@@ -1,0 +1,78 @@
+@import "~@/css/variable.scss";
+
+.lang {
+    position: relative;
+    float: right;
+    z-index: 2;
+    margin: 7px 30px 0 0;
+    font-size: 12px;
+    color: #AAA;
+}
+
+.lang-select-icon,
+.lang-list-icon {
+    display: inline-block;
+    vertical-align: middle;
+    width: 30px;
+    height: 30px;
+
+    span {
+        display: block;
+        width: 20px;
+        height: 20px;
+        margin: 5px auto 0;
+        background-repeat: no-repeat;
+        background-position: 50% 0;
+        background-size: cover;
+    }
+}
+
+.lang-select-text,
+.lang-list-text {
+    display: inline-block;
+    vertical-align: middle;
+}
+
+.lang-select {
+    position: relative;
+    cursor: pointer;
+
+    &:after {
+        content: '▾';
+        display: inline-block;
+        vertical-align: middle;
+        padding: 0 0 0 5px;
+    }
+}
+
+.lang-list-wrap {
+    position: absolute;
+    width: 100%;
+    top: 30px;
+    left: 0;
+    transform-origin: top;
+
+    .lang-list-item {
+        min-width: 82px;
+        cursor: pointer;
+
+        &:hover,
+        &.current {
+            .lang-list-text {
+                color: #FCA383;
+            }
+        }
+    }
+}
+
+@media screen and (min-width: $pc) {
+    .lang {
+        margin-top: 6px;
+    }
+}
+
+@media screen and (min-width: $layoutWidth) {
+    .lang {
+        margin-right: 0;
+    }
+}

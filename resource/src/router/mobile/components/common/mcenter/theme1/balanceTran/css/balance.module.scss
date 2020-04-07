@@ -1,0 +1,357 @@
+&.content-wrap {
+    height: calc(100vh - 121px);
+    padding-top: 29px;
+    background-color: #eee;
+    font-size: 14px;
+}
+
+.balance-tran {
+    height: 100%;
+    overflow-y: auto;
+}
+.transfer-type {
+    background: $balanceTitleBg;
+    position: fixed;
+    width: 100%;
+    color: $balanceTitleColor;
+    height: 29px;
+    margin-top: -29px;
+    z-index: 1;
+    .transfer-btn {
+        text-align: center;
+        height: 29px;
+        float: left;
+        width: 50%;
+        line-height: 29px;
+        white-space: nowrap;
+        text-overflow: ellipsis;
+        overflow: hidden;
+        &.active:after {
+            content: '';
+            display: block;
+            width: 100%;
+            height: 2px;
+            margin-top: -2px;
+            background-color: $balanceTitleBorderColor;
+        }
+        .info-icon {
+            height: 17px;
+            width: 17px;
+            position: relative;
+            top: 3px;
+            margin-left: 2px;
+            background-color: $balanceTransferInfoIconBg;
+            color: $balanceTransferInfoIconColor;
+            border-radius: 50%;
+            display: inline-block;
+            svg {
+                position: absolute;
+                top: 50%;
+                left: 50%;
+                transform: translate(-50%,-50%);
+            }
+        }
+    }
+    .auto-transfer-info {
+        margin-top: 29px;
+        height: 60px;
+        font-size: 12px;
+        color: #FFF;
+        background-color: #000;
+        padding: 9px 15px;
+        line-height: 16px;
+    }
+}
+.balance-total {
+    line-height: 12px;
+    height: 46px;
+    background-color: $balanceTotalBg;
+    position: relative;
+    &:before{
+        content:'';
+        display: inline-block;
+        height: 100%;
+        vertical-align: middle;
+    }
+    .info {
+        display: inline-block;
+        color: $balanceTotalColor;
+        font-size: 12px;
+        vertical-align: middle;
+        padding-left: 10px;
+        .text {
+            display: inline-block;
+            height: 12px;
+            width: 100%;
+            margin-top: 5px;
+            &:first-child {
+                margin-top: 0;
+            }
+        }
+
+        .membalance {
+            font-size: 17px;
+        }
+    }
+    .btn-wrap {
+        position: absolute;
+        right: 0;
+        top: 0;
+        height: 46px;
+        line-height: 46px;
+    }
+    .refresh-btn {
+        height: 30px;
+        width: 30px;
+        display: inline-block;
+        vertical-align: middle;
+        border: 2px solid $balanceRefreshBtnColor;
+        border-radius: 50%;
+        color: $balanceRefreshBtnColor;
+        position: relative;
+        &.disable {
+            opacity: 0.5;
+        }
+        svg {
+            position: absolute;
+            top: 50%;
+            left: 50%;
+            transform: translate(-50%,-50%);
+        }
+    }
+    .recycle-btn {
+        display: inline-block;
+        vertical-align: middle;
+        line-height: 28px;
+        min-width: 96px;
+        padding: 0 12px;
+        margin: 0 8px;
+        border: 1px solid $balanceRecycleBtnBorderColor;
+        background: $balanceRecycleBtnBg;
+        border-radius: 28px;
+        color: $balanceRecycleBtnColor;
+        font-size: 12px;
+        text-align: center;
+        height: 28px;
+        text-overflow: ellipsis;
+        overflow: hidden;
+        white-space: nowrap;
+        &.disable {
+            opacity: 0.5;
+        }
+    }
+}
+.main-account-balance-wrap{
+    margin-top: 10px;
+    line-height: 37px;
+    color: $mainAccountBalanceColor;
+    padding: 0 10px;
+    background-color: #FFF;
+    .main-account-balance {
+        float: right;
+        vertical-align: middle;
+        &:before{
+            content:'';
+            display: inline-block;
+            height: 100%;
+            vertical-align: middle;
+        }
+        .amount {
+            vertical-align: middle;
+        }
+    }
+}
+.vendor-list {
+    & > div:nth-child(2n-1) .vendor {
+        background-color: #F6F4F4;
+    }
+    .vendor {
+        line-height: 37px;
+        background-color: #FFF;
+        display: inline-block;
+        width: 100%;
+        padding: 0 10px;
+        &:before{
+            content:'';
+            display: inline-block;
+            height: 100%;
+            vertical-align: middle;
+        }
+        .vendor-alias {
+            clear:both;
+        }
+        .vendor-balance {
+            clear:both;
+            float: right;
+            vertical-align: middle;
+            &:before{
+                content:'';
+                display: inline-block;
+                height: 100%;
+                vertical-align: middle;
+            }
+            .amount {
+                vertical-align: middle;
+            }
+        }
+        .maintain {
+            float: right;
+            vertical-align: middle;
+            &:before{
+                content:'';
+                display: inline-block;
+                height: 100%;
+                vertical-align: middle;
+            }
+            .text {
+                color: #FF5454;
+                vertical-align: middle;
+            }
+
+            .info-icon {
+                vertical-align: middle;
+                height: 17px;
+                width: 17px;
+                position: relative;
+                margin-left: 5px;
+                background-color: $balanceTransferInfoIconBg;
+                color: $balanceTransferInfoIconColor;
+                border-radius: 50%;
+                display: inline-block;
+                svg {
+                    position: absolute;
+                    top: 50%;
+                    left: 50%;
+                    transform: translate(-50%,-50%);
+                }
+            }
+        }
+    }
+    .maintain-info {
+        line-height: initial;
+        height: 60px;
+        background-color: #000;
+        padding: 11px 10px;
+        color: white;
+    }
+    .last-vendor-tip {
+        float: right;
+        color: #1D8FFF;
+        margin: 5px 10px 20px;
+    }
+}
+.set-transfer-source {
+    width: 14px;
+    height: 14px;
+    vertical-align: middle;
+    margin: 0 1px 0 7px;
+}
+.manual-transfer {
+    .transfer-source {
+        margin-top: 10px;
+        background-color: white;
+        padding: 8px 10px;
+        font-size: 16px;
+        border: 1px solid #BEBCBC;
+        border-width: 1px 0;
+        .text {
+            font-size: 12px;
+            color: #BEBCBC;
+        }
+    }
+    .transfer-target {
+        background-color: white;
+        padding: 8px 10px;
+        font-size: 16px;
+        border-bottom: 1px solid #BEBCBC;
+        .text {
+            font-size: 12px;
+            color: #BEBCBC;
+        }
+        .trans-text {
+            float: left;
+        }
+        .trans-amount {
+            float: right;
+        }
+    }
+    .transfer-amount {
+        background-color: white;
+        padding: 8px 10px;
+        font-size: 16px;
+        border-bottom: 1px solid #BEBCBC;
+        .text {
+            font-size: 12px;
+            color: #BEBCBC;
+        }
+        input {
+            border: 0;
+        }
+    }
+    .btns {
+        padding-right: 10px;
+        margin-top: 10px;
+        margin-bottom: 30px;
+        text-align: right;
+        font-size: 16px;
+        color: #fff;
+        div {
+            line-height: 38px;
+            width: 128px
+        }
+        .clear{
+            text-align: center;
+            display: inline-block;
+            background: $balanceBtnCancelBg;
+            color: $balanceBtnCancelColor;
+            border: 1px solid rgba(194,194,194,1);
+            border-radius: 6px 6px 6px 6px;
+        }
+        .transfer {
+            margin-left: 4%;
+            text-align: center;
+            display: inline-block;
+            color: $balanceBtnConfirmColor;
+            background: $balanceBtnConfirmBg;
+            border: 1px solid rgba(194,194,194,1);
+            border-radius: 6px 6px 6px 6px;
+            &.disable {
+                opacity: 0.5;
+            }
+        }
+    }
+}
+.transfer-sucess-wrap {
+    width: 100%;
+    height: 100vh;
+    position: fixed;
+    top: 0;
+    text-align: center;
+    .content {
+        position: absolute;
+        top: 0;
+        right: 0;
+        bottom: 0;
+        left: 0;
+        border-radius: 5px;
+        width: 200px;
+        height: 200px;
+        opacity: 0.9;
+        background: rgba(22,22,22,1);
+        margin: auto;
+        .img {
+            width: 60px;
+            height: 60px;
+            margin: 54px 0 10px 0;
+        }
+        .text {
+            font-size: 16px;
+            color: #00D96D;
+        }
+    }
+}
+.star-icon {
+    width: 9px;
+    height: 9px;
+}
+

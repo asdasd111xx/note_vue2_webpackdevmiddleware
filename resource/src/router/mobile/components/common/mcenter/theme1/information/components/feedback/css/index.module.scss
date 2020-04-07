@@ -1,0 +1,41 @@
+.preset-color {
+    $addBtnBg: #00357E;
+    $addBtnColor: #FFF;
+
+    $tabBtnActiveColor: #00357E;
+
+    $deleteIconBg: #00357E;
+    $deleteIconColor: #FFF;
+
+    $mailboxCategoryColor: #19A3FF;
+
+    $cancelIconBg: #00357E;
+    $cancelIconColor: #FFF;
+
+    $feedbackBtnBg: #00357E;
+    $feedbackBtnColor: #FFF;
+    
+    @import './feedback.module.scss'; 
+}
+
+.site-500011,
+.site-52,
+.site-53 {
+    $addBtnBg: #EDB83F;
+    $addBtnColor: #FFF;
+
+    $tabBtnActiveColor: #EDB83F;
+
+    $deleteIconBg: #EDB83F;
+    $deleteIconColor: #FFF;
+
+    $mailboxCategoryColor: #EDB83F;
+
+    $cancelIconBg: #EDB83F;
+    $cancelIconColor: #000;
+
+    $feedbackBtnBg: #EDB83F;
+    $feedbackBtnColor: #000;
+
+    @import './feedback.module.scss';  
+}

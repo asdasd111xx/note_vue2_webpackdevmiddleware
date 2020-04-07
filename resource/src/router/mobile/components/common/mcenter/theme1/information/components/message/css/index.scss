@@ -1,0 +1,23 @@
+.preset-color {
+    $messageItemCategoryColor: #A37F5B;
+    $messageDeleteIconBg: rgba(0,0,0,0);
+    $messageDeleteIconColor: #00357E;
+
+    $messageDeleteTextColor: #00347D;
+    $messageDeleteTextBg: rgba(0,0,0,0);
+    
+    @import './message.module.scss'; 
+}
+
+.site-500011,
+.site-52,
+.site-53 {
+    $messageItemCategoryColor: #EDB83F;
+    $messageDeleteIconBg: #EDB83F;
+    $messageDeleteIconColor: #FFF;
+
+    $messageDeleteTextColor: #000;
+    $messageDeleteTextBg: #EDB83F;
+
+    @import './message.module.scss';  
+}

@@ -1,0 +1,37 @@
+@import '../../../variable.scss';
+
+.float-link-wrap {
+    position: absolute;
+    z-index: 100;
+    display: none;
+    transition: top 1s ease;
+
+    .mobile-show & {
+        display: block;
+    }
+
+    &.float-left-wrap {
+        left: 0;
+        a {
+            float: left;
+        }
+    }
+    &.float-right-wrap {
+        right: 0;
+        a {
+            float: right;
+        }
+    }
+    @media screen and (min-width: $pad + $sidebar) {
+        display: block;
+    }
+    a {
+        cursor: pointer;
+        &.nolink {
+            cursor: auto;
+        }
+    }
+    img {
+        display: block;
+    }
+}

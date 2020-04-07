@@ -1,0 +1,193 @@
+@import '~@/css/variable.scss';
+
+.container {
+    background-color: #FFF;
+}
+
+.header {
+    height: 43px;
+    line-height: 43px;
+    position: relative;
+    background: #000;
+    text-align: center;
+
+    img {
+        display: block;
+        width: 16px;
+        height: 16px;
+        position: absolute;
+        left: 10px;
+        top: 50%;
+        transform: translateY(-50%);
+    }
+}
+
+.title {
+    color: #FFF;
+    font-size: 16px;
+}
+
+.login-wrap {
+    min-height: 100vh;
+    margin: 0 auto;
+    font-size: 14px;
+}
+
+.login-logo {
+    width: 80px;
+    margin: 40px auto 15px;
+
+    img {
+        width: 100%;
+        height: 100%;
+    }
+}
+
+.login-name {
+    font-size: 21px;
+    text-align: center;
+    font-weight: bolder;
+}
+
+.login-form-wrap {
+    height: 360px;
+    margin: 25px 6% 0;
+    padding: 0 9%;
+
+
+    .login-unit {
+        display: block;
+        height: 40px;
+        margin-bottom: 11px;
+
+        input {
+            display: block;
+            width: 100%;
+            height: 100%;
+            padding: 0 38px;
+            border: 1px solid rgba(128, 128, 128, 0.26);
+            border-radius: 3px;
+            color: #000;
+
+            &::placeholder {
+                color: rgba(128, 128, 128, 0.26);
+            }
+        }
+
+        .input-icon {
+            display: inline-block;
+            position: relative;
+            left: 10px;
+            bottom: 26px;
+            width: 16px;
+            height: 16px;
+            padding-right: 19px;
+            background-repeat: no-repeat;
+            background-position: 0 50%;
+            background-size: contain;
+            border-right: 1px solid rgba(128, 128, 128, 0.26);
+        }
+    }
+
+    .login-unit-username {
+        .input-icon {
+            background-image: url('/static/image/mobile/tpl/porn1/login/sign_user.png');
+        }
+    }
+
+    .login-unit-password {
+        .input-icon {
+            background-image: url('/static/image/mobile/tpl/porn1/login/sign_password.png');
+        }
+    }
+
+    .login-unit-captcha {
+        position: relative;
+        margin-bottom: 19px;
+
+        .input-icon {
+            background-image: url('/static/image/mobile/tpl/porn1/login/sign_captcha.png');
+        }
+
+        img {
+            position: absolute;
+            top: 9px;
+            right: 15px;
+            width: 62px;
+            height: 21px;
+            background-color: #000;
+        }
+    }
+
+    .login-deposit-username {
+        margin-bottom: 29px;
+
+        img {
+            display: block;
+            width: 20px;
+            height: 20px;
+        }
+
+        .icon-wrap {
+            float: left;
+        }
+
+        .deposit-text {
+            float: left;
+            position: relative;
+            margin-left: 6px;
+            color: #000;
+        }
+
+        .login-unit-link {
+            float: right;
+            position: relative;
+            color: #000;
+        }
+    }
+
+    .login-button {
+        height: 40px;
+        color: #000;
+        text-align: center;
+        line-height: 40px;
+        background-color: #F4D452;
+        border-radius: 20px;
+        font-size: 16px;
+    }
+}
+
+.login-link-wrap {
+    margin-top: 25px;
+    .link-button {
+        display: inline-block;
+        width: 49%;
+        text-align: center;
+
+        a {
+            color: #304A85;
+        }
+    }
+}
+
+@media screen and (min-width: $phone) {
+    .login-wrap {
+        font-size: 15px;
+    }
+}
+
+@media screen and (min-width: $pad) {
+    .title {
+        font-size: 18px;
+    }
+
+    .login-wrap {
+        font-size: 16px;
+    }
+
+    .login-form-wrap {
+        .login-button {
+            font-size: 18px;
+        }
+    }
+}

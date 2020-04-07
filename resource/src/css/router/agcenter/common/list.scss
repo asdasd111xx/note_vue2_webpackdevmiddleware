@@ -1,0 +1,124 @@
+// 左側列表
+.agcenter-list-wrap {
+    position: fixed;
+    top: 98px;
+    width: 100%;
+    z-index: 1;
+    text-align: center;
+    &.show {
+        position: absolute;
+        .agcenter-list {
+            display: block;
+        }
+    }
+    .agcenter-select {
+        position: relative;
+        border-bottom: 1px solid #CCC;
+        background: #DFDFDF;
+        width: inherit;
+        height: 40px;
+        line-height: 40px;
+        color: #FF8989;
+        font-weight: bold;
+        cursor: pointer;
+        .select-arrow {
+            position: absolute;
+            top: 10px;
+            right: 6%;
+            width: 20px;
+            height: 20px;
+            color: #807A7A;
+            .fa-icon {
+                display: block;
+            }
+        }
+    }
+    .logo {
+        display: none;
+    }
+    .agcenter-list {
+        display: none;
+        background: #DFDFDF;
+        .list-title-line {
+            margin-top: 10px;
+            border-top: solid 1px #E8E8E8;
+            background: #D2D2D2;
+            height: 1px;
+            &:first-child {
+                display: none;
+            }
+        }
+        .list-title {
+            background: #CCC;
+            height: 46px;
+            line-height: 46px;
+            font-size: 18px;
+            font-weight: bold;
+            color: #403C3C;
+        }
+        .list-item {
+            color: #7B7B7B;
+            height: 42px;
+            line-height: 42px;
+            cursor: pointer;
+            &:hover {
+                text-decoration: underline;
+            }
+            &.current {
+                color: #FF8989;
+            }
+        }
+    }
+}
+
+@media screen and (min-width: $pad) {
+    .agcenter-list-wrap {
+        float: left;
+        position: static;
+        top: auto;
+        padding: 32px 0 70px;
+        width: 14.7%;
+        &.show {
+            position: relative;
+        }
+        .agcenter-select {
+            display: none;
+        }
+        .logo {
+            display: inline-block;
+        }
+        .agcenter-list {
+            display: block;
+            padding-top: 32px;
+            background: transparent;
+            .list-title-line {
+                display: none;
+            }
+            .list-title {
+                margin-top: 18px;
+                background: transparent;
+                height: 40px;
+                line-height: 40px;
+                color: #FFF;
+                font-size: 17px;
+                font-weight: bold;
+                &.current {
+                    background: #FF8989;
+                }
+            }
+            .list-item {
+                margin-bottom: 8px;
+                height: 35px;
+                line-height: 35px;
+                color: #CCC;
+                font-size: 15px;
+                cursor: pointer;
+                &:hover,
+                &.current {
+                    color: #FF8989;
+                    text-decoration: none;
+                }
+            }
+        }
+    }
+}

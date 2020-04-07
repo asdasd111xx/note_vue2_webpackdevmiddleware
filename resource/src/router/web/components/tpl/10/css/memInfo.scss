@@ -1,0 +1,83 @@
+.mem-info-wrap {
+    display: inline-block;
+    vertical-align: top;
+
+    .mem-info-item {
+        float: left;
+
+        &.account {
+            margin-right: 20px;
+        }
+
+        strong {
+            color: inherit;
+        }
+    }
+
+    // 加號選單
+    .balance-wrap {
+        position: relative;
+        float: left;
+        width: 14px;
+        height: 16px;
+        margin: 3px 9px 0 5px;
+        color: #F0D084;
+
+        .balance-icon {
+            display: block;
+            cursor: pointer;
+            color: inherit;
+        }
+
+        .balance-list {
+            border-color: #EFCF89;
+            color: #A55F46;
+            background: #EFCF89;
+        }
+
+        .balance-list-bottom {
+            border-color: #E9BE5F;
+            background: #E9BE5F;
+
+            .balance-translate {
+                color: #FFF;
+                background: #C28F29;
+                overflow : hidden;
+                text-overflow : ellipsis;
+                white-space : nowrap;
+
+                &:hover {
+                    background: #AD7F25;
+                }
+            }
+        }
+    }
+}
+
+// 深紫色
+.mem-info-wrap {
+    .deep-purple & {
+        // 加號選單
+        .balance-wrap {
+            .balance-list {
+                border-color: #540982;
+                color: #FFF;
+                background: #540982;
+            }
+
+            .balance-list-bottom {
+                border-color: #280545;
+                background: #280545;
+
+                .balance-translate {
+                    color: #190038;
+                    background: #FFD546;
+
+                    &:hover {
+                        background: #FFCF2D;
+                    }
+                }
+            }
+        }
+    }
+}

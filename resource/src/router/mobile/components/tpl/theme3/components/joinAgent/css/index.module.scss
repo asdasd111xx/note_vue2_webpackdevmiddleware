@@ -1,0 +1,164 @@
+@import "~@/css/page/joinMem.module.scss";
+
+.login-wrap {
+    padding: 50px 15px 40px;
+    background: url('/static/image/mobile/tpl/theme3/login/bg.png') 0 0/cover no-repeat;
+}
+
+.login-logo {
+    width: 200px;
+    height: 61px;
+    margin: 0 auto 25px;
+    background: url('/static/image/mobile/tpl/theme3/login/logo.png') 0 0/cover no-repeat;
+    text-align: center;
+}
+
+.icon {
+    display: inline-block;
+    width: 25px;
+    height: 25px;
+    vertical-align: middle;
+}
+
+.login-cotainer {
+    position: relative;
+    margin: 0 20px;
+    font-size: 12px;
+    color: #F8F1EB;
+}
+
+.login-register {
+    position: absolute;
+    left: 0;
+    width: 16%;
+    height: 100%;
+    border-radius: 5px 0 0 5px;
+    background-color: rgba(248, 241, 235, .18);
+    text-align: center;
+
+    img {
+        margin-top: 112px;
+    }
+
+    span {
+        display: block;
+        margin: 10px auto 0;
+        max-width: 13px;
+        text-align: center;
+        line-height: 17px;
+        word-break: break-all;
+    }
+}
+
+.login-main {
+    float: right;
+    width: 84%;
+    border-radius: 0 5px 5px 0;
+    background-color: rgba(0,0,0,.4);
+}
+
+.login-header {
+    margin: 29px 0 16px;
+    font-size: 17px;
+    text-align: center;
+}
+
+.join-wrap {
+    background: #212121;
+    padding-top: 0;
+}
+
+.field-wrap {
+    position: relative;
+    margin-bottom: 20px;
+}
+
+.captcha-img {
+    position: absolute;
+    top: 18px;
+    right: 8px;
+    width: 85px;
+    height: 38px;
+    background: #000;
+    cursor: pointer;
+}
+
+.join-star {
+    position: absolute;
+    left: 0;
+    color: #D01C1C;
+}
+
+.field-title {
+    position: absolute;
+    top: -28px;
+    left: 7px;
+    display: block;
+    padding-left: 10px;
+    width: 90px;
+    z-index: 1;
+    overflow : hidden;
+    text-overflow : ellipsis;
+    white-space : nowrap;
+}
+
+.field-right {
+    position: relative;
+    width: 100%;
+    text-align: right;
+
+    :global(.vdp-datepicker) {
+        width: 100%;
+
+        :global(.vdp-datepicker__calendar) {
+            top: 35px;
+            right: 0;
+            color: #000;
+            text-align: left;
+        }
+
+        :global(.vdp-datepicker__clear-button) {
+            position: absolute;
+            top: 8px;
+            right: 10px;
+        }
+    }
+}
+
+.btn-verify {
+    color: #9C6E54;
+    background: linear-gradient(90deg, #EFDFAF, #DDC084, #EDBF6B);
+}
+
+.icon-verify {
+    color: #EDBF6B;
+}
+
+.join-btn {
+    color: #9C6E54;
+    background: linear-gradient(90deg, #EFDFAF, #DDC084, #EDBF6B);
+    border-radius: 30px;
+}
+
+:global {
+    .v-select {
+        &.open {
+            .open-indicator {
+                bottom: 16px;
+            }
+        }
+
+        .open-indicator {
+            right: 4px;
+            bottom: 16px;
+            width: 6px;
+            height: 6px;
+
+            &::before {
+                height: 6px;
+                width: 6px;
+                border-width: 1px 1px 0 0;
+            }
+        }
+    }
+}

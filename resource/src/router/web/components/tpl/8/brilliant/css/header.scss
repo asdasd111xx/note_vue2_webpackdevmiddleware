@@ -1,0 +1,735 @@
+.header-wrap {
+    margin: 0 auto;
+    width: 1000px;
+    font-size: 12px;
+}
+
+.header-top-wrap {
+    margin-bottom: 21px;
+    padding-top: 10px;
+}
+
+.header-top-link {
+    float: left;
+    padding-top: 8px;
+
+    .header-link {
+        float: left;
+        margin-right: 7px;
+
+        .custom_link {
+            margin-right: 5px;
+            cursor: pointer;
+
+            &.vip {
+                color: #FF379D;
+            }
+            
+            &.rebate {
+                color: #FFDE00;
+            }
+            
+            &.card {
+                color: #00FF24;
+            }
+            
+            &.candy {
+                color: #DFDAD1;
+            }
+
+            &:hover {
+                color: #F4D15C;
+            }
+        }
+    }
+}
+
+.header-top-feature {
+    float: right;
+}
+
+.header-bottom-wrap {
+    position: relative;
+    height: 105px;
+
+    &.is-login {
+        padding-right: 0;
+    }
+}
+
+.header-login-wrap {
+    padding: 14px 0 0 30px;
+
+    &.is-login {
+        padding: 16px 0 0 22px;
+    }
+}
+
+// 語系元件
+/deep/ .lang-wrap {
+    float: right;
+    margin-right: 2px;
+
+    .lang-current {
+        width: 106px;
+        height: 28px;
+        background-color: #413535;
+        border: none;
+        border-radius: 7px;
+        
+        .lang-title {
+            color: #959595;
+
+            &:after {
+                content: '\25BC';
+                font-size: 9px;
+                margin-left: 2px;
+            }
+        }
+    }
+
+    .lang-item {
+        float: left;
+        width: 18px;
+        height: 18px;
+        margin: 4px 6px 0 0;
+        cursor: pointer;
+
+        &.zh-tw {
+            background-position-y: 0;
+        }
+
+        &.en {
+            background-position-y: -80px;
+        }
+
+        &.ja {
+            background-position-y: -120px;
+        }
+    }
+
+    .lang-title {
+        float: left;
+        line-height: 25px;
+        font-size: 12px;
+    }
+
+    .lang-select {
+        top: 25px;
+    }
+
+    .lang-box {
+        width: 106px;
+        background-color: #000;
+        border: 1px solid #000;
+
+        .lang-title:hover {
+            color: #F4D15C;
+        }
+    }
+}
+
+.spare-url {
+    float: right;
+    margin-right: 17px;
+    margin-top: 4px;
+    color: #DFDAD1;
+    cursor: pointer;
+
+    &:hover {
+        color: #F4D15C;
+    }
+}
+
+.title-img {
+    float: right;
+    width: 320px;
+    height: 103px;
+    padding: 0px;
+    margin: 24px 22px 0 0;
+}
+
+// 跑馬燈
+.news-wrap {
+    clear: right;
+    float: right;
+    width: 282px;
+    height: 82px;
+    margin-top: 37px;
+    padding: 12px 14px 12px 68px;
+
+    /deep/ .news-content {
+        display: block;
+        height: 58px;
+        font-size: 12px;
+        white-space: initial;
+        color: #9F9F9F;
+    }
+}
+
+// LOGO
+/deep/ .header-logo-wrap {
+    position: relative;
+    float: right;
+    width: 284px;
+    height: 100px;
+    margin: 8px 72px 0 0;
+
+    img {
+        vertical-align: middle;
+    }
+}
+
+/deep/ .nav-wrap {
+    float: left;
+    margin: 5px 0 0 12px;
+
+    .nav-item-wrap {
+        position: relative;
+        float: left;
+        width: 81px;
+        padding: 0 2px;
+
+        &:after {
+            content: '';
+            position: absolute;
+            width: 1px;
+            height: 11px;
+            top: 14px;
+            right: 0;
+            border-right: 1px solid #4B3B3D;
+            background: #000;
+        }
+
+        &.nav-last-item-wrap {
+            &:after {
+                content: none;
+            }
+        }
+
+        .nav-item-icon {
+            position: absolute;
+            display: block;
+            right: 12px;
+            bottom: 27px;
+
+            img {
+                display: block;
+            }
+        }
+
+
+        .nav-item {
+            display: block;
+            overflow: hidden;
+            height: 39px;
+            line-height: 39px;
+            padding: 0 5px;
+            font-size: 12px;
+            font-weight: bold;
+            text-align: center;
+            text-overflow: ellipsis;
+            white-space: nowrap;
+            cursor: pointer;
+            color: #FFF3CC;
+
+            &.nolink {
+                cursor: default;
+            }
+        }
+
+        .nav-sub-wrap {
+            position: absolute;
+            z-index: 100;
+            width: 110px;
+            margin-left: -16px;
+            padding: 16px 0;
+            top: 38px;
+            left: 0;
+            border-top: 1px solid rgba(255, 255, 255, 0.9);
+            background: rgba(255, 255, 255, 0.9);
+
+            .nav-sub-item {
+                position: relative;
+                color: #000;
+
+                span {
+                    display: block;
+                    overflow: hidden;
+                    width: 100%;
+                    height: 33px;
+                    line-height: 33px;
+                    padding: 0 10px;
+                    text-align: center;
+                    font-size: 13px;
+                    white-space: nowrap;
+                    text-overflow: ellipsis;
+                    cursor: pointer;
+                }
+
+                .nav-sub-icon-wrap {
+                    position: absolute;
+                    width: 17px;
+                    height: 17px;
+                    left: 86px;
+                    bottom: 21px;
+                    cursor: pointer;
+
+                    .nav-sub-item-icon {
+                        position: absolute;
+                        max-width: 100%;
+                        bottom: 0;
+                        left: 0;
+                    }
+                }
+
+                &.nolink {
+                    cursor: default;
+                }
+
+                &.current,
+                &:hover {
+                    color: #f00 !important;
+                }
+            }
+        }
+    }
+
+    .nav-more-wrap {
+        position: relative;
+        float: left;
+        margin-top: 10px;
+        width: 14px;
+        height: 14px;
+        padding: 1px 0 0 2px;
+        background-color: #B29496;
+        border-radius: 2px;
+
+        .more-btn {
+            display: block;
+            width: 10px;
+            height: 10px;
+            cursor: pointer;
+
+            svg {
+                display: block;
+                margin: 0 auto;
+                color: #FFF;
+            }
+        }
+
+        .more-list {
+            position: absolute;
+            z-index: 100;
+            width: 120px;
+            top: 26px;
+            right: 0;
+            border-top: 1px solid #887578;
+            background: #333;
+
+            &:before {
+                content: '';
+                position: absolute;
+                top: -9px;
+                bottom: 0;
+                right: 0;
+                left: 0;
+            }
+
+            .more-list-item {
+                position: relative;
+                display: block;
+                width: 100%;
+                height: 30px;
+                line-height: 30px;
+                font-size: 12px;
+                text-align: center;
+                cursor: pointer;
+                color: #FFF;
+
+                &.current,
+                &:hover {
+                    color: #887578 !important;
+                }
+
+                .text {
+                    display: block;
+                    white-space: nowrap;
+                    text-overflow: ellipsis;
+                    overflow: hidden;
+                    padding: 0 18px;
+                }
+
+                .nav-more-icon-wrap {
+                    position: absolute;
+                    width: 17px;
+                    height: 17px;
+                    left: 86px;
+                    bottom: 21px;
+                    cursor: pointer;
+
+                    .nav-more-item-icon {
+                        position: absolute;
+                        max-width: 100%;
+                        bottom: 0;
+                        left: 0;
+                    }
+                }
+
+                .nav-more-caret {
+                    position: absolute;
+                    right: 7px;
+                    top: 50%;
+                    margin-top: -8px;
+                }
+
+                .nav-more-sub-wrap {
+                    position: absolute;
+                    z-index: 100;
+                    top: 0;
+                    width: 120px;
+                    border-top: 1px solid #887578;
+                    background: #333;
+
+                    .nav-more-sub-item {
+                        position: relative;
+                        color: #FFF;
+                        font-size: 12px;
+
+                        .nav-more-sub-icon-wrap {
+                            position: absolute;
+                            width: 17px;
+                            height: 17px;
+                            left: 86px;
+                            bottom: 21px;
+                            cursor: pointer;
+
+                            .nav-more-sub-item-icon {
+                                position: absolute;
+                                max-width: 100%;
+                                bottom: 0;
+                                left: 0;
+                            }
+                        }
+
+                        &.nolink {
+                            cursor: default;
+                        }
+
+                        &.current,
+                        &:hover {
+                            color: #887578 !important;
+                        }
+                    }
+                }
+            }
+        }
+    }
+}
+
+// 登入前
+/deep/ .login-form-wrap {
+    display: inline-block;
+    vertical-align: middle;
+    font-size: 13px;
+
+    .login-unit {
+        display: inline-block;
+        vertical-align: middle;
+        width: 154px;
+        height: 28px;
+        margin-right: 8px;
+
+        input {
+            width: 100%;
+            height: 28px;
+            line-height: 28px;
+            padding-left: 8px;
+            outline: none;
+            border: none;
+            color: #DFC182;
+            background: none;
+
+            // Chrome/Opera/Safari
+            &::-webkit-input-placeholder {
+                color: #DFC182;
+            }
+            // Firefox 19+
+            &::-moz-placeholder {
+                color: #DFC182;
+            }
+            // IE 10+
+            &:-ms-input-placeholder {
+                color: #DFC182;
+            }
+            // Firefox 18-
+            &:-moz-placeholder {
+                color: #DFC182;
+            }
+        }
+    }
+
+    .login-unit-password {
+        position: relative;
+
+        .slide-fade-enter-active {
+            transition: .2s ease-in;
+            opacity: 1
+        }
+
+        .slide-fade-leave-active {
+            transition: 2s ease-out;
+            opacity: 0
+        }
+
+        .prompt-text {
+            position: absolute;
+            width: 181px;
+            background-color: #FFFDC0;
+            border-radius: 2px;
+            padding: 3px;
+            z-index: 99;
+        }
+
+        .prompt-link {
+            color: #FF0000;
+            cursor: pointer;
+            text-decoration: underline;
+        }
+    }
+
+    .login-unit-captcha {
+        position: relative;
+        width: 119px;
+        margin-right: 10px;
+
+        img {
+            position: absolute;
+            width: 58px;
+            top: 1px;
+            right: 1px;
+            cursor: pointer;
+            background: #202020;
+        }
+    }
+
+    .links-forget {
+        margin-right: 4px;
+        transition: all 0.5s;
+        cursor: pointer;
+        color: #DFC182;
+
+        &:hover {
+            color: #887578;
+        }
+    }
+
+    .login-submit {
+        margin: 0 5px 0 8px;
+        display: inline-block;
+        vertical-align: middle;
+        width: 90px;
+        height: 36px;
+        cursor: pointer;
+        transition: all .4s;
+
+        &:hover {
+            background-position: 50% 100%;
+        }
+    }
+}
+
+.header-register-wrap {
+    display: inline-block;
+    vertical-align: middle;
+
+    span {
+        display: inline-block;
+        vertical-align: middle;
+        width: 90px;
+        height: 36px;
+        cursor: pointer;
+        transition: all .4s;
+
+        &:hover {
+            background-position: 50% 100%;
+        }
+    }
+
+    .links-join {
+        margin: 0 1px;
+    }
+}
+
+.header-agent-wrap {
+    display: inline-block;
+    vertical-align: middle;
+
+    span {
+        display: inline-block;
+        vertical-align: middle;
+        width: 90px;
+        height: 30px;
+        cursor: pointer;
+        transition: all .4s;
+
+        &:hover {
+            background-position: 50% 100%;
+        }
+    }
+
+    .links-join {
+        margin: 0 1px;
+    }
+}
+
+// 登入後
+/deep/ .login-info-wrap {
+    display: inline-block;
+    vertical-align: middle;
+    font-size: 12px;
+    color: #F4E5B7;
+
+    .login-info-item {
+        display: inline-block;
+        vertical-align: middle;
+
+        &.account {
+            margin-right: 20px;
+        }
+
+        strong {
+            color: #FFBD00;
+        }
+    }
+
+    // 加號選單
+    .balance-wrap {
+        position: relative;
+        display: inline-block;
+        vertical-align: middle;
+        width: 14px;
+        height: 16px;
+        margin: 0 9px 0 5px;
+
+        .balance-icon {
+            display: block;
+            cursor: pointer;
+            color: #F4E5B7;
+        }
+
+        .balance-list-wrap {
+            position: absolute;
+            visibility: hidden;
+            width: 250px;
+            z-index: 100;
+            top: 18px;
+            right: 0;
+            transition: visibility 0.3s;
+
+            &.show {
+                visibility: visible;
+            }
+
+            &.right {
+                right: auto;
+            }
+
+            .balance-list {
+                line-height: 22px;
+                padding: 16px;
+                text-align: left;
+                border-width: 1px 1px 0 0;
+                border-style: solid;
+                border-radius: 2px 2px 0 0;
+                border-color: #FFF;
+                background: #FFF;
+                color: #000;
+            }
+
+            .balance-tran {
+                height: 30px;
+                padding: 4px 8px 0 0;
+                border-radius: 0 0 2px 2px;
+                background: #DEDEDE;
+
+                .balance-tran-btn {
+                    float: right;
+                    width: 58px;
+                    height: 22px;
+                    line-height: 22px;
+                    text-align: center;
+                    font-size: 12px;
+                    border-radius: 5px;
+                    cursor: pointer;
+                    color: #FFF;
+                    background: #545454;
+                    overflow : hidden;
+                    text-overflow : ellipsis;
+                    white-space : nowrap;
+                }
+            }
+        }
+    }
+
+    // 會員資訊子選單
+    .login-info-links {
+        display: inline-block;
+        vertical-align: middle;
+
+        span {
+            display: inline-block;
+            vertical-align: middle;
+
+            &.link-item {
+                cursor: pointer;
+                color: #F4E5B7;
+            }
+
+            &.mcenter {
+                position: relative;
+                padding-left: 8px;
+                transition: all 0.5s;
+            }
+
+            &.logout {
+                width: 72px;
+                height: 29px;
+                margin-left: 23px;
+                text-align: center;
+                line-height: 28px;
+                color: #FFF;
+            }
+        }
+    }
+}
+
+// 固定導覽列
+.navScroll {
+    .header-bottom-wrap {
+        height: initial;
+    }
+
+    .header-nav-wrap {
+        position: fixed;
+        z-index: 1000;
+        top: 0;
+        right: 0;
+        width: 100%;
+        height: 52px;
+        background: url("/static/image/tpl/8/nav_bg_x.png") repeat-x;
+
+        .nav-wrap {
+            float: none;
+            width: 1000px;
+            margin: 5px auto 12px;
+        }
+    }
+    
+    &.isBackEnd {
+        .header-nav-wrap {
+            width: calc(100% - 236px);
+            left: initial;
+        }
+    }
+}

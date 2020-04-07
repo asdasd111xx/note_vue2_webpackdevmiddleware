@@ -1,0 +1,668 @@
+// 投注記錄
+.bet-record {
+    padding: 500px 2.4% 0;
+
+    .main-title {
+        margin: 0 0 20px;
+
+        h1 {
+            float: left;
+            color: #262626;
+            font-size: 18px;
+            font-weight: bold;
+        }
+
+        .pointer {
+            cursor: pointer;
+
+            &:hover {
+                text-decoration: underline;
+            }
+        }
+
+        .detial {
+            color: #999;
+            font-weight: normal;
+
+            .arrow {
+                margin: 0 8px 0 12px;
+                color: #9d9d9d;
+            }
+        }
+    }
+
+    .main-btn {
+        border-radius: 4px;
+        background: $btnColorBg;
+        height: 39px;
+        line-height: 39px;
+        color: $btnColor;
+        text-align: center;
+        cursor: pointer;
+
+        &:hover {
+            background: $btnColorBgHover;
+        }
+    }
+
+    .total-area-wrap {
+        position: absolute;
+        top: 0;
+        left: 0;
+        padding: 16px 2.4%;
+        background: #eee;
+        width: 100%;
+
+        .main-title {
+            margin-bottom: 13px;
+        }
+
+        .total-area {
+            .total-item {
+                position: relative;
+                margin-bottom: 9px;
+                border-top: 5px solid $totalBorderColor;
+                padding: 7px 10px 0 87px;
+                background: #fff;
+                width: 100%;
+                height: 67px;
+                cursor: pointer;
+
+                .total-item-title {
+                    position: absolute;
+                    top: 7px;
+                    left: 8px;
+                    color: #000;
+                    font-size: 14px;
+
+                    span {
+                        display: block;
+                    }
+
+                    .sub-title {
+                        margin-top: 14px;
+                    }
+                }
+
+                .total-item-date-money {
+                    text-align: right;
+
+                    .total-item-date {
+                        margin-bottom: 12px;
+                        color: #7e7e7e;
+                        font-size: 12px;
+                    }
+
+                    .total-item-money {
+                        color: $totalColor;
+                        font-size: 16px;
+                        font-weight: bold;
+                    }
+                }
+
+                &:hover {
+                    box-shadow: 0 0 5px 0 rgba(0, 0, 0, 0.15);
+                }
+
+                &.last_month {
+                    margin-bottom: 0;
+                    border-top-color: #fff;
+                    cursor: auto;
+                    box-shadow: none;
+
+                    .total-item-money {
+                        color: #666;
+                    }
+                }
+            }
+        }
+    }
+
+    .bet-record-field {
+        position: relative;
+        margin-bottom: 40px;
+
+        .select-list {
+            width: 100%;
+            height: 38px;
+            line-height: 38px;
+
+            /deep/ .ui.fluid.dropdown {
+                border-color: #e8e8e8;
+
+                .text {
+                    color: #999;
+                }
+            }
+        }
+
+        .main-calendar-wrap {
+            margin: 10px 0;
+            position: relative;
+            padding-left: 95px;
+            width: 100%;
+
+            .date-text {
+                position: absolute;
+                font-size: 13px;
+                top: 0;
+                left: 0;
+                color: #848383;
+                line-height: 38px;
+            }
+
+            /deep/ .main-calendar {
+                float: left;
+                width: 48%;
+
+                .vdp-datepicker__calendar {
+                    width: 260px;
+                    font-family: 標楷體, "Microsoft JhengHei", 微軟正黑體, arial,
+                        helvetica, sans-serif;
+                }
+
+                &.left {
+                    float: left;
+
+                    .vdp-datepicker__calendar {
+                        left: -50px;
+                    }
+                }
+
+                &.right {
+                    float: right;
+
+                    .vdp-datepicker__calendar {
+                        right: 0;
+                    }
+                }
+
+                .main-input {
+                    float: none;
+                    width: 100%;
+                    height: 38px;
+                    line-height: 38px;
+                    padding-left: 5%;
+                    letter-spacing: 0.5px;
+                    font-family: sans-serif;
+                    cursor: pointer;
+                    border-radius: 4px;
+                    border: 1px solid #e8e8e8;
+                    color: #999;
+                    background-color: #fff;
+                }
+            }
+
+            .date-line {
+                float: left;
+                width: 4%;
+                line-height: 38px;
+                text-align: center;
+            }
+        }
+
+        .inquire-btn {
+            margin-top: 10px;
+            width: 100%;
+            height: 38px;
+            line-height: 38px;
+        }
+    }
+
+    .back-btn-wrap {
+        margin-bottom: 22px;
+
+        .main-radio-wrap {
+            float: left;
+            margin-top: 7px;
+        }
+
+        .main-btn {
+            float: right;
+            padding: 0 5px;
+            min-width: 60px;
+        }
+    }
+
+    .main-table {
+        width: 100%;
+        color: $tableBodyColor;
+        font-size: 14px;
+        border-collapse: collapse;
+        border-spacing: 0;
+
+        th,
+        td {
+            margin: 0;
+            padding: 0;
+        }
+
+        th {
+            height: 40px;
+            font-size: 16px;
+            font-style: normal;
+            font-weight: normal;
+            text-align: center;
+        }
+
+        thead {
+            tr {
+                border-width: 0 1px;
+                border-style: solid;
+                border-color: $tableTitleBorder;
+                background: $tableTitleBg;
+                color: $tableTitleColor;
+            }
+
+            &.mcenter-pc {
+                display: none;
+            }
+        }
+
+        tbody {
+            tr {
+                border-width: 1px 1px 0;
+                border-style: solid;
+                border-color: $tableBodyBorder;
+                background: $tableBodyBg;
+
+                &.total {
+                    height: 40px;
+                    line-height: 40px;
+                    background: #eee;
+                    font-weight: bold;
+
+                    td {
+                        &.title {
+                            letter-spacing: 1px;
+                            background: #d5d5d5;
+                        }
+                    }
+                }
+
+                &.mcenter-pc {
+                    display: none;
+                }
+            }
+
+            td {
+                padding: 5px 0;
+                line-height: 30px;
+                text-align: center;
+                min-height: 30px;
+
+                &.negative {
+                    color: #f00;
+                }
+
+                &.detail {
+                    span {
+                        display: block;
+                        margin: 0 auto;
+                        background: url("/static/image/member_search_btn.png") 0
+                            0 no-repeat;
+                        width: 30px;
+                        height: 30px;
+                        cursor: pointer;
+                    }
+                }
+            }
+
+            table {
+                margin-bottom: 40px;
+                border-bottom: 1px solid $tableBodyBorder;
+
+                &.pad {
+                    width: 100%;
+
+                    tr {
+                        &.number {
+                            background: #c3c3c3;
+                            color: #fff;
+                            font-weight: bold;
+                        }
+
+                        &.title {
+                            background: $btnColorBg;
+                            color: $tableTitleColor;
+                            font-weight: bold;
+                        }
+                    }
+
+                    td {
+                        &.caption {
+                            padding-left: 3%;
+                            width: 38%;
+                            text-align: left;
+                        }
+
+                        &.content {
+                            padding-left: 3%;
+                            width: auto;
+                            text-align: left;
+                            &.detail {
+                                span {
+                                    margin: 0;
+                                }
+                            }
+                        }
+                    }
+                }
+            }
+
+            .no-data {
+                color: $tableNoDataColor;
+            }
+        }
+
+        .number {
+            width: 11%;
+        }
+
+        .name {
+            width: 16%;
+        }
+
+        .quantity {
+            width: 9%;
+        }
+
+        .amount,
+        .valid,
+        .result {
+            padding-right: 2.9%;
+            width: 17.2%;
+            text-align: right;
+        }
+
+        .detail {
+            width: 12.4%;
+        }
+
+        &.detial {
+            .number {
+                width: 11.1%;
+            }
+            .name {
+                width: 19%;
+            }
+            .amount,
+            .valid,
+            .result {
+                width: 21.3%;
+            }
+        }
+    }
+}
+
+// phone 以上
+@media screen and (min-width: $phone) {
+    .bet-record {
+        padding-top: 390px;
+
+        .total-area-wrap {
+            padding: 40px 2.4%;
+
+            .main-title {
+                margin-bottom: 17px;
+            }
+
+            .total-area {
+                .total-item {
+                    float: left;
+                    margin-bottom: 12px;
+                    padding-right: 7px;
+                    width: 49%;
+
+                    &.today,
+                    &.this_week {
+                        margin-right: 2%;
+                    }
+
+                    &.last_month {
+                        border: none;
+                        padding: 0 0 0 180px;
+                        background-size: 24px;
+                        width: 100%;
+                        height: 44px;
+                        line-height: 44px;
+
+                        .total-item-title {
+                            top: 0;
+                            left: 70px;
+
+                            span {
+                                display: inline;
+                            }
+                        }
+
+                        .total-item-date-money {
+                            .total-item-date {
+                                display: inline-block;
+                                padding-right: 5%;
+                                margin-bottom: 0;
+                            }
+
+                            .total-item-money {
+                                display: inline-block;
+                                border-left: 1px solid #ccc;
+                                padding: 0 8%;
+                            }
+                        }
+                    }
+                }
+            }
+        }
+
+        .bet-record-field {
+            .main-calendar-wrap {
+                float: left;
+                width: 74%;
+
+                /deep/ .main-calendar {
+                    width: 47%;
+
+                    &.left {
+                        float: left;
+
+                        .vdp-datepicker__calendar {
+                            left: 0;
+                        }
+                    }
+
+                    &.right {
+                        float: right;
+
+                        .vdp-datepicker__calendar {
+                            right: 0;
+                        }
+                    }
+                }
+
+                .date-line {
+                    width: 6%;
+                }
+            }
+
+            .inquire-btn {
+                float: right;
+                width: 24%;
+            }
+        }
+    }
+}
+
+// pad 以上
+@media screen and (min-width: $pad) {
+    .bet-record {
+        padding-top: 240px;
+
+        .total-area-wrap {
+            padding-top: 35px;
+
+            .main-title {
+                margin-bottom: 20px;
+            }
+
+            .total-area {
+                .total-item {
+                    position: static;
+                    float: left;
+                    margin-right: 1%;
+                    margin-bottom: 0;
+                    padding: 5px 0 0;
+                    width: 15.83%;
+                    height: 120px;
+
+                    .total-item-title {
+                        position: relative;
+                        top: 20px;
+                        left: auto;
+                        height: 16px;
+                        line-height: 16px;
+                        text-align: center;
+                        padding: 0 4px;
+                        white-space: nowrap;
+                        overflow: hidden;
+                        text-overflow: ellipsis;
+
+                        span {
+                            display: inline;
+                        }
+
+                        .sub-title {
+                            margin-top: 0;
+                        }
+                    }
+
+                    .total-item-date-money {
+                        text-align: center;
+
+                        .total-item-date {
+                            margin: 28px 0 14px;
+                            height: 13px;
+                            line-height: 13px;
+                        }
+
+                        .total-item-money {
+                            border-top: 1px solid #ccc;
+                            height: 48px;
+                            line-height: 48px;
+                        }
+                    }
+
+                    &.today,
+                    &.this_week {
+                        margin-right: 1%;
+                    }
+
+                    &.last_month {
+                        border-top: 5px solid #fff;
+                        margin-right: 0;
+                        padding: 5px 0 0;
+                        background-position: 10px 24px;
+                        width: 15.83%;
+                        height: 120px;
+                        line-height: normal;
+
+                        .total-item-title {
+                            position: relative;
+                            top: 20px;
+                            left: auto;
+                        }
+
+                        .total-item-date-money {
+                            .total-item-date {
+                                display: block;
+                                padding-right: 0;
+                                margin: 28px 0 14px;
+                            }
+
+                            .total-item-money {
+                                display: block;
+                                border-left: none;
+                                padding: 0;
+                            }
+                        }
+                    }
+                }
+            }
+        }
+
+        .bet-record-field {
+            .select-list {
+                float: left;
+                margin-right: 2%;
+                width: 24%;
+            }
+
+            .main-calendar-wrap {
+                margin-top: 0;
+                width: 59%;
+            }
+
+            .inquire-btn {
+                float: right;
+                margin-top: 0;
+                width: 14%;
+            }
+        }
+
+        .main-table {
+            border-bottom: 1px solid #ccc;
+
+            thead {
+                &.mcenter-pc {
+                    display: none;
+                    display: table-header-group;
+                }
+
+                .amount,
+                .valid,
+                .result {
+                    cursor: pointer;
+
+                    &.active {
+                        color: #545d6e;
+                    }
+                }
+            }
+
+            tbody {
+                tr {
+                    &.mcenter-pc {
+                        display: table-row;
+                    }
+                }
+
+                table {
+                    display: none;
+                }
+            }
+        }
+    }
+}
+
+// pc 以上
+@media screen and (min-width: $layoutWidth) {
+    .bet-record {
+        .bet-record-field {
+            margin-bottom: 15px;
+
+            .select-list {
+                margin-right: 3.5%;
+                width: 19.3%;
+            }
+
+            .main-calendar-wrap {
+                width: 46.3%;
+            }
+
+            .inquire-btn {
+                float: left;
+                margin-left: 0.7%;
+                width: 9.6%;
+            }
+        }
+    }
+}

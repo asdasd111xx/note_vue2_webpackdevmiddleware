@@ -1,0 +1,68 @@
+/****** 各模板共用 ******/
+@import "~@/css/tpl/index.scss";
+
+.body {
+    min-width: 1405px;
+    word-break: break-all;
+    // 最近玩過
+    .main-container {
+        padding: 140px 0 41px;
+    }
+
+    .main-wrap {
+        // 模塊版寬設定
+        .element-wrap {
+            > .content {
+                margin: 0 auto;
+                width: 1200px;
+            }
+        }
+    }
+}
+
+.note-content {
+    position: absolute;
+    width: 100%;
+    max-width: 700px;
+    z-index: 1000;
+    height: auto;
+    top: 50%;
+    left: 50%;
+    transform: translateX(-50%) translateY(-50%);
+}
+
+.news-wrap {
+    background: #000;
+    width: 100%;
+    height: 40px;
+    font-size: 12px;
+    line-height: 40px;
+
+    .news-content {
+        max-width: 1242px;
+        margin: 0 auto;
+        color: #CCC;
+        box-sizing: border-box;
+        padding-right: 100px;
+        position: relative;
+
+        .lang {
+            position: absolute;
+            right: 0;
+            top: 11px;
+        }
+    }
+
+    .news-title {
+        color: #F7B500;
+        margin: 0 10px 0 45px;
+        display: inline-block;
+        vertical-align: middle;
+    }
+
+    .news-marquee-content {
+        display: inline-block;
+        vertical-align: middle;
+        width: calc(100% - 110px);
+    }
+}

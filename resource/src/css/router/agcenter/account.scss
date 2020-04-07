@@ -1,0 +1,94 @@
+// 帳戶資料
+.account-data {
+    padding: 18px 5.3% 36px;
+    .main-title {
+        padding-bottom: 15px;
+        span {
+            font-size: 16px;
+            font-weight: normal;
+        }
+    }
+    .account-data-field {
+        position: relative;
+        margin-bottom: 15px;
+        .main-input {
+            position: relative;
+            float: left;
+            border-color: #CCC;
+            padding: 0 1% 0 2.6%;
+            background: #EEE;
+            width: 82.5%;
+            height: auto;
+            color: #756E6E;
+            font-size: 14px;
+            text-align: right;
+            min-height: 37px;
+            vertical-align: middle;
+            label {
+                position: absolute;
+                top: 50%;
+                left: 2.6%;
+                margin-top: -18px;
+                color: #000;
+                font-size: 14px;
+            }
+            span {
+                display: inline-block;
+                padding-left: 86px;
+                width: 100%;
+            }
+            .intrlink,
+            .outlink {
+                line-height: 20px;
+                margin: 5px 0;
+                vertical-align: middle;
+                word-break: break-word;
+            }
+            &.yet {
+                border-color: #FF8A8A;
+                background: #FFF;
+                color: #B9BBC1;
+            }
+            &.password {
+                border-color: #CDCDCD;
+                background: #FFF;
+                color: #B9BBC1;
+            }
+        }
+        .main-btn {
+            float: right;
+            &.agcenter-pc {
+                display: none;
+                width: 10.3%;
+                font-size: 14px;
+            }
+            &.icon {
+                width: 16.3%;
+                line-height: 58px;
+                svg {
+                    width: 30px;
+                    height: 30px;
+                }
+            }
+        }
+    }
+}
+
+// pc
+@media screen and (min-width: $pad) {
+    .account-data {
+        .account-data-field {
+            .main-input {
+                width: 88.5%;
+            }
+            .main-btn {
+                &.agcenter-pc {
+                    display: block;
+                }
+                &.icon {
+                    display: none;
+                }
+            }
+        }
+    }
+}

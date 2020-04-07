@@ -1,0 +1,116 @@
+// 會員列表
+.member-list {
+    table {
+        border-collapse: collapse;
+        border-spacing: 0;
+    }
+    .main-title {
+        float: left;
+        line-height: 39px;
+    }
+    .main-radio-wrap {
+        float: right;
+        margin: 8px 0 15px 0;
+    }
+    .main-table {
+        border-bottom: none;
+        thead {
+            &.agcenter-pc {
+                display: none;
+            }
+            .sort-icon {
+                height: 13px;
+                width: 16px;
+                display: inline-block;
+                background: url("/static/image/agent/sorting_btn.png") no-repeat;
+                cursor: pointer;
+            }
+        }
+        .balance {
+            text-align: right;
+        }
+        tbody {
+            tr {
+                td {
+                    display: block;
+                    &.mobile-table-th {
+                        background: #C3C3C3;
+                        color: #FFF;
+                        font-weight: bold;
+                        width: 100%;
+                    }
+                    .mobile-item-table {
+                        display: table;
+                        width: 100%;
+                        .mobile-item-wrap {
+                            display: table-row;
+                            .mobile-item-title {
+                                display: table-cell;
+                                word-break: break-all;
+                                width: 35%;
+                                padding-left: 3%;
+                                text-align: left;
+                            }
+                            .mobile-item-content {
+                                display: table-cell;
+                                word-break: break-all;
+                                width: auto;
+                                padding-left: 3%;
+                                text-align: left;
+                            }
+                            .mem-status-enable {
+                                color: #8CC53F;
+                            }
+                            .mem-status-disable {
+                                color: #DF525F;
+                            }
+                        }
+                    }
+                }
+            }
+        }
+    }
+}
+
+// pad 以上
+@media screen and (min-width: $pad) {
+    .member-list {
+        .main-table {
+            border-bottom: 1px solid #EEE;
+            .balance {
+                padding-right: 5%;
+            }
+            thead {
+                &.agcenter-pc {
+                    display: table-header-group;
+                }
+            }
+            tbody {
+                tr {
+                    td {
+                        display: table-cell;
+                        &.mobile-table-th {
+                            background: transparent;
+                            color: #313F52;
+                            font-weight: normal;
+                            width: auto;
+                        }
+                        .mobile-item-table {
+                            .mobile-item-wrap {
+                                .mobile-item-title {
+                                    display: none;
+                                }
+                                .mobile-item-content {
+                                    text-align: center;
+                                }
+                                .align-right {
+                                    text-align: right;
+                                }
+                            }
+                        }
+                    }
+                }
+            }
+        }
+    }
+}

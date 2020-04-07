@@ -1,0 +1,50 @@
+.page-wrap {
+    background-color: #9E9E9E;
+}
+
+.page-container {
+    position: relative;
+    width: 1280px;
+    margin: 0 auto;
+    padding: 70px 0 34px;
+    background: url('/static/image/tpl/customizeHome/70/body/firtst_promotion_bg.png') 50% 0 no-repeat;
+}
+
+.img-wrap {
+    position: relative;
+    display: inline-block;
+    width: 298px;
+    height: 138px;
+    margin-left: 29px;
+    cursor: pointer;
+
+    &:first-child {
+        margin-left: 0;
+    }
+
+    &:hover {
+        .img-out {
+            display: block;
+        }
+
+        .img-in {
+            display: none;
+        }
+    }
+}
+
+.img-in {
+    display: block;
+    margin: 0 auto;
+}
+
+.img-out {
+    display: none;
+}
+
+.add-btn {
+    position: absolute;
+    top: 50px;
+    right: 0;
+    cursor: pointer;
+}

@@ -1,0 +1,395 @@
+$paginationColor: #000;
+$paginationListTextColor: initial;
+@import '../../../css/common/pagination.scss';
+
+.feedback-tab-wrap {
+    background: #F5F5FA;
+}
+
+.feedback-tab-btn {
+    display: inline-block;
+    vertical-align: top;
+    width: 165px;
+    height: 70px;
+    line-height: 70px;
+    text-align: center;
+    font-size: 18px;
+    border-radius: 5px 5px 0 0;
+    cursor: pointer;
+    color: #666;
+
+    &.is-current {
+        color: #DFAF50;
+        background: #FFF;
+    }
+}
+
+.feedback-button-wrap {
+    padding-top: 20px;
+    background-color: #E5E5E5;
+}
+
+.tab-button {
+    float: left;
+    display: block;
+    min-width: 95px;
+    height: 40px;
+    line-height: 40px;
+    padding: 0 16px;
+    color: #000;
+    background: rgba(255, 255, 255, 0.5);
+    border-radius: 3px;
+    font-size: 18px;
+    font-weight: bold;
+    outline: none;
+    cursor: pointer;
+
+    &.is-current {
+        color: #DFAF50;
+        background-color: #FFF;
+    }
+}
+
+.add-btn {
+    float: right;
+    display: block;
+    height: 30px;
+    padding: 0 10px;
+    color: #FFF;
+    background-color: #DFAF50;
+    border-radius: 5px;
+    margin-right: 60px;
+    font-weight: bold;
+    outline: none;
+    cursor: pointer;
+}
+
+.field-wrap {
+    padding: 30px 60px 60px;
+    font-size: 16px;
+}
+
+.feedback-field {
+    margin-bottom: 25px;
+
+    &:last-child {
+        margin-bottom: 0;
+    }
+}
+
+.field-title {
+    position: relative;
+    float: left;
+    width: 8%;
+    margin-top: 6px;
+    padding: 0 5px 0 12px;
+    color: #262626;
+}
+
+.field-star-icon {
+    position: absolute;
+    top: 4px;
+    left: 0;
+    color: #F00;
+}
+
+.field-type-list {
+    float: left;
+}
+
+.field-select {
+    float: left;
+    width: 240px;
+
+    :global {
+        .multiselect__tags {
+            border-radius: 0;
+            border: 1px solid #D9D9D9;
+        }
+
+        .multiselect__placeholder {
+            color: #E0E0E0;
+        }
+
+        .multiselect__option--highlight {
+            color: rgba(0, 0, 0, 0.87);
+            background: rgba(0, 0, 0, 0.05);
+        }
+    }
+}
+
+.field-input {
+    float: left;
+    width: 630px;
+    height: 39px;
+    line-height: 39px;
+    padding-left: 8px;
+    outline: none;
+    border: 1px solid #D9D9D9;
+    color: #7E7E7E;
+
+    &.is-error {
+        border: 1px solid #F00;
+    }
+
+    // Chrome/Opera/Safari
+    &::-webkit-input-placeholder {
+        color: #E0E0E0;
+    }
+
+    // Firefox 19+
+    &::-moz-placeholder {
+        color: #E0E0E0;
+    }
+
+    // IE 10+
+    &:-ms-input-placeholder {
+        color: #E0E0E0;
+    }
+
+    // Firefox 18-
+    &:-moz-placeholder {
+        color: #E0E0E0;
+    }
+}
+
+.field-textarea {
+    resize: none;
+    width: 630px;
+    height: 160px;
+    padding: 8px;
+    outline: none;
+    border: 1px solid #D9D9D9;
+    color: #7E7E7E;
+
+    // Chrome/Opera/Safari
+    &::-webkit-input-placeholder {
+        color: #E0E0E0;
+    }
+
+    // Firefox 19+
+    &::-moz-placeholder {
+        color: #E0E0E0;
+    }
+
+    // IE 10+
+    &:-ms-input-placeholder {
+        color: #E0E0E0;
+    }
+
+    // Firefox 18-
+    &:-moz-placeholder {
+        color: #E0E0E0;
+    }
+}
+
+.image-release-btn {
+    margin: 20px 0 20px 79px;
+    text-decoration: underline;
+    cursor: pointer;
+    color: #C39E51;
+}
+
+.feedback-tip-wrap {
+    margin: 0 0 60px 79px;
+}
+
+.tip-text {
+    font-size: 14px;
+}
+
+.feedback-btn {
+    float: right;
+    width: 100px;
+    height: 39px;
+    line-height: 39px;
+    margin-left: 10px;
+    text-align: center;
+    border-radius: 5px;
+    cursor: pointer;
+    border: 1px solid #000;
+
+    &:first-child {
+        background-image: linear-gradient(to right, #F3D382, #955D2C);
+        color: #FFF;
+        border: none;
+    }
+}
+
+.feedback-table {
+    width: 100%;
+    border: 1px solid #CCC;
+    border-spacing: 0;
+}
+
+.feedback-thead {
+    color: #FFF;
+    background: #CCC;
+}
+
+.feedback-thead-wrap {
+    text-align: center;
+}
+
+.feedback-tbody-wrap {
+    text-align: center;
+}
+
+.feedback-type {
+    height: 40px;
+
+    .msg-unread {
+        color: #F00;
+    }
+
+    .msg-read {
+        color: #C39E51;
+    }
+
+    &.index {
+        width: 8%;
+    }
+
+    &.title {
+        text-align: left;
+        cursor: pointer;
+    }
+
+    &.time {
+        width: 25%;
+    }
+
+    &.status {
+        width: 10%;
+    }
+
+    &.operate {
+        width: 10%;
+    }
+}
+
+.operate-icon {
+    width: 30px;
+    height: 30px;
+    color: #FFF;
+    background: #C39E51;
+    border: 0;
+    border-radius: 100%;
+    outline: none;
+    cursor: pointer;
+}
+
+.feedback-content {
+    text-align: left;
+    background: #F9F9F9;
+
+    .content-top {
+        padding: 10px 80px;
+    }
+
+    .content-bottom {
+        padding: 10px 100px;
+
+        div {
+            padding-left: 10px;
+        }
+    }
+}
+
+.page-wrap {
+    .page-select-wrap {
+        .page-select {
+            padding: 0 10px;
+        }
+    }
+}
+
+.feedback-form-wrap {
+    position: absolute;
+    background-color: #FFF;
+    padding: 30px 46px 8px;
+    width: 777px;
+    z-index: 1;
+}
+
+.mask {
+    position: fixed;
+    top: 0;
+    left: 0;
+    background-color: rgba(0, 0, 0, .5);
+    width: 100%;
+    height: 100%;
+}
+
+.empty {
+    height: 40px;
+    line-height: 40px;
+    border: 1px solid #CCC;
+    text-align: center;
+    color: #313F52;
+}
+
+.tabbed {
+    padding-top: 10px;
+    padding-left: 73px;
+    border-bottom: 4px solid #000;
+    overflow: hidden;
+    li {
+        position: relative;
+        padding: 10px 24px 8px;
+        margin-right: 30px;
+        height: 35px;
+        border-top: 1px solid #CCC;
+        font-size: 13px;
+        line-height: 20px;
+
+        &:before,
+        &:after {
+            content: " ";
+            position: absolute;
+            top: 0;
+            height: 100%;
+            width: 44px;
+        }
+        &:before {
+            width: 25px;
+            right: -5px;
+            transform: skew(20deg, 0deg);
+            box-shadow: rgba(0,0,0,.1) 3px 2px 5px, inset rgba(255,255,255,.09) -1px 0;
+        }
+        &:after {
+            width: 25px;
+            left: -5px;
+            transform: skew(-20deg, 0deg);
+            box-shadow: rgba(0,0,0,.1) -3px 2px 5px, inset rgba(255,255,255,.09) 1px 0;
+        }
+
+        &.hover,
+        &.hover:before,
+        &.hover:after {
+            background-color: #F4F7F9;
+            color: #444;
+        }
+
+        &.active,
+        &.active:before,
+        &.active:after {
+            background-color: #292929;
+            color: #fff;
+        }
+    }
+
+    &.round {
+        li {
+            border-radius: 8px 8px 0 0;
+
+            &:before {
+                border-radius: 0 8px 0 0;
+            }
+
+            &:after {
+                border-radius: 8px 0 0 0;
+            }
+        }
+    }
+}

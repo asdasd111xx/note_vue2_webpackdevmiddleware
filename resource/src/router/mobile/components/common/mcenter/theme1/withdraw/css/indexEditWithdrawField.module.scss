@@ -1,0 +1,25 @@
+
+.preset-color {
+    $alertTitleBg: #00347D;
+    $alertTitleColor: #FFF;
+    $alertCloseBtnColor: #F4D8AF;
+    $alertBtnConfirmColor: #FFF;
+    $alertBtnConfirmBg: #00347D; 
+    $alertBtnCancelColor: #FFF;
+    $alertBtnCancelBg: #A37F5B;
+    @import './editWithdrawField.module.scss';
+}
+
+
+.site-500011,
+.site-52,
+.site-53 {
+    $alertTitleBg: #F7B500;
+    $alertTitleColor: #000;
+    $alertCloseBtnColor: #FFF;
+    $alertBtnConfirmColor: #000;
+    $alertBtnConfirmBg: #F7B500; 
+    $alertBtnCancelColor: #FFF;
+    $alertBtnCancelBg: #000;
+    @import './editWithdrawField.module.scss';
+}

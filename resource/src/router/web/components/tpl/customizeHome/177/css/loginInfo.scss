@@ -1,0 +1,122 @@
+// 登入後
+.login-info-wrap /deep/ {
+    padding-top: 46px;
+    color: #F4E5B7;
+    background: url("/static/image/tpl/customizeHome/177/title03.png") 0 10px no-repeat;
+
+    .login-info-item {
+        &.account {
+            margin-bottom: 6px;
+        }
+
+        &.balance {
+            display: inline-block;
+            vertical-align: middle;
+        }
+        
+        strong {
+            color: #FFBD00;
+        }
+    }
+
+    // 加號選單
+    .balance-wrap {
+        position: relative;
+        display: inline-block;
+        vertical-align: middle;
+        width: 14px;
+        height: 16px;
+        margin: 0 9px 0 5px;
+
+        .balance-icon {
+            display: block;
+            cursor: pointer;
+            color: #F4E5B7;
+        }
+
+        .balance-list-wrap {
+            position: absolute;
+            visibility: hidden;
+            width: 250px;
+            z-index: 100;
+            top: 18px;
+            right: 0;
+            transition: visibility 0.3s;
+
+            &.show {
+                visibility: visible;
+            }
+
+            &.right {
+                right: auto;
+            }
+
+            .balance-list {
+                line-height: 22px;
+                padding: 16px;
+                text-align: left;
+                border-width: 1px 1px 0 0;
+                border-style: solid;
+                border-radius: 2px 2px 0 0;
+                border-color: #FFF;
+                background: #FFF;
+                color: #000;
+            }
+
+            .balance-tran {
+                height: 30px;
+                padding: 4px 8px 0 0;
+                border-radius: 0 0 2px 2px;
+                background: #DEDEDE;
+
+                .balance-tran-btn {
+                    float: right;
+                    width: 58px;
+                    height: 22px;
+                    line-height: 22px;
+                    text-align: center;
+                    font-size: 12px;
+                    border-radius: 5px;
+                    cursor: pointer;
+                    color: #FFF;
+                    background: #545454;
+                }
+            }
+        }
+    }
+
+    // 會員資訊子選單
+    .login-info-links {
+        margin-top: 3px;
+
+        .link-item {
+            display: inline-block;
+            vertical-align: top;
+            line-height: 26px;
+            cursor: pointer;
+            color: #F5E5B7;
+            
+            .item-btn {
+                &:hover {
+                    color: #F00;
+                }
+            }
+
+            .link-line {
+                margin: 0 5px 0 2px;
+            }
+        }
+    }
+
+    .logout {
+        display: block;
+        width: 57px;
+        height: 27px;
+        margin: 15px 0 0 66px;
+        background: url("/static/image/tpl/customizeHome/177/btn05.png") 50% 0 no-repeat;
+        color: #FFF;
+        text-align: center;
+        line-height: 23px;
+        cursor: pointer;
+    }
+}

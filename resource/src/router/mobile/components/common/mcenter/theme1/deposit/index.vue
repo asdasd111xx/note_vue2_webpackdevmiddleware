@@ -1,0 +1,114 @@
+<template>
+    <div :class="[$style['bank-deposit'], colorClass]">
+        <mcenter-header :header-setting="headerSetting" />
+        <bank-card-deposit v-if="nowTabCurrent === 'deposit'" :header-setting.sync="resultHeaderSetting" />
+        <record-deposit v-if="nowTabCurrent === 'record'" />
+    </div>
+</template>
+
+<script>
+import { mapGetters, mapActions } from 'vuex';
+
+export default {
+    components: {
+        bankCardDeposit: () => import(/* webpackChunkName: 'bankCardDeposit' */'./components/bankCardDeposit'),
+        recordDeposit: () => import(/* webpackChunkName: 'recordDeposit' */'./components/recordDeposit'),
+        mcenterHeader: () => import(/* webpackChunkName: 'recordDeposit' */'@/router/mobile/components/common/mcenter/theme1/header')
+    },
+
+    data() {
+        return {
+            tabCurrent: 'deposit',
+            headerSetting: {
+                title: this.$text('S_ONLINE_DEPOSIT', '线上存款'),
+                leftBtns: {
+                    icon: 'arrow',
+                    onClick: () => {
+                        if (this.nowTabCurrent === 'deposit') {
+                            this.$router.push('/mobile/mcenter');
+                            return;
+                        }
+                        this.actionSetUserBalance();
+                        this.nowTabCurrent = 'deposit';
+                    }
+                },
+                balance: true
+            }
+        };
+    },
+    computed: {
+        ...mapGetters({
+            memInfo: 'getMemInfo',
+            siteConfig: 'getSiteConfig'
+        }),
+        colorClass() {
+            return [
+                {
+                    [this.$style[`site-${this.memInfo.user.domain}`]]: this.$style[`site-${this.memInfo.user.domain}`],
+                    [this.$style['preset-color']]: !this.$style[`site-${this.memInfo.user.domain}`]
+                }
+            ];
+        },
+        nowTabCurrent: {
+            get() {
+                return this.tabCurrent;
+            },
+            set(val) {
+                this.tabCurrent = val;
+                if (val === 'record') {
+                    this.headerSetting = {
+                        title: this.$text('S_DEPOSIT_RECORD', '8日内存款纪录'),
+                        leftBtns: this.headerSetting.leftBtns,
+                        balance: true
+                    };
+                    return;
+                }
+                this.headerSetting = {
+                    title: this.$text('S_ONLINE_DEPOSIT', '线上存款'),
+                    leftBtns: this.headerSetting.leftBtns,
+                    rightBtns: {
+                        icon: 'regular/calendar-check',
+                        onClick: () => {
+                            this.actionSetUserBalance();
+                            this.nowTabCurrent = 'record';
+                        }
+                    }
+                };
+            }
+        },
+        resultHeaderSetting: {
+            get() {
+                return this.headerSetting;
+            },
+            set(value) {
+                this.headerSetting = value;
+            }
+        }
+    },
+    created() {
+        this.isFastPay();
+    },
+    methods: {
+        ...mapActions([
+            'actionSetUserBalance'
+        ]),
+        isFastPay() {
+            if (this.memInfo.config.deposit.includes('迅付')) {
+                this.headerSetting = {
+                    title: this.headerSetting.title,
+                    leftBtns: this.headerSetting.leftBtns,
+                    rightBtns: {
+                        icon: 'regular/calendar-check',
+                        onClick: () => {
+                            this.actionSetUserBalance();
+                            this.nowTabCurrent = 'record';
+                        }
+                    }
+                };
+            }
+        }
+    }
+};
+</script>
+
+<style lang="scss" src="./css/index.scss" module></style>

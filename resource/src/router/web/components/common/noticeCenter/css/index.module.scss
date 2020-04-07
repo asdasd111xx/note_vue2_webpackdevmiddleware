@@ -1,0 +1,100 @@
+@import "~@/css/variable.scss";
+
+@keyframes progress {
+    0% {
+        background-color: #4279CC;
+        transform: translateX(0);
+    }
+
+    100% {
+        background-color: #4279CC;
+        transform: translateX(-100%);
+    }
+}
+
+.notice-item-wrap {
+    position: fixed;
+    bottom: 42px;
+    width: 100%;
+    z-index: 1000;
+}
+
+.notice-wrap {
+    position: absolute;
+    bottom: 2px;
+    width: 100%;
+    min-height: 56px;
+    margin-bottom: 12px;
+    border-radius: 4px;
+    background: url('/static/image/common/noticeCenter/bg_push_y.png') repeat-y;
+    box-shadow: 0 0 5px 0 rgba(0,0,0,0.2);
+    overflow: hidden;
+    cursor: pointer;
+}
+
+.progress-bar {
+    animation: progress 5s;
+    height: 4px;
+}
+
+.icon-img {
+    width: 39px;
+    margin: 10px 16px;
+    vertical-align: middle;
+
+}
+
+.notice-text {
+    display: inline-block;
+    margin: 14px 0;
+    font-size: 12px;
+    color: #444;
+    font-weight: bold;
+    vertical-align: middle;
+}
+
+.close-btn {
+    position: absolute;
+    top: 12px;  
+    right: 9px;
+    width: 10px;
+    height: 10px;
+    background: url('/static/image/common/noticeCenter/btn_close02.png') no-repeat;
+    cursor: pointer;
+}
+
+@media screen and (min-width: $phone) {
+    .notice-text {
+        font-size: 18px;
+    }
+}
+
+@media screen and (min-width: $pad) {
+    .notice-text {
+        font-size: 30px;
+    }
+}
+
+@media screen and (min-width: $pc) {
+    .notice-item-wrap { 
+        right: 20px;
+        width: 310px;
+    }
+
+    .notice-wrap {
+        position: relative;
+        min-height: 80px;
+    }
+
+    .icon-img {
+        width: 52px;
+        margin: 14px 12px;
+        vertical-align: middle;
+    
+    }
+
+    .notice-text {
+        width: 204px;
+        font-size: 12px;
+    }
+}

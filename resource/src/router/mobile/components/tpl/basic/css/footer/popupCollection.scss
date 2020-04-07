@@ -1,0 +1,71 @@
+.popup-wrap {
+    font-size: 12px;
+    overflow: hidden;
+    z-index: 1001;
+
+    .popup-tab {
+        position: relative;
+        background-color: #363C5D;
+        padding-right: 37px;
+        height: 35px;
+        line-height: 35px;
+        color: #6E748C;
+
+        .tab {
+            float: left;
+            width: 50%;
+            text-align: center;
+
+
+            span {
+                display: inline-block;
+
+                &.is-active {
+                    color: #FFF;
+                }
+            }
+
+            img {
+                width: 15px;
+                height: 15px;
+                vertical-align: text-top;
+            }
+        }
+
+        .popup-close {
+            position: absolute;
+            top: 14px;
+            right: 12px;
+            width: 13px;
+            height: 7px;
+        }
+    }
+
+    .popup-content {
+        background-color: #272637;
+
+        .tip {
+            padding-top: 30px;
+            padding-bottom: 32px;
+            text-align: center;
+            color: #858A9E;
+
+            .tip-link {
+                margin-top: 12px;
+
+                a {
+                    display: inline-block;
+                    padding: 8px 42px;
+                    color: #DFC59F;
+                    border: 1px solid #DFC59F;
+                    border-radius: 3px;
+
+                    &:active {
+                        color: #CEA260;
+                        border-color: #CEA260;
+                    }
+                }
+            }
+        }
+    }
+}

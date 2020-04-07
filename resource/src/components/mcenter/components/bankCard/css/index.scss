@@ -1,0 +1,23 @@
+// 綁定銀行卡
+.account-bank-card {
+    margin-top: 20px;
+
+    &.is-mobile {
+        position: fixed;
+        right: 0;
+        bottom: 54px;
+        left: 0;
+        top: 66px;
+        -webkit-overflow-scrolling: touch;
+        overflow-y: scroll;
+        margin-top: 0;
+
+        iframe {
+            height: 100%;
+        }
+    }
+
+    iframe {
+        width: 100%;
+    }
+}

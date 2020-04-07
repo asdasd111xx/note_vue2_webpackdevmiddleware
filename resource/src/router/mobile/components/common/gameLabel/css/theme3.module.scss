@@ -1,0 +1,88 @@
+@import "~@/css/variable.scss";
+
+.label-wrap-bg {
+    background: linear-gradient(90deg, #EFDFAF, #DDC084, #EDBF6B);
+}
+
+.label-block {
+    margin: 0 auto;
+    max-width: 768px;
+    min-width: 320px;
+}
+
+.nav-item {
+    display: inline-block;
+    box-sizing: border-box;
+    width: auto;
+    height: 25px;
+    text-align: center;
+    font-size: 12px;
+
+    button {
+        display: block;
+        width: 100%;
+        height: 22px;
+        line-height: 22px;
+        padding: 0;
+        outline: none;
+        border: none;
+        color: #9C6E54;
+        background: none;
+    }
+
+    &:active,
+    &.is-current {
+        border-bottom: 3px solid #5C4030;
+
+        button {
+            color: #5C4030;
+        }
+    }
+}
+
+.loader {
+    top: 10px;
+    left: 10px;
+    padding: 0 8px;
+    margin: 0 0 5px 7%;
+    height: 48px;
+    line-height: 48px;
+    color: #FFF;
+    font-size: 15px;
+    cursor: pointer;
+    box-sizing: border-box;
+}
+
+@media screen and (min-width: $phone + $sidebar) {
+    .nav-item {
+        height: 39px;
+        font-size: 19px;
+
+        button {
+            height: 35px;
+            line-height: 35px;
+        }
+
+        &:active,
+        &.is-current {
+            border-bottom-width: 4px;
+        }
+    }
+}
+
+@media screen and (min-width: $pad + $sidebar) {
+    .nav-item {
+        height: 50px;
+        font-size: 30px;
+
+        button {
+            height: 43px;
+            line-height: 43px;
+        }
+
+        &:active,
+        &.is-current {
+            border-bottom-width: 7px;
+        }
+    }
+}

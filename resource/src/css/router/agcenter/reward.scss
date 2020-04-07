@@ -1,0 +1,270 @@
+// 佣金明細
+.finance-reward {
+    table {
+        border-spacing: 0;
+        border-collapse: collapse;
+    }
+    .main-title {
+        line-height: 39px;
+        .arrow {
+            margin: 0 10px;
+            color: #999;
+        }
+        .detial {
+            color: #ACACAC;
+        }
+        .main-btn {
+            float: right;
+            width: 9.6%;
+            min-width: 60px;
+        }
+    }
+    .main-table {
+        border-bottom: none;
+        thead {
+            &.agcenter-pc {
+                display: none;
+            }
+        }
+        .number {
+            width: 9.5%;
+        }
+        .period {
+            width: 13.5%;
+            word-break: break-all;
+        }
+        .date {
+            width: 30%;
+        }
+        .status {
+            width: 14.5%;
+        }
+        .result {
+            width: 20.2%;
+            padding-right: 9%;
+            text-align: right;
+        }
+        .detail {
+            width: 12.3%;
+            padding-right: 3.5%;
+            text-align: left;
+        }
+        tbody {
+            tr {
+                // cursor: pointer;
+                &.agcenter-pc {
+                    display: none;
+                }
+            }
+            table {
+                margin-bottom: 40px;
+                border-bottom: 1px solid #EEE;
+                &.pad {
+                    width: 100%;
+                    // cursor: pointer;
+                    tr {
+                        &.number {
+                            font-weight: bold;
+                            color: #FFF;
+                            background: #C3C3C3;
+                        }
+                    }
+                    td {
+                        &.caption {
+                            width: 32%;
+                            padding-left: 3%;
+                            text-align: left;
+                        }
+                        &.content {
+                            width: auto;
+                            padding-left: 3%;
+                            text-align: left;
+                            &.detail {
+                                span {
+                                    margin: 0;
+                                }
+                            }
+                        }
+                        &.view-next {
+                            span {
+                                margin: 0;
+                            }
+                        }
+                    }
+                }
+            }
+            .status {
+                &.verifying {
+                    color: #FF8989;
+                }
+            }
+            .detail {
+                span {
+                    position: relative;
+                    display: inline-block;
+                    margin-right: 6px;
+                    cursor: pointer;
+                    text-decoration: underline;
+                    color: #FF8989;
+                    &:hover {
+                        color: #FFB8B8;
+                    }
+                    &:after {
+                        position: absolute;
+                        top: 0;
+                        right: -37px;
+                        display: block;
+                        width: 30px;
+                        height: 30px;
+                        content: "";
+                        background: url("/static/image/agent/features_btn.png") 0 -60px no-repeat;
+                    }
+                }
+            }
+        }
+    }
+    .detail-table {
+        width: 100%;
+        color: #313F52;
+        border-bottom: 1px solid #EEE;
+        .agcenter-pc {
+            display: none;
+        }
+        &.full {
+            margin-top: 20px;
+        }
+        &.valid-member {
+            .member-number {
+                width: 24.4%;
+            }
+            .member-total {
+                width: 27.7%;
+            }
+            .member-valid {
+                width: 25.4%;
+            }
+            .member-check {
+                width: 22.5%;
+                &.ok {
+                    color: #0DBC79;
+                }
+                &.fail {
+                    color: #E23F3F;
+                }
+            }
+        }
+        &.current-commission {
+            margin-top: 20px;
+            .title {
+                width: 53%;
+            }
+        }
+        th,
+        td {
+            height: 55px;
+            text-align: center;
+            border: 1px solid #EEE;
+        }
+        thead {
+            tr {
+                background: #CBCED3;
+                th {
+                    font-weight: bold;
+                    color: #FFF;
+                }
+            }
+        }
+        tbody {
+            &.pad {
+                .pad-item-list {
+                    td {
+                        position: relative;
+                        padding-left: 3%;
+                        cursor: pointer;
+                        text-align: left;
+                        svg {
+                            position: absolute;
+                            top: 50%;
+                            right: 20px;
+                            margin-top: -12px;
+                            color: #FF8989;
+                        }
+                        &.current {
+                            svg {
+                                color: #D3D5DA;
+                            }
+                        }
+                    }
+                }
+                .pad-item-content {
+                    width: 100%;
+                    table {
+                        width: 96%;
+                        margin: 10px auto;
+                    }
+                }
+            }
+        }
+        .light-style {
+            color: #B1B1B1;
+            background: #F9F9F9;
+        }
+        .light-bg {
+            background: #F9F9F9;
+        }
+        .total-style {
+            width: 31%;
+            color: #FFF;
+            background: #ADDAE9;
+        }
+        .total-color {
+            color: #77C1DA;
+        }
+    }
+}
+
+// pad 以上
+@media screen and (min-width: $pad) {
+    .finance-reward {
+        .main-table {
+            border-bottom: 1px solid #EEE;
+            thead {
+                &.agcenter-pc {
+                    display: none;
+                    display: table-header-group;
+                }
+            }
+            tbody {
+                tr {
+                    &.agcenter-pc {
+                        display: table-row;
+                    }
+                }
+                table {
+                    display: none;
+                }
+            }
+        }
+        .detail-table {
+            .agcenter-pc {
+                display: table-row-group;
+            }
+            .pad {
+                display: none;
+            }
+            &.half {
+                width: 49.6%;
+            }
+            &.valid-member {
+                float: left;
+            }
+            &.current-commission {
+                float: right;
+                margin-top: 0;
+            }
+            .total-style {
+                width: auto;
+            }
+        }
+    }
+}

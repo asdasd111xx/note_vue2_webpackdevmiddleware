@@ -1,0 +1,203 @@
+@charset 'UTF-8';
+/* clear float */
+.clear {
+    margin: 0;
+    padding: 0;
+    clear: both;
+}
+.clearfix {
+    *zoom: 1;
+    &:before {
+        display: table;
+        content: "";
+    }
+    &:after {
+        display: table;
+        content: "";
+        clear: both;
+    }
+}
+
+/* reset */
+input {
+    margin: 0;
+    padding: 0;
+}
+button {
+    margin: 0;
+    border: 0;
+    padding: 0;
+}
+a {
+    outline: none;
+}
+
+// ＝＝＝＝＝＝＝＝＝＝＝＝＝＝＝＝＝＝
+//     共用樣式(同會員端)
+// ＝＝＝＝＝＝＝＝＝＝＝＝＝＝＝＝＝＝
+@import "../../variable.scss";
+@import "../../normalize.scss";
+@import "../../animation.scss";
+@import "../../fckeditor.scss";
+
+// ＝＝＝＝＝＝＝＝＝＝＝＝＝＝＝＝＝＝
+//     元件
+// ＝＝＝＝＝＝＝＝＝＝＝＝＝＝＝＝＝＝
+$mobile-sub-bg: #2F2F2F;
+@import "../../tpl/common/header/lang.scss";
+
+// ＝＝＝＝＝＝＝＝＝＝＝＝＝＝＝＝＝＝
+//     common 各頁共用
+// ＝＝＝＝＝＝＝＝＝＝＝＝＝＝＝＝＝＝
+/****** 左側列表 ******/
+@import './common/list.scss';
+
+/****** 右上區塊 ******/
+@import './common/content_top.scss';
+
+/****** 右下內容區塊 ******/
+@import './common/content.scss';
+
+// ＝＝＝＝＝＝＝＝＝＝＝＝＝＝＝＝＝＝
+//     各頁內容樣式
+// ＝＝＝＝＝＝＝＝＝＝＝＝＝＝＝＝＝＝
+/****** 帳戶資料 ******/
+@import './account.scss';
+
+/****** 佣金明細 ******/
+@import './reward.scss';
+
+/****** 會員遊戲紀錄 ******/
+@import './game_record.scss';
+
+/****** 會員列表 ******/
+@import './member.scss';
+
+/****** 站內信 ******/
+@import './message.scss';
+
+/****** 公告 ******/
+@import './post.scss';
+
+.agcenter-bg {
+    background: #CCC;
+    min-height: 100%;
+    word-break: break-all;
+    &.zh-cn {
+    font-family: STHeiti,"Microsoft YaHei", "微软雅黑", "SimSun", "宋体",arial;
+    }
+    &.zh-tw {
+        font-family: "Microsoft JhengHei","微軟正黑體",arial,helvetica,sans-serif;
+    }
+
+    // 上方跑馬燈
+    .news-wrap {
+        position: fixed;
+        top: 0;
+        left: 0;
+        z-index: 2;
+        padding-left: 74px;
+        background: #2F333E;
+        width: 100%;
+        height: 40px;
+        .news-title {
+            position: absolute;
+            top: 0;
+            left: 0;
+            background: #2F333E;
+            width: 74px;
+            color: #FFF;
+            font-size: 22px;
+            font-family: sans-serif;
+            line-height: 40px;
+            text-align: center;
+        }
+        marquee {
+            float: right;
+            width: 100%;
+            color: #CCC;
+            line-height: 40px;
+            white-space: nowrap;
+            span {
+                cursor: pointer;
+            }
+        }
+    }
+
+    .agcenter-wrap {
+        // padding-top: 0;
+        background: #545D6E;
+        width: 100%;
+    }
+
+    // 右側外框
+    .agcenter-content-wrap {
+        width: 100%;
+        .agcenter-info {
+            position: fixed;
+            top: 40px;
+            left: 0;
+            width: 100%;
+            height: 58px;
+            background: #434958;
+            z-index: 2;
+            .lang {
+                float: right;
+                margin: 18px 11px 0 24px;
+            }
+            .agcenter-logout {
+                float: right;
+                color: #FFF;
+                font-weight: bold;
+                line-height: 58px;
+                text-decoration: none;
+                cursor: pointer;
+                &:hover {
+                    color: #DEDEDE;
+                }
+            }
+        }
+        .agcenter-content {
+            padding-top: 139px;
+            background: #FFF;
+        }
+    }
+}
+
+@media screen and (min-width: $layoutWidth) {
+    .agcenter-bg {
+        .news-wrap,
+        .agcenter-wrap {
+            margin: 0 auto;
+            width: $layoutWidth;
+        }
+    }
+}
+
+@media screen and (min-width: $pad) {
+    .agcenter-bg {
+        .news-wrap {
+            position: relative;
+            top: auto;
+            left: auto;
+        }
+        .agcenter-wrap {
+            padding-top: 0;
+            .agcenter-content-wrap {
+                float: right;
+                width: 85.3%;
+                .agcenter-info {
+                    position: static;
+                    top: auto;
+                    left: auto;
+                    .lang {
+                        margin-top: 10px;
+                    }
+                }
+                .agcenter-content {
+                    padding-top: 0;
+                }
+            }
+        }
+    }
+}

@@ -1,0 +1,28 @@
+$mobile-icon-border: #595959 !default;
+$mobile-icon-border-hover: #595959 !default;
+$mobile-icon-color: #FFF !default;
+$mobile-icon-color-hover: #FFF !default;
+
+.btn-icon {
+    border: 2px solid $mobile-icon-border;
+    border-radius: 50%;
+    padding: 6px;
+    height: 24px;
+    width: 24px;
+    color: $mobile-icon-color;
+    cursor: pointer;
+    &:hover {
+        border: 2px solid $mobile-icon-border-hover;
+        color: $mobile-icon-color-hover;
+    }
+    &.btn-member {
+        float: left;
+    }
+    &.btn-nav {
+        float: right;
+    }
+    &.lang {
+        float: right;
+        margin-right: 5px;
+    }
+}

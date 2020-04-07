@@ -1,0 +1,312 @@
+
+.top-management-wrap {
+    padding: 0 4.75% 19px;
+    background-color: #EEE;
+}
+
+table {
+    width: 100%;
+    border-collapse: collapse;
+}
+
+.top-table {
+    th {
+        padding: 20px 0.5% 20px;
+        color: #262626;
+        font-size: 18px;
+        text-align: left;
+    }
+
+    td {
+        text-align: center;
+    }
+}
+
+.top-info {
+    width: 14.4%;
+    padding: 0;
+
+    .info-wrap {
+        border-top: 1px solid #56BAFF;
+        background-color: #F6F6F6;
+
+        img {
+            display: block;
+            width: 54px;
+            height: 54px;
+            margin: 9px auto;
+            border-radius: 50%;
+            background-color: #FFF;
+        }
+    }
+
+    .text {
+        margin-bottom: 8px;
+        color: #262626;
+        font-size: 14px;
+    }
+
+    .value {
+        height: 30px;
+        line-height: 30px;
+        background-color: #FFF;
+        color: #55B9FF;
+        font-size: 16px;
+    }
+}
+
+.qrcode {
+    width: 12%;
+    padding: 0 0.5%;
+
+    img {
+        display: block;
+        width: 100%;
+        max-width: 120px;
+    }
+}
+
+.func {
+    width: 16%;
+    padding: 0;
+
+    .code,
+    .link,
+    .recommend {
+        &:before {
+            content: '';
+            display: inline-block;
+            width: 0;
+            height: 100%;
+            vertical-align: middle;
+        }
+
+        span {
+            display: inline-block;
+            vertical-align: middle;
+        }
+
+        img {
+            display: block;
+        }
+    }
+
+    .code,
+    .link {
+        position: relative;
+        height: 32px;
+        margin-bottom: 6px;
+        padding: 0 3px;
+        border: 1px solid #53B8FE;
+        border-radius: 5px;
+        background-color: #ECF7F9;
+        color: #54B9FF;
+        font-size: 14px;
+        cursor: pointer;
+
+        &:hover {
+            background-color: #CEEEFF;
+
+            .tips-wrap {
+                display: block;
+            }
+        }
+    }
+
+    .recommend {
+        height: 42px;
+        padding: 0 3px;
+        border-radius: 5px;
+        background: #33BDBA;
+        background: linear-gradient(to right, #33BDBA, #54B9FF);
+        color: #FFF;
+        font-size: 15px;
+        cursor: pointer;
+
+        &:hover {
+            background: #3CD1DD;
+            background: linear-gradient(to right, #3CD1DD, #0F9FFF);
+        }
+    }
+
+    .tips-wrap {
+        display: none;
+        position: absolute;
+        top: -40px;
+        left: 50%;
+        width: 100px;
+        height: 36px;
+        line-height: 36px;
+        margin-left: -50px;
+        border-radius: 5px;
+        background-color: #FFF;
+        color: #000;
+        box-shadow: 3px 3px 6px rgba(0, 0, 0, 0.16);
+
+        .icon {
+            position: absolute;
+            top: 36px;
+            left: 23px;
+            width: 0;
+            height: 0;
+            border-width: 6px 6px 0 6px;
+            border-style: solid;
+            border-color: #FFF transparent transparent transparent;
+        }
+    }
+}
+
+.main-management-wrap {
+    padding: 36px 5.3% 0;
+}
+
+.datepicker-wrap {
+    /deep/ {
+        .vdp-datepicker {
+            float: left;
+            width: 25%;
+
+            input {
+                width: 100%;
+                height: 40px;
+                line-height: 38px;
+                padding-left: 8.3%;
+                border: 1px solid #E8E8E8;
+                border-radius: 4px;
+                background-color: #FFF;
+                color: #999;
+                font-family: sans-serif;
+                font-size: 15px;
+                letter-spacing: 1px;
+                cursor: pointer;
+
+                &:disabled {
+                    cursor: not-allowed;
+                }
+            }
+        }
+    }
+
+    .page-btn {
+        float: left;
+        width: 10%;
+        height: 40px;
+        line-height: 40px;
+        margin-right: 1%;
+        border-radius: 3px;
+        background-color: transparent;
+        color: #A6A6A6;
+        font-size: 14px;
+        text-align: center;
+        outline: none;
+        cursor: pointer;
+        border: 1px solid #A6A6A6;
+
+        &:hover {
+            color: #FFF;
+            background-color: #292929;
+            border: 1px solid #292929;
+        }
+
+        &.active {
+            background-color: #292929;
+            color: #FFF;
+            border: 1px solid #292929;
+        }
+    }
+
+    .date-select {
+        float: left;
+        width: 10%;
+        height: 40px;
+        margin: 0 1%;
+        padding-left: 1.2%;
+        border: 1px solid #E8E8E8;
+        border-radius: 4px;
+        background: url('/static/image/member_select_bg_arrow.png') 95% 50% no-repeat;
+        color: #999;
+        font-family: sans-serif;
+        font-size: 15px;
+        -webkit-appearance: none;
+        -moz-appearance: none;
+        cursor: pointer;
+    }
+
+    .date-line {
+        float: left;
+        width: 3%;
+        height: 40px;
+        line-height: 40px;
+        text-align: center;
+    }
+
+    .inquire-btn {
+        float: left;
+        width: 12%;
+        height: 40px;
+        line-height: 40px;
+        margin-left: 1%;
+        border-radius: 4px;
+        background-color: #55B9FF;
+        color: #FFF;
+        text-align: center;
+        cursor: pointer;
+
+        &:hover {
+            background-color: #71BFF5;
+        }
+    }
+}
+
+.popup-wrap {
+    position: fixed;
+    top: 0;
+    left: 0;
+    z-index: 5;
+    width: 100%;
+    height: 100%;
+}
+
+.popup-container {
+    position: absolute;
+    top: 0;
+    right: 0;
+    bottom: 0;
+    left: 0;
+    width: 183px;
+    height: 60px;
+    line-height: 60px;
+    margin: auto;
+    border-radius: 5px;
+    background-color: rgba(0, 0, 0, 0.6);
+    color: #FFF;
+    font-size: 16px;
+    text-align: center;
+}
+
+.theme-miller {
+    .inquire-btn {
+        background-color: #F7B500;
+        color: #292929;
+
+        &:hover {
+            background-color: #FFD152;
+        }
+    }
+
+    .top-info {
+        .value {
+            color: #F7B500;
+        }
+        .info-wrap {
+            border-color:  #F7B500;
+        }
+    }
+    .func {
+        .code,
+        .link {
+            color: #54B9FF;
+            border-color:  #F7B500;
+        }
+    }
+}

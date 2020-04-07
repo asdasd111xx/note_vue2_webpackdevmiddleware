@@ -1,0 +1,39 @@
+.page-wrap {
+    background: #FFF url('/static/image/tpl/customizeHome/500013/body/first_game_bg.png') 50% 0 no-repeat;
+}
+
+.page-container {
+    width: 1280px;
+    margin: 0 auto;
+    padding: 80px 0 38px;
+}
+
+.img-wrap {
+    position: relative;
+    display: inline-block;
+    margin-left: 20px;
+    cursor: pointer;
+
+    &:first-child {
+        margin-left: 0;
+    }
+
+    &:hover {
+        .img-out {
+            display: block;
+        }
+
+        .img-in {
+            display: none;
+        }
+    }
+}
+
+.img-in {
+    display: block;
+    margin: 0 auto;
+}
+
+.img-out {
+    display: none;
+}

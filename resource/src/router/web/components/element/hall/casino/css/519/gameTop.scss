@@ -1,0 +1,61 @@
+.top-bg {
+    height: 50px;
+
+    .top-bg-repeat {
+        height: inherit;
+    }
+}
+
+.title-wrap {
+    float: left;
+    height: inherit;
+    padding-left: 27px;
+    cursor: pointer;
+
+    .title {
+        line-height: 50px;
+        color: #FFF;
+        font-size: 22px;
+
+        .collapse-icon {
+            display: none;
+        }
+    }
+}
+
+.search-btn-wrap {
+    float: right;
+    margin: 6px 5px 0 0;
+    padding: 0 9px;
+    box-sizing: content-box;
+    border: 1px solid #4B494B;
+    cursor: pointer;
+
+    .search {
+        width: 142px;
+        height: 34px;
+        border: none;
+        background: none;
+        color: #848484;
+        outline: none;
+
+        &::-ms-clear {
+            display: none;
+        }
+
+        &::placeholder {
+            color: #888888;
+        }
+
+        &.is-empty {
+            color: #FF5910;
+        }
+    }
+
+    .search-icon {
+        float: right;
+        background: url('/static/image/casino/search_icon.png') 0 7px no-repeat;
+        width: 23px;
+        height: 34px;
+    }
+}

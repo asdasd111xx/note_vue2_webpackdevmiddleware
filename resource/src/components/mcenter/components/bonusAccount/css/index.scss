@@ -1,0 +1,67 @@
+@import "~@/css/variable.scss";
+$tableBodyBorder: initial;
+
+.theme-basic,
+.theme-brilliant,
+.theme-theme3 {
+    $tableBodyBorder: #CCC;
+    $tableBodyColor: #313F52;
+    $tableBodyBg: initial;
+    $tableTitleBg: #CCC;
+    $tableTitleBorder: #CCC;
+    $tableTitleColor: #FFF;
+    $tableNoDataColor: #313F52;
+    @import './bonusAccount.scss';
+}
+
+.theme-miller {
+    $tableBodyBorder: #CCC;
+    $tableBodyColor: #313F52;
+    $tableBodyBg: initial;
+    $tableTitleBg: #292929;
+    $tableTitleBorder: #CCC;
+    $tableTitleColor: #FFF;
+    $tableNoDataColor: #313F52;
+    @import './bonusAccount.scss';
+}
+
+.theme-519 {
+    $tableBodyBorder: #CA8C54;
+    $tableBodyColor: #000;
+    $tableBodyBg: #FFF;
+    $tableTitleBg: #CECECE;
+    $tableTitleBorder: #CA8C54;
+    $tableTitleColor: #000;
+    $tableNoDataColor: #313F52;
+    @import './bonusAccount.scss';
+
+    h1 {
+        color: #FFF;
+    }
+
+    .bonus-total {
+        color: #FFF;
+    }
+
+    tbody {
+        tr {
+            margin-bottom: 10px;
+        }
+    }
+
+    th {
+        font-weight: bold;
+    }
+
+    td {
+        &.account {
+            color: #000;
+        }
+    }
+
+    @media screen and (min-width: $pad) {
+        h1 {
+            font-size: 20px;
+        }
+    }
+}

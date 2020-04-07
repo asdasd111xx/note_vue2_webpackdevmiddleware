@@ -1,0 +1,244 @@
+.theme-basic {
+    $itemColor: #7E7E7E;
+    $itemColorHover: #FFF;
+    $titleColor: #cccccc;
+    $titleColorHover: #53B2F3;
+    $titleFontWeight: bold;
+    $itemFontWeight: initial;
+    $itemHoverDecoration: underline;
+    @import './navList.scss';
+}
+
+.theme-brilliant {
+    $itemColor: #978789;
+    $itemColorHover: #FFBC00;
+    $titleColor: #FFF;
+    $titleColorHover: #FFBC00;
+    $titleFontWeight: bold;
+    $itemFontWeight: initial;
+    $itemHoverDecoration: underline;
+    @import './navList.scss';
+
+    .brilliant {
+        float: inherit;
+        width: inherit;
+        padding: 0;
+
+        .mcenter-list {
+            padding: 0 0 0 36px;
+
+            .list-title-wrap {
+                border-top: 1px solid #47393A;
+                border-bottom: 1px solid #1A1416;
+                text-align: left;
+                height: 42px;
+
+                .list-title {
+                    margin: 0;
+                    display: inline-block;
+                    cursor: pointer;
+                    height: 40px;
+                    font-size: 12px;
+                    font-weight: initial;
+                    line-height: 40px;
+                    margin-right: 20px;
+
+                    &.current,
+                    &:hover {
+                        color: $titleColorHover;
+
+                        .title-icon {
+                            &.account,
+                            &.bank,
+                            &.tcenter,
+                            &.bet,
+                            &.info {
+                                background-position-y: 100%;
+                            }
+                        }
+                    }
+
+                    span {
+                        vertical-align: middle;
+                    }
+
+                    .title-icon {
+                        display: inline-block;
+                        vertical-align: middle;
+                        width: 26px;
+                        height: 26px;
+
+                        &.account {
+                            background-position: 0 0;
+                        }
+
+                        &.bank {
+                            background-position: -30px 0;
+                        }
+
+                        &.tcenter {
+                            background-position: -90px 0;
+                        }
+
+                        &.bet {
+                            background-position: -90px 0;
+                        }
+
+                        &.info {
+                            background-position: -120px 0;
+                        }
+                    }
+                }
+            }
+
+            .list-item-wrap {
+                text-align: left;
+                height: 44px;
+                border-top: 1px solid #47393a;
+
+                .list-item {
+                    display: inline-block;
+                    cursor: pointer;
+                    color: $itemColor;
+                    height: 43px;
+                    line-height: 43px;
+                    margin-right: 15px;
+                    font-size: 12px;
+
+                    &:hover,
+                    &.current {
+                        color: $itemColorHover;
+                        border-bottom: 3px solid $itemColorHover;
+                        text-decoration: initial;
+                    }
+                }
+            }
+        }
+    }
+}
+
+.theme-519 {
+    $itemColor: #5C6783;
+    $itemColorHover: #CA8C54;
+    $titleColor: #A5A2A5;
+    $titleColorHover: #A5A2A5;
+    $titleFontWeight: initial;
+    $itemFontWeight: initial;
+    $itemHoverDecoration: none;
+    @import './navList.scss';
+
+    // 左側列表
+    .mcenter-list-wrap {
+        width: 20%;
+        padding: 0 0 44px 20px;
+
+        .mcenter-list {
+            padding-top: 38px;
+
+            .list-title-line {
+                display: block;
+                height: 34px;
+                margin-top: 0;
+                border: none;
+                background: url('/static/image/mcenter/theme/519/mcenter_line.png') 50% 0 no-repeat;
+            }
+
+            .list-title {
+                margin: 0 0 2px;
+                text-align: left;
+                font-size: 24px;
+            }
+
+            .list-item {
+                position: relative;
+                padding: 0 12px 0 58px;
+                text-align: left;
+                font-size: 18px;
+
+                &:before {
+                    content: "";
+                    position: absolute;
+                    width: 44px;
+                    height: 44px;
+                    margin-top: -22px;
+                    top: 50%;
+                    left: 4px;
+                    background: url('/static/image/mcenter/theme/519/member_sidebar_icon.png') 0 0 no-repeat;
+                }
+
+                &:hover,
+                &.current {
+                    &:before {
+                        background-position-x: -64px;
+                    }
+                }
+            }
+
+            $list-item: accountData 0, accountBankCard 1, deposit 2, withdraw 3, bankBalanceTran 4, bonusAccount 5,
+            bankRebate 6, bankMoneyDetail 7, betRecord 8, infoMessage 9, infoPost 10;
+
+            @each $item in $list-item {
+                $item-name: nth($item, 1);
+                $pic-index: nth($item, 2) * -44px;
+
+                .#{$item-name}::before {
+                    background-position: 0 $pic-index;
+                }
+            }
+        }
+    }
+}
+
+.theme-theme3 {
+    $itemColor: #7E7E7E;
+    $itemColorHover: #00AEFF;
+    $titleColor: #cccccc;
+    $titleColorHover: #53B2F3;
+    $titleFontWeight: bold;
+    $itemFontWeight: initial;
+    $itemHoverDecoration: underline;
+    @import './navList.scss';
+
+    .mcenter-list-wrap {
+        border: 1px solid #CCCCCC;
+        border-right: 0px;
+        margin-bottom: 44px;
+        padding: 0 0 10px;
+        background-color: rgba(229, 229, 229, 0.5);
+        .mcenter-top-info {
+            padding-top: 6px;
+        }
+
+        .mcenter-list {
+            padding: 0;
+
+            .list-item {
+                color: #333;
+                vertical-align: middle;
+
+                img {
+                    float: left;
+                    margin-left: 35px;
+                    margin-top: 9px;
+                    height: 23px;
+                    vertical-align: middle;
+                }
+
+                span {
+                    float: left;
+                    margin-left: 10px;
+                }
+
+                &:hover {
+                    text-decoration: none;
+                    background: #FCFCFD;
+                }
+
+                &.current {
+                    background: #FCFCFD;
+                    border-left: 4px solid #00AEFF;
+                }
+            }
+        }
+    }
+}

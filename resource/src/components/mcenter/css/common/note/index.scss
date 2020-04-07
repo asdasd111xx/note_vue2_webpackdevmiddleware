@@ -1,0 +1,69 @@
+.theme-basic {
+    @import './style/basic/index.scss';
+    @import './note.scss';
+}
+
+.theme-519 {
+    @import './style/519/index.scss';
+    @import './note.scss';
+}
+
+.theme-brilliant {
+    @import './style/brilliant/index.scss';
+    @import './note.scss';
+    position: fixed;
+
+    .pop-note-warp {
+        position: fixed;
+        top: 50%;
+        left: 1%;
+        right: 1%;
+        margin: -144px auto 0;
+    }
+}
+
+.theme-theme3 {
+    @import './style/theme3/index.scss';
+    @import './note.scss';
+    position: fixed;
+
+    .pop-note-warp {
+        position: fixed;
+        top: 50%;
+        left: 1%;
+        right: 1%;
+        margin: -144px auto 0;
+        z-index: 1000;
+    }
+}
+
+.theme-miller {
+    @import './style/miller/index.scss';
+    @import './note.scss';
+    position: fixed;
+    
+    .pop-note-warp {
+        .content .note-msg {
+            .link {
+                span {
+                    color: #F7B500;
+                }
+            }
+        }
+    }
+}
+
+.theme-porn1 {
+    @import './style/porn1/index.scss';
+    @import './note.scss';
+    position: fixed;
+
+    .pop-note-warp {
+        position: fixed;
+        top: 50%;
+        left: 1%;
+        right: 1%;
+        margin: -144px auto 0;
+        z-index: 1000;
+    }
+}

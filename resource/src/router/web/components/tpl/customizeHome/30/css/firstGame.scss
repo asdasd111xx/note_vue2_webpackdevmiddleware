@@ -1,0 +1,24 @@
+//首頁遊戲圖
+.first-game-wrap {
+    margin-top: 11px;
+    padding-left: 3px;
+
+    .first-game {
+        display: inline-block;
+        width: 103px;
+        height: 130px;
+        cursor: pointer;
+
+        &.first-game-0 {
+            margin-right: 12px;
+        }
+
+        &.first-game-1 {
+            margin-right: 525px;
+        }
+
+        &.first-game-2 {
+            margin-right: 20px;
+        }
+    }
+}

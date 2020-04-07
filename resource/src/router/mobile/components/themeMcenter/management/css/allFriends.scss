@@ -1,0 +1,57 @@
+@import '~@/css/variable.scss';
+
+.all-friends-table {
+    width: 100%;
+    border-top: 1px solid #BBB;
+    border-collapse: collapse;
+
+    th,
+    td {
+        line-height: 12px;
+        border-bottom: 1px solid #BBB;
+        font-size: 12px;
+        text-align: center;
+        vertical-align: middle;
+
+        &:first-child {
+            text-align: left;
+        }
+    }
+
+    th {
+        padding: 2% 3%;
+        background-color: #ECECEC;
+        color: #666;
+        font-weight: normal;
+    }
+
+    td {
+        padding: 4% 3%;
+        background-color: #FFF;
+        color: #000;
+    }
+
+    .total {
+        background-color: #E8EAF2;
+    }
+}
+
+@media screen and (min-width: $phone) {
+    .all-friends-table {
+        th,
+        td {
+            line-height: 15px;
+            font-size: 15px;
+        }
+    }
+}
+
+@media screen and (min-width: $pad) {
+    .all-friends-table {
+        th,
+        td {
+            line-height: 24px;
+            font-size: 24px;
+        }
+    }
+}

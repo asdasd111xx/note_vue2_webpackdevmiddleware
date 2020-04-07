@@ -1,0 +1,21 @@
+.preset-color {
+    $withdrawBookmarkColor: #FFF;
+    $withdrawBookmarkBg: #00347D;
+    $withdrawBookmarkActiveColor: #FFF;
+    $withdrawBookmarkActiveBg: #00255A;
+
+    $withdrawRefreshBtnColor: #00347D;
+    @import './withdrawRecord.module.scss';    
+}
+
+.site-500011,
+.site-52,
+.site-53 {
+    $withdrawBookmarkColor: #FFF;
+    $withdrawBookmarkBg: #222;
+    $withdrawBookmarkActiveColor: #000;
+    $withdrawBookmarkActiveBg: #EDB83F;
+
+    $withdrawRefreshBtnColor: #000;
+    @import './withdrawRecord.module.scss';    
+}

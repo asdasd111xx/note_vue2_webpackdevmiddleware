@@ -1,0 +1,156 @@
+// 站內信
+.info-message {
+    .main-table {
+        border-bottom: none;
+
+        &.no-data {
+            border-bottom: 1px solid #EEE;
+        }
+
+        thead {
+            &.agcenter-pc {
+                display: none;
+            }
+        }
+        .number {
+            width: 8%;
+        }
+        .category {
+            width: 12%;
+        }
+        .title {
+            padding-left: 1%;
+            width: 42%;
+            text-align: left;
+        }
+        .date {
+            width: 18%;
+        }
+        .status {
+            width: 10%;
+        }
+        .delete {
+            width: 10%;
+            .del-btn {
+                display: block;
+                margin: 0 auto;
+                background: url("/static/image/agent/features_btn.png") 0 -90px no-repeat;
+                width: 30px;
+                height: 30px;
+                cursor: pointer;
+            }
+        }
+        tbody {
+            tr {
+                &.message-list {
+                    background: #FFF;
+                    cursor: pointer;
+                    .title {
+                        color: #CE6C6C;
+                        text-decoration: underline;
+                    }
+                    &.agcenter-pc {
+                        display: none;
+                    }
+                    &:hover {
+                        .title {
+                            color: #262626;
+                        }
+                    }
+                    &.yet {
+                        .status {
+                            color: #FF0000;
+                        }
+                    }
+                    &.already {
+                        .status {
+                            color: #CAB7B7;
+                        }
+                    }
+                }
+                &.message-detail {
+                    border-top-color: transparent;
+                    background: #F9F9F9;
+                    td {
+                        padding: 14px 2.6% 14px 3%;
+                        line-height: 24px;
+                        text-align: left;
+                        word-break: break-word;
+                    }
+                    &.agcenter-pc {
+                        display: none;
+                    }
+                }
+            }
+            table {
+                margin-bottom: 40px;
+                border-bottom: 1px solid #EEE;
+                &.pad {
+                    width: 100%;
+                    td {
+                        &.caption {
+                            padding-left: 3%;
+                            width: 30%;
+                            color: #313F52;
+                            text-align: left;
+                            &.title {
+                                text-decoration: none;
+                            }
+                        }
+                        &.content {
+                            width: auto;
+                            text-align: left;
+                            word-break: break-word;
+
+                            &.title {
+                                padding-left: 0;
+                            }
+                        }
+                        &.number {
+                            background: #C3C3C3;
+                            color: #FFF;
+                        }
+                        .del-btn {
+                            margin: 0;
+                        }
+                    }
+                }
+            }
+        }
+    }
+}
+
+// pad.pc
+@media screen and (min-width: $pad) {
+    .info-message {
+        .main-table {
+            border-bottom: 1px solid #EEE;
+            thead {
+                &.agcenter-pc {
+                    display: none;
+                    display: table-header-group;
+                }
+            }
+            tbody {
+                tr {
+                    &.message-list {
+                        &.agcenter-pc {
+                            display: table-row;
+                        }
+                    }
+                    &.message-detail {
+                        &.agcenter-pc {
+                            display: table-row;
+                            td {
+                                padding-left: 9%;
+                            }
+                        }
+                    }
+                }
+                table {
+                    display: none
+                }
+            }
+        }
+    }
+}

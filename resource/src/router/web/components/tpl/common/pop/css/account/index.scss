@@ -1,0 +1,23 @@
+.theme-basic {
+    @import './style/basic/index.scss';
+    @import './account.scss';
+}
+
+.theme-519 {
+    @import './style/519/index.scss';
+    @import './account.scss';
+}
+
+.theme-brilliant {
+    @import './style/basic/index.scss';
+    @import './account.scss';
+}
+.theme-theme3 {
+    @import './style/theme3/index.scss';
+    @import './style/theme3/account.scss';
+}
+
+.theme-miller {
+    @import './style/miller/index.scss';
+    @import './style/miller/account.scss';
+}

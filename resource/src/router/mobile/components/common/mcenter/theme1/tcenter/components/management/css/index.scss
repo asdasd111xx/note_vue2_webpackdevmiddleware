@@ -1,0 +1,385 @@
+@import '~@/css/variable.scss';
+
+.management-wrap {
+    background-color: #EEE;
+    margin-bottom: 50px;
+}
+
+.top-link-wrap {
+    position: relative;
+    background-color: #00347D;
+
+    > div {
+        margin: 2% 1%;
+    }
+
+    .recommend,
+    .code {
+        position: absolute;
+        top: 0;
+        bottom: 0;
+        padding: 0 1%;
+        border-width: 1px;
+        border-style: solid;
+        border-radius: 50px;
+        font-size: 12px;
+        text-align: center;
+
+        &:before {
+            content: '';
+            display: inline-block;
+            width: 0;
+            height: 100%;
+            vertical-align: middle;
+        }
+
+        span {
+            display: inline-block;
+            vertical-align: middle;
+        }
+    }
+
+    .copy,
+    .qrcode {
+        float: right;
+        width: 7%;
+
+        img {
+            width: 100%;
+        }
+
+        .imgout {
+            display: block;
+        }
+
+        .imgin {
+            display: none;
+        }
+
+        &.active,
+        &:hover {
+            .imgout {
+                display: none;
+            }
+
+            .imgin {
+                display: block;
+            }
+        }
+    }
+
+    .recommend {
+        left: 0;
+        width: 28%;
+        border-color: #F4D8AF;
+        color: #F4D8AF;
+    }
+
+    .code {
+        left: 30%;
+        width: 50%;
+        border-color: #FFFFFF;
+        color: #FFFFFF;
+    }
+
+    .hide {
+        display: none;
+    }
+}
+
+.no-register {
+    .code {
+        left: 0;
+    }
+}
+
+.first-level-info {
+    .level-info {
+        position: relative;
+        float: left;
+        width: 20%;
+        border-right: 3px solid #00347D;
+        color: #363C5D;
+        background-color: #ECECEC;
+        background-position: 0 0;
+        background-size: 100%;
+        background-repeat: no-repeat;
+
+        img {
+            display: block;
+            width: 100%;
+        }
+    }
+
+    .number,
+    .text {
+        position: absolute;
+        width: 100%;
+
+        span {
+            display: inline-block;
+            vertical-align: middle;
+        }
+
+        &:before {
+            content: '';
+            display: inline-block;
+            width: 0;
+            height: 100%;
+            vertical-align: middle;
+        }
+    }
+
+    .number {
+        top: 35%;
+        bottom: 0;
+        line-height: 16px;
+        padding: 0 15%;
+        font-size: 12px;
+        text-align: center;
+        color: #F4D8AF;
+        word-break: break-all;
+    }
+
+    .text {
+        top: 0;
+        bottom: 65%;
+        line-height: 12px;
+        padding: 0 1px;
+        font-size: 12px;
+        text-align: center;
+        color: #ABCDFE;
+    }
+}
+
+.page-select {
+    border-bottom: 1px solid #BBB;
+    background-color: #FFF;
+
+    > div {
+        border: none !important;
+        border-radius: 0 !important;
+        text-align: center !important;
+    }
+}
+
+.datepicker-wrap {
+    border-bottom: 1px solid #BEBCBC;
+    background-color: #FFF;
+    font-size: 12px;
+    display: inline-block;
+    width: 100%;
+
+    &.disabled {
+        opacity: 0.5;
+    }
+
+    &.disabled:before {
+        content: '';
+        display: block;
+        width: 100%;
+        opacity: 0.5;
+        height: 40px;
+        position: absolute;
+        z-index: 1;
+    }
+
+    .date-btn {
+        float: left;
+        width: 11%;
+        height: 40px;
+        line-height: 40px;
+        border-right: 1px solid #BBB;
+        background-color: #FFF;
+        color: #000;
+        text-align: center;
+
+        &.active {
+            border-right: none;
+            background-color: #00347D;
+            color: #FFF;
+        }
+    }
+
+    .start-date, .end-date {
+        border-right: 1px solid #BBB;
+        line-height: 16px;
+        color: #BEBCBC;
+        padding: 3px 0 3px 3px;
+        float: left;
+        width: 39%;
+        height: 40px;
+
+        :global(input) {
+            width: 100%;
+            font-size: 12px;
+            border: none;
+            background: none;
+        }
+    }
+
+    input {
+        border: none;
+        outline: none;
+        background: transparent;
+        appearance: none;
+    }
+}
+.search-icon-wrap{
+    background: #ddd;
+    border-bottom: 1px solid #BEBCBC;
+    .search-icon {
+        height: 26px;
+        width: 26px;
+        margin: 7px 10px;
+    }
+}
+
+.search-box {
+    background: white;
+    font-size: 12px;
+    line-height: 12px;
+    .type {
+        padding: 5px 13px;
+        border-bottom: 1px solid #BEBCBC;
+        color: #BEBCBC;
+        select {
+            width: 100%;
+            margin-top: 2px;
+            font-size: 14px;
+            background: transparent;
+            border: none;
+            appearance: none;
+            outline: none;
+        }
+    }
+}
+
+.search-btn-wrap {
+    height: 44px;
+    line-height: 44px;
+    border-bottom: 1px solid #BEBCBC;
+    .search-btn {
+        top: 5px;
+        position: relative;
+        text-align: center;
+        line-height: 30px;
+        color: #FFF;
+        width: 80%;
+        background-color: #00347D;
+        border-radius: 5px;
+        margin: auto;
+    }
+}
+
+.data {
+    margin-top: 11px;
+}
+
+@media screen and (min-width: $phone) {
+    .top-link-wrap {
+        .recommend,
+        .code {
+            font-size: 14px;
+        }
+    }
+
+    .first-level-info {
+        .number {
+            line-height: 22px;
+            font-size: 22px;
+        }
+
+        .text {
+            line-height: 14px;
+            font-size: 14px;
+        }
+    }
+
+    .page-select {
+        select {
+            height: 44px;
+            font-size: 19px;
+        }
+    }
+
+    .datepicker-wrap {
+        font-size: 19px;
+
+        &.disabled:before {
+            height: 44px;
+        }
+
+        .start-date, .end-date {
+            height: 44px;
+            padding-top: 6px;
+        }
+
+        .date-btn {
+            height: 44px;
+            line-height: 44px;
+        }
+    }
+}
+
+@media screen and (min-width: $pad) {
+    .top-link-wrap {
+        .recommend,
+        .code {
+            font-size: 23px;
+        }
+    }
+
+    .first-level-info {
+        .number {
+            line-height: 36px;
+            font-size: 36px;
+        }
+
+        .text {
+            line-height: 23px;
+            font-size: 23px;
+        }
+    }
+
+    .page-select {
+        select {
+            height: 71px;
+            font-size: 30px;
+        }
+    }
+
+    .datepicker-wrap {
+        font-size: 30px;
+
+        &.disabled:before {
+            height: 71px;
+        }
+
+        .start-date, .end-date {
+            padding-top: 21px;
+            height: 71px;
+        }
+
+        .date-btn {
+            height: 71px;
+            line-height: 71px;
+        }
+    }
+}
+
+.theme-miller {
+    .search-btn-wrap {
+        .search-btn {
+            background-color: #F7B500;
+        }
+    }
+    .top-link-wrap {
+        background-color: #2C2F2F;
+    }
+    .first-level-info {
+        .text {
+            color: #CFCFCF;
+        }
+    }
+}

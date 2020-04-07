@@ -1,0 +1,179 @@
+@import '~@/css/variable.scss';
+$tableSelectButton: initial;
+$btnColorBg: initial;
+$btnColorBgHover: initial;
+
+
+.theme-basic,
+.theme-brilliant {
+    $tableBodyBorder: #CCC;
+    $tableBodyColor: #313F52;
+    $tableBodyBg: initial;
+    $tableTitleBg: #CCC;
+    $tableTitleBorder: #CCC;
+    $tableTitleColor: #FFF;
+    $tableNoDataColor: #313F52;
+    $tableSelectButton: #314053;
+    $radioBorder: #CCC;
+    $radioBorderChecked: #55B9FF;
+    $radioCheckedBg: #CCC;
+    $paginationColor: #000;
+    $paginationListTextColor: initial;
+    $btnColorBg: #55B9FF;
+    $btnColorBgHover: #71BFF5;
+    $btnColor: #FFF;
+    @import './bankRebate.scss';
+    @import '../../../css/common/pagination.scss';
+    @import '../../../css/common/select.scss';
+    @import '../../../css/common/radio.scss';
+}
+
+.theme-theme3 {
+    $tableBodyBorder: #CCC;
+    $tableBodyColor: #313F52;
+    $tableBodyBg: initial;
+    $tableTitleBg: #CCC;
+    $tableTitleBorder: #CCC;
+    $tableTitleColor: #FFF;
+    $tableNoDataColor: #313F52;
+    $tableSelectButton: #314053;
+    $radioBorder: #CCC;
+    $radioBorderChecked: #DFAF50;
+    $radioCheckedBg: #DFAF50;
+    $paginationColor: #000;
+    $paginationListTextColor: initial;
+    $btnColorBg: #DFAF50;
+    $btnColorBgHover: #E2BA6C;
+    $btnColor: #FFF;
+    @import './bankRebate.scss';
+    @import '../../../css/common/pagination.scss';
+    @import '../../../css/common/select.scss';
+    @import '../../../css/common/radio.scss';
+}
+.theme-miller {
+    $tableBodyBorder: #CCC;
+    $tableBodyColor: #313F52;
+    $tableBodyBg: initial;
+    $tableTitleBg: #292929;
+    $tableTitleBorder: #CCC;
+    $tableTitleColor: #FFF;
+    $tableNoDataColor: #313F52;
+    $tableSelectButton: #292929;
+    $radioBorder: #CCC;
+    $radioBorderChecked: #F7B500;
+    $radioCheckedBg: #CCC;
+    $paginationColor: #000;
+    $paginationListTextColor: initial;
+    $btnColorBg: #F7B500;
+    $btnColorBgHover: #CB9605;
+    $btnColor: #292929;
+    @import './bankRebate.scss';
+    @import '../../../css/common/pagination.scss';
+    @import '../../../css/common/select.scss';
+    @import '../../../css/common/radio.scss';
+}
+.theme-519 {
+    $tableBodyBorder: #CA8C54;
+    $tableBodyColor: #000;
+    $tableBodyBg: #FFF;
+    $tableTitleBg: #CECECE;
+    $tableTitleBorder: #CA8C54;
+    $tableTitleColor: #000;
+    $tableNoDataColor: #313F52;
+    $tableSelectButton: #314053;
+    $radioBorder: #CA8C54;
+    $radioBorderChecked: #CA8C54;
+    $radioCheckedBg: #CA8C54;
+    $paginationColor: #FFF;
+    $paginationListTextColor: #000;
+    $btnColorBg: #CA8C54;
+    $btnColorBgHover: #B16F34;
+    $btnColor: #FFF;
+    @import './bankRebate.scss';
+    @import '../../../css/common/pagination.scss';
+    @import '../../../css/common/select.scss';
+    @import '../../../css/common/radio.scss';
+
+    // 我的返水
+    .bank-rebate {
+        h1 {
+            color: #FFF;
+        }
+
+        .bank-rebate-inner {
+            padding: 0 5.8%;
+        }
+
+        .main-radio {
+            color: #FFF;
+        }
+
+        .select-button {
+            border-radius: 0;
+            border: 1px solid #CA8C54;
+            color: #CA8C54;
+            background: #000;
+
+            &.current,
+            &:hover {
+                color: #FFF;
+                background-color: #CA8C54;
+            }
+        }
+
+        .rebate-total-wrap {
+            span {
+                color: #FFF;
+            }
+        }
+
+        .main-table {
+            thead {
+                th {
+                    font-weight: 700;
+                }
+            }
+
+            .number {
+                border-color: #CA8C54;
+                color: #000;
+                background: #CECECE;
+            }
+        }
+
+        .calculate-time-inner {
+            border-color: #CA8C54;
+
+            span {
+                background: #FFF;
+            }
+        }
+
+        .calculate-button {
+            border-radius: 0;
+        }
+
+        .rebate-text-wrap {
+            border: 1px solid #CA8C54;
+            color: #756E6E;
+        }
+    }
+
+    @media screen and (min-width: $pad) {
+        .bank-rebate {
+            h1 {
+                font-size: 20px;
+            }
+
+            .main-table {
+                .number {
+                    background: none;
+                }
+            }
+
+            .rebate-total-wrap {
+                border: 1px solid #CA8C54;
+            }
+        }
+    }
+}

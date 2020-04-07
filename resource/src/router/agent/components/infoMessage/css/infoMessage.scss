@@ -1,0 +1,202 @@
+@import "~@/css/variable.scss";
+
+.info-message {
+    .main-title {
+        padding-bottom: 25px;
+        span {
+            float: left;
+            color: $titleColor;
+            font-size: 17px;
+            font-weight: bold;
+        }
+    }
+
+    .main-table {
+        border-bottom: none;
+
+        &.no-data {
+            border-bottom: $tableBottomBorder;
+        }
+
+        thead {
+            &.agcenter-pc {
+                display: none;
+            }
+        }
+        .number {
+            width: 8%;
+        }
+        .category {
+            width: 12%;
+        }
+        .title {
+            padding-left: 1%;
+            width: 42%;
+            text-align: left;
+        }
+        .date {
+            width: 18%;
+        }
+        .status {
+            width: 10%;
+        }
+        .delete {
+            width: 10%;
+            white-space: nowrap;
+            .del-btn {
+                display: block;
+                margin: 0 auto;
+                background: $deleteIcon;
+                width: 30px;
+                height: 30px;
+                cursor: pointer;
+            }
+        }
+        tbody {
+            tr {
+                &.message-list {
+                    background: #FFF;
+                    cursor: pointer;
+                    .title {
+                        text-decoration: underline;
+                    }
+                    &.agcenter-pc {
+                        display: none;
+                    }
+                    &.yet {
+                        .title {
+                            color: $msgTitleYet;
+                        }
+                        .status {
+                            color: $msgStatusYet;
+                        }
+                    }
+                    &.already {
+                        .title {
+                            color: $msgTitleAlready;
+                        }
+                        .status {
+                            color: $msgStatusAlready;
+                        }
+                    }
+                    &:hover {
+                        .title {
+                            color: $msgHoverTitle;
+                        }
+                    }
+                }
+                &.message-detail {
+                    border-top-color: transparent;
+                    background: #F9F9F9;
+                    td {
+                        padding: 14px 2.6% 14px 3%;
+                        line-height: 24px;
+                        text-align: left;
+                        word-break: break-word;
+                    }
+                    &.agcenter-pc {
+                        display: none;
+                    }
+                }
+            }
+            table {
+                border-collapse: $tableCollapse;
+                margin-bottom: 40px;
+                border-bottom: $tableBottomBorder;
+                &.pad {
+                    width: 100%;
+                    td {
+                        &.caption {
+                            padding-left: 3%;
+                            width: 30%;
+                            color: $tableColor;
+                            text-align: left;
+                            &.title {
+                                text-decoration: none;
+                            }
+                        }
+                        &.content {
+                            width: auto;
+                            text-align: left;
+                            word-break: break-word;
+
+                            &.title {
+                                padding-left: 0;
+                            }
+                        }
+                        &.number {
+                            background: $theadBg;
+                            color: $theadColor;
+                        }
+                        .del-btn {
+                            margin: 0;
+                        }
+                    }
+                }
+            }
+        }
+    }
+}
+
+.msg-fliter-box {
+    .current-message-type {
+        width: 200px;
+        height: 38px;
+        margin: 0 14px 16px 0;
+        display: inline-block;
+
+        /deep/ {
+            .ui.fluid.dropdown {
+                border-color: $fieldBorder;
+                border-radius: $borderRadius;
+            }
+        }
+    }
+
+    .msg-filter-btn {
+        display: inline-block;
+        border-radius: $borderRadius;
+        background: $btnBg;
+        width: 85px;
+        height: 38px;
+        line-height: 38px;
+        color: #FFF;
+        text-align: center;
+        cursor: pointer;
+    }
+}
+
+// pad.pc
+@media screen and (min-width: $pad) {
+    .info-message {
+        .main-table {
+            border-bottom: $tableBottomBorder;
+            thead {
+                &.agcenter-pc {
+                    display: none;
+                    display: table-header-group;
+                }
+            }
+            tbody {
+                tr {
+                    &.message-list {
+                        &.agcenter-pc {
+                            display: table-row;
+                        }
+                    }
+                    &.message-detail {
+                        &.agcenter-pc {
+                            display: table-row;
+                            td {
+                                padding-left: 9%;
+                            }
+                        }
+                    }
+                }
+                table {
+                    display: none
+                }
+            }
+        }
+    }
+}

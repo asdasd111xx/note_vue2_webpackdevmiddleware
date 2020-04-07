@@ -1,0 +1,383 @@
+@import "../variable.scss";
+
+.join-wrap {
+    background: #212121;
+    margin: 0 auto;
+    padding: 70px 0 40px;
+    max-width: $layoutWidth;
+    color: #FFF;
+}
+
+.join {
+    margin: 0 auto;
+    width: 100%;
+}
+
+.join-banner {
+    position: relative;
+    margin: 0 auto 30px;
+    border-bottom: 1px solid #5A5A5A;
+    background: #3D3D3D;
+    padding-left: 140px;
+    width: 90%;
+    min-height: 90px;
+    font-size: 30px;
+    line-height: 76px;
+}
+
+.join-banner-icon {
+    position: absolute;
+    top: -30px;
+    left: 14px;
+    background: url("/static/image/join_icon.png") 0 0 no-repeat;
+    width: 109px;
+    height: 109px;
+}
+
+.join-ag-banner {
+    composes: join-banner;
+    padding-left: 112px;
+    font-size: 27px;
+    line-height: 94px;
+}
+
+.join-ag-banner-icon {
+    composes: join-banner-icon;
+    top: 14px;
+    background: url("/static/image/agent/agent_icon.png") 0 0 no-repeat;
+    width: 70px;
+    height: 64px;
+}
+
+.join-content {
+    margin: 0 auto;
+    width: 80%;
+}
+
+.field-wrap {
+    margin-bottom: 20px;
+}
+
+.captcha-img {
+    position: absolute;
+    top: 11px;
+    right: 8px;
+    background: #000;
+    cursor: pointer;
+}
+
+.field-title {
+    display: block;
+    line-height: 39px;
+    width: 100%;
+}
+
+.field-text {
+    float: left;
+    width: 88%;
+    overflow : hidden;
+    text-overflow : ellipsis;
+    white-space : nowrap;
+}
+
+.join-star {
+    float: left;
+    margin-left: 5px;
+    color: #D01C1C;
+}
+
+.join-input {
+    background-color: #303030;
+    padding: 10px 3.5%;
+    width: 100%;
+    height: 40px;
+    border: 1px solid #595959;
+    border-radius: 5px;
+    color: #A5A5A5;
+    font-size: 14px;
+    outline: 0;
+}
+
+.join-input-email {
+    padding-right: 82px;
+}
+
+.join-input-phone {
+    float: left;
+    width: 68%;
+    margin-left: 2%;
+    padding-right: 82px;
+}
+
+.join-input-captcha {
+    composes: join-input;
+    height: 72px;
+}
+
+.join-input-birthday {
+    composes: join-input;
+    margin-left: 0;
+    padding: 10px 3%;
+    width: 100%;
+    cursor: pointer;
+}
+
+.join-input-select {
+    composes: join-input;
+    padding: 0;
+
+    &:global(.v-select) {
+        &.show {
+            border-color: #C24141;
+        }
+
+        :global(.clear) {
+            display: none;
+        }
+
+        :global(.open-indicator:before) {
+            border-color: #A5A5A5;
+        }
+
+        :global(.selected-tag),
+        :global(.form-control) {
+            color: #A5A5A5;
+        }
+    }
+}
+
+.join-select-phone {
+    composes: join-input-select;
+    float: left;
+    width: 30%;
+
+    :global(input.form-control) {
+        position: absolute;
+        top: 0;
+        left: 0;
+        width: 100%;
+    }
+}
+
+.join-input-gender {
+    composes: join-input-select;
+
+    &:global(.open) {
+        :global(.selected-tag) {
+            display: block;
+            float: none;
+            top: 0;
+            right: 0;
+            left: 0;
+            height: 38px;
+            line-height: 38px;
+            margin: 0;
+            padding: 0 30px;
+            border-width: 0;
+            text-align: center;
+        }
+    }
+}
+
+.join-input-withdraw {
+    composes: join-input-select;
+    position: relative;
+    float: left;
+    width: 22%;
+    margin-right: 4%;
+
+    &:global(.open) {
+        :global(.selected-tag) {
+            position: static;
+        }
+    }
+
+    &:global(.v-select) {
+        input {
+            position: absolute;
+            left: 0;
+        }
+    }
+}
+
+.join-input-withdraw-last {
+    composes: join-input-withdraw;
+    margin-right: 0;
+}
+
+.join-input-disable {
+    composes: join-input;
+    cursor: no-drop;
+}
+
+.field-right {
+    position: relative;
+    width: 100%;
+    text-align: right;
+
+    :global(.vdp-datepicker) {
+        width: 100%;
+
+        :global(.vdp-datepicker__calendar) {
+            top: 35px;
+            right: -21px;
+            color: #000;
+            text-align: left;
+        }
+
+        :global(.vdp-datepicker__clear-button) {
+            position: absolute;
+            top: 8px;
+            right: 10px;
+        }
+    }
+}
+
+.join-tip {
+    display: none;
+    background-color: #C24141;
+    padding: 5px 5px;
+    border-radius: 5px;
+    color: #F9F9F9;
+}
+
+.join-tip-show {
+    composes: join-tip;
+    display: inline-block;
+}
+
+.join-msg {
+    margin-top: 5px;
+    color: #668691;
+    text-align: left;
+}
+
+.join-msg-icon {
+    margin-right: 5px;
+    color: #44C07D;
+    vertical-align: middle;
+}
+
+.icon-verify {
+    position: absolute;
+    top: 12px;
+    right: 12px;
+    width: 16px;
+    height: 16px;
+    color: #4DC769;
+
+    > svg {
+        display: block;
+    }
+}
+
+.btn-verify {
+    position: absolute;
+    top: 6px;
+    right: 6px;
+    height: 28px;
+    line-height: 28px;
+    padding: 0 6px;
+    border-radius: 5px;
+    background-color: #0672E1;
+    color: #FFF;
+    font-size: 12px;
+    cursor: pointer;
+
+    &.disabled {
+        background-color: #CDCDCD;
+    }
+}
+
+.join-line {
+    margin: 29px auto;
+    background: #595959;
+    width: 90%;
+    height: 1px;
+}
+
+.join-btn-wrap {
+    margin: 0 auto;
+    width: 80%;
+}
+
+.join-btn {
+    border-radius: 5px;
+    background-color: #F7B500;
+    width: 100%;
+    height: 54px;
+    line-height: 54px;
+    color: #FFF;
+    font-size: 18px;
+    text-align: center;
+    cursor: pointer;
+
+    &:hover {
+        background-color: #2889EC;
+    }
+}
+
+@media screen and (min-width: $pad) {
+    .join {
+        width: 700px;
+    }
+
+    .join-banner {
+        width: 100%;
+    }
+
+    .join-content {
+        width: 58%;
+    }
+
+    .join-btn-wrap {
+        padding-left: 16.4%;
+        width: 58%;
+    }
+
+    .field-wrap {
+        margin-bottom: 15px;
+    }
+
+    .field-title {
+        float: left;
+        width: 25%;
+        text-align: right;
+    }
+
+    .field-right {
+        float: left;
+        margin-left: 3.4%;
+        width: 71.6%;
+    }
+
+    .join-line {
+        width: 100%;
+    }
+}
+
+@media screen and (min-width: $phone) {
+    .join-banner {
+        padding-left: 160px;
+    }
+
+    .join-ag-banner {
+        composes: join-banner;
+        padding-left: 132px;
+        font-size: 27px;
+        line-height: 94px;
+    }
+
+    .join-banner-icon {
+        left: 34px;
+    }
+
+    .join-content,
+    .join-btn-wrap {
+        width: 70%;
+    }
+
+    .join-input {
+        font-size: 15px;
+    }
+}

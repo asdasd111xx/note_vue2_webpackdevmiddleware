@@ -1,0 +1,139 @@
+
+.login-form {
+    float: right;
+    width: 394px;
+    margin-top: 12px;
+    padding-bottom: 9px;
+
+    .login-input {
+        position: relative;
+        float: left;
+        margin: 3px 7px 4px 0;
+
+        &__input {
+            width: 141px;
+            height: 23px;
+            line-height: 23px;
+            padding-left: 8px;
+            outline: none;
+            border: none;
+            color: #FFF;
+
+            // Chrome/Opera/Safari
+            &::-webkit-input-placeholder {
+                color: #E0AFA5;
+            }
+            // Firefox 19+
+            &::-moz-placeholder {
+                color: #E0AFA5;
+            }
+            // IE 10+
+            &:-ms-input-placeholder {
+                color: #E0AFA5;
+            }
+            // Firefox 18-
+            &:-moz-placeholder {
+                color: #E0AFA5;
+            }
+        }
+
+        &__image {
+            position: absolute;
+            width: 43px;
+            height: 21px;
+            top: 1px;
+            right: 2px;
+            cursor: pointer;
+            background: #202020;
+        }
+    }
+
+    .login-btn {
+        float: left;
+        margin-top: 4px;
+        cursor: pointer;
+        color: #FFF;
+
+        &:hover {
+            color: #F8DDB8;
+        }
+
+        &.login-btn--submit {
+            float: right;
+            width: 98px;
+            height: 52px;
+            margin: 0;
+
+            &:hover {
+                background-position-y: 100%;
+            }
+        }
+
+        &.login-btn--join {
+            margin: 4px 0 0 0;
+            max-width: 68px;
+            overflow: hidden;
+            text-overflow: ellipsis;
+            white-space: nowrap;
+        }
+
+        &.login-btn--forget {
+            max-width: 96px;
+            padding-left: 5px;
+            overflow: hidden;
+            text-overflow: ellipsis;
+            white-space: nowrap;
+
+            &:before {
+                content: "";
+                display: inline-block;
+                width: 1px;
+                height: 8px;
+                margin-right: 3px;
+                background: #FFF;
+            }
+        }
+    }
+}
+
+// 深紫色
+.login-form {
+    .deep-purple & {
+        margin-top: 2px;
+
+        .login-input {
+            &__input {
+                // Chrome/Opera/Safari
+                &::-webkit-input-placeholder {
+                    color: #8F6EA3;
+                }
+                // Firefox 19+
+                &::-moz-placeholder {
+                    color: #8F6EA3;
+                }
+                // IE 10+
+                &:-ms-input-placeholder {
+                    color: #8F6EA3;
+                }
+                // Firefox 18-
+                &:-moz-placeholder {
+                    color: #8F6EA3;
+                }
+            }
+        }
+
+        .login-btn {
+            color: #FFF;
+
+            &:hover {
+                color: #FFFF73;
+            }
+
+            &.login-btn--submit {
+                &:hover {
+                    background-position-y: 100%;
+                }
+            }
+        }
+    }
+}

@@ -1,0 +1,7 @@
+#container
+#!container/auto-reload-nginx.sh
+resource
+cloudbuild.yaml
+.dockerignore
+.gitignore
+README.md

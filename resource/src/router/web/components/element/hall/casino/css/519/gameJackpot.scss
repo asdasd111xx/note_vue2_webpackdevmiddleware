@@ -1,0 +1,250 @@
+.game-jackpot-wrap {
+    float: right;
+    width: 508px;
+    height: 180px;
+    right: 32px;
+    margin: 1.4% 0.7%;
+    border-radius: 5px;
+    background-color: rgba(240, 240, 240, 0.08);
+    background-image: url("/static/image/game/jackpot_bg01.png");
+    background-position: 50% 46px;
+    background-repeat: no-repeat;
+
+    &.game-jackpot-single {
+        background-image: url("/static/image/game/jackpot_bg02.png");
+        background-position: 50% 55px;
+    }
+
+    &.grand-default-wrap {
+        background-image: url("/static/image/game/jdb_bg01.png");
+    }
+
+    .cumulation-jackpot-wrap {
+        margin: 0 auto;
+        width: 460px;
+    }
+}
+
+.jackpot-title-img-wrap {
+    float: left;
+    width: 118px;
+    min-height: 114px;
+    margin: 20px 0 0 10px;
+    background: url("/static/image/game/gamejp_title_bg.png") 0 0 no-repeat;
+
+    span {
+        display: block;
+        margin-top: 34px;
+        color: #FFF;
+        font-weight: bold;
+        font-size: 18px;
+        text-align: center;
+    }
+}
+
+.jackpot-title-img {
+    height: 50px;
+    background-position: 50% 0;
+    background-repeat: no-repeat;
+
+    &.bbin {
+        width: 75px;
+        margin: 26px 8px 0 22px;
+        background-image: url("/static/image/game/bbin_icon.png");
+    }
+
+    &.jdb {
+        width: 50px;
+        margin: 29px auto 0;
+        background-image: url("/static/image/game/jdb_icon.png");
+    }
+
+    &.hb {
+        width: 50px;
+        margin: 29px auto 0;
+        background-image: url("/static/image/game/hb_icon.png");
+    }
+
+    &.cq9 {
+        width: 50px;
+        margin: 29px auto 0;
+        background-image: url("/static/image/game/cq9_icon.png");
+    }
+
+    &.fg {
+        width: 50px;
+        margin: 29px auto 0;
+        background-image: url("/static/image/game/fg_icon.png");
+    }
+}
+
+.jackpot-show-wrap {
+    position: relative;
+    float: left;
+    margin: 26px 0 0 2px;
+}
+
+.jackpot-amount-bar {
+    position: relative;
+    width: 308px;
+    height: 50px;
+    background: url("/static/image/game/jackpot_bonus_bg01.png") 50% 0 no-repeat;
+
+    &.jdb {
+        margin-top: 34px;
+    }
+}
+
+.amount-icon {
+    float: left;
+    width: 30px;
+    height: 30px;
+    line-height: 30px;
+    margin: 8px 0 0 20px;
+    border-radius: 30px;
+    background-color: #3F0000;
+    color: #FFF;
+    font-size: 18px;
+    text-align: center;
+}
+
+.jackpot-text {
+    float: left;
+    width: 256px;
+    height: 45px;
+    line-height: 45px;
+    padding: 0 20px;
+    box-sizing: border-box;
+    color: #3F0000;
+    font-size: 25px;
+    text-align: center;
+}
+
+.jackpot-accumulation-list {
+    overflow: hidden;
+    float: left;
+    width: 286px;
+    height: 70px;
+    margin-left: 13px;
+    text-align: right;
+}
+
+.jackpot-accumulation {
+    height: 22px;
+    line-height: 22px;
+    margin-bottom: 2px;
+}
+
+.user {
+    float: left;
+    font-size: 15px;
+    color: #FFF;
+}
+
+.user-number {
+    width: 40px;
+    margin-left: 18px;
+    color: #C2C2C2;
+}
+
+.user-name {
+    width: 100px;
+    padding-left: 10px;
+    box-sizing: border-box;
+}
+
+.user-amount {
+    float: right;
+    width: 120px;
+    padding-right: 24px;
+    box-sizing: border-box;
+    text-align: right;
+}
+
+// 獨立彩金
+.single-jackpot-wrap {
+    overflow: hidden;
+    width: 432px;
+    margin: 0 auto;
+    color: #3F0000;
+    font-size: 16px;
+}
+
+.single-jackpot {
+    position: relative;
+    float: left;
+    height: 62px;
+    line-height: 62px;
+    padding-left: 60px;
+    background: url("/static/image/game/jackpot_bonus_bg02.png") 100% 50% no-repeat;
+
+    &.gns {
+        margin-top: 61px;
+    }
+
+    &.isb,
+    &.pt,
+    &.sg {
+        &:first-child {
+            margin: 24px 0 4px;
+        }
+    }
+
+    &:before {
+        content: "";
+        position: absolute;
+        top: 0;
+        left: 0;
+        width: 69px;
+        height: 62px;
+        background: url("/static/image/game/gamejp_img_bg.png") 50% 0 no-repeat;
+    }
+
+    img {
+        position: absolute;
+        border-radius: 50%;
+        width: auto;
+        height: 50px;
+        left: 4px;
+        top: 6px;
+    }
+}
+
+.single {
+    float: left;
+}
+
+.single-name {
+    overflow: hidden;
+    width: 112px;
+    height: 62px;
+    line-height: 62px;
+    margin-left: 12px;
+    font-weight: bold;
+    text-overflow: ellipsis;
+    white-space: nowrap;
+}
+
+.single-icon {
+    width: 30px;
+    height: 30px;
+    line-height: 30px;
+    margin: 15px 14px 0 20px;
+    border-radius: 30px;
+    background-color: #3F0000;
+    color: #FFF;
+    font-size: 18px;
+    text-align: center;
+}
+
+.single-amount-text {
+    width: 180px;
+    height: 42px;
+    font-weight: bold;
+    font-size: 22px;
+}
+
+// 無彩金資料才顯示
+.game-no-jackpot {
+    background: url("/static/image/game/no_jackpot_bg01.png") 50% 100% no-repeat;
+}

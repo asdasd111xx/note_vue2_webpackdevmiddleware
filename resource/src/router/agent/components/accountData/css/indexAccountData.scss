@@ -1,0 +1,19 @@
+.theme-basic {
+    @import './style/basic.scss';
+    @import './accountData.scss';
+}
+
+.theme-brilliant {
+    @import './style/basic.scss';
+    @import './accountData.scss';
+}
+
+.theme-519 {
+    @import './style/519.scss';
+    @import './accountData.scss';
+}
+
+.theme-theme3 {
+    @import './style/theme3.scss';
+    @import './accountData.scss';
+}

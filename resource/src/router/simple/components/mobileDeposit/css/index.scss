@@ -1,0 +1,452 @@
+@import '~@/css/variable.scss';
+
+.simple-deposit-wrap {
+    height: 100%;
+    background: #FFF;
+}
+
+.header-title {
+    display: block;
+    height: 23px;
+    line-height: 23px;
+    padding-left: 9px;
+    text-align: left;
+    font-size: 12px;
+    color: #BEBCBC
+}
+
+.header-wrap {
+    height: 65px;
+    text-align: right;
+    color: #FFF;
+    background-color: #222;
+}
+
+.logo-wrap {
+    width: 200px;
+    height: 62px;
+    line-height: 62px;
+    margin: 19px auto 0;
+    color: #FFF;
+}
+
+.website-btn {
+    display: inline-block;
+    vertical-align: top;
+    min-width: 80px;
+    height: 26px;
+    line-height: 26px;
+    margin: 12px 10px 0 0;
+    padding: 0 4px;
+    text-align: center;
+    font-size: 12px;
+    cursor: pointer;
+    border-radius: 13px;
+    border: 1px solid #F4D8AF;
+    color: #F4D8AF;
+}
+
+.content-wrap {
+    min-height: calc(100% - 164px);
+    margin: 0 auto;
+    padding-top: 10px;
+    background-color: #EEE;
+}
+
+.username-wrap {
+    padding: 5px 12px;
+    font-size: 12px;
+    border-width: 1px 0;
+    border-style: solid;
+    border-color: #BEBCBC;
+    color: #262626;
+    background-color: #FFF;
+}
+
+.member-title {
+    display: block;
+    font-size: 12px;
+    color: #BEBCBC;
+}
+
+.username-tip {
+    margin-left: 12px;
+    font-size: 12px;
+    color: #00347D;
+}
+
+.username-input-wrap {
+    position: relative;
+}
+
+.username-input {
+    display: block;
+    height: 22px;
+    line-height: 22px;
+    font-size: 15px;
+    outline: none;
+    border-radius: 4px;
+    border: none;
+    color: #000;
+
+    // Chrome/Opera/Safari
+    &::-webkit-input-placeholder {
+        color: #000;
+    }
+    // Firefox 19+
+    &::-moz-placeholder {
+        color: #000;
+    }
+    // IE 10+
+    &:-ms-input-placeholder {
+        color: #000;
+    }
+    // Firefox 18-
+    &:-moz-placeholder {
+        color: #000;
+    }
+}
+
+.img-icon {
+    position: absolute;
+    width: 20px;
+    height: 20px;
+    margin-top: -10px;
+    top: 50%;
+    right: 10px;
+
+    &.img-success {
+        color: #53B2F3;
+    }
+
+    &.img-error {
+        color: #F00;
+    }
+}
+
+.deposit-list-wrap {
+    padding: 10px 20px;
+    text-align: center;
+}
+
+.mode-item {
+    float: left;
+    overflow: hidden;
+    width: 48%;
+    height: 42px;
+    line-height: 42px;
+    margin-bottom: 8px;
+    padding: 0 16px;
+    text-align: center;
+    white-space: nowrap;
+    text-overflow: ellipsis;
+    cursor: pointer;
+    border-radius: 3px;
+    color: #FFF;
+    background-color: #00347D;
+
+    &:active {
+        background-color: #004AAE;
+    }
+
+    &:nth-child(2n + 1) {
+        margin: 0 8px 0 2px;
+    }
+}
+
+.bank-card-wrap {
+    position: relative;
+    padding-top: 8px;
+}
+
+.feature-wrap {
+    padding: 5px 21px;
+    border-width: 0 0 1px;
+    border-style: solid;
+    border-color: #BEBCBC;
+    background: #FFF;
+
+    &:first-child {
+        border-width: 1px 0;
+    }
+}
+
+.bank-card-title {
+    display: block;
+    margin-bottom: 5px;
+    font-size: 12px;
+    color: #BEBCBC;
+}
+
+.pay-mode-item {
+    cursor: pointer;
+    color: #000;
+
+    .pay-main-title {
+        font-size: 16px;
+    }
+}
+
+.is-error {
+    color: #F00;
+}
+
+.bank-feature-wrap {
+    float: left;
+    width: 100%;
+}
+
+.feature-deposit-wrap {
+    composes: bank-feature-wrap;
+    margin-bottom: 5px;
+    padding-bottom: 2px;
+    border-bottom: 1px solid #BEBCBC;
+
+    &.is-error-line {
+        border-color: #F00;
+    }
+}
+
+.pay-mode-pass {
+    font-size: 16px;
+    cursor: pointer;
+    color: #000;
+}
+
+.deposit-input {
+    display: inline-block;
+    vertical-align: middle;
+    width: 190px;
+    height: 24px;
+    line-height: 24px;
+    font-size: 17px;
+    outline: none;
+    border: none;
+    color: #000;
+    background: #FFF;
+
+    // Chrome/Opera/Safari
+    &::-webkit-input-placeholder {
+        color: #000;
+    }
+    // Firefox 19+
+    &::-moz-placeholder {
+        color: #000;
+    }
+    // IE 10+
+    &:-ms-input-placeholder {
+        color: #000;
+    }
+    // Firefox 18-
+    &:-moz-placeholder {
+        color: #000;
+    }
+}
+
+.pay-money-item {
+    float: left;
+    min-width: 18%;
+    height: 35px;
+    line-height: 35px;
+    margin: 2px;
+    padding: 0 3px;
+    text-align: center;
+    color: #000;
+    border-radius: 8px;
+    border: 1px solid #BEBCBC;
+
+    &.is-current {
+        border: 1px solid #00347D;
+        color: #FFF;
+        background-color: #00347D;
+    }
+}
+
+.feature-tip-wrap {
+    padding: 0 21px;
+}
+
+.money-info-wrap {
+    margin-top: 20px;
+}
+
+.feature-tip-title {
+    float: left;
+    margin-top: 4px;
+    font-size: 17px;
+}
+
+.amount-text {
+    float: right;
+    height: 27px;
+    line-height: 27px;
+    font-size: 27px;
+    color: #A37F5B;
+}
+
+.money-tip-wrap {
+    margin-top: 7px;
+    color: #0091D2;
+}
+
+.tip-list {
+    font-size: 12px;
+}
+
+.speed-input-wrap {
+    margin-top: 20px;
+}
+
+.speed-input-title {
+    display: block;
+    height: 26px;
+    line-height: 26px;
+    text-align: center;
+    font-size: 12px;
+    border-width: 1px 0;
+    border-style: solid;
+    border-color: #BEBCBC;
+    color: #262626;
+    background-color: #FFF;
+}
+
+.pay-button {
+    display: block;
+    overflow: hidden;
+    width: 268px;
+    height: 45px;
+    line-height: 45px;
+    margin: 47px auto 0;
+    padding: 0 5px;
+    text-align: center;
+    text-overflow: ellipsis;
+    white-space: nowrap;
+    cursor: pointer;
+    color: #FFF;
+    background-color: #00347D;
+
+    &:active {
+        background-color: #004AAE;
+    }
+}
+
+.warm-tip-title {
+    font-size: 12px;
+    color: #333857;
+}
+
+.warm-tip {
+    font-size: 12px;
+    color: #333857;
+}
+
+.loading-wrap {
+    position: absolute;
+    width: 100%;
+    height: 100%;
+    padding: 258px 0;
+    top: 0;
+    left: 0;
+    text-align: center;
+    background: rgba(0, 0, 0, 0.4);
+}
+
+.loading-item {
+    display: inline-block;
+    vertical-align: top;
+}
+
+// pad
+@media screen and (min-width: $pad) {
+    .mode-item {
+        height: 58px;
+        line-height: 58px;
+        font-size: 18px;
+    }
+
+    .bank-card-wrap {
+        padding-top: 20px;
+    }
+
+    .feature-wrap {
+        padding: 15px 6% 8px;
+    }
+
+    .bank-card-title {
+        font-size: 18px;
+    }
+    
+    .pay-mode-item {
+        height: 33px;
+        line-height: 33px;
+        margin-bottom: 0;
+        font-size: 26px;
+
+        .pay-main-title {
+            font-size: 26px;
+        }
+    }
+
+    .pay-mode-pass {
+        height: 33px;
+        line-height: 33px;
+        margin-bottom: 0;
+        font-size: 26px;
+    }
+
+    .deposit-input {
+        height: 33px;
+        line-height: 33px;
+        font-size: 26px;
+    }
+
+    .feature-tip-wrap {
+        padding: 0 6%;
+        line-height: 26px;
+    }
+
+    .feature-tip-title {
+        height: 37px;
+        line-height: 37px;
+        font-size: 26px;
+    }
+
+    .amount-text {
+        height: 46px;
+        line-height: 46px;
+        font-size: 46px;
+    }
+
+    .money-tip-wrap {
+        line-height: 28px;
+        margin-top: 10px;
+    }
+
+    .tip-list {
+        font-size: 18px;
+    }
+
+    .pay-button {
+        width: 567px;
+        height: 58px;
+        line-height: 58px;
+        margin-bottom: 20px;
+        font-size: 18px;
+    }
+
+    .warm-tip-title {
+        font-size: 18px;
+    }
+    
+    .warm-tip {
+        font-size: 18px;
+    }
+}
+
+.footer-wrap {
+    padding: 40px 0;
+    text-align: center;
+    font-size: 12px;
+    color: #343957;
+    background-color: #EEE;
+}

@@ -1,0 +1,212 @@
+.wrap {
+    background-color: #F5F5F5;
+    padding: 10px;
+}
+
+.title {
+    color: #BEBCBC;
+    font-size: 12px;
+}
+
+.datepicker {
+    margin: 0 auto 25px;
+    border-bottom: 1px solid #0091D2;
+    width: 100%;
+    height: 39px;
+}
+
+.datepicker-input {
+    background: transparent;
+    width: 94%;
+    height: 39px;
+    line-height: 39px;
+    border: none;
+    color: #000;
+    font-size: 16px;
+}
+
+.input-wrap {
+    position: relative;
+    margin: 0 auto 25px;
+}
+
+.input {
+    width: 100%;
+    background: none;
+    border: none;
+    border-bottom: 1px solid #0091D2;
+    height: 30px;
+    outline: none;
+    border-radius: 0;
+}
+
+.phone-input {
+    float: left;
+    width: 70%;
+}
+
+.input-error {
+    width: 100%;
+    background: none;
+    border: none;
+    border-bottom: 1px solid #0091D2;
+    height: 30px;
+    outline: none;
+    border-radius: 0;
+    border-bottom: 1px solid #FF5454;
+}
+
+.select {
+    width: 100%;
+    background: none;
+    border: none;
+    border-bottom: 1px solid #0091D2;
+    height: 30px;
+    outline: none;
+}
+
+.phone-select {
+    float: left;
+    width: 28%;
+    margin-right: 2%;
+    border-radius: 0;
+}
+
+.btn-wrap {
+    clear: both;
+    float: right;
+    color: #FFF;
+}
+
+.btn-confirm {
+    float: left;
+    background-color: $tableBtnConfirmBg;
+    color: $tableBtnConfirmColor;
+    padding: 10px 24px;
+    border-radius: 6px;
+}
+
+.btn-cancel {
+    float: left;
+    background-color: $tableBtnCancelBg;
+    color: $tableBtnCancelColor;
+    margin-right: 10px;
+    padding: 10px 24px;
+    border-radius: 6px;
+}
+
+.withdraw-input {
+    border: 1px solid #000;
+    border-radius: 6px;
+    margin-right: 8px;
+    width: 46px;
+    height: 46px;
+    font-size: 22px;
+    text-align: center;
+    outline: none;
+}
+
+/* 修改密碼 */
+.icon-eye {
+    position: absolute;
+    top: 0;
+    right: 0;
+    background: url('/static/image/mobile/mcenter/btn_eye_d.png') 0 0 / 100% 100% no-repeat;
+    width: 28px;
+    height: 28px;
+
+    &.is-visible {
+        background: url('/static/image/mobile/mcenter/btn_eye_n.png') 0 0 / 100% 100% no-repeat;
+    }
+}
+
+.tip {
+    margin: 10px 0 0 20px;
+    color: #FF5454;
+}
+
+.bottom-tip {
+    clear: both;
+    color: #333857;
+    padding: 8px 36px;
+
+    .important {
+        color: #FF5454;
+    }
+}
+
+// 暱稱切換
+.toggle-nickname {
+    display: block;
+    float: right;
+    margin-bottom: 50px;
+
+    :global(.ui.checkbox) {
+        margin-left: 4px;
+        vertical-align: middle;
+    }
+}
+
+/* 發送驗證碼按鈕 */
+.btn-send {
+    position: absolute;
+    right: 0;
+    top: -12px;
+    padding: 4px 6px;
+    border: 1px solid #30A5D9;
+    border-radius: 4px;
+    color: #30A5D9;
+}
+
+/* 發送驗證彈跳框 */
+.send-msg {
+    position: fixed;
+    top: 50%;
+    left: 50%;
+    background: 50% 54px no-repeat rgba(22, 22, 22, .9);
+    margin-top: -100px;
+    margin-left: -100px;
+    padding-top: 124px;
+    padding: 124px 10px 0;
+    width: 200px;
+    height: 200px;
+    border-radius: 4px;
+    color: #00D96D;
+    z-index: 600;
+}
+
+.send-email {
+    position: fixed;
+    top: 50%;
+    left: 50%;
+    background: 50% 54px no-repeat rgba(22, 22, 22, .9);
+    margin-top: -100px;
+    margin-left: -100px;
+    padding-top: 124px;
+    padding: 124px 10px 0;
+    width: 200px;
+    height: 200px;
+    border-radius: 4px;
+    color: #00D96D;
+    z-index: 600;
+    background-image: url('/static/image/mobile/mcenter/mail_icon.png');
+    background-size: 60px 60px;
+}
+
+.send-phone {
+    position: fixed;
+    top: 50%;
+    left: 50%;
+    background: 50% 54px no-repeat rgba(22, 22, 22, .9);
+    margin-top: -100px;
+    margin-left: -100px;
+    padding-top: 124px;
+    padding: 124px 10px 0;
+    width: 200px;
+    height: 200px;
+    border-radius: 4px;
+    color: #00D96D;
+    z-index: 600;
+    background-image: url('/static/image/mobile/mcenter/phone_icon.png');
+    background-size: 60px 60px;
+}

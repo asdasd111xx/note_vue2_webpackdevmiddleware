@@ -1,0 +1,13 @@
+.preset-color {
+    $contentTitleColor: #19A3FF;
+    
+    @import './context.module.scss'; 
+}
+
+.site-500011,
+.site-52,
+.site-53 {
+    $contentTitleColor: #EDB83F;
+
+    @import './context.module.scss';  
+}

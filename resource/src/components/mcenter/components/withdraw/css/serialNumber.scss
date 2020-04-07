@@ -1,0 +1,229 @@
+.serial-number-wrap {
+    position: fixed;
+    z-index: 5;
+    width: 100%;
+    height: 100%;
+    top: 0;
+    left: 0;
+    background: rgba(0, 0, 0, 0.5);
+}
+
+.serial-number {
+    position: relative;
+    width: 1000px;
+    height: 670px;
+    margin: -335px auto 0;
+    top: 50%;
+}
+
+.serial-title {
+    position: relative;
+    display: block;
+    line-height: 50px;
+    padding: 0 50px;
+    text-align: center;
+    font-size: 20px;
+    font-weight: bold;
+    color: #FFF;
+    background: #333;
+}
+
+.serial-close-wrap {
+    position: absolute;
+    width: 30px;
+    height: 30px;
+    margin-top: -15px;
+    top: 50%;
+    right: 7px;
+    cursor: pointer;
+}
+
+.serial-close-btn {
+    vertical-align: top;
+    color: #999;
+}
+
+.serial-info-wrap {
+    overflow-y: auto;
+    height: 620px;
+    padding: 20px 20px 0;
+    color: #000;
+    background: #FFF;
+}
+
+.basic-info-wrap {
+    margin-bottom: 20px;
+}
+
+.basic-title {
+    display: block;
+    margin-bottom: 20px;
+}
+
+.serial-info-change {
+    float: left;
+}
+
+.serial-cost {
+    float: right;
+}
+
+.serial-basic-table {
+    display: table;
+    width: 49%;
+    border-radius: 4px;
+    border: 1px solid #E2E2E2;
+}
+
+.serial-basic-thead {
+    background: #EEE;
+}
+
+.serial-basic-tr {
+    display: table-row;
+
+    &:last-child {
+        .serial-basic-td {
+            border-bottom: none;
+        }
+    }
+}
+
+.serial-basic-td {
+    position: relative;
+    display: table-cell;
+    vertical-align: middle;
+    width: 50%;
+    height: 40px;
+    line-height: 40px;
+    padding: 0 40px 0 10px;
+    text-align: right;
+    font-size: 16px;
+    border-bottom: 1px solid #E2E2E2;
+
+    &:first-child {
+        text-align: left;
+        padding: 0 10px 0 20px;
+    }
+}
+
+.serial-important {
+    font-weight: bold;
+}
+
+.serial-number-table {
+    display: table;
+    width: 100%;
+    border-collapse: collapse;
+    border: 1px solid #EEE;
+}
+
+.serial-number-thead {
+    line-height: 24px;
+    font-size: 16px;
+    background: #F0F3F7;
+}
+
+.serial-number-tr {
+    display: table-row;
+
+    &:last-child {
+        .serial-number-td {
+            border-bottom: none;
+        }
+    }
+}
+
+.serial-number-td {
+    position: relative;
+    display: table-cell;
+    vertical-align: middle;
+    height: 100%;
+    padding: 2px 5px;
+    text-align: center;
+    border: 1px solid #EEE;
+
+    span {
+        display: inline-block;
+    }
+}
+
+.serial-table-number,
+.serial-table-deposit,
+.serial-table-claim {
+    width: 5%;
+}
+
+.serial-table-audit {
+    width: 10%;
+}
+
+.serial-table-offer,
+.serial-table-approve,
+.serial-table-deduction {
+    width: 9%;
+}
+
+.serial-table-created-at {
+    width: 10%;
+}
+
+.serial-table-type {
+    width: 12%;
+}
+
+.serial-table-change {
+    width: 14%;
+}
+
+.serial-table-memo {
+    width: 13%;
+}
+
+.serial-table-claim {
+    cursor: pointer;
+
+    &:hover {
+        .audit-tip-wrap {
+            display: block;
+        }
+    }
+}
+
+.serial-number-tbody-item {
+    &.serial-table-deposit,
+    &.serial-table-offer,
+    &.serial-table-claim,
+    &.serial-table-approve,
+    &.serial-table-deduction {
+        text-align: right;
+    }
+
+    &.serial-table-audit,
+    &.serial-table-change {
+        text-align: left;
+    }
+}
+
+.serial-info-text {
+    position: relative;
+}
+
+.audit-tip-wrap {
+    position: absolute;
+    display: none;
+    width: 200px;
+    margin-left: -100px;
+    top: -42px;
+    left: 50%;
+    text-align: center;
+}
+
+.audit-tip-text {
+    text-align: left;
+}
+
+.icon-wrap {
+    display: inline-block;
+    cursor: pointer;
+}

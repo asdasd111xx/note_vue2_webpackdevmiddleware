@@ -1,0 +1,233 @@
+@import '~@/css/variable.scss';
+
+.basic-info-wrap {
+    margin-top: 12px;
+    background: #FFF;
+}
+
+.basic-title {
+    display: block;
+    height: 27px;
+    line-height: 27px;
+    text-align: center;
+    font-size: 12px;
+    border-width: 1px 0;
+    border-style: solid;
+    border-color: #BEBCBC;
+}
+
+.serial-related-wrap {
+    border-width: 0 0 1px;
+    border-style: solid;
+    border-color: #BEBCBC;
+    font-size: 12px;
+
+    .serial-info-item {
+        margin: 9px 3%;
+    }
+}
+
+.serial-btn-wrap {
+    padding: 6px 9px;
+}
+
+.serial-open-btn {
+    float: right;
+    width: 63px;
+    height: 27px;
+    line-height: 27px;
+    text-align: center;
+    cursor: pointer;
+    border: 1px solid $withdrawOpenBtnBorderColor;
+    background: $withdrawOpenBtnBg;
+    color: $withdrawOpenBtnColor;
+    border-radius: 50px;
+}
+
+.serial-basic-info {
+    cursor: pointer;
+    background-color: #FFF;
+    &:nth-child(2n) {
+        background-color: #F6F4F4;
+    }
+    &:last-child {
+        border-width: 1px 0;
+    }
+}
+
+.serial-basic-wrap {
+    padding: 9px 3%;
+}
+
+.serial-basic-left {
+    float: left;
+    width: 40%;
+}
+
+.serial-basic-right {
+    float: right;
+    width: 60%;
+    text-align: right;
+}
+
+.basic-info-opcode,
+.basic-info-promotion {
+    margin-top: 6px;
+}
+
+.basic-info-creatat {
+    font-size: 12px;
+    color: #BEBCBC;
+}
+
+.basic-info-change {
+    display: inline-block;
+    vertical-align: middle;
+    width: 116px;
+    text-align: left;
+    color: #000;
+
+    span {
+        display: block;
+    }
+}
+
+.expand-img {
+    display: inline-block;
+    vertical-align: middle;
+    width: 18px;
+    height: 18px;
+    margin-left: 9px;
+
+    img {
+        display: block;
+        width: 100%;
+    }
+}
+
+.serial-full-wrap {
+    display: block;
+    padding: 6px 6% 9px;
+    font-size: 12px;
+}
+
+.info-title {
+    float: left;
+    width: 34%;
+    text-align: left;
+    color: #000;
+
+    span {
+        display: inline-block;
+        vertical-align: middle;
+        width: 78%;
+    }
+}
+
+.info-text {
+    float: right;
+    max-width: 66%;
+    text-align: right;
+    color: #000;
+}
+
+.info-audit-text {
+    display: block;
+    text-align: left;
+}
+
+.icon-wrap {
+    display: inline-block;
+    vertical-align: middle;
+    width: 17px;
+    height: 17px;
+    border-radius: 50%;
+    background: $withdrawExclamationIconBg;
+    color: $withdrawExclamationIconColor;
+    cursor: pointer;
+    position: relative;
+    svg {
+        position: absolute;
+        top: 50%;
+        left: 50%;
+        transform: translate(-50%,-50%);
+    }
+}
+
+// phone
+@media screen and (min-width: $phone) {
+    .serial-related-wrap {
+        font-size: 14px;
+    }
+
+    .serial-open-btn {
+        width: 77px;
+        height: 33px;
+        line-height: 33px;
+    }
+}
+
+// pad
+@media screen and (min-width: $pad) {
+    .basic-title {
+        height: 33px;
+        line-height: 30px;
+        font-size: 16px;
+    }
+
+    .serial-related-wrap {
+        font-size: 16px;
+
+        .serial-info-item {
+            margin: 12px 5%;
+        }
+    }
+
+    .serial-open-btn {
+        width: 120px;
+        height: 53px;
+        line-height: 53px;
+        font-size: 23px;
+    }
+
+    .basic-info-creatat {
+        font-size: 18px;
+    }
+
+    .basic-info-opcode {
+        height: 30px;
+        line-height: 30px;
+        margin-top: 12px;
+        font-size: 24px;
+    }
+
+    .basic-info-change {
+        font-size: 24px;
+
+        span {
+            height: 30px;
+            line-height: 30px;
+        }
+    }
+
+    .serial-full-wrap {
+        padding: 6px 5% 9px;
+        font-size: 20px;
+
+        .serial-info-item {
+            line-height: 21px;
+            margin: 0 6% 15px 1%;
+        }
+    }
+
+    .expand-img {
+        width: 30px;
+        height: 30px;
+        margin-left: 7%;
+    }
+
+    .icon-wrap {
+        width: 28px;
+        height: 28px;
+    }
+}

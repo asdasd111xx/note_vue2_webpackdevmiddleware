@@ -1,0 +1,33 @@
+/****** 各模板共用 ******/
+@import "~@/css/tpl/index.scss";
+
+.body {
+    background-color: #EEE;
+    overflow-x: initial;
+    min-width: 1340px;
+    word-break: break-all;
+
+    // 最近玩過
+    .main-container {
+        padding-bottom: 36px;
+    }
+
+    .main-wrap {
+        padding-top: 120px;
+        background-color: #CDCDCD;
+
+        // 固定頁面版寬設定
+        .normal-page {
+            margin: 0 auto;
+            width: 1200px;
+        }
+
+        // 模塊版寬設定
+        .element-wrap {
+            > .content {
+                margin: 0 auto;
+                width: 1200px;
+            }
+        }
+    }
+}

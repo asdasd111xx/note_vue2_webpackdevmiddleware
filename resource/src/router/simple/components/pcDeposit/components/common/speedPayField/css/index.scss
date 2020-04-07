@@ -1,0 +1,102 @@
+.speed-field-tbody {
+    display: table-row-group;
+    width: 100%;
+    border-collapse: collapse;
+}
+
+.speed-field-tr {
+    display: table-row;
+    border-width: 1px 0;
+    border-color: #DDD;
+    border-style: solid;
+
+    &:first-child {
+        border-width: 0 0 1px;
+    }
+}
+
+.speed-field-td {
+    position: relative;
+    display: table-cell;
+    vertical-align: middle;
+    width: 79%;
+    padding: 12px;
+    border-width: 0 1px;
+    border-color: #DDD;
+    border-style: solid;
+
+    &.speed-field-thead {
+        width: 21%;
+        line-height: 20px;
+        text-align: right;
+        background: #F0F3F7;
+    }
+}
+
+.method-item {
+    display: inline-block;
+    vertical-align: top;
+    min-width: 82px;
+    height: 30px;
+    line-height: 30px;
+    margin-right: 10px;
+    padding: 0 8px;
+    text-align: center;
+    cursor: pointer;
+    border: 1px solid #CDCDCD;
+    border-radius: 4px;
+    color: #7E7E7E;
+
+    &.is-current {
+        border-color: #53B2F3;
+        color: #FFF;
+        background-color: #53B2F3;
+    }
+}
+
+.speed-deposit-input {
+    box-sizing: border-box;
+    width: 176px;
+    height: 30px;
+    line-height: 30px;
+    padding: 0 12px;
+    outline: none;
+    border: 1px solid #CDCDCD;
+    border-radius: 4px;
+
+    // Chrome/Opera/Safari
+    &::-webkit-input-placeholder {
+        color: #DDD;
+    }
+    // Firefox 19+
+    &::-moz-placeholder {
+        color: #DDD;
+    }
+    // IE 10+
+    &:-ms-input-placeholder {
+        color: #DDD;
+    }
+    // Firefox 18-
+    &:-moz-placeholder {
+        color: #DDD;
+    }
+
+    &.error {
+        border-color: #F28CA2;
+    }
+}
+
+.speed-deposit-input-error-messgae {
+    margin-left: 10px;
+    color: #F28CA2;
+}
+
+// 日期套件
+:global {
+    .mx-datepicker {
+        width: 176px;
+        &.error .mx-input{
+            border-color: #F28CA2;
+        }
+    }
+}

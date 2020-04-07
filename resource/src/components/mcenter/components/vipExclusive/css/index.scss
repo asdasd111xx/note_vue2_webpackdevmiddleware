@@ -1,0 +1,45 @@
+.vip-exclusive-wrap {
+    padding: 0 5.3%;
+
+    .vip-title {
+        margin: 0 0 20px;
+        color: #333;
+        font-size: 18px;
+        font-weight: bold;
+    }
+
+    .vip-header {
+        padding: 24px;
+        color: #666;
+        border-radius: 10px;
+        box-shadow: 0 0 18px 5px rgba(222,240,255,.4);
+    }
+
+    .vip-sub-title {
+        margin: 28px 0 20px;
+        color: #333;
+        font-size: 14px;
+        font-weight: bold;
+    }
+
+    .vip-sub-header {
+        margin-top: 40px;
+        padding: 24px;
+        border-radius: 10px;
+        box-shadow: 0 0 18px 5px rgba(222,240,255,.4);
+
+        .sub-header-item {
+            display: inline-block;
+            width: 48%;
+            text-align: center;
+
+            &:nth-child(odd) {
+                border-right: 1px solid #EFEFF4;
+            }
+
+            p {
+                color: #999;
+            }
+        }
+    }
+}

@@ -1,0 +1,116 @@
+// 登入前
+.login-form-wrap /deep/ {
+    display: inline-block;
+    vertical-align: middle;
+    padding: 73px 0 0 20px;
+    background: url("/static/image/tpl/customizeHome/177/title01.png") 20px 20px no-repeat;
+
+    .login-unit {
+        position: relative;
+        width: 188px;
+        height: 24px;
+        margin-bottom: 12px;
+        
+        input {
+            width: 100%;
+            height: 24px;
+            line-height: 24px;
+            padding-left: 10px;
+            outline: none;
+            border: none;
+            color: #FFF;
+            background: none;
+
+            // Chrome/Opera/Safari
+            &::-webkit-input-placeholder {
+                color: #FFF;
+            }
+            // Firefox 19+
+            &::-moz-placeholder {
+                color: #FFF;
+            }
+            // IE 10+
+            &:-ms-input-placeholder {
+                color: #FFF;
+            }
+            // Firefox 18-
+            &:-moz-placeholder {
+                color: #FFF;
+            }
+        }
+
+        .links-forget {
+            position: absolute;
+            height: 24px;
+            line-height: 24px;
+            top: 0;
+            right: 14px;
+            cursor: pointer;
+            color: #ABA59E;
+
+            &:hover {
+                color: #F00;
+            }
+        }
+    }
+
+    .login-unit-captcha {
+        position: relative;
+
+        img {
+            position: absolute;
+            top: 0;
+            right: 6px;
+            cursor: pointer;
+            background: #202020;
+        }
+    }
+
+    .login-submit,
+    .links-join {
+        display: inline-block;
+        vertical-align: middle;
+        width: 90px;
+        height: 36px;
+        transition: all 0.4s;
+        cursor: pointer;
+
+        &:hover {
+            background-position: 50% 100%;
+        }
+    }
+
+    .login-submit {
+        margin-right: 2px;
+        background: url("/static/image/tpl/customizeHome/177/btn01.png") 50% 0 no-repeat;
+    }
+
+    .links-join {
+        background: url("/static/image/tpl/customizeHome/177/btn02.png") 50% 0 no-repeat;
+    }
+
+    .slide-fade-enter-active {
+        transition: .2s ease-in;
+        opacity: 1
+    }
+
+    .slide-fade-leave-active {
+        transition: 2s ease-out;
+        opacity: 0
+    }
+
+    .prompt-text {
+        position: absolute;
+        width: 181px;
+        background-color: #FFFDC0;
+        border-radius: 2px;
+        padding: 3px;
+        z-index: 99;
+    }
+
+    .prompt-link {
+        color: #F00;
+        cursor: pointer;
+        text-decoration: underline;
+    }
+}

@@ -1,0 +1,250 @@
+.total-sub-wrap {
+    background: url('/static/image/mobile/mcenter/bg_header2_iphone8.png') 50% -65px / 100% no-repeat #222;
+    height: 30px;
+
+    .top-sub-title {
+        float: left;
+        width: 50%;
+        height: 30px;
+        color: #BEBCBC;
+        text-align: center;
+
+        img {
+            position: relative;
+            top: 3px;
+            width: 16px;
+        }
+
+        &.active {
+            color: #FFF;
+            border-bottom: 3px solid #F9DCB2;
+        }
+
+        &.self {
+            width: 100%;
+        }
+    }
+}
+
+.real-time-note {
+    position: fixed;
+    width: 100%;
+    padding: 15px;
+    font-size: 12px;
+    color: #FFF;
+    background-color: #000;
+
+    p {
+        margin: 0;
+    }
+}
+
+.history-top-wrap {
+    height: 70px;
+    background-color: #00347D;
+
+    .total-item {
+        padding: 5px 0;
+        float: left;
+        width: 33%;
+        height: 100%;
+        font-size: 12px;
+        text-align: center;
+
+        .total-item-title {
+            color: #ABCDEF;
+        }
+
+        .total-item-money {
+            margin: 2px 0;
+            font-size: 14px;
+            color: #F4D8AF;
+        }
+
+        .total-item-date {
+            color: #ABCDEF;
+        }
+    }
+}
+
+.content-wrap {
+
+    .content-item {
+        margin-top: 10px;
+        background-color: #FFF;
+        border-top: 1px solid #BEBCBC;
+        border-bottom: 1px solid #BEBCBC;
+
+        .rebate-header {
+            height: 26px;
+            line-height: 25px;
+            text-align: center;
+            border-bottom: 1px solid #BEBCBC;
+        }
+
+        .rebate-body {
+            padding: 10px 0;
+
+            .detail-content {
+                padding: 2px 30px;
+
+                .content-left {
+                    color: #ABABAB;
+                }
+
+                .content-right {
+                    float: right;
+                    color: #A37F5B;
+                }
+            }
+        }
+
+        .rebate-btn {
+            padding-bottom: 10px;
+            text-align: center;
+
+            button {
+                width: 270px;
+                height: 39px;
+                color: #FFF;
+                background: url('/static/image/mobile/mcenter/receive_button.png') 100%/100% no-repeat;
+                border: 0;
+                outline: none;
+            }
+
+            .unrebate-btn {
+                background: url('/static/image/mobile/mcenter/receive_button_n.png') 100%/100% no-repeat;
+            }
+
+            a {
+                display: inline-block;
+                width: 270px;
+                height: 39px;
+                line-height: 39px;
+                color: #FFF;
+                background: url('/static/image/mobile/mcenter/receive_button.png') 100%/100% no-repeat;
+                border: 0;
+                outline: none;
+
+                &.disable {
+                    background: url('/static/image/mobile/mcenter/receive_button_n.png') 100%/100% no-repeat;
+                }
+            }
+        }
+
+        .rebate-nodata {
+            padding: 15px 0;
+            text-align: center;
+
+            p {
+                color: #AAA;
+                font-size: 14px;
+            }
+        }
+    }
+}
+
+.real-top-wrap {
+    padding: 6px 10px;
+    height: 50px;
+    background-color: #00347D;
+
+    .real-top-title {
+        display: inline-block;
+        width: 70%;
+        font-size: 12px;
+        color: #F4D8AF;
+        vertical-align: middle;
+
+        .calculate-title {
+            overflow: hidden;
+            white-space: nowrap;
+            text-overflow: ellipsis;
+        }
+    }
+
+    .real-top-btn {
+        padding: 0 7px;
+        display: inline-block;
+        width: 28%;
+        min-width: 70px;
+        height: auto;
+        text-align: center;
+        border: 1px solid #FFF;
+        border-radius: 15px;
+        vertical-align: middle;
+
+        &.disable {
+            border: 1px solid #FF5454;
+        }
+
+        .calculate-button {
+            color: #FFF;
+
+            .calculate-button-title {
+                display: block;
+                overflow: hidden;
+                white-space: nowrap;
+                text-overflow: ellipsis;
+            }
+
+            &.disable {
+                color: #FF5454;
+            }
+        }
+    }
+}
+
+.theme-miller {
+    .history-top-wrap {
+        background-color: #F7B500;
+
+        .total-item {
+            .total-item-title {
+                color: #222;
+                font-weight: bold;
+            }
+
+            .total-item-money {
+                color: #222;
+            }
+
+            .total-item-date {
+                color: #222;
+            }
+        }
+    }
+
+    .real-top-wrap {
+        background-color: #F7B500;
+
+        .real-top-title {
+            color: #222;
+            font-weight: bold;
+        }
+
+        .real-top-btn {
+            &.disable {
+                border: 1px solid #FFF;
+            }
+
+            .calculate-button {
+                color: #FFF;
+            }
+        }
+    }
+    
+    .content-wrap {
+        .content-item {
+            .rebate-btn {
+                button {
+                    color: #222;
+                    background: #F7B500;
+                }
+                .unrebate-btn {
+                    background: url('/static/image/mobile/mcenter/receive_button_n.png') 100%/100% no-repeat;
+                }
+            }    
+        }
+    }
+}

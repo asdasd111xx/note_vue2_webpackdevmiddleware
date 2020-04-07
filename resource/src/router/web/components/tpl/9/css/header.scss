@@ -1,0 +1,144 @@
+.header-wrap {
+    font-size: 14px;
+    background-color: #A059BF;
+
+    .header-top {
+        line-height: 30px;
+        background-color: #B564A0;
+        height: 58px;
+
+        .header-top-center {
+            margin: 0 auto;
+            width: 1000px;
+
+            .mem-wrap {
+                float: left;
+            }
+        }
+    }
+    /deep/ {
+        @import "./memLogin.scss";
+        @import "./memInfo.scss";
+        @import "./memMenu.scss";
+        @import './langSelect.scss';
+        @import './nav.scss';
+    }
+
+    .header-center {
+        margin: 0 auto;
+        width: 1000px;
+        height: 149px;
+
+        .header-logo-wrap {
+            position: relative;
+            line-height: 74px;
+            margin: 20px auto;
+            cursor: pointer;
+
+            img {
+                display: block;
+                width: inherit;
+                height: inherit;
+            }
+        }
+    }
+
+    .agent-join,
+    .agent-login {
+        float: left;
+        margin: 8px 0 0 6px;
+        padding: 0 5px;
+        width: 94px;
+        height: 36px;
+        color: #FFF;
+        text-align: center;
+        line-height: 36px;
+        cursor: pointer;
+        overflow : hidden;
+        text-overflow : ellipsis;
+        white-space : nowrap;
+
+        &:hover {
+            background-position-y: 100%;
+        }
+    }
+
+    // 跑馬燈
+    .news-wrap {
+        line-height: 26px;
+        background-color: #502260;
+
+        .news-wrap-center {
+            margin: 0 auto;
+            width: 1000px;
+            height: 52px;
+
+            .news-title {
+                float: left;
+                width: 86px;
+                height: 36px;
+                margin: 8px 17px 0;
+                font-weight: bold;
+                text-align: center;
+                line-height: 36px;
+                color: #FFF;
+            }
+
+            /deep/ {
+                .news-content-wrap {
+                    float: left;
+                    width: 613px;
+                    height: 36px;
+                    margin-top: 8px;
+                    line-height: 36px;
+                    color: #FFF;
+                }
+            }
+        }
+    }
+}
+
+// 水藍紫
+.header-wrap {
+    .water-blue-purple & {
+        background-color: #52B8CA;
+
+        .header-top {
+            background-color: #5AADBE;
+        }
+
+        .news-wrap {
+            background-color: #333895;
+        }
+    }
+}
+
+// 墨黑
+.header-wrap {
+    .black & {
+        .header-top {
+            background-color: #000;
+        }
+
+        .header-center {
+            background: none;
+        }
+
+        .news-wrap {
+            background-color: #000;
+
+            .news-wrap-center {
+                .agent-join,
+                .agent-login  {
+                    background: #FFF;
+                    color: #000;
+                    font-weight: bold;
+
+                    &:hover {
+                        color: #D0664A;
+                    }
+                }
+            }
+        }
+    }
+}

@@ -1,0 +1,41 @@
+.preset-color {
+    $depositSwiperBg: #222 url('/static/image/mobile/mcenter/bg_header2_iphone8.png') 50% 0/100% no-repeat;
+    $depositSwiperColor:#BEBCBC;
+    $depositSwiperActiveColor: #F9DCB2;
+    $depositSwiperBorderColor: #F9DCB2;
+
+    $depositPayItemColor: #FFF;
+    $depositPayItemBg: #00347D;
+
+    $depositAmountTextColor: #A37F5B;
+
+    $depositPayButtonColor: #FFF;
+    $depositPayButtonBg: #00347D;
+    $depositPayButtonActiveBg: #004AAE;
+
+    $depositIconWrapColor: #FFF;
+    $depositIconWrapBg: #00347D;
+    @import './bankCardDeposit.module.scss'; 
+}
+
+.site-500011,
+.site-52,
+.site-53 {
+    $depositSwiperBg: #FFF;
+    $depositSwiperColor:#BEBCBC;
+    $depositSwiperActiveColor: #000;
+    $depositSwiperBorderColor: #EDB83F;
+
+    $depositPayItemColor: #000;
+    $depositPayItemBg: #EDB83F;
+
+    $depositAmountTextColor: #EDB83F;
+
+    $depositPayButtonColor: #000;
+    $depositPayButtonBg: #EDB83F;
+    $depositPayButtonActiveBg: #EDB83F;
+
+    $depositIconWrapColor: #FFF;
+    $depositIconWrapBg: #EDB83F;
+    @import './bankCardDeposit.module.scss';  
+}

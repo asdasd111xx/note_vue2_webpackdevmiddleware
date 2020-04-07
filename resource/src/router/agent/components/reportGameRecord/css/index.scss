@@ -1,0 +1,20 @@
+.theme-basic {
+    @import './style/basic.scss';
+    @import '../../../css/common/pager.scss';
+    @import '../../../css/common/table.scss';
+    @import './reportGameRecord.scss';
+}
+
+.theme-519 {
+    @import './style/519.scss';
+    @import '../../../css/common/pager.scss';
+    @import '../../../css/common/table.scss';
+    @import './reportGameRecord.scss';
+}
+
+.theme-theme3 {
+    @import './style/theme3.scss';
+    @import '../../../css/common/pager.scss';
+    @import '../../../css/common/table.scss';
+    @import './reportGameRecord.scss';
+}

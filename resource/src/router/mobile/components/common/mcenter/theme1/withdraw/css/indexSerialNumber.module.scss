@@ -1,0 +1,22 @@
+.preset-color {
+    $withdrawOpenBtnColor: #00347D;
+    $withdrawOpenBtnBg: rgba(0,0,0,0);
+    $withdrawOpenBtnBorderColor: #00347D;
+
+    $withdrawExclamationIconColor: #F9DCB2;
+    $withdrawExclamationIconBg: #00347D;
+    @import './serialNumber.module.scss';    
+}
+
+
+.site-500011,
+.site-52,
+.site-53 {
+    $withdrawOpenBtnColor: #000;
+    $withdrawOpenBtnBg: #EDB83F;
+    $withdrawOpenBtnBorderColor: #EDB83F;
+
+    $withdrawExclamationIconColor: #FFF;
+    $withdrawExclamationIconBg: #EDB83F;
+    @import './serialNumber.module.scss';    
+}

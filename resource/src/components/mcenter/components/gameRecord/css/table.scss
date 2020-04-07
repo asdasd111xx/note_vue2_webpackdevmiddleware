@@ -1,0 +1,109 @@
+.is-number {
+    text-align: right;
+}
+
+.is-negative {
+    composes: is-number;
+    color: #F00;
+}
+
+.is-text {
+    text-align: left;
+}
+
+.table {
+    margin-bottom: 32px;
+    width: 100%;
+    color: #313F52;
+    font-size: 14px;
+    border-collapse: collapse;
+    border-spacing: 0;
+    text-align: center;
+
+    thead {
+        tr {
+            background: #CCC;
+            border-width: 0 1px;
+            border-style: solid;
+            border-color: #CCC;
+            color: #FFF;
+        }
+
+        th {
+            height: 40px;
+            font-size: 16px;
+            font-style: normal;
+            font-weight: normal;
+
+            &.sort {
+                cursor: pointer;
+
+            }
+        }
+    }
+
+    tbody {
+        tr {
+            background: #FFF;
+            border-width: 1px 1px 0;
+            border-style: solid;
+            border-color: #CCC;
+        }
+
+        td {
+            padding: 5px 1.5%;
+            min-height: 30px;
+            line-height: 30px;
+
+            .icon-detail {
+                display: block;
+                margin: 0 auto;
+                background: url("/static/image/member_search_btn.png") 0 0 no-repeat;
+                width: 30px;
+                height: 30px;
+                cursor: pointer;
+            }
+        }
+
+        .no-data {
+            padding: 5px 0;
+            line-height: 30px;
+            border: 1px solid #CCC;
+            text-align: center;
+            color: #313F52;
+        }
+    }
+
+    tfoot {
+        border-bottom: 1px solid #CCC;
+
+        tr {
+            height: 40px;
+            line-height: 40px;
+            background: #EEE;
+            border-width: 1px 1px 0;
+            border-style: solid;
+            border-color: #CCC;
+            font-weight: bold;
+        }
+
+        td {
+            padding: 5px 1.5%;
+            line-height: 30px;
+            min-height: 30px;
+
+            &.title {
+                background-color: #D5D5D5;
+            }
+        }
+    }
+}
+
+.theme-miller {
+    thead {
+        tr {
+            background: #292929;
+            color: #FFF;
+        }
+    }
+}

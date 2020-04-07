@@ -1,0 +1,331 @@
+@import "~@/css/variable.scss";
+$tableNoDataColor: initial;
+$btnColorBg: initial;
+$btnColorBgHover: initial;
+
+.theme-basic,
+.theme-brilliant {
+    $tableBodyBorder: #ccc;
+    $tableBodyColor: #313f52;
+    $tableBodyBg: initial;
+    $tableTitleBg: #ccc;
+    $tableTitleBorder: #ccc;
+    $tableTitleColor: #fff;
+    $tableNoDataColor: #313f52;
+    $totalBorderColor: #54b9ff;
+    $totalColor: #54b9ff;
+    $radioBorder: #ccc;
+    $radioBorderChecked: #55b9ff;
+    $radioCheckedBg: #ccc;
+    $btnColorBg: #55b9ff;
+    $btnColorBgHover: #71bff5;
+    $btnColor: #fff;
+    $paginationColor: #000;
+    $paginationListTextColor: initial;
+    @import "./betRecord.scss";
+    @import "../../../css/common/radio.scss";
+    @import "../../../css/common/pagination.scss";
+    @import "../../../css/common/select.scss";
+}
+
+.theme-theme3 {
+    $tableBodyBorder: #ccc;
+    $tableBodyColor: #313f52;
+    $tableBodyBg: initial;
+    $tableTitleBg: #ccc;
+    $tableTitleBorder: #ccc;
+    $tableTitleColor: #fff;
+    $tableNoDataColor: #313f52;
+    $totalBorderColor: #dfaf50;
+    $totalColor: #dfaf50;
+    $radioBorder: #ccc;
+    $radioBorderChecked: #dfaf50;
+    $radioCheckedBg: #ccc;
+    $btnColorBg: #dfaf50;
+    $btnColorBgHover: #e2ba6c;
+    $btnColor: #fff;
+    $paginationColor: #000;
+    $paginationListTextColor: initial;
+    @import "./betRecord.scss";
+    @import "../../../css/common/radio.scss";
+    @import "../../../css/common/pagination.scss";
+    @import "../../../css/common/select.scss";
+}
+.theme-miller {
+    $tableBodyBorder: #ccc;
+    $tableBodyColor: #313f52;
+    $tableBodyBg: initial;
+    $tableTitleBg: #292929;
+    $tableTitleBorder: #ccc;
+    $tableTitleColor: #fff;
+    $tableNoDataColor: #313f52;
+    $totalBorderColor: #f7b500;
+    $totalColor: #f7b500;
+    $radioBorder: #ccc;
+    $radioBorderChecked: #f7b500;
+    $radioCheckedBg: #ccc;
+    $btnColorBg: #f7b500;
+    $btnColorBgHover: #cb9605;
+    $btnColor: #292929;
+    $paginationColor: rgb(7, 6, 6);
+    $paginationListTextColor: initial;
+    @import "./betRecord.scss";
+    @import "../../../css/common/radio.scss";
+    @import "../../../css/common/pagination.scss";
+    @import "../../../css/common/select.scss";
+}
+
+.theme-519 {
+    $tableBodyBorder: #ca8c54;
+    $tableBodyColor: #000;
+    $tableBodyBg: #fff;
+    $tableTitleBg: #cecece;
+    $tableTitleBorder: #ca8c54;
+    $tableTitleColor: #000;
+    $tableNoDataColor: #313f52;
+    $totalBorderColor: #e07158;
+    $totalColor: #e07158;
+    $radioBorder: #ca8c54;
+    $radioBorderChecked: #ca8c54;
+    $radioCheckedBg: #ca8c54;
+    $btnColorBg: #ca8c54;
+    $btnColorBgHover: #b16f34;
+    $btnColor: #fff;
+    $paginationColor: #fff;
+    $paginationListTextColor: #000;
+    @import "./betRecord.scss";
+    @import "../../../css/common/radio.scss";
+    @import "../../../css/common/pagination.scss";
+    @import "../../../css/common/select.scss";
+
+    // 投注記錄
+    .bet-record {
+        .main-title {
+            h1 {
+                color: #fff;
+            }
+        }
+
+        .main-btn {
+            border-radius: 0;
+        }
+
+        .total-area-wrap {
+            background: none;
+
+            .total-area {
+                .total-item {
+                    padding-top: 1px;
+                    border-top: 5px solid #e07158;
+
+                    .total-item-title {
+                        top: 11px;
+                        font-size: 15px;
+
+                        .sub-title {
+                            margin-top: 5px;
+                        }
+                    }
+
+                    .total-item-date-money {
+                        .total-item-date {
+                            margin: 9px 0 6px;
+                            font-size: 13px;
+                            color: #696969;
+                        }
+
+                        .total-item-money {
+                            font-size: 20px;
+                            color: #e07158;
+                        }
+                    }
+
+                    &.last_month {
+                        background: #fff;
+
+                        .total-item-date-money {
+                            .total-item-date {
+                                margin: 9px 0 6px;
+                            }
+
+                            .total-item-money {
+                                font-size: 20px;
+                                color: #000;
+                            }
+                        }
+                    }
+                }
+            }
+        }
+
+        .bet-record-field {
+            .select-list {
+                /deep/ .ui.fluid.dropdown {
+                    border-radius: 0;
+                    border: 1px solid #ca8c54;
+                    color: #756e6e;
+
+                    .menu {
+                        border: 1px solid #dbb969;
+
+                        .item {
+                            color: #756e6e;
+                        }
+                    }
+
+                    &:hover,
+                    &:active {
+                        border-color: #dbb969;
+                    }
+                }
+            }
+
+            .main-calendar-wrap {
+                .date-text {
+                    color: #fff;
+                }
+
+                /deep/ .main-calendar {
+                    .main-input {
+                        outline: #dbb969;
+                        border-radius: 0;
+                        border: 1px solid #ca8c54;
+                        color: #756e6e;
+                    }
+                }
+
+                .date-line {
+                    color: #fff;
+                }
+            }
+
+            .inquire-btn {
+                border-radius: 0;
+            }
+        }
+
+        .back-btn-wrap {
+            .main-radio-wrap {
+                color: #fff;
+            }
+        }
+
+        .main-table {
+            color: #000;
+
+            th {
+                font-weight: bold;
+            }
+
+            tbody {
+                tr {
+                    &.total {
+                        color: #000;
+                    }
+                }
+
+                td {
+                    &.detail {
+                        span {
+                            background: url("/static/image/mcenter/theme/519/member_search_btn.png")
+                                0 0 no-repeat;
+                        }
+                    }
+                }
+
+                table {
+                    border-collapse: collapse;
+
+                    &.pad {
+                        border-spacing: 0;
+
+                        tr {
+                            &.number {
+                                background: #cecece;
+                                color: #000;
+                            }
+
+                            &.title {
+                                color: #fff;
+                                background: #ca8c54;
+                            }
+                        }
+
+                        td {
+                            border-bottom: 1px solid #ca8c54;
+                        }
+                    }
+                }
+            }
+
+            .amount,
+            .valid,
+            .result {
+                svg {
+                    color: #fff;
+                }
+
+                &.active {
+                    color: inherit;
+
+                    svg {
+                        color: #ca8c54;
+                    }
+                }
+            }
+        }
+    }
+
+    // pad 以上
+    @media screen and (min-width: $pad) {
+        .bet-record {
+            .main-title {
+                h1 {
+                    font-size: 20px;
+                }
+            }
+
+            .total-area-wrap {
+                padding-top: 48px;
+
+                .total-area {
+                    .total-item {
+                        padding: 20px 0 0;
+
+                        .total-item-title {
+                            font-size: 12px;
+                        }
+
+                        .total-item-date-money {
+                            .total-item-date {
+                                margin-bottom: 9px;
+                            }
+                        }
+
+                        &.last_month {
+                            padding: 20px 0 0;
+
+                            .total-item-date-money {
+                                .total-item-date {
+                                    margin-bottom: 9px;
+                                }
+                            }
+                        }
+                    }
+                }
+            }
+
+            .main-table {
+                table {
+                    &.pad {
+                        tr {
+                            &.title {
+                                color: #000;
+                            }
+                        }
+                    }
+                }
+            }
+        }
+    }
+}

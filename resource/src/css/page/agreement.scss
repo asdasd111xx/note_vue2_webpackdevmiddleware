@@ -1,0 +1,35 @@
+@import "../variable.scss";
+
+.agreement-wrap {
+    background: #212121;
+    padding: 20px 0;
+    width: 100%;
+    color: #FFF;
+    .agree-title {
+        margin-bottom: 15px;
+        font-size: 40px;
+        font-weight: bold;
+        text-align: center;
+    }
+    .agree-tip {
+        color: #F00;
+        font-size: 20px;
+        text-align: center;
+    }
+    .agree-content {
+        margin-bottom: 0;
+        padding-right: 26px;
+        li {
+            margin-top: 15px;
+            line-height: 28px;
+        }
+    }
+}
+
+@media screen and (min-width: $layoutWidth) {
+    .agreement-wrap {
+        margin: 0 auto;
+        max-width: $layoutWidth;
+    }
+
+}

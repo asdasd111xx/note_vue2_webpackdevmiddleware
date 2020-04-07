@@ -1,0 +1,46 @@
+@import '~@/css/variable.scss';
+
+.mcenter-bg-wrap {
+    background: url('/static/image/mcenter/theme/519/bg.jpg') #000 50% 0 no-repeat;
+}
+
+.mcenter-wrap {
+    position: relative;
+    width: 100%;
+    margin: 0 auto;
+    padding-top: 0;
+}
+
+.body-wrap {
+    border: 1px solid #FFF;
+    border-radius: 40px;
+    background: url('/static/image/mcenter/theme/519/member_container_bg.png') 50% 0 repeat-y;
+}
+
+.mcenter-content {
+    float: right;
+    width: 80%;
+    border-radius: 0 40px 40px 0;
+}
+
+// 右下區塊 (註腳部份)
+.content-bottom {
+    padding: 15px 5.3%;
+    text-align: center;
+    color: #DBB969;
+    background: none;
+}
+
+// 右下內容區塊
+.content-main {
+    position: relative;
+    min-height: 683px;
+    padding: 25px 0 50px;
+}
+
+@media screen and (min-width: $pad) {
+    .content-main {
+        padding-top: 34px;
+    }
+}
+

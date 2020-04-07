@@ -1,0 +1,261 @@
+@import "~@/css/variable.scss";
+
+.game-item {
+    position: relative;
+    float: left;
+    background: url('/static/image/casino/game_img_bg_s.png') 0 0 no-repeat;
+    margin: 2px;
+    width: 98px;
+    height: 98px;
+    text-align: center;
+    cursor: pointer;
+}
+
+.game-item-activity {
+    composes: game-item;
+
+    &.no-activity {
+        cursor: initial;
+    }
+
+    .game-title {
+        &.is-login {
+            bottom: 0;
+        }
+    }
+}
+
+.game-active {
+    position: absolute;
+    z-index: 1;
+    width: 60px;
+    height: 60px;
+    top: -4px;
+    left: -4px;
+
+    img {
+        display: block;
+        max-width: 100%;
+    }
+}
+
+.game-vendor {
+    position: absolute;
+    display: block;
+    z-index: 1;
+    top: 1px;
+    right: 3px;
+    background: url('/static/image/casino/nameitem_bg.png') 0 0 no-repeat;
+    width: 43px;
+    height: 19px;
+    line-height: 19px;
+    color: #76604D;
+    font-size: 12px;
+}
+
+.game-box-wrap {
+    position: relative;
+}
+
+.game-box {
+    position: relative;
+
+    img {
+        display: block;
+        margin: 21px auto 0;
+        width: auto;
+        height: 50px;
+        max-width: 98px;
+    }
+}
+
+.game-jackpot {
+    position: absolute;
+    display: none;
+    opacity: 0.8;
+    width: 100%;
+    height: 25px;
+    padding: 0 6px;
+    bottom: 0;
+    background-color: #000;
+
+    &.jackpot-img {
+        padding: 0 1px;
+
+        &:before {
+            width: 60px;
+            margin-right: 0;
+            background: url("/static/image/game/jackpot_logo.png") 0 0 no-repeat;
+        }
+    }
+
+    &:before {
+        content: '';
+        float: left;
+        width: 43px;
+        height: 13px;
+        margin: 7px 6px 0 0;
+        background: url("/static/image/game/minor_logo.png") 0 0 no-repeat;
+    }
+
+    span {
+        float: left;
+        width: 88px;
+        height: 25px;
+        line-height: 25px;
+        text-align: right;
+        font-size: 13px;
+        color: #CDB187;
+    }
+}
+
+.mask {
+    display: none;
+    position: absolute;
+    z-index: 1;
+    left: 0;
+    top: 0;
+    width: 100%;
+    height: 100%;
+    background: #000;
+    opacity: 0.8;
+}
+
+.game-title {
+    position: absolute;
+    bottom: 0;
+    left: 0;
+    background: rgba(0, 0, 0, .8);
+    padding: 0 6px;
+    width: 100%;
+    height: 25px;
+    line-height: 25px;
+    white-space: nowrap;
+    overflow: hidden;
+    text-overflow: ellipsis;
+    color: #FFF;
+    font-size: 14px;
+
+    &.is-login {
+        bottom: 27px;
+    }
+}
+
+.icon-star {
+    background: url('/static/image/casino/favorite_icon.png') 0 0 no-repeat;
+    margin: 2px auto 0;
+    width: 23px;
+    height: 22px;
+    cursor: pointer;
+
+    &.is-favorite {
+        background-position: 0 100%;
+    }
+}
+
+.btn-enter {
+    display: none;
+    position: absolute;
+    z-index: 1;
+    top: 40px;
+    left: 50%;
+    margin-left: -63.5px;
+    width: 127px;
+    height: 37px;
+    line-height: 37px;
+    border: 1px solid #FFF;
+    font-size: 16px;
+    color: #FFF;
+    cursor: pointer;
+
+    &:hover {
+        border: 1px solid #CDB08A;
+        color: #CDB08A;
+    }
+}
+
+@media screen and (min-width: $pad + $sidebar) {
+    .game-item {
+        background: url('/static/image/casino/game_img_bg_m.png') 0 0 no-repeat;
+        margin: 2px;
+        width: 120px;
+        height: 114px;
+    }
+
+    .game-active {
+        width: 70px;
+        height: 70px;
+    }
+
+    .game-box {
+        img {
+            height: 66px;
+            max-width: 120px;
+        }
+    }
+}
+
+@media screen and (min-width: $pc + $sidebar) {
+    .game-item {
+        background: url('/static/image/casino/game_img_bg.png') 0 0 no-repeat;
+        margin: 3px;
+        width: 150px;
+        height: 138px;
+
+        &.show {
+            &:hover {
+                .mask {
+                    display: block;
+                }
+
+                .icon-star {
+                    z-index: 1;
+                    display: block;
+                    position: absolute;
+                    top: 78px;
+                    left: 50%;
+                    margin-left: -11.5px;
+                }
+
+                .btn-enter {
+                    display: block;
+                }
+
+                .icon-star-wrap {
+                    display: block;
+                }
+            }  
+        }
+    }
+
+    .game-box {
+        img {
+            margin: 23px auto 0;
+            height: 85px;
+            max-width: 150px;
+        }
+    }
+
+    .game-active {
+        width: 80px;
+        height: 80px;
+    }
+
+    .game-jackpot {
+        display: block;
+    }
+
+    .game-title {
+        background: none;
+        height: 30px;
+        line-height: 30px;
+
+        &.is-login {
+            bottom: 0;
+        }
+    }
+
+    .icon-star-wrap {
+        display: none;
+    }
+}

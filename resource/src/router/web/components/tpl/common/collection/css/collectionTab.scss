@@ -1,0 +1,124 @@
+@import "~@/css/variable.scss";
+
+// 自寫 Loading 動畫，因為使用 semantic ui 的動畫在 IE11 以下會有問題
+@keyframes loading {
+    from {
+        transform: rotate(0deg);
+    }
+
+    to {
+        transform: rotate(360deg);
+    }
+}
+
+.tab-wrap {
+    position: relative;
+    padding-right: 40px;
+    height: 40px;
+    font-size: 15px;
+
+    .tab {
+        float: left;
+        width: 135px;
+        height: 30px;
+        margin-top: 5px;
+        padding: 4px;
+        border-radius: 5px;
+
+        &.recent {
+            span {
+                background: url(/static/image/casino/quick_record_icon.png) 0 0 no-repeat;
+            }
+        }
+
+        &.favorite {
+            span {
+                background: url(/static/image/casino/quick_favorite_icon.png) 0 0 no-repeat;
+            }
+        }
+
+        &.hot {
+            span {
+                background: url(/static/image/casino/quick_favorite_icon.png) 0 0 no-repeat;
+            }
+        }
+
+        &.is-active {
+            background: #202121;
+
+            span {
+                background-position: 0 100%;
+                color: #D0B28B;
+            }
+        }
+
+        .loading {
+            display: inline-block;
+            width: 16px;
+            height: 16px;
+            border-width: 3px;
+            border-style: solid;
+            border-color: #FFF rgba(255, 255, 255, 0.15) rgba(255, 255, 255, 0.15);
+            border-radius: 50%;
+            vertical-align: middle;
+            animation: loading 0.6s infinite linear;
+            margin-bottom: 11px;
+        }
+
+        span {
+            display: inline-block;
+            padding-left: 28px;
+            height: 22px;
+            line-height: 22px;
+            color: #FFF;
+            cursor: pointer;
+            transition: background .6s, color .6s;
+            width: 107px;
+            text-overflow: ellipsis;
+            white-space: nowrap;
+            overflow: hidden;
+
+            &:hover {
+                background-position: 0 100%;
+                color: #D0B28B;
+            }
+        }
+    }
+
+    .collapse {
+        position: absolute;
+        bottom: 18px;
+        right: 50%;
+        width: 48px;
+        height: 48px;
+        background-color: #414242;
+        border-radius: 50%;
+        cursor: pointer;
+
+        .collapse-btn {
+            width: 22px;
+            height: 22px;
+            margin: 4px auto;
+            background: url(/static/image/casino/itembtn_icon.png) 50% 100% no-repeat;
+
+            &.is-show {
+                background-position: 50% 0;
+            }
+        }
+    }
+}
+
+@media screen and (min-width: $pc + $sidebar) {
+    .tab-wrap {
+        margin: 0 auto;
+        width: 960px;
+
+        .tab {
+            margin-left: 10px;
+
+            &.recent {
+                margin-left: 6px;
+            }
+        }
+    }
+}

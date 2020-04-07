@@ -1,0 +1,55 @@
+.lang-current {
+    width: 118px;
+    padding: 1px 6px;
+    border: 1px solid #DADADA;
+    background-color: #FFF;
+    cursor: pointer;
+}
+
+.lang-title {
+    float: left;
+    line-height: 18px;
+    color: #B2B2B2;
+    font-size: 15px;
+}
+
+.lang-select {
+    position: absolute;
+    z-index: 2;
+    left: 0;
+    opacity: 0;
+    visibility: hidden;
+    transition: 0.2s;
+    transform: translateY(-16px);
+
+    &.is-show {
+        visibility: visible;
+        opacity: 1;
+        transform: translateY(0);
+    }
+
+    .lang-title {
+        &:hover {
+            color: #000;
+        }
+    }
+}
+
+.lang-box {
+    width: 118px;
+    padding: 1px 6px;
+    border: 1px solid #DADADA;
+    border-top: 0px;
+    background-color: #FFF;
+    cursor: pointer;
+}
+
+.lang-item {
+    float: left;
+    width: 18px;
+    height: 18px;
+    margin-right: 6px;
+    background-position: 0 0;
+    background-repeat: no-repeat;
+    background-size: cover;
+}

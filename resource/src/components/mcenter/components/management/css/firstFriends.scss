@@ -1,0 +1,104 @@
+.first-friends-table {
+    width: 100%;
+    margin: 11px 0 26px;
+    border-bottom: 1px solid #CCC;
+    border-collapse: collapse;
+
+    tr {
+        border-width: 1px 1px 0;
+        border-style: solid;
+        border-color: #CCC;
+    }
+
+    th {
+        height: 40px;
+        line-height: 16px;
+        background-color: #CCC;
+        color: #FFF;
+        font-size: 16px;
+        font-style: normal;
+        font-weight: normal;
+
+        span {
+            display: inline-block;
+            vertical-align: middle;
+        }
+    }
+
+    td {
+        min-height: 30px;
+        line-height: 30px;
+        padding: 5px;
+        color: #313F52;
+        font-size: 14px;
+        text-align: center;
+        vertical-align: middle;
+
+        &.username {
+            text-align: left;
+        }
+
+        &.time {
+            word-break: break-word;
+        }
+
+        &.balance {
+            text-align: right;
+        }
+
+        &.no-data {
+            padding: 5px 0;
+            line-height: 30px;
+            color: #313F52;
+        }
+    }
+
+    .sort {
+        cursor: pointer;
+    }
+
+    .number {
+        width: 7%;
+    }
+
+    .username {
+        width: 18%;
+    }
+
+    .status {
+        width: 17%;
+
+        .enable {
+            color: #8CC53F;
+        }
+
+        .disable {
+            color: #DF525F;
+        }
+
+        .locked,
+        .bankrupt {
+            color: #4A5366;
+        }
+    }
+
+    .way {
+        width: 9%;
+    }
+
+    .time {
+        width: 16%;
+    }
+
+    .balance {
+        width: 17%;
+    }
+}
+
+.theme-miller {
+    .first-friends-table {
+        th {
+            background-color: #292929;
+        }
+    }
+}

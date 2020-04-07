@@ -1,0 +1,94 @@
+.recommend-wrap {
+    position: fixed;
+    top: 23px;
+    left: 0;
+    z-index: 200;
+    width: 100%;
+    height: calc(100vh - 77px);
+    background-color: #eee;
+}
+
+.top-recommend-wrap {
+    position: relative;
+    height: 44px;
+    background: url('/static/image/mobile/mcenter/bg_header2_iphone8.png') 50% -23px / 100% no-repeat #222;
+    text-align: center;
+
+    .close {
+        position: absolute;
+        top: 14px;
+        left: 22px;
+        width: 16px;
+        height: 16px;
+        background: url('/static/image/mobile/mcenter/btn_close_n.png') 0 0 no-repeat;
+        background-size: 100%;
+    }
+
+    .title {
+        line-height: 44px;
+        color: #F4D8AF;
+        font-size: 14px;
+    }
+}
+
+.register-wrap {
+    margin-top: 10px;
+    button {
+        margin-left: 10%;
+        width: 80%;
+        height: 38px;
+        line-height: 38px;
+        margin-top: 14px;
+        border: none;
+        border-radius: 5px;
+        background-color: #01347c;
+        color: #FFF;
+        text-align: center;
+        outline: none;
+    }
+}
+
+.input-group {
+    padding: 7px 10px;
+    width: 100%;
+    background-color: #FFFFFF;
+    color: #BEBCBC;
+    border-bottom: 1px solid #BEBCBC;
+    font-size: 12px;
+    &:first-child {
+        border-top: 1px solid #BEBCBC;
+    }
+    .error {
+        color: #FF5454;
+    }
+    input {
+        left: 0;
+        top: 0;
+        width: 100%;
+        margin: 0;
+        padding: 0;
+        border: none;
+        color: #000;
+        &.show-placeholder {
+            opacity: 0.4;
+            height: 100%;
+            position: absolute;
+        }
+    }
+}
+
+.error-message-wrap {
+    padding: 10px;
+    .error-message {
+        color: #FF1010;
+        font-size: 12px;
+    }
+}
+
+.placeholder {
+    position: relative;
+    color: #000;
+    &.name {
+        color: #FF5454;
+    }
+}

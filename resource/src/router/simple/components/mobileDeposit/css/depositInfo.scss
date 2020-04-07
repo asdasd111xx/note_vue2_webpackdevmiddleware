@@ -1,0 +1,259 @@
+@import '~@/css/variable.scss';
+
+.info-wrap {
+    margin-top: 10px;
+}
+
+.deposit-info-title {
+    height: 31px;
+    line-height: 31px;
+    text-align: center;
+    font-size: 12px;
+    border-top: 1px solid #BEBCBC;
+    color: #262626;
+    background: #FFF;
+}
+
+.deposit-submit-info {
+    width: 100%;
+    border-width: 1px 0;
+    border-style: solid;
+    border-color: #BEBCBC;
+    border-collapse: collapse;
+    background-color: #FFF;
+}
+
+.submit-info-wrap {
+    padding: 7px 0;
+}
+
+.basic-info-text {
+    position: relative;
+    display: inline-block;
+    vertical-align: middle;
+    width: 68%;
+    padding-right: 42px;
+    text-align: right;
+    color: #A37F5B;
+    background: #FFF;
+
+    &.basic-info-title {
+        width: 30%;
+        padding: 0 0 0 17px;
+        text-align: left;
+        color: #ABABAB;
+    }
+
+    &.info-memo {
+        padding: 0 12px 0 20px;
+        text-align: left;
+    }
+
+    .application-table & {
+        padding-right: 16px;
+    }
+}
+
+.qrcode-wrap {
+    padding-right: 22px;
+}
+
+.qrcode-td {
+    padding-right: 16px;
+}
+
+.icon-wrap {
+    position: absolute;
+    width: 20px;
+    height: 20px;
+    top: 50%;
+    right: 12px;
+    margin-top: -10px;
+    text-align: center;
+    cursor: pointer;
+    background: url('/static/image/mobile/mcenter/copy.png') 50% 0 no-repeat;
+    background-size: 100%;
+}
+
+.info-border {
+    margin: 7px 0;
+    border-bottom: 1px solid #BEBCBC;
+}
+
+.qrcode-item {
+    display: inline-block;
+    vertical-align: top;
+    margin-right: 26px;
+    text-align: center;
+
+    &:last-child {
+        margin-right: 0;
+    }
+}
+
+.qrcode-title {
+    display: block;
+    color: #000;
+}
+
+.qrcode-img {
+    width: 70px;
+    height: 70px;
+}
+
+.method-item {
+    display: inline-block;
+    vertical-align: top;
+    min-width: 82px;
+    height: 30px;
+    line-height: 30px;
+    margin-right: 10px;
+    padding: 0 8px;
+    text-align: center;
+    cursor: pointer;
+    border: 1px solid #CDCDCD;
+    border-radius: 4px;
+    color: #7E7E7E;
+
+    &.is-current {
+        border-color: #53B2F3;
+        color: #FFF;
+        background-color: #53B2F3;
+    }
+}
+
+.deposit-input {
+    box-sizing: border-box;
+    width: 176px;
+    height: 30px;
+    line-height: 30px;
+    padding: 0 12px;
+    outline: none;
+    border: 1px solid #CDCDCD;
+    border-radius: 4px;
+
+    // Chrome/Opera/Safari
+    &::-webkit-input-placeholder {
+        color: #DDD;
+    }
+    // Firefox 19+
+    &::-moz-placeholder {
+        color: #DDD;
+    }
+    // IE 10+
+    &:-ms-input-placeholder {
+        color: #DDD;
+    }
+    // Firefox 18-
+    &:-moz-placeholder {
+        color: #DDD;
+    }
+}
+
+.deposit-info-more {
+    padding: 11px 17px;
+    cursor: pointer;
+    border-bottom: 1px solid #BEBCBC;
+    background-color: #FFF;
+}
+
+.deposit-speed-title {
+    float: left;
+}
+
+.speed-icon-wrap {
+    float: right;
+
+    img {
+        display: block;
+        width: 20px;
+        height: 20px;
+    }
+}
+
+.submit-btn {
+    display: block;
+    overflow: hidden;
+    box-sizing: border-box;
+    width: 268px;
+    height: 45px;
+    line-height: 45px;
+    margin: 37px auto;
+    padding: 0 10px;
+    text-align: center;
+    font-size: 16px;
+    text-overflow: ellipsis;
+    white-space: nowrap;
+    cursor: pointer;
+    border-radius: 3px;
+    color: #FFF;
+    background-color: #00347D;
+
+    &:active {
+        background-color: #004AAE;
+    }
+
+    &.disabled {
+        cursor: not-allowed;
+        opacity: 0.5;
+    }
+}
+
+// pad
+@media screen and (min-width: $pad) {
+    .info-wrap {
+        margin-top: 20px;
+    }
+
+    .deposit-info-title {
+        height: 40px;
+        line-height: 40px;
+        font-size: 18px;
+    }
+
+    .deposit-submit-info {
+        padding: 16px 0;
+        font-size: 16px;
+    }
+
+    .basic-info-text {
+        padding-right: 9%;
+
+        .application-table & {
+            padding: 0 6%;
+        }
+
+        &.basic-info-title {
+            padding-left: 6%;
+        }
+    }
+
+    .qrcode-wrap {
+        padding-right: 3%;
+    }
+
+    .info-border {
+        margin: 16px 0;
+    }
+
+    .icon-wrap {
+        right: 39px;
+    }
+
+    .qrcode-img {
+        width: 112px;
+        height: 112px;
+    }
+
+    .deposit-info-more {
+        padding: 11px 6%;
+        font-size: 18px;
+    }
+
+    .submit-btn {
+        width: 568px;
+        height: 58px;
+        line-height: 58px;
+        font-size: 20px;
+    }
+}

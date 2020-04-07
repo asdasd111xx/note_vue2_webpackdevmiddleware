@@ -1,0 +1,33 @@
+/* eslint-disable no-param-reassign */
+import store from '@/store';
+import isMobile from '@/lib/is_mobile';
+import router from '../router';
+
+/**
+ * 開啓存款
+ */
+export default {
+    install(Vue) {
+        Vue.prototype.$depositLink = () => {
+            // 存款頁內嵌
+            if (store.state.loginStatus) {
+                // eslint-disable-next-line
+                if (isMobile()) {
+                    router.push('/mobile/mcenter/deposit');
+                    return;
+                }
+
+                router.push('/page/mcenter/deposit');
+                return;
+            }
+
+            // eslint-disable-next-line
+            if (isMobile()) {
+                router.push('/simple/mobileDeposit');
+                return;
+            }
+
+            router.push('/simple/pcDeposit');
+        };
+    }
+};

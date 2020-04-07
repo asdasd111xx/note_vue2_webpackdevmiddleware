@@ -1,0 +1,13 @@
+.preset-color {
+    $postItemCategoryColor: #A37F5B;
+    
+    @import './post.module.scss'; 
+}
+
+.site-500011,
+.site-52,
+.site-53 {
+    $postItemCategoryColor: #EDB83F;
+
+    @import './post.module.scss';  
+}

@@ -1,0 +1,206 @@
+@import '~@/css/variable.scss';
+$color: initial;
+$deleteBtnColor: initial;
+
+.theme-basic,
+.theme-brilliant {
+    $color: #55B9FF;
+    $tableBodyBorder: #CCC;
+    $tableBodyColor: #313F52;
+    $tableBodyBg: initial;
+    $tableTitleBg: #CCC;
+    $tableTitleBorder: #CCC;
+    $tableTitleColor: #FFF;
+    $tableNoDataBorder: #CCC;
+    $btnColor: #55B9FF;
+    $deleteBtnColor: #FFF;
+    $paginationColor: #000;
+    $paginationListTextColor: initial;
+    $TextYetColor: #F00;
+    $TextAlreadeyColor: #55B9FF;
+    @import './message.scss';
+    @import '../../../css/common/pagination.scss';
+    @import '../../../css/common/select.scss';
+}
+
+.theme-theme3 {
+    $color: #DFAF50;
+    $tableBodyBorder: #CCC;
+    $tableBodyColor: #313F52;
+    $tableBodyBg: initial;
+    $tableTitleBg: #CCC;
+    $tableTitleBorder: #CCC;
+    $tableTitleColor: #FFF;
+    $tableNoDataBorder: #CCC;
+    $btnColor: #DFAF50;
+    $deleteBtnColor: #FFF;
+    $paginationColor: #000;
+    $paginationListTextColor: initial;
+    $TextYetColor: #F00;
+    $TextAlreadeyColor: #DFAF50;
+    @import './message.scss';
+    @import '../../../css/common/pagination.scss';
+    @import '../../../css/common/select.scss';
+}
+
+.theme-miller {
+    $color: #F7B500;
+    $tableBodyBorder: #CCC;
+    $tableBodyColor: #313F52;
+    $tableBodyBg: initial;
+    $tableTitleBg: #292929;
+    $tableTitleBorder: #CCC;
+    $tableTitleColor: #FFF;
+    $tableNoDataBorder: #CCC;
+    $btnColor: #292929;
+    $deleteBtnColor: #FFF;
+    $paginationColor: #000;
+    $paginationListTextColor: initial;
+    $TextYetColor: #F00;
+    $TextAlreadeyColor: #DFAF50;
+    @import './message.scss';
+    @import '../../../css/common/pagination.scss';
+    @import '../../../css/common/select.scss';
+}
+
+.theme-519 {
+    $color: #F97D61;
+    $tableBodyBorder: #CA8C54;
+    $tableBodyColor: #000;
+    $tableBodyBg: #FFF;
+    $tableTitleBg: #CECECE;
+    $tableTitleBorder: #CA8C54;
+    $tableTitleColor: #000;
+    $tableNoDataBorder: #CA8C54;
+    $btnColor: #CA8C54;
+    $deleteBtnColor: #FFF;
+    $paginationColor: #FFF;
+    $paginationListTextColor: #000;
+    $TextYetColor: #F97D61;
+    $TextAlreadeyColor: #CA8C54;
+    @import './message.scss';
+    @import '../../../css/common/pagination.scss';
+    @import '../../../css/common/select.scss';
+
+    // 站內信
+    .msg-fliter-box {
+        .current-message-type {
+            width: 188px;
+            margin-right: 8px;
+
+            /deep/ .ui.fluid.dropdown {
+                border-radius: 0;
+                border: 1px solid #CA8C54;
+                color: #756E6E;
+
+                .menu {
+                    border: 1px solid #DBB969;
+
+                    .item {
+                        color: #756E6E;
+                    }
+                }
+
+                &:hover,
+                &:active {
+                    border-color: #DBB969;
+                }
+            }
+        }
+
+        .msg-filter-btn {
+            border-radius: 0;
+        }
+    }
+
+    .info-message {
+        .main-title {
+            span {
+                color: #FFF;
+            }
+        }
+
+        .main-table {
+            th {
+                font-weight: bold;
+            }
+
+            tbody {
+                tr {
+                    &.message-list {
+                        &.yet {
+                            .title {
+                                color: $TextYetColor;
+                            }
+                        }
+
+                        &:hover {
+                            .title {
+                                color: #000;
+                            }
+                        }
+                    }
+                }
+
+                table {
+                    border-collapse: collapse;
+
+                    &.pad {
+                        margin-bottom: 10px;
+                        border-spacing: 0;
+
+                        td {
+                            border-bottom: 1px solid #CA8C54;
+
+                            &.title,
+                            &.status {
+                                &.caption {
+                                    color: #000;
+                                }
+                            }
+
+                            &.number {
+                                background: #CECECE;
+                                color: #000;
+                            }
+                        }
+                    }
+                }
+            }
+
+            &.no-data {
+                padding: 5px 0;
+                line-height: 30px;
+                border-bottom: 1px solid #CA8C54;
+
+                tbody {
+                    background-color: #FFF;
+                    color: #756E6E;
+                }
+            }
+
+            .delete {
+                .del-btn {
+                    color: $deleteBtnColor;
+                }
+            }
+        }
+    }
+
+    // pad.pc
+    @media screen and (min-width: $pad) {
+        .msg-fliter-box {
+            .current-message-type {
+                width: 200px;
+            }
+        }
+
+        .info-message {
+            .main-title {
+                h1 {
+                    font-size: 20px;
+                }
+            }
+        }
+    }
+}

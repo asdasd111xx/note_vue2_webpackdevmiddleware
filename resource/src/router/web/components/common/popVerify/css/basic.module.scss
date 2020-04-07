@@ -1,0 +1,181 @@
+@import '~@/css/variable.scss';
+
+.pop-verify {
+    position: fixed;
+    top: 0;
+    left: 0;
+    z-index: 10;
+    width: 100%;
+    height: 100%;
+    background-color: rgba(0, 0, 0, 0.5);
+}
+
+.wrap {
+    position: absolute;
+    top: 50%;
+    left: 50%;
+    width: 85%;
+    max-width: 700px;
+    background-color: #FFF;
+    transform: translate(-50%, -50%);
+}
+
+.title-wrap {
+    position: relative;
+    background-color: #333;
+}
+
+.title {
+    height: 40px;
+    line-height: 40px;
+    color: #FFF;
+    font-size: 17px;
+    text-align: center;
+}
+
+.close {
+    position: absolute;
+    top: 11px;
+    right: 19px;
+    width: 19px;
+    height: 19px;
+    line-height: 19px;
+    color: #FFF;
+    cursor: pointer;
+
+    > svg {
+        display: block;
+    }
+}
+
+.content-wrap {
+    padding: 30px 13%;
+}
+
+.input-field {
+    position: relative;
+    margin-bottom: 25px;
+
+    > input {
+        height: 39px;
+        line-height: 39px;
+        padding: 0 5%;
+        border: 1px solid #CDCDCD;
+        border-radius: 4px;
+        background-color: #FFF;
+        color: #7D7D7D;
+        font-size: 14px;
+        outline: none;
+
+        &:disabled {
+            background-color: #EEE;
+        }
+    }
+}
+
+.country-code {
+    float: left;
+    width: 30%;
+    margin-bottom: 5px;
+}
+
+.email {
+    display: block;
+    width: 100%;
+    margin-bottom: 5px;
+}
+
+.phone {
+    float: left;
+    width: 68%;
+    margin-bottom: 5px;
+    margin-left: 2%;
+}
+
+.keyring {
+    display: block;
+    width: 100%;
+}
+
+.btn-verify {
+    overflow: hidden;
+    width: 24%;
+    min-width: 130px;
+    height: 39px;
+    line-height: 39px;
+    margin: 0 0 0 auto;
+    padding: 0 3px;
+    border-radius: 4px;
+    background-color: #55B9FF;
+    color: #FFF;
+    font-size: 14px;
+    text-align: center;
+    text-overflow: ellipsis;
+    white-space: nowrap;
+    cursor: pointer;
+
+    &:hover {
+        background-color: #71BFF5;
+    }
+
+    &.disabled {
+        background-color: #CDCDCD;
+    }
+
+    > span {
+        color: #F82428;
+    }
+}
+
+.btn-submit {
+    overflow: hidden;
+    width: 30%;
+    min-width: 130px;
+    height: 40px;
+    line-height: 40px;
+    margin: 25px auto;
+    border-radius: 5px;
+    background-color: #55B9FF;
+    color: #FFF;;
+    font-size: 14px;
+    text-align: center;
+    cursor: pointer;
+}
+
+.tips {
+    line-height: 14px;
+    color: #000;
+    font-size: 14px;
+
+    > span {
+        color: #F82428;
+    }
+}
+
+@media screen and (min-width: $pad) {
+    .country-code {
+        width: 20%;
+        margin-bottom: 0;
+    }
+
+    .email {
+        width: 74%;
+        margin-bottom: 0;
+    }
+
+    .phone {
+        width: 52%;
+        margin-bottom: 0;
+    }
+
+    .keyring {
+        width: 74%;
+    }
+
+    .btn-verify {
+        position: absolute;
+        top: 0;
+        right: 0;
+        margin: 0;
+    }
+}

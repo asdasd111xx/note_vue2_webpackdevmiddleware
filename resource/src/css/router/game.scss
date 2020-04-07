@@ -1,0 +1,55 @@
+.game-window {
+    position: relative;
+    width: 100%;
+    height: 100%;
+
+    &.sunplus {
+        overflow: hidden;
+        background-color: #333;
+    }
+}
+
+.rule-wrap {
+    max-width: 1346px;
+    margin: 0 auto;
+    text-align: right;
+
+    .rule-link {
+        line-height: 40px;
+        margin-right: 20px;
+        color: #FFF;
+        font-weight: bold;
+        font-size: 14px;
+        cursor: pointer;
+
+        svg {
+            width: 20px;
+            height: 20px;
+            margin-right: 8px;
+            vertical-align: text-top;
+        }
+    }
+}
+
+.game-iframe {
+    width: 100%;
+    height: 100%;
+
+    .sunplus & {
+        border: none;
+    }
+}
+
+.bet-record-btn {
+    position: absolute;
+    top: 0;
+    left: 0;
+    background: url('/static/image/game/bet_record.png') 50% 0 repeat-x;
+    width: 48px;
+    height: 48px;
+    cursor: pointer;
+    z-index: 1;
+    &:hover {
+        background-position: 50% 100%;
+    }
+}

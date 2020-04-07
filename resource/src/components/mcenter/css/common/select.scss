@@ -1,0 +1,16 @@
+// select
+select {
+    background: url("/static/image/member_select_bg_arrow.png") 95% 50% no-repeat;
+    -webkit-appearance: none;
+    -moz-appearance: none;
+    cursor: pointer;
+
+    &::-ms-expand {
+        display: none;
+    }
+
+    &::-ms-value {
+        color: #999;
+        background: transparent;
+    }
+}

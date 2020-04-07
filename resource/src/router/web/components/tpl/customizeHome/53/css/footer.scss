@@ -1,0 +1,146 @@
+@import "~@/css/tpl/index.scss";
+
+.footer {
+    position: relative;
+    color: #FFF;
+    background: url("/static/image/tpl/customizeHome/53/footer-bg-01.png") #000
+        no-repeat center top;
+    background-size: cover;
+}
+
+.footer-container {
+    width: 1000px;
+    margin: 0 auto;
+}
+
+.footer-info {
+    padding: 55px 0 50px;
+}
+
+.footer-license,
+.footer-pay {
+    float: left;
+    width: 50%;
+
+    img {
+        max-width: 100%;
+        height: 40px;
+        vertical-align: top;
+    }
+}
+
+.footer-pay {
+    position: relative;
+    &:before {
+        display: block;
+        width: 1px;
+        height: 180px;
+        position: absolute;
+        left: 0;
+        background: #FFF;
+        opacity: 0.2;
+        content: "";
+    }
+}
+
+.footer-title {
+    margin: 0 0 30px;
+    text-align: center;
+    font-size: 14px;
+}
+
+.footer-license-item {
+    float: left;
+    width: 50%;
+    line-height: 1.8;
+    margin-bottom: 30px;
+    font-size: 15px;
+    transition: all 0.5s;
+
+    p {
+        line-height: 1.8;
+        margin: 0 0 30px;
+    }
+
+    &:nth-child(2) {
+        padding-left: 50px;
+        box-sizing: border-box;
+    }
+
+    &:hover {
+        opacity: 0.5;
+    }
+}
+
+.footer-pay-list {
+    padding-left: 20px;
+}
+
+.footer-pay-item {
+    float: left;
+    width: 25%;
+    margin: 10px 0 20px;
+    text-align: right;
+    transition: all 0.5s;
+    cursor: pointer;
+
+    &:nth-child(n + 5) {
+        width: 33.33%;
+        text-align: left;
+    }
+
+    &:nth-child(6) {
+        text-align: center;
+    }
+
+    &:nth-child(7) {
+        text-align: right;
+    }
+
+    &:hover {
+        opacity: 0.5;
+    }
+}
+
+.footer-menu {
+    padding: 20px 0;
+    margin: 0;
+    text-align: center;
+}
+
+.footer-menu-item {
+    display: inline-block;
+    width: 130px;
+    height: 20px;
+    line-height: 20px;
+    text-align: center;
+    font-size: 14px;
+    border-right: 1px solid rgba(255, 255, 255, 0.5);
+    transition: all 0.5s;
+    cursor: pointer;
+
+    span {
+        display: block;
+    }
+
+    a {
+        display: block;
+        color: #FFF;
+    }
+
+    &:last-child {
+        border-right: 0;
+    }
+
+    &:hover {
+        opacity: 0.5;
+    }
+}
+
+.footer-copyright {
+    line-height: 60px;
+    text-align: center;
+    font-size: 12px;
+    color: #000;
+    background: #F7B500;
+}

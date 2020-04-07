@@ -1,0 +1,33 @@
+@import "~@/css/variable.scss";
+
+.empty-wrap {
+    padding-top: 110px;
+    color: #E0BD63;
+    font-size: 16px;
+    text-align: center;
+}
+
+.empty-icon {
+    margin: 0 auto;
+    width: 70px;
+    height: 70px;
+    background: url('/static/image/mobile/tpl/brilliant/cant_find_icon.png') 0 0/contain no-repeat;
+
+    &.activity {
+        background: none;
+    }
+}
+
+// 藍紫色系
+:global(.bluePurple) :local {
+    .empty-wrap {
+        color: #BABAFF;
+    }
+    .empty-icon {
+        background-image: url('/static/image/mobile/tpl/brilliant/bluePurple/cant_find_icon.png');
+        
+        &.activity{
+            background: none;
+        }
+    }
+}

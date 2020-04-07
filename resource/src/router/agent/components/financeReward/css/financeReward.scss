@@ -1,0 +1,295 @@
+@import "~@/css/variable.scss";
+
+.finance-reward {
+    table {
+        border-spacing: 0;
+        border-collapse: collapse;
+    }
+    .main-title {
+        padding-bottom: 25px;
+        line-height: 39px;
+        .arrow {
+            margin: 0 10px;
+            color: $detailTitleColor;
+        }
+        .detial {
+            color: $detailTitleColor;
+        }
+        .main-btn {
+            float: right;
+            background: $btnBg;
+            width: 9.6%;
+            min-width: 60px;
+            height: 39px;
+            line-height: 39px;
+            border-radius: $borderRadius;
+            color: $btnColor;
+            text-align: center;
+            cursor: pointer;
+            &:hover {
+                background: $btnHoverBg;
+            }
+        }
+        span {
+            float: left;
+            color: $titleColor;
+            font-size: 17px;
+            font-weight: bold;
+        }
+    }
+    .main-table {
+        border-bottom: none;
+        thead {
+            &.agcenter-pc {
+                display: none;
+            }
+        }
+        .number {
+            width: 9.5%;
+        }
+        .period {
+            width: 13.5%;
+            word-break: break-all;
+        }
+        .date {
+            width: 30%;
+        }
+        .status {
+            width: 14.5%;
+            padding: 0 5px;
+            white-space: nowrap;
+        }
+        .result {
+            width: 20.2%;
+            padding-right: 9%;
+            white-space: nowrap;
+            text-align: right;
+        }
+        .detail {
+            width: 12.3%;
+            padding-right: 3.5%;
+            text-align: left;
+        }
+        tbody {
+            tr {
+                // cursor: pointer;
+                &.agcenter-pc {
+                    display: none;
+                }
+            }
+            table {
+                margin-bottom: 40px;
+                border-bottom: $tableBottomBorder;
+                &.pad {
+                    width: 100%;
+                    // cursor: pointer;
+                    tr {
+                        &.number {
+                            font-weight: bold;
+                            color: $theadColor;
+                            background: $theadBg;
+                        }
+                    }
+                    td {
+                        &.caption {
+                            width: 32%;
+                            padding-left: 3%;
+                            text-align: left;
+                        }
+                        &.content {
+                            width: auto;
+                            padding-left: 3%;
+                            text-align: left;
+                            &.detail {
+                                span {
+                                    margin: 0;
+                                }
+                            }
+                        }
+                        &.view-next {
+                            span {
+                                margin: 0;
+                            }
+                        }
+                    }
+                }
+            }
+            .status {
+                &.verifying {
+                    color: $importantColor;
+                }
+            }
+            .detail {
+                span {
+                    position: relative;
+                    display: inline-block;
+                    margin-right: 6px;
+                    cursor: pointer;
+                    text-decoration: underline;
+                    color: $importantColor;
+                    &:hover {
+                        color: $importantHoverColor;
+                    }
+                    &:after {
+                        position: absolute;
+                        top: 0;
+                        right: -37px;
+                        display: block;
+                        width: 30px;
+                        height: 30px;
+                        content: "";
+                        background: $withdrawIcon;
+                    }
+                }
+            }
+        }
+    }
+    .detail-table {
+        width: 100%;
+        color: $tableColor;
+        border-bottom: $tableBottomBorder;
+        .agcenter-pc {
+            display: none;
+        }
+        &.full {
+            margin-top: 20px;
+        }
+        &.valid-member {
+            .member-number {
+                width: 24.4%;
+            }
+            .member-total {
+                width: 27.7%;
+            }
+            .member-valid {
+                width: 25.4%;
+            }
+            .member-check {
+                width: 22.5%;
+                &.ok {
+                    color: #0DBC79;
+                }
+                &.fail {
+                    color: #E23F3F;
+                }
+            }
+        }
+        &.current-commission {
+            margin-top: 20px;
+            .title {
+                width: 53%;
+            }
+        }
+        th,
+        td {
+            height: 55px;
+            text-align: center;
+            border: 1px solid $tableBorder;
+        }
+        thead {
+            tr {
+                background: $theadBg;
+                th {
+                    font-weight: bold;
+                    color: $theadColor;
+                }
+            }
+        }
+        tbody {
+            &.pad {
+                .pad-item-list {
+                    td {
+                        position: relative;
+                        padding-left: 3%;
+                        cursor: pointer;
+                        text-align: left;
+                        svg {
+                            position: absolute;
+                            top: 50%;
+                            right: 20px;
+                            margin-top: -12px;
+                            color: $importantColor;
+                        }
+                        &.current {
+                            svg {
+                                color: #D3D5DA;
+                            }
+                        }
+                    }
+                }
+                .pad-item-content {
+                    width: 100%;
+                    table {
+                        width: 96%;
+                        margin: 10px auto;
+                    }
+                }
+            }
+        }
+        .light-style {
+            color: #B1B1B1;
+            background: #F9F9F9;
+        }
+        .light-bg {
+            background: #F9F9F9;
+        }
+        .total-style {
+            width: 31%;
+            color: #FFF;
+            background: #ADDAE9;
+        }
+        .total-color {
+            color: #77C1DA;
+        }
+    }
+}
+
+// pad 以上
+@media screen and (min-width: $pad) {
+    .finance-reward {
+        .main-table {
+            border-bottom: $tableBottomBorder;
+            thead {
+                &.agcenter-pc {
+                    display: none;
+                    display: table-header-group;
+                }
+            }
+            tbody {
+                tr {
+                    &.agcenter-pc {
+                        display: table-row;
+                    }
+
+                    &.clickable {
+                        cursor: pointer;
+                    }
+                }
+                table {
+                    display: none;
+                }
+            }
+        }
+        .detail-table {
+            .agcenter-pc {
+                display: table-row-group;
+            }
+            .pad {
+                display: none;
+            }
+            &.half {
+                width: 49.6%;
+            }
+            &.valid-member {
+                float: left;
+            }
+            &.current-commission {
+                float: right;
+                margin-top: 0;
+            }
+            .total-style {
+                width: auto;
+            }
+        }
+    }
+}

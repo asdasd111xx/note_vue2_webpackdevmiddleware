@@ -1,0 +1,83 @@
+@import "~@/css/variable.scss";
+
+.agcenter-content-top {
+    padding: 18px 5.3% 15px;
+    color: #7E7E7E;
+    font-size: 13px;
+    line-height: 22px;
+}
+
+.content-top-title {
+    span {
+        display: inline-block;
+    }
+
+    .change-name-wrap {
+        vertical-align: middle;
+        padding-bottom: 3px;
+        cursor: pointer;
+    }
+
+    .change-name-img {
+        display: block;
+    }
+}
+
+.account {
+    margin: 0 4px;
+    color: #FC8182;
+    font-size: 16px;
+}
+
+.prompt {
+    padding: 0 8px 0 1px;
+    border: 1px solid #FF4C72;
+    border-radius: 19px;
+    color: #FF4C72;
+}
+
+.warning {
+    margin-top: 1px;
+    vertical-align: top;
+}
+
+.content-top-info {
+    margin-top: 18px;
+
+    span {
+        &.message {
+            color: #FC8182;
+            font-size: 16px;
+
+            &:hover {
+                text-decoration: underline;
+                cursor: pointer;
+            }
+        }
+    }
+}
+
+.info-item {
+    span {
+        color: #333;
+    }
+}
+
+@media screen and (min-width: $pad) {
+    .agcenter-content-top {
+        border-bottom: 1px solid #DDD;
+
+        &.zh-cn,
+        &.zh-tw {
+            background: url("/static/image/agent/lang/zh-cn/agent_center_title.png") 91.8% 28px no-repeat;
+        }
+
+        &.ja {
+            background: url("/static/image/agent/lang/ja/agent_center_title.png") 91.8% 28px no-repeat;
+        }
+
+        &.en {
+            background: url("/static/image/agent/lang/en/agent_center_title.png") 91.8% 28px no-repeat;
+        }
+    }
+}

@@ -1,0 +1,29 @@
+.vendor-list {
+    clear: right;
+    border-bottom: 1px solid #36353B;
+    margin-bottom: 25px;
+
+    > span {
+        position: relative;
+        top: 2px;
+        float: left;
+        margin-right: 5px;
+        padding: 0 8px;
+        height: 48px;
+        line-height: 48px;
+        color: #FFF;
+        font-size: 15px;
+        cursor: pointer;
+
+        &.is-current {
+            border-bottom: 3px solid #CDB08A;
+            color: #CDB08A;
+        }
+
+        &.loader {
+            position: relative;
+            top: 10px;
+            left: 10px;
+        }
+    }
+}

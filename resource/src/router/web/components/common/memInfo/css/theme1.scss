@@ -1,0 +1,55 @@
+.balance-list-wrap {
+    position: absolute;
+    visibility: hidden;
+    width: 250px;
+    z-index: 100;
+    top: 18px;
+    transition: visibility 0.3s;
+
+    &.is-show {
+        visibility: visible;
+    }
+
+    &.left {
+        right: 0;
+    }
+
+    .balance-list {
+        line-height: 22px;
+        padding: 16px;
+        text-align: left;
+        border-width: 1px 1px 0 1px;
+        border-style: solid;
+        border-radius: 2px 2px 0 0;
+
+        .is-maintain {
+            color: #F00;
+        }
+    }
+
+    .balance-list-bottom {
+        position: relative;
+        height: 30px;
+        border-radius: 0 0 2px 2px;
+
+        .balance-translate {
+            position: absolute;
+            top: 4px;
+            right: 8px;
+            max-width: 110px;
+            padding: 0 4px;
+            height: 22px;
+            line-height: 22px;
+            text-align: center;
+            font-size: 12px;
+            border-radius: 5px;
+            cursor: pointer;
+            color: #381717;
+            background: #DFC282;
+
+            &:hover {
+                background: #DAB86E;
+            }
+        }
+    }
+}

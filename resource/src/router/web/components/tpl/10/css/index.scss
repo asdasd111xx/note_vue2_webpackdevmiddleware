@@ -1,0 +1,31 @@
+/****** 各模板共用 ******/
+@import "~@/css/tpl/index.scss";
+
+.body {
+    overflow-x: initial;
+    min-width: 1000px;
+    word-break: break-all;
+
+    // 最近玩過
+    .main-container {
+        &.is-login {
+            padding-bottom: 42px;
+        }
+    }
+
+    .main-wrap {
+        // 固定頁面版寬設定
+        .normal-page {
+            width: 1000px;
+            margin: 0 auto;
+        }
+
+        // 模塊版寬設定
+        .element-wrap {
+            > .content {
+                width: 1000px;
+                margin: 0 auto;
+            }
+        }
+    }
+}

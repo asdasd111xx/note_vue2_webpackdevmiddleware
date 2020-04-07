@@ -1,0 +1,19 @@
+// footer
+.footer-wrap {
+    margin: 0 auto;
+    padding: 12px 0;
+    width: 1000px;
+
+    .footer {
+        text-align: center;
+        font-size: 14px;
+        color: #796B63;
+
+        .footer-info,
+        .footer-copyright {
+            margin-bottom: 8px;
+            padding: 0 40px;
+            line-height: 18px;
+        }
+    }
+}

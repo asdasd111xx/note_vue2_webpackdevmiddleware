@@ -1,0 +1,30 @@
+@import "~@/css/variable.scss";
+
+.news-wrap {
+    position: relative;
+    background: #2F333E;
+    margin: 0 auto;
+    padding-left: 74px;
+    width: 100%;
+    max-width: $layoutWidth;
+    height: 40px;
+
+    .news-title {
+        position: absolute;
+        top: 0;
+        left: 0;
+        background: #2F333E;
+        width: 74px;
+        color: #FFF;
+        font-size: 22px;
+        font-family: sans-serif;
+        line-height: 40px;
+        text-align: center;
+    }
+
+    :global(.news-content) {
+        float: right;
+        color: #CCC;
+        line-height: 40px;
+    }
+}

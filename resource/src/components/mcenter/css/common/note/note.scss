@@ -1,0 +1,111 @@
+/****** 變數 ******/
+@import '~@/css/variable.scss';
+
+.pop-note-warp {
+    position: relative;
+    margin: 120px auto 0;
+    background: $popupBg;
+    box-shadow: 0 2px 8px rgba(0, 0, 0, 0.33);
+    width: 98%;
+    max-width: 700px;
+    border-radius: $popupBorderRadius;
+    border: $popupBorder;
+    color: $popupColor;
+    p {
+        margin: 0;
+        padding: 0;
+    }
+    .close-btn {
+        position: absolute;
+        top: 13px;
+        right: 13px;
+        width: 25px;
+        height: 25px;
+        line-height: 25px;
+        font-size: 46px;
+        font-family: initial;
+        color: $closeColor;
+        text-align: center;
+        cursor: pointer;
+        transition: all .3s ease;
+        &:hover {
+            transform: rotate(90deg);
+        }
+    }
+    .title {
+        background: $titleBg;
+        height: 50px;
+        line-height: 50px;
+        color: #FFF;
+        font-size: 20px;
+        font-weight: bold;
+        text-align: center;
+    }
+    .content {
+        padding: 36px 0 20px 36px;
+        font-size: 18px;
+        line-height: 36px;
+
+        .note-account-title {
+            padding-top: 10px;
+            font-weight: bold;
+            cursor: pointer;
+            span {
+                border-bottom: 1px solid #000;
+                padding-bottom: 5px;
+            }
+        }
+
+        .note-msg {
+            padding-left: 20px;
+
+            .link {
+                margin-top: 8px;
+                margin-left: 40px;
+                span {
+                    color: $linkColor;
+                    font-weight: bold;
+                    text-decoration: underline;
+                    cursor: pointer;
+                    &:hover {
+                        color: $linkHoverColor;
+                    }
+                }
+
+                &.mobile-path {
+                    margin-left: 0;
+                }
+
+                &.agent {
+                    span {
+                        color: $agentLinkColor;
+                        &:hover {
+                            color: $agentLinkHoverColor;
+                        }
+                    }
+                }
+    
+                &.redirect {
+                    display: inline-block;
+    
+                    .bind-bank {
+                        float: right;
+    
+                        &.ja {
+                            float: left;
+                        }
+                    }
+                }
+            }
+        }
+
+        &.left {
+            text-align: left;
+        }
+    }
+
+    // For Mobile
+    .mobile-content & {
+        margin: 155px auto 0;
+    }
+}

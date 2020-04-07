@@ -1,0 +1,45 @@
+@import "src/css/variable.scss";
+
+.card-wrap {
+    background-color: rgba(53, 51, 56, 0.4);
+}
+
+.current-nav-wrap {
+    display: block;
+    line-height: 50px;
+    padding-left: 27px;
+    font-size: 22px;
+    color: #FFF;
+}
+
+.nav-btn-wrap {
+    padding: 9px 20px;
+    background-color: rgba(124, 108, 109, 0.08);
+}
+
+.nav-btn {
+    display: inline-block;
+    vertical-align: middle;
+    width: auto;
+    line-height: 35px;
+    margin-right: 14px;
+    font-size: 15px;
+    cursor: pointer;
+    border-radius: 2px;
+    color: #FFF;
+
+    &.current,
+    &:hover {
+        color: #000;
+        background-color: #DBB969;
+    }
+}
+
+.nav-text {
+    padding: 0 14px;
+}
+
+.game-wrap-inner {
+    padding: 16px;
+    text-align: center;
+}

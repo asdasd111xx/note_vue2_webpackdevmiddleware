@@ -1,0 +1,50 @@
+.category-list-wrap {
+    padding: 9px 20px;
+    background-color: rgba(124, 108, 109, 0.08);
+    overflow: hidden;
+}
+
+.vendor-list {
+    margin-bottom: 1px;
+}
+
+.category-item {
+    display: inline-block;
+    width: auto;
+}
+
+.vendor,
+.type {
+    display: inline-block;
+    position: relative;
+    height: 35px;
+    line-height: 35px;
+    margin-right: 13px;
+    padding: 0 14px;
+    box-sizing: border-box;
+    color: #FFF;
+    font-size: 15px;
+    cursor: pointer;
+
+    &.is-current {
+        background-color: #DBB969;
+        color: #000;
+    }
+}
+
+.category-list-wrap {
+    .category-content {
+        .loader {
+            top: 10px;
+            left: 10px;
+            box-sizing: border-box;
+            margin-right: 5px;
+            padding: 0 8px;
+            height: 35px;
+            line-height: 35px;
+            color: #FFF;
+            font-size: 15px;
+            cursor: pointer;
+        }
+    }
+}

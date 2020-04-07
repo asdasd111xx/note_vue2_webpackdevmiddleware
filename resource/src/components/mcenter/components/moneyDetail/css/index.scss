@@ -1,0 +1,168 @@
+@import '~@/css/variable.scss';
+$tableNoDataColor: initial;
+$btnColor: initial;
+$secBtnBg: initial;
+
+.theme-basic,
+.theme-brilliant {
+    $tableBodyBorder: #CCC;
+    $tableBodyColor: #313F52;
+    $tableBodyBg: initial;
+    $tableTitleBg: #CCC;
+    $tableTitleBorder: #FFF;
+    $tableTitleColor: #FFF;
+    $tableNoDataColor: #313F52;
+    $paginationColor: #000;
+    $paginationListTextColor: initial;
+    $btnColor: #FFF;
+    $btnBg: #55B9FF;
+    $btnBgHover: #71BFF5;
+    $secBtnBg: #313F52;
+    @import './moneyDetail.scss';
+    @import '../../../css/common/pagination.scss';
+    @import '../../../css/common/select.scss';
+}
+
+.theme-theme3 {
+    $tableBodyBorder: #CCC;
+    $tableBodyColor: #313F52;
+    $tableBodyBg: initial;
+    $tableTitleBg: #CCC;
+    $tableTitleBorder: #CCC;
+    $tableTitleColor: #FFF;
+    $tableNoDataColor: #313F52;
+    $paginationColor: #000;
+    $paginationListTextColor: initial;
+    $btnColor: #FFF;
+    $btnBg: #DFAF50;
+    $btnBgHover: #E2BA6C;
+    $secBtnBg: #313F52;
+    @import './moneyDetail.scss';
+    @import '../../../css/common/pagination.scss';
+    @import '../../../css/common/select.scss';
+}
+.theme-miller {
+    $tableBodyBorder: #CCC;
+    $tableBodyColor: #313F52;
+    $tableBodyBg: initial;
+    $tableTitleBg: #292929;
+    $tableTitleBorder: #CCC;
+    $tableTitleColor: #FFF;
+    $tableNoDataColor: #313F52;
+    $paginationColor: #000;
+    $paginationListTextColor: initial;
+    $btnColor: #292929;
+    $btnBg: #F7B500;
+    $btnBgHover: #CB9605;
+    $secBtnBg: #292929;
+    @import './moneyDetail.scss';
+    @import '../../../css/common/pagination.scss';
+    @import '../../../css/common/select.scss';
+}
+
+.theme-519 {
+    $tableBodyBorder: #CA8C54;
+    $tableBodyColor: #000;
+    $tableBodyBg: #FFF;
+    $tableTitleBg: #CECECE;
+    $tableTitleBorder: #CA8C54;
+    $tableTitleColor: #000;
+    $tableNoDataColor: #313F52;
+    $paginationColor: #FFF;
+    $paginationListTextColor: #000;
+    $btnColor: #FFF;
+    $btnBg: #CA8C54;
+    $btnBgHover: #B16F34;
+    $secBtnBg: #313F52;
+    @import './moneyDetail.scss';
+    @import '../../../css/common/pagination.scss';
+    @import '../../../css/common/select.scss';
+
+    // 資金明細
+    .bank-money-detail {
+        .main-title {
+            h1 {
+                color: #FFF;
+            }
+        }
+
+        select {
+            &::-ms-value {
+                color: #756E6E;
+            }
+        }
+
+        .money-detail-field {
+            /deep/ .main-input {
+                font-size: 14px;
+                outline: none;
+                border-radius: 0;
+                border: 1px solid #CA8C54;
+            }
+
+            .calendar-wrap {
+                .date-line {
+                    color: #FFF;
+                }
+            }
+
+            .main-btn {
+                border-radius: 0;
+            }
+        }
+
+        .money-detail-sort {
+            .sort-date {
+                &:hover,
+                &.current {
+                    background-color: #CA8C54;
+                }
+            }
+        }
+
+        .main-table {
+            border-color: #CA8C54;
+
+            th {
+                font-weight: bold;
+            }
+
+            tbody {
+                tr {
+                    border-color: #CA8C54;
+                    background: #FFF;
+                }
+
+                table {
+                    border-collapse: collapse;
+
+                    &.pad {
+                        margin-bottom: 10px;
+                        border-spacing: 0;
+
+                        tr {
+                            &.title {
+                                color: #000;
+                                background: #CECECE;
+                            }
+                        }
+
+                        td {
+                            border-bottom: 1px solid #CA8C54;
+                        }
+                    }
+                }
+            }
+        }
+    }
+
+    @media screen and (min-width: $pad) {
+        .bank-money-detail {
+            .main-title {
+                h1 {
+                    font-size: 20px;
+                }
+            }
+        }
+    }
+}

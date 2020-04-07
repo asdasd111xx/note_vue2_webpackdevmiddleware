@@ -1,0 +1,279 @@
+// 站內信
+.msg-fliter-box {
+    .current-message-type {
+        width: 200px;
+        height: 38px;
+        margin: 0 14px 16px 0;
+        display: inline-block;
+    }
+
+    .msg-filter-btn {
+        display: inline-block;
+        border-radius: 4px;
+        background: $btnColor;
+        width: 85px;
+        height: 38px;
+        line-height: 38px;
+        color: #FFF;
+        text-align: center;
+        cursor: pointer;
+    }
+}
+
+.info-message {
+    padding: 0 5.3%;
+
+    .main-title {
+        margin: 0 0 20px;
+
+        h1 {
+            float: left;
+            color: #262626;
+            font-size: 18px;
+            font-weight: bold;
+        }
+    }
+
+    .main-table {
+        width: 100%;
+        font-size: 14px;
+        border-collapse: collapse;
+        border-spacing: 0;
+        color: $tableBodyColor;
+
+        th,
+        td {
+            margin: 0;
+            padding: 0;
+        }
+
+        th {
+            height: 50px;
+            font-size: 16px;
+            font-style: normal;
+            font-weight: normal;
+            text-align: center;
+        }
+
+        thead {
+            tr {
+                border-width: 0 1px;
+                border-style: solid;
+                border-color: $tableTitleBorder;
+                background: $tableTitleBg;
+                color: $tableTitleColor;
+            }
+
+            &.mcenter-pc {
+                display: none;
+            }
+        }
+
+        tbody {
+            tr {
+                border-width: 1px 1px 0;
+                border-style: solid;
+                border-color: $tableBodyBorder;
+
+                &.message-list {
+                    background: #FFF;
+                    cursor: pointer;
+
+                    .title {
+                        text-decoration: underline;
+                        color: $TextAlreadeyColor;
+                    }
+
+                    &.mcenter-pc {
+                        display: none;
+                    }
+
+                    &:hover {
+                        .title {
+                            color: #262626;
+                        }
+                    }
+
+                    &.yet {
+                        .status {
+                            color: $TextYetColor;
+                        }
+                    }
+
+                    &.already {
+                        .title {
+                            &.content {
+                                color: $TextAlreadeyColor;
+                            }
+                        }
+
+                        .status {
+                            color: $TextAlreadeyColor;
+                        }
+                    }
+                }
+
+                &.message-detail {
+                    border-top-color: transparent;
+                    background: #F9F9F9;
+
+                    td {
+                        padding: 14px 2.6% 14px 3%;
+                        line-height: 24px;
+                        text-align: left;
+                        word-break: break-word;
+                    }
+
+                    &.mcenter-pc {
+                        display: none;
+                    }
+                }
+            }
+
+            td {
+                padding: 5px 0;
+                line-height: 30px;
+                text-align: center;
+                min-height: 30px;
+            }
+
+            table {
+                margin-bottom: 40px;
+                border-bottom: 1px solid $tableBodyBorder;
+
+                &.pad {
+                    width: 100%;
+
+                    td {
+                        &.already {
+                            &.title {
+                                &.content {
+                                    color: $TextAlreadeyColor;
+                                }
+                            }
+                        }
+
+                        &.caption {
+                            width: 30%;
+                            padding-left: 3%;
+                            text-align: left;
+                            color: $tableBodyColor;
+
+                            &.title {
+                                text-decoration: none;
+                            }
+                        }
+
+                        &.content {
+                            width: auto;
+                            text-align: left;
+                            word-break: break-word;
+
+                            &.title {
+                                padding-left: 0;
+                            }
+                        }
+
+                        &.number {
+                            background: #C3C3C3;
+                            color: #FFF;
+                        }
+
+                        .del-btn {
+                            margin: 0;
+                        }
+                    }
+                }
+            }
+        }
+
+        &.no-data {
+            padding: 5px 0;
+            line-height: 30px;
+            border-bottom: 1px solid $tableNoDataBorder;
+        }
+
+        .number {
+            width: 8%;
+        }
+
+        .category {
+            width: 12%;
+        }
+
+        .title {
+            padding-left: 1%;
+            width: 37%;
+            text-align: left;
+        }
+
+        .date {
+            width: 18%;
+        }
+
+        .status {
+            width: 10%;
+            white-space: nowrap;
+        }
+
+        .delete {
+            width: 10%;
+            white-space: nowrap;
+
+            button {
+                margin: 0 8px;
+                width: 30px;
+                height: 30px;
+                color: $deleteBtnColor;
+                background-color: $color;
+                border: 0;
+                border-radius: 100%;
+                outline: none;
+                white-space: nowrap;
+                overflow: hidden;
+                text-overflow: ellipsis;
+                cursor: pointer;
+            }
+        }
+    }
+}
+
+// pad.pc
+@media screen and (min-width: $pad) {
+    .info-message {
+        .main-table {
+            border-bottom: 1px solid #CCC;
+
+            thead {
+                &.mcenter-pc {
+                    display: none;
+                    display: table-header-group;
+                }
+            }
+
+            tbody {
+                tr {
+                    &.message-list {
+                        &.mcenter-pc {
+                            display: table-row;
+                        }
+                    }
+
+                    &.message-detail {
+                        &.mcenter-pc {
+                            display: table-row;
+
+                            td {
+                                padding-left: 9%;
+                            }
+                        }
+                    }
+                }
+
+                table {
+                    display: none
+                }
+            }
+        }
+    }
+}

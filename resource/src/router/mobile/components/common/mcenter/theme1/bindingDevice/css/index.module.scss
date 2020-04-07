@@ -1,0 +1,13 @@
+.preset-color{
+    $editIconBg: rgba(0,0,0,0);
+    $editIconColor: #00347D;
+    @import './bindingDevice.module.scss';
+}
+
+.site-500011,
+.site-52,
+.site-53 {
+    $editIconBg: #F7B500;
+    $editIconColor: #FFF;
+    @import './bindingDevice.module.scss';
+}

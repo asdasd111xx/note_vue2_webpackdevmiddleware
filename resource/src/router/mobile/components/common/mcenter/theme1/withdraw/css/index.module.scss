@@ -1,0 +1,65 @@
+.preset-color {
+    $withdrawTitleBg: url('/static/image/mobile/mcenter/header_bg.png') #222 50% -65px no-repeat;
+    $withdrawTitleBorderColor: #F9DCB2;
+    $withdrawTitleActiveColor: #FFF;
+
+    $withdrawTotalColor: #F4D8AF;
+    $withdrawTotalBg: #00347D;
+
+    $withdrawMoneyInfoColor: #F4D8AF;
+    $withdrawMoneyInfoBg: #00347D;
+    
+    $withdrawRecycleBtnColor: #FFF;
+    $withdrawRecycleBtnBg: rgba(0,0,0,0);
+    $withdrawRecycleBtnBorderColor: #FFF;
+
+    $withdrawRefreshBtnColor: #FFF;
+
+    $withdrawDetailsBtnBorderColor: #00347D;
+    $withdrawDetailsBtnBg: rgba(0,0,0,0);
+    $withdrawDetailBtnColor: #00347D;
+
+    $withdrawExclamationIconColor: #F9DCB2;
+    $withdrawExclamationIconBg: #00347D;
+
+    $withdrawBtnConfirmColor: #FFF;
+    $withdrawBtnConfirmBg: #00347D; 
+    $withdrawBtnCancelColor: #FFF;
+    $withdrawBtnCancelBg: #A37F5B;
+
+    @import './withdraw.module.scss'; 
+}
+
+.site-500011,
+.site-52,
+.site-53 {
+    $withdrawTitleBg: #FFF;
+    $withdrawTitleBorderColor: #F7B500;
+    $withdrawTitleActiveColor: #000;
+
+    $withdrawTotalColor: #000;
+    $withdrawTotalBg: #F6F4F4;
+
+    $withdrawMoneyInfoColor: #000;
+    $withdrawMoneyInfoBg: #EAEAEA;
+    
+    $withdrawRecycleBtnColor: #000;
+    $withdrawRecycleBtnBg: #EDB83F;
+    $withdrawRecycleBtnBorderColor: #EDB83F;
+
+    $withdrawRefreshBtnColor: #000;
+
+    $withdrawDetailsBtnBorderColor: #EDB83F;
+    $withdrawDetailsBtnBg: #EDB83F;
+    $withdrawDetailBtnColor: #000;
+
+    $withdrawExclamationIconColor: #FFF;
+    $withdrawExclamationIconBg: #EDB83F;
+
+    $withdrawBtnConfirmColor: #000;
+    $withdrawBtnConfirmBg: #F7B500; 
+    $withdrawBtnCancelColor: #FFF;
+    $withdrawBtnCancelBg: #000;
+    @import './withdraw.module.scss';
+}
+

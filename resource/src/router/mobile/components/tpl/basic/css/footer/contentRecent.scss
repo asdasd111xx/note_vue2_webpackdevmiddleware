@@ -1,0 +1,40 @@
+@import "~@/css/variable.scss";
+
+.list-wrap {
+    clear: right;
+    margin: 0 auto;
+    width: 306px;
+}
+
+.list-item {
+    float: left;
+    position: relative;
+    background: url(/static/image/casino/game_img_bg_s.png) 0 0 no-repeat;
+    margin: 2px;
+    width: 98px;
+    height: 98px;
+    text-align: center;
+}
+
+@media screen and (min-width: $phone + $sidebar) {
+    .list-wrap {
+        width: 432px;
+    }
+
+    .list-item {
+        margin: 5px;
+    }
+}
+
+@media screen and (min-width: $pad + $sidebar) {
+    .list-wrap {
+        width: 744px;
+    }
+
+    .list-item {
+        background: url(/static/image/casino/game_img_bg_m.png) 0 0 no-repeat;
+        margin: 2px;
+        width: 120px;
+        height: 114px;
+    }
+}

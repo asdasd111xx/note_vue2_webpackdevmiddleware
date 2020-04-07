@@ -1,0 +1,59 @@
+@import "src/css/variable.scss";
+
+.card-wrap {
+    max-width: 1000px;
+    margin: 0 auto;
+    border-radius: 6px 6px 0 0;
+    background: rgba(53, 51, 56, 0.6);
+}
+
+.game-wrap-inner {
+    max-width: 936px;
+    margin: 0 auto;
+    padding: 20px 0;
+    text-align: center;
+}
+
+.current-nav-wrap {
+    padding: 0 9px;
+    background-image: url('/static/image/casino/title_bg.png'), url('/static/image/casino/title_bg.png');
+    background-repeat: no-repeat, no-repeat;
+    background-position: 0 0, 100% -96px;
+}
+
+.current-nav-bg {
+    display: block;
+    line-height: 48px;
+    padding-left: 27px;
+    font-size: 22px;
+    color: #FFF;
+    background: url('/static/image/casino/title_bg.png') 0 -48px repeat-x;
+}
+
+.nav-btn-wrap {
+    padding: 0 20px;
+    border-bottom: 1px solid #36353B;
+    background: rgba(53, 51, 56, 0.7);
+}
+
+.nav-btn {
+    display: inline-block;
+    vertical-align: middle;
+    width: auto;
+    height: 38px;
+    line-height: 38px;
+    margin-right: 14px;
+    font-size: 15px;
+    cursor: pointer;
+    color: #FFF;
+
+    &.current,
+    &:hover {
+        border-bottom: 3px solid #CDB08A;
+        color: #CDB08A;
+    }
+}
+
+.nav-text {
+    padding: 0 14px;
+}

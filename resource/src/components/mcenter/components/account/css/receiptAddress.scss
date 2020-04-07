@@ -1,0 +1,374 @@
+@import "~@/css/variable.scss";
+
+.receipt-address-title {
+    float: left;
+    margin-bottom: 20px;
+    font-size: 16px;
+    color: #333;
+}
+
+.address-tip {
+    float: left;
+    margin-left: 15px;
+    margin-bottom: 10px;
+
+    span {
+        font-size: 15px;
+        font-weight: normal;
+        color: $color;
+    }
+}
+
+.add-address-btn {
+    float: right;
+    position: relative;
+    bottom: 5px;
+    width: 85px;
+    padding: 0 5px;
+    line-height: 32px;
+    color: $btnColor;
+    text-align: center;
+    background: $color;
+    border: 0;
+    border-radius: 18px;
+    outline: none;
+    white-space: nowrap;
+    overflow: hidden;
+    text-overflow: ellipsis;
+    cursor: pointer;
+
+    span {
+        margin-left: 4px;
+        font-size: 14px;
+    }
+
+    &:disabled {
+        cursor: not-allowed;
+    }
+}
+
+.receipt-address-table {
+    display: table;
+    width: 100%;
+    border-collapse: collapse;
+
+    .address-table-thead {
+        display: table-header-group;
+        background: $tableTitleBg;
+        color: $tableTitleColor;
+
+        .address-table-wrap-type {
+            display: table-row;
+            text-align: center;
+
+            .address-table-type {
+                display: table-cell;
+                padding: 5px 2.7%;
+                height: 40px;
+                font-size: 16px;
+                text-align: center;
+                border: 1px solid #CCC;
+                vertical-align: middle;
+
+                &:first-child {
+                    width: 75%;
+                }
+
+                &:last-child {
+                    width: 25%;
+                }
+            }
+        }
+    }
+
+    .address-table-tbody {
+        display: table-header-group;
+
+        .no-data {
+            height: 40px;
+            line-height: 40px;
+            border: 1px solid #CCC;
+            text-align: center;
+            color: #313F52;
+        }
+
+        .address-table-wrap-type {
+            display: table-row;
+            text-align: center;
+
+            .address-table-type {
+                display: table-cell;
+                padding: 10px 0;
+                width: auto;
+                height: 40px;
+                font-size: 14px;
+                text-align: center;
+                border: 1px solid #DDD;
+                vertical-align: middle;
+
+                .address-status {
+                    float: left;
+                    position: relative;
+                    top: 50%;
+                    width: 9%;
+                    color: #CCC;
+                    cursor: pointer;
+
+                    &.active {
+                        color: $color;
+                    }
+                }
+
+                .address-info {
+                    float: left;
+                    width: 90%;
+                    text-align: left;
+
+                    div {
+                        line-height: 24px;
+                    }
+
+                    p {
+                        margin: 0;
+                        font-size: 13px;
+                        line-height: 24px;
+                        color: #7E7E7E;
+                    }
+                }
+
+                .address-operate {
+                    text-align: center;
+
+                    button {
+                        margin: 0 8px;
+                        width: 30px;
+                        height: 30px;
+                        color: #FFF;
+                        background-color: $color;
+                        border: 0;
+                        border-radius: 100%;
+                        outline: none;
+                        white-space: nowrap;
+                        overflow: hidden;
+                        text-overflow: ellipsis;
+                        cursor: pointer;
+                    }
+
+                    .cancel {
+                        width: 60px;
+                        height: 36px;
+                        font-size: 14px;
+                        color: $secBtnColor;
+                        text-align: center;
+                        background-color: $secBtnColorBg;
+                        border: 1px solid #EEE;
+                        border-radius: 4px;
+                        outline: none;
+                        cursor: pointer;
+                    }
+
+                    .confirm {
+                        width: 60px;
+                        height: 36px;
+                        font-size: 14px;
+                        color: $btnColor;
+                        text-align: center;
+                        background-color: $color;
+                        border: 1px solid $color;
+                        border-radius: 4px;
+                        outline: none;
+                        cursor: pointer;
+                    }
+                }
+            }
+        }
+
+        .address-table-add-wrap {
+            display: table-row;
+
+            .address-table-type {
+                display: table-cell;
+                padding: 10px 0;
+                font-size: 14px;
+                text-align: center;
+                border: 1px solid #DDD;
+                vertical-align: middle;
+
+                &:first-child {
+                    border-right: none;
+                }
+
+                &:last-child {
+                    border-left: none;
+                }
+
+                .address-operate {
+                    text-align: center;
+
+                    button {
+                        margin: 0 8px;
+                        width: 30px;
+                        height: 30px;
+                        color: #FFF;
+                        background-color: $color;
+                        border: 0;
+                        border-radius: 100%;
+                        outline: none;
+                        white-space: nowrap;
+                        overflow: hidden;
+                        text-overflow: ellipsis;
+                        cursor: pointer;
+                    }
+
+                    .cancel {
+                        width: 60px;
+                        height: 36px;
+                        font-size: 14px;
+                        color: $secBtnColor;
+                        text-align: center;
+                        background-color: $secBtnColorBg;
+                        border: 1px solid #EEE;
+                        border-radius: 4px;
+                        outline: none;
+                        cursor: pointer;
+                    }
+
+                    .confirm {
+                        width: 60px;
+                        height: 36px;
+                        font-size: 14px;
+                        color: $btnColor;
+                        text-align: center;
+                        background-color: $color;
+                        border: 1px solid $color;
+                        border-radius: 4px;
+                        outline: none;
+                        cursor: pointer;
+                    }
+                }
+            }
+        }
+
+        .msg-notice {
+            padding-top: 10px;
+            padding-left: 23%;
+            color: #F28CA2;
+            text-align: left;
+        }
+
+        .address-input {
+            .add-input {
+                padding-left: 12px;
+                width: 74%;
+                height: 34px;
+                color: #7E7E7E;
+                border: 1px solid #CDCDCD;
+                border-radius: 4px;
+                vertical-align: middle;
+
+                &.notice {
+                    border-color: #FF4E74;
+                }
+            }
+
+            span {
+                display: inline-block;
+                padding-right: 20px;
+                width: 104px;
+                line-height: 40px;
+                text-align: right;
+                vertical-align: middle;
+                white-space: nowrap;
+                overflow: hidden;
+                text-overflow: ellipsis;
+            }
+
+            .add-select {
+                height: 34px;
+                width: 12%;
+                color: #7E7E7E;
+                background: #FFF;
+                border: 1px solid #CDCDCD;
+                border-radius: 5px;
+                vertical-align: middle;
+
+                &.notice {
+                    border-color: #FF4E74;
+                }
+            }
+
+            &.mobile {
+                input {
+                    width: 61%;
+                }
+            }
+        }
+    }
+}
+
+@media screen and (max-width: $pad) {
+    .receipt-address-table {
+        .address-table-tbody {
+            .address-table-wrap-type {
+                .address-table-type {
+                    .address-status {
+                        top: 0;
+                        width: 55px;
+                    }
+
+                    .address-info {
+                        padding-left: 15px;
+                    }
+
+                    .address-operate {
+                        button {
+                            margin: 8px;
+                            border: 0;
+                        }
+                    }
+                }
+            }
+
+            .address-input {
+                span {
+                    display: block;
+                    padding: 0 10px;
+                    text-align: left;
+                }
+
+                .add-input {
+                    width: 94%;
+                }
+
+                .add-select {
+                    width: 30%;
+                }
+
+                &.mobile {
+                    input {
+                        width: 62%;
+                    }
+                }
+            }
+
+            .address-table-add-wrap {
+                .address-table-type {
+                    .address-operate {
+                        button {
+                            margin: 8px;
+                        }
+                    }
+
+                    &:first-child {
+                        border-right: 1px solid #DDD;
+                    }
+                }
+            }
+
+            .msg-notice {
+                padding-left: 3%;
+            }
+        }
+
+    }
+}

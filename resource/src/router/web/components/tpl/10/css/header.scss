@@ -1,0 +1,115 @@
+.header-wrap {
+    margin: 0 auto;
+    width: 1000px;
+    font-size: 12px;
+
+    .header-top {
+        padding-top: 8px;
+        line-height: 20px;
+    }
+
+    /deep/ {
+        @import "./memLogin.scss";
+        @import "./memInfo.scss";
+        @import "./memMenu.scss";
+        @import './langSelect.scss';
+        @import './nav.scss';
+
+        .header-logo-wrap {
+            position: relative;
+            float: left;
+            margin-top: 10px;
+
+            img {
+                display: block;
+                width: inherit;
+                height: inherit;
+            }
+        }
+    }
+
+    .header-right-wrap {
+        float: left;
+        width: 800px;
+    }
+
+    .agent-join,
+    .agent-login {
+        float: left;
+        max-width: 65px;
+        height: 20px;
+        margin: 9px 4px 0;
+        cursor: pointer;
+        color: #FFF;
+        overflow: hidden;
+        text-overflow: ellipsis;
+        white-space: nowrap;
+
+        &:hover {
+            color: #F8DDB8;
+        }
+    }
+
+    .mem-wrap {
+        margin-top: 8px;
+        padding-bottom: 16px;
+    }
+
+    .mem-bg-wrap {
+        clear: right;
+        float: right;
+        max-width: 500px;
+        height: 25px;
+        line-height: 25px;
+        margin-right: 8px;
+        color: #DFACA5;
+
+        &:before,
+        &:after {
+            content: "";
+            display: inline-block;
+            vertical-align: top;
+            width: 20px;
+            height: 25px;
+            top: 0;
+        }
+    }
+
+    // 跑馬燈
+    .news-wrap {
+        position: relative;
+        float: left;
+        width: 540px;
+        height: 32px;
+        line-height: 32px;
+        margin-right: 5px;
+        padding-left: 185px;
+        color: #F8DDB8;
+    }
+}
+
+// 深紫色
+.header-wrap {
+    .deep-purple & {
+        .mem-wrap {
+            margin-top: 0;
+            padding-bottom: 14px;
+        }
+
+        .mem-bg-wrap {
+            color: #FFF;
+
+            &:before,
+            &:after {
+                width: 14px;
+            }
+        }
+
+        // 跑馬燈
+        .news-wrap {
+            height: 42px;
+            line-height: 42px;
+            color: #FFF;
+        }
+    }
+}

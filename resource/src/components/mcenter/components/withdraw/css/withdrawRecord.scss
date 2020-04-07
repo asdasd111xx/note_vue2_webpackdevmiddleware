@@ -1,0 +1,184 @@
+.withdraw-record-wrap {
+    margin-top: 32px;
+    padding: 20px 44px 44px;
+}
+
+.record-title {
+    position: relative;
+    display: inline-block;
+    vertical-align: middle;
+    line-height: 30px;
+    text-align: left;
+    font-size: 18px;
+    font-weight: bold;
+    color: #000;
+}
+
+.icon-wrap {
+    display: inline-block;
+    vertical-align: middle;
+    cursor: pointer;
+}
+
+.withdraw-bookmark-btn {
+    position: relative;
+    display: inline-block;
+    vertical-align: middle;
+    width: 80px;
+    height: 35px;
+    line-height: 35px;
+    margin: 0 2px 10px 0;
+    text-align: center;
+    cursor: pointer;
+    color: #A6A6A6;
+    background-color: transparent;
+    border-radius: 3px;
+    border: 1px solid #A6A6A6;
+
+    &:hover {
+        color: #FFF;
+        background-color: #292929;
+        border: 1px solid #292929;
+    }
+
+    &.is-current {
+        color: #FFF;
+        background-color: #292929;
+        border: 1px solid #292929;
+    }
+}
+
+.withdraw-bookmark-text {
+    display: block;
+    overflow: hidden;
+    padding: 0 2px;
+    text-overflow: ellipsis;
+    white-space: nowrap;
+}
+
+.finish-msg {
+    position: absolute;
+    width: 20px;
+    height: 20px;
+    line-height: 20px;
+    top: -5px;
+    right: -5px;
+    border-radius: 100%;
+    color: #FFF;
+    background: #F00;
+}
+
+.record-info-table {
+    display: table;
+    width: 100%;
+    border-collapse: collapse;
+    border: 1px solid #CCC;
+}
+
+.record-info-theard {
+    display: table-header-group;
+}
+
+.record-info-tr {
+    display: table-row;
+}
+
+.record-info-td {
+    display: table-cell;
+    vertical-align: middle;
+    padding: 10px;
+    text-align: center;
+    font-size: 13px;
+    border: 1px solid #CCC;
+    background: #FFF;
+
+    .record-info-theard & {
+        font-size: 14px;
+        background: #F0F3F7;
+    }
+}
+
+.record-date {
+    width: 18%;
+}
+
+.record-order {
+    width: 22%;
+}
+
+.record-withdraw,
+.record-deduction,
+.record-actual,
+.record-status {
+    width: 15%;
+}
+
+.record-deduction,
+.status-processing {
+    color: #F00;
+
+    .record-info-theard & {
+        color: inherit;
+    }
+}
+
+.tip-icon-wrap {
+    display: inline-block;
+    vertical-align: middle;
+    cursor: pointer;
+}
+
+.withdraw-pagination-wrap {
+    margin-top: 8px;
+}
+
+.pagination-tip {
+    float: left;
+    line-height: 20px;
+    margin-top: 4px;
+    color: #AAA;
+}
+
+.withdraw-pagination {
+    float: right;
+}
+
+.withdraw-info-btn {
+    cursor: pointer;
+    color: #55B9FF;
+}
+
+.loading-wrap {
+    position: absolute;
+    width: 100%;
+    height: 100%;
+    padding: 230px 0;
+    top: 0;
+    left: 0;
+    text-align: center;
+    background: rgba(0, 0, 0, 0.4);
+}
+
+.loading-item {
+    display: inline-block;
+    vertical-align: top;
+}
+
+.no-data {
+    padding: 5px 0;
+    line-height: 30px;
+    text-align: center;
+    color: #313F52;
+}
+
+.theme-miller {
+    .withdraw-bookmark-btn {
+        &.is-current {
+            background-color: #292929;
+        }
+    }
+    .record-info-td {
+        background: #292929;
+        color: #FFF;
+    }
+}

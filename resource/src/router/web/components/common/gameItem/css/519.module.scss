@@ -1,0 +1,172 @@
+.game-item {
+    position: relative;
+    float: left;
+    width: 12.88%;
+    height: 180px;
+    margin: 1.4% 0.7%;
+    border-radius: 5px;
+    background-color: rgba(240, 240, 240, 0.08);
+    text-align: center;
+    cursor: pointer;
+
+    &:hover {
+        .mask {
+            display: block;
+        }
+
+        .game-title {
+            background-color: #DBB969;
+            color: #373737;
+        }
+
+        .icon-star {
+            opacity: 1;
+        }
+
+        .btn-enter {
+            display: block;
+        }
+    }
+
+    .game-vendor {
+        display: block;
+        position: absolute;
+        top: 0px;
+        right: 0px;
+        width: 36px;
+        height: 18px;
+        line-height: 18px;
+        border-radius: 0 5px 0 5px;
+        background-color: rgba(255, 255, 255, 0.15);
+        color: #222;
+        font-size: 12px;
+    }
+
+    .game-box-wrap {
+        position: relative;
+    }
+
+    .game-box {
+        position: relative;
+        cursor: pointer;
+
+        img {
+            display: block;
+            margin: 26px auto 12px;
+            width: 100%;
+            height: 112px;
+            max-width: 120px;
+        }
+    }
+
+    .game-jackpot {
+        position: absolute;
+        display: block;
+        opacity: 0.8;
+        width: 100%;
+        height: 25px;
+        padding: 0 5px 0 3px;
+        bottom: 0;
+        background-color: rgba(21, 20, 22, 0.8);
+
+        &.pt {
+            &:before {
+                width: 60px;
+                margin-right: 0;
+                background: url("/static/image/game/jackpot_logo.png") 0 0 no-repeat;
+            }
+        }
+
+        &:before {
+            content: '';
+            float: left;
+            width: 43px;
+            height: 13px;
+            margin: 7px 6px 0 0;
+            background: url("/static/image/game/minor_logo.png") 0 0 no-repeat;
+        }
+
+        span {
+            display: block;
+            width: 100%;
+            height: 25px;
+            line-height: 25px;
+            text-align: right;
+            font-size: 13px;
+            color: #FFF;
+        }
+    }
+
+    .mask {
+        display: none;
+        position: absolute;
+        left: 0;
+        top: 0;
+        z-index: 1;
+        width: 100%;
+        height: 100%;
+        border-width: 1px 1px 0;
+        border-style: solid;
+        border-color: #DBB969;
+        border-radius: 5px 5px 0 0;
+        background: rgba(21, 20, 22, 0.97);
+    }
+
+    .game-title {
+        overflow: hidden;
+        position: absolute;
+        bottom: 0;
+        left: 0;
+        width: 100%;
+        height: 30px;
+        line-height: 30px;
+        padding: 0 6px;
+        border-radius: 0 0 5px 5px;
+        background-color: #4A494C;
+        color: #FFF;
+        font-size: 14px;
+        text-overflow: ellipsis;
+        white-space: nowrap;
+    }
+
+    .icon-star-wrap {
+        position: absolute;
+        right: 8px;
+        bottom: 8px;
+    }
+
+    .icon-star {
+        width: 16px;
+        height: 15px;
+        margin: 2px auto 0;
+        background: url('/static/image/common/favorite_icon.png') 0 0 no-repeat;
+        opacity: 0.6;
+        cursor: pointer;
+
+        &.is-favorite {
+            background: url('/static/image/common/favorite_icon_active.png') 0 0 no-repeat;
+            opacity: 1;
+        }
+    }
+
+    .btn-enter {
+        display: none;
+        position: absolute;
+        top: 58px;
+        left: 50%;
+        z-index: 1;
+        width: 120px;
+        height: 44px;
+        line-height: 44px;
+        margin-left: -60px;
+        background: url('/static/image/common/btn_playgame.png') 0 0 no-repeat;
+        color: #DDD;
+        font-size: 16px;
+        cursor: pointer;
+
+        &:hover {
+            background: url('/static/image/common/btn_playgame_hover.png') 0 0 no-repeat;
+            color: #FFF;
+        }
+    }
+}

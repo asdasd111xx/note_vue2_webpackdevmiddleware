@@ -1,0 +1,130 @@
+// 彈跳視窗專用
+.pop-class {
+    transition: all .3s;
+}
+.pop-enter .mask,
+.pop-leave-active .mask {
+    opacity: 0;
+}
+.pop-enter .pop-class {
+    transform: scale(0.9);
+    opacity: 0;
+}
+.pop-leave-active .pop-class {
+    transform: scale(1.1);
+    opacity: 0;
+}
+
+// fade
+.fade-enter-active,
+.fade-leave-active {
+    transition: opacity .5s;
+}
+.fade-enter,
+.fade-leave-to {
+    opacity: 0;
+}
+
+// slide
+.slide-enter-active,
+.slide-leave-active {
+    transition: all .5s ease;
+}
+.slide-enter,
+.slide-leave-to {
+    transform: translateX(100%);
+}
+
+// slide-left
+.slide-left-enter-active,
+.slide-left-leave {
+    transition: all .5s;
+    transform: translateX(0);
+}
+.slide-left-leave-active {
+    transform: translateX(100%);
+}
+.slide-left-enter {
+    transform: translateX(-100%);
+}
+
+// slide-right
+.slide-right-enter-active,
+.slide-right-leave-active {
+    transition: all .5s;
+}
+.slide-right-enter,
+.slide-right-leave-to {
+    transform: translateX(-100%);
+}
+
+// slide-top
+.slide-top-enter-active,
+.slide-top-leave {
+    transition: all 1s ease-in;
+    transform: translateY(0);
+}
+.slide-top-leave-active {
+    transition: all .6s ease-in;
+    opacity: 0;
+    transform: translateY(-50%);
+}
+.slide-top-enter {
+    opacity: 0;
+    transform: translateY(50%);
+}
+
+// slide-down
+.slide-down-enter-active,
+.slide-down-leave-active {
+    transition: all .3s ease;
+}
+.slide-down-enter,
+.slide-down-leave-to {
+    transform: scaleY(0);
+    opacity: 0;
+}
+
+// slide-show2
+.slide-show2-enter-active,
+.slide-show2-leave {
+    transition: all 1.2s ease-in;
+    transform: translateX(0);
+}
+
+.slide-show2-leave-active {
+    transition: all .3s ease-in;
+    transform: translateX(-50px);
+    opacity: 0;
+}
+.slide-show2-enter {
+    transform: translateX(200px);
+    opacity: 0;
+}
+
+// slide-down
+.slide-down-enter-active,
+.slide-down-leave {
+    transform-origin: top;
+    transition: transform .2s ease-in-out;
+}
+
+.slide-down-leave-active,
+.slide-down-leave-to {
+    transform-origin: top;
+    transform: scaleY(0);
+}
+
+// modal
+.modal-enter,
+.modal-leave-active {
+    transform: scale(1.1);
+    opacity: 0;
+}
+
+// 電子搜尋條專用
+.casino-searchbar-slide-enter,
+.casino-searchbar-slide-leave-to {
+    padding: 0 !important;
+    width: 0 !important;
+}

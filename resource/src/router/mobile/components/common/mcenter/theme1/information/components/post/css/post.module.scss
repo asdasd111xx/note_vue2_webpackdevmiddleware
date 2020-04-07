@@ -1,0 +1,139 @@
+@import '~@/css/variable.scss';
+
+&.post-wrap {
+    margin-top: 10px;
+}
+
+.post-item {
+    padding: 1.55% 3.15%;
+    background: #FFF url('/static/image/mobile/mcenter/btn_next_n.png') no-repeat;
+    background-size: 14px 14px;
+    background-position: right 3.15% bottom 50%;
+    font-family: 'Nirmala UI';
+
+    &:nth-child(2n) {
+        background: #F6F4F4 url('/static/image/mobile/mcenter/btn_next_n.png') no-repeat;
+        background-size: 14px 14px;
+        background-position: right 3.15% bottom 50%;
+    }
+
+    &:first-child {
+        .post-item-category {
+            margin: 0 4px 0 16px;
+        }
+
+        .post-item-top {
+            background: url('/static/image/mobile/mcenter/ic_mailnew.png') no-repeat;
+            background-size: 10px 10px;
+            background-position: 0 3px;
+        }
+    }
+}
+
+.post-item-top {
+    line-height: 1.35;
+    margin-bottom: 4px;
+    font-size: 12px;
+}
+
+.post-item-category {
+    float: left;
+    width: 47%;
+    max-width: 303px;
+    margin-right: 20px;
+    color: $postItemCategoryColor;
+
+    &.is-important {
+        color: #FF5454;
+    }
+}
+
+.post-item-time {
+    float: left;
+    width: 37%;
+    max-width: 238px;
+    text-align: right;
+    color: #BEBCBC;
+} 
+
+.post-item-title {
+    width: 90%;
+    max-width: 585px;
+    line-height: 1.5;
+    white-space: nowrap;
+    overflow: hidden;
+    text-overflow: ellipsis;
+}
+
+.no-post-notice {
+    text-align: center;
+    color: #AAA;
+    margin: 50px auto 0;
+}
+
+@media screen and (min-width: $phone) {
+    .post-wrap {
+        margin-top: 15px;
+    }
+
+    .post-item {
+        background-size: 18px 18px;
+
+        &.no-read {
+            .post-item-category {
+                margin: 0 0 0 20px;
+            }
+
+            .post-item-top {
+                background-size: 12px 12px;
+                background-position: 0 3px;
+            }
+        }
+    }
+
+    .post-item-top {
+        font-size: 14px;
+    }
+
+    .post-item-title {
+        font-size: 18px;
+    }
+}
+
+@media screen and (min-width: $pad) {
+    .post-wrap {
+        margin-top: 20px;
+    }
+
+    .post-item {
+        padding: 7px 50px;
+        background-size: 30px 30px;
+        background-position: right 50px bottom 50%;
+        &:nth-child(2n) {
+            background-size: 30px 30px;
+            background-position: right 50px bottom 50%;
+        }
+        &:first-child {
+            .post-item-category {
+                margin-left: 32px;
+            }
+
+            .post-item-top {
+                background-size: 20px 20px;
+                background-position: 0 2px;
+            }
+        }
+    }
+
+    .post-item-top {
+        font-size: 18px;
+    }
+
+    .post-item-category {
+        margin-right: 44px;
+    }
+
+    .post-item-title {
+        font-size: 24px;
+    }
+}

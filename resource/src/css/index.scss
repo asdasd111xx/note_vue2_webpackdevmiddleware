@@ -1,0 +1,17 @@
+@charset 'UTF-8';
+
+/****** css reset ******/
+@import './normalize.scss';
+
+/* clear float */
+.clearfix {
+    &:before {
+        content:"";
+        display:table;
+    }
+    &:after {
+        @extend .clearfix:before;
+        clear: both;
+    }
+}
+

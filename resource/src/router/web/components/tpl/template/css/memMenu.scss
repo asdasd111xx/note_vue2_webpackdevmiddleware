@@ -1,0 +1,23 @@
+.mem-menu-wrap {
+    float: left;
+
+    >.link-line {
+        float: left;
+        width: 1px;
+        height: 10px;
+        margin: 9px 10px 0;
+        background-color: #000;
+    }
+
+    span {
+        float: left;
+
+        &.link-item {
+            cursor: pointer;
+
+            &:hover {
+                color: inherit;
+            }
+        }
+    }
+}

@@ -1,0 +1,205 @@
+@import '~@/css/variable.scss';
+
+&.withdraw-alert-wrap {
+    position: absolute;
+    width: 100%;
+    height: 100%;
+    top: 0;
+    left: 0;
+    color: #000;
+    background: rgba(0, 0, 0, 0.5);
+}
+
+.alert-wrap {
+    position: relative;
+    width: 80%;
+    margin: 0 auto;
+    top: 160px;
+    left: 0;
+}
+
+.alert-title {
+    position: relative;
+    height: 50px;
+    line-height: 50px;
+    padding: 0 50px 0 48px;
+    text-align: center;
+    font-size: 15px;
+    font-weight: bold;
+    color: $alertTitleColor;
+    background: $alertTitleBg;
+}
+
+.alert-close-wrap {
+    position: absolute;
+    width: 20px;
+    height: 20px;
+    margin-top: -10px;
+    top: 50%;
+    right: 7px;
+    cursor: pointer;
+}
+
+.alert-close-btn {
+    display: block;
+    max-width: 100%;
+    color: $alertCloseBtnColor;
+}
+
+.alert-body-wrap {
+    padding-bottom: 12px;
+    background: #FFF;
+}
+
+.withdraw-info-tr {
+    margin: 0 17px;
+    border-bottom: 1px solid #0091D2;
+}
+
+.withdraw-info-td {
+    float: right;
+    width: 70%;
+    text-align: right;
+    padding: 12px 0;
+}
+
+.withdraw-account {
+    word-break: break-all;
+}
+
+.withdraw-info-thead {
+    float: left;
+    width: 30%;
+    line-height: 20px;
+    text-align: left;
+}
+
+.speed-field-wrap {
+    padding: 0 17px;
+    background-color: #FFF;
+}
+
+.speed-field {
+    padding-top: 10px;
+    border-bottom: 1px solid #0091D2;
+}
+
+.field-title {
+    position: relative;
+    float: left;
+    width: 35%;
+    line-height: 20px;
+    padding-bottom: 10px;
+    text-align: left;
+}
+
+.field-info {
+    position: relative;
+    float: right;
+    width: 65%;
+    padding-bottom: 10px;
+    text-align: right;
+}
+
+.speed-field-title {
+    color: #A37F5B;
+}
+
+.withdraw-select {
+    background: #FFF;
+    border: none;
+    max-width: 100%;
+    word-break: break-all;
+}
+
+.speed-withdraw-input {
+    box-sizing: border-box;
+    width: 100%;
+    height: 20px;
+    line-height: 20px;
+    text-align: right;
+    outline: none;
+    border: none;
+    border-radius: 4px;
+    color: #A37F5B;
+
+    // Chrome/Opera/Safari
+    &::-webkit-input-placeholder {
+        color: #BEBCBC;
+    }
+    // Firefox 19+
+    &::-moz-placeholder {
+        color: #BEBCBC;
+    }
+    // IE 10+
+    &:-ms-input-placeholder {
+        color: #BEBCBC;
+    }
+    // Firefox 18-
+    &:-moz-placeholder {
+        color: #BEBCBC;
+    }
+}
+
+.no-data {
+    color: #BEBCBC;
+}
+
+.tip-time {
+    display: block;
+    padding: 2px 17px 0;
+    font-size: 12px;
+    color: #333857;
+}
+
+.withdraw-pwd-wrap {
+    border-top: none;
+}
+
+.withdraw-input {
+    width: 100%;
+    padding-left: 5px;
+    text-align: right;
+    outline: none;
+    border: none;
+}
+
+.btn-wrap {
+    margin-top: 13px;
+    text-align: center;
+}
+
+.confirm-btn,
+.cancel-btn {
+    display: inline-block;
+    vertical-align: top;
+    width: 100px;
+    height: 35px;
+    line-height: 35px;
+    margin: 0 5px;
+    text-align: center;
+    cursor: pointer;
+    border-radius: 4px;
+}
+
+.confirm-btn {
+    color: $alertBtnConfirmColor;
+    background-color: $alertBtnConfirmBg;
+}
+
+.cancel-btn {
+    color: $alertBtnCancelColor;
+    background-color: $alertBtnCancelBg;
+}
+
+// pad
+@media screen and (min-width: $pad) {
+    .speed-field-wrap {
+        padding: 0 6% 20px;
+        font-size: 16px;
+    }
+
+    .speed-field {
+        padding-top: 20px;
+    }
+}

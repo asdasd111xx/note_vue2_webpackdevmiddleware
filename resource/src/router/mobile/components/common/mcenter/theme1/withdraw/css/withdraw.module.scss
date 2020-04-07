@@ -1,0 +1,463 @@
+@import '~@/css/variable.scss';
+
+.withdraw-title-wrap {
+    background: $withdrawTitleBg;
+    background-size: 100%;
+}
+
+.withdraw-title {
+    float: left;
+    overflow: hidden;
+    width: 50%;
+    line-height: 40px;
+    padding: 0 16px;
+    text-align: center;
+    text-overflow: ellipsis;
+    white-space: nowrap;
+    cursor: pointer;
+    color: #BEBCBC;
+
+    &.is-current {
+        border-bottom: 3px solid $withdrawTitleBorderColor;
+        color: $withdrawTitleActiveColor;
+    }
+}
+
+.main-money-wrap {
+    padding: 9px 15px;
+    background-color: $withdrawTotalBg;
+}
+
+.main-money {
+    float: left;
+}
+
+.main-title {
+    font-size: 12px;
+    color: $withdrawTotalColor;
+}
+
+.money-text {
+    font-size: 12px;
+    color: $withdrawTotalColor;
+}
+
+.icon-wrap {
+    float: right;
+    width: 30px;
+    height: 30px;
+    margin: 5px 9px 0 0;
+    cursor: pointer;
+    color: $withdrawRefreshBtnColor;
+    border-radius: 50%;
+    border: 2px solid $withdrawRefreshBtnColor;
+    position: relative;
+    svg {
+        position: absolute;
+        top: 50%;
+        left: 50%;
+        transform: translate(-50%,-50%);
+    }
+}
+
+.spang-btn {
+    float: right;
+    overflow: hidden;
+    min-width: 96px;
+    height: 30px;
+    line-height: 30px;
+    margin: 4px 0;
+    padding: 0 8px;
+    text-align: center;
+    text-overflow: ellipsis;
+    white-space: nowrap;
+    cursor: pointer;
+    border-radius: 15px;
+    background: $withdrawRecycleBtnBg;
+    border: 1px solid $withdrawRecycleBtnBorderColor;
+    color: $withdrawRecycleBtnColor;
+}
+
+.withdraw-money-info {
+    width: 100%;
+    padding: 7px 4%;
+    font-size: 12px;
+    color: $withdrawMoneyInfoColor;
+    background-color: $withdrawMoneyInfoBg;
+}
+
+.withdraw-money-title {
+    float: left;
+}
+
+.withdraw-money-text {
+    float: right;
+}
+
+.withdraw-feature-wrap {
+    margin-top: 9px;
+    border-top: 1px solid #BEBCBC;
+    background-color: #FFF;
+}
+
+.withdraw-input-wrap {
+    padding: 2% 4%;
+    border-bottom: 1px solid #BEBCBC;
+}
+
+.withdraw-input-title {
+    font-size: 12px;
+    color: #BEBCBC;
+}
+
+.withdraw-account-text {
+    font-size: 15px;
+    word-break: break-all;
+    cursor: pointer;
+    background: #FFF;
+    border: none;;
+    width: 100%;
+    max-width: 100%;
+    .select-items {
+        font-size: 13px;
+    }
+}
+
+.withdraw-input {
+    width: 100%;
+    text-align: left;
+    font-size: 15px;
+    outline: none;
+    border: none;
+    color: #000;
+
+    // Chrome/Opera/Safari
+    &::-webkit-input-placeholder {
+        color: #000;
+    }
+    // Firefox 19+
+    &::-moz-placeholder {
+        color: #000;
+    }
+    // IE 10+
+    &:-ms-input-placeholder {
+        color: #000;
+    }
+    // Firefox 18-
+    &:-moz-placeholder {
+        color: #000;
+    }
+}
+
+.withdraw-info {
+    padding: 3px 3%;
+    font-size: 12px;
+
+    &:last-child {
+        border-bottom: 1px solid #BEBCBC;
+    }
+}
+
+.info-account {
+    border-bottom: 1px solid #BEBCBC;
+}
+
+.withdraw-info-title {
+    float: left;
+    width: 30%;
+    color: #000;
+}
+
+.withdraw-can-text,
+.withdraw-fee-text {
+    display: inline-block;
+    vertical-align: middle;
+}
+
+.tip-icon-wrap {
+    display: inline-block;
+    vertical-align: middle;
+    width: 17px;
+    height: 17px;
+    cursor: pointer;
+
+    img {
+        max-width: 100%;
+    }
+}
+
+.withdraw-info-money {
+    float: right;
+    width: 70%;
+    text-align: right;
+    color: #000;
+}
+
+.water-wrap {
+    margin: 8px 3% 16px;
+    text-align: right;
+    color: #F00;
+}
+
+.details-tip {
+    float: left;
+    margin-top: 4px;
+    text-align: left;
+    font-size: 12px;
+}
+
+.details-btn {
+    float: left;
+    min-width: 94px;
+    height: 26px;
+    line-height: 26px;
+    margin-left: 8px;
+    padding: 0 5px;
+    text-align: center;
+    font-size: 12px;
+    cursor: pointer;
+    border: 1px solid $withdrawDetailsBtnBorderColor;
+    background: $withdrawDetailsBtnBg;
+    border-radius: 50px;
+    color: $withdrawDetailBtnColor;
+}
+
+.withdraw-tip {
+    padding: 10px 3% 0;
+    text-align: left;
+    font-size: 12px;
+    color: #55B9FF;
+}
+
+.withdraw-checkbox-wrap {
+    margin-top: 6px;
+    padding: 0 3%;
+    font-size: 12px;
+    text-align: left;
+    color: #FF1010;
+}
+
+.input-checkbox,
+.input-tip {
+    display: inline-block;
+    vertical-align: middle;
+}
+
+.input-tip {
+    width: 92%;
+}
+
+.withdraw-btn-wrap {
+    margin: 36px 0;
+    text-align: center;
+}
+
+.next-btn,
+.reset-btn {
+    display: inline-block;
+    vertical-align: top;
+    overflow: hidden;
+    width: 129px;
+    height: 39px;
+    line-height: 39px;
+    padding: 0 7px;
+    text-align: center;
+    text-overflow: ellipsis;
+    white-space: nowrap;
+    cursor: pointer;
+    border-radius: 4px;
+}
+
+.next-btn {
+    background-color: $withdrawBtnConfirmBg;
+    color: $withdrawBtnConfirmColor;
+    &:active {
+        opacity: .8;
+    }
+}
+
+.reset-btn {
+    margin-right: 18px;
+    background-color: $withdrawBtnCancelBg;
+    color: $withdrawBtnCancelColor;
+    &:active {
+        opacity: .8;
+    }
+}
+
+.withdraw-third-iframe {
+    width: 100%;
+}
+
+.loading-wrap {
+    position: absolute;
+    width: 100%;
+    height: 100%;
+    padding: 258px 0;
+    top: 0;
+    left: 0;
+    text-align: center;
+    background: rgba(0, 0, 0, 0.4);
+}
+
+.loading-item {
+    display: inline-block;
+    vertical-align: top;
+}
+
+// phone
+@media screen and (min-width: $phone) {
+    .withdraw-input-wrap {
+        padding: 9px 4%;
+    }
+
+    .input-wrap {
+        margin-top: 5px;
+    }
+
+    .withdraw-input {
+        height: 23px;
+        line-height: 23px;
+
+        &.withdraw-money {
+            font-size: 17px;
+        }
+    }
+
+    .withdraw-info {
+        padding: 11px 3% 0;
+        font-size: 14px;
+
+        &:last-child {
+            padding-bottom: 11px;
+        }
+    }
+
+    .withdraw-account-text {
+        margin: 5px 0 9px;
+    }
+}
+
+// pad
+@media screen and (min-width: $pad) {
+    .main-money-wrap {
+        padding: 9px 4%;
+        font-size: 18px;
+    }
+
+    .main-money {
+        margin-top: 6px;
+    }
+
+    .main-title{
+        font-size: 18px;
+    }
+
+    .money-text {
+        margin-top: 7px;
+        font-size: 24px;
+    }
+
+    .spang-btn {
+        width: 180px;
+        height: 60px;
+        line-height: 60px;
+        font-size: 22px;
+        border-radius: 30px;
+    }
+
+    .icon-wrap {
+        width: 60px;
+        height: 60px;
+        margin: 3px 24px 0 0;
+    }
+
+    .withdraw-money-info {
+        font-size: 18px;
+    }
+
+    .tip-icon-wrap {
+        width: 35px;
+        height: 35px;
+    }
+
+    .withdraw-input-wrap {
+        padding: 12px 7%;
+    }
+
+    .water-wrap {
+        margin: 8px 7% 16px;
+    }
+
+    .details-tip {
+        margin-top: 15px;
+        font-size: 18px;
+    }
+
+    .details-btn {
+        width: 180px;
+        height: 50px;
+        line-height: 50px;
+        font-size: 18px;
+        margin-left: 20px;
+    }
+
+    .withdraw-input-title {
+        font-size: 18px;
+    }
+
+    .withdraw-input {
+        height: 33px;
+        line-height: 33px;
+
+        &.deposit-pwd {
+            font-size: 26px;
+        }
+
+        &.withdraw-money {
+            font-size: 27px;
+        }
+    }
+
+    .withdraw-info-title {
+        font-size: 18px;
+    }
+
+    .withdraw-info-money {
+        font-size: 16px;
+    }
+
+    .withdraw-info {
+        padding: 21px 7% 0;
+
+        &:last-child {
+            padding-bottom: 21px;
+        }
+    }
+
+    .withdraw-account-text {
+        height: 33px;
+        line-height: 33px;
+        font-size: 26px;
+    }
+
+    .withdraw-tip {
+        margin-top: 18px;
+        padding: 0 7%;
+        font-size: 18px;
+    }
+
+    .withdraw-checkbox-wrap {
+        margin-top: 18px;
+        padding: 0 7%;
+        font-size: 18px;
+    }
+
+    .next-btn,
+    .reset-btn {
+        width: 250px;
+        height: 70px;
+        line-height: 70px;
+        font-size: 20px;
+    }
+}

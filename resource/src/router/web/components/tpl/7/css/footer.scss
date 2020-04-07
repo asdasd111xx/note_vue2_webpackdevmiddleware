@@ -1,0 +1,36 @@
+.footer-wrap {
+    border-top: solid 1px #FFBD29;
+    background: #E79910;
+    padding: 40px 0 42px;
+    .footer {
+        margin: 0 auto;
+        width: 1280px;
+        color: #FFF;
+        font-size: 14px;
+        line-height: 18px;
+        text-align: left;
+        .footer-left-text-wrap {
+            float: left;
+            width: 50%;
+        }
+        .footer-info {
+            margin-bottom: 20px;
+            padding: 0 40px;
+            line-height: 20px;
+        }
+        .footer-copyright {
+            padding: 0 40px;
+            font-size: 14px;
+        }
+        .footer-img-wrap {
+            float: right;
+            width: 50%;
+            margin-top: 0;
+            padding: 0 40px;
+            text-align: right;
+            img {
+                max-width: 100%;
+            }
+        }
+    }
+}

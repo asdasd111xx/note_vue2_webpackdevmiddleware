@@ -1,0 +1,18 @@
+// 文案連結
+.article-links-wrap {
+    .article-links {
+        display: inline-block;
+        vertical-align: top;
+        margin-bottom: 11px;
+
+        button {
+            cursor: pointer;
+            color: #A79486;
+            background: transparent;
+
+            &:hover {
+                color: #E8CF94;
+            }
+        }
+    }
+}

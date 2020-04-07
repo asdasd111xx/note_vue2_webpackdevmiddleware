@@ -1,0 +1,112 @@
+@import '~@/css/variable.scss';
+
+// 分頁器
+.page-wrap {
+    margin-top: 26px;
+    text-align: center;
+
+    span,
+    .page-select-wrap {
+        display: inline-block;
+        vertical-align: middle;
+    }
+
+    span,
+    .page-select {
+        border-radius: 5px;
+        border: 1px solid #CCC;
+        height: 40px;
+        cursor: pointer;
+    }
+
+    span {
+        width: 34px;
+        background-image: url("/static/image/member_page_arrow.png");
+        background-repeat: no-repeat;
+
+        &.page-first {
+            background-position: -122px 0;
+        }
+
+        &.page-pre {
+            margin-left: 1%;
+            background-position: -83px 0;
+        }
+
+        &.page-next {
+            margin-right: 1%;
+            background-position: -2px 0;
+        }
+
+        &.page-last {
+            background-position: -43px 0;
+        }
+
+        &.page-total {
+            width: auto;
+            height: auto;
+            border: none;
+            background: none;
+            cursor: auto;
+        }
+
+        &.disable {
+            border-color: #F0F0F0;
+            background-position-y: 100%;
+            cursor: no-drop;
+        }
+    }
+
+    .page-select-wrap {
+        margin: 0 1%;
+        color: $paginationColor;
+
+        .page-select {
+            padding: 0 24px 0 17px;
+            background-position: 44px 50%;
+            width: 68px;
+            color: $paginationColor;
+
+            option {
+                text-align: center;
+                color: $paginationListTextColor;
+            }
+        }
+    }
+}
+
+// pad.pc
+@media screen and (min-width: $phone) {
+    // 分頁器
+    .page-wrap {
+        span {
+            width: 40px;
+
+            &.page-first {
+                background-position: 100% 0;
+            }
+
+            &.page-pre {
+                margin-left: 10px;
+                background-position: -81px 0;
+            }
+
+            &.page-next {
+                margin-right: 10px;
+                background-position: 0 0;
+            }
+            
+            &.page-last {
+                background-position: -41px 0;
+            }
+        }
+
+        .page-select-wrap {
+            margin: 0 22px;
+
+            .page-select {
+                margin-right: 8px;
+            }
+        }
+    }
+}

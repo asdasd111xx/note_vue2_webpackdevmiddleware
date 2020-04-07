@@ -1,0 +1,54 @@
+
+.preset-color {
+    $balanceTitleBg: url('/static/image/mobile/mcenter/bg_header2_iphone8.png') 50% -65px / 100% no-repeat #222;
+    $balanceTitleColor: #FFF;
+    $balanceTitleBorderColor: #F9DCB2;
+
+    $balanceTotalColor: #F4D8AF;
+    $balanceTotalBg: #00347D;
+    
+    $balanceRecycleBtnColor: #FFF;
+    $balanceRecycleBtnBg: rgba(0,0,0,0);
+    $balanceRecycleBtnBorderColor: #FFF;
+
+    $balanceRefreshBtnColor: #FFF;
+
+    $balanceTransferInfoIconBg: #00347D;
+    $balanceTransferInfoIconColor: #F9DCB2;
+
+    $mainAccountBalanceColor: #A37F5B;
+
+    $balanceBtnConfirmColor: #FFF;
+    $balanceBtnConfirmBg: #00347D; 
+    $balanceBtnCancelColor: #FFF;
+    $balanceBtnCancelBg: #A37F5B;
+    @import './balance.module.scss';
+}
+
+.site-500011,
+.site-52,
+.site-53 {
+    $balanceTitleBg: #FFF;
+    $balanceTitleColor: #000;
+    $balanceTitleBorderColor: #F7B500;
+    
+    $balanceTotalColor: #000;
+    $balanceTotalBg: #F6F4F4;
+
+    $balanceRecycleBtnColor: #000;
+    $balanceRecycleBtnBg: #EDB83F;
+    $balanceRecycleBtnBorderColor: #EDB83F;
+
+    $balanceRefreshBtnColor: #000;
+
+    $balanceTransferInfoIconBg: #EDB83F;
+    $balanceTransferInfoIconColor: #FFF;
+
+    $mainAccountBalanceColor: #000;
+
+    $balanceBtnConfirmColor: #000;
+    $balanceBtnConfirmBg: #F7B500; 
+    $balanceBtnCancelColor: #FFF;
+    $balanceBtnCancelBg: #000;
+    @import './balance.module.scss';
+}

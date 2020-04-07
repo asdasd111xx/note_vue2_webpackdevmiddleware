@@ -1,0 +1,154 @@
+@import "~@/css/variable.scss";
+
+.category-list-wrap {
+    background: rgba(53, 51, 56, .7);
+}
+
+.game-content {
+    border-bottom: 1px solid #36353B;
+    height: 0;
+    overflow: hidden;
+    background: rgba(#1A1A29, 0.95);
+    position: absolute;
+    z-index: 5;
+    width: 100%;
+
+
+    &.is-show {
+        height: auto;
+    }
+}
+
+.category-content {
+    border-bottom: 1px solid #36353B;
+
+    &.vendor-list {
+        padding-top: 8px;
+    }
+}
+
+.category-item {
+    display: inline-block;
+    width: auto;
+}
+
+.game-item {
+    float: left;
+    width: calc(100% / 6);
+    text-align: center;
+
+    .vendor,
+    .type {
+        margin-right: 0;
+        padding: 0;
+    }
+}
+
+.vendor,
+.type {
+    position: relative;
+    display: inline-block;
+    box-sizing: border-box;
+    margin-right: 5px;
+    padding: 0 8px;
+    height: 48px;
+    line-height: 48px;
+    color: #FFF;
+    font-size: 15px;
+    cursor: pointer;
+
+    &.is-current {
+        border-bottom: 3px solid #CDB08A;
+        color: #CDB08A;
+    }
+}
+
+.category-list-wrap {
+    .category-content {
+        .loader {
+            top: 10px;
+            left: 10px;
+            box-sizing: border-box;
+            margin-right: 5px;
+            padding: 0 8px;
+            height: 48px;
+            line-height: 48px;
+            color: #FFF;
+            font-size: 15px;
+            cursor: pointer;
+        }
+    }
+}
+
+@media screen and (min-width: $phone + $sidebar) {
+    .game-item {
+        width: calc(100% / 7);
+    }
+}
+
+@media screen and (min-width: $pad + $sidebar) {
+    .game-item {
+        width: calc(100% / 11);
+    }
+}
+
+@media screen and (min-width: $pc + $sidebar) {
+    .category-list-wrap {
+        height: auto;
+        padding: 0 20px;
+
+        &.is-show {
+            padding-bottom: 0;
+        }
+    }
+
+    .game-content {
+        height: auto;
+        position: static;
+        background: none;
+
+        &.vendor-list {
+            padding-top: 8px;
+        }
+    }
+
+    .category-content {
+        &.vendor-list {
+            padding-top: 0;
+        }
+
+        .loader {
+            height: 38px;
+            line-height: 38px;
+            color: #FFF;
+        }
+    }
+
+    .game-item {
+        width: calc(100% / 18);
+        text-align: center;
+
+        .vendor,
+        .type {
+            margin-right: 0;
+            padding: 0;
+        }
+    }
+
+    .vendor,
+    .type {
+        height: 38px;
+        line-height: 38px;
+        color: #FFF;
+    }
+
+    .category-list-wrap {
+        .category-content {
+            .loader {
+                height: 38px;
+                line-height: 38px;
+                color: #FFF;
+            }
+        }
+    }
+}

@@ -1,0 +1,28 @@
+.preset-color {
+    $fieldTitleBg: #00347D;
+    $fieldTitleColor: #FFF;
+
+    $fieldConfirmBtnColor: #FFF;
+    $fieldConfirmBtnBg: #00347D;
+
+    $fieldCancelBtnColor: #FFF;
+    $fieldCancelBtnBg: #A37F5B;
+    $fieldCloseColor: #F9DCB2;
+    @import './editDepositField.module.scss'; 
+}
+
+.site-500011,
+.site-52,
+.site-53 {
+    $fieldTitleBg: #EDB83F;
+    $fieldTitleColor: #000;
+
+    $fieldConfirmBtnColor: #000;
+    $fieldConfirmBtnBg: #EDB83F;
+
+    $fieldCancelBtnColor: #FFF;
+    $fieldCancelBtnBg: #000;
+    $fieldCloseColor: #FFF;
+
+    @import './editDepositField.module.scss';  
+}

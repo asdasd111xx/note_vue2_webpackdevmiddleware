@@ -1,0 +1,182 @@
+.vip-title-wrap {
+    padding: 0 5.3%;
+    margin-bottom: 20px;
+
+    h1 {
+        display: inline-block;
+        margin-right: 20px;
+        font-size: 18px;
+    }
+
+    .honor-channel-btn {
+        display: inline-block;
+        padding: 0 10px;
+        height: 35px;
+        color: #FFF;
+        line-height: 35px;
+        text-align: center;
+        background-color: $color;
+        border: 1px solid $color;
+        border-radius: 3px;
+        cursor: pointer;
+    }
+
+    .title-right {
+        float: right;
+    }
+
+    .receive-btn {
+        display: inline-block;
+        padding: 0 15px;
+        height: 35px;
+        color: #FFF;
+        font-size: 12px;
+        line-height: 35px;
+        text-align: center;
+        background-color: $color;
+        border: 1px solid $color;
+        border-radius: 20px;
+        outline: none;
+        cursor: pointer;
+
+        &.record {
+            margin-right: 10px;
+            color: #666;
+            line-height: 35px;
+            text-align: center;
+            background-color: #EFEFEF;
+            border: 1px solid #EFEFEF;
+        }
+    }
+}
+
+.vip-content-wrap {
+    padding: 0 5.3%;
+}
+
+.vip-content {
+    margin-bottom: 25px;
+    min-height: 100px;
+    border-radius: 5px;
+    background-color: #F8F8F8;
+    box-shadow: 0 0 8px rgba(0, 0, 0, 0.15);
+}
+
+.content-left {
+    display: inline-block;
+    width: 42%;
+    height: 100%;
+    background-color: #FFF;
+    vertical-align: middle;
+}
+
+.content-right {
+    display: inline-block;
+    padding: 10px 20px;
+    width: 57%;
+    height: 100%;
+    vertical-align: middle;
+}
+
+.now-vip-level {
+    display: inline-block;
+    color: #808080;
+    vertical-align: middle;
+
+    h1 {
+        display: inline-block;
+        margin: 0;
+        line-height: 35px;
+        font-size: 18px;
+        vertical-align: middle;
+    }
+
+    img {
+        margin-left: 10px;
+        width: 80px;
+        height: 80px;
+    }
+
+    &.info {
+        margin-left: 10px;
+        width: 62%;
+        height: 100%;
+        min-height: 100px;
+    }
+
+    .info-list {
+        display: inline-block;
+        width: 100%;
+        font-size: 12px;
+    }
+
+    .arrow {
+        display: inline-block;
+        width: 15px;
+        height: 15px;
+        vertical-align: middle;
+        cursor: pointer;
+
+        &.prev {
+            background: url("/static/image/mcenter/vip/arrow_prev.png") 0 0 no-repeat;
+        }
+
+        &.next {
+            background: url("/static/image/mcenter/vip/arrow_next.png") 0 0 no-repeat;
+        }
+    }
+
+    .line {
+        height: 5px;
+        background: url("/static/image/mcenter/vip/line.png") 0 0 repeat-x;
+    }
+
+    .amount {
+        float: right;
+        width: 60%;
+        font-size: 15px;
+        text-align: right;
+    }
+
+    .rebate {
+        color: #999;
+        float: right;
+    }
+}
+
+.vip-level-content {
+    font-size: 14px;
+    color: #333;
+
+    /deep/ .vip-value {
+        font-size: 16px;
+        color: $vipValueColor;
+    }
+}
+
+.vip-level-bar {
+    margin-top: 5px;
+
+    span {
+        font-size: 12px;
+        color: #999;
+        vertical-align: middle;
+    }
+}
+
+.bar-wrap {
+    position: relative;
+    display: inline-block;
+    margin: 0 10px;
+}
+
+.progress-bar {
+    position: absolute;
+    top: 6px;
+    height: 8px;
+    max-width: 280px;
+}
+
+.progress-bar-bg {
+    vertical-align: middle;
+}

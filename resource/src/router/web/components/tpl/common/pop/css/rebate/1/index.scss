@@ -1,0 +1,88 @@
+.pop-rebate-wrap {
+    position: relative;
+    margin: 194px auto 0;
+    border-radius: 4px;
+    background: #FFF;
+    padding-bottom: 24px;
+    width: 98%;
+    max-width: 700px;
+    box-shadow: 0 2px 8px rgba(0, 0, 0, .33);
+    .close-btn {
+        position: absolute;
+        top: 13px;
+        right: 13px;
+        width: 25px;
+        height: 25px;
+        line-height: 25px;
+        font-size: 46px;
+        font-family: initial;
+        color: #999;
+        text-align: center;
+        cursor: pointer;
+        transition: all .3s ease;
+        &:hover {
+            transform:rotate(90deg);
+        }
+    }
+    .title {
+        background: #333;
+        height: 50px;
+        line-height: 50px;
+        color: #FFF;
+        font-size: 20px;
+        font-weight: bold;
+        text-align: center;
+    }
+    .content-wrap {
+        padding: 34px 20px 0;
+
+        .content {
+            text-align: center;
+        }
+        h1 {
+            font-size: 24px;
+            margin-bottom: 15px;
+        }
+    }
+    .rebate-title,
+    .rebate-value {
+        line-height: 24px;
+        padding: 5px 0;
+    }
+    .rebate-value {
+        color: #2E8FD4;
+    }
+    .rebate-loding {
+        margin: 20px 0;
+    }
+    .rebate-entry-button-wrap {
+        text-align: center;
+        margin-top: 15px;
+
+        a {
+            display: inline-block;
+            width: 48%;
+            max-width: 140px;
+            height: 42px;
+            line-height: 42px;
+            color: #FFF;
+            text-decoration: none;
+            border-radius: 4px;
+            margin: 0 5px;
+        }
+        #button-entry-history {
+            background-color: #55B9FF;
+
+            &:hover {
+                background-color: #71BFF5;
+            }
+        }
+        #button-entry-close {
+            background-color: #7A7A81;
+
+            &:hover {
+                background-color: #98989C;
+            }
+        }
+    }
+}

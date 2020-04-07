@@ -1,0 +1,530 @@
+.simple-deposit-wrap {
+    background: #FFF;
+}
+
+.header-wrap {
+    position: relative;
+    height: 100px;
+    background-color: #000;
+}
+
+.logo-wrap {
+    width: 200px;
+    height: 62px;
+    line-height: 62px;
+    margin: 19px auto 0;
+    color: #FFF;
+}
+
+.website-btn {
+    position: absolute;
+    min-width: 120px;
+    height: 40px;
+    line-height: 40px;
+    top: 40px;
+    right: 40px;
+    text-align: center;
+    font-size: 16px;
+    cursor: pointer;
+    border-radius: 4px;
+    color: #FFF;
+    background: #53B2F3;
+}
+
+.content-wrap {
+    width: 1280px;
+    min-height: 683px;
+    margin: 0 auto;
+    padding-top: 30px;
+}
+
+.username-wrap {
+    height: 32px;
+    line-height: 32px;
+    font-size: 16px;
+    color: #262626;
+}
+
+.username-tip {
+    margin-left: 30px;
+    font-size: 14px;
+    color: #53B2F3;
+}
+
+.username-input-wrap {
+    position: relative;
+    display: inline-block;
+    margin-top: 8px;
+}
+
+.username-input {
+    display: block;
+    width: 190px;
+    height: 40px;
+    padding-left: 12px;
+    border-radius: 4px;
+    border: 1px solid #CDCDCD;
+    background: #FFF;
+
+    // Chrome/Opera/Safari
+    &::-webkit-input-placeholder {
+        color: #DDD;
+    }
+    // Firefox 19+
+    &::-moz-placeholder {
+        color: #DDD;
+    }
+    // IE 10+
+    &:-ms-input-placeholder {
+        color: #DDD;
+    }
+    // Firefox 18-
+    &:-moz-placeholder {
+        color: #DDD;
+    }
+}
+
+.img-icon {
+    position: absolute;
+    width: 20px;
+    height: 20px;
+    margin-top: -10px;
+    top: 50%;
+    right: 10px;
+
+    &.img-success {
+        color: #53B2F3;
+    }
+
+    &.img-error {
+        color: #F00;
+    }
+}
+
+.deposit-wrap {
+    padding: 25px 70px 75px 0;
+}
+
+.mode-item {
+    display: inline-block;
+    overflow: hidden;
+    vertical-align: top;
+    width: 20%;
+    height: 40px;
+    line-height: 40px;
+    padding: 0 16px;
+    text-align: center;
+    font-weight: bold;
+    white-space: nowrap;
+    text-overflow: ellipsis;
+    cursor: pointer;
+    border-width: 1px 1px 1px 0;
+    border-style: solid;
+    border-color: #AAA;
+    color: #7E7E7E;
+    background-color: #FFF;
+
+    &.is-current {
+        color: #FFF;
+        background-color: #53B2F3;
+    }
+
+    &:first-child,
+    &:nth-child(5n + 1) {
+        border-width: 1px;
+    }
+
+    &:nth-child(n + 6) {
+        border-top: none;
+    }
+}
+
+.bank-card-wrap {
+    position: relative;
+    margin-top: 25px;
+}
+
+.bank-card-title {
+    float: left;
+    width: 9%;
+    height: 32px;
+    line-height: 32px;
+    font-size: 16px;
+    color: #262626;
+}
+
+.feature-wrap {
+    margin-top: 25px;
+}
+
+.pay-mode-item-wrap {
+    float: left;
+    width: 91%;
+}
+
+.pay-mode-item {
+    position: relative;
+    float: left;
+    box-sizing: border-box;
+    min-width: 148px;
+    height: 52px;
+    margin: 0 5px 5px 0;
+    padding: 6px 4px 6px 42px;
+    cursor: pointer;
+    border: 1px solid #CDCDCD;
+    border-radius: 4px;
+    color: #7E7E7E;
+
+    &.is-current {
+        border-color: #53B2F3;
+        color: #FFF;
+        background: url('/static/image/mcenter/payment_checked_icon.png') #53B2F3 105% 50% no-repeat;
+    }
+
+    span {
+        display: block;
+    }
+    
+    .pay-main-title {
+        font-size: 16px;
+    }
+
+    .pay-sub-title {
+        font-size: 12px;
+    }
+}
+
+.pay-mode-img {
+    position: absolute;
+    width: 36px;
+    height: 36px;
+    left: 3px;
+    padding: 2px;
+    border-radius: 100%;
+    background-color: #FFF;
+}
+
+.bank-feature-wrap {
+    float: left;
+    width: 80%;
+}
+
+.pay-mode-pass {
+    display: inline-block;
+    vertical-align: top;
+    box-sizing: border-box;
+    min-width: 82px;
+    height: 38px;
+    line-height: 36px;
+    margin: 0 5px 5px 0;
+    padding: 0 3px;
+    text-align: center;
+    cursor: pointer;
+    border: 1px solid #CDCDCD;
+    border-radius: 4px;
+    color: #7E7E7E;
+
+    &.is-current {
+        border-color: #53B2F3;
+        color: #fff;
+        background-color: #53B2F3;
+    }
+}
+
+.pass-tip {
+    display: block;
+    font-size: 12px;
+    color: #262626;
+}
+
+.banks-select-wrap {
+    float: left;
+    min-width: 190px;
+
+    .title {
+        line-height: normal;
+        font-size: 13px;
+    }
+
+    :global(.multiselect__option--highlight) {
+        color: rgba(0, 0, 0, 0.87);
+        background: rgba(0, 0, 0, 0.05);
+    }
+}
+
+.deposit-input {
+    display: inline-block;
+    vertical-align: middle;
+    width: 190px;
+    height: 40px;
+    line-height: 40px;
+    padding: 0 4px 0 12px;
+    outline: none;
+    border: 1px solid #CDCDCD;
+    border-radius: 4px;
+    color: #000;
+    background: #FFF;
+
+    &.is-error {
+        border: 1px solid #F00;
+    }
+
+    // Chrome/Opera/Safari
+    &::-webkit-input-placeholder {
+        color: #DDD;
+    }
+    // Firefox 19+
+    &::-moz-placeholder {
+        color: #DDD;
+    }
+    // IE 10+
+    &:-ms-input-placeholder {
+        color: #DDD;
+    }
+    // Firefox 18-
+    &:-moz-placeholder {
+        color: #DDD;
+    }
+}
+
+.error-tip {
+    display: inline-block;
+    vertical-align: middle;
+    margin-left: 10px;
+    font-size: 12px;
+    color: #F00;
+}
+
+.pay-money-item {
+    display: inline-block;
+    vertical-align: top;
+    min-width: 82px;
+    height: 38px;
+    line-height: 38px;
+    margin: 5px 5px 5px 0;
+    padding: 0 8px;
+    text-align: center;
+    cursor: pointer;
+    border: 1px solid #CDCDCD;
+    border-radius: 4px;
+    color: #7E7E7E;
+
+    &.is-current {
+        border-color: #53B2F3;
+        color: #FFF;
+        background-color: #53B2F3;
+    }
+}
+
+.amount-text {
+    display: block;
+    height: 35px;
+    line-height: 35px;
+    font-size: 35px;
+    font-weight: bold;
+    color: #53B2F3;
+}
+
+.speed-input-title {
+    display: block;
+    width: 100px;
+    height: 32px;
+    line-height: 32px;
+    margin-bottom: 12px;
+    font-size: 16px;
+    color: #262626;
+}
+
+.pay-button {
+    display: block;
+    overflow: hidden;
+    width: 120px;
+    height: 40px;
+    line-height: 40px;
+    margin: 8px 0;
+    padding: 0 4px;
+    text-align: center;
+    text-overflow: ellipsis;
+    white-space: nowrap;
+    cursor: pointer;
+    border-radius: 4px;
+    color: #FFF;
+    background: #53B2F3;
+}
+
+.is-speed {
+    width: 190px;
+    margin: 16px 0;
+}
+
+.tip-list {
+    font-size: 12px;
+    color: #000;
+}
+
+.tip-text {
+    font-weight: bold;
+    color: #53B2F3;
+}
+
+.warm-tip {
+    float: left;
+    color: #7E7E7E;
+}
+
+.loading-wrap {
+    position: absolute;
+    width: 100%;
+    height: 100%;
+    padding: 230px 0;
+    top: 0;
+    left: 0;
+    text-align: center;
+    background: rgba(0, 0, 0, 0.4);
+}
+
+.loading-item {
+    display: inline-block;
+    vertical-align: top;
+}
+
+// 極速到帳
+.speed-field-tbody {
+    display: table;
+    width: 100%;
+    border-collapse: collapse;
+}
+
+.speed-field-tr {
+    display: table-row;
+    border-width: 1px 0;
+    border-color: #DDD;
+    border-style: solid;
+}
+
+.speed-field-td {
+    position: relative;
+    display: table-cell;
+    vertical-align: top;
+    width: 79%;
+    padding: 12px;
+    border-width: 0 1px;
+    border-color: #DDD;
+    border-style: solid;
+
+    &.speed-field-thead {
+        width: 21%;
+        line-height: 20px;
+        text-align: right;
+        background: #F0F3F7;
+    }
+}
+
+.method-item {
+    display: inline-block;
+    vertical-align: top;
+    min-width: 82px;
+    height: 30px;
+    line-height: 30px;
+    margin-right: 10px;
+    padding: 0 8px;
+    text-align: center;
+    cursor: pointer;
+    border: 1px solid #CDCDCD;
+    border-radius: 4px;
+    color: #7E7E7E;
+
+    &.is-current {
+        border-color: #53B2F3;
+        color: #FFF;
+        background-color: #53B2F3;
+    }
+}
+
+.speed-deposit-input {
+    box-sizing: border-box;
+    width: 176px;
+    height: 30px;
+    line-height: 30px;
+    padding: 0 12px;
+    outline: none;
+    border: 1px solid #CDCDCD;
+    border-radius: 4px;
+
+    // Chrome/Opera/Safari
+    &::-webkit-input-placeholder {
+        color: #DDD;
+    }
+    // Firefox 19+
+    &::-moz-placeholder {
+        color: #DDD;
+    }
+    // IE 10+
+    &:-ms-input-placeholder {
+        color: #DDD;
+    }
+    // Firefox 18-
+    &:-moz-placeholder {
+        color: #DDD;
+    }
+}
+
+.pay-third-button {
+    display: block;
+    width: 156px;
+    height: 42px;
+    line-height: 42px;
+    margin: 30px 0;
+    text-align: center;
+    cursor: pointer;
+    border-radius: 4px;
+    color: #FFF;
+    background: #53B2F3;
+}
+
+.pay-third-main-title {
+    display: block;
+    line-height: 38px;
+    padding-left: 8px;
+    font-size: 16px;
+}
+
+.footer-wrap {
+    padding: 40px 0;
+    text-align: center;
+    font-size: 16px;
+    color: #FFF;
+    background-color: #000;
+}
+
+.loading-wrap {
+    position: absolute;
+    width: 100%;
+    height: 100%;
+    padding: 258px 0;
+    top: 0;
+    left: 0;
+    text-align: center;
+    background: rgba(0, 0, 0, 0.4);
+}
+
+.loading-item {
+    display: inline-block;
+    vertical-align: top;
+}
+
+.pay-button-wrap {
+    margin-left: 9%;
+    width: 80%;
+}
+
+.inline-wrap {
+    display: inline-block;
+    width: 100%;
+}
+
+.speed-input-group {
+    display: inline-block;
+    width: 100%;
+    margin-top: 25px;
+}

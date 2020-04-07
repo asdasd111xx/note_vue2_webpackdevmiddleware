@@ -1,0 +1,26 @@
+@charset 'UTF-8';
+
+.no-service {
+    background: #FFF;
+    height: 100%;
+    font-family: "Microsoft JhengHei", "微軟正黑體", arial, helvetica, sans-serif;
+    text-align: center;
+    .image {
+        display: inline-block;
+        img {
+            display: block;
+            margin: 50px auto 0;
+            width: 100%;
+            &.logo {
+                max-width: 200px;
+            }
+        }
+    }
+    .text {
+        display: block;
+        margin: 20px auto 0;
+        max-width: 525px;
+        color: #899096;
+        font-size: 20px;
+    }
+}

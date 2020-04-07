@@ -1,0 +1,791 @@
+import { mapGetters, mapActions } from 'vuex';
+import BigNumber from 'bignumber.js/bignumber';
+import ajax from '@/lib/ajax';
+import isMobile from '@/lib/is_mobile';
+import {
+    API_MCENTER_DEPOSIT_INPAY, API_MCENTER_DEPOSIT_CHANNEL, API_TRADE_RELAY, API_MCENTER_DEPOSIT_THIRD
+} from '@/config/api';
+
+export default {
+    data() {
+        return {
+            username: '',
+            depositData: [],
+            orderData: {},
+            passRoad: [],
+            isDepositAi: false,
+            curPaymentGroupIndex: 0,
+            getPassRoadOrAi: {},
+            curModeGroup: {},
+            curPayInfo: {},
+            curPassRoad: {},
+            moneyValue: '',
+            isShow: true,
+            isErrorMoney: false,
+            selectedBank: {},
+            speedField: {
+                depositMethod: '1',
+                depositTime: '',
+                depositAccount: '',
+                depositName: '',
+                bankBranch: '',
+                serialNumber: ''
+            }
+        };
+    },
+    computed: {
+        ...mapGetters({
+            memInfo: 'getMemInfo',
+            isLoading: 'getIsLoading'
+        }),
+        /**
+         * 所有銀行
+         *
+         * @return array
+         */
+        allBanks() {
+            if (!this.curPayInfo || !this.curPayInfo.banks) {
+                return [];
+            }
+
+            return this.curPayInfo.banks.map((bankInfo) => ({
+                label: bankInfo.name,
+                value: bankInfo.id
+            }));
+        },
+        /**
+         * 實際金額
+         *
+         * @return number or string
+         */
+        realSaveMoney() {
+            let promotionValue = this.curPayInfo.offer_enable ? new BigNumber(this.moneyValue).multipliedBy(new BigNumber(this.curPayInfo.offer_percent).dividedBy(100)).toNumber() : 0;
+            const deductionValue = +this.getPassRoadOrAi.fee_percent ? new BigNumber(this.moneyValue).multipliedBy(new BigNumber(this.getPassRoadOrAi.fee_percent).dividedBy(100)).toNumber() : Number(this.getPassRoadOrAi.fee_amount);
+            let total = '0.00';
+
+            // 尚未輸入金額
+            if (!this.moneyValue) {
+                return total;
+            }
+
+            // 未達到單筆存款金額，無優惠
+            if (+this.moneyValue < +this.curPayInfo.offer_amount) {
+                total = deductionValue ? new BigNumber(this.moneyValue).minus(new BigNumber(deductionValue)).toNumber(2) : Number(this.moneyValue);
+
+                // 取小數點後二位，若為整數則補小數點
+                total = total.toString().replace(/^([-]?(\d*))$/, '$1.');
+                // 只取小數點後二位
+                total = `${total}00`.replace(/(\d*\.\d{2})\d*/, '$1');
+                return total;
+            }
+
+            // 超過優惠金額以單筆上限為主
+            if (+this.curPayInfo.per_offer_limit > 0 && promotionValue > +this.curPayInfo.per_offer_limit) {
+                promotionValue = +this.curPayInfo.per_offer_limit;
+            }
+
+            // 總額計算
+            total = deductionValue ? new BigNumber(this.moneyValue).plus(promotionValue).minus(new BigNumber(deductionValue)).toNumber(2) : new BigNumber(this.moneyValue).plus(promotionValue);
+            // 取小數點後二位，若為整數則補小數點
+            total = total.toString().replace(/^([-]?(\d*))$/, '$1.');
+            // 只取小數點後二位
+            total = `${total}00`.replace(/(\d*\.\d{2})\d*/, '$1');
+            return total;
+        },
+        /**
+         * 設定銀行
+         *
+         * @return object
+         */
+        bankSelectValue: {
+            get() {
+                if (Object.keys(this.selectedBank).length === 0) {
+                    return '';
+                }
+
+                return this.selectedBank;
+            },
+            set(value) {
+                this.selectedBank = value;
+
+                if (!this.isDepositAi && this.curModeGroup.channel_display) {
+                    this.getPayPass();
+                }
+            }
+        },
+        /**
+         * 當前存款廠商
+         *
+         * @return string
+         */
+        mixingDeposit() {
+            // 只有迅付
+            if (this.memInfo.config.deposit.includes('迅付') && this.memInfo.config.deposit.length === 1) {
+                return 'onlyFastPay';
+            }
+
+            // 只有第三方
+            if (!this.memInfo.config.deposit.includes('迅付') && this.memInfo.config.deposit.length > 0) {
+                return 'onlyThird';
+            }
+
+            return 'mixing';
+        },
+        /**
+         * 優惠金額提示訊息
+         *
+         * @return string
+         */
+        promitionText() {
+            if (+this.curPayInfo.offer_limit && +this.curPayInfo.per_offer_limit) {
+                return this.$text('S_DEPOSIT_PROMOTION_TEXT', {
+                    replace: [
+                        { target: '%s', value: `<span>${this.curPayInfo.offer_amount}</span>` },
+                        { target: '%s', value: `<span>${this.curPayInfo.offer_percent}</span>` },
+                        { target: '%s', value: `<span>${this.curPayInfo.per_offer_limit}</span>` },
+                        { target: '%s', value: `<span>${this.curPayInfo.offer_limit}</span>` }
+                    ]
+                });
+            }
+
+            if (+this.curPayInfo.per_offer_limit) {
+                return this.$text('S_DEPOSIT_PROMOTION_TEXT02', {
+                    replace: [
+                        { target: '%s', value: `<span>${this.curPayInfo.offer_amount}</span>` },
+                        { target: '%s', value: `<span>${this.curPayInfo.offer_percent}</span>` },
+                        { target: '%s', value: `<span>${this.curPayInfo.per_offer_limit}</span>` }
+                    ]
+                });
+            }
+
+            return this.$text('S_DEPOSIT_PROMOTION_TEXT03', {
+                replace: [
+                    { target: '%s', value: `<span>${this.curPayInfo.offer_amount}</span>` },
+                    { target: '%s', value: `<span>${this.curPayInfo.offer_percent}</span>` }
+                ]
+            });
+        },
+        /**
+         * 手續費提示訊息
+         *
+         * @return string
+         */
+        feeText() {
+            // 百分比手續費
+            if (+this.getPassRoadOrAi.fee_percent) {
+                return this.$text('S_DEPOSIT_TIP06', { replace: [{ target: '%s', value: this.getPassRoadOrAi.fee_percent }] });
+            }
+
+            return this.$text('S_DEPOSIT_TIP07', { replace: [{ target: '%s', value: this.getPassRoadOrAi.fee_amount }] });
+        },
+        /**
+         * 存款金額最小至最大值
+         *
+         * @return string
+         */
+        depositInterval() {
+            const minMoney = +this.curPassRoad.per_trade_min || +this.curPayInfo.per_trade_min;
+            const maxMoney = +this.curPassRoad.per_trade_max || +this.curPayInfo.per_trade_max;
+
+            return {
+                minMoney,
+                maxMoney
+            };
+        },
+        /**
+         * 收款帳號
+         *
+         * @return string
+         */
+        receiptInfo() {
+            if (this.curPassRoad.safe_account === false) {
+                if ((this.curPayInfo.payment_method_id !== 3 && this.curPayInfo.payment_method_id !== 6) && (this.curPassRoad.qrcode || this.curPassRoad.photo)) {
+                    return [
+                        {
+                            objKey: 'withdrawAccount',
+                            title: this.$text('S_WITHDRAW_ACCOUNT', '收款帐号'),
+                            value: this.curPassRoad.bank_account,
+                            isFontBold: false,
+                            copyShow: true
+                        },
+                        {
+                            objKey: 'withdrawNickname',
+                            title: this.$text('S_WITHDRAW_NICKNAME', '收款昵称'),
+                            value: this.curPassRoad.bank_account_name,
+                            isFontBold: false,
+                            copyShow: false
+                        },
+                        {
+                            objKey: 'withdrawDeliver',
+                            title: this.$text('S_DELIVER_INFO', '收款资讯'),
+                            isFontBold: true,
+                            copyShow: false,
+                            qrcode: [
+                                {
+                                    title: this.curPassRoad.photo_name,
+                                    value: this.curPassRoad.photo
+                                },
+                                {
+                                    title: this.curPassRoad.qrcode_name,
+                                    value: this.curPassRoad.qrcode
+                                }
+                            ]
+                        },
+                        {
+                            objKey: 'memo',
+                            title: this.$text('S_DEPOSIT_TIP05', '提醒事项'),
+                            value: this.curPassRoad.reminder.replace(/\n/ig, '<br/>'),
+                            isFontBold: false,
+                            copyShow: false,
+                            htmlShow: true
+                        }
+                    ];
+                }
+
+                return [
+                    {
+                        objKey: 'withdrawBank',
+                        title: this.$text('S_WITHDRAW_BANK', '收款银行'),
+                        value: this.curPassRoad.bank_name,
+                        isFontBold: false,
+                        copyShow: true
+                    },
+                    {
+                        objKey: 'withdrawBranch',
+                        title: this.$text('S_WITHDRAW_BRANCH', '收款支行'),
+                        value: this.curPassRoad.bank_branch,
+                        isFontBold: false,
+                        copyShow: true
+                    },
+                    {
+                        objKey: 'withdrawAccount',
+                        title: this.$text('S_WITHDRAW_ACCOUNT', '收款帐号'),
+                        value: this.curPassRoad.bank_account,
+                        isFontBold: true,
+                        copyShow: true
+                    },
+                    {
+                        objKey: 'withdrawName',
+                        title: this.$text('S_WITHDRAW_NAME', '收款人姓名'),
+                        value: this.curPassRoad.bank_account_name,
+                        isFontBold: false,
+                        copyShow: true
+                    },
+                    {
+                        objKey: 'memo',
+                        title: this.$text('S_DEPOSIT_TIP05', '提醒事项'),
+                        value: this.curPassRoad.reminder.replace(/\n/ig, '<br/>'),
+                        isFontBold: false,
+                        copyShow: false,
+                        htmlShow: true
+                    }
+                ];
+            }
+
+            return false;
+        }
+    },
+    methods: {
+        ...mapActions([
+            'actionSetIsLoading'
+        ]),
+        /**
+         * 取得支付群組
+         * @method getPayGroup
+         */
+        getPayGroup() {
+            this.isShow = true;
+            this.actionSetIsLoading(true);
+
+            if (this.mixingDeposit === 'onlyThird') {
+                this.getPayThird().then(() => { [this.curModeGroup] = this.depositData; });
+                return Promise.resolve({ status: 'third' });
+            }
+
+            // 取得銀行群組
+            return ajax({
+                method: 'get',
+                url: `${API_MCENTER_DEPOSIT_INPAY}?username=${this.username}`,
+                errorAlert: false
+            }).then((response) => {
+                this.isShow = false;
+                this.actionSetIsLoading(false);
+                if (response && response.result === 'ok') {
+                    const filterData = response.ret.payment_group.filter((info) => !info.is_link)[0];
+
+                    this.curModeGroup = filterData || {};
+                    this.curPayInfo = filterData ? filterData.payment_group_content[0] : {};
+                    this.depositData = response.ret.payment_group;
+                    this.isDepositAi = response.ret.deposit_ai;
+
+                    if (this.isDepositAi) {
+                        this.PassRoadOrAi();
+                    }
+                    if (this.mixingDeposit !== 'onlyFastPay') {
+                        this.getPayThird();
+                    }
+
+                    if (!this.isDepositAi && this.curModeGroup.channel_display && (this.curPayInfo.bank_id || this.selectedBank.value)) {
+                        this.getPayPass();
+                        return { result: response.result };
+                    }
+
+                    return { result: response.result };
+                }
+
+                return response;
+            });
+        },
+        /**
+         * 智能 or 一般
+         *
+         * @return object
+         */
+        PassRoadOrAi() {
+            let getDataInfo = this.curPassRoad ? this.curPassRoad : {};
+
+            if (this.isDepositAi) {
+                getDataInfo = this.curModeGroup ? this.curModeGroup.payment_group_content[this.curPaymentGroupIndex] : {};
+            }
+            this.getPassRoadOrAi = {
+                fee_percent: getDataInfo.fee_percent,
+                fee_amount: getDataInfo.fee_amount,
+                amounts: getDataInfo.amounts
+            };
+        },
+        /**
+         * 取得第三方支付群組
+         * @method getPayThird
+         */
+        getPayThird() {
+            this.isShow = true;
+            this.actionSetIsLoading(true);
+
+            // 取得存款第三方
+            return ajax({
+                method: 'get',
+                url: API_MCENTER_DEPOSIT_THIRD,
+                errorAlert: false
+            }).then((response) => {
+                this.isShow = false;
+                this.actionSetIsLoading(false);
+                if (response && response.result === 'ok') {
+                    this.depositData.push(...response.ret.deposit.filter((info) => info.name !== '迅付'));
+
+                    if (this.mixingDeposit !== 'onlyFastPay' && Object.keys(this.curModeGroup).length === 0) {
+                        [this.curModeGroup] = response.ret.deposit.filter((info) => info.name !== '迅付');
+                    }
+                }
+            });
+        },
+        /**
+         * 取得支付通道
+         * @method getPayPass
+         */
+        getPayPass() {
+            if (this.isShow) {
+                return;
+            }
+
+            this.isShow = true;
+            this.actionSetIsLoading(true);
+            // 判斷是否為其他銀行，極速到帳(payment_method_id = 6)、銀行轉帳(payment_method_id = 3)皆有其他銀行選項
+            const isOtherBank = (this.curPayInfo.payment_method_id === 3 && this.curPayInfo.bank_id === 0) || (this.curPayInfo.payment_method_id === 6 && this.curPayInfo.bank_id === 0);
+            const nowBankId = !this.curPayInfo.bank_id ? this.selectedBank.value : this.curPayInfo.bank_id;
+
+            // 取得銀行群組
+            ajax({
+                method: 'get',
+                url: API_MCENTER_DEPOSIT_CHANNEL,
+                errorAlert: false,
+                params: {
+                    payment_method_id: this.curPayInfo.payment_method_id,
+                    bank_id: !isOtherBank ? nowBankId : '',
+                    username: this.username
+                }
+            }).then((response) => {
+                if (response.result === 'ok') {
+                    this.passRoad = response.ret.map((info, index) => ({
+                        ...info,
+                        mainTitle: this.$text('S_PASS_TEXT', { replace: [{ target: '%s', value: index + 1 }] })
+                    }));
+                    this.curPassRoad = { ...this.passRoad[0] };
+                }
+
+                this.isShow = false;
+                this.actionSetIsLoading(false);
+                this.PassRoadOrAi();
+            });
+        },
+        /**
+         * 切換支付群組
+         * @method changeMode
+         * @param {Object} mode - 支付群組資訊
+         */
+        changeMode(mode) {
+            if (mode.is_link && mode.link) {
+                window.open(mode.link, 'third');
+                return;
+            }
+
+            this.resetStatus();
+            this.curModeGroup = mode;
+
+            if (this.isDepositAi && this.curModeGroup.payment_group_content) {
+                this.changePayMode(this.curModeGroup.payment_group_content[0], 0);
+            }
+
+            if (mode.uri) {
+                return;
+            }
+
+            [this.curPayInfo] = this.curModeGroup.payment_group_content;
+            // 判斷是否為其他銀行，極速到帳(payment_method_id = 6)、銀行轉帳(payment_method_id = 3)皆有其他銀行選項
+            const isOtherBank = (this.curPayInfo.payment_method_id === 3 && this.curPayInfo.bank_id === 0) || (this.curPayInfo.payment_method_id === 6 && this.curPayInfo.bank_id === 0);
+
+            if (!this.isDepositAi && this.curModeGroup.channel_display && (this.curPayInfo.bank_id || this.selectedBank.value || isOtherBank)) {
+                this.getPayPass();
+            }
+        },
+        /**
+         * 切換支付方式
+         * @method changePayMode
+         * @param {Object} info - 支付方式資訊
+         */
+        changePayMode(info, index = null) {
+            this.resetStatus();
+            this.curPayInfo = info;
+
+            if (Object.keys(this.selectedBank).length === 0) {
+                this.bankSelectValue = this.allBanks[0] || {};
+            }
+            // 判斷是否為其他銀行，極速到帳(payment_method_id = 6)、銀行轉帳(payment_method_id = 3)皆有其他銀行選項
+            const isOtherBank = (this.curPayInfo.payment_method_id === 3 && this.curPayInfo.bank_id === 0) || (this.curPayInfo.payment_method_id === 6 && this.curPayInfo.bank_id === 0);
+
+            if (this.isDepositAi) {
+                this.curPaymentGroupIndex = index;
+                this.PassRoadOrAi();
+            }
+
+            if (!this.isDepositAi && this.curModeGroup.channel_display && ((!this.curPayInfo.bank_id && isOtherBank) || (this.curPayInfo.bank_id || this.selectedBank.value))) {
+                this.getPayPass();
+            }
+        },
+        /**
+         * 切換通道
+         * @method changePassRoad
+         * @param {Object} info - 支付方式資訊
+         */
+        changePassRoad(info) {
+            this.curPassRoad = info;
+            this.PassRoadOrAi();
+        },
+        /**
+         * 選擇通道金額
+         * @method changeMoney
+         * @param {String} money - 金額
+         */
+        changeMoney(money) {
+            this.moneyValue = money;
+            this.isErrorMoney = false;
+        },
+        /**
+         * 驗證存款金額
+         * @method verificationMoney
+         * @param {String} money - 金額
+         */
+        verificationMoney(money) {
+            if (this.depositInterval.maxMoney) {
+                this.isErrorMoney = money > Number(this.depositInterval.maxMoney) || money < Number(this.depositInterval.minMoney);
+                return;
+            }
+
+            this.isErrorMoney = !money;
+        },
+        /**
+         * 金額輸入
+         * @method submitInput
+         * @param {String} moneyValue - 輸入金額
+         */
+        submitInput(value) {
+            this.moneyValue = value.replace(/[^\d]/g, '');
+
+            if (value.replace(/[^\d]/g, '')) {
+                this.isErrorMoney = false;
+            }
+        },
+        /**
+         * 資料重置
+         * @method resetStatus
+         */
+        resetStatus() {
+            this.curPayInfo = {};
+            this.selectedBank = {};
+            this.passRoad = [];
+            this.curPassRoad = {};
+            this.moneyValue = '';
+            this.isErrorMoney = false;
+
+            Object.keys(this.speedField).forEach((info) => {
+                if (info === 'depositMethod') {
+                    this.speedField[info] = '1';
+                    return;
+                }
+
+                this.speedField[info] = '';
+            });
+        },
+        /**
+         * 送出存款表單
+         * @method submitList
+         * @param {String} inputValue - 輸入金額
+         */
+        submitList() {
+            let newWindow = '';
+            // 辨別裝置是否為ios寰宇瀏覽器
+            const isUBMobile = navigator.userAgent.match(/UBiOS/) !== null && navigator.userAgent.match(/iPhone/) !== null;
+            // 暫時用來判斷馬甲包
+            const webview = window.location.hostname === 'yaboxxxapp02.com';
+
+            // 金額輸入錯誤
+            if ((this.isErrorMoney || !this.moneyValue) && !this.curModeGroup.uri) {
+                const limitValue = `${this.$text('S_SINGLE_LIMIT', '单笔限额')}： ${this.$text('S_MONEY_RANGE_SHORT', {
+                    replace: [
+                        {
+                            target: '%s',
+                            value: this.depositInterval.minMoney
+                        },
+                        {
+                            target: '%s',
+                            value: this.depositInterval.maxMoney
+                        }
+                    ]
+                })}`;
+                alert(+this.moneyValue ? limitValue : this.$text('S_ENTER_MONEY', '请输入金额'));
+                return Promise.resolve({ status: 'error' });
+            }
+
+            // 檢查銀行匯款、支付轉帳的極速到帳表單必填欄位
+            if ([5, 6].includes(this.curPayInfo.payment_type_id)) {
+                const checkItemMap = {
+                    method: {
+                        key: 'bankBranch',
+                        alertMessage: this.$text('S_ENTER_DEPOSIT_BRANCH', '请输入银行支行')
+                    },
+                    deposit_at: {
+                        key: 'depositTime',
+                        alertMessage: this.$text('S_ENTER_DEPOSIT_TIME', '请输入存款时间')
+                    },
+                    pay_account: {
+                        key: 'depositAccount',
+                        alertMessage: this.$text('S_ENTER_DEPOSIT_ACCOUNT', '请输入存款帐号')
+                    },
+                    pay_username: {
+                        key: 'depositName',
+                        alertMessage: this.curPayInfo.payment_type_id === 6 ? this.$text('S_ENTER_DEPOSIT_NICKNAME', '请输入存款昵称') : this.$text('S_ENTER_DEPOSIT_NAME', '请输入存款人姓名')
+                    },
+                    sn: {
+                        key: 'serialNumber',
+                        alertMessage: this.$text('S_PLZ_ENTER_SERIAL_NUMBER', '请输入流水号')
+                    }
+                };
+                const missingRequiredField = this.curPayInfo.field.find((item) => {
+                    const check = checkItemMap[item.name];
+
+                    // 存款方式不是存款方式不是ATM或銀行櫃台 則不需檢查銀行支行的必填
+                    if (item.name === 'method' && !['2', '4'].includes(this.speedField.depositMethod)) {
+                        return false;
+                    }
+
+                    if (check && item.required && !this.speedField[check.key]) {
+                        alert(check.alertMessage);
+                        return true;
+                    }
+                    return false;
+                });
+                if (missingRequiredField) {
+                    return Promise.resolve({ status: 'error' });
+                }
+            }
+
+            // ios寰宇瀏覽器目前另開頁面需要與電腦版開啟方式相同
+            if (isMobile() && !isUBMobile && !webview) {
+                newWindow = window.open('', '_blank');
+            }
+
+            // 第三方存款
+            if (this.curModeGroup.uri) {
+                return ajax({
+                    method: 'get',
+                    url: this.curModeGroup.uri,
+                    errorAlert: !isMobile() || isUBMobile || webview
+                }).then((response) => {
+                    this.isShow = false;
+                    this.actionSetIsLoading(false);
+
+                    if (response && response.result === 'ok') {
+                        // 流量分析事件 - 成功
+                        window.dataLayer.push({
+                            event: 'ga_click',
+                            eventCategory: 'deposit',
+                            eventAction: 'pay',
+                            eventLabel: 'success'
+                        });
+
+                        if (webview) {
+                            window.location.href = response.ret.uri;
+                            return { status: 'third' };
+                        }
+                        if (isMobile() && !isUBMobile) {
+                            newWindow.location.href = response.ret.uri;
+                            return { status: 'third' };
+                        }
+                        window.open(response.ret.uri, 'third');
+                        return { status: 'third' };
+                    }
+
+                    // 流量分析事件 - 失敗
+                    window.dataLayer.push({
+                        event: 'ga_click',
+                        eventCategory: 'deposit',
+                        eventAction: 'pay',
+                        eventLabel: 'failure'
+                    });
+
+                    if (isMobile() && !isUBMobile && !webview) {
+                        newWindow.alert(`${response.msg} ${response.code ? `(${response.code})` : ''}`);
+                        newWindow.close();
+                    }
+
+                    return { status: 'error' };
+                });
+            }
+
+            this.isShow = true;
+            this.actionSetIsLoading(true);
+
+            let paramsData = {
+                api_uri: '/api/trade/v2/c/entry',
+                username: this.username,
+                method_id: this.curPayInfo.payment_method_id,
+                bank_id: this.selectedBank.value || this.curPayInfo.bank_id,
+                amount: this.moneyValue
+            };
+
+            if (!this.isDepositAi && this.curPassRoad.id) {
+                paramsData = {
+                    ...paramsData,
+                    channel_id: this.curPassRoad.id
+                };
+            }
+            // 銀行匯款、支付轉帳的極速到帳表單
+            if ([5, 6].includes(this.curPayInfo.payment_type_id)) {
+                paramsData = {
+                    ...paramsData,
+                    pay_account: this.speedField.depositAccount,
+                    pay_username: this.speedField.depositName,
+                    method: this.speedField.depositMethod,
+                    branch: this.speedField.bankBranch,
+                    deposit_at: this.speedField.depositTime,
+                    sn: this.speedField.serialNumber
+                };
+            }
+
+            return ajax({
+                method: 'post',
+                url: API_TRADE_RELAY,
+                errorAlert: !isMobile() || isUBMobile || webview,
+                params: paramsData
+            }).then((response) => {
+                this.isShow = false;
+                this.actionSetIsLoading(false);
+
+                if (response && response.result === 'ok') {
+                    // 流量分析事件 - 成功
+                    window.dataLayer.push({
+                        event: 'ga_click',
+                        eventCategory: 'deposit',
+                        eventAction: 'pay',
+                        eventLabel: 'success'
+                    });
+
+                    if (response.ret.deposit.url) {
+                        if (webview) {
+                            window.location.href = response.ret.deposit.url;
+                            return { status: 'third' };
+                        }
+                        if (isMobile() && !isUBMobile) {
+                            newWindow.location.href = response.ret.deposit.url;
+                            return { status: 'third' };
+                        }
+                        window.open(response.ret.deposit.url, 'third');
+                        return { status: 'third' };
+                    }
+
+                    if (response.ret.wallet.url) {
+                        if (webview) {
+                            window.location.href = response.ret.wallet.url;
+                            return { status: 'third' };
+                        }
+                        if (isMobile() && !isUBMobile) {
+                            newWindow.location.href = response.ret.wallet.url;
+                            return { status: 'third' };
+                        }
+                        window.open(response.ret.wallet.url, 'third');
+                        return { status: 'third' };
+                    }
+
+                    Object.keys(response.ret).forEach((info) => {
+                        if (info === 'deposit' || info === 'wallet' || info === 'remit') {
+                            return;
+                        }
+
+                        if (response.ret[info] && (info === 'is_deposit' || info === 'is_wallet' || info === 'is_remit')) {
+                            const typeKey = info.split('_')[1];
+
+                            this.orderData.orderInfo = response.ret[typeKey];
+                            this.orderData.methodType = typeKey;
+                            return;
+                        }
+
+                        this.orderData[info] = response.ret[info];
+                    });
+
+                    if (isMobile() && !isUBMobile && !webview) {
+                        newWindow.close();
+                    }
+
+                    return { status: 'local' };
+                }
+
+                // 流量分析事件 - 失敗
+                window.dataLayer.push({
+                    event: 'ga_click',
+                    eventCategory: 'deposit',
+                    eventAction: 'pay',
+                    eventLabel: 'failure'
+                });
+
+                if (isMobile() && !isUBMobile && !webview) {
+                    newWindow.alert(`${response.msg} ${response.code ? `(${response.code})` : ''}`);
+                    newWindow.close();
+                }
+
+                if (response.code === 'TM020058' || response.code === 'TM020059' || response.code === 'TM020060') {
+                    window.location.reload();
+                    return { status: 'error' };
+                }
+
+                return { status: 'error' };
+            });
+        },
+        /**
+         * 複製
+         * @method copyInfo
+         * @param {String} text - 需複製資訊
+         */
+        copyInfo(text) {
+            this.$copyText(text);
+        }
+    }
+};

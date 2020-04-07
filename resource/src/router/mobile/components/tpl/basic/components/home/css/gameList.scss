@@ -1,0 +1,106 @@
+@import "~@/css/variable.scss";
+
+.game-list-wrap {
+    padding: 13px 2px 26px;
+
+    .game-list {
+        position: relative;
+        float: left;
+        width: 25%;
+        padding-top: 13px;
+
+        .image-icon {
+            width: 48px;
+            height: 48px;
+            margin: 0 auto 2px;
+            background-size: 100%;
+            background-repeat: no-repeat;
+        }
+
+        .image-icon {
+            position: relative;
+            background-position: 0 100%;
+
+            img {
+                display: block;
+                position: absolute;
+                top: 0;
+                left: 0;
+                width: 48px;
+                height: 48px;
+                pointer-events: none;
+            }
+
+            .icon-pic {
+                display: block;
+            }
+    
+            .icon-pic-active {
+                display: none;
+            }
+    
+            &:active {
+                .icon-pic {
+                    display: none;
+                }
+        
+                .icon-pic-active {
+                    display: block;
+                }
+            }
+
+            &.is-single {
+                background-position: 0 50%;
+            }
+        }
+
+
+        p {
+            overflow: hidden;
+            margin: 0 auto;
+            padding: 0 3px;
+            color: #363C5D;
+            text-align: center;
+            text-overflow: ellipsis;
+            white-space: nowrap;
+        }
+
+        &.continue {
+            padding-bottom: 17px;
+        }
+    }
+
+    .empty-box {
+        clear: right;
+        margin-top: 25px;
+        color: #777;
+        font-size: 16px;
+        text-align: center;
+        position: fixed;
+        left: 50%;
+        bottom: 50%;
+        transform: translate( -50%, 80px);
+    }
+}
+
+@media screen and (min-width: $phone) {
+    .game-list-wrap {
+        padding-left: 15px;
+        padding-right: 15px;
+
+        .game-list {
+            width: 16.66%;
+        }
+    }
+}
+
+@media screen and (min-width: $pad) {
+    .game-list-wrap {
+        padding-left: 20px;
+        padding-right: 20px;
+
+        .game-list {
+            width: 14.28%;
+        }
+    }
+}

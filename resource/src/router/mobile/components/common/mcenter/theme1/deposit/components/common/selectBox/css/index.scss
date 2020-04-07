@@ -1,0 +1,86 @@
+@import '~@/css/variable.scss';
+
+.select-box-wrap {
+    position: fixed;
+    z-index: 999;
+    width: 100%;
+    min-width: 100%;
+    bottom: 0;
+    left: 0;
+    background: #000;
+}
+
+.select-title-wrap {
+    position: relative;
+    padding: 16px 45px;
+    text-align: center;
+    font-size: 17px;
+    color: #FFF;
+    background-color: #00347D;
+}
+
+.select-close-wrap {
+    position: absolute;
+    width: 23px;
+    height: 23px;
+    margin-top: -11px;
+    top: 50%;
+    left: 20px;
+}
+
+.select-close-btn {
+    display: block;
+    width: 100%;
+}
+
+.select-info-wrap {
+    overflow-y: auto;
+    height: 173px;
+    padding: 11px 27px 50px;
+    font-size: 17px;
+    color: #FFF;
+}
+
+.info-wrap {
+    padding: 8px 9px;
+    border-bottom: 1px solid #F4D8AF;
+
+    &.is-current {
+        color: #F4D8AF;
+    }
+}
+
+.info-bank {
+    float: left;
+
+    &.method-payPass,
+    &.method-depositMethod {
+        float: none;
+        display: block;
+        text-align: center;
+    }
+}
+
+.info-method {
+    float: right;
+}
+
+// pad
+@media screen and (min-width: $pad) {
+    .select-title-wrap {
+        height: 60px;
+        line-height: 60px;
+        font-size: 26px;
+    }
+
+    .select-close-wrap {
+        width: 40px;
+        height: 40px;
+        margin-top: -20px;
+    }
+
+    .info-wrap {
+        padding: 9px;
+        font-size: 20px;
+    }
+}

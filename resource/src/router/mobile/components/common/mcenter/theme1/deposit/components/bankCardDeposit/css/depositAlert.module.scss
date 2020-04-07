@@ -1,0 +1,156 @@
+@import '~@/css/variable.scss';
+
+&.deposit-alert-wrap {
+    position: absolute;
+    width: 100%;
+    height: 100%;
+    top: 0;
+    left: 0;
+    color: #000;
+    background: rgba(0, 0, 0, 0.5);
+}
+
+.alert-wrap {
+    position: relative;
+    width: 264px;
+    height: 345px;
+    margin: 0 auto;
+    top: 160px;
+    left: 0;
+    border-radius: 7px;
+}
+
+.alert-title {
+    position: relative;
+    height: 50px;
+    line-height: 50px;
+    padding: 0 50px;
+    text-align: center;
+    font-size: 17px;
+    border-radius: 7px 7px 0 0;
+    color: $alertTitleColor;
+    background: $alertTitleBg;
+}
+
+.alert-close-wrap {
+    position: absolute;
+    width: 23px;
+    height: 23px;
+    margin-top: -11px;
+    top: 50%;
+    right: 7px;
+    cursor: pointer;
+    color: $alertCloseColor;
+    div {
+        position: relative;
+        width: 100%;
+        height: 100%;
+    }
+    svg {
+        position: absolute;
+        top: 50%;
+        left: 50%;
+        transform: translate(-50%, -50%);
+    }
+}
+
+.alert-close-btn {
+    display: block;
+    max-width: 100%;
+    color: #999;
+}
+
+.alert-body-wrap {
+    padding-bottom: 12px;
+    border-radius: 0 0 7px 7px;
+    background: #FFF;
+}
+
+.success-icon-wrap {
+    display: block;
+    width: 200px;
+    margin: 0 auto;
+    text-align: center;
+}
+
+.success-icon {
+    width: 60px;
+    height: 60px;
+    margin: 14px 0;
+    color: #2693FC;
+}
+
+.success-title {
+    display: block;
+    padding-bottom: 2px;
+    text-align: center;
+    font-size: 18px;
+    color: #2693FC;
+}
+
+.tip-wrap {
+    width: 240px;
+    margin: 12px auto 24px;
+    font-size: 13px;
+}
+
+.confirm-btn {
+    display: block;
+    width: 230px;
+    height: 45px;
+    line-height: 45px;
+    margin: 0 auto;
+    text-align: center;
+    cursor: pointer;
+    border-radius: 4px;
+    color: $alertConfirmBtnColor;
+    background: $alertConfirmBtnBg;
+
+    &:active {
+        background-color: $alertConfirmBtnActiveBg;
+    }
+}
+
+// pad
+@media screen and (min-width: $pad) {
+    .alert-wrap {
+        width: 420px;
+        height: 60px;
+    }
+
+    .alert-title {
+        height: 60px;
+        line-height: 60px;
+        font-size: 26px;
+    }
+
+    .alert-close-wrap {
+        width: 34px;
+        height: 34px;
+        margin-top: -17px;
+        right: 20px;
+    }
+
+    .success-icon {
+        width: 100px;
+        height: 100px;
+    }
+
+    .success-title {
+        font-size: 22px;
+    }
+
+    .tip-wrap {
+        width: 380px;
+        line-height: 30px;
+        font-size: 20px;
+        margin-top: 18px;
+    }
+
+    .confirm-btn {
+        width: 300px;
+        height: 58px;
+        line-height: 58px;
+        font-size: 20px;
+    }
+}

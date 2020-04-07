@@ -1,0 +1,14 @@
+.lang-item {
+    float: left;
+    width: 18px;
+    height: 18px;
+    margin-right: 6px;
+    cursor: pointer;
+    background-position: 0 0;
+    background-repeat: no-repeat;
+    background-size: cover;
+
+    &:last-child {
+        margin-right: 0;
+    }
+}
