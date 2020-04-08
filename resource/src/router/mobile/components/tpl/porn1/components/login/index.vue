@@ -1,109 +1,122 @@
 <template>
-    <div class="container">
-        <div class="header">
-            <img
-                :src="$getCdnPath('/static/image/mobile/tpl/porn1/login/home.png')"
-                @click="$router.push({ name: 'home' })"
-            />
-            <span class="title">{{ $text('S_LOGON', '登录') }}</span>
-        </div>
-        <div class="login-wrap clearfix">
-            <div class="login-logo">
-                <img :src="$getCdnPath('/static/image/mobile/tpl/porn1/login/logo.png')" />
-            </div>
-            <div class="login-form-wrap">
-                <!-- 帳號 -->
-                <span class="login-unit login-unit-username">
-                    <input
-                        ref="username"
-                        v-model="username"
-                        :title="$text('S_ACCOUNT', '帐号')"
-                        :placeholder="$text('S_ACCOUNT', '帐号')"
-                        class="login-input"
-                        maxlength="20"
-                        tabindex="1"
-                        @keydown.13="loginCheck"
-                        @change="onSaveAccount"
-                    />
-                    <span class="input-icon" />
-                </span>
-                <!-- 密碼 -->
-                <span class="login-unit login-unit-password">
-                    <input
-                        ref="password"
-                        v-model="password"
-                        :title="$text('S_PASSWORD', '密码')"
-                        :placeholder="$text('S_PASSWORD', '密码')"
-                        class="login-input"
-                        type="password"
-                        maxlength="12"
-                        tabindex="2"
-                        @keydown.13="loginCheck"
-                    />
-                    <span class="input-icon" />
-                </span>
-                <!-- 驗證碼 -->
-                <span v-if="hasCaptchaText" class="login-unit login-unit-captcha clearfix">
-                    <input
-                        ref="captcha"
-                        v-model="captcha"
-                        :title="$text('S_RELOAD_PIC', '( 点选此处产生新验证码 )')"
-                        :placeholder="$text('S_CHECK_CODE', '验证码')"
-                        class="login-input"
-                        maxlength="4"
-                        tabindex="3"
-                        @focus="getCaptcha"
-                        @keydown.13="loginCheck"
-                    />
-                    <span class="input-icon" />
-                    <img
-                        v-if="captchaImg"
-                        :src="captchaImg"
-                        height="25"
-                        @click="getCaptcha"
-                    />
-                </span>
-                <div class="login-deposit-username clearfix" @click="onSaveAccount">
-                    <div class="icon-wrap" @click="depositStatus = !depositStatus">
-                        <img :src="`/static/image/mobile/tpl/porn1/login/sign_check${depositStatus? '_active': ''}.png`" />
-                    </div>
-                    <span class="deposit-text">{{ $text('S_SAVE_ACCOUNT', '储存帐号') }}</span>
-                    <!-- 忘記密碼 -->
-                    <span class="login-unit-link" @click="onService">{{ $text('S_PASSWORD_FORGET', '忘记密码') }}?</span>
-                </div>
-                <div class="login-bottom-wrap">
-                    <!-- 滑動驗證 -->
-                    <slide-verification
-                        v-if="memInfo.config.login_captcha_type === 2"
-                        :is-enable="isSlideAble"
-                        :success-fuc="slideLogin"
-                        page-status="login"
-                    />
-                    <div
-                        v-else
-                        class="login-button login-submit"
-                        @click="loginCheck"
-                    >
-                        {{ $text('S_LOGIN_TITLE', '登录') }}
-                    </div>
-                </div>
-                <div class="login-link-wrap">
-                    <!-- 加入會員 -->
-                    <div class="link-button link-join-mem">
-                        <router-link to="/mobile/joinmember">{{ $text('S_FREE_REGISTER', '免费注册') }}</router-link>
-                    </div>
-                    <!-- 登入鈕 -->
-                    <div class="link-button link-submit" @click="onService">{{ $text('S_CUSTOMER_SERVICE_ONLINE', '在线客服') }}</div>
-                </div>
-            </div>
-            <security-check
-                v-if="checkItem"
-                :check-item.sync="checkItem"
-                :theme="$styleSecurityCheck"
-                :on-login="login"
-            />
-        </div>
+  <div class="container">
+    <div class="header">
+      <img
+        :src="$getCdnPath('/static/image/mobile/tpl/porn1/login/home.png')"
+        @click="$router.push({ name: 'home' })"
+      />
+      <span class="title">{{ $text("S_LOGON", "登录") }}</span>
     </div>
+    <div class="login-wrap clearfix">
+      <div class="login-logo">
+        <img :src="$getCdnPath('/static/image/_new/login/logo.png')" />
+      </div>
+      <div class="login-form-wrap">
+        <!-- 帳號 -->
+        <span class="login-unit login-unit-username">
+          <input
+            ref="username"
+            v-model="username"
+            :title="$text('S_ACCOUNT', '帐号')"
+            :placeholder="$text('S_ACCOUNT', '帐号')"
+            class="login-input"
+            maxlength="20"
+            tabindex="1"
+            @keydown.13="loginCheck"
+            @change="onSaveAccount"
+          />
+          <span class="input-icon" />
+        </span>
+        <!-- 密碼 -->
+        <span class="login-unit login-unit-password">
+          <input
+            ref="password"
+            v-model="password"
+            :title="$text('S_PASSWORD', '密码')"
+            :placeholder="$text('S_PASSWORD', '密码')"
+            class="login-input"
+            type="password"
+            maxlength="12"
+            tabindex="2"
+            @keydown.13="loginCheck"
+          />
+          <span class="input-icon" />
+        </span>
+        <!-- 驗證碼 -->
+        <span
+          v-if="hasCaptchaText"
+          class="login-unit login-unit-captcha clearfix"
+        >
+          <input
+            ref="captcha"
+            v-model="captcha"
+            :title="$text('S_RELOAD_PIC', '( 点选此处产生新验证码 )')"
+            :placeholder="$text('S_CHECK_CODE', '验证码')"
+            class="login-input"
+            maxlength="4"
+            tabindex="3"
+            @focus="getCaptcha"
+            @keydown.13="loginCheck"
+          />
+          <span class="input-icon" />
+          <img
+            v-if="captchaImg"
+            :src="captchaImg"
+            height="25"
+            @click="getCaptcha"
+          />
+        </span>
+        <div class="login-deposit-username clearfix" @click="onSaveAccount">
+          <div class="icon-wrap" @click="depositStatus = !depositStatus">
+            <img
+              :src="
+                `/static/image/_new/login/sign_check${
+                  depositStatus ? '_active' : ''
+                }.png`
+              "
+            />
+          </div>
+          <span class="deposit-text">{{
+            $text("S_SAVE_ACCOUNT", "储存帐号")
+          }}</span>
+          <!-- 忘記密碼 -->
+          <span class="login-unit-link" @click="onService"
+            >{{ $text("S_PASSWORD_FORGET", "忘记密码") }}?</span
+          >
+        </div>
+        <div class="login-bottom-wrap">
+          <!-- 滑動驗證 -->
+          <slide-verification
+            v-if="memInfo.config.login_captcha_type === 2"
+            :is-enable="isSlideAble"
+            :success-fuc="slideLogin"
+            page-status="login"
+          />
+          <div v-else class="login-button login-submit" @click="loginCheck">
+            {{ $text("S_LOGIN_TITLE", "登录") }}
+          </div>
+        </div>
+        <div class="login-link-wrap">
+          <!-- 加入會員 -->
+          <div class="link-button link-join-mem">
+            <router-link to="/mobile/joinmember">{{
+              $text("S_FREE_REGISTER", "免费注册")
+            }}</router-link>
+          </div>
+          <!-- 登入鈕 -->
+          <div class="link-button link-submit" @click="onService">
+            {{ $text("S_CUSTOMER_SERVICE_ONLINE", "在线客服") }}
+          </div>
+        </div>
+      </div>
+      <security-check
+        v-if="checkItem"
+        :check-item.sync="checkItem"
+        :theme="$styleSecurityCheck"
+        :on-login="login"
+      />
+    </div>
+  </div>
 </template>
 
 <script>
@@ -116,192 +129,195 @@ import slideVerification from '@/components/slideVerification';
  * 登入共用元件
  */
 export default {
-    components: {
-        securityCheck: () => import(/* webpackChunkName: 'securityCheck' */'@/router/web/components/common/securityCheck'),
-        slideVerification
-    },
-    mixins: [loginForm],
-    props: {
-        redirect: {
-            type: String,
-            default: '/mobile'
-        }
-    },
-    computed: {
-        ...mapGetters({
-            webInfo: 'getWebInfo',
-            cdnDomain: 'getCdnDomain',
-            siteConfig: 'getSiteConfig',
-            memInfo: 'getMemInfo',
-            onlineService: 'getOnlineService'
-        }),
-        mobileColor() {
-            return this.$cookie.get('MOBILE_COLOR') || this.siteConfig.MOBILE_COLOR;
-        },
-        hasCaptchaText() {
-            if (this.memInfo.config.login_captcha_type === 1) {
-                return true;
-            }
-
-            return false;
-        },
-        isSlideAble() {
-            if (!this.username || !this.password) {
-                return false;
-            }
-
-            return true;
-        }
-    },
-    created() {
-        this.username = localStorage.getItem('username') || '';
-        this.depositStatus = localStorage.getItem('depositStatus') || false;
-    },
-    methods: {
-        mobileLinkOpen,
-        onService() {
-            if (!this.onlineService.url) {
-                return;
-            }
-
-            this.mobileLinkOpen({ linkType: 'static', linkTo: 'service' });
-        },
-        slideLogin(loginInfo) {
-            this.loginCheck({ captcha_text: loginInfo.data }, loginInfo.slideFuc);
-        }
+  components: {
+    securityCheck: () => import(/* webpackChunkName: 'securityCheck' */'@/router/web/components/common/securityCheck'),
+    slideVerification
+  },
+  mixins: [loginForm],
+  props: {
+    redirect: {
+      type: String,
+      default: '/mobile'
     }
+  },
+  computed: {
+    ...mapGetters({
+      webInfo: 'getWebInfo',
+      cdnDomain: 'getCdnDomain',
+      siteConfig: 'getSiteConfig',
+      memInfo: 'getMemInfo',
+      onlineService: 'getOnlineService'
+    }),
+    mobileColor() {
+      return this.$cookie.get('MOBILE_COLOR') || this.siteConfig.MOBILE_COLOR;
+    },
+    hasCaptchaText() {
+      if (this.memInfo.config.login_captcha_type === 1) {
+        return true;
+      }
+
+      return false;
+    },
+    isSlideAble() {
+      if (!this.username || !this.password) {
+        return false;
+      }
+
+      return true;
+    }
+  },
+  created() {
+    this.username = localStorage.getItem('username') || '';
+    this.depositStatus = localStorage.getItem('depositStatus') || false;
+  },
+  methods: {
+    mobileLinkOpen,
+    onService() {
+      if (!this.onlineService.url) {
+        return;
+      }
+
+      this.mobileLinkOpen({ linkType: 'static', linkTo: 'service' });
+    },
+    slideLogin(loginInfo) {
+      this.loginCheck({ captcha_text: loginInfo.data }, loginInfo.slideFuc);
+    }
+  }
 };
 </script>
 
 <style src="./css/index.scss" lang="scss"  scoped></style>
 <style lang="scss" module="$styleSecurityCheck">
 .container {
-    position: fixed;
-    top: 0;
-    left: 0;
-    width: 100%;
-    height: 100%;
-    z-index: 999;
+  position: fixed;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  z-index: 999;
 }
 
 .content {
-    position: relative;
-    margin: 194px auto 0;
-    border-radius: 4px;
-    background: #222;
-    padding-bottom: 24px;
-    box-shadow: 0 2px 8px rgba(0, 0, 0, 0.33);
-    max-width: 340px;
-    color: #FFF;
-    font-size: 14px;
+  position: relative;
+  margin: 194px auto 0;
+  border-radius: 4px;
+  background: #222;
+  padding-bottom: 24px;
+  box-shadow: 0 2px 8px rgba(0, 0, 0, 0.33);
+  max-width: 340px;
+  color: #fff;
+  font-size: 14px;
 }
 
 .title {
-    margin-bottom: 16px;
-    padding: 15px 20%;
-    background: #493535;
-    width: 100%;
-    font-size: 20px;
-    line-height: 20px;
-    text-align: center;
-    color: #FFF;
-    text-overflow: ellipsis;
-    overflow: hidden;
-    white-space: nowrap;
+  margin-bottom: 16px;
+  padding: 15px 20%;
+  background: #493535;
+  width: 100%;
+  font-size: 20px;
+  line-height: 20px;
+  text-align: center;
+  color: #fff;
+  text-overflow: ellipsis;
+  overflow: hidden;
+  white-space: nowrap;
 }
 .field {
-    margin: 0 auto 16px;
-    width: 80%;
+  margin: 0 auto 16px;
+  width: 80%;
 
-    .field-title {
-        line-height: 3;
+  .field-title {
+    line-height: 3;
+  }
+
+  input {
+    display: block;
+    background-color: #56433c;
+    border: none;
+    border-radius: 8px;
+    width: 100%;
+    height: 40px;
+    text-indent: 10px;
+    outline: none;
+    color: #fff;
+
+    &::-webkit-input-placeholder {
+      color: #fff;
     }
-
-    input {
-        display: block;
-        background-color: #56433C;
-        border: none;
-        border-radius: 8px;
-        width: 100%;
-        height: 40px;
-        text-indent: 10px;
-        outline: none;
-        color: #FFF;
-
-        &::-webkit-input-placeholder {
-            color: #FFF;
-        }
-    }
+  }
 }
 
+.link-submit {
+  color: #9ca3bf;
+}
 .submit {
-    margin: 0 auto;
-    border-radius: 8px;
-    background: #F2C925;
-    width: 80%;
-    height: 40px;
-    line-height: 40px;
-    color: #493535;
-    cursor: pointer;
-    text-align: center;
+  margin: 0 auto;
+  border-radius: 8px;
+  background: #f2c925;
+  width: 80%;
+  height: 40px;
+  line-height: 40px;
+  color: #493535;
+  cursor: pointer;
+  text-align: center;
 }
 
 .close {
-    position: absolute;
-    top: 5px;
-    right: 10px;
-    width: 40px;
-    height: 40px;
-    line-height: 36px;
-    font-size: 36px;
-    text-align: center;
-    color: #FFF;
-    cursor: pointer;
-    transition: all .3s ease;
+  position: absolute;
+  top: 5px;
+  right: 10px;
+  width: 40px;
+  height: 40px;
+  line-height: 36px;
+  font-size: 36px;
+  text-align: center;
+  color: #fff;
+  cursor: pointer;
+  transition: all 0.3s ease;
 
-    &:hover {
-        transform:rotate(90deg);
-    }
+  &:hover {
+    transform: rotate(90deg);
+  }
 }
 
 .tip {
-    margin: 20px auto 0;
-    width: 80%;
-    font-size: 15px;
-    text-align: center;
-    color: #F94444;
+  margin: 20px auto 0;
+  width: 80%;
+  font-size: 15px;
+  text-align: center;
+  color: #f94444;
 }
 
 .mask {
-    position: absolute;
-    top: 0;
-    left: 0;
-    background-color: rgba(0, 0, 0, 0.5);
-    width: 100%;
-    height: 100%;
+  position: absolute;
+  top: 0;
+  left: 0;
+  background-color: rgba(0, 0, 0, 0.5);
+  width: 100%;
+  height: 100%;
 }
 
 // 藍紫色系
 :global(.bluePurple) :local {
-    .content {
-        background: #1B1A44;
+  .content {
+    background: #1b1a44;
 
-        .title {
-            background: #6A69F5;
-        }
+    .title {
+      background: #6a69f5;
     }
+  }
 
-    .field input {
-        background: #6A69F5;
-    }
+  .field input {
+    background: #6a69f5;
+  }
 
-    .submit {
-        background: #CE5CEF;
-        color: #FFF;
-    }
+  .submit {
+    background: #ce5cef;
+    color: #fff;
+  }
 
-    .mask {
-        background-color: rgba(0, 0, 0, 0.8);
-    }
+  .mask {
+    background-color: rgba(0, 0, 0, 0.8);
+  }
 }
 </style>

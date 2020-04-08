@@ -8,7 +8,7 @@
     height: 43px;
     line-height: 43px;
     position: relative;
-    background: #000;
+    background: white;
     text-align: center;
 
     img {
@@ -23,7 +23,7 @@
 }
 
 .title {
-    color: #FFF;
+    color: black;
     font-size: 16px;
 }
 
@@ -31,11 +31,13 @@
     min-height: 100vh;
     margin: 0 auto;
     font-size: 14px;
+    background-image: url('/static/image/_new//login/bg.png');
+
 }
 
 .login-logo {
-    width: 80px;
-    margin: 40px auto 15px;
+    width: 150px;
+    margin: 70px auto 15px;
 
     img {
         width: 100%;
@@ -51,7 +53,7 @@
 
 .login-form-wrap {
     height: 360px;
-    margin: 25px 6% 0;
+    margin: 75px 6% 0;
     padding: 0 9%;
 
 
@@ -136,36 +138,41 @@
             float: left;
             position: relative;
             margin-left: 6px;
-            color: #000;
+            color: #5E626D;
         }
 
         .login-unit-link {
             float: right;
             position: relative;
-            color: #000;
+            color: #5E626D;
         }
     }
 
     .login-button {
-        height: 40px;
-        color: #000;
+        height: 50px;
+        color: white;
         text-align: center;
-        line-height: 40px;
-        background-color: #F4D452;
-        border-radius: 20px;
-        font-size: 16px;
+        line-height: 50px;
+        background: linear-gradient(to left, #BD9D7D 0%, #F9DDBD 100%);
+        border-radius: 25px;
+        font-size: 13px;
     }
 }
 
 .login-link-wrap {
     margin-top: 25px;
+
     .link-button {
         display: inline-block;
         width: 49%;
         text-align: center;
 
+        &.link-submit {
+            color: #9CA3BF;
+        }
+
         a {
-            color: #304A85;
+            color: #5E626D;
         }
     }
 }
