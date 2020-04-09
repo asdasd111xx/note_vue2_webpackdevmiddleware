@@ -2,7 +2,7 @@
   <mobile-container :header-config="headerConfig" :class="$style.container">
     <div slot="content" class="content-wrap">
       <home-slider :hall-tab="hallTab" />
-      <home-new :data="newsData" />
+      <home-new />
       <!--
       <home-content
         :hall-list="hallList"
@@ -42,14 +42,7 @@ export default {
     ...mapGetters({
       memInfo: 'getMemInfo',
       gameData: 'getGameData',
-      newsPopControl: 'getNewsPopControl',
-      memNewsData: 'getNews',
-      agentNewsData: 'getAgentNews',
     }),
-    newsData() {
-      console.log(this.memNewsData)
-      return (this.newsPopControl.type === 'mem') ? this.memNewsData : this.agentNewsData;
-    },
     // 當前大廳
     hallTab: {
       get() {

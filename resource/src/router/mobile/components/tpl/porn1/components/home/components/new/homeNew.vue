@@ -11,22 +11,23 @@
       class="news-content"
       @click="togglePopup"
     >
-      <span> {{ title }} &nbsp;&nbsp;&nbsp;&nbsp; </span>
+      <span v-for="(item, index) in newsData" :key="index">
+        {{ item.content }} &nbsp;&nbsp;&nbsp;&nbsp;
+      </span>
     </marquee>
   </div>
 </template>
 
 <script>
 import { mapGetters, mapActions } from 'vuex';
-import common from '@/api/common';
 
 export default {
   components: {
   },
   props: {
-    data: {
-      type: Array,
-      required: true
+    dataSource: {
+      type: String,
+      default: 'mem'
     },
     speed: {
       type: Number,
@@ -40,70 +41,38 @@ export default {
       type: Boolean,
       default: true
     },
-    togglePopup: {
+    updateNews: {
       type: Function,
       default: () => { }
     }
   },
   data() {
     return {
-      isShow: false,
-      title: '最新消息最新消息最新消息最新消息',
-      content: '',
-      image: '',
-      isText: true,
-      imgSrc: '' // 圖片src路徑
+      commonClass: ['news-content-wrap', 'clearfix']
     };
   },
   computed: {
     ...mapGetters({
-      postData: 'getPost',
-      loginStatus: 'getLoginStatus',
+      isBackEnd: 'getIsBackEnd',
+      newsPopControl: 'getNewsPopControl',
       memNewsData: 'getNews',
-      agentNewsData: 'getAgentNews',
-      curLang: 'getCurLang'
+      agentNewsData: 'getAgentNews'
     }),
-  },
-  beforeMount() {
-    this.getPostData();
+    newsData() {
+      return (this.dataSource === 'mem') ? this.memNewsData : this.agentNewsData;
+    }
   },
   methods: {
     ...mapActions([
-      'actionSetPost'
+      'actionNewsPopControl'
     ]),
-    showDialog() {
-      this.isShow = !this.isShow;
-    },
-    getPostData() {
-      this.actionSetPost().then((value) => {
+    // 開啟最新消息方式
+    togglePopup() {
+      if (this.isBackEnd || !this.viewFullContent) {
+        return;
+      }
 
-        if (value.result !== 'ok') {
-          return;
-        }
-
-        const data = value.ret;
-        const lang = this.curLang.replace('-', '_');
-        const title = data[0][`${lang}_title`];
-        const content = data[0][`${lang}_content`];
-        const image = data[0][`${lang}_image`];
-        const isText = data[0].is_text;
-
-        this.title = title ? `${title}` : null;
-        this.isText = isText;
-
-        if (isText) {
-          this.content = content ? `${content}` : null;
-          return;
-        }
-
-        if (image) {
-          common.image({
-            success: (res) => {
-              this.imgSrc = res.ret;
-            }
-          }, image);
-        }
-      });
+      this.actionNewsPopControl({ type: this.dataSource, status: !this.newsPopControl.status });
     }
   }
 };

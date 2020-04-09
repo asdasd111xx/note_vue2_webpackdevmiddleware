@@ -41,7 +41,7 @@ export default {
         { key: 'promotion', name: this.$text('S_PROMOTION', '优惠'), path: '/mobile/promotion' },
         // { key: 'liveStream', name: this.$text('S_LIVE_STREAM', '直播'), path: '/mobile/liveStream' },
         { key: 'service', name: this.$text('S_SERVIEC', '客服'), path: '/mobile/service' },
-        { key: 'sponsor', name: this.$text('S_DISCOVER', '发现'), path: '/mobile/discover' },
+        { key: 'discover', name: this.$text('S_DISCOVER', '发现'), path: '/mobile/discover' },
         { key: 'mcenter-home', name: this.$text('S_INFORMATION', '我的'), path: '/mobile/mcenter' }
       ];
     }
@@ -68,8 +68,15 @@ export default {
   left: 0;
   width: 100%;
   min-height: 60px;
-  background-color: white;
   z-index: 2;
+
+  background: -webkit-linear-gradient(right, #ffffff, #eeeeee);
+  background: -o-linear-gradient(left, #ffffff, #eeeeee);
+  background: -moz-linear-gradient(left, #ffffff, #eeeeee);
+  background: linear-gradient(to left, #ffffff, #eeeeee);
+
+  border-radius: 20px 20px 0 0;
+  box-shadow: 0pt -7px 7px 0 rgba(0, 0, 0, 0.05);
 }
 
 .footer-item {

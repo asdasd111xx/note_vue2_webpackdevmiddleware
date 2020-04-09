@@ -23,7 +23,7 @@
 }
 
 .title {
-    color: black;
+    color: rgb(134, 130, 130);
     font-size: 16px;
 }
 
@@ -31,8 +31,9 @@
     min-height: 100vh;
     margin: 0 auto;
     font-size: 14px;
-    background-image: url('/static/image/_new//login/bg.png');
-
+    background-repeat: no-repeat;
+    background-size: cover;
+    background-image: url("/static/image/_new/common/bg.png");
 }
 
 .login-logo {
