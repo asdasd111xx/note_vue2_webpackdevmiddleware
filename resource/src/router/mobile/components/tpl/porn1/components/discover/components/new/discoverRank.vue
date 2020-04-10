@@ -186,7 +186,7 @@ export default {
   text-align: center;
 
   &.active {
-    color: #a6a9b2;
+    color: $main_text_color2;
   }
 }
 

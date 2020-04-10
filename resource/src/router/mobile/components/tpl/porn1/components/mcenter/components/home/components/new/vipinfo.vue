@@ -1,5 +1,82 @@
 <template>
-  <div :class="$style['mcenter-info-wrap']"></div>
+  <div :class="$style['mcenter-vip-wrap']">
+    <div :class="$style['vip-promotion-wrap']">
+      <div @click="$router.push('/mobile/mcenter/accountVIP')">
+        <img
+          :src="$getCdnPath('/static/image/_new/mcenter/ic_vipprivicege.png')"
+        />
+        <div>
+          <div>VIP特权</div>
+          <div :class="$style['sub-text']">VIP PRIVILEGE</div>
+        </div>
+      </div>
+
+      <div>
+        <img
+          :src="$getCdnPath('/static/image/_new/mcenter/ic_promotion.png')"
+        />
+        <div>
+          <div>推广赚钱</div>
+          <div :class="$style['sub-text']">PROMOTION</div>
+        </div>
+      </div>
+    </div>
+    <div class="clearfix">
+      <!-- bottom-left -->
+      <div
+        :class="[
+          $style['info-btn-wrap'],
+          { [$style['is-full']]: memInfo.user.display_vip }
+        ]"
+      >
+        <div :class="$style['info-btn01']" @click="onListClick(0)">
+          <img
+            :src="
+              $getCdnPath(
+                '/static/image/mobile/tpl/porn1/home/online_deposit_icon.png'
+              )
+            "
+          />
+          <span>{{ $text("S_DEPOSIT", "充值") }}</span>
+        </div>
+        <div :class="$style['info-btn02']" @click="onListClick(1)">
+          <img
+            :src="
+              $getCdnPath('/static/image/mobile/tpl/porn1/home/wallet_icon.png')
+            "
+          />
+          <span>{{ $text("S_TRANSFER_BTN", "转账") }}</span>
+        </div>
+        <div :class="$style['info-btn03']" @click="onListClick(2)">
+          <img
+            :src="
+              $getCdnPath(
+                '/static/image/mobile/tpl/porn1/home/online_withdrawals_icon.png'
+              )
+            "
+          />
+          <span>{{ $text("S_WITHDRAWAL_TEXT", "提现") }}</span>
+        </div>
+        <div
+          v-if="memInfo.user.display_vip"
+          :class="$style['info-btn04']"
+          @click="onListClick(3)"
+        >
+          <img
+            :src="
+              $getCdnPath('/static/image/mobile/tpl/porn1/home/vip_icon.png')
+            "
+          />
+          <span>{{ $text("S_VIP_DETAILS_BTN", "VIP详情") }}</span>
+        </div>
+      </div>
+      <!-- bottom-right -->
+      <div :class="$style['login-view']">
+        <span :class="$style.money">¥{{ memBalance.total }}</span>
+        <span>{{ $text("S_TOTAL_MONEY", "总金额") }}</span>
+      </div>
+    </div>
+  </div>
 </template>
 
 <script>
@@ -124,67 +201,43 @@ export default {
 <style lang="scss" module>
 @import "~@/css/variable.scss";
 
-.mcenter-info-wrap {
-  margin: 0 auto;
-  border-radius: 9px;
-  background: #f8f1eb;
-  width: 94%;
-  height: 103px;
-  font-size: 12px;
-  .mcenter-info-header {
-    padding: 5px 0;
-    background: url("/static/image/mobile/tpl/porn1/home/vip_header_bg.png") 0 0
-      no-repeat;
-    background-size: 100%;
-    .avatar {
-      float: left;
-      margin: 3px 0 0 2%;
-      width: 28px;
-      position: relative;
-      img {
-        border-radius: 50%;
-        width: 100%;
+.mcenter-vip-wrap {
+  margin: 15px 0;
+}
+
+.sub-text {
+  color: $main_text_color2;
+}
+
+.vip-promotion-wrap {
+  padding: 5px 8% 0;
+  display: flex;
+
+  > div {
+    width: 50%;
+    display: flex;
+
+    > div {
+      width: 100%;
+      padding: 10px 0;
+
+      > div {
+        text-align: left;
+        font-size: 16px;
+        height: 50%;
+        display: flex;
+        align-items: center;
+        line-height: 50%;
       }
 
-      .avata-icon {
-        position: absolute;
-        right: -5px;
-        bottom: 4px;
-        width: 12px;
-        height: 12px;
-        border-radius: 50%;
-        background: #fff;
+      > div:last-of-type {
+        font-size: 8px;
       }
+    }
 
-      svg {
-        width: 10px;
-        height: 10px;
-        position: absolute;
-        top: 1px;
-        left: 1px;
-      }
-    }
-  }
-  .mcenter-info-tips {
-    float: left;
-    margin: 1px 0 0 2%;
-    line-height: 16px;
-    .member-name,
-    .vip-level {
-      float: left;
-      color: #5c4030;
-    }
-    .vip-level {
-      padding: 0 5px;
-      margin-left: 4px;
-      background: url("/static/image/mobile/tpl/porn1/home/vip_level_bg.png") 0
-        0 no-repeat;
-      background-size: 100%;
-      color: #f8f1eb;
-    }
-    .join-days {
-      margin-top: 2px;
-      color: #9c6e54;
+    > img {
+      width: 60px;
+      height: 60px;
     }
   }
 }

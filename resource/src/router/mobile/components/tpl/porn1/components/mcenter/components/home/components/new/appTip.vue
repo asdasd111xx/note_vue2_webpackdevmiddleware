@@ -68,7 +68,7 @@ export default {
   margin-bottom: 10px;
 
   > span:first-child {
-    color: #a6a9b2;
+    color: $main_text_color2;
   }
 
   img {

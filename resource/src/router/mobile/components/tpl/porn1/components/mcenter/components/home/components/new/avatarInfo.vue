@@ -1,16 +1,42 @@
 <template>
   <div :class="$style['mcenter-avatar-info-wrap']">
-    <img
-      :class="$style['avatar']"
-      :src="$getCdnPath(`/static/image/_new/mcenter/avatar_nologin.png`)"
-    />
+    <!-- 大頭照 -->
+    <div :class="$style['avatar-wrap']">
+      <img
+        @click="
+          loginStatus ? selectAvatar() : $router.push('/mobile/joinmember')
+        "
+        :src="avatarSrc"
+      />
+    </div>
+
+    <div v-if="isShow" :class="[$style['dialog-wrap'], 'clearfix']">
+      <div
+        v-for="(avatarList, index) in avatar"
+        :key="`avatar-${avatarList}`"
+        :class="$style['avatar-wrap']"
+      >
+        <img :src="$getCdnPath(avatarList.url)" @click="selectImg(index)" />
+        <div v-if="imgID === index + 1" :class="$style.check" />
+      </div>
+    </div>
+
+    <!-- 姓名/註冊 -->
     <div :class="$style['info-wrap']">
       <div>
         <template v-if="loginStatus">
-          <span>NAME </span>
+          <span>
+            {{
+              memInfo.user.show_alias
+                ? memInfo.user.alias
+                : memInfo.user.username
+            }}
+          </span>
         </template>
         <template v-else>
-          <span> 点击{{ $text("S_LOG_IN_REGISTER", "登录/注册") }} </span>
+          <span @click="$router.push('/mobile/joinmember')">
+            点击{{ $text("S_LOG_IN_REGISTER", "登录/注册") }}
+          </span>
         </template>
       </div>
       <div>
@@ -18,7 +44,7 @@
         <!-- <img
             :src="$getCdnPath(`/static/image/_new/theme3/${info.key}.png`)"
           /> -->
-        <span>¥</span>
+        <span :class="$style['money-symbol']">¥</span>
         <span>
           最高送6元
         </span>
@@ -40,7 +66,7 @@ import member from '@/api/member';
 export default {
   data() {
     return {
-
+      isShow: false,
       avatar: [
         { image: 'avatar_1', url: '/static/image/_new/mcenter/default/avatar_1.png' },
         { image: 'avatar_2', url: '/static/image/_new/mcenter/default/avatar_2.png' },
@@ -71,6 +97,25 @@ export default {
     ]),
     handleClickLogin() {
       $router.push('/mobile/joinmember')
+    },
+    // 大頭貼
+    selectAvatar() {
+      if (this.memInfo.user.image === this.imgID) {
+        this.dialogShow();
+        return;
+      }
+
+      mcenter.accountDataSet({
+        params: { image: this.imgID },
+        success: () => {
+          this.actionSetUserdata();
+          this.dialogShow();
+          this.imgIndex = this.imgID;
+        }
+      });
+    },
+    selectImg(index) {
+      this.imgID = index + 1;
     }
   }
 };
@@ -85,9 +130,27 @@ export default {
   padding: 0 14px;
 }
 
-.avatar {
+.avatar-wrap {
   height: 70px;
   width: 70px;
+
+  > img {
+    height: 100%;
+  }
+}
+
+.money-symbol {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  line-height: 18px;
+  border-radius: 50%;
+  color: white;
+  width: 18px;
+  height: 18px;
+  background: #ff8900;
+  border: 2pt solid #fecf34;
+  margin: 0 8px 0 11px;
 }
 
 .info-wrap {
@@ -101,15 +164,13 @@ export default {
     height: 50%;
     display: flex;
     align-items: center;
+    line-height: 50%;
   }
 
   div:last-of-type {
-    text-align: left;
     color: $main_text_color1;
     font-size: 12px;
     height: 50%;
-    display: flex;
-    align-items: center;
 
     span:last-of-type {
       color: $main_vip_color1;

@@ -12,8 +12,8 @@
       <app-tip />
 
       <avatar-info />
-      <!-- <vip-info />
-      <mem-list /> -->
+      <vip-info />
+      <mem-list />
     </div>
   </mobile-container>
 </template>
