@@ -75,7 +75,13 @@
         :class="$style['balance-wrap']"
         @click="setMenuState('balance')"
       >
-        {{ membalance.total }}
+        <span>
+          {{ membalance.total }}
+        </span>
+        <img
+          @click="handleClickAsk"
+          :src="$getCdnPath('/static/image/_new/common/icon_ask.png')"
+        />
       </div>
       <div v-else :class="$style['login-wrap']">
         <span @click="$router.push('/mobile/login')">{{
@@ -84,13 +90,29 @@
         <span @click="$router.push('/mobile/joinmember')">{{
           $text("S_REGISTER", "注册")
         }}</span>
-        <img :src="$getCdnPath('/static/image/_new/common/icon_ask.png')" />
+        <img
+          @click="handleClickAsk"
+          :src="$getCdnPath('/static/image/_new/common/icon_ask.png')"
+        />
       </div>
       <!-- 側開額度 -->
       <side-balance
         v-if="currentMenu === 'balance'"
         :open-state.sync="currentMenu"
       />
+    </template>
+
+    <template v-if="headerConfig.isMCenter">
+      <div :class="$style['mcenter-wrap']">
+        <img
+          @click="handleClickSetting"
+          :src="$getCdnPath('/static/image/_new/common/btn_setting.png')"
+        />
+        <img
+          @click="handleClickAsk"
+          :src="$getCdnPath('/static/image/_new/common/icon_ask.png')"
+        />
+      </div>
     </template>
   </div>
 </template>
@@ -134,6 +156,20 @@ export default {
     // 設定選單狀態
     setMenuState(value) {
       this.currentMenu = this.currentMenu === value ? '' : value;
+    },
+    handleClickAsk() {
+      if (this.loginStatus) {
+        this.$router.push("/mobile/mcenter/information/post")
+      } else {
+        this.$router.push('/mobile/login')
+      }
+    },
+    handleClickSetting() {
+      if (this.loginStatus) {
+        this.$router.push("/mobile/mcenter/feedback")
+      } else {
+        this.$router.push('/mobile/login')
+      }
     }
   }
 };
@@ -191,14 +227,28 @@ export default {
     font-size: 14px;
   }
 
-  > img {
+  img {
     display: inline-block;
-    height: 18px;
-    width: 18px;
+    height: 20px;
+    width: 20px;
     margin-left: 1.5px;
   }
 }
 
+.mcenter-wrap {
+  position: absolute;
+  right: 10px;
+  top: 0;
+  height: 43px;
+  display: flex;
+  align-items: center;
+
+  img {
+    height: 20px;
+    width: 20px;
+    margin: 0 5px;
+  }
+}
 .btn-prev {
   position: absolute;
   top: 0;
@@ -307,12 +357,22 @@ export default {
 }
 
 .balance-wrap {
-  position: absolute;
-  top: 16px;
-  right: 34px;
-  line-height: 12px;
-  font-size: 14px;
-  margin-right: 9px;
+  height: 100%;
+  display: flex;
+  align-items: center;
+  float: right;
+  > span {
+    display: inline-block;
+    font-size: 17px;
+    margin-right: 9px;
+  }
+
+  > img {
+    display: inline-block;
+    height: 20px;
+    width: 20px;
+    margin-left: 1.5px;
+  }
 }
 
 @media screen and (min-width: $pad) {

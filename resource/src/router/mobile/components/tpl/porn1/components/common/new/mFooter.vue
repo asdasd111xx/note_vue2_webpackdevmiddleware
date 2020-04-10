@@ -42,17 +42,16 @@ export default {
         // { key: 'liveStream', name: this.$text('S_LIVE_STREAM', '直播'), path: '/mobile/liveStream' },
         { key: 'service', name: this.$text('S_SERVIEC', '客服'), path: '/mobile/service' },
         { key: 'discover', name: this.$text('S_DISCOVER', '发现'), path: '/mobile/discover' },
-        { key: 'mcenter-home', name: this.$text('S_INFORMATION', '我的'), path: '/mobile/mcenter' }
+        { key: 'mcenter-home', name: this.$text('S_INFORMATION', '我的'), path: '/mobile/mcenter/home' }
       ];
     }
   },
   methods: {
     onClick({ key, path }) {
-      if ((key === 'mcenter-home' || key === 'liveStream') && !this.loginStatus) {
-        this.$router.push('/mobile/login');
-        return;
-      }
-
+      //   if ((key === 'mcenter-home' || key === 'liveStream') && !this.loginStatus) {
+      //     this.$router.push('/mobile/login');
+      //     return;
+      //   }  console.log(path)
       this.$router.push(path);
     }
   }
