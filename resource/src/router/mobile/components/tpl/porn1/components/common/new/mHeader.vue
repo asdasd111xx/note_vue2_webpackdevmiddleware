@@ -151,7 +151,7 @@ export default {
   height: 43px;
   padding: 0 17px; //or 5%
   //   padding-top: 27px;
-  background: #fefffe;
+  background: $main_white_color1;
   text-align: center;
 
   &::before {
@@ -225,7 +225,7 @@ export default {
   float: left;
   height: 22px;
   line-height: 22px;
-  color: black;
+  color: $main_title_color1;
   font-size: 17px;
 }
 
@@ -311,6 +311,8 @@ export default {
   top: 16px;
   right: 34px;
   line-height: 12px;
+  font-size: 14px;
+  margin-right: 9px;
 }
 
 @media screen and (min-width: $pad) {

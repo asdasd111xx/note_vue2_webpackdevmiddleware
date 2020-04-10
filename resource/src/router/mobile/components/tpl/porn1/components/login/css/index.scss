@@ -13,17 +13,17 @@
 
     img {
         display: block;
-        width: 16px;
-        height: 16px;
+        width: 20px;
+        height: 20px;
         position: absolute;
-        left: 10px;
+        left: 17px;
         top: 50%;
         transform: translateY(-50%);
     }
 }
 
 .title {
-    color: rgb(134, 130, 130);
+    color: $main_title_color1;
     font-size: 16px;
 }
 
@@ -169,7 +169,7 @@
         text-align: center;
 
         &.link-submit {
-            color: #9CA3BF;
+            color: $main_text_color1;
         }
 
         a {

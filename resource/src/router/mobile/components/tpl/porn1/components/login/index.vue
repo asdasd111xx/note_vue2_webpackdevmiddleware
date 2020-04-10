@@ -2,7 +2,7 @@
   <div class="container">
     <div class="header">
       <img
-        :src="$getCdnPath('/static/image/mobile/tpl/porn1/login/home.png')"
+        :src="$getCdnPath('/static/image/_new/common/btn_close.png')"
         @click="$router.push({ name: 'home' })"
       />
       <span class="title">{{ $text("S_LOGON", "登录") }}</span>
@@ -187,7 +187,10 @@ export default {
 </script>
 
 <style src="./css/index.scss" lang="scss"  scoped></style>
+
 <style lang="scss" module="$styleSecurityCheck">
+@import "~@/css/variable.scss";
+
 .container {
   position: fixed;
   top: 0;
@@ -248,7 +251,7 @@ export default {
 }
 
 .link-submit {
-  color: #9ca3bf;
+  color: $main_text_color1;
 }
 .submit {
   margin: 0 auto;

@@ -141,5 +141,10 @@ export default [
         path: 'domain',
         name: 'mobileDomain',
         component
+    },
+    { // 客服
+        path: 'service',
+        name: 'service',
+        component
     }
 ];

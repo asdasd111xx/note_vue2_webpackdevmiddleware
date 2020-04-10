@@ -68,7 +68,7 @@ export default {
       return {
         hasLogo: true,
         hasMemInfo: true,
-        hasSearchBtn: true,
+        hasSearchBtn: false,
         isBackgroundGradient: true,
         onClick: () => {
           if (!this.isAdult) {

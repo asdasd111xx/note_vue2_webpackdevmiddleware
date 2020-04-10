@@ -1,5 +1,6 @@
 <template>
   <swiper
+    ref="home-swiper"
     v-if="options"
     :options="options"
     :class="{ [$style['tab-fixed']]: hallTab !== 'home' }"
@@ -88,7 +89,7 @@ export default {
       const originSlider = this.slider;
       const options = {
         loop: hasData,
-        autoplay: hasData ? { delay: 2000, disableOnInteraction: false } : false,
+        autoplay: { delay: 5000, disableOnInteraction: false },
         pagination: hasData ? { el: '.swiper-pagination', clickable: true } : { el: null }
       };
 

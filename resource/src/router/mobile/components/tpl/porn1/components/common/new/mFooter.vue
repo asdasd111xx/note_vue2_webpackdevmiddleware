@@ -83,10 +83,10 @@ export default {
   float: left;
   width: 20%;
   height: 45px;
-  color: #9aa4c2;
+  color: $main_footer_color1;
 
   &.active {
-    color: #d2b79c;
+    color: $main_footer_active_color1;
   }
 
   > div {
