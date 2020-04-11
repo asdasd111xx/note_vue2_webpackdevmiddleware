@@ -1,0 +1,87 @@
+@import "~@/css/variable.scss";
+
+// 帳戶資料
+.account-list-wrap {
+    background: $tableTitleBg;
+    margin-bottom: 10px;
+}
+
+.account-list-item {
+    float: left;
+    line-height: 30px;
+    padding: 0 16px;
+    text-align: center;
+    color: #BEBCBC;
+
+    &.is-current {
+        color: $tableTitleColor;
+        border-bottom: 3px solid $tableTitleBorderColor;
+    }
+}
+
+.account-data-field {
+    position: relative;
+    padding: 14px 17px;
+    height: 80px;
+    cursor: pointer;
+    border-bottom: 1px solid #EEEEEE;
+    background-color: $main_white_color1;
+
+
+    &:last-child {
+        border-bottom: none;
+    }
+}
+
+.field-title {
+    display: block;
+    font-size: 14px;
+    color: #BEBCBC;
+}
+
+.field-editer {
+    display: flex;
+    margin-top: 10px;
+}
+
+.field-text {
+    width: 100%;
+    display: block;
+    margin-top: 4px;
+    word-break: break-all;
+    font-size: 17px;
+
+    &.yet {
+        color: #CBCED8;
+    }
+}
+
+.top-tip,
+.top-tip-personal {
+    margin-bottom: 10px;
+    padding-left: 10px;
+    line-height: 1.5;
+}
+
+
+.account-data-wrap {
+    color: $main_text_color3;
+    background: $main_white_color1;
+}
+
+.feature-btn {
+    text-align: center;
+    cursor: pointer;
+}
+
+.btn-next {
+    width: 14px;
+    height: 100%;
+    display: flex;
+    align-items: center;
+
+    >img {
+        height: 14px;
+        width: 14px;
+    }
+}

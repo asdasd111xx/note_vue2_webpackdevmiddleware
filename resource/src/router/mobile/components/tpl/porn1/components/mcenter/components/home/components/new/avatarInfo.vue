@@ -1,29 +1,19 @@
 <template>
-  <div :class="$style['mcenter-avatar-info-wrap']">
+  <div
+    :class="$style['mcenter-avatar-info-wrap']"
+    @click="
+      loginStatus
+        ? $router.push('/mobile/mcenter/accountData')
+        : $router.push('/mobile/joinmember')
+    "
+  >
     <message v-if="msg" @close="msg = ''"
       ><div slot="msg">{{ msg }}</div>
     </message>
-    <!-- 大頭照 -->
-    <div
-      :class="$style['avatar-wrap']"
-      @click="
-        loginStatus
-          ? $router.push({ path: '/mobile/mcenter/accountData' })
-          : $router.push('/mobile/joinmember')
-      "
-    >
-      <img :src="avatarSrc" />
-    </div>
 
-    <div v-if="isShow" :class="[$style['dialog-wrap'], 'clearfix']">
-      <div
-        v-for="(avatarList, index) in avatar"
-        :key="`avatar-${avatarList}`"
-        :class="$style['avatar-wrap']"
-      >
-        <img :src="$getCdnPath(avatarList.url)" @click="selectImg(index)" />
-        <div v-if="imgID === index + 1" :class="$style.check" />
-      </div>
+    <!-- 大頭照 -->
+    <div :class="$style['avatar-wrap']">
+      <img :src="avatarSrc" />
     </div>
 
     <!-- 姓名/註冊 -->
@@ -76,6 +66,8 @@ export default {
     return {
       isShow: false,
       msg: "",
+      imgID: 0,
+      imgIndex: 0,
       avatar: [
         { image: 'avatar_1', url: '/static/image/_new/mcenter/default/avatar_1.png' },
         { image: 'avatar_2', url: '/static/image/_new/mcenter/default/avatar_2.png' },
@@ -94,11 +86,22 @@ export default {
       memBalance: 'getMemBalance'
     }),
     avatarSrc() {
-      return this.$getCdnPath(`/static/image/_new/mcenter/avatar_nologin.png`)
+      return this.imgIndex == 0 ?
+        this.$getCdnPath(`/static/image/_new/mcenter/avatar_nologin.png`) :
+        this.$getCdnPath(`/static/image/_new/mcenter/default/avatar_${this.imgIndex}.png`)
+
     }
   },
   created() {
     this.getVipInfo();
+
+    if (this.memInfo.user.image === 0) {
+      //   this.imgIndex = 1;
+      //   this.imgID = 1;
+      return;
+    }
+    this.imgIndex = this.memInfo.user.image;
+    this.imgID = this.memInfo.user.image;
   },
   methods: {
     ...mapActions([

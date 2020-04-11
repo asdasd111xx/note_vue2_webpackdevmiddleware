@@ -26,7 +26,6 @@ import memList from './components/new/memList';
 import avatarInfo from './components/new/avatarInfo'
 import appTip from './components/new/appTip'
 export default {
-
   components: {
     mobileContainer,
     vipInfo,

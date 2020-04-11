@@ -1,0 +1,45 @@
+// @import '~@/css/variable.scss';
+
+.preset-color {
+    $tableTitleBg: url('/static/image/mobile/mcenter/bg_header2_iphone8.png') 50% -65px / 100% no-repeat #222;
+    $tableTitleColor: #FFF;
+    $tableTitleBorderColor: #F9DCB2;
+
+    $tableBtnConfirmColor: #FFF;
+    $tableBtnConfirmBg: #00347D; 
+    $tableBtnCancelColor: #FFF;
+    $tableBtnCancelBg: #A37F5B;
+
+    $addressPlusBg: #00347D;
+    $addressPlusColor: #FFF;
+
+    $editIconBg: rgba(0,0,0,0);
+    $editIconColor: #00347D;
+    
+    @import './account.module.scss';
+    @import './form.module.scss';
+    @import './address.module.scss';
+}
+
+.site-500011,
+.site-52,
+.site-53 {
+    $tableTitleBg: #FFF;
+    $tableTitleColor: #000;
+    $tableTitleBorderColor: #F7B500;
+
+    $tableBtnConfirmColor: #000;
+    $tableBtnConfirmBg: #F7B500;; 
+    $tableBtnCancelColor: #FFF;
+    $tableBtnCancelBg: #000;
+    
+    $addressPlusBg: #F7B500;
+    $addressPlusColor: #FFF;
+    
+    $editIconBg: #F7B500;
+    $editIconColor: #FFF;
+
+    @import './account.module.scss';
+    @import './form.module.scss';
+    @import './address.module.scss';
+}
