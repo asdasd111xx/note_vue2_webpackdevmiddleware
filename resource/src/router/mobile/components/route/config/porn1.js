@@ -42,5 +42,7 @@ export default {
 
         aboutPorn1: () => import(/* webpackChunkName: 'aboutPorn1' */'../../tpl/porn1/components/mcenter/components/about'),
         settingPorn1: () => import(/* webpackChunkName: 'settingPorn1' */'../../tpl/porn1/components/mcenter/components/setting'),
+        feedbackPorn1: () => import(/* webpackChunkName: 'feedbackPorn1' */'../../tpl/porn1/components/mcenter/components/feedback'),
+
     }
 };
