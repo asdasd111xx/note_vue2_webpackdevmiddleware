@@ -371,6 +371,7 @@ export default {
     > span {
       display: block;
       left: 18px;
+      position: absolute;
     }
   }
 }

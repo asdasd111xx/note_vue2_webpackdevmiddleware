@@ -17,6 +17,7 @@ export default {
         joinMemberPorn1: () => import(/* webpackChunkName: 'joinMemberPorn1' */'../../tpl/porn1/components/joinMember'),
         liveStreamPorn1: () => import(/* webpackChunkName: 'liveStreamPorn1' */'../../tpl/porn1/components/liveStream'),
         fishareaPorn1: () => import(/* webpackChunkName: 'fishareaPorn1' */'../../tpl/porn1/components/fisharea'),
+
         servicePorn1: () => import(/* webpackChunkName: 'servicePorn1' */'../../tpl/porn1/components/service')
     },
     mcenter: {
@@ -37,6 +38,8 @@ export default {
         accountVipPorn1: () => import(/* webpackChunkName: 'accountVipPorn1' */'../../tpl/porn1/components/mcenter/components/accountVip'),
         tcenterCommissionPorn1: () => import(/* webpackChunkName: 'tcenterCommissionPorn1' */'../../tpl/porn1/components/mcenter/components/tcenter/components/commission'),
         tcenterGameRecordPorn1: () => import(/* webpackChunkName: 'tcenterGameRecordPorn1' */'../../tpl/porn1/components/mcenter/components/tcenter/components/gameRecord'),
-        tcenterManagementPorn1: () => import(/* webpackChunkName: 'tcenterManagementPorn1' */'../../tpl/porn1/components/mcenter/components/tcenter/components/management')
+        tcenterManagementPorn1: () => import(/* webpackChunkName: 'tcenterManagementPorn1' */'../../tpl/porn1/components/mcenter/components/tcenter/components/management'),
+
+        aboutPorn1: () => import(/* webpackChunkName: 'aboutPorn1' */'../../tpl/porn1/components/mcenter/components/about'),
     }
 };
