@@ -9,6 +9,7 @@
         :hall-tab="hallTab"
         :video-tab="videoTab"
       /> -->
+      <home-content />
     </div>
   </mobile-container>
 </template>
@@ -20,7 +21,7 @@ import find from 'lodash/find';
 import gameCategory from '@/config/gameCategory';
 import hallTab from './components/hallTab';
 import homeSlider from './components/new/homeSlider';
-import homeContent from './components/homeContent';
+import homeContent from './components/new/homeContent';
 import mobileContainer from '../common/new/mobileContainer';
 import homeNew from './components/new/homeNew'
 export default {
