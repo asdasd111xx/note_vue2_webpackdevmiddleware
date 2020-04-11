@@ -1,5 +1,6 @@
 <template>
   <div :class="$style['mcenter-vip-wrap']">
+    <!-- VIP 推廣 -->
     <div :class="$style['vip-promotion-wrap']">
       <div @click="$router.push('/mobile/mcenter/accountVIP')">
         <img
@@ -21,8 +22,39 @@
         </div>
       </div>
     </div>
-    <div class="clearfix">
-      <!-- bottom-left -->
+    <!-- 快捷功能 -->
+    <div :class="$style['mcenter-func']">
+      <div :class="$style['cell']">
+        <div>
+          <img :src="$getCdnPath('/static/image/_new/mcenter/ic_wallet.png')" />
+        </div>
+        <div>{{ $text("S_MY_PURSE", "我的钱包") }}</div>
+      </div>
+      <div :class="$style['cell']">
+        <div>
+          <img
+            :src="$getCdnPath('/static/image/_new/mcenter/ic_bethistory.png')"
+          />
+        </div>
+        <div>{{ $text("S_BETHISTORYBTN", "投注纪录") }}</div>
+      </div>
+      <div :class="$style['cell']">
+        <div>
+          <img
+            :src="$getCdnPath('/static/image/_new/mcenter/ic_transaction.png')"
+          />
+        </div>
+        <div>{{ $text("S_TRANSACTION_RECORD", "交易记录") }}</div>
+      </div>
+      <div :class="$style['cell']">
+        <div>
+          <img :src="$getCdnPath('/static/image/_new/mcenter/ic_rebate.png')" />
+        </div>
+        <div>{{ $text("S_REAL_TIME_REBATE", "实时返水") }}</div>
+      </div>
+    </div>
+
+    <!-- <div class="clearfix">
       <div
         :class="[
           $style['info-btn-wrap'],
@@ -70,12 +102,11 @@
           <span>{{ $text("S_VIP_DETAILS_BTN", "VIP详情") }}</span>
         </div>
       </div>
-      <!-- bottom-right -->
       <div :class="$style['login-view']">
         <span :class="$style.money">¥{{ memBalance.total }}</span>
         <span>{{ $text("S_TOTAL_MONEY", "总金额") }}</span>
       </div>
-    </div>
+    </div> -->
   </div>
 </template>
 
@@ -215,6 +246,7 @@ export default {
 
   > div {
     width: 50%;
+    height: 60px;
     display: flex;
 
     > div {
@@ -236,8 +268,38 @@ export default {
     }
 
     > img {
-      width: 60px;
-      height: 60px;
+      //   width: 60px;
+      height: 100%;
+    }
+  }
+}
+
+.mcenter-func {
+  height: 75px;
+  display: flex;
+  align-items: center;
+  margin-top: 12px;
+  padding: 5px 8% 0;
+
+  .cell {
+    width: 25%;
+    > div {
+      text-align: center;
+    }
+
+    > div:first-child {
+      width: 37px;
+      height: 37px;
+      margin: 5px auto;
+
+      img {
+        height: 100%;
+        width: 100%;
+      }
+    }
+
+    > div:last-child {
+      font-size: 15px;
     }
   }
 }

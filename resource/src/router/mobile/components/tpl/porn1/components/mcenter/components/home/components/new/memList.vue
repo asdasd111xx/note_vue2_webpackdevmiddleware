@@ -1,42 +1,28 @@
 <template>
-  <div class="mem-list">
+  <div :class="$style['mem-list']">
     <div
       v-for="listInfo in list"
       :key="`list-${listInfo.pageName}`"
       :class="$style.list"
       @click="onListClick(listInfo)"
     >
-      <img
-        :class="$style['list-icon']"
-        :src="
-          $getCdnPath(
-            `/static/image/mobile/tpl/porn1/mcenter/${listInfo.image}_icon_n.png`
-          )
-        "
-      />
+      <div :class="$style['list-icon']">
+        <img
+          :src="
+            $getCdnPath(`/static/image/_new/mcenter/ic_${listInfo.image}.png`)
+          "
+        />
+      </div>
       <span>{{ $text(listInfo.name, listInfo.initName) }}</span>
-      <img
-        :class="$style['arrow']"
-        :src="
-          $getCdnPath('/static/image/mobile/tpl/porn1/mcenter/icon_goto_n.png')
-        "
-      />
-      <img
-        :class="[$style['is-active'], $style['arrow']]"
-        :src="
-          $getCdnPath('/static/image/mobile/tpl/porn1/mcenter/icon_goto_h.png')
-        "
-      />
+      <div :class="$style['btn-next']" @click="handleClickLogin">
+        <img :src="$getCdnPath(`/static/image/_new/common/btn_next.png`)" />
+      </div>
     </div>
-    <div v-if="memInfo.config.content_rating" :class="$style['switch-list']">
-      <img
-        :class="$style['list-icon']"
-        :src="
-          $getCdnPath(
-            `/static/image/mobile/tpl/porn1/mcenter/porn_switch_icon_n.png`
-          )
-        "
-      />
+
+    <div v-if="memInfo.config.content_rating" :class="$style['list']">
+      <div :class="$style['list-icon']">
+        <img :src="$getCdnPath(`/static/image/_new/mcenter/ic_18+.png`)" />
+      </div>
       <span>{{ $text("S_PORN_SWITCH", "色站开关") }}</span>
       <label
         :class="[$style['switch'], { [$style.active]: pornSwitchState }]"
@@ -45,9 +31,9 @@
         <span />
       </label>
     </div>
-    <div :class="$style['logout']" @click="onLogout()">
+    <!-- <div :class="$style['logout']" @click="onLogout()">
       {{ $text("S_LOGOUT2", "退出登录") }}
-    </div>
+    </div> -->
   </div>
 </template>
 
@@ -68,35 +54,52 @@ export default {
       isReceive: false,
       list: [
         {
-          initName: '下载超级签，成为超级会员', name: 'S_VIP_APP', path: '', pageName: 'super', image: 'download'
-        }, // 超級籤
+          initName: '下载超级签，成为超级会员', name: 'S_VIP_APP', path: '', pageName: 'super', image: 'vip'
+        },
         {
-          initName: '在线客服', name: 'S_CUSTOMER_SERVICE_ONLINE', path: '', pageName: 'service', image: 'service'
-        }, // 在線客服
+          initName: '帮助中心', name: 'S_HELP_CENTER', path: '/mobile/mcenter/help', pageName: 'help', image: 'help'
+        },
         {
-          initName: '帐户资料', name: 'S_ACCOUNT_DATA', path: '/mobile/mcenter/accountData', pageName: 'accountData', image: 'account_data'
-        }, // 個人資料
+          initName: '关于亚博直播', name: 'S_ABOUT_YABOLIVE', path: '/mobile/mcenter/about', pageName: 'about', image: 'about'
+        },
         {
-          initName: '我的推广', name: 'S_TEAM_CENTER', path: '/mobile/mcenter/tcenter', pageName: 'tcenter', image: 'my_promote'
-        }, // 我的推廣
+          initName: '我的推广', name: 'S_TEAM_CENTER', path: '/mobile/mcenter/about', pageName: 'mypromotion', image: 'mypromotion'
+        },
         {
-          initName: '绑定银行卡', name: 'S_BIND_BANK', path: '/mobile/mcenter/bankCard', pageName: 'accountBankCard', image: 'bank_info'
-        }, // 銀行卡管理
-        {
-          initName: '资金明细', name: 'S_FUNDS_DETAILS', path: '/mobile/mcenter/moneyDetail', pageName: 'bankMoneyDetail', image: 'money_detail'
-        }, // 交易記錄
-        {
-          initName: '投注纪录', name: 'S_BETHISTORYBTN', path: '/mobile/mcenter/betRecord', pageName: 'betRecord', image: 'bet_record'
-        }, // 投注記錄
-        {
-          initName: '实时返水', name: 'S_REAL_TIME_REBATE', path: '/mobile/mcenter/bankRebate', pageName: 'bankRebate', image: 'bank_rebate'
-        }, // 實時返水
-        {
-          initName: '红利帐户', name: 'S_BONUS_ACCOUNT', path: '/mobile/mcenter/bonusAccount', pageName: 'bonusAccount', image: 'bonus_account'
-        }, // 紅利帳戶
-        {
-          initName: '信息中心', name: 'S_MSG_CENTER', path: '/mobile/mcenter/information/post', pageName: 'information', image: 'info_post'
-        } // 信息中心
+          initName: '分享APP', name: 'S_SHARE_APP', path: '/mobile/mcenter/about', pageName: 'share', image: 'share'
+        },
+        // {
+        //   initName: '色站开关', name: 'S_PORN_SWITCH', path: '', pageName: '', image: '18+'
+        // },
+
+        // 原舊版亞博
+        // {
+        //   initName: '在线客服', name: 'S_CUSTOMER_SERVICE_ONLINE', path: '', pageName: 'service', image: 'service'
+        // }, // 在線客服
+        // {
+        //   initName: '帐户资料', name: 'S_ACCOUNT_DATA', path: '/mobile/mcenter/accountData', pageName: 'accountData', image: 'account_data'
+        // }, // 個人資料
+        // {
+        //   initName: '我的推广', name: 'S_TEAM_CENTER', path: '/mobile/mcenter/tcenter', pageName: 'tcenter', image: 'my_promote'
+        // }, // 我的推廣
+        // {
+        //   initName: '绑定银行卡', name: 'S_BIND_BANK', path: '/mobile/mcenter/bankCard', pageName: 'accountBankCard', image: 'bank_info'
+        // }, // 銀行卡管理
+        // {
+        //   initName: '资金明细', name: 'S_FUNDS_DETAILS', path: '/mobile/mcenter/moneyDetail', pageName: 'bankMoneyDetail', image: 'money_detail'
+        // }, // 交易記錄
+        // {
+        //   initName: '投注纪录', name: 'S_BETHISTORYBTN', path: '/mobile/mcenter/betRecord', pageName: 'betRecord', image: 'bet_record'
+        // }, // 投注記錄
+        // {
+        //   initName: '实时返水', name: 'S_REAL_TIME_REBATE', path: '/mobile/mcenter/bankRebate', pageName: 'bankRebate', image: 'bank_rebate'
+        // }, // 實時返水
+        // {
+        //   initName: '红利帐户', name: 'S_BONUS_ACCOUNT', path: '/mobile/mcenter/bonusAccount', pageName: 'bonusAccount', image: 'bonus_account'
+        // }, // 紅利帳戶
+        // {
+        //   initName: '信息中心', name: 'S_MSG_CENTER', path: '/mobile/mcenter/information/post', pageName: 'information', image: 'info_post'
+        // } // 信息中心
       ],
       vipData: {},
       pornSwitchState: false
@@ -279,56 +282,58 @@ export default {
 <style lang="scss" module>
 @import "~@/css/variable.scss";
 
-.list {
-  position: relative;
-  border-bottom: 1px solid #242424;
-  background: url("/static/image/mobile/tpl/porn1/home/mem_list_bg.png") 0 0
-    no-repeat;
-  background-size: 100%;
-  padding-left: 50px;
-  width: 100%;
-  height: 43px;
-  line-height: 43px;
-  font-size: 14px;
-  color: #f8f1eb;
-  display: block;
+.mem-list {
+  background-color: $main_background_white1;
+  padding-top: 5px;
 
-  &:active {
-    background: url("/static/image/mobile/tpl/porn1/home/mem_list_bg_active.png")
-      0 0 no-repeat;
-    color: #5c4030;
+  > .list:nth-child(1) {
+    margin: 5px 0;
+  }
 
-    .arrow {
-      display: none;
+  > .list:nth-child(2) {
+    margin: 5px 0;
+  }
 
-      &.is-active {
-        display: block;
-      }
-    }
+  > .list:last-child {
+    margin: 5px 0;
   }
 }
 
-.switch-list {
-  position: relative;
-  border-bottom: 1px solid #242424;
-  background: url("/static/image/mobile/tpl/porn1/home/mem_list_bg.png") 0 0
-    no-repeat;
-  background-size: 100%;
-  padding-left: 50px;
-  width: 100%;
-  height: 43px;
-  line-height: 43px;
+.list {
   font-size: 14px;
-  color: #f8f1eb;
-  display: block;
-}
+  height: 50px;
+  line-height: 50px;
+  padding: 0 18px;
+  display: flex;
+  align-items: center;
+  background-color: $main_white_color1;
+  color: $main_text_color3;
 
-.list-icon {
-  position: absolute;
-  top: 7px;
-  left: 14px;
-  width: 28px;
-  height: 28px;
+  > span {
+    width: 100%;
+    padding: 0 5px;
+  }
+
+  .btn-next {
+    width: 14px;
+    height: 100%;
+    display: flex;
+    align-items: center;
+    > img {
+      height: 14px;
+      width: 14px;
+    }
+  }
+
+  .list-icon {
+    width: 21px;
+    height: 21px;
+    display: flex;
+    align-items: center;
+    > img {
+      height: 100%;
+    }
+  }
 }
 
 .arrow {
@@ -344,20 +349,15 @@ export default {
 }
 
 .switch {
+  position: relative;
   display: block;
-  position: absolute;
-  top: 9px;
-  right: 9px;
-  width: 42px;
+  width: 48px;
   height: 24px;
   border-radius: 12px;
   background-color: #ccc;
   transition: all 0.4s;
 
   > span {
-    position: absolute;
-    top: 0;
-    left: 0;
     width: 24px;
     height: 24px;
     border-radius: 50%;
@@ -369,6 +369,7 @@ export default {
     background-color: #32db64;
 
     > span {
+      display: block;
       left: 18px;
     }
   }
@@ -386,20 +387,14 @@ export default {
 }
 
 @media screen and (min-width: $phone) {
-  .list,
-  .switch-list {
-    font-size: 15px;
+  .list {
+    font-size: 14px;
   }
 }
 
 @media screen and (min-width: $pad) {
-  .list,
-  .switch-list {
-    font-size: 16px;
-  }
-
-  .logout {
-    font-size: 16px;
+  .list {
+    font-size: 15px;
   }
 }
 </style>
