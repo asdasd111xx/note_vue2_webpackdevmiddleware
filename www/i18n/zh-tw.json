@@ -1554,5 +1554,6 @@
     "S_LEVEL": "等級",
     "S_NO_DATA_YET": "暫無資料",
     "S_BET_OVERVIEW": "投注概況",
-    "S_CHANGE_PLEASE_CLICK": "更改查詢條件請重復點擊上方搜索"
+    "S_CHANGE_PLEASE_CLICK": "更改查詢條件請重復點擊上方搜索",
+    "S_SETTING": "设置"
 }

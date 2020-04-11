@@ -166,7 +166,7 @@ export default {
     },
     handleClickSetting() {
       if (this.loginStatus) {
-        this.$router.push("/mobile/mcenter/feedback")
+        this.$router.push("/mobile/mcenter/setting")
       } else {
         this.$router.push('/mobile/login')
       }

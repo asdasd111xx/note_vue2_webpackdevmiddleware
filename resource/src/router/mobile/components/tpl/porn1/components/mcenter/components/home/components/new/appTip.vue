@@ -37,6 +37,7 @@ export default {
     ]),
     handleClose() {
       this.opacity = 0;
+      this.show = !this.show;
       this.timer = setTimeout(() => {
         this.show = !this.show;
       }, 200);

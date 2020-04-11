@@ -1556,5 +1556,6 @@
     "S_LEVEL": "等级",
     "S_NO_DATA_YET": "No results",
     "S_BET_OVERVIEW": "投注概况",
-    "S_CHANGE_PLEASE_CLICK": "更改查询条件请重复点击上方搜索"
+    "S_CHANGE_PLEASE_CLICK": "更改查询条件请重复点击上方搜索",
+    "S_SETTING": "setting"
 }

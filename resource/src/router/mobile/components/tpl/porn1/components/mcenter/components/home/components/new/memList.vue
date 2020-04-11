@@ -14,7 +14,11 @@
         />
       </div>
       <span>{{ $text(listInfo.name, listInfo.initName) }}</span>
-      <div :class="$style['btn-next']" @click="handleClickLogin">
+
+      <div v-if="listInfo.info" :class="$style['list-info']">
+        {{ listInfo.info }}
+      </div>
+      <div :class="$style['btn-next']">
         <img :src="$getCdnPath(`/static/image/_new/common/btn_next.png`)" />
       </div>
     </div>
@@ -57,13 +61,13 @@ export default {
           initName: '下载超级签，成为超级会员', name: 'S_VIP_APP', path: '', pageName: 'super', image: 'vip'
         },
         {
-          initName: '帮助中心', name: 'S_HELP_CENTER', path: '/mobile/mcenter/help', pageName: 'help', image: 'help'
+          initName: '帮助中心', name: 'S_HELP_CENTER', path: '/mobile/mcenter/help', pageName: 'help', image: 'help', info: '存取款、投注有疑问，看这里'
         },
         {
           initName: '关于亚博直播', name: 'S_ABOUT_YABOLIVE', path: '/mobile/mcenter/about', pageName: 'about', image: 'about'
         },
         {
-          initName: '我的推广', name: 'S_TEAM_CENTER', path: '/mobile/mcenter/about', pageName: 'mypromotion', image: 'mypromotion'
+          initName: '我的推广', name: 'S_TEAM_CENTER', path: '/mobile/mcenter/about', pageName: 'mypromotion', image: 'mypromotion', info: '合营计划'
         },
         {
           initName: '分享APP', name: 'S_SHARE_APP', path: '/mobile/mcenter/about', pageName: 'share', image: 'share'
@@ -363,6 +367,9 @@ export default {
     border-radius: 50%;
     background-color: #fff;
     transition: all 0.4s;
+    display: block;
+    left: 0;
+    position: absolute;
   }
 
   &.active {
@@ -375,16 +382,11 @@ export default {
     }
   }
 }
-
-.logout {
-  margin: 15px auto;
-  background: url("/static/image/mobile/tpl/porn1/home/logout_btn.png") 0 0
-    no-repeat;
-  background-size: 100%;
-  width: 301px;
-  line-height: 37px;
-  color: #9c6e54;
-  text-align: center;
+.list-info {
+  color: #cbced8;
+  font-size: 12px;
+  position: absolute;
+  right: 38px;
 }
 
 @media screen and (min-width: $phone) {

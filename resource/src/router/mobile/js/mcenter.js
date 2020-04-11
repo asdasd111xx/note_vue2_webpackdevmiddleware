@@ -217,6 +217,12 @@ export default {
                     component
                 }
             ]
-        }
+        },
+
+        { // 設置
+            path: 'setting',
+            name: 'mcenter-setting',
+            component
+        },
     ]
 };

@@ -1,13 +1,18 @@
 <template>
   <div :class="$style['mcenter-avatar-info-wrap']">
+    <message v-if="msg" @close="msg = ''"
+      ><div slot="msg">{{ msg }}</div>
+    </message>
     <!-- 大頭照 -->
-    <div :class="$style['avatar-wrap']">
-      <img
-        @click="
-          loginStatus ? selectAvatar() : $router.push('/mobile/joinmember')
-        "
-        :src="avatarSrc"
-      />
+    <div
+      :class="$style['avatar-wrap']"
+      @click="
+        loginStatus
+          ? $router.push({ path: '/mobile/mcenter/accountData' })
+          : $router.push('/mobile/joinmember')
+      "
+    >
+      <img :src="avatarSrc" />
     </div>
 
     <div v-if="isShow" :class="[$style['dialog-wrap'], 'clearfix']">
@@ -62,11 +67,15 @@ import moment from 'moment';
 import mcenterPageAuthControl from '@/lib/mcenterPageAuthControl';
 import mcenter from '@/api/mcenter';
 import member from '@/api/member';
-
+import message from '../../../../../common/new/message'
 export default {
+  components: {
+    message
+  },
   data() {
     return {
       isShow: false,
+      msg: "",
       avatar: [
         { image: 'avatar_1', url: '/static/image/_new/mcenter/default/avatar_1.png' },
         { image: 'avatar_2', url: '/static/image/_new/mcenter/default/avatar_2.png' },
@@ -89,7 +98,7 @@ export default {
     }
   },
   created() {
-
+    this.getVipInfo();
   },
   methods: {
     ...mapActions([
@@ -97,6 +106,13 @@ export default {
     ]),
     handleClickLogin() {
       $router.push('/mobile/joinmember')
+    },
+    getVipInfo() {
+      mcenter.vipUserDetail({
+        success: (response) => {
+          console.log(response)
+        }
+      });
     },
     // 大頭貼
     selectAvatar() {

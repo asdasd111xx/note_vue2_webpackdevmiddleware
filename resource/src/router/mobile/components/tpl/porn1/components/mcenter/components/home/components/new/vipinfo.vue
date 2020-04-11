@@ -1,5 +1,8 @@
 <template>
   <div :class="$style['mcenter-vip-wrap']">
+    <message v-if="msg" @close="msg = ''"
+      ><div slot="msg">{{ msg }}</div>
+    </message>
     <!-- VIP 推廣 -->
     <div :class="$style['vip-promotion-wrap']">
       <div @click="$router.push('/mobile/mcenter/accountVIP')">
@@ -12,7 +15,7 @@
         </div>
       </div>
 
-      <div>
+      <div @click="msg = '正在上线 敬请期待'">
         <img
           :src="$getCdnPath('/static/image/_new/mcenter/ic_promotion.png')"
         />
@@ -116,10 +119,15 @@ import moment from 'moment';
 import mcenterPageAuthControl from '@/lib/mcenterPageAuthControl';
 import mcenter from '@/api/mcenter';
 import member from '@/api/member';
+import message from '../../../../../common/new/message'
 
 export default {
+  components: {
+    message
+  },
   data() {
     return {
+      msg: "",
       list: [
         { path: '', pageName: 'deposit' }, // 存款
         { path: '/mobile/mcenter/balanceTrans', pageName: 'bankBalanceTran' }, // 額度轉換

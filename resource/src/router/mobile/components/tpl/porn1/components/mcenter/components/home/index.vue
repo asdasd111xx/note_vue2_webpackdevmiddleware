@@ -10,7 +10,6 @@
         />
       </div> -->
       <app-tip />
-
       <avatar-info />
       <vip-info />
       <mem-list />
@@ -26,12 +25,18 @@ import memList from './components/new/memList';
 import avatarInfo from './components/new/avatarInfo'
 import appTip from './components/new/appTip'
 export default {
+
   components: {
     mobileContainer,
     vipInfo,
     avatarInfo,
     memList,
     appTip
+  },
+  data() {
+    return {
+      isShowAppTip: true,
+    };
   },
   computed: {
     ...mapGetters({
@@ -51,9 +56,6 @@ export default {
 
   },
   methods: {
-    closeAppTips() {
-
-    },
     goMessage() {
       if (!this.loginStatus) {
         this.$router.push('/mobile/login');

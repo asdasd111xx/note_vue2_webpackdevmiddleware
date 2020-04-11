@@ -41,5 +41,6 @@ export default {
         tcenterManagementPorn1: () => import(/* webpackChunkName: 'tcenterManagementPorn1' */'../../tpl/porn1/components/mcenter/components/tcenter/components/management'),
 
         aboutPorn1: () => import(/* webpackChunkName: 'aboutPorn1' */'../../tpl/porn1/components/mcenter/components/about'),
+        settingPorn1: () => import(/* webpackChunkName: 'settingPorn1' */'../../tpl/porn1/components/mcenter/components/setting'),
     }
 };
