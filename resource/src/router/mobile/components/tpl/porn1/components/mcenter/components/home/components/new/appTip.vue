@@ -37,10 +37,11 @@ export default {
     ]),
     handleClose() {
       this.opacity = 0;
-      this.show = !this.show;
+
       this.timer = setTimeout(() => {
-        this.show = !this.show;
-      }, 200);
+        this.isShow = false;
+        this.$emit("close");
+      }, 300);
     },
     handleClick() {
       this.show = false;

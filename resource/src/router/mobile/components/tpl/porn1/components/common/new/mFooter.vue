@@ -62,6 +62,7 @@ export default {
 @import "~@/css/variable.scss";
 
 .footer {
+  transition: unset !important;
   position: fixed;
   bottom: 0;
   left: 0;

@@ -9,7 +9,8 @@
           @click="goMessage()"
         />
       </div> -->
-      <app-tip />
+
+      <app-tip v-if="showTip" @close="showTip = false" />
       <avatar-info />
       <vip-info />
       <mem-list />
@@ -35,6 +36,7 @@ export default {
   },
   data() {
     return {
+      showTip: true,
       isShowAppTip: true,
     };
   },

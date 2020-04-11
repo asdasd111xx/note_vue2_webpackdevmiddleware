@@ -35,9 +35,6 @@
         <span />
       </label>
     </div>
-    <!-- <div :class="$style['logout']" @click="onLogout()">
-      {{ $text("S_LOGOUT2", "退出登录") }}
-    </div> -->
   </div>
 </template>
 
@@ -245,13 +242,7 @@ export default {
         }
       });
     },
-    /**
-     * 登出
-     * @method onLogout
-     */
-    onLogout() {
-      member.logout().then(() => { window.location.reload(); });
-    },
+
     /**
      * 色站開關 狀態切換
      * @function toggleSwitch

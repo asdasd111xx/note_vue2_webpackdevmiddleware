@@ -12,12 +12,17 @@
           <img :src="$getCdnPath(`/static/image/_new/common/btn_next.png`)" />
         </div>
       </div>
+
+      <div :class="$style['logout']" @click="logout">
+        {{ this.$text("S_LOGOUT", "退出") }}
+      </div>
     </div>
   </mobile-container>
 </template>
 
 <script>
 import { mapGetters } from 'vuex';
+import member from '@/api/member';
 import mobileContainer from '../../../common/new/mobileContainer';
 export default {
   components: {
@@ -44,12 +49,17 @@ export default {
     },
   },
   created() {
-
+    if (!this.loginStatus) {
+      this.$router.push("/mobile/home")
+    }
   },
   methods: {
     handleClick(path) {
       this.$router.push(path)
-    }
+    },
+    logout() {
+      member.logout().then(() => { window.location.reload(); });
+    },
   }
 };
 </script>
@@ -85,6 +95,15 @@ export default {
       height: 14px;
       width: 14px;
     }
+  }
+
+  .logout {
+    background-color: $main_white_color1;
+    text-align: center;
+    width: 100%;
+    margin-top: 10px;
+    height: 50px;
+    line-height: 50px;
   }
 }
 </style>
