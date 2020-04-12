@@ -29,9 +29,9 @@
                 </div>
             </swiper-slide>
         </swiper>
-        <func-Block :isVideoPage="isVideoPage"></func-Block>
 
-        <!-- content 以 directive 建立，目的為了放置有fixed的區塊 -->
+        <func-Block :isVideoPage="isVideoPage" :video-tab.sync="videoTab" />
+
         <swiper
             class="swiper gellery-content"
             :options="swiperOptionContent"
@@ -39,7 +39,11 @@
             :style="contentDivHeight"
         >
             <swiper-slide>
-                <div class="content-cells">
+                <div
+                    class="content-cells"
+                    v-for="(item, index) in 2"
+                    :key="index"
+                >
                     <div class="desc">
                         <div class="title">
                             <img
@@ -55,75 +59,11 @@
                         <div class="more">更多</div>
                     </div>
                     <div class="content">
-                        <div class="content-cell-block">
-                            <img
-                                :src="
-                                    $getCdnPath(
-                                        '/static/image/_new/platform/card/slot/short/agcasino_short.png'
-                                    )
-                                "
-                                alt=""
-                            />
-                        </div>
-                        <div class="content-cell-block">
-                            <img
-                                :src="
-                                    $getCdnPath(
-                                        '/static/image/_new/platform/card/slot/short/agcasino_short.png'
-                                    )
-                                "
-                                alt=""
-                            />
-                        </div>
-                        <div class="content-cell-block">
-                            <img
-                                :src="
-                                    $getCdnPath(
-                                        '/static/image/_new/platform/card/slot/short/agcasino_short.png'
-                                    )
-                                "
-                                alt=""
-                            />
-                        </div>
-                        <div class="content-cell-block">
-                            <img
-                                :src="
-                                    $getCdnPath(
-                                        '/static/image/_new/platform/card/slot/short/agcasino_short.png'
-                                    )
-                                "
-                                alt=""
-                            />
-                        </div>
-                    </div>
-                </div>
-                <div class="content-cells">
-                    <div class="desc">
-                        <div class="title">
-                            <img
-                                :src="
-                                    $getCdnPath(
-                                        '/static/image/_new/common/icon_item.png'
-                                    )
-                                "
-                                alt="icon_item"
-                            />
-                            <span>推荐</span>
-                        </div>
-                        <div class="more">更多</div>
-                    </div>
-                    <div class="content">
-                        <div class="content-cell-block">
-                            <img
-                                :src="
-                                    $getCdnPath(
-                                        '/static/image/_new/platform/card/slot/short/agcasino_short.png'
-                                    )
-                                "
-                                alt=""
-                            />
-                        </div>
-                        <div class="content-cell-block">
+                        <div
+                            class="content-cell-block"
+                            v-for="(item, index) in 4"
+                            :key="index"
+                        >
                             <img
                                 :src="
                                     $getCdnPath(
@@ -136,60 +76,14 @@
                     </div>
                 </div>
             </swiper-slide>
-            <swiper-slide>
+            <swiper-slide v-for="(item, index) in 11" :key="index">
                 <div class="content-cells">
                     <div class="content">
-                        <div class="content-cell-block">
-                            <img
-                                :src="
-                                    $getCdnPath(
-                                        '/static/image/_new/platform/card/slot/short/agcasino_short.png'
-                                    )
-                                "
-                                alt=""
-                            />
-                        </div>
-                        <div class="content-cell-block">
-                            <img
-                                :src="
-                                    $getCdnPath(
-                                        '/static/image/_new/platform/card/slot/short/agcasino_short.png'
-                                    )
-                                "
-                                alt=""
-                            />
-                        </div>
-                        <div class="content-cell-block">
-                            <img
-                                :src="
-                                    $getCdnPath(
-                                        '/static/image/_new/platform/card/slot/short/agcasino_short.png'
-                                    )
-                                "
-                                alt=""
-                            />
-                        </div>
-                        <div class="content-cell-block">
-                            <img
-                                :src="
-                                    $getCdnPath(
-                                        '/static/image/_new/platform/card/slot/short/agcasino_short.png'
-                                    )
-                                "
-                                alt=""
-                            />
-                        </div>
-                        <div class="content-cell-block">
-                            <img
-                                :src="
-                                    $getCdnPath(
-                                        '/static/image/_new/platform/card/slot/short/agcasino_short.png'
-                                    )
-                                "
-                                alt=""
-                            />
-                        </div>
-                        <div class="content-cell-block">
+                        <div
+                            class="content-cell-block"
+                            v-for="(item, index) in 4"
+                            :key="index"
+                        >
                             <img
                                 :src="
                                     $getCdnPath(
@@ -221,13 +115,14 @@ export default {
         return {
             currentHallIndex: 0,
             isVideoPage: true,
+            video: { id: 0, title: "" },
             swiperOptionContent: {
                 // loop: true,
+                // loopAdditionalSlides: 6,
                 // loopedSlides: 6, // looped slides should be the same
                 spaceBetween: 10,
                 direction: "vertical",
                 freeMode: true,
-                touchRatio: 0.5,
                 mousewheel: true,
                 // 自適應內容的高度: autoHeight + slidesPerView 必備
                 autoHeight: true,
@@ -235,35 +130,35 @@ export default {
             },
             swiperOptionThumbs: {
                 // loop: true,
-                // loopedSlides: 1, // looped slides should be the same
+                // loopAdditionalSlides: 6,
+                // loopedSlides: 6, // looped slides should be the same
                 direction: "vertical",
                 height: 68,
                 freeMode: true,
                 mousewheel: true,
                 touchRatio: 1,
-                slideToClickedSlide: true,
-                watchSlidesVisibility: true //防止不可点击
+                slideToClickedSlide: true
             }
         };
     },
     mounted() {
         this.$nextTick(() => {
-            const swiperContent = this.$refs.swiperContent.$swiper;
-            const swiperThumbs = this.$refs.swiperThumbs.$swiper;
-            // swiperContent.controller.control = swiperThumbs;
-            // 初始設定第一頁
-            // swiperContent.slideTo(0, 0, false);
-            // swiperThumbs.slideTo(0, 0, false);
-            // swiperThumbs.on("click", () => {
-            //     let index = swiperThumbs.realIndex;
-            //     swiperContent.slideTo(index, 500, false);
-            // });
-            // slideChange：在当前Slide切换到另一个Slide时执行(activeIndex发生改变)，一般是在点击控制组件、释放滑动的时间点
-            // swiperContent.on("slideChange", () => {
-            //     let index = swiperThumbs.realIndex;
-            //     this.currentHallIndex = index;
-            //     this.isVideoPage = index === 0 ? true : false;
-            // });
+            const swiperContent = this.swiperContent;
+            const swiperThumbs = this.swiperThumbs;
+            swiperContent.controller.control = swiperThumbs;
+            // // 初始設定第一頁
+            swiperContent.slideToLoop(0, 0, false);
+            swiperThumbs.slideToLoop(0, 0, false);
+            // // swiperThumbs.on("click", () => {
+            // //     let index = swiperThumbs.realIndex;
+            // //     swiperContent.slideToLoop(index, 500, false);
+            // // });
+            // // slideChange：在当前Slide切换到另一个Slide时执行(activeIndex发生改变)，一般是在点击控制组件、释放滑动的时间点
+            swiperContent.on("slideChange", () => {
+                let index = swiperThumbs.realIndex;
+                this.currentHallIndex = index;
+                this.isVideoPage = index === 0 ? true : false;
+            });
         });
     },
     methods: {
@@ -272,16 +167,16 @@ export default {
         }
     },
     computed: {
-        divHeight() {
-            // offsetHeight - n , n 應該要是 offsetTop 的值，但目前有問題
-            return {
-                height: document.body.offsetHeight - 290 + "px"
-            };
-        },
         contentDivHeight() {
             // offsetHeight - n , n 應該要是 offsetTop 的值，但目前有問題
             return {
-                height: document.body.offsetHeight - 350 + "px"
+                height: document.body.offsetHeight - 340 + "px"
+            };
+        },
+        divHeight() {
+            // offsetHeight - n , n 應該要是 offsetTop 的值，但目前有問題
+            return {
+                height: document.body.offsetHeight - 280 + "px"
             };
         },
         hallTab() {
@@ -342,6 +237,20 @@ export default {
             });
 
             return hallTab;
+        },
+        videoTab: {
+            get() {
+                return this.video;
+            },
+            set(value) {
+                this.video = { ...value };
+            }
+        },
+        swiperContent() {
+            return this.$refs.swiperContent.swiper;
+        },
+        swiperThumbs() {
+            return this.$refs.swiperThumbs.swiper;
         }
     }
 };
@@ -351,8 +260,6 @@ export default {
 $border-radius: 5px;
 $main-color: #b1987f;
 $main-linear-background: linear-gradient(#bd9d7d, #f9ddbd);
-$icon-wallet-size: 33px;
-$thumb-size: 63px;
 $animation-time: 1s;
 
 .home-content-container {
@@ -377,7 +284,7 @@ $animation-time: 1s;
     .thumb-title {
         position: absolute;
         width: 100%;
-        bottom: 10px;
+        top: 37.5px;
         text-align: center;
         font-size: 12px;
         color: #a6a9b2;
@@ -425,6 +332,7 @@ $animation-time: 1s;
         display: inline-block;
         width: 49%;
         height: 120px;
+        margin: 0 1px;
 
         img {
             width: 100%;

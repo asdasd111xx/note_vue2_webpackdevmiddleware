@@ -14,18 +14,25 @@
             </div>
             <div class="tab-cells">
                 <div
-                    :class="[
-                        'tab-cell',
-                        { active: selectedVideoTab === item.id }
-                    ]"
-                    v-for="(item, index) in videoTab"
-                    :key="'v-tab-' + index"
-                    @click="onClickVideoTab(item.id)"
+                    :class="['tab-cell', { active: videoTab.id === 0 }]"
+                    @click="$emit('update:videoTab', { id: 0, title: '' })"
                 >
-                    {{ item.title }}
+                    {{ $text("S_ALL", "全部") }}
+                </div>
+                <div
+                    v-for="(tab, index) in avTabs"
+                    :class="['tab-cell', { active: tab.id === videoTab.id }]"
+                    :key="'v-tab-' + index"
+                    @click="$emit('update:videoTab', tab)"
+                >
+                    {{ tab.title }}
                 </div>
             </div>
-            <div class="show-all-arrow">
+            <div
+                class="show-all-arrow"
+                @click="onClickShowAll"
+                :style="rotateArrow"
+            >
                 <img
                     :src="
                         $getCdnPath('/static/image/_new/common/icon_more.png')
@@ -41,86 +48,141 @@
         >
             <div
                 class="tab-cells"
-                v-for="(item, index) in walletTab"
+                v-for="(item, index) in mcenterTab"
                 :key="'wallet-' + index"
+                @click="goMcenter(item.name)"
             >
-                <img :src="$getCdnPath(item.imgSrc)" :alt="item.name" />
-                <div class="tab-cell-name">{{ item.name }}</div>
-            </div>
-
-            <div class="tab-cells">
                 <img
+                    v-if="item.name === 'grade'"
                     :src="
-                        $getCdnPath('/static/image/_new/level/icon_level_0.png')
+                        $getCdnPath(
+                            `/static/image/_new/level/icon_level_${vipLevel}.png`
+                        )
                     "
-                    alt="level"
+                    :alt="item.name"
                 />
-                <div class="tab-cell-name">等级</div>
+                <img
+                    v-else
+                    :src="
+                        $getCdnPath(
+                            `/static/image/_new/wallet/icon_wallet_${item.name}.png`
+                        )
+                    "
+                    :alt="item.name"
+                />
+                <div
+                    v-if="item.name === 'grade' && currentLevel > 10"
+                    class="tab-cell-name"
+                >
+                    {{ vipLevel }}
+                </div>
+                <div v-else class="tab-cell-name">{{ item.text }}</div>
             </div>
         </div>
     </div>
 </template>
 
 <script>
+import axios from "axios";
+import { API_PORN1_DOMAIN } from "@/config/api";
+import { mapGetters } from "vuex";
+import mobileLinkOpen from "@/lib/mobile_link_open";
+import mcenter from "@/api/mcenter";
+
 export default {
     name: "funcBlock",
-    props: { isVideoPage: { type: Boolean, default: true } },
+    props: {
+        isVideoPage: { type: Boolean, default: true },
+        videoTab: { type: Object, required: true }
+    },
     data() {
         return {
-            selectedVideoTab: 1,
             showVideoTabAll: false,
-            videoTab: [
-                { id: 1, title: "全部" },
-                { id: 2, title: "无码" },
-                { id: 67, title: "潮吹" },
-                { id: 68, title: "轮奸" },
-                { id: 70, title: "乳交" },
-                { id: 75, title: "颜射" },
-                { id: 78, title: "口交" },
-                { id: 92, title: "后入" },
-                { id: 95, title: "手淫" },
-                { id: 113, title: "体液" },
-                { id: 117, title: "诱惑" },
-                { id: 142, title: "淫乱" },
-                { id: 64, title: "深喉" },
-                { id: 54, title: "痉挛" },
-                { id: 5, title: "大鸡巴" },
-                { id: 7, title: "凌辱" },
-                { id: 14, title: "中出" },
-                { id: 15, title: "短发" },
-                { id: 17, title: "人妻" },
-                { id: 18, title: "女搜查官" },
-                { id: 30, title: "丝袜" },
-                { id: 34, title: "中文字幕" },
-                { id: 40, title: "女上位" },
-                { id: 52, title: "剧情" },
-                { id: 153, title: "少妇" }
-            ],
-            walletTab: [
+            avTabs: [],
+            mcenterTab: [
                 {
-                    name: "充值",
-                    imgSrc: "/static/image/_new/wallet/icon_wallet_deposit.png"
+                    name: "deposit",
+                    text: this.$text("S_DEPOSIT", "充值")
                 },
                 {
-                    name: "转帐",
-                    imgSrc: "/static/image/_new/wallet/icon_wallet_transfer.png"
+                    name: "balanceTrans",
+                    text: this.$text("S_TRANSDER", "转帐")
                 },
                 {
-                    name: "提现",
-                    imgSrc: "/static/image/_new/wallet/icon_wallet_withdraw.png"
+                    name: "withdraw",
+                    text: this.$text("S_WITHDRAWAL_TEXT", "提现")
                 },
                 {
-                    name: "VIP",
-                    imgSrc: "/static/image/_new/wallet/icon_wallet_vip.png"
+                    name: "accountVip",
+                    text: this.$text("S_VIP", "VIP")
+                },
+                {
+                    name: "grade",
+                    text: this.$text("S_LEVEL", "等级")
                 }
-            ]
+            ],
+            currentLevel: 0
         };
     },
-    mounted() {},
+    computed: {
+        rotateArrow() {
+            return this.showVideoTabAll ? { transform: "rotate(180deg)" } : {};
+        },
+        ...mapGetters({
+            loginStatus: "getLoginStatus",
+            onlineService: "getOnlineService"
+        }),
+        vipLevel() {
+            return this.currentLevel <= 10 ? this.currentLevel : "max";
+        }
+    },
+    created() {
+        axios({
+            method: "get",
+            url: `${API_PORN1_DOMAIN}/api/v1/video/tag`,
+            timeout: 30000,
+            headers: {
+                // Bundleid: "chungyo.foxyporn.prod.enterprise.web",
+                // Version: 1
+                // 本機開發時會遇到 CORS 的問題，把Bundleid及Version註解，並打開下面註解即可
+                "Content-Type": "application/x-www-form-urlencoded",
+                origin: "http://127.0.0.1"
+            }
+        }).then(response => {
+            if (response.status !== 200) {
+                return;
+            }
+
+            this.avTabs = [...response.data.result];
+        });
+
+        if (!this.loginStatus) {
+            return;
+        }
+
+        mcenter.vipUserDetail({
+            success: ({ res }) => {
+                this.currentLevel = ret.find(
+                    item => item.complex
+                ).now_level_seq;
+            }
+        });
+    },
     methods: {
-        onClickVideoTab(videoTabId) {
-            this.selectedVideoTab = videoTabId;
-            // To do call tag api
+        onClickShowAll() {
+            this.showVideoTabAll = !this.showVideoTabAll;
+        },
+        goMcenter(path) {
+            if (!this.loginStatus) {
+                this.$router.push("/mobile/login");
+                return;
+            }
+
+            if (path === "grade") {
+                return;
+            }
+
+            this.$router.push(`/mobile/mcenter/${path}`);
         }
     }
 };
@@ -131,7 +193,7 @@ $border-radius: 5px;
 $main-color: #d5bea4;
 $main-linear-background: linear-gradient(#bd9d7d, #f9ddbd);
 $icon-wallet-size: 33px;
-$height: 60px;
+$height: 50px;
 $animation-time: 1s;
 
 @keyframes fade-in {
