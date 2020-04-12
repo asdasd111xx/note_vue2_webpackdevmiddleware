@@ -1,15 +1,80 @@
 <template>
-  <mobile-container :header-config="headerConfig" :class="$style.container">
-    <div slot="content" :class="$style['content-wrap']"></div>
+  <mobile-container
+    :header-config="headerConfig"
+    :has-footer="false"
+    :class="$style.container"
+  >
+    <div slot="content" :class="$style['setting-wrap']">
+      <div
+        v-for="listInfo in list"
+        :key="`list-${listInfo.name}`"
+        :class="$style.list"
+        @click="handleClick(listInfo.path)"
+      >
+        <div :class="$style['list-icon']">
+          <img
+            :src="
+              $getCdnPath(`/static/image/_new/mcenter/help/${listInfo.img}.png`)
+            "
+          />
+        </div>
+
+        <div v-if="listInfo.info" :class="$style['list-info']">
+          {{ listInfo.info }}
+        </div>
+
+        <span> {{ listInfo.name }} </span>
+        <div :class="$style['btn-next']">
+          <img :src="$getCdnPath(`/static/image/_new/common/btn_next.png`)" />
+        </div>
+      </div>
+    </div>
   </mobile-container>
 </template>
 
 <script>
 import { mapGetters } from 'vuex';
+import member from '@/api/member';
 import mobileContainer from '../../../common/new/mobileContainer';
 export default {
   components: {
     mobileContainer,
+  },
+  data() {
+    return {
+      list: [
+        {
+          name: this.$text('S_DEPOSIT_HELP', '存款帮助'),
+          path: '/mobile/mcenter/help/deposit',
+          img: 'deposit',
+          info: '存款极速到账'
+        },
+        {
+          name: this.$text('S_WITHDRAWAL_HELP', '取款帮助'),
+          path: '/mobile/mcenter/help/withdraw',
+          img: 'withdraw',
+          info: '极速提款仅需30秒'
+        },
+        {
+          name: this.$text('S_GAME_INTR', '游戏介绍'),
+          path: '/mobile/mcenter/help/gameintro',
+          img: 'gameintro',
+          info: '主流体育彩票玩法'
+        },
+        {
+          name: this.$text('S_TECH_SUP', '技术支持'),
+          path: '/mobile/mcenter/help/support',
+          img: 'support',
+          info: '提供全面技术支持'
+        },
+        {
+          name: this.$text('S_CONTACT_US', '联系我们'),
+          path: '/mobile/mcenter/help/contact',
+          img: 'contact',
+          info: '为您提供全天候服务'
+        },
+      ],
+    };
   },
   computed: {
     ...mapGetters({
@@ -17,24 +82,87 @@ export default {
     }),
     headerConfig() {
       return {
-        hasLogo: false,
-        hasMemInfo: false,
-        hasSearchBtn: false,
-        isMCenter: true,
+        prev: true,
+        onClick: () => { this.$router.back(); },
         title: this.$text('S_HELP_CENTER', '帮助中心'),
       };
     },
   },
   created() {
-
+    if (!this.loginStatus) {
+      this.$router.push("/mobile/home")
+    }
   },
   methods: {
+    handleClick(path) {
+      this.$router.push(path)
+    },
+    logout() {
+      member.logout().then(() => { window.location.reload(); });
+    },
   }
 };
 </script>
 
 <style lang="scss" module>
+@import "~@/css/variable.scss";
+
 .container {
-  overflow-y: scroll;
+  background-color: $main_background_white1;
+}
+
+.setting-wrap {
+  color: $main_text_color3;
+
+  .list {
+    height: 60px;
+    padding: 0 14px;
+    display: flex;
+    align-items: center;
+    background-color: $main_white_color1;
+
+    > span {
+      width: 100%;
+    }
+
+    .list-icon {
+      width: 30px;
+      height: 30px;
+      display: flex;
+      align-items: center;
+      margin-right: 5px;
+
+      > img {
+        height: 100%;
+      }
+    }
+
+    .list-info {
+      color: #cbced8;
+      font-size: 12px;
+      position: absolute;
+      right: 38px;
+    }
+  }
+
+  .btn-next {
+    width: 14px;
+    height: 100%;
+    display: flex;
+    align-items: center;
+    > img {
+      height: 14px;
+      width: 14px;
+    }
+  }
+
+  .logout {
+    background-color: $main_white_color1;
+    text-align: center;
+    width: 100%;
+    margin-top: 10px;
+    height: 50px;
+    line-height: 50px;
+  }
 }
 </style>

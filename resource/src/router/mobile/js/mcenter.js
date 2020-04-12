@@ -156,9 +156,26 @@ export default {
                     name: 'mcenter-help-sport',
                     component
                 },
+
+                // 幫助中心
                 {
-                    path: 'withdrawal',
-                    name: 'mcenter-help-withdrawal',
+                    path: 'deposit',
+                    name: 'mcenter-help-deposit',
+                    component
+                },
+                {
+                    path: 'gameintro',
+                    name: 'mcenter-help-gameintro',
+                    component
+                },
+                {
+                    path: 'support',
+                    name: 'mcenter-help-support',
+                    component
+                },
+                {
+                    path: 'contact',
+                    name: 'mcenter-help-contact',
                     component
                 }
             ]

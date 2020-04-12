@@ -2,7 +2,7 @@
   <div :class="[$style.container, { [$style['has-header']]: hasHeader }]">
     <m-header v-if="headerConfig" :header-config="headerConfig" />
     <slot name="content" />
-    <m-footer />
+    <m-footer v-if="hasFooter" />
     <!-- <ele-pop /> -->
     <!-- 會員中心彈窗 -->
     <!-- <div v-if="popType === 'note'" :class="[$style['note-content'], 'theme-porn1']">
@@ -27,6 +27,10 @@ export default {
     headerConfig: {
       type: Object,
       default: null
+    },
+    hasFooter: {
+      type: Boolean,
+      default: true
     }
   },
   computed: {

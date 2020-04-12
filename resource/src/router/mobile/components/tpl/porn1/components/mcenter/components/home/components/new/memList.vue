@@ -325,6 +325,8 @@ export default {
     height: 21px;
     display: flex;
     align-items: center;
+    margin-right: 5px;
+
     > img {
       height: 100%;
     }
