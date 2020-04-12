@@ -26,17 +26,6 @@ export default {
           text: 'S_REAL_NAME_CONFIRM',
           isShow: true,
           field: {
-            name: {
-              key: 'name',
-              text: 'S_PERSONAL_NAME',
-              status: '',
-              value: '',
-              btnText: '',
-              btnShow: true,
-              type: 'edit',
-              isShow: true,
-              popTitle: ''
-            },
             alias: {
               key: 'alias',
               text: 'S_USER_NAME',
@@ -48,59 +37,17 @@ export default {
               isShow: true,
               popTitle: 'S_MODIFY_NICKNAME'
             },
-            email: {
-              key: 'email',
-              text: 'SS_E_MAIL',
+            name: {
+              key: 'name',
+              text: 'S_PERSONAL_NAME',
               status: '',
               value: '',
               btnText: '',
               btnShow: true,
-              type: 'bind',
-              verification: true,
+              type: 'edit',
               isShow: true,
               popTitle: ''
             },
-            phone: {
-              key: 'phone',
-              text: 'S_TEL',
-              status: '',
-              value: '',
-              btnText: '',
-              btnShow: true,
-              type: 'bind',
-              verification: true,
-              isShow: true,
-              popTitle: ''
-            },
-            password: {
-              key: 'password',
-              text: 'SS_LOGIN_PW',
-              status: '',
-              value: '',
-              btnText: '',
-              btnShow: true,
-              type: 'password',
-              isShow: true,
-              popTitle: ''
-            },
-            withdrawPwd: {
-              key: 'withdrawPwd',
-              text: 'S_DAW_DRWAL_PASSWORD',
-              status: '',
-              value: '',
-              btnText: '',
-              btnShow: true,
-              type: 'withdrawPwd',
-              isShow: false,
-              popTitle: ''
-            }
-          }
-        },
-        {
-          title: 'personalData',
-          text: 'S_PERSONAL_DATA',
-          isShow: true,
-          field: {
             birthday: {
               key: 'birthday',
               text: 'S_BIRTHDAY_DATE',
@@ -123,6 +70,60 @@ export default {
               isShow: true,
               popTitle: ''
             },
+            phone: {
+              key: 'phone',
+              text: 'S_TEL',
+              status: '',
+              value: '',
+              btnText: '',
+              btnShow: true,
+              type: 'bind',
+              verification: true,
+              isShow: true,
+              popTitle: ''
+            },
+            email: {
+              key: 'email',
+              text: 'SS_E_MAIL',
+              status: '',
+              value: '',
+              btnText: '',
+              btnShow: true,
+              type: 'bind',
+              verification: true,
+              isShow: true,
+              popTitle: ''
+            },
+            // password: {
+            //   key: 'password',
+            //   text: 'SS_LOGIN_PW',
+            //   status: '',
+            //   value: '',
+            //   btnText: '',
+            //   btnShow: true,
+            //   type: 'password',
+            //   isShow: true,
+            //   popTitle: ''
+            // },
+            // withdrawPwd: {
+            //   key: 'withdrawPwd',
+            //   text: 'S_DAW_DRWAL_PASSWORD',
+            //   status: '',
+            //   value: '',
+            //   btnText: '',
+            //   btnShow: true,
+            //   type: 'withdrawPwd',
+            //   isShow: false,
+            //   popTitle: ''
+            // }
+          }
+        },
+        {
+          title: 'personalData',
+          text: 'S_PERSONAL_DATA',
+          isShow: true,
+          field: {
+
             qq_num: {
               key: 'qq_num',
               text: 'S_QQ',

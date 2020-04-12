@@ -45,7 +45,7 @@
         </span>
       </div>
     </div>
-    <div :class="$style['btn-next']" @click="handleClickLogin">
+    <div :class="$style['btn-next']">
       <img :src="$getCdnPath(`/static/image/_new/common/btn_next.png`)" />
     </div>
   </div>
@@ -95,9 +95,9 @@ export default {
   created() {
     this.getVipInfo();
 
-    if (this.memInfo.user.image === 0) {
-      //   this.imgIndex = 1;
-      //   this.imgID = 1;
+    if (this.memInfo.user.image === 0 || !(this.memInfo.user.image)) {
+      this.imgIndex = 0;
+      this.imgID = 0;
       return;
     }
     this.imgIndex = this.memInfo.user.image;
@@ -107,9 +107,6 @@ export default {
     ...mapActions([
       'actionSetUserdata'
     ]),
-    handleClickLogin() {
-      $router.push('/mobile/joinmember')
-    },
     getVipInfo() {
       mcenter.vipUserDetail({
         success: (response) => {
@@ -155,6 +152,7 @@ export default {
 
   > img {
     height: 100%;
+    border-radius: 50%;
   }
 }
 

@@ -58,12 +58,11 @@ export default {
     };
   },
   created() {
-    if (this.memInfo.user.image === 0) {
-      //   this.imgIndex = 1;
-      //   this.imgID = 1;
+    if (this.memInfo.user.image === 0 || !(this.memInfo.user.image)) {
+      this.imgIndex = 1;
+      this.imgID = 1;
       return;
     }
-
     this.imgIndex = this.memInfo.user.image;
     this.imgID = this.memInfo.user.image;
   },
@@ -74,9 +73,7 @@ export default {
       memCurrency: 'getMemCurrency',
     }),
     avatarSrc() {
-      return this.imgIndex == 0 ?
-        this.$getCdnPath(`/static/image/_new/mcenter/avatar_nologin.png`) :
-        this.$getCdnPath(`/static/image/_new/mcenter/default/avatar_${this.imgIndex}.png`)
+      return this.$getCdnPath(`/static/image/_new/mcenter/default/avatar_${this.imgIndex}.png`)
     },
     headerConfig() {
       return {
@@ -140,6 +137,7 @@ export default {
     position: relative;
     > img:first-child {
       height: 100%;
+      border-radius: 50%;
     }
 
     > img:last-child {
@@ -186,7 +184,6 @@ export default {
     width: 31%;
     text-align: center;
     img {
-      border-radius: 50%;
       margin-top: 5%;
       width: 90%;
     }

@@ -21,17 +21,13 @@
         <div :class="$style['info-wrap']">
           <span
             >Hi,&nbsp;
-            {{
-              memInfo.user.show_alias
-                ? memInfo.user.alias
-                : memInfo.user.username
-            }}
+            {{ name }}
           </span>
           <span>欢迎来到客服中心</span>
         </div>
       </div>
 
-      <div :class="$style['info-card']" @click="click">
+      <div :class="$style['info-card']" @click="clickService">
         <div>
           <div>
             <img :src="$getCdnPath(`/static/image/_new/service/24.png`)" />
@@ -47,7 +43,7 @@
         </div>
       </div>
 
-      <div :class="$style['info-card2']" @click="click">
+      <div :class="$style['info-card2']" @click="clickService">
         <div>
           <div>
             <img :src="$getCdnPath(`/static/image/_new/service/24.png`)" />
@@ -95,8 +91,8 @@ export default {
   },
   created() {
     if (this.memInfo.user.image === 0) {
-      //   this.imgIndex = 1;
-      //   this.imgID = 1;
+      this.imgIndex = 1;
+      this.imgID = 1;
       return;
     }
     this.imgIndex = this.memInfo.user.image;
@@ -108,12 +104,20 @@ export default {
       memInfo: 'getMemInfo',
     }),
     avatarSrc() {
-      return this.imgIndex == 0 ?
+      return !this.loginStatus ?
         this.$getCdnPath(`/static/image/_new/mcenter/avatar_nologin.png`) :
         this.$getCdnPath(`/static/image/_new/mcenter/default/avatar_${this.imgIndex}.png`)
 
     },
-
+    name() {
+      if (this.loginStatus) {
+        return this.memInfo.user.show_alias
+          ? this.memInfo.user.alias
+          : this.memInfo.user.username
+      } else {
+        return '尊敬的用户'
+      }
+    },
     headerConfig() {
       return {
         title: this.$text('S_SERVIEC', '客服'),
@@ -121,11 +125,12 @@ export default {
         // onClick: () => { this.$router.back(); }
       };
     },
-
-    click() {
-
+  },
+  methods: {
+    clickService() {
+      // to do
     }
-  }
+  },
 };
 </script>
 
@@ -175,6 +180,7 @@ div.container {
 
     > img {
       height: 100%;
+      border-radius: 50%;
     }
   }
 }
