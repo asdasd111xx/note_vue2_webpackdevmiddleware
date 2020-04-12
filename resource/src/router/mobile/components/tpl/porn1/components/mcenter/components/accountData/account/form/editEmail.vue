@@ -1,183 +1,118 @@
 <template>
-    <div>
-        <slot
-            :old-email="oldEmail"
-            :new-email="newEmail"
-            :check-code="checkCode"
-            :send-btn="sendBtn"
-            :countdown-sec="countdownSec"
-            :on-send="onSend"
-            :on-submit="onSubmit"
-        />
-    </div>
+    <edit-email
+        :old-value="oldValue"
+        :new-value="newValue"
+        :code-value="codeValue"
+        :info="info"
+    >
+        <template scope="{ oldEmail, newEmail, checkCode, sendBtn, countdownSec, onSend, onSubmit }">
+            <div :class="[$style.wrap, 'clearfix']">
+                <template v-if="oldEmail.isShow">
+                    <div :class="$style.title">{{ oldEmail.label }}</div>
+                    <div :class="$style['input-wrap']">
+                        <input
+                            v-model="oldValue"
+                            :placeholder="oldEmail.label"
+                            :class="$style.input"
+                            type="text"
+                        />
+                    </div>
+                </template>
+                <template v-if="newEmail.isShow">
+                    <div :class="$style.title">{{ newEmail.label }}</div>
+                    <div :class="$style['input-wrap']">
+                        <input
+                            v-model="newValue"
+                            :placeholder="newEmail.label"
+                            :class="$style.input"
+                            type="text"
+                        />
+                        <div
+                            v-if="sendBtn.isShow"
+                            :class="$style['btn-send']"
+                            @click="handleSend(onSend)"
+                        >
+                            {{ sendBtn.label }}
+                            <template v-if="sendBtn.countdownSec">
+                                (<span>{{ countdownSec }}</span>)
+                            </template>
+                        </div>
+                    </div>
+                </template>
+                <template v-if="checkCode.isShow">
+                    <div :class="$style.title">{{ checkCode.label }}</div>
+                    <div :class="$style['input-wrap']">
+                        <input
+                            v-model="codeValue"
+                            :placeholder="checkCode.label"
+                            :class="$style.input"
+                            type="text"
+                        />
+                    </div>
+                </template>
+                <div :class="$style['btn-wrap']">
+                    <div :class="$style['btn-cancel']" @click="$emit('cancel')">{{ $text('S_CANCEL', '取消') }}</div>
+                    <div :class="$style['btn-confirm']" @click="handleSubmit(onSubmit)">{{ $text('S_CONFIRM', '確認') }}</div>
+                </div>
+                <div :class="$style['bottom-tip']">
+                    <div>{{ $text('S_SECURITY_LEVEL') }}</div>
+                    <div v-if="countdownSec" :class="$style.important">
+                        {{ $text('S_SEND_CHECK_CODE_VALID_TIME').replace('%s', 5) }}
+                        {{ $text('S_FIND_TRASH') }}
+                    </div>
+                </div>
+            </div>
+            <div v-if="sendMsg" :class="$style['send-email']">
+                {{ sendMsg }}
+            </div>
+        </template>
+    </edit-email>
 </template>
 
 <script>
-import { mapGetters, mapActions } from 'vuex';
-import member from '@/api/member';
-import mcenter from '@/api/mcenter';
+import { mapActions } from 'vuex';
+import editEmail from '@/components/common/editEmail';
 
 export default {
+    components: {
+        editEmail
+    },
     props: {
         info: {
             type: Object,
-            required: true
-        },
-        oldValue: {
-            type: String,
-            required: true
-        },
-        newValue: {
-            type: String,
-            required: true
-        },
-        codeValue: {
-            type: String,
             required: true
         }
     },
     data() {
         return {
-            timer: '',
-            countdownSec: 0
+            oldValue: '',
+            newValue: '',
+            codeValue: '',
+            sendMsg: ''
         };
-    },
-    computed: {
-        ...mapGetters({
-            memInfo: 'getMemInfo'
-        }),
-        fieldValue() {
-            return this.memInfo.email.email;
-        },
-        oldEmail() {
-            return {
-                label: this.$text('S_ORIGINAL_EMAIL'),
-                isShow: this.fieldValue && this.info.status === 'already'
-            };
-        },
-        newEmail() {
-            return {
-                label: this.fieldValue && this.info.status === 'already'
-                    ? this.$text('S_NEW_EMAIL')
-                    : this.$text('SS_E_MAIL'),
-                isShow: true
-            };
-        },
-        checkCode() {
-            return {
-                label: this.$text('S_CHECK_CODE'),
-                isShow: this.info.verification
-            };
-        },
-        sendBtn() {
-            return {
-                label: this.countdownSec
-                    ? this.$text('S_SEND_CHECK_CODE_ALREADY')
-                    : this.$text('S_SEND_CHECK_CODE'),
-                isShow: this.info.verification,
-                countdownSec: this.countdownSec
-            };
-        }
-    },
-    created() {
-        // 取驗證倒數秒數
-        member.joinConfig({
-            success: (response) => {
-                // 從舊版複製過來，不良的寫法，後續再優化
-                this.info.verification = response.ret.email.code;
-
-                if (response.ret.email.code) {
-                    mcenter.accountMailSec({
-                        success: (data) => {
-                            if (data.ret > 0) {
-                                this.countdownSec = data.ret;
-                                this.locker();
-                            }
-                        }
-                    });
-                }
-            }
-        });
     },
     methods: {
         ...mapActions(['actionSetUserdata']),
-        locker() {
-            if (this.countdownSec === 0) {
-                this.countdownSec = 30;
-            }
+        handleSend(send) {
+            send().then((response) => {
+                if (response.status) {
+                    this.sendMsg = response.msg;
 
-            this.timer = setInterval(() => {
-                if (this.countdownSec === 0) {
-                    clearInterval(this.timer);
-                    return;
+                    setTimeout(() => {
+                        this.sendMsg = '';
+                    }, 3000);
                 }
-                this.countdownSec -= 1;
-            }, 1000);
+            });
         },
-        onSend() {
-            if (this.countdownSec) {
-                return Promise.resolve({ status: false });
-            }
-
-            const getOldEmail = () => {
-                if (this.fieldValue) {
-                    return this.info.status === 'ok' ? this.newValue : this.oldValue;
+        handleSubmit(submit) {
+            submit().then((response) => {
+                if (response.status) {
+                    this.$emit('cancel');
                 }
-
-                return '';
-            };
-
-            const result = {
-                status: false,
-                msg: ''
-            };
-
-            return mcenter.accountMailSend({
-                params: {
-                    old_email: getOldEmail(),
-                    email: this.newValue
-                },
-                success: () => {
-                    this.actionSetUserdata(true);
-                    this.locker();
-                    result.status = true;
-                    result.msg = this.$text('S_SEND_CHECK_CODE_MAIL');
-                }
-            }).then(() => result).catch(() => result);
-        },
-        onSubmit() {
-            const result = {
-                status: false,
-                msg: ''
-            };
-
-            // 驗證信箱
-            if (this.info.verification) {
-                return mcenter.accountMailCheck({
-                    params: {
-                        email: this.newValue,
-                        keyring: this.codeValue
-                    },
-                    success: () => {
-                        this.actionSetUserdata(true);
-                        result.status = true;
-                        result.msg = this.$text('S_CR_SUCCESS');
-                    }
-                }).then(() => result).catch(() => result);
-            }
-
-            // 不驗證直接設定信箱
-            return mcenter.accountMailEdit({
-                params: {
-                    email: this.newValue
-                },
-                success: () => {
-                    this.actionSetUserdata(true);
-                    result.status = true;
-                    result.message(this.$text('S_EDIT_SUCCESS'));
-                }
-            }).then(() => result).catch(() => result);
+            });
         }
     }
 };
 </script>
+
+<style src="../../css/index.module.scss" lang="scss" module>

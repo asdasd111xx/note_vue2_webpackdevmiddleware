@@ -1,39 +1,49 @@
 <template>
-    <div>
-        <slot :on-submit="onSubmit" />
-    </div>
+    <edit-line>
+        <template scope="{ onSubmit }">
+            <div :class="[$style.wrap, 'clearfix']">
+                <div :class="$style.title">{{ $text('S_LINE') }}</div>
+                <div :class="$style['input-wrap']">
+                    <input
+                        v-model="value"
+                        :placeholder="$text('S_LINE')"
+                        :class="$style.input"
+                        type="text"
+                    />
+                </div>
+                <div :class="$style['btn-wrap']">
+                    <div :class="$style['btn-cancel']" @click="$emit('cancel')">{{ $text('S_CANCEL', '取消') }}</div>
+                    <div :class="$style['btn-confirm']" @click="handleSubmit(onSubmit)">{{ $text('S_CONFIRM', '確認') }}</div>
+                </div>
+            </div>
+        </template>
+    </edit-line>
 </template>
 
 <script>
-import { mapGetters, mapActions } from 'vuex';
-import mcenter from '@/api/mcenter';
+import editLine from '@/components/common/editLine';
 
 export default {
-    computed: {
-        ...mapGetters({
-            webInfo: 'getWebInfo'
-        })
+    components: {
+        editLine
+    },
+    data() {
+        return {
+            value: ''
+        };
     },
     methods: {
-        ...mapActions(['actionSetUserdata']),
-        onSubmit(value) {
-            // 空值驗證
-            if (value === '') {
-                alert(this.$t('S_CR_NUT_NULL'));
-                return Promise.resolve('error');
-            }
-
-            return mcenter.accountDataSet({
-                params: {
-                    line: value
-                },
-                success: () => {
-                    alert(this.$t('S_CR_SUCCESS'));
-                    this.$emit('cancel');
-                    this.actionSetUserdata(true);
+        handleSubmit(submit) {
+            submit(this.value).then((response) => {
+                if (response === 'error') {
+                    return;
                 }
+
+                this.$emit('cancel');
             });
         }
     }
 };
 </script>
+
+<style src="../../css/index.module.scss" lang="scss" module>

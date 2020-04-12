@@ -1,33 +1,51 @@
 <template>
-    <div>
-        <slot :on-submit="onSubmit" />
-    </div>
+    <edit-weixin>
+        <template scope="{ onSubmit }">
+            <div :class="[$style.wrap, 'clearfix']">
+                <div :class="$style.title">{{ $text('WECHAT') }}</div>
+                <div :class="$style['input-wrap']">
+                    <input
+                        v-model="value"
+                        :placeholder="$text('WECHAT')"
+                        :class="$style.input"
+                        type="text"
+                    />
+                </div>
+                <div :class="$style['btn-wrap']">
+                    <div :class="$style['btn-cancel']" @click="$emit('cancel')">{{ $text('S_CANCEL', '取消') }}</div>
+                    <div :class="$style['btn-confirm']" @click="handleSubmit(onSubmit)">{{ $text('S_CONFIRM', '確認') }}</div>
+                </div>
+            </div>
+        </template>
+    </edit-weixin>
 </template>
 
 <script>
 import { mapActions } from 'vuex';
-import mcenter from '@/api/mcenter';
+import editWeixin from '@/components/common/editWeixin';
 
 export default {
+    components: {
+        editWeixin
+    },
+    data() {
+        return {
+            value: ''
+        };
+    },
     methods: {
         ...mapActions(['actionSetUserdata']),
-        onSubmit(value) {
-            // 空值驗證
-            if (value === '') {
-                alert(this.$t('S_CR_NUT_NULL'));
-                return Promise.resolve('error');
-            }
-
-            return mcenter.accountDataSet({
-                params: {
-                    weixin: value
-                },
-                success: () => {
-                    alert(this.$t('S_CR_SUCCESS'));
-                    this.actionSetUserdata(true);
+        handleSubmit(submit) {
+            submit(this.value).then((response) => {
+                if (response === 'error') {
+                    return;
                 }
+
+                this.$emit('cancel');
             });
         }
     }
 };
 </script>
+
+<style src="../../css/index.module.scss" lang="scss" module>

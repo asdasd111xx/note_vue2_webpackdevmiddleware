@@ -1,87 +1,63 @@
 <template>
-    <div>
-        <slot
-            :is-fetching="isFetching"
-            :show-nickname="showNickname"
-            :on-toggle="onToggle"
-            :on-submit="onSubmit"
-        />
-    </div>
+    <edit-alias :value.sync="value">
+        <template scope="{ isFetching, showNickname, onToggle, onSubmit }">
+            <div :class="[$style.wrap, 'clearfix']">
+                <div :class="$style.title">{{ $text('S_NICKNAME') }}</div>
+                <div :class="$style['input-wrap']">
+                    <input
+                        v-model="value"
+                        :placeholder="$text('S_NICKNAME')"
+                        :class="$style.input"
+                        maxlength="100"
+                        type="text"
+                    />
+                </div>
+                <div :class="$style['toggle-nickname']" @click="onToggle">
+                    <span>{{ $text('S_NICKNAME_SHOW', '显示昵称') }}</span>
+                    <div :class="['ui toggle checkbox']">
+                        <input
+                            :checked="showNickname"
+                            :disabled="isFetching"
+                            type="checkbox"
+                        />
+                        <label />
+                    </div>
+                </div>
+                <div :class="$style['btn-wrap']">
+                    <div :class="$style['btn-cancel']" @click="$emit('cancel')">{{ $text('S_CANCEL', '取消') }}</div>
+                    <div :class="$style['btn-confirm']" @click="handleSubmit(onSubmit)">{{ $text('S_CONFIRM', '確認') }}</div>
+                </div>
+            </div>
+        </template>
+    </edit-alias>
 </template>
 
 <script>
-import { mapGetters, mapActions } from 'vuex';
-import ajax from '@/lib/ajax';
-import mcenter from '@/api/mcenter';
-import { API_MCENTER_ENABLE_ALIAS, API_MCENTER_DISABLE_ALIAS } from '@/config/api';
+import editAlias from '@/components/common/editAlias';
 
 export default {
-    props: {
-        value: {
-            type: String,
-            required: true
-        }
+    components: {
+        editAlias
     },
     data() {
         return {
-            isFetching: false,
-            showNickname: false
+            value: ''
         };
     },
-    computed: {
-        ...mapGetters({
-            memInfo: 'getMemInfo'
-        })
-    },
-    created() {
-        this.showNickname = this.memInfo.user.show_alias;
-        this.$emit('update:value', this.memInfo.user.alias);
-    },
     methods: {
-        ...mapActions(['actionSetUserdata']),
-        onToggle() {
-            this.showNickname = !this.showNickname;
-        },
-        onSubmit() {
-            const result = {
-                status: false,
-                msg: ''
-            };
-
-            // 空值驗證
-            if (this.value === '') {
-                result.msg = this.$text('S_CR_NUT_NULL');
-                return Promise.resolve(result);
-            }
-
-            // 驗證失敗
-            if (!/^[^，:;！@#$%^&*?<>()+=`|[\]{}\\"/.~\-_']*$/.test(this.value)) {
-                result.msg = this.$text('S_NO_SYMBOL', '请勿输入特殊符号(允许空白)');
-                return Promise.resolve(result);
-            }
-
-            const setNickname = mcenter.accountDataSet({
-                params: {
-                    alias: this.value
-                }
-            });
-
-            const setShowNickname = ajax({
-                method: 'put',
-                url: this.showNickname ? API_MCENTER_ENABLE_ALIAS : API_MCENTER_DISABLE_ALIAS,
-                errorAlert: false
-            });
-
-            return Promise.all([setNickname, setShowNickname]).then((response) => {
-                if (response.every((res) => res.result === 'ok')) {
-                    result.status = true;
-                    result.msg = this.$t('S_CR_SUCCESS');
-                    this.actionSetUserdata(true);
+        handleSubmit(submit) {
+            submit(this.value).then((response) => {
+                if (response.msg) {
+                    alert(response.msg);
                 }
 
-                return result;
+                if (response.status) {
+                    this.$emit('cancel');
+                }
             });
         }
     }
 };
 </script>
+
+<style src="../../css/index.module.scss" lang="scss" module>

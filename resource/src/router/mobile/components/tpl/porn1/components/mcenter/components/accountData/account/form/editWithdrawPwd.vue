@@ -1,64 +1,79 @@
 <template>
-    <div>
-        <slot :has-old="hasOld" :on-submit="onSubmit" />
-    </div>
+    <edit-withdraw-pwd :old-value="oldValue" :new-value="newValue">
+        <template scope="{ hasOld, onSubmit }">
+            <div :class="[$style.wrap, 'clearfix']">
+                <template v-if="hasOld">
+                    <div :class="$style.title">{{ $text('S_OLD_PWD') }}</div>
+                    <div :class="$style['input-wrap']">
+                        <input
+                            v-for="num in 4"
+                            :key="`old-${num}`"
+                            :value="oldValue[num - 1]"
+                            :class="$style['withdraw-input']"
+                            type="text"
+                            maxlength="1"
+                            @input="onInput($event, 'oldValue', num - 1)"
+                        />
+                    </div>
+                </template>
+                <div :class="$style.title">{{ $text('S_NEW_PWD') }}</div>
+                <div :class="$style['input-wrap']">
+                    <input
+                        v-for="num in 4"
+                        :key="`new-${num}`"
+                        :value="newValue[num - 1]"
+                        :class="$style['withdraw-input']"
+                        type="text"
+                        maxlength="1"
+                        @input="onInput($event, 'newValue', num - 1)"
+                    />
+                </div>
+                <div :class="$style['btn-wrap']">
+                    <div :class="$style['btn-cancel']" @click="$emit('cancel')">{{ $text('S_CANCEL', '取消') }}</div>
+                    <div :class="$style['btn-confirm']" @click="handleSubmit(onSubmit)">{{ $text('S_CONFIRM', '確認') }}</div>
+                </div>
+                <div :class="$style['bottom-tip']">
+                    <div>{{ $text('S_LIMIT_0_TO_9') }}</div>
+                </div>
+            </div>
+        </template>
+    </edit-withdraw-pwd>
 </template>
 
 <script>
-import { mapGetters, mapActions } from 'vuex';
-import mcenter from '@/api/mcenter';
+import editWithdrawPwd from '@/components/common/editWithdrawPwd';
 
 export default {
-    props: {
-        oldValue: {
-            type: Array,
-            required: true
-        },
-        newValue: {
-            type: Array,
-            required: true
-        }
+    components: {
+        editWithdrawPwd
     },
-    computed: {
-        ...mapGetters({
-            memInfo: 'getMemInfo'
-        }),
-        hasOld() {
-            return !!this.memInfo.user.has_withdraw_password;
-        }
+    data() {
+        return {
+            oldValue: ['', '', '', ''],
+            newValue: ['', '', '', '']
+        };
     },
     methods: {
-        ...mapActions(['actionSetUserdata']),
-        onSubmit() {
-            const oldPw = this.oldValue.join('');
-            const newPw = this.newValue.join('');
-            const result = {
-                status: false,
-                msg: ''
-            };
+        onInput(e, field, index) {
+            this.$set(this[field], index, e.target.value);
 
-            if (this.hasOld && oldPw.length < 4) {
-                result.msg = this.$text('S_OLD_PW_NOT_COMPLETE');
-                return Promise.resolve(result);
+            if (!/^[0-9]$/.test(this[field][index])) {
+                this.$set(this[field], index, '');
             }
-
-            if (newPw.length < 4) {
-                result.msg = this.$text('S_NEW_PW_NOT_COMPLETE');
-                return Promise.resolve(result);
-            }
-
-            return mcenter.accountWdPassword({
-                params: {
-                    old_password: oldPw,
-                    new_password: newPw
-                },
-                success: () => {
-                    this.actionSetUserdata(true);
-                    result.status = true;
-                    result.msg = this.$text('S_EDIT_SUCCESS');
+        },
+        handleSubmit(submit) {
+            submit(this.value).then((response) => {
+                if (response.msg) {
+                    alert(response.msg);
                 }
-            }).then(() => result).catch(() => result);
+
+                if (response.status) {
+                    this.$emit('cancel');
+                }
+            });
         }
     }
 };
 </script>
+
+<style src="../../css/index.module.scss" lang="scss" module>
