@@ -25,7 +25,7 @@ import './css/plugins/semantic/semantic.css';
 // flatpickr
 import 'flatpickr/dist/flatpickr.css';
 // vue-awesome-swiper
-import 'swiper/dist/css/swiper.css';
+import 'swiper/css/swiper.css';
 // vue-multiselect
 import 'vue-multiselect/dist/vue-multiselect.min.css';
 
