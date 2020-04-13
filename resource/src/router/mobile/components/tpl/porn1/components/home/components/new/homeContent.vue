@@ -8,10 +8,10 @@
         >
             <swiper-slide
                 class="hall-thumb-cell"
-                v-for="(item, index) in hallTab"
+                v-for="(tab, index) in hallTab"
                 :key="'hallThumb-' + index"
             >
-                <div @click="onClickHallSlide(index)">
+                <!-- <div @click="onClickHallSlide(index)">
                     <img
                         v-if="currentHallIndex === index"
                         :src="$getCdnPath(item.hImgSrc)"
@@ -26,7 +26,8 @@
                     >
                         {{ item.title }}
                     </div>
-                </div>
+                </div> -->
+                <hall-tab-cell :hallTab="tab" :index="index" />
             </swiper-slide>
         </swiper>
 
@@ -101,21 +102,32 @@
 </template>
 
 <script>
-import { swiper, swiperSlide } from "vue-awesome-swiper";
+import { mapGetters } from "vuex";
+import { Swiper, SwiperSlide } from "vue-awesome-swiper";
+import axios from "axios";
+import querystring from "querystring";
 import funcBlock from "./funcBlock";
+import hallTabCell from "./hallTabCell";
+import game from "@/api/game";
+import { API_PORN1_DOMAIN } from "@/config/api";
 
 export default {
     name: "homeContent",
     components: {
-        swiper,
-        swiperSlide,
-        funcBlock
+        Swiper,
+        SwiperSlide,
+        funcBlock,
+        hallTabCell
     },
     data() {
         return {
-            currentHallIndex: 0,
+            // hallIndex: 0,
             isVideoPage: true,
             video: { id: 0, title: "" },
+            videoRecommand: [],
+            videoList: [],
+            videoSort: [],
+            allWinGame: [],
             swiperOptionContent: {
                 // loop: true,
                 // loopAdditionalSlides: 6,
@@ -141,32 +153,10 @@ export default {
             }
         };
     },
-    mounted() {
-        this.$nextTick(() => {
-            const swiperContent = this.swiperContent;
-            const swiperThumbs = this.swiperThumbs;
-            swiperContent.controller.control = swiperThumbs;
-            // // 初始設定第一頁
-            swiperContent.slideToLoop(0, 0, false);
-            swiperThumbs.slideToLoop(0, 0, false);
-            // // swiperThumbs.on("click", () => {
-            // //     let index = swiperThumbs.realIndex;
-            // //     swiperContent.slideToLoop(index, 500, false);
-            // // });
-            // // slideChange：在当前Slide切换到另一个Slide时执行(activeIndex发生改变)，一般是在点击控制组件、释放滑动的时间点
-            swiperContent.on("slideChange", () => {
-                let index = swiperThumbs.realIndex;
-                this.currentHallIndex = index;
-                this.isVideoPage = index === 0 ? true : false;
-            });
-        });
-    },
-    methods: {
-        onClickHallSlide(index) {
-            this.currentHallIndex = index;
-        }
-    },
     computed: {
+        ...mapGetters({
+            gameData: "getGameData"
+        }),
         contentDivHeight() {
             // offsetHeight - n , n 應該要是 offsetTop 的值，但目前有問題
             return {
@@ -183,57 +173,57 @@ export default {
             let hallTab = [
                 {
                     title: "影片",
-                    alias: "tv"
+                    category: "tv"
                 },
                 {
                     title: "捕鱼",
-                    alias: "fish"
+                    category: "fish"
                 },
                 {
                     title: "牛牛",
-                    alias: "bubu"
+                    category: "bubu"
                 },
                 {
                     title: "麻将",
-                    alias: "mahjong"
+                    category: "mahjong"
                 },
                 {
                     title: "电子",
-                    alias: "slot"
+                    category: "slot"
                 },
                 {
                     title: "棋牌",
-                    alias: "card"
+                    category: "card"
                 },
                 {
                     title: "电竞",
-                    alias: "esports"
+                    category: "esports"
                 },
                 {
                     title: "真人",
-                    alias: "livecasino"
+                    category: "livecasino"
                 },
                 {
                     title: "彩票",
-                    alias: "lottery"
+                    category: "lottery"
                 },
                 {
                     title: "体育",
-                    alias: "sports"
+                    category: "sports"
                 },
                 {
                     title: "代理",
-                    alias: "agents"
+                    category: "agents"
                 },
                 {
                     title: "直播",
-                    alias: "live"
+                    category: "live"
                 }
             ];
 
             hallTab.forEach(item => {
-                item.nImgSrc = `/static/image/_new/platform/icon/${item.alias}/icon_${item.alias}_n.png`;
-                item.hImgSrc = `/static/image/_new/platform/icon/${item.alias}/icon_${item.alias}_h.png`;
+                item.nImgSrc = `/static/image/_new/platform/icon/${item.category}/icon_${item.category}_n.png`;
+                item.hImgSrc = `/static/image/_new/platform/icon/${item.category}/icon_${item.category}_h.png`;
             });
 
             return hallTab;
@@ -246,11 +236,189 @@ export default {
                 this.video = { ...value };
             }
         },
+        getHallList() {
+            if (this.hallTab === "lottery") {
+                const data = find(
+                    this.hallList,
+                    info => info.vendor === this.hallTab
+                );
+                const gameList = this.allWinGame.filter(
+                    value => !data.list.includes(value)
+                );
+
+                data.list = gameList.concat(data.list);
+
+                return [{ ...data }];
+            }
+            return [
+                { ...find(this.hallList, info => info.vendor === this.hallTab) }
+            ];
+        },
+        getVideoList() {
+            if (!this.videoList.length) {
+                return [];
+            }
+
+            // 「全部」以外的tag進入此function
+            if (this.videoTab.id) {
+                return this.videoSort.reduce((init, sort) => {
+                    const data = find(
+                        this.videoList,
+                        info => info.id === sort.id
+                    );
+
+                    if (!data) {
+                        return init;
+                    }
+
+                    return [...init, { ...data }];
+                }, []);
+            }
+
+            return this.videoSort.reduce(
+                (init, sort) => {
+                    const data = find(
+                        this.videoList,
+                        info => info.id === sort.id
+                    );
+
+                    if (!data) {
+                        return init;
+                    }
+
+                    return [...init, { ...data }];
+                },
+                [...this.videoRecommand]
+            );
+        },
         swiperContent() {
             return this.$refs.swiperContent.swiper;
         },
         swiperThumbs() {
             return this.$refs.swiperThumbs.swiper;
+        }
+    },
+    watch: {
+        videoTab() {
+            this.getList();
+        }
+    },
+    created() {
+        this.getSort();
+        this.getRecommand();
+        this.getList();
+        if (this.gameData.allwin.switch === "Y") {
+            this.getAllWin();
+        }
+    },
+    mounted() {
+        this.$nextTick(() => {
+            // const swiperContent = this.swiperContent;
+            // const swiperThumbs = this.swiperThumbs;
+            // swiperContent.controller.control = swiperThumbs;
+            // // // 初始設定第一頁
+            // swiperContent.slideToLoop(0, 0, false);
+            // swiperThumbs.slideToLoop(0, 0, false);
+            // swiperThumbs.on("click", () => {
+            //     let index = swiperThumbs.realIndex;
+            //     swiperContent.slideToLoop(index, 500, false);
+            // });
+            // // slideChange：在当前Slide切换到另一个Slide时执行(activeIndex发生改变)，一般是在点击控制组件、释放滑动的时间点
+            // swiperContent.on("slideChange", () => {
+            //     let index = swiperThumbs.realIndex;
+            //     this.currentHallIndex = index;
+            //     this.isVideoPage = index === 0 ? true : false;
+            // });
+        });
+    },
+    methods: {
+        // onClickHallSlide(index) {
+        //     this.currentHallIndex = index;
+        // }
+        getSort() {
+            axios({
+                method: "get",
+                url: `${API_PORN1_DOMAIN}/api/v1/video/sort`,
+                timeout: 30000,
+                headers: {
+                    // Bundleid: "chungyo.foxyporn.prod.enterprise.web",
+                    // Version: 1
+                    // 本機開發時會遇到 CORS 的問題，把Bundleid及Version註解，並打開下面註解即可
+                    "Content-Type": "application/x-www-form-urlencoded",
+                    origin: "http://127.0.0.1"
+                }
+            }).then(response => {
+                if (response.status !== 200) {
+                    return;
+                }
+
+                this.videoSort = [...response.data.result];
+                console.log("getSort :", this.videoSort);
+            });
+        },
+        getRecommand() {
+            axios({
+                method: "get",
+                url: `${API_PORN1_DOMAIN}/api/v1/video/recommand`,
+                timeout: 30000,
+                headers: {
+                    // Bundleid: "chungyo.foxyporn.prod.enterprise.web",
+                    // Version: 1
+                    // 本機開發時會遇到 CORS 的問題，把Bundleid及Version註解，並打開下面註解即可
+                    "Content-Type": "application/x-www-form-urlencoded",
+                    origin: "http://127.0.0.1"
+                }
+            }).then(response => {
+                if (response.status !== 200) {
+                    return;
+                }
+
+                this.videoRecommand = [...response.data.result];
+                console.log("getRecommand :", this.videoRecommand);
+            });
+        },
+        getList() {
+            axios({
+                method: "post",
+                url: `${API_PORN1_DOMAIN}/api/v1/video/videolist`,
+                timeout: 30000,
+                data: querystring.stringify({ tag: this.videoTab.title }),
+                headers: {
+                    // Bundleid: "chungyo.foxyporn.prod.enterprise.web",
+                    // Version: 1
+                    // 本機開發時會遇到 CORS 的問題，把Bundleid及Version註解，並打開下面註解即可
+                    "Content-Type": "application/x-www-form-urlencoded",
+                    origin: "http://127.0.0.1"
+                }
+            }).then(response => {
+                if (response.status !== 200) {
+                    return;
+                }
+
+                this.videoList = [...response.data.result];
+                console.log("getList :", this.videoList);
+            });
+        },
+        getAllWin() {
+            // 500萬彩票要加遊戲入口共三款
+            game.gameListByAssign({
+                params: {
+                    kind: 4,
+                    vendor: "allwin",
+                    max_results: 3,
+                    enable: true
+                },
+                success: response => {
+                    response.ret.forEach(info => {
+                        const list = {
+                            ...info,
+                            is_game: true
+                        };
+
+                        this.allWinGame.push(list);
+                    });
+                }
+            });
         }
     }
 };
@@ -276,24 +444,24 @@ $animation-time: 1s;
     margin: 0;
 }
 
-.hall-thumb-cell {
-    img {
-        width: 100%;
-        height: 100%;
-    }
-    .thumb-title {
-        position: absolute;
-        width: 100%;
-        top: 37.5px;
-        text-align: center;
-        font-size: 12px;
-        color: #a6a9b2;
+// .hall-thumb-cell {
+//     img {
+//         width: 100%;
+//         height: 100%;
+//     }
+//     .thumb-title {
+//         position: absolute;
+//         width: 100%;
+//         top: 37.5px;
+//         text-align: center;
+//         font-size: 12px;
+//         color: #a6a9b2;
 
-        &.active {
-            color: white;
-        }
-    }
-}
+//         &.active {
+//             color: white;
+//         }
+//     }
+// }
 
 .gellery-content {
     position: relative;

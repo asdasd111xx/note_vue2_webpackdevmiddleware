@@ -27,13 +27,13 @@
 
 <script>
 import { mapGetters } from 'vuex';
-import { swiper, swiperSlide } from 'vue-awesome-swiper';
+import { Swiper, SwiperSlide } from 'vue-awesome-swiper';
 import mobileLinkOpen from '@/lib/mobile_link_open';
 
 export default {
   components: {
-    swiper,
-    swiperSlide
+    Swiper,
+    SwiperSlide
   },
   props: {
     hallTab: {
