@@ -1,12 +1,7 @@
 <template>
   <mobile-container :header-config="headerConfig">
     <div slot="content" :class="$style['content-wrap']">
-      <!-- 頭像選擇 -->
-      <div
-        v-if="isShow"
-        :class="$style['dialog-mask']"
-        @click="selectAvatar()"
-      />
+      <div v-if="isShow" :class="$style['dialog-mask']" />
       <div v-if="isShow" :class="[$style['dialog-wrap'], 'clearfix']">
         <div
           v-for="(avatarList, index) in avatar"
@@ -87,28 +82,6 @@ export default {
     ...mapActions([
       'actionSetUserdata'
     ]),
-
-    dialogShow() {
-      return;
-
-      // to do 修改大頭
-      this.isShow = !this.isShow;
-    },
-    selectAvatar() {
-      if (this.memInfo.user.image === this.imgID) {
-        this.dialogShow();
-        return;
-      }
-
-      mcenter.accountDataSet({
-        params: { image: this.imgID },
-        success: () => {
-          this.actionSetUserdata();
-          this.dialogShow();
-          this.imgIndex = this.imgID;
-        }
-      });
-    },
     selectImg(index) {
       this.imgID = index + 1;
     }
@@ -146,58 +119,6 @@ export default {
       position: absolute;
       right: 0;
       bottom: 0;
-    }
-  }
-}
-// avatar dialog
-.dialog-mask,
-.dialog-wrap {
-  position: absolute;
-  top: 0;
-  left: 0;
-  padding: 0;
-  background: #000;
-  z-index: 999;
-}
-.dialog-mask {
-  width: 100%;
-  height: 100%;
-  opacity: 0.5;
-}
-.dialog-wrap {
-  top: 40%;
-  left: 50%;
-  border-radius: 10px;
-  padding: 10px;
-  background: #f8f1eb;
-  width: 90%;
-  color: #999;
-  -webkit-transform: translate(-50%, -50%);
-  transform: translate(-50%, -50%);
-  .avatar-wrap {
-    position: relative;
-    float: left;
-    margin: 6px 1%;
-    background: url("/static/image/mobile/tpl/porn1/home/avatar_bg.png") 0 0
-      no-repeat;
-    background-size: 100%;
-    width: 31%;
-    text-align: center;
-    img {
-      margin-top: 5%;
-      width: 90%;
-    }
-    .check {
-      position: absolute;
-      bottom: -6%;
-      left: 50%;
-      background: url("/static/image/mobile/tpl/porn1/home/check_icon.png") 0 0
-        no-repeat;
-      background-size: 100%;
-      width: 30%;
-      height: 29%;
-      -webkit-transform: translate(-50%, 0);
-      transform: translate(-50%, 0);
     }
   }
 }

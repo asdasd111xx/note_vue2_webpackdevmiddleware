@@ -34,6 +34,7 @@
             :class="$style['account-data-wrap']"
           >
             <template v-for="(field, fieldIndex) in item.field">
+              <!-- 編輯顯示 -->
               <component
                 :is="`edit-${currentEdit}`"
                 v-if="field.key === currentEdit"
@@ -41,10 +42,13 @@
                 :info="field"
                 @cancel="currentEdit = ''"
               />
+
+              <!-- 顯示欄位 -->
               <div
                 v-else
                 :key="fieldIndex"
                 :class="[$style['account-data-field'], 'clearfix']"
+                @click="handleClick(field)"
               >
                 <span :class="$style['field-title']">{{ $t(field.text) }}</span>
                 <div :class="$style['field-editer']">
@@ -55,10 +59,7 @@
                     ]"
                     >{{ field.value }}</span
                   >
-                  <div
-                    :class="$style['feature-btn']"
-                    @click="currentEdit = field.key"
-                  >
+                  <div :class="$style['feature-btn']">
                     <div :class="$style['btn-next']">
                       <img
                         :src="
@@ -129,7 +130,22 @@ export default {
         }
       ];
     }
-  }
+  },
+  methods: {
+    handleClick(field) {
+      if (!field.btnShow) {
+        return;
+      }
+
+      if (['name', 'phone', 'email'].includes(field.key)) {
+        this.$router.push({
+          path: `/mobile/mcenter/accountData/${field.key}`,
+        });
+        return;
+      }
+      this.currentEdit = key;
+    }
+  },
 };
 </script>
 <style lang="scss" src="../css/index.module.scss" module></style>

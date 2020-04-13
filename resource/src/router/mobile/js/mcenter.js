@@ -14,7 +14,24 @@ export default {
         { // 帳戶資料
             path: 'accountData/:id?',
             name: 'mcenter-accountData',
-            component
+            component,
+            children: [
+                {
+                    path: 'name',
+                    name: 'mcenter-accountData-name',
+                    component
+                },
+                {
+                    path: 'email',
+                    name: 'mcenter-accountData-email',
+                    component
+                },
+                {
+                    path: 'phone',
+                    name: 'mcenter-accountData-phone',
+                    component
+                },
+            ]
         },
         { // 裝置管理
             path: 'bindingDevice',

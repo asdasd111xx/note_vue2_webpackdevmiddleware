@@ -114,6 +114,14 @@
         />
       </div>
     </template>
+
+    <template v-if="headerConfig.onSave">
+      <div :class="$style['save-wrap']" @click="headerConfig.onSave">
+        <div :class="headerConfig.saveBtnActive ? $style['active'] : ''">
+          {{ $text("S_COMPLETE", "完成") }}
+        </div>
+      </div>
+    </template>
   </div>
 </template>
 
@@ -375,6 +383,15 @@ export default {
   }
 }
 
+.save-wrap {
+  font-size: 15px;
+  position: absolute;
+  line-height: 43px;
+  top: 0;
+  height: 100%;
+  right: 14px;
+  color: $main_text_color2;
+}
 @media screen and (min-width: $pad) {
   .login-wrap {
     > span {

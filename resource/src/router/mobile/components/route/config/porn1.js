@@ -50,5 +50,9 @@ export default {
         helpGameintroPorn1: () => import(/* webpackChunkName: 'helpGameintroPorn1' */'../../tpl/porn1/components/mcenter/components/help/gameintro'),
         helpSupportPorn1: () => import(/* webpackChunkName: 'helpSupportPorn1' */'../../tpl/porn1/components/mcenter/components/help/support'),
         helpContactPorn1: () => import(/* webpackChunkName: 'helpContactPorn1' */'../../tpl/porn1/components/mcenter/components/help/contact'),
+
+        accountDataNamePorn1: () => import(/* webpackChunkName: 'accountDataNamePorn1' */'../../tpl/porn1/components/mcenter/components/accountData/account/form/editName'),
+        accountDataPhonePorn1: () => import(/* webpackChunkName: 'accountDataPhonePorn1' */'../../tpl/porn1/components/mcenter/components/accountData/account/form/editPhone'),
+        accountDataEmailPorn1: () => import(/* webpackChunkName: 'accountDataEmailPorn1' */'../../tpl/porn1/components/mcenter/components/accountData/account/form/editEmail'),
     }
 };
