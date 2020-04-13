@@ -56,8 +56,8 @@ export default {
             currentIndex: 0,
             swiperOptionThumbs: {
                 loop: true,
-                loopAdditionalSlides: 6,
-                loopedSlides: 6, // looped slides should be the same
+                // // loopAdditionalSlides: 6,
+                loopedSlides: 12, // looped slides should be the same
                 direction: "vertical",
                 height: 68,
                 freeMode: true,

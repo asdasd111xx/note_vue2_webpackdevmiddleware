@@ -5,7 +5,11 @@
         :style="contentDivHeight"
     >
         <swiper-slide>
-            <div class="content-cells" v-for="(item, index) in 2" :key="index">
+            <div
+                class="content-cells"
+                v-for="(info, index) in avList.slice(0, 3)"
+                :key="`av-${index}`"
+            >
                 <div class="desc">
                     <div class="title">
                         <img
@@ -16,28 +20,41 @@
                             "
                             alt="icon_item"
                         />
-                        <span>热门推荐</span>
+                        <span>{{ info.name }}</span>
                     </div>
-                    <div class="more">更多</div>
+                    <div
+                        class="more"
+                        @click="
+                            $router.push({
+                                name: 'videoList',
+                                query: { tagId: videoTab.id, sortId: sortId }
+                            })
+                        "
+                    >
+                        {{ $text("S_MORE", "更多") }}
+                    </div>
                 </div>
                 <div class="content">
                     <div
                         class="content-cell-block"
-                        v-for="(item, index) in 4"
-                        :key="index"
+                        v-for="(item, index) in info.list.slice(0, 2)"
+                        :key="`av-list-${index}`"
                     >
-                        <img
+                        <!-- <img
                             :src="
                                 $getCdnPath(
                                     '/static/image/_new/platform/card/slot/short/agcasino_short.png'
                                 )
                             "
-                            alt=""
-                        />
+                            alt="img"
+                        /> -->
+                        <img :src="item.image" alt="img" />
+                        <div class="video-text">{{ item.title }}</div>
                     </div>
                 </div>
             </div>
         </swiper-slide>
+
         <swiper-slide v-for="(item, index) in 11" :key="index">
             <div class="content-cells">
                 <div class="content">
@@ -65,6 +82,7 @@
 import { Swiper, SwiperSlide } from "vue-awesome-swiper";
 import { mapGetters } from "vuex";
 import axios from "axios";
+import find from "lodash/find";
 import game from "@/api/game";
 import querystring from "querystring";
 import { API_PORN1_DOMAIN } from "@/config/api";
@@ -103,13 +121,14 @@ export default {
     },
     computed: {
         ...mapGetters({
-            gameData: "getGameData"
+            gameData: "getGameData",
+            memInfo: "getMemInfo"
         }),
         swiperOptionContent() {
             return {
                 loop: true,
-                loopAdditionalSlides: 6,
-                loopedSlides: 6, // looped slides should be the same
+                // // loopAdditionalSlides: 6,
+                loopedSlides: 12, // looped slides should be the same
                 spaceBetween: 10,
                 direction: "vertical",
                 freeMode: true,
@@ -123,7 +142,7 @@ export default {
                 on: {
                     // init: () => {
                     //     this.$emit("update:selectedIndex", 0);
-                    // }
+                    // },
                     slideChange: () => {
                         this.$emit(
                             "update:selectedIndex",
@@ -134,24 +153,24 @@ export default {
                 }
             };
         },
-        hallList() {
-            if (this.hallTab === "lottery") {
-                const data = find(
-                    this.hallList,
-                    info => info.vendor === this.hallTab
-                );
-                const gameList = this.allWinGame.filter(
-                    value => !data.list.includes(value)
-                );
+        // hallList() {
+        //     if (this.hallTab === "lottery") {
+        //         const data = find(
+        //             this.hallList,
+        //             info => info.vendor === this.hallTab
+        //         );
+        //         const gameList = this.allWinGame.filter(
+        //             value => !data.list.includes(value)
+        //         );
 
-                data.list = gameList.concat(data.list);
+        //         data.list = gameList.concat(data.list);
 
-                return [{ ...data }];
-            }
-            return [
-                { ...find(this.hallList, info => info.vendor === this.hallTab) }
-            ];
-        },
+        //         return [{ ...data }];
+        //     }
+        //     return [
+        //         { ...find(this.hallList, info => info.vendor === this.hallTab) }
+        //     ];
+        // },
         avList() {
             if (!this.videoList.length) {
                 return [];
@@ -168,7 +187,6 @@ export default {
                     if (!data) {
                         return init;
                     }
-
                     return [...init, { ...data }];
                 }, []);
             }
@@ -188,6 +206,9 @@ export default {
                 },
                 [...this.videoRecommand]
             );
+        },
+        sortId() {
+            return this.videoList.id || 0;
         }
     },
     watch: {
@@ -206,12 +227,15 @@ export default {
         this.getSort();
         this.getRecommand();
         this.getList();
+        this.getHallList();
         if (this.gameData.allwin.switch === "Y") {
             this.getAllWin();
         }
     },
-
     methods: {
+        getHallList() {
+            console.log(this.memInfo.vendors);
+        },
         getSort() {
             axios({
                 method: "get",
@@ -230,7 +254,6 @@ export default {
                 }
 
                 this.videoSort = [...response.data.result];
-                console.log("getSort :", this.videoSort);
             });
         },
         getRecommand() {
@@ -251,7 +274,6 @@ export default {
                 }
 
                 this.videoRecommand = [...response.data.result];
-                console.log("getRecommand :", this.videoRecommand);
             });
         },
         getList() {
@@ -273,7 +295,6 @@ export default {
                 }
 
                 this.videoList = [...response.data.result];
-                console.log("getList :", this.videoList);
             });
         },
         getAllWin() {
@@ -341,6 +362,7 @@ $animation-time: 1s;
     }
 
     .content-cell-block {
+        position: relative;
         display: inline-block;
         width: 49%;
         height: 120px;
@@ -349,6 +371,24 @@ $animation-time: 1s;
         img {
             width: 100%;
             height: 100%;
+        }
+
+        .video-text {
+            position: absolute;
+            width: 100%;
+            height: 40px;
+            line-height: 20px;
+            overflow: hidden;
+            bottom: 0;
+            background: white;
+            opacity: 0.75;
+
+            &::after {
+                content: "...";
+                position: absolute;
+                bottom: 0;
+                right: 10px;
+            }
         }
     }
 }
