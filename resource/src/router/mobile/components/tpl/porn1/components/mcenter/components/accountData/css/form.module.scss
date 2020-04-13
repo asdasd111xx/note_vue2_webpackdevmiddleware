@@ -58,3 +58,20 @@ input {
         color: #FFFFFF;
     }
 }
+
+.top-tips {
+    padding: 0 14px;
+    color: #DB6372;
+    position: absolute;
+}
+
+.bottom-tips {
+    padding: 0 14px;
+    color: #DB6372;
+    visibility: hidden;
+    height: 30px;
+
+    &.active {
+        visibility: unset;
+    }
+}

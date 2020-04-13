@@ -52,13 +52,16 @@
               >
                 <span :class="$style['field-title']">{{ $t(field.text) }}</span>
                 <div :class="$style['field-editer']">
-                  <span
-                    :class="[
-                      $style['field-text'],
-                      { [$style.yet]: field.status === 'yet' }
-                    ]"
-                    >{{ field.value }}</span
-                  >
+                  <template>
+                    <span
+                      :class="[
+                        $style['field-text'],
+                        { [$style.yet]: field.status === 'yet' }
+                      ]"
+                      >{{ field.value }}
+                    </span>
+                  </template>
+
                   <div :class="$style['feature-btn']">
                     <div :class="$style['btn-next']">
                       <img
@@ -143,7 +146,7 @@ export default {
         });
         return;
       }
-      this.currentEdit = key;
+      this.currentEdit = field.key;
     }
   },
 };

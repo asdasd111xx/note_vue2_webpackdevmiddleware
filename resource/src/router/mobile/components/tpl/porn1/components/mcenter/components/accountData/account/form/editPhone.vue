@@ -13,7 +13,7 @@
           scope="{ countryCodes, oldPhone, newPhone, checkCode, sendBtn, countdownSec, onSend, onSubmit }"
         >
           <!-- 錯誤訊息 -->
-          <div :class="$style['top-tip']">
+          <div :class="$style['top-tips']">
             <div v-if="countdownSec" :class="$style.important">
               {{ $text("S_SEND_CHECK_CODE_VALID_TIME").replace("%s", 5) }}
               {{ $text("S_FIND_TRASH") }}
@@ -104,8 +104,10 @@
               </div>
             </div> -->
           </div>
-
-          <div v-if="sendMsg" :class="$style['send-msg']">
+          <div
+            v-if="sendMsg"
+            :class="[$style['bottom-tips'], { [$style.active]: sendMsg }]"
+          >
             {{ sendMsg }}
           </div>
           <service-tips />

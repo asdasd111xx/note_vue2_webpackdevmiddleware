@@ -175,9 +175,15 @@ export default {
                 },
 
                 // 幫助中心
+
                 {
                     path: 'deposit',
                     name: 'mcenter-help-deposit',
+                    component
+                },
+                {
+                    path: 'withdraw',
+                    name: 'mcenter-help-withdraw',
                     component
                 },
                 {
