@@ -66,8 +66,8 @@
 import { mapGetters } from 'vuex';
 import mobileContainer from '../common/new/mobileContainer';
 import mcenter from '@/api/mcenter';
-import member from '@/api/member';
 import message from '../../components/common/new/message'
+import common from '@/api/bbos/common';
 
 export default {
   components: {
@@ -120,7 +120,7 @@ export default {
     },
     headerConfig() {
       return {
-        title: this.$text('S_SERVIEC', '客服'),
+        title: this.$text('S_INFORMATION', '我的') + this.$text('S_SERVIEC', '客服'),
         // prev: true,
         // onClick: () => { this.$router.back(); }
       };
@@ -219,6 +219,12 @@ div.container {
     display: flex;
     flex-direction: column;
     padding: 14px;
+    background-image: url("/static/image/_new/service/service_card.png");
+    background-size: auto 100%;
+    background-position: top 0 right 0;
+    height: 100%;
+    background-repeat: no-repeat;
+
     > div {
       height: 25px;
       line-height: 25px;
@@ -257,5 +263,9 @@ div.container {
     height: 14px;
     width: 14px;
   }
+}
+
+.card-bg {
+  height: 100%;
 }
 </style>

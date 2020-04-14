@@ -17,8 +17,8 @@
             />
           </div>
           <div>
-            <div>投诉建议</div>
-            <div>cs@yabotiyu.net</div>
+            <div>投诉建义</div>
+            <div>cs@yaboxxx.net</div>
           </div>
           <div :class="$style['copy-btn']">
             <div @click="copy(0)">{{ $text("S_COPY", "复制") }}</div>
@@ -33,7 +33,7 @@
           </div>
           <div>
             <div>客服邮箱</div>
-            <div>cs2@yabotiyu.net</div>
+            <div>cs2@yaboxxx.net</div>
           </div>
           <div :class="$style['copy-btn']">
             <div @click="copy(1)">{{ $text("S_COPY", "复制") }}</div>
@@ -94,6 +94,7 @@ import { mapGetters } from 'vuex';
 import member from '@/api/member';
 import mobileContainer from '../../../common/new/mobileContainer';
 import message from '../../../../../porn1/components/common/new/message'
+import common from '@/api/bbos/common';
 
 export default {
   components: {
@@ -122,6 +123,26 @@ export default {
     if (!this.loginStatus) {
       this.$router.push("/mobile/home")
     }
+
+    common.contactus({
+      params: {
+      },
+      success: () => {
+        member.announcement({
+          success: (res) => {
+            console.log(res)
+          }
+        }).then(() => {
+
+        });
+      },
+      fail: () => {
+        this.$emit('update:unit', {
+          ...this.unit,
+          formLoginCaptcha: ''
+        });
+      }
+    });
   },
   methods: {
     copy(key) {

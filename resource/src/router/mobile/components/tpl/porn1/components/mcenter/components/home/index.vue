@@ -10,7 +10,8 @@
         />
       </div> -->
 
-      <app-tip v-if="showTip" @close="showTip = false" />
+      <!-- 暫時不顯示 -->
+      <!-- <app-tip v-if="showTip" @close="showTip = false" /> -->
       <avatar-info />
       <vip-info />
       <mem-list />
