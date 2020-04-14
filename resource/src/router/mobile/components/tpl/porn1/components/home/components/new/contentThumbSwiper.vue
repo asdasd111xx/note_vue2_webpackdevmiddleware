@@ -27,7 +27,10 @@
                         @click="
                             $router.push({
                                 name: 'videoList',
-                                query: { tagId: videoTab.id, sortId: sortId }
+                                query: {
+                                    tagId: videoTab.id,
+                                    sortId: info.id || 0
+                                }
                             })
                         "
                     >
@@ -40,14 +43,6 @@
                         v-for="(item, index) in info.list.slice(0, 2)"
                         :key="`av-list-${index}`"
                     >
-                        <!-- <img
-                            :src="
-                                $getCdnPath(
-                                    '/static/image/_new/platform/card/slot/short/agcasino_short.png'
-                                )
-                            "
-                            alt="img"
-                        /> -->
                         <img :src="item.image" alt="img" />
                         <div class="video-text">{{ item.title }}</div>
                     </div>
@@ -140,9 +135,14 @@ export default {
                     swiper: this.$parent.$refs.swiperThumbs.$el.swiper
                 },
                 on: {
-                    // init: () => {
-                    //     this.$emit("update:selectedIndex", 0);
-                    // },
+                    init: () => {
+                        this.$emit("update:selectedIndex", 0);
+                        this.$parent.$refs.swiperContent.$el.swiper.slideTo(
+                            0,
+                            0,
+                            false
+                        );
+                    },
                     slideChange: () => {
                         this.$emit(
                             "update:selectedIndex",
@@ -208,7 +208,7 @@ export default {
             );
         },
         sortId() {
-            return this.videoList.id || 0;
+            return this.avList.id || 0;
         }
     },
     watch: {
@@ -234,7 +234,7 @@ export default {
     },
     methods: {
         getHallList() {
-            console.log(this.memInfo.vendors);
+            let vendors = this.memInfo.vendors;
         },
         getSort() {
             axios({
@@ -323,7 +323,7 @@ export default {
 </script>
 
 <style lang="scss" scoped>
-$border-radius: 5px;
+$border-radius: 10px;
 $main-color: #b1987f;
 $main-linear-background: linear-gradient(#bd9d7d, #f9ddbd);
 $animation-time: 1s;
@@ -371,6 +371,7 @@ $animation-time: 1s;
         img {
             width: 100%;
             height: 100%;
+            border-radius: $border-radius;
         }
 
         .video-text {
@@ -379,16 +380,20 @@ $animation-time: 1s;
             height: 40px;
             line-height: 20px;
             overflow: hidden;
+            text-overflow: ellipsis;
+            white-space: nowrap;
             bottom: 0;
             background: white;
             opacity: 0.75;
+            border-bottom-right-radius: $border-radius;
+            border-bottom-left-radius: $border-radius;
 
-            &::after {
-                content: "...";
-                position: absolute;
-                bottom: 0;
-                right: 10px;
-            }
+            // &::after {
+            //     content: "...";
+            //     position: absolute;
+            //     bottom: 0;
+            //     right: 10px;
+            // }
         }
     }
 }

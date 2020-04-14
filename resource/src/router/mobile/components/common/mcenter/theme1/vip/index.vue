@@ -111,7 +111,7 @@
 
 <script>
 import { mapGetters } from 'vuex';
-import { swiper, swiperSlide } from 'vue-awesome-swiper';
+import { Swiper, SwiperSlide } from 'vue-awesome-swiper';
 import vip from '@/components/common/mcenter/vip';
 import ajax from '@/lib/ajax';
 
@@ -120,8 +120,8 @@ export default {
         mcenterHeader: () => import(/* webpackChunkName: 'mcenterHeader' */'@/router/mobile/components/common/mcenter/theme1/header'),
         urlList: () => import(/* webpackChunkName: 'urlList' */ './urlList'),
         vip,
-        swiper,
-        swiperSlide
+        Swiper,
+        SwiperSlide
     },
     data() {
         return {

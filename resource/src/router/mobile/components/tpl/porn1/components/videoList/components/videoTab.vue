@@ -20,17 +20,17 @@
 
 <script>
 import axios from 'axios';
-import { swiper, swiperSlide } from 'vue-awesome-swiper';
+import { Swiper, SwiperSlide } from 'vue-awesome-swiper';
 import { API_PORN1_DOMAIN } from '@/config/api';
 
 export default {
     components: {
-        swiper,
-        swiperSlide
+        Swiper,
+        SwiperSlide
     },
     props: {
         sortId: {
-            type: String,
+            type: Number,
             required: true
         },
         isSingle: {

@@ -8,8 +8,8 @@
 </template>
 
 <script>
-import vip from './components/vip';
-import mobileContainer from '../../../common/new/mobileContainer';
+import vip from '@/router/mobile/components/common/mcenter/theme1/vip';
+import mobileContainer from '../../../common/mobileContainer';
 
 export default {
     components: {

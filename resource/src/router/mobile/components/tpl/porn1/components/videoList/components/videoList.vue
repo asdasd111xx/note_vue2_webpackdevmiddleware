@@ -35,7 +35,7 @@ export default {
     },
     props: {
         sortId: {
-            type: String,
+            type: Number,
             required: true
         },
         isSingle: {
