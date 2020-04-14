@@ -39,25 +39,15 @@ export default {
             },
             name: {
               key: 'name',
-              text: 'S_PERSONAL_NAME',
+              text: 'S_REAL_NAME',
               status: '',
               value: '',
               btnText: '',
               btnShow: true,
               type: 'edit',
               isShow: true,
-              popTitle: ''
-            },
-            birthday: {
-              key: 'birthday',
-              text: 'S_BIRTHDAY_DATE',
-              status: '',
-              value: '',
-              btnText: '',
-              btnShow: true,
-              type: 'edit',
-              isShow: true,
-              popTitle: ''
+              popTitle: '',
+              placeholder: '姓名需与银行持卡人姓名一致，否则无法提款'
             },
             gender: {
               key: 'gender',
@@ -68,7 +58,20 @@ export default {
               btnShow: true,
               type: 'edit',
               isShow: true,
-              popTitle: ''
+              popTitle: '',
+              placeholder: '未选择'
+            },
+            birthday: {
+              key: 'birthday',
+              text: 'S_BIRTHDAY_DATE',
+              status: '',
+              value: '',
+              btnText: '',
+              btnShow: true,
+              type: 'edit',
+              isShow: true,
+              popTitle: '',
+              placeholder: '添加日期，确保您已满18岁'
             },
             phone: {
               key: 'phone',
@@ -80,7 +83,8 @@ export default {
               type: 'bind',
               verification: true,
               isShow: true,
-              popTitle: ''
+              popTitle: '',
+              placeholder: '绑定手机保护帐号安全'
             },
             email: {
               key: 'email',
@@ -92,7 +96,8 @@ export default {
               type: 'bind',
               verification: true,
               isShow: true,
-              popTitle: ''
+              popTitle: '',
+              placeholder: '绑定邮箱保护帐号安全'
             },
             // password: {
             //   key: 'password',
@@ -116,13 +121,6 @@ export default {
             //   isShow: false,
             //   popTitle: ''
             // }
-          }
-        },
-        {
-          title: 'personalData',
-          text: 'S_PERSONAL_DATA',
-          isShow: true,
-          field: {
 
             qq_num: {
               key: 'qq_num',
@@ -190,6 +188,15 @@ export default {
               isShow: false,
               popTitle: ''
             }
+          }
+        },
+        {
+          title: 'personalData',
+          text: 'S_PERSONAL_DATA',
+          isShow: true,
+          field: {
+
+
             // currency: {
             //  key: '// currency',
             //  text: 'S_CURRENCY',
@@ -343,7 +350,7 @@ export default {
             let checkValue = keyValue;
             if (keyValue) {
               if (key === 'name') {
-                checkValue = this.$t('S_SET_CL_ALREADY');
+                // checkValue = this.$t('S_SET_CL_ALREADY');
               }
               if (key === 'gender') {
                 checkValue = this.$t('S_MALE');
@@ -356,7 +363,7 @@ export default {
               ...itemNow,
               status: keyValue ? 'already' : 'yet',
               btnText: keyValue ? this.$t('S_CS_EDIT') : this.$t('S_SET_CL'),
-              value: keyValue ? checkValue : this.$t('S_YET_SET'),
+              value: keyValue ? checkValue : itemNow.placeholder,
               btnShow: !keyValue,
               isShow: userConfig.config[key] ? userConfig.config[key].display : false
             };

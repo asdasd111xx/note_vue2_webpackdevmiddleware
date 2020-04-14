@@ -10,6 +10,11 @@
         <template
           scope="{ oldEmail, newEmail, checkCode, sendBtn, countdownSec, onSend, onSubmit }"
         >
+          <!-- 暫時解scope 無法使用在header computed -->
+          <div :class="$style['save-btn']" @click="handleSubmit(onSubmit)">
+            {{ $text("S_COMPLETE", "完成") }}
+          </div>
+
           <div :class="[$style.wrap, 'clearfix']">
             <!-- 錯誤訊息 -->
             <div :class="$style['top-tip']">
@@ -166,11 +171,11 @@ export default {
       return {
         prev: true,
         onClick: () => { this.$router.back(); },
-        onSave: () => { this.handleSubmit(); },
-        saveBtnActive: this.codeVaue && this.newValue,
         title: this.$text("S_E_MAIL", "电子邮箱"),
       };
     },
+  },
+  mounted() {
   },
   methods: {
     ...mapActions(['actionSetUserdata']),
@@ -187,8 +192,8 @@ export default {
         }
       });
     },
-    handleSubmit() {
-      this.onSubmit().then((response) => {
+    handleSubmit(submit) {
+      submit().then((response) => {
         if (response.status) {
           this.$emit('cancel');
         }
@@ -229,4 +234,4 @@ export default {
   }
 };
 </script>
-<style src="../../css/form.module.scss" lang="scss" module>
+<style src="../../css/index.module.scss" lang="scss" module>

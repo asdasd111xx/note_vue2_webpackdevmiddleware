@@ -12,11 +12,18 @@
         <template
           scope="{ countryCodes, oldPhone, newPhone, checkCode, sendBtn, countdownSec, onSend, onSubmit }"
         >
-          <!-- 錯誤訊息 -->
+          <!-- 暫時解scope 無法使用在header computed -->
+          <div :class="$style['save-btn']" @click="handleSubmit(onSubmit)">
+            {{ $text("S_COMPLETE", "完成") }}
+          </div>
+
           <div :class="$style['top-tips']">
-            <div v-if="countdownSec" :class="$style.important">
+            <div v-show="countdownSec" :class="$style.important">
               {{ $text("S_SEND_CHECK_CODE_VALID_TIME").replace("%s", 5) }}
               {{ $text("S_FIND_TRASH") }}
+            </div>
+            <div v-show="errMsg" :class="$style.important">
+              {{ errMsg }}
             </div>
           </div>
 
@@ -44,6 +51,8 @@
                   <select
                     v-model="oldCode"
                     :class="[$style.select, $style['phone-select']]"
+                    :readonly="true"
+                    :disabled="true"
                   >
                     <template v-for="option in countryCodes.options">
                       <option :key="option" :value="option">{{
@@ -110,6 +119,7 @@
           >
             {{ sendMsg }}
           </div>
+
           <service-tips />
         </template>
       </edit-phone>
@@ -146,6 +156,7 @@ export default {
       newValue: '',
       codeValue: '',
       sendMsg: '',
+      errMsg: '',
       info: {
         key: 'phone',
         text: 'S_TEL',
@@ -172,6 +183,8 @@ export default {
       }
     });
   },
+  mounted() {
+  },
   computed: {
     ...mapGetters({
       memInfo: 'getMemInfo',
@@ -181,9 +194,11 @@ export default {
       return {
         prev: true,
         onClick: () => { this.$router.back(); },
-        onSave: () => { this.handleSubmit(); },
-        saveBtnActive: this.codeVaue && this.newValue,
         title: this.$text("S_TEL", "手机号码"),
+        // onClickFunc: () => {
+        // },
+        // funcBtn: this.$text("S_COMPLETE", "完成"),
+        // funcBtnActive: this.codeVaue && this.newValue,
       };
     },
   },
@@ -202,8 +217,8 @@ export default {
         }
       });
     },
-    handleSubmit() {
-      this.onSubmit().then((response) => {
+    handleSubmit(submit) {
+      submit().then((response) => {
         if (response.status) {
           this.$emit('cancel');
         }
@@ -244,4 +259,4 @@ export default {
   }
 };
 </script>
-<style src="../../css/form.module.scss" lang="scss" module>
+<style src="../../css/index.module.scss" lang="scss" module>

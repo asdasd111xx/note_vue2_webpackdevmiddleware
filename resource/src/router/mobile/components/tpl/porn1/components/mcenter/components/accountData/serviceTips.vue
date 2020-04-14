@@ -25,7 +25,7 @@ export default {
   width: 100%;
   color: $main_text_color2;
   font-size: 14px;
-
+  height: 250px;
   > span {
     color: #6aaaf5;
   }

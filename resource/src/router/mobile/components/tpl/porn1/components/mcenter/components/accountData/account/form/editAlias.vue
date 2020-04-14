@@ -1,18 +1,21 @@
 <template>
   <edit-alias :value.sync="value">
     <template scope="{ isFetching, showNickname, onToggle, onSubmit }">
-      <div :class="[$style.wrap, 'clearfix']">
-        <div :class="$style.title">{{ $text("S_NICKNAME") }}</div>
+      <div :class="[$style['field-editer'], 'clearfix']">
+        <div :class="$style['field-title']">{{ $text("S_USER_NAME") }}</div>
+
         <div :class="$style['input-wrap']">
-          <input
-            v-model="value"
-            :placeholder="$text('S_NICKNAME')"
-            :class="$style.input"
-            maxlength="100"
-            type="text"
-          />
-        </div>
-        <div :class="$style['toggle-nickname']" @click="onToggle">
+          <div :class="$style['field-value']">
+            <input
+              ref="input"
+              v-model="value"
+              :placeholder="$text('S_USER_NAME')"
+              :class="$style.input"
+              maxlength="100"
+              type="text"
+            />
+          </div>
+          <!-- <div :class="$style['toggle-nickname']" @click="onToggle">
           <span>{{ $text("S_NICKNAME_SHOW", "显示昵称") }}</span>
           <div :class="['ui toggle checkbox']">
             <input
@@ -22,13 +25,17 @@
             />
             <label />
           </div>
-        </div>
-        <div :class="$style['btn-wrap']">
-          <div :class="$style['btn-cancel']" @click="$emit('cancel')">
-            {{ $text("S_CANCEL", "取消") }}
-          </div>
-          <div :class="$style['btn-confirm']" @click="handleSubmit(onSubmit)">
-            {{ $text("S_CONFIRM", "確認") }}
+        </div> -->
+          <div :class="$style['btn-wrap']">
+            <span :class="$style['btn-cancel']" @click="$emit('cancel')">
+              {{ $text("S_CANCEL", "取消") }}
+            </span>
+            <span
+              :class="$style['btn-confirm']"
+              @click="handleSubmit(onSubmit)"
+            >
+              {{ $text("S_CONFIRM", "確認") }}
+            </span>
           </div>
         </div>
       </div>
@@ -47,6 +54,9 @@ export default {
     return {
       value: ''
     };
+  },
+  mounted() {
+    this.$refs.input.focus()
   },
   methods: {
     handleSubmit(submit) {

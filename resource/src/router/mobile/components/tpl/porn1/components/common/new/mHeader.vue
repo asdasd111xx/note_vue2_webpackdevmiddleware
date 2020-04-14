@@ -115,10 +115,14 @@
       </div>
     </template>
 
-    <template v-if="headerConfig.onSave">
-      <div :class="$style['save-wrap']" @click="headerConfig.onSave">
-        <div :class="headerConfig.saveBtnActive ? $style['active'] : ''">
-          {{ $text("S_COMPLETE", "完成") }}
+    <template v-if="headerConfig.onClickFunc">
+      <div :class="$style['save-wrap']" @click="headerConfig.onClickFunc">
+        <div :class="headerConfig.funcBtnActive ? $style['active'] : ''">
+          {{
+            headerConfig.funcBtn
+              ? headerConfig.funcBtn
+              : $text("S_COMPLETE", "完成")
+          }}
         </div>
       </div>
     </template>

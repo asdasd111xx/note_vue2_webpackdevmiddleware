@@ -42,6 +42,7 @@ export default {
   display: flex;
   justify-content: center;
   align-items: center;
+  z-index: 500;
 }
 
 .dialog div {
@@ -51,7 +52,6 @@ export default {
   margin-right: auto;
   max-width: 200px;
   padding: 15px;
-  z-index: 500;
   color: white;
 }
 

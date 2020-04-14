@@ -15,7 +15,7 @@
         </div>
       </div>
 
-      <div @click="msg = '正在上线 敬请期待'">
+      <div @click="msg = $text('S_COMING_SOON2')">
         <img
           :src="$getCdnPath('/static/image/_new/mcenter/ic_promotion.png')"
         />
@@ -203,9 +203,6 @@ export default {
 
       this.createdTime = now.diff(startTime, 'days') + 1;
     },
-    selectImg(index) {
-      this.imgID = index + 1;
-    }
   }
 };
 </script>
