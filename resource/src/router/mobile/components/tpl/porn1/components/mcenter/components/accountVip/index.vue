@@ -8,8 +8,8 @@
 </template>
 
 <script>
-import vip from './components/vip';
-import mobileContainer from '../../../common/new/mobileContainer';
+import vip from "./components/vip";
+import mobileContainer from "../../../common/new/mobileContainer";
 
 export default {
     components: {
@@ -21,8 +21,7 @@ export default {
 
 <style lang="scss" module>
 .content-wrap {
-    padding: 65px 0 45px;
-    background: #EEE;
-    min-height: calc(100vh);
+    padding-bottom: 60px;
+    background: #eee;
 }
 </style>
