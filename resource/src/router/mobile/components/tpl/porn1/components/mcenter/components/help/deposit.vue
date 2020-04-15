@@ -29,7 +29,7 @@ export default {
       return {
         prev: true,
         onClick: () => { this.$router.back(); },
-        title: this.$text('S_DEPOSIT_HELP', '存款帮助')
+        title: '充值教程'
       };
     },
   },

@@ -44,13 +44,13 @@ export default {
     return {
       list: [
         {
-          name: this.$text('S_DEPOSIT_HELP', '存款帮助'),
+          name: '充值教程',
           path: '/mobile/mcenter/help/deposit',
           img: 'deposit',
           info: '存款极速到账'
         },
         {
-          name: this.$text('S_WITHDRAWAL_HELP', '取款帮助'),
+          name: '提现教程',
           path: '/mobile/mcenter/help/withdraw',
           img: 'withdraw',
           info: '极速提款仅需30秒'
@@ -95,7 +95,9 @@ export default {
   },
   methods: {
     handleClick(path) {
-      this.$router.push(path)
+      // 其他頁面尚未實作
+      if (path.includes('contact'))
+        this.$router.push(path)
     },
     logout() {
       member.logout().then(() => { window.location.reload(); });

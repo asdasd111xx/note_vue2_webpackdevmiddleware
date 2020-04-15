@@ -27,6 +27,9 @@
                 : memInfo.user.username
             }}
           </span>
+          <span :class="$style['vip-level']">
+            {{ viplevel }}
+          </span>
         </template>
         <template v-else>
           <span @click="$router.push('/mobile/joinmember')">
@@ -68,6 +71,7 @@ export default {
       msg: "",
       imgID: 0,
       imgIndex: 0,
+      viplevel: "",
       avatar: [
         { image: 'avatar_1', url: '/static/image/_new/mcenter/default/avatar_1.png' },
         { image: 'avatar_2', url: '/static/image/_new/mcenter/default/avatar_2.png' },
@@ -109,8 +113,10 @@ export default {
     ]),
     getVipInfo() {
       mcenter.vipUserDetail({
-        success: (response) => {
-          console.log(response)
+        success: (res) => {
+          if (res && res.ret && res.ret[0]) {
+            this.viplevel = "VIP" + res.ret[0].now_level_id;
+          }
         }
       });
     },
@@ -199,5 +205,21 @@ export default {
     height: 20px;
     width: 20px;
   }
+}
+
+.vip-level {
+  margin-left: 5px;
+  font-size: 11px;
+  line-height: 17px;
+  height: 17px;
+  color: #ffffff;
+  text-align: center;
+  font-weight: bold;
+  width: 40px;
+  border-radius: 4px;
+  background: -webkit-linear-gradient(left, #eeddd0, #d5b69c);
+  background: -o-linear-gradient(right, #eeddd0, #d5b69c);
+  background: -moz-linear-gradient(right, #eeddd0, #d5b69c);
+  background: linear-gradient(to right, #eeddd0, #d5b69c);
 }
 </style>
