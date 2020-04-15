@@ -8,7 +8,7 @@ const HtmlWebpackTagsPlugin = require('html-webpack-tags-plugin');
 const FriendlyErrorsPlugin = require('friendly-errors-webpack-plugin');
 // const BundleAnalyzerPlugin = require('webpack-bundle-analyzer').BundleAnalyzerPlugin;
 
-function resolve (dir) {
+function resolve(dir) {
     return path.join(__dirname, '..', dir)
 }
 
@@ -21,14 +21,14 @@ module.exports = merge(baseWebpackConfig, {
     module: {
         rules: [
             {
-                test: /\.(js|vue)$/,
-                loader: 'eslint-loader',
-                enforce: "pre",
-                include: [resolve('src')],
-                options: {
-                    formatter: require('eslint-friendly-formatter'),
-                    emitWarning: true
-                }
+                // test: /\.(js|vue)$/,
+                // loader: 'eslint-loader',
+                // enforce: "pre",
+                // include: [resolve('src')],
+                // options: {
+                //     formatter: require('eslint-friendly-formatter'),
+                //     emitWarning: true
+                // }
             }]
     },
     mode: 'development',

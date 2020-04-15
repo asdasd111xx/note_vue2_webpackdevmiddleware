@@ -13,6 +13,7 @@ export default {
         return ajax({
             method: 'get',
             url: DOMAIN + apiUrl.CONTACT_US,
+            errorAlert: false,
             ...args
         });
     },

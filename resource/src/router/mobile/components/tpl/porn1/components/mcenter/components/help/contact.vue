@@ -17,8 +17,10 @@
             />
           </div>
           <div>
-            <div>投诉建义</div>
-            <div>cs@yaboxxx.net</div>
+            <template v-if="list">
+              <div>{{ list[0].name }}</div>
+              <div>{{ list[0].value }}</div>
+            </template>
           </div>
           <div :class="$style['copy-btn']">
             <div @click="copy(0)">{{ $text("S_COPY", "复制") }}</div>
@@ -32,8 +34,10 @@
             />
           </div>
           <div>
-            <div>客服邮箱</div>
-            <div>cs2@yaboxxx.net</div>
+            <template v-if="list">
+              <div>{{ list[1].name }}</div>
+              <div>{{ list[1].value }}</div>
+            </template>
           </div>
           <div :class="$style['copy-btn']">
             <div @click="copy(1)">{{ $text("S_COPY", "复制") }}</div>
@@ -53,8 +57,10 @@
             />
           </div>
           <div>
-            <div>合营部QQ</div>
-            <div>21075763</div>
+            <template v-if="list">
+              <div>{{ list[2].name }}</div>
+              <div>{{ list[2].value }}</div>
+            </template>
           </div>
           <div :class="$style['copy-btn']">
             <div @click="copy(2)">{{ $text("S_COPY", "复制") }}</div>
@@ -68,8 +74,10 @@
             />
           </div>
           <div>
-            <div>合营部Flygram</div>
-            <div>yaboaff</div>
+            <template v-if="list">
+              <div>{{ list[3].name }}</div>
+              <div>{{ list[3].value }}</div>
+            </template>
           </div>
           <div :class="$style['copy-btn']">
             <div @click="copy(3)">{{ $text("S_COPY", "复制") }}</div>
@@ -101,10 +109,16 @@ export default {
     mobileContainer,
     message
   },
+  //   {
+  //         id: 1,
+  //         type: "cu",
+  //         name: "投诉建义",
+  //         value: "cs@yaboxxx.net"
+  //    }
   data() {
     return {
       msg: '',
-      list: ['cs@yabotiyu.net', 'cs@yabotiyu.net', '21075763', 'yaboaff']
+      list: null
     };
   },
   computed: {
@@ -124,29 +138,14 @@ export default {
       this.$router.push("/mobile/home")
     }
 
-    common.contactus({
-      params: {
-      },
-      success: () => {
-        member.announcement({
-          success: (res) => {
-            console.log(res)
-          }
-        }).then(() => {
-
-        });
-      },
-      fail: () => {
-        this.$emit('update:unit', {
-          ...this.unit,
-          formLoginCaptcha: ''
-        });
-      }
+    common.contactus().then((res) => {
+      this.list = res.data;
     });
   },
   methods: {
     copy(key) {
-      let string = this.list[key];
+      let string = this.list[key].value;
+      if (!string) return;
 
       var textArea = document.createElement("textarea");
       textArea.value = string;

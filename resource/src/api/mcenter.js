@@ -20,6 +20,7 @@ export default {
         return ajax({
             method: 'put',
             url: apiUrl.API_MEMBER,
+            errorAlert: false,
             ...args
         });
     },
