@@ -55,9 +55,5 @@ export default {
 
 <style lang="scss" module>
 div.container {
-  background-color: white;
-  background-repeat: no-repeat;
-  background-size: cover;
-  background-image: url("/static/image/_new/common/bg.png");
 }
 </style>
