@@ -53,6 +53,10 @@
     }
 }
 
+.wrap {
+    background: $main_white_color1;
+}
+
 .account-data-wrap {
     color: $main_text_color3;
     background: $main_white_color1;
@@ -116,7 +120,7 @@
 }
 
 .block {
-    height: 77px;
+    height: 75px;
     font-size: 14px;
     padding: 2px 14px;
     display: flex;
@@ -170,6 +174,11 @@ input {
     padding: 0 14px;
     color: #DB6372;
     height: 40px;
+    line-height: 40px;
+
+    >.send-tips {
+        line-height: 20px;
+    }
 }
 
 .bottom-tips {

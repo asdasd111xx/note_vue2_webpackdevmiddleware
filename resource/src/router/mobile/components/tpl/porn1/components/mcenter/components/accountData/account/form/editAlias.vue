@@ -1,21 +1,19 @@
 <template>
-  <edit-alias :value.sync="value">
-    <template scope="{ isFetching, showNickname, onToggle, onSubmit }">
-      <div :class="[$style['field-editer'], 'clearfix']">
-        <div :class="$style['field-title']">{{ $text("S_USER_NAME") }}</div>
+  <div :class="[$style['field-editer'], 'clearfix']">
+    <div :class="$style['field-title']">{{ $text("S_USER_NAME") }}</div>
 
-        <div :class="$style['input-wrap']">
-          <div :class="$style['field-value']">
-            <input
-              ref="input"
-              v-model="value"
-              :placeholder="$text('S_USER_NAME')"
-              :class="$style.input"
-              maxlength="100"
-              type="text"
-            />
-          </div>
-          <!-- <div :class="$style['toggle-nickname']" @click="onToggle">
+    <div :class="$style['input-wrap']">
+      <div :class="$style['field-value']">
+        <input
+          ref="input"
+          v-model="value"
+          :placeholder="$text('S_USER_NAME')"
+          :class="$style.input"
+          maxlength="100"
+          type="text"
+        />
+      </div>
+      <!-- <div :class="$style['toggle-nickname']" @click="onToggle">
           <span>{{ $text("S_NICKNAME_SHOW", "显示昵称") }}</span>
           <div :class="['ui toggle checkbox']">
             <input
@@ -26,48 +24,90 @@
             <label />
           </div>
         </div> -->
-          <div :class="$style['btn-wrap']">
-            <span :class="$style['btn-cancel']" @click="$emit('cancel')">
-              {{ $text("S_CANCEL", "取消") }}
-            </span>
-            <span
-              :class="$style['btn-confirm']"
-              @click="handleSubmit(onSubmit)"
-            >
-              {{ $text("S_CONFIRM", "確認") }}
-            </span>
-          </div>
-        </div>
+      <div :class="$style['btn-wrap']">
+        <span :class="$style['btn-cancel']" @click="$emit('cancel')">
+          {{ $text("S_CANCEL", "取消") }}
+        </span>
+        <span :class="$style['btn-confirm']" @click="handleSubmit()">
+          {{ $text("S_CONFIRM", "確認") }}
+        </span>
       </div>
-    </template>
-  </edit-alias>
+    </div>
+  </div>
 </template>
 
 <script>
-import editAlias from '@/components/common/editAlias';
+import { mapGetters, mapActions } from 'vuex';
+import ajax from '@/lib/ajax';
+import mcenter from '@/api/mcenter';
+import { API_MCENTER_ENABLE_ALIAS, API_MCENTER_DISABLE_ALIAS } from '@/config/api';
 
 export default {
   components: {
-    editAlias
   },
   data() {
     return {
-      value: ''
+      value: '',
+      isFetching: false,
+      showNickname: false
     };
   },
   mounted() {
     this.$refs.input.focus()
   },
+  computed: {
+    ...mapGetters({
+      memInfo: 'getMemInfo'
+    })
+  },
+  created() {
+    this.showNickname = this.memInfo.user.show_alias;
+    this.value = this.memInfo.user.alias;
+  },
   methods: {
+    ...mapActions(['actionSetUserdata']),
+    onToggle() {
+      this.showNickname = !this.showNickname;
+    },
     handleSubmit(submit) {
-      submit(this.value).then((response) => {
-        if (response.msg) {
-          alert(response.msg);
+      const result = {
+        status: false,
+        msg: ''
+      };
+
+      // 空值驗證
+      if (this.value === '') {
+        result.msg = this.$text('S_CR_NUT_NULL');
+        return Promise.resolve(result);
+      }
+
+      // 驗證失敗
+      if (!/^[^，:;！@#$%^&*?<>()+=`|[\]{}\\"/.~\-_']*$/.test(this.value)) {
+        result.msg = this.$text('S_NO_SYMBOL', '请勿输入特殊符号(允许空白)');
+        return Promise.resolve(result);
+      }
+
+      const setNickname = mcenter.accountDataSet({
+        params: {
+          alias: this.value
+        }
+      });
+
+      const setShowNickname = ajax({
+        method: 'put',
+        url: this.showNickname ? API_MCENTER_ENABLE_ALIAS : API_MCENTER_DISABLE_ALIAS,
+        errorAlert: false
+      });
+
+      return Promise.all([setNickname, setShowNickname]).then((response) => {
+        if (response.every((res) => res.result === 'ok')) {
+          // result.status = true;
+          // result.msg = this.$t('S_CR_SUCCESS');
+          this.actionSetUserdata(true);
+          this.$emit('cancel')
         }
 
-        if (response.status) {
-          this.$emit('cancel');
-        }
+        return result;
       });
     }
   }

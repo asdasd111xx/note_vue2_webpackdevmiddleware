@@ -1,33 +1,29 @@
 <template>
   <mobile-container :header-config="headerConfig">
     <div slot="content" :class="$style['content-wrap']">
-      <edit-name>
-        <template scope="{ onSubmit }">
-          <!-- 暫時解scope 無法使用在header computed -->
-          <div :class="$style['save-btn']" @click="handleSubmit(onSubmit)">
-            {{ $text("S_COMPLETE", "完成") }}
+      <div :class="[$style.wrap, 'clearfix']">
+        <!-- 錯誤訊息 -->
+        <div :class="$style['top-tips']">
+          <div v-show="tipMsg">
+            {{ tipMsg }}
           </div>
-
-          <div :class="[$style.wrap, 'clearfix']">
-            <div :class="$style.block">
-              <div :class="$style.title">{{ $text("S_REAL_NAME") }}</div>
-              <div :class="$style['input-wrap']">
-                <input
-                  ref="input"
-                  :value="value"
-                  :placeholder="
-                    $text('S_ENTER_REAL_NAME', '请输入您的真实姓名')
-                  "
-                  :class="$style.input"
-                  type="text"
-                  @input="onInput"
-                />
-              </div>
-            </div>
+        </div>
+        <div :class="$style.block">
+          <div :class="$style.title">{{ $text("S_REAL_NAME") }}</div>
+          <div :class="$style['input-wrap']">
+            <input
+              ref="input"
+              :value="value"
+              :placeholder="$text('S_ENTER_REAL_NAME', '请输入您的真实姓名')"
+              :class="$style.input"
+              :maxlength="30"
+              type="text"
+              @input="onInput"
+            />
           </div>
-          <service-tips />
-        </template>
-      </edit-name>
+        </div>
+      </div>
+      <service-tips />
     </div>
   </mobile-container>
 </template>
@@ -39,11 +35,10 @@ import ajax from '@/lib/ajax';
 import member from '@/api/member';
 import mobileContainer from '../../../../../common/new/mobileContainer';
 import serviceTips from '../../serviceTips'
-import editName from '@/components/common/editName';
+import mcenter from '@/api/mcenter';
 
 export default {
   components: {
-    editName,
     mobileContainer,
     serviceTips
   },
@@ -56,30 +51,18 @@ export default {
   data() {
     return {
       value: '',
+      tipMsg: '',
       info: {
         key: 'name',
         text: 'S_REAL_NAME',
         status: '',
         value: '',
-        btnText: '',
-        btnShow: true,
-        type: 'edit',
+        verification: true,
         isShow: true,
-        popTitle: ''
       }
     };
   },
   created() {
-    ajax({
-      method: 'get',
-      url: API_MCENTER_USER_CONFIG,
-      errorAlert: false
-    }).then((response) => {
-      if (response && response.result === 'ok') {
-        this.info.verification = response.ret.config['name'].code;
-        this.setData(response.ret);
-      }
-    });
   },
   computed: {
     ...mapGetters({
@@ -91,6 +74,11 @@ export default {
         prev: true,
         onClick: () => { this.$router.back(); },
         title: this.$text("S_REAL_NAME", "真实姓名"),
+        onClickFunc: () => {
+          this.handleSubmit()
+        },
+        funcBtn: this.$text("S_COMPLETE", "完成"),
+        funcBtnActive: !!(this.value),
       };
     },
   },
@@ -104,46 +92,36 @@ export default {
         this.value = this.value.substring(0, 30);
       }
     },
-    handleSubmit(submit) {
-      if (!this.value || !this.value.length > 0) return;
-      submit(this.value).then((response) => {
-        if (response.status) {
-          this.$emit('cancel');
-        }
-      });
-    },
-    setData(userConfig = {}) {
-      if (Object.keys(userConfig).length === 0) {
+    handleSubmit() {
+      if (!this.value || !this.value.length > 0) {
+        this.tipMsg = this.$t('S_CR_NUT_NULL');
         return;
       }
 
-      const keyValue = this.memInfo.user.name;
+      let re = /^[^0-9，:;！@#$%^&*?<>()+=`|[\]{}\\"/.\s~\-_']*$/;
+      let msg = this.$text('S_NO_SYMBOL_DIGIT_CHEN', '请勿输入数字、空白及特殊符号');
 
-      let val = this.$t('S_YET_SET');
-      let text = this.$t('S_SET_CL');
-      let confirmSt = 'yet';
-
-      if (keyValue) {
-        val = `${this.$t('S_YET_VERIFIED')}(${keyValue})`;
-        text = this.$t('S_VERIFY');
-        confirmSt = 'ok';
-        if (userConfig.user['name']) {
-          val = keyValue;
-          text = this.$t('S_CS_EDIT');
-          confirmSt = 'already';
-        }
+      if (!re.test(this.value)) {
+        this.tipMsg = msg;
+        return;
       }
-      this.info = {
-        ...this.info,
-        status: confirmSt,
-        value: val,
-        btnText: text,
-        btnShow: true,
-        verification: true,
-        isShow: userConfig.config['name'].display
-      };
-      this.oldValue = val
-    }
+
+      return mcenter.accountDataSet({
+        params: {
+          name: this.value.substring(0, 30)
+        },
+        success: () => {
+          this.actionSetUserdata(true);
+          this.$router.push('/mobile/mcenter/accountData');
+          //   this.$text('S_EDIT_SUCCESS')
+        },
+        fail: (res) => {
+          if (res && res.data && res.data.msg) {
+            this.tipMsg = res.data.msg
+          }
+        }
+      });
+    },
   }
 };
 </script>

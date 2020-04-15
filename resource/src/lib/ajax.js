@@ -2,7 +2,7 @@ import axios from 'axios';
 import querystring from 'querystring';
 
 export default ({
-    method = '', url = '', params = {}, success = () => {}, fail = () => {}, headers = () => {}, timeout = 30000, errorAlert = true, cache = false
+    method = '', url = '', params = {}, success = () => { }, fail = () => { }, headers = () => { }, timeout = 30000, errorAlert = true, cache = false
 }) => {
     const obj = {
         method,

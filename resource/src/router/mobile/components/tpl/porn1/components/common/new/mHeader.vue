@@ -117,7 +117,7 @@
 
     <template v-if="headerConfig.onClickFunc">
       <div :class="$style['save-wrap']" @click="headerConfig.onClickFunc">
-        <div :class="headerConfig.funcBtnActive ? $style['active'] : ''">
+        <div :class="[{ [$style['active']]: headerConfig.funcBtnActive }]">
           {{
             headerConfig.funcBtn
               ? headerConfig.funcBtn
@@ -395,6 +395,10 @@ export default {
   height: 100%;
   right: 14px;
   color: $main_text_color2;
+
+  > .active {
+    color: $main_text_color3;
+  }
 }
 @media screen and (min-width: $pad) {
   .login-wrap {

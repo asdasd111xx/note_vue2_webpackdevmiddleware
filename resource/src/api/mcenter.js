@@ -47,6 +47,7 @@ export default {
         return ajax({
             method: 'post',
             url: apiUrl.API_MAIL_CHECK,
+            errorAlert: false,
             ...args
         });
     },
@@ -55,6 +56,7 @@ export default {
         return ajax({
             method: 'post',
             url: apiUrl.API_PHONE_CHECK,
+            errorAlert: false,
             ...args
         });
     },
@@ -63,6 +65,7 @@ export default {
         return ajax({
             method: 'put',
             url: apiUrl.API_MAIL_CHECK,
+            errorAlert: false,
             ...args
         });
     },
@@ -71,6 +74,7 @@ export default {
         return ajax({
             method: 'put',
             url: apiUrl.API_PHONE_CHECK,
+            errorAlert: false,
             ...args
         });
     },
@@ -79,6 +83,7 @@ export default {
         return ajax({
             method: 'put',
             url: apiUrl.API_MAIL_EDIT,
+            errorAlert: false,
             ...args
         });
     },
@@ -87,6 +92,7 @@ export default {
         return ajax({
             method: 'put',
             url: apiUrl.API_PHONE_EDIT,
+            errorAlert: false,
             ...args
         });
     },
@@ -95,6 +101,7 @@ export default {
         return ajax({
             method: 'put',
             url: apiUrl.API_PWD_CHANGE,
+            errorAlert: false,
             ...args
         });
     },
@@ -103,6 +110,7 @@ export default {
         return ajax({
             method: 'put',
             url: apiUrl.API_WITHDRAW_PWD_CHANGE,
+            errorAlert: false,
             ...args
         });
     },
@@ -111,6 +119,7 @@ export default {
         return ajax({
             method: 'get',
             url: apiUrl.API_MOBILE_CHECK,
+            errorAlert: false,
             errorAlert: false,
             ...args
         });
