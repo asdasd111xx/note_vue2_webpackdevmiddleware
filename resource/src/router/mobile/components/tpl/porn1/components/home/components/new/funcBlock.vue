@@ -1,8 +1,8 @@
 <template>
     <div class="func-container">
         <div
-            :class="['func-wrapper', 'video-tabs', { hide: !isVideoPage }]"
-            v-show="isVideoPage"
+            v-show="selectedIndex === 0"
+            :class="['func-wrapper', 'video-tabs', { hide: selectedIndex !== 0 }]"
         >
             <div class="video-search">
                 <img
@@ -21,17 +21,17 @@
                 </div>
                 <div
                     v-for="(tab, index) in avTabs"
-                    :class="['tab-cell', { active: tab.id === videoTab.id }]"
                     :key="'v-tab-' + index"
+                    :class="['tab-cell', { active: tab.id === videoTab.id }]"
                     @click="$emit('update:videoTab', tab)"
                 >
                     {{ tab.title }}
                 </div>
             </div>
             <div
+                :style="rotateArrow"
                 class="show-all-arrow"
                 @click="onClickShowAll"
-                :style="rotateArrow"
             >
                 <img
                     :src="
@@ -43,13 +43,13 @@
         </div>
 
         <div
-            :class="['func-wrapper', 'wallet-tabs', { hide: isVideoPage }]"
-            v-show="!isVideoPage"
+            v-show="selectedIndex !== 0"
+            :class="['func-wrapper', 'wallet-tabs', { hide: selectedIndex === 0 }]"
         >
             <div
-                class="tab-cells"
                 v-for="(item, index) in mcenterTab"
                 :key="'wallet-' + index"
+                class="tab-cells"
                 @click="goMcenter(item.name)"
             >
                 <img
@@ -83,17 +83,22 @@
 </template>
 
 <script>
-import axios from "axios";
-import { API_PORN1_DOMAIN } from "@/config/api";
-import { mapGetters } from "vuex";
-import mobileLinkOpen from "@/lib/mobile_link_open";
-import mcenter from "@/api/mcenter";
+import { mapGetters } from 'vuex';
+import axios from 'axios';
+import { API_PORN1_DOMAIN } from '@/config/api';
+import mcenter from '@/api/mcenter';
 
 export default {
-    name: "funcBlock",
+    name: 'FuncBlock',
     props: {
-        isVideoPage: { type: Boolean, default: true },
-        videoTab: { type: Object, required: true }
+        selectedIndex: {
+            type: Number,
+            required: true
+        },
+        videoTab: {
+            type: Object,
+            required: true
+        }
     },
     data() {
         return {
@@ -101,24 +106,24 @@ export default {
             avTabs: [],
             mcenterTab: [
                 {
-                    name: "deposit",
-                    text: this.$text("S_DEPOSIT", "充值")
+                    name: 'deposit',
+                    text: this.$text('S_DEPOSIT', '充值')
                 },
                 {
-                    name: "balanceTrans",
-                    text: this.$text("S_TRANSDER", "转帐")
+                    name: 'balanceTrans',
+                    text: this.$text('S_TRANSDER', '转帐')
                 },
                 {
-                    name: "withdraw",
-                    text: this.$text("S_WITHDRAWAL_TEXT", "提现")
+                    name: 'withdraw',
+                    text: this.$text('S_WITHDRAWAL_TEXT', '提现')
                 },
                 {
-                    name: "accountVip",
-                    text: this.$text("S_VIP", "VIP")
+                    name: 'accountVip',
+                    text: this.$text('S_VIP', 'VIP')
                 },
                 {
-                    name: "grade",
-                    text: this.$text("S_LEVEL", "等级")
+                    name: 'grade',
+                    text: this.$text('S_LEVEL', '等级')
                 }
             ],
             currentLevel: 0
@@ -126,29 +131,29 @@ export default {
     },
     computed: {
         rotateArrow() {
-            return this.showVideoTabAll ? { transform: "rotate(180deg)" } : {};
+            return this.showVideoTabAll ? { transform: 'rotate(180deg)' } : {};
         },
         ...mapGetters({
-            loginStatus: "getLoginStatus",
-            onlineService: "getOnlineService"
+            loginStatus: 'getLoginStatus',
+            onlineService: 'getOnlineService'
         }),
         vipLevel() {
-            return this.currentLevel <= 10 ? this.currentLevel : "max";
+            return this.currentLevel <= 10 ? this.currentLevel : 'max';
         }
     },
     created() {
         axios({
-            method: "get",
+            method: 'get',
             url: `${API_PORN1_DOMAIN}/api/v1/video/tag`,
             timeout: 30000,
             headers: {
-                // Bundleid: "chungyo.foxyporn.prod.enterprise.web",
+                // Bundleid: 'chungyo.foxyporn.prod.enterprise.web',
                 // Version: 1
                 // 本機開發時會遇到 CORS 的問題，把Bundleid及Version註解，並打開下面註解即可
-                "Content-Type": "application/x-www-form-urlencoded",
-                origin: "http://127.0.0.1"
+                'Content-Type': 'application/x-www-form-urlencoded',
+                origin: 'http://127.0.0.1'
             }
-        }).then(response => {
+        }).then((response) => {
             if (response.status !== 200) {
                 return;
             }
@@ -161,10 +166,8 @@ export default {
         }
 
         mcenter.vipUserDetail({
-            success: ({ res }) => {
-                this.currentLevel = ret.find(
-                    item => item.complex
-                ).now_level_seq;
+            success: ({ ret }) => {
+                this.currentLevel = ret.find((item) => item.complex).now_level_seq;
             }
         });
     },
@@ -174,11 +177,11 @@ export default {
         },
         goMcenter(path) {
             if (!this.loginStatus) {
-                this.$router.push("/mobile/login");
+                this.$router.push('/mobile/login');
                 return;
             }
 
-            if (path === "grade") {
+            if (path === 'grade') {
                 return;
             }
 
@@ -216,13 +219,6 @@ $animation-time: 1s;
         display: none;
         opacity: 0;
     }
-}
-
-.func-container {
-    position: relative;
-    width: calc(100% - 70px);
-    height: $height;
-    left: 70px;
 }
 
 .func-wrapper {

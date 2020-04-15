@@ -1,13 +1,21 @@
 <template>
-    <vip :class="[$style['vip-main-wrap']]">
+    <vip :class="[$style['vip-container']]">
         <template
             scope="{ vipLevelList, vipConfig, userVipInfo, previewLevel, isNextLevel, nowTypeLevel, nowMobileIndex, badgeList, isDisplay, changeMobileIndex }"
         >
-            <url-list
-                v-if="isShowUrl"
-                :url-list="allUrlList"
-                @close="switchUrlList"
-            />
+            <div :class="[$style['vip-bg-block']]">
+                <img
+                    :src="
+                        $getCdnPath(`/static/image/_new/mcenter/vip/vip_bg.png`)
+                    "
+                    alt="vip_bg"
+                />
+            </div>
+            <vip-user />
+            <vip-level-card />
+
+            <vip-info />
+            <!-- <live-info /> -->
         </template>
     </vip>
 </template>
@@ -16,6 +24,10 @@
 import { mapGetters } from "vuex";
 import { Swiper, SwiperSlide } from "vue-awesome-swiper";
 import vip from "@/components/common/mcenter/vip";
+import vipUser from "./vipUser";
+import vipLevelCard from "./vipLevelCard";
+import vipInfo from "./vipInfo";
+import liveInfo from "./liveInfo";
 import ajax from "@/lib/ajax";
 
 export default {
@@ -30,7 +42,11 @@ export default {
             ),
         vip,
         Swiper,
-        SwiperSlide
+        SwiperSlide,
+        vipUser,
+        vipLevelCard,
+        vipInfo,
+        liveInfo
     },
     data() {
         return {
@@ -150,6 +166,22 @@ export default {
 </script>
 
 <style lang="scss" module>
-.vip-main-wrap {
+$height: 350px;
+
+.vip-container {
+    width: 100%;
+    height: calc(100% - 60px);
+}
+
+.vip-bg-block {
+    position: absolute;
+    width: 100%;
+    height: $height;
+    background: white;
+
+    img {
+        width: 100%;
+        height: 100%;
+    }
 }
 </style>

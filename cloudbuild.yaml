@@ -38,7 +38,7 @@ steps:
   args:
   - build
   - -t
-  - gcr.io/$PROJECT_ID/$REPO_NAME-$_DEPLOY_TYPE:z-$REVISION_ID
+  - gcr.io/$PROJECT_ID/$REPO_NAME-$_DEPLOY_TYPE:latest
   - -f
   - Dockerfile
   - .
@@ -46,7 +46,7 @@ steps:
 - name: gcr.io/cloud-builders/docker
   args:
   - push
-  - gcr.io/$PROJECT_ID/$REPO_NAME-$_DEPLOY_TYPE:z-$REVISION_ID
+  - gcr.io/$PROJECT_ID/$REPO_NAME-$_DEPLOY_TYPE:latest
 
 - name: gcr.io/cloud-builders/gcloud
   args:
@@ -66,7 +66,7 @@ steps:
   - set
   - image
   - deploy/$_CLUSTER_DEPLOY
-  - $_CLUSTER_CONTAINER=gcr.io/$PROJECT_ID/$REPO_NAME-$_DEPLOY_TYPE:z-$REVISION_ID
+  - $_CLUSTER_CONTAINER=gcr.io/$PROJECT_ID/$REPO_NAME-$_DEPLOY_TYPE:latest
 
 options:
   machineType: 'N1_HIGHCPU_8'

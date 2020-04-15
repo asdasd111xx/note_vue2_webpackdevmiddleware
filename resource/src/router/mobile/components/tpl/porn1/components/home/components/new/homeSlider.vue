@@ -3,7 +3,6 @@
     ref="home-swiper"
     v-if="options"
     :options="options"
-    :class="{ [$style['tab-fixed']]: hallTab !== 'home' }"
   >
     <swiper-slide v-for="(info, key) in slider" :key="key">
       <div :class="$style['phone-image-wrap']">
@@ -34,12 +33,6 @@ export default {
   components: {
     Swiper,
     SwiperSlide
-  },
-  props: {
-    hallTab: {
-      type: String,
-      required: true
-    }
   },
   computed: {
     ...mapGetters({
@@ -172,10 +165,6 @@ export default {
 </script>
 
 <style lang="scss" module>
-.tab-fixed {
-  margin-top: 44px;
-}
-
 :global {
   .swiper-pagination-bullet {
     width: 5px;
