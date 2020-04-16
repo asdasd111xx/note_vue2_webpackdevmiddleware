@@ -2,7 +2,7 @@
     <div class="func-container">
         <div
             v-show="selectedIndex === 0"
-            :class="['func-wrapper', 'video-tabs', { hide: selectedIndex !== 0 }]"
+            :class="['func-wrapper', 'video-tabs', { hide: selectedIndex !== 0 }, 'clearfix']"
         >
             <div class="video-search">
                 <img
@@ -13,20 +13,11 @@
                 />
             </div>
             <div class="tab-cells">
-                <div
-                    :class="['tab-cell', { active: videoTab.id === 0 }]"
-                    @click="$emit('update:videoTab', { id: 0, title: '' })"
-                >
-                    {{ $text("S_ALL", "全部") }}
-                </div>
-                <div
-                    v-for="(tab, index) in avTabs"
-                    :key="'v-tab-' + index"
-                    :class="['tab-cell', { active: tab.id === videoTab.id }]"
-                    @click="$emit('update:videoTab', tab)"
-                >
-                    {{ tab.title }}
-                </div>
+                <swiper ref="tabs" :options="options">
+                    <swiper-slide v-for="(tab, index) in avTabs" :key="tab.id">
+                        <div :class="['tab-cell', { active: tab.id === videoTab.id }]" @click="onClick(index)">{{ tab.title }}</div>
+                    </swiper-slide>
+                </swiper>
             </div>
             <div
                 :style="rotateArrow"
@@ -39,6 +30,11 @@
                     "
                     alt="more"
                 />
+            </div>
+            <div v-if="showVideoTabAll" :class="['category-wrap', 'clearfix']">
+                <template v-for="(tab, index) in avTabs">
+                    <div :key="`category-${tab.id}`" @click="onClick(index)">{{ tab.title }}</div>
+                </template>
             </div>
         </div>
 
@@ -84,12 +80,17 @@
 
 <script>
 import { mapGetters } from 'vuex';
+import { Swiper, SwiperSlide } from 'vue-awesome-swiper';
 import axios from 'axios';
 import { API_PORN1_DOMAIN } from '@/config/api';
 import mcenter from '@/api/mcenter';
 
 export default {
     name: 'FuncBlock',
+    components: {
+        Swiper,
+        SwiperSlide
+    },
     props: {
         selectedIndex: {
             type: Number,
@@ -130,6 +131,15 @@ export default {
         };
     },
     computed: {
+        swiper() {
+            return this.$refs.tabs.$swiper;
+        },
+        options() {
+            return {
+                slidesPerView: 'auto',
+                spaceBetween: 4
+            };
+        },
         rotateArrow() {
             return this.showVideoTabAll ? { transform: 'rotate(180deg)' } : {};
         },
@@ -147,18 +157,18 @@ export default {
             url: `${API_PORN1_DOMAIN}/api/v1/video/tag`,
             timeout: 30000,
             headers: {
-                // Bundleid: 'chungyo.foxyporn.prod.enterprise.web',
-                // Version: 1
+                Bundleid: 'chungyo.foxyporn.prod.enterprise.web',
+                Version: 1
                 // 本機開發時會遇到 CORS 的問題，把Bundleid及Version註解，並打開下面註解即可
-                'Content-Type': 'application/x-www-form-urlencoded',
-                origin: 'http://127.0.0.1'
+                // 'Content-Type': 'application/x-www-form-urlencoded',
+                // origin: 'http://127.0.0.1'
             }
         }).then((response) => {
             if (response.status !== 200) {
                 return;
             }
 
-            this.avTabs = [...response.data.result];
+            this.avTabs = [{ id: 0, title: this.$text('S_ALL', '全部') }, ...response.data.result];
         });
 
         if (!this.loginStatus) {
@@ -172,6 +182,14 @@ export default {
         });
     },
     methods: {
+        onClick(index) {
+            this.showVideoTabAll = false;
+            this.swiper.slideTo(index);
+
+            setTimeout(() => {
+                this.$emit('update:videoTab', this.avTabs[index]);
+            }, 300);
+        },
         onClickShowAll() {
             this.showVideoTabAll = !this.showVideoTabAll;
         },
@@ -221,6 +239,10 @@ $animation-time: 1s;
     }
 }
 
+.swiper-slide {
+    width: auto;
+}
+
 .func-wrapper {
     animation: fade-in $animation-time;
     position: relative;
@@ -238,6 +260,7 @@ $animation-time: 1s;
     }
 
     &.video-tabs .video-search {
+        float: left;
         width: 25px;
         height: 25px;
 
@@ -248,38 +271,38 @@ $animation-time: 1s;
     }
 
     &.video-tabs .tab-cells {
-        display: inline-flex;
-        justify-content: center;
-        flex-direction: column;
-        flex-wrap: wrap;
-        width: 100%;
-        height: 100%;
-        overflow: auto;
-        overflow-y: hidden;
+        float: left;
+        width: calc(100% - 25px - 19px - 10px);
         margin: 0px 5px;
     }
 
     &.video-tabs .tab-cell {
         position: relative;
-        padding: 8px 18px;
-        margin: 0 2.5px;
-        border: 1.25px solid $main-color;
+        width: 60px;
+        height: 28px;
+        line-height: 28px;
+        border: 1px solid $main-color;
         border-radius: $border-radius;
         font-size: 14px;
         color: $main-color;
+        text-align: center;
 
         &.active {
+            height: 30px;
+            line-height: 30px;
+            border: none;
             background: $main-linear-background;
             color: white;
-            border-color: white;
         }
     }
 
     &.video-tabs .show-all-arrow {
-        width: 25px;
-        height: 25px;
+        float: right;
+        width: 19px;
+        height: 19px;
 
         img {
+            display: block;
             width: 100%;
             height: 100%;
         }
@@ -296,6 +319,28 @@ $animation-time: 1s;
     &.wallet-tabs img {
         width: $icon-wallet-size;
         height: $icon-wallet-size;
+    }
+}
+
+.category-wrap {
+    position: absolute;
+    top: 50px;
+    right: 0;
+    left: 0;
+    background-color: #FFF;
+    opacity: 0.9;
+
+    > div {
+        float: left;
+        width: 23%;
+        height: 28px;
+        line-height: 28px;
+        margin: 0 1% 4px;
+        border: 1px solid $main-color;
+        border-radius: $border-radius;
+        color: $main-color;
+        font-size: 14px;
+        text-align: center;
     }
 }
 </style>

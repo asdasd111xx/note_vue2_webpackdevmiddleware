@@ -8,11 +8,12 @@
                 :hall-tab-has-created.sync="hallTabHasCreated"
             />
         </div>
-        <div class="content-wrap">
+        <div ref="content-wrap" class="content-wrap">
             <func-Block :selected-index="selectedIndex" :video-tab.sync="videoTab" />
             <content-thumb-swiper
-                v-if="hallTabHasCreated"
+                v-if="hallTabHasCreated && contentStyle"
                 ref="swiperContent"
+                :content-style="contentStyle"
                 :hall-tab="hallTab"
                 :video-tab="videoTab"
                 :selected-index.sync="selectedIndex"
@@ -36,6 +37,7 @@ export default {
     data() {
         return {
             hallTabHasCreated: false,
+            contentStyle: null,
             selectedIndex: 0,
             video: { id: 0, title: '' }
         };
@@ -64,6 +66,20 @@ export default {
                 { title: '代理', category: 'agents' },
                 { title: '直播', category: 'live-stream' }
             ];
+        }
+    },
+    mounted() {
+        window.addEventListener('resize', this.onResize);
+
+        // 故意使用setTimeout等首頁輪播圖載入完畢，才能正確取得offsetTop
+        setTimeout(() => {
+            window.dispatchEvent(new Event('resize'));
+        }, 200);
+    },
+    methods: {
+        onResize() {
+            const height = window.innerHeight - this.$refs['content-wrap'].offsetTop - 50 - 60;
+            this.contentStyle = { height: `${height}px` };
         }
     }
 };

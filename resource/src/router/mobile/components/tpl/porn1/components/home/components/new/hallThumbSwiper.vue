@@ -79,13 +79,14 @@ export default {
 
 .hall-thumb-cell {
     img {
+        display: block;
         width: 100%;
         height: 100%;
     }
     .thumb-title {
         position: absolute;
+        top: 32px;
         width: 100%;
-        top: 37.5px;
         text-align: center;
         font-size: 12px;
         color: #a6a9b2;
