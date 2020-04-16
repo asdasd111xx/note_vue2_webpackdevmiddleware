@@ -82,7 +82,7 @@ export default {
 .news-wrap {
   display: flex;
   align-content: center;
-  padding: 10px 17px;
+  padding: 10px 17px 8px;
 
   > div {
     height: 100%;
@@ -90,6 +90,7 @@ export default {
   }
 
   > div > img {
+    display: block;
     width: 15px;
     height: 12px;
   }
@@ -98,5 +99,9 @@ export default {
   display: block;
   cursor: pointer;
   white-space: nowrap;
+  line-height: 12px;
+  margin-left: 6px;
+  color: #9CA3BF;
+  font-size: 12px;
 }
 </style>

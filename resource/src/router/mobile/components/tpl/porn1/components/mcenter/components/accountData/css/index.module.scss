@@ -1,45 +1,207 @@
-// @import '~@/css/variable.scss';
+@import "~@/css/variable.scss";
 
-.preset-color {
-    $tableTitleBg: url('/static/image/mobile/mcenter/bg_header2_iphone8.png') 50% -65px / 100% no-repeat #222;
-    $tableTitleColor: #FFF;
-    $tableTitleBorderColor: #F9DCB2;
-
-    $tableBtnConfirmColor: #FFF;
-    $tableBtnConfirmBg: #00347D; 
-    $tableBtnCancelColor: #FFF;
-    $tableBtnCancelBg: #A37F5B;
-
-    $addressPlusBg: #00347D;
-    $addressPlusColor: #FFF;
-
-    $editIconBg: rgba(0,0,0,0);
-    $editIconColor: #00347D;
-    
-    @import './account.module.scss';
-    @import './form.module.scss';
-    @import './address.module.scss';
+.content-wrap {
+    min-height: calc(100vh);
+    background-color: $main_background_white1;
 }
 
-.site-500011,
-.site-52,
-.site-53 {
-    $tableTitleBg: #FFF;
-    $tableTitleColor: #000;
-    $tableTitleBorderColor: #F7B500;
+.account-data-field {
+    position: relative;
+    padding: 0px 17px;
+    display: flex;
+    height: 80px;
+    cursor: pointer;
+    border-bottom: 1px solid #EEEEEE;
+    background-color: white;
+    flex-direction: column;
+    justify-content: center;
 
-    $tableBtnConfirmColor: #000;
-    $tableBtnConfirmBg: #F7B500;; 
-    $tableBtnCancelColor: #FFF;
-    $tableBtnCancelBg: #000;
-    
-    $addressPlusBg: #F7B500;
-    $addressPlusColor: #FFF;
-    
-    $editIconBg: #F7B500;
-    $editIconColor: #FFF;
+    &:last-child {
+        border-bottom: none;
+    }
 
-    @import './account.module.scss';
-    @import './form.module.scss';
-    @import './address.module.scss';
+    >.field-title {
+        height: 20px;
+    }
+
+    >.field-value {
+        height: 20px;
+    }
+}
+
+.field-title {
+    display: block;
+    font-size: 14px;
+    color: $main_text_color3;
+    margin-bottom: 5px;
+}
+
+.field-value {
+    display: flex;
+}
+
+.field-text {
+    width: 100%;
+    display: block;
+    word-break: break-all;
+    font-size: 14px;
+    color: $main_text_color3;
+    height: 20px;
+
+    &.yet {
+        color: #CBCED8;
+    }
+}
+
+.wrap {
+    background: $main_white_color1;
+}
+
+.account-data-wrap {
+    color: $main_text_color3;
+    background: $main_white_color1;
+}
+
+.feature-btn {
+    text-align: center;
+    cursor: pointer;
+}
+
+.btn-next {
+    width: 14px;
+    height: 100%;
+    display: flex;
+    align-items: center;
+
+    >img {
+        height: 14px;
+        width: 14px;
+    }
+}
+
+@import "~@/css/variable.scss";
+
+
+.field-editer {
+    font-size: 14px;
+    background-color: white;
+
+    >.block:first-child {
+        margin-top: 35px;
+        margin-bottom: 15px;
+    }
+
+    >.field-title {
+        height: 20px;
+    }
+
+    .field-value {
+        width: 80%;
+        height: 20px;
+
+        >input {
+            height: 20px;
+        }
+    }
+
+    .input-wrap {
+        display: inline-flex;
+        height: 20px;
+        width: 100%;
+
+        >div:last-child {
+            padding: 0 5px;
+            width: 75px;
+            position: absolute;
+            right: 14px;
+            color: $main_text_color4;
+        }
+    }
+}
+
+.block {
+    height: 75px;
+    font-size: 14px;
+    padding: 2px 14px;
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    background: $main_white_color1;
+
+    >div {
+        height: 30px;
+        display: inline-flex;
+        line-height: 30px;
+    }
+
+    >.title {
+        color: $main_text_color3;
+    }
+}
+
+input {
+    width: 100%;
+    background: none;
+    border: none;
+    height: 30px;
+    outline: none;
+    border-radius: 0;
+    color: $main_text_color3;
+
+    &::placeholder {
+        /* Chrome, Firefox, Opera, Safari 10.1+ */
+        color: #CBCED8;
+    }
+}
+
+.btn-send {
+    right: 14px;
+    width: 100px;
+    text-align: center;
+    height: 30px;
+    border-radius: 3px;
+    line-height: 30px;
+    background-color: #e9dacc;
+    color: #f3ede7;
+
+    &.active {
+        color: #FFFFFF;
+    }
+}
+
+.top-tips {
+    background: $main_white_color1;
+    padding: 0 14px;
+    color: #DB6372;
+    height: 40px;
+    line-height: 40px;
+
+    >.send-tips {
+        line-height: 20px;
+    }
+}
+
+.bottom-tips {
+    padding: 0 14px;
+    color: #DB6372;
+    visibility: hidden;
+    height: 30px;
+
+    &.active {
+        visibility: unset;
+    }
+}
+
+.save-btn {
+    position: fixed;
+    z-index: 50;
+    right: 14px;
+    height: 43px;
+    line-height: 43px;
+    top: 0;
+    color: #CBCED8;
+
+    &active {
+        color: $main_text_color3;
+    }
 }

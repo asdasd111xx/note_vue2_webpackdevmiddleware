@@ -408,6 +408,10 @@ export default {
   height: 100%;
   right: 14px;
   color: $main_text_color2;
+
+  > .active {
+    color: $main_text_color3;
+  }
 }
 @media screen and (min-width: $pad) {
   .login-wrap {

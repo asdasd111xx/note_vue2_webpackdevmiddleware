@@ -1,105 +1,78 @@
 <template>
   <mobile-container :header-config="headerConfig">
     <div slot="content" :class="$style['content-wrap']">
-      <edit-email
-        :old-value="oldValue"
-        :new-value="newValue"
-        :code-value="codeValue"
-        :info="info"
-      >
-        <template
-          scope="{ oldEmail, newEmail, checkCode, sendBtn, countdownSec, onSend, onSubmit }"
-        >
-          <div :class="[$style.wrap, 'clearfix']">
-            <!-- 錯誤訊息 -->
-            <div :class="$style['top-tip']">
-              <div v-if="countdownSec" :class="$style.important">
-                {{ $text("S_SEND_CHECK_CODE_VALID_TIME").replace("%s", 5) }}
-                {{ $text("S_FIND_TRASH") }}
+      <div :class="[$style.wrap, 'clearfix']">
+        <!-- 錯誤訊息 -->
+        <div :class="$style['top-tips']">
+          <div v-if="countdownSec" :class="$style['send-tips']">
+            {{ $text("S_SEND_CHECK_CODE_VALID_TIME").replace("%s", 5) }}
+            {{ $text("S_FIND_TRASH") }}
+          </div>
+          <div v-if="tipMsg">
+            {{ tipMsg }}
+          </div>
+        </div>
+
+        <template v-if="oldEmail.isShow">
+          <div :class="$style.block">
+            <div :class="$style.title">{{ oldEmail.label }}</div>
+            <div :class="$style['input-wrap']">
+              <input
+                v-model="oldValue"
+                :placeholder="oldEmail.label"
+                :class="$style.input"
+                type="text"
+              />
+            </div>
+          </div>
+        </template>
+
+        <template v-if="newEmail.isShow">
+          <div :class="$style.block">
+            <div :class="$style.title">
+              {{ $text("S_NEW_EMAIL2", "邮箱账号") }}
+            </div>
+            <div :class="$style['input-wrap']">
+              <input
+                v-model="newValue"
+                :placeholder="$text('S_PLS_ENTER_NEW_EMAIL', '请输入邮箱账号')"
+                :class="$style.input"
+                type="text"
+              />
+            </div>
+          </div>
+        </template>
+
+        <template v-if="checkCode.isShow">
+          <div :class="$style.block">
+            <div :class="$style.title">
+              {{ $text("S_MAIL_CHECK_CODE", "邮箱验证码") }}
+            </div>
+            <div :class="$style['input-wrap']">
+              <input
+                v-model="codeValue"
+                :placeholder="
+                  $text('S_PLS_ENTER_MAIL_CODE', '请输入邮箱验证码')
+                "
+                :class="$style.input"
+                type="text"
+              />
+
+              <div
+                v-if="sendBtn.isShow"
+                :class="[$style['btn-send'], { [$style.active]: newValue }]"
+                @click="handleSend()"
+              >
+                <template>
+                  <span v-if="sendBtn.countdownSec">{{ countdownSec }}</span>
+                  <span v-else> {{ sendBtn.label }} </span>
+                </template>
               </div>
             </div>
-
-            <template v-if="oldEmail.isShow">
-              <div :class="$style.block">
-                <div :class="$style.title">{{ oldEmail.label }}</div>
-                <div :class="$style['input-wrap']">
-                  <input
-                    v-model="oldValue"
-                    :placeholder="oldEmail.label"
-                    :class="$style.input"
-                    type="text"
-                  />
-                </div>
-              </div>
-            </template>
-
-            <template v-if="newEmail.isShow">
-              <div :class="$style.block">
-                <div :class="$style.title">
-                  {{ $text("S_NEW_EMAIL2", "邮箱账号") }}
-                </div>
-                <div :class="$style['input-wrap']">
-                  <input
-                    v-model="newValue"
-                    :placeholder="
-                      $text('S_PLS_ENTER_NEW_EMAIL', '请输入邮箱账号')
-                    "
-                    :class="$style.input"
-                    type="text"
-                  />
-                </div>
-              </div>
-            </template>
-
-            <template v-if="checkCode.isShow">
-              <div :class="$style.block">
-                <div :class="$style.title">
-                  {{ $text("S_MAIL_CHECK_CODE", "邮箱验证码") }}
-                </div>
-                <div :class="$style['input-wrap']">
-                  <input
-                    v-model="codeValue"
-                    :placeholder="
-                      $text('S_PLS_ENTER_MAIL_CODE', '请输入邮箱验证码')
-                    "
-                    :class="$style.input"
-                    type="text"
-                  />
-
-                  <div
-                    v-if="sendBtn.isShow"
-                    :class="[$style['btn-send'], { [$style.active]: newValue }]"
-                    @click="handleSend(onSend)"
-                  >
-                    {{ sendBtn.label }}
-                    <template v-if="sendBtn.countdownSec">
-                      (<span>{{ countdownSec }}</span
-                      >)
-                    </template>
-                  </div>
-                </div>
-              </div>
-            </template>
-
-            <!-- <div :class="$style['btn-wrap']">
-              <div :class="$style['btn-cancel']" @click="$emit('cancel')">
-                {{ $text("S_CANCEL", "取消") }}
-              </div>
-              <div
-                :class="$style['btn-confirm']"
-                @click="handleSubmit(onSubmit)"
-              >
-                {{ $text("S_CONFIRM", "確認") }}
-              </div>
-            </div> -->
           </div>
-
-          <div v-if="sendMsg" :class="$style['send-email']">
-            {{ sendMsg }}
-          </div>
-          <service-tips />
         </template>
-      </edit-email>
+      </div>
+      <service-tips />
     </div>
   </mobile-container>
 </template>
@@ -108,52 +81,60 @@
 import { API_MCENTER_USER_CONFIG } from '@/config/api';
 import { mapGetters, mapActions } from 'vuex';
 import ajax from '@/lib/ajax';
-import editEmail from '@/components/common/editEmail';
 import member from '@/api/member';
+import mcenter from '@/api/mcenter';
 import mobileContainer from '../../../../../common/new/mobileContainer';
 import serviceTips from '../../serviceTips'
 
 export default {
   components: {
-    editEmail,
     mobileContainer,
     serviceTips
   },
-  // props: {
-  //     info: {
-  //         type: Object,
-  //         required: true
-  //     }
-  // },
   data() {
     return {
       oldValue: '',
       newValue: '',
       codeValue: '',
-      sendMsg: '',
+      tipMsg: '',
+      timer: '',
+      countdownSec: 0,
+
       info: {
         key: 'email',
         text: 'SS_E_MAIL',
         status: '',
         value: '',
-        btnText: '',
-        btnShow: true,
-        type: 'bind',
         verification: true,
         isShow: true,
-        popTitle: ''
       }
     };
   },
   created() {
+    // 取得欄位資訊
     ajax({
       method: 'get',
       url: API_MCENTER_USER_CONFIG,
       errorAlert: false
     }).then((response) => {
       if (response && response.result === 'ok') {
-        this.info.verification = response.ret.config['email'].code;
-        this.setData(response.ret);
+        this.info.verification = response.ret.config[this.info.key].code;
+        this.info.isShow = response.ret.config[this.info.key].display;
+      }
+    });
+
+    member.joinConfig({
+      success: (response) => {
+        if (response.ret.email.code) {
+          mcenter.accountMailSec({
+            success: (data) => {
+              if (data.ret > 0) {
+                this.countdownSec = data.ret;
+                this.locker();
+              }
+            }
+          });
+        }
       }
     });
   },
@@ -162,71 +143,136 @@ export default {
       memInfo: 'getMemInfo',
       webInfo: 'getWebInfo'
     }),
+    fieldValue() {
+      return this.memInfo.email.email;
+    },
+    oldEmail() {
+      return {
+        label: this.$text('S_ORIGINAL_EMAIL'),
+        isShow: this.fieldValue && this.info.status === 'already'
+      };
+    },
+    newEmail() {
+      return {
+        label: this.fieldValue && this.info.status === 'already'
+          ? this.$text('S_NEW_EMAIL')
+          : this.$text('SS_E_MAIL'),
+        isShow: true
+      };
+    },
+    checkCode() {
+      return {
+        label: this.$text('S_CHECK_CODE'),
+        isShow: this.info.verification
+      };
+    },
+    sendBtn() {
+      return {
+        label: this.countdownSec
+          ? this.$text('S_SEND_CHECK_CODE_ALREADY')
+          : this.$text('S_SEND_CHECK_CODE'),
+        isShow: this.info.verification,
+        countdownSec: this.countdownSec
+      };
+    },
     headerConfig() {
       return {
         prev: true,
         onClick: () => { this.$router.back(); },
-        onSave: () => { this.handleSubmit(); },
-        saveBtnActive: this.codeVaue && this.newValue,
         title: this.$text("S_E_MAIL", "电子邮箱"),
+        onClickFunc: () => {
+          this.handleSubmit()
+        },
+        funcBtn: this.$text("S_COMPLETE", "完成"),
+        funcBtnActive: !!(this.newValue),
       };
     },
   },
+  mounted() {
+  },
   methods: {
     ...mapActions(['actionSetUserdata']),
+    locker() {
+      if (this.countdownSec === 0) {
+        this.countdownSec = 60;
+      }
+
+      this.timer = setInterval(() => {
+        if (this.countdownSec === 0) {
+          clearInterval(this.timer);
+          return;
+        }
+        this.countdownSec -= 1;
+      }, 1000);
+    },
     handleSend(send) {
+      this.locker();
       if (!this.newValue) return;
 
-      send().then((response) => {
-        if (response.status) {
-          this.sendMsg = response.msg;
+      if (this.countdownSec) {
+        return Promise.resolve({ status: false });
+      }
 
-          setTimeout(() => {
-            this.sendMsg = '';
-          }, 3000);
+      const getOldEmail = () => {
+        if (this.fieldValue) {
+          return this.info.status === 'ok' ? this.newValue : this.oldValue;
         }
-      });
+
+        return '';
+      };
+      return mcenter.accountMailSend({
+        params: {
+          old_email: getOldEmail(),
+          email: this.newValue
+        },
+        success: () => {
+          this.actionSetUserdata(true);
+          this.locker();
+          this.tipMsg = this.$text('S_SEND_CHECK_CODE_MAIL');
+        },
+
+        fail: (res) => {
+          this.tipMsg = res.data.msg
+        }
+      })
     },
     handleSubmit() {
-      this.onSubmit().then((response) => {
-        if (response.status) {
-          this.$emit('cancel');
+      // 驗證信箱
+      if (this.info.verification) {
+        return mcenter.accountMailCheck({
+          params: {
+            email: this.newValue,
+            keyring: this.codeValue
+          },
+          success: (res) => {
+            this.actionSetUserdata(true);
+            this.tipMsg = this.$text('S_CR_SUCCESS');
+            this.$router.push('/mobile/mcenter/accountData');
+          },
+          fail: (res) => {
+            this.tipMsg = res.data.msg
+          }
+        })
+      }
+
+      // 不驗證直接設定信箱
+      return mcenter.accountMailEdit({
+        params: {
+          email: this.newValue
+        },
+        success: () => {
+          this.actionSetUserdata(true);
+          this.tipMsg = this.$text('S_CR_SUCCESS');
+          this.$router.push('/mobile/mcenter/accountData');
+        },
+        fail: (res) => {
+          if (res && res.data && res.data.msg) {
+            this.tipMsg = res.data.msg
+          }
         }
-      });
+      })
     },
-    setData(userConfig = {}) {
-      if (Object.keys(userConfig).length === 0) {
-        return;
-      }
-
-      const keyValue = this.memInfo.user.email;
-
-      let val = this.$t('S_YET_SET');
-      let text = this.$t('S_SET_CL');
-      let confirmSt = 'yet';
-
-      if (keyValue) {
-        val = `${this.$t('S_YET_VERIFIED')}(${keyValue})`;
-        text = this.$t('S_VERIFY');
-        confirmSt = 'ok';
-        if (userConfig.user['email']) {
-          val = keyValue;
-          text = this.$t('S_CS_EDIT');
-          confirmSt = 'already';
-        }
-      }
-      this.info = {
-        ...this.info,
-        status: confirmSt,
-        value: val,
-        btnText: text,
-        btnShow: true,
-        verification: true,
-        isShow: userConfig.config['email'].display
-      };
-      this.oldValue = val
-    }
   }
 };
 </script>
-<style src="../../css/form.module.scss" lang="scss" module>
+<style src="../../css/index.module.scss" lang="scss" module>

@@ -19,32 +19,36 @@
           <img :src="avatarSrc" />
           <img :src="$getCdnPath(`/static/image/_new/mcenter/icon_edit.png`)" />
         </div>
+        <message v-if="msg" @close="msg = ''"
+          ><div slot="msg">{{ msg }}</div>
+        </message>
       </div>
 
       <!-- avatar dialog -->
-      <div
-        v-if="isShow"
-        :class="$style['dialog-mask']"
-        @click="selectAvatar()"
-      />
+      <div v-if="isShow" :class="$style['dialog-mask']" @click="saveAvatar()" />
       <div v-if="isShow" :class="[$style['dialog-wrap'], 'clearfix']">
         <div
           v-for="(avatarList, index) in avatar"
           :key="`avatar-${avatarList}`"
           :class="$style['avatar-wrap']"
         >
-          <img :src="$getCdnPath(avatarList.url)" @click="selectImg(index)" />
-          <div v-if="imgID === index + 1" :class="$style.check" />
+          <img
+            :class="[{ [$style['active']]: imgID === index }]"
+            :src="$getCdnPath(avatarList.url)"
+            @click="selectImg(index)"
+          />
+          <div v-if="imgID === index" :class="$style.check" />
         </div>
 
         <div :class="$style['dialog-func']">
-          <div @click="isShow = false">从相册选取</div>
-          <div @click="isShow = false">拍照</div>
+          <div @click="handleClickFunc">从相册选取</div>
+          <div @click="handleClickFunc">拍照</div>
           <div @click="isShow = false">{{ $text("S_CANCEL", "取消") }}</div>
         </div>
       </div>
 
       <account />
+      <service-tips />
     </div>
   </mobile-container>
 </template>
@@ -55,14 +59,19 @@ import account from './account/index';
 import mcenter from '@/api/mcenter';
 import member from '@/api/member';
 import mobileContainer from '../../../common/new/mobileContainer';
+import message from '../../../common/new/message'
+import serviceTips from './serviceTips'
 
 export default {
   components: {
     mobileContainer,
-    account
+    account,
+    message,
+    serviceTips
   },
   data() {
     return {
+      msg: "",
       isShow: false,
       avatar: [
         { image: 'avatar_0', url: '/static/image/_new/mcenter/default/avatar_0.png' },
@@ -79,11 +88,6 @@ export default {
     };
   },
   created() {
-    if (this.memInfo.user.image === 0 || !(this.memInfo.user.image)) {
-      this.imgIndex = 1;
-      this.imgID = 1;
-      return;
-    }
     this.imgIndex = this.memInfo.user.image;
     this.imgID = this.memInfo.user.image;
   },
@@ -108,10 +112,14 @@ export default {
     ...mapActions([
       'actionSetUserdata'
     ]),
+    handleClickFunc() {
+      this.isShow = false;
+      this.msg = this.$text('S_COMING_SOON2', '正在上线 敬请期待');
+    },
     dialogShow() {
       this.isShow = !this.isShow;
     },
-    selectAvatar() {
+    saveAvatar() {
       if (this.memInfo.user.image === this.imgID) {
         this.dialogShow();
         return;
@@ -127,7 +135,8 @@ export default {
       });
     },
     selectImg(index) {
-      this.imgID = index + 1;
+      this.imgID = index;
+      this.saveAvatar()
     }
   },
 };
@@ -179,7 +188,7 @@ export default {
 .dialog-mask {
   width: 100%;
   height: 100%;
-  opacity: 0.5;
+  opacity: 0.4;
 }
 .dialog-wrap {
   bottom: 0;
@@ -187,27 +196,34 @@ export default {
   top: unset;
   width: 100%;
   border-radius: 20px 20px 0 0;
-  position: absolute;
+  position: fixed;
   z-index: 999;
   min-height: 400px;
   height: 40%;
   background-color: $main_background_white1;
 
   .dialog-func {
-    margin-top: 15px;
     text-align: center;
     color: #5e626d;
     font-size: 17px;
-    height: 50px;
-    line-height: 50px;
+    position: absolute;
+    bottom: 0;
+    left: 0;
+    width: 100%;
+
+    > div:first {
+      padding-top: 1px;
+    }
 
     > div {
       background-color: $main_white_color1;
       width: 100%;
+      height: 50px;
+      line-height: 50px;
     }
 
     > div:last-child {
-      margin-top: 25px;
+      margin-top: 20px;
       color: black;
     }
   }
@@ -216,21 +232,28 @@ export default {
     position: relative;
     display: inline-block;
     width: 25%;
+    padding-top: 2.5px;
+
     text-align: center;
     img {
       border-radius: 50%;
-      width: 90%;
-      padding: 5%;
+      width: 75%;
+      max-width: 100px;
+      margin: 5%;
+      &.active {
+        border: 2px solid transparent;
+        border-color: #d2b79c;
+      }
     }
+
     .check {
       position: absolute;
-      bottom: -6%;
-      left: 50%;
-      background: url("/static/image/mobile/tpl/porn1/home/check_icon.png") 0 0
-        no-repeat;
+      bottom: 10%;
+      right: 5%;
+      background: url("/static/image/_new/mcenter/ic_check.png") 0 0 no-repeat;
       background-size: 100%;
-      width: 30%;
-      height: 29%;
+      width: 18px;
+      height: 18px;
       -webkit-transform: translate(-50%, 0);
       transform: translate(-50%, 0);
     }

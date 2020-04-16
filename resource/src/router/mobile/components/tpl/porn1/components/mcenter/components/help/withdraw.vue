@@ -29,7 +29,7 @@ export default {
       return {
         prev: true,
         onClick: () => { this.$router.back(); },
-        title: this.$text('S_WITHDRAWAL_HELP', '取款帮助'),
+        title: '提现教程',
       };
     },
   },

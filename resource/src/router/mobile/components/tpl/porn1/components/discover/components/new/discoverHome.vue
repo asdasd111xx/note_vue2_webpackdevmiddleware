@@ -1,5 +1,5 @@
 <template>
-  <div class="discover-home-wrap">
+  <div :class="$style['discover-home-wrap']">
     <div
       v-for="info in list"
       :key="info.key"
@@ -79,7 +79,13 @@ export default {
 
 <style lang="scss" module>
 @import "~@/css/variable.scss";
-
+.discover-home-wrap {
+  background-color: white;
+  background-repeat: no-repeat;
+  background-size: cover;
+  background-image: url("/static/image/_new/common/bg.png");
+  height: 100vh;
+}
 .list {
   padding-left: 17px;
   background-color: #e2ecff;

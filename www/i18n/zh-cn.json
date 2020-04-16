@@ -743,7 +743,7 @@
     "S_PROMOTE_MONEY": "我的推广",
     "S_MY_PURSE": "我的钱包",
     "S_CHECK_PLZ": "请进行验证",
-    "S_ENTER_REAL_NAME": "请输入真实姓名",
+    "S_ENTER_REAL_NAME": "请输入您的真实姓名",
     "S_NO_SETTING": "若未设置，请联系线上客服",
     "POP_NOTE_ACCOUNT_COMPLETE": "请完成【我的帐户】设定",
     "POP_NOTE_ACCOUNT_COMPLETE_2": "请完成【我的帐户】设定",
@@ -1486,11 +1486,11 @@
     "S_LIVE_BALANCE_NOT_LESS": "直播余额不低%s元",
     "S_AUTOSWTICH_HINT_GAME": "开启后余额自动转入游戏场馆",
     "S_AUTO_FREE_TRANSFER": "自动免转",
-    "S_SEARCH": "搜寻",
+    "S_SEARCH": "搜索视频",
     "S_SEARCH_FOR": "搜索",
-    "S_SEARCH_HISTORY": "历史搜寻",
-    "S_SEARCH_HOT": "热门搜寻",
-    "S_PLEASE_INPUT_AV": "请输入片名、女优或番号",
+    "S_SEARCH_HISTORY": "历史搜索",
+    "S_SEARCH_HOT": "热门搜索",
+    "S_PLEASE_INPUT_AV": "请输入片名, 女优或番号",
     "S_ADULT_VIDEO_TIPS": "车牌又叫电影番号或编号。在爱情动作电影的故乡岛国，老师将同学们喜爱的各形各色的爱情动作片按厂商、制作风、有无码、质量参数、发表时间、版本等特征性的内容编码分类。车牌是经验老道的老司机们对电影番号的另外壹种充满爱的诠释。",
     "S_RECOMMANDED": "推荐",
     "S_VIP_STATUS_BROWSE": "VIP身份一览",
@@ -1571,5 +1571,6 @@
     "S_MY_FEEDBACK": "我的反馈",
     "S_NO_FEEDBACK": "暂无反馈记录",
     "S_SEND_FEEDBACK": "立即反馈",
-    "S_FEEDBACK_DETAIL": "反馈详情"
+    "S_FEEDBACK_DETAIL": "反馈详情",
+    "S_COMING_SOON2": "正在上线 敬请期待"
 }

@@ -66,7 +66,7 @@ export default {
 
                 openGame({ vendor: 'boe', kind: 1 });
             }
-        }
+        };
         this.setAnalyticsCode();
     },
     methods: {

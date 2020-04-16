@@ -48,6 +48,11 @@ export default {
 
 .no-porn-wrap {
   text-align: center;
+  background-color: white;
+  background-repeat: no-repeat;
+  background-size: cover;
+  background-image: url("/static/image/_new/common/bg.png");
+  height: 100vh;
 }
 
 .no-porn-img {

@@ -1,5 +1,5 @@
 <template>
-  <div :class="colorClass">
+  <div>
     <account-wrap>
       <template scope="{ filteredDataList }">
         <!-- <div :class="[$style['account-list-wrap'], 'clearfix']">
@@ -36,6 +36,7 @@
             <template v-for="(field, fieldIndex) in item.field">
               <!-- 編輯顯示 -->
               <component
+                :class="[$style['account-data-field']]"
                 :is="`edit-${currentEdit}`"
                 v-if="field.key === currentEdit"
                 :key="`${currentEdit}-${fieldIndex}`"
@@ -51,7 +52,7 @@
                 @click="handleClick(field)"
               >
                 <span :class="$style['field-title']">{{ $t(field.text) }}</span>
-                <div :class="$style['field-editer']">
+                <div :class="$style['field-value']">
                   <template>
                     <span
                       :class="[
@@ -104,7 +105,7 @@ export default {
     editFacebook: () => import(/* webpackChunkName: 'editFacebook' */'./form/editFacebook'),
     editSkype: () => import(/* webpackChunkName: 'editSkype' */'./form/editSkype'),
     editZalo: () => import(/* webpackChunkName: 'editZalo' */'./form/editZalo'),
-    receiptAddress: () => import(/* webpackChunkName: 'receiptAddress' */'./receiptAddress')
+    // receiptAddress: () => import(/* webpackChunkName: 'receiptAddress' */'./receiptAddress')
   },
   data() {
     return {
@@ -152,5 +153,4 @@ export default {
 };
 </script>
 <style lang="scss" src="../css/index.module.scss" module></style>
-<style lang="scss" scope>
-</style>
+
