@@ -2,7 +2,10 @@
     <div :class="[$style['user-info-wrap']]">
         <!-- Header -->
         <div :class="[$style['header-block']]">
-            <div :class="[$style['btn-back']]">
+            <div
+                :class="[$style['btn-back']]"
+                @click="$router.push('/mobile/mcenter')"
+            >
                 <img
                     :src="$getCdnPath(`/static/image/_new/common/btn_back.png`)"
                     alt="btn_back"
@@ -29,7 +32,7 @@
                     />
                 </div>
                 <span>testvip00111</span>
-                <span>VIP3</span>
+                <span>{{ userVipInfo.now_level_name }}</span>
             </div>
             <div :class="[$style['user-vip-desc']]">
                 <div :class="[$style['vip-text']]">VIP详情</div>
@@ -49,11 +52,11 @@
         <!-- 進度條 -->
         <div :class="[$style['run-block']]">
             <div :class="[$style['run-level'], $style['current']]">
-                VIP3
+                {{ userVipInfo.now_level_name }}
             </div>
-            <div :class="[$style['run-bar']]">0%</div>
+            <div :class="[$style['run-bar']]">{{ userVipInfo.percent }}</div>
             <div :class="[$style['run-level'], $style['next']]">
-                VIP4
+                {{ userVipInfo.next_level_name }}
             </div>
         </div>
 
@@ -79,7 +82,19 @@
 </template>
 
 <script>
-export default {};
+export default {
+    props: {
+        userVipInfo: {
+            type: Object,
+            required: true
+        }
+    },
+    created() {
+        console.log(this.userVipInfo);
+        console.log(this.userVipInfo.now_level_name);
+    },
+    mounted() {}
+};
 </script>
 
 <style lang="scss" module>
@@ -93,7 +108,7 @@ $header-font-size: 18px;
     position: relative;
     width: 100%;
     height: $height;
-    padding: 60px 17px 0;
+    padding: 55px 17px 0;
 }
 
 .header-block {
@@ -113,7 +128,7 @@ $header-font-size: 18px;
 .header-title {
     font-size: $header-font-size;
     color: $user-info-font-main-color;
-    font-weight: bold;
+    font-weight: 500;
 
     span {
         padding: 0 15px;
@@ -129,7 +144,7 @@ $header-font-size: 18px;
     height: 130px;
     display: flex;
     justify-content: space-between;
-    
+
     .user-info-name {
         position: relative;
         align-self: center;

@@ -10,17 +10,17 @@
                     spaceBetween: 5
                 }"
             >
-                <swiper-slide :class="[$style['level-slide']]">
+                <!-- <swiper-slide :class="[$style['level-slide']]">
                     <div
                         :class="[$style['level-thumb-cell'], $style['active']]"
                     >
                         Lv1
                     </div>
-                </swiper-slide>
+                </swiper-slide> -->
 
                 <swiper-slide
                     :class="[$style['level-slide']]"
-                    v-for="index in 9"
+                    v-for="(item , index) in vipLevelList"
                     :key="index"
                 >
                     <div :class="[$style['level-thumb-cell']]">
@@ -98,6 +98,15 @@ export default {
     components: {
         Swiper,
         SwiperSlide
+    },
+    props: {
+        vipLevelList: {
+            type: Array,
+            required: true
+        }
+    },
+    mounted() {
+        console.log(this.vipLevelList);
     }
 };
 </script>
