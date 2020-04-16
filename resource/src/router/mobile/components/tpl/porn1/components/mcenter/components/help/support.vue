@@ -33,14 +33,6 @@ export default {
       };
     },
   },
-  created() {
-    if (!this.loginStatus) {
-      this.$router.push("/mobile/home")
-    }
-  },
-  methods: {
-
-  }
 };
 </script>
 

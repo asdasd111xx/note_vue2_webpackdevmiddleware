@@ -772,6 +772,7 @@
     "S_FORGET": "忘記?",
     "S_WELCOME": "歡迎您",
     "S_TRANSDER": "轉帳",
+    "S_WALLET2": "錢包",
     "S_WALLET": "錢包：%S元",
     "S_NEWS": "消息",
     "S_LOGOUT2": "退出登錄",

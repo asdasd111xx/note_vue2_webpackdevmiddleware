@@ -2,16 +2,15 @@
   <mobile-container :header-config="headerConfig">
     <div slot="content" :class="$style['promotion-wrap']">
       <div :class="$style['type-wrap']">
-        <swiper :options="{ slidesPerView: 'auto' }">
-          <swiper-slide
-            v-for="tab in tabList"
-            :key="tab.id"
-            :class="[$style['type-btn'], { [$style.active]: tab.id === tabId }]"
-          >
-            <div @click="getPromotionList(tab.id)">{{ tab.name }}</div>
-          </swiper-slide>
-        </swiper>
+        <div
+          v-for="tab in tabList"
+          :key="tab.id"
+          :class="[$style['type-btn'], { [$style.active]: tab.id === tabId }]"
+        >
+          <div @click="handleClickTab(tab)">{{ tab.name }}</div>
+        </div>
       </div>
+
       <div
         v-for="info in promotionList"
         :key="info.id"
@@ -36,7 +35,7 @@
   </mobile-container>
 </template>
 <script>
-import { swiper, swiperSlide } from 'vue-awesome-swiper';
+import { Swiper, SwiperSlide } from 'vue-awesome-swiper';
 import ajax from '@/lib/ajax';
 import { API_PROMOTION_LIST } from '@/config/api';
 import mobileContainer from '../common/new/mobileContainer';
@@ -44,24 +43,32 @@ import mobileContainer from '../common/new/mobileContainer';
 export default {
   components: {
     mobileContainer,
-    swiper,
-    swiperSlide
+    Swiper,
+    SwiperSlide
   },
   data() {
     return {
       tabId: 0,
       tabList: [],
       promotionList: [],
-      headerConfig: {
-        title: this.$text('S_PROMOTIONS', '优惠活动'),
-        isBackgroundGradient: true
-      }
     };
   },
   created() {
     this.getPromotionList(this.tabId);
   },
+  computed: {
+    headerConfig() {
+      return {
+        prev: true,
+        title: this.$text('S_PROMOTIONS', '优惠活动'),
+        onClick: () => { this.$router.back(); }
+      };
+    },
+  },
   methods: {
+    handleClickTab(tab) {
+      this.getPromotionList(tab.id);
+    },
     getPromotionList(id) {
       this.tabId = id;
       ajax({
@@ -137,7 +144,6 @@ export default {
   margin: 60px 0 45px;
 }
 .type-wrap {
-  background-color: #272727;
   position: fixed;
   top: 43px;
   left: 0;
@@ -145,19 +151,20 @@ export default {
   z-index: 1;
 }
 .type-btn {
-  width: calc(100% / 7);
-  line-height: 21px;
-  padding: 10px 0;
-  background-color: #272727;
-  color: #fff;
-  font-size: 15px;
+  float: left;
+  width: 25%;
+  height: 43px;
+  line-height: 43px;
+  color: #bcbdc1;
+  font-weight: 500;
+  font-size: 14px;
   text-align: center;
 
   &.active {
-    color: #fad859;
-    border-bottom: 3px solid #fad859;
+    color: $main_text_color2;
   }
 }
+
 .promotion {
   position: relative;
   margin: 0 15px 10px;

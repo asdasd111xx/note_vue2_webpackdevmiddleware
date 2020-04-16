@@ -1,9 +1,5 @@
 <template>
-  <mobile-container
-    :header-config="headerConfig"
-    :has-footer="false"
-    :class="$style.container"
-  >
+  <mobile-container :header-config="headerConfig" :class="$style.container">
     <div slot="content" :class="$style['setting-wrap']"></div>
   </mobile-container>
 </template>
@@ -12,9 +8,10 @@
 import { mapGetters } from 'vuex';
 import member from '@/api/member';
 import mobileContainer from '../../../common/new/mobileContainer';
+
 export default {
   components: {
-    mobileContainer,
+    mobileContainer
   },
   data() {
     return {
@@ -29,10 +26,21 @@ export default {
       return {
         prev: true,
         onClick: () => { this.$router.back(); },
-        title: '充值教程'
+        title: this.$text('S_WALLET2', '钱包')
       };
-    },
+    }
   },
+  created() {
+    if (!this.loginStatus) {
+      this.$router.push('/mobile/home');
+    }
+  },
+  methods: {
+    handleClick(path) {
+      this.$router.push(path);
+    },
+
+  }
 };
 </script>
 

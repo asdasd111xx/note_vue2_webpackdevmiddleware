@@ -30,7 +30,9 @@
       <div :class="$style['info-card']" @click="clickService">
         <div>
           <div>
-            <img :src="$getCdnPath(`/static/image/_new/service/24.png`)" />
+            <img
+              :src="$getCdnPath(`/static/image/_new/service/ic_service01.png`)"
+            />
             &nbsp;
             <span>在线客服1</span>
           </div>
@@ -46,7 +48,9 @@
       <div :class="$style['info-card2']" @click="clickService">
         <div>
           <div>
-            <img :src="$getCdnPath(`/static/image/_new/service/24.png`)" />
+            <img
+              :src="$getCdnPath(`/static/image/_new/service/ic_service02.png`)"
+            />
             &nbsp;
             <span>在线客服2</span>
           </div>

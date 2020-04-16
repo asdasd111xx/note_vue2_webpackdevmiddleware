@@ -259,6 +259,11 @@ export default {
             ]
         },
 
+        { // 錢包
+            path: 'wallet',
+            name: 'mcenter-wallet',
+            component
+        },
         { // 設置
             path: 'setting',
             name: 'mcenter-setting',

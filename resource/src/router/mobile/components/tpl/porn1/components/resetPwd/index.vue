@@ -1,140 +1,172 @@
 <template>
-  <div :class="$style['reset-container']">
-    <div :class="$style.header">
-      <div :class="$style['btn-prev']" @click.prevent="$router.back()">
-        <img
-          :src="
-            $getCdnPath(
-              '/static/image/mobile/tpl/porn1/header/btn_nav_back_h.png'
-            )
-          "
-        />
-      </div>
-      <span>{{ $text("S_PASSWORD_RESET", "重设密码") }}</span>
-    </div>
-    <div :class="$style['reset-content']">
-      <div :class="$style['form-data']">
-        <div
-          v-for="field in pwdResetInfo"
-          :key="field.key"
-          :class="$style['field-wrap']"
-        >
-          <div class="clearfix">
-            <div :class="$style['form-icon']">
-              <img
-                :src="
-                  $getCdnPath(
-                    `/static/image/mobile/tpl/porn1/reset/${field.key}.png`
-                  )
-                "
-              />
-            </div>
-            <input
-              :id="field.key"
-              :type="field.type"
-              :name="field.key"
-              :placeholder="$t(field.text)"
-              @input="verification($event.target.id, $event.target.value)"
-            />
-          </div>
+  <mobile-container :header-config="headerConfig" :class="$style.container">
+    <div slot="content" class="content-wrap">
+      <message v-if="msg" @close="msg = ''"
+        ><div slot="msg">{{ msg }}</div>
+      </message>
+      <!-- 錯誤訊息 -->
+      <div :class="$style['top-tips']">
+        <div v-show="tipMsg">
+          {{ tipMsg }}
         </div>
       </div>
-      <div :class="$style.submit" @click="pwdResetSubmit()">
-        {{ $t("S_JM_SURE_SEND") }}
+      <div :class="$style['reset-content']">
+        <form id="resetPwdForm">
+          <div
+            v-for="field in pwdResetInfo"
+            :key="field.key"
+            :class="$style['field-wrap']"
+          >
+            <div class="clearfix">
+              <div :class="$style['title']">{{ $text(field.text) }}</div>
+              <input
+                :id="field.key"
+                :type="field.type"
+                :name="field.key"
+                :placeholder="$t(field.text)"
+                @input="verification($event.target.id, $event.target.value)"
+              />
+            </div>
+          </div>
+          <div
+            :class="[$style['submit'], { [$style['active']]: hasValue }]"
+            @click="pwdResetSubmit()"
+          >
+            {{ $text("S_SUBMIT", "提交") }}
+          </div>
+        </form>
       </div>
     </div>
-  </div>
+  </mobile-container>
 </template>
 
 <script>
 import resetPwd from '@/mixins/resetPwd';
+import mobileContainer from '../common/new/mobileContainer'
+import message from '../common/new/message'
 
 export default {
-  mixins: [resetPwd]
+  mixins: [resetPwd],
+  data() {
+    return {
+      tipMsg: "",
+      msg: ""
+    }
+  },
+  components: {
+    mobileContainer,
+    message,
+  },
+  computed: {
+    headerConfig() {
+      return {
+        prev: true,
+        onClick: () => { this.$router.back(); },
+        title: this.$text("S_CHANGE_PASSWD", "修改密码"),
+      };
+    },
+    hasValue() {
+    }
+
+  },
+  created() {
+  },
+  methods: {
+  }
 };
+
 </script>
 
 <style lang="scss" module>
+@import "~@/css/variable.scss";
+
 .reset-container {
   min-height: 100%;
-  padding-top: 130px;
-  background: url("/static/image/mobile/tpl/porn1/login/forget-bg.png")
-    no-repeat center;
-  background-size: cover;
+  background-color: $main_background_white1;
 }
 
-.header {
-  position: fixed;
-  top: 0;
-  left: 0;
-  z-index: 2;
-  width: 100%;
-  height: 43px;
-  line-height: 43px;
-  background-color: #272727;
-  color: white;
-  font-size: 16px;
-  text-align: center;
-}
-
-.btn-prev {
-  position: absolute;
-  top: 0;
-  bottom: 0;
-  left: 5%;
-  width: 24px;
-  height: 24px;
-  margin: auto;
-
-  > img {
-    display: block;
-    width: 100%;
-  }
+.top-tips {
+  background: $main_white_color1;
+  padding: 0 14px;
+  color: #db6372;
+  height: 40px;
+  line-height: 40px;
 }
 
 .reset-content {
-  margin: 0 auto;
-  width: 90%;
+  margin-top: 50px;
+  padding: 0 14px;
 }
 
-.form-data {
-  padding: 7% 4%;
-  background: rgba(#fff, 0.5);
-  border-radius: 5px;
-}
+input {
+  width: 100%;
+  background: none;
+  border: none;
+  outline: none;
+  border-radius: 0;
+  color: $main_text_color3;
 
-.form-icon {
-  float: left;
-  width: 9%;
-  margin-right: 3%;
-
-  img {
-    display: block;
-    max-width: 100%;
+  &::placeholder {
+    color: #cbced8;
   }
 }
 
 .field-wrap {
-  margin-bottom: 15px;
+  font-size: 14px;
+  width: 100%;
+  margin-bottom: 8px;
+  height: 77px;
+
+  .title {
+    color: $main_text_color3;
+    margin-bottom: 6px;
+  }
 
   input {
-    float: left;
-    width: 88%;
-    padding: 1.5% 0 4.5%;
-    background: transparent;
-    border: none;
-    border-bottom: 1px solid rgba(0, 0, 0, 0.15);
-    outline: 0;
+    font-size: 16px;
+    height: 21px;
+
+    &::placeholder {
+      color: #cbced8;
+    }
   }
+
+  border-bottom: solid 1px $main_background_white1;
 }
 
 .submit {
-  padding: 3.5% 0;
-  margin-top: 25px;
-  color: #fff;
+  height: 45px;
   text-align: center;
-  border-radius: 35px;
-  background: #955d2c;
-  background: -webkit-linear-gradient(left, #955d2c, #f3d382);
+  line-height: 45px;
+  max-width: 375px;
+  width: 100%;
+  font-size: 14px;
+  background: -webkit-linear-gradient(right, #e9dacb, #eee5db);
+  background: -o-linear-gradient(left, #e9dacb, #eee5db);
+  background: -moz-linear-gradient(left, #e9dacb, #eee5db);
+  background: linear-gradient(to left, #e9dacb, #eee5db);
+  color: #f3ede7;
+  margin: 0 auto;
+  &.active {
+    background: -webkit-linear-gradient(right, #bd9d7d, #f9ddbd);
+    background: -o-linear-gradient(left, #bd9d7d, #f9ddbd);
+    background: -moz-linear-gradient(left, #bd9d7d, #f9ddbd);
+    background: linear-gradient(to left, #bd9d7d, #f9ddbd);
+    color: white;
+  }
+}
+
+@media screen and (min-width: $pad) {
+  .submit {
+    font-size: 17px;
+  }
+
+  .field-wrap {
+    font-size: 16px;
+  }
+
+  .field-wrap {
+    font-size: 17px;
+  }
 }
 </style>

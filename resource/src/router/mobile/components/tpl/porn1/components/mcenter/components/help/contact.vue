@@ -134,10 +134,6 @@ export default {
     },
   },
   created() {
-    if (!this.loginStatus) {
-      this.$router.push("/mobile/home")
-    }
-
     common.contactus().then((res) => {
       this.list = res.data;
     });

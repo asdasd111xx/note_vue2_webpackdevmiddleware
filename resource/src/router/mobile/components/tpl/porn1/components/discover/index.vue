@@ -54,6 +54,9 @@ export default {
 </script>
 
 <style lang="scss" module>
+@import "~@/css/variable.scss";
+
 div.container {
+  background-color: $main_background_white1;
 }
 </style>
