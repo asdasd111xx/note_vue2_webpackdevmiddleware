@@ -12,24 +12,12 @@
  */
 export default {
     props: {
-        theme: {
-            type: String,
-            required: true
-        },
         nowType: {
             type: String,
             default: ''
-        }
-    },
-    computed: {
-        $style() {
-            return this[`$style_${this.theme}`] || this.$style_theme1Gold;
         }
     }
 };
 </script>
 
-<style lang="scss" src="./css/theme1Gold.module.scss" module="$style_theme1Gold"></style>
-<style lang="scss" src="./css/theme3.module.scss" module="$style_theme3"></style>
-<style lang="scss" src="./css/basicMobile.module.scss" module="$style_basicMobile"></style>
-<style lang="scss" src="./css/porn1.module.scss" module="$style_porn1"></style>
+<style lang="scss" src="./css/porn1.module.scss" module></style>

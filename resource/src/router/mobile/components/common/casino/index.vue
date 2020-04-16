@@ -391,28 +391,8 @@ export default {
 </script>
 
 <style lang="scss" scoped>
-@import '~@/css/variable.scss';
-
-.themeMiller {
-    .game-item-wrap {
-        background: #FFF;
-        min-height: calc(100vh - 157px);
-    }
-}
-
-@media screen and (min-width: $phone + $sidebar) {
-    .themeMiller {
-        .game-item-wrap {
-            min-height: calc(100vh - 200px);
-        }
-    }
-}
-
-@media screen and (min-width: $pad + $sidebar) {
-    .themeMiller {
-        .game-item-wrap {
-            min-height: calc(100vh - 208px);
-        }
-    }
+.game-item-wrap {
+    background: #F8F8F7;
+    min-height: calc(100vh - 133px);
 }
 </style>

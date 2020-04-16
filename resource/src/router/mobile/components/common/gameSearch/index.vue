@@ -31,10 +31,6 @@ export default {
             type: Boolean,
             required: true
         },
-        theme: {
-            type: String,
-            default: '1'
-        },
         text: {
             type: String,
             default: ''
@@ -49,9 +45,6 @@ export default {
         }
     },
     computed: {
-        $style() {
-            return this[`$style_${this.theme}`] || this.$style_theme1Gold;
-        },
         searchText: {
             get() {
                 return this.text;
@@ -64,9 +57,4 @@ export default {
 };
 </script>
 
-<style lang="scss" src="./css/theme1Gold.module.scss" module="$style_theme1Gold"></style>
-<style lang="scss" src="./css/theme1Orange.module.scss" module="$style_theme1Orange"></style>
-<style lang="scss" src="./css/theme3.module.scss" module="$style_theme3"></style>
-<style lang="scss" src="./css/themeMiller.module.scss" module="$style_themeMiller"></style>
-<style lang="scss" src="./css/basicMobile.module.scss" module="$style_basicMobile"></style>
-<style lang="scss" src="./css/porn1.module.scss" module="$style_porn1"></style>
+<style lang="scss" src="./css/porn1.module.scss" module></style>

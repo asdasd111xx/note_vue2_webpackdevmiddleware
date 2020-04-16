@@ -1,19 +1,14 @@
 <template>
     <mobile-container :header-config="headerConfig">
         <div slot="content" class="content-wrap">
-            <mahjong-wrap
-                :slot-sort="['search', 'list']"
-                search-theme="porn1"
-                game-theme="porn1"
-                game-empty="porn1"
-            />
+            <mahjong-wrap :slot-sort="['search', 'list']" />
         </div>
     </mobile-container>
 </template>
 
 <script>
 import mahjongWrap from '@/router/mobile/components/common/mahjong';
-import mobileContainer from '../common/mobileContainer';
+import mobileContainer from '../common/new/mobileContainer';
 
 export default {
     components: {

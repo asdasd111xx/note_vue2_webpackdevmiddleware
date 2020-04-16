@@ -39,10 +39,6 @@ import isMobile from '@/lib/is_mobile';
 
 export default {
     props: {
-        theme: {
-            type: String,
-            required: true
-        },
         gameInfo: {
             type: Object,
             required: true
@@ -160,13 +156,7 @@ export default {
          * @returns {string} 圖片路徑
          */
         getActivityImg() {
-            const nowTheme = this.$cookie.get('TEST_MOBILE_TPL') || this.siteConfig.MOBILE_WEB_TPL;
-
-            if (nowTheme === 'brilliant') {
-                return `/static/image/casino/theme/brilliant/lang/${this.curLang}/${this.gameInfo.status === 2 ? 'upcoming_ribbon' : 'activity_ribbon'}.png`;
-            }
-
-            return `/static/image/casino/theme/basic/lang/${this.curLang}/${this.gameInfo.status === 2 ? 'upcoming_lace' : 'event_lace'}.png`;
+            return `/static/image/casino/theme/brilliant/lang/${this.curLang}/${this.gameInfo.status !== 2 ? 'upcoming_ribbon' : 'activity_ribbon'}.png`;
         },
         /**
          * 個別遊戲彩金金額
@@ -260,7 +250,7 @@ export default {
          * @returns {object} Class Object
         */
         getClass(className, classInfo) {
-            const style = this[`$style_${this.theme}`] || this.$style_basic;
+            const style = this.$style_porn1;
             const classObj = {};
 
             className.forEach((name) => {
@@ -351,11 +341,4 @@ export default {
 };
 </script>
 
-<style lang="scss" src="../css/basic.module.scss" module="$style_basic"></style>
-<style lang="scss" src="../css/519.module.scss" module="$style_519"></style>
-<style lang="scss" src="../css/whiteBasic.module.scss" module="$style_whiteBasic"></style>
-<style lang="scss" src="../css/waterBlue.module.scss" module="$style_waterBlue"></style>
-<style lang="scss" src="../css/blackMobile519.module.scss" module="$style_blackMobile519"></style>
-<style lang="scss" src="../css/goldMobile519.module.scss" module="$style_goldMobile519"></style>
-<style lang="scss" src="../css/theme3.module.scss" module="$style_theme3"></style>
 <style lang="scss" src="../css/porn1.module.scss" module="$style_porn1"></style>

@@ -1563,5 +1563,13 @@
     "S_CHANGE_PLEASE_CLICK": "更改查询条件请重复点击上方搜索",
     "S_SETTING": "设置",
     "S_GAME_INTR": "游戏介绍",
-    "S_TECH_SUP": "技术支持"
+    "S_TECH_SUP": "技术支持",
+    "S_SELECT_QUESTION_CATEGORY": "请选择问题类型",
+    "S_CONTEXT_LIMIT": "内容介于%s~%S字",
+    "S_DESCRIBE_PROBLEM": "请详细描述您遇到的问题，填写内容不少于%s字。",
+    "S_QUESTION_CATEGORY": "选择问题类型",
+    "S_MY_FEEDBACK": "我的反馈",
+    "S_NO_FEEDBACK": "暂无反馈记录",
+    "S_SEND_FEEDBACK": "立即反馈",
+    "S_FEEDBACK_DETAIL": "反馈详情"
 }

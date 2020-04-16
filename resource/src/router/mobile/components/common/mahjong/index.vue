@@ -5,7 +5,6 @@
                 <gameSearch
                     :key="`slot-${slotKey}`"
                     :is-game-data-receive="isGameDataReceive"
-                    :theme="searchTheme"
                     :text="paramsData.name"
                     :game-num="gameData.length"
                     :set-search-text="setSearchText"
@@ -14,7 +13,6 @@
             <template v-if="slotKey === 'label'">
                 <gameLabel
                     :key="`slot-${slotKey}`"
-                    :theme="labelTheme"
                     :is-label-receive="isLabelReceive"
                     :label="paramsData.label.toString()"
                     :label-data="labelData"
@@ -23,12 +21,11 @@
             </template>
             <template v-if="slotKey === 'list'">
                 <div :key="`slot-${slotKey}`" class="game-item-wrap clearfix">
-                    <game-empty v-if="isGameDataReceive && gameData.length === 0" :theme="gameTheme" />
+                    <game-empty v-if="isGameDataReceive && gameData.length === 0" />
                     <template v-else>
                         <template v-for="(gameInfo, index) in gameData">
                             <game-item
                                 :key="`game-${gameInfo.vendor}-${index}`"
-                                :theme="gameTheme"
                                 :game-info="gameInfo"
                                 :show-vendor="gameShowVendor"
                                 :show-jackpot="gameShowJackpot"
@@ -65,9 +62,6 @@ import gameEmpty from '../gameEmpty';
 /**
  * 共用元件 - 手機網頁版電子遊戲頁共用框 (邏輯共用)
  * @param {Array} [slotSort=['search', 'label', 'list']] - slot 的區塊順序調整
- * @param {String} [searchTheme] - 搜尋框組件樣式
- * @param {String} [labelTheme] - 分類項目組件樣式
- * @param {String} [gameTheme] - 遊戲列表(gameItem)的樣式
  * @param {Boolean} [gameShowVendor=true] - 遊戲列表(gameItem)，是否顯示平台名稱
  * @param {Boolean} [gameShowJackpot=false] - 遊戲列表(gameItem)，是否顯示彩金區塊
  * @param {Boolean} [gameShowFavor=true] - 遊戲列表(gameItem)，是否顯示最愛按鈕
@@ -85,18 +79,6 @@ export default {
         slotSort: {
             type: Array,
             default: () => (['search', 'label', 'list'])
-        },
-        searchTheme: {
-            type: String,
-            default: '1'
-        },
-        labelTheme: {
-            type: String,
-            default: '1'
-        },
-        gameTheme: {
-            type: String,
-            default: ''
         },
         gameShowVendor: {
             type: Boolean,
@@ -292,3 +274,10 @@ export default {
     }
 };
 </script>
+
+<style lang="scss" scoped>
+.game-item-wrap {
+    background: #F8F8F7;
+    min-height: calc(100vh - 133px);
+}
+</style>

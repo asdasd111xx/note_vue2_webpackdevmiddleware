@@ -2,7 +2,7 @@
 
 .search-wrap-bg {
     padding: 7px 0 8px;
-    background: linear-gradient(90deg, #EFDFAF, #DDC084, #EDBF6B);
+    background: #FFF;
 }
 
 .search-block {
@@ -30,13 +30,25 @@
     line-height: 30px;
     font-size: 12px;
     outline: none;
-    border: 1px solid #F8F1EB;
-    color: #9C6E54;
-    background-color: #F8F1EB;
+    border: 1px solid #D5BEA4;
+    color: #BF8646;
+    background-color: #FFF;
     padding: 0 30px 0 13px;
 
-    &.no-data {
-        color: #FF4D4D;
+    &::-webkit-input-placeholder {
+        color: #BF8646;
+    }
+
+    &::-moz-placeholder {
+        color: #BF8646;
+    }
+
+    &:-ms-input-placeholder {
+        color: #BF8646;
+    }
+
+    &::placeholder {
+        color: #BF8646;
     }
 }
 

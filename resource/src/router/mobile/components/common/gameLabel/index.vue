@@ -1,23 +1,25 @@
 <template>
     <div :class="$style['label-wrap-bg']">
         <div :class="$style['label-block']">
-            <swiper
+            <Swiper
                 v-if="isLabelReceive && labelData.length !== 0"
                 ref="typeSwiper"
                 :options="{ slidesPerView: 'auto' }"
                 class="clearfix"
             >
-                <swiper-slide
+                <Swiper-slide
                     v-for="info in labelData"
                     :key="`nav-${info.label}`"
-                    :style="{ width: 100 / labelData.length > 18 ? `${100 / labelData.length}%` : '18%' }"
-                    :class="[
-                        $style['nav-item'],
-                        { [$style['is-current']]: label === info.label.toString() }
-                    ]"
+                    :class="$style['nav-item']"
                 >
-                    <button :disabled="label === info.label" @click="changeGameLabel(info.label)">{{ info.name }}</button>
-                </swiper-slide>
+                    <button
+                        :disabled="label === info.label"
+                        :class="label === info.label.toString() ? $style['is-current'] : ''"
+                        @click="changeGameLabel(info.label)"
+                    >
+                        {{ info.name }}
+                    </button>
+                </Swiper-slide>
             </swiper>
             <span v-else-if="!isLabelReceive && labelData.length === 0" :class="['ui', 'active', 'inline', 'small', 'loader', 'inverted', $style['loader']]" />
         </div>
@@ -25,7 +27,7 @@
 </template>
 
 <script>
-import { swiper, swiperSlide } from 'vue-awesome-swiper';
+import { Swiper, SwiperSlide } from 'vue-awesome-swiper';
 
 /**
  * 共用元件 - 手機網頁版 遊戲大廳使用分類選單
@@ -37,14 +39,10 @@ import { swiper, swiperSlide } from 'vue-awesome-swiper';
  */
 export default {
     components: {
-        swiper,
-        swiperSlide
+        Swiper,
+        SwiperSlide
     },
     props: {
-        theme: {
-            type: String,
-            required: true
-        },
         isLabelReceive: {
             type: Boolean,
             default: false
@@ -61,18 +59,8 @@ export default {
             type: Function,
             required: true
         }
-    },
-    computed: {
-        $style() {
-            return this[`$style_${this.theme}`] || this.$style_theme1Gold;
-        }
     }
 };
 </script>
 
-<style lang="scss" src="./css/theme1Gold.module.scss" module="$style_theme1Gold"></style>
-<style lang="scss" src="./css/theme1Orange.module.scss" module="$style_theme1Orange"></style>
-<style lang="scss" src="./css/theme3.module.scss" module="$style_theme3"></style>
-<style lang="scss" src="./css/themeMiller.module.scss" module="$style_themeMiller"></style>
-<style lang="scss" src="./css/basicMobile.module.scss" module="$style_basicMobile"></style>
-<style lang="scss" src="./css/porn1.module.scss" module="$style_porn1"></style>
+<style lang="scss" src="./css/porn1.module.scss" module></style>

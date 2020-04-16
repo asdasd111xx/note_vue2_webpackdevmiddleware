@@ -1,19 +1,14 @@
 <template>
     <mobile-container :header-config="headerConfig">
         <div slot="content" class="content-wrap">
-            <casino-wrap
-                search-theme="porn1"
-                label-theme="porn1"
-                game-theme="porn1"
-                game-empty="porn1"
-            />
+            <casino-wrap />
         </div>
     </mobile-container>
 </template>
 
 <script>
 import casinoWrap from '@/router/mobile/components/common/casino';
-import mobileContainer from '../common/mobileContainer';
+import mobileContainer from '../common/new/mobileContainer';
 
 export default {
     components: {

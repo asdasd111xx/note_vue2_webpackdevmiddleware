@@ -1,16 +1,5 @@
 <template>
-    <theme-miller
-        v-if="theme === 'themeMiller'"
-        :theme="theme"
-        :game-info="gameInfo"
-        :show-vendor="showVendor"
-        :show-jackpot="showJackpot"
-        :show-favor="showFavor"
-        :show-button="showButton"
-    />
     <theme1
-        v-else
-        :theme="theme"
         :game-info="gameInfo"
         :show-vendor="showVendor"
         :show-jackpot="showJackpot"
@@ -22,14 +11,9 @@
 <script>
 export default {
     components: {
-        theme1: () => import(/* webpackChunkName: 'theme1' */'./template/theme1'),
-        themeMiller: () => import(/* webpackChunkName: 'themeMiller' */'./template/themeMiller')
+        theme1: () => import(/* webpackChunkName: 'theme1' */'./template/theme1')
     },
     props: {
-        theme: {
-            type: String,
-            required: true
-        },
         gameInfo: {
             type: Object,
             required: true

@@ -1,18 +1,14 @@
 <template>
     <mobile-container :header-config="headerConfig">
         <div slot="content" class="content-wrap">
-            <card-wrap
-                search-theme="porn1"
-                game-theme="porn1"
-                game-empty="porn1"
-            />
+            <card-wrap />
         </div>
     </mobile-container>
 </template>
 
 <script>
 import cardWrap from '@/router/mobile/components/common/card';
-import mobileContainer from '../common/mobileContainer';
+import mobileContainer from '../common/new/mobileContainer';
 
 export default {
     components: {

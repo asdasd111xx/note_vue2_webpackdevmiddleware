@@ -56,6 +56,6 @@ export default {
 }
 
 .has-header {
-  padding-top: 48px;
+  padding-top: 43px;
 }
 </style>

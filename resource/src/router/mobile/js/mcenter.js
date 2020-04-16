@@ -30,7 +30,7 @@ export default {
                     path: 'phone',
                     name: 'mcenter-accountData-phone',
                     component
-                },
+                }
             ]
         },
         { // 裝置管理
@@ -94,7 +94,7 @@ export default {
             component
         },
         { // 意見反饋
-            path: 'feedback',
+            path: 'feedback/:page/:id?',
             name: 'mcenter-feedback',
             component
         },
@@ -263,6 +263,6 @@ export default {
             path: 'setting',
             name: 'mcenter-setting',
             component
-        },
+        }
     ]
 };
