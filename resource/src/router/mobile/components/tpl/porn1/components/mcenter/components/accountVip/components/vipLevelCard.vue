@@ -5,22 +5,20 @@
             <swiper
                 ref="vip-level-thumb"
                 :options="{
-                    width: 360,
-                    slidesPerView: 4,
-                    spaceBetween: 5
+                    slidesPerView: 4
                 }"
             >
-                <!-- <swiper-slide :class="[$style['level-slide']]">
+                <swiper-slide :class="[$style['level-slide']]">
                     <div
                         :class="[$style['level-thumb-cell'], $style['active']]"
                     >
-                        Lv1
+                        Lv0
                     </div>
-                </swiper-slide> -->
+                </swiper-slide>
 
                 <swiper-slide
                     :class="[$style['level-slide']]"
-                    v-for="(item , index) in vipLevelList"
+                    v-for="(item, index) in vipLevelList"
                     :key="index"
                 >
                     <div :class="[$style['level-thumb-cell']]">
@@ -81,13 +79,6 @@
 
         <!-- page -->
         <div :class="[$style['card-page']]"><span>1</span>/<span>10</span></div>
-
-        <div
-            :class="[$style['my-promote']]"
-            @click="$router.push('/mobile/promotion')"
-        >
-            {{ $text("S_MY_PROMOTE") }} 》
-        </div>
     </div>
 </template>
 
@@ -113,13 +104,11 @@ export default {
 
 <style lang="scss" module>
 $card-width: calc(100% - 30px);
-$height: 350px;
 $border-radius: 10px;
 
-$header-font-size: 18px;
 .vip-card-wrap {
     position: relative;
-    height: $height - 50;
+    // height: 260px;
     padding: 0px 17px;
     box-shadow: 0px 5px 5px 0px rgba(0, 0, 0, 0.16);
     background: white;
@@ -129,18 +118,18 @@ $header-font-size: 18px;
     position: relative;
     width: 100%;
     height: auto;
-    padding: 30px 0;
+    padding: 30px 0 25px 0;
 
     .level-thumb-cell {
         width: fit-content;
         min-width: 35px;
-        padding: 2px 5px;
+        padding: 0px 3px;
         font-size: 12px;
         text-align: center;
         color: #6f748b;
         background: #d4d5df;
         border: 2px solid #bcc1ca;
-        border-radius: $border-radius * 2;
+        border-radius: 15px;
 
         &.active {
             color: white;
@@ -173,8 +162,8 @@ $header-font-size: 18px;
 .card-thumb-cell {
     position: relative;
     width: 100%;
-    height: 135px;
-    color: white;
+    height: 140px;
+    color: #fff;
 
     img {
         width: 100%;
@@ -184,17 +173,17 @@ $header-font-size: 18px;
     // VIP等級
     .card-level-text {
         position: absolute;
-        font-size: 26px;
+        font-size: 22px;
         font-weight: 700;
-        top: 30px;
-        left: 25px;
+        top: 25px;
+        left: 35px;
     }
 
     // VIP徽章
     .card-level-image {
         position: absolute;
         width: 50px;
-        height: 65px;
+        height: 60px;
         top: 0;
         right: 10%;
     }
@@ -203,17 +192,23 @@ $header-font-size: 18px;
     .card-desc-block {
         position: absolute;
         display: flex;
-        justify-content: space-evenly;
-        width: 100%;
-        height: 50px;
-        line-height: 1.5;
-        bottom: 0;
+        justify-content: space-around;
+        width: calc(100% - 20px);
+        height: 35px;
+        bottom: 25px;
+        font-size: 12px;
+        left: 50%;
+        transform: translateX(-50%);
+
+        div {
+            min-width: 65px;
+        }
     }
 }
 
 .card-page {
     width: $card-width;
-    padding: 10px 0;
+    padding: 15px 10px 15px 0;
     margin: 0 auto;
     text-align: right;
     font-size: 12px;
@@ -222,12 +217,5 @@ $header-font-size: 18px;
     span:first-of-type {
         color: #7e818b;
     }
-}
-
-.my-promote {
-    text-align: center;
-    font-size: 16px;
-    font-weight: 700;
-    color: #bbab98;
 }
 </style>

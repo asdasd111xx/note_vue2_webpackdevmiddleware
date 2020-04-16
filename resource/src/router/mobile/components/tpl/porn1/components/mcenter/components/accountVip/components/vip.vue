@@ -23,14 +23,18 @@
                 <span>直播VIP</span>
             </div>
         </div>
+
+        <!-- user info -->
         <template v-if="userVipInfo">
             <vip-user :userVipInfo="userVipInfo" />
         </template>
 
+        <!-- level card -->
         <template v-if="vipLevelList">
             <vip-level-card :vipLevelList="vipLevelList" />
         </template>
 
+        <!-- desc -->
         <template v-if="userVipInfo && vipLevelList">
             <vip-info />
         </template>
@@ -325,9 +329,8 @@ export default {
 </script>
 
 <style lang="scss" module>
-$height: 350px;
 $user-info-font-main-color: #9ba3bf;
-$header-font-size: 18px;
+$header-font-size: 16px;
 
 .vip-container {
     width: 100%;
@@ -337,7 +340,7 @@ $header-font-size: 18px;
 .vip-bg-block {
     position: absolute;
     width: 100%;
-    height: $height;
+    height: 320px;
     background: white;
 
     img {
@@ -350,23 +353,27 @@ $header-font-size: 18px;
     position: relative;
     height: 30px;
     text-align: center;
+    margin: 0 17px;
+    display: flex;
+    justify-content: center;
+    align-items: flex-end;
 
     .btn-back {
         position: absolute;
         width: 20px;
         height: 20px;
-        top: 0px;
-        left: 0px;
+        left: 0;
+        bottom: 0px;
     }
 }
 
 .header-title {
     font-size: $header-font-size;
     color: $user-info-font-main-color;
-    font-weight: 500;
+    font-weight: 700;
 
     span {
-        padding: 0 15px;
+        padding: 0 7.5px;
 
         &.active {
             color: #000000;

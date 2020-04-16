@@ -22,10 +22,10 @@
                     <img
                         :src="
                             $getCdnPath(
-                                '/static/image/_new/mcenter/vip/ic_vip03.png'
+                                '/static/image/_new/mcenter/vip/ic_vip00.png'
                             )
                         "
-                        alt=""
+                        alt="vip"
                     />
                 </div>
             </div>
@@ -34,11 +34,11 @@
         <!-- 進度條 -->
         <div :class="[$style['run-block']]">
             <div :class="[$style['run-level'], $style['current']]">
-                {{ userVipInfo.now_level_name }}
+                <span>{{ userVipInfo.now_level_name }}</span>
             </div>
             <div :class="[$style['run-bar']]">{{ userVipInfo.percent }}</div>
             <div :class="[$style['run-level'], $style['next']]">
-                {{ userVipInfo.next_level_name }}
+                <span>{{ userVipInfo.next_level_name }}</span>
             </div>
         </div>
 
@@ -80,22 +80,18 @@ export default {
 </script>
 
 <style lang="scss" module>
-$height: 350px;
-$user-info-font-main-color: #9ba3bf;
 $main-linear-background: linear-gradient(to right, #f9ddbd, #bd9d7d);
-$border-radius: 10px;
-$header-font-size: 18px;
 
 .user-info-wrap {
     position: relative;
     width: 100%;
-    height: $height;
-    padding: 55px 17px 0;
+    height: 290px;
+    padding: 10px 17px 0;
 }
 
 .user-info-block {
     position: relative;
-    height: 130px;
+    height: 110px;
     display: flex;
     justify-content: space-between;
 
@@ -105,8 +101,8 @@ $header-font-size: 18px;
         display: flex;
 
         .avatar {
-            width: 55px;
-            height: 55px;
+            width: 48px;
+            height: 48px;
 
             img {
                 width: 100%;
@@ -117,62 +113,65 @@ $header-font-size: 18px;
         // name text
         span:first-of-type {
             color: #484c59;
-            font-size: $header-font-size;
-            font-weight: bold;
+            font-size: 16px;
+            font-weight: 700;
             padding: 2.5px 5px 0px 10px;
         }
 
         // vip text
         span:last-of-type {
-            background: $main-linear-background;
-            color: white;
-            align-self: flex-start;
-            width: 50px;
-            padding: 2px 0;
+            background: linear-gradient(to right, #eeddd0, #d5b69c);
+            margin: 5px 0 0 5px;
+            padding: 0px 5px;
+            font-size: 12px;
+            line-height: 20px;
+            height: 20px;
+            color: #ffffff;
             text-align: center;
-            font-weight: bold;
-            border-radius: 5px;
+            font-weight: 700;
+            border-radius: 4px;
         }
     }
-}
 
-.user-vip-desc {
-    width: 90px;
-    height: 100%;
-    text-align: center;
+    .user-vip-desc {
+        width: 80px;
+        height: 100%;
+        text-align: center;
 
-    // VIP 詳情
-    .vip-text {
-        font-size: 16px;
-        font-weight: bold;
-    }
+        // VIP 詳情
+        .vip-text {
+            font-size: 14px;
+            font-weight: 700;
+        }
 
-    // VIP 详情的image
-    .vip-level {
-        width: 100%;
-        height: 100px;
-        margin-top: 10px;
-
-        img {
+        // VIP 详情的image
+        .vip-level {
             width: 100%;
-            height: 100%;
+
+            img {
+                width: 80px;
+                height: 90px;
+            }
         }
     }
 }
 
 .run-block {
     position: relative;
+    display: flex;
     width: 100%;
     height: 30px;
-    display: flex;
+    margin: 10px 0;
+    padding-right: 10px;
+    align-items: center;
 }
 
 .run-level {
-    width: 50px;
+    width: 40px;
     color: white;
     text-align: center;
     align-self: center;
-    border-radius: $border-radius * 2;
+    border-radius: 14px;
 
     &.current {
         background: #ceb89f;
@@ -189,13 +188,17 @@ $header-font-size: 18px;
 }
 
 .run-bar {
-    background: pink;
     flex: 1;
-    margin: 0px 10px;
+    margin: 0px 5px;
+    height: 15px;
+    background: url(/static/image/_new/mcenter/vip/vip_runbg.png);
+    background-size: cover;
+    background-repeat: no-repeat;
 }
 
 .user-desc-block {
-    color: $user-info-font-main-color;
+    padding-top: 5px;
+    color: #9ba3bf;
     font-size: 12px;
 
     .desc-text {

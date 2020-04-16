@@ -8,7 +8,7 @@
                     <img
                         :src="
                             $getCdnPath(
-                                `/static/image/_new/mcenter/vip/img00${index}.png`
+                                `/static/image/_new/mcenter/vip/pic_vip_${index}.png`
                             )
                         "
                         alt="vip_bg"
@@ -33,22 +33,25 @@ export default {};
 .vip-info-wrap {
     position: relative;
     width: 100%;
-    height: 260px;
+    height: 240px;
     top: 15px;
     padding: 0 17px;
     background: white;
 }
 
 .title {
-    font-size: 20px;
-    padding: 20px 0;
+    font-size: 18px;
+    padding: 10px 0 15px 0;
+    font-weight: 700;
+    color: #424654;
 
     &::before {
         content: "";
         position: relative;
         display: inline-block;
         width: 3px;
-        height: 16px;
+        height: 20px;
+        top: 2.5px;
         margin-right: 12px;
         background: linear-gradient(#d2bba4, #f1e5db);
     }
@@ -88,9 +91,8 @@ export default {};
 }
 
 .vip-detail {
-    margin-top: 10px;
     text-align: center;
-    font-size: 16px;
+    font-size: 12px;
     font-weight: 700;
     color: #bbab98;
 }
