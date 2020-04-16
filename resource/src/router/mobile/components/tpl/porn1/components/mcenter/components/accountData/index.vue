@@ -204,7 +204,7 @@ export default {
 
   .dialog-func {
     text-align: center;
-    color: #5e626d;
+    color: $main_text_color4;
     font-size: 17px;
     position: absolute;
     bottom: 0;

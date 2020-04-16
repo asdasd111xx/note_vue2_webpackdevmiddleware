@@ -139,13 +139,13 @@
             float: left;
             position: relative;
             margin-left: 6px;
-            color: #5E626D;
+            color: $main_text_color4;
         }
 
         .login-unit-link {
             float: right;
             position: relative;
-            color: #5E626D;
+            color: $main_text_color4;
         }
     }
 
@@ -173,7 +173,7 @@
         }
 
         a {
-            color: #5E626D;
+            color: $main_text_color4;
         }
     }
 }

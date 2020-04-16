@@ -46,7 +46,7 @@ export default {
 }
 
 .dialog div {
-  background-color: rgba($color: #000000, $alpha: 0.4);
+  background-color: rgba($color: #161616, $alpha: 0.8);
   border-radius: 10px;
   margin-left: auto;
   margin-right: auto;

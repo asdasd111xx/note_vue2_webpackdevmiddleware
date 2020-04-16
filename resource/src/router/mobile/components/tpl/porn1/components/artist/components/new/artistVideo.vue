@@ -51,7 +51,7 @@ export default {
   align-items: center;
 
   > span:last-child {
-    color: #5e626d;
+    color: $main_text_color4;
     font-size: 14px;
   }
   > span:first-child {
@@ -63,9 +63,6 @@ export default {
     background: -moz-linear-gradient(bottom, #bd9d7d, #f9ddbd);
     background: linear-gradient(to bottom, #bd9d7d, #f9ddbd);
   }
-}
-
-.video-list {
 }
 
 .wrap {
@@ -109,16 +106,6 @@ export default {
   background-color: black;
 }
 
-@media screen and (min-width: $phone) {
-  .title {
-    font-size: 16px;
-  }
-
-  .video-title {
-    font-size: 15px;
-  }
-}
-
 @media screen and (min-width: $pad) {
   .title {
     font-size: 18px;
@@ -126,6 +113,16 @@ export default {
 
   .video-title {
     font-size: 16px;
+  }
+
+  .image-wrap {
+    height: 160px;
+  }
+
+  .video-title {
+    height: 24px;
+    line-height: 24px;
+    font-size: 12px;
   }
 }
 </style>

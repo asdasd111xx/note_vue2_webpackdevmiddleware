@@ -136,11 +136,11 @@ export default {
 }
 
 .hot {
-  color: #bf8646;
+  color: $main_discover_color1;
 }
 
 .all {
-  color: #5e626d;
+  color: $main_text_color4;
 }
 
 .artist-wrap {
@@ -167,7 +167,7 @@ export default {
   height: 15px;
   line-height: 15px;
   margin-top: 8px;
-  color: #9ca3bf;
+  color: $main_text_color1;
   font-size: 11px;
   text-align: center;
   text-overflow: ellipsis;
@@ -188,12 +188,12 @@ export default {
     height: 15px;
     line-height: 16px;
     border-radius: 50%;
-    color: #bf8646;
+    color: $main_discover_color1;
     font-size: 9px;
     text-align: center;
 
     &.active {
-      background-color: #bf8646;
+      background-color: $main_discover_color1;
       color: #fefffe;
     }
   }

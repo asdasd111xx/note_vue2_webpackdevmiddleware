@@ -1,13 +1,13 @@
 <template>
   <div :class="$style['discover-tag-wrap']">
-    <div :class="[$style['tag-wrap'], 'clearfix']">
+    <div :class="[$style['tag-wrap']]">
       <div
         v-for="tag in tags"
         :key="tag.id"
         :class="[$style.tag, { [$style.active]: tag.id === active }]"
         @click="onClick(tag.id)"
       >
-        <div>{{ tag.name }}</div>
+        {{ tag.name }}
       </div>
     </div>
     <div :class="[$style['list-wrap'], 'clearfix']">
@@ -18,18 +18,28 @@
         @click="onSelect(info.id)"
       >
         <span v-if="selected.includes(info.id)" :class="$style['icon-wrap']">
-          <icon name="check-circle" width="14" height="14" />
+          <img
+            :class="$style['discover-icon']"
+            :src="$getCdnPath(`/static/image/_new/common/icon_remember.png`)"
+          />
         </span>
         <span>{{ info.title }}</span>
       </div>
     </div>
-    <div :class="[$style['select-wrap'], 'clearfix']">
-      <div :class="$style.amount">{{ selected.length }}</div>
-      <div :class="$style.tips">{{ $text("S_TAG_SELECTED", "已选标签") }}</div>
+    <div :class="[$style['select-wrap']]">
+      <div>
+        <div :class="$style.tips">
+          {{ $text("S_TAG_SELECTED", "已选标签") }}
+        </div>
+        <div :class="$style.amount">{{ selected.length }}</div>
+      </div>
+      <div :class="$style['btn-confirm']" @click="onConfirm">
+        {{ $text("S_CONFIRM", "确认") }}
+      </div>
     </div>
-    <div :class="$style['btn-confirm']" @click="onConfirm">
-      {{ $text("S_CONFIRM", "确认") }}
-    </div>
+    <message v-if="msg" @close="msg = ''"
+      ><div slot="msg">{{ msg }}</div>
+    </message>
   </div>
 </template>
 
@@ -38,13 +48,17 @@ import axios from 'axios';
 import find from 'lodash/find';
 import join from 'lodash/join';
 import { API_PORN1_DOMAIN } from '@/config/api';
-
+import message from '../../../common/new/message'
 export default {
+  components: {
+    message
+  },
   data() {
     return {
       tags: [],
       active: 0,
-      selected: []
+      selected: [],
+      msg: ''
     };
   },
   computed: {
@@ -84,6 +98,11 @@ export default {
         return;
       }
 
+      if (this.selected.length == 5) {
+        this.msg = "一次最多选5个标签"
+        return;
+      }
+
       this.selected = [...this.selected, id];
     },
     onConfirm() {
@@ -103,54 +122,58 @@ export default {
 @import "~@/css/variable.scss";
 
 .discover-tag-wrap {
-  padding: 11px 0 30px;
+}
+
+.tag-wrap {
+  overflow-x: auto;
+  width: 100%;
+  display: flex;
+  padding: 0 14px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
 }
 
 .tag {
-  float: left;
-  width: 25%;
-  margin-bottom: 11px;
+  color: #d5bea4;
+  border: 1px #d5bea4 solid;
+  display: inline-flex;
+  min-width: 54px;
+  height: 100%;
+  overflow: hidden;
+  line-height: 30px;
+  margin: 0 1.5px;
   border-radius: 3px;
-  border-color: #d5bea4;
+  font-size: 14px;
+  text-align: center;
+  text-overflow: ellipsis;
+  align-items: center;
+  justify-content: center;
 
   &.active {
-    > div {
-      border-color: #ffffff;
-      color: #ffffff;
-      background: -webkit-linear-gradient(right, #bd9d7d, #f9ddbd);
-      background: -o-linear-gradient(left, #bd9d7d, #f9ddbd);
-      background: -moz-linear-gradient(left, #bd9d7d, #f9ddbd);
-      background: linear-gradient(to left, #bd9d7d, #f9ddbd);
-    }
-  }
-
-  > div {
-    overflow: hidden;
-    width: 65px;
-    height: 30px;
-    line-height: 30px;
-    margin: 0 auto;
-    color: #d5bea4;
-    border-radius: 3px;
-    border-color: #d5bea4;
-    font-size: 14px;
-    text-align: center;
-    text-overflow: ellipsis;
-    white-space: nowrap;
+    border-color: #ffffff;
+    color: #ffffff;
+    background: -webkit-linear-gradient(right, #bd9d7d, #f9ddbd);
+    background: -o-linear-gradient(left, #bd9d7d, #f9ddbd);
+    background: -moz-linear-gradient(left, #bd9d7d, #f9ddbd);
+    background: linear-gradient(to left, #bd9d7d, #f9ddbd);
   }
 }
 
 .list-wrap {
-  margin-bottom: 40px;
-  padding: 0 10%;
+  margin-top: 14px;
+  margin-bottom: 20px;
+  background-color: $main_background_white1;
+  padding: 0 14px;
 }
 
 .list {
   float: left;
-  width: 40%;
-  height: 46px;
-  margin-left: 10%;
-  color: #9a9da4;
+  width: 50%;
+  height: 20px;
+  line-height: 20px;
+  margin-bottom: 10px;
+  color: $main_text_color4;
   font-size: 14px;
 
   &::before {
@@ -161,7 +184,7 @@ export default {
   }
 
   &.active {
-    color: #face15;
+    color: $main_text_color4;
   }
 
   > span {
@@ -172,42 +195,53 @@ export default {
 
 .icon-wrap {
   margin-right: 3px;
+  width: 17px;
+  height: 17px;
 
-  > svg {
-    display: block;
+  > img {
+    height: 100%;
   }
 }
 
 .select-wrap {
-  margin: 0 25% 10px;
-
-  > div {
-    float: right;
-    height: 16px;
-    line-height: 16px;
-    font-size: 12px;
+  height: 120px;
+  padding: 5px 0;
+  > div:first-child {
+    text-align: center;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    margin-bottom: 15px;
   }
 }
 
 .amount {
   padding: 0 4px;
+  font-size: 12px;
+  text-align: center;
   border-radius: 50%;
   background-color: #ff004f;
   color: #fff;
+  width: 17px;
+  height: 17px;
+  line-height: 17px;
 }
 
 .tips {
-  margin-right: 3px;
-  color: #9a9da4;
-  font-weight: 500;
+  margin-right: 4px;
+  font-size: 12px;
+  height: 16px;
+  line-height: 16px;
+  color: $main_text_color2;
 }
 
 .btn-confirm {
-  width: 60%;
-  height: 44px;
-  line-height: 44px;
+  max-width: 325px;
+  width: 100%;
+  height: 50px;
+  line-height: 50px;
   margin: 0 auto;
-  border-radius: 22px;
+  border-radius: 3px;
   color: #ffffff;
   background: -webkit-linear-gradient(right, #bd9d7d, #f9ddbd);
   background: -o-linear-gradient(left, #bd9d7d, #f9ddbd);
@@ -238,13 +272,13 @@ export default {
 
 @media screen and (min-width: $pad) {
   .tag {
-    > div {
-      font-size: 16px;
-    }
+    margin: 0 1%;
   }
 
   .list {
-    font-size: 16px;
+    height: 24px;
+    line-height: 24px;
+    font-size: 17px;
   }
 
   .select-wrap {

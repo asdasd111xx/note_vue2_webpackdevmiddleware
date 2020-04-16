@@ -89,9 +89,9 @@ export default {
     },
   },
   created() {
-    if (!this.loginStatus) {
-      this.$router.push("/mobile/home")
-    }
+    // if (!this.loginStatus) {
+    //   this.$router.push("/mobile/login")
+    // }
   },
   methods: {
     handleClick(path) {

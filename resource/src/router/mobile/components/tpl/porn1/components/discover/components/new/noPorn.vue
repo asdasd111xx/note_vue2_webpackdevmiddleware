@@ -62,7 +62,7 @@ export default {
 }
 
 .no-porn-title {
-  color: #5e626d;
+  color: $main_text_color4;
 }
 
 .porn-open-btn {

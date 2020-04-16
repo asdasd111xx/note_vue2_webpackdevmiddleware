@@ -1,14 +1,8 @@
 <template>
   <mobile-container v-if="videoInfo" :class="$style.container">
     <div slot="content" class="content-wrap">
-      <div :class="$style['header']">
-        <div :class="$style['btn-prev']" @click="$router.back()">
-          <img :src="$getCdnPath('/static/image/_new/common/btn_back_w.png')" />
-        </div>
-      </div>
       <video-player :video-info="videoInfo" />
       <video-info :video-info="videoInfo" />
-      <video-tag :tag="videoInfo.tag" />
       <video-guess />
     </div>
   </mobile-container>
@@ -18,11 +12,10 @@
 import { mapGetters } from 'vuex';
 import axios from 'axios';
 import querystring from 'querystring';
-import videoPlayer from './components/new/videoPlayer';
-import videoInfo from './components/new/videoInfo';
-import videoGuess from './components/new/videoGuess';
-import videoTag from './components/new/videoTag';
-import mobileContainer from '../common/new/mobileContainer';
+import videoPlayer from './components/videoPlayer';
+import videoInfo from './components/videoInfo';
+import videoGuess from './components/videoGuess';
+import mobileContainer from '../common/mobileContainer';
 import { API_PORN1_DOMAIN } from '@/config/api';
 
 export default {
@@ -30,8 +23,7 @@ export default {
     mobileContainer,
     videoPlayer,
     videoInfo,
-    videoGuess,
-    videoTag
+    videoGuess
   },
   data() {
     return {
@@ -73,43 +65,7 @@ export default {
 </script>
 
 <style lang="scss" module>
-@import "~@/css/variable.scss";
-
 div.container {
-  background-color: $main_white_color1;
-}
-
-.header {
-  position: fixed;
-  top: 0;
-  left: 0;
-  z-index: 3;
-  width: 100%;
-  height: 43px;
-  padding: 0 14px;
-  text-align: center;
-
-  > .title {
-    width: 100%;
-    line-height: 43px;
-    font-size: 17px;
-    height: 43px;
-    color: black;
-  }
-
-  .btn-prev {
-    position: absolute;
-    top: 0;
-    bottom: 0;
-    left: 14px;
-    width: 24px;
-    height: 24px;
-    margin: auto;
-
-    > img {
-      display: block;
-      width: 100%;
-    }
-  }
+  background-color: #161823;
 }
 </style>

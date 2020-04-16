@@ -36,7 +36,10 @@
           <span :class="[$style['desc'], { [$style['open']]: isOpenDesc }]">
             {{ desc }}
           </span>
-          <div :class="$style['more-btn']" @click="onToggleDesc">
+          <div
+            :class="[$style['more-btn'], { [$style['open']]: isOpenDesc }]"
+            @click="onToggleDesc"
+          >
             {{ $text("S_MORE", "更多") }}
             <img
               :src="$getCdnPath('/static/image/_new/common/btn_back_w.png')"
@@ -117,14 +120,14 @@ export default {
     width: 90px;
     position: relative;
     > img {
-      border: 1px #9ca3bf solid;
+      border: 1px $main_text_color1 solid;
       height: 100%;
       border-radius: 50%;
     }
 
     > div {
       color: white;
-      background-color: #9ca3bf;
+      background-color: $main_text_color1;
       width: 64px;
       border-radius: 7px;
       line-height: 17px;
@@ -145,17 +148,17 @@ export default {
       height: 16px;
       line-height: 16px;
       margin: 1.5px;
-      color: #9ca3bf;
+      color: $main_text_color1;
     }
 
     .title {
-      color: #5e626d;
+      color: $main_text_color4;
     }
 
     .intro {
       display: block;
       margin: 1.5px;
-      color: #9ca3bf;
+      color: $main_text_color1;
       width: 100%;
 
       span {
@@ -197,9 +200,18 @@ export default {
   background: -moz-linear-gradient(left, #bd9d7d, #f9ddbd);
   background: linear-gradient(to left, #bd9d7d, #f9ddbd);
 
+  &.open {
+    display: none;
+  }
   > img {
     height: 10px;
     width: 10px;
+  }
+}
+
+@media screen and (min-width: $pad) {
+  .artist-info-wrap {
+    font-size: 15px;
   }
 }
 </style>

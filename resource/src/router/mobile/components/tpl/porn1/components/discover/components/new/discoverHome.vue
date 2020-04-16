@@ -10,7 +10,7 @@
         <img
           :class="$style['discover-icon']"
           :src="
-            $getCdnPath(`/static/image/mobile/tpl/porn1/home/${info.icon}.png`)
+            $getCdnPath(`/static/image/_new/discover/icon_${info.icon}.png`)
           "
         />
         <span>{{ info.name }}</span>
@@ -34,27 +34,27 @@ export default {
         {
           key: 'rank',
           name: this.$text('S_RANK', '排行'),
-          icon: 'homepage'
+          icon: 'rank'
         },
         {
           key: 'artist',
           name: this.$text('S_ARTIST', '女优'),
-          icon: 'homepage'
+          icon: 'girl'
         },
         {
           key: 'tag',
           name: this.$text('S_TAG', '标签'),
-          icon: 'homepage'
+          icon: 'tag'
         },
         {
           key: 'agent',
           name: this.$text('S_AGENT_GROUP_DOMESTIC', '国内代理群'),
-          icon: 'agent'
+          icon: 'potatochat'
         },
         {
           key: 'cooperation',
           name: this.$text('S_COOPERATION_GROUP_FOREIGN', '国外合作群'),
-          icon: 'cooperation'
+          icon: 'telegram'
         }
       ];
     }
@@ -118,7 +118,7 @@ export default {
   position: relative;
   height: 45px;
   line-height: 59px;
-  color: #5e626d;
+  color: $main_text_color4;
   display: inline-flex;
   align-items: center;
   width: 100%;
