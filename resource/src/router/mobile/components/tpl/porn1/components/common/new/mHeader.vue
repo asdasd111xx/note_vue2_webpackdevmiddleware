@@ -326,33 +326,39 @@ export default {
   margin: 6px 0 0 24px;
 
   > input {
-    width: 100%;
-    height: 32px;
-    line-height: 32px;
-    padding: 0 64px 0 16px;
-    border: none;
-    border-radius: 16px;
-    background-color: #393a44;
-    color: #7a7d85;
-    font-size: 13px;
-    outline: none;
+      width: 100%;
+      height: 35px;
+      line-height: 32px;
+      padding: 0 40px 0 7px;
+      border: none;
+      border-radius: 5px;
+      background-color: #eeeeee;
+      color: $main_text_color2;
+      font-size: 14px;
+      outline: none;
+
+      &::placeholder {
+        color: $main_text_color2;
+      }
   }
 }
 
 .icon-search {
   position: absolute;
   top: 0;
-  right: -1px;
-  width: 48px;
-  height: 32px;
+  right: 0;
+  width: 35px;
+  height: 35px;
   padding: 6px 0;
-  border-radius: 0 16px 16px 0;
-  background-color: #f9cf33;
-  color: #ea377e;
+  border-radius: 0 5px 5px 0;
+  background: linear-gradient(to left, #bd9d7d, #f9ddbd);
+  color: white;
+  margin: 0 auto;
+  text-align: center;
 
-  > svg {
-    display: block;
-    margin: 0 auto;
+  > img {
+      width: 21px;
+      height: 21px;
   }
 }
 

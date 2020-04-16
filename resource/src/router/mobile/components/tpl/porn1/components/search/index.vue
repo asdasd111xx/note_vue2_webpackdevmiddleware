@@ -1,13 +1,13 @@
 <template>
     <mobile-container :header-config="headerConfig">
         <div slot="content" :class="[$style['content-wrap']]">
-            <div :class="[$style['search-hot']]">
+            <!-- <div :class="[$style['search-hot']]">
                 <span>姿势</span>
                 <span>美臀</span>
                 <span>调教/奴隶</span>
                 <span>女店员</span>
                 <span>烂醉如泥</span>
-            </div>
+            </div> -->
             <search-info v-if="$route.params.key" :key-word="keyWord" />
             <search-home v-else :set-key-word="setKeyWord" />
         </div>

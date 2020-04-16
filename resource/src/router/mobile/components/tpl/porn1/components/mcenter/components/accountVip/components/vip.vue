@@ -6,6 +6,23 @@
                 alt="vip_bg"
             />
         </div>
+        <!-- Header -->
+        <div :class="[$style['header-block']]">
+            <div
+                :class="[$style['btn-back']]"
+                @click="$router.push('/mobile/mcenter')"
+            >
+                <img
+                    :src="$getCdnPath(`/static/image/_new/common/btn_back.png`)"
+                    alt="btn_back"
+                />
+            </div>
+
+            <div :class="[$style['header-title']]">
+                <span :class="[$style['active']]">VIP特权</span>
+                <span>直播VIP</span>
+            </div>
+        </div>
         <template v-if="userVipInfo">
             <vip-user :userVipInfo="userVipInfo" />
         </template>
@@ -14,7 +31,9 @@
             <vip-level-card :vipLevelList="vipLevelList" />
         </template>
 
-        <vip-info />
+        <template v-if="userVipInfo && vipLevelList">
+            <vip-info />
+        </template>
         <!-- <live-info /> -->
     </div>
 </template>
@@ -307,6 +326,8 @@ export default {
 
 <style lang="scss" module>
 $height: 350px;
+$user-info-font-main-color: #9ba3bf;
+$header-font-size: 18px;
 
 .vip-container {
     width: 100%;
@@ -322,6 +343,34 @@ $height: 350px;
     img {
         width: 100%;
         height: 100%;
+    }
+}
+
+.header-block {
+    position: relative;
+    height: 30px;
+    text-align: center;
+
+    .btn-back {
+        position: absolute;
+        width: 20px;
+        height: 20px;
+        top: 0px;
+        left: 0px;
+    }
+}
+
+.header-title {
+    font-size: $header-font-size;
+    color: $user-info-font-main-color;
+    font-weight: 500;
+
+    span {
+        padding: 0 15px;
+
+        &.active {
+            color: #000000;
+        }
     }
 }
 </style>

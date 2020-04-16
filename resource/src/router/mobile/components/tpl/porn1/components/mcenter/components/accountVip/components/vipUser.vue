@@ -1,23 +1,5 @@
 <template>
     <div :class="[$style['user-info-wrap']]">
-        <!-- Header -->
-        <div :class="[$style['header-block']]">
-            <div
-                :class="[$style['btn-back']]"
-                @click="$router.push('/mobile/mcenter')"
-            >
-                <img
-                    :src="$getCdnPath(`/static/image/_new/common/btn_back.png`)"
-                    alt="btn_back"
-                />
-            </div>
-
-            <div :class="[$style['header-title']]">
-                <span :class="[$style['active']]">VIP特权</span>
-                <span>直播VIP</span>
-            </div>
-        </div>
-
         <!-- 個人資訊 -->
         <div :class="[$style['user-info-block']]">
             <div :class="[$style['user-info-name']]">
@@ -109,34 +91,6 @@ $header-font-size: 18px;
     width: 100%;
     height: $height;
     padding: 55px 17px 0;
-}
-
-.header-block {
-    position: relative;
-    height: 30px;
-    text-align: center;
-
-    .btn-back {
-        position: absolute;
-        width: 20px;
-        height: 20px;
-        top: 0px;
-        left: 0px;
-    }
-}
-
-.header-title {
-    font-size: $header-font-size;
-    color: $user-info-font-main-color;
-    font-weight: 500;
-
-    span {
-        padding: 0 15px;
-
-        &.active {
-            color: #000000;
-        }
-    }
 }
 
 .user-info-block {

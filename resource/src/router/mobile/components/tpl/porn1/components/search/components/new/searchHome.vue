@@ -190,12 +190,12 @@ export default {
         border: none;
         border-radius: 5px;
         background-color: #eeeeee;
-        color: #a6a9b2;
+        color: $main_text_color2;
         font-size: 14px;
         outline: none;
 
         &::placeholder {
-            color: #a6a9b2;
+            color: $main_text_color2;
         }
     }
 }
@@ -263,7 +263,7 @@ export default {
 
 .icon-trash {
     position: absolute;
-    top: 0;
+    top: 2px;
     right: 6px;
     width: 22px;
     height: 22px;
