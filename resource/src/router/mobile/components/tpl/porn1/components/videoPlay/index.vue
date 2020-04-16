@@ -8,7 +8,7 @@
       </div>
       <video-player :video-info="videoInfo" />
       <video-info :video-info="videoInfo" />
-      <video-tag :tag="videoInfo.tag" />
+      <video-tag :tag="videoInfo.tag" :padding="true" />
       <video-guess />
     </div>
   </mobile-container>

@@ -1,5 +1,5 @@
 <template>
-  <div :class="$style['video-tag-wrap']">
+  <div :class="[$style['video-tag-wrap'], { [$style['padding']]: padding }]">
     <div
       v-for="(tTag, index) in tags"
       :key="`tag-${index}`"
@@ -35,6 +35,9 @@ export default {
     tag: {
       type: String,
       required: true
+    },
+    padding: {
+      type: Boolean
     }
   },
   computed: {
@@ -53,9 +56,12 @@ export default {
   padding: 0 14px;
   text-align: center;
   display: flex;
-  padding: 12px 14px 10px 14px;
+
   overflow-x: auto;
 
+  &.padding {
+    padding: 12px 14px 10px 14px;
+  }
   > .tag {
     min-width: 62px;
     height: 18px;
