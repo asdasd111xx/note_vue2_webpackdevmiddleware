@@ -1,7 +1,8 @@
 <template>
     <swiper
-        v-if="avList.length && isReceive"
+        v-if="avList.length && allGame"
         :options="swiperOptionContent"
+        :style="contentStyle"
         class="swiper gellery-content"
     >
         <swiper-slide key="av">
@@ -37,11 +38,12 @@
                         {{ $text("S_MORE", "更多") }}
                     </div>
                 </div>
-                <div class="content">
+                <div class="content clearfix">
                     <div
                         v-for="(item, i) in info.list"
                         :key="`av-list-${i}`"
                         class="content-cell-block"
+                        @click="$router.push({ name: 'videoPlay', params: { id: info.id } })"
                     >
                         <img :src="item.image" alt="img" />
                         <div class="video-text">{{ item.title }}</div>
@@ -52,21 +54,15 @@
 
         <swiper-slide v-for="(info, key) in allGame" :key="key">
             <div class="content-cells">
-                <div class="content">
+                <div class="content clearfix">
                     <div
                         v-for="(item, index) in info"
                         :key="`game-list-${index}`"
-                        class="content-cell-block"
+                        :class="['content-cell-block', { 'is-full': item.isFull }]"
+                        @click="onClick(item)"
                     >
-                        <img
-                            :src="
-                                $getCdnPath(
-                                    `/static/image/mobile/platform/card/${trans[item.kind]}/short/${item.vendor}.png`
-                                )
-                            "
-                            alt="img"
-                        />
-                        <span>{{ item.alias }}</span>
+                        <img :src="item.image" alt="img" />
+                        <span v-if="item.hasName">{{ item.name }}</span>
                     </div>
                 </div>
             </div>
@@ -81,6 +77,7 @@ import axios from 'axios';
 import find from 'lodash/find';
 import querystring from 'querystring';
 import { API_PORN1_DOMAIN } from '@/config/api';
+import openGame from '@/lib/open_game';
 
 export default {
     components: {
@@ -88,6 +85,10 @@ export default {
         SwiperSlide
     },
     props: {
+        contentStyle: {
+            type: Object,
+            required: true
+        },
         hallTab: {
             type: Array,
             required: true
@@ -103,7 +104,6 @@ export default {
     },
     data() {
         return {
-            isReceive: false,
             trans: {
                 1: 'sports',
                 2: 'live',
@@ -115,11 +115,12 @@ export default {
             videoRecommand: [],
             videoList: [],
             videoSort: [],
-            allGame: {}
+            allGame: null
         };
     },
     computed: {
         ...mapGetters({
+            loginStatus: 'getLoginStatus',
             gameData: 'getGameData',
             memInfo: 'getMemInfo'
         }),
@@ -197,11 +198,11 @@ export default {
                 url: `${API_PORN1_DOMAIN}/api/v1/video/sort`,
                 timeout: 30000,
                 headers: {
-                    // Bundleid: 'chungyo.foxyporn.prod.enterprise.web',
-                    // Version: 1
+                    Bundleid: 'chungyo.foxyporn.prod.enterprise.web',
+                    Version: 1
                     // 本機開發時會遇到 CORS 的問題，把Bundleid及Version註解，並打開下面註解即可
-                    'Content-Type': 'application/x-www-form-urlencoded',
-                    origin: 'http://127.0.0.1'
+                    // 'Content-Type': 'application/x-www-form-urlencoded',
+                    // origin: 'http://127.0.0.1'
                 }
             }).then((response) => {
                 if (response.status !== 200) {
@@ -217,11 +218,11 @@ export default {
                 url: `${API_PORN1_DOMAIN}/api/v1/video/recommand`,
                 timeout: 30000,
                 headers: {
-                    // Bundleid: 'chungyo.foxyporn.prod.enterprise.web',
-                    // Version: 1
+                    Bundleid: 'chungyo.foxyporn.prod.enterprise.web',
+                    Version: 1
                     // 本機開發時會遇到 CORS 的問題，把Bundleid及Version註解，並打開下面註解即可
-                    'Content-Type': 'application/x-www-form-urlencoded',
-                    origin: 'http://127.0.0.1'
+                    // 'Content-Type': 'application/x-www-form-urlencoded',
+                    // origin: 'http://127.0.0.1'
                 }
             }).then((response) => {
                 if (response.status !== 200) {
@@ -238,11 +239,11 @@ export default {
                 timeout: 30000,
                 data: querystring.stringify({ tag: this.videoTab.title }),
                 headers: {
-                    // Bundleid: 'chungyo.foxyporn.prod.enterprise.web',
-                    // Version: 1
+                    Bundleid: 'chungyo.foxyporn.prod.enterprise.web',
+                    Version: 1
                     // 本機開發時會遇到 CORS 的問題，把Bundleid及Version註解，並打開下面註解即可
-                    'Content-Type': 'application/x-www-form-urlencoded',
-                    origin: 'http://127.0.0.1'
+                    // 'Content-Type': 'application/x-www-form-urlencoded',
+                    // origin: 'http://127.0.0.1'
                 }
             }).then((response) => {
                 if (response.status !== 200) {
@@ -253,449 +254,123 @@ export default {
             });
         },
         getGame() {
-            // axios({
-            //     method: 'get',
-            //     url: 'http://192.168.133.98:8080/api/game/list',
-            //     timeout: 30000,
-            //     headers: {
-            //         // Bundleid: 'chungyo.foxyporn.prod.enterprise.web',
-            //         // Version: 1
-            //         // 本機開發時會遇到 CORS 的問題，把Bundleid及Version註解，並打開下面註解即可
-            //         'Content-Type': 'application/x-www-form-urlencoded',
-            //         origin: 'http://127.0.0.1'
-            //     }
-            // }).then((response) => {
-            //     this.allGame = response.data.reduce((init, game) => {
-            //         const { category } = game;
-            //         if (!init[category]) {
-            //             return { ...init, [category]: [{ ...game }] };
-            //         }
-
-            //         return { ...init, [category]: [...init[category], { ...game }] };
-            //     }, {});
-            // });
-            const response = {
-                data: [
-                    {
-                        type: null,
-                        kind: 1,
-                        alias: '捕魚',
-                        vendor: 'bbin',
-                        category: 'fish',
-                        code: null,
-                        url: null
-                    },
-                    {
-                        type: null,
-                        kind: 1,
-                        alias: '捕魚',
-                        vendor: 'bbin',
-                        category: 'fish',
-                        code: null,
-                        url: null
-                    },
-                    {
-                        type: null,
-                        kind: 1,
-                        alias: '捕魚',
-                        vendor: 'bbin',
-                        category: 'fish',
-                        code: null,
-                        url: null
-                    },
-                    {
-                        type: null,
-                        kind: 1,
-                        alias: '捕魚',
-                        vendor: 'bbin',
-                        category: 'fish',
-                        code: null,
-                        url: null
-                    },
-                    {
-                        type: null,
-                        kind: 1,
-                        alias: '牛牛',
-                        vendor: 'bbin',
-                        category: 'bubu',
-                        code: null,
-                        url: null
-                    },
-                    {
-                        type: null,
-                        kind: 1,
-                        alias: '牛牛',
-                        vendor: 'bbin',
-                        category: 'bubu',
-                        code: null,
-                        url: null
-                    },
-                    {
-                        type: null,
-                        kind: 1,
-                        alias: '牛牛',
-                        vendor: 'bbin',
-                        category: 'bubu',
-                        code: null,
-                        url: null
-                    },
-                    {
-                        type: null,
-                        kind: 1,
-                        alias: '牛牛',
-                        vendor: 'bbin',
-                        category: 'bubu',
-                        code: null,
-                        url: null
-                    },
-                    {
-                        type: null,
-                        kind: 1,
-                        alias: '麻將',
-                        vendor: 'bbin',
-                        category: 'mahjong',
-                        code: null,
-                        url: null
-                    },
-                    {
-                        type: null,
-                        kind: 1,
-                        alias: '麻將',
-                        vendor: 'bbin',
-                        category: 'mahjong',
-                        code: null,
-                        url: null
-                    },
-                    {
-                        type: null,
-                        kind: 1,
-                        alias: '麻將',
-                        vendor: 'bbin',
-                        category: 'mahjong',
-                        code: null,
-                        url: null
-                    },
-                    {
-                        type: null,
-                        kind: 1,
-                        alias: '麻將',
-                        vendor: 'bbin',
-                        category: 'mahjong',
-                        code: null,
-                        url: null
-                    },
-                    {
-                        type: null,
-                        kind: 1,
-                        alias: '電子',
-                        vendor: 'bbin',
-                        category: 'slots',
-                        code: null,
-                        url: null
-                    },
-                    {
-                        type: null,
-                        kind: 1,
-                        alias: '電子',
-                        vendor: 'bbin',
-                        category: 'slots',
-                        code: null,
-                        url: null
-                    },
-                    {
-                        type: null,
-                        kind: 1,
-                        alias: '電子',
-                        vendor: 'bbin',
-                        category: 'slots',
-                        code: null,
-                        url: null
-                    },
-                    {
-                        type: null,
-                        kind: 1,
-                        alias: '電子',
-                        vendor: 'bbin',
-                        category: 'slots',
-                        code: null,
-                        url: null
-                    },
-                    {
-                        type: null,
-                        kind: 1,
-                        alias: '棋牌',
-                        vendor: 'bbin',
-                        category: 'card',
-                        code: null,
-                        url: null
-                    },
-                    {
-                        type: null,
-                        kind: 1,
-                        alias: '棋牌',
-                        vendor: 'bbin',
-                        category: 'card',
-                        code: null,
-                        url: null
-                    },
-                    {
-                        type: null,
-                        kind: 1,
-                        alias: '棋牌',
-                        vendor: 'bbin',
-                        category: 'card',
-                        code: null,
-                        url: null
-                    },
-                    {
-                        type: null,
-                        kind: 1,
-                        alias: '棋牌',
-                        vendor: 'bbin',
-                        category: 'card',
-                        code: null,
-                        url: null
-                    },
-                    {
-                        type: null,
-                        kind: 1,
-                        alias: '電競',
-                        vendor: 'bbin',
-                        category: 'e-sports',
-                        code: null,
-                        url: null
-                    },
-                    {
-                        type: null,
-                        kind: 1,
-                        alias: '電競',
-                        vendor: 'bbin',
-                        category: 'e-sports',
-                        code: null,
-                        url: null
-                    },
-                    {
-                        type: null,
-                        kind: 1,
-                        alias: '電競',
-                        vendor: 'bbin',
-                        category: 'e-sports',
-                        code: null,
-                        url: null
-                    },
-                    {
-                        type: null,
-                        kind: 1,
-                        alias: '電競',
-                        vendor: 'bbin',
-                        category: 'e-sports',
-                        code: null,
-                        url: null
-                    },
-                    {
-                        type: null,
-                        kind: 1,
-                        alias: '真人',
-                        vendor: 'bbin',
-                        category: 'live',
-                        code: null,
-                        url: null
-                    },
-                    {
-                        type: null,
-                        kind: 1,
-                        alias: '真人',
-                        vendor: 'bbin',
-                        category: 'live',
-                        code: null,
-                        url: null
-                    },
-                    {
-                        type: null,
-                        kind: 1,
-                        alias: '真人',
-                        vendor: 'bbin',
-                        category: 'live',
-                        code: null,
-                        url: null
-                    },
-                    {
-                        type: null,
-                        kind: 1,
-                        alias: '真人',
-                        vendor: 'bbin',
-                        category: 'live',
-                        code: null,
-                        url: null
-                    },
-                    {
-                        type: null,
-                        kind: 1,
-                        alias: '彩票',
-                        vendor: 'bbin',
-                        category: 'lottery',
-                        code: null,
-                        url: null
-                    },
-                    {
-                        type: null,
-                        kind: 1,
-                        alias: '彩票',
-                        vendor: 'bbin',
-                        category: 'lottery',
-                        code: null,
-                        url: null
-                    },
-                    {
-                        type: null,
-                        kind: 1,
-                        alias: '彩票',
-                        vendor: 'bbin',
-                        category: 'lottery',
-                        code: null,
-                        url: null
-                    },
-                    {
-                        type: null,
-                        kind: 1,
-                        alias: '彩票',
-                        vendor: 'bbin',
-                        category: 'lottery',
-                        code: null,
-                        url: null
-                    },
-                    {
-                        type: null,
-                        kind: 1,
-                        alias: '體育',
-                        vendor: 'bbin',
-                        category: 'sport',
-                        code: null,
-                        url: null
-                    },
-                    {
-                        type: null,
-                        kind: 1,
-                        alias: '體育',
-                        vendor: 'bbin',
-                        category: 'sport',
-                        code: null,
-                        url: null
-                    },
-                    {
-                        type: null,
-                        kind: 1,
-                        alias: '體育',
-                        vendor: 'bbin',
-                        category: 'sport',
-                        code: null,
-                        url: null
-                    },
-                    {
-                        type: null,
-                        kind: 1,
-                        alias: '體育',
-                        vendor: 'bbin',
-                        category: 'sport',
-                        code: null,
-                        url: null
-                    },
-                    {
-                        type: null,
-                        kind: 1,
-                        alias: '代理',
-                        vendor: 'bbin',
-                        category: 'agents',
-                        code: null,
-                        url: null
-                    },
-                    {
-                        type: null,
-                        kind: 1,
-                        alias: '代理',
-                        vendor: 'bbin',
-                        category: 'agents',
-                        code: null,
-                        url: null
-                    },
-                    {
-                        type: null,
-                        kind: 1,
-                        alias: '代理',
-                        vendor: 'bbin',
-                        category: 'agents',
-                        code: null,
-                        url: null
-                    },
-                    {
-                        type: null,
-                        kind: 1,
-                        alias: '代理',
-                        vendor: 'bbin',
-                        category: 'agents',
-                        code: null,
-                        url: null
-                    },
-                    {
-                        type: null,
-                        kind: 1,
-                        alias: '直播',
-                        vendor: 'bbin',
-                        category: 'live-stream',
-                        code: null,
-                        url: null
-                    },
-                    {
-                        type: null,
-                        kind: 1,
-                        alias: '直播',
-                        vendor: 'bbin',
-                        category: 'live-stream',
-                        code: null,
-                        url: null
-                    },
-                    {
-                        type: null,
-                        kind: 1,
-                        alias: '直播',
-                        vendor: 'bbin',
-                        category: 'live-stream',
-                        code: null,
-                        url: null
-                    },
-                    {
-                        type: null,
-                        kind: 1,
-                        alias: '直播',
-                        vendor: 'bbin',
-                        category: 'live-stream',
-                        code: null,
-                        url: null
-                    }
-                ],
-                status: 'ok',
-                errorCode: null,
-                errorMessage: null,
-                reponseTime: '2020-04-13T07:47:54.2109853+00:00',
-                version: '1.0.0.0'
-            };
-
-            this.allGame = response.data.reduce((init, game) => {
-                const { category } = game;
-                if (!init[category]) {
-                    return { ...init, [category]: [{ ...game }] };
+            axios({
+                method: 'get',
+                url: 'http://192.168.133.98:8080/api/game/list',
+                timeout: 30000,
+                headers: {
+                    Bundleid: 'chungyo.foxyporn.prod.enterprise.web',
+                    Version: 1
+                    // 本機開發時會遇到 CORS 的問題，把Bundleid及Version註解，並打開下面註解即可
+                    // 'Content-Type': 'application/x-www-form-urlencoded',
+                    // origin: 'http://127.0.0.1'
+                }
+            }).then((response) => {
+                if (response.status !== 200) {
+                    return;
                 }
 
-                return { ...init, [category]: [...init[category], { ...game }] };
-            }, {});
-            this.isReceive = true;
+                // 因API無對應的Key，但是順序會固定，故使用此方法取得當前的類別
+                const trans = {
+                    0: 'live-stream',
+                    1: 'sport',
+                    2: 'live',
+                    3: 'lottery',
+                    4: 'e-sports',
+                    5: 'slots',
+                    6: 'card',
+                    7: 'fish',
+                    8: 'bubu',
+                    9: 'mahjong',
+                    10: 'agents'
+                };
+
+                this.allGame = response.data.data.reduce((init, info, index) => {
+                    const category = trans[index];
+                    const games = info.vendors.map((game, i) => {
+                        // 代理大廳
+                        if (game.kind === 0 && game.type === 'D') {
+                            return { ...game, isFull: true, hasName: false };
+                        }
+
+                        // 美女直播、體育直播
+                        if (game.kind === 0 && ['BL', 'SL'].includes(game.type)) {
+                            return { ...game, isFull: true, hasName: true };
+                        }
+
+                        // IM电竞、泛亚电竞，因順序固定加上泛亞電競尚未介接無vendor故使用所以值判斷，但後續介接因使用vendor做判斷
+                        if (category === 'e-sports' && game.kind === 1 && [0, 1].includes(i)) {
+                            return { ...game, isFull: true, hasName: true };
+                        }
+
+                        // 視訊 亞博直播
+                        if (game.kind === 2 && game.vendor === 'lg_live' && i === 0) {
+                            return { ...game, isFull: true, hasName: false };
+                        }
+
+                        // BB電子
+                        if (game.kind === 3 && game.vendor === 'bbin' && game.code === '') {
+                            return { ...game, isFull: true, hasName: true };
+                        }
+
+                        return { ...game, isFull: false, hasName: true };
+                    });
+
+                    return { ...init, [category]: [...init[category], ...games] };
+                }, {
+                    fish: [], bubu: [], mahjong: [], slots: [], card: [], 'e-sports': [], live: [], lottery: [], sport: [], agents: [], 'live-stream': []
+                });
+            });
+        },
+        onClick(game) {
+            // Game Type
+            // L => 遊戲大廳
+            // G => 遊戲
+            // BL => 美女直播
+            // SL => 體育直播
+            // D => 代理
+            // T => 敬请期待
+            if (game.type === 'D') {
+                return;
+            }
+
+            if (game.type === 'T') {
+                if (!this.loginStatus) {
+                    this.$router.push('/mobile/login');
+                    return;
+                }
+                alert('正在上线 敬请期待！');
+                return;
+            }
+
+            if (['BL', 'SL'].includes(game.type)) {
+                if (!this.loginStatus) {
+                    this.$router.push('/mobile/login');
+                    return;
+                }
+                this.$router.push('/mobile/liveStream');
+                return;
+            }
+
+            if (game.code) {
+                if (!this.loginStatus) {
+                    this.$router.push('/mobile/login');
+                    return;
+                }
+                openGame({ kind: game.kind, vendor: game.vendor, code: game.code });
+                return;
+            }
+
+            const trans = { 3: 'casino', 5: 'card', 6: 'mahjong' };
+
+            this.$router.push(`/mobile/${trans[game.kind]}`);
         }
     }
 };
 </script>
 
 <style lang="scss" scoped>
-$border-radius: 10px;
+$border-radius: 7px;
 $main-color: #b1987f;
 $main-linear-background: linear-gradient(#bd9d7d, #f9ddbd);
 $animation-time: 1s;
@@ -728,12 +403,13 @@ $animation-time: 1s;
 
     .content-cell-block {
         position: relative;
-        display: inline-block;
-        width: 49%;
-        height: 120px;
-        margin: 0 1px;
+        float: left;
+        width: 50%;
+        padding: 0 2px 3px;
+        box-sizing: border-box;
 
         img {
+            display: block;
             width: 100%;
             height: 100%;
             border-radius: $border-radius;
@@ -741,25 +417,31 @@ $animation-time: 1s;
 
         span {
             position: absolute;
-            top: 10px;
-            left: 10px;
-            color: #FFF;
+            top: 2px;
+            left: 22px;
+            color: #9CA3BF;
+            font-weight: 700;
             font-size: 12px;
         }
 
         .video-text {
-            position: absolute;
-            width: 100%;
-            height: 40px;
-            line-height: 20px;
             overflow: hidden;
+            position: absolute;
+            bottom: 0;
+            left: 0;
+            width: 100%;
+            line-height: 20px;
+            border-radius: 0 0 7px 7px;
+            background-color: #FFF;
+            color: #3D3D3D;
+            font-size: 12px;
             text-overflow: ellipsis;
             white-space: nowrap;
-            bottom: 0;
-            background: white;
-            opacity: 0.75;
-            border-bottom-right-radius: $border-radius;
-            border-bottom-left-radius: $border-radius;
+            opacity: 0.8;
+        }
+
+        &.is-full {
+            width: 100%;
         }
     }
 }

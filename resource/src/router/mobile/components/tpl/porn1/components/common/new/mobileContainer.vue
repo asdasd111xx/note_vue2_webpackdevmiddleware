@@ -1,5 +1,5 @@
 <template>
-  <div :class="[$style.container, { [$style['has-header']]: hasHeader }]">
+  <div :class="[$style.container, { [$style['has-header']]: hasHeader, [$style['has-footer']]: hasFooter }]">
     <m-header v-if="headerConfig" :header-config="headerConfig" />
     <slot name="content" />
     <m-footer v-if="hasFooter" />
@@ -52,10 +52,13 @@ export default {
 .container {
   min-width: 320px;
   min-height: 100%;
-  padding-bottom: 45px;
 }
 
 .has-header {
   padding-top: 43px;
+}
+
+.has-footer {
+  padding-bottom: 45px;
 }
 </style>
