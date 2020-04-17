@@ -172,7 +172,7 @@ export default {
   left: calc(12.5% - 25px);
   height: 2px;
   background-color: #be9e7f;
-  width: 49px;
+  width: 50px;
   transition: left 0.31s;
 }
 .tab {

@@ -2,13 +2,16 @@
   <mobile-container :header-config="headerConfig">
     <div slot="content" :class="$style['promotion-wrap']">
       <div :class="$style['type-wrap']">
-        <div
-          v-for="tab in tabList"
-          :key="tab.id"
-          :class="[$style['type-btn'], { [$style.active]: tab.id === tabId }]"
-        >
-          <div @click="handleClickTab(tab)">{{ tab.name }}</div>
-        </div>
+        <swiper :options="{ slidesPerView: 'auto' }">
+          <swiper-slide
+            v-for="tab in tabList"
+            :key="tab.id"
+            :class="[$style['type-btn'], { [$style.active]: tab.id === tabId }]"
+          >
+            <div @click="getPromotionList(tab.id)">{{ tab.name }}</div>
+            <div v-if="tab.id === tabId" :class="$style['tab-slider']" />
+          </swiper-slide>
+        </swiper>
       </div>
 
       <div
@@ -23,6 +26,9 @@
           </div>
           <div :class="$style['text-wrap']">
             <div :class="$style.time">
+              <img
+                :src="$getCdnPath('/static/image/_new/promotion/icon_time.png')"
+              />
               <span v-if="info.end_time"
                 >{{ info.start_time }} ~ {{ info.end_time }}</span
               >
@@ -66,7 +72,7 @@ export default {
     },
   },
   methods: {
-    handleClickTab(tab) {
+    handleClickTab(tab, index) {
       this.getPromotionList(tab.id);
     },
     getPromotionList(id) {
@@ -141,34 +147,47 @@ export default {
 @import "~@/css/variable.scss";
 
 .promotion-wrap {
-  margin: 60px 0 45px;
+  padding: 0 14px;
+  background: #fefffe;
 }
+
 .type-wrap {
-  position: fixed;
-  top: 43px;
-  left: 0;
   width: 100%;
-  z-index: 1;
+  height: 43px;
+  position: relative;
 }
+
+.tab-slider {
+  position: absolute;
+  bottom: 1.5px;
+  left: calc(50% - 25px);
+  height: 2px;
+  background-color: #be9e7f;
+  width: 50px;
+  transition: left 0.31s;
+}
+
 .type-btn {
+  position: relative;
   float: left;
-  width: 25%;
+  width: calc(100% / 7);
+  min-width: 85px;
   height: 43px;
   line-height: 43px;
-  color: #bcbdc1;
   font-weight: 500;
   font-size: 14px;
   text-align: center;
+  color: $main_text_color2;
 
   &.active {
-    color: $main_text_color2;
+    color: $main_text_color4;
+    // border-bottom: solid 1px #be9e7f;
   }
 }
 
 .promotion {
   position: relative;
-  margin: 0 15px 10px;
-  padding-top: 15px;
+  margin: 7px 0;
 }
 .wrap {
   position: relative;
@@ -182,35 +201,22 @@ export default {
     border-radius: 10px;
   }
 }
+
 .text-wrap {
-  position: absolute;
-  bottom: 10px;
-  padding: 0 15px;
-  background-color: #fff;
-  border-radius: 10px 40px 40px 10px;
+  padding: 2px 7px;
 }
-.name {
-  line-height: 22px;
-  color: #fff;
-  font-weight: 700;
-  font-size: 16px;
-}
+
 .time {
-  line-height: 20px;
-  color: #000;
-  font-size: 12px;
+  line-height: 13px;
+  color: $main_text_color4;
+  font-size: 10px;
+
+  > img {
+    widows: 11px;
+    height: 11px;
+  }
 }
-.btn-next {
-  position: absolute;
-  top: 50%;
-  right: 15px;
-  width: 28px;
-  height: 28px;
-  margin-top: -14px;
-  background: url("/static/image/mobile/tpl/porn1/events/icon_go2_h.png") 0 0
-    no-repeat;
-  background-size: 28px;
-}
+
 .promotion-bg {
   position: absolute;
   top: 60px;
