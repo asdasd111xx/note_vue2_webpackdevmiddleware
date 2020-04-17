@@ -1,13 +1,6 @@
 <template>
     <mobile-container :header-config="headerConfig">
         <div slot="content" :class="[$style['content-wrap']]">
-            <!-- <div :class="[$style['search-hot']]">
-                <span>姿势</span>
-                <span>美臀</span>
-                <span>调教/奴隶</span>
-                <span>女店员</span>
-                <span>烂醉如泥</span>
-            </div> -->
             <search-info v-if="$route.params.key" :key-word="keyWord" />
             <search-home v-else :set-key-word="setKeyWord" />
         </div>
@@ -86,33 +79,4 @@ export default {
     background: #f8f8f7;
 }
 
-.search-hot {
-    position: relative;
-    display: flex;
-    justify-content: center;
-    align-items: center;
-    width: 100%;
-    height: 42px;
-    background: #fefffe;
-    color: #bf8646;
-    font-weight: 400;
-    font-size: 12px;
-
-    span {
-        position: relative;
-        padding: 0px 5px;
-
-        + span::before {
-            content: "";
-            position: absolute;
-            width: 3px;
-            height: 3px;
-            top: 50%;
-            left: -2.5px;
-            border-radius: 50%;
-            background: #bf8646;
-            transform: translate(0%, -50%);
-        }
-    }
-}
 </style>

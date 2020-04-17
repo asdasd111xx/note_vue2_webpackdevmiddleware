@@ -3,26 +3,22 @@
         <!-- vip-level thumbs -->
         <div :class="[$style['card-level-container']]">
             <swiper
-                ref="vip-level-thumb"
-                :options="{
-                    slidesPerView: 4
-                }"
+                :class="[$style['vipSwiperContainer']]"
+                ref="swiperLevel"
+                :options="vipLevelOption"
             >
-                <swiper-slide :class="[$style['level-slide']]">
-                    <div
-                        :class="[$style['level-thumb-cell'], $style['active']]"
-                    >
-                        Lv0
-                    </div>
-                </swiper-slide>
-
                 <swiper-slide
                     :class="[$style['level-slide']]"
                     v-for="(item, index) in vipLevelList"
-                    :key="index"
+                    :key="`vip-${index}}`"
                 >
-                    <div :class="[$style['level-thumb-cell']]">
-                        Lv{{ index + 1 }}
+                    <div
+                        :class="[
+                            $style['level-thumb-cell'],
+                            { [$style['active']]: selectedIndex === index }
+                        ]"
+                    >
+                        {{ item.alias }}
                     </div>
                 </swiper-slide>
             </swiper>
@@ -31,12 +27,14 @@
         <!-- vip-card thumbs -->
         <div :class="[$style['card-desc-container']]">
             <swiper
-                ref="vip-card-thumb"
-                :options="{
-                    spaceBetween: 20
-                }"
+                :class="[$style['vipSwiperContainer']]"
+                ref="swiperCard"
+                :options="vipCardOption"
             >
-                <swiper-slide v-for="index in 10" :key="index">
+                <swiper-slide
+                    v-for="(item, index) in vipLevelList"
+                    :key="`vipcard-${index}`"
+                >
                     <div :class="[$style['card-thumb-cell']]">
                         <img
                             :src="
@@ -47,29 +45,41 @@
                             alt="vipcard_bg"
                         />
                         <div :class="[$style['card-level-text']]">
-                            VIP{{ index }}
+                            {{ item.alias }}
                         </div>
-                        <img
+
+                        <!-- 有達成時的icon -->
+                        <img v-if="userVipInfo.now_level_seq <= item.seq"
                             :class="[$style['card-level-image']]"
                             :src="
                                 $getCdnPath(
-                                    `/static/image/_new/mcenter/vip/ic_s_vip03.png`
+                                    `/static/image/_new/mcenter/vip/ic_s_vip${item.seq}.png`
                                 )
                             "
-                            alt="vipcard_bg"
+                            alt="vipLevel_bg"
+                        />
+                        <!-- 尚未達成的icon -->
+                        <img v-else
+                            :class="[$style['card-level-image']]"
+                            :src="
+                                $getCdnPath(
+                                    `/static/image/_new/mcenter/vip/ic_vip${item.seq}.png`
+                                )
+                            "
+                            alt="vipLevel_bg"
                         />
                         <div :class="[$style['card-desc-block']]">
                             <div>
-                                3,000 <br />
+                                {{ item.deposit_limit }} <br />
                                 累计充值
                             </div>
                             <div>
-                                3,000 <br />
+                                {{ item.valid_bet_limit }} <br />
                                 流水要求
                             </div>
                             <div>
-                                保级推广3位 <br />
-                                有效会员(充值100)
+                                保级推广{{ item.downgrade_members }}位 <br />
+                                有效会员(充值{{ item.downgrade_deposit }})
                             </div>
                         </div>
                     </div>
@@ -78,7 +88,10 @@
         </div>
 
         <!-- page -->
-        <div :class="[$style['card-page']]"><span>1</span>/<span>10</span></div>
+        <div :class="[$style['card-page']]">
+            <span>{{ selectedIndex + 1 }}</span
+            >/<span>{{ vipLevelList.length }}</span>
+        </div>
     </div>
 </template>
 
@@ -94,9 +107,42 @@ export default {
         vipLevelList: {
             type: Array,
             required: true
+        },
+        userVipInfo: {
+            type: Object,
+            required: true
         }
     },
+    data() {
+        return {
+            selectedIndex: 0
+        };
+    },
+    computed: {
+        vipLevelOption() {
+            return {
+                slidesPerView: 4,
+                allowTouchMove: false
+                // centeredSlides: true
+            };
+        },
+        vipCardOption() {
+            return {
+                spaceBetween: 10
+            };
+        }
+    },
+    methods: {},
     mounted() {
+        this.$nextTick(() => {
+            const swiperLevel = this.$refs.swiperLevel.$swiper;
+            const swiperCard = this.$refs.swiperCard.$swiper;
+
+            swiperCard.controller.control = swiperLevel;
+            swiperCard.on("slideChange", () => {
+                this.selectedIndex = swiperCard.realIndex;
+            });
+        });
         console.log(this.vipLevelList);
     }
 };
@@ -112,6 +158,12 @@ $border-radius: 10px;
     padding: 0px 17px;
     box-shadow: 0px 5px 5px 0px rgba(0, 0, 0, 0.16);
     background: white;
+}
+
+.vipSwiperContainer {
+    margin-left: 0;
+    margin-right: 0;
+    overflow: unset;
 }
 
 .card-level-container {
@@ -176,7 +228,7 @@ $border-radius: 10px;
         font-size: 22px;
         font-weight: 700;
         top: 25px;
-        left: 35px;
+        left: 30px;
     }
 
     // VIP徽章

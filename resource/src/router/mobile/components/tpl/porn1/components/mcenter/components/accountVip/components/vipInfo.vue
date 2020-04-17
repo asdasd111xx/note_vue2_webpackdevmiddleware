@@ -1,22 +1,15 @@
 <template>
     <div :class="[$style['vip-info-wrap']]">
-        <div :class="[$style['title']]">VIP3尊享</div>
+        <div :class="[$style['title']]">{{userVipInfo.now_level_alias}}</div>
 
         <div :class="[$style['cells-block']]">
-            <div :class="[$style['cell']]" v-for="index in 5">
+            <div :class="[$style['cell']]" v-for="(item, index) in list">
                 <div :class="[$style['cell-icon']]">
-                    <img
-                        :src="
-                            $getCdnPath(
-                                `/static/image/_new/mcenter/vip/pic_vip_${index}.png`
-                            )
-                        "
-                        alt="vip_bg"
-                    />
+                    <img :src="$getCdnPath(item.icon)" alt="icon" />
                 </div>
                 <div :class="[$style['cell-text']]">
-                    <div>5</div>
-                    <div>每日提现次数</div>
+                    <div>{{ item.count }}</div>
+                    <div>{{ item.content }}</div>
                 </div>
             </div>
         </div>
@@ -26,7 +19,45 @@
 </template>
 
 <script>
-export default {};
+export default {
+    props: {
+        userVipInfo: {
+            type: Object,
+            required: true
+        }
+    },
+    data() {
+        return {
+            list: [
+                {
+                    icon: "/static/image/_new/mcenter/vip/pic_vip_1.png",
+                    count: "--",
+                    content: "每日提现次数"
+                },
+                {
+                    icon: "/static/image/_new/mcenter/vip/pic_vip_2.png",
+                    count: "--",
+                    content: "每日提现额度"
+                },
+                {
+                    icon: "/static/image/_new/mcenter/vip/pic_vip_3.png",
+                    count: this.userVipInfo.now_birth_amount,
+                    content: "晋级礼金(晋级自动派发)"
+                },
+                {
+                    icon: "/static/image/_new/mcenter/vip/pic_vip_4.png",
+                    count: "--",
+                    content: "每日红包(月初自动派发)"
+                },
+                {
+                    icon: "/static/image/_new/mcenter/vip/pic_vip_5.png",
+                    count: this.userVipInfo.now_gift_amount,
+                    content: "生日礼金"
+                }
+            ]
+        };
+    }
+};
 </script>
 
 <style lang="scss" module>
@@ -60,13 +91,14 @@ export default {};
 .cells-block {
     position: relative;
     display: flex;
-    width: 100%;
+    width: 103%;
     height: 160px;
     flex-wrap: wrap;
 
     .cell {
         width: 50%;
         display: flex;
+        align-items: center;
     }
 
     .cell-icon {
@@ -80,12 +112,14 @@ export default {};
     }
 
     .cell-text {
-        padding: 0 5px;
+        padding-left: 5px;
         color: #b4b9cf;
+        font-size: 12px;
+        font-weight: 700;
 
         div:first-of-type {
-            font-size: 17px;
-            color: black;
+            font-size: 16px;
+            color: #424654;
         }
     }
 }

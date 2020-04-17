@@ -4,16 +4,9 @@
         <div :class="[$style['user-info-block']]">
             <div :class="[$style['user-info-name']]">
                 <div :class="[$style['avatar']]">
-                    <img
-                        :src="
-                            $getCdnPath(
-                                '/static/image/_new/mcenter/vip/image-avatar-01.png'
-                            )
-                        "
-                        alt="avatar"
-                    />
+                    <img :src="avatarSrc" alt="avatar" />
                 </div>
-                <span>testvip00111</span>
+                <span>{{ memInfo.user.username }}</span>
                 <span>{{ userVipInfo.now_level_name }}</span>
             </div>
             <div :class="[$style['user-vip-desc']]">
@@ -22,7 +15,7 @@
                     <img
                         :src="
                             $getCdnPath(
-                                '/static/image/_new/mcenter/vip/ic_vip00.png'
+                                `/static/image/_new/mcenter/vip/ic_vip${userVipInfo.now_level_seq}.png`
                             )
                         "
                         alt="vip"
@@ -34,11 +27,27 @@
         <!-- 進度條 -->
         <div :class="[$style['run-block']]">
             <div :class="[$style['run-level'], $style['current']]">
-                <span>{{ userVipInfo.now_level_name }}</span>
+                <p>{{ userVipInfo.now_level_name }}</p>
             </div>
-            <div :class="[$style['run-bar']]">{{ userVipInfo.percent }}</div>
+            <div :class="[$style['run-bar']]">
+                <div
+                    :class="[$style['run-ok-bar']]"
+                    :style="{ width: runPercent }"
+                >
+                    <img
+                        :src="
+                            $getCdnPath(
+                                `/static/image/_new/mcenter/vip/vip_run.png`
+                            )
+                        "
+                        alt="run"
+                    />
+                    <span>{{ userVipInfo.percent }}%</span>
+                </div>
+            </div>
+
             <div :class="[$style['run-level'], $style['next']]">
-                <span>{{ userVipInfo.next_level_name }}</span>
+                <p>{{ userVipInfo.next_level_name }}</p>
             </div>
         </div>
 
@@ -46,24 +55,30 @@
         <div :class="[$style['user-desc-block']]">
             <div :class="[$style['desc-text']]">
                 ●累计充值(元)：
-                <span :class="[$style['money']]">10,000.00</span>
-                (0.00/30,0000)
+                <span :class="[$style['money']]">--</span>
+                (--/{{ userVipInfo.upgrade_deposit_amount }})
             </div>
             <div :class="[$style['desc-text']]">
                 ●当前流水(元)：
-                <span :class="[$style['money']]">178,888.00</span>
-                (0.00/10,0000)
+                <span :class="[$style['money']]">--</span>
+                ({{ userVipInfo.downgrade_valid_bet }}/{{
+                    userVipInfo.upgrade_valid_bet
+                }})
             </div>
             <div :class="[$style['desc-text']]">
                 ●保级推广(位)：
-                <span :class="[$style['money']]">12</span>
-                (有效会员充值100 , 保级90天)
+                <span :class="[$style['money']]">--</span>
+                (有效会员充值{{ userVipInfo.downgrade_deposit }} , 保级{{
+                    userVipInfo.downgrade_members
+                }}天)
             </div>
         </div>
     </div>
 </template>
 
 <script>
+import { mapGetters } from "vuex";
+
 export default {
     props: {
         userVipInfo: {
@@ -71,11 +86,37 @@ export default {
             required: true
         }
     },
+    data() {
+        return {
+            imgIndex: 0,
+            levelIcon: "00"
+        };
+    },
+    computed: {
+        ...mapGetters({
+            memInfo: "getMemInfo"
+        }),
+        avatarSrc() {
+            return this.imgIndex == 0
+                ? this.$getCdnPath(
+                      `/static/image/_new/mcenter/avatar_nologin.png`
+                  )
+                : this.$getCdnPath(
+                      `/static/image/_new/mcenter/default/avatar_${this.imgIndex}.png`
+                  );
+        },
+        runPercent() {
+            return this.userVipInfo.percent + "%";
+        }
+    },
     created() {
         console.log(this.userVipInfo);
-        console.log(this.userVipInfo.now_level_name);
-    },
-    mounted() {}
+        if (this.memInfo.user.image === 0 || !this.memInfo.user.image) {
+            this.imgIndex = 0;
+            return;
+        }
+        this.imgIndex = this.memInfo.user.image;
+    }
 };
 </script>
 
@@ -172,6 +213,14 @@ $main-linear-background: linear-gradient(to right, #f9ddbd, #bd9d7d);
     text-align: center;
     align-self: center;
     border-radius: 14px;
+    font-size: 12px;
+
+    p {
+        width: 30px;
+        margin: 0 auto;
+        line-height: 1;
+        padding: 2px 0;
+    }
 
     &.current {
         background: #ceb89f;
@@ -188,12 +237,49 @@ $main-linear-background: linear-gradient(to right, #f9ddbd, #bd9d7d);
 }
 
 .run-bar {
+    position: relative;
     flex: 1;
     margin: 0px 5px;
     height: 15px;
     background: url(/static/image/_new/mcenter/vip/vip_runbg.png);
     background-size: cover;
     background-repeat: no-repeat;
+}
+
+.run-ok-bar {
+    position: relative;
+    background: url(/static/image/_new/mcenter/vip/vip_runok.png);
+    background-size: cover;
+    background-repeat: no-repeat;
+    width: 20%; // 要透過JS動態給值
+    height: 15px;
+
+    img {
+        position: absolute;
+        width: 23px;
+        height: 15px;
+        bottom: 3px;
+        right: -23px;
+    }
+
+    span {
+        position: absolute;
+        font-size: 12px;
+        font-weight: 700;
+        bottom: 25px;
+        right: -15px;
+
+        &::after {
+            content: "";
+            position: absolute;
+            bottom: 2px;
+            right: 12.5px;
+            transform: translate(50%, 100%);
+            border-top: 7px solid black;
+            border-left: 4px solid transparent;
+            border-right: 4px solid transparent;
+        }
+    }
 }
 
 .user-desc-block {

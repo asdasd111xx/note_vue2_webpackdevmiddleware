@@ -20,8 +20,12 @@
 
             <div :class="[$style['header-title']]">
                 <span :class="[$style['active']]">VIP特权</span>
-                <span>直播VIP</span>
+                <span @click="msg = '正在上线 敬请期待'">直播VIP</span>
             </div>
+
+            <message v-if="msg" @close="msg = ''">
+                <div slot="msg">{{ msg }}</div>
+            </message>
         </div>
 
         <!-- user info -->
@@ -30,13 +34,16 @@
         </template>
 
         <!-- level card -->
-        <template v-if="vipLevelList">
-            <vip-level-card :vipLevelList="vipLevelList" />
+        <template v-if="vipLevelList && userVipInfo">
+            <vip-level-card
+                :vipLevelList="vipLevelList"
+                :userVipInfo="userVipInfo"
+            />
         </template>
 
         <!-- desc -->
-        <template v-if="userVipInfo && vipLevelList">
-            <vip-info />
+        <template v-if="userVipInfo">
+            <vip-info :userVipInfo="userVipInfo" />
         </template>
         <!-- <live-info /> -->
     </div>
@@ -52,6 +59,7 @@ import liveInfo from "./liveInfo";
 import ajax from "@/lib/ajax";
 import mcenter from "@/api/mcenter";
 import common from "@/api/common";
+import message from "../../../../common/new/message";
 
 export default {
     components: {
@@ -60,11 +68,13 @@ export default {
         vipUser,
         vipLevelCard,
         vipInfo,
-        liveInfo
+        liveInfo,
+        message
     },
     data() {
         return {
-            index: 0,
+            isLiveVip: false,
+            msg: "",
             vipLevelList: null,
             vipConfig: [],
             userVipInfo: null,
@@ -74,16 +84,7 @@ export default {
             isDisplay: false
         };
     },
-    computed: {
-        selectedIndex: {
-            get() {
-                return this.index;
-            },
-            set(value) {
-                this.index = value;
-            }
-        }
-    },
+    computed: {},
     created() {
         this.getUserDetail();
         this.getVipConfig();
