@@ -17,27 +17,23 @@
             <img
               v-if="currentTab === 'cutiesLive'"
               :src="
-                $getCdnPath(
-                  '/static/image/mobile/tpl/porn1/liveStream/btn_live_beauty_active.png'
-                )
+                $getCdnPath('/static/image/_new/live/icon_live_beauty_h.png')
               "
             />
             <img
               v-else
               :src="
-                $getCdnPath(
-                  '/static/image/mobile/tpl/porn1/liveStream/btn_live_beauty.png'
-                )
+                $getCdnPath('/static/image/_new/live/icon_live_beauty_n.png')
               "
             />
           </div>
-          <span :class="$style['live-tab-text']">{{
-            $text("S_BEAUTY_LIVE", "美女直播")
-          }}</span>
-          <div
-            v-if="currentTab === 'cutiesLive'"
-            :class="$style['tab-current-line']"
-          />
+          <span
+            :class="[
+              $style['live-tab-text'],
+              { [$style['active']]: currentTab === 'cutiesLive' }
+            ]"
+            >{{ $text("S_BEAUTY_LIVE", "美女直播") }}</span
+          >
         </div>
         <div
           :class="[
@@ -50,27 +46,23 @@
             <img
               v-if="currentTab === 'ballLive'"
               :src="
-                $getCdnPath(
-                  '/static/image/mobile/tpl/porn1/liveStream/btn_live_sports_active.png'
-                )
+                $getCdnPath('/static/image/_new/live/icon_live_sport_h.png')
               "
             />
             <img
               v-else
               :src="
-                $getCdnPath(
-                  '/static/image/mobile/tpl/porn1/liveStream/btn_live_sports.png'
-                )
+                $getCdnPath('/static/image/_new/live/icon_live_sport_n.png')
               "
             />
           </div>
-          <span :class="$style['live-tab-text']">{{
-            $text("S_SPORT_LIVE", "体育直播")
-          }}</span>
-          <div
-            v-if="currentTab === 'ballLive'"
-            :class="$style['tab-current-line']"
-          />
+          <span
+            :class="[
+              $style['live-tab-text'],
+              { [$style['active']]: currentTab === 'ballLive' }
+            ]"
+            >{{ $text("S_SPORT_LIVE", "体育直播") }}</span
+          >
         </div>
       </div>
       <div :class="$style['iframe-bg-wrap']">
@@ -105,22 +97,14 @@
             <div :class="$style['live-content']">
               <div :class="[$style['live-map-wrap'], 'clearfix']">
                 <img
-                  :src="
-                    $getCdnPath(
-                      '/static/image/mobile/tpl/porn1/liveStream/ic_address.png'
-                    )
-                  "
+                  :src="$getCdnPath('/static/image/_new/live/ic_address.png')"
                   :class="$style['icon-map']"
                 />
                 <div :class="$style['live-area']">{{ info.area }}</div>
               </div>
               <div :class="[$style['live-watch-wrap'], 'clearfix']">
                 <img
-                  :src="
-                    $getCdnPath(
-                      '/static/image/mobile/tpl/porn1/liveStream/ic_look.png'
-                    )
-                  "
+                  :src="$getCdnPath('/static/image/_new/live/ic_look.png')"
                   :class="$style['icon-watch']"
                 />
                 <div :class="$style['live-watch']">
@@ -201,14 +185,14 @@ export default {
 }
 
 .live-tab-wrap {
-  padding-top: 0;
 }
 
 .live-tab {
+  line-height: 43px;
+  height: 43px;
   position: relative;
   float: left;
   width: 50%;
-  padding: 9px 0;
   text-align: center;
   font-size: 16px;
   color: $main_text_color2;
@@ -216,16 +200,6 @@ export default {
   &.is-current {
     color: $main_text_color4;
   }
-}
-
-.tab-current-line {
-  position: absolute;
-  width: 40px;
-  height: 5px;
-  bottom: 0;
-  left: 50%;
-  margin-left: -20px;
-  background-color: #222;
 }
 
 .img-icon-wrap {
@@ -237,12 +211,17 @@ export default {
   img {
     display: block;
     width: 100%;
+    border-radius: 7px;
   }
 }
 
 .live-tab-text {
   display: inline-block;
   vertical-align: middle;
+
+  &.active {
+    border-bottom: #be9e7f solid 2px;
+  }
 }
 
 .iframe-bg-wrap {
@@ -273,13 +252,15 @@ export default {
 
 .live-icon {
   position: absolute;
-  width: 40px;
   top: 6px;
   right: 7%;
   text-align: center;
-  font-size: 12px;
+  font-size: 11px;
+  line-height: 21px;
+  width: 43pt;
+  height: 21px;
+  background: #be9e7f;
   border-radius: 10px;
-  color: #222;
 }
 
 .live-bg {
@@ -349,18 +330,6 @@ export default {
   color: #ffc954;
 }
 
-@media screen and (min-width: $pad) {
-  .live-area,
-  .live-watch,
-  .live-icon {
-    font-size: 13px;
-  }
-
-  .live-title {
-    font-size: 16px;
-  }
-}
-
 .btn-prev {
   position: absolute;
   left: 12px;
@@ -372,6 +341,22 @@ export default {
   > img {
     display: block;
     width: 100%;
+  }
+}
+
+@media screen and (min-width: $pad) {
+  .live-area,
+  .live-watch,
+  .live-icon {
+    font-size: 13px;
+  }
+
+  .live-title {
+    font-size: 16px;
+  }
+
+  .live-card__M0Oa0 {
+    height: 280px;
   }
 }
 </style>
