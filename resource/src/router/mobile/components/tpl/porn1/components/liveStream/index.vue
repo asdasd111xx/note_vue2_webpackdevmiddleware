@@ -1,6 +1,10 @@
 <template>
   <mobile-container>
     <div slot="content" :class="$style['live-stream-wrap']">
+      <div :class="$style['btn-prev']">
+        <img :src="$getCdnPath('/static/image/_new/common/btn_back.png')" />
+      </div>
+
       <div :class="[$style['live-tab-wrap'], 'clearfix']">
         <div
           :class="[
@@ -133,7 +137,7 @@
 <script>
 import { mapGetters } from 'vuex';
 import axios from 'axios';
-import mobileContainer from '../common/mobileContainer';
+import mobileContainer from '../common/new/mobileContainer';
 import { API_PORN1_DOMAIN } from '@/config/api';
 
 export default {
@@ -151,7 +155,7 @@ export default {
     ...mapGetters({
       loginStatus: 'getLoginStatus',
       memInfo: 'getMemInfo'
-    })
+    }),
   },
   created() {
     axios({
@@ -193,13 +197,11 @@ export default {
 @import "~@/css/variable.scss";
 
 .live-stream-wrap {
-  background-color: #000;
+  background-color: $main_white_color1;
 }
 
 .live-tab-wrap {
-  padding-top: 40px;
-  background: #ffc954;
-  background: linear-gradient(90deg, #ffc954, #fee084);
+  padding-top: 0;
 }
 
 .live-tab {
@@ -209,10 +211,10 @@ export default {
   padding: 9px 0;
   text-align: center;
   font-size: 16px;
-  color: #b05a0d;
+  color: $main_text_color2;
 
   &.is-current {
-    color: #222;
+    color: $main_text_color4;
   }
 }
 
@@ -278,7 +280,6 @@ export default {
   font-size: 12px;
   border-radius: 10px;
   color: #222;
-  background-color: #eed385;
 }
 
 .live-bg {
@@ -357,6 +358,20 @@ export default {
 
   .live-title {
     font-size: 16px;
+  }
+}
+
+.btn-prev {
+  position: absolute;
+  left: 12px;
+  width: 20px;
+  height: 43px;
+  display: flex;
+  align-items: center;
+
+  > img {
+    display: block;
+    width: 100%;
   }
 }
 </style>

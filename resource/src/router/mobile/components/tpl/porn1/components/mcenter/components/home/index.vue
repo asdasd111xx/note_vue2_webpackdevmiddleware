@@ -13,7 +13,7 @@
       <!-- 暫時不顯示 -->
       <!-- <app-tip v-if="showTip" @close="showTip = false" /> -->
       <avatar-info />
-      <vip-info />
+      <shortcut-info />
       <mem-list />
     </div>
   </mobile-container>
@@ -22,14 +22,14 @@
 <script>
 import { mapGetters } from 'vuex';
 import mobileContainer from '../../../common/new/mobileContainer';
-import vipInfo from './components/new/vipInfo';
+import shortcutInfo from './components/new/shortcutInfo';
 import memList from './components/new/memList';
 import avatarInfo from './components/new/avatarInfo'
 import appTip from './components/new/appTip'
 export default {
   components: {
     mobileContainer,
-    vipInfo,
+    shortcutInfo,
     avatarInfo,
     memList,
     appTip
@@ -70,9 +70,12 @@ export default {
 </script>
 
 <style lang="scss" module>
-.container {
-  overflow-y: scroll;
+@import "~@/css/variable.scss";
+
+div.container {
+  background-color: $main_white_color1;
 }
+
 .content-wrap {
   overflow-y: scroll;
 }
