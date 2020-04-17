@@ -36,6 +36,7 @@ export default {
         withdrawPorn1: () => import(/* webpackChunkName: 'withdrawPorn1' */'../../tpl/porn1/components/mcenter/components/withdraw'),
         depositPorn1: () => import(/* webpackChunkName: 'depositPorn1' */'../../tpl/porn1/components/mcenter/components/deposit'),
         accountVipPorn1: () => import(/* webpackChunkName: 'accountVipPorn1' */'../../tpl/porn1/components/mcenter/components/accountVip'),
+        accountVipDetailPorn1: () => import(/* webpackChunkName: 'accountVipDetailPorn1' */'../../tpl/porn1/components/mcenter/components/accountVip/components/vipDetail'),
         tcenterCommissionPorn1: () => import(/* webpackChunkName: 'tcenterCommissionPorn1' */'../../tpl/porn1/components/mcenter/components/tcenter/components/commission'),
         tcenterGameRecordPorn1: () => import(/* webpackChunkName: 'tcenterGameRecordPorn1' */'../../tpl/porn1/components/mcenter/components/tcenter/components/gameRecord'),
         tcenterManagementPorn1: () => import(/* webpackChunkName: 'tcenterManagementPorn1' */'../../tpl/porn1/components/mcenter/components/tcenter/components/management'),

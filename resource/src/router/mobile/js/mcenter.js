@@ -126,7 +126,14 @@ export default {
         { // VIP
             path: 'accountVip',
             name: 'mcenter-accountVip',
-            component
+            component,
+            children: [
+                {
+                    path: 'detail',
+                    name: 'mcenter-accountVip-detail',
+                    component
+                }
+            ]
         },
         // { // 贊助信息
         //     path: 'sponsor',

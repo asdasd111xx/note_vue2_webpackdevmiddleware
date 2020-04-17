@@ -1,17 +1,17 @@
 <template>
-    <div :class="[$style['user-info-wrap']]">
+    <div :class="$style['user-info-wrap']">
         <!-- 個人資訊 -->
-        <div :class="[$style['user-info-block']]">
-            <div :class="[$style['user-info-name']]">
-                <div :class="[$style['avatar']]">
+        <div :class="$style['user-info-block']">
+            <div :class="$style['user-info-name']">
+                <div :class="$style['avatar']">
                     <img :src="avatarSrc" alt="avatar" />
                 </div>
                 <span>{{ memInfo.user.username }}</span>
                 <span>{{ userVipInfo.now_level_name }}</span>
             </div>
-            <div :class="[$style['user-vip-desc']]">
-                <div :class="[$style['vip-text']]">VIP详情</div>
-                <div :class="[$style['vip-level']]">
+            <div :class="$style['user-vip-desc']">
+                <div :class="$style['vip-text']">VIP详情</div>
+                <div :class="$style['vip-level']">
                     <img
                         :src="
                             $getCdnPath(
@@ -25,13 +25,13 @@
         </div>
 
         <!-- 進度條 -->
-        <div :class="[$style['run-block']]">
+        <div :class="$style['run-block']">
             <div :class="[$style['run-level'], $style['current']]">
                 <p>{{ userVipInfo.now_level_name }}</p>
             </div>
-            <div :class="[$style['run-bar']]">
+            <div :class="$style['run-bar']">
                 <div
-                    :class="[$style['run-ok-bar']]"
+                    :class="$style['run-ok-bar']"
                     :style="{ width: runPercent }"
                 >
                     <img
@@ -52,22 +52,22 @@
         </div>
 
         <!-- 說明資訊 -->
-        <div :class="[$style['user-desc-block']]">
-            <div :class="[$style['desc-text']]">
+        <div :class="$style['user-desc-block']">
+            <div :class="$style['desc-text']">
                 ●累计充值(元)：
-                <span :class="[$style['money']]">--</span>
+                <span :class="$style['money']">--</span>
                 (--/{{ userVipInfo.upgrade_deposit_amount }})
             </div>
-            <div :class="[$style['desc-text']]">
+            <div :class="$style['desc-text']">
                 ●当前流水(元)：
-                <span :class="[$style['money']]">--</span>
+                <span :class="$style['money']">--</span>
                 ({{ userVipInfo.downgrade_valid_bet }}/{{
                     userVipInfo.upgrade_valid_bet
                 }})
             </div>
-            <div :class="[$style['desc-text']]">
+            <div :class="$style['desc-text']">
                 ●保级推广(位)：
-                <span :class="[$style['money']]">--</span>
+                <span :class="$style['money']">--</span>
                 (有效会员充值{{ userVipInfo.downgrade_deposit }} , 保级{{
                     userVipInfo.downgrade_members
                 }}天)

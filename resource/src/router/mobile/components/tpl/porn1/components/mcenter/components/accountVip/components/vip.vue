@@ -1,15 +1,15 @@
 <template>
-    <div :class="[$style['vip-container']]">
-        <div :class="[$style['vip-bg-block']]">
+    <div :class="$style['vip-container']">
+        <div :class="$style['vip-bg-block']">
             <img
                 :src="$getCdnPath(`/static/image/_new/mcenter/vip/vip_bg.png`)"
                 alt="vip_bg"
             />
         </div>
         <!-- Header -->
-        <div :class="[$style['header-block']]">
+        <div :class="$style['header-block']">
             <div
-                :class="[$style['btn-back']]"
+                :class="$style['btn-back']"
                 @click="$router.push('/mobile/mcenter')"
             >
                 <img
@@ -18,8 +18,8 @@
                 />
             </div>
 
-            <div :class="[$style['header-title']]">
-                <span :class="[$style['active']]">VIP特权</span>
+            <div :class="$style['header-title']">
+                <span :class="$style['active']">VIP特权</span>
                 <span @click="msg = '正在上线 敬请期待'">直播VIP</span>
             </div>
 

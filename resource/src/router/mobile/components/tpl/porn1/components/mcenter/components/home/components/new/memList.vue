@@ -23,6 +23,17 @@
       </div>
     </div>
 
+    <div :class="$style.list" @click="toggleShare">
+      <div :class="$style['list-icon']">
+        <img :src="$getCdnPath(`/static/image/_new/mcenter/ic_share.png`)" />
+      </div>
+      <span>{{ $text("S_SHARE_APP", "分享APP") }}</span>
+
+      <div :class="$style['btn-next']">
+        <img :src="$getCdnPath(`/static/image/_new/common/btn_next.png`)" />
+      </div>
+    </div>
+
     <div v-if="memInfo.config.content_rating" :class="$style['list']">
       <div :class="$style['list-icon']">
         <img :src="$getCdnPath(`/static/image/_new/mcenter/ic_18+.png`)" />
@@ -35,40 +46,96 @@
         <span />
       </label>
     </div>
+
+    <!-- Share Modal -->
+    <div v-if="showShare" :class="$style['share-container']">
+      <div :class="$style['pic-block']">
+        <img
+          :src="$getCdnPath(`/static/image/_new/mcenter/share/shareApp.png`)"
+          alt="shareApp"
+        />
+      </div>
+      <div :class="$style['func-block']">
+        <div :class="$style['func-cell']">
+          <div>
+            <img
+              :src="
+                $getCdnPath(`/static/image/_new/mcenter/share/btn_copy.png`)
+              "
+              alt=""
+            />
+          </div>
+          <p>复制链接</p>
+        </div>
+
+        <div :class="$style['func-cell']">
+          <div>
+            <img
+              :src="
+                $getCdnPath(`/static/image/_new/mcenter/share/btn_save.png`)
+              "
+              alt=""
+            />
+          </div>
+          <p>保存图片</p>
+        </div>
+
+        <div :class="$style['cancle']" @click="toggleShare">取消</div>
+      </div>
+    </div>
   </div>
 </template>
 
 <script>
-import Vue from 'vue';
-import { mapGetters, mapActions } from 'vuex';
-import mcenter from '@/api/mcenter';
-import mcenterPageAuthControl from '@/lib/mcenterPageAuthControl';
-import member from '@/api/member';
-import common from '@/api/common';
-import ajax from '@/lib/ajax';
-import { API_MCENTER_DESPOSIT_AMOUNT } from '@/config/api';
-import mobileLinkOpen from '@/lib/mobile_link_open';
+import Vue from "vue";
+import { mapGetters, mapActions } from "vuex";
+import mcenter from "@/api/mcenter";
+import mcenterPageAuthControl from "@/lib/mcenterPageAuthControl";
+import member from "@/api/member";
+import common from "@/api/common";
+import ajax from "@/lib/ajax";
+import { API_MCENTER_DESPOSIT_AMOUNT } from "@/config/api";
+import mobileLinkOpen from "@/lib/mobile_link_open";
 
 export default {
   data() {
     return {
       isReceive: false,
+      showShare: false,
       list: [
         {
-          initName: '下载超级签，成为超级会员', name: 'S_VIP_APP', path: '', pageName: 'super', image: 'vip'
+          initName: "下载超级签，成为超级会员",
+          name: "S_VIP_APP",
+          path: "",
+          pageName: "super",
+          image: "vip"
         },
         {
-          initName: '帮助中心', name: 'S_HELP_CENTER', path: '/mobile/mcenter/help', pageName: 'help', image: 'help', info: '存取款、投注有疑问，看这里'
+          initName: "帮助中心",
+          name: "S_HELP_CENTER",
+          path: "/mobile/mcenter/help",
+          pageName: "help",
+          image: "help",
+          info: "存取款、投注有疑问，看这里"
         },
         {
-          initName: '关于亚博直播', name: 'S_ABOUT_YABOLIVE', path: '/mobile/mcenter/about', pageName: 'about', image: 'about'
+          initName: "关于亚博直播",
+          name: "S_ABOUT_YABOLIVE",
+          path: "/mobile/mcenter/about",
+          pageName: "about",
+          image: "about"
         },
         {
-          initName: '我的推广', name: 'S_TEAM_CENTER', path: '/mobile/mcenter/about', pageName: 'mypromotion', image: 'mypromotion', info: '合营计划'
-        },
-        {
-          initName: '分享APP', name: 'S_SHARE_APP', path: '/mobile/mcenter/about', pageName: 'share', image: 'share'
-        },
+          initName: "我的推广",
+          name: "S_TEAM_CENTER",
+          path: "/mobile/mcenter/about",
+          pageName: "mypromotion",
+          image: "mypromotion",
+          info: "合营计划"
+        }
+        // {
+        //   initName: '分享APP', name: 'S_SHARE_APP', path: '/mobile/mcenter/about', pageName: 'share', image: 'share'
+        // },
         // {
         //   initName: '色站开关', name: 'S_PORN_SWITCH', path: '', pageName: '', image: '18+'
         // },
@@ -108,65 +175,66 @@ export default {
   },
   computed: {
     ...mapGetters({
-      memInfo: 'getMemInfo',
-      onlineService: 'getOnlineService'
+      memInfo: "getMemInfo",
+      onlineService: "getOnlineService"
     })
   },
   created() {
-    this.pornSwitchState = this.memInfo.config.content_rating && this.memInfo.user.content_rating;
+    this.pornSwitchState =
+      this.memInfo.config.content_rating && this.memInfo.user.content_rating;
 
     mcenter.accountVIP({
-      success: (response) => {
+      success: response => {
         this.vipData = {
-          type: 'vip',
-          key: 'text',
-          position: 'mcenter',
-          btnText: this.$t('S_VIP_LEVEL', 'VIP等级'),
+          type: "vip",
+          key: "text",
+          position: "mcenter",
+          btnText: this.$t("S_VIP_LEVEL", "VIP等级"),
           ...response.ret
         };
       }
     });
   },
   methods: {
-    ...mapActions([
-      'actionEnterMCenterThirdPartyLink',
-      'actionSetUserdata'
-    ]),
+    ...mapActions(["actionEnterMCenterThirdPartyLink", "actionSetUserdata"]),
     mobileLinkOpen,
     onListClick(item) {
-      if (item.pageName === 'super') {
+      if (item.pageName === "super") {
         // 超級籤需滿足的最低金額
         const requiredMoney = 200;
         // 超級籤app下載網址
-        const appUrl = 'https://www.sxkuge.com/3B2BF7AC5674E8E2';
+        const appUrl = "https://www.sxkuge.com/3B2BF7AC5674E8E2";
         // 暫時用來判斷馬甲包
-        const webview = window.location.hostname === 'yaboxxxapp02.com';
-        const isUBMobile = navigator.userAgent.match(/UBiOS/) !== null && navigator.userAgent.match(/iPhone/) !== null;
-        let newWindow = '';
+        const webview = window.location.hostname === "yaboxxxapp02.com";
+        const isUBMobile =
+          navigator.userAgent.match(/UBiOS/) !== null &&
+          navigator.userAgent.match(/iPhone/) !== null;
+        let newWindow = "";
 
         if (!isUBMobile && !webview) {
-          newWindow = window.open('');
+          newWindow = window.open("");
         }
         common.systemTime({
           errorAlert: isUBMobile || webview,
-          success: (response) => {
-            if (response.result !== 'ok') {
+          success: response => {
+            if (response.result !== "ok") {
               return;
             }
 
-            ajax({ // 會員存款總額
-              method: 'get',
+            ajax({
+              // 會員存款總額
+              method: "get",
               url: API_MCENTER_DESPOSIT_AMOUNT,
               params: {
-                start_at: '2020-03-01 00:00:00-04:00',
-                end_at: Vue.moment(response.ret).format('YYYY-MM-DD HH:mm:ss-04:00')
+                start_at: "2020-03-01 00:00:00-04:00",
+                end_at: Vue.moment(response.ret).format(
+                  "YYYY-MM-DD HH:mm:ss-04:00"
+                )
               },
               errorAlert: isUBMobile || webview,
-              success: ({
-                result, ret, msg, code
-              }) => {
-                if (result !== 'ok') {
-                  const errorCode = code || '';
+              success: ({ result, ret, msg, code }) => {
+                if (result !== "ok") {
+                  const errorCode = code || "";
 
                   if (!isUBMobile && !webview) {
                     newWindow.alert(`${msg} ${errorCode}`);
@@ -186,28 +254,46 @@ export default {
                     newWindow.location.href = appUrl;
                     return;
                   }
-                  window.open(appUrl, '_blank');
+                  window.open(appUrl, "_blank");
                   return;
                 }
 
                 if (!isUBMobile && !webview) {
-                  newWindow.alert(this.$text('S_VIP_ONLY_DOWNLOAD', '充值超过％s即可下载').replace('％s', requiredMoney));
+                  newWindow.alert(
+                    this.$text(
+                      "S_VIP_ONLY_DOWNLOAD",
+                      "充值超过％s即可下载"
+                    ).replace("％s", requiredMoney)
+                  );
                   newWindow.close();
                   return;
                 }
-                alert(this.$text('S_VIP_ONLY_DOWNLOAD', '充值超过％s即可下载').replace('％s', requiredMoney));
+                alert(
+                  this.$text(
+                    "S_VIP_ONLY_DOWNLOAD",
+                    "充值超过％s即可下载"
+                  ).replace("％s", requiredMoney)
+                );
               },
-              fail: (error) => {
+              fail: error => {
                 if (!isUBMobile && !webview) {
-                  newWindow.alert(`${error.data.msg} ${error.data.code ? `(${error.data.code})` : ''}`);
+                  newWindow.alert(
+                    `${error.data.msg} ${
+                      error.data.code ? `(${error.data.code})` : ""
+                    }`
+                  );
                   newWindow.close();
                 }
               }
             });
           },
-          fail: (error) => {
+          fail: error => {
             if (!isUBMobile && !webview) {
-              newWindow.alert(`${error.data.msg} ${error.data.code ? `(${error.data.code})` : ''}`);
+              newWindow.alert(
+                `${error.data.msg} ${
+                  error.data.code ? `(${error.data.code})` : ""
+                }`
+              );
               newWindow.close();
             }
           }
@@ -215,19 +301,22 @@ export default {
         return;
       }
 
-      if (item.pageName === 'service') {
+      if (item.pageName === "service") {
         if (!this.onlineService.url) {
           return;
         }
 
-        this.mobileLinkOpen({ linkType: 'static', linkTo: 'service' });
+        this.mobileLinkOpen({ linkType: "static", linkTo: "service" });
         return;
       }
 
-      if (item.pageName === 'bankRebate') {
-        this.actionEnterMCenterThirdPartyLink({ type: 'member', page: item.pageName }).then((pageName) => {
+      if (item.pageName === "bankRebate") {
+        this.actionEnterMCenterThirdPartyLink({
+          type: "member",
+          page: item.pageName
+        }).then(pageName => {
           if (pageName) {
-            mcenterPageAuthControl(pageName).then((response) => {
+            mcenterPageAuthControl(pageName).then(response => {
               if (response && response.status) {
                 this.$router.push(item.path);
               }
@@ -236,7 +325,7 @@ export default {
         });
       }
 
-      mcenterPageAuthControl(item.pageName).then((response) => {
+      mcenterPageAuthControl(item.pageName).then(response => {
         if (response && response.status) {
           this.$router.push(item.path);
         }
@@ -269,6 +358,10 @@ export default {
           this.isReceive = false;
         }
       });
+    },
+
+    toggleShare() {
+      this.showShare = !this.showShare;
     }
   }
 };
@@ -380,6 +473,86 @@ export default {
   font-size: 12px;
   position: absolute;
   right: 38px;
+}
+
+.share-container {
+  position: fixed;
+  height: 100%;
+  width: 100%;
+  top: 0;
+  left: 0;
+  z-index: 10;
+
+  &::before {
+    content: "";
+    position: absolute;
+    background: #000;
+    opacity: 0.4;
+    width: 100%;
+    height: 100%;
+    top: 0;
+    left: 0;
+  }
+
+  .pic-block {
+    position: absolute;
+    width: 270px;
+    height: 370px;
+    top: 55px;
+    left: 45px;
+    overflow-y: hidden;
+
+    img {
+      width: 100%;
+    }
+  }
+
+  .func-block {
+    position: absolute;
+    width: 100%;
+    bottom: 0;
+    font-weight: 600;
+    background: #f5f5f9;
+
+    .func-cell {
+      display: inline-block;
+      width: 60px;
+      text-align: center;
+      margin: 15px 0px 10px 17px;
+
+      > div {
+        display: flex;
+        justify-content: center;
+        align-items: center;
+        width: 60px;
+        height: 60px;
+        border-radius: 10px;
+        background: #fff;
+      }
+
+      > p {
+        font-size: 12px;
+        color: #898989;
+        margin-top: 5px;
+      }
+
+      img {
+        width: 32px;
+        height: 32px;
+      }
+    }
+
+    // cancle
+    .cancle {
+      display: flex;
+      justify-content: center;
+      align-items: center;
+      background: #fff;
+      height: 45px;
+      font-size: 16px;
+      color: $main_title_color1;
+    }
+  }
 }
 
 @media screen and (min-width: $phone) {

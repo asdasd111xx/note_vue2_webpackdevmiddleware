@@ -1,20 +1,25 @@
 <template>
-    <div :class="[$style['vip-info-wrap']]">
-        <div :class="[$style['title']]">{{userVipInfo.now_level_alias}}</div>
+    <div :class="$style['vip-info-wrap']">
+        <div :class="$style['title']">{{ userVipInfo.now_level_alias }}</div>
 
-        <div :class="[$style['cells-block']]">
-            <div :class="[$style['cell']]" v-for="(item, index) in list">
-                <div :class="[$style['cell-icon']]">
+        <div :class="$style['cells-block']">
+            <div :class="$style['cell']" v-for="(item, index) in list">
+                <div :class="$style['cell-icon']">
                     <img :src="$getCdnPath(item.icon)" alt="icon" />
                 </div>
-                <div :class="[$style['cell-text']]">
+                <div :class="$style['cell-text']">
                     <div>{{ item.count }}</div>
                     <div>{{ item.content }}</div>
                 </div>
             </div>
         </div>
 
-        <div :class="[$style['vip-detail']]">查看VIP详请 》</div>
+        <div
+            :class="$style['vip-detail']"
+            @click="$router.push('/mobile/mcenter/accountVIP/detail')"
+        >
+            查看VIP详请 》
+        </div>
     </div>
 </template>
 

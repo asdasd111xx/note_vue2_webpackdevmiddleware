@@ -1,14 +1,14 @@
 <template>
-    <div :class="[$style['vip-card-wrap']]">
+    <div :class="$style['vip-card-wrap']">
         <!-- vip-level thumbs -->
-        <div :class="[$style['card-level-container']]">
+        <div :class="$style['card-level-container']">
             <swiper
-                :class="[$style['vipSwiperContainer']]"
+                :class="$style['vipSwiperContainer']"
                 ref="swiperLevel"
                 :options="vipLevelOption"
             >
                 <swiper-slide
-                    :class="[$style['level-slide']]"
+                    :class="$style['level-slide']"
                     v-for="(item, index) in vipLevelList"
                     :key="`vip-${index}}`"
                 >
@@ -25,9 +25,9 @@
         </div>
 
         <!-- vip-card thumbs -->
-        <div :class="[$style['card-desc-container']]">
+        <div :class="$style['card-desc-container']">
             <swiper
-                :class="[$style['vipSwiperContainer']]"
+                :class="$style['vipSwiperContainer']"
                 ref="swiperCard"
                 :options="vipCardOption"
             >
@@ -35,7 +35,7 @@
                     v-for="(item, index) in vipLevelList"
                     :key="`vipcard-${index}`"
                 >
-                    <div :class="[$style['card-thumb-cell']]">
+                    <div :class="$style['card-thumb-cell']">
                         <img
                             :src="
                                 $getCdnPath(
@@ -44,13 +44,13 @@
                             "
                             alt="vipcard_bg"
                         />
-                        <div :class="[$style['card-level-text']]">
+                        <div :class="$style['card-level-text']">
                             {{ item.alias }}
                         </div>
 
                         <!-- 有達成時的icon -->
                         <img v-if="userVipInfo.now_level_seq <= item.seq"
-                            :class="[$style['card-level-image']]"
+                            :class="$style['card-level-image']"
                             :src="
                                 $getCdnPath(
                                     `/static/image/_new/mcenter/vip/ic_s_vip${item.seq}.png`
@@ -60,7 +60,7 @@
                         />
                         <!-- 尚未達成的icon -->
                         <img v-else
-                            :class="[$style['card-level-image']]"
+                            :class="$style['card-level-image']"
                             :src="
                                 $getCdnPath(
                                     `/static/image/_new/mcenter/vip/ic_vip${item.seq}.png`
@@ -68,7 +68,7 @@
                             "
                             alt="vipLevel_bg"
                         />
-                        <div :class="[$style['card-desc-block']]">
+                        <div :class="$style['card-desc-block']">
                             <div>
                                 {{ item.deposit_limit }} <br />
                                 累计充值
