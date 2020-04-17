@@ -1,60 +1,72 @@
 <template>
-  <edit-gender>
-    <template scope="{ options, onSubmit }">
-      <div :class="[$style['field-editer'], 'clearfix']">
-        <div :class="$style['field-title']">{{ $text("S_GENDER") }}</div>
-        <div :class="$style['input-wrap']">
-          <div :class="$style['field-value']">
-            <select v-model="value" :class="$style.select" ref="input">
-              <option
-                v-for="option in options"
-                :key="`option-${option.value}`"
-                :value="option.value"
-              >
-                {{ option.label }}
-              </option>
-            </select>
-          </div>
-          <div :class="$style['btn-wrap']">
-            <span :class="$style['btn-cancel']" @click="$emit('cancel')">
-              {{ $text("S_CANCEL", "取消") }}
-            </span>
-            <span
-              :class="$style['btn-confirm']"
-              @click="handleSubmit(onSubmit)"
-            >
-              {{ $text("S_CONFIRM", "確認") }}
-            </span>
-          </div>
-        </div>
+  <div :class="[$style['field-editer'], 'clearfix']">
+    <div :class="$style['field-title']">{{ $text("S_GENDER") }}</div>
+    <div :class="$style['input-wrap']">
+      <div :class="$style['field-value']">
+        <select v-model="value" :class="$style.select" ref="input">
+          <option
+            v-for="option in options"
+            :key="`option-${option.value}`"
+            :value="option.value"
+          >
+            {{ option.label }}
+          </option>
+        </select>
       </div>
-    </template>
-  </edit-gender>
+      <div :class="$style['btn-wrap']">
+        <span :class="$style['btn-cancel']" @click="$emit('cancel')">
+          {{ $text("S_CANCEL", "取消") }}
+        </span>
+        <span :class="$style['btn-confirm']" @click="handleSubmit()">
+          {{ $text("S_CONFIRM", "確認") }}
+        </span>
+      </div>
+    </div>
+  </div>
 </template>
 
 <script>
-import editGender from '@/components/common/editGender';
-
+import { mapActions } from 'vuex';
+import mcenter from '@/api/mcenter';
 export default {
   components: {
-    editGender
   },
   data() {
     return {
-      value: '1' // default 1
+      value: '1',
+      options: [
+        // 預設 男
+        // { value: '', label: this.$text('S_GENDER') },
+        { value: '1', label: this.$text('S_MALE') },
+        { value: '2', label: this.$text('S_FEMALE') }
+      ]
     };
   },
   mounted() {
     this.$refs.input.focus()
   },
   methods: {
-    handleSubmit(submit) {
-      submit(this.value).then((response) => {
-        if (response === 'error') {
-          return;
-        }
+    ...mapActions(['actionSetUserdata']),
+    handleSubmit() {
+      // 空值驗證
+      if (this.value === '') {
+        this.$emit('msg', this.$text('S_CR_NUT_NULL'));
+        return Promise.resolve('error');
+      }
 
-        this.$emit('cancel');
+      return mcenter.accountDataSet({
+        params: {
+          gender: this.value
+        },
+        success: () => {
+          this.$emit('msg', this.$text('S_CR_SUCCESS'));
+          this.$emit('cancel');
+          this.actionSetUserdata(true);
+        },
+        fail: (res) => {
+          this.$emit('msg', res.msg);
+          this.$emit('cancel');
+        }
       });
     }
   }

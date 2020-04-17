@@ -332,7 +332,6 @@ export default {
         },
         success: () => {
           this.actionSetUserdata(true);
-          this.tipMsg = res.data.msg
           this.$router.push('/mobile/mcenter/accountData');
         },
         fail: (res) => {

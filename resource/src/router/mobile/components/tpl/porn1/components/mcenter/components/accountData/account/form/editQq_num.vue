@@ -1,37 +1,33 @@
 <template>
-  <edit-qq_num>
-    <template scope="{ onSubmit }">
-      <div :class="[$style.wrap, 'clearfix']">
-        <div :class="$style.title">{{ $text("S_QQ") }}</div>
-        <div :class="$style['input-wrap']">
-          <input
-            v-model="value"
-            ref="input"
-            :placeholder="$text('S_QQ')"
-            :class="$style.input"
-            type="text"
-          />
-        </div>
-        <div :class="$style['btn-wrap']">
-          <div :class="$style['btn-cancel']" @click="$emit('cancel')">
-            {{ $text("S_CANCEL", "取消") }}
-          </div>
-          <div :class="$style['btn-confirm']" @click="handleSubmit(onSubmit)">
-            {{ $text("S_CONFIRM", "確認") }}
-          </div>
-        </div>
+  <div :class="[$style['field-editer'], 'clearfix']">
+    <div :class="$style['field-title']">{{ $text("S_QQ") }}</div>
+    <div :class="$style['input-wrap']">
+      <div :class="$style['field-value']">
+        <input
+          v-model="value"
+          ref="input"
+          :placeholder="$text('S_QQ')"
+          :class="$style.input"
+          type="text"
+        />
       </div>
-    </template>
-  </edit-qq_num>
+      <div :class="$style['btn-wrap']">
+        <span :class="$style['btn-cancel']" @click="$emit('cancel')">
+          {{ $text("S_CANCEL", "取消") }}
+        </span>
+        <span :class="$style['btn-confirm']" @click="handleSubmit()">
+          {{ $text("S_CONFIRM", "確認") }}
+        </span>
+      </div>
+    </div>
+  </div>
 </template>
 
 <script>
-// eslint-disable-next-line
-import editQq_num from '@/components/common/editQq_num';
-
+import { mapActions } from 'vuex';
+import mcenter from '@/api/mcenter';
 export default {
   components: {
-    'edit-qq_num': editQq_num
   },
   data() {
     return {
@@ -42,13 +38,32 @@ export default {
     this.$refs.input.focus()
   },
   methods: {
-    handleSubmit(submit) {
-      submit(this.value).then((response) => {
-        if (response === 'error') {
-          return;
-        }
+    ...mapActions(['actionSetUserdata']),
+    handleSubmit() {
+      // 空值驗證
+      if (this.value === '') {
+        this.$emit('msg', this.$text('S_CR_NUT_NULL'));
+        return Promise.resolve('error');
+      }
 
-        this.$emit('cancel');
+      if (!/^[0-9]+$/.test(this.value)) {
+        alert(this.$text('S_JM_AGENT_INPUT_NUMBER', '仅允许输入数字'));
+        return Promise.resolve('error');
+      }
+
+      return mcenter.accountDataSet({
+        params: {
+          qq_num: this.value
+        },
+        success: () => {
+          this.$emit('msg', this.$text('S_CR_SUCCESS'));
+          this.$emit('cancel');
+          this.actionSetUserdata(true);
+        },
+        fail: (res) => {
+          this.$emit('msg', res.msg);
+          this.$emit('cancel');
+        }
       });
     }
   }

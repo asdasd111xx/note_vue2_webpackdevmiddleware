@@ -1,5 +1,9 @@
 <template>
   <div>
+    <message v-if="msg" @close="msg = ''"
+      ><div slot="msg">{{ msg }}</div>
+    </message>
+
     <account-wrap>
       <template scope="{ filteredDataList }">
         <!-- <div :class="[$style['account-list-wrap'], 'clearfix']">
@@ -41,6 +45,7 @@
                 v-if="field.key === currentEdit"
                 :key="`${currentEdit}-${fieldIndex}`"
                 :info="field"
+                @msg="setMessage"
                 @cancel="currentEdit = ''"
               />
 
@@ -87,7 +92,7 @@
 
 <script>
 import { mapGetters } from 'vuex';
-
+import message from '../../../../common/new/message'
 export default {
   components: {
     accountWrap: () => import(/* webpackChunkName: 'accountWrap' */'./accountWrap'),
@@ -106,6 +111,7 @@ export default {
     editSkype: () => import(/* webpackChunkName: 'editSkype' */'./form/editSkype'),
     editZalo: () => import(/* webpackChunkName: 'editZalo' */'./form/editZalo'),
     // receiptAddress: () => import(/* webpackChunkName: 'receiptAddress' */'./receiptAddress')
+    message
   },
   data() {
     return {
@@ -118,7 +124,8 @@ export default {
         balance: true
       },
       currentTab: 0,
-      currentEdit: ''
+      currentEdit: '',
+      msg: ''
     };
   },
   computed: {
@@ -136,6 +143,9 @@ export default {
     }
   },
   methods: {
+    setMessage(msg) {
+      this.msg = msg;
+    },
     handleClick(field) {
       if (!field.btnShow) {
         return;

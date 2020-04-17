@@ -1,37 +1,34 @@
 <template>
-  <edit-weixin>
-    <template scope="{ onSubmit }">
-      <div :class="[$style.wrap, 'clearfix']">
-        <div :class="$style.title">{{ $text("WECHAT") }}</div>
-        <div :class="$style['input-wrap']">
-          <input
-            v-model="value"
-            ref="input"
-            :placeholder="$text('WECHAT')"
-            :class="$style.input"
-            type="text"
-          />
-        </div>
-        <div :class="$style['btn-wrap']">
-          <div :class="$style['btn-cancel']" @click="$emit('cancel')">
-            {{ $text("S_CANCEL", "取消") }}
-          </div>
-          <div :class="$style['btn-confirm']" @click="handleSubmit(onSubmit)">
-            {{ $text("S_CONFIRM", "確認") }}
-          </div>
-        </div>
+  <div :class="[$style['field-editer'], 'clearfix']">
+    <div :class="$style['field-title']">{{ $text("WECHAT") }}</div>
+    <div :class="$style['input-wrap']">
+      <div :class="$style['field-value']">
+        <input
+          v-model="value"
+          ref="input"
+          :placeholder="$text('WECHAT')"
+          :class="$style.input"
+          type="text"
+        />
       </div>
-    </template>
-  </edit-weixin>
+      <div :class="$style['btn-wrap']">
+        <span :class="$style['btn-cancel']" @click="$emit('cancel')">
+          {{ $text("S_CANCEL", "取消") }}
+        </span>
+        <span :class="$style['btn-confirm']" @click="handleSubmit()">
+          {{ $text("S_CONFIRM", "確認") }}
+        </span>
+      </div>
+    </div>
+  </div>
 </template>
 
 <script>
 import { mapActions } from 'vuex';
-import editWeixin from '@/components/common/editWeixin';
+import mcenter from '@/api/mcenter';
 
 export default {
   components: {
-    editWeixin
   },
   data() {
     return {
@@ -43,13 +40,27 @@ export default {
   },
   methods: {
     ...mapActions(['actionSetUserdata']),
-    handleSubmit(submit) {
-      submit(this.value).then((response) => {
-        if (response === 'error') {
-          return;
-        }
+    ...mapActions(['actionSetUserdata']),
+    handleSubmit() {
+      // 空值驗證
+      if (this.value === '') {
+        this.$emit('msg', this.$text('S_CR_NUT_NULL'));
+        return Promise.resolve('error');
+      }
 
-        this.$emit('cancel');
+      return mcenter.accountDataSet({
+        params: {
+          weixin: this.value
+        },
+        success: () => {
+          this.$emit('msg', this.$text('S_CR_SUCCESS'));
+          this.$emit('cancel');
+          this.actionSetUserdata(true);
+        },
+        fail: (res) => {
+          this.$emit('msg', res.msg);
+          this.$emit('cancel');
+        }
       });
     }
   }

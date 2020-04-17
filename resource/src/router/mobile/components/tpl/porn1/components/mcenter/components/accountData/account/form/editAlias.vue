@@ -69,21 +69,16 @@ export default {
     onToggle() {
       this.showNickname = !this.showNickname;
     },
-    handleSubmit(submit) {
-      const result = {
-        status: false,
-        msg: ''
-      };
-
+    handleSubmit() {
       // 空值驗證
       if (this.value === '') {
-        result.msg = this.$text('S_CR_NUT_NULL');
+        this.$emit('msg', this.$text('S_CR_NUT_NULL'));
         return Promise.resolve(result);
       }
 
       // 驗證失敗
       if (!/^[^，:;！@#$%^&*?<>()+=`|[\]{}\\"/.~\-_']*$/.test(this.value)) {
-        result.msg = this.$text('S_NO_SYMBOL', '请勿输入特殊符号(允许空白)');
+        this.$emit('msg', this.$text('S_NO_SYMBOL', '请勿输入特殊符号(允许空白)'));
         return Promise.resolve(result);
       }
 
@@ -101,8 +96,7 @@ export default {
 
       return Promise.all([setNickname, setShowNickname]).then((response) => {
         if (response.every((res) => res.result === 'ok')) {
-          // result.status = true;
-          // result.msg = this.$t('S_CR_SUCCESS');
+          this.$emit('msg', this.$text('S_CR_SUCCESS'));
           this.actionSetUserdata(true);
           this.$emit('cancel')
         }

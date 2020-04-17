@@ -131,7 +131,7 @@ export default {
               btnShow: true,
               type: 'edit',
               isShow: false,
-              popTitle: ''
+              popTitle: '',
             },
             weixin: {
               key: 'weixin',
@@ -142,7 +142,7 @@ export default {
               btnShow: true,
               type: 'edit',
               isShow: false,
-              popTitle: ''
+              popTitle: '',
             },
             line: {
               key: 'line',
@@ -313,7 +313,7 @@ export default {
           } else if (key === 'email' || key === 'phone') {
             const keyValue = this.memInfo[key][key];
 
-            let val = this.$t('S_YET_SET');
+            let val = itemNow.placeholder || this.$t('S_YET_SET');
             let text = this.$t('S_SET_CL');
             let confirmSt = 'yet';
 
