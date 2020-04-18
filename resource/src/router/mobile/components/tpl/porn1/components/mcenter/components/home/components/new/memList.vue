@@ -23,7 +23,7 @@
       </div>
     </div>
 
-    <div :class="$style.list" @click="toggleShare">
+    <div :class="$style.list" @click="showShare">
       <div :class="$style['list-icon']">
         <img :src="$getCdnPath(`/static/image/_new/mcenter/ic_share.png`)" />
       </div>
@@ -48,41 +48,8 @@
     </div>
 
     <!-- Share Modal -->
-    <div v-if="showShare" :class="$style['share-container']">
-      <div :class="$style['pic-block']">
-        <img
-          :src="$getCdnPath(`/static/image/_new/mcenter/share/shareApp.png`)"
-          alt="shareApp"
-        />
-      </div>
-      <div :class="$style['func-block']">
-        <div :class="$style['func-cell']">
-          <div>
-            <img
-              :src="
-                $getCdnPath(`/static/image/_new/mcenter/share/btn_copy.png`)
-              "
-              alt=""
-            />
-          </div>
-          <p>复制链接</p>
-        </div>
+    <share v-if="isShowShare" :is-show-share.sync="isShowShare" />
 
-        <div :class="$style['func-cell']">
-          <div>
-            <img
-              :src="
-                $getCdnPath(`/static/image/_new/mcenter/share/btn_save.png`)
-              "
-              alt=""
-            />
-          </div>
-          <p>保存图片</p>
-        </div>
-
-        <div :class="$style['cancle']" @click="toggleShare">取消</div>
-      </div>
-    </div>
   </div>
 </template>
 
@@ -96,12 +63,16 @@ import common from "@/api/common";
 import ajax from "@/lib/ajax";
 import { API_MCENTER_DESPOSIT_AMOUNT } from "@/config/api";
 import mobileLinkOpen from "@/lib/mobile_link_open";
+import share from "./share"
 
 export default {
+  components: {
+      share
+  },
   data() {
     return {
       isReceive: false,
-      showShare: false,
+      toggleShare: false,
       list: [
         {
           initName: "下载超级签，成为超级会员",
@@ -177,7 +148,15 @@ export default {
     ...mapGetters({
       memInfo: "getMemInfo",
       onlineService: "getOnlineService"
-    })
+    }) ,
+    isShowShare : {
+        get() {
+            return this.toggleShare
+        } ,
+        set(value) {
+            this.toggleShare = value
+        }
+    }
   },
   created() {
     this.pornSwitchState =
@@ -360,8 +339,8 @@ export default {
       });
     },
 
-    toggleShare() {
-      this.showShare = !this.showShare;
+    showShare() {
+      this.isShowShare = true
     }
   }
 };
@@ -475,85 +454,7 @@ export default {
   right: 38px;
 }
 
-.share-container {
-  position: fixed;
-  height: 100%;
-  width: 100%;
-  top: 0;
-  left: 0;
-  z-index: 10;
 
-  &::before {
-    content: "";
-    position: absolute;
-    background: #000;
-    opacity: 0.4;
-    width: 100%;
-    height: 100%;
-    top: 0;
-    left: 0;
-  }
-
-  .pic-block {
-    position: absolute;
-    width: 270px;
-    height: 370px;
-    top: 55px;
-    left: 45px;
-    overflow-y: hidden;
-
-    img {
-      width: 100%;
-    }
-  }
-
-  .func-block {
-    position: absolute;
-    width: 100%;
-    bottom: 0;
-    font-weight: 600;
-    background: #f5f5f9;
-
-    .func-cell {
-      display: inline-block;
-      width: 60px;
-      text-align: center;
-      margin: 15px 0px 10px 17px;
-
-      > div {
-        display: flex;
-        justify-content: center;
-        align-items: center;
-        width: 60px;
-        height: 60px;
-        border-radius: 10px;
-        background: #fff;
-      }
-
-      > p {
-        font-size: 12px;
-        color: #898989;
-        margin-top: 5px;
-      }
-
-      img {
-        width: 32px;
-        height: 32px;
-      }
-    }
-
-    // cancle
-    .cancle {
-      display: flex;
-      justify-content: center;
-      align-items: center;
-      background: #fff;
-      height: 45px;
-      font-size: 16px;
-      color: $main_title_color1;
-    }
-  }
-}
 
 @media screen and (min-width: $phone) {
   .list {
