@@ -1,7 +1,9 @@
-import { mapGetters, mapActions } from 'vuex';
+import * as apis from '@/config/api';
+
+import { mapActions, mapGetters } from 'vuex';
+
 import ajax from '@/lib/ajax';
 import ajax2 from '@/lib/ajax2';
-import * as apis from '@/config/api';
 
 export default {
     props: {
@@ -48,7 +50,8 @@ export default {
                 }
             });
         },
-        loginCheck(loginInfo, callBackFuc) {
+        loginCheck(loginInfo, callBackFuc, errorCB) {
+
             if (this.isBackEnd) {
                 return;
             }
@@ -60,37 +63,46 @@ export default {
                     params: {
                         username: this.username
                     },
+                    errorAlert: false,
                     success: (res) => {
                         if (res.ret && res.ret.check) {
                             this.checkItem = res.ret.check_item;
                             return;
                         }
-                        this.login(loginInfo, callBackFuc);
+                        this.login(loginInfo, callBackFuc, errorCB);
+                    },
+                    fail: (res) => {
                     }
                 });
                 return;
             }
 
-            this.login(loginInfo, callBackFuc);
+            this.login(loginInfo, callBackFuc, errorCB);
         },
         /**
          * 會員登入
          * @method login
          */
-        login(validate = {}, callBackFuc) {
+        login(validate = {}, callBackFuc, errorCB) {
             if (this.isBackEnd) {
                 return null;
             }
             return ajax2({
                 method: 'put',
                 url: apis.API_LOGIN,
+                errorAlert: false,
                 params: {
                     username: this.username,
                     password: this.password,
                     captcha_text: this.captcha,
                     ...validate
+                },
+                fail: (res) => {
+                    if (errorCB)
+                        errorCB(res.data)
                 }
             }).then((res) => {
+
                 if (res && res.result === 'ok') {
                     ajax({
                         method: 'get',
@@ -112,6 +124,11 @@ export default {
                         window.location.reload();
                     });
                     return;
+                }
+
+                if (res && res.result === 'error') {
+                    if (errorCB)
+                        errorCB(res)
                 }
 
                 if (res.code === 'C10004') {

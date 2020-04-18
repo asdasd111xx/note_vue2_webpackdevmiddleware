@@ -1,8 +1,8 @@
-import axios from 'axios';
 import * as apiUrl from '../config/api';
+
 import ajax from '../lib/ajax';
 import ajax2 from '../lib/ajax2';
-
+import axios from 'axios';
 
 export default {
     // 會員-登入後-額度
@@ -45,6 +45,7 @@ export default {
         return ajax2({
             method: 'put',
             url: apiUrl.API_LOGIN,
+            errorAlert: false,
             ...args
         });
     },
@@ -93,6 +94,7 @@ export default {
         return ajax({
             method: 'put',
             url: apiUrl.API_PWD_RESET,
+            errorAlert: false,
             ...args
         });
     },

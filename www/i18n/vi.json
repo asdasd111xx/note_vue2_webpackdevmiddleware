@@ -19,6 +19,7 @@
     "S_MEM_ZONE": "Khu vực hội viên",
     "S_ACCOUNT": "Tài khoản",
     "S_PASSWORD": "Mật khẩu",
+    "S_ORIGIN_PASSWORD": "原密码",
     "S_PWD_CONFIRM": "Xác nhận mk",
     "S_INTRODUCER": "Người giới thiệu",
     "S_REAL_NAME": "Họ tên thật",

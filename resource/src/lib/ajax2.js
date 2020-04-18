@@ -1,6 +1,5 @@
-
-import axios from 'axios';
 import { apiErrorAlarm } from './errorConsole';
+import axios from 'axios';
 
 export default ({
     method = 'get',
@@ -9,7 +8,8 @@ export default ({
     timeout = 30000,
     cache = false,
     responseInfo = false,
-    errorAlert = true
+    errorAlert = true,
+    fail = () => { },
 }) => {
     const obj = {
         method,
@@ -36,7 +36,7 @@ export default ({
             if (response.data.msg && errorAlert) {
                 alert(`${response.data.msg} ${response.data.code ? `(${response.data.code})` : ''}`);
             }
-
+            fail(response);
             apiErrorAlarm({ url, response });
         }
 
@@ -48,6 +48,7 @@ export default ({
             }
 
             if (error.response) {
+                fail(error.response);
                 return error.response;
             }
 

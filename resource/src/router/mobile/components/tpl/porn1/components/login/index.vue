@@ -12,6 +12,13 @@
         <img :src="$getCdnPath('/static/image/_new/login/logo.png')" />
       </div>
       <div class="login-form-wrap">
+        <!-- 錯誤訊息 -->
+        <div :class="$style['top-tips']">
+          <div v-show="tipMsg">
+            {{ tipMsg }}
+          </div>
+        </div>
+
         <!-- 帳號 -->
         <span class="login-unit login-unit-username">
           <input
@@ -77,10 +84,13 @@
             />
           </div>
           <span class="deposit-text">{{
-            $text("S_SAVE_ACCOUNT", "储存帐号")
+            $text("S_SAVE_PASSWORD", "记住密码")
           }}</span>
+
           <!-- 忘記密碼 -->
-          <span class="login-unit-link" @click="onService"
+          <span
+            class="login-unit-link"
+            @click="$router.push('/mobile/forgetpwd/member')"
             >{{ $text("S_PASSWORD_FORGET", "忘记密码") }}?</span
           >
         </div>
@@ -92,7 +102,11 @@
             :success-fuc="slideLogin"
             page-status="login"
           />
-          <div v-else class="login-button login-submit" @click="loginCheck">
+          <div
+            v-else
+            class="login-button login-submit"
+            @click="handleClickLogin"
+          >
             {{ $text("S_LOGIN_TITLE", "登录") }}
           </div>
         </div>
@@ -140,6 +154,11 @@ export default {
       default: '/mobile'
     }
   },
+  data() {
+    return {
+      tipMsg: "",
+    }
+  },
   computed: {
     ...mapGetters({
       webInfo: 'getWebInfo',
@@ -179,14 +198,24 @@ export default {
 
       this.mobileLinkOpen({ linkType: 'static', linkTo: 'service' });
     },
+    handleClickLogin() {
+      this.loginCheck(undefined, undefined, this.errorCallBack)
+    },
     slideLogin(loginInfo) {
-      this.loginCheck({ captcha_text: loginInfo.data }, loginInfo.slideFuc);
+      this.loginCheck({ captcha_text: loginInfo.data }, loginInfo.slideFuc, errorCallBack);
+    },
+    // 錯誤訊息call back
+    errorCallBack(response) {
+      if (response && response.msg) {
+        this.tipMsg = response.msg
+      }
     }
   }
 };
 </script>
 
-<style src="./css/index.scss" lang="scss"  scoped></style>
+<style src="./css/index.scss" lang="scss"  scoped>
+</style>
 
 <style lang="scss" module="$styleSecurityCheck">
 @import "~@/css/variable.scss";
@@ -322,5 +351,16 @@ export default {
   .mask {
     background-color: rgba(0, 0, 0, 0.8);
   }
+}
+</style>
+
+<style lang="scss" module>
+@import "~@/css/variable.scss";
+
+.top-tips {
+  padding: 2px 0;
+  color: $main_error_color1;
+  height: 40px;
+  line-height: 40px;
 }
 </style>

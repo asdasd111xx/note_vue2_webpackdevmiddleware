@@ -1,7 +1,6 @@
 @import "../variable.scss";
 
 .join-wrap {
-    background: #212121;
     margin: 0 auto;
     padding: 70px 0 40px;
     max-width: $layoutWidth;
@@ -75,9 +74,9 @@
 .field-text {
     float: left;
     width: 88%;
-    overflow : hidden;
-    text-overflow : ellipsis;
-    white-space : nowrap;
+    overflow: hidden;
+    text-overflow: ellipsis;
+    white-space: nowrap;
 }
 
 .join-star {
@@ -266,7 +265,7 @@
     height: 16px;
     color: #4DC769;
 
-    > svg {
+    >svg {
         display: block;
     }
 }

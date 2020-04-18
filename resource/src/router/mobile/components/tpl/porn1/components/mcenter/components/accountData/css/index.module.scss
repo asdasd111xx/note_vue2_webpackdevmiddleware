@@ -172,7 +172,7 @@ input {
 .top-tips {
     background: $main_white_color1;
     padding: 0 14px;
-    color: #DB6372;
+    color: $main_error_color1;
     height: 40px;
     line-height: 40px;
 
@@ -183,7 +183,7 @@ input {
 
 .bottom-tips {
     padding: 0 14px;
-    color: #DB6372;
+    color: $main_error_color1;
     visibility: hidden;
     height: 30px;
 

@@ -1,30 +1,36 @@
 <template>
-  <div :class="$style['join-member-wrap']">
-    <div :class="$style.header">
-      <img
-        :src="$getCdnPath('/static/image/mobile/tpl/porn1/login/home.png')"
-        @click="$router.push({ name: 'home' })"
-      />
-      <span :class="$style.title">{{ $text("S_REGISTER", "注册") }}</span>
+  <mobile-container :header-config="headerConfig" :class="$style.container">
+    <div slot="content" class="content-wrap">
+      <div :class="$style['join-member-wrap']">
+        <join-member :theme="$style">
+          <template slot="join-header" />
+        </join-member>
+      </div>
     </div>
-    <join-member :theme="$style">
-      <template slot="join-header" />
-    </join-member>
-  </div>
+  </mobile-container>
 </template>
 
 <script>
 import { mapGetters } from 'vuex';
 import joinMember from '@/router/web/components/page/join_member';
+import mobileContainer from '../common/new/mobileContainer'
 
 export default {
   components: {
-    joinMember
+    joinMember,
+    mobileContainer
   },
   computed: {
     ...mapGetters({
       loginStatus: 'getLoginStatus'
-    })
+    }),
+    headerConfig() {
+      return {
+        prev: true,
+        onClick: () => { this.$router.back(); },
+        title: this.$text("S_REGISTER", "注册"),
+      };
+    },
   },
   created() {
     if (this.loginStatus) {
@@ -38,34 +44,20 @@ export default {
 @import "~@/css/variable.scss";
 @import "~@/css/page/joinMem.module.scss";
 
-.join-member-wrap {
-  min-height: 100%;
-  background-color: #fff;
+.container {
+  background-repeat: no-repeat;
+  background-size: cover;
+  background-image: url("/static/image/_new/common/bg.png");
 }
 
-.header {
-  height: 43px;
-  line-height: 43px;
-  position: relative;
-  background: white;
-  text-align: center;
-
-  img {
-    display: block;
-    width: 16px;
-    height: 16px;
-    position: absolute;
-    left: 10px;
-    top: 50%;
-    transform: translateY(-50%);
-  }
+.join-member-wrap {
+  min-height: 100%;
 }
 
 .join-wrap {
   height: 100%;
   padding-top: 30px;
   color: #000;
-  background: #fff;
 }
 
 .title {

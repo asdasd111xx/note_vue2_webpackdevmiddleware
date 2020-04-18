@@ -19,6 +19,7 @@
     "S_MEM_ZONE": "会員エリア",
     "S_ACCOUNT": "アカウント",
     "S_PASSWORD": "パスワード",
+    "S_ORIGIN_PASSWORD": "原密码",
     "S_PWD_CONFIRM": "再入力",
     "S_INTRODUCER": "紹介者",
     "S_REAL_NAME": "氏名",

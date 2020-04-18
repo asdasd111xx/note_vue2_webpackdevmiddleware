@@ -19,6 +19,7 @@
     "S_MEM_ZONE": "Member center",
     "S_ACCOUNT": "Account",
     "S_PASSWORD": "Password",
+    "S_ORIGIN_PASSWORD": "原密码",
     "S_PWD_CONFIRM": "Retype",
     "S_INTRODUCER": "Introducer",
     "S_REAL_NAME": "Real name",

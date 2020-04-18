@@ -19,6 +19,7 @@
     "S_MEM_ZONE": "會員專區",
     "S_ACCOUNT": "帳號",
     "S_PASSWORD": "密碼",
+    "S_ORIGIN_PASSWORD": "原密碼",
     "S_PWD_CONFIRM": "確認密碼",
     "S_INTRODUCER": "介紹人",
     "S_REAL_NAME": "真實姓名",

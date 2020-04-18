@@ -1,280 +1,332 @@
 <template>
-    <div :class="$style['forget-password']">
-        <div :class="$style.header">
-            <div :class="$style['btn-prev']" @click.prevent="$router.back()">
-                <img :src="$getCdnPath('/static/image/mobile/tpl/porn1/header/btn_nav_back_h.png')" />
-            </div>
-            <span>{{ $text('S_PASSWORD_FORGET', '忘记密码') }}</span>
-        </div>
+  <mobile-container :header-config="headerConfig">
+    <div slot="content" class="content-wrap">
+      <div :class="$style['forget-password']">
         <forget-pwd
-            :username="username"
-            :email="email"
-            :phone="phone"
-            :keyring="keyring"
-            :password="password"
-            :confirm_password="confirm_password"
+          :username="username"
+          :email="email"
+          :phone="phone"
+          :keyring="keyring"
+          :password="password"
+          :confirm_password="confirm_password"
         >
-            <template scope="{ msg, sendEmail, verification, send, currentMethod, changeCurrentMethod }">
-                <div :class="$style['form-wrap']">
-                    <div :class="$style['form-data']">
-                        <div v-if="currentMethod !== 'phoneStatus2' && currentMethod !== 'phoneStatus3'" class="clearfix">
-                            <div
-                                :class="[$style['method-item'], { [$style.active] : currentMethod === 'phoneStatus1' }]"
-                                @click="changeMethod(currentMethod === 'phoneStatus1'), changeCurrentMethod('phoneStatus1')"
-                            >
-                                {{ $t('S_RETRIEVE_PHONE') }}
-                            </div>
-                            <div
-                                :class="[$style['method-item'], { [$style.active] : currentMethod === 'email' }]"
-                                @click="changeMethod(currentMethod === 'email'), changeCurrentMethod('email')"
-                            >
-                                {{ $t('S_RETRIEVE_EMAIL') }}
-                            </div>
-                        </div>
-                        <div :class="$style['user-data']">
-                            <div v-if="currentMethod !== 'phoneStatus2' && currentMethod !== 'phoneStatus3'" :class="$style['form-control']">
-                                <div class="clearfix">
-                                    <div :class="$style['form-icon']">
-                                        <img :src="$getCdnPath('/static/image/mobile/tpl/porn1/login/account.png')" />
-                                    </div>
-                                    <input
-                                        v-model="username"
-                                        :class="$style['form-input']"
-                                        :placeholder="$t('S_PLEASE_ENTER_USER_NAME')"
-                                        type="text"
-                                        @input="verification('username')"
-                                    />
-                                </div>
-                                <div v-if="msg.username !== ''" :class="$style.tip">{{ msg.username }}</div>
-                            </div>
-                            <div>
-                                <div v-if="currentMethod === 'email'" class="clearfix">
-                                    <div :class="$style['form-icon']">
-                                        <img :src="$getCdnPath('/static/image/mobile/tpl/porn1/login/email.png')" />
-                                    </div>
-                                    <input
-                                        v-model="email"
-                                        :placeholder="$t('S_PLEASE_ENTER_EMAIL')"
-                                        :class="$style['form-input']"
-                                        type="text"
-                                        @input="verification('email')"
-                                    />
-                                </div>
-                                <!-- eslint-disable vue/no-v-html -->
-                                <div
-                                    v-if="msg.email !== ''"
-                                    :class="$style.tip"
-                                    v-html="msg.email"
-                                />
-                                <!-- eslint-enable vue/no-v-html -->
-                            </div>
-                            <div v-if="currentMethod === 'phoneStatus2'" class="clearfix">
-                                <div :class="$style['form-icon']">
-                                    <img :src="$getCdnPath('/static/image/mobile/tpl/porn1/login/phone.png')" />
-                                </div>
-                                <input
-                                    v-model="keyring"
-                                    :placeholder="$t('S_ENABLE_KEYRING')"
-                                    :class="$style['form-input']"
-                                    type="text"
-                                    @input="verification('keyring')"
-                                />
-                            </div>
-                            <template v-if="currentMethod === 'phoneStatus3'">
-                                <div :class="$style['form-control']">
-                                    <div class="clearfix">
-                                        <div :class="$style['form-icon']">
-                                            <img :src="$getCdnPath('/static/image/mobile/tpl/porn1/login/account.png')" />
-                                        </div>
-                                        <input
-                                            v-model="password"
-                                            :class="$style['form-input']"
-                                            :placeholder="$t('S_ENABLE_PASSWORD')"
-                                            type="password"
-                                            @input="verification('password')"
-                                        />
-                                    </div>
-                                    <div v-if="msg.password !== ''" :class="$style.tip">{{ msg.password }}</div>
-                                </div>
-                                <div>
-                                    <div class="clearfix">
-                                        <div :class="$style['form-icon']">
-                                            <img :src="$getCdnPath('/static/image/mobile/tpl/porn1/login/account.png')" />
-                                        </div>
-                                        <input
-                                            v-model="confirm_password"
-                                            :class="$style['form-input']"
-                                            :placeholder="$t('S_ENABLE_CHK_PWD')"
-                                            type="password"
-                                            @input="verification('confirm_password')"
-                                        />
-                                    </div>
-                                    <div v-if="msg.confirm_password !== ''" :class="$style.tip">{{ msg.confirm_password }}</div>
-                                </div>
-                            </template>
-                        </div>
-                    </div>
-                    <div
-                        v-if="currentMethod === 'email'"
-                        :class="$style['forget-submit']"
-                        @click="sendEmail($route.params.type)"
-                    >
-                        {{ $t('S_JM_SURE_SEND') }}
-                    </div>
-                    <div
-                        v-else
-                        :class="$style['forget-submit']"
-                        @click="send($route.params.type)"
-                    >
-                        {{ currentMethod === 'phoneStatus3' ? $t('S_JM_SURE_SEND') : $t('S_NEXT_STEP') }}
-                    </div>
+          <template
+            scope="{ msg, sendEmail, verification, send, currentMethod, changeCurrentMethod }"
+          >
+            <div :class="$style['form-wrap']">
+              <div :class="$style['form-data']">
+                <div
+                  v-if="
+                    currentMethod !== 'phoneStatus2' &&
+                      currentMethod !== 'phoneStatus3'
+                  "
+                  class="clearfix"
+                >
+                  <div
+                    :class="[
+                      $style['method-item'],
+                      { [$style.active]: currentMethod === 'phoneStatus1' }
+                    ]"
+                    @click="
+                      changeMethod(currentMethod === 'phoneStatus1'),
+                        changeCurrentMethod('phoneStatus1')
+                    "
+                  >
+                    {{ $t("S_RETRIEVE_PHONE") }}
+                  </div>
+                  <div
+                    :class="[
+                      $style['method-item'],
+                      { [$style.active]: currentMethod === 'email' }
+                    ]"
+                    @click="
+                      changeMethod(currentMethod === 'email'),
+                        changeCurrentMethod('email')
+                    "
+                  >
+                    {{ $t("S_RETRIEVE_EMAIL") }}
+                  </div>
                 </div>
-            </template>
+                <div :class="$style['user-data']">
+                  <div
+                    v-if="
+                      currentMethod !== 'phoneStatus2' &&
+                        currentMethod !== 'phoneStatus3'
+                    "
+                    :class="$style['form-control']"
+                  >
+                    <div class="clearfix">
+                      <div :class="$style['form-icon']">
+                        <img
+                          :src="
+                            $getCdnPath(
+                              '/static/image/mobile/tpl/porn1/login/account.png'
+                            )
+                          "
+                        />
+                      </div>
+                      <input
+                        v-model="username"
+                        :class="$style['form-input']"
+                        :placeholder="$t('S_PLEASE_ENTER_USER_NAME')"
+                        type="text"
+                        @input="verification('username')"
+                      />
+                    </div>
+                    <div v-if="msg.username !== ''" :class="$style.tip">
+                      {{ msg.username }}
+                    </div>
+                  </div>
+                  <div>
+                    <div v-if="currentMethod === 'email'" class="clearfix">
+                      <div :class="$style['form-icon']">
+                        <img
+                          :src="
+                            $getCdnPath(
+                              '/static/image/mobile/tpl/porn1/login/email.png'
+                            )
+                          "
+                        />
+                      </div>
+                      <input
+                        v-model="email"
+                        :placeholder="$t('S_PLEASE_ENTER_EMAIL')"
+                        :class="$style['form-input']"
+                        type="text"
+                        @input="verification('email')"
+                      />
+                    </div>
+                    <!-- eslint-disable vue/no-v-html -->
+                    <div
+                      v-if="msg.email !== ''"
+                      :class="$style.tip"
+                      v-html="msg.email"
+                    />
+                    <!-- eslint-enable vue/no-v-html -->
+                  </div>
+                  <div v-if="currentMethod === 'phoneStatus2'" class="clearfix">
+                    <div :class="$style['form-icon']">
+                      <img
+                        :src="
+                          $getCdnPath(
+                            '/static/image/mobile/tpl/porn1/login/phone.png'
+                          )
+                        "
+                      />
+                    </div>
+                    <input
+                      v-model="keyring"
+                      :placeholder="$t('S_ENABLE_KEYRING')"
+                      :class="$style['form-input']"
+                      type="text"
+                      @input="verification('keyring')"
+                    />
+                  </div>
+                  <template v-if="currentMethod === 'phoneStatus3'">
+                    <div :class="$style['form-control']">
+                      <div class="clearfix">
+                        <div :class="$style['form-icon']">
+                          <img
+                            :src="
+                              $getCdnPath(
+                                '/static/image/mobile/tpl/porn1/login/account.png'
+                              )
+                            "
+                          />
+                        </div>
+                        <input
+                          v-model="password"
+                          :class="$style['form-input']"
+                          :placeholder="$t('S_ENABLE_PASSWORD')"
+                          type="password"
+                          @input="verification('password')"
+                        />
+                      </div>
+                      <div v-if="msg.password !== ''" :class="$style.tip">
+                        {{ msg.password }}
+                      </div>
+                    </div>
+                    <div>
+                      <div class="clearfix">
+                        <div :class="$style['form-icon']">
+                          <img
+                            :src="
+                              $getCdnPath(
+                                '/static/image/mobile/tpl/porn1/login/account.png'
+                              )
+                            "
+                          />
+                        </div>
+                        <input
+                          v-model="confirm_password"
+                          :class="$style['form-input']"
+                          :placeholder="$t('S_ENABLE_CHK_PWD')"
+                          type="password"
+                          @input="verification('confirm_password')"
+                        />
+                      </div>
+                      <div
+                        v-if="msg.confirm_password !== ''"
+                        :class="$style.tip"
+                      >
+                        {{ msg.confirm_password }}
+                      </div>
+                    </div>
+                  </template>
+                </div>
+              </div>
+              <div
+                v-if="currentMethod === 'email'"
+                :class="$style['forget-submit']"
+                @click="sendEmail($route.params.type)"
+              >
+                {{ $t("S_JM_SURE_SEND") }}
+              </div>
+              <div
+                v-else
+                :class="$style['forget-submit']"
+                @click="send($route.params.type)"
+              >
+                {{
+                  currentMethod === "phoneStatus3"
+                    ? $t("S_JM_SURE_SEND")
+                    : $t("S_NEXT_STEP")
+                }}
+              </div>
+            </div>
+          </template>
         </forget-pwd>
+      </div>
     </div>
+  </mobile-container>
 </template>
-
 <script>
 import forgetPwd from './components/forgetPwd';
-
+import mobileContainer from '../common/new/mobileContainer'
 export default {
-    components: {
-        forgetPwd
-    },
-    data() {
-        return {
-            username: '',
-            email: '',
-            phone: '',
-            keyring: '',
-            password: '',
-            confirm_password: ''
-        };
-    },
-    methods: {
-        changeMethod(status) {
-            if (status) return;
-            this.username = '';
-            this.email = '';
-            this.phone = '';
-            this.keyring = '';
-            this.password = '';
-            this.confirm_password = '';
-        }
+  components: {
+    mobileContainer,
+    forgetPwd
+  },
+  data() {
+    return {
+      username: '',
+      email: '',
+      phone: '',
+      keyring: '',
+      password: '',
+      confirm_password: ''
+    };
+  },
+  computed: {
+    headerConfig() {
+      return {
+        prev: true,
+        title: this.$text("S_PASSWORD_FORGET", "忘记密码"),
+        onClick: () => { this.$router.back(); }
+      };
     }
+  },
+  methods: {
+    changeMethod(status) {
+      if (status) return;
+      this.username = '';
+      this.email = '';
+      this.phone = '';
+      this.keyring = '';
+      this.password = '';
+      this.confirm_password = '';
+    }
+  }
 };
 </script>
 
 <style lang="scss" module>
 .forget-password {
-    min-height: 100%;
-    padding-top: 130px;
-    background: url('/static/image/mobile/tpl/porn1/login/forget-bg.png') no-repeat center;
-    background-size: cover;
-}
+  min-height: 100%;
+  font-size: 14px;
+  background-repeat: no-repeat;
+  background-size: cover;
+  background-image: url("/static/image/_new/common/bg.png");
 
-.header {
-    position: fixed;
-    top: 0;
-    left: 0;
-    z-index: 2;
-    width: 100%;
-    height: 43px;
-    line-height: 43px;
-    background-color: #272727;
-    color: #F8F1EB;
-    font-size: 16px;
-    text-align: center;
-}
-
-.btn-prev {
-    position: absolute;
-    top: 0;
-    bottom: 0;
-    left: 5%;
-    width: 24px;
-    height: 24px;
-    margin: auto;
-
-    > img {
-        display: block;
-        width: 100%;
-    }
+  > div {
+    padding-top: 30px;
+  }
 }
 
 .form-wrap {
-    width: 90%;
-    margin: 0 auto;
+  width: 90%;
+  margin: 0 auto;
 }
 
 .form-data {
-    padding: 7% 4% 15%;
-    background: rgba( #FFF, 0.5);
-    border-radius: 5px;
+  padding: 7% 4% 15%;
+  background: rgba(#fff, 0.5);
+  border-radius: 5px;
 }
 
 .method-item {
-    float: left;
-    width: 47%;
-    padding: 3.5% 0;
-    margin-left: 6%;
-    text-align: center;
-    color: #7E7E7E;
-    background: rgba( #FFF, 0.3);
-    border-radius: 35px;
+  float: left;
+  width: 47%;
+  padding: 3.5% 0;
+  margin-left: 6%;
+  text-align: center;
+  color: #7e7e7e;
+  background: rgba(#fff, 0.3);
+  border-radius: 35px;
 
-    &:first-child {
-        margin-left: 0;
-    }
+  &:first-child {
+    margin-left: 0;
+  }
 
-    &.active {
-        color: #333;
-        background: #FFF;
-    }
+  &.active {
+    color: #333;
+    background: #fff;
+  }
 }
 
 .user-data {
-    margin-top: 35px;
+  margin-top: 35px;
 }
 
 .form-control {
-    margin-bottom: 12px;
+  margin-bottom: 12px;
 }
 
 .form-icon {
-    float: left;
-    width: 9%;
-    margin-right: 3%;
+  float: left;
+  width: 9%;
+  margin-right: 3%;
 
-    img {
-        display: block;
-        max-width: 100%;
-    }
+  img {
+    display: block;
+    max-width: 100%;
+  }
 }
 
 .form-input {
-    float: left;
-    width: 88%;
-    padding: 1.5% 0 4.5%;
-    background: transparent;
-    border: none;
-    border-bottom: 1px solid rgba(0, 0, 0, 0.15);
-    outline: 0;
+  float: left;
+  width: 88%;
+  padding: 1.5% 0 4.5%;
+  background: transparent;
+  border: none;
+  border-bottom: 1px solid rgba(0, 0, 0, 0.15);
+  outline: 0;
 }
 
 .tip {
-    margin: 10px 0 0 12%;
-    color: #C00;
-    text-align: left;
+  margin: 10px 0 0 12%;
+  color: #c00;
+  text-align: left;
 }
 
 .forget-submit {
-    padding: 3.5% 0;
-    margin-top: 25px;
-    color: #FFF;
-    text-align: center;
-    border-radius: 35px;
-    background: #60E6FF;
-    background: -webkit-linear-gradient(left ,#60E6FF ,#46A8FE);
+  padding: 3.5% 0;
+  margin-top: 25px;
+  color: #fff;
+  text-align: center;
+  border-radius: 35px;
+  background: #60e6ff;
+  background: -webkit-linear-gradient(left, #60e6ff, #46a8fe);
 }
 </style>
