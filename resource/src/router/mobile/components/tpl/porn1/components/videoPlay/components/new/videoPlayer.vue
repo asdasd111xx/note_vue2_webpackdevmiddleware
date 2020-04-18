@@ -4,13 +4,30 @@
       ref="video-player"
       class="video-js vjs-default-skin vjs-fluid vjs-big-play-centered"
     />
+    <!-- 彩金活動 -->
+    <div
+      v-if="isActiveBouns"
+      :class="$style['video-block']"
+      @click="handleClickVideoBlock"
+      :style="{ height: `${blockHeight}px` }"
+    />
+    <bonuns-dialog
+      v-if="isActiveBouns && isShowBounsDialog"
+      @close="isShowBounsDialog = false"
+    />
   </div>
 </template>
 
 <script>
 import videojs from 'video.js';
+import bonunsDialog from '../../bouns/compontents/bonunsDialog'
+import bonunsProcess from '../../bouns/compontents/bonunsProcess'
 
 export default {
+  components: {
+    bonunsDialog,
+    bonunsProcess
+  },
   props: {
     videoInfo: {
       type: Object,
@@ -19,26 +36,51 @@ export default {
   },
   data() {
     return {
-      player: null
+      player: null,
+      blockHeight: 0,
+      //   彩金開關
+      isActiveBouns: false,
+      isShowBounsDialog: false
     };
   },
   mounted() {
     this.player = videojs(this.$refs['video-player'], {
       sources: [{ src: this.videoInfo.url, type: 'application/x-mpegURL' }],
       autoplay: false,
-      controls: true,
+      controls: this.isActiveBouns ? false : true,
       controlBar: true,
       loop: false,
       preload: 'auto',
-      bigPlayButton: true
+      bigPlayButton: true,
     });
+
+    //活動開關
+    if (this.isActiveBouns) {
+
+      //取消原本video 預設點擊播放事件
+      let videoDom = document.getElementsByClassName('vjs-tech');
+      if (videoDom[0]) {
+        videoDom[0].style.pointerEvents = "none";
+        this.blockHeight = videoDom[0].offsetHeight;
+      }
+
+      // 播放前判斷是否登入及餘額
+      this.player.on('playing', function (e) {
+
+      });
+    }
+
+  },
+  methods: {
+    handleClickVideoBlock() {
+      this.isShowBounsDialog = true;
+    }
   },
   beforeDestroy() {
     this.player.dispose();
   }
 };
 </script>
-
 <style lang="scss" module>
 .video-player-wrap {
   position: relative;
@@ -56,5 +98,14 @@ export default {
     display: block;
     width: 100%;
   }
+}
+
+// 彩金
+.video-block {
+  width: 100%;
+  height: 100%;
+  position: absolute;
+  top: 0;
+  z-index: 2;
 }
 </style>
