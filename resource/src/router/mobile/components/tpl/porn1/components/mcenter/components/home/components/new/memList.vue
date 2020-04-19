@@ -49,7 +49,6 @@
 
     <!-- Share Modal -->
     <share v-if="isShowShare" :is-show-share.sync="isShowShare" />
-
   </div>
 </template>
 
@@ -67,7 +66,7 @@ import share from "./share"
 
 export default {
   components: {
-      share
+    share
   },
   data() {
     return {
@@ -99,7 +98,7 @@ export default {
         {
           initName: "我的推广",
           name: "S_TEAM_CENTER",
-          path: "/mobile/mcenter/about",
+          path: "/mobile/mcenter/tcenter/management",
           pageName: "mypromotion",
           image: "mypromotion",
           info: "合营计划"
@@ -148,14 +147,14 @@ export default {
     ...mapGetters({
       memInfo: "getMemInfo",
       onlineService: "getOnlineService"
-    }) ,
-    isShowShare : {
-        get() {
-            return this.toggleShare
-        } ,
-        set(value) {
-            this.toggleShare = value
-        }
+    }),
+    isShowShare: {
+      get() {
+        return this.toggleShare
+      },
+      set(value) {
+        this.toggleShare = value
+      }
     }
   },
   created() {
@@ -258,7 +257,7 @@ export default {
                 if (!isUBMobile && !webview) {
                   newWindow.alert(
                     `${error.data.msg} ${
-                      error.data.code ? `(${error.data.code})` : ""
+                    error.data.code ? `(${error.data.code})` : ""
                     }`
                   );
                   newWindow.close();
@@ -270,7 +269,7 @@ export default {
             if (!isUBMobile && !webview) {
               newWindow.alert(
                 `${error.data.msg} ${
-                  error.data.code ? `(${error.data.code})` : ""
+                error.data.code ? `(${error.data.code})` : ""
                 }`
               );
               newWindow.close();
@@ -453,8 +452,6 @@ export default {
   position: absolute;
   right: 38px;
 }
-
-
 
 @media screen and (min-width: $phone) {
   .list {

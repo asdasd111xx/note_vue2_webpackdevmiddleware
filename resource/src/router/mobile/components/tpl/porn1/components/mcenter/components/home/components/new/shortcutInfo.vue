@@ -27,13 +27,19 @@
     </div>
     <!-- 快捷功能 -->
     <div :class="$style['mcenter-func']">
-      <div :class="$style['cell']">
+      <div
+        :class="$style['cell']"
+        @click="$router.push('/mobile/mcenter/wallet')"
+      >
         <div>
           <img :src="$getCdnPath('/static/image/_new/mcenter/ic_wallet.png')" />
         </div>
         <div>{{ $text("S_MY_PURSE", "我的钱包") }}</div>
       </div>
-      <div :class="$style['cell']">
+      <div
+        :class="$style['cell']"
+        @click="$router.push('/mobile/mcenter/betRecord')"
+      >
         <div>
           <img
             :src="$getCdnPath('/static/image/_new/mcenter/ic_bethistory.png')"
@@ -41,7 +47,10 @@
         </div>
         <div>{{ $text("S_BETHISTORYBTN", "投注纪录") }}</div>
       </div>
-      <div :class="$style['cell']">
+      <div
+        :class="$style['cell']"
+        @click="$router.push('/mobile/mcenter/moneyDetail')"
+      >
         <div>
           <img
             :src="$getCdnPath('/static/image/_new/mcenter/ic_transaction.png')"
@@ -49,7 +58,10 @@
         </div>
         <div>{{ $text("S_TRANSACTION_RECORD", "交易记录") }}</div>
       </div>
-      <div :class="$style['cell']">
+      <div
+        :class="$style['cell']"
+        @click="$router.push('/mobile/mcenter/bankRebate')"
+      >
         <div>
           <img :src="$getCdnPath('/static/image/_new/mcenter/ic_rebate.png')" />
         </div>
