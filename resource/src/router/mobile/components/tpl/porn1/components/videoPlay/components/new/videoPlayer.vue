@@ -4,24 +4,34 @@
       ref="video-player"
       class="video-js vjs-default-skin vjs-fluid vjs-big-play-centered"
     />
+
     <!-- 彩金活動 -->
     <div
       v-if="isActiveBouns"
       :class="$style['video-block']"
       @click="handleClickVideoBlock"
       :style="{ height: `${blockHeight}px` }"
-    />
-    <bonuns-dialog
-      v-if="isActiveBouns && isShowBounsDialog"
-      @close="isShowBounsDialog = false"
-    />
+    >
+      <bonuns-dialog
+        v-if="isActiveBouns && isShowBounsDialog"
+        :type="dialogType"
+        @close="isShowBounsDialog = false"
+      />
+      <bonuns-process
+        v-if="isActiveBouns && isShowBounsProcess"
+        @close="isShowBounsProcess = false"
+      />
+    </div>
   </div>
 </template>
 
 <script>
+import Vue from 'vue';
+import { mapGetters, mapActions } from 'vuex';
 import videojs from 'video.js';
 import bonunsDialog from '../../bouns/compontents/bonunsDialog'
 import bonunsProcess from '../../bouns/compontents/bonunsProcess'
+import config from '@/api/bbos/config'
 
 export default {
   components: {
@@ -39,9 +49,17 @@ export default {
       player: null,
       blockHeight: 0,
       //   彩金開關
-      isActiveBouns: false,
-      isShowBounsDialog: false
+      isActiveBouns: true,
+      isShowBounsDialog: false,
+      isShowBounsProcess: true,
+      dialogType: "tips" // 提示 & 賺得彩金
     };
+  },
+  computed: {
+    ...mapGetters({
+      memInfo: 'getMemInfo',
+      loginStatus: 'getLoginStatus',
+    }),
   },
   mounted() {
     this.player = videojs(this.$refs['video-player'], {
@@ -64,16 +82,24 @@ export default {
         this.blockHeight = videoDom[0].offsetHeight;
       }
 
-      // 播放前判斷是否登入及餘額
-      this.player.on('playing', function (e) {
+      try {
+        // connect websocket
+      } catch (e) {
 
-      });
+      }
     }
 
   },
   methods: {
     handleClickVideoBlock() {
+      // 餘額夠可播放
       this.isShowBounsDialog = true;
+      return;
+      if (!this.loginStatus) {
+        this.isShowBounsDialog = true;
+      } else {
+        this.player.play();
+      }
     }
   },
   beforeDestroy() {

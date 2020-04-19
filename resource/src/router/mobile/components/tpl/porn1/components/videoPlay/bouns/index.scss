@@ -4,6 +4,8 @@ $bouns_color1: #bf8646;
 $bouns_color2: #BE9E7F;
 $bouns_color3: #FAF5F0;
 $bouns_color4: #ECC374;
+$bouns_color5: #FF7F00;
+$bouns_color6: #FFF07B;
 
 .dialog {
     animation: fade-in 0.31s;
@@ -86,12 +88,140 @@ $bouns_color4: #ECC374;
         background-color: #FAF5F0;
     }
 
-    >div:last-child {
-        color: #FFFFFF;
-        background: -webkit-linear-gradient(right, #bd9d7d, #f9ddbd);
-        background: -o-linear-gradient(left, #bd9d7d, #f9ddbd);
-        background: -moz-linear-gradient(left, #bd9d7d, #f9ddbd);
-        background: linear-gradient(to left, #bd9d7d, #f9ddbd);
+    >div:last-child {}
+}
+
+.active-btn {
+    text-align: center;
+    color: #FFFFFF;
+    height: 40px;
+    font-size: 15px;
+    text-align: center;
+    border-radius: 20px;
+    line-height: 40px;
+    background: -webkit-linear-gradient(right, #bd9d7d, #f9ddbd);
+    background: -o-linear-gradient(left, #bd9d7d, #f9ddbd);
+    background: -moz-linear-gradient(left, #bd9d7d, #f9ddbd);
+    background: linear-gradient(to left, #bd9d7d, #f9ddbd);
+}
+
+.bouns-process-wrap {
+    position: absolute;
+    right: 0;
+    top: 43px;
+}
+
+.earn-wrap {
+    height: 325px !important;
+
+    .title-coin {
+        top: -20%;
+    }
+}
+
+.bouns-process {
+    animation: fade-in 0.31s;
+    width: 28px;
+    height: 28px;
+    opacity: 0.8;
+    background: #444444;
+    border-radius: 14px 0 0 14px;
+    color: $bouns_color5;
+    font-size: 15px;
+    line-height: 30px;
+
+    .active {
+        width: 85px;
+    }
+
+    .coin {
+        margin-left: 5px;
+        width: 17px;
+        height: 100%;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+
+        >img {
+            width: 17px;
+            height: 17px;
+        }
+
+        >span {
+            position: absolute;
+            color: $bouns_color6;
+        }
+    }
+
+    .content {
+        height: 100%;
+    }
+
+    .earn-keep-btn {
+        width: 100%;
+        height: 40px;
+        line-height: 40px;
+
+        font-size: 15px;
+        border-radius: 20px;
+        margin: 0px 20px;
+    }
+
+
+}
+
+.bouns-earn-wrap {
+    display: inline-block;
+
+
+    >.earn-title {
+        color: #3F1000;
+        font-size: 13px;
+        margin: 13px 0;
+        height: 25px;
+        line-height: 25px;
+        text-align: center;
+
+        >span:last-child {
+            color: #FF8C21;
+            font-size: 22px;
+        }
+    }
+
+    .earn-cell {
+        width: 33%;
+        width: 33%;
+        float: left;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        margin-bottom: 14px;
+
+        >div {
+            width: 54px;
+            height: 64px;
+            color: #FF8400;
+            text-align: center;
+
+            >div:first-child {
+                width: 100%;
+                padding: 4px 0;
+                background-color: #FCF7E2;
+
+                >img {
+                    margin: 0 auto;
+                    width: 30px;
+                    height: 30px;
+                }
+            }
+
+            >div:last-child {
+                height: 24px;
+                line-height: 24px;
+                font-size: 15px;
+                background-color: #F5D992;
+            }
+        }
     }
 }
 
@@ -155,6 +285,8 @@ $bouns_color4: #ECC374;
             font-size: 17px;
         }
     }
+
+
 }
 
 @media screen and (min-width: $pad) {
@@ -165,6 +297,14 @@ $bouns_color4: #ECC374;
     .bouns-func {
         >div {
             font-size: 21px;
+        }
+    }
+
+    .bouns-process {
+        width: 60px;
+
+        .active {
+            width: 100px;
         }
     }
 }
