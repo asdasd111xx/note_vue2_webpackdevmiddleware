@@ -130,7 +130,7 @@ $bouns_color6: #FFF07B;
     font-size: 15px;
     line-height: 30px;
 
-    .active {
+    &.active {
         width: 85px;
     }
 
@@ -142,14 +142,24 @@ $bouns_color6: #FFF07B;
         align-items: center;
         justify-content: center;
 
-        >img {
-            width: 17px;
-            height: 17px;
+        .icon {
+            display: flex;
+            align-items: center;
+            justify-content: center;
+
+            >img {
+                width: 17px;
+                height: 17px;
+            }
         }
 
         >span {
             position: absolute;
             color: $bouns_color6;
+
+            &.earn {
+                right: 0;
+            }
         }
     }
 

@@ -13,7 +13,7 @@
       <div
         :class="$style['tab-slider']"
         :style="{
-          left: `calc(${curIndex * 25}% + 25px `
+          left: `calc(calc(12.5% - 25px + 25% * ${curIndex}))`
         }"
       />
     </div>

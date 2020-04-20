@@ -6,14 +6,29 @@
         : $style['bouns-process-wrap']
     "
   >
-    <div :class="[$style['bouns-process'], { [$style['active']]: isEarn }]">
+    <div
+      :class="[
+        $style['bouns-process'],
+        { [$style['active']]: processType === 'earn' }
+      ]"
+    >
       <div :class="$style['coin']">
-        <img
-          :src="
-            $getCdnPath(`/static/image/_new/actives/bouns/${curCoinSrc}.png`)
-          "
-        />
-        <span>{{ process }} </span>
+        <div class="circle_box">
+          <div class="coin_process_circle"></div>
+          <div class="coin_process_circle"></div>
+        </div>
+        <div :class="$style['icon']">
+          <img
+            :src="
+              $getCdnPath(`/static/image/_new/actives/bouns/${curCoinSrc}.png`)
+            "
+          />
+        </div>
+
+        <span v-if="processType === 'earn'" :class="$style['earn']">
+          {{ `+${earnCoin}元` }}</span
+        >
+        <span v-else>{{ curMin }}</span>
       </div>
     </div>
 
@@ -27,23 +42,53 @@ export default {
 
   },
   props: {
-
   },
   data() {
     return {
       curCoinSrc: "coin_bg",
-      coinType: [{ key: 'done', src: 'coin_g' },
-      { key: 'process', src: 'coin_bg' },
-      { key: 'done', src: 'coin_y' }],
-      process: 9,
-      isEarn: false,
-      isClose: false
+      processType: "process", // 累加,達標,已完成
+      coinType:
+        [{ key: 'done', src: 'coin_g' },
+        { key: 'process', src: 'coin_bg' },
+        { key: 'earn', src: 'coin_y' }],
+      isClose: false,
+      earnCoin: "15.00",
+      curMin: 0
     };
   },
   computed: {
 
-  }
+  },
+  watch: {
+    curMin() {
+      if (this.curMin > 9) {
+        this.handleToggleEarnCoin();
+      }
+    }
+  },
+  methods: {
+    //   賺得彩金後變換樣式3秒後還原
+    handleToggleEarnCoin(earnCoin) {
+      this.curCoinSrc = this.coinType.find(i => i.key == "earn").src;
+      this.processType = "earn";
+      this.curMin = 0;
+      this.earnCoin = earnCoin || "15.00";
+
+      this.timer = setTimeout(() => {
+        if (this.isFinish) {
+          this.curCoinSrc = this.coinType.find(i => i.key == "done").src;
+          this.processType = "done";
+        } else {
+          this.curCoinSrc = this.coinType.find(i => i.key == "process").src;
+          this.processType = "process";
+        }
+      }, 3000)
+    }
+  },
+  destroyed() {
+    clearTimeout(this.timer);
+    this.timer = null;
+  },
 };
 </script>
 <style src="../index.scss" lang="scss" module></style>
-

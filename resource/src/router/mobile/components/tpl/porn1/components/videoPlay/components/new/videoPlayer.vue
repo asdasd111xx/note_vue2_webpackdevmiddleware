@@ -13,11 +13,13 @@
       :style="{ height: `${blockHeight}px` }"
     >
       <bonuns-dialog
+        ref="bonunsDialog"
         v-if="isActiveBouns && isShowBounsDialog"
         :type="dialogType"
         @close="isShowBounsDialog = false"
       />
       <bonuns-process
+        ref="bonunsProcess"
         v-if="isActiveBouns && isShowBounsProcess"
         @close="isShowBounsProcess = false"
       />
@@ -31,6 +33,7 @@ import { mapGetters, mapActions } from 'vuex';
 import videojs from 'video.js';
 import bonunsDialog from '../../bouns/compontents/bonunsDialog'
 import bonunsProcess from '../../bouns/compontents/bonunsProcess'
+
 import config from '@/api/bbos/config'
 
 export default {
@@ -52,7 +55,7 @@ export default {
       isActiveBouns: false,
       isShowBounsDialog: false,
       isShowBounsProcess: true,
-      dialogType: "tips" // 提示 & 賺得彩金
+      dialogType: "tips",// 提示 & 賺得彩金
     };
   },
   computed: {
@@ -84,8 +87,18 @@ export default {
 
       try {
         // connect websocket
-      } catch (e) {
+        if (!this.$socket) { this.isActiveBouns = false; return; }
+        this.$socket.onmessage = this.onMessage;
 
+        // 每分鐘賺得彩金
+        this.$refs.bonunsProcess.earnCoin
+
+        // 模擬每次增加1分鐘
+        // setInterval(() => {
+        //   this.$refs.bonunsProcess.curMin += 1
+        // }, 100)
+      } catch (e) {
+        console.log(e)
       }
     }
 
@@ -100,6 +113,9 @@ export default {
       } else {
         this.player.play();
       }
+    },
+    onMessage(e) {
+
     }
   },
   beforeDestroy() {

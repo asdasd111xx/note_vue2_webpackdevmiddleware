@@ -15,10 +15,13 @@
       </div>
       <template v-if="type == 'tips'">
         <div :class="$style['bouns-func']">
-          <div @click="handleClose">
+          <div @click="$router.back()">
             {{ $text("S_FIRST_LOOK", "先去逛逛") }}
           </div>
-          <div @click="handleClose" :class="$style['active-btn']">
+          <div
+            @click="$router.push('/mobile/mcenter')"
+            :class="$style['active-btn']"
+          >
             {{ $text("S_JOIN_MEMBER", "加入会员") }}
           </div>
         </div>
@@ -78,8 +81,9 @@ export default {
     return {
       isClose: false,
       earnCellNum: 6,
-      earnSingleNum: "5.00",
-      earnCurrentNum: "15.00"
+      earnSingleNum: "5.00", //每次獲得彩金
+      earnCurrentNum: "15.00", //獲得彩金
+      dialogEarnNum: "3" // 賺得彩金量
     };
   },
   computed: {
