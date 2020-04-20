@@ -1,7 +1,7 @@
 <template>
-    <mobile-container :header-config="headerConfig">
+    <mobile-container :header-config="headerConfig" :update-search-status="updateSearchStatus">
         <div slot="content" class="content-wrap">
-            <mahjong-wrap :slot-sort="['search', 'list']" />
+            <mahjong-wrap :slot-sort="['search', 'list']" :is-show-search.sync="isShowSearch" />
         </div>
     </mobile-container>
 </template>
@@ -14,6 +14,11 @@ export default {
     components: {
         mahjongWrap,
         mobileContainer
+    },
+    data() {
+        return {
+            searchStatus: false
+        };
     },
     computed: {
         headerTitle() {
@@ -35,8 +40,22 @@ export default {
             return {
                 prev: true,
                 title: this.headerTitle,
+                hasSearchBtn: true,
                 onClick: () => { this.$router.back(); }
             };
+        },
+        isShowSearch: {
+            get() {
+                return this.searchStatus;
+            },
+            set() {
+                this.searchStatus = !this.searchStatus;
+            }
+        }
+    },
+    methods: {
+        updateSearchStatus() {
+            this.searchStatus = !this.searchStatus;
         }
     }
 };

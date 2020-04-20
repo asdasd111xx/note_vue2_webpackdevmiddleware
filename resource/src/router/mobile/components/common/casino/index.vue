@@ -1,16 +1,6 @@
 <template>
     <div :class="`casino-wrap ${gameTheme}`">
         <template v-for="slotKey in slotSort">
-            <template v-if="slotKey === 'search'">
-                <gameSearch
-                    :key="`slot-${slotKey}`"
-                    :is-game-data-receive="isGameDataReceive"
-                    :theme="searchTheme"
-                    :text="paramsData.name"
-                    :game-num="activityData.events && gameData.length === activityData.events.length ? 0 : gameData.length"
-                    :set-search-text="setSearchText"
-                />
-            </template>
             <template v-if="slotKey === 'label'">
                 <gameLabel
                     :key="`slot-${slotKey}`"
@@ -23,12 +13,7 @@
             </template>
             <template v-if="slotKey === 'list'">
                 <div :key="`slot-${slotKey}`" class="game-item-wrap clearfix">
-                    <game-empty
-                        v-if="isGameDataReceive && gameData.length === 0"
-                        :theme="gameTheme"
-                        :now-type="paramsData.label"
-                    />
-                    <template v-else>
+                    <template>
                         <template v-for="(gameInfo, index) in gameData">
                             <game-item
                                 :key="`game-${gameInfo.vendor}-${index}`"
@@ -53,6 +38,18 @@
                 </div>
             </template>
         </template>
+        <gameSearch
+            v-if="isShowSearch"
+            :text="paramsData.name"
+            :set-search-text="setSearchText"
+            :update-search-status="updateSearchStatus"
+            :theme="gameTheme"
+            :game-data="gameData"
+            :game-show-vendor="gameShowVendor"
+            :game-show-jackpot="gameShowJackpot"
+            :game-show-favor="gameShowFavor"
+            :game-show-button="gameShowButton"
+        />
     </div>
 </template>
 
@@ -62,9 +59,8 @@ import InfiniteLoading from 'vue-infinite-loading';
 import ajax from '@/lib/ajax';
 import { gameType, gameList } from '@/config/api';
 import gameItem from '@/router/web/components/common/gameItem';
-import gameSearch from '../gameSearch';
 import gameLabel from '../gameLabel';
-import gameEmpty from '../gameEmpty';
+import gameSearch from '../search';
 
 /**
  * 共用元件 - 手機網頁版電子遊戲頁共用框 (邏輯共用)
@@ -82,7 +78,6 @@ export default {
         gameSearch,
         gameLabel,
         gameItem,
-        gameEmpty,
         InfiniteLoading
     },
     props: {
@@ -117,6 +112,10 @@ export default {
         gameShowButton: {
             type: Boolean,
             default: true
+        },
+        isShowSearch: {
+            type: Boolean,
+            default: false
         }
     },
     data() {
@@ -165,6 +164,14 @@ export default {
             }
 
             this.getGameLabelList();
+        },
+        isShowSearch() {
+            if (this.isShowSearch) {
+                this.gameData = [];
+                return;
+            }
+
+            this.setSearchText('');
         }
     },
     created() {
@@ -256,6 +263,10 @@ export default {
         setSearchText(value) {
             this.paramsData.first_result = 0;
             this.paramsData.name = value;
+            if (this.isShowSearch && !value) {
+                this.gameData = [];
+                return;
+            }
             this.updateGameData();
         },
         /**
@@ -385,6 +396,9 @@ export default {
                     $state.complete();
                 }
             });
+        },
+        updateSearchStatus() {
+            this.$emit('update:isShowSearch');
         }
     }
 };
@@ -393,6 +407,6 @@ export default {
 <style lang="scss" scoped>
 .game-item-wrap {
     background: #F8F8F7;
-    min-height: calc(100vh - 133px);
+    min-height: calc(100vh - 88px);
 }
 </style>

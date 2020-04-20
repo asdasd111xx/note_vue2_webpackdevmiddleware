@@ -1,6 +1,5 @@
 <template>
     <div :class="[$style['bet-record-wrap'], colorClass]">
-        <mcenter-header :header-setting="headerSetting" />
         <template v-if="!detailAlias">
             <div :class="$style['total-top-wrap']">
                 <swiper :options="categoryOptions" :class="$style['total-list']">
@@ -154,7 +153,7 @@
 
 <script>
 import { mapGetters } from 'vuex';
-import { swiper, swiperSlide } from 'vue-awesome-swiper';
+import { Swiper, SwiperSlide } from 'vue-awesome-swiper';
 import mixin from '@/mixins/mcenter/betRecord';
 import gameName from '@/lib/game_name';
 import detail from './detail';
@@ -162,9 +161,8 @@ import pagination from '../pagination';
 
 export default {
     components: {
-        mcenterHeader: () => import(/* webpackChunkName: 'recordDeposit' */'@/router/mobile/components/common/mcenter/theme1/header'),
-        swiper,
-        swiperSlide,
+        Swiper,
+        SwiperSlide,
         detail,
         pagination
     },

@@ -1580,5 +1580,12 @@
     "S_ACTIVITY_SHORT": "余额不足 请先充值",
     "S_ACTIVITY_EARN": "恭喜获得彩金",
     "S_ACTIVITY_LIMIT": "恭喜获得今日最高彩金",
-    "S_ACTIVITY_KEEP": "继续看片"
+    "S_ACTIVITY_KEEP": "继续看片",
+    "S_NO_BETRECORD": "还没有任何投注记录",
+    "S_SEVEN_DAY": "近7日",
+    "S_THIRTY_DAY": "近30日",
+    "S_DATA_COUNT": "笔数",
+    "S_TOTAL_WATER": "流水",
+    "S_WIN_LOSE": "输赢",
+    "S_SEARCH_KEYWORD2": "搜索关键字"
 }

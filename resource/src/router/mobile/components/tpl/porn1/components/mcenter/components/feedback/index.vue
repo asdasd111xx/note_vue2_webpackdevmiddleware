@@ -31,7 +31,7 @@ export default {
 
 <style lang="scss" module>
 .content-wrap {
-  background: #F8F8F7;
+    background: #F8F8F7;
     // min-height: calc(100vh - 0.86rem);
     min-height: calc(100vh - 44px);
     position: relative;

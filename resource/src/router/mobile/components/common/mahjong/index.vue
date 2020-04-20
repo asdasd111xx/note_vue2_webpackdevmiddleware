@@ -1,51 +1,41 @@
 <template>
     <div class="card-wrap">
         <template v-for="slotKey in slotSort">
-            <template v-if="slotKey === 'search'">
-                <gameSearch
-                    :key="`slot-${slotKey}`"
-                    :is-game-data-receive="isGameDataReceive"
-                    :text="paramsData.name"
-                    :game-num="gameData.length"
-                    :set-search-text="setSearchText"
-                />
-            </template>
-            <template v-if="slotKey === 'label'">
-                <gameLabel
-                    :key="`slot-${slotKey}`"
-                    :is-label-receive="isLabelReceive"
-                    :label="paramsData.label.toString()"
-                    :label-data="labelData"
-                    :change-game-label="changeGameLabel"
-                />
-            </template>
             <template v-if="slotKey === 'list'">
                 <div :key="`slot-${slotKey}`" class="game-item-wrap clearfix">
-                    <game-empty v-if="isGameDataReceive && gameData.length === 0" />
-                    <template v-else>
-                        <template v-for="(gameInfo, index) in gameData">
-                            <game-item
-                                :key="`game-${gameInfo.vendor}-${index}`"
-                                :game-info="gameInfo"
-                                :show-vendor="gameShowVendor"
-                                :show-jackpot="gameShowJackpot"
-                                :show-favor="gameShowFavor"
-                                :show-button="gameShowButton"
-                            />
-                        </template>
-                        <!-- 捲動加載 -->
-                        <infinite-loading
-                            v-if="showInfinite"
-                            ref="infiniteLoading"
-                            @infinite="infiniteHandler"
-                        >
-                            <span slot="no-more" />
-                            <span slot="no-results" />
-                        </infinite-loading>
+                    <template v-for="(gameInfo, index) in gameData">
+                        <game-item
+                            :key="`game-${gameInfo.vendor}-${index}`"
+                            :game-info="gameInfo"
+                            :show-vendor="gameShowVendor"
+                            :show-jackpot="gameShowJackpot"
+                            :show-favor="gameShowFavor"
+                            :show-button="gameShowButton"
+                        />
                     </template>
+                    <!-- 捲動加載 -->
+                    <infinite-loading
+                        v-if="showInfinite"
+                        ref="infiniteLoading"
+                        @infinite="infiniteHandler"
+                    >
+                        <span slot="no-more" />
+                        <span slot="no-results" />
+                    </infinite-loading>
                 </div>
             </template>
         </template>
+        <gameSearch
+            v-if="isShowSearch"
+            :text="paramsData.name"
+            :set-search-text="setSearchText"
+            :update-search-status="updateSearchStatus"
+            :game-data="gameData"
+            :game-show-vendor="gameShowVendor"
+            :game-show-jackpot="gameShowJackpot"
+            :game-show-favor="gameShowFavor"
+            :game-show-button="gameShowButton"
+        />
     </div>
 </template>
 
@@ -55,9 +45,7 @@ import InfiniteLoading from 'vue-infinite-loading';
 import ajax from '@/lib/ajax';
 import { gameType, gameList } from '@/config/api';
 import gameItem from '@/router/web/components/common/gameItem';
-import gameSearch from '../gameSearch';
-import gameLabel from '../gameLabel';
-import gameEmpty from '../gameEmpty';
+import gameSearch from '../search';
 
 /**
  * 共用元件 - 手機網頁版電子遊戲頁共用框 (邏輯共用)
@@ -70,9 +58,7 @@ import gameEmpty from '../gameEmpty';
 export default {
     components: {
         gameSearch,
-        gameLabel,
         gameItem,
-        gameEmpty,
         InfiniteLoading
     },
     props: {
@@ -95,6 +81,10 @@ export default {
         gameShowButton: {
             type: Boolean,
             default: true
+        },
+        isShowSearch: {
+            type: Boolean,
+            default: false
         }
     },
     data() {
@@ -137,6 +127,14 @@ export default {
         vendor() {
             this.updateGameData();
             this.getGameLabelList();
+        },
+        isShowSearch() {
+            if (this.isShowSearch) {
+                this.gameData = [];
+                return;
+            }
+
+            this.setSearchText('');
         }
     },
     created() {
@@ -190,6 +188,11 @@ export default {
         setSearchText(value) {
             this.paramsData.first_result = 0;
             this.paramsData.name = value;
+            if (this.isShowSearch && !value) {
+                this.gameData = [];
+                return;
+            }
+
             this.updateGameData();
             this.getGameLabelList();
         },
@@ -270,6 +273,9 @@ export default {
                     $state.complete();
                 }
             });
+        },
+        updateSearchStatus() {
+            this.$emit('update:isShowSearch');
         }
     }
 };
@@ -278,6 +284,6 @@ export default {
 <style lang="scss" scoped>
 .game-item-wrap {
     background: #F8F8F7;
-    min-height: calc(100vh - 133px);
+    min-height: calc(100vh - 88px);
 }
 </style>

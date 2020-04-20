@@ -1,197 +1,212 @@
 <template>
-  <div :class="mainClass">
-    <div
-      v-if="headerConfig.hasLogo"
-      :class="[$style['logo-wrap']]"
-      @click="headerConfig.onClick"
-    >
-      <img :src="$getCdnPath('/static/image/_new/common/logo.png')" />
-    </div>
-
-    <div
-      v-if="headerConfig.prev"
-      :class="$style['btn-prev']"
-      @click="headerConfig.onClick"
-    >
-      <img :src="$getCdnPath('/static/image/_new/common/btn_back.png')" />
-    </div>
-
-    <div v-if="headerConfig.title" :class="[$style.wrap, 'clearfix']">
-      <div :class="$style.title">{{ headerConfig.title }}</div>
-      <div
-        v-if="headerConfig.gameList"
-        :class="$style['btn-game-list']"
-        @click="setMenuState('gameList')"
-      >
-        <img
-          :src="
-            $getCdnPath(
-              '/static/image/mobile/tpl/porn1/header/btn_header_n.png'
-            )
-          "
-        />
-      </div>
-    </div>
-    <div
-      v-if="headerConfig.gameList"
-      v-show="currentMenu === 'gameList'"
-      ref="game-list-wrap"
-      :class="$style['game-list-wrap']"
-    >
-      <top-game-list :is-list-visible.sync="currentMenu" />
-    </div>
-    <template v-if="headerConfig.hasSearchBar">
-      <div :class="$style['search-wrap']">
-        <input
-          v-model="headerConfig.keyWord"
-          :placeholder="$text('S_PLEASE_INPUT_AV', '请输入片名、女优或番号')"
-          type="text"
-          @keydown.enter="headerConfig.onSearchClick(headerConfig.keyWord)"
-        />
+    <div :class="mainClass">
         <div
-          :class="$style['icon-search']"
-          @click="headerConfig.onSearchClick(headerConfig.keyWord)"
+            v-if="headerConfig.hasLogo"
+            :class="[$style['logo-wrap']]"
+            @click="headerConfig.onClick"
         >
-          <icon name="search" width="20" height="20" />
+            <img :src="$getCdnPath('/static/image/_new/common/logo.png')" />
         </div>
-      </div>
-    </template>
-    <template v-if="headerConfig.hasSearchBtn">
-      <div
-        :class="$style['btn-search-wrap']"
-        @click="$router.push({ name: 'search' })"
-      >
-        <!-- <icon name="search" width="16" height="16" /> -->
-        <img
-          :src="$getCdnPath('/static/image/_new/common/icon_search_n.png')"
-        />
-      </div>
-    </template>
 
-    <template v-if="headerConfig.hasFeedBackBtn">
-      <div
-        :class="$style['btn-feedback']"
-        @click="$router.push('/mobile/mcenter/feedback/feedbackList')"
-      >
-        {{ $text("S_MY_FEEDBACK", "我的反馈") }}
-      </div>
-    </template>
-
-    <!-- 登錄&註冊 -->
-    <template v-if="headerConfig.hasMemInfo">
-      <div
-        v-if="loginStatus"
-        :class="$style['balance-wrap']"
-        @click="setMenuState('balance')"
-      >
-        <span>
-          {{ membalance.total }}
-        </span>
-        <img
-          :src="$getCdnPath('/static/image/_new/common/icon_ask.png')"
-          @click="handleClickAsk"
-        />
-      </div>
-      <div v-else :class="$style['login-wrap']">
-        <span @click="$router.push('/mobile/login')">{{
-          $text("S_LOGON", "登录")
-        }}</span>
-        <span @click="$router.push('/mobile/joinmember')">{{
-          $text("S_REGISTER", "注册")
-        }}</span>
-        <img
-          :src="$getCdnPath('/static/image/_new/common/icon_ask.png')"
-          @click="handleClickAsk"
-        />
-      </div>
-      <!-- 側開額度 -->
-      <side-balance
-        v-if="currentMenu === 'balance'"
-        :open-state.sync="currentMenu"
-      />
-    </template>
-
-    <template v-if="headerConfig.isMCenter">
-      <div :class="$style['mcenter-wrap']">
-        <img
-          :src="$getCdnPath('/static/image/_new/common/btn_setting.png')"
-          @click="handleClickSetting"
-        />
-        <img
-          :src="$getCdnPath('/static/image/_new/common/icon_ask.png')"
-          @click="handleClickAsk"
-        />
-      </div>
-    </template>
-    <template v-if="headerConfig.onClickFunc">
-      <div :class="$style['save-wrap']" @click="headerConfig.onClickFunc">
-        <div :class="headerConfig.funcBtnActive ? $style['active'] : ''">
-          {{
-            headerConfig.funcBtn
-              ? headerConfig.funcBtn
-              : $text("S_COMPLETE", "完成")
-          }}
+        <div
+            v-if="headerConfig.prev"
+            :class="$style['btn-prev']"
+            @click="headerConfig.onClick"
+        >
+            <img :src="$getCdnPath('/static/image/_new/common/btn_back.png')" />
         </div>
-      </div>
-    </template>
-  </div>
+
+        <div v-if="headerConfig.title" :class="[$style.wrap, 'clearfix']">
+            <div :class="$style.title">{{ headerConfig.title }}</div>
+            <div
+                v-if="headerConfig.gameList"
+                :class="$style['btn-game-list']"
+                @click="setMenuState('gameList')"
+            >
+                <img
+                    :src="
+                        $getCdnPath(
+                            '/static/image/mobile/tpl/porn1/header/btn_header_n.png'
+                        )
+                    "
+                />
+            </div>
+        </div>
+        <div
+            v-if="headerConfig.gameList"
+            v-show="currentMenu === 'gameList'"
+            ref="game-list-wrap"
+            :class="$style['game-list-wrap']"
+        >
+            <top-game-list :is-list-visible.sync="currentMenu" />
+        </div>
+        <template v-if="headerConfig.hasSearchBar">
+            <div :class="$style['search-wrap']">
+                <input
+                    v-model="headerConfig.keyWord"
+                    :placeholder="$text('S_PLEASE_INPUT_AV', '请输入片名、女优或番号')"
+                    type="text"
+                    @keydown.enter="headerConfig.onSearchClick(headerConfig.keyWord)"
+                />
+                <div
+                    :class="$style['icon-search']"
+                    @click="headerConfig.onSearchClick(headerConfig.keyWord)"
+                >
+                    <icon
+                        name="search"
+                        width="20"
+                        height="20"
+                    />
+                </div>
+            </div>
+        </template>
+        <template v-if="headerConfig.hasSearchBtn">
+            <div
+                :class="$style['btn-search-wrap']"
+                @click="goSearch"
+            >
+                <!-- <icon name="search" width="16" height="16" /> -->
+                <img
+                    :src="$getCdnPath('/static/image/_new/common/icon_search_n.png')"
+                />
+            </div>
+        </template>
+
+        <template v-if="headerConfig.hasFeedBackBtn">
+            <div
+                :class="$style['btn-feedback']"
+                @click="$router.push('/mobile/mcenter/feedback/feedbackList')"
+            >
+                {{ $text("S_MY_FEEDBACK", "我的反馈") }}
+            </div>
+        </template>
+
+        <!-- 登錄&註冊 -->
+        <template v-if="headerConfig.hasMemInfo">
+            <div
+                v-if="loginStatus"
+                :class="$style['balance-wrap']"
+                @click="setMenuState('balance')"
+            >
+                <span>
+                    {{ membalance.total }}
+                </span>
+                <img
+                    :src="$getCdnPath('/static/image/_new/common/icon_ask.png')"
+                    @click="handleClickAsk"
+                />
+            </div>
+            <div v-else :class="$style['login-wrap']">
+                <span @click="$router.push('/mobile/login')">{{
+                    $text("S_LOGON", "登录")
+                }}</span>
+                <span @click="$router.push('/mobile/joinmember')">{{
+                    $text("S_REGISTER", "注册")
+                }}</span>
+                <img
+                    :src="$getCdnPath('/static/image/_new/common/icon_ask.png')"
+                    @click="handleClickAsk"
+                />
+            </div>
+            <!-- 側開額度 -->
+            <side-balance
+                v-if="currentMenu === 'balance'"
+                :open-state.sync="currentMenu"
+            />
+        </template>
+
+        <template v-if="headerConfig.isMCenter">
+            <div :class="$style['mcenter-wrap']">
+                <img
+                    :src="$getCdnPath('/static/image/_new/common/btn_setting.png')"
+                    @click="handleClickSetting"
+                />
+                <img
+                    :src="$getCdnPath('/static/image/_new/common/icon_ask.png')"
+                    @click="handleClickAsk"
+                />
+            </div>
+        </template>
+        <template v-if="headerConfig.onClickFunc">
+            <div :class="$style['save-wrap']" @click="headerConfig.onClickFunc">
+                <div :class="headerConfig.funcBtnActive ? $style['active'] : ''">
+                    {{
+                        headerConfig.funcBtn
+                            ? headerConfig.funcBtn
+                            : $text("S_COMPLETE", "完成")
+                    }}
+                </div>
+            </div>
+        </template>
+    </div>
 </template>
 
 <script>
 import { mapGetters } from 'vuex';
 
 export default {
-  components: {
+    components: {
     // sideBalance,
     // topGameList: () => import(/* webpackChunkName: 'topGameList' */'./topGameList')
-  },
-  props: {
-    headerConfig: {
-      type: Object,
-      required: true
-    }
-  },
-  data() {
-    return {
-      currentMenu: ''
-    };
-  },
-  computed: {
-    ...mapGetters({
-      membalance: 'getMemBalance',
-      loginStatus: 'getLoginStatus'
-    }),
-    mainClass() {
-      const config = this.headerConfig;
-      const style = this.$style;
-      // 暫時移除底色渲染
-      return {
-        [style.header]: true,
-        // [style['background-gradient']]: config.isBackgroundGradient ,
-        clearfix: true
-      };
-    }
-  },
-  methods: {
+    },
+    props: {
+        headerConfig: {
+            type: Object,
+            required: true
+        },
+        updateSearchStatus: {
+            type: Function,
+            default: () => {}
+        }
+    },
+    data() {
+        return {
+            currentMenu: ''
+        };
+    },
+    computed: {
+        ...mapGetters({
+            membalance: 'getMemBalance',
+            loginStatus: 'getLoginStatus'
+        }),
+        mainClass() {
+            const config = this.headerConfig;
+            const style = this.$style;
+            // 暫時移除底色渲染
+            return {
+                [style.header]: true,
+                // [style['background-gradient']]: config.isBackgroundGradient ,
+                clearfix: true
+            };
+        }
+    },
+    methods: {
     // 設定選單狀態
-    setMenuState(value) {
-      this.currentMenu = this.currentMenu === value ? '' : value;
-    },
-    handleClickAsk() {
-      if (this.loginStatus) {
-        this.$router.push('/mobile/mcenter/information/post');
-      } else {
-        this.$router.push('/mobile/login');
-      }
-    },
-    handleClickSetting() {
-      if (this.loginStatus) {
-        this.$router.push('/mobile/mcenter/setting');
-      } else {
-        this.$router.push('/mobile/login');
-      }
+        setMenuState(value) {
+            this.currentMenu = this.currentMenu === value ? '' : value;
+        },
+        handleClickAsk() {
+            if (this.loginStatus) {
+                this.$router.push('/mobile/mcenter/information/post');
+            } else {
+                this.$router.push('/mobile/login');
+            }
+        },
+        handleClickSetting() {
+            if (this.loginStatus) {
+                this.$router.push('/mobile/mcenter/setting');
+            } else {
+                this.$router.push('/mobile/login');
+            }
+        },
+        goSearch() {
+            if (['casino', 'card', 'mahjong'].includes(this.$route.name)) {
+                this.updateSearchStatus();
+                return;
+            }
+            this.$router.push({ name: 'search' });
+        }
     }
-  }
 };
 </script>
 
