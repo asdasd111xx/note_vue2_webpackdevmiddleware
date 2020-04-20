@@ -1,6 +1,6 @@
 <template>
     <mobile-container :header-config="headerConfig">
-        <div slot="content" :class="$style['content-wrap']">
+        <div slot="content" class="content-wrap">
             <video-tab :sort-id.sync="sortId" :is-single.sync="isSingle" />
             <video-list :sort-id="sortId" :is-single="isSingle" />
         </div>
@@ -9,9 +9,9 @@
 
 <script>
 import { mapGetters } from 'vuex';
-import videoTab from './components/new/videoTab';
-import videoList from './components/new/videoList';
-import mobileContainer from '../common/new/mobileContainer';
+import videoTab from './components/videoTab';
+import videoList from './components/videoList';
+import mobileContainer from '../common/mobileContainer';
 
 export default {
     components: {
@@ -62,9 +62,3 @@ export default {
     }
 };
 </script>
-
-<style lang="scss" module>
-.content-wrap {
-    background: #eee;
-}
-</style>

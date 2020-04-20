@@ -222,6 +222,7 @@
                           "
                         >
                           <span>{{ vendor.text }}</span>
+                          <img v-if="transOutText === vendor.text" :src="$getCdnPath(`/static/image/_new/mcenter/myWallet/ic_transfer_sel.png`)" alt="sel">
                         </div>
                       </div>
                     </div>
@@ -268,6 +269,7 @@
                           "
                         >
                           {{ vendor.text }}
+                          <img v-if="transInText === vendor.text" :src="$getCdnPath(`/static/image/_new/mcenter/myWallet/ic_transfer_sel.png`)" alt="sel">
                         </div>
                       </div>
                     </div>
@@ -713,10 +715,16 @@ export default {
     overflow-y: auto;
 
     .option {
+      position: relative;
       display: flex;
-      justify-content: flex-start;
+      justify-content: space-between;
       align-items: center;
       height: 50px;
+
+      img {
+        width: 15px;
+        height: 15px;
+      }
     }
   }
 }
