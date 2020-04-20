@@ -125,10 +125,6 @@ export default {
                         window.open(this.shareImageSrc);
                     },
                     text: "在新分页中开启图片"
-                },
-                {
-                    callback: () => {},
-                    text: "透过 Google 搜寻这张图片"
                 }
             ]
         };

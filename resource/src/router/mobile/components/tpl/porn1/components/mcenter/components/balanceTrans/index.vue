@@ -1,7 +1,6 @@
 <template>
-  <mobile-container>
+  <mobile-container :header-config="headerSetting">
     <div slot="content" :class="[$style['content-wrap'], 'clearfix']">
-      <mcenter-header :header-setting="headerSetting" />
       <balance-tran class="clearfix">
         <template
           scope="{ balanceTran, enableAutotransfer, closeAutotransfer, setTranOut, setTranIn, setMoney, balanceTransfer, balanceBack, getDefaultTran }"
@@ -10,21 +9,20 @@
             :class="[$style['balance-wrap'], 'clearfix']"
             @click="balanceBack()"
           >
-            <div :class="$style['balance-total-icon']">
+            <div :class="$style['balance-total-item']">
               <img
                 :src="
                   $getCdnPath(
-                    '/static/image/mobile/mcenter/porn1/icon_wallet_main.png'
+                    '/static/image/_new/mcenter/myWallet/ic_wallet_center.png'
                   )
                 "
               />
-            </div>
-            <div :class="$style['balance-total-item']">
               {{ $text("S_MCENTER_WALLET", "中心钱包") }}
-              <span :class="$style['balance-item-money']">{{
-                balanceTran.membalance.vendor.default.amount
-              }}</span>
+              <div :class="$style['balance-item-money']">
+                {{ balanceTran.membalance.vendor.default.amount }}
+              </div>
             </div>
+
             <div
               :class="[
                 $style['recycle-btn'],
@@ -34,6 +32,7 @@
               {{ $text("S_ONE_CLICK_TO_ACCOUNT") }}
             </div>
           </div>
+
           <div :class="[$style['balance-wrap'], 'clearfix']">
             <div :class="$style['balance-total-icon']">
               <img
@@ -44,6 +43,7 @@
                 "
               />
             </div>
+
             <div :class="$style['balance-tip-wrap']">
               {{ $text("S_AUTO_FREE_TRANSFER", "自动免转") }}
               <span :class="$style['balance-auto-tip']"
@@ -52,6 +52,7 @@
                 }})</span
               >
             </div>
+
             <div class="ui fitted toggle checkbox field-checkbox">
               <input
                 :checked="balanceTran.isAutotransfer"
@@ -65,75 +66,168 @@
               <label />
             </div>
           </div>
+
           <div :class="[$style['balance-item-wrap'], 'clearfix']">
-            <div
-              v-for="(item, key, index) in balanceTran.balanceInfo"
-              :key="`balance-item-${key}`"
-              :class="[
-                $style['balance-item'],
-                {
-                  [$style['is-last-item']]:
-                    Object.keys(balanceTran.balanceInfo).length - index <=
-                    (Object.keys(balanceTran.balanceInfo).length % 4 || 4)
-                }
-              ]"
-            >
-              <span :class="$style['balance-item-vendor']">{{
-                item.text
-              }}</span>
-              <span
-                v-if="item.maintain"
-                :class="$style['balance-info-maintain']"
+            <template v-if="!isShowMore">
+              <div
+                v-for="(item, key, index) in balanceTran.firstThirdBalanceInfo"
+                :key="`balance-item-${key}`"
+                :class="[
+                  $style['balance-item'],
+                  {
+                    [$style['is-last-item']]:
+                      Object.keys(balanceTran.firstThirdBalanceInfo).length -
+                        index <=
+                      (Object.keys(balanceTran.firstThirdBalanceInfo).length %
+                        4 || 4)
+                  }
+                ]"
               >
-                <img
-                  :src="
-                    $getCdnPath(
-                      '/static/image/mobile/tpl/porn1/mcenter/icon_relax.png'
-                    )
-                  "
-                  :class="$style['balance-wrench']"
-                />
-                {{ $t("S_MAINTAIN") }}
-              </span>
-              <span v-else :class="$style['balance-item-money']">{{
-                item.amount
-              }}</span>
-            </div>
+                <span :class="$style['balance-item-vendor']">{{
+                  item.text
+                }}</span>
+                <span
+                  v-if="item.maintain"
+                  :class="$style['balance-info-maintain']"
+                >
+                  <img
+                    :src="
+                      $getCdnPath(
+                        '/static/image/mobile/tpl/porn1/mcenter/icon_relax.png'
+                      )
+                    "
+                    :class="$style['balance-wrench']"
+                  />
+                  {{ $t("S_MAINTAIN") }}
+                </span>
+                <span v-else :class="$style['balance-item-money']">{{
+                  item.amount
+                }}</span>
+              </div>
+
+              <div :class="[$style['balance-item'], $style['collapse']]">
+                <span
+                  :class="$style['balance-item-vendor']"
+                  @click="toggleShowMore"
+                  >更多</span
+                >
+                <div :class="[$style['icon']]">
+                  <img
+                    :src="
+                      $getCdnPath(
+                        `/static/image/_new/mcenter/myWallet/ic_expand.png`
+                      )
+                    "
+                    alt="expend"
+                  />
+                </div>
+              </div>
+            </template>
+
+            <template v-else>
+              <div
+                v-for="(item, key, index) in balanceTran.balanceInfo"
+                :key="`balance-item-${key}`"
+                :class="[
+                  $style['balance-item'],
+                  {
+                    [$style['is-last-item']]:
+                      Object.keys(balanceTran.balanceInfo).length - index <=
+                      (Object.keys(balanceTran.balanceInfo).length % 4 || 4)
+                  }
+                ]"
+              >
+                <span :class="$style['balance-item-vendor']">{{
+                  item.text
+                }}</span>
+                <span
+                  v-if="item.maintain"
+                  :class="$style['balance-info-maintain']"
+                >
+                  {{ $t("S_MAINTAIN") }}
+                  <img
+                    :src="
+                      $getCdnPath(
+                        '/static/image/_new/mcenter/myWallet/icon_transfer_tips_info.png'
+                      )
+                    "
+                    :class="$style['balance-wrench']"
+                  />
+                </span>
+                <span v-else :class="$style['balance-item-money']">{{
+                  item.amount
+                }}</span>
+              </div>
+
+              <div :class="[$style['balance-item'], $style['collapse']]">
+                <span
+                  :class="$style['balance-item-vendor']"
+                  @click="toggleShowMore"
+                  >收起</span
+                >
+                <div :class="[$style['icon']]">
+                  <img
+                    :src="
+                      $getCdnPath(
+                        `/static/image/_new/mcenter/myWallet/ic_collapse.png`
+                      )
+                    "
+                    alt="collapse"
+                  />
+                </div>
+              </div>
+            </template>
           </div>
+
           <!-- 手動轉換功能 -->
           <template v-if="!balanceTran.isAutotransfer">
             <div :class="[$style['balance-manual-wrap'], 'clearfix']">
               <span :class="$style['wallet-title']">{{
                 $text("S_CHANGE_WALLET", "选择转帐钱包")
               }}</span>
+
               <div :class="[$style['balance-transfer-wrap'], 'clearfix']">
                 <div :class="$style['balance-select-wrap']">
                   <div :class="$style['select-title']">
                     {{ $text("S_OUT_WALLET", "转出钱包") }}
                   </div>
-                  <div :class="$style['balance-transfer-list']">
-                    <select
-                      v-model="getDefaultTran.out"
-                      @change="setTranOut(getDefaultTran.out)"
-                    >
-                      <option
-                        v-for="vendor in balanceTran.transOut"
-                        :key="vendor.value"
-                        :value="vendor.value"
-                      >
-                        {{ vendor.text }}
-                      </option>
-                    </select>
-                    <img
-                      :src="
-                        $getCdnPath(
-                          '/static/image/mobile/mcenter/porn1/dropdown.png'
-                        )
-                      "
-                      :class="$style['select-arrow-icon']"
-                    />
+                  <div
+                    :class="$style['balance-transfer-list']"
+                    @click="showTransOutSelect"
+                  >
+                    {{ transOutText }}
+                    <span :class="$style['select-arrow-icon']"></span>
+                  </div>
+
+                  <div
+                    v-if="isShowTransOutSelect"
+                    :class="$style['select-container']"
+                  >
+                    <div :class="$style['select-wrap']">
+                      <div :class="$style['select-header']">
+                        <span :class="$style['cancel']" @click="closeSelect">
+                          取消
+                        </span>
+                        选择钱包
+                      </div>
+
+                      <div :class="$style['select-content']">
+                        <div
+                          :class="$style['option']"
+                          v-for="vendor in balanceTran.transOut"
+                          :key="vendor.value"
+                          @click="
+                            setTranOut(vendor.value);
+                            setTransOutText(vendor.text);
+                          "
+                        >
+                          <span>{{ vendor.text }}</span>
+                        </div>
+                      </div>
+                    </div>
                   </div>
                 </div>
+
                 <div
                   :class="[
                     $style['balance-select-wrap'],
@@ -143,44 +237,45 @@
                   <div :class="$style['select-title']">
                     {{ $text("S_IN_WALLET", "转入钱包") }}
                   </div>
-                  <div :class="$style['balance-transfer-list']">
-                    <select
-                      v-model="getDefaultTran.in"
-                      @change="setTranIn(getDefaultTran.in)"
-                    >
-                      <option
-                        v-for="vendor in balanceTran.transIn"
-                        :key="vendor.value"
-                        :value="vendor.value"
-                      >
-                        {{ vendor.text }}
-                      </option>
-                    </select>
-                    <img
-                      :src="
-                        $getCdnPath(
-                          '/static/image/mobile/mcenter/porn1/dropdown.png'
-                        )
-                      "
-                      :class="$style['select-arrow-icon']"
-                    />
+                  <div
+                    :class="$style['balance-transfer-list']"
+                    @click="showTransInSelect"
+                  >
+                    {{ transInText }}
+                    <span :class="$style['select-arrow-icon']"></span>
+                  </div>
+
+                  <div
+                    v-if="isShowTransInSelect"
+                    :class="$style['select-container']"
+                  >
+                    <div :class="$style['select-wrap']">
+                      <div :class="$style['select-header']">
+                        <span :class="$style['cancel']" @click="closeSelect">
+                          取消
+                        </span>
+                        选择钱包
+                      </div>
+
+                      <div :class="$style['select-content']">
+                        <div
+                          :class="$style['option']"
+                          v-for="vendor in balanceTran.transIn"
+                          :key="vendor.value"
+                          @click="
+                            setTranIn(vendor.value);
+                            setTransInText(vendor.text);
+                          "
+                        >
+                          {{ vendor.text }}
+                        </div>
+                      </div>
+                    </div>
                   </div>
                 </div>
               </div>
-              <div :class="$style['balance-wallet-tip']">
-                <img
-                  :src="
-                    $getCdnPath(
-                      '/static/image/mobile/mcenter/porn1/icon_transfer_tips_info.png'
-                    )
-                  "
-                  :class="$style['wallet-tip-img']"
-                />
-                <span :class="$style['wallet-tip']">{{
-                  $text("S_TRANSFER_TIP", "场管钱包之间不可互转")
-                }}</span>
-              </div>
             </div>
+
             <div :class="[$style['balance-manual-wrap'], 'clearfix']">
               <span :class="$style['wallet-title']">{{
                 $text("S_TRANSFER_MONEY", "转帐金额")
@@ -193,6 +288,7 @@
                     :class="$style['transfer-money-input']"
                     type="number"
                     @input="setMoney(transferMoney)"
+                    placeholder="请输入转帐金额"
                   />
                 </span>
                 <div
@@ -232,36 +328,40 @@
 </template>
 
 <script>
-import { mapActions } from 'vuex';
-import mcenterHeader from '@/router/mobile/components/common/mcenter/theme1/header';
-import balanceTran from '@/components/mcenter/components/balanceTran';
-import mobileContainer from '../../../common/new/mobileContainer';
+import { mapActions } from "vuex";
+import balanceTran from "@/components/mcenter/components/balanceTran";
+import mobileContainer from "../../../common/new/mobileContainer";
 
 export default {
   components: {
     mobileContainer,
-    mcenterHeader,
     balanceTran
   },
   data() {
     return {
       transferMoney: 0,
       headerSetting: {
-        title: this.$text('S_TRANSDER', '转帐'),
-        leftBtns: {
-          icon: 'arrow'
+        title: this.$text("S_TRANSDER", "转帐"),
+        prev: true,
+        onClick: () => {
+          this.$router.back();
         },
-        balance: true
-      }
+        hasHelp: true
+      },
+      isShowMore: false,
+      isShowTransOutSelect: false,
+      isShowTransInSelect: false,
+      transInText: "请选择帐户",
+      transOutText: "请选择帐户"
     };
   },
   methods: {
-    ...mapActions([
-      'actionSetUserBalance'
-    ]),
+    ...mapActions(["actionSetUserBalance"]),
     getMaxMoney(balanceList, setMoneyData, transferTargetOut) {
       if (balanceList.vendor[transferTargetOut]) {
-        this.transferMoney = Math.floor(+balanceList.vendor[transferTargetOut].amount);
+        this.transferMoney = Math.floor(
+          +balanceList.vendor[transferTargetOut].amount
+        );
         setMoneyData(this.transferMoney);
         return;
       }
@@ -274,8 +374,29 @@ export default {
         return;
       }
 
-      alert(this.$t('S_CR_SUCCESS'));
+      alert(this.$t("S_CR_SUCCESS"));
       this.transferMoney = 0;
+    },
+    toggleShowMore() {
+      this.isShowMore = !this.isShowMore;
+    },
+    showTransOutSelect() {
+      this.isShowTransOutSelect = true;
+    },
+    showTransInSelect() {
+      this.isShowTransInSelect = true;
+    },
+    closeSelect() {
+      this.isShowTransOutSelect = false;
+      this.isShowTransInSelect = false;
+    },
+    setTransInText(value) {
+      this.transInText = value;
+      this.closeSelect();
+    },
+    setTransOutText(value) {
+      this.transOutText = value;
+      this.closeSelect();
     }
   }
 };
@@ -284,62 +405,107 @@ export default {
 <style lang="scss" module>
 @import "~@/css/variable.scss";
 
+@mixin fixed-container-style($opacity) {
+  position: fixed;
+  height: 100%;
+  width: 100%;
+  top: 0;
+  left: 0;
+  z-index: 10;
+
+  &::before {
+    content: "";
+    position: absolute;
+    background: #000;
+    opacity: $opacity;
+    width: 100%;
+    height: 100%;
+    top: 0;
+    left: 0;
+  }
+}
+
 .content-wrap {
   position: relative;
-  min-height: calc(100vh);
-  padding: 65px 4% 45px;
-  background: url("/static/image/mobile/mcenter/porn1/bg.jpg") 50% 0 no-repeat;
-  background-size: cover;
+  min-height: calc(100vh - 60px);
+  padding-bottom: 45px;
+  background: #eee;
 }
 
 .balance-wrap {
+  position: relative;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  text-align: center;
   margin-top: 3%;
-  padding: 6px;
+  height: 65px;
   border-radius: 4px;
   background: rgba(255, 255, 255, 0.65);
+
+  // 自動免轉區塊
+  &:nth-child(2) {
+    height: 48px;
+  }
+}
+
+.balance-total-item {
+  flex: 1;
+  font-size: 12px;
+  font-weight: 700;
+  color: $main_text_color3;
+
+  img {
+    width: 13px;
+    height: 13px;
+    vertical-align: text-bottom;
+  }
+
+  .balance-item-money {
+    font-size: 16px;
+    color: #be9e7f;
+  }
+}
+
+.recycle-btn {
+  position: relative;
+  flex: 1;
+  font-size: 16px;
+  color: #be9e7f;
+  font-weight: 700;
+
+  &::before {
+    content: "";
+    position: absolute;
+    width: 1px;
+    height: 20px;
+    background: #eee;
+    left: 0;
+    top: 0;
+  }
+
+  &.disable {
+    opacity: 0.5;
+  }
 }
 
 .balance-total-icon {
-  display: inline-block;
-  vertical-align: middle;
-  width: 36px;
+  width: 30px;
+  height: 30px;
 
   img {
     max-width: 100%;
   }
 }
 
-.balance-total-item {
-  display: inline-block;
-  vertical-align: middle;
-  width: 50%;
-}
-
 .balance-tip-wrap {
-  display: inline-block;
-  vertical-align: middle;
-  width: 67%;
+  width: 70%;
+  text-align: left;
+  color: $main_text_color3;
 
   .balance-auto-tip {
     font-size: 12px;
-  }
-}
-
-.recycle-btn {
-  display: inline-block;
-  vertical-align: middle;
-  line-height: 28px;
-  min-width: 82px;
-  padding: 0 12px;
-  margin: 0 6px;
-  font-size: 12px;
-  text-align: center;
-  height: 28px;
-  text-overflow: ellipsis;
-  overflow: hidden;
-  white-space: nowrap;
-  &.disable {
-    opacity: 0.5;
+    color: $main_text_color2;
   }
 }
 
@@ -350,26 +516,75 @@ export default {
       vertical-align: middle;
     }
   }
+
+  // /* Focus */
+  .ui.toggle.checkbox input:focus ~ .box:before,
+  .ui.toggle.checkbox input:focus ~ label:before {
+    background-color: rgba(0, 0, 0, 0.05) !important;
+  }
+
+  /* Active */
+  .ui.toggle.checkbox input:checked ~ .box:before,
+  .ui.toggle.checkbox input:checked ~ label:before {
+    background-color: #7d87a5 !important;
+  }
+
+  /* Active Focus */
+  .ui.toggle.checkbox input:focus:checked ~ .box:before,
+  .ui.toggle.checkbox input:focus:checked ~ label:before {
+    background-color: #7d87a5 !important;
+  }
 }
 
 .balance-item-wrap {
   margin-top: 2%;
-  padding: 3%;
+  padding: 5px 3% 0;
   font-size: 12px;
   border-radius: 4px;
   background: rgba(255, 255, 255, 0.65);
 }
 
 .balance-item {
+  position: relative;
   float: left;
   box-sizing: border-box;
   width: 25%;
-  padding: 4px;
+  padding: 10px 4px 15px;
   text-align: center;
+  font-size: 14px;
+  color: $main_text_color3;
   border-bottom: 1px solid #dad6d6;
+
+  &:not(:nth-child(4n + 1)):before {
+    content: "";
+    position: absolute;
+    left: 0;
+    top: 50%;
+    transform: translateY(-50%);
+    width: 1px;
+    height: 23px;
+    background: #eee;
+  }
 
   &.is-last-item {
     border-bottom: none;
+  }
+
+  &.collapse {
+    float: right;
+    color: $main_text_color2;
+    border-bottom: none;
+
+    .icon {
+      width: 15px;
+      height: 15px;
+      margin: 2px auto;
+
+      img {
+        width: 100%;
+        height: 100%;
+      }
+    }
   }
 }
 
@@ -377,66 +592,149 @@ export default {
   display: block;
 }
 
+.balance-info-maintain {
+  font-size: 12px;
+  color: $main_error_color1;
+}
+
+.balance-wrench {
+  height: 12px;
+  width: 12px;
+  vertical-align: middle;
+}
+
 .balance-item-money {
   display: block;
-  color: #53b2f3;
+  color: $main_text_color2;
+}
+
+.balance-manual-wrap {
+  background: rgba(255, 255, 255, 0.65);
 }
 
 .wallet-title {
   display: block;
-  margin-top: 4%;
+  padding: 8px 17px;
+  background: #eee;
+  color: $main_text_color3;
+  font-size: 14px;
 }
 
 .balance-transfer-wrap {
   margin: 1% 0 2%;
   border-radius: 4px;
-  background: url("/static/image/mobile/mcenter/porn1/icon_transfergo.png")
+  background: url("/static/image/_new/mcenter/myWallet/ic_transfergo.png")
     rgba(255, 255, 255, 0.65) 50% 50% no-repeat;
-  background-size: 24%;
+  background-size: 20px 15px;
 }
 
 .balance-select-wrap {
+  position: relative;
   float: left;
   box-sizing: border-box;
   width: 50%;
-  padding: 6px 40px 6px 6px;
+  padding: 6px 40px 6px 17px;
 }
 
 .select-right-wrap {
-  padding: 6px 5px 6px 16%;
-  background: rgba(154, 154, 154, 0.1);
+  padding: 6px 17px 6px 13%;
 }
 
 .balance-transfer-list {
+  width: 100%;
   position: relative;
   float: left;
+
+  &::after {
+    content: "";
+    position: absolute;
+    bottom: 40%;
+    right: 0px;
+    border-top: 5px solid #cbced8;
+    border-left: 4px solid transparent;
+    border-right: 4px solid transparent;
+  }
 
   select {
     background: transparent;
     outline: 0;
     border: none;
     appearance: none;
+    -webkit-appearance: none;
+    -moz-appearance: none;
+    -ms-appearance: none;
+  }
+}
+
+.select-container {
+  @include fixed-container-style(0.4);
+
+  .select-wrap {
+    position: absolute;
+    background: $main_white_color1;
+    width: 100%;
+    bottom: 0;
+    padding: 0 17px;
+    border-radius: 20px 20px 0 0;
+  }
+
+  .select-header {
+    position: relative;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    font-size: 16px;
+    text-align: center;
+    height: 65px;
+    color: $main_text_color3;
+
+    &::before {
+      content: "";
+      position: absolute;
+      width: 100vw;
+      height: 8px;
+      bottom: 0;
+      background: #f8f8f7;
+    }
+
+    span {
+      position: absolute;
+      left: 0;
+      color: #be9e7f;
+    }
+  }
+
+  .select-content {
+    position: relative;
+    font-size: 14px;
+    color: $main_text_color3;
+    max-height: 500px;
+    overflow: hidden;
+    overflow-y: auto;
+
+    .option {
+      display: flex;
+      justify-content: flex-start;
+      align-items: center;
+      height: 50px;
+    }
   }
 }
 
 .select-title {
-  padding-left: 5px;
   font-size: 12px;
-  color: #848484;
+  color: $main_text_color2;
 }
 
-.select-arrow-icon {
-  position: absolute;
-  width: 12px;
-  margin-top: -6px;
-  top: 50%;
-  right: -15px;
-}
-
-.balance-wallet-tip {
-  font-size: 12px;
-  color: #848484;
-}
+// .select-arrow-icon {
+//   position: absolute;
+//   top: 8px;
+//   right: -10px;
+//   transform: translateY(50%);
+//   border-top: 5px solid #cbced8;
+//   border-left: 4px solid transparent;
+//   border-right: 4px solid transparent;
+// }
 
 .wallet-tip-img {
   display: inline-block;
@@ -444,14 +742,8 @@ export default {
   width: 16px;
 }
 
-.wallet-tip {
-  display: inline-block;
-  vertical-align: middle;
-}
-
 .balance-input-wrap {
-  margin: 1% 0 2%;
-  padding: 3%;
+  padding: 15px 17px;
   border-radius: 4px;
   background: rgba(255, 255, 255, 0.65);
 }
@@ -467,84 +759,47 @@ export default {
   outline: none;
   border: none;
   background: transparent;
+  color: $main_text_color3;
+
+  &::placeholder {
+    color: #cdced8;
+  }
 }
 
 .max-money-btn {
   float: right;
-  width: 17%;
-  height: 18px;
-  line-height: 18px;
-  margin-top: 3px;
+  width: 50px;
+  height: 20px;
+  line-height: 20px;
   text-align: center;
-  font-size: 12px;
+  font-size: 14px;
   border-radius: 10px;
   color: #fff;
-  background: #53b2f3;
-  background: linear-gradient(
-    90deg,
-    rgba(0, 213, 253, 1) 27%,
-    rgba(2, 136, 254, 0.8) 62%
-  );
-  background: -moz-linear-gradient(
-    90deg,
-    rgba(0, 213, 253, 1) 27%,
-    rgba(2, 136, 254, 0.8) 62%
-  );
-  background: -webkit-linear-gradient(
-    90deg,
-    rgba(0, 213, 253, 1) 27%,
-    rgba(2, 136, 254, 0.8) 62%
-  );
-  background: -o-linear-gradient(
-    90deg,
-    rgba(0, 213, 253, 1) 27%,
-    rgba(2, 136, 254, 0.8) 62%
-  );
+  background: linear-gradient(to left, #bd9d7d, #f9ddbd);
+  background: -moz-linear-gradient(to left, #bd9d7d, #f9ddbd);
+  background: -webkit-linear-gradient(to left, #bd9d7d, #f9ddbd);
+  background: -o-linear-gradient(to left, #bd9d7d, #f9ddbd);
 }
 
 .transfer-btn {
-  height: 35px;
-  line-height: 35px;
-  margin-top: 3%;
+  height: 42px;
+  line-height: 42px;
+  margin: 4% 17px 0;
   text-align: center;
   cursor: pointer;
-  border-radius: 18px;
+  border-radius: 3px;
   color: #fff;
-  background: #53b2f3;
-  background: linear-gradient(
-    90deg,
-    rgba(0, 213, 253, 1) 27%,
-    rgba(2, 136, 254, 0.8) 62%
-  );
-  background: -moz-linear-gradient(
-    90deg,
-    rgba(0, 213, 253, 1) 27%,
-    rgba(2, 136, 254, 0.8) 62%
-  );
-  background: -webkit-linear-gradient(
-    90deg,
-    rgba(0, 213, 253, 1) 27%,
-    rgba(2, 136, 254, 0.8) 62%
-  );
-  background: -o-linear-gradient(
-    90deg,
-    rgba(0, 213, 253, 1) 27%,
-    rgba(2, 136, 254, 0.8) 62%
-  );
+  background: linear-gradient(to left, #bd9d7d, #f9ddbd);
+  background: -moz-linear-gradient(to left, #bd9d7d, #f9ddbd);
+  background: -webkit-linear-gradient(to left, #bd9d7d, #f9ddbd);
+  background: -o-linear-gradient(to left, #bd9d7d, #f9ddbd);
 
   &.is-disable {
-    background: #9e9e9e;
+    background: linear-gradient(to left, #e9dacb, #eee5db);
+    background: -moz-linear-gradient(to left, #e9dacb, #eee5db);
+    background: -webkit-linear-gradient(to left, #e9dacb, #eee5db);
+    background: -o-linear-gradient(to left, #e9dacb, #eee5db);
   }
-}
-
-.balance-info-maintain {
-  font-size: 12px;
-  color: #81674c;
-}
-
-.balance-wrench {
-  height: 12px;
-  width: 12px;
 }
 
 @media screen and (min-width: $phone) {
@@ -581,20 +836,12 @@ export default {
     font-size: 14px;
   }
 
-  .wallet-tip {
-    font-size: 14px;
-  }
-
   .max-money-btn {
     font-size: 14px;
   }
 
   .transfer-btn {
     font-size: 16px;
-  }
-
-  .balance-info-maintain {
-    font-size: 14px;
   }
 
   .balance-wrench {

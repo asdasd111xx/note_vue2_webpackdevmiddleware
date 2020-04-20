@@ -208,6 +208,18 @@ export default {
 
             return data;
         },
+        firstThirdBalanceInfo() {
+            const data = {}
+            Object.keys(this.membalance.vendor).slice(0,4).forEach((key) => {
+                if (key === 'default') {
+                    return;
+                }
+
+                data[key] = this.membalance.vendor[key];
+            });
+
+            return data
+        },
         tipText() {
             return this.$text('S_AUTO_SWITCH', {
                 text: '切换为【自动转换】模式重新开启游戏平台，系统会自动将主帐户余额转入正在进行中的游戏 (包含新入款成功)。',
@@ -240,7 +252,8 @@ export default {
                 // computed
                 transOut: this.transOut,
                 transIn: this.transIn,
-                balanceInfo: this.balanceInfo
+                balanceInfo: this.balanceInfo,
+                firstThirdBalanceInfo: this.firstThirdBalanceInfo
             };
         }
     },
