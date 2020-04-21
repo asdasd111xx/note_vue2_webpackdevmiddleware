@@ -5,20 +5,20 @@
     :class="$style.container"
   >
     <div slot="content" :class="$style['setting-wrap']">
-      <div :class="$style['content']">
+      <div v-if="list" :class="$style['content']">
         <div :class="$style['title']">
           <div :class="$style['block']" />
           反馈或建议
         </div>
         <div :class="$style['cell']">
           <div>
-            <img :src="list[4].value || defaultImgSrc" />
+            <img :src="(list[4] && list[4].value) || defaultImgSrc" />
           </div>
           <div>
-            <template v-if="list">
+            <div>
               <div>{{ list[0].name }}</div>
               <div>{{ list[0].value }}</div>
-            </template>
+            </div>
           </div>
           <div :class="$style['copy-btn']">
             <div @click="copy(0)">{{ $text("S_COPY", "复制") }}</div>
@@ -27,34 +27,33 @@
 
         <div :class="$style['cell']">
           <div>
-            <img :src="list[5].value || defaultImgSrc" />
+            <img :src="(list[5] && list[5].value) || defaultImgSrc" />
           </div>
           <div>
-            <template v-if="list">
+            <div>
               <div>{{ list[1].name }}</div>
               <div>{{ list[1].value }}</div>
-            </template>
+            </div>
           </div>
           <div :class="$style['copy-btn']">
             <div @click="copy(1)">{{ $text("S_COPY", "复制") }}</div>
           </div>
         </div>
       </div>
-
-      <div :class="$style['content']">
+      <div v-if="list" :class="$style['content']">
         <div :class="$style['title']">
           <div :class="$style['block']" />
           成为合营伙伴
         </div>
         <div :class="$style['cell']">
           <div>
-            <img :src="list[6].value || defaultImgSrc" />
+            <img :src="(list[6] && list[6].value) || defaultImgSrc" />
           </div>
           <div>
-            <template v-if="list">
+            <div>
               <div>{{ list[2].name }}</div>
               <div>{{ list[2].value }}</div>
-            </template>
+            </div>
           </div>
           <div :class="$style['copy-btn']">
             <div @click="copy(2)">{{ $text("S_COPY", "复制") }}</div>
@@ -63,13 +62,13 @@
 
         <div :class="$style['cell']">
           <div>
-            <img :src="list[7].value || defaultImgSrc" />
+            <img :src="(list[7] && list[7].value) || defaultImgSrc" />
           </div>
           <div>
-            <template v-if="list">
+            <div>
               <div>{{ list[3].name }}</div>
               <div>{{ list[3].value }}</div>
-            </template>
+            </div>
           </div>
           <div :class="$style['copy-btn']">
             <div @click="copy(3)">{{ $text("S_COPY", "复制") }}</div>
@@ -194,15 +193,14 @@ export default {
     height: 70px;
 
     > div:first-child {
-      width: 24px;
-      height: 24px;
+      width: 32px;
+      height: 32px;
       display: flex;
       align-items: center;
       justify-content: center;
       margin: 20px;
       img {
-        width: 24px;
-        height: 24px;
+        height: 100%;
       }
     }
 

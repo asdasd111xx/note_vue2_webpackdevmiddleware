@@ -95,14 +95,15 @@ Vue.use(depositLink);
 Vue.component('icon', Icon);
 
 // 彩金活動socket
-Vue.use(VueNativeSock,
-    // config.ACTIVES_BOUNS_WEBSOCKET + '?cid=c2118baa28d4ada25656d2c9e8e1f20bbb88e5',
-    'ws://192.168.133.98:8080/xxx/promosocket?cid=c2118baa28d4ada25656d2c9e8e1f20bbb88e5',
-    {
-        reconnection: true, // (Boolean) whether to reconnect automatically (false)
-        reconnectionAttempts: 5, // (Number) number of reconnection attempts before giving up (Infinity),
-        reconnectionDelay: 3000, // (Number) how long to initially wait before attempting a new (1000)
-    })
+// Vue.use(VueNativeSock,
+//     config.ACTIVES_BOUNS_WEBSOCKET + '?cid=28c0566e56a402f084e3dc508df40023c7beef12',
+//     {
+//         connectManually: true,
+//         format: 'json',
+//         reconnection: true, // (Boolean) whether to reconnect automatically (false)
+//         reconnectionAttempts: 5, // (Number) number of reconnection attempts before giving up (Infinity),
+//         reconnectionDelay: 3000, // (Number) how long to initially wait before attempting a new (1000)
+//     })
 
 
 /* eslint-disable no-new */

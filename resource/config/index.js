@@ -26,27 +26,27 @@ module.exports = {
         proxyTable: {
             // 可於自己開發時改換但不要蓋紀錄
             // '/ubb': {
-            //     target: 'https://yb0t.66relish.com/',
+            //     target: 'https://yb01.66boxing.com/',
             //     changeOrigin: true,
             //     secure: false
             // },
             // '/static': {
-            //     target: 'https://yb0t.66relish.com/',
+            //     target: 'https://yb01.66boxing.com/',
             //     changeOrigin: true,
             //     secure: false
             // },
             // '/i18n': {
-            //     target: 'https://yb0t.66relish.com/',
+            //     target: 'https://yb01.66boxing.com/',
             //     changeOrigin: true,
             //     secure: false
             // },
             // '/checkinfo': {
-            //     target: 'https://yb0t.66relish.com/',
+            //     target: 'https://yb01.66boxing.com/',
             //     changeOrigin: true,
             //     secure: false
             // },
             '/api': {
-                target: 'https://yb0t.66relish.com/',
+                target: 'https://yb01.66boxing.com/',
                 changeOrigin: true,
                 ws: true,
                 secure: false
@@ -58,19 +58,19 @@ module.exports = {
             '/tpl': {
                 //  開發測試用
                 // target: 'http://pineapple.vir888.net',
-                target: 'https://yb0t.66relish.com/',
+                target: 'https://yb01.66boxing.com/',
                 changeOrigin: true,
                 secure: false
             },
             '/cdn': {
                 //  開發測試用
                 // target: 'http://pineapple.vir888.net',
-                target: 'https://yb0t.66relish.com/',
+                target: 'https://yb01.66boxing.com/',
                 changeOrigin: true,
                 secure: false
             },
             '/payment': {
-                target: 'https://yb0t.66relish.com/',
+                target: 'https://yb01.66boxing.com/',
                 changeOrigin: true,
                 secure: false
             }

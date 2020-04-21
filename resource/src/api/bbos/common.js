@@ -2,7 +2,7 @@ import * as apiUrl from './config';
 
 import ajax from '../../lib/ajax';
 
-const DOMAIN = apiUrl.API_DOMAIN_DEV;
+let DOMAIN = apiUrl.PORN1_DOMAIN;
 
 export default {
     // ＝＝＝＝＝＝＝＝＝＝＝＝＝＝＝＝＝＝

@@ -235,6 +235,22 @@ $bouns_color6: #FFF07B;
     }
 }
 
+.circle_loader {
+    border: 1.5px solid;
+    width: 20px;
+    height: 20px;
+    border-radius: 50%;
+    border-color: #ffd628 rgba(0, 0, 0, 0) rgba(0, 0, 0, 0);
+    animation: spin 3s linear infinite;
+    position: absolute;
+    margin: auto;
+    left: 0;
+    top: 0;
+    right: 0;
+    bottom: 0;
+}
+
+
 :global {
     @keyframes fade-in {
         0% {
@@ -283,6 +299,12 @@ $bouns_color6: #FFF07B;
             opacity: 0;
         }
     }
+
+    @keyframes spin {
+        100% {
+            transform: rotate(360deg);
+        }
+    }
 }
 
 @media screen and (min-width: $phone) {
@@ -308,6 +330,11 @@ $bouns_color6: #FFF07B;
         >div {
             font-size: 21px;
         }
+    }
+
+    .circle_loader {
+        left: 5px;
+        right: unset;
     }
 
     .bouns-process {

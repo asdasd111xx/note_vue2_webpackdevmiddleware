@@ -13,16 +13,16 @@
       ]"
     >
       <div :class="$style['coin']">
-        <div class="circle_box">
-          <div class="coin_process_circle"></div>
-          <div class="coin_process_circle"></div>
-        </div>
         <div :class="$style['icon']">
           <img
             :src="
               $getCdnPath(`/static/image/_new/actives/bouns/${curCoinSrc}.png`)
             "
           />
+        </div>
+
+        <div v-if="processType !== 'earn'" class="circle_box">
+          <div :class="$style['circle_loader']"></div>
         </div>
 
         <span v-if="processType === 'earn'" :class="$style['earn']">

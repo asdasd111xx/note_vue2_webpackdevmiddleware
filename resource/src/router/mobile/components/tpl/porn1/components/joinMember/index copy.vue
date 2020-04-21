@@ -89,7 +89,6 @@ export default {
 }
 
 .join-star {
-  visibility: hidden;
   position: absolute;
   left: 0;
   color: #d01c1c;
@@ -147,8 +146,8 @@ export default {
 }
 
 .join-btn {
-  color: white;
-  background: linear-gradient(to left, #bd9d7d 0%, #f9ddbd 100%);
+  color: #000;
+  background: #fad859;
   border-radius: 30px;
 }
 

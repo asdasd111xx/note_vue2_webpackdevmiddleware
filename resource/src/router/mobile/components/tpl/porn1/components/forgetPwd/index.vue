@@ -261,8 +261,6 @@ export default {
 
 .form-data {
   padding: 7% 4% 15%;
-  background: rgba(#fff, 0.5);
-  border-radius: 5px;
 }
 
 .method-item {
@@ -323,10 +321,9 @@ export default {
 .forget-submit {
   padding: 3.5% 0;
   margin-top: 25px;
-  color: #fff;
+  color: white;
   text-align: center;
   border-radius: 35px;
-  background: #60e6ff;
-  background: -webkit-linear-gradient(left, #60e6ff, #46a8fe);
+  background: linear-gradient(to left, #bd9d7d 0%, #f9ddbd 100%);
 }
 </style>
