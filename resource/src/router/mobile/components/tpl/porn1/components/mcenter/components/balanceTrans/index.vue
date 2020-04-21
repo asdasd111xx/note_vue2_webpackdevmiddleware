@@ -13,7 +13,7 @@
               <img
                 :src="
                   $getCdnPath(
-                    '/static/image/_new/mcenter/myWallet/ic_wallet_center.png'
+                    '/static/image/_new/mcenter/balanceTrans/ic_wallet_center.png'
                   )
                 "
               />
@@ -89,6 +89,7 @@
                 <span
                   v-if="item.maintain"
                   :class="$style['balance-info-maintain']"
+                  @click="onClickMaintain(item.maintain)"
                 >
                   <img
                     :src="
@@ -115,7 +116,7 @@
                   <img
                     :src="
                       $getCdnPath(
-                        `/static/image/_new/mcenter/myWallet/ic_expand.png`
+                        `/static/image/_new/mcenter/balanceTrans/ic_expand.png`
                       )
                     "
                     alt="expend"
@@ -143,12 +144,13 @@
                 <span
                   v-if="item.maintain"
                   :class="$style['balance-info-maintain']"
+                  @click="onClickMaintain(item.maintain)"
                 >
                   {{ $t("S_MAINTAIN") }}
                   <img
                     :src="
                       $getCdnPath(
-                        '/static/image/_new/mcenter/myWallet/icon_transfer_tips_info.png'
+                        '/static/image/_new/mcenter/balanceTrans/icon_transfer_tips_info.png'
                       )
                     "
                     :class="$style['balance-wrench']"
@@ -169,7 +171,7 @@
                   <img
                     :src="
                       $getCdnPath(
-                        `/static/image/_new/mcenter/myWallet/ic_collapse.png`
+                        `/static/image/_new/mcenter/balanceTrans/ic_collapse.png`
                       )
                     "
                     alt="collapse"
@@ -222,7 +224,15 @@
                           "
                         >
                           <span>{{ vendor.text }}</span>
-                          <img v-if="transOutText === vendor.text" :src="$getCdnPath(`/static/image/_new/mcenter/myWallet/ic_transfer_sel.png`)" alt="sel">
+                          <img
+                            v-if="transOutText === vendor.text"
+                            :src="
+                              $getCdnPath(
+                                `/static/image/_new/mcenter/balanceTrans/ic_transfer_sel.png`
+                              )
+                            "
+                            alt="sel"
+                          />
                         </div>
                       </div>
                     </div>
@@ -269,7 +279,15 @@
                           "
                         >
                           {{ vendor.text }}
-                          <img v-if="transInText === vendor.text" :src="$getCdnPath(`/static/image/_new/mcenter/myWallet/ic_transfer_sel.png`)" alt="sel">
+                          <img
+                            v-if="transInText === vendor.text"
+                            :src="
+                              $getCdnPath(
+                                `/static/image/_new/mcenter/balanceTrans/ic_transfer_sel.png`
+                              )
+                            "
+                            alt="sel"
+                          />
                         </div>
                       </div>
                     </div>
@@ -320,11 +338,19 @@
                 })
               "
             >
-              立即轉帳
+              立即转帐
             </div>
           </template>
         </template>
       </balance-tran>
+      <message v-if="msg" @close="msg = ''">
+        <div slot="msg">
+          <div
+            v-html="msg"
+            style="background-color: transparent ; margin: 0 ; padding: 0"
+          ></div>
+        </div>
+      </message>
     </div>
   </mobile-container>
 </template>
@@ -333,11 +359,13 @@
 import { mapActions } from "vuex";
 import balanceTran from "@/components/mcenter/components/balanceTran";
 import mobileContainer from "../../../common/new/mobileContainer";
+import message from "../../../common/new/message";
 
 export default {
   components: {
     mobileContainer,
-    balanceTran
+    balanceTran,
+    message
   },
   data() {
     return {
@@ -350,6 +378,7 @@ export default {
         },
         hasHelp: true
       },
+      msg: "",
       isShowMore: false,
       isShowTransOutSelect: false,
       isShowTransInSelect: false,
@@ -399,6 +428,14 @@ export default {
     setTransOutText(value) {
       this.transOutText = value;
       this.closeSelect();
+    },
+    onClickMaintain(value) {
+      this.msg = `美东时间：
+          <br>
+          ${value.etc_start_at}
+          <p style="text-align: center">|</p>
+          ${value.etc_end_at}
+        `;
     }
   }
 };
@@ -548,9 +585,10 @@ export default {
 
 .balance-item {
   position: relative;
-  float: left;
+  display: inline-block;
   box-sizing: border-box;
   width: 25%;
+  height: 65px;
   padding: 10px 4px 15px;
   text-align: center;
   font-size: 14px;
@@ -625,7 +663,7 @@ export default {
 .balance-transfer-wrap {
   margin: 1% 0 2%;
   border-radius: 4px;
-  background: url("/static/image/_new/mcenter/myWallet/ic_transfergo.png")
+  background: url("/static/image/_new/mcenter/balanceTrans/ic_transfergo.png")
     rgba(255, 255, 255, 0.65) 50% 50% no-repeat;
   background-size: 20px 15px;
 }

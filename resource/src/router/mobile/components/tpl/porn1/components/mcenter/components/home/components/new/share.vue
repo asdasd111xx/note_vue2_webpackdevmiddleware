@@ -29,7 +29,7 @@
             </message>
         </div>
 
-        <div v-if="showSaveOption" :class="$style['option-container']">
+        <!-- <div v-if="showSaveOption" :class="$style['option-container']">
             <div :class="$style['option-wrap']">
                 <p
                     :class="$style['option-cell']"
@@ -47,7 +47,7 @@
                     取消
                 </div>
             </div>
-        </div>
+        </div> -->
     </div>
 </template>
 
@@ -68,7 +68,7 @@ export default {
     data() {
         return {
             msg: "",
-            showSaveOption: false,
+            // showSaveOption: false,
             shareImageSrc: "",
             funcList: [
                 {
@@ -78,15 +78,6 @@ export default {
                     imgSrc: `/static/image/_new/mcenter/share/btn_copy.png`,
                     text: "复制链接"
                 },
-                {
-                    callback: () => {
-                        this.showOption();
-                    },
-                    imgSrc: `/static/image/_new/mcenter/share/btn_copy.png`,
-                    text: "保存图片"
-                }
-            ],
-            optionList: [
                 {
                     callback: () => {
                         axios({
@@ -106,27 +97,51 @@ export default {
                             fileLink.click();
                         });
                     },
-                    text: "储存图片"
-                },
-                {
-                    callback: () => {
-                        this.copyShareImage();
-                    },
-                    text: "复制图片"
-                },
-                {
-                    callback: () => {
-                        window.location.href = this.shareImageSrc;
-                    },
-                    text: "开启图片"
-                },
-                {
-                    callback: () => {
-                        window.open(this.shareImageSrc);
-                    },
-                    text: "在新分页中开启图片"
+                    imgSrc: `/static/image/_new/mcenter/share/btn_copy.png`,
+                    text: "保存图片"
                 }
-            ]
+            ],
+            // optionList: [
+            //     {
+            //         callback: () => {
+            //             axios({
+            //                 url: this.shareImageSrc,
+            //                 methods: "GET",
+            //                 responseType: "blob"
+            //             }).then(res => {
+            //                 let fileURL = window.URL.createObjectURL(
+            //                     new Blob([res.data])
+            //                 );
+
+            //                 let fileLink = document.createElement("a");
+            //                 fileLink.href = fileURL;
+            //                 fileLink.setAttribute("download", "yabo.png");
+            //                 document.body.appendChild(fileLink);
+
+            //                 fileLink.click();
+            //             });
+            //         },
+            //         text: "储存图片"
+            //     },
+            //     {
+            //         callback: () => {
+            //             this.copyShareImage();
+            //         },
+            //         text: "复制图片"
+            //     },
+            //     {
+            //         callback: () => {
+            //             window.location.href = this.shareImageSrc;
+            //         },
+            //         text: "开启图片"
+            //     },
+            //     {
+            //         callback: () => {
+            //             window.open(this.shareImageSrc);
+            //         },
+            //         text: "在新分页中开启图片"
+            //     }
+            // ]
         };
     },
     mounted() {
@@ -136,12 +151,12 @@ export default {
         closeShare() {
             this.$emit("update:isShowShare", false);
         },
-        showOption() {
-            this.showSaveOption = true;
-        },
-        closeOption() {
-            this.showSaveOption = false;
-        },
+        // showOption() {
+        //     this.showSaveOption = true;
+        // },
+        // closeOption() {
+        //     this.showSaveOption = false;
+        // },
         copyShareImage() {
             this.$copyText(this.shareImageSrc).then(e => {
                 this.msg = "复制成功";

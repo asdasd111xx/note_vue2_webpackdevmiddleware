@@ -151,7 +151,7 @@
                 <img
                     :src="
                         $getCdnPath(
-                            '/static/image/_new/mcenter/myWallet/btn_help.png'
+                            '/static/image/_new/mcenter/balanceTrans/btn_help.png'
                         )
                     "
                     @click="$router.push('/mobile/mcenter/help')"

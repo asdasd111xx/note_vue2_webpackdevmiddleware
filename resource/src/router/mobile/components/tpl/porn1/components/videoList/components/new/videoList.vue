@@ -215,11 +215,11 @@ export default {
 .title {
     position: absolute;
     width: 100%;
-    height: 30px;
-    line-height: 30px;
+    height: 20px;
+    line-height: 20px;
     bottom: 0;
-    font-size: 14px;
-    color: #fff;
+    font-size: 12px;
+    color: $main_white_color1;
     background: #000;
     opacity: 0.8;
     overflow: hidden;

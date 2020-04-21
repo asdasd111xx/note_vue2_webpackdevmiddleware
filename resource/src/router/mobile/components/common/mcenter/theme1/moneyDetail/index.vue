@@ -1,250 +1,284 @@
 <template>
-    <div :class="[$style['money-detail-wrap'], colorClass]">
-        <mcenter-header :header-setting="headerSetting" />
-        <div :class="$style['choice-swipe-list']">
-            <swiper :options="swiperOption" :class="$style['type-list']">
-                <swiper-slide
-                    v-for="(option, index) in choiceTypes"
-                    :key="`type-${index}`"
-                    :class="[$style['type-item'], { [$style['is-active']]: choiceItem === option.key || type === option.key }]"
-                >
-                    <span @click="getTypeData(option.key)">
-                        {{ option.text }}
-                    </span>
-                </swiper-slide>
-            </swiper>
-            <div :class="$style['choice-btn']" @click="showChoiceList()">
-                <img :src="$getCdnPath('/static/image/mobile/mcenter/ic_arrow_d.png')" />
+    <div v-if="isReceive" class="money-detail-wrap">
+        <div v-if="$route.params.page !== 'detail' || !detailInfo" :class="[$style['top-link'], 'clearfix']">
+            <div :class="$style['link-wrap']" @click="changeCondition('category')">
+                <div>{{ currentCategory.text }}</div>
+                <span :class="{ [$style['arrow-top']]: showCondition === 'category' }" />
+            </div>
+            <div :class="[$style['link-wrap'], { [$style['has-date']]: currentDate.key === 'custom' }]" @click="changeCondition('date')">
+                <div v-if="currentDate.key === 'custom'">{{ startTime | dateFormat }}<br />{{ endTime | dateFormat }}</div>
+                <div v-else>{{ currentDate.text }}</div>
+                <span :class="{ [$style['arrow-top']]: showCondition === 'date' }" />
             </div>
         </div>
-        <div v-if="showAllChoice" :class="$style['choice-expand-wrap']">
-            <div :class="$style['choice-mask']" />
-            <div :class="$style['choice-content']">
+        <div v-if="showCondition === 'category'" :class="[$style['record-select']]">
+            <div :class="[$style['select-wrap'], 'clearfix']">
                 <div
-                    v-for="(option, index) in choiceTypes"
-                    :key="`choice-${index}`"
-                    :class="[$style['choice-item'], { [$style['is-active']]: choiceItem === option.key || type === option.key }]"
-                    @click="getTypeData(option.key)"
+                    v-for="option in categoryOptions"
+                    :key="option.key"
+                    :class="[$style.select, { [$style.active]: currentCategory.key === option.key }]"
+                    @click="setCategory(option)"
                 >
-                    {{ option.text }}
+                    <span>{{ option.text }}</span>
                 </div>
             </div>
         </div>
-        <div :class="$style['total-input-wrap']">
-            <div v-if="showSearch" :class="$style['select-list']">
-                <div :class="$style['select-input']">
-                    <div>{{ $text('S_PLEASE_SELECT_TYPE', '请选择类别') }}</div>
-                    <select v-model="type">
-                        <option
-                            v-for="(option, key) in options"
-                            :key="`option-${key}`"
-                            :value="option.key"
-                            :selected="type === option.key ? 'selected' : ''"
-                        >
-                            {{ option.text }}
-                        </option>
-                    </select>
-                </div>
-                <div :class="$style['date-pick']">
-                    <div>{{ $text('S_STARTED_DAY', '起始日') }}</div>
-                    <input v-model="startTime" type="date" />
-                </div>
-                <div :class="$style['date-pick']">
-                    <div>{{ $text('S_END_DAY', '结束日') }}</div>
-                    <input v-model="endTime" type="date" />
-                </div>
-                <div :class="$style['select-list-btn']">
-                    <button :class="$style['select-btn']" @click="setInquire()">{{ $text('S_INQUIRE', '查询') }}</button>
-                </div>
-            </div>
-        </div>
-        <div v-if="type !== 'all'" :class="$style['date-header']">
-            <div :class="$style['date-header-left']">{{ $text('S_DATE', '日期') }}</div>
-            <div :class="$style['date-header-right']">
-                <span>{{ startTime }} ～ {{ endTime }}</span>
-                <div :class="$style['sort-btn']" @click="onSort(sort === 'asc' ? 'desc' : 'asc')"/>
-            </div>
-        </div>
-        <div :class="$style['bank-money-detail']">
-            <template v-if="detailList.length">
+        <div v-if="showCondition === 'date'" :class="[$style['record-select']]">
+            <div :class="[$style['select-wrap'], 'clearfix']">
                 <div
-                    v-for="(item, index) in detailList"
-                    :key="`money-detail-${index}`"
-                    :class="$style['detail-wrap']"
+                    v-for="option in dateOptions"
+                    :key="option.key"
+                    :class="[$style.select, { [$style.active]: currentDate.key === option.key }]"
+                    @click="setDate(option)"
                 >
-                    <div :class="$style['detail-top']">
-                        <div :class="$style['top-title']">
-                            <div :class="$style['top-date']">{{ item.created_at }}</div>
-                            <div :class="$style['top-name']">{{ opcodeList[item.opcode] }}</div>
-                        </div>
-                        <div :class="[$style['top-money'], { [$style['is-negative']]: item.amount < 0 }]">{{ item.amount }}</div>
-                        <div :class="$style['top-expand']">
-                            <img
-                                :class="$style['top-expand-btn']"
-                                :src="$getCdnPath(!expandDetailList.includes(item.id) ? '/static/image/mobile/mcenter/btn_expand2.png' : '/static/image/mobile/mcenter/btn_collapse2.png')"
-                                @click="selectExpandDetail(item.id)"
-                            />
-                        </div>
-                    </div>
-                    <div v-if="expandDetailList.includes(item.id)" :class="[$style['detail-content-wrap'], 'clearfix']">
-                        <div :class="$style['detail-line']"/>
-                        <div :class="$style['detail-content']">
-                            <span :class="$style['content-left']">{{ $text('S_TRANSACTION_GOLD', '交易额度') }}</span>
-                            <div :class="[$style['content-right'], { [$style['is-negative']]: item.amount < 0 }]">{{ item.amount }}</div>
-                        </div>
-                        <div :class="$style['detail-content']">
-                            <span :class="$style['content-left']">{{ $text('S_MAIN_SUM', '主帐户小计') }}</span>
-                            <div :class="$style['content-right']">{{ item.balance }}</div>
-                        </div>
-                        <div :class="$style['detail-content']">
-                            <span :class="$style['content-left']">{{ $text('S_BETTYPE_1', '单号') }}</span>
-                            <div :class="$style['content-right']">{{ item.ref_id }}</div>
-                        </div>
-                        <div :class="$style['detail-content']">
-                            <span :class="$style['content-left']">{{ $text('S_REMARK', '备注') }}</span>
-                            <div :class="$style['content-right']">{{ item.memo }}</div>
-                        </div>
+                    <span>{{ option.text }}</span>
+                </div>
+            </div>
+            <div v-if="showDatePicker" :class="$style['date-wrap']">
+                <div :class="[$style['picker-wrap'], 'clearfix']" @click="changeDatePicker('start')">
+                    <div :class="$style['date-text']">开始日期</div>
+                    <div :class="$style['select-date']">{{ startTime | dateFormat }}</div>
+                    <div :class="$style['icon-arrow']">
+                        <icon
+                            name="chevron-right"
+                            width="10"
+                            height="16"
+                        />
                     </div>
                 </div>
-                <pagination
-                    :class="$style.pagination"
-                    :page="pageNow"
-                    :total="pageAll"
-                    @update:page="(page) => onChange(false, page)"
+                <date-picker
+                    v-if="currentDatePicker === 'start'"
+                    :key="'start-date-picker'"
+                    :date.sync="startTime"
+                    :min-limit="limitTime"
+                    :max-limit="estToday"
                 />
-            </template>
-            <template v-else>
-                <div :class="$style['no-data']">
-                    <div :class="$style['no-data-img']"/>
-                    <p>{{ $text('S_NO_DATA_GENERATED', '尚未产生数据') }}</p>
+                <div :class="[$style['picker-wrap'], 'clearfix']" @click="changeDatePicker('end')">
+                    <div :class="$style['date-text']">结束日期</div>
+                    <div :class="$style['select-date']">{{ endTime | dateFormat }}</div>
+                    <div :class="$style['icon-arrow']">
+                        <icon
+                            name="chevron-right"
+                            width="10"
+                            height="16"
+                        />
+                    </div>
                 </div>
-            </template>
-            <div :class="[$style['remind-message'], { [$style['show']]: messageStatus }]">
-                <div>{{ $text('S_CHANGE_PLEASE_CLICK', '更改查询条件请重复点击上方搜索') }}</div>
+                <date-picker
+                    v-if="currentDatePicker === 'end'"
+                    :key="'end-date-picker'"
+                    :date.sync="endTime"
+                    :min-limit="limitTime"
+                    :max-limit="estToday"
+                />
+                <div :class="['picker-button-wrap', 'clearfix']">
+                    <div :class="$style.cancel" @click="onCancel">取消</div>
+                    <div :class="$style.confirm" @click="onConfirm">确定</div>
+                </div>
             </div>
         </div>
-        <v-style>
-            <!-- eslint-disable vue/html-indent -->
-            .{{ $style['select-btn'] }} {
-                background-image: url({{ $getCdnPath('/static/image/mobile/mcenter/btn_button_n.png') }});
-            }
-            .{{ $style['expand-btn'] }} {
-                background: url({{ $getCdnPath('/static/image/mobile/mcenter/btn_cancel_n.png') }}) 100%/100% no-repeat;
-            }
-            <!-- eslint-enable vue/html-indent -->
-        </v-style>
+        <detail-info
+            v-if="$route.params.page === 'detail' && detailInfo"
+            :current-category="currentCategory"
+            :opcode-list="opcodeList"
+            :detail-info.sync="detailInfo"
+        />
+        <detail-list
+            v-else
+            :current-category="currentCategory"
+            :opcode-list="opcodeList"
+            :detail-list="detailList"
+            :detail-info.sync="detailInfo"
+        />
     </div>
 </template>
 
 <script>
-import { mapGetters } from 'vuex';
-import { swiper, swiperSlide } from 'vue-awesome-swiper';
-import mixin from '@/mixins/mcenter/moneyDetail';
-import pagination from '../pagination';
+import Vue from 'vue';
+import common from '@/api/common';
+import mcenter from '@/api/mcenter';
+import EST from '@/lib/EST';
 
 export default {
     components: {
-        mcenterHeader: () => import(/* webpackChunkName: 'recordDeposit' */'@/router/mobile/components/common/mcenter/theme1/header'),
-        pagination,
-        swiper,
-        swiperSlide
+        detailList: () => import(/* webpackChunkName: 'detailList' */ './components/detailList'),
+        detailInfo: () => import(/* webpackChunkName: 'detailInfo' */ './components/detailInfo'),
+        datePicker: () => import(/* webpackChunkName: 'datePicker' */ '../../../datePicker/index')
     },
-    mixins: [mixin],
+    filters: {
+        dateFormat(date) {
+            return Vue.moment(date).format('YYYY-MM-DD');
+        }
+    },
     data() {
+        const estToday = EST(new Date(), '', true);
+        const limitTime = new Date(Vue.moment(estToday).add(-29, 'days'));
+
         return {
-            headerSetting: {
-                title: this.$text('S_FUNDS_DETAILS', '资金明细'),
-                leftBtns: {
-                    icon: 'arrow',
-                    onClick: () => this.$router.push('/mobile/mcenter')
-                },
-                balance: true
-            },
-            swiperOption: {
-                slidesPerView: 'auto' // 容器呈現內的項目數量
-            },
-            showSearch: false,
-            expandDetailList: [],
-            choiceItem: '',
-            showAllChoice: false
+            estToday,
+            startTime: estToday,
+            endTime: estToday,
+            limitTime,
+            isReceive: false,
+            showCondition: '',
+            showDatePicker: false,
+            currentCategory: { key: 'deposit', text: this.$text('S_DEPOSIT', '充值') },
+            currentDate: { key: 'today', text: this.$text('S_TODDAY', '今日') },
+            currentDatePicker: '',
+            opcodeList: {},
+            detailList: null,
+            detailInfo: null,
+            type: ['deposit'], // 交易類型 預設開啟存款
+            sort: 'desc', // 排序方式
+            firstResult: 0, // 每頁起始筆數
+            maxResults: 20, // 每頁顯示幾筆
+            pageNow: 1, // 當前頁
+            pageAll: 1 // 總頁數
         };
     },
     computed: {
-        ...mapGetters({
-            siteConfig: 'getSiteConfig',
-            memInfo: 'getMemInfo'
-        }),
-        expandBtnText() {
-            return this.detailList.length !== this.expandDetailList.length || this.expandDetailList.length === 0 ? this.$text('S_SHOW', '展开') : this.$text('S_CLOSE02', '收合');
-        },
-        colorClass() {
+        categoryOptions() {
             return [
-                {
-                    [this.$style[`site-${this.memInfo.user.domain}`]]: this.$style[`site-${this.memInfo.user.domain}`],
-                    [this.$style['preset-color']]: !this.$style[`site-${this.memInfo.user.domain}`]
-                }
+                { key: 'deposit', text: '充值' },
+                { key: 'vendor', text: '转帐' },
+                { key: 'withdraw', text: '提现' },
+                { key: 'bouns', text: '红利' },
+                { key: 'manual', text: '人工' }
+            ];
+        },
+        dateOptions() {
+            return [
+                { key: 'today', text: '今日' },
+                { key: 'yesterday', text: '昨日' },
+                { key: 'week', text: '近7天' },
+                { key: 'thirty', text: '近30天' },
+                { key: 'custom', text: '自定义' }
             ];
         }
     },
-    watch: {
-        detailList() {
-            this.expandDetailList = [];
+    created() {
+        if (this.$route.params.page === 'detail' && !this.detailInfo) {
+            this.$router.push('/mobile/mcenter/moneyDetail');
         }
-    },
-    methods: {
-        /**
-         * 取得圖片
-         * @method getImg
-         * @return {Object} 圖片路徑
-         */
-        getImg() {
-            const srcImg = this.showSearch ? '/static/image/mobile/mcenter/btn_inquire_h.png' : '/static/image/mobile/mcenter/btn_inquire.png';
 
-            return {
-                src: this.$getCdnPath(srcImg),
-                error: this.$getCdnPath('/static/image/mobile/mcenter/btn_inquire_h.png'),
-                loading: this.$getCdnPath('/static/image/game_loading_s.gif')
-            };
-        },
-        selectExpandDetail(key) {
-            if (!this.expandDetailList.includes(key)) {
-                this.expandDetailList.push(key);
-                return;
-            }
-            this.expandDetailList.splice(this.expandDetailList.indexOf(key), 1);
-        },
-        showAllDetail() {
-            if (this.detailList.length === this.expandDetailList.length) {
-                this.expandDetailList = [];
-                return;
-            }
-
-            this.detailList.forEach((key) => {
-                if (this.expandDetailList.includes(key.id)) {
+        common.opcode({
+            success: ({ result, ret }) => {
+                if (result !== 'ok') {
                     return;
                 }
-                this.expandDetailList.push(key.id);
+                this.opcodeList = ret;
+            }
+        });
+
+        this.getData();
+    },
+    methods: {
+        getData() {
+            mcenter.moneyDetail({
+                params: {
+                    start_at: Vue.moment(this.startTime).format('YYYY-MM-DD 00:00:00-04:00'),
+                    end_at: Vue.moment(this.endTime).format('YYYY-MM-DD 23:59:59-04:00'),
+                    category: this.type,
+                    order: this.sort,
+                    first_result: this.pageNow * this.firstResult,
+                    max_results: this.pageNow * this.maxResults
+                },
+                success: ({ result, pagination, ret }) => {
+                    this.isReceive = true;
+
+                    if (result !== 'ok' || ret.length === 0) {
+                        return;
+                    }
+
+                    this.detailList = ret.reduce((init, info) => {
+                        const date = EST(info.created_at, 'YYYY-MM-DD');
+
+                        if (!init[date]) {
+                            return { ...init, [date]: [info] };
+                        }
+
+                        return { ...init, [date]: [...init[date], info] };
+                    }, {});
+
+                    if (pagination.total === '0') {
+                        return;
+                    }
+
+                    this.pageAll = Math.ceil(+pagination.total / this.maxResults);
+
+                    if (this.pageNow >= this.pageAll) {
+                        return;
+                    }
+
+                    this.pageNow += 1;
+
+                    this.getData();
+                }
             });
         },
-        getTypeData(type) {
-            this.choiceItem = type;
-            this.showAllChoice = false;
+        setCategory(value) {
+            this.currentCategory = value;
+            this.type = value.key === 'bouns' ? ['activity', 'rebate'] : [value.key];
 
-            if (type === 'search') {
-                this.type = 'all';
-                this.showSearch = !this.showSearch;
+            this.changeCondition('');
+            this.changeDatePicker('');
+            this.getData();
+        },
+        setDate(value) {
+            switch (value.key) {
+                case 'thirty':
+                    this.startTime = new Date(Vue.moment(this.estToday).add(-29, 'days'));
+                    this.endTime = new Date(Vue.moment(this.estToday));
+                    break;
+                case 'week':
+                    this.startTime = new Date(Vue.moment(this.estToday).add(-6, 'days'));
+                    this.endTime = new Date(Vue.moment(this.estToday));
+                    break;
+                case 'yesterday':
+                    this.startTime = new Date(Vue.moment(this.estToday).add(-1, 'days'));
+                    this.endTime = new Date(Vue.moment(this.estToday).add(-1, 'days'));
+                    break;
+                default:
+                    this.startTime = new Date(Vue.moment(this.estToday));
+                    this.endTime = new Date(Vue.moment(this.estToday));
+                    break;
+            }
+
+            this.showDatePicker = value.key === 'custom';
+
+            if (value.key === 'custom') {
                 return;
             }
 
-            this.showSearch = false;
-            this.onType(type);
+            this.currentDate = value;
+
+            this.changeCondition('');
+            this.changeDatePicker('');
+            this.getData();
         },
-        showChoiceList() {
-            this.showAllChoice = !this.showAllChoice;
+        changeCondition(value) {
+            this.showDatePicker = this.currentDate.key === 'custom';
+            this.showCondition = this.showCondition === value ? '' : value;
+
+            this.changeDatePicker('');
         },
-        setInquire() {
-            this.messageStatus = true;
-            this.onInquire();
+        changeDatePicker(value) {
+            this.currentDatePicker = this.currentDatePicker === value ? '' : value;
+        },
+        onCancel() {
+            this.changeCondition('');
+            this.changeDatePicker('');
+        },
+        onConfirm() {
+            if (this.startTime > this.endTime) {
+                return;
+            }
+
+            this.currentDate = { key: 'custom', text: '自定义' };
+
+            this.changeCondition('');
+            this.changeDatePicker('');
+            this.getData();
         }
     }
 };

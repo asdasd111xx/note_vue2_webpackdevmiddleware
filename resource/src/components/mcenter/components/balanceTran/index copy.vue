@@ -121,11 +121,6 @@
                 <p v-if="isAutotransfer" class="tip-text clear">{{ $t('S_TIPS') }}: <br /> <span v-html="tipText" /></p>
             </div>
         </slot>
-        <message v-if="msg" @close="msg = ''">
-          <div slot="msg">
-            {{msg}}
-          </div>
-        </message>
     </div>
 </template>
 
@@ -133,16 +128,13 @@
 import { mapGetters, mapActions } from 'vuex';
 import { ModelSelect } from 'vue-search-select';
 import mcenter from '@/api/mcenter';
-import message from "@/router/mobile/components/tpl/porn1/components/common/new/message"
 
 export default {
     components: {
-        ModelSelect,
-        message
+        ModelSelect
     },
     data() {
         return {
-            msg: '',
             balanceLock: true,
             btnLock: false,
             balanceBackLock: false,
@@ -290,8 +282,7 @@ export default {
             this.AutotransferLock = true;
             mcenter.balanceTranAutoEnable({
                 success: () => {
-                    this.msg = this.$t('S_SWITCH_AUTO_TRANSFER')
-                    // alert(this.$t('S_SWITCH_AUTO_TRANSFER'));
+                    alert(this.$t('S_SWITCH_AUTO_TRANSFER'));
                     this.isAutotransfer = true;
                     this.backAccount();
                     this.actionSetUserdata(true);
@@ -312,8 +303,7 @@ export default {
             this.AutotransferLock = true;
             mcenter.balanceTranAutoClose({
                 success: () => {
-                    this.msg = this.$t('S_SWITCH_SUCCESS')
-                    // alert(this.$t('S_SWITCH_SUCCESS'));
+                    alert(this.$t('S_SWITCH_SUCCESS'));
                     this.isAutotransfer = false;
                     this.actionSetUserdata(true);
 
@@ -382,18 +372,15 @@ export default {
             const { money } = this;
 
             if (+source === 0 || +target === 0) {
-                this.msg = this.$t('S_SELECT_ACCOUNT')
-                // alert(this.$t('S_SELECT_ACCOUNT'));
+                alert(this.$t('S_SELECT_ACCOUNT'));
                 return;
             }
             if (money === '') {
-                this.msg = this.$t('S_AMOUNT_NULL_VALUE')
-                // alert(this.$t('S_AMOUNT_NULL_VALUE'));
+                alert(this.$t('S_AMOUNT_NULL_VALUE'));
                 return;
             }
             if (!re.test(money)) {
-                this.msg = this.$t('S_DAW_ONLY_INT')
-                // alert(this.$t('S_DAW_ONLY_INT'));
+                alert(this.$t('S_DAW_ONLY_INT'));
                 return;
             }
 
@@ -408,8 +395,7 @@ export default {
                         customSucessAlert();
                     }
                     if (!customSucessAlert) {
-                        this.msg = this.$t('S_CR_SUCCESS')
-                        // alert(this.$t('S_CR_SUCCESS'));
+                        alert(this.$t('S_CR_SUCCESS'));
                     }
 
                     this.lockSec = 0;

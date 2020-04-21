@@ -49,21 +49,23 @@
                         </div>
 
                         <!-- 有達成時的icon -->
-                        <img v-if="userVipInfo.now_level_seq <= item.seq"
+                        <img
+                            v-if="item.seq <= userVipInfo.now_level_seq"
                             :class="$style['card-level-image']"
                             :src="
                                 $getCdnPath(
-                                    `/static/image/_new/mcenter/vip/ic_s_vip${item.seq}.png`
+                                    `/static/image/_new/mcenter/vip/ic_vip${item.seq}.png`
                                 )
                             "
                             alt="vipLevel_bg"
                         />
                         <!-- 尚未達成的icon -->
-                        <img v-else
+                        <img
+                            v-else
                             :class="$style['card-level-image']"
                             :src="
                                 $getCdnPath(
-                                    `/static/image/_new/mcenter/vip/ic_vip${item.seq}.png`
+                                    `/static/image/_new/mcenter/vip/ic_s_vip${item.seq}.png`
                                 )
                             "
                             alt="vipLevel_bg"
@@ -121,9 +123,8 @@ export default {
     computed: {
         vipLevelOption() {
             return {
-                slidesPerView: 4,
-                allowTouchMove: false
-                // centeredSlides: true
+                slidesPerView: 'auto',
+                allowTouchMove: false,
             };
         },
         vipCardOption() {
@@ -138,9 +139,9 @@ export default {
             const swiperLevel = this.$refs.swiperLevel.$swiper;
             const swiperCard = this.$refs.swiperCard.$swiper;
 
-            swiperCard.controller.control = swiperLevel;
             swiperCard.on("slideChange", () => {
                 this.selectedIndex = swiperCard.realIndex;
+                swiperLevel.slideTo(this.selectedIndex , 500 , false)
             });
         });
         console.log(this.vipLevelList);
@@ -172,6 +173,19 @@ $border-radius: 10px;
     height: auto;
     padding: 30px 0 25px 0;
 
+    .level-slide {
+        width: 90px !important;
+        &:not(:last-of-type)::before {
+            content: "";
+            width: 105%;
+            height: 3px;
+            background: #e9e7e4;
+            position: absolute;
+            top: 50%;
+            z-index: -1;
+        }
+    }
+
     .level-thumb-cell {
         width: fit-content;
         min-width: 35px;
@@ -188,18 +202,6 @@ $border-radius: 10px;
             background: #757a90;
             border: 2px solid #bcc1ca;
         }
-    }
-}
-
-.level-slide {
-    &:not(:last-of-type)::before {
-        content: "";
-        width: 105%;
-        height: 3px;
-        background: #e9e7e4;
-        position: absolute;
-        top: 50%;
-        z-index: -1;
     }
 }
 

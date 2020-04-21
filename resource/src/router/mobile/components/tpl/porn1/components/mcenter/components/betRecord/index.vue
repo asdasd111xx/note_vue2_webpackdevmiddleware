@@ -2,12 +2,16 @@
     <mobile-container :header-config="headerConfig" :has-footer="hasFooter">
         <div slot="content" :class="$style['content-wrap']">
             <div :class="$style['menu-wrap']">
-                <div :class="$style['menu-select']" @click="selectMenu = selectMenu ? '' : 'game'">
+                <div :class="$style['menu-select-game']" @click="selectMenu = selectMenu ? '' : 'game'">
                     <span>{{ selectType.text }}</span>
                     <span :class="$style['select-icon']" />
                 </div>
-                <div :class="$style['menu-select']" @click="selectMenu = selectMenu ? '' : 'time'">
-                    <span>{{ selectTime }}</span>
+                <div :class="[$style['menu-select-time'], {[$style.custom] : isCustomTime}]" @click="selectMenu = selectMenu ? '' : 'time'">
+                    <div v-if="isCustomTime" :class="$style['select-custom']">
+                        <p>{{ selectTime.split(' ')[0] }}</p>
+                        <p>{{ selectTime.split(' ')[1] }}</p>
+                    </div>
+                    <span v-else>{{ selectTime }}</span>
                     <span :class="$style['select-icon']" />
                 </div>
                 <ul v-if="selectMenu === 'game'" :class="[$style['dropdown-wrap'], 'clearfix']">
@@ -20,16 +24,49 @@
                         {{ game.text }}
                     </li>
                 </ul>
-                <ul v-if="selectMenu === 'time'" :class="[$style['dropdown-wrap'], 'clearfix']">
-                    <li
-                        v-for="(time, key) in allTotalData"
-                        :key="`date-${key}`"
-                        :class="{[$style.active] : selectTime === time.text}"
-                        @click="getTimeRecord(key)"
-                    >
-                        {{ time.text }}
-                    </li>
-                </ul>
+                <div v-if="selectMenu === 'time'" :class="[$style['dropdown-wrap'], $style['dropdown-wrap-time'], 'clearfix']">
+                    <p :class="$style['time-remind']">*{{ $text('S_SUPPORT_BETRECOED_SEARCH', '当前系统支持查询最近30日的投注记录') }}</p>
+                    <ul :class="[ {[$style['default-active']] : !isShowDatePicker},'clearfix']">
+                        <li
+                            v-for="(time, key) in allTotalData"
+                            :key="`date-${key}`"
+                            :class="{[$style.active] : currentSelectTime === time.text}"
+                            @click="getTimeRecord(time)"
+                        >
+                            {{ time.text }}
+                        </li>
+                    </ul>
+                    <template v-if="isShowDatePicker">
+                        <div :class="$style['custom-wrap']">
+                            <div :class="[$style['custom-date'], 'clearfix']" @click="currentCustomDate = currentCustomDate === 'start' ? '' : 'start'">
+                                <p :class="$style['custom-title']">{{ $text('S_START_DATE', '开始日期') }}</p>
+                                <p :class="$style['custom-time']">{{ startTime }}</p>
+                            </div>
+                            <date-picker
+                                v-if="currentCustomDate === 'start'"
+                                :key="`date${currentCustomDate}`"
+                                :min-limit.sync="limitDate"
+                                :max-limit.sync="estToday"
+                                :date.sync="setStartTime"
+                            />
+                            <div :class="[$style['custom-date'], 'clearfix']" @click="currentCustomDate = currentCustomDate === 'end' ? '' : 'end'">
+                                <p :class="$style['custom-title']">{{ $text('S_END_DATE', '结束日期') }}</p>
+                                <p :class="$style['custom-time']">{{ endTime }}</p>
+                            </div>
+                            <date-picker
+                                v-if="currentCustomDate === 'end'"
+                                :key="`date${currentCustomDate}`"
+                                :min-limit.sync="limitDate"
+                                :max-limit.sync="estToday"
+                                :date.sync="setEndTime"
+                            />
+                        </div>
+                        <div :class="[$style['time-button-group'], 'clearfix']">
+                            <div :class="$style['time-cancel']" @click="cancelCustomTime">{{ $text('S_CANCEL', '取消') }}</div>
+                            <div :class="$style['time-confirm']" @click="setCustomTime">{{ $text('S_CONFIRM', '确认') }}</div>
+                        </div>
+                    </template>
+                </div>
                 <div
                     v-if="selectMenu !== ''"
                     :class="$style['dropdown-mask']"
@@ -38,36 +75,46 @@
             </div>
             <div v-if="!mainNoData" :class="$style['data-wrap']">
                 <ul :class="[$style['total-wrap'], 'clearfix']">
-                    <li :class="$style['total-count']">{{ $text('S_DATA_COUNT', '笔数') }} : 9</li>
-                    <li :class="$style['total-water']">{{ $text('S_TOTAL_WATER', '流水') }} : 21.50</li>
-                    <li :class="$style['total-money']">{{ $text('S_WIN_LOSE', '输赢') }} : <span :class="{[$style['is-win']] : true}">2.25</span></li>
+                    <li :class="$style['total-count']">{{ $text('S_DATA_COUNT', '笔数') }} : {{ mainListData.length }}</li>
+                    <li :class="$style['total-water']">{{ $text('S_TOTAL_WATER', '流水') }} : {{ parseFloat(mainTotal.valid_bet).toFixed(2) }}</li>
+                    <li :class="$style['total-money']">{{ $text('S_WIN_LOSE', '输赢') }} : <span :class="{[$style['is-win']] : parseFloat(mainTotal.payoff) > 0}">{{ parseFloat(mainTotal.payoff).toFixed(2) }}</span></li>
                 </ul>
                 <div :class="$style['data-list']">
-                    <div :class="$style['data-item']">
+                    <div
+                        v-for="gameTime in mainTime"
+                        :key="gameTime.day"
+                        :class="$style['data-item']"
+                    >
                         <div :class="[$style['record-count'], 'clearfix']">
                             <div :class="$style['record-count-time']">
-                                03月26日
+                                {{ getMonthDay(gameTime.day) }}
                             </div>
                             <div :class="$style['single-total-wrap']">
                                 <ul :class="[$style['single-data-count'], 'clearfix']">
-                                    <li :class="$style['single-count']">{{ $text('S_DATA_COUNT', '笔数') }} : 9</li>
-                                    <li :class="$style['single-water']">{{ $text('S_TOTAL_WATER', '流水') }} : 21.50</li>
-                                    <li :class="$style['single-money']">{{ $text('S_WIN_LOSE', '输赢') }} : <span :class="{[$style['is-win']] : true}">2.25</span></li>
+                                    <li :class="$style['single-count']">{{ $text('S_DATA_COUNT', '笔数') }} : {{ getCount(gameTime.day) }}</li>
+                                    <li :class="$style['single-water']">{{ $text('S_TOTAL_WATER', '流水') }} : {{ gameTime.valid_bet }}</li>
+                                    <li :class="$style['single-money']">{{ $text('S_WIN_LOSE', '输赢') }} : <span :class="{[$style['is-win']] : gameTime.payoff > 0}">{{ gameTime.payoff }}</span></li>
                                 </ul>
                             </div>
                         </div>
-                        <div :class="$style['detail-wrap']">
-                            <div :class="$style['detail-name']">
-                                BBIN彩票
-                            </div>
-                            <div :class="$style['detail-game']">
-                                <div :class="$style['game-name']">江西11选5</div>
-                                <div :class="[$style['game-count'], 'clearfix']">
-                                    <div :class="$style['game-water']">{{ $text('S_TOTAL_WATER', '流水') }} : 21.50</div>
-                                    <div :class="$style['game-money']">{{ $text('S_WIN_LOSE', '输赢') }} : <span :class="{[$style['is-win']] : true}">2.25</span></div>
+                        <template v-for="(gameDteail, index) in mainListData">
+                            <div
+                                v-if="gameDteail.day === gameTime.day"
+                                :key="`${gameDteail.vendor}-${index}`"
+                                :class="$style['detail-wrap']"
+                            >
+                                <div :class="$style['detail-name']">
+                                    {{ getVendorName(gameDteail.vendor, gameDteail.kind) }}
+                                </div>
+                                <div :class="$style['detail-game']">
+                                    <div :class="$style['game-name']">{{ gameDteail.game_name }}</div>
+                                    <div :class="[$style['game-count'], 'clearfix']">
+                                        <div :class="$style['game-water']">{{ $text('S_TOTAL_WATER', '流水') }} : {{ parseFloat(gameDteail.valid_bet).toFixed(2) }}</div>
+                                        <div :class="$style['game-money']">{{ $text('S_WIN_LOSE', '输赢') }} : <span :class="{[$style['is-win']] : parseFloat(gameDteail.payoff) > 0}">{{ parseFloat(gameDteail.payoff).toFixed(2) }}</span></div>
+                                    </div>
                                 </div>
                             </div>
-                        </div>
+                        </template>
                     </div>
                 </div>
             </div>
@@ -85,26 +132,62 @@ import Vue from 'vue';
 import EST from '@/lib/EST';
 import mobileContainer from '../../../common/new/mobileContainer';
 import ajax from '@/lib/ajax';
-import { API_MCENTER_BETRECORD_TOTAL, API_MCENTER_BETRECORD_ALL } from '@/config/api';
 import gameName from '@/lib/game_name';
+import datePicker from '@/router/mobile/components/common/datePicker';
 
 export default {
     components: {
-        mobileContainer
+        mobileContainer,
+        datePicker
     },
     data() {
         return {
             hasFooter: false,
             options: [{ value: 'all', text: this.$t('S_ALL') }],
-            allTotalData: {},
             selectMenu: '',
             selectType: { value: 'all', text: this.$t('S_ALL') },
+            test: '',
+            isCustomTime: false,
+            currentSelectTime: this.$t('S_TODDAY'),
             selectTime: this.$t('S_TODDAY'),
             estToday: EST(new Date(), '', true),
+            limitDate: '',
             startTime: '',
             endTime: '',
             mainListData: [],
-            mainNoData: true
+            mainTotal: {},
+            mainTime: [],
+            mainNoData: true,
+            test2: new Date(),
+            currentCustomDate: '',
+            isShowDatePicker: false,
+            allTotalData: [
+                {
+                    text: this.$text('S_TODDAY', '今日'),
+                    name: 'today',
+                    value: 0
+                },
+                {
+                    text: this.$text('S_YESTERDAY', '昨日'),
+                    name: 'yesterday',
+                    value: 1
+                },
+                {
+                    text: this.$text('S_SEVEN_DAY', '近7日'),
+                    name: 'week',
+                    value: 7
+                },
+                {
+                    text: this.$text('S_THIRTY_DAY', '近30日'),
+                    name: 'month',
+                    value: 30
+                },
+                {
+                    text: this.$text('S_CUSTOM_DATE', '自定义'),
+                    name: 'custom',
+                    value: 30
+                }
+            ]
         };
     },
     computed: {
@@ -117,13 +200,29 @@ export default {
                 title: this.$text('S_BETHISTORYBTN', '投注纪录'),
                 onClick: () => { this.$router.back(); }
             };
+        },
+        setStartTime: {
+            get() {
+                return new Date(this.startTime);
+            },
+            set(value) {
+                this.startTime = Vue.moment(value).format('YYYY-MM-DD');
+            }
+        },
+        setEndTime: {
+            get() {
+                return new Date(this.endTime);
+            },
+            set(value) {
+                this.endTime = Vue.moment(value).format('YYYY-MM-DD');
+            }
         }
     },
     created() {
-        this.getBetRecordTotal();
         this.getAllGameData();
         this.startTime = Vue.moment(this.estToday).format('YYYY-MM-DD');
         this.endTime = Vue.moment(this.estToday).format('YYYY-MM-DD');
+        this.limitDate = new Date(Vue.moment(this.estToday).add(-30, 'days').format('YYYY-MM-DD'));
         this.inquire();
     },
     methods: {
@@ -132,44 +231,32 @@ export default {
             this.selectType = data;
             this.inquire();
         },
-        getTimeRecord(key) {
-            this.selectTime = this.allTotalData[key].text;
+        getTimeRecord(data) {
+            this.currentSelectTime = data.text;
+
+            this.startTime = Vue.moment(this.estToday).add(-data.value, 'days').format('YYYY-MM-DD');
+            this.endTime = Vue.moment(this.estToday).format('YYYY-MM-DD');
+
+            if (data.name === 'yesterday') {
+                this.endTime = Vue.moment(this.estToday).add(-data.value, 'days').format('YYYY-MM-DD');
+            }
+
+            if (data.name === 'custom') {
+                this.isShowDatePicker = true;
+                return;
+            }
+
+            this.selectTime = data.text;
+            this.isShowDatePicker = false;
+            this.isCustomTime = false;
             this.selectMenu = '';
-        },
-        getBetRecordTotal() {
-            return ajax({
-                method: 'get',
-                url: API_MCENTER_BETRECORD_TOTAL,
-                success: (response) => {
-                    const temp = response.ret;
-                    const textObj = {
-                        today: 'S_TODDAY',
-                        yesterday: 'S_YESTERDAY',
-                        this_week: 'S_SEVEN_DAY',
-                        this_month: 'S_THIRTY_DAY'
-                    };
-                    const tempData = {};
-
-                    Object.keys(textObj).forEach((index) => {
-                        tempData[index] = {
-                            start_at: temp[index].start_at,
-                            end_at: temp[index].end_at,
-                            startShow: Vue.moment(temp[index].start_at).format('MM/DD'),
-                            endShow: Vue.moment(temp[index].end_at).format('MM/DD'),
-                            money: +temp[index].total !== 0 ? Number(temp[index].total).toFixed(2) : +temp[index].total,
-                            text: this.$text(textObj[index])
-                        };
-                    });
-
-                    this.allTotalData = tempData;
-                }
-            });
+            this.inquire();
         },
         getAllGameData() {
             Object.keys(this.gameData).forEach((index) => {
-                const { vendor } = this.gameData[index];
+                const { vendor, kind } = this.gameData[index];
                 if (this.gameData[index].switch === 'Y' && this.options.map((item) => item.value).indexOf(vendor) === -1) {
-                    this.options.push({ value: vendor, text: gameName(vendor) });
+                    this.options.push({ value: vendor, text: gameName(vendor), kind });
                 }
             });
         },
@@ -179,93 +266,89 @@ export default {
                 end_at: Vue.moment(this.endTime).format('YYYY-MM-DD 23:59:59-04:00')
             };
 
+            if (this.selectType.kind) {
+                params.vendor = this.selectType.value;
+                if (params.vendor !== 'bbin' && params.vendor !== 'fg') {
+                    params.kind = this.selectType.kind;
+                }
+            }
+
             this.startTime = Vue.moment(this.startTime).format('YYYY-MM-DD');
             this.endTime = Vue.moment(this.endTime).format('YYYY-MM-DD');
 
-            return ajax({
+            // 注單統計總資料(依投注日期)
+            ajax({
                 method: 'get',
-                url: API_MCENTER_BETRECORD_ALL,
+                url: '/api/v1/c/stats/wager-report/by-day',
                 params,
                 success: (response) => {
-                    this.mainListData = [];
-                    this.inquiryStartTime = this.startTime;
-                    this.inquiryEndTime = this.endTime;
-
-                    setTimeout(() => {
-                        this.messageStatus = false;
-                    }, 3000);
-
-                    if (this.selectType.value === 'all') {
-                        this.mainListData = response.ret;
-                    } else {
-                        let num = 0;
-                        for (let i = 0; i < response.ret.length; i += 1) {
-                            if (this.selectType.value === response.ret[i].vendor) {
-                                console.log('response.ret[i].vendor', response.ret[i].vendor);
-                                this.mainListData[num] = response.ret[i];
-                                num += 1;
-                            }
-                        }
+                    if (response.ret.length === 0) {
+                        this.mainTime = [];
+                        return;
                     }
+                    this.mainTime = response.ret.map((item) => ({
+                        bet: parseFloat(item.bet).toFixed(2),
+                        count: item.count,
+                        day: item.day,
+                        payoff: parseFloat(item.payoff).toFixed(2),
+                        valid_bet: parseFloat(item.valid_bet).toFixed(2)
+                    }));
+                }
+            });
 
-                    if (this.mainListData.length === 0) {
-                        this.mainListData = '';
+            // 各遊戲注單統計資料(依投注日期)
+            ajax({
+                method: 'get',
+                url: '/api/v1/c/stats/wager-report/by-day-game',
+                params,
+                success: (response) => {
+                    if (response.ret.length === 0) {
+                        this.mainListData = [];
                         this.mainNoData = true;
-                        this.mainTotal = {
-                            bet: 0,
-                            valid_bet: 0,
-                            payoff: 0
-                        };
                         return;
                     }
 
-                    this.mainTotal = {
-                        bet: 0,
-                        valid_bet: 0,
-                        payoff: 0
-                    };
-
-                    for (let index = 0; index < this.mainListData.length; index += 1) {
-                        this.mainTotal.bet = this.accAdd(this.mainTotal.bet, this.mainListData[index].bet);
-                        this.mainTotal.valid_bet = this.accAdd(this.mainTotal.valid_bet, this.mainListData[index].valid_bet);
-                        this.mainTotal.payoff = this.accAdd(this.mainTotal.payoff, this.mainListData[index].payoff);
-                    }
-
+                    this.mainListData = response.ret;
+                    this.mainTotal = response.total;
                     this.mainNoData = false;
                 }
             });
         },
-        accAdd(arg1, arg2) {
-            let r1;
-            let r2;
-            let n1 = arg1;
-            let n2 = arg2;
-            try {
-                r1 = n1.toString().split('.')[1].length;
-            } catch (e) {
-                r1 = 0;
+        cancelCustomTime() {
+            if (this.allTotalData.some((item) => item.text === this.selectTime)) {
+                this.currentSelectTime = this.selectTime;
+                this.isShowDatePicker = false;
             }
-            try {
-                r2 = n2.toString().split('.')[1].length;
-            } catch (e) {
-                r2 = 0;
-            }
-            const c = Math.abs(r1 - r2);
-            const m = Math.pow(10, Math.max(r1, r2)); // eslint-disable-line no-restricted-properties
-            const cm = Math.pow(10, c); // eslint-disable-line no-restricted-properties
-            if (c > 0 && r1 > r2) {
-                n1 = Number(n1.toString().replace('.', ''));
-                n2 = Number(n2.toString().replace('.', '')) * cm;
-                return (n1 + n2) / m;
-            }
-            if (c > 0 && r1 <= r2) {
-                n1 = Number(n1.toString().replace('.', '')) * cm;
-                n2 = Number(n2.toString().replace('.', ''));
-                return (n1 + n2) / m;
-            }
-            n1 = Number(n1.toString().replace('.', ''));
-            n2 = Number(n2.toString().replace('.', ''));
-            return (n1 + n2) / m;
+
+            this.selectMenu = '';
+        },
+        setCustomTime() {
+            this.startTime = Vue.moment(this.setStartTime).format('YYYY-MM-DD');
+            this.endTime = Vue.moment(this.setEndTime).format('YYYY-MM-DD');
+            this.selectTime = `${this.startTime} ${this.endTime}`;
+            this.isCustomTime = true;
+            this.currentCustomDate = '';
+            this.selectMenu = '';
+            this.inquire();
+        },
+        getMonthDay(date) {
+            return `${Vue.moment(date).format('MM-DD').replace('-', '月')}日`;
+        },
+        getVendorName(vendor, kind) {
+            const transList = {
+                bbin_1: 'bbsport',
+                bbin_2: 'bblive',
+                bbin_3: 'bbcasino',
+                bbin_4: 'lottery',
+                fg_5: 'fg_card',
+                sp_1: 'sunplus',
+                lg_ly_4: 'lg_lottery',
+                xbb_ly_4: 'xbb_lottery'
+            };
+            return this.gameData[transList[`${vendor}_${kind}`] ? transList[`${vendor}_${kind}`] : vendor].alias;
+        },
+        getCount(date) {
+            return this.mainListData.filter((item) => item.day === date).length;
         }
     }
 };

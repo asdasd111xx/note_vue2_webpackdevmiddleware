@@ -55,14 +55,14 @@
         <div :class="$style['user-desc-block']">
             <div :class="$style['desc-text']">
                 ●累计充值(元)：
-                <span :class="$style['money']">--</span>
-                (--/{{ userVipInfo.upgrade_deposit_amount }})
+                <span :class="$style['money']">{{userVipInfo.amount_info.deposit_amount}}</span>
+                ({{userVipInfo.amount_info.deposit_amount}}/{{ userVipInfo.next_level_deposit_amount }})
             </div>
             <div :class="$style['desc-text']">
                 ●当前流水(元)：
-                <span :class="$style['money']">--</span>
-                ({{ userVipInfo.downgrade_valid_bet }}/{{
-                    userVipInfo.upgrade_valid_bet
+                <span :class="$style['money']">{{userVipInfo.amount_info.valid_bet}}</span>
+                ({{ userVipInfo.amount_info.valid_bet }}/{{
+                    userVipInfo.next_level_valid_bet
                 }})
             </div>
             <div :class="$style['desc-text']">

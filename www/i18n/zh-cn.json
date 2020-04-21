@@ -153,7 +153,7 @@
     "S_MANUAL_TRANS": "人工存提",
     "S_VENDOR": "外接平台",
     "S_BET_INFO": "投注资讯",
-    "S_BETHISTORYBTN": "投注纪录",
+    "S_BETHISTORYBTN": "投注记录",
     "S_EF_STR": "有效投注额",
     "S_MSG_CENTER": "信息中心",
     "S_PERSONAL_MESSAGE": "站内信",
@@ -1587,5 +1587,9 @@
     "S_DATA_COUNT": "笔数",
     "S_TOTAL_WATER": "流水",
     "S_WIN_LOSE": "输赢",
-    "S_SEARCH_KEYWORD2": "搜索关键字"
+    "S_SEARCH_KEYWORD2": "搜索关键字",
+    "S_SUPPORT_BETRECOED_SEARCH": "当前系统支持查询最近30日的投注记录",
+    "S_START_DATE": "开始日期",
+    "S_END_DATE": "结束日期",
+    "S_CUSTOM_DATE": "自定义"
 }
