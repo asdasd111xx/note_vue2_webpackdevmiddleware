@@ -51,7 +51,7 @@ export default {
       player: null,
       blockHeight: 0,
       //   彩金開關
-      isActiveBouns: true,
+      isActiveBouns: false,
       isShowBounsDialog: false,
       isShowBounsProcess: true,
       dialogType: "tips",// 提示 & 賺得彩金
