@@ -12,9 +12,7 @@
         </div>
         <div :class="$style['cell']">
           <div>
-            <img
-              :src="$getCdnPath(`/static/image/_new/mcenter/help/email.png`)"
-            />
+            <img :src="list[4].value || defaultImgSrc" />
           </div>
           <div>
             <template v-if="list">
@@ -29,9 +27,7 @@
 
         <div :class="$style['cell']">
           <div>
-            <img
-              :src="$getCdnPath(`/static/image/_new/mcenter/help/email.png`)"
-            />
+            <img :src="list[5].value || defaultImgSrc" />
           </div>
           <div>
             <template v-if="list">
@@ -52,9 +48,7 @@
         </div>
         <div :class="$style['cell']">
           <div>
-            <img
-              :src="$getCdnPath(`/static/image/_new/mcenter/help/email.png`)"
-            />
+            <img :src="list[6].value || defaultImgSrc" />
           </div>
           <div>
             <template v-if="list">
@@ -69,9 +63,7 @@
 
         <div :class="$style['cell']">
           <div>
-            <img
-              :src="$getCdnPath(`/static/image/_new/mcenter/help/email.png`)"
-            />
+            <img :src="list[7].value || defaultImgSrc" />
           </div>
           <div>
             <template v-if="list">
@@ -118,7 +110,8 @@ export default {
   data() {
     return {
       msg: '',
-      list: null
+      list: null,
+      defaultImgSrc: this.$getCdnPath(`/static/image/_new/mcenter/help/email.png`)
     };
   },
   computed: {
@@ -201,14 +194,15 @@ export default {
     height: 70px;
 
     > div:first-child {
-      width: 32px;
-      height: 32px;
+      width: 24px;
+      height: 24px;
       display: flex;
       align-items: center;
       justify-content: center;
       margin: 20px;
       img {
-        height: 100%;
+        width: 24px;
+        height: 24px;
       }
     }
 
