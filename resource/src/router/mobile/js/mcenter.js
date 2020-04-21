@@ -69,7 +69,7 @@ export default {
             component
         },
         { // 資金明細
-            path: 'moneyDetail',
+            path: 'moneyDetail/:page?',
             name: 'mcenter-moneyDetail',
             component
         },

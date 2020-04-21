@@ -1,27 +1,149 @@
-.preset-color {
-    $defaultColor: #00347D;
-    $secondColor: #19A3FF;
-    $btnColor: '';
-    $textColor: #FFF;
-    $detailBgColor: #F6F4F4;
-    $contentLeftColor: #000;
-    $contentRightColor: #000;
-    $lineColor: #DDD;
-
-    @import './moneyDetail.scss';
+.money-detail-wrap {
+    padding-top: 50px;
 }
 
-.site-500011,
-.site-52,
-.site-53 {
-    $defaultColor: #EDB83F;
-    $secondColor: #EDB83F;
-    $btnColor: #EDB83F;
-    $textColor: #000;
-    $detailBgColor: #F6F4F4;
-    $contentLeftColor: #000;
-    $contentRightColor: #000;
-    $lineColor: #DDD;
+.top-link {
+    position: fixed;
+    top: 43px;
+    left: 0;
+    right: 0;
+    padding: 8px 9px;
+    background-color: #FFF;
+}
 
-    @import './moneyDetail.scss';
+.link-wrap {
+    float: left;
+    min-width: 100px;
+    height: 34px;
+    margin: 0 5px;
+    border-radius: 17px;
+    background-color: #F7F8FB;
+    font-size: 14px;
+    text-align: center;
+
+    > div {
+        display: inline-block;
+        color: #414655;
+        vertical-align: middle;
+    }
+
+    > span {
+        display: inline-block;
+        margin-left: 5px;
+        border: 4px solid transparent;
+        border-top-color: #414655;
+        vertical-align: middle;
+        transform: translateY(2px);
+
+        &.arrow-top {
+            border-top-color: transparent;
+            border-bottom-color: #414655;
+            transform: translateY(-3px);
+        }
+    }
+
+    &::before {
+        content: '';
+        display: inline-block;
+        height: 100%;
+        vertical-align: middle;
+    }
+
+    &.has-date {
+        line-height: 17px;
+        font-size: 12px;
+    }
+}
+
+.record-select {
+    position: fixed;
+    top: 93px;
+    left: 0;
+    bottom: 0;
+    right: 0;
+    border-top: 1px solid #EEE;
+    background-color: rgba(0, 0, 0, 0.5);
+}
+
+.select-wrap {
+    padding: 12px 11px;
+    background-color: #FEFFFE;
+}
+
+.select {
+    float: left;
+    width: 18%;
+    height: 35px;
+    line-height: 33px;
+    margin: 3px 1%;
+    border: 1px solid #A6A9B2;
+    border-radius: 5px;
+    background-color: #FFF;
+    color: #A6A9B2;
+    font-size: 12px;
+    text-align: center;
+
+    &.active {
+        line-height: 35px;
+        border: none;
+        border-radius: 3px;
+        background: linear-gradient(#BD9D7D, #F9DDBD);
+        color: #FFF;
+    }
+}
+
+.date-wrap {
+    background-color: #FFF;
+}
+
+.picker-wrap {
+    position: relative;
+    line-height: 48px;
+    padding: 0 13px;
+    border-bottom: 1px solid #EEE;
+    color: #414655;
+    font-size: 13px;
+}
+
+.date-text {
+    float: left;
+}
+
+.select-date {
+    float: right;
+    margin-right: 17px;
+}
+
+.icon-arrow {
+    position: absolute;
+    top: 16px;
+    right: 13px;
+    width: 10px;
+    height: 16px;
+    color: #D1D0D6;
+
+    > svg {
+        display: block;
+    }
+}
+
+.button {
+    float: left;
+    width: 50%;
+    height: 43px;
+    line-height: 43px;
+    font-size: 15px;
+    text-align: center;
+}
+
+.cancel {
+    composes: button;
+    background: #FAF5F0;
+    color: #B1987F;
+}
+
+.confirm {
+    composes: button;
+    background: linear-gradient(90deg, #DCCAB8, #D2B496);
+    color: #FFF;
 }
