@@ -1585,5 +1585,9 @@
     "S_DATA_COUNT": "筆數",
     "S_TOTAL_WATER": "流水",
     "S_WIN_LOSE": "輸贏",
-    "S_SEARCH_KEYWORD2": "搜索關鍵字"
+    "S_SEARCH_KEYWORD2": "搜索關鍵字",
+    "S_SUPPORT_BETRECOED_SEARCH": "當前系統支持查詢最近30日的投註記錄",
+    "S_START_DATE": "開始日期",
+    "S_END_DATE": "結束日期",
+    "S_CUSTOM_DATE": "自定義"
 }

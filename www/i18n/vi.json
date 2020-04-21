@@ -1579,5 +1579,9 @@
     "S_DATA_COUNT": "笔数",
     "S_TOTAL_WATER": "流水",
     "S_WIN_LOSE": "输赢",
-    "S_SEARCH_KEYWORD2": "搜索关键字"
+    "S_SEARCH_KEYWORD2": "搜索关键字",
+    "S_SUPPORT_BETRECOED_SEARCH": "当前系统支持查询最近30日的投注记录",
+    "S_START_DATE": "开始日期",
+    "S_END_DATE": "结束日期",
+    "S_CUSTOM_DATE": "自定义"
 }

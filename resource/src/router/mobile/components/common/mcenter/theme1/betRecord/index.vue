@@ -170,7 +170,7 @@ export default {
     data() {
         return {
             headerSetting: {
-                title: this.$text('S_BETHISTORYBTN', '投注纪录'),
+                title: this.$text('S_BETHISTORYBTN', '投注记录'),
                 leftBtns: {
                     icon: 'arrow',
                     onClick: () => this.$router.push('/mobile/mcenter')
