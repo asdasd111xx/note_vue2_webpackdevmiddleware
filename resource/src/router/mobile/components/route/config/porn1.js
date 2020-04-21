@@ -49,6 +49,7 @@ export default {
         helpDepositPorn1: () => import(/* webpackChunkName: 'helpDepositPorn1' */'../../tpl/porn1/components/mcenter/components/help/deposit'),
         helpWithdrawPorn1: () => import(/* webpackChunkName: 'helpWithdrawPorn1' */'../../tpl/porn1/components/mcenter/components/help/withdraw'),
         helpGameintroPorn1: () => import(/* webpackChunkName: 'helpGameintroPorn1' */'../../tpl/porn1/components/mcenter/components/help/gameintro'),
+        helpGameintroDetailPorn1: () => import(/* webpackChunkName: 'helpGameintroDetailPorn1' */'../../tpl/porn1/components/mcenter/components/help/components/gameintroDetail'),
         helpSupportPorn1: () => import(/* webpackChunkName: 'helpSupportPorn1' */'../../tpl/porn1/components/mcenter/components/help/support'),
         helpContactPorn1: () => import(/* webpackChunkName: 'helpContactPorn1' */'../../tpl/porn1/components/mcenter/components/help/contact'),
 

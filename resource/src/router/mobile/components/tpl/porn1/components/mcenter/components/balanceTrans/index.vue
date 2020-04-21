@@ -13,7 +13,7 @@
               <img
                 :src="
                   $getCdnPath(
-                    '/static/image/_new/mcenter/myWallet/ic_wallet_center.png'
+                    '/static/image/_new/mcenter/balanceTrans/ic_wallet_center.png'
                   )
                 "
               />
@@ -116,7 +116,7 @@
                   <img
                     :src="
                       $getCdnPath(
-                        `/static/image/_new/mcenter/myWallet/ic_expand.png`
+                        `/static/image/_new/mcenter/balanceTrans/ic_expand.png`
                       )
                     "
                     alt="expend"
@@ -150,7 +150,7 @@
                   <img
                     :src="
                       $getCdnPath(
-                        '/static/image/_new/mcenter/myWallet/icon_transfer_tips_info.png'
+                        '/static/image/_new/mcenter/balanceTrans/icon_transfer_tips_info.png'
                       )
                     "
                     :class="$style['balance-wrench']"
@@ -171,7 +171,7 @@
                   <img
                     :src="
                       $getCdnPath(
-                        `/static/image/_new/mcenter/myWallet/ic_collapse.png`
+                        `/static/image/_new/mcenter/balanceTrans/ic_collapse.png`
                       )
                     "
                     alt="collapse"
@@ -228,7 +228,7 @@
                             v-if="transOutText === vendor.text"
                             :src="
                               $getCdnPath(
-                                `/static/image/_new/mcenter/myWallet/ic_transfer_sel.png`
+                                `/static/image/_new/mcenter/balanceTrans/ic_transfer_sel.png`
                               )
                             "
                             alt="sel"
@@ -283,7 +283,7 @@
                             v-if="transInText === vendor.text"
                             :src="
                               $getCdnPath(
-                                `/static/image/_new/mcenter/myWallet/ic_transfer_sel.png`
+                                `/static/image/_new/mcenter/balanceTrans/ic_transfer_sel.png`
                               )
                             "
                             alt="sel"
@@ -663,7 +663,7 @@ export default {
 .balance-transfer-wrap {
   margin: 1% 0 2%;
   border-radius: 4px;
-  background: url("/static/image/_new/mcenter/myWallet/ic_transfergo.png")
+  background: url("/static/image/_new/mcenter/balanceTrans/ic_transfergo.png")
     rgba(255, 255, 255, 0.65) 50% 50% no-repeat;
   background-size: 20px 15px;
 }

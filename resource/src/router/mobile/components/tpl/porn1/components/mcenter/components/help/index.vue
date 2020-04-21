@@ -95,9 +95,9 @@ export default {
   },
   methods: {
     handleClick(path) {
-      // 其他頁面尚未實作
-      if (path.includes('contact'))
-        this.$router.push(path)
+    //   其他頁面尚未實作
+    //   if (path.includes('contact')) {}
+      this.$router.push(path)
     },
     logout() {
       member.logout().then(() => { window.location.reload(); });

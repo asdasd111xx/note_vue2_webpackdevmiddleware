@@ -196,7 +196,14 @@ export default {
                 {
                     path: 'gameintro',
                     name: 'mcenter-help-gameintro',
-                    component
+                    component,
+                    children: [
+                        {
+                            path: 'detail',
+                            name: 'mcenter-help-gameintro-detail',
+                            component
+                        }
+                    ]
                 },
                 {
                     path: 'support',
