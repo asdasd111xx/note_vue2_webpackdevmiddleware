@@ -158,6 +158,14 @@
                 />
             </div>
         </template>
+        <template v-if="headerConfig.hasTransaction">
+          <div
+                :class="$style['btn-feedback']"
+                @click="$router.push('/mobile/mcenter/moneyDetail')"
+            >
+                {{ $text("S_TRANSACTION_RECORD", "交易记录") }}
+            </div>
+        </template>
     </div>
 </template>
 

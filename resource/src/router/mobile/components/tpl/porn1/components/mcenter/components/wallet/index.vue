@@ -105,7 +105,7 @@
         </template>
       </balance-tran>
 
-      <div :class="$style['invite-wrap']">
+      <div :class="$style['invite-wrap']" @click="onClickInvite">
         <div :class="$style['content']">
           <div>邀请好友获得现金奖励</div>
           <div>邀请人首存即可获得</div>
@@ -119,6 +119,38 @@
             alt="wallter"
           />
         </div>
+      </div>
+
+      <div :class="$style['wager-wrap']">
+        <div :class="$style['title']">
+          投注记录
+          <span @click="$router.push('/mobile/mcenter/betRecord')"
+            >查看更多</span
+          >
+        </div>
+
+        <template v-if="!mainNoData">
+          <div :class="$style['list']">
+            <div
+              :class="$style['cell']"
+              v-for="(item, index) in mainListData.slice(0, 5)"
+              :key="'cell-' + index"
+            >
+              <div :class="$style['vendor']">{{ item.vendor }}</div>
+
+              <div :class="$style['game-desc']">
+                <span :class="$style['game']">{{ item.game_name }}</span>
+                <span :class="$style['money']">{{ item.valid_bet }}</span>
+              </div>
+            </div>
+          </div>
+        </template>
+
+        <template v-else>
+          <div :class="$style['no-data']">
+            还没有任何投注记录
+          </div>
+        </template>
       </div>
 
       <message v-if="msg" @close="msg = ''">
@@ -135,6 +167,9 @@
 
 <script>
 import { mapGetters } from "vuex";
+import ajax from "@/lib/ajax";
+import Vue from "vue";
+import EST from "@/lib/EST";
 import member from "@/api/member";
 import balanceTran from "@/components/mcenter/components/balanceTran";
 import mobileContainer from "../../../common/new/mobileContainer";
@@ -149,7 +184,13 @@ export default {
   data() {
     return {
       msg: "",
+      estToday: EST(new Date(), "", true),
+      limitDate: "",
+      startTime: "",
+      endTime: "",
       isShowTrans: false,
+      mainListData: [],
+      mainNoData: false,
       walletIcons: [
         {
           text: "转帐",
@@ -185,28 +226,71 @@ export default {
         onClick: () => {
           this.$router.back();
         },
-        title: this.$text("S_WALLET2", "钱包")
+        title: this.$text("S_WALLET2", "钱包"),
+        hasTransaction: true
       };
     }
   },
   created() {
     if (!this.loginStatus) {
-      this.$router.push("/mobile/home");
+      this.$router.push("/mobile/login");
     }
+
+    this.startTime = Vue.moment(this.estToday)
+      .add(-30, "days")
+      .format("YYYY-MM-DD");
+    this.endTime = Vue.moment(this.estToday).format("YYYY-MM-DD");
+  },
+  mounted() {
+    this.getRecordList();
   },
   methods: {
     handleClick(path) {
       this.$router.push(path);
     },
+    onClickInvite() {
+      this.msg = "正在上线 敬请期待"
+    },
     toggleTrans() {
       this.isShowTrans = !this.isShowTrans;
+    },
+    getRecordList() {
+      const params = {
+        start_at: Vue.moment(this.startTime).format(
+          "YYYY-MM-DD 00:00:00-04:00"
+        ),
+        end_at: Vue.moment(this.endTime).format("YYYY-MM-DD 23:59:59-04:00")
+      };
+
+      // 各遊戲注單統計資料(依投注日期)
+      ajax({
+        method: "get",
+        url: "/api/v1/c/stats/wager-report/by-day-game",
+        params,
+        success: response => {
+          if (response.ret.length === 0) {
+            this.mainListData = [];
+            this.mainNoData = true;
+            return;
+          }
+
+          this.mainListData = response.ret;
+          this.mainNoData = false;
+        }
+      });
     },
     onClickMaintain(value) {
       this.msg = `美东时间：
           <br>
-          ${value.etc_start_at}
-          <p style="text-align: center">|</p>
-          ${value.etc_end_at}
+          <span>${value.etc_start_at}</span>
+          <p style="margin: 0 ; padding: 0 ; text-align: center">|</p>
+          <span>${value.etc_end_at}</span>
+          <p></p>
+          北京时间：
+          <br>
+          <span>${value.start_at}</span>
+          <p style="margin: 0 ; padding: 0 ; text-align: center">|</p>
+          <span>${value.end_at}</span>
         `;
     }
   }
@@ -451,26 +535,26 @@ export default {
       }
     }
   }
-}
 
-.balance-item-vendor {
-  display: block;
-}
+  .balance-item-vendor {
+    display: block;
+  }
 
-.balance-info-maintain {
-  font-size: 12px;
-  color: $main_error_color1;
-}
+  .balance-info-maintain {
+    font-size: 12px;
+    color: $main_error_color1;
+  }
 
-.balance-wrench {
-  height: 12px;
-  width: 12px;
-  vertical-align: middle;
-}
+  .balance-wrench {
+    height: 12px;
+    width: 12px;
+    vertical-align: middle;
+  }
 
-.balance-item-money {
-  display: block;
-  color: $main_text_color2;
+  .balance-item-money {
+    display: block;
+    color: $main_text_color2;
+  }
 }
 
 .invite-wrap {
@@ -507,6 +591,89 @@ export default {
       width: 100%;
       height: 100%;
     }
+  }
+}
+
+.wager-wrap {
+  margin-top: 22px;
+
+  .title {
+    position: relative;
+    display: flex;
+    justify-content: space-between;
+    font-size: 14px;
+    font-weight: 700;
+    color: $main_title_color1;
+    padding-left: 7px;
+
+    &::before {
+      content: "";
+      content: "";
+      position: absolute;
+      display: inline-block;
+      width: 3px;
+      height: 14px;
+      top: 2.5px;
+      left: 0;
+      background: linear-gradient(#d2bba4, #f1e5db);
+    }
+
+    // 查看更多
+    span {
+      position: relative;
+      font-size: 10px;
+      font-weight: 400;
+      color: $main_text_color2;
+      padding-right: 24px;
+
+      &::after {
+        content: "";
+        position: absolute;
+        width: 15px;
+        height: 15px;
+        right: 0;
+        top: 1;
+        background: url("/static/image/_new/common/arrow_next.png") center
+          center / 100% 100%;
+      }
+    }
+  }
+
+  .list {
+    margin-top: 7px;
+
+    .cell {
+      padding: 10px 7px;
+      border-bottom: 1px solid #eee;
+
+      .vendor {
+        font-size: 10px;
+        color: $main_text_color2;
+      }
+
+      .game-desc {
+        display: flex;
+        justify-content: space-between;
+        color: $main_text_color3;
+        padding-top: 6px;
+      }
+
+      .game {
+        font-size: 12px;
+      }
+
+      .money {
+        font-size: 14px;
+        padding-right: 7px;
+      }
+    }
+  }
+
+  .no-data {
+    font-size: 12px;
+    text-align: center;
+    margin: 35px 0;
+    color: $main_text_color2;
   }
 }
 </style>
