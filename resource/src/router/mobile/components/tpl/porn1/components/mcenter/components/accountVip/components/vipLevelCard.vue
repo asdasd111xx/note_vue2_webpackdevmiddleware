@@ -144,8 +144,6 @@ export default {
             const swiperLevel = this.$refs.swiperLevel.$swiper;
             const swiperCard = this.$refs.swiperCard.$swiper;
 
-            swiperCard.on("init", () => {});
-
             swiperCard.on("slideChange", () => {
                 this.selectedIndex = swiperCard.realIndex;
                 swiperLevel.slideTo(this.selectedIndex, 500, false);
@@ -155,12 +153,23 @@ export default {
                 );
             });
         });
-        console.log(this.vipLevelList);
+    },
+    watch: {
+        vipLevelList() {
+            // 強制讓 Card 的部份回到起始值
+            const swiperLevel = this.$refs.swiperLevel.$swiper;
+            const swiperCard = this.$refs.swiperCard.$swiper;
+            swiperCard.slideTo(0, 500, false);
+            swiperLevel.slideTo(0, 500, false);
+            this.$emit("update:currentLevelData", this.vipLevelList[0]);
+        }
     }
 };
 </script>
 
 <style lang="scss" module>
+@import "~@/css/variable.scss";
+
 $card-width: calc(100% - 30px);
 $border-radius: 10px;
 

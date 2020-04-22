@@ -110,6 +110,8 @@ export default {
 </script>
 
 <style lang="scss" module>
+@import '~@/css/variable.scss';
+
 .vip-info-wrap {
     position: relative;
     width: 100%;
