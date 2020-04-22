@@ -33,90 +33,77 @@
           <div @click="toggleTrans">点击查看全部场馆余额</div>
         </div>
       </div>
-      <!--
-            <balance-tran v-if="isShowTrans" class="clearfix">
-                <template scope="{ balanceTran , balanceBack}">
-                    <div>
-                        <div
-                            :class="[$style['balance-wrap'], 'clearfix']"
-                            @click="balanceBack()"
-                        >
-                            <div :class="$style['balance-total-item']">
-                                <img
-                                    :src="
-                                        $getCdnPath(
-                                            '/static/image/_new/mcenter/balanceTrans/ic_wallet_center.png'
-                                        )
-                                    "
-                                />
-                                {{ $text("S_MCENTER_WALLET", "中心钱包") }}
-                                <div :class="$style['balance-item-money']">
-                                    {{
-                                        balanceTran.membalance.vendor.default
-                                            .amount
-                                    }}
-                                </div>
-                            </div>
 
-                            <div
-                                :class="[
-                                    $style['recycle-btn'],
-                                    balanceTran.balanceBackLock
-                                        ? $style.disable
-                                        : ''
-                                ]"
-                            >
-                                {{ $text("S_ONE_CLICK_TO_ACCOUNT") }}
-                            </div>
-                        </div>
+      <balance-tran v-if="isShowTrans" class="clearfix">
+        <template scope="{ balanceTran , balanceBack}">
+          <div>
+            <div
+              :class="[$style['balance-wrap'], 'clearfix']"
+              @click="balanceBack()"
+            >
+              <div :class="$style['balance-total-item']">
+                <img
+                  :src="
+                    $getCdnPath(
+                      '/static/image/_new/mcenter/balanceTrans/ic_wallet_center.png'
+                    )
+                  "
+                />
+                {{ $text("S_MCENTER_WALLET", "中心钱包") }}
+                <div :class="$style['balance-item-money']">
+                  {{ balanceTran.membalance.vendor.default.amount }}
+                </div>
+              </div>
 
-                        <div :class="[$style['balance-item-wrap'], 'clearfix']">
-                            <div
-                                v-for="(item,
-                                key,
-                                index) in balanceTran.balanceInfo"
-                                :key="`balance-item-${key}`"
-                                :class="[
-                                    $style['balance-item'],
-                                    {
-                                        [$style['is-last-item']]:
-                                            Object.keys(balanceTran.balanceInfo)
-                                                .length -
-                                                index <=
-                                            (Object.keys(
-                                                balanceTran.balanceInfo
-                                            ).length % 4 || 4)
-                                    }
-                                ]"
-                            >
-                                <span :class="$style['balance-item-vendor']">{{
-                                    item.text
-                                }}</span>
-                                <span
-                                    v-if="item.maintain"
-                                    :class="$style['balance-info-maintain']"
-                                    @click="onClickMaintain(item.maintain)"
-                                >
-                                    {{ $t("S_MAINTAIN") }}
-                                    <img
-                                        :src="
-                                            $getCdnPath(
-                                                '/static/image/_new/mcenter/balanceTrans/icon_transfer_tips_info.png'
-                                            )
-                                        "
-                                        :class="$style['balance-wrench']"
-                                    />
-                                </span>
-                                <span
-                                    v-else
-                                    :class="$style['balance-item-money']"
-                                    >{{ item.amount }}</span
-                                >
-                            </div>
-                        </div>
-                    </div>
-                </template>
-            </balance-tran> -->
+              <div
+                :class="[
+                  $style['recycle-btn'],
+                  balanceTran.balanceBackLock ? $style.disable : ''
+                ]"
+              >
+                {{ $text("S_ONE_CLICK_TO_ACCOUNT") }}
+              </div>
+            </div>
+
+            <div :class="[$style['balance-item-wrap'], 'clearfix']">
+              <div
+                v-for="(item, key, index) in balanceTran.balanceInfo"
+                :key="`balance-item-${key}`"
+                :class="[
+                  $style['balance-item'],
+                  {
+                    [$style['is-last-item']]:
+                      Object.keys(balanceTran.balanceInfo).length - index <=
+                      (Object.keys(balanceTran.balanceInfo).length % 4 || 4)
+                  }
+                ]"
+              >
+                <span :class="$style['balance-item-vendor']">{{
+                  item.text
+                }}</span>
+                <span
+                  v-if="item.maintain"
+                  :class="$style['balance-info-maintain']"
+                  @click="onClickMaintain(item.maintain)"
+                >
+                  {{ $t("S_MAINTAIN") }}
+                  <img
+                    :src="
+                      $getCdnPath(
+                        '/static/image/_new/mcenter/balanceTrans/icon_transfer_tips_info.png'
+                      )
+                    "
+                    :class="$style['balance-wrench']"
+                  />
+                </span>
+                <span v-else :class="$style['balance-item-money']">{{
+                  item.amount
+                }}</span>
+              </div>
+            </div>
+          </div>
+        </template>
+      </balance-tran>
 
       <div :class="$style['invite-wrap']">
         <div :class="$style['content']">
@@ -166,24 +153,21 @@ export default {
       walletIcons: [
         {
           text: "转帐",
-          imgSrc:
-            "/static/image/_new/mcenter/wallet/ic_wallter_tranfer.png",
+          imgSrc: "/static/image/_new/mcenter/wallet/ic_wallter_tranfer.png",
           onClick: () => {
             this.$router.push("/mobile/mcenter/balanceTrans");
           }
         },
         {
           text: "取款",
-          imgSrc:
-            "/static/image/_new/mcenter/wallet/ic_wallter_withdraw.png",
+          imgSrc: "/static/image/_new/mcenter/wallet/ic_wallter_withdraw.png",
           onClick: () => {
             this.$router.push("/mobile/mcenter/withdraw");
           }
         },
         {
           text: "卡片管理",
-          imgSrc:
-            "/static/image/_new/mcenter/wallet/ic_wallter_manage.png",
+          imgSrc: "/static/image/_new/mcenter/wallet/ic_wallter_manage.png",
           onClick: () => {
             this.$router.push("/mobile/mcenter/bankCard");
           }
@@ -361,6 +345,7 @@ export default {
   height: 65px;
   border-radius: 4px;
   background: rgba(255, 255, 255, 0.65);
+  border-bottom: 1px solid #dad6d6;
 
   // 自動免轉區塊
   &:nth-child(2) {
@@ -448,44 +433,44 @@ export default {
     &.is-last-item {
       border-bottom: none;
     }
+  }
 
-    &.collapse {
-      float: right;
-      color: $main_text_color2;
-      border-bottom: none;
+  &.collapse {
+    float: right;
+    color: $main_text_color2;
+    border-bottom: none;
 
-      .icon {
-        width: 15px;
-        height: 15px;
-        margin: 2px auto;
+    .icon {
+      width: 15px;
+      height: 15px;
+      margin: 2px auto;
 
-        img {
-          width: 100%;
-          height: 100%;
-        }
+      img {
+        width: 100%;
+        height: 100%;
       }
     }
   }
+}
 
-  .balance-item-vendor {
-    display: block;
-  }
+.balance-item-vendor {
+  display: block;
+}
 
-  .balance-info-maintain {
-    font-size: 12px;
-    color: $main_error_color1;
-  }
+.balance-info-maintain {
+  font-size: 12px;
+  color: $main_error_color1;
+}
 
-  .balance-wrench {
-    height: 12px;
-    width: 12px;
-    vertical-align: middle;
-  }
+.balance-wrench {
+  height: 12px;
+  width: 12px;
+  vertical-align: middle;
+}
 
-  .balance-item-money {
-    display: block;
-    color: $main_text_color2;
-  }
+.balance-item-money {
+  display: block;
+  color: $main_text_color2;
 }
 
 .invite-wrap {
