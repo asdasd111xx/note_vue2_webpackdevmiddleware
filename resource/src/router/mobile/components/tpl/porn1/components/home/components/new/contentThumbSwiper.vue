@@ -245,7 +245,7 @@ export default {
     getGame() {
       axios({
         method: 'get',
-        url: 'https://api.bbin-asia.com/api/game/list',
+        url: 'https://yaboapi.bbin-asia.com/api/game/list',
         timeout: 30000,
         headers: {
           Bundleid: 'chungyo.foxyporn.prod.enterprise.web',
