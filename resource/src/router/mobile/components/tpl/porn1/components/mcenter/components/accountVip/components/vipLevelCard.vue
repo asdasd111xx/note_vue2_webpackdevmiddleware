@@ -106,6 +106,10 @@ export default {
         SwiperSlide
     },
     props: {
+        currentLevelData: {
+            type: Object,
+            required: true
+        },
         vipLevelList: {
             type: Array,
             required: true
@@ -123,8 +127,8 @@ export default {
     computed: {
         vipLevelOption() {
             return {
-                slidesPerView: 'auto',
-                allowTouchMove: false,
+                slidesPerView: "auto",
+                allowTouchMove: false
             };
         },
         vipCardOption() {
@@ -133,15 +137,22 @@ export default {
             };
         }
     },
-    methods: {},
     mounted() {
+        this.$emit("update:currentLevelData", this.vipLevelList[0]);
+
         this.$nextTick(() => {
             const swiperLevel = this.$refs.swiperLevel.$swiper;
             const swiperCard = this.$refs.swiperCard.$swiper;
 
+            swiperCard.on("init", () => {});
+
             swiperCard.on("slideChange", () => {
                 this.selectedIndex = swiperCard.realIndex;
-                swiperLevel.slideTo(this.selectedIndex , 500 , false)
+                swiperLevel.slideTo(this.selectedIndex, 500, false);
+                this.$emit(
+                    "update:currentLevelData",
+                    this.vipLevelList[this.selectedIndex]
+                );
             });
         });
         console.log(this.vipLevelList);

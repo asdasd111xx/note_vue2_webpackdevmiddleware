@@ -67,9 +67,9 @@
             </div>
             <div :class="$style['desc-text']">
                 ●保级推广(位)：
-                <span :class="$style['money']">--</span>
+                <span :class="$style['money']">{{userVipInfo.downgrade_members}}</span>
                 (有效会员充值{{ userVipInfo.downgrade_deposit }} , 保级{{
-                    userVipInfo.downgrade_members
+                    userVipInfo.downgrade_expire_day
                 }}天)
             </div>
         </div>

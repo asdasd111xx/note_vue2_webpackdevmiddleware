@@ -36,14 +36,17 @@
         <!-- level card -->
         <template v-if="vipLevelList && userVipInfo">
             <vip-level-card
+                :currentLevelData.sync="setCurrentLevel"
                 :vipLevelList="vipLevelList"
                 :userVipInfo="userVipInfo"
             />
         </template>
 
         <!-- desc -->
-        <template v-if="userVipInfo">
-            <vip-info :userVipInfo="userVipInfo" />
+        <template v-if="setCurrentLevel">
+            <vip-info
+                :currentLevelData="setCurrentLevel"
+            />
         </template>
         <!-- <live-info /> -->
     </div>
@@ -76,6 +79,7 @@ export default {
             isLiveVip: false,
             msg: "",
             vipLevelList: null,
+            currentLevelData: {},
             vipConfig: [],
             userVipInfo: null,
             nowTypeLevel: {},
@@ -84,7 +88,16 @@ export default {
             isDisplay: false
         };
     },
-    computed: {},
+    computed: {
+        setCurrentLevel: {
+            get() {
+                return this.currentLevelData;
+            },
+            set(value) {
+                this.currentLevelData = value;
+            }
+        }
+    },
     created() {
         this.getUserDetail();
         this.getVipConfig();

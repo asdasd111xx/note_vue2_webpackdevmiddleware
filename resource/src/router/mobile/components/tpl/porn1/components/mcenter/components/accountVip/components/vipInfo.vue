@@ -1,15 +1,90 @@
 <template>
     <div :class="$style['vip-info-wrap']">
-        <div :class="$style['title']">{{ userVipInfo.now_level_alias }}</div>
+        <div :class="$style['title']">{{ currentLevelData.alias }}</div>
 
         <div :class="$style['cells-block']">
-            <div :class="$style['cell']" v-for="(item, index) in list">
+            <div :class="$style['cell']">
                 <div :class="$style['cell-icon']">
-                    <img :src="$getCdnPath(item.icon)" alt="icon" />
+                    <img
+                        :src="
+                            $getCdnPath(
+                                `/static/image/_new/mcenter/vip/pic_vip_1.png`
+                            )
+                        "
+                        alt="icon"
+                    />
                 </div>
                 <div :class="$style['cell-text']">
-                    <div>{{ item.count }}</div>
-                    <div>{{ item.content }}</div>
+                    <div>--</div>
+                    <div>每日提款次数</div>
+                </div>
+            </div>
+
+            <div :class="$style['cell']">
+                <div :class="$style['cell-icon']">
+                    <img
+                        :src="
+                            $getCdnPath(
+                                `/static/image/_new/mcenter/vip/pic_vip_2.png`
+                            )
+                        "
+                        alt="icon"
+                    />
+                </div>
+                <div :class="$style['cell-text']">
+                    <div>--</div>
+                    <div>每日提现额度</div>
+                </div>
+            </div>
+
+            <div :class="$style['cell']">
+                <div :class="$style['cell-icon']">
+                    <img
+                        :src="
+                            $getCdnPath(
+                                `/static/image/_new/mcenter/vip/pic_vip_3.png`
+                            )
+                        "
+                        alt="icon"
+                    />
+                </div>
+                <div :class="$style['cell-text']">
+                    <div>{{ currentLevelData.gift_amount }}</div>
+                    <div>晋级礼金(晋级自动派发)</div>
+                </div>
+            </div>
+
+            <div :class="$style['cell']">
+                <div :class="$style['cell-icon']">
+                    <img
+                        :src="
+                            $getCdnPath(
+                                `/static/image/_new/mcenter/vip/pic_vip_4.png`
+                            )
+                        "
+                        alt="icon"
+                    />
+                </div>
+                <div :class="$style['cell-text']">
+                    <div>--</div>
+                    <div>每日红包(月初自动派发)</div>
+                </div>
+            </div>
+
+            <div :class="$style['cell']">
+                <div :class="$style['cell-icon']">
+                    <img
+                        :src="
+                            $getCdnPath(
+                                `/static/image/_new/mcenter/vip/pic_vip_5.png`
+                            )
+                        "
+                        alt="icon"
+                    />
+                </div>
+                <div :class="$style['cell-text']">
+                    <div>{{ currentLevelData.birth_amount }}</div>
+                    <div>生日礼金</div>
                 </div>
             </div>
         </div>
@@ -26,41 +101,10 @@
 <script>
 export default {
     props: {
-        userVipInfo: {
+        currentLevelData: {
             type: Object,
             required: true
         }
-    },
-    data() {
-        return {
-            list: [
-                {
-                    icon: "/static/image/_new/mcenter/vip/pic_vip_1.png",
-                    count: "--",
-                    content: "每日提现次数"
-                },
-                {
-                    icon: "/static/image/_new/mcenter/vip/pic_vip_2.png",
-                    count: "--",
-                    content: "每日提现额度"
-                },
-                {
-                    icon: "/static/image/_new/mcenter/vip/pic_vip_3.png",
-                    count: this.userVipInfo.now_birth_amount,
-                    content: "晋级礼金(晋级自动派发)"
-                },
-                {
-                    icon: "/static/image/_new/mcenter/vip/pic_vip_4.png",
-                    count: "--",
-                    content: "每日红包(月初自动派发)"
-                },
-                {
-                    icon: "/static/image/_new/mcenter/vip/pic_vip_5.png",
-                    count: this.userVipInfo.now_gift_amount,
-                    content: "生日礼金"
-                }
-            ]
-        };
     }
 };
 </script>
