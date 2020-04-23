@@ -8,7 +8,7 @@ const BBOS_DOMIAN_PROD = 'https://bbos.canarycherrytart.com/elibomApi/WebService
 export const BBOS_DOMIAN = process.env.NODE_ENV !== 'development' ? BBOS_DOMIAN_PROD : BBOS_DOMIAN_QA;
 
 // dev test
-export const ACTIVES_BOUNS_WEBSOCKET = 'ws://192.168.133.98:8080/xxx/promosocket';
+export const ACTIVES_BOUNS_WEBSOCKET = 'wss://yaboapi.bbin-asia.com/xxx/promosocket';
 
 // api moudle
 export const CONTACT_US = '/api/system/contactus';

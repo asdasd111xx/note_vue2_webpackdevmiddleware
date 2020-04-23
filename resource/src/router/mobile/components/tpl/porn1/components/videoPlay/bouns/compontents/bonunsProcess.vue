@@ -64,8 +64,17 @@ export default {
   },
   watch: {
     curMin() {
-      if (this.curMin > 9) {
+      if (this.curMin > 9)
         this.handleToggleEarnCoin();
+    },
+    isShowEarn() {
+      if (this.isShowEarn)
+        this.handleToggleEarnCoin();
+    },
+    isFinish() {
+      if (this.isFinish) {
+        this.curCoinSrc = this.coinType.find(i => i.key == "done").src;
+        this.processType = "done";
       }
     }
   },
@@ -85,6 +94,7 @@ export default {
           this.curCoinSrc = this.coinType.find(i => i.key == "process").src;
           this.processType = "process";
         }
+        this.isShowEarn = false;
       }, 3000)
     }
   },

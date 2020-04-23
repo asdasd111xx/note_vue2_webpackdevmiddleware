@@ -14,15 +14,15 @@
     >
       <bonuns-dialog
         ref="bonunsDialog"
-        v-if="isActiveBouns && isShowBounsDialog"
+        v-show="isActiveBouns && isShowBounsDialog && !isFullBouns"
         :type="dialogType"
         @close="isShowBounsDialog = false"
       />
       <bonuns-process
         ref="bonunsProcess"
-        v-if="isActiveBouns && isShowBounsProcess"
+        v-show="isActiveBouns && isShowBounsProcess"
         @close="isShowBounsProcess = false"
-        @playing="isPlaying"
+        :playing="isPlaying"
       />
     </div>
   </div>
@@ -58,6 +58,7 @@ export default {
       isActiveBouns: true,
       isShowBounsDialog: false,
       isShowBounsProcess: true,
+      isFullBouns: false,
       dialogType: "tips",// 提示 & 賺得彩金
       socket: null,
       socketId: ""
@@ -81,23 +82,9 @@ export default {
       preload: 'auto',
       bigPlayButton: true,
     });
-    if (this.socket) {
-      this.player.on("playing", () => {
-        this.isPlaying = true;
-        if (this.socket)
-          this.onSend("PLAY");
-      })
-
-      this.player.on("pause", () => {
-        this.isPlaying = false;
-        if (this.socket)
-          this.onSend("STOP");
-      })
-    }
 
     //活動開關
     if (this.isActiveBouns) {
-
       try {
         //取消原本video 預設點擊播放事件
         let videoDom = document.getElementsByClassName('vjs-tech');
@@ -124,6 +111,18 @@ export default {
       } catch (e) {
         console.log(e)
       }
+
+      this.player.on("playing", () => {
+        this.isPlaying = true;
+        if (this.socket)
+          this.onSend("PLAY");
+      })
+
+      this.player.on("pause", () => {
+        this.isPlaying = false;
+        if (this.socket)
+          this.onSend("STOP");
+      })
     }
 
   },
@@ -132,7 +131,13 @@ export default {
       // 餘額夠可播放
       if (!this.loginStatus) {
         this.isShowBounsDialog = true;
-      } else {
+        this.dialogType = 'tips';
+        this.player.pause();
+      } else if (this.isShowBounsDialog) {
+        this.player.pause();
+        return;
+      }
+      else {
         if (!this.player.paused()) {
           this.player.pause();
         } else {
@@ -143,35 +148,82 @@ export default {
     onMessage(e) {
       if (e.data) {
         let data = JSON.parse(e.data)
-        console.log(data)
+        this.socketId = data.SocketId;
+
+        if (process.env.NODE_ENV === 'development') {
+          //   console.log("msg ==>")
+          //   console.log(data)
+        }
 
         if (data.Active) {
+          //狀態
+          // 'OPEN', 'PLAY', 'STOP', 'CLOSE', 'BREAK', 'FULL', 'POOR'
+          switch (data.Status) {
+            case 'FULL':
+              this.$refs.bonunsProcess.isFinish = true;
+              this.dialogType = `tips-${data.Status.toLowerCase()}`
+              this.isShowBounsDialog = true;
+              break;
+            case 'POOR':
+              this.dialogType = `tips-${data.Status.toLowerCase()}`
+              this.isShowBounsDialog = true;
+              break;
+            case 'BREAK':
+              this.dialogType = `tips-${data.Status.toLowerCase()}`
+              this.isShowBounsDialog = true;
+              this.$refs.bonunsDialog.hadEarnNum = data.BreakTimes
+              this.player.pause();
+              break;
+            case 'CLOSE':
+              return;
+            default:
+              break;
+          }
+
           //每次累積彩金
-          this.$refs.bonunsProcess.earnCoin = Number(data.Active.MinAmout) * Number(data.Active.CueTimes);
-          //當前累積時間
-          this.$refs.bonunsProcess.curMin = data.Active.CueTimes;
+          this.$refs.bonunsProcess.earnCoin = Number(Number(data.Active.MinAmout) * Number(data.Active.CueTimes)).toFixed(2);
+
+          //當前累積時間(0)
+          this.$refs.bonunsProcess.curMin = data.CueTimes;
+          if (data.Amount != 0 && data.Active.CueTimes == 0) {
+            this.$refs.bonunsProcess.isShowEarn = true;
+          }
+
           //獲得彩金
-          this.$refs.bonunsDialog.earnCurrentNum = data.TotalAmount;
+          this.$refs.bonunsDialog.earnCurrentNum = Number(Number(data.Active.BreakAmout) * Number(data.Active.BreakTimes)).toFixed(2);
+
           //每次獲得彩金
-          this.$refs.bonunsDialog.earnSingleNum = Number(data.Active.MinAmout) * Number(data.Active.CueTimes);
+          this.$refs.bonunsDialog.earnSingleNum = Number(data.Active.BreakAmout).toFixed(2);
+
           //已經獲得彩金數
-          this.$refs.bonunsDialog.hadEarnNum = data.BreakTimes;
+          this.$refs.bonunsDialog.hadEarnNum = data.BreakTimes
+
+          //可獲得最高彩金
+          this.$refs.bonunsDialog.limitAmount = Number(data.Active.LimitAmout).toFixed(2)
+
           //可獲得彩金數
-          this.$refs.bonunsDialog.earnCellNum = data.Active.BreakAmout;
+          this.$refs.bonunsDialog.earnCellNum = (Number(data.Active.LimitAmout) / Number(data.Active.BreakAmout))
+
         }
-        this.socketId = data.SocketId;
       }
     },
     onOpen(e) {
-      console.log(e)
+      if (process.env.NODE_ENV === 'development') {
+        console.log("open ==>")
+        console.log(e)
+      }
     },
     onClose(e) {
-      console.log(e)
-      this.isActiveBouns = false;
-      this.socket = null;
+      if (process.env.NODE_ENV === 'development') {
+        console.log("close ==>")
+        console.log(e)
+      }
     },
     onError(e) {
-      console.log(e)
+      if (process.env.NODE_ENV === 'development') {
+        console.log("err ==>")
+        console.log(e)
+      }
       this.isActiveBouns = false;
       this.socket = null;
     },
@@ -183,8 +235,13 @@ export default {
       let data = {
         "SocketId": this.socketId,
         "Type": type,
-        "SendTime": new Date,
+        "SendTime": new Date().toISOString(),
         "Data": {}
+      }
+
+      if (process.env.NODE_ENV === 'development') {
+        console.log("send ==>")
+        console.log(data)
       }
       this.socket.send(JSON.stringify(data))
     }
@@ -195,7 +252,7 @@ export default {
       this.socket.send({
         "SocketId": this.socketId,
         "Type": "close",
-        "SendTime": new Date,
+        "SendTime": new Date().toISOString(),
         "Data": {}
       })
     }
