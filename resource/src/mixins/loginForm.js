@@ -1,9 +1,11 @@
 import * as apis from '@/config/api';
 
+import { CAPTCHA, LOGIN } from '@/api/bbos/config';
+import { getCookie, setCookie } from '@/lib/cookie';
 import { mapActions, mapGetters } from 'vuex';
 
 import ajax from '@/lib/ajax';
-import ajax2 from '@/lib/ajax2';
+import bbosRequest from '@/lib/bbosRequest';
 
 export default {
     props: {
@@ -19,7 +21,8 @@ export default {
             captcha: '',
             captchaImg: '',
             depositStatus: false,
-            checkItem: ''
+            checkItem: '',
+            aid: '' // repcatcha
         };
     },
     computed: {
@@ -41,12 +44,21 @@ export default {
                 return;
             }
 
-            ajax({
+            bbosRequest({
                 method: 'post',
-                url: apis.API_CAPTCHA,
-                errorAlert: false,
-                success: (response) => {
-                    this.captchaImg = response.ret;
+                moudle: CAPTCHA,
+                reqHeaders: {
+                    'Vendor': this.memInfo.user.domain
+                },
+                params: {
+                    "lang": "zh-cn",
+                    "format": "png",
+                },
+            }).then((res) => {
+                if (res.data && res.data.data) {
+                    this.captchaImg = res.data.data;
+                    this.aid = res.data.cookie.aid;
+                    setCookie('aid', res.data.cookie.aid);
                 }
             });
         },
@@ -87,14 +99,18 @@ export default {
             if (this.isBackEnd) {
                 return null;
             }
-            return ajax2({
+
+            return bbosRequest({
                 method: 'put',
-                url: apis.API_LOGIN,
-                errorAlert: false,
+                moudle: LOGIN,
+                reqHeaders: {
+                    'Vendor': this.memInfo.user.domain
+                },
                 params: {
                     username: this.username,
                     password: this.password,
-                    captcha_text: this.captcha,
+                    captcha: '1234',
+                    aid: this.aid || getCookie('aid') || '',
                     ...validate
                 },
                 fail: (res) => {
@@ -102,8 +118,17 @@ export default {
                         errorCB(res.data)
                 }
             }).then((res) => {
+                if (res && res.data && res.data && res.data.cookie && res.data.cookie.cid) {
+                    try {
+                        let cookie = res.data.cookie;
+                        for (let [key, value] of Object.entries(cookie)) {
+                            setCookie(key, value);
+                        }
+                    } catch (e) {
+                        //若不支持至少保留cid cookie
+                        setCookie('cid', res.data.cookie.cid);
+                    }
 
-                if (res && res.result === 'ok') {
                     ajax({
                         method: 'get',
                         url: apis.API_MEMBER_ANNOUNCEMENT,
@@ -111,7 +136,8 @@ export default {
                         success: (response) => {
                             if (response.result === 'ok') {
                                 response.ret.forEach((post) => {
-                                    alert(post.content);
+                                    // 登入公告
+                                    // alert(post.content);
                                 });
                             }
                         }
@@ -126,19 +152,19 @@ export default {
                     return;
                 }
 
-                if (res && res.result === 'error') {
+                if (res.status !== '000' && res.data) {
                     if (errorCB)
-                        errorCB(res)
+                        errorCB(res.data.msg)
                 }
 
-                if (res.code === 'C10004') {
-                    if (this.redirect) {
-                        window.location.href = this.redirect;
-                        return;
-                    }
+                // if (res.data && res.data.code === 'C10004') {
+                //     if (this.redirect) {
+                //         window.location.href = this.redirect;
+                //         return;
+                //     }
 
-                    window.location.reload();
-                }
+                //     window.location.reload();
+                // }
 
                 if (callBackFuc) {
                     callBackFuc.reset();

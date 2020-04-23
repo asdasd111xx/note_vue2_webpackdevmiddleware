@@ -1,6 +1,6 @@
-import store from '@/store';
-import i18n from '@/config/i18n';
 import exceptionList from '@/config/exceptionList';
+import i18n from '@/config/i18n';
+import store from '@/store';
 
 const getNameFormat = () => { // 真實姓名
     const { wonderCasino, knightCasino } = exceptionList;
@@ -32,6 +32,7 @@ export default {
         key: 'username',
         text: 'S_ACCOUNT',
         type: 'text',
+        placeholder: '请输入4-20位字母或数字',
         isRequired: true,
         hasVerify: false,
         show: true,
@@ -44,6 +45,7 @@ export default {
         key: 'password',
         text: 'S_PASSWORD',
         type: 'password',
+        placeholder: '请输入6-12位字母或数字',
         isRequired: true,
         hasVerify: false,
         show: true,
@@ -54,6 +56,7 @@ export default {
         key: 'confirm_password',
         text: 'S_PWD_CONFIRM',
         type: 'password',
+        placeholder: '请输入6-12位字母或数字',
         isRequired: true,
         hasVerify: false,
         show: true,

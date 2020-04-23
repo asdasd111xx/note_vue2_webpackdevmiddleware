@@ -4,8 +4,11 @@
       isClose ? [$style['dialog'], $style['dialog-close']] : $style['dialog']
     "
   >
-    <div :class="{ [$style['earn-wrap']]: type !== 'tips' }">
-      <div :class="$style['title-coin']">
+    <div :class="{ [$style['earn-wrap']]: type !== 'tips' }" id="earn-wrap">
+      <div
+        :class="$style['title-coin']"
+        :style="{ top: `calc(100% - ${dialogHeight}px - 64px)` }"
+      >
         <img
           :src="$getCdnPath('/static/image/_new/actives/bouns/coin_title.png')"
         />
@@ -36,22 +39,36 @@
               {{ earnCurrentNum }}
             </span>
           </div>
-          <div
-            v-for="index in earnCellNum"
-            :key="index"
-            :class="$style['earn-cell']"
-          >
-            <div>
+          <div :class="$style['earn-cell-wrap']">
+            <div
+              v-for="index in earnCellNum"
+              :key="index"
+              :class="[
+                $style['earn-cell'],
+                { [$style['active']]: index <= hadEarnNum }
+              ]"
+            >
               <div>
+                <div>
+                  <img
+                    :src="
+                      $getCdnPath(
+                        '/static/image/_new/actives/bouns/coin_solid.png'
+                      )
+                    "
+                  />
+                </div>
+                <div :class="[$style['earn-single-num']]">
+                  +{{ earnSingleNum }}
+                </div>
                 <img
+                  v-if="index <= hadEarnNum"
+                  :class="[$style['had-earned']]"
                   :src="
-                    $getCdnPath(
-                      '/static/image/_new/actives/bouns/coin_solid.png'
-                    )
+                    $getCdnPath('/static/image/_new/actives/bouns/get_icon.png')
                   "
                 />
               </div>
-              <div>+{{ earnSingleNum }}</div>
             </div>
           </div>
         </div>
@@ -79,17 +96,31 @@ export default {
   },
   data() {
     return {
+      dialogHeight: 0,
       isClose: false,
-      earnCellNum: 6,
+      earnCellNum: 6, // 可獲得彩金數
+      hadEarnNum: 3, // 已經獲得彩金數
       earnSingleNum: "5.00", //每次獲得彩金
       earnCurrentNum: "15.00", //獲得彩金
-      dialogEarnNum: "3" // 賺得彩金量
     };
   },
   computed: {
 
   },
+  mounted() {
+    this.getDialogHeight()
+    window.addEventListener('resize', this.getDialogHeight);
+  },
+  beforeDestroy() {
+    window.removeEventListener('resize', this.getDialogHeight);
+  },
+  created() {
+  },
   methods: {
+    getDialogHeight() {
+      let t = document.getElementById('earn-wrap');
+      this.dialogHeight = t.offsetHeight;
+    },
     handleClose() {
       this.isClose = true;
       setTimeout(() => {

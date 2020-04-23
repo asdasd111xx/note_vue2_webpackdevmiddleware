@@ -22,6 +22,7 @@
         ref="bonunsProcess"
         v-if="isActiveBouns && isShowBounsProcess"
         @close="isShowBounsProcess = false"
+        @playing="isPlaying"
       />
     </div>
   </div>
@@ -35,6 +36,8 @@ import bonunsDialog from '../../bouns/compontents/bonunsDialog'
 import bonunsProcess from '../../bouns/compontents/bonunsProcess'
 import { ACTIVES_BOUNS_WEBSOCKET } from '@/api/bbos/config'
 import config from '@/api/bbos/config'
+import { getCookie } from '@/lib/cookie';
+
 export default {
   components: {
     bonunsDialog,
@@ -50,8 +53,9 @@ export default {
     return {
       player: null,
       blockHeight: 0,
+      isPlaying: false,
       //   彩金開關
-      isActiveBouns: false,
+      isActiveBouns: true,
       isShowBounsDialog: false,
       isShowBounsProcess: true,
       dialogType: "tips",// 提示 & 賺得彩金
@@ -65,6 +69,8 @@ export default {
       loginStatus: 'getLoginStatus',
     }),
   },
+  create() {
+  },
   mounted() {
     this.player = videojs(this.$refs['video-player'], {
       sources: [{ src: this.videoInfo.url, type: 'application/x-mpegURL' }],
@@ -75,61 +81,42 @@ export default {
       preload: 'auto',
       bigPlayButton: true,
     });
-    this.player.on("playing", () => {
-      if (this.socket)
-        this.onSend("play");
-    })
+    if (this.socket) {
+      this.player.on("playing", () => {
+        this.isPlaying = true;
+        if (this.socket)
+          this.onSend("PLAY");
+      })
 
-    this.player.on("pause", () => {
-      if (this.socket)
-        this.onSend("stop");
-    })
+      this.player.on("pause", () => {
+        this.isPlaying = false;
+        if (this.socket)
+          this.onSend("STOP");
+      })
+    }
 
     //活動開關
     if (this.isActiveBouns) {
 
-      //取消原本video 預設點擊播放事件
-      let videoDom = document.getElementsByClassName('vjs-tech');
-      if (videoDom[0]) {
-        videoDom[0].style.pointerEvents = "none";
-        this.blockHeight = videoDom[0].offsetHeight;
-      }
-
       try {
+        //取消原本video 預設點擊播放事件
+        let videoDom = document.getElementsByClassName('vjs-tech');
+        if (videoDom[0]) {
+          videoDom[0].style.pointerEvents = "none";
+          this.blockHeight = videoDom[0].offsetHeight;
+        }
+
         // connect websocket
-        // 取不到cid 先固定
-        var uri = ACTIVES_BOUNS_WEBSOCKET + "?cid=9df6ea538e348fb738e0ace7008beafe8c8ae77c";
+        let cid = getCookie('cid');
+        if (!cid)
+          return
+        var uri = ACTIVES_BOUNS_WEBSOCKET + `?cid=${cid}`;
         this.socket = new WebSocket(uri);
         this.socket.onmessage = this.onMessage;
         this.socket.onopen = this.onOpen;
         this.socket.onerror = this.onError;
         this.socket.onclose = this.onClose;
         this.socket.onmessage = this.onMessage;
-
-        // ErrorCode: null
-        // ErrorMessage: null
-        // SocketId: "0eca0564-2229-48a7-9a3f-4e10c24e5982"
-        // Cid: "28c0566e56a402f084e3dc508df40023c7beef12"
-        // UserName: "mobjames"
-        // ConnectionTime: 0
-        // ActiveTime: 0
-        // Amount: 0
-        // TotalAmount: 0
-        // CueTimes: 0
-        // BreakTimes: 0
-        // Status: "OPEN"
-        // Active:
-        //     Id: 1
-        //     Name: "test active"
-        //     OPcode: 5015
-        //     StartTime: "2020-04-20T00:00:00"
-        //     EndTime: "2020-05-01T00:00:00"
-        //     Enable: true
-        //     Type: "A"
-        //     MinAmout: 0.05
-        //     LimitAmout: 0.1
-        //     BreakAmout: 5
-        //     CueTimes: 10
         // 模擬每次增加1分鐘
         // setInterval(() => {
         //   this.$refs.bonunsProcess.curMin += 1
@@ -146,7 +133,7 @@ export default {
       if (!this.loginStatus) {
         this.isShowBounsDialog = true;
       } else {
-        if (this.player.playing) {
+        if (!this.player.paused()) {
           this.player.pause();
         } else {
           this.player.play();
@@ -159,8 +146,18 @@ export default {
         console.log(data)
 
         if (data.Active) {
-          this.$refs.bonunsProcess.earnCoin = data.Active.MinAmout;
+          //每次累積彩金
+          this.$refs.bonunsProcess.earnCoin = Number(data.Active.MinAmout) * Number(data.Active.CueTimes);
+          //當前累積時間
           this.$refs.bonunsProcess.curMin = data.Active.CueTimes;
+          //獲得彩金
+          this.$refs.bonunsDialog.earnCurrentNum = data.TotalAmount;
+          //每次獲得彩金
+          this.$refs.bonunsDialog.earnSingleNum = Number(data.Active.MinAmout) * Number(data.Active.CueTimes);
+          //已經獲得彩金數
+          this.$refs.bonunsDialog.hadEarnNum = data.BreakTimes;
+          //可獲得彩金數
+          this.$refs.bonunsDialog.earnCellNum = data.Active.BreakAmout;
         }
         this.socketId = data.SocketId;
       }
@@ -170,19 +167,22 @@ export default {
     },
     onClose(e) {
       console.log(e)
+      this.isActiveBouns = false;
+      this.socket = null;
     },
     onError(e) {
       console.log(e)
       this.isActiveBouns = false;
       this.socket = null;
     },
+    // "STOP" | "CLOSE" | "PLAY"
     onSend(type) {
       if (!this.socket) {
         return
       }
       let data = {
         "SocketId": this.socketId,
-        "Type": type | "stop" | "close" | "play",
+        "Type": type,
         "SendTime": new Date,
         "Data": {}
       }
@@ -191,13 +191,14 @@ export default {
   },
   beforeDestroy() {
     this.player.dispose();
-
-    this.socket.send({
-      "SocketId": this.socketId,
-      "Type": "close",
-      "SendTime": new Date,
-      "Data": {}
-    })
+    if (this.socket) {
+      this.socket.send({
+        "SocketId": this.socketId,
+        "Type": "close",
+        "SendTime": new Date,
+        "Data": {}
+      })
+    }
   }
 };
 </script>
