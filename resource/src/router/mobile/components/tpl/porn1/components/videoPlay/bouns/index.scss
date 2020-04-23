@@ -30,8 +30,8 @@ $bouns_color6: #FFF07B;
         margin-right: auto;
         max-width: 375px;
         width: 90%;
-        min-height: 180px;
-        padding: 14px;
+        height: 180px;
+        padding: 15px;
         color: white;
     }
 }
@@ -46,7 +46,7 @@ $bouns_color6: #FFF07B;
     display: flex;
     align-items: center;
     position: absolute;
-    top: -20%;
+    top: -45%;
     left: calc(50% - 70px);
 
     >img {
@@ -68,6 +68,8 @@ $bouns_color6: #FFF07B;
     bottom: 34px;
     left: 0;
     display: flex;
+    align-items: center;
+    justify-content: space-evenly;
     padding: 0 5px;
     height: 40px;
     width: 100%;
@@ -84,9 +86,9 @@ $bouns_color6: #FFF07B;
     >div:first-child {
         color: $bouns_color2;
         background-color: #FAF5F0;
-        margin: 0 auto;
     }
 
+    >div:last-child {}
 }
 
 .active-btn {
@@ -97,8 +99,6 @@ $bouns_color6: #FFF07B;
     text-align: center;
     border-radius: 20px;
     line-height: 40px;
-    max-width: 325px;
-    margin: 0 auto;
     background: -webkit-linear-gradient(right, #bd9d7d, #f9ddbd);
     background: -o-linear-gradient(left, #bd9d7d, #f9ddbd);
     background: -moz-linear-gradient(left, #bd9d7d, #f9ddbd);
@@ -112,9 +112,11 @@ $bouns_color6: #FFF07B;
 }
 
 .earn-wrap {
-    // height: 325px !important;
+    height: 325px !important;
 
-    .title-coin {}
+    .title-coin {
+        top: -20%;
+    }
 }
 
 .bouns-process {
@@ -169,8 +171,7 @@ $bouns_color6: #FFF07B;
         width: 100%;
         height: 40px;
         line-height: 40px;
-        max-width: 325px;
-        margin: 0 auto;
+
         font-size: 15px;
         border-radius: 20px;
         margin: 0px 20px;
@@ -181,8 +182,7 @@ $bouns_color6: #FFF07B;
 
 .bouns-earn-wrap {
     display: inline-block;
-    width: 100%;
-    position: relative;
+
 
     >.earn-title {
         color: #3F1000;
@@ -197,61 +197,40 @@ $bouns_color6: #FFF07B;
             font-size: 22px;
         }
     }
-}
 
-.earn-cell-wrap {
-    position: relative;
-    display: block;
-    width: 100%;
-    overflow-y: auto;
-    overflow-x: auto;
-}
+    .earn-cell {
+        width: 33%;
+        width: 33%;
+        float: left;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        margin-bottom: 14px;
 
-.earn-cell {
-    width: 33%;
-    float: left;
-    display: flex;
-    align-items: center;
-    justify-content: center;
-    margin-bottom: 14px;
+        >div {
+            width: 54px;
+            height: 64px;
+            color: #FF8400;
+            text-align: center;
 
-    &.active {
-        opacity: 0.6;
-    }
+            >div:first-child {
+                width: 100%;
+                padding: 4px 0;
+                background-color: #FCF7E2;
 
-    >div {
-        width: 54px;
-        height: 64px;
-        color: #FF8400;
-        text-align: center;
-        position: relative;
-
-        >div:first-child {
-            position: relative;
-            width: 100%;
-            padding: 4px 0;
-            background-color: #FCF7E2;
-
-            >img {
-                margin: 0 auto;
-                width: 30px;
-                height: 30px;
+                >img {
+                    margin: 0 auto;
+                    width: 30px;
+                    height: 30px;
+                }
             }
-        }
 
-        >.earn-single-num {
-            height: 24px;
-            line-height: 24px;
-            font-size: 15px;
-            background-color: #F5D992;
-        }
-
-        >.had-earned {
-            position: absolute;
-            top: calc(50% - 20px);
-            left: calc(50% - 20px);
-            width: 40px;
-            height: 40px;
+            >div:last-child {
+                height: 24px;
+                line-height: 24px;
+                font-size: 15px;
+                background-color: #F5D992;
+            }
         }
     }
 }
@@ -328,26 +307,6 @@ $bouns_color6: #FFF07B;
     }
 }
 
-@media screen and (max-height: 376px) {
-    .earn-wrap {
-        max-width: 80% !important;
-        height: calc(100% - 60px) !important;
-        max-height: 260px;
-    }
-
-    .earn-cell-wrap {
-        width: 100%;
-        height: 90px;
-        display: inline-flex;
-    }
-
-    .earn-cell {
-        margin: 1px 5px;
-        display: inline-flex;
-    }
-
-}
-
 @media screen and (min-width: $phone) {
     .title {
         font-size: 20x;
@@ -364,7 +323,7 @@ $bouns_color6: #FFF07B;
 
 @media screen and (min-width: $pad) {
     .title {
-        font-size: 24px;
+        font-size: 24x;
     }
 
     .bouns-func {

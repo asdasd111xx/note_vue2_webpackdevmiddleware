@@ -202,14 +202,12 @@ export default {
       this.loginCheck(undefined, undefined, this.errorCallBack)
     },
     slideLogin(loginInfo) {
-      this.loginCheck({ captcha_text: loginInfo.data }, loginInfo.slideFuc, this.errorCallBack);
+      this.loginCheck({ captcha_text: loginInfo.data }, loginInfo.slideFuc, errorCallBack);
     },
     // 錯誤訊息call back
-    errorCallBack(res) {
-      if (res && res.msg) {
-        this.tipMsg = res.msg
-      } else if (res && res.status) {
-        this.tipMsg = res.status
+    errorCallBack(response) {
+      if (response && response.msg) {
+        this.tipMsg = response.msg
       }
     }
   }

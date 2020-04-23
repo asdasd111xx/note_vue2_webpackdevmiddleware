@@ -21,7 +21,7 @@
           />
         </div>
 
-        <div v-if="processType !== 'earn' && playing" class="circle_box">
+        <div v-if="processType !== 'earn'" class="circle_box">
           <div :class="$style['circle_loader']"></div>
         </div>
 
@@ -42,9 +42,6 @@ export default {
 
   },
   props: {
-    playing: {
-      type: Boolean
-    }
   },
   data() {
     return {

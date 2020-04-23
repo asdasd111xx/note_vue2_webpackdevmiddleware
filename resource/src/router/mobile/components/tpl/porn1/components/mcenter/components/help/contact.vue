@@ -193,14 +193,14 @@ export default {
     height: 70px;
 
     > div:first-child {
-      width: 24px;
-      height: 24px;
+      width: 32px;
+      height: 32px;
       display: flex;
       align-items: center;
       justify-content: center;
       margin: 20px;
       img {
-        width: 24px;
+        height: 100%;
       }
     }
 
