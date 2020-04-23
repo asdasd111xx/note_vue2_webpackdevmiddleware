@@ -961,7 +961,7 @@ export default {
         this.allValue.captcha_text = '';
         if (res.status !== "000") {
           // to do 錯誤訊息
-          alert(res.msg)
+          res.data ? alert(res.data.msg) : alert(res.msg)
         }
       });
     },

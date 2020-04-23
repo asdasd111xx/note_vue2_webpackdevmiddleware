@@ -109,7 +109,7 @@ export default {
                 params: {
                     username: this.username,
                     password: this.password,
-                    captcha: '1234',
+                    captcha: this.captcha,
                     aid: this.aid || getCookie('aid') || '',
                     ...validate
                 },
@@ -152,9 +152,10 @@ export default {
                     return;
                 }
 
-                if (res.status !== '000' && res.data) {
-                    if (errorCB)
-                        errorCB(res.data.msg)
+                if (res.status !== '000') {
+                    if (errorCB) {
+                        res.data ? errorCB(res.data) : errorCB(res)
+                    }
                 }
 
                 // if (res.data && res.data.code === 'C10004') {
