@@ -42,7 +42,7 @@
           >
             {{ $text("S_MORE", "更多") }}
             <img
-              :src="$getCdnPath('/static/image/_new/common/btn_back_w.png')"
+              :src="$getCdnPath('/static/image/_new/common/btn_down_w.png')"
             />
           </div>
         </div>

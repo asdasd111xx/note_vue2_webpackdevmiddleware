@@ -98,7 +98,7 @@
               </div>
             </div>
           </div>
-          <div :key="pwdResetInfo[3].key" :class="$style['field-wrap']">
+          <!-- <div :key="pwdResetInfo[3].key" :class="$style['field-wrap']">
             <div class="clearfix">
               <div :class="$style['title']">
                 {{ $text(pwdResetInfo[3].text) }}
@@ -112,7 +112,7 @@
                 @input="verification($event.target.id, $event.target.value)"
               />
             </div>
-          </div>
+          </div> -->
 
           <div
             :class="[
@@ -178,7 +178,8 @@ export default {
         key: 'email',
         text: 'S_E_MAIL',
         type: 'text',
-        regExp: /^[A-Za-z0-9.\-_]+@[A-Za-z0-9.-]+\.[A-Za-z]+$/,
+        // regExp: /^[A-Za-z0-9.\-_]+@[A-Za-z0-9.-]+\.[A-Za-z]+$/,
+        regExp: '',
         errorMsg: 'S_JM_EMAIL_FORMAT_UNAVAILABLE',
         placeholder: '电子邮箱'
       }]
@@ -222,9 +223,7 @@ export default {
       const re = new RegExp(data.regExp);
       let msg = this.$t(data.errorMsg);
 
-      if (!re.test(value)
-        || (value !== $('#pwd').val() || value === '')
-      ) {
+      if (!re.test(value) || value === '') {
         this.tipMsg = msg;
       } else {
         this.tipMsg = "";
@@ -238,7 +237,7 @@ export default {
         password: this.pwd,
         new_password: this.newPwd,
         confirm_password: this.confNewPwd,
-        email: this.email || this.memInfo.user.email
+        // email: this.email || this.memInfo.user.email
       };
       if (this.$route.query.type === 'agent') {
         agent.pwdReset({

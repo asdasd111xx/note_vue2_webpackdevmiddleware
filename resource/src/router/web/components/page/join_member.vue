@@ -306,6 +306,10 @@ import joinMemInfo from '@/config/joinMemInfo';
 import slideVerification from '@/components/slideVerification';
 import accountText from '../tpl/8/brilliant/components/openAccountText';
 
+import { REGISTER } from '@/api/bbos/config';
+import { getCookie, setCookie } from '@/lib/cookie';
+import bbosRequest from '@/lib/bbosRequest';
+
 export default {
   components: {
     datepicker,
@@ -332,6 +336,7 @@ export default {
       ageLimit: new Date(Vue.moment(new Date()).add(-18, 'year')),
       captchaImg: '',
       agreement: false,
+      aid: '',
       allValue: {
         username: '',
         password: '',
@@ -479,21 +484,21 @@ export default {
     const username = {
       key: 'username',
       content: {
-        note1: '',
+        note1: '请输入4-20位字母或数字',
         note2: ''
       }
     };
     const password = {
       key: 'password',
       content: {
-        note1: '',
+        note1: '请输入6-12位字母或数字',
         note2: ''
       }
     };
     const confirmPassword = {
       key: 'confirm_password',
       content: {
-        note1: '',
+        note1: '请输入6-12位字母或数字',
         note2: ''
       }
     };
@@ -608,9 +613,21 @@ export default {
       'actionChangePage'
     ]),
     getCaptcha() {
-      common.captcha({
-        success: (response) => {
-          this.captchaImg = response.ret;
+      bbosRequest({
+        method: 'post',
+        moudle: CAPTCHA,
+        reqHeaders: {
+          'Vendor': this.memInfo.user.domain
+        },
+        params: {
+          "lang": "zh-cn",
+          "format": "png",
+        },
+      }).then((res) => {
+        if (res.data && res.data.data) {
+          this.captchaImg = res.data.data;
+          this.aid = res.data.cookie.aid;
+          setCookie('aid', res.data.cookie.aid);
         }
       });
     },
@@ -881,16 +898,41 @@ export default {
       if (this.memInfo.config.register_captcha_type === 2) {
         this.allValue.captcha_text = captchaInfo.data;
       }
+      // 暫時調整欄位
 
-      member.join({
-        params: {
-          ...this.allValue,
-          phone: this.countryCode && this.allValue.phone ? `${this.countryCode.replace('+', '')}-${this.allValue.phone}` : ''
+      let params = {
+        ...this.allValue,
+        'captchaText': this.allValue.captcha_text,
+        'confirmPassword': this.allValue.confirm_password,
+        'withdrawPassword': this.allValue.withdraw_Password,
+        "aid": this.aid || getCookie('aid') || '',
+        "speedy": true,
+        phone: this.countryCode && this.allValue.phone ? `${this.countryCode.replace('+', '')}-${this.allValue.phone}` : ''
+      }
+      delete params['captcha_text'];
+      delete params['confirm_password'];
+      delete params['withdraw_Password'];
+      bbosRequest({
+        method: 'post',
+        moudle: REGISTER,
+        reqHeaders: {
+          'Vendor': this.memInfo.user.domain
         },
-        errorAlert: false
-      }).then((response) => {
-        if (response && response.result === 'ok') {
-          alert(this.$text('S_CR_SUCCESS_AND_LOGIN', '成功'));
+        params: {
+          ...params,
+        },
+      }).then((res) => {
+        if (res.data && res.data.cookie) {
+
+          try {
+            let cookie = res.data.cookie;
+            for (let [key, value] of Object.entries(cookie)) {
+              setCookie(key, value);
+            }
+          } catch (e) {
+            //若不支持至少保留cid cookie
+            setCookie('cid', res.data.cookie.cid);
+          }
 
           // GA流量統計
           window.dataLayer.push({
@@ -917,11 +959,9 @@ export default {
         }
 
         this.allValue.captcha_text = '';
-
-        if (response.errors) {
-          Object.keys(response.errors).forEach((msg) => {
-            this.allTip[msg] = response.errors[msg];
-          });
+        if (res.status !== "000") {
+          // to do 錯誤訊息
+          alert(res.msg)
         }
       });
     },
@@ -957,6 +997,4 @@ export default {
 </script>
 
 <style lang="scss" src="@/css/page/joinMem.module.scss" module="$styleDefault"></style>
-<style lang="scss" src="@/css/page/joinMem_519.module.scss" module="$style519"></style>
-<style lang="scss" src="@/css/page/joinMem_brilliant.module.scss" module="$styleBrilliant"></style>
-<style lang="scss" src="@/css/page/joinMem_miller.module.scss" module="$styleMiller"></style>
+
