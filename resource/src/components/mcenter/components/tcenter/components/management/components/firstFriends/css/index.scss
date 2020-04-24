@@ -1,0 +1,223 @@
+@import '~@/css/variable.scss';
+
+.first-friends-table {
+    margin-top: 7px;
+}
+
+.thead {
+    .row {
+        background-color: #DDD;
+    }
+
+    .column {
+        padding: 2% 1%;
+        color: #666;
+        text-align: center;
+    }
+}
+
+.tbody {
+    margin-bottom: 10px;
+
+    .row {
+        &:nth-child(odd) {
+            background-color: #FFF;
+        }
+
+        &:nth-child(even) {
+            background-color: #F6F6F6;
+        }
+    }
+
+    .column {
+        padding: 4% 1%;
+        color: #2D2D2D;
+    }
+
+    .number,
+    .online,
+    .username,
+    .status {
+        text-align: center;
+    }
+
+    .status {
+        .enable {
+            width: 100%;
+            float: left;
+        }
+
+        .disable,
+        .locked,
+        .bankrupt {
+            width: 100%;
+            float: left;
+            color: #FF5454;
+        }
+    }
+
+    .balance {
+        text-align: right;
+    }
+}
+
+.column {
+    float: left;
+    line-height: 16px;
+    font-size: 12px;
+    word-break: break-word;
+
+    span {
+        display: inline-block;
+        vertical-align: middle;
+    }
+}
+
+.number {
+    width: 10%;
+}
+
+.online {
+    width: 13%;
+}
+
+.username {
+    width: 22%;
+}
+
+.status {
+    width: 15%;
+}
+
+.balance {
+    width: 40%;
+}
+
+.money {
+    max-width: 70%;
+}
+
+.icon-online {
+    width: 12px;
+    height: 12px;
+    background-image: url('/static/image/mobile/mcenter/ic_noonline.png');
+    background-position: 0 0;
+    background-size: 12px;
+    background-repeat: no-repeat;
+
+    &.active {
+        background-image: url('/static/image/mobile/mcenter/ic_mailnew.png');
+    }
+}
+
+.icon-info {
+    width: 16px;
+    height: 16px;
+    margin: 0 2px 0 2px;
+    background: url('/static/image/mobile/mcenter/btn_expand.png') 0 0 no-repeat;
+    background-size: 16px;
+}
+
+.info-wrap {
+    clear: both;
+    padding: 10px 6%;
+    background-color: #DDD;
+}
+
+.info-row {
+    line-height: 20px;
+    font-size: 14px;
+
+    div {
+        overflow: hidden;
+        float: left;
+        text-overflow: ellipsis;
+        white-space: nowrap;
+    }
+
+    .info-status {
+        .enable {
+            color: #009685;
+        }
+
+        .disable,
+        .locked,
+        .bankrupt {
+            color: #FF5454;
+        }
+    }
+}
+
+.title {
+    width: 35%;
+    color: #000;
+}
+
+.info,
+.info-online,
+.info-status {
+    width: 65%;
+}
+
+.info {
+    color: #000;
+}
+
+.info-online {
+    .active {
+        color: #0091d2;
+    }
+}
+
+.no-data {
+    text-align: center;
+    margin-top: 8px;
+}
+
+@media screen and (min-width: $phone) {
+    .column {
+        line-height: 15px;
+        font-size: 15px;
+    }
+
+    .icon-online {
+        width: 13px;
+        height: 13px;
+        background-size: 13px;
+    }
+
+    .icon-info {
+        width: 19px;
+        height: 19px;
+        background-size: 19px;
+    }
+    
+    .info-row {
+        line-height: 15px;
+        font-size: 15px;
+    }
+}
+
+@media screen and (min-width: $pad) {
+    .column {
+        line-height: 24px;
+        font-size: 24px;
+    }
+
+    .icon-online {
+        width: 21px;
+        height: 21px;
+        background-size: 21px;
+    }
+
+    .icon-info {
+        width: 30px;
+        height: 30px;
+        background-size: 30px;
+    }
+
+    .info-row {
+        line-height: 24px;
+        font-size: 24px;
+    }
+}

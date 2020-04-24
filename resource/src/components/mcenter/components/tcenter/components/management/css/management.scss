@@ -1,0 +1,26 @@
+.top-link-wrap {
+    height: 30px;
+    line-height: 30px;
+    margin-bottom: 10px;
+    background-color: $linkBackgroundColor;
+
+    > div {
+        overflow: hidden;
+        float: left;
+        max-width: 33.333%;
+        padding: 0 5px;
+        color: $linkColor;
+        font-size: 12px;
+        text-overflow: ellipsis;
+        white-space: nowrap;
+
+        &.active {
+            color: $linkColorActive;
+        }
+    }
+}
+
+.pagination {
+    position: fixed;
+    bottom: 55px;
+}

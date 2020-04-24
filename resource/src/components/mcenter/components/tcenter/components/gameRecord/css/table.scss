@@ -1,0 +1,120 @@
+.is-number {
+    text-align: right;
+}
+
+.is-negative {
+    composes: is-number;
+    color: #FF5454;
+}
+
+.is-text {
+    text-align: left;
+}
+
+.table {
+    margin-top: 12px;
+    margin-bottom: 32px;
+    width: 100%;
+    color: #000;
+    font-size: 12px;
+    border-collapse: collapse;
+    border-spacing: 0;
+    text-align: center;
+
+    thead {
+        tr {
+            background: #DDD;
+            color: #676767;
+        }
+
+        th {
+            padding: 6px 1.5%;
+            font-style: normal;
+            font-weight: normal;
+
+            &.is-sorted {
+                color: #545D6E;
+            }
+
+            &.sort {
+                cursor: pointer;
+
+            }
+        }
+    }
+
+    tbody {
+        tr {
+            &:nth-child(odd) {
+                background: #FFF;
+            }
+
+            &:nth-child(even) {
+                background: #EEE;
+            }
+        }
+
+        td {
+            position: relative;
+            padding: 12px 1.5%;
+
+            &.is-last {
+                padding-right: 22px;
+            }
+
+            .icon-more {
+                position: absolute;
+                top: 50%;
+                right: 4px;
+                margin-top: -8px;
+                color: #999;
+
+                > svg {
+                    display: block;
+                }
+            }
+        }
+    }
+
+    tfoot {
+        tr {
+            background: #DDD;
+
+            &.sub-total {
+                background: #E6E6E6;
+            }
+        }
+
+        td {
+            padding: 12px 1.5%;
+
+            &.is-last {
+                padding-right: 22px;
+            }
+        }
+    }
+}
+
+.icon-group {
+    display: inline-block;
+    width: 10px;
+    height: 10px;
+}
+
+.icon {
+    width: 5px;
+    height: 10px;
+    float: left;
+}
+
+@media screen and (min-width: 480px) {
+    .table {
+        font-size: 15px;
+    }
+}
+
+@media screen and (min-width: 768px) {
+    .table {
+        font-size: 24px;
+    }
+}

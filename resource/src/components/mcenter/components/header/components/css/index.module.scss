@@ -1,0 +1,45 @@
+.preset-color {
+    $balanceCloseColor: #F4D8AF;
+    $balanceRefreshBtnColor: #F4D8AF;
+
+    $balanceWrapBg: #00347D;
+    $balanceWrapColor: #F4D8AF;
+    $balanceBg: #000;
+    $balanceContentColor: #FFF;
+
+    $balanceMaintenanceColor: #FF1010;
+    $balanceTipColor: #1D8FFF; 
+    @import './balance.module.scss'; 
+}
+
+.site-500011,
+.site-52,
+.site-53 {
+    $balanceCloseColor: #FFF;
+    $balanceRefreshBtnColor: #FFF;
+
+    $balanceWrapBg: #EDB83F;
+    $balanceWrapColor: #000;
+    $balanceBg: #FFF;
+    $balanceContentColor: #000;
+
+    $balanceMaintenanceColor: #FF1010;
+    $balanceTipColor: #1D8FFF;
+    @import './balance.module.scss';  
+}
+
+.site-500015,
+.site-69,
+.site-67 {
+    $balanceCloseColor: #FFF;
+    $balanceRefreshBtnColor: #FFF;
+
+    $balanceWrapBg: #FECF61;
+    $balanceWrapColor: #000;
+    $balanceBg: #FFF;
+    $balanceContentColor: #000;
+
+    $balanceMaintenanceColor: #FF1010;
+    $balanceTipColor: #1D8FFF;
+    @import './balance.module.scss';  
+}

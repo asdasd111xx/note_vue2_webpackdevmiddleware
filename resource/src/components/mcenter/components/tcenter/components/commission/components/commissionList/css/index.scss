@@ -1,0 +1,122 @@
+.main-table {
+    width: 100%;
+    margin: 9px 0 50px;
+    border-spacing: 0;
+    border-collapse: collapse;
+
+    thead {
+        th {
+            background-color: #DDD;
+            color: #666;
+            font-weight: normal;
+            font-size: 12px;
+        }
+
+        .index {
+            width: 10%;
+        }
+        .period {
+            width: 28%;
+            cursor: pointer;
+        }
+        .datetime {
+            width: 25%;
+        }
+        .state {
+            width: 28%;
+        }
+        .next {
+            width: 9%;
+        }
+    }
+
+    tbody {
+        td {
+            color: #000;
+            font-size: 12px;
+            text-align: center;
+
+            span {
+                display: inline-block;
+                width: 65px;
+                text-align: left;
+            }
+        }
+
+        .state-yet {
+            color: #52B8FF;
+        }
+
+        .state-unqualified {
+            color: #FF5454;
+        }
+
+        .detail-wrap {
+            padding: 3% 0 0;
+            background-color: #EEE;
+        }
+
+        .detail {
+            line-height: 12px;
+            padding-bottom: 3%;
+            font-size: 12px;
+
+            > div {
+                overflow: hidden;
+                float: left;
+                text-align: left;
+                text-overflow: ellipsis;
+                white-space: nowrap;
+            }
+        }
+
+        .title {
+            width: 35%;
+            padding: 0 3%;
+            color: #353B5D;
+        }
+
+        .number {
+            width: 65%;
+            color: #353B5D;
+        }
+    }
+
+    tfoot {
+        tr {
+            background-color: #DDD;
+        }
+
+        td {
+            color: #000;
+            font-size: 12px;
+            text-align: center;
+        }
+
+        .foot-title {
+            padding: 0 4% 0 7%;
+            text-align: left;
+        }
+
+        .money-type {
+            text-align: right;
+        }
+    }
+}
+
+.no-data {
+    margin-top: 122px;
+    color: #DDD;
+    text-align: center;
+
+    > img {
+        display: block;
+        width: 16%;
+        margin: 0 auto 8px;
+    }
+}
+
+.pagination {
+    position: fixed;
+    bottom: 55px;
+}

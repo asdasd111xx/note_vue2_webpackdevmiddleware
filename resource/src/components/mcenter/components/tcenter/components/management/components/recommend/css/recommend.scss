@@ -1,0 +1,217 @@
+.main-class {
+    position: relative;
+}
+
+.code-wrap {
+    padding: 0 6%;
+    background-color: #3E3E3E;
+
+    > div {
+        height: 37px;
+        line-height: 37px;
+        font-size: 14px;
+    }
+}
+
+.title {
+    float: left;
+    color: $titleColor;
+}
+
+.code {
+    float: right;
+    color: #FFF;;
+}
+
+.promote-wrap {
+    padding: 12px 6%;
+    background-color: #FFF;
+}
+
+.qrcode-wrap {
+    float: left;
+    border: 1px solid #AAA;
+
+    > img {
+        display: block;
+    }
+}
+
+.button-wrap {
+    float: right;
+    width: calc(100% - 131px - 10px);
+
+    > div {
+        height: 33px;
+        margin: 8px 0;
+        padding: 0 4%;
+        border: 1px solid #AAA;
+        border-radius: 3px;
+
+        &::before {
+            content: '';
+            display: inline-block;
+            height: 100%;
+            vertical-align: middle;
+        }
+    }
+}
+
+.icon {
+    display: inline-block;
+    width: 17px;
+    height: 17px;
+    margin-right: 3px;
+    background-position: 50% 50%;
+    background-size: 17px 17px;
+    background-repeat: no-repeat;
+    vertical-align: middle;
+}
+
+.icon-qrcode {
+    background-image: url('/static/image/mobile/mcenter/icon_qrcode.png');
+}
+
+.icon-copy {
+    background-image: url('/static/image/mobile/mcenter/icon_copy.png');
+}
+
+.button-text {
+    overflow: hidden;
+    display: inline-block;
+    width: calc(100% - 8% - 17px - 3px);
+    line-height: 14px;
+    font-size: 14px;
+    vertical-align: middle;
+    text-overflow: ellipsis;
+    white-space: nowrap;
+}
+
+.button-create {
+    display: inline-block;
+    height: 19px;
+    margin-top: 10px;
+
+    > span {
+        display: inline-block;
+        line-height: 14px;
+        color: #222;;
+        font-size: 14px;
+        vertical-align: middle;
+    }
+
+    &::before {
+        content: '';
+        display: inline-block;
+        height: 100%;
+        vertical-align: middle;
+    }
+}
+
+.icon-arrow {
+    width: 10px;
+    height: 10px;
+    margin-right: 3px;
+    background-image: url('/static/image/mobile/mcenter/icon_arrow.png');
+    background-position: 50% 50%;
+    background-size: 10px 10px;
+    background-repeat: no-repeat;
+
+    &.active {
+        background-image: url('/static/image/mobile/mcenter/icon_arrow_active.png');
+    }
+}
+
+.register-wrap {
+    padding: 0 6% 20px;
+    background-color: #FFF;
+
+    button {
+        display: block;
+        width: 40%;
+        height: 45px;
+        line-height: 45px;
+        margin-top: 42px;
+        margin-left: auto;
+        border: none;
+        border-radius: 3px;
+        background-color: $buttonBackgroundColor;
+        color: $buttonTextColor;
+        font-size: 13px;
+        text-align: center;
+        outline: none;
+    }
+}
+
+.line {
+    height: 1px;
+    margin-bottom: 15px;
+    background-color: #DDD;
+}
+
+.input-group {
+    position: relative;
+    padding-top: 5px;
+    margin-bottom: 10px;
+    font-size: 12px;
+}
+
+.input-title {
+    padding: 0 5px;
+    color: #222;
+}
+
+.placeholder {
+    position: relative;
+    padding: 0 5px 5px;
+    border-bottom: 1px solid #2693FC;
+    color: #AAA;
+
+    &.password,
+    &.password_confirm {
+        padding-right: 40px;
+    }
+
+    &.error {
+        border-color: #FF5454;
+    }
+
+    input {
+        top: 0;
+        bottom: 5px;
+        left: 0;
+        width: 100%;
+        margin: 0;
+        padding: 0 5px;
+        border: none;
+        color: #222;
+        outline: none;
+
+        &.show-placeholder {
+            opacity: 0.4;
+            position: absolute;
+        }
+    }
+}
+
+.error-message {
+    padding: 5px;
+    color: #FF1010;
+    font-size: 12px;
+}
+
+.btn-show-password {
+    position: absolute;
+    right: 5px;
+    bottom: 7px;
+    width: 30px;
+    height: 30px;
+    background-image: url('/static/image/mobile/mcenter/btn_eye.png');
+    background-position: 50% 50%;
+    background-size: 30px 30px;
+    background-repeat: no-repeat;
+
+    &.active {
+        background-image: url('/static/image/mobile/mcenter/btn_eye_active.png');
+    }
+}

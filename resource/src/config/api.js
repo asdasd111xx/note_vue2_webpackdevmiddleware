@@ -133,6 +133,9 @@ export const API_COMMISSION_FIRST_LEVEL_LIST = '/api/v1/c/wage/entry';
 // 會員推廣資訊
 export const API_PROMOTION_INFO = '/api/v1/c/player/promotion';
 
+// 下層好友總覽
+export const API_MANAGEMENT_FRIENDS_STATISTICS = '/api/v1/c/stats/player/friends/overview';
+
 // 一級好友今日登入、今日註冊、今日有投注、今日存款會員、7日未登入數量
 export const API_MANAGEMENT_FIRST_LEVEL_INFO = '/api/v1/c/stats/player/depth/1/friends';
 
@@ -150,6 +153,9 @@ export const API_FRIEND_WAGER_REPORT = '/api/v1/c/stats/player/friends/wager_rep
 
 // 會員依遊戲類別取得下層注單一覽
 export const API_FRIEND_RECORD_DETAIL = '/api/v1/c/friend/wagers/list_by_game_code';
+
+// 我的返利收益概況
+export const API_COMMISSION_SUMMARY = '/api/v1/c/wage/summary';
 
 // 取得會員意見反饋類別
 export const API_FEEDBACK_TYPE_LIST = '/api/v1/c/feedback_type/list';

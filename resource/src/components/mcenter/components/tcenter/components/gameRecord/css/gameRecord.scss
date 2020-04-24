@@ -1,0 +1,123 @@
+.main-wrap {
+    padding-bottom: 42px;
+}
+
+.top-wrap {
+    background-color: #FFF;
+    padding: 8px 22px;
+}
+
+.search-tab {
+    display: inline-block;
+    line-height: 12px;
+    margin: 0 9px;
+    color: $tabColor;
+    font-size: 12px;
+
+    &.active {
+        color: $tabColorActive;
+    }
+}
+
+.form-search {
+    background-color: #FFF;
+    border-top: 1px solid #BEBCBC;
+    border-bottom: 1px solid #BEBCBC;
+
+    .title {
+        left: 12px;
+        color: #BEBCBC;
+    }
+}
+
+.field-game-wrap {
+    padding: 4px 12px;
+    border-bottom: 1px solid #BEBCBC;
+
+    select {
+        background: transparent;
+        border: none;
+        appearance: none;
+        outline: none;
+    }
+}
+
+.field-date-wrap {
+    padding: 4px 12px;
+    float: left;
+    width: 50%;
+
+    &.start-date {
+        border-right: 1px solid #BEBCBC;
+    }
+
+    .date {
+        outline: none;
+        width: 100%;
+    }
+
+    input {
+        border: none;
+        outline: none;
+        background: transparent;
+        appearance: none;
+    }
+}
+
+.field-search-wrap {
+    padding: 8px 0;
+    clear: left;
+    border-top: 1px solid #BEBCBC;
+
+    .btn-search {
+        background-color: $buttonBackgroundColor;
+        margin: 0 auto;
+        width: 75%;
+        line-height: 30px;
+        border-radius: 6px;
+        text-align: center;
+        color: $buttonTextColor;
+    }
+}
+
+.select {
+    background-color: inherit;
+    width: 100%;
+    border: none;
+    outline: none;
+}
+
+.pagination {
+    position: fixed;
+    bottom: 55px;
+}
+
+.no-data {
+    padding-top: 100px;
+
+    > img {
+        display: block;
+        width: 60px;
+        margin: 0 auto 10px;
+    }
+
+    > div {
+        color: #747577;
+        text-align: center;
+    }
+}
+
+.search-tips {
+    position: absolute;
+    top: 50px;
+    right: 0;
+    left: 0;
+    width: 250px;
+    margin: 0 auto;
+    padding: 15px 18px;
+    border-radius: 5px;
+    background-color: #161616;
+    color: #FFF;
+    font-size: 16px;
+    text-align: center;
+}

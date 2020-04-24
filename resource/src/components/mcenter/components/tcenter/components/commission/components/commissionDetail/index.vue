@@ -1,0 +1,188 @@
+<template>
+    <div :class="mainClass">
+        <div :class="$style['state-wrap']">
+            <div :class="$style.period">{{ $text('S_PERIOD', '期数') }} {{ detailInfo.period }}</div>
+            <div :class="$style.state">{{ $text('S_ASSIGN_ALREADY', '已派发') }}</div>
+        </div>
+        <div v-if="!detailInfo.oauth2" class="level-wrap">
+            <div :class="[$style['level-info-wrap'], 'clearfix']">
+                <div
+                    v-for="item in summaryList"
+                    :key="`level-${item.depth}`"
+                    :class="[$style['level-info-box'], $style[`level-num-${summaryList.length}`]]"
+                >
+                    <div :class="[$style['info-title'], $style[`friend-${item.depth}`]]">{{ levelTrans[item.depth] }}</div>
+                    <div :class="$style['info-subtitle']">{{ $text('S_COMMISSION_01', '佣金') }}</div>
+                    <div>{{ item.amount }}</div>
+                    <div :class="$style['info-subtitle']">{{ $text('S_VALID_BET', '有效投注') }}</div>
+                    <div>{{ item.valid_bet }}</div>
+                </div>
+            </div>
+            <div v-if="summaryTotal" :class="$style['level-total-box']">
+                <div :class="[$style['level-total-tr'], 'clearfix']">
+                    <div :class="$style['info-title']">{{ $text('S_COMMISSION_TOTAL', '返利总计') }}</div>
+                    <div :class="$style['info-value']">{{ summaryTotal.amount }}</div>
+                </div>
+                <div :class="[$style['level-total-tr'], 'clearfix']">
+                    <div :class="$style['info-title']">{{ $text('S_VALID_BET_TOTAL_01', '有效投注总计') }}</div>
+                    <div :class="$style['info-value']">{{ summaryTotal.valid_bet }}</div>
+                </div>
+            </div>
+        </div>
+        <div v-if="!detailInfo.oauth2" class="main-wrap">
+            <template v-if="friendsList.length">
+                <table :class="$style['main-table']">
+                    <thead>
+                        <tr>
+                            <th :class="$style.index">{{ $text('S_NUMBER_NO', '序') }}</th>
+                            <th :class="$style['first-level']">{{ $text('S_FIRST_LEVEL_FRIEND', '一级好友') }}</th>
+                            <th :class="[$style['valid-bet'], { [$style.active]: sort === 'valid_bet' }]" @click="setDataSort('valid_bet')">
+                                <span>{{ $text('S_VALID_BET', '有效投注') }}</span>
+                                <span v-if="sort === 'period'">
+                                    <icon
+                                        :name="`${order === 'desc' ? 'long-arrow-alt-down' : 'long-arrow-alt-up'}`"
+                                        width="5"
+                                        height="10"
+                                    />
+                                </span>
+                                <span v-else>
+                                    <icon
+                                        name="long-arrow-alt-up"
+                                        width="5"
+                                        height="10"
+                                    />
+                                    <icon
+                                        name="long-arrow-alt-down"
+                                        width="5"
+                                        height="10"
+                                    />
+                                </span>
+                            </th>
+                            <th :class="$style.commission">{{ $text('S_COMMISSION_01', '返利') }}</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        <tr v-for="(info, index) in friendsList" :key="`list-${info.id}`">
+                            <td>{{ index + 1 }}</td>
+                            <td>{{ info.username }}</td>
+                            <td>
+                                <div>{{ info.valid_bet | commaFormat }}</div>
+                            </td>
+                            <td>
+                                <div>{{ info.wage_amount | commaFormat }}</div>
+                            </td>
+                        </tr>
+                    </tbody>
+                    <tfoot>
+                        <tr v-if="pageTotal">
+                            <td :class="$style['foot-title']" colspan="2">{{ $text('S_COMMISSION_PAGE_TOTAL', '本页结果小计') }}</td>
+                            <td>
+                                <div>{{ pageTotal.valid_bet | commaFormat }}</div>
+                            </td>
+                            <td>
+                                <div>{{ pageTotal.amount | commaFormat }}</div>
+                            </td>
+                        </tr>
+                        <tr v-if="allTotal">
+                            <td :class="$style['foot-title']" colspan="2">{{ $text('S_COMMISSION_SEARCH_TOTAL', '搜寻结果总计') }}</td>
+                            <td>
+                                <div>{{ allTotal.valid_bet | commaFormat }}</div>
+                            </td>
+                            <td>
+                                <div>{{ allTotal.amount | commaFormat }}</div>
+                            </td>
+                        </tr>
+                    </tfoot>
+                </table>
+                <pagintaion
+                    :class="$style.pagination"
+                    :page="+currentPage"
+                    :total="totalPage"
+                    @update:page="(value) => { updatePage(value); }"
+                />
+            </template>
+            <template v-else>
+                <div :class="$style['no-data']">{{ $text('S_NO_DATA_TPL') }}</div>
+            </template>
+        </div>
+        <div v-else class="main-wrap">
+            <div :class="$style['detail-wrap']">
+                <div :class="[$style.detail, 'clearfix']">
+                    <div :class="[$style.text, $style.main]">{{ $text('S_EXPECTED_LOSS_REBATE', '盈亏返利预估') }}</div>
+                    <div :class="[$style.amount, $style.main, { [$style.deficit]: +detailList.amount < 0 }]">{{ detailList.amount }}</div>
+                </div>
+                <div :class="[$style.detail, 'clearfix']">
+                    <div :class="[$style.text, $style.main]">{{ $text('S_REBATE_LEVEL', '返利级别') }}</div>
+                    <div :class="[$style.amount, $style.main]">{{ detailList.rate }} %</div>
+                </div>
+                <div :class="$style.divider" />
+                <div :class="$style.date">({{ detailList.start_at | dateFormat }}-{{ detailList.end_at | dateFormat }})</div>
+                <div :class="[$style.detail, 'clearfix']">
+                    <div :class="$style.text">{{ $text('S_ACH_VALID_MEMBERS', '有效会员') }}</div>
+                    <div :class="$style.amount">{{ detailList.valid_user }} {{ $text('S_PERSON', '人') }}</div>
+                </div>
+                <div :class="[$style.detail, 'clearfix']">
+                    <div :class="$style.text">{{ $text('S_VALID_BET', '有效投注') }}</div>
+                    <div :class="$style.amount">{{ detailList.valid_bet }}</div>
+                </div>
+                <div :class="[$style.detail, 'clearfix']">
+                    <div :class="$style.text">{{ $text('S_GAME_LOSS', '游戏盈亏') }}</div>
+                    <div :class="[$style.amount, { [$style.deficit]: +detailList.profit < 0 }]">{{ detailList.profit }}</div>
+                </div>
+                <div :class="[$style.detail, 'clearfix']">
+                    <div :class="$style.text">{{ $text('S_SENT_RAKEBACK', '已派返水') }}</div>
+                    <div :class="$style.amount">{{ detailList.dispatched_rebate }}</div>
+                </div>
+                <div :class="[$style.detail, 'clearfix']">
+                    <div :class="$style.text">{{ $text('S_SENT_PROMOTIONS', '已派优惠') }}</div>
+                    <div :class="$style.amount">{{ detailList.dispatched_offer }}</div>
+                </div>
+                <div :class="[$style.detail, 'clearfix']">
+                    <div :class="$style.text">{{ $text('S_MEM_DEPOSIT', '会员入款') }}</div>
+                    <div :class="$style.amount">{{ detailList.deposit }}</div>
+                </div>
+                <div :class="[$style.detail, 'clearfix']">
+                    <div :class="$style.text">{{ $text('S_MEM_WITHDRAW', '会员出款') }}</div>
+                    <div :class="$style.amount">{{ detailList.withdraw }}</div>
+                </div>
+                <div :class="[$style.detail, 'clearfix']">
+                    <div :class="$style.text">{{ $text('S_PLATFORM_COST', '平台费') }}</div>
+                    <div :class="$style.amount">{{ detailList.vendor_fee }}</div>
+                </div>
+                <div v-if="detailList.shift_amount" :class="[$style.detail, 'clearfix']">
+                    <div :class="$style.text">{{ $text('S_SHIFT_AMOUNT', '是否上期結轉') }}</div>
+                    <div :class="$style.amount">{{ $text('S_HAVE', '有') }}</div>
+                </div>
+                <div :class="$style.tips">※ {{ $text('S_EVERY_DAY_UPDATE', { replace: [{ target: '%s', value: '6:00' }] }) }}</div>
+            </div>
+        </div>
+    </div>
+</template>
+
+<script>
+import { mapGetters } from 'vuex';
+import commissionDetail from '@/mixins/mcenter/commission/commissionDetail';
+
+export default {
+    components: {
+        pagintaion: () => import(/* webpackChunkName: 'commissionList' */ '../../../../../pagination')
+    },
+    mixins: [commissionDetail],
+    computed: {
+        ...mapGetters({
+            memInfo: 'getMemInfo'
+        }),
+        mainClass() {
+            const site = `site-${this.memInfo.user.domain}`;
+
+            return {
+                'commission-detail-wrap': true,
+                [this.$style[site]]: this.$style[site],
+                [this.$style['preset-color']]: !this.$style[site]
+            };
+        }
+    }
+};
+</script>
+
+<style lang="scss" src="./css/index.scss" module></style>

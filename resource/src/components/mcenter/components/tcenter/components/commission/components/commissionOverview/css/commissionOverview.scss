@@ -1,0 +1,100 @@
+.date-wrap {
+    line-height: 35px;
+    padding: 0 22px;
+    background-color: #3E3E3E;
+    font-size: 14px;
+}
+
+.date {
+    float: left;
+    color: $titleColor;
+}
+
+.remainder {
+    float: right;
+    color: #FFF;
+}
+
+.summary-wrap {
+    background-color: #FFF;
+}
+
+.wrap {
+    margin: 0 19px;
+}
+
+.title-wrap {
+    border-bottom: 1px solid #CCC;
+    padding: 12px 0;
+    font-size: 14px;
+
+    .btn-arrow {
+        float: left;
+        margin-left: 10px;
+        color: #000;
+    }
+
+    .title {
+        float: left;
+        margin-left: 13px;
+        color: #555;
+    }
+
+    .amount {
+        float: right;
+        color: #000;
+    }
+}
+
+.detail-wrap {
+    padding: 5px 35px;
+
+    .text {
+        float: left;
+        color: #555;
+        font-size: 12px;
+
+        &.main {
+            color: #55B9FF;
+        }
+    }
+
+    .amount {
+        float: right;
+        color: #555;
+        font-size: 12px;
+
+        &.main {
+            color: #55B9FF;
+        }
+
+        &.deficit {
+            color: #F00;
+        }
+    }
+
+    .divider {
+        height: 1px;
+        margin: 5px 0;
+        background-color: #CCC;
+    }
+
+    .summary-date {
+        color: #555;
+        font-size: 12px;
+    }
+
+    .tips {
+        margin: 14px 0 11px;
+        color: #222;
+        font-size: 12px;
+        text-align: center;
+    }
+}
+
+.no-data {
+    padding: 12px 0;
+    color: #AAA;
+    font-size: 14px;
+    text-align: center;
+}

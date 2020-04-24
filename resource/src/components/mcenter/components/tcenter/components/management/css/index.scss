@@ -1,0 +1,17 @@
+.preset-color {
+    $linkBackgroundColor: #FFF;
+    $linkColor: #000;
+    $linkColorActive: #00347D;
+
+    @import './management.scss';
+}
+
+.site-500011,
+.site-52,
+.site-53 {
+    $linkBackgroundColor: #FFFEFE;
+    $linkColor: #000;
+    $linkColorActive: #EDB83F;
+
+    @import './management.scss';
+}

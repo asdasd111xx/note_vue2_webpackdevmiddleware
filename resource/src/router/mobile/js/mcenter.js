@@ -243,10 +243,10 @@ export default {
             path: 'tcenter',
             name: 'mcenter-tcenter',
             component,
-            redirect: '/mobile/mcenter/tcenter/management',
+            redirect: '/mobile/mcenter/tcenter/management/member',
             children: [
                 {
-                    path: 'commission/:id?/:period?',
+                    path: 'commission/:page',
                     name: 'mcenter-tcenter-commission',
                     component
                 },
@@ -256,7 +256,7 @@ export default {
                     component
                 },
                 {
-                    path: 'management',
+                    path: 'management/:page?/:date?',
                     name: 'mcenter-tcenter-management',
                     component
                 }

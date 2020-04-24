@@ -1,0 +1,106 @@
+.header {
+    margin-bottom: 10px;
+    padding: 7px 11px;
+    background-color: #FFFEFE;
+
+    .change-btn {
+        display: inline-block;
+        line-height: 12px;
+        margin: 0 11px;
+        color: $headerTextColor;
+        font-size: 12px;
+
+        &.current {
+            color: $headerTextColorActive;
+        }
+    }
+}
+
+.top-link {
+    margin-bottom: 10px;
+    padding: 7px 11px;
+    background-color: #FFFEFE;
+}
+
+.link {
+    display: inline-block;
+    line-height: 12px;
+    margin: 0 11px;
+    color: $headerTextColor;
+    font-size: 12px;
+
+    &.active {
+        color: $headerTextColorActive;
+    }
+}
+
+.search-form {
+    background-color: #FFF;
+}
+
+.form-row {
+    border-bottom: 1px solid #BEBCBC;
+
+    select {
+        width: 100%;
+        outline: none;
+        background: transparent;
+        border: none;
+        appearance: none;
+    }
+
+    input {
+        width: 100%;
+        border: none;
+        outline: none;
+        background: transparent;
+        appearance: none;
+    }
+}
+
+.form-title {
+    padding: 5px 0 0 5px;
+    color: #BEBCBC;
+}
+
+.form-date-start,
+.form-date-end {
+    float: left;
+    width: 50%;
+}
+
+.form-date-start {
+    border-right: 1px solid #BEBCBC;
+}
+
+.submit-form-row {
+    padding: 8px 0;
+    text-align: center;
+    border-bottom: 1px solid #BEBCBC;
+}
+
+.submit {
+    display: inline-block;
+    width: 70%;
+    height: 30px;
+    line-height: 30px;
+    color: $submitTextColor;
+    text-align: center;
+    border-radius: 5px;
+    background-color: $submitButtonBackgroundColor;
+}
+
+.tips {
+    position: absolute;
+    top: 130px;
+    right: 0;
+    left: 0;
+    width: 233px;
+    margin: auto;
+    padding: 11px 34px;
+    border-radius: 10px;
+    background-color: #161616;
+    color: #FFF;
+    text-align: center;
+    opacity: 0.9;
+}

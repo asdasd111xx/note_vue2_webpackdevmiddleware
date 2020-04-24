@@ -1,0 +1,19 @@
+.tab-wrap {
+    background: $tabBackground;
+}
+
+.tab-item {
+    float: left;
+    line-height: 30px;
+    padding: 0 16px;
+    color: $tabTitleColor;
+    text-align: center;
+    overflow: hidden;
+    text-overflow: ellipsis;
+    white-space: nowrap;
+
+    &.is-current {
+        color: $tabTitleColorActive;
+        border-bottom: 3px solid $tabBorderColor;
+    }
+}
