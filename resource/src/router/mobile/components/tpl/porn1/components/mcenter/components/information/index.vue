@@ -27,18 +27,9 @@ export default {
                 prev: true,
                 title: this.$route.params.pid ? trans[this.$route.params.page] : '消息中心',
                 onClick: () => {
-                    if (this.$route.params.pid) {
-                        this.$router.back();
-                        return;
-                    }
-                    this.onClick();
+                    this.$router.back();
                 }
             };
-        }
-    },
-    methods: {
-        onClick() {
-            this.$router.push('/mobile/mcenter');
         }
     }
 };

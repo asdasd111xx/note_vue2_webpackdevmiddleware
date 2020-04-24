@@ -88,7 +88,6 @@ export default {
 <style lang="scss" scoped>
 $border-radius: 5px;
 $main-color: #b1987f;
-$main-linear-background: linear-gradient(#bd9d7d, #f9ddbd);
 $animation-time: 1s;
 
 .home-content-container {

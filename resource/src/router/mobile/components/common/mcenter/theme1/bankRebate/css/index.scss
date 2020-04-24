@@ -1,12 +1,17 @@
 .total-sub-wrap {
-    background: url('/static/image/mobile/mcenter/bg_header2_iphone8.png') 50% -65px / 100% no-repeat #222;
-    height: 30px;
+    position: fixed;
+    top: 43px;
+    right: 0;
+    left: 0;
+    border-top: 1px solid #EEE;
+    background-color: #FFF;
 
     .top-sub-title {
         float: left;
         width: 50%;
-        height: 30px;
-        color: #BEBCBC;
+        height: 43px;
+        line-height: 43px;
+        color: #A6A9B2;
         text-align: center;
 
         img {
@@ -16,8 +21,8 @@
         }
 
         &.active {
-            color: #FFF;
-            border-bottom: 3px solid #F9DCB2;
+            color: #5E626D;
+            border-bottom: 2px solid #BE9E7F;
         }
 
         &.self {
@@ -28,7 +33,9 @@
 
 .real-time-note {
     position: fixed;
-    width: 100%;
+    top: 87px;
+    right: 0;
+    left: 0;
     padding: 15px;
     font-size: 12px;
     color: #FFF;
@@ -40,46 +47,53 @@
 }
 
 .history-top-wrap {
-    height: 70px;
-    background-color: #00347D;
+    height: 80px;
+    margin-top: 47px;
+    background-color: #FFF;
 
     .total-item {
-        padding: 5px 0;
         float: left;
         width: 33%;
         height: 100%;
+        padding: 9px 0 5px;
         font-size: 12px;
         text-align: center;
 
         .total-item-title {
-            color: #ABCDEF;
+            line-height: 12px;
+            color: #222;
         }
 
         .total-item-money {
-            margin: 2px 0;
-            font-size: 14px;
-            color: #F4D8AF;
+            line-height: 16px;
+            margin: 14px 0 9px;
+            font-size: 16px;
+            color: #222;
+
+            &.week {
+                color: #BF8646;
+            }
         }
 
         .total-item-date {
-            color: #ABCDEF;
+            line-height: 15px;
+            color: #222;
         }
     }
 }
 
 .content-wrap {
-
     .content-item {
         margin-top: 10px;
         background-color: #FFF;
-        border-top: 1px solid #BEBCBC;
-        border-bottom: 1px solid #BEBCBC;
 
         .rebate-header {
             height: 26px;
             line-height: 25px;
             text-align: center;
-            border-bottom: 1px solid #BEBCBC;
+            border-bottom: 1px solid #EAEAEA;
+            color: #000;
+            font-size: 12px;
         }
 
         .rebate-body {
@@ -89,12 +103,12 @@
                 padding: 2px 30px;
 
                 .content-left {
-                    color: #ABABAB;
+                    color: #A6A9B2;
                 }
 
                 .content-right {
                     float: right;
-                    color: #A37F5B;
+                    color: #222;
                 }
             }
         }
@@ -122,8 +136,9 @@
                 height: 39px;
                 line-height: 39px;
                 color: #FFF;
-                background: url('/static/image/mobile/mcenter/receive_button.png') 100%/100% no-repeat;
+                background: linear-gradient(to left, #BD9D7D, #F9DDBD);
                 border: 0;
+                border-radius: 5px;
                 outline: none;
 
                 &.disable {
@@ -147,13 +162,14 @@
 .real-top-wrap {
     padding: 6px 10px;
     height: 50px;
-    background-color: #00347D;
+    margin-top: 47px;
+    background-color: #F8F8F7;
 
     .real-top-title {
         display: inline-block;
         width: 70%;
         font-size: 12px;
-        color: #F4D8AF;
+        color: #000;
         vertical-align: middle;
 
         .calculate-title {
@@ -168,14 +184,18 @@
         display: inline-block;
         width: 28%;
         min-width: 70px;
-        height: auto;
-        text-align: center;
-        border: 1px solid #FFF;
+        height: 32px;
+        line-height: 28px;
+        margin: 3px 0;
+        padding: 2px 0;
         border-radius: 15px;
+        background: linear-gradient(to left, #BD9D7D, #F9DDBD);
+        text-align: center;
         vertical-align: middle;
 
         &.disable {
-            border: 1px solid #FF5454;
+            line-height: 14px;
+            background: linear-gradient(#E9DACB, #EEE5DB);
         }
 
         .calculate-button {
@@ -186,10 +206,6 @@
                 overflow: hidden;
                 white-space: nowrap;
                 text-overflow: ellipsis;
-            }
-
-            &.disable {
-                color: #FF5454;
             }
         }
     }

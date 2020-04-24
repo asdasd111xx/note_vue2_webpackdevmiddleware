@@ -1,8 +1,7 @@
 <template>
     <bank-rebate :class="$style[`theme-${siteConfig.MOBILE_WEB_TPL}`]">
         <template scope="{ rebateInitData, messageText, shortDay, pageAll, caculateData, list, pickDateList, rebateCaculate, btnLock, formatTime, rebateState, onableStatus, operateStatus, btnReceiveLock, popReceive, amountCache, rebateSubTotal }">
-            <mcenter-header :header-setting="headerSetting" />
-            <div :class="$style['total-sub-wrap']">
+            <div :class="[$style['total-sub-wrap'], 'clearfix']">
                 <div
                     :class="[$style['top-sub-title'], { [$style['active']]: mcenterBankRebateType === 'history' }, { [$style['self']]: !rebateInitData.self_rebate }]"
                     @click="getItemType('history'); realTimeNote = false"
@@ -15,7 +14,7 @@
                     @click="getItemType('realtime')"
                 >
                     {{ $text('S_REAL_TIME_REBATE', '实时返水') }}
-                    <img :src="$getCdnPath(mcenterBankRebateType === 'realtime' ? '/static/image/mobile/mcenter/btn_description_n.png' : '/static/image/mobile/mcenter/btn_description_d.png')" @click="showRealNote" />
+                    <img :src="$getCdnPath('/static/image/mobile/mcenter/btn_description_d.png')" @click.stop="showRealNote" />
                 </div>
             </div>
             <div v-if="realTimeNote" :class="$style['real-time-note']">
@@ -43,7 +42,7 @@
                                     <span>-</span>
                                     <span>{{ pickDateList[item.type].endDate }}</span>
                                 </div>
-                                <div :class="$style['total-item-money']">{{ rebateSubTotal[item.type] }}</div>
+                                <div :class="[$style['total-item-money'], { [$style.week]: item.type === 'week' }]">{{ rebateSubTotal[item.type] }}</div>
                                 <div :class="$style['total-item-date']">{{ item.text }}</div>
                             </div>
                         </swiper-slide>
@@ -93,8 +92,8 @@
                         <div :class="$style['calculate-title']">{{ $text('S_CALCULATION_STARTED', '本次计算起始 (美东时间)') }}</div>
                         <div>{{ rebateInitData.last_stat_at }}</div>
                     </div>
-                    <div :class="[$style['real-top-btn'], { [$style['disable']]: btnLock }]">
-                        <div :class="[$style['calculate-button'], { [$style['disable']]: btnLock }]" @click="rebateCaculate()">
+                    <div :class="[$style['real-top-btn'], { [$style['disable']]: btnLock && formatTime }]">
+                        <div :class="$style['calculate-button']" @click="rebateCaculate()">
                             <span :class="$style['calculate-button-title']">{{ $text('S_TRIAL_CALCULATION', '试算') }}</span>
                             <span v-if="btnLock && formatTime">{{ `(${formatTime})` }}</span>
                         </div>
@@ -170,17 +169,16 @@
 </template>
 
 <script>
-import { swiper, swiperSlide } from 'vue-awesome-swiper';
+import { Swiper, SwiperSlide } from 'vue-awesome-swiper';
 import { mapActions, mapGetters } from 'vuex';
 import bankRebate from '@/components/common/mcenter/bankRebate';
 
 export default {
     components: {
-        mcenterHeader: () => import(/* webpackChunkName: 'recordDeposit' */'@/router/mobile/components/common/mcenter/theme1/header'),
         eleLoading: () => import(/* webpackChunkName: 'eleLoading' */'@/router/web/components/tpl/common/element/loading/square'),
         bankRebate,
-        swiper,
-        swiperSlide
+        Swiper,
+        SwiperSlide
     },
     data() {
         return {

@@ -169,7 +169,7 @@ export default {
         line-height: 45px;
         margin: 0 auto;
         border-radius: 3px;
-        background: linear-gradient(#BD9D7D, #F9DDBD);
+        background: linear-gradient(to left, #BD9D7D, #F9DDBD);
         color: #FFF;
         font-weight: 700;
         font-size: 14px;

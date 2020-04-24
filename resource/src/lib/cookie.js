@@ -1,5 +1,5 @@
 /* eslint-disable import/prefer-default-export */
-import Cookies from 'js-cookie'
+import Cookies from 'js-cookie';
 
 /**
  * 取得 cookie 值，未帶參數則回傳全部
@@ -18,7 +18,7 @@ export const getCookie = (cookieName) => {
     return cookieName ? result[cookieName] : result;
 };
 
-export const setCookie = (name, value, expires = 7, path = "/") => {
+export const setCookie = (name, value, expires = 7, path = '/') => {
     //   to do cookie 全站設定
-    Cookies.set(name, value, { expires: expires, path: path })
-}
+    Cookies.set(name, value, { expires, path });
+};

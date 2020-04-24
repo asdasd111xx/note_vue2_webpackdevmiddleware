@@ -1,7 +1,6 @@
 <template>
     <transition name="fade">
         <div class="pop-rebate-wrap pop-class">
-            <div class="close-btn" @click="close()">×</div>
             <div class="title">{{ $t('S_REAL_TIME_REBATE') }}</div>
             <div class="content-wrap">
                 <template>

@@ -37,15 +37,10 @@ export default {
     },
     computed: {
         ...mapGetters({
-            siteConfig: 'getSiteConfig',
             loginStatus: 'getLoginStatus'
         }),
         theme() {
-            if (this.siteConfig.TESTER === 'Y' && this.$cookie.get('TEST_MOBILE_TPL') !== null && this.$cookie.get('TEST_MOBILE_TPL') !== '') {
-                return `root-${this.$cookie.get('TEST_MOBILE_TPL')}`;
-            }
-
-            return `root-${this.siteConfig.MOBILE_WEB_TPL}`;
+            return 'root-porn1';
         }
     },
     created() {

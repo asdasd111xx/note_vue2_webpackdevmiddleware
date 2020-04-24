@@ -209,7 +209,7 @@ export default {
 <style lang="scss" scoped>
 $border-radius: 5px;
 $main-color: #d5bea4;
-$main-linear-background: linear-gradient(#bd9d7d, #f9ddbd);
+$main-linear-background: linear-gradient(to left, #BD9D7D, #F9DDBD);
 $icon-wallet-size: 33px;
 $height: 50px;
 $animation-time: 1s;

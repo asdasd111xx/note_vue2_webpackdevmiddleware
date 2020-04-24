@@ -63,19 +63,9 @@ export default {
             name: 'mcenter-bonusAccount',
             component
         },
-        { // 站內信
-            path: 'message',
-            name: 'mcenter-message',
-            component
-        },
         { // 資金明細
             path: 'moneyDetail/:page?',
             name: 'mcenter-moneyDetail',
-            component
-        },
-        { // 公告
-            path: 'post',
-            name: 'mcenter-post',
             component
         },
         { // 信息中心

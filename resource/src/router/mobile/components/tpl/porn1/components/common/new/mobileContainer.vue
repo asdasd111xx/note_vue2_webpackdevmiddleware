@@ -23,7 +23,7 @@ export default {
     components: {
         mHeader: () => import(/* webpackChunkName: 'mHeader' */ './mHeader'),
         mFooter: () => import(/* webpackChunkName: 'mFooter' */ './mFooter'),
-        elePop: () => import(/* webpackChunkName: 'elePop' */'@/router/web/components/tpl/common/pop'),
+        elePop: () => import(/* webpackChunkName: 'elePop' */'@/router/web/components/tpl/common/pop')
     // note: () => import(/* webpackChunkName: 'note' */'@/components/mcenter/components/common/note'),
     // agentNote: () => import(/* webpackChunkName: 'note' */'@/router/agent/components/common/note')
     },
