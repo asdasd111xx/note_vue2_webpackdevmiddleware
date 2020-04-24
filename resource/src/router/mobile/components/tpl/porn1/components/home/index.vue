@@ -9,9 +9,9 @@
 </template>
 
 <script>
-import homeSlider from './components/new/homeSlider';
-import homeNew from './components/new/homeNew';
-import homeContent from './components/new/homeContent';
+import homeSlider from './components/homeSlider';
+import homeNew from './components/homeNew';
+import homeContent from './components/homeContent';
 import mobileContainer from '../common/new/mobileContainer';
 
 export default {

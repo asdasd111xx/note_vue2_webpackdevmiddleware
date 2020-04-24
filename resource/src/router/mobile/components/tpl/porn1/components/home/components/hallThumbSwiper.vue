@@ -1,27 +1,16 @@
 <template>
     <swiper
-        :options="swiperOptionThumbs"
-        class="swiper gellery-hall-thumbs"
+        v-if="hallTab.length"
+        :options="options"
+        class="gellery-hall-thumbs"
     >
-        <swiper-slide
-            v-for="(tab, index) in hallTab"
-            :key="`hallThumb-${index}`"
-            class="hall-thumb-cell"
-        >
-            <div>
-                <img
-                    v-if="selectedIndex === index"
-                    :src="$getCdnPath(`/static/image/_new/platform/icon/${tab.category}/icon_${tab.category}_h.png`)"
-                    alt="thumb"
-                />
-                <img
-                    v-else
-                    :src="$getCdnPath(`/static/image/_new/platform/icon/${tab.category}/icon_${tab.category}_n.png`)"
-                    alt="thumb"
-                />
-                <div :class="['thumb-title', { active: selectedIndex === index }]">{{ tab.title }}</div>
-            </div>
-        </swiper-slide>
+        <template v-for="(tab, index) in hallTab">
+            <swiper-slide :key="`hallThumb-${index}`" class="hall-thumb-cell">
+                <img v-if="selectedIndex === index" :src="$getCdnPath(`/static/image/_new/platform/icon/icon_${tab.icon}_h.png`)" />
+                <img v-else :src="$getCdnPath(`/static/image/_new/platform/icon/icon_${tab.icon}_n.png`)" />
+                <div :class="['thumb-title', { active: selectedIndex === index }]">{{ tab.name }}</div>
+            </swiper-slide>
+        </template>
     </swiper>
 </template>
 
@@ -48,7 +37,7 @@ export default {
         }
     },
     computed: {
-        swiperOptionThumbs() {
+        options() {
             return {
                 loop: true,
                 loopedSlides: this.hallTab.length, // looped slides should be the same
@@ -56,7 +45,6 @@ export default {
                 height: 63,
                 freeMode: true,
                 mousewheel: true,
-                touchRatio: 1,
                 slideToClickedSlide: true,
                 on: {
                     init: () => {

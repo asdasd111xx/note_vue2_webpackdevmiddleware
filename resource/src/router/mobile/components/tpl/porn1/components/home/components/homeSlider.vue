@@ -1,20 +1,24 @@
 <template>
     <swiper
         v-if="options"
+        ref="home-swiper"
         :options="options"
-        :class="{ [$style['tab-fixed']]: hallTab !== 'home' }"
     >
         <swiper-slide v-for="(info, key) in slider" :key="key">
-            <img
-                :class="$style['phone-image']"
-                :src="$getCdnPath(info.image[curLang])"
-                :data-info="key"
-            />
-            <img
-                :class="$style['pad-image']"
-                :src="$getCdnPath(info.padImg[curLang])"
-                :data-info="key"
-            />
+            <div :class="$style['phone-image-wrap']">
+                <img
+                    :class="$style['phone-image']"
+                    :src="$getCdnPath(info.image[curLang])"
+                    :data-info="key"
+                />
+            </div>
+            <div>
+                <img
+                    :class="$style['pad-image']"
+                    :src="$getCdnPath(info.padImg[curLang])"
+                    :data-info="key"
+                />
+            </div>
         </swiper-slide>
         <div slot="pagination" class="swiper-pagination" />
     </swiper>
@@ -22,19 +26,13 @@
 
 <script>
 import { mapGetters } from 'vuex';
-import { swiper, swiperSlide } from 'vue-awesome-swiper';
+import { Swiper, SwiperSlide } from 'vue-awesome-swiper';
 import mobileLinkOpen from '@/lib/mobile_link_open';
 
 export default {
     components: {
-        swiper,
-        swiperSlide
-    },
-    props: {
-        hallTab: {
-            type: String,
-            required: true
-        }
+        Swiper,
+        SwiperSlide
     },
     computed: {
         ...mapGetters({
@@ -84,7 +82,7 @@ export default {
             const originSlider = this.slider;
             const options = {
                 loop: hasData,
-                autoplay: hasData ? { delay: 6000, disableOnInteraction: false } : false,
+                autoplay: { delay: 5000, disableOnInteraction: false },
                 pagination: hasData ? { el: '.swiper-pagination', clickable: true } : { el: null }
             };
 
@@ -167,40 +165,42 @@ export default {
 </script>
 
 <style lang="scss" module>
-.tab-fixed {
-    margin-top: 44px;
+:global {
+  .swiper-pagination-bullet {
+    width: 5px;
+    height: 5px;
+    background-color: #c0c4cc;
+    opacity: 1;
+  }
+
+  .swiper-pagination-bullet-active {
+    background-color: #fff;
+  }
 }
 
-:global {
-    .swiper-pagination-bullet {
-        width: 5px;
-        height: 5px;
-        background-color: #C0C4CC;
-        opacity: 1;
-    }
-
-    .swiper-pagination-bullet-active {
-        background-color: #FFF;
-    }
+.phone-image-wrap {
+  padding: 0 17px;
 }
 
 .phone-image {
-    display: block;
-    width: 100%;
+  border-radius: 7px;
+  display: block;
+  width: 100%;
 }
 
 .pad-image {
-    display: none;
-    width: 100%;
+  border-radius: 7px;
+  display: none;
+  width: 100%;
 }
 
 @media screen and (min-width: 640px) {
-    .phone-image {
-        display: none;
-    }
+  .phone-image {
+    display: none;
+  }
 
-    .pad-image {
-        display: block;
-    }
+  .pad-image {
+    display: block;
+  }
 }
 </style>

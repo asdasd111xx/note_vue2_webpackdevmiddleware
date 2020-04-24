@@ -1,223 +1,123 @@
 <template>
-    <div class="home-content-wrap">
-        <mcenter v-if="hallTab !== 'home'" />
-        <template v-for="(info, index) in list">
-            <hall-view
-                v-if="info.vendor"
-                :key="index"
-                :hall-info="info"
+    <div class="home-content-container clearfix">
+        <div class="hall-wrap">
+            <hall-thumb-swiper
+                ref="swiperThumbs"
                 :hall-tab="hallTab"
+                :selected-index="selectedIndex"
+                :hall-tab-has-created.sync="hallTabHasCreated"
             />
-            <video-view
-                v-else
-                :key="index"
-                :video-info="info"
+        </div>
+        <div ref="content-wrap" class="content-wrap">
+            <func-Block :selected-index="selectedIndex" :video-tab.sync="videoTab" />
+            <content-thumb-swiper
+                v-if="hallTabHasCreated && contentStyle"
+                ref="swiperContent"
+                :content-style="contentStyle"
+                :hall-tab="hallTab"
                 :video-tab="videoTab"
+                :selected-index.sync="selectedIndex"
+                :all-game="allGame"
             />
-        </template>
+        </div>
     </div>
 </template>
 
 <script>
 import { mapGetters } from 'vuex';
 import axios from 'axios';
-import querystring from 'querystring';
-import find from 'lodash/find';
-import game from '@/api/game';
-import mcenter from './mcenter';
-import videoView from './videoView';
-import hallView from './hallView';
-import { API_PORN1_DOMAIN } from '@/config/api';
+import funcBlock from './funcBlock';
+import hallThumbSwiper from './hallThumbSwiper';
+import contentThumbSwiper from './contentThumbSwiper';
 
 export default {
+    name: 'HomeContent',
     components: {
-        videoView,
-        hallView,
-        mcenter
-    },
-    props: {
-        hallList: {
-            type: Array,
-            required: true
-        },
-        hallTab: {
-            type: String,
-            required: true
-        },
-        videoTab: {
-            type: Object,
-            required: true
-        }
+        funcBlock,
+        hallThumbSwiper,
+        contentThumbSwiper
     },
     data() {
         return {
-            isReceive: false,
-            videoRecommand: [],
-            videoList: [],
-            videoSort: [],
-            allWinGame: []
+            hallTabHasCreated: false,
+            contentStyle: null,
+            selectedIndex: 0,
+            video: { id: 0, title: '' },
+            allGame: []
         };
     },
     computed: {
         ...mapGetters({
-            gameData: 'getGameData'
+            siteConfig: 'getSiteConfig'
         }),
-        list() {
-            if (this.hallTab !== 'home') {
-                if (this.hallTab === 'lottery') {
-                    const data = find(this.hallList, (info) => info.vendor === this.hallTab);
-                    const gameList = this.allWinGame.filter((value) => !data.list.includes(value));
-
-                    data.list = gameList.concat(data.list);
-
-                    return [{ ...data }];
-                }
-                return [{ ...find(this.hallList, (info) => info.vendor === this.hallTab) }];
+        videoTab: {
+            get() {
+                return this.video;
+            },
+            set(value) {
+                this.video = { ...value };
             }
-
-            if (!this.videoList.length) {
-                return [];
-            }
-
-            let hallIndex = 0;
-
-            if (this.videoTab.id) {
-                return this.videoSort.reduce((init, sort) => {
-                    const { length } = this.hallList;
-                    const i = hallIndex % length;
-                    const data = find(this.videoList, (info) => info.id === sort.id);
-
-                    if (!data) {
-                        return init;
-                    }
-
-                    const hall = this.hallList[i];
-
-                    hallIndex += 1;
-
-                    return [...init, { ...data }, { ...hall }];
-                }, []);
-            }
-
-            return this.videoSort.reduce((init, sort) => {
-                const { length } = this.hallList;
-                const i = hallIndex % length;
-                const data = find(this.videoList, (info) => info.id === sort.id);
-
-                if (!data) {
-                    return init;
-                }
-
-                const hall = this.hallList[i];
-
-                if (hall.vendor === 'lottery') {
-                    const gameList = this.allWinGame.filter((value) => !hall.list.includes(value));
-                    hall.list = gameList.concat(hall.list);
-                }
-
-                hallIndex += 1;
-
-                return [...init, { ...hall }, { ...data }];
-            }, [...this.videoRecommand]);
-        }
-    },
-    watch: {
-        videoTab() {
-            this.getList();
+        },
+        hallTab() {
+            return [{ icon: 'Tv', name: '影片' }, ...this.allGame.map((game) => ({ icon: game.iconName, name: game.name }))];
         }
     },
     created() {
-        this.getSort();
-        this.getRecommand();
-        this.getList();
+        this.getGame();
+    },
+    mounted() {
+        window.addEventListener('resize', this.onResize);
 
-        if (this.gameData.allwin.switch === 'Y') {
-            this.getAllWin();
-        }
+        // 故意使用setTimeout等首頁輪播圖載入完畢，才能正確取得offsetTop
+        setTimeout(() => {
+            window.dispatchEvent(new Event('resize'));
+        }, 200);
     },
     methods: {
-        getSort() {
+        getGame() {
             axios({
                 method: 'get',
-                url: `${API_PORN1_DOMAIN}/api/v1/video/sort`,
+                url: `${this.siteConfig.YABO_API_DOMAIN}/game/list`,
                 timeout: 30000,
                 headers: {
                     Bundleid: 'chungyo.foxyporn.prod.enterprise.web',
-                    Version: 1
-                    // 本機開發時會遇到 CORS 的問題，把Bundleid及Version註解，並打開下面註解即可
-                    // 'Content-Type': 'application/x-www-form-urlencoded',
-                    // origin: 'http://127.0.0.1'
+                    Version: 1,
+                    'Content-Type': 'application/x-www-form-urlencoded',
+                    origin: 'http://127.0.0.1'
                 }
             }).then((response) => {
                 if (response.status !== 200) {
                     return;
                 }
 
-                this.videoSort = [...response.data.result];
+                this.allGame = [...response.data.data];
             });
         },
-        getRecommand() {
-            axios({
-                method: 'get',
-                url: `${API_PORN1_DOMAIN}/api/v1/video/recommand`,
-                timeout: 30000,
-                headers: {
-                    Bundleid: 'chungyo.foxyporn.prod.enterprise.web',
-                    Version: 1
-                    // 本機開發時會遇到 CORS 的問題，把Bundleid及Version註解，並打開下面註解即可
-                    // 'Content-Type': 'application/x-www-form-urlencoded',
-                    // origin: 'http://127.0.0.1'
-                }
-            }).then((response) => {
-                if (response.status !== 200) {
-                    return;
-                }
-
-                this.videoRecommand = [...response.data.result];
-            });
-        },
-        getList() {
-            axios({
-                method: 'post',
-                url: `${API_PORN1_DOMAIN}/api/v1/video/videolist`,
-                timeout: 30000,
-                data: querystring.stringify({ tag: this.videoTab.title }),
-                headers: {
-                    Bundleid: 'chungyo.foxyporn.prod.enterprise.web',
-                    Version: 1
-                    // 本機開發時會遇到 CORS 的問題，把Bundleid及Version註解，並打開下面註解即可
-                    // 'Content-Type': 'application/x-www-form-urlencoded',
-                    // origin: 'http://127.0.0.1'
-                }
-            }).then((response) => {
-                if (response.status !== 200) {
-                    return;
-                }
-
-                this.videoList = [...response.data.result];
-            });
-        },
-        getAllWin() {
-            // 500萬彩票要加遊戲入口共三款
-            game.gameListByAssign({
-                params: {
-                    kind: 4,
-                    vendor: 'allwin',
-                    max_results: 3,
-                    enable: true
-                },
-                success: (response) => {
-                    response.ret.forEach((info) => {
-                        const list = {
-                            ...info,
-                            is_game: true
-                        };
-
-                        this.allWinGame.push(list);
-                    });
-                }
-            });
+        onResize() {
+            const height = window.innerHeight - this.$refs['content-wrap'].offsetTop - 50 - 60;
+            this.contentStyle = { height: `${height}px` };
         }
     }
 };
 </script>
+
+<style lang="scss" scoped>
+$border-radius: 5px;
+$main-color: #b1987f;
+$animation-time: 1s;
+
+.home-content-container {
+    margin: 0 17px;
+}
+
+.hall-wrap {
+    float: left;
+    width: 63px;
+    margin-right: 1px;
+}
+
+.content-wrap {
+    float: right;
+    width: calc(100% - 63px - 1px);
+}
+</style>

@@ -21,7 +21,7 @@ export default {
     },
     data() {
         return {
-            active: this.$route.query.sortId,
+            active: +this.$route.query.sortId,
             isOne: false
         };
     },
