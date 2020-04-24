@@ -306,7 +306,6 @@ import joinMemInfo from '@/config/joinMemInfo';
 import slideVerification from '@/components/slideVerification';
 import accountText from '../tpl/8/brilliant/components/openAccountText';
 
-import { REGISTER } from '@/api/bbos/config';
 import { getCookie, setCookie } from '@/lib/cookie';
 import bbosRequest from '@/lib/bbosRequest';
 
@@ -615,7 +614,7 @@ export default {
     getCaptcha() {
       bbosRequest({
         method: 'post',
-        moudle: CAPTCHA,
+        url: this.siteConfig.BBOS_DOMIAN + '/Captcha',
         reqHeaders: {
           'Vendor': this.memInfo.user.domain
         },
@@ -914,7 +913,7 @@ export default {
       delete params['withdraw_Password'];
       bbosRequest({
         method: 'post',
-        moudle: REGISTER,
+        url: this.siteConfig.BBOS_DOMIAN + '/Player/Add',
         reqHeaders: {
           'Vendor': this.memInfo.user.domain
         },

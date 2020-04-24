@@ -34,8 +34,6 @@ import { mapGetters, mapActions } from 'vuex';
 import videojs from 'video.js';
 import bonunsDialog from '../../bouns/compontents/bonunsDialog'
 import bonunsProcess from '../../bouns/compontents/bonunsProcess'
-import { ACTIVES_BOUNS_WEBSOCKET } from '@/api/bbos/config'
-import config from '@/api/bbos/config'
 import { getCookie } from '@/lib/cookie';
 
 export default {
@@ -68,6 +66,7 @@ export default {
     ...mapGetters({
       memInfo: 'getMemInfo',
       loginStatus: 'getLoginStatus',
+      siteConfig: 'getSiteConfig',
     }),
   },
   create() {
@@ -97,7 +96,7 @@ export default {
         let cid = getCookie('cid');
         if (!cid)
           return
-        var uri = ACTIVES_BOUNS_WEBSOCKET + `?cid=${cid}`;
+        var uri = this.siteConfig.ACTIVES_BOUNS_WEBSOCKET + `?cid=${cid}`;
         this.socket = new WebSocket(uri);
         this.socket.onmessage = this.onMessage;
         this.socket.onopen = this.onOpen;

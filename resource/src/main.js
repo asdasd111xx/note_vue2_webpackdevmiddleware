@@ -14,8 +14,6 @@ import 'hint.css/hint.min.css';
 import 'video.js/dist/video-js.min.css';
 import '@/config/iconList';
 
-import * as config from '@/api/bbos/config'
-
 import App from './App';
 // Icon 組件全域使用, 只載入有使用的 Icon 資料
 import Icon from 'vue-awesome/components/Icon';
@@ -93,18 +91,6 @@ Vue.use(VueClipboard);
 Vue.component(VueQrcode.name, VueQrcode);
 Vue.use(depositLink);
 Vue.component('icon', Icon);
-
-// 彩金活動socket
-// Vue.use(VueNativeSock,
-//     config.ACTIVES_BOUNS_WEBSOCKET + '?cid=28c0566e56a402f084e3dc508df40023c7beef12',
-//     {
-//         connectManually: true,
-//         format: 'json',
-//         reconnection: true, // (Boolean) whether to reconnect automatically (false)
-//         reconnectionAttempts: 5, // (Number) number of reconnection attempts before giving up (Infinity),
-//         reconnectionDelay: 3000, // (Number) how long to initially wait before attempting a new (1000)
-//     })
-
 
 /* eslint-disable no-new */
 new Vue({

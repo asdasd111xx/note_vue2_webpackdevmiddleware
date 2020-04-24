@@ -1,4 +1,3 @@
-import { BBOS_DOMIAN } from '@/api/bbos/config'
 import axios from 'axios';
 export default ({
     method = 'get',
@@ -6,9 +5,9 @@ export default ({
     params = {},
     timeout = 30000,
     reqHeaders = {},
+    url = "",
     fail = () => { },
 }) => {
-    const url = BBOS_DOMIAN + moudle;
     const bbosHeader = {
         // to do 廳別應該統一控制
         // "Vendor": '500015' | '67' | '69',

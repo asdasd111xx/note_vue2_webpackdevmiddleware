@@ -9,7 +9,6 @@ import { mapGetters, mapActions } from 'vuex';
 import analytics from '@/lib/analytics';
 import appEvent from '@/lib/appEvent';
 import openGame from '@/lib/open_game';
-import * as config from '@/api/bbos/config';
 
 export default {
   data() {

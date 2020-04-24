@@ -2,6 +2,7 @@
 /**
  * 網站設定檔預設值
  */
+
 export const preset = {
     TESTER: 'N', // 可使用 Cookies 測試設定客製首頁
     CUSTOMIZE_HOME_TPL_PATH: [], // 有客製首頁的模版編號
@@ -20,6 +21,9 @@ export const preset = {
 export const site_500015 = {
     ...preset,
     MOBILE_WEB_TPL: 'porn1', // 手機網頁版模版
-    IS_PWA: true
+    IS_PWA: true,
+    BBOS_DOMIAN: 'https://bbos.bbin-asia.com/elibomApi/WebService',
+    YABO_API_DOMAIN: 'https://yaboapi.bbin-asia.com/api',
+    ACTIVES_BOUNS_WEBSOCKET: 'wss://yaboapi.bbin-asia.com/xxx/promosocket'
 };
 /* eslint-enable camelcase */

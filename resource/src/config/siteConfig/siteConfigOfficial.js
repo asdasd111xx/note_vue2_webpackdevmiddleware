@@ -21,7 +21,10 @@ export const preset = {
 export const site_67 = {
     ...preset,
     MOBILE_WEB_TPL: 'porn1', // 手機網頁版模版
-    IS_PWA: true
+    IS_PWA: true,
+    BBOS_DOMIAN: 'https://bbos.canarycherrytart.com/elibomApi/WebService',
+    YABO_API_DOMAIN: 'https://yaboapi.canarycherrytart.com/api',
+    ACTIVES_BOUNS_WEBSOCKET: 'wss://yaboapi.canarycherrytart.com/xxx/promosocket'
 };
 
 /**
@@ -30,7 +33,10 @@ export const site_67 = {
 export const site_69 = {
     ...preset,
     MOBILE_WEB_TPL: 'porn1', // 手機網頁版模版
-    IS_PWA: true
+    IS_PWA: true,
+    BBOS_DOMIAN: 'https://bbos.bbin-asia.com/elibomApi/WebService',
+    YABO_API_DOMAIN: 'https://yaboapi.bbin-asia.com/api',
+    ACTIVES_BOUNS_WEBSOCKET: 'wss://yaboapi.bbin-asia.com/xxx/promosocket'
 };
 
 /* eslint-enable camelcase */

@@ -93,7 +93,7 @@ import { mapGetters } from 'vuex';
 import member from '@/api/member';
 import mobileContainer from '../../../common/new/mobileContainer';
 import message from '../../../../../porn1/components/common/new/message'
-import common from '@/api/bbos/common';
+import ajax from '@/lib/ajax';
 
 export default {
   components: {
@@ -115,7 +115,8 @@ export default {
   },
   computed: {
     ...mapGetters({
-      loginStatus: 'getLoginStatus'
+      loginStatus: 'getLoginStatus',
+      siteConfig: 'getSiteConfig',
     }),
     headerConfig() {
       return {
@@ -126,9 +127,12 @@ export default {
     },
   },
   created() {
-    common.contactus().then((res) => {
+    ajax({
+      method: 'get',
+      url: this.siteConfig.YABO_API_DOMAIN + '/system/contactus',
+    }).then((res) => {
       this.list = res.data;
-    });
+    })
   },
   methods: {
     copy(key) {

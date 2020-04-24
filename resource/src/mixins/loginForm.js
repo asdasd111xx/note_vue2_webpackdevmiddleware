@@ -1,6 +1,5 @@
 import * as apis from '@/config/api';
 
-import { CAPTCHA, LOGIN } from '@/api/bbos/config';
 import { getCookie, setCookie } from '@/lib/cookie';
 import { mapActions, mapGetters } from 'vuex';
 
@@ -28,6 +27,7 @@ export default {
     computed: {
         ...mapGetters({
             isBackEnd: 'getIsBackEnd',
+            siteConfig: 'getSiteConfig',
             memInfo: 'getMemInfo'
         })
     },
@@ -43,10 +43,9 @@ export default {
             if (this.isBackEnd) {
                 return;
             }
-
             bbosRequest({
                 method: 'post',
-                moudle: CAPTCHA,
+                url: this.siteConfig.BBOS_DOMIAN + '/Captcha',
                 reqHeaders: {
                     'Vendor': this.memInfo.user.domain
                 },
@@ -96,13 +95,13 @@ export default {
          * @method login
          */
         login(validate = {}, callBackFuc, errorCB) {
+
             if (this.isBackEnd) {
                 return null;
             }
-
             return bbosRequest({
                 method: 'put',
-                moudle: LOGIN,
+                url: this.siteConfig.BBOS_DOMIAN + '/Login',
                 reqHeaders: {
                     'Vendor': this.memInfo.user.domain
                 },

@@ -71,7 +71,6 @@ import { mapGetters } from 'vuex';
 import mobileContainer from '../common/new/mobileContainer';
 import mcenter from '@/api/mcenter';
 import message from '../../components/common/new/message'
-import common from '@/api/bbos/common';
 import mobileLinkOpen from '@/lib/mobile_link_open';
 
 export default {
