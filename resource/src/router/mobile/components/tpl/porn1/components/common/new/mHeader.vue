@@ -56,7 +56,11 @@
                     :class="$style['icon-search']"
                     @click="headerConfig.onSearchClick(headerConfig.keyWord)"
                 >
-                    <icon name="search" width="20" height="20" />
+                    <icon
+                        name="search"
+                        width="20"
+                        height="20"
+                    />
                 </div>
             </div>
         </template>
@@ -159,7 +163,7 @@
             </div>
         </template>
         <template v-if="headerConfig.hasTransaction">
-          <div
+            <div
                 :class="$style['btn-feedback']"
                 @click="$router.push('/mobile/mcenter/moneyDetail')"
             >
@@ -170,7 +174,7 @@
 </template>
 
 <script>
-import { mapGetters } from "vuex";
+import { mapGetters } from 'vuex';
 
 export default {
     components: {
@@ -189,16 +193,16 @@ export default {
     },
     data() {
         return {
-            currentMenu: ""
+            currentMenu: ''
         };
     },
     computed: {
         ...mapGetters({
-            membalance: "getMemBalance",
-            loginStatus: "getLoginStatus"
+            membalance: 'getMemBalance',
+            loginStatus: 'getLoginStatus'
         }),
         mainClass() {
-            const config = this.headerConfig;
+            // const config = this.headerConfig;
             const style = this.$style;
             // 暫時移除底色渲染
             return {
@@ -211,28 +215,28 @@ export default {
     methods: {
         // 設定選單狀態
         setMenuState(value) {
-            this.currentMenu = this.currentMenu === value ? "" : value;
+            this.currentMenu = this.currentMenu === value ? '' : value;
         },
         handleClickAsk() {
             if (this.loginStatus) {
-                this.$router.push("/mobile/mcenter/information/post");
+                this.$router.push('/mobile/mcenter/information/message');
             } else {
-                this.$router.push("/mobile/login");
+                this.$router.push('/mobile/login');
             }
         },
         handleClickSetting() {
             if (this.loginStatus) {
-                this.$router.push("/mobile/mcenter/setting");
+                this.$router.push('/mobile/mcenter/setting');
             } else {
-                this.$router.push("/mobile/login");
+                this.$router.push('/mobile/login');
             }
         },
         goSearch() {
-            if (["casino", "card", "mahjong"].includes(this.$route.name)) {
+            if (['casino', 'card', 'mahjong'].includes(this.$route.name)) {
                 this.updateSearchStatus();
                 return;
             }
-            this.$router.push({ name: "search" });
+            this.$router.push({ name: 'search' });
         }
     }
 };

@@ -379,7 +379,6 @@ export default {
     },
     // 【站內信】-多則刪除
     messagesDelete(args) {
-        console.log('asa-------', args, ...args);
         return ajax({
             method: 'delete',
             url: apiUrl.API_MCENTER_MESSAGES_CONTENT,

@@ -1,6 +1,9 @@
 <template>
-    <div v-if="isPopShow" :class="[$style['popup-container'], `theme-${theme}`]">
-        <div :class="$style.mask" @click="onMaskClick" />
+    <div
+        v-if="isPopShow"
+        :class="[$style['popup-container'], `theme-${theme}`]"
+        @click.self="onMaskClick"
+    >
         <ag-login v-if="popType === 'agLogin'" />
         <mem-pwd-forget v-else-if="popType === 'memPwdForget'" />
         <ag-pwd-forget v-else-if="popType === 'agPwdForget'" />
@@ -169,25 +172,12 @@ export default {
 
 <style lang="scss" module>
 .popup-container {
-    position: absolute;
-    top: 0;
-    left: 0;
-    width: 100%;
-    height: 100%;
-    z-index: 999;
-}
-
-.mask {
     position: fixed;
     top: 0;
+    right: 0;
+    bottom: 0;
     left: 0;
+    z-index: 999;
     background-color: rgba(0, 0, 0, .5);
-    width: 100%;
-    height: 100%;
 }
-
-// .post-mask {
-//     composes: mask;
-//     background: url('/static/image/tpl/common/pop/post/bg_gray.png') 0 0 repeat;
-// }
 </style>

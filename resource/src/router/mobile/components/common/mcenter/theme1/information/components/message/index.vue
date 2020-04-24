@@ -1,141 +1,635 @@
 <template>
-    <div v-if="hasReceive" :class="[$style['message-wrap'], colorClass]">
-        <template v-if="!currentData">
-            <div v-if="isMessageValid">
-                <div :class="[$style['message-delete-wrap'], 'clearfix']">
-                    <div
-                        :class="[$style['message-cancel'], { [$style.active] : deleteStatus } ]"
-                        @click="deleteStatus = false, deletelist = []"
-                    >
-                        <span :class="$style['message-cancel-text']">{{ $text('S_CANCEL', '取消') }}</span>
-                    </div>
-                    <div v-if="filterMessageData.length" :class="$style['message-delete']" @click="selectDeleteData">
-                        <icon
-                            name="regular/trash-alt"
-                            width="24"
-                            height="21"
-                        />
-                    </div>
+    <div v-if="hasReceive && messageData.length === 0" :class="$style['no-data']">
+        <div :class="$style['no-data-wrap']">
+            <img :src="$getCdnPath('/static/image/_new/mcenter/information/no_message.webp')" />
+            <div>还没有新的消息</div>
+        </div>
+    </div>
+    <div v-else :class="$style['message-wrap']">
+        <div
+            v-if="isEditing"
+            :class="$style['btn-close']"
+            @click="isEditing = false"
+        >
+            <img :src="$getCdnPath('/static/image/_new/mcenter/information/btn_close.png')" />
+        </div>
+        <div v-if="!$route.params.pid" :class="$style['btn-more']">
+            <template v-if="isEditing">
+                <span v-if="isSelectAll" @click="selectMessage = []">取消全选</span>
+                <span v-else @click="onSelectAll">全选</span>
+            </template>
+            <template v-else>
+                <img :src="$getCdnPath('/static/image/_new/mcenter/information/btn_more.png')" @click="onShowFunction(true)" />
+            </template>
+        </div>
+        <div v-if="!$route.params.pid" :class="$style['message-list']">
+            <div
+                v-for="message in messageData"
+                :key="message.id"
+                :class="[$style.message, { [$style['edit-mode']]: isEditing }, 'clearfix']"
+                @click="onClick(message)"
+            >
+                <div v-if="isEditing" :class="[$style['icon-edit'], { [$style.active]: selectMessage.includes(message.id) }]" />
+                <div :class="$style['icon-message']">
+                    <img :src="$getCdnPath('/static/image/_new/mcenter/information/icon_information.png')" />
+                    <span v-if="!message.read" />
                 </div>
-                <div
-                    v-for="(item, index) in filterMessageData"
-                    :key="`message-item-${index}`"
-                    :class="[$style['message-item'], { [$style.active] : deleteStatus }, { [$style['no-read']] : !item.read } ]"
-                    @click="getCurrentMassage(item.id, index)"
-                >
-                    <div
-                        v-if="deleteStatus"
-                        :class="$style['message-item-check']"
-                        @click="changeStatus(item.id)"
-                    >
-                        <img :src="`/static/image/mobile/mcenter/btn_check_${deletelist.includes(item.id)? 's' : 'n'}.png`" />
-                    </div>
-                    <div :class="[$style['message-item-top'], 'clearfix']">
-                        <div :class="$style['message-item-category']">
-                            {{ msgTypeOptions[item.kind].text }}
-                        </div>
-                        <div :class="$style['message-item-time']">
-                            {{ EST(item.sent_at) }}
-                        </div>
-                    </div>
-                    <!-- eslint-disable vue/no-v-html -->
-                    <div :class="$style['message-item-title']" v-html="item.title" />
-                    <!-- eslint-enable vue/no-v-html -->
+                <div :class="$style.wrap">
+                    <div :class="$style.title" v-html="message.title" />
+                    <div :class="$style.content" v-html="message.content" />
                 </div>
             </div>
-            <div v-if="!isMessageValid" :class="$style['no-message-notice']">
-                {{ $text('S_HAS_NOT_MESSAGE', '無站內信') }}
+        </div>
+        <div v-else :class="$style['message-content']">
+            <div :class="[$style['content-title'], 'clearfix']">
+                <div :class="$style['icon-message']">
+                    <img :src="$getCdnPath('/static/image/_new/mcenter/information/icon_information.png')" />
+                </div>
+                <div :class="$style.wrap">
+                    <div :class="$style.title" v-html="currentMessage.title" />
+                    <div :class="$style.time">{{ currentMessage.sent_at | dateFormat }}</div>
+                </div>
             </div>
-        </template>
-        <context
-            v-else
-            :datalist="currentData"
-        />
+            <div :class="$style['content-wrap']" v-html="currentMessage.content" />
+        </div>
+        <div
+            v-if="showFunctionButton"
+            :class="$style['function-button']"
+            @click="onShowFunction(false)"
+        >
+            <div :class="$style['button-wrap']">
+                <div :class="$style.button" @click="isEditing = true">编辑消息</div>
+                <div :class="$style.divider" />
+                <div :class="[$style.button, { [$style.disable]: memInfo.msgCount === 0 }]" @click.stop="onAllRead">全部已读</div>
+                <div :class="$style.cancel" @click.stop="onShowFunction(false)">取消</div>
+            </div>
+        </div>
+        <div v-if="isEditing" :class="[$style['bottom-button'], { [$style.show]: selectMessage.length }, 'clearfix']">
+            <div :class="[$style.read, { [$style.disable]: hasAllRead }]" @click="onRead">标记已读</div>
+            <div :class="$style.delete" @click="isDelete = true">删除</div>
+        </div>
+        <div v-if="isLoading" :class="$style.loading">
+            <div :class="$style['loading-wrap']">
+                <div :class="$style['icon-loading']">
+                    <icon
+                        name="spinner"
+                        width="32"
+                        height="32"
+                        pulse
+                    />
+                </div>
+                <div :class="$style['loading-text']">数据加载中...</div>
+            </div>
+        </div>
+        <div v-if="isDelete" :class="$style['delete-tips']">
+            <div :class="$style['tips-wrap']">
+                <div :class="$style['tips-title']">温馨提醒</div>
+                <div :class="$style['tips-text']">删除后将无法恢复，确定要删除吗？</div>
+                <div :class="[$style['tips-button'], 'clearfix']">
+                    <div :class="$style['delete-cancel']" @click="isDelete = false">取消</div>
+                    <div :class="$style['delete-confirm']" @click="onDelete">确定</div>
+                </div>
+            </div>
+        </div>
     </div>
 </template>
 
 <script>
-import { mapGetters } from 'vuex';
-import EST from '@/lib/EST';
-import mixin from '@/mixins/mcenter/message';
+import Vue from 'vue';
+import { mapGetters, mapActions } from 'vuex';
+import axios from 'axios';
+import find from 'lodash/find';
+import mcenter from '@/api/mcenter';
+import { API_MCENTER_MESSAGES_CONTENT } from '@/config/api';
 
 export default {
-    components: {
-        context: () => import(/* webpackChunkName: 'commonContext' */ './components/context')
+    filters: {
+        dateFormat(date) {
+            return Vue.moment(date).format('YYYY-MM-DD HH:mm:ss');
+        }
     },
-    mixins: [mixin],
     data() {
         return {
-            deletelist: [],
-            deleteStatus: false
+            hasReceive: false,
+            isEditing: false,
+            isLoading: false,
+            isDelete: false,
+            showFunctionButton: false,
+            messageData: [],
+            selectMessage: []
         };
     },
     computed: {
         ...mapGetters({
-            siteConfig: 'getSiteConfig',
-            memInfo: 'getMemInfo',
+            memInfo: 'getMemInfo'
         }),
-        currentData() {
+        currentMessage() {
             if (!this.$route.params.pid) {
-                return false;
+                return null;
             }
-
-            return this.filterMessageData.find((item) => item.id === this.$route.params.pid);
+            return this.messageData.find((message) => message.id === this.$route.params.pid);
         },
-        isMessageValid() {
-            return this.filterMessageData.length !== 0;
+        isSelectAll() {
+            return this.selectMessage.length === this.messageData.length;
         },
-        colorClass() {
-            return [
-                {
-                    [this.$style[`site-${this.memInfo.user.domain}`]]: this.$style[`site-${this.memInfo.user.domain}`],
-                    [this.$style['preset-color']]: !this.$style[`site-${this.memInfo.user.domain}`]
-                }
-            ];
+        hasAllRead() {
+            return this.selectMessage.every((id) => find(this.messageData, (message) => message.id === id).read);
         }
     },
-    watch: {
-        currentData() {
-            this.$emit('changeTitle', this.currentData ? this.$text('S_PERSONAL_MESSAGE', '站内信') : this.$text('S_MSG_CENTER', '信息中心'));
-        }
+    created() {
+        this.getMessgae();
     },
     methods: {
-        changeStatus(id) {
-            if (!this.deletelist.includes(id)) {
-                this.deletelist.push(id);
-                return;
-            }
-
-            this.deletelist.splice(this.deletelist.indexOf(id), 1);
+        ...mapActions([
+            'actionSetMcenterMsgCount'
+        ]),
+        getMessgae() {
+            mcenter.message({
+                success: (response) => {
+                    this.messageData = response.ret;
+                    this.hasReceive = true;
+                }
+            });
         },
-        getCurrentMassage(id, index) {
-            if (this.deleteStatus) return;
-
-            this.selectMessage(id, index);
-            this.$router.push(`/mobile/mcenter/information/message/${id}`);
+        getContent({ id, read }) {
+            if (read) {
+                return;
+            }
+            mcenter.messageContent({
+                success: ({ result }) => {
+                    if (result !== 'ok') {
+                        return;
+                    }
+                    this.actionSetMcenterMsgCount();
+                    this.messageData = this.messageData.map((message) => {
+                        if (message.id === id) {
+                            return { ...message, read: true };
+                        }
+                        return message;
+                    });
+                }
+            }, id);
         },
-        selectDeleteData() {
-            if (!this.deleteStatus) {
-                this.deleteStatus = true;
-                return;
-            }
-
-            this.deleteStatus = false;
-
-            if (this.deletelist.length === 0) {
-                return;
-            }
-
-            if (this.deletelist.length === 1) {
-                this.deleteMessgae(this.deletelist[0]);
-                return;
-            }
-
-            this.deleteMessgaes(this.deletelist);
+        onShowFunction(value) {
+            this.showFunctionButton = value;
+            this.selectMessage = [];
         },
-        EST
+        onAllRead() {
+            if (this.memInfo.msgCount === 0) {
+                return;
+            }
+            this.isLoading = true;
+            this.messageData.forEach((message, index) => {
+                this.getContent(message);
+                if (index < this.messageData.length - 1) {
+                    return;
+                }
+                setTimeout(() => {
+                    this.isLoading = false;
+                }, 500);
+            });
+            this.isEditing = false;
+            this.onShowFunction(false);
+        },
+        onClick(info) {
+            if (this.isEditing) {
+                if (this.selectMessage.includes(info.id)) {
+                    this.selectMessage = [...this.selectMessage.filter((id) => id !== info.id)];
+                    return;
+                }
+                this.selectMessage = [...this.selectMessage, info.id];
+                return;
+            }
+            this.getContent(info);
+            this.$router.push({ params: { pid: info.id } });
+        },
+        onSelectAll() {
+            this.selectMessage = [...this.messageData.map((message) => message.id)];
+        },
+        onRead() {
+            if (this.hasAllRead) {
+                return;
+            }
+            this.isLoading = true;
+            this.selectMessage.forEach((id, index) => {
+                this.getContent(find(this.messageData, (message) => message.id === id));
+                if (index < this.selectMessage.length - 1) {
+                    return;
+                }
+                setTimeout(() => {
+                    this.isLoading = false;
+                }, 500);
+            });
+            this.isEditing = false;
+            this.onShowFunction(false);
+        },
+        onDelete() {
+            this.isDelete = false;
+            this.isLoading = true;
+
+            axios({
+                method: 'delete',
+                url: API_MCENTER_MESSAGES_CONTENT,
+                data: { message_ids: this.selectMessage.map((id) => +id) }
+            }).then((response) => {
+                setTimeout(() => {
+                    this.isLoading = false;
+                }, 500);
+                if (response.data.result !== 'ok') {
+                    return;
+                }
+                this.getMessgae();
+                this.onShowFunction(false);
+                this.isEditing = false;
+            });
+        }
     }
 };
 </script>
 
-<style lang="scss" src="./css/index.scss" module />
+<style lang="scss" module>
+@keyframes slide-up {
+    from {
+        bottom: -162px;
+    }
+
+    to {
+        bottom: 0;
+    }
+}
+
+.no-data {
+    position: relative;
+    min-height: calc(100vh - 43px - 42px - 10px);
+    margin-top: 52px;
+    background-color: #FEFFFE;
+}
+
+.no-data-wrap {
+    position: absolute;
+    top: 0;
+    right: 0;
+    bottom: 0;
+    left: 0;
+    width: 180px;
+    height: 220px;
+    margin: auto;
+
+    > img {
+        display: block;
+        width: 100%;
+    }
+
+    > div {
+        height: 20px;
+        line-height: 20px;
+        margin-top: 20px;
+        color: #A5A9B3;
+        font-size: 14px;
+        text-align: center;
+    }
+}
+
+.btn-close {
+    position: fixed;
+    top: 12px;
+    left: 14px;
+    z-index: 5;
+    width: 20px;
+    height: 20px;
+    background-color: #FEFFFE;
+
+    > img {
+        display: block;
+        width: 100%;
+    }
+}
+
+.btn-more {
+    position: fixed;
+    top: 12px;
+    right: 14px;
+    z-index: 5;
+    height: 20px;
+    line-height: 20px;
+    color: #414655;
+    font-size: 16px;
+
+    > img {
+        display: block;
+        width: 20px;
+    }
+}
+
+.message-wrap {
+    background-color: #FEFFFE;
+}
+
+.message-list {
+    min-height: calc(100vh - 43px - 42px - 10px);
+    margin-top: 52px;
+}
+
+.message-content {
+    min-height: calc(100vh - 43px - 10px);
+    margin-top: 10px;
+}
+
+.message {
+    height: 67px;
+    margin: 0 7px;
+    padding: 0 7px;
+    border-bottom: 1px solid #EEE;
+    background-color: #FEFFFE;
+
+    .icon-message {
+        margin: 17px 0;
+    }
+
+    .wrap {
+        padding: 13px 0;
+    }
+}
+
+.edit-mode {
+    position: relative;
+    padding-left: 41px;
+}
+
+.icon-edit {
+    position: absolute;
+    top: 24px;
+    left: 13px;
+    width: 18px;
+    height: 18px;
+    border: 1px solid #CBCED8;
+    border-radius: 50%;
+    background-color: #FFF;
+
+    &.active {
+        border: none;
+        background: url('/static/image/_new/mcenter/information/icon_check.png') 0 0 no-repeat;
+        background-size: 18px 18px;
+    }
+}
+
+.content-title {
+    padding-left: 14px;
+
+    .icon-message {
+        margin: 13px 0;
+    }
+
+    .wrap {
+        padding: 10px 0;
+        border-bottom: 1px solid #EEE;
+    }
+}
+
+.content-wrap {
+    padding: 8px 18px;
+    color: #414655;
+    font-size: 14px;
+}
+
+.icon-message {
+    position: relative;
+    float: left;
+    width: 32px;
+    height: 32px;
+
+    > img {
+        display: block;
+        width: 100%;
+    }
+
+    > span {
+        position: absolute;
+        top: 0;
+        right: 0;
+        display: block;
+        width: 8px;
+        height: 8px;
+        border-radius: 50%;
+        background-color: #DB6372;
+    }
+}
+
+.wrap {
+    float: left;
+    width: calc(100% - 32px - 10px);
+    margin-left: 10px;
+
+    p {
+        overflow: hidden;
+        text-overflow: ellipsis;
+        white-space: nowrap;
+    }
+}
+
+.title {
+    height: 20px;
+    line-height: 20px;
+    color: #414655;
+    font-size: 14px;
+}
+
+.content {
+    height: 17px;
+    line-height: 17px;
+    margin-top: 3px;
+    color: #A6A9B2;
+    font-size: 12px;
+}
+
+.time {
+    height: 12px;
+    line-height: 12px;
+    margin-top: 6px;
+    color: #A6A9B2;
+    font-size: 12px;
+}
+
+.function-button {
+    position: fixed;
+    top: 0;
+    right: 0;
+    bottom: 0;
+    left: 0;
+    z-index: 5;
+    background-color: rgba(0, 0, 0, 0.4);
+    transition: background-color 0.3s;
+}
+
+.button-wrap {
+    position: fixed;
+    right: 0;
+    bottom: 0;
+    left: 0;
+    background-color: #F8F8F8;
+    animation: slide-up 0.3s;
+}
+
+.button {
+    height: 50px;
+    line-height: 50px;
+    background-color: #FFF;
+    color: #5E626D;
+    font-size: 17px;
+    text-align: center;
+
+    &.disable {
+        color: #CBCED8;
+    }
+}
+
+.divider {
+    height: 1px;
+    background-color: #F9F9F9;
+}
+
+.cancel {
+    composes: button;
+    margin-top: 11px;
+}
+
+.bottom-button {
+    position: fixed;
+    right: 0;
+    bottom: -50px;
+    left: 0;
+    height: 50px;
+    line-height: 50px;
+    padding: 0 20px;
+    background-color: #EEE;
+    transition: bottom 0.3s;
+
+    &.show {
+        bottom: 0;
+    }
+}
+
+.read {
+    float: left;
+    color: #6AAAF5;
+    font-size: 16px;
+
+    &.disable {
+        color: #CBCED8;
+    }
+}
+
+.delete {
+    float: right;
+    color: #DB6372;
+    font-size: 16px;
+}
+
+.loading {
+    position: fixed;
+    top: 0;
+    right: 0;
+    bottom: 0;
+    left: 0;
+    z-index: 10;
+}
+
+.loading-wrap {
+    position: absolute;
+    top: 0;
+    right: 0;
+    bottom: 0;
+    left: 0;
+    width: 100px;
+    height: 85px;
+    margin: auto;
+    padding: 15px;
+    border-radius: 5px;
+    background-color: rgba(65, 70, 85, 0.8);
+}
+
+.icon-loading {
+    width: 32px;
+    height: 32px;
+    margin: 0 auto;
+    color: #9CA29F;
+
+    > svg {
+        display: block;
+    }
+}
+
+.loading-text {
+    height: 18px;
+    line-height: 18px;
+    margin-top: 5px;
+    color: #FFF;
+    font-size: 12px;
+    text-align: center;
+}
+
+.delete-tips {
+    position: fixed;
+    top: 0;
+    right: 0;
+    bottom: 0;
+    left: 0;
+    z-index: 10;
+    background-color: rgba(0, 0, 0, 0.4);
+}
+
+.tips-wrap {
+    position: absolute;
+    top: 0;
+    right: 0;
+    bottom: 0;
+    left: 0;
+    width: 270px;
+    height: 130px;
+    margin: auto;
+    padding-top: 15px;
+    border-radius: 10px;
+    background-color: #FFF;
+}
+
+.tips-title {
+    height: 18px;
+    line-height: 18px;
+    margin-bottom: 13px;
+    padding: 0 13px;
+    color: #000;
+    font-size: 18px;
+    text-align: center;
+}
+
+.tips-text {
+    height: 18px;
+    line-height: 18px;
+    margin-bottom: 15px;
+    padding: 0 20px;
+    color: #888;
+    font-size: 12px;
+    text-align: center;
+}
+
+.tips-button {
+    border-top: 1px solid #F7F7F7;
+
+    > div {
+        float: left;
+        width: 50%;
+        height: 50px;
+        line-height: 50px;
+        font-size: 18px;
+        text-align: center;
+    }
+}
+
+.delete-cancel {
+    color: #000;
+}
+
+.delete-confirm {
+    color: #D2B79C;
+}
+</style>

@@ -1,36 +1,36 @@
 <template>
-    <div v-if="hasReceive && postData.length === 0" :class="$style['no-data']">
+    <div v-if="newsData.length === 0" :class="$style['no-data']">
         <div :class="$style['no-data-wrap']">
             <img :src="$getCdnPath('/static/image/_new/mcenter/information/no_message.webp')" />
             <div>还没有新的消息</div>
         </div>
     </div>
-    <div v-else :class="$style['post-wrap']">
-        <div v-if="$route.params.pid" :class="$style['post-content']">
+    <div v-else :class="$style['news-wrap']">
+        <div v-if="$route.params.pid" :class="$style['news-content']">
             <div :class="[$style['content-title'], 'clearfix']">
-                <div :class="$style['icon-post']">
+                <div :class="$style['icon-news']">
                     <img :src="$getCdnPath('/static/image/_new/mcenter/information/icon_information.png')" />
                 </div>
                 <div :class="$style.wrap">
-                    <div :class="$style.title" v-html="currentPost.title" />
-                    <div :class="$style.time">{{ currentPost.enable_at | dateFormat }}</div>
+                    <div :class="$style.date">{{ currentNews.time | dateFormat }}</div>
+                    <div :class="$style.time">{{ currentNews.time | timeFormat }}</div>
                 </div>
             </div>
-            <div :class="$style['content-wrap']" v-html="currentPost.content" />
+            <div :class="$style['content-wrap']" v-html="currentNews.content" />
         </div>
-        <div v-else :class="$style['post-list']">
+        <div v-else :class="$style['news-list']">
             <div
-                v-for="post in postData"
-                :key="post.id"
-                :class="[$style.post, 'clearfix']"
-                @click="$router.push({ params: { pid: post.id } })"
+                v-for="news in newsData"
+                :key="news.id"
+                :class="[$style.news, 'clearfix']"
+                @click="$router.push({ params: { pid: news.id } })"
             >
-                <div :class="$style['icon-post']">
+                <div :class="$style['icon-news']">
                     <img :src="$getCdnPath('/static/image/_new/mcenter/information/icon_information.png')" />
                 </div>
                 <div :class="$style.wrap">
-                    <div :class="$style.title" v-html="post.title" />
-                    <div :class="$style.content" v-html="post.content" />
+                    <div :class="$style.date">{{ news.time }}</div>
+                    <div :class="$style.content" v-html="news.content" />
                 </div>
             </div>
         </div>
@@ -39,42 +39,27 @@
 
 <script>
 import Vue from 'vue';
-import { API_GET_POST } from '@/config/api';
-import ajax from '@/lib/ajax';
+import { mapGetters } from 'vuex';
 
 export default {
     filters: {
         dateFormat(date) {
+            return Vue.moment(date).format('YYYY-MM-DD');
+        },
+        timeFormat(date) {
             return Vue.moment(date).format('YYYY-MM-DD HH:mm:ss');
         }
     },
-    data() {
-        return {
-            hasReceive: false,
-            postData: []
-        };
-    },
     computed: {
-        currentPost() {
+        ...mapGetters({
+            newsData: 'getNews'
+        }),
+        currentNews() {
             if (!this.$route.params.pid) {
                 return null;
             }
-            return this.postData.find((post) => post.id === this.$route.params.pid);
+            return this.newsData.find((news) => news.id === this.$route.params.pid);
         }
-    },
-    created() {
-        ajax({
-            method: 'get',
-            url: API_GET_POST,
-            success: ({ result, ret }) => {
-                if (result !== 'ok') {
-                    return;
-                }
-
-                this.postData = [...ret];
-                this.hasReceive = true;
-            }
-        });
     }
 };
 </script>
@@ -112,16 +97,16 @@ export default {
     }
 }
 
-.post-wrap {
+.news-wrap {
     background-color: #FEFFFE;
 }
 
-.post-list {
+.news-list {
     min-height: calc(100vh - 43px - 42px - 10px);
     margin-top: 52px;
 }
 
-.post-content {
+.news-content {
     min-height: calc(100vh - 43px - 10px);
     margin-top: 10px;
 }
@@ -129,7 +114,7 @@ export default {
 .content-title {
     padding-left: 14px;
 
-    .icon-post {
+    .icon-news {
         margin: 13px 0;
     }
 
@@ -139,7 +124,7 @@ export default {
     }
 }
 
-.icon-post {
+.icon-news {
     position: relative;
     float: left;
     width: 32px;
@@ -162,14 +147,14 @@ export default {
     }
 }
 
-.post {
+.news {
     height: 67px;
     margin: 0 7px;
     padding: 0 7px;
     border-bottom: 1px solid #EEE;
     background-color: #FEFFFE;
 
-    .icon-post {
+    .icon-news {
         margin: 17px 0;
     }
 
@@ -178,7 +163,7 @@ export default {
     }
 }
 
-.icon-post {
+.icon-news {
     position: relative;
     float: left;
     width: 32px;
@@ -208,25 +193,25 @@ export default {
     font-size: 14px;
 }
 
-.title {
+.date {
     height: 20px;
     line-height: 20px;
     color: #414655;
     font-size: 14px;
 }
 
-.content {
-    height: 17px;
-    line-height: 17px;
-    margin-top: 3px;
-    color: #A6A9B2;
-    font-size: 12px;
-}
-
 .time {
     height: 12px;
     line-height: 12px;
     margin-top: 6px;
+    color: #A6A9B2;
+    font-size: 12px;
+}
+
+.content {
+    height: 17px;
+    line-height: 17px;
+    margin-top: 3px;
     color: #A6A9B2;
     font-size: 12px;
 }

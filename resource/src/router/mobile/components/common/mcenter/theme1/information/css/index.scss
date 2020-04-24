@@ -1,0 +1,44 @@
+.menu-list-wrap {
+    position: fixed;
+    top: 43px;
+    left: 0;
+    width: 100%;
+}
+
+.menu-list {
+    position: relative;
+    float: left;
+    width: 33.333%;
+    background-color: #FFF;
+    text-align: center;
+}
+
+.menu-title {
+    width: 42px;
+    height: 42px;
+    line-height: 42px;
+    margin: 0 auto;
+    border-bottom: 2px solid transparent;
+    color: #A5A9B3;
+    font-size: 13px;
+    text-align: center;
+
+    &.active {
+        border-bottom-color: #D2B79C;
+        color: #414655;
+    }
+}
+
+.menu-tips {
+    position: absolute;
+    top: 8px;
+    left: 50%;
+    height: 12px;
+    line-height: 12px;
+    margin-left: 15px;
+    padding: 0 5px;
+    border-radius: 7px;
+    background-color: #DB6372;
+    color: #FFF;
+    font-size: 12px;
+}

@@ -1,5 +1,5 @@
 <template>
-    <div v-if="isReceive" class="money-detail-wrap">
+    <div class="money-detail-wrap">
         <div v-if="$route.params.page !== 'detail' || !detailInfo" :class="[$style['top-link'], 'clearfix']">
             <div :class="$style['link-wrap']" @click="changeCondition('category')">
                 <div>{{ currentCategory.text }}</div>
@@ -90,17 +90,28 @@
             :detail-list="detailList"
             :detail-info.sync="detailInfo"
         />
+        <!-- 捲動加載 -->
+        <infinite-loading
+            v-if="showInfinite"
+            ref="infiniteLoading"
+            @infinite="infiniteHandler"
+        >
+            <span slot="no-more" />
+            <span slot="no-results" />
+        </infinite-loading>
     </div>
 </template>
 
 <script>
 import Vue from 'vue';
+import InfiniteLoading from 'vue-infinite-loading';
 import common from '@/api/common';
 import mcenter from '@/api/mcenter';
 import EST from '@/lib/EST';
 
 export default {
     components: {
+        InfiniteLoading,
         detailList: () => import(/* webpackChunkName: 'detailList' */ './components/detailList'),
         detailInfo: () => import(/* webpackChunkName: 'detailInfo' */ './components/detailInfo'),
         datePicker: () => import(/* webpackChunkName: 'datePicker' */ '../../../datePicker/index')
@@ -120,6 +131,7 @@ export default {
             endTime: estToday,
             limitTime,
             isReceive: false,
+            showInfinite: true,
             showCondition: '',
             showDatePicker: false,
             currentCategory: { key: 'deposit', text: this.$text('S_DEPOSIT', '充值') },
@@ -169,23 +181,19 @@ export default {
                 this.opcodeList = ret;
             }
         });
-
-        this.getData();
     },
     methods: {
         getData() {
-            mcenter.moneyDetail({
+            return mcenter.moneyDetail({
                 params: {
                     start_at: Vue.moment(this.startTime).format('YYYY-MM-DD 00:00:00-04:00'),
                     end_at: Vue.moment(this.endTime).format('YYYY-MM-DD 23:59:59-04:00'),
                     category: this.type,
                     order: this.sort,
-                    first_result: this.pageNow * this.firstResult,
-                    max_results: this.pageNow * this.maxResults
+                    first_result: this.firstResult,
+                    max_results: this.maxResults
                 },
                 success: ({ result, pagination, ret }) => {
-                    this.isReceive = true;
-
                     if (result !== 'ok' || ret.length === 0) {
                         return;
                     }
@@ -198,27 +206,24 @@ export default {
                         }
 
                         return { ...init, [date]: [...init[date], info] };
-                    }, {});
+                    }, { ...this.detailList });
 
                     if (pagination.total === '0') {
                         return;
                     }
 
                     this.pageAll = Math.ceil(+pagination.total / this.maxResults);
-
-                    if (this.pageNow >= this.pageAll) {
-                        return;
-                    }
-
-                    this.pageNow += 1;
-
-                    this.getData();
                 }
             });
         },
         setCategory(value) {
             this.currentCategory = value;
             this.type = value.key === 'bouns' ? ['activity', 'rebate'] : [value.key];
+
+            this.detailList = null;
+            this.firstResult = 0;
+            this.pageNow = 1;
+            this.pageAll = 1;
 
             this.changeCondition('');
             this.changeDatePicker('');
@@ -251,6 +256,10 @@ export default {
             }
 
             this.currentDate = value;
+            this.detailList = null;
+            this.firstResult = 0;
+            this.pageNow = 1;
+            this.pageAll = 1;
 
             this.changeCondition('');
             this.changeDatePicker('');
@@ -275,10 +284,45 @@ export default {
             }
 
             this.currentDate = { key: 'custom', text: '自定义' };
+            this.detailList = null;
+            this.firstResult = 0;
+            this.pageNow = 1;
+            this.pageAll = 1;
 
             this.changeCondition('');
             this.changeDatePicker('');
             this.getData();
+        },
+        /**
+         * 捲動加載
+         * @param {object} $state - 套件提供的方法
+         * @see { @link https://peachscript.github.io/vue-infinite-loading/#!/ }
+         */
+        infiniteHandler($state) {
+            // 防止在切換類別的時候馬上觸發捲動加載，造成有遊戲重複出現的情況
+            if (this.isReceive) {
+                return;
+            }
+
+            this.isReceive = true;
+
+            this.getData().then(({ result }) => {
+                this.isReceive = false;
+
+                if (result !== 'ok') {
+                    return;
+                }
+
+                if (this.pageNow + 1 > this.pageAll) {
+                    $state.complete();
+                    return;
+                }
+
+                this.pageNow += 1;
+                this.firstResult += this.maxResults;
+
+                $state.loaded();
+            });
         }
     }
 };

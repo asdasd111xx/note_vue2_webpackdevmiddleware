@@ -1,81 +1,52 @@
 <template>
-    <div :class="colorClass">
-        <mcenter-header :header-setting="headerSetting" />
-        <div v-if="!$route.params.pid" :class="[$style['message-title-wrap'], 'clearfix']">
-            <div
-                v-for="item in menulist"
-                :key="item.value"
-                :class="[$style['message-center-title'], { [$style.active]: item.value === ($route.params.id || 'post') }]"
-                @click="$router.push({ params: { id: item.value } })"
-            >
-                {{ item.text }}
+    <div class="information-wrap">
+        <div v-if="!$route.params.pid" :class="[$style['menu-list-wrap'], 'clearfix']">
+            <div :class="$style['menu-list']" @click="$router.push({ params: { page: 'message' } })">
+                <div :class="[$style['menu-title'], { [$style.active]: $route.params.page === 'message' }]">通知</div>
+                <div v-if="memInfo.msgCount" :class="$style['menu-tips']">{{ memInfo.msgCount }}</div>
+            </div>
+            <div :class="$style['menu-list']" @click="$router.push({ params: { page: 'news' } })">
+                <div :class="[$style['menu-title'], { [$style.active]: $route.params.page === 'news' }]">活动</div>
+            </div>
+            <div :class="$style['menu-list']" @click="$router.push({ params: { page: 'post' } })">
+                <div :class="[$style['menu-title'], { [$style.active]: $route.params.page === 'post' }]">公告</div>
             </div>
         </div>
-        <component
-            :is="$route.params.id"
-            @changeTitle="value => headerSetting.title = value"
-        />
+        <component :is="$route.params.page" />
     </div>
 </template>
 
 <script>
-import { mapGetters } from 'vuex';
+import { mapGetters, mapActions } from 'vuex';
+import message from './components/message/index';
+import news from './components/news/index';
+import post from './components/post/index';
 
 export default {
     components: {
-        post: () => import(/* webpackChunkName: 'post' */'./components/post'),
-        message: () => import(/* webpackChunkName: 'message' */'./components/message'),
-        feedback: () => import(/* webpackChunkName: 'feedback' */'./components/feedback'),
-        mcenterHeader: () => import(/* webpackChunkName: 'mcenterHeader' */ '@/router/mobile/components/common/mcenter/theme1/header')
-    },
-    data() {
-        return {
-            menulist: [
-                {
-                    value: 'post',
-                    text: this.$text('S_HOT_NEWS', '公告')
-                },
-                {
-                    value: 'message',
-                    text: this.$text('S_PERSONAL_MESSAGE', '站内信')
-                },
-                {
-                    value: 'feedback',
-                    text: this.$text('S_FEEDBACK', '意见反馈')
-                }
-            ],
-            headerSetting: {
-                title: this.$text('S_MSG_CENTER', '信息中心'),
-                leftBtns: {
-                    icon: 'arrow',
-                    onClick: () => {
-                        if (this.$route.params.pid) {
-                            this.$router.back();
-                            return;
-                        }
-
-                        this.$router.push('/mobile/mcenter');
-                    }
-                },
-                balance: true
-            }
-        };
+        message,
+        news,
+        post
     },
     computed: {
         ...mapGetters({
-            siteConfig: 'getSiteConfig',
-            memInfo: 'getMemInfo',
-        }),
-        colorClass() {
-            return [
-                {
-                    [this.$style[`site-${this.memInfo.user.domain}`]]: this.$style[`site-${this.memInfo.user.domain}`],
-                    [this.$style['preset-color']]: !this.$style[`site-${this.memInfo.user.domain}`]
-                }
-            ];
+            memInfo: 'getMemInfo'
+        })
+    },
+    created() {
+        if (['message', 'news', 'post'].includes(this.$route.params.page)) {
+            this.actionSetMcenterMsgCount();
+            return;
         }
+
+        this.$router.push('/mobile/mcenter/information/message');
+    },
+    methods: {
+        ...mapActions([
+            'actionSetMcenterMsgCount'
+        ])
     }
 };
 </script>
 
-<style lang="scss" src="./css/index.module.scss" module />
+<style lang="scss" src="./css/index.scss" module />
