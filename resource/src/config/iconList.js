@@ -87,3 +87,4 @@ import 'vue-awesome/icons/user-plus';
 import 'vue-awesome/icons/comment-dots';
 import 'vue-awesome/icons/clipboard-list';
 import 'vue-awesome/icons/exclamation';
+import 'vue-awesome/icons/ellipsis-h';

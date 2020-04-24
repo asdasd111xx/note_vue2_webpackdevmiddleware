@@ -1,0 +1,204 @@
+.no-data {
+    padding-top: 125px;
+}
+
+.no-bankcard {
+    width: 165px;
+    margin: 0 auto 25px;
+
+    img {
+        max-width: 100%;
+        vertical-align: top;
+    }
+}
+
+.remind {
+    font-size: 14px;
+    color: #A6A9B2;
+    text-align: center;
+}
+
+.add-wrap {
+    padding: 0 17px;
+    margin-bottom: 10px;
+    text-align: center;
+
+    img,
+    span {
+        display: inline-block;
+    }
+
+    img {
+        max-width: 18px;
+        vertical-align: top;
+    }
+
+    span {
+        line-height: 18px;
+        margin-left: 6px;
+        font-size: 16px;
+        font-weight: 700;
+        color: #414655;
+    }
+}
+
+.add-btn {
+    padding: 31px 0;
+    background: #FFF;
+    border-radius: 10px;
+}
+
+.my-card {
+    padding: 0 17px;
+}
+
+.card-count {
+    padding: 5px 0;
+    margin-bottom: 5px;
+
+    span {
+        float: left;
+        line-height: 24px;
+    }
+}
+
+.bankcard-list {
+    margin-bottom: 10px;
+}
+
+.bankcard-item {
+    height: 130px;
+    padding: 19px 16px;
+    border-radius: 8px;
+
+    &:first-child {
+        background: #45B784;
+        background-image: -webkit-linear-gradient(top ,#45B784, #6BD9B7);
+        background-image: linear-gradient(top ,#45B784, #6BD9B7);
+    }
+
+    &:nth-child(2) {
+        margin-top: -15px;
+        background: #D57175;
+        background-image: -webkit-linear-gradient(top ,#D57175, #F6AAAD);
+        background-image: linear-gradient(top ,#D57175, #F6AAAD);
+
+        .card-number {
+            color: #F6AAAD;
+        }
+    }
+
+    &:nth-child(3) {
+        margin-top: -15px;
+        background: #4378BE;
+        background-image: -webkit-linear-gradient(top ,#4378BE, #85B9F7);
+        background-image: linear-gradient(top ,#4378BE, #85B9F7);
+
+        .card-number {
+            color: #85B9F7;
+        }
+    }
+}
+
+.title {
+    margin-right: 8px;
+    font-size: 18px;
+    font-weight: 700;
+    color: #414655;
+}
+
+.count {
+    font-size: 12px;
+    color: #414655;
+}
+
+.bankcard-top {
+    margin-bottom: 10px;
+}
+
+.bankcard-logo {
+    float: left;
+    width: 40px;
+    height: 40px;
+    background: #FFF;
+    border-radius: 50%;
+}
+
+.bankcard-name {
+    float: left;
+    margin-left: 7px;
+    font-size: 18px;
+    font-weight: 700;
+    color: #FEFFFE;
+}
+
+.card-number {
+    padding-left: 47px;
+    font-size: 18px;
+    font-weight: 700;
+    color: #6BD9B7;
+    letter-spacing: 1px;
+
+    span {
+        color: #FEFFFE;
+    }
+}
+
+.bankcard-detail {
+    padding: 10px 17px 0;
+}
+
+.edit-mask {
+    position: fixed;
+    top: 0;
+    bottom: 0;
+    right: 0;
+    left: 0;
+    z-index: 4;
+    background: rgba(0, 0, 0, 0.5);
+}
+
+.edit-button {
+    width: 100%;
+    padding: 0 10px;
+    position: fixed;
+    bottom: 30px;
+    left: 0;
+    z-index: 5;
+}
+
+.edit-confirm,
+.edit-cancel {
+    height: 54px;
+    line-height: 54px;
+    text-align: center;
+    font-size: 18px;
+    font-weight: 700;
+    background: #EFF0EF;
+    border-radius: 8px;
+}
+
+.edit-confirm {
+    margin-bottom: 8px;
+    color: #FB3B2F;
+}
+
+.edit-cancel {
+    color: #067AFC;
+}
+
+.pop-message {
+    width: 140px;
+    height: 32px;
+    line-height: 32px;
+    text-align: center;
+    position: fixed;
+    top: 50%;
+    left: 50%;
+    z-index: 1;
+    transform: translate(-50%, -50%);
+    font-size: 12px;
+    color: #FFF;
+    background: #5E626D;
+    border-radius: 3px;
+}

@@ -4,14 +4,17 @@
             <home-slider />
             <home-new />
             <home-content />
+            <popup v-if="popStatus && isShow && !isHidePop" @close="popStatus=false" />
         </div>
     </mobile-container>
 </template>
 
 <script>
-import homeSlider from './components/homeSlider';
-import homeNew from './components/homeNew';
-import homeContent from './components/homeContent';
+import { mapGetters, mapActions } from 'vuex';
+import homeSlider from './components/new/homeSlider';
+import homeNew from './components/new/homeNew';
+import homeContent from './components/new/homeContent';
+import popup from './components/new/popup';
 import mobileContainer from '../common/new/mobileContainer';
 
 export default {
@@ -19,9 +22,21 @@ export default {
         mobileContainer,
         homeSlider,
         homeNew,
-        homeContent
+        homeContent,
+        popup
+    },
+    data() {
+        return {
+            popStatus: false,
+            isShow: false,
+            isHidePop: false
+        };
     },
     computed: {
+        ...mapGetters({
+            loginStatus: 'getLoginStatus',
+            post: 'getPost'
+        }),
         headerConfig() {
             return {
                 hasLogo: true,
@@ -33,7 +48,22 @@ export default {
             };
         }
     },
+    created() {
+        if (!this.loginStatus) {
+            localStorage.setItem('pop', true);
+            return;
+        }
+        this.isHidePop = this.$cookie.get(`hidepop${this.post.config.last_modified_at}`) || false;
+        this.popStatus = this.post.list.length > 0;
+        this.isShow = localStorage.getItem('pop') || false;
+        if (this.isShow) {
+            document.querySelector('body').style = 'overflow: hidden';
+        }
+    },
     methods: {
+        ...mapActions([
+            'actionSetPost'
+        ]),
         onClick() {
             this.$router.push('/mobile');
         }

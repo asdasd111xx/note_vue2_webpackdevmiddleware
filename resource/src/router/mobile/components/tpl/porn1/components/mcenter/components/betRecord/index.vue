@@ -3,7 +3,7 @@
         <div slot="content" :class="$style['content-wrap']">
             <div :class="$style['menu-wrap']">
                 <div :class="$style['menu-select-game']" @click="selectMenu = selectMenu ? '' : 'game'">
-                    <span>{{ selectType.text }}</span>
+                    <span>{{ selectType.alias }}</span>
                     <span :class="$style['select-icon']" />
                 </div>
                 <div :class="[$style['menu-select-time'], {[$style.custom] : isCustomTime}]" @click="selectMenu = selectMenu ? '' : 'time'">
@@ -18,10 +18,10 @@
                     <li
                         v-for="(game, index) in options"
                         :key="`${game.value}-${index}`"
-                        :class="{[$style.active] : selectType.value === game.value}"
+                        :class="{[$style.active] : selectType.vendor === game.vendor && selectType.kind === game.kind}"
                         @click="getGameRecord(game)"
                     >
-                        {{ game.text }}
+                        {{ game.alias }}
                     </li>
                 </ul>
                 <div v-if="selectMenu === 'time'" :class="[$style['dropdown-wrap'], $style['dropdown-wrap-time'], 'clearfix']">
@@ -97,20 +97,20 @@
                                 </ul>
                             </div>
                         </div>
-                        <template v-for="(gameDteail, index) in mainListData">
+                        <template v-for="(gameDetail, index) in mainListData">
                             <div
-                                v-if="gameDteail.day === gameTime.day"
-                                :key="`${gameDteail.vendor}-${index}`"
+                                v-if="gameDetail.day === gameTime.day"
+                                :key="`${gameDetail.vendor}-${index}`"
                                 :class="$style['detail-wrap']"
                             >
                                 <div :class="$style['detail-name']">
-                                    {{ getVendorName(gameDteail.vendor, gameDteail.kind) }}
+                                    {{ getVendorName(gameDetail.vendor, gameDetail.kind) }}
                                 </div>
                                 <div :class="$style['detail-game']">
-                                    <div :class="$style['game-name']">{{ gameDteail.game_name }}</div>
+                                    <div :class="$style['game-name']">{{ gameDetail.game_name }}</div>
                                     <div :class="[$style['game-count'], 'clearfix']">
-                                        <div :class="$style['game-water']">{{ $text('S_TOTAL_WATER', '流水') }} : {{ parseFloat(gameDteail.valid_bet).toFixed(2) }}</div>
-                                        <div :class="$style['game-money']">{{ $text('S_WIN_LOSE', '输赢') }} : <span :class="{[$style['is-win']] : parseFloat(gameDteail.payoff) > 0}">{{ parseFloat(gameDteail.payoff).toFixed(2) }}</span></div>
+                                        <div :class="$style['game-water']">{{ $text('S_TOTAL_WATER', '流水') }} : {{ parseFloat(gameDetail.valid_bet).toFixed(2) }}</div>
+                                        <div :class="$style['game-money']">{{ $text('S_WIN_LOSE', '输赢') }} : <span :class="{[$style['is-win']] : parseFloat(gameDetail.payoff) > 0}">{{ parseFloat(gameDetail.payoff).toFixed(2) }}</span></div>
                                     </div>
                                 </div>
                             </div>
@@ -132,7 +132,6 @@ import Vue from 'vue';
 import EST from '@/lib/EST';
 import mobileContainer from '../../../common/new/mobileContainer';
 import ajax from '@/lib/ajax';
-import gameName from '@/lib/game_name';
 import datePicker from '@/router/mobile/components/common/datePicker';
 
 export default {
@@ -143,10 +142,9 @@ export default {
     data() {
         return {
             hasFooter: false,
-            options: [{ value: 'all', text: this.$t('S_ALL') }],
+            options: [{ vendor: 'all', alias: this.$t('S_ALL'), kind: '' }],
             selectMenu: '',
-            selectType: { value: 'all', text: this.$t('S_ALL') },
-            test: '',
+            selectType: { vendor: 'all', alias: this.$t('S_ALL'), kind: '' },
             isCustomTime: false,
             currentSelectTime: this.$t('S_TODDAY'),
             selectTime: this.$t('S_TODDAY'),
@@ -158,7 +156,6 @@ export default {
             mainTotal: {},
             mainTime: [],
             mainNoData: true,
-            test2: new Date(),
             currentCustomDate: '',
             isShowDatePicker: false,
             allTotalData: [
@@ -192,7 +189,7 @@ export default {
     },
     computed: {
         ...mapGetters({
-            gameData: 'getGameData'
+            memInfo: 'getMemInfo'
         }),
         headerConfig() {
             return {
@@ -219,7 +216,7 @@ export default {
         }
     },
     created() {
-        this.getAllGameData();
+        this.options = [...this.options, ...this.memInfo.vendors];
         this.startTime = Vue.moment(this.estToday).format('YYYY-MM-DD');
         this.endTime = Vue.moment(this.estToday).format('YYYY-MM-DD');
         this.limitDate = new Date(Vue.moment(this.estToday).add(-30, 'days').format('YYYY-MM-DD'));
@@ -252,14 +249,6 @@ export default {
             this.selectMenu = '';
             this.inquire();
         },
-        getAllGameData() {
-            Object.keys(this.gameData).forEach((index) => {
-                const { vendor, kind } = this.gameData[index];
-                if (this.gameData[index].switch === 'Y' && this.options.map((item) => item.value).indexOf(vendor) === -1) {
-                    this.options.push({ value: vendor, text: gameName(vendor), kind });
-                }
-            });
-        },
         inquire() {
             const params = {
                 start_at: Vue.moment(this.startTime).format('YYYY-MM-DD 00:00:00-04:00'),
@@ -267,10 +256,8 @@ export default {
             };
 
             if (this.selectType.kind) {
-                params.vendor = this.selectType.value;
-                if (params.vendor !== 'bbin' && params.vendor !== 'fg') {
-                    params.kind = this.selectType.kind;
-                }
+                params.vendor = this.selectType.vendor;
+                params.kind = this.selectType.kind;
             }
 
             this.startTime = Vue.moment(this.startTime).format('YYYY-MM-DD');
@@ -335,17 +322,7 @@ export default {
             return `${Vue.moment(date).format('MM-DD').replace('-', '月')}日`;
         },
         getVendorName(vendor, kind) {
-            const transList = {
-                bbin_1: 'bbsport',
-                bbin_2: 'bblive',
-                bbin_3: 'bbcasino',
-                bbin_4: 'lottery',
-                fg_5: 'fg_card',
-                sp_1: 'sunplus',
-                lg_ly_4: 'lg_lottery',
-                xbb_ly_4: 'xbb_lottery'
-            };
-            return this.gameData[transList[`${vendor}_${kind}`] ? transList[`${vendor}_${kind}`] : vendor].alias;
+            return this.memInfo.vendors.find((item) => item.vendor === vendor && item.kind === kind).alias;
         },
         getCount(date) {
             return this.mainListData.filter((item) => item.day === date).length;

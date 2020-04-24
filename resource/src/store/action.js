@@ -552,6 +552,7 @@ export const actionMemInit = ({ state, dispatch, commit }) => {
             };
 
             dispatch('actionSetVip');
+            dispatch('actionSetPost');
             dispatch('actionSetUserBalance');
             // 取得會員我的返水
             mcenter.rebate({

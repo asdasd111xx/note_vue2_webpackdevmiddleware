@@ -1589,5 +1589,10 @@
     "S_SUPPORT_BETRECOED_SEARCH": "當前系統支持查詢最近30日的投註記錄",
     "S_START_DATE": "開始日期",
     "S_END_DATE": "結束日期",
-    "S_CUSTOM_DATE": "自定義"
+    "S_CUSTOM_DATE": "自定義",
+    "S_CARD_MANAGEMENT": "卡片管理",
+    "S_ADD_BANKCARD": "添加銀行卡",
+    "S_BANKCARD_LIMIT": "最多支持添加%s張銀行卡",
+    "S_MY_CRAD": "我的卡",
+    "S_CRAD_COUNT": "共%s張"
 }

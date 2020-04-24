@@ -1583,5 +1583,10 @@
     "S_SUPPORT_BETRECOED_SEARCH": "当前系统支持查询最近30日的投注记录",
     "S_START_DATE": "开始日期",
     "S_END_DATE": "结束日期",
-    "S_CUSTOM_DATE": "自定义"
+    "S_CUSTOM_DATE": "自定义",
+    "S_CARD_MANAGEMENT": "卡片管理",
+    "S_ADD_BANKCARD": "添加银行卡",
+    "S_BANKCARD_LIMIT": "最多支持添加%s张银行卡",
+    "S_MY_CRAD": "我的卡",
+    "S_CRAD_COUNT": "共%s张"
 }
