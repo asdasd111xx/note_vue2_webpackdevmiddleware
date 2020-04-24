@@ -90,10 +90,9 @@ export default {
       memBalance: 'getMemBalance'
     }),
     avatarSrc() {
-      return this.imgIndex == 0 ?
+      return !this.loginStatus ?
         this.$getCdnPath(`/static/image/_new/mcenter/avatar_nologin.png`) :
         this.$getCdnPath(`/static/image/_new/mcenter/default/avatar_${this.imgIndex}.png`)
-
     }
   },
   created() {

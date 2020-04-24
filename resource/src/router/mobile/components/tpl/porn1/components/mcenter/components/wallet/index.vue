@@ -49,7 +49,7 @@
                     )
                   "
                 />
-                {{ $text("S_MCENTER_WALLET", "中心钱包") }}
+                <span> {{ $text("S_MCENTER_WALLET", "中心钱包") }} </span>
                 <div :class="$style['balance-item-money']">
                   {{ balanceTran.membalance.vendor.default.amount }}
                 </div>
@@ -193,21 +193,21 @@ export default {
       mainNoData: false,
       walletIcons: [
         {
-          text: "转帐",
+          text: this.$text('S_TRANSDER', '转帐'),
           imgSrc: "/static/image/_new/mcenter/wallet/ic_wallter_tranfer.png",
           onClick: () => {
             this.$router.push("/mobile/mcenter/balanceTrans");
           }
         },
         {
-          text: "取款",
+          text: this.$text('S_WITHDRAWAL_TEXT', '提现'),
           imgSrc: "/static/image/_new/mcenter/wallet/ic_wallter_withdraw.png",
           onClick: () => {
             this.$router.push("/mobile/mcenter/withdraw");
           }
         },
         {
-          text: "卡片管理",
+          text: this.$text('S_MARANGE_CARD', '卡片管理'),
           imgSrc: "/static/image/_new/mcenter/wallet/ic_wallter_manage.png",
           onClick: () => {
             this.$router.push("/mobile/mcenter/bankCard");

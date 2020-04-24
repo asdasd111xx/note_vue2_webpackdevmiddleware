@@ -1,15 +1,6 @@
 <template>
   <mobile-container :header-config="headerConfig" :class="$style.container">
     <div slot="content" :class="$style['content-wrap']">
-      <!-- <div :class="$style['msg-icon']">
-        <img
-          :src="
-            $getCdnPath('/static/image/mobile/tpl/porn1/home/message_icon.png')
-          "
-          @click="goMessage()"
-        />
-      </div> -->
-
       <!-- 暫時不顯示 -->
       <!-- <app-tip v-if="showTip" @close="showTip = false" /> -->
       <avatar-info />

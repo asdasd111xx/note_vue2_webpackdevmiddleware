@@ -131,9 +131,14 @@ export default {
       if (!this.loginStatus) {
         this.isShowBounsDialog = true;
         this.dialogType = 'tips';
-        this.player.pause();
+        if (!this.player.paused()) {
+          this.player.pause();
+        }
+
       } else if (this.isShowBounsDialog) {
-        this.player.pause();
+        if (!this.player.paused()) {
+          this.player.pause();
+        }
         return;
       }
       else {
@@ -171,7 +176,9 @@ export default {
               this.dialogType = `tips-${data.Status.toLowerCase()}`
               this.isShowBounsDialog = true;
               this.$refs.bonunsDialog.hadEarnNum = data.BreakTimes
-              this.player.pause();
+              if (!this.player.paused()) {
+                this.player.pause();
+              }
               break;
             case 'CLOSE':
               return;
