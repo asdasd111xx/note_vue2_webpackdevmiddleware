@@ -11,10 +11,10 @@
 
 <script>
 import { mapGetters, mapActions } from 'vuex';
-import homeSlider from './components/new/homeSlider';
-import homeNew from './components/new/homeNew';
-import homeContent from './components/new/homeContent';
-import popup from './components/new/popup';
+import homeSlider from './components/homeSlider';
+import homeNew from './components/homeNew';
+import homeContent from './components/homeContent';
+import popup from './components/popup';
 import mobileContainer from '../common/new/mobileContainer';
 
 export default {
