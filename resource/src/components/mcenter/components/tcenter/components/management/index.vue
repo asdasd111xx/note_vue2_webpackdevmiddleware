@@ -27,13 +27,7 @@
             <recommend />
         </template>
         <template v-else-if="$route.params.page === 'friends'">
-            <first-friends :current="currentPage" :total.sync="totalPage" />
-            <pagination
-                :class="$style.pagination"
-                :page="+currentPage"
-                :total="totalPage"
-                @update:page="currentPage = `${$event}`"
-            />
+            <first-friends />
         </template>
     </div>
 </template>
@@ -44,7 +38,6 @@ import management from '@/mixins/mcenter/management/index';
 
 export default {
     components: {
-        pagination: () => import(/* webpackChunkName: 'pagination' */'@/router/mobile/components/common/mcenter/theme1/pagination'),
         memberInfo: () => import(/* webpackChunkName: 'memberInfo' */'./components/memberInfo/index'),
         firstFriends: () => import(/* webpackChunkName: 'firstFriends' */'./components/firstFriends/index'),
         recommend: () => import(/* webpackChunkName: 'recommend' */'./components/recommend/index')

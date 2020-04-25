@@ -1,18 +1,21 @@
-@import '~@/css/variable.scss';
+@import "~@/css/variable.scss";
 
 .first-friends-table {
-    margin-top: 7px;
+    margin-top: 10px;
 }
 
 .thead {
     .row {
-        background-color: #DDD;
+        background-color: #eee;
     }
 
     .column {
-        padding: 2% 1%;
+        padding: 2% 0;
         color: #666;
-        text-align: center;
+    }
+
+    .balance {
+        width: 32%;
     }
 }
 
@@ -21,23 +24,20 @@
 
     .row {
         &:nth-child(odd) {
-            background-color: #FFF;
+            background-color: #fff;
         }
 
         &:nth-child(even) {
-            background-color: #F6F6F6;
+            background-color: #f6f6f6;
         }
     }
 
     .column {
-        padding: 4% 1%;
-        color: #2D2D2D;
+        padding: 4% 0;
+        color: #2d2d2d;
     }
 
-    .number,
-    .online,
-    .username,
-    .status {
+    .balance {
         text-align: center;
     }
 
@@ -52,7 +52,7 @@
         .bankrupt {
             width: 100%;
             float: left;
-            color: #FF5454;
+            color: #ff5454;
         }
     }
 
@@ -75,22 +75,30 @@
 
 .number {
     width: 10%;
+    text-align: right;
+}
+
+.online,
+.username,
+.status,
+.balance {
+    text-align: center;
 }
 
 .online {
-    width: 13%;
+    width: 14%;
 }
 
 .username {
-    width: 22%;
+    width: 20%;
 }
 
 .status {
-    width: 15%;
+    width: 20%;
 }
 
 .balance {
-    width: 40%;
+    width: 33%;
 }
 
 .money {
@@ -100,33 +108,40 @@
 .icon-online {
     width: 12px;
     height: 12px;
-    background-image: url('/static/image/mobile/mcenter/ic_noonline.png');
+    background-image: url("/static/image/_new/mcenter/tcenter/ic_noonline.png");
     background-position: 0 0;
     background-size: 12px;
     background-repeat: no-repeat;
 
     &.active {
-        background-image: url('/static/image/mobile/mcenter/ic_mailnew.png');
+        background-image: url("/static/image/_new/mcenter/tcenter/ic_mailnew.png");
     }
 }
 
 .icon-info {
     width: 16px;
     height: 16px;
-    margin: 0 2px 0 2px;
-    background: url('/static/image/mobile/mcenter/btn_expand.png') 0 0 no-repeat;
+    margin: 0 2% 0 4%;
+    background: url("/static/image/_new/mcenter/tcenter/btn_expand2.png") 0 0
+        no-repeat;
     background-size: 16px;
+
+    &.expend {
+        background: url("/static/image/_new/mcenter/tcenter/btn_collapse2.png") 0
+            0 no-repeat;
+    }
 }
 
 .info-wrap {
     clear: both;
     padding: 10px 6%;
-    background-color: #DDD;
+    background-color: #f6f6f6;
 }
 
 .info-row {
     line-height: 20px;
     font-size: 14px;
+    padding: 2.5px 0;
 
     div {
         overflow: hidden;
@@ -143,7 +158,7 @@
         .disable,
         .locked,
         .bankrupt {
-            color: #FF5454;
+            color: #ff5454;
         }
     }
 }

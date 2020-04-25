@@ -7,19 +7,10 @@ import ajax from '@/lib/ajax';
  * @param {Number} total - 選擇總頁數
  */
 export default {
-    props: {
-        current: {
-            type: String,
-            required: true
-        },
-        total: {
-            type: Number,
-            required: true
-        }
-    },
     data() {
         return {
             isReceive: false,
+            showInfinite: true,
             friendsTrans: {
                 1: 'S_MEMBER_REGISTER',
                 2: 'S_AGENT_JOIN_2',
@@ -28,7 +19,10 @@ export default {
             },
             firstFriends: [],
             subInfoIndex: -1, // 要顯示詳細資料的索引值(for mobile)
-            maxResults: 10,
+            firstResult: 0,
+            maxResults: 10 ,
+            pageNow: 1,
+            pageAll: 1 ,
             sort: '',
             order: {
                 created_at: false,
@@ -37,7 +31,7 @@ export default {
         };
     },
     watch: {
-        current() {
+        padgeNow() {
             let params = {};
 
             if (this.sort) {
@@ -69,7 +63,7 @@ export default {
         }
     },
     created() {
-        this.getFirstFriends();
+        // this.getFirstFriends();
     },
     methods: {
         /**
@@ -78,30 +72,33 @@ export default {
          * @param {Object} params - 排序
          */
         getFirstFriends(params) {
-            ajax({
-                method: 'get',
-                url: API_FIRST_LEVEL_FRIENDS,
-                params: {
-                    ...params,
-                    first_result: (this.current - 1) * this.maxResults,
-                    max_results: this.maxResults
-                },
-                success: ({ result, ret, pagination }) => {
-                    this.isReceive = true;
+            return (
+                ajax({
+                    method: 'get',
+                    url: API_FIRST_LEVEL_FRIENDS,
+                    params: {
+                        ...params,
+                        first_result: this.firstResult,
+                        max_results: this.maxResults
+                    },
+                    success: ({ result, ret, pagination }) => {
 
-                    if (result !== 'ok') {
-                        return;
+                        if (result !== 'ok' || ret.length === 0) {
+                            return;
+                        }
+
+                        this.firstFriends = ret.reduce((init , info) => {
+                            return [...init, info]
+                        }, this.firstFriends)
+
+                        if (pagination.total === '0') {
+                            return;
+                        }
+
+                        this.pageAll = Math.ceil(+pagination.total / this.maxResults);
                     }
-
-                    if (!ret.length) {
-                        return;
-                    }
-
-                    // 計算資料會有幾頁，一頁最多十筆
-                    this.$emit('update:total', Math.ceil(pagination.total / this.maxResults));
-                    this.firstFriends = ret;
-                }
-            });
+                })
+            )
         },
         /**
          * 會員是否在線
@@ -143,6 +140,37 @@ export default {
             }
 
             this.subInfoIndex = value;
+        },
+        /**
+         * 捲動加載
+         * @param {object} $state - 套件提供的方法
+         * @see { @link https://peachscript.github.io/vue-infinite-loading/#!/ }
+         */
+        infiniteHandler($state) {
+            // 防止在切換類別的時候馬上觸發捲動加載，造成有遊戲重複出現的情況
+            if (this.isReceive) {
+                return;
+            }
+
+            this.isReceive = true;
+
+            this.getFirstFriends().then(({ result }) => {
+                this.isReceive = false;
+
+                if (result !== 'ok') {
+                    return;
+                }
+
+                if (this.pageNow + 1 > this.pageAll) {
+                    $state.complete();
+                    return;
+                }
+
+                this.pageNow += 1;
+                this.firstResult += this.maxResults;
+
+                $state.loaded();
+            });
         }
     }
 };

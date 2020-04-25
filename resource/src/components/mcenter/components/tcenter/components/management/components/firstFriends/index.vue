@@ -49,7 +49,7 @@
                     <!-- 主帳戶餘額 -->
                     <div :class="[$style.column, $style.balance]">
                         <span :class="$style.money">{{ info.cash.balance.replace(/\B(?=(\d{3})+(?!\d))/g, ',') }}</span>
-                        <span :class="$style['icon-info']" />
+                        <span :class="[$style['icon-info'] , {[$style.expend] : subInfoIndex === index }]" />
                     </div>
                     <!-- 詳細資料 -->
                     <div v-show="subInfoIndex === index" :class="$style['info-wrap']">
@@ -103,28 +103,26 @@
         <div v-if="!firstFriends.length" :class="$style.tbody">
             <div :class="$style['no-data']">{{ $text('S_NO_FIRST_FRIEND_DATA') }}</div>
         </div>
+        <infinite-loading
+            v-if="showInfinite"
+            ref="infiniteLoading"
+            @infinite="infiniteHandler"
+        >
+            <span slot="no-more" />
+            <span slot="no-results" />
+        </infinite-loading>
     </div>
 </template>
 
 <script>
+import InfiniteLoading from 'vue-infinite-loading';
 import firstLevelStatistics from '@/mixins/mcenter/management/firstLevelStatistics';
 
-/**
- * @param {String} current - 當前頁數
- * @param {Number} total - 總頁數
- */
 export default {
-    mixins: [firstLevelStatistics],
-    props: {
-        current: {
-            type: String,
-            required: true
-        },
-        total: {
-            type: Number,
-            required: true
-        }
-    }
+    components: {
+        InfiniteLoading,
+    },
+    mixins: [firstLevelStatistics]
 };
 </script>
 
