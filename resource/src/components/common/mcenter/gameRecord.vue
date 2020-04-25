@@ -1,9 +1,13 @@
 <template>
-    <div>
+    <div :class="$style['game-record']">
         <slot
             :inq-1st="inq1st"
             :inq-2nd="inq2nd"
             :inq-3rd="inq3rd"
+            :has-search="hasSearch"
+            :is-show-tips="isShowTips"
+            :search-tabs="searchTabs"
+            :current-condition="currentCondition"
             :game-list="gameList"
             :current-page="currentPage"
             :sort="sort"
@@ -11,6 +15,7 @@
             :total-page="totalPage"
             :count-of-page="showNum"
             :update-page="updatePage"
+            :change-search-condition="changeSearchCondition"
             :on-sort="onSort"
             :on-search="onSearch"
             :on-search-bet="onSearchBet"
@@ -21,7 +26,8 @@
 
 <script>
 import Vue from 'vue';
-import { mapGetters, mapActions } from 'vuex';
+import { mapGetters } from 'vuex';
+import EST from '@/lib/EST';
 import gameName from '@/lib/game_name';
 import ajax from '@/lib/ajax';
 import * as apis from '@/config/api';
@@ -39,10 +45,17 @@ export default {
         inqEnd: {
             type: String,
             required: true
+        },
+        setHeaderTitle: {
+            type: Function,
+            required: true
         }
     },
     data() {
         return {
+            hasSearch: false,
+            isShowTips: false,
+            currentCondition: 'today',
             currentPage: '', // 當前所呈現的頁面內容
             selectedUser: '', // 第一層所選擇的使用者
             selectedVendor: '', // 第二層所選的遊戲 vendor
@@ -73,6 +86,7 @@ export default {
                 detail: 1
             },
             inq1st: {
+                isReceive: false,
                 list: [],
                 subTotal: {},
                 total: {}
@@ -93,6 +107,22 @@ export default {
         ...mapGetters({
             gameData: 'getGameData'
         }),
+        searchTabs() {
+            return [
+                {
+                    key: 'range',
+                    name: this.$text('S_SEARCH_FOR', '搜索')
+                },
+                {
+                    key: 'today',
+                    name: this.$text('S_TODDAY', '今日')
+                },
+                {
+                    key: 'yesterday',
+                    name: this.$text('S_YESTERDAY', '昨日')
+                }
+            ];
+        },
         gameList() {
             return [
                 { value: '', text: this.$text('S_ALL') },
@@ -146,12 +176,32 @@ export default {
         '$route.params.page': {
             handler(newValue) {
                 this.currentPage = newValue;
+
+                switch (newValue) {
+                    case 'main':
+                        this.setHeaderTitle(this.$text('S_TEAM_CENTER', '我的推广'));
+                        break;
+                    case 'bet':
+                        this.setHeaderTitle(this.selectedUser);
+                        break;
+                    case 'detail':
+                        this.setHeaderTitle(gameName(this.selectedVendor, this.selectedKind));
+                        break;
+                    default:
+                        break;
+                }
             },
             immediate: true
         }
     },
+    created() {
+        this.currentGame = this.inqGame;
+        this.currentStart = this.inqStart;
+        this.currentEnd = this.inqEnd;
+
+        this.onInquire();
+    },
     methods: {
-        ...mapActions([]),
         updatePage(target, value) {
             this.$set(this.page, target, value);
             switch (target) {
@@ -168,6 +218,38 @@ export default {
                     break;
             }
         },
+        changeSearchCondition(value) {
+            if (this.isShowTips) {
+                return;
+            }
+
+            this.inq1st = {
+                isReceive: false,
+                list: [],
+                subTotal: {},
+                total: {}
+            };
+            this.currentCondition = value;
+            this.hasSearch = value === 'range';
+
+            if (value === 'range') {
+                return;
+            }
+
+            const now = EST(new Date(), '', true);
+            const range = value === 'today' ? 0 : -1;
+            const date = Vue.moment(now).add(range, 'days').format('YYYY-MM-DD');
+
+            this.$emit('update:inqGame', '');
+            this.$emit('update:inqStart', date);
+            this.$emit('update:inqEnd', date);
+
+            this.currentGame = this.inqGame;
+            this.currentStart = this.inqStart;
+            this.currentEnd = this.inqEnd;
+
+            this.onInquire();
+        },
         onSort(value) {
             this.sort = value;
         },
@@ -175,10 +257,16 @@ export default {
             this.currentGame = this.inqGame;
             this.currentStart = this.inqStart;
             this.currentEnd = this.inqEnd;
-            this.onInquire();
+            this.onInquire().then(() => {
+                this.isShowTips = true;
+
+                setTimeout(() => {
+                    this.isShowTips = false;
+                }, 3000);
+            });
         },
         onInquire() {
-            ajax({
+            return ajax({
                 method: 'get',
                 url: apis.API_FRIEND_WAGER_REPORT,
                 params: {
@@ -193,10 +281,12 @@ export default {
                 }
             }).then((response) => {
                 if (response.result === 'ok') {
+                    this.hasSearch = false;
                     this.$router.push({ params: { page: 'main' } });
+
                     if (!response.ret.length) {
-                        alert(this.$text('S_NO_DATA_TPL', '查无任何资料'));
                         this.inq1st = {
+                            isReceive: true,
                             list: [],
                             subTotal: {},
                             total: {}
@@ -207,6 +297,7 @@ export default {
                     this.$nextTick(() => {
                         this.totalPage[this.currentPage] = Math.ceil(response.pagination.total / this.showNum);
                         this.inq1st = {
+                            isReceive: true,
                             list: response.ret,
                             subTotal: response.sub_total,
                             total: response.total
@@ -317,3 +408,9 @@ export default {
     }
 };
 </script>
+
+<style lang="scss" module>
+.game-record {
+    position: relative;
+}
+</style>

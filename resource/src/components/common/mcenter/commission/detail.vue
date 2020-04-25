@@ -15,6 +15,7 @@
             :current-page="currentPage"
             :total-page="totalPage"
             :update-page="updatePage"
+            :oauth2-detail="oauth2Detail"
         />
     </div>
 </template>
@@ -44,6 +45,10 @@ export default {
         state: {
             type: String,
             default: ''
+        },
+        isOauth2: {
+            type: String,
+            required: true
         }
     },
     data() {
@@ -67,7 +72,8 @@ export default {
             levelTotle: {},
             firstLevelList: [],
             pageSubtotal: {},
-            allTotal: {}
+            allTotal: {},
+            oauth2Detail: {}
         };
     },
     watch: {
@@ -76,7 +82,7 @@ export default {
         }
     },
     created() {
-        const params = [this.getLevelList(), this.getFirstLevel()];
+        const params = this.isOauth2 === 'Y' ? [this.getOauth2EntryDetail(this.id)] : [this.getLevelList(), this.getFirstLevel()];
 
         // 當所有 api 完成後再渲染
         Promise.all(params).then(() => {
@@ -146,6 +152,18 @@ export default {
             this.sort = sortValue;
             this.order = orderstate;
             this.getFirstLevel();
+        },
+        getOauth2EntryDetail(id) {
+            return ajax({
+                method: 'get',
+                url: `${API_COMMISSION_FIRST_LEVEL_LIST}/${id}/oauth2/detail`,
+                success: ({ result, ret }) => {
+                    if (result !== 'ok') {
+                        return;
+                    }
+                    this.oauth2Detail = ret;
+                }
+            });
         }
     }
 };

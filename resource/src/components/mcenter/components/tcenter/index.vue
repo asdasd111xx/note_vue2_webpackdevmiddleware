@@ -27,9 +27,9 @@ import mcenterHeader from '../header';
 export default {
     components: {
         mcenterHeader,
-        gameRecord: () => import(/* webpackChunkName: 'mcenter_theme1_gameRecord' */'./components/gameRecord/'),
-        management: () => import(/* webpackChunkName: 'mcenter_theme1_management' */'./components/management/'),
-        commission: () => import(/* webpackChunkName: 'mcenter_theme1_commission' */'./components/commission')
+        gameRecord: () => import(/* webpackChunkName: 'mcenter_pron1_gameRecord' */'./components/gameRecord/'),
+        management: () => import(/* webpackChunkName: 'mcenter_pron1_management' */'./components/management/'),
+        commission: () => import(/* webpackChunkName: 'mcenter_pron1_commission' */'./components/commission')
     },
     props: {
         func: {

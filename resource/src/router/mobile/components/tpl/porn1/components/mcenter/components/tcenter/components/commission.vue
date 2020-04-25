@@ -1,5 +1,5 @@
 <template>
-    <mobile-container :class="$style.container">
+    <mobile-container :class="$style.container" :hasFooter="false">
         <div slot="content" class="content-wrap">
             <tcenter func="commission" />
         </div>
@@ -19,8 +19,10 @@ export default {
 </script>
 
 <style lang="scss" module>
+@import "@/css/variable.scss";
+
 div.container {
-    padding-top: 65px;
-    background-color: #FFF;
+    padding-top: 43px;
+    background-color: $main_background_white1;
 }
 </style>

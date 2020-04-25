@@ -1,7 +1,7 @@
 <template>
     <div>
         <slot
-            :commission-last="commissionLast"
+            :commission-summary="commissionSummary"
             :commission-state="commissionState"
             :get-list-commission="getListCommission"
             :commission-list="commissionList"
@@ -19,7 +19,7 @@
 import Vue from 'vue';
 import EST from '@/lib/EST';
 import ajax from '@/lib/ajax';
-import { API_COMMISSION_LAST, API_COMMISSION_LIST } from '@/config/api';
+import { API_COMMISSION_LIST, API_COMMISSION_SUMMARY } from '@/config/api';
 
 export default {
     props: {
@@ -72,8 +72,8 @@ export default {
             },
             estToday: now,
             limitDays: limit,
-            commissionLast: {},
             commissionList: [],
+            commissionSummary: null,
             pageSubtotal: {},
             allTotal: {}
         };
@@ -84,28 +84,24 @@ export default {
         }
     },
     created() {
-        const params = [this.getLastCommission(), this.getListCommission()];
-
-        // 當所有 api 完成後再渲染
-        Promise.all(params);
+        this.getSummaryCommission();
     },
     methods: {
         updatePage(value) {
             this.currentPage = value;
         },
         /**
-         * 取得最近一期資料
+         * 取得收益概況
          */
-        getLastCommission() {
+        getSummaryCommission() {
             return ajax({
                 method: 'get',
-                url: API_COMMISSION_LAST,
+                url: API_COMMISSION_SUMMARY,
                 success: ({ result, ret }) => {
                     if (result !== 'ok') {
                         return;
                     }
-
-                    this.commissionLast = ret;
+                    this.commissionSummary = ret;
                 }
             });
         },
@@ -131,19 +127,19 @@ export default {
                 method: 'get',
                 url: API_COMMISSION_LIST,
                 params,
-                success: (request) => {
-                    if (request.result !== 'ok') {
+                success: (response) => {
+                    if (response.result !== 'ok') {
                         return;
                     }
 
                     // 計算資料會有幾頁，一頁最多十筆
-                    this.totalPage = Math.ceil(request.pagination.total / this.recordCount);
+                    this.totalPage = Math.ceil(response.pagination.total / this.recordCount);
                     // 佣金資料列表
-                    this.commissionList = request.ret;
+                    this.commissionList = response.ret;
                     // 小計
-                    this.pageSubtotal = request.sub_total;
+                    this.pageSubtotal = response.sub_total;
                     // 總計
-                    this.allTotal = request.total;
+                    this.allTotal = response.total;
                 }
             });
         },

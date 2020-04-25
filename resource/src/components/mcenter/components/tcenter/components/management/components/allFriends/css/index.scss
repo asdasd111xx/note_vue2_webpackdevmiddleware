@@ -1,78 +1,84 @@
-@import '~@/css/variable.scss';
+@import "~@/css/variable.scss";
 
 .all-friends-table {
-    width: 100%;
-    border-collapse: collapse;
+  width: 100%;
+  border-collapse: collapse;
 
-    thead {
-        tr {
-            background-color: #DDD;
-        }
-
-        th {
-            padding: 2% 3%;
-            color: #676767;
-            font-weight: normal;
-        }
+  thead {
+    tr {
+      height: 32px;
+      line-height: 32px;
+      background-color: #eee;
+      color: #676767;
     }
 
-    tbody {
-        tr {
-            &:nth-child(odd) {
-                background-color: #FFF;
-            }
+    th {
+      padding: 2% 3%;
+      font-weight: normal;
+    }
+  }
 
-            &:nth-child(even) {
-                background-color: #F6F4F4;
-            }
-        }
+  tbody {
+    tr {
+      height: 40px;
+      line-height: 40px;
 
-        td {
-            padding: 4% 3%;
-            color: #2D2D2D;
-        }
+      &:nth-child(odd) {
+        background-color: #fff;
+      }
+
+      &:nth-child(even) {
+        background-color: #eee;
+      }
     }
 
-    tfoot {
-        tr {
-            background-color: #DDD;
-        }
-
-        td {
-            padding: 4% 3%;
-            color: #222;
-        }
-    }
-
-    th,
     td {
-        line-height: 12px;
-        font-size: 12px;
-        text-align: center;
-        vertical-align: middle;
-
-        &:first-child {
-            text-align: left;
-        }
+      padding: 4% 3%;
+      color: #2d2d2d;
     }
+  }
+
+  tfoot {
+    tr {
+      background-color: #eee;
+    }
+
+    td {
+      padding: 4% 3%;
+      color: #222;
+    }
+  }
+
+  th,
+  td {
+    line-height: 12px;
+    font-size: 12px;
+    text-align: center;
+    vertical-align: middle;
+
+    &:first-child {
+      padding-left: 17px;
+      text-align: left;
+    }
+  }
 }
 
 @media screen and (min-width: $phone) {
-    .all-friends-table {
-        th,
-        td {
-            line-height: 15px;
-            font-size: 15px;
-        }
+  .all-friends-table {
+    th,
+    td {
+      line-height: 15px;
+      font-size: 15px;
     }
+  }
 }
 
 @media screen and (min-width: $pad) {
-    .all-friends-table {
-        th,
-        td {
-            line-height: 24px;
-            font-size: 24px;
-        }
+  .all-friends-table {
+    th,
+    td {
+      line-height: 24px;
+      font-size: 24px;
     }
+  }
 }

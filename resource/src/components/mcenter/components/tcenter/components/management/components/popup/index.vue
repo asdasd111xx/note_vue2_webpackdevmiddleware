@@ -3,7 +3,7 @@
         <template v-if="['CODE', 'LINK'].indexOf(type) >= 0">
             <div :class="$style.mask" />
             <div :class="$style.content">
-                <div :class="$style.icon"><img :src="$getCdnPath('/static/image/mobile/mcenter/ic_ok.png')" /></div>
+                <div :class="$style.icon"><img :src="$getCdnPath('/static/image/_new/mcenter/tcenter/ic_ok.png')" /></div>
                 <div :class="$style.text">{{ $text(`S_${type}_COPIED`) }}</div>
             </div>
         </template>
@@ -29,7 +29,7 @@
                                 <!-- 未組合的圖片，等html2canvas完成後隱藏 -->
                                 <div ref="printMe">
                                     <img
-                                        :src="`/static/image/lang/qrcode/${curLang}/${item}.jpg`"
+                                        :src="`/static/image/_new/lang/qrcode/${curLang}/${item}.jpg`"
                                         :class="$style['qr-bgimg']"
                                         @load="aferLoad(index)"
                                     />
@@ -70,7 +70,7 @@
 
 <script>
 import { mapGetters } from 'vuex';
-import { swiper, swiperSlide } from 'vue-awesome-swiper';
+import { Swiper, SwiperSlide } from 'vue-awesome-swiper';
 import html2canvas from 'html2canvas';
 
 /**
@@ -79,8 +79,8 @@ import html2canvas from 'html2canvas';
  */
 export default {
     components: {
-        swiper,
-        swiperSlide
+        Swiper,
+        SwiperSlide
     },
     props: {
         type: {

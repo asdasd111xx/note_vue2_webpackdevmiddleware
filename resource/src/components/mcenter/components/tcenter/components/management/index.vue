@@ -5,7 +5,7 @@
                 :class="{ [$style.active]: $route.params.page === 'promote' }"
                 @click="$router.push('/mobile/mcenter/tcenter/management/promote')"
             >
-                <span>{{ $text('S_FRIENDS_PROMOTE', '开户推广') }}</span>
+                <span>{{ $text('S_FRIENDS_PROMOTE', '推广信息') }}</span>
             </div>
             <div
                 :class="{ [$style.active]: $route.params.page === 'member' }"
