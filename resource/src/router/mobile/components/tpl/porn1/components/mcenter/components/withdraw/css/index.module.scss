@@ -1,0 +1,228 @@
+@import "~@/css/variable.scss";
+@import "../../../../../components/mcenter/components/balanceTrans/css/index.module.scss";
+
+.content-wrap {
+    min-height: calc(100vh);
+    color: #414655;
+    background-color: $main_background_white1;
+}
+
+// 中心錢包
+.balance-wrap-wrap {
+    background-color: $main_white_color1;
+    height: 67px;
+    display: flex;
+    align-items: center;
+    margin-top: 11px;
+
+    >div {
+        width: 50%;
+    }
+
+    >.balance-wrap {
+        >div:first-child {
+            text-align: center;
+
+            >img {
+                width: 14px;
+                height: 14px;
+            }
+
+            >span {
+                color: #5E626D;
+            }
+        }
+
+        >div:last-child {
+            color: #BE9E7F;
+            text-align: center;
+            font-size: 16px;
+        }
+
+    }
+
+
+    .recycle-btn {
+        color: #BE9E7F;
+        text-align: center;
+        font-size: 16px;
+    }
+}
+
+//增加銀行卡
+.add-bank-card {
+    background-color: $main_white_color1;
+    color: #BE9E7F;
+    font-size: 15px;
+    height: 50px;
+    line-height: 50px;
+    margin-top: 15px;
+    width: 100%;
+    text-align: center;
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    font-weight: bold;
+
+    >img {
+        width: 18px;
+        height: 18px;
+    }
+}
+
+.bank-card-wrap {
+    background-color: $main_background_white1;
+    margin-top: 10px;
+}
+
+.bank-card-cell {
+    background-color: $main_white_color1;
+    padding: 1px 18px;
+    color: #414655;
+    height: 50px;
+    line-height: 50px;
+    display: flex;
+    align-items: center;
+    margin-bottom: 2px;
+
+    >img {
+        width: 25px;
+        height: 25px;
+    }
+
+    >span {
+        margin-left: 3px;
+        width: 100%;
+    }
+
+    >.check-box {
+        position: absolute;
+        width: 18px;
+        height: 18px;
+        border-radius: 50%;
+        border: #CBCED8 solid 1px;
+        right: 18px;
+
+        &.checked {
+            background: url("/static/image/_new/mcenter/ic_check.png") 0 0 no-repeat;
+            background-size: 100%;
+            width: 18px;
+            height: 18px;
+        }
+    }
+}
+
+.tips {
+    margin-top: 12px;
+    color: #A6A9B2;
+    font-size: 12px;
+    padding: 0 14px;
+}
+
+.monet-currency {
+    font-size: 17px;
+    line-height: 54px;
+    margin-right: 5px;
+}
+
+.withdraw-input {
+    height: 54px;
+    background-color: $main_white_color1;
+    color: #414655;
+    line-height: 54px;
+    padding: 0 14px;
+    width: 100%;
+    margin-top: 5px;
+
+    >input {
+        width: 60%;
+        height: 32px;
+        color: #414655;
+        font-size: 16px;
+
+        &::placeholder {
+            color: #CBCED8;
+            font-size: 14px;
+        }
+    }
+}
+
+.actual-money {
+    background-color: $main_white_color1;
+    padding: 0 14px;
+    font-size: 14px;
+    height: 43px;
+    line-height: 43px;
+    color: #CBCED8;
+
+    .serial {
+        float: right;
+        font-size: 14px;
+    }
+}
+
+
+.withdraw-max {
+    height: 100%;
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    float: right;
+
+    >span {
+        font-size: 14px;
+        background: -webkit-linear-gradient(right, #bd9d7d, #f9ddbd);
+        background: -o-linear-gradient(left, #bd9d7d, #f9ddbd);
+        background: -moz-linear-gradient(left, #bd9d7d, #f9ddbd);
+        background: linear-gradient(to left, #bd9d7d, #f9ddbd);
+        color: white;
+        border-radius: 11px;
+        width: 82px;
+        height: 21px;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+    }
+}
+
+.withdraw-error-tips {
+    background-color: $main_white_color1;
+    padding: 0 14px;
+    color: #DB6372;
+    font-size: 14px;
+    height: 54px;
+    line-height: 54px;
+}
+
+.submit-btn {
+    width: 100%;
+    text-align: center;
+    margin-top: 15px;
+
+    >div {
+        margin: 0 auto;
+        height: 45px;
+        background: -webkit-linear-gradient(right, #bd9d7d, #f9ddbd);
+        background: -o-linear-gradient(left, #bd9d7d, #f9ddbd);
+        background: -moz-linear-gradient(left, #bd9d7d, #f9ddbd);
+        background: linear-gradient(to left, #bd9d7d, #f9ddbd);
+        border-radius: 3px;
+        width: 100%;
+        max-width: 340px;
+        line-height: 45px;
+        font-size: 14px;
+        font-weight: 700;
+        text-align: center;
+        color: #ffffff;
+    }
+
+
+    &.disabled {
+        div {
+            background: -webkit-linear-gradient(right, #e9dacb, #eee5db);
+            background: -o-linear-gradient(left, #e9dacb, #eee5db);
+            background: -moz-linear-gradient(left, #e9dacb, #eee5db);
+            background: linear-gradient(to left, #e9dacb, #eee5db);
+        }
+    }
+}

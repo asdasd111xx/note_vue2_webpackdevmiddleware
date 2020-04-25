@@ -1,8 +1,15 @@
-import { mapGetters, mapActions } from 'vuex';
-import ajax from '@/lib/ajax';
 import {
-    API_WITHDRAW_INFO, API_MCENTER_WITHDRAW, API_TRADE_RELAY, API_WITHDRAW_BALANCE_BACK, API_WITHDRAW_WRITE, API_WITHDRAW_CGPAY_BINDING, API_WITHDRAW
+    API_MCENTER_WITHDRAW,
+    API_TRADE_RELAY,
+    API_WITHDRAW,
+    API_WITHDRAW_BALANCE_BACK,
+    API_WITHDRAW_CGPAY_BINDING,
+    API_WITHDRAW_INFO,
+    API_WITHDRAW_WRITE
 } from '@/config/api';
+import { mapActions, mapGetters } from 'vuex';
+
+import ajax from '@/lib/ajax';
 import isMobile from '@/lib/is_mobile';
 
 export default {
@@ -278,7 +285,8 @@ export default {
                 errorAlert: true,
                 params: {
                     amount: this.withdrawValue,
-                    withdraw_password: this.withdrawPwd,
+                    // withdraw_password: this.withdrawPwd,
+                    withdraw_password: '0000',
                     forward: true,
                     confirm: true,
                     max_id: this.withdrawData.audit.total.max_id,

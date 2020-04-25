@@ -156,8 +156,9 @@
       <!-- 銀行卡 -->
       <div
         v-if="
-          this.withdrawUserData.account &&
-            this.withdrawUserData.account.length !== 0
+          withdrawUserData &&
+            withdrawUserData.account &&
+            withdrawUserData.account.length !== 0
         "
         :class="$style['bank-card-wrap']"
       >
@@ -173,11 +174,7 @@
           :class="$style['bank-card-cell']"
           @click="handleSelectCard(item)"
         >
-          <!-- 缺銀行圖片暫時放 -->
-          <!-- alias: "交通银行-*****566"
-            id: 3836
-            offer_limit: "0"
-            offer_percent: "0.00" -->
+          <!-- 缺銀行圖片 -->
           <img
             :src="$getCdnPath(`/static/image/_new/withdraw/16.png`)"
             alt="collapse"
@@ -192,6 +189,94 @@
         </div>
       </div>
 
+      <!-- 額度提示訊息 -->
+      <template v-if="withdrawUserData && withdrawData.payment_charge">
+        <div :class="$style['tips']">
+          {{
+            $text("S_WITHRAW_DESC", {
+              replace: [
+                {
+                  target: "%s",
+                  value:
+                    withdrawData.payment_charge.ret &&
+                    validateMoney(
+                      withdrawData.payment_charge.ret.withdraw_count
+                    )
+                },
+                {
+                  target: "%s",
+                  value:
+                    withdrawData.payment_charge.ret &&
+                    validateMoney(
+                      withdrawData.payment_charge.ret.allow_withdraw_limit
+                    )
+                },
+                {
+                  target: "%s",
+                  value:
+                    withdrawData.payment_charge.ret &&
+                    validateMoney(withdrawData.payment_charge.ret.withdraw_max)
+                }
+              ]
+            })
+          }}
+        </div>
+
+        <!-- 提現輸入 -->
+        <div :class="[$style['withdraw-input']]">
+          <span :class="$style['monet-currency']">¥</span>
+          <input
+            v-model="withdrawValue"
+            autocomplete="off"
+            type="number"
+            @input="validateWithdrawValue($event.target.value)"
+            :placeholder="
+              $text('S_WITHRAW_PLACEHOLDER', {
+                replace: [
+                  {
+                    target: '%s',
+                    value:
+                      withdrawData.payment_charge.ret &&
+                      validateMoney(
+                        withdrawData.payment_charge.ret.withdraw_min
+                      )
+                  },
+                  {
+                    target: '%s',
+                    value:
+                      withdrawData.payment_charge.ret &&
+                      validateMoney(
+                        withdrawData.payment_charge.ret.withdraw_max
+                      )
+                  }
+                ]
+              })
+            "
+          />
+          <span :class="[$style['withdraw-max']]">
+            <span @click="handleMaxWithdraw">
+              {{ $text("S_WITHRAW_MAX2", "最高提现") }}
+            </span>
+          </span>
+        </div>
+      </template>
+
+      <!-- 到帳金額 -->
+      <div v-if="actualMoney" :class="[$style['actual-money']]">
+        <span :class="$style['monet-currency']">到帐金额</span>
+        <span :class="$style['monet-currency']">¥</span>
+        <span :class="$style['monet-currency']">{{ actualMoney }}</span>
+
+        <span :class="[$style['serial']]" @click="toggleSerial">
+          詳請
+        </span>
+      </div>
+
+      <!-- 錯誤訊息 -->
+      <div v-if="errTips" :class="[$style['withdraw-error-tips']]">
+        <span>{{ errTips }}</span>
+      </div>
+
       <div :class="[$style['add-bank-card']]">
         <img
           :src="$getCdnPath(`/static/image/_new/common/ic_withardw_add.png`)"
@@ -203,17 +288,28 @@
         </span>
       </div>
 
+      <div
+        :class="[
+          $style['submit-btn'],
+          { [$style['disabled']]: errTips || !withdrawValue }
+        ]"
+      >
+        <div @click="handleSubmit">
+          {{ $text("S_WITHRAW_NOW", "立即取款") }}
+        </div>
+      </div>
+
       <div :class="$style['tips']">
         {{
-          $text("S_WITHRAW_DESC", {
-            replace: [
-              { target: "%S", value: `5` },
-              { target: "%S", value: `200.000` },
-              { target: "%S", value: `499.999` }
-            ]
-          })
+          $text(
+            "S_WITHRAW_TIP",
+            "为了方便您快速取款，请先将所有场馆钱包金额回收至中心钱包"
+          )
         }}
       </div>
+
+      <!-- 流水檢查 -->
+      <serial-number v-if="isSerial" :close-fuc="toggleSerial" />
     </div>
   </mobile-container>
 </template>
@@ -224,6 +320,7 @@ import mixin from '@/mixins/mcenter/withdraw';
 import { mapGetters, mapActions } from 'vuex';
 import balanceTran from "@/components/mcenter/components/balanceTran";
 import message from '../../../common/new/message'
+import serialNumber from './serialNumber'
 
 export default {
   mixins: [mixin],
@@ -237,13 +334,48 @@ export default {
 
       isShowMore: false,
       msg: '',
-      selectedCard: ''
+      selectedCard: '',
+      errTips: '',
+      actualMoney: ''
     }
   },
   components: {
     mobileContainer,
     balanceTran,
-    message
+    message,
+    serialNumber
+  },
+  watch: {
+    withdrawData() {
+      console.log(this.withdrawData)
+    },
+    withdrawValue() {
+      let value = Number(this.withdrawValue)
+
+      if (!Number.isInteger(value) && this.withdrawValue) {
+        this.errTips = this.$text("S_WITHRAW_ERROR_MSG1", "取款金额必需为整数");
+      } else {
+        this.errTips = "";
+
+        //   withdrawData.audit.total.fee + withdrawData.audit.total.deduction
+        let _actualMoney = value - Number(this.withdrawData.audit.total.total_deduction)
+
+        if (_actualMoney !== value) {
+          this.actualMoney = _actualMoney;
+          if (_actualMoney <= 0) {
+            this.errTips = this.$text("S_WITHRAW_ERROR_MSG2", "实际出款金额须大于0，请重新输入");
+            this.actualMoney = "0.00";
+          }
+        }
+        else {
+          this.actualMoney = "";
+          this.errTips = "";
+        }
+      }
+    }
+  },
+  mounted() {
+
   },
   computed: {
     ...mapGetters({
@@ -262,6 +394,19 @@ export default {
     },
   },
   methods: {
+    validateMoney(target) {
+      if (!target || Number(target) === 0) {
+        return this.$text('S_UNLIMITED', '无限制')
+      } else {
+        return target
+      }
+    },
+    toggleSerial() {
+      this.isSerial = !this.isSerial;
+    },
+    validateWithdrawValue(value) {
+      return value
+    },
     toggleShowMore() {
       this.isShowMore = !this.isShowMore;
     },
@@ -271,10 +416,36 @@ export default {
       } else {
         this.selectedCard = item.id;
       }
+    },
+    // 最高提現
+    handleMaxWithdraw() {
+      if (!this.withdrawData) return;
+
+      let withdraw_max = this.withdrawData.payment_charge.ret.withdraw_max
+      let balance = this.withdrawData.cash.available_balance
+
+      if (!withdraw_max || Number(withdraw_max) == 0) {
+        this.withdrawValue = Math.floor(Number(balance));
+        return;
+      }
+
+      let result = Number(withdraw_max) >= Number(balance) ? balance : withdraw_max;
+      this.withdrawValue = Math.floor(Number(result));
+    },
+    handleSubmit() {
+      if (this.errTips || !this.withdrawValue)
+        return;
+
+      this.submitWithdraw().then((response) => {
+        console.log(response)
+        if (response.result === 'error' && response.code === 500110) {
+          this.isOpenOrder = true;
+        }
+      });
     }
   },
 }
 
 </script>
-<style lang="scss" src="./index.module.scss" module></style>
+<style lang="scss" src="./css/index.module.scss" module></style>
 
