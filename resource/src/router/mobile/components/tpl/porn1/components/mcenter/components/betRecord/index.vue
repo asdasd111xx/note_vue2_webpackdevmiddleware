@@ -73,7 +73,7 @@
                     @click="selectMenu = ''"
                 />
             </div>
-            <div v-if="!mainNoData" :class="$style['data-wrap']">
+            <div v-if="!mainNoData && showData" :class="$style['data-wrap']">
                 <ul :class="[$style['total-wrap'], 'clearfix']">
                     <li :class="$style['total-count']">{{ $text('S_DATA_COUNT', '笔数') }} : {{ mainListData.length }}</li>
                     <li :class="$style['total-water']">{{ $text('S_TOTAL_WATER', '流水') }} : {{ parseFloat(mainTotal.valid_bet).toFixed(2) }}</li>
@@ -97,7 +97,7 @@
                                 </ul>
                             </div>
                         </div>
-                        <template v-for="(gameDetail, index) in mainListData">
+                        <template v-for="(gameDetail, index) in controlData">
                             <div
                                 v-if="gameDetail.day === gameTime.day"
                                 :key="`${gameDetail.vendor}-${index}`"
@@ -118,10 +118,18 @@
                     </div>
                 </div>
             </div>
-            <div v-else :class="$style['no-data']">
+            <div v-if="mainNoData && !isLoading" :class="$style['no-data']">
                 <img src="/static/image/_new/mcenter/no_data.png" />
                 <p>{{ $text('S_NO_BETRECORD', '还没有任何投注记录') }}</p>
             </div>
+            <infinite-loading
+                v-if="showInfinite"
+                ref="infiniteLoading"
+                @infinite="infiniteHandler"
+            >
+                <span slot="no-more" />
+                <span slot="no-results" />
+            </infinite-loading>
         </div>
     </mobile-container>
 </template>
@@ -129,6 +137,7 @@
 <script>
 import { mapGetters } from 'vuex';
 import Vue from 'vue';
+import InfiniteLoading from 'vue-infinite-loading';
 import EST from '@/lib/EST';
 import mobileContainer from '../../../common/new/mobileContainer';
 import ajax from '@/lib/ajax';
@@ -137,7 +146,8 @@ import datePicker from '@/router/mobile/components/common/datePicker';
 export default {
     components: {
         mobileContainer,
-        datePicker
+        datePicker,
+        InfiniteLoading
     },
     data() {
         return {
@@ -184,7 +194,11 @@ export default {
                     name: 'custom',
                     value: 30
                 }
-            ]
+            ],
+            isLoading: false,
+            showInfinite: true,
+            maxResults: 10, // 一頁顯示幾筆
+            showPage: 0 // 顯示幾頁
         };
     },
     computed: {
@@ -213,6 +227,15 @@ export default {
             set(value) {
                 this.endTime = Vue.moment(value).format('YYYY-MM-DD');
             }
+        },
+        controlData() {
+            return this.mainListData.filter((item, index) => index < this.maxResults * this.showPage);
+        },
+        showData() {
+            if (this.mainTime.length === 0 || this.mainListData === 0) {
+                return false;
+            }
+            return this.mainTime.some((item) => this.controlData.some((data) => item.day === data.day));
         }
     },
     created() {
@@ -250,6 +273,10 @@ export default {
             this.inquire();
         },
         inquire() {
+            this.showInfinite = false;
+            this.isLoading = true;
+            this.showPage = 0;
+
             const params = {
                 start_at: Vue.moment(this.startTime).format('YYYY-MM-DD 00:00:00-04:00'),
                 end_at: Vue.moment(this.endTime).format('YYYY-MM-DD 23:59:59-04:00')
@@ -281,24 +308,25 @@ export default {
                         valid_bet: parseFloat(item.valid_bet).toFixed(2)
                     }));
                 }
-            });
-
-            // 各遊戲注單統計資料(依投注日期)
-            ajax({
-                method: 'get',
-                url: '/api/v1/c/stats/wager-report/by-day-game',
-                params,
-                success: (response) => {
-                    if (response.ret.length === 0) {
-                        this.mainListData = [];
-                        this.mainNoData = true;
-                        return;
+            }).then(() => {
+                // 各遊戲注單統計資料(依投注日期)
+                ajax({
+                    method: 'get',
+                    url: '/api/v1/c/stats/wager-report/by-day-game',
+                    params,
+                    success: (response) => {
+                        this.showInfinite = true;
+                        if (response.ret.length === 0) {
+                            this.mainListData = [];
+                            this.mainNoData = true;
+                            return;
+                        }
+                        this.isLoading = false;
+                        this.mainListData = response.ret;
+                        this.mainTotal = response.total;
+                        this.mainNoData = false;
                     }
-
-                    this.mainListData = response.ret;
-                    this.mainTotal = response.total;
-                    this.mainNoData = false;
-                }
+                });
             });
         },
         cancelCustomTime() {
@@ -326,6 +354,29 @@ export default {
         },
         getCount(date) {
             return this.mainListData.filter((item) => item.day === date).length;
+        },
+        /**
+         * 捲動加載
+         * @param {object} $state - 套件提供的方法
+         * @see { @link https://peachscript.github.io/vue-infinite-loading/#!/ }
+         */
+        infiniteHandler($state) {
+            setTimeout(() => {
+                if (this.mainListData.length === 0) {
+                    this.isLoading = false;
+                    $state.complete();
+                    return;
+                }
+
+                if (this.mainListData.length / this.maxResults > this.showPage) {
+                    this.showPage += 1;
+                    $state.loaded();
+
+                    if (Math.ceil(this.mainListData.length / this.maxResults) === this.showPage) {
+                        $state.complete();
+                    }
+                }
+            }, 300);
         }
     }
 };

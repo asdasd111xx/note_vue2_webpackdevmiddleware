@@ -27,7 +27,7 @@
                         <img :class="$style['arrow-icon']" src="/static/image/_new/common/arrow_next.png" />
                     </div>
                 </div>
-                <div :class="$style['info-item']">
+                <!-- <div :class="$style['info-item']">
                     <p :class="$style['input-title']">省/直辖市</p>
                     <div :class="$style['input-wrap']">
                         <input
@@ -50,7 +50,7 @@
                             @input="checkData"
                         />
                     </div>
-                </div>
+                </div> -->
                 <div :class="$style['info-item']">
                     <p :class="$style['input-title']">开户支行</p>
                     <div :class="$style['input-wrap']">
@@ -123,7 +123,7 @@
             </div>
         </div>
         <p :class="$style['service-remind']">
-            如需帮助，请<span :class="$style['service-btn']">联系客服</span>
+            如需帮助，请<span :class="$style['service-btn']" @click="$router.push('/mobile/service')">联系客服</span>
         </p>
 
         <div v-if="isShowPop" :class="$style['pop-wrap']">
@@ -166,14 +166,13 @@ export default {
     data() {
         return {
             bankList: [],
-            // currentStep: 'one',
             currentBank: '',
             isShowPop: false,
             formData: {
                 account_name: '',
                 bank_id: '',
-                province: '',
-                city: '',
+                // province: '',
+                // city: '',
                 branch: '',
                 account: '',
                 phone: '',

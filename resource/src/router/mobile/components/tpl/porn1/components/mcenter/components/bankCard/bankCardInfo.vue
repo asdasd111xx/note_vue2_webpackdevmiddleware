@@ -1,5 +1,5 @@
 <template>
-    <div>
+    <div v-if="isRevice">
         <template v-if="!showDetail">
             <div v-if="bankCard.length > 0" :class="$style['my-card']">
                 <p :class="[$style['card-count'], 'clearfix']">
@@ -92,7 +92,8 @@ export default {
         return {
             bankCard: [],
             bankCardDetail: {},
-            popStatus: false
+            popStatus: false,
+            isRevice: false
         };
     },
     created() {
@@ -101,10 +102,10 @@ export default {
             url: '/api/v1/c/player/user_bank/list',
             errorAlert: false
         }).then((response) => {
+            this.isRevice = true;
             if (!response || response.result !== 'ok') {
                 return;
             }
-
             this.bankCard = response.ret.filter((item, index) => index < 3);
         });
     },

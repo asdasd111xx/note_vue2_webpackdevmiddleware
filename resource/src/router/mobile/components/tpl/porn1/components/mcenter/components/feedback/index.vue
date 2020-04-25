@@ -35,5 +35,6 @@ export default {
     // min-height: calc(100vh - 0.86rem);
     min-height: calc(100vh - 44px);
     position: relative;
+    padding-bottom: 20px;
 }
 </style>

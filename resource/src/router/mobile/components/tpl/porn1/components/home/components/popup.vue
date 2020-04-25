@@ -59,7 +59,7 @@ export default {
 </script>
 
 <style lang="scss" module>
-.pop-wrap {}
+.popup {}
 
 .mask {
     position: fixed;
