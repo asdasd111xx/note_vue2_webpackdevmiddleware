@@ -1,5 +1,106 @@
 @import '~@/css/variable.scss';
 
+.swiper-wrap {
+    background-color: #FFF;
+}
+
+.swiper-item {
+    width: 25%;
+    height: 38px;
+    line-height: 38px;
+    text-align: center;
+    color: #A6A9B2;
+
+    &.is-current {
+        color: #5E626D;
+        border-bottom: 2px solid #BE9E7F;
+    }
+}
+
+.bank-card-wrap {
+    position: relative;
+}
+
+.feature-wrap {
+    padding: 10px;
+    background-color: #FFF;
+}
+
+.feature-title {
+    height: 16px;
+    line-height: 16px;
+    margin-bottom: 4px;
+    padding: 0 5px;
+    color: #222;
+    font-size: 12px;
+}
+
+.bank-card-title {
+    display: block;
+    font-size: 12px;
+    color: #A6A9B2;
+}
+
+.pay-mode-item-wrap {
+    margin-top: 5px;
+}
+
+.pay-mode-item {
+    position: relative;
+    float: left;
+    width: 24%;
+    margin: 0 0.5% 4px;
+    padding: 7px 1px 1px;
+    border: 1px solid #BEBCBC;
+    border-radius: 3px;
+    color: #AAA;
+    cursor: pointer;
+
+    &.is-current {
+        border: 1px solid #BF8646;
+        color: #BF8646;
+    }
+
+    .pay-mode-tag {
+        display: block;
+        position: absolute;
+        top: 0;
+        right: 0;
+        width: 26px;
+        height: 25px;
+    }
+
+    .pay-mode-img {
+        display: block;
+        width: 24px;
+        height: 24px;
+        margin: 0 auto;
+    }
+
+    .pay-main-title {
+        overflow: hidden;
+        height: 16px;
+        line-height: 16px;
+        font-size: 12px;
+        text-align: center;
+        text-overflow: ellipsis;
+        white-space: nowrap;
+    }
+
+    .pay-sub-title {
+        overflow: hidden;
+        height: 12px;
+        line-height: 12px;
+        color: #DB6372;
+        font-size: 12px;
+        text-align: center;
+        text-overflow: ellipsis;
+        white-space: nowrap;
+    }
+}
+
+// ===============================================
+
 .deposit-list-wrap {
     padding: 10px 20px;
     text-align: center;
@@ -30,25 +131,6 @@
     }
 }
 
-.swiper-wrap {
-    background: $depositSwiperBg;
-}
-
-.swiper-item {
-    width: 25%;
-    height: 38px;
-    line-height: 38px;
-    text-align: center;
-    color: $depositSwiperColor;
-
-    &.is-current {
-        color: $depositSwiperActiveColor;
-        border-bottom: 2px solid $depositSwiperBorderColor;
-    }
-}
-
-
-
 .loading-wrap {
     position: absolute;
     width: 100%;
@@ -63,72 +145,6 @@
 .loading-item {
     display: inline-block;
     vertical-align: top;
-}
-
-.bank-card-wrap {
-    position: relative;
-    padding-top: 8px;
-}
-
-.feature-wrap {
-    padding: 5px 21px;
-    border-width: 0 0 1px;
-    border-style: solid;
-    border-color: #BEBCBC;
-    background: #FFF;
-
-    &:first-child {
-        border-width: 1px 0;
-    }
-}
-
-.bank-card-title {
-    display: block;
-    margin-bottom: 5px;
-    font-size: 12px;
-    color: #BEBCBC;
-}
-
-.pay-mode-item-wrap {
-    font-size: 11px;
-}
-
-.pay-mode-item {
-    float: left;
-    position: relative;
-    margin: 0 8px 4px 0;
-    padding: 2px 4px 6px 44px;
-    width: 48%;
-    border: 1px solid #BEBCBC;
-    border-radius: 3px;
-    cursor: pointer;
-    color: #000;
-
-    &:nth-child(2n) {
-        margin-right: 0;
-        padding-right: 0;
-    }
-
-    &.is-current {
-        border: 1px solid $depositPayItemBg;
-        color: $depositPayItemColor;
-        background-color: $depositPayItemBg;
-    }
-
-    .pay-main-title {
-        font-size: 13px;
-    }
-
-    .pay-mode-img {
-        position: absolute;
-        width: 25px;
-        height: 25px;
-        top: 7px;
-        left: 10px;
-        padding: 2px;
-        border-radius: 100%;
-        background-color: #FFF;
-    }
 }
 
 .select-style {

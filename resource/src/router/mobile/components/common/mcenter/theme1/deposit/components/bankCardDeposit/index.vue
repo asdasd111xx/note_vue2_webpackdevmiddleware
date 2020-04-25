@@ -1,6 +1,7 @@
 <template>
     <div :class="[$style['mode-wrap'], $style[`theme-${siteConfig.MCENTER_COLOR}`], colorClass]">
         <swiper
+            v-if="depositData.length > 1"
             ref="swiperTop"
             :options="categoryOptions"
             :class="$style['swiper-wrap']"
@@ -18,6 +19,7 @@
                 <div v-if="!curModeGroup.uri" :class="$style['bank-card-wrap']">
                     <!-- 支付方式 -->
                     <div :class="[$style['feature-wrap'], 'clearfix']">
+                        <div :class="$style['feature-title']">支付方式</div>
                         <div :class="[$style['pay-mode-item-wrap'], 'clearfix']">
                             <div
                                 v-for="(info, index) in curModeGroup.payment_group_content"
@@ -25,9 +27,16 @@
                                 :class="[$style['pay-mode-item'], { [$style['is-current']]: curPayInfo.payment_method_id === info.payment_method_id && curPayInfo.bank_id === info.bank_id}]"
                                 @click="changePayMode(info, index)"
                             >
+                                <img
+                                    v-if="tagTrans[info.tag]"
+                                    :src="$getCdnPath(`/static/image/_new/mcenter/deposit/icon_${tagTrans[info.tag]}.png`)"
+                                    :class="$style['pay-mode-tag']"
+                                />
                                 <img v-lazy="getImg(info)" :class="$style['pay-mode-img']" />
-                                <div :class="$style['pay-main-title']">{{ info.bank_name || info.payment_method_name }}</div>
-                                <div :class="$style['pay-sub-title']">{{ info.payment_type_name }}</div>
+                                <div :class="$style['pay-main-title']">{{ info.short_name }}</div>
+                                <div :class="$style['pay-sub-title']">
+                                    <template v-if="[5, 6].includes(info.payment_type_id)">返利1%无上限</template>
+                                </div>
                             </div>
                         </div>
                     </div>
@@ -37,8 +46,8 @@
                         <div :class="$style['select-bank-item']" @click="changeType('chagneBank')">
                             <select
                                 v-model="isSelectValue"
-                                @change="changeSelectValue(isSelectValue)"
                                 :class="$style['select-style']"
+                                @change="changeSelectValue(isSelectValue)"
                             >
                                 <option
                                     v-for="item in paySelectData['chagneBank'].allData"
@@ -230,7 +239,7 @@
 
 <script>
 import { mapGetters, mapActions } from 'vuex';
-import { swiper, swiperSlide } from 'vue-awesome-swiper';
+import { Swiper, SwiperSlide } from 'vue-awesome-swiper';
 import mixin from '@/mixins/mcenter/deposit/bankCardDeposit';
 
 export default {
@@ -239,8 +248,8 @@ export default {
         eleLoading: () => import(/* webpackChunkName: 'eleLoading' */ '@/router/web/components/tpl/common/element/loading/circle'),
         selectBox: () => import(/* webpackChunkName: 'selectBox' */ '../common/selectBox'),
         speedPayField: () => import(/* webpackChunkName: 'speedPayField' */ '../common/speedPayField'),
-        swiper,
-        swiperSlide
+        Swiper,
+        SwiperSlide
     },
     mixins: [mixin],
     props: {
@@ -258,13 +267,14 @@ export default {
                 slidesPerView: 'auto'
             },
             initHeaderSetting: {},
-            isSelectValue: ''
+            isSelectValue: '',
+            tagTrans: { 2: 'general', 3: 'recommend', 4: 'speed' }
         };
     },
     computed: {
         ...mapGetters({
             siteConfig: 'getSiteConfig',
-            memInfo: 'getMemInfo',
+            memInfo: 'getMemInfo'
         }),
         colorClass() {
             return [

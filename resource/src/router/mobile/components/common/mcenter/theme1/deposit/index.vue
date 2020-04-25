@@ -1,6 +1,5 @@
 <template>
-    <div :class="[$style['bank-deposit'], colorClass]">
-        <mcenter-header :header-setting="headerSetting" />
+    <div :class="$style['bank-deposit']">
         <bank-card-deposit v-if="nowTabCurrent === 'deposit'" :header-setting.sync="resultHeaderSetting" />
         <record-deposit v-if="nowTabCurrent === 'record'" />
     </div>
@@ -12,8 +11,7 @@ import { mapGetters, mapActions } from 'vuex';
 export default {
     components: {
         bankCardDeposit: () => import(/* webpackChunkName: 'bankCardDeposit' */'./components/bankCardDeposit'),
-        recordDeposit: () => import(/* webpackChunkName: 'recordDeposit' */'./components/recordDeposit'),
-        mcenterHeader: () => import(/* webpackChunkName: 'recordDeposit' */'@/router/mobile/components/common/mcenter/theme1/header')
+        recordDeposit: () => import(/* webpackChunkName: 'recordDeposit' */'./components/recordDeposit')
     },
 
     data() {
@@ -41,14 +39,6 @@ export default {
             memInfo: 'getMemInfo',
             siteConfig: 'getSiteConfig'
         }),
-        colorClass() {
-            return [
-                {
-                    [this.$style[`site-${this.memInfo.user.domain}`]]: this.$style[`site-${this.memInfo.user.domain}`],
-                    [this.$style['preset-color']]: !this.$style[`site-${this.memInfo.user.domain}`]
-                }
-            ];
-        },
         nowTabCurrent: {
             get() {
                 return this.tabCurrent;
