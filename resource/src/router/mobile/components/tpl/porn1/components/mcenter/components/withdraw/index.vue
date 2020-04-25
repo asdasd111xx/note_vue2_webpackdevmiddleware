@@ -175,10 +175,7 @@
           @click="handleSelectCard(item)"
         >
           <!-- 缺銀行圖片 -->
-          <img
-            :src="$getCdnPath(`/static/image/_new/withdraw/16.png`)"
-            alt="collapse"
-          />
+          <img :src="`https://images.bbin-asia.com/icon/bank/${item.id}.png`" />
           <span>{{ item.alias }} </span>
           <div
             :class="[
@@ -291,7 +288,7 @@
       <div
         :class="[
           $style['submit-btn'],
-          { [$style['disabled']]: errTips || !withdrawValue }
+          { [$style['disabled']]: errTips || !withdrawValue || !selectedCard }
         ]"
       >
         <div @click="handleSubmit">
@@ -309,7 +306,7 @@
       </div>
 
       <!-- 流水檢查 -->
-      <serial-number v-if="isSerial" :close-fuc="toggleSerial" />
+      <serial-number v-if="isSerial" :handle-close="toggleSerial" />
     </div>
   </mobile-container>
 </template>
@@ -347,7 +344,6 @@ export default {
   },
   watch: {
     withdrawData() {
-      console.log(this.withdrawData)
     },
     withdrawValue() {
       let value = Number(this.withdrawValue)
@@ -412,7 +408,7 @@ export default {
     },
     handleSelectCard(item) {
       if (this.selectedCard === item.id) {
-        this.selectedCard = "";
+        // this.selectedCard = "";
       } else {
         this.selectedCard = item.id;
       }
@@ -435,9 +431,7 @@ export default {
     handleSubmit() {
       if (this.errTips || !this.withdrawValue)
         return;
-
-      this.submitWithdraw().then((response) => {
-        console.log(response)
+      this.submitWithdraw({ user_bank_id: this.selectedCard }).then((response) => {
         if (response.result === 'error' && response.code === 500110) {
           this.isOpenOrder = true;
         }

@@ -1,243 +1,201 @@
 <template>
-  <transition :name="'fade'">
-    <div :class="$style['serial-number-wrap']">
-      <div v-if="!isShow" :class="$style['serial-number']">
-        <span :class="$style['serial-title']">
-          {{ $text("S_SERIAL_CHANGE", "流水检查") }}
-          <div :class="$style['serial-close-wrap']" @click="closeFuc(false)">
-            <icon
-              :class="$style['serial-close-btn']"
-              width="30"
-              height="30"
-              name="times"
-            />
+  <div :class="sliderClass">
+    <div :class="$style['serial-header']">
+      <div :class="$style['btn-prev']">
+        <img
+          :src="$getCdnPath('/static/image/_new/common/btn_back.png')"
+          @click="onClose()"
+        />
+      </div>
+      <span :class="$style['title']">
+        {{ $text("S_SERIAL_CHANGE", "流水检查") }}</span
+      >
+    </div>
+    <div :class="[$style['serial-number-wrap']]">
+      <div :class="$style['serial-time']">
+        {{ $text("S_CHECK_TIME", "检查时间") }}：{{ nowTime }}
+      </div>
+
+      <div
+        :class="[$style['basic-info-wrap'], 'clearfix']"
+        v-if="serialNumberData && serialNumberData.total"
+      >
+        <div :class="$style['serial-basic-cell']">
+          <div :class="$style['serial-basic-title']">
+            {{ $text("S_SERIAL_CHANGE", "流水要求") }}
           </div>
-        </span>
-        <div :class="$style['serial-info-wrap']">
-          <div :class="[$style['basic-info-wrap'], 'clearfix']">
-            <span :class="$style['basic-title']"
-              >{{ $text("S_CHECK_TIME", "检查时间") }}：{{ nowTime }}</span
-            >
-            <div
-              :class="[
-                $style['serial-basic-table'],
-                $style['serial-info-change']
-              ]"
-            >
-              <div
-                :class="[
-                  $style['serial-basic-thead'],
-                  $style['serial-basic-tr']
-                ]"
-              >
-                <div
-                  :class="[
-                    $style['serial-basic-td'],
-                    $style['serial-important']
-                  ]"
-                >
-                  {{ $text("S_SERIAL_CHANGE", "流水检查") }}
-                </div>
-                <div
-                  :class="[
-                    $style['serial-basic-td'],
-                    $style['serial-important']
-                  ]"
-                />
-              </div>
-              <div :class="$style['serial-basic-tr']">
-                <div :class="$style['serial-basic-td']">
-                  {{ $text("S_SERIAL_CHANGE", "流水要求") }}
-                </div>
-                <div :class="$style['serial-basic-td']">
-                  {{ serialNumberData.total.audit_amount }}
-                </div>
-              </div>
-              <div :class="$style['serial-basic-tr']">
-                <div :class="$style['serial-basic-td']">
-                  {{ $text("S_SERIAL_POOR", "流水不足") }}
-                </div>
-                <div :class="$style['serial-basic-td']">
-                  {{ serialNumberData.total.audit_amount_lack }}
-                </div>
-              </div>
-            </div>
-            <div :class="[$style['serial-basic-table'], $style['serial-cost']]">
-              <div
-                :class="[
-                  $style['serial-basic-thead'],
-                  $style['serial-basic-tr']
-                ]"
-              >
-                <div
-                  :class="[
-                    $style['serial-basic-td'],
-                    $style['serial-important']
-                  ]"
-                >
-                  {{ $text("S_CH_CHARGE", "费用") }}
-                </div>
-                <div
-                  :class="[
-                    $style['serial-basic-td'],
-                    $style['serial-important']
-                  ]"
-                />
-              </div>
-              <div :class="$style['serial-basic-tr']">
-                <div :class="$style['serial-basic-td']">
-                  {{ $text("S_DEDUCTION_MONEY", "扣除金额") }}
-                </div>
-                <div :class="$style['serial-basic-td']">
-                  {{ serialNumberData.total.deduction }}
-                </div>
-              </div>
-              <div :class="$style['serial-basic-tr']">
-                <div :class="$style['serial-basic-td']">
-                  {{ $text("S_FEE", "手续费") }}
-                </div>
-                <div :class="$style['serial-basic-td']">
-                  {{ serialNumberData.total.fee }}
-                </div>
-              </div>
-              <div :class="$style['serial-basic-tr']">
-                <div :class="$style['serial-basic-td']">
-                  {{ $text("S_SERIAL_TOTAL", "合计") }}
-                </div>
-                <div :class="$style['serial-basic-td']">
-                  {{ serialNumberData.total.total_deduction }}
-                </div>
-              </div>
-            </div>
+          <div :class="$style['serial-basic-value']">
+            {{ serialNumberData.total.audit_amount }}
           </div>
+        </div>
+
+        <div :class="$style['serial-basic-cell']">
+          <div :class="$style['serial-basic-title']">
+            {{ $text("S_SERIAL_POOR", "流水不足") }}
+          </div>
+          <div :class="$style['serial-basic-value']">
+            {{ serialNumberData.total.audit_amount_lack }}
+          </div>
+        </div>
+
+        <div :class="$style['serial-basic-hr']" />
+
+        <div :class="$style['serial-basic-cell']">
+          <div :class="$style['serial-basic-title']">
+            {{ $text("S_DEDUCTION_MONEY", "扣除金额") }}
+          </div>
+          <div :class="$style['serial-basic-value']">
+            {{ serialNumberData.total.deduction }}
+          </div>
+        </div>
+
+        <div :class="$style['serial-basic-cell']">
+          <div :class="$style['serial-basic-title']">
+            {{ $text("S_FEE", "手续费") }}
+          </div>
+          <div :class="$style['serial-basic-value']">
+            {{ serialNumberData.total.fee }}
+          </div>
+        </div>
+
+        <div :class="$style['serial-basic-cell']">
+          <div :class="$style['serial-basic-title']">
+            {{ $text("S_SERIAL_TOTAL", "合计") }}
+          </div>
+          <div :class="$style['serial-basic-value']">
+            {{ serialNumberData.total.total_deduction }}
+          </div>
+        </div>
+      </div>
+      <div
+        v-if="serialNumberList && serialNumberList.length > 0"
+        :class="[$style['serial-number-wrap']]"
+      >
+        <div
+          v-for="(serialDate, serialIndex) in serialNumberList"
+          :key="`serial-block-${serialIndex}`"
+          :class="$style['serial-number-block']"
+        >
+          <div :class="$style['serial-number-title']">
+            {{ serialDate._confirmDate }}
+          </div>
+
           <div
-            :class="[$style['serial-number-table'], $style['serial-change']]"
+            v-for="(serialInfo, index) in serialDate.list"
+            :key="`serial-cell-${index}`"
+            :class="$style['serial-number-cell']"
+            @click="handleClickSerial(serialInfo)"
           >
-            <div
-              :class="[
-                $style['serial-number-thead'],
-                $style['serial-number-tr']
-              ]"
-            >
-              <div
-                v-for="(info, index) in serialHeader"
-                :key="`serial-thead-${index}`"
-                :class="[$style['serial-number-td'], info.className]"
-              >
-                <span>{{ info.value }}</span>
-                <div
-                  v-if="info.objKey === 'deduction'"
-                  :class="$style['icon-wrap']"
-                  :title="
-                    `${$text('S_SERIAL_TIP02', '行政费用')}：${
-                      serialNumberData.administrative_rate
-                    }%`
-                  "
-                >
-                  <icon name="info-circle" />
-                </div>
-                <div
-                  v-if="info.objKey === 'change_serial'"
-                  :class="$style['icon-wrap']"
-                  :title="$text('S_SERIAL_TIP', '系统流水稽核顺序为存款->优惠')"
-                >
-                  <icon name="info-circle" />
-                </div>
+            <div>
+              <div :class="$style['title']">{{ serialInfo.opcode }}</div>
+              <div :class="$style['time']">
+                {{
+                  serialInfo.confirm_at.split(" ") &&
+                    serialInfo.confirm_at.split(" ")[1]
+                }}
               </div>
             </div>
-            <div
-              v-for="(serialInfo, serialIndex) in serialNumberData.ret"
-              :key="`serial-data-${serialIndex}`"
-              :class="$style['serial-number-tr']"
-            >
-              <div
-                v-for="(info, index) in serialHeader"
-                :key="`serial-thead-${index}`"
-                :class="[
-                  $style['serial-number-tbody-item'],
-                  $style['serial-number-td'],
-                  info.className
-                ]"
-              >
-                <template v-if="info.objKey === 'audit_multiple'">
-                  <div>
-                    {{ $text("S_ACCOUNT_DEPOSITE", "存款") }}：
-                    {{ +serialInfo.audit_rate ? serialInfo.audit_rate : "-" }}
-                  </div>
-                  <div>
-                    {{ $text("S_PROMOTION", "优惠") }}：
-                    {{
-                      +serialInfo.offer_audit_rate
-                        ? serialInfo.offer_audit_rate
-                        : "-"
-                    }}
-                  </div>
-                </template>
-                <template v-if="info.objKey === 'change_serial'">
-                  <div>
-                    {{ $text("S_SERIAL_STATUS01", "存款稽核") }}：
-                    {{
-                      getSerialValue(serialInfo, info.objKey, serialIndex)
-                        .depositAudit
-                    }}
-                  </div>
-                  <div>
-                    {{ $text("S_SERIAL_STATUS02", "优惠稽核") }}：
-                    {{
-                      getSerialValue(serialInfo, info.objKey, serialIndex)
-                        .promotionAudit
-                    }}
-                  </div>
-                </template>
-                <div v-else :class="$style['serial-info-text']">
-                  {{ getSerialValue(serialInfo, info.objKey, serialIndex) }}
-                  <div
-                    v-if="info.objKey === 'total_audit_amount'"
-                    :class="$style['audit-tip-wrap']"
-                  >
-                    <div
-                      :class="[
-                        $style['audit-tip-text'],
-                        'ui pointing below label'
-                      ]"
-                    >
-                      <div>
-                        {{ $text("S_DSEPOSIT_SERIAL", "存款流水") }}：{{
-                          +serialInfo.audit_amount
-                            ? serialInfo.audit_amount
-                            : "-"
-                        }}
-                      </div>
-                      <div>
-                        {{ $text("S_PROMOTION_SERIAL", "优惠流水") }}：{{
-                          +serialInfo.offer_audit_amount
-                            ? serialInfo.offer_audit_amount
-                            : "-"
-                        }}
-                      </div>
-                    </div>
-                  </div>
-                </div>
+
+            <div>
+              <div>
+                <span :class="$style['sub-title']">
+                  {{ $text("S_SERIAL_CHANGE", "流水要求") }}
+                </span>
+                <span :class="$style['money']">
+                  {{ serialInfo.audit_amount }}
+                </span>
               </div>
+              <div>
+                <span :class="$style['sub-title']">
+                  {{ $text("S_DEDUCTION_MONEY", "扣除金额") }}
+                </span>
+                <span :class="$style['money']">
+                  {{ serialInfo.deduction }}
+                </span>
+              </div>
+            </div>
+
+            <div :class="$style['serial-next']">
+              <img
+                :class="$style['arrow-icon']"
+                src="/static/image/_new/common/arrow_next.png"
+              />
             </div>
           </div>
         </div>
       </div>
     </div>
-  </transition>
+    <serial-detail
+      v-if="showDetail"
+      :handle-close="() => (showDetail = false)"
+      :data="selectedSerialDetail"
+    />
+  </div>
 </template>
 
 <script>
 import mixin from '@/mixins/mcenter/withdraw/serialNumber';
-
+import serialDetail from './serialDetail'
 export default {
   mixins: [mixin],
+  components: {
+    serialDetail
+  },
+  data() {
+    return {
+      sliderClass: 'slider',
+      serialNumberList: [],
+      selectedSerialDetail: {},
+      isShow: true,
+      showDetail: false,
+    }
+  },
   props: {
-    closeFuc: {
+    handleClose: {
       type: Function,
       default: () => { }
     }
-  }
+  },
+  watch: {
+    serialNumberData() {
+      if (this.serialNumberData.ret) {
+        let result = [];
+        let dateArray = [];
+        this.serialNumberData.ret.map((item, index) => {
+          if (item.confirm_at.split(" ") && item.confirm_at.split(" ")[0]) {
+            let day = item.confirm_at.split(" ")[0];
+            if (dateArray.includes(day)) {
+              result.find(i => i._confirmDate == day).list.push({ ...item })
+            } else {
+              dateArray.push(day);
+              result.push(
+                {
+                  _confirmDate: day,
+                  list: [{ ...item }]
+                }
+              )
+            }
+          }
+        })
+        this.serialNumberList = result
+      }
+    }
+  },
+  methods: {
+    onClose() {
+      this.$nextTick(() => {
+        setTimeout(() => {
+          this.handleClose();
+        }, 280)
+
+      });
+      this.sliderClass = 'slider-close slider'
+    },
+    handleClickSerial(data) {
+      this.selectedSerialDetail = data;
+      this.showDetail = true;
+    }
+  },
 };
 </script>
 

@@ -139,6 +139,8 @@
         height: 32px;
         color: #414655;
         font-size: 16px;
+        border-radius: 0;
+        line-height: 32px;
 
         &::placeholder {
             color: #CBCED8;
@@ -151,8 +153,8 @@
     background-color: $main_white_color1;
     padding: 0 14px;
     font-size: 14px;
-    height: 43px;
-    line-height: 43px;
+    height: 54px;
+    line-height: 54px;
     color: #CBCED8;
 
     .serial {

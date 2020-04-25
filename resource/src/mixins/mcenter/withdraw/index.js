@@ -10,6 +10,7 @@ import {
 import { mapActions, mapGetters } from 'vuex';
 
 import ajax from '@/lib/ajax';
+import bbosRequest from '@/lib/bbosRequest';
 import isMobile from '@/lib/is_mobile';
 
 export default {
@@ -267,33 +268,47 @@ export default {
          * 送出取款資訊
          * @method submitWithdraw
          */
-        submitWithdraw() {
+        submitWithdraw(params) {
             if (this.realWithdrawMoney === '--' || this.realWithdrawMoney <= 0) {
                 alert(this.$text('S_WITHDRAW_ERROR_TIP01', '实际出款金额需大于0，请重新输入'));
                 return Promise.resolve({ status: 'error', errorCode: '' });
             }
-
+            //不需要取款密碼預設帶0000,並且可選銀行卡
+            let _params = {
+                amount: this.withdrawValue,
+                // withdraw_password: this.withdrawPwd,
+                withdraw_password: '0000',
+                forward: true,
+                confirm: true,
+                max_id: this.withdrawData.audit.total.max_id,
+                audit_amount: this.withdrawData.audit.total.audit_amount,
+                offer_deduction: this.withdrawData.audit.total.offer_deduction,
+                administrative_amount: this.withdrawData.audit.total.administrative_amount
+            }
+            if (params) {
+                _params = { ..._params, ...params }
+            }
             const hasAccountId = !this.withdrawAccount.withdrawType ? 'account_id' : this.withdrawAccount.withdrawType;
 
             this.isLoading = true;
             this.actionSetIsLoading(true);
+
+            // to do 改接bbos ?
+            // bbosRequest({
+            //     method: 'post',
+            //     url: this.siteConfig.BBOS_DOMIAN + '/Payment/Withdraw',
+            //     reqHeaders: {
+            //         'Vendor': this.memInfo.user.domain
+            //     },
+            //     params: _params,
+            // })
 
             // 本站寫單
             return ajax({
                 method: 'post',
                 url: API_WITHDRAW_WRITE,
                 errorAlert: true,
-                params: {
-                    amount: this.withdrawValue,
-                    // withdraw_password: this.withdrawPwd,
-                    withdraw_password: '0000',
-                    forward: true,
-                    confirm: true,
-                    max_id: this.withdrawData.audit.total.max_id,
-                    audit_amount: this.withdrawData.audit.total.audit_amount,
-                    offer_deduction: this.withdrawData.audit.total.offer_deduction,
-                    administrative_amount: this.withdrawData.audit.total.administrative_amount
-                },
+                params: _params,
                 success: (response) => {
                     if (response && response.result === 'ok') {
                         if (this.memInfo.config.withdraw === '迅付') {
