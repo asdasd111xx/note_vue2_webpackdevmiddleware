@@ -1,9 +1,5 @@
 <template>
-    <swiper
-        v-if="options"
-        ref="home-swiper"
-        :options="options"
-    >
+    <swiper v-if="options" :options="options">
         <swiper-slide v-for="(info, key) in slider" :key="key">
             <div :class="$style['phone-image-wrap']">
                 <img
@@ -33,6 +29,12 @@ export default {
     components: {
         Swiper,
         SwiperSlide
+    },
+    props: {
+        isSliderCreated: {
+            type: Boolean,
+            required: true
+        }
     },
     computed: {
         ...mapGetters({
@@ -89,6 +91,9 @@ export default {
             return {
                 ...options,
                 on: {
+                    init: () => {
+                        this.$emit('update:isSliderCreated', true);
+                    },
                     click(element) {
                         mobileLinkOpen(originSlider[element.target.dataset.info]);
                     }
