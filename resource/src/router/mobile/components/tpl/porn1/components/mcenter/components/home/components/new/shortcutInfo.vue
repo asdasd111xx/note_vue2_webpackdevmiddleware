@@ -5,7 +5,13 @@
     </message>
     <!-- VIP 推廣 -->
     <div :class="$style['vip-promotion-wrap']">
-      <div @click="$router.push('/mobile/mcenter/accountVIP')">
+      <div
+        @click="
+          loginStatus
+            ? $router.push('/mobile/mcenter/accountVIP')
+            : $router.push('/mobile/login')
+        "
+      >
         <img
           :src="$getCdnPath('/static/image/_new/mcenter/ic_vipprivicege.png')"
         />
@@ -15,7 +21,13 @@
         </div>
       </div>
 
-      <div @click="msg = $text('S_COMING_SOON2')">
+      <div
+        @click="
+          loginStatus
+            ? (msg = $text('S_COMING_SOON2'))
+            : $router.push('/mobile/login')
+        "
+      >
         <img
           :src="$getCdnPath('/static/image/_new/mcenter/ic_promotion.png')"
         />
@@ -29,7 +41,11 @@
     <div :class="$style['mcenter-func']">
       <div
         :class="$style['cell']"
-        @click="$router.push('/mobile/mcenter/wallet')"
+        @click="
+          loginStatus
+            ? $router.push('/mobile/mcenter/wallet')
+            : $router.push('/mobile/login')
+        "
       >
         <div>
           <img :src="$getCdnPath('/static/image/_new/mcenter/ic_wallet.png')" />
@@ -38,7 +54,11 @@
       </div>
       <div
         :class="$style['cell']"
-        @click="$router.push('/mobile/mcenter/betRecord')"
+        @click="
+          loginStatus
+            ? $router.push('/mobile/mcenter/betRecord')
+            : $router.push('/mobile/login')
+        "
       >
         <div>
           <img
@@ -49,7 +69,11 @@
       </div>
       <div
         :class="$style['cell']"
-        @click="$router.push('/mobile/mcenter/moneyDetail')"
+        @click="
+          loginStatus
+            ? $router.push('/mobile/mcenter/moneyDetail')
+            : $router.push('/mobile/login')
+        "
       >
         <div>
           <img
@@ -60,7 +84,11 @@
       </div>
       <div
         :class="$style['cell']"
-        @click="$router.push('/mobile/mcenter/bankRebate')"
+        @click="
+          loginStatus
+            ? $router.push('/mobile/mcenter/bankRebate')
+            : $router.push('/mobile/login')
+        "
       >
         <div>
           <img :src="$getCdnPath('/static/image/_new/mcenter/ic_rebate.png')" />
@@ -68,60 +96,6 @@
         <div>{{ $text("S_REAL_TIME_REBATE", "实时返水") }}</div>
       </div>
     </div>
-
-    <!-- <div class="clearfix">
-      <div
-        :class="[
-          $style['info-btn-wrap'],
-          { [$style['is-full']]: memInfo.user.display_vip }
-        ]"
-      >
-        <div :class="$style['info-btn01']" @click="onListClick(0)">
-          <img
-            :src="
-              $getCdnPath(
-                '/static/image/mobile/tpl/porn1/home/online_deposit_icon.png'
-              )
-            "
-          />
-          <span>{{ $text("S_DEPOSIT", "充值") }}</span>
-        </div>
-        <div :class="$style['info-btn02']" @click="onListClick(1)">
-          <img
-            :src="
-              $getCdnPath('/static/image/mobile/tpl/porn1/home/wallet_icon.png')
-            "
-          />
-          <span>{{ $text("S_TRANSFER_BTN", "转账") }}</span>
-        </div>
-        <div :class="$style['info-btn03']" @click="onListClick(2)">
-          <img
-            :src="
-              $getCdnPath(
-                '/static/image/mobile/tpl/porn1/home/online_withdrawals_icon.png'
-              )
-            "
-          />
-          <span>{{ $text("S_WITHDRAWAL_TEXT", "提现") }}</span>
-        </div>
-        <div
-          v-if="memInfo.user.display_vip"
-          :class="$style['info-btn04']"
-          @click="onListClick(3)"
-        >
-          <img
-            :src="
-              $getCdnPath('/static/image/mobile/tpl/porn1/home/vip_icon.png')
-            "
-          />
-          <span>{{ $text("S_VIP_DETAILS_BTN", "VIP详情") }}</span>
-        </div>
-      </div>
-      <div :class="$style['login-view']">
-        <span :class="$style.money">¥{{ memBalance.total }}</span>
-        <span>{{ $text("S_TOTAL_MONEY", "总金额") }}</span>
-      </div>
-    </div> -->
   </div>
 </template>
 

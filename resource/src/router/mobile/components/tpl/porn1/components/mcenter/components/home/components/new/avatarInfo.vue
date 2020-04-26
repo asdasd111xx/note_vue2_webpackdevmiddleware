@@ -4,7 +4,7 @@
     @click="
       loginStatus
         ? $router.push('/mobile/mcenter/accountData')
-        : $router.push('/mobile/joinmember')
+        : $router.push('/mobile/login')
     "
   >
     <message v-if="msg" @close="msg = ''"

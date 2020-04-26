@@ -65,9 +65,7 @@ export default {
   computed: {
     headerConfig() {
       return {
-        prev: true,
         title: this.$text('S_PROMOTIONS', '优惠活动'),
-        onClick: () => { this.$router.back(); }
       };
     },
   },

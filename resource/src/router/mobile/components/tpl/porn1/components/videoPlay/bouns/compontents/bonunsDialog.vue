@@ -7,6 +7,7 @@
     <div
       :class="{ [$style['earn-wrap']]: !type.includes('tips') }"
       id="earn-wrap"
+      ref="wrap"
     >
       <div
         :class="$style['title-coin']"
@@ -40,7 +41,7 @@
           </div>
           <div
             v-else
-            @click="$router.push('/mobile/mcenter')"
+            @click="$router.push('/mobile/joinmember')"
             :class="$style['active-btn']"
           >
             {{ $text("S_JOIN_MEMBER", "加入会员") }}
@@ -140,10 +141,10 @@ export default {
 
   },
   mounted() {
-    this.$nextTick(() => {
-      this.getDialogHeight()
-    });
     window.addEventListener('resize', this.getDialogHeight);
+    setTimeout(() => {
+      this.$nextTick(() => this.getDialogHeight());
+    });
   },
   beforeDestroy() {
     window.removeEventListener('resize', this.getDialogHeight);
@@ -153,8 +154,9 @@ export default {
   methods: {
     getDialogHeight() {
       let t = document.getElementById('earn-wrap');
-      if (t.offsetHeight)
+      if (t && t.offsetHeight) {
         this.dialogHeight = t.offsetHeight;
+      }
     },
     handleClose() {
       this.isClose = true;

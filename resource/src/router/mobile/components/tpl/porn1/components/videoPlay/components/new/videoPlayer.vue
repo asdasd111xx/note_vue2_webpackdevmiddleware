@@ -14,13 +14,13 @@
     >
       <bonuns-dialog
         ref="bonunsDialog"
-        v-show="isActiveBouns && isShowBounsDialog && !isFullBouns"
+        v-if="isActiveBouns && isShowBounsDialog && !isFullBouns"
         :type="dialogType"
         @close="isShowBounsDialog = false"
       />
       <bonuns-process
         ref="bonunsProcess"
-        v-show="isActiveBouns && isShowBounsProcess"
+        v-if="isActiveBouns && isShowBounsProcess"
         @close="isShowBounsProcess = false"
         :playing="isPlaying"
       />
@@ -131,7 +131,7 @@ export default {
       if (!this.loginStatus) {
         this.isShowBounsDialog = true;
         this.dialogType = 'tips';
-        if (!this.player.paused()) {
+        if (this.player && !this.player.paused()) {
           this.player.pause();
         }
 

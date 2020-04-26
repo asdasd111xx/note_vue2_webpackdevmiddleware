@@ -59,7 +59,7 @@ export default {
     };
   },
   created() {
-    this.$emit('setTitle', this.artist)
+    this.setTitle(this.artist)
   },
   methods: {
     onToggleDesc() {
@@ -67,6 +67,10 @@ export default {
     }
   },
   props: {
+    setTitle: {
+      type: Function,
+      required: true
+    },
     artist: {
       type: String,
       required: true

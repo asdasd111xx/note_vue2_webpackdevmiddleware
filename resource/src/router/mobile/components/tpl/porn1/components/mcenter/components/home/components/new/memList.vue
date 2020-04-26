@@ -146,7 +146,8 @@ export default {
   computed: {
     ...mapGetters({
       memInfo: "getMemInfo",
-      onlineService: "getOnlineService"
+      onlineService: "getOnlineService",
+      loginStatus: 'getLoginStatus'
     }),
     isShowShare: {
       get() {
@@ -316,6 +317,9 @@ export default {
      * @param {string} e - input argument
      */
     toggleSwitch() {
+      if (!this.loginStatus) {
+        this.$router.push('/mobile/joinmember')
+      }
       if (!this.memInfo.config.content_rating) {
         return;
       }

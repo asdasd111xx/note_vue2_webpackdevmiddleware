@@ -17,7 +17,7 @@
         :desc="artistInfo.desc"
         :height="artistInfo.height"
         :amount="artistInfo.videoList.length"
-        @set-title="setTitle"
+        :set-title="setTitle"
       />
       <artist-video :video-list="artistInfo.videoList" />
     </div>

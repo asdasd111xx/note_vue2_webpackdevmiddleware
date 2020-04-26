@@ -67,9 +67,9 @@ export default {
     return {
       isReceive: false,
       list: [
-        {
-          initName: '下载超级签，成为超级会员', name: 'S_VIP_APP', path: '', pageName: 'super', image: 'download'
-        }, // 超級籤
+        // {
+        //   initName: '下载超级签，成为超级会员', name: 'S_VIP_APP', path: '', pageName: 'super', image: 'download'
+        // }, // 超級籤
         {
           initName: '在线客服', name: 'S_CUSTOMER_SERVICE_ONLINE', path: '', pageName: 'service', image: 'service'
         }, // 在線客服
