@@ -1,30 +1,42 @@
+@import "@/css/variable.scss";
+
 .date-wrap {
-    line-height: 35px;
-    padding: 0 22px;
-    background-color: #3E3E3E;
-    font-size: 14px;
+    padding: 0 23px;
+    background-color: #e9dacc;
+
+    > div {
+        height: 37px;
+        line-height: 37px;
+        font-size: 14px;
+    }
 }
 
 .date {
     float: left;
-    color: $titleColor;
+    color: $main_discover_color1;
 }
 
 .remainder {
     float: right;
-    color: #FFF;
+    color: $main_title_color1;
 }
 
 .summary-wrap {
-    background-color: #FFF;
+    background-color: #fff;
 }
 
 .wrap {
     margin: 0 19px;
+
+    &:nth-child(even) {
+        padding: 0 19px;
+        margin: 0;
+        background: #f6f4f4;
+    }
 }
 
 .title-wrap {
-    border-bottom: 1px solid #CCC;
+    border-bottom: 1px solid #ccc;
     padding: 12px 0;
     font-size: 14px;
 
@@ -55,7 +67,7 @@
         font-size: 12px;
 
         &.main {
-            color: #55B9FF;
+            color: #55b9ff;
         }
     }
 
@@ -65,18 +77,18 @@
         font-size: 12px;
 
         &.main {
-            color: #55B9FF;
+            color: #55b9ff;
         }
 
         &.deficit {
-            color: #F00;
+            color: #f00;
         }
     }
 
     .divider {
         height: 1px;
         margin: 5px 0;
-        background-color: #CCC;
+        background-color: #ccc;
     }
 
     .summary-date {
@@ -94,7 +106,7 @@
 
 .no-data {
     padding: 12px 0;
-    color: #AAA;
+    color: #aaa;
     font-size: 14px;
     text-align: center;
 }

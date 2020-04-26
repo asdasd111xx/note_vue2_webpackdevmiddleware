@@ -1,122 +1,199 @@
-.main-table {
+@import "@/css/variable.scss";
+
+.commission-list-wrap {
+    position: relative;
+    padding: 0 14px;
     width: 100%;
-    margin: 9px 0 50px;
-    border-spacing: 0;
-    border-collapse: collapse;
+}
 
-    thead {
-        th {
-            background-color: #DDD;
-            color: #666;
-            font-weight: normal;
-            font-size: 12px;
-        }
+.total-block {
+    display: flex;
+    justify-content: space-between;
+    color: $main_text_color3;
+    font-size: 12px;
+    height: 40px;
+    line-height: 40px;
+    border-bottom: 1px solid #eee;
 
-        .index {
-            width: 10%;
-        }
-        .period {
-            width: 28%;
-            cursor: pointer;
-        }
-        .datetime {
-            width: 25%;
-        }
-        .state {
-            width: 28%;
-        }
-        .next {
-            width: 9%;
-        }
-    }
+    span {
+        flex: 1;
 
-    tbody {
-        td {
-            color: #000;
-            font-size: 12px;
-            text-align: center;
-
-            span {
-                display: inline-block;
-                width: 65px;
-                text-align: left;
-            }
-        }
-
-        .state-yet {
-            color: #52B8FF;
-        }
-
-        .state-unqualified {
-            color: #FF5454;
-        }
-
-        .detail-wrap {
-            padding: 3% 0 0;
-            background-color: #EEE;
-        }
-
-        .detail {
-            line-height: 12px;
-            padding-bottom: 3%;
-            font-size: 12px;
-
-            > div {
-                overflow: hidden;
-                float: left;
-                text-align: left;
-                text-overflow: ellipsis;
-                white-space: nowrap;
-            }
-        }
-
-        .title {
-            width: 35%;
-            padding: 0 3%;
-            color: #353B5D;
-        }
-
-        .number {
-            width: 65%;
-            color: #353B5D;
-        }
-    }
-
-    tfoot {
-        tr {
-            background-color: #DDD;
-        }
-
-        td {
-            color: #000;
-            font-size: 12px;
-            text-align: center;
-        }
-
-        .foot-title {
-            padding: 0 4% 0 7%;
-            text-align: left;
-        }
-
-        .money-type {
+        &:nth-child(2) {
+            flex: 1;
             text-align: right;
         }
     }
 }
 
-.no-data {
-    margin-top: 122px;
-    color: #DDD;
-    text-align: center;
+.list-block {
+    position: relative;
+    margin-top: 10px;
+}
+.card {
+    background: $main_white_color1;
+    color: $main_text_color3;
+    border-radius: 8px;
+    margin-bottom: 9px;
 
-    > img {
-        display: block;
-        width: 16%;
-        margin: 0 auto 8px;
+    div {
+        display: flex;
+        justify-content: space-between;
+        font-size: 14px;
+        // padding-top: 9px;
+        padding: 9px 9px 0 12px;
+
+        &:last-of-type {
+            padding: 9px 9px 9px 12px;
+        }
+    }
+
+    .card-title {
+        padding: 6px 9px 6px 12px;
+        line-height: 21px;
+        border-bottom: 1px solid #eee;
+    }
+
+    .card-name {
+        font-size: 16px;
+        font-weight: 700;
+    }
+
+    .card-getNumber {
+        &.is-negative {
+            color: $main_error_color1;
+        }
+
+        &::before {
+            content: "返利：";
+            position: relative;
+            color: $main_text_color3;
+        }
+    }
+
+    .state-unqualified {
+        color: $main_error_color1;
     }
 }
 
-.pagination {
-    position: fixed;
-    bottom: 55px;
-}
+// .main-table {
+//     width: 100%;
+//     margin: 9px 0 50px;
+//     border-spacing: 0;
+//     border-collapse: collapse;
+
+//     thead {
+//         th {
+//             background-color: #DDD;
+//             color: #666;
+//             font-weight: normal;
+//             font-size: 12px;
+//         }
+
+//         .index {
+//             width: 10%;
+//         }
+//         .period {
+//             width: 28%;
+//             cursor: pointer;
+//         }
+//         .datetime {
+//             width: 25%;
+//         }
+//         .state {
+//             width: 28%;
+//         }
+//         .next {
+//             width: 9%;
+//         }
+//     }
+
+//     tbody {
+//         td {
+//             color: #000;
+//             font-size: 12px;
+//             text-align: center;
+
+//             span {
+//                 display: inline-block;
+//                 width: 65px;
+//                 text-align: left;
+//             }
+//         }
+
+//         .state-yet {
+//             color: #52B8FF;
+//         }
+
+//         .state-unqualified {
+//             color: #FF5454;
+//         }
+
+//         .detail-wrap {
+//             padding: 3% 0 0;
+//             background-color: #EEE;
+//         }
+
+//         .detail {
+//             line-height: 12px;
+//             padding-bottom: 3%;
+//             font-size: 12px;
+
+//             > div {
+//                 overflow: hidden;
+//                 float: left;
+//                 text-align: left;
+//                 text-overflow: ellipsis;
+//                 white-space: nowrap;
+//             }
+//         }
+
+//         .title {
+//             width: 35%;
+//             padding: 0 3%;
+//             color: #353B5D;
+//         }
+
+//         .number {
+//             width: 65%;
+//             color: #353B5D;
+//         }
+//     }
+
+//     tfoot {
+//         tr {
+//             background-color: #DDD;
+//         }
+
+//         td {
+//             color: #000;
+//             font-size: 12px;
+//             text-align: center;
+//         }
+
+//         .foot-title {
+//             padding: 0 4% 0 7%;
+//             text-align: left;
+//         }
+
+//         .money-type {
+//             text-align: right;
+//         }
+//     }
+// }
+
+// .no-data {
+//     margin-top: 122px;
+//     color: #DDD;
+//     text-align: center;
+
+//     > img {
+//         display: block;
+//         width: 16%;
+//         margin: 0 auto 8px;
+//     }
+// }
+
+// .pagination {
+//     position: fixed;
+//     bottom: 55px;
+// }

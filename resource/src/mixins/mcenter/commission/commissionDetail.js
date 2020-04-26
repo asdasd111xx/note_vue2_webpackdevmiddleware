@@ -7,10 +7,6 @@ export default {
         detailInfo: {
             type: Object,
             default: null
-        },
-        setDetailData: {
-            type: Function,
-            required: true
         }
     },
     data() {

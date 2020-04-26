@@ -127,7 +127,7 @@
                     <img src="/static/image/mobile/mcenter/ic_nodata.png" />
                     <div>{{ $text('S_NO_DATA_YET', '暂无资料') }}</div>
                 </div>
-                <div v-if="isShowTips" :class="$style['search-tips']">{{ $text('S_CHANGE_PLEASE_CLICK', '更改查询条件请重复点击上方搜索') }}</div>
+                <!-- <div v-if="isShowTips" :class="$style['search-tips']">{{ $text('S_CHANGE_PLEASE_CLICK', '更改查询条件请重复点击上方搜索') }}</div> -->
             </template>
         </game-record>
     </div>

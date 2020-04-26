@@ -257,13 +257,7 @@ export default {
             this.currentGame = this.inqGame;
             this.currentStart = this.inqStart;
             this.currentEnd = this.inqEnd;
-            this.onInquire().then(() => {
-                this.isShowTips = true;
-
-                setTimeout(() => {
-                    this.isShowTips = false;
-                }, 3000);
-            });
+            this.onInquire();
         },
         onInquire() {
             return ajax({

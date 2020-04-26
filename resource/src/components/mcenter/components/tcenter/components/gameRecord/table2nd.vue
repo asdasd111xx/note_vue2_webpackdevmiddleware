@@ -1,5 +1,39 @@
 <template>
-    <table :class="$style.table">
+    <div :class="$style['record-wrap']">
+        <div :class="$style['total-block']">
+            <span>笔数：{{ total.counts }}</span>
+            <span>有效投注：{{ total.valid_bet }}</span>
+            <span>派彩：{{ +total.payoff }}</span>
+        </div>
+
+        <div :class="$style['list-block']">
+            <div
+                :class="$style['card']"
+                v-for="(info, index) in list"
+                @click="$emit('onInquire', info.vendor_name, info.kind)"
+            >
+                <div :class="$style['card-title']">
+                    <span :class="$style['userName']">{{ info.username }}</span>
+                    <span
+                        :class="[
+                            $style['payout'],
+                            { [$style['is-negative']]: info.payoff < 0 }
+                        ]"
+                        >{{ +info.payoff }}</span
+                    >
+                </div>
+                <div>
+                    <span>投注金额</span>
+                    <span>{{ info.bet }}</span>
+                </div>
+                <div>
+                    <span>有效投注</span>
+                    <span>{{ info.valid_bet }}</span>
+                </div>
+            </div>
+        </div>
+    </div>
+    <!-- <table :class="$style.table">
         <thead>
             <tr>
                 <th>{{ $text('S_PLATFORM', '平台') }}</th>
@@ -54,7 +88,7 @@
                 <td :class="[total.payoff < 0 ? $style['is-negative'] : $style['is-number'], $style['is-last']]">{{ total.payoff }}</td>
             </tr>
         </tfoot>
-    </table>
+    </table> -->
 </template>
 
 <script>
@@ -80,21 +114,20 @@ export default {
     methods: {
         onSort(sortBy) {
             if (this.sort.by === sortBy) {
-                this.$emit('update:sort', {
+                this.$emit("update:sort", {
                     ...this.sort,
-                    way: this.sort.way === 'asc' ? 'desc' : 'asc'
+                    way: this.sort.way === "asc" ? "desc" : "asc"
                 });
                 return;
             }
 
-            this.$emit('update:sort', {
+            this.$emit("update:sort", {
                 by: sortBy,
-                way: 'asc'
+                way: "asc"
             });
         }
     }
 };
 </script>
-
 
 <style src="./css/table.scss" lang="scss" module></style>

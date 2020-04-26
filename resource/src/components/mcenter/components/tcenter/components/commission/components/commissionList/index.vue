@@ -1,15 +1,78 @@
 <template>
-    <div v-if="isReceive" class="commission-list-wrap">
+    <div v-if="isReceive" :class="$style['commission-list-wrap']">
         <template v-if="commissionList.length">
-            <table :class="$style['main-table']">
+            <div :class="$style['total-block']">
+                <span>笔数：{{ commissionList.length }}</span>
+                <span>返利总计：{{ allTotal.amount | amountFormat }}</span>
+            </div>
+
+            <div :class="$style['list-block']">
+                <div
+                    :class="$style['card']"
+                    v-for="(info, index) in commissionList"
+                    :key="'item-' + index"
+                    @click="onClick(info)"
+                >
+                    <div :class="$style['card-title']">
+                        <span :class="$style['card-name']">{{
+                            info.period
+                        }}</span>
+                        <span :class="[$style['card-getNumber']]">{{
+                            info.amount | amountFormat
+                        }}</span>
+                    </div>
+                    <div>
+                        <span>{{
+                            $text("S_COMPUTE_WAGER_INTERVAL", "结算区间")
+                        }}</span>
+                        <span
+                            >{{ info.start_at | dateFormat }} ~
+                            {{ info.end_at | dateFormat }}</span
+                        >
+                    </div>
+
+                    <div>
+                        <span>{{ $text("S_VALID_BET", "有效投注") }}</span>
+                        <span>{{ info.sub_valid_bet | amountFormat }}</span>
+                    </div>
+                    <div>
+                        <span>{{ $text("S_STATUS", "状态") }}</span>
+                        <span
+                            :class="
+                                $style[
+                                    `state-${commissionState[info.state].key}`
+                                ]
+                            "
+                            >{{ commissionState[info.state].text }}</span
+                        >
+                    </div>
+                </div>
+            </div>
+            <!-- <table :class="$style['main-table']">
                 <thead>
                     <tr>
-                        <th :class="$style.index">{{ $text('S_NUMBER_NO', '序') }}</th>
-                        <th :class="[$style.period, { [$style.active]: sort === 'period' }]" @click="onSort('period')">
-                            <span>{{ $text('S_PERIOD_NAME', '期数名称') }}</span>
+                        <th :class="$style.index">
+                            {{ $text("S_NUMBER_NO", "序") }}
+                        </th>
+                        <th
+                            :class="[
+                                $style.period,
+                                { [$style.active]: sort === 'period' }
+                            ]"
+                            @click="onSort('period')"
+                        >
+                            <span>{{
+                                $text("S_PERIOD_NAME", "期数名称")
+                            }}</span>
                             <span v-if="sort === 'period'">
                                 <icon
-                                    :name="`${order === 'desc' ? 'long-arrow-alt-down' : 'long-arrow-alt-up'}`"
+                                    :name="
+                                        `${
+                                            order === 'desc'
+                                                ? 'long-arrow-alt-down'
+                                                : 'long-arrow-alt-up'
+                                        }`
+                                    "
                                     width="5"
                                     height="10"
                                 />
@@ -27,8 +90,12 @@
                                 />
                             </span>
                         </th>
-                        <th :class="$style.datetime">{{ $text('S_COMPUTE_WAGER_INTERVAL', '结算区间') }}</th>
-                        <th :class="$style.state">{{ $text('S_STATUS', '状态') }}</th>
+                        <th :class="$style.datetime">
+                            {{ $text("S_COMPUTE_WAGER_INTERVAL", "结算区间") }}
+                        </th>
+                        <th :class="$style.state">
+                            {{ $text("S_STATUS", "状态") }}
+                        </th>
                         <th :class="$style.next" />
                     </tr>
                 </thead>
@@ -41,7 +108,17 @@
                                 <span>{{ info.start_at | dateFormat }}</span>
                                 <span>{{ info.end_at | dateFormat }}</span>
                             </td>
-                            <td :class="$style[`state-${commissionState[info.state].key}`]">{{ commissionState[info.state].text }}</td>
+                            <td
+                                :class="
+                                    $style[
+                                        `state-${
+                                            commissionState[info.state].key
+                                        }`
+                                    ]
+                                "
+                            >
+                                {{ commissionState[info.state].text }}
+                            </td>
                             <td>
                                 <icon
                                     name="chevron-right"
@@ -50,15 +127,31 @@
                                 />
                             </td>
                         </tr>
-                        <tr v-show="displayDetail.includes(info.id)" :key="`detail-${info.id}`">
+                        <tr
+                            v-show="displayDetail.includes(info.id)"
+                            :key="`detail-${info.id}`"
+                        >
                             <td :class="$style['detail-wrap']" colspan="5">
                                 <div :class="[$style.detail, 'clearfix']">
-                                    <div :class="$style.title">{{ $text('S_ACH_VALID_MEMBERS', '有效会员') }}</div>
-                                    <div :class="$style.number">{{ info.sub_user_count }}</div>
+                                    <div :class="$style.title">
+                                        {{
+                                            $text(
+                                                "S_ACH_VALID_MEMBERS",
+                                                "有效会员"
+                                            )
+                                        }}
+                                    </div>
+                                    <div :class="$style.number">
+                                        {{ info.sub_user_count }}
+                                    </div>
                                 </div>
                                 <div :class="[$style.detail, 'clearfix']">
-                                    <div :class="$style.title">{{ $text('S_COMMISSION_01', '佣金') }}</div>
-                                    <div :class="$style.number">{{ info.amount }}</div>
+                                    <div :class="$style.title">
+                                        {{ $text("S_COMMISSION_01", "佣金") }}
+                                    </div>
+                                    <div :class="$style.number">
+                                        {{ info.amount }}
+                                    </div>
                                 </div>
                             </td>
                         </tr>
@@ -66,39 +159,61 @@
                 </tbody>
                 <tfoot>
                     <tr>
-                        <td :class="$style['foot-title']" colspan="2">{{ $text('S_COMMISSION_PAGE_TOTAL', '本页结果小计') }}</td>
-                        <td>{{ $text('S_COMMISSION_01', '佣金') }}</td>
-                        <td :class="$style['money-type']" colspan="2">{{ pageTotal.amount | amountFormat }}</td>
+                        <td :class="$style['foot-title']" colspan="2">
+                            {{
+                                $text("S_COMMISSION_PAGE_TOTAL", "本页结果小计")
+                            }}
+                        </td>
+                        <td>{{ $text("S_COMMISSION_01", "佣金") }}</td>
+                        <td :class="$style['money-type']" colspan="2">
+                            {{ pageTotal.amount | amountFormat }}
+                        </td>
                     </tr>
                     <tr>
-                        <td :class="$style['foot-title']" colspan="2">{{ $text('S_COMMISSION_SEARCH_TOTAL', '搜寻结果总计') }}</td>
-                        <td>{{ $text('S_COMMISSION_01', '佣金') }}</td>
-                        <td :class="$style['money-type']" colspan="2">{{ allTotal.amount | amountFormat }}</td>
+                        <td :class="$style['foot-title']" colspan="2">
+                            {{
+                                $text(
+                                    "S_COMMISSION_SEARCH_TOTAL",
+                                    "搜寻结果总计"
+                                )
+                            }}
+                        </td>
+                        <td>{{ $text("S_COMMISSION_01", "佣金") }}</td>
+                        <td :class="$style['money-type']" colspan="2">
+                            {{ allTotal.amount | amountFormat }}
+                        </td>
                     </tr>
                 </tfoot>
-            </table>
-            <pagintaion
+            </table> -->
+            <!-- <pagintaion
                 :class="$style.pagination"
                 :page="+currentPage"
                 :total="totalPage"
-                @update:page="(value) => { updatePage(value); }"
-            />
+                @update:page="
+                    value => {
+                        updatePage(value);
+                    }
+                "
+            /> -->
         </template>
         <template v-else>
             <div :class="$style['no-data']">
                 <img src="/static/image/mobile/mcenter/ic_nodata.png" />
-                <span>{{ $text('S_NO_DATA_YET', '暂无资料') }}</span>
+                <span>{{ $text("S_NO_DATA_YET", "暂无资料") }}</span>
             </div>
         </template>
     </div>
 </template>
 
 <script>
-import commissionList from '@/mixins/mcenter/commission/commissionList';
+import commissionList from "@/mixins/mcenter/commission/commissionList";
 
 export default {
     components: {
-        pagintaion: () => import(/* webpackChunkName: 'commissionList' */ '../../../../../pagination')
+        pagintaion: () =>
+            import(
+                /* webpackChunkName: 'commissionList' */ "../../../../../pagination"
+            )
     },
     mixins: [commissionList],
     props: {
@@ -121,13 +236,15 @@ export default {
             if (info.state === 1) {
                 this.setDetailData(info);
                 this.setTabState(false);
-                this.setHeaderTitle(this.$text('S_MY_REWARD', '我的返利'));
-                this.$router.push('/mobile/mcenter/tcenter/commission/detail');
+                this.setHeaderTitle(info.period);
+                this.$router.push("/mobile/mcenter/tcenter/commission/detail");
                 return;
             }
 
             if (this.displayDetail.includes(info.id)) {
-                this.displayDetail = [...this.displayDetail.filter((value) => value !== info.id)];
+                this.displayDetail = [
+                    ...this.displayDetail.filter(value => value !== info.id)
+                ];
                 return;
             }
 

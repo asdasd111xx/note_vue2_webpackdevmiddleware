@@ -1,9 +1,11 @@
+@import "@/css/variable.scss";
+
 .main-wrap {
     padding-bottom: 42px;
 }
 
 .top-wrap {
-    background-color: #FFF;
+    background-color: #fff;
     padding: 8px 22px;
 }
 
@@ -11,28 +13,28 @@
     display: inline-block;
     line-height: 12px;
     margin: 0 9px;
-    color: $tabColor;
+    color: $main_text_color2;
     font-size: 12px;
 
     &.active {
-        color: $tabColorActive;
+        color: #be9e7f;
     }
 }
 
 .form-search {
-    background-color: #FFF;
-    border-top: 1px solid #BEBCBC;
-    border-bottom: 1px solid #BEBCBC;
+    background-color: #fff;
+    border-top: 1px solid #bebcbc;
+    border-bottom: 1px solid #bebcbc;
 
     .title {
         left: 12px;
-        color: #BEBCBC;
+        color: #bebcbc;
     }
 }
 
 .field-game-wrap {
-    padding: 4px 12px;
-    border-bottom: 1px solid #BEBCBC;
+    padding: 4px 17px;
+    border-bottom: 1px solid #bebcbc;
 
     select {
         background: transparent;
@@ -43,12 +45,12 @@
 }
 
 .field-date-wrap {
-    padding: 4px 12px;
+    padding: 4px 17px;
     float: left;
     width: 50%;
 
     &.start-date {
-        border-right: 1px solid #BEBCBC;
+        border-right: 1px solid #bebcbc;
     }
 
     .date {
@@ -67,14 +69,14 @@
 .field-search-wrap {
     padding: 8px 0;
     clear: left;
-    border-top: 1px solid #BEBCBC;
+    border-top: 1px solid #bebcbc;
 
     .btn-search {
-        background-color: $buttonBackgroundColor;
+        background: linear-gradient(to left , #bd9d7d , #f9ddbd);
         margin: 0 auto;
-        width: 75%;
-        line-height: 30px;
-        border-radius: 6px;
+        width: 85%;
+        line-height: 45px;
+        border-radius: 3px;
         text-align: center;
         color: $buttonTextColor;
     }
@@ -117,7 +119,7 @@
     padding: 15px 18px;
     border-radius: 5px;
     background-color: #161616;
-    color: #FFF;
+    color: #fff;
     font-size: 16px;
     text-align: center;
 }

@@ -1,120 +1,190 @@
-.is-number {
-    text-align: right;
-}
+@import "@/css/variable.scss";
 
-.is-negative {
-    composes: is-number;
-    color: #FF5454;
-}
-
-.is-text {
-    text-align: left;
-}
-
-.table {
-    margin-top: 12px;
-    margin-bottom: 32px;
+.record-wrap {
+    position: relative;
+    padding: 0 14px;
     width: 100%;
-    color: #000;
+}
+.total-block {
+    display: flex;
+    justify-content: space-between;
+    color: $main_text_color3;
     font-size: 12px;
-    border-collapse: collapse;
-    border-spacing: 0;
-    text-align: center;
+    height: 40px;
+    line-height: 40px;
+    border-bottom: 1px solid #eee;
 
-    thead {
-        tr {
-            background: #DDD;
-            color: #676767;
-        }
+    span {
+        flex: 1;
 
-        th {
-            padding: 6px 1.5%;
-            font-style: normal;
-            font-weight: normal;
-
-            &.is-sorted {
-                color: #545D6E;
-            }
-
-            &.sort {
-                cursor: pointer;
-
-            }
+        &:nth-child(2) {
+            flex: 2;
+            text-align: center;
         }
     }
+}
 
-    tbody {
-        tr {
-            &:nth-child(odd) {
-                background: #FFF;
-            }
+.list-block {
+    position: relative;
+}
+.card {
+    height: 100px;
+    background: $main_white_color1;
+    color: $main_text_color3;
+    border-radius: 8px;
+    padding: 0 9px 0 12px;
+    margin-bottom: 9px;
 
-            &:nth-child(even) {
-                background: #EEE;
-            }
+    div {
+        display: flex;
+        justify-content: space-between;
+        font-size: 14px;
+        padding-top: 9px;
+    }
+
+    .card-title {
+        padding: 6px 0;
+        line-height: 21px;
+        border-bottom: 1px solid #eee;
+    }
+
+    .userName {
+        font-size: 16px;
+        font-weight: 700;
+    }
+
+    .payout {
+        &.is-negative {
+            color: $main_error_color1;
         }
 
-        td {
+        &::before {
+            content: "派彩：";
             position: relative;
-            padding: 12px 1.5%;
-
-            &.is-last {
-                padding-right: 22px;
-            }
-
-            .icon-more {
-                position: absolute;
-                top: 50%;
-                right: 4px;
-                margin-top: -8px;
-                color: #999;
-
-                > svg {
-                    display: block;
-                }
-            }
-        }
-    }
-
-    tfoot {
-        tr {
-            background: #DDD;
-
-            &.sub-total {
-                background: #E6E6E6;
-            }
-        }
-
-        td {
-            padding: 12px 1.5%;
-
-            &.is-last {
-                padding-right: 22px;
-            }
+            color: $main_text_color3;
         }
     }
 }
 
-.icon-group {
-    display: inline-block;
-    width: 10px;
-    height: 10px;
-}
 
-.icon {
-    width: 5px;
-    height: 10px;
-    float: left;
-}
 
-@media screen and (min-width: 480px) {
-    .table {
-        font-size: 15px;
-    }
-}
+// .is-number {
+//     text-align: right;
+// }
 
-@media screen and (min-width: 768px) {
-    .table {
-        font-size: 24px;
-    }
-}
+// .is-negative {
+//     composes: is-number;
+//     color: #FF5454;
+// }
+
+// .is-text {
+//     text-align: left;
+// }
+
+// .table {
+//     margin-top: 12px;
+//     margin-bottom: 32px;
+//     width: 100%;
+//     color: #000;
+//     font-size: 12px;
+//     border-collapse: collapse;
+//     border-spacing: 0;
+//     text-align: center;
+
+//     thead {
+//         tr {
+//             background: #DDD;
+//             color: #676767;
+//         }
+
+//         th {
+//             padding: 6px 1.5%;
+//             font-style: normal;
+//             font-weight: normal;
+
+//             &.is-sorted {
+//                 color: #545D6E;
+//             }
+
+//             &.sort {
+//                 cursor: pointer;
+
+//             }
+//         }
+//     }
+
+//     tbody {
+//         tr {
+//             &:nth-child(odd) {
+//                 background: #FFF;
+//             }
+
+//             &:nth-child(even) {
+//                 background: #EEE;
+//             }
+//         }
+
+//         td {
+//             position: relative;
+//             padding: 12px 1.5%;
+
+//             &.is-last {
+//                 padding-right: 22px;
+//             }
+
+//             .icon-more {
+//                 position: absolute;
+//                 top: 50%;
+//                 right: 4px;
+//                 margin-top: -8px;
+//                 color: #999;
+
+//                 > svg {
+//                     display: block;
+//                 }
+//             }
+//         }
+//     }
+
+//     tfoot {
+//         tr {
+//             background: #DDD;
+
+//             &.sub-total {
+//                 background: #E6E6E6;
+//             }
+//         }
+
+//         td {
+//             padding: 12px 1.5%;
+
+//             &.is-last {
+//                 padding-right: 22px;
+//             }
+//         }
+//     }
+// }
+
+// .icon-group {
+//     display: inline-block;
+//     width: 10px;
+//     height: 10px;
+// }
+
+// .icon {
+//     width: 5px;
+//     height: 10px;
+//     float: left;
+// }
+
+// @media screen and (min-width: 480px) {
+//     .table {
+//         font-size: 15px;
+//     }
+// }
+
+// @media screen and (min-width: 768px) {
+//     .table {
+//         font-size: 24px;
+//     }
+// }

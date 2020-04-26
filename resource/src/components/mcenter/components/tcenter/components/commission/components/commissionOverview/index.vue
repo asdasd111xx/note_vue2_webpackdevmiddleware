@@ -1,7 +1,7 @@
 <template>
     <div :class="mainClass">
         <div :class="[$style['date-wrap'], 'clearfix']">
-            <div :class="$style.date">{{ $text(`S_${currentMonth}_MONTH`) }} / {{ currentYear }}</div>
+            <div :class="$style.date">{{$text(`S_${currentMonth}_MONTH`)}}/{{ currentYear }}</div>
             <div :class="$style.remainder">{{ $text('S_DAYSLEFT', { replace: [{ target: '%s', value: remainderDays }] }) }}</div>
         </div>
         <div v-if="summary" :class="$style['summary-wrap']">

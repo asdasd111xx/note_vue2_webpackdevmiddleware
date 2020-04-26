@@ -41,7 +41,7 @@
             v-if="page === 'detail'"
             :detail-info="detailInfo"
         />
-        <div v-if="hasTips" :class="$style.tips">{{ $text('S_COMMISSION_INQUIRE_MSG', '更改查询条件请重覆点击上方派发纪录') }}</div>
+        <!-- <div v-if="hasTips" :class="$style.tips">{{ $text('S_COMMISSION_INQUIRE_MSG', '更改查询条件请重覆点击上方派发纪录') }}</div> -->
     </div>
 </template>
 
@@ -70,7 +70,7 @@ export default {
     data() {
         return {
             isShowDetail: [],
-            hasTips: false,
+            // hasTips: false,
             hasSearch: this.$route.params.page === 'record'
         };
     },
@@ -134,11 +134,11 @@ export default {
             this.onSearch();
 
             this.hasSearch = false;
-            this.hasTips = true;
+            // this.hasTips = true;
 
-            setTimeout(() => {
-                this.hasTips = false;
-            }, 3000);
+            // setTimeout(() => {
+            //     this.hasTips = false;
+            // }, 3000);
         }
     }
 };

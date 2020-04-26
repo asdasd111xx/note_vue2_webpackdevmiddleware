@@ -1,7 +1,9 @@
+@import "@/css/variable.scss";
+
 .header {
     margin-bottom: 10px;
     padding: 7px 11px;
-    background-color: #FFFEFE;
+    background-color: #fffefe;
 
     .change-btn {
         display: inline-block;
@@ -17,29 +19,34 @@
 }
 
 .top-link {
-    margin-bottom: 10px;
-    padding: 7px 11px;
-    background-color: #FFFEFE;
+    display: flex;
+    height: 35px;
+    line-height: 35px;
+    padding: 0px 10px;
+    background-color: #fff;
 }
 
 .link {
-    display: inline-block;
-    line-height: 12px;
-    margin: 0 11px;
-    color: $headerTextColor;
+    padding-left: 20px;
+    color: $main_text_color2;
     font-size: 12px;
+    overflow: hidden;
+    text-overflow: ellipsis;
+    white-space: nowrap;
 
     &.active {
-        color: $headerTextColorActive;
+        color: #be9e7f;
     }
 }
 
 .search-form {
-    background-color: #FFF;
+    background-color: #fff;
+    border-top: 1px solid #bebcbc;
 }
 
 .form-row {
-    border-bottom: 1px solid #BEBCBC;
+    border-bottom: 1px solid #bebcbc;
+    padding: 4px 17px;
 
     select {
         width: 100%;
@@ -59,8 +66,8 @@
 }
 
 .form-title {
-    padding: 5px 0 0 5px;
-    color: #BEBCBC;
+    padding: 0 0 0 5px;
+    color: #bebcbc;
 }
 
 .form-date-start,
@@ -70,24 +77,23 @@
 }
 
 .form-date-start {
-    border-right: 1px solid #BEBCBC;
+    border-right: 1px solid #bebcbc;
 }
 
 .submit-form-row {
     padding: 8px 0;
     text-align: center;
-    border-bottom: 1px solid #BEBCBC;
+    border-bottom: 1px solid #bebcbc;
 }
 
 .submit {
-    display: inline-block;
-    width: 70%;
-    height: 30px;
-    line-height: 30px;
-    color: $submitTextColor;
+    background: linear-gradient(to left, #bd9d7d, #f9ddbd);
+    margin: 0 auto;
+    width: 85%;
+    line-height: 45px;
+    border-radius: 3px;
     text-align: center;
-    border-radius: 5px;
-    background-color: $submitButtonBackgroundColor;
+    color: #fff;
 }
 
 .tips {
@@ -100,7 +106,7 @@
     padding: 11px 34px;
     border-radius: 10px;
     background-color: #161616;
-    color: #FFF;
+    color: #fff;
     text-align: center;
     opacity: 0.9;
 }

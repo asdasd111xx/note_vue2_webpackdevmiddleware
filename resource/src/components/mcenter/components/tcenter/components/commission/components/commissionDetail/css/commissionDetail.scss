@@ -1,104 +1,71 @@
-.state-wrap {
-    height: 32px;
-    line-height: 32px;
-    background: #222 url("/static/image/mobile/mcenter/bg_header2_iphone8.png") 50% -56px/100% no-repeat;
-}
+@import "@/css/variable.scss";
 
-.period {
-    float: left;
-    width: 50%;
-    padding: 0 10px;
-    color: $titleColor;
-}
-
-.state {
-    float: left;
-    width: 50%;
-    padding: 0 10px;
-    color: #9EA5C5;
-    text-align: right;
-}
-
-.level-num-1 {
+.level-info {
+    position: relative;
+    display: inline-block;
     width: 100%;
-}
+    padding: 0 9px 0 12px;
+    margin-top: 10px;
+    overflow: scroll;
+    white-space: nowrap;
 
-.level-num-2 {
-    width: 50%;
-}
-
-.level-num-3 {
-    width: 33.333%;
-}
-
-.level-num-4 {
-    width: 25%;
-}
-
-.level-num-5 {
-    width: 20%;
-}
-
-.level-info-box {
-    float: left;
-    color: #F4D8AF;
-    font-size: 12px;
-    text-align: center;
-    border-right: 1px solid #002963;
-    border-bottom: 1px solid #002963;
-    background-color: #00347D;
-
-    &:last-child {
-        border-right: 0;
-    }
-
-    .info-title {
-        color: #FFF;
-    }
-    .info-subtitle {
-        color: #ABCDFE;
+    // 針對 Chrome 與 Safari 隱藏滾動條
+    &::-webkit-scrollbar {
+        display: none !important;
     }
 }
 
-.level-total-tr {
-    color: #FFF;
-    font-size: 12px;
-    border-bottom: 1px solid #002963;
-    background-color: #002E6E;
+.card {
+    display: inline-block;
+    width: 230px;
+    background: $main_white_color1;
+    color: $main_text_color3;
+    border-radius: 8px;
+    margin: 0px 10px 10px 0;
+    padding: 0 9px 0 12px;
 
-    .info-title {
-        float: left;
-        padding: 0 10px;
-        width: 50%;
+    div {
+        display: flex;
+        justify-content: space-between;
+        font-size: 14px;
+        padding-top: 9px;
+
+        &:last-of-type {
+            padding: 9px 0 9px 0;
+        }
     }
-    .info-value {
-        float: left;
-        padding: 0 10px;
-        width: 50%;
-        text-align: right;
+
+    .card-title {
+        justify-content: center;
+        padding: 6px 9px 6px 12px;
+        line-height: 21px;
+        border-bottom: 1px solid #eee;
+        font-size: 16px;
+        font-weight: 700;
     }
 }
 
 .main-table {
     width: 100%;
-    margin: 8px 0 50px;
     border-spacing: 0;
     border-collapse: collapse;
 
     thead {
         th {
-            background-color: #DDD;
-            color: #666;
+            background-color: #eee;
+            color: #676767;
             font-weight: normal;
             font-size: 12px;
+            height: 32px;
+            line-height: 32px;
         }
 
         .index {
-            width: 10%;
+            width: 15%;
         }
 
         .first-level {
-            width: 28%;
+            width: 23%;
             cursor: pointer;
         }
 
@@ -112,11 +79,20 @@
     }
 
     tbody {
+        tr {
+            background: #fff;
+
+            &:nth-child(even) {
+                background: #f6f6f6;
+            }
+        }
+
         td {
-            background-color: #FFF;
-            color: #000;
+            color: #2d2d2d;
             font-size: 12px;
             text-align: center;
+            height: 39px;
+            line-height: 39px;
 
             > div {
                 display: block;
@@ -124,87 +100,176 @@
                 margin: 0 auto;
                 text-align: right;
             }
-        }
-    }
 
-    tfoot {
-        tr {
-            background-color: #DDD;
-        }
-
-        td {
-            color: #000;
-            font-size: 12px;
-            text-align: left;
-
-            > div {
-                display: block;
-                width: 70%;
-                margin: 0 auto;
-                text-align: right;
+            &:nth-child(3),
+            &:nth-child(4) {
+                color: #676767;
             }
         }
-
-        .foot-title {
-            padding: 0 4% 0 7%;
-        }
     }
-}
-
-.no-data {
-    padding: 6px 6px;
-    text-align: center;
-}
-
-.pagination {
-    position: fixed;
-    bottom: 55px;
 }
 
 .detail-wrap {
-    margin-top: 8px;
-    padding: 5px 55px;
-    background-color: #FFF;
+    width: 100%;
+    margin-top: 13px;
 
-    .text {
-        float: left;
-        color: #555;
-        font-size: 12px;
+    // 共用
+    .detail {
+        display: flex;
+        justify-content: space-between;
+        line-height: 40px;
 
-        &.main {
-            color: #55B9FF;
+        .text {
+            flex: 1;
         }
     }
 
-    .amount {
-        float: right;
-        color: #555;
-        font-size: 12px;
+    .rebate-wrap,
+    .date,
+    .list-wrap {
+        padding: 0 15px;
+        background: #fff;
+    }
 
-        &.main {
-            color: #55B9FF;
+    // 細部調整
+    .rebate-wrap {
+        .detail {
+            line-height: 23px;
+
+            &:first-of-type {
+                padding-top: 10px;
+            }
+
+            &:last-of-type {
+                padding-bottom: 10px;
+            }
         }
-
-        &.deficit {
-            color: #F00;
+        .text {
+            color: #6aaaf5;
         }
     }
 
-    .divider {
-        height: 1px;
-        margin: 5px 0;
-        background-color: #CCC;
+    .date {
+        background: none;
+        color: $main_text_color3;
+        font-weight: 700;
+        font-size: 16px;
+        padding: 0 15px;
+        height: 32px;
+        line-height: 32px;
     }
 
-    .summary-date {
-        color: #555;
-        font-size: 12px;
+    .list-wrap {
+        min-height: 300px;
+
+        .text {
+            color: $main_text_color2;
+        }
     }
 
     .tips {
-        margin: 14px 0 11px;
-        color: #222;
+        padding: 40px 0;
+        color: $main_text_color2;
         font-size: 12px;
         text-align: center;
+
+        .service-btn {
+            margin-left: 5px;
+            color: #6aaaf5;
+        }
     }
 }
+
+// // ---------------------
+
+// .state-wrap {
+//     height: 32px;
+//     line-height: 32px;
+//     background: #222 url("/static/image/mobile/mcenter/bg_header2_iphone8.png")
+//         50% -56px/100% no-repeat;
+// }
+
+// .period {
+//     float: left;
+//     width: 50%;
+//     padding: 0 10px;
+//     color: $titleColor;
+// }
+
+// .state {
+//     float: left;
+//     width: 50%;
+//     padding: 0 10px;
+//     color: #9ea5c5;
+//     text-align: right;
+// }
+
+// .level-num-1 {
+//     width: 100%;
+// }
+
+// .level-num-2 {
+//     width: 50%;
+// }
+
+// .level-num-3 {
+//     width: 33.333%;
+// }
+
+// .level-num-4 {
+//     width: 25%;
+// }
+
+// .level-num-5 {
+//     width: 20%;
+// }
+
+// .level-info-box {
+//     float: left;
+//     color: #f4d8af;
+//     font-size: 12px;
+//     text-align: center;
+//     border-right: 1px solid #002963;
+//     border-bottom: 1px solid #002963;
+//     background-color: #00347d;
+
+//     &:last-child {
+//         border-right: 0;
+//     }
+
+//     .info-title {
+//         color: #fff;
+//     }
+//     .info-subtitle {
+//         color: #abcdfe;
+//     }
+// }
+
+// .level-total-tr {
+//     color: #fff;
+//     font-size: 12px;
+//     border-bottom: 1px solid #002963;
+//     background-color: #002e6e;
+
+//     .info-title {
+//         float: left;
+//         padding: 0 10px;
+//         width: 50%;
+//     }
+//     .info-value {
+//         float: left;
+//         padding: 0 10px;
+//         width: 50%;
+//         text-align: right;
+//     }
+// }
+
+// .no-data {
+//     padding: 6px 6px;
+//     text-align: center;
+// }
+
+// .pagination {
+//     position: fixed;
+//     bottom: 55px;
+// }
