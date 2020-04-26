@@ -29,7 +29,7 @@
       </div>
       <template v-if="type == 'tips' || type.includes('poor')">
         <div :class="$style['bouns-func']">
-          <div @click="$router.back()">
+          <div @click="$router.push('/mobile')">
             {{ $text("S_FIRST_LOOK", "先去逛逛") }}
           </div>
           <div

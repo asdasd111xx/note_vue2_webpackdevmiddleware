@@ -13,10 +13,10 @@
 <script>
 import { mapGetters } from 'vuex';
 import mobileContainer from '../../../common/new/mobileContainer';
-import shortcutInfo from './components/new/shortcutInfo';
-import memList from './components/new/memList';
-import avatarInfo from './components/new/avatarInfo'
-import appTip from './components/new/appTip'
+import shortcutInfo from './components/shortcutInfo';
+import memList from './components/memList';
+import avatarInfo from './components/avatarInfo'
+import appTip from './components/appTip'
 export default {
   components: {
     mobileContainer,
@@ -64,7 +64,7 @@ export default {
 @import "~@/css/variable.scss";
 
 div.container {
-  background-color: $main_white_color1;
+  background-color: $main_background_white1;
 }
 
 .content-wrap {

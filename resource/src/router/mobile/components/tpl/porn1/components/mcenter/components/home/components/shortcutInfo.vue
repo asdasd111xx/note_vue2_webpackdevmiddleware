@@ -105,7 +105,7 @@ import moment from 'moment';
 import mcenterPageAuthControl from '@/lib/mcenterPageAuthControl';
 import mcenter from '@/api/mcenter';
 import member from '@/api/member';
-import message from '../../../../../common/new/message'
+import message from '../../../../common/new/message'
 
 export default {
   components: {
@@ -197,7 +197,8 @@ export default {
 @import "~@/css/variable.scss";
 
 .mcenter-vip-wrap {
-  margin: 15px 0;
+  margin-bottom: 2px;
+  background-color: #fefffe;
 }
 
 .sub-text {
@@ -205,8 +206,14 @@ export default {
 }
 
 .vip-promotion-wrap {
-  padding: 5px 8% 0;
+  margin: 0px 8% 0;
   display: flex;
+  align-items: center;
+  /* width: 347pt; */
+  height: 50pt;
+  background: #ffffff;
+  border-radius: 10pt;
+  box-shadow: 0pt 0pt 7px 0pt rgba(0, 0, 0, 0.05);
 
   > div {
     width: 50%;
@@ -239,7 +246,7 @@ export default {
 }
 
 .mcenter-func {
-  height: 75px;
+  height: 100px;
   display: flex;
   align-items: center;
   margin-top: 12px;

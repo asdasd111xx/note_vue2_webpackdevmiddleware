@@ -1,59 +1,87 @@
 <template>
-    <div :class="$style['video-tag-wrap']">
-        <swiper :options="{ slidesPerView: 'auto', slideClass: $style['tab-wrap'] }">
-            <swiper-slide
-                v-for="(tTag, index) in tags"
-                :key="`tag-${index}`"
-            >
-                <span :class="$style.tag">
-                    {{ tTag }}
-                </span>
-            </swiper-slide>
-        </swiper>
+  <div :class="[$style['video-tag-wrap'], { [$style['padding']]: padding }]">
+    <div
+      v-for="(tTag, index) in tags"
+      :key="`tag-${index}`"
+      :class="$style['tag']"
+    >
+      {{ tTag }}
     </div>
+    <div
+      v-for="(tTag, index) in tags"
+      :key="`tag-${index}`"
+      :class="$style['tag']"
+    >
+      {{ tTag }}
+    </div>
+    <div
+      v-for="(tTag, index) in tags"
+      :key="`tag-${index}`"
+      :class="$style['tag']"
+    >
+      {{ tTag }}
+    </div>
+  </div>
 </template>
 
 <script>
 import split from 'lodash/split';
-import { swiper, swiperSlide } from 'vue-awesome-swiper';
 
 export default {
-    components: {
-        swiper,
-        swiperSlide
+  components: {
+
+  },
+  props: {
+    tag: {
+      type: String,
+      required: true
     },
-    props: {
-        tag: {
-            type: String,
-            required: true
-        }
-    },
-    computed: {
-        tags() {
-            return split(this.tag, ',');
-        }
+    padding: {
+      type: Boolean
     }
+  },
+  computed: {
+    tags() {
+      return split(this.tag, ',');
+    }
+  }
 };
 </script>
 
 <style lang="scss" module>
+@import "~@/css/variable.scss";
+
 .video-tag-wrap {
-    height: 20px;
-    margin-top: 10px;
-    white-space: nowrap;
-}
+  color: $main_text_color2;
+  padding: 0 14px;
+  text-align: center;
+  display: flex;
 
-.tab-wrap {
-    display: inline-block;
-}
+  overflow-x: auto;
 
-.tag {
-    line-height: 16px;
+  &.padding {
+    padding: 12px 14px 10px 14px;
+  }
+  > .tag {
+    min-width: 62px;
+    height: 18px;
+    background: #eeeeee;
+    border-radius: 9px;
+    text-align: center;
+    font-size: 10px;
+    line-height: 18px;
+    font-weight: 400;
     margin-right: 10px;
-    padding: 2px 10px;
-    border-radius: 10px;
-    background-color: #242630;
-    color: #FACE15;
-    font-size: 12px;
+  }
+}
+
+@media screen and (min-width: $pad) {
+  .video-tag-wrap {
+    > .tag {
+      height: 20px;
+      border-radius: 12px;
+      line-height: 20px;
+    }
+  }
 }
 </style>

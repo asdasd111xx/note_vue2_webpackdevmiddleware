@@ -300,7 +300,19 @@ export default {
             //     reqHeaders: {
             //         'Vendor': this.memInfo.user.domain
             //     },
-            //     params: _params,
+            //     params: {
+            //         userBankId: params.userBankId,
+            //         amount: this.withdrawValue,
+            //         withdraw_password: '0000',
+            //         forward: true,
+            //         confirm: true,
+            //         maxId: this.withdrawData.audit.total.max_id,
+            //         auditAmount: this.withdrawData.audit.total.audit_amount,
+            //         offerDeduction: this.withdrawData.audit.total.offer_deduction,
+            //         administrativeAmount: this.withdrawData.audit.total.administrative_amount
+            //     },
+            // }).then((res) => {
+            //     console.log(res)
             // })
 
             // 本站寫單

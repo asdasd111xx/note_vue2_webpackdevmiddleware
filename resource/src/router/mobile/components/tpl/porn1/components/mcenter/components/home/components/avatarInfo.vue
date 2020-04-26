@@ -60,7 +60,7 @@ import moment from 'moment';
 import mcenterPageAuthControl from '@/lib/mcenterPageAuthControl';
 import mcenter from '@/api/mcenter';
 import member from '@/api/member';
-import message from '../../../../../common/new/message'
+import message from '../../../../common/new/message'
 export default {
   components: {
     message
@@ -145,10 +145,12 @@ export default {
 <style lang="scss" module>
 @import "~@/css/variable.scss";
 .mcenter-avatar-info-wrap {
-  height: 70px;
+  margin-top: 2px;
+  height: 100px;
   display: flex;
   align-items: center;
   padding: 0 14px;
+  background-color: #fefffe;
 }
 
 .avatar-wrap {

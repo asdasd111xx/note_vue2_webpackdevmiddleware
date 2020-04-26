@@ -1,4 +1,6 @@
 import axios from 'axios';
+import { getCookie } from '@/lib/cookie';
+
 export default ({
     method = 'get',
     moudle = '',
@@ -14,6 +16,7 @@ export default ({
         "Useragent": navigator.userAgent,
         "Ekey": "sobb",
         'Content-Type': 'application/json',
+        'cid': getCookie('cid') ? getCookie('cid') : ''
     }
 
     const bbosParams = {

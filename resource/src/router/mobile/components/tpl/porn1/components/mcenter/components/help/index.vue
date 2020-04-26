@@ -5,6 +5,11 @@
     :class="$style.container"
   >
     <div slot="content" :class="$style['setting-wrap']">
+      <message v-if="msg" @close="msg = ''">
+        <div slot="msg">
+          {{ msg }}
+        </div>
+      </message>
       <div
         v-for="listInfo in list"
         :key="`list-${listInfo.name}`"
@@ -36,12 +41,16 @@
 import { mapGetters } from 'vuex';
 import member from '@/api/member';
 import mobileContainer from '../../../common/new/mobileContainer';
+import message from "../../../common/new/message"
+
 export default {
   components: {
     mobileContainer,
+    message
   },
   data() {
     return {
+      msg: '',
       list: [
         {
           name: '充值教程',
@@ -95,9 +104,12 @@ export default {
   },
   methods: {
     handleClick(path) {
-    //   其他頁面尚未實作
-    //   if (path.includes('contact')) {}
-      this.$router.push(path)
+      //   其他頁面尚未實作
+      if (path.includes('contact')) {
+        this.$router.push(path)
+      } else {
+        this.msg = '正在上线 敬请期待'
+      }
     },
     logout() {
       member.logout().then(() => { window.location.reload(); });

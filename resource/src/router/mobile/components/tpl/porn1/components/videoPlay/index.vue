@@ -1,74 +1,74 @@
 <template>
-    <mobile-container v-if="videoInfo" :class="$style.container">
-        <div slot="content" class="content-wrap">
-            <div :class="$style['header']">
-                <div :class="$style['btn-prev']" @click="$router.back()">
-                    <img :src="$getCdnPath('/static/image/_new/common/btn_back_w.png')" />
-                </div>
-            </div>
-            <video-player :video-info="videoInfo" />
-            <video-info :video-info="videoInfo" />
-            <video-tag :tag="videoInfo.tag" :padding="true" />
-            <video-guess />
+  <mobile-container v-if="videoInfo" :class="$style.container">
+    <div slot="content" class="content-wrap">
+      <div :class="$style['header']">
+        <div :class="$style['btn-prev']" @click="$router.back()">
+          <img :src="$getCdnPath('/static/image/_new/common/btn_back_w.png')" />
         </div>
-    </mobile-container>
+      </div>
+      <video-player :video-info="videoInfo" />
+      <video-info :video-info="videoInfo" />
+      <video-tag :tag="videoInfo.tag" :padding="true" />
+      <video-guess />
+    </div>
+  </mobile-container>
 </template>
 
 <script>
 import { mapGetters } from 'vuex';
 import axios from 'axios';
 import querystring from 'querystring';
-import videoPlayer from './components/new/videoPlayer';
-import videoInfo from './components/new/videoInfo';
-import videoGuess from './components/new/videoGuess';
-import videoTag from './components/new/videoTag';
+import videoPlayer from './components/videoPlayer';
+import videoInfo from './components/videoInfo';
+import videoGuess from './components/videoGuess';
+import videoTag from './components/videoTag';
 import mobileContainer from '../common/new/mobileContainer';
 import { API_PORN1_DOMAIN } from '@/config/api';
 
 export default {
-    components: {
-        mobileContainer,
-        videoPlayer,
-        videoInfo,
-        videoGuess,
-        videoTag
-    },
-    data() {
-        return {
-            videoInfo: null
-        };
-    },
-    computed: {
-        ...mapGetters({
-            memInfo: 'getMemInfo'
-        })
-    },
-    created() {
-        if (!this.memInfo.config.content_rating || !this.memInfo.user.content_rating) {
-            this.$router.push('/mobile');
-            return;
-        }
-
-        axios({
-            method: 'post',
-            url: `${API_PORN1_DOMAIN}/api/v1/video/videoinfo`,
-            timeout: 30000,
-            data: querystring.stringify({ videoId: this.$route.params.id }),
-            headers: {
-                Bundleid: 'chungyo.foxyporn.prod.enterprise.web',
-                Version: 1
-                // 本機開發時會遇到 CORS 的問題，把Bundleid及Version註解，並打開下面註解即可
-                // 'Content-Type': 'application/x-www-form-urlencoded',
-                // origin: 'http://127.0.0.1'
-            }
-        }).then((response) => {
-            if (response.status !== 200) {
-                return;
-            }
-
-            this.videoInfo = { ...response.data.result };
-        });
+  components: {
+    mobileContainer,
+    videoPlayer,
+    videoInfo,
+    videoGuess,
+    videoTag
+  },
+  data() {
+    return {
+      videoInfo: null
+    };
+  },
+  computed: {
+    ...mapGetters({
+      memInfo: 'getMemInfo'
+    })
+  },
+  created() {
+    if (!this.memInfo.config.content_rating || !this.memInfo.user.content_rating) {
+      this.$router.push('/mobile');
+      return;
     }
+
+    axios({
+      method: 'post',
+      url: `${API_PORN1_DOMAIN}/api/v1/video/videoinfo`,
+      timeout: 30000,
+      data: querystring.stringify({ videoId: this.$route.params.id }),
+      headers: {
+        Bundleid: 'chungyo.foxyporn.prod.enterprise.web',
+        Version: 1
+        // 本機開發時會遇到 CORS 的問題，把Bundleid及Version註解，並打開下面註解即可
+        // 'Content-Type': 'application/x-www-form-urlencoded',
+        // origin: 'http://127.0.0.1'
+      }
+    }).then((response) => {
+      if (response.status !== 200) {
+        return;
+      }
+
+      this.videoInfo = { ...response.data.result };
+    });
+  }
 };
 </script>
 
@@ -76,40 +76,40 @@ export default {
 @import "~@/css/variable.scss";
 
 div.container {
-    background-color: $main_white_color1;
+  background-color: $main_white_color1;
 }
 
 .header {
-    position: fixed;
-    top: 0;
-    left: 0;
-    z-index: 3;
+  position: fixed;
+  top: 0;
+  left: 0;
+  z-index: 3;
+  width: 100%;
+  height: 43px;
+  padding: 0 14px;
+  text-align: center;
+
+  > .title {
     width: 100%;
+    line-height: 43px;
+    font-size: 17px;
     height: 43px;
-    padding: 0 14px;
-    text-align: center;
+    color: black;
+  }
 
-    > .title {
-        width: 100%;
-        line-height: 43px;
-        font-size: 17px;
-        height: 43px;
-        color: black;
+  .btn-prev {
+    position: absolute;
+    top: 0;
+    bottom: 0;
+    left: 14px;
+    width: 24px;
+    height: 24px;
+    margin: auto;
+
+    > img {
+      display: block;
+      width: 100%;
     }
-
-    .btn-prev {
-        position: absolute;
-        top: 0;
-        bottom: 0;
-        left: 14px;
-        width: 24px;
-        height: 24px;
-        margin: auto;
-
-        > img {
-            display: block;
-            width: 100%;
-        }
-    }
+  }
 }
 </style>

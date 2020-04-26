@@ -1,8 +1,13 @@
 <template>
   <mobile-container :header-config="headerConfig">
     <div slot="content" :class="$style['content-wrap']">
-      <message v-if="msg" @close="msg = ''"
-        ><div slot="msg">{{ msg }}</div>
+      <message v-if="msg" @close="msg = ''">
+        <div slot="msg">
+          <div
+            v-html="msg"
+            style="background-color: transparent ; margin: 0 ; padding: 0"
+          ></div>
+        </div>
       </message>
 
       <balance-tran class="clearfix">
@@ -287,7 +292,13 @@
           { [$style['disabled']]: errTips || !withdrawValue || !selectedCard }
         ]"
       >
-        <div @click="handleSubmit">
+        <div
+          @click="
+            errTips || !withdrawValue || !selectedCard
+              ? () => {}
+              : handleSubmit()
+          "
+        >
           {{ $text("S_WITHRAW_NOW", "立即取款") }}
         </div>
       </div>
@@ -386,6 +397,20 @@ export default {
     },
   },
   methods: {
+    onClickMaintain(value) {
+      this.msg = `美东时间：
+          <br>
+          <span>${value.etc_start_at}</span>
+          <p style="margin: 0 ; padding: 0 ; text-align: center">|</p>
+          <span>${value.etc_end_at}</span>
+          <p></p>
+          北京时间：
+          <br>
+          <span>${value.start_at}</span>
+          <p style="margin: 0 ; padding: 0 ; text-align: center">|</p>
+          <span>${value.end_at}</span>
+        `;
+    },
     validateMoney(target) {
       if (!target || Number(target) === 0) {
         return this.$text('S_UNLIMITED', '无限制')
@@ -427,7 +452,10 @@ export default {
     handleSubmit() {
       if (this.errTips || !this.withdrawValue)
         return;
-      this.submitWithdraw({ user_bank_id: this.selectedCard }).then((response) => {
+      this.submitWithdraw({
+        user_bank_id: this.selectedCard,
+        userBankId: this.selectedCard
+      }).then((response) => {
         if (response.result === 'error' && response.code === 500110) {
           this.isOpenOrder = true;
         }
