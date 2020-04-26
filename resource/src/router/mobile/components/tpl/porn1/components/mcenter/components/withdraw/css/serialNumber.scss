@@ -167,17 +167,136 @@
 }
 
 .detail-wrap {
-    background-color: #F8F8F7;
+    background-color: #fefffe;
     color: #A6A9B2;
     padding: 11px 17px;
     font-size: 14px;
+    margin-top: 11px;
+
+    &:last-of-type {
+        margin-top: 1px;
+    }
 
     >div {
         height: 21px;
         line-height: 21px;
+        margin: 3px 0;
 
-        >span {
+        >span:first-child {
+            float: left;
+        }
+
+        >span:last-child {
             float: right;
+        }
+    }
+}
+
+.audit-wrap {
+    margin-top: 1px;
+}
+
+.audit-cell {
+    >span:last-child {
+        color: #6AAAF5;
+    }
+}
+
+.tips {
+    width: 100%;
+    text-align: center;
+    font-size: 14px;
+    margin-top: 40px;
+
+    >span {
+        color: #6AAAF5;
+    }
+}
+
+@media screen and (min-width: $phone) {
+    .detail-wrap {
+        font-size: 15px;
+    }
+
+    .tips {
+        font-size: 15px;
+    }
+
+    .serial-header {
+        .title {
+            font-size: 18px;
+        }
+
+        .serial-time {
+            font-size: 13px;
+
+        }
+
+        .serial-number-block {
+
+            >.serial-number-title {
+                font-size: 18px;
+            }
+        }
+
+        .serial-number-cell {
+            .time {
+
+                font-size: 13px;
+            }
+
+            .title {
+                font-size: 17px;
+
+            }
+
+            .money {
+                font-size: 15px;
+            }
+        }
+    }
+}
+
+@media screen and (min-width: $pad) {
+    .detail-wrap {
+        font-size: 16px;
+    }
+
+    .tips {
+        font-size: 16px;
+    }
+
+    .serial-header {
+        .title {
+            font-size: 19px;
+        }
+
+        .serial-time {
+            font-size: 14px;
+
+        }
+
+        .serial-number-block {
+
+            >.serial-number-title {
+                font-size: 19px;
+            }
+        }
+
+        .serial-number-cell {
+            .time {
+
+                font-size: 14px;
+            }
+
+            .title {
+                font-size: 18px;
+
+            }
+
+            .money {
+                font-size: 16px;
+            }
         }
     }
 }

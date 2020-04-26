@@ -228,3 +228,116 @@
         }
     }
 }
+
+
+@media screen and (min-width: $phone) {
+    >.balance-wrap {
+        >div:last-child {
+            font-size: 17px;
+        }
+    }
+
+    .recycle-btn {
+        font-size: 17px;
+    }
+
+    .add-bank-card {
+        font-size: 16px;
+
+    }
+
+    .tips {
+        font-size: 13px;
+    }
+
+    .monet-currency {
+        font-size: 18px;
+    }
+
+    .withdraw-input {
+        >input {
+            font-size: 17px;
+
+            &::placeholder {
+                color: #CBCED8;
+                font-size: 15px;
+            }
+        }
+    }
+
+    .actual-money {
+        font-size: 15px;
+    }
+
+    .withdraw-max {
+        >span {
+            font-size: 15px;
+        }
+    }
+
+    .withdraw-error-tips {
+        font-size: 15px;
+    }
+
+    .submit-btn {
+        >div {
+            font-size: 15px;
+        }
+    }
+}
+
+@media screen and (min-width: $pad) {
+    >.balance-wrap {
+        >div:last-child {
+            font-size: 17px;
+        }
+    }
+
+    .recycle-btn {
+        font-size: 18px;
+    }
+
+    .add-bank-card {
+        font-size: 17px;
+
+    }
+
+    .tips {
+        font-size: 14px;
+    }
+
+    .monet-currency {
+        font-size: 19px;
+    }
+
+    .withdraw-input {
+        >input {
+            font-size: 18px;
+
+            &::placeholder {
+                color: #CBCED8;
+                font-size: 16px;
+            }
+        }
+    }
+
+    .actual-money {
+        font-size: 16px;
+    }
+
+    .withdraw-max {
+        >span {
+            font-size: 16px;
+        }
+    }
+
+    .withdraw-error-tips {
+        font-size: 16px;
+    }
+
+    .submit-btn {
+        >div {
+            font-size: 16px;
+        }
+    }
+}

@@ -131,20 +131,25 @@
         </div>
       </div>
     </template>
+
+    <message v-if="msg" @close="msg = ''"
+      ><div slot="msg">{{ msg }}</div>
+    </message>
     <template v-if="headerConfig.hasHelp">
       <div :class="$style['balance-wrap']" @click="setMenuState('balance')">
         <img
           :src="
             $getCdnPath('/static/image/_new/mcenter/balanceTrans/btn_help.png')
           "
-          @click="
+          @click="msg = '正在上线 敬请期待'"
+        />
+        <!-- @click="
             $router.push(
               `/mobile/mcenter/help/${
                 headerConfig.helpRouter ? headerConfig.helpRouter : ''
               }`
             )
-          "
-        />
+          " -->
       </div>
     </template>
     <template v-if="headerConfig.hasTransaction">
@@ -160,9 +165,11 @@
 
 <script>
 import { mapGetters } from 'vuex';
+import message from '../new/message'
 
 export default {
   components: {
+    message
     // sideBalance,
     // topGameList: () => import(/* webpackChunkName: 'topGameList' */'./topGameList')
   },
@@ -178,7 +185,8 @@ export default {
   },
   data() {
     return {
-      currentMenu: ''
+      currentMenu: '',
+      msg: ''
     };
   },
   computed: {

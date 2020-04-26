@@ -42,6 +42,29 @@
           <span>{{ item.value }} </span>
         </div>
       </div>
+
+      <div v-for="list in auditList" :class="$style['detail-wrap']">
+        <div v-for="item in list" :class="$style['audit-cell']">
+          <span>
+            <span>{{ item.title }} </span>
+            <span>{{ item.rateValue }} </span>
+          </span>
+          <span
+            >{{
+              item.deduction
+                ? item.deduction + ":" + item.value
+                : item.value
+                ? $text("S_COMPLETE", "完成")
+                : $text("S_NOT_FINISH", "未完成")
+            }}
+          </span>
+        </div>
+      </div>
+
+      <div :class="$style.tips">
+        如需帮助，请
+        <span @click="$router.push('/mobile/service')">联系客服</span>
+      </div>
     </div>
   </div>
 </template>
@@ -75,6 +98,33 @@ export default {
       { title: this.$text('S_DEPOSIT_MONEY', '存款金额'), value: this.data.amount },
       { title: this.$text('S_OFFER_MONEY', '优惠金额'), value: this.data.offer },
       ]
+    },
+    auditList() {
+      return [[
+        {
+          title: this.$text('S_SERIAL_AUDIT', '稽核倍数'),
+          rateValue: this.data.audit_rate,
+          value: this.data.audit_amount        },
+        {
+          title: this.$text('S_SERIAL_NUMBER', '流水要求'),
+          rateValue: this.data.total_audit_amount,
+          value: this.data.deduction,
+          deduction: this.$text('S_DEDUCTION_MONEY', '扣除金额')
+        },
+      ],
+      [
+        {
+          title: this.$text('S_SERIAL_STATUS02', '优惠稽核'),
+          rateValue: this.data.offer_audit_rate,
+          value: this.data.offer_audit_amount
+        },
+        {
+          title: this.$text('S_SERIAL_NUMBER', '流水要求'),
+          rateValue: this.data.total_audit_amount,
+          value: this.data.offer_deduction,
+          deduction: this.$text('S_DEDUCTION_MONEY', '扣除金额')
+        },
+      ]]
     }
   },
   methods: {

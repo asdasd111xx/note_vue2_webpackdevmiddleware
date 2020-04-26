@@ -162,10 +162,7 @@
         "
         :class="$style['bank-card-wrap']"
       >
-        <div
-          v-for="item in withdrawUserData.account"
-          :class="$style['bank-card-cell']"
-        >
+        <div :class="$style['bank-card-cell']">
           {{ $text("S_BANKCARD", "银行卡") }}
         </div>
 
@@ -184,6 +181,16 @@
             ]"
           />
         </div>
+      </div>
+
+      <div :class="[$style['add-bank-card']]">
+        <img
+          :src="$getCdnPath(`/static/image/_new/common/ic_withardw_add.png`)"
+        />
+        &nbsp;
+        <span @click="$router.push('/mobile/mcenter/bankcard?withdraw=true')">
+          {{ $text("S_ADD_BANKCARD", "添加银行卡") }}
+        </span>
       </div>
 
       <!-- 額度提示訊息 -->
@@ -272,17 +279,6 @@
       <!-- 錯誤訊息 -->
       <div v-if="errTips" :class="[$style['withdraw-error-tips']]">
         <span>{{ errTips }}</span>
-      </div>
-
-      <div :class="[$style['add-bank-card']]">
-        <img
-          :src="$getCdnPath(`/static/image/_new/common/ic_withardw_add.png`)"
-          alt="collapse"
-        />
-        &nbsp;
-        <span @click="$router.push('/mobile/mcenter/bankcard?withdraw=true')">
-          {{ $text("S_ADD_BANKCARD", "添加银行卡") }}
-        </span>
       </div>
 
       <div
