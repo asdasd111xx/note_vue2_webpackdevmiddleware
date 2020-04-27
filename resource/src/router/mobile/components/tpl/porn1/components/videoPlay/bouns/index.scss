@@ -262,13 +262,20 @@ $bouns_color6: #FFF07B;
     height: 20px;
     border-radius: 50%;
     border-color: #ffd628 rgba(0, 0, 0, 0) rgba(0, 0, 0, 0);
-    animation: spin 3s linear infinite;
+    animation: spin 60s linear infinite;
     position: absolute;
     margin: auto;
     left: 0;
     top: 0;
     right: 0;
     bottom: 0;
+
+    &.pause {
+        -webkit-animation-play-state: paused;
+        -moz-animation-play-state: paused;
+        -o-animation-play-state: paused;
+        animation-play-state: paused;
+    }
 }
 
 

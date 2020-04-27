@@ -1,9 +1,9 @@
 <template>
   <div :class="$style['no-porn-wrap']">
-    <img
-      :class="$style['no-porn-img']"
-      src="/static/image/_new/discover/no_porn.png"
-    />
+    <div :class="$style['no-porn-img']">
+      <img src="/static/image/_new/discover/no_porn.png" />
+    </div>
+
     <span :class="$style['no-porn-title']">{{
       $text("S_PORN_CLOSE_TIP", "目前关闭中，欲开启色站请点击按钮")
     }}</span>
@@ -53,12 +53,21 @@ export default {
   background-size: cover;
   background-image: url("/static/image/_new/common/bg.png");
   height: 100vh;
+  padding-top: 96px;
 }
 
 .no-porn-img {
   display: block;
-  width: 240px;
-  margin: 92px auto 46px;
+  width: 100%;
+  height: 233px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+
+  > img {
+    height: 233px;
+    width: 243px;
+  }
 }
 
 .no-porn-title {

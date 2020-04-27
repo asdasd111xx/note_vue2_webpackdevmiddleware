@@ -1,5 +1,6 @@
 <template>
   <div
+    v-if="isShow"
     :class="
       isClose ? [$style['dialog'], $style['dialog-close']] : $style['dialog']
     "
@@ -124,10 +125,16 @@ export default {
       if (this.earnCellNum < 0) {
         this.earnCellNum = 6; //暫時防呆
       }
+    },
+    isShow() {
+      setTimeout(() => {
+        this.$nextTick(() => this.getDialogHeight());
+      });
     }
   },
   data() {
     return {
+      isShow: false,
       dialogHeight: 0,
       isClose: false,
       earnCellNum: 6, // 可獲得彩金數
@@ -162,6 +169,7 @@ export default {
       this.isClose = true;
       setTimeout(() => {
         this.$emit('close')
+        this.isShow = false;
       }, 300)
     }
   },

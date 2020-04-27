@@ -273,11 +273,11 @@ export default {
                 alert(this.$text('S_WITHDRAW_ERROR_TIP01', '实际出款金额需大于0，请重新输入'));
                 return Promise.resolve({ status: 'error', errorCode: '' });
             }
-            //不需要取款密碼預設帶0000,並且可選銀行卡
+            //不需要取款密碼,並且可選銀行卡
             let _params = {
                 amount: this.withdrawValue,
                 // withdraw_password: this.withdrawPwd,
-                withdraw_password: '0000',
+                // withdraw_password: '0000',
                 forward: true,
                 confirm: true,
                 max_id: this.withdrawData.audit.total.max_id,

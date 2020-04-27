@@ -15,6 +15,18 @@ export const preset = {
 
 /* ---------- ↓ 正式站 ---------- */
 
+// domain list
+// yaboapi.dormousepie.com
+// yaboapi.gophertart.com
+// yaboapi.slothwafer.com
+// yaboapi.armadillobrulee.com
+// yaboapi.chimpanzeescone.com
+// yaboapi.duckbillcaramel.com
+// yaboapi.quailtortillas.com
+// yaboapi.parrotbostonpie.com
+// yaboapi.canarycherrytart.com
+// yaboapi.iguanagingercake.com
+
 /**
  * 亞博直播 正式站正式環境
  */
@@ -36,7 +48,7 @@ export const site_69 = {
     IS_PWA: true,
     BBOS_DOMIAN: 'https://bbos.canarycherrytart.com/elibomApi/WebService',
     YABO_API_DOMAIN: 'https://yaboapi.bbin-asia.com/api',
-    ACTIVES_BOUNS_WEBSOCKET: 'wss://yaboapi.bbin-asia.com/xxx/promosocket'
+    ACTIVES_BOUNS_WEBSOCKET: 'wss://yaboapi.iguanagingercake.com/xxx/promosocket'
 };
 
 /* eslint-enable camelcase */

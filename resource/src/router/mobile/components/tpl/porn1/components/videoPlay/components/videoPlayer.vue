@@ -14,15 +14,14 @@
     >
       <bonuns-dialog
         ref="bonunsDialog"
-        v-if="isActiveBouns && isShowBounsDialog && !isFullBouns"
+        v-show="!isFullBouns"
         :type="dialogType"
         @close="isShowBounsDialog = false"
       />
       <bonuns-process
         ref="bonunsProcess"
-        v-if="isActiveBouns && isShowBounsProcess"
+        v-show="isShowBounsProcess"
         @close="isShowBounsProcess = false"
-        :playing="isPlaying"
       />
     </div>
   </div>
@@ -59,7 +58,8 @@ export default {
       isFullBouns: false,
       dialogType: "tips",// 提示 & 賺得彩金
       socket: null,
-      socketId: ""
+      socketId: "",
+      isFirstPlay: true
     };
   },
   computed: {
@@ -96,17 +96,14 @@ export default {
         let cid = getCookie('cid');
         if (!cid)
           return
-        var uri = this.siteConfig.ACTIVES_BOUNS_WEBSOCKET + `?cid=${cid}`;
+
+        let uri = this.siteConfig.ACTIVES_BOUNS_WEBSOCKET + `?cid=${cid}`;
         this.socket = new WebSocket(uri);
         this.socket.onmessage = this.onMessage;
         this.socket.onopen = this.onOpen;
         this.socket.onerror = this.onError;
         this.socket.onclose = this.onClose;
         this.socket.onmessage = this.onMessage;
-        // 模擬每次增加1分鐘
-        // setInterval(() => {
-        //   this.$refs.bonunsProcess.curMin += 1
-        // }, 100)
       } catch (e) {
         console.log(e)
       }
@@ -129,13 +126,13 @@ export default {
     handleClickVideoBlock(e) {
       // 餘額夠可播放
       if (!this.loginStatus) {
-        this.isShowBounsDialog = true;
+        this.$refs.bonunsDialog.isShow = true
         this.dialogType = 'tips';
         if (this.player && !this.player.paused()) {
           this.player.pause();
         }
 
-      } else if (this.isShowBounsDialog) {
+      } else if (this.$refs.bonunsDialog.isShow) {
         if (!this.player.paused()) {
           this.player.pause();
         }
@@ -144,8 +141,10 @@ export default {
       else {
         if (!this.player.paused()) {
           this.player.pause();
+          this.$refs.bonunsProcess.isPause = true;
         } else {
           this.player.play();
+          this.$refs.bonunsProcess.isPause = false;
         }
       }
     },
@@ -154,9 +153,10 @@ export default {
         let data = JSON.parse(e.data)
         this.socketId = data.SocketId;
 
+
         if (process.env.NODE_ENV === 'development') {
-          //   console.log("msg ==>")
-          //   console.log(data)
+          console.log("msg ==>")
+          console.log(data)
         }
 
         if (data.Active) {
@@ -165,21 +165,28 @@ export default {
           switch (data.Status) {
             case 'FULL':
               this.$refs.bonunsProcess.isFinish = true;
+              this.$refs.bonunsDialog.isShow = true
+              this.isFullBouns = true;
               this.dialogType = `tips-${data.Status.toLowerCase()}`
-              this.isShowBounsDialog = true;
               break;
             case 'POOR':
               this.dialogType = `tips-${data.Status.toLowerCase()}`
-              this.isShowBounsDialog = true;
+              this.$refs.bonunsDialog.isShow = true
               break;
             case 'BREAK':
               this.dialogType = `tips-${data.Status.toLowerCase()}`
-              this.isShowBounsDialog = true;
+              this.$refs.bonunsDialog.isShow = true
               this.$refs.bonunsDialog.hadEarnNum = data.BreakTimes
               if (!this.player.paused()) {
                 this.player.pause();
               }
               break;
+            case 'PLAY':
+              this.$refs.bonunsProcess.playCueTime()
+              break;
+            case 'STOP':
+              this.$refs.bonunsProcess.playCueTime(false)
+              return;
             case 'CLOSE':
               return;
             default:
@@ -191,10 +198,12 @@ export default {
 
           //當前累積時間(0)
           this.$refs.bonunsProcess.curMin = data.CueTimes;
-          if (data.Amount != 0 && data.Active.CueTimes == 0) {
-            this.$refs.bonunsProcess.isShowEarn = true;
+
+          if (data.Amount != 0 && Number(data.CueTimes) % Number(data.Active.CueTimes) === 0) {
+            this.$refs.bonunsProcess.showEarn(data.Amount);
           }
 
+          if (!this.$refs.bonunsDialog) { return }
           //獲得彩金
           this.$refs.bonunsDialog.earnCurrentNum = Number(Number(data.Active.BreakAmout) * Number(data.Active.BreakTimes)).toFixed(2);
 
@@ -235,7 +244,7 @@ export default {
     },
     // "STOP" | "CLOSE" | "PLAY"
     onSend(type) {
-      if (!this.socket) {
+      if (!this.socket || this.socket.readyState === 3) {
         return
       }
       let data = {
@@ -245,10 +254,6 @@ export default {
         "Data": {}
       }
 
-      if (process.env.NODE_ENV === 'development') {
-        console.log("send ==>")
-        console.log(data)
-      }
       this.socket.send(JSON.stringify(data))
     }
   },

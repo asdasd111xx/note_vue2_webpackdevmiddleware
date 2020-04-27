@@ -171,8 +171,9 @@
           {{ $text("S_BANKCARD", "银行卡") }}
         </div>
 
+        <!-- 取前三個銀行卡 不應該超過三張 -->
         <div
-          v-for="item in withdrawUserData.account"
+          v-for="item in withdrawUserData.account.slice(0, 3)"
           :class="$style['bank-card-cell']"
           @click="handleSelectCard(item)"
         >
@@ -188,7 +189,15 @@
         </div>
       </div>
 
-      <div :class="[$style['add-bank-card']]">
+      <!-- 添加银行卡 -->
+      <div
+        v-if="
+          withdrawUserData &&
+            withdrawUserData.account &&
+            withdrawUserData.account.length < 3
+        "
+        :class="[$style['add-bank-card']]"
+      >
         <img
           :src="$getCdnPath(`/static/image/_new/common/ic_withardw_add.png`)"
         />
