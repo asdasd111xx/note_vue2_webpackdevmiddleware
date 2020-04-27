@@ -434,7 +434,7 @@ export default {
 
             if ([3, 5, 6].includes(game.kind) && game.code === '') {
                 const trans = { 3: 'casino', 5: 'card', 6: 'mahjong' };
-                this.$router.push(`/mobile/${trans[game.kind]}`);
+                this.$router.push(`/mobile/${trans[game.kind]}/${game.vendor}`);
                 return;
             }
 
