@@ -41,7 +41,7 @@
           </div>
           <div
             v-else
-            @click="$router.push('/mobile/joinmember')"
+            @click="$router.push('/mobile/login')"
             :class="$style['active-btn']"
           >
             {{ $text("S_JOIN_MEMBER", "加入会员") }}
