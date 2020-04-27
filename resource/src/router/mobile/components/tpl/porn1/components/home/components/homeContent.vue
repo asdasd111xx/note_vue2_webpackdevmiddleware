@@ -17,7 +17,7 @@
         </div>
         <div v-if="isTypeSwiperCreated" :class="$style['all-game-wrap']">
             <div :class="$style['top-wrap']">
-                <div :class="[$style['video-tag-wrap'], 'clearfix']">
+                <div :class="[$style['video-tag-wrap'], 'clearfix', {[$style['wrap-display']]: !isAdult}]">
                     <div :class="$style['btn-search']" @click="$router.push({ name: 'search' })">
                         <img :src="$getCdnPath('/static/image/_new/common/icon_search.png')" />
                     </div>
@@ -37,7 +37,7 @@
                         </template>
                     </div>
                 </div>
-                <div :class="[$style['mcenter-func-wrap'], 'clearfix']">
+                <div :class="[$style['mcenter-func-wrap'], 'clearfix', {[$style['wrap-display']]: isAdult}]">
                     <div
                         v-for="(info, index) in mcenterList"
                         :key="`mcenter-${index}`"
@@ -183,7 +183,7 @@ export default {
                             return;
                         }
 
-                        if (this.typeSwiper.realIndex === 0) {
+                        if (this.typeSwiper.realIndex === 0 && this.isAdult) {
                             $(`.${this.$style['mcenter-func-wrap']}`).hide();
                             $(`.${this.$style['video-tag-wrap']}`).show();
                             return;
@@ -196,7 +196,7 @@ export default {
                             return;
                         }
 
-                        if (this.typeSwiper.realIndex === 0) {
+                        if (this.typeSwiper.realIndex === 0 && this.isAdult) {
                             $(`.${this.$style['mcenter-func-wrap']}`).hide();
                             $(`.${this.$style['video-tag-wrap']}`).show();
                             return;
@@ -257,7 +257,10 @@ export default {
                 return [...init, { ...data }];
             }, [...videoRecommand]);
             const gameList = this.allGame.map((game) => ({ ...game, isVideo: false }));
-            return [{ isVideo: true, data: videoList }, ...gameList];
+            if (this.isAdult) {
+                return [{ isVideo: true, data: videoList }, ...gameList];
+            }
+            return [...gameList];
         },
         vipLevel() {
             return this.currentLevel <= 10 ? this.currentLevel : 'max';
@@ -288,11 +291,11 @@ export default {
             Promise.all([this.getVideoTag(), this.getVideoSort(), this.getVideoRecommand(), this.getVideoList(), this.getAllGame()]).then(() => {
                 this.isReceive = true;
             });
+        } else {
+            this.getAllGame().then(() => {
+                this.isReceive = true;
+            });
         }
-
-        this.getAllGame().then(() => {
-            this.isReceive = true;
-        });
 
         if (!this.loginStatus) {
             return;
@@ -629,7 +632,6 @@ export default {
 }
 
 .mcenter-func-wrap {
-    display: none;
     width: 100%;
     transition: all 0.5s;
 
@@ -760,5 +762,9 @@ export default {
     &.is-full {
         width: 100%;
     }
+}
+
+.wrap-display {
+    display: none;
 }
 </style>
