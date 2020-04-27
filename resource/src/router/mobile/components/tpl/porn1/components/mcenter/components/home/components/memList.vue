@@ -441,7 +441,7 @@ export default {
   }
 
   &.active {
-    background-color: #32db64;
+    background-color: #7F877B;
 
     > span {
       display: block;
