@@ -21,10 +21,16 @@
           />
         </div>
 
-        <div v-if="processType !== 'earn' && playingCueTime" class="circle_box">
-          <div
-            :class="[$style['circle_loader'], { [$style['pause']]: isPause }]"
-          ></div>
+        <div
+          v-if="processType !== 'earn' && playingCueTime"
+          class="circle_container"
+        >
+          <div :class="`circle_loader ${isPause ? 'pause' : ''}`">
+            <div id="halfclip">
+              <div class="halfcircle" id="clipped"></div>
+            </div>
+            <div class="halfcircle" id="fixed"></div>
+          </div>
         </div>
 
         <span v-if="processType === 'earn'" :class="$style['earn']">
@@ -110,6 +116,7 @@ export default {
     },
     // 收到playing跑一次進度動畫
     playCueTime(play) {
+      console.log(play)
       if (play) { this.playingCueTime = play; return; }
       if (this.playingCueTime) { return }
       this.playingCueTime = true;
@@ -129,3 +136,116 @@ export default {
 };
 </script>
 <style src="../index.scss" lang="scss" module></style>
+<style lang="scss" scoped>
+.circle_container {
+  width: 18px;
+  height: 18px;
+  position: absolute;
+}
+
+.circle_loader {
+  position: absolute;
+  width: 18px;
+  height: 18px;
+
+  &.pause {
+    -webkit-animation-play-state: paused;
+    -moz-animation-play-state: paused;
+    -o-animation-play-state: paused;
+    animation-play-state: paused;
+  }
+}
+
+#halfclip {
+  width: 50%;
+  height: 100%;
+  right: 0px;
+  position: absolute;
+  overflow: hidden;
+  transform-origin: left center;
+  animation: cliprotate 60s steps(2) infinite;
+  -webkit-animation: cliprotate 60s steps(2) infinite;
+}
+
+.halfcircle {
+  box-sizing: border-box;
+  height: 100%;
+  right: 0px;
+  position: absolute;
+  border: solid 2px transparent;
+  border-top-color: #ffd628;
+  border-left-color: #ffd628;
+  border-radius: 50%;
+}
+
+#clipped {
+  width: 200%;
+  animation: rotate 30s linear infinite;
+  -webkit-animation: rotate 30s linear infinite;
+}
+
+#fixed {
+  width: 100%;
+  transform: rotate(135deg);
+  animation: showfixed 60s steps(2) infinite;
+  -webkit-animation: showfixed 60s linear infinite;
+}
+
+@-webkit-keyframes cliprotate {
+  0% {
+    transform: rotate(0deg);
+  }
+
+  100% {
+    transform: rotate(360deg);
+  }
+}
+
+@keyframes cliprotate {
+  0% {
+    transform: rotate(0deg);
+  }
+
+  100% {
+    transform: rotate(360deg);
+  }
+}
+
+@-webkit-keyframes rotate {
+  0% {
+    transform: rotate(-45deg);
+  }
+
+  100% {
+    transform: rotate(135deg);
+  }
+}
+
+@keyframes rotate {
+  0% {
+    transform: rotate(-45deg);
+  }
+
+  100% {
+    transform: rotate(135deg);
+  }
+}
+
+@-webkit-keyframes showfixed {
+  0% {
+    opacity: 0;
+  }
+
+  49.9% {
+    opacity: 0;
+  }
+
+  50% {
+    opacity: 1;
+  }
+
+  100% {
+    opacity: 1;
+  }
+}
+</style>

@@ -175,8 +175,6 @@ $bouns_color6: #FFF07B;
         border-radius: 20px;
         margin: 0px 20px;
     }
-
-
 }
 
 .bouns-earn-wrap {
@@ -256,29 +254,6 @@ $bouns_color6: #FFF07B;
     }
 }
 
-.circle_loader {
-    border: 1.5px solid;
-    width: 20px;
-    height: 20px;
-    border-radius: 50%;
-    border-color: #ffd628 rgba(0, 0, 0, 0) rgba(0, 0, 0, 0);
-    animation: spin 60s linear infinite;
-    position: absolute;
-    margin: auto;
-    left: 0;
-    top: 0;
-    right: 0;
-    bottom: 0;
-
-    &.pause {
-        -webkit-animation-play-state: paused;
-        -moz-animation-play-state: paused;
-        -o-animation-play-state: paused;
-        animation-play-state: paused;
-    }
-}
-
-
 :global {
     @keyframes fade-in {
         0% {
@@ -325,12 +300,6 @@ $bouns_color6: #FFF07B;
         100% {
             display: flex;
             opacity: 0;
-        }
-    }
-
-    @keyframes spin {
-        100% {
-            transform: rotate(360deg);
         }
     }
 }
