@@ -153,7 +153,8 @@ export default {
     computed: {
         ...mapGetters({
             siteConfig: 'getSiteConfig',
-            loginStatus: 'getLoginStatus'
+            loginStatus: 'getLoginStatus',
+            memInfo: 'getMemInfo'
         }),
         isAllReady() {
             return this.isTypeSwiperCreated && this.isGameSwiperCreated;
@@ -208,7 +209,10 @@ export default {
             };
         },
         typeList() {
-            return [{ icon: 'Tv', name: '影片' }, ...this.allGame.map((game) => ({ icon: game.iconName, name: game.name }))];
+            if (this.isAdult) {
+                return [{ icon: 'Tv', name: '影片' }, ...this.allGame.map((game) => ({ icon: game.iconName, name: game.name }))];
+            }
+            return [...this.allGame.map((game) => ({ icon: game.iconName, name: game.name }))];
         },
         tagSwiper() {
             return this.$refs['tag-swiper'].$swiper;
@@ -257,6 +261,9 @@ export default {
         },
         vipLevel() {
             return this.currentLevel <= 10 ? this.currentLevel : 'max';
+        },
+        isAdult() {
+            return this.memInfo.config.content_rating && this.memInfo.user.content_rating;
         }
     },
     watch: {
@@ -277,7 +284,13 @@ export default {
         }
     },
     created() {
-        Promise.all([this.getVideoTag(), this.getVideoSort(), this.getVideoRecommand(), this.getVideoList(), this.getAllGame()]).then(() => {
+        if (this.isAdult) {
+            Promise.all([this.getVideoTag(), this.getVideoSort(), this.getVideoRecommand(), this.getVideoList(), this.getAllGame()]).then(() => {
+                this.isReceive = true;
+            });
+        }
+
+        this.getAllGame().then(() => {
             this.isReceive = true;
         });
 
