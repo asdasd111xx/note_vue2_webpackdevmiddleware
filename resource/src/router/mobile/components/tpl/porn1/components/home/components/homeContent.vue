@@ -2,29 +2,36 @@
     <div
         v-if="isReceive"
         ref="home-wrap"
+        :style="{ height: `${wrapHeight}px` }"
         :class="[$style['home-wrap'], 'clearfix']"
     >
+        <!-- 左側分類 -->
         <div :class="$style['type-wrap']">
             <swiper ref="type-swiper" :options="typeOptions">
-                <template v-for="(type, index) in typeList">
-                    <swiper-slide :key="`type-${index}`" :class="[$style['type-swiper'], { 'swiper-no-swiping': !isCanSlide }]">
-                        <img :src="$getCdnPath(`/static/image/_new/platform/icon/icon_${type.icon}_h.png`)" :class="$style['image-active']" />
-                        <img :src="$getCdnPath(`/static/image/_new/platform/icon/icon_${type.icon}_n.png`)" :class="$style['image-normal']" />
-                        <div :class="$style['type-title']">{{ type.name }}</div>
-                    </swiper-slide>
-                </template>
+                <swiper-slide
+                    v-for="(type, index) in typeList"
+                    :key="`type-${index}`"
+                    :class="$style['type-swiper']"
+                >
+                    <img v-if="selectedIndex === index" :src="$getCdnPath(`/static/image/_new/platform/icon/icon_${type.icon}_h.png`)" />
+                    <img v-else :src="$getCdnPath(`/static/image/_new/platform/icon/icon_${type.icon}_n.png`)" />
+                    <div :class="[$style['type-title'], { [$style.active]:selectedIndex === index }]">{{ type.name }}</div>
+                </swiper-slide>
             </swiper>
         </div>
-        <div v-if="isTypeSwiperCreated" :class="$style['all-game-wrap']">
+        <!-- 右側內容 -->
+        <div :class="$style['all-game-wrap']">
+            <!-- 上方功能列 -->
             <div :class="$style['top-wrap']">
-                <div :class="[$style['video-tag-wrap'], 'clearfix', {[$style['wrap-display']]: !isAdult}]">
+                <!-- 影片分類 -->
+                <div v-if="isAdult && selectedIndex === 0" :class="[$style['video-tag-wrap'], 'clearfix']">
                     <div :class="$style['btn-search']" @click="$router.push({ name: 'search' })">
                         <img :src="$getCdnPath('/static/image/_new/common/icon_search.png')" />
                     </div>
                     <div :class="[$style['video-tag'], 'clearfix']">
                         <swiper ref="tag-swiper" :options="tagOptions">
                             <swiper-slide v-for="(tag, index) in videoTag" :key="`tag-${index}`">
-                                <div :class="{ [$style.active]: tag.id === videoType.id }" @click="onVideoTypeChange(index)">{{ tag.title }}</div>
+                                <div :class="{ [$style.active]: tag.id === videoType.id }" @click="onChangeVideoType(index)">{{ tag.title }}</div>
                             </swiper-slide>
                         </swiper>
                     </div>
@@ -33,11 +40,12 @@
                     </div>
                     <div v-if="isShowAllTag" :class="[$style['all-tag-wrap'], 'clearfix']">
                         <template v-for="(tag, index) in videoTag">
-                            <div :key="`all-tag-${index}`" @click="onVideoTypeChange(index)">{{ tag.title }}</div>
+                            <div :key="`all-tag-${index}`" @click="onChangeVideoType(index)">{{ tag.title }}</div>
                         </template>
                     </div>
                 </div>
-                <div :class="[$style['mcenter-func-wrap'], 'clearfix', {[$style['wrap-display']]: isAdult}]">
+                <!-- 會員中心連結 -->
+                <div v-else :class="[$style['mcenter-func-wrap'], 'clearfix']">
                     <div
                         v-for="(info, index) in mcenterList"
                         :key="`mcenter-${index}`"
@@ -55,63 +63,58 @@
                     </div>
                 </div>
             </div>
-            <div v-show="isGameSwiperCreated" :class="$style['game-list-wrap']">
-                <swiper
-                    ref="game-swiper"
-                    :options="gameOptions"
-                    :style="style"
-                >
-                    <template v-for="(info, index) in allGameList">
-                        <swiper-slide
-                            v-if="info.isVideo"
-                            :key="`video-wrap-${index}`"
-                        >
+            <!-- 下方影片與遊戲 -->
+            <div
+                ref="game-wrap"
+                :class="[$style['game-list-wrap'], 'clearfix']"
+                :style="{ height: `${wrapHeight - 50}px` }"
+                @touchstart="onTouchStart"
+                @touchmove="onTouchMove"
+                @touchend="onTouchEnd"
+            >
+                <!-- 影片 -->
+                <template v-if="currentGame.isVideo">
+                    <div
+                        v-for="(videoData, i) in currentGame.data"
+                        :key="`video-type-${i}`"
+                        :class="$style['video-list-wrap']"
+                    >
+                        <div :class="[$style['video-type'], 'clearfix']">
+                            <div :class="$style['type-name']">{{ videoData.name }}</div>
+                            <div :class="$style['btn-more']" @click="$router.push({ name: 'videoList', query: { tagId: videoType.id, sortId: videoData.id || 0 } })">更多</div>
+                        </div>
+                        <div :class="['video-wrap', 'clearfix']">
                             <div
-                                v-for="(videoData, i) in info.data"
-                                :key="`video-type-${i}`"
-                                :class="$style['video-list-wrap']"
+                                v-for="video in videoData.list"
+                                :key="`video-${video.id}`"
+                                :href="`/mobile/videoPlay/${video.id}`"
+                                :class="$style.video"
+                                @click="$router.push({ name: 'videoPlay', params: { id: video.id } })"
                             >
-                                <div :class="[$style['video-type'], 'clearfix']">
-                                    <div :class="$style['type-name']">{{ videoData.name }}</div>
-                                    <a :href="`/mobile/videoList?tagId=${videoType.id}&sortId=${videoData.id || 0}`" :class="$style['btn-more']">更多</a>
-                                </div>
-                                <div :class="['video-wrap', 'clearfix']">
-                                    <a
-                                        v-for="video in videoData.list"
-                                        :key="`video-${video.id}`"
-                                        :href="`/mobile/videoPlay/${video.id}`"
-                                        :class="$style.video"
-                                    >
-                                        <img :src="video.image" />
-                                        <div>{{ video.title }}</div>
-                                    </a>
-                                </div>
+                                <img :src="video.image" />
+                                <div>{{ video.title }}</div>
                             </div>
-                        </swiper-slide>
-                        <swiper-slide
-                            v-else
-                            :key="`game-wrap-${index}`"
-                            class="clearfix"
-                        >
-                            <div
-                                v-for="(game, i) in info.vendors"
-                                :key="`game-${i}`"
-                                :class="[$style.game, { [$style['is-full']]: game.imageType > 0 }]"
-                                @click="onOpenGame(game)"
-                            >
-                                <img :src="game.image" />
-                                <span v-if="!['D', 'R'].includes(game.type) && game.name">{{ game.name }}</span>
-                            </div>
-                        </swiper-slide>
-                    </template>
-                </swiper>
+                        </div>
+                    </div>
+                </template>
+                <!-- 遊戲 -->
+                <template v-else>
+                    <div
+                        v-for="(game, i) in currentGame.vendors"
+                        :key="`game-${i}`"
+                        :class="[$style.game, { [$style['is-full']]: game.imageType > 0 }]"
+                        @click="onOpenGame(game)"
+                    >
+                        <img :src="game.image" />
+                        <span v-if="!['D', 'R'].includes(game.type) && game.name">{{ game.name }}</span>
+                    </div>
+                </template>
             </div>
         </div>
     </div>
 </template>
 
 <script>
-/* global $ */
 import { mapGetters } from 'vuex';
 import axios from 'axios';
 import querystring from 'querystring';
@@ -129,10 +132,12 @@ export default {
     data() {
         return {
             isReceive: false,
-            isTypeSwiperCreated: false,
-            isGameSwiperCreated: false,
-            isCanSlide: false,
             isShowAllTag: false,
+            isSliding: false,
+            hasScrollBar: false,
+            startTouchY: 0,
+            slideDirection: '',
+            slideStatus: '',
             wrapHeight: 0,
             videoTag: [],
             videoSort: [],
@@ -140,6 +145,7 @@ export default {
             videoList: [],
             allGame: [],
             videoType: { id: 0, title: '' },
+            selectedIndex: 0,
             currentLevel: 0,
             mcenterList: [
                 { name: 'deposit', text: '充值' },
@@ -156,11 +162,12 @@ export default {
             loginStatus: 'getLoginStatus',
             memInfo: 'getMemInfo'
         }),
-        isAllReady() {
-            return this.isTypeSwiperCreated && this.isGameSwiperCreated;
+        isAdult() {
+            return this.memInfo.config.content_rating && this.memInfo.user.content_rating;
         },
-        style() {
-            return { height: `${this.wrapHeight}px` };
+        typeList() {
+            const adultVideo = this.isAdult ? [{ icon: 'Tv', name: '影片' }] : [];
+            return [...adultVideo, ...this.allGame.map((game) => ({ icon: game.iconName, name: game.name }))];
         },
         typeSwiper() {
             return this.$refs['type-swiper'].$swiper;
@@ -169,50 +176,18 @@ export default {
             return {
                 loop: true,
                 freeMode: true,
+                mousewheel: true,
                 slideToClickedSlide: true,
                 preventInteractionOnTransition: true,
                 loopAdditionalSlides: this.typeList.length,
                 height: 63,
                 direction: 'vertical',
                 on: {
-                    init: () => {
-                        this.onChangeTypeSwiperStatus();
-                    },
                     click: () => {
-                        if (!this.isCanSlide) {
-                            return;
-                        }
-
-                        if (this.typeSwiper.realIndex === 0 && this.isAdult) {
-                            $(`.${this.$style['mcenter-func-wrap']}`).hide();
-                            $(`.${this.$style['video-tag-wrap']}`).show();
-                            return;
-                        }
-                        $(`.${this.$style['video-tag-wrap']}`).hide();
-                        $(`.${this.$style['mcenter-func-wrap']}`).show();
-                    },
-                    slideChange: () => {
-                        if (!this.isCanSlide) {
-                            return;
-                        }
-
-                        if (this.typeSwiper.realIndex === 0 && this.isAdult) {
-                            $(`.${this.$style['mcenter-func-wrap']}`).hide();
-                            $(`.${this.$style['video-tag-wrap']}`).show();
-                            return;
-                        }
-
-                        $(`.${this.$style['video-tag-wrap']}`).hide();
-                        $(`.${this.$style['mcenter-func-wrap']}`).show();
+                        this.onChangeSelectInedx(this.typeSwiper.realIndex);
                     }
                 }
             };
-        },
-        typeList() {
-            if (this.isAdult) {
-                return [{ icon: 'Tv', name: '影片' }, ...this.allGame.map((game) => ({ icon: game.iconName, name: game.name }))];
-            }
-            return [...this.allGame.map((game) => ({ icon: game.iconName, name: game.name }))];
         },
         tagSwiper() {
             return this.$refs['tag-swiper'].$swiper;
@@ -224,28 +199,13 @@ export default {
                 slideClass: this.$style.tag
             };
         },
-        gameSwiper() {
-            return this.$refs['game-swiper'].$swiper;
-        },
-        gameOptions() {
-            return {
-                loop: true,
-                freeMode: true,
-                autoHeight: true,
-                preventInteractionOnTransition: true,
-                slidesPerView: 'auto',
-                direction: 'vertical',
-                thumbs: {
-                    swiper: this.typeSwiper
-                },
-                on: {
-                    init: () => {
-                        this.onChangeGameSwiperStatus();
-                    }
-                }
-            };
-        },
         allGameList() {
+            const gameList = this.allGame.map((game) => ({ ...game, isVideo: false }));
+
+            if (!this.isAdult) {
+                return [...gameList];
+            }
+
             const videoRecommand = this.videoType.id === 0 ? [...this.videoRecommand] : [];
             const videoList = this.videoSort.reduce((init, sort) => {
                 const data = find(this.videoList, (video) => video.id === sort.id);
@@ -256,46 +216,33 @@ export default {
 
                 return [...init, { ...data }];
             }, [...videoRecommand]);
-            const gameList = this.allGame.map((game) => ({ ...game, isVideo: false }));
-            if (this.isAdult) {
-                return [{ isVideo: true, data: videoList }, ...gameList];
-            }
-            return [...gameList];
+
+            return [{ isVideo: true, data: videoList }, ...gameList];
+        },
+        currentGame() {
+            return { ...this.allGameList[this.selectedIndex] };
         },
         vipLevel() {
             return this.currentLevel <= 10 ? this.currentLevel : 'max';
-        },
-        isAdult() {
-            return this.memInfo.config.content_rating && this.memInfo.user.content_rating;
         }
     },
     watch: {
-        isAllReady() {
-            // 故意使用setTimeout等首頁輪播圖載入完畢，才能正確取得offsetTop
-            setTimeout(() => {
-                $(window).resize();
-
-                this.$nextTick(() => {
-                    this.typeSwiper.mousewheel.enable();
-                    this.gameSwiper.mousewheel.enable();
-                    this.isCanSlide = true;
-                });
-            }, 1000);
-        },
         videoType() {
             this.getVideoList();
         }
     },
-    created() {
-        if (this.isAdult) {
-            Promise.all([this.getVideoTag(), this.getVideoSort(), this.getVideoRecommand(), this.getVideoList(), this.getAllGame()]).then(() => {
-                this.isReceive = true;
+    mounted() {
+        window.addEventListener('resize', this.onResize);
+
+        const params = this.isAdult ? [this.getVideoTag(), this.getVideoSort(), this.getVideoRecommand(), this.getVideoList(), this.getAllGame()] : [this.getAllGame()];
+
+        Promise.all(params).then(() => {
+            this.isReceive = true;
+
+            this.$nextTick(() => {
+                window.dispatchEvent(new Event('resize'));
             });
-        } else {
-            this.getAllGame().then(() => {
-                this.isReceive = true;
-            });
-        }
+        });
 
         if (!this.loginStatus) {
             return;
@@ -311,13 +258,11 @@ export default {
             }
         });
     },
-    mounted() {
-        $(window).on('resize', this.onResize);
-    },
     beforeDestroy() {
-        $(window).off('resize', this.onResize);
+        window.removeEventListener('resize', this.onResize);
     },
     methods: {
+        // 取得影片分類
         getVideoTag() {
             return axios({
                 method: 'get',
@@ -335,6 +280,7 @@ export default {
                 this.videoTag = [{ id: 0, title: '全部' }, ...response.data.result];
             });
         },
+        // 取得影片排序
         getVideoSort() {
             return axios({
                 method: 'get',
@@ -352,6 +298,7 @@ export default {
                 this.videoSort = [...response.data.result];
             });
         },
+        // 取得熱門推薦影片
         getVideoRecommand() {
             return axios({
                 method: 'get',
@@ -369,6 +316,7 @@ export default {
                 this.videoRecommand = [...response.data.result];
             });
         },
+        // 取得所有影片(熱門推薦除外)
         getVideoList() {
             return axios({
                 method: 'post',
@@ -387,6 +335,7 @@ export default {
                 this.videoList = [...response.data.result];
             });
         },
+        // 取得所有遊戲
         getAllGame() {
             return axios({
                 method: 'get',
@@ -405,15 +354,84 @@ export default {
             });
         },
         onResize() {
-            this.wrapHeight = window.innerHeight - this.$refs['home-wrap'].offsetTop - 60 - 50;
+            // 計算外框高度
+            this.wrapHeight = window.innerHeight - this.$refs['home-wrap'].offsetTop - 60;
         },
-        onChangeTypeSwiperStatus() {
-            this.isTypeSwiperCreated = true;
+        onTouchStart(e) {
+            if (this.isSliding) {
+                return;
+            }
+
+            // 取得touch起始位置
+            this.startTouchY = e.touches[0].clientY;
+            // 檢查是否有scroll bar
+            this.hasScrollBar = this.$refs['game-wrap'].scrollHeight > this.$refs['game-wrap'].clientHeight;
         },
-        onChangeGameSwiperStatus() {
-            this.isGameSwiperCreated = true;
+        onTouchMove(e) {
+            if (this.isSliding) {
+                return;
+            }
+
+            // 單純點擊不做切換
+            if (this.startTouchY === e.touches[0].clientY) {
+                this.slideDirection = '';
+                return;
+            }
+
+            // 判斷滑動方向
+            this.slideDirection = this.startTouchY > e.touches[0].clientY ? 'down' : 'up';
         },
-        onVideoTypeChange(index) {
+        onTouchEnd() {
+            if (this.isSliding) {
+                return;
+            }
+
+            if (this.slideDirection === '') {
+                return;
+            }
+
+            // 無scroll bar
+            if (!this.hasScrollBar) {
+                if (this.slideDirection === 'up') {
+                    const index = this.selectedIndex <= 0 ? this.typeList.length - 1 : this.selectedIndex - 1;
+                    this.onChangeSelectInedx(index);
+                    return;
+                }
+                const index = this.selectedIndex >= this.typeList.length - 1 ? 0 : this.selectedIndex + 1;
+                this.onChangeSelectInedx(index);
+                return;
+            }
+
+            // 以下為有scroll bar
+            if (this.slideDirection === 'up') {
+                if (this.$refs['game-wrap'].scrollTop > 0) {
+                    return;
+                }
+                const index = this.selectedIndex <= 0 ? this.typeList.length - 1 : this.selectedIndex - 1;
+                this.onChangeSelectInedx(index);
+                return;
+            }
+
+            if (this.$refs['game-wrap'].scrollHeight > this.$refs['game-wrap'].scrollTop + this.$refs['game-wrap'].clientHeight) {
+                return;
+            }
+
+            const index = this.selectedIndex >= this.typeList.length - 1 ? 0 : this.selectedIndex + 1;
+            this.onChangeSelectInedx(index);
+        },
+        // 切換當前分類
+        onChangeSelectInedx(index) {
+            this.isSliding = true;
+            this.slideDirection = '';
+            this.selectedIndex = index;
+            this.typeSwiper.slideToLoop(index);
+
+            this.$nextTick(() => {
+                this.isSliding = false;
+            });
+        },
+        // 切換當前影片分類
+        onChangeVideoType(index) {
             this.onShowAllTag(false);
             this.videoType = { ...this.videoTag[index] };
 
@@ -421,9 +439,11 @@ export default {
                 this.tagSwiper.slideTo(index);
             });
         },
+        // 開啟影片分類選單
         onShowAllTag(value) {
             this.isShowAllTag = value;
         },
+        // 前往會員中心
         onGoToMcenter(path) {
             if (!this.loginStatus) {
                 this.$router.push('/mobile/login');
@@ -436,6 +456,7 @@ export default {
 
             this.$router.push(`/mobile/mcenter/${path}`);
         },
+        // 開啟遊戲
         onOpenGame(game) {
             // Game Type
             // L => 遊戲大廳
@@ -448,7 +469,7 @@ export default {
                 return;
             }
 
-            if ([3, 5, 6].includes(game.kind) && game.code === '') {
+            if (game.type === 'L') {
                 const trans = { 3: 'casino', 5: 'card', 6: 'mahjong' };
                 this.$router.push(`/mobile/${trans[game.kind]}/${game.vendor}`);
                 return;
@@ -476,49 +497,24 @@ export default {
 </script>
 
 <style lang="scss" module>
-:global(.swiper-slide-thumb-active) {
-    .image-active {
-        display: block;
-    }
-
-    .image-normal {
-        display: none;
-    }
-
-    .type-title {
-        color: #FFF;
-    }
-}
-
 .home-wrap {
     overflow: hidden;
     padding: 0 18px;
 }
 
 .type-wrap {
-    overflow: hidden;
     float: left;
     width: 63px;
-    height: 100%;
 }
 
 .type-swiper {
     position: relative;
     width: 63px;
-    height: 63px;
 
     > img {
+        display: block;
         width: 100%;
-        height: 100%;
     }
-}
-
-.image-active {
-    display: none;
-}
-
-.image-normal {
-    display: block;
 }
 
 .type-title {
@@ -529,13 +525,15 @@ export default {
     color: #A6A9B2;
     font-size: 12px;
     text-align: center;
+
+    &.active {
+        color: #FFF;
+    }
 }
 
 .all-game-wrap {
-    overflow: hidden;
     float: right;
     width: calc(100% - 63px);
-    height: 100%;
 }
 
 .top-wrap {
@@ -634,10 +632,6 @@ export default {
 .mcenter-func-wrap {
     width: 100%;
     transition: all 0.5s;
-
-    &.show {
-        display: block;
-    }
 }
 
 .mcenter-wrap {
@@ -661,7 +655,7 @@ export default {
 }
 
 .game-list-wrap {
-    height: calc(100% - 50px);
+    overflow-y: auto;
 }
 
 .video-list-wrap {
@@ -762,9 +756,5 @@ export default {
     &.is-full {
         width: 100%;
     }
-}
-
-.wrap-display {
-    display: none;
 }
 </style>

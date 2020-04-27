@@ -35,7 +35,7 @@ export const site_69 = {
     MOBILE_WEB_TPL: 'porn1', // 手機網頁版模版
     IS_PWA: true,
     BBOS_DOMIAN: 'https://bbos.canarycherrytart.com/elibomApi/WebService',
-    YABO_API_DOMAIN: 'https://yaboapi.bbin-asia.com/api',
+    YABO_API_DOMAIN: 'https://yaboapi.canarycherrytart.com/api',
     ACTIVES_BOUNS_WEBSOCKET: 'wss://yaboapi.bbin-asia.com/xxx/promosocket'
 };
 
