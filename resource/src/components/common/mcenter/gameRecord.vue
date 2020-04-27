@@ -3,34 +3,30 @@
         <slot
             :inq-1st="inq1st"
             :inq-2nd="inq2nd"
-            :inq-3rd="inq3rd"
             :has-search="hasSearch"
-            :is-show-tips="isShowTips"
             :search-tabs="searchTabs"
             :current-condition="currentCondition"
             :game-list="gameList"
             :current-page="currentPage"
             :sort="sort"
-            :page="page"
-            :total-page="totalPage"
-            :count-of-page="showNum"
-            :update-page="updatePage"
             :change-search-condition="changeSearchCondition"
             :on-sort="onSort"
             :on-search="onSearch"
             :on-search-bet="onSearchBet"
-            :on-search-detail="onSearchDetail"
+            :show-infinite="showInfinite"
+            :infinite-handler="infiniteHandler"
+            :control-1st-data="control1stData"
         />
     </div>
 </template>
 
 <script>
-import Vue from 'vue';
-import { mapGetters } from 'vuex';
-import EST from '@/lib/EST';
-import gameName from '@/lib/game_name';
-import ajax from '@/lib/ajax';
-import * as apis from '@/config/api';
+import Vue from "vue";
+import { mapGetters } from "vuex";
+import EST from "@/lib/EST";
+import gameName from "@/lib/game_name";
+import ajax from "@/lib/ajax";
+import * as apis from "@/config/api";
 
 export default {
     props: {
@@ -49,41 +45,33 @@ export default {
         setHeaderTitle: {
             type: Function,
             required: true
+        },
+        setTabState: {
+            type: Function,
+            required: true
         }
     },
     data() {
         return {
             hasSearch: false,
-            isShowTips: false,
-            currentCondition: 'today',
-            currentPage: '', // 當前所呈現的頁面內容
-            selectedUser: '', // 第一層所選擇的使用者
-            selectedVendor: '', // 第二層所選的遊戲 vendor
-            selectedKind: '', // 第二層所選擇的遊戲 kind
-            currentAcc: '',
-            currentGame: '',
-            currentStart: '',
-            currentEnd: '',
-            sortBy: { // 排序欄位
-                main: 'payoff',
-                bet: 'payoff',
-                detail: 'payoff'
+            currentCondition: "today",
+            currentPage: "", // 當前所呈現的頁面內容
+            selectedUser: "", // 第一層所選擇的使用者
+            selectedVendor: "", // 第二層所選的遊戲 vendor
+            selectedKind: "", // 第二層所選擇的遊戲 kind
+            currentAcc: "",
+            currentGame: "",
+            currentStart: "",
+            currentEnd: "",
+            sortBy: {
+                // 排序欄位
+                main: "payoff",
+                bet: "payoff",
             },
-            sortWay: { // 排序方法
-                main: 'asc',
-                bet: 'asc',
-                detail: 'asc'
-            },
-            showNum: 10,
-            page: {
-                main: '1',
-                bet: '1',
-                detail: '1'
-            },
-            totalPage: {
-                main: 1,
-                bet: 1,
-                detail: 1
+            sortWay: {
+                // 排序方法
+                main: "asc",
+                bet: "asc",
             },
             inq1st: {
                 isReceive: false,
@@ -96,41 +84,51 @@ export default {
                 subTotal: {},
                 total: {}
             },
-            inq3rd: {
-                list: [],
-                subTotal: {},
-                total: {}
+            isLoading: false,
+            showInfinite: true,
+            mainNoData: true,
+            maxResults: {
+                main: 10,
+                bet: 10
+            },
+            showPage: {
+                main: 0,
+                bet: 0
             }
         };
     },
     computed: {
         ...mapGetters({
-            gameData: 'getGameData'
+            gameData: "getGameData"
         }),
         searchTabs() {
             return [
                 {
-                    key: 'range',
-                    name: this.$text('S_SEARCH_FOR', '搜索')
+                    key: "range",
+                    name: this.$text("S_SEARCH_FOR", "搜索")
                 },
                 {
-                    key: 'today',
-                    name: this.$text('S_TODDAY', '今日')
+                    key: "today",
+                    name: this.$text("S_TODDAY", "今日")
                 },
                 {
-                    key: 'yesterday',
-                    name: this.$text('S_YESTERDAY', '昨日')
+                    key: "yesterday",
+                    name: this.$text("S_YESTERDAY", "昨日")
                 }
             ];
         },
         gameList() {
             return [
-                { value: '', text: this.$text('S_ALL') },
+                { value: "", text: this.$text("S_ALL") },
                 ...Object.keys(this.gameData)
-                    .filter((key) => this.gameData[key].switch === 'Y')
+                    .filter(key => this.gameData[key].switch === "Y")
                     .reduce((init, key) => {
                         // 過濾重複的 vendor
-                        if (init.some((info) => info.value === this.gameData[key].vendor)) {
+                        if (
+                            init.some(
+                                info => info.value === this.gameData[key].vendor
+                            )
+                        ) {
                             return init;
                         }
 
@@ -156,36 +154,40 @@ export default {
                 this.sortWay[this.currentPage] = value.way;
 
                 switch (this.currentPage) {
-                    case 'main':
+                    case "main":
                         this.onInquire();
                         break;
-                    case 'bet':
+                    case "bet":
                         this.onInquireBet();
-                        break;
-                    case 'detail':
-                        this.onInquireDetail();
                         break;
                     default:
                         break;
                 }
             }
+        },
+        control1stData() {
+            return this.inq1st.list.filter(
+                (item, index) =>
+                    index < this.maxResults.main * this.showPage.main
+            );
         }
     },
     watch: {
         // eslint-disable-next-line
-        '$route.params.page': {
+        "$route.params.page": {
             handler(newValue) {
                 this.currentPage = newValue;
 
                 switch (newValue) {
-                    case 'main':
-                        this.setHeaderTitle(this.$text('S_TEAM_CENTER', '我的推广'));
+                    case "main":
+                        this.showInfinite = false;
+                        this.setHeaderTitle(
+                            this.$text("S_TEAM_CENTER", "我的推广")
+                        );
                         break;
-                    case 'bet':
+                    case "bet":
+                        this.setTabState(false);
                         this.setHeaderTitle(this.selectedUser);
-                        break;
-                    case 'detail':
-                        this.setHeaderTitle(gameName(this.selectedVendor, this.selectedKind));
                         break;
                     default:
                         break;
@@ -202,26 +204,7 @@ export default {
         this.onInquire();
     },
     methods: {
-        updatePage(target, value) {
-            this.$set(this.page, target, value);
-            switch (target) {
-                case 'main':
-                    this.onInquire();
-                    break;
-                case 'bet':
-                    this.onInquireBet();
-                    break;
-                case 'detail':
-                    this.onInquireDetail();
-                    break;
-                default:
-                    break;
-            }
-        },
         changeSearchCondition(value) {
-            if (this.isShowTips) {
-                return;
-            }
 
             this.inq1st = {
                 isReceive: false,
@@ -230,19 +213,21 @@ export default {
                 total: {}
             };
             this.currentCondition = value;
-            this.hasSearch = value === 'range';
+            this.hasSearch = value === "range";
 
-            if (value === 'range') {
+            if (value === "range") {
                 return;
             }
 
-            const now = EST(new Date(), '', true);
-            const range = value === 'today' ? 0 : -1;
-            const date = Vue.moment(now).add(range, 'days').format('YYYY-MM-DD');
+            const now = EST(new Date(), "", true);
+            const range = value === "today" ? 0 : -1;
+            const date = Vue.moment(now)
+                .add(range, "days")
+                .format("YYYY-MM-DD");
 
-            this.$emit('update:inqGame', '');
-            this.$emit('update:inqStart', date);
-            this.$emit('update:inqEnd', date);
+            this.$emit("update:inqGame", "");
+            this.$emit("update:inqStart", date);
+            this.$emit("update:inqEnd", date);
 
             this.currentGame = this.inqGame;
             this.currentStart = this.inqStart;
@@ -260,72 +245,86 @@ export default {
             this.onInquire();
         },
         onInquire() {
-            return ajax({
-                method: 'get',
+            this.showInfinite = false;
+            this.isLoading = true;
+            this.showPage.main = 0;
+
+            ajax({
+                method: "get",
                 url: apis.API_FRIEND_WAGER_REPORT,
                 params: {
                     username: this.currentAcc,
                     vendor: this.currentGame,
-                    start_at: Vue.moment(this.currentStart).format('YYYY-MM-DD 00:00:00-04:00'),
-                    end_at: Vue.moment(this.currentEnd).format('YYYY-MM-DD 23:59:59-04:00'),
+                    start_at: Vue.moment(this.currentStart).format(
+                        "YYYY-MM-DD 00:00:00-04:00"
+                    ),
+                    end_at: Vue.moment(this.currentEnd).format(
+                        "YYYY-MM-DD 23:59:59-04:00"
+                    ),
                     sort: this.sortBy.main,
-                    order: this.sortWay.main,
-                    first_result: (this.page.main - 1) * this.showNum,
-                    max_results: this.showNum
-                }
-            }).then((response) => {
-                if (response.result === 'ok') {
-                    this.hasSearch = false;
-                    this.$router.push({ params: { page: 'main' } });
+                    order: this.sortWay.main
+                },
+                success: response => {
+                    if (response.result === "ok") {
+                        this.hasSearch = false;
+                        this.$router.push({ params: { page: "main" } });
 
-                    if (!response.ret.length) {
-                        this.inq1st = {
-                            isReceive: true,
-                            list: [],
-                            subTotal: {},
-                            total: {}
-                        };
-                        return;
-                    }
+                        this.showInfinite = true;
+                        if (response.ret.length === 0) {
+                            this.inq1st = {
+                                isReceive: false,
+                                list: [],
+                                subTotal: {},
+                                total: {}
+                            };
+                            this.mainNoData = true;
+                            return;
+                        }
 
-                    this.$nextTick(() => {
-                        this.totalPage[this.currentPage] = Math.ceil(response.pagination.total / this.showNum);
+                        this.isLoading = false;
                         this.inq1st = {
                             isReceive: true,
                             list: response.ret,
                             subTotal: response.sub_total,
                             total: response.total
                         };
-                    });
+                        this.mainNoData = false;
+                    }
                 }
             });
         },
         onSearchBet(username) {
             this.selectedUser = username;
-            this.page.bet = '1';
+            this.showPage.bet = "1";
             this.onInquireBet();
         },
         onInquireBet() {
             ajax({
-                method: 'get',
+                method: "get",
                 url: apis.API_AGCENTER_RECORD_MEMBER,
                 params: {
                     username: this.selectedUser,
-                    start_at: Vue.moment(this.currentStart).format('YYYY-MM-DD 00:00:00-04:00'),
-                    end_at: Vue.moment(this.currentEnd).format('YYYY-MM-DD 23:59:59-04:00'),
+                    start_at: Vue.moment(this.currentStart).format(
+                        "YYYY-MM-DD 00:00:00-04:00"
+                    ),
+                    end_at: Vue.moment(this.currentEnd).format(
+                        "YYYY-MM-DD 23:59:59-04:00"
+                    ),
                     vendor: this.currentGame,
                     sort: this.sortBy.bet,
                     order: this.sortWay.bet,
-                    first_result: (this.page.bet - 1) * this.showNum,
-                    max_results: this.showNum
+                    first_result: (this.showPage.bet - 1) * this.maxResults.bet,
+                    max_results: this.maxResults.bet
                 }
-            }).then((response) => {
-                if (response.result === 'ok') {
-                    this.$router.push({ params: { page: 'bet' } });
+            }).then(response => {
+                if (response.result === "ok") {
+                    this.$router.push({ params: { page: "bet" } });
                     this.$nextTick(() => {
-                        this.totalPage[this.currentPage] = Math.ceil(response.pagination.total / this.showNum);
+                        // this.totalPage[this.currentPage] = Math.ceil(
+                        //     response.pagination.total / this.maxResults.bet
+                        // );
                         this.inq2nd = {
-                            list: response.ret.map((info) => ({
+                            list: response.ret.map(info => ({
                                 ...info,
                                 name: gameName(info.vendor_name, info.kind)
                             })),
@@ -336,68 +335,37 @@ export default {
                 }
             });
         },
-        onSearchDetail(vendor, kind) {
-            this.selectedVendor = vendor;
-            this.selectedKind = kind;
-            this.page.detail = '1';
-            this.onInquireDetail();
-        },
-        onInquireDetail() {
-            ajax({
-                method: 'get',
-                url: apis.API_FRIEND_RECORD_DETAIL,
-                params: {
-                    username: this.selectedUser,
-                    start_at: Vue.moment(this.currentStart).format('YYYY-MM-DD 00:00:00-04:00'),
-                    end_at: Vue.moment(this.currentEnd).format('YYYY-MM-DD 23:59:59-04:00'),
-                    vendor: this.selectedVendor,
-                    kind: this.selectedKind,
-                    sort: this.sortBy.detail,
-                    order: this.sortWay.detail,
-                    first_result: (this.page.detail - 1) * this.showNum,
-                    max_results: this.showNum
+        /**
+         * 捲動加載
+         * @param {object} $state - 套件提供的方法
+         * @see { @link https://peachscript.github.io/vue-infinite-loading/#!/ }
+         */
+        infiniteHandler($state) {
+            setTimeout(() => {
+                if (this.currentPage === "main") {
+                    if (this.inq1st.list.length === 0) {
+                        this.isLoading = false;
+                        $state.complete();
+                        return;
+                    }
+
+                    if (
+                        this.inq1st.list.length / this.maxResults.main >
+                        this.showPage.main
+                    ) {
+                        this.showPage.main += 1;
+                        $state.loaded();
+
+                        if (
+                            Math.ceil(
+                                this.inq1st.list.length / this.maxResults.main
+                            ) === this.showPage.main
+                        ) {
+                            $state.complete();
+                        }
+                    }
                 }
-            }).then((response) => {
-                if (response.result === 'ok') {
-                    const params = [];
-                    const list = [];
-
-                    // 請求遊戲名稱
-                    response.ret.forEach((info, index) => {
-                        params.push(ajax({
-                            method: 'get',
-                            url: `${apis.API_GET_VENDOR}/${this.selectedVendor}/game/list`,
-                            params: {
-                                kind: this.selectedKind,
-                                first_result: 0,
-                                max_results: 1,
-                                code: info.code,
-                                ignore_device: true
-                            },
-                            success: (res) => {
-                                list[index] = {
-                                    ...info,
-                                    name: res.ret[0].name
-                                };
-                            }
-                        }));
-                    });
-
-                    // 當所有 api 完成後再渲染
-                    Promise.all(params).then(() => {
-                        this.$router.push({ params: { page: 'detail' } });
-
-                        this.$nextTick(() => {
-                            this.totalPage[this.currentPage] = Math.ceil(response.pagination.total / this.showNum);
-                            this.inq3rd = {
-                                list,
-                                subTotal: response.total,
-                                total: response.sum
-                            };
-                        });
-                    });
-                }
-            });
+            }, 300);
         }
     }
 };
