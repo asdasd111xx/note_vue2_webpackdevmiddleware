@@ -35,16 +35,20 @@ export default {
             commissionList: [],
             pageTotal: null,
             allTotal: null,
-            recordCount: 10, // 每頁限制筆數
-            currentPage: '1', // 當前頁
-            totalPage: 0 // 總頁數
+            mainNoData: true,
+            showInfinite: true,
+            isLoading: false,
+            maxResults: 10,
+            showPage: 0
         };
+    },
+    computed: {
+        controlData() {
+            return this.commissionList.filter((item, index) => index < this.maxResults * this.showPage);
+        }
     },
     watch: {
         searchInfo() {
-            this.getListCommission();
-        },
-        currentPage() {
             this.getListCommission();
         }
     },
@@ -53,6 +57,10 @@ export default {
          * 取得佣金資料列表
          */
         getListCommission() {
+            this.showInfinite = false;
+            this.isLoading = true;
+            this.showPage = 0
+
             const { startTime, endTime, state } = this.searchInfo;
             // startTime, endTime初始值為日期格式，若使用者選擇日期後將會變成串格式
             const start = typeof (startTime) === 'string' ? parseISO(startTime) : startTime;
@@ -61,9 +69,7 @@ export default {
             const params = {
                 start_at: format(toDate(Date.parse(start)), 'yyyy-MM-dd'),
                 end_at: format(toDate(Date.parse(end)), 'yyyy-MM-dd'),
-                state,
-                max_results: this.recordCount,
-                first_result: (this.currentPage - 1) * this.recordCount
+                state
             };
             // 預設美東時間
             params.start_at += ' 00:00:00-04:00';
@@ -79,18 +85,21 @@ export default {
                 url: API_COMMISSION_LIST,
                 params,
                 success: (response) => {
-                    this.isReceive = true;
+                    this.showInfinite = true
 
-                    if (response.result !== 'ok') {
+                    if (response.result !== 'ok' || response.ret.length === 0) {
+                        this.commissionList = []; // 佣金資料列表
+                        this.mainNoData = true;
                         return;
                     }
 
-                    this.totalPage = Math.ceil(response.pagination.total / this.recordCount); // 計算資料會有幾頁，一頁最多十筆
+                    this.isLoading = false;
                     this.pageTotal = response.sub_total; // 小計
                     this.allTotal = response.total; // 總計
                     this.commissionList = response.ret; // 佣金資料列表
+                    this.mainNoData = false;
                 }
-            });
+            })
         },
         onSort(sortValue) {
             let orderstate = 'asc';
@@ -99,11 +108,34 @@ export default {
                 orderstate = this.order === 'asc' ? 'desc' : 'asc';
             }
 
-            this.currentPage = '1';
+            this.show = 1;
             this.sort = sortValue;
             this.order = orderstate;
 
             this.getListCommission();
+        },
+        /**
+         * 捲動加載
+         * @param {object} $state - 套件提供的方法
+         * @see { @link https://peachscript.github.io/vue-infinite-loading/#!/ }
+         */
+        infiniteHandler($state) {
+            setTimeout(() => {
+                if (this.commissionList.length === 0) {
+                    this.isLoading = false;
+                    $state.complete();
+                    return
+                }
+
+                if (this.commissionList.length / this.maxResults > this.showPage) {
+                    this.showPage += 1;
+                    $state.loaded();
+
+                    if (Math.ceil(this.commissionList.length / this.maxResults) === this.showPage) {
+                        $state.complete();
+                    }
+                }
+            }, 300)
         }
     }
 };

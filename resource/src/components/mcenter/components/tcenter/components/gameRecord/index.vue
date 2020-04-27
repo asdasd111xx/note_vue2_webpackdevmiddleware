@@ -33,15 +33,23 @@
                     <div
                         v-for="info in searchTabs"
                         :key="info.key"
-                        :class="[$style['search-tab'], { [$style.active]: currentCondition === info.key }]"
+                        :class="[
+                            $style['search-tab'],
+                            { [$style.active]: currentCondition === info.key }
+                        ]"
                         @click="changeSearchCondition(info.key)"
                     >
                         <span>{{ info.name }}</span>
                     </div>
                 </div>
-                <div v-show="hasSearch" :class="[$style['form-search'], 'clearfix']">
+                <div
+                    v-show="hasSearch"
+                    :class="[$style['form-search'], 'clearfix']"
+                >
                     <div :class="$style['field-game-wrap']">
-                        <div :class="$style.title">{{ $text('S_GAMETYPE2') }}</div>
+                        <div :class="$style.title">
+                            {{ $text("S_GAMETYPE2") }}
+                        </div>
                         <select v-model="inqGame" :class="$style.select">
                             <option
                                 v-for="info in gameList"
@@ -52,8 +60,15 @@
                             </option>
                         </select>
                     </div>
-                    <div :class="[$style['field-date-wrap'], $style['start-date']]">
-                        <div :class="$style.title">{{ $text('S_STARTED_DAY') }}</div>
+                    <div
+                        :class="[
+                            $style['field-date-wrap'],
+                            $style['start-date']
+                        ]"
+                    >
+                        <div :class="$style.title">
+                            {{ $text("S_STARTED_DAY") }}
+                        </div>
                         <input
                             v-model="inqStart"
                             :class="$style.date"
@@ -62,8 +77,12 @@
                             type="date"
                         />
                     </div>
-                    <div :class="[$style['field-date-wrap'], $style['end-date']]">
-                        <div :class="$style.title">{{ $text('S_END_DAY') }}</div>
+                    <div
+                        :class="[$style['field-date-wrap'], $style['end-date']]"
+                    >
+                        <div :class="$style.title">
+                            {{ $text("S_END_DAY") }}
+                        </div>
                         <input
                             v-model="inqEnd"
                             :class="$style.date"
@@ -73,7 +92,9 @@
                         />
                     </div>
                     <div :class="$style['field-search-wrap']">
-                        <div :class="$style['btn-search']" @click="onSearch">{{ $text('S_INQUIRE') }}</div>
+                        <div :class="$style['btn-search']" @click="onSearch">
+                            {{ $text("S_INQUIRE") }}
+                        </div>
                     </div>
                 </div>
                 <template v-if="currentPage === 'main' && inq1st.list.length">
@@ -85,15 +106,19 @@
                         @update:sort="onSort"
                         @onInquire="onSearchBet"
                     />
-                    <pagintaion
+                    <!-- <pagintaion
                         :class="$style.pagination"
                         :page="+page.main"
                         :total="totalPage.main"
-                        @update:page="(value) => { updatePage('main', `${value}`) }"
-                    />
+                        @update:page="
+                            value => {
+                                updatePage('main', `${value}`);
+                            }
+                        "
+                    /> -->
                 </template>
                 <template v-if="currentPage === 'bet' && inq2nd.list.length">
-                    <table-2nd
+                    <!-- <table-2nd
                         :list="inq2nd.list"
                         :sub-total="inq2nd.subTotal"
                         :total="inq2nd.total"
@@ -106,9 +131,14 @@
                         :page="+page.bet"
                         :total="totalPage.bet"
                         @update:page="(value) => { updatePage('bet', `${value}`) }"
-                    />
+
+                    /> -->
+                    <div :class="$style['no-data']">
+                        <img src="/static/image/_new/mcenter/no_data.png" />
+                        <p>{{ $text("S_NO_DATA_YET", "暂无资料") }}</p>
+                    </div>
                 </template>
-                <template v-if="currentPage === 'detail' && inq3rd.list.length">
+                <!-- <template v-if="currentPage === 'detail' && inq3rd.list.length">
                     <table-3rd
                         :list="inq3rd.list"
                         :sub-total="inq3rd.subTotal"
@@ -122,10 +152,17 @@
                         :total="totalPage.detail"
                         @update:page="(value) => { updatePage('detail', `${value}`) }"
                     />
-                </template>
-                <div v-if="currentPage === 'main' && inq1st.isReceive && !inq1st.list.length" :class="$style['no-data']">
-                    <img src="/static/image/mobile/mcenter/ic_nodata.png" />
-                    <div>{{ $text('S_NO_DATA_YET', '暂无资料') }}</div>
+                </template> -->
+                <div
+                    v-if="
+                        currentPage === 'main' &&
+                            inq1st.isReceive &&
+                            !inq1st.list.length
+                    "
+                    :class="$style['no-data']"
+                >
+                    <img src="/static/image/_new/mcenter/no_data.png" />
+                    <p>{{ $text("S_NO_DATA_YET", "暂无资料") }}</p>
                 </div>
                 <!-- <div v-if="isShowTips" :class="$style['search-tips']">{{ $text('S_CHANGE_PLEASE_CLICK', '更改查询条件请重复点击上方搜索') }}</div> -->
             </template>
@@ -134,14 +171,14 @@
 </template>
 
 <script>
-import Vue from 'vue';
-import { mapGetters } from 'vuex';
-import EST from '@/lib/EST';
-import gameRecord from '@/components/common/mcenter/gameRecord';
-import pagintaion from '../../../pagination';
-import table1st from './table1st';
-import table2nd from './table2nd';
-import table3rd from './table3rd';
+import Vue from "vue";
+import { mapGetters } from "vuex";
+import EST from "@/lib/EST";
+import gameRecord from "@/components/common/mcenter/gameRecord";
+import pagintaion from "../../../pagination";
+import table1st from "./table1st";
+import table2nd from "./table2nd";
+import table3rd from "./table3rd";
 
 export default {
     components: {
@@ -162,27 +199,29 @@ export default {
         }
     },
     data() {
-        const now = EST(new Date(), '', true);
+        const now = EST(new Date(), "", true);
 
         return {
-            fromDate: Vue.moment(now).add(-60, 'days').format('YYYY-MM-DD'),
-            endDate: Vue.moment(now).format('YYYY-MM-DD'),
-            inqGame: '',
-            inqStart: Vue.moment(now).format('YYYY-MM-DD'),
-            inqEnd: Vue.moment(now).format('YYYY-MM-DD')
+            fromDate: Vue.moment(now)
+                .add(-60, "days")
+                .format("YYYY-MM-DD"),
+            endDate: Vue.moment(now).format("YYYY-MM-DD"),
+            inqGame: "",
+            inqStart: Vue.moment(now).format("YYYY-MM-DD"),
+            inqEnd: Vue.moment(now).format("YYYY-MM-DD")
         };
     },
     computed: {
         ...mapGetters({
-            memInfo: 'getMemInfo'
+            memInfo: "getMemInfo"
         }),
         mainClass() {
             const site = `site-${this.memInfo.user.domain}`;
 
             return {
-                [this.$style['main-wrap']]: true,
+                [this.$style["main-wrap"]]: true,
                 [this.$style[site]]: this.$style[site],
-                [this.$style['preset-color']]: !this.$style[site]
+                [this.$style["preset-color"]]: !this.$style[site]
             };
         }
     }

@@ -30,17 +30,6 @@ export default {
             }
         };
     },
-    watch: {
-        padgeNow() {
-            let params = {};
-
-            if (this.sort) {
-                params = { sort: this.sort, order: this.order.created_at ? 'asc' : 'desc' };
-            }
-
-            this.getFirstFriends(params);
-        }
-    },
     filters: {
         /**
          * 金額格式化

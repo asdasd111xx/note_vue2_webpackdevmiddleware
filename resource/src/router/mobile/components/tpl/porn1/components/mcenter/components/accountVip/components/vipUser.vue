@@ -10,7 +10,12 @@
                 <span>{{ userVipInfo.now_level_name }}</span>
             </div>
             <div :class="$style['user-vip-desc']">
-                <div :class="$style['vip-text']">VIP详情</div>
+                <div
+                    :class="$style['vip-text']"
+                    @click="$router.push('/mobile/mcenter/accountVIP/detail')"
+                >
+                    VIP详情
+                </div>
                 <div :class="$style['vip-level']">
                     <img
                         :src="
@@ -55,19 +60,27 @@
         <div :class="$style['user-desc-block']">
             <div :class="$style['desc-text']">
                 ●累计充值(元)：
-                <span :class="$style['money']">{{userVipInfo.amount_info.deposit_amount}}</span>
-                ({{userVipInfo.amount_info.deposit_amount}}/{{ userVipInfo.next_level_deposit_amount }})
+                <span :class="$style['money']">{{
+                    userVipInfo.amount_info.deposit_amount
+                }}</span>
+                ({{ userVipInfo.amount_info.deposit_amount }}/{{
+                    userVipInfo.next_level_deposit_amount
+                }})
             </div>
             <div :class="$style['desc-text']">
                 ●当前流水(元)：
-                <span :class="$style['money']">{{userVipInfo.amount_info.valid_bet}}</span>
+                <span :class="$style['money']">{{
+                    userVipInfo.amount_info.valid_bet
+                }}</span>
                 ({{ userVipInfo.amount_info.valid_bet }}/{{
                     userVipInfo.next_level_valid_bet
                 }})
             </div>
             <div :class="$style['desc-text']">
                 ●保级推广(位)：
-                <span :class="$style['money']">{{userVipInfo.downgrade_members}}</span>
+                <span :class="$style['money']">{{
+                    userVipInfo.downgrade_members
+                }}</span>
                 (有效会员充值{{ userVipInfo.downgrade_deposit }} , 保级{{
                     userVipInfo.downgrade_expire_day
                 }}天)

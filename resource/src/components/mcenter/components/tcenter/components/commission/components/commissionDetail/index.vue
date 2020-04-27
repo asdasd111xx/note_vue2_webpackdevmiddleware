@@ -73,7 +73,7 @@
                     </thead>
                     <tbody>
                         <tr
-                            v-for="(info, index) in friendsList"
+                            v-for="(info, index) in controlData"
                             :key="`list-${info.id}`"
                         >
                             <td>{{ index + 1 }}</td>
@@ -87,16 +87,14 @@
                         </tr>
                     </tbody>
                 </table>
-                <pagintaion
-                    :class="$style.pagination"
-                    :page="+currentPage"
-                    :total="totalPage"
-                    @update:page="
-                        value => {
-                            updatePage(value);
-                        }
-                    "
-                />
+                <infinite-loading
+                    v-if="showInfinite"
+                    ref="infiniteLoading"
+                    @infinite="infiniteHandler"
+                >
+                    <span slot="no-more" />
+                    <span slot="no-results" />
+                </infinite-loading>
             </template>
             <template v-else>
                 <div :class="$style['no-data']">
@@ -215,14 +213,18 @@
                         :class="[$style.detail, 'clearfix']"
                     >
                         <div :class="$style.text">
-                            {{ $text("S_SHIFT_AMOUNT", "是否上期結轉") }}
+                            {{ $text("S_SHIFT_AMOUNT", "上期結轉") }}
                         </div>
                         <div :class="$style.amount">
                             {{ $text("S_HAVE", "有") }}
                         </div>
                     </div>
                     <div :class="$style.tips">
-                        如需帮助，请<span :class="$style['service-btn']" @click="$router.push('/mobile/service')">联系客服</span>
+                        如需帮助，请<span
+                            :class="$style['service-btn']"
+                            @click="$router.push('/mobile/service')"
+                            >联系客服</span
+                        >
                     </div>
                 </div>
             </div>
@@ -232,14 +234,12 @@
 
 <script>
 import { mapGetters } from "vuex";
+import InfiniteLoading from 'vue-infinite-loading';
 import commissionDetail from "@/mixins/mcenter/commission/commissionDetail";
 
 export default {
     components: {
-        pagintaion: () =>
-            import(
-                /* webpackChunkName: 'commissionList' */ "../../../../../pagination"
-            )
+        InfiniteLoading
     },
     mixins: [commissionDetail],
     computed: {

@@ -39,8 +39,7 @@
                             <div :class="[$style.text, $style.main]">{{ $text('S_REBATE_LEVEL', '返利级别') }}</div>
                             <div :class="[$style.amount, $style.main]">{{ summaryContent[index].rate }} %</div>
                         </div>
-                        <div :class="$style.divider" />
-                        <div :class="$style['summary-date']">({{ summaryContent[index].start_at | dateFormat }}-{{ summaryContent[index].end_at | dateFormat }})</div>
+                        <div :class="$style['summary-date']">{{ summaryContent[index].start_at | dateFormat }}-{{ summaryContent[index].end_at | dateFormat }}</div>
                         <div :class="[$style.detail, 'clearfix']">
                             <div :class="$style.text">{{ $text('S_ACH_VALID_MEMBERS', '有效会员') }}</div>
                             <div :class="$style.amount">{{ summaryContent[index].valid_user }} {{ $text('S_PERSON', '人') }}</div>
@@ -74,7 +73,7 @@
                             <div :class="$style.amount">{{ summaryContent[index].vendor_fee }}</div>
                         </div>
                         <div v-if="summaryContent[index].shift_amount" :class="[$style.detail, 'clearfix']">
-                            <div :class="$style.text">{{ $text('S_SHIFT_AMOUNT', '是否上期結轉') }}</div>
+                            <div :class="$style.text">{{ $text('S_SHIFT_AMOUNT', '上期結轉') }}</div>
                             <div :class="$style.amount">{{ $text('S_HAVE', '有') }}</div>
                         </div>
                         <div :class="$style.tips">※ {{ $text('S_EVERY_DAY_UPDATE', { replace: [{ target: '%s', value: '6:00' }] }) }}</div>

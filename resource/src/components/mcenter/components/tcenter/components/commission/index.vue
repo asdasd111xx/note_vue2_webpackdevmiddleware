@@ -1,7 +1,7 @@
 <template>
     <div :class="mainClass">
         <div v-if="page !== 'detail'" :class="$style['top-link']">
-            <span :class="[$style.link, { [$style.active]: page === 'record' }]" @click="onClick('record')">{{ $text('S_COMMISSION_SEND_RECORD', '派发纪录') }}</span>
+            <span :class="[$style.link, { [$style.active]: page === 'record' }]" @click="onClick('record')">{{ $text('S_COMMISSION_SEND_RECORD', '派发记录') }}</span>
             <span :class="[$style.link, { [$style.active]: page === 'summary' }]" @click="onClick('summary')">{{ $text('S_COMMISSION_SUMMARY', '收益概況') }}</span>
         </div>
         <div v-if="page === 'record' && hasSearch" class="search-wrap">
@@ -41,7 +41,6 @@
             v-if="page === 'detail'"
             :detail-info="detailInfo"
         />
-        <!-- <div v-if="hasTips" :class="$style.tips">{{ $text('S_COMMISSION_INQUIRE_MSG', '更改查询条件请重覆点击上方派发纪录') }}</div> -->
     </div>
 </template>
 
@@ -134,11 +133,6 @@ export default {
             this.onSearch();
 
             this.hasSearch = false;
-            // this.hasTips = true;
-
-            // setTimeout(() => {
-            //     this.hasTips = false;
-            // }, 3000);
         }
     }
 };

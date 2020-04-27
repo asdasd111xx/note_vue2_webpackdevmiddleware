@@ -72,7 +72,7 @@
     border-top: 1px solid #bebcbc;
 
     .btn-search {
-        background: linear-gradient(to left , #bd9d7d , #f9ddbd);
+        background: linear-gradient(to left, #bd9d7d, #f9ddbd);
         margin: 0 auto;
         width: 85%;
         line-height: 45px;
@@ -96,16 +96,18 @@
 
 .no-data {
     padding-top: 100px;
+    text-align: center;
 
-    > img {
-        display: block;
-        width: 60px;
-        margin: 0 auto 10px;
+    img {
+        display: inline-block;
+        width: 174px;
+        height: 174px;
+        margin-bottom: 14px;
     }
 
-    > div {
-        color: #747577;
-        text-align: center;
+    p {
+        font-size: 14px;
+        color: #a6a9b2;
     }
 }
 

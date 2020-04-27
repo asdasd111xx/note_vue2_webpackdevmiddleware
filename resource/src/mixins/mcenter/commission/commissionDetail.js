@@ -26,10 +26,16 @@ export default {
             friendsList: [], // 本站返利一級好友資料
             pageTotal: null,
             allTotal: null,
-            recordCount: 10, // 每頁限制筆數
-            currentPage: '1', // 當前頁
-            totalPage: 1 // 總頁數
+            isLoading: false,
+            showInfinite: true,
+            maxResults: 10, // 每頁限制筆數
+            showPage: 0
         };
+    },
+    computed: {
+        controlData() {
+            return this.friendsList.filter((item, index) => index < this.maxResults * this.showPage)
+        }
     },
     filters: {
         commaFormat(value) {
@@ -38,11 +44,6 @@ export default {
         dateFormat(date) {
             const est = format(new Date(date), 'yyyy/MM/dd HH:mm:ss+20:00');
             return format(new Date(est), 'MM/dd');
-        }
-    },
-    watch: {
-        currentPage() {
-            this.getFriends();
         }
     },
     created() {
@@ -79,9 +80,13 @@ export default {
          * 本站返利一級好友資料
          */
         getFriends() {
+            this.showInfinite = false;
+            this.isLoading = true;
+            this.showPage = 0;
+
             const params = {
-                max_results: this.recordCount,
-                first_result: (this.currentPage - 1) * this.recordCount
+                // max_results: this.maxResults,
+                // first_result: this.firstResult
             };
 
             if (this.sort !== '') {
@@ -95,14 +100,12 @@ export default {
                 errorAlert: false,
                 params,
                 success: (response) => {
-                    if (response.result !== 'ok') {
+                    this.showInfinite = true;
+                    if (response.result !== 'ok' || response.ret.length === 0) {
                         return;
                     }
 
-                    if (response.pagination.total !== '0') {
-                        this.totalPage = Math.ceil(response.pagination.total / this.recordCount); // 計算資料會有幾頁，一頁最多十筆
-                    }
-
+                    this.isLoading = false
                     this.friendsList = response.ret; // 第一級好友佣金資料列表
                     this.pageTotal = response.sub_total; // 小計
                     this.allTotal = response.total; // 總計
@@ -133,11 +136,34 @@ export default {
                 orderstate = (this.order === 'asc') ? 'desc' : 'asc';
             }
 
-            this.currentPage = '1';
+            this.showPage = 1;
             this.sort = sortValue;
             this.order = orderstate;
 
             this.getFriends();
+        },
+        /**
+         * 捲動加載
+         * @param {object} $state - 套件提供的方法
+         * @see { @link https://peachscript.github.io/vue-infinite-loading/#!/ }
+         */
+        infiniteHandler($state) {
+            setTimeout(() => {
+                if (this.friendsList.length === 0) {
+                    this.isLoading = false;
+                    $state.complete();
+                    return
+                }
+
+                if (this.friendsList.length / this.maxResults > this.showPage) {
+                    this.showPage += 1;
+                    $state.loaded()
+
+                    if (Math.ceil(this.friendsList.length / this.maxResults) === this.showPage) {
+                        $state.complete();
+                    }
+                }
+            }, 300)
         }
     }
 };

@@ -130,7 +130,7 @@ export default {
                     id: 'main',
                     visible: true,
                     clickable: this.currentPage === 'bet' || this.currentPage === 'detail',
-                    text: this.$text('S_GAME_RECORD', '游戏纪录')
+                    text: this.$text('S_GAME_RECORD', '游戏记录')
                 },
                 {
                     id: 'bet',

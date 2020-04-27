@@ -208,7 +208,7 @@ export default {
         headerConfig() {
             return {
                 prev: true,
-                title: this.$text('S_BETHISTORYBTN', '投注纪录'),
+                title: this.$text('S_BETHISTORYBTN', '投注记录'),
                 onClick: () => { this.$router.back(); }
             };
         },
