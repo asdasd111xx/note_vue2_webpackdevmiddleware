@@ -24,13 +24,15 @@ export default {
             isErrorMoney: false,
             selectedBank: {},
             speedField: {
-                depositMethod: '1',
+                depositMethod: '',
                 depositTime: '',
                 depositAccount: '',
                 depositName: '',
                 bankBranch: '',
                 serialNumber: ''
-            }
+            },
+            isShowPop: false,
+            checkSuccess: false
         };
     },
     computed: {
@@ -65,7 +67,11 @@ export default {
 
             // 尚未輸入金額
             if (!this.moneyValue) {
-                return total;
+                return '--';
+            }
+
+            if ((this.depositInterval.minMoney && this.depositInterval.minMoney > this.moneyValue) || (this.depositInterval.maxMoney && this.depositInterval.maxMoney < this.moneyValue)) {
+                return '--';
             }
 
             // 未達到單筆存款金額，無優惠
@@ -283,6 +289,9 @@ export default {
             }
 
             return false;
+        },
+        singleLimit() {
+            return `单笔充值金额： ${Number(this.depositInterval.maxMoney) === 0 ? this.$text('S_UNLIMITED', '无限制') : this.$text('S_MONEY_RANGE_SHORT', { replace: [{ target: '%s', value: this.depositInterval.minMoney }, { target: '%s', value: this.depositInterval.maxMoney }] })}`;
         }
     },
     methods: {
@@ -456,9 +465,6 @@ export default {
             this.resetStatus();
             this.curPayInfo = info;
 
-            if (Object.keys(this.selectedBank).length === 0) {
-                this.bankSelectValue = this.allBanks[0] || {};
-            }
             // 判斷是否為其他銀行，極速到帳(payment_method_id = 6)、銀行轉帳(payment_method_id = 3)皆有其他銀行選項
             const isOtherBank = (this.curPayInfo.payment_method_id === 3 && this.curPayInfo.bank_id === 0) || (this.curPayInfo.payment_method_id === 6 && this.curPayInfo.bank_id === 0);
 
@@ -488,6 +494,7 @@ export default {
         changeMoney(money) {
             this.moneyValue = money;
             this.isErrorMoney = false;
+            this.checkOrderData();
         },
         /**
          * 驗證存款金額
@@ -513,6 +520,12 @@ export default {
             if (value.replace(/[^\d]/g, '')) {
                 this.isErrorMoney = false;
             }
+
+            this.checkOrderData();
+        },
+        submitDataInput(data, objKey) {
+            this.$emit('update:speedField', { data, objKey });
+            this.checkOrderData();
         },
         /**
          * 資料重置
@@ -525,10 +538,11 @@ export default {
             this.curPassRoad = {};
             this.moneyValue = '';
             this.isErrorMoney = false;
+            this.isSelectValue = '';
 
             Object.keys(this.speedField).forEach((info) => {
                 if (info === 'depositMethod') {
-                    this.speedField[info] = '1';
+                    this.speedField[info] = '';
                     return;
                 }
 
@@ -546,67 +560,6 @@ export default {
             const isUBMobile = navigator.userAgent.match(/UBiOS/) !== null && navigator.userAgent.match(/iPhone/) !== null;
             // 暫時用來判斷馬甲包
             const webview = window.location.hostname === 'yaboxxxapp02.com';
-
-            // 金額輸入錯誤
-            if ((this.isErrorMoney || !this.moneyValue) && !this.curModeGroup.uri) {
-                const limitValue = `${this.$text('S_SINGLE_LIMIT', '单笔限额')}： ${this.$text('S_MONEY_RANGE_SHORT', {
-                    replace: [
-                        {
-                            target: '%s',
-                            value: this.depositInterval.minMoney
-                        },
-                        {
-                            target: '%s',
-                            value: this.depositInterval.maxMoney
-                        }
-                    ]
-                })}`;
-                alert(+this.moneyValue ? limitValue : this.$text('S_ENTER_MONEY', '请输入金额'));
-                return Promise.resolve({ status: 'error' });
-            }
-
-            // 檢查銀行匯款、支付轉帳的極速到帳表單必填欄位
-            if ([5, 6].includes(this.curPayInfo.payment_type_id)) {
-                const checkItemMap = {
-                    method: {
-                        key: 'bankBranch',
-                        alertMessage: this.$text('S_ENTER_DEPOSIT_BRANCH', '请输入银行支行')
-                    },
-                    deposit_at: {
-                        key: 'depositTime',
-                        alertMessage: this.$text('S_ENTER_DEPOSIT_TIME', '请输入存款时间')
-                    },
-                    pay_account: {
-                        key: 'depositAccount',
-                        alertMessage: this.$text('S_ENTER_DEPOSIT_ACCOUNT', '请输入存款帐号')
-                    },
-                    pay_username: {
-                        key: 'depositName',
-                        alertMessage: this.curPayInfo.payment_type_id === 6 ? this.$text('S_ENTER_DEPOSIT_NICKNAME', '请输入存款昵称') : this.$text('S_ENTER_DEPOSIT_NAME', '请输入存款人姓名')
-                    },
-                    sn: {
-                        key: 'serialNumber',
-                        alertMessage: this.$text('S_PLZ_ENTER_SERIAL_NUMBER', '请输入流水号')
-                    }
-                };
-                const missingRequiredField = this.curPayInfo.field.find((item) => {
-                    const check = checkItemMap[item.name];
-
-                    // 存款方式不是存款方式不是ATM或銀行櫃台 則不需檢查銀行支行的必填
-                    if (item.name === 'method' && !['2', '4'].includes(this.speedField.depositMethod)) {
-                        return false;
-                    }
-
-                    if (check && item.required && !this.speedField[check.key]) {
-                        alert(check.alertMessage);
-                        return true;
-                    }
-                    return false;
-                });
-                if (missingRequiredField) {
-                    return Promise.resolve({ status: 'error' });
-                }
-            }
 
             // ios寰宇瀏覽器目前另開頁面需要與電腦版開啟方式相同
             if (isMobile() && !isUBMobile && !webview) {
@@ -786,6 +739,58 @@ export default {
          */
         copyInfo(text) {
             this.$copyText(text);
+        },
+        checkOrderData() {
+            // 金額輸入錯誤
+            if (((this.isErrorMoney || !this.moneyValue) && !this.curModeGroup.uri) || (this.depositInterval.minMoney && this.depositInterval.minMoney > this.moneyValue) || (this.depositInterval.maxMoney && this.depositInterval.maxMoney < this.moneyValue)) {
+                this.checkSuccess = false;
+                return;
+            }
+
+            // 檢查銀行匯款、支付轉帳的極速到帳表單必填欄位
+            if ([5, 6].includes(this.curPayInfo.payment_type_id)) {
+                const checkItemMap = {
+                    method: {
+                        key: 'bankBranch',
+                        alertMessage: this.$text('S_ENTER_DEPOSIT_BRANCH', '请输入银行支行')
+                    },
+                    deposit_at: {
+                        key: 'depositTime',
+                        alertMessage: this.$text('S_ENTER_DEPOSIT_TIME', '请输入存款时间')
+                    },
+                    pay_account: {
+                        key: 'depositAccount',
+                        alertMessage: this.$text('S_ENTER_DEPOSIT_ACCOUNT', '请输入存款帐号')
+                    },
+                    pay_username: {
+                        key: 'depositName',
+                        alertMessage: this.curPayInfo.payment_type_id === 6 ? this.$text('S_ENTER_DEPOSIT_NICKNAME', '请输入存款昵称') : this.$text('S_ENTER_DEPOSIT_NAME', '请输入存款人姓名')
+                    },
+                    sn: {
+                        key: 'serialNumber',
+                        alertMessage: this.$text('S_PLZ_ENTER_SERIAL_NUMBER', '请输入流水号')
+                    }
+                };
+                const missingRequiredField = this.curPayInfo.field.find((item) => {
+                    const check = checkItemMap[item.name];
+
+                    // 存款方式不是存款方式不是ATM或銀行櫃台 則不需檢查銀行支行的必填
+                    if (item.name === 'method' && !['2', '4'].includes(this.speedField.depositMethod)) {
+                        return false;
+                    }
+
+                    if (check && item.required && !this.speedField[check.key]) {
+                        return true;
+                    }
+                    return false;
+                });
+                if (missingRequiredField) {
+                    this.checkSuccess = false;
+                    return;
+                }
+            }
+
+            this.checkSuccess = true;
         }
     }
 };

@@ -5,31 +5,28 @@
             :inq-start.sync="inqStart"
             :inq-end.sync="inqEnd"
             :set-header-title="setHeaderTitle"
+            :set-tab-state="setTabState"
         >
             <template
                 scope="{
                     inq1st,
                     inq2nd,
-                    inq3rd,
                     hasSearch,
-                    isShowTips,
                     searchTabs,
                     currentCondition,
                     gameList,
                     currentPage,
-                    page,
-                    totalPage,
-                    countOfPage,
                     sort,
-                    updatePage,
                     changeSearchCondition,
                     onSort,
                     onSearch,
                     onSearchBet,
-                    onSearchDetail
+                    showInfinite,
+                    infiniteHandler,
+                    control1stData
                 }"
             >
-                <div :class="$style['top-wrap']">
+                <div v-if="currentPage === 'main'" :class="$style['top-wrap']">
                     <div
                         v-for="info in searchTabs"
                         :key="info.key"
@@ -43,7 +40,7 @@
                     </div>
                 </div>
                 <div
-                    v-show="hasSearch"
+                    v-show="currentPage === 'main' && hasSearch"
                     :class="[$style['form-search'], 'clearfix']"
                 >
                     <div :class="$style['field-game-wrap']">
@@ -99,23 +96,21 @@
                 </div>
                 <template v-if="currentPage === 'main' && inq1st.list.length">
                     <table-1st
-                        :list="inq1st.list"
+                        :list="control1stData"
                         :sub-total="inq1st.subTotal"
                         :total="inq1st.total"
                         :sort="sort"
                         @update:sort="onSort"
                         @onInquire="onSearchBet"
                     />
-                    <!-- <pagintaion
-                        :class="$style.pagination"
-                        :page="+page.main"
-                        :total="totalPage.main"
-                        @update:page="
-                            value => {
-                                updatePage('main', `${value}`);
-                            }
-                        "
-                    /> -->
+                    <infinite-loading
+                        v-if="showInfinite"
+                        ref="infiniteLoading"
+                        @infinite="infiniteHandler"
+                    >
+                        <span slot="no-more" />
+                        <span slot="no-results" />
+                    </infinite-loading>
                 </template>
                 <template v-if="currentPage === 'bet' && inq2nd.list.length">
                     <!-- <table-2nd
@@ -125,34 +120,14 @@
                         :sort="sort"
                         @update:sort="onSort"
                         @onInquire="onSearchDetail"
-                    />
-                    <pagintaion
-                        :class="$style.pagination"
-                        :page="+page.bet"
-                        :total="totalPage.bet"
-                        @update:page="(value) => { updatePage('bet', `${value}`) }"
-
                     /> -->
+
                     <div :class="$style['no-data']">
                         <img src="/static/image/_new/mcenter/no_data.png" />
                         <p>{{ $text("S_NO_DATA_YET", "暂无资料") }}</p>
                     </div>
                 </template>
-                <!-- <template v-if="currentPage === 'detail' && inq3rd.list.length">
-                    <table-3rd
-                        :list="inq3rd.list"
-                        :sub-total="inq3rd.subTotal"
-                        :total="inq3rd.total"
-                        :sort="sort"
-                        @update:sort="onSort"
-                    />
-                    <pagintaion
-                        :class="$style.pagination"
-                        :page="+page.detail"
-                        :total="totalPage.detail"
-                        @update:page="(value) => { updatePage('detail', `${value}`) }"
-                    />
-                </template> -->
+
                 <div
                     v-if="
                         currentPage === 'main' &&
@@ -164,7 +139,6 @@
                     <img src="/static/image/_new/mcenter/no_data.png" />
                     <p>{{ $text("S_NO_DATA_YET", "暂无资料") }}</p>
                 </div>
-                <!-- <div v-if="isShowTips" :class="$style['search-tips']">{{ $text('S_CHANGE_PLEASE_CLICK', '更改查询条件请重复点击上方搜索') }}</div> -->
             </template>
         </game-record>
     </div>
@@ -173,6 +147,7 @@
 <script>
 import Vue from "vue";
 import { mapGetters } from "vuex";
+import InfiniteLoading from "vue-infinite-loading";
 import EST from "@/lib/EST";
 import gameRecord from "@/components/common/mcenter/gameRecord";
 import pagintaion from "../../../pagination";
@@ -182,6 +157,7 @@ import table3rd from "./table3rd";
 
 export default {
     components: {
+        InfiniteLoading,
         gameRecord,
         pagintaion,
         table1st,

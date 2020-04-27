@@ -1,11 +1,11 @@
 <template>
-    <div :class="['deposit-info-wrap', 'clearfix', colorClass]">
+    <div :class="[$style['deposit-info-wrap'], 'clearfix', colorClass]">
         <!-- 收款帳號 -->
         <div :class="[$style['info-wrap'], $style['info-wrap-account'], 'clearfix']">
             <div :class="$style['deposit-info-title']">{{ $text('S_WITHDRAW_ACCOUNT', '收款帐号') }}</div>
             <div :class="$style['deposit-submit-info']">
                 <template v-for="(info, index) in receiptInfo">
-                    <div :key="`receipt-info-${index}`" :class="[ $style['submit-info-wrap'], { [$style['is-memo']]: info.objKey === 'memo' }]">
+                    <div :key="`receipt-info-${index}`" :class="[ $style['submit-info-wrap'], { [$style['is-memo']]: info.objKey === 'memo' }, { [$style['is-even']]: index % 2 !== 0 }]">
                         <div :class="[$style['basic-info-text'], $style['basic-info-title']]">{{ info.title }}</div>
                         <div v-if="info.qrcode && info.qrcode.length > 0" :class="[$style['basic-info-text'], $style['qrcode-wrap']]">
                             <template v-for="(qrcodeInfo, infoIndex) in info.qrcode">
@@ -32,12 +32,13 @@
                         <!-- eslint-enable vue/no-v-html -->
                         <div v-else :class="$style['basic-info-text']">
                             {{ info.value }}
-                             <div v-if="info.copyShow" :class="$style['icon-wrap']" @click="copyInfo(info.value)">
+                            <div
+                                v-if="info.copyShow"
+                                :class="$style['icon-wrap']"
+                                @click="copyInfo(info.value)"
+                            >
                                 <div>
-                                    <icon
-                                        name="regular/copy"
-                                        width="12"
-                                        height="12"/>
+                                    <img src="/static/image/_new/mcenter/deposit/more_info.png" />
                                 </div>
                             </div>
                         </div>
@@ -75,6 +76,9 @@
         >
             {{ orderData.methodType !== 'remit' ? $text('S_FINISH_DEPOSIT', '完成支付') : $text('S_SUBMIT_DEPOSIT', '提交資料') }}
         </div>
+        <p :class="$style['service-remind']">
+            如需帮助，请<span :class="$style['service-btn']" @click="$router.push('/mobile/service')">联系客服</span>
+        </p>
         <deposit-alert v-if="isAlertTip" :close-fuc="goBack" />
         <deposit-popup
             v-if="isShowQrcode"
@@ -121,7 +125,7 @@ export default {
     },
     computed: {
         ...mapGetters({
-            memInfo: 'getMemInfo',
+            memInfo: 'getMemInfo'
         }),
         colorClass() {
             return [
