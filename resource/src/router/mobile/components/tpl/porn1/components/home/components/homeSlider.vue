@@ -30,12 +30,6 @@ export default {
         Swiper,
         SwiperSlide
     },
-    props: {
-        isSliderCreated: {
-            type: Boolean,
-            required: true
-        }
-    },
     computed: {
         ...mapGetters({
             cdnDomain: 'getCdnDomain',
@@ -91,9 +85,6 @@ export default {
             return {
                 ...options,
                 on: {
-                    init: () => {
-                        this.$emit('update:isSliderCreated', true);
-                    },
                     click(element) {
                         mobileLinkOpen(originSlider[element.target.dataset.info]);
                     }

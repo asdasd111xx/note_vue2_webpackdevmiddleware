@@ -1,9 +1,9 @@
 <template>
     <mobile-container :header-config="headerConfig" :class="$style.container">
         <div slot="content" class="content-wrap">
-            <home-slider :is-slider-created.sync="isSliderCreated" />
+            <home-slider />
             <home-new />
-            <home-content v-if="isSliderCreated" />
+            <home-content />
             <popup v-if="popStatus && isShow && !isHidePop" @close="popStatus = false" />
         </div>
     </mobile-container>
@@ -29,8 +29,7 @@ export default {
         return {
             popStatus: false,
             isShow: false,
-            isHidePop: false,
-            isSliderCreated: false
+            isHidePop: false
         };
     },
     computed: {

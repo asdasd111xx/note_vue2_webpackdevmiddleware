@@ -7,7 +7,7 @@
             <img
                 v-if="currentIndex !== ''"
                 :class="$style['select-icon']"
-                :src="`/static/image/_new/mcenter/feedback/question_${currentIndex}.png`"
+                :src="`/static/image/_new/mcenter/feedback/question_${iconList[memInfo.user.domain][paramsData.type_id] ? iconList[memInfo.user.domain][paramsData.type_id] : 8}.png`"
             />
             <span :class="{[$style['select-active']] : paramsData.title}">
                 {{ paramsData.title || $text('S_SELECT_QUESTION_CATEGORY', '请选择问题类型') }}
@@ -62,8 +62,13 @@
                         :key="item.id"
                         @click="getCategory(item, index)"
                     >
-                        <img :src="`/static/image/_new/mcenter/feedback/question_${index < 7 ? index : 7}.png`" />
+                        <img :src="`/static/image/_new/mcenter/feedback/question_${iconList[memInfo.user.domain][item.id] ? iconList[memInfo.user.domain][item.id] : 8}.png`" />
                         {{ item.content }}
+                        <icon
+                            v-if="item.id === paramsData.type_id"
+                            :class="$style['select-check']"
+                            name="check"
+                        />
                     </li>
                 </ul>
             </div>
@@ -72,6 +77,7 @@
 </template>
 
 <script>
+import { mapGetters } from 'vuex';
 import ajax from '@/lib/ajax';
 import { API_FEEDBACK_TYPE_LIST, API_FEEDBACK_CREATED } from '@/config/api';
 
@@ -93,10 +99,33 @@ export default {
                 this.$text('S_FEEDBACK_TIP03', '步骤三： 将获取的网址链结贴至对话输入框内。'),
                 this.$text('S_FEEDBACK_TIP04', '特别说明： 部分浏览器不支援 拖曳 上传图片，请使用上传按钮')
             ],
-            message: ''
+            message: '',
+            iconList: {
+                500015: {
+                    260: 1,
+                    261: 2,
+                    262: 3,
+                    263: 4,
+                    264: 5,
+                    265: 6,
+                    266: 7
+                },
+                69: {
+                    90: 1,
+                    91: 2,
+                    92: 3,
+                    93: 4,
+                    94: 5,
+                    95: 6,
+                    96: 7
+                }
+            }
         };
     },
     computed: {
+        ...mapGetters({
+            memInfo: 'getMemInfo'
+        }),
         contextLimit() {
             return this.$text('S_CONTEXT_LIMIT', {
                 replace: [

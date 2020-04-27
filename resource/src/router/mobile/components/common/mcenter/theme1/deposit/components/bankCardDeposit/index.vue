@@ -69,7 +69,7 @@
                                         :key="item.selectId"
                                         @click.stop="changeSelectValue(item.value)"
                                     >
-                                        <img :src="`/static/image/mcenter/bank/default.png`" />
+                                        <img :src="`https://bbos.bbin-asia.com/elibom/bank/${item.selectId}.png`" />
                                         {{ item.label }}
                                         <icon
                                             v-if="item.value === selectedBank.value"

@@ -270,6 +270,7 @@
         font-size: 14px;
         color: #414655;
         border-bottom: 1px solid #EEE;
+        position: relative;
     }
 
     img {
@@ -284,4 +285,15 @@
         transform: translateY(-50%);
         vertical-align: top;
     }
+}
+
+
+.select-check {
+    position: absolute;
+    right: 18px;
+    top: 50%;
+    width: 15px;
+    height: 15px;
+    color: #BE9E7F;
+    transform: translateY(-50%);
 }

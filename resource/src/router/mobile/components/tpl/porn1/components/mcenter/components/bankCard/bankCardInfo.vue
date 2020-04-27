@@ -15,10 +15,15 @@
                     >
                         <div :class="[$style['bankcard-top'], 'clearfix']">
                             <div :class="$style['bankcard-logo']">
-                                <!-- <img src=""> -->
+                                <img :src="`https://bbos.bbin-asia.com/elibom/bank/${item.bank_id}.png`" />
                             </div>
-                            <div :class="$style['bankcard-name']">
-                                {{ item.bank_id }}工商银行
+                            <div :class="$style['bankcard-info']">
+                                <div :class="$style['bankcard-name']">
+                                    {{ item.bank_name }}
+                                </div>
+                                <div :class="$style['bankcard-tpye']">
+                                    {{ item.type }}除直卡
+                                </div>
                             </div>
                         </div>
                         <div :class="$style['card-number']">
