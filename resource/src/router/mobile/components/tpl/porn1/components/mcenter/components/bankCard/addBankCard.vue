@@ -118,7 +118,7 @@
                     :class="[$style['submit'], {[$style['disabled']] : !NextStepStatus}]"
                     @click="sendData"
                 >
-                    下一步
+                    {{ addBankCardStep === 'one' && memInfo.config.player_user_bank_mobile ? '下一步':'提交' }}
                 </div>
             </div>
         </div>
@@ -135,12 +135,18 @@
                 </div>
                 <ul :class="$style['pop-list']">
                     <li
-                        v-for="(item, index) in bankList"
+                        v-for="item in bankList"
                         :key="item.id"
                         @click="setBank(item)"
                     >
-                        <img :src="`/static/image/_new/mcenter/feedback/question_${index < 7 ? index : 7}.png`" />
+                        <!-- <img :src="`https://bbos.bbin-asia.com/elibom/bank/${item.id}.png`" /> -->
+                        <img :src="`/static/image/mcenter/bank/default.png`" />
                         {{ item.name }}
+                        <icon
+                            v-if="item.id === formData.bank_id"
+                            :class="$style['select-icon']"
+                            name="check"
+                        />
                     </li>
                 </ul>
             </div>
@@ -230,7 +236,7 @@ export default {
             'actionSetUserdata'
         ]),
         sendData() {
-            if (this.addBankCardStep === 'one') {
+            if (this.addBankCardStep === 'one' && this.memInfo.config.player_user_bank_mobile) {
                 this.NextStepStatus = false;
                 this.$emit('update:addBankCardStep', 'two');
                 return;
@@ -310,23 +316,34 @@ export default {
                     phone: `86-${this.formData.phone}`
                 },
                 success: () => {
-                    this.lockStatus = false;
-                    this.mustWait = true;
-                    this.time = 59;
-                    const timer = () => {
-                        setTimeout(() => {
-                            if (this.time === 1) {
-                                this.mustWait = false;
-                            }
+                    ajax({
+                        method: 'get',
+                        url: '/api/v1/c/player/phone/ttl',
+                        errorAlert: false,
+                        success: ({ ret }) => {
+                            this.lockStatus = false;
+                            this.mustWait = true;
+                            this.time = ret;
+                            const timer = () => {
+                                setTimeout(() => {
+                                    if (this.time === 1) {
+                                        this.mustWait = false;
+                                    }
 
-                            if (this.time <= 0) {
-                                return;
-                            }
-                            this.time -= 1;
+                                    if (this.time <= 0) {
+                                        return;
+                                    }
+                                    this.time -= 1;
+                                    timer();
+                                }, 1000);
+                            };
                             timer();
-                        }, 1000);
-                    };
-                    timer();
+                        },
+                        fail: (error) => {
+                            this.lockStatus = false;
+                            this.errorMsg = error.data.msg;
+                        }
+                    });
                 },
                 fail: (error) => {
                     this.lockStatus = false;

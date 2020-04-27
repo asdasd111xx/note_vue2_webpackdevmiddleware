@@ -15,7 +15,7 @@
                         @click="getCurrentMassage(message)"
                     >
                         <div :class="$style['feedback-icon']">
-                            <img src="/static/image/_new/mcenter/feedback/question_0.png" />
+                            <img :src="`/static/image/_new/mcenter/feedback/question_${iconList[memInfo.user.domain][message.type_id] ? iconList[memInfo.user.domain][message.type_id] : 8}.png`" />
                         </div>
                         <div :class="$style['feedback-content']">
                             <div class="clearfix">
@@ -32,7 +32,7 @@
             <div :class="$style['feedback-detail']">
                 <div :class="$style['detail-content']">
                     <div :class="[$style['detail-title'], 'clearfix']">
-                        <img src="/static/image/_new/mcenter/feedback/question_0.png" />
+                        <img :src="`/static/image/_new/mcenter/feedback/question_${iconList[memInfo.user.domain][currentFeedback.type_id] ? iconList[memInfo.user.domain][currentFeedback.type_id] : 8}.png`" />
                         <h3>{{ currentFeedback.title }}</h3>
                     </div>
                     <div :class="[$style['detail-question'], 'clearfix']">
@@ -91,7 +91,27 @@ export default {
             currentFeedback: {},
             unReadCount: 0,
             repliedList: [],
-            isReceive: false
+            isReceive: false,
+            iconList: {
+                500015: {
+                    260: 1,
+                    261: 2,
+                    262: 3,
+                    263: 4,
+                    264: 5,
+                    265: 6,
+                    266: 7
+                },
+                69: {
+                    90: 1,
+                    91: 2,
+                    92: 3,
+                    93: 4,
+                    94: 5,
+                    95: 6,
+                    96: 7
+                }
+            }
         };
     },
     computed: {
