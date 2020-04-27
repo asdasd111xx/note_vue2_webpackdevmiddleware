@@ -4,7 +4,7 @@
             <div
                 v-if="info.showCondition"
                 :key="`field-${info.objKey}`"
-                :class="[$style['speed-field'], {[$style.error]: info.isError}, 'clearfix']"
+                :class="[$style['speed-field'], {[$style.error]: info.isError},'clearfix']"
             >
                 <div :class="$style['field-title']">{{ info.title }}</div>
                 <div :class="$style['field-info']">
@@ -13,7 +13,7 @@
                     </template>
                     <template v-else>
                         <template v-if="info.objKey === 'depositMethod'">
-                            <div :class="$style['speed-field-title']" @click="isShowSelect(true)">{{ nowSelectData.mainTitle }}</div>
+                            <div :class="[$style['speed-field-title'], {[$style['depositMethod-no-data']] : !nowSelectData.mainTitle}]" @click="isShowSelect(true)">{{ nowSelectData.mainTitle || info.selectTitle }}</div>
                         </template>
                         <template v-else-if="info.objKey === 'depositTime'">
                             <date-picker
@@ -45,10 +45,10 @@
         </template>
         <select-box
             v-if="isSelectShow"
-            :select-data="allInputData[0].selectData"
+            :select-data="allInputData[1].selectData"
             :now-select-cur.sync="nowSelectData"
             :close-fuc="isShowSelect"
-            :title="allInputData[0].selectTitle"
+            :title="allInputData[1].selectTitle"
         />
     </div>
 </template>
@@ -105,10 +105,18 @@ export default {
         allInputData() {
             return [
                 {
+                    objKey: 'depositName',
+                    title: '充值人姓名',
+                    value: this.speedField.depositName,
+                    placeholderText: '请输入充值人姓名',
+                    showCondition: this.showByRequiredFields ? this.requiredFields.find((e) => e.name === 'pay_username' && e.required) : true,
+                    isError: this.showError && this.requiredFields.find((item) => item.name === 'pay_username' && item.required) && !this.speedField.depositName
+                },
+                {
                     objKey: 'depositMethod',
-                    title: this.$text('S_DEPOSIT_METHOD', '存款方式'),
+                    title: '充值方式',
                     curMethodId: this.speedField.depositMethod,
-                    selectTitle: this.$text('S_ENTER_DEPOSIT_METHOD', '请输入存款方式'),
+                    selectTitle: '请选择充值方式',
                     selectData: [
                         {
                             mainTitle: this.$text('S_ONLINE_BANK', '网银'),
@@ -135,36 +143,28 @@ export default {
                     isError: false
                 },
                 {
-                    objKey: 'depositTime',
-                    title: this.$text('S_DEPOSIT_TIME', '存款时间(北京)'),
-                    value: this.speedField.depositTime,
-                    placeholderText: this.$text('S_ENTER_DEPOSIT_TIME', '请输入存款时间'),
-                    showCondition: this.showByRequiredFields ? this.requiredFields.find((e) => e.name === 'deposit_at' && e.required) : true,
-                    isError: this.showError && this.requiredFields.find((item) => item.name === 'deposit_at' && item.required) && !this.speedField.depositTime
-                },
-                {
-                    objKey: 'depositAccount',
-                    title: this.$text('S_DEPOSIT_ACCOUNT', '存款帐号'),
-                    value: this.speedField.depositAccount,
-                    placeholderText: this.$text('S_ENTER_DEPOSIT_ACCOUNT', '请输入存款帐号'),
-                    showCondition: this.showByRequiredFields ? this.requiredFields.find((e) => e.name === 'pay_account' && e.required) : true,
-                    isError: this.showError && this.requiredFields.find((item) => item.name === 'pay_account' && item.required) && !this.speedField.depositAccount
-                },
-                {
-                    objKey: 'depositName',
-                    title: this.typeId === 6 ? this.$text('S_DEPOSIT_NICKNAME', '存款昵称') : this.$text('S_DEPOSIT_NAME', '存款人姓名'),
-                    value: this.speedField.depositName,
-                    placeholderText: this.typeId === 6 ? this.$text('S_ENTER_DEPOSIT_NICKNAME', '请输入存款昵称') : this.$text('S_ENTER_DEPOSIT_NAME', '请输入存款人姓名'),
-                    showCondition: this.showByRequiredFields ? this.requiredFields.find((e) => e.name === 'pay_username' && e.required) : true,
-                    isError: this.showError && this.requiredFields.find((item) => item.name === 'pay_username' && item.required) && !this.speedField.depositName
-                },
-                {
                     objKey: 'bankBranch',
                     title: this.$text('S_DEPOSIT_BRANCH', '银行支行'),
                     value: this.speedField.bankBranch,
                     placeholderText: this.$text('S_ENTER_DEPOSIT_BRANCH', '请输入银行支行'),
                     showCondition: this.speedField.depositMethod === '2' || this.speedField.depositMethod === '4',
                     isError: this.showError && this.requiredFields.find((item) => item.name === 'method' && item.required) && !this.speedField.bankBranch && ['2', '4'].includes(this.speedField.depositMethod)
+                },
+                {
+                    objKey: 'depositAccount',
+                    title: '充值帐号',
+                    value: this.speedField.depositAccount,
+                    placeholderText: '请输入充值帐号',
+                    showCondition: this.showByRequiredFields ? this.requiredFields.find((e) => e.name === 'pay_account' && e.required) : true,
+                    isError: this.showError && this.requiredFields.find((item) => item.name === 'pay_account' && item.required) && !this.speedField.depositAccount
+                },
+                {
+                    objKey: 'depositTime',
+                    title: '充值时间(北京)',
+                    value: this.speedField.depositTime,
+                    placeholderText: '请选择充值时间',
+                    showCondition: this.showByRequiredFields ? this.requiredFields.find((e) => e.name === 'deposit_at' && e.required) : true,
+                    isError: this.showError && this.requiredFields.find((item) => item.name === 'deposit_at' && item.required) && !this.speedField.depositTime
                 },
                 {
                     objKey: 'serialNumber',
@@ -179,8 +179,8 @@ export default {
         nowSelectData: {
             get() {
                 return {
-                    ...this.allInputData[0].selectData.filter((info) => info.selectId === this.speedField.depositMethod)[0],
-                    objKey: this.allInputData[0].objKey
+                    ...this.allInputData[1].selectData.filter((info) => info.selectId === this.speedField.depositMethod)[0],
+                    objKey: this.allInputData[1].objKey
                 };
             },
             set(value) {

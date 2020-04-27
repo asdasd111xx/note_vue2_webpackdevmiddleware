@@ -13,7 +13,7 @@ export default {
         return {
             moreShow: false,
             speedField: {
-                depositMethod: this.orderData.orderInfo.method ? String(this.orderData.orderInfo.method) : '1',
+                depositMethod: this.orderData.orderInfo.method ? String(this.orderData.orderInfo.method) : '',
                 depositTime: this.orderData.orderInfo.deposit_at ? Vue.moment(this.orderData.orderInfo.deposit_at).utcOffset(+8).format('YYYY-MM-DD HH:mm:ss') : '',
                 depositAccount: this.orderData.orderInfo.pay_account,
                 depositName: this.orderData.orderInfo.pay_username,

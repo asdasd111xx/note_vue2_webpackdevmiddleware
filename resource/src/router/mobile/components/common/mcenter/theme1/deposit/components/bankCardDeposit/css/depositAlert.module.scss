@@ -6,6 +6,7 @@
     height: 100%;
     top: 0;
     left: 0;
+    z-index: 5;
     color: #000;
     background: rgba(0, 0, 0, 0.5);
 }
@@ -28,8 +29,8 @@
     text-align: center;
     font-size: 17px;
     border-radius: 7px 7px 0 0;
-    color: $alertTitleColor;
-    background: $alertTitleBg;
+    color: #FFF;
+    background: #BE9E7F;
 }
 
 .alert-close-wrap {
@@ -77,7 +78,7 @@
     width: 60px;
     height: 60px;
     margin: 14px 0;
-    color: #2693FC;
+    color: #BE9E7F;
 }
 
 .success-title {
@@ -85,7 +86,7 @@
     padding-bottom: 2px;
     text-align: center;
     font-size: 18px;
-    color: #2693FC;
+    color: #BE9E7F;
 }
 
 .tip-wrap {
@@ -103,11 +104,13 @@
     text-align: center;
     cursor: pointer;
     border-radius: 4px;
-    color: $alertConfirmBtnColor;
-    background: $alertConfirmBtnBg;
+    color: #FFF;
+    background: #BD9D7D;
+    background-image: -webkit-linear-gradient(right ,#BD9D7D, #F9DDBD);
+    background-image: linear-gradient(right ,#BD9D7D, #F9DDBD);
 
     &:active {
-        background-color: $alertConfirmBtnActiveBg;
+        background-color: #BE9E7F;
     }
 }
 

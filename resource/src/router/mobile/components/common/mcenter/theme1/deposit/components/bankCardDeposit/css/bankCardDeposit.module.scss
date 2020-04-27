@@ -1,6 +1,7 @@
 @import '~@/css/variable.scss';
 
 .swiper-wrap {
+    margin-bottom: 10px;
     background-color: #FFF;
 }
 
@@ -11,18 +12,30 @@
     text-align: center;
     color: #A6A9B2;
 
+    span {
+        display: inline-block;
+        height: 35px;
+        line-height: 35px;
+        border-bottom: 2px solid transparent;
+    }
+
     &.is-current {
         color: #5E626D;
-        border-bottom: 2px solid #BE9E7F;
+
+        span {
+            border-bottom: 2px solid #BE9E7F;
+        }
     }
 }
 
 .bank-card-wrap {
     position: relative;
+    background: #F8F8F7;
 }
 
 .feature-wrap {
     padding: 10px;
+    margin-bottom: 5px;
     background-color: #FFF;
 }
 
@@ -36,9 +49,27 @@
 }
 
 .bank-card-title {
-    display: block;
+    float: left;
+    width: 100%;
+    margin-bottom: 8px;
     font-size: 12px;
-    color: #A6A9B2;
+    color: #222;
+}
+
+.select-bank-title {
+    float: left;
+    font-size: 14px;
+    color: #222;
+}
+
+.select-active {
+    position: absolute;
+    right: 18px;
+    top: 50%;
+    width: 15px;
+    height: 15px;
+    color: #BE9E7F;
+    transform: translateY(-50%);
 }
 
 .pay-mode-item-wrap {
@@ -48,17 +79,28 @@
 .pay-mode-item {
     position: relative;
     float: left;
-    width: 24%;
-    margin: 0 0.5% 4px;
+    width: 23%;
+    margin: 0 1% 5px;
     padding: 7px 1px 1px;
     border: 1px solid #BEBCBC;
     border-radius: 3px;
     color: #AAA;
     cursor: pointer;
+    position: relative;
+
+    .pay-active {
+        display: block;
+        width: 7px;
+        height: 5px;
+        position: absolute;
+        right: 1px;
+        bottom: 2px;
+    }
 
     &.is-current {
         border: 1px solid #BF8646;
         color: #BF8646;
+        background: linear-gradient(-45deg,#BF8646 10px,hsla(0,0%,100%,0) 0);
     }
 
     .pay-mode-tag {
@@ -99,6 +141,164 @@
     }
 }
 
+.pay-mode-pass {
+    display: inline-block;
+    width: 18.5%;
+    height: 40px;
+    line-height: 40px;
+    font-size: 12px;
+    margin-right: 6px;
+    color: #000;
+    border: 1px solid #BEBCBC;
+    border-radius: 3px;
+    text-align: center;
+    cursor: pointer;
+    position: relative;
+
+    &:nth-child(5n) {
+        margin-right: 0;
+    }
+
+    .pay-active {
+        display: block;
+        width: 7px;
+        height: 5px;
+        position: absolute;
+        right: 1px;
+        bottom: 3px;
+    }
+}
+
+.current-data {
+    background-color: #FFF;
+    color: #BF8646;
+    border: 1px solid #BF8646;
+    background: linear-gradient(-45deg,#BF8646 12px,hsla(0,0%,100%,0) 0);
+}
+
+
+.pay-money-item {
+    float: left;
+    min-width: 23%;
+    height: 40px;
+    line-height: 40px;
+    margin: 2px 8px 2px 0;
+    padding: 0 3px;
+    text-align: center;
+    font-size: 13px;
+    color: #222;
+    border-radius: 3px;
+    border: 1px solid #BEBCBC;
+    position: relative;
+
+    .pay-active {
+        display: block;
+        width: 7px;
+        height: 5px;
+        position: absolute;
+        right: 1px;
+        bottom: 3px;
+    }
+
+    &:nth-child(4n) {
+        margin-right: 0;
+    }
+
+    &.is-current {
+        background-color: #FFF;
+        color: #BF8646;
+        border: 1px solid #BF8646;
+        background: linear-gradient(-45deg,#BF8646 12px,hsla(0,0%,100%,0) 0);
+    }
+}
+
+.pay-button {
+    display: block;
+    overflow: hidden;
+    width: calc(100% - 20px);
+    height: 45px;
+    line-height: 45px;
+    margin: 30px auto 15px;
+    text-align: center;
+    text-overflow: ellipsis;
+    white-space: nowrap;
+    border-radius: 3px;
+    cursor: pointer;
+    color: #FFF;
+    background: #BD9D7D;
+    background-image: -webkit-linear-gradient(right ,#BD9D7D, #F9DDBD);
+    background-image: linear-gradient(right ,#BD9D7D, #F9DDBD);
+
+    &.disabled {
+        opacity: 0.5;
+        pointer-events: none;
+    }
+}
+
+.deposit-input {
+    display: inline-block;
+    vertical-align: middle;
+    width: 100%;
+    height: 52px;
+    line-height: 52px;
+    padding-left: 15px;
+    font-size: 14px;
+    outline: none;
+    border: none;
+    color: #222;
+    background: #FFF;
+
+    // Chrome/Opera/Safari
+    &::-webkit-input-placeholder {
+        color: #CBCED8;
+    }
+    // Firefox 19+
+    &::-moz-placeholder {
+        color: #CBCED8;
+    }
+    // IE 10+
+    &:-ms-input-placeholder {
+        color: #CBCED8;
+    }
+    // Firefox 18-
+    &:-moz-placeholder {
+        color: #CBCED8;
+    }
+}
+
+.deposit-input-icon {
+    position: absolute;
+    left: 0;
+    top: 50%;
+    transform: translateY(-50%);
+    font-size: 14px;
+    font-weight: 700;
+    color: #414655;
+}
+
+.money-input-tip {
+    float: left;
+    width: 100%;
+    padding: 10px 0;
+    font-size: 13px;
+    color: #DB6372;
+}
+
+.is-error {
+    color: #DB6372;
+}
+
+.service-remind {
+    padding: 40px 0;
+    text-align: center;
+    font-size: 14px;
+    color: #A6A9B2;
+}
+
+.service-btn {
+    margin-left: 5px;
+    color: #6AAAF5;
+}
 // ===============================================
 
 .deposit-list-wrap {
@@ -138,6 +338,7 @@
     padding: 258px 0;
     top: 0;
     left: 0;
+    z-index: 100;
     text-align: center;
     background: rgba(0, 0, 0, 0.4);
 }
@@ -153,9 +354,96 @@
     background: none;
 }
 
+.select-card-wrap {
+    font-size: 14px;
+    line-height: 19px;
+}
+
 .select-bank-item {
+    float: left;
     height: 23px;
+    margin-left: 50px;
+    font-size: 14px;
+}
+
+.select-bank-icon {
+    float: right;
+    width: 15px;
+    height: 15px;
+    margin-top: 2px;
+}
+
+.pop-wrap {
+    position: fixed;
+    top: 0;
+    right: 0;
+    left: 0;
+    bottom: 0;
+    z-index: 99;
+}
+
+.pop-mask {
+    width: 100%;
+    height: 100%;
+    background: #000;
+    opacity: 0.5;
+}
+
+.pop-menu {
+    width: 100%;
+    height: 90%;
+    position: absolute;
+    bottom: 0;
+    left: 0;
+    background: #F8F8F7;
+    border-radius: 20px 20px 0 0;
+}
+
+.pop-title {
+    height: 73px;
+    line-height: 73px;
+    margin-bottom: 9px;
+    position: relative;
     font-size: 17px;
+    color: #414655;
+    background: #FEFFFE;
+    text-align: center;
+    border-radius: 20px 20px 0 0;
+    box-shadow: 0 2px 4px 0 rgba(0, 0, 0, .05);
+    span {
+        padding: 0 14px;
+        position: absolute;
+        left: 0;
+        color: #BE9E7F;
+    }
+}
+
+.pop-list {
+    height: calc(100% - 82px);
+    padding-left: 18px;
+    margin: 0;
+    list-style: none;
+    background: #FEFFFE;
+    overflow-y: scroll;
+
+    li {
+        height: 50px;
+        line-height: 50px;
+        font-size: 14px;
+        color: #414655;
+        border-bottom: 1px solid #EEE;
+        position: relative;
+    }
+
+    img {
+        width: 24px;
+        height: 24px;
+        margin-right: 9px;
+        position: relative;
+        top: 50%;
+        transform: translateY(-50%);
+        vertical-align: top;
+    }
 }
 
 .bank-feature-wrap {
@@ -167,94 +455,20 @@
     float: left;
     width: 100%;
     margin-bottom: 5px;
-    padding-bottom: 2px;
-    border-bottom: 1px solid #BEBCBC;
+    position: relative;
+    border-bottom: 1px solid transparent;
 
     &.is-error-line {
-        border-color: #F00;
+        border-bottom: 1px solid #EEE;
     }
 }
 
 .speed-money-wrap {
-    padding-bottom: 2px;
-    border-bottom: 1px solid #BEBCBC;
+    margin-bottom: 5px;
 }
 
-.pay-mode-pass {
-    display: inline-block;
-    width: 31%;
-    height: 40px;
-    line-height: 40px;
-    font-size: 12px;
-    margin-right: 8px;
-    color: #000;
-    border: 1px solid #BEBCBC;
-    border-radius: 3px;
-    text-align: center;
-    cursor: pointer;
-
-    &:nth-child(3n) {
-        margin-right: 0;
-    }
-}
-
-.current-data {
-    background-color: $depositPayItemBg;
-    color: $depositPayItemColor;
-    border: none;
-}
-
-.deposit-input {
-    display: inline-block;
-    vertical-align: middle;
-    width: 100%;
-    height: 24px;
-    line-height: 24px;
-    font-size: 17px;
-    outline: none;
-    border: none;
-    color: #000;
-    background: #FFF;
-
-    // Chrome/Opera/Safari
-    &::-webkit-input-placeholder {
-        color: #000;
-    }
-    // Firefox 19+
-    &::-moz-placeholder {
-        color: #000;
-    }
-    // IE 10+
-    &:-ms-input-placeholder {
-        color: #000;
-    }
-    // Firefox 18-
-    &:-moz-placeholder {
-        color: #000;
-    }
-}
-
-.pay-money-item {
-    float: left;
-    min-width: 18%;
-    height: 35px;
-    line-height: 35px;
-    margin: 2px;
-    padding: 0 3px;
-    text-align: center;
-    color: #000;
-    border-radius: 3px;
-    border: 1px solid #BEBCBC;
-
-    &.is-current {
-        border: 1px solid $depositPayItemBg;
-        color: $depositPayItemColor;
-        background-color: $depositPayItemBg;
-    }
-}
-
-.is-error {
-    color: #F00;
+.select-money {
+    padding-bottom: 0;
 }
 
 .feature-tip-wrap {
@@ -262,22 +476,55 @@
 }
 
 .money-info-wrap {
-    margin-top: 11px;
+    padding: 0 10px;
+    margin-top: 30px;
 }
 
 .feature-tip-title {
-    float: left;
-    margin-top: 4px;
     font-size: 14px;
-    color: #000;
+    color: #CBCED8;
 }
 
-.amount-text {
-    float: right;
-    height: 27px;
-    line-height: 27px;
-    font-size: 27px;
-    color: $depositAmountTextColor;
+.pop-message-mark {
+    position: fixed;
+    left: 0;
+    right: 0;
+    top: 0;
+    bottom: 0;
+    z-index: 99;
+    background: rgba(0, 0, 0, 0.5);
+}
+
+.message-container {
+    width: 260px;
+    position: fixed;
+    top: 50%;
+    left: 50%;
+    z-index: 100;
+    background: #FEFFFE;
+    border-radius: 8px;
+    transform: translate(-50%, -50%);
+}
+
+.message-content {
+    padding: 14px 10px;
+    margin: 0;
+    border-bottom: 1px solid #F8F8F7;
+    list-style: none;
+
+    li {
+        line-height: 15px;
+        font-size: 12px;
+        color: #A6A9B2;
+    }
+}
+
+.message-close {
+    padding: 10px 0;
+    text-align: center;
+    font-size: 18px;
+    font-weight: 700;
+    color: #D1B79C;
 }
 
 .money-tip-wrap {
@@ -289,8 +536,103 @@
     font-size: 12px;
 }
 
+.depositName-wrap {
+    padding: 0 10px;
+    margin-bottom: 5px;
+    background: #FFF;
+}
+
 .speed-input-wrap {
-    margin-top: 20px;
+    margin-top: 5px;
+    padding: 0 10px;
+    background: #FFF;
+}
+
+.speed-field {
+    padding: 15px 0;
+    font-size: 14px;
+    border-bottom: 1px solid #EEE;
+    position: relative;
+}
+
+.speed-field-icon {
+    display: block;
+    width: 15px;
+    height: 15px;
+    position: absolute;
+    right: 0;
+    top: 50%;
+    transform: translateY(-50%);
+}
+
+.field-title {
+    float: left;
+    width: 35%;
+    color: #222;
+}
+
+.field-info {
+    float: left;
+    width: 65%;
+
+    input {
+        padding: 0;
+        border: none;
+        outline: 0;
+
+        // Chrome/Opera/Safari
+        &::-webkit-input-placeholder {
+            color: #AAA;
+        }
+        // Firefox 19+
+        &::-moz-placeholder {
+            color: #AAA;
+        }
+        // IE 10+
+        &:-ms-input-placeholder {
+            color: #AAA;
+        }
+        // Firefox 18-
+        &:-moz-placeholder {
+            color: #AAA;
+        }
+    }
+}
+
+.speed-deposit-input-error-messgae {
+    color: #AAA;
+}
+
+.depositMethod-no-data {
+    color: #AAA;
+}
+
+// 日期套件
+:global {
+    .mx-datepicker {
+        width: 100%;
+    }
+
+    .mx-input {
+        height: 19px;
+        line-height: 19px;
+        padding: 0;
+        box-shadow: none;
+        border: none;
+        background: transparent;
+        &::-webkit-input-placeholder {
+            color: #A6A9B2;
+        }
+    }
+
+    .mx-icon-calendar {
+        right: 0;
+        display: none;
+    }
+
+    .mx-icon-clear {
+        right: 0;
+    }
 }
 
 .speed-input-title {
@@ -420,34 +762,36 @@
     height: 100px;
 }
 
-.pay-button {
-    display: block;
-    overflow: hidden;
-    width: 268px;
-    height: 45px;
-    line-height: 45px;
-    margin: 47px auto 15px;
-    text-align: center;
-    text-overflow: ellipsis;
-    white-space: nowrap;
-    border-radius: 3px;
-    cursor: pointer;
-    color: $depositPayButtonColor;
-    background-color: $depositPayButtonBg;
-
-    &:active {
-        background-color: $depositPayButtonActiveBg;
-    }
-}
-
 .warm-tip-title {
-    font-size: 12px;
-    color: #333857;
+    line-height: 27px;
+    margin-bottom: 0;
+    font-size: 14px;
+    color: #A6A9B2;
+    text-align: center;
+    position: relative;
+
+    &:before,
+    &:after {
+        content: '';
+        display: block;
+        width: calc(50% - 50px);
+        height: 1px;
+        background: #DDD;
+        position: absolute;
+        top: 50%;
+        transform: translate(0, -50%);
+    }
+    &:before {
+        left: 0;
+    }
+    &:after {
+        right: 0;
+    }
 }
 
 .warm-tip {
     font-size: 12px;
-    color: #333857;
+    color: #A6A9B2;
 }
 
 // pad
@@ -490,6 +834,7 @@
         line-height: 58px;
         margin-bottom: 0;
         font-size: 26px;
+        position: relative;
 
         &:nth-child(3n) {
             margin-right: 8px;
@@ -501,9 +846,9 @@
     }
 
     .deposit-input {
-        height: 33px;
-        line-height: 33px;
-        font-size: 26px;
+        height: 53px;
+        line-height: 52px;
+        font-size: 14px;
     }
 
     .feature-tip-wrap {

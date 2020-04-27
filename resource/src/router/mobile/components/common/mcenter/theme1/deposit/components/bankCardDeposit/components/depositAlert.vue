@@ -3,7 +3,7 @@
         <div :class="[$style['deposit-alert-wrap'], colorClass]">
             <div :class="$style['alert-wrap']">
                 <div :class="$style['alert-title']">
-                    {{ $text('S_DEPOSIT_APPLY', '存款申请') }}
+                    充值申请
                     <div :class="$style['alert-close-wrap']" @click="closeFuc(false)">
                          <div>
                             <icon

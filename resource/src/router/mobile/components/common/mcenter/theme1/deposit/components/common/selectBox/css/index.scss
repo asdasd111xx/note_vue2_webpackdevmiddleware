@@ -1,86 +1,84 @@
 @import '~@/css/variable.scss';
 
-.select-box-wrap {
+.pop-wrap {
     position: fixed;
-    z-index: 999;
+    top: 0;
+    right: 0;
+    left: 0;
+    bottom: 0;
+    z-index: 99;
+}
+
+.pop-mask {
     width: 100%;
-    min-width: 100%;
+    height: 100%;
+    background: #000;
+    opacity: 0.5;
+}
+
+.pop-menu {
+    width: 100%;
+    height: 90%;
+    position: absolute;
     bottom: 0;
     left: 0;
-    background: #000;
+    background: #F8F8F7;
+    border-radius: 20px 20px 0 0;
 }
 
-.select-title-wrap {
+.pop-title {
+    height: 73px;
+    line-height: 73px;
+    margin-bottom: 9px;
     position: relative;
-    padding: 16px 45px;
+    font-size: 17px;
+    color: #414655;
+    background: #FEFFFE;
     text-align: center;
-    font-size: 17px;
-    color: #FFF;
-    background-color: #00347D;
+    border-radius: 20px 20px 0 0;
+    box-shadow: 0 2px 4px 0 rgba(0, 0, 0, .05);
+    span {
+        padding: 0 14px;
+        position: absolute;
+        left: 0;
+        color: #BE9E7F;
+    }
 }
 
-.select-close-wrap {
+.pop-list {
+    height: calc(100% - 82px);
+    padding-left: 18px;
+    margin: 0;
+    list-style: none;
+    background: #FEFFFE;
+    overflow-y: scroll;
+
+    li {
+        height: 50px;
+        line-height: 50px;
+        font-size: 14px;
+        color: #414655;
+        border-bottom: 1px solid #EEE;
+        position: relative;
+    }
+
+    img {
+        width: 24px;
+        height: 24px;
+        margin-right: 9px;
+        position: relative;
+        top: 50%;
+        transform: translateY(-50%);
+        vertical-align: top;
+    }
+}
+
+.select-active {
     position: absolute;
-    width: 23px;
-    height: 23px;
-    margin-top: -11px;
+    right: 18px;
     top: 50%;
-    left: 20px;
-}
-
-.select-close-btn {
-    display: block;
-    width: 100%;
-}
-
-.select-info-wrap {
-    overflow-y: auto;
-    height: 173px;
-    padding: 11px 27px 50px;
-    font-size: 17px;
-    color: #FFF;
-}
-
-.info-wrap {
-    padding: 8px 9px;
-    border-bottom: 1px solid #F4D8AF;
-
-    &.is-current {
-        color: #F4D8AF;
-    }
-}
-
-.info-bank {
-    float: left;
-
-    &.method-payPass,
-    &.method-depositMethod {
-        float: none;
-        display: block;
-        text-align: center;
-    }
-}
-
-.info-method {
-    float: right;
-}
-
-// pad
-@media screen and (min-width: $pad) {
-    .select-title-wrap {
-        height: 60px;
-        line-height: 60px;
-        font-size: 26px;
-    }
-
-    .select-close-wrap {
-        width: 40px;
-        height: 40px;
-        margin-top: -20px;
-    }
-
-    .info-wrap {
-        padding: 9px;
-        font-size: 20px;
-    }
+    width: 15px;
+    height: 15px;
+    color: #BE9E7F;
+    transform: translateY(-50%);
 }

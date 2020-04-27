@@ -1,21 +1,26 @@
 <template>
-    <div :class="$style['select-box-wrap']">
-        <div :class="$style['select-title-wrap']">
-            <div :class="$style['select-close-wrap']" @click.prevent="closeFuc()">
-                <img :src="$getCdnPath('/static/image/mobile/mcenter/close_icon.png')" :class="$style['select-close-btn']" />
+    <div :class="$style['pop-wrap']">
+        <div :class="$style['pop-mask']" @click.stop="closeFuc()" />
+        <div :class="$style['pop-menu']">
+            <div :class="$style['pop-title']">
+                <span @click.stop="closeFuc()">{{ $text('S_CANCEL', '取消') }}</span>
+                {{ title }}
             </div>
-            {{ title }}
-        </div>
-        <div :class="$style['select-info-wrap']">
-            <div
-                v-for="(info, index) in selectData"
-                :key="`select-method-${info.bank_id || index}`"
-                :class="[$style['info-wrap'], { [$style['is-current']]: isCurrent(info) }, 'clearfix']"
-                @click="changePay(info)"
-            >
-                <span v-if="info.mainTitle" :class="[$style['info-bank'], $style[`method-${nowSelectCur.objKey}`]]">{{ info.mainTitle }}</span>
-                <span v-if="info.subTitle" :class="$style['info-method']">{{ info.subTitle }}</span>
-            </div>
+            <ul :class="$style['pop-list']">
+                <li
+                    v-for="(info, index) in selectData"
+                    :key="`select-method-${info.selectId || index}`"
+                    @click.stop="changePay(info)"
+                >
+                    <img :src="`/static/image/mcenter/bank/default.png`" />
+                    {{ info.mainTitle }}
+                    <icon
+                        v-if="info.selectId === nowSelectCur.selectId"
+                        :class="$style['select-active']"
+                        name="check"
+                    />
+                </li>
+            </ul>
         </div>
     </div>
 </template>
