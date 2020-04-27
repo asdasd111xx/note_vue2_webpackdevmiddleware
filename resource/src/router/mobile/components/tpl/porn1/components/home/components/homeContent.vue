@@ -111,6 +111,9 @@
                 </template>
             </div>
         </div>
+        <message v-if="msg" @close="msg = ''">
+            <div slot="msg">{{ msg }}</div>
+        </message>
     </div>
 </template>
 
@@ -123,9 +126,11 @@ import { Swiper, SwiperSlide } from 'vue-awesome-swiper';
 import mcenter from '@/api/mcenter';
 import { API_PORN1_DOMAIN } from '@/config/api';
 import openGame from '@/lib/open_game';
+import message from "../../common/new/message"
 
 export default {
     components: {
+        message,
         Swiper,
         SwiperSlide
     },
@@ -153,7 +158,8 @@ export default {
                 { name: 'withdraw', text: '提现' },
                 { name: 'accountVip', text: 'VIP' },
                 { name: 'grade', text: '等级' }
-            ]
+            ],
+            msg: ""
         };
     },
     computed: {
@@ -481,7 +487,7 @@ export default {
             }
 
             if (game.type === 'T') {
-                alert('正在上线 敬请期待！');
+                this.msg = '正在上线 敬请期待'
                 return;
             }
 

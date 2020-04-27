@@ -69,7 +69,6 @@ export default {
     data() {
         return {
             isShowDetail: [],
-            // hasTips: false,
             hasSearch: this.$route.params.page === 'record'
         };
     },
@@ -131,7 +130,6 @@ export default {
         },
         onInquire() {
             this.onSearch();
-
             this.hasSearch = false;
         }
     }

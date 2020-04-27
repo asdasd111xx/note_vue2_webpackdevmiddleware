@@ -55,7 +55,6 @@ export default {
                 (this.func === "commission" &&
                     this.$route.params.id &&
                     this.$route.params.period) ||
-                (this.func === "gameRecord" && this.$route.params.page) ||
                 (this.func === "management" &&
                     this.$route.params.page &&
                     this.$route.params.date)
@@ -71,11 +70,6 @@ export default {
                                     this.setTabState(true);
                                     this.$router.push({
                                         params: { page: "main" }
-                                    });
-                                    break;
-                                case "detail":
-                                    this.$router.push({
-                                        params: { page: "bet" }
                                     });
                                     break;
                                 default:

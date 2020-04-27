@@ -23,18 +23,20 @@
 
 .form-search {
     background-color: #fff;
-    border-top: 1px solid #bebcbc;
-    border-bottom: 1px solid #bebcbc;
+    border-top: 1px solid #eee;
+    border-bottom: 1px solid #eaeaea;
 
     .title {
+        font-size: 12px;
+        padding-left: 5px;
         left: 12px;
         color: #bebcbc;
     }
 }
 
 .field-game-wrap {
-    padding: 4px 17px;
-    border-bottom: 1px solid #bebcbc;
+    padding: 4px 8px;
+    border-bottom: 1px solid #eaeaea;
 
     select {
         background: transparent;
@@ -45,12 +47,12 @@
 }
 
 .field-date-wrap {
-    padding: 4px 17px;
+    padding: 4px 0 4px 8px;
     float: left;
     width: 50%;
 
     &.start-date {
-        border-right: 1px solid #bebcbc;
+        border-right: 1px solid #eaeaea;
     }
 
     .date {
@@ -59,6 +61,7 @@
     }
 
     input {
+        padding-left: 5px;
         border: none;
         outline: none;
         background: transparent;
@@ -69,7 +72,7 @@
 .field-search-wrap {
     padding: 8px 0;
     clear: left;
-    border-top: 1px solid #bebcbc;
+    border-top: 1px solid #eaeaea;
 
     .btn-search {
         background: linear-gradient(to left, #bd9d7d, #f9ddbd);

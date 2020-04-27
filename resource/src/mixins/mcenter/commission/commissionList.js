@@ -88,11 +88,14 @@ export default {
                     this.showInfinite = true
 
                     if (response.result !== 'ok' || response.ret.length === 0) {
-                        this.commissionList = []; // 佣金資料列表
+                        this.pageTotal = null
+                        this.allTotal = null
+                        this.commissionList = [];
                         this.mainNoData = true;
                         return;
                     }
 
+                    console.log('enter?');
                     this.isLoading = false;
                     this.pageTotal = response.sub_total; // 小計
                     this.allTotal = response.total; // 總計
@@ -100,19 +103,6 @@ export default {
                     this.mainNoData = false;
                 }
             })
-        },
-        onSort(sortValue) {
-            let orderstate = 'asc';
-
-            if (this.sort === sortValue) {
-                orderstate = this.order === 'asc' ? 'desc' : 'asc';
-            }
-
-            this.show = 1;
-            this.sort = sortValue;
-            this.order = orderstate;
-
-            this.getListCommission();
         },
         /**
          * 捲動加載
