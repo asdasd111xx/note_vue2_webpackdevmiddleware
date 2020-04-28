@@ -118,6 +118,7 @@ export default {
 
 .discover-artist-wrap {
   position: relative;
+  padding-bottom: 30px;
 }
 
 .artist-container {
