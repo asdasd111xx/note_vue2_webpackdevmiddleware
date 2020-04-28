@@ -32,7 +32,7 @@
                                     :src="$getCdnPath(`/static/image/_new/mcenter/deposit/icon_${tagTrans[info.tag]}.png`)"
                                     :class="$style['pay-mode-tag']"
                                 />
-                                <img v-lazy="getImg(info)" :class="$style['pay-mode-img']" />
+                                <img v-lazy="getImg(info.bank_id)" :class="$style['pay-mode-img']" />
                                 <div :class="$style['pay-main-title']">{{ info.short_name }}</div>
                                 <div :class="$style['pay-sub-title']">
                                     <template v-if="[5, 6].includes(info.payment_type_id)">返利1%无上限</template>
@@ -69,7 +69,7 @@
                                         :key="item.selectId"
                                         @click.stop="changeSelectValue(item.value)"
                                     >
-                                        <img :src="`https://bbos.bbin-asia.com/elibom/bank/${item.selectId}.png`" />
+                                        <img v-lazy="getImg(item.selectId)" />
                                         {{ item.label }}
                                         <icon
                                             v-if="item.value === selectedBank.value"
@@ -669,9 +669,9 @@ export default {
                 }
             });
         },
-        getImg(info) {
+        getImg(id) {
             return {
-                src: this.$getCdnPath(`/static/image/mcenter/bank/${info.bank_id}.png`),
+                src: `https://bbos.bbin-asia.com/elibom/bank/${id}.png`,
                 error: this.$getCdnPath('/static/image/mcenter/bank/default.png'),
                 loading: this.$getCdnPath('/static/image/game_loading_s.gif')
             };
