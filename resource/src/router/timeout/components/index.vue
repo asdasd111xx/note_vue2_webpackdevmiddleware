@@ -65,4 +65,4 @@ export default {
 };
 </script>
 
-<style lang="scss" src="@/css/router/status.scss" module></style>
+<style lang="scss" src="@/css/router/timeout.scss"></style>

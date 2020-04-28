@@ -11,7 +11,7 @@
       </div>
 
       <div
-        :class="$style['tab-slider']"
+        :class="$style['active-slider']"
         :style="{
           left: `calc(calc(12.5% - 25px + 25% * ${curIndex}))`
         }"
@@ -166,7 +166,7 @@ export default {
   position: relative;
 }
 
-.tab-slider {
+.active-slider {
   position: absolute;
   bottom: 1.5px;
   left: calc(12.5% - 25px);

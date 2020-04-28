@@ -7,20 +7,6 @@
     >
       {{ tTag }}
     </div>
-    <div
-      v-for="(tTag, index) in tags"
-      :key="`tag-${index}`"
-      :class="$style['tag']"
-    >
-      {{ tTag }}
-    </div>
-    <div
-      v-for="(tTag, index) in tags"
-      :key="`tag-${index}`"
-      :class="$style['tag']"
-    >
-      {{ tTag }}
-    </div>
   </div>
 </template>
 

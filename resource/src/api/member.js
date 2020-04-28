@@ -28,6 +28,7 @@ export default {
         return ajax2({
             method: 'post',
             url: apiUrl.API_MEMBER,
+            errorAlert: false,
             ...args
         });
     },
@@ -70,6 +71,7 @@ export default {
         return ajax({
             method: 'post',
             url: apiUrl.API_PWD_FORGET,
+            errorAlert: false,
             ...args
         });
     },
@@ -78,6 +80,7 @@ export default {
         return ajax({
             method: 'post',
             url: apiUrl.API_PWD_FORGET_MOBILE,
+            errorAlert: false,
             ...args
         });
     },
@@ -86,6 +89,7 @@ export default {
         return ajax({
             method: 'put',
             url: apiUrl.API_PWD_MOBILE_VERIFY,
+            errorAlert: false,
             ...args
         });
     },
@@ -103,6 +107,7 @@ export default {
         return ajax({
             method: 'put',
             url: apiUrl.API_PWD_MOBILE_RESET,
+            errorAlert: false,
             ...args
         });
     },

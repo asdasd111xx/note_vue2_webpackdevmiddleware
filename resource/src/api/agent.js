@@ -1,4 +1,5 @@
 import * as apiUrl from '../config/api';
+
 import ajax from '../lib/ajax';
 
 export default {
@@ -16,6 +17,7 @@ export default {
         return ajax({
             method: 'post',
             url: apiUrl.API_AGENT,
+            errorAlert: false,
             ...args
         });
     },
@@ -33,6 +35,7 @@ export default {
         return ajax({
             method: 'put',
             url: apiUrl.API_AGENT_LOGIN,
+            errorAlert: false,
             ...args
         });
     },
@@ -50,6 +53,7 @@ export default {
         return ajax({
             method: 'post',
             url: apiUrl.API_AGENT_PWD_FORGET,
+            errorAlert: false,
             ...args
         });
     },
@@ -58,6 +62,7 @@ export default {
         return ajax({
             method: 'post',
             url: apiUrl.API_AGENT_PWD_FORGET_MOBILE,
+            errorAlert: false,
             ...args
         });
     },
@@ -66,6 +71,7 @@ export default {
         return ajax({
             method: 'put',
             url: apiUrl.API_AGENT_PWD_MOBILE_VERIFY,
+            errorAlert: false,
             ...args
         });
     },
@@ -74,6 +80,7 @@ export default {
         return ajax({
             method: 'put',
             url: apiUrl.API_AGENT_PWD_MOBILE_RESET,
+            errorAlert: false,
             ...args
         });
     },
@@ -82,6 +89,7 @@ export default {
         return ajax({
             method: 'put',
             url: apiUrl.API_AGENT_PWD_RESET,
+            errorAlert: false,
             ...args
         });
     },

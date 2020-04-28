@@ -13,9 +13,9 @@
       </div>
       <div class="login-form-wrap">
         <!-- 錯誤訊息 -->
-        <div :class="$style['top-tips']">
-          <div v-show="tipMsg">
-            {{ tipMsg }}
+        <div :class="$style['err-msg']">
+          <div v-show="errMsg">
+            {{ errMsg }}
           </div>
         </div>
 
@@ -156,7 +156,7 @@ export default {
   },
   data() {
     return {
-      tipMsg: "",
+      errMsg: "",
     }
   },
   computed: {
@@ -207,9 +207,9 @@ export default {
     // 錯誤訊息call back
     errorCallBack(res) {
       if (res && res.msg) {
-        this.tipMsg = res.msg
+        this.errMsg = res.msg
       } else if (res && res.status) {
-        this.tipMsg = res.status
+        this.errMsg = res.status
       }
     }
   }
@@ -359,10 +359,9 @@ export default {
 <style lang="scss" module>
 @import "~@/css/variable.scss";
 
-.top-tips {
+.err-msg {
   padding: 2px 0;
   color: $main_error_color1;
-  height: 40px;
-  line-height: 40px;
+  min-height: 40px;
 }
 </style>

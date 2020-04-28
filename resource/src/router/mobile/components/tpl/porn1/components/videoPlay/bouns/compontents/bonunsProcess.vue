@@ -116,7 +116,6 @@ export default {
     },
     // 收到playing跑一次進度動畫
     playCueTime(play) {
-      console.log(play)
       if (play) { this.playingCueTime = play; return; }
       if (this.playingCueTime) { return }
       this.playingCueTime = true;
