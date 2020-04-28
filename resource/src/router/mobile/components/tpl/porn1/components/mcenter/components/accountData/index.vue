@@ -8,8 +8,8 @@
           :key="`avatar-${avatarList}`"
           :class="$style['avatar-wrap']"
         >
-          <img :src="$getCdnPath(avatarList.url)" @click="selectImg(index)" />
-          <div v-if="imgID === index + 1" :class="$style.check" />
+          <img :src="$getCdnPath(avatarList.url)" @click="selectImg(index + 1)" />
+          <div v-if="imgID - 1 === index" :class="$style.check" />
         </div>
       </div>
 
@@ -35,9 +35,9 @@
           <img
             :class="[{ [$style['active']]: imgID === index }]"
             :src="$getCdnPath(avatarList.url)"
-            @click="selectImg(index)"
+            @click="selectImg(index + 1)"
           />
-          <div v-if="imgID === index" :class="$style.check" />
+          <div v-if="imgID - 1 === index" :class="$style.check" />
         </div>
 
         <div :class="$style['dialog-func']">
@@ -74,7 +74,6 @@ export default {
       msg: "",
       isShow: false,
       avatar: [
-        { image: 'avatar_0', url: '/static/image/_new/mcenter/default/avatar_0.png' },
         { image: 'avatar_1', url: '/static/image/_new/mcenter/default/avatar_1.png' },
         { image: 'avatar_2', url: '/static/image/_new/mcenter/default/avatar_2.png' },
         { image: 'avatar_3', url: '/static/image/_new/mcenter/default/avatar_3.png' },
@@ -82,6 +81,7 @@ export default {
         { image: 'avatar_5', url: '/static/image/_new/mcenter/default/avatar_5.png' },
         { image: 'avatar_6', url: '/static/image/_new/mcenter/default/avatar_6.png' },
         { image: 'avatar_7', url: '/static/image/_new/mcenter/default/avatar_7.png' },
+        { image: 'avatar_8', url: '/static/image/_new/mcenter/default/avatar_8.png' },
       ],
       imgID: 0,
       imgIndex: 0

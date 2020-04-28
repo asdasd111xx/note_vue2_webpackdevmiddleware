@@ -7,7 +7,7 @@
         />
         <slot name="content" />
         <m-footer v-if="hasFooter" />
-        <ele-pop />
+        <!-- <ele-pop /> -->
         <!-- 會員中心彈窗 -->
         <!-- <div v-if="popType === 'note'" :class="[$style['note-content'], 'theme-porn1']">
             <agent-note v-if="path[1] === 'agcenter'" :position="popData" />
@@ -23,7 +23,7 @@ export default {
     components: {
         mHeader: () => import(/* webpackChunkName: 'mHeader' */ './mHeader'),
         mFooter: () => import(/* webpackChunkName: 'mFooter' */ './mFooter'),
-        elePop: () => import(/* webpackChunkName: 'elePop' */'@/router/web/components/tpl/common/pop')
+        // elePop: () => import(/* webpackChunkName: 'elePop' */'@/router/web/components/tpl/common/pop')
     // note: () => import(/* webpackChunkName: 'note' */'@/components/mcenter/components/common/note'),
     // agentNote: () => import(/* webpackChunkName: 'note' */'@/router/agent/components/common/note')
     },
