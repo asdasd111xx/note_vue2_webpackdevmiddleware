@@ -1,7 +1,7 @@
 <template>
   <mobile-container>
     <div slot="content" :class="$style['live-stream-wrap']">
-      <div :class="$style['btn-prev']">
+      <div :class="$style['btn-prev']" @click="$router.push('/mobile')">
         <img :src="$getCdnPath('/static/image/_new/common/btn_back.png')" />
       </div>
 
@@ -131,7 +131,7 @@ export default {
   data() {
     return {
       streamList: [],
-      currentTab: 'ballLive',
+      currentTab: this.$route.params.type,
       iframeHeight: 500
     };
   },
@@ -337,6 +337,7 @@ export default {
   height: 43px;
   display: flex;
   align-items: center;
+  z-index: 1;
 
   > img {
     display: block;

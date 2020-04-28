@@ -85,7 +85,7 @@
                         </div>
                         <div :class="['video-wrap', 'clearfix']">
                             <div
-                                v-for="video in videoData.list"
+                                v-for="video in videoData.list.slice(0,2)"
                                 :key="`video-${video.id}`"
                                 :href="`/mobile/videoPlay/${video.id}`"
                                 :class="$style.video"
@@ -492,7 +492,18 @@ export default {
             }
 
             if (['BL', 'SL'].includes(game.type)) {
-                this.$router.push('/mobile/liveStream');
+                switch (game.type) {
+                    case 'BL':
+                        this.$router.push({name: 'liveStream' , params: {type: 'cutiesLive'}});
+                        break;
+
+                    case 'SL':
+                        this.$router.push({name: 'liveStream' , params: {type: 'ballLive'}});
+                        break;
+
+                    default:
+                        break;
+                }
                 return;
             }
 
