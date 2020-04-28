@@ -483,21 +483,21 @@ export default {
     const username = {
       key: 'username',
       content: {
-        note1: '请输入4-20位字母或数字',
+        note1: this.$text('S_ACCOUNT_PLACEHOLDER', '请输入4-20位字母或数字'),
         note2: ''
       }
     };
     const password = {
       key: 'password',
       content: {
-        note1: '请输入6-12位字母或数字',
+        note1: this.$text('S_PASSWORD_PLACEHOLDER', '请输入6-12位字母或数字'),
         note2: ''
       }
     };
     const confirmPassword = {
       key: 'confirm_password',
       content: {
-        note1: '请输入6-12位字母或数字',
+        note1: this.$text('S_PASSWORD_PLACEHOLDER', '请输入6-12位字母或数字'),
         note2: ''
       }
     };

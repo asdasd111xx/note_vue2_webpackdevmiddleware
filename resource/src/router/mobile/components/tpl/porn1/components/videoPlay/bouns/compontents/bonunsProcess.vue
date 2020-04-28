@@ -146,13 +146,6 @@ export default {
   position: absolute;
   width: 18px;
   height: 18px;
-
-  &.pause {
-    -webkit-animation-play-state: paused;
-    -moz-animation-play-state: paused;
-    -o-animation-play-state: paused;
-    animation-play-state: paused;
-  }
 }
 
 #halfclip {
@@ -190,6 +183,14 @@ export default {
   -webkit-animation: showfixed 60s linear infinite;
 }
 
+.circle_loader {
+  &.pause * {
+    -webkit-animation-play-state: paused !important;
+    -moz-animation-play-state: paused !important;
+    -o-animation-play-state: paused !important;
+    animation-play-state: paused !important;
+  }
+}
 @-webkit-keyframes cliprotate {
   0% {
     transform: rotate(0deg);

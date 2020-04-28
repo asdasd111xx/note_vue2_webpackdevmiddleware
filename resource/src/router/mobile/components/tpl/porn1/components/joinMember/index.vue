@@ -28,6 +28,7 @@ export default {
       return {
         prev: true,
         onClick: () => { this.$router.back(); },
+        hasClose: true,
         title: this.$text("S_REGISTER", "注册"),
       };
     },

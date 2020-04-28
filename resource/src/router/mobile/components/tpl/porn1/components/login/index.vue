@@ -1,136 +1,140 @@
 <template>
-  <div class="container">
-    <div class="header">
-      <img
-        :src="$getCdnPath('/static/image/_new/common/btn_close.png')"
-        @click="$router.push({ name: 'home' })"
-      />
-      <span class="title">{{ $text("S_LOGON", "登录") }}</span>
-    </div>
-    <div class="login-wrap clearfix">
-      <div class="login-logo">
-        <img :src="$getCdnPath('/static/image/_new/login/logo.png')" />
-      </div>
-      <div class="login-form-wrap">
-        <!-- 錯誤訊息 -->
-        <div :class="$style['err-msg']">
-          <div v-show="errMsg">
-            {{ errMsg }}
+  <mobile-container :header-config="headerConfig" :class="$style.container">
+    <div slot="content" class="content-wrap">
+      <div class="container">
+        <div class="login-wrap clearfix">
+          <div class="login-logo">
+            <img :src="$getCdnPath('/static/image/_new/login/logo.png')" />
           </div>
-        </div>
+          <div class="login-form-wrap">
+            <!-- 錯誤訊息 -->
+            <div :class="$style['err-msg']">
+              <div v-show="errMsg">
+                {{ errMsg }}
+              </div>
+            </div>
 
-        <!-- 帳號 -->
-        <span class="login-unit login-unit-username">
-          <input
-            ref="username"
-            v-model="username"
-            :title="$text('S_ACCOUNT', '帐号')"
-            :placeholder="$text('S_ACCOUNT', '帐号')"
-            class="login-input"
-            maxlength="20"
-            tabindex="1"
-            @keydown.13="loginCheck"
-            @change="onSaveAccount"
-          />
-          <span class="input-icon" />
-        </span>
-        <!-- 密碼 -->
-        <span class="login-unit login-unit-password">
-          <input
-            ref="password"
-            v-model="password"
-            :title="$text('S_PASSWORD', '密码')"
-            :placeholder="$text('S_PASSWORD', '密码')"
-            class="login-input"
-            type="password"
-            maxlength="12"
-            tabindex="2"
-            @keydown.13="loginCheck"
-          />
-          <span class="input-icon" />
-        </span>
-        <!-- 驗證碼 -->
-        <span
-          v-if="hasCaptchaText"
-          class="login-unit login-unit-captcha clearfix"
-        >
-          <input
-            ref="captcha"
-            v-model="captcha"
-            :title="$text('S_RELOAD_PIC', '( 点选此处产生新验证码 )')"
-            :placeholder="$text('S_CHECK_CODE', '验证码')"
-            class="login-input"
-            maxlength="4"
-            tabindex="3"
-            @focus="getCaptcha"
-            @keydown.13="loginCheck"
-          />
-          <span class="input-icon" />
-          <img
-            v-if="captchaImg"
-            :src="captchaImg"
-            height="25"
-            @click="getCaptcha"
-          />
-        </span>
-        <div class="login-deposit-username clearfix" @click="onSaveAccount">
-          <div class="icon-wrap" @click="depositStatus = !depositStatus">
-            <img
-              :src="
-                `/static/image/_new/login/sign_check${
-                  depositStatus ? '_active' : ''
-                }.png`
-              "
-            />
-          </div>
-          <span class="deposit-text">{{
-            $text("S_SAVE_PASSWORD", "记住密码")
-          }}</span>
+            <!-- 帳號 -->
+            <span class="login-unit login-unit-username">
+              <input
+                ref="username"
+                v-model="username"
+                :title="$text('S_ACCOUNT', '帐号')"
+                :placeholder="
+                  $text('S_ACCOUNT_PLACEHOLDER', '请输入4-20位字母或数字')
+                "
+                class="login-input"
+                maxlength="20"
+                tabindex="1"
+                @keydown.13="loginCheck"
+                @change="onSaveAccount"
+              />
+              <span class="input-icon" />
+            </span>
+            <!-- 密碼 -->
+            <span class="login-unit login-unit-password">
+              <input
+                ref="password"
+                v-model="password"
+                :title="$text('S_PASSWORD', '密码')"
+                :placeholder="
+                  $text('S_PASSWORD_PLACEHOLDER', '请输入6-12位字母或数字')
+                "
+                class="login-input"
+                type="password"
+                maxlength="12"
+                tabindex="2"
+                @keydown.13="loginCheck"
+              />
+              <span class="input-icon" />
+            </span>
+            <!-- 驗證碼 -->
+            <span
+              v-if="hasCaptchaText"
+              class="login-unit login-unit-captcha clearfix"
+            >
+              <input
+                ref="captcha"
+                v-model="captcha"
+                :title="$text('S_RELOAD_PIC', '( 点选此处产生新验证码 )')"
+                :placeholder="$text('S_CHECK_CODE', '验证码')"
+                class="login-input"
+                maxlength="4"
+                tabindex="3"
+                @focus="getCaptcha"
+                @keydown.13="loginCheck"
+              />
+              <span class="input-icon" />
+              <img
+                v-if="captchaImg"
+                :src="captchaImg"
+                height="25"
+                @click="getCaptcha"
+              />
+            </span>
+            <div class="login-deposit-username clearfix" @click="onSaveAccount">
+              <div class="icon-wrap" @click="depositStatus = !depositStatus">
+                <img
+                  :src="
+                    `/static/image/_new/common/icon_${
+                      depositStatus ? '' : 'no'
+                    }remember.png`
+                  "
+                />
+              </div>
+              <span class="deposit-text">{{
+                $text("S_SAVE_PASSWORD", "记住密码")
+              }}</span>
 
-          <!-- 忘記密碼 -->
-          <span
-            class="login-unit-link"
-            @click="$router.push('/mobile/forgetpwd/member')"
-            >{{ $text("S_PASSWORD_FORGET", "忘记密码") }}?</span
-          >
-        </div>
-        <div class="login-bottom-wrap">
-          <!-- 滑動驗證 -->
-          <slide-verification
-            v-if="memInfo.config.login_captcha_type === 2"
-            :is-enable="isSlideAble"
-            :success-fuc="slideLogin"
-            page-status="login"
+              <!-- 忘記密碼 -->
+              <span
+                class="login-unit-link"
+                @click="$router.push('/mobile/forgetpwd/member')"
+                >{{ $text("S_PASSWORD_FORGET", "忘记密码") }}?</span
+              >
+            </div>
+            <div class="login-bottom-wrap">
+              <!-- 滑動驗證 -->
+              <slide-verification
+                v-if="memInfo.config.login_captcha_type === 2"
+                :is-enable="isSlideAble"
+                :success-fuc="slideLogin"
+                page-status="login"
+              />
+              <div
+                v-else
+                class="login-button login-submit"
+                @click="handleClickLogin"
+              >
+                {{ $text("S_LOGIN_TITLE", "登录") }}
+              </div>
+            </div>
+            <div class="login-link-wrap">
+              <!-- 加入會員 -->
+              <div class="link-button link-join-mem">
+                <router-link to="/mobile/joinmember">{{
+                  $text("S_FREE_REGISTER", "免费注册")
+                }}</router-link>
+              </div>
+              <!-- 登入鈕 -->
+              <div
+                class="link-button link-submit"
+                @click="$router.push('/mobile/service')"
+              >
+                {{ $text("S_CUSTOMER_SERVICE_ONLINE", "在线客服") }}
+              </div>
+            </div>
+          </div>
+          <security-check
+            v-if="checkItem"
+            :check-item.sync="checkItem"
+            :theme="$styleSecurityCheck"
+            :on-login="login"
           />
-          <div
-            v-else
-            class="login-button login-submit"
-            @click="handleClickLogin"
-          >
-            {{ $text("S_LOGIN_TITLE", "登录") }}
-          </div>
-        </div>
-        <div class="login-link-wrap">
-          <!-- 加入會員 -->
-          <div class="link-button link-join-mem">
-            <router-link to="/mobile/joinmember">{{
-              $text("S_FREE_REGISTER", "免费注册")
-            }}</router-link>
-          </div>
-          <!-- 登入鈕 -->
-          <div class="link-button link-submit" @click="onService">
-            {{ $text("S_CUSTOMER_SERVICE_ONLINE", "在线客服") }}
-          </div>
         </div>
       </div>
-      <security-check
-        v-if="checkItem"
-        :check-item.sync="checkItem"
-        :theme="$styleSecurityCheck"
-        :on-login="login"
-      />
     </div>
-  </div>
+  </mobile-container>
 </template>
 
 <script>
@@ -138,14 +142,16 @@ import { mapGetters } from 'vuex';
 import loginForm from '@/mixins/loginForm';
 import mobileLinkOpen from '@/lib/mobile_link_open';
 import slideVerification from '@/components/slideVerification';
-
+import joinMember from '@/router/web/components/page/join_member';
+import mobileContainer from '../common/new/mobileContainer'
 /**
  * 登入共用元件
  */
 export default {
   components: {
     securityCheck: () => import(/* webpackChunkName: 'securityCheck' */'@/router/web/components/common/securityCheck'),
-    slideVerification
+    slideVerification,
+    mobileContainer
   },
   mixins: [loginForm],
   props: {
@@ -167,6 +173,14 @@ export default {
       memInfo: 'getMemInfo',
       onlineService: 'getOnlineService'
     }),
+    headerConfig() {
+      return {
+        prev: true,
+        onClick: () => { this.$router.back(); },
+        hasClose: true,
+        title: this.$text("S_LOGON", "登录"),
+      };
+    },
     mobileColor() {
       return this.$cookie.get('MOBILE_COLOR') || this.siteConfig.MOBILE_COLOR;
     },
@@ -191,14 +205,8 @@ export default {
   },
   methods: {
     mobileLinkOpen,
-    onService() {
-      if (!this.onlineService.url) {
-        return;
-      }
-
-      this.mobileLinkOpen({ linkType: 'static', linkTo: 'service' });
-    },
     handleClickLogin() {
+      if (!this.username || !this.password) return
       this.loginCheck(undefined, undefined, this.errorCallBack)
     },
     slideLogin(loginInfo) {

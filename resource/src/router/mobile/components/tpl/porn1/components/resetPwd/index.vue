@@ -5,9 +5,9 @@
         ><div slot="msg">{{ msg }}</div>
       </message>
       <!-- 錯誤訊息 -->
-      <div :class="$style['top-tips']">
-        <div v-show="tipMsg">
-          {{ tipMsg }}
+      <div :class="$style['err-msg']">
+        <div v-show="errMsg">
+          {{ errMsg }}
         </div>
       </div>
       <div :class="$style['reset-content']">
@@ -118,7 +118,7 @@
             :class="[
               $style['submit'],
               {
-                [$style['active']]: pwd && newPwd && confNewPwd && !this.tipMsg
+                [$style['active']]: pwd && newPwd && confNewPwd
               }
             ]"
             @click="pwdResetSubmit()"
@@ -144,7 +144,7 @@ export default {
   //   mixins: [resetPwd],
   data() {
     return {
-      tipMsg: "",
+      errMsg: "",
       msg: "",
       pwd: "",
       newPwd: "",
@@ -219,18 +219,20 @@ export default {
       this.pwdResetInfo[key].show = !this.pwdResetInfo[key].show;
     },
     verification(id, value) {
+      // 前端先不驗證
+      return;
       const data = this.pwdResetInfo.find((i) => i.key == id);
       const re = new RegExp(data.regExp);
       let msg = this.$t(data.errorMsg);
 
       if (!re.test(value) || value === '') {
-        this.tipMsg = msg;
+        this.errMsg = msg;
       } else {
-        this.tipMsg = "";
+        this.errMsg = "";
       }
     },
     pwdResetSubmit() {
-      if (this.tipMsg) return;
+      if (!pwd || !newPwd || !confNewPwd) return;
 
       const pwdInfo = {
         username: this.memInfo.user.username,
@@ -243,24 +245,24 @@ export default {
         agent.pwdReset({
           params: pwdInfo,
           success: () => {
-            this.tipMsg = this.$t('S_CR_SUCCESS')
+            this.errMsg = this.$t('S_CR_SUCCESS')
             setTimeout(() => {
               this.$router.push('/mobile/mcenter/setting')
             }, 400)
           },
           fail: (res) => {
-            this.tipMsg = res.data.msg;
+            this.errMsg = res.data.msg;
           }
         });
       } else {
         member.pwdReset({
           params: pwdInfo,
           success: () => {
-            this.tipMsg = this.$t('S_CR_SUCCESS')
+            this.errMsg = this.$t('S_CR_SUCCESS')
             this.$router.push('/mobile/mcenter/setting')
           },
           fail: (res) => {
-            this.tipMsg = res.data.msg;
+            this.errMsg = res.data.msg;
           }
         });
       }
@@ -345,7 +347,7 @@ input {
   }
 }
 
-.top-tips {
+.err-msg {
   background: $main_white_color1;
   padding: 0 14px;
   color: $main_error_color1;

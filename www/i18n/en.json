@@ -887,6 +887,8 @@
     "S_ENABLE_KEYRING": "请输入验证码",
     "S_NEXT_STEP": "下一步",
     "S_LOGIN_TITLE": "登录",
+    "S_ACCOUNT_PLACEHOLDER": "请输入4-20位字母或数字",
+    "S_PASSWORD_PLACEHOLDER": " 请输入6-12位字母或数字",
     "S_SAVE_PASSWORD": "记住密码",
     "S_GO_VISIT_FIRST": "先去逛逛",
     "S_ENABLE_PASSWORD": "请输入新密码",

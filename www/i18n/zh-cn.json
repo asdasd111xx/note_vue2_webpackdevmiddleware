@@ -21,6 +21,8 @@
     "POP_NOTE_LIST_2_AGENT": "绑定银行卡并加入【常用帐号】或帐户资料设定【会员帐号】",
     "POP_NOTE_LIST_3": "设定【取款密码】",
     "S_MEMBER_LOGIN": "会员登入",
+    "S_ACCOUNT_PLACEHOLDER": "请输入4-20位字母或数字",
+    "S_PASSWORD_PLACEHOLDER": " 请输入6-12位字母或数字",
     "S_MEM_ZONE": "会员专区",
     "S_ACCOUNT": "帐号",
     "S_PASSWORD": "密码",
