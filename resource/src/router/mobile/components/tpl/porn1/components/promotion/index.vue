@@ -56,18 +56,21 @@ export default {
     return {
       tabId: 0,
       tabList: [],
-      promotionList: [],
+      promotionList: []
     };
   },
   created() {
     this.getPromotionList(this.tabId);
   },
   computed: {
-    headerConfig() {
-      return {
-        title: this.$text('S_PROMOTIONS', '优惠活动'),
-      };
-    },
+        headerConfig() {
+            return {
+                prev: true,
+                title: this.$text('S_PROMOTIONS', '优惠活动'),
+                hasSearchBtn: true,
+                onClick: () => { this.$router.back(); }
+            };
+        }
   },
   methods: {
     handleClickTab(tab, index) {
@@ -145,7 +148,6 @@ export default {
 @import "~@/css/variable.scss";
 
 .promotion-wrap {
-  padding: 0 14px;
   background: #fefffe;
 }
 
@@ -153,6 +155,7 @@ export default {
   width: 100%;
   height: 43px;
   position: relative;
+  background-color: #FEFFFE;
 }
 
 .tab-slider {
@@ -185,6 +188,7 @@ export default {
 
 .promotion {
   position: relative;
+  padding: 0 14px;
   margin: 7px 0;
 }
 .wrap {

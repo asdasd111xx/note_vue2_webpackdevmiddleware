@@ -108,7 +108,7 @@
                   :class="$style['icon-watch']"
                 />
                 <div :class="$style['live-watch']">
-                  {{ $text("S_WATCH", "观看") }}{{ info.views }}
+                  {{ $text("S_WATCH", "观看") }} {{ info.views }}
                 </div>
               </div>
             </div>
@@ -233,7 +233,8 @@ export default {
 }
 
 .cuties-live-wrap {
-  margin: 10px 0 40px;
+  margin: 10px 6px 40px;
+  background: url("/static/image/_new/live/live_stream_background.png") 100% 100%;
 }
 
 .live-card {
@@ -242,7 +243,6 @@ export default {
   vertical-align: middle;
   overflow: hidden;
   width: 49%;
-  height: 220px;
   margin-bottom: 10px;
 
   &:nth-child(even) {
@@ -255,7 +255,7 @@ export default {
   top: 6px;
   right: 7%;
   text-align: center;
-  font-size: 11px;
+  font-size: 14px;
   line-height: 21px;
   width: 43pt;
   height: 21px;
@@ -264,7 +264,9 @@ export default {
 }
 
 .live-bg {
+  display: block;
   width: 100%;
+  border-radius: 10px;
 }
 
 .tip-wrap {
@@ -273,6 +275,7 @@ export default {
   padding: 6px 0 3px;
   bottom: 0;
   background-color: rgba(0, 0, 0, 0.5);
+  border-radius: 0 0 10px 10px;
 }
 
 .card-content {

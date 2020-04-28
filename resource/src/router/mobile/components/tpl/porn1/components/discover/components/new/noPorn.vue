@@ -53,7 +53,7 @@ export default {
   background-size: cover;
   background-image: url("/static/image/_new/common/bg.png");
   height: 100vh;
-  padding-top: 96px;
+  padding-top: 89px;
 }
 
 .no-porn-img {
@@ -63,6 +63,7 @@ export default {
   display: flex;
   align-items: center;
   justify-content: center;
+  margin-bottom: 44px;
 
   > img {
     height: 233px;
@@ -71,7 +72,7 @@ export default {
 }
 
 .no-porn-title {
-  color: $main_text_color4;
+  color: #A6A9B2;
 }
 
 .porn-open-btn {
@@ -80,7 +81,7 @@ export default {
   width: 300px;
   height: 50px;
   line-height: 50px;
-  margin: 32px auto 0;
+  margin: 26px auto 0;
   border-radius: 3px;
   background: -webkit-linear-gradient(right, #bd9d7d, #f9ddbd);
   background: -o-linear-gradient(left, #bd9d7d, #f9ddbd);
