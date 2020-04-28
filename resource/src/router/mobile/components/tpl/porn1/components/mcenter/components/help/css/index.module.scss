@@ -1,0 +1,88 @@
+@import "~@/css/variable.scss";
+
+.container {
+    background-color: #f8f8f8;
+}
+
+.section {
+    background-color: #f8f8f8;
+    color: #414655;
+    font-size: 14px;
+    position: relative;
+    width: 100%;
+}
+
+.cell {
+    background-color: #fefefe;
+    position: relative;
+    margin-top: 1px;
+    padding: 0 14px;
+
+    .title {
+        height: 50px;
+        line-height: 50px;
+        font-weight: bold;
+    }
+}
+
+.content {
+    -moz-transition: all .31s;
+    -ms-transition: all .31s;
+    -o-transition: all .31s;
+    -webkit-transition: all .31s;
+    font-size: 14px;
+    margin-top: 5px;
+    margin-bottom: 5px;
+    height: 0;
+    opacity: 0.5;
+    overflow: hidden;
+    transition: all .31s ease-out;
+
+    &.active {
+        height: auto;
+        opacity: 1;
+        overflow: unset;
+    }
+
+}
+
+.arrow-btn {
+    -moz-transition: transform .31s;
+    -ms-transition: transform .31s;
+    -o-transition: transform .31s;
+    -webkit-transition: transform .31s;
+    height: 50px;
+    position: absolute;
+    right: 14px;
+    top: 0;
+    transition: transform .31s;
+    width: 14px;
+
+    >img {
+        bottom: 0;
+        height: 14px;
+        margin: auto;
+        position: absolute;
+        top: 0;
+        width: 100%;
+    }
+
+    &.active {
+        transform: rotate(90deg);
+    }
+}
+
+
+
+@media screen and (max-width: $phone) {
+    .section {
+        font-size: 15px;
+    }
+}
+
+
+@media screen and (min-width: $pad) {
+    .section {
+        font-size: 17px;
+    }
+}
