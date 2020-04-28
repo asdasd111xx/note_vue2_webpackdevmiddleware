@@ -5,12 +5,6 @@ import store from '@/store';
 import config from './route/config';
 
 export default {
-    metaInfo: {
-        meta: [{
-            name: 'viewport',
-            content: 'width=device-width, initial-scale=1.0, minimum-scale=1.0, maximum-scale=1.0, user-scalable=no'
-        }]
-    },
     components: config.root,
     beforeRouteEnter(to, from, next) {
         // 指定為預覽模式，抓取廳主自改預覽資料

@@ -22,12 +22,6 @@ import member from '@/api/member';
 import store from '@/store';
 
 export default {
-  metaInfo: {
-    meta: [{
-      name: 'viewport',
-      content: 'width=device-width, initial-scale=1.0, minimum-scale=1.0, maximum-scale=1.0, user-scalable=no'
-    }]
-  },
   beforeRouteEnter(to, from, next) {
     member.data({
       timeout: 10000,

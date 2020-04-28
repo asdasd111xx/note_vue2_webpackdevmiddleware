@@ -58,140 +58,116 @@
                                 </div>
                             </div>
 
-                            <balance-tran v-if="isShowTrans" class="clearfix">
-                                <template scope="{ balanceTran , balanceBack}">
-                                    <div>
-                                        <div
-                                            :class="[$style['balance-wrap'], 'clearfix']"
-                                            @click="balanceBack()"
-                                        >
-                                            <div :class="$style['balance-total-item']">
-                                                <img
-                                                    :src="
-                                                        $getCdnPath(
-                                                            '/static/image/_new/mcenter/balanceTrans/ic_wallet_center.png'
-                                                        )
-                                                    "
-                                                />
-                                                <span> {{ $text("S_MCENTER_WALLET", "中心钱包") }} </span>
-                                                <div :class="$style['balance-item-money']">
-                                                    {{ balanceTran.membalance.vendor.default.amount }}
-                                                </div>
-                                            </div>
+                            <div
+                                :class="[
+                                    $style['recycle-btn'],
+                                    balanceTran.balanceBackLock ? $style.disable : ''
+                                ]"
+                            >
+                                {{ $text("S_ONE_CLICK_TO_ACCOUNT") }}
+                            </div>
+                        </div>
 
-                                            <div
-                                                :class="[
-                                                    $style['recycle-btn'],
-                                                    balanceTran.balanceBackLock ? $style.disable : ''
-                                                ]"
-                                            >
-                                                {{ $text("S_ONE_CLICK_TO_ACCOUNT") }}
-                                            </div>
-                                        </div>
-
-                                        <div :class="[$style['balance-item-wrap'], 'clearfix']">
-                                            <div
-                                                v-for="(item, key, index) in balanceTran.balanceInfo"
-                                                :key="`balance-item-${key}`"
-                                                :class="[
-                                                    $style['balance-item'],
-                                                    {
-                                                        [$style['is-last-item']]:
-                                                            Object.keys(balanceTran.balanceInfo).length - index <=
-                                                            (Object.keys(balanceTran.balanceInfo).length % 4 || 4)
-                                                    }
-                                                ]"
-                                            >
-                                                <span :class="$style['balance-item-vendor']">{{
-                                                    item.text
-                                                }}</span>
-                                                <span
-                                                    v-if="item.maintain"
-                                                    :class="$style['balance-info-maintain']"
-                                                    @click="onClickMaintain(item.maintain)"
-                                                >
-                                                    {{ $t("S_MAINTAIN") }}
-                                                    <img
-                                                        :src="
-                                                            $getCdnPath(
-                                                                '/static/image/_new/mcenter/balanceTrans/icon_transfer_tips_info.png'
-                                                            )
-                                                        "
-                                                        :class="$style['balance-wrench']"
-                                                    />
-                                                </span>
-                                                <span v-else :class="$style['balance-item-money']">{{
-                                                    item.amount
-                                                }}</span>
-                                            </div>
-                                        </div>
-                                    </div>
-                                </template>
-                            </balance-tran>
-
-                            <div :class="$style['invite-wrap']" @click="onClickInvite">
-                                <div :class="$style['content']">
-                                    <div>邀请好友获得现金奖励</div>
-                                    <div>邀请人首存即可获得</div>
-                                </div>
-
-                                <div :class="$style['image']">
+                        <div :class="[$style['balance-item-wrap'], 'clearfix']">
+                            <div
+                                v-for="(item, key, index) in balanceTran.balanceInfo"
+                                :key="`balance-item-${key}`"
+                                :class="[
+                                    $style['balance-item'],
+                                    {
+                                        [$style['is-last-item']]:
+                                            Object.keys(balanceTran.balanceInfo).length - index <=
+                                            (Object.keys(balanceTran.balanceInfo).length % 4 || 4)
+                                    }
+                                ]"
+                            >
+                                <span :class="$style['balance-item-vendor']">{{
+                                    item.text
+                                }}</span>
+                                <span
+                                    v-if="item.maintain"
+                                    :class="$style['balance-info-maintain']"
+                                    @click="onClickMaintain(item.maintain)"
+                                >
+                                    {{ $t("S_MAINTAIN") }}
                                     <img
                                         :src="
-                                            $getCdnPath('/static/image/_new/mcenter/wallet/img_wallter.png')
+                                            $getCdnPath(
+                                                '/static/image/_new/mcenter/balanceTrans/icon_transfer_tips_info.png'
+                                            )
                                         "
-                                        alt="wallter"
+                                        :class="$style['balance-wrench']"
                                     />
-                                </div>
+                                </span>
+                                <span v-else :class="$style['balance-item-money']">{{
+                                    item.amount
+                                }}</span>
                             </div>
-
-                            <div :class="$style['wager-wrap']">
-                                <div :class="$style['title']">
-                                    投注记录
-                                    <span
-                                        @click="$router.push('/mobile/mcenter/betRecord')"
-                                    >查看更多</span>
-                                </div>
-
-                                <template v-if="!mainNoData">
-                                    <div :class="$style['list']">
-                                        <div
-                                            v-for="(item, index) in mainListData.slice(0, 5)"
-                                            :key="'cell-' + index"
-                                            :class="$style['cell']"
-                                        >
-                                            <div :class="$style['vendor']">{{ item.vendor }}</div>
-
-                                            <div :class="$style['game-desc']">
-                                                <span :class="$style['game']">{{ item.game_name }}</span>
-                                                <span :class="$style['money']">{{ parseFloat(item.valid_bet).toFixed(2) }}</span>
-                                            </div>
-                                        </div>
-                                    </div>
-                                </template>
-
-                                <template v-else>
-                                    <div :class="$style['no-data']">
-                                        还没有任何投注记录
-                                    </div>
-                                </template>
-                            </div>
-
-                            <message v-if="msg" @close="msg = ''">
-                                <div slot="msg">
-                                    <div
-                                        style="background-color: transparent ; margin: 0 ; padding: 0"
-                                        v-html="msg"
-                                    />
-                                </div>
-                            </message>
                         </div>
                     </div>
                 </template>
             </balance-tran>
+
+            <div :class="$style['invite-wrap']" @click="onClickInvite">
+                <div :class="$style['content']">
+                    <div>邀请好友获得现金奖励</div>
+                    <div>邀请人首存即可获得</div>
+                </div>
+
+                <div :class="$style['image']">
+                    <img
+                        :src="
+                            $getCdnPath('/static/image/_new/mcenter/wallet/img_wallter.png')
+                        "
+                        alt="wallter"
+                    />
+                </div>
+            </div>
+
+            <div :class="$style['wager-wrap']">
+                <div :class="$style['title']">
+                    投注记录
+                    <span
+                        @click="$router.push('/mobile/mcenter/betRecord')"
+                    >查看更多</span>
+                </div>
+
+                <template v-if="!mainNoData">
+                    <div :class="$style['list']">
+                        <div
+                            v-for="(item, index) in mainListData.slice(0, 5)"
+                            :key="'cell-' + index"
+                            :class="$style['cell']"
+                        >
+                            <div :class="$style['vendor']">{{ item.vendor }}</div>
+
+                            <div :class="$style['game-desc']">
+                                <span :class="$style['game']">{{ item.game_name }}</span>
+                                <span :class="$style['money']">{{ item.valid_bet }}</span>
+                            </div>
+                        </div>
+                    </div>
+                </template>
+
+                <template v-else>
+                    <div :class="$style['no-data']">
+                        还没有任何投注记录
+                    </div>
+                </template>
+            </div>
+
+            <message v-if="msg" @close="msg = ''">
+                <div slot="msg">
+                    <div
+                        style="background-color: transparent ; margin: 0 ; padding: 0"
+                        v-html="msg"
+                    />
+                </div>
+            </message>
         </div>
     </mobile-container>
 </template>
+
 
 <script>
 import { mapGetters } from 'vuex';
