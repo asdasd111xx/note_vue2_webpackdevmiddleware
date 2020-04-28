@@ -302,7 +302,7 @@
               }}</span>
               <div :class="[$style['balance-input-wrap'], 'clearfix']">
                 <span :class="$style['transfer-money']">
-                  ¥
+                  <span>¥</span>
                   <input
                     v-model="transferMoney"
                     :class="$style['transfer-money-input']"

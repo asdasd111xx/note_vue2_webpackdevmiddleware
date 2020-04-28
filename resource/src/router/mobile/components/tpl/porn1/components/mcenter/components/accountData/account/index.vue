@@ -5,7 +5,7 @@
             <img
                 v-if="msg === $text('S_CR_SUCCESS')"
                 :class="$style['success-icon']"
-                :src="$getCdnPath('/static/image/mobile/mcenter/ic_ok.png')"
+                :src="$getCdnPath('/static/image/_new/mcenter/popup_ic_success.png')"
             />
             <span :class="$style.meg">{{ msg }}</span>
         </div>
@@ -79,7 +79,7 @@
                     <div :class="$style['btn-next']">
                       <img
                         :src="
-                          $getCdnPath(`/static/image/_new/common/btn_next.png`)
+                          $getCdnPath(`/static/image/_new/mcenter/ic_arrow_next.png`)
                         "
                       />
                     </div>

@@ -19,7 +19,7 @@
         {{ listInfo.info }}
       </div>
       <div :class="$style['btn-next']">
-        <img :src="$getCdnPath(`/static/image/_new/common/btn_next.png`)" />
+        <img :src="$getCdnPath(`/static/image/_new/mcenter/ic_arrow_next.png`)" />
       </div>
     </div>
 
@@ -30,7 +30,7 @@
       <span>{{ $text("S_SHARE_APP", "分享APP") }}</span>
 
       <div :class="$style['btn-next']">
-        <img :src="$getCdnPath(`/static/image/_new/common/btn_next.png`)" />
+        <img :src="$getCdnPath(`/static/image/_new/mcenter/ic_arrow_next.png`)" />
       </div>
     </div>
 

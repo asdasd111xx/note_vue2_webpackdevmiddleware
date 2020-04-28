@@ -49,7 +49,7 @@
       </div>
     </div>
     <div :class="$style['btn-next']">
-      <img :src="$getCdnPath(`/static/image/_new/common/btn_next.png`)" />
+      <img :src="$getCdnPath(`/static/image/_new/mcenter/ic_arrow_next.png`)" />
     </div>
   </div>
 </template>
