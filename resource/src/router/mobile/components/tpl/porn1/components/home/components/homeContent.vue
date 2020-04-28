@@ -126,7 +126,7 @@ import { Swiper, SwiperSlide } from 'vue-awesome-swiper';
 import mcenter from '@/api/mcenter';
 import { API_PORN1_DOMAIN } from '@/config/api';
 import openGame from '@/lib/open_game';
-import message from "../../common/new/message"
+import message from '../../common/new/message';
 
 export default {
     components: {
@@ -159,7 +159,7 @@ export default {
                 { name: 'accountVip', text: 'VIP' },
                 { name: 'grade', text: '等级' }
             ],
-            msg: ""
+            msg: ''
         };
     },
     computed: {
@@ -475,7 +475,7 @@ export default {
                 return;
             }
 
-            if (game.type === 'L') {
+            if (game.type === 'L' && [3, 5, 6].includes(game.kind)) {
                 const trans = { 3: 'casino', 5: 'card', 6: 'mahjong' };
                 this.$router.push(`/mobile/${trans[game.kind]}/${game.vendor}`);
                 return;
@@ -487,18 +487,18 @@ export default {
             }
 
             if (game.type === 'T') {
-                this.msg = '正在上线 敬请期待'
+                this.msg = '正在上线 敬请期待';
                 return;
             }
 
             if (['BL', 'SL'].includes(game.type)) {
                 switch (game.type) {
                     case 'BL':
-                        this.$router.push({name: 'liveStream' , params: {type: 'cutiesLive'}});
+                        this.$router.push({ name: 'liveStream', params: { type: 'cutiesLive' } });
                         break;
 
                     case 'SL':
-                        this.$router.push({name: 'liveStream' , params: {type: 'ballLive'}});
+                        this.$router.push({ name: 'liveStream', params: { type: 'ballLive' } });
                         break;
 
                     default:
