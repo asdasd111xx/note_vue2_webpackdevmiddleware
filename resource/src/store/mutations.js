@@ -232,8 +232,9 @@ export default {
 
         Object.keys(obj).forEach((index) => {
             apiData[index] = {
-                time: EST(obj[index].created_at, 'YYYY-MM-DD'),
-                content: obj[index].content
+                time: EST(obj[index].created_at, 'YYYY-MM-DD HH:mm:ss'),
+                content: obj[index].content,
+                id: obj[index].id
             };
         });
         state.news = apiData;

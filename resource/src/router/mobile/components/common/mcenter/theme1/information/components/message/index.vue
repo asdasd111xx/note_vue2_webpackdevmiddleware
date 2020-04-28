@@ -1,7 +1,7 @@
 <template>
     <div v-if="hasReceive && messageData.length === 0" :class="$style['no-data']">
         <div :class="$style['no-data-wrap']">
-            <img :src="$getCdnPath('/static/image/_new/mcenter/information/no_message.webp')" />
+            <img :src="$getCdnPath('/static/image/_new/mcenter/information/no_message.png')" />
             <div>还没有新的消息</div>
         </div>
     </div>
@@ -440,6 +440,9 @@ export default {
     margin-top: 3px;
     color: #A6A9B2;
     font-size: 12px;
+    overflow: hidden;
+    text-overflow: ellipsis;
+    white-space: nowrap;
 }
 
 .time {

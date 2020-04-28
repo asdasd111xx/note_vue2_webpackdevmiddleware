@@ -27,7 +27,13 @@ export default {
                 prev: true,
                 title: this.$route.params.pid ? trans[this.$route.params.page] : '消息中心',
                 onClick: () => {
-                    this.$router.back();
+                    if (this.$route.params.pid) {
+                        this.$router.back();
+                        return;
+                    }
+
+                    // eslint-disable-next-line vue/no-side-effects-in-computed-properties
+                    this.$router.push('/mobile/mcenter/home');
                 }
             };
         }

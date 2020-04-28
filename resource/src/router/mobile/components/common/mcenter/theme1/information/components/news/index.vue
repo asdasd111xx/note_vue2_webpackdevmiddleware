@@ -1,7 +1,7 @@
 <template>
     <div v-if="newsData.length === 0" :class="$style['no-data']">
         <div :class="$style['no-data-wrap']">
-            <img :src="$getCdnPath('/static/image/_new/mcenter/information/no_message.webp')" />
+            <img :src="$getCdnPath('/static/image/_new/mcenter/information/no_message.png')" />
             <div>还没有新的消息</div>
         </div>
     </div>
@@ -29,7 +29,7 @@
                     <img :src="$getCdnPath('/static/image/_new/mcenter/information/icon_information.png')" />
                 </div>
                 <div :class="$style.wrap">
-                    <div :class="$style.date">{{ news.time }}</div>
+                    <div :class="$style.date">{{ news.time | dateFormat }}</div>
                     <div :class="$style.content" v-html="news.content" />
                 </div>
             </div>
@@ -214,5 +214,8 @@ export default {
     margin-top: 3px;
     color: #A6A9B2;
     font-size: 12px;
+    overflow: hidden;
+    text-overflow: ellipsis;
+    white-space: nowrap;
 }
 </style>
