@@ -97,7 +97,6 @@ export default {
   },
   created() {
     this.getVipInfo();
-
     if (this.memInfo.user.image === 0 || !(this.memInfo.user.image)) {
       this.imgIndex = 0;
       this.imgID = 0;
@@ -145,7 +144,6 @@ export default {
 <style lang="scss" module>
 @import "~@/css/variable.scss";
 .mcenter-avatar-info-wrap {
-  margin-top: 2px;
   height: 100px;
   display: flex;
   align-items: center;

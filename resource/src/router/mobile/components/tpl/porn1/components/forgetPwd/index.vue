@@ -13,40 +13,40 @@
           <template
             scope="{ msg, sendEmail, verification, send, currentMethod, changeCurrentMethod }"
           >
+        <div
+            v-if="
+            currentMethod !== 'phoneStatus2' &&
+                currentMethod !== 'phoneStatus3'
+            "
+            class="clearfix"
+        >
+            <div
+            :class="[
+                $style['method-item'],
+                { [$style.active]: currentMethod === 'phoneStatus1' }
+            ]"
+            @click="
+                changeMethod(currentMethod === 'phoneStatus1'),
+                changeCurrentMethod('phoneStatus1')
+            "
+            >
+            {{ $t("S_RETRIEVE_PHONE") }}
+            </div>
+            <div
+            :class="[
+                $style['method-item'],
+                { [$style.active]: currentMethod === 'email' }
+            ]"
+            @click="
+                changeMethod(currentMethod === 'email'),
+                changeCurrentMethod('email')
+            "
+            >
+            {{ $t("S_RETRIEVE_EMAIL") }}
+            </div>
+        </div>
             <div :class="$style['form-wrap']">
               <div :class="$style['form-data']">
-                <div
-                  v-if="
-                    currentMethod !== 'phoneStatus2' &&
-                      currentMethod !== 'phoneStatus3'
-                  "
-                  class="clearfix"
-                >
-                  <div
-                    :class="[
-                      $style['method-item'],
-                      { [$style.active]: currentMethod === 'phoneStatus1' }
-                    ]"
-                    @click="
-                      changeMethod(currentMethod === 'phoneStatus1'),
-                        changeCurrentMethod('phoneStatus1')
-                    "
-                  >
-                    {{ $t("S_RETRIEVE_PHONE") }}
-                  </div>
-                  <div
-                    :class="[
-                      $style['method-item'],
-                      { [$style.active]: currentMethod === 'email' }
-                    ]"
-                    @click="
-                      changeMethod(currentMethod === 'email'),
-                        changeCurrentMethod('email')
-                    "
-                  >
-                    {{ $t("S_RETRIEVE_EMAIL") }}
-                  </div>
-                </div>
                 <div :class="$style['user-data']">
                   <div
                     v-if="
@@ -56,15 +56,7 @@
                     :class="$style['form-control']"
                   >
                     <div class="clearfix">
-                      <div :class="$style['form-icon']">
-                        <img
-                          :src="
-                            $getCdnPath(
-                              '/static/image/mobile/tpl/porn1/login/account.png'
-                            )
-                          "
-                        />
-                      </div>
+                      <div :class="$style.fieldTitle">{{ $text('S_USER_NAME','用户名') }}</div>
                       <input
                         v-model="username"
                         :class="$style['form-input']"
@@ -79,15 +71,8 @@
                   </div>
                   <div>
                     <div v-if="currentMethod === 'email'" class="clearfix">
-                      <div :class="$style['form-icon']">
-                        <img
-                          :src="
-                            $getCdnPath(
-                              '/static/image/mobile/tpl/porn1/login/email.png'
-                            )
-                          "
-                        />
-                      </div>
+
+                      <div :class="$style.fieldTitle">{{ $text('SS_E_MAIL','电子邮箱') }}</div>
                       <input
                         v-model="email"
                         :placeholder="$t('S_PLEASE_ENTER_EMAIL')"
@@ -105,15 +90,6 @@
                     <!-- eslint-enable vue/no-v-html -->
                   </div>
                   <div v-if="currentMethod === 'phoneStatus2'" class="clearfix">
-                    <div :class="$style['form-icon']">
-                      <img
-                        :src="
-                          $getCdnPath(
-                            '/static/image/mobile/tpl/porn1/login/phone.png'
-                          )
-                        "
-                      />
-                    </div>
                     <input
                       v-model="keyring"
                       :placeholder="$t('S_ENABLE_KEYRING')"
@@ -125,15 +101,6 @@
                   <template v-if="currentMethod === 'phoneStatus3'">
                     <div :class="$style['form-control']">
                       <div class="clearfix">
-                        <div :class="$style['form-icon']">
-                          <img
-                            :src="
-                              $getCdnPath(
-                                '/static/image/mobile/tpl/porn1/login/account.png'
-                              )
-                            "
-                          />
-                        </div>
                         <input
                           v-model="password"
                           :class="$style['form-input']"
@@ -148,15 +115,6 @@
                     </div>
                     <div>
                       <div class="clearfix">
-                        <div :class="$style['form-icon']">
-                          <img
-                            :src="
-                              $getCdnPath(
-                                '/static/image/mobile/tpl/porn1/login/account.png'
-                              )
-                            "
-                          />
-                        </div>
                         <input
                           v-model="confirm_password"
                           :class="$style['form-input']"
@@ -247,11 +205,6 @@ export default {
   font-size: 14px;
   background-repeat: no-repeat;
   background-size: cover;
-  background-image: url("/static/image/_new/common/bg.png");
-
-  > div {
-    padding-top: 30px;
-  }
 }
 
 .form-wrap {
@@ -323,7 +276,11 @@ export default {
   margin-top: 25px;
   color: white;
   text-align: center;
-  border-radius: 35px;
+  border-radius: 2px;
   background: linear-gradient(to left, #bd9d7d 0%, #f9ddbd 100%);
+}
+
+.fieldTitle {
+    padding-bottom: 5px;
 }
 </style>

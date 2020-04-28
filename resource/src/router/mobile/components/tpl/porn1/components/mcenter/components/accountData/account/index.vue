@@ -1,7 +1,14 @@
 <template>
   <div>
     <message v-if="msg" @close="msg = ''"
-      ><div slot="msg">{{ msg }}</div>
+      ><div slot="msg">
+            <img
+                v-if="msg === $text('S_CR_SUCCESS')"
+                :class="$style['success-icon']"
+                :src="$getCdnPath('/static/image/mobile/mcenter/ic_ok.png')"
+            />
+            <span :class="$style.meg">{{ msg }}</span>
+        </div>
     </message>
 
     <account-wrap>

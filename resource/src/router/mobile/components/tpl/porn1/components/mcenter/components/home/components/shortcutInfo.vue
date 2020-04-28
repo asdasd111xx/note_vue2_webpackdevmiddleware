@@ -20,7 +20,7 @@
           <div :class="$style['sub-text']">VIP PRIVILEGE</div>
         </div>
       </div>
-
+            <div :class="$style['v-line']" />
       <div
         @click="
           loginStatus
@@ -197,7 +197,7 @@ export default {
 @import "~@/css/variable.scss";
 
 .mcenter-vip-wrap {
-  margin-bottom: 2px;
+  margin-bottom: 5px;
   background-color: #fefffe;
 }
 
@@ -243,14 +243,19 @@ export default {
       height: 100%;
     }
   }
+    .v-line {
+        border-left: 1px solid #EEE;
+        height: 40px;
+        width: 1px;
+    }
 }
 
 .mcenter-func {
   height: 100px;
   display: flex;
   align-items: center;
-  margin-top: 12px;
-  padding: 5px 8% 0;
+  margin-top: 10px;
+  padding: 0 8%;
 
   .cell {
     width: 25%;
@@ -346,6 +351,8 @@ export default {
     }
   }
 }
+
+
 
 @media screen and (min-width: $pad) {
   .mcenter-info-wrap {

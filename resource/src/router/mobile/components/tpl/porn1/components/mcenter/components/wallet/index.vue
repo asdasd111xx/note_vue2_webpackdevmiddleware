@@ -28,9 +28,13 @@
           </div>
         </div>
 
-        <div :class="$style['wallet-desc-block']">
+        <div :class="[$style['wallet-desc-block']]">
           <div>钱包明细</div>
-          <div @click="toggleTrans">点击查看全部场馆余额</div>
+          <div @click="toggleTrans">
+              点击查看全部场馆余额
+                        <i :class="[$style.expand, {[$style.collapse]: isShowTrans}]" />
+          </div>
+
         </div>
       </div>
 
@@ -386,19 +390,24 @@ export default {
       color: $main_text_color2;
       padding-right: 24px;
       height: 15px;
-
-      &::after {
-        content: "";
-        position: absolute;
-        top: 0;
-        right: 0;
-        width: 15px;
-        height: 15px;
-        background: url("/static/image/_new/mcenter/wallet/ic_wallter_details_expand.png")
-          center center / 100% 100%;
-      }
     }
   }
+}
+
+.expand {
+    content: "";
+    position: absolute;
+    top: 0;
+    right: 0;
+    width: 15px;
+    height: 15px;
+    background: url("/static/image/_new/mcenter/wallet/ic_wallter_details_expand.png")
+        center center / 100% 100%;
+
+    &.collapse {
+        background: url("/static/image/_new/mcenter/wallet/ic_wallter_details_collapse.png")
+            center center / 100% 100%;
+    }
 }
 
 .balance-total-item {

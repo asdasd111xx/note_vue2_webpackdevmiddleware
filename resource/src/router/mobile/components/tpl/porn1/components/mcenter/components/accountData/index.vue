@@ -154,11 +154,12 @@ export default {
   background-color: $main_white_color1;
   color: $main_text_color3;
   padding: 15px;
+  border-bottom: 1px solid #EEE;
 
   > .avatar {
     height: 56px;
     width: 56px;
-    margin: 10px 0;
+    margin: 6px 0 13px;
     position: relative;
     > img:first-child {
       height: 100%;

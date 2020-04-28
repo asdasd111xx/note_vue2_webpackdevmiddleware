@@ -81,6 +81,7 @@ export default {
     display: flex;
     align-items: center;
     background-color: $main_white_color1;
+    border-bottom: 1px solid #EEE;
 
     > span {
       width: 100%;

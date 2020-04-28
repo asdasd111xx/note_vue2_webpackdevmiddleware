@@ -33,7 +33,7 @@
     justify-content: center;
     align-items: center;
     text-align: center;
-    margin-top: 3%;
+    margin-top: 10px;
     height: 65px;
     border-radius: 4px;
     background: rgba(255, 255, 255, 0.65);
@@ -138,7 +138,7 @@
 
 .balance-item-wrap {
     margin-top: 2%;
-    padding: 5px 3% 0;
+    padding: 10px 3% 0;
     font-size: 12px;
     border-radius: 4px;
     background: rgba(255, 255, 255, 0.65);
@@ -154,7 +154,7 @@
     text-align: center;
     font-size: 14px;
     color: $main_text_color3;
-    border-bottom: 1px solid #dad6d6;
+    border-bottom: 1px solid #EEE;
 
     &:not(:nth-child(4n + 1)):before {
         content: "";
@@ -233,11 +233,11 @@
     float: left;
     box-sizing: border-box;
     width: 50%;
-    padding: 6px 40px 6px 17px;
+    padding: 8px 40px 8px 17px;
 }
 
 .select-right-wrap {
-    padding: 6px 17px 6px 13%;
+    padding: 8px 17px 8px 13%;
 }
 
 .balance-transfer-list {
@@ -250,7 +250,7 @@
         position: absolute;
         bottom: 40%;
         right: 0px;
-        border-top: 5px solid #cbced8;
+        border-top: 5px solid #EEE;
         border-left: 4px solid transparent;
         border-right: 4px solid transparent;
     }
@@ -318,6 +318,7 @@
             justify-content: space-between;
             align-items: center;
             height: 50px;
+            border-bottom: 1px solid #EEE;
 
             img {
                 width: 15px;
