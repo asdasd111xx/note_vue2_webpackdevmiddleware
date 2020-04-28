@@ -3,7 +3,7 @@
         <div
             v-for="listInfo in list"
             :key="`list-${listInfo.pageName}`"
-            :class="$style.list"
+            :class="[$style.list, {[$style['list-part']]: listInfo.isPart}, {[$style['list-border-bottom']]: !listInfo.isPart}]"
             @click="onListClick(listInfo)"
         >
             <div :class="$style['list-icon']">
@@ -34,7 +34,7 @@
             </div>
         </div>
 
-        <div v-if="memInfo.config.content_rating" :class="$style['list']">
+        <div v-if="memInfo.config.content_rating" :class="[$style['list'], $style['list-part']]">
             <div :class="$style['list-icon']">
                 <img :src="$getCdnPath(`/static/image/_new/mcenter/ic_18+.png`)" />
             </div>
@@ -85,14 +85,18 @@ export default {
                     path: '/mobile/mcenter/help',
                     pageName: 'help',
                     image: 'help',
-                    info: '存取款、投注有疑问，看这里'
+                    info: '存取款、投注有疑问，看这里',
+                    isPart: true
+
                 },
                 {
                     initName: '关于亚博直播',
                     name: 'S_ABOUT_YABOLIVE',
                     path: '/mobile/mcenter/about',
                     pageName: 'about',
-                    image: 'about'
+                    image: 'about',
+                    isPart: false
+
                 },
                 {
                     initName: '我的推广',
@@ -100,7 +104,8 @@ export default {
                     path: '/mobile/mcenter/tcenter/management',
                     pageName: 'mypromotion',
                     image: 'mypromotion',
-                    info: '合营计划'
+                    info: '合营计划',
+                    isPart: false
                 }
                 // {
                 //   initName: '分享APP', name: 'S_SHARE_APP', path: '/mobile/mcenter/about', pageName: 'share', image: 'share'
@@ -363,7 +368,7 @@ export default {
 }
 
 .list-part {
-    margin: 5px 0;
+    margin: 10px 0;
 }
 
 .list-border-bottom {
@@ -371,7 +376,7 @@ export default {
 }
 
 .list {
-    position: relative;
+  position: relative;
   font-size: 14px;
   height: 50px;
   line-height: 50px;

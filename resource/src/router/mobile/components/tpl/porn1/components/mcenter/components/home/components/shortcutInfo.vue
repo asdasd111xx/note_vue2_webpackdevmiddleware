@@ -197,7 +197,7 @@ export default {
 @import "~@/css/variable.scss";
 
 .mcenter-vip-wrap {
-  margin-bottom: 5px;
+  margin-bottom: 10px;
   background-color: #fefffe;
 }
 
@@ -245,7 +245,7 @@ export default {
   }
     .v-line {
         border-left: 1px solid #EEE;
-        height: 40px;
+        height: 38px;
         width: 1px;
     }
 }
@@ -254,8 +254,9 @@ export default {
   height: 100px;
   display: flex;
   align-items: center;
-  margin-top: 10px;
-  padding: 0 8%;
+  margin-top: 12px;
+  padding: 5px 8% 0;
+
 
   .cell {
     width: 25%;
@@ -351,8 +352,6 @@ export default {
     }
   }
 }
-
-
 
 @media screen and (min-width: $pad) {
   .mcenter-info-wrap {
