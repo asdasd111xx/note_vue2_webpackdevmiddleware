@@ -183,6 +183,10 @@ export default {
         mobileLinkOpen,
         onListClick(item) {
             if (item.pageName === 'super') {
+                if (!this.loginStatus) {
+                    this.$router.push('/mobile/login');
+                    return;
+                }
                 // 超級籤需滿足的最低金額
                 const requiredMoney = 200;
                 // 超級籤app下載網址
