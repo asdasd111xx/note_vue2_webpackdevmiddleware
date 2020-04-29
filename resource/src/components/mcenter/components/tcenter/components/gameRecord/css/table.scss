@@ -15,7 +15,6 @@
     border-bottom: 1px solid #eee;
 
     span {
-
         &:nth-child(2) {
             flex: 2;
             text-align: center;
@@ -25,9 +24,9 @@
 
 .list-block {
     position: relative;
+    margin-top: 10px;
 }
 .card {
-    height: 100px;
     background: $main_white_color1;
     color: $main_text_color3;
     border-radius: 8px;
@@ -39,33 +38,56 @@
         justify-content: space-between;
         font-size: 14px;
         padding-top: 9px;
+
+        &:last-of-type {
+            padding-bottom: 9px;
+        }
+
+        &.bet {
+            margin-left: 7px;
+        }
     }
 
     .card-title {
         padding: 6px 0;
         line-height: 21px;
         border-bottom: 1px solid #eee;
-    }
 
-    .userName {
-        font-size: 16px;
-        font-weight: 700;
-    }
-
-    .payout {
-        &.is-negative {
-            color: $main_error_color1;
+        .header {
+            font-size: 16px;
+            font-weight: 700;
         }
 
+        .payout {
+            &.is-negative {
+                color: $main_error_color1;
+            }
+
+            &::before {
+                content: "派彩：";
+                position: relative;
+                color: $main_text_color3;
+            }
+        }
+    }
+
+    .game-name {
+        font-size: 16px;
+        line-height: 21px;
+        font-weight: 700;
+
         &::before {
-            content: "派彩：";
+            content: "";
             position: relative;
-            color: $main_text_color3;
+            display: inline-block;
+            width: 3px;
+            height: 14px;
+            top: 1px;
+            margin-right: 5px;
+            background: linear-gradient(#d2bba4, #f1e5db);
         }
     }
 }
-
-
 
 // .is-number {
 //     text-align: right;

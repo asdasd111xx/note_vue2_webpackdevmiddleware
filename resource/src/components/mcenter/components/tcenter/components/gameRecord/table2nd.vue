@@ -7,13 +7,9 @@
         </div>
 
         <div :class="$style['list-block']">
-            <div
-                :class="$style['card']"
-                v-for="(info, index) in list"
-                @click="$emit('onInquire', info.vendor_name, info.kind)"
-            >
+            <div :class="$style['card']" v-for="(info, index) in list">
                 <div :class="$style['card-title']">
-                    <span :class="$style['userName']">{{ info.username }}</span>
+                    <span :class="$style['header']">{{ info.vendor }}</span>
                     <span
                         :class="[
                             $style['payout'],
@@ -23,10 +19,17 @@
                     >
                 </div>
                 <div>
+                    <span :class="$style['game-name']">{{ info.game_name }}</span>
+                </div>
+                <div :class="$style['bet']">
+                    <span>单量</span>
+                    <span>{{ info.count }}</span>
+                </div>
+                <div :class="$style['bet']">
                     <span>投注金额</span>
                     <span>{{ info.bet }}</span>
                 </div>
-                <div>
+                <div :class="$style['bet']">
                     <span>有效投注</span>
                     <span>{{ info.valid_bet }}</span>
                 </div>
@@ -110,6 +113,34 @@ export default {
             type: Object,
             required: true
         }
+    },
+    data() {
+        return {
+            test: [
+                {
+                    day: "2019-09-22",
+                    kind: 3,
+                    code: "5106",
+                    bet: "189.0000",
+                    valid_bet: "188.9244",
+                    payoff: "-63.0000",
+                    count: "21",
+                    game_name: "THREE KINGDOMS",
+                    vendor: "bbin"
+                },
+                {
+                    day: "2019-09-22",
+                    kind: 3,
+                    code: "5902",
+                    bet: "80.0000",
+                    valid_bet: "79.9680",
+                    payoff: "2.5000",
+                    count: "16",
+                    game_name: "Candy Party",
+                    vendor: "bbin"
+                }
+            ]
+        };
     },
     methods: {
         onSort(sortBy) {

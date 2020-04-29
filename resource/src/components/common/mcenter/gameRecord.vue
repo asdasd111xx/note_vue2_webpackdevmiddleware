@@ -57,8 +57,6 @@ export default {
             currentCondition: "today",
             currentPage: "", // 當前所呈現的頁面內容
             selectedUser: "", // 第一層所選擇的使用者
-            selectedVendor: "", // 第二層所選的遊戲 vendor
-            selectedKind: "", // 第二層所選擇的遊戲 kind
             currentAcc: "",
             currentGame: "",
             currentStart: "",
@@ -66,12 +64,12 @@ export default {
             sortBy: {
                 // 排序欄位
                 main: "payoff",
-                bet: "payoff",
+                bet: "payoff"
             },
             sortWay: {
                 // 排序方法
                 main: "asc",
-                bet: "asc",
+                bet: "asc"
             },
             inq1st: {
                 isReceive: false,
@@ -205,7 +203,6 @@ export default {
     },
     methods: {
         changeSearchCondition(value) {
-
             this.inq1st = {
                 isReceive: false,
                 list: [],
@@ -253,8 +250,6 @@ export default {
                 method: "get",
                 url: apis.API_FRIEND_WAGER_REPORT,
                 params: {
-                    username: this.currentAcc,
-                    vendor: this.currentGame,
                     start_at: Vue.moment(this.currentStart).format(
                         "YYYY-MM-DD 00:00:00-04:00"
                     ),
@@ -295,26 +290,23 @@ export default {
         },
         onSearchBet(username) {
             this.selectedUser = username;
-            this.showPage.bet = "1";
-            this.onInquireBet();
+            this.showPage.bet = 0;
+            // this.onInquireBet();
+            this.$router.push({ params: { page: "bet" } });
         },
         onInquireBet() {
             ajax({
                 method: "get",
-                url: apis.API_AGCENTER_RECORD_MEMBER,
+                url: apis.API_FRIEND_WAGER_REPORT_BY_DAY_GAME,
                 params: {
-                    username: this.selectedUser,
+                    user_id: this.selectedUser,
                     start_at: Vue.moment(this.currentStart).format(
                         "YYYY-MM-DD 00:00:00-04:00"
                     ),
                     end_at: Vue.moment(this.currentEnd).format(
                         "YYYY-MM-DD 23:59:59-04:00"
-                    ),
-                    vendor: this.currentGame,
-                    sort: this.sortBy.bet,
-                    order: this.sortWay.bet,
-                    first_result: (this.showPage.bet - 1) * this.maxResults.bet,
-                    max_results: this.maxResults.bet
+                    )
+                    // vendor: this.currentGame
                 }
             }).then(response => {
                 if (response.result === "ok") {

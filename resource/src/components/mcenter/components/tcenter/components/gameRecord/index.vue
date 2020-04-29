@@ -113,19 +113,18 @@
                     </infinite-loading>
                 </template>
                 <template v-if="currentPage === 'bet' && inq2nd.list.length">
-                    <!-- <table-2nd
+                    <table-2nd
                         :list="inq2nd.list"
                         :sub-total="inq2nd.subTotal"
                         :total="inq2nd.total"
                         :sort="sort"
                         @update:sort="onSort"
-                        @onInquire="onSearchDetail"
-                    /> -->
+                    />
 
-                    <div :class="$style['no-data']">
+                    <!-- <div :class="$style['no-data']">
                         <img src="/static/image/_new/mcenter/no_data.png" />
                         <p>{{ $text("S_NO_DATA_YET", "暂无资料") }}</p>
-                    </div>
+                    </div> -->
                 </template>
 
                 <div

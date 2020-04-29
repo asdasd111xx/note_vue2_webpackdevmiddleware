@@ -151,6 +151,9 @@ export const API_FIRST_LEVEL_FRIENDS = '/api/v1/c/player/friends';
 // 一級好友注單統計資料
 export const API_FRIEND_WAGER_REPORT = '/api/v1/c/stats/player/friends/wager_report';
 
+// 取得使用者每日各遊戲的注單統計資料
+export const API_FRIEND_WAGER_REPORT_BY_DAY_GAME = 'api/v1/c/stats/player/friend/wager_report/by_day_game';
+
 // 會員依遊戲類別取得下層注單一覽
 export const API_FRIEND_RECORD_DETAIL = '/api/v1/c/friend/wagers/list_by_game_code';
 

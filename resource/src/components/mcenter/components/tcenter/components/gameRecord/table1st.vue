@@ -13,7 +13,7 @@
                 @click="$emit('onInquire', info.username)"
             >
                 <div :class="$style['card-title']">
-                    <span :class="$style['userName']">{{ info.username }}</span>
+                    <span :class="$style['header']">{{ info.username }}</span>
                     <span
                         :class="[
                             $style['payout'],
