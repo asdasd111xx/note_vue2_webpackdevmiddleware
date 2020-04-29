@@ -505,7 +505,7 @@ export default {
     const confirmPassword = {
       key: 'confirm_password',
       content: {
-        note1: this.$text('S_PASSWORD_PLACEHOLDER', '请输入6-12位字母或数字'),
+        note1: '请再次输入设置密码',
         note2: ''
       }
     };
@@ -719,9 +719,6 @@ export default {
       this.verifyTips = '';
     },
     onFocus() {
-      // 前端先不驗證
-      return;
-
       if (this.allValue.username === '') {
         this.allTip.username = this.$text('S_JM_FIELD_REQUIRE', '该栏位不得为空');
       }
@@ -779,8 +776,6 @@ export default {
       this.verification(key);
     },
     verification(key) {
-      // 前端先不驗證
-      return;
       const data = this.joinMemInfo[key];
 
       if (key === 'name' && this.allValue[key].length > 30) {
@@ -859,11 +854,11 @@ export default {
       const data = this.registerData;
 
       this.checkFail = false;
-      // 前端先不驗證
-      //   if (this.allValue.username === this.allValue.password) {
-      //     alert(this.$text('S_USERNAME_CONFIRM_ERROR', '密码不能与帐号相同'));
-      //     return;
-      //   }
+
+      if (this.allValue.username === this.allValue.password) {
+        this.errMSg = (this.$text('S_USERNAME_CONFIRM_ERROR', '密码不能与帐号相同'));
+        return;
+      }
 
       if (this.hasAgreement && !this.agreement) {
         if (captchaInfo && captchaInfo.slideFuc) {
@@ -877,36 +872,36 @@ export default {
       if (this.allValue.birthday) {
         this.allValue.birthday = Vue.moment(this.allValue.birthday).format();
       }
-      // 前端先不驗證
-      //   data.forEach((field) => {
-      //     if (this.joinMemInfo[field.key].show) {
-      //       // 提示訊息不為空
-      //       // 或 取款密碼只填1~3碼
-      //       // 或 欄位為必填（且input為空、input取代空白為空、姓名未選擇、取款密碼輸入不完整）
-      //       if (this.allTip[field.key]
-      //         || (this.allValue.withdraw_password.length < 0 && this.allValue.withdraw_password.length < 4)
-      //         || (this.joinMemInfo[field.key].isRequired
-      //           && (!this.allValue[field.key]
-      //             || ((this.joinMemInfo[field.key].type !== 'select' && field.key !== 'birthday') && this.allValue[field.key].replace(/(^\s*)|(\s*$)/g, '') === '')
-      //             || (field.key === 'gender' && +this.allValue[field.key] === 0)
-      //             || (field.key === 'withdraw_password' && this.allValue.withdraw_password.length < 4)
-      //             || (field.key === 'phone' && this.joinMemInfo[field.key].hasVerify && !this.countryCode)
-      //           )
-      //         )
-      //       ) {
-      //         this.checkFail = true;
-      //       }
-      //     }
-      //   });
 
-      //   if (this.checkFail) {
-      //     if (captchaInfo && captchaInfo.slideFuc) {
-      //       captchaInfo.slideFuc.reset();
-      //     }
+      data.forEach((field) => {
+        if (this.joinMemInfo[field.key].show) {
+          // 提示訊息不為空
+          // 或 取款密碼只填1~3碼
+          // 或 欄位為必填（且input為空、input取代空白為空、姓名未選擇、取款密碼輸入不完整）
+          if (this.allTip[field.key]
+            || (this.allValue.withdraw_password.length < 0 && this.allValue.withdraw_password.length < 4)
+            || (this.joinMemInfo[field.key].isRequired
+              && (!this.allValue[field.key]
+                || ((this.joinMemInfo[field.key].type !== 'select' && field.key !== 'birthday') && this.allValue[field.key].replace(/(^\s*)|(\s*$)/g, '') === '')
+                || (field.key === 'gender' && +this.allValue[field.key] === 0)
+                || (field.key === 'withdraw_password' && this.allValue.withdraw_password.length < 4)
+                || (field.key === 'phone' && this.joinMemInfo[field.key].hasVerify && !this.countryCode)
+              )
+            )
+          ) {
+            this.checkFail = true;
+          }
+        }
+      });
 
-      //     alert(this.$t('S_JM_MSG_COMPLETE'));
-      //     return;
-      //   }
+      if (this.checkFail) {
+        if (captchaInfo && captchaInfo.slideFuc) {
+          captchaInfo.slideFuc.reset();
+        }
+
+        this.errMsg = (this.$t('S_JM_MSG_COMPLETE'));
+        return;
+      }
 
       if (this.memInfo.config.register_captcha_type === 2) {
         this.allValue.captcha_text = captchaInfo.data;
