@@ -7,9 +7,11 @@
   >
     <div slot="content" :class="$style['setting-wrap']">
       <template v-if="type == 'withdraw'">
-        <withdraw :cid="cid" :vendor="vendor"
-      /></template>
-      <template v-else> <deposit :cid="cid" :vendor="vendor"/></template>
+        <withdraw :cid="cid" :vendor="vendor" />
+      </template>
+      <template v-else>
+        <deposit :cid="cid" :vendor="vendor" />
+      </template>
     </div>
   </mobile-container>
 </template>
@@ -58,7 +60,7 @@ export default {
       if (isApp && this.isWithdraw)
         document.title = this.$text("S_RECENTLY_WITHDRAW", "近10笔提现纪录")
       else if (isApp && !this.isWithdraw) {
-        document.title = this.$text("S_RECENTLY_DEPOSIT", "近10笔充值纪录")
+        document.title = this.$text("S_RECENTLY_DEPOSIT", "8日内充值记录")
       }
       return isApp
     },

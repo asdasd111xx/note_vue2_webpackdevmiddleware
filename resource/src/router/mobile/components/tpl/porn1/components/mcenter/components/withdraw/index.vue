@@ -400,7 +400,7 @@ export default {
         onClick: () => { this.$router.back(); },
         title: this.$text('S_WITHDRAWAL_TEXT', '提现'),
         hasHelp: true,
-        helpRouter: '/detail?type=withdraw'
+        helpRouter: '/withdraw'
       };
     },
   },
@@ -520,6 +520,7 @@ export default {
         params: _params,
         success: (response) => {
           if (response && response.result === 'ok') {
+            this.msg = "提现成功"
             if (this.memInfo.config.withdraw === '迅付') {
               // 迅付寫單
               ajax({
@@ -580,12 +581,16 @@ export default {
           this.actionSetIsLoading(false);
         },
         fail: (error) => {
-          if (error.data.code === 'M500001') {
+          console.log(error)
+          if (error && error.data && error.data.code === 'M500001') {
             window.location.reload();
             return;
           }
 
-          this.errTips = error.data.msg;
+          if (error && error.data && error.data.msg) {
+            this.errTips = error.data.msg;
+          }
+
           this.isLoading = false;
           this.actionSetIsLoading(false);
         }

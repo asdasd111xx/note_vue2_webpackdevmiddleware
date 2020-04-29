@@ -70,11 +70,8 @@ export default {
       })
     };
   },
-  created() {
-    if (!info) this.$router.back();
-  },
   mounted() {
-    console.log(this.$route.query)
+    if (!info) this.$router.back();
   },
   computed: {
     ...mapGetters({

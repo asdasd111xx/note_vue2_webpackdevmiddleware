@@ -4,7 +4,25 @@
     :has-footer="false"
     :class="$style.container"
   >
-    <div slot="content" :class="$style['setting-wrap']"></div>
+    <div slot="content" :class="$style['setting-wrap']">
+      <div :class="$style['section']">
+        <div
+          v-if="loginStatus"
+          :class="[$style['cell']]"
+          :style="{ 'margin-bottom': '10px' }"
+          @click="$router.push('/mobile/mcenter/help/detail?type=deposit')"
+        >
+          <div :class="$style['title']">
+            {{ $text("S_RECENTLY_DEPOSIT", "近10笔充值纪录") }}
+          </div>
+          <div :class="[$style['arrow-btn']]">
+            <img
+              :src="$getCdnPath(`/static/image/_new/mcenter/ic_arrow_next.png`)"
+            />
+          </div>
+        </div>
+      </div>
+    </div>
   </mobile-container>
 </template>
 

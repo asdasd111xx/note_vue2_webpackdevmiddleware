@@ -74,10 +74,98 @@
     }
 }
 
+// 詳細資料
+.withdraw-wrap {
+    background-color: #f8f8f8;
+}
+
+.status-wrap {
+    position: relative;
+    width: 100%;
+    white-space: nowrap;
+    background-color: white;
+    margin-bottom: 10px;
+}
+
+.status {
+    width: 49%;
+    height: 42px;
+    line-height: 42px;
+    font-size: 14px;
+    font-weight: 400;
+    text-align: center;
+    color: $main_text_color2;
+    display: inline-block;
+    background-color: white;
+
+    &.active {
+        color: $main_text_color4;
+    }
+}
+
+.blue {
+    color: #6AAAF5
+}
+
+.active-slider {
+    position: absolute;
+    bottom: 1.5px;
+    left: calc(25% - 25px);
+    height: 2px;
+    background-color: #be9e7f;
+    width: 45px;
+    transition: left 0.31s;
+}
+
+.withdraw-content-wrap {
+    width: 100%;
+    white-space: nowrap;
+    font-size: 14px;
+    font-weight: 400;
+    background-color: #f8f8f8;
+    margin: 11px 0;
+
+    .withdraw-block {
+        margin-top: 11px;
+        text-align: left;
+        color: #a6a9b2;
+        background-color: white;
+    }
+}
+
+.item-status-border {
+    height: 1px;
+    width: 100%;
+    background-color: #EAEAEA;
+}
+
+.withdraw-cell {
+    padding: 0 16px;
+    position: relative;
+    height: 26px;
+    line-height: 26px;
+
+    >.title {
+        display: inline-block;
+    }
+
+    >.value {
+        float: right;
+        color: black;
+        white-space: nowrap;
+        overflow: hidden;
+        text-overflow: ellipsis;
+        max-width: 50%;
+    }
+}
 
 
 @media screen and (max-width: $phone) {
     .section {
+        font-size: 15px;
+    }
+
+    .withdraw-content-wrap {
         font-size: 15px;
     }
 }
@@ -85,6 +173,10 @@
 
 @media screen and (min-width: $pad) {
     .section {
+        font-size: 17px;
+    }
+
+    .withdraw-content-wrap {
         font-size: 17px;
     }
 }

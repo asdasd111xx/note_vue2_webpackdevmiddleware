@@ -1030,7 +1030,7 @@
     "S_DEPOSIT_MSG": "充值信息",
     "S_DEPOSIT_RECORD": "8日内充值记录",
     "S_SUBMIT_DEPOSIT": "提交资料",
-    "S_ORDER_NUMBER": "订单号",
+    "S_ORDER_NUMBER": "单号",
     "S_LAST_SUBMIT_TIME": "上次提交时间",
     "S_RECORD_TIP01": "将以您最后提交时的充值资料做审核",
     "S_ENTER_SHORT": "提交",
@@ -1039,7 +1039,7 @@
     "S_WITHDRAW_MONEY": "提现金额",
     "S_WITHDRAW_FEE": "提现手续费",
     "S_DEDUCTION_MONEY": "扣除金额",
-    "S_REAL_WITHDRAW": "实际提现",
+    "S_REAL_WITHDRAW": "实际到账",
     "S_VIEW_DETAILS": "查看详情",
     "S_WITHDRAW_ACCOUNT02": "提现帐号",
     "S_NEXT": "下一步",
@@ -1673,5 +1673,5 @@
     "S_CREATE_SECCESS": "新增成功",
     "S_SPONSOR_PARTNERS": "赞助伙伴",
     "S_RECENTLY_WITHDRAW": "近10笔提现纪录",
-    "S_RECENTLY_DEPOSIT": "近10笔充值纪录"
+    "S_RECENTLY_DEPOSIT": "8日内充值记录"
 }
