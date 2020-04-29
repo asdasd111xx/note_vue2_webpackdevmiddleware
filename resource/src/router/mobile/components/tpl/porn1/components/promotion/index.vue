@@ -156,6 +156,7 @@ export default {
   height: 43px;
   position: relative;
   background-color: #FEFFFE;
+  border-bottom: 1px solid #EEE;
 }
 
 .tab-slider {

@@ -268,6 +268,7 @@ export default {
   //   padding-top: 27px;
   background: $main_white_color1;
   text-align: center;
+  border-bottom: 1px solid #EEE;
 
   &::before {
     content: "";

@@ -100,7 +100,7 @@ export default {
     display: flex;
     align-items: center;
     padding-bottom: 8px;
-    font-size: 10px;
+    font-size: 12px;
 
     > img {
       margin-right: 3px;
@@ -114,7 +114,7 @@ export default {
 
   .desc {
     display: none;
-    font-size: 10px;
+    font-size: 12px;
     line-height: 14px;
     padding-bottom: 6px;
     margin-top: -5px;

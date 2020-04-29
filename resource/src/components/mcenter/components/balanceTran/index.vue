@@ -183,7 +183,8 @@ export default {
                     && +this.membalance.vendor[index].amount >= 1
                     && !this.membalance.vendor[index].maintain
                 ) {
-                    list.push({ value: index, text: this.membalance.vendor[index].text });
+                    const text = index === 'default' ? '中心钱包' : this.membalance.vendor[index].text;
+                    list.push({ value: index, text });
                 }
             });
             return list;
@@ -198,7 +199,8 @@ export default {
             // 維護時不可轉入
             Object.keys(this.membalance.vendor).forEach((index) => {
                 if (!this.membalance.vendor[index].maintain) {
-                    list.push({ value: index, text: this.membalance.vendor[index].text });
+                    const text = index === 'default' ? '中心钱包' : this.membalance.vendor[index].text;
+                    list.push({ value: index, text });
                 }
             });
             return list;
