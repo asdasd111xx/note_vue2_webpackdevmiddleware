@@ -1,5 +1,9 @@
 <template>
-  <mobile-container :header-config="headerConfig" :class="$style.container">
+  <mobile-container
+    :header-config="headerConfig"
+    :class="$style.container"
+    :has-footer="false"
+  >
     <div slot="content" class="content-wrap">
       <div :class="$style['join-member-wrap']">
         <join-member :theme="$style">
@@ -51,14 +55,20 @@ export default {
   background-image: url("/static/image/_new/common/bg.png");
 }
 
+.err-msg {
+  padding: 2px 0;
+  color: $main_error_color1;
+  min-height: 40px;
+}
+
 .join-member-wrap {
   min-height: 100%;
 }
 
 .join-wrap {
   height: 100%;
-  padding-top: 30px;
-  color: #000;
+  padding-top: 10px;
+  color: #5e626d;
 }
 
 .title {
@@ -99,6 +109,10 @@ export default {
 .join-input {
   background-color: #fff;
   border: 1px solid #d8d8d8;
+
+  &::placeholder {
+    color: #a5a5a5;
+  }
 }
 
 .field-title {
@@ -111,6 +125,7 @@ export default {
   text-overflow: ellipsis;
   white-space: nowrap;
   vertical-align: middle;
+  color: #5e626d;
 }
 
 .field-right {
@@ -147,14 +162,31 @@ export default {
   color: #edbf6b;
 }
 
-.join-btn {
-  color: white;
-  background: linear-gradient(to left, #bd9d7d 0%, #f9ddbd 100%);
-  border-radius: 30px;
+.join-btn-wrap {
+  width: 100%;
+  max-width: 300px;
+  padding: 0;
 }
 
-.join-line {
-  background: #fff;
+.join-btn {
+  margin: 0 auto;
+  background: linear-gradient(to left, #bd9d7d 0%, #f9ddbd 100%);
+  border-radius: 30px;
+  height: 50px;
+  line-height: 50px;
+  width: 100%;
+  max-width: 300px;
+  font-size: 13px;
+  font-family: Segoe UI, Segoe UI-Bold;
+  font-weight: 700;
+  text-align: center;
+  color: #ffffff;
+}
+
+.js-nc-check-bar {
+  max-width: 300px;
+  padding: 0;
+  width: 100%;
 }
 
 :global {
