@@ -125,12 +125,12 @@ export default {
 
   > div {
     height: 33%;
-    display: flex;
     align-items: center;
   }
 }
 
 .video-title {
+  padding-top: 1px;
   overflow: hidden;
   line-height: 14px;
   color: $main_text_color4;

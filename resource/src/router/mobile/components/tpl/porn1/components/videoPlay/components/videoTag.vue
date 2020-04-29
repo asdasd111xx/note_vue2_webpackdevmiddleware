@@ -39,7 +39,6 @@ export default {
 
 .video-tag-wrap {
   color: $main_text_color2;
-  padding: 0 14px;
   text-align: center;
   display: flex;
 

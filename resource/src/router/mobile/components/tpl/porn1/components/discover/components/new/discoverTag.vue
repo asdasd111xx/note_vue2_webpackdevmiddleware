@@ -122,16 +122,17 @@ export default {
 @import "~@/css/variable.scss";
 
 .discover-tag-wrap {
+  padding-bottom: 100px;
 }
 
 .tag-wrap {
   overflow-x: auto;
   width: 100%;
-  display: flex;
-  padding: 0 14px;
+  padding: 7px 14px;
   display: flex;
   align-items: center;
   justify-content: center;
+  background-color: $main_white_color1;
 }
 
 .tag {
@@ -204,8 +205,13 @@ export default {
 }
 
 .select-wrap {
+  position: fixed;
+  width: 100%;
+  bottom: 40px;
   height: 120px;
   padding: 5px 0;
+  background-color: $main_white_color1;
+
   > div:first-child {
     text-align: center;
     display: flex;

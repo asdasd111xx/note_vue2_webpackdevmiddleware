@@ -1670,5 +1670,6 @@
     "S_GOT_YESTERDAY": "昨日已领",
     "S_GOT_MONTH": "本月已领",
     "S_EXPECTED_REBATE": "预估返利",
-    "S_CREATE_SECCESS": "新增成功"
+    "S_CREATE_SECCESS": "新增成功",
+    "S_SPONSOR_PARTNERS": "赞助伙伴"
 }

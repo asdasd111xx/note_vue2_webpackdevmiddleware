@@ -1,7 +1,7 @@
 <template>
   <div :class="$style['video-info-wrap']">
     <div :class="$style['intro-wrap']">
-      <span />&nbsp;
+      <div :class="$style['v-line']" />
       <span> {{ $text("S_DESC", "简介") }}</span>
     </div>
 
@@ -47,9 +47,9 @@ export default {
   computed: {
     openImgSrc() {
       if (this.isOpenDesc)
-        return this.$getCdnPath('/static/image/_new/video/btn_arrow_close.png')
-      else
         return this.$getCdnPath('/static/image/_new/video/btn_arrow.png')
+      else
+        return this.$getCdnPath('/static/image/_new/video/btn_arrow_close.png')
     },
     tabs() {
       return [{ key: 0, name: '簡介' }];
@@ -62,34 +62,31 @@ export default {
 @import "~@/css/variable.scss";
 
 .intro-wrap {
-  height: 16px;
-  line-height: 16px;
-  margin: 6px 10px;
-  display: flex;
-  align-items: center;
-  font-size: 10px;
-
-  border-bottom: solid 1px $main_background_white1;
+  margin: 6px 10px 9px;
+  font-size: 12px;
 
   > span:last-child {
     color: $main_text_color4;
   }
-  > span:first-child {
+}
+
+.v-line {
     display: inline-block;
     width: 3px;
-    height: 100%;
+    height: 15px;
+    vertical-align: middle;
     background: -webkit-linear-gradient(top, #bd9d7d, #f9ddbd);
     background: -o-linear-gradient(bottom, #bd9d7d, #f9ddbd);
     background: -moz-linear-gradient(bottom, #bd9d7d, #f9ddbd);
     background: linear-gradient(to bottom, #bd9d7d, #f9ddbd);
-  }
 }
 
 .info-wrap {
   padding: 0 14px;
   position: relative;
   color: $main_text_color2;
-  border-bottom: solid 1px $main_background_white1;
+  border-top: 1px solid #EEE;
+  border-bottom: solid 1px #EEE;
 
   .title {
     color: $main_text_color4;
@@ -102,6 +99,8 @@ export default {
   .views {
     display: flex;
     align-items: center;
+    padding-bottom: 8px;
+    font-size: 10px;
 
     > img {
       margin-right: 3px;
@@ -109,7 +108,7 @@ export default {
       height: 13px;
     }
     > span {
-      margin-right: 10px;
+      margin-right: 14px;
     }
   }
 
@@ -117,6 +116,9 @@ export default {
     display: none;
     font-size: 10px;
     line-height: 14px;
+    padding-bottom: 6px;
+    margin-top: -5px;
+
     &.open {
       display: block;
     }
@@ -128,7 +130,7 @@ export default {
   width: 20px;
   height: 20px;
   right: 14px;
-  top: 0;
+  top: 8px;
 
   > img {
     height: 100%;

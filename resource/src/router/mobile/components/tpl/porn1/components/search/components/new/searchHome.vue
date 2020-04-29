@@ -284,7 +284,7 @@ export default {
     width: 22%;
     height: 28px;
     line-height: 28px;
-    margin: 0 4% 10px 0;
+    margin: 0 9px 9px 0;
     padding: 0 3px;
     border-radius: 15px;
     background-color: #eeeeee;

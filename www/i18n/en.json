@@ -1671,5 +1671,6 @@
     "S_GOT_YESTERDAY": "Yesterday Collected",
     "S_GOT_MONTH": "This Month Collected",
     "S_EXPECTED_REBATE": "Estimated Reward",
-    "S_CREATE_SECCESS": "Create successfully"
+    "S_CREATE_SECCESS": "Create successfully",
+    "S_SPONSOR_PARTNERS": "赞助伙伴"
 }

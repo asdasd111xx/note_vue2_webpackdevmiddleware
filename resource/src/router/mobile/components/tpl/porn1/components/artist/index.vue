@@ -3,7 +3,7 @@
     <div slot="content" class="content-wrap">
       <div :class="$style['header']">
         <div :class="$style['btn-prev']" @click="$router.back()">
-          <img :src="$getCdnPath('/static/image/_new/common/btn_back_w.png')" />
+          <img :src="$getCdnPath('/static/image/_new/common/btn_back.png')" />
         </div>
         <div :class="$style.title">{{ title }}</div>
       </div>

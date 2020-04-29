@@ -1671,5 +1671,6 @@
     "S_GOT_YESTERDAY": "昨日受取済",
     "S_GOT_MONTH": "今月受取済",
     "S_EXPECTED_REBATE": "報酬予測",
-    "S_CREATE_SECCESS": "追加成功"
+    "S_CREATE_SECCESS": "追加成功",
+    "S_SPONSOR_PARTNERS": "赞助伙伴"
 }

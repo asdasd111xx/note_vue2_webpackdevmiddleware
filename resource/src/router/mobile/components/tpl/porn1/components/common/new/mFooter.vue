@@ -6,12 +6,12 @@
       :class="[
         $style['footer-item'],
         $style[`${info.key}`],
-        { [$style.active]: info.key === $route.name }
+        { [$style.active]: isActive(info.key)}
       ]"
       @click="onClick(info)"
     >
       <img
-        v-if="info.key === $route.name"
+        v-if="isActive(info.key)"
         :src="
           $getCdnPath(`/static/image/_new/common/footer/icon_${info.key}_h.png`)
         "
@@ -53,6 +53,12 @@ export default {
       //     return;
       //   }  console.log(path)
       this.$router.push(path);
+    },
+    isActive(key) {
+        if(key === 'discover') {
+          return [key, 'artist', 'videoPlay', 'tag'].indexOf(this.$route.name) >= 0;
+        }
+      return key === this.$route.name;
     }
   }
 };

@@ -118,7 +118,7 @@ export default {
 
 .discover-artist-wrap {
   position: relative;
-  padding-bottom: 30px;
+  padding-bottom: 15px;
 }
 
 .artist-container {
@@ -128,11 +128,10 @@ export default {
 }
 
 .title {
-  height: 30px;
-  line-height: 30px;
   width: 100%;
   background-color: #f8f8f7;
-  padding: 0 14px;
+  padding: 0 16px;
+  margin: 3px 0 8px;
   font-size: 14px;
 }
 
@@ -177,15 +176,14 @@ export default {
 
 .sidebar {
   position: fixed;
-  top: 45px;
+  top: 148px;
   right: 18px;
   z-index: 1;
   width: 16px;
   height: 350px;
-  top: calc(50% - 175px);
 
   > div {
-    margin: 3px 0;
+    margin: 5px 0;
     height: 15px;
     line-height: 16px;
     border-radius: 50%;

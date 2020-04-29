@@ -35,7 +35,7 @@ export default {
 @import "~@/css/variable.scss";
 
 .artist-video-wrap {
-  margin-top: 20px;
+  margin-top: 9px;
   height: 100vh;
   background: #fefffe;
   border-radius: 10px 10px 0 0;

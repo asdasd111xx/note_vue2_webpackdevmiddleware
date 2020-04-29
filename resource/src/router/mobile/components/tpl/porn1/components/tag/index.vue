@@ -69,7 +69,7 @@ export default {
       memInfo: 'getMemInfo'
     }),
     searchTags() {
-      return this.$route.params.key ? this.$route.params.key.replace(",", "・") : ''
+      return this.$route.params.key ? this.$route.params.key.replace(/,/g, "・") : ''
     },
     headerConfig() {
       return {
@@ -166,7 +166,7 @@ export default {
 @import "~@/css/variable.scss";
 
 .content-wrap {
-  padding: 30px 0 10px;
+  padding: 53px 0 10px;
 }
 
 .title {
@@ -187,7 +187,7 @@ export default {
 }
 
 .video {
-  padding: 10px 15px;
+  padding: 0 18px 10px;
 
   > div {
     float: left;
@@ -224,7 +224,6 @@ export default {
   > div {
     height: 33%;
     width: 100%;
-    display: flex;
     align-items: center;
   }
 }

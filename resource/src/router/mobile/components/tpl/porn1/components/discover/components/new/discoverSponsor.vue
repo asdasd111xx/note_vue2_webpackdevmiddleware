@@ -72,14 +72,15 @@ export default {
 }
 
 .list {
-  margin: 0 15px;
-  padding: 5px 0;
+  padding: 3px 13px 0 ;
 }
 
 .wrap {
   display: block;
 
   img {
+    display: block;
+    border-radius: 6px;
     width: 100%;
   }
 }

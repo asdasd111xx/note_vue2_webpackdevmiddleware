@@ -1663,5 +1663,6 @@
     "S_EXPECTED_REBATE": "Hoa hồng ước tính",
     "S_ACCOUNT_PLACEHOLDER": "请输入4-20位字母或数字",
     "S_PASSWORD_PLACEHOLDER": " 请输入6-12位字母或数字",
-    "S_CREATE_SECCESS": "Tạo mới thành công"
+    "S_CREATE_SECCESS": "Tạo mới thành công",
+    "S_SPONSOR_PARTNERS": "赞助伙伴"
 }

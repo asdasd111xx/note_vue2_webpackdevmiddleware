@@ -166,6 +166,10 @@ export default {
   position: relative;
 }
 
+.tab-wrap {
+    background-color: $main_white_color1;
+}
+
 .active-slider {
   position: absolute;
   bottom: 1.5px;
