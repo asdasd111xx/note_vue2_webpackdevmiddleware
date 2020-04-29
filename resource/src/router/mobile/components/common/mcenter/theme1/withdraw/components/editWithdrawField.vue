@@ -3,7 +3,7 @@
         <div :class="[$style['withdraw-alert-wrap'], colorClass]">
             <div :class="$style['alert-wrap']">
                 <div :class="$style['alert-title']">
-                    {{ $text('S_SUBMIT_WITHDRAW', '提交取款资料') }}
+                    提交提现资料
                     <div :class="$style['alert-close-wrap']" @click="closeFuc(false)">
                         <icon
                             :class="$style['alert-close-btn']"
@@ -23,7 +23,7 @@
                             <div :class="$style['withdraw-info-td']">{{ withdrawData.id }}</div>
                         </div>
                         <div :class="[$style['withdraw-info-tr'], 'clearfix']">
-                            <div :class="[$style['withdraw-info-td'], $style['withdraw-info-thead']]">{{ $text('S_WITHDRAW_MONEY', '取款金额') }}</div>
+                            <div :class="[$style['withdraw-info-td'], $style['withdraw-info-thead']]">提现金额</div>
                             <div :class="$style['withdraw-info-td']">{{ withdrawData.amount }}</div>
                         </div>
                         <div :class="[$style['withdraw-info-tr'], 'clearfix']">
@@ -31,12 +31,12 @@
                             <div :class="$style['withdraw-info-td']">{{ withdrawData.deduction }}</div>
                         </div>
                         <div :class="[$style['withdraw-info-tr'], 'clearfix']">
-                            <div :class="[$style['withdraw-info-td'], $style['withdraw-info-thead']]">{{ $text('S_REAL_WITHDRAW', '实际出款') }}</div>
+                            <div :class="[$style['withdraw-info-td'], $style['withdraw-info-thead']]">实际提现</div>
                             <div :class="$style['withdraw-info-td']">{{ withdrawData.real_amount }}</div>
                         </div>
                         <template v-if="withdrawData.withdraw === '迅付'">
                             <div :class="[$style['withdraw-info-tr'], 'clearfix']">
-                                <div :class="[$style['withdraw-info-td'], $style['withdraw-info-thead']]">{{ $text('S_WITHDRAW_ACCOUNT02', '取款帐号') }}</div>
+                                <div :class="[$style['withdraw-info-td'], $style['withdraw-info-thead']]">提现帐号</div>
                                 <div :class="[$style['withdraw-info-td'], $style['withdraw-account']]">
                                     <select
                                         v-model="selectAccountValue"
@@ -54,7 +54,7 @@
                                 </div>
                             </div>
                             <div :class="[$style['withdraw-info-tr'], 'clearfix']">
-                                <div :class="[$style['withdraw-info-td'], $style['withdraw-info-thead']]">{{ $text('S_DAW_DRWAL_PASSWORD', '取款密码') }}</div>
+                                <div :class="[$style['withdraw-info-td'], $style['withdraw-info-thead']]">提现密码</div>
                                 <div :class="[$style['withdraw-info-td'], $style['withdraw-pwd-wrap']]">
                                     <input
                                         v-model="withdrawPwd"

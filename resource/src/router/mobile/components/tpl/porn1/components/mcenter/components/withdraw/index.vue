@@ -308,17 +308,12 @@
               : handleSubmit()
           "
         >
-          {{ $text("S_WITHRAW_NOW", "立即取款") }}
+          立即提现
         </div>
       </div>
 
       <div :class="$style['tips']">
-        {{
-          $text(
-            "S_WITHRAW_TIP",
-            "为了方便您快速取款，请先将所有场馆钱包金额回收至中心钱包"
-          )
-        }}
+        为了方便您快速提现，请先将所有场馆钱包金额回收至中心钱包
       </div>
 
       <!-- 流水檢查 -->
@@ -365,7 +360,7 @@ export default {
       let value = Number(this.withdrawValue)
 
       if (!Number.isInteger(value) && this.withdrawValue) {
-        this.errTips = this.$text("S_WITHRAW_ERROR_MSG1", "取款金额必需为整数");
+        this.errTips = '提现金额必需为整数';
       } else {
         this.errTips = "";
 
@@ -375,7 +370,7 @@ export default {
         if (_actualMoney !== value) {
           this.actualMoney = _actualMoney;
           if (_actualMoney <= 0) {
-            this.errTips = this.$text("S_WITHRAW_ERROR_MSG2", "实际出款金额须大于0，请重新输入");
+            this.errTips = '实际提现金额须大于0，请重新输入';
             this.actualMoney = "0.00";
           }
         }

@@ -49,7 +49,7 @@ export default {
                 },
                 // 取款密碼 - 日本站需顯藏
                 {
-                    msg: this.$text(this.isJpException ? 'S_POP_NOTE_LIST_3' : 'POP_NOTE_LIST_3', '设定【取款密码】'),
+                    msg: this.$text(this.isJpException ? 'S_POP_NOTE_LIST_3' : 'POP_NOTE_LIST_3', '设定【提现密码】'),
                     verifyFail: this.isJpException ? false : !this.memInfo.user.has_withdraw_password
                 },
                 // 手機號碼

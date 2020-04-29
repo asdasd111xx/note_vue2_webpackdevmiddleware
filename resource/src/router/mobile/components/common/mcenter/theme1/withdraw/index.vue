@@ -5,17 +5,17 @@
             <div :class="[$style['withdraw-title-wrap'], 'clearfix']">
                 <span
                     :class="[$style['withdraw-title'], { [$style['is-current']]: curTitleTab === 'withdrawMethod'}]"
-                    :title="$text('S_WITHDRAW_METHOD', '取款方式')"
+                    title="提现方式"
                     @click="changeTab('withdrawMethod')"
                 >
-                    {{ $text('S_WITHDRAW_METHOD', '取款方式') }}
+                    提现方式
                 </span>
                 <span
                     :class="[$style['withdraw-title'], { [$style['is-current']]: curTitleTab === 'withdrawRecord'}]"
-                    :title="$text('S_WITHDRAW_RECORD_SHORT', '取款纪录')"
+                    title="提现纪录"
                     @click="changeTab('withdrawRecord')"
                 >
-                    {{ $text('S_WITHDRAW_RECORD_SHORT', '取款纪录') }}
+                    提现纪录
                 </span>
             </div>
             <!-- 主帳戶餘額區塊 -->
@@ -41,11 +41,11 @@
             <template v-if="curTitleTab === 'withdrawMethod'">
                 <div :class="[$style['withdraw-money-info'], 'clearfix']">
                     <div :class="$style['withdraw-money-title']">
-                        <span :class="$style['withdraw-can-text']">{{ $text('S_CAN_WITHDRAW_MONEY', '可取款金额') }}</span>
+                        <span :class="$style['withdraw-can-text']">可提现金额</span>
                         <div
                             v-if="+withdrawData.cash.gift_card_balance > 0"
                             :class="$style['tip-icon-wrap']"
-                            @click.stop="alertMsg($text('S_WITHDRAW_TIP02', '未满足流水的红利无法取款'))"
+                            @click.stop="alertMsg('未满足流水的红利无法提现')"
                         >
                             <img src="/static/image/mobile/mcenter/btn_description_white.png" />
                         </div>
@@ -61,7 +61,7 @@
                                 <input
                                     v-model="withdrawValue"
                                     :class="[$style['withdraw-input'], $style['withdraw-money']]"
-                                    :placeholder="$text('S_SUMBIT_WITHDRAW_MONEY', '请输入取款金额')"
+                                    placeholder="请输入提现金额"
                                     @input="withdrawValue = $event.target.value.replace(/[^\d]/g, '')"
                                 />
                             </div>
@@ -69,7 +69,7 @@
                         <template v-if="!memInfo.config.internal_audit">
                             <div :class="[$style['withdraw-info'], 'clearfix']">
                                 <div :class="$style['withdraw-info-title']">
-                                    <span :class="$style['withdraw-fee-text']">{{ $text('S_WITHDRAW_FEE', '出款手续费') }}</span>
+                                    <span :class="$style['withdraw-fee-text']">提现手续费</span>
                                     <div
                                         v-if="withdrawData.audit.total.exceed_free_count"
                                         :class="$style['tip-icon-wrap']"
@@ -90,7 +90,7 @@
                                 <div :class="$style['withdraw-info-money']">{{ +withdrawData.audit.total.deduction ? `-${withdrawData.audit.total.deduction}` : '--' }}</div>
                             </div>
                             <div :class="[$style['withdraw-info'], 'clearfix']">
-                                <div :class="$style['withdraw-info-title']">{{ $text('S_REAL_WITHDRAW', '实际出款') }}</div>
+                                <div :class="$style['withdraw-info-title']">实际提现</div>
                                 <div :class="$style['withdraw-info-money']">{{ realWithdrawMoney }}</div>
                             </div>
                         </template>
@@ -102,7 +102,7 @@
                     <!-- 取款帳號區塊 -->
                     <div v-if="memInfo.config.withdraw === '迅付'" :class="[$style['withdraw-feature-wrap'], 'clearfix']">
                         <div :class="[$style['withdraw-info'], $style['info-account'], 'clearfix']">
-                            <div :class="$style['withdraw-input-title']">{{ $text('S_WITHDRAW_ACCOUNT02', '取款帐号') }}</div>
+                            <div :class="$style['withdraw-input-title']">提现帐号</div>
                                 <select
                                     v-model="selectAccountValue"
                                     @change="changeSelectAccountValue(selectAccountValue)"
@@ -119,12 +119,12 @@
                                 </select>
                             </div>
                         <div :class="[$style['withdraw-info'], 'clearfix']">
-                            <div :class="$style['withdraw-input-title']">{{ $text('S_DAW_DRWAL_PASSWORD', '取款密码') }}</div>
+                            <div :class="$style['withdraw-input-title']">提现密码</div>
                             <div :class="$style['input-wrap']">
                                 <input
                                     v-model="withdrawPwd"
                                     :class="[$style['withdraw-input'], $style['deposit-pwd']]"
-                                    :placeholder="$text('S_SUBMIT_WITHDRAW_PASSWORD', '请输入取款密码')"
+                                    placeholder="请输入提现密码"
                                     type="password"
                                     @input="withdrawPwd = $event.target.value.replace(/[^\d]/g, '')"
                                 />
@@ -138,7 +138,7 @@
                             :class="$style['input-checkbox']"
                             type="checkbox"
                         />
-                        <div :class="$style['input-tip']">{{ $text('S_WITHDRAW_TIP01', '我同意扣除上述费用，并经财务审核后才可出款') }} !</div>
+                        <div :class="$style['input-tip']">我同意扣除上述费用，并经财务审核后才可提现 !</div>
                     </div>
                     <div :class="$style['withdraw-btn-wrap']">
                         <div
@@ -207,7 +207,7 @@ export default {
             curTitleTab: 'withdrawMethod',
             isSerial: false,
             headerSetting: {
-                title: this.$text('S_ACCOUNT_WITHDRAW', '取款'),
+                title: '提现',
                 leftBtns: {
                     icon: 'arrow',
                     onClick: () => this.$router.push('/mobile/mcenter')
@@ -261,7 +261,7 @@ export default {
          */
         serialClose(showType = false) {
             let initHeaderSetting = {
-                title: this.$text('S_ACCOUNT_WITHDRAW', '取款'),
+                title: '提现',
                 leftBtns: {
                     icon: 'arrow',
                     onClick: () => this.$router.push('/mobile/mcenter')
@@ -288,7 +288,7 @@ export default {
             }
 
             if (!this.withdrawPwd && this.memInfo.config.withdraw === '迅付') {
-                alert(this.$text('S_SUBMIT_WITHDRAW_PASSWORD', '请输入取款密码'));
+                alert('请输入提现密码');
                 return;
             }
 
