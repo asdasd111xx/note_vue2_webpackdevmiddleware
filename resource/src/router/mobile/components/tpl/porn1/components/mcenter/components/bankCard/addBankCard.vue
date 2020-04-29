@@ -212,6 +212,9 @@ export default {
     watch: {
         addBankCardStep() {
             if (this.addBankCardStep === 'one') {
+                this.formData.phone = '';
+                this.formData.keyring = '';
+                this.errorMsg = '';
                 this.checkData();
             }
         }
