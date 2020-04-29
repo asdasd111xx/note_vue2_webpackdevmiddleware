@@ -147,5 +147,10 @@ export default [
         path: 'service',
         name: 'service',
         component
+    },
+    { // App 客服
+        path: 'webview',
+        name: 'webview',
+        component
     }
 ];

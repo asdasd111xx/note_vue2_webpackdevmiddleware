@@ -17,7 +17,8 @@ export default {
         joinMemberPorn1: () => import(/* webpackChunkName: 'joinMemberPorn1' */'../../tpl/porn1/components/joinMember'),
         liveStreamPorn1: () => import(/* webpackChunkName: 'liveStreamPorn1' */'../../tpl/porn1/components/liveStream'),
         fishareaPorn1: () => import(/* webpackChunkName: 'fishareaPorn1' */'../../tpl/porn1/components/fisharea'),
-        servicePorn1: () => import(/* webpackChunkName: 'servicePorn1' */'../../tpl/porn1/components/service')
+        servicePorn1: () => import(/* webpackChunkName: 'servicePorn1' */'../../tpl/porn1/components/service'),
+        webviewPorn1: () => import(/* webpackChunkName: 'servicePorn1' */'../../tpl/porn1/components/webview')
     },
     mcenter: {
         homePorn1: () => import(/* webpackChunkName: 'homePorn1' */'../../tpl/porn1/components/mcenter/components/home'),
