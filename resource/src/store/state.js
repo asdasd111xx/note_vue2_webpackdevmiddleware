@@ -2,6 +2,8 @@ import i18n from '@/config/i18n';
 import gameData from '@/config/games';
 
 export default {
+    // 判斷極速版、pwa、webclip
+    isPwa: window.matchMedia('(display-mode: standalone)').matches || window.navigator.standalone,
     // Webview介接(客端、廳主端)
     isWebview: false,
     // 後台左側slidebar的寬度

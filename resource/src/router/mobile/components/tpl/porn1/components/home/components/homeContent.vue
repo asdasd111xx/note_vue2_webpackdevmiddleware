@@ -457,6 +457,7 @@ export default {
             }
 
             if (path === 'grade') {
+                this.$router.push('/mobile/mcenter/accountVip');
                 return;
             }
 

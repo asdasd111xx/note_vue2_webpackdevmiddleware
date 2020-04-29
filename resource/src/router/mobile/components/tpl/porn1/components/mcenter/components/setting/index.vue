@@ -4,7 +4,7 @@
             <div
                 v-for="listInfo in list"
                 :key="`list-${listInfo.name}`"
-                :class="$style.list"
+                :class="[$style.list, {[$style['list-part']]: listInfo.isPart}, {[$style['list-border-bottom']]: !listInfo.isPart}]"
                 @click="handleClick(listInfo.path)"
             >
                 <span> {{ listInfo.name }} </span>
@@ -32,8 +32,8 @@ export default {
     data() {
         return {
             list: [
-                { name: this.$text('S_CHANGE_PASSWD', '代理登入'), path: '/mobile/resetPwd' },
-                { name: this.$text('S_FEEDBACK', '意见反馈'), path: '/mobile/mcenter/feedback/sendFeedback' }
+                { name: this.$text('S_CHANGE_PASSWD', '代理登入'), path: '/mobile/resetPwd', isPart: true },
+                { name: this.$text('S_FEEDBACK', '意见反馈'), path: '/mobile/mcenter/feedback/sendFeedback', isPart: true }
             ]
         };
     },
@@ -75,6 +75,10 @@ export default {
 .setting-wrap {
   color: $main_text_color3;
 
+  > div:first-child {
+      margin-top: 5px;
+  }
+
   .list {
     height: 50px;
     padding: 0 14px;
@@ -107,5 +111,13 @@ export default {
     height: 50px;
     line-height: 50px;
   }
+}
+
+.list-part {
+    margin-bottom: 10px;
+}
+
+.list-border-bottom {
+    border-bottom: 1px solid #EEE;
 }
 </style>

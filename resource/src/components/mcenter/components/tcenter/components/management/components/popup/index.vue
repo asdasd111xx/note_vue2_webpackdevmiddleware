@@ -9,7 +9,7 @@
         </template>
         <template v-else>
             <div :class="$style['qr-mask']" />
-            <div :class="$style['qr-wrap']">
+            <div v-show="isCombineFinish.length === qrCodeBackground.length" :class="$style['qr-wrap']">
                 <div :class="[$style['qr-content'],'clearfix']">
                     <swiper
                         ref="qrSwiper"
@@ -21,13 +21,13 @@
                             <div :class="$style.close" @click="$emit('close')">
                                 <icon :class="$style['close-icon']" name="times" />
                             </div>
-                            <div v-if="isCombine && !isPwa" :class="$style['qrcode']">
+                            <div v-if="canvasLink[index]" :class="$style['qrcode']">
                                 <!-- 顯示已組合後的img -->
                                 <img :src="canvasLink[index]" :class="$style['qr-img']" />
                             </div>
                             <div v-else :class="$style['print-area']">
                                 <!-- 未組合的圖片，等html2canvas完成後隱藏 -->
-                                <div ref="printMe">
+                                <div :ref="`printMe${index}`">
                                     <img
                                         :src="`/static/image/_new/lang/qrcode/${curLang}/${item}.jpg`"
                                         :class="$style['qr-bgimg']"
@@ -41,13 +41,12 @@
                                 </div>
                             </div>
                             <template v-if="isPwa">
-                                <a
+                                <div
                                     :class="$style['qr-save']"
-                                    :href="hrefLink(index)"
-                                    download="QRCode.png"
+                                    @click="openImg(index)"
                                 >
                                     {{ $text('S_SCREENSHOT_SAVE','点击截屏保存') }}
-                                </a>
+                                </div>
                             </template>
                             <template v-else>
                                 <div :class="$style['qr-save']">
@@ -72,7 +71,6 @@
 import { mapGetters } from 'vuex';
 import { Swiper, SwiperSlide } from 'vue-awesome-swiper';
 import html2canvas from 'html2canvas';
-
 /**
  * @param {String} type - 彈窗類型
  * @param {String} link - 推廣連結
@@ -95,7 +93,6 @@ export default {
     data() {
         return {
             canvasLink: [],
-            isCombine: false,
             categoryOptions: {
                 effect: 'fade',
                 simulateTouch: false,
@@ -104,13 +101,28 @@ export default {
                     nextEl: `.${this.$style['btn-next']}`,
                     prevEl: `.${this.$style['btn-prev']}`,
                     disabledClass: `${this.$style['navi-disabled']}`
+                },
+                on: {
+                    init: () => {
+                        if (this.isCombineFinish.length === this.qrCodeBackground.length) {
+                            this.htmlToCanvas(0);
+                        }
+                        this.isSwiperInit = true;
+                    },
+                    slideChangeTransitionEnd: () => {
+                        if (this.isCombineFinish.length === this.qrCodeBackground.length && this.swiperIndex >= 0) {
+                            this.htmlToCanvas(this.swiperIndex);
+                        }
+                    }
                 }
             },
             qrCodeEdition: {
                 qrcode_a: 'qrcode-img-a',
                 qrcode_b: 'qrcode-img-b'
             },
-            isCombineFinish: []
+            isCombineFinish: [],
+            isMounted: false,
+            isSwiperInit: false
         };
     },
     computed: {
@@ -120,14 +132,29 @@ export default {
         }),
         qrCodeBackground() {
             return Object.keys(this.qrCodeEdition);
+        },
+        swiperIndex() {
+            return this.isMounted ? this.$refs.qrSwiper.$swiper.activeIndex : -1;
         }
+    },
+    mounted() {
+        this.isMounted = true;
     },
     methods: {
         aferLoad(index) {
+            this.isCombineFinish.push(index);
+            if (this.isCombineFinish.length === this.qrCodeBackground.length && this.isSwiperInit) {
+                this.htmlToCanvas(0);
+            }
+        },
+        htmlToCanvas(index) {
+            if (this.canvasLink[index]) {
+                return;
+            }
             this.$nextTick(() => {
                 // html2canvas會依據當前畫面擷取，則須將scroll = 0
                 window.scrollTo(0, 0);
-                const el = this.$refs.printMe[index];
+                const el = this.$refs[`printMe${index}`][0];
                 const options = {
                     useCORS: true,
                     windowWidth: document.body.scrollWidth,
@@ -135,15 +162,11 @@ export default {
                 };
                 html2canvas(el, options).then((canvas) => {
                     this.$set(this.canvasLink, index, canvas.toDataURL());
-                    this.isCombineFinish.push(index);
-                    if (this.isCombineFinish.length === Object.keys(this.qrCodeEdition).length) {
-                        this.isCombine = true;
-                    }
                 });
             });
         },
-        hrefLink(index) {
-            return `javascript: window.open('${this.canvasLink[index]}');`;
+        openImg(index) {
+            window.open(this.canvasLink[index]);
         }
     }
 };

@@ -1,5 +1,7 @@
 
 export default {
+    // 判斷極速版、pwa、webclip
+    getIsPwa: (state) => state.isPwa,
     // Webview介接(客端、廳主端)
     getIsWebview: (state) => state.isWebview,
     getCurLang: (state) => state.curLang,

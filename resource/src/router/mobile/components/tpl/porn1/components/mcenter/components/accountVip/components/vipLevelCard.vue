@@ -184,7 +184,6 @@ $border-radius: 10px;
 .vipSwiperContainer {
     margin-left: 0;
     margin-right: 0;
-    overflow: unset;
 }
 
 .card-level-container {
