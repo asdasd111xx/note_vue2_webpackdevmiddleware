@@ -329,7 +329,10 @@ import { mapGetters, mapActions } from 'vuex';
 import balanceTran from "@/components/mcenter/components/balanceTran";
 import message from '../../../common/new/message'
 import serialNumber from './serialNumber'
-
+import ajax from '@/lib/ajax';
+import {
+  API_WITHDRAW_WRITE
+} from '@/config/api';
 export default {
   mixins: [mixin],
   data() {
@@ -339,6 +342,7 @@ export default {
       isCheckWithdraw: false,
       isOpenOrder: false,
       selectAccountValue: '',
+      isSendSubmit: false,
 
       isShowMore: false,
       msg: '',
@@ -396,7 +400,7 @@ export default {
         onClick: () => { this.$router.back(); },
         title: this.$text('S_WITHDRAWAL_TEXT', '提现'),
         hasHelp: true,
-        helpRouter: 'withdraw'
+        helpRouter: '/detail?type=withdraw'
       };
     },
   },
@@ -454,18 +458,141 @@ export default {
       this.withdrawValue = Math.floor(Number(result));
     },
     handleSubmit() {
-      if (this.errTips || !this.withdrawValue)
+      if (this.errTips || !this.withdrawValue || this.isSendSubmit)
         return;
+
+      this.isSendSubmit = true;
       this.submitWithdraw({
         user_bank_id: this.selectedCard,
         userBankId: this.selectedCard
       }).then((response) => {
-        if (response.result === 'error' && response.code === 500110) {
-          this.isOpenOrder = true;
+
+        if (response) {
+          if (response.result === 'error' && response.code === 500110) {
+            this.isOpenOrder = true;
+          }
+
+          if (response.result === 'ok') {
+            this.msg = "提现成功"
+          }
+
+          if (response.result === 'error') {
+            this.errTips = response.msg;
+          }
         }
       });
-    }
+    },
+    // 搬移原提現方法
+    /**
+       * 送出取款資訊
+       * @method submitWithdraw
+       */
+    submitWithdraw(params) {
+      if (this.realWithdrawMoney === '--' || this.realWithdrawMoney <= 0) {
+
+        return Promise.resolve({ status: 'error', errorCode: '', msg: "金额低于最小金额限制" });
+      }
+      //不需要取款密碼,並且可選銀行卡
+      let _params = {
+        amount: this.withdrawValue,
+        // withdraw_password: this.withdrawPwd,
+        // withdraw_password: '0000',
+        forward: true,
+        confirm: true,
+        max_id: this.withdrawData.audit.total.max_id,
+        audit_amount: this.withdrawData.audit.total.audit_amount,
+        offer_deduction: this.withdrawData.audit.total.offer_deduction,
+        administrative_amount: this.withdrawData.audit.total.administrative_amount
+      }
+      if (params) {
+        _params = { ..._params, ...params }
+      }
+      const hasAccountId = !this.withdrawAccount.withdrawType ? 'account_id' : this.withdrawAccount.withdrawType;
+
+      this.isLoading = true;
+      this.actionSetIsLoading(true);
+
+      // 本站寫單
+      return ajax({
+        method: 'post',
+        url: API_WITHDRAW_WRITE,
+        errorAlert: false,
+        params: _params,
+        success: (response) => {
+          if (response && response.result === 'ok') {
+            if (this.memInfo.config.withdraw === '迅付') {
+              // 迅付寫單
+              ajax({
+                method: 'post',
+                url: API_TRADE_RELAY,
+                errorAlert: true,
+                params: {
+                  api_uri: '/api/trade/v2/c/withdraw/entry',
+                  [`method[${hasAccountId}]`]: this.withdrawAccount.id,
+                  password: this.withdrawPwd,
+                  withdraw_id: response.ret.id
+                }
+              }).then((res) => {
+                this.isLoading = false;
+                this.actionSetIsLoading(false);
+
+                if (res && res.result === 'ok') {
+                  this.alertTipClose(true);
+                }
+              });
+
+              return;
+            }
+
+            // 第三方寫單
+            ajax({
+              method: 'get',
+              url: API_WITHDRAW,
+              errorAlert: true,
+              params: {
+                amount: response.ret.amount,
+                withdraw_id: response.ret.id,
+                stage: 'forward',
+                logo: this.webInfo.logo ? `${this.webInfo.cdn_domain}${this.webInfo.logo}` : '',
+                mlogo: this.webInfo.m_logo ? `${this.webInfo.cdn_domain}${this.webInfo.m_logo}` : '',
+                title: encodeURI(this.memInfo.config.domain_name[this.curLang]),
+                favicon: this.webInfo.fav_icon ? `${this.webInfo.cdn_domain}${this.webInfo.fav_icon}` : '',
+                check: true
+              }
+            }).then((res) => {
+              this.isLoading = false;
+              this.actionSetIsLoading(false);
+
+              if (res.result === 'ok') {
+                this.thirdUrl = res.ret.uri;
+              }
+            });
+
+            return;
+          }
+
+          if (response.code === 'M500001') {
+            window.location.reload();
+            return;
+          }
+
+          this.isLoading = false;
+          this.actionSetIsLoading(false);
+        },
+        fail: (error) => {
+          if (error.data.code === 'M500001') {
+            window.location.reload();
+            return;
+          }
+
+          this.errTips = error.data.msg;
+          this.isLoading = false;
+          this.actionSetIsLoading(false);
+        }
+      }).then(() => { this.isSendSubmit = false });
+    },
   },
+
 }
 
 </script>

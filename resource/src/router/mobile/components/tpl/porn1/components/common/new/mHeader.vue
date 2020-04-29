@@ -149,24 +149,13 @@
           :src="
             $getCdnPath('/static/image/_new/mcenter/balanceTrans/btn_help.png')
           "
-          @click="msg = '正在上线 敬请期待'"
-        />
-        <!-- @click="
+          @click="
             $router.push(
               `/mobile/mcenter/help/${
                 headerConfig.helpRouter ? headerConfig.helpRouter : ''
               }`
             )
-          " -->
-      </div>
-    </template>
-    <template v-if="headerConfig.depositHelp">
-      <div :class="$style['deposit-wrap']">
-        <img
-          :src="
-            $getCdnPath('/static/image/_new/mcenter/balanceTrans/btn_help.png')
           "
-          @click="headerConfig.customEvent"
         />
       </div>
     </template>

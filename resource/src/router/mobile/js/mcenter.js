@@ -187,13 +187,6 @@ export default {
                     path: 'gameintro',
                     name: 'mcenter-help-gameintro',
                     component,
-                    children: [
-                        {
-                            path: 'detail',
-                            name: 'mcenter-help-gameintro-detail',
-                            component
-                        }
-                    ]
                 },
                 {
                     path: 'support',
@@ -203,6 +196,12 @@ export default {
                 {
                     path: 'contact',
                     name: 'mcenter-help-contact',
+                    component
+                },
+                // 存取款細節頁面
+                {
+                    path: 'detail',
+                    name: 'mcenter-help-detail',
                     component
                 }
             ]
