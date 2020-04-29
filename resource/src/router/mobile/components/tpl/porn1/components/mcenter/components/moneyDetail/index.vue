@@ -23,7 +23,7 @@ export default {
         headerConfig() {
             return {
                 prev: true,
-                title: this.$route.params.page === 'detail' ? '交易详情' : '交易明细',
+                title: this.$route.params.page === 'detail' ? '交易详情' : '交易记录',
                 onClick: () => {
                     this.$router.back();
                 }

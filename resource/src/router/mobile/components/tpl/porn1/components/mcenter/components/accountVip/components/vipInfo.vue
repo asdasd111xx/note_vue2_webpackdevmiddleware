@@ -67,7 +67,7 @@
                 </div>
                 <div :class="$style['cell-text']">
                     <div>--</div>
-                    <div>每日红包(月初自动派发)</div>
+                    <div>每月红包(月初自动派发)</div>
                 </div>
             </div>
 

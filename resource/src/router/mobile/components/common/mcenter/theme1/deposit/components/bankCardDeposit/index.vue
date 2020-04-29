@@ -28,7 +28,7 @@
                                 @click="changePayMode(info, index)"
                             >
                                 <img
-                                    v-if="[5, 6].includes(info.payment_type_id) && tagTrans[info.tag]"
+                                    v-if="tagTrans[info.tag]"
                                     :src="$getCdnPath(`/static/image/_new/mcenter/deposit/icon_${tagTrans[info.tag]}.png`)"
                                     :class="$style['pay-mode-tag']"
                                 />

@@ -154,7 +154,7 @@ export default {
                 { key: 'deposit', text: '充值' },
                 { key: 'vendor', text: '转帐' },
                 { key: 'withdraw', text: '提现' },
-                { key: 'bouns', text: '红利' },
+                { key: 'bonus', text: '红利' },
                 { key: 'manual', text: '人工' }
             ];
         },
@@ -218,7 +218,7 @@ export default {
         },
         setCategory(value) {
             this.currentCategory = value;
-            this.type = value.key === 'bouns' ? ['activity', 'rebate'] : [value.key];
+            this.type = value.key === 'bonus' ? ['activity', 'rebate'] : [value.key];
 
             this.detailList = null;
             this.firstResult = 0;

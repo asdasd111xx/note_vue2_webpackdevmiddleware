@@ -7,7 +7,7 @@
         <div :class="$style.wrap">
             <div :class="[$style.detail, 'clearfix']">
                 <div :class="$style.title">交易类型</div>
-                <div :class="$style.text">{{ detailInfo.amount }}</div>
+                <div :class="$style.text">{{ currentCategory.text }}</div>
             </div>
             <div :class="[$style.detail, 'clearfix']">
                 <div :class="$style.title">交易方式</div>
