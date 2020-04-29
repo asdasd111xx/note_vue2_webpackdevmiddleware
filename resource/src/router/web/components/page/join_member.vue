@@ -23,6 +23,13 @@
         </div>
       </slot>
       <div :class="$style['join-content']">
+        <!-- 錯誤訊息 -->
+        <div :class="$style['err-msg']">
+          <div v-show="errMsg">
+            {{ errMsg }}
+          </div>
+        </div>
+
         <div
           v-for="field in fieldsData"
           :key="field.key"
@@ -249,7 +256,6 @@
           </div>
         </div>
       </div>
-      <div :class="$style['join-line']" />
       <div v-if="hasAgreement" :class="$style.agreement">
         <input v-model="agreement" type="checkbox" />
         <span @click="agreement = !agreement">{{
@@ -259,6 +265,7 @@
           $text("S_AGREEMENT", "开户协议")
         }}</span>
       </div>
+
       <slide-verification
         v-if="memInfo.config.register_captcha_type === 2"
         :class="$style['join-btn-wrap']"
@@ -330,6 +337,7 @@ export default {
   },
   data() {
     return {
+      errMsg: '',
       joinMemInfo,
       dateLang: datepickerLang(this.$i18n.locale),
       ageLimit: new Date(Vue.moment(new Date()).add(-18, 'year')),
@@ -497,7 +505,7 @@ export default {
     const confirmPassword = {
       key: 'confirm_password',
       content: {
-        note1: this.$text('S_PASSWORD_PLACEHOLDER', '请输入6-12位字母或数字'),
+        note1: '请再次输入设置密码',
         note2: ''
       }
     };
@@ -842,12 +850,13 @@ export default {
       this.allTip[key] = '';
     },
     joinSubmit(captchaInfo) {
+      if (!this.allValue.username || !this.allValue.password || !this.allValue.confirm_password) return;
       const data = this.registerData;
 
       this.checkFail = false;
 
       if (this.allValue.username === this.allValue.password) {
-        alert(this.$text('S_USERNAME_CONFIRM_ERROR', '密码不能与帐号相同'));
+        this.errMSg = (this.$text('S_USERNAME_CONFIRM_ERROR', '密码不能与帐号相同'));
         return;
       }
 
@@ -890,15 +899,15 @@ export default {
           captchaInfo.slideFuc.reset();
         }
 
-        alert(this.$t('S_JM_MSG_COMPLETE'));
+        this.errMsg = (this.$t('S_JM_MSG_COMPLETE'));
         return;
       }
 
       if (this.memInfo.config.register_captcha_type === 2) {
         this.allValue.captcha_text = captchaInfo.data;
       }
-      // 暫時調整欄位
 
+      // 暫時調整欄位
       let params = {
         ...this.allValue,
         'captchaText': this.allValue.captcha_text,
@@ -909,8 +918,8 @@ export default {
         phone: this.countryCode && this.allValue.phone ? `${this.countryCode.replace('+', '')}-${this.allValue.phone}` : ''
       }
       delete params['captcha_text'];
-      delete params['confirm_password'];
       delete params['withdraw_Password'];
+
       bbosRequest({
         method: 'post',
         url: this.siteConfig.BBOS_DOMIAN + '/Player/Add',
@@ -959,8 +968,8 @@ export default {
 
         this.allValue.captcha_text = '';
         if (res.status !== "000") {
-          // to do 錯誤訊息
-          res.data ? alert(res.data.msg) : alert(res.msg)
+          // to do 錯誤訊息?
+          this.errMsg = res.msg;
         }
       });
     },

@@ -655,6 +655,7 @@ export default {
         submitInfo() {
             this.submitList().then((response) => {
                 if (response.status === 'local') {
+                    this.checkSuccess = false;
                     this.submitStatus = 'stepTwo';
                     this.$emit('update:headerSetting', {
                         ...this.initHeaderSetting,

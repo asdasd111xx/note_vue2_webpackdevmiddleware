@@ -120,7 +120,6 @@ export default {
             method: 'get',
             url: apiUrl.API_MOBILE_CHECK,
             errorAlert: false,
-            errorAlert: false,
             ...args
         });
     },

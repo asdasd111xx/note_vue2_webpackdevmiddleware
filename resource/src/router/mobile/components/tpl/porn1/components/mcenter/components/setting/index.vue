@@ -14,7 +14,7 @@
             </div>
 
             <div :class="$style['logout']" @click="logout">
-                {{ this.$text("S_LOGOUT", "退出") }}
+                退出
             </div>
         </div>
     </mobile-container>

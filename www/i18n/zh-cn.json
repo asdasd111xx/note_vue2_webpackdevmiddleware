@@ -1557,7 +1557,7 @@
     "S_SUBMIT_ORDER_SYSTEM_AUO_ALLOCATES": "提交订单时，系统自动调配最佳存款金额",
     "S_AGENT_GROUP_DOMESTIC": "国内代理群",
     "S_COOPERATION_GROUP_FOREIGN": "国外合作群",
-    "S_SLIDE_REGISTER": "向右滑动即注册",
+    "S_SLIDE_REGISTER": "请按住滑块，移动到最右边",
     "S_SLIDE_LOGIN": "请按住滑块，拖动到最右边",
     "S_VRLOTTERY": "VR彩票",
     "S_BEAUTY_LIVE": "美女直播",

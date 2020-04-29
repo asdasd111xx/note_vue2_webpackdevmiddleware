@@ -475,16 +475,17 @@ export default {
                 return;
             }
 
+            if (!this.loginStatus) {
+                this.$router.push('/mobile/login');
+                return;
+            }
+
             if (game.type === 'L' && [3, 5, 6].includes(game.kind)) {
                 const trans = { 3: 'casino', 5: 'card', 6: 'mahjong' };
                 this.$router.push(`/mobile/${trans[game.kind]}/${game.vendor}`);
                 return;
             }
 
-            if (!this.loginStatus) {
-                this.$router.push('/mobile/login');
-                return;
-            }
 
             if (game.type === 'T') {
                 this.msg = '正在上线 敬请期待';
