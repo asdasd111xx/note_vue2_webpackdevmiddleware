@@ -11,7 +11,7 @@
 </template>
 
 <script>
-import { mapGetters } from 'vuex';
+import { mapGetters, mapActions } from 'vuex';
 import mobileContainer from '../../../common/new/mobileContainer';
 import shortcutInfo from './components/shortcutInfo';
 import memList from './components/memList';
@@ -46,9 +46,12 @@ export default {
     },
   },
   created() {
-
+      this.actionSetVip();
   },
   methods: {
+    ...mapActions([
+      'actionSetVip'
+    ]),
     goMessage() {
       if (!this.loginStatus) {
         this.$router.push('/mobile/login');

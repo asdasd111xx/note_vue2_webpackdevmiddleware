@@ -11,6 +11,7 @@ export default {
     vip: {
         enable: false
     },
+    allVip: [],
     // ＝＝＝＝＝＝＝＝＝＝＝＝＝＝＝＝＝＝
     //     後台(mangosteen_front)共用
     // ＝＝＝＝＝＝＝＝＝＝＝＝＝＝＝＝＝＝

@@ -173,9 +173,13 @@ export default {
     // ＝＝＝＝＝＝＝＝＝＝＝＝＝＝＝＝＝＝
     getNoticeData: (state) => state.noticeData,
     // ＝＝＝＝＝＝＝＝＝＝＝＝＝＝＝＝＝＝
-    //     vip 資料
+    //    綜合 vip 資料
     // ＝＝＝＝＝＝＝＝＝＝＝＝＝＝＝＝＝＝
     getVip: (state) => state.vip,
+    // ＝＝＝＝＝＝＝＝＝＝＝＝＝＝＝＝＝＝
+    //    所有 vip 資料
+    // ＝＝＝＝＝＝＝＝＝＝＝＝＝＝＝＝＝＝
+    getAllVip: (state) => state.allVip,
     // 是否Loading
     getIsLoading: (state) => state.isLoading
 };

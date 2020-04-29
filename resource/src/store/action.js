@@ -529,7 +529,7 @@ export const actionMemInit = ({ state, dispatch, commit }) => {
         await dispatch('actionSetUserdata');
         await dispatch('actionSetWebInfo', state.memInfo.user.domain);
 
-        const defaultLang =  ['47', '70', '71'].includes(state.memInfo.user.domain) && state.webInfo.is_production ? 'vi' : 'zh-cn';
+        const defaultLang = ['47', '70', '71'].includes(state.memInfo.user.domain) && state.webInfo.is_production ? 'vi' : 'zh-cn';
         await getLang(state.webInfo.language, defaultLang);
 
         // 設定網站設定檔資訊 (start)
@@ -551,7 +551,7 @@ export const actionMemInit = ({ state, dispatch, commit }) => {
                 favicon: state.webInfo.fav_icon ? `${state.webInfo.cdn_domain}${state.webInfo.fav_icon}` : ''
             };
 
-            dispatch('actionSetVip');
+            // dispatch('actionSetVip');
             dispatch('actionSetPost');
             dispatch('actionSetUserBalance');
             // 取得會員我的返水

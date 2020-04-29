@@ -461,6 +461,7 @@ export default {
     // VIP
     [types.SET_VIP](state, data) {
         state.vip = data.find((item) => item.complex);
+        state.allVip = data;
     },
     // isLoading
     [types.SET_ISLOADING](state, data) {

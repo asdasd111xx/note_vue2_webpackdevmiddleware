@@ -144,7 +144,6 @@ export default {
                 //   initName: '信息中心', name: 'S_MSG_CENTER', path: '/mobile/mcenter/information/post', pageName: 'information', image: 'info_post'
                 // } // 信息中心
             ],
-            vipData: {},
             pornSwitchState: false
         };
     },
@@ -165,18 +164,6 @@ export default {
     },
     created() {
         this.pornSwitchState = this.memInfo.config.content_rating && this.memInfo.user.content_rating;
-
-        mcenter.accountVIP({
-            success: (response) => {
-                this.vipData = {
-                    type: 'vip',
-                    key: 'text',
-                    position: 'mcenter',
-                    btnText: this.$t('S_VIP_LEVEL', 'VIP等级'),
-                    ...response.ret
-                };
-            }
-        });
     },
     methods: {
         ...mapActions(['actionEnterMCenterThirdPartyLink', 'actionSetUserdata']),

@@ -120,7 +120,7 @@ export default {
         { path: '/mobile/mcenter/withdraw', pageName: 'withdraw' }, // 取款
         { path: '/mobile/mcenter/accountVip', pageName: 'accountVip' } // VIP
       ],
-      vipData: {},
+    //   vipData: {},
       createdTime: '',
       imgID: 0,
       imgIndex: 0
@@ -135,13 +135,6 @@ export default {
     })
   },
   created() {
-    mcenter.accountVIP({
-      success: (res) => {
-        this.vipData = {
-          ...res.ret
-        };
-      }
-    });
     member.data({
       success: (res) => {
         this.countDays(res.ret.user.created_at);

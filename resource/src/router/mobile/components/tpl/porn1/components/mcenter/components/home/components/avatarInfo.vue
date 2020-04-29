@@ -28,7 +28,7 @@
             }}
           </span>
           <span :class="$style['vip-level']">
-            {{ viplevel }}
+            VIP{{ vip.now_level_id }}
           </span>
         </template>
         <template v-else>
@@ -87,7 +87,8 @@ export default {
       loginStatus: 'getLoginStatus',
       memInfo: 'getMemInfo',
       memCurrency: 'getMemCurrency',
-      memBalance: 'getMemBalance'
+      memBalance: 'getMemBalance',
+      vip: 'getVip'
     }),
     avatarSrc() {
       return !this.loginStatus ?
@@ -96,7 +97,6 @@ export default {
     }
   },
   created() {
-    this.getVipInfo();
     if (this.memInfo.user.image === 0 || !(this.memInfo.user.image)) {
       this.imgIndex = 0;
       this.imgID = 0;
@@ -109,15 +109,6 @@ export default {
     ...mapActions([
       'actionSetUserdata'
     ]),
-    getVipInfo() {
-      mcenter.vipUserDetail({
-        success: (res) => {
-          if (res && res.ret && res.ret[0]) {
-            this.viplevel = "VIP" + res.ret[0].now_level_id;
-          }
-        }
-      });
-    },
     // 大頭貼
     selectAvatar() {
       if (this.memInfo.user.image === this.imgID) {
