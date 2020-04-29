@@ -127,6 +127,7 @@ $bouns_color6: #FFF07B;
     color: $bouns_color5;
     font-size: 15px;
     line-height: 30px;
+    transition: width .31s;
 
     &.active {
         width: 85px;

@@ -205,7 +205,7 @@ export default {
 
           if (!this.$refs.bonunsDialog) { return }
           //獲得彩金
-          this.$refs.bonunsDialog.earnCurrentNum = Number(Number(data.Active.BreakAmout) * Number(data.Active.BreakTimes)).toFixed(2);
+          this.$refs.bonunsDialog.earnCurrentNum = Number(Number(data.Active.BreakAmout) * Number(data.BreakTimes)).toFixed(2);
 
           //每次獲得彩金
           this.$refs.bonunsDialog.earnSingleNum = Number(data.Active.BreakAmout).toFixed(2);
