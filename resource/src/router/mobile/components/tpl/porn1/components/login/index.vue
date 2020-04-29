@@ -45,6 +45,7 @@
                 maxlength="12"
                 tabindex="2"
                 @keydown.13="loginCheck"
+                @change="onSaveAccount"
               />
               <span class="input-icon" />
             </span>
@@ -201,6 +202,7 @@ export default {
   },
   created() {
     this.username = localStorage.getItem('username') || '';
+    this.password = localStorage.getItem('password') || '';
     this.depositStatus = localStorage.getItem('depositStatus') || false;
   },
   methods: {
