@@ -184,11 +184,13 @@ export default {
 
             if (!this.depositStatus) {
                 localStorage.removeItem('username');
+                localStorage.removeItem('password');
                 localStorage.removeItem('depositStatus');
                 return;
             }
 
             localStorage.setItem('username', this.username);
+            localStorage.setItem('password', this.password);
             localStorage.setItem('depositStatus', this.depositStatus);
         }
     }

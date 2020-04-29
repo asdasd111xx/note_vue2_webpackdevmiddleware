@@ -86,7 +86,7 @@ export default {
                     path: '/mobile/mcenter/help',
                     pageName: 'help',
                     image: 'help',
-                    info: '存取款、投注有疑问，看这里',
+                    info: '充值、提现、投注有疑问，看这里',
                     isPart: true
 
                 },

@@ -13,6 +13,11 @@
 }
 
 .cell {
+    -moz-transition: all .31s;
+    -ms-transition: all .31s;
+    -o-transition: all .31s;
+    -webkit-transition: all .31s;
+    transition: all .31s ease-out;
     background-color: #fefefe;
     position: relative;
     margin-top: 1px;
@@ -31,19 +36,16 @@
     -o-transition: all .31s;
     -webkit-transition: all .31s;
     font-size: 14px;
-    margin-top: 5px;
-    margin-bottom: 5px;
-    height: 0;
+    max-height: 0;
     opacity: 0.5;
     overflow: hidden;
     transition: all .31s ease-out;
 
     &.active {
-        height: auto;
+        // height: unset;
         opacity: 1;
         overflow: unset;
     }
-
 }
 
 .arrow-btn {
@@ -56,11 +58,11 @@
     right: 14px;
     top: 0;
     transition: transform .31s;
-    width: 14px;
+    width: 16px;
 
     >img {
         bottom: 0;
-        height: 14px;
+        height: 16px;
         margin: auto;
         position: absolute;
         top: 0;

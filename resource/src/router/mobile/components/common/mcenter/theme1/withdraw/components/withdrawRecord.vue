@@ -2,7 +2,7 @@
     <div :class="[$style['withdraw-record-wrap'], colorClass]">
         <div class="clearfix">
             <div :class="$style['record-title-wrap']">
-                <span :class="$style['record-title']">{{ $text('S_WITHDRAW_RECORD', '近10笔取款记录') }}</span>
+                <span :class="$style['record-title']">近10笔提现记录</span>
                 <div :class="$style['icon-wrap']" @click="getRecordData">
                     <icon
                         name="sync-alt"
@@ -47,7 +47,7 @@
                                 :class="$style['withdraw-info-btn']"
                                 @click="openEdit(true, info)"
                             >
-                                {{ $text('S_SUBMIT_WITHDRAW', '提交取款资料') }}
+                                提交提现资料
                             </span>
                             <span v-else>{{ getCurrentText(info, theadInfo.objKey) }}</span>
                             <div

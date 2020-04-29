@@ -11,7 +11,8 @@
 <script>
 import { mapGetters } from 'vuex';
 import member from '@/api/member';
-import mobileContainer from '../../../common/new/mobileContainer';
+import mobileContainer from '../../../../common/new/mobileContainer';
+
 export default {
   components: {
     mobileContainer,
@@ -29,7 +30,7 @@ export default {
       return {
         prev: true,
         onClick: () => { this.$router.back(); },
-        title: this.$text('S_TECH_SUP', '技术支持'),
+        title: '充值教程'
       };
     },
   },

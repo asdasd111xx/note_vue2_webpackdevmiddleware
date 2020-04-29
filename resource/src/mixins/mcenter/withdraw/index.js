@@ -267,8 +267,9 @@ export default {
         /**
          * 送出取款資訊
          * @method submitWithdraw
+         * 舊版
          */
-        submitWithdraw(params) {
+        submitWithdraw_Old(params) {
             if (this.realWithdrawMoney === '--' || this.realWithdrawMoney <= 0) {
                 alert(this.$text('S_WITHDRAW_ERROR_TIP01', '实际出款金额需大于0，请重新输入'));
                 return Promise.resolve({ status: 'error', errorCode: '' });

@@ -56,13 +56,13 @@ export default {
           name: '充值教程',
           path: '/mobile/mcenter/help/deposit',
           img: 'deposit',
-          info: '存款极速到账'
+          info: '充值极速到账'
         },
         {
           name: '提现教程',
           path: '/mobile/mcenter/help/withdraw',
           img: 'withdraw',
-          info: '极速提款仅需30秒'
+          info: '极速充值仅需30秒'
         },
         {
           name: this.$text('S_GAME_INTR', '游戏介绍'),

@@ -95,7 +95,7 @@ export default {
       return [{ title: this.$text('S_CREATED_TIME', '建立时间'), value: this.data.confirm_at },
       { title: this.$text('S_REMARK', '备注'), value: this.data.memo },
       { title: this.$text('S_TYPE', '类别'), value: this.data.opcode },
-      { title: this.$text('S_DEPOSIT_MONEY', '存款金额'), value: this.data.amount },
+      { title: '充值金额', value: this.data.amount },
       { title: this.$text('S_OFFER_MONEY', '优惠金额'), value: this.data.offer },
       ]
     },

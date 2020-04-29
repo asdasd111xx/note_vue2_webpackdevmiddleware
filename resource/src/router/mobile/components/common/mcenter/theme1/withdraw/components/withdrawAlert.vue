@@ -30,7 +30,7 @@
                         <span :class="$style['success-title']">{{ tipTitle }}</span>
                     </div>
                     <div v-if="type === 'successTip'" :class="$style['tip-wrap']">
-                        <li>{{ $text('S_WITHDRAW_TIP04', '财务将尽快为您审核出款，请稍后') }}</li>
+                        <li>财务将尽快为您审核提现，请稍后</li>
                         <li>{{ $text('S_DEPOSIT_TIP03', '若长时间未到帐请联络客服') }}</li>
                     </div>
                     <div v-else :class="$style['tip-wrap']">
