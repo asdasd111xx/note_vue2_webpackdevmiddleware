@@ -4,7 +4,7 @@
     :has-footer="false"
     :class="$style.container"
   >
-    <div slot="content" :class="$style['setting-wrap']">
+    <div slot="content">
       <div :class="$style['section']">
         <div
           v-if="loginStatus"
@@ -48,17 +48,10 @@ export default {
       return {
         prev: true,
         onClick: () => { this.$router.back(); },
-        title: '充值教程'
+        title: this.$text('S_HELP_CENTER', '帮助中心'),
       };
     },
   },
 };
 </script>
-
-<style lang="scss" module>
-@import "~@/css/variable.scss";
-
-.container {
-  background-color: $main_background_white1;
-}
-</style>
+<style src="../css/index.module.scss" lang="scss" module>

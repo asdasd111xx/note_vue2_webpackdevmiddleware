@@ -18,11 +18,7 @@
         :type="dialogType"
         @close="isShowBounsDialog = false"
       />
-      <bonuns-process
-        ref="bonunsProcess"
-        v-show="isShowBounsProcess"
-        @close="isShowBounsProcess = false"
-      />
+      <bonuns-process ref="bonunsProcess" v-show="isShowBounsProcess" />
     </div>
   </div>
 </template>
@@ -49,7 +45,6 @@ export default {
   data() {
     return {
       player: null,
-      blockHeight: 0,
       isPlaying: false,
       //   彩金開關
       isActiveBouns: true, //預設打開由message決定是否啟動
@@ -85,20 +80,11 @@ export default {
 
     // 彩金疊加在播放器上
     $('#video-play-block').appendTo($('.video-js'));
-
     //活動開關
     if (this.isActiveBouns) {
       try {
-        window.addEventListener('resize', this.getVideoHeight);
-        setTimeout(() => {
-          this.$nextTick(() => this.getVideoHeight());
-        });
-
         // connect websocket
         let cid = getCookie('cid');
-        if (!cid)
-          return
-
         let uri = this.siteConfig.ACTIVES_BOUNS_WEBSOCKET + `?cid=${cid}`;
         this.socket = new WebSocket(uri);
         this.socket.onmessage = this.onMessage;
@@ -106,11 +92,13 @@ export default {
         this.socket.onerror = this.onError;
         this.socket.onclose = this.onClose;
         this.socket.onmessage = this.onMessage;
+
       } catch (e) {
         console.log(e)
       }
 
       this.player.on("playing", () => {
+
         this.isPlaying = true;
         if (this.socket)
           this.onSend("PLAY");
@@ -129,16 +117,8 @@ export default {
 
   },
   methods: {
-    getVideoHeight() {
-      let videoDom = document.getElementsByClassName('vjs-tech');
-      if (videoDom[0]) {
-        //   videoDom[0].style.pointerEvents = "none";
-        this.blockHeight = videoDom[0].offsetHeight - 36;
-      }
-    },
-    handleClickVideo(e) {
+    handleClickVideo() {
       if (!this.isActiveBouns) return
-
       // 餘額夠可播放
       if (!this.loginStatus) {
         this.$refs.bonunsDialog.isShow = true

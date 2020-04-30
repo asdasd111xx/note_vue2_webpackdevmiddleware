@@ -4,7 +4,7 @@
     :has-footer="false"
     :class="$style.container"
   >
-    <div slot="content" :class="$style['setting-wrap']">
+    <div slot="content">
       <div v-if="list" :class="$style['content']">
         <div :class="$style['title']">
           <div :class="$style['block']" />
