@@ -241,7 +241,7 @@
         </div>
 
         <!-- 提現輸入 -->
-        <div :class="[$style['withdraw-input']]">
+        <div v-if="hasBankCard" :class="[$style['withdraw-input']]">
           <span :class="$style['monet-currency']">¥</span>
           <input
             v-model="withdrawValue"
@@ -333,6 +333,8 @@ import ajax from '@/lib/ajax';
 import {
   API_WITHDRAW_WRITE
 } from '@/config/api';
+import common from '@/api/common';
+
 export default {
   mixins: [mixin],
   data() {
@@ -348,7 +350,8 @@ export default {
       msg: '',
       selectedCard: '',
       errTips: '',
-      actualMoney: ''
+      actualMoney: '',
+      hasBankCard: false
     }
   },
   components: {
@@ -385,8 +388,16 @@ export default {
       }
     }
   },
-  mounted() {
-
+  created() {
+    // 綁定銀行卡內無常用帳號
+    common.bankCardCheck({
+      success: ({ result, ret }) => {
+        if (result !== 'ok') {
+          return;
+        }
+        this.hasBankCard = ret;
+      }
+    });
   },
   computed: {
     ...mapGetters({

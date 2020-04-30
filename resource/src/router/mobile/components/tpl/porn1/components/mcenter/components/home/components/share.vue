@@ -3,7 +3,7 @@
     <div :class="$style['pic-wrap']">
       <img
         ref="shareAppImage"
-        :src="$getCdnPath(`/static/image/_new/mcenter/share/shareApp.png`)"
+        :src="$getCdnPath('/static/image/_new/mcenter/share/share_app.png')"
         alt="shareApp"
       />
     </div>
