@@ -68,22 +68,7 @@ export default {
       }
     };
     this.setAnalyticsCode();
-    // console.log(vm.$connect())
-    // this.$socket.onopen = (event) => {
-    //   console.log("opened connection to ", event.target.url);
-    //   console.log(event)
-    // };
-    // this.$socket.onerror = (event) => {
-    //   console.log("==> socket error: ", event.target.url);
-    //   console.log(event)
-    // };
-    // this.$socket.onmessage = (event) => {
-    //   console.log(event);
-    // };
-    // this.$socket.onclose = (event) => {
-    //   console.log("closed connection from ", event.target.url);
-    //   console.log(event);
-    // };
+
   },
   methods: {
     ...mapActions([

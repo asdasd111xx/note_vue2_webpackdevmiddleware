@@ -81,7 +81,7 @@
 }
 
 // 詳細資料
-.withdraw-wrap {
+.detail-wrap {
     background-color: #f8f8f8;
 }
 
@@ -120,7 +120,7 @@
     transition: left 0.31s;
 }
 
-.withdraw-content-wrap {
+.detail-content-wrap {
     width: 100%;
     white-space: nowrap;
     font-size: 14px;
@@ -128,7 +128,7 @@
     background-color: #f8f8f8;
     margin: 11px 0;
 
-    .withdraw-block {
+    .detail-block {
         text-align: left;
         color: #a6a9b2;
         background-color: white;
@@ -142,7 +142,7 @@
     background-color: #EAEAEA;
 }
 
-.withdraw-cell {
+.detail-cell {
     padding: 0 16px;
     position: relative;
     height: 34px;
@@ -166,12 +166,22 @@
     }
 }
 
+.tip-time {
+    height: 19px;
+    font-size: 12px;
+    font-family: Nirmala UI, Nirmala UI-Regular;
+    font-weight: 400;
+    text-align: left;
+    color: #a6a9b2;
+    padding: 0px 16px;
+}
+
 @media screen and (max-width: $phone) {
     .section {
         font-size: 15px;
     }
 
-    .withdraw-content-wrap {
+    .detail-content-wrap {
         font-size: 15px;
     }
 }
@@ -181,11 +191,11 @@
         font-size: 17px;
     }
 
-    .withdraw-content-wrap {
+    .detail-content-wrap {
         font-size: 17px;
     }
 
-    .withdraw-cell {
+    .detail-cell {
         height: 36px;
         line-height: 36px;
     }

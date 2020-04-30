@@ -1,7 +1,8 @@
+import { API_MCENTER_DEPOSIT_INPAY, API_MCENTER_DEPOSIT_RECORD, API_MCENTER_DEPOSIT_SINGLE } from '@/config/api';
+
 import Vue from 'vue';
-import { mapActions } from 'vuex';
 import ajax from '@/lib/ajax';
-import { API_MCENTER_DEPOSIT_RECORD, API_MCENTER_DEPOSIT_SINGLE, API_MCENTER_DEPOSIT_INPAY } from '@/config/api';
+import { mapActions } from 'vuex';
 
 export default {
     data() {
@@ -24,19 +25,19 @@ export default {
                 },
                 {
                     className: this.$style['record-actual'],
-                    value: this.$text('S_REAL_ENTER', '实际存入'),
+                    value: this.$text('S_REAL_ENTER', '实际到账'),
                     objKey: 'actual_deposit'
                 },
-                {
-                    className: this.$style['record-status'],
-                    value: this.$text('S_STATUS', '状态'),
-                    objKey: 'status'
-                }
+                // {
+                //     className: this.$style['record-status'],
+                //     value: this.$text('S_STATUS', '状态'),
+                //     objKey: 'status'
+                // }
             ],
             recordData: [],
             paramsData: {
                 first_result: 0,
-                max_results: 10
+                max_results: 8
             },
             totalRecord: 0,
             isShow: true,

@@ -1,5 +1,5 @@
 <template>
-  <div :class="$style['withdraw-wrap']">
+  <div :class="$style['detail-wrap']">
     <div :class="$style['status-wrap']">
       <div
         :class="[$style.status, { [$style.active]: curStatus == 0 }]"
@@ -20,9 +20,9 @@
         }"
       />
     </div>
-    <div v-if="list" :class="$style['withdraw-content-wrap']">
-      <div v-for="(item, index) in list" :class="$style['withdraw-block']">
-        <div :class="[$style['withdraw-cell'], $style['item-status']]">
+    <div v-if="list" :class="$style['detail-content-wrap']">
+      <div v-for="(item, index) in list" :class="$style['detail-block']">
+        <div :class="[$style['detail-cell'], $style['item-status']]">
           <div :class="$style['title']">
             {{ $text("S_STATUS", "状态") }}
           </div>
@@ -38,7 +38,7 @@
           </div>
         </div>
         <div :class="$style['item-status-border']" />
-        <div v-for="(col, index) in columns" :class="$style['withdraw-cell']">
+        <div v-for="(col, index) in columns" :class="$style['detail-cell']">
           <div :class="$style['title']">
             {{ item.hasOwnProperty(col.key) && $text(col.title) }}
           </div>
