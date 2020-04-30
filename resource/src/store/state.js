@@ -446,5 +446,7 @@ export default {
     // ＝＝＝＝＝＝＝＝＝＝＝＝＝＝＝＝＝＝
     siteConfig: {},
     // 是否Loading
-    isLoading: false
+    isLoading: false,
+    // 會員中心-個人資料-手機/姓名/信箱 綁定成功訊息
+    mcenterBindMessage: {}
 };

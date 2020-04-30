@@ -1667,5 +1667,9 @@
     "S_SPONSOR_PARTNERS": "赞助伙伴",
     "S_RECENTLY_WITHDRAW": "近10笔提现纪录",
     "S_RECENTLY_DEPOSIT": "8日内充值记录",
-    "S_TP_CASINO": "TP电子"
+    "S_TP_CASINO": "TP电子",
+    "S_GET_VERIFICATION_CODE": "获取验证码",
+    "S_BIND_SUCCESSFULLY": "绑定成功",
+    "S_PICTURE_SAVED_TO_LOCAL": "图片已保存到本地相册",
+    "S_AUTO_SAVE": "自动保存"
 }

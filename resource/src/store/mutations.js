@@ -466,5 +466,9 @@ export default {
     // isLoading
     [types.SET_ISLOADING](state, data) {
         state.isLoading = data;
+    },
+    // 會員中心-個人資料-手機/姓名/信箱 綁定成功訊息
+    [types.SET_MCENTER_BIND_MESSAGE](state, data) {
+        state.mcenterBindMessage = data;
     }
 };

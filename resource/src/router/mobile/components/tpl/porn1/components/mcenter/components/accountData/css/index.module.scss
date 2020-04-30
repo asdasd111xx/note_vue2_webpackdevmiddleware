@@ -161,11 +161,12 @@ input {
     height: 30px;
     border-radius: 3px;
     line-height: 30px;
-    background-color: #e9dacc;
-    color: #f3ede7;
+    background-color: #E9DACC;
+    color: #F3EDE7;
 
     &.active {
         color: #FFFFFF;
+        background-color: #D1B79C;
     }
 }
 
@@ -173,7 +174,7 @@ input {
     background: $main_white_color1;
     padding: 0 14px;
     color: $main_error_color1;
-    height: 40px;
+    min-height: 40px;
     line-height: 40px;
 
     >.send-tips {
