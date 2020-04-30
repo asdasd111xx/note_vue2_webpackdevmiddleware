@@ -4,7 +4,7 @@
       <div :class="$style['service-header']">
         <div :class="$style.title">{{ this.$text("S_SERVIEC", "客服") }}</div>
         <div
-          @click="$router.push('/mobile/mcenter/feedback/sendFeedback')"
+          @click="$router.push(loginStatus ? '/mobile/mcenter/feedback/sendFeedback' : '/mobile/login')"
           :class="$style.feedback"
         >
           {{ this.$text("S_FEEDBACK", "意见反馈") }}

@@ -139,7 +139,7 @@
                             :key="'cell-' + index"
                             :class="$style['cell']"
                         >
-                            <div :class="$style['vendor']">{{ item.vendor }}</div>
+                            <div :class="$style['vendor']">{{ getVendorName(item.vendor, item.kind) }}</div>
 
                             <div :class="$style['game-desc']">
                                 <span :class="$style['game']">{{ item.game_name }}</span>
@@ -296,6 +296,9 @@ export default {
           <p style="margin: 0 ; padding: 0 ; text-align: center">|</p>
           <span>${value.end_at}</span>
         `;
+        },
+        getVendorName(vendor, kind) {
+            return this.memInfo.vendors.find((item) => item.vendor === vendor && item.kind === kind).alias;
         }
     }
 };

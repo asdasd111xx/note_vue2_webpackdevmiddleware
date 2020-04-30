@@ -38,7 +38,7 @@ if (VueCookie.get('lang') === null) {
             break;
     }
 
-    VueCookie.set('lang', lang);
+    VueCookie.set('lang', 'zh-cn');
 }
 
 export default new VueI18n({
