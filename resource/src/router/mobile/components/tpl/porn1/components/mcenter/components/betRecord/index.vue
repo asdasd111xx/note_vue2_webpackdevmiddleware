@@ -73,55 +73,57 @@
                     @click="selectMenu = ''"
                 />
             </div>
-            <div v-if="!mainNoData && showData" :class="$style['data-wrap']">
-                <ul :class="[$style['total-wrap'], 'clearfix']">
-                    <li :class="$style['total-count']">{{ $text('S_DATA_COUNT', '笔数') }} : {{ mainListData.length }}</li>
-                    <li :class="$style['total-water']">{{ $text('S_TOTAL_WATER', '流水') }} : {{ parseFloat(mainTotal.valid_bet).toFixed(2) }}</li>
-                    <li :class="$style['total-money']">{{ $text('S_WIN_LOSE', '输赢') }} : <span :class="{[$style['is-win']] : parseFloat(mainTotal.payoff) > 0}">{{ parseFloat(mainTotal.payoff).toFixed(2) }}</span></li>
-                </ul>
-                <div :class="$style['data-list']">
-                    <div
-                        v-for="gameTime in mainTime"
-                        :key="gameTime.day"
-                        :class="$style['data-item']"
-                    >
-                        <div :class="[$style['record-count'], 'clearfix']">
-                            <div :class="$style['record-count-time']">
-                                {{ getMonthDay(gameTime.day) }}
-                            </div>
-                            <div :class="$style['single-total-wrap']">
-                                <ul :class="[$style['single-data-count'], 'clearfix']">
-                                    <li :class="$style['single-count']">{{ $text('S_DATA_COUNT', '笔数') }} : {{ getCount(gameTime.day) }}</li>
-                                    <li :class="$style['single-water']">{{ $text('S_TOTAL_WATER', '流水') }} : {{ gameTime.valid_bet }}</li>
-                                    <li :class="$style['single-money']">{{ $text('S_WIN_LOSE', '输赢') }} : <span :class="{[$style['is-win']] : gameTime.payoff > 0}">{{ gameTime.payoff }}</span></li>
-                                </ul>
-                            </div>
-                        </div>
-                        <template v-for="(gameDetail, index) in controlData">
-                            <div
-                                v-if="gameDetail.day === gameTime.day"
-                                :key="`${gameDetail.vendor}-${index}`"
-                                :class="$style['detail-wrap']"
-                            >
-                                <div :class="$style['detail-name']">
-                                    {{ getVendorName(gameDetail.vendor, gameDetail.kind) }}
+            <!-- v-if="!mainNoData && showData" -->
+            <template v-if="!isLoading">
+                <div v-if="!mainNoData" :class="$style['data-wrap']">
+                    <ul :class="[$style['total-wrap'], 'clearfix']">
+                        <li :class="$style['total-count']">{{ $text('S_DATA_COUNT', '笔数') }} : {{ mainListData.length }}</li>
+                        <li :class="$style['total-water']">{{ $text('S_TOTAL_WATER', '流水') }} : {{ parseFloat(mainTotal.valid_bet).toFixed(2) }}</li>
+                        <li :class="$style['total-money']">{{ $text('S_WIN_LOSE', '输赢') }} : <span :class="{[$style['is-win']] : parseFloat(mainTotal.payoff) > 0}">{{ parseFloat(mainTotal.payoff).toFixed(2) }}</span></li>
+                    </ul>
+                    <div :class="$style['data-list']">
+                        <div
+                            v-for="item in controlData"
+                            :key="item.day"
+                            :class="$style['data-item']"
+                        >
+                            <div :class="[$style['record-count'], 'clearfix']">
+                                <div :class="$style['record-count-time']">
+                                    {{ getMonthDay(item.day) }}
                                 </div>
-                                <div :class="$style['detail-game']">
-                                    <div :class="$style['game-name']">{{ gameDetail.game_name }}</div>
-                                    <div :class="[$style['game-count'], 'clearfix']">
-                                        <div :class="$style['game-water']">{{ $text('S_TOTAL_WATER', '流水') }} : {{ parseFloat(gameDetail.valid_bet).toFixed(2) }}</div>
-                                        <div :class="$style['game-money']">{{ $text('S_WIN_LOSE', '输赢') }} : <span :class="{[$style['is-win']] : parseFloat(gameDetail.payoff) > 0}">{{ parseFloat(gameDetail.payoff).toFixed(2) }}</span></div>
+                                <div :class="$style['single-total-wrap']">
+                                    <ul :class="[$style['single-data-count'], 'clearfix']">
+                                        <li :class="$style['single-count']">{{ $text('S_DATA_COUNT', '笔数') }} : {{ item.list.length }}</li>
+                                        <li :class="$style['single-water']">{{ $text('S_TOTAL_WATER', '流水') }} : {{ item.valid_bet }}</li>
+                                        <li :class="$style['single-money']">{{ $text('S_WIN_LOSE', '输赢') }} : <span :class="{[$style['is-win']] : item.payoff > 0}">{{ item.payoff }}</span></li>
+                                    </ul>
+                                </div>
+                            </div>
+                            <template v-for="(gameDetail, index) in item.list">
+                                <div
+                                    :key="`${gameDetail.vendor}-${index}`"
+                                    :class="$style['detail-wrap']"
+                                >
+                                    <div :class="$style['detail-name']">
+                                        {{ getVendorName(gameDetail.vendor, gameDetail.kind) }}
+                                    </div>
+                                    <div :class="$style['detail-game']">
+                                        <div :class="$style['game-name']">{{ gameDetail.game_name }}</div>
+                                        <div :class="[$style['game-count'], 'clearfix']">
+                                            <div :class="$style['game-water']">{{ $text('S_TOTAL_WATER', '流水') }} : {{ parseFloat(gameDetail.valid_bet).toFixed(2) }}</div>
+                                            <div :class="$style['game-money']">{{ $text('S_WIN_LOSE', '输赢') }} : <span :class="{[$style['is-win']] : parseFloat(gameDetail.payoff) > 0}">{{ parseFloat(gameDetail.payoff).toFixed(2) }}</span></div>
+                                        </div>
                                     </div>
                                 </div>
-                            </div>
-                        </template>
+                            </template>
+                        </div>
                     </div>
                 </div>
-            </div>
-            <div v-if="mainNoData && !isLoading" :class="$style['no-data']">
-                <img src="/static/image/_new/mcenter/no_data.png" />
-                <p>{{ $text('S_NO_BETRECORD', '还没有任何投注记录') }}</p>
-            </div>
+                <div v-if="mainNoData" :class="$style['no-data']">
+                    <img src="/static/image/_new/mcenter/no_data.png" />
+                    <p>{{ $text('S_NO_BETRECORD', '还没有任何投注记录') }}</p>
+                </div>
+            </template>
             <infinite-loading
                 v-if="showInfinite"
                 ref="infiniteLoading"
@@ -195,8 +197,10 @@ export default {
                     value: 30
                 }
             ],
+            pagination: {},
             isLoading: false,
-            showInfinite: true,
+            isReceive: false,
+            showInfinite: false,
             maxResults: 10, // 一頁顯示幾筆
             showPage: 0 // 顯示幾頁
         };
@@ -229,13 +233,16 @@ export default {
             }
         },
         controlData() {
-            return this.mainListData.filter((item, index) => index < this.maxResults * this.showPage);
+            return this.mainTime.map((item) => ({
+                ...item,
+                list: this.mainListData.filter((game) => game.day === item.day)
+            })).filter((data) => data.list.length > 0);
         },
         showData() {
-            if (this.mainTime.length === 0 || this.mainListData === 0) {
+            if (this.mainData.length === 0) {
                 return false;
             }
-            return this.mainTime.some((item) => this.controlData.some((data) => item.day === data.day));
+            return this.mainData.some((item) => this.controlData.some((data) => item.day === data.day));
         }
     },
     created() {
@@ -243,13 +250,20 @@ export default {
         this.startTime = Vue.moment(this.estToday).format('YYYY-MM-DD');
         this.endTime = Vue.moment(this.estToday).format('YYYY-MM-DD');
         this.limitDate = new Date(Vue.moment(this.estToday).add(-30, 'days').format('YYYY-MM-DD'));
-        this.inquire();
+        this.isLoading = true;
+        this.getTotalTime();
     },
     methods: {
         getGameRecord(data) {
             this.selectMenu = '';
             this.selectType = data;
-            this.inquire();
+            this.showPage = 0;
+            this.mainTotal = {};
+            this.pagination = {};
+            this.mainListData = [];
+            this.mainTime = [];
+            this.isLoading = true;
+            this.getTotalTime();
         },
         getTimeRecord(data) {
             this.currentSelectTime = data.text;
@@ -270,13 +284,15 @@ export default {
             this.isShowDatePicker = false;
             this.isCustomTime = false;
             this.selectMenu = '';
-            this.inquire();
-        },
-        inquire() {
-            this.showInfinite = false;
-            this.isLoading = true;
             this.showPage = 0;
-
+            this.pagination = {};
+            this.mainTotal = {};
+            this.mainListData = [];
+            this.mainTime = [];
+            this.isLoading = true;
+            this.getTotalTime();
+        },
+        getTotalTime() {
             const params = {
                 start_at: Vue.moment(this.startTime).format('YYYY-MM-DD 00:00:00-04:00'),
                 end_at: Vue.moment(this.endTime).format('YYYY-MM-DD 23:59:59-04:00')
@@ -287,46 +303,64 @@ export default {
                 params.kind = this.selectType.kind;
             }
 
-            this.startTime = Vue.moment(this.startTime).format('YYYY-MM-DD');
-            this.endTime = Vue.moment(this.endTime).format('YYYY-MM-DD');
-
             // 注單統計總資料(依投注日期)
-            ajax({
+            return ajax({
                 method: 'get',
                 url: '/api/v1/c/stats/wager-report/by-day',
                 params,
                 success: (response) => {
-                    if (response.ret.length === 0) {
-                        this.mainTime = [];
-                        return;
-                    }
                     this.mainTime = response.ret.map((item) => ({
                         bet: parseFloat(item.bet).toFixed(2),
                         count: item.count,
                         day: item.day,
                         payoff: parseFloat(item.payoff).toFixed(2),
-                        valid_bet: parseFloat(item.valid_bet).toFixed(2)
+                        valid_bet: parseFloat(item.valid_bet).toFixed(2),
+                        list: []
                     }));
+                    this.updateGame();
                 }
-            }).then(() => {
-                // 各遊戲注單統計資料(依投注日期)
-                ajax({
-                    method: 'get',
-                    url: '/api/v1/c/stats/wager-report/by-day-game',
-                    params,
-                    success: (response) => {
-                        this.showInfinite = true;
-                        if (response.ret.length === 0) {
-                            this.mainListData = [];
-                            this.mainNoData = true;
-                            return;
-                        }
-                        this.isLoading = false;
-                        this.mainListData = response.ret;
-                        this.mainTotal = response.total;
-                        this.mainNoData = false;
+            });
+        },
+        getGameDetail() {
+            const params = {
+                start_at: Vue.moment(this.startTime).format('YYYY-MM-DD 00:00:00-04:00'),
+                end_at: Vue.moment(this.endTime).format('YYYY-MM-DD 23:59:59-04:00'),
+                max_results: this.maxResults,
+                first_result: this.maxResults * this.showPage
+            };
+
+            if (this.selectType.kind) {
+                params.vendor = this.selectType.vendor;
+                params.kind = this.selectType.kind;
+            }
+
+            this.startTime = Vue.moment(this.startTime).format('YYYY-MM-DD');
+            this.endTime = Vue.moment(this.endTime).format('YYYY-MM-DD');
+
+            // 各遊戲注單統計資料(依投注日期)
+            return ajax({
+                method: 'get',
+                url: '/api/v1/c/stats/wager-report/by-day-game',
+                params,
+                success: (response) => {
+                    if (response.ret.length === 0) {
+                        return;
                     }
-                });
+
+                    this.mainListData.push(...response.ret);
+                    this.mainTotal = response.total;
+                    this.pagination = response.pagination;
+                    this.mainNoData = false;
+                }
+            });
+        },
+        updateGame() {
+            this.showInfinite = false;
+
+            this.mainNoData = true;
+
+            this.$nextTick(() => {
+                this.showInfinite = true;
             });
         },
         cancelCustomTime() {
@@ -344,7 +378,7 @@ export default {
             this.isCustomTime = true;
             this.currentCustomDate = '';
             this.selectMenu = '';
-            this.inquire();
+            this.getTotalTime();
         },
         getMonthDay(date) {
             return `${Vue.moment(date).format('MM-DD').replace('-', '月')}日`;
@@ -361,22 +395,27 @@ export default {
          * @see { @link https://peachscript.github.io/vue-infinite-loading/#!/ }
          */
         infiniteHandler($state) {
-            setTimeout(() => {
-                if (this.mainListData.length === 0) {
-                    this.isLoading = false;
+            if (this.isReceive) {
+                return;
+            }
+
+            this.isReceive = true;
+            this.getGameDetail().then(({ result }) => {
+                this.isLoading = false;
+                this.isReceive = false;
+                if (result !== 'ok') {
+                    return;
+                }
+
+                if (!this.pagination.total || this.mainListData.length === +this.pagination.total) {
                     $state.complete();
                     return;
                 }
 
-                if (this.mainListData.length / this.maxResults > this.showPage) {
-                    this.showPage += 1;
-                    $state.loaded();
+                this.showPage += 1;
 
-                    if (Math.ceil(this.mainListData.length / this.maxResults) === this.showPage) {
-                        $state.complete();
-                    }
-                }
-            }, 300);
+                $state.loaded();
+            });
         }
     }
 };

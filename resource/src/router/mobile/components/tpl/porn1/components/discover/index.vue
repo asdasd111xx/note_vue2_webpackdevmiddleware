@@ -40,7 +40,7 @@ export default {
 
       return {
         isBackgroundGradient: true,
-        hasSearchBtn: name === 'home',
+        hasSearchBtn: name === 'home' && this.isAdult,
         title: trans[name],
       };
     },

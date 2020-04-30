@@ -35,6 +35,14 @@
                             <span slot="no-results" />
                         </infinite-loading>
                     </template>
+                    <!-- 暫時幫TP電子加的, 正式站開放後拿掉 -->
+                    <div
+                        v-if="$route.params.vendor === 'tp' && gameData.length === 0"
+                        class="empty-wrap"
+                    >
+                        <div class="empty-icon" />
+                        <div>{{ $text('S_NO_GAME', '未查询到相关游戏') }}</div>
+                    </div>
                 </div>
             </template>
         </template>
@@ -408,5 +416,19 @@ export default {
 .game-item-wrap {
     background: #F8F8F7;
     min-height: calc(100vh - 88px);
+}
+
+.empty-wrap {
+    padding-top: 90px;
+    color: #A6A9B2;
+    font-size: 16px;
+    text-align: center;
+}
+
+.empty-icon {
+    margin: 0 auto 20px;
+    width: 62px;
+    height: 62px;
+    background: url('/static/image/_new/common/search_none.png') 0 0/contain no-repeat;
 }
 </style>
