@@ -151,7 +151,7 @@
           "
           @click="
             $router.push(
-              `/mobile/mcenter/help/${
+              `/mobile/mcenter/help${
                 headerConfig.helpRouter ? headerConfig.helpRouter : ''
               }`
             )

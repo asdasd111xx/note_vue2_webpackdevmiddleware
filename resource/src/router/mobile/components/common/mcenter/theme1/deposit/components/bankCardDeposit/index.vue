@@ -672,7 +672,7 @@ export default {
         },
         getImg(id) {
             return {
-                src: `https://bbos.bbin-asia.com/elibom/bank/${id}.png`,
+                src: `https://images.dormousepie.com/icon/withdrawBank/${id}.png`,
                 error: this.$getCdnPath('/static/image/mcenter/bank/default.png'),
                 loading: this.$getCdnPath('/static/image/game_loading_s.gif')
             };

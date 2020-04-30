@@ -140,7 +140,7 @@
                         @click="setBank(item)"
                     >
                         <!-- <img :src="`https://bbos.bbin-asia.com/elibom/bank/${item.id}.png`" /> -->
-                        <img :src="`/static/image/mcenter/bank/default.png`" />
+                        <img v-lazy="getImg(item.id)" />
                         {{ item.name }}
                         <icon
                             v-if="item.id === formData.bank_id"
@@ -303,6 +303,13 @@ export default {
 
                 return true;
             });
+        },
+        getImg(id) {
+            return {
+                src: `https://images.dormousepie.com/icon/cardBank/${id}.png`,
+                error: this.$getCdnPath('/static/image/mcenter/bank/default.png'),
+                loading: this.$getCdnPath('/static/image/game_loading_s.gif')
+            };
         },
         getKeyring() {
             if (this.lockStatus) {
