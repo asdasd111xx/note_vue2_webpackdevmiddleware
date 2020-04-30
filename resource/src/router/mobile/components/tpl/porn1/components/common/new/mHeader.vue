@@ -208,6 +208,7 @@ export default {
       // 暫時移除底色渲染
       return {
         [style.header]: true,
+        [style['is-home']]: this.$route.name === 'home',
         // [style['background-gradient']]: config.isBackgroundGradient ,
         clearfix: true
       };
@@ -265,6 +266,10 @@ export default {
     height: 100%;
     vertical-align: middle;
   }
+
+  &.is-home {
+    border-bottom: none;
+  }
 }
 
 .logo-wrap {
@@ -289,11 +294,13 @@ export default {
   float: right;
   > span {
     display: inline-block;
-    line-height: 12px;
+    height: 20px;
+    line-height: 20px;
     margin: 0 1.5px;
-    padding: 3px;
+    padding: 0 3px;
     color: black;
     font-size: 14px;
+    vertical-align: middle;
   }
 
   img {
@@ -301,6 +308,14 @@ export default {
     height: 20px;
     width: 20px;
     margin-left: 1.5px;
+    vertical-align: middle;
+  }
+
+  &::before {
+    content: '';
+    display: inline-block;
+    height: 100%;
+    vertical-align: middle;
   }
 }
 
@@ -446,6 +461,8 @@ export default {
   float: right;
   > span {
     display: inline-block;
+    height: 20px;
+    line-height: 20px;
     font-size: 17px;
     margin-right: 9px;
   }
@@ -455,6 +472,13 @@ export default {
     height: 20px;
     width: 20px;
     margin-left: 1.5px;
+  }
+
+  &::before {
+    content: '';
+    display: inline-block;
+    height: 100%;
+    vertical-align: middle;
   }
 }
 

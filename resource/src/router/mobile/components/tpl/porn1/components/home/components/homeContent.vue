@@ -356,7 +356,7 @@ export default {
                     return;
                 }
 
-                this.allGame = [...response.data.data];
+                this.allGame = [...response.data.data.filter((game) => game.vendors.length > 0)];
             });
         },
         onResize() {
@@ -518,7 +518,7 @@ export default {
 <style lang="scss" module>
 .home-wrap {
     overflow: hidden;
-    padding: 0 18px;
+    padding: 0 18px 0 13px;
 }
 
 .type-wrap {

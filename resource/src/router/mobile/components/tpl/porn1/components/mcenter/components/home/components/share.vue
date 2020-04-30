@@ -127,16 +127,19 @@ $radius: 10px;
 }
 
 .pic-wrap {
+  overflow: hidden;
   position: absolute;
+  top: 0;
+  right: 0;
+  bottom: 152px;
+  left: 0;
   width: 270px;
   height: 345px;
-  top: 8%;
-  left: 50%;
-  transform: translateX(-50%);
+  margin: auto;
   border-radius: 8px;
-  overflow-y: hidden;
 
   img {
+    display: block;
     width: 100%;
   }
 }
