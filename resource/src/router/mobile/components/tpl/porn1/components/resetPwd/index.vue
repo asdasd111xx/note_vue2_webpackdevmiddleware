@@ -1,276 +1,280 @@
 <template>
-  <mobile-container :header-config="headerConfig" :class="$style.container">
-    <div slot="content" class="content-wrap">
-      <message v-if="msg" @close="msg = ''"
-        ><div slot="msg">{{ msg }}</div>
-      </message>
-      <!-- 錯誤訊息 -->
-      <div :class="$style['err-msg']">
-        <div v-show="errMsg">
-          {{ errMsg }}
-        </div>
-      </div>
-      <div :class="$style['reset-content']">
-        <form id="resetPwdForm">
-          <div :key="pwdResetInfo[0].key" :class="$style['field-wrap']">
-            <div class="clearfix">
-              <div :class="$style['title']">
-                {{ $text(pwdResetInfo[0].text) }}
-              </div>
-              <input
-                :id="pwdResetInfo[0].key"
-                type="password"
-                :name="pwdResetInfo[0].key"
-                :placeholder="pwdResetInfo[0].placeholder"
-                maxlength="12"
-                minlength="6"
-                v-model="pwd"
-              />
-              <div :class="$style['eye']">
-                <img
-                  :src="
-                    $getCdnPath(
-                      `/static/image/_new/login/btn_eye_${
-                        pwdResetInfo[0].show ? 'n' : 'd'
-                      }.png`
-                    )
-                  "
-                  @click="toggleEye(0)"
-                />
-              </div>
-            </div>
-          </div>
-          <div :key="pwdResetInfo[1].key" :class="$style['field-wrap']">
-            <div class="clearfix">
-              <div :class="$style['title']">
-                {{ $text(pwdResetInfo[1].text) }}
-              </div>
-              <input
-                :id="pwdResetInfo[1].key"
-                type="password"
-                :name="pwdResetInfo[1].key"
-                :placeholder="pwdResetInfo[1].placeholder"
-                v-model="newPwd"
-                maxlength="12"
-                minlength="6"
-                @input="verification($event.target.id, $event.target.value)"
-              />
-              <div :class="$style['eye']">
-                <img
-                  :src="
-                    $getCdnPath(
-                      `/static/image/_new/login/btn_eye_${
-                        pwdResetInfo[1].show ? 'n' : 'd'
-                      }.png`
-                    )
-                  "
-                  @click="toggleEye(1)"
-                />
-              </div>
-            </div>
-          </div>
-          <div :key="pwdResetInfo[2].key" :class="$style['field-wrap']">
-            <div class="clearfix">
-              <div :class="$style['title']">
-                {{ $text(pwdResetInfo[2].text) }}
-              </div>
-              <input
-                :id="pwdResetInfo[2].key"
-                type="password"
-                :name="pwdResetInfo[2].key"
-                :placeholder="pwdResetInfo[2].placeholder"
-                v-model="confNewPwd"
-                maxlength="12"
-                minlength="6"
-                @input="verification($event.target.id, $event.target.value)"
-              />
-              <div :class="$style['eye']">
-                <img
-                  :src="
-                    $getCdnPath(
-                      `/static/image/_new/login/btn_eye_${
-                        pwdResetInfo[2].show ? 'n' : 'd'
-                      }.png`
-                    )
-                  "
-                  @click="toggleEye(2)"
-                />
-              </div>
-            </div>
-          </div>
-          <!-- <div :key="pwdResetInfo[3].key" :class="$style['field-wrap']">
-            <div class="clearfix">
-              <div :class="$style['title']">
-                {{ $text(pwdResetInfo[3].text) }}
-              </div>
-              <input
-                :id="pwdResetInfo[3].key"
-                type="text"
-                :name="pwdResetInfo[3].key"
-                :placeholder="pwdResetInfo[3].placeholder"
-                v-model="email"
-                @input="verification($event.target.id, $event.target.value)"
-              />
-            </div>
-          </div> -->
+    <mobile-container :header-config="headerConfig" :class="$style.container">
+        <div slot="content" class="content-wrap">
+            <message v-if="msg" @close="msg = ''">
+                <div slot="msg">{{ msg }}</div>
+            </message>
 
-          <div
-            :class="[
-              $style['submit'],
-              {
-                [$style['active']]: pwd && newPwd && confNewPwd
-              }
-            ]"
-            @click="pwdResetSubmit()"
-          >
-            {{ $text("S_SUBMIT", "提交") }}
-          </div>
-        </form>
-      </div>
-    </div>
-  </mobile-container>
+            <!-- 錯誤訊息 -->
+            <div :class="$style['err-msg']">
+                <div v-show="errMsg">
+                    {{ errMsg }}
+                </div>
+            </div>
+            <div :class="$style['reset-content']">
+                <form id="resetPwdForm">
+                    <div
+                        v-for="item in filterField()"
+                        :key="item"
+                        :class="$style['field-wrap']"
+                    >
+                        <div v-if="pwdResetInfo[item].display" :class="[$style.column ,'clearfix']">
+                            <div :class="$style['title']">
+                                {{ $text(pwdResetInfo[item].text) }}
+                            </div>
+                            <input
+                                v-if="pwdResetInfo[item].type === 'text'"
+                                :id="item"
+                                v-model="pwdResetInfo[item].value"
+                                type="text"
+                                :placeholder="pwdResetInfo[item].placeholder"
+                                :maxlength="pwdResetInfo[item].maxlength"
+                                :minlength="pwdResetInfo[item].minlength"
+                            />
+                            <input
+                                v-if="pwdResetInfo[item].type === 'password'"
+                                :id="item"
+                                v-model="pwdResetInfo[item].value"
+                                type="password"
+                                :placeholder="pwdResetInfo[item].placeholder"
+                                :maxlength="pwdResetInfo[item].maxlength"
+                                :minlength="pwdResetInfo[item].minlength"
+                            />
+                            <div v-if="pwdResetInfo[item].type ==='password'" :class="$style['eye']">
+                                <img
+                                    :src="$getCdnPath(`/static/image/_new/login/btn_eye_${pwdResetInfo[item].eyeShow ? 'n' : 'd'}.png`)"
+                                    @click="toggleEye(item)"
+                                />
+                            </div>
+                        </div>
+                    </div>
+                    <div v-if="isResetPW" :class="$style.prompt">请避免使用与其他网站相同或易于被他人猜测到的密码</div>
+                    <div
+                        :class="[$style['submit'], {[$style['active']]: submitActive}]"
+                        @click="isResetPW ? pwdResetSubmit(): pwdModifySubmit()"
+                    >
+                        {{ $text("S_SUBMIT", "提交") }}
+                    </div>
+                </form>
+            </div>
+        </div>
+    </mobile-container>
 </template>
 
 <script>
-import resetPwd from '@/mixins/resetPwd';
-import mobileContainer from '../common/new/mobileContainer'
-import message from '../common/new/message'
 import { mapGetters, mapActions } from 'vuex';
+import resetPwd from '@/mixins/resetPwd';
+import mobileContainer from '../common/new/mobileContainer';
+import message from '../common/new/message';
+import mcenter from '@/api/mcenter';
+import agcenter from '@/api/agcenter';
 import member from '@/api/member';
 import agent from '@/api/agent';
 
 export default {
-  // 原公用驗證
-  //   mixins: [resetPwd],
-  data() {
-    return {
-      errMsg: "",
-      msg: "",
-      pwd: "",
-      newPwd: "",
-      email: "",
-      confNewPwd: "",
-      pwdResetInfo: [{
-        key: 'pwd',
-        text: 'S_ORIGIN_PASSWORD',
-        regExp: /^[a-z0-9._\-!@#$&*+=|]{6,12}$/,
-        errorMsg: 'S_PASSWORD_ERROR',
-        placeholder: '请输入原密码',
-        show: false
-      },
-      {
-        key: 'newPwd',
-        text: 'S_NEW_PWD',
-        regExp: /^[a-z0-9._\-!@#$&*+=|]{6,12}$/,
-        errorMsg: 'S_PASSWORD_ERROR',
-        placeholder: '(6~12码，字元限定a-z0-9._-!@#$&+=|*)',
-        show: false
-      },
-      {
-        key: 'confNewPwd',
-        text: 'S_CHK_PWD',
-        regExp: /^[a-z0-9._\-!@#$&*+=|]{6,12}$/,
-        errorMsg: 'S_PASSWORD_ERROR',
-        placeholder: '请再次输入密码',
-        show: false
-      },
-      {
-        key: 'email',
-        text: 'S_E_MAIL',
-        type: 'text',
-        // regExp: /^[A-Za-z0-9.\-_]+@[A-Za-z0-9.-]+\.[A-Za-z]+$/,
-        regExp: '',
-        errorMsg: 'S_JM_EMAIL_FORMAT_UNAVAILABLE',
-        placeholder: '电子邮箱'
-      }]
+    components: {
+        mobileContainer,
+        message
+    },
+    // 原公用驗證
+    //   mixins: [resetPwd],
+    data() {
+        return {
+            errMsg: '',
+            msg: '',
+            pwdResetInfo: {
+                userName: {
+                    key: 'userName',
+                    text: 'S_USER_NAME',
+                    type: 'text',
+                    value: '',
+                    regExp: /^[a-z][a-z0-9]{3,19}$/,
+                    errorMsg: 'S_USERNAME_ERROR',
+                    placeholder: '请输入用户名',
+                    eyeShow: false,
+                    display: false
+                },
+                email: {
+                    text: 'S_E_MAIL',
+                    type: 'text',
+                    value: '',
+                    regExp: /^[A-Za-z0-9.\-_]+@[A-Za-z0-9.-]+\.[A-Za-z]+$/,
+                    errorMsg: 'S_JM_EMAIL_FORMAT_UNAVAILABLE',
+                    placeholder: '请输入电子邮箱',
+                    maxlength: 100,
+                    minlength: 12,
+                    eyeShow: false,
+                    display: false
+                },
+                pwd: {
+                    text: 'S_ORIGIN_PASSWORD',
+                    type: 'password',
+                    value: '',
+                    regExp: /^[a-z0-9._\-!@#$&*+=|]{6,12}$/,
+                    errorMsg: 'S_PASSWORD_ERROR',
+                    placeholder: '请输入原密码',
+                    maxlength: 12,
+                    minlength: 6,
+                    eyeShow: false,
+                    display: false
+                },
+                newPwd: {
+                    text: 'S_NEW_PWD',
+                    type: 'password',
+                    value: '',
+                    regExp: /^[a-z0-9._\-!@#$&*+=|]{6,12}$/,
+                    errorMsg: 'S_PASSWORD_ERROR',
+                    placeholder: '(6~12码，字元限定a-z0-9._-!@#$&+=|*)',
+                    maxlength: 12,
+                    minlength: 6,
+                    eyeShow: false,
+                    display: false
+                },
+                confNewPwd: {
+                    text: 'S_CHK_PWD',
+                    type: 'password',
+                    value: '',
+                    regExp: /^[a-z0-9._\-!@#$&*+=|]{6,12}$/,
+                    errorMsg: 'S_PASSWORD_ERROR',
+                    placeholder: '请再次输入密码',
+                    maxlength: 12,
+                    minlength: 6,
+                    eyeShow: false,
+                    display: false
+                }
+            }
+        };
+    },
+    computed: {
+        ...mapGetters({
+            webInfo: 'getWebInfo',
+            siteConfig: 'getSiteConfig',
+            memInfo: 'getMemInfo'
+        }),
+        headerConfig() {
+            return {
+                prev: true,
+                onClick: () => { this.$router.back(); },
+                title: this.isResetPW ? this.$text('S_PASSWORD_RESET', '重设密码') : this.$text('S_CHANGE_PASSWD', '修改密码')
+            };
+        },
+        isResetPW() {
+            return this.$route.query.page === 'pwdreset';
+        },
+        submitActive() {
+            return Object.keys(this.pwdResetInfo).every((key) => !this.pwdResetInfo[key].display || (this.pwdResetInfo[key].display && this.pwdResetInfo[key].value));
+        }
+    },
+    methods: {
+        toggleEye(key) {
+            const target = this.pwdResetInfo[key];
+            if (target.eyeShow) {
+                document.getElementById(key).type = 'password';
+            } else {
+                document.getElementById(key).type = 'text';
+            }
+
+            this.pwdResetInfo[key].eyeShow = !this.pwdResetInfo[key].eyeShow;
+        },
+        verification(id, value) {
+            // 前端先不驗證
+
+            // const data = this.pwdResetInfo.find((i) => i.key == id);
+            // const re = new RegExp(data.regExp);
+            // const msg = this.$t(data.errorMsg);
+
+            // if (!re.test(value) || value === '') {
+            //     this.errMsg = msg;
+            // } else {
+            //     this.errMsg = '';
+            // }
+        },
+        pwdModifySubmit() {
+            if (!this.submitActive) return;
+
+            const pwdInfo = {
+                old_password: this.pwdResetInfo.pwd.value,
+                new_password: this.pwdResetInfo.newPwd.value,
+                confirm_password: this.pwdResetInfo.confNewPwd.value
+            };
+            if (this.$route.query.type === 'agent') {
+                agcenter.accountPassword({
+                    params: pwdInfo,
+                    success: () => {
+                        this.errMsg = this.$t('S_CR_SUCCESS');
+                        setTimeout(() => {
+                            this.$router.push('/mobile/mcenter/setting');
+                        }, 400);
+                    },
+                    fail: (res) => {
+                        this.errMsg = res.data.msg;
+                    }
+                });
+            } else {
+                mcenter.accountPassword({
+                    params: pwdInfo,
+                    success: () => {
+                        this.errMsg = this.$t('S_CR_SUCCESS');
+                        this.$router.push('/mobile/mcenter/setting');
+                    },
+                    fail: (res) => {
+                        this.errMsg = res.data.msg;
+                    }
+                });
+            }
+        },
+        pwdResetSubmit() {
+            if (!this.submitActive) return;
+
+            const pwdInfo = {
+                username: this.pwdResetInfo.userName.value,
+                email: this.pwdResetInfo.email.value,
+                new_password: this.pwdResetInfo.newPwd.value,
+                confirm_password: this.pwdResetInfo.confNewPwd.value,
+                keyring: this.$route.query.kr
+            };
+            if (this.$route.query.type === 'agent') {
+                agent.pwdReset({
+                    params: pwdInfo,
+                    success: () => {
+                        this.errMsg = this.$t('S_CR_SUCCESS');
+                        setTimeout(() => {
+                            this.$router.push('/mobile/mcenter/setting');
+                        }, 400);
+                    },
+                    fail: (res) => {
+                        this.errMsg = res.data.msg;
+                    }
+                });
+            } else {
+                member.pwdReset({
+                    params: pwdInfo,
+                    success: () => {
+                        this.errMsg = this.$t('S_CR_SUCCESS');
+                        this.$router.push('/mobile/mcenter/setting');
+                    },
+                    fail: (res) => {
+                        this.errMsg = res.data.msg;
+                    }
+                });
+            }
+        },
+        ...mapActions([
+            'actionChangePage'
+        ]),
+        filterField() {
+            let displayColumn = ['newPwd', 'confNewPwd'];
+            if (this.isResetPW) {
+                displayColumn = ['userName', 'email', ...displayColumn];
+            } else {
+                displayColumn = ['pwd', ...displayColumn];
+            }
+            Object.keys(this.pwdResetInfo).forEach((key) => {
+                this.pwdResetInfo[key].display = displayColumn.includes(key);
+            });
+            return Object.keys(this.pwdResetInfo);
+        }
     }
-  },
-  components: {
-    mobileContainer,
-    message,
-  },
-  watch: {
-  },
-  computed: {
-    ...mapGetters({
-      webInfo: 'getWebInfo',
-      siteConfig: 'getSiteConfig',
-      memInfo: 'getMemInfo'
-    }),
-    headerConfig() {
-      return {
-        prev: true,
-        onClick: () => { this.$router.back(); },
-        title: this.$text("S_CHANGE_PASSWD", "修改密码"),
-      };
-    },
-  },
-  created() {
-  },
-  methods: {
-    toggleEye(key) {
-      let target = this.pwdResetInfo[key]
-      if (target.show) {
-        document.getElementById(target.key).type = 'password';
-      } else {
-        document.getElementById(target.key).type = 'text';
-      }
-
-      this.pwdResetInfo[key].show = !this.pwdResetInfo[key].show;
-    },
-    verification(id, value) {
-      // 前端先不驗證
-      return;
-      const data = this.pwdResetInfo.find((i) => i.key == id);
-      const re = new RegExp(data.regExp);
-      let msg = this.$t(data.errorMsg);
-
-      if (!re.test(value) || value === '') {
-        this.errMsg = msg;
-      } else {
-        this.errMsg = "";
-      }
-    },
-    pwdResetSubmit() {
-      if (!pwd || !newPwd || !confNewPwd) return;
-
-      const pwdInfo = {
-        username: this.memInfo.user.username,
-        password: this.pwd,
-        new_password: this.newPwd,
-        confirm_password: this.confNewPwd,
-        // email: this.email || this.memInfo.user.email
-      };
-      if (this.$route.query.type === 'agent') {
-        agent.pwdReset({
-          params: pwdInfo,
-          success: () => {
-            this.errMsg = this.$t('S_CR_SUCCESS')
-            setTimeout(() => {
-              this.$router.push('/mobile/mcenter/setting')
-            }, 400)
-          },
-          fail: (res) => {
-            this.errMsg = res.data.msg;
-          }
-        });
-      } else {
-        member.pwdReset({
-          params: pwdInfo,
-          success: () => {
-            this.errMsg = this.$t('S_CR_SUCCESS')
-            this.$router.push('/mobile/mcenter/setting')
-          },
-          fail: (res) => {
-            this.errMsg = res.data.msg;
-          }
-        });
-      }
-    },
-    ...mapActions([
-      'actionChangePage'
-    ])
-  }
 };
 
 </script>
@@ -285,7 +289,7 @@ export default {
 
 .reset-content {
   margin-top: 10px;
-  padding: 0 14px;
+  padding: 0 17px;
 }
 
 input {
@@ -304,17 +308,15 @@ input {
 .field-wrap {
   font-size: 14px;
   width: 100%;
-  margin-bottom: 8px;
-  height: 77px;
   position: relative;
 
   .title {
     color: $main_text_color3;
-    margin-bottom: 6px;
+    margin: 17px 0 6px;
   }
 
   input {
-    font-size: 16px;
+    font-size: 14px;
     height: 26px;
 
     &::placeholder {
@@ -338,6 +340,7 @@ input {
   background: linear-gradient(to left, #e9dacb, #eee5db);
   color: #f3ede7;
   margin: 0 auto;
+  margin-top: 21px;
   &.active {
     background: -webkit-linear-gradient(right, #bd9d7d, #f9ddbd);
     background: -o-linear-gradient(left, #bd9d7d, #f9ddbd);
@@ -351,7 +354,7 @@ input {
   background: $main_white_color1;
   padding: 0 14px;
   color: $main_error_color1;
-  height: 40px;
+  height: 33px;
   line-height: 40px;
 }
 
@@ -361,13 +364,23 @@ input {
   height: 25px;
   width: 18px;
   position: absolute;
-  right: 14px;
-  top: 25px;
+  right: 16px;
+  top: 42px;
 
   > img {
     width: 18px;
     height: 18px;
   }
+}
+
+.column {
+    padding-bottom: 17px;
+}
+
+.prompt {
+    padding-top: 15px;
+    color: #A6A9B2;
+    font-size: 12px;
 }
 
 @media screen and (min-width: $pad) {

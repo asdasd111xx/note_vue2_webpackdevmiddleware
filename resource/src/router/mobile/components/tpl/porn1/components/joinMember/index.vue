@@ -67,7 +67,7 @@ export default {
 
 .join-wrap {
   height: 100%;
-  padding-top: 10px;
+  padding-top: 40px;
   color: #5e626d;
 }
 

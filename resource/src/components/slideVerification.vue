@@ -141,6 +141,26 @@ export default {
       .nc_scale {
         min-height: inherit;
         height: initial;
+        border-radius: 5px;
+
+        .nc_bg {
+            width: 0px;
+            border-top-left-radius: 5px;
+            border-bottom-left-radius: 5px;
+            background: -webkit-linear-gradient(to right,#F9DDBD,#BD9D7D);
+            background: -o-linear-gradient(to right,#F9DDBD,#BD9D7D);
+            background: -moz-linear-gradient(to right,#F9DDBD,#BD9D7D);
+            background: linear-gradient(to right,#F9DDBD,#BD9D7D);
+        }
+
+        .nc_iconfont {
+            border-radius: 5px;
+            color: #000;
+        }
+
+        .btn_ok {
+            color: #BD9D7D;
+        }
       }
 
       .nc_iconfont {
@@ -198,4 +218,5 @@ export default {
   cursor: move;
   background: #fff;
 }
+
 </style>
