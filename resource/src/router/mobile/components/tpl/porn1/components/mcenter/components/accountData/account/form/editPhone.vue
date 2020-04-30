@@ -80,7 +80,7 @@
                 <template v-if="checkCode.isShow">
                     <div :class="$style.block">
                         <div :class="$style.title">
-                            {{ $text("S_MAIL_CHECK_CODE", "手机验证码") }}
+                            手机验证码
                         </div>
                         <div :class="$style['input-wrap']">
                             <input
