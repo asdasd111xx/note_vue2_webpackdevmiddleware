@@ -16,7 +16,10 @@ export default ({
         "Useragent": navigator.userAgent,
         "Ekey": "sobb",
         'Content-Type': 'application/json',
-        'cid': getCookie('cid') ? getCookie('cid') : ''
+    }
+
+    if (getCookie('cid')) {
+        bbosHeader['cid'] = getCookie('cid');
     }
 
     const bbosParams = {
