@@ -1,6 +1,6 @@
 <template>
   <transition :name="'fade'">
-    <div :class="$style['withdraw-alert-wrap']">
+    <div :class="$style['detail-alert-wrap']">
       <div :class="$style['alert-wrap']">
         <div :class="$style['alert-title']">
           <span>{{ $text("S_SUBMIT_WITHDRAW", "提交取款资料") }} </span>
@@ -11,11 +11,8 @@
           </div>
         </div>
         <div :class="$style['alert-body-wrap']">
-          <div :class="$style['withdraw-block']">
-            <div
-              v-for="(col, index) in columns"
-              :class="$style['withdraw-cell']"
-            >
+          <div :class="$style['detail-block']">
+            <div v-for="(col, index) in columns" :class="$style['detail-cell']">
               <div :class="$style['title']">
                 {{ withdrawData.hasOwnProperty(col.key) && $text(col.title) }}
               </div>
@@ -209,4 +206,4 @@ export default {
 };
 </script>
 
-<style lang="scss" src="../../css/editWithdraw.module.scss" module></style>
+<style lang="scss" src="../../css/edit.module.scss" module></style>

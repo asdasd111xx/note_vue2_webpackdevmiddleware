@@ -991,7 +991,7 @@
     "S_UNLIMITED": "无限制",
     "S_ENTER_DEPOSIT_MONEY": "请输入充值金额",
     "S_ESTIMATE_ENTER": "预计存入",
-    "S_REAL_ENTER": "实际存入",
+    "S_REAL_ENTER": "实际到账",
     "S_REMITTANCE_INFO": "汇款资料",
     "S_ENTER_PAY": "前往支付",
     "S_PAY_MODE": "支付方式",
