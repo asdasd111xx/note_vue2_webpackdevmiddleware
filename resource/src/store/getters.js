@@ -183,5 +183,7 @@ export default {
     // ＝＝＝＝＝＝＝＝＝＝＝＝＝＝＝＝＝＝
     getAllVip: (state) => state.allVip,
     // 是否Loading
-    getIsLoading: (state) => state.isLoading
+    getIsLoading: (state) => state.isLoading,
+    // 會員中心-個人資料-手機/姓名/信箱 綁定成功訊息
+    getMcenterBindMessage: (state) => state.mcenterBindMessage
 };

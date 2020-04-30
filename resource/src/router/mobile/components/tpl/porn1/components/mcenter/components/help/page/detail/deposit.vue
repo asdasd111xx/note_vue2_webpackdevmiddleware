@@ -31,19 +31,8 @@ import ajax from '@/lib/ajax';
 import bbosRequest from '@/lib/bbosRequest';
 import { getCookie, setCookie } from '@/lib/cookie';
 
-import { API_deposit_RECORD } from '@/config/api';
 export default {
   components: {
-  },
-  props: {
-    cid: {
-      type: String,
-      default: ''
-    },
-    vendor: {
-      type: String,
-      default: ''
-    }
   },
   data() {
     return {
@@ -86,7 +75,7 @@ export default {
 
       ajax({
         method: 'get',
-        url: API_deposit_RECORD,
+        // url: API_deposit_RECORD,
         errorAlert: false,
         params: this.params
       }).then((res) => {

@@ -130,3 +130,7 @@ export const SETNOTICEDATA = 'SETNOTICEDATA';
 export const SET_VIP = 'SET_VIP';
 
 export const SET_ISLOADING = 'SET_ISLOADING';
+
+
+// 會員中心-個人資料-手機/姓名/信箱 綁定成功訊息
+export const SET_MCENTER_BIND_MESSAGE = 'SET_MCENTER_BIND_MESSAGE';

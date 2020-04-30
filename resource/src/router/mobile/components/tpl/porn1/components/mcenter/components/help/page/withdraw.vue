@@ -5,13 +5,19 @@
     :is-app="isApp"
     :class="$style.container"
   >
-    <div slot="content" :class="$style['setting-wrap']">
+    <div slot="content">
       <div :class="$style['section']">
         <div
-          v-if="loginStatus"
+          v-if="loginStatus || isApp"
           :class="[$style['cell']]"
           :style="{ 'margin-bottom': '10px' }"
-          @click="$router.push('/mobile/mcenter/help/detail?type=withdraw')"
+          @click="
+            $router.push(
+              `/mobile/mcenter/help/detail?type=withdraw${
+                isApp ? '&app=true' : ''
+              }`
+            )
+          "
         >
           <div :class="$style['title']">
             {{ $text("S_RECENTLY_WITHDRAW", "近10笔提现纪录") }}
@@ -89,7 +95,7 @@ export default {
         return {
           prev: true,
           onClick: () => { this.$router.back(); },
-          title: '提现教程',
+          title: this.$text('S_HELP_CENTER', '帮助中心'),
         };
     },
   },

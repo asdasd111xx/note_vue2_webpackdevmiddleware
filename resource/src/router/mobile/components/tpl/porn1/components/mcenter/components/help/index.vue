@@ -104,12 +104,10 @@ export default {
   },
   methods: {
     handleClick(path) {
-      //   其他頁面尚未實作
-      this.$router.push(path)
-      if (path.includes('contact')) {
-        this.$router.push(path)
-      } else {
+      if (['gameintro', 'support'].includes(path)) {
         this.msg = '正在上线 敬请期待'
+      } else {
+        this.$router.push(path)
       }
     },
     logout() {

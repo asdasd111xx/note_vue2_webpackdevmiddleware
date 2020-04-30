@@ -28,6 +28,12 @@
         line-height: 50px;
         font-weight: bold;
     }
+
+    &.support-cell>title {
+        height: 20px;
+        line-height: 20px;
+        display: contents;
+    }
 }
 
 .content {
@@ -103,9 +109,6 @@
     }
 }
 
-.blue {
-    color: #6AAAF5
-}
 
 .active-slider {
     position: absolute;
@@ -126,10 +129,10 @@
     margin: 11px 0;
 
     .withdraw-block {
-        margin-top: 11px;
         text-align: left;
         color: #a6a9b2;
         background-color: white;
+        margin-bottom: 6px;
     }
 }
 
@@ -142,8 +145,8 @@
 .withdraw-cell {
     padding: 0 16px;
     position: relative;
-    height: 26px;
-    line-height: 26px;
+    height: 34px;
+    line-height: 34px;
 
     >.title {
         display: inline-block;
@@ -151,14 +154,17 @@
 
     >.value {
         float: right;
-        color: black;
+        color: #222222;
         white-space: nowrap;
         overflow: hidden;
         text-overflow: ellipsis;
         max-width: 50%;
     }
-}
 
+    .edit {
+        color: #6AAAF5
+    }
+}
 
 @media screen and (max-width: $phone) {
     .section {
@@ -170,7 +176,6 @@
     }
 }
 
-
 @media screen and (min-width: $pad) {
     .section {
         font-size: 17px;
@@ -178,5 +183,10 @@
 
     .withdraw-content-wrap {
         font-size: 17px;
+    }
+
+    .withdraw-cell {
+        height: 36px;
+        line-height: 36px;
     }
 }

@@ -5,12 +5,12 @@
     :is-app="isApp"
     :class="$style.container"
   >
-    <div slot="content" :class="$style['setting-wrap']">
+    <div slot="content">
       <template v-if="type == 'withdraw'">
-        <withdraw :cid="cid" :vendor="vendor" />
+        <withdraw />
       </template>
       <template v-else>
-        <deposit :cid="cid" :vendor="vendor" />
+        <deposit />
       </template>
     </div>
   </mobile-container>
@@ -34,8 +34,6 @@ export default {
   data() {
     return {
       type: 'withdraw' | 'deposit',
-      cid: '',
-      vendor: ''
     };
   },
   created() {
@@ -45,8 +43,6 @@ export default {
     } else {
       this.$router.push('/mobile/mcenter/help')
     }
-    this.cid = query.cid || '';
-    this.vendor = query.vendor || '';
   },
   computed: {
     ...mapGetters({
@@ -66,6 +62,7 @@ export default {
     },
     headerConfig() {
       let title = this.isWithdraw ? this.$text("S_RECENTLY_WITHDRAW", "近10笔提现纪录") : this.$text("S_RECENTLY_DEPOSIT", "近10笔充值纪录");
+
       if (!this.isApp) {
         return {
           prev: true,

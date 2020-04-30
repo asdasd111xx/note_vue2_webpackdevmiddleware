@@ -2,15 +2,15 @@
   <div :class="$style['video-player-wrap']">
     <video
       ref="video-player"
+      playsinline="true"
+      webkit-playsinline="true"
       class="video-js vjs-default-skin vjs-fluid vjs-big-play-centered"
-    />
-
+    ></video>
     <!-- 彩金活動 -->
     <div
       v-if="isActiveBouns"
+      id="video-play-block"
       :class="$style['video-block']"
-      @click="handleClickVideoBlock"
-      :style="{ height: `${blockHeight}px` }"
     >
       <bonuns-dialog
         ref="bonunsDialog"
@@ -18,11 +18,7 @@
         :type="dialogType"
         @close="isShowBounsDialog = false"
       />
-      <bonuns-process
-        ref="bonunsProcess"
-        v-show="isShowBounsProcess"
-        @close="isShowBounsProcess = false"
-      />
+      <bonuns-process ref="bonunsProcess" v-show="isShowBounsProcess" />
     </div>
   </div>
 </template>
@@ -49,10 +45,9 @@ export default {
   data() {
     return {
       player: null,
-      blockHeight: 0,
       isPlaying: false,
       //   彩金開關
-      isActiveBouns: true,
+      isActiveBouns: true, //預設打開由message決定是否啟動
       isShowBounsDialog: false,
       isShowBounsProcess: true,
       isFullBouns: false,
@@ -69,7 +64,8 @@ export default {
       siteConfig: 'getSiteConfig',
     }),
   },
-  create() {
+  beforeDestroy() {
+    window.removeEventListener('resize', this.getVideoHeight);
   },
   mounted() {
     this.player = videojs(this.$refs['video-player'], {
@@ -82,21 +78,13 @@ export default {
       bigPlayButton: true,
     });
 
+    // 彩金疊加在播放器上
+    $('#video-play-block').appendTo($('.video-js'));
     //活動開關
     if (this.isActiveBouns) {
       try {
-        //取消原本video 預設點擊播放事件
-        let videoDom = document.getElementsByClassName('vjs-tech');
-        if (videoDom[0]) {
-          videoDom[0].style.pointerEvents = "none";
-          this.blockHeight = videoDom[0].offsetHeight - 36;
-        }
-
         // connect websocket
         let cid = getCookie('cid');
-        if (!cid)
-          return
-
         let uri = this.siteConfig.ACTIVES_BOUNS_WEBSOCKET + `?cid=${cid}`;
         this.socket = new WebSocket(uri);
         this.socket.onmessage = this.onMessage;
@@ -104,11 +92,13 @@ export default {
         this.socket.onerror = this.onError;
         this.socket.onclose = this.onClose;
         this.socket.onmessage = this.onMessage;
+
       } catch (e) {
         console.log(e)
       }
 
       this.player.on("playing", () => {
+
         this.isPlaying = true;
         if (this.socket)
           this.onSend("PLAY");
@@ -119,11 +109,16 @@ export default {
         if (this.socket)
           this.onSend("STOP");
       })
+
+      this.player.on("play", () => {
+        this.handleClickVideo();
+      })
     }
 
   },
   methods: {
-    handleClickVideoBlock(e) {
+    handleClickVideo() {
+      if (!this.isActiveBouns) return
       // 餘額夠可播放
       if (!this.loginStatus) {
         this.$refs.bonunsDialog.isShow = true
@@ -138,21 +133,15 @@ export default {
         }
         return;
       }
-      else {
-        if (!this.player.paused()) {
-          this.player.pause();
-          this.$refs.bonunsProcess.isPause = true;
-        } else {
-          this.player.play();
-          this.$refs.bonunsProcess.isPause = false;
-        }
-      }
     },
     onMessage(e) {
       if (e.data) {
         let data = JSON.parse(e.data)
         this.socketId = data.SocketId;
-
+        // this.isActiveBouns = !!(data.HasActivity);
+        // if (!this.isActiveBouns) {
+        //   return
+        // }
 
         if (process.env.NODE_ENV === 'development') {
           console.log("msg ==>")
@@ -235,10 +224,8 @@ export default {
       }
     },
     onError(e) {
-      if (process.env.NODE_ENV === 'development') {
-        console.log("err ==>")
-        console.log(e)
-      }
+      console.log("err ==>")
+      console.log(e)
       this.isActiveBouns = false;
       this.socket = null;
     },
@@ -291,10 +278,10 @@ export default {
 
 // 彩金
 .video-block {
-  width: 100%;
   height: 100%;
   position: absolute;
   top: 0;
-  z-index: 2;
+  right: 0;
+  z-index: 200;
 }
 </style>

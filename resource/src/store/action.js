@@ -744,7 +744,7 @@ export const actionAgentInit = ({ state, dispatch, commit }, next) => {
         if (!state.agentIsLogin) return;
         await dispatch('actionSetWebInfo', state.agentInfo.user.domain);
 
-        const defaultLang =  ['47', '70', '71'].includes(state.agentInfo.user.domain) && state.webInfo.is_production ? 'vi' : 'zh-cn';
+        const defaultLang = ['47', '70', '71'].includes(state.agentInfo.user.domain) && state.webInfo.is_production ? 'vi' : 'zh-cn';
         await getLang(state.webInfo.language, defaultLang);
         await dispatch('actionSetAgentPost');
 
@@ -1027,4 +1027,10 @@ export const actionSetWithdrawCheck = ({ commit }) => {
 // 設定Loading
 export const actionSetIsLoading = ({ commit }, data) => {
     commit(types.SET_ISLOADING, data);
+};
+
+// 設定會員中心-個人資料-手機/姓名/信箱 綁定成功訊息
+export const actionSetＭcenterBindMessage = ({ commit }, data) => {
+    console.log('actionSetＭcenterBindMessage:', data);
+    commit(types.SET_MCENTER_BIND_MESSAGE, data);
 };

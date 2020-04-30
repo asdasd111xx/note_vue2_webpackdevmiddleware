@@ -3,13 +3,13 @@
     <div :class="$style['status-wrap']">
       <div
         :class="[$style.status, { [$style.active]: curStatus == 0 }]"
-        @click="curStatus = 0"
+        @click="filterStatus(0)"
       >
         {{ $text("S_APPLY", "已申请") }}
       </div>
       <div
         :class="[$style.status, { [$style.active]: curStatus == 1 }]"
-        @click="curStatus = 1"
+        @click="filterStatus(1)"
       >
         {{ $text("S_NOT_FINISH", "未完成") }}
       </div>
@@ -26,7 +26,14 @@
           <div :class="$style['title']">
             {{ $text("S_STATUS", "状态") }}
           </div>
-          <div :class="$style['value']">
+          <div
+            v-if="!item.locked"
+            :class="[$style['value'], $style['edit']]"
+            @click="openEdit(item)"
+          >
+            {{ $text("S_SUBMIT_WITHDRAW", "重新提交") }}
+          </div>
+          <div v-else="" :class="$style['value']">
             {{ getStatus(item.status) }}
           </div>
         </div>
@@ -41,6 +48,12 @@
         </div>
       </div>
     </div>
+    <edit-withdraw-field
+      v-if="editOpen"
+      :third-url.sync="thirdUrl"
+      :withdraw-data="withdrawData"
+      :close-fuc="() => (editOpen = false)"
+    />
   </div>
 </template>
 
@@ -50,31 +63,27 @@ import member from '@/api/member';
 import ajax from '@/lib/ajax';
 import bbosRequest from '@/lib/bbosRequest';
 import { getCookie, setCookie } from '@/lib/cookie';
-
+import editWithdrawField from './editWithdrawField'
 import { API_WITHDRAW_RECORD } from '@/config/api';
 export default {
   components: {
-  },
-  props: {
-    cid: {
-      type: String,
-      default: ''
-    },
-    vendor: {
-      type: String,
-      default: ''
-    }
+    editWithdrawField
   },
   data() {
     return {
       total: 0,
+      data: [],
       list: [],
       curStatus: 0,
       columns: [{ key: "at", title: "S_DATE" },
       { key: "id", title: "S_ORDER_NUMBER" },
       { key: "amount", title: "S_WITHDRAW_MONEY" },
       { key: "deduction", title: "S_DEDUCTION_MONEY" },
-      { key: "real_amount", title: "S_REAL_WITHDRAW" }]
+      { key: "real_amount", title: "S_REAL_WITHDRAW" }],
+
+      editOpen: false,
+      withdrawData: {},
+      thirdUrl: ''
     };
   },
   mounted() {
@@ -87,7 +96,27 @@ export default {
       memInfo: 'getMemInfo'
     }),
   },
+  watch: {
+    data() {
+      this.filterStatus(this.curStatus)
+    }
+  },
   methods: {
+    filterStatus(status) {
+      this.curStatus = status;
+
+      // 已申請
+      if (status == 0) {
+        this.list = this.data.filter((info) => info.status === 'finished' || info.locked)
+        return
+      }
+
+      // 未完成
+      if (status == 1) {
+        this.list = this.data.filter((info) => info.process && !info.locked)
+        return
+      }
+    },
     getData() {
       let params = {
         first_result: 0,
@@ -108,10 +137,10 @@ export default {
         method: 'get',
         url: API_WITHDRAW_RECORD,
         errorAlert: false,
-        params: this.params
+        params: params
       }).then((res) => {
         if (res.result === 'ok') {
-          this.list = res.ret;
+          this.data = res.ret;
           this.total = res.pagination.total;
         }
       });
@@ -131,22 +160,23 @@ export default {
       //   });
 
     },
-    getStatus(status, color) {
-      if (!status) {
-        return "";
-      }
+    getStatus(status) {
       status = status.toLowerCase();
-
       switch (status) {
         case 'processing':
-          return color ? true : this.$text('S_PROCESSING_TEXT', '处理中');
+          return this.$text('S_PROCESSING_TEXT', '处理中');
         case 'cancel':
-          return color ? false : this.$text('S_CANCEL', '取消');
+          return this.$text('S_CANCEL', '取消');
         case 'reject':
-          return color ? false : this.$text('S_CANCEL_TEXT', '拒绝');
+          return this.$text('S_CANCEL_TEXT', '拒绝');
         default:
           return this.$text('S_CR_SUCCESS', '成功');
       }
+    },
+    openEdit(info) {
+      this.editOpen = true;
+      this.withdrawData = info;
+      this.getData();
     }
   },
 };

@@ -178,7 +178,7 @@
           @click="handleSelectCard(item)"
         >
           <!-- 缺銀行圖片 -->
-          <img :src="`https://images.bbin-asia.com/icon/bank/${item.id}.png`" />
+          <img :src="`${bankSrc}${item.id}.png`" />
           <span>{{ item.alias }} </span>
           <div
             :class="[
@@ -361,8 +361,6 @@ export default {
     serialNumber
   },
   watch: {
-    withdrawData() {
-    },
     withdrawValue() {
       let value = Number(this.withdrawValue)
 
@@ -403,7 +401,8 @@ export default {
     ...mapGetters({
       memCurrency: 'getMemCurrency',
       siteConfig: 'getSiteConfig',
-      memInfo: 'getMemInfo'
+      memInfo: 'getMemInfo',
+      webInfo: 'getWebInfo',
     }),
     headerConfig() {
       return {
@@ -414,6 +413,11 @@ export default {
         helpRouter: '/withdraw'
       };
     },
+    bankSrc() {
+      return !this.webInfo.is_production ?
+        'https://images.bbin-asia.com/icon/withdrawBank/' :
+        'https://images.dormousepie.com/icon/withdrawBank/'
+    }
   },
   methods: {
     onClickMaintain(value) {

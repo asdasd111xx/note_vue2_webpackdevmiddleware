@@ -23,7 +23,8 @@
                     onSearchBet,
                     showInfinite,
                     infiniteHandler,
-                    control1stData
+                    control1stData,
+                    control2ndData
                 }"
             >
                 <div v-if="currentPage === 'main'" :class="$style['top-wrap']">
@@ -97,8 +98,8 @@
                 <template v-if="currentPage === 'main' && inq1st.list.length">
                     <table-1st
                         :list="control1stData"
-                        :sub-total="inq1st.subTotal"
                         :total="inq1st.total"
+                        :counts="inq1st.counts"
                         :sort="sort"
                         @update:sort="onSort"
                         @onInquire="onSearchBet"
@@ -114,13 +115,21 @@
                 </template>
                 <template v-if="currentPage === 'bet' && inq2nd.list.length">
                     <table-2nd
-                        :list="inq2nd.list"
-                        :sub-total="inq2nd.subTotal"
+                        :list="control2ndData"
                         :total="inq2nd.total"
+                        :counts="inq2nd.counts"
                         :sort="sort"
                         @update:sort="onSort"
                     />
 
+                    <infinite-loading
+                        v-if="showInfinite"
+                        ref="infiniteLoading"
+                        @infinite="infiniteHandler"
+                    >
+                        <span slot="no-more" />
+                        <span slot="no-results" />
+                    </infinite-loading>
                     <!-- <div :class="$style['no-data']">
                         <img src="/static/image/_new/mcenter/no_data.png" />
                         <p>{{ $text("S_NO_DATA_YET", "暂无资料") }}</p>

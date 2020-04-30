@@ -1,7 +1,7 @@
 <template>
-  <div v-if="isReady">
-    <slot :filtered-data-list="filteredDataList" />
-  </div>
+    <div v-if="isReady">
+        <slot :filtered-data-list="filteredDataList" />
+    </div>
 </template>
 
 <script>
@@ -11,367 +11,365 @@ import exceptionList from '@/config/exceptionList';
 import ajax from '@/lib/ajax';
 
 export default {
-  data() {
-    return {
-      mcenterUserField: {},
-      isReady: false,
-      lang: this.$i18n.locale,
-      verification: {
-        email: true,
-        phone: true
-      },
-      dataList: [
-        {
-          title: 'realName',
-          text: 'S_REAL_NAME_CONFIRM',
-          isShow: true,
-          field: {
-            alias: {
-              key: 'alias',
-              text: 'S_USER_NAME',
-              status: '',
-              value: '',
-              btnText: '',
-              btnShow: true,
-              type: 'alias',
-              isShow: true,
-              popTitle: 'S_MODIFY_NICKNAME'
+    data() {
+        return {
+            mcenterUserField: {},
+            isReady: false,
+            lang: this.$i18n.locale,
+            verification: {
+                email: true,
+                phone: true
             },
-            name: {
-              key: 'name',
-              text: 'S_REAL_NAME',
-              status: '',
-              value: '',
-              btnText: '',
-              btnShow: true,
-              type: 'edit',
-              isShow: true,
-              popTitle: '',
-              placeholder: '姓名需与银行持卡人姓名一致，否则无法提款'
-            },
-            gender: {
-              key: 'gender',
-              text: 'S_GENDER',
-              status: '',
-              value: '',
-              btnText: '',
-              btnShow: true,
-              type: 'edit',
-              isShow: true,
-              popTitle: '',
-              placeholder: '未选择'
-            },
-            birthday: {
-              key: 'birthday',
-              text: 'S_BIRTHDAY_DATE',
-              status: '',
-              value: '',
-              btnText: '',
-              btnShow: true,
-              type: 'edit',
-              isShow: true,
-              popTitle: '',
-              placeholder: '添加日期，确保您已满18岁'
-            },
-            phone: {
-              key: 'phone',
-              text: 'S_TEL',
-              status: '',
-              value: '',
-              btnText: '',
-              btnShow: true,
-              type: 'bind',
-              verification: true,
-              isShow: true,
-              popTitle: '',
-              placeholder: '绑定手机保护帐号安全'
-            },
-            email: {
-              key: 'email',
-              text: 'SS_E_MAIL',
-              status: '',
-              value: '',
-              btnText: '',
-              btnShow: true,
-              type: 'bind',
-              verification: true,
-              isShow: true,
-              popTitle: '',
-              placeholder: '绑定邮箱保护帐号安全'
-            },
-            // password: {
-            //   key: 'password',
-            //   text: 'SS_LOGIN_PW',
-            //   status: '',
-            //   value: '',
-            //   btnText: '',
-            //   btnShow: true,
-            //   type: 'password',
-            //   isShow: true,
-            //   popTitle: ''
-            // },
-            // withdrawPwd: {
-            //   key: 'withdrawPwd',
-            //   text: 'S_DAW_DRWAL_PASSWORD',
-            //   status: '',
-            //   value: '',
-            //   btnText: '',
-            //   btnShow: true,
-            //   type: 'withdrawPwd',
-            //   isShow: false,
-            //   popTitle: ''
-            // }
+            dataList: [
+                {
+                    title: 'realName',
+                    text: 'S_REAL_NAME_CONFIRM',
+                    isShow: true,
+                    field: {
+                        name: {
+                            key: 'name',
+                            text: 'S_REAL_NAME',
+                            status: '',
+                            value: '',
+                            btnText: '',
+                            btnShow: true,
+                            type: 'edit',
+                            isShow: true,
+                            popTitle: '',
+                            placeholder: '姓名需与银行持卡人姓名一致，否则无法提款'
+                        },
+                        alias: {
+                            key: 'alias',
+                            text: 'S_NICKNAME',
+                            status: '',
+                            value: '',
+                            btnText: '',
+                            btnShow: true,
+                            type: 'alias',
+                            isShow: true,
+                            popTitle: 'S_MODIFY_NICKNAME'
+                        },
+                        gender: {
+                            key: 'gender',
+                            text: 'S_GENDER',
+                            status: '',
+                            value: '',
+                            btnText: '',
+                            btnShow: true,
+                            type: 'edit',
+                            isShow: true,
+                            popTitle: '',
+                            placeholder: '未选择'
+                        },
+                        birthday: {
+                            key: 'birthday',
+                            text: 'S_BIRTHDAY_DATE',
+                            status: '',
+                            value: '',
+                            btnText: '',
+                            btnShow: true,
+                            type: 'edit',
+                            isShow: true,
+                            popTitle: '',
+                            placeholder: '添加日期，确保您已满18岁'
+                        },
+                        phone: {
+                            key: 'phone',
+                            text: 'S_TEL',
+                            status: '',
+                            value: '',
+                            btnText: '',
+                            btnShow: true,
+                            type: 'bind',
+                            verification: true,
+                            isShow: true,
+                            popTitle: '',
+                            placeholder: '绑定手机保护帐号安全'
+                        },
+                        email: {
+                            key: 'email',
+                            text: 'SS_E_MAIL',
+                            status: '',
+                            value: '',
+                            btnText: '',
+                            btnShow: true,
+                            type: 'bind',
+                            verification: true,
+                            isShow: false,
+                            popTitle: '',
+                            placeholder: '绑定邮箱保护帐号安全'
+                        },
+                        // password: {
+                        //   key: 'password',
+                        //   text: 'SS_LOGIN_PW',
+                        //   status: '',
+                        //   value: '',
+                        //   btnText: '',
+                        //   btnShow: true,
+                        //   type: 'password',
+                        //   isShow: true,
+                        //   popTitle: ''
+                        // },
+                        // withdrawPwd: {
+                        //   key: 'withdrawPwd',
+                        //   text: 'S_DAW_DRWAL_PASSWORD',
+                        //   status: '',
+                        //   value: '',
+                        //   btnText: '',
+                        //   btnShow: true,
+                        //   type: 'withdrawPwd',
+                        //   isShow: false,
+                        //   popTitle: ''
+                        // }
 
-            qq_num: {
-              key: 'qq_num',
-              text: 'S_QQ',
-              status: '',
-              value: '',
-              btnText: '',
-              btnShow: true,
-              type: 'edit',
-              isShow: false,
-              popTitle: '',
-            },
-            weixin: {
-              key: 'weixin',
-              text: 'WECHAT',
-              status: '',
-              value: '',
-              btnText: '',
-              btnShow: true,
-              type: 'edit',
-              isShow: false,
-              popTitle: '',
-            },
-            line: {
-              key: 'line',
-              text: 'S_LINE',
-              status: '',
-              value: '',
-              btnText: '',
-              btnShow: true,
-              type: 'edit',
-              isShow: false,
-              popTitle: ''
-            },
-            facebook: {
-              key: 'facebook',
-              text: 'S_FACEBOOK',
-              status: '',
-              value: '',
-              btnText: '',
-              btnShow: true,
-              type: 'edit',
-              isShow: false,
-              popTitle: ''
-            },
-            skype: {
-              key: 'skype',
-              text: 'S_SKYPE',
-              status: '',
-              value: '',
-              btnText: '',
-              btnShow: true,
-              type: 'edit',
-              isShow: false,
-              popTitle: ''
-            },
-            zalo: {
-              key: 'zalo',
-              text: 'S_ZALO',
-              status: '',
-              value: '',
-              btnText: '',
-              btnShow: true,
-              type: 'edit',
-              isShow: false,
-              popTitle: ''
-            }
-          }
-        },
-        {
-          title: 'personalData',
-          text: 'S_PERSONAL_DATA',
-          isShow: true,
-          field: {
+                        qq_num: {
+                            key: 'qq_num',
+                            text: 'S_QQ',
+                            status: '',
+                            value: '',
+                            btnText: '',
+                            btnShow: true,
+                            type: 'edit',
+                            isShow: false,
+                            popTitle: ''
+                        },
+                        weixin: {
+                            key: 'weixin',
+                            text: 'WECHAT',
+                            status: '',
+                            value: '',
+                            btnText: '',
+                            btnShow: true,
+                            type: 'edit',
+                            isShow: false,
+                            popTitle: ''
+                        },
+                        line: {
+                            key: 'line',
+                            text: 'S_LINE',
+                            status: '',
+                            value: '',
+                            btnText: '',
+                            btnShow: true,
+                            type: 'edit',
+                            isShow: false,
+                            popTitle: ''
+                        },
+                        facebook: {
+                            key: 'facebook',
+                            text: 'S_FACEBOOK',
+                            status: '',
+                            value: '',
+                            btnText: '',
+                            btnShow: true,
+                            type: 'edit',
+                            isShow: false,
+                            popTitle: ''
+                        },
+                        skype: {
+                            key: 'skype',
+                            text: 'S_SKYPE',
+                            status: '',
+                            value: '',
+                            btnText: '',
+                            btnShow: true,
+                            type: 'edit',
+                            isShow: false,
+                            popTitle: ''
+                        },
+                        zalo: {
+                            key: 'zalo',
+                            text: 'S_ZALO',
+                            status: '',
+                            value: '',
+                            btnText: '',
+                            btnShow: true,
+                            type: 'edit',
+                            isShow: false,
+                            popTitle: ''
+                        }
+                    }
+                },
+                {
+                    title: 'personalData',
+                    text: 'S_PERSONAL_DATA',
+                    isShow: true,
+                    field: {
 
 
-            // currency: {
-            //  key: '// currency',
-            //  text: 'S_CURRENCY',
-            //  status: '',
-            //  value: '',
-            //  btnText: '',
-            //  btnShow: true,
-            //  type: '',
-            //  isShow: true
-            // },
-          }
-        },
-        {
-          title: 'receiptAddress',
-          text: 'S_RECEIPT_ADDRESS',
-          isShow: true,
-          field: {}
-        }
-      ]
-    };
-  },
-  computed: {
-    ...mapGetters({
-      memInfo: 'getMemInfo',
-      webInfo: 'getWebInfo'
-    }),
-    // 過濾特例的資料
-    filteredDataList() {
-      return this.dataList
-        .filter((data) => data.isShow)
-        .map((item) => ({
-          ...item,
-          field: Object.keys(item.field)
-            .filter((subItem) => item.field[subItem].isShow)
-            .reduce((obj, key) => ({
-              ...obj,
-              [key]: item.field[key]
-            }), {})
-        }));
-    },
-    // 特例判斷
-    isException() {
-      const { wonderCasino, knightCasino } = exceptionList;
-      return wonderCasino.concat(knightCasino).includes(this.webInfo.alias);
-    }
-  },
-  watch: {
-    memInfo: {
-      immediate: true,
-      handler() {
-        this.getData();
-      }
-    },
-    lang() {
-      this.setData(this.mcenterUserField);
-    }
-  },
-  beforeUpdate() {
-    this.lang = this.$i18n.locale;
-  },
-  methods: {
-    ...mapActions([
-      'actionSetPop'
-    ]),
-    getData() {
-      ajax({
-        method: 'get',
-        url: API_MCENTER_USER_CONFIG,
-        errorAlert: false
-      }).then((response) => {
-        if (response && response.result === 'ok') {
-          Object.keys(this.verification).forEach((key) => {
-            this.verification[key] = response.ret.config[key].code;
-          });
-
-          Object.keys(this.dataList).forEach((item) => {
-            if (this.dataList[item].title === 'receiptAddress') {
-              this.dataList[item].isShow = response.ret.config.address.display;
-            }
-          });
-
-          this.mcenterUserField = response.ret;
-          this.setData(response.ret);
-        }
-
-        this.isReady = true;
-      });
-    },
-    setData(userConfig = {}) {
-      if (Object.keys(userConfig).length === 0) {
-        return;
-      }
-
-      Object.keys(this.dataList).forEach((item) => {
-        Object.keys(this.dataList[item].field).forEach((key) => {
-          let itemNow = this.dataList[item].field[key];
-
-          if (key === 'password') {
-            itemNow = {
-              ...itemNow,
-              status: 'already',
-              value: this.$t('S_SET_CL_ALREADY'),
-              btnText: this.$t('S_CS_EDIT')
-            };
-          } else if (key === 'withdrawPwd') {
-            const wdStatus = this.memInfo.user.has_withdraw_password;
-            itemNow = {
-              ...itemNow,
-              status: wdStatus ? 'already' : 'yet',
-              value: wdStatus ? this.$t('S_SET_CL_ALREADY') : this.$t('S_YET_SET'),
-              btnText: wdStatus ? this.$t('S_CS_EDIT') : this.$t('S_SET_CL'),
-              isShow: userConfig.config.withdraw_password.display
-            };
-          } else if (key === 'email' || key === 'phone') {
-            const keyValue = this.memInfo[key][key];
-
-            let val = itemNow.placeholder || this.$t('S_YET_SET');
-            let text = this.$t('S_SET_CL');
-            let confirmSt = 'yet';
-
-            if (keyValue) {
-              val = `${this.$t('S_YET_VERIFIED')}(${keyValue})`;
-              text = this.$t('S_VERIFY');
-              confirmSt = 'ok';
-              if (!this.verification[key] || userConfig.user[key]) {
-                val = keyValue;
-                text = this.$t('S_CS_EDIT');
-                confirmSt = 'already';
-              }
-            }
-            itemNow = {
-              ...itemNow,
-              status: confirmSt,
-              value: val,
-              btnText: text,
-              btnShow: !(!this.verification[key] && keyValue),
-              verification: this.verification[key],
-              isShow: userConfig.config[key].display
-            };
-          } else if (key === 'alias' && userConfig.config[key]) {
-            itemNow = {
-              ...itemNow,
-              status: this.memInfo.user[key] ? 'already' : 'yet',
-              value: this.memInfo.user[key] || this.$t('S_YET_SET'),
-              btnText: this.$t('S_CS_EDIT'),
-              btnShow: true,
-              isShow: userConfig.config[key].display
-            };
-          } else {
-            const keyValue = this.memInfo.user[key];
-            let checkValue = keyValue;
-            if (keyValue) {
-              if (key === 'name') {
-                // checkValue = this.$t('S_SET_CL_ALREADY');
-              }
-              if (key === 'gender') {
-                checkValue = this.$t('S_MALE');
-                if (+keyValue === 2) {
-                  checkValue = this.$t('S_FEMALE');
+                        // currency: {
+                        //  key: '// currency',
+                        //  text: 'S_CURRENCY',
+                        //  status: '',
+                        //  value: '',
+                        //  btnText: '',
+                        //  btnShow: true,
+                        //  type: '',
+                        //  isShow: true
+                        // },
+                    }
+                },
+                {
+                    title: 'receiptAddress',
+                    text: 'S_RECEIPT_ADDRESS',
+                    isShow: true,
+                    field: {}
                 }
-              }
+            ]
+        };
+    },
+    computed: {
+        ...mapGetters({
+            memInfo: 'getMemInfo',
+            webInfo: 'getWebInfo'
+        }),
+        // 過濾特例的資料
+        filteredDataList() {
+            return this.dataList
+                .filter((data) => data.isShow)
+                .map((item) => ({
+                    ...item,
+                    field: Object.keys(item.field)
+                        .filter((subItem) => item.field[subItem].isShow)
+                        .reduce((obj, key) => ({
+                            ...obj,
+                            [key]: item.field[key]
+                        }), {})
+                }));
+        },
+        // 特例判斷
+        isException() {
+            const { wonderCasino, knightCasino } = exceptionList;
+            return wonderCasino.concat(knightCasino).includes(this.webInfo.alias);
+        }
+    },
+    watch: {
+        memInfo: {
+            immediate: true,
+            handler() {
+                this.getData();
             }
-            itemNow = {
-              ...itemNow,
-              status: keyValue ? 'already' : 'yet',
-              btnText: keyValue ? this.$t('S_CS_EDIT') : this.$t('S_SET_CL'),
-              value: keyValue ? checkValue : itemNow.placeholder,
-              btnShow: !keyValue,
-              isShow: userConfig.config[key] ? userConfig.config[key].display : false
-            };
-          }
-          this.dataList[item].field[key] = itemNow;
-        });
-      });
+        },
+        lang() {
+            this.setData(this.mcenterUserField);
+        }
+    },
+    beforeUpdate() {
+        this.lang = this.$i18n.locale;
+    },
+    methods: {
+        ...mapActions([
+            'actionSetPop'
+        ]),
+        getData() {
+            ajax({
+                method: 'get',
+                url: API_MCENTER_USER_CONFIG,
+                errorAlert: false
+            }).then((response) => {
+                if (response && response.result === 'ok') {
+                    Object.keys(this.verification).forEach((key) => {
+                        this.verification[key] = response.ret.config[key].code;
+                    });
+
+                    Object.keys(this.dataList).forEach((item) => {
+                        if (this.dataList[item].title === 'receiptAddress') {
+                            this.dataList[item].isShow = response.ret.config.address.display;
+                        }
+                    });
+
+                    this.mcenterUserField = response.ret;
+                    this.setData(response.ret);
+                }
+
+                this.isReady = true;
+            });
+        },
+        setData(userConfig = {}) {
+            if (Object.keys(userConfig).length === 0) {
+                return;
+            }
+            Object.keys(this.dataList).forEach((item) => {
+                Object.keys(this.dataList[item].field).forEach((key) => {
+                    let itemNow = this.dataList[item].field[key];
+                    if (key === 'password') {
+                        itemNow = {
+                            ...itemNow,
+                            status: 'already',
+                            value: this.$t('S_SET_CL_ALREADY'),
+                            btnText: this.$t('S_CS_EDIT')
+                        };
+                    } else if (key === 'withdrawPwd') {
+                        const wdStatus = this.memInfo.user.has_withdraw_password;
+                        itemNow = {
+                            ...itemNow,
+                            status: wdStatus ? 'already' : 'yet',
+                            value: wdStatus ? this.$t('S_SET_CL_ALREADY') : this.$t('S_YET_SET'),
+                            btnText: wdStatus ? this.$t('S_CS_EDIT') : this.$t('S_SET_CL'),
+                            isShow: userConfig.config.withdraw_password.display
+                        };
+                    } else if (key === 'email' || key === 'phone') {
+                        const keyValue = this.memInfo[key][key];
+
+                        let val = itemNow.placeholder || this.$t('S_YET_SET');
+                        let text = this.$t('S_SET_CL');
+                        let confirmSt = 'yet';
+
+                        if (keyValue) {
+                            val = `${this.$t('S_YET_VERIFIED')}(${keyValue})`;
+                            text = this.$t('S_VERIFY');
+                            confirmSt = 'ok';
+                            if (!this.verification[key] || userConfig.user[key]) {
+                                val = keyValue;
+                                text = this.$t('S_CS_EDIT');
+                                confirmSt = 'already';
+                            }
+                        }
+                        itemNow = {
+                            ...itemNow,
+                            status: confirmSt,
+                            value: val,
+                            btnText: text,
+                            btnShow: !(!this.verification[key] && keyValue),
+                            verification: this.verification[key],
+                            isShow: userConfig.config[key].display
+                        };
+                    } else if (key === 'alias' && userConfig.config[key]) {
+                        itemNow = {
+                            ...itemNow,
+                            status: this.memInfo.user[key] ? 'already' : 'yet',
+                            value: this.memInfo.user[key] || this.$t('S_YET_SET'),
+                            btnText: this.$t('S_CS_EDIT'),
+                            btnShow: true,
+                            isShow: userConfig.config[key].display
+                        };
+                    } else {
+                        const keyValue = this.memInfo.user[key];
+                        let checkValue = keyValue;
+                        if (keyValue) {
+                            if (key === 'name') {
+                                // checkValue = this.$t('S_SET_CL_ALREADY');
+                            }
+                            if (key === 'gender') {
+                                checkValue = this.$t('S_MALE');
+                                if (+keyValue === 2) {
+                                    checkValue = this.$t('S_FEMALE');
+                                }
+                            }
+                        }
+                        itemNow = {
+                            ...itemNow,
+                            status: keyValue ? 'already' : 'yet',
+                            btnText: keyValue ? this.$t('S_CS_EDIT') : this.$t('S_SET_CL'),
+                            value: keyValue ? checkValue : itemNow.placeholder,
+                            btnShow: !keyValue,
+                            isShow: userConfig.config[key] ? userConfig.config[key].display : false
+                        };
+                    }
+                    this.dataList[item].field[key] = itemNow;
+                });
+            });
+        }
     }
-  }
 };
 </script>

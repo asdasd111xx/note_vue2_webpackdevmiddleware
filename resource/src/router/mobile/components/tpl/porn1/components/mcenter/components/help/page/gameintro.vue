@@ -55,11 +55,4 @@ export default {
   }
 };
 </script>
-
-<style lang="scss" module>
-@import "~@/css/variable.scss";
-
-.container {
-  background-color: $main_background_white1;
-}
-</style>
+<style src="../css/index.module.scss" lang="scss" module>

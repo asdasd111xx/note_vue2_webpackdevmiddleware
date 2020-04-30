@@ -145,7 +145,7 @@
               :name="field.key"
               :placeholder="field.content.note1"
               type="password"
-              @input="verification(field.key)"
+              @blur="verification(field.key)"
               @keydown.13="joinSubmit()"
             />
             <input
@@ -155,9 +155,8 @@
               :name="field.key"
               :placeholder="field.content.note1"
               type="password"
-              @input="verification(field.key)"
-              @blur="verification(field.key)"
               @focus="onFocus"
+              @blur="verification(field.key)"
               @keydown.13="joinSubmit()"
             />
             <input
@@ -206,7 +205,7 @@
               :name="field.key"
               :placeholder="field.content.note1"
               type="text"
-              @input="verification(field.key)"
+              @blur="verification(field.key)"
               @keydown.13="joinSubmit()"
             />
             <div v-if="field.content.note2" :class="$style['join-msg']">

@@ -1,99 +1,176 @@
 <template>
-  <div :class="$style['share-container']">
-    <div :class="$style['pic-wrap']">
-      <img
-        ref="shareAppImage"
-        :src="$getCdnPath('/static/image/_new/mcenter/share/share_app.png')"
-        alt="shareApp"
-      />
-    </div>
-
-    <div :class="$style['func-wrap']">
-      <div
-        :class="$style['func-cell']"
-        v-for="(item, index) in funcList"
-        :key="index"
-      >
-        <div @click="item.callback">
-          <img :src="$getCdnPath(item.imgSrc)" :alt="item.text" />
+    <div :class="$style['share-container']">
+        <div :class="$style['pic-wrap']">
+            <div :class="$style['img']">
+                <img
+                    ref="shareAppImage"
+                    :src="$getCdnPath(`/static/image/_new/mcenter/share/shareApp.png`)"
+                    alt="shareApp"
+                />
+            </div>
+            <div :class="$style['text']" @click="downloadImage">
+                <img :src="$getCdnPath(`/static/image/_new/mcenter/share/btn_tick.png`)" />
+                {{ $text('S_AUTO_SAVE','自动保存') }}
+            </div>
         </div>
-        <p>{{ item.text }}</p>
-      </div>
+        <div :class="$style['func-wrap']">
+            <div
+                v-for="(item, index) in funcList"
+                :key="index"
+                :class="$style['func-cell']"
+            >
+                <div @click="item.callback">
+                    <img :src="$getCdnPath(item.imgSrc)" :alt="item.text" />
+                </div>
+                <p>{{ item.text }}</p>
+            </div>
 
-      <div :class="$style['cancle']" @click="closeShare">取消</div>
+            <div :class="$style['cancle']" @click="closeShare">取消</div>
 
-      <message v-if="msg" @close="msg = ''">
-        <div slot="msg">{{ msg }}</div>
-      </message>
+            <message v-if="msg" @close="msg = ''">
+                <div slot="msg">{{ msg }}</div>
+            </message>
+        </div>
+
+    <!-- <div v-if="showSaveOption" :class="$style['option-container']">
+            <div :class="$style['option-wrap']">
+                <p
+                    :class="$style['option-cell']"
+                    v-for="(item, index) in optionList"
+                    :key="`item-${index}`"
+                    @click="item.callback"
+                >
+                    {{ item.text }}
+                </p>
+
+                <div
+                    :class="[$style['option-cell'], $style['cancle']]"
+                    @click="closeOption"
+                >
+                    取消
+                </div>
+            </div>
+        </div> -->
     </div>
-  </div>
 </template>
 
 <script>
-import axios from "axios";
-import message from "../../../../common/new/message";
+import axios from 'axios';
+import message from '../../../../common/new/message';
 
 export default {
-  components: {
-    message
-  },
-  props: {
-    isShowShare: {
-      type: Boolean,
-      require: true
-    }
-  },
-  data() {
-    return {
-      msg: "",
-      // showSaveOption: false,
-      shareImageSrc: "",
-      funcList: [
-        {
-          callback: () => {
-            this.copyShareImage();
-          },
-          imgSrc: `/static/image/_new/mcenter/share/btn_copy.png`,
-          text: "复制链接"
-        },
-        {
-          callback: () => {
-            axios({
-              url: this.shareImageSrc,
-              methods: "GET",
-              responseType: "blob"
-            }).then(res => {
-              let fileURL = window.URL.createObjectURL(
-                new Blob([res.data])
-              );
-
-              let fileLink = document.createElement("a");
-              fileLink.href = fileURL;
-              fileLink.setAttribute("download", "yabo.png");
-              document.body.appendChild(fileLink);
-
-              fileLink.click();
-            });
-          },
-          imgSrc: `/static/image/_new/mcenter/share/btn_save.png`,
-          text: "保存图片"
-        }
-      ]
-    };
-  },
-  mounted() {
-    this.shareImageSrc = this.$refs.shareAppImage.src;
-  },
-  methods: {
-    closeShare() {
-      this.$emit("update:isShowShare", false);
+    components: {
+        message
     },
-    copyShareImage() {
-      this.$copyText(this.shareImageSrc).then(e => {
-        this.msg = "复制成功";
-      });
+    props: {
+        isShowShare: {
+            type: Boolean,
+            require: true
+        }
+    },
+    data() {
+        return {
+            msg: '',
+            // showSaveOption: false,
+            shareImageSrc: '',
+            funcList: [
+                {
+                    callback: () => {
+                        this.copyShareImage();
+                    },
+                    imgSrc: '/static/image/_new/mcenter/share/btn_copy.png',
+                    text: '复制链接'
+                },
+                {
+                    callback: () => {
+                        this.downloadImage();
+                    },
+                    imgSrc: '/static/image/_new/mcenter/share/btn_save.png',
+                    text: '保存图片'
+                }
+            ]
+            // optionList: [
+            //     {
+            //         callback: () => {
+            //             axios({
+            //                 url: this.shareImageSrc,
+            //                 methods: "GET",
+            //                 responseType: "blob"
+            //             }).then(res => {
+            //                 let fileURL = window.URL.createObjectURL(
+            //                     new Blob([res.data])
+            //                 );
+
+            //                 let fileLink = document.createElement("a");
+            //                 fileLink.href = fileURL;
+            //                 fileLink.setAttribute("download", "yabo.png");
+            //                 document.body.appendChild(fileLink);
+
+            //                 fileLink.click();
+            //             });
+            //         },
+            //         text: "储存图片"
+            //     },
+            //     {
+            //         callback: () => {
+            //             this.copyShareImage();
+            //         },
+            //         text: "复制图片"
+            //     },
+            //     {
+            //         callback: () => {
+            //             window.location.href = this.shareImageSrc;
+            //         },
+            //         text: "开启图片"
+            //     },
+            //     {
+            //         callback: () => {
+            //             window.open(this.shareImageSrc);
+            //         },
+            //         text: "在新分页中开启图片"
+            //     }
+            // ]
+        };
+    },
+    mounted() {
+        this.shareImageSrc = this.$refs.shareAppImage.src;
+    },
+    methods: {
+        closeShare() {
+            this.$emit('update:isShowShare', false);
+        },
+        // showOption() {
+        //     this.showSaveOption = true;
+        // },
+        // closeOption() {
+        //     this.showSaveOption = false;
+        // },
+        copyShareImage() {
+            this.$copyText(this.shareImageSrc).then((e) => {
+                this.msg = this.$text('S_COPY_SUCCESSFUL', '复制成功');
+            });
+        },
+        downloadImage() {
+            axios({
+                url: this.shareImageSrc,
+                methods: 'GET',
+                responseType: 'blob'
+            }).then((res) => {
+                const fileURL = window.URL.createObjectURL(
+                    new Blob([res.data])
+                );
+
+                const fileLink = document.createElement('a');
+                fileLink.href = fileURL;
+                fileLink.setAttribute('download', 'yabo.png');
+                document.body.appendChild(fileLink);
+
+                this.msg = this.$text('S_PICTURE_SAVED_TO_LOCAL', '图片已保存到本地相册');
+
+                fileLink.click();
+            });
+        }
     }
-  }
 };
 </script>
 
@@ -127,20 +204,29 @@ $radius: 10px;
 }
 
 .pic-wrap {
-  overflow: hidden;
   position: absolute;
-  top: 0;
-  right: 0;
-  bottom: 152px;
-  left: 0;
   width: 270px;
-  height: 345px;
-  margin: auto;
+  top: 8%;
+  left: 50%;
+  transform: translateX(-50%);
   border-radius: 8px;
-
-  img {
-    display: block;
-    width: 100%;
+  overflow: hidden;
+  .img {
+    height: 345px;
+    overflow: hidden;
+    img {
+      width: 100%;
+    }
+  }
+  .text {
+    background: #fff;
+    color: #78A8F0;
+    padding: 9px;
+    text-align: center;
+    font-size: 12px;
+    img {
+      vertical-align: middle;
+    }
   }
 }
 

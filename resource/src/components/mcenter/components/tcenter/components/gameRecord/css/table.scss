@@ -30,14 +30,13 @@
     background: $main_white_color1;
     color: $main_text_color3;
     border-radius: 8px;
-    padding: 0 9px 0 12px;
     margin-bottom: 9px;
 
     div {
         display: flex;
         justify-content: space-between;
         font-size: 14px;
-        padding-top: 9px;
+        padding: 9px 9px 0 12px;
 
         &:last-of-type {
             padding-bottom: 9px;
@@ -48,8 +47,16 @@
         }
     }
 
+    .date {
+        background: $main_background_white1;
+        font-size: 16px;
+        font-weight: 700;
+        padding: 5px 0;
+    }
+
     .card-title {
-        padding: 6px 0;
+        padding: 6px 9px 6px 12px;
+
         line-height: 21px;
         border-bottom: 1px solid #eee;
 
