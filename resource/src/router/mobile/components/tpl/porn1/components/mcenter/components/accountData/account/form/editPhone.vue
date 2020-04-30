@@ -5,7 +5,6 @@
             <div :class="$style['top-tips']">
                 <div v-if="countdownSec" :class="$style['send-tips']">
                     {{ $text("S_SEND_CHECK_CODE_VALID_TIME").replace("%s", 5) }}
-                    {{ $text("S_FIND_TRASH") }}
                 </div>
                 <div v-else-if="tipMsg">
                     {{ tipMsg }}
