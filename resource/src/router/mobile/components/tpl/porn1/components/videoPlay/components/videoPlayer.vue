@@ -2,6 +2,8 @@
   <div :class="$style['video-player-wrap']">
     <video
       ref="video-player"
+      playinline="true"
+      webkit-playsinline="true"
       class="video-js vjs-default-skin vjs-fluid vjs-big-play-centered"
     ></video>
     <!-- 彩金活動 -->
