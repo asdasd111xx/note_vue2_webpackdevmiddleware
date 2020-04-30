@@ -50,7 +50,7 @@
             </div>
         </div>
 
-        <div :class="$style['info-card']">
+        <div :class="$style['info-card']" @click="clickService">
             <div>
                 <div>
                     <img
@@ -78,7 +78,7 @@
             </div>
         </div>
 
-        <div :class="$style['info-card2']">
+        <div :class="$style['info-card2']" @click="clickService">
             <div>
                 <div>
                     <img
@@ -109,6 +109,7 @@
 </template>
 
 <script>
+import mobileLinkOpen from "@/lib/mobile_link_open";
 export default {
     data() {
         return {
@@ -143,6 +144,12 @@ export default {
                 }
             ]
         };
+    },
+    methods: {
+        mobileLinkOpen,
+        clickService() {
+            this.mobileLinkOpen({ linkType: "static", linkTo: "service" });
+        }
     }
 };
 </script>
