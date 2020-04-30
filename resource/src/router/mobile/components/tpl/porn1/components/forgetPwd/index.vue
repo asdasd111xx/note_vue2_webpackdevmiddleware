@@ -259,7 +259,7 @@ export default {
     headerConfig() {
       return {
         prev: true,
-        title: this.$text("S_PASSWORD_FORGET", "忘记密码"),
+        title: '找回密码',
         onClick: () => { this.$router.back(); }
       };
     }

@@ -138,6 +138,7 @@ export default {
       const string = this.list[key].value;
       if (!string) return;
       this.$copyText(string);
+      this.msg = '复制成功';
     }
   }
 };
