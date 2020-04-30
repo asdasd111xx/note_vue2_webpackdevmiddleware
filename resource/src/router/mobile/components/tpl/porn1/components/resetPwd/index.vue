@@ -72,75 +72,9 @@ import member from '@/api/member';
 import agent from '@/api/agent';
 
 export default {
-<<<<<<< HEAD
     components: {
         mobileContainer,
         message
-=======
-  // 原公用驗證
-  //   mixins: [resetPwd],
-  data() {
-    return {
-      errMsg: "",
-      msg: "",
-      pwd: "",
-      newPwd: "",
-      email: "",
-      confNewPwd: "",
-      pwdResetInfo: [{
-        key: 'pwd',
-        text: 'S_ORIGIN_PASSWORD',
-        regExp: /^[a-z0-9._\-!@#$&*+=|]{6,12}$/,
-        errorMsg: 'S_PASSWORD_ERROR',
-        placeholder: '请输入原密码',
-        show: false
-      },
-      {
-        key: 'newPwd',
-        text: 'S_NEW_PWD',
-        regExp: /^[a-z0-9._\-!@#$&*+=|]{6,12}$/,
-        errorMsg: 'S_PASSWORD_ERROR',
-        placeholder: '请设置新密码 (6-12位字母或数字)',
-        show: false
-      },
-      {
-        key: 'confNewPwd',
-        text: 'S_CHK_PWD',
-        regExp: /^[a-z0-9._\-!@#$&*+=|]{6,12}$/,
-        errorMsg: 'S_PASSWORD_ERROR',
-        placeholder: '请再次输入密码',
-        show: false
-      },
-      {
-        key: 'email',
-        text: 'S_E_MAIL',
-        type: 'text',
-        // regExp: /^[A-Za-z0-9.\-_]+@[A-Za-z0-9.-]+\.[A-Za-z]+$/,
-        regExp: '',
-        errorMsg: 'S_JM_EMAIL_FORMAT_UNAVAILABLE',
-        placeholder: '电子邮箱'
-      }]
-    }
-  },
-  components: {
-    mobileContainer,
-    message,
-  },
-  watch: {
-  },
-  computed: {
-    ...mapGetters({
-      webInfo: 'getWebInfo',
-      siteConfig: 'getSiteConfig',
-      memInfo: 'getMemInfo'
-    }),
-    headerConfig() {
-      return {
-        prev: true,
-        onClick: () => { this.$router.back(); },
-        title: this.$text("S_CHANGE_PASSWD", "修改密码"),
-      };
->>>>>>> c4d9ee16c75dc4e84114ed6f67498db6db5ffcbc
     },
     // 原公用驗證
     //   mixins: [resetPwd],
