@@ -163,7 +163,7 @@ export default {
         text: 'S_NEW_PWD',
         regExp: /^[a-z0-9._\-!@#$&*+=|]{6,12}$/,
         errorMsg: 'S_PASSWORD_ERROR',
-        placeholder: '(6~12码，字元限定a-z0-9._-!@#$&+=|*)',
+        placeholder: '请设置新密码 (6-12位字母或数字)',
         show: false
       },
       {
