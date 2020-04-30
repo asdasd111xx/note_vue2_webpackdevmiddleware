@@ -1,6 +1,10 @@
 <template>
-    <mobile-container :header-config="headerConfig">
-        <div slot="content" :class="$style['detail-wrap']">
+    <mobile-container
+        :header-config="headerConfig"
+        :has-footer="false"
+        :is-app="isApp"
+    >
+        <div slot="content" :class="$style['detail-wrap']" ref="detail-wrap">
             <div :class="$style['table-container']">
                 <div :class="$style['title']">返水比例</div>
 
@@ -149,14 +153,35 @@ export default {
         ...mapGetters({
             loginStatus: "getLoginStatus"
         }),
+        isApp() {
+            let isApp = !!(
+                (this.$route.query && this.$route.query.app) ||
+                (this.$route.query && this.$route.query.APP)
+            );
+            if (isApp) {
+                document.title = "VIP详请";
+            }
+            return isApp;
+        },
         headerConfig() {
-            return {
-                prev: true,
-                onClick: () => {
-                    this.$router.back();
-                },
-                title: "VIP详请"
-            };
+            if (!this.isApp) {
+                return {
+                    prev: true,
+                    onClick: () => {
+                        this.$router.back();
+                    },
+                    title: "VIP详请"
+                };
+            }
+        }
+    },
+    mounted() {
+        let el = window.document.getElementsByClassName("scroll-area");
+        el[0].style.overflow = "unset";
+
+        if (this.isApp) {
+            let ref = this.$refs["detail-wrap"];
+            ref.style.paddingTop = "0";
         }
     },
     methods: {

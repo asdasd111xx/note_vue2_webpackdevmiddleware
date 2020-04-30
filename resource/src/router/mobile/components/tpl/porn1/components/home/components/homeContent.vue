@@ -81,7 +81,7 @@
                     >
                         <div :class="[$style['video-type'], 'clearfix']">
                             <div :class="$style['type-name']">{{ videoData.name }}</div>
-                            <div :class="$style['btn-more']" @click="$router.push({ name: 'videoList', query: { tagId: videoType.id, sortId: videoData.id || 0 } })">更多</div>
+                            <div :class="$style['btn-more']" @click.stop="$router.push({ name: 'videoList', query: { tagId: videoType.id, sortId: videoData.id || 0 } })">更多</div>
                         </div>
                         <div :class="['video-wrap', 'clearfix']">
                             <div
@@ -89,7 +89,7 @@
                                 :key="`video-${video.id}`"
                                 :href="`/mobile/videoPlay/${video.id}`"
                                 :class="$style.video"
-                                @click="$router.push({ name: 'videoPlay', params: { id: video.id } })"
+                                @click.stop="$router.push({ name: 'videoPlay', params: { id: video.id } })"
                             >
                                 <img :src="video.image" />
                                 <div>{{ video.title }}</div>
@@ -103,7 +103,7 @@
                         v-for="(game, i) in currentGame.vendors"
                         :key="`game-${i}`"
                         :class="[$style.game, { [$style['is-full']]: game.imageType > 0 }]"
-                        @click="onOpenGame(game)"
+                        @click.stop="onOpenGame(game)"
                     >
                         <img :src="game.image" />
                         <span v-if="!['D', 'R'].includes(game.type) && game.name">{{ game.name }}</span>
@@ -124,7 +124,8 @@ import querystring from 'querystring';
 import find from 'lodash/find';
 import { Swiper, SwiperSlide } from 'vue-awesome-swiper';
 import mcenter from '@/api/mcenter';
-import { API_PORN1_DOMAIN } from '@/config/api';
+import { API_PORN1_DOMAIN, API_GET_VENDOR } from '@/config/api';
+import ajax from '@/lib/ajax';
 import openGame from '@/lib/open_game';
 import message from '../../common/new/message';
 
@@ -396,9 +397,13 @@ export default {
                 return;
             }
 
+            const direction = this.slideDirection;
+
+            this.slideDirection = '';
+
             // 無scroll bar
             if (!this.hasScrollBar) {
-                if (this.slideDirection === 'up') {
+                if (direction === 'up') {
                     const index = this.selectedIndex <= 0 ? this.typeList.length - 1 : this.selectedIndex - 1;
                     this.onChangeSelectInedx(index);
                     return;
@@ -409,7 +414,7 @@ export default {
             }
 
             // 以下為有scroll bar
-            if (this.slideDirection === 'up') {
+            if (direction === 'up') {
                 if (this.$refs['game-wrap'].scrollTop > 0) {
                     return;
                 }
@@ -506,6 +511,28 @@ export default {
                     default:
                         break;
                 }
+                return;
+            }
+
+            if (game.type === 'R') {
+                const win = window.open('about:blank');
+
+                ajax({
+                    method: 'get',
+                    url: `${API_GET_VENDOR}/${game.vendor}/game/launch`,
+                    errorAlert: false,
+                    params: { kind: game.kind },
+                    success: ({ result, ret }) => {
+                        if (result !== 'ok') {
+                            win.close();
+                            return;
+                        }
+                        win.location.href = `${ret.url}&customize=yabo&tableType=3310`;
+                    },
+                    fail: () => {
+                        win.close();
+                    }
+                });
                 return;
             }
 
