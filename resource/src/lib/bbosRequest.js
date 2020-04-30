@@ -19,7 +19,7 @@ export default ({
     }
 
     if (getCookie('cid')) {
-        bbosHeader['cid'] = getCookie('cid');
+        bbosHeader['Cid'] = getCookie('cid');
     }
 
     const bbosParams = {

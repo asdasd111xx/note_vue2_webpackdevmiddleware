@@ -1103,7 +1103,7 @@
     "S_SELECT_POINT_CARD": "请选择点卡",
     "S_SELECT_POINT_CARD_SHORT": "选择点卡",
     "S_FINISH_DEPOSIT": "完成支付",
-    "S_SUBMIT_WITHDRAW": "出金手続きへ",
+    "S_SUBMIT_WITHDRAW": "重新提交",
     "S_DELIVER_INFO": "收款资讯",
     "S_SERIAL_NUMBER_TIP01": "未满足流水检查，扣除费用 %s",
     "S_SUBMIT_WITHDRAW_PASSWORD": "出金パスワードを入力してください",
