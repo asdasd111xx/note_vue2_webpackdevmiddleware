@@ -41,23 +41,23 @@ export default {
   },
   data() {
     return {
-      value: new Date(),
+      value: new Date(Vue.moment(new Date()).add(-18, 'year')),
       limit: new Date(Vue.moment(new Date()).add(-18, 'year')),
       dateLang: datepickerLang(this.$i18n.locale)
     };
   },
   methods: {
     ...mapActions(['actionSetUserdata']),
-    handleSubmit(value) {
+    handleSubmit() {
       // 空值驗證
-      if (value === '') {
+      if (this.value === '') {
         alert(this.$text('S_CR_NUT_NULL'));
         return Promise.resolve('error');
       }
 
       return mcenter.accountDataSet({
         params: {
-          birthday: Vue.moment(value).format()
+          birthday: Vue.moment(this.value).format()
         },
         success: () => {
           this.$emit('msg', this.$text('S_CR_SUCCESS'));

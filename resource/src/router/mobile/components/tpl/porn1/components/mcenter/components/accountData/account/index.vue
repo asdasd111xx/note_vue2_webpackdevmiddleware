@@ -75,7 +75,7 @@
                     </span>
                   </template>
 
-                  <div :class="$style['feature-btn']">
+                  <div v-if="field.btnShow" :class="$style['feature-btn']">
                     <div :class="$style['btn-next']">
                       <img
                         :src="

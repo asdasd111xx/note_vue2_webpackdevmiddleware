@@ -188,7 +188,7 @@ export default {
 }
 
 .live-tab {
-  line-height: 43px;
+  line-height: 41px;
   height: 43px;
   position: relative;
   float: left;
