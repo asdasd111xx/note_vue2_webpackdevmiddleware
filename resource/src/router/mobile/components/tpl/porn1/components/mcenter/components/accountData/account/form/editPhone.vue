@@ -136,7 +136,7 @@ export default {
             timer: '',
             countdownSec: 0,
             options: {},
-
+            isLock: false,
             info: {
                 key: 'phone',
                 text: 'S_TEL',
@@ -282,7 +282,9 @@ export default {
 
                 return '';
             };
+            if (this.isLock) return;
 
+            this.isLock = true;
             mcenter.accountPhoneSend({
                 params: {
                     old_phone: getOldPhone(),
@@ -292,10 +294,12 @@ export default {
                     this.actionSetUserdata(true);
                     this.locker();
                     this.sendMsg = this.$text('S_SEND_CHECK_CODE_PHONE');
+                    this.isLock = false;
                 },
                 fail: (res) => {
                     this.countdownSec = '';
                     this.tipMsg = res.data.msg;
+                    this.isLock = false;
                 }
             });
         },
