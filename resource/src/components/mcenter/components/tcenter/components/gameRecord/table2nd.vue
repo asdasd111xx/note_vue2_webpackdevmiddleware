@@ -1,13 +1,14 @@
 <template>
     <div :class="$style['record-wrap']">
         <div :class="$style['total-block']">
-            <span>笔数：{{ total.counts }}</span>
+            <span>笔数：{{ counts }}</span>
             <span>有效投注：{{ total.valid_bet }}</span>
             <span>派彩：{{ +total.payoff }}</span>
         </div>
 
         <div :class="$style['list-block']">
             <div :class="$style['card']" v-for="(info, index) in list">
+                <div :class="$style['date']">{{ info.day }}</div>
                 <div :class="$style['card-title']">
                     <span :class="$style['header']">{{ info.vendor }}</span>
                     <span
@@ -19,7 +20,9 @@
                     >
                 </div>
                 <div>
-                    <span :class="$style['game-name']">{{ info.game_name }}</span>
+                    <span :class="$style['game-name']">{{
+                        info.game_name
+                    }}</span>
                 </div>
                 <div :class="$style['bet']">
                     <span>单量</span>
@@ -101,13 +104,13 @@ export default {
             type: Array,
             default: () => []
         },
-        subTotal: {
-            type: Object,
-            default: () => ({})
-        },
         total: {
             type: Object,
             default: () => ({})
+        },
+        counts: {
+            type: Number,
+            default: null
         },
         sort: {
             type: Object,

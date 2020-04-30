@@ -16,6 +16,7 @@
             :show-infinite="showInfinite"
             :infinite-handler="infiniteHandler"
             :control-1st-data="control1stData"
+            :control-2nd-data="control2ndData"
         />
     </div>
 </template>
@@ -27,6 +28,7 @@ import EST from "@/lib/EST";
 import gameName from "@/lib/game_name";
 import ajax from "@/lib/ajax";
 import * as apis from "@/config/api";
+import bbosRequest from "@/lib/bbosRequest";
 
 export default {
     props: {
@@ -74,20 +76,20 @@ export default {
             inq1st: {
                 isReceive: false,
                 list: [],
-                subTotal: {},
-                total: {}
+                total: {},
+                counts: null
             },
             inq2nd: {
                 list: [],
-                subTotal: {},
-                total: {}
+                total: {},
+                counts: null
             },
             isLoading: false,
             showInfinite: true,
             mainNoData: true,
             maxResults: {
                 main: 10,
-                bet: 10
+                bet: 1
             },
             showPage: {
                 main: 0,
@@ -97,7 +99,9 @@ export default {
     },
     computed: {
         ...mapGetters({
-            gameData: "getGameData"
+            gameData: "getGameData",
+            siteConfig: "getSiteConfig",
+            memInfo: "getMemInfo"
         }),
         searchTabs() {
             return [
@@ -168,6 +172,12 @@ export default {
                 (item, index) =>
                     index < this.maxResults.main * this.showPage.main
             );
+        },
+        control2ndData() {
+            return this.inq2nd.list.filter(
+                (item, index) =>
+                    index < this.maxResults.bet * this.showPage.bet
+            );
         }
     },
     watch: {
@@ -206,8 +216,8 @@ export default {
             this.inq1st = {
                 isReceive: false,
                 list: [],
-                subTotal: {},
-                total: {}
+                total: {},
+                counts: null
             };
             this.currentCondition = value;
             this.hasSearch = value === "range";
@@ -269,8 +279,8 @@ export default {
                             this.inq1st = {
                                 isReceive: false,
                                 list: [],
-                                subTotal: {},
-                                total: {}
+                                total: {},
+                                counts: null
                             };
                             this.mainNoData = true;
                             return;
@@ -280,8 +290,8 @@ export default {
                         this.inq1st = {
                             isReceive: true,
                             list: response.ret,
-                            subTotal: response.sub_total,
-                            total: response.total
+                            total: response.total,
+                            counts: Number(response.pagination.total)
                         };
                         this.mainNoData = false;
                     }
@@ -290,40 +300,53 @@ export default {
         },
         onSearchBet(username) {
             this.selectedUser = username;
-            this.showPage.bet = 0;
-            // this.onInquireBet();
-            this.$router.push({ params: { page: "bet" } });
+            this.onInquireBet();
         },
         onInquireBet() {
-            ajax({
+            this.showInfinite = false;
+            this.isLoading = true;
+            this.showPage.bet = 0;
+
+            bbosRequest({
                 method: "get",
-                url: apis.API_FRIEND_WAGER_REPORT_BY_DAY_GAME,
+                url:
+                    this.siteConfig.BBOS_DOMIAN +
+                    "/Stats/Player/Friends/WagerReport/ByDayGame",
+                reqHeaders: {
+                    Vendor: this.memInfo.user.domain
+                },
                 params: {
-                    user_id: this.selectedUser,
-                    start_at: Vue.moment(this.currentStart).format(
+                    lang: "zh-cn",
+                    username: this.selectedUser,
+                    startAt: Vue.moment(this.currentStart).format(
                         "YYYY-MM-DD 00:00:00-04:00"
                     ),
-                    end_at: Vue.moment(this.currentEnd).format(
+                    endAt: Vue.moment(this.currentEnd).format(
                         "YYYY-MM-DD 23:59:59-04:00"
                     )
-                    // vendor: this.currentGame
                 }
             }).then(response => {
-                if (response.result === "ok") {
+                if (response.status === "000") {
                     this.$router.push({ params: { page: "bet" } });
-                    this.$nextTick(() => {
-                        // this.totalPage[this.currentPage] = Math.ceil(
-                        //     response.pagination.total / this.maxResults.bet
-                        // );
+                    this.showInfinite = true;
+
+                    if (response.data.ret.length === 0) {
                         this.inq2nd = {
-                            list: response.ret.map(info => ({
-                                ...info,
-                                name: gameName(info.vendor_name, info.kind)
-                            })),
-                            subTotal: response.total,
-                            total: response.sum
+                            list: [],
+                            total: {},
+                            counts: null
                         };
-                    });
+                        this.mainNoData = true;
+                        return;
+                    }
+
+                    this.isLoading = false;
+                    this.inq2nd = {
+                        list: response.data.ret,
+                        total: response.data.total,
+                        counts: Number(response.data.pagination.total)
+                    };
+                    this.mainNoData = false;
                 }
             });
         },
@@ -334,28 +357,59 @@ export default {
          */
         infiniteHandler($state) {
             setTimeout(() => {
-                if (this.currentPage === "main") {
-                    if (this.inq1st.list.length === 0) {
-                        this.isLoading = false;
-                        $state.complete();
-                        return;
-                    }
-
-                    if (
-                        this.inq1st.list.length / this.maxResults.main >
-                        this.showPage.main
-                    ) {
-                        this.showPage.main += 1;
-                        $state.loaded();
+                switch (this.currentPage) {
+                    case "main":
+                        if (this.inq1st.list.length === 0) {
+                            this.isLoading = false;
+                            $state.complete();
+                            return;
+                        }
 
                         if (
-                            Math.ceil(
-                                this.inq1st.list.length / this.maxResults.main
-                            ) === this.showPage.main
+                            this.inq1st.list.length / this.maxResults.main >
+                            this.showPage.main
                         ) {
-                            $state.complete();
+                            this.showPage.main += 1;
+                            $state.loaded();
+
+                            if (
+                                Math.ceil(
+                                    this.inq1st.list.length /
+                                        this.maxResults.main
+                                ) === this.showPage.main
+                            ) {
+                                $state.complete();
+                            }
                         }
-                    }
+                        break;
+
+                    case "bet":
+                        if (this.inq2nd.list.length === 0) {
+                            this.isLoading = false;
+                            $state.complete();
+                            return;
+                        }
+
+                        if (
+                            this.inq2nd.list.length / this.maxResults.bet >
+                            this.showPage.bet
+                        ) {
+                            this.showPage.bet += 1;
+                            $state.loaded();
+
+                            if (
+                                Math.ceil(
+                                    this.inq2nd.list.length /
+                                        this.maxResults.bet
+                                ) === this.showPage.bet
+                            ) {
+                                $state.complete();
+                            }
+                        }
+                        break;
+
+                    default:
+                        break;
                 }
             }, 300);
         }

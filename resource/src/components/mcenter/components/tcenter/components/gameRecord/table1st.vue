@@ -1,7 +1,7 @@
 <template>
     <div :class="$style['record-wrap']">
         <div :class="$style['total-block']">
-            <span>笔数：{{ total.counts }}</span>
+            <span>笔数：{{ counts }}</span>
             <span>有效投注：{{ total.valid_bet }}</span>
             <span>派彩：{{ +total.payoff }}</span>
         </div>
@@ -42,13 +42,13 @@ export default {
             type: Array,
             default: () => []
         },
-        subTotal: {
-            type: Object,
-            default: () => ({})
-        },
         total: {
             type: Object,
             default: () => ({})
+        },
+        counts: {
+            type: Number,
+            default: null
         },
         sort: {
             type: Object,
