@@ -106,6 +106,10 @@ export default {
   background-image: url("/static/image/_new/about/bg.png");
 }
 
+.content-wrap {
+  height: calc(100vh - 110px);
+  overflow-y: auto;
+}
 .yabo {
   width: 75px;
   height: 75px;
