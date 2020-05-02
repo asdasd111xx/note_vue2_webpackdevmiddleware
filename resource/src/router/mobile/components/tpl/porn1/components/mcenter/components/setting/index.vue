@@ -1,67 +1,89 @@
 <template>
-    <mobile-container :header-config="headerConfig" :class="$style.container">
-        <div slot="content" :class="$style['setting-wrap']">
-            <div
-                v-for="listInfo in list"
-                :key="`list-${listInfo.name}`"
-                :class="[$style.list, {[$style['list-part']]: listInfo.isPart}, {[$style['list-border-bottom']]: !listInfo.isPart}]"
-                @click="handleClick(listInfo.path)"
-            >
-                <span> {{ listInfo.name }} </span>
-                <div :class="$style['btn-next']">
-                    <img :src="$getCdnPath(`/static/image/_new/mcenter/ic_arrow_next.png`)" />
-                </div>
-            </div>
-
-            <div :class="$style['logout']" @click="logout">
-                退出
-            </div>
+  <mobile-container :header-config="headerConfig" :class="$style.container">
+    <div slot="content" :class="$style['setting-wrap']">
+      <div
+        v-for="listInfo in list"
+        :key="`list-${listInfo.name}`"
+        :class="[
+          $style.list,
+          { [$style['list-part']]: listInfo.isPart },
+          { [$style['list-border-bottom']]: !listInfo.isPart }
+        ]"
+        @click="handleClick(listInfo.path)"
+      >
+        <span> {{ listInfo.name }} </span>
+        <div :class="$style['btn-next']">
+          <img
+            :src="$getCdnPath(`/static/image/_new/mcenter/ic_arrow_next.png`)"
+          />
         </div>
-    </mobile-container>
+      </div>
+
+      <div v-if="version" :class="[$style.list]">
+        <span> {{ $text("S_CURRENT_VERSION", "当前版本") }} </span>
+        <span>
+          {{ version }}
+        </span>
+      </div>
+
+      <div :class="$style['logout']" @click="logout">
+        退出
+      </div>
+    </div>
+  </mobile-container>
 </template>
 
 <script>
 import { mapGetters } from 'vuex';
 import member from '@/api/member';
 import mobileContainer from '../../../common/new/mobileContainer';
+import { getCookie, setCookie } from '@/lib/cookie';
 
 export default {
-    components: {
-        mobileContainer
-    },
-    data() {
-        return {
-            list: [
-                { name: this.$text('S_CHANGE_PASSWD', '代理登入'), path: '/mobile/resetPwd', isPart: true },
-                { name: this.$text('S_FEEDBACK', '意见反馈'), path: '/mobile/mcenter/feedback/sendFeedback', isPart: true }
-            ]
-        };
-    },
-    computed: {
-        ...mapGetters({
-            loginStatus: 'getLoginStatus'
-        }),
-        headerConfig() {
-            return {
-                prev: true,
-                onClick: () => { this.$router.back(); },
-                title: this.$text('S_SETTING', '设置')
-            };
-        }
-    },
-    created() {
-        if (!this.loginStatus) {
-            this.$router.push('/mobile/home');
-        }
-    },
-    methods: {
-        handleClick(path) {
-            this.$router.push(path);
-        },
-        logout() {
-            member.logout().then(() => { window.location.reload(); });
-        }
+  components: {
+    mobileContainer
+  },
+  data() {
+    return {
+      version: "",
+      list: [
+        { name: this.$text('S_CHANGE_PASSWD', '代理登入'), path: '/mobile/resetPwd', isPart: true },
+        { name: this.$text('S_FEEDBACK', '意见反馈'), path: '/mobile/mcenter/feedback/sendFeedback', isPart: true }
+      ]
+    };
+  },
+  mounted() {
+    let version = this.$route.query.version || getCookie('version');
+    if (version) {
+      this.version = version;
+      setCookie('version', version);
     }
+  },
+  computed: {
+    ...mapGetters({
+      loginStatus: 'getLoginStatus'
+    }),
+    headerConfig() {
+      return {
+        prev: true,
+        onClick: () => { this.$router.back(); },
+        title: this.$text('S_SETTING', '设置')
+      };
+    }
+  },
+  created() {
+    if (!this.loginStatus) {
+      this.$router.push('/mobile/home');
+    }
+  },
+  methods: {
+    handleClick(path) {
+      this.$router.push(path);
+    },
+    logout() {
+      member.logout().then(() => { window.location.reload(); });
+    }
+  }
 };
 </script>
 
@@ -76,7 +98,7 @@ export default {
   color: $main_text_color3;
 
   > div:first-child {
-      margin-top: 5px;
+    margin-top: 5px;
   }
 
   .list {
@@ -85,10 +107,15 @@ export default {
     display: flex;
     align-items: center;
     background-color: $main_white_color1;
-    border-bottom: 1px solid #EEE;
+    border-bottom: 1px solid #eee;
 
     > span {
       width: 100%;
+    }
+
+    > span:last-child {
+      text-align: right;
+      padding-right: 14px;
     }
   }
 
@@ -114,10 +141,10 @@ export default {
 }
 
 .list-part {
-    margin-bottom: 10px;
+  margin-bottom: 10px;
 }
 
 .list-border-bottom {
-    border-bottom: 1px solid #EEE;
+  border-bottom: 1px solid #eee;
 }
 </style>
