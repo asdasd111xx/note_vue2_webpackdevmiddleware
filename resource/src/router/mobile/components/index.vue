@@ -42,7 +42,7 @@ export default {
     // PWA版本
     let version = this.$route.query.version || getCookie('version');
     if (version) {
-      setCookie('version', version)
+      setCookie('version', version);
     }
 
     // 設置隱藏屬性和改變可見屬性的事件的名稱
