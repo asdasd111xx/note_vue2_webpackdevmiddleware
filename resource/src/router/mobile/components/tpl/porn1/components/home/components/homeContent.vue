@@ -2,43 +2,46 @@
   <div
     v-if="isReceive"
     ref="home-wrap"
-    :style="{ height: `${wrapHeight}px` }"
     :class="[$style['home-wrap'], 'clearfix']"
   >
     <!-- 左側分類 -->
-    <div :class="$style['type-wrap']">
-      <swiper ref="type-swiper" :options="typeOptions">
-        <swiper-slide
-          v-for="(type, index) in typeList"
-          :key="`type-${index}`"
-          :class="$style['type-swiper']"
+    <div
+      ref="type-wrap"
+      :class="$style['type-wrap']"
+      @touchstart="onTypeTouchStart"
+      @touchmove="onTypeTouchMove"
+    >
+      <div
+        v-for="(type, index) in typeList"
+        :key="`type-${index}`"
+        :class="$style['type-swiper']"
+        @click="onChangeSelectInedx(index)"
+      >
+        <img
+          v-if="selectedIndex === index"
+          :src="
+            $getCdnPath(
+              `/static/image/_new/platform/icon/icon_${type.icon}_h.png`
+            )
+          "
+        />
+        <img
+          v-else
+          :src="
+            $getCdnPath(
+              `/static/image/_new/platform/icon/icon_${type.icon}_n.png`
+            )
+          "
+        />
+        <div
+          :class="[
+            $style['type-title'],
+            { [$style.active]: selectedIndex === index }
+          ]"
         >
-          <img
-            v-if="selectedIndex === index"
-            :src="
-              $getCdnPath(
-                `/static/image/_new/platform/icon/icon_${type.icon}_h.png`
-              )
-            "
-          />
-          <img
-            v-else
-            :src="
-              $getCdnPath(
-                `/static/image/_new/platform/icon/icon_${type.icon}_n.png`
-              )
-            "
-          />
-          <div
-            :class="[
-              $style['type-title'],
-              { [$style.active]: selectedIndex === index }
-            ]"
-          >
-            {{ type.name }}
-          </div>
-        </swiper-slide>
-      </swiper>
+          {{ type.name }}
+        </div>
+      </div>
     </div>
     <!-- 右側內容 -->
     <div :class="$style['all-game-wrap']">
@@ -58,7 +61,7 @@
             />
           </div>
           <div :class="[$style['video-tag'], 'clearfix']">
-            <swiper ref="tag-swiper" :options="tagOptions">
+            <swiper ref="tag-swiper" :options="options">
               <swiper-slide
                 v-for="(tag, index) in videoTag"
                 :key="`tag-${index}`"
@@ -191,6 +194,7 @@
 </template>
 
 <script>
+/* global $ */
 import { mapGetters } from 'vuex';
 import axios from 'axios';
 import querystring from 'querystring';
@@ -213,10 +217,11 @@ export default {
       isReceive: false,
       isShowAllTag: false,
       isSliding: false,
-      hasScrollBar: false,
+      isTop: false,
+      isBottom: false,
+      typeStartTouchY: 0,
       startTouchY: 0,
       slideDirection: '',
-      slideStatus: '',
       wrapHeight: 0,
       videoTag: [],
       videoSort: [],
@@ -249,35 +254,8 @@ export default {
       const adultVideo = this.isAdult ? [{ icon: 'Tv', name: '影片' }] : [];
       return [...adultVideo, ...this.allGame.map((game) => ({ icon: game.iconName, name: game.name }))];
     },
-    typeSwiper() {
-      return this.$refs['type-swiper'].$swiper;
-    },
-    typeOptions() {
-      return {
-        loop: true,
-        freeMode: true,
-        mousewheel: true,
-        slideToClickedSlide: true,
-        preventInteractionOnTransition: true,
-        loopAdditionalSlides: this.typeList.length,
-        height: 63,
-        direction: 'vertical',
-        on: {
-          click: () => {
-            this.onChangeSelectInedx(this.typeSwiper.realIndex);
-          }
-        }
-      };
-    },
-    tagSwiper() {
-      return this.$refs['tag-swiper'].$swiper;
-    },
-    tagOptions() {
-      return {
-        slidesPerView: 'auto',
-        spaceBetween: 4,
-        slideClass: this.$style.tag
-      };
+    options() {
+      return { slidesPerView: 'auto', spaceBetween: 4, slideClass: this.$style.tag };
     },
     allGameList() {
       const gameList = this.allGame.map((game) => ({ ...game, isVideo: false }));
@@ -312,7 +290,7 @@ export default {
     }
   },
   mounted() {
-    window.addEventListener('resize', this.onResize);
+    $(window).on('resize', this.onResize);
 
     const params = this.isAdult ? [this.getVideoTag(), this.getVideoSort(), this.getVideoRecommand(), this.getVideoList(), this.getAllGame()] : [this.getAllGame()];
 
@@ -320,7 +298,7 @@ export default {
       this.isReceive = true;
 
       this.$nextTick(() => {
-        window.dispatchEvent(new Event('resize'));
+        $(window).trigger('resize');
       });
     });
 
@@ -339,7 +317,7 @@ export default {
     });
   },
   beforeDestroy() {
-    window.removeEventListener('resize', this.onResize);
+    $(window).off('resize', this.onResize);
   },
   methods: {
     // 取得影片分類
@@ -438,6 +416,26 @@ export default {
       // 計算外框高度
       this.wrapHeight = window.innerHeight - this.$refs['home-wrap'].offsetTop - 60;
     },
+    onTypeTouchStart(e) {
+      if (this.isSliding) {
+        return;
+      }
+
+      // 取得touch起始位置
+      this.typeStartTouchY = e.touches[0].clientY;
+    },
+    onTypeTouchMove(e) {
+      if (this.isSliding) {
+        return;
+      }
+
+      const ele = this.$refs['type-wrap'];
+      const isGoBottom = this.typeStartTouchY > e.touches[0].clientY;
+
+      if (isGoBottom && ele.scrollHeight - 10 <= ele.scrollTop + ele.clientHeight) {
+        e.preventDefault();
+      }
+    },
     onTouchStart(e) {
       if (this.isSliding) {
         return;
@@ -445,22 +443,22 @@ export default {
 
       // 取得touch起始位置
       this.startTouchY = e.touches[0].clientY;
-      // 檢查是否有scroll bar
-      this.hasScrollBar = this.$refs['game-wrap'].scrollHeight > this.$refs['game-wrap'].clientHeight;
     },
     onTouchMove(e) {
       if (this.isSliding) {
         return;
       }
 
-      // 單純點擊不做切換
-      if (this.startTouchY === e.touches[0].clientY) {
-        this.slideDirection = '';
-        return;
-      }
-
       // 判斷滑動方向
       this.slideDirection = this.startTouchY > e.touches[0].clientY ? 'down' : 'up';
+      // 判斷是否置頂
+      this.isTop = this.slideDirection === 'up' && this.$refs['game-wrap'].scrollTop <= 10;
+      // 判斷是否置底
+      this.isBottom = this.slideDirection === 'down' && this.$refs['game-wrap'].scrollHeight - 10 <= this.$refs['game-wrap'].scrollTop + this.$refs['game-wrap'].clientHeight;
+
+      if (this.isTop || this.isBottom) {
+        e.preventDefault();
+      }
     },
     onTouchEnd() {
       if (this.isSliding) {
@@ -471,45 +469,41 @@ export default {
         return;
       }
 
-      const direction = this.slideDirection;
-
-      this.slideDirection = '';
-
-      // 無scroll bar
-      if (!this.hasScrollBar) {
-        if (direction === 'up') {
-          const index = this.selectedIndex <= 0 ? this.typeList.length - 1 : this.selectedIndex - 1;
-          this.onChangeSelectInedx(index);
-          return;
-        }
-        const index = this.selectedIndex >= this.typeList.length - 1 ? 0 : this.selectedIndex + 1;
-        this.onChangeSelectInedx(index);
-        return;
-      }
-
-      // 以下為有scroll bar
-      if (direction === 'up') {
-        if (this.$refs['game-wrap'].scrollTop > 0) {
-          return;
-        }
+      if (this.isTop) {
         const index = this.selectedIndex <= 0 ? this.typeList.length - 1 : this.selectedIndex - 1;
         this.onChangeSelectInedx(index);
         return;
       }
 
-      if (this.$refs['game-wrap'].scrollHeight > this.$refs['game-wrap'].scrollTop + this.$refs['game-wrap'].clientHeight) {
-        return;
+      if (this.isBottom) {
+        const index = this.selectedIndex >= this.typeList.length - 1 ? 0 : this.selectedIndex + 1;
+        this.onChangeSelectInedx(index);
       }
-
-      const index = this.selectedIndex >= this.typeList.length - 1 ? 0 : this.selectedIndex + 1;
-      this.onChangeSelectInedx(index);
     },
     // 切換當前分類
     onChangeSelectInedx(index) {
       this.isSliding = true;
+      this.isTop = false;
+      this.isBottom = false;
+      this.typeStartTouchY = 0;
+      this.startTouchY = 0;
       this.slideDirection = '';
       this.selectedIndex = index;
-      this.typeSwiper.slideToLoop(index);
+
+      // 當前區域可完整顯示數量
+      const displayNumber = Math.floor(this.wrapHeight / 63);
+      // 當前區域可置頂數量
+      const topNumber = this.typeList.length - displayNumber;
+
+      let top = 0;
+
+      if (index < topNumber) {
+        top = index * 63;
+      } else {
+        top = this.$refs['type-wrap'].scrollHeight - this.wrapHeight;
+      }
+
+      $(this.$refs['type-wrap']).animate({ scrollTop: top }, 300);
 
       this.$nextTick(() => {
         this.isSliding = false;
@@ -521,7 +515,7 @@ export default {
       this.videoType = { ...this.videoTag[index] };
 
       this.$nextTick(() => {
-        this.tagSwiper.slideTo(index);
+        this.$refs['tag-swiper'].$swiper.slideTo(index);
       });
     },
     // 開啟影片分類選單
@@ -577,11 +571,9 @@ export default {
           case 'BL':
             this.$router.push({ name: 'liveStream', params: { type: 'cutiesLive' } });
             break;
-
           case 'SL':
             this.$router.push({ name: 'liveStream', params: { type: 'ballLive' } });
             break;
-
           default:
             break;
         }
@@ -619,11 +611,17 @@ export default {
 <style lang="scss" module>
 .home-wrap {
   overflow: hidden;
+  position: relative;
   padding: 0 18px 0 13px;
 }
 
 .type-wrap {
-  float: left;
+  overflow-y: auto;
+  position: absolute;
+  top: 0;
+  bottom: 0;
+  left: 13px;
+  z-index: 1;
   width: 63px;
 }
 
@@ -652,8 +650,7 @@ export default {
 }
 
 .all-game-wrap {
-  float: right;
-  width: calc(100% - 63px);
+  margin-left: 63px;
 }
 
 .top-wrap {
