@@ -11,8 +11,7 @@ export default {
     },
     filters: {
         dateFormat(date) {
-            const toESTDate = new Date(date).getTime() + ((new Date(date).getTimezoneOffset() / 60) * 3600000) - 14400000;
-            return format(toESTDate, 'MM/dd');
+            return format(new Date(date), 'MM/dd');
         }
     },
     computed: {

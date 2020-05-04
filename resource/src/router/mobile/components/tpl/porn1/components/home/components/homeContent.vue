@@ -406,7 +406,7 @@ export default {
           return;
         }
 
-        this.allGame = [...response.data.data.filter((game) => game.vendors.length > 0)];
+        this.allGame = [...response.data.data];
       });
     },
     onResize() {
