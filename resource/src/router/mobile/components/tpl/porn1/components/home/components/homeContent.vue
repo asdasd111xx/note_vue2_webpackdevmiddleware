@@ -231,8 +231,7 @@ export default {
         { name: 'accountVip', text: 'VIP' },
         { name: 'grade', text: '等级' }
       ],
-      msg: '',
-      isMounted: false
+      msg: ''
     };
   },
   computed: {
