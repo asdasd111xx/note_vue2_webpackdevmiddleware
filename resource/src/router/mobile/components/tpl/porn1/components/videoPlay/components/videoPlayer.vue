@@ -119,8 +119,12 @@ export default {
       this.player.on("play", () => {
         this.handleClickVideo();
       })
-    }
 
+      if (!this.loginStatus) {
+        this.$refs.bonunsDialog.isShow = true
+        this.dialogType = 'tips';
+      }
+    }
   },
   methods: {
     handleClickVideo() {

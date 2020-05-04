@@ -36,12 +36,9 @@
         </template>
       </div>
       <div>
-        <span>观影60秒计时 彩金分分送</span>
-        <!-- API開關及金額 -->
-        <!-- <span :class="$style['money-symbol']">¥</span>
-        <span>
-          最高送18元
-        </span> -->
+        <span> 观影60秒计时奖励 </span>
+        <span :class="$style['money-symbol']">¥</span>
+        <span> 彩金分分送 </span>
       </div>
     </div>
     <div :class="$style['btn-next']">
@@ -159,7 +156,7 @@ export default {
   height: 18px;
   background: #ff8900;
   border: 2pt solid #fecf34;
-  margin: 0 8px 0 11px;
+  margin: 0 2px;
 }
 
 .info-wrap {

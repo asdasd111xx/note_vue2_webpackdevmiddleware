@@ -208,7 +208,14 @@
       </div>
 
       <!-- 額度提示訊息 -->
-      <template v-if="withdrawUserData && withdrawData.payment_charge">
+      <template
+        v-if="
+          withdrawUserData &&
+            withdrawData.payment_charge &&
+            withdrawUserData.account &&
+            withdrawUserData.account.length > 0
+        "
+      >
         <div :class="$style['tips']">
           {{
             $text("S_WITHRAW_DESC", {
@@ -296,6 +303,11 @@
       </div>
 
       <div
+        v-if="
+          withdrawUserData &&
+            withdrawUserData.account &&
+            withdrawUserData.account.length > 0
+        "
         :class="[
           $style['submit-btn'],
           { [$style['disabled']]: errTips || !withdrawValue || !selectedCard }
@@ -313,7 +325,18 @@
       </div>
 
       <div :class="$style['tips']">
-        为了方便您快速提现，请先将所有场馆钱包金额回收至中心钱包
+        <template
+          v-if="
+            withdrawUserData &&
+              withdrawUserData.account &&
+              withdrawUserData.account.length > 0
+          "
+        >
+          为了方便您快速提现，请先将所有场馆钱包金额回收至中心钱包
+        </template>
+        <template v-else>
+          请先绑定一张银行卡，用于收款
+        </template>
       </div>
 
       <!-- 流水檢查 -->
