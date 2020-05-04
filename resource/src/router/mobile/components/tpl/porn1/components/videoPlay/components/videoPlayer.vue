@@ -152,6 +152,9 @@ export default {
           //狀態
           // 'OPEN', 'PLAY', 'STOP', 'CLOSE', 'BREAK', 'FULL', 'POOR'
           switch (data.Status) {
+            case 'RISK':
+              this.$refs.bonunsProcess.processType = 'done';
+              return;
             case 'FULL':
               this.$refs.bonunsProcess.processType = 'done';
               this.$refs.bonunsDialog.isShow = true;
@@ -233,7 +236,7 @@ export default {
     },
     // "STOP" | "CLOSE" | "PLAY"
     onSend(type) {
-      if (!this.socket || this.socket.readyState === 3) {
+      if (!this.socket || this.socket.readyState === 3 || this.$refs.bonunsProcess.processType === 'done') {
         return
       }
       let data = {
