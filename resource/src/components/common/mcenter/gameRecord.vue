@@ -62,16 +62,6 @@ export default {
             currentGame: "",
             currentStart: "",
             currentEnd: "",
-            sortBy: {
-                // 排序欄位
-                main: "payoff",
-                bet: "payoff"
-            },
-            sortWay: {
-                // 排序方法
-                main: "asc",
-                bet: "asc"
-            },
             inq1st: {
                 list: [],
                 total: {},
@@ -187,6 +177,7 @@ export default {
     },
     methods: {
         changeSearchCondition(value) {
+
             this.inq1st = {
                 list: [],
                 total: {},

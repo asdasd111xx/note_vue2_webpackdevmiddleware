@@ -21,7 +21,7 @@
         </div>
 
         <div :class="$style['card-wrap']">
-            <div
+            <!-- <div
                 v-if="isIos"
                 :class="$style['card']"
                 v-for="(item, index) in iosCard"
@@ -32,7 +32,21 @@
                 </div>
                 <div>
                     <div :class="$style['text']">{{ item.text }}</div>
-                    <div :class="$style['download']">立即下载</div>
+                    <div :class="$style['download']" @click="download">
+                        立即下载
+                    </div>
+                </div>
+            </div> -->
+
+            <div v-if="isIos" :class="[$style['card'], $style['isSingle']]">
+                <div :class="[$style['img'], $style['isSingle']]">
+                    <img :src="$getCdnPath(yaboIconSrc)" alt="icon" />
+                </div>
+                <div :class="$style['isSingle']">
+                    <div :class="$style['text']">IOS版</div>
+                    <div :class="$style['download']" @click="download">
+                        立即下载
+                    </div>
                 </div>
             </div>
 
@@ -42,7 +56,9 @@
                 </div>
                 <div :class="$style['isSingle']">
                     <div :class="$style['text']">亚博直播APP</div>
-                    <div :class="$style['download']">立即下载</div>
+                    <div :class="$style['download']" @click="download">
+                        立即下载
+                    </div>
                 </div>
             </div>
         </div>
@@ -107,6 +123,9 @@
 
 <script>
 import mobileLinkOpen from "@/lib/mobile_link_open";
+import bbosRequest from "@/lib/bbosRequest";
+import { mapGetters } from "vuex";
+
 export default {
     data() {
         return {
@@ -142,10 +161,54 @@ export default {
             ]
         };
     },
+    computed: {
+        ...mapGetters({
+            siteConfig: "getSiteConfig",
+            memInfo: "getMemInfo"
+        }),
+        currentBundle() {
+            switch (this.memInfo.user.domain) {
+                case "500015":
+                    return "bbin.mobile.xbbPorn.qa";
+                    break;
+
+                case "69":
+                    return "chungyo.foxyporn.stage.enterprise";
+                    break;
+
+                case "67":
+                    return "chungyo.foxyporn.prod.enterprise";
+                    break;
+
+                default:
+                    break;
+            }
+        }
+    },
     methods: {
         mobileLinkOpen,
         clickService() {
             this.mobileLinkOpen({ linkType: "static", linkTo: "service" });
+        },
+        download() {
+            if (this.currentBundle) {
+                bbosRequest({
+                    method: "get",
+                    url: this.siteConfig.BBOS_DOMIAN + "/App/Download",
+                    reqHeaders: {
+                        Vendor: this.memInfo.user.domain
+                    },
+                    params: {
+                        bundleID: this.currentBundle,
+                        lang: "zh-cn",
+                        platform: this.isIos ? 1 : 3
+                    }
+                }).then(res => {
+                    if (res.status === "000" && res.data) {
+                        location.href = res.data.url;
+                    }
+                });
+            }
         }
     }
 };

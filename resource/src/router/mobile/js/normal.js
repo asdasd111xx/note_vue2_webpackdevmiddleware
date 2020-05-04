@@ -152,5 +152,10 @@ export default [
         path: 'webview',
         name: 'webview',
         component
-    }
+    },
+    { // App 安裝頁面
+        path: 'install',
+        name: 'install',
+        component
+    },
 ];
