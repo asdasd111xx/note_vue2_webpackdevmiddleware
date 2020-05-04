@@ -123,9 +123,7 @@ export default {
         max_results: 10,
       }
 
-      let cid = getCookie('cid') ?
-        getCookie('cid') :
-        setCookie('cid', this.cid)
+      let cid = getCookie('cid');
       if (!cid) return
 
       // RD7 BBOS API
