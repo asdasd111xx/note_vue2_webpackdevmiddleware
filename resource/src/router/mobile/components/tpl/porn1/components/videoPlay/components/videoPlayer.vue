@@ -284,7 +284,7 @@ export default {
 // 彩金
 .video-block {
   height: 100%;
-  position: fixed;
+  position: absolute;
   top: 0;
   right: 0;
   z-index: 200;
