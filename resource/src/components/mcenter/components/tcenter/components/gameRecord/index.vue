@@ -101,6 +101,8 @@
                         :total="inq1st.total"
                         :counts="inq1st.counts"
                         :sort="sort"
+                        :inqStart="inqStart"
+                        :inqEnd="inqEnd"
                         @update:sort="onSort"
                         @onInquire="onSearchBet"
                     />
@@ -130,10 +132,6 @@
                         <span slot="no-more" />
                         <span slot="no-results" />
                     </infinite-loading>
-                    <!-- <div :class="$style['no-data']">
-                        <img src="/static/image/_new/mcenter/no_data.png" />
-                        <p>{{ $text("S_NO_DATA_YET", "暂无资料") }}</p>
-                    </div> -->
                 </template>
 
                 <div
