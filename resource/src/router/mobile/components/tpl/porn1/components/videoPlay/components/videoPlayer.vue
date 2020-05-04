@@ -85,7 +85,7 @@ export default {
       try {
         // connect websocket
         let cid = getCookie('cid');
-        let uri = this.siteConfig.ACTIVES_BOUNS_WEBSOCKET + `?cid=${cid}&domain=${window.location.origin}`;
+        let uri = this.siteConfig.ACTIVES_BOUNS_WEBSOCKET + `?cid=${cid}&domain=${this.memInfo.user.domain}`;
         this.socket = new WebSocket(uri);
         this.socket.onmessage = this.onMessage;
         this.socket.onopen = this.onOpen;
@@ -188,6 +188,7 @@ export default {
           //當前累積時間(0)
           this.$refs.bonunsProcess.curMin = data.CueTimes;
 
+          // 當總金額不等於0跟計時等於0時 顯示右上角獲得金額
           if (data.Amount != 0 && Number(data.CueTimes) % Number(data.Active.CueTimes) === 0) {
             this.$refs.bonunsProcess.showEarn(data.Amount);
           }

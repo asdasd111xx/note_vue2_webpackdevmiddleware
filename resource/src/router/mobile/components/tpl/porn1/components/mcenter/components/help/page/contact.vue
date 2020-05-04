@@ -114,6 +114,7 @@ export default {
   },
   computed: {
     ...mapGetters({
+      memInfo: 'getMemInfo',
       loginStatus: 'getLoginStatus',
       siteConfig: 'getSiteConfig'
     }),
@@ -129,7 +130,7 @@ export default {
     axios({
       method: 'get',
       url: `${this.siteConfig.YABO_API_DOMAIN}/system/contactus`,
-      headers: { 'x-domain': window.location.origin }
+      headers: { 'x-domain': this.memInfo.user.domain }
     }).then((res) => {
       if (res && res.data && res.data.data) {
         this.list = res.data.data;

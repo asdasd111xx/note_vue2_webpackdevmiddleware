@@ -420,11 +420,11 @@ export default {
       return axios({
         method: 'get',
         url: `${this.siteConfig.YABO_API_DOMAIN}/game/list`,
-        headers: { 'x-domain': window.location.origin },
         timeout: 30000,
         headers: {
           Bundleid: 'chungyo.foxyporn.prod.enterprise.web',
-          Version: 1
+          Version: 1,
+          'x-domain': this.memInfo.user.domain
         }
       }).then((response) => {
         if (response.status !== 200) {
