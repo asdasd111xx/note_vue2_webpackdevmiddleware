@@ -22,10 +22,10 @@
 
         <div :class="$style['card-wrap']">
             <div
-                v-if="type === 'ios'"
+                v-if="isIos"
                 :class="$style['card']"
                 v-for="(item, index) in iosCard"
-                :key="'ios-' + index"
+                :key="'iOS-' + index"
             >
                 <div :class="$style['img']">
                     <img :src="$getCdnPath(yaboIconSrc)" alt="icon" />
@@ -36,10 +36,7 @@
                 </div>
             </div>
 
-            <div
-                v-if="type === 'android'"
-                :class="[$style['card'], $style['isSingle']]"
-            >
+            <div v-if="!isIos" :class="[$style['card'], $style['isSingle']]">
                 <div :class="[$style['img'], $style['isSingle']]">
                     <img :src="$getCdnPath(yaboIconSrc)" alt="icon" />
                 </div>
@@ -113,7 +110,7 @@ import mobileLinkOpen from "@/lib/mobile_link_open";
 export default {
     data() {
         return {
-            type: "ios",
+            isIos: !!navigator.userAgent.match(/\(i[^;]+;( U;)? CPU.+Mac OS X/),
             iconList: [
                 {
                     text: "多种玩法",
