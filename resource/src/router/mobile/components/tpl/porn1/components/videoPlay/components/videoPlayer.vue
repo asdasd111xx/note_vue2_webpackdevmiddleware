@@ -85,7 +85,7 @@ export default {
       try {
         // connect websocket
         let cid = getCookie('cid');
-        let uri = this.siteConfig.ACTIVES_BOUNS_WEBSOCKET + `?cid=${cid}`;
+        let uri = this.siteConfig.ACTIVES_BOUNS_WEBSOCKET + `?cid=${cid}&domain=${window.location.origin}`;
         this.socket = new WebSocket(uri);
         this.socket.onmessage = this.onMessage;
         this.socket.onopen = this.onOpen;
