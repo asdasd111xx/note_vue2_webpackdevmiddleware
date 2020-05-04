@@ -1,5 +1,5 @@
 <template>
-  <mobile-container>
+  <mobile-container :has-footer="false">
     <div slot="content" :class="$style['live-stream-wrap']">
       <div :class="$style['btn-prev']" @click="$router.push('/mobile')">
         <img :src="$getCdnPath('/static/image/_new/common/btn_back.png')" />

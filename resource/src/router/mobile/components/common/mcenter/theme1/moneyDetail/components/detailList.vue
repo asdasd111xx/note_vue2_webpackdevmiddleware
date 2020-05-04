@@ -37,7 +37,7 @@ import Vue from 'vue';
 export default {
     filters: {
         timeFormat(date) {
-            return Vue.moment(date).format('HH:mm:ss');
+            return Vue.moment(date).utcOffset(-4).format('HH:mm:ss');
         }
     },
     props: {

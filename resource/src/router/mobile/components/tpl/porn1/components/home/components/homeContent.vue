@@ -145,12 +145,7 @@
               <div :class="$style['type-name']">{{ videoData.name }}</div>
               <div
                 :class="$style['btn-more']"
-                @click.stop="
-                  $router.push({
-                    name: 'videoList',
-                    query: { tagId: videoType.id, sortId: videoData.id || 0 }
-                  })
-                "
+                @click.stop="openVideo('videoList',{query: { tagId: videoType.id, sortId: videoData.id || 0 }})"
               >
                 更多
               </div>
@@ -161,9 +156,7 @@
                 :key="`video-${video.id}`"
                 :href="`/mobile/videoPlay/${video.id}`"
                 :class="$style.video"
-                @click.stop="
-                  $router.push({ name: 'videoPlay', params: { id: video.id } })
-                "
+                @click.stop="openVideo('videoPlay',{params: { id: video.id }})"
               >
                 <img :src="video.image" />
                 <div>{{ video.title }}</div>
@@ -238,7 +231,8 @@ export default {
         { name: 'accountVip', text: 'VIP' },
         { name: 'grade', text: '等级' }
       ],
-      msg: ''
+      msg: '',
+      isMounted: false
     };
   },
   computed: {
@@ -299,7 +293,11 @@ export default {
 
       this.$nextTick(() => {
         $(window).trigger('resize');
+      const icon = localStorage.getItem('type');
+      const index = this.typeList.findIndex((data) => data.icon === icon);
+      this.onChangeSelectInedx(index > 0 ? index : this.selectedIndex);
       });
+
     });
 
     if (!this.loginStatus) {
@@ -545,6 +543,8 @@ export default {
       // SL => 體育直播
       // D => 代理
       // T => 敬请期待
+      localStorage.setItem('type', this.typeList[this.selectedIndex].icon);
+
       if (game.type === 'D') {
         return;
       }
@@ -603,6 +603,10 @@ export default {
       }
 
       openGame({ kind: game.kind, vendor: game.vendor, code: game.code });
+    },
+    openVideo(name, routerParam) {
+        localStorage.setItem('type', 'Tv');
+        this.$router.push({name, ...routerParam });
     }
   }
 };
