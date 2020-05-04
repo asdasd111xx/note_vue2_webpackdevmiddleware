@@ -156,7 +156,7 @@ export default {
   height: 18px;
   background: #ff8900;
   border: 2pt solid #fecf34;
-  margin: 0 2px;
+  margin: 0 5px;
 }
 
 .info-wrap {
