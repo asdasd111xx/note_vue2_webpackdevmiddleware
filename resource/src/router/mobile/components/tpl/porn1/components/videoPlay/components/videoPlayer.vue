@@ -109,6 +109,13 @@ export default {
           this.onSend("STOP");
       })
 
+      this.player.on("ended", () => {
+        this.$refs.bonunsProcess.playCueTime("pause");
+        this.isPlaying = false;
+        if (this.socket)
+          this.onSend("STOP");
+      })
+
       this.player.on("play", () => {
         this.handleClickVideo();
       })
@@ -179,7 +186,7 @@ export default {
               this.$refs.bonunsProcess.playCueTime();
               break;
             case 'STOP':
-              this.$refs.bonunsProcess.playCueTime(false);
+              this.$refs.bonunsProcess.playCueTime("pause");
               return;
             case 'CLOSE':
               return;

@@ -27,9 +27,7 @@
                 : memInfo.user.username
             }}
           </span>
-          <span :class="$style['vip-level']">
-            VIP{{ vip.now_level_id }}
-          </span>
+          <span :class="$style['vip-level']"> VIP{{ vip.now_level_id }} </span>
         </template>
         <template v-else>
           <span @click="$router.push('/mobile/joinmember')">
@@ -38,14 +36,12 @@
         </template>
       </div>
       <div>
-        <span>观影60秒计时奖励</span>
-        <!-- <img
-            :src="$getCdnPath(`/static/image/_new/theme3/${info.key}.png`)"
-          /> -->
-        <span :class="$style['money-symbol']">¥</span>
+        <span>观影60秒计时 彩金分分送</span>
+        <!-- API開關及金額 -->
+        <!-- <span :class="$style['money-symbol']">¥</span>
         <span>
-          最高送6元
-        </span>
+          最高送18元
+        </span> -->
       </div>
     </div>
     <div :class="$style['btn-next']">

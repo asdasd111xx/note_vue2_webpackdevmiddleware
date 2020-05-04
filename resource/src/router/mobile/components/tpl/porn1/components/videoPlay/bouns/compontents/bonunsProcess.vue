@@ -110,10 +110,11 @@ export default {
     },
     // 收到playing跑一次進度動畫
     playCueTime(play) {
-      if (play) { this.playingCueTime = play; return; }
-      if (this.playingCueTime) { return; }
-      this.playingCueTime = true;
+      if (play === "pause") { this.isPause = true; return; }
+      if (this.playingCueTime) { this.isPause = false; return; }
 
+      this.isPause = false;
+      this.playingCueTime = true;
       this.cunTimer = setTimeout(() => {
         this.playingCueTime = false;
       }, 60000)
