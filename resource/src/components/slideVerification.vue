@@ -1,7 +1,7 @@
 <template>
   <div :id="$style['js-nc-check-bar']" :class="$style['drag-verify-wrap']">
     <div v-if="isBackEnd" :class="$style['nc_wrapper']">
-      <div $style['nc_text']> 请按住滑块，移动到最右边</div>
+      <div :class="$style['nc_text']"> 请按住滑块，移动到最右边</div>
       <div :class="$style['nc_scale']">
         <span :class="[$style['nc_iconfont'], $style['btn_slide']]"></span>
       </div>

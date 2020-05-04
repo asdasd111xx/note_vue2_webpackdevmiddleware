@@ -124,7 +124,7 @@ export default {
   text-align: right;
   text-overflow: ellipsis;
   white-space: nowrap;
-  vertical-align: middle;
+  vertical-align: top;
   color: #5e626d;
 }
 
