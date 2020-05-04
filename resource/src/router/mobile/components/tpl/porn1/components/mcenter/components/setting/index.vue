@@ -9,23 +9,18 @@
           { [$style['list-part']]: listInfo.isPart },
           { [$style['list-border-bottom']]: !listInfo.isPart }
         ]"
-        @click="handleClick(listInfo.path)"
+        @click="listInfo.path && handleClick(listInfo.path)"
       >
         <span> {{ listInfo.name }} </span>
-        <div :class="$style['btn-next']">
+        <div v-if="listInfo.path" :class="$style['btn-next']">
           <img
             :src="$getCdnPath(`/static/image/_new/mcenter/ic_arrow_next.png`)"
           />
         </div>
-      </div>
-
-      <div v-if="version" :class="[$style.list]">
-        <span> {{ $text("S_CURRENT_VERSION", "当前版本") }} </span>
-        <span>
+        <span v-else>
           {{ version }}
         </span>
       </div>
-
       <div :class="$style['logout']" @click="logout">
         退出
       </div>
@@ -48,7 +43,9 @@ export default {
       version: "",
       list: [
         { name: this.$text('S_CHANGE_PASSWD', '代理登入'), path: '/mobile/resetPwd', isPart: true },
-        { name: this.$text('S_FEEDBACK', '意见反馈'), path: '/mobile/mcenter/feedback/sendFeedback', isPart: true }
+        { name: this.$text('S_FEEDBACK', '意见反馈'), path: '/mobile/mcenter/feedback/sendFeedback', isPart: false },
+        { name: this.$text("S_CURRENT_VERSION", "当前版本"), path: '', isPart: true }
+
       ]
     };
   },
