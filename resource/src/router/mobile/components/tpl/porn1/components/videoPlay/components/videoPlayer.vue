@@ -1,6 +1,7 @@
 <template>
   <div :class="$style['video-player-wrap']">
     <video
+      id="video-play"
       ref="video-player"
       playsinline="true"
       webkit-playsinline="true"
@@ -77,7 +78,8 @@ export default {
     });
 
     // 彩金疊加在播放器上
-    $('#video-play-block').appendTo($('.video-js'));
+    let videoDom = document.getElementById("video-play");
+    videoDom.insertBefore(document.getElementById("video-play-block"), videoDom.childNodes[0]);
     //活動開關
     if (this.isActiveBouns) {
       try {
@@ -136,10 +138,10 @@ export default {
         let data = JSON.parse(e.data);
         this.socketId = data.SocketId;
         // 彩金開關
-        // this.isActiveBouns = !!(data.HasActivity);
-        // if (!this.isActiveBouns) {
-        //   return
-        // }
+        this.isActiveBouns = !!(data.HasActivity);
+        if (!data.HasActivity) {
+          return
+        }
 
         if (process.env.NODE_ENV === 'development') {
           console.log("msg ==>")
@@ -194,7 +196,6 @@ export default {
           //   this.$refs.bonunsProcess.showEarn(data.Amount);
           // }
 
-          if (!this.$refs.bonunsDialog) { return }
           //獲得彩金
           this.$refs.bonunsDialog.earnCurrentNum = Number(Number(data.Active.BreakAmout) * Number(data.BreakTimes)).toFixed(2);
 
@@ -280,7 +281,7 @@ export default {
 // 彩金
 .video-block {
   height: 100%;
-  position: absolute;
+  position: fixed;
   top: 0;
   right: 0;
   z-index: 200;
