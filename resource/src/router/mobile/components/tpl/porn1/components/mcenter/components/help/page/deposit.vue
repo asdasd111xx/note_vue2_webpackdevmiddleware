@@ -7,10 +7,16 @@
     <div slot="content">
       <div :class="$style['section']">
         <div
-          v-if="loginStatus"
+          v-if="hasCid"
           :class="[$style['cell']]"
           :style="{ 'margin-bottom': '10px' }"
-          @click="$router.push('/mobile/mcenter/help/detail?type=deposit')"
+          @click="
+            $router.push(
+              `/mobile/mcenter/help/detail?type=deposit${
+                isApp ? '&app=true' : ''
+              }`
+            )
+          "
         >
           <div :class="$style['title']">
             {{ $text("S_RECENTLY_DEPOSIT", "近10笔充值纪录") }}
@@ -30,6 +36,7 @@
 import { mapGetters } from 'vuex';
 import member from '@/api/member';
 import mobileContainer from '../../../../common/new/mobileContainer';
+import { getCookie, setCookie } from '@/lib/cookie';
 
 export default {
   components: {
@@ -37,13 +44,23 @@ export default {
   },
   data() {
     return {
-
+      hasCid: false,
     };
+  },
+  mounted() {
+    this.hasCid = getCookie('cid') || false;
   },
   computed: {
     ...mapGetters({
       loginStatus: 'getLoginStatus'
     }),
+    isApp() {
+      let isApp = !!((this.$route.query && this.$route.query.app) || (this.$route.query && this.$route.query.APP))
+      if (isApp)
+        document.title = "充值教程"
+
+      return isApp
+    },
     headerConfig() {
       return {
         prev: true,

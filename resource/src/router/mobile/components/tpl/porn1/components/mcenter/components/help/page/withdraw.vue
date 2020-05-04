@@ -8,7 +8,7 @@
     <div slot="content">
       <div :class="$style['section']">
         <div
-          v-if="loginStatus || isApp"
+          v-if="hasCid"
           :class="[$style['cell']]"
           :style="{ 'margin-bottom': '10px' }"
           @click="
@@ -61,7 +61,9 @@
 import { mapGetters } from 'vuex';
 import member from '@/api/member';
 import mobileContainer from '../../../../common/new/mobileContainer';
-import info from '../json/withdraw.json'
+import info from '../json/withdraw.json';
+import { getCookie, setCookie } from '@/lib/cookie';
+
 export default {
   components: {
     mobileContainer,
@@ -69,6 +71,7 @@ export default {
   data() {
     return {
       isShowRecoard: false,
+      hasCid: false,
       data: info.data.map(function (el) {
         let _o = Object.assign({}, el);
         _o.isOpen = false;
@@ -78,6 +81,7 @@ export default {
   },
   mounted() {
     if (!info) this.$router.back();
+    this.hasCid = getCookie('cid') || false;
   },
   computed: {
     ...mapGetters({
