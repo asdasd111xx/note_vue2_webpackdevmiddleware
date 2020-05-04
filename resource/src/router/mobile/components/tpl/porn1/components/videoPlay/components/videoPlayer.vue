@@ -1,6 +1,7 @@
 <template>
   <div :class="$style['video-player-wrap']">
     <video
+      id="video-play"
       ref="video-player"
       playsinline="true"
       webkit-playsinline="true"
@@ -14,7 +15,6 @@
     >
       <bonuns-dialog
         ref="bonunsDialog"
-        v-show="!isFullBouns"
         :type="dialogType"
         @close="isShowBounsDialog = false"
       />
@@ -50,7 +50,6 @@ export default {
       isActiveBouns: true, //預設打開由message決定是否啟動
       isShowBounsDialog: false,
       isShowBounsProcess: true,
-      isFullBouns: false,
       dialogType: "tips",// 提示 & 賺得彩金
       socket: null,
       socketId: "",
@@ -79,7 +78,8 @@ export default {
     });
 
     // 彩金疊加在播放器上
-    $('#video-play-block').appendTo($('.video-js'));
+    let videoDom = document.getElementById("video-play");
+    videoDom.insertBefore(document.getElementById("video-play-block"), videoDom.childNodes[0]);
     //活動開關
     if (this.isActiveBouns) {
       try {
@@ -98,7 +98,6 @@ export default {
       }
 
       this.player.on("playing", () => {
-
         this.isPlaying = true;
         if (this.socket)
           this.onSend("PLAY");
@@ -136,12 +135,13 @@ export default {
     },
     onMessage(e) {
       if (e.data) {
-        let data = JSON.parse(e.data)
+        let data = JSON.parse(e.data);
         this.socketId = data.SocketId;
-        // this.isActiveBouns = !!(data.HasActivity);
-        // if (!this.isActiveBouns) {
-        //   return
-        // }
+        // 彩金開關
+        this.isActiveBouns = !!(data.HasActivity);
+        if (!data.HasActivity) {
+          return
+        }
 
         if (process.env.NODE_ENV === 'development') {
           console.log("msg ==>")
@@ -153,28 +153,30 @@ export default {
           // 'OPEN', 'PLAY', 'STOP', 'CLOSE', 'BREAK', 'FULL', 'POOR'
           switch (data.Status) {
             case 'FULL':
-              this.$refs.bonunsProcess.isFinish = true;
-              this.$refs.bonunsDialog.isShow = true
-              this.isFullBouns = true;
-              this.dialogType = `tips-${data.Status.toLowerCase()}`
+              this.$refs.bonunsProcess.processType = 'done';
+              this.$refs.bonunsDialog.isShow = true;
+              this.dialogType = `tips-${data.Status.toLowerCase()}`;
+              if (!this.player.paused()) {
+                this.player.pause();
+              }
               break;
             case 'POOR':
-              this.dialogType = `tips-${data.Status.toLowerCase()}`
-              this.$refs.bonunsDialog.isShow = true
+              this.dialogType = `tips-${data.Status.toLowerCase()}`;
+              this.$refs.bonunsDialog.isShow = true;
               break;
             case 'BREAK':
-              this.dialogType = `tips-${data.Status.toLowerCase()}`
-              this.$refs.bonunsDialog.isShow = true
-              this.$refs.bonunsDialog.hadEarnNum = data.BreakTimes
+              this.dialogType = `tips-${data.Status.toLowerCase()}`;
+              this.$refs.bonunsDialog.isShow = true;
+              this.$refs.bonunsDialog.hadEarnNum = data.BreakTimes;
               if (!this.player.paused()) {
                 this.player.pause();
               }
               break;
             case 'PLAY':
-              this.$refs.bonunsProcess.playCueTime()
+              this.$refs.bonunsProcess.playCueTime();
               break;
             case 'STOP':
-              this.$refs.bonunsProcess.playCueTime(false)
+              this.$refs.bonunsProcess.playCueTime(false);
               return;
             case 'CLOSE':
               return;
@@ -185,15 +187,15 @@ export default {
           //每次累積彩金
           this.$refs.bonunsProcess.earnCoin = Number(Number(data.Active.MinAmout) * Number(data.Active.CueTimes)).toFixed(2);
 
+          // 0504 - 調整成每分鐘都顯示獲得金額
           //當前累積時間(0)
           this.$refs.bonunsProcess.curMin = data.CueTimes;
 
           // 當總金額不等於0跟計時等於0時 顯示右上角獲得金額
-          if (data.Amount != 0 && Number(data.CueTimes) % Number(data.Active.CueTimes) === 0) {
-            this.$refs.bonunsProcess.showEarn(data.Amount);
-          }
+          // if (data.Amount != 0 && Number(data.CueTimes) % Number(data.Active.CueTimes) === 0) {
+          //   this.$refs.bonunsProcess.showEarn(data.Amount);
+          // }
 
-          if (!this.$refs.bonunsDialog) { return }
           //獲得彩金
           this.$refs.bonunsDialog.earnCurrentNum = Number(Number(data.Active.BreakAmout) * Number(data.BreakTimes)).toFixed(2);
 
@@ -201,14 +203,13 @@ export default {
           this.$refs.bonunsDialog.earnSingleNum = Number(data.Active.BreakAmout).toFixed(2);
 
           //已經獲得彩金數
-          this.$refs.bonunsDialog.hadEarnNum = data.BreakTimes
+          this.$refs.bonunsDialog.hadEarnNum = data.BreakTimes;
 
           //可獲得最高彩金
-          this.$refs.bonunsDialog.limitAmount = Number(data.Active.LimitAmout).toFixed(2)
+          this.$refs.bonunsDialog.limitAmount = Number(data.Active.LimitAmout).toFixed(2);
 
           //可獲得彩金數
-          this.$refs.bonunsDialog.earnCellNum = (Number(data.Active.LimitAmout) / Number(data.Active.BreakAmout))
-
+          this.$refs.bonunsDialog.earnCellNum = (Number(data.Active.LimitAmout) / Number(data.Active.BreakAmout));
         }
       }
     },
@@ -280,7 +281,7 @@ export default {
 // 彩金
 .video-block {
   height: 100%;
-  position: absolute;
+  position: fixed;
   top: 0;
   right: 0;
   z-index: 200;

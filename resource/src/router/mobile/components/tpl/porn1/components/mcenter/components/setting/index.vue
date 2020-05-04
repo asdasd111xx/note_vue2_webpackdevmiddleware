@@ -11,15 +11,20 @@
         ]"
         @click="listInfo.path && handleClick(listInfo.path)"
       >
-        <span> {{ listInfo.name }} </span>
-        <div v-if="listInfo.path" :class="$style['btn-next']">
-          <img
-            :src="$getCdnPath(`/static/image/_new/mcenter/ic_arrow_next.png`)"
-          />
-        </div>
-        <span v-else>
-          {{ version }}
-        </span>
+        <template v-if="!listInfo.isVersion">
+          <span> {{ listInfo.name }} </span>
+          <div :class="$style['btn-next']">
+            <img
+              :src="$getCdnPath(`/static/image/_new/mcenter/ic_arrow_next.png`)"
+            />
+          </div>
+        </template>
+        <template v-else>
+          <span> {{ listInfo.name }} </span>
+          <span>
+            {{ version }}
+          </span>
+        </template>
       </div>
       <div :class="$style['logout']" @click="logout">
         退出
@@ -44,8 +49,6 @@ export default {
       list: [
         { name: this.$text('S_CHANGE_PASSWD', '代理登入'), path: '/mobile/resetPwd', isPart: true },
         { name: this.$text('S_FEEDBACK', '意见反馈'), path: '/mobile/mcenter/feedback/sendFeedback', isPart: false },
-        { name: this.$text("S_CURRENT_VERSION", "当前版本"), path: '', isPart: true }
-
       ]
     };
   },
@@ -54,6 +57,10 @@ export default {
     if (version) {
       this.version = version;
       setCookie('version', version);
+
+      this.list.push({
+        name: this.$text("S_CURRENT_VERSION", "当前版本"), path: '', isPart: true, isVersion: true
+      })
     }
   },
   computed: {

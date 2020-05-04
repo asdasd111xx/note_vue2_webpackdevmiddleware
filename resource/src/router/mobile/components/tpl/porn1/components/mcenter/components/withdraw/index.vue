@@ -178,7 +178,7 @@
           @click="handleSelectCard(item)"
         >
           <!-- 缺銀行圖片 -->
-          <img :src="`${bankSrc}${item.id}.png`" />
+          <img :src="`${bankSrc}${item.bank_id}.png`" />
           <span>{{ item.alias }} </span>
           <div
             :class="[
@@ -346,7 +346,7 @@ export default {
       selectAccountValue: '',
       isSendSubmit: false,
 
-      isShowMore: false,
+      isShowMore: true,
       msg: '',
       selectedCard: '',
       errTips: '',
