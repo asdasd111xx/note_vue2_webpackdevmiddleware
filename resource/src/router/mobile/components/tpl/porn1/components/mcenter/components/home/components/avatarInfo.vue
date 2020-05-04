@@ -35,10 +35,15 @@
           </span>
         </template>
       </div>
-      <div>
+      <div v-if="!loginStatus">
         <span> 观影60秒计时奖励 </span>
         <span :class="$style['money-symbol']">¥</span>
         <span> 彩金分分送 </span>
+      </div>
+      <div v-else>
+        <span> 观影60秒计时奖励 </span>
+        <span :class="$style['money-symbol']">¥</span>
+        <span> 最高送18 </span>
       </div>
     </div>
     <div :class="$style['btn-next']">

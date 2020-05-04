@@ -379,7 +379,7 @@ export default {
         hasHelp: true
       },
       msg: "",
-      isShowMore: false,
+      isShowMore: true,
       isShowTransOutSelect: false,
       isShowTransInSelect: false,
       transInText: "请选择帐户",
