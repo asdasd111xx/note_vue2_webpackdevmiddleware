@@ -39,9 +39,11 @@ export default {
       };
 
       return {
+        prev: true,
         isBackgroundGradient: true,
         hasSearchBtn: name === 'home' && this.isAdult,
         title: trans[name],
+        onClick: () => { this.$router.back(); }
       };
     },
     template() {

@@ -3,18 +3,7 @@
         <div :class="$style['field-title']">{{ $text("S_BIRTHDAY_DATE") }}</div>
         <div :class="$style['input-wrap']">
             <div :class="$style['field-value']">
-                <datepicker
-                    v-model="value"
-                    :wrapper-class="$style.datepicker"
-                    :input-class="$style['datepicker-input']"
-                    :language="dateLang"
-                    :disabled="{ from: limit }"
-                    :open-date="limit"
-                    :monday-first="true"
-                    :placeholder="$t('S_BIRTHDAY_DATE')"
-                    format="yyyy/MM/dd"
-                    initial-view="year"
-                />
+                <input v-model="value" type="date" />
             </div>
             <div :class="$style['btn-wrap']">
                 <span :class="$style['btn-cancel']" @click="$emit('cancel')">
@@ -30,21 +19,21 @@
 
 <script>
 import Vue from 'vue';
-import datepicker from 'vuejs-datepicker';
-import { mapActions } from 'vuex';
+import { mapGetters, mapActions } from 'vuex';
 import datepickerLang from '@/lib/datepicker_lang';
 import mcenter from '@/api/mcenter';
 
 export default {
-    components: {
-        datepicker
-    },
     data() {
         return {
-            value: new Date(Vue.moment(new Date()).add(-18, 'year')),
-            limit: new Date(Vue.moment(new Date()).add(-18, 'year')),
+            value: '',
             dateLang: datepickerLang(this.$i18n.locale)
         };
+    },
+    computed: {
+        ...mapGetters({
+            systemTime: 'getSystemTime'
+        })
     },
     methods: {
         ...mapActions(['actionSetUserdata']),
@@ -52,6 +41,13 @@ export default {
             // 空值驗證
             if (this.value === '') {
                 alert(this.$text('S_CR_NUT_NULL'));
+                return Promise.resolve('error');
+            }
+
+            const valueDate = new Date(this.value);
+            const limit = new Date(Vue.moment(this.systemTime).add(-18, 'year'));
+            if (valueDate > limit) {
+                this.$emit('msg', '年龄未满十八岁,无法游戏');
                 return Promise.resolve('error');
             }
 
