@@ -7,6 +7,13 @@
         </div>
 
         <div :class="$style['list-block']">
+            <div v-if="inqStart === inqEnd" :class="$style['date']">
+                {{ inqStart }}
+            </div>
+            <div v-else :class="$style['date']">
+                {{ inqStart }} ~ {{ inqEnd }}
+            </div>
+
             <div
                 :class="$style['card']"
                 v-for="(info, index) in list"
@@ -53,6 +60,14 @@ export default {
         sort: {
             type: Object,
             required: true
+        },
+        inqStart: {
+            type: String,
+            default: ""
+        },
+        inqEnd: {
+            type: String,
+            default: ""
         }
     },
     methods: {

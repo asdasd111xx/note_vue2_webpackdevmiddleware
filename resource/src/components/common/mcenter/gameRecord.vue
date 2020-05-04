@@ -89,7 +89,7 @@ export default {
             mainNoData: true,
             maxResults: {
                 main: 10,
-                bet: 1
+                bet: 10
             },
             showPage: {
                 main: 0,
@@ -175,8 +175,7 @@ export default {
         },
         control2ndData() {
             return this.inq2nd.list.filter(
-                (item, index) =>
-                    index < this.maxResults.bet * this.showPage.bet
+                (item, index) => index < this.maxResults.bet * this.showPage.bet
             );
         }
     },
@@ -325,30 +324,52 @@ export default {
                         "YYYY-MM-DD 23:59:59-04:00"
                     )
                 }
-            }).then(response => {
-                if (response.status === "000") {
-                    this.$router.push({ params: { page: "bet" } });
-                    this.showInfinite = true;
+            })
+                .then(response => {
+                    if (response.status === "000") {
+                        this.$router.push({ params: { page: "bet" } });
+                        this.showInfinite = true;
 
-                    if (response.data.ret.length === 0) {
+                        if (response.data.ret.length === 0) {
+                            this.inq2nd = {
+                                list: [],
+                                total: {},
+                                counts: null
+                            };
+                            this.mainNoData = true;
+                            return;
+                        }
+
+                        this.isLoading = false;
                         this.inq2nd = {
-                            list: [],
-                            total: {},
-                            counts: null
+                            list: response.data.ret,
+                            total: response.data.total,
+                            counts: Number(response.data.pagination.total)
                         };
-                        this.mainNoData = true;
-                        return;
-                    }
 
-                    this.isLoading = false;
-                    this.inq2nd = {
-                        list: response.data.ret,
-                        total: response.data.total,
-                        counts: Number(response.data.pagination.total)
-                    };
-                    this.mainNoData = false;
-                }
-            });
+                        this.mainNoData = false;
+                    }
+                })
+                .then(() => {
+                    // 整理 inq2nd.list => 將以日期區分資料
+                    let result = [];
+                    let dateArr = [];
+                    this.inq2nd.list.map(item => {
+                        if (dateArr.includes(item.day)) {
+                            result
+                                .find(i => i.day === item.day)
+                                .list.push({ ...item });
+                        } else {
+                            dateArr.push(item.day);
+                            result.push({
+                                day: item.day,
+                                list: [{ ...item }]
+                            });
+                        }
+                    });
+
+                    this.inq2nd.list = result;
+                });
         },
         /**
          * 捲動加載
