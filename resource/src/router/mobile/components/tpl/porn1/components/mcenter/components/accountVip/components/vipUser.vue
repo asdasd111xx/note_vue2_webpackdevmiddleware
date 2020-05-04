@@ -45,10 +45,19 @@
                                 `/static/image/_new/mcenter/vip/vip_run.png`
                             )
                         "
-                        :style="`right: ${userVipInfo.percent > 77 ? userVipInfo.percent - 100 : -23}px`"
+                        :style="
+                            `right: ${
+                                userVipInfo.percent > 77
+                                    ? userVipInfo.percent - 100
+                                    : -23
+                            }px`
+                        "
                         alt="run"
                     />
-                    <span>{{ userVipInfo.percent }}%</span>
+                    <span
+                        ::style="`right: ${userVipInfo.percent > 90 ? -10 : -15 }px`"
+                        >{{ userVipInfo.percent }}%</span
+                    >
                 </div>
             </div>
 

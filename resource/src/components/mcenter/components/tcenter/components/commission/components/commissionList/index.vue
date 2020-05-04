@@ -1,6 +1,6 @@
 <template>
-    <div v-if="!mainNoData" :class="$style['commission-list-wrap']">
-        <template v-if=" commissionList.length">
+    <div :class="$style['commission-list-wrap']">
+        <template v-if="!mainNoData">
             <div :class="$style['total-block']">
                 <span>笔数：{{ commissionList.length }}</span>
                 <span>返利总计：{{ allTotal.amount | amountFormat }}</span>

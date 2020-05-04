@@ -95,7 +95,6 @@ export default {
                         return;
                     }
 
-                    console.log('enter?');
                     this.isLoading = false;
                     this.pageTotal = response.sub_total; // 小計
                     this.allTotal = response.total; // 總計

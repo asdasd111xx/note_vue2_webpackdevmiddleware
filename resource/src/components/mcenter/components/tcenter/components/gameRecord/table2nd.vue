@@ -55,54 +55,6 @@ export default {
         counts: {
             type: Number,
             default: null
-        },
-        sort: {
-            type: Object,
-            required: true
-        }
-    },
-    data() {
-        return {
-            test: [
-                {
-                    day: "2019-09-22",
-                    kind: 3,
-                    code: "5106",
-                    bet: "189.0000",
-                    valid_bet: "188.9244",
-                    payoff: "-63.0000",
-                    count: "21",
-                    game_name: "THREE KINGDOMS",
-                    vendor: "bbin"
-                },
-                {
-                    day: "2019-09-22",
-                    kind: 3,
-                    code: "5902",
-                    bet: "80.0000",
-                    valid_bet: "79.9680",
-                    payoff: "2.5000",
-                    count: "16",
-                    game_name: "Candy Party",
-                    vendor: "bbin"
-                }
-            ]
-        };
-    },
-    methods: {
-        onSort(sortBy) {
-            if (this.sort.by === sortBy) {
-                this.$emit("update:sort", {
-                    ...this.sort,
-                    way: this.sort.way === "asc" ? "desc" : "asc"
-                });
-                return;
-            }
-
-            this.$emit("update:sort", {
-                by: sortBy,
-                way: "asc"
-            });
         }
     }
 };
