@@ -60,7 +60,8 @@ export default {
         { key: 'process', src: 'coin_bg' },
         { key: 'earn', src: 'coin_y' }],
       isClose: false,
-      earnCoin: "15.00",
+      isStart: false,
+      earnCoin: "",
       curMin: 0,
       playingCueTime: false,
       lastAmount: 0,
@@ -74,8 +75,10 @@ export default {
   },
   watch: {
     curMin(newValue, oldValue) {
-      if (this.curMin != Number(this.lastCueMin)) {
+      if (this.curMin != Number(this.lastCueMin) && this.isStart) {
         this.handleToggleEarnCoin();
+      } else {
+        this.isStart = true;
       }
     },
     processType() {

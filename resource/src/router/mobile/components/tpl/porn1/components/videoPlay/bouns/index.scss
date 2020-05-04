@@ -153,8 +153,12 @@ $bouns_color6: #FFF07B;
         }
 
         >span {
+            display: block;
             position: absolute;
             color: $bouns_color6;
+            white-space: nowrap;
+            overflow: hidden;
+            text-overflow: ellipsis;
 
             &.earn {
                 right: 0;

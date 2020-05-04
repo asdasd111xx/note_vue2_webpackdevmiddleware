@@ -188,7 +188,8 @@ export default {
           }
 
           //每次累積彩金
-          this.$refs.bonunsProcess.earnCoin = Number(Number(data.Active.MinAmout) * Number(data.Active.CueTimes)).toFixed(2);
+          // this.$refs.bonunsProcess.earnCoin = Number(Number(data.Active.MinAmout) * Number(data.Active.CueTimes)).toFixed(2);
+          this.$refs.bonunsProcess.earnCoin = Number(data.Active.MinAmout).toFixed(2);
 
           // 0504 - 調整成每分鐘都顯示獲得金額
           //當前累積時間(0)
