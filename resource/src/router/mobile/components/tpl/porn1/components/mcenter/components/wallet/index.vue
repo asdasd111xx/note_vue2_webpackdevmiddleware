@@ -222,7 +222,8 @@ export default {
     computed: {
         ...mapGetters({
             loginStatus: 'getLoginStatus',
-            memInfo: 'getMemInfo'
+            memInfo: 'getMemInfo',
+            gameData: 'getGameData'
         }),
         headerConfig() {
             return {
@@ -298,6 +299,15 @@ export default {
         `;
         },
         getVendorName(vendor, kind) {
+            if (!this.memInfo.vendors.find((item) => item.vendor === vendor && item.kind === kind)) {
+                return this.$t(Object.keys(this.gameData).map((key) => {
+                    if (this.gameData[key].vendor === vendor) {
+                        return this.gameData[key].text;
+                    }
+
+                    return '';
+                }).join(''));
+            }
             return this.memInfo.vendors.find((item) => item.vendor === vendor && item.kind === kind).alias;
         }
     }

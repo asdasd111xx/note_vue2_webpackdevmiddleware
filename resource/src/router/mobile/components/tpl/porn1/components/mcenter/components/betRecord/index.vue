@@ -207,7 +207,8 @@ export default {
     },
     computed: {
         ...mapGetters({
-            memInfo: 'getMemInfo'
+            memInfo: 'getMemInfo',
+            gameData: 'getGameData'
         }),
         headerConfig() {
             return {
@@ -384,6 +385,15 @@ export default {
             return `${Vue.moment(date).format('MM-DD').replace('-', '月')}日`;
         },
         getVendorName(vendor, kind) {
+            if (!this.memInfo.vendors.find((item) => item.vendor === vendor && item.kind === kind)) {
+                return this.$t(Object.keys(this.gameData).map((key) => {
+                    if (this.gameData[key].vendor === vendor) {
+                        return this.gameData[key].text;
+                    }
+
+                    return '';
+                }).join(''));
+            }
             return this.memInfo.vendors.find((item) => item.vendor === vendor && item.kind === kind).alias;
         },
         getCount(date) {

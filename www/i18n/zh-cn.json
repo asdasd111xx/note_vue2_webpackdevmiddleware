@@ -1679,5 +1679,6 @@
     "S_GET_VERIFICATION_CODE": "获取验证码",
     "S_BIND_SUCCESSFULLY": "绑定成功",
     "S_PICTURE_SAVED_TO_LOCAL": "图片已保存到本地相册",
-    "S_AUTO_SAVE": "自动保存"
+    "S_AUTO_SAVE": "自动保存",
+    "S_XBB_GAMIMG": "XBB麻将馆"
 }
