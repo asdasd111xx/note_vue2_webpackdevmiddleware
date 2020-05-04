@@ -30,6 +30,7 @@
                 </div>
                 <div :class="$style.wrap">
                     <div :class="$style.title" v-html="post.title" />
+                    <div :class="$style['post-time']">{{ post.enable_at | shortDateFormat }}</div>
                     <div :class="$style.content" v-html="post.content" />
                 </div>
             </div>
@@ -46,6 +47,9 @@ export default {
     filters: {
         dateFormat(date) {
             return Vue.moment(date).format('YYYY-MM-DD HH:mm:ss');
+        },
+        shortDateFormat(date) {
+            return Vue.moment(date).format('YYYY-MM-DD');
         }
     },
     data() {
@@ -209,10 +213,18 @@ export default {
 }
 
 .title {
+    display: inline-block;
     height: 20px;
     line-height: 20px;
     color: #414655;
     font-size: 14px;
+}
+
+.post-time {
+    float: right;
+    line-height: 22px;
+    color: #A6A9B2;
+    font-size: 12px;
 }
 
 .content {

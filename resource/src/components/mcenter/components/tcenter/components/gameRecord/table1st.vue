@@ -1,18 +1,25 @@
 <template>
     <div :class="$style['record-wrap']">
-        <div :class="$style['total-block']">
-            <span>笔数：{{ counts }}</span>
-            <span>有效投注：{{ total.valid_bet }}</span>
-            <span>派彩：{{ +total.payoff }}</span>
+        <div v-if="!hasSearch" :class="$style['total-block']">
+            <span>笔数：{{ counts ? counts : 0 }}</span>
+            <span
+                >有效投注：{{
+                    total.valid_bet ? total.valid_bet : "0.00"
+                }}</span
+            >
+            <span>派彩：{{ +total.payoff ? +total.payoff : "0.00" }}</span>
         </div>
 
         <div :class="$style['list-block']">
-            <div v-if="inqStart === inqEnd" :class="$style['date']">
-                {{ inqStart }}
-            </div>
-            <div v-else :class="$style['date']">
-                {{ inqStart }} ~ {{ inqEnd }}
-            </div>
+
+            <template v-if="!hasSearch">
+                <div v-if="inqStart === inqEnd" :class="$style['date']">
+                    {{ inqStart }}
+                </div>
+                <div v-else :class="$style['date']">
+                    {{ inqStart }} ~ {{ inqEnd }}
+                </div>
+            </template>
 
             <div
                 :class="$style['card']"
@@ -57,10 +64,6 @@ export default {
             type: Number,
             default: null
         },
-        sort: {
-            type: Object,
-            required: true
-        },
         inqStart: {
             type: String,
             default: ""
@@ -68,22 +71,9 @@ export default {
         inqEnd: {
             type: String,
             default: ""
-        }
-    },
-    methods: {
-        onSort(sortBy) {
-            if (this.sort.by === sortBy) {
-                this.$emit("update:sort", {
-                    ...this.sort,
-                    way: this.sort.way === "asc" ? "desc" : "asc"
-                });
-                return;
-            }
-
-            this.$emit("update:sort", {
-                by: sortBy,
-                way: "asc"
-            });
+        },
+        hasSearch: {
+            type: Boolean
         }
     }
 };

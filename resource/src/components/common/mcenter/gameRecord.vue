@@ -8,15 +8,14 @@
             :current-condition="currentCondition"
             :game-list="gameList"
             :current-page="currentPage"
-            :sort="sort"
             :change-search-condition="changeSearchCondition"
-            :on-sort="onSort"
             :on-search="onSearch"
             :on-search-bet="onSearchBet"
             :show-infinite="showInfinite"
             :infinite-handler="infiniteHandler"
             :control-1st-data="control1stData"
             :control-2nd-data="control2ndData"
+            :mainNoData="mainNoData"
         />
     </div>
 </template>
@@ -74,7 +73,6 @@ export default {
                 bet: "asc"
             },
             inq1st: {
-                isReceive: false,
                 list: [],
                 total: {},
                 counts: null
@@ -144,29 +142,6 @@ export default {
                     }, [])
             ];
         },
-        sort: {
-            get() {
-                return {
-                    by: this.sortBy[this.currentPage],
-                    way: this.sortWay[this.currentPage]
-                };
-            },
-            set(value) {
-                this.sortBy[this.currentPage] = value.by;
-                this.sortWay[this.currentPage] = value.way;
-
-                switch (this.currentPage) {
-                    case "main":
-                        this.onInquire();
-                        break;
-                    case "bet":
-                        this.onInquireBet();
-                        break;
-                    default:
-                        break;
-                }
-            }
-        },
         control1stData() {
             return this.inq1st.list.filter(
                 (item, index) =>
@@ -213,7 +188,6 @@ export default {
     methods: {
         changeSearchCondition(value) {
             this.inq1st = {
-                isReceive: false,
                 list: [],
                 total: {},
                 counts: null
@@ -241,9 +215,6 @@ export default {
 
             this.onInquire();
         },
-        onSort(value) {
-            this.sort = value;
-        },
         onSearch() {
             this.currentGame = this.inqGame;
             this.currentStart = this.inqStart;
@@ -265,8 +236,8 @@ export default {
                     end_at: Vue.moment(this.currentEnd).format(
                         "YYYY-MM-DD 23:59:59-04:00"
                     ),
-                    sort: this.sortBy.main,
-                    order: this.sortWay.main
+                    sort: "payoff",
+                    order: "asc"
                 },
                 success: response => {
                     if (response.result === "ok") {
@@ -276,7 +247,6 @@ export default {
                         this.showInfinite = true;
                         if (response.ret.length === 0) {
                             this.inq1st = {
-                                isReceive: false,
                                 list: [],
                                 total: {},
                                 counts: null
@@ -287,7 +257,6 @@ export default {
 
                         this.isLoading = false;
                         this.inq1st = {
-                            isReceive: true,
                             list: response.ret,
                             total: response.total,
                             counts: Number(response.pagination.total)
@@ -336,7 +305,6 @@ export default {
                                 total: {},
                                 counts: null
                             };
-                            this.mainNoData = true;
                             return;
                         }
 
@@ -346,8 +314,6 @@ export default {
                             total: response.data.total,
                             counts: Number(response.data.pagination.total)
                         };
-
-                        this.mainNoData = false;
                     }
                 })
                 .then(() => {

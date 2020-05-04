@@ -16,15 +16,14 @@
                     currentCondition,
                     gameList,
                     currentPage,
-                    sort,
                     changeSearchCondition,
-                    onSort,
                     onSearch,
                     onSearchBet,
                     showInfinite,
                     infiniteHandler,
                     control1stData,
-                    control2ndData
+                    control2ndData,
+                    mainNoData
                 }"
             >
                 <div v-if="currentPage === 'main'" :class="$style['top-wrap']">
@@ -40,6 +39,7 @@
                         <span>{{ info.name }}</span>
                     </div>
                 </div>
+
                 <div
                     v-show="currentPage === 'main' && hasSearch"
                     :class="[$style['form-search'], 'clearfix']"
@@ -95,15 +95,15 @@
                         </div>
                     </div>
                 </div>
-                <template v-if="currentPage === 'main' && inq1st.list.length">
+
+                <template v-if="currentPage === 'main'">
                     <table-1st
                         :list="control1stData"
                         :total="inq1st.total"
                         :counts="inq1st.counts"
-                        :sort="sort"
                         :inqStart="inqStart"
                         :inqEnd="inqEnd"
-                        @update:sort="onSort"
+                        :hasSearch="hasSearch"
                         @onInquire="onSearchBet"
                     />
                     <infinite-loading
@@ -115,13 +115,12 @@
                         <span slot="no-results" />
                     </infinite-loading>
                 </template>
+
                 <template v-if="currentPage === 'bet' && inq2nd.list.length">
                     <table-2nd
                         :list="control2ndData"
                         :total="inq2nd.total"
                         :counts="inq2nd.counts"
-                        :sort="sort"
-                        @update:sort="onSort"
                     />
 
                     <infinite-loading
@@ -135,11 +134,7 @@
                 </template>
 
                 <div
-                    v-if="
-                        currentPage === 'main' &&
-                            inq1st.isReceive &&
-                            !inq1st.list.length
-                    "
+                    v-if="currentPage === 'main' && mainNoData"
                     :class="$style['no-data']"
                 >
                     <img src="/static/image/_new/mcenter/no_data.png" />
@@ -156,19 +151,15 @@ import { mapGetters } from "vuex";
 import InfiniteLoading from "vue-infinite-loading";
 import EST from "@/lib/EST";
 import gameRecord from "@/components/common/mcenter/gameRecord";
-import pagintaion from "../../../pagination";
 import table1st from "./table1st";
 import table2nd from "./table2nd";
-import table3rd from "./table3rd";
 
 export default {
     components: {
         InfiniteLoading,
         gameRecord,
-        pagintaion,
         table1st,
-        table2nd,
-        table3rd
+        table2nd
     },
     props: {
         setTabState: {
