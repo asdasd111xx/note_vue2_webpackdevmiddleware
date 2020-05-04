@@ -107,8 +107,8 @@ export default {
 }
 
 .content-wrap {
-  height: calc(100vh - 110px);
   overflow-y: auto;
+  padding: 25px 0;
 }
 .yabo {
   width: 75px;
