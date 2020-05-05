@@ -243,9 +243,6 @@ export default {
     onError(e) {
       console.log("err ==>")
       console.log(e)
-      console.log(this.socket)
-      console.log(this.memInfo.user.domain)
-      console.log(getCookie('cid'))
       this.isActiveBouns = false;
       this.socket = null;
     },
