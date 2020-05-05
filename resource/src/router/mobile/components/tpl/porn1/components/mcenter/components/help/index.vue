@@ -62,7 +62,7 @@ export default {
           name: '提现教程',
           path: '/mobile/mcenter/help/withdraw',
           img: 'withdraw',
-          info: '极速充值仅需30秒'
+          info: '极速提现仅需30秒'
         },
         {
           name: this.$text('S_GAME_INTR', '游戏介绍'),
