@@ -10,7 +10,7 @@
             </div>
             <div :class="$style['text']" @click="downloadImage">
                 <img :src="$getCdnPath(`/static/image/_new/mcenter/share/btn_tick.png`)" />
-                {{ $text('S_AUTO_SAVE','自动保存') }}
+                {{ btnTickText }}
             </div>
         </div>
         <div :class="$style['func-wrap']">
@@ -55,6 +55,7 @@
 </template>
 
 <script>
+import { mapGetters } from 'vuex';
 import axios from 'axios';
 import message from '../../../../common/new/message';
 
@@ -132,6 +133,17 @@ export default {
             // ]
         };
     },
+    computed: {
+        ...mapGetters({
+            isPwa: 'getIsPwa'
+        }),
+        isException() {
+            return window.location.hostname === 'yaboxxxapp02.com' || this.isPwa;
+        },
+        btnTickText() {
+            return this.$text(...this.isException ? ['S_SCREENSHOT_SAVE', '点击截屏保存'] : ['S_AUTO_SAVE', '自动保存']);
+        }
+    },
     mounted() {
         this.shareImageSrc = this.$refs.shareAppImage.src;
     },
@@ -151,6 +163,11 @@ export default {
             });
         },
         downloadImage() {
+            if (this.isPwa) {
+                window.open(this.shareImageSrc);
+                return;
+            }
+
             axios({
                 url: this.shareImageSrc,
                 methods: 'GET',

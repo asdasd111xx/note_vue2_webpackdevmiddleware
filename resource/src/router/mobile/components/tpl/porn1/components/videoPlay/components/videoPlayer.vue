@@ -3,8 +3,8 @@
     <video
       id="video-play"
       ref="video-player"
-      playsinline="true"
-      webkit-playsinline="true"
+      playsinline=""
+      webkit-playsinline=""
       class="video-js vjs-default-skin vjs-fluid vjs-big-play-centered"
     ></video>
     <!-- 彩金活動 -->
