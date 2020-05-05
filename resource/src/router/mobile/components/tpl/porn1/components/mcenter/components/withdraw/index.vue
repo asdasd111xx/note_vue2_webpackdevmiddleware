@@ -354,6 +354,12 @@ import message from '../../../common/new/message'
 import serialNumber from './serialNumber'
 import ajax from '@/lib/ajax';
 import {
+  API_MCENTER_WITHDRAW,
+  API_TRADE_RELAY,
+  API_WITHDRAW,
+  API_WITHDRAW_BALANCE_BACK,
+  API_WITHDRAW_CGPAY_BINDING,
+  API_WITHDRAW_INFO,
   API_WITHDRAW_WRITE
 } from '@/config/api';
 import common from '@/api/common';
@@ -559,7 +565,7 @@ export default {
         success: (response) => {
           if (response && response.result === 'ok') {
             this.msg = "提现成功"
-            console.log(this.memInfo.config.withdraw)
+
             if (this.memInfo.config.withdraw === '迅付') {
               // 迅付寫單
               ajax({
@@ -620,7 +626,6 @@ export default {
           this.actionSetIsLoading(false);
         },
         fail: (error) => {
-          console.log(error)
           if (error && error.data && error.data.code === 'M500001') {
             window.location.reload();
             return;

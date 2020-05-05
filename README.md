@@ -1,6 +1,7 @@
 ## 開發設置
 
 #### cookie 相關設定
+
 ##### 非開發環境下使用的，用 TEST 開頭，只有開發階段可以用的，用 DEV 開頭
 
 <table border="1">
@@ -326,7 +327,7 @@
     </tr>
     <tr>
         <td>亞博直播正式站</td>
-        <td><a href="https://yaboxxx01.com/">客端</a></td>
+        <td><a href="https://yaboxxxapp01.com/">客端</a></td>
         <td><a href="https://yb01.88lard.com/">廳主端</a></td>
         <td>67</td>
         <td>@yb01</td>
