@@ -8,7 +8,10 @@
             </div>
         </template>
         <template v-else>
-            <div :class="$style['qr-mask']" />
+
+            <!-- Share Modal -->
+            <share :is-show-share.sync="isShowShare" />
+            <!-- <div :class="$style['qr-mask']" />
             <div v-show="isCombineFinish.length === qrCodeBackground.length" :class="$style['qr-wrap']">
                 <div :class="[$style['qr-content'],'clearfix']">
                     <swiper
@@ -22,11 +25,9 @@
                                 <icon :class="$style['close-icon']" name="times" />
                             </div>
                             <div v-if="canvasLink[index]" :class="$style['qrcode']">
-                                <!-- 顯示已組合後的img -->
                                 <img :src="canvasLink[index]" :class="$style['qr-img']" />
                             </div>
                             <div v-else :class="$style['print-area']">
-                                <!-- 未組合的圖片，等html2canvas完成後隱藏 -->
                                 <div :ref="`printMe${index}`">
                                     <img
                                         :src="`/static/image/_new/lang/qrcode/${curLang}/${item}.jpg`"
@@ -62,7 +63,7 @@
                         </div>
                     </swiper>
                 </div>
-            </div>
+            </div> -->
         </template>
     </div>
 </template>
@@ -71,6 +72,7 @@
 import { mapGetters } from 'vuex';
 import { Swiper, SwiperSlide } from 'vue-awesome-swiper';
 import html2canvas from 'html2canvas';
+import share from '@/router/mobile/components/tpl/porn1/components/mcenter/components/home/components/share';
 /**
  * @param {String} type - 彈窗類型
  * @param {String} link - 推廣連結
@@ -78,7 +80,8 @@ import html2canvas from 'html2canvas';
 export default {
     components: {
         Swiper,
-        SwiperSlide
+        SwiperSlide,
+        share
     },
     props: {
         type: {
@@ -92,6 +95,8 @@ export default {
     },
     data() {
         return {
+
+            toggleShare: false,
             canvasLink: [],
             categoryOptions: {
                 effect: 'fade',
@@ -135,6 +140,17 @@ export default {
         },
         swiperIndex() {
             return this.isMounted ? this.$refs.qrSwiper.$swiper.activeIndex : -1;
+        },
+        isShowShare: {
+            get() {
+                return this.toggleShare;
+            },
+            set(value) {
+                this.toggleShare = value;
+                if (!value) {
+                    this.$emit('close');
+                }
+            }
         }
     },
     mounted() {
