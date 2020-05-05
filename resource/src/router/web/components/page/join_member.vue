@@ -188,7 +188,28 @@ export default {
         captcha_text: ''
       },
       registerData: [],
-      currentTip: ''
+      currentTip: '',
+      selectData: {
+        phone: {
+          options: [],
+          selected: { label: '', value: '' }
+        },
+        gender: {
+          options: [
+            { label: this.$i18n.t('S_SELECTED'), value: '0' },
+            { label: this.$i18n.t('S_MALE'), value: '1' },
+            { label: this.$i18n.t('S_FEMALE'), value: '2' }
+          ],
+          selected: { label: this.$i18n.t('S_SELECTED'), value: '' }
+        },
+        withdraw_password: [
+          { options: [{ label: '-', value: '' }], selected: { label: '-', value: '' } },
+          { options: [{ label: '-', value: '' }], selected: { label: '-', value: '' } },
+          { options: [{ label: '-', value: '' }], selected: { label: '-', value: '' } },
+          { options: [{ label: '-', value: '' }], selected: { label: '-', value: '' } }
+        ]
+      }
+
     };
   },
   computed: {
@@ -259,7 +280,7 @@ export default {
     const captchaText = {
       key: 'captcha_text',
       content: {
-        note1: '',
+        note1: '请填写验证码',
         note2: ''
       }
     };
