@@ -137,7 +137,7 @@
                                 :class="[$style['pay-money-item'], { [$style['is-current']]: moneyValue === item }]"
                                 @click="changeMoney(item)"
                             >
-                                {{ item }}
+                                ¥ {{ item }}
                                 <img
                                     v-if="moneyValue === item"
                                     :class="$style['pay-active']"
@@ -341,10 +341,10 @@
                     </div>
                     <div
                         :class="$style['pay-button']"
-                        :title="$text('S_ENTER_PAY', '前往支付')"
+                        title="立即充值"
                         @click="submitInfo"
                     >
-                        {{ $text('S_ENTER_PAY', '前往支付') }}
+                        立即充值
                     </div>
                 </div>
             </template>

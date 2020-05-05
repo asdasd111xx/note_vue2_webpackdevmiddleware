@@ -45,6 +45,7 @@ export default {
     },
     handleClick() {
       this.show = false;
+      this.$router.push('/mobile/install')
     }
   }
 };
