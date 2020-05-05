@@ -333,7 +333,7 @@ export default {
                                 params: {
                                     api_uri: '/api/trade/v2/c/withdraw/entry',
                                     [`method[${hasAccountId}]`]: this.withdrawAccount.id,
-                                    password: this.withdrawPwd,
+                                    // password: this.withdrawPwd,
                                     withdraw_id: response.ret.id
                                 }
                             }).then((res) => {
