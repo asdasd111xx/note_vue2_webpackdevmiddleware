@@ -776,6 +776,7 @@ export default {
 
 .game-list-wrap {
   overflow-y: auto;
+  -webkit-overflow-scrolling: touch;
 }
 
 .video-list-wrap {
