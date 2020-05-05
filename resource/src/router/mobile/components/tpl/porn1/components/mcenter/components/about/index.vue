@@ -3,6 +3,7 @@
     <div slot="content" :class="$style['content-wrap']">
       <div :class="$style['yabo']">
         <img :src="$getCdnPath(`/static/image/_new/about/appicon.png`)" />
+        <div :class="$style['version']">{{ version }}</div>
       </div>
       <div :class="$style['officel']">
         <div>官方认证</div>
@@ -71,7 +72,14 @@
 <script>
 import { mapGetters } from 'vuex';
 import mobileContainer from '../../../common/new/mobileContainer';
+import { getCookie, setCookie } from '@/lib/cookie';
+
 export default {
+  data() {
+    return {
+      version: ''
+    }
+  },
   components: {
     mobileContainer,
   },
@@ -88,7 +96,11 @@ export default {
     },
   },
   created() {
-
+    let version = this.$route.query.version || getCookie('version');
+    if (version) {
+      this.version = version;
+      setCookie('version', version);
+    }
   },
   methods: {
   }
@@ -118,6 +130,12 @@ export default {
   > img {
     height: 100%;
   }
+}
+
+.version {
+  font-size: 9px;
+  text-align: center;
+  width: 100%;
 }
 
 .officel,
