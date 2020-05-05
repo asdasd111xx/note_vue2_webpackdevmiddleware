@@ -28,6 +28,12 @@
                 tabindex="1"
                 @keydown.13="loginCheck"
                 @change="onSaveAccount"
+                @input="
+                  username = $event.target.value
+                    .toLowerCase()
+                    .replace(' ', '')
+                    .trim()
+                "
               />
               <span class="input-icon" />
             </span>
@@ -209,7 +215,7 @@ export default {
     mobileLinkOpen,
     handleClickLogin() {
       if (!this.username || !this.password) return
-      this.loginCheck(undefined, undefined, this.errorCallBack)
+      this.loginCheck(undefined, undefined, this.errorCallBack);
     },
     slideLogin(loginInfo) {
       this.loginCheck({ captcha_text: loginInfo.data }, loginInfo.slideFuc, this.errorCallBack);
@@ -217,9 +223,11 @@ export default {
     // 錯誤訊息call back
     errorCallBack(res) {
       if (res && res.msg) {
-        this.errMsg = res.msg
+        this.errMsg = res.msg;
       } else if (res && res.status) {
-        this.errMsg = res.status
+        this.errMsg = res.status;
+      } else if (res && res.data) {
+        this.errMsg = res.data.msg;
       }
     }
   }

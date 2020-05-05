@@ -113,8 +113,9 @@ export default {
                     ...validate
                 },
                 fail: (res) => {
-                    if (errorCB)
-                        errorCB(res.data)
+                    if (errorCB) {
+                        res.data ? errorCB(res.data) : errorCB(res);
+                    }
                 }
             }).then((res) => {
                 if (res && res.data && res.data && res.data.cookie && res.data.cookie.cid) {
@@ -151,9 +152,9 @@ export default {
                     return;
                 }
 
-                if (res.status !== '000') {
+                if (res && res.status !== '000') {
                     if (errorCB) {
-                        res.data ? errorCB(res.data) : errorCB(res)
+                        res.data ? errorCB(res.data) : errorCB(res);
                     }
                 }
 
