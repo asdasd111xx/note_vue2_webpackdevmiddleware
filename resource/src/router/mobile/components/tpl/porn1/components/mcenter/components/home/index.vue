@@ -2,7 +2,7 @@
   <mobile-container :header-config="headerConfig" :class="$style.container">
     <div slot="content" :class="$style['content-wrap']">
       <!-- 暫時不顯示 -->
-      <!-- <app-tip v-if="showTip" @close="showTip = false" /> -->
+      <app-tip v-if="showTip" @close="showTip = false" />
       <avatar-info />
       <shortcut-info />
       <mem-list />
