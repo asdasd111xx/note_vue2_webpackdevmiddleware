@@ -72,13 +72,14 @@
 <script>
 import { mapGetters } from "vuex";
 import { Swiper, SwiperSlide } from "vue-awesome-swiper";
+import { API_PORN1_DOMAIN } from "@/config/api";
+import { getCookie } from "@/lib/cookie";
+import axios from "axios";
 import vipUser from "./vipUser";
 import vipLevelCard from "./vipLevelCard";
 import vipInfo from "./vipInfo";
 import liveInfo from "./liveInfo";
-import ajax from "@/lib/ajax";
 import mcenter from "@/api/mcenter";
-import common from "@/api/common";
 import message from "../../../../common/new/message";
 
 export default {
@@ -97,10 +98,14 @@ export default {
             currentConfigID: 0,
             userVipInfo: null,
             vipLevelList: null,
-            currentLevelData: {},
+            currentLevelData: {}
         };
     },
     computed: {
+        ...mapGetters({
+            siteConfig: "getSiteConfig",
+            memInfo: "getMemInfo"
+        }),
         setCurrentLevel: {
             get() {
                 return this.currentLevelData;
@@ -112,6 +117,7 @@ export default {
     },
     created() {
         this.getUserDetail();
+        this.getVipLevel();
     },
     methods: {
         getUserDetail() {
@@ -126,6 +132,17 @@ export default {
                     }
                 }
             });
+            // axios({
+            //     method: "get",
+            //     url: `${
+            //         this.siteConfig.YABO_API_DOMAIN
+            //     }/player/vipInfo/${getCookie("cid")}`,
+            //     headers: { "x-domain": this.memInfo.user.domain }
+            // }).then(res => {
+            //     if (res && res.data && res.data.data) {
+            //         console.log(res);
+            //     }
+            // });
         },
         getVipLevel() {
             // 依vip分類回傳所有等級清單(不分⾴)
@@ -135,20 +152,32 @@ export default {
                 },
                 success: res => {
                     if (res && res.ret) {
-                        this.vipLevelList = res.ret
+                        this.vipLevelList = res.ret;
                     }
                 }
             });
+            // this.currentConfigID = 104
+            // axios({
+            //     method: "get",
+            //     url: `${
+            //         this.siteConfig.YABO_API_DOMAIN
+            //     }/player/viplevel/${getCookie("cid")}?${this.currentConfigID}`,
+            //     headers: { "x-domain": this.memInfo.user.domain }
+            // }).then(res => {
+            //     if (res && res.data && res.data.data) {
+            //         console.log(res);
+            //     }
+            // });
         },
         handleConfigId(value) {
             this.currentConfigID = value;
         }
     },
-     watch: {
-         currentConfigID() {
-             this.getVipLevel()
-         }
-     },
+    watch: {
+        currentConfigID() {
+            this.getVipLevel();
+        }
+    }
 };
 </script>
 

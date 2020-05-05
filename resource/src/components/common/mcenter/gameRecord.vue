@@ -221,6 +221,7 @@ export default {
                 method: "get",
                 url: apis.API_FRIEND_WAGER_REPORT,
                 params: {
+                    vendor: this.currentGame,
                     start_at: Vue.moment(this.currentStart).format(
                         "YYYY-MM-DD 00:00:00-04:00"
                     ),
