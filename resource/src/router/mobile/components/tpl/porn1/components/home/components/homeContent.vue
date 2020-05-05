@@ -6,6 +6,7 @@
   >
     <!-- 左側分類 -->
     <div
+      v-show="isShow"
       ref="type-wrap"
       :class="$style['type-wrap']"
       @touchstart="onTypeTouchStart"
@@ -18,7 +19,7 @@
         @click="onChangeSelectInedx(index)"
       >
         <img
-          v-if="selectedIndex === index"
+          v-if="typeList[selectedIndex].icon === type.icon"
           :src="
             $getCdnPath(
               `/static/image/_new/platform/icon/icon_${type.icon}_h.png`
@@ -36,7 +37,7 @@
         <div
           :class="[
             $style['type-title'],
-            { [$style.active]: selectedIndex === index }
+            { [$style.active]: typeList[selectedIndex].icon === type.icon }
           ]"
         >
           {{ type.name }}
@@ -44,12 +45,12 @@
       </div>
     </div>
     <!-- 右側內容 -->
-    <div :class="$style['all-game-wrap']">
+    <div v-show="isShow" :class="$style['all-game-wrap']">
       <!-- 上方功能列 -->
       <div :class="$style['top-wrap']">
         <!-- 影片分類 -->
         <div
-          v-if="isAdult && selectedIndex === 0"
+          v-if="isAdult && typeList[selectedIndex].icon === 'Tv'"
           :class="[$style['video-tag-wrap'], 'clearfix']"
         >
           <div
@@ -145,7 +146,7 @@
               <div :class="$style['type-name']">{{ videoData.name }}</div>
               <div
                 :class="$style['btn-more']"
-                @click.stop="openVideo('videoList',{query: { tagId: videoType.id, sortId: videoData.id || 0 }})"
+                @click.stop="openVideo('videoList', { query: { tagId: videoType.id, sortId: videoData.id || 0 }})"
               >
                 更多
               </div>
@@ -156,7 +157,7 @@
                 :key="`video-${video.id}`"
                 :href="`/mobile/videoPlay/${video.id}`"
                 :class="$style.video"
-                @click.stop="openVideo('videoPlay',{params: { id: video.id }})"
+                @click.stop="openVideo('videoPlay', { params: { id: video.id }})"
               >
                 <img :src="video.image" />
                 <div>{{ video.title }}</div>
@@ -208,6 +209,7 @@ export default {
   data() {
     return {
       isReceive: false,
+      isShow: false,
       isShowAllTag: false,
       isSliding: false,
       isTop: false,
@@ -245,7 +247,9 @@ export default {
     },
     typeList() {
       const adultVideo = this.isAdult ? [{ icon: 'Tv', name: '影片' }] : [];
-      return [...adultVideo, ...this.allGame.map((game) => ({ icon: game.iconName, name: game.name }))];
+      const typeList = [...adultVideo, ...this.allGame.map((game) => ({ icon: game.iconName, name: game.name }))];
+      // 業主說左側選單前後要各複製一份...
+      return [...typeList, ...typeList, ...typeList];
     },
     options() {
       return { slidesPerView: 'auto', spaceBetween: 4, slideClass: this.$style.tag };
@@ -271,7 +275,9 @@ export default {
       return [{ isVideo: true, data: videoList }, ...gameList];
     },
     currentGame() {
-      return { ...this.allGameList[this.selectedIndex] };
+      const length = this.typeList.length / 3;
+      const index = this.selectedIndex % length;
+      return { ...this.allGameList[index] };
     },
     vipLevel() {
       return this.currentLevel <= 10 ? this.currentLevel : 'max';
@@ -291,12 +297,15 @@ export default {
       this.isReceive = true;
 
       this.$nextTick(() => {
-        $(window).trigger('resize');
-      const icon = localStorage.getItem('type');
-      const index = this.typeList.findIndex((data) => data.icon === icon);
-      this.onChangeSelectInedx(index > 0 ? index : this.selectedIndex);
+        setTimeout(() => {
+          $(window).trigger('resize');
+          const defaultType = localStorage.getItem('type') || 'Tv';
+          const defaultIndex = this.typeList.findIndex((type) => type.icon === defaultType);
+          const selectIndex = (this.typeList.length / 3) + defaultIndex;
+          this.onChangeSelectInedx(selectIndex);
+          this.isShow = true;
+        }, 300);
       });
-
     });
 
     if (!this.loginStatus) {
@@ -487,20 +496,7 @@ export default {
       this.slideDirection = '';
       this.selectedIndex = index;
 
-      // 當前區域可完整顯示數量
-      const displayNumber = Math.floor(this.wrapHeight / 63);
-      // 當前區域可置頂數量
-      const topNumber = this.typeList.length - displayNumber;
-
-      let top = 0;
-
-      if (index < topNumber) {
-        top = index * 63;
-      } else {
-        top = this.$refs['type-wrap'].scrollHeight - this.wrapHeight;
-      }
-
-      $(this.$refs['type-wrap']).animate({ scrollTop: top }, 300);
+      $(this.$refs['type-wrap']).animate({ scrollTop: index * 63 }, 300);
 
       this.$nextTick(() => {
         this.isSliding = false;
@@ -535,6 +531,8 @@ export default {
     },
     // 開啟遊戲
     onOpenGame(game) {
+      localStorage.setItem('type', this.typeList[this.selectedIndex].icon);
+
       // Game Type
       // L => 遊戲大廳
       // G => 遊戲
@@ -542,8 +540,6 @@ export default {
       // SL => 體育直播
       // D => 代理
       // T => 敬请期待
-      localStorage.setItem('type', this.typeList[this.selectedIndex].icon);
-
       if (game.type === 'D') {
         return;
       }
@@ -604,8 +600,8 @@ export default {
       openGame({ kind: game.kind, vendor: game.vendor, code: game.code });
     },
     openVideo(name, routerParam) {
-        localStorage.setItem('type', 'Tv');
-        this.$router.push({name, ...routerParam });
+      localStorage.setItem('type', 'Tv');
+      this.$router.push({ name, ...routerParam });
     }
   }
 };
@@ -626,6 +622,8 @@ export default {
   left: 13px;
   z-index: 1;
   width: 63px;
+  touch-action: default; // 誤刪，否則在touchmove事件會有cancelable錯誤
+  -webkit-overflow-scrolling: touch; // 誤刪，維持touchmove滾動順暢
 }
 
 .type-swiper {
@@ -776,7 +774,8 @@ export default {
 
 .game-list-wrap {
   overflow-y: auto;
-  -webkit-overflow-scrolling: touch;
+  touch-action: default; // 誤刪，否則在touchmove事件會有cancelable錯誤
+  -webkit-overflow-scrolling: touch; // 誤刪，維持touchmove滾動順暢
 }
 
 .video-list-wrap {
