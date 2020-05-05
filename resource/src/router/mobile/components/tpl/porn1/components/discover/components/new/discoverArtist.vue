@@ -92,17 +92,18 @@ export default {
   },
   mounted() {
     $(window).scroll(this.onScroll);
+    $('.mobile-wrap').css('height', 'unset');
   },
   beforeDestroy() {
     $(window).off('scroll', this.onScroll);
+    $('.mobile-wrap').css('height', '100%');
   },
   methods: {
     onScroll() {
       const scrollTop = window.scrollY;
       const container = document.getElementsByClassName(this.$style['artist-container']);
       const element = find(container, (ele) => scrollTop >= ele.offsetTop && scrollTop < ele.offsetTop + ele.offsetHeight);
-
-      this.active = element.dataset.letter;
+      if (element && element.dataset) this.active = element.dataset.letter;
     },
     onScrollTop(target) {
       const container = document.getElementsByClassName(this.$style['artist-container']);
