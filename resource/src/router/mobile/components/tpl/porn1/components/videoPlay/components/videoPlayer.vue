@@ -67,8 +67,10 @@ export default {
     window.removeEventListener('resize', this.getVideoHeight);
   },
   mounted() {
+    //  暫時手動轉換https
+    if (!this.videoInfo.url) return;
     this.player = videojs(this.$refs['video-player'], {
-      sources: [{ src: this.videoInfo.url, type: 'application/x-mpegURL' }],
+      sources: [{ src: this.videoInfo.url.replace('http://', 'https://'), type: 'application/x-mpegURL' }],
       autoplay: false,
       controls: true,
       controlBar: true,
@@ -93,36 +95,39 @@ export default {
         this.socket.onclose = this.onClose;
         this.socket.onmessage = this.onMessage;
 
+        this.player.on("playing", () => {
+          this.isPlaying = true;
+          if (this.socket)
+            this.onSend("PLAY");
+        })
+
+        this.player.on("pause", () => {
+          this.isPlaying = false;
+          if (this.socket)
+            this.onSend("STOP");
+        })
+
+        this.player.on("ended", () => {
+          this.$refs.bonunsProcess.playCueTime("pause");
+          this.isPlaying = false;
+          if (this.socket)
+            this.onSend("STOP");
+        })
+
+        this.player.on("play", () => {
+          this.handleClickVideo();
+        })
+
+        if (!this.loginStatus) {
+          this.$refs.bonunsDialog.isShow = true
+          this.dialogType = 'tips';
+        }
+
+        // window.onorientationchange = function () {
+        // };
+
       } catch (e) {
         console.log(e)
-      }
-
-      this.player.on("playing", () => {
-        this.isPlaying = true;
-        if (this.socket)
-          this.onSend("PLAY");
-      })
-
-      this.player.on("pause", () => {
-        this.isPlaying = false;
-        if (this.socket)
-          this.onSend("STOP");
-      })
-
-      this.player.on("ended", () => {
-        this.$refs.bonunsProcess.playCueTime("pause");
-        this.isPlaying = false;
-        if (this.socket)
-          this.onSend("STOP");
-      })
-
-      this.player.on("play", () => {
-        this.handleClickVideo();
-      })
-
-      if (!this.loginStatus) {
-        this.$refs.bonunsDialog.isShow = true
-        this.dialogType = 'tips';
       }
     }
   },
