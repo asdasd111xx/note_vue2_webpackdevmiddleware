@@ -619,8 +619,8 @@ export const actionSetUserdata = ({ commit }, forceUpdate = false) => {
         },
         headers: (headers) => {
             // 設置cdn圖片路徑
-            if (headers['x-cdn']) {
-                commit(types.SETCDNROOT, `https://${headers['x-cdn']}`);
+            if (headers['x-cdn-yb']) {
+                commit(types.SETCDNROOT, `https://${headers['x-cdn-yb']}`);
             }
         },
         fail: (response) => {
