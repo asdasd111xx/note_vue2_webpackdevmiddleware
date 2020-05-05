@@ -559,6 +559,7 @@ export default {
         success: (response) => {
           if (response && response.result === 'ok') {
             this.msg = "提现成功"
+            console.log(this.memInfo.config.withdraw)
             if (this.memInfo.config.withdraw === '迅付') {
               // 迅付寫單
               ajax({
@@ -568,7 +569,7 @@ export default {
                 params: {
                   api_uri: '/api/trade/v2/c/withdraw/entry',
                   [`method[${hasAccountId}]`]: this.withdrawAccount.id,
-                  password: this.withdrawPwd,
+                  //   password: this.withdrawPwd,
                   withdraw_id: response.ret.id
                 }
               }).then((res) => {
