@@ -14,7 +14,10 @@
       <div
         v-for="(type, index) in typeList"
         :key="`type-${index}`"
-        :class="$style['type-swiper']"
+        :class="[
+          $style['type-swiper'],
+          { [$style.active]: selectedIndex === index }
+        ]"
         @click="onChangeSelectInedx(index)"
       >
         <img
@@ -145,7 +148,11 @@
               <div :class="$style['type-name']">{{ videoData.name }}</div>
               <div
                 :class="$style['btn-more']"
-                @click.stop="openVideo('videoList',{query: { tagId: videoType.id, sortId: videoData.id || 0 }})"
+                @click.stop="
+                  openVideo('videoList', {
+                    query: { tagId: videoType.id, sortId: videoData.id || 0 }
+                  })
+                "
               >
                 更多
               </div>
@@ -156,7 +163,9 @@
                 :key="`video-${video.id}`"
                 :href="`/mobile/videoPlay/${video.id}`"
                 :class="$style.video"
-                @click.stop="openVideo('videoPlay',{params: { id: video.id }})"
+                @click.stop="
+                  openVideo('videoPlay', { params: { id: video.id } })
+                "
               >
                 <img :src="video.image" />
                 <div>{{ video.title }}</div>
@@ -291,12 +300,13 @@ export default {
       this.isReceive = true;
 
       this.$nextTick(() => {
-        $(window).trigger('resize');
-      const icon = localStorage.getItem('type');
-      const index = this.typeList.findIndex((data) => data.icon === icon);
-      this.onChangeSelectInedx(index > 0 ? index : this.selectedIndex);
+        setTimeout(() => {
+          $(window).trigger('resize');
+          const defaultType = localStorage.getItem('type') || 'Tv';
+          const defaultIndex = this.typeList.findIndex((type) => type.icon === defaultType);
+          this.onChangeSelectInedx(defaultIndex);
+        }, 300);
       });
-
     });
 
     if (!this.loginStatus) {
@@ -487,21 +497,7 @@ export default {
       this.slideDirection = '';
       this.selectedIndex = index;
 
-      // 當前區域可完整顯示數量
-      const displayNumber = Math.floor(this.wrapHeight / 63);
-      // 當前區域可置頂數量
-      const topNumber = this.typeList.length - displayNumber;
-
-      let top = 0;
-
-      if (index < topNumber) {
-        top = index * 63;
-      } else {
-        top = this.$refs['type-wrap'].scrollHeight - this.wrapHeight;
-      }
-
-      $(this.$refs['type-wrap']).animate({ scrollTop: top }, 300);
-      this.$refs['game-wrap'].scrollTop = 0;
+      $(this.$refs['type-wrap']).animate({ scrollTop: index * 63 }, 300);
 
       this.$nextTick(() => {
         this.isSliding = false;
@@ -536,6 +532,8 @@ export default {
     },
     // 開啟遊戲
     onOpenGame(game) {
+      localStorage.setItem('type', this.typeList[this.selectedIndex].icon);
+
       // Game Type
       // L => 遊戲大廳
       // G => 遊戲
@@ -543,8 +541,6 @@ export default {
       // SL => 體育直播
       // D => 代理
       // T => 敬请期待
-      localStorage.setItem('type', this.typeList[this.selectedIndex].icon);
-
       if (game.type === 'D') {
         return;
       }
@@ -605,8 +601,8 @@ export default {
       openGame({ kind: game.kind, vendor: game.vendor, code: game.code });
     },
     openVideo(name, routerParam) {
-        localStorage.setItem('type', 'Tv');
-        this.$router.push({name, ...routerParam });
+      localStorage.setItem('type', 'Tv');
+      this.$router.push({ name, ...routerParam });
     }
   }
 };
@@ -627,15 +623,32 @@ export default {
   left: 13px;
   z-index: 1;
   width: 63px;
+  touch-action: default; // 誤刪，否則在touchmove事件會有cancelable錯誤
+  -webkit-overflow-scrolling: touch; // 誤刪，維持touchmove滾動順暢
 }
 
 .type-swiper {
   position: relative;
   width: 63px;
+  height: 63px;
+  background-image: url("/static/image/_new/platform/icon/icon_bg_n.png");
+  background-position: 0 0;
+  background-size: 63px 63px;
+  background-repeat: no-repeat;
 
   > img {
     display: block;
-    width: 100%;
+    position: absolute;
+    top: 0;
+    right: 0;
+    left: 0;
+    width: 40px;
+    height: 40px;
+    margin: 0 auto;
+  }
+
+  &.active {
+    background-image: url("/static/image/_new/platform/icon/icon_bg_h.png");
   }
 }
 
@@ -777,7 +790,8 @@ export default {
 
 .game-list-wrap {
   overflow-y: auto;
-  -webkit-overflow-scrolling: touch;
+  touch-action: default; // 誤刪，否則在touchmove事件會有cancelable錯誤
+  -webkit-overflow-scrolling: touch; // 誤刪，維持touchmove滾動順暢
 }
 
 .video-list-wrap {
