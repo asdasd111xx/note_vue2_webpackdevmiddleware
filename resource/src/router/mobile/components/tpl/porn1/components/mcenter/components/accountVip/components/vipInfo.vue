@@ -1,6 +1,6 @@
 <template>
     <div :class="$style['vip-info-wrap']">
-        <div :class="$style['title']">{{ currentLevelData.alias }}</div>
+        <div :class="$style['title']">VIP {{ currentLevelData.seq }}</div>
 
         <div :class="$style['cells-block']">
             <div :class="$style['cell']">
