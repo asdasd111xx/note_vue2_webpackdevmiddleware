@@ -501,6 +501,7 @@ export default {
       }
 
       $(this.$refs['type-wrap']).animate({ scrollTop: top }, 300);
+      this.$refs['game-wrap'].scrollTop = 0;
 
       this.$nextTick(() => {
         this.isSliding = false;
