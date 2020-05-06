@@ -18,7 +18,7 @@
                             { [$style['active']]: selectedIndex === index }
                         ]"
                     >
-                        {{ item.alias }}
+                        VIP{{ item.seq }}
                     </div>
                 </swiper-slide>
             </swiper>
@@ -45,7 +45,7 @@
                             alt="vipcard_bg"
                         />
                         <div :class="$style['card-level-text']">
-                            {{ item.alias }}
+                            VIP {{ item.seq }}
                         </div>
 
                         <!-- 有達成時的icon -->

@@ -3,9 +3,8 @@
     <video
       id="video-play"
       ref="video-player"
-      :playsinline="true"
-      playsinline
-      webkit-playsinline
+      :playsinline="playsinline"
+      :webkit-playsinline="playsinline"
       class="video-js vjs-default-skin vjs-fluid vjs-big-play-centered"
     ></video>
     <!-- 彩金活動 -->
@@ -62,6 +61,9 @@ export default {
       loginStatus: 'getLoginStatus',
       siteConfig: 'getSiteConfig',
     }),
+    playsinline() {
+      return true
+    }
   },
   beforeDestroy() {
     window.removeEventListener('resize', this.getVideoHeight);
