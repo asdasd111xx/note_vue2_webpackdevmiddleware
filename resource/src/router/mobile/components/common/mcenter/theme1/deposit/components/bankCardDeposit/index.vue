@@ -45,246 +45,248 @@
                             </div>
                         </div>
                     </div>
-                    <!-- 選擇銀行 or 選擇點卡 -->
-                    <div
-                        v-if="curPayInfo.banks && curPayInfo.banks.length > 0"
-                        :class="[$style['feature-wrap'], $style['select-card-wrap'], 'clearfix']"
-                        @click="changeType('chagneBank'), isShowPop=true"
-                    >
-                        <span :class="$style['select-bank-title']">{{ curPayInfo.payment_method_id === 2 ? $text('S_SELECT_POINT_CARD', '请选择点卡') : $text('S_SELECT_BANKS', '请选择银行') }}</span>
-                        <div :class="$style['select-bank-item']">
-                            {{ isSelectValue }}
-                        </div>
-                        <img :class="$style['select-bank-icon']" src="/static/image/_new/common/arrow_next.png" />
-                        <div v-if="isShowPop" :class="$style['pop-wrap']">
-                            <div :class="$style['pop-mask']" @click.stop="isShowPop = false" />
-                            <div :class="$style['pop-menu']">
-                                <div :class="$style['pop-title']">
-                                    <span @click.stop="isShowPop = false">{{ $text('S_CANCEL', '取消') }}</span>
-                                    选择银行
+                    <template v-if="curPayInfo.payment_method_id !== 20">
+                        <!-- 選擇銀行 or 選擇點卡 -->
+                        <div
+                            v-if="curPayInfo.banks && curPayInfo.banks.length > 0"
+                            :class="[$style['feature-wrap'], $style['select-card-wrap'], 'clearfix']"
+                            @click="changeType('chagneBank'), isShowPop=true"
+                        >
+                            <span :class="$style['select-bank-title']">{{ curPayInfo.payment_method_id === 2 ? $text('S_SELECT_POINT_CARD', '请选择点卡') : $text('S_SELECT_BANKS', '请选择银行') }}</span>
+                            <div :class="$style['select-bank-item']">
+                                {{ isSelectValue }}
+                            </div>
+                            <img :class="$style['select-bank-icon']" src="/static/image/_new/common/arrow_next.png" />
+                            <div v-if="isShowPop" :class="$style['pop-wrap']">
+                                <div :class="$style['pop-mask']" @click.stop="isShowPop = false" />
+                                <div :class="$style['pop-menu']">
+                                    <div :class="$style['pop-title']">
+                                        <span @click.stop="isShowPop = false">{{ $text('S_CANCEL', '取消') }}</span>
+                                        选择银行
+                                    </div>
+                                    <ul :class="$style['pop-list']">
+                                        <li
+                                            v-for="item in paySelectData['chagneBank'].allData"
+                                            :key="item.selectId"
+                                            @click.stop="changeSelectValue(item.value)"
+                                        >
+                                            <img v-lazy="getImg(item.selectId)" />
+                                            {{ item.label }}
+                                            <icon
+                                                v-if="item.value === selectedBank.value"
+                                                :class="$style['select-active']"
+                                                name="check"
+                                            />
+                                        </li>
+                                    </ul>
                                 </div>
-                                <ul :class="$style['pop-list']">
-                                    <li
-                                        v-for="item in paySelectData['chagneBank'].allData"
-                                        :key="item.selectId"
-                                        @click.stop="changeSelectValue(item.value)"
-                                    >
-                                        <img v-lazy="getImg(item.selectId)" />
-                                        {{ item.label }}
-                                        <icon
-                                            v-if="item.value === selectedBank.value"
-                                            :class="$style['select-active']"
-                                            name="check"
-                                        />
-                                    </li>
-                                </ul>
                             </div>
                         </div>
-                    </div>
 
-                    <div v-if="depositNameInput.showCondition" :class="$style['depositName-wrap']">
-                        <div
-                            :key="`field-${depositNameInput.objKey}`"
-                            :class="[$style['speed-field'], {[$style.error]: depositNameInput.isError},'clearfix']"
-                        >
-                            <div :class="$style['field-title']">{{ depositNameInput.title }}</div>
-                            <div :class="$style['field-info']">
-                                <input
-                                    v-model="speedField.depositName"
-                                    :class="$style['speed-deposit-input']"
-                                    :placeholder="depositNameInput.placeholderText"
-                                    @input="submitDataInput($event.target.value, depositNameInput.objKey)"
-                                />
-                            </div>
-                        </div>
-                        <div
-                            v-if="depositNameInput.isError"
-                            :key="`field-error-${depositNameInput.objKey}`"
-                            :class="$style['speed-deposit-input-error-messgae']"
-                        >
-                            {{ depositNameInput.placeholderText }}
-                        </div>
-                    </div>
-                    <!-- 通道 -->
-                    <div v-if="!isDepositAi && passRoad.length > 0" :class="[$style['feature-wrap'], 'clearfix']">
-                        <span :class="$style['bank-card-title']">支付通道</span>
-                        <div :class="$style['bank-feature-wrap']">
+                        <div v-if="depositNameInput.showCondition" :class="$style['depositName-wrap']">
                             <div
-                                v-for="data in paySelectData.payPass.allData"
-                                :key="data.id"
-                                :class="[$style['pay-mode-pass'], {[$style['current-data']]: data.id === curPassRoad.id}]"
-                                @click="changePassRoad(data)"
+                                :key="`field-${depositNameInput.objKey}`"
+                                :class="[$style['speed-field'], {[$style.error]: depositNameInput.isError},'clearfix']"
                             >
-                                {{ data.mainTitle }}
-                                <img
-                                    v-if="data.id === curPassRoad.id"
-                                    :class="$style['pay-active']"
-                                    src="/static/image/_new/common/select_active.png"
-                                />
-                            </div>
-                        </div>
-                    </div>
-                    <!-- 存款金額 -->
-                    <div :class="[$style['feature-wrap'], $style['select-money'], 'clearfix']">
-                        <div :class="$style['bank-card-title']">充值金额</div>
-                        <div v-if="isDepositAi" :class="[$style['bank-card-title'], { [$style['is-error']]: isErrorMoney }]">
-                            提交订单时，系统自动调配最佳充值金额
-                        </div>
-                        <div v-if="isDepositAi || curPassRoad.is_recommend_amount" :class="[$style['speed-money-wrap'], 'clearfix']">
-                            <div
-                                v-for="(item, index) in getPassRoadOrAi.amounts"
-                                :key="`pay-money-${index}`"
-                                :class="[$style['pay-money-item'], { [$style['is-current']]: moneyValue === item }]"
-                                @click="changeMoney(item)"
-                            >
-                                ¥ {{ item }}
-                                <img
-                                    v-if="moneyValue === item"
-                                    :class="$style['pay-active']"
-                                    src="/static/image/_new/common/select_active.png"
-                                />
-                            </div>
-                        </div>
-                        <div v-if="!isDepositAi && (Object.keys(curPassRoad).length === 0 || curPassRoad.is_custom_amount)" :class="$style['feature-deposit-wrap']">
-                            <div class="money-input-wrap">
-                                <input
-                                    v-model="moneyValue"
-                                    :class="$style['deposit-input']"
-                                    :placeholder="singleLimit"
-                                    type="number"
-                                    pattern="[0-9]*"
-                                    @blur="verificationMoney(moneyValue)"
-                                    @input="updateInput($event, $event.target.value)"
-                                />
-                            </div>
-                            <span :class="$style['deposit-input-icon']">¥</span>
-                        </div>
-                        <div v-if="!isDepositAi && isErrorMoney" :class="$style['money-input-tip']">
-                            {{ singleLimit }}
-                        </div>
-                        <!-- 實際存入 -->
-                    </div>
-                    <div v-if="curPay(curPayInfo)" :class="$style['speed-input-wrap']">
-                        <template v-for="info in allInputData">
-                            <div
-                                v-if="info.showCondition"
-                                :key="`field-${info.objKey}`"
-                                :class="[$style['speed-field'], {[$style.error]: info.isError},'clearfix']"
-                            >
-                                <img
-                                    v-if="info.objKey === 'depositMethod' || info.objKey === 'depositTime'"
-                                    :class="$style['speed-field-icon']"
-                                    src="/static/image/_new/common/arrow_next.png"
-                                />
-                                <div :class="$style['field-title']">{{ info.title }}</div>
+                                <div :class="$style['field-title']">{{ depositNameInput.title }}</div>
                                 <div :class="$style['field-info']">
-                                    <template v-if="info.objKey === 'depositMethod'">
-                                        <div :class="[$style['speed-field-title'], {[$style['depositMethod-no-data']] : !speedField.depositMethod}]" @click="isShowMethodsPop=true">
-                                            {{ speedField.depositMethod ? info.selectData.find(item => speedField.depositMethod === item.selectId).mainTitle : info.selectTitle }}
-                                        </div>
-                                        <div v-if="isShowMethodsPop" :class="$style['pop-wrap']">
-                                            <div :class="$style['pop-mask']" @click.stop="isShowMethodsPop = false" />
-                                            <div :class="$style['pop-menu']">
-                                                <div :class="$style['pop-title']">
-                                                    <span @click.stop="isShowMethodsPop = false">{{ $text('S_CANCEL', '取消') }}</span>
-                                                    {{ info.title }}
-                                                </div>
-                                                <ul :class="$style['pop-list']">
-                                                    <li
-                                                        v-for="item in info.selectData"
-                                                        :key="item.selectId"
-                                                        @click.stop="speedField.depositMethod = item.selectId, isShowMethodsPop = false"
-                                                    >
-                                                        <img :src="`/static/image/mcenter/bank/default.png`" />
-                                                        {{ item.mainTitle }}
-                                                        <icon
-                                                            v-if="item.selectId === speedField.depositMethod"
-                                                            :class="$style['select-active']"
-                                                            name="check"
-                                                        />
-                                                    </li>
-                                                </ul>
-                                            </div>
-                                        </div>
-                                    </template>
-                                    <template v-else-if="info.objKey === 'depositTime'">
-                                        <date-picker
-                                            v-model="speedField[info.objKey]"
-                                            :placeholder="info.placeholderText"
-                                            type="datetime"
-                                            format="YYYY-MM-DD HH:mm:ss"
-                                            value-type="format"
-                                            @input="submitDataInput(info.value, info.objKey)"
-                                        />
-                                    </template>
                                     <input
-                                        v-else
-                                        v-model="speedField[info.objKey]"
+                                        v-model="speedField.depositName"
                                         :class="$style['speed-deposit-input']"
-                                        :placeholder="info.placeholderText"
-                                        @input="submitDataInput($event.target.value, info.objKey)"
+                                        :placeholder="depositNameInput.placeholderText"
+                                        @input="submitDataInput($event.target.value, depositNameInput.objKey)"
                                     />
                                 </div>
                             </div>
                             <div
-                                v-if="info.isError"
-                                :key="`field-error-${info.objKey}`"
+                                v-if="depositNameInput.isError"
+                                :key="`field-error-${depositNameInput.objKey}`"
                                 :class="$style['speed-deposit-input-error-messgae']"
                             >
-                                {{ info.placeholderText }}
+                                {{ depositNameInput.placeholderText }}
                             </div>
-                        </template>
-                    </div>
-                    <div v-if="receiptInfo" :class="[$style['info-wrap'], 'clearfix']">
-                        <div :class="$style['deposit-info-title']">{{ $text('S_WITHDRAW_ACCOUNT', '收款帐号') }}</div>
-                        <div :class="$style['deposit-submit-info']">
-                            <template v-for="(info, index) in receiptInfo">
-                                <div :key="`receipt-info-${index}`" :class="$style['submit-info-wrap']">
-                                    <div :class="[$style['basic-info-text'], $style['basic-info-title']]">{{ info.title }}</div>
-                                    <div v-if="info.qrcode && info.qrcode.length > 0" :class="[$style['basic-info-text'], $style['qrcode-wrap']]">
-                                        <template v-for="(qrcodeInfo, qrcodeInfoIndex) in info.qrcode">
-                                            <div
-                                                v-if="qrcodeInfo.value"
-                                                :key="`qrcode-item-${qrcodeInfoIndex}`"
-                                                :class="$style['qrcode-item']"
-                                            >
-                                                <div :class="$style['qrcode-title']">{{ qrcodeInfo.title }}</div>
-                                                <img
-                                                    :src="qrcodeInfo.value"
-                                                    :class="$style['qrcode-img']"
-                                                    @click="switchQrcodePopup(true, qrcodeInfo.value, qrcodeInfo.title)"
-                                                />
+                        </div>
+                        <!-- 通道 -->
+                        <div v-if="!isDepositAi && passRoad.length > 0" :class="[$style['feature-wrap'], 'clearfix']">
+                            <span :class="$style['bank-card-title']">支付通道</span>
+                            <div :class="$style['bank-feature-wrap']">
+                                <div
+                                    v-for="data in paySelectData.payPass.allData"
+                                    :key="data.id"
+                                    :class="[$style['pay-mode-pass'], {[$style['current-data']]: data.id === curPassRoad.id}]"
+                                    @click="changePassRoad(data)"
+                                >
+                                    {{ data.mainTitle }}
+                                    <img
+                                        v-if="data.id === curPassRoad.id"
+                                        :class="$style['pay-active']"
+                                        src="/static/image/_new/common/select_active.png"
+                                    />
+                                </div>
+                            </div>
+                        </div>
+                        <!-- 存款金額 -->
+                        <div :class="[$style['feature-wrap'], $style['select-money'], 'clearfix']">
+                            <div :class="$style['bank-card-title']">充值金额</div>
+                            <div v-if="isDepositAi" :class="[$style['bank-card-title'], { [$style['is-error']]: isErrorMoney }]">
+                                提交订单时，系统自动调配最佳充值金额
+                            </div>
+                            <div v-if="isDepositAi || curPassRoad.is_recommend_amount" :class="[$style['speed-money-wrap'], 'clearfix']">
+                                <div
+                                    v-for="(item, index) in getPassRoadOrAi.amounts"
+                                    :key="`pay-money-${index}`"
+                                    :class="[$style['pay-money-item'], { [$style['is-current']]: moneyValue === item }]"
+                                    @click="changeMoney(item)"
+                                >
+                                    ¥ {{ item }}
+                                    <img
+                                        v-if="moneyValue === item"
+                                        :class="$style['pay-active']"
+                                        src="/static/image/_new/common/select_active.png"
+                                    />
+                                </div>
+                            </div>
+                            <div v-if="!isDepositAi && (Object.keys(curPassRoad).length === 0 || curPassRoad.is_custom_amount)" :class="$style['feature-deposit-wrap']">
+                                <div class="money-input-wrap">
+                                    <input
+                                        v-model="moneyValue"
+                                        :class="$style['deposit-input']"
+                                        :placeholder="singleLimit"
+                                        type="number"
+                                        pattern="[0-9]*"
+                                        @blur="verificationMoney(moneyValue)"
+                                        @input="updateInput($event, $event.target.value)"
+                                    />
+                                </div>
+                                <span :class="$style['deposit-input-icon']">¥</span>
+                            </div>
+                            <div v-if="!isDepositAi && isErrorMoney" :class="$style['money-input-tip']">
+                                {{ singleLimit }}
+                            </div>
+                            <!-- 實際存入 -->
+                        </div>
+                        <div v-if="curPay(curPayInfo)" :class="$style['speed-input-wrap']">
+                            <template v-for="info in allInputData">
+                                <div
+                                    v-if="info.showCondition"
+                                    :key="`field-${info.objKey}`"
+                                    :class="[$style['speed-field'], {[$style.error]: info.isError},'clearfix']"
+                                >
+                                    <img
+                                        v-if="info.objKey === 'depositMethod' || info.objKey === 'depositTime'"
+                                        :class="$style['speed-field-icon']"
+                                        src="/static/image/_new/common/arrow_next.png"
+                                    />
+                                    <div :class="$style['field-title']">{{ info.title }}</div>
+                                    <div :class="$style['field-info']">
+                                        <template v-if="info.objKey === 'depositMethod'">
+                                            <div :class="[$style['speed-field-title'], {[$style['depositMethod-no-data']] : !speedField.depositMethod}]" @click="isShowMethodsPop=true">
+                                                {{ speedField.depositMethod ? info.selectData.find(item => speedField.depositMethod === item.selectId).mainTitle : info.selectTitle }}
+                                            </div>
+                                            <div v-if="isShowMethodsPop" :class="$style['pop-wrap']">
+                                                <div :class="$style['pop-mask']" @click.stop="isShowMethodsPop = false" />
+                                                <div :class="$style['pop-menu']">
+                                                    <div :class="$style['pop-title']">
+                                                        <span @click.stop="isShowMethodsPop = false">{{ $text('S_CANCEL', '取消') }}</span>
+                                                        {{ info.title }}
+                                                    </div>
+                                                    <ul :class="$style['pop-list']">
+                                                        <li
+                                                            v-for="item in info.selectData"
+                                                            :key="item.selectId"
+                                                            @click.stop="speedField.depositMethod = item.selectId, isShowMethodsPop = false"
+                                                        >
+                                                            <img :src="`/static/image/mcenter/bank/default.png`" />
+                                                            {{ item.mainTitle }}
+                                                            <icon
+                                                                v-if="item.selectId === speedField.depositMethod"
+                                                                :class="$style['select-active']"
+                                                                name="check"
+                                                            />
+                                                        </li>
+                                                    </ul>
+                                                </div>
                                             </div>
                                         </template>
+                                        <template v-else-if="info.objKey === 'depositTime'">
+                                            <date-picker
+                                                v-model="speedField[info.objKey]"
+                                                :placeholder="info.placeholderText"
+                                                type="datetime"
+                                                format="YYYY-MM-DD HH:mm:ss"
+                                                value-type="format"
+                                                @input="submitDataInput(info.value, info.objKey)"
+                                            />
+                                        </template>
+                                        <input
+                                            v-else
+                                            v-model="speedField[info.objKey]"
+                                            :class="$style['speed-deposit-input']"
+                                            :placeholder="info.placeholderText"
+                                            @input="submitDataInput($event.target.value, info.objKey)"
+                                        />
                                     </div>
-                                    <!-- eslint-disable vue/no-v-html -->
-                                    <div
-                                        v-else-if="info.htmlShow"
-                                        :class="[$style['basic-info-text'], $style[`info-${info.objKey}`]]"
-                                        v-html="info.value"
-                                    />
-                                    <!-- eslint-enable vue/no-v-html -->
-                                    <div v-else :class="$style['basic-info-text']">
-                                        {{ info.value }}
+                                </div>
+                                <div
+                                    v-if="info.isError"
+                                    :key="`field-error-${info.objKey}`"
+                                    :class="$style['speed-deposit-input-error-messgae']"
+                                >
+                                    {{ info.placeholderText }}
+                                </div>
+                            </template>
+                        </div>
+                        <div v-if="receiptInfo" :class="[$style['info-wrap'], 'clearfix']">
+                            <div :class="$style['deposit-info-title']">{{ $text('S_WITHDRAW_ACCOUNT', '收款帐号') }}</div>
+                            <div :class="$style['deposit-submit-info']">
+                                <template v-for="(info, index) in receiptInfo">
+                                    <div :key="`receipt-info-${index}`" :class="$style['submit-info-wrap']">
+                                        <div :class="[$style['basic-info-text'], $style['basic-info-title']]">{{ info.title }}</div>
+                                        <div v-if="info.qrcode && info.qrcode.length > 0" :class="[$style['basic-info-text'], $style['qrcode-wrap']]">
+                                            <template v-for="(qrcodeInfo, qrcodeInfoIndex) in info.qrcode">
+                                                <div
+                                                    v-if="qrcodeInfo.value"
+                                                    :key="`qrcode-item-${qrcodeInfoIndex}`"
+                                                    :class="$style['qrcode-item']"
+                                                >
+                                                    <div :class="$style['qrcode-title']">{{ qrcodeInfo.title }}</div>
+                                                    <img
+                                                        :src="qrcodeInfo.value"
+                                                        :class="$style['qrcode-img']"
+                                                        @click="switchQrcodePopup(true, qrcodeInfo.value, qrcodeInfo.title)"
+                                                    />
+                                                </div>
+                                            </template>
+                                        </div>
+                                        <!-- eslint-disable vue/no-v-html -->
                                         <div
-                                            v-if="info.copyShow"
-                                            :class="$style['icon-wrap']"
-                                            @click="copyInfo(info.value)"
-                                        >
-                                            <div>
-                                                <icon
-                                                    name="regular/copy"
-                                                    width="12"
-                                                    height="12"
-                                                />
+                                            v-else-if="info.htmlShow"
+                                            :class="[$style['basic-info-text'], $style[`info-${info.objKey}`]]"
+                                            v-html="info.value"
+                                        />
+                                        <!-- eslint-enable vue/no-v-html -->
+                                        <div v-else :class="$style['basic-info-text']">
+                                            {{ info.value }}
+                                            <div
+                                                v-if="info.copyShow"
+                                                :class="$style['icon-wrap']"
+                                                @click="copyInfo(info.value)"
+                                            >
+                                                <div>
+                                                    <icon
+                                                        name="regular/copy"
+                                                        width="12"
+                                                        height="12"
+                                                    />
+                                                </div>
                                             </div>
                                         </div>
                                     </div>
-                                </div>
-                                <div :key="`border-line-${index}`" :class="{ [$style['info-border']]: info.isBorderBottom }" />
-                            </template>
+                                    <div :key="`border-line-${index}`" :class="{ [$style['info-border']]: info.isBorderBottom }" />
+                                </template>
+                            </div>
                         </div>
-                    </div>
+                    </template>
                     <div
                         :class="[$style['pay-button'], {[$style.disabled] : !checkSuccess}]"
                         :title="$text('S_ENTER_PAY', '前往支付')"
