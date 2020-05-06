@@ -3,8 +3,9 @@
     <video
       id="video-play"
       ref="video-player"
-      playsinline=""
-      webkit-playsinline=""
+      :playsinline="true"
+      playsinline
+      webkit-playsinline
       class="video-js vjs-default-skin vjs-fluid vjs-big-play-centered"
     ></video>
     <!-- 彩金活動 -->
@@ -18,7 +19,7 @@
         :type="dialogType"
         @close="isShowBounsDialog = false"
       />
-      <bonuns-process ref="bonunsProcess" v-show="isShowBounsProcess" />
+      <bonuns-process ref="bonunsProcess" />
     </div>
   </div>
 </template>
@@ -49,7 +50,6 @@ export default {
       //   彩金開關
       isActiveBouns: true, //預設打開由message決定是否啟動
       isShowBounsDialog: false,
-      isShowBounsProcess: true,
       dialogType: "tips",// 提示 & 賺得彩金
       socket: null,
       socketId: "",
@@ -234,36 +234,47 @@ export default {
       }
     },
     onOpen(e) {
-      if (process.env.NODE_ENV === 'development') {
-        console.log("open ==>")
-        console.log(e)
-      }
+      console.log("video socket: ", e);
+      let data = {
+        "SocketId": this.socketId,
+        "Type": "WEB-OPEN",
+        "SendTime": new Date().toISOString(),
+        "Data": {
+          "platform": getCookie('platform') || "normal",
+          "videoid": this.videoInfo.id,
+          "url": this.videoInfo.url,
+        }
+      };
+
+      this.socket.send(JSON.stringify(data));
     },
     onClose(e) {
       if (process.env.NODE_ENV === 'development') {
-        console.log("close ==>")
-        console.log(e)
+        console.log("close ==>");
+        console.log(e);
       }
     },
     onError(e) {
       console.log("err ==>")
-      console.log(e)
+      console.log(e);
       this.isActiveBouns = false;
       this.socket = null;
     },
     // "STOP" | "CLOSE" | "PLAY"
     onSend(type) {
-      if (!this.socket || this.socket.readyState === 3 || this.$refs.bonunsProcess.processType === 'done') {
+      if (!this.socket || this.socket.readyState === 3 || (this.$refs.bonunsProcess && this.$refs.bonunsProcess.processType === 'done')) {
         return
       }
       let data = {
         "SocketId": this.socketId,
         "Type": type,
         "SendTime": new Date().toISOString(),
-        "Data": {}
+        "Data": {
+          "platform": getCookie('platform') || "normal"
+        }
       }
 
-      this.socket.send(JSON.stringify(data))
+      this.socket.send(JSON.stringify(data));
     }
   },
   beforeDestroy() {

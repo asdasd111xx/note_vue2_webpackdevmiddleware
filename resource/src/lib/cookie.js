@@ -20,5 +20,6 @@ export const getCookie = (cookieName) => {
 
 export const setCookie = (name, value, expires = 7, path = '/') => {
     //   to do cookie 全站設定
+    if (!value) Cookies.remove(name);
     Cookies.set(name, value, { expires, path });
 };

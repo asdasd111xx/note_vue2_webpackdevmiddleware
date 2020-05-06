@@ -212,11 +212,6 @@ export default {
         }
     },
     created() {
-        if (!this.mobileCheck && this.$route.path === '/mobile/mcenter/withdraw') {
-            this.$router.push('/mobile/mcenter/accountData');
-            return;
-        }
-
         this.actionSetIsLoading(true);
         // 取得取款初始資料
         ajax({
@@ -333,7 +328,7 @@ export default {
                                 params: {
                                     api_uri: '/api/trade/v2/c/withdraw/entry',
                                     [`method[${hasAccountId}]`]: this.withdrawAccount.id,
-                                    password: this.withdrawPwd,
+                                    // password: this.withdrawPwd,
                                     withdraw_id: response.ret.id
                                 }
                             }).then((res) => {

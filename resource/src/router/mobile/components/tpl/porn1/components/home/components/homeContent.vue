@@ -6,7 +6,6 @@
   >
     <!-- 左側分類 -->
     <div
-      v-show="isShow"
       ref="type-wrap"
       :class="$style['type-wrap']"
       @touchstart="onTypeTouchStart"
@@ -15,11 +14,14 @@
       <div
         v-for="(type, index) in typeList"
         :key="`type-${index}`"
-        :class="$style['type-swiper']"
+        :class="[
+          $style['type-swiper'],
+          { [$style.active]: selectedIndex === index }
+        ]"
         @click="onChangeSelectInedx(index)"
       >
         <img
-          v-if="typeList[selectedIndex].icon === type.icon"
+          v-if="selectedIndex === index"
           :src="
             $getCdnPath(
               `/static/image/_new/platform/icon/icon_${type.icon}_h.png`
@@ -37,7 +39,7 @@
         <div
           :class="[
             $style['type-title'],
-            { [$style.active]: typeList[selectedIndex].icon === type.icon }
+            { [$style.active]: selectedIndex === index }
           ]"
         >
           {{ type.name }}
@@ -45,12 +47,12 @@
       </div>
     </div>
     <!-- 右側內容 -->
-    <div v-show="isShow" :class="$style['all-game-wrap']">
+    <div :class="$style['all-game-wrap']">
       <!-- 上方功能列 -->
       <div :class="$style['top-wrap']">
         <!-- 影片分類 -->
         <div
-          v-if="isAdult && typeList[selectedIndex].icon === 'Tv'"
+          v-if="isAdult && selectedIndex === 0"
           :class="[$style['video-tag-wrap'], 'clearfix']"
         >
           <div
@@ -146,7 +148,11 @@
               <div :class="$style['type-name']">{{ videoData.name }}</div>
               <div
                 :class="$style['btn-more']"
-                @click.stop="openVideo('videoList', { query: { tagId: videoType.id, sortId: videoData.id || 0 }})"
+                @click.stop="
+                  openVideo('videoList', {
+                    query: { tagId: videoType.id, sortId: videoData.id || 0 }
+                  })
+                "
               >
                 更多
               </div>
@@ -157,7 +163,9 @@
                 :key="`video-${video.id}`"
                 :href="`/mobile/videoPlay/${video.id}`"
                 :class="$style.video"
-                @click.stop="openVideo('videoPlay', { params: { id: video.id }})"
+                @click.stop="
+                  openVideo('videoPlay', { params: { id: video.id } })
+                "
               >
                 <img :src="video.image" />
                 <div>{{ video.title }}</div>
@@ -209,7 +217,6 @@ export default {
   data() {
     return {
       isReceive: false,
-      isShow: false,
       isShowAllTag: false,
       isSliding: false,
       isTop: false,
@@ -247,9 +254,7 @@ export default {
     },
     typeList() {
       const adultVideo = this.isAdult ? [{ icon: 'Tv', name: '影片' }] : [];
-      const typeList = [...adultVideo, ...this.allGame.map((game) => ({ icon: game.iconName, name: game.name }))];
-      // 業主說左側選單前後要各複製一份...
-      return [...typeList, ...typeList, ...typeList];
+      return [...adultVideo, ...this.allGame.map((game) => ({ icon: game.iconName, name: game.name }))];
     },
     options() {
       return { slidesPerView: 'auto', spaceBetween: 4, slideClass: this.$style.tag };
@@ -275,9 +280,7 @@ export default {
       return [{ isVideo: true, data: videoList }, ...gameList];
     },
     currentGame() {
-      const length = this.typeList.length / 3;
-      const index = this.selectedIndex % length;
-      return { ...this.allGameList[index] };
+      return { ...this.allGameList[this.selectedIndex] };
     },
     vipLevel() {
       return this.currentLevel <= 10 ? this.currentLevel : 'max';
@@ -301,9 +304,7 @@ export default {
           $(window).trigger('resize');
           const defaultType = localStorage.getItem('type') || 'Tv';
           const defaultIndex = this.typeList.findIndex((type) => type.icon === defaultType);
-          const selectIndex = (this.typeList.length / 3) + defaultIndex;
-          this.onChangeSelectInedx(selectIndex);
-          this.isShow = true;
+          this.onChangeSelectInedx(defaultIndex);
         }, 300);
       });
     });
@@ -629,10 +630,25 @@ export default {
 .type-swiper {
   position: relative;
   width: 63px;
+  height: 63px;
+  background-image: url("/static/image/_new/platform/icon/icon_bg_n.png");
+  background-position: 0 0;
+  background-size: 63px 63px;
+  background-repeat: no-repeat;
 
   > img {
     display: block;
-    width: 100%;
+    position: absolute;
+    top: 0;
+    right: 0;
+    left: 0;
+    width: 40px;
+    height: 40px;
+    margin: 0 auto;
+  }
+
+  &.active {
+    background-image: url("/static/image/_new/platform/icon/icon_bg_h.png");
   }
 }
 
