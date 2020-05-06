@@ -6,9 +6,11 @@
           <img :src="$getCdnPath('/static/image/_new/common/btn_back_w.png')" />
         </div>
       </div>
-      <video-player :video-info="videoInfo" />
-      <video-info :video-info="videoInfo" />
-      <video-tag :tag="videoInfo.tag" :padding="true" />
+      <template v-if="videoInfo">
+        <video-player :video-info="videoInfo" />
+        <video-info :video-info="videoInfo" />
+        <video-tag :tag="videoInfo.tag" :padding="true" />
+      </template>
       <video-guess />
     </div>
   </mobile-container>
