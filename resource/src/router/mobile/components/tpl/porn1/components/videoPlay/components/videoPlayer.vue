@@ -262,7 +262,7 @@ export default {
     },
     // "STOP" | "CLOSE" | "PLAY"
     onSend(type) {
-      if (!this.socket || this.socket.readyState === 3 || this.$refs.bonunsProcess.processType === 'done') {
+      if (!this.socket || this.socket.readyState === 3 || (this.$refs.bonunsProcess && this.$refs.bonunsProcess.processType === 'done')) {
         return
       }
       let data = {
