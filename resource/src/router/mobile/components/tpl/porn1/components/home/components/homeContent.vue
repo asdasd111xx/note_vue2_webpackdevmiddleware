@@ -14,7 +14,10 @@
       <div
         v-for="(type, index) in typeList"
         :key="`type-${index}`"
-        :class="[$style['type-swiper'], { [$style.active]: selectedIndex === index }]"
+        :class="[
+          $style['type-swiper'],
+          { [$style.active]: selectedIndex === index }
+        ]"
         @click="onChangeSelectInedx(index)"
       >
         <img
@@ -145,7 +148,11 @@
               <div :class="$style['type-name']">{{ videoData.name }}</div>
               <div
                 :class="$style['btn-more']"
-                @click.stop="openVideo('videoList', { query: { tagId: videoType.id, sortId: videoData.id || 0 }})"
+                @click.stop="
+                  openVideo('videoList', {
+                    query: { tagId: videoType.id, sortId: videoData.id || 0 }
+                  })
+                "
               >
                 更多
               </div>
@@ -156,7 +163,9 @@
                 :key="`video-${video.id}`"
                 :href="`/mobile/videoPlay/${video.id}`"
                 :class="$style.video"
-                @click.stop="openVideo('videoPlay', { params: { id: video.id }})"
+                @click.stop="
+                  openVideo('videoPlay', { params: { id: video.id } })
+                "
               >
                 <img :src="video.image" />
                 <div>{{ video.title }}</div>
@@ -622,7 +631,7 @@ export default {
   position: relative;
   width: 63px;
   height: 63px;
-  background-image: url('/static/image/_new/platform/icon/icon_bg_n.png');
+  background-image: url("/static/image/_new/platform/icon/icon_bg_n.png");
   background-position: 0 0;
   background-size: 63px 63px;
   background-repeat: no-repeat;
@@ -639,7 +648,7 @@ export default {
   }
 
   &.active {
-    background-image: url('/static/image/_new/platform/icon/icon_bg_h.png');
+    background-image: url("/static/image/_new/platform/icon/icon_bg_h.png");
   }
 }
 

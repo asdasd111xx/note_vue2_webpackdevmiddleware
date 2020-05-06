@@ -40,10 +40,11 @@ export default {
   },
   created() {
     // PWA版本
-    let version = this.$route.query.version || getCookie('version');
-    if (version) {
-      setCookie('version', version);
-    }
+    let version = this.$route.query.version || getCookie('version') || '';
+    setCookie('version', version);
+    let platform = this.$route.query.platform || getCookie('platform') || '';
+    setCookie('platform', platform);
+
 
     // 設置隱藏屬性和改變可見屬性的事件的名稱
     let visibilityChange;

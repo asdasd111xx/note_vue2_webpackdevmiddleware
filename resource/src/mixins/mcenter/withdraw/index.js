@@ -212,11 +212,6 @@ export default {
         }
     },
     created() {
-        if (!this.mobileCheck && this.$route.path === '/mobile/mcenter/withdraw') {
-            this.$router.push('/mobile/mcenter/accountData');
-            return;
-        }
-
         this.actionSetIsLoading(true);
         // 取得取款初始資料
         ajax({
