@@ -1,5 +1,8 @@
 <template >
-  <div v-if="isShow" :class="$style['app-tips']" :style="{ opacity: opacity }">
+  <div v-if="isShow && ( isIos && platform !== 'H' )"
+       :class="$style['app-tips']"
+       :style="{ opacity: opacity }"
+  >
     <span>收藏我们随时下载APP </span>
     <div>
       <span :class="$style['go-btn']" @click="handleClick">立即收藏</span>
@@ -17,10 +20,13 @@ import moment from 'moment';
 import mcenterPageAuthControl from '@/lib/mcenterPageAuthControl';
 import mcenter from '@/api/mcenter';
 import member from '@/api/member';
+import { getCookie, setCookie } from '@/lib/cookie';
 
 export default {
   data() {
     return {
+      isIos: !!navigator.userAgent.match(/\(i[^;]+;( U;)? CPU.+Mac OS X/),
+      platform: '',
       isShow: true,
       opacity: 1
     };
@@ -30,7 +36,13 @@ export default {
 
     }),
   },
-
+  created() {
+    let platform = this.$route.query.platform || getCookie('platform');;
+    if (platform) {
+      this.platform = platform;
+      setCookie('platform', platform);
+    }
+  },
   methods: {
     ...mapActions([
       'actionSetUserdata'
@@ -45,7 +57,7 @@ export default {
     },
     handleClick() {
       this.show = false;
-      this.$router.push('/mobile/install')
+      window.open('/mobile/install')
     }
   }
 };

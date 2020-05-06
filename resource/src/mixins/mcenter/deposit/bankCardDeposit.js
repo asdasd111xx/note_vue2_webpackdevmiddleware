@@ -465,6 +465,12 @@ export default {
             this.resetStatus();
             this.curPayInfo = info;
 
+            if (info.payment_method_id === 20) {
+                this.checkSuccess = true;
+            } else {
+                this.checkSuccess = false;
+            }
+
             // 判斷是否為其他銀行，極速到帳(payment_method_id = 6)、銀行轉帳(payment_method_id = 3)皆有其他銀行選項
             const isOtherBank = (this.curPayInfo.payment_method_id === 3 && this.curPayInfo.bank_id === 0) || (this.curPayInfo.payment_method_id === 6 && this.curPayInfo.bank_id === 0);
 
@@ -612,6 +618,28 @@ export default {
 
                     return { status: 'error' };
                 });
+            }
+
+            // 代客充值
+            if (this.curPayInfo.external_url) {
+                // 流量分析事件 - 成功
+                window.dataLayer.push({
+                    event: 'ga_click',
+                    eventCategory: 'deposit',
+                    eventAction: 'pay',
+                    eventLabel: 'success'
+                });
+
+                if (webview) {
+                    window.location.href = this.curPayInfo.external_url;
+                    return Promise.resolve({ status: 'credit' });
+                }
+                if (isMobile() && !isUBMobile) {
+                    newWindow.location.href = this.curPayInfo.external_url;
+                    return Promise.resolve({ status: 'credit' });
+                }
+                window.open(this.curPayInfo.external_url, 'credit');
+                return Promise.resolve({ status: 'credit' });
             }
 
             this.isShow = true;
