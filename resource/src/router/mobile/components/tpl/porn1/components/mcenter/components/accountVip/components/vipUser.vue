@@ -32,7 +32,7 @@
         <!-- 進度條 -->
         <div :class="$style['run-block']">
             <div :class="[$style['run-level'], $style['current']]">
-                <p>{{ userVipInfo.now_level_name }}</p>
+                <p>VIP{{ userVipInfo.now_level_seq }}</p>
             </div>
             <div :class="$style['run-bar']">
                 <div

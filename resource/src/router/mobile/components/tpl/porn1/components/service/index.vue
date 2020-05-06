@@ -1,141 +1,138 @@
 <template>
-  <mobile-container :class="$style.container">
-    <div slot="content" class="content-wrap">
-      <div :class="$style['service-header']">
-        <div :class="$style.title">{{ this.$text("S_SERVIEC", "客服") }}</div>
-        <div
-          @click="$router.push(loginStatus ? '/mobile/mcenter/feedback/sendFeedback' : '/mobile/login')"
-          :class="$style.feedback"
-        >
-          {{ this.$text("S_FEEDBACK", "意见反馈") }}
-        </div>
-      </div>
-      <message v-if="msg" @close="msg = ''"
-        ><div slot="msg">{{ msg }}</div>
-      </message>
-      <div :class="$style['bg']" />
-      <div :class="$style['avatar-info-wrap']">
-        <div :class="$style['avatar-wrap']">
-          <img :src="avatarSrc" />
-        </div>
-        <div :class="$style['info-wrap']">
-          <span
-            >Hi,&nbsp;
-            {{ name }}
-          </span>
-          <span>欢迎来到客服中心</span>
-        </div>
-      </div>
+    <mobile-container :class="$style.container">
+        <div slot="content" class="content-wrap">
+            <div :class="$style['service-header']">
+                <div
+                    :class="$style['btn-prev']"
+                    @click="$router.back()"
+                >
+                    <img :src="$getCdnPath('/static/image/_new/common/btn_back_w.png')" />
+                </div>
+                <div :class="$style.title">{{ this.$text("S_SERVIEC", "客服") }}</div>
+                <div
+                    :class="$style.feedback"
+                    @click="$router.push(loginStatus ? '/mobile/mcenter/feedback/sendFeedback' : '/mobile/login')"
+                >
+                    {{ this.$text("S_FEEDBACK", "意见反馈") }}
+                </div>
+            </div>
+            <message
+                v-if="msg"
+                @close="msg = ''"
+            >
+                <div slot="msg">{{ msg }}</div>
+            </message>
+            <div :class="$style['bg']" />
+            <div :class="$style['avatar-info-wrap']">
+                <div :class="$style['avatar-wrap']">
+                    <img :src="avatarSrc" />
+                </div>
+                <div :class="$style['info-wrap']">
+                    <span>Hi,&nbsp;
+                        {{ name }}
+                    </span>
+                    <span>欢迎来到客服中心</span>
+                </div>
+            </div>
 
-      <div :class="$style['info-card']" @click="clickService">
-        <div>
-          <div>
-            <img
-              :src="$getCdnPath(`/static/image/_new/service/ic_service01.png`)"
-            />
-            &nbsp;
-            <span>在线客服1</span>
-          </div>
-          <div>Main Customer Support</div>
-          <div>7*24小时专线服务 贴心至上</div>
-        </div>
+            <div :class="$style['info-card']" @click="clickService">
+                <div>
+                    <div>
+                        <img
+                            :src="$getCdnPath(`/static/image/_new/service/ic_service01.png`)"
+                        />
+                        &nbsp;
+                        <span>在线客服1</span>
+                    </div>
+                    <div>Main Customer Support</div>
+                    <div>7*24小时专线服务 贴心至上</div>
+                </div>
 
-        <div :class="$style['btn-next']">
-          <img :src="$getCdnPath(`/static/image/_new/common/btn_next.png`)" />
-        </div>
-      </div>
+                <div :class="$style['btn-next']">
+                    <img :src="$getCdnPath(`/static/image/_new/common/btn_next.png`)" />
+                </div>
+            </div>
 
-      <div :class="$style['info-card2']" @click="clickService">
-        <div>
-          <div>
-            <img
-              :src="$getCdnPath(`/static/image/_new/service/ic_service02.png`)"
-            />
-            &nbsp;
-            <span>在线客服2</span>
-          </div>
-          <div>Main Customer Support</div>
-          <div>7*24小时专线服务 贴心至上</div>
-        </div>
+            <div :class="$style['info-card2']" @click="clickService">
+                <div>
+                    <div>
+                        <img
+                            :src="$getCdnPath(`/static/image/_new/service/ic_service02.png`)"
+                        />
+                        &nbsp;
+                        <span>在线客服2</span>
+                    </div>
+                    <div>Main Customer Support</div>
+                    <div>7*24小时专线服务 贴心至上</div>
+                </div>
 
-        <div :class="$style['btn-next']">
-          <img :src="$getCdnPath(`/static/image/_new/common/btn_next.png`)" />
+                <div :class="$style['btn-next']">
+                    <img :src="$getCdnPath(`/static/image/_new/common/btn_next.png`)" />
+                </div>
+            </div>
         </div>
-      </div>
-    </div>
-  </mobile-container>
+    </mobile-container>
 </template>
 
 <script>
 import { mapGetters } from 'vuex';
 import mobileContainer from '../common/new/mobileContainer';
-import mcenter from '@/api/mcenter';
-import message from '../../components/common/new/message'
+import message from '../common/new/message';
 import mobileLinkOpen from '@/lib/mobile_link_open';
 
 export default {
-  components: {
-    mobileContainer,
-    message
-  },
-  data() {
-    return {
-      msg: "",
-      imgID: 0,
-      imgIndex: 0,
-      avatar: [
-        { image: 'avatar_1', url: '/static/image/_new/mcenter/default/avatar_1.png' },
-        { image: 'avatar_2', url: '/static/image/_new/mcenter/default/avatar_2.png' },
-        { image: 'avatar_3', url: '/static/image/_new/mcenter/default/avatar_3.png' },
-        { image: 'avatar_4', url: '/static/image/_new/mcenter/default/avatar_4.png' },
-        { image: 'avatar_5', url: '/static/image/_new/mcenter/default/avatar_5.png' },
-        { image: 'avatar_6', url: '/static/image/_new/mcenter/default/avatar_6.png' }
-      ],
-    };
-  },
-  created() {
-    if (this.memInfo.user.image === 0) {
-      this.imgIndex = 1;
-      this.imgID = 1;
-      return;
+    components: {
+        mobileContainer,
+        message
+    },
+    data() {
+        return {
+            msg: '',
+            imgID: 0,
+            imgIndex: 0,
+            avatar: [
+                { image: 'avatar_1', url: '/static/image/_new/mcenter/default/avatar_1.png' },
+                { image: 'avatar_2', url: '/static/image/_new/mcenter/default/avatar_2.png' },
+                { image: 'avatar_3', url: '/static/image/_new/mcenter/default/avatar_3.png' },
+                { image: 'avatar_4', url: '/static/image/_new/mcenter/default/avatar_4.png' },
+                { image: 'avatar_5', url: '/static/image/_new/mcenter/default/avatar_5.png' },
+                { image: 'avatar_6', url: '/static/image/_new/mcenter/default/avatar_6.png' }
+            ]
+        };
+    },
+    created() {
+        if (this.memInfo.user.image === 0) {
+            this.imgIndex = 1;
+            this.imgID = 1;
+            return;
+        }
+        this.imgIndex = this.memInfo.user.image;
+        this.imgID = this.memInfo.user.image;
+    },
+    computed: {
+        ...mapGetters({
+            loginStatus: 'getLoginStatus',
+            memInfo: 'getMemInfo'
+        }),
+        avatarSrc() {
+            return !this.loginStatus
+                ? this.$getCdnPath('/static/image/_new/mcenter/avatar_nologin.png')
+                : this.$getCdnPath(`/static/image/_new/mcenter/default/avatar_${this.imgIndex}.png`);
+        },
+        name() {
+            if (this.loginStatus) {
+                return this.memInfo.user.show_alias
+                    ? this.memInfo.user.alias
+                    : this.memInfo.user.username;
+            }
+            return '尊敬的用户';
+        }
+    },
+    methods: {
+        clickService() {
+            mobileLinkOpen({ linkType: 'static', linkTo: 'service' });
+        }
     }
-    this.imgIndex = this.memInfo.user.image;
-    this.imgID = this.memInfo.user.image;
-  },
-  computed: {
-    ...mapGetters({
-      loginStatus: 'getLoginStatus',
-      memInfo: 'getMemInfo',
-    }),
-    avatarSrc() {
-      return !this.loginStatus ?
-        this.$getCdnPath(`/static/image/_new/mcenter/avatar_nologin.png`) :
-        this.$getCdnPath(`/static/image/_new/mcenter/default/avatar_${this.imgIndex}.png`)
-
-    },
-    name() {
-      if (this.loginStatus) {
-        return this.memInfo.user.show_alias
-          ? this.memInfo.user.alias
-          : this.memInfo.user.username
-      } else {
-        return '尊敬的用户'
-      }
-    },
-    headerConfig() {
-      return {
-        title: this.$text('S_INFORMATION', '我的') + this.$text('S_SERVIEC', '客服'),
-        // prev: true,
-        // onClick: () => { this.$router.back(); }
-      };
-    },
-  },
-  methods: {
-    mobileLinkOpen,
-    clickService() {
-      this.mobileLinkOpen({ linkType: 'static', linkTo: 'service' });
-    }
-  },
 };
 </script>
 
@@ -192,6 +189,7 @@ div.container {
 
 .service-header {
   text-align: center;
+  position: relative;
   height: 43px;
   color: white;
   font-size: 17px;
@@ -272,5 +270,20 @@ div.container {
 
 .card-bg {
   height: 100%;
+}
+
+.btn-prev {
+  position: absolute;
+  top: 0;
+  bottom: 0;
+  left: 12px;
+  width: 20px;
+  height: 20px;
+  margin: auto;
+
+  > img {
+    display: block;
+    width: 100%;
+  }
 }
 </style>
