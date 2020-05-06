@@ -20,7 +20,7 @@
           <div :class="$style['sub-text']">VIP PRIVILEGE</div>
         </div>
       </div>
-            <div :class="$style['v-line']" />
+      <div :class="$style['v-line']" />
       <div
         @click="
           loginStatus
@@ -120,7 +120,7 @@ export default {
         { path: '/mobile/mcenter/withdraw', pageName: 'withdraw' }, // 取款
         { path: '/mobile/mcenter/accountVip', pageName: 'accountVip' } // VIP
       ],
-    //   vipData: {},
+      //   vipData: {},
       createdTime: '',
       imgID: 0,
       imgIndex: 0
@@ -168,13 +168,6 @@ export default {
     },
     goLogin() {
       this.$router.push('/mobile/login');
-    },
-    goAccountData() {
-      if (!this.loginStatus) {
-        this.goLogin();
-        return;
-      }
-      this.$router.push('/mobile/mcenter/accountData');
     },
     countDays(ceatedTime) {
       const startTime = moment(ceatedTime);
@@ -236,11 +229,11 @@ export default {
       height: 100%;
     }
   }
-    .v-line {
-        border-left: 1px solid #EEE;
-        height: 38px;
-        width: 1px;
-    }
+  .v-line {
+    border-left: 1px solid #eee;
+    height: 38px;
+    width: 1px;
+  }
 }
 
 .mcenter-func {
@@ -249,7 +242,6 @@ export default {
   align-items: center;
   margin-top: 12px;
   padding: 5px 8% 0;
-
 
   .cell {
     width: 25%;
