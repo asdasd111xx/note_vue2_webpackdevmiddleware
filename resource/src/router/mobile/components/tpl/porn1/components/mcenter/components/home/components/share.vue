@@ -223,13 +223,13 @@ $radius: 10px;
 .pic-wrap {
   position: absolute;
   width: 270px;
-  top: 8%;
+  top: 6%;
   left: 50%;
   transform: translateX(-50%);
   border-radius: 8px;
   overflow: hidden;
   .img {
-    height: 345px;
+    height: 368px;
     overflow: hidden;
     img {
       width: 100%;
