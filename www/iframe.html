@@ -20,13 +20,10 @@
     </style>
 
     <script>
+        // to do
         const urlParams = new URLSearchParams(window.location.search);
         let _version = urlParams.get('version');
         let _platform = urlParams.get('platform');
-        $.cookie("version", null)
-        $.cookie("version", _version, { path: '/', expires: 7 });
-        $.cookie("platform", null)
-        $.cookie("platform", _platform, { path: '/', expires: 7 });
     </script>
 </head>
 
