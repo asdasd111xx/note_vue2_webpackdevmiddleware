@@ -32,7 +32,7 @@
                 @click="isShow = !isShow"
             >
                 <span :class="[$style['icon-arrow'], { [$style.active]: isShow }]" />
-                <span>{{ $text('S_FIRST_LEVEL_FRIEND_RECOMMANDED', '新增一级好友') }}</span>
+                <span>新增一级好友</span>
             </div>
         </div>
         <transition name="slide-down">

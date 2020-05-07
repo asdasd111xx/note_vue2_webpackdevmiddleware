@@ -155,7 +155,8 @@ export default {
                 { key: 'vendor', text: '转帐' },
                 { key: 'withdraw', text: '提现' },
                 { key: 'bonus', text: '红利' },
-                { key: 'manual', text: '人工' }
+                { key: 'manual', text: '人工' },
+                { key: 'wage', text: '返利' }
             ];
         },
         dateOptions() {

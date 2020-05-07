@@ -169,9 +169,7 @@ export default {
 
 .type-btn {
   position: relative;
-  float: left;
-  width: calc(100% / 7);
-  min-width: 85px;
+    flex: 1;
   height: 43px;
   line-height: 43px;
   font-weight: 500;
