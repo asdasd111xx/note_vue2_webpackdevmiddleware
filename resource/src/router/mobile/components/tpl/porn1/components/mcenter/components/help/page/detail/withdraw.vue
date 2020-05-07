@@ -62,7 +62,7 @@ import { mapGetters } from 'vuex';
 import member from '@/api/member';
 import ajax from '@/lib/ajax';
 import bbosRequest from '@/lib/bbosRequest';
-import { getCookie, setCookie } from '@/lib/cookie';
+import { getCookie } from '@/lib/cookie';
 import editWithdrawField from './editWithdrawField'
 import { API_WITHDRAW_RECORD } from '@/config/api';
 export default {

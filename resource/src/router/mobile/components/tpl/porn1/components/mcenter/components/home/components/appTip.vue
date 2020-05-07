@@ -39,10 +39,8 @@ export default {
   },
   created() {
     let platform = this.$route.query.platform || getCookie('platform');;
-    if (platform) {
-      this.platform = platform;
-      setCookie('platform', platform);
-    }
+    this.platform = platform;
+    setCookie('platform', platform);
   },
   methods: {
     ...mapActions([

@@ -44,7 +44,7 @@
 import { mapGetters } from 'vuex';
 import member from '@/api/member';
 import ajax from '@/lib/ajax';
-import { getCookie, setCookie } from '@/lib/cookie';
+import { getCookie } from '@/lib/cookie';
 import mixin from '@/mixins/mcenter/deposit/recordDeposit';
 import editDepositField from './editDepositField'
 export default {
