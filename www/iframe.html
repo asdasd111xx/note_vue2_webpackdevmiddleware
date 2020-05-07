@@ -1,21 +1,37 @@
 <!DOCTYPE html>
 <html class="fullscreen">
-    <head>
-        <meta charset="utf-8" />
-        <meta name="viewport" content="width=device-width, initial-scale=1.0, minimum-scale=1.0, maximum-scale=1.0, user-scalable=no">
-        <style>
-            html.fullscreen, body.fullscreen, iframe.fullscreen {
-                height: 100%;
-                width: 100%;
-                margin: 0;
-                padding: 0;
-                border: none;
-                display: block;
-                overflow: hidden;
-            }
-        </style>
-    </head>
-    <body class="fullscreen">
-        <iframe class="webclip fullscreen" style="width: 1px;min-width: 100%;" scrolling="no" src="/mobile"></iframe>
-    </body>
+
+<head>
+    <meta charset="utf-8" />
+    <meta name="viewport"
+        content="width=device-width, initial-scale=1.0, minimum-scale=1.0, maximum-scale=1.0, user-scalable=no">
+    <style>
+        html.fullscreen,
+        body.fullscreen,
+        iframe.fullscreen {
+            height: 100%;
+            width: 100%;
+            margin: 0;
+            padding: 0;
+            border: none;
+            display: block;
+            overflow: hidden;
+        }
+    </style>
+
+    <script>
+        const urlParams = new URLSearchParams(window.location.search);
+        let _version = urlParams.get('version');
+        let _platform = urlParams.get('platform');
+        $.cookie("version", null)
+        $.cookie("version", _version, { path: '/', expires: 7 });
+        $.cookie("platform", null)
+        $.cookie("platform", _platform, { path: '/', expires: 7 });
+    </script>
+</head>
+
+<body class="fullscreen">
+    <iframe class="webclip fullscreen" style="width: 1px;min-width: 100%;" scrolling="no" src="/mobile"></iframe>
+</body>
+
 </html>

@@ -7,7 +7,6 @@
     </div>
   </div>
 </template>
-
 <script>
 export default {
   computed: {
@@ -15,49 +14,45 @@ export default {
       return [
         {
           key: 'manchester',
-          requestUrl: 'https://www.guangzhouhl.com/sponsor/manchester/manchester.html',
+          requestUrl: 'http://mau2l.com/jAfxWuN',
           titleName: '英超曼联'
         },
         {
           key: 'yidali',
-          requestUrl: 'https://www.guangzhouhl.com/sponsor/yidali/yidali.html',
+          requestUrl: 'http://wagc8.com/X8TKaSM',
           titleName: '意甲联赛'
         },
         {
           key: 'bayern',
-          requestUrl: 'https://www.guangzhouhl.com/sponsor/bayern/bayern.html',
+          requestUrl: 'http://y3az6.com/wSxyKTu',
           titleName: '拜仁慕尼黑'
         },
         {
           key: 'stevevGerrard',
-          requestUrl: 'https://www.guangzhouhl.com/sponsor/stevevGerrard/stevevGerrard.html',
+          requestUrl: 'http://wagc8.com/gjNOpQU',
           titleName: '杰拉德'
         },
         {
           key: 'leicester',
-          requestUrl: 'https://www.guangzhouhl.com//sponsor/leicester/leicester.html',
+          requestUrl: 'http://eqfyl.com/tjGo9Tz',
           titleName: '莱斯特城'
         },
         {
           key: 'argentina',
-          requestUrl: 'https://www.guangzhouhl.com/sponsor/argentina.html',
+          requestUrl: 'http://q3vcf.com/DQkCAFB',
           titleName: '阿根廷国家队'
         },
         {
           key: 'monaco',
-          requestUrl: 'https://www.guangzhouhl.com/sponsor/monaco.html',
+          requestUrl: 'http://q7g1l.com/iJhNMLo',
           titleName: '法甲摩纳哥'
         },
         {
           key: 'bundesliga',
-          requestUrl: 'https://www.guangzhouhl.com/sponsor/bundesliga.html',
+          requestUrl: 'http://y3az6.com/OLTMz2G',
           titleName: '德甲柏林赫塔'
         },
-        {
-          key: 'americaCup',
-          requestUrl: 'https://www.guangzhouhl.com/sponsor/americaCup.html',
-          titleName: '美洲杯'
-        }
+
       ];
     }
   }
@@ -72,7 +67,7 @@ export default {
 }
 
 .list {
-  padding: 3px 13px 0 ;
+  padding: 3px 13px 0;
 }
 
 .wrap {
