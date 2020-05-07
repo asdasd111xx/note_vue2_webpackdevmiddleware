@@ -7,7 +7,7 @@
                     <img :src="avatarSrc" alt="avatar" />
                 </div>
                 <span>{{ memInfo.user.username }}</span>
-                <span>{{ userVipInfo.now_level_name }}</span>
+                <span>VIP{{ userVipInfo.now_level_seq }}</span>
             </div>
             <div :class="$style['user-vip-desc']">
                 <div
@@ -62,7 +62,7 @@
             </div>
 
             <div :class="[$style['run-level'], $style['next']]">
-                <p>{{ userVipInfo.next_level_name }}</p>
+                <p>VIP{{ userVipInfo.next_level_seq }}</p>
             </div>
         </div>
 
