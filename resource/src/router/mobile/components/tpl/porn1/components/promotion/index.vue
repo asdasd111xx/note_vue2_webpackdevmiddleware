@@ -149,6 +149,7 @@ export default {
 
 .promotion-wrap {
   background: #fefffe;
+  padding-bottom: 10px;
 }
 
 .type-wrap {

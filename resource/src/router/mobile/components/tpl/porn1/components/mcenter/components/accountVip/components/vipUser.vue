@@ -133,7 +133,6 @@ export default {
         }
     },
     created() {
-        console.log(this.userVipInfo);
         if (this.memInfo.user.image === 0 || !this.memInfo.user.image) {
             this.imgIndex = 0;
             return;
