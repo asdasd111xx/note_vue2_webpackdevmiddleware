@@ -25,31 +25,32 @@ export default {
          * @returns {String} 推廣連結
          */
         agentLink() {
-            switch (this.memInfo.user.domain) {
-                case '67':
-                    return "http://yaboxxx1.com/"
-                default:
-                    return "http://yaboxxx2.com/"
+            if (!this.domain || !this.agentCode) {
+                return ''
             }
+
+            return `https://${this.domain}/a/${this.agentCode}`;
+
+
         }
     },
     created() {
-        // this.getDomain();
+        this.getDomain();
         this.getAgentCode();
     },
     methods: {
-        // getDomain() {
-        //     ajax({
-        //         method: 'get',
-        //         url: '/api/v1/c/hostnames'
-        //     }).then(({ result, ret }) => {
-        //         if (result !== 'ok') {
-        //             return;
-        //         }
+        getDomain() {
+            ajax({
+                method: 'get',
+                url: '/api/v1/c/hostnames'
+            }).then(({ result, ret }) => {
+                if (result !== 'ok') {
+                    return;
+                }
 
-        //         [this.domain] = ret;
-        //     });
-        // },
+                [this.domain] = ret;
+            });
+        },
         /**
          * 取得推廣代碼
          * @method getAgentCode
