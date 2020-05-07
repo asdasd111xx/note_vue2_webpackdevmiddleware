@@ -162,12 +162,12 @@ export default {
 @import "~@/css/variable.scss";
 
 .discover-rank-wrap {
-  height: 43px;
   position: relative;
 }
 
 .tab-wrap {
-    background-color: $main_white_color1;
+  height: 43px;
+  background-color: $main_white_color1;
 }
 
 .active-slider {
@@ -197,10 +197,12 @@ export default {
 .wrap {
   position: relative;
   margin-bottom: 5px;
+  height: 320px;
 
   > img {
     display: block;
     width: 100%;
+    height: 100%;
   }
 }
 
@@ -246,6 +248,10 @@ export default {
       font-size: 13px;
     }
   }
+
+  .wrap {
+    height: 320px;
+  }
 }
 
 @media screen and (min-width: $pad) {
@@ -253,6 +259,10 @@ export default {
   .views,
   .title {
     font-size: 16px;
+  }
+
+  .wrap {
+    height: 480px;
   }
 }
 </style>

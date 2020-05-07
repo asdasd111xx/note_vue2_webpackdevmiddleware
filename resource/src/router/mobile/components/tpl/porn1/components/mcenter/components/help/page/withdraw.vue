@@ -62,7 +62,7 @@ import { mapGetters } from 'vuex';
 import member from '@/api/member';
 import mobileContainer from '../../../../common/new/mobileContainer';
 import info from '../json/withdraw.json';
-import { getCookie, setCookie } from '@/lib/cookie';
+import { getCookie } from '@/lib/cookie';
 
 export default {
   components: {

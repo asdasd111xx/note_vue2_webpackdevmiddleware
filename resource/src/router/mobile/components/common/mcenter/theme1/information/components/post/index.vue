@@ -12,7 +12,7 @@
                     <img :src="$getCdnPath('/static/image/_new/mcenter/information/icon_information.png')" />
                 </div>
                 <div :class="$style.wrap">
-                    <div :class="$style.title" v-html="currentPost.title" />
+                    <div :class="$style['detail-title']" v-html="currentPost.title" />
                     <div :class="$style.time">{{ currentPost.enable_at | dateFormat }}</div>
                 </div>
             </div>
@@ -29,8 +29,11 @@
                     <img :src="$getCdnPath('/static/image/_new/mcenter/information/icon_information.png')" />
                 </div>
                 <div :class="$style.wrap">
-                    <div :class="$style.title" v-html="post.title" />
-                    <div :class="$style['post-time']">{{ post.enable_at | shortDateFormat }}</div>
+                    <div class="clearfix">
+                        <div :class="$style.title" v-html="post.title" />
+                        <div :class="$style.category">{{ post.categoryText }}</div>
+                        <div :class="$style['post-time']">{{ post.enable_at | shortDateFormat }}</div>
+                    </div>
                     <div :class="$style.content" v-html="post.content" />
                 </div>
             </div>
@@ -75,7 +78,18 @@ export default {
                     return;
                 }
 
-                this.postData = [...ret];
+                const categoryList = {
+                    0: '',
+                    1: '最新',
+                    2: '重要',
+                    3: '活动',
+                    4: '维护'
+                };
+
+                this.postData = ret.map((item) => ({
+                    ...item,
+                    categoryText: categoryList[item.category]
+                }));
                 this.hasReceive = true;
             }
         });
@@ -213,21 +227,43 @@ export default {
 }
 
 .title {
-    display: inline-block;
+    float: left;
+    max-width: calc(100% - 115px);
     height: 20px;
     line-height: 20px;
     color: #414655;
     font-size: 14px;
+    overflow: hidden;
+    text-overflow: ellipsis;
+    white-space: nowrap;
+}
+
+.detail-title {
+    color: #414655;
+    font-size: 14px;
+}
+
+.category {
+    float: left;
+    width: 30px;
+    margin-left: 10px;
+    text-align: center;
+    font-size: 10px;
+    color: #DB6372;
+    border: 1px solid #D96472;
+    border-radius: 2px;
 }
 
 .post-time {
     float: right;
+    width: 66px;
     line-height: 22px;
     color: #A6A9B2;
     font-size: 12px;
 }
 
 .content {
+    max-width: calc(100% - 70px);
     height: 17px;
     line-height: 17px;
     margin-top: 3px;

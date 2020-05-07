@@ -6,6 +6,8 @@
       <img :src="$getCdnPath('/static/image/_new/status/logo_b.png')" />
     </div>
     <div :class="$style['title']">{{ $t("ROUTER_NO_SERVICE_TITLE") }}</div>
+    <div :class="$style['text']">IP所在区域不在我们服务范围内，造成您的困扰，很抱歉！若有任何疑惑，请与我们客户服务联络，谢谢。</div>
+    <div :class="$style['text']">IP：{{ ip }}({{ code }})</div>
     <div :class="$style['main-img']">
       <img :src="$getCdnPath('/static/image/_new/status/pic_403.png')" />
     </div>

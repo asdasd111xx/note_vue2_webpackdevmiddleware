@@ -97,10 +97,8 @@ export default {
   },
   created() {
     let version = this.$route.query.version || getCookie('version');
-    if (version) {
-      this.version = version;
-      setCookie('version', version);
-    }
+    this.version = version;
+    setCookie('version', version);
   },
   methods: {
   }

@@ -65,10 +65,7 @@ export default {
   computed: {
         headerConfig() {
             return {
-                prev: true,
-                title: this.$text('S_PROMOTIONS', '优惠活动'),
-                hasSearchBtn: true,
-                onClick: () => { this.$router.back(); }
+                title: this.$text('S_PROMOTIONS', '优惠活动')
             };
         }
   },
@@ -149,6 +146,7 @@ export default {
 
 .promotion-wrap {
   background: #fefffe;
+  padding-bottom: 10px;
 }
 
 .type-wrap {
@@ -171,9 +169,7 @@ export default {
 
 .type-btn {
   position: relative;
-  float: left;
-  width: calc(100% / 7);
-  min-width: 85px;
+    flex: 1;
   height: 43px;
   line-height: 43px;
   font-weight: 500;

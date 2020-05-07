@@ -1,7 +1,8 @@
 <template >
-  <div v-if="isShow && ( isIos && platform !== 'H' )"
-       :class="$style['app-tips']"
-       :style="{ opacity: opacity }"
+  <div
+    v-if="isShow && isIos && platform !== 'H'"
+    :class="$style['app-tips']"
+    :style="{ opacity: opacity }"
   >
     <span>收藏我们随时下载APP </span>
     <div>
@@ -38,10 +39,8 @@ export default {
   },
   created() {
     let platform = this.$route.query.platform || getCookie('platform');;
-    if (platform) {
-      this.platform = platform;
-      setCookie('platform', platform);
-    }
+    this.platform = platform;
+    setCookie('platform', platform);
   },
   methods: {
     ...mapActions([
@@ -81,6 +80,7 @@ export default {
   display: flex;
   align-items: center;
   margin-bottom: 10px;
+  position: relative;
 
   > span:first-child {
     color: $main_text_color2;

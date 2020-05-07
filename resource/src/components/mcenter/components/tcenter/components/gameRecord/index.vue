@@ -137,7 +137,7 @@
                     v-if="currentPage === 'main' && mainNoData"
                     :class="$style['no-data']"
                 >
-                    <img src="/static/image/_new/mcenter/no_data.png" />
+                    <img src="/static/image/_new/mcenter/ic_nodata.png" />
                     <p>{{ $text("S_NO_DATA_YET", "暂无资料") }}</p>
                 </div>
             </template>

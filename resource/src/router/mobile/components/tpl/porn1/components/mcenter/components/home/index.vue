@@ -1,8 +1,7 @@
 <template>
   <mobile-container :header-config="headerConfig" :class="$style.container">
     <div slot="content" :class="$style['content-wrap']">
-      <!-- 暫時不顯示 -->
-      <app-tip v-if="showTip" @close="showTip = false" />
+      <app-tip @close="showTip = false" />
       <avatar-info />
       <shortcut-info />
       <mem-list />
@@ -27,7 +26,6 @@ export default {
   },
   data() {
     return {
-      showTip: true,
       isShowAppTip: true,
     };
   },
@@ -46,7 +44,7 @@ export default {
     },
   },
   created() {
-      this.actionSetVip();
+    this.actionSetVip();
   },
   methods: {
     ...mapActions([
