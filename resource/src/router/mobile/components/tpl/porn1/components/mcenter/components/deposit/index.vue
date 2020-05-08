@@ -24,8 +24,9 @@ export default {
       return {
         prev: true,
         title: '充值',
-        hasHelp: true,
-        helpRouter: '/deposit',
+        hasDespositHelp: true,
+        // hasHelp: true,
+        // helpRouter: '/deposit',
         onClick: () => {
           this.$router.back();
         },

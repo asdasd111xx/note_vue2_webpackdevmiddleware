@@ -147,9 +147,7 @@ export default {
         }
     },
     mounted() {
-        if (!this.loginStatus) {
-            this.shareImageSrc = this.$refs.shareAppImage.src;
-        }
+        this.shareImageSrc = this.$refs.shareAppImage.src;
     },
     methods: {
         closeShare() {

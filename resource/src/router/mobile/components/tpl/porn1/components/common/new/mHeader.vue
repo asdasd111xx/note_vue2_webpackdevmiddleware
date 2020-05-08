@@ -159,6 +159,20 @@
         />
       </div>
     </template>
+
+    <template v-if="headerConfig.hasDespositHelp">
+      <div :class="$style['balance-wrap']">
+        <img
+          :src="
+            $getCdnPath('/static/image/_new/mcenter/balanceTrans/btn_help.png')
+          "
+          @click="
+            headerConfig.customEvent
+          "
+        />
+      </div>
+    </template>
+
     <template v-if="headerConfig.hasTransaction">
       <div
         :class="$style['btn-feedback']"
