@@ -39,7 +39,7 @@ export default {
     }
   },
   created() {
-    // PWA版本
+    // 版本&平台
     let version = this.$route.query.version || getCookie('version') || '';
     setCookie('version', version);
     let platform = this.$route.query.platform || getCookie('platform') || '';
