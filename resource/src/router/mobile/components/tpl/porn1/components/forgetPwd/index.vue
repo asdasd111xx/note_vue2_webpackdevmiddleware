@@ -1,5 +1,5 @@
 <template>
-  <mobile-container :header-config="headerConfig">
+  <mobile-container :header-config="headerConfig" :hasFooter="false">
     <div slot="content" class="content-wrap">
       <div :class="$style['forget-password']">
         <div :class="$style['form-wrap']">
