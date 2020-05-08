@@ -1,10 +1,10 @@
 <template>
-    <bank-rebate :class="$style[`theme-${siteConfig.MOBILE_WEB_TPL}`]">
-        <template scope="{ rebateInitData, messageText, shortDay, pageAll, caculateData, list, pickDateList, rebateCaculate, btnLock, formatTime, rebateState, onableStatus, operateStatus, btnReceiveLock, popReceive, amountCache, rebateSubTotal, realTimePeriod, maintainsList }">
+    <bank-rebate :class="siteStyleClass">
+        <template scope="{ rebateInitData, messageText, shortDay, pageAll, caculateData, list, pickDateList, rebateCaculate, btnLock, btnReceiveLock, formatTime, rebateState, popReceive, amountCache, rebateSubTotal, immediateData, realTimeRebateTotal, maintainsList, receiveAll, isReceiveAll, realTimePeriod }">
             <div :class="[$style['total-sub-wrap'], 'clearfix']">
                 <div
                     :class="[$style['top-sub-title'], { [$style['active']]: mcenterBankRebateType === 'history' }, { [$style['self']]: !rebateInitData.self_rebate }]"
-                    @click="getItemType('history'); realTimeNote = false"
+                    @click="getItemType('history');"
                 >
                     {{ $text('S_REBATE_HISTORY', '返水历史') }}
                 </div>
@@ -14,16 +14,7 @@
                     @click="getItemType('realtime')"
                 >
                     {{ $text('S_REAL_TIME_REBATE', '实时返水') }}
-                    <img :src="$getCdnPath('/static/image/mobile/mcenter/btn_description_d.png')" @click.stop="showRealNote" />
                 </div>
-            </div>
-            <div v-if="realTimeNote" :class="$style['real-time-note']">
-                <p>1.{{ !rebateInitData.accumulative ? $text('S_VALID_BETTING_AMOUNT') : $text('S_VALID_BETTING_AMOUNT_NEW') }}</p>
-                <p>2.{{ !rebateInitData.accumulative ? $text('S_FUNCTION_ET') : $text('S_FUNCTION_ET_NEW') }}</p>
-                <p>3.{{ $text('S_CALCULATION_SERVICE') }}</p>
-                <p>4.{{ $text('S_ACTUAL_COLLECTION') }}</p>
-                <p>5.{{ messageText }}</p>
-                <p>6.{{ $text('S_CONSIDERATION_DATA') }}</p>
             </div>
             <template v-if="mcenterBankRebateType === 'history'">
                 <div :class="$style['history-top-wrap']">
@@ -33,7 +24,7 @@
                             :key="`total-data-${key}`"
                             :class="$style['total-item']"
                         >
-                            <div @click="actionSetMcenterBankRebate({ type: 'history', interval: item.type })">
+                            <div @click="setMcenterBankRebate(item.type)">
                                 <div v-if="item.type !== 'week'" :class="$style['total-item-title']">
                                     <span>{{ pickDateList[item.type].startDate }}</span>
                                 </div>
@@ -42,7 +33,9 @@
                                     <span>-</span>
                                     <span>{{ pickDateList[item.type].endDate }}</span>
                                 </div>
-                                <div :class="[$style['total-item-money'], { [$style.week]: item.type === 'week' }]">{{ rebateSubTotal[item.type] }}</div>
+                                <div :class="[$style['total-item-money'], { [$style['is-current']]: item.type === currentType} ]">
+                                    {{ rebateSubTotal[item.type] }}
+                                </div>
                                 <div :class="$style['total-item-date']">{{ item.text }}</div>
                             </div>
                         </swiper-slide>
@@ -81,7 +74,7 @@
                         <div v-else :class="$style['rebate-header']">{{ pickDateList[mcenterBankRebateInterval].startFullDate }}</div>
                         <div :class="$style['rebate-nodata']">
                             <img :src="$getCdnPath('/static/image/mobile/mcenter/ic_nodata.png')" />
-                            <p>{{ $text('S_NO_DATA_GENERATED', '尚未产生数据') }}</p>
+                            <p>{{ $text('S_NO_DATA_YET', '暂无资料') }}</p>
                         </div>
                     </div>
                 </div>
@@ -95,71 +88,76 @@
                     </div>
                     <div :class="[$style['real-top-btn'], { [$style['disable']]: btnLock && formatTime }]">
                         <div :class="$style['calculate-button']" @click="rebateCaculate()">
-                            <span :class="$style['calculate-button-title']">{{ $text('S_TRIAL_CALCULATION', '试算') }}</span>
-                            <span v-if="btnLock && formatTime">{{ `(${formatTime})` }}</span>
+                            <div :class="$style['calculate-button-title']">
+                                {{ $text('S_TRIAL_CALCULATION', '试算') }}
+                                <div v-if="btnLock && formatTime">{{ `(${formatTime})` }}</div>
+                            </div>
                         </div>
                     </div>
                 </div>
+                <div v-if="rebateState !== 'initial' && rebateInitData.is_vip" :class="[$style['real-vip-wrap'], 'clearfix']">
+                    <div :class="$style['real-vip-title']">
+                        {{ $text('S_RECEIVE_REBATE', '可领返水') }}：{{ realTimeRebateTotal }}
+                    </div>
+                    <div :class="[$style['receive-vip-btn'], { [$style['is-disabled']]: !isReceiveAll }]" @click="receiveAll">
+                        {{ $text('S_ALL_GET', '一键全领') }}
+                    </div>
+                </div>
                 <div v-if="rebateState !== 'initial'" :class="$style['content-wrap']">
-                    <div :class="$style['content-item']">
+                    <div
+                        v-for="(caculateList, listIndex) in immediateData"
+                        :key="`caculate-${listIndex}`"
+                        :class="$style['content-item']"
+                    >
                         <div :class="$style['rebate-header']">
-                            <template v-if="rebateState === 'initial'">--</template>
-                            <ele-loading v-else-if="rebateState === 'loading'" />
+                            <ele-loading v-if="rebateState === 'loading'" />
                             <template v-else>
-                                {{ caculateData.start_at }}~{{ caculateData.end_at }}
+                                <div v-if="rebateInitData.is_vip">{{ caculateList.vip_config_name }}</div>
+                                <div>{{ caculateList.start_at }}~{{ caculateList.end_at }}</div>
                             </template>
                         </div>
                         <div :class="$style['rebate-body']">
                             <div :class="$style['detail-content']">
-                                <span :class="$style['content-left']">{{ $text('S_CYCLE_TIME', '周期') }}</span>
-                                <div :class="$style['content-right']">{{ rebateInitData.event_name }}</div>
-                            </div>
-                            <div :class="$style['detail-content']">
-                                <span :class="$style['content-left']">{{ $text('S_VALID_BET_TOTAL', '总有效投注') }}</span>
+                                <span :class="$style['content-left']">{{ $text('S_VALID_BET', '有效投注') }}</span>
                                 <div :class="$style['content-right']">
-                                    <template v-if="rebateState === 'initial'">--</template>
-                                    <ele-loading v-else-if="rebateState === 'loading'" />
-                                    <template v-else>{{ caculateData.total }}</template>
+                                    <ele-loading v-if="rebateState === 'loading'" />
+                                    <template v-else>{{ caculateList.total }}</template>
                                 </div>
                             </div>
                             <div :class="$style['detail-content']">
                                 <span :class="$style['content-left']">{{ $text('S_PREMIUM_AMOUNT', '返水金额') }}</span>
                                 <div :class="$style['content-right']">
-                                    <template v-if="rebateInitData.daily_upper_limit && !caculateData.rebate">{{ $t('S_UPPER_LIMIT') }}</template>
-                                    <template v-else-if="rebateState === 'initial'">--</template>
-                                    <ele-loading v-else-if="rebateState === 'loading'" />
-                                    <template v-else>{{ caculateData.rebate }}</template>
+                                    <template v-if="caculateList.daily_upper_limit && !caculateList.rebate">{{ $t('S_UPPER_LIMIT') }}</template>
+                                    <ele-loading v-if="rebateState === 'loading'" />
+                                    <template v-else>{{ caculateList.rebate }}</template>
                                 </div>
                             </div>
                             <div :class="$style['detail-content']">
                                 <span :class="$style['content-left']">{{ $text('S_MINIMUM_PREMIUM_AMOUNT', '最低返水金额') }}</span>
-                                <div :class="$style['content-right']">{{ rebateInitData.min_rebate }}</div>
+                                <div :class="$style['content-right']">{{ caculateList.min_rebate }}</div>
                             </div>
                             <div :class="$style['detail-content']">
                                 <span :class="$style['content-left']">{{ $text('S_RECEIVE_NUMBER_TIMES', '可领取次数') }}</span>
-                                <div :class="$style['content-right']">{{ rebateInitData.info[0].remaining_times ? rebateInitData.info[0].remaining_times : $t('S_UPPER_LIMIT') }}</div>
+                                <div :class="$style['content-right']">{{ caculateList.remaining_times ? caculateList.remaining_times : $t('S_UPPER_LIMIT') }}</div>
                             </div>
                         </div>
                         <div :class="$style['rebate-btn']">
-                            <template v-if="!rebateInitData.remaining_times || rebateInitData.daily_upper_limit">
+                            <template v-if="!caculateList.remaining_times || caculateList.daily_upper_limit">
                                 <button :class="$style['unrebate-btn']">{{ $t('S_UNABLE_PASS') }}</button>
-                            </template>
-                            <template v-else-if="rebateState === 'initial'">
-                                <button :class="$style['unrebate-btn']" @click="popReceive()">{{ $text('S_RECEIVE', '领取') }}</button>
                             </template>
                             <ele-loading v-else-if="rebateState === 'loading'" />
                             <template v-else>
                                 <!-- 當返水金額符合最低返水金額才可領取 rebate 和 min_rebate -->
                                 <a
-                                    v-if="operateStatus"
+                                    v-if="caculateList.operateStatus"
                                     id="receive-button"
-                                    :class="{ [$style['disable']]: btnReceiveLock }"
+                                    :class="{ [$style['disable']]: btnReceiveLock[listIndex] }"
                                     href="###"
-                                    @click="popReceive()"
+                                    @click="popReceive(listIndex)"
                                 >
                                     {{ $t('S_RECEIVE') }}
                                 </a>
-                                <button v-if="onableStatus" :class="$style['unrebate-btn']">{{ $t('S_UNABLE_PASS') }}</button>
+                                <button v-else :class="$style['unrebate-btn']">{{ $t('S_UNABLE_PASS') }}</button>
                             </template>
                         </div>
                     </div>
@@ -171,12 +169,12 @@
                 <div v-if="isShowTip" :class="$style['rebate-manual-wrap']">
                     <div :class="$style['manual-line']" />
                     <div :class="$style['rebate-manual-tip']">
-                        <div>1{{ !rebateInitData.accumulative ? $t('S_VALID_BETTING_AMOUNT') : $t('S_VALID_BETTING_AMOUNT_NEW') }}</div>
-                        <div>2{{ !rebateInitData.accumulative ? $t('S_FUNCTION_ET') : $t('S_FUNCTION_ET_NEW') }}</div>
-                        <div>3{{ $t('S_CALCULATION_SERVICE') }}</div>
-                        <div>4{{ $t('S_ACTUAL_COLLECTION') }}</div>
-                        <div>5{{ messageText }}</div>
-                        <div>6{{ $t('S_CONSIDERATION_DATA') }}</div>
+                        <div>(1){{ !rebateInitData.accumulative ? $t('S_VALID_BETTING_AMOUNT') : $t('S_VALID_BETTING_AMOUNT_NEW') }}</div>
+                        <div>(2){{ !rebateInitData.accumulative ? $t('S_FUNCTION_ET') : $t('S_FUNCTION_ET_NEW') }}</div>
+                        <div>(3){{ $t('S_CALCULATION_SERVICE') }}</div>
+                        <div>(4){{ $t('S_ACTUAL_COLLECTION') }}</div>
+                        <div>(5){{ messageText }}</div>
+                        <div>(6){{ $t('S_CONSIDERATION_DATA') }}</div>
                         <div v-show="maintainsList">
                             {{ $t('S_CURRENT_PLATFORM') }}：
                             <span :class="$style['maintains-list']">{{ maintainsList }}</span>
@@ -214,7 +212,6 @@ export default {
                 slidesPerView: 'auto'
             },
             rebateType: true,
-            realTimeNote: false,
             dateList: [
                 {
                     type: 'yesterday',
@@ -229,15 +226,23 @@ export default {
                     text: this.$text('S_LATELY_WEEK', '最近一周')
                 }
             ],
-            isShowTip: true
+            isShowTip: true,
+            currentType: 'yesterday'
         };
     },
     computed: {
         ...mapGetters({
             mcenterBankRebateType: 'getMcenterBankRebateType',
             mcenterBankRebateInterval: 'getMcenterBankRebateInterval',
-            siteConfig: 'getSiteConfig'
-        })
+            siteConfig: 'getSiteConfig',
+            memInfo: 'getMemInfo'
+        }),
+        siteStyleClass() {
+            return {
+                [this.$style[`site-${this.memInfo.user.domain}`]]: this.$style[`site-${this.memInfo.user.domain}`],
+                [this.$style['preset-color']]: !this.$style[`site-${this.memInfo.user.domain}`]
+            };
+        }
     },
     methods: {
         ...mapActions([
@@ -254,11 +259,9 @@ export default {
             }
             this.actionSetMcenterBankRebate({ type: item, interval: this.mcenterBankRebateInterval });
         },
-        showRealNote() {
-            if (this.rebateType) {
-                return;
-            }
-            this.realTimeNote = !this.realTimeNote;
+        setMcenterBankRebate(type) {
+            this.currentType = type;
+            this.actionSetMcenterBankRebate({ type: 'history', interval: type });
         }
     }
 };

@@ -32,7 +32,8 @@ export default {
   },
   computed: {
     ...mapGetters({
-      loginStatus: 'getLoginStatus'
+      loginStatus: 'getLoginStatus',
+      memInfo: 'getMemInfo'
     }),
     theme() {
       return 'root-porn1';
@@ -71,6 +72,10 @@ export default {
     // 使用者回來頁面時通知rd5，自動回收機制-取消回收
     if (this.loginStatus) {
       apiBalanceAutoBack('in');
+    }
+
+    if (this.loginStatus && this.memInfo.user.password_reset) {
+        this.$router.push('/mobile/resetPwd');
     }
   },
   methods: {

@@ -7,12 +7,15 @@
     background-color: #FFF;
 
     .top-sub-title {
+        overflow: hidden;
         float: left;
         width: 50%;
         height: 43px;
         line-height: 43px;
         color: #A6A9B2;
         text-align: center;
+        text-overflow: ellipsis;
+        white-space: nowrap;
 
         img {
             position: relative;
@@ -31,23 +34,8 @@
     }
 }
 
-.real-time-note {
-    position: fixed;
-    top: 87px;
-    right: 0;
-    left: 0;
-    padding: 15px;
-    font-size: 12px;
-    color: #FFF;
-    background-color: #000;
-
-    p {
-        margin: 0;
-    }
-}
-
 .history-top-wrap {
-    height: 80px;
+    min-height: 80px;
     margin-top: 47px;
     background-color: #FFF;
 
@@ -73,6 +61,10 @@
             &.week {
                 color: #BF8646;
             }
+
+            &.is-current {
+                color: #F7B500;
+            }
         }
 
         .total-item-date {
@@ -88,8 +80,7 @@
         background-color: #FFF;
 
         .rebate-header {
-            height: 26px;
-            line-height: 25px;
+            padding: 4px 0;
             text-align: center;
             border-bottom: 1px solid #EAEAEA;
             color: #000;
@@ -127,6 +118,7 @@
             }
 
             .unrebate-btn {
+                color: #CFCFCF;
                 background: url('/static/image/mobile/mcenter/receive_button_n.png') 100%/100% no-repeat;
             }
 
@@ -142,6 +134,7 @@
                 outline: none;
 
                 &.disable {
+                    color: #CFCFCF;
                     background: url('/static/image/mobile/mcenter/receive_button_n.png') 100%/100% no-repeat;
                 }
             }
@@ -213,6 +206,70 @@
     }
 }
 
+
+.real-vip-wrap {
+    margin-top: 5px;
+    padding: 0 10px;
+    height: 50px;
+    line-height: 50px;
+    color: #000;
+    background-color: #F6F4F4;
+}
+
+.real-vip-title {
+    float: left;
+}
+
+.receive-vip-btn {
+    float: right;
+    width: 110px;
+    height: 33px;
+    line-height: 33px;
+    margin-top: 9px;
+    text-align: center;
+    border-radius: 17px;
+    color: #FFF;
+    background-color: #00347D;
+
+    &.is-disabled {
+        color: #CFCFCF;
+        background-color: #AAA;
+    }
+}
+
+.rebate-manual-title {
+    height: 43px;
+    line-height: 43px;
+    margin-top: 7px;
+    padding: 0 19px;
+    background: #FFF;
+}
+
+.rebate-manual-wrap {
+    background: #FFF;
+}
+
+.manual-line {
+    height: 1px;
+    margin: 0 14px;
+    background: #CFCFCF;
+}
+
+.rebate-manual-tip {
+    padding: 7px 19px;
+    color: #AAA;
+}
+
+.title-icon,
+.manual-title {
+    display: inline-block;
+    vertical-align: middle;
+}
+
+.maintains-list {
+    color: #00F;
+}
+
 .theme-miller {
     .history-top-wrap {
         background-color: #F7B500;
@@ -242,10 +299,6 @@
         }
 
         .real-top-btn {
-            &.disable {
-                border: 1px solid #FFF;
-            }
-
             .calculate-button {
                 color: #FFF;
             }
@@ -267,37 +320,3 @@
     }
 }
 
-.rebate-manual-title {
-    height: 43px;
-    line-height: 43px;
-    margin-top: 7px;
-    padding: 0 19px;
-    background: #FFF;
-}
-
-.rebate-manual-wrap {
-    background: #FFF;
-}
-
-.manual-line {
-    height: 1px;
-    margin: 0 14px;
-    background: #CFCFCF;
-}
-
-.rebate-manual-tip {
-    line-height: 22px;
-    padding: 7px 19px;
-    font-size: 12px;
-    color: #AAA;
-}
-
-.title-icon,
-.manual-title {
-    display: inline-block;
-    vertical-align: middle;
-}
-
-.maintains-list {
-    color: #2693FC;
-}

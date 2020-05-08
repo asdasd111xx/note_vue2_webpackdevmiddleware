@@ -10,16 +10,18 @@
             :pick-date-list="pickDateList"
             :rebate-caculate="rebateCaculate"
             :btn-lock="btnLock"
+            :btn-receive-lock="btnReceiveLock"
             :format-time="formatTime"
             :rebate-state="rebateState"
-            :onable-status="onableStatus"
-            :operate-status="operateStatus"
-            :btn-receive-lock="btnReceiveLock"
             :pop-receive="popReceive"
             :amountCache="amountCache"
             :rebate-sub-total="rebateSubTotal"
-            :real-time-period="realTimePeriod"
+            :immediate-data="immediateData"
+            :real-time-rebate-total="realTimeRebateTotal"
+            :receive-all="receiveAll"
             :maintains-list="maintainsList"
+            :is-receive-all="isReceiveAll"
+            :real-time-period="realTimePeriod"
         />
     </div>
 </template>
@@ -31,6 +33,8 @@ import { format } from 'date-fns';
 import EST from '@/lib/EST';
 import i18n from '@/config/i18n';
 import mcenter from '@/api/mcenter';
+import { API_MCENTER_REBATE_RECEIVE_ALL } from '@/config/api';
+import ajax from '@/lib/ajax';
 
 export default {
     data() {
@@ -52,15 +56,13 @@ export default {
             caculateData: {},
             rebateSubTotal: {},
             btnLock: false,
-            btnReceiveLock: false,
+            btnReceiveLock: [],
             time: 0,
             lockTimer: '',
             formatTime: '',
             rebateState: 'initial',
-            operateStatus: false,
             receiveData: {},
             maintainsList: '',
-            onableStatus: false,
             reciprocalStatus: false,
             pickDateList: {
                 today: {
@@ -106,16 +108,64 @@ export default {
             return messageText.replace('%S', this.rebateInitData.hour);
         },
         /**
-         * 回傳實時返水開始到結束實間（美東）
-         * @returns {String}} 美東時間：開始到結束
+         * 整理實時返水所需資料
+         * @returns {array} 實時返水資料
          */
+        immediateData() {
+            if (this.rebateState === 'initial' || this.rebateState === 'loading') {
+                return this.rebateInitData.info;
+            }
+
+            let rebateInfoData = {};
+
+            this.rebateInitData.info.forEach((item) => {
+                rebateInfoData = {
+                    ...rebateInfoData,
+                    [item.vip_config_id]: {
+                        ...item
+                    }
+                };
+            });
+
+            const resultData = this.caculateData.map((item) => ({
+                ...item,
+                ...rebateInfoData[item.vip_config_id],
+                operateStatus: Number(item.rebate) >= Number(rebateInfoData[item.vip_config_id].min_rebate)
+            }));
+
+            return resultData;
+        },
+        /**
+         * 返水總金額
+         * @returns {number} 實時返水總金額
+         */
+        realTimeRebateTotal() {
+            if (!this.rebateInitData.is_vip) {
+                return '--';
+            }
+
+            const allTotal = this.immediateData.reduce((item, nextItem) => Number(item) + Number(nextItem.rebate), 0);
+            return allTotal ? allTotal.toFixed(2) : '--';
+        },
+        /**
+         * 一鍵全領是否可按
+         * @returns {boolean}} 是否可一鍵全領
+         */
+        isReceiveAll() {
+            if (this.rebateState === 'initial' || this.rebateState === 'loading') {
+                return false;
+            }
+
+            // 判斷是否可領取
+            return this.btnReceiveLock.some((item) => item);
+        },
         realTimePeriod() {
             if (!this.rebateInitData.event_end_at) {
                 return '--';
             }
 
             const estDate = new Date(this.rebateInitData.event_end_at).getTime() + ((new Date(this.rebateInitData.event_end_at).getTimezoneOffset() / 60) * 3600000) - 14400000;
-            return `${EST(this.rebateInitData.event_start_at)}～${format(new Date(estDate), 'HH:mm:ss')}`;
+            return `${this.EST(this.rebateInitData.event_start_at)}～${format(new Date(estDate), 'HH:mm:ss')}`;
         }
     },
     watch: {
@@ -143,19 +193,24 @@ export default {
             }
         }
     },
-    destroyed() {
-        clearTimeout(this.lockTimer);
-    },
     created() {
         this.init();
         this.getTotalRebateByUser();
     },
+    destroyed() {
+        clearTimeout(this.lockTimer);
+    },
     methods: {
+        ...mapActions([
+            'actionSetSystemTime',
+            'actionSetPop',
+            'actionSetMcenterBankRebate'
+        ]),
+        EST,
         init() {
             mcenter.bankRebateInit({
                 success: (response) => {
                     this.rebateInitData = response.ret;
-                    this.calculateTime(this.rebateInitData.last_stat_at);
 
                     // 從其他會員頁切換回我的返水時，恢復元件初始狀態
                     this.actionSetMcenterBankRebate({ type: 'history', interval: 'yesterday' });
@@ -177,7 +232,7 @@ export default {
             mcenter.bankRebateDateTime({
                 success: (response) => {
                     const time = new Date(response.ret);
-                    this.estToday = EST(time);
+                    this.estToday = this.EST(time);
                     this.setYesterday();
 
                     this.pickDateList = {
@@ -200,6 +255,13 @@ export default {
                             endFullDate: Vue.moment(this.estToday).format('YYYY/MM/DD 23:59:59')
                         }
                     };
+                }
+            });
+        },
+        bankRebateInit() {
+            mcenter.bankRebateInit({
+                success: (response) => {
+                    this.rebateInitData = response.ret;
                 }
             });
         },
@@ -236,9 +298,9 @@ export default {
                     this.amountCache[interval] = response.total.amount_total;
                     this.rebateList = response.ret;
                     for (let i = 0; i < this.rebateList.length; i += 1) {
-                        this.rebateList[i].start_at = EST(this.rebateList[i].start_at);
-                        this.rebateList[i].end_at = EST(this.rebateList[i].end_at);
-                        this.rebateList[i].rebate_done_at = EST(this.rebateList[i].rebate_done_at);
+                        this.rebateList[i].start_at = this.EST(this.rebateList[i].start_at);
+                        this.rebateList[i].end_at = this.EST(this.rebateList[i].end_at);
+                        this.rebateList[i].rebate_done_at = this.EST(this.rebateList[i].rebate_done_at);
 
                         if (this.rebateList[i].canceled) {
                             this.rebateList[i].text = i18n.t('S_DISMISSA');
@@ -288,12 +350,11 @@ export default {
             this.btnLock = true;
 
             // 頁面不重整時，點選試算的操作狀態設定為fasle
-            this.operateStatus = false;
-            this.btnReceiveLock = false;
+            this.btnReceiveLock = this.immediateData.map(() => false);
 
             // 美東時間00:00~00:30期間，系統不提供自助返水
             this.actionSetSystemTime(() => {
-                const time = EST(this.systemTime, 'HH:mm:ss');
+                const time = this.EST(this.systemTime, 'HH:mm:ss');
                 const timeStr = time.split(':');
                 const seconds = (timeStr[0] * 3600) + (timeStr[1] * 60) + (timeStr[2] * 1);
 
@@ -309,20 +370,21 @@ export default {
                 }
 
                 this.rebateState = 'loading';
-                this.onableStatus = false;
 
                 mcenter.bankRebateCaculate({
                     success: (response) => {
-                        this.rebateState = 'ready';
-                        this.caculateData = response.ret;
-                        this.caculateData.start_at = EST(this.caculateData.start_at);
-                        this.caculateData.end_at = EST(this.caculateData.end_at);
+                        const arrangeData = [];
 
-                        if (Number(this.caculateData.rebate) >= Number(this.rebateInitData.min_rebate)) {
-                            this.operateStatus = true;
-                        } else {
-                            this.onableStatus = true;
-                        }
+                        response.ret.forEach((item) => {
+                            arrangeData.push({
+                                ...item,
+                                start_at: this.EST(item.start_at),
+                                end_at: this.EST(item.end_at)
+                            });
+                        });
+
+                        this.caculateData = arrangeData;
+                        this.rebateState = 'ready';
 
                         // 倒數開關
                         if (this.reciprocalStatus) {
@@ -365,32 +427,36 @@ export default {
                 this.time -= 1;
             }, 1000);
         },
-        popReceive() {
-            if (this.btnReceiveLock === true) {
+        popReceive(dataIndex) {
+            if (this.btnReceiveLock[dataIndex] === true) {
                 return;
             }
             this.actionSetSystemTime(() => {
+                this.$set(this.btnReceiveLock, dataIndex, true);
+
                 // 判斷跨日之後是否有重新按下試算
-                const caculateTime = new Date(this.caculateData.now_at.replace('+0800', '+08:00'));
+                const caculateTime = new Date(this.caculateData[dataIndex].now_at.replace('+0800', '+08:00'));
                 const nowTime = new Date(this.systemTime);
                 if (caculateTime.getDate() !== nowTime.getDate()) {
-                    this.btnReceiveLock = true;
                     alert(i18n.t('S_RESET_TRIAL'));
                     return;
                 }
 
                 window.scrollTo(0, 0);
-                this.btnReceiveLock = true;
 
                 mcenter.bankRebateReceive({
-                    params: { trial_at: this.caculateData.now_at },
+                    params: {
+                        trial_at: this.caculateData[dataIndex].now_at,
+                        vip_config_id: this.caculateData[dataIndex].vip_config_id
+                    },
                     success: (response) => {
-                        this.receiveData = response.ret;
-                        this.receiveData.start_at = EST(this.receiveData.start_at);
-                        this.receiveData.end_at = EST(this.receiveData.end_at);
-                        // eslint-disable-next-line no-self-assign
-                        this.receiveData.id = this.receiveData.id;
-                        this.actionSetPop({ type: 'rebate', data: this.receiveData });
+                        const receiveData = {
+                            idArray: [response.ret.id],
+                            start_at: `${this.EST(this.rebateInitData.event_start_at)}-04:00`,
+                            end_at: `${this.EST(this.rebateInitData.event_end_at)}-04:00`
+                        };
+
+                        this.actionSetPop({ type: 'rebate', data: receiveData });
                         this.bankRebateInit();
                     },
                     fail: () => {
@@ -411,30 +477,36 @@ export default {
                 }
             });
         },
-        bankRebateInit() {
-            mcenter.bankRebateInit({
+        receiveAll() {
+            if (!this.isReceiveAll) {
+                return;
+            }
+
+            ajax({
+                method: 'post',
+                url: API_MCENTER_REBATE_RECEIVE_ALL,
+                errorAlert: false,
+                params: {
+                    trial_at: this.caculateData[0].now_at
+                },
                 success: (response) => {
-                    this.rebateInitData = response.ret;
-                    this.calculateTime(this.rebateInitData.last_stat_at);
+                    this.btnReceiveLock = this.immediateData.map(() => true);
+
+                    const receiveData = {
+                        idArray: response.ret.map((item) => item.id),
+                        start_at: `${this.EST(this.rebateInitData.event_start_at)}-04:00`,
+                        end_at: `${this.EST(this.rebateInitData.event_end_at)}-04:00`
+                    };
+
+                    this.actionSetPop({ type: 'rebate', data: receiveData });
+                    this.bankRebateInit();
+                },
+                fail: () => {
+                    this.rebateState = 'initial';
+                    this.init();
                 }
             });
-        },
-        calculateTime(time) {
-            // 舊制並且已領取過則需將本次計算起始加上1秒顯示
-            const lastTime = time.replace('+0800', '+08:00');
-            if (!this.rebateInitData.accumulative && EST(lastTime, 'HH:mm:ss') !== '00:00:00') {
-                const calculateTime = new Date(lastTime);
-                calculateTime.setTime(calculateTime.getTime() + 1000);
-                this.rebateInitData.last_stat_at = EST(new Date(calculateTime));
-            } else {
-                this.rebateInitData.last_stat_at = EST(lastTime);
-            }
-        },
-        ...mapActions([
-            'actionSetSystemTime',
-            'actionSetPop',
-            'actionSetMcenterBankRebate'
-        ])
+        }
     }
 };
 </script>
