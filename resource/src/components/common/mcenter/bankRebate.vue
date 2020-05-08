@@ -18,6 +18,8 @@
             :pop-receive="popReceive"
             :amountCache="amountCache"
             :rebate-sub-total="rebateSubTotal"
+            :real-time-period="realTimePeriod"
+            :maintains-list="maintainsList"
         />
     </div>
 </template>
@@ -25,6 +27,7 @@
 <script>
 import Vue from 'vue';
 import { mapActions, mapGetters } from 'vuex';
+import { format } from 'date-fns';
 import EST from '@/lib/EST';
 import i18n from '@/config/i18n';
 import mcenter from '@/api/mcenter';
@@ -101,6 +104,18 @@ export default {
         messageText() {
             const messageText = this.$t('S_REMAINING_REBATE');
             return messageText.replace('%S', this.rebateInitData.hour);
+        },
+        /**
+         * 回傳實時返水開始到結束實間（美東）
+         * @returns {String}} 美東時間：開始到結束
+         */
+        realTimePeriod() {
+            if (!this.rebateInitData.event_end_at) {
+                return '--';
+            }
+
+            const estDate = new Date(this.rebateInitData.event_end_at).getTime() + ((new Date(this.rebateInitData.event_end_at).getTimezoneOffset() / 60) * 3600000) - 14400000;
+            return `${EST(this.rebateInitData.event_start_at)}～${format(new Date(estDate), 'HH:mm:ss')}`;
         }
     },
     watch: {

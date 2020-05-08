@@ -88,3 +88,5 @@ import 'vue-awesome/icons/comment-dots';
 import 'vue-awesome/icons/clipboard-list';
 import 'vue-awesome/icons/exclamation';
 import 'vue-awesome/icons/ellipsis-h';
+import 'vue-awesome/icons/angle-up';
+import 'vue-awesome/icons/angle-down';

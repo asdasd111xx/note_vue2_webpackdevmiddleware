@@ -1,6 +1,6 @@
 <template>
     <bank-rebate :class="$style[`theme-${siteConfig.MOBILE_WEB_TPL}`]">
-        <template scope="{ rebateInitData, messageText, shortDay, pageAll, caculateData, list, pickDateList, rebateCaculate, btnLock, formatTime, rebateState, onableStatus, operateStatus, btnReceiveLock, popReceive, amountCache, rebateSubTotal }">
+        <template scope="{ rebateInitData, messageText, shortDay, pageAll, caculateData, list, pickDateList, rebateCaculate, btnLock, formatTime, rebateState, onableStatus, operateStatus, btnReceiveLock, popReceive, amountCache, rebateSubTotal, realTimePeriod, maintainsList }">
             <div :class="[$style['total-sub-wrap'], 'clearfix']">
                 <div
                     :class="[$style['top-sub-title'], { [$style['active']]: mcenterBankRebateType === 'history' }, { [$style['self']]: !rebateInitData.self_rebate }]"
@@ -89,8 +89,9 @@
             <template v-else>
                 <div :class="$style['real-top-wrap']">
                     <div :class="$style['real-top-title']">
+                        <div>周期: {{ rebateInitData.event_name }}</div>
                         <div :class="$style['calculate-title']">{{ $text('S_CALCULATION_STARTED', '本次计算起始 (美东时间)') }}</div>
-                        <div>{{ rebateInitData.last_stat_at }}</div>
+                        <div>{{ realTimePeriod }}</div>
                     </div>
                     <div :class="[$style['real-top-btn'], { [$style['disable']]: btnLock && formatTime }]">
                         <div :class="$style['calculate-button']" @click="rebateCaculate()">
@@ -99,7 +100,7 @@
                         </div>
                     </div>
                 </div>
-                <div :class="$style['content-wrap']">
+                <div v-if="rebateState !== 'initial'" :class="$style['content-wrap']">
                     <div :class="$style['content-item']">
                         <div :class="$style['rebate-header']">
                             <template v-if="rebateState === 'initial'">--</template>
@@ -136,7 +137,7 @@
                             </div>
                             <div :class="$style['detail-content']">
                                 <span :class="$style['content-left']">{{ $text('S_RECEIVE_NUMBER_TIMES', '可领取次数') }}</span>
-                                <div :class="$style['content-right']">{{ rebateInitData.remaining_times ? rebateInitData.remaining_times : $t('S_UPPER_LIMIT') }}</div>
+                                <div :class="$style['content-right']">{{ rebateInitData.info[0].remaining_times ? rebateInitData.info[0].remaining_times : $t('S_UPPER_LIMIT') }}</div>
                             </div>
                         </div>
                         <div :class="$style['rebate-btn']">
@@ -160,6 +161,25 @@
                                 </a>
                                 <button v-if="onableStatus" :class="$style['unrebate-btn']">{{ $t('S_UNABLE_PASS') }}</button>
                             </template>
+                        </div>
+                    </div>
+                </div>
+                <div :class="$style['rebate-manual-title']" @click="isShowTip = !isShowTip">
+                    <icon :class="$style['title-icon']" :name="isShowTip ? 'angle-up' : 'angle-down'" />
+                    <span :class="$style['manual-title']">{{ $text('S_REAL_DIRECTIONS', '实返说明') }}</span>
+                </div>
+                <div v-if="isShowTip" :class="$style['rebate-manual-wrap']">
+                    <div :class="$style['manual-line']" />
+                    <div :class="$style['rebate-manual-tip']">
+                        <div>1{{ !rebateInitData.accumulative ? $t('S_VALID_BETTING_AMOUNT') : $t('S_VALID_BETTING_AMOUNT_NEW') }}</div>
+                        <div>2{{ !rebateInitData.accumulative ? $t('S_FUNCTION_ET') : $t('S_FUNCTION_ET_NEW') }}</div>
+                        <div>3{{ $t('S_CALCULATION_SERVICE') }}</div>
+                        <div>4{{ $t('S_ACTUAL_COLLECTION') }}</div>
+                        <div>5{{ messageText }}</div>
+                        <div>6{{ $t('S_CONSIDERATION_DATA') }}</div>
+                        <div v-show="maintainsList">
+                            {{ $t('S_CURRENT_PLATFORM') }}：
+                            <span :class="$style['maintains-list']">{{ maintainsList }}</span>
                         </div>
                     </div>
                 </div>
@@ -208,7 +228,8 @@ export default {
                     type: 'week',
                     text: this.$text('S_LATELY_WEEK', '最近一周')
                 }
-            ]
+            ],
+            isShowTip: true
         };
     },
     computed: {
