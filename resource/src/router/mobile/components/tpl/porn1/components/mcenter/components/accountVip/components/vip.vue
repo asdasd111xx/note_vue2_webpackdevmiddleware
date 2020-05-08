@@ -104,7 +104,8 @@ export default {
     computed: {
         ...mapGetters({
             siteConfig: "getSiteConfig",
-            memInfo: "getMemInfo"
+            memInfo: "getMemInfo",
+            loginStatus: "getLoginStatus"
         }),
         setCurrentLevel: {
             get() {
@@ -117,6 +118,10 @@ export default {
     },
     created() {
         this.getUserDetail();
+
+        if (!this.loginStatus) {
+            this.$router.push("/mobile/login");
+        }
     },
     methods: {
         getUserDetail() {
@@ -149,6 +154,11 @@ export default {
             });
         },
         handleConfigId(value) {
+            if (!this.loginStatus) {
+                this.$router.push("/mobile/login");
+                return;
+            }
+
             this.currentConfigID = value;
         }
     },
