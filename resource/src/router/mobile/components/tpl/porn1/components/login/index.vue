@@ -1,5 +1,9 @@
 <template>
-  <mobile-container :header-config="headerConfig" :class="$style.container">
+  <mobile-container
+    :header-config="headerConfig"
+    :class="$style.container"
+    :hasFooter="false"
+  >
     <div slot="content" class="content-wrap">
       <div class="container">
         <div class="login-wrap clearfix">
