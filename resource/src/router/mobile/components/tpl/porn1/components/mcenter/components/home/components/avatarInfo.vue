@@ -43,7 +43,7 @@
       <div>
         <span> 观影60秒计时奖励 </span>
         <span :class="$style['money-symbol']">¥</span>
-        <span> 最高送900元 </span>
+        <span> 最高送999元 </span>
       </div>
     </div>
     <div :class="$style['btn-next']">
