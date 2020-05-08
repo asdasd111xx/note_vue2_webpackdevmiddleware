@@ -1,5 +1,9 @@
 <template>
-    <mobile-container :header-config="headerConfig" :class="$style.container">
+    <mobile-container
+        :header-config="headerConfig"
+        :class="$style.container"
+        :has-footer="hasFooter"
+    >
         <div slot="content" class="content-wrap">
             <message v-if="msg" @close="msg = ''">
                 <div slot="msg">{{ msg }}</div>
@@ -153,7 +157,7 @@ export default {
         }),
         headerConfig() {
             return {
-                prev: true,
+                prev: !this.memInfo.user.password_reset,
                 onClick: () => { this.$router.back(); },
                 title: this.isResetPW ? this.$text('S_PASSWORD_RESET', '重设密码') : this.$text('S_CHANGE_PASSWD', '修改密码')
             };
@@ -163,6 +167,9 @@ export default {
         },
         submitActive() {
             return Object.keys(this.pwdResetInfo).every((key) => !this.pwdResetInfo[key].display || (this.pwdResetInfo[key].display && this.pwdResetInfo[key].value));
+        },
+        hasFooter() {
+            return !this.memInfo.user.password_reset;
         }
     },
     methods: {
@@ -215,6 +222,12 @@ export default {
                     params: pwdInfo,
                     success: () => {
                         this.errMsg = this.$t('S_CR_SUCCESS');
+                        if (this.memInfo.user.password_reset) {
+                            this.actionSetUserdata(true).then(() => {
+                                this.$router.push('/mobile');
+                            });
+                            return;
+                        }
                         this.$router.push('/mobile/mcenter/setting');
                     },
                     fail: (res) => {
@@ -260,7 +273,8 @@ export default {
             }
         },
         ...mapActions([
-            'actionChangePage'
+            'actionChangePage',
+            'actionSetUserdata'
         ]),
         filterField() {
             let displayColumn = ['newPwd', 'confNewPwd'];

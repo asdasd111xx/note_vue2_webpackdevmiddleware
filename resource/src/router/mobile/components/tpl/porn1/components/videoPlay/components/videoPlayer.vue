@@ -297,6 +297,15 @@ export default {
   position: relative;
 }
 
+:global {
+    .video-js {
+        button {
+            outline: 0;
+        }
+    }
+}
+
+
 .btn-prev {
   position: absolute;
   top: 5px;
