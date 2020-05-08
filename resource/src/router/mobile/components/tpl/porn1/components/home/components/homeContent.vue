@@ -6,6 +6,7 @@
   >
     <!-- 左側分類 -->
     <div
+      v-show="isShow"
       ref="type-wrap"
       :class="$style['type-wrap']"
       @touchstart="onTypeTouchStart"
@@ -16,12 +17,12 @@
         :key="`type-${index}`"
         :class="[
           $style['type-swiper'],
-          { [$style.active]: selectedIndex === index }
+          { [$style.active]: typeList[selectedIndex].icon === type.icon }
         ]"
         @click="onChangeSelectInedx(index)"
       >
         <img
-          v-if="selectedIndex === index"
+          v-if="typeList[selectedIndex].icon === type.icon"
           :src="
             $getCdnPath(
               `/static/image/_new/platform/icon/icon_${type.icon}_h.png`
@@ -39,7 +40,7 @@
         <div
           :class="[
             $style['type-title'],
-            { [$style.active]: selectedIndex === index }
+            { [$style.active]: typeList[selectedIndex].icon === type.icon }
           ]"
         >
           {{ type.name }}
@@ -220,6 +221,7 @@ export default {
       isShowAllTag: false,
       isSliding: false,
       isTop: false,
+      isShow: false,
       isBottom: false,
       typeStartTouchY: 0,
       startTouchY: 0,
@@ -254,7 +256,9 @@ export default {
     },
     typeList() {
       const adultVideo = this.isAdult ? [{ icon: 'Tv', name: '影片' }] : [];
-      return [...adultVideo, ...this.allGame.map((game) => ({ icon: game.iconName, name: game.name }))];
+      const typeList = [...adultVideo, ...this.allGame.map((game) => ({ icon: game.iconName, name: game.name }))];
+      // 業主說左側選單前後要各複製一份...
+      return [...typeList, ...typeList, ...typeList];
     },
     options() {
       return { slidesPerView: 'auto', spaceBetween: 4, slideClass: this.$style.tag };
@@ -280,7 +284,9 @@ export default {
       return [{ isVideo: true, data: videoList }, ...gameList];
     },
     currentGame() {
-      return { ...this.allGameList[this.selectedIndex] };
+      const length = this.typeList.length / 3;
+      const index = this.selectedIndex % length;
+      return { ...this.allGameList[index] };
     },
     vipLevel() {
       return this.currentLevel <= 10 ? this.currentLevel : 'max';
@@ -304,7 +310,9 @@ export default {
           $(window).trigger('resize');
           const defaultType = localStorage.getItem('type') || 'Tv';
           const defaultIndex = this.typeList.findIndex((type) => type.icon === defaultType);
-          this.onChangeSelectInedx(defaultIndex);
+          const selectIndex = (this.typeList.length / 3) + defaultIndex;
+          this.onChangeSelectInedx(selectIndex);
+          this.isShow = true;
         }, 300);
       });
     });
@@ -500,7 +508,7 @@ export default {
       $(this.$refs['type-wrap']).animate({ scrollTop: index * 63 }, 300);
 
       this.$nextTick(() => {
-        if(this.$refs['game-wrap']) {
+        if (this.$refs['game-wrap']) {
           this.$refs['game-wrap'].scrollTop = 0
         }
         this.isSliding = false;
