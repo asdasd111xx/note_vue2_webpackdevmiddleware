@@ -506,6 +506,7 @@ export default {
       this.selectedIndex = index;
 
       $(this.$refs['type-wrap']).animate({ scrollTop: index * 63 }, 300);
+      $(this.$refs['game-wrap']).animate({ scrollTop: 0 }, 0);
 
       this.$nextTick(() => {
         if (this.$refs['game-wrap']) {
