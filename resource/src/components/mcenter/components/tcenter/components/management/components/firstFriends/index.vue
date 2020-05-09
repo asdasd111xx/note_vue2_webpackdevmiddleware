@@ -100,8 +100,9 @@
                 </div>
             </template>
         </div>
-        <div v-if="!firstFriends.length" :class="$style.tbody">
-            <div :class="$style['no-data']">{{ $text('S_NO_FIRST_FRIEND_DATA') }}</div>
+        <div v-if="!firstFriends.length" :class="$style['no-data']">
+            <img src="/static/image/_new/mcenter/ic_nodata.png" />
+            <p>{{ $text("S_NO_DATA_YET", "暂无资料") }}</p>
         </div>
         <infinite-loading
             v-if="showInfinite"

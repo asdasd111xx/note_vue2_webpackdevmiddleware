@@ -1,35 +1,21 @@
 <template>
     <div :class="$style['share-container']">
         <div :class="$style['pic-wrap']">
-            <!-- 未登入:落地頁 -->
-            <div v-if="!loginStatus" :class="$style['img']">
+            <div :class="$style['img']" ref="shareImageBlockRef">
                 <img
-                    ref="shareAppImage"
+                    ref="shareImageRef"
                     :src="
                         $getCdnPath(
-                            `/static/image/_new/mcenter/share/share_app.png`
+                            `/static/image/_new/mcenter/share/share_app_f.png`
                         )
                     "
                     alt="shareApp"
                 />
-            </div>
-
-            <!-- 已登入:註冊頁 -->
-            <div v-else :class="$style['img']">
-                <img
-                    ref="shareAppImage"
-                    :src="
-                        $getCdnPath(
-                            `/static/image/_new/mcenter/share/share_app_n.jpg`
-                        )
-                    "
-                    alt="shareApp"
-                />
-                <template v-if="agentLink">
-                    <div :class="$style['qrcode-wrap']">
+                <template v-if="agentLink || landingLink">
+                    <div :class="$style['qrcode-wrap']" ref="qrcodeRef">
                         <qrcode
-                            :value="agentLink"
-                            :options="{ width: 80 }"
+                            :value="loginStatus ? agentLink : landingLink"
+                            :options="{ width: 75 }"
                             tag="img"
                         />
                     </div>
@@ -72,6 +58,7 @@
 <script>
 import { mapGetters } from "vuex";
 import axios from "axios";
+import html2canvas from "html2canvas";
 import { API_PROMOTION_INFO } from "@/config/api";
 import message from "../../../../common/new/message";
 
@@ -89,6 +76,7 @@ export default {
         return {
             msg: "",
             shareImageSrc: "",
+            landingLink: "",
             domain: "",
             agentCode: "",
             funcList: [
@@ -112,7 +100,8 @@ export default {
     computed: {
         ...mapGetters({
             isPwa: "getIsPwa",
-            loginStatus: "getLoginStatus"
+            loginStatus: "getLoginStatus",
+            siteConfig: "getSiteConfig"
         }),
         isException() {
             return (
@@ -142,12 +131,24 @@ export default {
     },
     created() {
         if (this.loginStatus) {
+            // 已登入：註冊頁
             this.getDomain();
             this.getAgentCode();
+        } else {
+            // 未登入：落地頁
+            axios({
+                method: "get",
+                url: `${this.siteConfig.YABO_API_DOMAIN}/system/downloadlink`
+            }).then(res => {
+                if (res && res.data && res.data.data) {
+                    this.landingLink =
+                        res.data.data[0].value || res.data.data[1].value;
+                }
+            });
         }
     },
     mounted() {
-        this.shareImageSrc = this.$refs.shareAppImage.src;
+        this.shareImageSrc = this.$refs.shareImageRef.src;
     },
     methods: {
         closeShare() {
@@ -162,30 +163,39 @@ export default {
 
         downloadImage() {
             if (this.isPwa) {
-                window.open(this.shareImageSrc);
+                // window.open(this.shareImageSrc);
+                html2canvas(this.$refs["qrcodeRef"]).then(canvas => {
+                    window.open("").document.write(
+                        `
+                        <html>
+                            <head>
+                                <meta name="viewport"
+                                        content="width=device-width, initial-scale=1.0, minimum-scale=1.0, maximum-scale=1.0, user-scalable=no" />
+                            </head>
+                            <body style="margin: 0">
+                                <div style="position: relative ; width: 100% ; height: 100%">
+                                    <img style="width: 100% ; height: 100%" src=${
+                                        this.shareImageSrc
+                                    } />
+                                    <img style="position: absolute ; height: 14% ; left: 50% ; bottom: 36.5% ;  transform: translate(-50% , 50%)" src=${canvas.toDataURL()} />
+                                </div>
+                            </body>
+                        </html>
+                    `
+                    );
+                });
                 return;
             }
 
-            axios({
-                url: this.shareImageSrc,
-                methods: "GET",
-                responseType: "blob"
-            }).then(res => {
-                const fileURL = window.URL.createObjectURL(
-                    new Blob([res.data])
-                );
-
-                const fileLink = document.createElement("a");
-                fileLink.href = fileURL;
-                fileLink.setAttribute("download", "yabo.png");
-                document.body.appendChild(fileLink);
-
-                this.msg = this.$text(
-                    "S_PICTURE_SAVED_TO_LOCAL",
-                    "图片已保存到本地相册"
-                );
-
-                fileLink.click();
+            html2canvas(this.$refs["shareImageBlockRef"], {
+                useCORS: true
+            }).then(canvas => {
+                let link = document.createElement("a");
+                link.href = canvas.toDataURL();
+                link.setAttribute("download", "Yabo.png");
+                link.style.display = "none";
+                document.body.appendChild(link);
+                link.click();
             });
         },
         getDomain() {
@@ -199,10 +209,6 @@ export default {
                 this.domain = res.data.ret[0];
             });
         },
-        /**
-         * 取得推廣代碼
-         * @method getAgentCode
-         */
         getAgentCode() {
             axios({
                 method: "get",
@@ -275,7 +281,7 @@ $radius: 10px;
 
     .qrcode-wrap {
         position: absolute;
-        bottom: 8%;
+        bottom: 14%;
         left: 50%;
         transform: translateX(-50%);
     }
