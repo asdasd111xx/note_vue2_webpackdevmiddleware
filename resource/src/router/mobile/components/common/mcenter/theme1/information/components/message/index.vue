@@ -35,7 +35,10 @@
                     <span v-if="!message.read" />
                 </div>
                 <div :class="$style.wrap">
-                    <div :class="$style.title" v-html="message.title" />
+                    <div class="clearfix">
+                        <div :class="$style.title" v-html="message.title" />
+                        <div :class="$style['msg-time']">{{ message.sent_at | shortDateFormat }}</div>
+                    </div>
                     <div :class="$style.content" v-html="message.content" />
                 </div>
             </div>
@@ -106,6 +109,9 @@ export default {
     filters: {
         dateFormat(date) {
             return Vue.moment(date).format('YYYY-MM-DD HH:mm:ss');
+        },
+        shortDateFormat(date) {
+            return Vue.moment(date).format('YYYY-MM-DD');
         }
     },
     data() {
@@ -348,6 +354,16 @@ export default {
 
     .wrap {
         padding: 13px 0;
+
+        .title {
+            float: left;
+        }
+
+        .msg-time {
+            float: right;
+            color: #A6A9B2;
+            font-size: 12px;
+        }
     }
 }
 

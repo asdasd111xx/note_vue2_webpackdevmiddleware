@@ -17,6 +17,7 @@
                             $style['level-thumb-cell'],
                             { [$style['active']]: selectedIndex === index }
                         ]"
+                        @click="onClickLevel(index)"
                     >
                         VIP{{ item.seq }}
                     </div>
@@ -128,7 +129,7 @@ export default {
         vipLevelOption() {
             return {
                 slidesPerView: "auto",
-                allowTouchMove: false
+                // allowTouchMove: false
             };
         },
         vipCardOption() {
@@ -153,6 +154,17 @@ export default {
                 );
             });
         });
+    },
+    methods: {
+        onClickLevel(index) {
+            const swiperCard = this.$refs.swiperCard.$swiper;
+
+            swiperCard.slideTo(index , 500 , false)
+            this.$emit(
+                    "update:currentLevelData",
+                    this.vipLevelList[index]
+                );
+        }
     },
     watch: {
         vipLevelList() {
