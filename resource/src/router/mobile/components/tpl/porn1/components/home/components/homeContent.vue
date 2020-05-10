@@ -53,7 +53,7 @@
       <div :class="$style['top-wrap']">
         <!-- 影片分類 -->
         <div
-          v-if="isAdult && selectedIndex === 0"
+          v-if="isAdult && typeList[selectedIndex].icon === 'Tv'"
           :class="[$style['video-tag-wrap'], 'clearfix']"
         >
           <div
