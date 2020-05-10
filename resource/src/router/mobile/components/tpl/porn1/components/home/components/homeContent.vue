@@ -257,7 +257,6 @@ export default {
     typeList() {
       const adultVideo = this.isAdult ? [{ icon: 'Tv', name: '影片' }] : [];
       const typeList = [...adultVideo, ...this.allGame.map((game) => ({ icon: game.iconName, name: game.name }))];
-      console.log(typeList);
       // 業主說左側選單前後要各複製一份...
       return [...typeList, ...typeList, ...typeList];
     },
@@ -287,7 +286,6 @@ export default {
     currentGame() {
       const length = this.typeList.length / 3;
       const index = this.selectedIndex % length;
-      console.log(this.allGameList[index] );
       return { ...this.allGameList[index] };
     },
     vipLevel() {
