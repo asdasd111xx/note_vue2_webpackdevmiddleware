@@ -48,7 +48,7 @@
       </div>
     </div>
     <!-- 右側內容 -->
-    <div :class="$style['all-game-wrap']">
+    <div v-show="isShow" :class="$style['all-game-wrap']">
       <!-- 上方功能列 -->
       <div :class="$style['top-wrap']">
         <!-- 影片分類 -->
@@ -257,6 +257,7 @@ export default {
     typeList() {
       const adultVideo = this.isAdult ? [{ icon: 'Tv', name: '影片' }] : [];
       const typeList = [...adultVideo, ...this.allGame.map((game) => ({ icon: game.iconName, name: game.name }))];
+      console.log(typeList);
       // 業主說左側選單前後要各複製一份...
       return [...typeList, ...typeList, ...typeList];
     },
@@ -286,6 +287,7 @@ export default {
     currentGame() {
       const length = this.typeList.length / 3;
       const index = this.selectedIndex % length;
+      console.log(this.allGameList[index] );
       return { ...this.allGameList[index] };
     },
     vipLevel() {
@@ -395,7 +397,7 @@ export default {
         method: 'post',
         url: `${API_PORN1_DOMAIN}/api/v1/video/videolist`,
         timeout: 30000,
-        data: querystring.stringify({ tag: this.videoType.title }),
+        data: querystring.stringify({ tag: this.videoType.title === '全部' ? '' : this.videoType.title }),
         headers: {
           Bundleid: 'chungyo.foxyporn.prod.enterprise.web',
           Version: 1
