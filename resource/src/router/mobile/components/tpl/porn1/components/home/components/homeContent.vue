@@ -48,7 +48,7 @@
       </div>
     </div>
     <!-- 右側內容 -->
-    <div :class="$style['all-game-wrap']">
+    <div v-show="isShow" :class="$style['all-game-wrap']">
       <!-- 上方功能列 -->
       <div :class="$style['top-wrap']">
         <!-- 影片分類 -->
@@ -395,7 +395,7 @@ export default {
         method: 'post',
         url: `${API_PORN1_DOMAIN}/api/v1/video/videolist`,
         timeout: 30000,
-        data: querystring.stringify({ tag: this.videoType.title }),
+        data: querystring.stringify({ tag: this.videoType.title === '全部' ? '' : this.videoType.title }),
         headers: {
           Bundleid: 'chungyo.foxyporn.prod.enterprise.web',
           Version: 1
