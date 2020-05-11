@@ -268,6 +268,7 @@ export default {
       this.timer = setInterval(() => {
         if (this.countdownSec === 0) {
           clearInterval(this.timer);
+          this.timer = null;
           return;
         }
         this.countdownSec -= 1;
