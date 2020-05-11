@@ -162,7 +162,7 @@ export default {
       gameData: [],
       activityData: [],
       msg: '',
-      hasBackCard: false
+      hasBankCard: false
     };
   },
   computed: {
@@ -210,7 +210,7 @@ export default {
 
     common.bankCardCheck({
       success: (response) => {
-        this.hasBackCard = response.ret
+        this.hasBankCard = response.ret
       }
     }).then(() => { })
   },
@@ -221,7 +221,7 @@ export default {
       'actionSetFavoriteGame'
     ]),
     beforeOnEnter() {
-      if (this.hasBackCard) {
+      if (this.hasBankCard) {
         return true
       } else {
         this.msg = "请先绑定提现银行卡"

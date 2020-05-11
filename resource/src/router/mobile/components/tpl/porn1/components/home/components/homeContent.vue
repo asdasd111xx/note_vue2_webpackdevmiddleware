@@ -208,6 +208,7 @@ import { API_PORN1_DOMAIN, API_GET_VENDOR } from '@/config/api';
 import ajax from '@/lib/ajax';
 import openGame from '@/lib/open_game';
 import message from '../../common/new/message';
+import common from '@/api/common';
 
 export default {
   components: {
@@ -242,7 +243,8 @@ export default {
         { name: 'accountVip', text: 'VIP' },
         { name: 'grade', text: '等级' }
       ],
-      msg: ''
+      msg: '',
+      hasBankCard: false
     };
   },
   computed: {
@@ -296,6 +298,13 @@ export default {
     videoType() {
       this.getVideoList();
     }
+  },
+  created() {
+    common.bankCardCheck({
+      success: (response) => {
+        this.hasBankCard = response.ret
+      }
+    }).then(() => { })
   },
   mounted() {
     $(window).on('resize', this.onResize);
@@ -568,9 +577,13 @@ export default {
         return;
       }
 
-
       if (game.type === 'T') {
         this.msg = '正在上线 敬请期待';
+        return;
+      }
+
+      if (!this.hasBankCard) {
+        this.$router.push(`/mobile/mcenter/bankcard?home=true`);
         return;
       }
 
@@ -597,7 +610,7 @@ export default {
 
         // ios寰宇瀏覽器目前另開頁面需要與電腦版開啟方式相同
         if (!isUBMobile && !webview) {
-            newWindow = window.open('', '_blank');
+          newWindow = window.open('', '_blank');
         }
         ajax({
           method: 'get',
@@ -606,28 +619,28 @@ export default {
           params: { kind: game.kind },
           success: ({ result, ret }) => {
             if (result !== 'ok') {
-                if (!isUBMobile && !webview) {
-                    newWindow.close();
-                }
-                return;
+              if (!isUBMobile && !webview) {
+                newWindow.close();
+              }
+              return;
             }
 
 
             if (webview) {
-                window.location.href = ret.url;
-                return;
+              window.location.href = ret.url;
+              return;
             }
             if (!isUBMobile) {
-                newWindow.location.href = ret.url;
-                return;
+              newWindow.location.href = ret.url;
+              return;
             }
 
             window.open(ret.url);
           },
           fail: (error) => {
             if (!isUBMobile || !webview) {
-                newWindow.alert(`${error.data.msg} ${error.data.code ? `(${error.data.code})` : ''}`);
-                newWindow.close();
+              newWindow.alert(`${error.data.msg} ${error.data.code ? `(${error.data.code})` : ''}`);
+              newWindow.close();
             }
           }
         });
