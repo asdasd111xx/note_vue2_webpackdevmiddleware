@@ -56,7 +56,7 @@ export default {
     },
     handleClick() {
       this.show = false;
-      window.open('/mobile/install')
+      window.open('/mobile/install' , "_blank")
     }
   }
 };

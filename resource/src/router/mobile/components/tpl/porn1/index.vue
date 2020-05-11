@@ -11,12 +11,12 @@
 @import "~@/css/variable.scss";
 
 :global {
-    .mobile-wrap {
-        height: 100%;
-    }
-    .scroll-area {
-        overflow-y: auto;
-    }
+    // .mobile-wrap {
+    //     height: 100%;
+    // }
+    // .scroll-area {
+    //     overflow-y: auto;
+    // }
 
   .fade-enter-active,
   .fade-leave-active {

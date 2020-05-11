@@ -218,6 +218,7 @@ export default {
     padding-top: 10px;
     padding-bottom: 30px;
     background: #eee;
+    overflow: hidden auto;
 }
 
 .table-container {

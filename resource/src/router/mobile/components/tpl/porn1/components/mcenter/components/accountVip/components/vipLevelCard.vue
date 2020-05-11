@@ -82,7 +82,9 @@
                             </div>
                             <div>
                                 保级推广{{ item.downgrade_members }}位 <br />
-                                有效会员(充值{{ item.downgrade_deposit }})
+                                有效会员(充值{{
+                                    item.downgrade_deposit | roundTwoPoints
+                                }})
                             </div>
                         </div>
                     </div>
@@ -125,10 +127,15 @@ export default {
             selectedIndex: 0
         };
     },
+    filters: {
+        roundTwoPoints(value) {
+            return Number(value).toFixed(2);
+        }
+    },
     computed: {
         vipLevelOption() {
             return {
-                slidesPerView: "auto",
+                slidesPerView: "auto"
                 // allowTouchMove: false
             };
         },
@@ -159,11 +166,8 @@ export default {
         onClickLevel(index) {
             const swiperCard = this.$refs.swiperCard.$swiper;
 
-            swiperCard.slideTo(index , 500 , false)
-            this.$emit(
-                    "update:currentLevelData",
-                    this.vipLevelList[index]
-                );
+            swiperCard.slideTo(index, 500, false);
+            this.$emit("update:currentLevelData", this.vipLevelList[index]);
         }
     },
     watch: {

@@ -18,5 +18,6 @@ export default {
 .content-wrap {
     padding-bottom: 60px;
     background: #eee;
+    overflow: hidden auto;
 }
 </style>

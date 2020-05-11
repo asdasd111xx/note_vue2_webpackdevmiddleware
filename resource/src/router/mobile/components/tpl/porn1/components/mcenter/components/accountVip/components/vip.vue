@@ -213,8 +213,7 @@ export default {
     font-size: 16px;
     color: $main_text_color1;
     font-weight: 700;
-    overflow-x: auto;
-    overflow-y: hidden;
+    overflow: auto hidden;
     white-space: nowrap;
 
     // 針對 Chrome 與 Safari 隱藏滾動條
