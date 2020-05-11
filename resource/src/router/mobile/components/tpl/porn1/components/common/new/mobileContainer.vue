@@ -68,7 +68,7 @@ export default {
 <style lang="scss" module>
 .container {
   min-width: 320px;
-  min-height: 100%;
+  min-height: calc(100vh);
 }
 
 .has-header {
