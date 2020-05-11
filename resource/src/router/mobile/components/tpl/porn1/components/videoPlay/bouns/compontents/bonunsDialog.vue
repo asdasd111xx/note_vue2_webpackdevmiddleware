@@ -25,7 +25,7 @@
           {{ $text("S_ACTIVITY_SHORT", "余额不足 请先充值") }}
         </template>
         <template v-else>
-          {{ $text("S_ACTIVITY_SLOGAN", "看视频送现金 看越久送越多") }}
+          {{ $text("S_ACTIVITY_SLOGAN", "看视频送现金 天天看天天送") }}
         </template>
       </div>
       <template v-if="type == 'tips' || type.includes('poor')">
