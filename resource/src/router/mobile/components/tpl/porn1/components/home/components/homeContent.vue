@@ -190,8 +190,10 @@
         </template>
       </div>
     </div>
-    <message v-if="msg" @close="msg = ''">
-      <div slot="msg">{{ msg }}</div>
+    <message v-if="msg" @close="clearMsg">
+      <div slot="msg">
+        {{ msg }}
+      </div>
     </message>
   </div>
 </template>
@@ -344,6 +346,13 @@ export default {
     $(window).off('resize', this.onResize);
   },
   methods: {
+    clearMsg() {
+      if (this.msg === '请先绑定提现银行卡') {
+        this.$router.push('/mobile/mcenter/bankCard?home=true');
+      }
+
+      this.msg = '';
+    },
     // 取得影片分類
     getVideoTag() {
       return axios({
@@ -583,7 +592,8 @@ export default {
       }
 
       if (!this.hasBankCard) {
-        this.$router.push(`/mobile/mcenter/bankcard?home=true`);
+        this.msg = "请先绑定提现银行卡"
+        this.checkBankCard = true;
         return;
       }
 

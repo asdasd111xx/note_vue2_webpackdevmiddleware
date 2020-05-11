@@ -5,7 +5,9 @@
       @close="msg = ''"
       :callback="
         () => {
-          $router.push(`/mobile/mcenter/bankcard?type=${paramsData.label}`);
+          $router.push(
+            `/mobile/mcenter/bankcard?lobby=${vendor}-${paramsData.label}`
+          );
         }
       "
     >
@@ -272,8 +274,8 @@ export default {
 
         this.updateGameData();
 
-        if (this.$route.query.type) {
-          this.paramsData.label = this.$route.query.type;
+        if (this.$route.query.label) {
+          this.paramsData.label = this.$route.query.label;
           return;
         }
 
