@@ -218,7 +218,7 @@ export default {
       this.loginCheck(undefined, undefined, this.errorCallBack);
     },
     slideLogin(loginInfo) {
-      this.loginCheck({ captcha_text: loginInfo.data }, loginInfo.slideFuc, this.errorCallBack);
+      this.loginCheck({ captcha: loginInfo.data }, loginInfo.slideFuc, this.errorCallBack);
     },
     // 錯誤訊息call back
     errorCallBack(res) {
