@@ -121,10 +121,10 @@
                 <p v-if="isAutotransfer" class="tip-text clear">{{ $t('S_TIPS') }}: <br /> <span v-html="tipText" /></p>
             </div>
         </slot>
-        <message v-if="msg" @close="msg = ''">
-          <div slot="msg">
-            {{msg}}
-          </div>
+        <message v-if="msg" @close="clearMsg">
+            <div slot="msg">
+                {{ msg }}
+            </div>
         </message>
     </div>
 </template>
@@ -133,7 +133,8 @@
 import { mapGetters, mapActions } from 'vuex';
 import { ModelSelect } from 'vue-search-select';
 import mcenter from '@/api/mcenter';
-import message from "@/router/mobile/components/tpl/porn1/components/common/new/message"
+import ajax from '@/lib/ajax';
+import message from '@/router/mobile/components/tpl/porn1/components/common/new/message';
 
 export default {
     components: {
@@ -219,8 +220,8 @@ export default {
             return data;
         },
         firstThirdBalanceInfo() {
-            const data = {}
-            Object.keys(this.membalance.vendor).slice(0,4).forEach((key) => {
+            const data = {};
+            Object.keys(this.membalance.vendor).slice(0, 4).forEach((key) => {
                 if (key === 'default') {
                     return;
                 }
@@ -228,7 +229,7 @@ export default {
                 data[key] = this.membalance.vendor[key];
             });
 
-            return data
+            return data;
         },
         tipText() {
             return this.$text('S_AUTO_SWITCH', {
@@ -292,7 +293,7 @@ export default {
             this.AutotransferLock = true;
             mcenter.balanceTranAutoEnable({
                 success: () => {
-                    this.msg = this.$t('S_SWITCH_AUTO_TRANSFER')
+                    this.msg = this.$t('S_SWITCH_AUTO_TRANSFER');
                     // alert(this.$t('S_SWITCH_AUTO_TRANSFER'));
                     this.isAutotransfer = true;
                     this.backAccount();
@@ -314,7 +315,7 @@ export default {
             this.AutotransferLock = true;
             mcenter.balanceTranAutoClose({
                 success: () => {
-                    this.msg = this.$t('S_SWITCH_SUCCESS')
+                    this.msg = this.$t('S_SWITCH_SUCCESS');
                     // alert(this.$t('S_SWITCH_SUCCESS'));
                     this.isAutotransfer = false;
                     this.actionSetUserdata(true);
@@ -372,64 +373,92 @@ export default {
                 }
             });
         },
+        checkBankCard() {
+            return ajax({
+                method: 'get',
+                url: '/api/v1/c/user/has-bank'
+            }).then((response) => {
+                if (!response || response.result !== 'ok') {
+                    return 'error';
+                }
+                return response.ret;
+            });
+        },
+        clearMsg() {
+            if (this.msg === '请先绑定提现银行卡') {
+                this.$router.push('/mobile/mcenter/bankCard?balanceTrans=true');
+            }
+
+            this.msg = '';
+        },
         balanceTran({ customSucessAlert } = {}) {
             // 阻擋連續點擊
             if (this.btnLock) {
                 return;
             }
 
-            const re = /^[1-9]*[1-9][0-9]*$/;
-            const source = this.tranOut;
-            const target = this.tranIn;
-            const { money } = this;
-
-            if (+source === 0 || +target === 0) {
-                this.msg = this.$t('S_SELECT_ACCOUNT')
-                // alert(this.$t('S_SELECT_ACCOUNT'));
-                return;
-            }
-            if (money === '') {
-                this.msg = this.$t('S_AMOUNT_NULL_VALUE')
-                // alert(this.$t('S_AMOUNT_NULL_VALUE'));
-                return;
-            }
-            if (!re.test(money)) {
-                this.msg = this.$t('S_DAW_ONLY_INT')
-                // alert(this.$t('S_DAW_ONLY_INT'));
-                return;
-            }
-
             this.btnLock = true;
 
-            mcenter.balanceTran({
-                params: {
-                    amount: money
-                },
-                success: () => {
-                    if (customSucessAlert) {
-                        customSucessAlert();
-                    }
-                    if (!customSucessAlert) {
-                        this.msg = this.$t('S_CR_SUCCESS')
-                        // alert(this.$t('S_CR_SUCCESS'));
-                    }
-
-                    this.lockSec = 0;
-                    this.balanceBackLock = false;
-                    this.actionSetUserBalance();
-
-                    this.tranIn = 0;
-                    this.tranOut = 0;
-                    this.money = '';
-                    this.getDefaultTran.out = '';
-                    this.getDefaultTran.in = '';
-
-                    this.btnLock = false;
-                },
-                fail: () => {
-                    this.btnLock = false;
+            this.checkBankCard().then((res) => {
+                if (res === 'error') {
+                    return;
                 }
-            }, source, target);
+
+                if (!res) {
+                    this.msg = '请先绑定提现银行卡';
+                    return;
+                }
+                const re = /^[1-9]*[1-9][0-9]*$/;
+                const source = this.tranOut;
+                const target = this.tranIn;
+                const { money } = this;
+
+                if (+source === 0 || +target === 0) {
+                    this.msg = this.$t('S_SELECT_ACCOUNT');
+                    // alert(this.$t('S_SELECT_ACCOUNT'));
+                    return;
+                }
+                if (money === '') {
+                    this.msg = this.$t('S_AMOUNT_NULL_VALUE');
+                    // alert(this.$t('S_AMOUNT_NULL_VALUE'));
+                    return;
+                }
+                if (!re.test(money)) {
+                    this.msg = this.$t('S_DAW_ONLY_INT');
+                    // alert(this.$t('S_DAW_ONLY_INT'));
+                    return;
+                }
+
+                mcenter.balanceTran({
+                    params: {
+                        amount: money
+                    },
+                    success: () => {
+                        if (customSucessAlert) {
+                            customSucessAlert();
+                        }
+                        if (!customSucessAlert) {
+                            this.msg = this.$t('S_CR_SUCCESS');
+                        // alert(this.$t('S_CR_SUCCESS'));
+                        }
+
+                        this.lockSec = 0;
+                        this.balanceBackLock = false;
+                        this.actionSetUserBalance();
+
+                        this.tranIn = 0;
+                        this.tranOut = 0;
+                        this.money = '';
+                        this.getDefaultTran.out = '';
+                        this.getDefaultTran.in = '';
+
+                        this.btnLock = false;
+                    },
+                    fail: () => {
+                        this.btnLock = false;
+                    }
+                }, source, target);
+            });
         },
         getRecentlyOpened() {
             mcenter.lastVendor({
