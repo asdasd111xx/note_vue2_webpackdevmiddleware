@@ -589,8 +589,16 @@ export default {
       }
 
       if (game.type === 'R') {
-        const win = window.open('about:blank');
+        let newWindow = '';
+        // 辨別裝置是否為ios寰宇瀏覽器
+        const isUBMobile = navigator.userAgent.match(/UBiOS/) !== null && navigator.userAgent.match(/iPhone/) !== null;
+        // 暫時用來判斷馬甲包
+        const webview = window.location.hostname === 'yaboxxxapp02.com';
 
+        // ios寰宇瀏覽器目前另開頁面需要與電腦版開啟方式相同
+        if (!isUBMobile && !webview) {
+            newWindow = window.open('', '_blank');
+        }
         ajax({
           method: 'get',
           url: `${API_GET_VENDOR}/${game.vendor}/game/launch`,
@@ -598,13 +606,29 @@ export default {
           params: { kind: game.kind },
           success: ({ result, ret }) => {
             if (result !== 'ok') {
-              win.close();
-              return;
+                if (!isUBMobile && !webview) {
+                    newWindow.close();
+                }
+                return;
             }
-            win.location.href = `${ret.url}&customize=yabo&tableType=3310`;
+
+
+            if (webview) {
+                window.location.href = ret.url;
+                return;
+            }
+            if (!isUBMobile) {
+                newWindow.location.href = ret.url;
+                return;
+            }
+
+            window.open(ret.url);
           },
-          fail: () => {
-            win.close();
+          fail: (error) => {
+            if (!isUBMobile || !webview) {
+                newWindow.alert(`${error.data.msg} ${error.data.code ? `(${error.data.code})` : ''}`);
+                newWindow.close();
+            }
           }
         });
         return;
