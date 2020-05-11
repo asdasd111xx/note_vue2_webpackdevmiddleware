@@ -14,12 +14,12 @@ import mobileContainer from '../common/new/mobileContainer';
 export default {
   components: {
     mobileContainer,
-    noPorn: () => import('./components/new/noPorn'),
-    discoverHome: () => import('./components/new/discoverHome'),
-    discoverTag: () => import('./components/new/discoverTag'),
-    discoverArtist: () => import('./components/new/discoverArtist'),
-    discoverRank: () => import('./components/new/discoverRank'),
-    discoverSponsor: () => import('./components/new/discoverSponsor')
+    noPorn: () => import('./components/noPorn'),
+    discoverHome: () => import('./components/discoverHome'),
+    discoverTag: () => import('./components/discoverTag'),
+    discoverArtist: () => import('./components/discoverArtist'),
+    discoverRank: () => import('./components/discoverRank'),
+    discoverSponsor: () => import('./components/discoverSponsor')
   },
   computed: {
     ...mapGetters({
