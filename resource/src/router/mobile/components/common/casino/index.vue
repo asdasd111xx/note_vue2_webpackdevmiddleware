@@ -271,8 +271,15 @@ export default {
         }
 
         this.updateGameData();
-        if (this.$route.params.type || this.$route.query.type) {
-          this.paramsData.label = this.$route.params.type || this.$route.query.type;
+
+        if (this.$route.query.type) {
+          this.paramsData.label = this.$route.query.type;
+          return;
+        }
+
+        if (this.$route.params.type) {
+          this.paramsData.label = this.$route.params.type;
+          return;
         }
       });
 
