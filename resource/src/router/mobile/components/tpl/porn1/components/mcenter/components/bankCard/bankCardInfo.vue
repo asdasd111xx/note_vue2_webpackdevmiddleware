@@ -109,6 +109,13 @@ export default {
     created() {
         ajax({
             method: 'get',
+            url: '/api/v1/c/user/has-bank',
+            errorAlert: false
+        }).then((response) => {
+            console.log('response', response);
+        });
+        ajax({
+            method: 'get',
             url: '/api/v1/c/player/user_bank/list',
             errorAlert: false
         }).then((response) => {

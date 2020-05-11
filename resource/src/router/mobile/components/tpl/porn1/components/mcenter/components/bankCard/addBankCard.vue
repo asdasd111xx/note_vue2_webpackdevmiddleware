@@ -151,14 +151,23 @@
                 </ul>
             </div>
         </div>
+        <message v-if="msg" @close="clearMsg">
+            <div slot="msg">
+                {{ msg }}
+            </div>
+        </message>
     </div>
 </template>
 
 <script>
 import { mapGetters, mapActions } from 'vuex';
 import ajax from '@/lib/ajax';
+import message from '../../../common/new/message';
 
 export default {
+    components: {
+        message
+    },
     props: {
         changePage: {
             type: Function,
@@ -188,7 +197,8 @@ export default {
             errorMsg: '',
             lockStatus: false,
             mustWait: false,
-            time: 0
+            time: 0,
+            msg: ''
 
         };
     },
@@ -262,18 +272,31 @@ export default {
                 errorAlert: false,
                 params,
                 success: () => {
+                    this.msg = '绑定成功';
                     this.lockStatus = false;
                     if (!this.memInfo.user.name) {
                         this.actionSetUserdata(true);
                     }
-
-                    this.changePage('bankCardInfo');
                 },
                 fail: (error) => {
                     this.lockStatus = false;
                     this.errorMsg = error.data.msg;
                 }
             });
+        },
+        clearMsg() {
+            const { query } = this.$route;
+            this.msg = '';
+
+            if (query.type) {
+                this.$router.push(`/mobile/casino/bbin?label=${query.type}`);
+            } else if (query.withdraw) {
+                this.$router.push('/mobile/mcenter/withdraw');
+            } else if (query.balanceTrans) {
+                this.$router.push('/mobile/mcenter/balanceTrans');
+            } else {
+                this.changePage('bankCardInfo');
+            }
         },
         setBank(bank) {
             this.isShowPop = false;

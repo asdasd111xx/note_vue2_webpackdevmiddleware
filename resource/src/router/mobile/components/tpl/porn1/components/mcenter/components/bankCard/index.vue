@@ -48,6 +48,11 @@ export default {
     },
     computed: {
         headerTitle() {
+            const { query } = this.$route;
+
+            if (query.type || query.withdraw || query.balanceTrans) {
+                return '提现银行卡';
+            }
             return this.$text(...this.currentPage === 'bankCardInfo' ? ['S_CARD_MANAGEMENT', '卡片管理'] : ['S_ADD_BANKCARD', '添加银行卡']);
         },
         showDetail: {
@@ -73,6 +78,13 @@ export default {
             set(value) {
                 this.step = value;
             }
+        }
+    },
+    created() {
+        const { query } = this.$route;
+
+        if (query.type || query.withdraw || query.balanceTrans) {
+            this.currentPage = 'addBankCard';
         }
     },
     methods: {

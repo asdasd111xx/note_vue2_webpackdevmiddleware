@@ -46,7 +46,7 @@ module.exports = {
             //     secure: false
             // },
             '/api': {
-                target: 'https://yb01.66boxing.com/',
+                target: 'https://yb0t.66relish.com/',
                 changeOrigin: true,
                 ws: true,
                 secure: false
@@ -58,19 +58,19 @@ module.exports = {
             '/tpl': {
                 //  開發測試用
                 // target: 'http://pineapple.vir888.net',
-                target: 'https://yb01.66boxing.com/',
+                target: 'https://yb0t.66relish.com/',
                 changeOrigin: true,
                 secure: false
             },
             '/cdn': {
                 //  開發測試用
                 // target: 'http://pineapple.vir888.net',
-                target: 'https://yb01.66boxing.com/',
+                target: 'https://yb0t.66relish.com/',
                 changeOrigin: true,
                 secure: false
             },
             '/payment': {
-                target: 'https://yb01.66boxing.com/',
+                target: 'https://yb0t.66relish.com/',
                 changeOrigin: true,
                 secure: false
             }
