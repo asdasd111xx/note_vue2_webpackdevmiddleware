@@ -122,6 +122,7 @@ export default {
 
   },
   destroyed() {
+    this.curMin = 0;
     clearTimeout(this.timer);
     this.timer = null;
     clearTimeout(this.cunTimer);
@@ -139,8 +140,8 @@ export default {
 
 .circle_loader {
   position: absolute;
-  width: 18px;
-  height: 18px;
+  width: 18.5px;
+  height: 18.5px;
 }
 
 #halfclip {

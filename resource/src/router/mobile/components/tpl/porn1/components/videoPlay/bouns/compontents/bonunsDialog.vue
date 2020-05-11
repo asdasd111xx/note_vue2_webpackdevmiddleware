@@ -137,7 +137,7 @@ export default {
       isShow: false,
       dialogHeight: 0,
       isClose: false,
-      earnCellNum: 6, // 可獲得彩金數
+      earnCellNum: 0, // 可獲得彩金數
       hadEarnNum: 0, // 已經獲得彩金數
       earnSingleNum: "0.00", //每次獲得彩金
       earnCurrentNum: "0.00", //獲得彩金
