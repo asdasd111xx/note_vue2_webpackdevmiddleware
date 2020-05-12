@@ -105,25 +105,20 @@ $bouns_color6: #FFF07B;
     background: linear-gradient(to left, #bd9d7d, #f9ddbd);
 }
 
+// 進度條
 .bouns-process-wrap {
     position: absolute;
     right: 0;
     top: 43px;
 }
 
-.earn-wrap {
-    // height: 325px !important;
-
-    .title-coin {}
-}
-
 .bouns-process {
     animation: fade-in 0.31s;
-    width: 28px;
-    height: 28px;
+    width: 30px;
+    height: 30px;
     opacity: 0.8;
     background: #444444;
-    border-radius: 14px 0 0 14px;
+    border-radius: 14px 0 0 15px;
     color: $bouns_color5;
     font-size: 15px;
     line-height: 30px;
@@ -135,7 +130,7 @@ $bouns_color6: #FFF07B;
 
     .coin {
         margin-left: 5px;
-        width: 17px;
+        width: 24px; // 包含進度轉圈大小
         height: 100%;
         display: flex;
         align-items: center;

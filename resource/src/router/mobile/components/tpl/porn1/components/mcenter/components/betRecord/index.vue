@@ -2,17 +2,15 @@
     <mobile-container :header-config="headerConfig" :has-footer="hasFooter">
         <div slot="content" :class="$style['content-wrap']">
             <div :class="$style['menu-wrap']">
-                <div :class="$style['menu-select-game']" @click="selectMenu = selectMenu ? '' : 'game'">
+                <div :class="[$style['menu-select-game'], {[$style.active] : selectMenu === 'game'}]" @click="selectMenu = selectMenu === 'game' ? '' : 'game'">
                     <span>{{ selectType.alias }}</span>
-                    <span :class="$style['select-icon']" />
                 </div>
-                <div :class="[$style['menu-select-time'], {[$style.custom] : isCustomTime}]" @click="selectMenu = selectMenu ? '' : 'time'">
+                <div :class="[$style['menu-select-time'], {[$style.custom] : isCustomTime}, {[$style.active] : selectMenu === 'time'}]" @click="selectMenu = selectMenu === 'time' ? '' : 'time'">
                     <div v-if="isCustomTime" :class="$style['select-custom']">
                         <p>{{ selectTime.split(' ')[0] }}</p>
                         <p>{{ selectTime.split(' ')[1] }}</p>
                     </div>
                     <span v-else>{{ selectTime }}</span>
-                    <span :class="$style['select-icon']" />
                 </div>
                 <ul v-if="selectMenu === 'game'" :class="[$style['dropdown-wrap'], 'clearfix']">
                     <li

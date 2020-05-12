@@ -1,5 +1,5 @@
 <template>
-  <mobile-container :header-config="headerConfig" :class="$style.container">
+  <mobile-container :header-config="headerConfig" :class="$style.container" :hasFooter="false">
     <div slot="content" :class="$style['content-wrap']">
       <div :class="$style['yabo']">
         <img :src="$getCdnPath(`/static/image/_new/about/appicon.png`)" />
@@ -97,10 +97,8 @@ export default {
   },
   created() {
     let version = this.$route.query.version || getCookie('version');
-    if (version) {
-      this.version = version;
-      setCookie('version', version);
-    }
+    this.version = version;
+    setCookie('version', version);
   },
   methods: {
   }

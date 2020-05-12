@@ -282,6 +282,7 @@ export const API_MCENTER_REBATE_HISTORY = '/api/v1/c/rebate/entry/list';
 export const API_MCENTER_MAINTAINS = '/api/v1/c/maintains';
 export const API_MCENTER_DATETIME = '/api/v1/c/tool/datetime';
 export const API_MCENTER_REBATE_SUBTOTAL = '/api/v1/c/player/rebate/subtotal';
+export const API_MCENTER_REBATE_RECEIVE_ALL = '/api/v1/c/rebate/self/all';
 
 // 餘額歸戶
 export const API_MCENTER_BALANCE_BACK = '/api/v1/c/vendor/recycle/balance';

@@ -122,6 +122,7 @@ export default {
 
   },
   destroyed() {
+    this.curMin = 0;
     clearTimeout(this.timer);
     this.timer = null;
     clearTimeout(this.cunTimer);
@@ -131,16 +132,17 @@ export default {
 </script>
 <style src="../index.scss" lang="scss" module></style>
 <style lang="scss" scoped>
+// 轉圈進度動畫
 .circle_container {
-  width: 18px;
-  height: 18px;
+  width: 24px; // 轉圈進度大小需跟圖形同樣大小
+  height: 24px;
   position: absolute;
 }
 
 .circle_loader {
   position: absolute;
-  width: 18px;
-  height: 18px;
+  width: 24px;
+  height: 24px;
 }
 
 #halfclip {

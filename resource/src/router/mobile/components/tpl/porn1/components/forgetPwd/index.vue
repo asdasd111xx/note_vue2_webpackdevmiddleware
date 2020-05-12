@@ -1,5 +1,5 @@
 <template>
-  <mobile-container :header-config="headerConfig">
+  <mobile-container :header-config="headerConfig" :hasFooter="false">
     <div slot="content" class="content-wrap">
       <div :class="$style['forget-password']">
         <div :class="$style['form-wrap']">
@@ -66,7 +66,7 @@
                     @input="verification('username')"
                   />
                 </div>
-                <div v-if="msg.username !== ''" :class="$style.tip">
+                <div v-if="msg.username !== ''" :class="$style.errorTips">
                   {{ msg.username }}
                 </div>
               </div>
@@ -86,7 +86,7 @@
                 <!-- eslint-disable vue/no-v-html -->
                 <div
                   v-if="msg.email !== ''"
-                  :class="$style.tip"
+                  :class="$style.errorTips"
                   v-html="msg.email"
                 />
                 <!-- eslint-enable vue/no-v-html -->
@@ -105,7 +105,7 @@
                 <div
                   :class="[
                     $style['send-keyring'],
-                    { [$style['active']]: username }
+                    { [$style['active']]: username && !keyRingTimer }
                   ]"
                   @click="getKeyring"
                 >
@@ -140,7 +140,7 @@
                       />
                     </div>
                   </div>
-                  <div v-if="msg.password !== ''" :class="$style.tip">
+                  <div v-if="msg.password !== ''" :class="$style.errorTips">
                     {{ msg.password }}
                   </div>
                 </div>
@@ -170,12 +170,18 @@
                       />
                     </div>
                   </div>
-                  <div v-if="msg.confirm_password !== ''" :class="$style.tip">
+                  <div
+                    v-if="msg.confirm_password !== ''"
+                    :class="$style.errorTips"
+                  >
                     {{ msg.confirm_password }}
                   </div>
                 </div>
               </template>
             </div>
+          </div>
+          <div v-if="currentMethod === 'phone-step-2'" :class="$style.tip">
+            请避免使用与其他网站相同或易于被他人猜测到的密码
           </div>
           <div
             v-if="currentMethod === 'email'"
@@ -538,7 +544,7 @@ export default {
   }
 }
 
-.tip {
+.errorTips {
   color: #db6372;
   text-align: left;
 }
@@ -576,10 +582,10 @@ export default {
 }
 
 .send-keyring {
+  color: white;
   width: 100px;
   height: 30px;
   background: #e9dacc;
-  color: #f3ede7;
   border-radius: 3px;
   pointer-events: none;
   right: 14px;
@@ -589,8 +595,6 @@ export default {
 
   &.active {
     pointer-events: unset;
-    opacity: 1;
-    color: white;
     background: #bd9d7d;
   }
 }
@@ -608,5 +612,13 @@ export default {
     width: 18px;
     height: 18px;
   }
+}
+
+.tip {
+  margin-top: 15px;
+  font-size: 12px;
+  font-weight: 400;
+  text-align: left;
+  color: #a6a9b2;
 }
 </style>

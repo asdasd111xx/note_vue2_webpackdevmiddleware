@@ -1,10 +1,21 @@
 <template>
-  <div :id="$style['js-nc-check-bar']" :class="$style['drag-verify-wrap']">
-    <div v-if="isBackEnd" :class="$style['nc_wrapper']">
-      <div :class="$style['nc_text']"> 请按住滑块，移动到最右边</div>
-      <div :class="$style['nc_scale']">
-        <span :class="[$style['nc_iconfont'], $style['btn_slide']]"></span>
+  <div :style="{ position: 'relative' }">
+    <div :id="$style['js-nc-check-bar']" :class="$style['drag-verify-wrap']">
+      <div v-if="isBackEnd" :class="$style['nc_wrapper']">
+        <div :class="$style['nc_text']">
+          {{ $t(slideText[pageStatus][0]) }}
+        </div>
+        <div :class="$style['nc_scale']">
+          <span :class="[$style['nc_iconfont'], $style['btn_slide']]"></span>
+        </div>
       </div>
+    </div>
+    <div
+      v-if="!isEnable"
+      :class="$style['unable-wrap']"
+      id="slide-verification-unable-wrap"
+    >
+      {{ $t(slideText[pageStatus][0]) }}
     </div>
   </div>
 </template>
@@ -36,7 +47,10 @@ export default {
     return {
       slideText: {
         register: ['S_SLIDE_REGISTER', '向右滑动即注册'],
-        login: ['S_SLIDE_LOGIN', '请按住滑块，拖动到最右边']
+        login: ['S_SLIDE_LOGIN', '向右滑动即登入'],
+        error: ['S_SLIDE_ERROR', '哎呀，出错了，点击!刷新试试'],
+        errorNetwork: ['S_SLIDE_ERROR_NETWORK', '网络不给力！刷新试试'],
+        yesText: ['S_SLIDE_YES_TEXT', '验证通过']
       }
     };
   },
@@ -144,22 +158,22 @@ export default {
         border-radius: 5px;
 
         .nc_bg {
-            width: 0px;
-            border-top-left-radius: 5px;
-            border-bottom-left-radius: 5px;
-            background: -webkit-linear-gradient(to right,#F9DDBD,#BD9D7D);
-            background: -o-linear-gradient(to right,#F9DDBD,#BD9D7D);
-            background: -moz-linear-gradient(to right,#F9DDBD,#BD9D7D);
-            background: linear-gradient(to right,#F9DDBD,#BD9D7D);
+          width: 0px;
+          border-top-left-radius: 5px;
+          border-bottom-left-radius: 5px;
+          background: -webkit-linear-gradient(to right, #f9ddbd, #bd9d7d);
+          background: -o-linear-gradient(to right, #f9ddbd, #bd9d7d);
+          background: -moz-linear-gradient(to right, #f9ddbd, #bd9d7d);
+          background: linear-gradient(to right, #f9ddbd, #bd9d7d);
         }
 
         .nc_iconfont {
-            border-radius: 5px;
-            color: #000;
+          border-radius: 5px;
+          color: #000;
         }
 
         .btn_ok {
-            color: #BD9D7D;
+          color: #bd9d7d;
         }
       }
 
@@ -219,4 +233,32 @@ export default {
   background: #fff;
 }
 
+.unable-wrap {
+  width: 100%;
+  line-height: 40px;
+  height: 40px;
+  top: 0;
+  position: absolute;
+  font-size: 12px;
+  text-align: center;
+  background: -webkit-gradient(
+    linear,
+    left top,
+    right top,
+    color-stop(0, #4d4d4d),
+    color-stop(0.4, #4d4d4d),
+    color-stop(0.5, #fff),
+    color-stop(0.6, #4d4d4d),
+    color-stop(1, #4d4d4d)
+  );
+}
+</style>
+
+<style lang="scss">
+#slide-verification-unable-wrap {
+  -webkit-background-clip: text;
+  -webkit-text-fill-color: transparent;
+  -webkit-animation: slidetounlock 3s infinite;
+  -webkit-text-size-adjust: none;
+}
 </style>

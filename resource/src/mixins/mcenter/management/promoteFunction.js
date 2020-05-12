@@ -26,10 +26,12 @@ export default {
          */
         agentLink() {
             if (!this.domain || !this.agentCode) {
-                return '';
+                return ''
             }
 
             return `https://${this.domain}/a/${this.agentCode}`;
+
+
         }
     },
     created() {

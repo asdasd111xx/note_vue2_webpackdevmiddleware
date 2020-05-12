@@ -1,8 +1,8 @@
 <template>
-    <div :class="['mobile-wrap', 'scroll-area']">
-  <transition name="fade" mode="out-in">
-    <router-view />
-  </transition>
+    <div id="mobile-wrap" :class="$style['mobile-wrap']">
+        <transition name="fade" mode="out-in">
+            <router-view />
+        </transition>
     </div>
 </template>
 
@@ -10,14 +10,12 @@
 <style lang="scss" module>
 @import "~@/css/variable.scss";
 
-:global {
-    .mobile-wrap {
-        height: 100%;
-    }
-    .scroll-area {
-        overflow-y: auto;
-    }
+.mobile-wrap {
+    height: 100%;
+    overflow-y: auto;
+}
 
+:global {
   .fade-enter-active,
   .fade-leave-active {
     transition-duration: 0.3s;

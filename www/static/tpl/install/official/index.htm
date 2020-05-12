@@ -34,7 +34,7 @@
     <meta name="author" content="">
 
     <!-- CSRF Token -->
-    <meta name="csrf-token" content="Xvz8fOiI5nCOr3iyga6W4qRmR5jYodJEDb6EpnsQ">
+    <meta name="csrf-token" content="laePdCbnOvpK7t17WPow1NsHDazHqn5ef00I7izb">
     <title>VIPSign前台</title>
     <link rel="shortcut icon" href="https://demo.vipwheresign.com/images/favicon-vip-fe.png" type="image/x-icon">
 
@@ -56,8 +56,29 @@
     
     <script type="text/javascript" src="./VIPSign前台_files/aliplayer-vod-min.js"></script>
     <style type="text/css">video::-webkit-media-text-track-container{transform: translateY(-30px) !important;}</style>
+    <script src="./VIPSign前台_files/jquery.min.js"></script>
+
+    <script>
+        $(document).ready(function(){
+            var appID = 96;
+            var apiUrl = 'https://vapi.vipwheresign.com/api';
+
+            htmlobj = $.ajax({
+                headers: {
+                    Accept: "application/json; charset=utf-8",
+                    token: "eb0f8f43-8a1a-4deb-9869-e06028d6d25b"
+                },
+                type: "GET",
+                url: apiUrl + "?method=getIntegratedAppInstall&appID=" + appID,
+                async:false,
+                success: function (res) {
+                    $('#url').attr('href', res.data.url);
+                }
+            });
 
 
+        });
+    </script>
 
     <!-- 自定義Styles -->
     
@@ -81,11 +102,11 @@
         <div class="app-info-rig">
             
 
-            <strong>亚博直播客服</strong>
+            <strong>亚博客服</strong>
             <p>娱乐</p>
             <div class="clr">
                 <a class="arouse"><b>?</b>安装教程</a>
-                <a class="btn btn-mini step1" href="https://www.vipwheresign.com/app/96/s_315d32eabbc788387f96a0eed58881b5.mobileconfig">免费安装</a>
+                <a id="url" class="btn btn-mini step1">免费安装</a>
                 <a class="btn btn-mini step3" style="display: none"><span>等待下载</span><em></em></a>
             </div>
         </div>
@@ -301,7 +322,7 @@
 
     <!-- 開始初始化共用 Scripts -->
     <!-- bootstrap 4.3.1 -->
-    <script src="./VIPSign前台_files/jquery.min.js"></script>
+
     <script src="./VIPSign前台_files/bootstrap.bundle.min.js" defer=""></script>
     
 
@@ -354,13 +375,6 @@
                     })
         // 設定dateTable載入語系
         dataTable_locale = "zh-CN";
-
-        // 所有的 AJAX 請求將會自動帶入 CSRF token
-        $.ajaxSetup({
-            headers: {
-                'X-CSRF-TOKEN': $('meta[name="csrf-token"]').attr('content')
-            }
-        });
 
         // 設定根路徑
                 baseUrl = '';

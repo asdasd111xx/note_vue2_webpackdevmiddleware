@@ -6,6 +6,7 @@
   >
     <!-- 左側分類 -->
     <div
+      v-show="isShow"
       ref="type-wrap"
       :class="$style['type-wrap']"
       @touchstart="onTypeTouchStart"
@@ -16,12 +17,12 @@
         :key="`type-${index}`"
         :class="[
           $style['type-swiper'],
-          { [$style.active]: selectedIndex === index }
+          { [$style.active]: typeList[selectedIndex].icon === type.icon }
         ]"
         @click="onChangeSelectInedx(index)"
       >
         <img
-          v-if="selectedIndex === index"
+          v-if="typeList[selectedIndex].icon === type.icon"
           :src="
             $getCdnPath(
               `/static/image/_new/platform/icon/icon_${type.icon}_h.png`
@@ -39,7 +40,7 @@
         <div
           :class="[
             $style['type-title'],
-            { [$style.active]: selectedIndex === index }
+            { [$style.active]: typeList[selectedIndex].icon === type.icon }
           ]"
         >
           {{ type.name }}
@@ -47,12 +48,12 @@
       </div>
     </div>
     <!-- 右側內容 -->
-    <div :class="$style['all-game-wrap']">
+    <div v-show="isShow" :class="$style['all-game-wrap']">
       <!-- 上方功能列 -->
       <div :class="$style['top-wrap']">
         <!-- 影片分類 -->
         <div
-          v-if="isAdult && selectedIndex === 0"
+          v-if="isAdult && typeList[selectedIndex].icon === 'Tv'"
           :class="[$style['video-tag-wrap'], 'clearfix']"
         >
           <div
@@ -189,8 +190,10 @@
         </template>
       </div>
     </div>
-    <message v-if="msg" @close="msg = ''">
-      <div slot="msg">{{ msg }}</div>
+    <message v-if="msg" @close="clearMsg">
+      <div slot="msg">
+        {{ msg }}
+      </div>
     </message>
   </div>
 </template>
@@ -207,6 +210,7 @@ import { API_PORN1_DOMAIN, API_GET_VENDOR } from '@/config/api';
 import ajax from '@/lib/ajax';
 import openGame from '@/lib/open_game';
 import message from '../../common/new/message';
+import common from '@/api/common';
 
 export default {
   components: {
@@ -220,6 +224,7 @@ export default {
       isShowAllTag: false,
       isSliding: false,
       isTop: false,
+      isShow: false,
       isBottom: false,
       typeStartTouchY: 0,
       startTouchY: 0,
@@ -240,7 +245,8 @@ export default {
         { name: 'accountVip', text: 'VIP' },
         { name: 'grade', text: '等级' }
       ],
-      msg: ''
+      msg: '',
+      hasBankCard: false
     };
   },
   computed: {
@@ -254,7 +260,9 @@ export default {
     },
     typeList() {
       const adultVideo = this.isAdult ? [{ icon: 'Tv', name: '影片' }] : [];
-      return [...adultVideo, ...this.allGame.map((game) => ({ icon: game.iconName, name: game.name }))];
+      const typeList = [...adultVideo, ...this.allGame.map((game) => ({ icon: game.iconName, name: game.name }))];
+      // 業主說左側選單前後要各複製一份...
+      return [...typeList, ...typeList, ...typeList];
     },
     options() {
       return { slidesPerView: 'auto', spaceBetween: 4, slideClass: this.$style.tag };
@@ -280,7 +288,9 @@ export default {
       return [{ isVideo: true, data: videoList }, ...gameList];
     },
     currentGame() {
-      return { ...this.allGameList[this.selectedIndex] };
+      const length = this.typeList.length / 3;
+      const index = this.selectedIndex % length;
+      return { ...this.allGameList[index] };
     },
     vipLevel() {
       return this.currentLevel <= 10 ? this.currentLevel : 'max';
@@ -290,6 +300,13 @@ export default {
     videoType() {
       this.getVideoList();
     }
+  },
+  created() {
+    common.bankCardCheck({
+      success: (response) => {
+        this.hasBankCard = response.ret
+      }
+    }).then(() => { })
   },
   mounted() {
     $(window).on('resize', this.onResize);
@@ -304,7 +321,9 @@ export default {
           $(window).trigger('resize');
           const defaultType = localStorage.getItem('type') || 'Tv';
           const defaultIndex = this.typeList.findIndex((type) => type.icon === defaultType);
-          this.onChangeSelectInedx(defaultIndex);
+          const selectIndex = (this.typeList.length / 3) + defaultIndex;
+          this.onChangeSelectInedx(selectIndex);
+          this.isShow = true;
         }, 300);
       });
     });
@@ -327,6 +346,13 @@ export default {
     $(window).off('resize', this.onResize);
   },
   methods: {
+    clearMsg() {
+      if (this.msg === '请先绑定提现银行卡') {
+        this.$router.push('/mobile/mcenter/bankCard?home=true');
+      }
+
+      this.msg = '';
+    },
     // 取得影片分類
     getVideoTag() {
       return axios({
@@ -387,7 +413,7 @@ export default {
         method: 'post',
         url: `${API_PORN1_DOMAIN}/api/v1/video/videolist`,
         timeout: 30000,
-        data: querystring.stringify({ tag: this.videoType.title }),
+        data: querystring.stringify({ tag: this.videoType.title === '全部' ? '' : this.videoType.title }),
         headers: {
           Bundleid: 'chungyo.foxyporn.prod.enterprise.web',
           Version: 1
@@ -498,9 +524,12 @@ export default {
       this.selectedIndex = index;
 
       $(this.$refs['type-wrap']).animate({ scrollTop: index * 63 }, 300);
-      this.$refs['game-wrap'].scrollTop = 0
+      $(this.$refs['game-wrap']).animate({ scrollTop: 0 }, 0);
 
       this.$nextTick(() => {
+        if (this.$refs['game-wrap']) {
+          this.$refs['game-wrap'].scrollTop = 0
+        }
         this.isSliding = false;
       });
     },
@@ -557,9 +586,14 @@ export default {
         return;
       }
 
-
       if (game.type === 'T') {
         this.msg = '正在上线 敬请期待';
+        return;
+      }
+
+      if (!this.hasBankCard) {
+        this.msg = "请先绑定提现银行卡"
+        this.checkBankCard = true;
         return;
       }
 
@@ -578,8 +612,17 @@ export default {
       }
 
       if (game.type === 'R') {
-        const win = window.open('about:blank');
+        let urlParams = game.vendor === 'lg_live' ? '&customize=yabo&tableType=3310' : '';
+        let newWindow = '';
+        // 辨別裝置是否為ios寰宇瀏覽器
+        const isUBMobile = navigator.userAgent.match(/UBiOS/) !== null && navigator.userAgent.match(/iPhone/) !== null;
+        // 暫時用來判斷馬甲包
+        const webview = window.location.hostname === 'yaboxxxapp02.com';
 
+        // ios寰宇瀏覽器目前另開頁面需要與電腦版開啟方式相同
+        if (!isUBMobile && !webview) {
+          newWindow = window.open('', '_blank');
+        }
         ajax({
           method: 'get',
           url: `${API_GET_VENDOR}/${game.vendor}/game/launch`,
@@ -587,13 +630,29 @@ export default {
           params: { kind: game.kind },
           success: ({ result, ret }) => {
             if (result !== 'ok') {
-              win.close();
+              if (!isUBMobile && !webview) {
+                newWindow.close();
+              }
               return;
             }
-            win.location.href = `${ret.url}&customize=yabo&tableType=3310`;
+
+
+            if (webview) {
+              window.location.href = ret.url + urlParams;
+              return;
+            }
+            if (!isUBMobile) {
+              newWindow.location.href = ret.url + urlParams;
+              return;
+            }
+
+            window.open(ret.url + urlParams);
           },
-          fail: () => {
-            win.close();
+          fail: (error) => {
+            if (!isUBMobile || !webview) {
+              newWindow.alert(`${error.data.msg} ${error.data.code ? `(${error.data.code})` : ''}`);
+              newWindow.close();
+            }
           }
         });
         return;

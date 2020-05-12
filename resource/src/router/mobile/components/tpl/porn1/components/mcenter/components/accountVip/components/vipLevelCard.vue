@@ -17,8 +17,9 @@
                             $style['level-thumb-cell'],
                             { [$style['active']]: selectedIndex === index }
                         ]"
+                        @click="onClickLevel(index)"
                     >
-                        {{ item.alias }}
+                        VIP{{ item.seq }}
                     </div>
                 </swiper-slide>
             </swiper>
@@ -45,7 +46,7 @@
                             alt="vipcard_bg"
                         />
                         <div :class="$style['card-level-text']">
-                            {{ item.alias }}
+                            VIP {{ item.seq }}
                         </div>
 
                         <!-- 有達成時的icon -->
@@ -81,7 +82,9 @@
                             </div>
                             <div>
                                 保级推广{{ item.downgrade_members }}位 <br />
-                                有效会员(充值{{ item.downgrade_deposit }})
+                                有效会员(充值{{
+                                    item.downgrade_deposit | roundTwoPoints
+                                }})
                             </div>
                         </div>
                     </div>
@@ -124,11 +127,16 @@ export default {
             selectedIndex: 0
         };
     },
+    filters: {
+        roundTwoPoints(value) {
+            return Number(value).toFixed(2);
+        }
+    },
     computed: {
         vipLevelOption() {
             return {
-                slidesPerView: "auto",
-                allowTouchMove: false
+                slidesPerView: "auto"
+                // allowTouchMove: false
             };
         },
         vipCardOption() {
@@ -153,6 +161,14 @@ export default {
                 );
             });
         });
+    },
+    methods: {
+        onClickLevel(index) {
+            const swiperCard = this.$refs.swiperCard.$swiper;
+
+            swiperCard.slideTo(index, 500, false);
+            this.$emit("update:currentLevelData", this.vipLevelList[index]);
+        }
     },
     watch: {
         vipLevelList() {

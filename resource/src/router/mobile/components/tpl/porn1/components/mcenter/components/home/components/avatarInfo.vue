@@ -30,7 +30,7 @@
           <span :class="$style['vip-level']"> VIP{{ vip.now_level_id }} </span>
         </template>
         <template v-else>
-          <span @click="$router.push('/mobile/joinmember')">
+          <span @click.stop="$router.push('/mobile/login')">
             点击{{ $text("S_LOG_IN_REGISTER", "登录/注册") }}
           </span>
         </template>
@@ -43,7 +43,7 @@
       <div>
         <span> 观影60秒计时奖励 </span>
         <span :class="$style['money-symbol']">¥</span>
-        <span> 最高送900元 </span>
+        <span> 最高送999元 </span>
       </div>
     </div>
     <div :class="$style['btn-next']">

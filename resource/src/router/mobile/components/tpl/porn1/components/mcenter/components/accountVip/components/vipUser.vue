@@ -7,7 +7,7 @@
                     <img :src="avatarSrc" alt="avatar" />
                 </div>
                 <span>{{ memInfo.user.username }}</span>
-                <span>{{ userVipInfo.now_level_name }}</span>
+                <span>VIP{{ userVipInfo.now_level_seq }}</span>
             </div>
             <div :class="$style['user-vip-desc']">
                 <div
@@ -32,7 +32,7 @@
         <!-- 進度條 -->
         <div :class="$style['run-block']">
             <div :class="[$style['run-level'], $style['current']]">
-                <p>{{ userVipInfo.now_level_name }}</p>
+                <p>VIP{{ userVipInfo.now_level_seq }}</p>
             </div>
             <div :class="$style['run-bar']">
                 <div
@@ -62,7 +62,7 @@
             </div>
 
             <div :class="[$style['run-level'], $style['next']]">
-                <p>{{ userVipInfo.next_level_name }}</p>
+                <p>VIP{{ userVipInfo.next_level_seq }}</p>
             </div>
         </div>
 
@@ -133,7 +133,6 @@ export default {
         }
     },
     created() {
-        console.log(this.userVipInfo);
         if (this.memInfo.user.image === 0 || !this.memInfo.user.image) {
             this.imgIndex = 0;
             return;

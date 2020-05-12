@@ -3,9 +3,8 @@
     <video
       id="video-play"
       ref="video-player"
-      :playsinline="true"
-      playsinline
-      webkit-playsinline
+      :playsinline="playsinline"
+      :webkit-playsinline="playsinline"
       class="video-js vjs-default-skin vjs-fluid vjs-big-play-centered"
     ></video>
     <!-- 彩金活動 -->
@@ -62,6 +61,9 @@ export default {
       loginStatus: 'getLoginStatus',
       siteConfig: 'getSiteConfig',
     }),
+    playsinline() {
+      return "playsinline"
+    }
   },
   beforeDestroy() {
     window.removeEventListener('resize', this.getVideoHeight);
@@ -82,6 +84,7 @@ export default {
     // 彩金疊加在播放器上
     let videoDom = document.getElementById("video-play");
     videoDom.insertBefore(document.getElementById("video-play-block"), videoDom.childNodes[0]);
+
     //活動開關
     if (this.isActiveBouns) {
       try {
@@ -189,6 +192,9 @@ export default {
               this.$refs.bonunsDialog.hadEarnNum = data.BreakTimes;
               if (!this.player.paused()) {
                 this.player.pause();
+                if (this.player.isFullscreen()) {
+                  this.player.exitFullscreen();
+                }
               }
               break;
             case 'PLAY':
@@ -295,6 +301,14 @@ export default {
   position: relative;
 }
 
+:global {
+  .video-js {
+    button {
+      outline: 0;
+    }
+  }
+}
+
 .btn-prev {
   position: absolute;
   top: 5px;
@@ -315,6 +329,6 @@ export default {
   position: absolute;
   top: 0;
   right: 0;
-  z-index: 200;
+  z-index: 2147483647;
 }
 </style>

@@ -25,8 +25,32 @@ export default {
         prev: true,
         onClick: () => { this.$router.back(); },
         title: '充值',
+<<<<<<< HEAD
         hasHelp: true,
         helpRouter: '/deposit',
+=======
+        hasDespositHelp: true,
+        // hasHelp: true,
+        // helpRouter: '/deposit',
+        onClick: () => {
+          this.$router.back();
+        },
+        customEvent: () => { // 暫時阻擋的彈窗
+          if (document.getElementById('deposit-pop')) {
+            return;
+          }
+
+          const pop = document.createElement('div');
+          pop.innerHTML = '正在上线 敬请期待';
+          pop.setAttribute('class', `${this.$style['pop-message']}`);
+          pop.setAttribute('id', 'deposit-pop');
+          document.querySelector('body').appendChild(pop);
+
+          setTimeout(() => {
+            document.querySelector('body').removeChild(pop);
+          }, 3000);
+        }
+>>>>>>> master
       };
     }
   }

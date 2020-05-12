@@ -198,7 +198,7 @@ export default {
         },
         goImageRelease() {
             const url = 'https://imgbb.com/';
-            if (window.matchMedia('(display-mode: standalone)').matches || window.navigator.standalone || window.location.hostname !== 'yaboxxxapp02.com') {
+            if (window.matchMedia('(display-mode: standalone)').matches || window.navigator.standalone || window.location.hostname === 'yaboxxxapp02.com') {
                 if (this.popStatus) {
                     return;
                 }

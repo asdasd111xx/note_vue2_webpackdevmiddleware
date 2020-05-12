@@ -50,9 +50,6 @@ export default {
 @import "~@/css/page/joinMem.module.scss";
 
 .container {
-  background-repeat: no-repeat;
-  background-size: cover;
-  background-image: url("/static/image/_new/common/bg.png");
 }
 
 .err-msg {
@@ -62,7 +59,10 @@ export default {
 }
 
 .join-member-wrap {
-  min-height: 100%;
+  min-height: 100vh;
+  background-repeat: no-repeat;
+  background-size: cover;
+  background-image: url("/static/image/_new/common/bg.png");
 }
 
 .join-wrap {

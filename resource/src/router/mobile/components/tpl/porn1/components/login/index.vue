@@ -1,5 +1,9 @@
 <template>
-  <mobile-container :header-config="headerConfig" :class="$style.container">
+  <mobile-container
+    :header-config="headerConfig"
+    :class="$style.container"
+    :hasFooter="false"
+  >
     <div slot="content" class="content-wrap">
       <div class="container">
         <div class="login-wrap clearfix">
@@ -20,9 +24,7 @@
                 ref="username"
                 v-model="username"
                 :title="$text('S_ACCOUNT', '帐号')"
-                :placeholder="
-                  $text('S_ACCOUNT_PLACEHOLDER', '请输入4-20位字母或数字')
-                "
+                :placeholder="$text('S_USER_NAME', '用户名')"
                 class="login-input"
                 maxlength="20"
                 tabindex="1"
@@ -43,9 +45,7 @@
                 ref="password"
                 v-model="password"
                 :title="$text('S_PASSWORD', '密码')"
-                :placeholder="
-                  $text('S_PASSWORD_PLACEHOLDER', '请输入6-12位字母或数字')
-                "
+                :placeholder="$text('S_PASSWORD', '密码')"
                 class="login-input"
                 type="password"
                 maxlength="12"
@@ -218,7 +218,7 @@ export default {
       this.loginCheck(undefined, undefined, this.errorCallBack);
     },
     slideLogin(loginInfo) {
-      this.loginCheck({ captcha_text: loginInfo.data }, loginInfo.slideFuc, this.errorCallBack);
+      this.loginCheck({ captcha: loginInfo.data }, loginInfo.slideFuc, this.errorCallBack);
     },
     // 錯誤訊息call back
     errorCallBack(res) {

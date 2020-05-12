@@ -25,7 +25,7 @@
           {{ $text("S_ACTIVITY_SHORT", "余额不足 请先充值") }}
         </template>
         <template v-else>
-          {{ $text("S_ACTIVITY_SLOGAN", "看视频送现金 看越久送越多") }}
+          {{ $text("S_ACTIVITY_SLOGAN", "看视频送现金 天天看天天送") }}
         </template>
       </div>
       <template v-if="type == 'tips' || type.includes('poor')">
@@ -137,7 +137,7 @@ export default {
       isShow: false,
       dialogHeight: 0,
       isClose: false,
-      earnCellNum: 6, // 可獲得彩金數
+      earnCellNum: 0, // 可獲得彩金數
       hadEarnNum: 0, // 已經獲得彩金數
       earnSingleNum: "0.00", //每次獲得彩金
       earnCurrentNum: "0.00", //獲得彩金

@@ -103,6 +103,17 @@
     }
 }
 
+.text {
+    width: 80%;
+    line-height: 19px;
+    font-size: 12px;
+    font-family: Microsoft JhengHei, Microsoft JhengHei-Regular;
+    font-weight: 400;
+    text-align: center;
+    color: #9ca3bf;
+    margin: 0 auto;
+}
+
 @import '~@/css/variable.scss';
 
 @media screen and (max-height: $pad) {

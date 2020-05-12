@@ -104,7 +104,8 @@ export default {
     computed: {
         ...mapGetters({
             siteConfig: "getSiteConfig",
-            memInfo: "getMemInfo"
+            memInfo: "getMemInfo",
+            loginStatus: "getLoginStatus"
         }),
         setCurrentLevel: {
             get() {
@@ -117,7 +118,10 @@ export default {
     },
     created() {
         this.getUserDetail();
-        this.getVipLevel();
+
+        if (!this.loginStatus) {
+            this.$router.push("/mobile/login");
+        }
     },
     methods: {
         getUserDetail() {
@@ -132,44 +136,29 @@ export default {
                     }
                 }
             });
-            // axios({
-            //     method: "get",
-            //     url: `${
-            //         this.siteConfig.YABO_API_DOMAIN
-            //     }/player/vipInfo/${getCookie("cid")}`,
-            //     headers: { "x-domain": this.memInfo.user.domain }
-            // }).then(res => {
-            //     if (res && res.data && res.data.data) {
-            //         console.log(res);
-            //     }
-            // });
         },
         getVipLevel() {
             // 依vip分類回傳所有等級清單(不分⾴)
-            return mcenter.vipLevelList({
-                params: {
-                    config_id: this.currentConfigID
-                },
-                success: res => {
-                    if (res && res.ret) {
-                        this.vipLevelList = res.ret;
-                    }
+            axios({
+                method: "get",
+                url: `${
+                    this.siteConfig.YABO_API_DOMAIN
+                }/player/viplevel/${getCookie("cid")}?configId=${
+                    this.currentConfigID
+                }`,
+                headers: { "x-domain": this.memInfo.user.domain }
+            }).then(res => {
+                if (res && res.data && res.data.data) {
+                    this.vipLevelList = res.data.data;
                 }
             });
-            // this.currentConfigID = 104
-            // axios({
-            //     method: "get",
-            //     url: `${
-            //         this.siteConfig.YABO_API_DOMAIN
-            //     }/player/viplevel/${getCookie("cid")}?${this.currentConfigID}`,
-            //     headers: { "x-domain": this.memInfo.user.domain }
-            // }).then(res => {
-            //     if (res && res.data && res.data.data) {
-            //         console.log(res);
-            //     }
-            // });
         },
         handleConfigId(value) {
+            if (!this.loginStatus) {
+                this.$router.push("/mobile/login");
+                return;
+            }
+
             this.currentConfigID = value;
         }
     },
@@ -224,8 +213,7 @@ export default {
     font-size: 16px;
     color: $main_text_color1;
     font-weight: 700;
-    overflow-x: auto;
-    overflow-y: hidden;
+    overflow: auto hidden;
     white-space: nowrap;
 
     // 針對 Chrome 與 Safari 隱藏滾動條

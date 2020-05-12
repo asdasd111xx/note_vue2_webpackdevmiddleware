@@ -185,8 +185,20 @@
 }
 
 .no-data {
+    padding-top: 40px;
     text-align: center;
-    margin-top: 8px;
+
+    img {
+        display: inline-block;
+        width: 60px;
+        height: 60px;
+        margin-bottom: 14px;
+    }
+
+    p {
+        font-size: 14px;
+        color: #a6a9b2;
+    }
 }
 
 @media screen and (min-width: $phone) {

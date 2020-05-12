@@ -1,6 +1,6 @@
 <template>
     <div :class="$style['vip-info-wrap']">
-        <div :class="$style['title']">{{ currentLevelData.alias }}</div>
+        <div :class="$style['title']">VIP {{ currentLevelData.seq }}尊享</div>
 
         <div :class="$style['cells-block']">
             <div :class="$style['cell']">
@@ -15,7 +15,7 @@
                     />
                 </div>
                 <div :class="$style['cell-text']">
-                    <div>--</div>
+                    <div>{{ currentLevelData.deposit_time }}</div>
                     <div>每日提款次数</div>
                 </div>
             </div>
@@ -32,7 +32,7 @@
                     />
                 </div>
                 <div :class="$style['cell-text']">
-                    <div>--</div>
+                    <div>{{ currentLevelData.deposit_limit }}</div>
                     <div>每日提现额度</div>
                 </div>
             </div>
@@ -66,7 +66,7 @@
                     />
                 </div>
                 <div :class="$style['cell-text']">
-                    <div>--</div>
+                    <div>{{ currentLevelData.monthly_gift }}</div>
                     <div>每月红包(月初自动派发)</div>
                 </div>
             </div>
