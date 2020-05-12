@@ -36,21 +36,28 @@
           :key="item.key"
           @click="item.content && handleToggleContent(index)"
         >
-          <div :class="$style['title']">
-            {{ item.title }}
-          </div>
-          <div
-            :class="[$style['content'], { [$style['active']]: item.isOpen }]"
-            :style="{ 'max-height': item.isOpen ? `100vh` : 0 }"
-            v-html="item.content"
-          ></div>
-          <div
-            :class="[$style['arrow-btn'], { [$style['active']]: item.isOpen }]"
-          >
-            <img
-              :src="$getCdnPath(`/static/image/_new/mcenter/ic_arrow_next.png`)"
-            />
-          </div>
+          <template v-if="item.title">
+            <div :class="$style['title']">
+              {{ item.title }}
+            </div>
+            <div
+              :class="[$style['content'], { [$style['active']]: item.isOpen }]"
+              :style="{ 'max-height': item.isOpen ? `100vh` : 0 }"
+              v-html="item.content"
+            ></div>
+            <div
+              :class="[
+                $style['arrow-btn'],
+                { [$style['active']]: item.isOpen }
+              ]"
+            >
+              <img
+                :src="
+                  $getCdnPath(`/static/image/_new/mcenter/ic_arrow_next.png`)
+                "
+              />
+            </div>
+          </template>
         </div>
       </div>
     </div>

@@ -64,10 +64,10 @@
     </template>
     <select-box
       v-if="isSelectShow"
-      :select-data="allInputData[1].selectData"
+      :select-data="allInputData[0].selectData"
       :now-select-cur.sync="nowSelectData"
       :close-fuc="isShowSelect"
-      :title="allInputData[1].selectTitle"
+      :title="allInputData[0].selectTitle"
     />
   </div>
 </template>
