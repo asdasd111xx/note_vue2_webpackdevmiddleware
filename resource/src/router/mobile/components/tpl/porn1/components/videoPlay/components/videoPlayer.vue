@@ -62,7 +62,7 @@ export default {
       siteConfig: 'getSiteConfig',
     }),
     playsinline() {
-      return true
+      return "playsinline"
     }
   },
   beforeDestroy() {
@@ -84,6 +84,7 @@ export default {
     // 彩金疊加在播放器上
     let videoDom = document.getElementById("video-play");
     videoDom.insertBefore(document.getElementById("video-play-block"), videoDom.childNodes[0]);
+
     //活動開關
     if (this.isActiveBouns) {
       try {
@@ -191,6 +192,9 @@ export default {
               this.$refs.bonunsDialog.hadEarnNum = data.BreakTimes;
               if (!this.player.paused()) {
                 this.player.pause();
+                if (this.player.isFullscreen()) {
+                  this.player.exitFullscreen();
+                }
               }
               break;
             case 'PLAY':
@@ -298,13 +302,12 @@ export default {
 }
 
 :global {
-    .video-js {
-        button {
-            outline: 0;
-        }
+  .video-js {
+    button {
+      outline: 0;
     }
+  }
 }
-
 
 .btn-prev {
   position: absolute;
@@ -326,6 +329,6 @@ export default {
   position: absolute;
   top: 0;
   right: 0;
-  z-index: 200;
+  z-index: 2147483647;
 }
 </style>
