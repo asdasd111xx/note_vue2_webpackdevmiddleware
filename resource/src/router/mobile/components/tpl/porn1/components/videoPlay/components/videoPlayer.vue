@@ -3,7 +3,7 @@
     <video
       id="video-play"
       ref="video-player"
-      :playsinline="playsinline"
+      playsinline="1"
       :webkit-playsinline="playsinline"
       class="video-js vjs-default-skin vjs-fluid vjs-big-play-centered"
     ></video>
@@ -62,7 +62,7 @@ export default {
       siteConfig: 'getSiteConfig',
     }),
     playsinline() {
-      return "playsinline"
+      return "true"
     }
   },
   beforeDestroy() {
