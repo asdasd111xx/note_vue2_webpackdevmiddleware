@@ -612,6 +612,7 @@ export default {
       }
 
       if (game.type === 'R') {
+        let urlParams = game.vendor === 'lg_live' ? '&customize=yabo&tableType=3310' : '';
         let newWindow = '';
         // 辨別裝置是否為ios寰宇瀏覽器
         const isUBMobile = navigator.userAgent.match(/UBiOS/) !== null && navigator.userAgent.match(/iPhone/) !== null;
@@ -637,15 +638,15 @@ export default {
 
 
             if (webview) {
-              window.location.href = ret.url;
+              window.location.href = ret.url + urlParams;
               return;
             }
             if (!isUBMobile) {
-              newWindow.location.href = ret.url;
+              newWindow.location.href = ret.url + urlParams;
               return;
             }
 
-            window.open(ret.url);
+            window.open(ret.url + urlParams);
           },
           fail: (error) => {
             if (!isUBMobile || !webview) {

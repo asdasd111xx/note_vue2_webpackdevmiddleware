@@ -1,5 +1,5 @@
 <template>
-    <div :class="$style['mobile-wrap']">
+    <div id="mobile-wrap" :class="$style['mobile-wrap']">
         <transition name="fade" mode="out-in">
             <router-view />
         </transition>
