@@ -162,6 +162,7 @@
 
     <template v-if="headerConfig.hasDespositHelp">
       <div :class="$style['balance-wrap']">
+        教程
         <img
           :src="
             $getCdnPath('/static/image/_new/mcenter/balanceTrans/btn_help.png')
@@ -473,6 +474,7 @@ export default {
   display: flex;
   align-items: center;
   float: right;
+  color: #5E626D;
   > span {
     display: inline-block;
     height: 20px;

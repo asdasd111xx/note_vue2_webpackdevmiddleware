@@ -5,7 +5,7 @@
                 <div v-if="feedbackList.length === 0" :class="$style['no-feedback']">
                     <img src="/static/image/_new/mcenter/feedback/no_feedback.png" />
                     <p>{{ $text('S_NO_FEEDBACK', '暂无反馈记录') }}</p>
-                    <button @click="$router.push({ name: 'mcenter-feedback' })">{{ $text('S_SEND_FEEDBACK', '立即反馈') }}</button>
+                    <button @click="$router.push('/mobile/mcenter/feedback/sendFeedback')">{{ $text('S_SEND_FEEDBACK', '立即反馈') }}</button>
                 </div>
                 <ul v-else :class="$style['feedback-list']">
                     <li
