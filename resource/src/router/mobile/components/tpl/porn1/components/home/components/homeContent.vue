@@ -623,6 +623,7 @@ export default {
         if (!isUBMobile && !webview) {
           newWindow = window.open('', '_blank');
         }
+
         ajax({
           method: 'get',
           url: `${API_GET_VENDOR}/${game.vendor}/game/launch`,
@@ -636,6 +637,7 @@ export default {
               return;
             }
 
+            console.log(ret.url + urlParams)
 
             if (webview) {
               window.location.href = ret.url + urlParams;
