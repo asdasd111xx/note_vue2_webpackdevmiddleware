@@ -542,6 +542,23 @@
     background: #FFF;
 }
 
+.deposit-name-messgae {
+    padding: 5px 0;
+    font-size: 12px;
+    color: #AAA;
+
+    &.error {
+        color: #DB6372;
+    }
+}
+
+.speed-field-name {
+    padding: 10px 0;
+    font-size: 14px;
+    border-bottom: 1px solid #EEE;
+    position: relative;
+}
+
 .speed-input-wrap {
     margin-top: 5px;
     padding: 0 10px;
