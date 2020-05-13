@@ -246,7 +246,7 @@ export default {
               return false;
             }
 
-            return this.allValue[field.key].replace(/(^\s*)|(\s*$)/g, '') !== '';
+            return this.allValue[field.key] ? this.allValue[field.key].replace(/(^\s*)|(\s*$)/g, '') !== '' : false;
           }
 
           return true;
@@ -527,9 +527,10 @@ export default {
 
         this.allValue.captcha_text = '';
         if (res.status !== '000') {
-          // to do 錯誤訊息?
-          if (Object.keys(res.errors)[0]) {
-            this.allTip[Object.keys(res.errors)[0]] = res.errors[Object.keys(res.errors)[0]];
+          if (Object.keys(res.errors)) {
+            Object.keys(res.errors).forEach((item) => {
+              this.allTip[item] = res.errors[item]
+            })
             return;
           }
           this.errMsg = res.msg;
