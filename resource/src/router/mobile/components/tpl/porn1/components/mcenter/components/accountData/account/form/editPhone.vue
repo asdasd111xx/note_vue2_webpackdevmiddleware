@@ -109,7 +109,7 @@
           </div>
         </template>
       </div>
-      <service-tips />
+      <!-- <service-tips /> -->
     </div>
   </mobile-container>
 </template>
