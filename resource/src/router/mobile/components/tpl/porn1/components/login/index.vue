@@ -138,6 +138,9 @@
             :theme="$styleSecurityCheck"
             :on-login="login"
           />
+          <div :class="$style.version">
+            {{ version }}
+          </div>
         </div>
       </div>
     </div>
@@ -151,6 +154,8 @@ import mobileLinkOpen from '@/lib/mobile_link_open';
 import slideVerification from '@/components/slideVerification';
 import joinMember from '@/router/web/components/page/join_member';
 import mobileContainer from '../common/new/mobileContainer'
+import { getCookie, setCookie } from '@/lib/cookie';
+
 /**
  * 登入共用元件
  */
@@ -170,6 +175,7 @@ export default {
   data() {
     return {
       errMsg: "",
+      version: "",
     }
   },
   computed: {
@@ -210,6 +216,12 @@ export default {
     this.username = localStorage.getItem('username') || '';
     this.password = localStorage.getItem('password') || '';
     this.depositStatus = localStorage.getItem('depositStatus') || false;
+
+    let version = this.$route.query.version || getCookie('version');
+    if (version) {
+      this.version = version;
+      setCookie('version', version);
+    }
   },
   methods: {
     mobileLinkOpen,
@@ -376,6 +388,14 @@ export default {
 
 <style lang="scss" module>
 @import "~@/css/variable.scss";
+
+.version {
+  color: $main_text_color3;
+  position: absolute;
+  right: 14px;
+  bottom: 5vh;
+  font-size: 12px;
+}
 
 .err-msg {
   padding: 2px 0;

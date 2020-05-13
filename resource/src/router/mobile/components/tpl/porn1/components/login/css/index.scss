@@ -10,12 +10,13 @@
 }
 
 .login-wrap {
-    min-height: 100vh;
-    margin: 0 auto;
-    font-size: 14px;
+    background-image: url("/static/image/_new/common/bg.png");
     background-repeat: no-repeat;
     background-size: cover;
-    background-image: url("/static/image/_new/common/bg.png");
+    font-size: 14px;
+    margin: 0 auto;
+    min-height: 100vh;
+    position: relative;
 }
 
 .login-logo {

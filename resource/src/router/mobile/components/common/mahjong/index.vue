@@ -160,15 +160,14 @@ export default {
     this.getGameLabelList();
     if (this.loginStatus) {
       this.actionSetFavoriteGame();
+      ajax({
+        method: 'get',
+        url: '/api/v1/c/player/user_bank/list',
+        errorAlert: false
+      }).then((res) => {
+        this.hasBankCard = res.ret && res.ret.length > 0
+      });
     }
-
-    ajax({
-      method: 'get',
-      url: '/api/v1/c/player/user_bank/list',
-      errorAlert: false
-    }).then((res) => {
-      this.hasBankCard = res.ret && res.ret.length > 0
-    });
   },
   methods: {
     ...mapActions([
