@@ -561,6 +561,14 @@ export default {
          * @param {String} inputValue - 輸入金額
          */
         submitList() {
+            const reg = /^[^，:;！@#$%^&*?<>()+=`|[\]{}\\"/.~\-_']*$/;
+
+            if (!reg.test(this.speedField.depositName)) {
+                return Promise.resolve({ status: 'NameFail' });
+            }
+
+            this.nameCheckFail = false;
+
             let newWindow = '';
             // 辨別裝置是否為ios寰宇瀏覽器
             const isUBMobile = navigator.userAgent.match(/UBiOS/) !== null && navigator.userAgent.match(/iPhone/) !== null;

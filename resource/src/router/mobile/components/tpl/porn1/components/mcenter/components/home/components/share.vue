@@ -15,14 +15,17 @@
                     <div :class="$style['qrcode-wrap']" ref="qrcodeRef">
                         <qrcode
                             :value="loginStatus ? agentLink : landingLink"
-                            :options="{ width: 75 }"
+                            :options="{ width: 75, margin: 1 }"
                             tag="img"
                         />
                     </div>
                 </template>
             </div>
 
-            <div :class="$style['text']" @click="downloadImage">
+            <div
+                :class="$style['text']"
+                @click="downloadImage"
+            >
                 <img
                     :src="
                         $getCdnPath(
@@ -79,6 +82,7 @@ export default {
             landingLink: "",
             domain: "",
             agentCode: "",
+            canvasLink: "",
             funcList: [
                 {
                     callback: () => {
@@ -162,11 +166,15 @@ export default {
         },
 
         downloadImage() {
-            if (this.isPwa) {
-                // window.open(this.shareImageSrc);
-                html2canvas(this.$refs["qrcodeRef"]).then(canvas => {
-                    window.open("").document.write(
-                        `
+            let newWindow = "";
+            // newWindow = window.open("", "_blank");
+
+            html2canvas(this.$refs["qrcodeRef"], {
+                useCORS: true
+            }).then(canvas => {
+                this.canvasLink = canvas.toDataURL();
+                newWindow = window.open("", "_blank").document.write(
+                    `
                         <html>
                             <head>
                                 <meta name="viewport"
@@ -174,29 +182,71 @@ export default {
                             </head>
                             <body style="margin: 0">
                                 <div style="position: relative ; width: 100% ; height: 100%">
-                                    <img style="width: 100% ; height: 100%" src=${
-                                        this.shareImageSrc
-                                    } />
-                                    <img style="position: absolute ; height: 14% ; left: 50% ; bottom: 36.5% ;  transform: translate(-50% , 50%)" src=${canvas.toDataURL()} />
+                                    <img style="width: 100% ; height: 100%" src=${this.shareImageSrc} />
+                                    <img style="position: absolute ; height: 14% ; left: 50% ; bottom: 36.5% ;  transform: translate(-50% , 50%)" src=${this.canvasLink} />
                                 </div>
                             </body>
                         </html>
                     `
-                    );
-                });
-                return;
-            }
+                );
 
-            html2canvas(this.$refs["shareImageBlockRef"], {
-                useCORS: true
-            }).then(canvas => {
-                let link = document.createElement("a");
-                link.href = canvas.toDataURL();
-                link.setAttribute("download", "Yabo.png");
-                link.style.display = "none";
-                document.body.appendChild(link);
-                link.click();
+                return;
             });
+
+            // if (this.agentLink || this.landingLink) {
+            //     window.scroll(0, 0);
+
+            //     // 極速版 or 馬甲版 => 另開新分頁
+            //     if (this.isException) {
+            //         // 截 Qrcode
+            //         html2canvas(this.$refs["qrcodeRef"], {
+            //             useCORS: true
+            //         }).then(canvas => {
+            //             this.canvasLink = canvas.toDataURL();
+            //             newWindow = window.open("", "_blank").document.write(
+            //                 `
+            //                     <html>
+            //                         <head>
+            //                             <meta name="viewport"
+            //                                     content="width=device-width, initial-scale=1.0, minimum-scale=1.0, maximum-scale=1.0, user-scalable=no" />
+            //                         </head>
+            //                         <body style="margin: 0">
+            //                             <div style="position: relative ; width: 100% ; height: 100%">
+            //                                 <img style="width: 100% ; height: 100%" src=${this.shareImageSrc} />
+            //                                 <img style="position: absolute ; height: 14% ; left: 50% ; bottom: 36.5% ;  transform: translate(-50% , 50%)" src=${this.canvasLink} />
+            //                             </div>
+            //                         </body>
+            //                     </html>
+            //                 `
+            //             );
+
+            //             return;
+            //         });
+            //     }
+            // }
+
+            // axios({
+            //     url: this.shareImageSrc,
+            //     methods: "GET",
+            //     responseType: "blob"
+            // }).then(res => {
+            //     console.log(res);
+            //     const fileURL = window.URL.createObjectURL(
+            //         new Blob([res.data])
+            //     );
+
+            //     const fileLink = document.createElement("a");
+            //     fileLink.href = fileURL;
+            //     fileLink.setAttribute("download", "yabo.png");
+            //     document.body.appendChild(fileLink);
+
+            //     this.msg = this.$text(
+            //         "S_PICTURE_SAVED_TO_LOCAL",
+            //         "图片已保存到本地相册"
+            //     );
+
+            //     fileLink.click();
+            // });
         },
         getDomain() {
             axios({
@@ -256,13 +306,13 @@ $radius: 10px;
 .pic-wrap {
     position: absolute;
     width: 270px;
-    top: 10%;
+    top: 50%;
     left: 50%;
-    transform: translateX(-50%);
+    transform: translate(-50%, -50%);
     border-radius: 8px;
-    overflow: hidden;
+    // overflow: hidden;
     .img {
-        height: 368px;
+        height: 347px;
         overflow: hidden;
         img {
             width: 100%;
@@ -274,6 +324,7 @@ $radius: 10px;
         padding: 9px;
         text-align: center;
         font-size: 12px;
+        z-index: 999;
         img {
             vertical-align: middle;
         }
@@ -281,7 +332,7 @@ $radius: 10px;
 
     .qrcode-wrap {
         position: absolute;
-        bottom: 14%;
+        bottom: 9%;
         left: 50%;
         transform: translateX(-50%);
     }
@@ -331,43 +382,6 @@ $radius: 10px;
         height: 45px;
         font-size: 16px;
         color: $main_title_color1;
-    }
-}
-
-.option-container {
-    @include fixed-container-style(0.6);
-}
-
-.option-wrap {
-    width: 100%;
-    position: absolute;
-    bottom: 0;
-    left: 0;
-    padding: 0 17px;
-
-    .option-cell {
-        width: 100%;
-        background: #3a3a3a;
-        color: #5f799e;
-        text-align: center;
-        padding: 15px 0px;
-        margin: 0;
-    }
-
-    p:first-of-type {
-        border-top-left-radius: $radius;
-        border-top-right-radius: $radius;
-    }
-
-    p:last-of-type {
-        border-bottom-left-radius: $radius;
-        border-bottom-right-radius: $radius;
-    }
-
-    .cancle {
-        margin: 5px 0;
-        background: #2c2c2e;
-        border-radius: $radius;
     }
 }
 </style>
