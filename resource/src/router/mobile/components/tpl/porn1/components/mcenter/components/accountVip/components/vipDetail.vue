@@ -184,6 +184,11 @@ export default {
             };
         }
     },
+    created() {
+        if (!this.loginStatus) {
+            this.$router.push("/mobile/login");
+        }
+    },
     methods: {
         backToTop() {
             $('#mobile-wrap').animate({ scrollTop: 0 }, 1000);
