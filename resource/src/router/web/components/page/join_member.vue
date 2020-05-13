@@ -414,6 +414,7 @@ export default {
       }
 
       if (data.isRequired && this.allValue[key] === '') {
+        this.allTip[key] = '该栏位不得为空';
         return;
       }
 

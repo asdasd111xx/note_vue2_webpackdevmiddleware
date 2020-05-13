@@ -3,18 +3,18 @@
         <div class="news-icon">
             <img :src="$getCdnPath('/static/image/_new/common/icon_news.png')" />
         </div>
-        <marquee
-            :direction="direction"
-            :scrolldelay="speed"
-            :onmouseover="viewFullContent ? 'this.stop()' : ''"
-            :onmouseout="viewFullContent ? 'this.start()' : ''"
+        <div
+            ref="container"
             class="news-content"
             @click="togglePopup"
         >
-            <span v-for="(item, index) in newsData" :key="index">
-                {{ item.content }} &nbsp;&nbsp;&nbsp;&nbsp;
-            </span>
-        </marquee>
+            <div
+                ref="news"
+                class="news-content-text"
+                :style="`left: ${currentLeft}px;`"
+                v-html="newsText"
+            />
+        </div>
         <template v-if="newsPopControl.status">
             <div class="mask" />
             <div class="modal-wrap">
@@ -68,7 +68,11 @@ export default {
     },
     data() {
         return {
-            commonClass: ['news-content-wrap', 'clearfix']
+            commonClass: ['news-content-wrap', 'clearfix'],
+            containerWidth: 0,
+            totalWidth: 0,
+            currentLeft: 0,
+            paused: false
         };
     },
     computed: {
@@ -80,7 +84,15 @@ export default {
         }),
         newsData() {
             return (this.dataSource === 'mem') ? this.memNewsData : this.agentNewsData;
+        },
+        newsText() {
+            return this.newsData.map((item) => `${item.content} &nbsp;&nbsp;&nbsp;&nbsp;`).join('');
         }
+    },
+    mounted() {
+        this.currentLeft = this.$refs.container.offsetWidth;
+        this.totalWidth = this.$refs.news.offsetWidth;
+        this.startMove();
     },
     methods: {
         ...mapActions([
@@ -88,13 +100,22 @@ export default {
         ]),
         // 開啟最新消息方式
         togglePopup() {
-            if (this.isBackEnd || !this.viewFullContent) {
-                return;
+            this.paused = !this.paused;
+            if (!this.paused) {
+                this.startMove();
             }
-
             document.querySelector('body').style = !this.newsPopControl.status ? 'overflow: hidden' : '';
-
             this.actionNewsPopControl({ type: this.dataSource, status: !this.newsPopControl.status });
+        },
+        startMove() {
+            if (this.paused) return;
+            if (Math.abs(this.currentLeft) < this.totalWidth) {
+                this.currentLeft -= this.$refs.container.offsetWidth / 200;
+                window.requestAnimationFrame(this.startMove);
+            } else {
+                this.currentLeft = this.$refs.container.offsetWidth;
+                window.requestAnimationFrame(this.startMove);
+            }
         }
     }
 };
@@ -120,11 +141,19 @@ export default {
 .news-content {
     display: block;
     cursor: pointer;
-    white-space: nowrap;
     line-height: 12px;
     margin-left: 6px;
     color: #9CA3BF;
     font-size: 12px;
+    overflow: hidden;
+}
+
+.news-content-text {
+    position: relative;
+    display: inline-block;
+    white-space: nowrap;
+    // animation: marquee linear 5s infinite;
+    // animation: marquee-left 3s infinite;
 }
 
 .mask {
@@ -190,5 +219,11 @@ export default {
     line-height: 50px;
     text-align: center;
     font-size: 18px;
+}
+
+@keyframes marquee-left {
+    to {
+        left: -100%;
+    }
 }
 </style>
