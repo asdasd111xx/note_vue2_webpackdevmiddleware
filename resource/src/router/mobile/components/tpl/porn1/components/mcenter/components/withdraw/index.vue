@@ -202,7 +202,9 @@
           :src="$getCdnPath(`/static/image/_new/common/ic_withardw_add.png`)"
         />
         &nbsp;
-        <span @click="$router.push('/mobile/mcenter/bankcard?withdraw=true')">
+        <span
+          @click="$router.push('/mobile/mcenter/bankcard?redirect=withdraw')"
+        >
           {{ $text("S_ADD_BANKCARD", "添加银行卡") }}
         </span>
       </div>

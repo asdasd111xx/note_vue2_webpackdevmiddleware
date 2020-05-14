@@ -325,7 +325,7 @@ export default {
       this.AutotransferLock = true;
       mcenter.balanceTranAutoEnable({
         success: () => {
-          this.msg = this.$t('S_SWITCH_AUTO_TRANSFER');
+          this.msg = '归户成功';
           // alert(this.$t('S_SWITCH_AUTO_TRANSFER'));
           this.isAutotransfer = true;
           this.backAccount();
@@ -415,7 +415,7 @@ export default {
     },
     clearMsg() {
       if (this.msg === '请先绑定提现银行卡') {
-        this.$router.push('/mobile/mcenter/bankCard?balanceTrans=true');
+        this.$router.push('/mobile/mcenter/bankCard?redirect=balanceTrans');
       }
 
       this.msg = '';

@@ -44,9 +44,27 @@ export default {
     };
   },
   computed: {
-    headerTitle() {
+    hasRedirect() {
+      // 預設提現銀行卡添加
       const { query } = this.$route;
-      if (query.lobby || query.withdraw || query.balanceTrans || query.home || query.cardlobby || query.mahjonglobby) {
+      let redirect = query.redirect;
+      if (redirect.split('-')[0]) {
+        switch (redirect.split('-')[0]) {
+          case "casino":
+          case "withdraw":
+          case "balanceTrans":
+          case "home":
+          case "card":
+          case "mahjong":
+          case "liveStream":
+            this.currentPage = 'addBankCard';
+            return true;
+        }
+      }
+      return false;
+    },
+    headerTitle() {
+      if (this.hasRedirect) {
         return '提现银行卡';
       }
       return this.$text(...this.currentPage === 'bankCardInfo' ? ['S_CARD_MANAGEMENT', '卡片管理'] : ['S_ADD_BANKCARD', '添加银行卡']);
@@ -77,10 +95,6 @@ export default {
     }
   },
   created() {
-    const { query } = this.$route;
-    if (query.lobby || query.withdraw || query.balanceTrans || query.home || query.cardlobby || query.mahjonglobby) {
-      this.currentPage = 'addBankCard';
-    }
   },
   methods: {
     changePage(value) {

@@ -1,6 +1,15 @@
 <template>
   <div class="card-wrap">
     <template v-for="slotKey in slotSort">
+      <template v-if="slotKey === 'label'">
+        <gameLabel
+          :key="`slot-${slotKey}`"
+          :is-label-receive="isLabelReceive"
+          :label="paramsData.label.toString()"
+          :label-data="labelData"
+          :change-game-label="changeGameLabel"
+        />
+      </template>
       <template v-if="slotKey === 'list'">
         <div :key="`slot-${slotKey}`" class="game-item-wrap clearfix">
           <message
@@ -8,7 +17,9 @@
             @close="msg = ''"
             :callback="
               () => {
-                $router.push(`/mobile/mcenter/bankcard?cardlobby=${vendor}`);
+                $router.push(
+                  `/mobile/mcenter/bankcard?redirect=card-${vendor}-${paramsData.label}`
+                );
               }
             "
           >
@@ -58,6 +69,7 @@ import { mapGetters, mapActions } from 'vuex';
 import InfiniteLoading from 'vue-infinite-loading';
 import ajax from '@/lib/ajax';
 import { gameType, gameList } from '@/config/api';
+import gameLabel from '../gameLabel';
 import gameItem from '@/router/web/components/common/gameItem';
 import gameSearch from '../search';
 import message from "@/router/mobile/components/tpl/porn1/components/common/new/message"
@@ -73,6 +85,7 @@ import message from "@/router/mobile/components/tpl/porn1/components/common/new/
 export default {
   components: {
     gameSearch,
+    gameLabel,
     gameItem,
     InfiniteLoading,
     message
@@ -109,7 +122,7 @@ export default {
       showInfinite: true,
       paramsData: {
         kind: 5,
-        label: 27, // 棋牌遊戲分類預設“棋牌遊戲”
+        label: 'hot', // 棋牌遊戲分類預設“棋牌遊戲”
         enable: true,
         first_result: 0,
         max_results: 36,
@@ -144,7 +157,7 @@ export default {
   watch: {
     vendor() {
       this.paramsData.first_result = 0;
-      this.paramsData.label = 27; // 棋牌遊戲分類預設“棋牌遊戲”
+      //   this.paramsData.label = 27; // 棋牌遊戲分類預設“棋牌遊戲”
       this.updateGameData();
       this.getGameLabelList();
     },
@@ -192,6 +205,14 @@ export default {
         {
           label: '',
           name: this.$t('S_ALL')
+        },
+        {
+          label: 'new',
+          name: this.$t('S_NEW_GAMES')
+        },
+        {
+          label: 'hot',
+          name: this.$t('S_HOT')
         }
       ];
 
@@ -201,8 +222,16 @@ export default {
         url: `${gameType}?kind=${this.paramsData.kind}&vendor=${this.vendor}`
       }).then((response) => {
         this.labelData = defaultData.concat(response.ret);
-        this.paramsData.label = 27; // 棋牌遊戲分類預設“棋牌遊戲”
+
+        if (this.loginStatus) {
+          this.labelData.splice(1, 0, { label: 'favorite', name: this.$t('S_FAVORITE') });
+        }
+        // this.paramsData.label = 27; // 棋牌遊戲分類預設“棋牌遊戲”
         this.isLabelReceive = true;
+        if (this.$route.query.label) {
+          this.paramsData.label = this.$route.query.label;
+          return;
+        }
       });
     },
     /**

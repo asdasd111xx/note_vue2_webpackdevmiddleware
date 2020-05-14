@@ -38,11 +38,18 @@
                 "
               />
               <span class="input-icon" />
+              <div :class="$style['clear']" v-if="username">
+                <img
+                  :src="$getCdnPath(`/static/image/_new/common/ic_clear.png`)"
+                  @click="username = ''"
+                />
+              </div>
             </span>
             <!-- 密碼 -->
             <span class="login-unit login-unit-password">
               <input
                 ref="password"
+                id="pwd"
                 v-model="password"
                 :title="$text('S_PASSWORD', '密码')"
                 :placeholder="$text('S_PASSWORD', '密码')"
@@ -53,6 +60,18 @@
                 @keydown.13="loginCheck"
                 @change="onSaveAccount"
               />
+              <div :class="$style['eye']">
+                <img
+                  :src="
+                    $getCdnPath(
+                      `/static/image/_new/login/btn_eye_${
+                        isShowPwd ? 'n' : 'd'
+                      }.png`
+                    )
+                  "
+                  @click="toggleEye('confPwd')"
+                />
+              </div>
               <span class="input-icon" />
             </span>
             <!-- 驗證碼 -->
@@ -176,6 +195,7 @@ export default {
     return {
       errMsg: "",
       version: "",
+      isShowPwd: false,
     }
   },
   computed: {
@@ -225,6 +245,15 @@ export default {
   },
   methods: {
     mobileLinkOpen,
+    toggleEye() {
+      if (this.isShowPwd) {
+        document.getElementById("pwd").type = 'password';
+      } else {
+        document.getElementById("pwd").type = 'text';
+      }
+
+      this.isShowPwd = !this.isShowPwd;
+    },
     handleClickLogin() {
       if (!this.username || !this.password) return
       this.loginCheck(undefined, undefined, this.errorCallBack);
@@ -235,7 +264,7 @@ export default {
     // 錯誤訊息call back
     errorCallBack(res) {
       if (res && res.msg) {
-        this.errMsg = res.msg;
+        this.errMsg = `${res.msg}(${res.code})`;
       } else if (res && res.status) {
         this.errMsg = res.status;
       } else if (res && res.data) {
@@ -401,5 +430,35 @@ export default {
   padding: 2px 0;
   color: $main_error_color1;
   min-height: 40px;
+}
+
+.eye {
+  display: flex;
+  align-items: center;
+  height: 100%;
+  width: 18px;
+  position: absolute;
+  right: 10px;
+  top: 0;
+
+  > img {
+    width: 18px;
+    height: 18px;
+  }
+}
+
+.clear {
+  display: flex;
+  align-items: center;
+  height: 100%;
+  width: 12px;
+  position: absolute;
+  right: 10px;
+  top: 0;
+
+  > img {
+    width: 12px;
+    height: 12px;
+  }
 }
 </style>

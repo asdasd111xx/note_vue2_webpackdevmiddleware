@@ -51,24 +51,8 @@ export default {
         frame.height = num;
       }
     };
-    // 給體育遊戲觸發事件的function
-    window.sportEvent = (type) => {
-      if (type === 'GO_IM_SPORT') {
-        if (!this.loginStatus) {
-          if (window.location.pathname.split('/')[1] === 'mobile') {
-            this.$router.push({ name: 'login' });
-            return;
-          }
 
-          alert(this.$text('S_LOGIN_TIPS', '请先登入'));
-          return;
-        }
-
-        openGame({ vendor: 'boe', kind: 1 });
-      }
-    };
     this.setAnalyticsCode();
-
   },
   methods: {
     ...mapActions([
