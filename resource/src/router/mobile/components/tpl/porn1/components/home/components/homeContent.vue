@@ -133,7 +133,7 @@
       <div
         ref="game-wrap"
         :class="[$style['game-list-wrap'], 'clearfix']"
-        :style="{ height: `${wrapHeight - 50}px` }"
+        :style="{ height: `${wrapHeight - 50}px`, 'overflow-y': `${stopScroll ? 'hidden' : 'auto'}` }"
         @touchstart="onTouchStart"
         @touchmove="onTouchMove"
         @touchend="onTouchEnd"
@@ -220,6 +220,7 @@ export default {
   },
   data() {
     return {
+      stopScroll: false,
       isReceive: false,
       isShowAllTag: false,
       isSliding: false,
@@ -526,14 +527,13 @@ export default {
       this.startTouchY = 0;
       this.slideDirection = '';
       this.selectedIndex = index;
+      this.stopScroll = true;
 
       $(this.$refs['type-wrap']).animate({ scrollTop: index * 63 }, 300);
       $(this.$refs['game-wrap']).animate({ scrollTop: 0 }, 0);
 
       this.$nextTick(() => {
-        if (this.$refs['game-wrap']) {
-          this.$refs['game-wrap'].scrollTop = 0
-        }
+        this.stopScroll = false;
         this.isSliding = false;
       });
     },
