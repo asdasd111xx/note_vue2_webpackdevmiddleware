@@ -1,194 +1,224 @@
 <template>
-    <div class="news-wrap">
-        <div class="news-icon">
-            <img :src="$getCdnPath('/static/image/_new/common/icon_news.png')" />
-        </div>
-        <marquee
-            :direction="direction"
-            :scrolldelay="speed"
-            :onmouseover="viewFullContent ? 'this.stop()' : ''"
-            :onmouseout="viewFullContent ? 'this.start()' : ''"
-            class="news-content"
-            @click="togglePopup"
-        >
-            <span v-for="(item, index) in newsData" :key="index">
-                {{ item.content }} &nbsp;&nbsp;&nbsp;&nbsp;
-            </span>
-        </marquee>
-        <template v-if="newsPopControl.status">
-            <div class="mask" />
-            <div class="modal-wrap">
-                <div class="modal-content">
-                    <div class="modal-news">
-                        <div
-                            v-for="(item, sort) in newsData"
-                            :key="`news-${sort}`"
-                            class="news-item"
-                        >
-                            <h4 class="news-title">{{ item.time }}</h4>
-                            <p class="news-text">{{ item.content }}</p>
-                        </div>
-                    </div>
-                </div>
-                <div class="modal-button" @click="togglePopup">
-                    关闭
-                </div>
-            </div>
-        </template>
+  <div class="news-wrap">
+    <div class="news-icon">
+      <img :src="$getCdnPath('/static/image/_new/common/icon_news.png')" />
     </div>
+    <div ref="container" class="news-content" @click="togglePopup">
+      <div
+        ref="news"
+        class="news-content-text"
+        :style="`left: ${currentLeft}px;`"
+        v-html="newsText"
+      />
+    </div>
+    <template v-if="newsPopControl.status">
+      <div class="mask" />
+      <div class="modal-wrap">
+        <div class="modal-content">
+          <div class="modal-news">
+            <div
+              v-for="(item, sort) in newsData"
+              :key="`news-${sort}`"
+              class="news-item"
+            >
+              <h4 class="news-title">{{ item.time }}</h4>
+              <p class="news-text">{{ item.content }}</p>
+            </div>
+          </div>
+        </div>
+        <div class="modal-button" @click="togglePopup">
+          关闭
+        </div>
+      </div>
+    </template>
+  </div>
 </template>
 
 <script>
 import { mapGetters, mapActions } from 'vuex';
 
 export default {
-    components: {
+  components: {
+  },
+  props: {
+    dataSource: {
+      type: String,
+      default: 'mem'
     },
-    props: {
-        dataSource: {
-            type: String,
-            default: 'mem'
-        },
-        speed: {
-            type: Number,
-            default: 85
-        },
-        direction: {
-            type: String,
-            default: 'left'
-        },
-        viewFullContent: {
-            type: Boolean,
-            default: true
-        },
-        updateNews: {
-            type: Function,
-            default: () => { }
-        }
+    speed: {
+      type: Number,
+      default: 85
     },
-    data() {
-        return {
-            commonClass: ['news-content-wrap', 'clearfix']
-        };
+    direction: {
+      type: String,
+      default: 'left'
     },
-    computed: {
-        ...mapGetters({
-            isBackEnd: 'getIsBackEnd',
-            newsPopControl: 'getNewsPopControl',
-            memNewsData: 'getNews',
-            agentNewsData: 'getAgentNews'
-        }),
-        newsData() {
-            return (this.dataSource === 'mem') ? this.memNewsData : this.agentNewsData;
-        }
+    viewFullContent: {
+      type: Boolean,
+      default: true
     },
-    methods: {
-        ...mapActions([
-            'actionNewsPopControl'
-        ]),
-        // 開啟最新消息方式
-        togglePopup() {
-            if (this.isBackEnd || !this.viewFullContent) {
-                return;
-            }
-
-            document.querySelector('body').style = !this.newsPopControl.status ? 'overflow: hidden' : '';
-
-            this.actionNewsPopControl({ type: this.dataSource, status: !this.newsPopControl.status });
-        }
+    updateNews: {
+      type: Function,
+      default: () => { }
     }
+  },
+  data() {
+    return {
+      commonClass: ['news-content-wrap', 'clearfix'],
+      containerWidth: 0,
+      totalWidth: 0,
+      currentLeft: 0,
+      paused: false
+    };
+  },
+  computed: {
+    ...mapGetters({
+      isBackEnd: 'getIsBackEnd',
+      newsPopControl: 'getNewsPopControl',
+      memNewsData: 'getNews',
+      agentNewsData: 'getAgentNews'
+    }),
+    newsData() {
+      return (this.dataSource === 'mem') ? this.memNewsData : this.agentNewsData;
+    },
+    newsText() {
+      return this.newsData.map((item) => `${item.content} &nbsp;&nbsp;&nbsp;&nbsp;`).join('');
+    }
+  },
+  mounted() {
+    this.currentLeft = this.$refs.container.offsetWidth;
+    this.totalWidth = this.$refs.news.offsetWidth;
+    this.startMove();
+  },
+  methods: {
+    ...mapActions([
+      'actionNewsPopControl'
+    ]),
+    // 開啟最新消息方式
+    togglePopup() {
+      this.paused = !this.paused;
+      if (!this.paused) {
+        this.startMove();
+      }
+      document.querySelector('body').style = !this.newsPopControl.status ? 'overflow: hidden' : '';
+      this.actionNewsPopControl({ type: this.dataSource, status: !this.newsPopControl.status });
+    },
+    startMove() {
+      if (this.paused || !this.$refs.container) return;
+      if (Math.abs(this.currentLeft) < this.totalWidth) {
+        this.currentLeft -= this.$refs.container.offsetWidth / 200;
+        window.requestAnimationFrame(this.startMove);
+      } else {
+        this.currentLeft = this.$refs.container.offsetWidth;
+        window.requestAnimationFrame(this.startMove);
+      }
+    }
+  }
 };
 </script>
 
 <style lang="scss" scoped>
 .news-wrap {
-    display: flex;
-    align-content: center;
-    padding: 10px 17px 8px;
+  display: flex;
+  align-content: center;
+  padding: 10px 17px 8px;
 
-    .news-icon {
-        height: 100%;
-        width: 15px;
-    }
+  .news-icon {
+    height: 100%;
+    width: 15px;
+  }
 
-    .news-icon > img {
-        display: block;
-        width: 15px;
-        height: 12px;
-    }
+  .news-icon > img {
+    display: block;
+    width: 15px;
+    height: 12px;
+  }
 }
 .news-content {
-    display: block;
-    cursor: pointer;
-    white-space: nowrap;
-    line-height: 12px;
-    margin-left: 6px;
-    color: #9CA3BF;
-    font-size: 12px;
+  display: block;
+  cursor: pointer;
+  line-height: 12px;
+  margin-left: 6px;
+  color: #9ca3bf;
+  font-size: 12px;
+  overflow: hidden;
+}
+
+.news-content-text {
+  position: relative;
+  display: inline-block;
+  white-space: nowrap;
+  // animation: marquee linear 5s infinite;
+  // animation: marquee-left 3s infinite;
 }
 
 .mask {
-    position: fixed;
-    top: 0;
-    bottom: 0;
-    left: 0;
-    right: 0;
-    z-index: 99;
-    background: rgba(0, 0, 0, 0.4);
-    overflow: hidden;
+  position: fixed;
+  top: 0;
+  bottom: 0;
+  left: 0;
+  right: 0;
+  z-index: 99;
+  background: rgba(0, 0, 0, 0.4);
+  overflow: hidden;
 }
 
-
 .modal-wrap {
-    width: 270px;
-    position: fixed;
-    top: 50%;
-    left: 50%;
-    z-index: 100;
-    transform: translate(-50%, -50%);
-    background: #FFF;
-    border-radius: 10px;
+  width: 270px;
+  position: fixed;
+  top: 50%;
+  left: 50%;
+  z-index: 100;
+  transform: translate(-50%, -50%);
+  background: #fff;
+  border-radius: 10px;
 }
 
 .modal-content {
-    padding: 15px 20px;
-    border-bottom: 1px solid #EEE;
+  padding: 15px 20px;
+  border-bottom: 1px solid #eee;
 }
 
 .modal-news {
-    min-height: 170px;
-    max-height: 190px;
-    overflow-x: hidden;
-    overflow-y: auto;
+  min-height: 170px;
+  max-height: 190px;
+  overflow-x: hidden;
+  overflow-y: auto;
 }
 
 .news-item {
-    margin-top: 20px;
-    word-break: break-all;
+  margin-top: 20px;
+  word-break: break-all;
 
-    &:first-child {
-        margin-top: 0;
-    }
+  &:first-child {
+    margin-top: 0;
+  }
 }
 
 .news-title {
-    line-height: 23px;
-    margin-bottom: 5px;
-    font-size: 18px;
-    font-weight: normal;
-    color: #414655;
+  line-height: 23px;
+  margin-bottom: 5px;
+  font-size: 18px;
+  font-weight: normal;
+  color: #414655;
 }
 
 .news-text {
-    line-height: 21px;
-    font-size: 14px;
-    color: #A5A9B3;
+  line-height: 21px;
+  font-size: 14px;
+  color: #a5a9b3;
 }
 
 .modal-button {
-    height: 50px;
-    line-height: 50px;
-    text-align: center;
-    font-size: 18px;
+  height: 50px;
+  line-height: 50px;
+  text-align: center;
+  font-size: 18px;
+}
+
+@keyframes marquee-left {
+  to {
+    left: -100%;
+  }
 }
 </style>

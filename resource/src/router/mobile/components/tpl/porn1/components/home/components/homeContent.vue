@@ -84,7 +84,13 @@
             @click.stop="onShowAllTag(!isShowAllTag)"
           >
             <img
-              :src="$getCdnPath('/static/image/_new/common/icon_more.png')"
+              :src="
+                $getCdnPath(
+                  `/static/image/_new/common/icon_more${
+                    isShowAllTag ? '_close' : ''
+                  }.png`
+                )
+              "
             />
           </div>
           <div
@@ -133,7 +139,7 @@
       <div
         ref="game-wrap"
         :class="[$style['game-list-wrap'], 'clearfix']"
-        :style="{ height: `${wrapHeight - 50}px` }"
+        :style="{ height: `${wrapHeight - 50}px`, 'overflow-y': `${stopScroll ? 'hidden' : 'auto'}` }"
         @touchstart="onTouchStart"
         @touchmove="onTouchMove"
         @touchend="onTouchEnd"
@@ -220,6 +226,7 @@ export default {
   },
   data() {
     return {
+      stopScroll: false,
       isReceive: false,
       isShowAllTag: false,
       isSliding: false,
@@ -302,13 +309,15 @@ export default {
     }
   },
   created() {
-    ajax({
-      method: 'get',
-      url: '/api/v1/c/player/user_bank/list',
-      errorAlert: false
-    }).then((res) => {
-      this.hasBankCard = res.ret && res.ret.length > 0
-    });
+    if (this.loginStatus) {
+      ajax({
+        method: 'get',
+        url: '/api/v1/c/player/user_bank/list',
+        errorAlert: false
+      }).then((res) => {
+        this.hasBankCard = res.ret && res.ret.length > 0
+      });
+    }
   },
   mounted() {
     $(window).on('resize', this.onResize);
@@ -350,7 +359,7 @@ export default {
   methods: {
     clearMsg() {
       if (this.msg === '请先绑定提现银行卡') {
-        this.$router.push('/mobile/mcenter/bankCard?home=true');
+        this.$router.push('/mobile/mcenter/bankCard?redirect=home');
       }
 
       this.msg = '';
@@ -524,14 +533,13 @@ export default {
       this.startTouchY = 0;
       this.slideDirection = '';
       this.selectedIndex = index;
+      this.stopScroll = true;
 
       $(this.$refs['type-wrap']).animate({ scrollTop: index * 63 }, 300);
       $(this.$refs['game-wrap']).animate({ scrollTop: 0 }, 0);
 
       this.$nextTick(() => {
-        if (this.$refs['game-wrap']) {
-          this.$refs['game-wrap'].scrollTop = 0
-        }
+        this.stopScroll = false;
         this.isSliding = false;
       });
     },
@@ -577,6 +585,20 @@ export default {
         return;
       }
 
+      if (['BL', 'SL'].includes(game.type)) {
+        switch (game.type) {
+          case 'BL':
+            this.$router.push({ name: 'liveStream', params: { type: 'cutiesLive' } });
+            break;
+          case 'SL':
+            this.$router.push({ name: 'liveStream', params: { type: 'ballLive' } });
+            break;
+          default:
+            break;
+        }
+        return;
+      }
+
       if (!this.loginStatus) {
         this.$router.push('/mobile/login');
         return;
@@ -596,20 +618,6 @@ export default {
       if (!this.hasBankCard) {
         this.msg = "请先绑定提现银行卡"
         this.checkBankCard = true;
-        return;
-      }
-
-      if (['BL', 'SL'].includes(game.type)) {
-        switch (game.type) {
-          case 'BL':
-            this.$router.push({ name: 'liveStream', params: { type: 'cutiesLive' } });
-            break;
-          case 'SL':
-            this.$router.push({ name: 'liveStream', params: { type: 'ballLive' } });
-            break;
-          default:
-            break;
-        }
         return;
       }
 
@@ -741,6 +749,7 @@ export default {
 .video-tag-wrap {
   position: relative;
   width: 100%;
+  height: 100%;
   transition: all 0.5s;
 }
 
@@ -759,7 +768,7 @@ export default {
 
 .video-tag {
   float: left;
-  width: calc(100% - 52px);
+  width: calc(100% - 32px);
   height: 30px;
   margin: 10px 0;
 }
@@ -789,18 +798,43 @@ export default {
 
 .icon-arrow {
   float: right;
-  width: 19px;
-  height: 19px;
-  margin-top: 16px;
+  width: 30px;
+  height: 100%;
+  position: absolute;
+  right: 0;
   transition: all 0.1s;
+  align-items: center;
+  z-index: 2;
+  display: flex;
+  justify-content: flex-end;
+  align-items: center;
+  background: -webkit-linear-gradient(
+    left,
+    rgba(255, 255, 255, 0.3),
+    rgba(255, 255, 255, 1)
+  );
+  background: -o-linear-gradient(
+    right,
+    rgba(255, 255, 255, 0.3),
+    rgba(255, 255, 255, 1)
+  );
+  background: -moz-linear-gradient(
+    right,
+    rgba(255, 255, 255, 0.3),
+    rgba(255, 255, 255, 1)
+  );
+  background: linear-gradient(
+    to right,
+    rgba(255, 255, 255, 0.3),
+    rgba(255, 255, 255, 1)
+  );
 
   > img {
     display: block;
-    width: 100%;
+    width: 19px;
   }
 
   &.active {
-    transform: rotate(180deg);
   }
 }
 
@@ -811,7 +845,6 @@ export default {
   left: 0;
   z-index: 2;
   background-color: #fff;
-  opacity: 0.9;
 
   > div {
     float: left;

@@ -51,7 +51,7 @@
                             <div :class="$style['rebate-header']">{{ item.start_at }}~{{ item.end_at }}</div>
                             <div :class="$style['rebate-body']">
                                 <div :class="$style['detail-content']">
-                                    <span :class="$style['content-left']">{{ $text('S_CYCLE_TIME', '周期') }}</span>
+                                    <span :class="$style['content-left']">{{ $text('S_CYCLE_TIME', '週期') }}</span>
                                     <div :class="$style['content-right']">{{ item.name }}</div>
                                 </div>
                                 <div :class="$style['detail-content']">
@@ -71,9 +71,9 @@
                     </div>
                     <div v-else :class="$style['content-item']">
                         <div v-if="mcenterBankRebateInterval === 'week'" :class="$style['rebate-header']">{{ pickDateList[mcenterBankRebateInterval].startFullDate }} ~ {{ pickDateList[mcenterBankRebateInterval].endFullDate }}</div>
-                        <div v-else :class="$style['rebate-header']">{{ pickDateList[mcenterBankRebateInterval].startFullDate }}</div>
+                        <div v-else :class="$style['rebate-header']">{{ pickDateList[mcenterBankRebateInterval].startFullDate }} ~ {{ pickDateList[mcenterBankRebateInterval].endFullDate }}</div>
                         <div :class="$style['rebate-nodata']">
-                            <img :src="$getCdnPath('/static/image/mobile/mcenter/ic_nodata.png')" />
+                            <img :src="$getCdnPath('/static/image/_new/mcenter/ic_nodata.png')" />
                             <p>{{ $text('S_NO_DATA_YET', '暂无资料') }}</p>
                         </div>
                     </div>

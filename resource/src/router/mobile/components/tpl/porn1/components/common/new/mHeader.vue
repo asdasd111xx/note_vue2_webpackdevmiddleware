@@ -161,7 +161,7 @@
     </template>
 
     <template v-if="headerConfig.hasDespositHelp">
-      <div :class="$style['balance-wrap']">
+      <div :class="$style['deposit-wrap']">
         教程
         <img
           :src="
@@ -468,8 +468,29 @@ export default {
   color: #414655;
 }
 
-.balance-wrap,
 .deposit-wrap {
+    position: absolute;
+    right: 17px;
+    top: 50%;
+    transform: translateY(-50%);
+    display: flex;
+
+    > img {
+        display: inline-block;
+        height: 20px;
+        width: 20px;
+        margin-left: 1.5px;
+    }
+
+    &::before {
+        content: '';
+        display: inline-block;
+        height: 100%;
+        vertical-align: middle;
+    }
+}
+
+.balance-wrap {
   height: 100%;
   display: flex;
   align-items: center;

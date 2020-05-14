@@ -19,11 +19,9 @@
     </div>
   </div>
 </template>
-
 <script>
 /* global noCaptcha */
 import { mapGetters } from 'vuex';
-
 export default {
   props: {
     cssStyle: {
@@ -41,7 +39,7 @@ export default {
     pageStatus: {
       type: String,
       required: true
-    }
+    },
   },
   data() {
     return {
@@ -63,7 +61,6 @@ export default {
       if (this.cssStyle) {
         return this.cssStyle;
       }
-
       return this.$styleDefault;
     },
     langContrast() {
@@ -76,12 +73,11 @@ export default {
       };
     },
     ncObject() {
-      const ncToken = ['FFFF0N00000000008216', (new Date()).getTime(), Math.random()].join(':');
-
+      const ncToken = [this.currentSlideData.appkey, (new Date()).getTime(), Math.random()].join(':');
       return {
         renderTo: this.$style['js-nc-check-bar'],
-        appkey: 'FFFF0N00000000008216',
-        scene: 'nc_login',
+        appkey: this.currentSlideData.appkey,
+        scene: this.currentSlideData.scene,
         token: ncToken,
         customWidth: '100%',
         // 錯誤訊息格式
@@ -93,6 +89,31 @@ export default {
         timeout: 3000,
         times: 5
       };
+    },
+    currentSlideData() {
+      const data = {
+        pc: {
+          register: {
+            scene: 'nc_register',
+            appkey: 'FFFF0N0N000000008EBA'
+          },
+          login: {
+            scene: 'nc_login',
+            appkey: 'FFFF0N1N000000008EBA'
+          }
+        },
+        mobile: {
+          register: {
+            scene: 'nc_register_h5',
+            appkey: 'FFFF0N0N000000008EBA'
+          },
+          login: {
+            scene: 'nc_login_h5',
+            appkey: 'FFFF0N0N000000008EBA'
+          }
+        }
+      };
+      return data[window.location.pathname.split('/')[1] === 'mobile' ? 'mobile' : 'pc'][this.pageStatus];
     }
   },
   watch: {
@@ -100,7 +121,6 @@ export default {
       if (this.isBackEnd) {
         return;
       }
-
       this.creatSlide();
     }
   },
@@ -108,7 +128,6 @@ export default {
     if (this.isBackEnd) {
       return;
     }
-
     this.creatSlide();
   },
   methods: {
@@ -122,16 +141,19 @@ export default {
               token: data.token,
               csessionid: data.csessionid,
               sig: data.sig,
-              scene: 'nc_login'
+              scene: this.currentSlideData.scene,
+              appkey: this.currentSlideData.appkey
             },
             slideFuc: nc
           });
         }
       });
-
+      const refreshIcon = "<i class='refresh-icon'></i>";
       nc.upLang(this.langContrast[this.curLang], {
         _startTEXT: this.$text(...this.slideText[this.pageStatus]),
-        _yesTEXT: ''
+        _yesTEXT: this.$text(...this.slideText.yesText),
+        _error300: `<a href=\"javascript:__nc.reset()\">${refreshIcon}${this.$text(...this.slideText.error)}</a>`,
+        _errorNetwork: `<a href=\"javascript:__nc.reset()\">${refreshIcon}${this.$text(...this.slideText.errorNetwork)}</a>`
       });
     }
   }

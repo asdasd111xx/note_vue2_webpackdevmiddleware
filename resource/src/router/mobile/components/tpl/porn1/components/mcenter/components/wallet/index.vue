@@ -143,7 +143,7 @@
 
                             <div :class="$style['game-desc']">
                                 <span :class="$style['game']">{{ item.game_name }}</span>
-                                <span :class="$style['money']">{{ item.valid_bet }}</span>
+                                <span :class="$style['money']">{{ parseFloat(item.valid_bet).toFixed(2) }}</span>
                             </div>
                         </div>
                     </div>

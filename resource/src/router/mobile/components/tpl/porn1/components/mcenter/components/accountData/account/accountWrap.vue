@@ -36,7 +36,7 @@ export default {
                             type: 'edit',
                             isShow: true,
                             popTitle: '',
-                            placeholder: '姓名需与银行持卡人姓名一致，否则无法提款'
+                            placeholder: '姓名需与银行持卡人姓名一致，否则无法提现'
                         },
                         alias: {
                             key: 'alias',
@@ -131,7 +131,8 @@ export default {
                             btnShow: true,
                             type: 'edit',
                             isShow: false,
-                            popTitle: ''
+                            popTitle: '',
+                            placeholder: '尚未设定'
                         },
                         weixin: {
                             key: 'weixin',
@@ -142,7 +143,8 @@ export default {
                             btnShow: true,
                             type: 'edit',
                             isShow: false,
-                            popTitle: ''
+                            popTitle: '',
+                            placeholder: '尚未设定'
                         },
                         line: {
                             key: 'line',
@@ -153,7 +155,8 @@ export default {
                             btnShow: true,
                             type: 'edit',
                             isShow: false,
-                            popTitle: ''
+                            popTitle: '',
+                            placeholder: '尚未设定'
                         },
                         facebook: {
                             key: 'facebook',
