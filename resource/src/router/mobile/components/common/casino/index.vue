@@ -6,7 +6,7 @@
       :callback="
         () => {
           $router.push(
-            `/mobile/mcenter/bankcard?lobby=${vendor}-${paramsData.label}`
+            `/mobile/mcenter/bankcard?redirect=casino-${vendor}-${paramsData.label}`
           );
         }
       "

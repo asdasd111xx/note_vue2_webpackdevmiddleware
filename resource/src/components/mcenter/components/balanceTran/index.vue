@@ -415,7 +415,7 @@ export default {
     },
     clearMsg() {
       if (this.msg === '请先绑定提现银行卡') {
-        this.$router.push('/mobile/mcenter/bankCard?balanceTrans=true');
+        this.$router.push('/mobile/mcenter/bankCard?redirect=balanceTrans');
       }
 
       this.msg = '';

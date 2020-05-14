@@ -352,7 +352,7 @@ export default {
   methods: {
     clearMsg() {
       if (this.msg === '请先绑定提现银行卡') {
-        this.$router.push('/mobile/mcenter/bankCard?home=true');
+        this.$router.push('/mobile/mcenter/bankCard?redirect=home');
       }
 
       this.msg = '';
@@ -579,6 +579,20 @@ export default {
         return;
       }
 
+      if (['BL', 'SL'].includes(game.type)) {
+        switch (game.type) {
+          case 'BL':
+            this.$router.push({ name: 'liveStream', params: { type: 'cutiesLive' } });
+            break;
+          case 'SL':
+            this.$router.push({ name: 'liveStream', params: { type: 'ballLive' } });
+            break;
+          default:
+            break;
+        }
+        return;
+      }
+
       if (!this.loginStatus) {
         this.$router.push('/mobile/login');
         return;
@@ -598,20 +612,6 @@ export default {
       if (!this.hasBankCard) {
         this.msg = "请先绑定提现银行卡"
         this.checkBankCard = true;
-        return;
-      }
-
-      if (['BL', 'SL'].includes(game.type)) {
-        switch (game.type) {
-          case 'BL':
-            this.$router.push({ name: 'liveStream', params: { type: 'cutiesLive' } });
-            break;
-          case 'SL':
-            this.$router.push({ name: 'liveStream', params: { type: 'ballLive' } });
-            break;
-          default:
-            break;
-        }
         return;
       }
 

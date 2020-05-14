@@ -8,7 +8,9 @@
             @close="msg = ''"
             :callback="
               () => {
-                $router.push(`/mobile/mcenter/bankcard?cardlobby=${vendor}`);
+                $router.push(
+                  `/mobile/mcenter/bankcard?redirect=card-${vendor}-${paramsData.label}`
+                );
               }
             "
           >

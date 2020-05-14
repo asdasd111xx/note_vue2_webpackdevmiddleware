@@ -1,6 +1,20 @@
 <template>
   <mobile-container :has-footer="false">
     <div slot="content" :class="$style['live-stream-wrap']">
+      <message
+        v-if="msg"
+        @close="msg = ''"
+        :callback="
+          () => {
+            $router.push(`/mobile/mcenter/bankcard?redirect=liveStream`);
+          }
+        "
+      >
+        <div slot="msg">
+          {{ msg }}
+        </div>
+      </message>
+
       <div :class="$style['btn-prev']" @click="$router.push('/mobile')">
         <img :src="$getCdnPath('/static/image/_new/common/btn_back.png')" />
       </div>
@@ -123,16 +137,22 @@ import { mapGetters } from 'vuex';
 import axios from 'axios';
 import mobileContainer from '../common/new/mobileContainer';
 import { API_PORN1_DOMAIN } from '@/config/api';
+import message from '../../components/common/new/message';
+import openGame from '@/lib/open_game';
+import ajax from '@/lib/ajax';
 
 export default {
   components: {
+    message,
     mobileContainer
   },
   data() {
     return {
       streamList: [],
       currentTab: this.$route.params.type,
-      iframeHeight: 500
+      iframeHeight: 500,
+      msg: '',
+      hasBankCard: false
     };
   },
   computed: {
@@ -156,6 +176,40 @@ export default {
     }).then((response) => {
       this.streamList = response.data.result;
     });
+
+    if (this.loginStatus) {
+      ajax({
+        method: 'get',
+        url: '/api/v1/c/player/user_bank/list',
+        errorAlert: false
+      }).then((res) => {
+        this.hasBankCard = res.ret && res.ret.length > 0
+      });
+    }
+
+    // 給體育遊戲觸發事件的function
+    window.sportEvent = (type) => {
+      if (type === 'GO_IM_SPORT') {
+        if (!this.loginStatus) {
+          if (window.location.pathname.split('/')[1] === 'mobile') {
+            this.$router.push({ name: 'login' });
+            return;
+          }
+
+          alert(this.$text('S_LOGIN_TIPS', '请先登入'));
+          return;
+        } else {
+
+          if (!this.hasBankCard) {
+            this.msg = "请先绑定提现银行卡"
+            this.checkBankCard = true;
+            return;
+          }
+
+          openGame({ vendor: 'boe', kind: 1 });
+        }
+      }
+    };
   },
   methods: {
     openLiveStream() {
@@ -234,7 +288,8 @@ export default {
 
 .cuties-live-wrap {
   margin: 10px 6px 40px;
-  background: url("/static/image/_new/live/live_stream_background.png") 100% 100%;
+  background: url("/static/image/_new/live/live_stream_background.png") 100%
+    100%;
 }
 
 .live-card {

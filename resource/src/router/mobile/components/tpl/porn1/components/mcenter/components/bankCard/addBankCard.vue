@@ -313,25 +313,37 @@ export default {
       const { query } = this.$route;
       this.msg = '';
 
-      if (query.lobby) {
-        let q = query.lobby.split('-');
-        if (q && q.length > 1) {
-          this.$router.push(`/mobile/casino/${q[0]}?label=${q[1]}`);
-        } else {
-          this.changePage('bankCardInfo');
-        }
-      } else if (query.withdraw) {
-        this.$router.push('/mobile/mcenter/withdraw');
-      } else if (query.balanceTrans) {
-        this.$router.push('/mobile/mcenter/balanceTrans');
-      } else if (query.home) {
-        this.$router.push('/mobile/mcenter/home');
-      } else if (query.cardlobby) {
-        this.$router.push(`/mobile/card/${query.cardlobby}`);
-      } else if (query.mahjonglobby) {
-        this.$router.push(`/mobile/mahjong/${query.mahjonglobby}`);
-      } else {
+      let redirect = query.redirect;
+      if (!redirect) {
         this.changePage('bankCardInfo');
+        return;
+      }
+
+      // 預設提現銀行卡添加成功後回到遊戲
+      let split = redirect.split('-');
+      if (split.length === 2) {
+        this.$router.push(`/mobile/${split[0]}/${split[1]}`);
+        return;
+      }
+
+      // 有分類的遊戲大廳 card casino
+      if (split.length === 3) {
+        this.$router.push(`/mobile/${split[0]}/${split[1]}?label=${split[2]}`);
+        return;
+      }
+
+      switch (redirect) {
+        case "withdraw":
+        case "balanceTrans":
+          this.$router.push(`/mobile/mcenter/${redirect}`);
+          return;
+        case "liveStream":
+        case "home":
+          this.$router.push(`/mobile/${redirect}`);
+          return
+        default:
+          this.changePage('bankCardInfo');
+          return;
       }
     },
     setBank(bank) {
