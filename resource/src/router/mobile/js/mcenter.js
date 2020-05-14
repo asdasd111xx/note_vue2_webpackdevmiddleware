@@ -258,10 +258,19 @@ export default {
                     path: 'management/:page?/:date?',
                     name: 'mcenter-tcenter-management',
                     component
+                },
+                {
+                    path: 'recommendGift',
+                    name: 'mcenter-tcenter-recommendGift',
+                    component
                 }
             ]
         },
-
+        { // 錢包
+            path: 'makeMoney',
+            name: 'mcenter-makeMoney',
+            component
+        },
         { // 錢包
             path: 'wallet',
             name: 'mcenter-wallet',

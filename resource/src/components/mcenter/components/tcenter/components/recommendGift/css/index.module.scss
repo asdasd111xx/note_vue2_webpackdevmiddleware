@@ -1,20 +1,10 @@
-.content-wrap {
-    background: #F8F8F7;
-    min-height: calc(100vh - 43px);
-    position: relative;
-    padding-top: 50px;
-}
-
 .menu-wrap {
     width: 100%;
     padding: 8px 17px;
     background: #FFF;
-    position: fixed;
-    top: 43px;
-    left: 0;
-    z-index: 5;
     border-top: 1px solid #EEE;
     border-bottom: 1px solid #EEE;
+    position: relative;
 }
 
 .menu-select-game {
@@ -89,28 +79,11 @@
 
 }
 
-.no-data {
-    padding-top: 100px;
-    text-align: center;
-
-    img {
-        display: inline-block;
-        width: 174px;
-        height: 174px;
-        margin-bottom: 14px;
-    }
-
-    p {
-        font-size: 14px;
-        color: #A6A9B2;
-    }
-}
-
 .dropdown-mask {
     width: 100%;
-    height: calc(100vh - 93px);
-    position: fixed;
-    top: 93px;
+    height: calc(100vh - 138px);
+    position: absolute;
+    top: 50px;
     left: 0;
     z-index: 4;
     background: #000;
@@ -121,8 +94,8 @@
     width: 100%;
     padding: 15px 7px 15px 17px;
     margin: 0;
-    position: fixed;
-    top: 93px;
+    position: absolute;
+    top: 50px;
     left: 0;
     z-index: 5;
     background: #FFF;
@@ -225,139 +198,78 @@
     background-image: linear-gradient(right ,#BD9D7D, #F9DDBD);
 }
 
-.data-wrap {
-    padding: 0 13px;
-}
-
 .total-wrap {
-    height: 38px;
-    line-height: 38px;
-    padding-left: 0;
-    margin: 0;
-    border-bottom: 1px solid #EEE;
-    list-style: none;
-
-    li {
-        float: left;
-        width: calc((100% - 26px) / 3);
-        font-size: 12px;
-        color: #414655;
-
-        &:nth-child(3n+2) {
-            margin: 0 13px;
-            text-align: center;
-        }
-
-        &:nth-child(3n) {
-            text-align: right;
-        }
-    }
-}
-
-.is-win {
-    color: #DB6372;
-}
-
-.record-count {
-    padding: 5px 0 8px;
-}
-
-.record-count-time {
-    float: left;
-    line-height: 20px;
-    font-size: 15px;
-    color: #414655;
-}
-
-.single-total-wrap {
-    float: right;
-    line-height: 20px;
-
-    ul {
-        list-style: none;
-        padding-left: 0;
-        margin: 0;
-    }
-
-    li {
-        float: left;
-        font-size: 12px;
-        color: #A6A9B2;
-    }
-
-    .single-water {
-        margin: 0 8px;
-    }
-}
-
-.data-item {
-    margin-bottom: 15px;
-
-    &:last-child {
-        margin-bottom: 0;
-        padding-bottom: 15px;
-    }
-}
-
-.detail-wrap {
-    height: 100px;
-    margin-top: 7px;
-    background: #FEFFFE;
-    border-radius: 8px;
-
-    &:first-child {
-        margin-top: 0;
-    }
-}
-
-.detail-name {
-    height: 33px;
-    line-height: 33px;
-    padding-left: 12px;
-    font-size: 14px;
-    font-weight: 700;
-    border-bottom: 1px solid #EEE;
-}
-
-.detail-game {
-    padding: 12px 12px 10px;
-}
-
-.game-name {
-    line-height: 21px;
-    padding-left: 8px;
-    margin-bottom: 6px;
-    position: relative;
-    font-size: 16px;
-    font-weight: 700;
-    color: #414655;
-
-    &:before  {
-        display: block;
-        width: 3px;
-        height: 14px;
-        position: absolute;
-        left: 0;
-        top: 50%;
-        transform: translateY(-50%);
-        background: #BD9D7D;
-        background-image: -webkit-linear-gradient(top ,#BD9D7D, #F9DDBD);
-        background-image: linear-gradient(top ,#BD9D7D, #F9DDBD);
-        content: '';
-    }
-}
-
-.game-count {
-    padding-left: 8px;
-    line-height: 16px;
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    padding: 10px 17px;
     font-size: 12px;
     color: #414655;
 }
 
-.game-water {
-    float: left;
+.info-item {
+    background: #FFF;
+    margin-bottom: 10px;
+    font-size: 12px;
 }
 
-.game-money {
-    float: right;
+.item-header {
+    display: flex;
+    justify-content: space-between;
+    padding: 5px 17px;
+    border-bottom: 1px solid #EEE;
+}
+
+.friend-name {
+    color: #A6A9B2;
+}
+
+.item-content {
+    padding: 10px 17px;
+}
+
+.item-detail {
+    display: flex;
+    justify-content: space-between;
+    padding: 5px 0;
+}
+
+.item-detail-title {
+    color: #A6A9B2;
+}
+
+.item-detail-result {
+
+}
+
+.no-data-wrap {
+    width: 180px;
+    height: 292px;
+    margin: 20% auto 0;
+
+    > img {
+        display: block;
+        width: 100%;
+    }
+
+    .tips {
+        line-height: 22px;
+        margin: 16px 0 29px;
+        color: #A6A9B2;
+        font-size: 16px;
+        text-align: center;
+    }
+
+    .btn-money {
+        width: 140px;
+        height: 45px;
+        line-height: 45px;
+        margin: 0 auto;
+        border-radius: 3px;
+        background: linear-gradient(to left, #BD9D7D, #F9DDBD);
+        color: #FFF;
+        font-weight: 700;
+        font-size: 14px;
+        text-align: center;
+    }
 }
