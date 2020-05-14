@@ -158,4 +158,9 @@ export default [
         name: 'install',
         component
     },
+    {
+        path: 'shareDownload',
+        name: 'shareDownload',
+        component
+    }
 ];

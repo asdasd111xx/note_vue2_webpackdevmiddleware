@@ -1,9 +1,8 @@
 <template>
     <div :class="$style['share-container']">
         <div :class="$style['pic-wrap']">
-            <div :class="$style['img']" ref="shareImageBlockRef">
+            <div :class="$style['img']">
                 <img
-                    ref="shareImageRef"
                     :src="
                         $getCdnPath(
                             `/static/image/_new/mcenter/share/share_app_f.png`
@@ -11,21 +10,20 @@
                     "
                     alt="shareApp"
                 />
-                <template v-if="agentLink || landingLink">
-                    <div :class="$style['qrcode-wrap']" ref="qrcodeRef">
-                        <qrcode
-                            :value="loginStatus ? agentLink : landingLink"
-                            :options="{ width: 75, margin: 1 }"
-                            tag="img"
-                        />
-                    </div>
-                </template>
+
+                <div
+                    v-if="agentLink || landingLink"
+                    :class="$style['qrcode-wrap']"
+                >
+                    <qrcode
+                        :value="loginStatus ? agentLink : landingLink"
+                        :options="{ width: 75, margin: 1 }"
+                        tag="img"
+                    />
+                </div>
             </div>
 
-            <div
-                :class="$style['text']"
-                @click="downloadImage"
-            >
+            <div :class="$style['text']" @click="downloadImage">
                 <img
                     :src="
                         $getCdnPath(
@@ -38,17 +36,6 @@
         </div>
 
         <div :class="$style['func-wrap']">
-            <!-- <div
-                v-for="(item, index) in funcList"
-                :key="index"
-                :class="$style['func-cell']"
-            >
-                <div @click="item.callback">
-                    <img :src="$getCdnPath(item.imgSrc)" :alt="item.text" />
-                </div>
-                <p>{{ item.text }}</p>
-            </div> -->
-
             <div :class="$style['cancle']" @click="closeShare">取消</div>
 
             <message v-if="msg" @close="msg = ''">
@@ -61,7 +48,6 @@
 <script>
 import { mapGetters } from "vuex";
 import axios from "axios";
-import html2canvas from "html2canvas";
 import { API_PROMOTION_INFO } from "@/config/api";
 import message from "../../../../common/new/message";
 
@@ -78,27 +64,9 @@ export default {
     data() {
         return {
             msg: "",
-            shareImageSrc: "",
             landingLink: "",
             domain: "",
-            agentCode: "",
-            canvasLink: "",
-            funcList: [
-                {
-                    callback: () => {
-                        this.copyShareImage();
-                    },
-                    imgSrc: "/static/image/_new/mcenter/share/btn_copy.png",
-                    text: "复制链接"
-                },
-                {
-                    callback: () => {
-                        this.downloadImage();
-                    },
-                    imgSrc: "/static/image/_new/mcenter/share/btn_save.png",
-                    text: "保存图片"
-                }
-            ]
+            agentCode: ""
         };
     },
     computed: {
@@ -151,102 +119,15 @@ export default {
             });
         }
     },
-    mounted() {
-        this.shareImageSrc = this.$refs.shareImageRef.src;
-    },
     methods: {
         closeShare() {
             this.$emit("update:isShowShare", false);
         },
-
-        copyShareImage() {
-            this.$copyText(this.shareImageSrc).then(e => {
-                this.msg = this.$text("S_COPY_SUCCESSFUL", "复制成功");
-            });
-        },
-
         downloadImage() {
-            let newWindow = "";
-            // newWindow = window.open("", "_blank");
-
-            html2canvas(this.$refs["qrcodeRef"], {
-                useCORS: true
-            }).then(canvas => {
-                this.canvasLink = canvas.toDataURL();
-                newWindow = window.open("", "_blank").document.write(
-                    `
-                        <html>
-                            <head>
-                                <meta name="viewport"
-                                        content="width=device-width, initial-scale=1.0, minimum-scale=1.0, maximum-scale=1.0, user-scalable=no" />
-                            </head>
-                            <body style="margin: 0">
-                                <div style="position: relative ; width: 100% ; height: 100%">
-                                    <img style="width: 100% ; height: 100%" src=${this.shareImageSrc} />
-                                    <img style="position: absolute ; height: 14% ; left: 50% ; bottom: 36.5% ;  transform: translate(-50% , 50%)" src=${this.canvasLink} />
-                                </div>
-                            </body>
-                        </html>
-                    `
-                );
-
+            if (this.isException) {
+                window.open("/mobile/shareDownload", "_blank");
                 return;
-            });
-
-            // if (this.agentLink || this.landingLink) {
-            //     window.scroll(0, 0);
-
-            //     // 極速版 or 馬甲版 => 另開新分頁
-            //     if (this.isException) {
-            //         // 截 Qrcode
-            //         html2canvas(this.$refs["qrcodeRef"], {
-            //             useCORS: true
-            //         }).then(canvas => {
-            //             this.canvasLink = canvas.toDataURL();
-            //             newWindow = window.open("", "_blank").document.write(
-            //                 `
-            //                     <html>
-            //                         <head>
-            //                             <meta name="viewport"
-            //                                     content="width=device-width, initial-scale=1.0, minimum-scale=1.0, maximum-scale=1.0, user-scalable=no" />
-            //                         </head>
-            //                         <body style="margin: 0">
-            //                             <div style="position: relative ; width: 100% ; height: 100%">
-            //                                 <img style="width: 100% ; height: 100%" src=${this.shareImageSrc} />
-            //                                 <img style="position: absolute ; height: 14% ; left: 50% ; bottom: 36.5% ;  transform: translate(-50% , 50%)" src=${this.canvasLink} />
-            //                             </div>
-            //                         </body>
-            //                     </html>
-            //                 `
-            //             );
-
-            //             return;
-            //         });
-            //     }
-            // }
-
-            // axios({
-            //     url: this.shareImageSrc,
-            //     methods: "GET",
-            //     responseType: "blob"
-            // }).then(res => {
-            //     console.log(res);
-            //     const fileURL = window.URL.createObjectURL(
-            //         new Blob([res.data])
-            //     );
-
-            //     const fileLink = document.createElement("a");
-            //     fileLink.href = fileURL;
-            //     fileLink.setAttribute("download", "yabo.png");
-            //     document.body.appendChild(fileLink);
-
-            //     this.msg = this.$text(
-            //         "S_PICTURE_SAVED_TO_LOCAL",
-            //         "图片已保存到本地相册"
-            //     );
-
-            //     fileLink.click();
-            // });
+            }
         },
         getDomain() {
             axios({
@@ -276,8 +157,6 @@ export default {
 
 <style lang="scss" module>
 @import "~@/css/variable.scss";
-
-$radius: 10px;
 
 @mixin fixed-container-style($opacity) {
     position: fixed;

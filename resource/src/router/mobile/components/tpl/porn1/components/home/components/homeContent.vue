@@ -302,13 +302,15 @@ export default {
     }
   },
   created() {
-    ajax({
-      method: 'get',
-      url: '/api/v1/c/player/user_bank/list',
-      errorAlert: false
-    }).then((res) => {
-      this.hasBankCard = res.ret && res.ret.length > 0
-    });
+    if (this.loginStatus) {
+      ajax({
+        method: 'get',
+        url: '/api/v1/c/player/user_bank/list',
+        errorAlert: false
+      }).then((res) => {
+        this.hasBankCard = res.ret && res.ret.length > 0
+      });
+    }
   },
   mounted() {
     $(window).on('resize', this.onResize);
@@ -741,6 +743,7 @@ export default {
 .video-tag-wrap {
   position: relative;
   width: 100%;
+  height: 100%;
   transition: all 0.5s;
 }
 
@@ -759,7 +762,7 @@ export default {
 
 .video-tag {
   float: left;
-  width: calc(100% - 52px);
+  width: calc(100% - 32px);
   height: 30px;
   margin: 10px 0;
 }
@@ -789,14 +792,41 @@ export default {
 
 .icon-arrow {
   float: right;
-  width: 19px;
-  height: 19px;
-  margin-top: 16px;
+  width: 30px;
+  height: 100%;
+  position: absolute;
+  right: 0;
   transition: all 0.1s;
+  align-items: center;
+  z-index: 2;
+  display: flex;
+  justify-content: flex-end;
+  align-items: center;
+
+  background: -webkit-linear-gradient(
+    left,
+    rgba(255, 255, 255, 0.3),
+    rgba(255, 255, 255, 1)
+  );
+  background: -o-linear-gradient(
+    right,
+    rgba(255, 255, 255, 0.3),
+    rgba(255, 255, 255, 1)
+  );
+  background: -moz-linear-gradient(
+    right,
+    rgba(255, 255, 255, 0.3),
+    rgba(255, 255, 255, 1)
+  );
+  background: linear-gradient(
+    to right,
+    rgba(255, 255, 255, 0.3),
+    rgba(255, 255, 255, 1)
+  );
 
   > img {
     display: block;
-    width: 100%;
+    width: 19px;
   }
 
   &.active {
@@ -811,7 +841,7 @@ export default {
   left: 0;
   z-index: 2;
   background-color: #fff;
-  opacity: 0.9;
+  opacity: 0.1;
 
   > div {
     float: left;

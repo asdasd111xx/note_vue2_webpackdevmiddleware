@@ -1,26 +1,28 @@
-import Vue from 'vue';
 import * as axios from 'axios';
 import * as moment from 'moment-timezone';
-import ajax from '@/lib/ajax';
-import { errorAlarm } from '@/lib/error_console';
 import * as siteConfigOfficial from '@/config/siteConfig/siteConfigOfficial';
 import * as siteConfigTest from '@/config/siteConfig/siteConfigTest';
+import * as types from './mutations_type';
+
 import { API_GETAPPINFO, API_QRCODE } from '@/config/api';
+
+import EST from '@/lib/EST';
+import Vue from 'vue';
+import agcenter from '@/api/agcenter';
+import agent from '@/api/agent';
+import ajax from '@/lib/ajax';
+import common from '@/api/common';
+import { errorAlarm } from '@/lib/error_console';
+import game from '@/api/game';
+import getLang from '@/lib/getLang';
 import i18n from '@/config/i18n';
 import links from '@/config/links';
-import common from '@/api/common';
-import game from '@/api/game';
-import member from '@/api/member';
-import agent from '@/api/agent';
 import mcenter from '@/api/mcenter';
-import agcenter from '@/api/agcenter';
-import EST from '@/lib/EST';
-// eslint-disable-next-line import/no-cycle
-import openGame from '@/lib/open_game';
-import getLang from '@/lib/getLang';
 // eslint-disable-next-line import/no-cycle
 import mcenterPageAuthControl from '@/lib/mcenterPageAuthControl';
-import * as types from './mutations_type';
+import member from '@/api/member';
+// eslint-disable-next-line import/no-cycle
+import openGame from '@/lib/open_game';
 import router from '../router';
 
 let memstatus = true;
@@ -1031,6 +1033,5 @@ export const actionSetIsLoading = ({ commit }, data) => {
 
 // 設定會員中心-個人資料-手機/姓名/信箱 綁定成功訊息
 export const actionSetＭcenterBindMessage = ({ commit }, data) => {
-    console.log('actionSetＭcenterBindMessage:', data);
     commit(types.SET_MCENTER_BIND_MESSAGE, data);
 };

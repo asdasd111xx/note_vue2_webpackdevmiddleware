@@ -25,7 +25,11 @@
                     }"
                     v-for="(item, index) in userVipInfo"
                     :key="item.config_id"
-                    @click="handleConfigId(item.config_id)"
+                    @click="
+                        loginStatus
+                            ? handleConfigId(item.config_id)
+                            : $router.push('/mobile/login')
+                    "
                     >{{ item.config_name }}</span
                 >
 
@@ -138,6 +142,10 @@ export default {
             });
         },
         getVipLevel() {
+            if (!this.loginStatus || !getCookie("cid")) {
+                this.$router.push("/mobile/login");
+            }
+
             // 依vip分類回傳所有等級清單(不分⾴)
             axios({
                 method: "get",
@@ -148,17 +156,14 @@ export default {
                 }`,
                 headers: { "x-domain": this.memInfo.user.domain }
             }).then(res => {
-                if (res && res.data && res.data.data) {
-                    this.vipLevelList = res.data.data;
+                if (res.data.status === "failure") {
+                    this.$router.push("/mobile/login");
                 }
+
+                this.vipLevelList = res.data.data;
             });
         },
         handleConfigId(value) {
-            if (!this.loginStatus) {
-                this.$router.push("/mobile/login");
-                return;
-            }
-
             this.currentConfigID = value;
         }
     },

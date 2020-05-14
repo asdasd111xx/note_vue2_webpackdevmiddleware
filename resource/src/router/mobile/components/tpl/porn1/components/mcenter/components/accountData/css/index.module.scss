@@ -163,6 +163,9 @@ input {
     line-height: 30px;
     background-color: #E9DACC;
     color: white;
+    // 取消點擊特效
+    -webkit-tap-highlight-color: rgba(0, 0, 0, 0);
+    -moz-tap-highlight-color: rgba(0, 0, 0, 0);
 
     &.active {
         color: #FFFFFF;
