@@ -31,7 +31,8 @@ export default {
         mcenterHeader,
         gameRecord: () => import(/* webpackChunkName: 'mcenter_theme1_gameRecord' */'./components/gameRecord/'),
         management: () => import(/* webpackChunkName: 'mcenter_theme1_management' */'./components/management/'),
-        commission: () => import(/* webpackChunkName: 'mcenter_theme1_commission' */'./components/commission')
+        commission: () => import(/* webpackChunkName: 'mcenter_theme1_commission' */'./components/commission'),
+        recommendGift: () => import(/* webpackChunkName: 'mcenter_theme1_recommendGift' */'./components/recommendGift')
     },
     props: {
         func: {
@@ -95,6 +96,11 @@ export default {
                     key: 'commission',
                     text: this.$text('S_MY_COMMISSION'),
                     show: !(this.memInfo.config.wage && this.commissionLink === '')
+                },
+                {
+                    key: 'recommendGift',
+                    text: '推荐礼金',
+                    show: true
                 }
             ].filter((item) => item.show);
         },
