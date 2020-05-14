@@ -84,7 +84,13 @@
             @click.stop="onShowAllTag(!isShowAllTag)"
           >
             <img
-              :src="$getCdnPath('/static/image/_new/common/icon_more.png')"
+              :src="
+                $getCdnPath(
+                  `/static/image/_new/common/icon_more${
+                    isShowAllTag ? '_close' : ''
+                  }.png`
+                )
+              "
             />
           </div>
           <div
@@ -800,7 +806,6 @@ export default {
   display: flex;
   justify-content: flex-end;
   align-items: center;
-
   background: -webkit-linear-gradient(
     left,
     rgba(255, 255, 255, 0.3),
@@ -828,7 +833,6 @@ export default {
   }
 
   &.active {
-    transform: rotate(180deg);
   }
 }
 
@@ -839,7 +843,6 @@ export default {
   left: 0;
   z-index: 2;
   background-color: #fff;
-  opacity: 0.1;
 
   > div {
     float: left;
