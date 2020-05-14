@@ -40,6 +40,7 @@ export default {
         tcenterCommissionPorn1: () => import(/* webpackChunkName: 'tcenterCommissionPorn1' */'../../tpl/porn1/components/mcenter/components/tcenter/components/commission'),
         tcenterGameRecordPorn1: () => import(/* webpackChunkName: 'tcenterGameRecordPorn1' */'../../tpl/porn1/components/mcenter/components/tcenter/components/gameRecord'),
         tcenterManagementPorn1: () => import(/* webpackChunkName: 'tcenterManagementPorn1' */'../../tpl/porn1/components/mcenter/components/tcenter/components/management'),
+        tcenterRecommendGiftPorn1: () => import(/* webpackChunkName: 'tcenteRecommendGiftPorn1' */'../../tpl/porn1/components/mcenter/components/tcenter/components/recommendGift'),
         aboutPorn1: () => import(/* webpackChunkName: 'aboutPorn1' */'../../tpl/porn1/components/mcenter/components/about'),
         settingPorn1: () => import(/* webpackChunkName: 'settingPorn1' */'../../tpl/porn1/components/mcenter/components/setting'),
         feedbackPorn1: () => import(/* webpackChunkName: 'feedbackPorn1' */'../../tpl/porn1/components/mcenter/components/feedback'),
@@ -53,6 +54,7 @@ export default {
         accountDataNamePorn1: () => import(/* webpackChunkName: 'accountDataNamePorn1' */'../../tpl/porn1/components/mcenter/components/accountData/account/form/editName'),
         accountDataPhonePorn1: () => import(/* webpackChunkName: 'accountDataPhonePorn1' */'../../tpl/porn1/components/mcenter/components/accountData/account/form/editPhone'),
         accountDataEmailPorn1: () => import(/* webpackChunkName: 'accountDataEmailPorn1' */'../../tpl/porn1/components/mcenter/components/accountData/account/form/editEmail'),
-        walletPorn1: () => import(/* webpackChunkName: 'walletPorn1' */'../../tpl/porn1/components/mcenter/components/wallet')
+        walletPorn1: () => import(/* webpackChunkName: 'walletPorn1' */'../../tpl/porn1/components/mcenter/components/wallet'),
+        makeMoneyPorn1: () => import(/* webpackChunkName: 'makeMoneyPorn1' */'../../tpl/porn1/components/mcenter/components/makeMoney')
     }
 };

@@ -182,6 +182,14 @@
         {{ $text("S_TRANSACTION_RECORD", "交易记录") }}
       </div>
     </template>
+    <template v-if="headerConfig.recommendGift">
+      <div
+        :class="$style['btn-feedback']"
+        @click="$router.push('/mobile/mcenter/tcenter/recommendGift')"
+      >
+        礼金明细
+      </div>
+    </template>
   </div>
 </template>
 
