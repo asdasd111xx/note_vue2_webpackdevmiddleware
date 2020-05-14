@@ -202,7 +202,6 @@ export default {
 
           if (!this.hasBankCard) {
             this.msg = "请先绑定提现银行卡"
-            this.checkBankCard = true;
             return;
           }
 

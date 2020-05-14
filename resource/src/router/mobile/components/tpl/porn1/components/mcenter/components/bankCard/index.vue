@@ -54,9 +54,10 @@ export default {
           case "withdraw":
           case "balanceTrans":
           case "home":
-          case "cardlobby":
-          case "mahjonglobby":
+          case "card":
+          case "mahjong":
           case "liveStream":
+            this.currentPage = 'addBankCard';
             return true;
         }
       }
@@ -94,10 +95,6 @@ export default {
     }
   },
   created() {
-    const { query } = this.$route;
-    if (query.hasRedirect) {
-      this.currentPage = 'addBankCard';
-    }
   },
   methods: {
     changePage(value) {

@@ -157,7 +157,7 @@ export default {
   watch: {
     vendor() {
       this.paramsData.first_result = 0;
-    //   this.paramsData.label = 27; // 棋牌遊戲分類預設“棋牌遊戲”
+      //   this.paramsData.label = 27; // 棋牌遊戲分類預設“棋牌遊戲”
       this.updateGameData();
       this.getGameLabelList();
     },
@@ -228,6 +228,10 @@ export default {
         }
         // this.paramsData.label = 27; // 棋牌遊戲分類預設“棋牌遊戲”
         this.isLabelReceive = true;
+        if (this.$route.query.label) {
+          this.paramsData.label = this.$route.query.label;
+          return;
+        }
       });
     },
     /**
