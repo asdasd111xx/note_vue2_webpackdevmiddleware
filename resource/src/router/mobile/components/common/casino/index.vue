@@ -247,6 +247,12 @@ export default {
         //     label: 'activity',
         //     name: this.$t('S_ACTIVITY')
         // },
+
+        // 最愛
+        {
+          label: 'favorite',
+          name: this.$t('S_FAVORITE')
+        },
         {
           label: 'new',
           name: this.$t('S_NEW_GAMES')
@@ -265,9 +271,9 @@ export default {
         this.labelData = defaultData.concat(response.ret);
 
         // 最愛統一放在最後面
-        if (this.loginStatus) {
-          this.labelData.push({ label: 'favorite', name: this.$t('S_FAVORITE') });
-        }
+        // if (this.loginStatus) {
+        //   this.labelData.push({ label: 'favorite', name: this.$t('S_FAVORITE') });
+        // }
         this.isLabelReceive = true;
 
         if (!defaultData.concat(response.ret).some((item) => item.label === this.paramsData.label)) {

@@ -24,6 +24,7 @@
           <div :class="$style['image-wrap']">
             <img v-lazy="info.image" />
           </div>
+          <div :class="$style['latest-wrap']">最新</div>
           <div :class="$style['text-wrap']">
             <div :class="$style.time">
               <img
@@ -199,6 +200,21 @@ export default {
     width: 100%;
     border-radius: 10px;
   }
+}
+
+.latest-wrap {
+    position: absolute;
+    background: url('/static/image/_new/promotion/pic_latest.png');
+    background-position: 50% 50%;
+    background-size: cover;
+    top: 6px;
+    left: -8px;
+    width: 47px;
+    height: 25px;
+    color: $main_white_color1;
+    font-size: 12px;
+    text-align: center;
+    line-height: 20px;
 }
 
 .text-wrap {
