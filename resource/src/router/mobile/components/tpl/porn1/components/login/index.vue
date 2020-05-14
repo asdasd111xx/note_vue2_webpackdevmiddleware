@@ -235,7 +235,7 @@ export default {
     // 錯誤訊息call back
     errorCallBack(res) {
       if (res && res.msg) {
-        this.errMsg = res.msg;
+        this.errMsg = `${res.msg}(${res.code})`;
       } else if (res && res.status) {
         this.errMsg = res.status;
       } else if (res && res.data) {
