@@ -52,7 +52,7 @@
     float: left;
     width: 100%;
     margin-bottom: 8px;
-    font-size: 12px;
+    font-size: 14px;
     color: #222;
 }
 
@@ -82,7 +82,7 @@
     width: 23%;
     margin: 0 1% 5px;
     padding: 7px 1px 1px;
-    border: 1px solid #BEBCBC;
+    border: 1px solid #EEE;
     border-radius: 3px;
     color: #AAA;
     cursor: pointer;
@@ -98,9 +98,9 @@
     }
 
     &.is-current {
-        border: 1px solid #BF8646;
-        color: #BF8646;
-        background: linear-gradient(-45deg,#BF8646 10px,hsla(0,0%,100%,0) 0);
+        border: 1px solid #D1B79C;
+        color: #D1B79C;
+        background: linear-gradient(-45deg,#D1B79C 10px,hsla(0,0%,100%,0) 0);
     }
 
     .pay-mode-tag {
@@ -149,7 +149,7 @@
     font-size: 12px;
     margin-right: 6px;
     color: #000;
-    border: 1px solid #BEBCBC;
+    border: 1px solid #EEE;
     border-radius: 3px;
     text-align: center;
     cursor: pointer;
@@ -171,9 +171,9 @@
 
 .current-data {
     background-color: #FFF;
-    color: #BF8646;
-    border: 1px solid #BF8646;
-    background: linear-gradient(-45deg,#BF8646 12px,hsla(0,0%,100%,0) 0);
+    color: #D1B79C;
+    border: 1px solid #D1B79C;
+    background: linear-gradient(-45deg,#D1B79C 12px,hsla(0,0%,100%,0) 0);
 }
 
 
@@ -188,7 +188,7 @@
     font-size: 13px;
     color: #222;
     border-radius: 3px;
-    border: 1px solid #BEBCBC;
+    border: 1px solid #EEE;
     position: relative;
 
     .pay-active {
@@ -206,9 +206,9 @@
 
     &.is-current {
         background-color: #FFF;
-        color: #BF8646;
-        border: 1px solid #BF8646;
-        background: linear-gradient(-45deg,#BF8646 12px,hsla(0,0%,100%,0) 0);
+        color: #D1B79C;
+        border: 1px solid #D1B79C;
+        background: linear-gradient(-45deg,#D1B79C 12px,hsla(0,0%,100%,0) 0);
     }
 }
 
@@ -483,6 +483,10 @@
 .feature-tip-title {
     font-size: 14px;
     color: #CBCED8;
+
+    &.success {
+        color: #D1B79C;
+    }
 }
 
 .pop-message-mark {

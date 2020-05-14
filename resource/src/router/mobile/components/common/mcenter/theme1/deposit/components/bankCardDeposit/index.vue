@@ -475,20 +475,10 @@
                             </div>
                         </div>
                     </template>
-                    <div
-                        :class="[
-                            $style['pay-button'],
-                            { [$style.disabled]: !checkSuccess }
-                        ]"
-                        :title="$text('S_ENTER_PAY', '立即充值')"
-                        @click="submitInfo"
-                    >
-                        {{ $text("S_ENTER_PAY", "立即充值") }}
-                    </div>
                     <div :class="$style['money-info-wrap']">
                         <span
                             v-if="realSaveMoney > 0"
-                            :class="$style['feature-tip-title']"
+                            :class="[$style['feature-tip-title'], $style.success]"
                             @click="showRealStatus = true"
                         >
                             实际到账： ¥{{ realSaveMoney }} (详情)
@@ -523,6 +513,16 @@
                                 关闭
                             </div>
                         </div>
+                    </div>
+                    <div
+                        :class="[
+                            $style['pay-button'],
+                            { [$style.disabled]: !checkSuccess }
+                        ]"
+                        :title="$text('S_ENTER_PAY', '立即充值')"
+                        @click="submitInfo"
+                    >
+                        {{ $text("S_ENTER_PAY", "立即充值") }}
                     </div>
                     <p :class="$style['service-remind']">
                         如需帮助，请<span
