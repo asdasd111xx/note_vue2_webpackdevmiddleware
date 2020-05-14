@@ -270,10 +270,9 @@ export default {
       }).then((response) => {
         this.labelData = defaultData.concat(response.ret);
 
-        // 最愛統一放在最後面
-        // if (this.loginStatus) {
-        //   this.labelData.push({ label: 'favorite', name: this.$t('S_FAVORITE') });
-        // }
+        if (this.loginStatus) {
+          this.labelData.splice(1, 0, { label: 'favorite', name: this.$t('S_FAVORITE') });
+        }
         this.isLabelReceive = true;
 
         if (!defaultData.concat(response.ret).some((item) => item.label === this.paramsData.label)) {

@@ -325,7 +325,7 @@ export default {
       this.AutotransferLock = true;
       mcenter.balanceTranAutoEnable({
         success: () => {
-          this.msg = this.$t('S_SWITCH_AUTO_TRANSFER');
+          this.msg = '归户成功';
           // alert(this.$t('S_SWITCH_AUTO_TRANSFER'));
           this.isAutotransfer = true;
           this.backAccount();
