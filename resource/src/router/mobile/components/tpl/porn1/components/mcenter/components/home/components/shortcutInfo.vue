@@ -24,7 +24,7 @@
       <div
         @click="
           loginStatus
-            ? (msg = $text('S_COMING_SOON2'))
+            ? $router.push('/mobile/mcenter/makeMoney')
             : $router.push('/mobile/login')
         "
       >
