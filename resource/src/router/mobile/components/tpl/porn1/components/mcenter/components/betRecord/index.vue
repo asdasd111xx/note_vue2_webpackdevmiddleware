@@ -187,12 +187,12 @@ export default {
                 {
                     text: this.$text('S_THIRTY_DAY', '近30日'),
                     name: 'month',
-                    value: 30
+                    value: 29
                 },
                 {
                     text: this.$text('S_CUSTOM_DATE', '自定义'),
                     name: 'custom',
-                    value: 30
+                    value: 29
                 }
             ],
             pagination: {},

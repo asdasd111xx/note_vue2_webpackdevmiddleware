@@ -67,7 +67,6 @@
 import { mapGetters, mapActions } from 'vuex';
 import cloneDeep from 'lodash/cloneDeep';
 import draggable from 'vuedraggable';
-import { getElementInfo } from '@/lib/element_default';
 import semanticModal from '@/components/semanticModal';
 import sliderItem from './sliderItem';
 
@@ -172,7 +171,7 @@ export default {
             if (!this.isBackEnd) {
                 return;
             }
-            const eleData = getElementInfo('slider02', this.webInfo.model, this.webInfo.style_color);
+            const eleData = '';
             const fieldData = [];
 
             eleData.data.forEach((data, index) => {

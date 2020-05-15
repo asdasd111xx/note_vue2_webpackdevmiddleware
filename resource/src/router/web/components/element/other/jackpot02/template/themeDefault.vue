@@ -81,7 +81,6 @@
 import { mapGetters, mapActions } from 'vuex';
 import animatedNumber from 'animated-number-vue';
 import cloneDeep from 'lodash/cloneDeep';
-import { getElementInfo } from '@/lib/element_default';
 import elementWrap from '../../../common/new/elementWrap';
 import elementDraggable from '../../../common/new/elementDraggable';
 
@@ -269,7 +268,7 @@ export default {
                 return;
             }
 
-            const eleData = getElementInfo(this.config.name, this.webInfo.model, this.webInfo.style_color);
+            const eleData = '';
             const fields = {};
             this.config.fields.common.forEach((fieldName) => {
                 if (!fields[fieldName]) {

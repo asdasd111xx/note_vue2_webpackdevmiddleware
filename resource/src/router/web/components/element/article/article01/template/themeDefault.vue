@@ -47,7 +47,6 @@
 <script>
 import { mapGetters, mapActions } from 'vuex';
 import axios from 'axios';
-import { getElementInfo } from '@/lib/element_default';
 import elementWrap from '../../../common/new/elementWrap';
 import caseEdit from '../../../common/new/caseEdit';
 import articleTab from './articleTab';
@@ -190,7 +189,7 @@ export default {
                 return;
             }
 
-            const eleData = getElementInfo(this.config.name, this.webInfo.model, this.webInfo.style_color);
+            const eleData = '';
             const fields = {};
             const content = {};
 

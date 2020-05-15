@@ -25,7 +25,6 @@
 import { mapGetters, mapActions } from 'vuex';
 import cloneDeep from 'lodash/cloneDeep';
 import positionTrans from '@/lib/position_trans';
-import { getElementInfo } from '@/lib/element_default';
 
 /**
  * 共用模塊主要外框
@@ -131,7 +130,7 @@ export default {
                 return;
             }
 
-            const eleData = getElementInfo(this.config.name, this.webInfo.model, this.webInfo.style_color);
+            const eleData = '';
             const fieldData = [];
             const contentData = [];
 

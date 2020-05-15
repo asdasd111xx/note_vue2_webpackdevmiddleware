@@ -187,12 +187,6 @@ export const actionChangePage = ({ state, commit, dispatch }, {
             return;
         }
 
-        // 寰宇瀏覽器
-        if (page === 'ubb') {
-            window.open('/ubb/index.html', '_blank');
-            return;
-        }
-
         // 活動頁面
         if (/^festival*/g.test(page)) {
             // 活動連結判斷
@@ -210,11 +204,6 @@ export const actionChangePage = ({ state, commit, dispatch }, {
 
         if (page === 'mobileBet') {
             window.open('/mobileBet', 'mobileBet');
-            return;
-        }
-
-        if (page === 'cgPay') {
-            window.open('/cgPay', 'cgPay');
             return;
         }
 

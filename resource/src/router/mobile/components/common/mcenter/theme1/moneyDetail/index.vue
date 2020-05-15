@@ -233,6 +233,7 @@ export default {
         setDate(value) {
             switch (value.key) {
                 case 'thirty':
+                case 'custom':
                     this.startTime = new Date(Vue.moment(this.estToday).add(-29, 'days'));
                     this.endTime = new Date(Vue.moment(this.estToday));
                     break;
@@ -252,11 +253,11 @@ export default {
 
             this.showDatePicker = value.key === 'custom';
 
+            this.currentDate = value;
             if (value.key === 'custom') {
                 return;
             }
 
-            this.currentDate = value;
             this.detailList = null;
             this.firstResult = 0;
             this.pageNow = 1;

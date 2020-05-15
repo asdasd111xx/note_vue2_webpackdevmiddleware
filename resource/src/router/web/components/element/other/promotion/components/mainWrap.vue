@@ -19,7 +19,6 @@
 <script>
 import { mapGetters, mapActions } from 'vuex';
 import positionTrans from '@/lib/position_trans';
-import { getElementInfo } from '@/lib/element_default';
 import mainPanel from './mainPanel';
 
 export default {
@@ -108,7 +107,7 @@ export default {
                 return;
             }
 
-            const eleData = getElementInfo(this.config.name, this.webInfo.model, this.webInfo.style_color);
+            const eleData = '';
 
             const data = eleData.data.reduce((initial, info) => {
                 const result = this.config.fields.common.reduce((init, key) => {

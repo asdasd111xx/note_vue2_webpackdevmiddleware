@@ -1,5 +1,4 @@
 import cloneDeep from 'lodash/cloneDeep';
-import { getElementInfo } from '@/lib/element_default';
 
 // eslint-disable-next-line
 export const moduleMethod = (self, moduleConfig) => {
@@ -23,7 +22,7 @@ export const moduleMethod = (self, moduleConfig) => {
                 return;
             }
             const fieldData = [];
-            const eleData = getElementInfo(moduleConfig.name, self.webInfo.model, self.webInfo.style_color);
+            const eleData = '';
             if (self.element.case.data.length === 0) {
                 // Module init data
                 eleData.data.forEach((data, index) => {

@@ -1,19 +1,13 @@
 <template>
     <div :style="backgroundStyle" class="index">
-        <!-- 首頁客製化 -->
-        <template v-if="isCustomizeHome && nowpage === webInfo.page[0].pid">
-            <customizeHome :now-alias="customizeAlias" />
-        </template>
         <!-- 模板 -->
-        <template v-else>
+        <template>
             <component :is="templateName" />
         </template>
         <!-- 玩過、最愛 -->
         <collection v-if="!isWebview" />
         <!-- 拉頁 -->
         <change-ver v-if="isChangeVerShow" />
-        <!-- 浮動圖 -->
-        <floating-pic />
         <!-- 各彈窗 (前台才顯示) -->
         <ele-pop v-if="!isBackEnd" />
         <!-- 最新消息彈跳視窗 -->
@@ -35,7 +29,6 @@ import store from '@/store';
 import links from '@/config/links';
 import exceptionList from '@/config/exceptionList';
 import isMobile from '@/lib/is_mobile';
-import floatingPic from './tpl/common/float/floatingPic';
 import popNews from './common/popNews';
 import noticeCenter from './common/noticeCenter';
 
@@ -44,20 +37,8 @@ export default {
         return this.metaInfo;
     },
     components: {
-        customizeHome: () => import(/* webpackChunkName: 'customizeHome' */'./tpl/customizeHome'),
-        template5: () => import(/* webpackChunkName: 'template5' */'./tpl/5'),
-        template6: () => import(/* webpackChunkName: 'template6' */'./tpl/6'),
-        template7: () => import(/* webpackChunkName: 'template7' */'./tpl/7'),
-        template8: () => import(/* webpackChunkName: 'template8' */'./tpl/8'),
-        template9: () => import(/* webpackChunkName: 'template9' */'./tpl/9'),
-        template10: () => import(/* webpackChunkName: 'template10' */'./tpl/10'),
-        template13: () => import(/* webpackChunkName: 'template13' */'./tpl/13'),
-        template17: () => import(/* webpackChunkName: 'template17' */'./tpl/17'),
-        template18: () => import(/* webpackChunkName: 'template18' */'./tpl/18'),
-        template19: () => import(/* webpackChunkName: 'template19' */'./tpl/19'),
         collection: () => import(/* webpackChunkName: 'collection' */'./tpl/common/collection'),
         changeVer: () => import(/* webpackChunkName: 'changeVer' */'./tpl/common/changeVer'),
-        floatingPic,
         elePop: () => import(/* webpackChunkName: 'elePop' */'./tpl/common/pop'),
         popNews,
         noticeCenter
@@ -107,16 +88,6 @@ export default {
             }
 
             return this.siteConfig.CUSTOMIZE_HOME_TPL_PATH.length > 0 && this.siteConfig.CUSTOMIZE_HOME_TPL_PATH.includes(this.webInfo.model);
-        },
-        /**
-         * 客製首頁的 Alias
-         */
-        customizeAlias() {
-            if (!this.isBackEnd && this.siteConfig.TESTER === 'Y') {
-                return this.$cookie.get('TEST_HOME');
-            }
-
-            return this.webInfo.alias;
         },
         /**
          * 是否開啟拉頁

@@ -32,7 +32,6 @@
 /* global $ */
 import { mapGetters } from 'vuex';
 import draggable from 'vuedraggable';
-import { getElementInfo } from '@/lib/element_default';
 import sliderImageItem from './sliderImageItem';
 
 export default {
@@ -102,8 +101,8 @@ export default {
             // 防止超過預設數量
             // if (this.element.case.data.length >= this.config.max) {
             //     return;
-            // }
-            const eleData = getElementInfo(this.element.type, this.webInfo.model, this.webInfo.style_color).data[0].slider;
+            // }'
+            const eleData = '';
             const result = Object.keys(eleData[0]).reduce((init, key) => {
                 if (['image', 'imageHover'].includes(key)) {
                     return { ...init, [key]: '' };
