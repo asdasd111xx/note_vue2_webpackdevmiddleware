@@ -29,8 +29,7 @@ export default {
         terms: () => import(/* webpackChunkName: 'terms' */'./components/customCopyPage/terms'),
         // plan: () => import(/* webpackChunkName: 'plan' */'./components/customCopyPage/plan'),
         privacy: () => import(/* webpackChunkName: 'privacy' */'./components/customCopyPage/privacy'),
-        contact: () => import(/* webpackChunkName: 'contact' */'./components/customCopyPage/contact'),
-        cgPay: () => import(/* webpackChunkName: 'cgPay' */'./components/customCopyPage/cgPay')
+        contact: () => import(/* webpackChunkName: 'contact' */'./components/customCopyPage/contact')
 
     },
     props: {

@@ -5,8 +5,6 @@ import popControl from './popcontrol';
 import game from './game';
 import agent from './agent';
 import mobile from './mobile';
-import mobileBet from './mobileBet';
-import cgPay from './cgPay';
 import simple from './simple';
 import domain from './domain';
 import error500 from './500';
@@ -121,8 +119,6 @@ export default new Router({
         game,
         agent,
         mobile,
-        mobileBet,
-        cgPay,
         simple,
         domain,
         error500,

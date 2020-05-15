@@ -213,11 +213,6 @@ export const actionChangePage = ({ state, commit, dispatch }, {
             return;
         }
 
-        if (page === 'cgPay') {
-            window.open('/cgPay', 'cgPay');
-            return;
-        }
-
         if (page === 'domain') {
             window.open('/domain', '_blank');
             return;
