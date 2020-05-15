@@ -60,6 +60,11 @@
 
     <!-- Share Modal -->
     <share v-if="isShowShare" :is-show-share.sync="isShowShare" />
+    <message v-if="msg" @close="msg = ''">
+      <div slot="msg">
+        {{ msg }}
+      </div>
+    </message>
   </div>
 </template>
 
@@ -73,13 +78,16 @@ import ajax from '@/lib/ajax';
 import { API_MCENTER_DESPOSIT_AMOUNT } from '@/config/api';
 import mobileLinkOpen from '@/lib/mobile_link_open';
 import share from './share';
+import message from '../../../../common/new/message';
 
 export default {
   components: {
-    share
+    share,
+    message
   },
   data() {
     return {
+      msg: '',
       isReceive: false,
       toggleShare: false,
       list: [
@@ -199,7 +207,7 @@ export default {
           newWindow = window.open('');
         }
         common.systemTime({
-          errorAlert: isUBMobile || webview,
+          errorAlert: false,
           success: (response) => {
             if (response.result !== 'ok') {
               return;
@@ -215,7 +223,7 @@ export default {
                   'YYYY-MM-DD HH:mm:ss-04:00'
                 )
               },
-              errorAlert: isUBMobile || webview,
+              errorAlert: false,
               success: ({
                 result, ret, msg, code
               }) => {
@@ -223,11 +231,10 @@ export default {
                   const errorCode = code || '';
 
                   if (!isUBMobile && !webview) {
-                    newWindow.alert(`${msg} ${errorCode}`);
                     newWindow.close();
-                    return;
                   }
-                  alert(`${msg} ${errorCode}`);
+
+                  this.msg = `${msg} ${errorCode}`;
                   return;
                 }
 
@@ -245,43 +252,31 @@ export default {
                 }
 
                 if (!isUBMobile && !webview) {
-                  newWindow.alert(
-                    this.$text(
-                      'S_VIP_ONLY_DOWNLOAD',
-                      '充值超过％s即可下载'
-                    ).replace('％s', requiredMoney)
-                  );
                   newWindow.close();
-                  return;
                 }
-                alert(
-                  this.$text(
-                    'S_VIP_ONLY_DOWNLOAD',
-                    '充值超过％s即可下载'
-                  ).replace('％s', requiredMoney)
-                );
+
+                this.msg = this.$text(
+                  'S_VIP_ONLY_DOWNLOAD',
+                  '充值超过％s即可下载'
+                ).replace('％s', requiredMoney);
               },
               fail: (error) => {
                 if (!isUBMobile && !webview) {
-                  newWindow.alert(
-                    `${error.data.msg} ${
-                    error.data.code ? `(${error.data.code})` : ''
-                    }`
-                  );
                   newWindow.close();
                 }
+                this.msg = `${error.data.msg} ${
+                    error.data.code ? `(${error.data.code})` : ''
+                }`;
               }
             });
           },
           fail: (error) => {
             if (!isUBMobile && !webview) {
-              newWindow.alert(
-                `${error.data.msg} ${
-                error.data.code ? `(${error.data.code})` : ''
-                }`
-              );
-              newWindow.close();
+                newWindow.close();
             }
+            this.msg = `${error.data.msg} ${
+                error.data.code ? `(${error.data.code})` : ''
+              }`;
           }
         });
         return;
