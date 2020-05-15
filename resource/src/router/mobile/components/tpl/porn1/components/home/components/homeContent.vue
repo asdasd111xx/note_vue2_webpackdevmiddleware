@@ -652,7 +652,6 @@ export default {
               return;
             }
 
-
             if (webview) {
               window.location.href = ret.url + urlParams;
               return;
