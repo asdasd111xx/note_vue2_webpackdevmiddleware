@@ -183,35 +183,40 @@ export default {
     }
   },
   created() {
-    common.systemTime({
-      errorAlert: false,
-      success: (response) => {
-        if (response.result !== 'ok') {
-          return;
-        }
-        ajax({
-          // 會員存款總額
-          method: 'get',
-          url: API_MCENTER_DESPOSIT_AMOUNT,
-          params: {
-            start_at: '2020-03-01 00:00:00-04:00',
-            end_at: Vue.moment(response.ret).format(
-              'YYYY-MM-DD HH:mm:ss-04:00'
-            )
-          },
-          errorAlert: false,
-          success: ({
-            result, ret, msg, code
-          }) => {
-            this.balance = ret;
-          },
-          fail: (error) => {
+    if (this.loginStatus) {
+
+      common.systemTime({
+        errorAlert: false,
+        success: (response) => {
+          let today = response.ret;
+          //馬甲版異常錯誤 暫時解決
+          if (response.result !== 'ok') {
+            today = new Date().toISOString()
           }
-        });
-      },
-      fail: (error) => {
-      }
-    });
+          ajax({
+            // 會員存款總額
+            method: 'get',
+            url: API_MCENTER_DESPOSIT_AMOUNT,
+            params: {
+              start_at: '2020-03-01 00:00:00-04:00',
+              end_at: Vue.moment(response.ret).format(
+                'YYYY-MM-DD HH:mm:ss-04:00'
+              )
+            },
+            errorAlert: false,
+            success: ({
+              result, ret, msg, code
+            }) => {
+              this.balance = ret;
+            },
+            fail: (error) => {
+            }
+          });
+        },
+        fail: (error) => {
+        }
+      });
+    }
 
     this.pornSwitchState = this.memInfo.config.content_rating && this.memInfo.user.content_rating;
   },
