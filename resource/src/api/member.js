@@ -59,7 +59,8 @@ export default {
             ...args
         }).then((response) => {
             if (response && response.result === 'ok') {
-                localStorage.clear();
+                // localStorage.clear();
+                localStorage.removeItem('type');
                 // GA流量統計
                 window.dataLayer.push({
                     ga_uid: undefined
