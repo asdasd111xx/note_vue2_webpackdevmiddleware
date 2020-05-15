@@ -178,11 +178,8 @@ input {
     padding: 0 14px;
     color: $main_error_color1;
     min-height: 40px;
-    line-height: 40px;
-
-    >.send-tips {
-        line-height: 20px;
-    }
+    display: flex;
+    align-items: center;
 }
 
 .bottom-tips {
