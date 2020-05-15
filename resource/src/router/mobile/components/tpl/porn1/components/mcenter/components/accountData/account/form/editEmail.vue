@@ -4,11 +4,7 @@
       <div :class="[$style.wrap, 'clearfix']">
         <!-- 錯誤訊息 -->
         <div :class="$style['top-tips']">
-          <div v-if="countdownSec" :class="$style['send-tips']">
-            {{ $text("S_SEND_CHECK_CODE_VALID_TIME").replace("%s", 5) }}
-            {{ $text("S_FIND_TRASH") }}
-          </div>
-          <div v-if="tipMsg">
+          <div v-show="tipMsg">
             {{ tipMsg }}
           </div>
         </div>
@@ -193,7 +189,9 @@ export default {
       };
     }
   },
-  mounted() {
+  beforeDestroy() {
+    clearInterval(this.timer);
+    this.timer = null;
   },
   methods: {
     ...mapActions([
@@ -215,20 +213,15 @@ export default {
       }, 1000);
     },
     handleSend(send) {
-      this.locker();
-      if (!this.newValue) return;
-
-      if (this.countdownSec) {
-        return Promise.resolve({ status: false });
-      }
+      if (!this.newValue || this.timer) return;
 
       const getOldEmail = () => {
         if (this.fieldValue) {
           return this.info.status === 'ok' ? this.newValue : this.oldValue;
         }
-
         return '';
       };
+
       mcenter.accountMailSend({
         params: {
           old_email: getOldEmail(),
@@ -237,9 +230,8 @@ export default {
         success: () => {
           this.actionSetUserdata(true);
           this.locker();
-          this.tipMsg = this.$text('S_SEND_CHECK_CODE_MAIL');
+          this.tipMsg = `${this.$text("S_SEND_CHECK_CODE_VALID_TIME").replace("%s", 5)}${this.$text("S_FIND_TRASH")}`
         },
-
         fail: (res) => {
           this.tipMsg = res.data.msg;
         }

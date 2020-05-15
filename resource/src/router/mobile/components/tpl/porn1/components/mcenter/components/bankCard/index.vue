@@ -48,7 +48,7 @@ export default {
       // 預設提現銀行卡添加
       const { query } = this.$route;
       let redirect = query.redirect;
-      if (redirect.split('-')[0]) {
+      if (redirect && redirect.split('-')[0]) {
         switch (redirect.split('-')[0]) {
           case "casino":
           case "withdraw":

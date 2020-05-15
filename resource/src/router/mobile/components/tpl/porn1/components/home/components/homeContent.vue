@@ -139,7 +139,10 @@
       <div
         ref="game-wrap"
         :class="[$style['game-list-wrap'], 'clearfix']"
-        :style="{ height: `${wrapHeight - 50}px`, 'overflow-y': `${stopScroll ? 'hidden' : 'auto'}` }"
+        :style="{
+          height: `${wrapHeight - 50}px`,
+          'overflow-y': `${stopScroll ? 'hidden' : 'auto'}`
+        }"
         @touchstart="onTouchStart"
         @touchmove="onTouchMove"
         @touchend="onTouchEnd"
@@ -539,9 +542,12 @@ export default {
       $(this.$refs['game-wrap']).animate({ scrollTop: 0 }, 0);
 
       this.$nextTick(() => {
-        this.stopScroll = false;
         this.isSliding = false;
       });
+
+      setTimeout(() => {
+        this.stopScroll = false;
+      }, 100);
     },
     // 切換當前影片分類
     onChangeVideoType(index) {

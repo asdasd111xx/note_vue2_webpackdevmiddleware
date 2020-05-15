@@ -3,10 +3,7 @@
     <div slot="content" :class="$style['content-wrap']">
       <!-- 錯誤訊息 -->
       <div :class="$style['top-tips']">
-        <div v-if="countdownSec" :class="$style['send-tips']">
-          {{ $text("S_SEND_CHECK_CODE_VALID_TIME").replace("%s", 5) }}
-        </div>
-        <div v-else-if="tipMsg">
+        <div v-show="tipMsg">
           {{ tipMsg }}
         </div>
       </div>
@@ -136,7 +133,6 @@ export default {
       oldValue: '',
       newValue: '',
       codeValue: '',
-      sendMsg: '',
       tipMsg: '',
       countdownSec: 0,
       options: {},
@@ -254,6 +250,10 @@ export default {
       }
     });
   },
+  beforeDestroy() {
+    clearInterval(this.timer);
+    this.timer = null;
+  },
   methods: {
     ...mapActions([
       'actionSetUserdata',
@@ -277,10 +277,6 @@ export default {
     handleSend() {
       if (!this.newValue || this.timer) return;
 
-      if (this.countdownSec) {
-        return Promise.resolve({ status: false });
-      }
-
       const getOldPhone = () => {
         if (this.fieldValue) {
           return this.info.status === 'ok' ? `${this.newCode.replace('+', '')}-${this.newValue}` : `${this.oldCode.replace('+', '')}-${this.oldValue}`;
@@ -288,9 +284,7 @@ export default {
 
         return '';
       };
-      if (this.isLock) return;
 
-      this.isLock = true;
       mcenter.accountPhoneSend({
         params: {
           old_phone: getOldPhone(),
@@ -300,13 +294,11 @@ export default {
           this.countdownSec = 60;
           this.actionSetUserdata(true);
           this.locker();
-          this.sendMsg = this.$text('S_SEND_CHECK_CODE_PHONE');
-          this.isLock = false;
+          this.tipMsg = this.$text("S_SEND_CHECK_CODE_VALID_TIME").replace("%s", 5)
         },
         fail: (res) => {
           this.countdownSec = '';
           this.tipMsg = res.data.msg;
-          this.isLock = false;
         }
       });
     },
