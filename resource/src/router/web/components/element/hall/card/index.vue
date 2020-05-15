@@ -11,7 +11,6 @@
 </template>
 
 <script>
-import elementDefault from '@/config/elementDefault';
 import config from './config';
 import themeDefault from './template/themeDefault';
 
@@ -28,7 +27,6 @@ export default {
     },
     data() {
         return {
-            elementDefault,
             config
         };
     }

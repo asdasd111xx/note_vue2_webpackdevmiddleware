@@ -82,7 +82,6 @@ import { mapGetters, mapActions } from 'vuex';
 import cloneDeep from 'lodash/cloneDeep';
 import isNil from 'lodash/isNil';
 import isObjectLike from 'lodash/isObjectLike';
-import { getElementInfo } from '@/lib/element_default';
 import positionTrans from '@/lib/position_trans';
 import isJsonStr from '@/lib/isJsonStr';
 import widgetView from '../../widgetView';
@@ -407,7 +406,7 @@ export default {
                 return;
             }
 
-            const eleData = getElementInfo('widget', this.webInfo.model, this.webInfo.style_color);
+            const eleData = '';
             const fieldData = [];
             const contentData = [];
 

@@ -69,7 +69,6 @@
 import { mapGetters } from 'vuex';
 import cloneDeep from 'lodash/cloneDeep';
 import draggable from 'vuedraggable';
-import { getElementInfo } from '@/lib/element_default';
 import config from '../../config';
 
 export default {
@@ -155,7 +154,7 @@ export default {
                 return;
             }
 
-            const eleData = getElementInfo(this.config.name, this.webInfo.model, this.webInfo.style_color);
+            const eleData = '';
             const initData = {};
 
             Object.keys(eleData.data[1].slider[0]).forEach((objKey) => {

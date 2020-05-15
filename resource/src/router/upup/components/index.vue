@@ -32,12 +32,8 @@ import Vue from 'vue';
 import store from '@/store';
 import member from '@/api/member';
 import getLang from '@/lib/getLang';
-import floatingPic from '@/router/web/components/tpl/common/float/floatingPic';
 
 export default {
-  components: {
-    floatingPic
-  },
   data() {
     return {
       start: '',

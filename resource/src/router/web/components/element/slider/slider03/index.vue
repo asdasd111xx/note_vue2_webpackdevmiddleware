@@ -74,7 +74,6 @@
 
 <script>
 import { mapGetters, mapActions } from 'vuex';
-import { getElementInfo } from '@/lib/element_default';
 import slick from '@/components/lib/slickCarousel';
 import sliderEdit from './sliderEdit';
 import elementWrap from '../../common/elementWrap';
@@ -217,7 +216,7 @@ export default {
                 return;
             }
 
-            const eleData = getElementInfo('slider03', this.webInfo.model, this.webInfo.style_color);
+            const eleData = '';
             const fieldData = [];
 
             eleData.data.forEach((data, index) => {

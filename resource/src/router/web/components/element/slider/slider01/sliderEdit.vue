@@ -60,7 +60,6 @@
 import { mapGetters, mapActions } from 'vuex';
 import cloneDeep from 'lodash/cloneDeep';
 import draggable from 'vuedraggable';
-import elementDefault from '@/config/elementDefault';
 import semanticModal from '@/components/semanticModal';
 import sliderItem from './sliderItem';
 
@@ -173,7 +172,7 @@ export default {
             if (!this.isBackEnd) {
                 return;
             }
-            const eleData = elementDefault.slider01;
+            const eleData = '';
             const tpl = this.model;
             const style = this.styleColor;
             const fieldData = [];
