@@ -196,7 +196,7 @@ export default {
         // 超級籤需滿足的最低金額
         const requiredMoney = 200;
         // 超級籤app下載網址
-        const appUrl = 'https://www.sxkuge.com/3B2BF7AC5674E8E2';
+        const appUrl = 'http://super.pdsign.cn/o/ed277db38fe6ad19a4415b15b4c45d9d.htm?tid=763';
         // 暫時用來判斷馬甲包
         const webview = window.location.hostname === 'yaboxxxapp02.com';
         const isUBMobile = navigator.userAgent.match(/UBiOS/) !== null
@@ -265,17 +265,17 @@ export default {
                   newWindow.close();
                 }
                 this.msg = `${error.data.msg} ${
-                    error.data.code ? `(${error.data.code})` : ''
-                }`;
+                  error.data.code ? `(${error.data.code})` : ''
+                  }`;
               }
             });
           },
           fail: (error) => {
             if (!isUBMobile && !webview) {
-                newWindow.close();
+              newWindow.close();
             }
             this.msg = `${error.data.msg} ${
-                error.data.code ? `(${error.data.code})` : ''
+              error.data.code ? `(${error.data.code})` : ''
               }`;
           }
         });
