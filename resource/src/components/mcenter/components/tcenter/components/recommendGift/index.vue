@@ -73,7 +73,7 @@
             <template v-if="mainListData.length > 0">
                 <div :class="$style['total-wrap']">
                     <div>首存金额: {{ mainTotal.amount }}</div>
-                    <div>礼金: 13443</div>
+                    <div>礼金: {{ mainTotal.total_invite_gift }}</div>
                 </div>
                 <div :class="$style['info-list']">
                     <div
@@ -377,7 +377,7 @@ export default {
             this.isCustomTime = true;
             this.currentCustomDate = '';
             this.selectMenu = '';
-            this.getTotalTime();
+            this.updateGame();
         },
         /**
          * 捲動加載
