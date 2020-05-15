@@ -139,7 +139,10 @@
       <div
         ref="game-wrap"
         :class="[$style['game-list-wrap'], 'clearfix']"
-        :style="{ height: `${wrapHeight - 50}px`, 'overflow-y': `${stopScroll ? 'hidden' : 'auto'}` }"
+        :style="{
+          height: `${wrapHeight - 50}px`,
+          'overflow-y': `${stopScroll ? 'hidden' : 'auto'}`
+        }"
         @touchstart="onTouchStart"
         @touchmove="onTouchMove"
         @touchend="onTouchEnd"
@@ -370,10 +373,10 @@ export default {
         method: 'get',
         url: `${API_PORN1_DOMAIN}/api/v1/video/tag`,
         timeout: 30000,
-        // headers: {
-        //   Bundleid: 'chungyo.foxyporn.prod.enterprise.web',
-        //   Version: 1
-        // }
+        headers: {
+          Bundleid: 'chungyo.foxyporn.prod.enterprise.web',
+          Version: 1
+        }
       }).then((response) => {
         if (response.status !== 200) {
           return;
@@ -388,10 +391,10 @@ export default {
         method: 'get',
         url: `${API_PORN1_DOMAIN}/api/v1/video/sort`,
         timeout: 30000,
-        // headers: {
-        //   Bundleid: 'chungyo.foxyporn.prod.enterprise.web',
-        //   Version: 1
-        // }
+        headers: {
+          Bundleid: 'chungyo.foxyporn.prod.enterprise.web',
+          Version: 1
+        }
       }).then((response) => {
         if (response.status !== 200) {
           return;
@@ -406,10 +409,10 @@ export default {
         method: 'get',
         url: `${API_PORN1_DOMAIN}/api/v1/video/recommand`,
         timeout: 30000,
-        // headers: {
-        //   Bundleid: 'chungyo.foxyporn.prod.enterprise.web',
-        //   Version: 1
-        // }
+        headers: {
+          Bundleid: 'chungyo.foxyporn.prod.enterprise.web',
+          Version: 1
+        }
       }).then((response) => {
         if (response.status !== 200) {
           return;
@@ -425,10 +428,10 @@ export default {
         url: `${API_PORN1_DOMAIN}/api/v1/video/videolist`,
         timeout: 30000,
         data: querystring.stringify({ tag: this.videoType.title === '全部' ? '' : this.videoType.title }),
-        // headers: {
-        //   Bundleid: 'chungyo.foxyporn.prod.enterprise.web',
-        //   Version: 1
-        // }
+        headers: {
+          Bundleid: 'chungyo.foxyporn.prod.enterprise.web',
+          Version: 1
+        }
       }).then((response) => {
         if (response.status !== 200) {
           return;
@@ -443,11 +446,11 @@ export default {
         method: 'get',
         url: `${this.siteConfig.YABO_API_DOMAIN}/game/list`,
         timeout: 30000,
-        // headers: {
-        //   Bundleid: 'chungyo.foxyporn.prod.enterprise.web',
-        //   Version: 1,
-        //   'x-domain': this.memInfo.user.domain
-        // }
+        headers: {
+          Bundleid: 'chungyo.foxyporn.prod.enterprise.web',
+          Version: 1,
+          'x-domain': this.memInfo.user.domain
+        }
       }).then((response) => {
         if (response.status !== 200) {
           return;
@@ -543,7 +546,7 @@ export default {
       });
 
       setTimeout(() => {
-          this.stopScroll = false;
+        this.stopScroll = false;
       }, 100);
     },
     // 切換當前影片分類
