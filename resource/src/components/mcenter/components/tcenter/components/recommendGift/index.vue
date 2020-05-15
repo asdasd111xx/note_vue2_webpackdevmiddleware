@@ -221,12 +221,12 @@ export default {
                 {
                     text: this.$text('S_THIRTY_DAY', '近30日'),
                     name: 'month',
-                    value: 30
+                    value: 29
                 },
                 {
                     text: this.$text('S_CUSTOM_DATE', '自定义'),
                     name: 'custom',
-                    value: 30
+                    value: 29
                 }
             ],
             pagination: {},
@@ -323,8 +323,8 @@ export default {
         },
         getGiftList() {
             const params = {
-                start_at: Vue.moment(this.startTime).format('YYYY-MM-DD 00:00:00-04:00'),
-                end_at: Vue.moment(this.endTime).format('YYYY-MM-DD 23:59:59-04:00'),
+                dispatch_start_at: Vue.moment(this.startTime).format('YYYY-MM-DD 00:00:00-04:00'),
+                dispatch_end_at: Vue.moment(this.endTime).format('YYYY-MM-DD 23:59:59-04:00'),
                 max_results: this.maxResults,
                 first_result: this.maxResults * this.showPage
             };
