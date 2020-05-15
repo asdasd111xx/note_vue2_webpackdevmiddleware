@@ -76,6 +76,7 @@
 <script>
 /* global $ */
 import { mapGetters } from 'vuex';
+import { getCookie } from "@/lib/cookie";
 import mobileContainer from '../../../../common/new/mobileContainer';
 
 export default {
@@ -185,6 +186,10 @@ export default {
         }
     },
     created() {
+        if (getCookie("cid")) {
+            return
+        }
+
         if (!this.loginStatus) {
             this.$router.push("/mobile/login");
         }

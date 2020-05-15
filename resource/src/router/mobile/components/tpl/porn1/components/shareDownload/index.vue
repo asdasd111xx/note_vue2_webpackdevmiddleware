@@ -1,5 +1,15 @@
 <template>
     <div>
+        <div :class="$style['back']" @click="$router.push('/mobile/mcenter/home')">
+            <img
+                :src="
+                    $getCdnPath(
+                        `/static/image/_new/common/btn_back.png`
+                    )
+                "
+                alt="back"
+            />
+        </div>
         <div :class="$style['pic-wrap']">
             <img
                 :src="
@@ -101,6 +111,19 @@ export default {
 </script>
 
 <style lang="scss" module>
+.back {
+    position: absolute;
+    width: 20px;
+    height: 20px;
+    z-index: 1;
+    top: 5px;
+    left: 5px;
+
+    img {
+        width: 100%;
+        height: 100%;
+    }
+}
 .pic-wrap {
     position: relative;
     width: 100%;
