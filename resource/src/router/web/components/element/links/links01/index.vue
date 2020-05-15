@@ -23,7 +23,6 @@
 
 <script>
 import { mapGetters, mapActions } from 'vuex';
-import { getElementInfo } from '@/lib/element_default';
 import positionTrans from '@/lib/position_trans';
 import elementWrap from '../../common/elementWrap';
 
@@ -87,7 +86,7 @@ export default {
         },
         // 初始化
         initCase() {
-            const eleData = getElementInfo('links01', this.webInfo.model, this.webInfo.style_color);
+            const eleData = '';
             const fieldData = [];
 
             eleData.data.forEach((data) => {

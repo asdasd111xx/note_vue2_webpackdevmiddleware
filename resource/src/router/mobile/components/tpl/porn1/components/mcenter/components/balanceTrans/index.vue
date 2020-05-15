@@ -38,7 +38,7 @@
               <img
                 :src="
                   $getCdnPath(
-                    '/static/image/mobile/mcenter/porn1/icon_autotransfer.png'
+                    '/static/image/_new/mcenter/wallet/ic_autotransfer.png'
                   )
                 "
               />

@@ -37,7 +37,13 @@
                     .trim()
                 "
               />
-              <span class="input-icon" />
+              <div class="input-icon">
+                <img
+                  :src="
+                    $getCdnPath(`/static/image/_new/login/icon_account.png`)
+                  "
+                />
+              </div>
               <div :class="$style['clear']" v-if="username">
                 <img
                   :src="$getCdnPath(`/static/image/_new/common/ic_clear.png`)"
@@ -72,7 +78,13 @@
                   @click="toggleEye('confPwd')"
                 />
               </div>
-              <span class="input-icon" />
+              <div class="input-icon">
+                <img
+                  :src="
+                    $getCdnPath(`/static/image/_new/login/icon_password.png`)
+                  "
+                />
+              </div>
             </span>
             <!-- 驗證碼 -->
             <span
@@ -90,8 +102,15 @@
                 @focus="getCaptcha"
                 @keydown.13="loginCheck"
               />
-              <span class="input-icon" />
+              <div class="input-icon">
+                <img
+                  :src="
+                    $getCdnPath(`/static/image/_new/login/sign_captcha.png`)
+                  "
+                />
+              </div>
               <img
+                class="captchaImg"
                 v-if="captchaImg"
                 :src="captchaImg"
                 height="25"

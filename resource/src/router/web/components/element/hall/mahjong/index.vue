@@ -11,7 +11,6 @@
 </template>
 
 <script>
-import elementDefault from '@/config/elementDefault';
 import config from './config';
 import themeDefault from './template/themeDefault';
 import mainWrap from '../../common/new/mainWrap';
@@ -29,7 +28,6 @@ export default {
     },
     data() {
         return {
-            elementDefault,
             config
         };
     }

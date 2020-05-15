@@ -5,8 +5,6 @@ import popControl from './popcontrol';
 import game from './game';
 import agent from './agent';
 import mobile from './mobile';
-import mobileBet from './mobileBet';
-import cgPay from './cgPay';
 import simple from './simple';
 import domain from './domain';
 import error500 from './500';
@@ -52,77 +50,10 @@ export default new Router({
                 next();
             }
         },
-        {
-            path: '/page/:pid/:subId?',
-            name: 'page',
-            component: mainbody,
-            alias: '/preview/page/:pid/:subId?',
-            beforeEnter: (to, from, next) => {
-                const isPc = document.cookie.indexOf('pc=1');
-
-                if (isPc !== -1) {
-                    next();
-                    return;
-                }
-
-                if (isMobile()) {
-                    if (to.query.page && to.query.page === 'pwdreset') {
-                        next(`/mobile/resetPwd?kr=${to.query.kr}&type=${to.query.type}`);
-                        return;
-                    }
-
-                    next('/mobile');
-                    return;
-                }
-                next();
-            }
-        },
-        {
-            path: '/preview',
-            name: 'preview',
-            component: mainbody
-        },
-        {
-            path: '/webview/:pid',
-            name: 'webview',
-            component: mainbody
-        },
-        {
-            path: '/a/:agentId',
-            component: mainbody,
-            beforeEnter: (to, from, next) => {
-                const isPc = document.cookie.indexOf('pc=1');
-
-                if (isPc !== -1) {
-                    next();
-                    return;
-                }
-
-                if (isMobile()) {
-                    Vue.cookie.set('a', to.params.agentId);
-
-                    if (to.query.page && to.query.page === 'pwdreset') {
-                        next(`/mobile/resetPwd?kr=${to.query.kr}&type=${to.query.type}`);
-                        return;
-                    }
-
-                    if (to.params) {
-                        next('/mobile/joinmember');
-                        return;
-                    }
-
-                    next('/mobile');
-                    return;
-                }
-                next();
-            }
-        },
         popControl,
         game,
         agent,
         mobile,
-        mobileBet,
-        cgPay,
         simple,
         domain,
         error500,

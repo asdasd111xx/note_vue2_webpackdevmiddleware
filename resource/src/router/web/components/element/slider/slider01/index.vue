@@ -54,7 +54,6 @@
 
 <script>
 import { mapGetters, mapActions } from 'vuex';
-import elementDefault from '@/config/elementDefault';
 import slick from '@/components/lib/slickCarousel';
 import sliderEdit from './sliderEdit';
 import imageConfig from './config/imageConfig';

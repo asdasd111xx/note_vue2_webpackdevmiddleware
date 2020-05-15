@@ -43,7 +43,6 @@ import { API_PROMOTION_MEM } from '@/config/api';
 import ajax from '@/lib/ajax';
 import EST from '@/lib/EST';
 import isMobile from '@/lib/is_mobile';
-import { getElementInfo } from '@/lib/element_default';
 import promotionCategory from '../components/promotionCategory';
 import elementWrap from '../components/elementWrap';
 import elementDraggable from '../../../common/new/elementDraggable';
@@ -189,7 +188,7 @@ export default {
                 return;
             }
 
-            const eleData = getElementInfo(this.config.name, this.webInfo.model, this.webInfo.style_color);
+            const eleData = '';
             const data = this.config.fields.common.reduce((initial, key) => {
                 const name = typeof key === 'object' ? key.name : key;
 

@@ -62,28 +62,20 @@
 
         .input-icon {
             display: inline-block;
-            position: relative;
-            left: 10px;
-            bottom: 26px;
-            width: 16px;
-            height: 16px;
-            padding-right: 19px;
-            background-repeat: no-repeat;
-            background-position: 0 50%;
-            background-size: contain;
+            position: absolute;
+            top: calc(50% - 9px);
+            left: 0;
+            width: 30px;
+            height: 20px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
             border-right: 1px solid rgba(128, 128, 128, 0.26);
-        }
-    }
 
-    .login-unit-username {
-        .input-icon {
-            background-image: url('/static/image/mobile/tpl/porn1/login/sign_user.png');
-        }
-    }
-
-    .login-unit-password {
-        .input-icon {
-            background-image: url('/static/image/mobile/tpl/porn1/login/sign_password.png');
+            >img {
+                width: 18px;
+                height: 18px;
+            }
         }
     }
 
@@ -91,11 +83,7 @@
         position: relative;
         margin-bottom: 19px;
 
-        .input-icon {
-            background-image: url('/static/image/mobile/tpl/porn1/login/sign_captcha.png');
-        }
-
-        img {
+        .captchaImg {
             position: absolute;
             top: 9px;
             right: 15px;

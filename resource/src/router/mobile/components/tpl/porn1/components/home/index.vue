@@ -1,5 +1,5 @@
 <template>
-    <mobile-container :header-config="headerConfig" :class="$style.container">
+    <mobile-container :header-config="headerConfig" :class="$style.container" >
         <div slot="content" class="content-wrap">
             <home-slider />
             <home-new />
@@ -27,6 +27,7 @@ export default {
     },
     data() {
         return {
+            updateBalance: null ,
             popStatus: false,
             isShow: false,
             isHidePop: false
@@ -59,10 +60,19 @@ export default {
         if (this.isShow) {
             document.querySelector('body').style = 'overflow: hidden';
         }
+
+        this.updateBalance = setInterval(() => {
+            this.actionSetUserBalance()
+        } , 20000)
+    },
+    beforeDestroy() {
+        clearInterval(this.updateBalance)
+        this.updateBalance = null
     },
     methods: {
         ...mapActions([
-            'actionSetPost'
+            'actionSetPost',
+            'actionSetUserBalance'
         ]),
         onClick() {
             this.$router.push('/mobile');

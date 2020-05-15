@@ -94,12 +94,6 @@ export default ({ linkType = 'nolink', linkTo = '', linkItem = '' }) => {
             return;
         }
 
-        // 寰宇瀏覽器
-        if (linkTo === 'ubb') {
-            window.open('/ubb/index.html', '_blank');
-            return;
-        }
-
         // 手機下注
         if (linkTo === 'mobileBet') {
             if (store.state.loginStatus || store.state.appInfo.unsafe_download) {
