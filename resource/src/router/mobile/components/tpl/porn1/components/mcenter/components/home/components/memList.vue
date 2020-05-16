@@ -163,7 +163,8 @@ export default {
         //   initName: '信息中心', name: 'S_MSG_CENTER', path: '/mobile/mcenter/information/post', pageName: 'information', image: 'info_post'
         // } // 信息中心
       ],
-      pornSwitchState: false
+      pornSwitchState: false,
+      balance: ""
     };
   },
   computed: {
@@ -182,6 +183,41 @@ export default {
     }
   },
   created() {
+    if (this.loginStatus) {
+
+      common.systemTime({
+        errorAlert: false,
+        success: (response) => {
+          let today = response.ret;
+          //馬甲版異常錯誤 暫時解決
+          if (response.result !== 'ok') {
+            today = new Date().toISOString()
+          }
+          ajax({
+            // 會員存款總額
+            method: 'get',
+            url: API_MCENTER_DESPOSIT_AMOUNT,
+            params: {
+              start_at: '2020-03-01 00:00:00-04:00',
+              end_at: Vue.moment(today).format(
+                'YYYY-MM-DD HH:mm:ss-04:00'
+              )
+            },
+            errorAlert: false,
+            success: ({
+              result, ret, msg, code
+            }) => {
+              this.balance = ret;
+            },
+            fail: (error) => {
+            }
+          });
+        },
+        fail: (error) => {
+        }
+      });
+    }
+
     this.pornSwitchState = this.memInfo.config.content_rating && this.memInfo.user.content_rating;
   },
   methods: {
@@ -204,82 +240,30 @@ export default {
         let newWindow = '';
 
         if (!isUBMobile && !webview) {
-          newWindow = window.open('');
+          newWindow = window.open('', '_blank');
         }
-        common.systemTime({
-          errorAlert: false,
-          success: (response) => {
-            if (response.result !== 'ok') {
-              return;
-            }
-
-            ajax({
-              // 會員存款總額
-              method: 'get',
-              url: API_MCENTER_DESPOSIT_AMOUNT,
-              params: {
-                start_at: '2020-03-01 00:00:00-04:00',
-                end_at: Vue.moment(response.ret).format(
-                  'YYYY-MM-DD HH:mm:ss-04:00'
-                )
-              },
-              errorAlert: false,
-              success: ({
-                result, ret, msg, code
-              }) => {
-                if (result !== 'ok') {
-                  const errorCode = code || '';
-
-                  if (!isUBMobile && !webview) {
-                    newWindow.close();
-                  }
-
-                  this.msg = `${msg} ${errorCode}`;
-                  return;
-                }
-
-                if (ret && +ret >= requiredMoney) {
-                  if (webview) {
-                    window.location.href = appUrl;
-                    return;
-                  }
-                  if (!isUBMobile) {
-                    newWindow.location.href = appUrl;
-                    return;
-                  }
-                  window.open(appUrl, '_blank');
-                  return;
-                }
-
-                if (!isUBMobile && !webview) {
-                  newWindow.close();
-                }
-
-                this.msg = this.$text(
-                  'S_VIP_ONLY_DOWNLOAD',
-                  '充值超过％s即可下载'
-                ).replace('％s', requiredMoney);
-              },
-              fail: (error) => {
-                if (!isUBMobile && !webview) {
-                  newWindow.close();
-                }
-                this.msg = `${error.data.msg} ${
-                  error.data.code ? `(${error.data.code})` : ''
-                  }`;
-              }
-            });
-          },
-          fail: (error) => {
-            if (!isUBMobile && !webview) {
-              newWindow.close();
-            }
-            this.msg = `${error.data.msg} ${
-              error.data.code ? `(${error.data.code})` : ''
-              }`;
+        if (Number(this.balance) >= Number(requiredMoney)) {
+          if (webview) {
+            window.location.href = appUrl;
+            return;
           }
-        });
-        return;
+          if (!isUBMobile) {
+            newWindow.location.href = appUrl;
+            return;
+          }
+          window.open(appUrl, '_blank');
+          return;
+        } else {
+          this.msg = this.$text(
+            'S_VIP_ONLY_DOWNLOAD',
+            '充值超过％s即可下载'
+          ).replace('％s', requiredMoney);
+          if (!isUBMobile && !webview) {
+            newWindow.close();
+            return;
+          }
+          return;
+        }
       }
 
       if (item.pageName === 'service') {
