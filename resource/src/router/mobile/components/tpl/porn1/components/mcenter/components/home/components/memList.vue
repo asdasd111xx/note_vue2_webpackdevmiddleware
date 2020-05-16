@@ -199,7 +199,7 @@ export default {
             url: API_MCENTER_DESPOSIT_AMOUNT,
             params: {
               start_at: '2020-03-01 00:00:00-04:00',
-              end_at: Vue.moment(response.ret).format(
+              end_at: Vue.moment(today).format(
                 'YYYY-MM-DD HH:mm:ss-04:00'
               )
             },

@@ -104,7 +104,8 @@ export default {
         {
           title: this.$text('S_SERIAL_AUDIT', '稽核倍数'),
           rateValue: this.data.audit_rate,
-          value: this.data.audit_amount        },
+          value: this.data.administrative_checked
+        },
         {
           title: this.$text('S_SERIAL_NUMBER', '流水要求'),
           rateValue: this.data.total_audit_amount,
@@ -116,11 +117,11 @@ export default {
         {
           title: this.$text('S_SERIAL_STATUS02', '优惠稽核'),
           rateValue: this.data.offer_audit_rate,
-          value: this.data.offer_audit_amount
+          value: this.data.offer_checked
         },
         {
           title: this.$text('S_SERIAL_NUMBER', '流水要求'),
-          rateValue: this.data.total_audit_amount,
+          rateValue: this.data.offer_audit_amount,
           value: this.data.offer_deduction,
           deduction: this.$text('S_DEDUCTION_MONEY', '扣除金额')
         },
