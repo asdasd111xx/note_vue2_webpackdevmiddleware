@@ -1,56 +1,57 @@
 <template>
     <div :class="$style['vip-container']">
-        <div :class="$style['vip-bg-block']">
-            <img
-                :src="$getCdnPath(`/static/image/_new/mcenter/vip/vip_bg.png`)"
-                alt="vip_bg"
-            />
-        </div>
-        <!-- Header -->
-        <div :class="$style['header-block']">
-            <div
-                :class="$style['btn-back']"
-                @click="$router.push('/mobile/mcenter')"
-            >
-                <img
-                    :src="$getCdnPath(`/static/image/_new/common/btn_back.png`)"
-                    alt="btn_back"
-                />
-            </div>
-
-            <div :class="$style['header-title']">
-                <span
-                    :class="{
-                        [$style['active']]: item.config_id === currentConfigID
-                    }"
-                    v-for="(item, index) in userVipInfo"
-                    :key="item.config_id"
-                    @click="
-                        loginStatus
-                            ? handleConfigId(item.config_id)
-                            : $router.push('/mobile/login')
-                    "
-                    >{{ item.config_name }}</span
+        <div :class="$style['vip-top-info']">
+            <!-- Header -->
+            <div :class="$style['header-block']">
+                <div
+                    :class="$style['btn-back']"
+                    @click="$router.push('/mobile/mcenter')"
                 >
+                    <img
+                        :src="
+                            $getCdnPath(
+                                `/static/image/_new/common/btn_back.png`
+                            )
+                        "
+                        alt="btn_back"
+                    />
+                </div>
 
-                <span @click="msg = '正在上线 敬请期待'">直播VIP</span>
+                <div :class="$style['header-title']">
+                    <span
+                        :class="{
+                            [$style['active']]:
+                                item.config_id === currentConfigID
+                        }"
+                        v-for="(item, index) in userVipInfo"
+                        :key="item.config_id"
+                        @click="
+                            loginStatus
+                                ? handleConfigId(item.config_id)
+                                : $router.push('/mobile/login')
+                        "
+                        >{{ item.config_name ? item.config_name : "综合VIP"}}</span
+                    >
+
+                    <span @click="msg = '正在上线 敬请期待'">直播VIP</span>
+                </div>
+
+                <message v-if="msg" @close="msg = ''">
+                    <div slot="msg">{{ msg }}</div>
+                </message>
             </div>
 
-            <message v-if="msg" @close="msg = ''">
-                <div slot="msg">{{ msg }}</div>
-            </message>
+            <!-- user info -->
+            <template v-if="userVipInfo">
+                <vip-user
+                    :userVipInfo="
+                        userVipInfo.find(
+                            item => item.config_id === this.currentConfigID
+                        )
+                    "
+                />
+            </template>
         </div>
-
-        <!-- user info -->
-        <template v-if="userVipInfo">
-            <vip-user
-                :userVipInfo="
-                    userVipInfo.find(
-                        item => item.config_id === this.currentConfigID
-                    )
-                "
-            />
-        </template>
 
         <!-- level card -->
         <template v-if="vipLevelList && userVipInfo">
@@ -188,16 +189,13 @@ export default {
     height: calc(100% - 60px);
 }
 
-.vip-bg-block {
-    position: absolute;
+.vip-top-info {
+    position: relative;
     width: 100%;
     height: 320px;
-    background: white;
-
-    img {
-        width: 100%;
-        height: 100%;
-    }
+    background: white url("/static/image/_new/mcenter/vip/vip_bg.png") no-repeat;
+    background-size: cover;
+    background-position: center;
 }
 
 .header-block {
