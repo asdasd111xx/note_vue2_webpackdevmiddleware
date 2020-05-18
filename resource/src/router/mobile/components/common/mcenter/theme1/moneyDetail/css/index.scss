@@ -70,7 +70,8 @@
     background-color: #FEFFFE;
 }
 
-.select {
+.select,
+.select-time {
     float: left;
     width: 18%;
     height: 35px;
@@ -90,6 +91,10 @@
         background: linear-gradient(to left, #BD9D7D, #F9DDBD);
         color: #FFF;
     }
+}
+
+.select-time {
+    width: 23%;
 }
 
 .date-wrap {

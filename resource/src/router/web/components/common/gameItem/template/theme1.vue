@@ -167,8 +167,11 @@ export default {
         5: 'card',
         6: 'mahjong'
       };
+      // cdn 機制
+      // let resultUrl = this.$getCdnPath(`${this.cdnDomain}/image/${imgConverter[this.gameInfo.kind]}/${this.gameInfo.vendor}/Game_${this.gameInfo.code}.png`);
 
-      let resultUrl = this.$getCdnPath(`${this.cdnDomain}-image/${imgConverter[this.gameInfo.kind]}/${this.gameInfo.vendor}/Game_${this.gameInfo.code}.png`);
+      // 本地圖片, 待 cdn 調整好刪除
+      let resultUrl = `/static/cdn-image/${imgConverter[this.gameInfo.kind]}/${this.gameInfo.vendor}/Game_${this.gameInfo.code}.png`;
 
       if (!this.gameInfo.code && this.gameInfo.status > 1) {
         resultUrl = this.$getCdnPath('/static/image/casino/event_icon.png');

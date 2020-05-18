@@ -82,7 +82,7 @@
             <input
               v-model="formData.account"
               type="number"
-              placeholder="请输入银行卡卡号(限定数字)"
+              placeholder="请输入银行卡卡号(限定16位以上数字)"
               minlength="16"
               maxlength="19"
               @input="checkData"
