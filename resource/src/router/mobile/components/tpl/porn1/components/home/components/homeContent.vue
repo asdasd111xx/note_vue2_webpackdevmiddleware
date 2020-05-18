@@ -591,20 +591,6 @@ export default {
         return;
       }
 
-      if (['BL', 'SL'].includes(game.type)) {
-        switch (game.type) {
-          case 'BL':
-            this.$router.push({ name: 'liveStream', params: { type: 'cutiesLive' } });
-            break;
-          case 'SL':
-            this.$router.push({ name: 'liveStream', params: { type: 'ballLive' } });
-            break;
-          default:
-            break;
-        }
-        return;
-      }
-
       if (!this.loginStatus) {
         this.$router.push('/mobile/login');
         return;
@@ -618,6 +604,20 @@ export default {
 
       if (game.type === 'T') {
         this.msg = '正在上线 敬请期待';
+        return;
+      }
+
+      if (['BL', 'SL'].includes(game.type)) {
+        switch (game.type) {
+          case 'BL':
+            this.$router.push({ name: 'liveStream', params: { type: 'cutiesLive' } });
+            break;
+          case 'SL':
+            this.$router.push({ name: 'liveStream', params: { type: 'ballLive' } });
+            break;
+          default:
+            break;
+        }
         return;
       }
 
