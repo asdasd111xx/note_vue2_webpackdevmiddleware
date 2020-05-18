@@ -110,7 +110,7 @@ export default {
 
         },
         {
-          initName: '关于亚博直播',
+          initName: '关于鸭脖直播',
           name: 'S_ABOUT_YABOLIVE',
           path: '/mobile/mcenter/about',
           pageName: 'about',
@@ -134,7 +134,7 @@ export default {
         //   initName: '色站开关', name: 'S_PORN_SWITCH', path: '', pageName: '', image: '18+'
         // },
 
-        // 原舊版亞博
+        // 原舊版鸭脖
         // {
         //   initName: '在线客服', name: 'S_CUSTOMER_SERVICE_ONLINE', path: '', pageName: 'service', image: 'service'
         // }, // 在線客服

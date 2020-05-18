@@ -1,5 +1,9 @@
 <template>
-  <mobile-container :header-config="headerConfig" :class="$style.container" :hasFooter="false">
+  <mobile-container
+    :header-config="headerConfig"
+    :class="$style.container"
+    :hasFooter="false"
+  >
     <div slot="content" :class="$style['content-wrap']">
       <div :class="$style['yabo']">
         <img :src="$getCdnPath(`/static/image/_new/about/appicon.png`)" />
@@ -91,7 +95,7 @@ export default {
       return {
         prev: true,
         onClick: () => { this.$router.back(); },
-        title: this.$text('S_ABOUT_YABOLIVE', '关于亚博直播'),
+        title: this.$text('S_ABOUT_YABOLIVE', '关于鸭脖直播'),
       };
     },
   },
