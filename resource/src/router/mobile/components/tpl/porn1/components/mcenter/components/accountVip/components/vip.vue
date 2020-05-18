@@ -129,16 +129,21 @@ export default {
     },
     methods: {
         getUserDetail() {
-            // 取得vip使⽤者詳細資料
-            mcenter.vipUserDetail({
-                success: res => {
-                    if (res && res.ret) {
-                        this.userVipInfo = res.ret;
-
-                        // 起始預設 config_id 為分類中的第一筆
-                        this.currentConfigID = this.userVipInfo[0].config_id;
-                    }
+            axios({
+                method: "get",
+                url: `${
+                    this.siteConfig.YABO_API_DOMAIN
+                }/player/vipinfo/${getCookie("cid")}`,
+                headers: { "x-domain": this.memInfo.user.domain }
+            }).then(res => {
+                if (res.data.status === "failure") {
+                    this.$router.push("/mobile/login");
                 }
+
+                this.userVipInfo = res.data.data;
+
+                // 起始預設 config_id 為分類中的第一筆
+                this.currentConfigID = this.userVipInfo[0].config_id;
             });
         },
         getVipLevel() {

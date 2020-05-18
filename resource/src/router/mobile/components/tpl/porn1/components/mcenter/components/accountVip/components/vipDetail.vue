@@ -67,7 +67,7 @@
                     "
                     alt="top"
                 />
-                <p>回到頂部</p>
+                <p>回到顶部</p>
             </div>
         </div>
     </mobile-container>
