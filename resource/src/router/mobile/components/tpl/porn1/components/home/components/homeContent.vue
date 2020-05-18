@@ -578,6 +578,10 @@ export default {
     },
     // 開啟遊戲
     onOpenGame(game) {
+      if (process.env.NODE_ENV === 'development') {
+        console.log(game)
+      }
+
       localStorage.setItem('type', this.typeList[this.selectedIndex].icon);
 
       // Game Type
