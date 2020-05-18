@@ -141,7 +141,8 @@
         :class="[$style['game-list-wrap'], 'clearfix']"
         :style="{
           height: `${wrapHeight - 50}px`,
-          'overflow-y': `${stopScroll ? 'hidden' : 'auto'}`
+          'overflow-y': `${stopScroll ? 'hidden' : 'auto'}`,
+          opacity: stopScroll ? 0 : 1
         }"
         @touchstart="onTouchStart"
         @touchmove="onTouchMove"
@@ -518,7 +519,7 @@ export default {
 
       if (this.isTop) {
         const index = this.selectedIndex <= 0 ? this.typeList.length - 1 : this.selectedIndex - 1;
-        this.onChangeSelectInedx(index);
+        this.onChangeSelectInedx(index, true);
         return;
       }
 
@@ -528,7 +529,7 @@ export default {
       }
     },
     // 切換當前分類
-    onChangeSelectInedx(index) {
+    onChangeSelectInedx(index, isSetEnd = false) {
       this.isSliding = true;
       this.isTop = false;
       this.isBottom = false;
@@ -547,6 +548,9 @@ export default {
 
       setTimeout(() => {
         this.stopScroll = false;
+        if (isSetEnd) {
+            this.$refs['game-wrap'].scrollTop = this.$refs['game-wrap'].scrollHeight;
+        }
       }, 100);
     },
     // 切換當前影片分類
