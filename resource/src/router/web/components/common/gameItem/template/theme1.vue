@@ -168,7 +168,7 @@ export default {
         6: 'mahjong'
       };
 
-      let resultUrl = this.$getCdnPath(`${this.cdnDomain}/image/${imgConverter[this.gameInfo.kind]}/${this.gameInfo.vendor}/Game_${this.gameInfo.code}.png`);
+      let resultUrl = this.$getCdnPath(`${this.cdnDomain}-image/${imgConverter[this.gameInfo.kind]}/${this.gameInfo.vendor}/Game_${this.gameInfo.code}.png`);
 
       if (!this.gameInfo.code && this.gameInfo.status > 1) {
         resultUrl = this.$getCdnPath('/static/image/casino/event_icon.png');

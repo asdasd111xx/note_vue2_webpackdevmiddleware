@@ -248,11 +248,6 @@ export default {
         //     name: this.$t('S_ACTIVITY')
         // },
 
-        // 最愛
-        {
-          label: 'favorite',
-          name: this.$t('S_FAVORITE')
-        },
         {
           label: 'new',
           name: this.$t('S_NEW_GAMES')
