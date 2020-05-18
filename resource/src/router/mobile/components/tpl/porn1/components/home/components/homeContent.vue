@@ -188,11 +188,11 @@
         <template v-else>
           <div
             v-for="(game, i) in currentGame.vendors"
-            :key="`game-${i}`"
+            :key="`game-${i}-${game.image}`"
             :class="[$style.game, { [$style['is-full']]: game.imageType > 0 }]"
             @click.stop="onOpenGame(game)"
           >
-            <img :src="game.image" />
+            <img v-lazy="getImg(game)" />
             <span v-if="!['D', 'R'].includes(game.type) && game.name">{{
               game.name
             }}</span>
@@ -361,6 +361,13 @@ export default {
     $(window).off('resize', this.onResize);
   },
   methods: {
+      getImg(info) {
+      return {
+        src: info.image,
+        error: this.$getCdnPath(`/static/image/_new/common/default_${info.imageType}.png`),
+        loading: this.$getCdnPath(`/static/image/_new/common/default_${info.imageType}.png`)
+      };
+    },
     clearMsg() {
       if (this.msg === '请先绑定提现银行卡') {
         this.$router.push('/mobile/mcenter/bankCard?redirect=home');
