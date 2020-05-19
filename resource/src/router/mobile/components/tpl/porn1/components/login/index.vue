@@ -117,27 +117,6 @@
                 @click="getCaptcha"
               />
             </span>
-            <div class="login-deposit-username clearfix" @click="onSaveAccount">
-              <div class="icon-wrap" @click="depositStatus = !depositStatus">
-                <img
-                  :src="
-                    `/static/image/_new/common/icon_${
-                      depositStatus ? '' : 'no'
-                    }remember.png`
-                  "
-                />
-              </div>
-              <span class="deposit-text">{{
-                $text("S_SAVE_PASSWORD", "记住密码")
-              }}</span>
-
-              <!-- 忘記密碼 -->
-              <span
-                class="login-unit-link"
-                @click="$router.push('/mobile/forgetpwd/member')"
-                >{{ $text("S_PASSWORD_FORGET", "忘记密码") }}?</span
-              >
-            </div>
             <div class="login-bottom-wrap">
               <!-- 滑動驗證 -->
               <slide-verification
@@ -153,6 +132,26 @@
               >
                 {{ $text("S_LOGIN_TITLE", "登录") }}
               </div>
+            </div>
+            <div class="login-deposit-username clearfix" @click="onSaveAccount">
+              <div class="icon-wrap" @click="depositStatus = !depositStatus">
+                <img
+                  :src="
+                    `/static/image/_new/common/icon_${
+                      depositStatus ? '' : 'no'
+                    }remember.png`
+                  "
+                />
+              </div>
+              <span class="deposit-text">{{
+                $text("S_SAVE_PASSWORD", "记住密码")
+              }}</span>
+              <!-- 忘記密碼 -->
+              <span
+                class="login-unit-link"
+                @click="$router.push('/mobile/forgetpwd/member')"
+                >{{ $text("S_PASSWORD_FORGET", "忘记密码") }}?</span
+              >
             </div>
             <div class="login-link-wrap">
               <!-- 加入會員 -->

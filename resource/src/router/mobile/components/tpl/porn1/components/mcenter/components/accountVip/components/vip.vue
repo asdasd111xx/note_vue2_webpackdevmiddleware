@@ -30,7 +30,7 @@
                                 ? handleConfigId(item.config_id)
                                 : $router.push('/mobile/login')
                         "
-                        >{{ item.config_name ? item.config_name : "综合VIP"}}</span
+                        >{{ item.config_name }}</span
                     >
 
                     <span @click="msg = '正在上线 敬请期待'">直播VIP</span>
