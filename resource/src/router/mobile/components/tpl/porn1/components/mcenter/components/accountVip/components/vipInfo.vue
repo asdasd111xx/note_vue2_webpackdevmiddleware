@@ -15,7 +15,7 @@
                     />
                 </div>
                 <div :class="$style['cell-text']">
-                    <div>{{ currentLevelData.deposit_time }}</div>
+                    <div>{{ currentLevelData.withdraw_fee ? currentLevelData.withdraw_fee.withdraw_count : "--" }}</div>
                     <div>每日提款次数</div>
                 </div>
             </div>
@@ -32,7 +32,7 @@
                     />
                 </div>
                 <div :class="$style['cell-text']">
-                    <div>{{ currentLevelData.deposit_limit }}</div>
+                    <div>{{ currentLevelData.withdraw_fee ? currentLevelData.withdraw_fee.withdraw_limit : "--"  }}</div>
                     <div>每日提现额度</div>
                 </div>
             </div>

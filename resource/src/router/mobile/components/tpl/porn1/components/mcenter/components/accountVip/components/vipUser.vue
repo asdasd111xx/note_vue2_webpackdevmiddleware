@@ -91,8 +91,8 @@
                 <span :class="$style['money']">{{
                     userVipInfo.downgrade_members
                 }}</span>
-                (有效会员充值{{ userVipInfo.downgrade_deposit }} , 保级{{
-                    userVipInfo.downgrade_expire_day
+                (有效会员充值{{ userVipInfo.downgrade_valid_bet }} , 保级{{
+                    userVipInfo.downgrade_day
                 }}天)
             </div>
         </div>

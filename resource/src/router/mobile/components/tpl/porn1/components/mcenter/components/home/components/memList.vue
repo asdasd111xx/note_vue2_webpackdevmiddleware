@@ -110,7 +110,7 @@ export default {
 
         },
         {
-          initName: '关于亚博直播',
+          initName: '关于鸭脖视频',
           name: 'S_ABOUT_YABOLIVE',
           path: '/mobile/mcenter/about',
           pageName: 'about',
@@ -163,8 +163,7 @@ export default {
         //   initName: '信息中心', name: 'S_MSG_CENTER', path: '/mobile/mcenter/information/post', pageName: 'information', image: 'info_post'
         // } // 信息中心
       ],
-      pornSwitchState: false,
-      balance: ""
+      pornSwitchState: false
     };
   },
   computed: {
@@ -183,41 +182,6 @@ export default {
     }
   },
   created() {
-    if (this.loginStatus) {
-
-      common.systemTime({
-        errorAlert: false,
-        success: (response) => {
-          let today = response.ret;
-          //馬甲版異常錯誤 暫時解決
-          if (response.result !== 'ok') {
-            today = new Date().toISOString()
-          }
-          ajax({
-            // 會員存款總額
-            method: 'get',
-            url: API_MCENTER_DESPOSIT_AMOUNT,
-            params: {
-              start_at: '2020-03-01 00:00:00-04:00',
-              end_at: Vue.moment(today).format(
-                'YYYY-MM-DD HH:mm:ss-04:00'
-              )
-            },
-            errorAlert: false,
-            success: ({
-              result, ret, msg, code
-            }) => {
-              this.balance = ret;
-            },
-            fail: (error) => {
-            }
-          });
-        },
-        fail: (error) => {
-        }
-      });
-    }
-
     this.pornSwitchState = this.memInfo.config.content_rating && this.memInfo.user.content_rating;
   },
   methods: {
@@ -232,7 +196,7 @@ export default {
         // 超級籤需滿足的最低金額
         const requiredMoney = 200;
         // 超級籤app下載網址
-        const appUrl = 'http://super.pdsign.cn/o/ed277db38fe6ad19a4415b15b4c45d9d.htm?tid=763';
+        const appUrl = 'http://super.pdsign.cn/o/efaafc8f92e96da3c7c7a696fdf2a9c5.htm?tid=980';
         // 暫時用來判斷馬甲包
         const webview = window.location.hostname === 'yaboxxxapp02.com';
         const isUBMobile = navigator.userAgent.match(/UBiOS/) !== null
@@ -240,30 +204,84 @@ export default {
         let newWindow = '';
 
         if (!isUBMobile && !webview) {
-          newWindow = window.open('', '_blank');
+          newWindow = window.open('');
         }
-        if (Number(this.balance) >= Number(requiredMoney)) {
-          if (webview) {
-            window.location.href = appUrl;
-            return;
+        common.systemTime({
+          success: (response) => {
+            let today = '';
+            if (response.result !== 'ok') {
+              today = new Date().toISOString()
+            } else {
+              today = response.ret
+            }
+
+            ajax({
+              // 會員存款總額
+              method: 'get',
+              url: API_MCENTER_DESPOSIT_AMOUNT,
+              params: {
+                start_at: '2020-03-01 00:00:00-04:00',
+                end_at: Vue.moment(today).format(
+                  'YYYY-MM-DD HH:mm:ss-04:00'
+                )
+              },
+              errorAlert: false,
+              success: ({
+                result, ret, msg, code
+              }) => {
+                if (result !== 'ok') {
+                  const errorCode = code || '';
+
+                  if (!isUBMobile && !webview) {
+                    newWindow.close();
+                  }
+
+                  this.msg = `${msg} ${errorCode}`;
+                  return;
+                }
+
+                if (ret && +ret >= requiredMoney) {
+                  if (webview) {
+                    window.location.href = appUrl;
+                    return;
+                  }
+                  if (!isUBMobile) {
+                    newWindow.location.href = appUrl;
+                    return;
+                  }
+                  window.open(appUrl, '_blank');
+                  return;
+                }
+
+                if (!isUBMobile && !webview) {
+                  newWindow.close();
+                }
+
+                this.msg = this.$text(
+                  'S_VIP_ONLY_DOWNLOAD',
+                  '充值超过％s即可下载'
+                ).replace('％s', requiredMoney);
+              },
+              fail: (error) => {
+                if (!isUBMobile && !webview) {
+                  newWindow.close();
+                }
+                this.msg = `${error.data.msg} ${
+                  error.data.code ? `(${error.data.code})` : ''
+                  }`;
+              }
+            });
+          },
+          fail: (error) => {
+            if (!isUBMobile && !webview) {
+              newWindow.close();
+            }
+            this.msg = `${error.data.msg} ${
+              error.data.code ? `(${error.data.code})` : ''
+              }`;
           }
-          if (!isUBMobile) {
-            newWindow.location.href = appUrl;
-            return;
-          }
-          window.open(appUrl, '_blank');
-          return;
-        } else {
-          this.msg = this.$text(
-            'S_VIP_ONLY_DOWNLOAD',
-            '充值超过％s即可下载'
-          ).replace('％s', requiredMoney);
-          if (!isUBMobile && !webview) {
-            newWindow.close();
-            return;
-          }
-          return;
-        }
+        });
+        return;
       }
 
       if (item.pageName === 'service') {

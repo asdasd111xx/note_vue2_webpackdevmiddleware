@@ -19,7 +19,6 @@ import App from './App';
 import Icon from 'vue-awesome/components/Icon';
 import Loading from 'vue-loading-overlay';
 import Meta from 'vue-meta';
-import SocketIO from "socket.io-client"
 // vee-validate - 表單驗證
 import VeeValidate from 'vee-validate';
 // The Vue build version to load with the `import` command
@@ -31,7 +30,6 @@ import VueLazyload from 'vue-lazyload';
 import VueNativeSock from 'vue-native-websocket'
 import VueQrcode from '@chenfengyuan/vue-qrcode';
 import VueRx from 'vue-rx';
-import VueSocketIO from 'vue-socket.io'
 // swal
 import VueSwal2 from 'vue-sweetalert2';
 import Vuebar from 'vuebar';

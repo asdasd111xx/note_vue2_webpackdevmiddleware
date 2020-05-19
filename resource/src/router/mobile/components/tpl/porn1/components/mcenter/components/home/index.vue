@@ -44,12 +44,8 @@ export default {
     },
   },
   created() {
-    this.actionSetVip();
   },
   methods: {
-    ...mapActions([
-      'actionSetVip'
-    ]),
     goMessage() {
       if (!this.loginStatus) {
         this.$router.push('/mobile/login');

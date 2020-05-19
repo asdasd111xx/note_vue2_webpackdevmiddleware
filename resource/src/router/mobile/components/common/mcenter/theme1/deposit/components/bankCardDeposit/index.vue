@@ -493,11 +493,12 @@
                         <div :class="$style['message-container']">
                             <ul :class="$style['message-content']">
                                 <li>• 实际到账： {{ realSaveMoney }}</li>
-                                <li
-                                    v-if="curPayInfo.offer_enable"
-                                    :class="$style['tip-list']"
-                                    v-html="promitionText"
-                                />
+                                <template v-if="curPayInfo.offer_enable">
+                                    • <li
+                                        :class="$style['tip-list']"
+                                        v-html="promitionText"
+                                    />
+                                </template>
                                 <li
                                     v-if="
                                         +getPassRoadOrAi.fee_percent || +getPassRoadOrAi.fee_amount

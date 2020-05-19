@@ -46,7 +46,7 @@ export default {
       slideText: {
         register: ['S_SLIDE_REGISTER', '向右滑动即注册'],
         login: ['S_SLIDE_LOGIN', '向右滑动即登入'],
-        error: ['S_SLIDE_ERROR', '哎呀，出错了，点击!刷新试试'],
+        error: ['S_SLIDE_ERROR', '哎呀，出错了，点击刷新试试'],
         errorNetwork: ['S_SLIDE_ERROR_NETWORK', '网络不给力！刷新试试'],
         yesText: ['S_SLIDE_YES_TEXT', '验证通过']
       }

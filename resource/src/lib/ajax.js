@@ -1,3 +1,5 @@
+import { getCookie, setCookie } from '@/lib/cookie';
+
 import axios from 'axios';
 import querystring from 'querystring';
 
@@ -33,6 +35,7 @@ export default ({
             if (response.data.msg && errorAlert) {
                 alert(`${response.data.msg} ${response.data.code ? `(${response.data.code})` : ''}`);
             }
+
             fail(response);
         }
         return response.data;
@@ -41,6 +44,18 @@ export default ({
             if (error.response && error.response.data.msg && errorAlert) {
                 alert(`${error.response.data.msg} ${error.response.data.code ? `(${error.response.data.code})` : ''}`);
             }
+
+            // 收到重新登入需要導向登入頁面
+            if (error && error.response && error.response.data && error.response.data.code === "M00001") {
+                if (getCookie('cid') && !errorAlert) {
+                    alert(`${error.response.data.msg} ${error.response.data.code ? `(${error.response.data.code})` : ''}`);
+                }
+                setCookie('cid', '');
+                setCookie('aid', '');
+                window.location.reload();
+                window.location.href = '/mobile/login';
+            }
+
             if (error.response) {
                 fail(error.response);
             } else {

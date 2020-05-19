@@ -8,7 +8,10 @@
           :key="`avatar-${avatarList}`"
           :class="$style['avatar-wrap']"
         >
-          <img :src="$getCdnPath(avatarList.url)" @click="selectImg(index + 1)" />
+          <img
+            :src="$getCdnPath(avatarList.url)"
+            @click="selectImg(index + 1)"
+          />
           <div v-if="imgID - 1 === index" :class="$style.check" />
         </div>
       </div>
@@ -88,6 +91,17 @@ export default {
     };
   },
   created() {
+    if (!this.loginStatus) {
+      this.$router.push('/mobile/mcenter');
+      return;
+    }
+
+    if (this.memInfo.user.image === 0) {
+      this.imgIndex = 1;
+      this.imgID = 1;
+      return;
+    }
+
     this.imgIndex = this.memInfo.user.image;
     this.imgID = this.memInfo.user.image;
   },
@@ -154,7 +168,7 @@ export default {
   background-color: $main_white_color1;
   color: $main_text_color3;
   padding: 15px;
-  border-bottom: 1px solid #EEE;
+  border-bottom: 1px solid #eee;
 
   > .avatar {
     height: 56px;

@@ -17,7 +17,7 @@ export const preset = {
 /* ---------- ↓ 測試站 ---------- */
 
 /**
- * 亞博直播 測試站
+ * 鸭脖视频 測試站
  */
 export const site_500015 = {
     ...preset,

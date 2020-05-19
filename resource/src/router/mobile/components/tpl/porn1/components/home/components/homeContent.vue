@@ -141,7 +141,8 @@
         :class="[$style['game-list-wrap'], 'clearfix']"
         :style="{
           height: `${wrapHeight - 50}px`,
-          'overflow-y': `${stopScroll ? 'hidden' : 'auto'}`
+          'overflow-y': `${stopScroll ? 'hidden' : 'auto'}`,
+          opacity: stopScroll ? 0 : 1
         }"
         @touchstart="onTouchStart"
         @touchmove="onTouchMove"
@@ -187,11 +188,11 @@
         <template v-else>
           <div
             v-for="(game, i) in currentGame.vendors"
-            :key="`game-${i}`"
+            :key="`game-${i}-${game.image}`"
             :class="[$style.game, { [$style['is-full']]: game.imageType > 0 }]"
             @click.stop="onOpenGame(game)"
           >
-            <img :src="game.image" />
+            <img v-lazy="getImg(game)" />
             <span v-if="!['D', 'R'].includes(game.type) && game.name">{{
               game.name
             }}</span>
@@ -360,6 +361,13 @@ export default {
     $(window).off('resize', this.onResize);
   },
   methods: {
+      getImg(info) {
+      return {
+        src: info.image,
+        error: this.$getCdnPath(`/static/image/_new/common/default_${info.imageType}.png`),
+        loading: this.$getCdnPath(`/static/image/_new/common/default_${info.imageType}.png`)
+      };
+    },
     clearMsg() {
       if (this.msg === '请先绑定提现银行卡') {
         this.$router.push('/mobile/mcenter/bankCard?redirect=home');
@@ -518,7 +526,7 @@ export default {
 
       if (this.isTop) {
         const index = this.selectedIndex <= 0 ? this.typeList.length - 1 : this.selectedIndex - 1;
-        this.onChangeSelectInedx(index);
+        this.onChangeSelectInedx(index, true);
         return;
       }
 
@@ -528,7 +536,7 @@ export default {
       }
     },
     // 切換當前分類
-    onChangeSelectInedx(index) {
+    onChangeSelectInedx(index, isSetEnd = false) {
       this.isSliding = true;
       this.isTop = false;
       this.isBottom = false;
@@ -547,6 +555,9 @@ export default {
 
       setTimeout(() => {
         this.stopScroll = false;
+        if (isSetEnd) {
+            this.$refs['game-wrap'].scrollTop = this.$refs['game-wrap'].scrollHeight;
+        }
       }, 100);
     },
     // 切換當前影片分類
@@ -578,6 +589,10 @@ export default {
     },
     // 開啟遊戲
     onOpenGame(game) {
+      if (process.env.NODE_ENV === 'development') {
+        console.log(game)
+      }
+
       localStorage.setItem('type', this.typeList[this.selectedIndex].icon);
 
       // Game Type
@@ -588,20 +603,6 @@ export default {
       // D => 代理
       // T => 敬请期待
       if (game.type === 'D') {
-        return;
-      }
-
-      if (['BL', 'SL'].includes(game.type)) {
-        switch (game.type) {
-          case 'BL':
-            this.$router.push({ name: 'liveStream', params: { type: 'cutiesLive' } });
-            break;
-          case 'SL':
-            this.$router.push({ name: 'liveStream', params: { type: 'ballLive' } });
-            break;
-          default:
-            break;
-        }
         return;
       }
 
@@ -618,6 +619,20 @@ export default {
 
       if (game.type === 'T') {
         this.msg = '正在上线 敬请期待';
+        return;
+      }
+
+      if (['BL', 'SL'].includes(game.type)) {
+        switch (game.type) {
+          case 'BL':
+            this.$router.push({ name: 'liveStream', params: { type: 'cutiesLive' } });
+            break;
+          case 'SL':
+            this.$router.push({ name: 'liveStream', params: { type: 'ballLive' } });
+            break;
+          default:
+            break;
+        }
         return;
       }
 
