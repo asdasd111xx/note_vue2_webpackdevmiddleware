@@ -382,7 +382,7 @@ export default {
       selectedCard: '',
       errTips: '',
       actualMoney: '',
-      hasBankCard: false
+      hasBankCard: false,
     }
   },
   components: {
@@ -392,6 +392,13 @@ export default {
     serialNumber
   },
   watch: {
+    withdrawUserData() {
+      if (!this.selectedCard) {
+        this.selectedCard = this.withdrawUserData.account &&
+          this.withdrawUserData.account.length > 0 &&
+          this.withdrawUserData.account[0].id;
+      }
+    },
     withdrawValue() {
       let value = Number(this.withdrawValue)
 
