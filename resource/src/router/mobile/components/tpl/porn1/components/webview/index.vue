@@ -146,15 +146,15 @@ export default {
             ],
             yaboIconSrc: "/static/image/_new/webview/appicon_yabo.png",
             iosCard: [
-                // {
-                //     text: "极速版",
-                //     onClick: () => {
-                //         this.download(
-                //             2,
-                //             "1e9158cb-8dfe-11ea-8585-42010a08056f"
-                //         );
-                //     }
-                // },
+                {
+                    text: "极速版",
+                    onClick: () => {
+                        this.download(
+                            2,
+                            "yaboxxxapp01.com.mobile.webview"
+                        );
+                    }
+                },
                 {
                     text: "IOS版",
                     onClick: () => {
