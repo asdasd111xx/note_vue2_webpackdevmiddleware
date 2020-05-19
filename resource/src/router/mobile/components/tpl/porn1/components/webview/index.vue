@@ -21,7 +21,7 @@
         </div>
 
         <div :class="$style['card-wrap']">
-            <!-- <div
+            <div
                 v-if="isIos"
                 :class="$style['card']"
                 v-for="(item, index) in iosCard"
@@ -32,13 +32,13 @@
                 </div>
                 <div>
                     <div :class="$style['text']">{{ item.text }}</div>
-                    <div :class="$style['download']" @click="download">
+                    <div :class="$style['download']" @click="item.onClick">
                         立即下载
                     </div>
                 </div>
-            </div> -->
+            </div>
 
-            <div v-if="isIos" :class="[$style['card'], $style['isSingle']]">
+            <!-- <div v-if="isIos" :class="[$style['card'], $style['isSingle']]">
                 <div :class="[$style['img'], $style['isSingle']]">
                     <img :src="$getCdnPath(yaboIconSrc)" alt="icon" />
                 </div>
@@ -48,14 +48,14 @@
                         立即下载
                     </div>
                 </div>
-            </div>
+            </div> -->
 
             <div v-if="!isIos" :class="[$style['card'], $style['isSingle']]">
                 <div :class="[$style['img'], $style['isSingle']]">
                     <img :src="$getCdnPath(yaboIconSrc)" alt="icon" />
                 </div>
                 <div :class="$style['isSingle']">
-                    <div :class="$style['text']">亚博直播APP</div>
+                    <div :class="$style['text']">鸭脖直播APP</div>
                     <div :class="$style['download']" @click="download">
                         立即下载
                     </div>
@@ -146,17 +146,31 @@ export default {
             ],
             yaboIconSrc: "/static/image/_new/webview/appicon_yabo.png",
             iosCard: [
-                {
-                    text: "极速版",
-                    onClick: () => {}
-                },
+                // {
+                //     text: "极速版",
+                //     onClick: () => {
+                //         this.download(
+                //             2,
+                //             "1e9158cb-8dfe-11ea-8585-42010a08056f"
+                //         );
+                //     }
+                // },
                 {
                     text: "IOS版",
-                    onClick: () => {}
+                    onClick: () => {
+                        if (this.iOSBundle) {
+                            this.download(1, this.iOSBundle);
+                        }
+                    }
                 },
                 {
                     text: "隐藏版",
-                    onClick: () => {}
+                    onClick: () => {
+                        window.open(
+                            "https://apps.apple.com/cn/app/id1508493065",
+                            "_blank"
+                        );
+                    }
                 }
             ]
         };
@@ -166,7 +180,7 @@ export default {
             siteConfig: "getSiteConfig",
             memInfo: "getMemInfo"
         }),
-        currentBundle() {
+        iOSBundle() {
             switch (this.memInfo.user.domain) {
                 case "500015":
                     return "bbin.mobile.xbbPorn.qa";
@@ -190,25 +204,24 @@ export default {
         clickService() {
             this.mobileLinkOpen({ linkType: "static", linkTo: "service" });
         },
-        download() {
-            if (this.currentBundle) {
-                bbosRequest({
-                    method: "get",
-                    url: this.siteConfig.BBOS_DOMIAN + "/App/Download",
-                    reqHeaders: {
-                        Vendor: this.memInfo.user.domain
-                    },
-                    params: {
-                        bundleID: this.currentBundle,
-                        lang: "zh-cn",
-                        platform: this.isIos ? 1 : 3
-                    }
-                }).then(res => {
-                    if (res.status === "000" && res.data) {
-                        location.href = res.data.url;
-                    }
-                });
-            }
+        download(platform, bundleID) {
+            // platform: 1 -> PWA , 2 -> iOS
+            bbosRequest({
+                method: "get",
+                url: this.siteConfig.BBOS_DOMIAN + "/App/Download",
+                reqHeaders: {
+                    Vendor: this.memInfo.user.domain
+                },
+                params: {
+                    bundleID,
+                    lang: "zh-cn",
+                    platform
+                }
+            }).then(res => {
+                if (res.status === "000" && res.data) {
+                    location.href = res.data.url;
+                }
+            });
         }
     }
 };
@@ -284,7 +297,8 @@ export default {
     margin: -50px 14px 0;
 
     .card {
-        width: 30%;
+        // width: 30%;
+        flex: 1;
         background: #fff;
         border-radius: 7px;
         box-shadow: 0 3px 7px 0px rgba(0, 0, 0, 0.05);

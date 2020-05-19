@@ -28,7 +28,7 @@
                 <div
                     v-for="option in dateOptions"
                     :key="option.key"
-                    :class="[$style.select, { [$style.active]: currentDate.key === option.key }]"
+                    :class="[$style['select-time'], { [$style.active]: currentDate.key === option.key }]"
                     @click="setDate(option)"
                 >
                     <span>{{ option.text }}</span>

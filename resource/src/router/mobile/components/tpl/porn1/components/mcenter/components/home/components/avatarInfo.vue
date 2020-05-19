@@ -27,7 +27,7 @@
                 : memInfo.user.username
             }}
           </span>
-          <span :class="$style['vip-level']"> VIP{{ vip.now_level_id }} </span>
+          <span :class="$style['vip-level']"> VIP{{ viplevel }} </span>
         </template>
         <template v-else>
           <span @click.stop="$router.push('/mobile/login')">
@@ -58,7 +58,10 @@ import moment from 'moment';
 import mcenterPageAuthControl from '@/lib/mcenterPageAuthControl';
 import mcenter from '@/api/mcenter';
 import member from '@/api/member';
-import message from '../../../../common/new/message'
+import message from '../../../../common/new/message';
+import { getCookie, setCookie } from '@/lib/cookie';
+import axios from 'axios';
+
 export default {
   components: {
     message
@@ -86,7 +89,7 @@ export default {
       memInfo: 'getMemInfo',
       memCurrency: 'getMemCurrency',
       memBalance: 'getMemBalance',
-      vip: 'getVip'
+      siteConfig: "getSiteConfig",
     }),
     avatarSrc() {
       return !this.loginStatus ?
@@ -96,17 +99,34 @@ export default {
   },
   created() {
     if (this.memInfo.user.image === 0 || !(this.memInfo.user.image)) {
-      this.imgIndex = 0;
-      this.imgID = 0;
+      this.imgIndex = 1;
+      this.imgID = 1;
       return;
     }
+
     this.imgIndex = this.memInfo.user.image;
     this.imgID = this.memInfo.user.image;
+  },
+  mounted() {
+    this.getUserViplevel();
   },
   methods: {
     ...mapActions([
       'actionSetUserdata'
     ]),
+    getUserViplevel() {
+      let cid = getCookie("cid");
+      if (!cid) { return }
+      axios({
+        method: "get",
+        url: `${
+          this.siteConfig.YABO_API_DOMAIN
+          }/player/vipinfo/${cid}`,
+        headers: { "x-domain": this.memInfo.user.domain }
+      }).then(res => {
+        this.viplevel = res.data.data[0].now_level_seq;
+      });
+    },
     // 大頭貼
     selectAvatar() {
       if (this.memInfo.user.image === this.imgID) {

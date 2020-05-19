@@ -7,5 +7,5 @@ export default merge(
             rootPorn1: () => import(/* webpackChunkName: 'rootPorn1' */'../../tpl/porn1/')
         }
     },
-    tplPorn1 // 亞博直播
+    tplPorn1 // 鸭脖视频
 );
