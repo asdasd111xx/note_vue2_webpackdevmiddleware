@@ -1,5 +1,5 @@
 <template>
-  <div :class="$style['discover-artist-wrap']">
+  <div :class="$style['discover-artist-wrap']" @scroll="onScroll">
     <div :class="$style['artist-container']" data-letter="HOT">
       <div :class="[$style.title, $style.hot]">
         {{ $text("S_HOT_ARTIST", "人气女优") }}
@@ -11,7 +11,7 @@
           :class="$style.wrap"
           @click="$router.push({ name: 'artist', params: { id: info.id } })"
         >
-          <img :src="info.image" />
+          <img v-lazy="getImg(info.image)" />
           <div :class="$style['artist-name']">{{ info.artist }}</div>
         </div>
       </div>
@@ -92,23 +92,30 @@ export default {
   },
   mounted() {
     $(window).scroll(this.onScroll);
-    $('.mobile-wrap').css('height', 'unset');
   },
   beforeDestroy() {
     $(window).off('scroll', this.onScroll);
-    $('.mobile-wrap').css('height', '100%');
   },
   methods: {
+    getImg(image) {
+      return {
+        src: image,
+        error: this.$getCdnPath(`/static/image/_new/default/bg_avatar_d.png`),
+        loading: this.$getCdnPath(`/static/image/_new/default/bg_avatar_d.png`)
+      }
+    },
     onScroll() {
-      const scrollTop = window.scrollY;
+      let wrap = document.getElementsByClassName(this.$style['discover-artist-wrap'])[0];
+      const scrollTop = wrap.scrollTop;
       const container = document.getElementsByClassName(this.$style['artist-container']);
-      const element = find(container, (ele) => scrollTop >= ele.offsetTop && scrollTop < ele.offsetTop + ele.offsetHeight);
+      const element = find(container, (ele) => scrollTop >= ele.offsetTop - 40 && scrollTop < ele.offsetTop + ele.offsetHeight);
       if (element && element.dataset) this.active = element.dataset.letter;
     },
     onScrollTop(target) {
+      let wrap = document.getElementsByClassName(this.$style['discover-artist-wrap'])[0];
       const container = document.getElementsByClassName(this.$style['artist-container']);
       const element = find(container, (ele) => ele.dataset.letter === target);
-      window.scrollTo(0, element.offsetTop);
+      wrap.scrollTo(0, element.offsetTop);
     }
   }
 };
@@ -120,6 +127,8 @@ export default {
 .discover-artist-wrap {
   position: relative;
   padding-bottom: 15px;
+  height: calc(100vh - 105px);
+  overflow-y: scroll;
 }
 
 .artist-container {

@@ -137,7 +137,7 @@ import { mapGetters } from 'vuex';
 import axios from 'axios';
 import mobileContainer from '../common/new/mobileContainer';
 import { API_PORN1_DOMAIN } from '@/config/api';
-import message from '../../components/common/new/message';
+import message from '../common/new/message';
 import openGame from '@/lib/open_game';
 import ajax from '@/lib/ajax';
 
@@ -218,11 +218,10 @@ export default {
       }
 
       if (this.memInfo.balance.total < 100) {
-        alert(this.$text('S_LIVE_BALANCE_NOT_LESS', '直播余额不低%s元').replace('%s', 100));
+        this.msg = this.$text('S_LIVE_BALANCE_NOT_LESS', '直播余额不低%s元').replace('%s', 100);
         return;
       }
-
-      alert(this.$text('S_BEAUTY_STAY_TUNED', '我们将在下个月帮您开通美眉直播，敬请期待！先去体验一下其它游戏吧！'));
+       this.msg = this.$text('S_BEAUTY_STAY_TUNED', '我们将在下个月帮您开通美眉直播，敬请期待！先去体验一下其它游戏吧！');
     },
     getIframeHeight() {
       this.iframeHeight = this.$refs['js-set-height'].contentWindow.window.document.body.scrollHeight + 100;

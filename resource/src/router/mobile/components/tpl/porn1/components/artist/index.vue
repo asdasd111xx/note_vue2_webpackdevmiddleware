@@ -28,9 +28,9 @@
 import { mapGetters } from 'vuex';
 import axios from 'axios';
 import querystring from 'querystring';
-import artistInfo from './components/new/artistInfo';
-import artistVideo from './components/new/artistVideo';
-import mobileContainer from '../common/new/mobileContainer';
+import artistInfo from './components/artistInfo';
+import artistVideo from './components/artistVideo';
+import mobileContainer from '../common/mobileContainer';
 import { API_PORN1_DOMAIN } from '@/config/api';
 
 export default {
