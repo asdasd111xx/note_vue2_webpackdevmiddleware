@@ -74,7 +74,7 @@
                         "
                     />
                     &nbsp;
-                    <span>在线客服1</span>
+                    <span>主线客服</span>
                 </div>
                 <div>Main Customer Support</div>
                 <div>7*24小时专线服务 贴心至上</div>
@@ -102,7 +102,7 @@
                         "
                     />
                     &nbsp;
-                    <span>在线客服2</span>
+                    <span>次线客服</span>
                 </div>
                 <div>Main Customer Support</div>
                 <div>7*24小时专线服务 贴心至上</div>
@@ -146,15 +146,15 @@ export default {
             ],
             yaboIconSrc: "/static/image/_new/webview/appicon_yabo.png",
             iosCard: [
-                // {
-                //     text: "极速版",
-                //     onClick: () => {
-                //         this.download(
-                //             2,
-                //             "yaboxxxapp01.com.mobile.webview"
-                //         );
-                //     }
-                // },
+                {
+                    text: "极速版",
+                    onClick: () => {
+                        this.download(
+                            2,
+                            "yaboxxxapp01.com.platformG"
+                        );
+                    }
+                },
                 {
                     text: "IOS版",
                     onClick: () => {
