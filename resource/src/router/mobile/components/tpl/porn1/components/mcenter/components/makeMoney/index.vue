@@ -10,7 +10,11 @@
                 :key="`img${item}`"
                 :class="$style['img-wrap']"
             >
-                <img :src="`/static/image/_new/mcenter/makeMoney/promotion_${item}.png`" />
+                <img
+                    :src="
+                        `/static/image/_new/mcenter/makeMoney/promotion_${item}.png`
+                    "
+                />
                 <template v-if="item === 2">
                     <span>{{ agentCode }}</span>
                     <div :class="$style['copy-btn']" @click="copyCode">
@@ -28,10 +32,10 @@
 </template>
 
 <script>
-import mobileContainer from '../../../common/new/mobileContainer';
-import { API_PROMOTION_INFO } from '@/config/api';
-import ajax from '@/lib/ajax';
-import message from '../../../common/new/message';
+import mobileContainer from "../../../common/new/mobileContainer";
+import { API_PROMOTION_INFO } from "@/config/api";
+import axios from "axios";
+import message from "../../../common/new/message";
 
 export default {
     components: {
@@ -40,39 +44,65 @@ export default {
     },
     data() {
         return {
-            agentCode: '',
-            msg: ''
+            msg: "",
+            domain: "",
+            agentCode: ""
         };
     },
     computed: {
         headerConfig() {
             return {
                 prev: true,
-                title: '推广赚钱',
+                title: "推广赚钱",
                 recommendGift: true,
                 onClick: () => {
                     this.$router.back();
                 }
             };
+        },
+        /**
+         * 推廣連結
+         * @method agentLink
+         * @returns {String} 推廣連結
+         */
+        agentLink() {
+            if (!this.domain || !this.agentCode) {
+                return "";
+            }
+
+            return `https://${this.domain}/a/${this.agentCode}`;
         }
     },
     created() {
-        ajax({
-            method: 'get',
-            url: API_PROMOTION_INFO,
-            success: ({ result, ret }) => {
-                if (result !== 'ok') {
-                    return;
-                }
-
-                this.agentCode = ret.code;
-            }
-        });
+        this.getDomain();
+        this.getAgentCode();
     },
     methods: {
         copyCode() {
-            this.$copyText(this.agentCode).then(() => {
-                this.msg = '复制成功';
+            this.$copyText(this.agentLink).then(() => {
+                this.msg = "复制成功";
+            });
+        },
+        getDomain() {
+            axios({
+                method: "get",
+                url: "/api/v1/c/hostnames"
+            }).then(res => {
+                if (res.data.result !== "ok") {
+                    return;
+                }
+                this.domain = res.data.ret[0];
+            });
+        },
+        getAgentCode() {
+            axios({
+                method: "get",
+                url: API_PROMOTION_INFO
+            }).then(res => {
+                if (res.data.result !== "ok") {
+                    return;
+                }
+                this.agentCode = res.data.ret.code;
             });
         }
     }
@@ -82,7 +112,7 @@ export default {
 <style lang="scss" module>
 .container {
     position: relative;
-    background-color: #F8F8F7;
+    background-color: #f8f8f7;
 }
 
 .img-wrap {
@@ -107,10 +137,10 @@ export default {
         bottom: calc(6vw - 3px);
         right: 5%;
         font-weight: 700;
-        color: #FFF;
-        background: #BD9D7D;
-        background-image: -webkit-linear-gradient(top ,#BD9D7D, #F9DDBD);
-        background-image: linear-gradient(top ,#BD9D7D, #F9DDBD);
+        color: #fff;
+        background: #bd9d7d;
+        background-image: -webkit-linear-gradient(top, #bd9d7d, #f9ddbd);
+        background-image: linear-gradient(top, #bd9d7d, #f9ddbd);
         border-radius: 20px;
     }
 }
