@@ -12,7 +12,7 @@
                     :key="`select-method-${info.selectId || index}`"
                     @click.stop="changePay(info)"
                 >
-                    <img :src="`/static/image/mcenter/bank/default.png`" />
+                    <img src="/static/image/_new/mcenter/default.png" />
                     {{ info.mainTitle }}
                     <icon
                         v-if="info.selectId === nowSelectCur.selectId"
