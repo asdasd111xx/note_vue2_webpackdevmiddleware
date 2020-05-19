@@ -87,7 +87,7 @@
             />
             <div :class="$style['question-info']">
               <div :class="$style['question-name']">
-                鸭脖直播
+                鸭脖视频
               </div>
               <p
                 :class="$style['question-description']"

@@ -55,7 +55,7 @@
           <img :src="$getCdnPath(yaboIconSrc)" alt="icon" />
         </div>
         <div :class="$style['isSingle']">
-          <div :class="$style['text']">鸭脖直播APP</div>
+          <div :class="$style['text']">鸭脖视频APP</div>
           <div :class="$style['download']" @click="download">
             立即下载
           </div>

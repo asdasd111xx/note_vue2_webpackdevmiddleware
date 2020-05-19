@@ -95,7 +95,7 @@ export default {
       return {
         prev: true,
         onClick: () => { this.$router.back(); },
-        title: this.$text('S_ABOUT_YABOLIVE', '关于鸭脖直播'),
+        title: this.$text('S_ABOUT_YABOLIVE', '关于鸭脖视频'),
       };
     },
   },

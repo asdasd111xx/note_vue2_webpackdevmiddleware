@@ -110,7 +110,7 @@ export default {
 
         },
         {
-          initName: '关于鸭脖直播',
+          initName: '关于鸭脖视频',
           name: 'S_ABOUT_YABOLIVE',
           path: '/mobile/mcenter/about',
           pageName: 'about',
@@ -203,7 +203,6 @@ export default {
                 'YYYY-MM-DD HH:mm:ss-04:00'
               )
             },
-            errorAlert: false,
             success: ({
               result, ret, msg, code
             }) => {
