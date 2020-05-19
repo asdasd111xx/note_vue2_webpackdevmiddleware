@@ -128,7 +128,7 @@
                                             :key="item.selectId"
                                             @click.stop="changeSelectValue(item.value)"
                                         >
-                                            <img v-lazy="getImg(item.selectId)" />
+                                            <img v-lazy="getImg(item)" />
                                             {{ item.label }}
                                             <icon
                                                 v-if="item.value === selectedBank.value"
@@ -347,7 +347,7 @@
                                                             "
                                                         >
                                                             <img
-                                                                :src="`/static/image/mcenter/bank/default.png`"
+                                                                :src="`/static/image/_new/mcenter/default.png`"
                                                             />
                                                             {{ item.mainTitle }}
                                                             <icon
@@ -911,7 +911,7 @@ export default {
             });
         },
         getImg(info) {
-            let imgId = info.bank_id;
+            let imgId = info.bank_id || info.selectId;
 
             if (info.bank_id === 0) {
                 if (info.payment_method_id === 20 && info.payment_type_id === 11) {
@@ -928,7 +928,7 @@ export default {
             }
             return {
                 src: `https://images.dormousepie.com/icon/withdrawBank/${imgId}.png`,
-                error: this.$getCdnPath('/static/image/mcenter/bank/default.png'),
+                error: this.$getCdnPath('/static/image/_new/mcenter/default.png'),
                 loading: this.$getCdnPath('/static/image/game_loading_s.gif')
             };
         },
