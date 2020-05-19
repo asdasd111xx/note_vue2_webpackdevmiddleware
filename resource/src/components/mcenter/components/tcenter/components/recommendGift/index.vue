@@ -137,7 +137,7 @@
             <div v-else :class="$style['no-data-wrap']">
                 <img :src="$getCdnPath('/static/image/_new/mcenter/moneyDetail/no_data.png')" />
                 <div :class="$style.tips">还没有任何记录</div>
-                <div :class="$style['btn-money']" @click="$router.push('/mobile/mcenter/deposit')">推广赚钱</div>
+                <div :class="$style['btn-money']" @click="$router.push('/mobile/mcenter/makeMoney')">推广赚钱</div>
             </div>
         </template>
         <infinite-loading

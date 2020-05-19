@@ -15,8 +15,8 @@
                 <li
                     v-for="(item, index) in options"
                     :key="`options-${index}`"
-                    :class="{[$style.active] : true}"
-                    @click="getGameRecord(game)"
+                    :class="{[$style.active] : item.key === selectType.key}"
+                    @click="getLabel(item)"
                 >
                     {{ item.name }}
                 </li>
@@ -69,207 +69,77 @@
                 @click="selectMenu = ''"
             />
         </div>
-        <template v-if="true">
-            <div :class="$style['total-wrap']">
-                <div>首存金额: {{ mainTotal.amount }}</div>
-                <div>礼金: 13443</div>
-            </div>
-            <div :class="$style['info-list']">
-                <div
-                    v-for="info in mainListData"
-                    :key="info.upper_id"
-                    :class="$style['info-item']"
-                >
-                    <div :class="$style['item-header']">
-                        <div :class="$style['friend-name']">
-                            {{ info.username }}
-                        </div>
-                        <div>
-                            礼金: {{ info.total_invite_gift }}
-                        </div>
-                    </div>
-                    <div :class="$style['item-content']">
-                        <div :class="$style['item-detail']">
-                            <div :class="$style['item-detail-title']">
-                                注册时间
+        <template v-if="!isLoading">
+            <template v-if="mainListData.length > 0">
+                <div :class="$style['total-wrap']">
+                    <div>首存金额: {{ mainTotal.amount }}</div>
+                    <div>礼金: {{ mainTotal.total_invite_gift }}</div>
+                </div>
+                <div :class="$style['info-list']">
+                    <div
+                        v-for="info in mainListData"
+                        :key="info.upper_id"
+                        :class="$style['info-item']"
+                    >
+                        <div :class="$style['item-header']">
+                            <div :class="$style['friend-name']">
+                                {{ info.username }}
                             </div>
-                            <div :class="$style['item-detail-result']">
-                                {{ info.user_created_at }}
+                            <div>
+                                礼金: {{ info.total_invite_gift }}
                             </div>
                         </div>
-                        <div :class="$style['item-detail']">
-                            <div :class="$style['item-detail-title']">
-                                首存金额
+                        <div :class="$style['item-content']">
+                            <div :class="$style['item-detail']">
+                                <div :class="$style['item-detail-title']">
+                                    注册时间
+                                </div>
+                                <div :class="$style['item-detail-result']">
+                                    {{ info.user_created_at }}
+                                </div>
                             </div>
-                            <div :class="$style['item-detail-result']">
-                                {{ info.amount }}
+                            <div :class="$style['item-detail']">
+                                <div :class="$style['item-detail-title']">
+                                    首存金额
+                                </div>
+                                <div :class="$style['item-detail-result']">
+                                    {{ info.amount }}
+                                </div>
                             </div>
-                        </div>
-                        <div :class="$style['item-detail']">
-                            <div :class="$style['item-detail-title']">
-                                推荐礼金
+                            <div :class="$style['item-detail']">
+                                <div :class="$style['item-detail-title']">
+                                    推荐礼金
+                                </div>
+                                <div :class="$style['item-detail-result']">
+                                    {{ info.deposit_gift }}
+                                </div>
                             </div>
-                            <div :class="$style['item-detail-result']">
-                                {{ info.deposit_gift }}
+                            <div v-if="parseFloat(info.invite_gift) > 0" :class="$style['item-detail']">
+                                <div :class="$style['item-detail-title']">
+                                    推荐人奖励
+                                </div>
+                                <div :class="$style['item-detail-result']">
+                                    {{ info.invite_gift }}
+                                </div>
                             </div>
-                        </div>
-                        <div :class="$style['item-detail']">
-                            <div :class="$style['item-detail-title']">
-                                推荐人奖励
-                            </div>
-                            <div :class="$style['item-detail-result']">
-                                {{ info.invite_gift }}
-                            </div>
-                        </div>
-                        <div :class="$style['item-detail']">
-                            <div :class="$style['item-detail-title']">
-                                审核状态
-                            </div>
-                            <div :class="$style['item-detail-result']">
-                                已派发
+                            <div :class="$style['item-detail']">
+                                <div :class="$style['item-detail-title']">
+                                    审核状态
+                                </div>
+                                <div :class="$style['item-detail-result']">
+                                    {{ getStatus(info) }}
+                                </div>
                             </div>
                         </div>
                     </div>
                 </div>
-                <div :class="$style['info-item']">
-                    <div :class="$style['item-header']">
-                        <div :class="$style['friend-name']">
-                            sann
-                        </div>
-                        <div>
-                            礼金: 6344
-                        </div>
-                    </div>
-                    <div :class="$style['item-content']">
-                        <div :class="$style['item-detail']">
-                            <div :class="$style['item-detail-title']">
-                                注册时间
-                            </div>
-                            <div :class="$style['item-detail-result']">
-                                2020-03-30 01:00:56
-                            </div>
-                        </div>
-                        <div :class="$style['item-detail']">
-                            <div :class="$style['item-detail-title']">
-                                首存金额
-                            </div>
-                            <div :class="$style['item-detail-result']">
-                                45555
-                            </div>
-                        </div>
-                        <div :class="$style['item-detail']">
-                            <div :class="$style['item-detail-title']">
-                                推荐礼金
-                            </div>
-                            <div :class="$style['item-detail-result']">
-                                88.99
-                            </div>
-                        </div>
-                        <div :class="$style['item-detail']">
-                            <div :class="$style['item-detail-title']">
-                                审核状态
-                            </div>
-                            <div :class="$style['item-detail-result']">
-                                已派发
-                            </div>
-                        </div>
-                    </div>
-                </div>
-                <div :class="$style['info-item']">
-                    <div :class="$style['item-header']">
-                        <div :class="$style['friend-name']">
-                            sann
-                        </div>
-                        <div>
-                            礼金: 6344
-                        </div>
-                    </div>
-                    <div :class="$style['item-content']">
-                        <div :class="$style['item-detail']">
-                            <div :class="$style['item-detail-title']">
-                                注册时间
-                            </div>
-                            <div :class="$style['item-detail-result']">
-                                2020-03-30 01:00:56
-                            </div>
-                        </div>
-                        <div :class="$style['item-detail']">
-                            <div :class="$style['item-detail-title']">
-                                首存金额
-                            </div>
-                            <div :class="$style['item-detail-result']">
-                                45555
-                            </div>
-                        </div>
-                        <div :class="$style['item-detail']">
-                            <div :class="$style['item-detail-title']">
-                                推荐礼金
-                            </div>
-                            <div :class="$style['item-detail-result']">
-                                88.99
-                            </div>
-                        </div>
-                        <div :class="$style['item-detail']">
-                            <div :class="$style['item-detail-title']">
-                                审核状态
-                            </div>
-                            <div :class="$style['item-detail-result']">
-                                已派发
-                            </div>
-                        </div>
-                    </div>
-                </div>
-                <div :class="$style['info-item']">
-                    <div :class="$style['item-header']">
-                        <div :class="$style['friend-name']">
-                            sann
-                        </div>
-                        <div>
-                            礼金: 6344
-                        </div>
-                    </div>
-                    <div :class="$style['item-content']">
-                        <div :class="$style['item-detail']">
-                            <div :class="$style['item-detail-title']">
-                                注册时间
-                            </div>
-                            <div :class="$style['item-detail-result']">
-                                2020-03-30 01:00:56
-                            </div>
-                        </div>
-                        <div :class="$style['item-detail']">
-                            <div :class="$style['item-detail-title']">
-                                首存金额
-                            </div>
-                            <div :class="$style['item-detail-result']">
-                                45555
-                            </div>
-                        </div>
-                        <div :class="$style['item-detail']">
-                            <div :class="$style['item-detail-title']">
-                                推荐礼金
-                            </div>
-                            <div :class="$style['item-detail-result']">
-                                88.99
-                            </div>
-                        </div>
-                        <div :class="$style['item-detail']">
-                            <div :class="$style['item-detail-title']">
-                                审核状态
-                            </div>
-                            <div :class="$style['item-detail-result']">
-                                已派发
-                            </div>
-                        </div>
-                    </div>
-                </div>
+            </template>
+            <div v-else :class="$style['no-data-wrap']">
+                <img :src="$getCdnPath('/static/image/_new/mcenter/moneyDetail/no_data.png')" />
+                <div :class="$style.tips">还没有任何记录</div>
+                <div :class="$style['btn-money']" @click="$router.push('/mobile/mcenter/makeMoney')">推广赚钱</div>
             </div>
         </template>
-        <div v-else :class="$style['no-data-wrap']">
-            <img :src="$getCdnPath('/static/image/_new/mcenter/moneyDetail/no_data.png')" />
-            <div :class="$style.tips">还没有任何记录</div>
-            <div :class="$style['btn-money']" @click="$router.push('/mobile/mcenter/deposit')">推广赚钱</div>
-        </div>
         <infinite-loading
             v-if="showInfinite"
             ref="infiniteLoading"
@@ -282,7 +152,6 @@
 </template>
 
 <script>
-import { mapGetters } from 'vuex';
 import Vue from 'vue';
 import InfiniteLoading from 'vue-infinite-loading';
 import EST from '@/lib/EST';
@@ -300,23 +169,27 @@ export default {
             options: [
                 {
                     name: '全部',
-                    key: 'all'
+                    key: 'all',
+                    status: 0
                 },
                 {
                     name: '已派发',
-                    key: 'dispatch'
+                    key: 'dispatch',
+                    status: 1
                 },
                 {
                     name: '已撤销',
-                    key: 'revoked'
+                    key: 'revoked',
+                    status: 2
                 },
                 {
                     name: '资格不符',
-                    key: 'allow'
+                    key: 'allow',
+                    status: 3
                 }
             ],
             selectMenu: '',
-            selectType: { name: '全部' },
+            selectType: { name: '全部', key: 'all', status: 0 },
             isCustomTime: false,
             currentSelectTime: this.$t('S_TODDAY'),
             selectTime: this.$t('S_TODDAY'),
@@ -324,63 +197,8 @@ export default {
             limitDate: '',
             startTime: '',
             endTime: '',
-            mainListData: [
-                {
-                    id: '1',
-                    upper_id: '3',
-                    user_id: '4',
-                    user_created_at: '2020-03-01 19:32:00',
-                    amount: '210.00',
-                    deposit_gift: '12.00',
-                    invite_gift: '122.00',
-                    total_invite_gift: '234.00',
-                    status: '1',
-                    allow: true,
-                    canceled: false,
-                    dispatch: true,
-                    revoked: false,
-                    username: 'player0'
-                },
-                {
-                    id: '1',
-                    upper_id: '3',
-                    user_id: '4',
-                    user_created_at: '2020-04-02 00:22:00',
-                    amount: '90.00',
-                    deposit_gift: '22.00',
-                    invite_gift: '152.00',
-                    total_invite_gift: '1134.00',
-                    status: '1',
-                    allow: true,
-                    canceled: false,
-                    dispatch: true,
-                    revoked: false,
-                    username: 'jack'
-                },
-                {
-                    id: '1',
-                    upper_id: '3',
-                    user_id: '4',
-                    user_created_at: '2020-04-22 13:32:00',
-                    amount: '1111.00',
-                    deposit_gift: '32.00',
-                    invite_gift: '8.00',
-                    total_invite_gift: '334.00',
-                    status: '1',
-                    allow: true,
-                    canceled: false,
-                    dispatch: true,
-                    revoked: false,
-                    username: 'mina'
-                }
-            ],
-            mainTotal: {
-                amount: '100.00',
-                deposit_gift: '122.00',
-                invite_gift: '12.00',
-                total_invite_gift: '134.00'
-            },
-            mainTime: [],
+            mainListData: [],
+            mainTotal: {},
             mainNoData: true,
             currentCustomDate: '',
             isShowDatePicker: false,
@@ -403,12 +221,12 @@ export default {
                 {
                     text: this.$text('S_THIRTY_DAY', '近30日'),
                     name: 'month',
-                    value: 30
+                    value: 29
                 },
                 {
                     text: this.$text('S_CUSTOM_DATE', '自定义'),
                     name: 'custom',
-                    value: 30
+                    value: 29
                 }
             ],
             pagination: {},
@@ -420,17 +238,6 @@ export default {
         };
     },
     computed: {
-        ...mapGetters({
-            memInfo: 'getMemInfo',
-            gameData: 'getGameData'
-        }),
-        headerConfig() {
-            return {
-                prev: true,
-                title: this.$text('S_BETHISTORYBTN', '投注记录'),
-                onClick: () => { this.$router.back(); }
-            };
-        },
         setStartTime: {
             get() {
                 return new Date(this.startTime);
@@ -447,12 +254,6 @@ export default {
                 this.endTime = Vue.moment(value).format('YYYY-MM-DD');
             }
         },
-        controlData() {
-            return this.mainTime.map((item) => ({
-                ...item,
-                list: this.mainListData.filter((game) => game.day === item.day)
-            })).filter((data) => data.list.length > 0);
-        },
         showData() {
             if (this.mainData.length === 0) {
                 return false;
@@ -460,22 +261,37 @@ export default {
             return this.mainData.some((item) => this.controlData.some((data) => item.day === data.day));
         }
     },
+    watch: {
+        selectMenu() {
+            document.querySelector('#mobile-wrap').style = this.selectMenu ? 'overflow: hidden' : '';
+        }
+    },
     created() {
         this.startTime = Vue.moment(this.estToday).format('YYYY-MM-DD');
         this.endTime = Vue.moment(this.estToday).format('YYYY-MM-DD');
         this.limitDate = new Date(Vue.moment(this.estToday).add(-30, 'days').format('YYYY-MM-DD'));
         this.isLoading = true;
-        this.updateGame();
+        this.getGiftList();
     },
     methods: {
-        getGameRecord(data) {
+        getStatus(info) {
+            if (!info.allow) {
+                return '资格不符';
+            }
+
+            if (info.revoked) {
+                return '已撤销';
+            }
+
+            return '已派发';
+        },
+        getLabel(data) {
             this.selectMenu = '';
             this.selectType = data;
             this.showPage = 0;
             this.mainTotal = {};
             this.pagination = {};
             this.mainListData = [];
-            this.mainTime = [];
             this.isLoading = true;
             this.updateGame();
         },
@@ -502,56 +318,30 @@ export default {
             this.pagination = {};
             this.mainTotal = {};
             this.mainListData = [];
-            this.mainTime = [];
             this.isLoading = true;
             this.updateGame();
         },
-        // getTotalTime() {
-        //     const params = {
-        //         start_at: Vue.moment(this.startTime).format('YYYY-MM-DD 00:00:00-04:00'),
-        //         end_at: Vue.moment(this.endTime).format('YYYY-MM-DD 23:59:59-04:00')
-        //     };
-
-        //     if (this.selectType.kind) {
-        //         params.vendor = this.selectType.vendor;
-        //         params.kind = this.selectType.kind;
-        //     }
-
-        //     // 注單統計總資料(依投注日期)
-        //     return ajax({
-        //         method: 'get',
-        //         url: '/api/v1/c/stats/wager-report/by-day',
-        //         params,
-        //         success: (response) => {
-        //             this.mainTime = response.ret.map((item) => ({
-        //                 bet: parseFloat(item.bet).toFixed(2),
-        //                 count: item.count,
-        //                 day: item.day,
-        //                 payoff: parseFloat(item.payoff).toFixed(2),
-        //                 valid_bet: parseFloat(item.valid_bet).toFixed(2),
-        //                 list: []
-        //             }));
-        //             this.updateGame();
-        //         }
-        //     });
-        // },
-        getGameDetail() {
+        getGiftList() {
             const params = {
-                start_at: Vue.moment(this.startTime).format('YYYY-MM-DD 00:00:00-04:00'),
-                end_at: Vue.moment(this.endTime).format('YYYY-MM-DD 23:59:59-04:00'),
+                dispatch_start_at: Vue.moment(this.startTime).format('YYYY-MM-DD 00:00:00-04:00'),
+                dispatch_end_at: Vue.moment(this.endTime).format('YYYY-MM-DD 23:59:59-04:00'),
                 max_results: this.maxResults,
                 first_result: this.maxResults * this.showPage
             };
 
+            if (this.selectType.status > 0) {
+                params.status = this.selectType.status;
+            }
+
             this.startTime = Vue.moment(this.startTime).format('YYYY-MM-DD');
             this.endTime = Vue.moment(this.endTime).format('YYYY-MM-DD');
 
-            // 各遊戲注單統計資料(依投注日期)
             return ajax({
                 method: 'get',
                 url: '/api/v1/c/festival/entry/list',
                 params,
                 success: (response) => {
+                    this.isLoading = false;
                     if (response.ret.length === 0) {
                         return;
                     }
@@ -587,25 +377,7 @@ export default {
             this.isCustomTime = true;
             this.currentCustomDate = '';
             this.selectMenu = '';
-            this.getTotalTime();
-        },
-        getMonthDay(date) {
-            return `${Vue.moment(date).format('MM-DD').replace('-', '月')}日`;
-        },
-        getVendorName(vendor, kind) {
-            if (!this.memInfo.vendors.find((item) => item.vendor === vendor && item.kind === kind)) {
-                return this.$t(Object.keys(this.gameData).map((key) => {
-                    if (this.gameData[key].vendor === vendor) {
-                        return this.gameData[key].text;
-                    }
-
-                    return '';
-                }).join(''));
-            }
-            return this.memInfo.vendors.find((item) => item.vendor === vendor && item.kind === kind).alias;
-        },
-        getCount(date) {
-            return this.mainListData.filter((item) => item.day === date).length;
+            this.updateGame();
         },
         /**
          * 捲動加載
@@ -618,8 +390,7 @@ export default {
             }
 
             this.isReceive = true;
-            this.getGameDetail().then(({ result }) => {
-                this.isLoading = false;
+            this.getGiftList().then(({ result }) => {
                 this.isReceive = false;
                 if (result !== 'ok') {
                     return;
