@@ -198,7 +198,7 @@
             }}</span>
           </div>
         </template>
-        <div :class="$style['wrap-buffer']" />
+        <div ref="wrap-buffer" :class="$style['wrap-buffer']" />
       </div>
     </div>
     <message v-if="msg" @close="clearMsg">
@@ -564,7 +564,7 @@ export default {
       setTimeout(() => {
         this.stopScroll = false;
         if (isSetEnd) {
-          this.$refs['game-wrap'].scrollTop = this.$refs['game-wrap'].scrollHeight;
+          this.$refs['game-wrap'].scrollTop = this.$refs['game-wrap'].scrollHeight - this.$refs['game-wrap'].clientHeight - this.$refs['wrap-buffer'].offsetHeight;
         }
       }, 100);
     },
