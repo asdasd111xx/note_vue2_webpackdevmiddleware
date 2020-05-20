@@ -74,7 +74,7 @@
                         "
                     />
                     &nbsp;
-                    <span>主线客服</span>
+                    <span>在线客服1</span>
                 </div>
                 <div>Main Customer Support</div>
                 <div>7*24小时专线服务 贴心至上</div>
@@ -102,7 +102,7 @@
                         "
                     />
                     &nbsp;
-                    <span>次线客服</span>
+                    <span>在线客服2</span>
                 </div>
                 <div>Main Customer Support</div>
                 <div>7*24小时专线服务 贴心至上</div>
