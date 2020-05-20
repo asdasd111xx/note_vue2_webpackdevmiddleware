@@ -326,7 +326,14 @@ export default {
   mounted() {
     $(window).on('resize', this.onResize);
 
-    const params = this.isAdult ? [this.getVideoTag(), this.getVideoSort(), this.getVideoRecommand(), this.getVideoList(), this.getAllGame()] : [this.getAllGame()];
+    // const params = this.isAdult ? [this.getVideoTag(), this.getVideoSort(), this.getVideoRecommand(), this.getVideoList(), this.getAllGame()] : [this.getAllGame()];
+    const params = [this.getAllGame()]
+    if (this.isAdult) {
+      this.getVideoTag();
+      this.getVideoSort();
+      this.getVideoRecommand();
+      this.getVideoList()
+    }
 
     Promise.all(params).then(() => {
       this.isReceive = true;
@@ -361,7 +368,7 @@ export default {
     $(window).off('resize', this.onResize);
   },
   methods: {
-      getImg(info) {
+    getImg(info) {
       return {
         src: info.image,
         error: this.$getCdnPath(`/static/image/_new/common/default_${info.imageType}.png`),
@@ -556,7 +563,7 @@ export default {
       setTimeout(() => {
         this.stopScroll = false;
         if (isSetEnd) {
-            this.$refs['game-wrap'].scrollTop = this.$refs['game-wrap'].scrollHeight;
+          this.$refs['game-wrap'].scrollTop = this.$refs['game-wrap'].scrollHeight;
         }
       }, 100);
     },

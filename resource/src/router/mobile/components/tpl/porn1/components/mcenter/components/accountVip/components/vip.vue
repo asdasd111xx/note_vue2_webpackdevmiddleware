@@ -137,9 +137,6 @@ export default {
                 }/player/vipinfo/${getCookie("cid")}`,
                 headers: { "x-domain": this.memInfo.user.domain }
             }).then(res => {
-                if (res.data.status === "failure") {
-                    this.$router.push("/mobile/login");
-                }
 
                 this.userVipInfo = res.data.data;
 
@@ -162,9 +159,6 @@ export default {
                 }`,
                 headers: { "x-domain": this.memInfo.user.domain }
             }).then(res => {
-                if (res.data.status === "failure") {
-                    this.$router.push("/mobile/login");
-                }
 
                 this.vipLevelList = res.data.data;
             });

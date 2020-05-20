@@ -21,7 +21,7 @@
 
     <div :class="$style.tips">
       如需帮助，请
-      <span @click="$router.push('/mobile/service')">&nbsp;联系客服</span>
+      <span @click="handleClick">&nbsp;联系客服</span>
     </div>
   </div>
 </template>
@@ -37,13 +37,17 @@ export default {
   data() {
     return {
       start: '',
-      end: ''
+      end: '',
+      username: ''
     };
   },
   beforeRouteEnter(to, from, next) {
     getLang({ [Vue.cookie.get('lang') || 'zh-cn']: '' }).then(() => {
       member.data({
         success: (response) => {
+          if (response && response.ret && response.ret.user && response.ret.username) {
+            this.username = response.ret.username
+          }
           // 測試模式
           if (to.params.mode && to.params.mode === 'test') {
             store.dispatch('actionSetWebInfo', response.ret.user.domain).then(() => {
@@ -70,6 +74,14 @@ export default {
     $(document).prop('title', this.$t('S_UNDER_MAINTENANCE'));
   },
   methods: {
+    handleClick() {
+      let on_service_url = store && store.state && store.state.webInfo && store.state.webInfo.on_service_url;
+      if (on_service_url) {
+        localStorage.setItem('serviceUrl', on_service_url)
+      }
+
+      window.location.href = `/static/upup/index.html?username=${this.username}`
+    },
     setData(data) {
       if (!data || !data.end_at) return;
 
