@@ -46,9 +46,8 @@
 </template>
 
 <script>
-import { mapGetters } from "vuex";
+import { mapGetters, mapActions } from "vuex";
 import axios from "axios";
-import { API_PROMOTION_INFO } from "@/config/api";
 import message from "../../../../common/new/message";
 
 export default {
@@ -73,7 +72,8 @@ export default {
         ...mapGetters({
             isPwa: "getIsPwa",
             loginStatus: "getLoginStatus",
-            siteConfig: "getSiteConfig"
+            siteConfig: "getSiteConfig",
+            agentLink: "getAgentLink"
         }),
         isException() {
             return (
@@ -86,26 +86,12 @@ export default {
                     ? ["S_SCREENSHOT_SAVE", "点击截屏保存"]
                     : ["S_AUTO_SAVE", "自动保存"])
             );
-        },
-
-        /**
-         * 推廣連結
-         * @method agentLink
-         * @returns {String} 推廣連結
-         */
-        agentLink() {
-            if (!this.domain || !this.agentCode || !this.loginStatus) {
-                return "";
-            }
-
-            return `https://${this.domain}/a/${this.agentCode}`;
         }
     },
     created() {
         if (this.loginStatus) {
             // 已登入：註冊頁
-            this.getDomain();
-            this.getAgentCode();
+            this.actionSetAgentLink();
         } else {
             // 未登入：落地頁
             axios({
@@ -120,6 +106,7 @@ export default {
         }
     },
     methods: {
+        ...mapActions(["actionSetAgentLink"]),
         closeShare() {
             this.$emit("update:isShowShare", false);
         },
@@ -128,28 +115,6 @@ export default {
                 window.open("/mobile/shareDownload", "_blank");
                 return;
             }
-        },
-        getDomain() {
-            axios({
-                method: "get",
-                url: "/api/v1/c/hostnames"
-            }).then(res => {
-                if (res.data.result !== "ok") {
-                    return;
-                }
-                this.domain = res.data.ret[0];
-            });
-        },
-        getAgentCode() {
-            axios({
-                method: "get",
-                url: API_PROMOTION_INFO
-            }).then(res => {
-                if (res.data.result !== "ok") {
-                    return;
-                }
-                this.agentCode = res.data.ret.code;
-            });
         }
     }
 };

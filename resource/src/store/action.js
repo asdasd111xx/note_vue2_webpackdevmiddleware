@@ -1024,3 +1024,33 @@ export const actionSetIsLoading = ({ commit }, data) => {
 export const actionSetＭcenterBindMessage = ({ commit }, data) => {
     commit(types.SET_MCENTER_BIND_MESSAGE, data);
 };
+
+// 設定推廣連結
+export const actionSetAgentLink = ({ commit }) => {
+    const domain = new Promise((resolve) => {
+        axios({
+            method: "get",
+            url: "/api/v1/c/hostnames"
+        }).then((res) => {
+            if (res.data.result !== "ok") {
+                return
+            }
+            return resolve(res.data.ret[0])
+        })
+    })
+    let agentCode = new Promise((resolve) => {
+        axios({
+            method: "get",
+            url: "/api/v1/c/player/promotion"
+        }).then((res) => {
+            if (res.data.result !== "ok") {
+                return
+            }
+            return resolve(res.data.ret.code)
+        })
+    })
+
+    Promise.all([domain, agentCode]).then(([domain, agentCode]) => {
+        commit(types.SET_AGENTLINK, `https://${domain}/a/${agentCode}`);
+    });
+};
