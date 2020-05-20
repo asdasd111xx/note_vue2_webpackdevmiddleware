@@ -198,6 +198,7 @@
             }}</span>
           </div>
         </template>
+        <div :class="$style['wrap-buffer']" />
       </div>
     </div>
     <message v-if="msg" @close="clearMsg">
@@ -507,6 +508,7 @@ export default {
       this.startTouchY = e.touches[0].clientY;
     },
     onTouchMove(e) {
+      let wrap = this.$refs['game-wrap'];
       if (this.isSliding) {
         return;
       }
@@ -514,10 +516,9 @@ export default {
       // 判斷滑動方向
       this.slideDirection = this.startTouchY > e.touches[0].clientY ? 'down' : 'up';
       // 判斷是否置頂
-      this.isTop = this.slideDirection === 'up' && this.$refs['game-wrap'].scrollTop <= 10;
+      this.isTop = this.slideDirection === 'up' && wrap.scrollTop <= 10;
       // 判斷是否置底
-      this.isBottom = this.slideDirection === 'down' && this.$refs['game-wrap'].scrollHeight - 10 <= this.$refs['game-wrap'].scrollTop + this.$refs['game-wrap'].clientHeight;
-
+      this.isBottom = this.slideDirection === 'down' && wrap.scrollHeight - 10 <= wrap.scrollTop + wrap.clientHeight;
       if (this.isTop || this.isBottom) {
         e.preventDefault();
       }
@@ -1014,5 +1015,15 @@ export default {
   &.is-full {
     width: 100%;
   }
+}
+
+.wrap-buffer {
+  width: 100%;
+  height: 12%;
+  display: block;
+  overflow: hidden;
+  position: relative;
+  float: left;
+  box-sizing: border-box;
 }
 </style>
