@@ -459,4 +459,4 @@ export const API_GETAPPINFO_MORE = '/api/v2/c/app/info';
 export const API_PROMOTION_LIST = '/api/v1/c/ext/promotion';
 
 // 鸭脖视频 api domain
-export const API_PORN1_DOMAIN = 'https://baobingxue.com';
+export const API_PORN1_DOMAIN = 'https://daydayyouhui.com';
