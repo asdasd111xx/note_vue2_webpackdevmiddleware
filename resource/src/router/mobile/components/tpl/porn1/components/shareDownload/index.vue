@@ -1,12 +1,11 @@
 <template>
     <div>
-        <div :class="$style['back']" @click="$router.push('/mobile/mcenter/home')">
+        <div
+            :class="$style['back']"
+            @click="$router.push('/mobile/mcenter/home')"
+        >
             <img
-                :src="
-                    $getCdnPath(
-                        `/static/image/_new/common/btn_back.png`
-                    )
-                "
+                :src="$getCdnPath(`/static/image/_new/common/btn_back.png`)"
                 alt="back"
             />
         </div>
@@ -32,10 +31,8 @@
 </template>
 
 <script>
-import { mapGetters } from "vuex";
+import { mapGetters, mapActions } from "vuex";
 import axios from "axios";
-import html2canvas from "html2canvas";
-import { API_PROMOTION_INFO } from "@/config/api";
 
 export default {
     data() {
@@ -49,27 +46,14 @@ export default {
         ...mapGetters({
             isPwa: "getIsPwa",
             loginStatus: "getLoginStatus",
-            siteConfig: "getSiteConfig"
-        }),
-
-        /**
-         * 推廣連結
-         * @method agentLink
-         * @returns {String} 推廣連結
-         */
-        agentLink() {
-            if (!this.domain || !this.agentCode || !this.loginStatus) {
-                return "";
-            }
-
-            return `https://${this.domain}/a/${this.agentCode}`;
-        }
+            siteConfig: "getSiteConfig",
+            agentLink: "getAgentLink"
+        })
     },
     created() {
         if (this.loginStatus) {
             // 已登入：註冊頁
-            this.getDomain();
-            this.getAgentCode();
+            this.actionSetAgentLink();
         } else {
             // 未登入：落地頁
             axios({
@@ -84,28 +68,7 @@ export default {
         }
     },
     methods: {
-        getDomain() {
-            axios({
-                method: "get",
-                url: "/api/v1/c/hostnames"
-            }).then(res => {
-                if (res.data.result !== "ok") {
-                    return;
-                }
-                this.domain = res.data.ret[0];
-            });
-        },
-        getAgentCode() {
-            axios({
-                method: "get",
-                url: API_PROMOTION_INFO
-            }).then(res => {
-                if (res.data.result !== "ok") {
-                    return;
-                }
-                this.agentCode = res.data.ret.code;
-            });
-        }
+        ...mapActions(["actionSetAgentLink"])
     }
 };
 </script>

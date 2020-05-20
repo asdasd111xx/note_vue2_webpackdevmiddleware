@@ -14,6 +14,8 @@ export default {
         enable: false
     },
     allVip: [],
+    // 推廣連結
+    agentLink: '',
     // ＝＝＝＝＝＝＝＝＝＝＝＝＝＝＝＝＝＝
     //     後台(mangosteen_front)共用
     // ＝＝＝＝＝＝＝＝＝＝＝＝＝＝＝＝＝＝

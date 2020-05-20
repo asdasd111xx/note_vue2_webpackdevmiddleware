@@ -58,7 +58,9 @@ export default {
       coinType:
         [{ key: 'done', src: 'coin_g' },
         { key: 'process', src: 'coin_bg' },
-        { key: 'earn', src: 'coin_y' }],
+        { key: 'next', src: 'coin_next' },
+        { key: 'open', src: 'coin_open' },
+        ],
       isClose: false,
       isStart: false,
       earnCoin: "",
