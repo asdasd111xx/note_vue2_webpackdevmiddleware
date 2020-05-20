@@ -185,5 +185,7 @@ export default {
     // 是否Loading
     getIsLoading: (state) => state.isLoading,
     // 會員中心-個人資料-手機/姓名/信箱 綁定成功訊息
-    getMcenterBindMessage: (state) => state.mcenterBindMessage
+    getMcenterBindMessage: (state) => state.mcenterBindMessage,
+    // 推廣連結
+    getAgentLink: (state) => state.agentLink
 };
