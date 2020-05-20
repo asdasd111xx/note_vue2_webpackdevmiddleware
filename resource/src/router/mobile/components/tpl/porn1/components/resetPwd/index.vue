@@ -33,6 +33,7 @@
                 v-if="pwdResetInfo[item].type === 'text'"
                 :id="item"
                 v-model="pwdResetInfo[item].value"
+                @blur="verification(item, pwdResetInfo[item].value)"
                 type="text"
                 :placeholder="pwdResetInfo[item].placeholder"
                 :maxlength="pwdResetInfo[item].maxlength"
@@ -42,6 +43,7 @@
                 v-if="pwdResetInfo[item].type === 'password'"
                 :id="item"
                 v-model="pwdResetInfo[item].value"
+                @blur="verification(item, pwdResetInfo[item].value)"
                 type="password"
                 :placeholder="pwdResetInfo[item].placeholder"
                 :maxlength="pwdResetInfo[item].maxlength"
@@ -113,6 +115,7 @@ export default {
           display: false
         },
         email: {
+          key: 'email',
           text: 'S_E_MAIL',
           type: 'text',
           value: '',
@@ -125,6 +128,7 @@ export default {
           display: false
         },
         pwd: {
+          key: 'pwd',
           text: 'S_ORIGIN_PASSWORD',
           type: 'password',
           value: '',
@@ -137,6 +141,7 @@ export default {
           display: false
         },
         newPwd: {
+          key: 'newPwd',
           text: 'S_NEW_PWD',
           type: 'password',
           value: '',
@@ -149,6 +154,7 @@ export default {
           display: false
         },
         confNewPwd: {
+          key: 'confNewPwd',
           text: 'S_CHK_PWD',
           type: 'password',
           value: '',
@@ -198,17 +204,23 @@ export default {
       this.pwdResetInfo[key].eyeShow = !this.pwdResetInfo[key].eyeShow;
     },
     verification(id, value) {
-      // 前端先不驗證
+      const data = this.pwdResetInfo[id];
+      const re = new RegExp(data.regExp);
+      const msg = this.$t(data.errorMsg);
 
-      // const data = this.pwdResetInfo.find((i) => i.key == id);
-      // const re = new RegExp(data.regExp);
-      // const msg = this.$t(data.errorMsg);
+      if (!re.test(value)) {
+        this.errMsg = msg
+      } else {
+        this.errMsg = '';
+      }
 
-      // if (!re.test(value) || value === '') {
-      //     this.errMsg = msg;
-      // } else {
-      //     this.errMsg = '';
-      // }
+      if (this.pwdResetInfo['confNewPwd'].value !== this.pwdResetInfo['newPwd'].value) {
+        this.errMsg = '确认密码要与新密码一致';
+      }
+
+      if (!value) {
+        this.errMsg = '该栏位不得为空';
+      }
     },
     pwdModifySubmit() {
       if (!this.submitActive) return;
@@ -222,30 +234,32 @@ export default {
         agcenter.accountPassword({
           params: pwdInfo,
           success: () => {
-            this.errMsg = this.$t('S_CR_SUCCESS');
+            this.msg = this.$t('S_EDIT_SUCCESS');
             setTimeout(() => {
               this.$router.push('/mobile/mcenter/setting');
-            }, 400);
+            }, 2000);
           },
           fail: (res) => {
-            this.errMsg = res.data.msg;
+            this.errMsg = `${res.data.msg}(${res.data.code})`;
           }
         });
       } else {
         mcenter.accountPassword({
           params: pwdInfo,
           success: () => {
-            this.errMsg = this.$t('S_CR_SUCCESS');
-            if (this.memInfo.user.password_reset) {
-              this.actionSetUserdata(true).then(() => {
-                this.$router.push('/mobile');
-              });
-              return;
-            }
-            this.$router.push('/mobile/mcenter/setting');
+            this.msg = this.$t('S_EDIT_SUCCESS');
+            setTimeout(() => {
+              if (this.memInfo.user.password_reset) {
+                this.actionSetUserdata(true).then(() => {
+                  this.$router.push('/mobile');
+                });
+                return;
+              }
+              this.$router.push('/mobile/mcenter/setting');
+            }, 2000);
           },
           fail: (res) => {
-            this.errMsg = res.data.msg;
+            this.errMsg = `${res.data.msg}(${res.data.code})`;
           }
         });
       }
@@ -264,21 +278,23 @@ export default {
         agent.pwdReset({
           params: pwdInfo,
           success: () => {
-            this.errMsg = this.$t('S_CR_SUCCESS');
+            this.msg = this.$t('S_EDIT_SUCCESS');
             setTimeout(() => {
               this.$router.push('/mobile/mcenter/setting');
-            }, 400);
+            }, 2000);
           },
           fail: (res) => {
-            this.errMsg = res.data.msg;
+            this.errMsg = `${res.data.msg}(${res.data.code})`;
           }
         });
       } else {
         member.pwdReset({
           params: pwdInfo,
           success: () => {
-            this.errMsg = this.$t('S_CR_SUCCESS');
-            this.$router.push('/mobile/mcenter/setting');
+            this.msg = this.$t('S_EDIT_SUCCESS');
+            setTimeout(() => {
+              this.$router.push('/mobile/mcenter/setting');
+            }, 2000);
           },
           fail: (res) => {
             this.errMsg = res.data.msg;
