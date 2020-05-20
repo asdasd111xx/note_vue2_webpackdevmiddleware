@@ -55,22 +55,22 @@ import vStyle from './lib/vStyle';
 
 
 // 推播中心websocket api
-const script = document.createElement('script');
-script.setAttribute('src', '/api/v1/ws/front_file');
-script.setAttribute('data-id', 'ws-bc');
-script.setAttribute('data-msg-func', 'notice');
-document.body.appendChild(script);
-window.notice = (data) => {
-    const date = new Date();
-    store.state.noticeData = [
-        ...store.state.noticeData,
-        {
-            id: date.toISOString(),
-            event: data.event,
-            ...data.message
-        }
-    ];
-};
+// const script = document.createElement('script');
+// script.setAttribute('src', '/api/v1/ws/front_file');
+// script.setAttribute('data-id', 'ws-bc');
+// script.setAttribute('data-msg-func', 'notice');
+// document.body.appendChild(script);
+// window.notice = (data) => {
+//     const date = new Date();
+//     store.state.noticeData = [
+//         ...store.state.noticeData,
+//         {
+//             id: date.toISOString(),
+//             event: data.event,
+//             ...data.message
+//         }
+//     ];
+// };
 
 Vue.use(Vuex);
 Vue.use(VueRx);
