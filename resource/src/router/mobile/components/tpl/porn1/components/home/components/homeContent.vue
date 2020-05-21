@@ -683,8 +683,9 @@ export default {
               }
             });
             return;
+          } else {
+            openGame({ kind: game.kind, vendor: game.vendor, code: game.code });
           }
-          openGame({ kind: game.kind, vendor: game.vendor, code: game.code });
         },
         fail: (error) => {
           // "C50099" "请先绑定提现银行卡"
