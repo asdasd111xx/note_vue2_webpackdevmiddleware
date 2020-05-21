@@ -688,7 +688,11 @@ export default {
           }
         },
         fail: (error) => {
-          // "C50099" "请先绑定提现银行卡"
+          if (error && error.data && error.data.code === "C50099") {
+            this.msg = error.data.msg //  "请先绑定提现银行卡"
+            return;
+          }
+
           if (error && error.data) {
             this.msg = `${error.data.msg}(${error.data.code})`
             return;
