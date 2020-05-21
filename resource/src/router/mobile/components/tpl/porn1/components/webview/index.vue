@@ -104,7 +104,7 @@
                     &nbsp;
                     <span>在线客服2</span>
                 </div>
-                <div>Main Customer Support</div>
+                <div>Reserve Customer Support</div>
                 <div>7*24小时专线服务 贴心至上</div>
             </div>
 
