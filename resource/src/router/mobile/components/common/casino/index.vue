@@ -211,10 +211,10 @@ export default {
 
       ajax({
         method: 'get',
-        url: '/api/v1/c/player/user_bank/list',
+        url: '/api/v1/c/user/has-bank',
         errorAlert: false
       }).then((res) => {
-        this.hasBankCard = res.ret && res.ret.length > 0
+        this.hasBankCard = res.ret
       });
     }
   },
