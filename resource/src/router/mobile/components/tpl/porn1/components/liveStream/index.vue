@@ -201,7 +201,7 @@ export default {
         } else {
 
           if (!this.hasBankCard) {
-            this.msg = "请先绑定提现银行卡"
+            this.msg = "请先绑定提现银行卡(C50099)"
             return;
           }
 
@@ -221,7 +221,7 @@ export default {
         this.msg = this.$text('S_LIVE_BALANCE_NOT_LESS', '直播余额不低%s元').replace('%s', 100);
         return;
       }
-       this.msg = this.$text('S_BEAUTY_STAY_TUNED', '我们将在下个月帮您开通美眉直播，敬请期待！先去体验一下其它游戏吧！');
+      this.msg = this.$text('S_BEAUTY_STAY_TUNED', '我们将在下个月帮您开通美眉直播，敬请期待！先去体验一下其它游戏吧！');
     },
     getIframeHeight() {
       this.iframeHeight = this.$refs['js-set-height'].contentWindow.window.document.body.scrollHeight + 100;

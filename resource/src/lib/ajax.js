@@ -52,6 +52,7 @@ export default ({
                 }
                 setCookie('cid', '');
                 setCookie('aid', '');
+                window.location.reload();
                 window.location.href = '/mobile/login';
             }
 
