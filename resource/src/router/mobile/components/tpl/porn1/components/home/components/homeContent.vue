@@ -687,11 +687,7 @@ export default {
           openGame({ kind: game.kind, vendor: game.vendor, code: game.code });
         },
         fail: (error) => {
-          if (error && error.data && error.data.code === "C50099") {
-            this.msg = error.data.msg //  "请先绑定提现银行卡"
-            return;
-          }
-
+          // "C50099" "请先绑定提现银行卡"
           if (error && error.data) {
             this.msg = `${error.data.msg}(${error.data.code})`
             return;
