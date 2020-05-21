@@ -31,41 +31,59 @@
         </div>
       </div>
 
-      <div :class="$style['sponsor']">
-        <div>赞助伙伴</div>
+      <div :class="[$style['sponsor'], $style['partner']]">
+        <div>联盟伙伴</div>
         <div :class="$style['content']">
           <div :class="$style['cell']">
-            <img :src="$getCdnPath(`/static/image/_new/about/img05.png`)" />
-            <div>英超曼联<br />全球赞助商</div>
+            <img
+              :src="$getCdnPath(`/static/image/_new/about/logo_yabolive.png`)"
+            />
+            <div>鸭脖视频</div>
           </div>
           <div :class="$style['cell']">
-            <img :src="$getCdnPath(`/static/image/_new/about/img06.png`)" />
-            <div>意甲联赛<br />全球赞助商</div>
+            <img
+              :src="$getCdnPath(`/static/image/_new/about/logo_yaboball.png`)"
+            />
+            <div>亚博体育</div>
           </div>
           <div :class="$style['cell']">
-            <img :src="$getCdnPath(`/static/image/_new/about/img07.png`)" />
-            <div>德甲拜仁慕尼黑<br />亚洲区赞助商</div>
+            <img
+              :src="$getCdnPath(`/static/image/_new/about/logo_hglive.png`)"
+            />
+            <div>黄瓜视频</div>
           </div>
           <div :class="$style['cell']">
-            <img :src="$getCdnPath(`/static/image/_new/about/img08.png`)" />
-            <div>英超莱斯特城<br />亚洲区赞助商</div>
+            <img
+              :src="$getCdnPath(`/static/image/_new/about/logo_aglive.png`)"
+            />
+            <div>AG视讯</div>
           </div>
         </div>
       </div>
 
-      <div :class="$style['sponsor-2']">
+      <div :class="[$style['sponsor'], $style['partner']]">
         <div :class="$style['content']">
           <div :class="$style['cell']">
-            <img :src="$getCdnPath(`/static/image/_new/about/img09.png`)" />
-            <div>阿根廷国家队<br />官方合作伙伴</div>
+            <img
+              :src="$getCdnPath(`/static/image/_new/about/logo_suncity.png`)"
+            />
+            <div>太阳城</div>
           </div>
           <div :class="$style['cell']">
-            <img :src="$getCdnPath(`/static/image/_new/about/img010.png`)" />
-            <div>法甲摩纳哥<br />官方合作伙伴</div>
+            <img :src="$getCdnPath(`/static/image/_new/about/logo_bbin.png`)" />
+            <div>BBIN集团</div>
           </div>
           <div :class="$style['cell']">
-            <img :src="$getCdnPath(`/static/image/_new/about/img011.png`)" />
-            <div>德甲柏林赫塔<br />官方合作伙伴</div>
+            <img
+              :src="$getCdnPath(`/static/image/_new/about/logo_csball.png`)"
+            />
+            <div>皇冠体育</div>
+          </div>
+          <div :class="$style['cell']">
+            <img
+              :src="$getCdnPath(`/static/image/_new/about/logo_kycard.png`)"
+            />
+            <div>开元棋牌</div>
           </div>
         </div>
       </div>
@@ -128,7 +146,7 @@ export default {
   width: 75px;
   height: 75px;
   margin: 0 auto;
-  margin-top: 43px;
+  margin-top: 10px;
   > img {
     height: 100%;
   }
@@ -141,8 +159,7 @@ export default {
 }
 
 .officel,
-.sponsor,
-.sponsor-2 {
+.sponsor {
   text-align: center;
   margin-top: 91px;
 
@@ -169,17 +186,16 @@ export default {
 .sponsor {
   margin-top: 40px;
 }
-.sponsor-2 {
-  margin-top: 10px;
-  .content {
-    display: flex;
-    margin-top: 14px;
-    padding: 0 15%;
-  }
 
+.partner {
   .cell {
-    width: calc(100% / 3);
+    width: 25%;
     font-size: 9px;
+
+    img {
+      height: 26px;
+      width: 67px;
+    }
   }
 }
 </style>
