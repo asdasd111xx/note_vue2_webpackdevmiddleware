@@ -258,6 +258,7 @@ export default {
         { name: 'grade', text: '等级' }
       ],
       msg: '',
+      hasBankCard: false
     };
   },
   computed: {
@@ -310,6 +311,17 @@ export default {
   watch: {
     videoType() {
       this.getVideoList();
+    }
+  },
+  created() {
+    if (this.loginStatus) {
+      ajax({
+        method: 'get',
+        url: '/api/v1/c/player/user_bank/list',
+        errorAlert: false
+      }).then((res) => {
+        this.hasBankCard = res.ret && res.ret.length > 0
+      });
     }
   },
   mounted() {
@@ -632,73 +644,59 @@ export default {
         return;
       }
 
-      // 檢查提现银行卡
-      let check = ajax({
-        method: 'get',
-        url: `${API_GET_VENDOR}/${game.vendor}/game/launch`,
-        errorAlert: false,
-        params: { kind: game.kind, code: game.code },
-        success: ({ result, ret }) => {
-          if (game.type === 'R') {
-            let urlParams = game.vendor === 'lg_live' ? '&customize=yabo&tableType=3310' : '';
-            let newWindow = '';
-            // 辨別裝置是否為ios寰宇瀏覽器
-            const isUBMobile = navigator.userAgent.match(/UBiOS/) !== null && navigator.userAgent.match(/iPhone/) !== null;
-            // 暫時用來判斷馬甲包
-            const webview = window.location.hostname === 'yaboxxxapp02.com';
+      if (!this.hasBankCard) {
+        this.msg = "请先绑定提现银行卡(C50099)"
+        this.checkBankCard = true;
+        return;
+      }
 
-            // ios寰宇瀏覽器目前另開頁面需要與電腦版開啟方式相同
-            if (!isUBMobile && !webview) {
-              newWindow = window.open('', '_blank');
-            }
-            ajax({
-              method: 'get',
-              url: `${API_GET_VENDOR}/${game.vendor}/game/launch`,
-              errorAlert: false,
-              params: { kind: game.kind },
-              success: ({ result, ret }) => {
-                if (result !== 'ok') {
-                  if (!isUBMobile && !webview) {
-                    newWindow.close();
-                  }
-                  return;
-                }
+      if (game.type === 'R') {
+        let urlParams = game.vendor === 'lg_live' ? '&customize=yabo&tableType=3310' : '';
+        let newWindow = '';
+        // 辨別裝置是否為ios寰宇瀏覽器
+        const isUBMobile = navigator.userAgent.match(/UBiOS/) !== null && navigator.userAgent.match(/iPhone/) !== null;
+        // 暫時用來判斷馬甲包
+        const webview = window.location.hostname === 'yaboxxxapp02.com';
 
-                if (webview) {
-                  window.location.href = ret.url + urlParams;
-                  return;
-                }
-                if (!isUBMobile) {
-                  newWindow.location.href = ret.url + urlParams;
-                  return;
-                }
-
-                window.open(ret.url + urlParams);
-              },
-              fail: (error) => {
-                if (!isUBMobile || !webview) {
-                  newWindow.alert(`${error.data.msg} ${error.data.code ? `(${error.data.code})` : ''}`);
-                  newWindow.close();
-                }
-              }
-            });
-            return;
-          } else {
-            openGame({ kind: game.kind, vendor: game.vendor, code: game.code });
-          }
-        },
-        fail: (error) => {
-          if (error && error.data && error.data.code === "C50099") {
-            this.msg = error.data.msg //  "请先绑定提现银行卡"
-            return;
-          }
-
-          if (error && error.data) {
-            this.msg = `${error.data.msg}(${error.data.code})`
-            return;
-          }
+        // ios寰宇瀏覽器目前另開頁面需要與電腦版開啟方式相同
+        if (!isUBMobile && !webview) {
+          newWindow = window.open('', '_blank');
         }
-      });
+        ajax({
+          method: 'get',
+          url: `${API_GET_VENDOR}/${game.vendor}/game/launch`,
+          errorAlert: false,
+          params: { kind: game.kind },
+          success: ({ result, ret }) => {
+            if (result !== 'ok') {
+              if (!isUBMobile && !webview) {
+                newWindow.close();
+              }
+              return;
+            }
+
+            if (webview) {
+              window.location.href = ret.url + urlParams;
+              return;
+            }
+            if (!isUBMobile) {
+              newWindow.location.href = ret.url + urlParams;
+              return;
+            }
+
+            window.open(ret.url + urlParams);
+          },
+          fail: (error) => {
+            if (!isUBMobile || !webview) {
+              newWindow.alert(`${error.data.msg} ${error.data.code ? `(${error.data.code})` : ''}`);
+              newWindow.close();
+            }
+          }
+        });
+        return;
+      }
+
+      openGame({ kind: game.kind, vendor: game.vendor, code: game.code });
     },
     openVideo(name, routerParam) {
       localStorage.setItem('type', 'Tv');
