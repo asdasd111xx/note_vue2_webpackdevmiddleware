@@ -1,6 +1,7 @@
 {
     "data": [
         {
+            "kind": "sport",
             "category": "体育赛事",
             "list": [
                 {
@@ -146,6 +147,7 @@
             ]
         },
         {
+            "kind": "live",
             "category": "真人娱乐",
             "list": [
                 {
@@ -242,6 +244,7 @@
             ]
         },
         {
+            "kind": "lottery",
             "category": "彩票投注",
             "list": [
                 {
@@ -274,6 +277,7 @@
             ]
         },
         {
+            "kind": "esport",
             "category": "电子竞技",
             "list": [
                 {
@@ -335,6 +339,7 @@
             ]
         },
         {
+            "kind": "other",
             "category": "其它问题",
             "list": [
                 {
