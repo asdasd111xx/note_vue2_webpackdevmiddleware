@@ -15,8 +15,17 @@
                     />
                 </div>
                 <div :class="$style['cell-text']">
-                    <div>{{ currentLevelData.withdraw_fee ? currentLevelData.withdraw_fee.withdraw_count : "--" }}</div>
-                    <div>每日提款次数</div>
+                    <div>
+                        {{
+                            currentLevelData.withdraw_fee
+                                ? currentLevelData.withdraw_fee.withdraw_count
+                                    ? currentLevelData.withdraw_fee
+                                          .withdraw_count
+                                    : 0
+                                : "--"
+                        }}
+                    </div>
+                    <div>每日提现次数</div>
                 </div>
             </div>
 
@@ -32,7 +41,16 @@
                     />
                 </div>
                 <div :class="$style['cell-text']">
-                    <div>{{ currentLevelData.withdraw_fee ? currentLevelData.withdraw_fee.withdraw_limit : "--"  }}</div>
+                    <div>
+                        {{
+                            currentLevelData.withdraw_fee
+                                ? +currentLevelData.withdraw_fee.withdraw_limit
+                                    ? currentLevelData.withdraw_fee
+                                          .withdraw_limit
+                                    : 0
+                                : "--"
+                        }}
+                    </div>
                     <div>每日提现额度</div>
                 </div>
             </div>
@@ -110,7 +128,7 @@ export default {
 </script>
 
 <style lang="scss" module>
-@import '~@/css/variable.scss';
+@import "~@/css/variable.scss";
 
 .vip-info-wrap {
     position: relative;
