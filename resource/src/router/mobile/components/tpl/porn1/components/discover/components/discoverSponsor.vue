@@ -1,8 +1,8 @@
 <template>
   <div :class="$style['discover-sponsor-wrap']">
     <div v-for="info in list" :key="info.key" :class="$style.list">
-      <div :class="$style.wrap" @click="open(info)">
-        <img :src="$getCdnPath(`/static/image/_new/sponsor/${info.key}.jpg`)" />
+      <div :class="$style.wrap">
+        <img :src="$getCdnPath(`/static/image/_new/sponsor/${info.key}.png`)" />
       </div>
     </div>
   </div>
@@ -18,46 +18,29 @@ export default {
     list() {
       return [
         {
-          key: 'manchester',
-          requestUrl: 'http://mau2l.com/jAfxWuN',
-          titleName: '英超曼联'
+          key: 'sponsor_yabolive',
         },
         {
-          key: 'yidali',
-          requestUrl: 'http://wagc8.com/X8TKaSM',
-          titleName: '意甲联赛'
+          key: 'sponsor_hglive',
         },
         {
-          key: 'bayern',
-          requestUrl: 'http://y3az6.com/wSxyKTu',
-          titleName: '拜仁慕尼黑'
+          key: 'sponsor_yaboball',
         },
         {
-          key: 'stevevGerrard',
-          requestUrl: 'http://wagc8.com/gjNOpQU',
-          titleName: '杰拉德'
+          key: 'sponsor_aglive',
         },
         {
-          key: 'leicester',
-          requestUrl: 'http://eqfyl.com/tjGo9Tz',
-          titleName: '莱斯特城'
+          key: 'sponsor_suncity',
         },
         {
-          key: 'argentina',
-          requestUrl: 'http://q3vcf.com/DQkCAFB',
-          titleName: '阿根廷国家队'
+          key: 'sponsor_bbin',
         },
         {
-          key: 'monaco',
-          requestUrl: 'http://q7g1l.com/iJhNMLo',
-          titleName: '法甲摩纳哥'
+          key: 'sponsor_csball',
         },
         {
-          key: 'bundesliga',
-          requestUrl: 'http://y3az6.com/OLTMz2G',
-          titleName: '德甲柏林赫塔'
+          key: 'sponsor_kycard',
         },
-
       ];
     }
   }
