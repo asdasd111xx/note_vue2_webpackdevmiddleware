@@ -62,6 +62,8 @@ import { mapActions, mapGetters } from 'vuex';
 import game from '@/api/game';
 import openGame from '@/lib/open_game';
 import isMobile from '@/lib/is_mobile';
+import { API_PORN1_DOMAIN, API_GET_VENDOR } from '@/config/api';
+import ajax from '@/lib/ajax';
 
 export default {
   props: {
@@ -301,52 +303,67 @@ export default {
      * @method onEnter
     */
     onEnter() {
-      if (!this.beforeOnEnter()) return
-      if (this.isBackEnd) {
-        return;
-      }
+      let check = ajax({
+        method: 'get',
+        url: `${API_GET_VENDOR}/${this.gameInfo.vendor}/game/launch`,
+        errorAlert: false,
+        params: { kind: this.gameInfo.kind, code: this.gameInfo.code },
+        success: ({ result, ret }) => {
 
-      let isMobileView;
+          if (this.isBackEnd) {
+            return;
+          }
 
-      try {
-        isMobileView = this.$route.matched[0].meta.isMobile;
-      } catch (e) {
-        isMobileView = false;
-      }
+          let isMobileView;
 
-      const {
-        vendor, kind, code, url
-      } = this.gameInfo;
+          try {
+            isMobileView = this.$route.matched[0].meta.isMobile;
+          } catch (e) {
+            isMobileView = false;
+          }
 
-      // 活動
-      if (Object.keys(this.gameInfo).includes('url')) {
-        if (!url) {
+          const {
+            vendor, kind, code, url
+          } = this.gameInfo;
+
+          // 活動
+          if (Object.keys(this.gameInfo).includes('url')) {
+            if (!url) {
+              return;
+            }
+
+            if (!this.loginStatus) {
+              alert(this.$i18n.t('S_LOGIN_TIPS'));
+              return;
+            }
+
+            window.open(url, 'game');
+            return;
+          }
+
+          if (!this.loginStatus && !(isMobile() ? this.gameInfo.mobile_trial : this.gameInfo.trial)) {
+            if (isMobileView) {
+              this.$router.push('/mobile/login');
+            } else {
+              alert(this.$i18n.t('S_LOGIN_TIPS'));
+            }
+
+            return;
+          }
+
+          openGame({
+            vendor,
+            kind,
+            code
+          });
+        },
+        fail: (error) => {
+          // "C50099" "请先绑定提现银行卡"
+          if (error && error.data) {
+            this.beforeOnEnter(this.gameInfo, `${error.data.msg}(${error.data.code})`);
+          }
           return;
         }
-
-        if (!this.loginStatus) {
-          alert(this.$i18n.t('S_LOGIN_TIPS'));
-          return;
-        }
-
-        window.open(url, 'game');
-        return;
-      }
-
-      if (!this.loginStatus && !(isMobile() ? this.gameInfo.mobile_trial : this.gameInfo.trial)) {
-        if (isMobileView) {
-          this.$router.push('/mobile/login');
-        } else {
-          alert(this.$i18n.t('S_LOGIN_TIPS'));
-        }
-
-        return;
-      }
-
-      openGame({
-        vendor,
-        kind,
-        code
       });
     },
     /**
