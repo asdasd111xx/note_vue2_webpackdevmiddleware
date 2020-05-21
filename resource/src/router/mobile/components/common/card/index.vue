@@ -188,13 +188,9 @@ export default {
     ...mapActions([
       'actionSetFavoriteGame'
     ]),
-    beforeOnEnter() {
-      if (this.hasBankCard) {
-        return true
-      } else {
-        this.msg = "请先绑定提现银行卡"
-        return false
-      }
+    beforeOnEnter(gameInfo, msg) {
+      // 檢查提现银行卡
+      this.msg = msg;
     },
     /**
      * 取得遊戲平台分類
