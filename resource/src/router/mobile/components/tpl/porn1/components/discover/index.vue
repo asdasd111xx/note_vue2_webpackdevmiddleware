@@ -32,7 +32,7 @@ export default {
       const name = this.$route.params.page || 'home';
       const trans = {
         home: this.$text('S_DISCOVER', '发现'),
-        sponsor: this.$text('S_SPONSOR_PARTNERS', '赞助伙伴'),
+        sponsor: '联盟夥伴',
         rank: this.$text('S_RANK', '排行'),
         artist: this.$text('S_ARTIST', '女优'),
         tag: this.$text('S_TAG', '标签')

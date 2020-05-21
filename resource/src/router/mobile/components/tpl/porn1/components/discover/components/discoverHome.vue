@@ -28,7 +28,7 @@ export default {
       return [
         {
           key: 'sponsor',
-          name: this.$text('S_SPONSOR', '赞助'),
+          name: '联盟',
           icon: 'sponsor'
         },
         {
