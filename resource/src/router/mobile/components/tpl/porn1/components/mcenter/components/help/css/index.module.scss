@@ -24,9 +24,11 @@
     padding: 0 14px;
 
     .title {
-        height: 50px;
-        line-height: 50px;
+        display: flex;
+        align-items: center;
+        min-height: 50px;
         font-weight: bold;
+        padding: 10px 0;
     }
 
     &.support-cell>title {
