@@ -136,7 +136,7 @@
 import { mapGetters } from 'vuex';
 import axios from 'axios';
 import mobileContainer from '../common/new/mobileContainer';
-import { API_PORN1_DOMAIN } from '@/config/api';
+import pornRequest from '@/api/pornRequest';
 import message from '../common/new/message';
 import openGame from '@/lib/open_game';
 import ajax from '@/lib/ajax';
@@ -162,17 +162,10 @@ export default {
     }),
   },
   created() {
-    axios({
+    pornRequest({
       method: 'get',
-      url: `${API_PORN1_DOMAIN}/api/v1/video/livelist`,
-      timeout: 30000,
-      headers: {
-        Bundleid: 'chungyo.foxyporn.prod.enterprise.web',
-        Version: 1
-        // 本機開發時會遇到 CORS 的問題，把Bundleid及Version註解，並打開下面註解即可
-        // 'Content-Type': 'application/x-www-form-urlencoded',
-        // origin: 'http://127.0.0.1'
-      }
+      url: `/video/livelist`,
+
     }).then((response) => {
       this.streamList = response.data.result;
     });
