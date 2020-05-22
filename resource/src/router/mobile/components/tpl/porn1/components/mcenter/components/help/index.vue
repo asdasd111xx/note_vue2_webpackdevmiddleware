@@ -110,12 +110,11 @@ export default {
   },
   methods: {
     handleClick(path) {
-    //   if (path.includes('gameintro') || path.includes('support') || path.includes('deposit')) {
-    //     this.msg = '正在上线 敬请期待'
-    //   } else {
-    //     this.$router.push(path)
-    //   }
-      this.$router.push(path)
+      if (path.includes('gameintro') || path.includes('support') || path.includes('deposit')) {
+        this.msg = '正在上线 敬请期待'
+      } else {
+        this.$router.push(path)
+      }
     },
     logout() {
       member.logout().then(() => { window.location.reload(); });
