@@ -11,7 +11,7 @@
       @click="onClick(video.id)"
     >
       <div :class="$style['image-wrap']">
-        <img :src="video.image" />
+        <img v-lazy="getImg(video.image)" />
       </div>
       <div :class="$style['info-wrap']">
         <div :class="$style['video-title']">{{ video.title }}</div>
@@ -60,6 +60,13 @@ export default {
     });
   },
   methods: {
+    getImg(image) {
+      return {
+        src: image,
+        error: this.$getCdnPath(`/static/image/_new/default/bg_video03_d.png`),
+        loading: this.$getCdnPath(`/static/image/_new/default/bg_video03_d.png`)
+      }
+    },
     onClick(id) {
       window.location.href = `/mobile/videoPlay/${id}`;
     }

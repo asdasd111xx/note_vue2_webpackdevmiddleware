@@ -30,7 +30,7 @@
           :class="$style.wrap"
           @click="$router.push({ name: 'artist', params: { id: info.id } })"
         >
-          <img :src="info.image" />
+          <img v-lazy="getImg(info.image)" />
           <div :class="$style['artist-name']">{{ info.artist }}</div>
         </div>
       </div>
