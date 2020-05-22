@@ -48,7 +48,7 @@
 import InfiniteLoading from 'vue-infinite-loading';
 import axios from 'axios';
 import querystring from 'querystring';
-import { API_PORN1_DOMAIN } from '@/config/api';
+import pornRequest from '@/api/pornRequest';
 
 export default {
   components: {
@@ -96,18 +96,10 @@ export default {
       this.curIndex = tab.index;
     },
     getVideoList(page) {
-      return axios({
+      return pornRequest({
         method: 'post',
-        url: `${API_PORN1_DOMAIN}/api/v1/video/rank`,
-        timeout: 30000,
-        data: querystring.stringify({ type: this.active, page }),
-        headers: {
-          Bundleid: 'chungyo.foxyporn.prod.enterprise.web',
-          Version: 1
-          // 本機開發時會遇到 CORS 的問題，把Bundleid及Version註解，並打開下面註解即可
-          // 'Content-Type': 'application/x-www-form-urlencoded',
-          // origin: 'http://127.0.0.1'
-        }
+        url: `/video/rank`,
+        data: { type: this.active, page: page },
       });
     },
     setVideoList() {
@@ -125,11 +117,11 @@ export default {
           return;
         }
 
-        this.videoList = [...response.data.result.data];
-        this.current = response.data.result.current_page;
-        this.total = response.data.result.last_page;
+        this.videoList = [...response.result.data];
+        this.current = response.result.current_page;
+        this.total = response.result.last_page;
 
-        if (response.data.result.current_page >= response.data.result.last_page) {
+        if (response.result.current_page >= response.result.last_page) {
           return;
         }
 
@@ -148,12 +140,12 @@ export default {
           return;
         }
 
-        this.videoList = [...this.videoList, ...response.data.result.data];
-        this.current = response.data.result.current_page;
-        this.total = response.data.result.last_page;
+        this.videoList = [...this.videoList, ...response.result.data];
+        this.current = response.result.current_page;
+        this.total = response.result.last_page;
         this.isReceive = false;
 
-        if (response.data.result.current_page >= response.data.result.last_page) {
+        if (response.result.current_page >= response.result.last_page) {
           $state.complete();
           return;
         }
@@ -175,6 +167,7 @@ export default {
 .tab-wrap {
   height: 43px;
   background-color: $main_white_color1;
+  position: relative;
 }
 
 .active-slider {

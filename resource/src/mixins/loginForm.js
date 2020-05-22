@@ -4,7 +4,7 @@ import { getCookie, setCookie } from '@/lib/cookie';
 import { mapActions, mapGetters } from 'vuex';
 
 import ajax from '@/lib/ajax';
-import bbosRequest from '@/lib/bbosRequest';
+import bbosRequest from "@/api/bbosRequest";
 
 export default {
     props: {

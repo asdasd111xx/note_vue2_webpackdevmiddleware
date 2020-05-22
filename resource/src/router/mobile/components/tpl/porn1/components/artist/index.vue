@@ -31,7 +31,7 @@ import querystring from 'querystring';
 import artistInfo from './components/artistInfo';
 import artistVideo from './components/artistVideo';
 import mobileContainer from '../common/new/mobileContainer';
-import { API_PORN1_DOMAIN } from '@/config/api';
+import pornRequest from '@/api/pornRequest';
 
 export default {
   components: {
@@ -61,24 +61,16 @@ export default {
       return;
     }
 
-    axios({
+    pornRequest({
       method: 'post',
-      url: `${API_PORN1_DOMAIN}/api/v1/video/artistvideo`,
-      timeout: 30000,
-      data: querystring.stringify({ artistId: this.$route.params.id }),
-      headers: {
-        Bundleid: 'chungyo.foxyporn.prod.enterprise.web',
-        Version: 1
-        // 本機開發時會遇到 CORS 的問題，把Bundleid及Version註解，並打開下面註解即可
-        // 'Content-Type': 'application/x-www-form-urlencoded',
-        // origin: 'http://127.0.0.1'
-      }
+      url: `/video/artistvideo`,
+      data: { artistId: this.$route.params.id },
     }).then((response) => {
       if (response.status !== 200) {
         return;
       }
 
-      this.artistInfo = { ...response.data.result };
+      this.artistInfo = { ...response.result };
     });
   }
 };

@@ -28,7 +28,7 @@
 <script>
 import axios from 'axios';
 import videoTag from './videoTag';
-import { API_PORN1_DOMAIN } from '@/config/api';
+import pornRequest from '@/api/pornRequest';
 
 export default {
   components: {
@@ -40,23 +40,14 @@ export default {
     };
   },
   created() {
-    axios({
-      method: 'get',
-      url: `${API_PORN1_DOMAIN}/api/v1/video/guess`,
-      timeout: 30000,
-      headers: {
-        Bundleid: 'chungyo.foxyporn.prod.enterprise.web',
-        Version: 1
-        // 本機開發時會遇到 CORS 的問題，把Bundleid及Version註解，並打開下面註解即可
-        // 'Content-Type': 'application/x-www-form-urlencoded',
-        // origin: 'http://127.0.0.1'
-      }
+    pornRequest({
+      url: `/video/guess`,
     }).then((response) => {
       if (response.status !== 200) {
         return;
       }
 
-      this.videoList = [...response.data.result.data];
+      this.videoList = [...response.result.data];
     });
   },
   methods: {
