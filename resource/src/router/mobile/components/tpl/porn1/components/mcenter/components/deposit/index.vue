@@ -5,6 +5,11 @@
     :class="$style.container"
   >
     <div slot="content" class="content-wrap">
+      <message v-if="msg" @close="msg = ''">
+        <div slot="msg">
+          {{ msg }}
+        </div>
+      </message>
       <depsoit />
     </div>
   </mobile-container>
@@ -13,11 +18,18 @@
 <script>
 import depsoit from '@/router/mobile/components/common/mcenter/theme1/deposit';
 import mobileContainer from '../../../common/new/mobileContainer';
+import message from '../../../common/new/message'
 
 export default {
+  data() {
+    return {
+      msg: ''
+    }
+  },
   components: {
     depsoit,
-    mobileContainer
+    mobileContainer,
+    message
   },
   computed: {
     headerConfig() {
@@ -31,19 +43,7 @@ export default {
           this.$router.back();
         },
         customEvent: () => { // 暫時阻擋的彈窗
-          if (document.getElementById('deposit-pop')) {
-            return;
-          }
-
-          const pop = document.createElement('div');
-          pop.innerHTML = '正在上线 敬请期待';
-          pop.setAttribute('class', `${this.$style['pop-message']}`);
-          pop.setAttribute('id', 'deposit-pop');
-          document.querySelector('body').appendChild(pop);
-
-          setTimeout(() => {
-            document.querySelector('body').removeChild(pop);
-          }, 3000);
+          this.msg = '正在上线 敬请期待'
         }
       };
     }
