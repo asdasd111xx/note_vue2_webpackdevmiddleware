@@ -2,7 +2,7 @@
   <div :class="$style['artist-info-wrap']">
     <div :class="$style['main-info-wrap']">
       <div :class="$style['profile-photo']">
-        <img :src="image" />
+        <img v-lazy="getImg(image)" />
         <div>
           {{
             $text("S_VIDEO_AMOUNT", {
@@ -64,7 +64,14 @@ export default {
   methods: {
     onToggleDesc() {
       this.isOpenDesc = !this.isOpenDesc;
-    }
+    },
+    getImg(image) {
+      return {
+        src: image,
+        error: this.$getCdnPath(`/static/image/_new/default/bg_avatar_d.png`),
+        loading: this.$getCdnPath(`/static/image/_new/default/bg_avatar_d.png`)
+      }
+    },
   },
   props: {
     setTitle: {

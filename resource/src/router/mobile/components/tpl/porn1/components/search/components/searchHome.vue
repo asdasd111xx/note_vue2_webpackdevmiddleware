@@ -1,25 +1,33 @@
 <template>
     <div :class="$style['discover-tag-wrap']">
         <div :class="$style['banner-wrap']">
-            <img :src="$getCdnPath('/static/image/mobile/tpl/porn1/search/banner.png')" />
+            <img :src="$getCdnPath('/static/image/_new/search/banner.png')" />
         </div>
         <div :class="$style['search-wrap']">
             <input
                 v-model="keyWord"
-                :placeholder="$text('S_PLEASE_INPUT_AV', '请输入片名、女优或番号')"
+                :placeholder="
+                    $text('S_PLEASE_INPUT_AV', '请输入片名, 女优或番号')
+                "
                 type="text"
                 @keydown.enter="onClick({ title: keyWord })"
             />
-            <div :class="$style['icon-search']" @click="onClick({ title: keyWord })">
-                <icon
-                    name="search"
-                    width="20"
-                    height="20"
+            <div
+                :class="$style['icon-search']"
+                @click="onClick({ title: keyWord })"
+            >
+                <img
+                    :src="
+                        $getCdnPath(`/static/image/_new/search/ic_search.png`)
+                    "
+                    alt="search"
                 />
             </div>
         </div>
         <div v-if="historyList.length" :class="$style.history">
-            <div :class="$style.title">{{ $text('S_SEARCH_HISTORY', '历史搜寻') }}</div>
+            <div :class="$style.title">
+                {{ $text("S_SEARCH_HISTORY", "历史搜索") }}
+            </div>
             <div :class="$style['icon-trash']" @click="onDelete" />
             <div :class="[$style['history-search'], 'clearfix']">
                 <div
@@ -33,7 +41,9 @@
             </div>
         </div>
         <div :class="$style.hot">
-            <div :class="$style.title">{{ $text('S_SEARCH_HOT', '热门搜寻') }}</div>
+            <div :class="$style.title">
+                {{ $text("S_SEARCH_HOT", "热门搜索") }}
+            </div>
             <div :class="[$style['hot-search'], 'clearfix']">
                 <div
                     v-for="info in hotList"
@@ -46,7 +56,9 @@
             </div>
         </div>
         <div :class="$style.recommend">
-            <div :class="$style.title">{{ $text('S_RECOMMANDED', '推荐') }}</div>
+            <div :class="$style.title">
+                {{ $text("S_RECOMMANDED", "推荐") }}
+            </div>
             <div :class="[$style['recommend-search'], 'clearfix']">
                 <div
                     v-for="info in recommendList"
@@ -58,17 +70,27 @@
                 </div>
             </div>
         </div>
-        <div :class="$style.tips">
-            <span>{{ $text('S_ADULT_VIDEO_TIPS', '车牌又叫电影番号或编号。在爱情动作电影的故乡岛国，老师将同学们喜爱的各形各色的爱情动作片按厂商、制作风、有无码、质量参数、发表时间、版本等特征性的内容编码分类。车牌是经验老道的老司机们对电影番号的另外壹种充满爱的诠释。') }}</span>
+        <div :class="$style['tips']">
+            <div :class="$style['tips-title']">
+                <span>老司机课堂</span>
+            </div>
+            <div :class="$style['tips-content']">
+                {{
+                    $text(
+                        "S_ADULT_VIDEO_TIPS",
+                        "车牌又叫电影番号或编号。在爱情动作电影的故乡岛国，老师将同学们喜爱的各形各色的爱情动作片按厂商、制作风、有无码、质量参数、发表时间、版本等特征性的内容编码分类。车牌是经验老道的老司机们对电影番号的另外壹种充满爱的诠释。"
+                    )
+                }}
+            </div>
         </div>
     </div>
 </template>
 
 <script>
-import axios from 'axios';
-import split from 'lodash/split';
-import join from 'lodash/join';
-import { API_PORN1_DOMAIN } from '@/config/api';
+import axios from "axios";
+import split from "lodash/split";
+import join from "lodash/join";
+import { API_PORN1_DOMAIN } from "@/config/api";
 
 export default {
     props: {
@@ -78,28 +100,28 @@ export default {
         }
     },
     data() {
-        const historyKeyWord = localStorage.getItem('history-search');
+        const historyKeyWord = localStorage.getItem("history-search");
 
         return {
-            historyList: historyKeyWord ? split(historyKeyWord, ',') : [],
+            historyList: historyKeyWord ? split(historyKeyWord, ",") : [],
             hotList: [],
             recommendList: [],
-            keyWord: ''
+            keyWord: ""
         };
     },
     created() {
         axios({
-            method: 'get',
+            method: "get",
             url: `${API_PORN1_DOMAIN}/api/v1/video/getsearchkey`,
             timeout: 30000,
             headers: {
-                Bundleid: 'chungyo.foxyporn.prod.enterprise.web',
+                Bundleid: "chungyo.foxyporn.prod.enterprise.web",
                 Version: 1
                 // 本機開發時會遇到 CORS 的問題，把Bundleid及Version註解，並打開下面註解即可
                 // 'Content-Type': 'application/x-www-form-urlencoded',
                 // origin: 'http://127.0.0.1'
             }
-        }).then((response) => {
+        }).then(response => {
             if (response.data.status !== 200) {
                 return;
             }
@@ -110,31 +132,45 @@ export default {
     },
     methods: {
         onClick({ title }) {
-            const historyKeyWord = this.historyList.includes(title) ? [...this.historyList] : [...this.historyList, title];
+            const historyKeyWord = this.historyList.includes(title)
+                ? [...this.historyList]
+                : [...this.historyList, title];
 
-            localStorage.setItem('history-search', join(historyKeyWord));
+            localStorage.setItem("history-search", join(historyKeyWord));
 
             this.setKeyWord(title);
-            this.$router.push({ name: 'search', params: { key: title } });
+            this.$router.push({ name: "search", params: { key: title } });
         },
         onDelete() {
             this.historyList = [];
 
-            localStorage.removeItem('history-search');
+            localStorage.removeItem("history-search");
         }
     }
 };
 </script>
 
 <style lang="scss" module>
-@import '~@/css/variable.scss';
+@import "~@/css/variable.scss";
+
+@mixin tip-wage-style {
+    content: "";
+    position: absolute;
+    bottom: 0;
+    right: 100px;
+    width: 90px;
+    height: 15px;
+    background-image: url(/static/image/_new/search/wave_left.png);
+    background-size: contain;
+    background-repeat: no-repeat;
+}
 
 .discover-tag-wrap {
     padding: 10px 15px 12px;
 }
 
 .banner-wrap {
-    margin-bottom: 20px;
+    margin-bottom: 5px;
 
     > img {
         display: block;
@@ -144,19 +180,23 @@ export default {
 
 .search-wrap {
     position: relative;
-    margin-bottom: 20px;
+    margin-bottom: 5px;
 
     > input {
         width: 100%;
-        height: 32px;
+        height: 35px;
         line-height: 32px;
-        padding: 0 64px 0 16px;
+        padding: 0 40px 0 7px;
         border: none;
-        border-radius: 16px;
-        background-color: #393A44;
-        color: #7A7D85;
-        font-size: 13px;
+        border-radius: 5px;
+        background-color: #eeeeee;
+        color: $main_text_color2;
+        font-size: 14px;
         outline: none;
+
+        &::placeholder {
+            color: $main_text_color2;
+        }
     }
 }
 
@@ -164,62 +204,78 @@ export default {
     position: absolute;
     top: 0;
     right: 0;
-    width: 48px;
-    height: 32px;
+    width: 35px;
+    height: 35px;
     padding: 6px 0;
-    border-radius: 0 16px 16px 0;
-    background-color: #F9CF33;
-    color: #EA377E;
+    border-radius: 0 5px 5px 0;
+    background: linear-gradient(to left, #bd9d7d, #f9ddbd);
+    color: white;
+    margin: 0 auto;
+    text-align: center;
 
-    > svg {
-        display: block;
-        margin: 0 auto;
+    > img {
+        width: 21px;
+        height: 21px;
     }
 }
 
 .history,
 .hot,
 .recommend {
-    margin-bottom: 15px;
+    margin: 15px 0;
 }
 
-.history  {
+.history {
     position: relative;
 
     .wrap {
-        color: #9A9DA4;
+        color: #9a9da4;
     }
 }
 
 .hot,
 .recommend {
+    position: relative;
     .wrap {
-        color: #FFAF3F;
+        color: #bf8646;
     }
 }
 
 .title {
     height: 30px;
     line-height: 30px;
-    color: #FFF;
-    font-weight: 700;
-    font-size: 15px;
+    color: #5e626d;
+    font-weight: 400;
+    font-size: 12px;
+    margin-left: 8px;
+
+    &::before {
+        content: "";
+        position: absolute;
+        width: 3px;
+        height: 16px;
+        left: 0px;
+        top: 7px;
+        border-radius: 2px;
+        background: linear-gradient(to left, #d2bba4, #f1e5db);
+    }
 }
 
 .icon-trash {
     position: absolute;
-    top: 4px;
-    right: 0;
+    top: 2px;
+    right: 6px;
     width: 22px;
     height: 22px;
-    background: url('/static/image/mobile/tpl/porn1/search/icon_trash.png') 50% 50% no-repeat;
+    background: url("/static/image/_new/search/btn_delete.png") 50% 50%
+        no-repeat;
     background-size: 22px 22px;
 }
 
 .history-search,
 .hot-search,
 .recommend-search {
-    margin-top: 15px;
+    margin-top: 7px;
 }
 
 .wrap {
@@ -228,10 +284,10 @@ export default {
     width: 22%;
     height: 28px;
     line-height: 28px;
-    margin: 0 4% 15px 0;
+    margin: 0 9px 9px 0;
     padding: 0 3px;
-    border-radius: 14px;
-    background-color: #242630;
+    border-radius: 15px;
+    background-color: #eeeeee;
     font-size: 12px;
     text-align: center;
     text-overflow: ellipsis;
@@ -243,25 +299,43 @@ export default {
 }
 
 .tips {
-    height: 75px;
-    line-height: 15px;
-    padding-right: 24px;
-    background: url('/static/image/mobile/tpl/porn1/search/lesson.png') 100% 50% no-repeat;
-    background-size: 20px 71px;
-    color: #5B5D6C;
-    font-weight: 500;
-    font-size: 12px;
+    width: 100%;
+    height: 150px;
+    background: #fff;
+    border-radius: 15px;
+    box-shadow: 0 0 20px 0 rgba(0, 0, 0, 0.05);
 
-    &::before {
-        content: '';
-        display: inline-block;
-        height: 100%;
-        vertical-align: middle;
+    .tips-title {
+        position: relative;
+        font-size: 14pt;
+        text-align: center;
+        color: #bf8646;
+        padding: 15px 0;
+
+        > span {
+            position: relative;
+
+            &::before {
+                @include tip-wage-style;
+                background-image: url(/static/image/_new/search/wave_left.png);
+                right: 100px;
+            }
+
+            &::after {
+                @include tip-wage-style;
+                background-image: url(/static/image/_new/search/wave_right.png);
+                left: 100px;
+            }
+        }
     }
 
-    > span {
-        display: inline-block;
-        vertical-align: middle;
+    .tips-content {
+        position: relative;
+        height: auto;
+        padding: 0 10px;
+        font-size: 11px;
+        line-height: 17px;
+        color: #5e626d;
     }
 }
 

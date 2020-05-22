@@ -18,7 +18,7 @@
         :type="dialogType"
         @close="isShowBounsDialog = false"
       />
-      <bonuns-process ref="bonunsProcess" />
+      <bonuns-process ref="bonunsProcess" :click="handleClickProcess" />
     </div>
   </div>
 </template>
@@ -52,7 +52,7 @@ export default {
       dialogType: "tips",// 提示 & 賺得彩金
       socket: null,
       socketId: "",
-      isFirstPlay: true
+      firstWait: false
     };
   },
   computed: {
@@ -135,6 +135,10 @@ export default {
     }
   },
   methods: {
+    //   點擊進圖條任務彈窗
+    handleClickProcess() {
+
+    },
     handleClickVideo() {
       if (!this.isActiveBouns) return
       // 餘額夠可播放
@@ -169,7 +173,7 @@ export default {
 
         if (data.Active) {
           //狀態
-          // 'OPEN', 'PLAY', 'STOP', 'CLOSE', 'BREAK', 'FULL', 'POOR'
+          // 'OPEN', 'PLAY', 'STOP', 'CLOSE', 'BREAK', 'FULL', 'POOR', 'WAIT'
           switch (data.Status) {
             case 'RISK':
               this.$refs.bonunsProcess.processType = 'done';
@@ -202,6 +206,12 @@ export default {
               break;
             case 'STOP':
               this.$refs.bonunsProcess.playCueTime("pause");
+              return;
+            case 'WAIT':
+              this.firstWait = true;
+              if (!this.player.paused()) {
+                this.player.pause();
+              }
               return;
             case 'CLOSE':
               return;
