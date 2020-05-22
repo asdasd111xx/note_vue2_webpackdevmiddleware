@@ -5,6 +5,11 @@
     :class="$style.container"
   >
     <div slot="content" class="content-wrap">
+      <message v-if="msg" @close="msg = ''">
+        <div slot="msg">
+          {{ msg }}
+        </div>
+      </message>
       <depsoit />
     </div>
   </mobile-container>
@@ -13,11 +18,18 @@
 <script>
 import depsoit from '@/router/mobile/components/common/mcenter/theme1/deposit';
 import mobileContainer from '../../../common/new/mobileContainer';
+import message from '../../../common/new/message'
 
 export default {
+  data() {
+    return {
+      msg: ''
+    }
+  },
   components: {
     depsoit,
-    mobileContainer
+    mobileContainer,
+    message
   },
   computed: {
     headerConfig() {

@@ -25,7 +25,7 @@
         @click="$router.push({ name: 'videoPlay', params: { id: video.id } })"
       >
         <div :class="$style.title">{{ video.title }}</div>
-        <img v-lazy="video.image" />
+        <img v-lazy="getImg(video.image)" />
         <div :class="$style.views">
           <img :src="$getCdnPath('/static/image/_new/discover/ic_video.png')" />
           {{ video.views }}
@@ -84,6 +84,13 @@ export default {
     this.setVideoList();
   },
   methods: {
+    getImg(image) {
+      return {
+        src: image,
+        error: this.$getCdnPath(`/static/image/_new/default/bg_video01_d.png`),
+        loading: this.$getCdnPath(`/static/image/_new/default/bg_video01_d.png`)
+      }
+    },
     handleClick(tab) {
       this.active = tab.key;
       this.curIndex = tab.index;
@@ -197,7 +204,7 @@ export default {
 .wrap {
   position: relative;
   margin-bottom: 5px;
-  height: 320px;
+  height: 260px;
 
   > img {
     display: block;
