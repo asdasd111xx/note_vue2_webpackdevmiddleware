@@ -155,14 +155,14 @@ export default {
                         );
                     }
                 },
-                // {
-                //     text: "IOS版",
-                //     onClick: () => {
-                //         if (this.iOSBundle) {
-                //             this.download(1, this.iOSBundle);
-                //         }
-                //     }
-                // },
+                {
+                    text: "IOS版",
+                    onClick: () => {
+                        if (this.iOSBundle) {
+                            this.download(1, this.iOSBundle);
+                        }
+                    }
+                },
                 {
                     text: "隐藏版",
                     onClick: () => {
