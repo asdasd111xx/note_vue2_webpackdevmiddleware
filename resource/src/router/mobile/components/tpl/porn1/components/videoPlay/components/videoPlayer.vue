@@ -16,9 +16,14 @@
       <bonuns-dialog
         ref="bonunsDialog"
         :type="dialogType"
-        @close="isShowBounsDialog = false"
+        :videoid="videoInfo.id"
+        @close="handleCloseDialog"
       />
-      <bonuns-process ref="bonunsProcess" :click="handleClickProcess" />
+      <bonuns-process
+        ref="bonunsProcess"
+        :type="dialogType"
+        @click="handleClickProcess"
+      />
     </div>
   </div>
 </template>
@@ -52,7 +57,9 @@ export default {
       dialogType: "tips",// 提示 & 賺得彩金
       socket: null,
       socketId: "",
-      firstWait: false
+      mission: {},
+      keepPlay: false, // wait 任務未達成繼續觀看不發送play
+      breakwaitCallback: () => { }
     };
   },
   computed: {
@@ -100,14 +107,18 @@ export default {
 
         this.player.on("playing", () => {
           this.isPlaying = true;
-          if (this.socket)
+          if (this.socket && !this.keepPlay) {
             this.onSend("PLAY");
+          }
+          this.keepPlay = false
         })
 
         this.player.on("pause", () => {
           this.isPlaying = false;
-          if (this.socket)
+          if (this.socket && !this.keepPlay) {
             this.onSend("STOP");
+          }
+          this.keepPlay = false
         })
 
         this.player.on("ended", () => {
@@ -135,9 +146,19 @@ export default {
     }
   },
   methods: {
+    handleCloseDialog() {
+      this.keepPlay = true;
+      this.isShowBounsDialog = false;
+      if (this.breakwaitCallback) {
+        this.breakwaitCallback();
+      }
+    },
     //   點擊進圖條任務彈窗
     handleClickProcess() {
-
+      this.dialogType = `tips-wait`;
+      this.$refs.bonunsDialog.missionDesc = this.mission.Description;
+      this.$refs.bonunsDialog.missionActionType = this.mission.ActionType;
+      this.$refs.bonunsDialog.isShow = true;
     },
     handleClickVideo() {
       if (!this.isActiveBouns) return
@@ -171,9 +192,12 @@ export default {
           console.log(data)
         }
 
+        // test
+        // data.Status = "BREAK_WAIT"
+
         if (data.Active) {
           //狀態
-          // 'OPEN', 'PLAY', 'STOP', 'CLOSE', 'BREAK', 'FULL', 'POOR', 'WAIT'
+          // 'OPEN', 'PLAY', 'STOP', 'CLOSE', 'BREAK', 'FULL', 'POOR', 'BREAK_WAIT'
           switch (data.Status) {
             case 'RISK':
               this.$refs.bonunsProcess.processType = 'done';
@@ -208,12 +232,44 @@ export default {
               this.$refs.bonunsProcess.playCueTime("pause");
               return;
             case 'WAIT':
-              this.firstWait = true;
+            case 'BREAK_WAIT':
+              this.dialogType = `tips-break`;
+              this.$refs.bonunsDialog.hadEarnNum = data.BreakTimes;
+              this.$refs.bonunsDialog.isShow = true;
               if (!this.player.paused()) {
                 this.player.pause();
+                if (this.player.isFullscreen()) {
+                  this.player.exitFullscreen();
+                }
               }
-              return;
+
+              // wait
+              this.$refs.bonunsProcess.processType = 'wait';
+              this.breakwaitCallback = () => {
+                this.$nextTick(() => {
+                  let mission = data.Mession;
+                  //   mission =
+                  //     { "Id": 2, "Name": "2\u7D1A\u5145\u503C", "Level": 2, "Amount": 18, "TagId": 132, "TagName": "2\u7D1A\u5145\u503C", "CreateDate": "05/20/2020 10:39:00", "Domain": 500015, "ActionType": 1, "Description": "\u89C2\u5F71\u9001\u94B1\u6EE1 18\u5143 \u4EFB\u52A1 <br/> \u8BF7\u5145\u503C\u2F00\u6B21", "Times": 1, "Unit": "\u6B21", "Factor": 0 }
+
+                  if (mission) {
+                    this.dialogType = `tips-wait`;
+                    //任務類型
+                    this.$refs.bonunsDialog.missionDesc = mission.Description;
+                    //任務動作
+                    this.$refs.bonunsDialog.missionActionType = mission.ActionType;
+                    this.$refs.bonunsDialog.isShow = true;
+                    this.$nextTick(() => this.$refs.bonunsDialog.getDialogHeight());
+                  }
+                  // 暫存任務內容
+                  this.mission = mission;
+                  this.breakwaitCallback = () => { };
+                });
+              }
+              break;
             case 'CLOSE':
+              return;
+            case 'NEXT':
+              this.$refs.bonunsProcess.processType = 'next';
               return;
             default:
               break;
@@ -255,6 +311,7 @@ export default {
         "SocketId": this.socketId,
         "Type": "WEB-OPEN",
         "SendTime": new Date().toISOString(),
+        // 測試log
         "Data": {
           "platform": getCookie('platform') || "normal",
           "videoid": this.videoInfo.id,
@@ -291,10 +348,11 @@ export default {
       }
 
       this.socket.send(JSON.stringify(data));
-    }
+    },
   },
   beforeDestroy() {
     this.player.dispose();
+    this.player = null;
     if (this.socket) {
       this.socket.send({
         "SocketId": this.socketId,

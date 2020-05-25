@@ -405,7 +405,7 @@ export default {
         return;
       }
 
-      alert(this.$t("S_CR_SUCCESS"));
+      this.msg = this.$t('S_CR_SUCCESS');
       this.transferMoney = 0;
     },
     toggleShowMore() {
