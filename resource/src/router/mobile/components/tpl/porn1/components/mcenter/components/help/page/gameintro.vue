@@ -29,17 +29,21 @@
                 <div
                     v-for="(item, index) in lists[currentIndex]"
                     :id="`q-${index}`"
-                    :class="$style['cell']"
+                    :class="[$style['cell'], $style['flex']]"
                     :key="item.key"
-                    @click="
-                        $router.push(
-                            `/mobile/mcenter/help/detail?index=${currentIndex}&key=${
-                                item.key
-                            }&type=gameintro${isApp ? '&app=true' : ''}`
-                        )
-                    "
+                    @click="clickGotoDetail(item)"
                 >
                     <template v-if="item.title && item.content">
+                        <div :class="$style['title-icon']">
+                            <img
+                                :src="
+                                    $getCdnPath(
+                                        '/static/image/_new/mcenter/ic_help.png'
+                                    )
+                                "
+                                alt="help"
+                            />
+                        </div>
                         <div :class="$style['title']">
                             {{ item.title }}
                         </div>
@@ -92,6 +96,11 @@ export default {
     },
     mounted() {
         if (!info) this.$router.back();
+
+        this.$nextTick(() => {
+            // 在幫助中心有清除該local，故新增預設為0
+            this.currentIndex = localStorage.getItem("help_gameIntro") || 0;
+        });
     },
     computed: {
         isApp() {
@@ -133,6 +142,15 @@ export default {
         setType(index) {
             this.currentIndex = index;
             this.isShowPop = false;
+        },
+        clickGotoDetail(item) {
+            localStorage.setItem("help_gameIntro", this.currentIndex);
+
+            this.$router.push(
+                `/mobile/mcenter/help/detail?index=${this.currentIndex}&key=${
+                    item.key
+                }&type=gameintro${this.isApp ? "&app=true" : ""}`
+            );
         }
     }
 };
