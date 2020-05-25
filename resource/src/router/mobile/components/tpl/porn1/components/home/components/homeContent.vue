@@ -19,7 +19,7 @@
           $style['type-swiper'],
           { [$style.active]: typeList[selectedIndex].icon === type.icon }
         ]"
-        @click="onChangeSelectInedx(index)"
+        @click="onChangeSelectIndex(index)"
       >
         <img
           v-if="typeList[selectedIndex].icon === type.icon"
@@ -337,20 +337,31 @@ export default {
       this.getVideoList()
     }
 
-    Promise.all(params).then(() => {
-      this.isReceive = true;
-
+    // 首頁選單列表預設拿local
+    const cache = this.getAllGameFromCache();
+    const setDefaultSelected = () => {
       this.$nextTick(() => {
+        this.isReceive = true;
         setTimeout(() => {
           $(window).trigger('resize');
           const defaultType = localStorage.getItem('type') || 'Tv';
           const defaultIndex = this.typeList.findIndex((type) => type.icon === defaultType);
           const selectIndex = (this.typeList.length / 3) + defaultIndex;
-          this.onChangeSelectInedx(selectIndex);
+          this.onChangeSelectIndex(selectIndex);
           this.isShow = true;
         }, 300);
       });
-    });
+    }
+
+    if (!cache) {
+      const params = [this.getAllGame()]
+      Promise.all(params).then(() => {
+        setDefaultSelected();
+      });
+    } else {
+      setDefaultSelected();
+    }
+
 
     if (!this.loginStatus) {
       return;
@@ -456,11 +467,13 @@ export default {
       });
     },
     // 取得所有遊戲
-    getAllGame() {
+    getAllGameFromCache() {
+      let result = false;
       try {
         let videolistStorage = localStorage.getItem('game-list');
         if (videolistStorage) {
           this.allGame = JSON.parse(localStorage.getItem('game-list'));
+          result = true;
         }
 
         if (process.env.NODE_ENV === 'development') {
@@ -471,6 +484,10 @@ export default {
         console.log(e)
       }
 
+      return result;
+    },
+    // 取得所有遊戲
+    getAllGame() {
       return axios({
         method: 'get',
         url: `${this.siteConfig.YABO_API_DOMAIN}/game/list`,
@@ -484,6 +501,7 @@ export default {
         if (response.status !== 200) {
           return;
         }
+        this.isReceive = true;
 
         try {
           localStorage.setItem('game-list', JSON.stringify(response.data.data))
@@ -554,17 +572,17 @@ export default {
 
       if (this.isTop) {
         const index = this.selectedIndex <= 0 ? this.typeList.length - 1 : this.selectedIndex - 1;
-        this.onChangeSelectInedx(index, true);
+        this.onChangeSelectIndex(index, true);
         return;
       }
 
       if (this.isBottom) {
         const index = this.selectedIndex >= this.typeList.length - 1 ? 0 : this.selectedIndex + 1;
-        this.onChangeSelectInedx(index);
+        this.onChangeSelectIndex(index);
       }
     },
     // 切換當前分類
-    onChangeSelectInedx(index, isSetEnd = false) {
+    onChangeSelectIndex(index, isSetEnd = false) {
       this.isSliding = true;
       this.isTop = false;
       this.isBottom = false;

@@ -38,6 +38,7 @@ export default ({
         //  Create `axios-cache-adapter` instance
         const cache = setupCache({
             maxAge: 30 * 60 * 1000,
+            // debug: true,
             exclude: {
                 query: false
             }
@@ -60,7 +61,6 @@ export default ({
 
     return api(obj).then((res) => {
         if (res && res.data) {
-
             return res.data;
         } else {
             fail(res.data);
