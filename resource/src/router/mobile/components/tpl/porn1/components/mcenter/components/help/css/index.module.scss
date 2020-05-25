@@ -286,6 +286,38 @@
     transform: translateY(-50%);
 }
 
+.no-data-wrap {
+    width: 180px;
+    height: 292px;
+    margin: 20% auto 0;
+
+    > img {
+        display: block;
+        width: 100%;
+    }
+
+    .tips {
+        line-height: 22px;
+        margin: 16px 0 29px;
+        color: #a6a9b2;
+        font-size: 16px;
+        text-align: center;
+    }
+
+    .btn-deposit {
+        width: 140px;
+        height: 45px;
+        line-height: 45px;
+        margin: 0 auto;
+        border-radius: 3px;
+        background: linear-gradient(to left, #bd9d7d, #f9ddbd);
+        color: #fff;
+        font-weight: 700;
+        font-size: 14px;
+        text-align: center;
+    }
+}
+
 @media screen and (max-width: $phone) {
     .section {
         font-size: 15px;

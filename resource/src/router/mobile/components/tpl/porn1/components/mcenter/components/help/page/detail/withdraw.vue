@@ -48,12 +48,21 @@
         </div>
       </div>
     </div>
+
     <edit-withdraw-field
       v-if="editOpen"
       :third-url.sync="thirdUrl"
       :withdraw-data="withdrawData"
       :close-fuc="() => (editOpen = false)"
     />
+
+    <div v-if="!list.length" :class="$style['no-data-wrap']">
+      <img :src="$getCdnPath('/static/image/_new/mcenter/moneyDetail/no_data.png')" />
+      <div v-if="curStatus === 0" :class="$style['tips']">暂时没有新的提现记录</div>
+      <div v-else :class="$style['tips']">还没有任何记录</div>
+    </div>
+
+
   </div>
 </template>
 
