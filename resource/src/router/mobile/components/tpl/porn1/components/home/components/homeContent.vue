@@ -217,11 +217,12 @@ import querystring from 'querystring';
 import find from 'lodash/find';
 import { Swiper, SwiperSlide } from 'vue-awesome-swiper';
 import mcenter from '@/api/mcenter';
-import { API_PORN1_DOMAIN, API_GET_VENDOR } from '@/config/api';
+import { API_GET_VENDOR } from '@/config/api';
 import ajax from '@/lib/ajax';
 import openGame from '@/lib/open_game';
 import message from '../../common/new/message';
 import common from '@/api/common';
+import pornRequest from '@/api/pornRequest';
 
 export default {
   components: {
@@ -385,75 +386,52 @@ export default {
     },
     // 取得影片分類
     getVideoTag() {
-      return axios({
-        method: 'get',
-        url: `${API_PORN1_DOMAIN}/api/v1/video/tag`,
-        timeout: 30000,
-        headers: {
-          Bundleid: 'chungyo.foxyporn.prod.enterprise.web',
-          Version: 1
-        }
+      return pornRequest({
+        url: `/video/tag`,
       }).then((response) => {
         if (response.status !== 200) {
           return;
         }
 
-        this.videoTag = [{ id: 0, title: '全部' }, ...response.data.result];
+        this.videoTag = [{ id: 0, title: '全部' }, ...response.result];
       });
     },
     // 取得影片排序
     getVideoSort() {
-      return axios({
-        method: 'get',
-        url: `${API_PORN1_DOMAIN}/api/v1/video/sort`,
-        timeout: 30000,
-        headers: {
-          Bundleid: 'chungyo.foxyporn.prod.enterprise.web',
-          Version: 1
-        }
+      return pornRequest({
+        url: `/video/sort`,
       }).then((response) => {
         if (response.status !== 200) {
           return;
         }
 
-        this.videoSort = [...response.data.result];
+        this.videoSort = [...response.result];
       });
     },
     // 取得熱門推薦影片
     getVideoRecommand() {
-      return axios({
-        method: 'get',
-        url: `${API_PORN1_DOMAIN}/api/v1/video/recommand`,
-        timeout: 30000,
-        headers: {
-          Bundleid: 'chungyo.foxyporn.prod.enterprise.web',
-          Version: 1
-        }
+      return pornRequest({
+        url: `/video/recommand`,
       }).then((response) => {
         if (response.status !== 200) {
           return;
         }
 
-        this.videoRecommand = [...response.data.result];
+        this.videoRecommand = [...response.result];
       });
     },
     // 取得所有影片(熱門推薦除外)
     getVideoList() {
-      return axios({
+      return pornRequest({
         method: 'post',
-        url: `${API_PORN1_DOMAIN}/api/v1/video/videolist`,
-        timeout: 30000,
-        data: querystring.stringify({ tag: this.videoType.title === '全部' ? '' : this.videoType.title }),
-        headers: {
-          Bundleid: 'chungyo.foxyporn.prod.enterprise.web',
-          Version: 1
-        }
+        url: `/video/videolist`,
+        data: { tag: this.videoType.title === '全部' ? '' : this.videoType.title },
       }).then((response) => {
         if (response.status !== 200) {
           return;
         }
 
-        this.videoList = [...response.data.result];
+        this.videoList = [...response.result];
       });
     },
     // 取得所有遊戲

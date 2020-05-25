@@ -32,7 +32,7 @@
 import InfiniteLoading from "vue-infinite-loading";
 import axios from "axios";
 import querystring from "querystring";
-import { API_PORN1_DOMAIN } from "@/config/api";
+import pornRequest from '@/api/pornRequest';
 
 export default {
   components: {
@@ -70,21 +70,13 @@ export default {
       }
     },
     getSearchList(page) {
-      return axios({
+      return pornRequest({
         method: "post",
-        url: `${API_PORN1_DOMAIN}/api/v1/video/searchbywords`,
-        timeout: 30000,
-        data: querystring.stringify({
+        url: `/video/searchbywords`,
+        data: {
           keyWords: this.keyWord,
-          page
-        }),
-        headers: {
-          Bundleid: "chungyo.foxyporn.prod.enterprise.web",
-          Version: 1
-          // 本機開發時會遇到 CORS 的問題，把Bundleid及Version註解，並打開下面註解即可
-          // 'Content-Type': 'application/x-www-form-urlencoded',
-          // origin: 'http://127.0.0.1'
-        }
+          page: page
+        },
       });
     },
     setSearchList() {
@@ -102,13 +94,13 @@ export default {
           return;
         }
 
-        this.searchList = [...response.data.result.data];
-        this.current = response.data.result.current_page;
-        this.total = response.data.result.last_page;
+        this.searchList = [...response.result.data];
+        this.current = response.result.current_page;
+        this.total = response.result.last_page;
 
         if (
-          response.data.result.current_page >=
-          response.data.result.last_page
+          response.result.current_page >=
+          response.result.last_page
         ) {
           return;
         }
@@ -130,15 +122,15 @@ export default {
 
         this.searchList = [
           ...this.searchList,
-          ...response.data.result.data
+          ...response.result.data
         ];
-        this.current = response.data.result.current_page;
-        this.total = response.data.result.last_page;
+        this.current = response.result.current_page;
+        this.total = response.result.last_page;
         this.isReceive = false;
 
         if (
-          response.data.result.current_page >=
-          response.data.result.last_page
+          response.result.current_page >=
+          response.result.last_page
         ) {
           $state.complete();
           return;

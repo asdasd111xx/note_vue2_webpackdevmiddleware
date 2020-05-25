@@ -47,8 +47,9 @@
 import axios from "axios";
 import find from "lodash/find";
 import join from "lodash/join";
-import { API_PORN1_DOMAIN } from "@/config/api";
+import pornRequest from '@/api/pornRequest';
 import message from "../../common/new/message";
+
 export default {
   components: {
     message
@@ -70,23 +71,15 @@ export default {
     }
   },
   created() {
-    axios({
+    pornRequest({
       method: "get",
-      url: `${API_PORN1_DOMAIN}/api/v1/video/alltag`,
-      timeout: 30000,
-      headers: {
-        Bundleid: "chungyo.foxyporn.prod.enterprise.web",
-        Version: 1
-        // 本機開發時會遇到 CORS 的問題，把Bundleid及Version註解，並打開下面註解即可
-        // 'Content-Type': 'application/x-www-form-urlencoded',
-        // origin: 'http://127.0.0.1'
-      }
+      url: `/video/alltag`,
     }).then(response => {
-      if (response.data.status !== 200) {
+      if (response.status !== 200) {
         return;
       }
 
-      this.tags = [...response.data.result.tags];
+      this.tags = [...response.result.tags];
       this.totalLists = this.tags
         .map(item => {
           return item.list;

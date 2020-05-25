@@ -10,7 +10,7 @@ import {
 import { mapActions, mapGetters } from 'vuex';
 
 import ajax from '@/lib/ajax';
-import bbosRequest from '@/lib/bbosRequest';
+import bbosRequest from "@/api/bbosRequest";
 import isMobile from '@/lib/is_mobile';
 
 export default {

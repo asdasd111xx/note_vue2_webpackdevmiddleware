@@ -18,7 +18,7 @@
 <script>
 import axios from "axios";
 import { Swiper, SwiperSlide } from "vue-awesome-swiper";
-import { API_PORN1_DOMAIN } from "@/config/api";
+import pornRequest from '@/api/pornRequest';
 
 export default {
   components: {
@@ -48,17 +48,10 @@ export default {
     }
   },
   created() {
-    axios({
+    pornRequest({
       method: "get",
-      url: `${API_PORN1_DOMAIN}/api/v1/video/sort`,
+      url: `/video/sort`,
       timeout: 30000,
-      headers: {
-        Bundleid: "chungyo.foxyporn.prod.enterprise.web",
-        Version: 1
-        // 本機開發時會遇到 CORS 的問題，把Bundleid及Version註解，並打開下面註解即可
-        // 'Content-Type': 'application/x-www-form-urlencoded',
-        // origin: 'http://127.0.0.1'
-      }
     }).then(response => {
       if (response.status !== 200) {
         return;
@@ -66,7 +59,7 @@ export default {
 
       this.videoTabs = [
         { id: 0, title: "全部" },
-        ...response.data.result
+        ...response.result
       ];
     });
   }
