@@ -5,6 +5,7 @@
         ? [$style['bouns-process-wrap'], $style['dialog-close']]
         : $style['bouns-process-wrap']
     "
+    @click="$emit('click')"
   >
     <div
       :class="[
@@ -46,11 +47,6 @@
 <script>
 
 export default {
-  components: {
-
-  },
-  props: {
-  },
   data() {
     return {
       curCoinSrc: "coin_bg",
@@ -58,8 +54,9 @@ export default {
       coinType:
         [{ key: 'done', src: 'coin_g' },
         { key: 'process', src: 'coin_bg' },
+        { key: 'earn', src: 'coin_y' },
         { key: 'next', src: 'coin_next' },
-        { key: 'open', src: 'coin_open' },
+        { key: 'wait', src: 'coin_open' },
         ],
       isClose: false,
       isStart: false,
@@ -113,7 +110,7 @@ export default {
     // 收到playing跑一次進度動畫
     playCueTime(play) {
       if (play === "pause") { this.isPause = true; return; }
-      if (this.playingCueTime) { this.isPause = false; return; }
+      if (this.playingCueTime) { return; }
 
       this.isPause = false;
       this.playingCueTime = true;

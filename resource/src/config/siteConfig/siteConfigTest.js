@@ -25,6 +25,6 @@ export const site_500015 = {
     IS_PWA: true,
     BBOS_DOMIAN: 'https://bbos.bbin-asia.com/elibomApi/WebService',
     YABO_API_DOMAIN: 'https://yaboapi.bbin-asia.com/api',
-    ACTIVES_BOUNS_WEBSOCKET: 'wss://yaboapi.bbin-asia.com/xxx/promosocket',
+    ACTIVES_BOUNS_WEBSOCKET: 'wss://yaboapi.bbin-asia.com/ws/promosocket',
 };
 /* eslint-enable camelcase */
