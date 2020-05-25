@@ -433,10 +433,10 @@ export default {
           return;
         }
 
-        // if (!res) {
-        //   this.msg = '请先绑定提现银行卡';
-        //   return;
-        // }
+        if (!res) {
+          this.msg = '请先绑定提现银行卡';
+          return;
+        }
         const re = /^[1-9]*[1-9][0-9]*$/;
         const source = this.tranOut;
         const target = this.tranIn;
