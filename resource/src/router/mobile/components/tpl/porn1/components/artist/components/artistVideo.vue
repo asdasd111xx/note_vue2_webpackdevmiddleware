@@ -12,7 +12,7 @@
         @click="$router.push({ name: 'videoPlay', params: { id: video.id } })"
       >
         <div :class="$style['image-wrap']">
-          <img :src="video.image" />
+          <img v-lazy="getImg(video.image)" />
         </div>
         <div :class="$style['video-title']">{{ video.title }}</div>
       </div>
@@ -27,7 +27,16 @@ export default {
       type: Array,
       required: true
     }
-  }
+  },
+  methods: {
+    getImg(image) {
+      return {
+        src: image,
+        error: this.$getCdnPath(`/static/image/_new/default/bg_video03_d.png`),
+        loading: this.$getCdnPath(`/static/image/_new/default/bg_video03_d.png`)
+      }
+    },
+  },
 };
 </script>
 

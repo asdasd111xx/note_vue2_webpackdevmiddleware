@@ -19,7 +19,7 @@
           $style['type-swiper'],
           { [$style.active]: typeList[selectedIndex].icon === type.icon }
         ]"
-        @click="onChangeSelectInedx(index)"
+        @click="onChangeSelectIndex(index)"
       >
         <img
           v-if="typeList[selectedIndex].icon === type.icon"
@@ -217,11 +217,12 @@ import querystring from 'querystring';
 import find from 'lodash/find';
 import { Swiper, SwiperSlide } from 'vue-awesome-swiper';
 import mcenter from '@/api/mcenter';
-import { API_PORN1_DOMAIN, API_GET_VENDOR } from '@/config/api';
+import { API_GET_VENDOR } from '@/config/api';
 import ajax from '@/lib/ajax';
 import openGame from '@/lib/open_game';
 import message from '../../common/new/message';
 import common from '@/api/common';
+import pornRequest from '@/api/pornRequest';
 
 export default {
   components: {
@@ -336,20 +337,31 @@ export default {
       this.getVideoList()
     }
 
-    Promise.all(params).then(() => {
-      this.isReceive = true;
-
+    // 首頁選單列表預設拿local
+    const cache = this.getAllGameFromCache();
+    const setDefaultSelected = () => {
       this.$nextTick(() => {
+        this.isReceive = true;
         setTimeout(() => {
           $(window).trigger('resize');
           const defaultType = localStorage.getItem('type') || 'Tv';
           const defaultIndex = this.typeList.findIndex((type) => type.icon === defaultType);
           const selectIndex = (this.typeList.length / 3) + defaultIndex;
-          this.onChangeSelectInedx(selectIndex);
+          this.onChangeSelectIndex(selectIndex);
           this.isShow = true;
         }, 300);
       });
-    });
+    }
+
+    if (!cache) {
+      const params = [this.getAllGame()]
+      Promise.all(params).then(() => {
+        setDefaultSelected();
+      });
+    } else {
+      setDefaultSelected();
+    }
+
 
     if (!this.loginStatus) {
       return;
@@ -385,76 +397,94 @@ export default {
     },
     // 取得影片分類
     getVideoTag() {
-      return axios({
-        method: 'get',
-        url: `${API_PORN1_DOMAIN}/api/v1/video/tag`,
-        timeout: 30000,
-        headers: {
-          Bundleid: 'chungyo.foxyporn.prod.enterprise.web',
-          Version: 1
-        }
+      return pornRequest({
+        url: `/video/tag`,
       }).then((response) => {
         if (response.status !== 200) {
           return;
         }
 
-        this.videoTag = [{ id: 0, title: '全部' }, ...response.data.result];
+        this.videoTag = [{ id: 0, title: '全部' }, ...response.result];
       });
     },
     // 取得影片排序
     getVideoSort() {
-      return axios({
-        method: 'get',
-        url: `${API_PORN1_DOMAIN}/api/v1/video/sort`,
-        timeout: 30000,
-        headers: {
-          Bundleid: 'chungyo.foxyporn.prod.enterprise.web',
-          Version: 1
-        }
+      return pornRequest({
+        url: `/video/sort`,
       }).then((response) => {
         if (response.status !== 200) {
           return;
         }
 
-        this.videoSort = [...response.data.result];
+        this.videoSort = [...response.result];
       });
     },
     // 取得熱門推薦影片
     getVideoRecommand() {
-      return axios({
-        method: 'get',
-        url: `${API_PORN1_DOMAIN}/api/v1/video/recommand`,
-        timeout: 30000,
-        headers: {
-          Bundleid: 'chungyo.foxyporn.prod.enterprise.web',
-          Version: 1
-        }
+      return pornRequest({
+        url: `/video/recommand`,
       }).then((response) => {
         if (response.status !== 200) {
           return;
         }
 
-        this.videoRecommand = [...response.data.result];
+        this.videoRecommand = [...response.result];
       });
     },
     // 取得所有影片(熱門推薦除外)
     getVideoList() {
-      return axios({
-        method: 'post',
-        url: `${API_PORN1_DOMAIN}/api/v1/video/videolist`,
-        timeout: 30000,
-        data: querystring.stringify({ tag: this.videoType.title === '全部' ? '' : this.videoType.title }),
-        headers: {
-          Bundleid: 'chungyo.foxyporn.prod.enterprise.web',
-          Version: 1
+      try {
+        let videolistStorage = localStorage.getItem('video-list');
+        if (videolistStorage) {
+          this.videoList = JSON.parse(localStorage.getItem('video-list'));
         }
+
+        if (process.env.NODE_ENV === 'development') {
+          //   console.log("video-list-time", localStorage.getItem('video-list-timestamp'))
+        }
+
+      } catch (e) {
+        console.log(e)
+      }
+
+      return pornRequest({
+        method: 'post',
+        url: `/video/videolist`,
+        data: { tag: this.videoType.title === '全部' ? '' : this.videoType.title },
       }).then((response) => {
         if (response.status !== 200) {
           return;
         }
 
-        this.videoList = [...response.data.result];
+        try {
+          localStorage.setItem('video-list', JSON.stringify(response.result))
+          localStorage.setItem('video-list-timestamp', Date.now())
+        } catch (e) {
+          console.log(e)
+        }
+
+        this.videoList = [...response.result];
       });
+    },
+    // 取得所有遊戲
+    getAllGameFromCache() {
+      let result = false;
+      try {
+        let videolistStorage = localStorage.getItem('game-list');
+        if (videolistStorage) {
+          this.allGame = JSON.parse(localStorage.getItem('game-list'));
+          result = true;
+        }
+
+        if (process.env.NODE_ENV === 'development') {
+          //   console.log("game-list-time", localStorage.getItem('game-list-timestamp'))
+        }
+
+      } catch (e) {
+        console.log(e)
+      }
+
+      return result;
     },
     // 取得所有遊戲
     getAllGame() {
@@ -470,6 +500,14 @@ export default {
       }).then((response) => {
         if (response.status !== 200) {
           return;
+        }
+        this.isReceive = true;
+
+        try {
+          localStorage.setItem('game-list', JSON.stringify(response.data.data))
+          localStorage.setItem('game-list-timestamp', Date.now())
+        } catch (e) {
+          console.log(e)
         }
 
         this.allGame = [...response.data.data];
@@ -534,17 +572,17 @@ export default {
 
       if (this.isTop) {
         const index = this.selectedIndex <= 0 ? this.typeList.length - 1 : this.selectedIndex - 1;
-        this.onChangeSelectInedx(index, true);
+        this.onChangeSelectIndex(index, true);
         return;
       }
 
       if (this.isBottom) {
         const index = this.selectedIndex >= this.typeList.length - 1 ? 0 : this.selectedIndex + 1;
-        this.onChangeSelectInedx(index);
+        this.onChangeSelectIndex(index);
       }
     },
     // 切換當前分類
-    onChangeSelectInedx(index, isSetEnd = false) {
+    onChangeSelectIndex(index, isSetEnd = false) {
       this.isSliding = true;
       this.isTop = false;
       this.isBottom = false;

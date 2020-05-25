@@ -13,23 +13,42 @@
 }
 
 .cell {
-    -moz-transition: all .31s;
-    -ms-transition: all .31s;
-    -o-transition: all .31s;
-    -webkit-transition: all .31s;
-    transition: all .31s ease-out;
+    -moz-transition: all 0.31s;
+    -ms-transition: all 0.31s;
+    -o-transition: all 0.31s;
+    -webkit-transition: all 0.31s;
+    transition: all 0.31s ease-out;
     background-color: #fefefe;
     position: relative;
     margin-top: 1px;
     padding: 0 14px;
 
-    .title {
-        height: 50px;
-        line-height: 50px;
-        font-weight: bold;
+    &.flex {
+        display: inline-flex;
+        width: 100%;
+        align-items: center;
     }
 
-    &.support-cell>title {
+    .title-icon {
+        width: 16px;
+        height: 16px;
+        margin-right: 10px;
+
+        img {
+            width: 16px;
+            height: 16px;
+        }
+    }
+
+    .title {
+        display: flex;
+        align-items: center;
+        min-height: 50px;
+        font-weight: bold;
+        padding: 10px 0;
+    }
+
+    &.support-cell > title {
         height: 20px;
         line-height: 20px;
         display: contents;
@@ -37,15 +56,15 @@
 }
 
 .content {
-    -moz-transition: all .31s;
-    -ms-transition: all .31s;
-    -o-transition: all .31s;
-    -webkit-transition: all .31s;
+    -moz-transition: all 0.31s;
+    -ms-transition: all 0.31s;
+    -o-transition: all 0.31s;
+    -webkit-transition: all 0.31s;
     font-size: 14px;
     max-height: 0;
     opacity: 0.5;
     overflow: hidden;
-    transition: all .31s ease-out;
+    transition: all 0.31s ease-out;
 
     &.active {
         // height: unset;
@@ -55,18 +74,18 @@
 }
 
 .arrow-btn {
-    -moz-transition: transform .31s;
-    -ms-transition: transform .31s;
-    -o-transition: transform .31s;
-    -webkit-transition: transform .31s;
+    -moz-transition: transform 0.31s;
+    -ms-transition: transform 0.31s;
+    -o-transition: transform 0.31s;
+    -webkit-transition: transform 0.31s;
     height: 50px;
     position: absolute;
     right: 14px;
     top: 0;
-    transition: transform .31s;
+    transition: transform 0.31s;
     width: 16px;
 
-    >img {
+    > img {
         bottom: 0;
         height: 16px;
         margin: auto;
@@ -80,7 +99,7 @@
     }
 }
 
-// 詳細資料
+// 詳細資料--存款 & 提現
 .detail-wrap {
     background-color: #f8f8f8;
 }
@@ -108,7 +127,6 @@
         color: $main_text_color4;
     }
 }
-
 
 .active-slider {
     position: absolute;
@@ -139,7 +157,7 @@
 .item-status-border {
     height: 1px;
     width: 100%;
-    background-color: #EAEAEA;
+    background-color: #eaeaea;
 }
 
 .detail-cell {
@@ -148,11 +166,11 @@
     height: 34px;
     line-height: 34px;
 
-    >.title {
+    > .title {
         display: inline-block;
     }
 
-    >.value {
+    > .value {
         float: right;
         color: #222222;
         white-space: nowrap;
@@ -162,7 +180,141 @@
     }
 
     .edit {
-        color: #6AAAF5
+        color: #6aaaf5;
+    }
+}
+
+// 詳細資料--遊戲介紹 & 技術支持
+.detail-article-wrap {
+    position: relative;
+    width: 100%;
+    height: 100%;
+    margin-top: 10px;
+    padding: 0px 17px;
+    background: $main_white_color1;
+}
+
+.article-title {
+    padding: 15px 0;
+    font-weight: 700;
+    border-bottom: 1px solid #eee;
+}
+
+.article-block {
+    margin-top: 20px;
+    line-height: 22px;
+    font-size: 12px;
+    display: inline-flex;
+    width: 100%;
+
+    span {
+        display: block;
+        margin-right: 10px;
+    }
+}
+
+.pop-wrap {
+    position: fixed;
+    top: 0;
+    right: 0;
+    left: 0;
+    bottom: 0;
+    z-index: 99;
+}
+
+.pop-mask {
+    width: 100%;
+    height: 100%;
+    background: #000;
+    opacity: 0.5;
+}
+
+.pop-menu {
+    width: 100%;
+    height: 90%;
+    position: absolute;
+    bottom: 0;
+    left: 0;
+    background: #f8f8f7;
+    border-radius: 20px 20px 0 0;
+}
+
+.pop-title {
+    height: 73px;
+    line-height: 73px;
+    margin-bottom: 9px;
+    position: relative;
+    font-size: 17px;
+    color: #414655;
+    background: #fefffe;
+    text-align: center;
+    border-radius: 20px 20px 0 0;
+    box-shadow: 0 2px 4px 0 rgba(0, 0, 0, 0.05);
+    span {
+        padding: 0 14px;
+        position: absolute;
+        left: 0;
+        color: #be9e7f;
+    }
+}
+
+.pop-list {
+    height: calc(100% - 82px);
+    padding-left: 18px;
+    margin: 0;
+    list-style: none;
+    background: #fefffe;
+    overflow-y: scroll;
+
+    li {
+        height: 50px;
+        line-height: 50px;
+        font-size: 14px;
+        color: #414655;
+        border-bottom: 1px solid #eee;
+        position: relative;
+    }
+}
+
+.select-icon {
+    position: absolute;
+    right: 18px;
+    top: 50%;
+    width: 15px;
+    height: 15px;
+    color: #be9e7f;
+    transform: translateY(-50%);
+}
+
+.no-data-wrap {
+    width: 180px;
+    height: 292px;
+    margin: 20% auto 0;
+
+    > img {
+        display: block;
+        width: 100%;
+    }
+
+    .tips {
+        line-height: 22px;
+        margin: 16px 0 29px;
+        color: #a6a9b2;
+        font-size: 16px;
+        text-align: center;
+    }
+
+    .btn-deposit {
+        width: 140px;
+        height: 45px;
+        line-height: 45px;
+        margin: 0 auto;
+        border-radius: 3px;
+        background: linear-gradient(to left, #bd9d7d, #f9ddbd);
+        color: #fff;
+        font-weight: 700;
+        font-size: 14px;
+        text-align: center;
     }
 }
 

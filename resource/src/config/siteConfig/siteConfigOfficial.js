@@ -51,7 +51,7 @@ export const site_69 = {
     IS_PWA: true,
     BBOS_DOMIAN: 'https://bbos.canarycherrytart.com/elibomApi/WebService',
     YABO_API_DOMAIN: 'https://yaboapi.canarycherrytart.com/api',
-    ACTIVES_BOUNS_WEBSOCKET: 'wss://yaboapi.canarycherrytart.com/xxx/promosocket'
+    ACTIVES_BOUNS_WEBSOCKET: 'wss://yaboapi.canarycherrytart.com/ws/promosocket'
 };
 
 /* eslint-enable camelcase */

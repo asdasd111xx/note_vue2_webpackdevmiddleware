@@ -58,19 +58,31 @@ module.exports = {
             '/tpl': {
                 //  開發測試用
                 // target: 'http://pineapple.vir888.net',
+<<<<<<< HEAD
                 target: 'https://yb0t.66relish.com/',
+=======
+                target: 'https://yaboxxxapp01.com/',
+>>>>>>> bugfix
                 changeOrigin: true,
                 secure: false
             },
             '/cdn': {
                 //  開發測試用
                 // target: 'http://pineapple.vir888.net',
+<<<<<<< HEAD
                 target: 'https://yb0t.66relish.com/',
+=======
+                target: 'https://yaboxxxapp01.com/',
+>>>>>>> bugfix
                 changeOrigin: true,
                 secure: false
             },
             '/payment': {
+<<<<<<< HEAD
                 target: 'https://yb0t.66relish.com/',
+=======
+                target: 'https://yaboxxxapp01.com/',
+>>>>>>> bugfix
                 changeOrigin: true,
                 secure: false
             }
