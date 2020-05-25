@@ -234,8 +234,11 @@ export default {
             case 'WAIT':
             case 'BREAK_WAIT':
               this.dialogType = `tips-break`;
-              this.$refs.bonunsDialog.hadEarnNum = data.BreakTimes;
-              this.$refs.bonunsDialog.isShow = true;
+              this.$nextTick(() => {
+                this.$refs.bonunsProcess.processType = 'wait';
+                this.$refs.bonunsDialog.hadEarnNum = data.BreakTimes;
+                this.$refs.bonunsDialog.isShow = true;
+              });
               if (!this.player.paused()) {
                 this.player.pause();
                 if (this.player.isFullscreen()) {
@@ -243,8 +246,6 @@ export default {
                 }
               }
 
-              // wait
-              this.$refs.bonunsProcess.processType = 'wait';
               this.breakwaitCallback = () => {
                 this.$nextTick(() => {
                   let mission = data.Mession;
