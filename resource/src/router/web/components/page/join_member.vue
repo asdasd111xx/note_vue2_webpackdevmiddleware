@@ -153,7 +153,7 @@ import member from '@/api/member';
 import joinMemInfo from '@/config/joinMemInfo';
 import slideVerification from '@/components/slideVerification';
 import { getCookie, setCookie } from '@/lib/cookie';
-import bbosRequest from '@/lib/bbosRequest';
+import bbosRequest from "@/api/bbosRequest";
 
 export default {
   components: {

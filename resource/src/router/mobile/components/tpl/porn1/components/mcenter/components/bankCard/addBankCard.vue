@@ -319,7 +319,7 @@ export default {
         return;
       }
 
-      // 預設提現銀行卡添加成功後回到遊戲
+      // 預設提現銀行卡添加成功後回到遊戲 影片
       let split = redirect.split('-');
       if (split.length === 2) {
         this.$router.push(`/mobile/${split[0]}/${split[1]}`);

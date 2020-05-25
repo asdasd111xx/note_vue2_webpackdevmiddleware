@@ -240,7 +240,7 @@
                                     />
                                 </div>
                             </div>
-                            <div
+                            <!-- <div
                                 v-if="
                                     !isDepositAi &&
                                         getPassRoadOrAi.amounts &&
@@ -253,7 +253,7 @@
                                 >
                                     --
                                 </div>
-                            </div>
+                            </div> -->
                             <div
                                 v-if="
                                     !isDepositAi &&

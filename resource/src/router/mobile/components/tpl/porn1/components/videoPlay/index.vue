@@ -25,7 +25,7 @@ import videoInfo from './components/videoInfo';
 import videoGuess from './components/videoGuess';
 import videoTag from './components/videoTag';
 import mobileContainer from '../common/new/mobileContainer';
-import { API_PORN1_DOMAIN } from '@/config/api';
+import pornRequest from '@/api/pornRequest';
 
 export default {
   components: {
@@ -51,25 +51,42 @@ export default {
       return;
     }
 
-    axios({
+    pornRequest({
       method: 'post',
-      url: `${API_PORN1_DOMAIN}/api/v1/video/videoinfo`,
-      timeout: 30000,
-      data: querystring.stringify({ videoId: this.$route.params.id }),
-      headers: {
-        Bundleid: 'chungyo.foxyporn.prod.enterprise.web',
-        Version: 1
-        // 本機開發時會遇到 CORS 的問題，把Bundleid及Version註解，並打開下面註解即可
-        // 'Content-Type': 'application/x-www-form-urlencoded',
-        // origin: 'http://127.0.0.1'
-      }
-    }).then((response) => {
-      if (response.status !== 200) {
+      url: `/video/videoinfo`,
+      data: { videoId: this.$route.params.id },
+      //   reqHeaders: {
+      //     // 本機開發時會遇到 CORS 的問題，把Bundleid及Version註解，並打開下面註解即可
+      //      'Content-Type': 'application/x-www-form-urlencoded',
+      //      origin: 'http://127.0.0.1'
+      //   }
+    }).then((res) => {
+      if (res.status !== 200) {
         return;
       }
 
-      this.videoInfo = { ...response.data.result };
+      this.videoInfo = { ...res.result };
     });
+
+    // axios({
+    //   method: 'post',
+    //   url: `https://daydayyouhui.com/api/v1/video/videoinfo`,
+    //   timeout: 30000,
+    //   //   data: querystring.stringify({ videoId: this.$route.params.id }),
+    //   headers: {
+    //     Bundleid: 'chungyo.foxyporn.prod.enterprise.web',
+    //     Version: 1
+    //     // 本機開發時會遇到 CORS 的問題，把Bundleid及Version註解，並打開下面註解即可
+    //     // 'Content-Type': 'application/x-www-form-urlencoded',
+    //     // origin: 'http://127.0.0.1'
+    //   }
+    // }).then((response) => {
+    //   if (response.status !== 200) {
+    //     return;
+    //   }
+
+    //   this.videoInfo = { ...response.data.result };
+    // });
   }
 };
 </script>

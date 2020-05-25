@@ -1,80 +1,82 @@
 <template>
-  <mobile-container
-    :header-config="headerConfig"
-    :has-footer="false"
-    :class="$style.container"
-  >
-    <div slot="content">
-      <div
-        v-for="(item, index) in data"
-        :id="`q-${index}`"
-        :class="[
-          $style['cell'],
-          $style['support-cell'],
-          { [$style['active']]: item.isOpen }
-        ]"
-        :key="item.key"
-        @click="item.list && handleToggleContent(index)"
-      >
-        <div :class="$style['title']">
-          {{ item.title }}
+    <mobile-container
+        :header-config="headerConfig"
+        :has-footer="false"
+        :is-app="isApp"
+        :class="$style.container"
+    >
+        <div slot="content">
+            <div :class="$style['section']" style="margin-top: 10px">
+                <div
+                    v-for="(item, index) in data"
+                    :id="`q-${index}`"
+                    :class="[$style['cell'], $style['flex']]"
+                    :key="item.key"
+                    @click="
+                        $router.push(
+                            `/mobile/mcenter/help/detail?key=${
+                                item.key
+                            }&type=support${isApp ? '&app=true' : ''}`
+                        )
+                    "
+                >
+                    <div :class="$style['title-icon']">
+                        <img
+                            :src="
+                                $getCdnPath(
+                                    '/static/image/_new/mcenter/ic_help.png'
+                                )
+                            "
+                            alt="help"
+                        />
+                    </div>
+                    <div :class="$style['title']" style="font-weight: 400">
+                        {{ item.title }}
+                    </div>
+                </div>
+            </div>
         </div>
-        <div
-          :class="[$style['content'], { [$style['active']]: item.isOpen }]"
-          :style="{ 'max-height': item.isOpen ? `100vh` : 0 }"
-          v-html="item.content"
-        ></div>
-        <!-- <div
-          :class="[$style['arrow-btn'], { [$style['active']]: item.isOpen }]"
-        >
-          <img
-            :src="$getCdnPath(`/static/image/_new/mcenter/ic_arrow_next.png`)"
-          />
-        </div> -->
-      </div>
-    </div>
-  </mobile-container>
+    </mobile-container>
 </template>
 
 <script>
-import { mapGetters } from 'vuex';
-import member from '@/api/member';
-import mobileContainer from '../../../../common/new/mobileContainer';
-import info from '../json/support.json'
+import mobileContainer from "../../../../common/new/mobileContainer";
+import info from "../json/support.json";
 
 export default {
-  components: {
-    mobileContainer,
-  },
-  data() {
-    return {
-      data: info.data.map(function (el) {
-        let _o = Object.assign({}, el);
-        _o.isOpen = false;
-        return _o;
-      })
-    };
-  },
-  computed: {
-    ...mapGetters({
-      loginStatus: 'getLoginStatus'
-    }),
-    headerConfig() {
-      return {
-        prev: true,
-        onClick: () => { this.$router.back(); },
-        title: this.$text('S_TECH_SUP', '技术支持'),
-      };
+    components: {
+        mobileContainer
     },
-  },
-  methods: {
-    handleToggleContent(key) {
-      let target = document.getElementById(`q-${key}`);
-      if (!target) return;
-      this.data[key].isOpen = !this.data[key].isOpen;
+    mounted() {
+        if (!info) this.$router.back();
+    },
+    computed: {
+        isApp() {
+            let isApp = !!(
+                (this.$route.query && this.$route.query.app) ||
+                (this.$route.query && this.$route.query.APP)
+            );
+            if (isApp) document.title = "技术支持";
+
+            return isApp;
+        },
+        headerConfig() {
+            if (!this.isApp)
+                return {
+                    prev: true,
+                    onClick: () => {
+                        this.$router.back();
+                    },
+                    title: this.$text("S_TECH_SUP", "技术支持")
+                };
+        },
+        data() {
+            return info.data.map(item => {
+                return item;
+            });
+        }
     }
-  },
 };
 </script>
 
-<style src="../css/index.module.scss" lang="scss" module>
+<style src="../css/index.module.scss" lang="scss" module />

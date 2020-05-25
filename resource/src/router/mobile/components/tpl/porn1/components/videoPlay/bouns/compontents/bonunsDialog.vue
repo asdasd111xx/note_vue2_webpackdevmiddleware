@@ -24,21 +24,38 @@
         <template v-if="type.includes('poor')">
           {{ $text("S_ACTIVITY_SHORT", "余额不足 请先充值") }}
         </template>
+        <div
+          v-else-if="missionDesc && type.includes('wait')"
+          v-html="getDesc(missionDesc)"
+        ></div>
         <template v-else>
           {{ $text("S_ACTIVITY_SLOGAN", "看视频送现金 天天看天天送") }}
         </template>
       </div>
-      <template v-if="type == 'tips' || type.includes('poor')">
+      <template
+        v-if="type == 'tips' || type.includes('poor') || type.includes('wait')"
+      >
         <div :class="$style['bouns-func']">
-          <div @click="$router.push('/mobile')">
+          <div v-if="missionDesc && type.includes('wait')" @click="handleClose">
+            {{ "继续看" }}
+          </div>
+          <div v-else @click="$router.push('/mobile')">
             {{ $text("S_FIRST_LOOK", "先去逛逛") }}
           </div>
+
           <div
             v-if="type.includes('poor')"
             @click="$router.push('/mobile/mcenter/deposit')"
             :class="$style['active-btn']"
           >
             {{ $text("S_GO_DEPOSIT", "去充值") }}
+          </div>
+          <div
+            v-else-if="missionActionType && type.includes('wait')"
+            @click="handleAcionType"
+            :class="$style['active-btn']"
+          >
+            {{ getActionName(missionActionType) }}
           </div>
           <div
             v-else
@@ -102,7 +119,7 @@
           @click="handleClose"
           :class="[$style['earn-keep-btn'], $style['active-btn']]"
         >
-          {{ $text("S_ACTIVITY_KEEP") }}
+          {{ $text("S_ACTIVITY_KEEP", "继续看片") }}
         </div>
       </template>
     </div>
@@ -116,6 +133,10 @@ export default {
       type: String,
       default: "tips"
     },
+    videoid: {
+      type: Number,
+      default: ""
+    }
   },
   components: {
 
@@ -141,11 +162,10 @@ export default {
       hadEarnNum: 0, // 已經獲得彩金數
       earnSingleNum: "0.00", //每次獲得彩金
       earnCurrentNum: "0.00", //獲得彩金
-      limitAmount: "" //最高彩金
+      limitAmount: "", //最高彩金
+      missionDesc: "", //任務標題
+      missionActionType: "" //任務動作 去充值 去綁定 去推廣
     };
-  },
-  computed: {
-
   },
   mounted() {
     window.addEventListener('resize', this.getDialogHeight);
@@ -156,9 +176,54 @@ export default {
   beforeDestroy() {
     window.removeEventListener('resize', this.getDialogHeight);
   },
-  created() {
-  },
   methods: {
+    getDesc(desc) {
+      //   暫時修改標題
+      //   return desc;
+      let split = desc.split(' ');
+      if (split && split.length > 0) {
+        return `${split[split.length - 1]}<br />即可繼續享有觀影送錢！`;
+      }
+    },
+    getActionName() {
+      switch (this.missionActionType) {
+        case 1:
+          return "去绑定"
+        case 2:
+          return "去充值"
+        case 3:
+        case 4:
+          return "去推广"
+        case 5:
+        case 6:
+          return "去下注"
+        case 7:
+        default:
+          return;
+      }
+    },
+    handleAcionType() {
+      let redirect = `?redirect=videoPlay-${this.videoid}`;
+      switch (this.missionActionType) {
+        case 1:
+          this.$router.push(`/mobile/mcenter/bankCard${redirect}`);
+          return;
+        case 2:
+          this.$router.push(`/mobile/mcenter/deposit${redirect}`);
+          return;
+        case 3:
+        case 4:
+          this.$router.push(`/mobile/mcenter/makeMoney`);
+          return;
+        case 5:
+        case 6:
+          this.$router.push(`/mobile`);
+          return;
+        case 7:
+        default:
+          return;
+      }
+    },
     getDialogHeight() {
       let t = document.getElementById('earn-wrap');
       if (t && t.offsetHeight) {
@@ -170,6 +235,7 @@ export default {
       setTimeout(() => {
         this.$emit('close')
         this.isShow = false;
+        this.isClose = false;
       }, 300)
     }
   },
