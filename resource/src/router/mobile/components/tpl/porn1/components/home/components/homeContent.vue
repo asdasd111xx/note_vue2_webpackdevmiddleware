@@ -422,6 +422,20 @@ export default {
     },
     // 取得所有影片(熱門推薦除外)
     getVideoList() {
+      try {
+        let videolistStorage = localStorage.getItem('video-list');
+        if (videolistStorage) {
+          this.videoList = JSON.parse(localStorage.getItem('video-list'));
+        }
+
+        if (process.env.NODE_ENV === 'development') {
+          //   console.log("video-list-time", localStorage.getItem('video-list-timestamp'))
+        }
+
+      } catch (e) {
+        console.log(e)
+      }
+
       return pornRequest({
         method: 'post',
         url: `/video/videolist`,
@@ -431,11 +445,32 @@ export default {
           return;
         }
 
+        try {
+          localStorage.setItem('video-list', JSON.stringify(response.result))
+          localStorage.setItem('video-list-timestamp', Date.now())
+        } catch (e) {
+          console.log(e)
+        }
+
         this.videoList = [...response.result];
       });
     },
     // 取得所有遊戲
     getAllGame() {
+      try {
+        let videolistStorage = localStorage.getItem('game-list');
+        if (videolistStorage) {
+          this.allGame = JSON.parse(localStorage.getItem('game-list'));
+        }
+
+        if (process.env.NODE_ENV === 'development') {
+          //   console.log("game-list-time", localStorage.getItem('game-list-timestamp'))
+        }
+
+      } catch (e) {
+        console.log(e)
+      }
+
       return axios({
         method: 'get',
         url: `${this.siteConfig.YABO_API_DOMAIN}/game/list`,
@@ -448,6 +483,13 @@ export default {
       }).then((response) => {
         if (response.status !== 200) {
           return;
+        }
+
+        try {
+          localStorage.setItem('game-list', JSON.stringify(response.data.data))
+          localStorage.setItem('game-list-timestamp', Date.now())
+        } catch (e) {
+          console.log(e)
         }
 
         this.allGame = [...response.data.data];

@@ -32,31 +32,35 @@ export default ({
         data: querystring.stringify(data)
     };
 
-    //  Create `axios-cache-adapter` instance
-    const cache = setupCache({
-        maxAge: 30 * 60 * 1000
-    })
+    let api = window.PermissionRequest;
 
-    //  Create `axios` instance passing the newly created `cache.adapter`
-    const api2 = axios.create({
-        adapter: cache.adapter
-    })
+    if (!api) {
+        //  Create `axios-cache-adapter` instance
+        const cache = setupCache({
+            maxAge: 30 * 60 * 1000,
+            exclude: {
+                query: false
+            }
+        })
 
-    const api = setup({
-        ...obj,
-        baseURL: PORN_DOMAIN,
-        adapter: cache.adapter
-    })
+        // window.PermissionRequest = setup({
+        //     ...obj,
+        //     baseURL: PORN_DOMAIN,
+        //     cache: {
+        //         maxAge: 15 * 60 * 1000
+        //     }
+        // })
 
-    return api(obj).then(async (res) => {
-        if (process.env.NODE_ENV === "development") {
-            // console.log("[PORN request]");
-            // console.log(res.data);
-            // const length = await cache.store;
-            // console.log('Cache store :', length);
-        }
+        //  Create `axios` instance passing the newly created `cache.adapter`
+        window.PermissionRequest = axios.create({
+            adapter: cache.adapter
+        })
+        api = window.PermissionRequest;
+    }
 
+    return api(obj).then((res) => {
         if (res && res.data) {
+
             return res.data;
         } else {
             fail(res.data);
@@ -68,30 +72,4 @@ export default ({
             console.log(error);
             return error;
         });
-
-    // 未完成
-    const _method = method.toLocaleLowerCase();
-    switch (_method) {
-        case "post":
-            return api.post(url).then((res) => {
-                console.log(res.request)
-                if (process.env.NODE_ENV === "development") {
-                    console.log("[PORN request]")
-                    console.log(res.data)
-                }
-
-                if (res && res.data) {
-                    return res.data;
-                } else {
-                    fail(res.data);
-                }
-                return res.data;
-            })
-                .catch((error) => {
-                    console.log("[PORN request error]")
-                    console.log(error);
-                    return error;
-                });
-    }
-
 };
