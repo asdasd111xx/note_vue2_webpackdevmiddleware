@@ -107,6 +107,9 @@ export default {
     // if (!this.loginStatus) {
     //   this.$router.push("/mobile/login")
     // }
+
+    // 針對遊戲介紹
+    localStorage.removeItem("help_gameIntro");
   },
   methods: {
     handleClick(path) {

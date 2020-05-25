@@ -23,6 +23,23 @@
     margin-top: 1px;
     padding: 0 14px;
 
+    &.flex {
+        display: inline-flex;
+        width: 100%;
+        align-items: center;
+    }
+
+    .title-icon {
+        width: 16px;
+        height: 16px;
+        margin-right: 10px;
+
+        img {
+            width: 16px;
+            height: 16px;
+        }
+    }
+
     .title {
         display: flex;
         align-items: center;
@@ -82,7 +99,7 @@
     }
 }
 
-// 詳細資料
+// 詳細資料--存款 & 提現
 .detail-wrap {
     background-color: #f8f8f8;
 }
@@ -164,6 +181,35 @@
 
     .edit {
         color: #6aaaf5;
+    }
+}
+
+// 詳細資料--遊戲介紹 & 技術支持
+.detail-article-wrap {
+    position: relative;
+    width: 100%;
+    height: 100%;
+    margin-top: 10px;
+    padding: 0px 17px;
+    background: $main_white_color1;
+}
+
+.article-title {
+    padding: 15px 0;
+    font-weight: 700;
+    border-bottom: 1px solid #eee;
+}
+
+.article-block {
+    margin-top: 20px;
+    line-height: 22px;
+    font-size: 12px;
+    display: inline-flex;
+    width: 100%;
+
+    span {
+        display: block;
+        margin-right: 10px;
     }
 }
 

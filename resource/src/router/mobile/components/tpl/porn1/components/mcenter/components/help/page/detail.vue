@@ -22,7 +22,7 @@
             </template>
 
             <template v-if="type == 'support'">
-                <support />
+                <support :keys="$route.query.key" />
             </template>
         </div>
     </mobile-container>
