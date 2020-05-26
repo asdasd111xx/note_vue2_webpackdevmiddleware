@@ -155,7 +155,7 @@ export default {
           text: "隐藏版",
           onClick: () => {
             window.open(
-              "https://apps.apple.com/cn/app/id1508493065",
+              "https://apps.apple.com/cn/app/id1507102732",
               "_blank"
             );
           }
