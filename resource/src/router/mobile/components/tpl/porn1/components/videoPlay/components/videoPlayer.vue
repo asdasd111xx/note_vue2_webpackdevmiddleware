@@ -101,6 +101,7 @@ export default {
       this.connectWS();
 
       this.player.on("playing", () => {
+        if (this.player.seeking()) return;
         this.isPlaying = true;
         if (this.socket && !this.keepPlay) {
           this.onSend("PLAY");
@@ -108,7 +109,15 @@ export default {
         this.keepPlay = false
       })
 
+      // 快轉
+      this.player.on("seeking", () => {
+      })
+
+      this.player.on("seeked", () => {
+      })
+
       this.player.on("pause", () => {
+        if (this.player.seeking()) return;
         this.isPlaying = false;
         if (this.socket && !this.keepPlay) {
           this.onSend("STOP");
@@ -389,7 +398,11 @@ export default {
     },
     // "STOP" | "CLOSE" | "PLAY"
     onSend(type) {
-      if (!this.socket || this.socket.readyState === 3 || (this.$refs.bonunsProcess && this.$refs.bonunsProcess.processType === 'done')) {
+      // 0	CONNECTING
+      // 1	OPEN
+      // 2	CLOSING
+      // 3	CLOSED
+      if (!this.socket || this.socket.readyState !== 1 || (this.$refs.bonunsProcess && this.$refs.bonunsProcess.processType === 'done')) {
         return
       }
       let data = {

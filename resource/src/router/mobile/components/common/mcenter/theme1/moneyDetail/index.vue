@@ -25,6 +25,7 @@
         </div>
         <div v-if="showCondition === 'date'" :class="[$style['record-select']]">
             <div :class="[$style['select-wrap'], 'clearfix']">
+                <div :class="$style['select-tip']">当前系统支持查询最近30日的交易记录</div>
                 <div
                     v-for="option in dateOptions"
                     :key="option.key"
