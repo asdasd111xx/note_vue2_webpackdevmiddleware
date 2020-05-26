@@ -158,6 +158,15 @@
         {{ msg }}
       </div>
     </message>
+    <confirm
+      v-if="showIntegerBackConfirm"
+      @confirm="confirmIntegerBack"
+      @cancel="showIntegerBackConfirm = false"
+    >
+      <div slot="msg">
+        {{ $t("S_INTEGER_BACK_ACCOUNT_CONFIRM") }}
+      </div>
+    </confirm>
   </div>
 </template>
 
@@ -167,11 +176,13 @@ import { ModelSelect } from 'vue-search-select';
 import mcenter from '@/api/mcenter';
 import ajax from '@/lib/ajax';
 import message from '@/router/mobile/components/tpl/porn1/components/common/new/message';
+import confirm from '@/router/mobile/components/tpl/porn1/components/common/new/confirm';
 
 export default {
   components: {
     ModelSelect,
-    message
+    message,
+    confirm
   },
   data() {
     return {
@@ -193,7 +204,8 @@ export default {
       getDefaultTran: {
         out: '',
         in: ''
-      }
+      },
+      showIntegerBackConfirm: false
     };
   },
   computed: {
@@ -378,14 +390,15 @@ export default {
       });
     },
     balanceBack({ afterSetUserBalance } = {}) {
+      this.showIntegerBackConfirm = true;
       // 阻擋連續點擊
       if (this.balanceBackLock) {
         return;
       }
-      if (window.confirm(this.$t('S_INTEGER_BACK_ACCOUNT_CONFIRM'))) {
-        this.balanceBackLock = true;
-        this.backAccount({ afterSetUserBalance });
-      }
+    },
+    confirmIntegerBack() {
+      this.showIntegerBackConfirm = false;
+      this.backAccount();
     },
     backAccount({ afterSetUserBalance } = {}) {
       mcenter.balanceTranBack({

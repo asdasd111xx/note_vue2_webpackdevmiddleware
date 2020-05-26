@@ -107,10 +107,12 @@ export default {
         }
       }, 3000)
     },
-    // 收到playing跑一次進度動畫
+    // 收到play跑一次進度動畫
     playCueTime(play) {
+      // 強制暫停動畫
       if (play === "pause") { this.isPause = true; return; }
-      if (this.playingCueTime) { return; }
+      // 繼續播放
+      if (this.playingCueTime) { this.isPause = false; return; }
 
       this.isPause = false;
       this.playingCueTime = true;
