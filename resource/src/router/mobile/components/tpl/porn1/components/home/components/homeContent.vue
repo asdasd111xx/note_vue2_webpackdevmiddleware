@@ -599,6 +599,8 @@ export default {
         this.isSliding = false;
       });
 
+      localStorage.setItem('type', this.typeList[index].icon);
+
       setTimeout(() => {
         this.stopScroll = false;
         if (isSetEnd) {
@@ -638,8 +640,6 @@ export default {
       if (process.env.NODE_ENV === 'development') {
         console.log(game)
       }
-
-      localStorage.setItem('type', this.typeList[this.selectedIndex].icon);
 
       // Game Type
       // L => 遊戲大廳

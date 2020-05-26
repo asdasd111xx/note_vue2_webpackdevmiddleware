@@ -667,7 +667,7 @@ export const actionSetAppDownloadInfo = ({ commit }) => {
         url: API_GETAPPINFO,
         errorAlert: false
     }).then((response) => {
-        if (response.result === 'ok') {
+        if (response && response.result === 'ok') {
             commit(types.SET_APP_DOWNLOAD_INFO, response.ret);
         }
     });

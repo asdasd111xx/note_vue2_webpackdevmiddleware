@@ -32,11 +32,11 @@ export default {
         key: 'username',
         text: 'S_ACCOUNT',
         type: 'text',
-        placeholder: '请输入4-20位字母或数字',
+        placeholder: '请输入4-20码英文小写、数字',
         isRequired: true,
         hasVerify: false,
         show: true,
-        regExp: enableUserNameDigit ? /^[a-z0-9]{4,20}$/ : /^[a-z][a-z0-9]{3,19}$/,
+        regExp: enableUserNameDigit ? /^[a-z1-9]{4,20}$/ : /^[a-z][a-z0-9]{3,19}$/,
         errorMsg: enableUserNameDigit
             ? i18n.t('S_ENABLE_NUM_CHAR').replace('%s', '4').replace('%s', '20')
             : i18n.t('S_USERNAME_ERROR').replace('%s', '<br/>')

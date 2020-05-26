@@ -1,5 +1,5 @@
-import i18n from '@/config/i18n';
 import gameData from '@/config/games';
+import i18n from '@/config/i18n';
 
 export default {
     // 判斷極速版、pwa、webclip
@@ -133,7 +133,7 @@ export default {
             type: 'text',
             regExp: /^[a-z][a-z0-9]{3,19}$/,
             errorMsg: 'S_USERNAME_ERROR',
-            defaultErrMsg: '请输入4-20码英文小写、数字，首字不得为数字'
+            defaultErrMsg: '请输入4-20码英文小写、数字，首字不得为数字0'
         },
         email: {
             key: 'email',
