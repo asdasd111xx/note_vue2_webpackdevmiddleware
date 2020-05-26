@@ -21,6 +21,10 @@
                 <div :class="$style.title">订单号码</div>
                 <div :class="$style.text">{{ detailInfo.ref_id }}</div>
             </div>
+            <div :class="[$style.detail, 'clearfix']">
+                <div :class="$style.title">備註</div>
+                <div :class="$style.text">{{ detailInfo.memo ? detailInfo.memo : '--' }}</div>
+            </div>
         </div>
         <div :class="$style.tips">如需帮助，请 <span @click="$router.push('/mobile/service')">联系客服</span></div>
     </div>
