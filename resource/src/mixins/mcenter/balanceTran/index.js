@@ -1,4 +1,5 @@
-import { mapGetters, mapActions } from 'vuex';
+import { mapActions, mapGetters } from 'vuex';
+
 import { ModelSelect } from 'vue-search-select';
 import mcenter from '@/api/mcenter';
 
