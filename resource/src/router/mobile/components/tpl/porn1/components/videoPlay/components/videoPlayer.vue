@@ -423,12 +423,7 @@ export default {
     this.player.dispose();
     this.player = null;
     if (this.socket) {
-      this.socket.send({
-        "SocketId": this.socketId,
-        "Type": "close",
-        "SendTime": new Date().toISOString(),
-        "Data": {}
-      })
+        this.onSend("CLOSE");
     }
   }
 };
