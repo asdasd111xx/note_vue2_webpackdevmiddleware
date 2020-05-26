@@ -124,7 +124,7 @@ export default {
           }/player/vipinfo/${cid}`,
         headers: { "x-domain": this.memInfo.user.domain }
       }).then(res => {
-        this.viplevel = res.data.data[0].now_level_seq;
+        this.viplevel = res.data && res.data.data ? res.data.data[0].now_level_seq : 0;
       });
     },
     // 大頭貼
