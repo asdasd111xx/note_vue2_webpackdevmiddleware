@@ -3,6 +3,7 @@ import * as apiUrl from '../config/api';
 import ajax from '../lib/ajax';
 import ajax2 from '../lib/ajax2';
 import axios from 'axios';
+import { setCookie } from '@/lib/cookie';
 
 export default {
     // 會員-登入後-額度
@@ -59,12 +60,15 @@ export default {
             ...args
         }).then((response) => {
             if (response && response.result === 'ok') {
-                // localStorage.clear();
+                setCookie('cid', '');
+                setCookie('aid', '');
                 localStorage.removeItem('type');
                 // GA流量統計
                 window.dataLayer.push({
                     ga_uid: undefined
                 });
+                window.location.reload();
+                this.$router.push("/mobile");
             }
         });
     },
