@@ -53,11 +53,11 @@ export default {
       isPlaying: false,
       //   彩金開關
       isActiveBouns: true, //預設打開由message決定是否啟動
-      isShowBounsDialog: false,
       dialogType: "tips",// 提示 & 賺得彩金
+      reconnectTimer: null, //重新連線timer
       socket: null,
       socketId: "",
-      mission: {},
+      mission: null,
       keepPlay: false, // wait 任務未達成繼續觀看不發送play
       breakwaitCallback: () => { }
     };
@@ -70,6 +70,9 @@ export default {
     }),
     playsinline() {
       return "true"
+    },
+    isDebug() {
+      return process.env.NODE_ENV === 'development' || (this.$route.query & this.$route.query.debug)
     }
   },
   beforeDestroy() {
@@ -94,71 +97,63 @@ export default {
 
     //活動開關
     if (this.isActiveBouns) {
-      try {
-        // connect websocket
-        let cid = getCookie('cid');
-        let uri = this.siteConfig.ACTIVES_BOUNS_WEBSOCKET + `?cid=${cid}&domain=${this.memInfo.user.domain}`;
-        this.socket = new WebSocket(uri);
-        this.socket.onmessage = this.onMessage;
-        this.socket.onopen = this.onOpen;
-        this.socket.onerror = this.onError;
-        this.socket.onclose = this.onClose;
-        this.socket.onmessage = this.onMessage;
+      // connect websocket
+      this.connectWS();
 
-        this.player.on("playing", () => {
-          this.isPlaying = true;
-          if (this.socket && !this.keepPlay) {
-            this.onSend("PLAY");
-          }
-          this.keepPlay = false
-        })
-
-        this.player.on("pause", () => {
-          this.isPlaying = false;
-          if (this.socket && !this.keepPlay) {
-            this.onSend("STOP");
-          }
-          this.keepPlay = false
-        })
-
-        this.player.on("ended", () => {
-          this.$refs.bonunsProcess.playCueTime("pause");
-          this.isPlaying = false;
-          if (this.socket)
-            this.onSend("STOP");
-        })
-
-        this.player.on("play", () => {
-          this.handleClickVideo();
-        })
-
-        if (!this.loginStatus) {
-          this.$refs.bonunsDialog.isShow = true
-          this.dialogType = 'tips';
+      this.player.on("playing", () => {
+        this.isPlaying = true;
+        if (this.socket && !this.keepPlay) {
+          this.onSend("PLAY");
         }
+        this.keepPlay = false
+      })
 
-        // window.onorientationchange = function () {
-        // };
+      this.player.on("pause", () => {
+        this.isPlaying = false;
+        if (this.socket && !this.keepPlay) {
+          this.onSend("STOP");
+        }
+        this.keepPlay = false
+      })
 
-      } catch (e) {
-        console.log(e)
+      this.player.on("ended", () => {
+        this.$refs.bonunsProcess.playCueTime("pause");
+        this.isPlaying = false;
+        if (this.socket)
+          this.onSend("STOP");
+      })
+
+      this.player.on("play", () => {
+        this.handleClickVideo();
+      })
+
+      if (!this.loginStatus) {
+        this.$refs.bonunsDialog.isShow = true
+        this.dialogType = 'tips';
       }
     }
   },
   methods: {
     handleCloseDialog() {
       this.keepPlay = true;
-      this.isShowBounsDialog = false;
       if (this.breakwaitCallback) {
         this.breakwaitCallback();
       }
     },
     //   點擊進圖條任務彈窗
     handleClickProcess() {
-      this.dialogType = `tips-wait`;
-      this.$refs.bonunsDialog.missionDesc = this.mission.Description;
-      this.$refs.bonunsDialog.missionActionType = this.mission.ActionType;
-      this.$refs.bonunsDialog.isShow = true;
+      if (this.mission) {
+        this.dialogType = `tips-wait`;
+        this.$refs.bonunsDialog.missionDesc = this.mission.Description;
+        this.$refs.bonunsDialog.missionActionType = this.mission.ActionType;
+        this.$refs.bonunsDialog.isShow = true;
+        if (!this.player.paused()) {
+          this.player.pause();
+          if (this.player.isFullscreen()) {
+            this.player.exitFullscreen();
+          }
+        }
+      }
     },
     handleClickVideo() {
       if (!this.isActiveBouns) return
@@ -177,7 +172,28 @@ export default {
         return;
       }
     },
+    connectWS() {
+      try {
+        let cid = getCookie('cid') || '';
+        let uri = this.siteConfig.ACTIVES_BOUNS_WEBSOCKET + `?cid=${cid}&domain=${this.memInfo.user.domain}`;
+        this.socket = new WebSocket(uri);
+        this.socket.onmessage = this.onMessage;
+        this.socket.onerror = this.onError;
+        this.socket.onclose = this.onClose;
+        this.socket.onmessage = this.onMessage;
+        this.socket.onopen = this.onOpen;
+      } catch (e) {
+        console.log("[WS]: connectWS Error:", e);
+      }
+    },
     onMessage(e) {
+      clearTimeout(this.reconnectTimer);
+      this.reconnectTimer = null;
+
+      if (this.isDebug) {
+        console.log("[WS]: onMessage:", JSON.parse(e.data));
+      }
+
       if (e.data) {
         let data = JSON.parse(e.data);
         this.socketId = data.SocketId;
@@ -187,13 +203,7 @@ export default {
           return
         }
 
-        if (process.env.NODE_ENV === 'development') {
-          console.log("msg ==>")
-          console.log(data)
-        }
-
-        // test
-        // data.Status = "BREAK_WAIT"
+        this.reconnectTimer = null;
 
         if (data.Active) {
           //狀態
@@ -232,6 +242,26 @@ export default {
               this.$refs.bonunsProcess.playCueTime("pause");
               return;
             case 'WAIT':
+              let mission = data.Mession;
+              if (mission) {
+                this.dialogType = `tips-wait`;
+                this.$refs.bonunsProcess.processType = 'wait';
+                //任務類型
+                this.$refs.bonunsDialog.missionDesc = mission.Description;
+                //任務動作
+                this.$refs.bonunsDialog.missionActionType = mission.ActionType;
+                this.$refs.bonunsDialog.isShow = true;
+                this.$nextTick(() => this.$refs.bonunsDialog.getDialogHeight());
+              }
+              // 暫存任務內容
+              this.mission = mission;
+              if (!this.player.paused()) {
+                this.player.pause();
+                if (this.player.isFullscreen()) {
+                  this.player.exitFullscreen();
+                }
+              }
+              break;
             case 'BREAK_WAIT':
               this.dialogType = `tips-break`;
               this.$nextTick(() => {
@@ -246,6 +276,7 @@ export default {
                 }
               }
 
+              // break wait 收到中斷彩金後繼續播放要處理 wait 第二次彈窗
               this.breakwaitCallback = () => {
                 this.$nextTick(() => {
                   let mission = data.Mession;
@@ -307,32 +338,54 @@ export default {
       }
     },
     onOpen(e) {
-      console.log("video socket: ", e);
-      let data = {
-        "SocketId": this.socketId,
-        "Type": "WEB-OPEN",
-        "SendTime": new Date().toISOString(),
-        // 測試log
-        "Data": {
-          "platform": getCookie('platform') || "normal",
-          "videoid": this.videoInfo.id,
-          "url": this.videoInfo.url,
-        }
-      };
+      if (this.isDebug) {
+        console.log("[WS]: onOpen:", e)
+        console.log("[Video-url]:", this.videoInfo.url)
+      }
+      clearTimeout(this.reconnectTimer);
+      this.reconnectTimer = null;
 
-      this.socket.send(JSON.stringify(data));
+      if (!this.player.paused()) {
+        if (this.socket && !this.keepPlay) {
+          this.onSend("PLAY");
+        }
+      }
+
+      // 測試log
+      //   let data = {
+      //     "SocketId": this.socketId,
+      //     "Type": "WEB-OPEN",
+      //     "SendTime": new Date().toISOString(),
+      //     "Data": {
+      //       "platform": getCookie('platform') || "normal",
+      //       "videoid": this.videoInfo.id,
+      //       "url": this.videoInfo.url,
+      //     }
+      //   };
+
+      //   this.socket.send(JSON.stringify(data));
     },
     onClose(e) {
-      if (process.env.NODE_ENV === 'development') {
-        console.log("close ==>");
-        console.log(e);
+      if (this.isDebug) {
+        console.log("[WS]: onClose:", e)
+        console.log("[Video-url]:", this.videoInfo.url)
       }
+      this.reconnect();
+    },
+    reconnect() {
+      if (this.reconnectTimer) return;
+      this.reconnectTimer = setTimeout(() => {
+        if (this.isDebug) {
+          console.log("[WS]: Reconnecting:");
+          console.log(this.socket);
+
+        }
+        this.connectWS();
+      }, 2500)
     },
     onError(e) {
-      console.log("err ==>")
-      console.log(e);
-      this.isActiveBouns = false;
-      this.socket = null;
+      console.log("[WS]: onError:", e)
+      this.reconnect();
     },
     // "STOP" | "CLOSE" | "PLAY"
     onSend(type) {
@@ -347,7 +400,9 @@ export default {
           "platform": getCookie('platform') || "normal"
         }
       }
-
+      if (this.isDebug) {
+        console.log("[WS]: onSend:", data)
+      }
       this.socket.send(JSON.stringify(data));
     },
   },
