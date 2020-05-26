@@ -273,9 +273,13 @@ export default {
     },
     typeList() {
       const adultVideo = this.isAdult ? [{ icon: 'Tv', name: '影片' }] : [];
-      const typeList = [...adultVideo, ...this.allGame.map((game) => ({ icon: game.iconName, name: game.name }))];
-      // 業主說左側選單前後要各複製一份...
-      return [...typeList, ...typeList, ...typeList];
+      if (this.allGame) {
+        const typeList = [...adultVideo, ...this.allGame.map((game) => ({ icon: game.iconName, name: game.name }))];
+        // 業主說左側選單前後要各複製一份...
+        return [...typeList, ...typeList, ...typeList];
+      } else {
+        return [...adultVideo];
+      }
     },
     options() {
       return { slidesPerView: 'auto', spaceBetween: 4, slideClass: this.$style.tag };
@@ -361,7 +365,6 @@ export default {
     } else {
       setDefaultSelected();
     }
-
 
     if (!this.loginStatus) {
       return;
