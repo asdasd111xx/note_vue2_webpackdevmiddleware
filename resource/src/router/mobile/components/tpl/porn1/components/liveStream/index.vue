@@ -167,7 +167,7 @@ export default {
       url: `/video/livelist`,
 
     }).then((response) => {
-      this.streamList = response.data.result;
+      this.streamList = response.result;
     });
 
     if (this.loginStatus) {
