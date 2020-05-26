@@ -1,6 +1,10 @@
 <template>
   <div :class="$style['content']">
     <div :class="$style['header']">
+      <div :class="$style['header-background']">
+        <img :src="$getCdnPath('/static/image/_new/webview/bg_service_app02.png')" alt="background">
+      </div>
+
       <div :class="$style['header-desc']">
         <div>我的客服</div>
         <div>24小时为您服务</div>
@@ -221,9 +225,17 @@ export default {
 
 .header {
   position: relative;
-  background: url("/static/image/_new/webview/bg_service_app.png") center center /
-    100% 100% no-repeat;
   height: 300px;
+}
+
+.header-background {
+    position: relative;
+    width: 100%;
+    height: 100%;
+    img {
+        width: 100%;
+        height: 100%;
+    }
 }
 
 .header-desc,
