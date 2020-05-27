@@ -75,9 +75,6 @@ export default {
       return process.env.NODE_ENV === 'development' || (this.$route.query & this.$route.query.debug)
     }
   },
-  beforeDestroy() {
-    window.removeEventListener('resize', this.getVideoHeight);
-  },
   mounted() {
     //  暫時手動轉換https
     if (!this.videoInfo.url) return;
@@ -418,7 +415,22 @@ export default {
       this.socket.send(JSON.stringify(data));
     },
   },
+  created() {
+    document.addEventListener('visibilitychange', function () {
+      console.log('visibilitychange', document.hidden)
+    })
+    window.addEventListener('focus', function () {
+      console.log('focus', document.hidden)
+    });
+    window.addEventListener('blur', function () {
+      console.log('blur', document.hidden)
+    });
+  },
   beforeDestroy() {
+    window.removeEventListener('visibilitychange');
+    window.removeEventListener('focus');
+    window.removeEventListener('visibblurilitychange');
+
     clearTimeout(this.reconnectTimer);
     this.reconnectTimer = null;
     this.player.dispose();
