@@ -111,8 +111,17 @@ export default {
     playCueTime(play) {
       // 強制暫停動畫
       if (play === "pause") { this.isPause = true; return; }
+      //重置計數
+      if (play === "stop") {
+        this.isPause = false;
+        this.playingCueTime = false;
+        clearTimeout(this.cunTimer);
+        this.cunTimer = null;
+        return;
+      }
       // 繼續播放
       if (this.playingCueTime) { this.isPause = false; return; }
+
 
       this.isPause = false;
       this.playingCueTime = true;
