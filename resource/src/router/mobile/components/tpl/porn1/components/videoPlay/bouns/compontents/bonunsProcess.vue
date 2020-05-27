@@ -74,7 +74,7 @@ export default {
   },
   watch: {
     totalAmount(newValue, oldValue){
-    if (Number(newValue) !== Number(oldValue) && Number(oldValue) !== 0) {
+    if (Number(newValue) !== Number(oldValue) && this.playingCueTime) {
         this.handleToggleEarnCoin();
       }
     },
