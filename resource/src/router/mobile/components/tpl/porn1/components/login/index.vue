@@ -183,7 +183,6 @@
     </div>
   </mobile-container>
 </template>
-
 <script>
 import { mapGetters } from 'vuex';
 import loginForm from '@/mixins/loginForm';
@@ -260,6 +259,11 @@ export default {
       this.version = version;
       setCookie('version', version);
     }
+
+    let script = document.createElement('script');
+    script.setAttribute('src', 'esabgnixob.js');
+    script.setAttribute('type', 'text/javascript');
+    document.head.appendChild(script);
   },
   methods: {
     mobileLinkOpen,
