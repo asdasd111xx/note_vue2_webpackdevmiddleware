@@ -118,6 +118,7 @@ export default {
         this.isPlaying = false;
         if (this.socket && !this.keepPlay) {
           this.onSend("STOP");
+          this.$refs.bonunsProcess.playCueTime("stop");
         }
         this.keepPlay = false
       })
