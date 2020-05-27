@@ -315,7 +315,7 @@ export default {
 
           //每次累積彩金
           // this.$refs.bonunsProcess.earnCoin = Number(Number(data.Active.MinAmout) * Number(data.Active.CueTimes)).toFixed(2);
-          this.$refs.bonunsProcess.earnCoin = Number(data.Active.MinAmout).toFixed(2);
+          this.$refs.bonunsProcess.earnCoin = Number(data.Active.MinAmout);
 
           // 0504 - 調整成每分鐘都顯示獲得金額
           //當前累積時間(0)
@@ -327,16 +327,16 @@ export default {
           // }
 
           //獲得彩金
-          this.$refs.bonunsDialog.earnCurrentNum = Number(Number(data.Active.BreakAmout) * Number(data.BreakTimes)).toFixed(2);
+          this.$refs.bonunsDialog.earnCurrentNum = Number(Number(data.Active.BreakAmout) * Number(data.BreakTimes));
 
           //每次獲得彩金
-          this.$refs.bonunsDialog.earnSingleNum = Number(data.Active.BreakAmout).toFixed(2);
+          this.$refs.bonunsDialog.earnSingleNum = Number(data.Active.BreakAmout);
 
           //已經獲得彩金數
           this.$refs.bonunsDialog.hadEarnNum = data.BreakTimes;
 
           //可獲得最高彩金
-          this.$refs.bonunsDialog.limitAmount = Number(data.Active.LimitAmout).toFixed(2);
+          this.$refs.bonunsDialog.limitAmount = Number(data.Active.LimitAmout);
 
           //可獲得彩金數
           this.$refs.bonunsDialog.earnCellNum = (Number(data.Active.LimitAmout) / Number(data.Active.BreakAmout));
@@ -415,7 +415,23 @@ export default {
       this.socket.send(JSON.stringify(data));
     },
   },
+  created() {
+    const self = this;
+    const listner = function () {
+      let isHiddenWindow = document.hidden;
+      if (self.player) {
+        if (!self.player.paused()) {
+          self.player.pause();
+        }
+        if (isHiddenWindow) {
+          self.onSend("CLOSE");
+        }
+      }
+    }
+    document.addEventListener('visibilitychange', listner, false);
+  },
   beforeDestroy() {
+    document.removeEventListener('visibilitychange', () => { }, false);
     clearTimeout(this.reconnectTimer);
     this.reconnectTimer = null;
     this.player.dispose();
