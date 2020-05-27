@@ -20,6 +20,7 @@
       line-height: 1.15;
       font-size: 14px;
       box-sizing: border-box;
+      position: relative;
     }
 
     *,
@@ -29,15 +30,16 @@
     }
 
     body {
-      margin: 0px;
-      padding: 0px;
-      overflow-x: hidden;
-      min-width: 320px;
-      font-family: 'Lato', 'Helvetica Neue', Arial, Helvetica, sans-serif;
-      font-size: 14px;
-      line-height: 1.4285em;
-      color: rgba(0, 0, 0, 0.87);
-      font-smoothing: antialiased;
+      height: 100%;
+      width: 100%;
+      padding: 0;
+      border: none;
+      display: block;
+      overflow: hidden;
+      max-width: 768px;
+      min-width: 0;
+      background-color: #f2f2f2;
+      margin: 0 auto;
     }
 
     /* RWD 斷點 */
@@ -216,10 +218,11 @@
   <style type="text/css">
     /* RWD 斷點 */
     .footer__1-0jL {
+      margin: 0 auto;
+      max-width: 768px;
       transition: unset !important;
       position: fixed;
       bottom: 0;
-      left: 0;
       width: 100%;
       min-height: 60px;
       z-index: 2;

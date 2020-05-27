@@ -3,6 +3,23 @@
 /****** css reset ******/
 @import './normalize.scss';
 
+html {
+    position: relative;
+}
+
+body {
+    height: 100%;
+    width: 100%;
+    padding: 0;
+    border: none;
+    display: block;
+    overflow: hidden;
+    max-width: 768px;
+    min-width: 0;
+    background-color: #f2f2f2;
+    margin: 0 auto;
+}
+
 /* clear float */
 .clearfix {
     &:before {

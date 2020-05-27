@@ -167,9 +167,7 @@
           :src="
             $getCdnPath('/static/image/_new/mcenter/balanceTrans/btn_help.png')
           "
-          @click="
-            headerConfig.customEvent
-          "
+          @click="headerConfig.customEvent"
         />
       </div>
     </template>
@@ -271,17 +269,17 @@ export default {
 @import "~@/css/variable.scss";
 
 .header {
+  margin: 0 auto;
+  max-width: 768px;
   position: fixed;
   top: 0;
-  left: 0;
   z-index: 3;
   width: 100%;
   height: 43px;
-  padding: 0 17px; //or 5%
-  //   padding-top: 27px;
+  padding: 0 17px;
   background: $main_white_color1;
   text-align: center;
-  border-bottom: 1px solid #EEE;
+  border-bottom: 1px solid #eee;
 
   &::before {
     content: "";
@@ -335,7 +333,7 @@ export default {
   }
 
   &::before {
-    content: '';
+    content: "";
     display: inline-block;
     height: 100%;
     vertical-align: middle;
@@ -477,25 +475,25 @@ export default {
 }
 
 .deposit-wrap {
-    position: absolute;
-    right: 17px;
-    top: 50%;
-    transform: translateY(-50%);
-    display: flex;
+  position: absolute;
+  right: 17px;
+  top: 50%;
+  transform: translateY(-50%);
+  display: flex;
 
-    > img {
-        display: inline-block;
-        height: 20px;
-        width: 20px;
-        margin-left: 1.5px;
-    }
+  > img {
+    display: inline-block;
+    height: 20px;
+    width: 20px;
+    margin-left: 1.5px;
+  }
 
-    &::before {
-        content: '';
-        display: inline-block;
-        height: 100%;
-        vertical-align: middle;
-    }
+  &::before {
+    content: "";
+    display: inline-block;
+    height: 100%;
+    vertical-align: middle;
+  }
 }
 
 .balance-wrap {
@@ -503,7 +501,7 @@ export default {
   display: flex;
   align-items: center;
   float: right;
-  color: #5E626D;
+  color: #5e626d;
   > span {
     display: inline-block;
     height: 20px;
@@ -520,7 +518,7 @@ export default {
   }
 
   &::before {
-    content: '';
+    content: "";
     display: inline-block;
     height: 100%;
     vertical-align: middle;
