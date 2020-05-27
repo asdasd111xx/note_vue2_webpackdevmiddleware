@@ -4,7 +4,10 @@
       <span />&nbsp;
       <span> {{ $text("S_RELATED_VIDEO", "相关影集") }} </span>
     </div>
-    <div v-if="!videoList.length" :class="[$style['video-list'], 'clearfix']">
+    <div
+      v-if="videoList.length > 0"
+      :class="[$style['video-list'], 'clearfix']"
+    >
       <div
         v-for="video in videoList"
         :key="video.id"
@@ -19,7 +22,10 @@
     </div>
     <div v-else :class="$style['no-data']">
       <div :class="$style['search-img']">
-        <img :src="$getCdnPath('/static/image/_new/common/search_none.png')" alt="search">
+        <img
+          :src="$getCdnPath('/static/image/_new/common/search_none.png')"
+          alt="search"
+        />
       </div>
       <p>无视频资料</p>
     </div>
@@ -136,8 +142,8 @@ export default {
     height: 63px;
 
     img {
-        width: 100%;
-        height: 100%;
+      width: 100%;
+      height: 100%;
     }
   }
 

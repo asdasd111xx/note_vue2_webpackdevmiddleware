@@ -1,8 +1,7 @@
 <template>
   <mobile-container :class="$style.container" :header-config="headerConfig">
     <div slot="content" class="content-wrap">
-      <component :is="template" v-if="isAdult" />
-      <no-porn v-else />
+      <component :is="template" />
     </div>
   </mobile-container>
 </template>
@@ -47,7 +46,20 @@ export default {
       };
     },
     template() {
-      return this.$route.params.page ? `discover-${this.$route.params.page}` : 'discover-home';
+      if (this.isAdult) {
+        return this.$route.params.page ? `discover-${this.$route.params.page}` : 'discover-home';
+      } else {
+        let page = this.$route.params.page || "";
+        switch (page) {
+          case "tag":
+          case "artist":
+          case "rank":
+          case "":
+            return 'discover-home';
+          default:
+            return `discover-${page}`;
+        }
+      }
     }
   }
 };

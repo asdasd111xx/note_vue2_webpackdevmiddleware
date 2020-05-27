@@ -93,11 +93,6 @@ export default {
             name: 'mcenter-share',
             component
         },
-        { // 優惠
-            path: 'promotion',
-            name: 'promotion',
-            component
-        },
         { // VIP中心
             path: 'vipCenter',
             name: 'mcenter-vipCenter',

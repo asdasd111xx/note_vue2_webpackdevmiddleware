@@ -382,12 +382,11 @@ export default {
       this.reconnect();
     },
     reconnect() {
-      if (this.reconnectTimer) return;
+      if (this.reconnectTimer || !this.player) return;
       this.reconnectTimer = setTimeout(() => {
         if (this.isDebug) {
           console.log("[WS]: Reconnecting:");
           console.log(this.socket);
-
         }
         this.connectWS();
       }, 2500)
@@ -420,10 +419,12 @@ export default {
     },
   },
   beforeDestroy() {
+    clearTimeout(this.reconnectTimer);
+    this.reconnectTimer = null;
     this.player.dispose();
     this.player = null;
     if (this.socket) {
-        this.onSend("CLOSE");
+      this.onSend("CLOSE");
     }
   }
 };
@@ -434,10 +435,9 @@ export default {
 }
 
 :global {
-  .video-js {
-    button {
-      outline: 0;
-    }
+  .video-js * {
+    outline: none !important;
+    box-shadow: none !important;
   }
 }
 

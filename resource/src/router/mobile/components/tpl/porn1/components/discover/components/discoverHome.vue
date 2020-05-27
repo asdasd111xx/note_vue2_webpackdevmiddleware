@@ -22,41 +22,56 @@
 </template>
 
 <script>
+import { mapGetters } from 'vuex';
+
 export default {
   computed: {
+    ...mapGetters({
+      memInfo: 'getMemInfo'
+    }),
+    isAdult() {
+      return this.memInfo.config.content_rating && this.memInfo.user.content_rating;
+    },
     list() {
-      return [
-        {
-          key: 'sponsor',
-          name: '联盟',
-          icon: 'sponsor'
-        },
-        {
-          key: 'rank',
-          name: this.$text('S_RANK', '排行'),
-          icon: 'rank'
-        },
-        {
-          key: 'artist',
-          name: this.$text('S_ARTIST', '女优'),
-          icon: 'girl'
-        },
-        {
-          key: 'tag',
-          name: this.$text('S_TAG', '标签'),
-          icon: 'tag'
-        },
-        {
-          key: 'agent',
-          name: this.$text('S_AGENT_GROUP_DOMESTIC', '国内代理群'),
-          icon: 'potatochat'
-        },
-        {
-          key: 'cooperation',
-          name: this.$text('S_COOPERATION_GROUP_FOREIGN', '国外合作群'),
-          icon: 'telegram'
-        }
-      ];
+      let list =
+        [
+          {
+            key: 'sponsor',
+            name: '联盟',
+            icon: 'sponsor'
+          },
+          {
+            key: 'rank',
+            name: this.$text('S_RANK', '排行'),
+            icon: 'rank',
+            isAdult: true
+          },
+          {
+            key: 'artist',
+            name: this.$text('S_ARTIST', '女优'),
+            icon: 'girl',
+            isAdult: true
+
+          },
+          {
+            key: 'tag',
+            name: this.$text('S_TAG', '标签'),
+            icon: 'tag',
+            isAdult: true
+          },
+          {
+            key: 'agent',
+            name: this.$text('S_AGENT_GROUP_DOMESTIC', '国内代理群'),
+            icon: 'potatochat'
+          },
+          {
+            key: 'cooperation',
+            name: this.$text('S_COOPERATION_GROUP_FOREIGN', '国外合作群'),
+            icon: 'telegram'
+          }
+        ];
+
+      return this.isAdult ? list : list.filter(i => !i.isAdult)
     }
   },
   methods: {
