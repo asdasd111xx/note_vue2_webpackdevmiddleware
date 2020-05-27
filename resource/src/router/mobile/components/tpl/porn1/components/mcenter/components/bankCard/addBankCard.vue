@@ -378,7 +378,7 @@ export default {
     getImg(id) {
       return {
         src: `https://images.dormousepie.com/icon/cardBank/${id}.png`,
-        error: this.$getCdnPath('/static/image/mcenter/bank/default.png'),
+        error: this.$getCdnPath('/static/image/_new/default/bank_card_default.png'),
         loading: this.$getCdnPath('/static/image/game_loading_s.gif')
       };
     },
