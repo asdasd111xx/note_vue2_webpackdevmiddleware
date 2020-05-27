@@ -86,6 +86,7 @@
               minlength="16"
               maxlength="19"
               @input="checkData"
+              @keypress="verifyNumber"
             />
           </div>
         </div>
@@ -374,6 +375,12 @@ export default {
 
         return true;
       });
+    },
+    verifyNumber(e) {
+      const regex = /^[0-9]+$/
+      if(!regex.test(e.key)) {
+        e.preventDefault();
+      }
     },
     getImg(id) {
       return {
