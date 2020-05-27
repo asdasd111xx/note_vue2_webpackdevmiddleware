@@ -45,11 +45,7 @@ export default {
       memInfo: 'getMemInfo'
     })
   },
-  created() {
-    if (!this.memInfo.config.content_rating || !this.memInfo.user.content_rating) {
-      this.$router.push('/mobile');
-      return;
-    }
+  mounted() {
 
     pornRequest({
       method: 'post',
@@ -67,6 +63,12 @@ export default {
 
       this.videoInfo = { ...res.result };
     });
+  },
+  created() {
+    if (!this.memInfo.config.content_rating || !this.memInfo.user.content_rating) {
+      this.$router.push('/mobile');
+      return;
+    }
 
     // axios({
     //   method: 'post',
