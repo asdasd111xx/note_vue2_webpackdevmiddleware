@@ -416,22 +416,22 @@ export default {
     },
   },
   created() {
-    const self = this;
-    const listner = function () {
-      let isHiddenWindow = document.hidden;
-      if (self.player) {
-        if (!self.player.paused()) {
-          self.player.pause();
-        }
-        if (isHiddenWindow) {
-          self.onSend("CLOSE");
-        }
-      }
-    }
-    document.addEventListener('visibilitychange', listner, false);
+    // const self = this;
+    // const listner = function () {
+    //   let isHiddenWindow = document.hidden;
+    //   if (self.player) {
+    //     if (!self.player.paused()) {
+    //       self.player.pause();
+    //     }
+    //     if (isHiddenWindow) {
+    //       self.onSend("CLOSE");
+    //     }
+    //   }
+    // }
+    // document.addEventListener('visibilitychange', listner, false);
   },
   beforeDestroy() {
-    document.removeEventListener('visibilitychange', () => { }, false);
+    // document.removeEventListener('visibilitychange', () => { }, false);
     clearTimeout(this.reconnectTimer);
     this.reconnectTimer = null;
     this.player.dispose();
