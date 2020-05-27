@@ -1,7 +1,7 @@
-import { mapGetters } from 'vuex';
 import { API_FIRST_LEVEL_REGISTER } from '@/config/api';
 import ajax from '@/lib/ajax';
 import isMobile from '@/lib/is_mobile';
+import { mapGetters } from 'vuex';
 
 export default {
     provide() {
@@ -56,7 +56,8 @@ export default {
                 password: '',
                 confirm_password: '',
                 name: ''
-            }
+            },
+            msg: ''
         };
     },
     computed: {
@@ -87,13 +88,19 @@ export default {
         onInput(value, key) {
             const { allValue, allText } = this;
             const reg = {
-                username: /^[a-z][a-z0-9]{3,19}$/,
+                username: /^[a-z1-9][a-z0-9]{3,19}$/,
                 password: /^[a-z0-9._\-!@#$&*+=|]{6,12}$/,
                 confirm_password: /^[a-z0-9._\-!@#$&*+=|]{6,12}$/,
                 name: /^[^0-9，:;！@#$%^&*?<>()+=`|[\]{}\\"/.\s~\-_']*$/
             };
 
-            allValue[key] = value;
+            if (key === "username") {
+                allValue[key] = value.toLowerCase()
+                    .replace(' ', '')
+                    .trim();
+            } else {
+                allValue[key] = value;
+            }
 
             if (!reg[key].test(allValue[key])) {
                 allText[key].error = true;
@@ -125,7 +132,7 @@ export default {
 
             this.$validator.validateAll('form-page').then((response) => {
                 if (!response) {
-                    alert(this.$text('S_JM_MSG_COMPLETE'));
+                    this.msg = this.$text('S_JM_MSG_COMPLETE');
                     Object.keys(this.allValue).forEach((key) => {
                         if (this.allValue[key]) {
                             return;
@@ -158,7 +165,7 @@ export default {
                             return;
                         }
 
-                        alert(this.$text('S_CREATE_SECCESS', '新增成功'));
+                        this.msg = this.$text('S_CREATE_SECCESS', '新增成功');
 
                         if (isMobile()) {
                             this.allValue = {
@@ -177,25 +184,25 @@ export default {
                     fail: ({ data }) => {
                         if (data.errors) {
                             if (data.errors.username) {
-                                alert(data.errors.username);
+                                this.msg = this.$text(data.errors.username);
                                 return;
                             }
 
                             if (data.errors.password) {
-                                alert(data.errors.password);
+                                this.msg = this.$text(data.errors.password);
                                 return;
                             }
 
                             if (data.errors.confirm_password) {
-                                alert(data.errors.confirm_password);
+                                this.msg = this.$text(data.errors.confirm_password);
                                 return;
                             }
 
-                            alert(data.errors.name);
+                            this.msg = this.$text(data.errors.name);
                             return;
                         }
 
-                        alert(data.msg);
+                        this.msg = this.$text(data.msg);
                     }
                 });
             });
