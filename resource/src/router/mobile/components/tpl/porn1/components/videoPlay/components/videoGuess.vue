@@ -59,7 +59,7 @@ export default {
       }
     },
     onClick(id) {
-      window.location.href = `/mobile/videoPlay/${id}`;
+      window.location.href = `/mobile/videoPlay/${id}?v=${id}`;
     }
   }
 };

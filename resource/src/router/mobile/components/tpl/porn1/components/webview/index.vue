@@ -42,19 +42,7 @@
         </div>
       </div>
 
-      <!-- <div v-if="isIos" :class="[$style['card'], $style['isSingle']]">
-                <div :class="[$style['img'], $style['isSingle']]">
-                    <img :src="$getCdnPath(yaboIconSrc)" alt="icon" />
-                </div>
-                <div :class="$style['isSingle']">
-                    <div :class="$style['text']">IOS版</div>
-                    <div :class="$style['download']" @click="download">
-                        立即下载
-                    </div>
-                </div>
-            </div> -->
-
-      <div v-if="!isIos" :class="[$style['card'], $style['isSingle']]">
+      <!-- <div v-if="!isIos" :class="[$style['card'], $style['isSingle']]">
         <div :class="[$style['img'], $style['isSingle']]">
           <img :src="$getCdnPath(yaboIconSrc)" alt="icon" />
         </div>
@@ -64,7 +52,7 @@
             立即下载
           </div>
         </div>
-      </div>
+      </div> -->
     </div>
 
     <div :class="$style['info-card']" @click="clickService">
@@ -151,15 +139,15 @@ export default {
         //         }
         //     }
         // },
-        {
-          text: "隐藏版",
-          onClick: () => {
-            window.open(
-              "https://apps.apple.com/cn/app/id1507102732",
-              "_blank"
-            );
-          }
-        }
+        // {
+        //   text: "隐藏版",
+        //   onClick: () => {
+        //     window.open(
+        //       "https://apps.apple.com/cn/app/id1507102732",
+        //       "_blank"
+        //     );
+        //   }
+        // }
       ]
     };
   },
