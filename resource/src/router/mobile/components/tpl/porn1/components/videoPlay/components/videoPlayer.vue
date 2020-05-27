@@ -213,6 +213,35 @@ export default {
         this.reconnectTimer = null;
 
         if (data.Active) {
+          //每次累積彩金
+          // this.$refs.bonunsProcess.earnCoin = Number(Number(data.Active.MinAmout) * Number(data.Active.CueTimes)).toFixed(2);
+          this.$refs.bonunsProcess.earnCoin = Number(data.Active.MinAmout);
+
+          // 0504 - 調整成每分鐘都顯示獲得金額
+          //當前累積時間(0)
+          this.$refs.bonunsProcess.curMin = Number(data.CueTimes);
+          this.$refs.bonunsProcess.totalAmount = Number(data.TotalAmount);
+
+          // 當總金額不等於0跟計時等於0時 顯示右上角獲得金額
+          // if (data.Amount != 0 && Number(data.CueTimes) % Number(data.Active.CueTimes) === 0) {
+          //   this.$refs.bonunsProcess.showEarn(data.Amount);
+          // }
+
+          //獲得彩金
+          this.$refs.bonunsDialog.earnCurrentNum = Number(Number(data.Active.BreakAmout) * Number(data.BreakTimes));
+
+          //每次獲得彩金
+          this.$refs.bonunsDialog.earnSingleNum = Number(data.Active.BreakAmout);
+
+          //已經獲得彩金數
+          this.$refs.bonunsDialog.hadEarnNum = data.BreakTimes;
+
+          //可獲得最高彩金
+          this.$refs.bonunsDialog.limitAmount = Number(data.Active.LimitAmout);
+
+          //可獲得彩金數
+          this.$refs.bonunsDialog.earnCellNum = (Number(data.Active.LimitAmout) / Number(data.Active.BreakAmout));
+
           //狀態
           // 'OPEN', 'PLAY', 'STOP', 'CLOSE', 'BREAK', 'FULL', 'POOR', 'BREAK_WAIT'
           switch (data.Status) {
@@ -313,35 +342,6 @@ export default {
             default:
               break;
           }
-
-          //每次累積彩金
-          // this.$refs.bonunsProcess.earnCoin = Number(Number(data.Active.MinAmout) * Number(data.Active.CueTimes)).toFixed(2);
-          this.$refs.bonunsProcess.earnCoin = Number(data.Active.MinAmout);
-
-          // 0504 - 調整成每分鐘都顯示獲得金額
-          //當前累積時間(0)
-          this.$refs.bonunsProcess.curMin = Number(data.CueTimes);
-          this.$refs.bonunsProcess.totalAmount = Number(data.TotalAmount);
-
-          // 當總金額不等於0跟計時等於0時 顯示右上角獲得金額
-          // if (data.Amount != 0 && Number(data.CueTimes) % Number(data.Active.CueTimes) === 0) {
-          //   this.$refs.bonunsProcess.showEarn(data.Amount);
-          // }
-
-          //獲得彩金
-          this.$refs.bonunsDialog.earnCurrentNum = Number(Number(data.Active.BreakAmout) * Number(data.BreakTimes));
-
-          //每次獲得彩金
-          this.$refs.bonunsDialog.earnSingleNum = Number(data.Active.BreakAmout);
-
-          //已經獲得彩金數
-          this.$refs.bonunsDialog.hadEarnNum = data.BreakTimes;
-
-          //可獲得最高彩金
-          this.$refs.bonunsDialog.limitAmount = Number(data.Active.LimitAmout);
-
-          //可獲得彩金數
-          this.$refs.bonunsDialog.earnCellNum = (Number(data.Active.LimitAmout) / Number(data.Active.BreakAmout));
         }
       }
     },
