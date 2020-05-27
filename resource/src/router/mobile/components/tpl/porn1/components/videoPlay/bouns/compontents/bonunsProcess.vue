@@ -74,7 +74,7 @@ export default {
   },
   watch: {
     curMin(newValue, oldValue) {
-      if (this.curMin != Number(this.lastCueMin) && this.isStart) {
+      if (Number(this.curMin) != Number(this.lastCueMin) && this.isStart) {
         this.handleToggleEarnCoin();
       } else {
         this.isStart = true;
