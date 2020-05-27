@@ -15,23 +15,23 @@
             border: none;
             display: block;
             overflow: hidden;
-            max-width: 768px;
+            max-width: 420px;
             min-width: 0;
             background-color: #f2f2f2;
             margin: 0 auto;
         }
     </style>
     <script>
-        const version = "2.0.0";
+        const version = "2.0.1";
         const urlParams = new URLSearchParams(window.location.search);
         document.cookie = `platform=${urlParams.get('platform') || ''}`
-        document.cookie = `version=${version}${urlParams.get('platform' || '')}`
+        document.cookie = `version=${version}${urlParams.get('platform') || ''}`
     </script>
 </head>
 
 <body class="fullscreen">
     <iframe id="webclip-iframe" class="webclip fullscreen" style="width: 1px;min-width: 100%;" scrolling="no"
-        src="/mobile?ver=2.0.0">
+        src="/mobile?ver=2.0.1">
     </iframe>
 </body>
 
