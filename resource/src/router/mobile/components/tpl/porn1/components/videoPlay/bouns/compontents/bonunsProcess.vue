@@ -59,7 +59,7 @@ export default {
         { key: 'wait', src: 'coin_open' },
         ],
       isClose: false,
-      isStart: false,
+      totalAmount: 0,
       earnCoin: "",
       curMin: 0,
       playingCueTime: false,
@@ -73,12 +73,15 @@ export default {
 
   },
   watch: {
-    curMin(newValue, oldValue) {
-      if (Number(newValue) !== Number(oldValue) && this.isStart) {
+    totalAmount(newValue, oldValue){
+    if (Number(newValue) !== Number(oldValue) && Number(oldValue) !== 0) {
         this.handleToggleEarnCoin();
-      } else {
-        this.isStart = true;
       }
+    },
+    curMin(newValue, oldValue) {
+    //   if (oldValue !== "" && Number(newValue) !== Number(oldValue)) {
+    //     this.handleToggleEarnCoin();
+    //   }
     },
     processType() {
       this.curCoinSrc = this.coinType.find(i => i.key == this.processType).src;
@@ -121,7 +124,6 @@ export default {
       }
       // 繼續播放
       if (this.playingCueTime) { this.isPause = false; return; }
-
 
       this.isPause = false;
       this.playingCueTime = true;
