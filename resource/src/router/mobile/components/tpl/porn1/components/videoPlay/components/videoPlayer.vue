@@ -75,9 +75,6 @@ export default {
       return process.env.NODE_ENV === 'development' || (this.$route.query & this.$route.query.debug)
     }
   },
-  beforeDestroy() {
-    window.removeEventListener('resize', this.getVideoHeight);
-  },
   mounted() {
     //  暫時手動轉換https
     if (!this.videoInfo.url) return;
@@ -126,7 +123,7 @@ export default {
       })
 
       this.player.on("ended", () => {
-        this.$refs.bonunsProcess.playCueTime("pause");
+        this.$refs.bonunsProcess.playCueTime("stop");
         this.isPlaying = false;
         if (this.socket)
           this.onSend("STOP");
@@ -248,7 +245,7 @@ export default {
               this.$refs.bonunsProcess.playCueTime();
               break;
             case 'STOP':
-              this.$refs.bonunsProcess.playCueTime("pause");
+              this.$refs.bonunsProcess.playCueTime("stop");
               return;
             case 'WAIT':
               let mission = data.Mession;
