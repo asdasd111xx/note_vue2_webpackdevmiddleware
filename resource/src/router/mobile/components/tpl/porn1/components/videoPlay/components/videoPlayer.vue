@@ -319,7 +319,7 @@ export default {
 
           // 0504 - 調整成每分鐘都顯示獲得金額
           //當前累積時間(0)
-          this.$refs.bonunsProcess.curMin = data.CueTimes;
+          this.$refs.bonunsProcess.curMin = Number(data.CueTimes);
 
           // 當總金額不等於0跟計時等於0時 顯示右上角獲得金額
           // if (data.Amount != 0 && Number(data.CueTimes) % Number(data.Active.CueTimes) === 0) {
