@@ -69,7 +69,7 @@ export default {
 
 .footer {
   margin: 0 auto;
-  max-width: 768px;
+  max-width: 420px;
   transition: unset !important;
   position: fixed;
   bottom: 0;

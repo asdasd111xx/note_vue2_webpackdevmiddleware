@@ -270,7 +270,7 @@ export default {
 
 .header {
   margin: 0 auto;
-  max-width: 768px;
+  max-width: 420px;
   position: fixed;
   top: 0;
   z-index: 3;
