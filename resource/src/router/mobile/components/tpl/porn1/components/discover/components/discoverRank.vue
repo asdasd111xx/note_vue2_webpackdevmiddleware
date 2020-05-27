@@ -197,7 +197,7 @@ export default {
 .wrap {
   position: relative;
   margin-bottom: 5px;
-  height: 260px;
+  height: 240px;
 
   > img {
     display: block;

@@ -13,7 +13,7 @@
             <img
                 :src="
                     $getCdnPath(
-                        `/static/image/_new/mcenter/share/share_app_f.png`
+                        `/static/image/_new/mcenter/share/shareapp_save.png`
                     )
                 "
                 alt="shareApp"

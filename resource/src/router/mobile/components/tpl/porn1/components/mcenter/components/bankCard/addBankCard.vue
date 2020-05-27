@@ -86,6 +86,7 @@
               minlength="16"
               maxlength="19"
               @input="checkData"
+              @keypress="verifyNumber"
             />
           </div>
         </div>
@@ -375,10 +376,16 @@ export default {
         return true;
       });
     },
+    verifyNumber(e) {
+      const regex = /^[0-9]+$/
+      if(!regex.test(e.key)) {
+        e.preventDefault();
+      }
+    },
     getImg(id) {
       return {
         src: `https://images.dormousepie.com/icon/cardBank/${id}.png`,
-        error: this.$getCdnPath('/static/image/mcenter/bank/default.png'),
+        error: this.$getCdnPath('/static/image/_new/default/bank_card_default.png'),
         loading: this.$getCdnPath('/static/image/game_loading_s.gif')
       };
     },

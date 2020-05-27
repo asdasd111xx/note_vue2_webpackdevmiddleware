@@ -182,7 +182,7 @@ export default {
       //   return desc;
       let split = desc.split(' ');
       if (split && split.length > 0) {
-        return `${split[split.length - 1]}<br />即可繼續享有觀影送錢！`;
+        return `${split[split.length - 1]}<br />即可继续享有观影送钱！`;
       }
     },
     getActionName() {

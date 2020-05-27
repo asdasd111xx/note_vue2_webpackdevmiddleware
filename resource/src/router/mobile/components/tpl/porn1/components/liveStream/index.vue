@@ -25,7 +25,7 @@
             $style['live-tab'],
             { [$style['is-current']]: currentTab === 'cutiesLive' }
           ]"
-          @click="currentTab = 'cutiesLive'"
+          @click="handleClickType('cutiesLive')"
         >
           <div :class="$style['img-icon-wrap']">
             <img
@@ -54,7 +54,7 @@
             $style['live-tab'],
             { [$style['is-current']]: currentTab === 'ballLive' }
           ]"
-          @click="currentTab = 'ballLive'"
+          @click="handleClickType('ballLive')"
         >
           <div :class="$style['img-icon-wrap']">
             <img
@@ -149,7 +149,7 @@ export default {
   data() {
     return {
       streamList: [],
-      currentTab: this.$route.params.type,
+      currentTab: this.$route.params.type || localStorage.getItem('streamType'),
       iframeHeight: 500,
       msg: '',
       hasBankCard: false
@@ -162,6 +162,9 @@ export default {
     }),
   },
   created() {
+    // 從首頁點擊進來並記錄
+    localStorage.setItem('streamType', this.$route.params.type)
+
     pornRequest({
       method: 'get',
       url: `/video/livelist`,
@@ -218,6 +221,10 @@ export default {
     },
     getIframeHeight() {
       this.iframeHeight = this.$refs['js-set-height'].contentWindow.window.document.body.scrollHeight + 100;
+    },
+    handleClickType(type) {
+        this.currentTab = type
+        localStorage.setItem('streamType' , type)
     }
   }
 };

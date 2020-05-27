@@ -6,7 +6,7 @@
       :class="[
         $style['footer-item'],
         $style[`${info.key}`],
-        { [$style.active]: isActive(info.key)}
+        { [$style.active]: isActive(info.key) }
       ]"
       @click="onClick(info)"
     >
@@ -55,9 +55,9 @@ export default {
       this.$router.push(path);
     },
     isActive(key) {
-        if(key === 'discover') {
-          return [key, 'artist', 'videoPlay', 'tag'].indexOf(this.$route.name) >= 0;
-        }
+      if (key === 'discover') {
+        return [key, 'artist', 'videoPlay', 'tag'].indexOf(this.$route.name) >= 0;
+      }
       return key === this.$route.name;
     }
   }
@@ -68,10 +68,11 @@ export default {
 @import "~@/css/variable.scss";
 
 .footer {
+  margin: 0 auto;
+  max-width: 768px;
   transition: unset !important;
   position: fixed;
   bottom: 0;
-  left: 0;
   width: 100%;
   min-height: 60px;
   z-index: 2;
