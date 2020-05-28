@@ -123,10 +123,6 @@ export default {
 
   > div {
     height: 33%;
-    align-items: center;
-    display: flex;
-    align-items: center;
-    justify-content: start;
   }
 }
 

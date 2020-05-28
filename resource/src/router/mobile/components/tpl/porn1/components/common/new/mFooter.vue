@@ -1,5 +1,5 @@
 <template>
-  <div :class="[$style.footer, 'clearfix']">
+  <div :class="[$style.footer, 'clearfix']" id="footer">
     <div
       v-for="info in list"
       :key="info.key"

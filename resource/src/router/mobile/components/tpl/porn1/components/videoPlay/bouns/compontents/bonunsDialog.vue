@@ -138,9 +138,6 @@ export default {
       default: ""
     }
   },
-  components: {
-
-  },
   watch: {
     earnCellNum() {
       if (this.earnCellNum < 0) {
@@ -160,11 +157,12 @@ export default {
       isClose: false,
       earnCellNum: 0, // 可獲得彩金數
       hadEarnNum: 0, // 已經獲得彩金數
-      earnSingleNum: "0.00", //每次獲得彩金
-      earnCurrentNum: "0.00", //獲得彩金
-      limitAmount: "", //最高彩金
+      earnSingleNum: 0, //每次獲得彩金
+      earnCurrentNum: 0, //獲得彩金
+      limitAmount: 0, //最高彩金
       missionDesc: "", //任務標題
-      missionActionType: "" //任務動作 去充值 去綁定 去推廣
+      missionActionType: 0, //任務動作 去充值 去綁定 去推廣
+      isFinishMissio: false //是否完成今年任務
     };
   },
   mounted() {
@@ -180,6 +178,24 @@ export default {
     getDesc(desc) {
       //   暫時修改標題
       //   return desc;
+
+      if (this.isFinishMission) {
+        if (split && split.length > 0 && split[1]) {
+          let max = split[1];
+          return `恭喜您今年已获得最高奖励${Number(max) ? max : "999元"}<br />下一年会重新开始发放观影${Number(max) ? max : "999元"}奖励`
+        }
+        return `恭喜您已获得最高奖励999元<br />下一年会重新开始发放观影奖励999元`;
+      }
+
+      if (this.type.includes('wait') && this.missionActionType === 7) {
+        let split = desc.split(' ');
+        if (split && split.length > 0 && split[1]) {
+          let max = split[1];
+          return `恭喜您已获得最高奖励${Number(max) ? max : "999元"}`
+        }
+        return `恭喜您已获得最高奖励999元`;
+      }
+
       let split = desc.split(' ');
       if (split && split.length > 0) {
         return `${split[split.length - 1]}<br />即可继续享有观影送钱！`;
@@ -190,13 +206,12 @@ export default {
         case 1:
           return "去绑定"
         case 2:
+        case 5:
+        case 6:
           return "去充值"
         case 3:
         case 4:
           return "去推广"
-        case 5:
-        case 6:
-          return "去下注"
         case 7:
         default:
           return;
@@ -209,15 +224,13 @@ export default {
           this.$router.push(`/mobile/mcenter/bankCard${redirect}`);
           return;
         case 2:
+        case 5:
+        case 6:
           this.$router.push(`/mobile/mcenter/deposit${redirect}`);
           return;
         case 3:
         case 4:
           this.$router.push(`/mobile/mcenter/makeMoney`);
-          return;
-        case 5:
-        case 6:
-          this.$router.push(`/mobile`);
           return;
         case 7:
         default:
