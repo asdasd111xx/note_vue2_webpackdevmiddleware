@@ -3,6 +3,7 @@
         <div v-if="page !== 'detail'" :class="$style['top-link']">
             <span :class="[$style.link, { [$style.active]: page === 'record' }]" @click="onClick('record')">{{ $text('S_COMMISSION_SEND_RECORD', '派发记录') }}</span>
             <span :class="[$style.link, { [$style.active]: page === 'summary' }]" @click="onClick('summary')">{{ $text('S_COMMISSION_SUMMARY', '收益概況') }}</span>
+            <span :class="[$style.link, { [$style.active]: page === 'rebate' }]" @click="onClick('rebate')">{{ $text('S_COMMISSION_REBATE', '实时返利') }}</span>
         </div>
         <div v-if="page === 'record' && hasSearch" class="search-wrap">
             <div :class="$style['search-form']">
@@ -41,6 +42,7 @@
             v-if="page === 'detail'"
             :detail-info="detailInfo"
         />
+        <commission-rebate v-if="page === 'rebate'"/>
     </div>
 </template>
 
@@ -53,7 +55,8 @@ export default {
     components: {
         commissionOverview: () => import(/* webpackChunkName: 'commissionOverview' */ './components/commissionOverview/index'),
         commissionList: () => import(/* webpackChunkName: 'commissionList' */ './components/commissionList/index'),
-        commissionDetail: () => import(/* webpackChunkName: 'commissionDetail' */ './components/commissionDetail/index')
+        commissionDetail: () => import(/* webpackChunkName: 'commissionDetail' */ './components/commissionDetail/index'),
+        commissionRebate: () => import(/* webpackChunkName: 'commissionRebate' */ './components/CommissionRebate/index')
     },
     mixins: [commission],
     props: {
