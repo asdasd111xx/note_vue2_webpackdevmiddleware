@@ -42,6 +42,15 @@
       margin: 0 auto;
     }
 
+    @media (orientation: landscape) {
+
+      body,
+      #footer,
+      #header {
+        max-width: 768px !important;
+      }
+    }
+
     /* RWD 斷點 */
     .mobile-wrap__3LiU2 {
       height: 100%;
@@ -290,7 +299,7 @@
           </div>
         </div>
         <div class="avatar-info-wrap__-IaVk" onclick="window.location.href='/mobile'">
-          <div class="avatar-wrap__33rpp"><img src="/static/image/_new/mcenter/default/avatar_6.png"></div>
+          <div class="avatar-wrap__33rpp"><img src="/static/image/_new/mcenter/default/avatar_1.png"></div>
           <div class="info-wrap__2c93e"><span>Hi,&nbsp;
               <span id="username"></span>
             </span> <span>欢迎来到客服中心</span></div>
@@ -310,13 +319,13 @@
             <div><img src="/static/image/_new/service/ic_service02.png">
               &nbsp;
               <span>在线客服2</span></div>
-            <div>Main Customer Support</div>
+            <div>Reserve Customer Support</div>
             <div>7*24小时专线服务 贴心至上</div>
           </div>
           <div class="btn-next__2iqtz"><img src="/static/image/_new/common/btn_next.png"></div>
         </div>
       </div>
-      <div class="footer__1-0jL clearfix">
+      <div class="footer__1-0jL clearfix" id="footer">
         <div class="footer-item__2ojRd" onclick="window.location.href='/mobile/'"><img
             src="/static/image/_new/common/footer/icon_home_n.png">
           <div>首页</div>
