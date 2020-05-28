@@ -247,7 +247,6 @@ export default {
         }).then(res => {
             if (res && res.data && res.data.data) {
                 this.linkArray = res.data.data;
-                console.log(this.linkArray);
             }
         });
     },
