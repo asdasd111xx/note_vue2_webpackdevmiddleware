@@ -13,12 +13,28 @@ body {
     padding: 0;
     border: none;
     display: block;
-    overflow: hidden;
     max-width: 420px;
     min-width: 0;
     background-color: #f2f2f2;
     margin: 0 auto;
 }
+
+body,
+#footer,
+#header {
+    max-width: 420px;
+    min-width: 0;
+}
+
+@media (orientation: landscape) {
+
+    body,
+    #footer,
+    #header {
+        max-width: 768px !important;
+    }
+}
+
 
 /* clear float */
 .clearfix {

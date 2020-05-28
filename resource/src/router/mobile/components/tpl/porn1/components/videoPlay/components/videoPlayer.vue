@@ -151,6 +151,7 @@ export default {
     handleClickProcess() {
       if (this.mission) {
         this.dialogType = `tips-wait`;
+        this.$refs.bonunsDialog.isFinishMission = Number(this.mission.ActionType) === 7;
         this.$refs.bonunsDialog.missionDesc = this.mission.Description;
         this.$refs.bonunsDialog.missionActionType = this.mission.ActionType;
         this.$refs.bonunsDialog.isShow = true;
@@ -166,17 +167,22 @@ export default {
       if (!this.isActiveBouns) return
       // 餘額夠可播放
       if (!this.loginStatus) {
-        this.$refs.bonunsDialog.isShow = true
         this.dialogType = 'tips';
-        if (this.player && !this.player.paused()) {
-          this.player.pause();
-        }
-
+        this.$refs.bonunsDialog.isShow = true
+        this.playerPause();
       } else if (this.$refs.bonunsDialog.isShow) {
-        if (!this.player.paused()) {
-          this.player.pause();
-        }
+        this.playerPause();
         return;
+      }
+    },
+    playerPause() {
+      if (this.player && !this.player.paused()) {
+        this.player.pause();
+
+        // 取消全螢幕
+        if (this.player.isFullscreen()) {
+          this.player.exitFullscreen();
+        }
       }
     },
     connectWS() {
@@ -213,135 +219,115 @@ export default {
         this.reconnectTimer = null;
 
         if (data.Active) {
-          //每次累積彩金
-          // this.$refs.bonunsProcess.earnCoin = Number(Number(data.Active.MinAmout) * Number(data.Active.CueTimes)).toFixed(2);
-          this.$refs.bonunsProcess.earnCoin = Number(data.Active.MinAmout);
+          // 轉圈進度 彈窗
+          const bonunsProcess = this.$refs.bonunsProcess;
+          const bonunsDialog = this.$refs.bonunsDialog;
 
-          // 0504 - 調整成每分鐘都顯示獲得金額
-          //當前累積時間(0)
-          this.$refs.bonunsProcess.curMin = Number(data.CueTimes);
-          this.$refs.bonunsProcess.totalAmount = Number(data.TotalAmount);
+          // 每分鐘獲得最小彩金
+          // bonunsProcess.earnCoin = Number(Number(data.Active.MinAmout) * Number(data.Active.CueTimes)).toFixed(2);
+          bonunsProcess.earnCoin = Number(data.Active.MinAmout);
 
-          // 當總金額不等於0跟計時等於0時 顯示右上角獲得金額
-          // if (data.Amount != 0 && Number(data.CueTimes) % Number(data.Active.CueTimes) === 0) {
-          //   this.$refs.bonunsProcess.showEarn(data.Amount);
-          // }
+          /* 每分鐘都顯示獲得金額 */
+          // 當前累積時間(0-9)
+          bonunsProcess.curMin = Number(data.CueTimes);
+          // 目前總獲得彩金
+          bonunsProcess.totalAmount = Number(data.TotalAmount);
 
-          //獲得彩金
-          this.$refs.bonunsDialog.earnCurrentNum = Number(Number(data.Active.BreakAmout) * Number(data.BreakTimes));
+          // 獲得彩金
+          bonunsDialog.earnCurrentNum = Number(Number(data.Active.BreakAmout) * Number(data.BreakTimes));
 
-          //每次獲得彩金
-          this.$refs.bonunsDialog.earnSingleNum = Number(data.Active.BreakAmout);
+          // 可獲得最高彩金
+          bonunsDialog.limitAmount = Number(data.Active.LimitAmout);
 
-          //已經獲得彩金數
-          this.$refs.bonunsDialog.hadEarnNum = data.BreakTimes;
+          // 每個中斷點獲得的彩金
+          bonunsDialog.earnSingleNum = Number(data.Active.BreakAmout);
 
-          //可獲得最高彩金
-          this.$refs.bonunsDialog.limitAmount = Number(data.Active.LimitAmout);
+          // 可獲得中斷點數量
+          bonunsDialog.earnCellNum = (Number(data.Active.LimitAmout) / Number(data.Active.BreakAmout));
 
-          //可獲得彩金數
-          this.$refs.bonunsDialog.earnCellNum = (Number(data.Active.LimitAmout) / Number(data.Active.BreakAmout));
-
+          // 已獲得中斷點數量
+          bonunsDialog.hadEarnNum = Number(data.BreakTimes);
           //狀態
           // 'OPEN', 'PLAY', 'STOP', 'CLOSE', 'BREAK', 'FULL', 'POOR', 'BREAK_WAIT'
-          switch (data.Status) {
-            case 'RISK':
-              this.$refs.bonunsProcess.processType = 'done';
-              return;
-            case 'FULL':
-              this.$refs.bonunsProcess.processType = 'done';
-              this.$refs.bonunsDialog.isShow = true;
-              this.dialogType = `tips-${data.Status.toLowerCase()}`;
-              if (!this.player.paused()) {
-                this.player.pause();
-              }
-              break;
-            case 'POOR':
-              this.dialogType = `tips-${data.Status.toLowerCase()}`;
-              this.$refs.bonunsDialog.isShow = true;
-              break;
-            case 'BREAK':
-              this.dialogType = `tips-${data.Status.toLowerCase()}`;
-              this.$refs.bonunsDialog.isShow = true;
-              this.$refs.bonunsDialog.hadEarnNum = data.BreakTimes;
-              if (!this.player.paused()) {
-                this.player.pause();
-                if (this.player.isFullscreen()) {
-                  this.player.exitFullscreen();
-                }
-              }
-              break;
-            case 'PLAY':
-              this.$refs.bonunsProcess.playCueTime();
-              break;
-            case 'STOP':
-              this.$refs.bonunsProcess.playCueTime("stop");
-              return;
-            case 'WAIT':
-              let mission = data.Mession;
-              if (mission) {
-                this.dialogType = `tips-wait`;
-                this.$refs.bonunsProcess.processType = 'wait';
-                //任務類型
-                this.$refs.bonunsDialog.missionDesc = mission.Description;
-                //任務動作
-                this.$refs.bonunsDialog.missionActionType = mission.ActionType;
-                this.$refs.bonunsDialog.isShow = true;
-                this.$nextTick(() => this.$refs.bonunsDialog.getDialogHeight());
-              }
-              // 暫存任務內容
-              this.mission = mission;
-              if (!this.player.paused()) {
-                this.player.pause();
-                if (this.player.isFullscreen()) {
-                  this.player.exitFullscreen();
-                }
-              }
-              break;
-            case 'BREAK_WAIT':
-              this.dialogType = `tips-break`;
-              this.$nextTick(() => {
-                this.$refs.bonunsProcess.processType = 'wait';
-                this.$refs.bonunsDialog.hadEarnNum = data.BreakTimes;
-                this.$refs.bonunsDialog.isShow = true;
-              });
-              if (!this.player.paused()) {
-                this.player.pause();
-                if (this.player.isFullscreen()) {
-                  this.player.exitFullscreen();
-                }
-              }
+          this.$nextTick(() => {
+            switch (data.Status) {
+              case 'OPEN':
+                bonunsProcess.isInit = true;
+                bonunsDialog.isInit = true;
+                break;
+              case 'RISK':
+                bonunsProcess.processType = 'done';
+                break;
+              case 'FULL':
+                bonunsProcess.processType = 'done';
+                this.dialogType = 'tips-full';
+                bonunsDialog.isShow = true;
+                this.playerPause();
+                break;
+              case 'POOR':
+                this.dialogType = 'tips-poor';
+                bonunsDialog.isShow = true;
+                this.playerPause();
+                break;
+              case 'BREAK':
+                this.dialogType = `tips-${data.Status.toLowerCase()}`;
+                this.dialogType = 'tips-break';
+                bonunsDialog.isShow = true;
+                this.playerPause();
+                break;
+              case 'PLAY':
+                bonunsProcess.playCueTime();
+                break;
+              case 'STOP':
+                bonunsProcess.playCueTime("stop");
+                break;
+              case 'WAIT':
+                let mission = data.Mession;
+                this.mission = mission;
 
-              // break wait 收到中斷彩金後繼續播放要處理 wait 第二次彈窗
-              this.breakwaitCallback = () => {
+                if (mission) {
+                  this.dialogType = 'tips-wait';
+                  bonunsProcess.processType = 'wait';
+                  bonunsDialog.missionDesc = mission.Description;
+                  bonunsDialog.missionActionType = Number(mission.ActionType);
+                  bonunsDialog.isShow = true;
+                  this.$nextTick(() => bonunsDialog.getDialogHeight());
+                }
+                this.playerPause();
+                break;
+              case 'BREAK_WAIT':
+                let _mission = data.Mession;
+                this.mission = _mission;
+                this.dialogType = 'tips-break';
                 this.$nextTick(() => {
-                  let mission = data.Mession;
-                  //   mission =
-                  //     { "Id": 2, "Name": "2\u7D1A\u5145\u503C", "Level": 2, "Amount": 18, "TagId": 132, "TagName": "2\u7D1A\u5145\u503C", "CreateDate": "05/20/2020 10:39:00", "Domain": 500015, "ActionType": 1, "Description": "\u89C2\u5F71\u9001\u94B1\u6EE1 18\u5143 \u4EFB\u52A1 <br/> \u8BF7\u5145\u503C\u2F00\u6B21", "Times": 1, "Unit": "\u6B21", "Factor": 0 }
-
-                  if (mission) {
-                    this.dialogType = `tips-wait`;
-                    //任務類型
-                    this.$refs.bonunsDialog.missionDesc = mission.Description;
-                    //任務動作
-                    this.$refs.bonunsDialog.missionActionType = mission.ActionType;
-                    this.$refs.bonunsDialog.isShow = true;
-                    this.$nextTick(() => this.$refs.bonunsDialog.getDialogHeight());
-                  }
-                  // 暫存任務內容
-                  this.mission = mission;
-                  this.breakwaitCallback = () => { };
+                  if (_mission) bonunsProcess.processType = Number(_mission.ActionType) === 7 ? 'next' : 'wait';
+                  bonunsDialog.hadEarnNum = data.BreakTimes;
+                  bonunsDialog.isShow = true;
                 });
-              }
-              break;
-            case 'CLOSE':
-              return;
-            case 'NEXT':
-              this.$refs.bonunsProcess.processType = 'next';
-              return;
-            default:
-              break;
-          }
+                this.playerPause();
+
+                // 收到中斷彩金後繼續播放要處理 wait 第二次彈窗
+                this.breakwaitCallback = () => {
+                  this.$nextTick(() => {
+                    if (_mission) {
+                      this.dialogType = 'tips-wait';
+                      bonunsDialog.missionDesc = _mission.Description;
+                      bonunsDialog.missionActionType = Number(_mission.ActionType);
+                      bonunsDialog.isShow = true;
+                      this.$nextTick(() => bonunsDialog.getDialogHeight());
+                    }
+                    this.breakwaitCallback = null;
+                  });
+                }
+                break;
+              case 'CLOSE':
+                this.onSend("CLOSE");
+                break;
+              default:
+                break;
+            }
+          });
+
         }
       }
     },
@@ -354,7 +340,7 @@ export default {
       this.reconnectTimer = null;
 
       if (!this.player.paused()) {
-        if (this.socket && !this.keepPlay) {
+        if (this.socket) {
           this.onSend("PLAY");
         }
       }
@@ -400,7 +386,7 @@ export default {
       // 1	OPEN
       // 2	CLOSING
       // 3	CLOSED
-      if (!this.socket || this.socket.readyState !== 1 || (this.$refs.bonunsProcess && this.$refs.bonunsProcess.processType === 'done')) {
+      if (!this.socket || this.socket.readyState !== 1) {
         return
       }
       let data = {
@@ -418,22 +404,23 @@ export default {
     },
   },
   created() {
-    // const self = this;
-    // const listner = function () {
-    //   let isHiddenWindow = document.hidden;
-    //   if (self.player) {
-    //     if (!self.player.paused()) {
-    //       self.player.pause();
-    //     }
-    //     if (isHiddenWindow) {
-    //       self.onSend("CLOSE");
-    //     }
-    //   }
-    // }
-    // document.addEventListener('visibilitychange', listner, false);
+    const self = this;
+    const listner = function () {
+      let isHiddenWindow = document.hidden;
+      if (self.player) {
+        //離開視窗強制暫停影片
+        if (!self.player.paused()) {
+          self.player.pause();
+        }
+        // if (isHiddenWindow) {
+        //   self.onSend("CLOSE");
+        // }
+      }
+    }
+    document.addEventListener('visibilitychange', listner, false);
   },
   beforeDestroy() {
-    // document.removeEventListener('visibilitychange', () => { }, false);
+    document.removeEventListener('visibilitychange', () => { }, false);
     clearTimeout(this.reconnectTimer);
     this.reconnectTimer = null;
     this.player.dispose();

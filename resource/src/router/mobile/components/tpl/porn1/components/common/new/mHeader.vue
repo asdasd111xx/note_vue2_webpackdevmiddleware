@@ -1,5 +1,5 @@
 <template>
-  <div :class="mainClass">
+  <div :class="mainClass" id="header">
     <div
       v-if="headerConfig.hasLogo"
       :class="[$style['logo-wrap']]"

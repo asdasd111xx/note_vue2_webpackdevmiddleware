@@ -223,8 +223,8 @@ export default {
       this.iframeHeight = this.$refs['js-set-height'].contentWindow.window.document.body.scrollHeight + 100;
     },
     handleClickType(type) {
-        this.currentTab = type
-        localStorage.setItem('streamType' , type)
+      this.currentTab = type
+      localStorage.setItem('streamType', type)
     }
   }
 };
@@ -234,9 +234,8 @@ export default {
 
 .live-stream-wrap {
   background-color: $main_white_color1;
-}
-
-.live-tab-wrap {
+  position: relative;
+  height: calc(100vh - 43px);
 }
 
 .live-tab {
