@@ -206,14 +206,13 @@ export default {
         case 1:
           return "去绑定"
         case 2:
-        case 7:
+        case 5:
+        case 6:
           return "去充值"
         case 3:
         case 4:
           return "去推广"
-        case 5:
-        case 6:
-          return "去下注"
+        case 7:
         default:
           return;
       }
