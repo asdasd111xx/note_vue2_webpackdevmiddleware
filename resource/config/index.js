@@ -3,6 +3,12 @@ const path = require('path');
 
 const outputDirName = process.env.CDN_HOST ? process.env.CDN_HOST.split('://')[1] : 'www';
 
+// 開發測試用
+const domain = 'https://yb01.66boxing.com/';
+// const domain = 'https://yb0t.66relish.com/';
+// const domain = 'https://yaboxxxapp01.com/';
+// const domain = 'https://yaboxxxapp02.com/';
+
 module.exports = {
     build: {
         env: require('./prod.env'),
@@ -46,7 +52,7 @@ module.exports = {
             //     secure: false
             // },
             '/api': {
-                target: 'https://yb01.66boxing.com/',
+                target: domain,
                 changeOrigin: true,
                 ws: true,
                 secure: false
@@ -58,19 +64,19 @@ module.exports = {
             '/tpl': {
                 //  開發測試用
                 // target: 'http://pineapple.vir888.net',
-                target: 'https://yb01.66boxing.com/',
+                target: domain,
                 changeOrigin: true,
                 secure: false
             },
             '/cdn': {
                 //  開發測試用
                 // target: 'http://pineapple.vir888.net',
-                target: 'https://yb01.66boxing.com/',
+                target: domain,
                 changeOrigin: true,
                 secure: false
             },
             '/payment': {
-                target: 'https://yb01.66boxing.com/',
+                target: domain,
                 changeOrigin: true,
                 secure: false
             }

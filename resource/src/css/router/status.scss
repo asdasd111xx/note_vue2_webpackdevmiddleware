@@ -8,7 +8,6 @@ body {
     padding: 0;
     border: none;
     display: block;
-    overflow: hidden;
     max-width: 420px;
 
     min-width: 0;
@@ -133,6 +132,7 @@ body {
 }
 
 @import '~@/css/variable.scss';
+@import '~@/css/index.scss';
 
 @media screen and (max-height: $pad) {
     .main-img {
