@@ -195,7 +195,7 @@ export default {
   methods: {
     clearMsg() {
       if (this.msg.includes('银行卡')) {
-        this.$router.push('/mobile/mcenter/bankCard?redirect=balanceTrans');
+        this.$router.push('/mobile/mcenter/bankCard?redirect=liveStream');
       }
 
       this.msg = '';
