@@ -192,7 +192,7 @@ export default {
       if (this.hasBankCard) {
         return true
       } else {
-        this.msg = "请先绑定提现银行卡(C50099)"
+        this.msg = "请先绑定提现银行卡"
         return false
       }
     },
