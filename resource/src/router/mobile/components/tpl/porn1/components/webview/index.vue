@@ -139,15 +139,15 @@ export default {
         //         }
         //     }
         // },
-        // {
-        //   text: "隐藏版",
-        //   onClick: () => {
-        //     window.open(
-        //       "https://apps.apple.com/cn/app/id1507102732",
-        //       "_blank"
-        //     );
-        //   }
-        // }
+        {
+          text: "隐藏版",
+          onClick: () => {
+            window.open(
+              "https://apps.apple.com/cn/app/id1515483910",
+              "_blank"
+            );
+          }
+        }
       ]
     };
   },
