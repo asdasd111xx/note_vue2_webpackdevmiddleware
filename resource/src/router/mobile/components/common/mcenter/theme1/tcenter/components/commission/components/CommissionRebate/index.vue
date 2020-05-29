@@ -1,6 +1,6 @@
 <template>
-    <div :class="siteStyleClass">
-        <div :class="$style['content-wrap']">
+    <div>
+        <div v-if="immediateData.length > 0" :class="$style['content-wrap']">
             <div
                 v-for="(caculateList, listIndex) in immediateData"
                 :key="`caculate-${listIndex}`"
@@ -9,12 +9,10 @@
                 <div :class="$style['rebate-header']">
                     <!-- <ele-loading v-if="rebateState === 'loading'" /> -->
                     <template>
-                        <div v-if="rebateInitData.is_vip">
-                            {{ caculateList.vip_config_name }}
-                        </div>
+                        <div>{{ caculateList.period }}期</div>
                         <div>
-                            {{ caculateList.start_at }}~{{
-                                caculateList.end_at
+                            {{ caculateList.start_at | dateFormat }}~{{
+                                caculateList.end_at | dateFormat
                             }}
                         </div>
                     </template>
@@ -22,80 +20,84 @@
 
                 <div :class="$style['rebate-body']">
                     <div :class="$style['detail-content']">
-                        <span :class="$style['content-left']">{{
-                            $text("S_VALID_BET", "有效投注")
-                        }}</span>
+                        <span :class="$style['content-left']">
+                            结算方式
+                        </span>
                         <div :class="$style['content-right']">
-                            <!-- <ele-loading v-if="rebateState === 'loading'" /> -->
-                            <template>{{ caculateList.total }}</template>
-                        </div>
-                    </div>
-                    <div :class="$style['detail-content']">
-                        <span :class="$style['content-left']">{{
-                            $text("S_PREMIUM_AMOUNT", "返水金额")
-                        }}</span>
-                        <div :class="$style['content-right']">
-                            <template
-                                v-if="
-                                    caculateList.daily_upper_limit &&
-                                        !caculateList.rebate
-                                "
-                                >{{ $t("S_UPPER_LIMIT") }}</template
-                            >
                             <!-- <ele-loading v-if="rebateState === 'loading'" /> -->
                             <template>{{
-                                caculateList.rebate
+                                caculateList.type === 1
+                                    ? "投注返利"
+                                    : "损益返利"
                             }}</template>
                         </div>
                     </div>
+
                     <div :class="$style['detail-content']">
-                        <span :class="$style['content-left']">{{
-                            $text("S_MINIMUM_PREMIUM_AMOUNT", "最低返水金额")
-                        }}</span>
+                        <span :class="$style['content-left']">
+                            {{ $text("S_VALID_BET", "有效投注") }}
+                        </span>
                         <div :class="$style['content-right']">
-                            {{ caculateList.min_rebate }}
+                            <!-- <ele-loading v-if="rebateState === 'loading'" /> -->
+                            <template>{{
+                                caculateList.sub_valid_bet
+                                    | roundTwoPoints
+                                    | commaFormat
+                            }}</template>
                         </div>
                     </div>
+
                     <div :class="$style['detail-content']">
-                        <span :class="$style['content-left']">{{
-                            $text("S_RECEIVE_NUMBER_TIMES", "可领取次数")
-                        }}</span>
+                        <span :class="$style['content-left']">
+                            損益
+                        </span>
                         <div :class="$style['content-right']">
-                            {{
-                                caculateList.remaining_times
-                                    ? caculateList.remaining_times
-                                    : $t("S_UPPER_LIMIT")
-                            }}
+                            {{ caculateList.sub_profit }}
+                        </div>
+                    </div>
+
+                    <div :class="$style['detail-content']">
+                        <span :class="$style['content-left']">
+                            返利
+                        </span>
+                        <div :class="$style['content-right']">
+                            {{ caculateList.amount }}
+                        </div>
+                    </div>
+
+                    <div :class="$style['detail-content']">
+                        <span :class="$style['content-left']">
+                            最低领取金额
+                        </span>
+                        <div :class="$style['content-right']">
+                            {{ caculateList.self_min_limit }}
+                        </div>
+                    </div>
+
+                    <div :class="$style['detail-content']">
+                        <span :class="$style['content-left']">
+                            可领取次数
+                        </span>
+                        <div :class="$style['content-right']">
+                            {{ caculateList.self_times }}
                         </div>
                     </div>
                 </div>
 
                 <div :class="$style['rebate-btn']">
-                    <template
-                        v-if="
-                            !caculateList.remaining_times ||
-                                caculateList.daily_upper_limit
-                        "
-                    >
-                        <button :class="$style['unrebate-btn']">
-                            {{ $t("S_UNABLE_PASS") }}
-                        </button>
-                    </template>
                     <!-- <ele-loading v-else-if="rebateState === 'loading'" /> -->
-                    <template v-else>
-                        <!-- 當返水金額符合最低返水金額才可領取 rebate 和 min_rebate -->
-                        <a
-                            v-if="caculateList.operateStatus"
-                            id="receive-button"
-                            :class="{
-                                [$style['disable']]: btnReceiveLock[listIndex]
-                            }"
-                            href="###"
-                            @click="popReceive(listIndex)"
+                    <template>
+                        <button
+                            v-if="caculateList.state === 1"
+                            @click="handleRebateProcess(caculateList.type)"
                         >
                             {{ $t("S_RECEIVE") }}
-                        </a>
-                        <button v-else :class="$style['unrebate-btn']">
+                        </button>
+
+                        <button
+                            v-if="caculateList.state === 3"
+                            :class="$style['unrebate-btn']"
+                        >
                             {{ $t("S_UNABLE_PASS") }}
                         </button>
                     </template>
@@ -145,15 +147,24 @@
                 </div>
             </div>
         </div>
+
+        <template v-if="isShowPopup">
+            <popup />
+        </template>
     </div>
 </template>
 
 <script>
+import Vue from "vue";
+import mcenter from "@/api/mcenter";
+import { format } from "date-fns";
 import bbosRequest from "@/api/bbosRequest";
 import { mapActions, mapGetters } from "vuex";
+import popup from "./components/popup";
 
 export default {
     components: {
+        popup,
         eleLoading: () =>
             import(
                 /* webpackChunkName: 'eleLoading' */ "@/router/web/components/tpl/common/element/loading/square"
@@ -161,8 +172,8 @@ export default {
     },
     data() {
         return {
+            isShowPopup: false,
             isShowTip: true,
-            btnReceiveLock: false,
             immediateData: [],
             rebateInitData: {},
             maintainsList: "",
@@ -175,23 +186,26 @@ export default {
             siteConfig: "getSiteConfig",
             memInfo: "getMemInfo"
         }),
-        siteStyleClass() {
-            return {
-                [this.$style[`site-${this.memInfo.user.domain}`]]: this.$style[
-                    `site-${this.memInfo.user.domain}`
-                ],
-                [this.$style["preset-color"]]: !this.$style[
-                    `site-${this.memInfo.user.domain}`
-                ]
-            };
-        },
         messageText() {
             const messageText = this.$t("S_REMAINING_REBATE");
             return messageText.replace("%S", this.rebateInitData.hour);
         }
     },
+    filters: {
+        roundTwoPoints(value) {
+            return Number(value).toFixed(2);
+        },
+        commaFormat(value) {
+            return value.toString().replace(/\B(?=(\d{3})+(?!\d))/g, ",");
+        },
+        dateFormat(date) {
+            const est = format(new Date(date), "yyyy/MM/dd HH:mm:ss+20:00");
+            return format(new Date(est), "yyyy-MM-dd HH:mm:ss");
+        }
+    },
     created() {
         this.getImmediateData();
+        this.bankRebateMaintains();
     },
     methods: {
         bankRebateMaintains() {
@@ -230,6 +244,20 @@ export default {
                             amount: "200.00"
                         }
                     ];
+                }
+            });
+        },
+        handleRebateProcess(type) {
+            bbosRequest({
+                methods: "put",
+                url: this.siteConfig.BBOS_DOMIAN + "/Wage/SelfDispatch",
+                reqHeaders: {
+                    Vendor: this.memInfo.user.domain
+                },
+                params: { lang: "zh-cn", type }
+            }).then(response => {
+                this.isShowPopup = true;
+                if (response.status === "000") {
                 }
             });
         }

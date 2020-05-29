@@ -56,7 +56,7 @@ export default {
         commissionOverview: () => import(/* webpackChunkName: 'commissionOverview' */ './components/commissionOverview/index'),
         commissionList: () => import(/* webpackChunkName: 'commissionList' */ './components/commissionList/index'),
         commissionDetail: () => import(/* webpackChunkName: 'commissionDetail' */ './components/commissionDetail/index'),
-        commissionRebate: () => import(/* webpackChunkName: 'commissionRebate' */ './components/CommissionRebate/index')
+        commissionRebate: () => import(/* webpackChunkName: 'commissionRebate' */ './components/commissionRebate/index')
     },
     mixins: [commission],
     props: {

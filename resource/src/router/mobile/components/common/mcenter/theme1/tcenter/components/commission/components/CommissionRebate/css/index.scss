@@ -1,88 +1,12 @@
-.total-sub-wrap {
-    position: fixed;
-    top: 43px;
-    right: 0;
-    left: 0;
-    border-top: 1px solid #EEE;
-    background-color: #FFF;
-
-    .top-sub-title {
-        overflow: hidden;
-        float: left;
-        width: 50%;
-        height: 43px;
-        line-height: 43px;
-        color: #A6A9B2;
-        text-align: center;
-        text-overflow: ellipsis;
-        white-space: nowrap;
-
-        img {
-            position: relative;
-            top: 3px;
-            width: 16px;
-        }
-
-        &.active {
-            color: #5E626D;
-            border-bottom: 2px solid #BE9E7F;
-        }
-
-        &.self {
-            width: 100%;
-        }
-    }
-}
-
-.history-top-wrap {
-    min-height: 80px;
-    margin-top: 47px;
-    background-color: #FFF;
-
-    .total-item {
-        float: left;
-        width: 33%;
-        height: 100%;
-        padding: 9px 0 5px;
-        font-size: 12px;
-        text-align: center;
-
-        .total-item-title {
-            line-height: 12px;
-            color: #222;
-        }
-
-        .total-item-money {
-            line-height: 16px;
-            margin: 14px 0 9px;
-            font-size: 16px;
-            color: #222;
-
-            &.week {
-                color: #BF8646;
-            }
-
-            &.is-current {
-                color: #F7B500;
-            }
-        }
-
-        .total-item-date {
-            line-height: 15px;
-            color: #222;
-        }
-    }
-}
-
 .content-wrap {
     .content-item {
         margin-top: 10px;
-        background-color: #FFF;
+        background-color: #fff;
 
         .rebate-header {
             padding: 4px 0;
             text-align: center;
-            border-bottom: 1px solid #EAEAEA;
+            border-bottom: 1px solid #eaeaea;
             color: #000;
             font-size: 12px;
         }
@@ -94,7 +18,7 @@
                 padding: 2px 30px;
 
                 .content-left {
-                    color: #A6A9B2;
+                    color: #a6a9b2;
                 }
 
                 .content-right {
@@ -111,32 +35,18 @@
             button {
                 width: 270px;
                 height: 39px;
-                color: #FFF;
-                background: url('/static/image/mobile/mcenter/receive_button.png') 100%/100% no-repeat;
+                color: #fff;
+                // background: url('/static/image/mobile/mcenter/receive_button.png') 100%/100% no-repeat;
+                background: #00347d;
                 border: 0;
                 outline: none;
+                border-radius: 3px;
             }
 
             .unrebate-btn {
-                color: #CFCFCF;
-                background: url('/static/image/mobile/mcenter/receive_button_n.png') 100%/100% no-repeat;
-            }
-
-            a {
-                display: inline-block;
-                width: 270px;
-                height: 39px;
-                line-height: 39px;
-                color: #FFF;
-                background: linear-gradient(to left, #BD9D7D, #F9DDBD);
-                border: 0;
-                border-radius: 5px;
-                outline: none;
-
-                &.disable {
-                    color: #CFCFCF;
-                    background: url('/static/image/mobile/mcenter/receive_button_n.png') 100%/100% no-repeat;
-                }
+                background: #aaa;
+                color: #cfcfcf;
+                // background: url('/static/image/mobile/mcenter/receive_button_n.png') 100%/100% no-repeat;
             }
         }
 
@@ -159,112 +69,28 @@
     }
 }
 
-.real-top-wrap {
-    padding: 5px 10px;
-    height: 60px;
-    margin-top: 47px;
-    background-color: #F8F8F7;
-    display: flex;
-    justify-content: space-between;
-    align-items: center;
-
-    .real-top-title {
-        line-height: 17px;
-        // width: 70%;
-        font-size: 12px;
-        color: #000;
-        vertical-align: middle;
-
-        .calculate-title {
-            overflow: hidden;
-            white-space: nowrap;
-            text-overflow: ellipsis;
-        }
-    }
-
-    .real-top-btn {
-        padding: 0 7px;
-        // width: 28%;
-        min-width: 110px;
-        height: 33px;
-        line-height: 28px;
-        margin: 3px 0;
-        padding: 2px 0;
-        border-radius: 17px;
-        background: linear-gradient(to left, #BD9D7D, #F9DDBD);
-        text-align: center;
-        vertical-align: middle;
-
-        &.disable {
-            line-height: 14px;
-            background: linear-gradient(#E9DACB, #EEE5DB);
-        }
-
-        .calculate-button {
-            color: #FFF;
-
-            .calculate-button-title {
-                display: block;
-                overflow: hidden;
-                white-space: nowrap;
-                text-overflow: ellipsis;
-            }
-        }
-    }
-}
-
-
-.real-vip-wrap {
-    margin-top: 5px;
-    padding: 0 10px;
-    height: 50px;
-    line-height: 50px;
-    color: #000;
-    background-color: #F6F4F4;
-}
-
-.real-vip-title {
-    float: left;
-}
-
-.receive-vip-btn {
-    float: right;
-    width: 110px;
-    height: 33px;
-    line-height: 33px;
-    margin-top: 9px;
-    text-align: center;
-    border-radius: 17px;
-    color: #FFF;
-    background-color: #00347D;
-
-    &.is-disabled {
-        color: #CFCFCF;
-        background-color: #AAA;
-    }
-}
-
+// 實返說明
 .rebate-manual-title {
     height: 43px;
     line-height: 43px;
     margin-top: 7px;
     padding: 0 19px;
-    background: #FFF;
+    background: #fff;
 }
 
 .rebate-manual-wrap {
-    background: #FFF;
+    background: #fff;
 }
 
 .manual-line {
     height: 1px;
     margin: 0 14px;
-    background: #CFCFCF;
+    background: #cfcfcf;
 }
 
 .rebate-manual-tip {
     padding: 7px 19px;
-    color: #AAA;
+    color: #aaa;
 }
 
 .title-icon,
@@ -272,58 +98,3 @@
     display: inline-block;
     vertical-align: middle;
 }
-
-.maintains-list {
-    color: #00F;
-}
-
-.theme-miller {
-    .history-top-wrap {
-        background-color: #F7B500;
-
-        .total-item {
-            .total-item-title {
-                color: #222;
-                font-weight: bold;
-            }
-
-            .total-item-money {
-                color: #222;
-            }
-
-            .total-item-date {
-                color: #222;
-            }
-        }
-    }
-
-    .real-top-wrap {
-        background-color: #F7B500;
-
-        .real-top-title {
-            color: #222;
-            font-weight: bold;
-        }
-
-        .real-top-btn {
-            .calculate-button {
-                color: #FFF;
-            }
-        }
-    }
-
-    .content-wrap {
-        .content-item {
-            .rebate-btn {
-                button {
-                    color: #222;
-                    background: #F7B500;
-                }
-                .unrebate-btn {
-                    background: url('/static/image/mobile/mcenter/receive_button_n.png') 100%/100% no-repeat;
-                }
-            }
-        }
-    }
-}
-
