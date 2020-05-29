@@ -686,7 +686,7 @@ export default {
       }
 
       if (!this.hasBankCard) {
-        this.msg = "请先绑定提现银行卡(C50099)"
+        this.msg = "请先绑定提现银行卡"
         this.checkBankCard = true;
         return;
       }
