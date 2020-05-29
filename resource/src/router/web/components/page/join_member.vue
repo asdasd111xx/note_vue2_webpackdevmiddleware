@@ -527,6 +527,12 @@ export default {
         }
 
         this.allValue.captcha_text = '';
+
+        if (res.status === '429') {
+          this.errMsg = '操作太频繁，请稍候在试';
+          return
+        }
+
         if (res.status !== '000') {
           if (Object.keys(res.errors)) {
             Object.keys(res.errors).forEach((item) => {
