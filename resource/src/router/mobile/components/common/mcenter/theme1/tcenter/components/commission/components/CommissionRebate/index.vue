@@ -7,7 +7,6 @@
                 :class="$style['content-item']"
             >
                 <div :class="$style['rebate-header']">
-                    <!-- <ele-loading v-if="rebateState === 'loading'" /> -->
                     <template>
                         <div>{{ caculateList.period }}期</div>
                         <div>
@@ -24,7 +23,6 @@
                             结算方式
                         </span>
                         <div :class="$style['content-right']">
-                            <!-- <ele-loading v-if="rebateState === 'loading'" /> -->
                             <template>{{
                                 caculateList.type === 1
                                     ? "投注返利"
@@ -38,7 +36,6 @@
                             {{ $text("S_VALID_BET", "有效投注") }}
                         </span>
                         <div :class="$style['content-right']">
-                            <!-- <ele-loading v-if="rebateState === 'loading'" /> -->
                             <template>{{
                                 caculateList.sub_valid_bet
                                     | roundTwoPoints
@@ -85,7 +82,6 @@
                 </div>
 
                 <div :class="$style['rebate-btn']">
-                    <!-- <ele-loading v-else-if="rebateState === 'loading'" /> -->
                     <template>
                         <button
                             v-if="caculateList.state === 1"
@@ -122,23 +118,22 @@
             <div :class="$style['manual-line']" />
             <div :class="$style['rebate-manual-tip']">
                 <div>
-                    (1){{
-                        !rebateInitData.accumulative
-                            ? $t("S_VALID_BETTING_AMOUNT")
-                            : $t("S_VALID_BETTING_AMOUNT_NEW")
-                    }}
+                    1.结算周期自美东时日0点整为计算始点。
                 </div>
                 <div>
-                    (2){{
-                        !rebateInitData.accumulative
-                            ? $t("S_FUNCTION_ET")
-                            : $t("S_FUNCTION_ET_NEW")
-                    }}
+                    2.每日01:30:00候可进行试算，领取后请至派发记录查看记录。
                 </div>
-                <div>(3){{ $t("S_CALCULATION_SERVICE") }}</div>
-                <div>(4){{ $t("S_ACTUAL_COLLECTION") }}</div>
-                <div>(5){{ messageText }}</div>
-                <div>(6){{ $t("S_CONSIDERATION_DATA") }}</div>
+                <div>3.每30分钟可使用一次试算及领取服务。</div>
+                <div>
+                    4.实际领取金额与有效投注、损益时间时间以按下<领取>的时日为主,
+                    若未达最低返利金额当次不提供领取。
+                </div>
+                <div>
+                    5.周期结算时仍有剩余的返利金额，在结算后系统于上午3点主动派发。
+                </div>
+                <div>
+                    6.另考虑到资眼刷新同步或平台维护时，可能造成试算、领取存在误差，如有遗漏或偏差敬请见谅
+                </div>
                 <div v-show="maintainsList">
                     {{ $t("S_CURRENT_PLATFORM") }}：
                     <span :class="$style['maintains-list']">{{
@@ -149,7 +144,7 @@
         </div>
 
         <template v-if="isShowPopup">
-            <popup />
+            <popup :is-show-popup.sync="isShowPopup" :amount="amountResult" />
         </template>
     </div>
 </template>
@@ -172,12 +167,14 @@ export default {
     },
     data() {
         return {
-            isShowPopup: false,
+            togglePopup: false,
             isShowTip: true,
             immediateData: [],
             rebateInitData: {},
             maintainsList: "",
-            rebateState: ""
+            rebateState: "",
+            amountResult: 0,
+            dispatch_hour: 0
         };
     },
     computed: {
@@ -186,9 +183,13 @@ export default {
             siteConfig: "getSiteConfig",
             memInfo: "getMemInfo"
         }),
-        messageText() {
-            const messageText = this.$t("S_REMAINING_REBATE");
-            return messageText.replace("%S", this.rebateInitData.hour);
+        isShowPopup: {
+            get() {
+                return this.togglePopup;
+            },
+            set(value) {
+                this.togglePopup = value;
+            }
         }
     },
     filters: {
@@ -220,6 +221,7 @@ export default {
             });
         },
         getImmediateData() {
+            this.rebateState = "loading";
             bbosRequest({
                 methods: "get",
                 url: this.siteConfig.BBOS_DOMIAN + "/Wage/SelfDispatchInfo",
@@ -228,22 +230,24 @@ export default {
                 },
                 params: { lang: "zh-cn" }
             }).then(response => {
+                this.rebateState = "initial";
                 if (response.status === "000") {
-                    // this.immediateData = response.data.entries
-                    this.immediateData = [
-                        {
-                            period: "20200421",
-                            start_at: "2020-04-21T12:00:00+0800",
-                            end_at: "2020-04-21T07:15:18+0800",
-                            sub_valid_bet: "14875039.6179",
-                            sub_profit: "0.00",
-                            state: 1,
-                            self_times: 10,
-                            self_min_limit: "10",
-                            type: 1,
-                            amount: "200.00"
-                        }
-                    ];
+                    this.immediateData = response.data.entries
+                    // this.immediateData = [
+                    //     {
+                    //         period: "20200421",
+                    //         start_at: "2020-04-21T12:00:00+0800",
+                    //         end_at: "2020-04-21T07:15:18+0800",
+                    //         sub_valid_bet: "14875039.6179",
+                    //         sub_profit: "0.00",
+                    //         state: 1,
+                    //         self_times: 10,
+                    //         self_min_limit: "10",
+                    //         type: 1,
+                    //         amount: "200.00"
+                    //     }
+                    // ];
+                    return;
                 }
             });
         },
@@ -258,6 +262,7 @@ export default {
             }).then(response => {
                 this.isShowPopup = true;
                 if (response.status === "000") {
+                    this.amountResult = response.data.dispatched_amount;
                 }
             });
         }

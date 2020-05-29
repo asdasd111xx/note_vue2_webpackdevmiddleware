@@ -357,7 +357,7 @@
     "S_MINIMUM_PREMIUM_AMOUNT": "最低返水金额",
     "S_RECEIVE": "领取",
     "S_UNABLE_PASS": "未达条件",
-    "S_SYSTEM_COMPUTE_WAGER": "系统结算中, 请稍候",
+    "S_SYSTEM_COMPUTE_WAGER": "系统结算中，请稍后",
     "S_COMPUTE_WAGER_INTERVAL": "结算区间",
     "S_COMPUTE_WAGER_TIP": "如欲离开本画面,　请稍候至返水历史查看记录",
     "S_SENT_YESTERDAY_AMOUNT": "昨日已派金额",

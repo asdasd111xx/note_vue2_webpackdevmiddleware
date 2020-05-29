@@ -1,10 +1,27 @@
 <template>
     <transition name="fade">
-        <div class="pop-rebate-wrap pop-class">
-            <div class="title">{{ $t("S_REAL_TIME_REBATE") }}</div>
-            <div class="content-wrap">
-                <template>
-                    <div class="content">
+        <div :class="$style['pop-wrap']">
+            <div :class="$style['pop-mask']" />
+            <div :class="$style['pop-block']">
+                <div
+                    v-if="!computeState"
+                    :class="$style['close-img']"
+                    @click="close"
+                >
+                    <img
+                        :src="
+                            $getCdnPath(
+                                '/static/image/_new/common/btn_close_w.png'
+                            )
+                        "
+                        alt="close"
+                    />
+                </div>
+                <div :class="$style['title']">
+                    实时返利
+                </div>
+                <div :class="$style['content-wrap']">
+                    <div :class="$style['content']">
                         <h1>
                             {{
                                 computeState
@@ -12,45 +29,38 @@
                                     : $t("S_SYSTEM_COMPUTE_WAGER")
                             }}
                         </h1>
-                        <div class="rebate-title">
-                            {{ $t("S_COMPUTE_WAGER_INTERVAL") }}
-                        </div>
 
                         <template v-if="computeState">
-                            <div class="rebate-title">
-                                {{ $t("S_COMPUTING_VALID_BET") }}
+                            <div :class="$style['rebate-title']">
+                                结算返利金额
                             </div>
-                            <div class="rebate-value">
-                                43123
+                            <div :class="$style['rebate-value']">
+                                {{ amount ? amount : "--"}}
                             </div>
-                            <div class="rebate-title">
-                                {{ $t("S_COMPUTING_PREMIUM_AMOUNT") }}
-                            </div>
-                            <div class="rebate-value">
-                                123
-                            </div>
-                            <div class="rebate-entry-button-wrap">
-                                <a
-                                    id="button-entry-history"
-                                    href="###"
-                                    @click="close()"
-                                >
-                                    {{ $t("S_REBATE_HISTORY") }}
-                                </a>
-                                <a
-                                    id="button-entry-close"
-                                    href="###"
-                                    @click="close()"
+                            <div :class="$style['rebate-entry-button-wrap']">
+                                <div
+                                    :class="$style['button-entry-close']"
+                                    @click="close"
                                 >
                                     {{ $t("S_CLOSE") }}
-                                </a>
+                                </div>
+                                <div
+                                    :class="$style['button-entry-history']"
+                                    @click="
+                                        $router.push(
+                                            '/mobile/mcenter/tcenter/commission/record'
+                                        )
+                                    "
+                                >
+                                    {{ $t("S_COMMISSION_SEND_RECORD") }}
+                                </div>
                             </div>
                         </template>
                         <template v-else>
-                            <p>{{ $t("S_COMPUTE_WAGER_TIP") }}</p>
+                            <p>如欲离开本画面, 请稍候至派发记录查看记录</p>
                         </template>
                     </div>
-                </template>
+                </div>
             </div>
         </div>
     </transition>
@@ -63,46 +73,81 @@ import mcenter from "@/api/mcenter";
 
 export default {
     props: {
-        data: {
-            type: Object,
-            default: () => {}
+        amount: {
+            type: Number,
+            require: true
+        },
+        isShowPopup: {
+            type: Boolean,
+            require: true
         }
     },
     data() {
         return {
             computeState: false,
-            receiveEntryData: {},
+            receiveEntryData: {}
         };
     },
     created() {
         setTimeout(() => {
             this.computeState = true;
-        }, 5000);
+        }, 3000);
     },
     methods: {
-        close() {}
+        close() {
+            this.$emit("update:isShowPopup", false);
+        }
     }
 };
 </script>
 
-<style lang="scss" scoped>
-.pop-rebate-wrap {
-    position: absolute;
-    top: 50%;
+<style lang="scss" module>
+@import "~@/css/variable.scss";
+
+.pop-wrap {
+    position: fixed;
+    top: 0;
     right: 0;
     left: 0;
-    margin: -45% auto 0;
-    border-radius: 5px;
-    background: #fff;
-    padding-bottom: 24px;
-    width: 98%;
-    max-width: 700px;
-    box-shadow: 0 2px 8px rgba(0, 0, 0, 0.33);
+    bottom: 0;
+    z-index: 99;
+
+    .pop-mask {
+        width: 100%;
+        height: 100%;
+        background: #000;
+        opacity: 0.5;
+    }
+
+    .pop-block {
+        position: absolute;
+        width: 85%;
+        top: 50%;
+        left: 50%;
+        transform: translate(-50%, -50%);
+        background: #f8f8f7;
+        border-radius: 8px;
+    }
+
+    .close-img {
+        position: absolute;
+        top: 13px;
+        right: 10px;
+        width: 23px;
+        height: 23px;
+
+        img {
+            width: 100%;
+            height: 100%;
+        }
+    }
+
     .title {
         height: 48px;
         line-height: 48px;
         border-radius: 5px 5px 0 0;
-        background-color: #be9e7f;
+        // background-color: #be9e7f;
+        background-color: #00347d;
         color: #fff;
         font-size: 16px;
         text-align: center;
@@ -115,7 +160,7 @@ export default {
         }
         h1 {
             font-size: 16px;
-            margin-bottom: 11px;
+            margin-bottom: 14px;
         }
     }
     .rebate-title,
@@ -124,33 +169,36 @@ export default {
         margin-bottom: 5px;
         font-size: 14px;
     }
+
     .rebate-value {
         color: #2693cf;
     }
-    .rebate-loding {
-        margin: 20px 0;
-    }
+
     .rebate-entry-button-wrap {
         text-align: center;
         margin-top: 15px;
+        display: inline-block;
+        width: 100%;
+        height: 42px;
+        line-height: 42px;
 
-        a {
+        .button-entry-history {
             display: inline-block;
-            width: 48%;
-            max-width: 140px;
-            height: 42px;
-            line-height: 42px;
-            text-decoration: none;
-            border-radius: 4px;
-            margin: 0 5px;
-        }
-        #button-entry-history {
-            background: linear-gradient(to left, #bd9d7d, #f9ddbd);
+            width: 45%;
+            // background: linear-gradient(to left, #bd9d7d, #f9ddbd);
+            background: #00347d;
             color: #fff;
+            border-radius: 4px;
+            margin: 0 3px;
         }
-        #button-entry-close {
-            background: #faf5f0;
-            color: #be9e7f;
+        .button-entry-close {
+            display: inline-block;
+            width: 45%;
+            background: black;
+            // color: #be9e7f;
+            color: #fff;
+            border-radius: 4px;
+            margin: 0 3px;
         }
     }
 }
