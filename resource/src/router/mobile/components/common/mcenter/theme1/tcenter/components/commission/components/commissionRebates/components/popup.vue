@@ -35,7 +35,7 @@
                                 结算返利金额
                             </div>
                             <div :class="$style['rebate-value']">
-                                {{ amount ? amount : "--"}}
+                                {{ amount ? amount : "--" }}
                             </div>
                             <div :class="$style['rebate-entry-button-wrap']">
                                 <div
