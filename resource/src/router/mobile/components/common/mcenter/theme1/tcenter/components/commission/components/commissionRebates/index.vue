@@ -118,21 +118,16 @@
             <div :class="$style['manual-line']" />
             <div :class="$style['rebate-manual-tip']">
                 <div>
-                    1.结算周期自美东时日0点整为计算始点。
+                    (1)结算周期自美东时间0点整为计算始点。
                 </div>
                 <div>
-                    2.每日01:30:00候可进行试算，领取后请至派发记录查看记录。
-                </div>
-                <div>3.每30分钟可使用一次试算及领取服务。</div>
-                <div>
-                    4.实际领取金额与有效投注、损益时间时间以按下<领取>的时日为主,
-                    若未达最低返利金额当次不提供领取。
+                    (2)系统于每小时会计算一小时前的返利金额，若未达最低返利金额或可领次数已达上限，当次不提供领取。
                 </div>
                 <div>
-                    5.周期结算时仍有剩余的返利金额，在结算后系统于上午3点主动派发。
+                    (3)周期结算后剩余的返利金额，系统于上午３点主动派发。
                 </div>
                 <div>
-                    6.另考虑到资眼刷新同步或平台维护时，可能造成试算、领取存在误差，如有遗漏或偏差敬请见谅
+                    (4)另考虑到资料刷新同步或平台维护时，可能造成试算领取存在误差，如有遗漏或偏差敬请见谅。
                 </div>
                 <div v-show="maintainsList">
                     {{ $t("S_CURRENT_PLATFORM") }}：
@@ -221,7 +216,6 @@ export default {
             });
         },
         getImmediateData() {
-            this.rebateState = "loading";
             bbosRequest({
                 method: "get",
                 url: this.siteConfig.BBOS_DOMIAN + "/Wage/SelfDispatchInfo",
@@ -230,8 +224,8 @@ export default {
                 },
                 params: { lang: "zh-cn" }
             }).then(response => {
-                this.rebateState = "initial";
                 if (response.status === "000") {
+                    console.log(response);
                     this.immediateData = response.data.entries
 
                     // 測試資料
