@@ -1,0 +1,19 @@
+.preset-color {
+    $tabBorderColor: #F9DCB2;
+    $tabBackground: #222 url('/static/image/mobile/mcenter/bg_header2_iphone8.png') 50% -65px/100% no-repeat;
+    $tabTitleColor: #BEBCBC;
+    $tabTitleColorActive: #FFF;
+
+    @import './tcenter.scss';
+}
+
+.site-500011,
+.site-52,
+.site-53 {
+    $tabBorderColor: #EDB83F;
+    $tabBackground: #FFF;
+    $tabTitleColor: #AAA;
+    $tabTitleColorActive: #000;
+
+    @import './tcenter.scss';
+}

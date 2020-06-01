@@ -1,0 +1,91 @@
+.date-wrap {
+    margin-bottom: 10px;
+    background-color: $dateBackgroundColor;
+
+    > div {
+        float: left;
+        width: 33.333%;
+        height: 40px;
+        line-height: 38px;
+        border-bottom: 2px solid transparent;
+        color: $dateTextColor;
+        font-size: 14px;
+        text-align: center;
+
+        &.active {
+            border-color: $dateBorderColor;
+            color: $dateTextColorActive;
+        }
+    }
+}
+
+.member-total {
+    padding: 0 23px;
+    background-color: #3E3E3E;
+
+    > div {
+        height: 37px;
+        line-height: 37px;
+        font-size: 14px;
+    }
+}
+
+.member-text {
+    float: left;
+    color: $titleColor;
+}
+
+.member-count {
+    float: right;
+    color: #FFF;
+}
+
+.info-wrap {
+    float: left;
+    width: 50%;
+    padding: 11px 0;
+    border-bottom: 1px solid #F6F6F6;
+    background-color: #FFF;
+    text-align: center;
+
+    &:nth-child(2n+1) {
+        border-right: 1px solid #F6F6F6;
+    }
+}
+
+.text {
+    overflow: hidden;
+    line-height: 14px;
+    padding: 0 3px;
+    color: #AAA;
+    font-size: 14px;
+    text-overflow: ellipsis;
+    white-space: nowrap;
+}
+
+.count {
+    overflow: hidden;
+    line-height: 20px;
+    margin-top: 15px;
+    padding: 0 3px;
+    color: #000;
+    font-size: 20px;
+    text-overflow: ellipsis;
+    white-space: nowrap;
+
+    &.deficit {
+        color: #F00;
+    }
+}
+
+.btn-check {
+    width: 90%;
+    height: 47px;
+    line-height: 47px;
+    margin: 45px auto;
+    border-radius: 4px;
+    background-color: $buttonBackgroundColor;
+    color: $buttonTextColor;
+    font-size: 15px;
+    text-align: center;
+}
