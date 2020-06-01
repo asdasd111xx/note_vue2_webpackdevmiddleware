@@ -91,7 +91,7 @@ export default {
     created() {
         setTimeout(() => {
             this.computeState = true;
-        }, 3000);
+        }, 3000 );
     },
     methods: {
         close() {
