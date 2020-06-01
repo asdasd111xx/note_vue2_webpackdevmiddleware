@@ -1,16 +1,10 @@
-import {
-    API_MCENTER_DEPOSIT_CHANNEL,
-    API_MCENTER_DEPOSIT_INPAY,
-    API_MCENTER_DEPOSIT_THIRD,
-    API_TRADE_RELAY
-} from '@/config/api';
-import { mapActions, mapGetters } from 'vuex';
-
+import { mapGetters, mapActions } from 'vuex';
 import BigNumber from 'bignumber.js/bignumber';
 import ajax from '@/lib/ajax';
-import axios from 'axios';
-import { getCookie } from '@/lib/cookie';
 import isMobile from '@/lib/is_mobile';
+import {
+    API_MCENTER_DEPOSIT_INPAY, API_MCENTER_DEPOSIT_CHANNEL, API_TRADE_RELAY, API_MCENTER_DEPOSIT_THIRD
+} from '@/config/api';
 
 export default {
     data() {
@@ -44,8 +38,7 @@ export default {
     computed: {
         ...mapGetters({
             memInfo: 'getMemInfo',
-            isLoading: 'getIsLoading',
-            siteConfig: "getSiteConfig",
+            isLoading: 'getIsLoading'
         }),
         /**
          * 所有銀行
@@ -686,19 +679,13 @@ export default {
                     sn: this.speedField.serialNumber
                 };
             }
-            return axios({
-                method: 'post',
-                // url: API_TRADE_RELAY,
-                url: `${this.siteConfig.YABO_API_DOMAIN}/AccountBank/CreateTradeEntry/${getCookie('cid')}`,
-                headers: {
-                    Bundleid: 'chungyo.foxyporn.prod.enterprise.web',
-                    Version: 1,
-                    'x-domain': this.memInfo.user.domain
-                },
-                // errorAlert: !isMobile() || isUBMobile || webview,
-                data: paramsData
-            }).then((response) => {
 
+            return ajax({
+                method: 'post',
+                url: API_TRADE_RELAY,
+                errorAlert: !isMobile() || isUBMobile || webview,
+                params: paramsData
+            }).then((response) => {
                 this.isShow = false;
                 this.actionSetIsLoading(false);
 
@@ -768,25 +755,18 @@ export default {
                     eventLabel: 'failure'
                 });
 
-                if (response) {
-                    if (isMobile() && !isUBMobile && !webview) {
-                        newWindow.alert(`${response.msg} ${response.code ? `(${response.code})` : ''}`);
-                        newWindow.close();
-                    }
+                if (isMobile() && !isUBMobile && !webview) {
+                    newWindow.alert(`${response.msg} ${response.code ? `(${response.code})` : ''}`);
+                    newWindow.close();
+                }
 
-                    if (response.code === 'TM020058' || response.code === 'TM020059' || response.code === 'TM020060') {
-                        window.location.reload();
-                        return { status: 'error' };
-                    }
-
+                if (response.code === 'TM020058' || response.code === 'TM020059' || response.code === 'TM020060') {
+                    window.location.reload();
                     return { status: 'error' };
                 }
-            })
-                .catch((e) => {
-                    console.log(e);
-                    newWindow.close();
-                    return { status: 'error' };
-                });
+
+                return { status: 'error' };
+            });
         },
         /**
          * 複製
