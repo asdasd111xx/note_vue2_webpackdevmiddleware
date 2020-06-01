@@ -333,7 +333,7 @@ export default {
     $(window).on('resize', this.onResize);
 
     // const params = this.isAdult ? [this.getVideoTag(), this.getVideoSort(), this.getVideoRecommand(), this.getVideoList(), this.getAllGame()] : [this.getAllGame()];
-    const params = [this.getAllGame()]
+
     if (this.isAdult) {
       this.getVideoTag();
       this.getVideoSort();
@@ -400,23 +400,60 @@ export default {
     },
     // 取得影片分類
     getVideoTag() {
+      try {
+        let videolistStorage = localStorage.getItem('video-tag');
+        if (videolistStorage) {
+          this.videoTag = JSON.parse(localStorage.getItem('video-tag'));
+        }
+
+      } catch (e) {
+        console.log(e)
+      }
+
       return pornRequest({
-        url: `/video/tag`,
+        url: '/video/tag',
+        method: 'get',
       }).then((response) => {
         if (response.status !== 200) {
           return;
         }
 
+        try {
+          localStorage.setItem('video-tag', JSON.stringify([{ id: 0, title: '全部' }, ...response.result]))
+          localStorage.setItem('video-tag-timestamp', Date.now())
+        } catch (e) {
+          console.log(e)
+        }
+
         this.videoTag = [{ id: 0, title: '全部' }, ...response.result];
       });
+
     },
     // 取得影片排序
     getVideoSort() {
+      try {
+        let videolistStorage = localStorage.getItem('video-sort');
+        if (videolistStorage) {
+          this.videoSort = JSON.parse(localStorage.getItem('video-sort'));
+        }
+
+      } catch (e) {
+        console.log(e)
+      }
+
       return pornRequest({
-        url: `/video/sort`,
+        method: 'get',
+        url: '/video/sort',
       }).then((response) => {
         if (response.status !== 200) {
           return;
+        }
+
+        try {
+          localStorage.setItem('video-sort', JSON.stringify(response.result))
+          localStorage.setItem('video-sort-timestamp', Date.now())
+        } catch (e) {
+          console.log(e)
         }
 
         this.videoSort = [...response.result];
@@ -440,10 +477,6 @@ export default {
         let videolistStorage = localStorage.getItem('video-list');
         if (videolistStorage) {
           this.videoList = JSON.parse(localStorage.getItem('video-list'));
-        }
-
-        if (process.env.NODE_ENV === 'development') {
-          //   console.log("video-list-time", localStorage.getItem('video-list-timestamp'))
         }
 
       } catch (e) {
@@ -477,10 +510,6 @@ export default {
         if (videolistStorage) {
           this.allGame = JSON.parse(localStorage.getItem('game-list'));
           result = true;
-        }
-
-        if (process.env.NODE_ENV === 'development') {
-          //   console.log("game-list-time", localStorage.getItem('game-list-timestamp'))
         }
 
       } catch (e) {
