@@ -58,6 +58,7 @@ export default {
           case "mahjong":
           case "liveStream":
           case "videoPlay":
+          case "wallet":
             this.currentPage = 'addBankCard';
             return true;
         }

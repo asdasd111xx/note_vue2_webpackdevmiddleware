@@ -8,7 +8,7 @@
       <div class="container">
         <div class="login-wrap clearfix">
           <div class="login-logo">
-            <img :src="$getCdnPath('/static/image/_new/login/logo.png')" />
+            <img :src="'/static/image/_new/common/logo.png'" />
           </div>
           <div class="login-form-wrap">
             <!-- 錯誤訊息 -->

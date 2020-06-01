@@ -421,6 +421,7 @@ export default {
     padding: 13px 0;
 
     .title {
+      max-width: calc(100% - 70px);
       float: left;
     }
 
