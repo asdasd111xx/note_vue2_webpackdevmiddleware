@@ -37,6 +37,7 @@
             :set-header-title="setHeaderTitle"
             :search-info="searchInfo"
             :set-detail-data="setDetailData"
+            :show-no-data="isShowNoData"
         />
         <commission-detail
             v-if="page === 'detail'"
@@ -72,7 +73,8 @@ export default {
     data() {
         return {
             isShowDetail: [],
-            hasSearch: this.$route.params.page === 'record'
+            isShowNoData: false,
+            hasSearch: this.$route.params.page === 'record',
         };
     },
     computed: {
@@ -130,10 +132,12 @@ export default {
         onClick(page) {
             this.hasSearch = page === 'record';
             this.$router.push(`/mobile/mcenter/tcenter/commission/${page}`);
+            this.isShowNoData = false
         },
         onInquire() {
             this.onSearch();
             this.hasSearch = false;
+            this.isShowNoData = true
         }
     }
 };

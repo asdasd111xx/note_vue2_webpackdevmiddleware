@@ -60,7 +60,7 @@
         </template>
 
         <template v-else>
-            <div :class="$style['no-data']">
+            <div :class="$style['no-data']" v-if="ShowNoData">
                 <img src="/static/image/_new/mcenter/no_data.png" />
                 <p>{{ $text("S_NO_DATA_YET", "暂无资料") }}</p>
             </div>
@@ -84,6 +84,10 @@ export default {
         },
         setHeaderTitle: {
             type: Function,
+            required: true
+        },
+        ShowNoData: {
+            type: Boolean,
             required: true
         }
     },
