@@ -7,7 +7,7 @@
     <div slot="content" :class="$style['content-wrap']">
       <div :class="$style['yabo']">
         <img :src="$getCdnPath(`/static/image/_new/about/appicon.png`)" />
-        <div :class="$style['version']">{{ version }}</div>
+        <div :class="$style['version']">版本号 {{ version }}</div>
       </div>
       <div :class="$style['officel']">
         <div>官方认证</div>

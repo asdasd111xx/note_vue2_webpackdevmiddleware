@@ -306,6 +306,10 @@ export default {
         fail: (error) => {
           this.lockStatus = false;
           this.errorMsg = error.data.msg;
+
+          if (this.addBankCardStep === 'one') {
+            this.msg = error.data.msg;
+          }
         }
       });
     },
@@ -340,6 +344,9 @@ export default {
       }
 
       switch (redirect) {
+        case "wallet":
+          this.$router.push(`/mobile/mcenter/wallet`);
+          return;
         case "withdraw":
         case "balanceTrans":
           this.$router.push(`/mobile/mcenter/${redirect}`);

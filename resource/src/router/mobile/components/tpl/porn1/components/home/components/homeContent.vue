@@ -223,6 +223,7 @@ import openGame from '@/lib/open_game';
 import message from '../../common/new/message';
 import common from '@/api/common';
 import pornRequest from '@/api/pornRequest';
+import { getCookie, setCookie } from '@/lib/cookie';
 
 export default {
   components: {
@@ -259,7 +260,7 @@ export default {
         { name: 'grade', text: '等级' }
       ],
       msg: '',
-      hasBankCard: false
+      hasBankCard: false,
     };
   },
   computed: {
@@ -660,12 +661,34 @@ export default {
         return;
       }
 
-      if (path === 'grade') {
+      if (path === 'deposit') {
+        axios({
+          method: 'get',
+          url: `${this.siteConfig.YABO_API_DOMAIN}/AccountBank/GetBankBindingStatus/${getCookie('cid')}`,
+          timeout: 30000,
+          headers: {
+            Bundleid: 'chungyo.foxyporn.prod.enterprise.web',
+            Version: 1,
+            'x-domain': this.memInfo.user.domain
+          }
+        }).then((res) => {
+          if (res.data && res.data.result === "OK" && res.data.ret) {
+            this.$router.push(`/mobile/mcenter/deposit`);
+          }
+          else {
+            this.msg = "请先绑定提现银行卡"
+          }
+        });
+      }
+
+      else if (path === 'grade') {
         this.$router.push('/mobile/mcenter/accountVip');
         return;
       }
 
-      this.$router.push(`/mobile/mcenter/${path}`);
+      else {
+        this.$router.push(`/mobile/mcenter/${path}`);
+      }
     },
     // 開啟遊戲
     onOpenGame(game) {
@@ -716,7 +739,6 @@ export default {
 
       if (!this.hasBankCard) {
         this.msg = "请先绑定提现银行卡"
-        this.checkBankCard = true;
         return;
       }
 
