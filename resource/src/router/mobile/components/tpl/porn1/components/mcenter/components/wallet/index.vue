@@ -265,7 +265,7 @@ export default {
           'x-domain': this.memInfo.user.domain
         }
       }).then((res) => {
-        if (res.data && res.data.result === "OK" && res.data.ret) {
+        if (res.data && res.data.data) {
           this.$router.push(`/mobile/mcenter/deposit`);
         }
         else {
