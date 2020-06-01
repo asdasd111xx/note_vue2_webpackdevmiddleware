@@ -223,7 +223,7 @@ export default {
         getImmediateData() {
             this.rebateState = "loading";
             bbosRequest({
-                methods: "get",
+                method: "get",
                 url: this.siteConfig.BBOS_DOMIAN + "/Wage/SelfDispatchInfo",
                 reqHeaders: {
                     Vendor: this.memInfo.user.domain
@@ -233,6 +233,8 @@ export default {
                 this.rebateState = "initial";
                 if (response.status === "000") {
                     this.immediateData = response.data.entries
+
+                    // 測試資料
                     // this.immediateData = [
                     //     {
                     //         period: "20200421",
@@ -253,7 +255,7 @@ export default {
         },
         handleRebateProcess(type) {
             bbosRequest({
-                methods: "put",
+                method: "put",
                 url: this.siteConfig.BBOS_DOMIAN + "/Wage/SelfDispatch",
                 reqHeaders: {
                     Vendor: this.memInfo.user.domain
