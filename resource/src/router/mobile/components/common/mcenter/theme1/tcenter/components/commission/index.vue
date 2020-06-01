@@ -42,7 +42,7 @@
             v-if="page === 'detail'"
             :detail-info="detailInfo"
         />
-        <commission-rebate v-if="page === 'rebate'"/>
+        <commission-rebates v-if="page === 'rebate'"/>
     </div>
 </template>
 
@@ -56,7 +56,7 @@ export default {
         commissionOverview: () => import(/* webpackChunkName: 'commissionOverview' */ './components/commissionOverview/index'),
         commissionList: () => import(/* webpackChunkName: 'commissionList' */ './components/commissionList/index'),
         commissionDetail: () => import(/* webpackChunkName: 'commissionDetail' */ './components/commissionDetail/index'),
-        commissionRebate: () => import(/* webpackChunkName: 'commissionRebate' */ './components/commissionRebate/index')
+        commissionRebates: () => import(/* webpackChunkName: 'commissionRebates' */ './components/commissionRebates/index')
     },
     mixins: [commission],
     props: {
