@@ -69,7 +69,7 @@
                   <img
                     :src="
                       $getCdnPath(
-                        '/static/image/mobile/tpl/porn1/mcenter/icon_relax.png'
+                        '/static/image/_new/mcenter/balanceTrans/icon_transfer_tips_info.png'
                       )
                     "
                     :class="$style['balance-wrench']"
