@@ -100,7 +100,7 @@
     &.is-current {
         border: 1px solid #D1B79C;
         color: #D1B79C;
-        background: linear-gradient(-45deg,#D1B79C 10px,hsla(0,0%,100%,0) 0);
+        background: linear-gradient(-45deg, #D1B79C 10px, hsla(0, 0%, 100%, 0) 0);
     }
 
     .pay-mode-tag {
@@ -173,7 +173,7 @@
     background-color: #FFF;
     color: #D1B79C;
     border: 1px solid #D1B79C;
-    background: linear-gradient(-45deg,#D1B79C 12px,hsla(0,0%,100%,0) 0);
+    background: linear-gradient(-45deg, #D1B79C 12px, hsla(0, 0%, 100%, 0) 0);
 }
 
 
@@ -208,7 +208,7 @@
         background-color: #FFF;
         color: #D1B79C;
         border: 1px solid #D1B79C;
-        background: linear-gradient(-45deg,#D1B79C 12px,hsla(0,0%,100%,0) 0);
+        background: linear-gradient(-45deg, #D1B79C 12px, hsla(0, 0%, 100%, 0) 0);
     }
 }
 
@@ -226,8 +226,8 @@
     cursor: pointer;
     color: #FFF;
     background: #BD9D7D;
-    background-image: -webkit-linear-gradient(right ,#BD9D7D, #F9DDBD);
-    background-image: linear-gradient(right ,#BD9D7D, #F9DDBD);
+    background-image: -webkit-linear-gradient(right, #BD9D7D, #F9DDBD);
+    background-image: linear-gradient(right, #BD9D7D, #F9DDBD);
 
     &.disabled {
         opacity: 0.5;
@@ -252,14 +252,17 @@
     &::-webkit-input-placeholder {
         color: #CBCED8;
     }
+
     // Firefox 19+
     &::-moz-placeholder {
         color: #CBCED8;
     }
+
     // IE 10+
     &:-ms-input-placeholder {
         color: #CBCED8;
     }
+
     // Firefox 18-
     &:-moz-placeholder {
         color: #CBCED8;
@@ -299,6 +302,7 @@
     margin-left: 5px;
     color: #6AAAF5;
 }
+
 // ===============================================
 
 .deposit-list-wrap {
@@ -410,6 +414,7 @@
     text-align: center;
     border-radius: 20px 20px 0 0;
     box-shadow: 0 2px 4px 0 rgba(0, 0, 0, .05);
+
     span {
         padding: 0 14px;
         position: absolute;
@@ -605,14 +610,17 @@
         &::-webkit-input-placeholder {
             color: #AAA;
         }
+
         // Firefox 19+
         &::-moz-placeholder {
             color: #AAA;
         }
+
         // IE 10+
         &:-ms-input-placeholder {
             color: #AAA;
         }
+
         // Firefox 18-
         &:-moz-placeholder {
             color: #AAA;
@@ -641,6 +649,7 @@
         box-shadow: none;
         border: none;
         background: transparent;
+
         &::-webkit-input-placeholder {
             color: #A6A9B2;
         }
@@ -748,11 +757,13 @@
     background: $depositIconWrapBg;
     color: $depositIconWrapColor;
     border-radius: 50%;
+
     div {
         position: relative;
         width: 100%;
         height: 100%;
     }
+
     svg {
         position: absolute;
         top: 50%;
@@ -802,9 +813,11 @@
         top: 50%;
         transform: translate(0, -50%);
     }
+
     &:before {
         left: 0;
     }
+
     &:after {
         right: 0;
     }
@@ -813,126 +826,4 @@
 .warm-tip {
     font-size: 12px;
     color: #A6A9B2;
-}
-
-// pad
-@media screen and (min-width: $pad) {
-    .mode-item {
-        height: 58px;
-        line-height: 58px;
-        font-size: 18px;
-    }
-
-    .bank-card-wrap {
-        padding-top: 20px;
-    }
-
-    .feature-wrap {
-        padding: 15px 6% 8px;
-    }
-
-    .bank-card-title {
-        font-size: 18px;
-    }
-
-    .pay-mode-item {
-        padding: 8px 4px 6px 57px;
-        font-size: 14px;
-
-        .pay-main-title {
-            font-size: 20px;
-        }
-
-        .pay-mode-img {
-            width: 36px;
-            height: 36px;
-        }
-    }
-
-    .pay-mode-pass {
-        width: 22%;
-        height: 58px;
-        line-height: 58px;
-        margin-bottom: 0;
-        font-size: 26px;
-        position: relative;
-
-        &:nth-child(3n) {
-            margin-right: 8px;
-        }
-
-        &:nth-child(4n) {
-            margin-right: 0;
-        }
-    }
-
-    .deposit-input {
-        height: 53px;
-        line-height: 52px;
-        font-size: 14px;
-    }
-
-    .feature-tip-wrap {
-        padding: 0 6%;
-        line-height: 26px;
-    }
-
-    .feature-tip-title {
-        height: 37px;
-        line-height: 37px;
-        font-size: 26px;
-    }
-
-    .amount-text {
-        height: 46px;
-        line-height: 46px;
-        font-size: 46px;
-    }
-
-    .money-tip-wrap {
-        line-height: 28px;
-        margin-top: 10px;
-    }
-
-    .tip-list {
-        font-size: 18px;
-    }
-
-    .pay-button {
-        width: 567px;
-        height: 58px;
-        line-height: 58px;
-        margin-bottom: 20px;
-        font-size: 18px;
-    }
-
-    .warm-tip-title {
-        font-size: 18px;
-    }
-
-    .warm-tip {
-        font-size: 18px;
-    }
-}
-
-.theme-miller {
-    .mode-item {
-        background-color: #F7B500;
-
-        &:active {
-            background-color: #FFD152;
-        }
-    }
-
-    .pay-button {
-        background-color: #F7B500;
-
-        &:active {
-            background-color: #FFD152;
-        }
-    }
-
-    .money-tip-wrap {
-        color: #F7B500;
-    }
 }
