@@ -232,9 +232,6 @@ export default {
         title: this.$text("S_LOGON", "登录"),
       };
     },
-    mobileColor() {
-      return this.$cookie.get('MOBILE_COLOR') || this.siteConfig.MOBILE_COLOR;
-    },
     hasCaptchaText() {
       if (this.memInfo.config.login_captcha_type === 1) {
         return true;
@@ -254,12 +251,7 @@ export default {
     this.username = localStorage.getItem('username') || '';
     this.password = localStorage.getItem('password') || '';
     this.depositStatus = localStorage.getItem('depositStatus') || false;
-
-    let version = this.$route.query.version || getCookie('version');
-    if (version) {
-      this.version = version;
-      setCookie('version', version);
-    }
+    this.version = this.siteConfig.VERSION;
   },
   methods: {
     mobileLinkOpen,
