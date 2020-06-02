@@ -1,0 +1,13 @@
+.preset-color {
+    $titleColor: #19A3FF;
+
+    @import './commissionDetail.scss';
+}
+
+.site-500011,
+.site-52,
+.site-53 {
+    $titleColor: #EDB83F;
+
+    @import './commissionDetail.scss';
+}

@@ -118,7 +118,7 @@
               @input="checkData"
             />
             <div
-              :class="[$style['send-keyring'], { [$style.disabled]: mustWait }]"
+              :class="[$style['send-keyring'], { [$style.disabled]: smsTimer }]"
               @click="getKeyring"
             >
               {{ time ? `${time}s` : "获取验证码" }}
@@ -222,10 +222,9 @@ export default {
       NextStepStatus: false,
       errorMsg: '',
       lockStatus: false,
-      mustWait: false,
       time: 0,
-      msg: ''
-
+      msg: '',
+      smsTimer: null
     };
   },
   computed: {
@@ -307,20 +306,31 @@ export default {
         fail: (error) => {
           this.lockStatus = false;
           this.errorMsg = error.data.msg;
+
+          if (this.addBankCardStep === 'one') {
+            this.msg = error.data.msg;
+          }
         }
       });
     },
     clearMsg() {
       const { query } = this.$route;
-      this.msg = '';
+      if (!this.msg.includes('绑定成功')) {
+        this.msg = '';
+        return;
+      }
 
+      // 綁定成功後添加成功後回到遊戲 影片
+      this.msg = '';
       let redirect = query.redirect;
       if (!redirect) {
         this.changePage('bankCardInfo');
         return;
       }
 
-      // 預設提現銀行卡添加成功後回到遊戲 影片
+      clearInterval(this.smsTimer);
+      this.smsTimer = null;
+
       let split = redirect.split('-');
       if (split.length === 2) {
         this.$router.push(`/mobile/${split[0]}/${split[1]}`);
@@ -334,6 +344,9 @@ export default {
       }
 
       switch (redirect) {
+        case "wallet":
+          this.$router.push(`/mobile/mcenter/wallet`);
+          return;
         case "withdraw":
         case "balanceTrans":
           this.$router.push(`/mobile/mcenter/${redirect}`);
@@ -378,7 +391,7 @@ export default {
     },
     verifyNumber(e) {
       const regex = /^[0-9]+$/
-      if(!regex.test(e.key)) {
+      if (!regex.test(e.key)) {
         e.preventDefault();
       }
     },
@@ -390,7 +403,7 @@ export default {
       };
     },
     getKeyring() {
-      if (this.lockStatus) {
+      if (this.lockStatus || this.smsTimer) {
         return;
       }
 
@@ -410,24 +423,27 @@ export default {
             errorAlert: false,
             success: ({ ret }) => {
               this.lockStatus = false;
-              this.mustWait = true;
               this.time = ret;
-              const timer = () => {
-                setTimeout(() => {
-                  if (this.time === 1) {
-                    this.mustWait = false;
-                  }
 
-                  if (this.time <= 0) {
-                    return;
-                  }
-                  this.time -= 1;
-                  timer();
-                }, 1000);
-              };
-              timer();
+              this.smsTimer = setInterval(() => {
+                if (this.time === 1) {
+                  this.smsTimer = false;
+                }
+
+                if (this.time <= 0) {
+                  clearInterval(this.smsTimer);
+                  this.smsTimer = null;
+                  return;
+                }
+                this.time -= 1;
+              }, 1000);
             },
             fail: (error) => {
+              if (error && error.status === "429") {
+                this.msg = '操作太频繁，请稍候在试';
+                return;
+              }
+
               this.lockStatus = false;
               this.errorMsg = error.data.msg;
             }
@@ -438,7 +454,11 @@ export default {
           this.errorMsg = error.data.msg;
         }
       });
-    }
+    },
+    beforeDestroy() {
+      clearInterval(this.smsTimer);
+      this.smsTimer = null;
+    },
   }
 };
 </script>

@@ -1,19 +1,23 @@
 <template>
-    <mobile-container :class="$style.container" :hasFooter="false">
-        <div slot="content" class="content-wrap">
-            <tcenter func="commission" />
-        </div>
-    </mobile-container>
+    <div :class="$style['content-wrap']" :style="{ height: divHeight + 'px' }">
+        <tcenter func="commission" />
+    </div>
 </template>
 
 <script>
-import tcenter from '@/components/mcenter/components/tcenter';
-import mobileContainer from '../../../../common/new/mobileContainer';
+import tcenter from "@/router/mobile/components/common/mcenter/theme1/tcenter";
 
 export default {
     components: {
-        mobileContainer,
         tcenter
+    },
+    data() {
+        return {
+            divHeight: 0
+        };
+    },
+    mounted() {
+        this.divHeight = document.body.offsetHeight;
     }
 };
 </script>
@@ -21,7 +25,7 @@ export default {
 <style lang="scss" module>
 @import "@/css/variable.scss";
 
-div.container {
+.content-wrap {
     padding-top: 43px;
     background-color: $main_background_white1;
 }

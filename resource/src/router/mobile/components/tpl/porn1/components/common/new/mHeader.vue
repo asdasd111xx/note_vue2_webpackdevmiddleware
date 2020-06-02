@@ -295,7 +295,7 @@ export default {
 
 .logo-wrap {
   float: left;
-  width: 64px;
+  width: 99px;
   height: 100%;
   display: flex;
   align-items: center;
@@ -303,7 +303,7 @@ export default {
 
   > img {
     display: block;
-    height: 24px;
+    height: 33px;
     width: 100%;
   }
 }
@@ -320,7 +320,7 @@ export default {
     margin: 0 1.5px;
     padding: 0 3px;
     color: black;
-    font-size: 14px;
+    font-size: 17px;
     vertical-align: middle;
   }
 

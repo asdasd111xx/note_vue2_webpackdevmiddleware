@@ -1,0 +1,19 @@
+.preset-color {
+    $tabColor: #000;
+    $tabColorActive: #00347D;
+    $buttonBackgroundColor: #00347D;
+    $buttonTextColor: #FFF;
+
+    @import './gameRecord.scss';
+}
+
+.site-500011,
+.site-52,
+.site-53 {
+    $tabColor: #000;
+    $tabColorActive: #EDB83F;
+    $buttonBackgroundColor: #EDB83F;
+    $buttonTextColor: #222;
+
+    @import './gameRecord.scss';
+}

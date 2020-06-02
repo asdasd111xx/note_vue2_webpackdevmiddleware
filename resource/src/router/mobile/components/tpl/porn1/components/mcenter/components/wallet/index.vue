@@ -6,10 +6,7 @@
 
         <div :class="$style['money-block']">
           <span :class="$style['money']">{{ memInfo.balance.total }}</span>
-          <div
-            :class="$style['goDeposit']"
-            @click="$router.push('/mobile/mcenter/deposit')"
-          >
+          <div :class="$style['goDeposit']" @click="handleDeposit">
             去充值
           </div>
         </div>
@@ -181,6 +178,8 @@ import EST from '@/lib/EST';
 import balanceTran from '@/components/mcenter/components/balanceTran';
 import mobileContainer from '../../../common/new/mobileContainer';
 import message from '../../../common/new/message';
+import { getCookie, setCookie } from '@/lib/cookie';
+import axios from 'axios';
 
 export default {
   components: {
@@ -227,7 +226,8 @@ export default {
     ...mapGetters({
       loginStatus: 'getLoginStatus',
       memInfo: 'getMemInfo',
-      gameData: 'getGameData'
+      gameData: 'getGameData',
+      siteConfig: 'getSiteConfig',
     }),
     headerConfig() {
       return {
@@ -254,6 +254,29 @@ export default {
     this.getRecordList();
   },
   methods: {
+    handleDeposit() {
+      axios({
+        method: 'get',
+        url: `${this.siteConfig.YABO_API_DOMAIN}/AccountBank/GetBankBindingStatus/${getCookie('cid')}`,
+        timeout: 30000,
+        headers: {
+          Bundleid: 'chungyo.foxyporn.prod.enterprise.web',
+          Version: 1,
+          'x-domain': this.memInfo.user.domain
+        }
+      }).then((res) => {
+        if (res.data && res.data.data) {
+          this.$router.push(`/mobile/mcenter/deposit`);
+        }
+        else {
+          this.msg = "请先绑定提现银行卡"
+
+          setTimeout(() => {
+            this.$router.push('/mobile/mcenter/bankCard?redirect=wallet');
+          }, 2500)
+        }
+      });
+    },
     handleClick(path) {
       this.$router.push(path);
     },

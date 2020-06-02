@@ -1,15 +1,7 @@
 <template>
   <mobile-container :has-footer="false">
     <div slot="content" :class="$style['live-stream-wrap']">
-      <message
-        v-if="msg"
-        @close="msg = ''"
-        :callback="
-          () => {
-            $router.push(`/mobile/mcenter/bankcard?redirect=liveStream`);
-          }
-        "
-      >
+      <message v-if="msg" @close="msg = ''" :callback="clearMsg">
         <div slot="msg">
           {{ msg }}
         </div>
@@ -187,26 +179,27 @@ export default {
     window.sportEvent = (type) => {
       if (type === 'GO_IM_SPORT') {
         if (!this.loginStatus) {
-          if (window.location.pathname.split('/')[1] === 'mobile') {
-            this.$router.push({ name: 'login' });
-            return;
-          }
-
-          alert(this.$text('S_LOGIN_TIPS', '请先登入'));
+          this.$router.push({ name: 'login' });
+          this.msg = this.$text('S_LOGIN_TIPS', '请先登入')
           return;
         } else {
-
           if (!this.hasBankCard) {
             this.msg = "请先绑定提现银行卡"
             return;
           }
-
           openGame({ vendor: 'boe', kind: 1 });
         }
       }
     };
   },
   methods: {
+    clearMsg() {
+      if (this.msg.includes('银行卡')) {
+        this.$router.push('/mobile/mcenter/bankCard?redirect=liveStream');
+      }
+
+      this.msg = '';
+    },
     openLiveStream() {
       if (!this.loginStatus) {
         this.$router.push('/mobile/login');
@@ -235,7 +228,7 @@ export default {
 .live-stream-wrap {
   background-color: $main_white_color1;
   position: relative;
-  height: calc(100vh - 43px);
+  height: 100%;
 }
 
 .live-tab {
@@ -276,11 +269,16 @@ export default {
 }
 
 .iframe-bg-wrap {
+  overflow: auto;
+  -webkit-overflow-scrolling: touch;
   background-color: #fff;
+  height: 100%;
 }
 
 .iframe-wrap {
   width: 100%;
+  overflow: auto;
+  -webkit-overflow-scrolling: touch;
 }
 
 .cuties-live-wrap {

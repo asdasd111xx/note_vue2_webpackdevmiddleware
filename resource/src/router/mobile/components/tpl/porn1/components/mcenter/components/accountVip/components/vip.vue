@@ -27,8 +27,6 @@
             "
             >{{ item.config_name }}</span
           >
-
-          <span @click="msg = '正在上线 敬请期待'">直播VIP</span>
         </div>
 
         <message v-if="msg" @close="msg = ''">
