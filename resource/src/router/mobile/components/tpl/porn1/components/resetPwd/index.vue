@@ -4,7 +4,7 @@
     :class="$style.container"
     :has-footer="hasFooter"
   >
-    <div slot="content" class="content-wrap">
+    <div slot="content" :class="$style['content-wrap']">
       <message v-if="msg" @close="msg = ''">
         <div slot="msg">{{ msg }}</div>
       </message>
@@ -325,6 +325,11 @@ export default {
 
 <style lang="scss" module>
 @import "~@/css/variable.scss";
+
+.content-wrap {
+  background: #fefffe;
+  min-height: 100vh;
+}
 
 .reset-container {
   min-height: 100%;
