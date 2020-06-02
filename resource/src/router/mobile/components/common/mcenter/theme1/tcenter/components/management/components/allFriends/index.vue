@@ -1,5 +1,5 @@
 <template>
-    <table class="all-friends-table">
+    <table v-if="levelList.length" :class="mainClass">
         <thead>
             <tr>
                 <!-- 好友級數(總) -->
@@ -25,37 +25,45 @@
                     <td>{{ info.withdraw }}</td>
                 </tr>
             </template>
-            <template v-if="levelList.length">
+        </tbody>
+        <tfoot>
+            <template>
                 <!-- 總計 -->
-                <tr class="total">
+                <tr>
                     <td>{{ $text('S_TOTAL') }}({{ allTotal.total }})</td>
                     <td>{{ allTotal.register }}</td>
                     <td>{{ allTotal.deposit }}</td>
                     <td>{{ allTotal.withdraw }}</td>
                 </tr>
             </template>
-        </tbody>
+        </tfoot>
     </table>
 </template>
 
 <script>
-import mixinAllFriends from '@/mixins/mcenter/management/mixinAllFriends';
+import { mapGetters } from 'vuex';
+import allLevelStatistics from '@/mixins/mcenter/management/allLevelStatistics';
 
 /**
  * @param {Array} date - 日期
  */
 export default {
-    mixins: [mixinAllFriends],
-    props: {
-        date: {
-            type: Array,
-            required: true
+    mixins: [allLevelStatistics],
+    computed: {
+        ...mapGetters({
+            memInfo: 'getMemInfo'
+        }),
+        mainClass() {
+            const site = `site-${this.memInfo.user.domain}`;
+
+            return {
+                [this.$style['all-friends-table']]: true,
+                [this.$style[site]]: this.$style[site],
+                [this.$style['preset-color']]: !this.$style[site]
+            };
         }
-    },
-    created() {
-        this.getLevelList(this.date);
     }
 };
 </script>
 
-<style lang="scss" src="../css/allFriends.scss" scoped></style>
+<style lang="scss" src="./css/index.scss" module></style>

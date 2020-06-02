@@ -163,6 +163,16 @@ export default {
         datePicker,
         InfiniteLoading
     },
+    props: {
+        setTabState: {
+            type: Function,
+            required: true
+        },
+        setHeaderTitle: {
+            type: Function,
+            required: true
+        }
+    },
     data() {
         return {
             hasFooter: false,
