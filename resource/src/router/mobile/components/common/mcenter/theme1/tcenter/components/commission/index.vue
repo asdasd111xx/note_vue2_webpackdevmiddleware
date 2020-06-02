@@ -5,6 +5,7 @@
             <span :class="[$style.link, { [$style.active]: page === 'summary' }]" @click="onClick('summary')">{{ $text('S_COMMISSION_SUMMARY', '收益概況') }}</span>
             <span :class="[$style.link, { [$style.active]: page === 'rebate' }]" @click="onClick('rebate')">{{ $text('S_COMMISSION_REBATE', '实时返利') }}</span>
         </div>
+
         <div v-if="page === 'record' && hasSearch" class="search-wrap">
             <div :class="$style['search-form']">
                 <div :class="$style['form-row']">
@@ -30,7 +31,9 @@
                 </div>
             </div>
         </div>
+
         <commission-overview v-if="page === 'summary'" />
+
         <commission-list
             v-show="page === 'record'"
             :set-tab-state="setTabState"
@@ -39,10 +42,12 @@
             :set-detail-data="setDetailData"
             :show-no-data="isShowNoData"
         />
+
         <commission-detail
             v-if="page === 'detail'"
             :detail-info="detailInfo"
         />
+
         <commission-rebates v-if="page === 'rebate'"/>
     </div>
 </template>
@@ -113,19 +118,28 @@ export default {
     watch: {
         startTime() {
             this.endTime = this.startTime > this.endTime ? this.startTime : this.endTime;
+        },
+        "$route.params.page"() {
+            if (this.$route.params.page === 'detail') {
+                return;
+            } else {
+                this.setTabState(true);
+                this.setHeaderTitle(this.$text("S_TEAM_CENTER", "我的推广"));
+            }
         }
     },
     created() {
-        if (!this.page) {
+        // 因 detail 的資料可能為第三方 or 各級好友(從上一個傳下來的data)，統一重整回summary
+        if (this.page === 'detail') {
             this.$router.push('/mobile/mcenter/tcenter/commission/summary');
+        }
+
+        // 重整的時候，根據當下render page
+        if (this.page) {
+            this.$router.push(`/mobile/mcenter/tcenter/commission/${this.page}`);
             return;
         }
 
-        if (this.page !== 'detail') {
-            return;
-        }
-
-        this.$router.push('/mobile/mcenter/tcenter/commission/record');
         this.hasSearch = true;
     },
     methods: {

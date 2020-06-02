@@ -292,7 +292,7 @@ export default {
 
   .video {
     > div {
-      height: 180px;
+      height: 115px;
     }
   }
 

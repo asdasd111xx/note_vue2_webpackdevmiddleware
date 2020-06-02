@@ -153,6 +153,7 @@ export default {
         switch (newValue) {
           case "main":
             this.showInfinite = false;
+            this.setTabState(true)
             this.setHeaderTitle(
               this.$text("S_TEAM_CENTER", "我的推广")
             );

@@ -154,7 +154,7 @@ export default {
 @media screen and (min-width: $pad) {
   .video-wrap {
     > div {
-      height: 160px;
+      height: 115px;
     }
   }
 

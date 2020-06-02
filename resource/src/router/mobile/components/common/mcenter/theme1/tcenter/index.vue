@@ -55,19 +55,31 @@ export default {
     },
     data() {
         return {
-            tabState: !(
-                (this.func === "commission" &&
-                    this.$route.params.id &&
-                    this.$route.params.period) ||
-                (this.func === "management" &&
-                    this.$route.params.page &&
-                    this.$route.params.date)
-            ),
+            tabState: true,
             headerConfig: {
                 title: this.$text("S_TEAM_CENTER", "我的推广"),
                 prev: true,
                 onClick: () => {
-                    this.$router.push('/mobile/mcenter');
+                    if (
+                        this.func === "management" &&
+                        this.$route.params.page &&
+                        this.$route.params.date
+                    ) {
+                        this.$router.push("/mobile/mcenter/tcenter/management/member");
+                        return;
+                    }
+
+                    if (this.func === "gameRecord" && this.$route.params.page === "bet") {
+                        this.$router.back()
+                        return;
+                    }
+
+                    if (this.func === "commission" && this.$route.params.page === "detail") {
+                        this.$router.back()
+                        return;
+                    }
+
+                    this.$router.push("/mobile/mcenter");
                 }
             }
         };
@@ -121,13 +133,35 @@ export default {
     methods: {
         ...mapActions(["actionChangePage"]),
         setTabCurrent(tabKey) {
-            if (this.tabItem[tabKey].key === "commission") {
-                this.$router.push("/mobile/mcenter/tcenter/commission/summary");
-                return;
+            // 點擊類別 & 再次點擊，來預設path以render畫面
+            switch (this.tabItem[tabKey].key) {
+                // 我的返利
+                case "commission":
+                    this.$router.push(
+                        "/mobile/mcenter/tcenter/commission/summary"
+                    );
+
+                    break;
+
+                // 遊戲記錄
+                case "gameRecord":
+                    this.$router.push(
+                        "/mobile/mcenter/tcenter/gameRecord/main"
+                    );
+                    break;
+
+                // 團隊管理
+                case "management":
+                    this.$router.push(
+                        `/mobile/mcenter/tcenter/management/member`
+                    );
+                    break;
+
+                // 推薦禮金
+                default:
+                    this.$router.push(`/mobile/mcenter/tcenter/recommendGift`);
+                    break;
             }
-            this.$router.push(
-                `/mobile/mcenter/tcenter/${this.tabItem[tabKey].key}`
-            );
         },
         setTabState(state) {
             this.tabState = state;

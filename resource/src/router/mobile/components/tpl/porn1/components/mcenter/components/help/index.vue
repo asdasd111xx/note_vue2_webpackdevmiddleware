@@ -135,6 +135,7 @@ export default {
 
 .setting-wrap {
   color: $main_text_color3;
+  position: relative;
 
   .list {
     height: 60px;

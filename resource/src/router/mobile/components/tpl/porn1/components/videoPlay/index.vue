@@ -1,7 +1,7 @@
 <template>
   <mobile-container v-if="videoInfo" :class="$style.container">
     <div slot="content" class="content-wrap">
-      <div :class="$style['header']">
+      <div :class="$style['header']" id="header">
         <div :class="$style['btn-prev']" @click="$router.back()">
           <img :src="$getCdnPath('/static/image/_new/common/btn_back_w.png')" />
         </div>
@@ -103,7 +103,6 @@ div.container {
 .header {
   position: fixed;
   top: 0;
-  left: 0;
   z-index: 3;
   width: 100%;
   height: 43px;

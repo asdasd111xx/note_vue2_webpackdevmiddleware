@@ -118,9 +118,9 @@ export default {
 
 .discover-artist-wrap {
   position: relative;
-  padding-bottom: 15px;
   height: calc(100vh - 105px);
   overflow-y: scroll;
+  padding-bottom: 100px;
 }
 
 .artist-container {

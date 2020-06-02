@@ -51,28 +51,19 @@
     &::-webkit-input-placeholder {
         color: #BEBCBC;
     }
+
     // Firefox 19+
     &::-moz-placeholder {
         color: #BEBCBC;
     }
+
     // IE 10+
     &:-ms-input-placeholder {
         color: #BEBCBC;
     }
+
     // Firefox 18-
     &:-moz-placeholder {
         color: #BEBCBC;
-    }
-}
-
-// pad
-@media screen and (min-width: $pad) {
-    .speed-field-wrap {
-        padding: 0 6% 20px;
-        font-size: 16px;
-    }
-    
-    .speed-field {
-        padding-top: 20px;
     }
 }

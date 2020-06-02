@@ -46,22 +46,6 @@
     }
 }
 
-// pad
-@media screen and (min-width: $pad) {
-    .deposit-now-total {
-        padding: 14px 3%;
-
-        span {
-            font-size: 16x;
-        }
-
-        .now-total {
-            margin-top: 7px;
-            font-size: 20px;
-        }
-    }
-}
-
 .theme-miller {
     .deposit-now-total {
         background: #2C2F2F;

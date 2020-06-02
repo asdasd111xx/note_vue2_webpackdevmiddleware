@@ -53,19 +53,15 @@ export default {
     };
   },
   mounted() {
-    let version = this.$route.query.version || getCookie('version');
-    if (version) {
-      this.version = version;
-      setCookie('version', version);
-
-      this.list.push({
-        name: this.$text("S_CURRENT_VERSION", "当前版本"), path: '', isPart: true, isVersion: true
-      })
-    }
+    this.version = this.siteConfig.VERSION;
+    this.list.push({
+      name: this.$text("S_CURRENT_VERSION", "当前版本"), path: '', isPart: true, isVersion: true
+    })
   },
   computed: {
     ...mapGetters({
-      loginStatus: 'getLoginStatus'
+      loginStatus: 'getLoginStatus',
+      siteConfig: "getSiteConfig",
     }),
     headerConfig() {
       return {
