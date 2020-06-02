@@ -28,7 +28,7 @@
                 class="login-input"
                 maxlength="20"
                 tabindex="1"
-                @keydown.13="loginCheck"
+                @keydown.13="keyDownSubmit()"
                 @change="onSaveAccount"
                 @input="
                   username = $event.target.value
@@ -63,7 +63,7 @@
                 type="password"
                 maxlength="12"
                 tabindex="2"
-                @keydown.13="loginCheck"
+                @keydown.13="keyDownSubmit()"
                 @change="onSaveAccount"
               />
               <div :class="$style['eye']">
@@ -100,7 +100,7 @@
                 maxlength="4"
                 tabindex="3"
                 @focus="getCaptcha"
-                @keydown.13="loginCheck"
+                @keydown.13="keyDownSubmit()"
               />
               <div class="input-icon">
                 <img
@@ -263,6 +263,12 @@ export default {
   },
   methods: {
     mobileLinkOpen,
+    keyDownSubmit() {
+      if (this.memInfo.config.login_captcha_type === 2) {
+        return
+      }
+      this.loginCheck();
+    },
     toggleEye() {
       if (this.isShowPwd) {
         document.getElementById("pwd").type = 'password';

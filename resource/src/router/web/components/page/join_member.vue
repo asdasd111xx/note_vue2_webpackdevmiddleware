@@ -52,7 +52,7 @@
                 maxlength="4"
                 @focus="getCaptcha()"
                 @input="verification(field.key)"
-                @keydown.13="joinSubmit()"
+                @keydown.13="keyDownSubmit()"
               />
               <img
                 v-if="captchaImg"
@@ -70,7 +70,7 @@
               type="password"
               @focus="onFocus(field.key)"
               @blur="verification(field.key)"
-              @keydown.13="joinSubmit()"
+              @keydown.13="keyDownSubmit()"
             />
             <input
               v-else-if="field.key === 'confirm_password'"
@@ -81,7 +81,7 @@
               type="password"
               @input="verification(field.key)"
               @blur="verification(field.key)"
-              @keydown.13="joinSubmit()"
+              @keydown.13="keyDownSubmit()"
             />
             <input
               v-else-if="field.key === 'username'"
@@ -93,7 +93,7 @@
               type="text"
               @focus="onFocus(field.key)"
               @blur="verification(field.key)"
-              @keydown.13="joinSubmit()"
+              @keydown.13="keyDownSubmit()"
               @input="
                 allValue[field.key] = $event.target.value
                   .toLowerCase()
@@ -110,7 +110,7 @@
               :placeholder="field.content.note1"
               type="text"
               @blur="verification(field.key)"
-              @keydown.13="joinSubmit()"
+              @keydown.13="keyDownSubmit()"
             />
           </div>
           <!-- eslint-disable vue/no-v-html -->
@@ -376,6 +376,12 @@ export default {
     });
   },
   methods: {
+    keyDownSubmit() {
+      if (this.memInfo.config.register_captcha_type === 2) {
+        return
+      }
+      this.joinSubmit();
+    },
     getCaptcha() {
       bbosRequest({
         method: 'post',
