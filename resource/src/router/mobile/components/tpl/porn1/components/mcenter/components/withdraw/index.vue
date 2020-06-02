@@ -136,12 +136,11 @@
                 }}</span>
               </div>
 
-              <div :class="[$style['balance-item'], $style['collapse']]">
-                <span
-                  :class="$style['balance-item-vendor']"
-                  @click="toggleShowMore"
-                  >收起</span
-                >
+              <div
+                :class="[$style['balance-item'], $style['collapse']]"
+                @click="toggleShowMore"
+              >
+                <span :class="$style['balance-item-vendor']">收起</span>
                 <div :class="[$style['icon']]">
                   <img
                     :src="

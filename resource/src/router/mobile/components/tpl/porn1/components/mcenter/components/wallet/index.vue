@@ -178,7 +178,7 @@ import EST from '@/lib/EST';
 import balanceTran from '@/components/mcenter/components/balanceTran';
 import mobileContainer from '../../../common/new/mobileContainer';
 import message from '../../../common/new/message';
-import { getCookie, setCookie } from '@/lib/cookie';
+import { getCookie } from '@/lib/cookie';
 import axios from 'axios';
 
 export default {
