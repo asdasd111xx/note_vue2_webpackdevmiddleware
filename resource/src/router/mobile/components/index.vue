@@ -41,8 +41,6 @@ export default {
   },
   created() {
     // 版本&平台
-    let version = this.$route.query.version || getCookie('version') || '';
-    setCookie('version', version);
     let platform = this.$route.query.platform || getCookie('platform') || '';
     setCookie('platform', platform);
 
@@ -75,7 +73,7 @@ export default {
     }
 
     if (this.loginStatus && this.memInfo.user.password_reset) {
-        this.$router.push('/mobile/resetPwd');
+      this.$router.push('/mobile/resetPwd');
     }
   },
   methods: {

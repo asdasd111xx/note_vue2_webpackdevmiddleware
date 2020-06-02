@@ -28,7 +28,7 @@
                 class="login-input"
                 maxlength="20"
                 tabindex="1"
-                @keydown.13="loginCheck"
+                @keydown.13="keyDownSubmit()"
                 @change="onSaveAccount"
                 @input="
                   username = $event.target.value
@@ -63,7 +63,7 @@
                 type="password"
                 maxlength="12"
                 tabindex="2"
-                @keydown.13="loginCheck"
+                @keydown.13="keyDownSubmit()"
                 @change="onSaveAccount"
               />
               <div :class="$style['eye']">
@@ -100,7 +100,7 @@
                 maxlength="4"
                 tabindex="3"
                 @focus="getCaptcha"
-                @keydown.13="loginCheck"
+                @keydown.13="keyDownSubmit()"
               />
               <div class="input-icon">
                 <img
@@ -232,9 +232,6 @@ export default {
         title: this.$text("S_LOGON", "登录"),
       };
     },
-    mobileColor() {
-      return this.$cookie.get('MOBILE_COLOR') || this.siteConfig.MOBILE_COLOR;
-    },
     hasCaptchaText() {
       if (this.memInfo.config.login_captcha_type === 1) {
         return true;
@@ -254,15 +251,16 @@ export default {
     this.username = localStorage.getItem('username') || '';
     this.password = localStorage.getItem('password') || '';
     this.depositStatus = localStorage.getItem('depositStatus') || false;
-
-    let version = this.$route.query.version || getCookie('version');
-    if (version) {
-      this.version = version;
-      setCookie('version', version);
-    }
+    this.version = this.siteConfig.VERSION;
   },
   methods: {
     mobileLinkOpen,
+    keyDownSubmit() {
+      if (this.memInfo.config.login_captcha_type === 2) {
+        return
+      }
+      this.loginCheck();
+    },
     toggleEye() {
       if (this.isShowPwd) {
         document.getElementById("pwd").type = 'password';

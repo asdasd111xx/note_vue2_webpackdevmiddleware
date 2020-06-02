@@ -225,7 +225,6 @@ export default {
                 params: { lang: "zh-cn" }
             }).then(response => {
                 if (response.status === "000") {
-                    console.log(response);
                     this.immediateData = response.data.entries
 
                     // 測試資料

@@ -66,7 +66,6 @@
     </template>
     <template v-if="headerConfig.hasSearchBtn">
       <div :class="$style['btn-search-wrap']" @click="goSearch">
-        <!-- <icon name="search" width="16" height="16" /> -->
         <img
           :src="$getCdnPath('/static/image/_new/common/icon_search_n.png')"
         />
@@ -504,9 +503,7 @@ export default {
   color: #5e626d;
   > span {
     display: inline-block;
-    height: 20px;
-    line-height: 20px;
-    font-size: 17px;
+    font-size: 18px;
     margin-right: 9px;
   }
 

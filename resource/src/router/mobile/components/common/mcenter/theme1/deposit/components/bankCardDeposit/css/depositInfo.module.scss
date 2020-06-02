@@ -79,11 +79,13 @@
     background: $depositIconWrapBg;
     color: $depositIconWrapColor;
     border-radius: 50%;
+
     div {
         position: relative;
         width: 100%;
         height: 100%;
     }
+
     img {
         display: block;
         width: 12px;
@@ -150,14 +152,17 @@
     &::-webkit-input-placeholder {
         color: #DDD;
     }
+
     // Firefox 19+
     &::-moz-placeholder {
         color: #DDD;
     }
+
     // IE 10+
     &:-ms-input-placeholder {
         color: #DDD;
     }
+
     // Firefox 18-
     &:-moz-placeholder {
         color: #DDD;
@@ -201,8 +206,8 @@
     border-radius: 3px;
     color: #FFF;
     background: #BD9D7D;
-    background-image: -webkit-linear-gradient(right ,#BD9D7D, #F9DDBD);
-    background-image: linear-gradient(right ,#BD9D7D, #F9DDBD);
+    background-image: -webkit-linear-gradient(right, #BD9D7D, #F9DDBD);
+    background-image: linear-gradient(right, #BD9D7D, #F9DDBD);
 
     &:active {
         background-color: #BD9D7D;
@@ -224,59 +229,4 @@
 .service-btn {
     margin-left: 5px;
     color: #6AAAF5;
-}
-
-// pad
-@media screen and (min-width: $pad) {
-    .deposit-info-title {
-        height: 40px;
-        line-height: 40px;
-        font-size: 18px;
-    }
-
-    .deposit-submit-info {
-        padding: 16px 0;
-        font-size: 16px;
-    }
-
-    .basic-info-text {
-        padding-right: 9%;
-
-        .application-table & {
-            padding: 0 6%;
-        }
-
-        &.basic-info-title {
-            padding-left: 6%;
-        }
-    }
-
-    .qrcode-wrap {
-        padding-right: 3%;
-    }
-
-    .info-border {
-        margin: 16px 0;
-    }
-
-    .icon-wrap {
-        right: 39px;
-    }
-
-    .qrcode-img {
-        width: 112px;
-        height: 112px;
-    }
-
-    .deposit-info-more {
-        padding: 11px 6%;
-        font-size: 18px;
-    }
-
-    .submit-btn {
-        width: 568px;
-        height: 58px;
-        line-height: 58px;
-        font-size: 20px;
-    }
 }

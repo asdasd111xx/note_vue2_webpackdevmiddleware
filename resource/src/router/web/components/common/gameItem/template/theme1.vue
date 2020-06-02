@@ -170,8 +170,23 @@ export default {
       // cdn 機制
       // let resultUrl = this.$getCdnPath(`${this.cdnDomain}/image/${imgConverter[this.gameInfo.kind]}/${this.gameInfo.vendor}/Game_${this.gameInfo.code}.png`);
 
-      // 本地圖片, 待 cdn 調整好刪除
-      let resultUrl = `/static/cdn-image/${imgConverter[this.gameInfo.kind]}/${this.gameInfo.vendor}/Game_${this.gameInfo.code}.png`;
+      // cdn 未完善先調整至同APP
+      //  let resultUrl = `/static/cdn-image/${imgConverter[this.gameInfo.kind]}/${this.gameInfo.vendor}/Game_${this.gameInfo.code}.png`;
+
+      let type = "";
+      switch (Number(this.gameInfo.kind)) {
+        case 3:
+          type = "casino";
+          break;
+        case 6:
+          type = "mahjong";
+          break;
+        default:
+          type = "card";
+          break;
+      }
+
+      let resultUrl = `https://b1.xf0371.com/cdn/image/${type}/${this.gameInfo.vendor}/Game_${this.gameInfo.code}.png`;
 
       if (!this.gameInfo.code && this.gameInfo.status > 1) {
         resultUrl = this.$getCdnPath('/static/image/casino/event_icon.png');

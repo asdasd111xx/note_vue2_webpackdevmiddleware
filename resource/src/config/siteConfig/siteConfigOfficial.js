@@ -1,5 +1,4 @@
-import version from '@/config/version'
-
+import version from '@/config/version.json'
 /* eslint-disable camelcase */
 /**
  * 網站設定檔預設值
@@ -11,7 +10,6 @@ export const preset = {
     JOIN_MEMBER_THEME: 'default', // 加入會員 / 加入代理樣式
     MOBILE_WEB_TPL: 'brilliant', // 手機網頁版模版
     MOBILE_BET_THEME: 'basic', // 手機下注頁
-    MOBILE_COLOR: 'yellow', // 手機網頁版色系
     IS_PWA: false, // 是否為PWA站
     VERSION: version.version // 版本
 };

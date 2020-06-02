@@ -1,5 +1,10 @@
 <template>
-  <div :class="$style['artist-video-wrap']">
+  <div
+    :class="[
+      $style['artist-video-wrap'],
+      { [$style['no-data-wrap']]: videoList.length === 0 }
+    ]"
+  >
     <div :class="$style.title">
       <span />&nbsp;
       <span> {{ $text("S_RELATED_VIDEO", "相关影集") }} </span>
@@ -57,11 +62,15 @@ export default {
 
 .artist-video-wrap {
   margin-top: 9px;
-  height: 100vh;
   background: #fefffe;
   border-radius: 10px 10px 0 0;
   box-shadow: 0pt -2pt 7px 0pt rgba(0, 0, 0, 0.1);
   padding: 0 14px;
+  padding-bottom: 70px;
+
+  &.no-data-wrap {
+    background: unset;
+  }
 }
 
 .title {
@@ -89,7 +98,8 @@ export default {
 .wrap {
   float: left;
   width: 48.5%;
-  margin-bottom: 10px;
+  margin-bottom: 9px;
+  height: 110px;
 
   &:nth-child(2n) {
     margin-left: 3%;
@@ -99,16 +109,11 @@ export default {
 .image-wrap {
   overflow: hidden;
   position: relative;
-  height: 100px;
+  height: calc(100% - 24px);
   background-color: #161823;
 
   > img {
     display: block;
-    position: absolute;
-    top: 0;
-    right: 0;
-    bottom: 0;
-    left: 0;
     width: 100%;
     min-height: 100%;
     margin: auto;
@@ -162,8 +167,8 @@ export default {
     font-size: 16px;
   }
 
-  .image-wrap {
-    height: 160px;
+  .wrap {
+    height: 180px;
   }
 
   .video-title {

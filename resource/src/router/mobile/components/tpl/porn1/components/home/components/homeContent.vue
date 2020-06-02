@@ -781,8 +781,9 @@ export default {
           fail: (error) => {
             if (!isUBMobile || !webview) {
               newWindow.alert(`${error.data.msg} ${error.data.code ? `(${error.data.code})` : ''}`);
-              newWindow.close();
             }
+            newWindow.close();
+            window.location.reload();
           }
         });
         return;

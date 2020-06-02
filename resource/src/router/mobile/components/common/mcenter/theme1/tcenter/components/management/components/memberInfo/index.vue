@@ -37,6 +37,7 @@
             </div>
             <all-friends :period="$route.params.date" />
         </template>
+
         <template v-else>
             <template v-if="friendsStatistics">
                 <div :class="[$style['member-total'], 'clearfix']">
@@ -259,10 +260,13 @@ export default {
         // eslint-disable-next-line
         "$route.params.date"() {
             if (this.$route.params.date) {
+                this.setTabState(false);
                 this.setHeaderTitle(this.$text("S_SUB_STATISTICS", "下级统计"));
                 return;
+            } else {
+                this.setTabState(true);
+                this.setHeaderTitle(this.$text("S_TEAM_CENTER", "我的推广"));
             }
-            this.setHeaderTitle(this.$text("S_TEAM_CENTER", "我的推广"));
         }
     },
     created() {
@@ -270,6 +274,8 @@ export default {
             return;
         }
 
+        // 當 route.params 含有 date，且重新整理時
+        this.setTabState(false);
         this.setHeaderTitle(this.$text("S_SUB_STATISTICS", "下级统计"));
     },
     methods: {
@@ -278,7 +284,6 @@ export default {
                 name: "mcenter-tcenter-management",
                 params: { page: "member", date: "week" }
             });
-            this.setTabState(false);
         }
     }
 };

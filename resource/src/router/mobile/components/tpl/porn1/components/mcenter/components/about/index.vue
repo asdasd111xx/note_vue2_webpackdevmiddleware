@@ -107,7 +107,8 @@ export default {
   },
   computed: {
     ...mapGetters({
-      loginStatus: 'getLoginStatus'
+      loginStatus: 'getLoginStatus',
+      siteConfig: "getSiteConfig",
     }),
     headerConfig() {
       return {
@@ -118,9 +119,7 @@ export default {
     },
   },
   created() {
-    let version = this.$route.query.version || getCookie('version');
-    this.version = version;
-    setCookie('version', version);
+    this.version = this.siteConfig.VERSION;
   },
   methods: {
   }

@@ -8,7 +8,6 @@
   >
     <swiper
       v-if="depositData.length > 1"
-      ref="swiperTop"
       :options="categoryOptions"
       :class="$style['swiper-wrap']"
     >
@@ -83,6 +82,46 @@
             </div>
           </div>
           <template v-if="curPayInfo.payment_method_id !== 20">
+            <!-- 充值人姓名 -->
+            <div
+              v-if="depositNameInput.showCondition"
+              :class="$style['depositName-wrap']"
+            >
+              <div
+                :key="`field-${depositNameInput.objKey}`"
+                :class="[
+                  $style['speed-field-name'],
+                  { [$style.error]: depositNameInput.isError },
+                  'clearfix'
+                ]"
+              >
+                <div :class="$style['field-title']">
+                  {{ depositNameInput.title }}
+                </div>
+                <div :class="$style['field-info']">
+                  <input
+                    v-model="speedField.depositName"
+                    :class="$style['speed-deposit-input']"
+                    :placeholder="depositNameInput.placeholderText"
+                    @input="
+                      submitDataInput(
+                        $event.target.value,
+                        depositNameInput.objKey
+                      )
+                    "
+                  />
+                </div>
+              </div>
+              <div
+                :class="[
+                  $style['deposit-name-messgae'],
+                  { [$style.error]: nameCheckFail }
+                ]"
+              >
+                为即时到账，请务必输入正确的汇款人姓名
+              </div>
+            </div>
+
             <!-- 選擇銀行 or 選擇點卡 -->
             <div
               v-if="curPayInfo.banks && curPayInfo.banks.length > 0"
@@ -136,44 +175,6 @@
               </div>
             </div>
 
-            <div
-              v-if="depositNameInput.showCondition"
-              :class="$style['depositName-wrap']"
-            >
-              <div
-                :key="`field-${depositNameInput.objKey}`"
-                :class="[
-                  $style['speed-field-name'],
-                  { [$style.error]: depositNameInput.isError },
-                  'clearfix'
-                ]"
-              >
-                <div :class="$style['field-title']">
-                  {{ depositNameInput.title }}
-                </div>
-                <div :class="$style['field-info']">
-                  <input
-                    v-model="speedField.depositName"
-                    :class="$style['speed-deposit-input']"
-                    :placeholder="depositNameInput.placeholderText"
-                    @input="
-                      submitDataInput(
-                        $event.target.value,
-                        depositNameInput.objKey
-                      )
-                    "
-                  />
-                </div>
-              </div>
-              <div
-                :class="[
-                  $style['deposit-name-messgae'],
-                  { [$style.error]: nameCheckFail }
-                ]"
-              >
-                为即时到账，请务必输入正确的汇款人姓名
-              </div>
-            </div>
             <!-- 通道 -->
             <div
               v-if="!isDepositAi && passRoad.length > 0"
@@ -829,10 +830,6 @@ export default {
       if (Object.keys(this.selectedBank).length === 0) {
         this.bankSelectValue = this.allBanks[0] || {};
       }
-
-      this.$nextTick(() => {
-        this.$refs.swiperTop && this.$refs.swiperTop.swiper.slideTo(index);
-      });
     },
     /**
  * 顯示選擇框
