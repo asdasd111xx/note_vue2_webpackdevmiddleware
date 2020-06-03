@@ -426,7 +426,7 @@ export default {
     this.player.dispose();
     this.player = null;
     if (this.socket) {
-      this.onSend("CLOSE");
+      this.onSend("STOP");
     }
   }
 };
