@@ -9,24 +9,42 @@ import { mapGetters, mapActions } from 'vuex';
 import analytics from '@/lib/analytics';
 import appEvent from '@/lib/appEvent';
 import openGame from '@/lib/open_game';
+import { getCookie } from '@/lib/cookie';
 
 export default {
   data() {
     return {
       setCode: false, // 流量分析代碼設置狀態
-      setGtmCode: false // GTM流量分析狀態
+      setGtmCode: false, // GTM流量分析狀態,
+      siteConfigLoad: false,
+      memInfoLoad: false,
+      reconnectTimer: null // 重新連線WS timer
     };
   },
   computed: {
     ...mapGetters({
+      siteConfig: 'getSiteConfig',
       memInfo: 'getMemInfo',
-      loginStatus: 'getLoginStatus'
-    })
+      loginStatus: 'getLoginStatus',
+    }),
+    isDebug() {
+      return process.env.NODE_ENV === 'development' || (this.$route.query & this.$route.query._db)
+    }
   },
   watch: {
     memInfo() {
       this.setAnalyticsCode();
       this.setGoogleAnalytics();
+      this.memInfoLoad = this.memInfo && this.memInfo.user;
+      if (this.memInfoLoad && this.siteConfigLoad) {
+        this.connectWS();
+      }
+    },
+    siteConfig() {
+      this.siteConfigLoad = this.siteConfig && this.siteConfig.ACTIVES_BOUNS_WEBSOCKET;
+      if (this.memInfoLoad && this.siteConfigLoad) {
+        this.connectWS();
+      }
     }
   },
   created() {
@@ -58,6 +76,54 @@ export default {
     ...mapActions([
       'actionSetWebview'
     ]),
+    reconnect() {
+      if (this.reconnectTimer) return;
+      this.reconnectTimer = setTimeout(() => {
+        if (this.isDebug) {
+          console.log("[WS]: Reconnecting");
+        }
+        this.connectWS();
+      }, 3000)
+    },
+    connectWS() {
+      try {
+        let cid = getCookie('cid') || '';
+        if (!cid) return;
+        let uri = this.siteConfig.ACTIVES_BOUNS_WEBSOCKET + `?cid=${cid}&domain=${this.memInfo.user.domain}`;
+        window.YABO_SOCKET = new WebSocket(uri);
+        window.YABO_SOCKET.onmessage = (e) => {
+          let data = JSON.parse(e.data);
+          window.YABO_SOCKET_ID = data.SocketId;
+
+          if (this.isDebug) {
+            console.log("[WS]: onMessage:", JSON.parse(e.data));
+          }
+          //   彩金活動ONMESSAGE
+          if (window.YABO_SOCKET_VIDEO_ONMESSAGE) {
+            window.YABO_SOCKET_VIDEO_ONMESSAGE(e);
+          }
+        };
+        window.YABO_SOCKET.onerror = (e) => {
+          console.log("[WS]: onError:", e)
+          this.reconnect();
+        };
+        window.YABO_SOCKET.onclose = (e) => {
+          if (this.isDebug) {
+            console.log("[WS]: onClose:", e)
+          }
+          this.reconnect();
+        };
+        window.YABO_SOCKET.onopen = (e) => {
+          if (this.isDebug) {
+            console.log("[WS]: onOpen: Success")
+          }
+          clearTimeout(this.reconnectTimer);
+          this.reconnectTimer = null;
+        };
+      } catch (e) {
+        console.log("[WS]: connectWS Error:", e);
+      }
+    },
     /* 設定各站的流量分析/站長統計代碼 */
     setAnalyticsCode() {
       if (!this.memInfo.user || !this.memInfo.user.domain || this.setCode) {

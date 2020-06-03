@@ -100,7 +100,7 @@ export default {
       this.player.on("playing", () => {
         if (this.player.seeking()) return;
         this.isPlaying = true;
-        if (this.socket && !this.keepPlay) {
+        if (window.YABO_SOCKET && !this.keepPlay) {
           this.onSend("PLAY");
         }
         this.keepPlay = false
@@ -116,7 +116,7 @@ export default {
       this.player.on("pause", () => {
         if (this.player.seeking()) return;
         this.isPlaying = false;
-        if (this.socket && !this.keepPlay) {
+        if (window.YABO_SOCKET && !this.keepPlay) {
           this.onSend("STOP");
           this.$refs.bonunsProcess.playCueTime("stop");
         }
@@ -126,7 +126,7 @@ export default {
       this.player.on("ended", () => {
         this.$refs.bonunsProcess.playCueTime("stop");
         this.isPlaying = false;
-        if (this.socket)
+        if (window.YABO_SOCKET)
           this.onSend("STOP");
       })
 
@@ -186,28 +186,25 @@ export default {
       }
     },
     connectWS() {
-      try {
-        let cid = getCookie('cid') || '';
-        let uri = this.siteConfig.ACTIVES_BOUNS_WEBSOCKET + `?cid=${cid}&domain=${this.memInfo.user.domain}`;
-        this.socket = new WebSocket(uri);
-        this.socket.onmessage = this.onMessage;
-        this.socket.onerror = this.onError;
-        this.socket.onclose = this.onClose;
-        this.socket.onmessage = this.onMessage;
-        this.socket.onopen = this.onOpen;
-      } catch (e) {
-        console.log("[WS]: connectWS Error:", e);
+      if (window.YABO_SOCKET) {
+        if (this.isDebug) {
+          console.log("[WS]: Video active message connected");
+        }
+        window.YABO_SOCKET_VIDEO_ONMESSAGE = this.onMessage;
+        clearTimeout(this.reconnectTimer);
+        this.reconnectTimer = null;
+      } else {
+        if (this.reconnectTimer) return;
+        this.reconnectTimer = setTimeout(() => {
+          if (this.isDebug) {
+            console.log("[WS]: Video active Reconnecting...");
+          }
+          this.connectWS();
+        }, 1000)
       }
     },
     onMessage(e) {
-      clearTimeout(this.reconnectTimer);
-      this.reconnectTimer = null;
-
-      if (this.isDebug) {
-        console.log("[WS]: onMessage:", JSON.parse(e.data));
-      }
-
-      if (e.data) {
+      if (e && e.data) {
         let data = JSON.parse(e.data);
         this.socketId = data.SocketId;
         // 彩金開關
@@ -230,8 +227,11 @@ export default {
           /* 每分鐘都顯示獲得金額 */
           // 當前累積時間(0-9)
           bonunsProcess.curMin = Number(data.CueTimes);
+          //   let n = Math.floor(Math.random() * 10);
+
           // 目前總獲得彩金
           bonunsProcess.totalAmount = Number(data.TotalAmount);
+          //   bonunsProcess.totalAmount = n * 10
 
           // 獲得彩金
           bonunsDialog.earnCurrentNum = Number(Number(data.Active.BreakAmout) * Number(data.BreakTimes));
@@ -247,6 +247,15 @@ export default {
 
           // 已獲得中斷點數量
           bonunsDialog.hadEarnNum = Number(data.BreakTimes);
+
+          // 第一次收到初始化
+          setTimeout(() => {
+            this.$nextTick(() => {
+              bonunsProcess.isInit = true;
+              bonunsDialog.isInit = true;
+            })
+          }, 200)
+
           //狀態
           // 'OPEN', 'PLAY', 'STOP', 'CLOSE', 'BREAK', 'FULL', 'POOR', 'BREAK_WAIT'
           this.$nextTick(() => {
@@ -327,58 +336,8 @@ export default {
                 break;
             }
           });
-
         }
       }
-    },
-    onOpen(e) {
-      if (this.isDebug) {
-        console.log("[WS]: onOpen:", e)
-        console.log("[Video-url]:", this.videoInfo.url)
-      }
-      clearTimeout(this.reconnectTimer);
-      this.reconnectTimer = null;
-
-      if (!this.player.paused()) {
-        if (this.socket) {
-          this.onSend("PLAY");
-        }
-      }
-
-      // 測試log
-      //   let data = {
-      //     "SocketId": this.socketId,
-      //     "Type": "WEB-OPEN",
-      //     "SendTime": new Date().toISOString(),
-      //     "Data": {
-      //       "platform": getCookie('platform') || "normal",
-      //       "videoid": this.videoInfo.id,
-      //       "url": this.videoInfo.url,
-      //     }
-      //   };
-
-      //   this.socket.send(JSON.stringify(data));
-    },
-    onClose(e) {
-      if (this.isDebug) {
-        console.log("[WS]: onClose:", e)
-        console.log("[Video-url]:", this.videoInfo.url)
-      }
-      this.reconnect();
-    },
-    reconnect() {
-      if (this.reconnectTimer || !this.player) return;
-      this.reconnectTimer = setTimeout(() => {
-        if (this.isDebug) {
-          console.log("[WS]: Reconnecting:");
-          console.log(this.socket);
-        }
-        this.connectWS();
-      }, 2500)
-    },
-    onError(e) {
-      console.log("[WS]: onError:", e)
-      this.reconnect();
     },
     // "STOP" | "CLOSE" | "PLAY"
     onSend(type) {
@@ -386,21 +345,21 @@ export default {
       // 1	OPEN
       // 2	CLOSING
       // 3	CLOSED
-      if (!this.socket || this.socket.readyState !== 1) {
+      if (!window.YABO_SOCKET || window.YABO_SOCKET.readyState !== 1) {
         return
       }
       let data = {
-        "SocketId": this.socketId,
+        "SocketId": window.YABO_SOCKET_ID || this.socketId,
         "Type": type,
         "SendTime": new Date().toISOString(),
         "Data": {
-          "platform": getCookie('platform') || "normal"
+          "web-platform": getCookie('platform') || 'web'
         }
       }
       if (this.isDebug) {
         console.log("[WS]: onSend:", data)
       }
-      this.socket.send(JSON.stringify(data));
+      window.YABO_SOCKET.send(JSON.stringify(data));
     },
   },
   created() {
@@ -420,14 +379,13 @@ export default {
     document.addEventListener('visibilitychange', listner, false);
   },
   beforeDestroy() {
+    this.onSend("STOP");
     document.removeEventListener('visibilitychange', () => { }, false);
+    window.YABO_SOCKET_VIDEO_ONMESSAGE = null;
     clearTimeout(this.reconnectTimer);
     this.reconnectTimer = null;
     this.player.dispose();
     this.player = null;
-    if (this.socket) {
-      this.onSend("STOP");
-    }
   }
 };
 </script>
