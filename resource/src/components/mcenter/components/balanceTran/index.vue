@@ -177,7 +177,8 @@ import mcenter from '@/api/mcenter';
 import ajax from '@/lib/ajax';
 import message from '@/router/mobile/components/tpl/porn1/components/common/new/message';
 import confirm from '@/router/mobile/components/tpl/porn1/components/common/new/confirm';
-
+import { getCookie } from '@/lib/cookie';
+import axios from 'axios';
 export default {
   components: {
     ModelSelect,
@@ -419,11 +420,16 @@ export default {
       });
     },
     checkBankCard() {
-      return ajax({
+      return axios({
         method: 'get',
-        url: '/api/v1/c/player/user_bank/list',
-      }).then((response) => {
-        return response.ret && response.ret.length > 0
+        url: `${this.siteConfig.YABO_API_DOMAIN}/AccountBank/GetBankBindingStatusTrans/${getCookie('cid')}`,
+        headers: {
+          Bundleid: 'chungyo.foxyporn.prod.enterprise.web',
+          Version: 1,
+          'x-domain': this.memInfo.user.domain
+        }
+      }).then((res) => {
+        return res.data && res.data.data
       });
     },
     clearMsg() {
@@ -442,10 +448,6 @@ export default {
       this.btnLock = true;
 
       this.checkBankCard().then((res) => {
-        if (res === 'error') {
-          return;
-        }
-
         if (!res) {
           this.msg = '请先绑定提现银行卡';
           return;

@@ -53,7 +53,7 @@
           <span v-if="processType === 'earn'" :class="$style['earn']">
             {{ `+${earnCoin} ` }}元</span
           >
-          <span v-else-if="processType === 'process'">{{ curMin }}</span>
+          <span v-else-if="processType === 'process'">{{ curMin || 0 }}</span>
         </template>
       </div>
     </div>
@@ -87,14 +87,15 @@ export default {
     // 總獲得彩金量變化 或 時間變化時 時需顯示動畫
     totalAmount(newValue, oldValue) {
       if (Number(newValue) !== Number(oldValue) && this.isInit) {
+        // console.log(newValue, oldValue, this.isInit);
         this.handleToggleEarnCoin();
       }
     },
     curMin(newValue, oldValue) {
-      //   console.log(newValue, oldValue, this.isInit)
-      //   if (Number(newValue) !== Number(oldValue), this.isInit) {
-      //     this.handleToggleEarnCoin();
-      //   }
+      if (Number(newValue) !== Number(oldValue) && this.isInit) {
+        console.log(newValue, oldValue, this.isInit);
+        this.handleToggleEarnCoin();
+      }
     },
     processType() {
       this.curCoinSrc = this.coinType.find(i => i.key == this.processType).src;
@@ -103,12 +104,15 @@ export default {
   methods: {
     //   賺得彩金後變換樣式3秒後還原
     handleToggleEarnCoin() {
-      this.curCoinSrc = this.coinType.find(i => i.key == "earn").src;
-      this.processType = "earn";
-
+      if (this.timer) return;
       this.timer = setTimeout(() => {
         this.processType = "process";
+        clearTimeout(this.timer);
+        this.timer = null;
       }, 2500)
+
+      this.curCoinSrc = this.coinType.find(i => i.key == "earn").src;
+      this.processType = "earn";
     },
     // 收到play跑一次進度動畫
     playCueTime(play) {
