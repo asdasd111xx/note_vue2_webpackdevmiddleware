@@ -321,7 +321,7 @@ export default {
                 }
                 break;
               case 'CLOSE':
-                this.onSend("CLOSE");
+                this.onSend("STOP");
                 break;
               default:
                 break;
