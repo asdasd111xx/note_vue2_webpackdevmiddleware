@@ -64,6 +64,8 @@
               :src="$getCdnPath('/static/image/_new/common/icon_search.png')"
             />
           </div>
+
+
           <div :class="[$style['video-tag'], 'clearfix']">
             <swiper ref="tag-swiper" :options="options">
               <swiper-slide
@@ -79,6 +81,8 @@
               </swiper-slide>
             </swiper>
           </div>
+
+
           <div
             :class="[$style['icon-arrow'], { [$style.active]: isShowAllTag }]"
             @click.stop="onShowAllTag(!isShowAllTag)"
@@ -161,10 +165,21 @@
                 :class="$style['btn-more']"
                 @click.stop="
                   openVideo('videoList', {
-                    query: { tagId: videoType.id, sortId: videoData.id || 0 }
+                    query: { source: 'yabo' }
                   })
                 "
               >
+                <!-- @click.stop="
+                  openVideo('videoList', {
+                    query: { tagId: videoType.id, sortId: videoData.id || 0 }
+                  })
+                " -->
+                <!-- @click.stop="
+                  openVideo('videoList', {
+                    query: { source: 'yabo' }
+                  })
+                " -->
+
                 更多
               </div>
             </div>

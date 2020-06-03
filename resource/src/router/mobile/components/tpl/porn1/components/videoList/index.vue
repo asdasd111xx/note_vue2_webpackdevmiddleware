@@ -1,63 +1,66 @@
 <template>
   <mobile-container :header-config="headerConfig">
     <div slot="content" :class="$style['content-wrap']">
-      <video-tab :sort-id.sync="sortId" :is-single.sync="isSingle" />
-      <video-list :sort-id="sortId" :is-single="isSingle" />
+      <component
+        :is="template"
+        :set-header-title="setHeaderTitle"
+        :set-has-search-btn="setHasSearchBtn"
+      />
     </div>
   </mobile-container>
 </template>
 
 <script>
-import { mapGetters } from 'vuex';
-import videoTab from './components/videoTab';
-import videoList from './components/videoList';
-import mobileContainer from '../common/new/mobileContainer';
+import { mapGetters } from "vuex";
+import mobileContainer from "../common/new/mobileContainer";
 
 export default {
   components: {
     mobileContainer,
-    videoTab,
-    videoList
-  },
-  data() {
-    return {
-      active: +this.$route.query.sortId,
-      isOne: false
-    };
+    yabo: () => import("./components/yabo/")
   },
   computed: {
     ...mapGetters({
-      memInfo: 'getMemInfo'
+      memInfo: "getMemInfo"
     }),
     headerConfig() {
+      const name = this.$route.query.source;
+      const source = {
+        yabo: "鸭脖视频",
+        smallPig: "小猪视频"
+        // this.$text("S_FULL_HD_MOVIE", "全部高清影片")
+      };
+
       return {
         prev: true,
         isBackgroundGradient: true,
-        title: this.$text('S_FULL_HD_MOVIE', '全部高清影片'),
+        title: source[name],
         hasSearchBtn: true,
-        onClick: () => { this.$router.back(); }
+        onClick: () => {
+          this.$router.back();
+        }
       };
     },
-    sortId: {
-      get() {
-        return this.active;
-      },
-      set(value) {
-        this.active = Number(value);
-      }
-    },
-    isSingle: {
-      get() {
-        return this.isOne;
-      },
-      set() {
-        this.isOne = !this.isOne;
-      }
+    template() {
+      let source = this.$route.query.source;
+      return source;
     }
   },
   created() {
-    if (!this.memInfo.config.content_rating || !this.memInfo.user.content_rating) {
-      this.$router.push('/mobile');
+    // 由此層(最外層)直接判斷有無登入
+    if (
+      !this.memInfo.config.content_rating ||
+      !this.memInfo.user.content_rating
+    ) {
+      this.$router.push("/mobile");
+    }
+  },
+  methods: {
+    setHeaderTitle(value) {
+      this.$set(this.headerConfig, "title", value);
+    },
+    setHasSearchBtn(value) {
+      this.$set(this.headerConfig, "hasSearchBtn", value);
     }
   }
 };
