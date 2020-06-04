@@ -287,7 +287,7 @@ export default {
 
       mcenter.accountPhoneSend({
         params: {
-          old_phone: getOldPhone(),
+          old_phone: `${this.newCode.replace('+', '')}-${this.newValue}`,
           phone: `${this.newCode.replace('+', '')}-${this.newValue}`
         },
         success: () => {
@@ -314,6 +314,17 @@ export default {
             this.actionSetUserdata(true);
             this.actionSetWithdrawCheck();
             this.tipMsg = res.data.msg;
+
+            const { query } = this.$route;
+            let redirect = query.redirect;
+            if (redirect) {
+              switch (redirect) {
+                case "withdraw":
+                  localStorage.setItem('tmp_w_d', "1");
+                  this.$router.push('/mobile/mcenter/withdraw');
+                  return;
+              }
+            }
             this.$router.push('/mobile/mcenter/accountData');
             this.successMessage();
           },
@@ -330,6 +341,17 @@ export default {
         },
         success: () => {
           this.actionSetUserdata(true);
+
+          const { query } = this.$route;
+          let redirect = query.redirect;
+          if (redirect) {
+            switch (redirect) {
+              case "withdraw":
+                localStorage.setItem('tmp_w_d', "1");
+                this.$router.push('/mobile/mcenter/withdraw');
+                return;
+            }
+          }
           this.$router.push('/mobile/mcenter/accountData');
           this.successMessage();
         },
