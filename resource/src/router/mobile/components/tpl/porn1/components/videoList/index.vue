@@ -17,7 +17,8 @@ import mobileContainer from "../common/new/mobileContainer";
 export default {
   components: {
     mobileContainer,
-    yabo: () => import("./components/yabo/")
+    yabo: () => import("./components/yabo/"),
+    smallPig: () => import("./components/smallPig/")
   },
   data() {
     return {

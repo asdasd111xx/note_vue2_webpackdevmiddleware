@@ -165,7 +165,7 @@
                 :class="$style['btn-more']"
                 @click.stop="
                   openVideo('videoList', {
-                    query: { source: 'yabo' }
+                    query: { source: 'smallPig' }
                   })
                 "
               >

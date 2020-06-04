@@ -28,11 +28,6 @@ export default {
     videoLobby: () => import("./components/videoLobby"),
     videoMore: () => import("./components/videoMore")
   },
-  data() {
-    return {
-      toggleLobby: true
-    };
-  },
   props: {
     setHeaderTitle: {
       type: Function,

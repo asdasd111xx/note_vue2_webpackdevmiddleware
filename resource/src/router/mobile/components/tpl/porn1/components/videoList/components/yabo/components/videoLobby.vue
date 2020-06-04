@@ -363,6 +363,7 @@ export default {
 .video-list-wrap {
   overflow-y: auto;
   padding: 0 17px;
+  background: $main_background_white1;
 }
 
 .video-cell {
