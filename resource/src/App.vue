@@ -11,6 +11,7 @@ import appEvent from '@/lib/appEvent';
 import openGame from '@/lib/open_game';
 import { getCookie } from '@/lib/cookie';
 import io from 'socket.io-client';
+
 export default {
   data() {
     return {
@@ -48,8 +49,6 @@ export default {
     }
   },
   created() {
-    this.connectNotifyWS();
-
     if (this.$cookie.get('IS_BB_APP') !== null && this.$cookie.get('IS_BB_APP') === 'Y') {
       appEvent.jsToAppMessage('HOME_PAGE');
       this.actionSetWebview();
@@ -81,28 +80,6 @@ export default {
     /* 推播中心 websocket */
     connectNotifyWS() {
       try {
-        let cid = getCookie('cid') || '';
-        if (!cid) return;
-        const script = document.createElement('script');
-        script.setAttribute('src', '/api/v1/ws/front_file');
-        script.setAttribute('data-id', 'ws-bc');
-        script.setAttribute('data-msg-func', 'notice');
-        document.body.appendChild(script);
-        window.notice = (data) => {
-          if (this.isDebug) {
-            console.log("[WS front_file]: onMessage:", data);
-          }
-          const date = new Date();
-          store.state.noticeData = [
-            ...store.state.noticeData,
-            {
-              id: date.toISOString(),
-              event: data.event,
-              ...data.message
-            }
-          ];
-        };
-
         // var onSocket, nsp;
         // var reConnectSetting = {
         //   path: '/api/socket.io',
