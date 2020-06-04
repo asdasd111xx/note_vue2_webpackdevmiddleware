@@ -128,6 +128,8 @@ export default {
 </script>
 
 <style lang="scss" module>
+@import "~@/css/variable.scss";
+
 .wrap {
   padding-top: 43px;
   background: #f8f8f8;
@@ -138,7 +140,8 @@ export default {
   position: fixed;
   top: 0;
   z-index: 3;
-  max-width: 420px;
+  max-width: $mobile_max_width;
+
   width: 100%;
   height: 43px;
   padding: 0 17px;

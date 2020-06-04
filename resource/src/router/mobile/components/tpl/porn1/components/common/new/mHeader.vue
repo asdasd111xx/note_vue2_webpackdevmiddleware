@@ -269,7 +269,7 @@ export default {
 
 .header {
   margin: 0 auto;
-  max-width: 420px;
+  max-width: $mobile_max_width;
   position: fixed;
   top: 0;
   z-index: 3;

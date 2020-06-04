@@ -69,7 +69,7 @@ export default {
 
 .footer {
   margin: 0 auto;
-  max-width: 420px;
+  max-width: $mobile_max_width;
   transition: unset !important;
   position: fixed;
   bottom: 0;
