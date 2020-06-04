@@ -189,6 +189,10 @@ export default {
       })
     },
     handleClick(field) {
+      if (field.key === "phone" && field.value && !this.memInfo.config.user_edit_phone) {
+        return;
+      }
+
       if (!field.btnShow) {
         return;
       }
