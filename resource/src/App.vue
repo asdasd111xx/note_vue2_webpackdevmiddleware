@@ -10,7 +10,7 @@ import analytics from '@/lib/analytics';
 import appEvent from '@/lib/appEvent';
 import openGame from '@/lib/open_game';
 import { getCookie } from '@/lib/cookie';
-
+import io from 'socket.io-client';
 export default {
   data() {
     return {
@@ -37,17 +37,19 @@ export default {
       this.setGoogleAnalytics();
       this.memInfoLoad = this.memInfo && this.memInfo.user;
       if (this.memInfoLoad && this.siteConfigLoad) {
-        this.connectWS();
+        this.connectYaboWS();
       }
     },
     siteConfig() {
       this.siteConfigLoad = this.siteConfig && this.siteConfig.ACTIVES_BOUNS_WEBSOCKET;
       if (this.memInfoLoad && this.siteConfigLoad) {
-        this.connectWS();
+        this.connectYaboWS();
       }
     }
   },
   created() {
+    this.connectNotifyWS();
+
     if (this.$cookie.get('IS_BB_APP') !== null && this.$cookie.get('IS_BB_APP') === 'Y') {
       appEvent.jsToAppMessage('HOME_PAGE');
       this.actionSetWebview();
@@ -76,16 +78,71 @@ export default {
     ...mapActions([
       'actionSetWebview'
     ]),
-    reconnect() {
+    /* 推播中心 websocket */
+    connectNotifyWS() {
+      try {
+        let cid = getCookie('cid') || '';
+        if (!cid) return;
+        const script = document.createElement('script');
+        script.setAttribute('src', '/api/v1/ws/front_file');
+        script.setAttribute('data-id', 'ws-bc');
+        script.setAttribute('data-msg-func', 'notice');
+        document.body.appendChild(script);
+        window.notice = (data) => {
+          if (this.isDebug) {
+            console.log("[WS front_file]: onMessage:", data);
+          }
+          const date = new Date();
+          store.state.noticeData = [
+            ...store.state.noticeData,
+            {
+              id: date.toISOString(),
+              event: data.event,
+              ...data.message
+            }
+          ];
+        };
+
+        // var onSocket, nsp;
+        // var reConnectSetting = {
+        //   path: '/api/socket.io',
+        //   reconnectionAttempts: 5
+        // };
+        // var socket = io('/namespace', reConnectSetting);
+        // socket.on('open', (e) => { console.log(e) });
+
+        // // 取得namespace並連線
+        // socket.on('namespace', getNameSpace);
+
+        // function getNameSpace(namespace) {
+        //   nsp = namespace.nsp;
+        //   socket.disconnect();
+
+        //   onSocket = io(nsp, reConnectSetting);
+        //   onSocket.on('message', (data) => {
+        //     const lang = 'zh-cn';
+        //     const ct = data.message.content;
+        //     data.message.text = (textMap[lang] && textMap[lang][ct]) || ct;
+        //     console.log(data);
+        //     // displayFunc(data);
+        //   });
+        // }
+
+      } catch (e) {
+        console.log(e)
+      }
+    },
+    /* 彩金websocket */
+    reconnectYaboWS() {
       if (this.reconnectTimer) return;
       this.reconnectTimer = setTimeout(() => {
         if (this.isDebug) {
           console.log("[WS]: Reconnecting");
         }
-        this.connectWS();
+        this.connectYaboWS();
       }, 3000)
     },
-    connectWS() {
+    connectYaboWS() {
       try {
         let cid = getCookie('cid') || '';
         if (!cid) return;
@@ -105,13 +162,13 @@ export default {
         };
         window.YABO_SOCKET.onerror = (e) => {
           console.log("[WS]: onError:", e)
-          this.reconnect();
+          this.reconnectYaboWS();
         };
         window.YABO_SOCKET.onclose = (e) => {
           if (this.isDebug) {
             console.log("[WS]: onClose:", e)
           }
-          this.reconnect();
+          this.reconnectYaboWS();
         };
         window.YABO_SOCKET.onopen = (e) => {
           if (this.isDebug) {
@@ -121,7 +178,7 @@ export default {
           this.reconnectTimer = null;
         };
       } catch (e) {
-        console.log("[WS]: connectWS Error:", e);
+        console.log("[WS]: connectYaboWS Error:", e);
       }
     },
     /* 設定各站的流量分析/站長統計代碼 */
