@@ -1,13 +1,17 @@
 <template>
   <div>
-    <template v-if="$route.query.tagId && $route.query.sortId">
-      <video-tab :sort-id.sync="sortId" :is-single.sync="isSingle" />
-      <video-list :sort-id="sortId" :is-single="isSingle" />
-      <!-- <video-more /> -->
+    <template
+      v-if="
+        ($route.query.tagId && $route.query.sortId) ||
+          ($route.query.tagId === 0 && $route.query.sortId === 0) ||
+          ($route.query.tagId === 0 && $route.query.sortId !== 0)
+      "
+    >
+      <video-more :set-header-title="setHeaderTitle" />
     </template>
 
     <template v-else>
-      <video-lobby />
+      <video-lobby :set-header-title="setHeaderTitle" />
     </template>
   </div>
 </template>
@@ -15,12 +19,19 @@
 <script>
 import { mapGetters } from "vuex";
 
+/********************************
+ * Source 為 Yabo 最外層的接口元件 *
+ ********************************/
+
 export default {
   components: {
-    videoTab: () => import("./components/videoTab"),
-    videoList: () => import("./components/videoList"),
     videoLobby: () => import("./components/videoLobby"),
     videoMore: () => import("./components/videoMore")
+  },
+  data() {
+    return {
+      toggleLobby: true
+    };
   },
   props: {
     setHeaderTitle: {
@@ -32,30 +43,14 @@ export default {
       default: () => {}
     }
   },
-  data() {
-    return {
-      active: +this.$route.query.sortId,
-      isOne: false
-    };
-  },
-  computed: {
-    sortId: {
-      // Todo:這邊由lobby往上傳，再往下more頁做更新
-      get() {
-        return this.active;
-      },
-      set(value) {
-        this.active = Number(value);
+  watch: {
+    "$route.query"() {
+      if (this.$route.query.sortId && this.$route.query.tagId) {
+        this.setHeaderTitle(this.$text("S_FULL_HD_MOVIE", "全部高清影片"));
+        return;
       }
-    },
-    isSingle: {
-      // Todo:這邊由lobby往上傳，再往下more頁做更新
-      get() {
-        return this.isOne;
-      },
-      set() {
-        this.isOne = !this.isOne;
-      }
+
+      this.setHeaderTitle("鴨脖視頻");
     }
   }
 };

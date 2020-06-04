@@ -19,28 +19,24 @@ export default {
     mobileContainer,
     yabo: () => import("./components/yabo/")
   },
-  computed: {
-    ...mapGetters({
-      memInfo: "getMemInfo"
-    }),
-    headerConfig() {
-      const name = this.$route.query.source;
-      const source = {
-        yabo: "鸭脖视频",
-        smallPig: "小猪视频"
-        // this.$text("S_FULL_HD_MOVIE", "全部高清影片")
-      };
-
-      return {
+  data() {
+    return {
+      headerConfig: {
+        // Title 由各接口設定
         prev: true,
         isBackgroundGradient: true,
-        title: source[name],
         hasSearchBtn: true,
         onClick: () => {
           this.$router.back();
         }
-      };
-    },
+      }
+    };
+  },
+  computed: {
+    ...mapGetters({
+      memInfo: "getMemInfo"
+    }),
+
     template() {
       let source = this.$route.query.source;
       return source;

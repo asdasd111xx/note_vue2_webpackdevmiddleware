@@ -57,10 +57,10 @@
               openVideo('videoList', {
                 query: {
                   source: $route.query.source,
-                  tagId: +videoType.id,
+                  tagId: +videoType.id || 0,
                   sortId: +videoData.id || 0
                 }
-              });
+              })
             "
           >
             更多
@@ -95,6 +95,12 @@ export default {
     Swiper,
     SwiperSlide
   },
+  props: {
+    setHeaderTitle: {
+      type: Function,
+      required: true
+    }
+  },
   data() {
     return {
       isShowAllTag: false,
@@ -126,11 +132,11 @@ export default {
     }
   },
   created() {
+    this.setHeaderTitle("鴨脖視頻");
     this.getVideoTag();
     this.getVideoSort();
     this.getVideoRecommand();
     this.getVideoList();
-
   },
   methods: {
     getVideoTag() {

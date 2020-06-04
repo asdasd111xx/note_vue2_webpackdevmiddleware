@@ -1,32 +1,35 @@
 <template>
-  <div>
-    <div :class="$style.box">
-      <swiper :options="{ slidesPerView: 'auto', slideClass: $style.tab }">
+  <div :class="$style['video-more-container']">
+    <div :class="$style['box']">
+      <swiper :options="{ slidesPerView: 'auto', slideClass: $style['tab'] }">
         <swiper-slide v-for="info in videoTabs" :key="info.id">
           <div
-            :class="[$style.wrap, { [$style.active]: info.id === +sortId }]"
-            @click="$emit('update:sortId', `${info.id}`)"
+            :class="[$style['wrap'], { [$style.active]: info.id === +sortId }]"
+            @click="setSortId(info.id)"
           >
             <span>{{ info.title }}</span>
             <div />
           </div>
         </swiper-slide>
       </swiper>
-      <div :class="Permutation" @click="$emit('update:isSingle')" />
+      <div
+        :class="[isSingle ? $style['is-single'] : $style['is-multiple']]"
+        @click="isSingle = !isSingle"
+      />
     </div>
 
     <div :class="[$style['video-list-wrap'], 'clearfix']">
       <div
         v-for="info in videoList"
         :key="info.id"
-        :class="Permutation"
+        :class="[isSingle ? $style['single'] : $style['multiple']]"
         @click="$router.push({ name: 'videoPlay', params: { id: info.id } })"
       >
         <div :class="$style['image-wrap']">
           <img v-lazy="getImg(info.image)" />
         </div>
-        <div :class="$style.title">{{ info.title }}</div>
-        <div v-if="isSingle" :class="$style.views">
+        <div :class="$style['title']">{{ info.title }}</div>
+        <div v-if="isSingle" :class="$style['views']">
           <img :src="$getCdnPath('/static/image/_new/discover/ic_video.png')" />
           {{ info.views }}
         </div>
@@ -42,7 +45,6 @@
       </infinite-loading>
     </div>
   </div>
-
 </template>
 
 <script>
@@ -57,6 +59,12 @@ export default {
     SwiperSlide,
     InfiniteLoading
   },
+  props: {
+    setHeaderTitle: {
+      type: Function,
+      required: true
+    }
+  },
   data() {
     return {
       isReceive: false,
@@ -65,33 +73,32 @@ export default {
       current: 0,
       total: 0,
       videoTabs: [],
-      sortId: 0,
+      sortId: +this.$route.query.sortId,
       isSingle: false
     };
   },
-  computed: {
-    Permutation() {
-      return this.isSingle
-        ? this.$style["is-single"]
-        : this.$style["is-multiple"];
-    }
-  },
   created() {
-    pornRequest({
-      method: "get",
-      url: `/video/sort`,
-      timeout: 30000
-    }).then(response => {
-      if (response.status !== 200) {
-        return;
-      }
-
-      this.videoTabs = [{ id: 0, title: "全部" }, ...response.result];
-    });
-
+    this.setHeaderTitle(this.$text("S_FULL_HD_MOVIE", "全部高清影片"));
+    this.getVideoTab();
     this.setVideoList();
   },
   methods: {
+    getVideoTab() {
+      pornRequest({
+        method: "get",
+        url: `/video/sort`,
+        timeout: 30000
+      }).then(response => {
+        if (response.status !== 200) {
+          return;
+        }
+
+        this.videoTabs = [{ id: 0, title: "全部" }, ...response.result];
+      });
+    },
+    setSortId(value) {
+      this.sortId = value;
+    },
     getImg(image) {
       return {
         src: image,
