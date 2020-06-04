@@ -297,6 +297,11 @@ export default {
     },
     verification(target) {
       // 前端先不驗證
+      target = target.toLowerCase()
+        .replace(' ', '')
+        .trim()
+        .replace(/[\W]/g, '');
+
       return;
       const data = joinMemInfo[target];
       const re = data.regExp;

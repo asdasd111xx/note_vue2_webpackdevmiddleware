@@ -99,6 +99,7 @@
                   .toLowerCase()
                   .replace(' ', '')
                   .trim()
+                  .replace(/[\W]/g, '')
               "
             />
             <input
@@ -407,6 +408,7 @@ export default {
     },
     verification(key) {
       const data = this.joinMemInfo[key];
+      this.allValue[key] = this.allValue[key].replace(/[\W]/g, '')
 
       if (key === 'name' && this.allValue[key].length > 30) {
         this.allValue[key] = this.allValue[key].substring(0, 30);

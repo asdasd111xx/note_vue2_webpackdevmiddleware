@@ -189,6 +189,13 @@ export default {
       })
     },
     handleClick(field) {
+      if (field.key === "phone") {
+        // 只能設定一次
+        if (this.memInfo.user.phone && !this.memInfo.config.user_edit_phone) {
+          return;
+        }
+      }
+
       if (!field.btnShow) {
         return;
       }

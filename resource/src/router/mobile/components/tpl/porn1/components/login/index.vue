@@ -35,6 +35,7 @@
                     .toLowerCase()
                     .replace(' ', '')
                     .trim()
+                    .replace(/[\W]/g, '')
                 "
               />
               <div class="input-icon">
@@ -63,6 +64,13 @@
                 type="password"
                 maxlength="12"
                 tabindex="2"
+                @input="
+                  password = $event.target.value
+                    .toLowerCase()
+                    .replace(' ', '')
+                    .trim()
+                    .replace(/[\W]/g, '')
+                "
                 @keydown.13="keyDownSubmit()"
                 @change="onSaveAccount"
               />

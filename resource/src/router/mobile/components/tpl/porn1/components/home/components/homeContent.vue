@@ -193,9 +193,9 @@
             @click.stop="onOpenGame(game)"
           >
             <img v-lazy="getImg(game)" />
-            <span v-if="!['D', 'R'].includes(game.type) && game.name">{{
+            <!-- <span v-if="!['D', 'R'].includes(game.type) && game.name">{{
               game.name
-            }}</span>
+            }}</span> -->
           </div>
         </template>
         <div ref="wrap-buffer" :class="$style['wrap-buffer']" />

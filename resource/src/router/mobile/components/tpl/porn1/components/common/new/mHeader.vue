@@ -128,7 +128,14 @@
       </div>
     </template>
     <template v-if="headerConfig.onClickFunc">
-      <div :class="$style['save-wrap']" @click="headerConfig.onClickFunc">
+      <div
+        :class="$style['save-wrap']"
+        @click="
+          () => {
+            headerConfig.funcBtnActive ? headerConfig.onClickFunc() : '';
+          }
+        "
+      >
         <div :class="headerConfig.funcBtnActive ? $style['active'] : ''">
           {{
             headerConfig.funcBtn

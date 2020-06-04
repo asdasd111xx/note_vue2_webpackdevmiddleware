@@ -392,10 +392,20 @@ export default {
   },
   watch: {
     withdrawUserData() {
-      if (!this.selectedCard) {
-        this.selectedCard = this.withdrawUserData.account &&
-          this.withdrawUserData.account.length > 0 &&
+      // 預設選擇第一張卡 或是從電話驗證成功後直接送出
+      if (!this.selectedCard &&
+        this.withdrawUserData.account &&
+        this.withdrawUserData.account.length > 0) {
+        this.selectedCard = Number(localStorage.getItem('tmp_w_selectedCard')) ||
           this.withdrawUserData.account[0].id;
+        this.withdrawValue = localStorage.getItem('tmp_w_amount')
+        setTimeout(() => {
+          localStorage.removeItem('tmp_w_selectedCard');
+          localStorage.removeItem('tmp_w_amount');
+          if (localStorage.getItem('tmp_w_d')) {
+            this.handleSubmit()
+          }
+        })
       }
     },
     withdrawValue() {
@@ -513,6 +523,14 @@ export default {
       if (this.errTips || !this.withdrawValue || this.isSendSubmit)
         return;
 
+      if (this.memInfo.config.player_withdraw_verify && !localStorage.getItem('tmp_w_d')) {
+        localStorage.setItem('tmp_w_selectedCard', this.selectedCard);
+        localStorage.setItem('tmp_w_amount', this.withdrawValue);
+        this.$router.push("/mobile/mcenter/accountData/phone?redirect=withdraw");
+        return;
+      }
+
+      localStorage.removeItem('tmp_w_d');
       this.isSendSubmit = true;
       this.submitWithdraw({
         user_bank_id: this.selectedCard,
@@ -548,7 +566,6 @@ export default {
       let _params = {
         amount: this.withdrawValue,
         // withdraw_password: this.withdrawPwd,
-        // withdraw_password: '0000',
         forward: true,
         confirm: true,
         max_id: this.withdrawData.audit.total.max_id,
