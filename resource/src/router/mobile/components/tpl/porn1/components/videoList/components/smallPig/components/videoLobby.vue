@@ -2,7 +2,10 @@
   <div :class="$style['video-lobby-container']">
     <div :class="$style['top-warp']">
       <span @click="msg = '正在上线 敬请期待'">频道</span>
-      <div :class="$style['search-block']">
+      <div
+        :class="$style['search-block']"
+        @click="$router.push({ path: 'search', query: { source: 'smallPig' } })"
+      >
         <p>请输入关键词找片源</p>
       </div>
       <span @click="msg = '正在上线 敬请期待'">发现</span>
