@@ -70,6 +70,20 @@ export default {
       return;
     }
 
+    // 小豬要call的部份
+    // axios.defaults.withCredentials = true;
+    // axios({
+    //     method: 'post',
+    //     url: 'https://api.pv123.app/v1/device/verify',
+    //     data: {
+    //       type: 'ios',
+    //       token: '111123333',
+    //       info: 'brrrr'
+    //     }
+    // }).then((res) => {
+    //     return
+    // })
+
     // axios({
     //   method: 'post',
     //   url: `https://daydayyouhui.com/api/v1/video/videoinfo`,

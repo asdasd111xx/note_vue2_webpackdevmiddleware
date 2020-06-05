@@ -51,65 +51,8 @@
     <div v-show="isShow" :class="$style['all-game-wrap']">
       <!-- 上方功能列 -->
       <div :class="$style['top-wrap']">
-        <!-- 影片分類 -->
-        <div
-          v-if="isAdult && typeList[selectedIndex].icon === 'Tv'"
-          :class="[$style['video-tag-wrap'], 'clearfix']"
-        >
-          <div
-            :class="$style['btn-search']"
-            @click="$router.push({ name: 'search' })"
-          >
-            <img
-              :src="$getCdnPath('/static/image/_new/common/icon_search.png')"
-            />
-          </div>
-
-
-          <div :class="[$style['video-tag'], 'clearfix']">
-            <swiper ref="tag-swiper" :options="options">
-              <swiper-slide
-                v-for="(tag, index) in videoTag"
-                :key="`tag-${index}`"
-              >
-                <div
-                  :class="{ [$style.active]: tag.id === videoType.id }"
-                  @click="onChangeVideoType(index)"
-                >
-                  {{ tag.title }}
-                </div>
-              </swiper-slide>
-            </swiper>
-          </div>
-
-
-          <div
-            :class="[$style['icon-arrow'], { [$style.active]: isShowAllTag }]"
-            @click.stop="onShowAllTag(!isShowAllTag)"
-          >
-            <img
-              :src="
-                $getCdnPath(
-                  `/static/image/_new/common/icon_more${
-                    isShowAllTag ? '_close' : ''
-                  }.png`
-                )
-              "
-            />
-          </div>
-          <div
-            v-if="isShowAllTag"
-            :class="[$style['all-tag-wrap'], 'clearfix']"
-          >
-            <template v-for="(tag, index) in videoTag">
-              <div :key="`all-tag-${index}`" @click="onChangeVideoType(index)">
-                {{ tag.title }}
-              </div>
-            </template>
-          </div>
-        </div>
         <!-- 會員中心連結 -->
-        <div v-else :class="[$style['mcenter-func-wrap'], 'clearfix']">
+        <div :class="[$style['mcenter-func-wrap'], 'clearfix']">
           <div
             v-for="(info, index) in mcenterList"
             :key="`mcenter-${index}`"
@@ -152,55 +95,8 @@
         @touchmove="onTouchMove"
         @touchend="onTouchEnd"
       >
-        <!-- 影片 -->
-        <template v-if="currentGame.isVideo">
-          <div
-            v-for="(videoData, i) in currentGame.data"
-            :key="`video-type-${i}`"
-            :class="$style['video-list-wrap']"
-          >
-            <div :class="[$style['video-type'], 'clearfix']">
-              <div :class="$style['type-name']">{{ videoData.name }}</div>
-              <div
-                :class="$style['btn-more']"
-                @click.stop="
-                  openVideo('videoList', {
-                    query: { source: 'smallPig' }
-                  })
-                "
-              >
-                <!-- @click.stop="
-                  openVideo('videoList', {
-                    query: { tagId: videoType.id, sortId: videoData.id || 0 }
-                  })
-                " -->
-                <!-- @click.stop="
-                  openVideo('videoList', {
-                    query: { source: 'yabo' }
-                  })
-                " -->
-
-                更多
-              </div>
-            </div>
-            <div :class="['video-wrap', 'clearfix']">
-              <div
-                v-for="video in videoData.list.slice(0, 2)"
-                :key="`video-${video.id}`"
-                :href="`/mobile/videoPlay/${video.id}`"
-                :class="$style.video"
-                @click.stop="
-                  openVideo('videoPlay', { params: { id: video.id } })
-                "
-              >
-                <img :src="video.image" />
-                <div>{{ video.title }}</div>
-              </div>
-            </div>
-          </div>
-        </template>
         <!-- 遊戲 -->
-        <template v-else>
+        <template>
           <div
             v-for="(game, i) in currentGame.vendors"
             :key="`game-${i}-${game.image}`"
@@ -259,12 +155,7 @@ export default {
       startTouchY: 0,
       slideDirection: '',
       wrapHeight: 0,
-      videoTag: [],
-      videoSort: [],
-      videoRecommand: [],
-      videoList: [],
       allGame: [],
-      videoType: { id: 0, title: '' },
       selectedIndex: 0,
       currentLevel: 0,
       mcenterList: [
@@ -275,7 +166,7 @@ export default {
         { name: 'grade', text: '等级' }
       ],
       msg: '',
-      hasBankCard: false,
+      hasBankCard: false
     };
   },
   computed: {
@@ -285,40 +176,40 @@ export default {
       memInfo: 'getMemInfo'
     }),
     isAdult() {
-      return this.memInfo.config.content_rating && this.memInfo.user.content_rating;
+      return (
+        this.memInfo.config.content_rating && this.memInfo.user.content_rating
+      );
     },
     typeList() {
-      const adultVideo = this.isAdult ? [{ icon: 'Tv', name: '影片' }] : [];
       if (this.allGame) {
-        const typeList = [...adultVideo, ...this.allGame.map((game) => ({ icon: game.iconName, name: game.name }))];
+        let typeList = this.allGame
+          .map(game => ({
+            icon: game.iconName,
+            name: game.name
+          }))
+          .filter(type => {
+            // Welfare 的 W 是全形的W...
+            return this.isAdult ? type : type.icon !== 'Ｗelfare';
+          });
+
         // 業主說左側選單前後要各複製一份...
         return [...typeList, ...typeList, ...typeList];
-      } else {
-        return [...adultVideo];
       }
     },
     options() {
-      return { slidesPerView: 'auto', spaceBetween: 4, slideClass: this.$style.tag };
+      return {
+        slidesPerView: "auto",
+        spaceBetween: 4,
+        slideClass: this.$style.tag
+      };
     },
     allGameList() {
-      const gameList = this.allGame.map((game) => ({ ...game, isVideo: false }));
-
-      if (!this.isAdult) {
-        return [...gameList];
-      }
-
-      const videoRecommand = this.videoType.id === 0 ? [...this.videoRecommand] : [];
-      const videoList = this.videoSort.reduce((init, sort) => {
-        const data = find(this.videoList, (video) => video.id === sort.id);
-
-        if (!data) {
-          return init;
-        }
-
-        return [...init, { ...data }];
-      }, [...videoRecommand]);
-
-      return [{ isVideo: true, data: videoList }, ...gameList];
+      const gameList = this.allGame
+        .map(game => game)
+        .filter(item => {
+          return this.isAdult ? item : item.iconName !== 'Ｗelfare';
+        });
+      return gameList;
     },
     currentGame() {
       const length = this.typeList.length / 3;
@@ -329,19 +220,14 @@ export default {
       return this.currentLevel <= 10 ? this.currentLevel : 'max';
     }
   },
-  watch: {
-    videoType() {
-      this.getVideoList();
-    }
-  },
   created() {
     if (this.loginStatus) {
       ajax({
         method: 'get',
         url: '/api/v1/c/player/user_bank/list',
         errorAlert: false
-      }).then((res) => {
-        this.hasBankCard = res.ret && res.ret.length > 0
+      }).then(res => {
+        this.hasBankCard = res.ret && res.ret.length > 0;
       });
     }
   },
@@ -350,13 +236,6 @@ export default {
 
     // const params = this.isAdult ? [this.getVideoTag(), this.getVideoSort(), this.getVideoRecommand(), this.getVideoList(), this.getAllGame()] : [this.getAllGame()];
 
-    if (this.isAdult) {
-      this.getVideoTag();
-      this.getVideoSort();
-      this.getVideoRecommand();
-      this.getVideoList()
-    }
-
     // 首頁選單列表預設拿local
     const cache = this.getAllGameFromCache();
     const setDefaultSelected = () => {
@@ -364,17 +243,19 @@ export default {
         this.isReceive = true;
         setTimeout(() => {
           $(window).trigger('resize');
-          const defaultType = localStorage.getItem('type') || 'Tv';
-          const defaultIndex = this.typeList.findIndex((type) => type.icon === defaultType);
-          const selectIndex = (this.typeList.length / 3) + defaultIndex;
+          const defaultType = localStorage.getItem('type') || 'Ｗelfare';
+          const defaultIndex = this.typeList.findIndex(
+            type => type.icon === defaultType
+          );
+          const selectIndex = this.typeList.length / 3 + defaultIndex;
           this.onChangeSelectIndex(selectIndex);
           this.isShow = true;
         }, 300);
       });
-    }
+    };
 
     if (!cache) {
-      const params = [this.getAllGame()]
+      const params = [this.getAllGame()];
       Promise.all(params).then(() => {
         setDefaultSelected();
       });
@@ -392,7 +273,7 @@ export default {
           return;
         }
 
-        this.currentLevel = ret.find((item) => item.complex).now_level_seq;
+        this.currentLevel = ret.find(item => item.complex).now_level_seq;
       }
     });
   },
@@ -403,8 +284,12 @@ export default {
     getImg(info) {
       return {
         src: info.image,
-        error: this.$getCdnPath(`/static/image/_new/common/default_${info.imageType}.png`),
-        loading: this.$getCdnPath(`/static/image/_new/common/default_${info.imageType}.png`)
+        error: this.$getCdnPath(
+          `/static/image/_new/common/default_${info.imageType}.png`
+        ),
+        loading: this.$getCdnPath(
+          `/static/image/_new/common/default_${info.imageType}.png`
+        )
       };
     },
     clearMsg() {
@@ -413,110 +298,6 @@ export default {
       }
 
       this.msg = '';
-    },
-    // 取得影片分類
-    getVideoTag() {
-      try {
-        let videolistStorage = localStorage.getItem('video-tag');
-        if (videolistStorage) {
-          this.videoTag = JSON.parse(localStorage.getItem('video-tag'));
-        }
-
-      } catch (e) {
-        console.log(e)
-      }
-
-      return pornRequest({
-        url: '/video/tag',
-        method: 'get',
-      }).then((response) => {
-        if (response.status !== 200) {
-          return;
-        }
-
-        try {
-          localStorage.setItem('video-tag', JSON.stringify([{ id: 0, title: '全部' }, ...response.result]))
-          localStorage.setItem('video-tag-timestamp', Date.now())
-        } catch (e) {
-          console.log(e)
-        }
-
-        this.videoTag = [{ id: 0, title: '全部' }, ...response.result];
-      });
-
-    },
-    // 取得影片排序
-    getVideoSort() {
-      try {
-        let videolistStorage = localStorage.getItem('video-sort');
-        if (videolistStorage) {
-          this.videoSort = JSON.parse(localStorage.getItem('video-sort'));
-        }
-
-      } catch (e) {
-        console.log(e)
-      }
-
-      return pornRequest({
-        method: 'get',
-        url: '/video/sort',
-      }).then((response) => {
-        if (response.status !== 200) {
-          return;
-        }
-
-        try {
-          localStorage.setItem('video-sort', JSON.stringify(response.result))
-          localStorage.setItem('video-sort-timestamp', Date.now())
-        } catch (e) {
-          console.log(e)
-        }
-
-        this.videoSort = [...response.result];
-      });
-    },
-    // 取得熱門推薦影片
-    getVideoRecommand() {
-      return pornRequest({
-        url: `/video/recommand`,
-      }).then((response) => {
-        if (response.status !== 200) {
-          return;
-        }
-
-        this.videoRecommand = [...response.result];
-      });
-    },
-    // 取得所有影片(熱門推薦除外)
-    getVideoList() {
-      try {
-        let videolistStorage = localStorage.getItem('video-list');
-        if (videolistStorage) {
-          this.videoList = JSON.parse(localStorage.getItem('video-list'));
-        }
-
-      } catch (e) {
-        console.log(e)
-      }
-
-      return pornRequest({
-        method: 'post',
-        url: `/video/videolist`,
-        data: { tag: this.videoType.title === '全部' ? '' : this.videoType.title },
-      }).then((response) => {
-        if (response.status !== 200) {
-          return;
-        }
-
-        try {
-          localStorage.setItem('video-list', JSON.stringify(response.result))
-          localStorage.setItem('video-list-timestamp', Date.now())
-        } catch (e) {
-          console.log(e)
-        }
-
-        this.videoList = [...response.result];
-      });
     },
     // 取得所有遊戲
     getAllGameFromCache() {
@@ -527,9 +308,8 @@ export default {
           this.allGame = JSON.parse(localStorage.getItem('game-list'));
           result = true;
         }
-
       } catch (e) {
-        console.log(e)
+        console.log(e);
       }
 
       return result;
@@ -545,17 +325,17 @@ export default {
           Version: 1,
           'x-domain': this.memInfo.user.domain
         }
-      }).then((response) => {
+      }).then(response => {
         if (response.status !== 200) {
           return;
         }
         this.isReceive = true;
 
         try {
-          localStorage.setItem('game-list', JSON.stringify(response.data.data))
-          localStorage.setItem('game-list-timestamp', Date.now())
+          localStorage.setItem('game-list', JSON.stringify(response.data.data));
+          localStorage.setItem('game-list-timestamp', Date.now());
         } catch (e) {
-          console.log(e)
+          console.log(e);
         }
 
         this.allGame = [...response.data.data];
@@ -563,7 +343,8 @@ export default {
     },
     onResize() {
       // 計算外框高度
-      this.wrapHeight = window.innerHeight - this.$refs['home-wrap'].offsetTop - 60;
+      this.wrapHeight =
+        window.innerHeight - this.$refs['home-wrap'].offsetTop - 60;
     },
     onTypeTouchStart(e) {
       if (this.isSliding) {
@@ -581,7 +362,10 @@ export default {
       const ele = this.$refs['type-wrap'];
       const isGoBottom = this.typeStartTouchY > e.touches[0].clientY;
 
-      if (isGoBottom && ele.scrollHeight - 10 <= ele.scrollTop + ele.clientHeight) {
+      if (
+        isGoBottom &&
+        ele.scrollHeight - 10 <= ele.scrollTop + ele.clientHeight
+      ) {
         e.preventDefault();
       }
     },
@@ -600,11 +384,14 @@ export default {
       }
 
       // 判斷滑動方向
-      this.slideDirection = this.startTouchY > e.touches[0].clientY ? 'down' : 'up';
+      this.slideDirection =
+        this.startTouchY > e.touches[0].clientY ? 'down' : 'up';
       // 判斷是否置頂
       this.isTop = this.slideDirection === 'up' && wrap.scrollTop <= 10;
       // 判斷是否置底
-      this.isBottom = this.slideDirection === 'down' && wrap.scrollHeight - 10 <= wrap.scrollTop + wrap.clientHeight;
+      this.isBottom =
+        this.slideDirection === 'down' &&
+        wrap.scrollHeight - 10 <= wrap.scrollTop + wrap.clientHeight;
       if (this.isTop || this.isBottom) {
         e.preventDefault();
       }
@@ -619,13 +406,19 @@ export default {
       }
 
       if (this.isTop) {
-        const index = this.selectedIndex <= 0 ? this.typeList.length - 1 : this.selectedIndex - 1;
+        const index =
+          this.selectedIndex <= 0
+            ? this.typeList.length - 1
+            : this.selectedIndex - 1;
         this.onChangeSelectIndex(index, true);
         return;
       }
 
       if (this.isBottom) {
-        const index = this.selectedIndex >= this.typeList.length - 1 ? 0 : this.selectedIndex + 1;
+        const index =
+          this.selectedIndex >= this.typeList.length - 1
+            ? 0
+            : this.selectedIndex + 1;
         this.onChangeSelectIndex(index);
       }
     },
@@ -652,22 +445,12 @@ export default {
       setTimeout(() => {
         this.stopScroll = false;
         if (isSetEnd) {
-          this.$refs['game-wrap'].scrollTop = this.$refs['game-wrap'].scrollHeight - this.$refs['game-wrap'].clientHeight - this.$refs['wrap-buffer'].offsetHeight;
+          this.$refs['game-wrap'].scrollTop =
+            this.$refs['game-wrap'].scrollHeight -
+            this.$refs['game-wrap'].clientHeight -
+            this.$refs['wrap-buffer'].offsetHeight;
         }
       }, 100);
-    },
-    // 切換當前影片分類
-    onChangeVideoType(index) {
-      this.onShowAllTag(false);
-      this.videoType = { ...this.videoTag[index] };
-
-      this.$nextTick(() => {
-        this.$refs['tag-swiper'].$swiper.slideTo(index);
-      });
-    },
-    // 開啟影片分類選單
-    onShowAllTag(value) {
-      this.isShowAllTag = value;
     },
     // 前往會員中心
     onGoToMcenter(path) {
@@ -679,36 +462,33 @@ export default {
       if (path === 'deposit') {
         axios({
           method: 'get',
-          url: `${this.siteConfig.YABO_API_DOMAIN}/AccountBank/GetBankBindingStatus/${getCookie('cid')}`,
+          url: `${
+            this.siteConfig.YABO_API_DOMAIN
+          }/AccountBank/GetBankBindingStatus/${getCookie('cid')}`,
           timeout: 30000,
           headers: {
             Bundleid: 'chungyo.foxyporn.prod.enterprise.web',
             Version: 1,
             'x-domain': this.memInfo.user.domain
           }
-        }).then((res) => {
+        }).then(res => {
           if (res.data && res.data.data) {
             this.$router.push(`/mobile/mcenter/deposit`);
-          }
-          else {
-            this.msg = "请先绑定提现银行卡"
+          } else {
+            this.msg = '请先绑定提现银行卡';
           }
         });
-      }
-
-      else if (path === 'grade') {
+      } else if (path === 'grade') {
         this.$router.push('/mobile/mcenter/accountVip');
         return;
-      }
-
-      else {
+      } else {
         this.$router.push(`/mobile/mcenter/${path}`);
       }
     },
     // 開啟遊戲
     onOpenGame(game) {
       if (process.env.NODE_ENV === 'development') {
-        console.log(game)
+        console.log(game);
       }
 
       // Game Type
@@ -718,6 +498,9 @@ export default {
       // SL => 體育直播
       // D => 代理
       // T => 敬请期待
+      // YV => 鴨脖視頻
+      // PV => 小豬視頻
+
       if (game.type === 'D') {
         return;
       }
@@ -727,6 +510,7 @@ export default {
         return;
       }
 
+      // 大廳
       if (game.type === 'L' && [3, 5, 6].includes(game.kind)) {
         const trans = { 3: 'casino', 5: 'card', 6: 'mahjong' };
         this.$router.push(`/mobile/${trans[game.kind]}/${game.vendor}`);
@@ -738,13 +522,43 @@ export default {
         return;
       }
 
+      // 福利
+      if (['YV', 'PV'].includes(game.type)) {
+        switch (game.type) {
+          case 'YV':
+            this.$router.push({
+              name: 'videoList',
+              query: { source: 'yabo' }
+            });
+            break;
+
+          case 'PV':
+            this.$router.push({
+              name: 'videoList',
+              query: { source: 'smallPig' }
+            });
+            break;
+
+          default:
+            break;
+        }
+        return
+      }
+
+      // 直播
       if (['BL', 'SL'].includes(game.type)) {
         switch (game.type) {
           case 'BL':
-            this.$router.push({ name: 'liveStream', params: { type: 'cutiesLive' } });
+            this.$router.push({
+              name: 'liveStream',
+              params: { type: 'cutiesLive' }
+            });
             break;
           case 'SL':
-            this.$router.push({ name: 'liveStream', params: { type: 'ballLive' } });
+            this.$router.push({
+              name: 'liveStream',
+              params: { type: 'ballLive' }
+            });
             break;
           default:
             break;
@@ -753,15 +567,18 @@ export default {
       }
 
       if (!this.hasBankCard) {
-        this.msg = "请先绑定提现银行卡"
+        this.msg = '请先绑定提现银行卡';
         return;
       }
 
       if (game.type === 'R') {
-        let urlParams = game.vendor === 'lg_live' ? '&customize=yabo&tableType=3310' : '';
+        let urlParams =
+          game.vendor === 'lg_live' ? '&customize=yabo&tableType=3310' : '';
         let newWindow = '';
         // 辨別裝置是否為ios寰宇瀏覽器
-        const isUBMobile = navigator.userAgent.match(/UBiOS/) !== null && navigator.userAgent.match(/iPhone/) !== null;
+        const isUBMobile =
+          navigator.userAgent.match(/UBiOS/) !== null &&
+          navigator.userAgent.match(/iPhone/) !== null;
         // 暫時用來判斷馬甲包
         const webview = window.location.hostname === 'yaboxxxapp02.com';
 
@@ -793,9 +610,13 @@ export default {
 
             window.open(ret.url + urlParams);
           },
-          fail: (error) => {
+          fail: error => {
             if (!isUBMobile || !webview) {
-              newWindow.alert(`${error.data.msg} ${error.data.code ? `(${error.data.code})` : ''}`);
+              newWindow.alert(
+                `${error.data.msg} ${
+                  error.data.code ? `(${error.data.code})` : ''
+                }`
+              );
             }
             newWindow.close();
             window.location.reload();
@@ -805,10 +626,6 @@ export default {
       }
 
       openGame({ kind: game.kind, vendor: game.vendor, code: game.code });
-    },
-    openVideo(name, routerParam) {
-      localStorage.setItem('type', 'Tv');
-      this.$router.push({ name, ...routerParam });
     }
   }
 };

@@ -80,6 +80,7 @@ export default {
     if (!this.videoInfo.url) return;
     this.player = videojs(this.$refs['video-player'], {
       sources: [{ src: this.videoInfo.url.replace('http://', 'https://'), type: 'application/x-mpegURL' }],
+      // sources: [{ src: 'https://pv-oa-1259142350.file.myqcloud.com/dev/video/FCC/FC2-PPV-777661-3/FC2-PPV-777661-3.m3u8', type: 'application/x-mpegURL' , withCredentials: true}],
       autoplay: false,
       controls: true,
       controlBar: true,
