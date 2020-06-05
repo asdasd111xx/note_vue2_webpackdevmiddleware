@@ -141,9 +141,9 @@ export default {
   methods: {
     getVideoTag() {
       try {
-        let videolistStorage = localStorage.getItem("video-tag");
+        let videolistStorage = localStorage.getItem("yabo-video-tag");
         if (videolistStorage) {
-          this.videoTag = JSON.parse(localStorage.getItem("video-tag"));
+          this.videoTag = JSON.parse(localStorage.getItem("yabo-video-tag"));
         }
       } catch (e) {
         console.log(e);
@@ -159,10 +159,10 @@ export default {
 
         try {
           localStorage.setItem(
-            "video-tag",
+            "yabo-video-tag",
             JSON.stringify([{ id: 0, title: "全部" }, ...response.result])
           );
-          localStorage.setItem("video-tag-timestamp", Date.now());
+          localStorage.setItem("yabo-video-tag-timestamp", Date.now());
         } catch (e) {
           console.log(e);
         }
@@ -186,9 +186,9 @@ export default {
     // 取得影片排序
     getVideoSort() {
       try {
-        let videolistStorage = localStorage.getItem("video-sort");
+        let videolistStorage = localStorage.getItem("yabo-video-sort");
         if (videolistStorage) {
-          this.videoSort = JSON.parse(localStorage.getItem("video-sort"));
+          this.videoSort = JSON.parse(localStorage.getItem("yabo-video-sort"));
         }
       } catch (e) {
         console.log(e);
@@ -203,8 +203,8 @@ export default {
         }
 
         try {
-          localStorage.setItem("video-sort", JSON.stringify(response.result));
-          localStorage.setItem("video-sort-timestamp", Date.now());
+          localStorage.setItem("yabo-video-sort", JSON.stringify(response.result));
+          localStorage.setItem("yabo-video-sort-timestamp", Date.now());
         } catch (e) {
           console.log(e);
         }
@@ -227,9 +227,9 @@ export default {
     // 取得所有影片(熱門推薦除外)
     getVideoList() {
       try {
-        let videolistStorage = localStorage.getItem("video-list");
+        let videolistStorage = localStorage.getItem("yabo-video-list");
         if (videolistStorage) {
-          this.videoList = JSON.parse(localStorage.getItem("video-list"));
+          this.videoList = JSON.parse(localStorage.getItem("yabo-video-list"));
         }
       } catch (e) {
         console.log(e);
@@ -247,8 +247,8 @@ export default {
         }
 
         try {
-          localStorage.setItem("video-list", JSON.stringify(response.result));
-          localStorage.setItem("video-list-timestamp", Date.now());
+          localStorage.setItem("yabo-video-list", JSON.stringify(response.result));
+          localStorage.setItem("yabo-video-list-timestamp", Date.now());
         } catch (e) {
           console.log(e);
         }

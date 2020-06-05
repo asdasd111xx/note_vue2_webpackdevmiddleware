@@ -1,5 +1,8 @@
 <template>
-  <mobile-container :header-config="headerConfig">
+  <mobile-container
+    :header-config="headerConfig"
+    :style="{ background: bgColor }"
+  >
     <div slot="content" :class="$style['content-wrap']">
       <component
         :is="template"
@@ -41,6 +44,23 @@ export default {
     template() {
       let source = this.$route.query.source;
       return source;
+    },
+
+    bgColor() {
+      if (this.template) {
+        switch (this.template) {
+          case "yabo":
+            return "#eee";
+            break;
+
+          case "smallPig":
+            return "#333";
+            break;
+
+          default:
+            break;
+        }
+      }
     }
   },
   created() {
@@ -65,6 +85,5 @@ export default {
 
 <style lang="scss" module>
 .content-wrap {
-  background: #eee;
 }
 </style>

@@ -697,33 +697,6 @@ export default {
   height: 50px;
 }
 
-.video-tag-wrap {
-  position: relative;
-  width: 100%;
-  height: 100%;
-  transition: all 0.5s;
-}
-
-.btn-search {
-  float: left;
-  width: 20px;
-  height: 22px;
-  margin: 14px 9px 14px 1px;
-
-  > img {
-    display: block;
-    width: 100%;
-    height: 100%;
-  }
-}
-
-.video-tag {
-  float: left;
-  width: calc(100% - 32px);
-  height: 30px;
-  margin: 10px 0;
-}
-
 .tag {
   width: auto;
 
@@ -744,70 +717,6 @@ export default {
       background: linear-gradient(to left, #bd9d7d, #f9ddbd);
       color: #fff;
     }
-  }
-}
-
-.icon-arrow {
-  float: right;
-  width: 30px;
-  height: 100%;
-  position: absolute;
-  right: 0;
-  transition: all 0.1s;
-  align-items: center;
-  z-index: 2;
-  display: flex;
-  justify-content: flex-end;
-  align-items: center;
-  background: -webkit-linear-gradient(
-    left,
-    rgba(255, 255, 255, 0.3),
-    rgba(255, 255, 255, 1)
-  );
-  background: -o-linear-gradient(
-    right,
-    rgba(255, 255, 255, 0.3),
-    rgba(255, 255, 255, 1)
-  );
-  background: -moz-linear-gradient(
-    right,
-    rgba(255, 255, 255, 0.3),
-    rgba(255, 255, 255, 1)
-  );
-  background: linear-gradient(
-    to right,
-    rgba(255, 255, 255, 0.3),
-    rgba(255, 255, 255, 1)
-  );
-
-  > img {
-    display: block;
-    width: 19px;
-  }
-
-  &.active {
-  }
-}
-
-.all-tag-wrap {
-  position: absolute;
-  top: 50px;
-  right: 0;
-  left: 0;
-  z-index: 2;
-  background-color: #fff;
-
-  > div {
-    float: left;
-    width: 23%;
-    height: 28px;
-    line-height: 28px;
-    margin: 0 1% 4px;
-    border: 1px solid #d5bea4;
-    border-radius: 5px;
-    color: #d5bea4;
-    font-size: 14px;
-    text-align: center;
   }
 }
 
@@ -840,42 +749,6 @@ export default {
   overflow-y: auto;
   touch-action: default; // 誤刪，否則在touchmove事件會有cancelable錯誤
   -webkit-overflow-scrolling: touch; // 誤刪，維持touchmove滾動順暢
-}
-
-.video-list-wrap {
-  padding: 8px 0 1px;
-}
-
-.video-type {
-  margin-bottom: 5px;
-}
-
-.type-name {
-  float: left;
-  height: 20px;
-  line-height: 20px;
-  padding-left: 20px;
-  background: url("/static/image/_new/common/icon_item.png") 0 50% no-repeat;
-  background-size: 15px 15px;
-  color: #be9e7f;
-  font-weight: 700;
-  font-size: 12px;
-}
-
-.btn-more {
-  float: right;
-  width: 53px;
-  height: 20px;
-  line-height: 20px;
-  border-radius: 3px;
-  background: linear-gradient(to left, #bd9d7d, #f9ddbd);
-  color: #fff;
-  font-size: 12px;
-  text-align: center;
-
-  &:hover {
-    color: #fff;
-  }
 }
 
 .wrap {
@@ -916,21 +789,6 @@ export default {
     text-overflow: ellipsis;
     white-space: nowrap;
     opacity: 0.8;
-  }
-}
-
-.video {
-  composes: wrap;
-  height: 117px;
-
-  > img {
-    position: absolute;
-    top: 0;
-    right: 0;
-    bottom: 0;
-    left: 0;
-    min-height: 100%;
-    margin: auto;
   }
 }
 

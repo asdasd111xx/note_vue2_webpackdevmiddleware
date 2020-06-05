@@ -70,19 +70,21 @@ export default {
       return;
     }
 
-    // 小豬要call的部份
-    // axios.defaults.withCredentials = true;
-    // axios({
-    //     method: 'post',
-    //     url: 'https://api.pv123.app/v1/device/verify',
-    //     data: {
-    //       type: 'ios',
-    //       token: '111123333',
-    //       info: 'brrrr'
-    //     }
-    // }).then((res) => {
-    //     return
-    // })
+    if(this.$route.query.source === 'smallPig') {
+      axios.defaults.withCredentials = true;
+      axios({
+          method: 'post',
+          url: 'https://api.pv123.app/v1/device/verify',
+          data: {
+            type: 'ios',
+            token: '111123333',
+            info: 'brrrr'
+          }
+      }).then((res) => {
+          return
+      })
+    }
+
 
     // axios({
     //   method: 'post',
@@ -103,7 +105,10 @@ export default {
 
     //   this.videoInfo = { ...response.data.result };
     // });
-  }
+  },
+  destroyed() {
+    axios.defaults.withCredentials = false;
+  },
 };
 </script>
 

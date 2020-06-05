@@ -17,7 +17,18 @@
         v-for="(info, index) in videoTag.slice(0, 8)"
         :key="info.id"
       >
-        <div :class="$style['tag-icon']">
+        <div
+          :class="$style['tag-icon']"
+          @click.stop="
+            openVideo('videoList', {
+              query: {
+                source: $route.query.source,
+                tagId: +info.id,
+                sortId: 1
+              }
+            })
+          "
+        >
           <img
             :src="$getCdnPath('/static/image/_new/source/smallPig/btn_av1.png')"
             alt="icon"
@@ -65,7 +76,12 @@
             :key="`video-${video.id}`"
             :href="`/mobile/videoPlay/${video.id}`"
             :class="$style['video']"
-            @click.stop="openVideo('videoPlay', { params: { id: video.id } })"
+            @click.stop="
+              openVideo('videoPlay', {
+                params: { id: video.id },
+                query: { source: $route.query.source }
+              })
+            "
           >
             <div :class="$style['video-img']">
               <img :src="video.image" />
@@ -144,14 +160,16 @@ export default {
   },
   methods: {
     getVideoTag() {
-      // try {
-      //   let videolistStorage = localStorage.getItem("video-tag");
-      //   if (videolistStorage) {
-      //     this.videoTag = JSON.parse(localStorage.getItem("video-tag"));
-      //   }
-      // } catch (e) {
-      //   console.log(e);
-      // }
+      try {
+        let videolistStorage = localStorage.getItem("smallPig-video-tag");
+        if (videolistStorage) {
+          this.videoTag = JSON.parse(
+            localStorage.getItem("smallPig-video-tag")
+          );
+        }
+      } catch (e) {
+        console.log(e);
+      }
 
       return pornRequest({
         url: "/video/tag",
@@ -161,29 +179,31 @@ export default {
           return;
         }
 
-        // try {
-        //   localStorage.setItem(
-        //     "video-tag",
-        //     JSON.stringify([{ id: 0, title: "全部" }, ...response.result])
-        //   );
-        //   localStorage.setItem("video-tag-timestamp", Date.now());
-        // } catch (e) {
-        //   console.log(e);
-        // }
+        try {
+          localStorage.setItem(
+            "smallPig-video-tag",
+            JSON.stringify(response.result)
+          );
+          localStorage.setItem("smallPig-video-tag-timestamp", Date.now());
+        } catch (e) {
+          console.log(e);
+        }
 
         this.videoTag = response.result;
       });
     },
     // 取得影片排序
     getVideoSort() {
-      // try {
-      //   let videolistStorage = localStorage.getItem("video-sort");
-      //   if (videolistStorage) {
-      //     this.videoSort = JSON.parse(localStorage.getItem("video-sort"));
-      //   }
-      // } catch (e) {
-      //   console.log(e);
-      // }
+      try {
+        let videolistStorage = localStorage.getItem("smallPig-video-sort");
+        if (videolistStorage) {
+          this.videoSort = JSON.parse(
+            localStorage.getItem("smallPig-video-sort")
+          );
+        }
+      } catch (e) {
+        console.log(e);
+      }
 
       return pornRequest({
         method: "get",
@@ -193,12 +213,15 @@ export default {
           return;
         }
 
-        // try {
-        //   localStorage.setItem("video-sort", JSON.stringify(response.result));
-        //   localStorage.setItem("video-sort-timestamp", Date.now());
-        // } catch (e) {
-        //   console.log(e);
-        // }
+        try {
+          localStorage.setItem(
+            "smallPig-video-sort",
+            JSON.stringify(response.result)
+          );
+          localStorage.setItem("smallPig-video-sort-timestamp", Date.now());
+        } catch (e) {
+          console.log(e);
+        }
 
         this.videoSort = [...response.result];
       });
@@ -217,14 +240,16 @@ export default {
     },
     // 取得所有影片(熱門推薦除外)
     getVideoList() {
-      // try {
-      //   let videolistStorage = localStorage.getItem("video-list");
-      //   if (videolistStorage) {
-      //     this.videoList = JSON.parse(localStorage.getItem("video-list"));
-      //   }
-      // } catch (e) {
-      //   console.log(e);
-      // }
+      try {
+        let videolistStorage = localStorage.getItem("smallPig-video-list");
+        if (videolistStorage) {
+          this.videoList = JSON.parse(
+            localStorage.getItem("smallPig-video-list")
+          );
+        }
+      } catch (e) {
+        console.log(e);
+      }
 
       return pornRequest({
         method: "post",
@@ -237,12 +262,15 @@ export default {
           return;
         }
 
-        // try {
-        //   localStorage.setItem("video-list", JSON.stringify(response.result));
-        //   localStorage.setItem("video-list-timestamp", Date.now());
-        // } catch (e) {
-        //   console.log(e);
-        // }
+        try {
+          localStorage.setItem(
+            "smallPig-video-list",
+            JSON.stringify(response.result)
+          );
+          localStorage.setItem("smallPig-video-list-timestamp", Date.now());
+        } catch (e) {
+          console.log(e);
+        }
 
         this.videoList = [...response.result];
       });
@@ -259,19 +287,20 @@ export default {
 @import "~@/css/variable.scss";
 
 .video-lobby-container {
-  padding-bottom: 20px;
-  background: #333;
+  padding: 50px 0 20px;
 }
 
 .top-warp {
-  position: relative;
+  position: fixed;
   width: 100%;
   height: 50px;
+  top: 40px;
   display: flex;
   justify-content: center;
   align-items: center;
   background: #414141;
   color: #fff;
+  z-index: 1;
 
   .search-block {
     position: relative;

@@ -21,7 +21,13 @@
         v-for="info in videoList"
         :key="info.id"
         :class="$style['multiple']"
-        @click="$router.push({ name: 'videoPlay', params: { id: info.id } })"
+        @click="
+          $router.push({
+            name: 'videoPlay',
+            params: { id: info.id },
+            query: { source: $route.query.source }
+          })
+        "
       >
         <div :class="$style['image-wrap']">
           <img v-lazy="getImg(info.image)" />
@@ -182,7 +188,6 @@ export default {
 <style lang="scss" module>
 @import "~@/css/variable.scss";
 .video-more-container {
-  background: #333;
   overflow: hidden;
   padding-bottom: 20px;
 }
