@@ -167,9 +167,11 @@ export default {
   methods: {
     getVideoTag() {
       try {
-        let videolistStorage = localStorage.getItem("yabo-video-tag");
+        let videolistStorage = localStorage.getItem(`${this.source}-video-tag`);
         if (videolistStorage) {
-          this.videoTag = JSON.parse(localStorage.getItem("yabo-video-tag"));
+          this.videoTag = JSON.parse(
+            localStorage.getItem(`${this.source}-video-tag`)
+          );
         }
       } catch (e) {
         console.log(e);
@@ -185,10 +187,13 @@ export default {
 
         try {
           localStorage.setItem(
-            "yabo-video-tag",
+            `${this.source}-video-tag`,
             JSON.stringify([{ id: 0, title: "全部" }, ...response.result])
           );
-          localStorage.setItem("yabo-video-tag-timestamp", Date.now());
+          localStorage.setItem(
+            `${this.source}-video-tag-timestamp`,
+            Date.now()
+          );
         } catch (e) {
           console.log(e);
         }
@@ -212,9 +217,13 @@ export default {
     // 取得影片排序
     getVideoSort() {
       try {
-        let videolistStorage = localStorage.getItem("yabo-video-sort");
+        let videolistStorage = localStorage.getItem(
+          `${this.source}-video-sort`
+        );
         if (videolistStorage) {
-          this.videoSort = JSON.parse(localStorage.getItem("yabo-video-sort"));
+          this.videoSort = JSON.parse(
+            localStorage.getItem(`${this.source}-video-sort`)
+          );
         }
       } catch (e) {
         console.log(e);
@@ -230,10 +239,13 @@ export default {
 
         try {
           localStorage.setItem(
-            "yabo-video-sort",
+            `${this.source}-video-sort`,
             JSON.stringify(response.result)
           );
-          localStorage.setItem("yabo-video-sort-timestamp", Date.now());
+          localStorage.setItem(
+            `${this.source}-video-sort-timestamp`,
+            Date.now()
+          );
         } catch (e) {
           console.log(e);
         }
@@ -256,9 +268,13 @@ export default {
     // 取得所有影片(熱門推薦除外)
     getVideoList() {
       try {
-        let videolistStorage = localStorage.getItem("yabo-video-list");
+        let videolistStorage = localStorage.getItem(
+          `${this.source}-video-list`
+        );
         if (videolistStorage) {
-          this.videoList = JSON.parse(localStorage.getItem("yabo-video-list"));
+          this.videoList = JSON.parse(
+            localStorage.getItem(`${this.source}-video-list`)
+          );
         }
       } catch (e) {
         console.log(e);
@@ -277,10 +293,13 @@ export default {
 
         try {
           localStorage.setItem(
-            "yabo-video-list",
+            `${this.source}-video-list`,
             JSON.stringify(response.result)
           );
-          localStorage.setItem("yabo-video-list-timestamp", Date.now());
+          localStorage.setItem(
+            `${this.source}-video-list-timestamp`,
+            Date.now()
+          );
         } catch (e) {
           console.log(e);
         }

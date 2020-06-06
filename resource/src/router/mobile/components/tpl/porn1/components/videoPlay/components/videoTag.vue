@@ -1,9 +1,14 @@
 <template>
   <div :class="[$style['video-tag-wrap'], { [$style['padding']]: padding }]">
+    <span v-if="isDialog">标签：</span>
     <div
       v-for="(tTag, index) in tags"
       :key="`tag-${index}`"
-      :class="$style['tag']"
+      :class="[
+        $style['tag'],
+        { [$style['custom']]: $route.query.source === 'smallPig' },
+        { [$style['custom-dialog']]: isDialog }
+      ]"
     >
       {{ tTag }}
     </div>
@@ -11,12 +16,10 @@
 </template>
 
 <script>
-import split from 'lodash/split';
+import split from "lodash/split";
 
 export default {
-  components: {
-
-  },
+  components: {},
   props: {
     tag: {
       type: String,
@@ -24,11 +27,14 @@ export default {
     },
     padding: {
       type: Boolean
+    },
+    isDialog: {
+      type: Boolean
     }
   },
   computed: {
     tags() {
-      return split(this.tag, ',');
+      return split(this.tag, ",");
     }
   }
 };
@@ -57,6 +63,17 @@ export default {
     line-height: 18px;
     font-weight: 400;
     margin-right: 10px;
+
+    &.custom {
+      background: #474747;
+    }
+
+    &.custom-dialog {
+      min-width: 0;
+      padding: 0 5px;
+      background: #eee;
+      color: #333;
+    }
   }
 }
 

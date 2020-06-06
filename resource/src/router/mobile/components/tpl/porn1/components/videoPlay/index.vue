@@ -1,5 +1,5 @@
 <template>
-  <mobile-container v-if="videoInfo" :class="$style.container">
+  <mobile-container v-if="videoInfo" :class="[$style.container , $style[source]]">
     <div slot="content" class="content-wrap">
       <div :class="$style['header']" id="header">
         <div :class="$style['btn-prev']" @click="$router.back()">
@@ -9,7 +9,11 @@
       <template v-if="videoInfo">
         <video-player :video-info="videoInfo" />
         <video-info :video-info="videoInfo" />
-        <video-tag :tag="videoInfo.tag" :padding="true" />
+        <video-tag
+          v-if="!['smallPig' , 'gay' ,'les'].includes(source)"
+          :tag="videoInfo.tag"
+          :padding="true"
+        />
       </template>
       <video-guess />
     </div>
@@ -37,6 +41,7 @@ export default {
   },
   data() {
     return {
+      source: this.$route.query.source,
       videoInfo: null
     };
   },
@@ -116,7 +121,12 @@ export default {
 @import "~@/css/variable.scss";
 
 div.container {
+  // Yabo & gay & les
   background-color: $main_white_color1;
+
+  &.smallPig {
+    background-color: #333;
+  }
 }
 
 .header {

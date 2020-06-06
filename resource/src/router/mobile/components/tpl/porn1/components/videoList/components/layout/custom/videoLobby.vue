@@ -122,6 +122,7 @@ export default {
   },
   data() {
     return {
+      source: this.$route.query.source,
       msg: "",
       videoTag: [],
       videoSort: [],
@@ -161,10 +162,10 @@ export default {
   methods: {
     getVideoTag() {
       try {
-        let videolistStorage = localStorage.getItem("smallPig-video-tag");
+        let videolistStorage = localStorage.getItem(`${this.source}-video-tag`);
         if (videolistStorage) {
           this.videoTag = JSON.parse(
-            localStorage.getItem("smallPig-video-tag")
+            localStorage.getItem(`${this.source}-video-tag`)
           );
         }
       } catch (e) {
@@ -181,10 +182,13 @@ export default {
 
         try {
           localStorage.setItem(
-            "smallPig-video-tag",
+            `${this.source}-video-tag`,
             JSON.stringify(response.result)
           );
-          localStorage.setItem("smallPig-video-tag-timestamp", Date.now());
+          localStorage.setItem(
+            `${this.source}-video-tag-timestamp`,
+            Date.now()
+          );
         } catch (e) {
           console.log(e);
         }
@@ -195,10 +199,12 @@ export default {
     // 取得影片排序
     getVideoSort() {
       try {
-        let videolistStorage = localStorage.getItem("smallPig-video-sort");
+        let videolistStorage = localStorage.getItem(
+          `${this.source}-video-sort`
+        );
         if (videolistStorage) {
           this.videoSort = JSON.parse(
-            localStorage.getItem("smallPig-video-sort")
+            localStorage.getItem(`${this.source}-video-sort`)
           );
         }
       } catch (e) {
@@ -215,10 +221,13 @@ export default {
 
         try {
           localStorage.setItem(
-            "smallPig-video-sort",
+            `${this.source}-video-sort`,
             JSON.stringify(response.result)
           );
-          localStorage.setItem("smallPig-video-sort-timestamp", Date.now());
+          localStorage.setItem(
+            `${this.source}-video-sort-timestamp`,
+            Date.now()
+          );
         } catch (e) {
           console.log(e);
         }
@@ -241,10 +250,12 @@ export default {
     // 取得所有影片(熱門推薦除外)
     getVideoList() {
       try {
-        let videolistStorage = localStorage.getItem("smallPig-video-list");
+        let videolistStorage = localStorage.getItem(
+          `${this.source}-video-list`
+        );
         if (videolistStorage) {
           this.videoList = JSON.parse(
-            localStorage.getItem("smallPig-video-list")
+            localStorage.getItem(`${this.source}-video-list`)
           );
         }
       } catch (e) {
@@ -264,10 +275,13 @@ export default {
 
         try {
           localStorage.setItem(
-            "smallPig-video-list",
+            `${this.source}-video-list`,
             JSON.stringify(response.result)
           );
-          localStorage.setItem("smallPig-video-list-timestamp", Date.now());
+          localStorage.setItem(
+            `${this.source}-video-list-timestamp`,
+            Date.now()
+          );
         } catch (e) {
           console.log(e);
         }
