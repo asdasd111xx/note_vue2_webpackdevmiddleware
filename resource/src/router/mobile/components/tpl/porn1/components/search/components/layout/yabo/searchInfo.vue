@@ -8,7 +8,8 @@
             @click="
               $router.push({
                 name: 'videoPlay',
-                params: { id: info.id }
+                params: { id: info.id },
+                query: { source: $route.query.source }
               })
             "
           >
@@ -79,12 +80,8 @@ export default {
     getImg(image) {
       return {
         src: image,
-        error: this.$getCdnPath(
-          `/static/image/_new/default/bg_video03_d.png`
-        ),
-        loading: this.$getCdnPath(
-          `/static/image/_new/default/bg_video03_d.png`
-        )
+        error: this.$getCdnPath(`/static/image/_new/default/bg_video03_d.png`),
+        loading: this.$getCdnPath(`/static/image/_new/default/bg_video03_d.png`)
       };
     },
     getSearchList(page) {

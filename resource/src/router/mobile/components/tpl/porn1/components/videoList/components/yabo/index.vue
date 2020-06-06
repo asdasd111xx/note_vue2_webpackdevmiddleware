@@ -25,8 +25,8 @@ import { mapGetters } from "vuex";
 
 export default {
   components: {
-    videoLobby: () => import("./components/videoLobby"),
-    videoMore: () => import("./components/videoMore")
+    videoLobby: () => import("../layout/yabo/videoLobby"),
+    videoMore: () => import("../layout/yabo/videoMore")
   },
   props: {
     setHeaderTitle: {
@@ -45,7 +45,7 @@ export default {
         return;
       }
 
-      this.setHeaderTitle("鴨脖視頻");
+      this.setHeaderTitle("鸭脖视频");
     }
   }
 };

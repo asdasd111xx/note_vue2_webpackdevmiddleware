@@ -14,6 +14,11 @@
       @click="headerConfig.onClick"
     >
       <img
+        v-if="source === 'gay' || source === 'les'"
+        :src="$getCdnPath(`/static/image/_new/common/btn_back_w.png`)"
+      />
+      <img
+        v-else
         :src="
           $getCdnPath(
             `/static/image/_new/common/btn_${
@@ -25,7 +30,9 @@
     </div>
 
     <div v-if="headerConfig.title" :class="[$style.wrap, 'clearfix']">
-      <div :class="$style.title">{{ headerConfig.title }}</div>
+      <div :class="[[$style.title], $style[source]]">
+        {{ headerConfig.title }}
+      </div>
       <div
         v-if="headerConfig.gameList"
         :class="$style['btn-game-list']"
@@ -50,26 +57,16 @@
     </div>
 
     <template v-if="headerConfig.hasSearchBar">
-      <div
-        :class="[
-          $style['search-wrap'],
-          headerConfig.source === 'smallPig' ? $style['smallPig'] : ''
-        ]"
-      >
+      <div :class="[$style['search-wrap'], $style[source]]">
         <input
           v-model="headerConfig.keyWord"
           :placeholder="$text('S_PLEASE_INPUT_AV', '请输入片名、女优或番号')"
           type="text"
           @keydown.enter="headerConfig.onSearchClick(headerConfig.keyWord)"
-          :class="[
-            headerConfig.source === 'smallPig' ? $style['smallPig'] : ''
-          ]"
+          :class="$style[source]"
         />
         <div
-          :class="[
-            $style['icon-search'],
-            headerConfig.source === 'smallPig' ? $style['smallPig'] : ''
-          ]"
+          :class="[$style['icon-search'], $style[source]]"
           @click="headerConfig.onSearchClick(headerConfig.keyWord)"
         >
           <icon name="search" width="20" height="20" />
@@ -80,6 +77,17 @@
     <template v-if="headerConfig.hasSearchBtn">
       <div :class="$style['btn-search-wrap']" @click="goSearch">
         <img
+          v-if="source === 'smallPig'"
+          :src="$getCdnPath('/static/image/_new/common/icon_search_gray.png')"
+        />
+
+        <img
+          v-else-if="source === 'gay' || source === 'les'"
+          :src="$getCdnPath('/static/image/_new/common/icon_search_white.png')"
+        />
+
+        <img
+          v-else
           :src="$getCdnPath('/static/image/_new/common/icon_search_n.png')"
         />
       </div>
@@ -233,7 +241,8 @@ export default {
   data() {
     return {
       currentMenu: "",
-      msg: ""
+      msg: "",
+      source: this.$route.query.source
     };
   },
   computed: {
@@ -248,7 +257,10 @@ export default {
       return {
         [style.header]: true,
         [style["is-home"]]: this.$route.name === "home",
-        [style["smallPig"]]: this.headerConfig.source === "smallPig",
+        [style[this.source]]: this.source ? this.source : "",
+        [style["search-page"]]: this.headerConfig.isSmallPigSearch
+          ? true
+          : false,
         // [style['background-gradient']]: config.isBackgroundGradient ,
         clearfix: true
       };
@@ -279,7 +291,7 @@ export default {
         return;
       }
 
-      this.$router.push({ path: "search" });
+      this.$router.push({ path: "search", query: { source: this.source } });
     }
   }
 };
@@ -301,8 +313,19 @@ export default {
   text-align: center;
   border-bottom: 1px solid #eee;
 
-  &.smallPig {
+  // 小豬視頻的search Header 為黑色底
+  &.search-page {
     background: #414141;
+  }
+
+  &.gay {
+    background: #4a8cb8;
+    border-bottom: none;
+  }
+
+  &.les {
+    background: #d64545;
+    border-bottom: none;
   }
 
   &::before {
@@ -406,6 +429,11 @@ export default {
   line-height: 22px;
   color: $main_title_color1;
   font-size: 17px;
+
+  &.les,
+  &.gay {
+    color: #fff;
+  }
 }
 
 .btn-game-list {
@@ -436,7 +464,9 @@ export default {
   width: calc(100% - 10% - 24px);
   margin: 6px 0 0 24px;
 
-  &.smallPig {
+  &.smallPig,
+  &.gay,
+  &.les {
     border-radius: 18px;
   }
 
@@ -452,9 +482,32 @@ export default {
     font-size: 14px;
     outline: none;
 
+    &.smallPig,
+    &.gay,
+    &.les {
+      border-radius: 18px;
+    }
+
     &.smallPig {
       background-color: #333;
-      border-radius: 18px;
+    }
+
+    &.gay {
+      color: #fff;
+      background-color: #3a79a1;
+
+      &::placeholder {
+        color: #fff;
+      }
+    }
+
+    &.les {
+      color: #fff;
+      background-color: #b73939;
+
+      &::placeholder {
+        color: #fff;
+      }
     }
 
     &::placeholder {
@@ -476,10 +529,23 @@ export default {
   margin: 0 auto;
   text-align: center;
 
-  &.smallPig {
+  &.smallPig,
+  &.gay,
+  &.les {
     width: 85px;
     border-radius: 0 18px 18px 0;
+  }
+
+  &.smallPig {
     background: #1e1e1e;
+  }
+
+  &.gay {
+    background: #3e81ac;
+  }
+
+  &.les {
+    background: #c54242;
   }
 
   > img {

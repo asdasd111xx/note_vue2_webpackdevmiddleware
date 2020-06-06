@@ -29,7 +29,6 @@ export default {
         prev: true,
         hasSearchBar: true,
         keyWord: "",
-        isSmallPigSearch: 'smallPigSearch',
         onClick: () => {
           this.$router.back();
         },

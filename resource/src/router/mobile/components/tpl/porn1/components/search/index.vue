@@ -14,7 +14,9 @@ export default {
   components: {
     mobileContainer,
     yabo: () => import("./components/yabo/"),
-    smallPig: () => import("./components/smallPig/")
+    smallPig: () => import("./components/smallPig/"),
+    gay: () => import("./components/gay/"),
+    les: () => import("./components/les/")
   },
   data() {
     return {

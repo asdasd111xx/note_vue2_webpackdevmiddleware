@@ -1,14 +1,18 @@
 <template>
   <div :class="$style['video-more-container']">
-    <div :class="$style['box']">
+    <div :class="[$style['box'], $style[source]]">
       <swiper :options="{ slidesPerView: 'auto', slideClass: $style['tab'] }">
         <swiper-slide v-for="info in videoTabs" :key="info.id">
           <div
-            :class="[$style['wrap'], { [$style.active]: info.id === +sortId }]"
+            :class="[
+              $style['wrap'],
+              $style[source],
+              { [$style.active]: info.id === +sortId }
+            ]"
             @click="setSortId(info.id)"
           >
             <span>{{ info.title }}</span>
-            <div />
+            <div :class="$style['line']" />
           </div>
         </swiper-slide>
       </swiper>
@@ -23,7 +27,13 @@
         v-for="info in videoList"
         :key="info.id"
         :class="[isSingle ? $style['single'] : $style['multiple']]"
-        @click="$router.push({ name: 'videoPlay', params: { id: info.id } })"
+        @click="
+          $router.push({
+            name: 'videoPlay',
+            params: { id: info.id },
+            query: { source: $route.query.source }
+          })
+        "
       >
         <div :class="$style['image-wrap']">
           <img v-lazy="getImg(info.image)" />
@@ -74,7 +84,8 @@ export default {
       total: 0,
       videoTabs: [],
       sortId: +this.$route.query.sortId,
-      isSingle: false
+      isSingle: false,
+      source: this.$route.query.source
     };
   },
   created() {
@@ -183,7 +194,18 @@ export default {
 .box {
   position: relative;
   padding-right: 40px;
-  background: $main_white_color1;
+
+  &.yabo {
+    background: $main_white_color1;
+  }
+
+  &.gay {
+    background: #3e81ac;
+  }
+
+  &.les {
+    background: #cc4646;
+  }
 }
 
 .tab {
@@ -194,20 +216,36 @@ export default {
 .wrap {
   position: relative;
   line-height: 44px;
-  color: #bcbdc1;
   font-size: 14px;
   text-align: center;
   white-space: nowrap;
 
-  &.active {
-    color: $main_text_color4;
+  &.yabo {
+    color: #bcbdc1;
 
-    > div {
-      display: block;
+    // 亞博點擊的文字color
+    &.active {
+      color: $main_text_color4;
     }
   }
 
-  > div {
+  &.gay {
+    color: #a8ceff;
+  }
+
+  &.les {
+    color: #ffbbbb;
+  }
+
+  &.gay,
+  &.les {
+    // 男男 or 女女 點擊的文字color
+    &.active {
+      color: #fff;
+    }
+  }
+
+  .line {
     display: none;
     position: absolute;
     width: 48px;
@@ -216,6 +254,14 @@ export default {
     bottom: 2px;
     transform: translateX(-50%);
     border-radius: 1px;
+    background-color: #fff;
+  }
+
+  &.active .line {
+    display: block;
+  }
+
+  &.yabo.active .line {
     background-color: #be9e7f;
   }
 }

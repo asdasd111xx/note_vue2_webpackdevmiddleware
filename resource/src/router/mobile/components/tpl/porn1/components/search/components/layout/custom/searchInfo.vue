@@ -8,7 +8,8 @@
             @click="
               $router.push({
                 name: 'videoPlay',
-                params: { id: info.id }
+                params: { id: info.id },
+                query: { source: $route.query.source }
               })
             "
           >

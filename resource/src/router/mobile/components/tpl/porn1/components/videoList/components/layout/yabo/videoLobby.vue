@@ -1,6 +1,6 @@
 <template>
   <div :class="$style['video-lobby-container']">
-    <div :class="$style['tag-box']">
+    <div :class="[$style['tag-box'], $style[source]]">
       <swiper
         ref="tag-swiper"
         :options="{ slidesPerView: 'auto', slideClass: $style['tag-tab'] }"
@@ -9,17 +9,19 @@
           <div
             :class="[
               $style['tag-wrap'],
+              $style[source],
               { [$style.active]: info.id === +videoType.id }
             ]"
             @click="onChangeVideoType(index)"
           >
             <span>{{ info.title }}</span>
-            <div />
+            <div :class="$style['line']" />
           </div>
         </swiper-slide>
       </swiper>
 
       <div
+        v-if="source === 'yabo'"
         :class="[$style['icon-arrow'], { [$style.active]: isShowAllTag }]"
         @click.stop="onShowAllTag(!isShowAllTag)"
       >
@@ -50,9 +52,11 @@
         :class="$style['video-cell']"
       >
         <div :class="[$style['video-type'], 'clearfix']">
-          <div :class="$style['type-name']">{{ videoData.name }}</div>
+          <div :class="[$style['type-name'], $style[source]]">
+            {{ videoData.name }}
+          </div>
           <div
-            :class="$style['btn-more']"
+            :class="[$style['btn-more'], $style[source]]"
             @click.stop="
               openVideo('videoList', {
                 query: {
@@ -67,13 +71,18 @@
           </div>
         </div>
 
-        <div :class="['video-block', 'clearfix']">
+        <div :class="[$style['video-block'], $style['clearfix']]">
           <div
             v-for="video in videoData.list.slice(0, 2)"
             :key="`video-${video.id}`"
             :href="`/mobile/videoPlay/${video.id}`"
-            :class="$style['video']"
-            @click.stop="openVideo('videoPlay', { params: { id: video.id } })"
+            :class="[$style['video'], $style[source]]"
+            @click.stop="
+              openVideo('videoPlay', {
+                params: { id: video.id },
+                query: { source: $route.query.source }
+              })
+            "
           >
             <img :src="video.image" />
             <div>{{ video.title }}</div>
@@ -104,6 +113,7 @@ export default {
   data() {
     return {
       isShowAllTag: false,
+      source: this.$route.query.source,
       videoTag: [],
       videoSort: [],
       videoRecommand: [],
@@ -132,7 +142,23 @@ export default {
     }
   },
   created() {
-    this.setHeaderTitle("鴨脖視頻");
+    switch (this.source) {
+      case "yabo":
+        this.setHeaderTitle("鸭脖视频");
+        break;
+
+      case "gay":
+        this.setHeaderTitle("男男视频");
+        break;
+
+      case "les":
+        this.setHeaderTitle("女女视频");
+        break;
+
+      default:
+        break;
+    }
+
     this.getVideoTag();
     this.getVideoSort();
     this.getVideoRecommand();
@@ -203,7 +229,10 @@ export default {
         }
 
         try {
-          localStorage.setItem("yabo-video-sort", JSON.stringify(response.result));
+          localStorage.setItem(
+            "yabo-video-sort",
+            JSON.stringify(response.result)
+          );
           localStorage.setItem("yabo-video-sort-timestamp", Date.now());
         } catch (e) {
           console.log(e);
@@ -247,7 +276,10 @@ export default {
         }
 
         try {
-          localStorage.setItem("yabo-video-list", JSON.stringify(response.result));
+          localStorage.setItem(
+            "yabo-video-list",
+            JSON.stringify(response.result)
+          );
           localStorage.setItem("yabo-video-list-timestamp", Date.now());
         } catch (e) {
           console.log(e);
@@ -277,8 +309,19 @@ export default {
 
 .tag-box {
   position: relative;
-  padding-right: 40px;
-  background: $main_white_color1;
+
+  &.yabo {
+    background: $main_white_color1;
+    padding-right: 40px;
+  }
+
+  &.gay {
+    background: #3e81ac;
+  }
+
+  &.les {
+    background: #cc4646;
+  }
 }
 
 .tag-tab {
@@ -289,20 +332,36 @@ export default {
 .tag-wrap {
   position: relative;
   line-height: 44px;
-  color: #bcbdc1;
   font-size: 14px;
   text-align: center;
   white-space: nowrap;
 
-  &.active {
-    color: $main_text_color4;
+  &.yabo {
+    color: #bcbdc1;
 
-    > div {
-      display: block;
+    // 亞博點擊的文字color
+    &.active {
+      color: $main_text_color4;
     }
   }
 
-  > div {
+  &.gay {
+    color: #a8ceff;
+  }
+
+  &.les {
+    color: #ffbbbb;
+  }
+
+  &.gay,
+  &.les {
+    // 男男 or 女女 點擊的文字color
+    &.active {
+      color: #fff;
+    }
+  }
+
+  .line {
     display: none;
     position: absolute;
     width: 48px;
@@ -311,6 +370,14 @@ export default {
     bottom: 2px;
     transform: translateX(-50%);
     border-radius: 1px;
+    background-color: #fff;
+  }
+
+  &.active .line {
+    display: block;
+  }
+
+  &.yabo.active .line {
     background-color: #be9e7f;
   }
 }
@@ -384,6 +451,15 @@ export default {
   color: #be9e7f;
   font-weight: 700;
   font-size: 12px;
+
+  &.gay {
+    color: #333;
+  }
+
+  &.gay,
+  &.les {
+    background-image: url("/static/image/_new/common/icon_item_black.png");
+  }
 }
 
 .btn-more {
@@ -392,38 +468,42 @@ export default {
   height: 20px;
   line-height: 20px;
   border-radius: 3px;
-  background: linear-gradient(to left, #bd9d7d, #f9ddbd);
   color: #fff;
   font-size: 12px;
   text-align: center;
-
-  &:hover {
-    color: #fff;
+  &.yabo {
+    background: linear-gradient(to left, #bd9d7d, #f9ddbd);
   }
+
+  &.gay {
+    background: #4a8cb8;
+  }
+
+  &.les {
+    background: #d64545;
+  }
+
+  // &:hover {
+  //   color: #fff;
+  // }
+}
+
+.video-block {
+  display: flex;
+  justify-content: space-between;
 }
 
 .wrap {
   overflow: hidden;
   position: relative;
   float: left;
-  width: 50%;
+  width: 49%;
   margin-bottom: 3px;
-  border-radius: 7px;
   box-sizing: border-box;
 
   > img {
     display: block;
     width: 100%;
-    padding: 0 2px;
-  }
-
-  > span {
-    position: absolute;
-    top: 2px;
-    left: 22px;
-    color: #9ca3bf;
-    font-weight: 700;
-    font-size: 12px;
   }
 
   > div {
@@ -433,9 +513,8 @@ export default {
     bottom: 0;
     left: 0;
     line-height: 20px;
-    border-radius: 0 0 7px 7px;
-    background-color: #fff;
-    color: #3d3d3d;
+    background-color: #000;
+    color: #fefefe;
     font-size: 12px;
     text-overflow: ellipsis;
     white-space: nowrap;
@@ -455,6 +534,11 @@ export default {
     left: 0;
     min-height: 100%;
     margin: auto;
+  }
+
+  &.yabo > div {
+    background-color: #fff;
+    color: #3d3d3d;
   }
 }
 </style>

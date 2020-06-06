@@ -7,8 +7,8 @@
 
 <script>
 import { mapGetters } from "vuex";
-import searchHome from "./components/searchHome";
-import searchInfo from "./components/searchInfo";
+import searchHome from "../layout/yabo/searchHome";
+import searchInfo from "../layout/yabo/searchInfo";
 
 /********************************
  * Source 為 Yabo 最外層的接口元件 *
@@ -31,7 +31,6 @@ export default {
       headerInfo: {
         home: {
           prev: true,
-          isBackgroundGradient: true,
           title: this.$text("S_SEARCH", "搜索视频"),
           onClick: () => {
             this.$router.back();
@@ -40,7 +39,6 @@ export default {
         info: {
           prev: true,
           hasSearchBar: true,
-          isBackgroundGradient: true,
           keyWord: this.$route.query.key,
           onClick: () => {
             this.$router.back();

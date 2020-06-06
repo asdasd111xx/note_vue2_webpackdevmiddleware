@@ -21,7 +21,9 @@ export default {
   components: {
     mobileContainer,
     yabo: () => import("./components/yabo/"),
-    smallPig: () => import("./components/smallPig/")
+    smallPig: () => import("./components/smallPig/"),
+    gay: () => import("./components/gay/"),
+    les: () => import("./components/les/"),
   },
   data() {
     return {
@@ -42,6 +44,12 @@ export default {
     }),
 
     template() {
+      /* source Type
+         yabo => 鴨脖視頻
+         smallPig => 小豬視頻
+         gay => 男男視頻
+         les => 女女視頻
+      */
       let source = this.$route.query.source;
       return source;
     },

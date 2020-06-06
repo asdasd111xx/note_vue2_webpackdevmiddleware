@@ -7,17 +7,11 @@
           ($route.query.tagId === 0 && $route.query.sortId !== 0)
       "
     >
-      <video-more
-        :set-header-title="setHeaderTitle"
-        :set-has-search-btn="setHasSearchBtn"
-      />
+      <video-more :set-header-title="setHeaderTitle" />
     </template>
 
     <template v-else>
-      <video-lobby
-        :set-header-title="setHeaderTitle"
-        :set-has-search-btn="setHasSearchBtn"
-      />
+      <video-lobby :set-header-title="setHeaderTitle" />
     </template>
   </div>
 </template>
@@ -25,14 +19,14 @@
 <script>
 import { mapGetters } from "vuex";
 
-/***********************************
- * Source 為 smallPig 最外層的接口元件*
- ***********************************/
+/********************************
+ * Source 為 gay 最外層的接口元件  *
+ ********************************/
 
 export default {
   components: {
-    videoLobby: () => import("../layout/custom/videoLobby"),
-    videoMore: () => import("../layout/custom/videoMore")
+    videoLobby: () => import("../layout/yabo/videoLobby"),
+    videoMore: () => import("../layout/yabo/videoMore")
   },
   props: {
     setHeaderTitle: {
@@ -51,7 +45,7 @@ export default {
         return;
       }
 
-      this.setHeaderTitle("小猪视频");
+      this.setHeaderTitle("男男视频");
     }
   }
 };
