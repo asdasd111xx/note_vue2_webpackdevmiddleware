@@ -2,8 +2,8 @@
   <div
     id="TencentCaptcha"
     :class="[
-      $style['login-unit'],
-      $style['login-unit-captcha'],
+      $style['click-unit'],
+      $style['click-unit-captcha'],
       { [$style['disable']]: puzzleObj }
     ]"
     data-appid="2028894711"
@@ -68,7 +68,7 @@ export default {
 </script>
 
 <style lang="scss" module>
-.login-unit {
+.click-unit {
   position: relative;
   display: flex;
   align-items: center;
@@ -98,7 +98,7 @@ export default {
     }
   }
   span {
-    padding: 0 38px;
+    padding-left: 38px;
     color: #a5a5a5;
 
     &.success {

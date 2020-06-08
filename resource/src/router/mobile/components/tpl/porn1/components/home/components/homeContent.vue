@@ -500,6 +500,8 @@ export default {
       // T => 敬请期待
       // YV => 鴨脖視頻
       // PV => 小豬視頻
+      // BB => 男男視頻
+      // GG => 女女視頻
 
       if (game.type === 'D') {
         return;
@@ -536,6 +538,20 @@ export default {
             this.$router.push({
               name: 'videoList',
               query: { source: 'smallPig' }
+            });
+            break;
+
+          case 'BB':
+             this.$router.push({
+              name: 'videoList',
+              query: { source: 'gay' }
+            });
+            break;
+
+          case 'GG':
+             this.$router.push({
+              name: 'videoList',
+              query: { source: 'les' }
             });
             break;
 
