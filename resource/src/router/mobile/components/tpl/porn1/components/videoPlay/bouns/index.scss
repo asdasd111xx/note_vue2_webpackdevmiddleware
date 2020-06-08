@@ -157,7 +157,7 @@ $bouns_color6: #FFF07B;
             white-space: nowrap;
 
             &.earn {
-                margin-left: 5px;
+                margin-left: 3px;
                 position: relative;
                 text-align: left;
             }
@@ -165,10 +165,10 @@ $bouns_color6: #FFF07B;
     }
 
     &.active {
-        width: 85px;
+        width: 105px;
 
         .coin-wrap {
-            width: 85px;
+            width: 105px;
             justify-content: flex-start;
         }
     }
