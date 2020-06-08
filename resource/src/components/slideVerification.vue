@@ -101,6 +101,10 @@ export default {
           login: {
             scene: 'nc_login',
             appkey: 'FFFF0N0N000000009172'
+          },
+          verify: {
+            scene: 'nc_login',
+            appkey: 'FFFF0N0N000000009172'
           }
         },
         mobile: {
@@ -110,6 +114,10 @@ export default {
           },
           login: {
             scene: 'nc_login_h5',
+            appkey: 'FFFF0N0N000000009172'
+          },
+          verify: {
+            scene: 'nc_login',
             appkey: 'FFFF0N0N000000009172'
           }
         }
