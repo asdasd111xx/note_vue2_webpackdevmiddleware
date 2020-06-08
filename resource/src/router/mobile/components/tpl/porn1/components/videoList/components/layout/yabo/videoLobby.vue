@@ -84,7 +84,7 @@
               })
             "
           >
-            <img :src="video.image" />
+            <img v-lazy="getImg(video.image)" />
             <div>{{ video.title }}</div>
           </div>
         </div>
@@ -169,6 +169,14 @@ export default {
     this.getVideoList();
   },
   methods: {
+    getImg(img) {
+      const isYabo = this.source === 'yabo';
+      return {
+        src: img,
+        error: this.$getCdnPath(`/static/image/_new/default/${isYabo ? 'bg_video03_d' : 'bg_video03_1_d@3x'}.png`),
+        loading: this.$getCdnPath(`/static/image/_new/default/${isYabo ? 'bg_video03_d' : 'bg_video03_1_d@3x'}.png`),
+      };
+    },
     getVideoTag() {
       try {
         let videolistStorage = localStorage.getItem(`${this.source}-video-tag`);

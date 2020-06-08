@@ -114,11 +114,12 @@ export default {
     setSortId(value) {
       this.sortId = value;
     },
-    getImg(image) {
+    getImg(img) {
+      const isYabo = this.source === 'yabo';
       return {
-        src: image,
-        error: this.$getCdnPath(`/static/image/_new/default/bg_video03_d.png`),
-        loading: this.$getCdnPath(`/static/image/_new/default/bg_video03_d.png`)
+        src: img,
+        error: this.$getCdnPath(`/static/image/_new/default/${isYabo ? 'bg_video03_d' : 'bg_video03_1_d@3x'}.png`),
+        loading: this.$getCdnPath(`/static/image/_new/default/${isYabo ? 'bg_video03_d' : 'bg_video03_1_d@3x'}.png`),
       };
     },
     getVideoList(page) {
