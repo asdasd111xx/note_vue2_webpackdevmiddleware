@@ -76,6 +76,20 @@ if (cid) {
     };
 }
 
+// 推播測試
+// setTimeout(() => {
+//     const date = new Date();
+//     store.state.noticeData = [
+//         ...store.state.noticeData,
+//         {
+//             id: date.toISOString(),
+//             event: "notice",
+//             content: "C_WS_INBOX",
+//             type: 'player_inbox'
+//         }
+//     ];
+// }, 2500)
+
 Vue.use(Vuex);
 Vue.use(VueRx);
 Vue.use(VeeValidate, { inject: true });
