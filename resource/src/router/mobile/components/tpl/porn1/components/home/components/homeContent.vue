@@ -188,8 +188,7 @@ export default {
             name: game.name
           }))
           .filter(type => {
-            // Welfare 的 W 是全形的W...
-            return this.isAdult ? type : type.icon !== 'Ｗelfare';
+            return this.isAdult ? type : type.icon !== 'Welfare';
           });
 
         // 業主說左側選單前後要各複製一份...
@@ -207,7 +206,7 @@ export default {
       const gameList = this.allGame
         .map(game => game)
         .filter(item => {
-          return this.isAdult ? item : item.iconName !== 'Ｗelfare';
+          return this.isAdult ? item : item.iconName !== 'Welfare';
         });
       return gameList;
     },
@@ -243,7 +242,7 @@ export default {
         this.isReceive = true;
         setTimeout(() => {
           $(window).trigger('resize');
-          const defaultType = localStorage.getItem('type') || 'Ｗelfare';
+          const defaultType = localStorage.getItem('type') || 'Welfare';
           const defaultIndex = this.typeList.findIndex(
             type => type.icon === defaultType
           );
@@ -525,7 +524,7 @@ export default {
       }
 
       // 福利
-      if (['YV', 'PV'].includes(game.type)) {
+      if (['YV', 'PV', 'BB', 'GG'].includes(game.type)) {
         switch (game.type) {
           case 'YV':
             this.$router.push({
@@ -558,7 +557,7 @@ export default {
           default:
             break;
         }
-        return
+        return;
       }
 
       // 直播

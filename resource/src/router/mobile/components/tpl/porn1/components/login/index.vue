@@ -297,19 +297,20 @@ export default {
     handleClickLogin() {
       if (!this.username || !this.password) return;
 
-      // 拼圖驗證
-      if (memInfo.config.login_captcha_type === 3) {
-        console.log(this.puzzleObj);
-        this.loginCheck(
-          { captcha: this.puzzleObj },
-          undefined,
-          this.errorCallBack
-        );
-        return
-      }
+      switch (memInfo.config.login_captcha_type) {
+        case 1:
+          // 數字驗證
+          this.loginCheck(undefined, undefined, this.errorCallBack);
+          break;
 
-      // 數字驗證
-      this.loginCheck(undefined, undefined, this.errorCallBack);
+        case 3:
+          // 拼圖驗證
+          this.loginCheck({ captcha: this.puzzleObj }, undefined, this.errorCallBack);
+          break;
+
+        default:
+          break;
+      }
     },
     slideLogin(loginInfo) {
       this.loginCheck({ captcha: loginInfo.data }, loginInfo.slideFuc, this.errorCallBack);
