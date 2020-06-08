@@ -107,7 +107,7 @@
                     $style['send-keyring'],
                     { [$style['active']]: username && !keyRingTimer }
                   ]"
-                  @click="getKeyring"
+                  @click="showCaptchaPopup"
                 >
                   {{ keyRingTime ? `${keyRingTime}s` : "获取验证码" }}
                 </div>
@@ -216,6 +216,13 @@
           </div>
         </div>
       </div>
+
+      <popupVerification
+        v-if="isShowCaptcha"
+        :is-show-captcha.sync="isShowCaptcha"
+        :captcha.sync="captchaData"
+      />
+
     </div>
   </mobile-container>
 </template>
@@ -224,9 +231,12 @@ import { mapGetters } from 'vuex';
 import member from '@/api/member';
 import joinMemInfo from '@/config/joinMemInfo';
 import mobileContainer from '../common/new/mobileContainer'
+import popupVerification from '@/components/popupVerification';
+
 export default {
   components: {
     mobileContainer,
+    popupVerification
   },
   data() {
     return {
@@ -249,7 +259,9 @@ export default {
       phone: '',
       keyring: '',
       password: '',
-      confirm_password: ''
+      confirm_password: '',
+      toggleCaptcha: false,
+      captcha: null
     };
   },
   currentMethod() {
@@ -262,12 +274,36 @@ export default {
     };
   },
   computed: {
+    ...mapGetters({
+      memInfo: 'getMemInfo'
+    }),
     headerConfig() {
       return {
         prev: true,
         title: '找回密码',
         onClick: () => { this.$router.back(); }
       };
+    },
+    isShowCaptcha: {
+      get() {
+        return this.toggleCaptcha
+      },
+      set(value) {
+        return this.toggleCaptcha = value
+      }
+    },
+    captchaData: {
+      get() {
+        return this.captcha
+      },
+      set(value) {
+        return this.captcha = value
+      }
+    }
+  },
+  watch: {
+    captchaData() {
+      this.getKeyring()
     }
   },
   methods: {
@@ -369,12 +405,22 @@ export default {
         return;
       }
     },
+    showCaptchaPopup() {
+      if(this.memInfo.config.default_captcha_type === 0) {
+        this.getKeyring()
+        return
+      }
+
+      // // show captcha
+      this.toggleCaptcha = true
+    },
     // 忘記密碼發送簡訊(驗證碼)
     getKeyring(type) {
       if (this.keyRingTimer) return;
       const data = {
         params: {
-          username: this.username
+          username: this.username,
+          captcha_text: this.captchaData
         },
         success: (response) => {
           this.errMsg = "";

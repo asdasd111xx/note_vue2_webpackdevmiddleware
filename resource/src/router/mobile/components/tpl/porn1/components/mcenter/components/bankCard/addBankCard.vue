@@ -119,7 +119,7 @@
             />
             <div
               :class="[$style['send-keyring'], { [$style.disabled]: smsTimer }]"
-              @click="getKeyring"
+              @click="showCaptchaPopup"
             >
               {{ time ? `${time}s` : "获取验证码" }}
             </div>
@@ -178,7 +178,11 @@
       </div>
     </div>
 
-    <popupVerification v-if="isShowCaptcha" />/>
+    <popupVerification
+      v-if="isShowCaptcha"
+      :is-show-captcha.sync="isShowCaptcha"
+      :captcha.sync="captchaData"
+    />
 
     <message v-if="msg" @close="clearMsg">
       <div slot="msg">
@@ -196,7 +200,8 @@ import popupVerification from '@/components/popupVerification';
 
 export default {
   components: {
-    message
+    message,
+    popupVerification
   },
   props: {
     changePage: {
@@ -229,7 +234,8 @@ export default {
       time: 0,
       msg: '',
       smsTimer: null,
-      toggleCaptcha: false
+      toggleCaptcha: false,
+      captcha: null
     };
   },
   computed: {
@@ -242,6 +248,14 @@ export default {
       },
       set(value) {
         return this.toggleCaptcha = value
+      }
+    },
+    captchaData: {
+      get() {
+        return this.captcha
+      },
+      set(value) {
+        return this.captcha = value
       }
     },
     username() {
@@ -265,6 +279,9 @@ export default {
         this.errorMsg = '';
         this.checkData();
       }
+    },
+    captchaData() {
+      this.getKeyring()
     }
   },
   created() {
@@ -415,11 +432,19 @@ export default {
         loading: this.$getCdnPath('/static/image/game_loading_s.gif')
       };
     },
+    showCaptchaPopup() {
+      if(this.memInfo.config.default_captcha_type === 0) {
+        this.getKeyring()
+        return
+      }
+
+      // // show captcha
+      this.toggleCaptcha = true
+    },
     getKeyring() {
       if (this.lockStatus || this.smsTimer) {
         return;
       }
-
       this.lockStatus = true;
 
       ajax({
@@ -427,7 +452,8 @@ export default {
         url: '/api/v1/c/player/verify/user_bank/sms',
         errorAlert: false,
         params: {
-          phone: `86-${this.formData.phone}`
+          phone: `86-${this.formData.phone}`,
+          captcha_text: this.captchaData
         },
         success: () => {
           ajax({
