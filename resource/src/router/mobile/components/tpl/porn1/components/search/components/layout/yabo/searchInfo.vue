@@ -57,6 +57,10 @@ export default {
     keyWord: {
       type: String,
       required: true
+    },
+    siteId: {
+      type: Number,
+      required: true
     }
   },
   data() {
@@ -90,7 +94,8 @@ export default {
         url: `/video/searchbywords`,
         data: {
           keyWords: this.keyWord,
-          page: page
+          page: page,
+          siteId: this.siteId
         }
       });
     },

@@ -1,7 +1,7 @@
 <template>
   <div>
-    <search-info v-if="$route.query.key" :key-word="keyWord" />
-    <search-home v-else :set-key-word="setKeyWord" />
+    <search-info v-if="$route.query.key" :key-word="keyWord" :siteId="siteId" />
+    <search-home v-else :set-key-word="setKeyWord" :siteId="siteId" />
   </div>
 </template>
 
@@ -27,6 +27,7 @@ export default {
   },
   data() {
     return {
+      siteId: 1,
       keyWord: this.$route.query.key,
       headerInfo: {
         home: {

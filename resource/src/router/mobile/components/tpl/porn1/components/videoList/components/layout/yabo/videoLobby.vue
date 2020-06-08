@@ -108,6 +108,10 @@ export default {
     setHeaderTitle: {
       type: Function,
       required: true
+    },
+    siteId: {
+      type: Number,
+      required: true
     }
   },
   data() {
@@ -179,7 +183,10 @@ export default {
 
       return pornRequest({
         url: "/video/tag",
-        method: "get"
+        method: "get",
+        params: {
+          siteId: this.siteId
+        }
       }).then(response => {
         if (response.status !== 200) {
           return;
@@ -231,7 +238,10 @@ export default {
 
       return pornRequest({
         method: "get",
-        url: "/video/sort"
+        url: "/video/sort",
+        params: {
+          siteId: this.siteId
+        }
       }).then(response => {
         if (response.status !== 200) {
           return;
@@ -256,7 +266,10 @@ export default {
     // 取得熱門推薦影片
     getVideoRecommand() {
       return pornRequest({
-        url: `/video/recommand`
+        url: `/video/recommand`,
+        params: {
+          siteId: this.siteId
+        }
       }).then(response => {
         if (response.status !== 200) {
           return;
@@ -284,7 +297,8 @@ export default {
         method: "post",
         url: `/video/videolist`,
         data: {
-          tag: this.videoType.title === "全部" ? "" : this.videoType.title
+          tag: this.videoType.title === "全部" ? "" : this.videoType.title,
+          siteId: this.siteId
         }
       }).then(response => {
         if (response.status !== 200) {

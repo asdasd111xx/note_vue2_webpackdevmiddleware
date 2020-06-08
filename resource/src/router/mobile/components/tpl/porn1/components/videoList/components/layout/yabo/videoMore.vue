@@ -73,6 +73,10 @@ export default {
     setHeaderTitle: {
       type: Function,
       required: true
+    },
+    siteId: {
+      type: Number,
+      required: true
     }
   },
   data() {
@@ -98,6 +102,9 @@ export default {
       pornRequest({
         method: "get",
         url: `/video/sort`,
+        params: {
+          siteId: this.siteId
+        },
         timeout: 30000
       }).then(response => {
         if (response.status !== 200) {
@@ -124,7 +131,8 @@ export default {
         data: {
           tagId: this.$route.query.tagId,
           sortId: this.sortId,
-          page: page
+          page: page,
+          siteId: this.siteId
         }
       });
     },

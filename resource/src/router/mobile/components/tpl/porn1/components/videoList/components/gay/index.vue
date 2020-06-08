@@ -7,11 +7,11 @@
           ($route.query.tagId === 0 && $route.query.sortId !== 0)
       "
     >
-      <video-more :set-header-title="setHeaderTitle" />
+      <video-more :set-header-title="setHeaderTitle" :siteId="siteId"/>
     </template>
 
     <template v-else>
-      <video-lobby :set-header-title="setHeaderTitle" />
+      <video-lobby :set-header-title="setHeaderTitle" :siteId="siteId"/>
     </template>
   </div>
 </template>
@@ -36,6 +36,11 @@ export default {
     setHasSearchBtn: {
       type: Function,
       default: () => {}
+    }
+  },
+  data() {
+    return {
+      siteId : 3
     }
   },
   watch: {

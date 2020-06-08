@@ -90,6 +90,10 @@ export default {
     setKeyWord: {
       type: Function,
       required: true
+    },
+    siteId: {
+      type: Number,
+      required: true
     }
   },
   data() {
@@ -105,7 +109,8 @@ export default {
   created() {
     pornRequest({
       method: "get",
-      url: `/video/getsearchkey`
+      url: `/video/getsearchkey`,
+      params: { siteId: this.siteId }
     }).then(response => {
       if (response.status !== 200) {
         return;

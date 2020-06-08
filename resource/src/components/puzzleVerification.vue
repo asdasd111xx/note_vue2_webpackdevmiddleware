@@ -4,24 +4,23 @@
     :class="[
       $style['click-unit'],
       $style['click-unit-captcha'],
-      { [$style['disable']]: puzzleObj }
+      { [$style['disable']]: ret === 0 }
     ]"
-    data-appid="2028894711"
-    data-cbfn="callback"
+    @click="showCaptcha"
   >
     <div :class="$style['icon']">
       <img
         :src="
           $getCdnPath(
             `/static/image/_new/login/ic_verification_${
-              puzzleObj ? 'success' : 'check'
+              ret === 0 ? 'success' : 'check'
             }.png`
           )
         "
       />
     </div>
 
-    <span v-if="puzzleObj" :class="$style['success']">验证成功</span>
+    <span v-if="ret === 0" :class="$style['success']">验证成功</span>
     <span v-else>点击按钮进行验证</span>
   </div>
 </template>
@@ -35,33 +34,30 @@ export default {
     }
   },
   data() {
-    return {};
-  },
-  mounted() {
-    this.createScript();
-
-    window.callback = res => {
-      // res（用户主动关闭验证码）= {ret: 2, ticket: null}
-      // res（验证成功） = {ret: 0, ticket: "String", randstr: "String"}
-      if (res.ret === 0) {
-        const { appid, randstr, ticket } = res;
-        let data = {
-          appid: appid,
-          randstr: randstr,
-          icket: ticket
-        };
-        this.$emit("update:puzzleObj", data);
-      } else {
-        this.$emit("update:puzzleObj", {});
-      }
-      return;
+    return {
+      ret: null
     };
   },
   methods: {
-    createScript() {
-      let script = document.createElement("script");
-      script.setAttribute("src", "https://ssl.captcha.qq.com/TCaptcha.js");
-      document.head.appendChild(script);
+    showCaptcha() {
+      let captcha = new TencentCaptcha("2028894711", res => {
+        if (res.ret === 0) {
+          const { appid, randstr, ticket, ret } = res;
+          this.ret = ret;
+          let data = {
+            appid: appid,
+            randstr: randstr,
+            ticket: ticket
+          };
+          this.$emit("update:puzzleObj", data);
+        } else {
+          this.ret = null;
+          this.$emit("update:puzzleObj", {});
+        }
+        return;
+      });
+
+      captcha.show()
     }
   }
 };

@@ -123,7 +123,7 @@
           />
         </div>
         <puzzle-verification
-          v-if="memInfo.config.login_captcha_type === 3"
+          v-if="memInfo.config.register_captcha_type === 3"
           :class="$style['puzzle-block']"
           :puzzle-obj.sync="puzzleObj"
         />
@@ -510,6 +510,10 @@ export default {
       };
       delete params.captcha_text;
       delete params.withdraw_Password;
+
+      if(this.memInfo.config.register_captcha_type === 3) {
+        delete params.confirm_password;
+      }
 
       bbosRequest({
         method: 'post',

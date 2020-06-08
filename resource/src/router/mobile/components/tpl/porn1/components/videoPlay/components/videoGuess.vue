@@ -53,9 +53,36 @@ export default {
       videoList: []
     };
   },
+  computed: {
+    siteId() {
+      switch (this.source) {
+        case 'yabo':
+          return 1;
+          break;
+
+        case 'smallPig':
+          return 2;
+          break
+
+        case 'gay':
+          return 3;
+        break;
+
+        case 'les':
+          return 4;
+        break;
+
+        default:
+          break;
+      }
+    }
+  },
   created() {
     pornRequest({
       url: `/video/guess`,
+      params: {
+        siteId: this.siteId
+      }
     }).then((response) => {
       if (response.status !== 200) {
         return;

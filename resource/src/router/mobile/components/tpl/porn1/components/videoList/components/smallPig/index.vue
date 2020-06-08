@@ -10,6 +10,7 @@
       <video-more
         :set-header-title="setHeaderTitle"
         :set-has-search-btn="setHasSearchBtn"
+        :siteId="siteId"
       />
     </template>
 
@@ -17,6 +18,7 @@
       <video-lobby
         :set-header-title="setHeaderTitle"
         :set-has-search-btn="setHasSearchBtn"
+        :siteId="siteId"
       />
     </template>
   </div>
@@ -42,6 +44,11 @@ export default {
     setHasSearchBtn: {
       type: Function,
       default: () => {}
+    }
+  },
+  data() {
+    return {
+      siteId : 2
     }
   },
   watch: {

@@ -48,14 +48,36 @@ export default {
   computed: {
     ...mapGetters({
       memInfo: 'getMemInfo'
-    })
+    }),
+    siteId() {
+      switch (this.source) {
+        case 'yabo':
+          return 1;
+          break;
+
+        case 'smallPig':
+          return 2;
+          break
+
+        case 'gay':
+          return 3;
+        break;
+
+        case 'les':
+          return 4;
+        break;
+
+        default:
+          break;
+      }
+    }
   },
   mounted() {
 
     pornRequest({
       method: 'post',
       url: `/video/videoinfo`,
-      data: { videoId: this.$route.params.id },
+      data: { videoId: this.$route.params.id , siteId: this.siteId },
       //   reqHeaders: {
       //     // 本機開發時會遇到 CORS 的問題，把Bundleid及Version註解，並打開下面註解即可
       //      'Content-Type': 'application/x-www-form-urlencoded',

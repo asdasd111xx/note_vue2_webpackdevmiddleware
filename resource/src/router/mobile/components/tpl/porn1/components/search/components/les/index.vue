@@ -1,6 +1,6 @@
 <template>
   <div>
-    <search-info :key-word="keyWord" />
+    <search-info :key-word="keyWord" :siteId="siteId" />
   </div>
 </template>
 
@@ -24,6 +24,7 @@ export default {
   },
   data() {
     return {
+      siteId: 4,
       keyWord: "",
       headerInfo: {
         prev: true,
