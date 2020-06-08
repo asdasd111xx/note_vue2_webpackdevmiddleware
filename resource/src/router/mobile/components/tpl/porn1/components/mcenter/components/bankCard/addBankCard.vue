@@ -279,6 +279,9 @@ export default {
         this.errorMsg = '';
         this.checkData();
       }
+    },
+    captchaData() {
+      this.getKeyring()
     }
   },
   created() {
@@ -430,7 +433,7 @@ export default {
       };
     },
     showCaptchaPopup() {
-      if(this.memInfo.config.default_captcha_type === 1) {
+      if(this.memInfo.config.default_captcha_type === 0) {
         this.getKeyring()
         return
       }
@@ -495,12 +498,7 @@ export default {
       clearInterval(this.smsTimer);
       this.smsTimer = null;
     },
-  },
-  watch: {
-    captchaData() {
-      this.getKeyring()
-    }
-  },
+  }
 };
 </script>
 
