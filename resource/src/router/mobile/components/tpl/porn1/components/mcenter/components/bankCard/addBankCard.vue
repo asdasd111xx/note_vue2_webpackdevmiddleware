@@ -177,6 +177,9 @@
         </ul>
       </div>
     </div>
+
+    <popupVerification v-if="isShowCaptcha" />/>
+
     <message v-if="msg" @close="clearMsg">
       <div slot="msg">
         {{ msg }}
@@ -189,6 +192,7 @@
 import { mapGetters, mapActions } from 'vuex';
 import ajax from '@/lib/ajax';
 import message from '../../../common/new/message';
+import popupVerification from '@/components/popupVerification';
 
 export default {
   components: {
@@ -224,13 +228,22 @@ export default {
       lockStatus: false,
       time: 0,
       msg: '',
-      smsTimer: null
+      smsTimer: null,
+      toggleCaptcha: false
     };
   },
   computed: {
     ...mapGetters({
       memInfo: 'getMemInfo'
     }),
+    isShowCaptcha: {
+      get() {
+        return this.toggleCaptcha
+      },
+      set(value) {
+        return this.toggleCaptcha = value
+      }
+    },
     username() {
       if (!this.memInfo.user.name) {
         return '';
