@@ -94,6 +94,11 @@
                 />
               </div>
             </span>
+            <!-- 拼圖驗證 -->
+            <puzzle-verification
+              v-if="memInfo.config.login_captcha_type === 3"
+              :puzzle-obj.sync="puzzleObj"
+            />
             <!-- 驗證碼 -->
             <span
               v-if="hasCaptchaText"
@@ -133,6 +138,7 @@
                 :success-fuc="slideLogin"
                 page-status="login"
               />
+              <!-- 登入鈕 -->
               <div
                 v-else
                 class="login-button login-submit"
@@ -168,7 +174,6 @@
                   $text("S_FREE_REGISTER", "免费注册")
                 }}</router-link>
               </div>
-              <!-- 登入鈕 -->
               <div
                 class="link-button link-submit"
                 @click="$router.push('/mobile/service')"
@@ -196,8 +201,9 @@ import { mapGetters } from 'vuex';
 import loginForm from '@/mixins/loginForm';
 import mobileLinkOpen from '@/lib/mobile_link_open';
 import slideVerification from '@/components/slideVerification';
+import puzzleVerification from '@/components/puzzleVerification';
 import joinMember from '@/router/web/components/page/join_member';
-import mobileContainer from '../common/new/mobileContainer'
+import mobileContainer from '../common/new/mobileContainer';
 import { getCookie, setCookie } from '@/lib/cookie';
 
 /**
@@ -207,6 +213,7 @@ export default {
   components: {
     securityCheck: () => import(/* webpackChunkName: 'securityCheck' */'@/router/web/components/common/securityCheck'),
     slideVerification,
+    puzzleVerification,
     mobileContainer
   },
   mixins: [loginForm],
@@ -221,7 +228,8 @@ export default {
       errMsg: "",
       version: "",
       isShowPwd: false,
-    }
+      puzzleData: null
+    };
   },
   computed: {
     ...mapGetters({
@@ -231,6 +239,14 @@ export default {
       memInfo: 'getMemInfo',
       onlineService: 'getOnlineService'
     }),
+    puzzleObj: {
+      get() {
+        return this.puzzleData;
+      },
+      set(value) {
+        this.puzzleData = value;
+      }
+    },
     headerConfig() {
       return {
         prev: true,
@@ -284,8 +300,22 @@ export default {
       this.isShowPwd = !this.isShowPwd;
     },
     handleClickLogin() {
-      if (!this.username || !this.password) return
-      this.loginCheck(undefined, undefined, this.errorCallBack);
+      if (!this.username || !this.password) return;
+
+      switch (memInfo.config.login_captcha_type) {
+        case 1:
+          // 數字驗證
+          this.loginCheck(undefined, undefined, this.errorCallBack);
+          break;
+
+        case 3:
+          // 拼圖驗證
+          this.loginCheck({ captcha: this.puzzleObj }, undefined, this.errorCallBack);
+          break;
+
+        default:
+          break;
+      }
     },
     slideLogin(loginInfo) {
       this.loginCheck({ captcha: loginInfo.data }, loginInfo.slideFuc, this.errorCallBack);

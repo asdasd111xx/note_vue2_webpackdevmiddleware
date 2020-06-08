@@ -1,63 +1,91 @@
 <template>
-  <mobile-container :header-config="headerConfig">
+  <mobile-container
+    :header-config="headerConfig"
+    :style="{ background: bgColor }"
+  >
     <div slot="content" :class="$style['content-wrap']">
-      <video-tab :sort-id.sync="sortId" :is-single.sync="isSingle" />
-      <video-list :sort-id="sortId" :is-single="isSingle" />
+      <component
+        :is="template"
+        :set-header-title="setHeaderTitle"
+        :set-has-search-btn="setHasSearchBtn"
+      />
     </div>
   </mobile-container>
 </template>
 
 <script>
-import { mapGetters } from 'vuex';
-import videoTab from './components/videoTab';
-import videoList from './components/videoList';
-import mobileContainer from '../common/new/mobileContainer';
+import { mapGetters } from "vuex";
+import mobileContainer from "../common/new/mobileContainer";
 
 export default {
   components: {
     mobileContainer,
-    videoTab,
-    videoList
+    yabo: () => import("./components/yabo/"),
+    smallPig: () => import("./components/smallPig/"),
+    gay: () => import("./components/gay/"),
+    les: () => import("./components/les/"),
   },
   data() {
     return {
-      active: +this.$route.query.sortId,
-      isOne: false
+      headerConfig: {
+        // Title 由各接口設定
+        prev: true,
+        isBackgroundGradient: true,
+        hasSearchBtn: true,
+        onClick: () => {
+          this.$router.back();
+        }
+      }
     };
   },
   computed: {
     ...mapGetters({
-      memInfo: 'getMemInfo'
+      memInfo: "getMemInfo"
     }),
-    headerConfig() {
-      return {
-        prev: true,
-        isBackgroundGradient: true,
-        title: this.$text('S_FULL_HD_MOVIE', '全部高清影片'),
-        hasSearchBtn: true,
-        onClick: () => { this.$router.back(); }
-      };
+
+    template() {
+      /* source Type
+         yabo => 鴨脖視頻
+         smallPig => 小豬視頻
+         gay => 男男視頻
+         les => 女女視頻
+      */
+      let source = this.$route.query.source;
+      return source;
     },
-    sortId: {
-      get() {
-        return this.active;
-      },
-      set(value) {
-        this.active = Number(value);
-      }
-    },
-    isSingle: {
-      get() {
-        return this.isOne;
-      },
-      set() {
-        this.isOne = !this.isOne;
+
+    bgColor() {
+      if (this.template) {
+        switch (this.template) {
+          case "yabo":
+            return "#eee";
+            break;
+
+          case "smallPig":
+            return "#333";
+            break;
+
+          default:
+            break;
+        }
       }
     }
   },
   created() {
-    if (!this.memInfo.config.content_rating || !this.memInfo.user.content_rating) {
-      this.$router.push('/mobile');
+    // 由此層(最外層)直接判斷有無登入
+    if (
+      !this.memInfo.config.content_rating ||
+      !this.memInfo.user.content_rating
+    ) {
+      this.$router.push("/mobile");
+    }
+  },
+  methods: {
+    setHeaderTitle(value) {
+      this.$set(this.headerConfig, "title", value);
+    },
+    setHasSearchBtn(value) {
+      this.$set(this.headerConfig, "hasSearchBtn", value);
     }
   }
 };
@@ -65,6 +93,5 @@ export default {
 
 <style lang="scss" module>
 .content-wrap {
-  background: #eee;
 }
 </style>

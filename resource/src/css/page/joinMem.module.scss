@@ -322,6 +322,12 @@
     }
 }
 
+.puzzle-block {
+  margin: 0 0 11px 95px;
+  border-radius: 5px;
+  max-width: 65%;
+}
+
 @media screen and (min-width: $pad) {
     .join {
         width: 700px;

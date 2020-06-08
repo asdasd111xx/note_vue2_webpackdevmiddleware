@@ -20,8 +20,13 @@
           :src="$getCdnPath('/static/image/_new/actives/bouns/coin_title.png')"
         />
       </div>
+      <!-- 第一行文字 -->
       <div :class="$style['title']">
-        <template v-if="type.includes('poor')">
+        <template v-if="type.includes('full')">
+          请推广好友充值<br />
+          领取更多礼金&nbsp;享受每月分红
+        </template>
+        <template v-else-if="type.includes('poor')">
           {{ $text("S_ACTIVITY_SHORT", "余额不足 请先充值") }}
         </template>
         <div
@@ -32,17 +37,30 @@
           {{ $text("S_ACTIVITY_SLOGAN", "看视频送现金 天天看天天送") }}
         </template>
       </div>
+      <!-- 第二行文字或按鈕 -->
       <template
-        v-if="type == 'tips' || type.includes('poor') || type.includes('wait')"
+        v-if="
+          type == 'tips' ||
+            type.includes('poor') ||
+            type.includes('wait') ||
+            type.includes('full')
+        "
       >
         <div :class="$style['bouns-func']">
-          <div v-if="missionDesc && type.includes('wait')" @click="handleClose">
+          <!-- 左邊第一個按鈕 -->
+          <div
+            v-if="
+              (missionDesc && type.includes('wait')) || type.includes('full')
+            "
+            @click="handleClose"
+          >
             {{ "继续看" }}
           </div>
           <div v-else @click="$router.push('/mobile')">
             {{ $text("S_FIRST_LOOK", "先去逛逛") }}
           </div>
 
+          <!-- 右邊第一個按鈕 -->
           <div
             v-if="type.includes('poor')"
             @click="$router.push('/mobile/mcenter/deposit')"
@@ -51,7 +69,14 @@
             {{ $text("S_GO_DEPOSIT", "去充值") }}
           </div>
           <div
-            v-else-if="missionActionType && type.includes('wait')"
+            v-else-if="type.includes('full')"
+            @click="$router.push('/mobile/mcenter/makeMoney')"
+            :class="$style['active-btn']"
+          >
+            去推广
+          </div>
+          <div
+            v-else-if="type.includes('wait') && missionActionType"
             @click="handleAcionType"
             :class="$style['active-btn']"
           >
@@ -69,6 +94,7 @@
       <template v-else>
         <div :class="$style['bouns-earn-wrap']">
           <div :class="$style['earn-title']">
+            <!-- 暫時不顯示full彩金狀態 -->
             <template v-if="type.includes('full')">
               <span>
                 恭喜获得今日最高彩金

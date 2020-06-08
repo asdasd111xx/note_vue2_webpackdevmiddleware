@@ -80,6 +80,7 @@ export default {
     if (!this.videoInfo.url) return;
     this.player = videojs(this.$refs['video-player'], {
       sources: [{ src: this.videoInfo.url.replace('http://', 'https://'), type: 'application/x-mpegURL' }],
+      // sources: [{ src: 'https://pv-oa-1259142350.file.myqcloud.com/dev/video/FCC/FC2-PPV-777661-3/FC2-PPV-777661-3.m3u8', type: 'application/x-mpegURL' , withCredentials: true}],
       autoplay: false,
       controls: true,
       controlBar: true,
@@ -149,18 +150,19 @@ export default {
     },
     //   點擊進圖條任務彈窗
     handleClickProcess() {
+      const bonunsProcess = this.$refs.bonunsProcess;
+      const bonunsDialog = this.$refs.bonunsDialog;
       if (this.mission) {
         this.dialogType = `tips-wait`;
-        this.$refs.bonunsDialog.isFinishMission = Number(this.mission.ActionType) === 7;
-        this.$refs.bonunsDialog.missionDesc = this.mission.Description;
-        this.$refs.bonunsDialog.missionActionType = this.mission.ActionType;
-        this.$refs.bonunsDialog.isShow = true;
-        if (!this.player.paused()) {
-          this.player.pause();
-          if (this.player.isFullscreen()) {
-            this.player.exitFullscreen();
-          }
-        }
+        bonunsDialog.isFinishMission = Number(this.mission.ActionType) === 7;
+        bonunsDialog.missionDesc = this.mission.Description;
+        bonunsDialog.missionActionType = this.mission.ActionType;
+        bonunsDialog.isShow = true;
+        this.playerPause();
+      } else if (this.dialogType === 'tips-full') {
+        bonunsProcess.processType = 'wait';
+        bonunsDialog.isShow = true;
+        this.playerPause();
       }
     },
     handleClickVideo() {
@@ -234,7 +236,7 @@ export default {
           //   bonunsProcess.totalAmount = n * 10
 
           // 獲得彩金
-          bonunsDialog.earnCurrentNum = Number(Number(data.Active.BreakAmout) * Number(data.BreakTimes));
+          bonunsDialog.earnCurrentNum = parseFloat((Number(data.Active.BreakAmout) * Number(data.BreakTimes)).toFixed(2));
 
           // 可獲得最高彩金
           bonunsDialog.limitAmount = Number(data.Active.LimitAmout);
@@ -268,7 +270,7 @@ export default {
                 bonunsProcess.processType = 'done';
                 break;
               case 'FULL':
-                bonunsProcess.processType = 'done';
+                bonunsProcess.processType = 'wait';
                 this.dialogType = 'tips-full';
                 bonunsDialog.isShow = true;
                 this.playerPause();
@@ -279,7 +281,6 @@ export default {
                 this.playerPause();
                 break;
               case 'BREAK':
-                this.dialogType = `tips-${data.Status.toLowerCase()}`;
                 this.dialogType = 'tips-break';
                 bonunsDialog.isShow = true;
                 this.playerPause();

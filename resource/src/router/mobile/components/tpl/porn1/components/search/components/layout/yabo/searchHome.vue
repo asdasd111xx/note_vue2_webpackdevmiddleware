@@ -83,12 +83,16 @@
 import axios from "axios";
 import split from "lodash/split";
 import join from "lodash/join";
-import pornRequest from '@/api/pornRequest';
+import pornRequest from "@/api/pornRequest";
 
 export default {
   props: {
     setKeyWord: {
       type: Function,
+      required: true
+    },
+    siteId: {
+      type: Number,
       required: true
     }
   },
@@ -106,6 +110,7 @@ export default {
     pornRequest({
       method: "get",
       url: `/video/getsearchkey`,
+      params: { siteId: this.siteId }
     }).then(response => {
       if (response.status !== 200) {
         return;
@@ -124,7 +129,10 @@ export default {
       localStorage.setItem("history-search", join(historyKeyWord));
 
       this.setKeyWord(title);
-      this.$router.push({ name: "search", params: { key: title } });
+      this.$router.push({
+        path: "search",
+        query: { source: this.$route.query.source, key: title }
+      });
     },
     onDelete() {
       this.historyList = [];

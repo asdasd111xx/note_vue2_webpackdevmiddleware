@@ -94,11 +94,12 @@ export default {
         errorAlert: false
       });
 
+      let self = this;
       return Promise.all([setNickname, setShowNickname]).then((response) => {
         if (response.every((res) => res.result === 'ok')) {
-          this.$emit('msg', this.$text('S_CR_SUCCESS'));
-          this.actionSetUserdata(true);
-          this.$emit('cancel');
+          self.$emit('msg', this.$text('S_CR_SUCCESS'));
+          self.actionSetUserdata(true);
+          self.$emit('cancel');
         }
       });
     }

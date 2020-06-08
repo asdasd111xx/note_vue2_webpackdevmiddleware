@@ -1,7 +1,20 @@
 <template>
   <div :class="$style['video-guess-wrap']">
-    <div :class="$style.like">
-      <img :src="$getCdnPath('/static/image/_new/video/icon_like.png')" />
+    <div
+      :class="[
+        [$style.like],
+        { [$style['custom']]: ['les', 'gay'].includes(source) }
+      ]"
+    >
+      <img
+        :src="
+          $getCdnPath(
+            `/static/image/_new/video/icon_like${
+              ['les', 'gay'].includes(source) ? '_red' : ''
+            }.png`
+          )
+        "
+      />
       {{ $text("S_YOU_MAY_LIKE", "猜你喜欢") }}
     </div>
     <div
@@ -36,12 +49,40 @@ export default {
   },
   data() {
     return {
+      source: this.$route.query.source,
       videoList: []
     };
+  },
+  computed: {
+    siteId() {
+      switch (this.source) {
+        case 'yabo':
+          return 1;
+          break;
+
+        case 'smallPig':
+          return 2;
+          break
+
+        case 'gay':
+          return 3;
+        break;
+
+        case 'les':
+          return 4;
+        break;
+
+        default:
+          break;
+      }
+    }
   },
   created() {
     pornRequest({
       url: `/video/guess`,
+      params: {
+        siteId: this.siteId
+      }
     }).then((response) => {
       if (response.status !== 200) {
         return;
@@ -79,6 +120,10 @@ export default {
   color: $main_discover_color1;
   font-weight: 500;
   position: relative;
+
+  &.custom {
+    color: #333;
+  }
 
   img {
     width: 20px;

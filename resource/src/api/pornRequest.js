@@ -24,7 +24,8 @@ export default ({
         timeout,
         headers: {
             ...pornHeader,
-            ...reqHeaders
+            ...reqHeaders,
+            origin: location.host
         },
         params: {
             ...params
