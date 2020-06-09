@@ -107,7 +107,7 @@ export default {
           clearTimeout(this.closeTimer);
           this.closeTimer = null;
         }, 800);
-      }, 2500);
+      }, 3500);
     },
     getTime(string) {
       return Vue.moment(string).format("llll");

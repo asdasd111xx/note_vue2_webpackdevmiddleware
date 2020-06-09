@@ -99,6 +99,7 @@ export default {
       pornRequest({
         method: "get",
         url: `/video/sort`,
+        smallPig: true,
         params: {
           siteId: this.siteId
         },
@@ -126,6 +127,7 @@ export default {
       return pornRequest({
         method: "post",
         url: `/video/list`,
+        smallPig: true,
         data: {
           tagId: this.$route.query.tagId,
           sortId: this.sortId,
