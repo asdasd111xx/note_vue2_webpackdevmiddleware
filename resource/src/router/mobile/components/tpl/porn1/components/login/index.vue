@@ -97,6 +97,7 @@
             <!-- 拼圖驗證 -->
             <puzzle-verification
               v-if="memInfo.config.login_captcha_type === 3"
+              ref="puzzleVer"
               :puzzle-obj.sync="puzzleObj"
             />
             <!-- 驗證碼 -->

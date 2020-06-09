@@ -124,6 +124,7 @@
         </div>
         <puzzle-verification
           v-if="memInfo.config.register_captcha_type === 3"
+          ref="puzzleVer"
           :class="$style['puzzle-block']"
           :puzzle-obj.sync="puzzleObj"
         />
@@ -511,7 +512,7 @@ export default {
       delete params.captcha_text;
       delete params.withdraw_Password;
 
-      if(this.memInfo.config.register_captcha_type === 3) {
+      if (this.memInfo.config.register_captcha_type === 3) {
         delete params.confirm_password;
       }
 
@@ -525,6 +526,7 @@ export default {
           ...params
         }
       }).then((res) => {
+        this.$refs.puzzleVer.ret = null;
         if (res.data && res.data.cookie) {
           try {
             const { cookie } = res.data;
@@ -568,7 +570,7 @@ export default {
         }
 
         if (res.status !== '000') {
-          if (Object.keys(res.errors)) {
+          if (res.errors && Object.keys(res.errors)) {
             Object.keys(res.errors).forEach((item) => {
               this.allTip[item] = res.errors[item]
             })
