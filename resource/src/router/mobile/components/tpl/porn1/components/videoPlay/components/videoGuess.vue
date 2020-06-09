@@ -100,7 +100,7 @@ export default {
       }
     },
     onClick(id) {
-      window.location.href = `/mobile/videoPlay/${id}?v=${id}`;
+      window.location.href = `/mobile/videoPlay/${id}?source=${this.$route.query.source}`;
     }
   }
 };
