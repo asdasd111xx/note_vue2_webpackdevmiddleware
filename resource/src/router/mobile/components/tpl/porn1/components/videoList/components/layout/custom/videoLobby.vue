@@ -30,7 +30,7 @@
           "
         >
           <img
-            :src="$getCdnPath('/static/image/_new/source/smallPig/btn_av1.png')"
+            :src="$getCdnPath(`/static/image/_new/source/smallPig/btn_av${ index + 1 }.png`)"
             alt="icon"
           />
         </div>
