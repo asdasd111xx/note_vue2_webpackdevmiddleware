@@ -252,6 +252,10 @@ export default {
       return this.$styleDefault;
     },
     isSlideAble() {
+      if (this.memInfo.config.register_captcha_type === 3 && !this.puzzleObj) {
+        return false;
+      }
+
       return this.registerData
         .filter((field) => this.joinMemInfo[field.key].show)
         .every((field) => {
