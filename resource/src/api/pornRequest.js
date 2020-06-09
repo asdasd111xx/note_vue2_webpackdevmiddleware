@@ -35,12 +35,10 @@ export default ({
     };
 
     if (smallPig) {
-        obj['withCredentials'] = true;
+        // obj['withCredentials'] = true;
         if (process.env.NODE_ENV === 'development') {
             obj['url'] = S_PORN_DOMAIN + url;
         }
-        console.log(obj)
-
     }
 
     let api = window.PermissionRequest;
