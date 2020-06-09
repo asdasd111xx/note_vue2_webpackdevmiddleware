@@ -45,6 +45,9 @@ export default {
     videoInfo: {
       type: Object,
       required: true
+    },
+    source: {
+      type: String,
     }
   },
   data() {
@@ -78,7 +81,7 @@ export default {
   mounted() {
     //  暫時手動轉換https
     if (!this.videoInfo.url) return;
-    this.player = videojs(this.$refs['video-player'], {
+    let obj = {
       sources: [{ src: this.videoInfo.url.replace('http://', 'https://'), type: 'application/x-mpegURL' }],
       // sources: [{ src: 'https://pv-oa-1259142350.file.myqcloud.com/dev/video/FCC/FC2-PPV-777661-3/FC2-PPV-777661-3.m3u8', type: 'application/x-mpegURL' , withCredentials: true}],
       autoplay: false,
@@ -87,7 +90,17 @@ export default {
       loop: false,
       preload: 'auto',
       bigPlayButton: true,
-    });
+    }
+    if (this.source === "smallPig") {
+      console.log(obj)
+      console.log(this.source)
+      obj['html5'] = {
+        "hls": {
+          "withCredentials": true,
+        }
+      }
+    }
+    this.player = videojs(this.$refs['video-player'], obj);
 
     // 彩金疊加在播放器上
     let videoDom = document.getElementById("video-play");
