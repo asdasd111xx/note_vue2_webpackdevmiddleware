@@ -392,10 +392,20 @@ export default {
   },
   watch: {
     withdrawUserData() {
-      if (!this.selectedCard) {
-        this.selectedCard = this.withdrawUserData.account &&
-          this.withdrawUserData.account.length > 0 &&
+      // 預設選擇第一張卡 或是從電話驗證成功後直接送出
+      if (!this.selectedCard &&
+        this.withdrawUserData.account &&
+        this.withdrawUserData.account.length > 0) {
+        this.selectedCard = Number(localStorage.getItem('tmp_w_selectedCard')) ||
           this.withdrawUserData.account[0].id;
+        this.withdrawValue = localStorage.getItem('tmp_w_amount')
+        setTimeout(() => {
+          localStorage.removeItem('tmp_w_selectedCard');
+          localStorage.removeItem('tmp_w_amount');
+          if (localStorage.getItem('tmp_w_1')) {
+            this.handleSubmit();
+          }
+        })
       }
     },
     withdrawValue() {
@@ -424,6 +434,11 @@ export default {
     }
   },
   created() {
+    if (!localStorage.getItem('tmp_w_1')) {
+      localStorage.removeItem('tmp_w_selectedCard');
+      localStorage.removeItem('tmp_w_amount');
+    }
+
     // 綁定銀行卡內無常用帳號
     common.bankCardCheck({
       success: ({ result, ret }) => {
@@ -513,10 +528,18 @@ export default {
       if (this.errTips || !this.withdrawValue || this.isSendSubmit)
         return;
 
+      if (this.memInfo.config.withdraw_player_verify && !localStorage.getItem('tmp_w_1')) {
+        localStorage.setItem('tmp_w_selectedCard', this.selectedCard);
+        localStorage.setItem('tmp_w_amount', this.withdrawValue);
+        this.$router.push("/mobile/mcenter/accountData/phone?redirect=withdraw");
+        return;
+      }
+
       this.isSendSubmit = true;
       this.submitWithdraw({
         user_bank_id: this.selectedCard,
-        userBankId: this.selectedCard
+        userBankId: this.selectedCard,
+        keyring: localStorage.getItem('tmp_w_1') // 手機驗證成功後回傳
       }).then((response) => {
 
         if (response) {
@@ -533,6 +556,9 @@ export default {
           }
         }
       });
+      localStorage.removeItem('tmp_w_1');
+      localStorage.removeItem('tmp_w_selectedCard');
+      localStorage.removeItem('tmp_w_amount');
     },
     // 搬移原提現方法
     /**
@@ -548,7 +574,6 @@ export default {
       let _params = {
         amount: this.withdrawValue,
         // withdraw_password: this.withdrawPwd,
-        // withdraw_password: '0000',
         forward: true,
         confirm: true,
         max_id: this.withdrawData.audit.total.max_id,

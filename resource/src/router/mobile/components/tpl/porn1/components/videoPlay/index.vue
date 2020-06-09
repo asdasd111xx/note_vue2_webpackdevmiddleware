@@ -1,5 +1,8 @@
 <template>
-  <mobile-container v-if="videoInfo" :class="$style.container">
+  <mobile-container
+    v-if="videoInfo"
+    :class="[$style.container, $style[source]]"
+  >
     <div slot="content" class="content-wrap">
       <div :class="$style['header']" id="header">
         <div :class="$style['btn-prev']" @click="$router.back()">
@@ -9,7 +12,11 @@
       <template v-if="videoInfo">
         <video-player :video-info="videoInfo" />
         <video-info :video-info="videoInfo" />
-        <video-tag :tag="videoInfo.tag" :padding="true" />
+        <video-tag
+          v-if="!['smallPig', 'gay', 'les'].includes(source)"
+          :tag="videoInfo.tag"
+          :padding="true"
+        />
       </template>
       <video-guess />
     </div>
@@ -37,30 +44,54 @@ export default {
   },
   data() {
     return {
+      source: this.$route.query.source,
       videoInfo: null
     };
   },
   computed: {
     ...mapGetters({
       memInfo: 'getMemInfo'
-    })
+    }),
+    siteId() {
+      switch (this.source) {
+        case 'yabo':
+          return 1;
+          break;
+
+        case 'smallPig':
+          return 2;
+          break
+
+        case 'gay':
+          return 3;
+          break;
+
+        case 'les':
+          return 4;
+          break;
+
+        default:
+          break;
+      }
+    }
   },
   mounted() {
-
-    pornRequest({
+    const obj = {
       method: 'post',
       url: `/video/videoinfo`,
-      data: { videoId: this.$route.params.id },
+      data: { videoId: this.$route.params.id, siteId: this.siteId },
+
       //   reqHeaders: {
       //     // 本機開發時會遇到 CORS 的問題，把Bundleid及Version註解，並打開下面註解即可
       //      'Content-Type': 'application/x-www-form-urlencoded',
       //      origin: 'http://127.0.0.1'
       //   }
-    }).then((res) => {
+    }
+    if (this.$route.query.source === 'smallPig') { obj['smallPig'] = true }
+    pornRequest(obj).then((res) => {
       if (res.status !== 200) {
         return;
       }
-
       this.videoInfo = { ...res.result };
     });
   },
@@ -69,6 +100,23 @@ export default {
       this.$router.push('/mobile');
       return;
     }
+
+    if (this.$route.query.source === 'smallPig') {
+      //   axios.defaults.withCredentials = true;
+      axios({
+        method: 'post',
+        url: 'https://api.pv123.app/v1/device/verify',
+        data: {
+          type: 'ios',
+          token: '111123333',
+          info: 'brrrr'
+        },
+        withCredentials: true,
+      }).then((res) => {
+        return
+      })
+    }
+
 
     // axios({
     //   method: 'post',
@@ -89,7 +137,7 @@ export default {
 
     //   this.videoInfo = { ...response.data.result };
     // });
-  }
+  },
 };
 </script>
 
@@ -97,7 +145,12 @@ export default {
 @import "~@/css/variable.scss";
 
 div.container {
+  // Yabo & gay & les
   background-color: $main_white_color1;
+
+  &.smallPig {
+    background-color: #333;
+  }
 }
 
 .header {

@@ -167,7 +167,7 @@
 
                         <div :class="$style['content-cell']">
                             <span
-                                >2.收藏亚博直播永久网址，浏览器打开，随时畅玩：</span
+                                >2.收藏鸭脖视频永久网址，浏览器打开，随时畅玩：</span
                             >
                             <div
                                 :class="$style['link']"

@@ -103,7 +103,7 @@ export default [
         component
     },
     { // 影片播放頁
-        path: 'videoPlay/:id',
+        path: 'videoPlay/:id?',
         name: 'videoPlay',
         component
     },
@@ -123,7 +123,7 @@ export default [
         component
     },
     { // 關鍵字搜尋影片頁
-        path: 'search/:key?',
+        path: 'search',
         name: 'search',
         component
     },

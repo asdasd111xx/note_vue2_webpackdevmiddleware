@@ -38,6 +38,13 @@
                 :placeholder="pwdResetInfo[item].placeholder"
                 :maxlength="pwdResetInfo[item].maxlength"
                 :minlength="pwdResetInfo[item].minlength"
+                @input="
+                  pwdResetInfo[item].value = $event.target.value
+                    .toLowerCase()
+                    .replace(' ', '')
+                    .trim()
+                    .replace(/[\W]/g, '')
+                "
               />
               <input
                 v-if="pwdResetInfo[item].type === 'password'"
@@ -48,6 +55,13 @@
                 :placeholder="pwdResetInfo[item].placeholder"
                 :maxlength="pwdResetInfo[item].maxlength"
                 :minlength="pwdResetInfo[item].minlength"
+                @input="
+                  pwdResetInfo[item].value = $event.target.value
+                    .toLowerCase()
+                    .replace(' ', '')
+                    .trim()
+                    .replace(/[\W]/g, '')
+                "
               />
               <div
                 v-if="pwdResetInfo[item].type === 'password'"

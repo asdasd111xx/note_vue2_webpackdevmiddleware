@@ -93,7 +93,7 @@
                   $style['btn-send'],
                   { [$style.active]: newValue && !timer }
                 ]"
-                @click="handleSend()"
+                @click="showCaptchaPopup()"
               >
                 <template>
                   <span v-if="sendBtn.countdownSec">{{
@@ -106,6 +106,12 @@
           </div>
         </template>
       </div>
+
+      <popupVerification
+        v-if="isShowCaptcha"
+        :is-show-captcha.sync="isShowCaptcha"
+        :captcha.sync="captchaData"
+      />
       <!-- <service-tips /> -->
     </div>
   </mobile-container>
@@ -119,11 +125,13 @@ import member from '@/api/member';
 import mobileContainer from '../../../../../common/new/mobileContainer';
 import serviceTips from '../../serviceTips';
 import mcenter from '@/api/mcenter';
+import popupVerification from '@/components/popupVerification';
 
 export default {
   components: {
     mobileContainer,
-    serviceTips
+    serviceTips,
+    popupVerification
   },
   data() {
     return {
@@ -145,7 +153,9 @@ export default {
         value: '',
         verification: true,
         isShow: true
-      }
+      },
+      toggleCaptcha: false,
+      captcha: null
     };
   },
   computed: {
@@ -153,6 +163,34 @@ export default {
       memInfo: 'getMemInfo',
       webInfo: 'getWebInfo'
     }),
+    isShowCaptcha: {
+      get() {
+        return this.toggleCaptcha
+      },
+      set(value) {
+        return this.toggleCaptcha = value
+      }
+    },
+    captchaData: {
+      get() {
+        return this.captcha
+      },
+      set(value) {
+        return this.captcha = value
+      }
+    },
+    isfromWithdraw() {
+      const { query } = this.$route;
+      let redirect = query.redirect;
+      if (redirect) {
+        switch (redirect) {
+          case "withdraw":
+            return true;
+          default:
+            return false;
+        }
+      }
+    },
     headerConfig() {
       return {
         prev: true,
@@ -203,6 +241,11 @@ export default {
         isShow: this.info.verification,
         countdownSec: this.countdownSec
       };
+    }
+  },
+  watch: {
+    captchaData() {
+      this.handleSend()
     }
   },
   created() {
@@ -274,6 +317,15 @@ export default {
         this.countdownSec -= 1;
       }, 1000);
     },
+    showCaptchaPopup() {
+      if(this.memInfo.config.default_captcha_type === 0) {
+        this.handleSend()
+        return
+      }
+
+      // // show captcha
+      this.toggleCaptcha = true
+    },
     handleSend() {
       if (!this.newValue || this.timer) return;
 
@@ -285,58 +337,101 @@ export default {
         return '';
       };
 
-      mcenter.accountPhoneSend({
-        params: {
-          old_phone: getOldPhone(),
-          phone: `${this.newCode.replace('+', '')}-${this.newValue}`
-        },
-        success: () => {
-          this.countdownSec = 60;
-          this.actionSetUserdata(true);
-          this.locker();
-          this.tipMsg = this.$text("S_SEND_CHECK_CODE_VALID_TIME").replace("%s", 5)
-        },
-        fail: (res) => {
-          this.countdownSec = '';
-          this.tipMsg = res.data.msg;
-        }
-      });
-    },
-    handleSubmit() {
-      // 驗證手機
-      if (this.info.verification) {
-        return mcenter.accountPhoneCheck({
+      if (this.isfromWithdraw) {
+        ajax({
+          method: 'post',
+          url: '/api/v1/c/player/withdraw/verify/sms',
+          errorAlert: false,
           params: {
-            phone: `${this.newCode.replace('+', '')}-${this.newValue}`,
-            keyring: this.codeValue
+            phone: `${this.newCode.replace('+', '')}-${this.newValue}`
+          },
+          fail: (res) => {
+            this.countdownSec = '';
+            this.tipMsg = res.data.msg;
           },
           success: (res) => {
+            if (res && res.result === 'ok') {
+              this.countdownSec = 60;
+              this.actionSetUserdata(true);
+              this.locker();
+              this.tipMsg = this.$text("S_SEND_CHECK_CODE_VALID_TIME").replace("%s", 5)
+            }
+          }
+        });
+      } else {
+        mcenter.accountPhoneSend({
+          params: {
+            old_phone: this.memInfo.phone.phone ? `${this.newCode.replace('+', '')}-${this.newValue}` : '',
+            phone: `${this.newCode.replace('+', '')}-${this.newValue}`,
+            captcha_text: this.captchaData
+          },
+          success: () => {
+            this.countdownSec = 60;
             this.actionSetUserdata(true);
-            this.actionSetWithdrawCheck();
+            this.locker();
+            this.tipMsg = this.$text("S_SEND_CHECK_CODE_VALID_TIME").replace("%s", 5)
+          },
+          fail: (res) => {
+            this.countdownSec = '';
             this.tipMsg = res.data.msg;
-            this.$router.push('/mobile/mcenter/accountData');
+          }
+        });
+      }
+    },
+    handleSubmit() {
+      if (this.isfromWithdraw) {
+        ajax({
+          method: 'put',
+          url: '/api/v1/c/player/withdraw/sms/verify',
+          errorAlert: false,
+          params: {
+            keyring: this.codeValue
+          },
+          fail: (res) => {
+            this.tipMsg = res.data.msg;
+          },
+          success: (res) => {
+            if (res && res.result === 'ok') {
+              localStorage.setItem('tmp_w_1', res.ret);
+              this.$router.push('/mobile/mcenter/withdraw');
+            }
+          }
+        })
+      } else {
+        // 驗證手機
+        if (this.info.verification) {
+          return mcenter.accountPhoneCheck({
+            params: {
+              phone: `${this.newCode.replace('+', '')}-${this.newValue}`,
+              keyring: this.codeValue
+            },
+            success: (res) => {
+              this.actionSetUserdata(true);
+              this.actionSetWithdrawCheck();
+              this.successMessage();
+              this.$router.push('/mobile/mcenter/accountData');
+            },
+            fail: (res) => {
+              this.tipMsg = res.data.msg;
+            }
+          });
+        }
+
+        // 不驗證直接設定手機
+        return mcenter.accountPhoneEdit({
+          params: {
+            phone: `${this.newCode.replace('+', '')}-${this.newValue}`
+          },
+          success: () => {
+            this.actionSetUserdata(true);
             this.successMessage();
+            this.$router.push('/mobile/mcenter/accountData');
           },
           fail: (res) => {
             this.tipMsg = res.data.msg;
           }
         });
       }
-
-      // 不驗證直接設定手機
-      return mcenter.accountPhoneEdit({
-        params: {
-          phone: `${this.newCode.replace('+', '')}-${this.newValue}`
-        },
-        success: () => {
-          this.actionSetUserdata(true);
-          this.$router.push('/mobile/mcenter/accountData');
-          this.successMessage();
-        },
-        fail: (res) => {
-          this.tipMsg = res.data.msg;
-        }
-      });
     },
     successMessage() {
       this.actionSetＭcenterBindMessage({

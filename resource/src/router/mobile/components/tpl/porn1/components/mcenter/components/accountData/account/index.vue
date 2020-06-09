@@ -177,9 +177,12 @@ export default {
   created() {
     this.setMessage(this.mcenterBindMessage);
   },
+  mounted() {
+    this.actionSetUserdata(true);
+  },
   methods: {
     ...mapActions([
-      'actionSetＭcenterBindMessage'
+      'actionSetＭcenterBindMessage', 'actionSetUserdata'
     ]),
     handleCloseMsg() {
       this.msg = '';
@@ -189,6 +192,13 @@ export default {
       })
     },
     handleClick(field) {
+      if (field.key === "phone") {
+        // 只能設定一次
+        if (this.memInfo.user.phone && !this.memInfo.config.user_edit_phone) {
+          return;
+        }
+      }
+
       if (!field.btnShow) {
         return;
       }
@@ -202,6 +212,7 @@ export default {
       this.currentEdit = field.key;
     },
     setMessage(msg) {
+      this.actionSetUserdata(true);
       if (msg instanceof Object) {
         this.msg = msg.msg;
         this.msgIcon = msg.msgIcon;

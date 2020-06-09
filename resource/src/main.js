@@ -36,6 +36,7 @@ import Vuebar from 'vuebar';
 import Vuex from 'vuex';
 import depositLink from './lib/depositLink';
 import getCdnPath from './lib/getCdnPath';
+import { getCookie } from '@/lib/cookie';
 import i18n from './config/i18n';
 import moment from 'vue-moment';
 import router from './router';
@@ -55,22 +56,39 @@ import vStyle from './lib/vStyle';
 
 
 // 推播中心websocket api
-// const script = document.createElement('script');
-// script.setAttribute('src', '/api/v1/ws/front_file');
-// script.setAttribute('data-id', 'ws-bc');
-// script.setAttribute('data-msg-func', 'notice');
-// document.body.appendChild(script);
-// window.notice = (data) => {
+let cid = getCookie('cid')
+if (cid) {
+    const script = document.createElement('script');
+    script.setAttribute('src', '/api/v1/ws/front_file');
+    script.setAttribute('data-id', 'ws-bc');
+    script.setAttribute('data-msg-func', 'notice');
+    document.body.appendChild(script);
+    window.notice = (data) => {
+        const date = new Date();
+        store.state.noticeData = [
+            ...store.state.noticeData,
+            {
+                id: date.toISOString(),
+                event: data.event,
+                ...data.message
+            }
+        ];
+    };
+}
+
+// 推播測試
+// setTimeout(() => {
 //     const date = new Date();
 //     store.state.noticeData = [
 //         ...store.state.noticeData,
 //         {
 //             id: date.toISOString(),
-//             event: data.event,
-//             ...data.message
+//             event: "notice",
+//             content: "C_WS_INBOX",
+//             type: 'player_inbox'
 //         }
 //     ];
-// };
+// }, 2500)
 
 Vue.use(Vuex);
 Vue.use(VueRx);

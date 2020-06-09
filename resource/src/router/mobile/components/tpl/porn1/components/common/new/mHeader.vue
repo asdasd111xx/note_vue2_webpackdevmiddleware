@@ -14,6 +14,11 @@
       @click="headerConfig.onClick"
     >
       <img
+        v-if="source === 'gay' || source === 'les'"
+        :src="$getCdnPath(`/static/image/_new/common/btn_back_w.png`)"
+      />
+      <img
+        v-else
         :src="
           $getCdnPath(
             `/static/image/_new/common/btn_${
@@ -25,7 +30,9 @@
     </div>
 
     <div v-if="headerConfig.title" :class="[$style.wrap, 'clearfix']">
-      <div :class="$style.title">{{ headerConfig.title }}</div>
+      <div :class="[[$style.title], $style[source]]">
+        {{ headerConfig.title }}
+      </div>
       <div
         v-if="headerConfig.gameList"
         :class="$style['btn-game-list']"
@@ -48,25 +55,39 @@
     >
       <top-game-list :is-list-visible.sync="currentMenu" />
     </div>
+
     <template v-if="headerConfig.hasSearchBar">
-      <div :class="$style['search-wrap']">
+      <div :class="[$style['search-wrap'], $style[source]]">
         <input
           v-model="headerConfig.keyWord"
           :placeholder="$text('S_PLEASE_INPUT_AV', '请输入片名、女优或番号')"
           type="text"
           @keydown.enter="headerConfig.onSearchClick(headerConfig.keyWord)"
+          :class="$style[source]"
         />
         <div
-          :class="$style['icon-search']"
+          :class="[$style['icon-search'], $style[source]]"
           @click="headerConfig.onSearchClick(headerConfig.keyWord)"
         >
           <icon name="search" width="20" height="20" />
         </div>
       </div>
     </template>
+
     <template v-if="headerConfig.hasSearchBtn">
       <div :class="$style['btn-search-wrap']" @click="goSearch">
         <img
+          v-if="source === 'smallPig'"
+          :src="$getCdnPath('/static/image/_new/common/icon_search_gray.png')"
+        />
+
+        <img
+          v-else-if="source === 'gay' || source === 'les'"
+          :src="$getCdnPath('/static/image/_new/common/icon_search_white.png')"
+        />
+
+        <img
+          v-else
           :src="$getCdnPath('/static/image/_new/common/icon_search_n.png')"
         />
       </div>
@@ -128,7 +149,14 @@
       </div>
     </template>
     <template v-if="headerConfig.onClickFunc">
-      <div :class="$style['save-wrap']" @click="headerConfig.onClickFunc">
+      <div
+        :class="$style['save-wrap']"
+        @click="
+          () => {
+            headerConfig.funcBtnActive ? headerConfig.onClickFunc() : '';
+          }
+        "
+      >
         <div :class="headerConfig.funcBtnActive ? $style['active'] : ''">
           {{
             headerConfig.funcBtn
@@ -190,10 +218,9 @@
   </div>
 </template>
 
-
 <script>
-import { mapGetters } from 'vuex';
-import message from './message';
+import { mapGetters } from "vuex";
+import message from "./message";
 
 export default {
   components: {
@@ -208,19 +235,20 @@ export default {
     },
     updateSearchStatus: {
       type: Function,
-      default: () => { }
+      default: () => {}
     }
   },
   data() {
     return {
-      currentMenu: '',
-      msg: ''
+      currentMenu: "",
+      msg: "",
+      source: this.$route.query.source
     };
   },
   computed: {
     ...mapGetters({
-      membalance: 'getMemBalance',
-      loginStatus: 'getLoginStatus'
+      membalance: "getMemBalance",
+      loginStatus: "getLoginStatus"
     }),
     mainClass() {
       // const config = this.headerConfig;
@@ -228,7 +256,11 @@ export default {
       // 暫時移除底色渲染
       return {
         [style.header]: true,
-        [style['is-home']]: this.$route.name === 'home',
+        [style["is-home"]]: this.$route.name === "home",
+        [style[this.source]]: this.source ? this.source : "",
+        [style["search-page"]]: this.headerConfig.isSmallPigSearch
+          ? true
+          : false,
         // [style['background-gradient']]: config.isBackgroundGradient ,
         clearfix: true
       };
@@ -237,28 +269,29 @@ export default {
   methods: {
     // 設定選單狀態
     setMenuState(value) {
-      this.currentMenu = this.currentMenu === value ? '' : value;
+      this.currentMenu = this.currentMenu === value ? "" : value;
     },
     handleClickAsk() {
       if (this.loginStatus) {
-        this.$router.push('/mobile/mcenter/information/message');
+        this.$router.push("/mobile/mcenter/information/message");
       } else {
-        this.$router.push('/mobile/login');
+        this.$router.push("/mobile/login");
       }
     },
     handleClickSetting() {
       if (this.loginStatus) {
-        this.$router.push('/mobile/mcenter/setting');
+        this.$router.push("/mobile/mcenter/setting");
       } else {
-        this.$router.push('/mobile/login');
+        this.$router.push("/mobile/login");
       }
     },
     goSearch() {
-      if (['casino', 'card', 'mahjong'].includes(this.$route.name)) {
+      if (["casino", "card", "mahjong"].includes(this.$route.name)) {
         this.updateSearchStatus();
         return;
       }
-      this.$router.push({ name: 'search' });
+
+      this.$router.push({ path: "search", query: { source: this.source } });
     }
   }
 };
@@ -269,7 +302,7 @@ export default {
 
 .header {
   margin: 0 auto;
-  max-width: 420px;
+  max-width: $mobile_max_width;
   position: fixed;
   top: 0;
   z-index: 3;
@@ -279,6 +312,21 @@ export default {
   background: $main_white_color1;
   text-align: center;
   border-bottom: 1px solid #eee;
+
+  // 小豬視頻的search Header 為黑色底
+  &.search-page {
+    background: #414141;
+  }
+
+  &.gay {
+    background: #4a8cb8;
+    border-bottom: none;
+  }
+
+  &.les {
+    background: #d64545;
+    border-bottom: none;
+  }
 
   &::before {
     content: "";
@@ -381,6 +429,11 @@ export default {
   line-height: 22px;
   color: $main_title_color1;
   font-size: 17px;
+
+  &.les,
+  &.gay {
+    color: #fff;
+  }
 }
 
 .btn-game-list {
@@ -411,6 +464,12 @@ export default {
   width: calc(100% - 10% - 24px);
   margin: 6px 0 0 24px;
 
+  &.smallPig,
+  &.gay,
+  &.les {
+    border-radius: 18px;
+  }
+
   > input {
     width: 100%;
     height: 35px;
@@ -422,6 +481,34 @@ export default {
     color: $main_text_color2;
     font-size: 14px;
     outline: none;
+
+    &.smallPig,
+    &.gay,
+    &.les {
+      border-radius: 18px;
+    }
+
+    &.smallPig {
+      background-color: #333;
+    }
+
+    &.gay {
+      color: #fff;
+      background-color: #3a79a1;
+
+      &::placeholder {
+        color: #fff;
+      }
+    }
+
+    &.les {
+      color: #fff;
+      background-color: #b73939;
+
+      &::placeholder {
+        color: #fff;
+      }
+    }
 
     &::placeholder {
       color: $main_text_color2;
@@ -441,6 +528,25 @@ export default {
   color: white;
   margin: 0 auto;
   text-align: center;
+
+  &.smallPig,
+  &.gay,
+  &.les {
+    width: 85px;
+    border-radius: 0 18px 18px 0;
+  }
+
+  &.smallPig {
+    background: #1e1e1e;
+  }
+
+  &.gay {
+    background: #3e81ac;
+  }
+
+  &.les {
+    background: #c54242;
+  }
 
   > img {
     width: 21px;

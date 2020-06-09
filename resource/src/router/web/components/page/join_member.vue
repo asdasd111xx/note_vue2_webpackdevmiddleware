@@ -99,6 +99,7 @@
                   .toLowerCase()
                   .replace(' ', '')
                   .trim()
+                  .replace(/[\W]/g, '')
               "
             />
             <input
@@ -121,6 +122,11 @@
             v-html="allTip[field.key]"
           />
         </div>
+        <puzzle-verification
+          v-if="memInfo.config.register_captcha_type === 3"
+          :class="$style['puzzle-block']"
+          :puzzle-obj.sync="puzzleObj"
+        />
       </div>
 
       <slide-verification
@@ -152,12 +158,14 @@ import appEvent from '@/lib/appEvent';
 import member from '@/api/member';
 import joinMemInfo from '@/config/joinMemInfo';
 import slideVerification from '@/components/slideVerification';
+import puzzleVerification from '@/components/puzzleVerification';
 import { getCookie, setCookie } from '@/lib/cookie';
 import bbosRequest from "@/api/bbosRequest";
 
 export default {
   components: {
-    slideVerification
+    slideVerification,
+    puzzleVerification,
   },
   props: {
     theme: {
@@ -187,6 +195,7 @@ export default {
         confirm_password: '',
         captcha_text: ''
       },
+      puzzleData: null,
       registerData: [],
       currentTip: '',
       selectData: {
@@ -219,6 +228,14 @@ export default {
       memInfo: 'getMemInfo',
       siteConfig: 'getSiteConfig'
     }),
+    puzzleObj: {
+      get() {
+        return this.puzzleData;
+      },
+      set(value) {
+        this.puzzleData = value;
+      }
+    },
     fieldsData() {
       return this.registerData.filter((field) => this.joinMemInfo[field.key] && this.joinMemInfo[field.key].show);
     },
@@ -407,6 +424,7 @@ export default {
     },
     verification(key) {
       const data = this.joinMemInfo[key];
+      this.allValue[key] = this.allValue[key].replace(/[\W]/g, '')
 
       if (key === 'name' && this.allValue[key].length > 30) {
         this.allValue[key] = this.allValue[key].substring(0, 30);
@@ -472,8 +490,14 @@ export default {
       this.currentTip = '';
     },
     joinSubmit(captchaInfo) {
+      // 滑動
       if (this.memInfo.config.register_captcha_type === 2) {
         this.allValue.captcha_text = captchaInfo.data;
+      }
+
+      // 拼圖
+      if (this.memInfo.config.register_captcha_type === 3) {
+        this.allValue.captcha_text = this.puzzleObj;
       }
 
       // 暫時調整欄位
@@ -486,6 +510,10 @@ export default {
       };
       delete params.captcha_text;
       delete params.withdraw_Password;
+
+      if(this.memInfo.config.register_captcha_type === 3) {
+        delete params.confirm_password;
+      }
 
       bbosRequest({
         method: 'post',

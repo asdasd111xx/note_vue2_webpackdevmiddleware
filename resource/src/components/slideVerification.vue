@@ -44,6 +44,7 @@ export default {
   data() {
     return {
       slideText: {
+        verify: ['S_SLIDE_VERIFY' , '向右滑动验证'],
         register: ['S_SLIDE_REGISTER', '向右滑动即注册'],
         login: ['S_SLIDE_LOGIN', '向右滑动即登入'],
         error: ['S_SLIDE_ERROR', '哎呀，出错了，点击刷新试试'],
@@ -100,6 +101,10 @@ export default {
           login: {
             scene: 'nc_login',
             appkey: 'FFFF0N0N000000009172'
+          },
+          verify: {
+            scene: 'nc_login',
+            appkey: 'FFFF0N0N000000009172'
           }
         },
         mobile: {
@@ -109,6 +114,10 @@ export default {
           },
           login: {
             scene: 'nc_login_h5',
+            appkey: 'FFFF0N0N000000009172'
+          },
+          verify: {
+            scene: 'nc_login',
             appkey: 'FFFF0N0N000000009172'
           }
         }
