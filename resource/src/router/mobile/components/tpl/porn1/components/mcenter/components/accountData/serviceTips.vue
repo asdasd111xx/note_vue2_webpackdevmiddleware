@@ -1,7 +1,8 @@
 <template>
   <div :class="$style['service-tip']">
-    <!-- S_SECURITY_LEVEL -->
-    为了你的隐私安全，信息在确认后将无法修改
+    <template v-if="type !== 'phone'">
+      为了你的隐私安全，信息在确认后将无法修改
+    </template>
     <br />
     如需帮助，请
     <span @click="$router.push('/mobile/service')">联系客服</span>
@@ -11,7 +12,10 @@
 <script>
 
 export default {
-  components: {
+  props: {
+    type: {
+      type: String
+    }
   },
   methods: {
   }
