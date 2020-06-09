@@ -10,7 +10,7 @@
         </div>
       </div>
       <template v-if="videoInfo">
-        <video-player :video-info="videoInfo" />
+        <video-player :video-info="videoInfo" :source="this.source" />
         <video-info :video-info="videoInfo" />
         <video-tag
           v-if="!['smallPig', 'gay', 'les'].includes(source)"
@@ -113,7 +113,7 @@ export default {
         },
         withCredentials: true,
       }).then((res) => {
-        return
+        console.log(res)
       })
     }
 
