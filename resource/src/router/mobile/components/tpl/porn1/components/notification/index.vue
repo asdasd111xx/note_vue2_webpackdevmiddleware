@@ -3,6 +3,7 @@
     <div
       v-show="isShow && data"
       :class="[$style['notification-wrap'], { [$style['close']]: !isShow }]"
+      @click="handleClick"
     >
       <div :class="$style['container']">
         <div :class="$style['notification-header']">
@@ -98,6 +99,23 @@ export default {
     ...mapActions([
       'actionNoticeData'
     ]),
+    handleClick() {
+      let content = this.data.content;
+      switch (content) {
+        case 'C_WS_INBOX':
+        case 'C_WS_FEEDBACK_REPLY':
+        default:
+          this.$router.push('/mobile/mcenter/information/message');
+          break;
+        case 'C_WS_DEPOSIT':
+        case 'C_WS_WITHDRAW':
+        case 'C_WS_REBATE':
+        case 'C_WS_ACTIVITY':
+        case 'C_WS_WAGE':
+          this.$router.push('/mobile/mcenter/wallet');
+          break;
+      }
+    },
     show() {
       this.isShow = true;
       this.closeTimer = setTimeout(() => {

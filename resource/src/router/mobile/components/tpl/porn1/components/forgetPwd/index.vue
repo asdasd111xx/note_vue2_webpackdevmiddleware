@@ -406,12 +406,13 @@ export default {
       }
     },
     showCaptchaPopup() {
+      // 無認證直接呼叫
       if(this.memInfo.config.default_captcha_type === 0) {
         this.getKeyring()
         return
       }
 
-      // // show captcha
+      // 彈驗證窗並利用Watch captchaData來呼叫 getKeyring()
       this.toggleCaptcha = true
     },
     // 忘記密碼發送簡訊(驗證碼)
@@ -420,7 +421,7 @@ export default {
       const data = {
         params: {
           username: this.username,
-          captcha_text: this.captchaData
+          captcha_text: this.captchaData ? this.captchaData : ''
         },
         success: (response) => {
           this.errMsg = "";
