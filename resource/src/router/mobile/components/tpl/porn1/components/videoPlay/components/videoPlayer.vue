@@ -91,15 +91,16 @@ export default {
       preload: 'auto',
       bigPlayButton: true,
     }
+    console.log(this.source);
+
     if (this.source === "smallPig") {
-      console.log(obj)
-      console.log(this.source)
       obj['html5'] = {
         "hls": {
           "withCredentials": true,
         }
       }
     }
+    console.log(obj);
     this.player = videojs(this.$refs['video-player'], obj);
 
     // 彩金疊加在播放器上
