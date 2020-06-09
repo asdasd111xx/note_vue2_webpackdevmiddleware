@@ -99,7 +99,6 @@ export default {
         }
       }
     }
-    console.log(obj);
     this.player = videojs(this.$refs['video-player'], obj);
 
     // 彩金疊加在播放器上
