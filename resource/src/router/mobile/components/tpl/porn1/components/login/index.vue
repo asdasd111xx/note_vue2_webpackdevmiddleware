@@ -297,7 +297,7 @@ export default {
     handleClickLogin() {
       if (!this.username || !this.password) return;
 
-      switch (memInfo.config.login_captcha_type) {
+      switch (this.memInfo.config.login_captcha_type) {
         case 1:
           // 數字驗證
           this.loginCheck(undefined, undefined, this.errorCallBack);

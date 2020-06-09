@@ -10,7 +10,7 @@
         </div>
       </div>
       <template v-if="videoInfo">
-        <video-player :video-info="videoInfo" />
+        <video-player :video-info="videoInfo" :source="this.source" />
         <video-info :video-info="videoInfo" />
         <video-tag
           v-if="!['smallPig', 'gay', 'les'].includes(source)"
@@ -105,7 +105,7 @@ export default {
       //   axios.defaults.withCredentials = true;
       axios({
         method: 'post',
-        url: 'https://api.pv123.app/v1/device/verify',
+        url: 'https://api.yabo.pv123.app/v1/device/verify',
         data: {
           type: 'ios',
           token: '111123333',
@@ -113,7 +113,6 @@ export default {
         },
         withCredentials: true,
       }).then((res) => {
-        return
       })
     }
 
