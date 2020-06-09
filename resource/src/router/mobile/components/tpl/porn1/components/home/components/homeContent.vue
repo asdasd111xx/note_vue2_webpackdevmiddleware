@@ -260,6 +260,7 @@ export default {
       });
     } else {
       setDefaultSelected();
+      this.getAllGame(true)
     }
 
     if (!this.loginStatus) {
@@ -314,7 +315,7 @@ export default {
       return result;
     },
     // 取得所有遊戲
-    getAllGame() {
+    getAllGame(setLocal) {
       return axios({
         method: 'get',
         url: `${this.siteConfig.YABO_API_DOMAIN}/game/list`,
@@ -337,7 +338,9 @@ export default {
           console.log(e);
         }
 
-        this.allGame = [...response.data.data];
+        if (!setLocal) {
+          this.allGame = [...response.data.data];
+        }
       });
     },
     onResize() {
@@ -463,7 +466,7 @@ export default {
           method: 'get',
           url: `${
             this.siteConfig.YABO_API_DOMAIN
-          }/AccountBank/GetBankBindingStatus/${getCookie('cid')}`,
+            }/AccountBank/GetBankBindingStatus/${getCookie('cid')}`,
           timeout: 30000,
           headers: {
             Bundleid: 'chungyo.foxyporn.prod.enterprise.web',
@@ -541,14 +544,14 @@ export default {
             break;
 
           case 'BB':
-             this.$router.push({
+            this.$router.push({
               name: 'videoList',
               query: { source: 'gay' }
             });
             break;
 
           case 'GG':
-             this.$router.push({
+            this.$router.push({
               name: 'videoList',
               query: { source: 'les' }
             });
@@ -629,7 +632,7 @@ export default {
             if (!isUBMobile || !webview) {
               newWindow.alert(
                 `${error.data.msg} ${
-                  error.data.code ? `(${error.data.code})` : ''
+                error.data.code ? `(${error.data.code})` : ''
                 }`
               );
             }
