@@ -91,8 +91,7 @@ export default {
       preload: 'auto',
       bigPlayButton: true,
     }
-    console.log(obj)
-    console.log(this.source)
+
     if (this.source === "smallPig") {
       obj['html5'] = {
         "hls": {

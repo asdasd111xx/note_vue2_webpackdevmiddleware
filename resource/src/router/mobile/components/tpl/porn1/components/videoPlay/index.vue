@@ -105,7 +105,7 @@ export default {
       //   axios.defaults.withCredentials = true;
       axios({
         method: 'post',
-        url: 'https://api.pv123.app/v1/device/verify',
+        url: 'https://api.yabo.pv123.app/v1/device/verify',
         data: {
           type: 'ios',
           token: '111123333',
@@ -113,7 +113,6 @@ export default {
         },
         withCredentials: true,
       }).then((res) => {
-        console.log(res)
       })
     }
 
