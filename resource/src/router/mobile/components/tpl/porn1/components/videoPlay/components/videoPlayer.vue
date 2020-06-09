@@ -93,12 +93,13 @@ export default {
     }
 
     if (this.source === "smallPig") {
-      //   obj['html5'] = {
-      //     "hls": {
-      //       "withCredentials": true,
-      //     }
-      //   }
+      obj['html5'] = {
+        "hls": {
+          "withCredentials": true,
+        }
+      }
     }
+    console.log(obj);
     this.player = videojs(this.$refs['video-player'], obj);
 
     // 彩金疊加在播放器上
