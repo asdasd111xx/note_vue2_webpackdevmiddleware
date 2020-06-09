@@ -1,5 +1,8 @@
 <template>
-  <mobile-container v-if="videoInfo" :class="[$style.container , $style[source]]">
+  <mobile-container
+    v-if="videoInfo"
+    :class="[$style.container, $style[source]]"
+  >
     <div slot="content" class="content-wrap">
       <div :class="$style['header']" id="header">
         <div :class="$style['btn-prev']" @click="$router.back()">
@@ -10,7 +13,7 @@
         <video-player :video-info="videoInfo" />
         <video-info :video-info="videoInfo" />
         <video-tag
-          v-if="!['smallPig' , 'gay' ,'les'].includes(source)"
+          v-if="!['smallPig', 'gay', 'les'].includes(source)"
           :tag="videoInfo.tag"
           :padding="true"
         />
@@ -61,11 +64,11 @@ export default {
 
         case 'gay':
           return 3;
-        break;
+          break;
 
         case 'les':
           return 4;
-        break;
+          break;
 
         default:
           break;
@@ -73,21 +76,22 @@ export default {
     }
   },
   mounted() {
-
-    pornRequest({
+    const obj = {
       method: 'post',
       url: `/video/videoinfo`,
-      data: { videoId: this.$route.params.id , siteId: this.siteId },
+      data: { videoId: this.$route.params.id, siteId: this.siteId },
+
       //   reqHeaders: {
       //     // 本機開發時會遇到 CORS 的問題，把Bundleid及Version註解，並打開下面註解即可
       //      'Content-Type': 'application/x-www-form-urlencoded',
       //      origin: 'http://127.0.0.1'
       //   }
-    }).then((res) => {
+    }
+    if (this.$route.query.source === 'smallPig') { obj['smallPig'] = true }
+    pornRequest(obj).then((res) => {
       if (res.status !== 200) {
         return;
       }
-
       this.videoInfo = { ...res.result };
     });
   },
@@ -97,18 +101,19 @@ export default {
       return;
     }
 
-    if(this.$route.query.source === 'smallPig') {
-      axios.defaults.withCredentials = true;
+    if (this.$route.query.source === 'smallPig') {
+      //   axios.defaults.withCredentials = true;
       axios({
-          method: 'post',
-          url: 'https://api.pv123.app/v1/device/verify',
-          data: {
-            type: 'ios',
-            token: '111123333',
-            info: 'brrrr'
-          }
+        method: 'post',
+        url: 'https://api.pv123.app/v1/device/verify',
+        data: {
+          type: 'ios',
+          token: '111123333',
+          info: 'brrrr'
+        },
+        withCredentials: true,
       }).then((res) => {
-          return
+        return
       })
     }
 
@@ -132,9 +137,6 @@ export default {
 
     //   this.videoInfo = { ...response.data.result };
     // });
-  },
-  destroyed() {
-    axios.defaults.withCredentials = false;
   },
 };
 </script>

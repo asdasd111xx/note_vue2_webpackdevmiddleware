@@ -187,6 +187,7 @@ export default {
       return pornRequest({
         url: "/video/tag",
         method: "get",
+        smallPig: true,
         params: {
           siteId: this.siteId
         }
@@ -229,6 +230,7 @@ export default {
       return pornRequest({
         method: "get",
         url: "/video/sort",
+        smallPig: true,
         params: {
           siteId: this.siteId
         }
@@ -257,6 +259,7 @@ export default {
     getVideoRecommand() {
       return pornRequest({
         url: `/video/recommand`,
+        smallPig: true,
         params: {
           siteId: this.siteId
         }
@@ -286,6 +289,7 @@ export default {
       return pornRequest({
         method: "post",
         url: `/video/videolist`,
+        smallPig: true,
         data: {
           tag: this.videoType.title,
           siteId: this.siteId

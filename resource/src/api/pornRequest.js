@@ -1,6 +1,6 @@
+import { PORN_DOMAIN, S_PORN_DOMAIN } from '@/api/config';
 import { setup, setupCache } from 'axios-cache-adapter'
 
-import { PORN_DOMAIN } from '@/api/config';
 import axios from 'axios';
 import querystring from 'querystring'
 
@@ -11,6 +11,7 @@ export default ({
     timeout = 30000,
     reqHeaders = {},
     url = "",
+    smallPig = false,
     fail = () => { },
 }) => {
     const pornHeader = {
@@ -32,6 +33,15 @@ export default ({
         },
         data: querystring.stringify(data)
     };
+
+    if (smallPig) {
+        obj['withCredentials'] = true;
+        if (process.env.NODE_ENV === 'development') {
+            obj['url'] = S_PORN_DOMAIN + url;
+        }
+        console.log(obj)
+
+    }
 
     let api = window.PermissionRequest;
 
