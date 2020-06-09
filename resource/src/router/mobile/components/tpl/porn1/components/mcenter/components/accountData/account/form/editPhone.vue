@@ -93,7 +93,7 @@
                   $style['btn-send'],
                   { [$style.active]: newValue && !timer }
                 ]"
-                @click="showCaptchaPopup()"
+                @click="showCaptchaPopup"
               >
                 <template>
                   <span v-if="sendBtn.countdownSec">{{
@@ -318,12 +318,13 @@ export default {
       }, 1000);
     },
     showCaptchaPopup() {
+      // 無認證直接呼叫
       if(this.memInfo.config.default_captcha_type === 0) {
         this.handleSend()
         return
       }
 
-      // // show captcha
+      // 彈驗證窗並利用Watch captchaData來呼叫 getKeyring()
       this.toggleCaptcha = true
     },
     handleSend() {
@@ -363,7 +364,7 @@ export default {
           params: {
             old_phone: this.memInfo.phone.phone ? `${this.newCode.replace('+', '')}-${this.newValue}` : '',
             phone: `${this.newCode.replace('+', '')}-${this.newValue}`,
-            captcha_text: this.captchaData
+            captcha_text: this.captchaData ? this.captchaData : ''
           },
           success: () => {
             this.countdownSec = 60;

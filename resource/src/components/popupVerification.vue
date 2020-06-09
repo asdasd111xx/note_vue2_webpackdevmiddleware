@@ -54,13 +54,6 @@ export default {
       return this.memInfo.config.default_captcha_type;
     }
   },
-  created() {
-    // 無認證
-    if (this.captchaType === 0) {
-      this.$emit("update:captcha", '');
-      this.$emit("update:isShowCaptcha", false);
-    }
-  },
   mounted() {
     // 拼圖認證
     if (this.captchaType === 3) {
