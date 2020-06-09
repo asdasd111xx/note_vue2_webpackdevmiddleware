@@ -113,7 +113,6 @@ export default {
         },
         withCredentials: true,
       }).then((res) => {
-        console.log(res)
       })
     }
 
