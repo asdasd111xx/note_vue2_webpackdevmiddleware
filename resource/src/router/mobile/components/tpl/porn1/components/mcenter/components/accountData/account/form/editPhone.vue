@@ -112,7 +112,7 @@
         :is-show-captcha.sync="isShowCaptcha"
         :captcha.sync="captchaData"
       />
-      <!-- <service-tips /> -->
+      <service-tips :type="'phone'" />
     </div>
   </mobile-container>
 </template>
@@ -319,7 +319,7 @@ export default {
     },
     showCaptchaPopup() {
       // 無認證直接呼叫
-      if(this.memInfo.config.default_captcha_type === 0) {
+      if (this.memInfo.config.default_captcha_type === 0) {
         this.handleSend()
         return
       }
