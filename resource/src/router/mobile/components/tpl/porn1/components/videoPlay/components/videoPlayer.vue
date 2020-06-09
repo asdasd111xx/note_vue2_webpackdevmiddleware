@@ -94,9 +94,11 @@ export default {
 
     if (this.source === "smallPig") {
       obj['html5'] = {
-        "hls": {
-          "withCredentials": true,
-        }
+        hls: {
+          overrideNative: true
+        },
+        nativeAudioTracks: false,
+        nativeVideoTracks: false,
       }
     }
     this.player = videojs(this.$refs['video-player'], obj);
