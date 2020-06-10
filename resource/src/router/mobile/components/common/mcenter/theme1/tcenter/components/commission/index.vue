@@ -3,7 +3,7 @@
         <div v-if="page !== 'detail'" :class="$style['top-link']">
             <span :class="[$style.link, { [$style.active]: page === 'record' }]" @click="onClick('record')">{{ $text('S_COMMISSION_SEND_RECORD', '派发记录') }}</span>
             <span :class="[$style.link, { [$style.active]: page === 'summary' }]" @click="onClick('summary')">{{ $text('S_COMMISSION_SUMMARY', '收益概況') }}</span>
-            <span :class="[$style.link, { [$style.active]: page === 'rebate' }]" @click="onClick('rebate')">{{ $text('S_COMMISSION_REBATE', '实时返利') }}</span>
+            <span v-if="isShowRebate" :class="[$style.link, { [$style.active]: page === 'rebate' }]" @click="onClick('rebate')">{{ $text('S_COMMISSION_REBATE', '实时返利') }}</span>
         </div>
 
         <div v-if="page === 'record' && hasSearch" class="search-wrap">
@@ -55,6 +55,7 @@
 <script>
 import { mapGetters } from 'vuex';
 import { format } from 'date-fns';
+import bbosRequest from "@/api/bbosRequest";
 import commission from '@/mixins/mcenter/commission';
 
 export default {
@@ -79,12 +80,14 @@ export default {
         return {
             isShowDetail: [],
             isShowNoData: false,
+            isShowRebate: true,
             hasSearch: this.$route.params.page === 'record',
         };
     },
     computed: {
         ...mapGetters({
-            memInfo: 'getMemInfo'
+            memInfo: 'getMemInfo',
+            siteConfig: "getSiteConfig",
         }),
         start: {
             get() {
@@ -129,6 +132,8 @@ export default {
         }
     },
     created() {
+        this.getRebateSwitch();
+
         // 因 detail 的資料可能為第三方 or 各級好友(從上一個傳下來的data)，統一重整回summary
         if (this.page === 'detail') {
             this.$router.push('/mobile/mcenter/tcenter/commission/summary');
@@ -152,7 +157,23 @@ export default {
             this.onSearch();
             this.hasSearch = false;
             this.isShowNoData = true
-        }
+        },
+        getRebateSwitch() {
+          // 因開關在此 api 的回傳，所以在入口點先呼叫此 api
+            bbosRequest({
+                method: "get",
+                url: this.siteConfig.BBOS_DOMIAN + "/Wage/SelfDispatchInfo",
+                reqHeaders: {
+                    Vendor: this.memInfo.user.domain
+                },
+                params: { lang: "zh-cn" }
+            }).then(response => {
+                if (response.status === "000") {
+                    this.isShowRebate = response.data.show_real_time
+                    return;
+                }
+            });
+        },
     }
 };
 </script>
