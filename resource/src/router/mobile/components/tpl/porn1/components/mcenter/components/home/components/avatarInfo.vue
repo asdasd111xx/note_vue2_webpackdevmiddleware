@@ -122,7 +122,7 @@ export default {
         url: `${
           this.siteConfig.YABO_API_DOMAIN
           }/player/vipinfo/${cid}`,
-        headers: { "x-domain": this.memInfo.user.domain }
+        headers: { "x-domain": this.memInfo.user.domain, 'Authorization': 'YaboAPIforDev0nly', }
       }).then(res => {
         this.viplevel = res.data && res.data.data ? res.data.data[0].now_level_seq : 0;
       });
