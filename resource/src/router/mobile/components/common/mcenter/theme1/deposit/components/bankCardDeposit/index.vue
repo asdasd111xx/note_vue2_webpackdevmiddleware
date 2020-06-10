@@ -895,7 +895,8 @@ export default {
                   this.actionSetUserBalance();
                   this.nowSubmitStatus = 'stepOne';
                 }
-              }
+              },
+              submitStatus: this.submitStatus
             });
           }
         }

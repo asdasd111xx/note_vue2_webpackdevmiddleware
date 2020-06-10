@@ -10,7 +10,7 @@
           {{ msg }}
         </div>
       </message>
-      <depsoit />
+      <depsoit ref="depsoit" />
     </div>
   </mobile-container>
 </template>
@@ -40,7 +40,13 @@ export default {
         // hasHelp: true,
         // helpRouter: '/deposit',
         onClick: () => {
-          this.$router.back();
+          let step = this.$refs.depsoit.resultHeaderSetting && this.$refs.depsoit.resultHeaderSetting.submitStatus
+          if (step === "stepTwo") {
+            window.location.reload();
+            this.$router.push('/mobile/mcenter/deposit');
+          } else {
+            this.$router.back();
+          }
         },
         customEvent: () => { // 暫時阻擋的彈窗
           this.msg = '正在上线 敬请期待'
