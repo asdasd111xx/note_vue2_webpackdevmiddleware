@@ -130,7 +130,7 @@ export default {
     axios({
       method: 'get',
       url: `${this.siteConfig.YABO_API_DOMAIN}/system/contactus`,
-      headers: { 'x-domain': this.memInfo.user.domain }
+      headers: { 'x-domain': this.memInfo.user.domain, 'Authorization': 'YaboAPIforDev0nly', }
     }).then((res) => {
       if (res && res.data && res.data.data) {
         this.list = res.data.data;

@@ -103,7 +103,7 @@ export default {
                 method: 'put',
                 url: this.siteConfig.BBOS_DOMIAN + '/Login',
                 reqHeaders: {
-                    'Vendor': this.memInfo.user.domain
+                    'Vendor': this.memInfo.user.domain,
                 },
                 params: {
                     username: this.username,

@@ -58,6 +58,7 @@ export default {
       isActiveBouns: true, //預設打開由message決定是否啟動
       dialogType: "tips",// 提示 & 賺得彩金
       reconnectTimer: null, //重新連線timer
+      isFULL: false,
       socket: null,
       socketId: "",
       mission: null,
@@ -92,6 +93,7 @@ export default {
       bigPlayButton: true,
     }
 
+    // hls sarfari 小豬視頻必須
     if (this.source === "smallPig") {
       obj['html5'] = {
         hls: {
@@ -174,7 +176,7 @@ export default {
         bonunsDialog.missionActionType = this.mission.ActionType;
         bonunsDialog.isShow = true;
         this.playerPause();
-      } else if (this.dialogType === 'tips-full') {
+      } else if (this.dialogType === 'tips-full' || this.isFULL) {
         bonunsProcess.processType = 'wait';
         bonunsDialog.isShow = true;
         this.playerPause();
@@ -286,9 +288,10 @@ export default {
                 break;
               case 'FULL':
                 bonunsProcess.processType = 'wait';
+                this.isFULL = true;
                 this.dialogType = 'tips-full';
-                bonunsDialog.isShow = true;
-                this.playerPause();
+                // bonunsDialog.isShow = true;
+                // this.playerPause();
                 break;
               case 'POOR':
                 this.dialogType = 'tips-poor';

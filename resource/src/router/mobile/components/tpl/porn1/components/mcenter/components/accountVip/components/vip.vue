@@ -123,7 +123,7 @@ export default {
         url: `${
           this.siteConfig.YABO_API_DOMAIN
           }/player/vipinfo/${getCookie("cid")}`,
-        headers: { "x-domain": this.memInfo.user.domain }
+        headers: { "x-domain": this.memInfo.user.domain, 'Authorization': 'YaboAPIforDev0nly', }
       }).then(res => {
 
         this.userVipInfo = res.data.data;

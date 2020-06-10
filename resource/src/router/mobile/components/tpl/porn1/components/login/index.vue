@@ -275,7 +275,7 @@ export default {
     this.username = localStorage.getItem('username') || '';
     this.password = localStorage.getItem('password') || '';
     this.depositStatus = localStorage.getItem('depositStatus') || false;
-    this.version = this.siteConfig.VERSION;
+    this.version = `${this.siteConfig.VERSION}${getCookie('platform') || ''}`;
 
     // 測試站 script
     let script = document.createElement('script');

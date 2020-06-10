@@ -10,7 +10,7 @@
           {{ msg }}
         </div>
       </message>
-      <depsoit />
+      <depsoit ref="depsoit" />
     </div>
   </mobile-container>
 </template>
@@ -35,10 +35,18 @@ export default {
     headerConfig() {
       return {
         prev: true,
-        onClick: () => { this.$router.back(); },
         title: '充值',
         hasHelp: true,
         helpRouter: '/deposit',
+        onClick: () => {
+          let step = this.$refs.depsoit.resultHeaderSetting && this.$refs.depsoit.resultHeaderSetting.submitStatus
+          if (step === "stepTwo") {
+            window.location.reload();
+            this.$router.push('/mobile/mcenter/deposit');
+          } else {
+            this.$router.back();
+          }
+        },
       };
     }
   }
