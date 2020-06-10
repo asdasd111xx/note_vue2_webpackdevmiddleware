@@ -106,10 +106,12 @@
                 }}</span>
               </div>
 
-              <div :class="[$style['balance-item'], $style['collapse']]">
+
+              <div
+                :class="[$style['balance-item'], $style['collapse']]"
+                @click="toggleShowMore">
                 <span
                   :class="$style['balance-item-vendor']"
-                  @click="toggleShowMore"
                   >更多</span
                 >
                 <div :class="[$style['icon']]">
