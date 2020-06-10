@@ -142,7 +142,7 @@ export default {
       mcenter.accountDataSet({
         params: { image: this.imgID },
         success: () => {
-          this.actionSetUserdata();
+          this.actionSetUserdata(true);
           this.dialogShow();
           this.imgIndex = this.imgID;
         }
