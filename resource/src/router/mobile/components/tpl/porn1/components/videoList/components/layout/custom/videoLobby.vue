@@ -24,7 +24,7 @@
               query: {
                 source: $route.query.source,
                 tagId: +info.id,
-                sortId: 1
+                sortId: 0
               }
             })
           "

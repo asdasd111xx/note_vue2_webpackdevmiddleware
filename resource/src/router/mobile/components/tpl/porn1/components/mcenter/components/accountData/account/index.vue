@@ -140,7 +140,6 @@ export default {
     editFacebook: () => import(/* webpackChunkName: 'editFacebook' */'./form/editFacebook'),
     editSkype: () => import(/* webpackChunkName: 'editSkype' */'./form/editSkype'),
     editZalo: () => import(/* webpackChunkName: 'editZalo' */'./form/editZalo'),
-    // receiptAddress: () => import(/* webpackChunkName: 'receiptAddress' */'./receiptAddress')
     message
   },
   data() {
@@ -179,7 +178,7 @@ export default {
     this.setMessage(this.mcenterBindMessage);
   },
   mounted() {
-    this.actionSetUserdata(true);
+    // this.actionSetUserdata(true);
   },
   methods: {
     ...mapActions([

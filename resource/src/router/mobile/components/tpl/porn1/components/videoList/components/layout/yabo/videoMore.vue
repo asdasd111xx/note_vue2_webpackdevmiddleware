@@ -88,6 +88,7 @@ export default {
       total: 0,
       videoTabs: [],
       sortId: +this.$route.query.sortId,
+      tagId: +this.$route.query.tagId,
       isSingle: false,
       source: this.$route.query.source
     };
@@ -103,6 +104,7 @@ export default {
         method: "get",
         url: `/video/sort`,
         params: {
+          tagId: !this.tagId ? '' : this.tagId ,
           siteId: this.siteId
         },
         timeout: 30000
@@ -130,7 +132,7 @@ export default {
         method: "post",
         url: `/video/list`,
         data: {
-          tagId: this.$route.query.tagId,
+          tagId: this.tagId,
           sortId: this.sortId,
           page: page,
           siteId: this.siteId

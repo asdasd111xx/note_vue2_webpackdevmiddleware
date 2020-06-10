@@ -2,9 +2,8 @@
   <div>
     <template
       v-if="
-        ($route.query.tagId && $route.query.sortId) ||
-          ($route.query.tagId === 0 && $route.query.sortId === 0) ||
-          ($route.query.tagId === 0 && $route.query.sortId !== 0)
+        Object.keys(this.$route.query).indexOf('tagId') !== -1 &&
+          Object.keys(this.$route.query).indexOf('sortId') !== -1
       "
     >
       <video-more
@@ -48,8 +47,8 @@ export default {
   },
   data() {
     return {
-      siteId : 2
-    }
+      siteId: 2
+    };
   },
   watch: {
     "$route.query"() {

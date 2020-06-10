@@ -176,7 +176,6 @@
           :class="$style['bank-card-cell']"
           @click="handleSelectCard(item)"
         >
-          <!-- 缺銀行圖片 -->
           <img :src="`${bankSrc}${item.bank_id}.png`" />
           <span>{{ item.alias }} </span>
           <div
@@ -342,6 +341,12 @@
 
       <!-- 流水檢查 -->
       <serial-number v-if="isSerial" :handle-close="toggleSerial" />
+
+      <div v-if="isLoading" :class="$style['loading-wrap']">
+        <div :class="$style['loading-item']">
+          <ele-loading />
+        </div>
+      </div>
     </div>
   </mobile-container>
 </template>
@@ -370,6 +375,7 @@ export default {
   data() {
     return {
       curTitleTab: 'withdrawMethod',
+      isLoading: true,
       isSerial: false,
       isCheckWithdraw: false,
       isOpenOrder: false,
@@ -385,6 +391,7 @@ export default {
     }
   },
   components: {
+    eleLoading: () => import(/* webpackChunkName: 'eleLoading' */ '@/router/web/components/tpl/common/element/loading/circle'),
     mobileContainer,
     balanceTran,
     message,
@@ -406,6 +413,8 @@ export default {
             this.handleSubmit();
           }
         })
+
+        this.isLoading = false;
       }
     },
     withdrawValue() {
@@ -541,7 +550,6 @@ export default {
         userBankId: this.selectedCard,
         keyring: localStorage.getItem('tmp_w_1') // 手機驗證成功後回傳
       }).then((response) => {
-
         if (response) {
           if (response.result === 'error' && response.code === 500110) {
             this.isOpenOrder = true;
@@ -597,26 +605,28 @@ export default {
         params: _params,
         success: (response) => {
           if (response && response.result === 'ok') {
-            this.msg = "提现成功"
 
             if (this.memInfo.config.withdraw === '迅付') {
               // 迅付寫單
               ajax({
                 method: 'post',
                 url: API_TRADE_RELAY,
-                errorAlert: true,
+                errorAlert: false,
                 params: {
                   api_uri: '/api/trade/v2/c/withdraw/entry',
                   [`method[${hasAccountId}]`]: this.withdrawAccount.id,
                   //   password: this.withdrawPwd,
                   withdraw_id: response.ret.id
+                },
+                fail: (res) => {
+                  this.msg = '提现已取消，请重新提交申请';
                 }
               }).then((res) => {
                 this.isLoading = false;
                 this.actionSetIsLoading(false);
 
                 if (res && res.result === 'ok') {
-                  this.alertTipClose(true);
+                  this.msg = "提现成功"
                 }
               });
 
@@ -627,7 +637,7 @@ export default {
             ajax({
               method: 'get',
               url: API_WITHDRAW,
-              errorAlert: true,
+              errorAlert: false,
               params: {
                 amount: response.ret.amount,
                 withdraw_id: response.ret.id,
@@ -637,12 +647,16 @@ export default {
                 title: encodeURI(this.memInfo.config.domain_name[this.curLang]),
                 favicon: this.webInfo.fav_icon ? `${this.webInfo.cdn_domain}${this.webInfo.fav_icon}` : '',
                 check: true
+              },
+              fail: (res) => {
+                this.msg = '提现已取消，请重新提交申请';
               }
             }).then((res) => {
               this.isLoading = false;
               this.actionSetIsLoading(false);
 
               if (res.result === 'ok') {
+                this.msg = "提现成功"
                 this.thirdUrl = res.ret.uri;
               }
             });
