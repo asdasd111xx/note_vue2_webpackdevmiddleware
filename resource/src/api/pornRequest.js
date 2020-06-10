@@ -3,6 +3,7 @@ import { setup, setupCache } from 'axios-cache-adapter'
 
 import axios from 'axios';
 import querystring from 'querystring'
+import store from '@/store';
 
 export default ({
     method = 'get',
@@ -36,7 +37,13 @@ export default ({
 
     if (smallPig) {
         // obj['withCredentials'] = true;
-        if (process.env.NODE_ENV === 'development') {
+        const domain = store &&
+            store.state &&
+            store.state.memInfo &&
+            store.state.memInfo.user &&
+            store.state.memInfo.user.domain;
+
+        if (domain === '500015') {
             obj['url'] = S_PORN_DOMAIN + url;
         }
     }
