@@ -119,7 +119,7 @@ export default {
     },
   },
   created() {
-    this.version = this.siteConfig.VERSION;
+    this.version = `${this.siteConfig.VERSION}${getCookie('platform') || ''}`;
   },
   methods: {
   }
