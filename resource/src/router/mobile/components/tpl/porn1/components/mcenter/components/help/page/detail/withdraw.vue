@@ -1,6 +1,7 @@
 <template>
   <div :class="$style['detail-wrap']">
-    <div :class="$style['status-wrap']">
+    <!-- 狀態暫時移除 -->
+    <!-- <div :class="$style['status-wrap']">
       <div
         :class="[$style.status, { [$style.active]: curStatus == 0 }]"
         @click="filterStatus(0)"
@@ -19,7 +20,7 @@
           left: `calc(calc(25% - 25px + 50% * ${curStatus}))`
         }"
       />
-    </div>
+    </div> -->
     <div v-if="list" :class="$style['detail-content-wrap']">
       <div v-for="(item, index) in list" :class="$style['detail-block']">
         <div :class="[$style['detail-cell'], $style['item-status']]">
@@ -57,12 +58,14 @@
     />
 
     <div v-if="!list.length" :class="$style['no-data-wrap']">
-      <img :src="$getCdnPath('/static/image/_new/mcenter/moneyDetail/no_data.png')" />
-      <div v-if="curStatus === 0" :class="$style['tips']">暂时没有新的提现记录</div>
+      <img
+        :src="$getCdnPath('/static/image/_new/mcenter/moneyDetail/no_data.png')"
+      />
+      <div v-if="curStatus === 0" :class="$style['tips']">
+        暂时没有新的提现记录
+      </div>
       <div v-else :class="$style['tips']">还没有任何记录</div>
     </div>
-
-
   </div>
 </template>
 
