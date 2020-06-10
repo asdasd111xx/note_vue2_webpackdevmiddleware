@@ -103,7 +103,8 @@ export default {
                 method: 'put',
                 url: this.siteConfig.BBOS_DOMIAN + '/Login',
                 reqHeaders: {
-                    'Vendor': this.memInfo.user.domain
+                    'Vendor': this.memInfo.user.domain,
+                    'token': '35fe4ca56df10dda446aee2e7df7bccbd16df67267'
                 },
                 params: {
                     username: this.username,

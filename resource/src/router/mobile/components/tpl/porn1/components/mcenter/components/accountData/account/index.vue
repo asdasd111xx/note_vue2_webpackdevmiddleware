@@ -163,7 +163,8 @@ export default {
     ...mapGetters({
       siteConfig: 'getSiteConfig',
       memInfo: 'getMemInfo',
-      mcenterBindMessage: 'getMcenterBindMessage'
+      mcenterBindMessage: 'getMcenterBindMessage',
+      mobileCheck: 'getMobileCheck'
     }),
     colorClass() {
       return [
@@ -193,6 +194,12 @@ export default {
     },
     handleClick(field) {
       if (field.key === "phone") {
+        //   手機未驗證能設定
+        if (!this.mobileCheck) {
+          this.$router.push({
+            path: `/mobile/mcenter/accountData/phone`
+          });
+        }
         // 只能設定一次
         if (this.memInfo.user.phone && !this.memInfo.config.user_edit_phone) {
           return;
