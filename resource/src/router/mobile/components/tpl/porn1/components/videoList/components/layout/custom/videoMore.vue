@@ -82,7 +82,8 @@ export default {
       current: 0,
       total: 0,
       videoTabs: [],
-      sortId: +this.$route.query.sortId
+      sortId: +this.$route.query.sortId,
+      tagId: +this.$route.query.tagId
     };
   },
   created() {
@@ -101,6 +102,7 @@ export default {
         url: `/video/sort`,
         smallPig: true,
         params: {
+          tagId: !this.tagId ? '' : this.tagId ,
           siteId: this.siteId
         },
         timeout: 30000
@@ -129,7 +131,7 @@ export default {
         url: `/video/list`,
         smallPig: true,
         data: {
-          tagId: this.$route.query.tagId,
+          tagId: this.tagId,
           sortId: this.sortId,
           page: page,
           siteId: this.siteId

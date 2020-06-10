@@ -2,16 +2,15 @@
   <div>
     <template
       v-if="
-        ($route.query.tagId && $route.query.sortId) ||
-          ($route.query.tagId === 0 && $route.query.sortId === 0) ||
-          ($route.query.tagId === 0 && $route.query.sortId !== 0)
+        Object.keys(this.$route.query).indexOf('tagId') !== -1 &&
+          Object.keys(this.$route.query).indexOf('sortId') !== -1
       "
     >
-      <video-more :set-header-title="setHeaderTitle" :siteId="siteId"/>
+      <video-more :set-header-title="setHeaderTitle" :siteId="siteId" />
     </template>
 
     <template v-else>
-      <video-lobby :set-header-title="setHeaderTitle" :siteId="siteId"/>
+      <video-lobby :set-header-title="setHeaderTitle" :siteId="siteId" />
     </template>
   </div>
 </template>
@@ -40,8 +39,8 @@ export default {
   },
   data() {
     return {
-      siteId : 3
-    }
+      siteId: 3
+    };
   },
   watch: {
     "$route.query"() {

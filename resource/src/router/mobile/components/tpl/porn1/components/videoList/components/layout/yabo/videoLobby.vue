@@ -62,7 +62,7 @@
                 query: {
                   source: $route.query.source,
                   tagId: +videoType.id || 0,
-                  sortId: +videoData.id || 30
+                  sortId: +videoData.id || 0
                 }
               })
             "
