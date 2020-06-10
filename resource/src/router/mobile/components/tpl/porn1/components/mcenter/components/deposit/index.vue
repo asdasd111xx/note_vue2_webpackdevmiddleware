@@ -36,6 +36,7 @@ export default {
       return {
         prev: true,
         title: '充值',
+        hasDespositHelp: true,
         hasHelp: true,
         helpRouter: '/deposit',
         onClick: () => {
