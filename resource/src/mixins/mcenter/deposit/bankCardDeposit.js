@@ -1,10 +1,14 @@
-import { mapGetters, mapActions } from 'vuex';
+import {
+    API_MCENTER_DEPOSIT_CHANNEL,
+    API_MCENTER_DEPOSIT_INPAY,
+    API_MCENTER_DEPOSIT_THIRD,
+    API_TRADE_RELAY
+} from '@/config/api';
+import { mapActions, mapGetters } from 'vuex';
+
 import BigNumber from 'bignumber.js/bignumber';
 import ajax from '@/lib/ajax';
 import isMobile from '@/lib/is_mobile';
-import {
-    API_MCENTER_DEPOSIT_INPAY, API_MCENTER_DEPOSIT_CHANNEL, API_TRADE_RELAY, API_MCENTER_DEPOSIT_THIRD
-} from '@/config/api';
 
 export default {
     data() {
@@ -67,11 +71,11 @@ export default {
 
             // 尚未輸入金額
             if (!this.moneyValue) {
-                return '--';
+                return '0.00';
             }
 
             if ((this.depositInterval.minMoney && this.depositInterval.minMoney > this.moneyValue) || (this.depositInterval.maxMoney && this.depositInterval.maxMoney < this.moneyValue)) {
-                return '--';
+                return '0.00';
             }
 
             // 未達到單筆存款金額，無優惠

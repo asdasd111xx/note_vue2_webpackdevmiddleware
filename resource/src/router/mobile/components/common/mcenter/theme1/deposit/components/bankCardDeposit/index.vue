@@ -478,7 +478,9 @@
             >
               实际到账： ¥{{ realSaveMoney }} (详情)
             </span>
-            <span v-else :class="$style['feature-tip-title']"
+            <span
+              v-else-if="curPayInfo.payment_method_name !== '代客充值'"
+              :class="$style['feature-tip-title']"
               >实际到账： {{ realSaveMoney }}</span
             >
           </div>
