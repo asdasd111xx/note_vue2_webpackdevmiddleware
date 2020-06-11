@@ -51,14 +51,6 @@
               <span slot="no-results" />
             </infinite-loading>
           </template>
-          <!-- 暫時幫TP電子加的, 正式站開放後拿掉 -->
-          <div
-            v-if="$route.params.vendor === 'tp' && gameData.length === 0"
-            class="empty-wrap"
-          >
-            <div class="empty-icon" />
-            <div>{{ $text("S_NO_GAME", "未查询到相关游戏") }}</div>
-          </div>
         </div>
       </template>
     </template>

@@ -637,6 +637,13 @@ export default {
       msg: ''
     };
   },
+  watch: {
+    getPassRoadOrAi() {
+      if (this.getPassRoadOrAi.amounts && this.getPassRoadOrAi.amounts.length > 0) {
+        this.moneyValue = this.getPassRoadOrAi.amounts[0];
+      }
+    }
+  },
   computed: {
     ...mapGetters({
       siteConfig: 'getSiteConfig',
