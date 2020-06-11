@@ -117,7 +117,7 @@ export default {
         return this.text;
       },
       set(value) {
-        debounce(() => { this.setSearchText(value); }, 600)();
+        debounce(() => { this.setSearchText(value); }, 800)();
       }
     }
   },

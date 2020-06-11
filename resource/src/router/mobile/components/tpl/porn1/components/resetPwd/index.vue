@@ -53,8 +53,7 @@
                 @blur="verification(item, pwdResetInfo[item].value)"
                 type="password"
                 :placeholder="pwdResetInfo[item].placeholder"
-                :maxlength="pwdResetInfo[item].maxlength"
-                :minlength="pwdResetInfo[item].minlength"
+                maxlength="12"
                 @input="
                   pwdResetInfo[item].value = $event.target.value
                     .toLowerCase()
@@ -161,7 +160,7 @@ export default {
           value: '',
           regExp: /^[a-z0-9._\-!@#$&*+=|]{6,12}$/,
           errorMsg: 'S_PASSWORD_ERROR',
-          placeholder: '請設置新密碼(6-12位字母或數字)',
+          placeholder: '请设置新密码(6-12位字母或数字)',
           maxlength: 12,
           minlength: 6,
           eyeShow: false,
@@ -183,11 +182,15 @@ export default {
       }
     };
   },
+  created() {
+    if (!this.loginStatus) this.$router.push('/mobile/home');
+  },
   computed: {
     ...mapGetters({
       webInfo: 'getWebInfo',
       siteConfig: 'getSiteConfig',
-      memInfo: 'getMemInfo'
+      memInfo: 'getMemInfo',
+      loginStatus: 'getLoginStatus',
     }),
     headerConfig() {
       return {
