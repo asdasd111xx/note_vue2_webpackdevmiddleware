@@ -30,7 +30,11 @@
           "
         >
           <img
-            :src="$getCdnPath(`/static/image/_new/source/smallPig/btn_av${ index + 1 }.png`)"
+            :src="
+              $getCdnPath(
+                `/static/image/_new/source/smallPig/btn_av${index + 1}.png`
+              )
+            "
             alt="icon"
           />
         </div>
@@ -156,7 +160,7 @@ export default {
     }
   },
   created() {
-    this.setHeaderTitle("小猪視頻");
+    this.setHeaderTitle("小猪视频");
     this.setHasSearchBtn(false);
     this.getVideoTag();
     this.getVideoSort();
@@ -371,6 +375,17 @@ export default {
         transform: translateY(-50%);
       }
     }
+  }
+}
+
+.top-warp {
+  max-width: $mobile_max_width;
+  min-width: 0;
+}
+
+@media (orientation: landscape) {
+  .top-warp {
+    max-width: $mobile_max_landscape_width !important;
   }
 }
 
