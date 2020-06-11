@@ -350,7 +350,7 @@
     "S_REBATE_HISTORY": "返水历史",
     "S_REAL_TIME_REBATE": "实时返水",
     "S_TRIAL_CALCULATION": "试算",
-    "S_CALCULATION_STARTED": "本次计算起始 (美东时间)",
+    "S_CALCULATION_STARTED": "本次起算(美东时间)",
     "S_CYCLE_TIME": "周期",
     "S_CALCULATION_INTERVAL": "计算区间",
     "S_PREMIUM_AMOUNT": "返水金额",
