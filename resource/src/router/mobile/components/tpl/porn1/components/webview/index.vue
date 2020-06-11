@@ -2,7 +2,10 @@
   <div :class="$style['content']">
     <div :class="$style['header']">
       <div :class="$style['header-background']">
-        <img :src="$getCdnPath('/static/image/_new/webview/bg_service_app02.png')" alt="background">
+        <img
+          :src="$getCdnPath('/static/image/_new/webview/bg_service_app02.png')"
+          alt="background"
+        />
       </div>
 
       <div :class="$style['header-desc']">
@@ -129,31 +132,26 @@ export default {
               2,
               "yaboxxxapp01.com.platformG"
             );
-          },
-          isShow: true
-        },
-        {
-            text: "IOS版",
-            onClick: () => {
-                if (this.iOSBundle) {
-                    this.download(1, this.iOSBundle);
-                }
-            },
-            isShow: false
-        },
-        {
-          text: "隐藏版",
-          onClick: () => {
-            window.open(
-              "https://apps.apple.com/cn/app/id1516668517",
-              "_blank"
-            );
-          },
-          isShow: true
+          }
         }
-      ].filter(item => {
-        return item.isShow
-      })
+        // {
+        //     text: "IOS版",
+        //     onClick: () => {
+        //         if (this.iOSBundle) {
+        //             this.download(1, this.iOSBundle);
+        //         }
+        //     }
+        // },
+        // {
+        //   text: "隐藏版",
+        //   onClick: () => {
+        //     window.open(
+        //       "https://apps.apple.com/cn/app/id1515483910",
+        //       "_blank"
+        //     );
+        //   }
+        // }
+      ]
     };
   },
   computed: {
@@ -222,13 +220,13 @@ export default {
 }
 
 .header-background {
-    position: relative;
+  position: relative;
+  width: 100%;
+  height: 100%;
+  img {
     width: 100%;
     height: 100%;
-    img {
-        width: 100%;
-        height: 100%;
-    }
+  }
 }
 
 .header-desc,
