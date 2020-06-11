@@ -87,7 +87,7 @@ export default {
       //      origin: 'http://127.0.0.1'
       //   }
     }
-    if (this.$route.query.source === 'smallPig') { obj['smallPig'] = true }
+    // if (this.$route.query.source === 'smallPig') { obj['smallPig'] = true }
     pornRequest(obj).then((res) => {
       if (res.status !== 200) {
         return;
