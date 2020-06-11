@@ -103,7 +103,7 @@ export default {
                 method: 'put',
                 url: this.siteConfig.BBOS_DOMIAN + '/Login',
                 reqHeaders: {
-                    'Vendor': this.memInfo.user.domain
+                    'Vendor': this.memInfo.user.domain,
                 },
                 params: {
                     username: this.username,
@@ -118,7 +118,7 @@ export default {
                     }
                 }
             }).then((res) => {
-                this.$refs.puzzleVer.ret = null;
+                if (this.$refs.puzzleVer) this.$refs.puzzleVer.ret = null;
 
                 if (res && res.data && res.data && res.data.cookie && res.data.cookie.cid) {
                     try {

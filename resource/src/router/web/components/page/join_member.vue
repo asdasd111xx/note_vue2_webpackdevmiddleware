@@ -530,7 +530,7 @@ export default {
           ...params
         }
       }).then((res) => {
-        this.$refs.puzzleVer.ret = null;
+        if (this.$refs.puzzleVer) this.$refs.puzzleVer.ret = null;
         if (res.data && res.data.cookie) {
           try {
             const { cookie } = res.data;
