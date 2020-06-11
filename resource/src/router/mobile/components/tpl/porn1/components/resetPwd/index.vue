@@ -161,7 +161,7 @@ export default {
           value: '',
           regExp: /^[a-z0-9._\-!@#$&*+=|]{6,12}$/,
           errorMsg: 'S_PASSWORD_ERROR',
-          placeholder: '請設置新密碼(6-12位字母或數字)',
+          placeholder: '请设置新密码(6-12位字母或数字)',
           maxlength: 12,
           minlength: 6,
           eyeShow: false,
