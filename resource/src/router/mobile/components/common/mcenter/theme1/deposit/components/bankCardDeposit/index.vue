@@ -454,7 +454,7 @@
                       <div
                         v-if="info.copyShow"
                         :class="$style['icon-wrap']"
-                        @click="copyInfo(info.value)"
+                        @click="handleCopy(info.value)"
                       >
                         <div>
                           <icon name="regular/copy" width="12" height="12" />
@@ -831,6 +831,10 @@ export default {
     ...mapActions([
       'actionSetUserBalance'
     ]),
+    handleCopy(val) {
+      this.msg = "已复制到剪贴板";
+      this.copyInfo(val)
+    },
     modeChange(listItem, index) {
       this.changeMode(listItem);
 

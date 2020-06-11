@@ -426,8 +426,7 @@ export default {
         method: 'get',
         url: `${this.siteConfig.YABO_API_DOMAIN}/AccountBank/GetBankBindingStatusTrans/${getCookie('cid')}`,
         headers: {
-          Bundleid: 'chungyo.foxyporn.prod.enterprise.web',
-          Version: 1,
+          'Authorization': 'YaboAPIforDev0nly',
           'x-domain': this.memInfo.user.domain
         }
       }).then((res) => {

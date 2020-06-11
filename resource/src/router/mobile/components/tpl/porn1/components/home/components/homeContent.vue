@@ -470,8 +470,7 @@ export default {
             }/AccountBank/GetBankBindingStatus/${getCookie('cid')}`,
           timeout: 30000,
           headers: {
-            Bundleid: 'chungyo.foxyporn.prod.enterprise.web',
-            Version: 1,
+            'Authorization': 'YaboAPIforDev0nly',
             'x-domain': this.memInfo.user.domain
           }
         }).then(res => {

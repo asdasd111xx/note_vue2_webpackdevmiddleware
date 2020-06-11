@@ -145,7 +145,7 @@ export default {
           }/player/viplevel/${getCookie("cid")}?configId=${
           this.currentConfigID
           }`,
-        headers: { "x-domain": this.memInfo.user.domain }
+        headers: { "x-domain": this.memInfo.user.domain, 'Authorization': 'YaboAPIforDev0nly' }
       }).then(res => {
 
         this.vipLevelList = res.data.data;

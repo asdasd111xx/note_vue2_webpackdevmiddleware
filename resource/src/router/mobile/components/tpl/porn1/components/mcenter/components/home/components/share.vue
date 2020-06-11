@@ -64,7 +64,8 @@ export default {
       isPwa: "getIsPwa",
       loginStatus: "getLoginStatus",
       siteConfig: "getSiteConfig",
-      agentLink: "getAgentLink"
+      agentLink: "getAgentLink",
+      memInfo: 'getMemInfo',
     }),
     isException() {
       return (
@@ -88,7 +89,10 @@ export default {
       axios({
         method: "get",
         url: `${this.siteConfig.YABO_API_DOMAIN}/system/downloadlink`,
-        'Authorization': 'YaboAPIforDev0nly',
+        headers: {
+          'x-domain': this.memInfo.user.domain,
+          'Authorization': 'YaboAPIforDev0nly'
+        }
       }).then(res => {
         if (res && res.data && res.data.data) {
           this.landingLink =
