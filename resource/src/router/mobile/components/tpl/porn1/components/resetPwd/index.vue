@@ -53,8 +53,7 @@
                 @blur="verification(item, pwdResetInfo[item].value)"
                 type="password"
                 :placeholder="pwdResetInfo[item].placeholder"
-                :maxlength="pwdResetInfo[item].maxlength"
-                :minlength="pwdResetInfo[item].minlength"
+                maxlength="12"
                 @input="
                   pwdResetInfo[item].value = $event.target.value
                     .toLowerCase()
@@ -183,11 +182,15 @@ export default {
       }
     };
   },
+  created() {
+    if (!this.loginStatus) this.$router.push('/mobile/home');
+  },
   computed: {
     ...mapGetters({
       webInfo: 'getWebInfo',
       siteConfig: 'getSiteConfig',
-      memInfo: 'getMemInfo'
+      memInfo: 'getMemInfo',
+      loginStatus: 'getLoginStatus',
     }),
     headerConfig() {
       return {
