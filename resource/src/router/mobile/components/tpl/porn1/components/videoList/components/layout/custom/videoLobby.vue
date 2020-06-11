@@ -160,7 +160,7 @@ export default {
     }
   },
   created() {
-    this.setHeaderTitle("小猪視頻");
+    this.setHeaderTitle("小猪视频");
     this.setHasSearchBtn(false);
     this.getVideoTag();
     this.getVideoSort();

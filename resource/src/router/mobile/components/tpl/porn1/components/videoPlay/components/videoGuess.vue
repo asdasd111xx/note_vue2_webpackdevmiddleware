@@ -78,12 +78,14 @@ export default {
     }
   },
   created() {
-    pornRequest({
+    const obj = {
       url: `/video/guess`,
       params: {
         siteId: this.siteId
       }
-    }).then((response) => {
+    }
+    // if (this.$route.query.source === 'smallPig') { obj['smallPig'] = true }
+    pornRequest(obj).then((response) => {
       if (response.status !== 200) {
         return;
       }
