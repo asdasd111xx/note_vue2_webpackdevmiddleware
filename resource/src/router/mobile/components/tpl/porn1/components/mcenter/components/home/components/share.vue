@@ -91,7 +91,7 @@ export default {
         url: `${this.siteConfig.YABO_API_DOMAIN}/system/downloadlink`,
         headers: {
           'x-domain': this.memInfo.user.domain,
-          'Authorization': 'YaboAPIforDev0nly'
+          'AuthToken': 'YaboAPIforDev0nly'
         }
       }).then(res => {
         if (res && res.data && res.data.data) {
