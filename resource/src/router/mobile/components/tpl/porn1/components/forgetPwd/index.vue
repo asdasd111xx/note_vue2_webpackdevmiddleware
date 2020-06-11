@@ -208,9 +208,7 @@
           >
             <div>
               {{
-                currentMethod === "phone-step-1"
-                  ? $t("S_NEXT_STEP")
-                  : $t("S_JM_SURE_SEND")
+                currentMethod === "phone-step-1" ? $t("S_NEXT_STEP") : "提交"
               }}
             </div>
           </div>
@@ -222,7 +220,6 @@
         :is-show-captcha.sync="isShowCaptcha"
         :captcha.sync="captchaData"
       />
-
     </div>
   </mobile-container>
 </template>
@@ -280,7 +277,7 @@ export default {
     headerConfig() {
       return {
         prev: true,
-        title: '找回密码',
+        title: '重设密码',
         onClick: () => { this.$router.back(); }
       };
     },
@@ -407,7 +404,7 @@ export default {
     },
     showCaptchaPopup() {
       // 無認證直接呼叫
-      if(this.memInfo.config.default_captcha_type === 0) {
+      if (this.memInfo.config.default_captcha_type === 0) {
         this.getKeyring()
         return
       }

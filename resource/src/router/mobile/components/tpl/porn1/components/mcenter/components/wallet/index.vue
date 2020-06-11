@@ -260,7 +260,7 @@ export default {
         url: `${this.siteConfig.YABO_API_DOMAIN}/AccountBank/GetBankBindingStatus/${getCookie('cid')}`,
         timeout: 30000,
         headers: {
-          'Authorization': 'YaboAPIforDev0nly',
+          'AuthToken': 'YaboAPIforDev0nly',
           'x-domain': this.memInfo.user.domain
         }
       }).then((res) => {

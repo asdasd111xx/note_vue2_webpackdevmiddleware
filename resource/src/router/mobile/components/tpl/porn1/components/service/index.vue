@@ -211,7 +211,7 @@ export default {
       method: "get",
       url: `${this.siteConfig.YABO_API_DOMAIN}/system/downloadlink`,
       headers: {
-        'Authorization': 'YaboAPIforDev0nly',
+        'AuthToken': 'YaboAPIforDev0nly',
         'x-domain': this.memInfo.user.domain
       }
     }).then(res => {
