@@ -598,8 +598,7 @@ export default {
           navigator.userAgent.match(/UBiOS/) !== null &&
           navigator.userAgent.match(/iPhone/) !== null;
         // 暫時用來判斷馬甲包
-        // const webview = window.location.hostname === 'yaboxxxapp02.com';
-        const webview = false;
+        const webview = window.location.hostname === 'yaboxxxapp02.com';
 
         // ios寰宇瀏覽器目前另開頁面需要與電腦版開啟方式相同
         if (!isUBMobile && !webview) {
