@@ -242,15 +242,13 @@ export default {
         case 1:
           return "去绑定";
         case 2:
-        case 5:
-        case 6:
           return "去充值";
         case 3:
         case 4:
           return "去推广";
-        case 8:
+        case 5:
           return "去查看";
-        case 7:
+        case 6:
         default:
           return;
       }
@@ -262,18 +260,18 @@ export default {
           this.$router.push(`/mobile/mcenter/bankCard${redirect}`);
           return;
         case 2:
-        case 5:
-        case 6:
           this.$router.push(`/mobile/mcenter/deposit${redirect}`);
           return;
         case 3:
-        case 4:
           this.$router.push(`/mobile/mcenter/makeMoney`);
           return;
-        case 8:
+        case 4:
+          this.$router.push(`/mobile/mcenter/tcenter/management/member`);
+          return;
+        case 5:
           this.unlockTag();
           return;
-        case 7:
+        case 6:
         default:
           return;
       }
