@@ -117,7 +117,7 @@ export default {
       this.player.on("playing", () => {
         if (this.player.seeking()) return;
         this.isPlaying = true;
-        if (window.YABO_SOCKET && !this.keepPlay) {
+        if (window.YABO_SOCKET && !this.keepPlay && !this.isFULL) {
           this.onSend("PLAY");
         }
         this.keepPlay = false
