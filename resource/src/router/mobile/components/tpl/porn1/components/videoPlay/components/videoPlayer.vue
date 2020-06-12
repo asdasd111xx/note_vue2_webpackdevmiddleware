@@ -158,8 +158,8 @@ export default {
     }
   },
   methods: {
-    handleCloseDialog() {
-      this.keepPlay = true;
+    handleCloseDialog(keepPlay) {
+      this.keepPlay = keepPlay;
       if (this.breakwaitCallback) {
         this.breakwaitCallback();
       }
