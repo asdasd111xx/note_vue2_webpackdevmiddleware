@@ -108,7 +108,7 @@
 
 
               <div
-                :class="[$style['balance-item'], $style['collapse']]"
+                :class="[$style['balance-item'], $style['expend']]"
                 @click="toggleShowMore">
                 <span
                   :class="$style['balance-item-vendor']"

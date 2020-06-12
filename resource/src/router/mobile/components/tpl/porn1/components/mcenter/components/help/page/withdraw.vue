@@ -36,7 +36,7 @@
           :key="item.key"
           @click="item.content && handleToggleContent(index)"
         >
-          <template v-if="item.title">
+          <template v-if="item.title && item.content">
             <div :class="$style['title']">
               {{ item.title }}
             </div>

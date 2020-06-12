@@ -154,6 +154,9 @@ export default {
           clearTimeout(this.reconnectTimer);
           this.reconnectTimer = null;
         };
+        window.YABO_SOCKET_RECONNECT = () => {
+          this.reconnectYaboWS();
+        }
       } catch (e) {
         console.log("[WS]: connectYaboWS Error:", e);
       }

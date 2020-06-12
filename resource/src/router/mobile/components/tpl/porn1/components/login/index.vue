@@ -232,6 +232,11 @@ export default {
       puzzleData: null
     };
   },
+  watch: {
+    puzzleObj() {
+      this.errMsg = "";
+    }
+  },
   computed: {
     ...mapGetters({
       webInfo: 'getWebInfo',
@@ -311,7 +316,12 @@ export default {
 
         case 3:
           // 拼圖驗證
+          if (!this.puzzleObj) {
+            this.errMsg = "請先點擊按鈕進行驗證";
+            return;
+          }
           this.loginCheck({ captcha: this.puzzleObj }, undefined, this.errorCallBack);
+          this.puzzleData = null;
           break;
 
         default:

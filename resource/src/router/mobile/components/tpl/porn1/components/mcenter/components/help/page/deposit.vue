@@ -49,6 +49,7 @@ export default {
   },
   mounted() {
     this.hasCid = getCookie('cid') || false;
+    this.$router.push("/mobile/mcenter/help")
   },
   computed: {
     ...mapGetters({

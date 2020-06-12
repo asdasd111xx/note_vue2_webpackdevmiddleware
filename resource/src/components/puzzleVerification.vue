@@ -52,7 +52,7 @@ export default {
           this.$emit("update:puzzleObj", data);
         } else {
           this.ret = null;
-          this.$emit("update:puzzleObj", {});
+          this.$emit("update:puzzleObj", null);
         }
         return;
       });

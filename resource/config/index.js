@@ -32,22 +32,22 @@ module.exports = {
         proxyTable: {
             // 可於自己開發時改換但不要蓋紀錄
             // '/ubb': {
-            //     target: 'https://yb01.66boxing.com/',
+            //     target: 'https://yaboxxxapp01.com/',
             //     changeOrigin: true,
             //     secure: false
             // },
             // '/static': {
-            //     target: 'https://yb01.66boxing.com/',
+            //     target: 'https://yaboxxxapp01.com/',
             //     changeOrigin: true,
             //     secure: false
             // },
             // '/i18n': {
-            //     target: 'https://yb01.66boxing.com/',
+            //     target: 'https://yaboxxxapp01.com/',
             //     changeOrigin: true,
             //     secure: false
             // },
             // '/checkinfo': {
-            //     target: 'https://yb01.66boxing.com/',
+            //     target: 'https://yaboxxxapp01.com/',
             //     changeOrigin: true,
             //     secure: false
             // },

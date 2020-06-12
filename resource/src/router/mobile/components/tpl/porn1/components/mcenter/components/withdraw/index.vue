@@ -81,10 +81,12 @@
                 }}</span>
               </div>
 
-              <div :class="[$style['balance-item'], $style['collapse']]">
+              <div
+                :class="[$style['balance-item'], $style['expend']]"
+                @click="toggleShowMore"
+              >
                 <span
                   :class="$style['balance-item-vendor']"
-                  @click="toggleShowMore"
                   >更多</span
                 >
                 <div :class="[$style['icon']]">
@@ -366,7 +368,7 @@ import {
   API_WITHDRAW_BALANCE_BACK,
   API_WITHDRAW_CGPAY_BINDING,
   API_WITHDRAW_INFO,
-  API_WITHDRAW_WRITE
+  API_WITHDRAW_WRITE_2
 } from '@/config/api';
 import common from '@/api/common';
 
@@ -551,17 +553,7 @@ export default {
         keyring: localStorage.getItem('tmp_w_1') // 手機驗證成功後回傳
       }).then((response) => {
         if (response) {
-          if (response.result === 'error' && response.code === 500110) {
-            this.isOpenOrder = true;
-          }
 
-          if (response.result === 'ok') {
-            this.msg = "提现成功"
-          }
-
-          if (response.result === 'error') {
-            this.errTips = response.msg;
-          }
         }
       });
       localStorage.removeItem('tmp_w_1');
@@ -575,9 +567,12 @@ export default {
        */
     submitWithdraw(params) {
       if (this.realWithdrawMoney === '--' || this.realWithdrawMoney <= 0) {
-
         return Promise.resolve({ status: 'error', errorCode: '', msg: "金额低于最小金额限制" });
       }
+
+      this.isLoading = true;
+      this.actionSetIsLoading(true);
+
       //不需要取款密碼,並且可選銀行卡
       let _params = {
         amount: this.withdrawValue,
@@ -587,36 +582,76 @@ export default {
         max_id: this.withdrawData.audit.total.max_id,
         audit_amount: this.withdrawData.audit.total.audit_amount,
         offer_deduction: this.withdrawData.audit.total.offer_deduction,
-        administrative_amount: this.withdrawData.audit.total.administrative_amount
+        administrative_amount: this.withdrawData.audit.total.administrative_amount,
       }
+
       if (params) {
         _params = { ..._params, ...params }
       }
+
       const hasAccountId = !this.withdrawAccount.withdrawType ? 'account_id' : this.withdrawAccount.withdrawType;
 
-      this.isLoading = true;
-      this.actionSetIsLoading(true);
+      if (this.memInfo.config.withdraw === '迅付') {
+        _params = {
+          ..._params,
+          [`ext[api_uri]`]: '/api/trade/v2/c/withdraw/entry',
+          [`ext[method][${hasAccountId}]`]: this.withdrawAccount.id,
+        }
+      }
 
-      // 本站寫單
       return ajax({
         method: 'post',
-        url: API_WITHDRAW_WRITE,
+        // url: API_WITHDRAW_WRITE, 舊的本站寫單
+        url: this.memInfo.config.withdraw === '迅付' ? API_WITHDRAW_WRITE_2 : API_WITHDRAW_WRITE,
         errorAlert: false,
         params: _params,
         success: (response) => {
           if (response && response.result === 'ok') {
-
             if (this.memInfo.config.withdraw === '迅付') {
+              this.msg = "提现成功"
+              // 舊的第二次寫單才需要
               // 迅付寫單
+              //   ajax({
+              //     method: 'post',
+              //     url: API_TRADE_RELAY,
+              //     errorAlert: false,
+              //     params: {
+              //       api_uri: '/api/trade/v2/c/withdraw/entry',
+              //       [`method[${hasAccountId}]`]: this.withdrawAccount.id,
+              //       //   password: this.withdrawPwd,
+              //       withdraw_id: response.ret.id
+              //     },
+              //     fail: (res) => {
+              //       console.log(res)
+
+              //       this.msg = '提现已取消，请重新提交申请';
+              //     }
+              //   }).then((res) => {
+              //     console.log(res)
+
+              //     this.isLoading = false;
+              //     this.actionSetIsLoading(false);
+
+              //     if (res && res.result === 'ok') {
+              //       this.msg = "提现成功"
+              //     }
+              //   });
+
+            } else {
+              // 第三方寫單
               ajax({
-                method: 'post',
-                url: API_TRADE_RELAY,
+                method: 'get',
+                url: API_WITHDRAW,
                 errorAlert: false,
                 params: {
-                  api_uri: '/api/trade/v2/c/withdraw/entry',
-                  [`method[${hasAccountId}]`]: this.withdrawAccount.id,
-                  //   password: this.withdrawPwd,
-                  withdraw_id: response.ret.id
+                  amount: response.ret.amount,
+                  withdraw_id: response.ret.id,
+                  stage: 'forward',
+                  logo: this.webInfo.logo ? `${this.webInfo.cdn_domain}${this.webInfo.logo}` : '',
+                  mlogo: this.webInfo.m_logo ? `${this.webInfo.cdn_domain}${this.webInfo.m_logo}` : '',
+                  title: encodeURI(this.memInfo.config.domain_name[this.curLang]),
+                  favicon: this.webInfo.fav_icon ? `${this.webInfo.cdn_domain}${this.webInfo.fav_icon}` : '',
+                  check: true
                 },
                 fail: (res) => {
                   this.msg = '提现已取消，请重新提交申请';
@@ -625,43 +660,14 @@ export default {
                 this.isLoading = false;
                 this.actionSetIsLoading(false);
 
-                if (res && res.result === 'ok') {
+                if (res.result === 'ok') {
                   this.msg = "提现成功"
+                  this.thirdUrl = res.ret.uri;
                 }
               });
-
-              return;
             }
-
-            // 第三方寫單
-            ajax({
-              method: 'get',
-              url: API_WITHDRAW,
-              errorAlert: false,
-              params: {
-                amount: response.ret.amount,
-                withdraw_id: response.ret.id,
-                stage: 'forward',
-                logo: this.webInfo.logo ? `${this.webInfo.cdn_domain}${this.webInfo.logo}` : '',
-                mlogo: this.webInfo.m_logo ? `${this.webInfo.cdn_domain}${this.webInfo.m_logo}` : '',
-                title: encodeURI(this.memInfo.config.domain_name[this.curLang]),
-                favicon: this.webInfo.fav_icon ? `${this.webInfo.cdn_domain}${this.webInfo.fav_icon}` : '',
-                check: true
-              },
-              fail: (res) => {
-                this.msg = '提现已取消，请重新提交申请';
-              }
-            }).then((res) => {
-              this.isLoading = false;
-              this.actionSetIsLoading(false);
-
-              if (res.result === 'ok') {
-                this.msg = "提现成功"
-                this.thirdUrl = res.ret.uri;
-              }
-            });
-
-            return;
+          } else {
+            this.msg = '提现已取消，请重新提交申请';
           }
 
           if (response.code === 'M500001') {
@@ -671,6 +677,7 @@ export default {
 
           this.isLoading = false;
           this.actionSetIsLoading(false);
+          return;
         },
         fail: (error) => {
           if (error && error.data && error.data.code === 'M500001') {
@@ -678,7 +685,12 @@ export default {
             return;
           }
 
+          if (error && error.data && error.data.code === 'M500001') {
+            this.isOpenOrder = true;
+          }
+
           if (error && error.data && error.data.msg) {
+            this.msg = error.data.msg;
             this.errTips = error.data.msg;
           }
 

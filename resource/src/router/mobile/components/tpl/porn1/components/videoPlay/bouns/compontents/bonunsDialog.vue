@@ -22,7 +22,7 @@
       </div>
       <!-- 第一行文字 -->
       <div :class="$style['title']">
-        <template v-if="type.includes('full')">
+        <template v-if="type.includes('full-open')">
           请推广好友充值<br />
           领取更多礼金&nbsp;享受每月分红
         </template>
@@ -43,7 +43,7 @@
           type == 'tips' ||
             type.includes('poor') ||
             type.includes('wait') ||
-            type.includes('full')
+            type.includes('full-open')
         "
       >
         <div :class="$style['bouns-func']">
@@ -293,7 +293,7 @@ export default {
           domain: this.memInfo.user.domain
         },
       }).then((res) => {
-        if (res && res.data === "ok") { }
+        if (res && res.data === "ok") { window.YABO_SOCKET_RECONNECT(); }
         this.$router.push(`/mobile/mcenter/makeMoney`);
       }).catch(e => {
         console.log(e)
