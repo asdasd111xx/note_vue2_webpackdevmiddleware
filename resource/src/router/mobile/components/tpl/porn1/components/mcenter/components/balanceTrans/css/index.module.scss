@@ -172,8 +172,11 @@
         border-bottom: none;
     }
 
-    &.collapse {
+    &.expend {
         float: right;
+    }
+
+    &.expend , &.collapse {
         color: $main_text_color2;
         border-bottom: none;
 
