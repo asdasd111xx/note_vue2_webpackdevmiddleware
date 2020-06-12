@@ -129,26 +129,31 @@ export default {
               2,
               "yaboxxxapp01.com.platformG"
             );
-          }
+          },
+          isShow: true
         },
-        // {
-        //     text: "IOS版",
-        //     onClick: () => {
-        //         if (this.iOSBundle) {
-        //             this.download(1, this.iOSBundle);
-        //         }
-        //     }
-        // },
+        {
+            text: "IOS版",
+            onClick: () => {
+                if (this.iOSBundle) {
+                    this.download(1, this.iOSBundle);
+                }
+            },
+            isShow: false
+        },
         {
           text: "隐藏版",
           onClick: () => {
             window.open(
-              "https://apps.apple.com/cn/app/id1515483910",
+              "https://apps.apple.com/cn/app/id1516668517",
               "_blank"
             );
-          }
+          },
+          isShow: true
         }
-      ]
+      ].filter(item => {
+        return item.isShow
+      })
     };
   },
   computed: {
