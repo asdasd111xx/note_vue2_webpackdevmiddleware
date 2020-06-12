@@ -152,6 +152,9 @@
   </div>
 </template>
 <script>
+import { getCookie } from '@/lib/cookie';
+import axios from 'axios';
+import { mapGetters } from 'vuex';
 
 export default {
   props: {
@@ -162,7 +165,7 @@ export default {
     videoid: {
       type: Number,
       default: ""
-    }
+    },
   },
   watch: {
     earnCellNum() {
@@ -188,8 +191,15 @@ export default {
       limitAmount: 0, //最高彩金
       missionDesc: "", //任務標題
       missionActionType: 0, //任務動作 去充值 去綁定 去推廣
-      isFinishMissio: false //是否完成今年任務
+      isFinishMissio: false,//是否完成今年任務,
+      tagId: 0
     };
+  },
+  computed: {
+    ...mapGetters({
+      memInfo: 'getMemInfo',
+      siteConfig: 'getSiteConfig',
+    }),
   },
   mounted() {
     window.addEventListener('resize', this.getDialogHeight);
@@ -230,15 +240,15 @@ export default {
     getActionName() {
       switch (this.missionActionType) {
         case 1:
-          return "去绑定"
+          return "去绑定";
         case 2:
-        case 5:
-        case 6:
-          return "去充值"
+          return "去充值";
         case 3:
         case 4:
-          return "去推广"
-        case 7:
+          return "去推广";
+        case 5:
+          return "去查看";
+        case 6:
         default:
           return;
       }
@@ -250,18 +260,44 @@ export default {
           this.$router.push(`/mobile/mcenter/bankCard${redirect}`);
           return;
         case 2:
-        case 5:
-        case 6:
           this.$router.push(`/mobile/mcenter/deposit${redirect}`);
           return;
         case 3:
-        case 4:
           this.$router.push(`/mobile/mcenter/makeMoney`);
           return;
-        case 7:
+        case 4:
+          this.$router.push(`/mobile/mcenter/tcenter/management/member`);
+          return;
+        case 5:
+          this.unlockTag();
+          return;
+        case 6:
         default:
           return;
       }
+    },
+    unlockTag() {
+      let cid = getCookie('cid');
+      axios({
+        method: 'put',
+        url: `${this.siteConfig.YABO_API_DOMAIN}/Account/UnlockTagId?`,
+        headers: {
+          'AuthToken': 'YaboAPIforDev0nly',
+          'x-domain': this.memInfo.user.domain,
+          'Content-Type': 'application/json; charset=utf-8'
+        },
+        data: {
+          cid: cid,
+          userid: this.memInfo.user.id,
+          tagId: this.tagId,
+          domain: this.memInfo.user.domain
+        },
+      }).then((res) => {
+        if (res && res.data === "ok") { }
+        this.$router.push(`/mobile/mcenter/makeMoney`);
+      }).catch(e => {
+        console.log(e)
+      });
     },
     getDialogHeight() {
       let t = document.getElementById('earn-wrap');
