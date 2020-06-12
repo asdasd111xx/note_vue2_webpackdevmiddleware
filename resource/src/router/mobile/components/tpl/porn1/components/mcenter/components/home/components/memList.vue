@@ -91,14 +91,14 @@ export default {
       isReceive: false,
       toggleShare: false,
       list: [
-        {
-          initName: '下载超级签，成为超级会员',
-          name: 'S_VIP_APP',
-          path: '',
-          pageName: 'super',
-          image: 'vip',
-          isPart: true
-        },
+        // {
+        //   initName: '下载超级签，成为超级会员',
+        //   name: 'S_VIP_APP',
+        //   path: '',
+        //   pageName: 'super',
+        //   image: 'vip',
+        //   isPart: true
+        // },
         {
           initName: '帮助中心',
           name: 'S_HELP_CENTER',
