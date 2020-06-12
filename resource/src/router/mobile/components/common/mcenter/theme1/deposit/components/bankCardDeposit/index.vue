@@ -103,6 +103,7 @@
                     v-model="speedField.depositName"
                     :class="$style['speed-deposit-input']"
                     :placeholder="depositNameInput.placeholderText"
+                    @blur="verificationName"
                     @input="
                       submitDataInput(
                         $event.target.value,
@@ -833,6 +834,16 @@ export default {
     ...mapActions([
       'actionSetUserBalance'
     ]),
+    verificationName() {
+      const reg = /^[^，:;！@#$%^&*?<>()+=`|[\]{}\\"/.~\-_']*$/;
+      if (!reg.test(this.speedField.depositName)) {
+        this.msg = '请输入正确名称';
+        this.nameCheckFail = true;
+      } else {
+        this.msg = '';
+        this.nameCheckFail = false;
+      }
+    },
     handleCopy(val) {
       this.msg = "已复制到剪贴板";
       this.copyInfo(val)
