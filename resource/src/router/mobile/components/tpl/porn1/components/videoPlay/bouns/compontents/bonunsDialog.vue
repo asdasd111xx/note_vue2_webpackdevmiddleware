@@ -308,7 +308,7 @@ export default {
     handleClose() {
       this.isClose = true;
       setTimeout(() => {
-        this.$emit('close')
+        this.$emit('close', this.type.includes('wait') ? true : false)
         this.isShow = false;
         this.isClose = false;
       }, 300)
