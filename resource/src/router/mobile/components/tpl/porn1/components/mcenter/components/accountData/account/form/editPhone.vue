@@ -146,6 +146,7 @@ export default {
       options: {},
       isLock: false,
       timer: null,
+      isSendSMS: false,
       info: {
         key: 'phone',
         text: 'S_TEL',
@@ -304,10 +305,8 @@ export default {
       'actionSetＭcenterBindMessage'
     ]),
     locker() {
-      if (this.countdownSec === 0) {
-        this.countdownSec = 60;
-      }
-
+      if (this.timer) return;
+      this.countdownSec = 60;
       this.timer = setInterval(() => {
         if (this.countdownSec === 0) {
           clearInterval(this.timer);
@@ -328,7 +327,7 @@ export default {
       this.toggleCaptcha = true
     },
     handleSend() {
-      if (!this.newValue || this.timer) return;
+      if (!this.newValue || this.timer || this.isSendSMS) return;
 
       const getOldPhone = () => {
         if (this.fieldValue) {
@@ -338,6 +337,7 @@ export default {
         return '';
       };
 
+      this.isSendSMS = true;
       if (this.isfromWithdraw) {
         ajax({
           method: 'post',
@@ -349,14 +349,15 @@ export default {
           fail: (res) => {
             this.countdownSec = '';
             this.tipMsg = res.data.msg;
+            this.isSendSMS = false;
           },
           success: (res) => {
             if (res && res.result === 'ok') {
-              this.countdownSec = 60;
               this.actionSetUserdata(true);
               this.locker();
               this.tipMsg = this.$text("S_SEND_CHECK_CODE_VALID_TIME").replace("%s", 5)
             }
+            this.isSendSMS = false;
           }
         });
       } else {
@@ -367,14 +368,16 @@ export default {
             captcha_text: this.captchaData ? this.captchaData : ''
           },
           success: () => {
-            this.countdownSec = 60;
             this.actionSetUserdata(true);
             this.locker();
-            this.tipMsg = this.$text("S_SEND_CHECK_CODE_VALID_TIME").replace("%s", 5)
+            this.tipMsg = this.$text("S_SEND_CHECK_CODE_VALID_TIME").replace("%s", 5);
+            this.isSendSMS = false;
+
           },
           fail: (res) => {
             this.countdownSec = '';
             this.tipMsg = res.data.msg;
+            this.isSendSMS = false;
           }
         });
       }
