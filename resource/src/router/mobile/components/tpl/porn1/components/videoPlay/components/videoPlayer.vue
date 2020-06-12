@@ -63,7 +63,8 @@ export default {
       socketId: "",
       mission: null,
       keepPlay: false, // wait 任務未達成繼續觀看不發送play
-      breakwaitCallback: () => { }
+      breakwaitCallback: () => { },
+      isFULL: false
     };
   },
   computed: {
@@ -170,15 +171,16 @@ export default {
       const bonunsProcess = this.$refs.bonunsProcess;
       const bonunsDialog = this.$refs.bonunsDialog;
       if (this.mission) {
-        this.dialogType = `tips-wait`;
-        bonunsDialog.isFinishMission = Number(this.mission.ActionType) === 6;
+        this.dialogType = 'tips-wait';
+        bonunsDialog.isFinishMission = Number(this.mission.ActionType) === 7;
         bonunsDialog.missionDesc = this.mission.Description;
         bonunsDialog.missionActionType = this.mission.ActionType;
         bonunsDialog.isShow = true;
         this.playerPause();
-      } else if (this.dialogType === 'tips-full' || this.isFULL) {
+      } else if (this.isFULL) {
         bonunsProcess.processType = 'wait';
         bonunsDialog.isShow = true;
+        this.dialogType = 'tips-full-open';
         this.playerPause();
       }
     },
@@ -288,10 +290,10 @@ export default {
                 break;
               case 'FULL':
                 bonunsProcess.processType = 'wait';
-                this.isFULL = true;
+                bonunsDialog.isShow = true;
                 this.dialogType = 'tips-full';
-                // bonunsDialog.isShow = true;
-                // this.playerPause();
+                this.isFULL = true;
+                this.playerPause();
                 break;
               case 'POOR':
                 this.dialogType = 'tips-poor';

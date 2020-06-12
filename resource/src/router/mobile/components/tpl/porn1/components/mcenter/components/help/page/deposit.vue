@@ -19,7 +19,7 @@
           "
         >
           <div :class="$style['title']">
-            {{ $text("S_RECENTLY_DEPOSIT", "近10笔充值纪录") }}
+            {{ $text("S_RECENTLY_DEPOSIT", "8日内充值记录") }}
           </div>
           <div :class="[$style['arrow-btn']]">
             <img
@@ -49,6 +49,7 @@ export default {
   },
   mounted() {
     this.hasCid = getCookie('cid') || false;
+    this.$router.push("/mobile/mcenter/help")
   },
   computed: {
     ...mapGetters({

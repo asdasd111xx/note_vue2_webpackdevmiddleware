@@ -512,6 +512,7 @@ export default {
       // 拼圖
       if (this.memInfo.config.register_captcha_type === 3) {
         this.allValue.captcha_text = this.puzzleObj;
+        this.puzzleData = null;
       }
 
       // 暫時調整欄位
