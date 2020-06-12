@@ -1,9 +1,9 @@
 import { PORN_DOMAIN, S_PORN_DOMAIN } from '@/api/config';
 import { setup, setupCache } from 'axios-cache-adapter'
-import store from '@/store';
 
 import axios from 'axios';
 import querystring from 'querystring'
+import store from '@/store';
 
 export default ({
     method = 'get',
