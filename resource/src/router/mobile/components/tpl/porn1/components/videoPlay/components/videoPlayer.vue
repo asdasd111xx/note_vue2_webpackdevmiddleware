@@ -316,6 +316,7 @@ export default {
                 if (mission) {
                   this.dialogType = 'tips-wait';
                   bonunsProcess.processType = 'wait';
+                  bonunsDialog.tagId = mission.TagId;
                   bonunsDialog.missionDesc = mission.Description;
                   bonunsDialog.missionActionType = Number(mission.ActionType);
                   bonunsDialog.isShow = true;
@@ -339,6 +340,7 @@ export default {
                   this.$nextTick(() => {
                     if (_mission) {
                       this.dialogType = 'tips-wait';
+                      bonunsDialog.tagId = mission.TagId;
                       bonunsDialog.missionDesc = _mission.Description;
                       bonunsDialog.missionActionType = Number(_mission.ActionType);
                       bonunsDialog.isShow = true;
