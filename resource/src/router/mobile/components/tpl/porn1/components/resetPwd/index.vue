@@ -30,7 +30,7 @@
                 {{ $text(pwdResetInfo[item].text) }}
               </div>
               <input
-                v-if="pwdResetInfo[item].type === 'text'"
+                v-if="pwdResetInfo[item].key === 'userName'"
                 :id="item"
                 v-model="pwdResetInfo[item].value"
                 @blur="verification(item, pwdResetInfo[item].value)"
@@ -47,7 +47,7 @@
                 "
               />
               <input
-                v-if="pwdResetInfo[item].type === 'password'"
+                v-else-if="pwdResetInfo[item].type === 'password'"
                 :id="item"
                 v-model="pwdResetInfo[item].value"
                 @blur="verification(item, pwdResetInfo[item].value)"
@@ -62,6 +62,16 @@
                     .trim()
                     .replace(/[\W]/g, '')
                 "
+              />
+               <input
+                v-else
+                :id="item"
+                v-model="pwdResetInfo[item].value"
+                @blur="verification(item, pwdResetInfo[item].value)"
+                type="text"
+                :placeholder="pwdResetInfo[item].placeholder"
+                :maxlength="pwdResetInfo[item].maxlength"
+                :minlength="pwdResetInfo[item].minlength"
               />
               <div
                 v-if="pwdResetInfo[item].type === 'password'"
