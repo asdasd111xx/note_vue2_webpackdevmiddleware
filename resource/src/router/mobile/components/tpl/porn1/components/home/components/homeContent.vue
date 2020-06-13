@@ -489,10 +489,6 @@ export default {
     },
     // 開啟遊戲
     onOpenGame(game) {
-      if (process.env.NODE_ENV === 'development') {
-        console.log(game);
-      }
-
       // Game Type
       // L => 遊戲大廳
       // G => 遊戲

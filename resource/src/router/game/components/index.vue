@@ -55,6 +55,15 @@ export default {
     const temp = { kind };
     this.vendor = vendor;
 
+    if (process.env.NODE_ENV === 'development') {
+      console.log(vendor, kind, code);
+    }
+
+    let query = '';
+    if (vendor === "lg_live" && kind === "2") {
+      query = '&customize=yabo&tableType=3310';
+    }
+
     if (code) {
       temp.code = code;
     }
@@ -69,18 +78,20 @@ export default {
         }
 
         if (!this.isMobile && vendor === 'sp') {
-          this.urlData = ret;
+          this.urlData = ret + query;
           return;
         }
 
         if (!this.isMobile && vendor === 'mg') {
-          this.urlData = ret;
+          this.urlData = ret + query;
           return;
         }
 
-        window.location.href = ret.url;
+        window.location.href = ret.url + query;
       },
       fail: (res) => {
+        alert(res)
+        debugger;
         this.msg = res.data && res.data.msg ? res.data.msg : '';
         setTimeout(() => {
           this.$nextTick(() => {
