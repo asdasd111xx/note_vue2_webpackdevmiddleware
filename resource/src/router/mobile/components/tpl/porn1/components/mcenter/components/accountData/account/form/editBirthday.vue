@@ -2,8 +2,9 @@
     <div :class="[$style['field-editer'], 'clearfix']">
         <div :class="$style['field-title']">{{ $text("S_BIRTHDAY_DATE") }}</div>
         <div :class="$style['input-wrap']">
-            <div :class="$style['field-value']">
+            <div :class="[$style['field-value'], $style['date-field']]">
                 <input v-model="value" type="date" />
+                <span>{{ value | dateFormat }}</span>
             </div>
             <div :class="$style['btn-wrap']">
                 <span :class="$style['btn-cancel']" @click="$emit('cancel')">
@@ -20,6 +21,7 @@
 <script>
 import Vue from 'vue';
 import { mapGetters, mapActions } from 'vuex';
+import { format } from 'date-fns';
 import datepickerLang from '@/lib/datepicker_lang';
 import mcenter from '@/api/mcenter';
 
@@ -34,6 +36,15 @@ export default {
         ...mapGetters({
             systemTime: 'getSystemTime'
         })
+    },
+    filters: {
+        dateFormat(value) {
+            if(value) {
+                return Vue.moment(value).format('YYYY年MM月DD日')
+            } else {
+                return '年 / 月 / 日'
+            }
+        }
     },
     methods: {
         ...mapActions(['actionSetUserdata']),

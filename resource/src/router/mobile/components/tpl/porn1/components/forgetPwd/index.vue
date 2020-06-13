@@ -63,7 +63,14 @@
                     :class="$style['form-input']"
                     :placeholder="$t('S_PLEASE_ENTER_USER_NAME')"
                     type="text"
-                    @input="verification('username')"
+                    maxlength="20"
+                    @input="
+                      username = $event.target.value
+                        .toLowerCase()
+                        .replace(' ', '')
+                        .trim()
+                        .replace(/[\W]/g, '')
+                    "
                   />
                 </div>
                 <div v-if="msg.username !== ''" :class="$style.errorTips">
@@ -125,7 +132,14 @@
                       :class="$style['form-input']"
                       placeholder="请输入6-12位字母或数字"
                       type="password"
-                      @input="verification('password')"
+                      maxlength="12"
+                      @input="
+                        password = $event.target.value
+                          .toLowerCase()
+                          .replace(' ', '')
+                          .trim()
+                          .replace(/[\W]/g, '')
+                      "
                     />
                     <div :class="$style['eye']">
                       <img
@@ -155,7 +169,14 @@
                       :class="$style['form-input']"
                       placeholder="请再次输入密码"
                       type="password"
-                      @input="verification('confirm_password')"
+                      maxlength="12"
+                      @input="
+                        confirm_password = $event.target.value
+                          .toLowerCase()
+                          .replace(' ', '')
+                          .trim()
+                          .replace(/[\W]/g, '')
+                      "
                     />
                     <div :class="$style['eye']">
                       <img
@@ -328,13 +349,8 @@ export default {
       this.password = '';
       this.confirm_password = '';
     },
-    verification(target) {
+    verification(target, value) {
       // 前端先不驗證
-      target = target.toLowerCase()
-        .replace(' ', '')
-        .trim()
-        .replace(/[\W]/g, '');
-
       return;
       const data = joinMemInfo[target];
       const re = data.regExp;

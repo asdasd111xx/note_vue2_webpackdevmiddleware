@@ -20,10 +20,12 @@
                     <div :class="$style['form-date-start']">
                         <div :class="$style['form-title']">{{ $text('S_STARTED_DAY', '起始日') }}</div>
                         <input v-model="start" type="date" />
+                        <span>{{ start | dateFormat }}</span>
                     </div>
                     <div :class="$style['form-date-end']">
                         <div :class="$style['form-title']">{{ $text('S_END_DAY', '结束日') }}</div>
                         <input v-model="end" type="date" />
+                        <span>{{ end | dateFormat }}</span>
                     </div>
                 </div>
                 <div :class="$style['submit-form-row']">
@@ -53,6 +55,7 @@
 </template>
 
 <script>
+import Vue from 'vue'
 import { mapGetters } from 'vuex';
 import { format } from 'date-fns';
 import bbosRequest from "@/api/bbosRequest";
@@ -129,6 +132,11 @@ export default {
                 this.setTabState(true);
                 this.setHeaderTitle(this.$text("S_TEAM_CENTER", "我的推广"));
             }
+        }
+    },
+    filters: {
+        dateFormat(value) {
+            return Vue.moment(value).format('YYYY/MM/DD')
         }
     },
     created() {
