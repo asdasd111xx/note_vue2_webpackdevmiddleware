@@ -590,8 +590,10 @@ export default {
       }
 
       if (game.type === 'R') {
+        // let urlParams =
+        //   game.vendor === 'lg_live' ? '&customize=yabo&tableType=3310' : '';
         let urlParams =
-          game.vendor === 'lg_live' ? '&customize=yabo&tableType=3310' : '';
+          game.vendor === 'lg_live' ? '' : '';
         let newWindow = '';
         // 辨別裝置是否為ios寰宇瀏覽器
         const isUBMobile =
