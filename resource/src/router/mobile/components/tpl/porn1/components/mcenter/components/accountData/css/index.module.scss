@@ -11,7 +11,7 @@
     display: flex;
     height: 80px;
     cursor: pointer;
-    border-bottom: 1px solid #EEEEEE;
+    border-bottom: 1px solid #eeeeee;
     background-color: white;
     flex-direction: column;
     justify-content: center;
@@ -20,11 +20,11 @@
         border-bottom: none;
     }
 
-    >.field-title {
+    > .field-title {
         height: 20px;
     }
 
-    >.field-value {
+    > .field-value {
         height: 20px;
     }
 }
@@ -49,7 +49,7 @@
     height: 20px;
 
     &.yet {
-        color: #CBCED8;
+        color: #cbced8;
     }
 }
 
@@ -73,7 +73,7 @@
     display: flex;
     align-items: center;
 
-    >img {
+    > img {
         height: 14px;
         width: 14px;
     }
@@ -81,17 +81,16 @@
 
 @import "~@/css/variable.scss";
 
-
 .field-editer {
     font-size: 14px;
     background-color: white;
 
-    >.block:first-child {
+    > .block:first-child {
         margin-top: 35px;
         margin-bottom: 15px;
     }
 
-    >.field-title {
+    > .field-title {
         height: 20px;
     }
 
@@ -99,7 +98,7 @@
         width: 80%;
         height: 20px;
 
-        >input {
+        > input {
             height: 20px;
         }
 
@@ -107,7 +106,7 @@
         &.date-field {
             position: relative;
 
-            >input {
+            > input {
                 opacity: 0;
             }
 
@@ -125,7 +124,7 @@
         height: 20px;
         width: 100%;
 
-        >div:last-child {
+        > div:last-child {
             padding: 0 5px;
             width: 75px;
             position: absolute;
@@ -144,13 +143,13 @@
     justify-content: center;
     background: $main_white_color1;
 
-    >div {
+    > div {
         height: 30px;
         display: inline-flex;
         line-height: 30px;
     }
 
-    >.title {
+    > .title {
         color: $main_text_color3;
     }
 }
@@ -166,7 +165,7 @@ input {
 
     &::placeholder {
         /* Chrome, Firefox, Opera, Safari 10.1+ */
-        color: #CBCED8;
+        color: #cbced8;
     }
 }
 
@@ -177,15 +176,15 @@ input {
     height: 30px;
     border-radius: 3px;
     line-height: 30px;
-    background-color: #E9DACC;
+    background-color: #e9dacc;
     color: white;
     // 取消點擊特效
     -webkit-tap-highlight-color: rgba(0, 0, 0, 0);
     -moz-tap-highlight-color: rgba(0, 0, 0, 0);
 
     &.active {
-        color: #FFFFFF;
-        background-color: #D1B79C;
+        color: #ffffff;
+        background-color: #d1b79c;
     }
 }
 
@@ -216,7 +215,7 @@ input {
     height: 43px;
     line-height: 43px;
     top: 0;
-    color: #CBCED8;
+    color: #cbced8;
 
     &active {
         color: $main_text_color3;

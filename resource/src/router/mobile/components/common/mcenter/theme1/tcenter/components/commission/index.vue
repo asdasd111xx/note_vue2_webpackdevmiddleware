@@ -55,7 +55,7 @@
 </template>
 
 <script>
-import Vue from 'vue'
+import Vue from 'vue';
 import { mapGetters } from 'vuex';
 import { format } from 'date-fns';
 import bbosRequest from "@/api/bbosRequest";
@@ -136,7 +136,7 @@ export default {
     },
     filters: {
         dateFormat(value) {
-            return Vue.moment(value).format('YYYY/MM/DD')
+            return Vue.moment(value).format('YYYY/MM/DD');
         }
     },
     created() {

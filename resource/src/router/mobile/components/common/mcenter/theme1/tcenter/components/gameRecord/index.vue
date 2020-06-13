@@ -151,7 +151,7 @@
 import Vue from "vue";
 import { mapGetters } from "vuex";
 import InfiniteLoading from "vue-infinite-loading";
-import { format } from 'date-fns';
+import { format } from "date-fns";
 import EST from "@/lib/EST";
 import gameRecord from "@/components/common/mcenter/gameRecord";
 import table1st from "./table1st";
@@ -203,9 +203,9 @@ export default {
     },
     filters: {
         dateFormat(value) {
-            return Vue.moment(value).format('YYYY/MM/DD')
+            return Vue.moment(value).format("YYYY/MM/DD");
         }
-    },
+    }
 };
 </script>
 
