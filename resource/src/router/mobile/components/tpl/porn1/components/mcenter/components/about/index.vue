@@ -142,8 +142,8 @@ export default {
   padding: 25px 0;
 }
 .yabo {
-  width: 75px;
-  height: 75px;
+  width: 80px;
+  height: 80px;
   margin: 0 auto;
   margin-top: 10px;
   > img {
@@ -153,7 +153,7 @@ export default {
 
 .version {
   margin-top: 5px;
-  font-size: 9px;
+  font-size: 13px;
   text-align: center;
   width: 100%;
 }
@@ -164,22 +164,22 @@ export default {
   margin-top: 91px;
 
   > div:first-child {
-    font-size: 16px;
+    font-size: 17px;
   }
 
   .content {
     display: flex;
     margin-top: 19px;
-    padding: 0 5%;
+    padding: 0 2%;
   }
 
   .cell {
     width: 25%;
-    font-size: 9px;
+    font-size: 13px;
 
     img {
-      height: 41px;
-      width: 41px;
+      height: 50px;
+      width: 50px;
     }
   }
 }
@@ -190,11 +190,11 @@ export default {
 .partner {
   .cell {
     width: 25%;
-    font-size: 9px;
+    font-size: 13px;
 
     img {
-      height: 26px;
-      width: 67px;
+      height: 30px;
+      width: 70px;
     }
   }
 }
