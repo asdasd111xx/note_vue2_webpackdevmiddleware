@@ -589,59 +589,59 @@ export default {
         return;
       }
 
-      if (game.type === 'R') {
-        let urlParams =
-          game.vendor === 'lg_live' ? '&customize=yabo&tableType=3310' : '';
-        let newWindow = '';
-        // 辨別裝置是否為ios寰宇瀏覽器
-        const isUBMobile =
-          navigator.userAgent.match(/UBiOS/) !== null &&
-          navigator.userAgent.match(/iPhone/) !== null;
-        // 暫時用來判斷馬甲包
-        const webview = window.location.hostname === 'yaboxxxapp02.com';
+      //   if (game.type === 'R') {
+      //     let urlParams =
+      //       game.vendor === 'lg_live' ? '&customize=yabo&tableType=3310' : '';
+      //     let newWindow = '';
+      //     // 辨別裝置是否為ios寰宇瀏覽器
+      //     const isUBMobile =
+      //       navigator.userAgent.match(/UBiOS/) !== null &&
+      //       navigator.userAgent.match(/iPhone/) !== null;
+      //     // 暫時用來判斷馬甲包
+      //     const webview = window.location.hostname === 'yaboxxxapp02.com';
 
-        // ios寰宇瀏覽器目前另開頁面需要與電腦版開啟方式相同
-        if (!isUBMobile && !webview) {
-          newWindow = window.open('', '_blank');
-        }
-        ajax({
-          method: 'get',
-          url: `${API_GET_VENDOR}/${game.vendor}/game/launch`,
-          errorAlert: false,
-          params: { kind: game.kind },
-          success: ({ result, ret }) => {
-            if (result !== 'ok') {
-              if (!isUBMobile && !webview) {
-                newWindow.close();
-              }
-              return;
-            }
+      //     // ios寰宇瀏覽器目前另開頁面需要與電腦版開啟方式相同
+      //     if (!isUBMobile && !webview) {
+      //       newWindow = window.open('', '_blank');
+      //     }
+      //     ajax({
+      //       method: 'get',
+      //       url: `${API_GET_VENDOR}/${game.vendor}/game/launch`,
+      //       errorAlert: false,
+      //       params: { kind: game.kind },
+      //       success: ({ result, ret }) => {
+      //         if (result !== 'ok') {
+      //           if (!isUBMobile && !webview) {
+      //             newWindow.close();
+      //           }
+      //           return;
+      //         }
 
-            if (webview) {
-              window.location.href = ret.url + urlParams;
-              return;
-            }
-            if (!isUBMobile) {
-              newWindow.location.href = ret.url + urlParams;
-              return;
-            }
+      //         if (webview) {
+      //           window.location.href = ret.url + urlParams;
+      //           return;
+      //         }
+      //         if (!isUBMobile) {
+      //           newWindow.location.href = ret.url + urlParams;
+      //           return;
+      //         }
 
-            window.open(ret.url + urlParams);
-          },
-          fail: error => {
-            if (!isUBMobile || !webview) {
-              newWindow.alert(
-                `${error.data.msg} ${
-                error.data.code ? `(${error.data.code})` : ''
-                }`
-              );
-            }
-            newWindow.close();
-            window.location.reload();
-          }
-        });
-        return;
-      }
+      //         window.open(ret.url + urlParams);
+      //       },
+      //       fail: error => {
+      //         if (!isUBMobile || !webview) {
+      //           newWindow.alert(
+      //             `${error.data.msg} ${
+      //             error.data.code ? `(${error.data.code})` : ''
+      //             }`
+      //           );
+      //         }
+      //         newWindow.close();
+      //         window.location.reload();
+      //       }
+      //     });
+      //     return;
+      //   }
 
       openGame({ kind: game.kind, vendor: game.vendor, code: game.code });
     }
