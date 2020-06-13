@@ -51,6 +51,10 @@
     float: left;
     width: 50%;
 
+    &.start-date , &.end-date {
+        position: relative;
+    }
+
     &.start-date {
         border-right: 1px solid #eaeaea;
     }
@@ -66,6 +70,14 @@
         outline: none;
         background: transparent;
         appearance: none;
+        opacity: 0;
+    }
+
+    span {
+        position: absolute;
+        padding-left: 7px;
+        bottom: 5px;
+        left: 5px;
     }
 }
 
