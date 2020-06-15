@@ -8,6 +8,7 @@ import { mapActions, mapGetters } from 'vuex';
 
 import BigNumber from 'bignumber.js/bignumber';
 import ajax from '@/lib/ajax';
+import { getCookie } from '@/lib/cookie';
 import isMobile from '@/lib/is_mobile';
 
 export default {
@@ -44,6 +45,11 @@ export default {
             memInfo: 'getMemInfo',
             isLoading: 'getIsLoading'
         }),
+        isPWA() {
+            return true;
+            // return window.location.host === "yaboxxxapp01.com";
+            // return getCookie('platform') === "G";
+        },
         /**
          * 所有銀行
          *
@@ -346,6 +352,10 @@ export default {
                     return { result: response.result };
                 }
 
+                if (response && response.result !== 'ok') {
+                    this.msg = response.msg;
+                }
+
                 return response;
             });
         },
@@ -574,13 +584,7 @@ export default {
             this.nameCheckFail = false;
 
             let newWindow = '';
-            // 辨別裝置是否為ios寰宇瀏覽器
-            const isUBMobile = navigator.userAgent.match(/UBiOS/) !== null && navigator.userAgent.match(/iPhone/) !== null;
-            // 暫時用來判斷馬甲包
-            const webview = window.location.hostname === 'yaboxxxapp02.com';
-
-            // ios寰宇瀏覽器目前另開頁面需要與電腦版開啟方式相同
-            if (isMobile() && !isUBMobile && !webview) {
+            if (this.isPWA) {
                 newWindow = window.open('', '_blank');
             }
 
@@ -593,8 +597,9 @@ export default {
                 }).then((response) => {
                     this.isShow = false;
                     this.actionSetIsLoading(false);
-
                     if (response && response.result === 'ok') {
+                        console.log(response.ret.uri);
+
                         // 流量分析事件 - 成功
                         window.dataLayer.push({
                             event: 'ga_click',
@@ -607,10 +612,10 @@ export default {
                         //     window.location.href = response.ret.uri;
                         //     return { status: 'third' };
                         // }
-                        // if (isMobile() && !isUBMobile) {
-                        //     newWindow.location.href = response.ret.uri;
-                        //     return { status: 'third' };
-                        // }
+                        if (isPWA) {
+                            newWindow.location.href = response.ret.uri;
+                            return { status: 'third' };
+                        }
                         window.open(response.ret.uri, 'third');
                         return { status: 'third' };
                     }
@@ -623,8 +628,11 @@ export default {
                         eventLabel: 'failure'
                     });
 
-                    if (isMobile() && !isUBMobile && !webview) {
-                        newWindow.alert(`${response.msg} ${response.code ? `(${response.code})` : ''}`);
+                    if (response && response.result !== 'ok') {
+                        this.msg = response.msg;
+                    }
+
+                    if (this.isPWA) {
                         newWindow.close();
                     }
 
@@ -646,11 +654,12 @@ export default {
                 //     window.location.href = this.curPayInfo.external_url;
                 //     return Promise.resolve({ status: 'credit' });
                 // }
-                // if (isMobile() && !isUBMobile) {
-                //     newWindow.location.href = this.curPayInfo.external_url;
-                //     return Promise.resolve({ status: 'credit' });
-                // }
-                window.open(this.curPayInfo.external_url, 'credit');
+                if (this.isPWA) {
+                    newWindow.location.href = this.curPayInfo.external_url;
+                    return Promise.resolve({ status: 'credit' });
+                }
+                window.location.href = this.curPayInfo.external_url;
+                // window.open(this.curPayInfo.external_url, 'credit');
                 return Promise.resolve({ status: 'credit' });
             }
 
@@ -690,7 +699,6 @@ export default {
                 errorAlert: !isMobile() || isUBMobile || webview,
                 params: paramsData
             }).then((response) => {
-                console.log(response)
 
                 this.isShow = false;
                 this.actionSetIsLoading(false);
@@ -709,11 +717,12 @@ export default {
                         //     window.location.href = response.ret.deposit.url;
                         //     return { status: 'third' };
                         // }
-                        // if (isMobile() && !isUBMobile) {
-                        //     newWindow.location.href = response.ret.deposit.url;
-                        //     return { status: 'third' };
-                        // }
-                        window.open(response.ret.deposit.url, 'third');
+                        if (this.isPWA) {
+                            newWindow.location.href = response.ret.deposit.url
+                            return { status: 'third' };
+                        }
+                        window.location.href = response.ret.deposit.url;
+                        // window.open(response.ret.deposit.url, 'third');
                         return { status: 'third' };
                     }
 
@@ -722,11 +731,12 @@ export default {
                         //     window.location.href = response.ret.wallet.url;
                         //     return { status: 'third' };
                         // }
-                        // if (isMobile() && !isUBMobile) {
-                        //     newWindow.location.href = response.ret.wallet.url;
-                        //     return { status: 'third' };
-                        // }
-                        window.open(response.ret.wallet.url, 'third');
+                        if (this.isPWA) {
+                            newWindow.location.href = response.ret.wallet.url;
+                            return { status: 'third' };
+                        }
+                        window.location.href = response.ret.wallet.url;
+                        // window.open(response.ret.wallet.url, 'third');
                         return { status: 'third' };
                     }
 
@@ -746,7 +756,7 @@ export default {
                         this.orderData[info] = response.ret[info];
                     });
 
-                    if (isMobile() && !isUBMobile && !webview) {
+                    if (this.isPWA) {
                         newWindow.close();
                     }
 
@@ -761,14 +771,17 @@ export default {
                     eventLabel: 'failure'
                 });
 
-                if (isMobile() && !isUBMobile && !webview) {
-                    newWindow.alert(`${response.msg} ${response.code ? `(${response.code})` : ''}`);
+                if (this.isPWA) {
                     newWindow.close();
                 }
 
                 if (response.code === 'TM020058' || response.code === 'TM020059' || response.code === 'TM020060') {
                     window.location.reload();
                     return { status: 'error' };
+                }
+
+                if (response && response.result !== 'ok') {
+                    this.msg = response.msg;
                 }
 
                 return { status: 'error' };
