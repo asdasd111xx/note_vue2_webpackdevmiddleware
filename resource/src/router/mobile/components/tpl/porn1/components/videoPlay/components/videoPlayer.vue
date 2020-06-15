@@ -309,7 +309,7 @@ export default {
                 bonunsProcess.playCueTime();
                 break;
               case 'STOP':
-                bonunsProcess.playCueTime("stop");
+                this.$nextTick(() => bonunsProcess.playCueTime("stop"));
                 break;
               case 'WAIT':
                 let mission = data.Mession;
