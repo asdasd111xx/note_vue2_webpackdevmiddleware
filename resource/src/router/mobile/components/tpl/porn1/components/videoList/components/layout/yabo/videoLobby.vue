@@ -20,7 +20,7 @@
         </swiper-slide>
       </swiper>
 
-      <!-- <div
+      <div
         v-if="source === 'yabo'"
         :class="[$style['icon-arrow'], { [$style.active]: isShowAllTag }]"
         @click.stop="onShowAllTag(!isShowAllTag)"
@@ -34,7 +34,7 @@
             )
           "
         />
-      </div> -->
+      </div>
 
       <div v-if="isShowAllTag" :class="[$style['all-tag-wrap'], 'clearfix']">
         <template v-for="(tag, index) in videoTag">
@@ -353,7 +353,7 @@ export default {
 
   &.yabo {
     background: $main_white_color1;
-    // padding-right: 40px;
+    padding-right: 40px;
   }
 
   &.gay {
