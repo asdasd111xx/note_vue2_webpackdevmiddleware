@@ -318,7 +318,7 @@ export default {
 
                 if (mission) {
                   this.dialogType = 'tips-wait';
-                  bonunsProcess.processType = Number(_mission.ActionType) === 7 ? 'next' : 'wait';
+                  bonunsProcess.processType = Number(mission.ActionType) === 7 ? 'next' : 'wait';
                   bonunsDialog.missionDesc = mission.Description;
                   bonunsDialog.missionActionType = Number(mission.ActionType);
                   bonunsDialog.isShow = true;
