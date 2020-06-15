@@ -73,7 +73,7 @@
                         />
                         <div :class="$style['card-desc-block']">
                             <div>
-                                {{ userVipInfo.next_level_deposit_total }}
+                                {{ item.deposit_total }}
                                 <br />
                                 累计充值
                             </div>

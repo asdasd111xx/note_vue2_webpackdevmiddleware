@@ -1,10 +1,19 @@
+@import "~@/css/variable.scss";
+
 .menu-list-wrap {
+    max-width: $mobile_max_width;
     position: fixed;
     top: 43px;
-    left: 0;
     width: 100%;
     z-index: 3;
 }
+
+@media (orientation: landscape) {
+    .menu-list-wrap {
+        max-width: $mobile_max_landscape_width !important;
+    }
+}
+
 
 .menu-list {
     position: relative;

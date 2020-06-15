@@ -20,7 +20,8 @@ export default {
         servicePorn1: () => import(/* webpackChunkName: 'servicePorn1' */'../../tpl/porn1/components/service'),
         webviewPorn1: () => import(/* webpackChunkName: 'webviewPorn1' */'../../tpl/porn1/components/webview'),
         installPorn1: () => import(/* webpackChunkName: 'installPorn1' */'../../tpl/porn1/components/install'),
-        shareDownloadPorn1: () => import(/* webpackChunkName: 'shareDownloadPorn1' */ '../../tpl/porn1/components/shareDownload')
+        shareDownloadPorn1: () => import(/* webpackChunkName: 'shareDownloadPorn1' */ '../../tpl/porn1/components/shareDownload'),
+        launchPorn1: () => import(/* webpackChunkName: 'launchPorn1' */ '../../tpl/porn1/components/launch')
     },
     mcenter: {
         homePorn1: () => import(/* webpackChunkName: 'homePorn1' */'../../tpl/porn1/components/mcenter/components/home'),

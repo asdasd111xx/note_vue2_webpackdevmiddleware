@@ -236,7 +236,7 @@
         </div>
       </div>
 
-      <popupVerification
+      <popup-verification
         v-if="isShowCaptcha"
         :is-show-captcha.sync="isShowCaptcha"
         :captcha.sync="captchaData"
@@ -245,6 +245,7 @@
   </mobile-container>
 </template>
 <script>
+import axios from 'axios';
 import { mapGetters } from 'vuex';
 import member from '@/api/member';
 import joinMemInfo from '@/config/joinMemInfo';
@@ -463,7 +464,31 @@ export default {
       }
 
       // 忘記密碼發送簡訊 - 會員
-      member.pwdForgetMobile(data);
+      // member.pwdForgetMobile(data);
+      axios({
+        method: 'post',
+        url: '/api/v1/c/player/forget/password/sms',
+        data: {
+          username: this.username,
+          captcha_text: this.captchaData ? this.captchaData : ''
+        }
+      }).then(response => {
+        this.errMsg = "";
+        this.keyRingTime = 60;
+        this.keyRingTimer = setInterval(() => {
+          if (this.keyRingTime === 0) {
+            clearInterval(this.keyRingTimer)
+            this.keyRingTimer = null;
+            this.keyRingTime = 0;
+            return;
+          }
+          this.keyRingTime -= 1;
+        }, 1000)
+      }).catch(error => {
+        if (error.response && error.response.data && error.response.data.msg) {
+          this.errMsg = error.response.data.msg;
+        }
+      })
     },
     // 驗證簡訊(驗證碼)
     verifySms(type) {

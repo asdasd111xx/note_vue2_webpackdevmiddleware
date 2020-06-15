@@ -60,7 +60,11 @@
       <div :class="[$style['search-wrap'], $style[source]]">
         <input
           v-model="headerConfig.keyWord"
-          :placeholder="$text('S_PLEASE_INPUT_AV', '请输入片名、女优或番号')"
+          :placeholder="
+            source === 'gay'
+              ? '请输入片名、男优或番号'
+              : $text('S_PLEASE_INPUT_AV', '请输入片名、女优或番号')
+          "
           type="text"
           @keydown.enter="headerConfig.onSearchClick(headerConfig.keyWord)"
           :class="$style[source]"
@@ -112,10 +116,13 @@
         <span>
           {{ membalance.total }}
         </span>
-        <img
-          :src="$getCdnPath('/static/image/_new/common/icon_ask.png')"
-          @click="handleClickAsk"
-        />
+        <div>
+          <img
+            :src="$getCdnPath('/static/image/_new/common/icon_ask.png')"
+            @click="handleClickAsk"
+          />
+          <div v-show="hasUnreadMessage" :class="$style['red-dot']" />
+        </div>
       </div>
       <div v-else :class="$style['login-wrap']">
         <span @click="$router.push('/mobile/login')">{{
@@ -142,10 +149,13 @@
           :src="$getCdnPath('/static/image/_new/common/btn_setting.png')"
           @click="handleClickSetting"
         />
-        <img
-          :src="$getCdnPath('/static/image/_new/common/icon_ask.png')"
-          @click="handleClickAsk"
-        />
+        <div>
+          <img
+            :src="$getCdnPath('/static/image/_new/common/icon_ask.png')"
+            @click="handleClickAsk"
+          />
+          <div v-show="hasUnreadMessage" :class="$style['red-dot']" />
+        </div>
       </div>
     </template>
     <template v-if="headerConfig.onClickFunc">
@@ -172,18 +182,22 @@
     </message>
     <template v-if="headerConfig.hasHelp">
       <div :class="$style['balance-wrap']" @click="setMenuState('balance')">
-        <img
-          :src="
-            $getCdnPath('/static/image/_new/mcenter/balanceTrans/btn_help.png')
-          "
-          @click="
-            $router.push(
-              `/mobile/mcenter/help${
-                headerConfig.helpRouter ? headerConfig.helpRouter : ''
-              }`
-            )
-          "
-        />
+        <div>
+          <img
+            :src="
+              $getCdnPath(
+                '/static/image/_new/mcenter/balanceTrans/btn_help.png'
+              )
+            "
+            @click="
+              $router.push(
+                `/mobile/mcenter/help${
+                  headerConfig.helpRouter ? headerConfig.helpRouter : ''
+                }`
+              )
+            "
+          />
+        </div>
       </div>
     </template>
 
@@ -227,7 +241,6 @@
 <script>
 import { mapGetters } from "vuex";
 import message from "./message";
-
 export default {
   components: {
     message
@@ -242,13 +255,17 @@ export default {
     updateSearchStatus: {
       type: Function,
       default: () => { }
+    },
+    hasUnreadMessage: {
+      type: Boolean,
+      default: false
     }
   },
   data() {
     return {
       currentMenu: "",
       msg: "",
-      source: this.$route.query.source
+      source: this.$route.query.source,
     };
   },
   computed: {
@@ -270,7 +287,7 @@ export default {
         // [style['background-gradient']]: config.isBackgroundGradient ,
         clearfix: true
       };
-    }
+    },
   },
   methods: {
     // 設定選單狀態
@@ -401,10 +418,17 @@ export default {
   display: flex;
   align-items: center;
 
-  img {
+  > img,
+  > div {
     height: 20px;
     width: 20px;
     margin: 0 5px;
+    position: relative;
+
+    > img {
+      height: 20px;
+      width: 20px;
+    }
   }
 }
 .btn-prev {
@@ -619,11 +643,17 @@ export default {
     margin-right: 9px;
   }
 
-  > img {
+  > div {
+    position: relative;
     display: inline-block;
     height: 20px;
     width: 20px;
     margin-left: 1.5px;
+
+    > img {
+      height: 20px;
+      width: 20px;
+    }
   }
 
   &::before {
@@ -647,6 +677,17 @@ export default {
     color: $main_text_color3;
   }
 }
+
+.red-dot {
+  position: absolute;
+  right: -4px;
+  background: red;
+  border-radius: 50%;
+  width: 6px;
+  height: 6px;
+  top: -2px;
+}
+
 @media screen and (min-width: $pad) {
   .login-wrap {
     > span {

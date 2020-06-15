@@ -20,12 +20,16 @@
         </swiper-slide>
       </swiper>
 
-      <!-- <div
-        v-if="source === 'yabo'"
-        :class="[$style['icon-arrow'], { [$style.active]: isShowAllTag }]"
+      <div
+        :class="[
+          $style['icon-arrow'],
+          $style[source],
+          { [$style.active]: isShowAllTag }
+        ]"
         @click.stop="onShowAllTag(!isShowAllTag)"
       >
         <img
+          v-if="source === 'yabo'"
           :src="
             $getCdnPath(
               `/static/image/_new/common/icon_more${
@@ -34,9 +38,19 @@
             )
           "
         />
-      </div> -->
+        <img
+          v-else
+          :src="
+            $getCdnPath(
+              `/static/image/_new/common/icon_more${
+                isShowAllTag ? '_close_w' : '_w'
+              }.png`
+            )
+          "
+        />
+      </div>
 
-      <div v-if="isShowAllTag" :class="[$style['all-tag-wrap'], 'clearfix']">
+      <div v-if="isShowAllTag" :class="[$style['all-tag-wrap'], $style[source], 'clearfix']">
         <template v-for="(tag, index) in videoTag">
           <div :key="`all-tag-${index}`" @click="onChangeVideoType(index)">
             {{ tag.title }}
@@ -350,10 +364,10 @@ export default {
 
 .tag-box {
   position: relative;
+  padding-right: 40px;
 
   &.yabo {
     background: $main_white_color1;
-    // padding-right: 40px;
   }
 
   &.gay {
@@ -440,6 +454,10 @@ export default {
   background: -moz-linear-gradient(right, hsla(0, 0%, 100%, 0.3), #fff);
   background: linear-gradient(90deg, hsla(0, 0%, 100%, 0.3), #fff);
 
+  &.gay , &.les {
+    background: none;
+  }
+
   img {
     display: block;
     width: 17px;
@@ -465,6 +483,16 @@ export default {
     color: #d5bea4;
     font-size: 14px;
     text-align: center;
+  }
+
+  &.gay > div {
+    border-color: #3e81ac;
+    color: #3e81ac;
+  }
+
+  &.les > div {
+    border-color: #d64545;
+    color: #d64545;
   }
 }
 

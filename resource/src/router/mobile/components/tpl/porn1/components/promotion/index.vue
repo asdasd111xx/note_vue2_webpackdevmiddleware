@@ -144,18 +144,28 @@ export default {
 </script>
 <style lang="scss" module>
 @import "~@/css/variable.scss";
+$fixed_spacing_height: 43px;
 
 .promotion-wrap {
   background: #fefffe;
-  padding-bottom: 10px;
+  padding: $fixed_spacing_height 0 10px;
 }
 
 .type-wrap {
   width: 100%;
-  height: 43px;
-  position: relative;
+  max-width: $mobile_max_width;
+  height: $fixed_spacing_height;
+  position: fixed;
+  top: $fixed_spacing_height;
   background-color: #FEFFFE;
   border-bottom: 1px solid #EEE;
+  z-index: 1;
+}
+
+@media (orientation: landscape) {
+  .type-wrap {
+    max-width: $mobile_max_landscape_width !important;
+  }
 }
 
 .tab-slider {
@@ -170,7 +180,7 @@ export default {
 
 .type-btn {
   position: relative;
-    flex: 1;
+  flex: 1;
   height: 43px;
   line-height: 43px;
   font-weight: 500;

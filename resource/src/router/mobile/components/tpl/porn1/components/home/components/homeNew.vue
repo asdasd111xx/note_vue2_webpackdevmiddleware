@@ -21,7 +21,7 @@
               :key="`news-${sort}`"
               class="news-item"
             >
-              <h4 class="news-title">{{ item.time }}</h4>
+              <h4 class="news-title">{{ item.time | dateFormat }}</h4>
               <p class="news-text">{{ item.content }}</p>
             </div>
           </div>
@@ -35,6 +35,8 @@
 </template>
 
 <script>
+import Vue from "vue";
+import { format } from "date-fns";
 import { mapGetters, mapActions } from 'vuex';
 
 export default {
@@ -83,6 +85,11 @@ export default {
     },
     newsText() {
       return this.newsData.map((item) => `${item.content} &nbsp;&nbsp;&nbsp;&nbsp;`).join('');
+    }
+  },
+  filters: {
+    dateFormat(value) {
+      return Vue.moment(value).format('YYYY-MM-DD')
     }
   },
   mounted() {

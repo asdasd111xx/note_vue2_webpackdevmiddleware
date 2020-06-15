@@ -135,6 +135,9 @@
     margin-top: 5px;
 
     >input {
+        border: unset;
+        box-shadow: none;
+        outline: none;
         width: 60%;
         height: 32px;
         color: #414655;

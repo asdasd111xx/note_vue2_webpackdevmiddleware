@@ -10,18 +10,28 @@
       ]"
       @click="onClick(info)"
     >
-      <img
-        v-if="isActive(info.key)"
-        :src="
-          $getCdnPath(`/static/image/_new/common/footer/icon_${info.key}_h.png`)
-        "
-      />
-      <img
-        v-else
-        :src="
-          $getCdnPath(`/static/image/_new/common/footer/icon_${info.key}_n.png`)
-        "
-      />
+      <div>
+        <img
+          v-if="isActive(info.key)"
+          :src="
+            $getCdnPath(
+              `/static/image/_new/common/footer/icon_${info.key}_h.png`
+            )
+          "
+        />
+        <img
+          v-else
+          :src="
+            $getCdnPath(
+              `/static/image/_new/common/footer/icon_${info.key}_n.png`
+            )
+          "
+        />
+        <div
+          v-if="hasUnreadMessage && info.key === 'mcenter-home'"
+          :class="$style['red-dot']"
+        />
+      </div>
       <div>{{ info.name }}</div>
     </div>
   </div>
@@ -31,6 +41,12 @@
 import { mapGetters } from 'vuex';
 
 export default {
+  props: {
+    hasUnreadMessage: {
+      type: Boolean,
+      default: false
+    }
+  },
   computed: {
     ...mapGetters({
       loginStatus: 'getLoginStatus'
@@ -91,12 +107,22 @@ export default {
   width: 20%;
   height: 45px;
   color: $main_footer_color1;
+  position: relative;
 
   &.active {
     color: $main_footer_active_color1;
   }
 
   > div {
+    img {
+      display: block;
+      width: 18px;
+      height: 18px;
+      margin: 6px auto 0;
+    }
+  }
+
+  > div:last-of-type {
     overflow: hidden;
     height: 21px;
     line-height: 21px;
@@ -105,13 +131,6 @@ export default {
     text-align: center;
     text-overflow: ellipsis;
     white-space: nowrap;
-  }
-
-  > img {
-    display: block;
-    width: 18px;
-    height: 18px;
-    margin: 6px auto 0;
   }
 }
 
@@ -125,6 +144,16 @@ export default {
     margin: 0 auto;
     border-radius: 50%;
   }
+}
+
+.red-dot {
+  position: absolute;
+  background: red;
+  border-radius: 50%;
+  width: 6px;
+  height: 6px;
+  top: 5px;
+  right: 33%;
 }
 
 @media screen and (min-width: $phone) {
