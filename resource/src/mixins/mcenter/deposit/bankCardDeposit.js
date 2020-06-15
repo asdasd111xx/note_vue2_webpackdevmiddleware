@@ -346,6 +346,10 @@ export default {
                     return { result: response.result };
                 }
 
+                if (response && response.result !== 'ok') {
+                    this.msg = response.msg;
+                }
+
                 return response;
             });
         },
@@ -612,6 +616,10 @@ export default {
                         eventLabel: 'failure'
                     });
 
+                    if (response && response.result !== 'ok') {
+                        this.msg = response.msg;
+                    }
+
                     return { status: 'error' };
                 });
             }
@@ -747,6 +755,10 @@ export default {
                 if (response.code === 'TM020058' || response.code === 'TM020059' || response.code === 'TM020060') {
                     window.location.reload();
                     return { status: 'error' };
+                }
+
+                if (response && response.result !== 'ok') {
+                    this.msg = response.msg;
                 }
 
                 return { status: 'error' };
