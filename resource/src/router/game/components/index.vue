@@ -90,8 +90,6 @@ export default {
         window.location.href = ret.url + query;
       },
       fail: (res) => {
-        alert(res)
-        debugger;
         this.msg = res.data && res.data.msg ? res.data.msg : '';
         setTimeout(() => {
           this.$nextTick(() => {
