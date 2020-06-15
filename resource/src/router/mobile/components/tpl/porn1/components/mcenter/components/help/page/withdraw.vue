@@ -97,7 +97,7 @@ export default {
     isApp() {
       let isApp = !!((this.$route.query && this.$route.query.app) || (this.$route.query && this.$route.query.APP))
       if (isApp)
-        document.title = "提现教程"
+        document.title = "近10笔提现纪录"
 
       return isApp
     },

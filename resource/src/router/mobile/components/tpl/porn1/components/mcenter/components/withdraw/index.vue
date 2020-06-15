@@ -671,10 +671,6 @@ export default {
             this.msg = '提现已取消，请重新提交申请';
           }
 
-          if (response.code === 'M500001') {
-            window.location.reload();
-            return;
-          }
 
           this.isLoading = false;
           this.actionSetIsLoading(false);
@@ -683,11 +679,8 @@ export default {
         fail: (error) => {
           if (error && error.data && error.data.code === 'M500001') {
             window.location.reload();
-            return;
-          }
-
-          if (error && error.data && error.data.code === 'M500001') {
             this.isOpenOrder = true;
+            return;
           }
 
           if (error && error.data && error.data.msg) {

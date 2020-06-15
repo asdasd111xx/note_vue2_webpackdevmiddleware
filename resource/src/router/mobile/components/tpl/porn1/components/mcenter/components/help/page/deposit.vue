@@ -58,7 +58,7 @@ export default {
     isApp() {
       let isApp = !!((this.$route.query && this.$route.query.app) || (this.$route.query && this.$route.query.APP))
       if (isApp)
-        document.title = "充值教程"
+        document.title = "8日内充值记录"
 
       return isApp
     },

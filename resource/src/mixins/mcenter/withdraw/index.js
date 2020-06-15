@@ -256,6 +256,8 @@ export default {
                     }
 
                     [this.withdrawAccount] = this.allWithdrawAccount;
+                } else {
+                    this.msg = response && response.msg;
                 }
             });
         },
