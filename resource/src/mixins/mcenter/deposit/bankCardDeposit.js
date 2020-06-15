@@ -8,6 +8,7 @@ import { mapActions, mapGetters } from 'vuex';
 
 import BigNumber from 'bignumber.js/bignumber';
 import ajax from '@/lib/ajax';
+import { getCookie } from '@/lib/cookie';
 import isMobile from '@/lib/is_mobile';
 
 export default {
@@ -44,6 +45,11 @@ export default {
             memInfo: 'getMemInfo',
             isLoading: 'getIsLoading'
         }),
+        isPWA() {
+            return true;
+            // return window.location.host === "yaboxxxapp01.com";
+            // return getCookie('platform') === "G";
+        },
         /**
          * 所有銀行
          *
@@ -577,6 +583,11 @@ export default {
 
             this.nameCheckFail = false;
 
+            let newWindow = '';
+            if (this.isPWA) {
+                newWindow = window.open('', '_blank');
+            }
+
             // 第三方存款
             if (this.curModeGroup.uri) {
                 return ajax({
@@ -586,8 +597,9 @@ export default {
                 }).then((response) => {
                     this.isShow = false;
                     this.actionSetIsLoading(false);
-
                     if (response && response.result === 'ok') {
+                        console.log(response.ret.uri);
+
                         // 流量分析事件 - 成功
                         window.dataLayer.push({
                             event: 'ga_click',
@@ -600,10 +612,10 @@ export default {
                         //     window.location.href = response.ret.uri;
                         //     return { status: 'third' };
                         // }
-                        // if (isMobile() && !isUBMobile) {
-                        //     newWindow.location.href = response.ret.uri;
-                        //     return { status: 'third' };
-                        // }
+                        if (isPWA) {
+                            newWindow.location.href = response.ret.uri;
+                            return { status: 'third' };
+                        }
                         window.open(response.ret.uri, 'third');
                         return { status: 'third' };
                     }
@@ -618,6 +630,10 @@ export default {
 
                     if (response && response.result !== 'ok') {
                         this.msg = response.msg;
+                    }
+
+                    if (this.isPWA) {
+                        newWindow.close();
                     }
 
                     return { status: 'error' };
@@ -638,10 +654,10 @@ export default {
                 //     window.location.href = this.curPayInfo.external_url;
                 //     return Promise.resolve({ status: 'credit' });
                 // }
-                // if (isMobile() && !isUBMobile) {
-                //     newWindow.location.href = this.curPayInfo.external_url;
-                //     return Promise.resolve({ status: 'credit' });
-                // }
+                if (this.isPWA) {
+                    newWindow.location.href = this.curPayInfo.external_url;
+                    return Promise.resolve({ status: 'credit' });
+                }
                 window.location.href = this.curPayInfo.external_url;
                 // window.open(this.curPayInfo.external_url, 'credit');
                 return Promise.resolve({ status: 'credit' });
@@ -683,7 +699,6 @@ export default {
                 errorAlert: !isMobile() || isUBMobile || webview,
                 params: paramsData
             }).then((response) => {
-                console.log(response)
 
                 this.isShow = false;
                 this.actionSetIsLoading(false);
@@ -702,10 +717,10 @@ export default {
                         //     window.location.href = response.ret.deposit.url;
                         //     return { status: 'third' };
                         // }
-                        // if (isMobile() && !isUBMobile) {
-                        //     newWindow.location.href = response.ret.deposit.url;
-                        //     return { status: 'third' };
-                        // }
+                        if (this.isPWA) {
+                            newWindow.location.href = response.ret.deposit.url
+                            return { status: 'third' };
+                        }
                         window.location.href = response.ret.deposit.url;
                         // window.open(response.ret.deposit.url, 'third');
                         return { status: 'third' };
@@ -716,10 +731,10 @@ export default {
                         //     window.location.href = response.ret.wallet.url;
                         //     return { status: 'third' };
                         // }
-                        // if (isMobile() && !isUBMobile) {
-                        //     newWindow.location.href = response.ret.wallet.url;
-                        //     return { status: 'third' };
-                        // }
+                        if (this.isPWA) {
+                            newWindow.location.href = response.ret.wallet.url;
+                            return { status: 'third' };
+                        }
                         window.location.href = response.ret.wallet.url;
                         // window.open(response.ret.wallet.url, 'third');
                         return { status: 'third' };
@@ -741,6 +756,10 @@ export default {
                         this.orderData[info] = response.ret[info];
                     });
 
+                    if (this.isPWA) {
+                        newWindow.close();
+                    }
+
                     return { status: 'local' };
                 }
 
@@ -751,6 +770,10 @@ export default {
                     eventAction: 'pay',
                     eventLabel: 'failure'
                 });
+
+                if (this.isPWA) {
+                    newWindow.close();
+                }
 
                 if (response.code === 'TM020058' || response.code === 'TM020059' || response.code === 'TM020060') {
                     window.location.reload();
