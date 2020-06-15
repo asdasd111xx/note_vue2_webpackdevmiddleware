@@ -162,5 +162,10 @@ export default [
         path: 'shareDownload',
         name: 'shareDownload',
         component
-    }
+    },
+    { // 起始頁
+        path: 'launch',
+        name: 'launch',
+        component
+    },
 ];
