@@ -136,13 +136,13 @@ export default {
           }
         },
         {
-            text: "IOS版",
-            isShow: false,
-            onClick: () => {
-                if (this.iOSBundle) {
-                    this.download(1, this.iOSBundle);
-                }
+          text: "IOS版",
+          isShow: false,
+          onClick: () => {
+            if (this.iOSBundle) {
+              this.download(1, this.iOSBundle);
             }
+          }
         },
         {
           text: "隐藏版",
