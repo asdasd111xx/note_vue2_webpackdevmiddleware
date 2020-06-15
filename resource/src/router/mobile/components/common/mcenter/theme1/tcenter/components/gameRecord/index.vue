@@ -203,7 +203,11 @@ export default {
     },
     filters: {
         dateFormat(value) {
-            return Vue.moment(value).format("YYYY/MM/DD");
+            if(value) {
+                return Vue.moment(value).format("YYYY/MM/DD");
+            } else {
+                return '';
+            }
         }
     }
 };
