@@ -178,18 +178,22 @@
     </message>
     <template v-if="headerConfig.hasHelp">
       <div :class="$style['balance-wrap']" @click="setMenuState('balance')">
-        <img
-          :src="
-            $getCdnPath('/static/image/_new/mcenter/balanceTrans/btn_help.png')
-          "
-          @click="
-            $router.push(
-              `/mobile/mcenter/help${
-                headerConfig.helpRouter ? headerConfig.helpRouter : ''
-              }`
-            )
-          "
-        />
+        <div>
+          <img
+            :src="
+              $getCdnPath(
+                '/static/image/_new/mcenter/balanceTrans/btn_help.png'
+              )
+            "
+            @click="
+              $router.push(
+                `/mobile/mcenter/help${
+                  headerConfig.helpRouter ? headerConfig.helpRouter : ''
+                }`
+              )
+            "
+          />
+        </div>
       </div>
     </template>
 
