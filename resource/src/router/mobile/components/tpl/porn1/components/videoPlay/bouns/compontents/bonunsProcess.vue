@@ -75,6 +75,7 @@ export default {
         ],
       isClose: false,
       isInit: false,
+      isForceWait: false,
       totalAmount: 0,
       earnCoin: "",
       curMin: 0,
@@ -96,6 +97,10 @@ export default {
       }
     },
     processType() {
+      if (processType === "wait") {
+        this.isForceWait = true;
+      }
+
       this.curCoinSrc = this.coinType.find(i => i.key == this.processType).src;
     },
   },
@@ -108,8 +113,11 @@ export default {
         clearTimeout(this.timer);
         this.timer = null;
       }, 2500)
-
-      this.curCoinSrc = this.coinType.find(i => i.key == "earn").src;
+      if (isForceWait) {
+        this.curCoinSrc = this.coinType.find(i => i.key == "wait").src;
+      } else {
+        this.curCoinSrc = this.coinType.find(i => i.key == "earn").src;
+      }
       this.processType = "earn";
     },
     // 收到play跑一次進度動畫

@@ -278,7 +278,10 @@ export default {
               })
             }, 200)
           }
-
+          // 今日額滿後就不動作
+          if (this.isFULL) {
+            return;
+          }
           //狀態
           // 'OPEN', 'PLAY', 'STOP', 'CLOSE', 'BREAK', 'FULL', 'POOR', 'BREAK_WAIT'
           this.$nextTick(() => {
@@ -291,11 +294,21 @@ export default {
                 bonunsProcess.processType = 'done';
                 break;
               case 'FULL':
-                bonunsProcess.processType = 'wait';
-                bonunsDialog.isShow = true;
-                this.dialogType = 'tips-full';
-                this.isFULL = true;
-                this.playerPause();
+                const fullAction = () => {
+                  bonunsProcess.processType = 'wait';
+                  bonunsDialog.isShow = true;
+                  this.dialogType = 'tips-full';
+                  this.isFULL = true;
+                  this.playerPause();
+                  this.$nextTick(() => bonunsProcess.playCueTime("stop"));
+                }
+                if (bonunsProcess.isInit) {
+                  setTimeout(() => {
+                    fullAction();
+                  }, 2505)
+                } else {
+                  fullAction();
+                }
                 break;
               case 'POOR':
                 this.dialogType = 'tips-poor';
