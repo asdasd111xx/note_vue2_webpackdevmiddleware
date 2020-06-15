@@ -61,22 +61,25 @@ export default {
     }
   },
   mounted() {
-    axios({
-      method: 'get',
-      url: '/api/v1/c/player/messages',
-    }).then((res) => {
-      const ret = res.data.ret;
-      ret.forEach(i => {
-        if (i.read === false) {
-          this.hasUnreadMessage = true;
-        }
-      })
-    });
+    if (this.loginStatus) {
+      axios({
+        method: 'get',
+        url: '/api/v1/c/player/messages',
+      }).then((res) => {
+        const ret = res.data.ret;
+        ret.forEach(i => {
+          if (i.read === false) {
+            this.hasUnreadMessage = true;
+          }
+        })
+      });
+    }
   },
   computed: {
     ...mapGetters({
       popType: 'getPopType',
-      popData: 'getPopData'
+      popData: 'getPopData',
+      loginStatus: "getLoginStatus"
     }),
     hasHeader() {
       return this.headerConfig;
