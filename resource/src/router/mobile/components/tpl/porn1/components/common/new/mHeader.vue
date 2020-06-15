@@ -60,7 +60,7 @@
       <div :class="[$style['search-wrap'], $style[source]]">
         <input
           v-model="headerConfig.keyWord"
-          :placeholder="$text('S_PLEASE_INPUT_AV', '请输入片名、女优或番号')"
+          :placeholder="source ==='gay' ? '请输入片名、男优或番号' : $text('S_PLEASE_INPUT_AV', '请输入片名、女优或番号')"
           type="text"
           @keydown.enter="headerConfig.onSearchClick(headerConfig.keyWord)"
           :class="$style[source]"
