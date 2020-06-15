@@ -46,8 +46,8 @@ export default {
             isLoading: 'getIsLoading'
         }),
         isPWA() {
-            return true;
-            // return window.location.host === "yaboxxxapp01.com";
+            // return true;
+            return window.location.host === "yaboxxxapp01.com";
             // return getCookie('platform') === "G";
         },
         /**
