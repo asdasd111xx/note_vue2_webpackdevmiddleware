@@ -578,7 +578,7 @@ export default {
                 return ajax({
                     method: 'get',
                     url: this.curModeGroup.uri,
-                    errorAlert: !isMobile() || isUBMobile || webview
+                    errorAlert: false
                 }).then((response) => {
                     this.isShow = false;
                     this.actionSetIsLoading(false);
@@ -672,7 +672,7 @@ export default {
             return ajax({
                 method: 'post',
                 url: API_TRADE_RELAY,
-                errorAlert: !isMobile() || isUBMobile || webview,
+                errorAlert: false,
                 params: paramsData
             }).then((response) => {
                 console.log(response)
