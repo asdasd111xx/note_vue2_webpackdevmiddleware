@@ -291,6 +291,7 @@ export default {
                 bonunsProcess.processType = 'done';
                 break;
               case 'FULL':
+                bonunsProcess.isForceWait = true;
                 bonunsProcess.processType = 'wait';
                 bonunsDialog.isShow = true;
                 this.dialogType = 'tips-full';
@@ -319,7 +320,7 @@ export default {
 
                 if (mission) {
                   this.dialogType = 'tips-wait';
-                  bonunsProcess.processType = Number(_mission.ActionType) === 6 ? 'next' : 'wait';
+                  bonunsProcess.processType = Number(mission.ActionType) === 6 ? 'next' : 'wait';
                   bonunsDialog.tagId = mission.TagId;
                   bonunsDialog.missionDesc = mission.Description;
                   bonunsDialog.missionActionType = Number(mission.ActionType);
