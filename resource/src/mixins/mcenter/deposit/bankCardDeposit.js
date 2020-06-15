@@ -573,17 +573,6 @@ export default {
 
             this.nameCheckFail = false;
 
-            let newWindow = '';
-            // 辨別裝置是否為ios寰宇瀏覽器
-            const isUBMobile = navigator.userAgent.match(/UBiOS/) !== null && navigator.userAgent.match(/iPhone/) !== null;
-            // 暫時用來判斷馬甲包
-            const webview = window.location.hostname === 'yaboxxxapp02.com';
-
-            // ios寰宇瀏覽器目前另開頁面需要與電腦版開啟方式相同
-            if (isMobile() && !isUBMobile && !webview) {
-                newWindow = window.open('', '_blank');
-            }
-
             // 第三方存款
             if (this.curModeGroup.uri) {
                 return ajax({
@@ -622,11 +611,6 @@ export default {
                         eventAction: 'pay',
                         eventLabel: 'failure'
                     });
-
-                    if (isMobile() && !isUBMobile && !webview) {
-                        newWindow.alert(`${response.msg} ${response.code ? `(${response.code})` : ''}`);
-                        newWindow.close();
-                    }
 
                     return { status: 'error' };
                 });
@@ -749,10 +733,6 @@ export default {
                         this.orderData[info] = response.ret[info];
                     });
 
-                    if (isMobile() && !isUBMobile && !webview) {
-                        newWindow.close();
-                    }
-
                     return { status: 'local' };
                 }
 
@@ -763,11 +743,6 @@ export default {
                     eventAction: 'pay',
                     eventLabel: 'failure'
                 });
-
-                if (isMobile() && !isUBMobile && !webview) {
-                    newWindow.alert(`${response.msg} ${response.code ? `(${response.code})` : ''}`);
-                    newWindow.close();
-                }
 
                 if (response.code === 'TM020058' || response.code === 'TM020059' || response.code === 'TM020060') {
                     window.location.reload();
