@@ -155,6 +155,7 @@ export default {
           this.reconnectTimer = null;
         };
         window.YABO_SOCKET_RECONNECT = () => {
+          window.YABO_SOCKET.close();
           this.connectYaboWS();
         }
       } catch (e) {

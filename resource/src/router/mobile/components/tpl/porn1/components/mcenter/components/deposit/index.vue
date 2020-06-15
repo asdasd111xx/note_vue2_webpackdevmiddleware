@@ -49,7 +49,7 @@ export default {
           }
         },
         customEvent: () => { // 暫時阻擋的彈窗
-          this.msg = '正在上线 敬请期待'
+          this.msg = '正在上线 敬请期待';
         }
       };
     }
