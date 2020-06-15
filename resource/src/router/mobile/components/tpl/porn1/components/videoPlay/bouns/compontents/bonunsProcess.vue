@@ -75,6 +75,7 @@ export default {
         ],
       isClose: false,
       isInit: false,
+      isForceWait: false,
       totalAmount: 0,
       earnCoin: "",
       curMin: 0,
@@ -104,7 +105,12 @@ export default {
     handleToggleEarnCoin() {
       if (this.timer) return;
       this.timer = setTimeout(() => {
-        this.processType = "process";
+        if (this.isForceWait) {
+          this.processType = "wait";
+        } else {
+          this.processType = "process";
+        }
+
         clearTimeout(this.timer);
         this.timer = null;
       }, 2500)

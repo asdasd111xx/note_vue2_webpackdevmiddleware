@@ -289,6 +289,7 @@ export default {
                 bonunsProcess.processType = 'done';
                 break;
               case 'FULL':
+                bonunsProcess.isForceWait = true;
                 bonunsProcess.processType = 'wait';
                 bonunsDialog.isShow = true;
                 this.dialogType = 'tips-full';
