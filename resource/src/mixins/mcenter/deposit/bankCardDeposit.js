@@ -603,14 +603,14 @@ export default {
                             eventLabel: 'success'
                         });
 
-                        if (webview) {
-                            window.location.href = response.ret.uri;
-                            return { status: 'third' };
-                        }
-                        if (isMobile() && !isUBMobile) {
-                            newWindow.location.href = response.ret.uri;
-                            return { status: 'third' };
-                        }
+                        // if (webview) {
+                        //     window.location.href = response.ret.uri;
+                        //     return { status: 'third' };
+                        // }
+                        // if (isMobile() && !isUBMobile) {
+                        //     newWindow.location.href = response.ret.uri;
+                        //     return { status: 'third' };
+                        // }
                         window.open(response.ret.uri, 'third');
                         return { status: 'third' };
                     }
@@ -642,14 +642,14 @@ export default {
                     eventLabel: 'success'
                 });
 
-                if (webview) {
-                    window.location.href = this.curPayInfo.external_url;
-                    return Promise.resolve({ status: 'credit' });
-                }
-                if (isMobile() && !isUBMobile) {
-                    newWindow.location.href = this.curPayInfo.external_url;
-                    return Promise.resolve({ status: 'credit' });
-                }
+                // if (webview) {
+                //     window.location.href = this.curPayInfo.external_url;
+                //     return Promise.resolve({ status: 'credit' });
+                // }
+                // if (isMobile() && !isUBMobile) {
+                //     newWindow.location.href = this.curPayInfo.external_url;
+                //     return Promise.resolve({ status: 'credit' });
+                // }
                 window.open(this.curPayInfo.external_url, 'credit');
                 return Promise.resolve({ status: 'credit' });
             }
@@ -690,6 +690,8 @@ export default {
                 errorAlert: !isMobile() || isUBMobile || webview,
                 params: paramsData
             }).then((response) => {
+                console.log(response)
+
                 this.isShow = false;
                 this.actionSetIsLoading(false);
 
@@ -703,27 +705,27 @@ export default {
                     });
 
                     if (response.ret.deposit.url) {
-                        if (webview) {
-                            window.location.href = response.ret.deposit.url;
-                            return { status: 'third' };
-                        }
-                        if (isMobile() && !isUBMobile) {
-                            newWindow.location.href = response.ret.deposit.url;
-                            return { status: 'third' };
-                        }
+                        // if (webview) {
+                        //     window.location.href = response.ret.deposit.url;
+                        //     return { status: 'third' };
+                        // }
+                        // if (isMobile() && !isUBMobile) {
+                        //     newWindow.location.href = response.ret.deposit.url;
+                        //     return { status: 'third' };
+                        // }
                         window.open(response.ret.deposit.url, 'third');
                         return { status: 'third' };
                     }
 
                     if (response.ret.wallet.url) {
-                        if (webview) {
-                            window.location.href = response.ret.wallet.url;
-                            return { status: 'third' };
-                        }
-                        if (isMobile() && !isUBMobile) {
-                            newWindow.location.href = response.ret.wallet.url;
-                            return { status: 'third' };
-                        }
+                        // if (webview) {
+                        //     window.location.href = response.ret.wallet.url;
+                        //     return { status: 'third' };
+                        // }
+                        // if (isMobile() && !isUBMobile) {
+                        //     newWindow.location.href = response.ret.wallet.url;
+                        //     return { status: 'third' };
+                        // }
                         window.open(response.ret.wallet.url, 'third');
                         return { status: 'third' };
                     }
