@@ -650,7 +650,8 @@ export default {
                 //     newWindow.location.href = this.curPayInfo.external_url;
                 //     return Promise.resolve({ status: 'credit' });
                 // }
-                window.open(this.curPayInfo.external_url, 'credit');
+                window.location.href = this.curPayInfo.external_url;
+                // window.open(this.curPayInfo.external_url, 'credit');
                 return Promise.resolve({ status: 'credit' });
             }
 
@@ -713,7 +714,8 @@ export default {
                         //     newWindow.location.href = response.ret.deposit.url;
                         //     return { status: 'third' };
                         // }
-                        window.open(response.ret.deposit.url, 'third');
+                        window.location.href = response.ret.deposit.url;
+                        // window.open(response.ret.deposit.url, 'third');
                         return { status: 'third' };
                     }
 
@@ -726,7 +728,8 @@ export default {
                         //     newWindow.location.href = response.ret.wallet.url;
                         //     return { status: 'third' };
                         // }
-                        window.open(response.ret.wallet.url, 'third');
+                        window.location.href = response.ret.wallet.url;
+                        // window.open(response.ret.wallet.url, 'third');
                         return { status: 'third' };
                     }
 
