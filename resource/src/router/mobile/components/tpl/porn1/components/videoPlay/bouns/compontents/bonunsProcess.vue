@@ -87,13 +87,11 @@ export default {
     // 總獲得彩金量變化 或 時間變化時 時需顯示動畫
     totalAmount(newValue, oldValue) {
       if (Number(newValue) !== Number(oldValue) && this.isInit) {
-        // console.log(newValue, oldValue, this.isInit);
         this.handleToggleEarnCoin();
       }
     },
     curMin(newValue, oldValue) {
       if (Number(newValue) !== Number(oldValue) && this.isInit) {
-        console.log(newValue, oldValue, this.isInit);
         this.handleToggleEarnCoin();
       }
     },
