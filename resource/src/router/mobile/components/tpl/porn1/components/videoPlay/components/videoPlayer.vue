@@ -268,12 +268,14 @@ export default {
           bonunsDialog.hadEarnNum = Number(data.BreakTimes);
 
           // 第一次收到初始化
-          setTimeout(() => {
-            this.$nextTick(() => {
-              bonunsProcess.isInit = true;
-              bonunsDialog.isInit = true;
-            })
-          }, 200)
+          if (!bonunsProcess.isInit) {
+            setTimeout(() => {
+              this.$nextTick(() => {
+                bonunsProcess.isInit = true;
+                bonunsDialog.isInit = true;
+              })
+            }, 200)
+          }
 
           //狀態
           // 'OPEN', 'PLAY', 'STOP', 'CLOSE', 'BREAK', 'FULL', 'POOR', 'BREAK_WAIT'
@@ -315,7 +317,7 @@ export default {
 
                 if (mission) {
                   this.dialogType = 'tips-wait';
-                  bonunsProcess.processType = 'wait';
+                  bonunsProcess.processType = Number(_mission.ActionType) === 7 ? 'next' : 'wait';
                   bonunsDialog.missionDesc = mission.Description;
                   bonunsDialog.missionActionType = Number(mission.ActionType);
                   bonunsDialog.isShow = true;
