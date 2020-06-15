@@ -1,10 +1,14 @@
-import { mapGetters, mapActions } from 'vuex';
+import {
+    API_MCENTER_DEPOSIT_CHANNEL,
+    API_MCENTER_DEPOSIT_INPAY,
+    API_MCENTER_DEPOSIT_THIRD,
+    API_TRADE_RELAY
+} from '@/config/api';
+import { mapActions, mapGetters } from 'vuex';
+
 import BigNumber from 'bignumber.js/bignumber';
 import ajax from '@/lib/ajax';
 import isMobile from '@/lib/is_mobile';
-import {
-    API_MCENTER_DEPOSIT_INPAY, API_MCENTER_DEPOSIT_CHANNEL, API_TRADE_RELAY, API_MCENTER_DEPOSIT_THIRD
-} from '@/config/api';
 
 export default {
     data() {
@@ -599,10 +603,10 @@ export default {
                             eventLabel: 'success'
                         });
 
-                        if (webview) {
-                            window.location.href = response.ret.uri;
-                            return { status: 'third' };
-                        }
+                        // if (webview) {
+                        //     window.location.href = response.ret.uri;
+                        //     return { status: 'third' };
+                        // }
                         if (isMobile() && !isUBMobile) {
                             newWindow.location.href = response.ret.uri;
                             return { status: 'third' };
@@ -638,10 +642,10 @@ export default {
                     eventLabel: 'success'
                 });
 
-                if (webview) {
-                    window.location.href = this.curPayInfo.external_url;
-                    return Promise.resolve({ status: 'credit' });
-                }
+                // if (webview) {
+                //     window.location.href = this.curPayInfo.external_url;
+                //     return Promise.resolve({ status: 'credit' });
+                // }
                 if (isMobile() && !isUBMobile) {
                     newWindow.location.href = this.curPayInfo.external_url;
                     return Promise.resolve({ status: 'credit' });
@@ -699,10 +703,10 @@ export default {
                     });
 
                     if (response.ret.deposit.url) {
-                        if (webview) {
-                            window.location.href = response.ret.deposit.url;
-                            return { status: 'third' };
-                        }
+                        // if (webview) {
+                        //     window.location.href = response.ret.deposit.url;
+                        //     return { status: 'third' };
+                        // }
                         if (isMobile() && !isUBMobile) {
                             newWindow.location.href = response.ret.deposit.url;
                             return { status: 'third' };
@@ -712,10 +716,10 @@ export default {
                     }
 
                     if (response.ret.wallet.url) {
-                        if (webview) {
-                            window.location.href = response.ret.wallet.url;
-                            return { status: 'third' };
-                        }
+                        // if (webview) {
+                        //     window.location.href = response.ret.wallet.url;
+                        //     return { status: 'third' };
+                        // }
                         if (isMobile() && !isUBMobile) {
                             newWindow.location.href = response.ret.wallet.url;
                             return { status: 'third' };
