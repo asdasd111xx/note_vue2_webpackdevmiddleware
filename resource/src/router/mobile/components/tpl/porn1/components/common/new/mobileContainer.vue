@@ -9,9 +9,13 @@
       v-if="headerConfig && !isApp"
       :header-config="headerConfig"
       :update-search-status="updateSearchStatus"
+      :has-unread-message="hasUnreadMessage"
     />
     <slot name="content" />
-    <m-footer v-if="hasFooter && !isApp" />
+    <m-footer
+      v-if="hasFooter && !isApp"
+      :has-unread-message="hasUnreadMessage"
+    />
     <!-- <ele-pop /> -->
     <!-- 會員中心彈窗 -->
     <!-- <div v-if="popType === 'note'" :class="[$style['note-content'], 'theme-porn1']">
@@ -23,6 +27,7 @@
 
 <script>
 import { mapGetters } from 'vuex';
+import axios from 'axios'
 
 export default {
   components: {
@@ -31,6 +36,11 @@ export default {
     // elePop: () => import(/* webpackChunkName: 'elePop' */'@/router/web/components/tpl/common/pop')
     // note: () => import(/* webpackChunkName: 'note' */'@/components/mcenter/components/common/note'),
     // agentNote: () => import(/* webpackChunkName: 'note' */'@/router/agent/components/common/note')
+  },
+  data() {
+    return {
+      hasUnreadMessage: false
+    }
   },
   props: {
     headerConfig: {
@@ -49,6 +59,19 @@ export default {
       type: Boolean,
       default: false
     }
+  },
+  mounted() {
+    axios({
+      method: 'get',
+      url: '/api/v1/c/player/messages',
+    }).then((res) => {
+      const ret = res.data.ret;
+      ret.forEach(i => {
+        if (i.read === false) {
+          this.hasUnreadMessage = true;
+        }
+      })
+    });
   },
   computed: {
     ...mapGetters({
