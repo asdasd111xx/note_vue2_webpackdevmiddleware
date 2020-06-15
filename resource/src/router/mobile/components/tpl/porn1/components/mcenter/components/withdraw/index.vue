@@ -381,6 +381,8 @@ export default {
       }
     },
     withdrawValue() {
+      if (!this.withdrawValue && this.withdrawValue !== 0) return;
+
       let value = Number(this.withdrawValue);
 
       if (!Number.isInteger(value) && this.withdrawValue) {
