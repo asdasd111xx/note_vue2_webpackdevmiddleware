@@ -1,6 +1,6 @@
 <template>
   <div :class="$style['video-lobby-container']">
-    <div :class="$style['top-warp']">
+    <div :class="$style['top-wrap']">
       <span @click="msg = '正在上线 敬请期待'">频道</span>
       <div
         :class="$style['search-block']"
@@ -11,7 +11,7 @@
       <span @click="msg = '正在上线 敬请期待'">发现</span>
     </div>
 
-    <div :class="$style['category-warp']">
+    <div :class="$style['category-wrap']">
       <div
         :class="$style['tag-block']"
         v-for="(info, index) in videoTag.slice(0, 8)"
@@ -334,7 +334,7 @@ export default {
   padding: 50px 0 20px;
 }
 
-.top-warp {
+.top-wrap {
   position: fixed;
   width: 100%;
   height: 50px;
@@ -378,18 +378,18 @@ export default {
   }
 }
 
-.top-warp {
+.top-wrap {
   max-width: $mobile_max_width;
   min-width: 0;
 }
 
 @media (orientation: landscape) {
-  .top-warp {
+  .top-wrap {
     max-width: $mobile_max_landscape_width !important;
   }
 }
 
-.category-warp {
+.category-wrap {
   position: relative;
   width: 90%;
   height: 220px;
@@ -426,6 +426,7 @@ export default {
 .video-list-wrap {
   position: relative;
   padding: 0 20px;
+  margin: auto;
 
   .video-cell {
     position: relative;

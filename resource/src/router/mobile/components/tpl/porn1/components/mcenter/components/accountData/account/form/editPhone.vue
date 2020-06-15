@@ -107,7 +107,7 @@
         </template>
       </div>
 
-      <popupVerification
+      <popup-verification
         v-if="isShowCaptcha"
         :is-show-captcha.sync="isShowCaptcha"
         :captcha.sync="captchaData"
@@ -118,6 +118,7 @@
 </template>
 
 <script>
+import axios from 'axios';
 import { mapGetters, mapActions } from 'vuex';
 import { API_MCENTER_USER_CONFIG } from '@/config/api';
 import ajax from '@/lib/ajax';
@@ -317,6 +318,10 @@ export default {
       }, 1000);
     },
     showCaptchaPopup() {
+      if(this.newValue === '') {
+        return
+      }
+
       // 無認證直接呼叫
       if (this.memInfo.config.default_captcha_type === 0) {
         this.handleSend()
@@ -361,25 +366,24 @@ export default {
           }
         });
       } else {
-        mcenter.accountPhoneSend({
-          params: {
+        axios({
+          method: 'post',
+          url: '/api/v1/c/player/verify/phone',
+          data: {
             old_phone: this.memInfo.phone.phone ? `${this.newCode.replace('+', '')}-${this.newValue}` : '',
             phone: `${this.newCode.replace('+', '')}-${this.newValue}`,
             captcha_text: this.captchaData ? this.captchaData : ''
-          },
-          success: () => {
-            this.actionSetUserdata(true);
-            this.locker();
-            this.tipMsg = this.$text("S_SEND_CHECK_CODE_VALID_TIME").replace("%s", 5);
-            this.isSendSMS = false;
-
-          },
-          fail: (res) => {
-            this.countdownSec = '';
-            this.tipMsg = res.data.msg;
-            this.isSendSMS = false;
           }
-        });
+        }).then(res => {
+          this.actionSetUserdata(true);
+          this.locker();
+          this.tipMsg = this.$text("S_SEND_CHECK_CODE_VALID_TIME").replace("%s", 5);
+          this.isSendSMS = false;
+        }).catch(error => {
+          this.countdownSec = '';
+          this.tipMsg = error.response.data.msg;
+          this.isSendSMS = false;
+        })
       }
     },
     handleSubmit() {
@@ -447,3 +451,4 @@ export default {
 };
 </script>
 <style src="../../css/index.module.scss" lang="scss" module>
+</style>
