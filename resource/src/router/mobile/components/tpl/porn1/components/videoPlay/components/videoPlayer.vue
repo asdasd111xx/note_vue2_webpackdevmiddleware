@@ -319,7 +319,7 @@ export default {
 
                 if (mission) {
                   this.dialogType = 'tips-wait';
-                  bonunsProcess.processType = 'wait';
+                  bonunsProcess.processType = Number(_mission.ActionType) === 6 ? 'next' : 'wait';
                   bonunsDialog.tagId = mission.TagId;
                   bonunsDialog.missionDesc = mission.Description;
                   bonunsDialog.missionActionType = Number(mission.ActionType);
@@ -333,7 +333,7 @@ export default {
                 this.mission = _mission;
                 this.dialogType = 'tips-break';
                 this.$nextTick(() => {
-                  if (_mission) bonunsProcess.processType = Number(_mission.ActionType) === 7 ? 'next' : 'wait';
+                  if (_mission) bonunsProcess.processType = Number(_mission.ActionType) === 6 ? 'next' : 'wait';
                   bonunsDialog.hadEarnNum = data.BreakTimes;
                   bonunsDialog.isShow = true;
                 });
