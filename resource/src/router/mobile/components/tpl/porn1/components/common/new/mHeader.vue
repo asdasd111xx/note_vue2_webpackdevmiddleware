@@ -194,7 +194,13 @@
           :src="
             $getCdnPath('/static/image/_new/mcenter/balanceTrans/btn_help.png')
           "
-          @click="headerConfig.customEvent"
+          @click="
+            $router.push(
+              `/mobile/mcenter/help${
+                headerConfig.helpRouter ? headerConfig.helpRouter : ''
+              }`
+            )
+          "
         />
       </div>
     </template>
@@ -235,7 +241,7 @@ export default {
     },
     updateSearchStatus: {
       type: Function,
-      default: () => {}
+      default: () => { }
     }
   },
   data() {
