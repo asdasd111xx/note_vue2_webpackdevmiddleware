@@ -45,10 +45,11 @@ export default {
             memInfo: 'getMemInfo',
             isLoading: 'getIsLoading'
         }),
+        isWebView() {
+            return getCookie('platform') === "H" || window.location.host === "yaboxxxapp02.com";
+        },
         isPWA() {
-            // return true;
-            return window.location.host === "yaboxxxapp01.com";
-            // return getCookie('platform') === "G";
+            return getCookie('platform') === "G" || window.location.host === "yaboxxxapp01.com";
         },
         /**
          * 所有銀行
@@ -593,7 +594,7 @@ export default {
                 return ajax({
                     method: 'get',
                     url: this.curModeGroup.uri,
-                    errorAlert: !isMobile() || isUBMobile || webview
+                    errorAlert: false
                 }).then((response) => {
                     this.isShow = false;
                     this.actionSetIsLoading(false);
@@ -608,11 +609,11 @@ export default {
                             eventLabel: 'success'
                         });
 
-                        // if (webview) {
-                        //     window.location.href = response.ret.uri;
-                        //     return { status: 'third' };
-                        // }
-                        if (isPWA) {
+                        if (this.isWebView) {
+                            window.location.href = response.ret.uri;
+                            return { status: 'third' };
+                        }
+                        else if (this.isPWA) {
                             newWindow.location.href = response.ret.uri;
                             return { status: 'third' };
                         }
@@ -650,16 +651,16 @@ export default {
                     eventLabel: 'success'
                 });
 
-                // if (webview) {
-                //     window.location.href = this.curPayInfo.external_url;
-                //     return Promise.resolve({ status: 'credit' });
-                // }
-                if (this.isPWA) {
+                if (this.isWebView) {
+                    window.location.href = this.curPayInfo.external_url;
+                    return Promise.resolve({ status: 'credit' });
+                }
+                else if (this.isPWA) {
                     newWindow.location.href = this.curPayInfo.external_url;
                     return Promise.resolve({ status: 'credit' });
                 }
-                window.location.href = this.curPayInfo.external_url;
-                // window.open(this.curPayInfo.external_url, 'credit');
+
+                window.open(this.curPayInfo.external_url, 'credit');
                 return Promise.resolve({ status: 'credit' });
             }
 
@@ -696,7 +697,7 @@ export default {
             return ajax({
                 method: 'post',
                 url: API_TRADE_RELAY,
-                errorAlert: !isMobile() || isUBMobile || webview,
+                errorAlert: false,
                 params: paramsData
             }).then((response) => {
 
@@ -713,30 +714,30 @@ export default {
                     });
 
                     if (response.ret.deposit.url) {
-                        // if (webview) {
-                        //     window.location.href = response.ret.deposit.url;
-                        //     return { status: 'third' };
-                        // }
-                        if (this.isPWA) {
+                        if (this.isWebview) {
+                            window.location.href = response.ret.deposit.url;
+                            return { status: 'third' };
+                        }
+                        else if (this.isPWA) {
                             newWindow.location.href = response.ret.deposit.url
                             return { status: 'third' };
                         }
-                        window.location.href = response.ret.deposit.url;
-                        // window.open(response.ret.deposit.url, 'third');
+
+                        window.open(response.ret.deposit.url, 'third');
                         return { status: 'third' };
                     }
 
                     if (response.ret.wallet.url) {
-                        // if (webview) {
-                        //     window.location.href = response.ret.wallet.url;
-                        //     return { status: 'third' };
-                        // }
-                        if (this.isPWA) {
+                        if (this.isWebview) {
+                            window.location.href = response.ret.wallet.url;
+                            return { status: 'third' };
+                        }
+                        else if (this.isPWA) {
                             newWindow.location.href = response.ret.wallet.url;
                             return { status: 'third' };
                         }
-                        window.location.href = response.ret.wallet.url;
-                        // window.open(response.ret.wallet.url, 'third');
+
+                        window.open(response.ret.wallet.url, 'third');
                         return { status: 'third' };
                     }
 
