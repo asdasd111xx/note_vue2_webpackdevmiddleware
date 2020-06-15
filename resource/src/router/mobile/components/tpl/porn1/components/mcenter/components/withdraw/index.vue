@@ -677,15 +677,14 @@ export default {
           return;
         },
         fail: (error) => {
-          if (error && error.data && error.data.code === 'M500001') {
-            window.location.reload();
-            this.isOpenOrder = true;
-            return;
-          }
-
           if (error && error.data && error.data.msg) {
             this.msg = error.data.msg;
             this.errTips = error.data.msg;
+          }
+
+          if (error && error.data && error.data.code === 'M500001') {
+            window.location.reload();
+            this.isOpenOrder = true;
           }
 
           this.isLoading = false;
