@@ -278,10 +278,6 @@ export default {
               })
             }, 200)
           }
-          // 今日額滿後就不動作
-          if (this.isFULL) {
-            return;
-          }
           //狀態
           // 'OPEN', 'PLAY', 'STOP', 'CLOSE', 'BREAK', 'FULL', 'POOR', 'BREAK_WAIT'
           this.$nextTick(() => {
@@ -294,21 +290,12 @@ export default {
                 bonunsProcess.processType = 'done';
                 break;
               case 'FULL':
-                const fullAction = () => {
-                  bonunsProcess.processType = 'wait';
-                  bonunsDialog.isShow = true;
-                  this.dialogType = 'tips-full';
-                  this.isFULL = true;
-                  this.playerPause();
-                  this.$nextTick(() => bonunsProcess.playCueTime("stop"));
-                }
-                if (bonunsProcess.isInit) {
-                  setTimeout(() => {
-                    fullAction();
-                  }, 2505)
-                } else {
-                  fullAction();
-                }
+                bonunsProcess.isForceWait = true;
+                bonunsProcess.processType = 'wait';
+                bonunsDialog.isShow = true;
+                this.dialogType = 'tips-full';
+                this.isFULL = true;
+                this.playerPause();
                 break;
               case 'POOR':
                 this.dialogType = 'tips-poor';
@@ -332,7 +319,7 @@ export default {
 
                 if (mission) {
                   this.dialogType = 'tips-wait';
-                  bonunsProcess.processType = Number(_mission.ActionType) === 6 ? 'next' : 'wait';
+                  bonunsProcess.processType = Number(mission.ActionType) === 6 ? 'next' : 'wait';
                   bonunsDialog.tagId = mission.TagId;
                   bonunsDialog.missionDesc = mission.Description;
                   bonunsDialog.missionActionType = Number(mission.ActionType);
