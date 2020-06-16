@@ -330,6 +330,7 @@ export default {
     toggleSwitch() {
       if (!this.loginStatus) {
         this.$router.push('/mobile/joinmember');
+        return;
       }
       if (!this.memInfo.config.content_rating) {
         return;
