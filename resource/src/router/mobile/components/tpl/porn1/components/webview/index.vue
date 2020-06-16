@@ -127,6 +127,7 @@ export default {
       iosCard: [
         {
           text: "极速版",
+          isShow: true,
           onClick: () => {
             this.download(
               2,
@@ -134,24 +135,26 @@ export default {
             );
           }
         },
-        // {
-        //     text: "IOS版",
-        //     onClick: () => {
-        //         if (this.iOSBundle) {
-        //             this.download(1, this.iOSBundle);
-        //         }
-        //     }
-        // },
-        // {
-        //   text: "隐藏版",
-        //   onClick: () => {
-        //     window.open(
-        //       "https://apps.apple.com/cn/app/id1516668517",
-        //       "_blank"
-        //     );
-        //   }
-        // }
-      ]
+        {
+          text: "IOS版",
+          isShow: false,
+          onClick: () => {
+            if (this.iOSBundle) {
+              this.download(1, this.iOSBundle);
+            }
+          }
+        },
+        {
+          text: "隐藏版",
+          isShow: false,
+          onClick: () => {
+            window.open(
+              "https://apps.apple.com/cn/app/id1516668517",
+              "_blank"
+            );
+          }
+        }
+      ].filter(item => item.isShow)
     };
   },
   computed: {
