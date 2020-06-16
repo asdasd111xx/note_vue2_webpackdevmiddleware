@@ -178,7 +178,7 @@
       </div>
     </div>
 
-    <popupVerification
+    <popup-verification
       v-if="isShowCaptcha"
       :is-show-captcha.sync="isShowCaptcha"
       :captcha.sync="captchaData"
@@ -193,6 +193,7 @@
 </template>
 
 <script>
+import axios from 'axios';
 import { mapGetters, mapActions } from 'vuex';
 import ajax from '@/lib/ajax';
 import message from '../../../common/new/message';
@@ -448,51 +449,49 @@ export default {
       }
       this.lockStatus = true;
 
-      ajax({
-        method: 'post',
-        url: '/api/v1/c/player/verify/user_bank/sms',
-        errorAlert: false,
-        params: {
+      axios({
+        method: "post",
+        url: "/api/v1/c/player/verify/user_bank/sms",
+        data: {
           phone: `86-${this.formData.phone}`,
           captcha_text: this.captchaData ? this.captchaData : ''
-        },
-        success: () => {
-          ajax({
-            method: 'get',
-            url: '/api/v1/c/player/phone/ttl',
-            errorAlert: false,
-            success: ({ ret }) => {
-              this.lockStatus = false;
-              this.time = ret;
+        }
+      })
+      .then(res => {
+        axios({
+          method: "get",
+          url: "/api/v1/c/player/phone/ttl"
+        })
+          .then(res => {
+            this.lockStatus = false;
+            this.time = res.data.ret;
 
-              this.smsTimer = setInterval(() => {
-                if (this.time === 1) {
-                  this.smsTimer = false;
-                }
-
-                if (this.time <= 0) {
-                  clearInterval(this.smsTimer);
-                  this.smsTimer = null;
-                  return;
-                }
-                this.time -= 1;
-              }, 1000);
-            },
-            fail: (error) => {
-              if (error && error.status === "429") {
-                this.msg = '操作太频繁，请稍候在试';
-                return;
+            this.smsTimer = setInterval(() => {
+              if (this.time === 1) {
+                this.smsTimer = false;
               }
 
-              this.lockStatus = false;
-              this.errorMsg = error.data.msg;
+              if (this.time <= 0) {
+                clearInterval(this.smsTimer);
+                this.smsTimer = null;
+                return;
+              }
+              this.time -= 1;
+            }, 1000);
+          })
+          .catch(error => {
+            if (error.response && error.response.status === "429") {
+              this.msg = "操作太频繁，请稍候在试";
+              return;
             }
+
+            this.lockStatus = false;
+            this.errorMsg = error.response.data.msg;
           });
-        },
-        fail: (error) => {
-          this.lockStatus = false;
-          this.errorMsg = error.data.msg;
-        }
+      })
+      .catch(error => {
+        this.lockStatus = false;
+        this.errorMsg = error.response.data.msg;
       });
     },
     beforeDestroy() {

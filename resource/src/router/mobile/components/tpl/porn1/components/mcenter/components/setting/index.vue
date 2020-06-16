@@ -53,7 +53,7 @@ export default {
     };
   },
   mounted() {
-    this.version = this.siteConfig.VERSION;
+    this.version = `${this.siteConfig.VERSION}${getCookie('platform') || ''}`;
     this.list.push({
       name: this.$text("S_CURRENT_VERSION", "当前版本"), path: '', isPart: true, isVersion: true
     })

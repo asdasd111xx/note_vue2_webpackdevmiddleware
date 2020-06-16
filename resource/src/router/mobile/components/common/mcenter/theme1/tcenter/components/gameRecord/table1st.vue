@@ -11,13 +11,12 @@
         </div>
 
         <div :class="$style['list-block']">
-
             <template v-if="!hasSearch">
                 <div v-if="inqStart === inqEnd" :class="$style['date']">
-                    {{ inqStart }}
+                    {{ inqStart | dateFormat }}
                 </div>
                 <div v-else :class="$style['date']">
-                    {{ inqStart }} ~ {{ inqEnd }}
+                    {{ inqStart | dateFormat }} ~ {{ inqEnd | dateFormat }}
                 </div>
             </template>
 
@@ -50,6 +49,9 @@
 </template>
 
 <script>
+import Vue from "vue";
+import { format } from "date-fns";
+
 export default {
     props: {
         list: {
@@ -74,6 +76,11 @@ export default {
         },
         hasSearch: {
             type: Boolean
+        }
+    },
+    filters: {
+        dateFormat(value) {
+            return Vue.moment(value).format("MM月DD日");
         }
     }
 };

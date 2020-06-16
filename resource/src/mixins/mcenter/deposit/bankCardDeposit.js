@@ -78,11 +78,11 @@ export default {
 
             // 尚未輸入金額
             if (!this.moneyValue) {
-                return '--';
+                return '0.00';
             }
 
             if ((this.depositInterval.minMoney && this.depositInterval.minMoney > this.moneyValue) || (this.depositInterval.maxMoney && this.depositInterval.maxMoney < this.moneyValue)) {
-                return '--';
+                return '0.00';
             }
 
             // 未達到單筆存款金額，無優惠

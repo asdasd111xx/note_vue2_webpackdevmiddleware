@@ -321,6 +321,7 @@ export default {
         url: `${this.siteConfig.YABO_API_DOMAIN}/game/list`,
         timeout: 30000,
         headers: {
+          'AuthToken': 'YaboAPIforDev0nly',
           Bundleid: 'chungyo.foxyporn.prod.enterprise.web',
           Version: 1,
           'x-domain': this.memInfo.user.domain
@@ -469,8 +470,7 @@ export default {
             }/AccountBank/GetBankBindingStatus/${getCookie('cid')}`,
           timeout: 30000,
           headers: {
-            Bundleid: 'chungyo.foxyporn.prod.enterprise.web',
-            Version: 1,
+            'AuthToken': 'YaboAPIforDev0nly',
             'x-domain': this.memInfo.user.domain
           }
         }).then(res => {

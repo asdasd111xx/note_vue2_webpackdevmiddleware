@@ -342,6 +342,10 @@ export const API_WITHDRAW_BALANCE_BACK = '/api/v1/c/vendor/recycle/balance';
 export const API_WITHDRAW_INFO = '/api/v1/c/withdraw/info';
 // 會員中心 - 取款 - 本站取款寫單
 export const API_WITHDRAW_WRITE = '/api/payment/v1/c/withdraw';
+
+// 會員中心 - 取款 - 本站取款寫單 新版
+export const API_WITHDRAW_WRITE_2 = '/api/v1/c/withdraw/inpay';
+
 // 會員中心 - 取款 - 取得CGPAY綁定資訊
 export const API_WITHDRAW_CGPAY_BINDING = '/api/v1/c/ext/inpay?api_uri=/api/trade/v1/c/withdraw/bind_wallet';
 

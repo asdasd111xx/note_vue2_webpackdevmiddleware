@@ -68,8 +68,10 @@
               :name="field.key"
               :placeholder="field.content.note1"
               type="password"
+              maxlength="12"
               @focus="onFocus(field.key)"
               @blur="verification(field.key)"
+              @input="verification(field.key)"
               @keydown.13="keyDownSubmit()"
             />
             <input
@@ -79,6 +81,7 @@
               :name="field.key"
               :placeholder="field.content.note1"
               type="password"
+              maxlength="12"
               @input="verification(field.key)"
               @blur="verification(field.key)"
               @keydown.13="keyDownSubmit()"
@@ -91,6 +94,7 @@
               :name="field.key"
               :placeholder="field.content.note1"
               type="text"
+              maxlength="20"
               @focus="onFocus(field.key)"
               @blur="verification(field.key)"
               @keydown.13="keyDownSubmit()"
@@ -430,7 +434,12 @@ export default {
     verification(key) {
       const data = this.joinMemInfo[key];
       this.allValue[key] = this.allValue[key].replace(/[\W]/g, '')
-
+      if (key.includes('password') || key === "username") {
+        this.allValue[key] = this.allValue[key].toLowerCase()
+          .replace(' ', '')
+          .trim()
+          .replace(/[\W]/g, '');
+      }
       if (key === 'name' && this.allValue[key].length > 30) {
         this.allValue[key] = this.allValue[key].substring(0, 30);
         return;

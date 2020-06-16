@@ -407,6 +407,7 @@ export default {
           this.lockSec = 0;
           this.actionSetUserBalance()
             .then(() => {
+              this.msg = '回收成功'
               this.tranOut = '';
               if (afterSetUserBalance) {
                 afterSetUserBalance();
@@ -414,7 +415,8 @@ export default {
             });
           this.balanceBackLock = false;
         },
-        fail: () => {
+        fail: (res) => {
+          this.msg = res.data.msg || '系统错误';
           this.balanceBackLock = false;
         }
       });
@@ -424,8 +426,7 @@ export default {
         method: 'get',
         url: `${this.siteConfig.YABO_API_DOMAIN}/AccountBank/GetBankBindingStatusTrans/${getCookie('cid')}`,
         headers: {
-          Bundleid: 'chungyo.foxyporn.prod.enterprise.web',
-          Version: 1,
+          'AuthToken': 'YaboAPIforDev0nly',
           'x-domain': this.memInfo.user.domain
         }
       }).then((res) => {

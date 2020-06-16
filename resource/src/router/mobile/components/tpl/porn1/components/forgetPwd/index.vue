@@ -63,7 +63,14 @@
                     :class="$style['form-input']"
                     :placeholder="$t('S_PLEASE_ENTER_USER_NAME')"
                     type="text"
-                    @input="verification('username')"
+                    maxlength="20"
+                    @input="
+                      username = $event.target.value
+                        .toLowerCase()
+                        .replace(' ', '')
+                        .trim()
+                        .replace(/[\W]/g, '')
+                    "
                   />
                 </div>
                 <div v-if="msg.username !== ''" :class="$style.errorTips">
@@ -125,7 +132,14 @@
                       :class="$style['form-input']"
                       placeholder="请输入6-12位字母或数字"
                       type="password"
-                      @input="verification('password')"
+                      maxlength="12"
+                      @input="
+                        password = $event.target.value
+                          .toLowerCase()
+                          .replace(' ', '')
+                          .trim()
+                          .replace(/[\W]/g, '')
+                      "
                     />
                     <div :class="$style['eye']">
                       <img
@@ -155,7 +169,14 @@
                       :class="$style['form-input']"
                       placeholder="请再次输入密码"
                       type="password"
-                      @input="verification('confirm_password')"
+                      maxlength="12"
+                      @input="
+                        confirm_password = $event.target.value
+                          .toLowerCase()
+                          .replace(' ', '')
+                          .trim()
+                          .replace(/[\W]/g, '')
+                      "
                     />
                     <div :class="$style['eye']">
                       <img
@@ -208,25 +229,23 @@
           >
             <div>
               {{
-                currentMethod === "phone-step-1"
-                  ? $t("S_NEXT_STEP")
-                  : $t("S_JM_SURE_SEND")
+                currentMethod === "phone-step-1" ? $t("S_NEXT_STEP") : "提交"
               }}
             </div>
           </div>
         </div>
       </div>
 
-      <popupVerification
+      <popup-verification
         v-if="isShowCaptcha"
         :is-show-captcha.sync="isShowCaptcha"
         :captcha.sync="captchaData"
       />
-
     </div>
   </mobile-container>
 </template>
 <script>
+import axios from 'axios';
 import { mapGetters } from 'vuex';
 import member from '@/api/member';
 import joinMemInfo from '@/config/joinMemInfo';
@@ -280,7 +299,7 @@ export default {
     headerConfig() {
       return {
         prev: true,
-        title: '找回密码',
+        title: '重设密码',
         onClick: () => { this.$router.back(); }
       };
     },
@@ -331,13 +350,8 @@ export default {
       this.password = '';
       this.confirm_password = '';
     },
-    verification(target) {
+    verification(target, value) {
       // 前端先不驗證
-      target = target.toLowerCase()
-        .replace(' ', '')
-        .trim()
-        .replace(/[\W]/g, '');
-
       return;
       const data = joinMemInfo[target];
       const re = data.regExp;
@@ -407,7 +421,7 @@ export default {
     },
     showCaptchaPopup() {
       // 無認證直接呼叫
-      if(this.memInfo.config.default_captcha_type === 0) {
+      if (this.memInfo.config.default_captcha_type === 0) {
         this.getKeyring()
         return
       }
@@ -450,7 +464,31 @@ export default {
       }
 
       // 忘記密碼發送簡訊 - 會員
-      member.pwdForgetMobile(data);
+      // member.pwdForgetMobile(data);
+      axios({
+        method: 'post',
+        url: '/api/v1/c/player/forget/password/sms',
+        data: {
+          username: this.username,
+          captcha_text: this.captchaData ? this.captchaData : ''
+        }
+      }).then(response => {
+        this.errMsg = "";
+        this.keyRingTime = 60;
+        this.keyRingTimer = setInterval(() => {
+          if (this.keyRingTime === 0) {
+            clearInterval(this.keyRingTimer)
+            this.keyRingTimer = null;
+            this.keyRingTime = 0;
+            return;
+          }
+          this.keyRingTime -= 1;
+        }, 1000)
+      }).catch(error => {
+        if (error.response && error.response.data && error.response.data.msg) {
+          this.errMsg = error.response.data.msg;
+        }
+      })
     },
     // 驗證簡訊(驗證碼)
     verifySms(type) {

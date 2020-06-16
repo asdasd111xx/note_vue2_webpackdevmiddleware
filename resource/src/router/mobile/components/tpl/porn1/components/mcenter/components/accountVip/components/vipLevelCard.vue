@@ -10,7 +10,7 @@
                 <swiper-slide
                     :class="$style['level-slide']"
                     v-for="(item, index) in vipLevelList"
-                    :key="`vip-${index}}`"
+                    :key="`vip-${index}`"
                 >
                     <div
                         :class="[
@@ -73,7 +73,8 @@
                         />
                         <div :class="$style['card-desc-block']">
                             <div>
-                                {{ userVipInfo.next_level_deposit_total }} <br />
+                                {{ item.deposit_total }}
+                                <br />
                                 累计充值
                             </div>
                             <div>
@@ -146,12 +147,13 @@ export default {
         }
     },
     mounted() {
-        this.$emit("update:currentLevelData", this.vipLevelList[0]);
+        const swiperLevel = this.$refs.swiperLevel.$swiper;
+        const swiperCard = this.$refs.swiperCard.$swiper;
+
+        // 根據當前VIP等級進行初始化
+        this.initSwiper();
 
         this.$nextTick(() => {
-            const swiperLevel = this.$refs.swiperLevel.$swiper;
-            const swiperCard = this.$refs.swiperCard.$swiper;
-
             swiperCard.on("slideChange", () => {
                 this.selectedIndex = swiperCard.realIndex;
                 swiperLevel.slideTo(this.selectedIndex, 500, false);
@@ -168,16 +170,24 @@ export default {
 
             swiperCard.slideTo(index, 500, false);
             this.$emit("update:currentLevelData", this.vipLevelList[index]);
+        },
+        initSwiper() {
+            const swiperLevel = this.$refs.swiperLevel.$swiper;
+            const swiperCard = this.$refs.swiperCard.$swiper;
+            this.selectedIndex = this.userVipInfo.now_level_seq;
+            swiperLevel.slideTo(this.selectedIndex, 0, false);
+            swiperCard.slideTo(this.selectedIndex, 0, false);
+            this.$emit(
+                "update:currentLevelData",
+                this.vipLevelList[this.selectedIndex]
+            );
         }
     },
     watch: {
         vipLevelList() {
-            // 強制讓 Card 的部份回到起始值
-            const swiperLevel = this.$refs.swiperLevel.$swiper;
-            const swiperCard = this.$refs.swiperCard.$swiper;
-            swiperCard.slideTo(0, 500, false);
-            swiperLevel.slideTo(0, 500, false);
-            this.$emit("update:currentLevelData", this.vipLevelList[0]);
+            this.$nextTick(() => {
+                this.initSwiper();
+            });
         }
     }
 };

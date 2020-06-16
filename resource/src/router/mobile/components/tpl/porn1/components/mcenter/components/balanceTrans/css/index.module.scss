@@ -149,7 +149,7 @@
     position: relative;
     display: inline-block;
     box-sizing: border-box;
-    width: 25%;
+    width: 24.5%;
     height: 65px;
     padding: 10px 4px 15px;
     text-align: center;
@@ -172,8 +172,11 @@
         border-bottom: none;
     }
 
-    &.collapse {
+    &.expend {
         float: right;
+    }
+
+    &.expend , &.collapse {
         color: $main_text_color2;
         border-bottom: none;
 

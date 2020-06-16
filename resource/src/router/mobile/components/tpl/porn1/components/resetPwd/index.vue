@@ -53,8 +53,7 @@
                 @blur="verification(item, pwdResetInfo[item].value)"
                 type="password"
                 :placeholder="pwdResetInfo[item].placeholder"
-                :maxlength="pwdResetInfo[item].maxlength"
-                :minlength="pwdResetInfo[item].minlength"
+                maxlength="12"
                 @input="
                   pwdResetInfo[item].value = $event.target.value
                     .toLowerCase()
@@ -63,7 +62,7 @@
                     .replace(/[\W]/g, '')
                 "
               />
-               <input
+              <input
                 v-else
                 :id="item"
                 v-model="pwdResetInfo[item].value"
@@ -171,7 +170,7 @@ export default {
           value: '',
           regExp: /^[a-z0-9._\-!@#$&*+=|]{6,12}$/,
           errorMsg: 'S_PASSWORD_ERROR',
-          placeholder: '請設置新密碼(6-12位字母或數字)',
+          placeholder: '请设置新密码(6-12位字母或数字)',
           maxlength: 12,
           minlength: 6,
           eyeShow: false,
@@ -193,24 +192,36 @@ export default {
       }
     };
   },
+  created() {
+    if (!this.loginStatus) this.$router.push('/mobile/home');
+  },
   computed: {
     ...mapGetters({
       webInfo: 'getWebInfo',
       siteConfig: 'getSiteConfig',
-      memInfo: 'getMemInfo'
+      memInfo: 'getMemInfo',
+      loginStatus: 'getLoginStatus'
     }),
     headerConfig() {
       return {
         prev: !this.memInfo.user.password_reset,
-        onClick: () => { this.$router.back(); },
-        title: this.isResetPW ? this.$text('S_PASSWORD_RESET', '重设密码') : this.$text('S_CHANGE_PASSWD', '修改密码')
+        onClick: () => {
+          this.$router.back();
+        },
+        title: this.isResetPW
+          ? this.$text('S_PASSWORD_RESET', '重设密码')
+          : this.$text('S_CHANGE_PASSWD', '修改密码')
       };
     },
     isResetPW() {
       return this.$route.query.page === 'pwdreset';
     },
     submitActive() {
-      return Object.keys(this.pwdResetInfo).every((key) => !this.pwdResetInfo[key].display || (this.pwdResetInfo[key].display && this.pwdResetInfo[key].value));
+      return Object.keys(this.pwdResetInfo).every(
+        key =>
+          !this.pwdResetInfo[key].display ||
+          (this.pwdResetInfo[key].display && this.pwdResetInfo[key].value)
+      );
     },
     hasFooter() {
       return !this.memInfo.user.password_reset;
@@ -233,12 +244,15 @@ export default {
       const msg = this.$t(data.errorMsg);
 
       if (!re.test(value)) {
-        this.errMsg = msg
+        this.errMsg = msg;
       } else {
         this.errMsg = '';
       }
 
-      if (this.pwdResetInfo['confNewPwd'].value !== this.pwdResetInfo['newPwd'].value) {
+      if (
+        this.pwdResetInfo['confNewPwd'].value !==
+        this.pwdResetInfo['newPwd'].value
+      ) {
         this.errMsg = '确认密码要与新密码一致';
       }
 
@@ -263,7 +277,7 @@ export default {
               this.$router.push('/mobile/mcenter/setting');
             }, 2000);
           },
-          fail: (res) => {
+          fail: res => {
             this.errMsg = `${res.data.msg}(${res.data.code})`;
           }
         });
@@ -282,7 +296,7 @@ export default {
               this.$router.push('/mobile/mcenter/setting');
             }, 2000);
           },
-          fail: (res) => {
+          fail: res => {
             this.errMsg = `${res.data.msg}(${res.data.code})`;
           }
         });
@@ -307,7 +321,7 @@ export default {
               this.$router.push('/mobile/mcenter/setting');
             }, 2000);
           },
-          fail: (res) => {
+          fail: res => {
             this.errMsg = `${res.data.msg}(${res.data.code})`;
           }
         });
@@ -320,16 +334,13 @@ export default {
               this.$router.push('/mobile/mcenter/setting');
             }, 2000);
           },
-          fail: (res) => {
+          fail: res => {
             this.errMsg = res.data.msg;
           }
         });
       }
     },
-    ...mapActions([
-      'actionChangePage',
-      'actionSetUserdata'
-    ]),
+    ...mapActions(['actionChangePage', 'actionSetUserdata']),
     filterField() {
       let displayColumn = ['newPwd', 'confNewPwd'];
       if (this.isResetPW) {
@@ -337,14 +348,13 @@ export default {
       } else {
         displayColumn = ['pwd', ...displayColumn];
       }
-      Object.keys(this.pwdResetInfo).forEach((key) => {
+      Object.keys(this.pwdResetInfo).forEach(key => {
         this.pwdResetInfo[key].display = displayColumn.includes(key);
       });
       return Object.keys(this.pwdResetInfo);
     }
   }
 };
-
 </script>
 
 <style lang="scss" module>

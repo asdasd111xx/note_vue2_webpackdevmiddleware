@@ -107,7 +107,7 @@
         </template>
       </div>
 
-      <popupVerification
+      <popup-verification
         v-if="isShowCaptcha"
         :is-show-captcha.sync="isShowCaptcha"
         :captcha.sync="captchaData"
@@ -118,6 +118,7 @@
 </template>
 
 <script>
+import axios from 'axios';
 import { mapGetters, mapActions } from 'vuex';
 import { API_MCENTER_USER_CONFIG } from '@/config/api';
 import ajax from '@/lib/ajax';
@@ -146,6 +147,7 @@ export default {
       options: {},
       isLock: false,
       timer: null,
+      isSendSMS: false,
       info: {
         key: 'phone',
         text: 'S_TEL',
@@ -304,10 +306,8 @@ export default {
       'actionSetＭcenterBindMessage'
     ]),
     locker() {
-      if (this.countdownSec === 0) {
-        this.countdownSec = 60;
-      }
-
+      if (this.timer) return;
+      this.countdownSec = 60;
       this.timer = setInterval(() => {
         if (this.countdownSec === 0) {
           clearInterval(this.timer);
@@ -318,6 +318,10 @@ export default {
       }, 1000);
     },
     showCaptchaPopup() {
+      if(this.newValue === '') {
+        return
+      }
+
       // 無認證直接呼叫
       if (this.memInfo.config.default_captcha_type === 0) {
         this.handleSend()
@@ -328,7 +332,7 @@ export default {
       this.toggleCaptcha = true
     },
     handleSend() {
-      if (!this.newValue || this.timer) return;
+      if (!this.newValue || this.timer || this.isSendSMS) return;
 
       const getOldPhone = () => {
         if (this.fieldValue) {
@@ -338,6 +342,7 @@ export default {
         return '';
       };
 
+      this.isSendSMS = true;
       if (this.isfromWithdraw) {
         ajax({
           method: 'post',
@@ -349,34 +354,36 @@ export default {
           fail: (res) => {
             this.countdownSec = '';
             this.tipMsg = res.data.msg;
+            this.isSendSMS = false;
           },
           success: (res) => {
             if (res && res.result === 'ok') {
-              this.countdownSec = 60;
               this.actionSetUserdata(true);
               this.locker();
               this.tipMsg = this.$text("S_SEND_CHECK_CODE_VALID_TIME").replace("%s", 5)
             }
+            this.isSendSMS = false;
           }
         });
       } else {
-        mcenter.accountPhoneSend({
-          params: {
+        axios({
+          method: 'post',
+          url: '/api/v1/c/player/verify/phone',
+          data: {
             old_phone: this.memInfo.phone.phone ? `${this.newCode.replace('+', '')}-${this.newValue}` : '',
             phone: `${this.newCode.replace('+', '')}-${this.newValue}`,
             captcha_text: this.captchaData ? this.captchaData : ''
-          },
-          success: () => {
-            this.countdownSec = 60;
-            this.actionSetUserdata(true);
-            this.locker();
-            this.tipMsg = this.$text("S_SEND_CHECK_CODE_VALID_TIME").replace("%s", 5)
-          },
-          fail: (res) => {
-            this.countdownSec = '';
-            this.tipMsg = res.data.msg;
           }
-        });
+        }).then(res => {
+          this.actionSetUserdata(true);
+          this.locker();
+          this.tipMsg = this.$text("S_SEND_CHECK_CODE_VALID_TIME").replace("%s", 5);
+          this.isSendSMS = false;
+        }).catch(error => {
+          this.countdownSec = '';
+          this.tipMsg = error.response.data.msg;
+          this.isSendSMS = false;
+        })
       }
     },
     handleSubmit() {
@@ -444,3 +451,4 @@ export default {
 };
 </script>
 <style src="../../css/index.module.scss" lang="scss" module>
+</style>

@@ -81,12 +81,11 @@
                 }}</span>
               </div>
 
-              <div :class="[$style['balance-item'], $style['collapse']]">
-                <span
-                  :class="$style['balance-item-vendor']"
-                  @click="toggleShowMore"
-                  >更多</span
-                >
+              <div
+                :class="[$style['balance-item'], $style['expend']]"
+                @click="toggleShowMore"
+              >
+                <span :class="$style['balance-item-vendor']">更多</span>
                 <div :class="[$style['icon']]">
                   <img
                     :src="
@@ -176,7 +175,6 @@
           :class="$style['bank-card-cell']"
           @click="handleSelectCard(item)"
         >
-          <!-- 缺銀行圖片 -->
           <img :src="`${bankSrc}${item.bank_id}.png`" />
           <span>{{ item.alias }} </span>
           <div
@@ -218,34 +216,7 @@
         "
       >
         <div :class="$style['tips']">
-          {{
-            $text("S_WITHRAW_DESC", {
-              replace: [
-                {
-                  target: "%s",
-                  value:
-                    withdrawData.payment_charge.ret &&
-                    validateMoney(
-                      withdrawData.payment_charge.ret.withdraw_count
-                    )
-                },
-                {
-                  target: "%s",
-                  value:
-                    withdrawData.payment_charge.ret &&
-                    validateMoney(
-                      withdrawData.payment_charge.ret.allow_withdraw_limit
-                    )
-                },
-                {
-                  target: "%s",
-                  value:
-                    withdrawData.payment_charge.ret &&
-                    validateMoney(withdrawData.payment_charge.ret.withdraw_max)
-                }
-              ]
-            })
-          }}
+          {{ getWithdrawTips }}
         </div>
 
         <!-- 提現輸入 -->
@@ -255,7 +226,7 @@
             v-model="withdrawValue"
             autocomplete="off"
             type="number"
-            @input="validateWithdrawValue($event.target.value)"
+            @blur="validateWithdrawValue($event.target.value)"
             :placeholder="
               $text('S_WITHRAW_PLACEHOLDER', {
                 replace: [
@@ -309,18 +280,9 @@
             withdrawUserData.account &&
             withdrawUserData.account.length > 0
         "
-        :class="[
-          $style['submit-btn'],
-          { [$style['disabled']]: errTips || !withdrawValue || !selectedCard }
-        ]"
+        :class="[$style['submit-btn'], { [$style['disabled']]: lockSubmit }]"
       >
-        <div
-          @click="
-            errTips || !withdrawValue || !selectedCard
-              ? () => {}
-              : handleSubmit()
-          "
-        >
+        <div @click="handleSubmit()">
           立即提现
         </div>
       </div>
@@ -342,6 +304,12 @@
 
       <!-- 流水檢查 -->
       <serial-number v-if="isSerial" :handle-close="toggleSerial" />
+
+      <div v-if="isLoading" :class="$style['loading-wrap']">
+        <div :class="$style['loading-item']">
+          <ele-loading />
+        </div>
+      </div>
     </div>
   </mobile-container>
 </template>
@@ -361,7 +329,7 @@ import {
   API_WITHDRAW_BALANCE_BACK,
   API_WITHDRAW_CGPAY_BINDING,
   API_WITHDRAW_INFO,
-  API_WITHDRAW_WRITE
+  API_WITHDRAW_WRITE_2
 } from '@/config/api';
 import common from '@/api/common';
 
@@ -370,6 +338,7 @@ export default {
   data() {
     return {
       curTitleTab: 'withdrawMethod',
+      isLoading: true,
       isSerial: false,
       isCheckWithdraw: false,
       isOpenOrder: false,
@@ -385,6 +354,7 @@ export default {
     }
   },
   components: {
+    eleLoading: () => import(/* webpackChunkName: 'eleLoading' */ '@/router/web/components/tpl/common/element/loading/circle'),
     mobileContainer,
     balanceTran,
     message,
@@ -406,10 +376,14 @@ export default {
             this.handleSubmit();
           }
         })
+
+        this.isLoading = false;
       }
     },
     withdrawValue() {
-      let value = Number(this.withdrawValue)
+      if (!this.withdrawValue && this.withdrawValue !== 0) return;
+
+      let value = Number(this.withdrawValue);
 
       if (!Number.isInteger(value) && this.withdrawValue) {
         this.errTips = '提现金额必需为整数';
@@ -456,6 +430,9 @@ export default {
       memInfo: 'getMemInfo',
       webInfo: 'getWebInfo',
     }),
+    lockSubmit() {
+      return this.errTips || !this.withdrawValue || this.isSendSubmit || !this.selectedCard;
+    },
     headerConfig() {
       return {
         prev: true,
@@ -469,7 +446,27 @@ export default {
       return !this.webInfo.is_production ?
         'https://images.bbin-asia.com/icon/withdrawBank/' :
         'https://images.dormousepie.com/icon/withdrawBank/'
-    }
+    },
+    getWithdrawTips() {
+      let string = [];
+
+      if (this.withdrawData && this.withdrawData.payment_charge.ret) {
+        const ret = this.withdrawData.payment_charge.ret;
+        if (ret.withdraw_count && Number(ret.withdraw_count) > 0) {
+          string.push(`今日可用提现次数：${ret.allow_withdraw_count}次`);
+        }
+
+        if (ret.withdraw_limit && Number(ret.withdraw_limit) > 0) {
+          string.push(`今日可用提现额度：${ret.allow_withdraw_limit}元`);
+        }
+
+        if (ret.withdraw_max && Number(ret.withdraw_max) > 0) {
+          string.push(`单次最高提现额度：${ret.withdraw_max}元`);
+        }
+
+        return string.join("，");
+      }
+    },
   },
   methods: {
     onClickMaintain(value) {
@@ -497,22 +494,31 @@ export default {
       this.isSerial = !this.isSerial;
     },
     validateWithdrawValue(value) {
-      return value
+      if (!this.withdrawData) return;
+
+      const withdrawMax = Number(this.withdrawData.payment_charge.ret.withdraw_max);
+      const withdrawMin = Number(this.withdrawData.payment_charge.ret.withdraw_min);
+
+      if (this.realWithdrawMoney === '--' ||
+        +this.realWithdrawMoney <= 0 ||
+        +value <= 0 ||
+        +value < withdrawMin ||
+        (withdrawMax > 0 && Number(this.withdrawValue) > withdrawMax)) {
+        this.errTips = `单笔提现金额最小为${withdrawMin}元，最大为${withdrawMax ? `${withdrawMax}元` : '无限制'}`;
+        return;
+      }
     },
     toggleShowMore() {
       this.isShowMore = !this.isShowMore;
     },
     handleSelectCard(item) {
-      if (this.selectedCard === item.id) {
-        // this.selectedCard = "";
-      } else {
-        this.selectedCard = item.id;
-      }
+      this.selectedCard = item.id;
     },
     // 最高提現
     handleMaxWithdraw() {
       if (!this.withdrawData) return;
 
+      // 單筆最高提現
       let withdraw_max = this.withdrawData.payment_charge.ret.withdraw_max
       let balance = this.withdrawData.cash.available_balance
 
@@ -525,8 +531,15 @@ export default {
       this.withdrawValue = Math.floor(Number(result));
     },
     handleSubmit() {
-      if (this.errTips || !this.withdrawValue || this.isSendSubmit)
+      if (this.errTips || !this.withdrawValue || this.isSendSubmit || !this.selectedCard)
         return;
+
+      const withdrawCount = Number(this.withdrawData.payment_charge.ret.allow_withdraw_count);
+      const withdrawLimit = Number(this.withdrawData.payment_charge.ret.allow_withdraw_limit);
+
+      if (withdrawCount === 0 || withdrawLimit === 0) {
+        return;
+      }
 
       if (this.memInfo.config.withdraw_player_verify && !localStorage.getItem('tmp_w_1')) {
         localStorage.setItem('tmp_w_selectedCard', this.selectedCard);
@@ -541,20 +554,12 @@ export default {
         userBankId: this.selectedCard,
         keyring: localStorage.getItem('tmp_w_1') // 手機驗證成功後回傳
       }).then((response) => {
-
-        if (response) {
-          if (response.result === 'error' && response.code === 500110) {
-            this.isOpenOrder = true;
-          }
-
-          if (response.result === 'ok') {
-            this.msg = "提现成功"
-          }
-
-          if (response.result === 'error') {
-            this.errTips = response.msg;
-          }
-        }
+        setTimeout(() => {
+          this.$nextTick(() => {
+            this.isSendSubmit = false;
+            this.getWithdrawAccount();
+          });
+        }, 200)
       });
       localStorage.removeItem('tmp_w_1');
       localStorage.removeItem('tmp_w_selectedCard');
@@ -566,10 +571,9 @@ export default {
        * @method submitWithdraw
        */
     submitWithdraw(params) {
-      if (this.realWithdrawMoney === '--' || this.realWithdrawMoney <= 0) {
+      this.isLoading = true;
+      this.actionSetIsLoading(true);
 
-        return Promise.resolve({ status: 'error', errorCode: '', msg: "金额低于最小金额限制" });
-      }
       //不需要取款密碼,並且可選銀行卡
       let _params = {
         amount: this.withdrawValue,
@@ -579,99 +583,114 @@ export default {
         max_id: this.withdrawData.audit.total.max_id,
         audit_amount: this.withdrawData.audit.total.audit_amount,
         offer_deduction: this.withdrawData.audit.total.offer_deduction,
-        administrative_amount: this.withdrawData.audit.total.administrative_amount
+        administrative_amount: this.withdrawData.audit.total.administrative_amount,
       }
+
       if (params) {
         _params = { ..._params, ...params }
       }
+
       const hasAccountId = !this.withdrawAccount.withdrawType ? 'account_id' : this.withdrawAccount.withdrawType;
 
-      this.isLoading = true;
-      this.actionSetIsLoading(true);
+      if (this.memInfo.config.withdraw === '迅付') {
+        _params = {
+          ..._params,
+          [`ext[api_uri]`]: '/api/trade/v2/c/withdraw/entry',
+          [`ext[method][${hasAccountId}]`]: this.withdrawAccount.id,
+        }
+      }
 
-      // 本站寫單
       return ajax({
         method: 'post',
-        url: API_WITHDRAW_WRITE,
+        // url: API_WITHDRAW_WRITE, 舊的本站寫單
+        url: this.memInfo.config.withdraw === '迅付' ? API_WITHDRAW_WRITE_2 : API_WITHDRAW_WRITE,
         errorAlert: false,
         params: _params,
         success: (response) => {
           if (response && response.result === 'ok') {
-            this.msg = "提现成功"
-
             if (this.memInfo.config.withdraw === '迅付') {
+              this.msg = "提现成功";
+              // 舊的第二次寫單才需要
               // 迅付寫單
+              //   ajax({
+              //     method: 'post',
+              //     url: API_TRADE_RELAY,
+              //     errorAlert: false,
+              //     params: {
+              //       api_uri: '/api/trade/v2/c/withdraw/entry',
+              //       [`method[${hasAccountId}]`]: this.withdrawAccount.id,
+              //       //   password: this.withdrawPwd,
+              //       withdraw_id: response.ret.id
+              //     },
+              //     fail: (res) => {
+              //       console.log(res)
+
+              //       this.msg = '提现已取消，请重新提交申请';
+              //     }
+              //   }).then((res) => {
+              //     console.log(res)
+
+              //     this.isLoading = false;
+              //     this.actionSetIsLoading(false);
+
+              //     if (res && res.result === 'ok') {
+              //       this.msg = "提现成功"
+              //     }
+              //   });
+
+            } else {
+              // 第三方寫單
               ajax({
-                method: 'post',
-                url: API_TRADE_RELAY,
-                errorAlert: true,
+                method: 'get',
+                url: API_WITHDRAW,
+                errorAlert: false,
                 params: {
-                  api_uri: '/api/trade/v2/c/withdraw/entry',
-                  [`method[${hasAccountId}]`]: this.withdrawAccount.id,
-                  //   password: this.withdrawPwd,
-                  withdraw_id: response.ret.id
+                  amount: response.ret.amount,
+                  withdraw_id: response.ret.id,
+                  stage: 'forward',
+                  logo: this.webInfo.logo ? `${this.webInfo.cdn_domain}${this.webInfo.logo}` : '',
+                  mlogo: this.webInfo.m_logo ? `${this.webInfo.cdn_domain}${this.webInfo.m_logo}` : '',
+                  title: encodeURI(this.memInfo.config.domain_name[this.curLang]),
+                  favicon: this.webInfo.fav_icon ? `${this.webInfo.cdn_domain}${this.webInfo.fav_icon}` : '',
+                  check: true
+                },
+                fail: (res) => {
+                  this.msg = '提现已取消，请重新提交申请';
                 }
               }).then((res) => {
                 this.isLoading = false;
                 this.actionSetIsLoading(false);
 
-                if (res && res.result === 'ok') {
-                  this.alertTipClose(true);
+                if (res.result === 'ok') {
+                  this.msg = "提现成功"
+                  this.thirdUrl = res.ret.uri;
                 }
               });
-
-              return;
             }
-
-            // 第三方寫單
-            ajax({
-              method: 'get',
-              url: API_WITHDRAW,
-              errorAlert: true,
-              params: {
-                amount: response.ret.amount,
-                withdraw_id: response.ret.id,
-                stage: 'forward',
-                logo: this.webInfo.logo ? `${this.webInfo.cdn_domain}${this.webInfo.logo}` : '',
-                mlogo: this.webInfo.m_logo ? `${this.webInfo.cdn_domain}${this.webInfo.m_logo}` : '',
-                title: encodeURI(this.memInfo.config.domain_name[this.curLang]),
-                favicon: this.webInfo.fav_icon ? `${this.webInfo.cdn_domain}${this.webInfo.fav_icon}` : '',
-                check: true
-              }
-            }).then((res) => {
-              this.isLoading = false;
-              this.actionSetIsLoading(false);
-
-              if (res.result === 'ok') {
-                this.thirdUrl = res.ret.uri;
-              }
-            });
-
-            return;
+          } else {
+            this.msg = '提现已取消，请重新提交申请';
           }
 
-          if (response.code === 'M500001') {
-            window.location.reload();
-            return;
-          }
 
           this.isLoading = false;
           this.actionSetIsLoading(false);
+          return;
         },
         fail: (error) => {
-          if (error && error.data && error.data.code === 'M500001') {
-            window.location.reload();
-            return;
+          if (error && error.data && error.data.msg) {
+            this.msg = error.data.msg;
+            this.errTips = error.data.msg;
           }
 
-          if (error && error.data && error.data.msg) {
-            this.errTips = error.data.msg;
+          if (error && error.data && error.data.code === 'M500001') {
+            window.location.reload();
+            this.isOpenOrder = true;
           }
 
           this.isLoading = false;
           this.actionSetIsLoading(false);
         }
-      }).then(() => { this.isSendSubmit = false });
+      })
     },
   },
 

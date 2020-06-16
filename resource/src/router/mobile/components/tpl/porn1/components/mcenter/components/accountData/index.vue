@@ -22,9 +22,6 @@
           <img :src="avatarSrc" />
           <img :src="$getCdnPath(`/static/image/_new/mcenter/icon_edit.png`)" />
         </div>
-        <message v-if="msg" @close="msg = ''"
-          ><div slot="msg">{{ msg }}</div>
-        </message>
       </div>
 
       <!-- avatar dialog -->
@@ -49,7 +46,9 @@
           <div @click="isShow = false">{{ $text("S_CANCEL", "取消") }}</div>
         </div>
       </div>
-
+      <message v-if="msg" @close="msg = ''"
+        ><div slot="msg">{{ msg }}</div>
+      </message>
       <account />
       <service-tips />
     </div>
@@ -127,7 +126,6 @@ export default {
       'actionSetUserdata'
     ]),
     handleClickFunc() {
-      this.isShow = false;
       this.msg = this.$text('S_COMING_SOON2', '正在上线 敬请期待');
     },
     dialogShow() {
@@ -142,7 +140,7 @@ export default {
       mcenter.accountDataSet({
         params: { image: this.imgID },
         success: () => {
-          this.actionSetUserdata();
+          this.actionSetUserdata(true);
           this.dialogShow();
           this.imgIndex = this.imgID;
         }
@@ -198,7 +196,7 @@ export default {
   left: 0;
   padding: 0;
   background: #000;
-  z-index: 999;
+  z-index: 100;
 }
 .dialog-mask {
   width: 100%;
@@ -212,7 +210,7 @@ export default {
   width: 100%;
   border-radius: 20px 20px 0 0;
   position: fixed;
-  z-index: 999;
+  z-index: 100;
   min-height: 400px;
   height: 40%;
   background-color: $main_background_white1;

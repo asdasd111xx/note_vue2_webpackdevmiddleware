@@ -2,7 +2,10 @@
   <div :class="$style['content']">
     <div :class="$style['header']">
       <div :class="$style['header-background']">
-        <img :src="$getCdnPath('/static/image/_new/webview/bg_service_app02.png')" alt="background">
+        <img
+          :src="$getCdnPath('/static/image/_new/webview/bg_service_app02.png')"
+          alt="background"
+        />
       </div>
 
       <div :class="$style['header-desc']">
@@ -217,13 +220,13 @@ export default {
 }
 
 .header-background {
-    position: relative;
+  position: relative;
+  width: 100%;
+  height: 100%;
+  img {
     width: 100%;
     height: 100%;
-    img {
-        width: 100%;
-        height: 100%;
-    }
+  }
 }
 
 .header-desc,

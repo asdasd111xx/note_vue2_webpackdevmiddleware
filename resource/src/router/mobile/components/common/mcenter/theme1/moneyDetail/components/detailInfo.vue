@@ -19,7 +19,12 @@
             </div>
             <div :class="[$style.detail, 'clearfix']">
                 <div :class="$style.title">订单号码</div>
-                <div :class="$style.text">{{ detailInfo.ref_id }}</div>
+                <div :class="$style.text">
+                  <span>{{ detailInfo.ref_id }}</span>
+                  <div :class="$style.copyImg" @click="oncopy">
+                      <img :src="$getCdnPath('/static/image/_new/mcenter/moneyDetail/icon_copy.png')" alt="copy">
+                  </div>
+                </div>
             </div>
             <div :class="[$style.detail, 'clearfix']">
                 <div :class="$style.title">備註</div>
@@ -52,6 +57,13 @@ export default {
             type: Object,
             default: null
         }
+    },
+    methods: {
+      oncopy() {
+        this.$copyText(this.detailInfo.ref_id).then((res) => {
+            console.log(res);
+        });
+      }
     },
     beforeDestroy() {
         this.$emit('update:detailInfo', null);
@@ -108,6 +120,18 @@ export default {
     float: right;
     color: #414655;
     font-size: 14px;
+
+    .copyImg {
+      display: inline-block;
+      width: 12px;
+      height: 12px;
+      margin-left: 10px;
+
+      img {
+        width: 100%;
+        height: 100%;
+      }
+    }
 }
 
 .tips {

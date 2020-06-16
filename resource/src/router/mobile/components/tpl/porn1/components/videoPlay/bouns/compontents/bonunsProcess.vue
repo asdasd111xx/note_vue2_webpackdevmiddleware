@@ -75,7 +75,6 @@ export default {
         ],
       isClose: false,
       isInit: false,
-      isForceWait: false,
       totalAmount: 0,
       earnCoin: "",
       curMin: 0,

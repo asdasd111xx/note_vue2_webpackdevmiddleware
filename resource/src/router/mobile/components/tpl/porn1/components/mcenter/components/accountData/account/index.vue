@@ -140,7 +140,6 @@ export default {
     editFacebook: () => import(/* webpackChunkName: 'editFacebook' */'./form/editFacebook'),
     editSkype: () => import(/* webpackChunkName: 'editSkype' */'./form/editSkype'),
     editZalo: () => import(/* webpackChunkName: 'editZalo' */'./form/editZalo'),
-    // receiptAddress: () => import(/* webpackChunkName: 'receiptAddress' */'./receiptAddress')
     message
   },
   data() {
@@ -163,7 +162,8 @@ export default {
     ...mapGetters({
       siteConfig: 'getSiteConfig',
       memInfo: 'getMemInfo',
-      mcenterBindMessage: 'getMcenterBindMessage'
+      mcenterBindMessage: 'getMcenterBindMessage',
+      mobileCheck: 'getMobileCheck'
     }),
     colorClass() {
       return [
@@ -178,7 +178,7 @@ export default {
     this.setMessage(this.mcenterBindMessage);
   },
   mounted() {
-    this.actionSetUserdata(true);
+    // this.actionSetUserdata(true);
   },
   methods: {
     ...mapActions([
@@ -193,6 +193,12 @@ export default {
     },
     handleClick(field) {
       if (field.key === "phone") {
+        //   手機未驗證能設定
+        if (!this.mobileCheck) {
+          this.$router.push({
+            path: `/mobile/mcenter/accountData/phone`
+          });
+        }
         // 只能設定一次
         if (this.memInfo.user.phone && !this.memInfo.config.user_edit_phone) {
           return;

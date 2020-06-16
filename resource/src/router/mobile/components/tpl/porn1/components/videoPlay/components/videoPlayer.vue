@@ -58,6 +58,7 @@ export default {
       isActiveBouns: true, //預設打開由message決定是否啟動
       dialogType: "tips",// 提示 & 賺得彩金
       reconnectTimer: null, //重新連線timer
+      isFULL: false,
       socket: null,
       socketId: "",
       mission: null,
@@ -93,6 +94,7 @@ export default {
       bigPlayButton: true,
     }
 
+    // hls sarfari 小豬視頻必須
     if (this.source === "smallPig") {
       obj['html5'] = {
         hls: {
@@ -318,7 +320,8 @@ export default {
 
                 if (mission) {
                   this.dialogType = 'tips-wait';
-                  bonunsProcess.processType = Number(mission.ActionType) === 7 ? 'next' : 'wait';
+                  bonunsProcess.processType = Number(mission.ActionType) === 6 ? 'next' : 'wait';
+                  bonunsDialog.tagId = mission.TagId;
                   bonunsDialog.missionDesc = mission.Description;
                   bonunsDialog.missionActionType = Number(mission.ActionType);
                   bonunsDialog.isShow = true;
@@ -331,7 +334,7 @@ export default {
                 this.mission = _mission;
                 this.dialogType = 'tips-break';
                 this.$nextTick(() => {
-                  if (_mission) bonunsProcess.processType = Number(_mission.ActionType) === 7 ? 'next' : 'wait';
+                  if (_mission) bonunsProcess.processType = Number(_mission.ActionType) === 6 ? 'next' : 'wait';
                   bonunsDialog.hadEarnNum = data.BreakTimes;
                   bonunsDialog.isShow = true;
                 });
@@ -342,6 +345,7 @@ export default {
                   this.$nextTick(() => {
                     if (_mission) {
                       this.dialogType = 'tips-wait';
+                      bonunsDialog.tagId = mission.TagId;
                       bonunsDialog.missionDesc = _mission.Description;
                       bonunsDialog.missionActionType = Number(_mission.ActionType);
                       bonunsDialog.isShow = true;

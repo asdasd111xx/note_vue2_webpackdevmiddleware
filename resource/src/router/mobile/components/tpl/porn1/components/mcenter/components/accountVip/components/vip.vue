@@ -123,7 +123,7 @@ export default {
         url: `${
           this.siteConfig.YABO_API_DOMAIN
           }/player/vipinfo/${getCookie("cid")}`,
-        headers: { "x-domain": this.memInfo.user.domain }
+        headers: { "x-domain": this.memInfo.user.domain, 'AuthToken': 'YaboAPIforDev0nly', }
       }).then(res => {
 
         this.userVipInfo = res.data.data;
@@ -145,7 +145,7 @@ export default {
           }/player/viplevel/${getCookie("cid")}?configId=${
           this.currentConfigID
           }`,
-        headers: { "x-domain": this.memInfo.user.domain }
+        headers: { "x-domain": this.memInfo.user.domain, 'AuthToken': 'YaboAPIforDev0nly' }
       }).then(res => {
 
         this.vipLevelList = res.data.data;

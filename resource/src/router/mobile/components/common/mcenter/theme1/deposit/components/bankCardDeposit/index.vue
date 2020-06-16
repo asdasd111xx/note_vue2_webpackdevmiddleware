@@ -103,6 +103,7 @@
                     v-model="speedField.depositName"
                     :class="$style['speed-deposit-input']"
                     :placeholder="depositNameInput.placeholderText"
+                    @blur="verificationName"
                     @input="
                       submitDataInput(
                         $event.target.value,
@@ -454,7 +455,7 @@
                       <div
                         v-if="info.copyShow"
                         :class="$style['icon-wrap']"
-                        @click="copyInfo(info.value)"
+                        @click="handleCopy(info.value)"
                       >
                         <div>
                           <icon name="regular/copy" width="12" height="12" />
@@ -478,7 +479,9 @@
             >
               实际到账： ¥{{ realSaveMoney }} (详情)
             </span>
-            <span v-else :class="$style['feature-tip-title']"
+            <span
+              v-else-if="curPayInfo.payment_method_name !== '代客充值'"
+              :class="$style['feature-tip-title']"
               >实际到账： {{ realSaveMoney }}</span
             >
           </div>
@@ -636,6 +639,13 @@ export default {
       nameCheckFail: false,
       msg: ''
     };
+  },
+  watch: {
+    getPassRoadOrAi() {
+      if (this.getPassRoadOrAi.amounts && this.getPassRoadOrAi.amounts.length > 0) {
+        this.moneyValue = this.getPassRoadOrAi.amounts[0];
+      }
+    }
   },
   computed: {
     ...mapGetters({
@@ -824,6 +834,20 @@ export default {
     ...mapActions([
       'actionSetUserBalance'
     ]),
+    verificationName() {
+      const reg = /^[^，:;！@#$%^&*?<>()+=`|[\]{}\\"/.~\-_']*$/;
+      if (!reg.test(this.speedField.depositName)) {
+        this.msg = '请输入正确名称';
+        this.nameCheckFail = true;
+      } else {
+        this.msg = '';
+        this.nameCheckFail = false;
+      }
+    },
+    handleCopy(val) {
+      this.msg = "已复制到剪贴板";
+      this.copyInfo(val)
+    },
     modeChange(listItem, index) {
       this.changeMode(listItem);
 
@@ -895,7 +919,8 @@ export default {
                   this.actionSetUserBalance();
                   this.nowSubmitStatus = 'stepOne';
                 }
-              }
+              },
+              submitStatus: this.submitStatus
             });
           }
         }
