@@ -99,7 +99,7 @@ export default {
   background-repeat: no-repeat;
   background-size: cover;
   background-image: url("/static/image/_new/common/bg.png");
-  height: 100vh;
+  height: calc(100vh - 103px);
 }
 .list {
   padding-left: 17px;
