@@ -431,7 +431,25 @@ export default {
       webInfo: 'getWebInfo',
     }),
     lockSubmit() {
-      return this.errTips || !this.withdrawValue || this.isSendSubmit || !this.selectedCard;
+      if (this.errTips || !this.withdrawValue || this.isSendSubmit || !this.selectedCard) {
+        return true;
+      }
+      if (this.withdrawData && this.withdrawData.payment_charge && this.withdrawData.payment_charge.ret) {
+        const ret = this.withdrawData.payment_charge.ret;
+
+        const allowWithdrawCount = Number(this.withdrawData.payment_charge.ret.allow_withdraw_count);
+        const allowWithdrawLimit = Number(this.withdrawData.payment_charge.ret.allow_withdraw_limit);
+
+        // 非無限次數且有剩額度
+        if (ret.withdraw_count && Number(ret.withdraw_count) > 0 && allowWithdrawCount <= 0) {
+          return true;
+        }
+
+        if (ret.withdraw_limit && Number(ret.withdraw_limit) > 0 && allowWithdrawLimit <= 0) {
+          return true;
+        }
+      }
+      return false;
     },
     headerConfig() {
       return {
@@ -531,13 +549,28 @@ export default {
       this.withdrawValue = Math.floor(Number(result));
     },
     handleSubmit() {
-      if (this.errTips || !this.withdrawValue || this.isSendSubmit || !this.selectedCard)
-        return;
+      const islock = () => {
+        if (this.errTips || !this.withdrawValue || this.isSendSubmit || !this.selectedCard) {
+          return true;
+        }
+        if (this.withdrawData && this.withdrawData.payment_charge && this.withdrawData.payment_charge.ret) {
+          const ret = this.withdrawData.payment_charge.ret;
 
-      const withdrawCount = Number(this.withdrawData.payment_charge.ret.allow_withdraw_count);
-      const withdrawLimit = Number(this.withdrawData.payment_charge.ret.allow_withdraw_limit);
+          const allowWithdrawCount = Number(this.withdrawData.payment_charge.ret.allow_withdraw_count);
+          const allowWithdrawLimit = Number(this.withdrawData.payment_charge.ret.allow_withdraw_limit);
 
-      if (withdrawCount === 0 || withdrawLimit === 0) {
+          // 非無限次數且有剩額度
+          if (ret.withdraw_count && Number(ret.withdraw_count) > 0 && allowWithdrawCount <= 0) {
+            return true;
+          }
+
+          if (ret.withdraw_limit && Number(ret.withdraw_limit) > 0 && allowWithdrawLimit <= 0) {
+            return true;
+          }
+        }
+        return false;
+      }
+      if (islock()) {
         return;
       }
 
