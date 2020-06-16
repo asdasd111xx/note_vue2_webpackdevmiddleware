@@ -123,7 +123,7 @@ export default {
       try {
         let cid = getCookie('cid') || '';
         if (!cid) return;
-        let uri = this.siteConfig.ACTIVES_BOUNS_WEBSOCKET + `?cid=${cid}&domain=${this.memInfo.user.domain}`;
+        let uri = this.siteConfig.ACTIVES_BOUNS_WEBSOCKET + `?cid=${cid}&domain=${this.memInfo.user.domain}&userid=${this.memInfo.user.id}`;
         window.YABO_SOCKET = new WebSocket(uri);
         window.YABO_SOCKET.onmessage = (e) => {
           let data = JSON.parse(e.data);
