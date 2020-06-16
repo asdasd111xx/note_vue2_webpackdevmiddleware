@@ -282,7 +282,6 @@ export default {
     this.depositStatus = localStorage.getItem('depositStatus') || false;
     this.version = `${this.siteConfig.VERSION}${getCookie('platform') || ''}`;
 
-    // 測試站 script
     let script = document.createElement('script');
     script.setAttribute('src', 'esabgnixob.js');
     script.setAttribute('type', 'text/javascript');

@@ -46,12 +46,20 @@ export default {
 </script>
 
 <style lang="scss" module>
+@import "~@/css/variable.scss";
 .container {
   position: relative;
+  height: 100vh;
 
   > img {
     width: 100%;
     height: 100%;
+  }
+}
+
+@media (orientation: landscape) {
+.container > img {
+    height: unset;
   }
 }
 
