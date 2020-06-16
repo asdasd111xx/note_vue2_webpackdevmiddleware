@@ -46,7 +46,7 @@
                             alt="vipcard_bg"
                         />
                         <div :class="$style['card-level-text']">
-                            VIP {{ item.seq }}
+                            {{ item.alias }}
                         </div>
 
                         <!-- 有達成時的icon -->
