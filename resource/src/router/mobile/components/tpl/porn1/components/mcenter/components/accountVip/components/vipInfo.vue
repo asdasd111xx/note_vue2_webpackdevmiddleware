@@ -17,12 +17,9 @@
                 <div :class="$style['cell-text']">
                     <div>
                         {{
-                            currentLevelData.withdraw_fee
-                                ? currentLevelData.withdraw_fee.withdraw_count
-                                    ? currentLevelData.withdraw_fee
-                                          .withdraw_count
-                                    : 0
-                                : "--"
+                            currentLevelData.withdraw_fee ? currentLevelData.withdraw_fee.withdraw_count
+                            ? currentLevelData.withdraw_fee.withdraw_count : "无限制"
+                            : "无限制"
                         }}
                     </div>
                     <div>每日提现次数</div>
@@ -47,7 +44,7 @@
                                 ? +currentLevelData.withdraw_fee.withdraw_limit
                                     ? currentLevelData.withdraw_fee
                                           .withdraw_limit
-                                    : 0
+                                    : "--"
                                 : "--"
                         }}
                     </div>
