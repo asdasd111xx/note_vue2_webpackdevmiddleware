@@ -300,7 +300,6 @@ export default {
             }, 200)
           }
 
-          data.Status = "FULL"
           //狀態
           // 'OPEN', 'PLAY', 'STOP', 'CLOSE', 'BREAK', 'FULL', 'POOR', 'BREAK_WAIT'
           this.$nextTick(() => {
