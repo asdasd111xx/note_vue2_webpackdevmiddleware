@@ -53,7 +53,7 @@
           <span v-if="processType === 'earn'" :class="$style['earn']">
             {{ `+${earnCoin} ` }}元</span
           >
-          <span v-else-if="processType === 'process'">{{ curMin || 0 }}</span>
+          <span v-else-if="processType === 'process'">{{ curMin }}</span>
         </template>
       </div>
     </div>
@@ -62,6 +62,11 @@
 <script>
 
 export default {
+  props: {
+    isUnloginMode: {
+      type: Boolean
+    }
+  },
   data() {
     return {
       curCoinSrc: "coin_bg",
@@ -96,8 +101,19 @@ export default {
       }
     },
     processType() {
-      this.curCoinSrc = this.coinType.find(i => i.key == this.processType).src;
+      if (this.isUnloginMode) {
+        this.curCoinSrc = this.coinType.find(i => i.key == "earn").src;
+      } else {
+        this.curCoinSrc = this.coinType.find(i => i.key == this.processType).src;
+      }
     },
+  },
+  mounted() {
+    if (this.isUnloginMode) {
+      this.curCoinSrc = this.coinType.find(i => i.key == "earn").src;
+      this.earnCoin = "999";
+      this.curMin = "";
+    }
   },
   methods: {
     //   賺得彩金後變換樣式3秒後還原
@@ -126,22 +142,34 @@ export default {
 
       //重置計數
       else if (play === "stop") {
-        this.isPause = false;
-        clearTimeout(this.playingCueTime);
-        this.playingCueTime = null;
+        if (this.isUnloginMode) {
+          clearInterval(this.playingCueTime);
+          this.playingCueTime = null;
+        } else {
+          this.isPause = false;
+          clearTimeout(this.playingCueTime);
+          this.playingCueTime = null;
+        }
         return;
       }
 
       // 暫停後繼續播放
       else if (this.playingCueTime) { this.isPause = false; return; }
 
-      this.isPause = false;
-      this.playingCueTime = setTimeout(() => {
-        // clearTimeout(this.playingCueTime);
-        // this.playingCueTime = null;
-      }, 60000)
-    },
-
+      // 未登入模式 60秒+999
+      if (this.isUnloginMode) {
+        this.isPause = false;
+        this.playingCueTime = setInterval(() => {
+          this.handleToggleEarnCoin();
+        }, 60000)
+      } else {
+        this.isPause = false;
+        this.playingCueTime = setTimeout(() => {
+          clearTimeout(this.playingCueTime);
+          this.playingCueTime = null;
+        }, 60000)
+      }
+    }
   },
   destroyed() {
     this.curMin = 0;
