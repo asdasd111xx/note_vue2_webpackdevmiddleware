@@ -21,7 +21,7 @@
                                 ? currentLevelData.withdraw_fee.withdraw_count
                                     ? currentLevelData.withdraw_fee
                                           .withdraw_count
-                                    : 0
+                                    : "--"
                                 : "--"
                         }}
                     </div>
@@ -47,7 +47,7 @@
                                 ? +currentLevelData.withdraw_fee.withdraw_limit
                                     ? currentLevelData.withdraw_fee
                                           .withdraw_limit
-                                    : 0
+                                    : "--"
                                 : "--"
                         }}
                     </div>
