@@ -68,11 +68,6 @@ export default {
       console.log(vendor, kind, code);
     }
 
-    let query = '';
-    if (vendor === "lg_live" && kind === "2") {
-      query = '&customize=yabo&tableType=3310';
-    }
-
     if (code) {
       temp.code = code;
     }
@@ -84,6 +79,12 @@ export default {
         const { result, ret } = response;
         if (result !== 'ok') {
           return;
+        }
+
+        // 80桌參數
+        let query = '';
+        if (vendor === "lg_live" && kind === "2" && this.$route.query && this.$route.query.q === "R") {
+          query = '&customize=yabo&tableType=3310';
         }
 
         if (!this.isMobile && vendor === 'sp') {

@@ -1,6 +1,6 @@
+import { API_TRADE_RELAY } from '@/config/api';
 import Vue from 'vue';
 import ajax from '@/lib/ajax';
-import { API_TRADE_RELAY } from '@/config/api';
 
 export default {
     props: {
@@ -282,6 +282,7 @@ export default {
          */
         copyInfo(text) {
             this.$copyText(text);
+            this.msg = "已复制到剪贴板";
         }
     }
 };
