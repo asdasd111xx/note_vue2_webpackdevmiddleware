@@ -39,5 +39,8 @@ export default (params) => {
         link += `/${settings.code}`;
     }
 
+    if (params.gameType) {
+        link += `/${settings.code}?q=${params.gameType}`;
+    }
     window.open(link, '', option);
 };

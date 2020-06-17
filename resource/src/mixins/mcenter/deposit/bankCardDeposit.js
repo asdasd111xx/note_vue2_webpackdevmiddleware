@@ -795,6 +795,7 @@ export default {
          */
         copyInfo(text) {
             this.$copyText(text);
+            this.msg = "已复制到剪贴板";
         },
         checkOrderData() {
             // 金額輸入錯誤

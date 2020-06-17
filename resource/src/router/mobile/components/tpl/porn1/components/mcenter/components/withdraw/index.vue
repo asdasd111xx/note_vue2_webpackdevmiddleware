@@ -423,6 +423,11 @@ export default {
       }
     });
   },
+  mounted() {
+    if (this.memInfo.auto_transfer.enable) {
+      this.balanceBack();
+    }
+  },
   computed: {
     ...mapGetters({
       memCurrency: 'getMemCurrency',

@@ -638,8 +638,11 @@ export default {
       //     });
       //     return;
       //   }
-
-      openGame({ kind: game.kind, vendor: game.vendor, code: game.code });
+      if (game.type === "R") {
+        openGame({ kind: game.kind, vendor: game.vendor, code: game.code, gameType: game.type });
+      } else {
+        openGame({ kind: game.kind, vendor: game.vendor, code: game.code });
+      }
     }
   }
 };
