@@ -20,7 +20,7 @@
                             <div :class="$style['deposit-info-td']">{{ depositData.id }}</div>
                         </div>
                         <div :class="[$style['deposit-info-tr'], 'clearfix']">
-                            <div :class="[$style['deposit-info-td'], $style['deposit-info-thead']]">{{ depositData.type_id === 6 ? $text('S_PAY_MODE', '支付方式') : $text('S_USE_BANK', '使用银行') }}</div>
+                            <div :class="[$style['deposit-info-td'], $style['deposit-info-thead']]">{{ depositData.type_id === 6 ? $text('S_PAY_MODE', '支付方式') : $text('S_YOUR_BANK', '您的银行') }}</div>
                             <div :class="$style['deposit-info-td']">{{ depositData.bank_name }}</div>
                         </div>
                         <speed-pay-field
