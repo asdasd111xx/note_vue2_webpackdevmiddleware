@@ -259,7 +259,7 @@
       </template>
 
       <!-- 到帳金額 -->
-      <div v-if="actualMoney" :class="[$style['actual-money']]">
+      <div :class="[$style['actual-money']]">
         <span :class="$style['monet-currency']">到帐金额</span>
         <span :class="$style['monet-currency']">¥</span>
         <span :class="$style['monet-currency']">{{ actualMoney }}</span>
@@ -349,7 +349,7 @@ export default {
       msg: '',
       selectedCard: '',
       errTips: '',
-      actualMoney: '',
+      actualMoney: '0.00',
       hasBankCard: false,
     }
   },

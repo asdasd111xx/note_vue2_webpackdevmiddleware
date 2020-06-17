@@ -43,6 +43,7 @@
         <div :class="$style['serial-basic-cell']">
           <div :class="$style['serial-basic-title']">
             {{ $text("S_DEDUCTION_MONEY", "扣除金额") }}
+            行政费用:({{ `${serialNumberData.administrative_rate}%` }})
           </div>
           <div :class="$style['serial-basic-value']">
             {{ serialNumberData.total.deduction }}
@@ -60,7 +61,7 @@
 
         <div :class="$style['serial-basic-cell']">
           <div :class="$style['serial-basic-title']">
-            {{ $text("S_SERIAL_TOTAL", "合计") }}
+            扣除总计
           </div>
           <div :class="$style['serial-basic-value']">
             {{ serialNumberData.total.total_deduction }}
