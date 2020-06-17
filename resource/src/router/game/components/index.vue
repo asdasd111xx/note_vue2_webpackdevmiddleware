@@ -35,6 +35,7 @@ import { mapGetters } from 'vuex';
 import game from '@/api/game';
 import isMobileFuc from '@/lib/is_mobile';
 import message from "@/router/mobile/components/tpl/porn1/components/common/new/message"
+import { getCookie } from '@/lib/cookie';
 
 export default {
   components: {
@@ -106,6 +107,9 @@ export default {
         setTimeout(() => {
           this.$nextTick(() => {
             window.close();
+            if (getCookie('platform') === "H") {
+              window.history.back();
+            }
           });
         }, 2500)
       }
