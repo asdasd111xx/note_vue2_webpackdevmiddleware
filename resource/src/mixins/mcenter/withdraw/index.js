@@ -442,7 +442,6 @@ export default {
             if (this.isAjaxUse) {
                 return;
             }
-
             this.isAjaxUse = true;
 
             ajax({
@@ -453,6 +452,7 @@ export default {
                 if (response.result === 'ok') {
                     this.isAjaxUse = false;
                     this.updateAmount();
+                    this.msg = '回收成功';
                 }
             });
         }

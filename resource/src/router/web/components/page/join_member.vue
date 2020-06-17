@@ -530,11 +530,13 @@ export default {
         delete params.confirm_password;
       }
 
+      const platform = getCookie('platform');
       bbosRequest({
         method: 'post',
         url: `${this.siteConfig.BBOS_DOMIAN}/Player/Add`,
         reqHeaders: {
-          Vendor: this.memInfo.user.domain
+          'Vendor': this.memInfo.user.domain,
+          'kind': platform === "H" ? 'h' : 'pwa'
         },
         params: {
           ...params

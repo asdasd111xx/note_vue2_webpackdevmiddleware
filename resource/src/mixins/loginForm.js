@@ -99,11 +99,14 @@ export default {
             if (this.isBackEnd) {
                 return null;
             }
+
+            const platform = getCookie('platform');
             return bbosRequest({
                 method: 'put',
                 url: this.siteConfig.BBOS_DOMIAN + '/Login',
                 reqHeaders: {
                     'Vendor': this.memInfo.user.domain,
+                    'kind': platform === "H" ? 'h' : 'pwa'
                 },
                 params: {
                     username: this.username,

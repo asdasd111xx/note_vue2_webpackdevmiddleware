@@ -89,6 +89,11 @@ export default {
   mounted() {
     if (!info) this.$router.back();
     this.hasCid = getCookie('cid') || false;
+
+    const query = this.$route.query;
+    if (query.key) {
+      this.handleToggleContent(query.key);
+    }
   },
   computed: {
     ...mapGetters({
