@@ -645,6 +645,11 @@ export default {
       if (this.getPassRoadOrAi.amounts && this.getPassRoadOrAi.amounts.length > 0) {
         this.moneyValue = this.getPassRoadOrAi.amounts[0];
       }
+    },
+    curPayInfo() {
+      if (this.curPayInfo.payment_method_name === '代客充值') {
+        this.checkSuccess = true;
+      }
     }
   },
   computed: {

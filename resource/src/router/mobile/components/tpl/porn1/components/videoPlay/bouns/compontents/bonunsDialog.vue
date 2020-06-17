@@ -33,6 +33,10 @@
           v-else-if="missionDesc && type.includes('wait')"
           v-html="getDesc(missionDesc)"
         ></div>
+        <template v-else-if="isUnloginMode">
+          加入会员享有<br />
+          超高清超流畅观影送钱
+        </template>
         <template v-else>
           {{ $text("S_ACTIVITY_SLOGAN", "看视频送现金 天天看天天送") }}
         </template>
@@ -55,6 +59,9 @@
             @click="handleClose"
           >
             {{ "继续看" }}
+          </div>
+          <div v-else-if="isUnloginMode" @click="handleClose">
+            继续观影
           </div>
           <div v-else @click="$router.push('/mobile')">
             {{ $text("S_FIRST_LOOK", "先去逛逛") }}
@@ -84,7 +91,7 @@
           </div>
           <div
             v-else
-            @click="$router.push('/mobile/login')"
+            @click="$router.push('/mobile/joinmember')"
             :class="$style['active-btn']"
           >
             {{ $text("S_JOIN_MEMBER", "加入会员") }}
@@ -99,13 +106,13 @@
               <span>
                 恭喜获得今日最高彩金
               </span>
-              <span> ¥&nbsp;{{ limitAmount }} </span>
+              <span>&nbsp;¥&nbsp;{{ limitAmount }} </span>
             </template>
             <template v-else>
               <span>
                 恭喜获得彩金
               </span>
-              <span> ¥&nbsp;{{ earnCurrentNum }} </span>
+              <span>&nbsp;¥&nbsp;{{ earnCurrentNum }} </span>
             </template>
           </div>
           <div :class="$style['earn-cell-wrap']">
@@ -166,6 +173,9 @@ export default {
       type: Number,
       default: ""
     },
+    isUnloginMode: {
+      type: Boolean
+    }
   },
   watch: {
     earnCellNum() {
@@ -295,8 +305,11 @@ export default {
       }).then((res) => {
         if (res && res.data === "ok") {
           window.YABO_SOCKET_RECONNECT();
+        } else {
+          setTimeout(() => {
+            this.$router.push(`/mobile/mcenter/makeMoney`);
+          }, 400)
         }
-        this.$router.push(`/mobile/mcenter/makeMoney`);
       }).catch(e => {
         console.log(e)
       });

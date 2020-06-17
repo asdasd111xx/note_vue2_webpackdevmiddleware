@@ -17,11 +17,13 @@
         ref="bonunsDialog"
         :type="dialogType"
         :videoid="videoInfo.id"
+        :is-unlogin-mode="isUnloginMode"
         @close="handleCloseDialog"
       />
       <bonuns-process
         ref="bonunsProcess"
         :type="dialogType"
+        :is-unlogin-mode="isUnloginMode"
         @click="handleClickProcess"
       />
     </div>
@@ -64,7 +66,7 @@ export default {
       mission: null,
       keepPlay: false, // wait 任務未達成繼續觀看不發送play
       breakwaitCallback: () => { },
-      isFULL: false
+      isFULL: false,
     };
   },
   computed: {
@@ -78,6 +80,10 @@ export default {
     },
     isDebug() {
       return process.env.NODE_ENV === 'development' || (this.$route.query & this.$route.query.debug)
+    },
+    //   未登入模式
+    isUnloginMode() {
+      return !this.loginStatus && false; //吃開關
     }
   },
   mounted() {
@@ -122,7 +128,11 @@ export default {
         if (window.YABO_SOCKET && !this.keepPlay && !this.isFULL) {
           this.onSend("PLAY");
         }
-        this.keepPlay = false
+        this.keepPlay = false;
+
+        if (this.isUnloginMode) {
+          this.unloginModeAction("play");
+        }
       })
 
       // 快轉
@@ -139,7 +149,11 @@ export default {
           this.onSend("STOP");
           this.$refs.bonunsProcess.playCueTime("stop");
         }
-        this.keepPlay = false
+        this.keepPlay = false;
+
+        if (this.isUnloginMode) {
+          this.unloginModeAction("pause");
+        }
       })
 
       this.player.on("ended", () => {
@@ -153,7 +167,7 @@ export default {
         this.handleClickVideo();
       })
 
-      if (!this.loginStatus) {
+      if (!this.loginStatus && !this.isUnloginMode) {
         this.$refs.bonunsDialog.isShow = true
         this.dialogType = 'tips';
       }
@@ -168,6 +182,13 @@ export default {
     },
     //   點擊進圖條任務彈窗
     handleClickProcess() {
+      if (this.isUnloginMode) {
+        this.$refs.bonunsDialog.isShow = true
+        this.dialogType = 'tips';
+        this.playerPause();
+        return;
+      }
+
       const bonunsProcess = this.$refs.bonunsProcess;
       const bonunsDialog = this.$refs.bonunsDialog;
       if (this.mission) {
@@ -185,9 +206,9 @@ export default {
       }
     },
     handleClickVideo() {
-      if (!this.isActiveBouns) return
+      if (!this.isActiveBouns) return;
       // 餘額夠可播放
-      if (!this.loginStatus) {
+      if (!this.loginStatus && !this.isUnloginMode) {
         this.dialogType = 'tips';
         this.$refs.bonunsDialog.isShow = true
         this.playerPause();
@@ -386,6 +407,20 @@ export default {
       }
       window.YABO_SOCKET.send(JSON.stringify(data));
     },
+    unloginModeAction(type) {
+      const bonunsProcess = this.$refs.bonunsProcess;
+      const bonunsDialog = this.$refs.bonunsDialog;
+      if (!bonunsProcess || !bonunsDialog) return;
+
+      switch (type) {
+        case "play":
+          bonunsProcess.playCueTime();
+          break;
+        case "pause":
+          bonunsProcess.playCueTime('stop');
+          break;
+      }
+    }
   },
   created() {
     const self = this;

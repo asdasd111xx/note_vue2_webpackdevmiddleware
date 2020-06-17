@@ -465,28 +465,4 @@ input {
   color: #a6a9b2;
   font-size: 12px;
 }
-
-@media screen and (min-width: $pad) {
-  .submit {
-    font-size: 17px;
-  }
-
-  .field-wrap {
-    input {
-      font-size: 20px;
-      height: 40px;
-    }
-  }
-
-  .eye {
-    height: 40px;
-    width: 24px;
-    top: 25px;
-
-    > img {
-      width: 24px;
-      height: 24px;
-    }
-  }
-}
 </style>

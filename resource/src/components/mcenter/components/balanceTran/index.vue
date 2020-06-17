@@ -338,10 +338,10 @@ export default {
       this.AutotransferLock = true;
       mcenter.balanceTranAutoEnable({
         success: () => {
-          this.msg = '归户成功';
+          this.msg = '切换成功';
           // alert(this.$t('S_SWITCH_AUTO_TRANSFER'));
           this.isAutotransfer = true;
-          this.backAccount();
+          this.backAccount({}, true);
           this.actionSetUserdata(true);
 
           this.AutotransferLock = false;
@@ -360,8 +360,7 @@ export default {
       this.AutotransferLock = true;
       mcenter.balanceTranAutoClose({
         success: () => {
-          this.msg = this.$t('S_SWITCH_SUCCESS');
-          // alert(this.$t('S_SWITCH_SUCCESS'));
+          this.msg = '切换成功';
           this.isAutotransfer = false;
           this.actionSetUserdata(true);
 
@@ -401,13 +400,15 @@ export default {
       this.showIntegerBackConfirm = false;
       this.backAccount();
     },
-    backAccount({ afterSetUserBalance } = {}) {
+    backAccount({ afterSetUserBalance } = {}, fromAuto) {
       mcenter.balanceTranBack({
         success: () => {
           this.lockSec = 0;
           this.actionSetUserBalance()
             .then(() => {
-              this.msg = '回收成功'
+              if (!fromAuto) {
+                this.msg = '回收成功'
+              }
               this.tranOut = '';
               if (afterSetUserBalance) {
                 afterSetUserBalance();

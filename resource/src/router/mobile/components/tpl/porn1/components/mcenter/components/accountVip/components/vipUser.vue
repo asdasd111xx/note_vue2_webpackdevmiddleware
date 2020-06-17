@@ -74,7 +74,7 @@
                     userVipInfo.amount_info.deposit_amount
                 }}</span>
                 ({{ userVipInfo.amount_info.deposit_amount }}/{{
-                    userVipInfo.next_level_deposit_amount
+                    userVipInfo.next_level_deposit_total
                 }})
             </div>
             <div :class="$style['desc-text']">

@@ -56,17 +56,18 @@ $bouns_color6: #FFF07B;
 }
 
 .title {
-    margin-top: 26px;
+    margin-top: 9%;
     line-height: 22px;
     color: $bouns_color1;
     width: 100%;
     font-size: 18px;
+    font-weight: 700;
     text-align: center;
 }
 
 .bouns-func {
     position: absolute;
-    bottom: 34px;
+    bottom: 22px;
     left: 0;
     display: flex;
     padding: 0 5px;
@@ -192,15 +193,20 @@ $bouns_color6: #FFF07B;
 
     >.earn-title {
         color: #3F1000;
-        font-size: 13px;
-        margin: 13px 0;
+        font-size: 14px;
+        margin: 8px 0;
         height: 25px;
         line-height: 25px;
         text-align: center;
+        font-weight: 500;
+        display: flex;
+        justify-content: center;
+        align-items: center;
 
         >span:last-child {
             color: #FF8C21;
             font-size: 22px;
+            font-weight: 700;
         }
     }
 }

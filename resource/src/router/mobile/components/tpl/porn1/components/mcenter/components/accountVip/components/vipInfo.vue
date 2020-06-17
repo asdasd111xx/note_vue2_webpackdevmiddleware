@@ -16,14 +16,9 @@
                 </div>
                 <div :class="$style['cell-text']">
                     <div>
-                        {{
-                            currentLevelData.withdraw_fee
-                                ? currentLevelData.withdraw_fee.withdraw_count
-                                    ? currentLevelData.withdraw_fee
-                                          .withdraw_count
-                                    : 0
-                                : "--"
-                        }}
+                        <span v-if="currentLevelData.withdraw_fee.withdraw_count === 0">无限制</span>
+                        <span v-else-if="currentLevelData.withdraw_fee.withdraw_count === ''">--</span>
+                        <span v-else>{{ currentLevelData.withdraw_fee.withdraw_count }}</span>
                     </div>
                     <div>每日提现次数</div>
                 </div>
@@ -47,7 +42,7 @@
                                 ? +currentLevelData.withdraw_fee.withdraw_limit
                                     ? currentLevelData.withdraw_fee
                                           .withdraw_limit
-                                    : 0
+                                    : "--"
                                 : "--"
                         }}
                     </div>

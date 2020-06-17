@@ -21,6 +21,12 @@
       </div>
       <iframe :src="urlData.url" class="game-iframe" />
     </div>
+
+    <div v-if="isLoading" class="loading-wrap">
+      <div class="loading-item">
+        <ele-loading />
+      </div>
+    </div>
   </div>
 </template>
 
@@ -29,15 +35,18 @@ import { mapGetters } from 'vuex';
 import game from '@/api/game';
 import isMobileFuc from '@/lib/is_mobile';
 import message from "@/router/mobile/components/tpl/porn1/components/common/new/message"
+import { getCookie } from '@/lib/cookie';
 
 export default {
   components: {
     message,
+    eleLoading: () => import(/* webpackChunkName: 'eleLoading' */ '@/router/web/components/tpl/common/element/loading/circle'),
   },
   data() {
     const isMobile = isMobileFuc();
 
     return {
+      isLoading: true,
       isMobile,
       vendor: '',
       urlData: {},
@@ -78,15 +87,19 @@ export default {
         }
 
         if (!this.isMobile && vendor === 'sp') {
+          this.isLoading = false;
+
           this.urlData = ret + query;
           return;
         }
 
         if (!this.isMobile && vendor === 'mg') {
+          this.isLoading = false;
           this.urlData = ret + query;
           return;
         }
 
+        this.isLoading = false;
         window.location.href = ret.url + query;
       },
       fail: (res) => {
@@ -94,6 +107,9 @@ export default {
         setTimeout(() => {
           this.$nextTick(() => {
             window.close();
+            if (getCookie('platform') === "H") {
+              window.history.back();
+            }
           });
         }, 2500)
       }
@@ -112,3 +128,22 @@ export default {
 </script>
 
 <style lang="scss" src="@/css/router/game.scss"></style>
+<style lang="scss" scoped>
+.loading-wrap {
+  position: absolute;
+  width: 100%;
+  height: 100%;
+  display: flex;
+  top: 0;
+  left: 0;
+  text-align: center;
+  background: rgba(0, 0, 0, 0.4);
+  justify-content: center;
+}
+
+.loading-item {
+  position: fixed;
+  margin: 0 auto;
+  top: 40%;
+}
+</style>
