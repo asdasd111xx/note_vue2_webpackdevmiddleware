@@ -296,7 +296,9 @@ export default {
         if (res && res.data === "ok") {
           window.YABO_SOCKET_RECONNECT();
         }
-        this.$router.push(`/mobile/mcenter/makeMoney`);
+        setTimeout(() => {
+          this.$router.push(`/mobile/mcenter/makeMoney`);
+        }, 400)
       }).catch(e => {
         console.log(e)
       });

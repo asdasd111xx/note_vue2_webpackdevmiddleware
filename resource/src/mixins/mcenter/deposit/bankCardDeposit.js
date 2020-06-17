@@ -586,7 +586,17 @@ export default {
 
             let newWindow = '';
             if (this.isPWA) {
-                newWindow = window.open('', '_blank');
+                newWindow = window.open('', '', '_blank', true);
+            }
+
+            const newWindowHref = (uri) => {
+                try {
+                    newWindow.location.href = uri;
+                } catch (e) {
+                    console.log(e);
+                    console.log(newWindow);
+                    console.log(uri)
+                }
             }
 
             // 第三方存款
@@ -614,7 +624,7 @@ export default {
                             return { status: 'third' };
                         }
                         else if (this.isPWA) {
-                            newWindow.location.href = response.ret.uri;
+                            newWindowHref(response.ret.uri);
                             return { status: 'third' };
                         }
                         window.open(response.ret.uri, 'third');
@@ -656,7 +666,7 @@ export default {
                     return Promise.resolve({ status: 'credit' });
                 }
                 else if (this.isPWA) {
-                    newWindow.location.href = this.curPayInfo.external_url;
+                    newWindowHref(this.curPayInfo.external_url);
                     return Promise.resolve({ status: 'credit' });
                 }
 
@@ -719,7 +729,7 @@ export default {
                             return { status: 'third' };
                         }
                         else if (this.isPWA) {
-                            newWindow.location.href = response.ret.deposit.url
+                            newWindowHref(response.ret.deposit.url);
                             return { status: 'third' };
                         }
 
@@ -733,7 +743,7 @@ export default {
                             return { status: 'third' };
                         }
                         else if (this.isPWA) {
-                            newWindow.location.href = response.ret.wallet.url;
+                            newWindowHref(response.ret.wallet.url);
                             return { status: 'third' };
                         }
 
