@@ -69,7 +69,7 @@ export default {
   },
   created() {
     if (this.$route.query && this.$route.query.refresh) {
-      window.location.href = '/mobile/mcenter/makeMoney';
+      window.location.replace('/mobile/mcenter/makeMoney');
       return;
     }
 
