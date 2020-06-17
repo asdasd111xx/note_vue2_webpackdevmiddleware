@@ -73,7 +73,7 @@
                 <span :class="$style['money']">{{
                     userVipInfo.amount_info.deposit_amount
                 }}</span>
-                ({{ userVipInfo.amount_info.deposit_amount }}/{{
+                ({{ userVipInfo.amount_info.deposit_total }}/{{
                     userVipInfo.next_level_deposit_total
                 }})
             </div>
