@@ -293,12 +293,12 @@ export default {
           domain: this.memInfo.user.domain
         },
       }).then((res) => {
-        if (res && res.data === "ok") {
-          window.YABO_SOCKET_RECONNECT();
-        }
+        // if (res && res.data === "ok") {
+        //   window.YABO_SOCKET_RECONNECT();
+        // }
         setTimeout(() => {
-          this.$router.push(`/mobile/mcenter/makeMoney`);
-        }, 400)
+          this.$router.push(`/mobile/mcenter/makeMoney?&refresh=1`);
+        }, 200)
       }).catch(e => {
         console.log(e)
       });
