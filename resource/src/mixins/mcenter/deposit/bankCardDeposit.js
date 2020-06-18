@@ -59,7 +59,7 @@ export default {
          */
         allBanks() {
             // 銀行匯款一律吃 Your_Data 裡面所有的資料
-            if (this.curPayInfo.payment_type_id === 5) {
+            if (this.yourBankData && this.curPayInfo.payment_type_id === 5) {
                 return this.yourBankData.map((bankInfo) => ({
                   label: bankInfo.name,
                   value: bankInfo.id
@@ -507,8 +507,10 @@ export default {
 
             if (!this.isDepositAi && this.curModeGroup.channel_display && ((!this.curPayInfo.bank_id && isOtherBank) || (this.curPayInfo.bank_id || this.selectedBank.value))) {
                 this.getPayPass();
+            }
 
-                // 直接將您的銀行，預設成當前選擇的支付銀行
+            // 銀行轉帳(payment_type_id === 5)，將您的銀行，預設成當前選擇的支付銀行
+            if ( this.allBanks.length !== 0 && this.curPayInfo.payment_type_id === 5 ) {
                 let target = this.allBanks.find(item => {
                   return item.value === info.bank_id
                 })

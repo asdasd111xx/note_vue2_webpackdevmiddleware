@@ -85,7 +85,7 @@
           <!-- 選擇銀行 or 選擇點卡 -->
           <!-- To Do: payment_type_id === 5 就顯示 -->
           <div
-              v-if="(curPayInfo.banks && curPayInfo.banks.length > 0) || curPayInfo.payment_type_id === 5"
+              v-if="(curPayInfo.banks && curPayInfo.banks.length > 0) || (curPayInfo.banks.length > 0 && curPayInfo.payment_type_id === 5)"
               :class="[
                 $style['feature-wrap'],
                 $style['select-card-wrap'],
