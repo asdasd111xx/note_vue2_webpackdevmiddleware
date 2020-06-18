@@ -124,7 +124,7 @@ export default {
           }/player/vipinfo/${cid}`,
         headers: { "x-domain": this.memInfo.user.domain, 'AuthToken': 'YaboAPIforDev0nly', }
       }).then(res => {
-        this.viplevel = res.data && res.data.data ? res.data.data[0].now_level_seq : 0;
+        this.viplevel = res.data && res.data.data ? res.data.data[0] && res.data.data[0].now_level_seq : 0;
       });
     },
     // 大頭貼
