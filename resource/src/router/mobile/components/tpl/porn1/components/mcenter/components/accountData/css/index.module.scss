@@ -21,11 +21,13 @@
     }
 
     >.field-title {
-        height: 20px;
+        height: 22px;
+        line-height: 22px;
     }
 
     >.field-value {
-        height: 20px;
+        height: 22px;
+        line-height: 22px;
     }
 }
 
@@ -46,7 +48,7 @@
     word-break: break-all;
     font-size: 14px;
     color: $main_text_color3;
-    height: 20px;
+    height: 22px;
 
     &.yet {
         color: #cbced8;

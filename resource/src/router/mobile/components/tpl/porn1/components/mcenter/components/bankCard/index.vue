@@ -118,6 +118,11 @@ export default {
       }
 
       if (this.$route.query) {
+        if (this.$route.query.redirect === "home") {
+          this.$router.push('/mobile');
+        } else if (this.$route.query.redirect === "liveStream") {
+          this.$router.push('/mobile/liveStream');
+        }
         this.$router.back();
       }
 

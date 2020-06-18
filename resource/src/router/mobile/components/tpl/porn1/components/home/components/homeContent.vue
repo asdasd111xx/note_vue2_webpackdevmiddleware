@@ -505,23 +505,6 @@ export default {
         return;
       }
 
-      if (!this.loginStatus) {
-        this.$router.push('/mobile/login');
-        return;
-      }
-
-      // 大廳
-      if (game.type === 'L' && [3, 5, 6].includes(game.kind)) {
-        const trans = { 3: 'casino', 5: 'card', 6: 'mahjong' };
-        this.$router.push(`/mobile/${trans[game.kind]}/${game.vendor}`);
-        return;
-      }
-
-      if (game.type === 'T') {
-        this.msg = '正在上线 敬请期待';
-        return;
-      }
-
       // 福利
       if (['YV', 'PV', 'BB', 'GG'].includes(game.type)) {
         switch (game.type) {
@@ -556,6 +539,23 @@ export default {
           default:
             break;
         }
+        return;
+      }
+
+      if (!this.loginStatus) {
+        this.$router.push('/mobile/login');
+        return;
+      }
+
+      // 大廳
+      if (game.type === 'L' && [3, 5, 6].includes(game.kind)) {
+        const trans = { 3: 'casino', 5: 'card', 6: 'mahjong' };
+        this.$router.push(`/mobile/${trans[game.kind]}/${game.vendor}`);
+        return;
+      }
+
+      if (game.type === 'T') {
+        this.msg = '正在上线 敬请期待';
         return;
       }
 
