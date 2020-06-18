@@ -58,8 +58,8 @@ export default {
          * @return array
          */
         allBanks() {
-            // 銀行匯款一律吃 Your_Data 裡面所有的資料
-            if (this.yourBankData && this.curPayInfo.payment_type_id === 5) {
+            // 銀行匯款一律吃 your_Bank 裡面所有的資料
+            if (this.yourBankData.length > 0 && this.curPayInfo.payment_type_id === 5) {
                 return this.yourBankData.map((bankInfo) => ({
                   label: bankInfo.name,
                   value: bankInfo.id
@@ -347,7 +347,9 @@ export default {
                     this.depositData = response.ret.payment_group;
                     this.isDepositAi = response.ret.deposit_ai;
 
-                    this.yourBankData = response.ret.your_bank;
+                    if (response.ret.your_bank) {
+                        this.yourBankData = response.ret.your_bank;
+                    }
 
                     if (this.isDepositAi) {
                         this.PassRoadOrAi();
@@ -510,12 +512,8 @@ export default {
             }
 
             // 銀行轉帳(payment_type_id === 5)，將您的銀行，預設成當前選擇的支付銀行
-            if ( this.allBanks.length !== 0 && this.curPayInfo.payment_type_id === 5 ) {
-                let target = this.allBanks.find(item => {
-                  return item.value === info.bank_id
-                })
-                this.isSelectValue = target.label
-                this.bankSelectValue = target
+            if ( this.yourBankData.length > 0 && this.curPayInfo.payment_type_id === 5 ) {
+                this.defaultCurPayBank()
             }
         },
         /**
@@ -878,6 +876,14 @@ export default {
             }
 
             this.checkSuccess = true;
+        },
+        defaultCurPayBank() {
+            let target = this.allBanks.find(item => {
+              return item.value === this.curPayInfo.bank_id
+            })
+
+            this.isSelectValue = target.label
+            this.bankSelectValue = target
         }
     }
 };
