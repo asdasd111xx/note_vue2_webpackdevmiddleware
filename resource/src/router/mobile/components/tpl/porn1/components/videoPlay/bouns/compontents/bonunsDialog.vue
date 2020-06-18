@@ -91,7 +91,7 @@
           </div>
           <div
             v-else
-            @click="$router.push('/mobile/joinmember')"
+            @click="$router.push('/mobile/login')"
             :class="$style['active-btn']"
           >
             {{ $text("S_JOIN_MEMBER", "加入会员") }}
@@ -303,12 +303,12 @@ export default {
           domain: this.memInfo.user.domain
         },
       }).then((res) => {
-        if (res && res.data === "ok") {
-          window.YABO_SOCKET_RECONNECT();
-        }
+        // if (res && res.data === "ok") {
+        //   window.YABO_SOCKET_RECONNECT();
+        // }
         setTimeout(() => {
-          this.$router.push(`/mobile/mcenter/makeMoney`);
-        }, 400)
+          this.$router.push(`/mobile/mcenter/makeMoney?&refresh=1`);
+        }, 200)
       }).catch(e => {
         console.log(e)
       });
