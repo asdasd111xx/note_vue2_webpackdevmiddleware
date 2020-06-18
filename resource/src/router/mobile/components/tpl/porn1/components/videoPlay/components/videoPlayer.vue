@@ -79,11 +79,11 @@ export default {
       return "true"
     },
     isDebug() {
-      return process.env.NODE_ENV === 'development' || (this.$route.query & this.$route.query.debug)
+      return process.env.NODE_ENV === 'development' || (this.$route.query & this.$route.query.testmode)
     },
     //   未登入模式
     isUnloginMode() {
-      return !this.loginStatus && false; //吃開關
+      return !this.loginStatus && true; //吃開關
     }
   },
   mounted() {
@@ -109,6 +109,10 @@ export default {
         },
         "nativeAudioTracks": false,
         "nativeVideoTracks": false,
+      }
+    } else {
+      if (this.$route.query && this.$route.query.testmode) {
+        obj['crossOrigin'] = 'anonymous'
       }
     }
     this.player = videojs(this.$refs['video-player'], obj);
