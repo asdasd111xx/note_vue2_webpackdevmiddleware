@@ -37,7 +37,8 @@ export default {
                 serialNumber: ''
             },
             isShowPop: false,
-            checkSuccess: false
+            checkSuccess: false,
+            yourBankData: []
         };
     },
     computed: {
@@ -57,6 +58,14 @@ export default {
          * @return array
          */
         allBanks() {
+            // 銀行匯款一律吃 Your_Data 裡面所有的資料
+            if (this.curPayInfo.payment_type_id === 5) {
+                return this.yourBankData.map((bankInfo) => ({
+                  label: bankInfo.name,
+                  value: bankInfo.id
+                }));
+            }
+
             if (!this.curPayInfo || !this.curPayInfo.banks) {
                 return [];
             }
@@ -338,6 +347,8 @@ export default {
                     this.depositData = response.ret.payment_group;
                     this.isDepositAi = response.ret.deposit_ai;
 
+                    this.yourBankData = response.ret.your_bank;
+
                     if (this.isDepositAi) {
                         this.PassRoadOrAi();
                     }
@@ -496,6 +507,13 @@ export default {
 
             if (!this.isDepositAi && this.curModeGroup.channel_display && ((!this.curPayInfo.bank_id && isOtherBank) || (this.curPayInfo.bank_id || this.selectedBank.value))) {
                 this.getPayPass();
+
+                // 直接將您的銀行，預設成當前選擇的支付銀行
+                let target = this.allBanks.find(item => {
+                  return item.value === info.bank_id
+                })
+                this.isSelectValue = target.label
+                this.bankSelectValue = target
             }
         },
         /**

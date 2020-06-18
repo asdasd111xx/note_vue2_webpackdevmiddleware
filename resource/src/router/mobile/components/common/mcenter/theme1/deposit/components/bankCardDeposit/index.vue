@@ -81,6 +81,65 @@
               </div>
             </div>
           </div>
+
+          <!-- 選擇銀行 or 選擇點卡 -->
+          <!-- To Do: payment_type_id === 5 就顯示 -->
+          <div
+              v-if="(curPayInfo.banks && curPayInfo.banks.length > 0) || curPayInfo.payment_type_id === 5"
+              :class="[
+                $style['feature-wrap'],
+                $style['select-card-wrap'],
+                'clearfix'
+              ]"
+              @click="changeType('chagneBank'), (isShowPop = true)"
+          >
+            <span v-if="curPayInfo.payment_type_id === 5" :class="$style['select-bank-title']">
+              {{ $text("S_YOUR_BANK", "您的银行") }}
+            </span>
+            <span v-else :class="$style['select-bank-title']">{{
+              curPayInfo.payment_method_id === 2
+                  ? $text("S_SELECT_POINT_CARD", "请选择点卡")
+                  : $text("S_SELECT_BANKS", "请选择银行")
+              }}
+            </span>
+            <div :class="$style['select-bank-item']">
+              {{ isSelectValue }}
+            </div>
+            <img
+              :class="$style['select-bank-icon']"
+              src="/static/image/_new/common/arrow_next.png"
+            />
+            <div v-if="isShowPop" :class="$style['pop-wrap']">
+              <div
+                :class="$style['pop-mask']"
+                @click.stop="isShowPop = false"
+              />
+              <div :class="$style['pop-menu']">
+                <div :class="$style['pop-title']">
+                  <span @click.stop="isShowPop = false">{{
+                      $text("S_CANCEL", "取消")
+                  }}</span>
+                  选择银行
+                </div>
+                <ul :class="$style['pop-list']">
+                  <li
+                      v-for="item in paySelectData['chagneBank'].allData"
+                      :key="item.selectId"
+                      @click.stop="changeSelectValue(item.value)"
+                    >
+                    <img v-lazy="getImg(item)" />
+                      {{ item.label }}
+                    <icon
+                      v-if="item.value === selectedBank.value"
+                      :class="$style['select-active']"
+                      name="check"
+                    />
+                  </li>
+                </ul>
+              </div>
+            </div>
+          </div>
+
           <template v-if="curPayInfo.payment_method_id !== 20">
             <!-- 充值人姓名 -->
             <div
@@ -120,59 +179,6 @@
                 ]"
               >
                 为即时到账，请务必输入正确的汇款人姓名
-              </div>
-            </div>
-
-            <!-- 選擇銀行 or 選擇點卡 -->
-            <div
-              v-if="curPayInfo.banks && curPayInfo.banks.length > 0"
-              :class="[
-                $style['feature-wrap'],
-                $style['select-card-wrap'],
-                'clearfix'
-              ]"
-              @click="changeType('chagneBank'), (isShowPop = true)"
-            >
-              <span :class="$style['select-bank-title']">{{
-                curPayInfo.payment_method_id === 2
-                  ? $text("S_SELECT_POINT_CARD", "请选择点卡")
-                  : $text("S_YOUR_BANK", "您的银行")
-              }}</span>
-              <div :class="$style['select-bank-item']">
-                {{ isSelectValue }}
-              </div>
-              <img
-                :class="$style['select-bank-icon']"
-                src="/static/image/_new/common/arrow_next.png"
-              />
-              <div v-if="isShowPop" :class="$style['pop-wrap']">
-                <div
-                  :class="$style['pop-mask']"
-                  @click.stop="isShowPop = false"
-                />
-                <div :class="$style['pop-menu']">
-                  <div :class="$style['pop-title']">
-                    <span @click.stop="isShowPop = false">{{
-                      $text("S_CANCEL", "取消")
-                    }}</span>
-                    选择银行
-                  </div>
-                  <ul :class="$style['pop-list']">
-                    <li
-                      v-for="item in paySelectData['chagneBank'].allData"
-                      :key="item.selectId"
-                      @click.stop="changeSelectValue(item.value)"
-                    >
-                      <img v-lazy="getImg(item)" />
-                      {{ item.label }}
-                      <icon
-                        v-if="item.value === selectedBank.value"
-                        :class="$style['select-active']"
-                        name="check"
-                      />
-                    </li>
-                  </ul>
-                </div>
               </div>
             </div>
 
@@ -855,8 +861,19 @@ export default {
     modeChange(listItem, index) {
       this.changeMode(listItem);
 
+      // 進來充值頁面，沒有 bankSelectValue 的預設值才觸發，再切換其它類別不再觸發
       if (Object.keys(this.selectedBank).length === 0) {
         this.bankSelectValue = this.allBanks[0] || {};
+      }
+
+      // 當切換其它類別是銀行匯款的類別時，才會觸發
+      if (this.curPayInfo.payment_type_id === 5) {
+        // 直接將您的銀行，預設成當前選擇的支付銀行
+        let target = this.allBanks.find(item => {
+          return item.value === this.curPayInfo.bank_id
+        })
+        this.isSelectValue = target.label
+        this.bankSelectValue = target
       }
     },
     /**
