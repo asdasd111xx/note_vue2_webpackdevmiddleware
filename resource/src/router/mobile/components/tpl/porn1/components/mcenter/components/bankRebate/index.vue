@@ -24,6 +24,7 @@ export default {
             return {
                 prev: true,
                 title: '我的返水',
+                customTitle: true,
                 onClick: () => {
                     this.$router.back();
                 }
