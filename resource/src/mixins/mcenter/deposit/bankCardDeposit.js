@@ -37,8 +37,14 @@ export default {
                 serialNumber: ''
             },
             isShowPop: false,
-            checkSuccess: false
+            checkSuccess: false,
+            webviewOpenUrl: ''
         };
+    },
+    watch: {
+        webviewOpenUrl() {
+            setTimeout(() => { document.location.href = this.webviewOpenUrl }, 500);
+        }
     },
     computed: {
         ...mapGetters({
@@ -620,7 +626,8 @@ export default {
                         });
 
                         if (this.isWebView) {
-                            setTimeout(function () { document.location.href = response.ret.uri; }, 250);
+                            this.webviewOpenUrl = response.ret.uri;
+                            // setTimeout(function () { document.location.href = response.ret.uri; }, 250);
                             return { status: 'third' };
                         }
                         else if (this.isPWA) {
@@ -662,7 +669,8 @@ export default {
                 });
 
                 if (this.isWebView) {
-                    setTimeout(function () { document.location.href = this.curPayInfo.external_url; }, 250);
+                    this.webviewOpenUrl = this.curPayInfo.external_url;
+                    // setTimeout(function () { document.location.href = this.curPayInfo.external_url; }, 250);
                     return Promise.resolve({ status: 'credit' });
                 }
                 else if (this.isPWA) {
@@ -724,8 +732,10 @@ export default {
                     });
 
                     if (response.ret.deposit.url) {
+                        console.log(response.ret.deposit.url, this.isWebview)
                         if (this.isWebview) {
-                            setTimeout(function () { document.location.href = response.ret.deposit.url; }, 250);
+                            this.webviewOpenUrl = response.ret.deposit.url;
+                            // setTimeout(function () { document.location.href = response.ret.deposit.url; }, 250);
                             return { status: 'third' };
                         }
                         else if (this.isPWA) {
@@ -739,7 +749,8 @@ export default {
 
                     if (response.ret.wallet.url) {
                         if (this.isWebview) {
-                            setTimeout(function () { document.location.href = response.ret.wallet.url; }, 250);
+                            this.webviewOpenUrl = response.ret.wallet.url;
+                            // setTimeout(function () { document.location.href = response.ret.wallet.url; }, 250);
                             return { status: 'third' };
                         }
                         else if (this.isPWA) {
