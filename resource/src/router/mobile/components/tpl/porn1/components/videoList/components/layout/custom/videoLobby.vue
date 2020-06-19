@@ -1,5 +1,5 @@
 <template>
-  <div :class="$style['video-lobby-container']">
+  <div :class="$style['video-lobby-container']" id="video-lobby-container">
     <div :class="$style['top-wrap']">
       <span @click="msg = '正在上线 敬请期待'">频道</span>
       <div
@@ -44,6 +44,7 @@
 
     <div :class="$style['video-list-wrap']">
       <div
+        :id="`${i}`"
         v-for="(videoData, i) in allVideoList"
         :key="`video-type-${i}`"
         :class="$style['video-cell']"
@@ -52,15 +53,7 @@
           <div :class="$style['type-name']">{{ videoData.name }}</div>
           <div
             :class="$style['btn-more']"
-            @click.stop="
-              openVideo('videoList', {
-                query: {
-                  source: $route.query.source,
-                  tagId: +videoType.id,
-                  sortId: +videoData.id || 0
-                }
-              })
-            "
+            @click.stop="handleMore(i, videoData)"
           >
             <span>更多</span>
             <span :class="$style['icon-arrow']">
@@ -80,12 +73,7 @@
             :key="`video-${video.id}`"
             :href="`/mobile/videoPlay/${video.id}`"
             :class="$style['video']"
-            @click.stop="
-              openVideo('videoPlay', {
-                params: { id: video.id },
-                query: { source: $route.query.source }
-              })
-            "
+            @click.stop="handleVideo(i, video)"
           >
             <div :class="$style['video-img']">
               <img v-lazy="getImg(video.image)" />
@@ -168,6 +156,23 @@ export default {
     this.getVideoList();
   },
   methods: {
+    handleVideo(tag, video) {
+      window.location.replace(`${window.location.pathname}${window.location.search}#${tag}`);
+      this.openVideo('videoPlay', {
+        params: { id: video.id },
+        query: { source: this.$route.query.source }
+      })
+    },
+    handleMore(tag, videoData) {
+      window.location.replace(`${window.location.pathname}${window.location.search}#${tag}`);
+      this.openVideo('videoList', {
+        query: {
+          source: this.$route.query.source,
+          tagId: +this.videoType.id || 0,
+          sortId: +videoData.id || 0
+        }
+      })
+    },
     getImg(img) {
       const isYabo = this.source === 'yabo';
       return {
@@ -317,13 +322,28 @@ export default {
         }
 
         this.videoList = [...response.result];
+        this.$nextTick(() => {
+          if (window.location.hash) {
+            const hash = Number(window.location.hash.replace('#', '')) || 0;
+            const wrap = document.getElementById('video-lobby-container');
+            const cells = document.getElementsByClassName(this.$style['video-cell']);
+
+            if (wrap && cells && cells[0] && hash > 0) {
+              let totalTop = 0;
+              for (let i = 0; i < hash; i++) {
+                totalTop += cells[i].offsetHeight;
+              }
+
+              wrap.scrollTop = 220 + totalTop;
+            }
+          }
+        })
       });
     },
     openVideo(name, routerParam) {
       this.$router.push({ name, ...routerParam });
     }
   },
-  watch: {}
 };
 </script>
 
@@ -332,13 +352,16 @@ export default {
 
 .video-lobby-container {
   padding: 50px 0 20px;
+  height: calc(100vh - 100px);
+  overflow: scroll;
 }
 
 .top-wrap {
+  max-width: $mobile_max_width;
   position: fixed;
   width: 100%;
   height: 50px;
-  top: 40px;
+  top: 43px;
   display: flex;
   justify-content: center;
   align-items: center;
@@ -427,6 +450,7 @@ export default {
   position: relative;
   padding: 0 20px;
   margin: auto;
+  //   height: calc(100vh - 105px);
 
   .video-cell {
     position: relative;
