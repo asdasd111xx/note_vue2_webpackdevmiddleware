@@ -620,7 +620,7 @@ export default {
                         });
 
                         if (this.isWebView) {
-                            window.location.href = response.ret.uri;
+                            setTimeout(function () { document.location.href = response.ret.uri; }, 250);
                             return { status: 'third' };
                         }
                         else if (this.isPWA) {
@@ -662,7 +662,7 @@ export default {
                 });
 
                 if (this.isWebView) {
-                    window.location.href = this.curPayInfo.external_url;
+                    setTimeout(function () { document.location.href = this.curPayInfo.external_url; }, 250);
                     return Promise.resolve({ status: 'credit' });
                 }
                 else if (this.isPWA) {
@@ -725,7 +725,7 @@ export default {
 
                     if (response.ret.deposit.url) {
                         if (this.isWebview) {
-                            window.location.href = response.ret.deposit.url;
+                            setTimeout(function () { document.location.href = response.ret.deposit.url; }, 250);
                             return { status: 'third' };
                         }
                         else if (this.isPWA) {
@@ -739,7 +739,7 @@ export default {
 
                     if (response.ret.wallet.url) {
                         if (this.isWebview) {
-                            window.location.href = response.ret.wallet.url;
+                            setTimeout(function () { document.location.href = response.ret.wallet.url; }, 250);
                             return { status: 'third' };
                         }
                         else if (this.isPWA) {
