@@ -115,7 +115,7 @@ export default {
     /* 彩金websocket */
     reconnectYaboWS() {
       if (this.reconnectTimer) return;
-      this.reconnectTimer = setTimeout(() => {
+      this.reconnectTimer = setInterval(() => {
         if (this.isDebug) {
           console.log("[WS]: Reconnecting");
         }
@@ -139,6 +139,8 @@ export default {
           if (window.YABO_SOCKET_VIDEO_ONMESSAGE) {
             window.YABO_SOCKET_VIDEO_ONMESSAGE(e);
           }
+          clearInterval(this.reconnectTimer);
+          this.reconnectTimer = null;
         };
         window.YABO_SOCKET.onerror = (e) => {
           console.log("[WS]: onError:", e)
@@ -154,13 +156,9 @@ export default {
           if (this.isDebug) {
             console.log("[WS]: onOpen: Success")
           }
-          clearTimeout(this.reconnectTimer);
+          clearInterval(this.reconnectTimer);
           this.reconnectTimer = null;
         };
-        window.YABO_SOCKET_RECONNECT = () => {
-          window.YABO_SOCKET.close();
-          this.connectYaboWS();
-        }
       } catch (e) {
         console.log("[WS]: connectYaboWS Error:", e);
       }

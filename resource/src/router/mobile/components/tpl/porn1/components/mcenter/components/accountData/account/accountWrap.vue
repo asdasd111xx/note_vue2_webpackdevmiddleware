@@ -208,7 +208,7 @@ export default {
       }).then((response) => {
         if (response && response.result === 'ok') {
           Object.keys(this.verification).forEach((key) => {
-            this.verification[key] = response.ret.config[key].code;
+            this.verification[key] = response.ret.user[key];
           });
 
           Object.keys(this.dataList).forEach((item) => {

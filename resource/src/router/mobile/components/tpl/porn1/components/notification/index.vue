@@ -78,7 +78,20 @@ export default {
         if (this.data.event === ("notice")) {
           this.show();
         }
+
+        if (this.data.event === ("maintain_notice")) {
+          this.show();
+        }
       }
+
+      // event: "maintain_notice"
+      // message:
+      // content: "COMMON_MAINTAIN_NOTICE"
+      // countdown: 1
+      // end_at: "2020-06-19T17:05:00+0800"
+      // start_at: "2020-06-19T17:00:00+0800"
+      // text: "网站系统公告↵网站即将进行系统维护，如有不便之处，敬请见谅 !↵预计完成 :↵美东时间 %s↵北京时间 %s↵於 %s 分钟後开始"
+      // type: "c_domain_maintain"
 
       //   if (this.noticeData.length > 4) {
       //     const resultMsg = cloneDeep(this.noticeData);
@@ -131,6 +144,10 @@ export default {
       return Vue.moment(string).format("llll");
     },
     getText(key) {
+      if (this.data.event === ("maintain_notice")) {
+        let string = `网站系统公告\n网站即将进行系统维护，如有不便之处，敬请见谅 !`
+        return string;
+      }
       return this.lang[key] ? this.lang[key] : "您有 1 封新的站内信，请前往查看"
     },
     deleMsg(id) {
