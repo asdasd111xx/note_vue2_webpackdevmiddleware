@@ -1,5 +1,9 @@
 <template>
-  <div :class="$style['discover-artist-wrap']" @scroll="onScroll">
+  <div
+    :class="$style['discover-artist-wrap']"
+    @scroll="onScroll"
+    :style="{ paddingBottom: dynamicPB + 'px' }"
+  >
     <div :class="$style['artist-container']" data-letter="HOT">
       <div :class="[$style.title, $style.hot]">
         {{ $text("S_HOT_ARTIST", "人气女优") }}
@@ -57,36 +61,44 @@
 
 <script>
 /* global $ */
-import axios from 'axios';
-import find from 'lodash/find';
-import pornRequest from '@/api/pornRequest';
+import axios from "axios";
+import find from "lodash/find";
+import pornRequest from "@/api/pornRequest";
 
 export default {
   data() {
     return {
       hotArtist: [],
       allArtist: [],
-      active: 'HOT'
+      active: "HOT",
+      dynamicPB: null
     };
   },
-  created() {
-    pornRequest({
-      url: `/video/artist`,
+  mounted() {
+    $(window).scroll(this.onScroll);
 
-    }).then((response) => {
+    pornRequest({
+      url: `/video/artist`
+    }).then(response => {
       if (response.status !== 200) {
         return;
       }
 
       this.hotArtist = [...response.result.hotArtist];
       this.allArtist = [...response.result.allArtist];
+    }).then(() => {
+      let wrap = document.getElementsByClassName(
+        this.$style["discover-artist-wrap"]
+      );
+      const container = document.getElementsByClassName(
+        this.$style["artist-container"]
+      );
+      const target = container[container.length - 1];
+      this.dynamicPB = wrap[0].offsetHeight - target.offsetHeight
     });
   },
-  mounted() {
-    $(window).scroll(this.onScroll);
-  },
   beforeDestroy() {
-    $(window).off('scroll', this.onScroll);
+    $(window).off("scroll", this.onScroll);
   },
   methods: {
     getImg(image) {
@@ -94,19 +106,32 @@ export default {
         src: image,
         error: this.$getCdnPath(`/static/image/_new/default/bg_avatar_d.png`),
         loading: this.$getCdnPath(`/static/image/_new/default/bg_avatar_d.png`)
-      }
+      };
     },
     onScroll() {
-      let wrap = document.getElementsByClassName(this.$style['discover-artist-wrap'])[0];
+      let wrap = document.getElementsByClassName(
+        this.$style["discover-artist-wrap"]
+      )[0];
       const scrollTop = wrap.scrollTop;
-      const container = document.getElementsByClassName(this.$style['artist-container']);
-      const element = find(container, (ele) => scrollTop >= ele.offsetTop - 40 && scrollTop < ele.offsetTop + ele.offsetHeight);
+      const container = document.getElementsByClassName(
+        this.$style["artist-container"]
+      );
+      const element = find(
+        container,
+        ele =>
+          scrollTop >= ele.offsetTop - 40 &&
+          scrollTop < ele.offsetTop + ele.offsetHeight
+      );
       if (element && element.dataset) this.active = element.dataset.letter;
     },
     onScrollTop(target) {
-      let wrap = document.getElementsByClassName(this.$style['discover-artist-wrap'])[0];
-      const container = document.getElementsByClassName(this.$style['artist-container']);
-      const element = find(container, (ele) => ele.dataset.letter === target);
+      let wrap = document.getElementsByClassName(
+        this.$style["discover-artist-wrap"]
+      )[0];
+      const container = document.getElementsByClassName(
+        this.$style["artist-container"]
+      );
+      const element = find(container, ele => ele.dataset.letter === target);
       wrap.scrollTo(0, element.offsetTop);
     }
   }
@@ -120,7 +145,7 @@ export default {
   position: relative;
   height: calc(100vh - 105px);
   overflow-y: scroll;
-  padding-bottom: 100px;
+  //   padding-bottom: 100px;
 }
 
 .artist-container {
