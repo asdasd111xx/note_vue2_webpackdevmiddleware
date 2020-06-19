@@ -38,20 +38,21 @@ export default {
             },
             isShowPop: false,
             checkSuccess: false,
-            yourBankData: []
+            yourBankData: [],
+            webviewOpenUrl: ''
         };
+    },
+    watch: {
+        webviewOpenUrl() {
+            setTimeout(() => { document.location.href = this.webviewOpenUrl }, 500);
+        }
     },
     computed: {
         ...mapGetters({
             memInfo: 'getMemInfo',
             isLoading: 'getIsLoading'
         }),
-        isWebView() {
-            return getCookie('platform') === "H" || window.location.host === "yaboxxxapp02.com";
-        },
-        isPWA() {
-            return getCookie('platform') === "G" || window.location.host === "yaboxxxapp01.com";
-        },
+
         /**
          * 所有銀行
          *
@@ -61,8 +62,8 @@ export default {
             // 銀行匯款一律吃 your_Bank 裡面所有的資料
             if (this.yourBankData.length > 0 && this.curPayInfo.payment_type_id === 5) {
                 return this.yourBankData.map((bankInfo) => ({
-                  label: bankInfo.name,
-                  value: bankInfo.id
+                    label: bankInfo.name,
+                    value: bankInfo.id
                 }));
             }
 
@@ -512,7 +513,7 @@ export default {
             }
 
             // 銀行轉帳(payment_type_id === 5)，將您的銀行，預設成當前選擇的支付銀行
-            if ( this.yourBankData.length > 0 && this.curPayInfo.payment_type_id === 5 ) {
+            if (this.yourBankData.length > 0 && this.curPayInfo.payment_type_id === 5) {
                 this.defaultCurPayBank()
             }
         },
@@ -602,8 +603,11 @@ export default {
 
             this.nameCheckFail = false;
 
+            let isPWA = getCookie('platform') === "G" || window.location.host === "yaboxxxapp01.com";
+            let isWebView = getCookie('platform') === "H" || window.location.host === "yaboxxxapp02.com";
+
             let newWindow = '';
-            if (this.isPWA) {
+            if (isPWA) {
                 newWindow = window.open('', '', '_blank', true);
             }
 
@@ -626,6 +630,9 @@ export default {
                 }).then((response) => {
                     this.isShow = false;
                     this.actionSetIsLoading(false);
+                    let _isWebview = getCookie('platform') === "H" || window.location.host === "yaboxxxapp02.com"
+                    let _isPWA = getCookie('platform') === "G" || window.location.host === "yaboxxxapp01.com"
+
                     if (response && response.result === 'ok') {
                         console.log(response.ret.uri);
 
@@ -637,11 +644,12 @@ export default {
                             eventLabel: 'success'
                         });
 
-                        if (this.isWebView) {
-                            window.location.href = response.ret.uri;
+                        if (_isWebview) {
+                            this.webviewOpenUrl = response.ret.uri;
+                            // setTimeout(function () { document.location.href = response.ret.uri; }, 250);
                             return { status: 'third' };
                         }
-                        else if (this.isPWA) {
+                        else if (_isPWA) {
                             newWindowHref(response.ret.uri);
                             return { status: 'third' };
                         }
@@ -661,7 +669,7 @@ export default {
                         this.msg = response.msg;
                     }
 
-                    if (this.isPWA) {
+                    if (_isPWA) {
                         newWindow.close();
                     }
 
@@ -679,11 +687,11 @@ export default {
                     eventLabel: 'success'
                 });
 
-                if (this.isWebView) {
-                    window.location.href = this.curPayInfo.external_url;
+                if (isWebView) {
+                    this.webviewOpenUrl = this.curPayInfo.external_url;
                     return Promise.resolve({ status: 'credit' });
                 }
-                else if (this.isPWA) {
+                else if (isPWA) {
                     newWindowHref(this.curPayInfo.external_url);
                     return Promise.resolve({ status: 'credit' });
                 }
@@ -731,6 +739,8 @@ export default {
 
                 this.isShow = false;
                 this.actionSetIsLoading(false);
+                let _isWebview = getCookie('platform') === "H" || window.location.host === "yaboxxxapp02.com"
+                let _isPWA = getCookie('platform') === "G" || window.location.host === "yaboxxxapp01.com"
 
                 if (response && response.result === 'ok') {
                     // 流量分析事件 - 成功
@@ -741,12 +751,15 @@ export default {
                         eventLabel: 'success'
                     });
 
+                    console.log(response.ret, _isWebview)
+
                     if (response.ret.deposit.url) {
-                        if (this.isWebview) {
-                            window.location.href = response.ret.deposit.url;
+                        if (_isWebview) {
+                            this.webviewOpenUrl = response.ret.deposit.url;
+                            // setTimeout(function () { document.location.href = response.ret.deposit.url; }, 250);
                             return { status: 'third' };
                         }
-                        else if (this.isPWA) {
+                        else if (_isPWA) {
                             newWindowHref(response.ret.deposit.url);
                             return { status: 'third' };
                         }
@@ -756,11 +769,12 @@ export default {
                     }
 
                     if (response.ret.wallet.url) {
-                        if (this.isWebview) {
-                            window.location.href = response.ret.wallet.url;
+                        if (_isWebview) {
+                            this.webviewOpenUrl = response.ret.wallet.url;
+                            // setTimeout(function () { document.location.href = response.ret.wallet.url; }, 250);
                             return { status: 'third' };
                         }
-                        else if (this.isPWA) {
+                        else if (_isPWA) {
                             newWindowHref(response.ret.wallet.url);
                             return { status: 'third' };
                         }
@@ -785,7 +799,7 @@ export default {
                         this.orderData[info] = response.ret[info];
                     });
 
-                    if (this.isPWA) {
+                    if (_isPWA) {
                         newWindow.close();
                     }
 
@@ -800,7 +814,7 @@ export default {
                     eventLabel: 'failure'
                 });
 
-                if (this.isPWA) {
+                if (_isPWA) {
                     newWindow.close();
                 }
 
@@ -879,7 +893,7 @@ export default {
         },
         defaultCurPayBank() {
             let target = this.allBanks.find(item => {
-              return item.value === this.curPayInfo.bank_id
+                return item.value === this.curPayInfo.bank_id
             })
 
             this.isSelectValue = target.label
