@@ -86,7 +86,10 @@ export default {
         if (this.tabList.length) {
           return;
         }
-        this.tabList = response.tab_list;
+        this.tabList = response.tab_list
+
+        // 原為全部優惠
+        this.tabList[0].name = "全部"
       });
     },
     onClick({ link }) {
