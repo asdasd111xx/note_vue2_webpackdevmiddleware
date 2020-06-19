@@ -51,12 +51,7 @@ export default {
             memInfo: 'getMemInfo',
             isLoading: 'getIsLoading'
         }),
-        isWebView() {
-            return getCookie('platform') === "H" || window.location.host === "yaboxxxapp02.com";
-        },
-        isPWA() {
-            return getCookie('platform') === "G" || window.location.host === "yaboxxxapp01.com";
-        },
+
         /**
          * 所有銀行
          *
@@ -315,6 +310,12 @@ export default {
         ...mapActions([
             'actionSetIsLoading'
         ]),
+        isWebView() {
+            return getCookie('platform') === "H" || window.location.host === "yaboxxxapp02.com";
+        },
+        isPWA() {
+            return getCookie('platform') === "G" || window.location.host === "yaboxxxapp01.com";
+        },
         /**
          * 取得支付群組
          * @method getPayGroup
