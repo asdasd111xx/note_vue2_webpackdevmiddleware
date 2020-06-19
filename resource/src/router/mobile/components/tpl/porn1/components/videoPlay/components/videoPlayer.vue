@@ -66,7 +66,6 @@ export default {
       mission: null,
       keepPlay: false, // wait 任務未達成繼續觀看不發送play
       breakwaitCallback: () => { },
-      isFULL: false,
     };
   },
   computed: {

@@ -31,11 +31,8 @@ export default {
               text: 'S_REAL_NAME',
               status: '',
               value: '',
-              btnText: '',
               btnShow: true,
-              type: 'edit',
               isShow: true,
-              popTitle: '',
               placeholder: '姓名需与银行持卡人姓名一致，否则无法提现'
             },
             alias: {
@@ -43,7 +40,6 @@ export default {
               text: 'S_NICKNAME',
               status: '',
               value: '',
-              btnText: '',
               btnShow: true,
               type: 'alias',
               isShow: true,
@@ -54,11 +50,8 @@ export default {
               text: 'S_GENDER',
               status: '',
               value: '',
-              btnText: '',
               btnShow: true,
-              type: 'edit',
               isShow: true,
-              popTitle: '',
               placeholder: '未选择'
             },
             birthday: {
@@ -66,11 +59,8 @@ export default {
               text: 'S_BIRTHDAY_DATE',
               status: '',
               value: '',
-              btnText: '',
               btnShow: true,
-              type: 'edit',
               isShow: true,
-              popTitle: '',
               placeholder: '添加日期，确保您已满18岁'
             },
             phone: {
@@ -78,12 +68,10 @@ export default {
               text: 'S_TEL',
               status: '',
               value: '',
-              btnText: '',
               btnShow: true,
               type: 'bind',
               verification: true,
               isShow: true,
-              popTitle: '',
               placeholder: '绑定手机保护帐号安全'
             },
             email: {
@@ -91,47 +79,19 @@ export default {
               text: 'SS_E_MAIL',
               status: '',
               value: '',
-              btnText: '',
               btnShow: true,
               type: 'bind',
               verification: true,
               isShow: false,
-              popTitle: '',
               placeholder: '绑定邮箱保护帐号安全'
             },
-            // password: {
-            //   key: 'password',
-            //   text: 'SS_LOGIN_PW',
-            //   status: '',
-            //   value: '',
-            //   btnText: '',
-            //   btnShow: true,
-            //   type: 'password',
-            //   isShow: true,
-            //   popTitle: ''
-            // },
-            // withdrawPwd: {
-            //   key: 'withdrawPwd',
-            //   text: 'S_DAW_DRWAL_PASSWORD',
-            //   status: '',
-            //   value: '',
-            //   btnText: '',
-            //   btnShow: true,
-            //   type: 'withdrawPwd',
-            //   isShow: false,
-            //   popTitle: ''
-            // }
-
             qq_num: {
               key: 'qq_num',
               text: 'S_QQ',
               status: '',
               value: '',
-              btnText: '',
               btnShow: true,
-              type: 'edit',
               isShow: false,
-              popTitle: '',
               placeholder: '尚未设定'
             },
             weixin: {
@@ -139,11 +99,8 @@ export default {
               text: 'WECHAT',
               status: '',
               value: '',
-              btnText: '',
               btnShow: true,
-              type: 'edit',
               isShow: false,
-              popTitle: '',
               placeholder: '尚未设定'
             },
             line: {
@@ -151,11 +108,8 @@ export default {
               text: 'S_LINE',
               status: '',
               value: '',
-              btnText: '',
               btnShow: true,
-              type: 'edit',
               isShow: false,
-              popTitle: '',
               placeholder: '尚未设定'
             },
             facebook: {
@@ -163,9 +117,7 @@ export default {
               text: 'S_FACEBOOK',
               status: '',
               value: '',
-              btnText: '',
               btnShow: true,
-              type: 'edit',
               isShow: false,
               popTitle: ''
             },
@@ -174,9 +126,7 @@ export default {
               text: 'S_SKYPE',
               status: '',
               value: '',
-              btnText: '',
               btnShow: true,
-              type: 'edit',
               isShow: false,
               popTitle: ''
             },
@@ -185,9 +135,7 @@ export default {
               text: 'S_ZALO',
               status: '',
               value: '',
-              btnText: '',
               btnShow: true,
-              type: 'edit',
               isShow: false,
               popTitle: ''
             }
@@ -198,18 +146,6 @@ export default {
           text: 'S_PERSONAL_DATA',
           isShow: true,
           field: {
-
-
-            // currency: {
-            //  key: '// currency',
-            //  text: 'S_CURRENCY',
-            //  status: '',
-            //  value: '',
-            //  btnText: '',
-            //  btnShow: true,
-            //  type: '',
-            //  isShow: true
-            // },
           }
         },
         {
@@ -295,36 +231,15 @@ export default {
       Object.keys(this.dataList).forEach((item) => {
         Object.keys(this.dataList[item].field).forEach((key) => {
           let itemNow = this.dataList[item].field[key];
-          if (key === 'password') {
-            itemNow = {
-              ...itemNow,
-              status: 'already',
-              value: this.$t('S_SET_CL_ALREADY'),
-              btnText: this.$t('S_CS_EDIT')
-            };
-          } else if (key === 'withdrawPwd') {
-            const wdStatus = this.memInfo.user.has_withdraw_password;
-            itemNow = {
-              ...itemNow,
-              status: wdStatus ? 'already' : 'yet',
-              value: wdStatus ? this.$t('S_SET_CL_ALREADY') : this.$t('S_YET_SET'),
-              btnText: wdStatus ? this.$t('S_CS_EDIT') : this.$t('S_SET_CL'),
-              isShow: userConfig.config.withdraw_password.display
-            };
-          } else if (key === 'email' || key === 'phone') {
+          if (key === 'email' || key === 'phone') {
             const keyValue = this.memInfo[key][key];
-            let val = itemNow.placeholder || this.$t('S_YET_SET');
-            let text = this.$t('S_SET_CL');
+            let val = keyValue ? keyValue : itemNow.placeholder;
             let confirmSt = 'yet';
 
             if (keyValue) {
-              // 未驗證
-              //   val = `${this.$t('S_YET_VERIFIED')}(${keyValue})`;
               val = keyValue;
-              text = this.$t('S_VERIFY');
               confirmSt = 'ok';
               if (!this.verification[key] || userConfig.user[key]) {
-                text = this.$t('S_CS_EDIT');
                 confirmSt = 'already';
               }
             }
@@ -333,8 +248,6 @@ export default {
               ...itemNow,
               status: confirmSt,
               value: val,
-              btnText: text,
-              // btnShow: !(!this.verification[key] && keyValue),
               btnShow: !keyValue || !this.verification[key] || (key === 'phone' && this.memInfo.config.user_edit_phone),
               verification: this.verification[key],
               isShow: userConfig.config[key].display
@@ -344,7 +257,6 @@ export default {
               ...itemNow,
               status: this.memInfo.user[key] ? 'already' : 'yet',
               value: this.memInfo.user[key] || this.$t('S_YET_SET'),
-              btnText: this.$t('S_CS_EDIT'),
               btnShow: true,
               isShow: userConfig.config[key].display
             };
@@ -352,9 +264,6 @@ export default {
             const keyValue = this.memInfo.user[key];
             let checkValue = keyValue;
             if (keyValue) {
-              if (key === 'name') {
-                // checkValue = this.$t('S_SET_CL_ALREADY');
-              }
               if (key === 'gender') {
                 checkValue = this.$t('S_MALE');
                 if (+keyValue === 2) {
@@ -365,7 +274,6 @@ export default {
             itemNow = {
               ...itemNow,
               status: keyValue ? 'already' : 'yet',
-              btnText: keyValue ? this.$t('S_CS_EDIT') : this.$t('S_SET_CL'),
               value: keyValue ? checkValue : itemNow.placeholder,
               btnShow: !keyValue,
               isShow: userConfig.config[key] ? userConfig.config[key].display : false

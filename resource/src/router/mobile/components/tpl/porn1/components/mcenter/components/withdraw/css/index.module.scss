@@ -234,10 +234,133 @@
     }
 }
 
+// 檢查提現提示彈窗
+.check-wrap {
+    position: fixed;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    background: rgba(0, 0, 0, 0.4);
+    z-index: 2;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+}
+
+.check-container {
+    width: 320px;
+    height: 400px;
+    z-index: 3;
+    background-color: #FFFFFF;
+    border-radius: 4px;
+    position: relative;
+
+    .check-header {
+        width: 100%;
+        height: 50px;
+        background: #be9e7f;
+        border-radius: 3px 3px 0 0;
+        color: white;
+        position: relative;
+        line-height: 50px;
+
+        .title {
+            width: 100%;
+            font-size: 17px;
+            font-weight: 400;
+            text-align: center;
+        }
+
+        .btn-close {
+            width: 23px;
+            height: 100%;
+            position: absolute;
+            right: 10px;
+            top: 0;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+
+            img {
+                height: 23px;
+                width: 100%;
+            }
+        }
+    }
+
+    .hr {
+        width: 100%;
+        height: 2px;
+        background-color: #F8F8F7;
+    }
+
+    .check-content {
+        background-color: #FFFFFF;
+        font-size: 15px;
+
+        .time {
+            width: 100%;
+            height: 24px;
+            line-height: 24px;
+            font-size: 12px;
+            font-weight: 400;
+            text-align: center;
+            color: $main_text_color3;
+        }
+    }
+
+    .check-cell {
+        color: $main_text_color2;
+        height: 33px;
+        line-height: 33px;
+        margin: 2px 11px;
+
+        &.check-total {
+            color: $main_text_color3;
+            background: $main_background_white1;
+        }
+
+        &.check-actual {
+            color: $main_text_color3;
+            font-weight: 700;
+        }
+
+        >span:last-child {
+            float: right;
+        }
+    }
+
+    .check-button-wrap {
+        padding: 0 11px;
+        color: #BE9E7F;
+        text-align: center;
+        position: absolute;
+        bottom: 12px;
+        width: 100%;
+
+        .check-btn {
+            width: 90px;
+            height: 45px;
+            line-height: 45px;
+            background: #faf5f0;
+            border-radius: 3px;
+            margin: 0 3px;
+            display: inline-block;
+
+            &.submit {
+                color: white;
+                background: linear-gradient(to left, #bd9d7d, #f9ddbd);
+            }
+        }
+    }
+}
+
 .loading-wrap {
     position: absolute;
     width: 100%;
     height: 100%;
+    margin: 0 auto;
     display: flex;
     top: 0;
     left: 0;

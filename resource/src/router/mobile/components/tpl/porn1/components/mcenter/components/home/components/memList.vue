@@ -1,33 +1,35 @@
 <template>
   <div :class="$style['mem-list']">
-    <div
-      v-for="listInfo in list"
-      :key="`list-${listInfo.pageName}`"
-      :class="[
-        $style.list,
-        { [$style['list-part']]: listInfo.isPart },
-        { [$style['list-border-bottom']]: !listInfo.isPart }
-      ]"
-      @click="onListClick(listInfo)"
-    >
-      <div :class="$style['list-icon']">
-        <img
-          :src="
-            $getCdnPath(`/static/image/_new/mcenter/ic_${listInfo.image}.png`)
-          "
-        />
-      </div>
-      <span>{{ $text(listInfo.name, listInfo.initName) }}</span>
+    <template v-for="listInfo in list">
+      <div
+        v-if="listInfo.pageName !== 'super' || isShowSuper"
+        :key="`list-${listInfo.pageName}`"
+        :class="[
+          $style.list,
+          { [$style['list-part']]: listInfo.isPart },
+          { [$style['list-border-bottom']]: !listInfo.isPart }
+        ]"
+        @click="onListClick(listInfo)"
+      >
+        <div :class="$style['list-icon']">
+          <img
+            :src="
+              $getCdnPath(`/static/image/_new/mcenter/ic_${listInfo.image}.png`)
+            "
+          />
+        </div>
+        <span>{{ $text(listInfo.name, listInfo.initName) }}</span>
 
-      <div v-if="listInfo.info" :class="$style['list-info']">
-        {{ listInfo.info }}
+        <div v-if="listInfo.info" :class="$style['list-info']">
+          {{ listInfo.info }}
+        </div>
+        <div :class="$style['btn-next']">
+          <img
+            :src="$getCdnPath(`/static/image/_new/mcenter/ic_arrow_next.png`)"
+          />
+        </div>
       </div>
-      <div :class="$style['btn-next']">
-        <img
-          :src="$getCdnPath(`/static/image/_new/mcenter/ic_arrow_next.png`)"
-        />
-      </div>
-    </div>
+    </template>
 
     <div :class="$style.list" @click="showShare">
       <div :class="$style['list-icon']">
@@ -57,7 +59,6 @@
         <span />
       </label>
     </div>
-
     <!-- Share Modal -->
     <share v-if="isShowShare" :is-show-share.sync="isShowShare" />
     <message v-if="msg" @close="msg = ''">
@@ -79,7 +80,7 @@ import { API_MCENTER_DESPOSIT_AMOUNT } from '@/config/api';
 import mobileLinkOpen from '@/lib/mobile_link_open';
 import share from './share';
 import message from '../../../../common/new/message';
-
+import { getCookie } from '@/lib/cookie';
 export default {
   components: {
     share,
@@ -90,15 +91,18 @@ export default {
       msg: '',
       isReceive: false,
       toggleShare: false,
+      requiredMoney: 'load',
+      superErrorMsg: '', // 超級簽錯誤訊息
+      isShowSuper: false, // *顯示超級簽開關
       list: [
-        // {
-        //   initName: '下载超级签，成为超级会员',
-        //   name: 'S_VIP_APP',
-        //   path: '',
-        //   pageName: 'super',
-        //   image: 'vip',
-        //   isPart: true
-        // },
+        {
+          initName: '下载超级签，成为超级会员',
+          name: 'S_VIP_APP',
+          path: '',
+          pageName: 'super',
+          image: 'vip',
+          isPart: true
+        },
         {
           initName: '帮助中心',
           name: 'S_HELP_CENTER',
@@ -183,6 +187,63 @@ export default {
   },
   created() {
     this.pornSwitchState = this.memInfo.config.content_rating && this.memInfo.user.content_rating;
+    // 超級籤需滿足的最低金額
+    const requiredMoney = 200;
+    common.systemTime({
+      success: (response) => {
+        let today = '';
+        if (response.result !== 'ok') {
+          today = new Date().toISOString()
+        } else {
+          today = response.ret
+        }
+
+        ajax({
+          // 會員存款總額
+          method: 'get',
+          url: API_MCENTER_DESPOSIT_AMOUNT,
+          params: {
+            start_at: '2020-03-01 00:00:00-04:00',
+            end_at: Vue.moment(today).format(
+              'YYYY-MM-DD HH:mm:ss-04:00'
+            )
+          },
+          errorAlert: false,
+          success: ({
+            result, ret, msg, code
+          }) => {
+            if (result !== 'ok') {
+              const errorCode = code || '';
+              this.superErrorMsg = `${msg} ${errorCode}`;
+              return;
+            }
+            this.requiredMoneyStatus = 'ok';
+
+            if (ret && +ret >= requiredMoney) {
+              this.requiredMoneyStatus = 'ok';
+              return;
+            }
+
+            this.superErrorMsg = this.$text(
+              'S_VIP_ONLY_DOWNLOAD',
+              '充值超过％s即可下载'
+            ).replace('％s', requiredMoney);
+          },
+          fail: (error) => {
+            this.superErrorMsg =
+              `${error.data.msg} ${
+              error.data.code ? `(${error.data.code})` : ''
+              }`;
+          }
+        });
+      },
+      fail: (error) => {
+        this.superErrorMsg = `${error.data.msg} ${
+          error.data.code ? `(${error.data.code})` : ''
+          }`;
+      }
+    });
+
   },
   methods: {
     ...mapActions(['actionEnterMCenterThirdPartyLink', 'actionSetUserdata']),
@@ -193,94 +254,16 @@ export default {
           this.$router.push('/mobile/login');
           return;
         }
-        // 超級籤需滿足的最低金額
-        const requiredMoney = 200;
-        // 超級籤app下載網址
-        const appUrl = 'http://super.pdsign.cn/o/efaafc8f92e96da3c7c7a696fdf2a9c5.htm?tid=980';
-        // 暫時用來判斷馬甲包
-        const webview = window.location.hostname === 'yaboxxxapp02.com';
-        const isUBMobile = navigator.userAgent.match(/UBiOS/) !== null
-          && navigator.userAgent.match(/iPhone/) !== null;
-        let newWindow = '';
 
-        if (!isUBMobile && !webview) {
-          newWindow = window.open('');
+        if (this.requiredMoneyStatus === "ok") {
+          // 超級籤app下載網址
+          const appUrl = 'http://super.pdsign.cn/o/efaafc8f92e96da3c7c7a696fdf2a9c5.htm?tid=980';
+          const isWebView = getCookie('platform') === "H" || window.location.host === "yaboxxxapp02.com";
+          window.location.href = appUrl;
+        } else {
+          this.msg = this.superErrorMsg;
         }
-        common.systemTime({
-          success: (response) => {
-            let today = '';
-            if (response.result !== 'ok') {
-              today = new Date().toISOString()
-            } else {
-              today = response.ret
-            }
 
-            ajax({
-              // 會員存款總額
-              method: 'get',
-              url: API_MCENTER_DESPOSIT_AMOUNT,
-              params: {
-                start_at: '2020-03-01 00:00:00-04:00',
-                end_at: Vue.moment(today).format(
-                  'YYYY-MM-DD HH:mm:ss-04:00'
-                )
-              },
-              errorAlert: false,
-              success: ({
-                result, ret, msg, code
-              }) => {
-                if (result !== 'ok') {
-                  const errorCode = code || '';
-
-                  if (!isUBMobile && !webview) {
-                    newWindow.close();
-                  }
-
-                  this.msg = `${msg} ${errorCode}`;
-                  return;
-                }
-
-                if (ret && +ret >= requiredMoney) {
-                  if (webview) {
-                    window.location.href = appUrl;
-                    return;
-                  }
-                  if (!isUBMobile) {
-                    newWindow.location.href = appUrl;
-                    return;
-                  }
-                  window.open(appUrl, '_blank');
-                  return;
-                }
-
-                if (!isUBMobile && !webview) {
-                  newWindow.close();
-                }
-
-                this.msg = this.$text(
-                  'S_VIP_ONLY_DOWNLOAD',
-                  '充值超过％s即可下载'
-                ).replace('％s', requiredMoney);
-              },
-              fail: (error) => {
-                if (!isUBMobile && !webview) {
-                  newWindow.close();
-                }
-                this.msg = `${error.data.msg} ${
-                  error.data.code ? `(${error.data.code})` : ''
-                  }`;
-              }
-            });
-          },
-          fail: (error) => {
-            if (!isUBMobile && !webview) {
-              newWindow.close();
-            }
-            this.msg = `${error.data.msg} ${
-              error.data.code ? `(${error.data.code})` : ''
-              }`;
-          }
-        });
         return;
       }
 

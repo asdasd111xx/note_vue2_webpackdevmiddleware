@@ -19,7 +19,7 @@
       <div :class="[$style['basic-info-wrap'], 'clearfix']" v-if="data">
         <div :class="$style['serial-basic-cell']">
           <div :class="$style['serial-basic-title']">
-            {{ $text("S_VALID_BET_TOTAL", "总有效投注") }}
+            {{ $text("S_VALID_BET", "有效投注") }}
           </div>
           <div :class="$style['serial-basic-value']">
             {{ data.effective_betting }}
@@ -31,7 +31,7 @@
             {{ $text("S_DEDUCTION_MONEY", "扣除金额") }}
           </div>
           <div :class="$style['serial-basic-value']">
-            {{ data.deduction }}
+            {{ getDeductionNumber(data.deduction) }}
           </div>
         </div>
       </div>
@@ -102,27 +102,27 @@ export default {
     auditList() {
       return [[
         {
-          title: this.$text('S_SERIAL_AUDIT', '稽核倍数'),
+          title: this.$text('S_SERIAL_AUDIT', '充值稽核倍数'),
           rateValue: this.data.audit_rate,
-          value: this.data.administrative_checked
+          value: this.getFixed(this.data.administrative_checked)
         },
         {
           title: this.$text('S_SERIAL_NUMBER', '流水要求'),
           rateValue: this.data.total_audit_amount,
-          value: this.data.deduction,
+          value: this.getFixed(this.data.deduction),
           deduction: this.$text('S_DEDUCTION_MONEY', '扣除金额')
         },
       ],
       [
         {
-          title: this.$text('S_SERIAL_STATUS02', '优惠稽核'),
+          title: this.$text('S_SERIAL_STATUS02', '优惠稽核倍数'),
           rateValue: this.data.offer_audit_rate,
           value: this.data.offer_checked
         },
         {
           title: this.$text('S_SERIAL_NUMBER', '流水要求'),
           rateValue: this.data.offer_audit_amount,
-          value: this.data.offer_deduction,
+          value: this.getFixed(this.data.offer_deduction),
           deduction: this.$text('S_DEDUCTION_MONEY', '扣除金额')
         },
       ]]

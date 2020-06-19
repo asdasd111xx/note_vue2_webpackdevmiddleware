@@ -1,7 +1,7 @@
 <template>
   <mobile-container :has-footer="false">
     <div slot="content" :class="$style['live-stream-wrap']">
-      <message v-if="msg" @close="msg = ''" :callback="clearMsg">
+      <message v-if="msg" :callback="clearMsg">
         <div slot="msg">
           {{ msg }}
         </div>
@@ -213,7 +213,7 @@ export default {
       this.msg = this.$text('S_BEAUTY_STAY_TUNED', '我们将在下个月帮您开通美眉直播，敬请期待！先去体验一下其它游戏吧！');
     },
     getIframeHeight() {
-    //   this.iframeHeight = this.$refs['js-set-height'].contentWindow.window.document.body.scrollHeight + 100;
+      //   this.iframeHeight = this.$refs['js-set-height'].contentWindow.window.document.body.scrollHeight + 100;
       this.iframeHeight = document.body.offsetHeight - 48
     },
     handleClickType(type) {
