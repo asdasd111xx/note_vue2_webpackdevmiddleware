@@ -38,8 +38,14 @@ export default {
             },
             isShowPop: false,
             checkSuccess: false,
-            yourBankData: []
+            yourBankData: [],
+            webviewOpenUrl: ''
         };
+    },
+    watch: {
+        webviewOpenUrl() {
+            setTimeout(() => { document.location.href = this.webviewOpenUrl }, 500);
+        }
     },
     computed: {
         ...mapGetters({
@@ -61,8 +67,8 @@ export default {
             // 銀行匯款一律吃 your_Bank 裡面所有的資料
             if (this.yourBankData.length > 0 && this.curPayInfo.payment_type_id === 5) {
                 return this.yourBankData.map((bankInfo) => ({
-                  label: bankInfo.name,
-                  value: bankInfo.id
+                    label: bankInfo.name,
+                    value: bankInfo.id
                 }));
             }
 
@@ -512,7 +518,7 @@ export default {
             }
 
             // 銀行轉帳(payment_type_id === 5)，將您的銀行，預設成當前選擇的支付銀行
-            if ( this.yourBankData.length > 0 && this.curPayInfo.payment_type_id === 5 ) {
+            if (this.yourBankData.length > 0 && this.curPayInfo.payment_type_id === 5) {
                 this.defaultCurPayBank()
             }
         },
@@ -638,7 +644,8 @@ export default {
                         });
 
                         if (this.isWebView) {
-                            setTimeout(function () { document.location.href = response.ret.uri; }, 250);
+                            this.webviewOpenUrl = response.ret.uri;
+                            // setTimeout(function () { document.location.href = response.ret.uri; }, 250);
                             return { status: 'third' };
                         }
                         else if (this.isPWA) {
@@ -680,7 +687,8 @@ export default {
                 });
 
                 if (this.isWebView) {
-                    setTimeout(function () { document.location.href = this.curPayInfo.external_url; }, 250);
+                    this.webviewOpenUrl = this.curPayInfo.external_url;
+                    // setTimeout(function () { document.location.href = this.curPayInfo.external_url; }, 250);
                     return Promise.resolve({ status: 'credit' });
                 }
                 else if (this.isPWA) {
@@ -742,8 +750,10 @@ export default {
                     });
 
                     if (response.ret.deposit.url) {
+                        console.log(response.ret.deposit.url, this.isWebview)
                         if (this.isWebview) {
-                            setTimeout(function () { document.location.href = response.ret.deposit.url; }, 250);
+                            this.webviewOpenUrl = response.ret.deposit.url;
+                            // setTimeout(function () { document.location.href = response.ret.deposit.url; }, 250);
                             return { status: 'third' };
                         }
                         else if (this.isPWA) {
@@ -757,7 +767,8 @@ export default {
 
                     if (response.ret.wallet.url) {
                         if (this.isWebview) {
-                            setTimeout(function () { document.location.href = response.ret.wallet.url; }, 250);
+                            this.webviewOpenUrl = response.ret.wallet.url;
+                            // setTimeout(function () { document.location.href = response.ret.wallet.url; }, 250);
                             return { status: 'third' };
                         }
                         else if (this.isPWA) {
@@ -879,7 +890,7 @@ export default {
         },
         defaultCurPayBank() {
             let target = this.allBanks.find(item => {
-              return item.value === this.curPayInfo.bank_id
+                return item.value === this.curPayInfo.bank_id
             })
 
             this.isSelectValue = target.label
