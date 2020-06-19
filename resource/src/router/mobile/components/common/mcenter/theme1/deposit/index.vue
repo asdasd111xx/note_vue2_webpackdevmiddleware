@@ -12,7 +12,8 @@
 <script>
 import { mapGetters, mapActions } from 'vuex';
 import { getCookie } from '@/lib/cookie';
-import axios from 'axios';
+import yaboRequest from '@/api/yaboRequest';
+
 export default {
   components: {
     bankCardDeposit: () => import(/* webpackChunkName: 'bankCardDeposit' */'./components/bankCardDeposit'),
@@ -87,16 +88,14 @@ export default {
       this.$router.push('/mobile/login');
     }
 
-    axios({
+    yaboRequest({
       method: 'get',
       url: `${this.siteConfig.YABO_API_DOMAIN}/AccountBank/GetBankBindingStatus/${getCookie('cid')}`,
-      timeout: 30000,
       headers: {
-        'AuthToken': 'YaboAPIforDev0nly',
         'x-domain': this.memInfo.user.domain
       }
     }).then((res) => {
-      if (res.data && res.data.data) {
+      if (res.data) {
       }
       else {
         this.msg = "请先绑定提现银行卡"

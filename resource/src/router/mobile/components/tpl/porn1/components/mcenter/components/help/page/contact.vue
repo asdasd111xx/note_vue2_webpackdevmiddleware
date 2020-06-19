@@ -92,7 +92,7 @@
 import { mapGetters } from 'vuex';
 import mobileContainer from '../../../../common/new/mobileContainer';
 import message from '../../../../common/new/message';
-import axios from 'axios';
+import yaboRequest from '@/api/yaboRequest';
 
 export default {
   components: {
@@ -127,13 +127,13 @@ export default {
     }
   },
   created() {
-    axios({
+    yaboRequest({
       method: 'get',
       url: `${this.siteConfig.YABO_API_DOMAIN}/system/contactus`,
-      headers: { 'x-domain': this.memInfo.user.domain, 'AuthToken': 'YaboAPIforDev0nly', }
+      headers: { 'x-domain': this.memInfo.user.domain, }
     }).then((res) => {
-      if (res && res.data && res.data.data) {
-        this.list = res.data.data;
+      if (res && res.data) {
+        this.list = res.data;
       }
     });
   },

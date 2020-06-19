@@ -38,8 +38,8 @@
 
 <script>
 import { mapGetters, mapActions } from "vuex";
-import axios from "axios";
 import message from "../../../../common/new/message";
+import yaboRequest from '@/api/yaboRequest';
 
 export default {
   components: {
@@ -86,17 +86,16 @@ export default {
       this.actionSetAgentLink();
     } else {
       // 未登入：落地頁
-      axios({
+      yaboRequest({
         method: "get",
         url: `${this.siteConfig.YABO_API_DOMAIN}/system/downloadlink`,
         headers: {
-          'x-domain': this.memInfo.user.domain,
           'AuthToken': 'YaboAPIforDev0nly'
         }
       }).then(res => {
-        if (res && res.data && res.data.data) {
+        if (res && res.data && res.data) {
           this.landingLink =
-            res.data.data[0].value || res.data.data[1].value;
+            res.data[0].value || res.data[1].value;
         }
       });
     }

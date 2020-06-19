@@ -194,7 +194,8 @@ export default {
     handleClick(field) {
       if (field.key === "phone") {
         //   手機未驗證能設定
-        if (!this.mobileCheck) {
+
+        if (!field.verification) {
           this.$router.push({
             path: `/mobile/mcenter/accountData/phone`
           });

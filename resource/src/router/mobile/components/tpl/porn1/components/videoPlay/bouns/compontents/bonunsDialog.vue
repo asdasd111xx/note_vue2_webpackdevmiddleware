@@ -160,7 +160,7 @@
 </template>
 <script>
 import { getCookie } from '@/lib/cookie';
-import axios from 'axios';
+import yaboRequest from '@/api/yaboRequest';
 import { mapGetters } from 'vuex';
 
 export default {
@@ -288,24 +288,19 @@ export default {
     },
     unlockTag() {
       let cid = getCookie('cid');
-      axios({
+      yaboRequest({
         method: 'put',
         url: `${this.siteConfig.YABO_API_DOMAIN}/Account/UnlockTagId?`,
         headers: {
-          'AuthToken': 'YaboAPIforDev0nly',
           'x-domain': this.memInfo.user.domain,
-          'Content-Type': 'application/json; charset=utf-8'
         },
-        data: {
+        params: {
           cid: cid,
           userid: this.memInfo.user.id,
           tagId: this.tagId,
           domain: this.memInfo.user.domain
         },
       }).then((res) => {
-        // if (res && res.data === "ok") {
-        //   window.YABO_SOCKET_RECONNECT();
-        // }
         setTimeout(() => {
           this.$router.push(`/mobile/mcenter/makeMoney?&refresh=1`);
         }, 200)

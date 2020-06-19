@@ -179,7 +179,7 @@ import balanceTran from '@/components/mcenter/components/balanceTran';
 import mobileContainer from '../../../common/new/mobileContainer';
 import message from '../../../common/new/message';
 import { getCookie } from '@/lib/cookie';
-import axios from 'axios';
+import yaboRequest from '@/api/yaboRequest';
 
 export default {
   components: {
@@ -255,16 +255,15 @@ export default {
   },
   methods: {
     handleDeposit() {
-      axios({
+      yaboRequest({
         method: 'get',
         url: `${this.siteConfig.YABO_API_DOMAIN}/AccountBank/GetBankBindingStatus/${getCookie('cid')}`,
         timeout: 30000,
         headers: {
-          'AuthToken': 'YaboAPIforDev0nly',
           'x-domain': this.memInfo.user.domain
         }
       }).then((res) => {
-        if (res.data && res.data.data) {
+        if (res.data) {
           this.$router.push(`/mobile/mcenter/deposit`);
         }
         else {

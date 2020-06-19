@@ -361,3 +361,15 @@
 .game-money {
     float: right;
 }
+
+.date-tip {
+    position: absolute;
+    min-width: 200px;
+    left: 50%;
+    transform: translateX(-50%);
+    text-align: center;
+    border-radius: 5px;
+    padding: 5px 10px;
+    margin-top: 10%;
+    background: #dbdbdb;
+}

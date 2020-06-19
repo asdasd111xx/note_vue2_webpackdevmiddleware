@@ -30,7 +30,7 @@
     </div>
 
     <div v-if="headerConfig.title" :class="[$style.wrap, 'clearfix']">
-      <div :class="[[$style.title], $style[source]]">
+      <div :class="[[$style.title], $style[source] , { [$style['customTitle']]: headerConfig.customTitle}]">
         {{ headerConfig.title }}
       </div>
       <div
@@ -463,6 +463,10 @@ export default {
   &.les,
   &.gay {
     color: #fff;
+  }
+
+  &.customTitle {
+    font-weight: 500;
   }
 }
 

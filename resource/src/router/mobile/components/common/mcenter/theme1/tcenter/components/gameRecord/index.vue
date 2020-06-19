@@ -46,7 +46,7 @@
                 >
                     <div :class="$style['field-game-wrap']">
                         <div :class="$style.title">
-                            {{ $text("S_GAMETYPE2") }}
+                            {{ $text("S_PLEASE_SELECT_TYPE") }}
                         </div>
                         <select v-model="inqGame" :class="$style.select">
                             <option
@@ -136,7 +136,7 @@
                 </template>
 
                 <div
-                    v-if="currentPage === 'main' && mainNoData"
+                    v-if="currentPage === 'main' && mainNoData && !hasSearch"
                     :class="$style['no-data']"
                 >
                     <img src="/static/image/_new/mcenter/ic_nodata.png" />
