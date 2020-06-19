@@ -505,6 +505,11 @@ export default {
         return;
       }
 
+      if (game.type === 'T') {
+        this.msg = '正在上线 敬请期待';
+        return;
+      }
+
       // 福利
       if (['YV', 'PV', 'BB', 'GG'].includes(game.type)) {
         switch (game.type) {
@@ -554,10 +559,6 @@ export default {
         return;
       }
 
-      if (game.type === 'T') {
-        this.msg = '正在上线 敬请期待';
-        return;
-      }
 
       // 直播
       if (['BL', 'SL'].includes(game.type)) {

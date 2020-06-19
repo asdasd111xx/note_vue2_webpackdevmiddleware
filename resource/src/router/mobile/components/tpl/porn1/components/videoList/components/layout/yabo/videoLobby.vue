@@ -50,7 +50,10 @@
         />
       </div>
 
-      <div v-if="isShowAllTag" :class="[$style['all-tag-wrap'], $style[source], 'clearfix']">
+      <div
+        v-if="isShowAllTag"
+        :class="[$style['all-tag-wrap'], $style[source], 'clearfix']"
+      >
         <template v-for="(tag, index) in videoTag">
           <div :key="`all-tag-${index}`" @click="onChangeVideoType(index)">
             {{ tag.title }}
@@ -59,8 +62,9 @@
       </div>
     </div>
 
-    <div :class="[$style['video-list-wrap'], 'clearfix']">
+    <div :class="[$style['video-list-wrap'], 'clearfix']" id="video-list-wrap">
       <div
+        :id="`${i}`"
         v-for="(videoData, i) in allVideoList"
         :key="`video-type-${i}`"
         :class="$style['video-cell']"
@@ -71,15 +75,7 @@
           </div>
           <div
             :class="[$style['btn-more'], $style[source]]"
-            @click.stop="
-              openVideo('videoList', {
-                query: {
-                  source: $route.query.source,
-                  tagId: +videoType.id || 0,
-                  sortId: +videoData.id || 0
-                }
-              })
-            "
+            @click.stop="handleMore(i, videoData)"
           >
             更多
           </div>
@@ -91,12 +87,7 @@
             :key="`video-${video.id}`"
             :href="`/mobile/videoPlay/${video.id}`"
             :class="[$style['video'], $style[source]]"
-            @click.stop="
-              openVideo('videoPlay', {
-                params: { id: video.id },
-                query: { source: $route.query.source }
-              })
-            "
+            @click.stop="handleVideo(i, video)"
           >
             <img v-lazy="getImg(video.image)" />
             <div>{{ video.title }}</div>
@@ -183,6 +174,23 @@ export default {
     this.getVideoList();
   },
   methods: {
+    handleVideo(tag, video) {
+      window.location.replace(`${window.location.pathname}${window.location.search}#${tag}`);
+      this.openVideo('videoPlay', {
+        params: { id: video.id },
+        query: { source: this.$route.query.source }
+      })
+    },
+    handleMore(tag, videoData) {
+      window.location.replace(`${window.location.pathname}${window.location.search}#${tag}`);
+      this.openVideo('videoList', {
+        query: {
+          source: this.$route.query.source,
+          tagId: +this.videoType.id || 0,
+          sortId: +videoData.id || 0
+        }
+      })
+    },
     getImg(img) {
       const isYabo = this.source === 'yabo';
       return {
@@ -341,6 +349,16 @@ export default {
         }
 
         this.videoList = [...response.result];
+        this.$nextTick(() => {
+          if (window.location.hash) {
+            const hash = Number(window.location.hash.replace('#', '')) || 0;
+            const wrap = document.getElementById('video-list-wrap');
+            const cell = document.getElementsByClassName(this.$style['video-cell']);
+            if (wrap && cell && cell[0]) {
+              wrap.scrollTop = cell[0].offsetHeight * hash;
+            }
+          }
+        })
       });
     },
     openVideo(name, routerParam) {
@@ -363,8 +381,11 @@ export default {
 }
 
 .tag-box {
-  position: relative;
+  max-width: $mobile_max_width;
   padding-right: 40px;
+  position: fixed;
+  top: 43px;
+  z-index: 2;
 
   &.yabo {
     background: $main_white_color1;
@@ -376,6 +397,12 @@ export default {
 
   &.les {
     background: #cc4646;
+  }
+}
+
+@media (orientation: landscape) {
+  .tag-box {
+    max-width: $mobile_max_landscape_width !important;
   }
 }
 
@@ -454,7 +481,8 @@ export default {
   background: -moz-linear-gradient(right, hsla(0, 0%, 100%, 0.3), #fff);
   background: linear-gradient(90deg, hsla(0, 0%, 100%, 0.3), #fff);
 
-  &.gay , &.les {
+  &.gay,
+  &.les {
     background: none;
   }
 
@@ -500,6 +528,8 @@ export default {
   overflow-y: auto;
   padding: 0 17px;
   background: $main_background_white1;
+  padding-top: 43px;
+  height: calc(100vh - 105px);
 }
 
 .video-cell {

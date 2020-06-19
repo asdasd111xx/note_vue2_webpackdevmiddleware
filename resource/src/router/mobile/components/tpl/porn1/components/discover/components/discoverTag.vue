@@ -27,14 +27,14 @@
       </div>
     </div>
     <div :class="[$style['select-wrap']]">
-      <div>
+      <div v-if="selected.length > 0">
         <div :class="$style.tips">
           {{ $text("S_TAG_SELECTED", "已选标签") }}
         </div>
         <div :class="$style.amount">{{ selected.length }}</div>
       </div>
       <div :class="$style['btn-confirm']" @click="onConfirm">
-        {{ $text("S_CONFIRM", "确认") }}
+        确定
       </div>
     </div>
     <message v-if="msg" @close="msg = ''"

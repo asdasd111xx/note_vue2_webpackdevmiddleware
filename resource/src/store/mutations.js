@@ -1,11 +1,12 @@
 /* eslint-disable no-param-reassign */
 
-import Vue from 'vue';
-import jwt from 'jwt-simple';
-import EST from '@/lib/EST';
-import i18n from '@/config/i18n';
 // import navFilterPage from '@/lib/nav_filter_page';
 import * as types from './mutations_type';
+
+import EST from '@/lib/EST';
+import Vue from 'vue';
+import i18n from '@/config/i18n';
+import jwt from 'jwt-simple';
 
 export default {
     // Webview介接(客端、廳主端)
@@ -232,7 +233,8 @@ export default {
 
         Object.keys(obj).forEach((index) => {
             apiData[index] = {
-                time: EST(obj[index].created_at, 'YYYY-MM-DD HH:mm:ss'),
+                // time: EST(obj[index].created_at, 'YYYY-MM-DD HH:mm:ss'),
+                time: obj[index].created_at,
                 content: obj[index].content,
                 id: obj[index].id
             };
