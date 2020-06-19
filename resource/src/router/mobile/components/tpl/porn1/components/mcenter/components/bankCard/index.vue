@@ -66,7 +66,7 @@ export default {
       return false;
     },
     headerTitle() {
-      if (this.hasRedirect) {
+      if (this.hasRedirect && this.$route.query.redirect !== "withdraw") {
         return '提现银行卡';
       }
       return this.$text(...this.currentPage === 'bankCardInfo' ? ['S_CARD_MANAGEMENT', '卡片管理'] : ['S_ADD_BANKCARD', '添加银行卡']);
