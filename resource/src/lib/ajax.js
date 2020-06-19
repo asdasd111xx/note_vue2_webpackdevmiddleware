@@ -58,7 +58,7 @@ export default ({
                     return;
                 }
                 // 維護中導向
-                if (error.response.data.code === "M00002") {
+                if (error.response.data.code === "M00002" && !window.location.href.includes('upup')) {
                     window.location.href = '/upup';
                     return;
                 }
