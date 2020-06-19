@@ -189,6 +189,8 @@ export default {
     this.pornSwitchState = this.memInfo.config.content_rating && this.memInfo.user.content_rating;
     // 超級籤需滿足的最低金額
     const requiredMoney = 200;
+    if (!this.loginStatus) return;
+
     common.systemTime({
       success: (response) => {
         let today = '';

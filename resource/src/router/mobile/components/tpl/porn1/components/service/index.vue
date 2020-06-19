@@ -151,11 +151,11 @@
 </template>
 
 <script>
-import axios from "axios";
 import { mapGetters } from "vuex";
 import mobileContainer from "../common/new/mobileContainer";
 import message from "../common/new/message";
 import mobileLinkOpen from "@/lib/mobile_link_open";
+import yaboRequest from '@/api/yaboRequest';
 
 export default {
   components: {
@@ -207,16 +207,15 @@ export default {
     this.imgIndex = this.memInfo.user.image;
     this.imgID = this.memInfo.user.image;
 
-    axios({
+    yaboRequest({
       method: "get",
       url: `${this.siteConfig.YABO_API_DOMAIN}/system/downloadlink`,
       headers: {
-        'AuthToken': 'YaboAPIforDev0nly',
         'x-domain': this.memInfo.user.domain
       }
     }).then(res => {
-      if (res && res.data && res.data.data) {
-        this.linkArray = res.data.data;
+      if (res && res.data) {
+        this.linkArray = res.data;
       }
     });
   },

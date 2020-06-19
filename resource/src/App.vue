@@ -9,8 +9,9 @@ import { mapGetters, mapActions } from 'vuex';
 import analytics from '@/lib/analytics';
 import appEvent from '@/lib/appEvent';
 import openGame from '@/lib/open_game';
-import { getCookie } from '@/lib/cookie';
+import { getCookie, setCookie } from '@/lib/cookie';
 import io from 'socket.io-client';
+import yaboRequest from '@/api/yaboRequest';
 
 export default {
   data() {
@@ -38,12 +39,14 @@ export default {
       this.setGoogleAnalytics();
       this.memInfoLoad = this.memInfo && this.memInfo.user;
       if (this.memInfoLoad && this.siteConfigLoad) {
+        this.getYABOAPIToken();
         this.connectYaboWS();
       }
     },
     siteConfig() {
       this.siteConfigLoad = this.siteConfig && this.siteConfig.ACTIVES_BOUNS_WEBSOCKET;
       if (this.memInfoLoad && this.siteConfigLoad) {
+        this.getYABOAPIToken();
         this.connectYaboWS();
       }
     }
@@ -186,6 +189,21 @@ export default {
           }
         });
       }, 3000);
+    },
+    getYABOAPIToken() {
+      setCookie('y-x-domain', this.memInfo.user.domain)
+      setCookie('y-username', this.memInfo.user.username)
+      let cid = getCookie('cid') || '';
+      if (!cid) return;
+      yaboRequest({
+        method: 'get',
+        url: this.siteConfig.YABO_API_DOMAIN + '/Account/GetAuthorizationToken',
+      }).then((res) => {
+        if (res.data) {
+          setCookie('y_token', res.data);
+          return;
+        }
+      });
     },
     /* GA流量統計 */
     setGoogleAnalytics() {

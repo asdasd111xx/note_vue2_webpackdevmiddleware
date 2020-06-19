@@ -178,7 +178,8 @@ import ajax from '@/lib/ajax';
 import message from '@/router/mobile/components/tpl/porn1/components/common/new/message';
 import confirm from '@/router/mobile/components/tpl/porn1/components/common/new/confirm';
 import { getCookie } from '@/lib/cookie';
-import axios from 'axios';
+import yaboRequest from '@/api/yaboRequest';
+
 export default {
   components: {
     ModelSelect,
@@ -423,15 +424,14 @@ export default {
       });
     },
     checkBankCard() {
-      return axios({
+      return yaboRequest({
         method: 'get',
         url: `${this.siteConfig.YABO_API_DOMAIN}/AccountBank/GetBankBindingStatusTrans/${getCookie('cid')}`,
         headers: {
-          'AuthToken': 'YaboAPIforDev0nly',
           'x-domain': this.memInfo.user.domain
         }
       }).then((res) => {
-        return res.data && res.data.data
+        return res.data
       });
     },
     clearMsg() {

@@ -67,13 +67,13 @@
 import { mapGetters } from "vuex";
 import { Swiper, SwiperSlide } from "vue-awesome-swiper";
 import { getCookie } from "@/lib/cookie";
-import axios from "axios";
 import vipUser from "./vipUser";
 import vipLevelCard from "./vipLevelCard";
 import vipInfo from "./vipInfo";
 import liveInfo from "./liveInfo";
 import mcenter from "@/api/mcenter";
 import message from "../../../../common/new/message";
+import yaboRequest from '@/api/yaboRequest';
 
 export default {
   components: {
@@ -118,15 +118,15 @@ export default {
   },
   methods: {
     getUserDetail() {
-      axios({
+      yaboRequest({
         method: "get",
         url: `${
           this.siteConfig.YABO_API_DOMAIN
           }/player/vipinfo/${getCookie("cid")}`,
-        headers: { "x-domain": this.memInfo.user.domain, 'AuthToken': 'YaboAPIforDev0nly', }
+        headers: { "x-domain": this.memInfo.user.domain }
       }).then(res => {
 
-        this.userVipInfo = res.data.data;
+        this.userVipInfo = res.data;
 
         // 起始預設 config_id 為分類中的第一筆
         this.currentConfigID = this.userVipInfo[0].config_id;
@@ -138,17 +138,17 @@ export default {
       }
 
       // 依vip分類回傳所有等級清單(不分⾴)
-      axios({
+      yaboRequest({
         method: "get",
         url: `${
           this.siteConfig.YABO_API_DOMAIN
           }/player/viplevel/${getCookie("cid")}?configId=${
           this.currentConfigID
           }`,
-        headers: { "x-domain": this.memInfo.user.domain, 'AuthToken': 'YaboAPIforDev0nly' }
+        headers: { "x-domain": this.memInfo.user.domain }
       }).then(res => {
 
-        this.vipLevelList = res.data.data;
+        this.vipLevelList = res.data;
       });
     },
     handleConfigId(value) {
