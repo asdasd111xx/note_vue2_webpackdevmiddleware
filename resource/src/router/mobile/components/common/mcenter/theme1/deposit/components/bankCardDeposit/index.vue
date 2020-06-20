@@ -85,19 +85,26 @@
           <!-- 選擇銀行 or 選擇點卡 -->
           <!-- To Do: payment_type_id === 5 就顯示 -->
           <div
-              v-if="(curPayInfo.banks && curPayInfo.banks.length > 0) || (yourBankData.length > 0 && curPayInfo.payment_type_id === 5)"
-              :class="[
-                $style['feature-wrap'],
-                $style['select-card-wrap'],
-                'clearfix'
-              ]"
-              @click="changeType('chagneBank'), (isShowPop = true)"
+            v-if="
+              (curPayInfo.banks && curPayInfo.banks.length > 0) ||
+                (yourBankData.length > 0 && curPayInfo.payment_type_id === 5)
+            "
+            :class="[
+              $style['feature-wrap'],
+              $style['select-card-wrap'],
+              'clearfix'
+            ]"
+            @click="changeType('chagneBank'), (isShowPop = true)"
           >
-            <span v-if="curPayInfo.payment_type_id === 5" :class="$style['select-bank-title']">
+            <span
+              v-if="curPayInfo.payment_type_id === 5"
+              :class="$style['select-bank-title']"
+            >
               {{ $text("S_YOUR_BANK", "您的银行") }}
             </span>
-            <span v-else :class="$style['select-bank-title']">{{
-              curPayInfo.payment_method_id === 2
+            <span v-else :class="$style['select-bank-title']"
+              >{{
+                curPayInfo.payment_method_id === 2
                   ? $text("S_SELECT_POINT_CARD", "请选择点卡")
                   : $text("S_SELECT_BANKS", "请选择银行")
               }}
@@ -117,18 +124,18 @@
               <div :class="$style['pop-menu']">
                 <div :class="$style['pop-title']">
                   <span @click.stop="isShowPop = false">{{
-                      $text("S_CANCEL", "取消")
+                    $text("S_CANCEL", "取消")
                   }}</span>
                   选择银行
                 </div>
                 <ul :class="$style['pop-list']">
                   <li
-                      v-for="item in paySelectData['chagneBank'].allData"
-                      :key="item.selectId"
-                      @click.stop="changeSelectValue(item.value)"
-                    >
+                    v-for="item in paySelectData['chagneBank'].allData"
+                    :key="item.selectId"
+                    @click.stop="changeSelectValue(item.value)"
+                  >
                     <img v-lazy="getImg(item)" />
-                      {{ item.label }}
+                    {{ item.label }}
                     <icon
                       v-if="item.value === selectedBank.value"
                       :class="$style['select-active']"
@@ -521,7 +528,15 @@
               { [$style.disabled]: !checkSuccess }
             ]"
             :title="$text('S_ENTER_PAY', '立即充值')"
-            @click="entryBlockStatusData.status === 0 ? submitInfo : isShowEntryBlockStatus = true"
+            @click="
+              () => {
+                if (this.entryBlockStatusData.status === 0) {
+                  this.submitInfo();
+                } else {
+                  this.isShowEntryBlockStatus = true;
+                }
+              }
+            "
           >
             {{ $text("S_ENTER_PAY", "立即充值") }}
           </div>
@@ -567,7 +582,15 @@
           <div
             :class="$style['pay-button']"
             title="立即充值"
-            @click="entryBlockStatusData.status === 0 ? submitInfo : isShowEntryBlockStatus = true"
+            @click="
+              () => {
+                if (this.entryBlockStatusData.status === 0) {
+                  this.submitInfo();
+                } else {
+                  this.isShowEntryBlockStatus = true;
+                }
+              }
+            "
           >
             立即充值
           </div>
@@ -615,7 +638,12 @@
           :class="$style['entry-message-confirm']"
           @click="isShowEntryBlockStatus = false"
         >
-          <li v-if="entryBlockStatusData.status === 2" @click="goToValetDeposit">前往代客充值</li>
+          <li
+            v-if="entryBlockStatusData.status === 2"
+            @click="goToValetDeposit"
+          >
+            前往代客充值
+          </li>
           <li @click="submitInfo">确定</li>
         </ul>
       </div>
@@ -868,7 +896,7 @@ export default {
           break;
 
         case 3:
-          return `为了保证您的使用安全，规避IP监控，我方将为您暂停${ this.entryBlockStatusData.block_times }小时的充值服务功能，如需继续存款，请联繫我方客服。祝您游戏愉快!`
+          return `为了保证您的使用安全，规避IP监控，我方将为您暂停${this.entryBlockStatusData.block_times}小时的充值服务功能，如需继续存款，请联繫我方客服。祝您游戏愉快!`
           break;
 
         default:
@@ -909,7 +937,7 @@ export default {
 
       // 銀行轉帳 payment_type_id === 5，將您的銀行，預設成當前選擇的支付銀行
       if (this.yourBankData.length > 0 && this.curPayInfo.payment_type_id === 5) {
-          this.defaultCurPayBank()
+        this.defaultCurPayBank()
       }
     },
     /**
@@ -1036,7 +1064,7 @@ export default {
           "lang": "zh-cn",
         },
       }).then((res) => {
-        if(res.status === "000" && res.data && res.data.ret) {
+        if (res.status === "000" && res.data && res.data.ret) {
           this.entryBlockStatusData = res.data.ret
         }
       });
@@ -1046,32 +1074,32 @@ export default {
 
       let newWindow = '';
       if (this.isPWA) {
-          newWindow = window.open('', '', '_blank', true);
+        newWindow = window.open('', '', '_blank', true);
       }
 
       const newWindowHref = (uri) => {
-          try {
-              newWindow.location.href = uri;
-          } catch (e) {
-              console.log(e);
-              console.log(newWindow);
-              console.log(uri)
-          }
+        try {
+          newWindow.location.href = uri;
+        } catch (e) {
+          console.log(e);
+          console.log(newWindow);
+          console.log(uri)
+        }
       }
 
       // 前往代客充值
       if (this.entryBlockStatusData.has_csr && this.entryBlockStatusData.external_url) {
-          if (this.isWebView) {
-              window.location.href = this.entryBlockStatusData.external_url;
-              return;
-          }
-          else if (this.isPWA) {
-              newWindowHref(this.entryBlockStatusData.external_url);
-              return;
-          }
-
-          window.open(this.entryBlockStatusData.external_url);
+        if (this.isWebView) {
+          window.location.href = this.entryBlockStatusData.external_url;
           return;
+        }
+        else if (this.isPWA) {
+          newWindowHref(this.entryBlockStatusData.external_url);
+          return;
+        }
+
+        window.open(this.entryBlockStatusData.external_url);
+        return;
       }
 
       return
