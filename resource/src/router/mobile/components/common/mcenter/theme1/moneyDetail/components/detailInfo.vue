@@ -44,13 +44,30 @@
       如需帮助，请
       <span @click="$router.push('/mobile/service')">联系客服</span>
     </div>
+    <message v-if="msg" @close="msg = ''">
+      <div slot="msg">
+        <div
+          style="background-color: transparent ; margin: 0 ; padding: 0"
+          v-html="msg"
+        />
+      </div>
+    </message>
   </div>
 </template>
 
 <script>
 import Vue from 'vue';
+import Message from '../../../../../tpl/porn1/components/common/new/message';
 
 export default {
+  components: {
+    Message
+  },
+  data() {
+    return {
+      msg: ''
+    }
+  },
   filters: {
     dateFormat(date) {
       return Vue.moment(date).utcOffset(-4).format('YYYY-MM-DD HH:mm:ss');
@@ -72,9 +89,8 @@ export default {
   },
   methods: {
     oncopy() {
-      this.$copyText(this.detailInfo.ref_id).then((res) => {
-        console.log(res);
-      });
+      this.$copyText(this.detailInfo.ref_id);
+      this.msg = '已复制到剪贴板'
     }
   },
   beforeDestroy() {

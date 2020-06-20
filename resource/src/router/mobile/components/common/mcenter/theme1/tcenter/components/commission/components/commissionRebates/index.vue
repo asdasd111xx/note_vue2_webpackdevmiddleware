@@ -67,7 +67,7 @@
                             最低领取金额
                         </span>
                         <div :class="$style['content-right']">
-                            {{ caculateList.self_min_limit }}
+                            {{ caculateList.self_min_limit ? caculateList.self_min_limit : "--"}}
                         </div>
                     </div>
 

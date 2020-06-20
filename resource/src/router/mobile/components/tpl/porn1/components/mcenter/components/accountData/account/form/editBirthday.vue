@@ -51,7 +51,7 @@ export default {
         handleSubmit() {
             // 空值驗證
             if (this.value === '') {
-                alert(this.$text('S_CR_NUT_NULL'));
+                this.$emit('msg', this.$text('S_CR_NUT_NULL'));
                 return Promise.resolve('error');
             }
 
