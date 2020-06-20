@@ -26,11 +26,9 @@
 </template>
 
 <script>
-import mobileContainer from '../../../common/new/mobileContainer';
 
 export default {
   components: {
-    mobileContainer,
     bankCardInfo: () => import(/* webpackChunkName: 'bankCardInfo' */ './bankCardInfo'),
     addBankCard: () => import(/* webpackChunkName: 'addBankCard' */ './addBankCard')
   },

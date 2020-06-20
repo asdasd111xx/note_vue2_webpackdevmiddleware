@@ -340,6 +340,11 @@ export default {
             }).then((response) => {
                 this.isShow = false;
                 this.actionSetIsLoading(false);
+
+                if (response && response.result !== 'ok') {
+                    this.msg = response.msg;
+                }
+
                 if (response && response.result === 'ok') {
                     const filterData = response.ret.payment_group.filter((info) => !info.is_link)[0];
 
@@ -365,10 +370,6 @@ export default {
                     }
 
                     return { result: response.result };
-                }
-
-                if (response && response.result !== 'ok') {
-                    this.msg = response.msg;
                 }
 
                 return response;

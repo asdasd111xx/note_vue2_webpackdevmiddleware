@@ -1,5 +1,5 @@
 <template>
-  <mobile-container :header-config="headerSetting">
+  <mobile-container :header-config="headerSetting" :has-footer="false">
     <div slot="content" :class="[$style['content-wrap'], 'clearfix']">
       <balance-tran class="clearfix">
         <template
@@ -106,14 +106,11 @@
                 }}</span>
               </div>
 
-
               <div
                 :class="[$style['balance-item'], $style['expend']]"
-                @click="toggleShowMore">
-                <span
-                  :class="$style['balance-item-vendor']"
-                  >更多</span
-                >
+                @click="toggleShowMore"
+              >
+                <span :class="$style['balance-item-vendor']">更多</span>
                 <div :class="[$style['icon']]">
                   <img
                     :src="
