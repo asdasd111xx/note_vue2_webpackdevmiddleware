@@ -39,6 +39,8 @@ export default {
   },
   methods: {
     click() {
+      clearInterval(this.timer);
+      this.timer = null;
       this.$router.push('/mobile/');
     }
   },
@@ -58,7 +60,7 @@ export default {
 }
 
 @media (orientation: landscape) {
-.container > img {
+  .container > img {
     height: unset;
   }
 }
