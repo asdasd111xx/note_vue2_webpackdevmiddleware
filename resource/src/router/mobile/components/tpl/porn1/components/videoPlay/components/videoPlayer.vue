@@ -435,7 +435,11 @@ export default {
   },
   created() {
     this.actionSetYaboConfig().then(() => {
-      this.isUnloginMode = !this.loginStatus && (this.yaboConfig && this.yaboConfig[2] ? Boolean(this.yaboConfig[2].value) : false);
+      this.isUnloginMode = !this.loginStatus &&
+        this.yaboConfig &&
+        this.yaboConfig[2] &&
+        this.yaboConfig[2].value == "true";
+
       setTimeout(() => {
         this.$nextTick(() => {
           if (!this.loginStatus && !this.isUnloginMode) {
