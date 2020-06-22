@@ -146,7 +146,7 @@ export default {
         },
         {
           text: "隐藏版",
-          isShow: false,
+          isShow: true,
           onClick: () => {
             window.open(
               "https://apps.apple.com/cn/app/id1517374530",
