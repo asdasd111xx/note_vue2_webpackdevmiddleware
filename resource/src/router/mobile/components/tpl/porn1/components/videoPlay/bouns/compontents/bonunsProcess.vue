@@ -117,6 +117,10 @@ export default {
     },
   },
   mounted() {
+    if (this.isUnloginMode) {
+      this.curCoinSrc = this.coinType.find(i => i.key == "earn").src;
+      this.earnCoin = "999";
+    }
   },
   methods: {
     //   賺得彩金後變換樣式3秒後還原
