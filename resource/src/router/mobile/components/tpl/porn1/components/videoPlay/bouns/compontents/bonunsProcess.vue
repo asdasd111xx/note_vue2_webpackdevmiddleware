@@ -36,7 +36,7 @@
               <div class="halfcircle" id="fixed"></div>
             </div>
           </div>
-          <span>{{ curMin }}</span>
+          <span>{{ isUnloginMode ? "" : curMin }}</span>
         </template>
 
         <!-- 一般顯示 -->
@@ -53,7 +53,9 @@
           <span v-if="processType === 'earn'" :class="$style['earn']">
             {{ `+${earnCoin} ` }}元</span
           >
-          <span v-else-if="processType === 'process'">{{ curMin }}</span>
+          <span v-else-if="processType === 'process'">{{
+            isUnloginMode ? "" : curMin
+          }}</span>
         </template>
       </div>
     </div>
@@ -100,6 +102,12 @@ export default {
         this.handleToggleEarnCoin();
       }
     },
+    isUnloginMode(val) {
+      if (val) {
+        this.curCoinSrc = this.coinType.find(i => i.key == "earn").src;
+        this.earnCoin = "999";
+      }
+    },
     processType() {
       if (this.isUnloginMode) {
         this.curCoinSrc = this.coinType.find(i => i.key == "earn").src;
@@ -109,11 +117,6 @@ export default {
     },
   },
   mounted() {
-    if (this.isUnloginMode) {
-      this.curCoinSrc = this.coinType.find(i => i.key == "earn").src;
-      this.earnCoin = "999";
-      this.curMin = "";
-    }
   },
   methods: {
     //   賺得彩金後變換樣式3秒後還原
@@ -143,13 +146,12 @@ export default {
       //重置計數
       else if (play === "stop") {
         if (this.isUnloginMode) {
-          clearInterval(this.playingCueTime);
-          this.playingCueTime = null;
         } else {
           this.isPause = false;
-          clearTimeout(this.playingCueTime);
-          this.playingCueTime = null;
         }
+
+        clearInterval(this.playingCueTime);
+        this.playingCueTime = null;
         return;
       }
 

@@ -37,6 +37,7 @@ import videojs from 'video.js';
 import bonunsDialog from '../bouns/compontents/bonunsDialog'
 import bonunsProcess from '../bouns/compontents/bonunsProcess'
 import { getCookie } from '@/lib/cookie';
+import yaboRequest from '@/api/yaboRequest';
 
 export default {
   components: {
@@ -65,6 +66,7 @@ export default {
       socketId: "",
       mission: null,
       keepPlay: false, // wait 任務未達成繼續觀看不發送play
+      isUnloginMode: false,
       breakwaitCallback: () => { },
     };
   },
@@ -80,10 +82,6 @@ export default {
     isDebug() {
       return process.env.NODE_ENV === 'development' || (this.$route.query & this.$route.query.testmode)
     },
-    //   未登入模式
-    isUnloginMode() {
-      return !this.loginStatus && true; //吃開關
-    }
   },
   mounted() {
     //  暫時手動轉換https
@@ -169,11 +167,6 @@ export default {
       this.player.on("play", () => {
         this.handleClickVideo();
       })
-
-      if (!this.loginStatus && !this.isUnloginMode) {
-        this.$refs.bonunsDialog.isShow = true
-        this.dialogType = 'tips';
-      }
     }
   },
   methods: {
@@ -236,8 +229,6 @@ export default {
           console.log("[WS]: Video active message connected");
         }
         window.YABO_SOCKET_VIDEO_ONMESSAGE = this.onMessage;
-        clearTimeout(this.reconnectTimer);
-        this.reconnectTimer = null;
       } else {
         if (this.reconnectTimer) return;
         this.reconnectTimer = setTimeout(() => {
@@ -424,9 +415,39 @@ export default {
           bonunsProcess.playCueTime('stop');
           break;
       }
+    },
+    handleLeavePage(cb) {
+      this.onSend("STOP");
+      document.removeEventListener('visibilitychange', () => { }, false);
+      window.YABO_SOCKET_VIDEO_ONMESSAGE = null;
+      clearTimeout(this.reconnectTimer);
+      this.reconnectTimer = null;
+      this.player.dispose();
+      this.player = null;
+      if (cb) {
+        cb();
+      }
     }
   },
   created() {
+    //   暫時 待搬移
+    yaboRequest({
+      method: 'get',
+      url: this.siteConfig.YABO_API_DOMAIN + '/system/switch',
+    }).then((res) => {
+      if (res && res.data && res.data[2]) {
+        this.isUnloginMode = !this.loginStatus && Boolean(res.data[2].value);
+        setTimeout(() => {
+          this.$nextTick(() => {
+            if (!this.loginStatus && !this.isUnloginMode) {
+              this.$refs.bonunsDialog.isShow = true
+              this.dialogType = 'tips';
+            }
+          })
+        }, 200)
+      }
+    });
+
     const self = this;
     const listner = function () {
       let isHiddenWindow = document.hidden;
@@ -450,7 +471,7 @@ export default {
     this.reconnectTimer = null;
     this.player.dispose();
     this.player = null;
-  }
+  },
 };
 </script>
 <style lang="scss" module>

@@ -8,7 +8,6 @@ export default ({
     timeout = 30000,
     headers = {},
     url = "",
-    fail = () => { },
 }) => {
     // YABO_API_DOMAIN: 'https://yaboapi.bbin-asia.com/api',
     // YABO_API_DOMAIN: 'https://yaboapi.canarycherrytart.com/api',

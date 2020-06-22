@@ -10,7 +10,12 @@
         </div>
       </div>
       <template v-if="videoInfo">
-        <video-player :video-info="videoInfo" :source="this.source" />
+        <video-player
+          :video-info="videoInfo"
+          :source="this.source"
+          :key="videoInfo.id"
+          ref="player"
+        />
         <video-info :video-info="videoInfo" />
         <video-tag
           v-if="!['smallPig', 'gay', 'les'].includes(source)"
@@ -18,7 +23,7 @@
           :padding="true"
         />
       </template>
-      <video-guess />
+      <video-guess @leave="handleLeavePage" />
     </div>
   </mobile-container>
 </template>
@@ -72,6 +77,13 @@ export default {
 
         default:
           break;
+      }
+    }
+  },
+  methods: {
+    handleLeavePage(cb) {
+      if (this.$refs['player']) {
+        this.$refs['player'].handleLeavePage(cb);
       }
     }
   },
