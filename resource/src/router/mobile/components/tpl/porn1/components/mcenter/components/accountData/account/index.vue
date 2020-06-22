@@ -205,18 +205,18 @@ export default {
         }
       }
 
-      if (field.key === "email") {
-        if (!field.verification) {
-          this.$router.push({
-            path: `/mobile/mcenter/accountData/email`
-          });
-        }
+      //   if (field.key === "email") {
+      //     if (!field.verification) {
+      //       this.$router.push({
+      //         path: `/mobile/mcenter/accountData/email`
+      //       });
+      //     }
 
-        // 只能設定一次
-        if (this.memInfo.user.email) {
-          return;
-        }
-      }
+      //     // 只能設定一次
+      //     if (this.memInfo.user.email) {
+      //       return;
+      //     }
+      //   }
 
 
       if (!field.btnShow) {

@@ -13,12 +13,12 @@
           </div>
         </div>
         <div :class="$style['check-content']">
-          <div :class="$style['time']">{{ nowTime }}</div>
+          <div :class="$style['time']">流水检查时间：{{ nowTime }}</div>
           <div :class="$style['hr']" />
           <div v-if="serialNumberData && serialNumberData.total">
             <div :class="$style['check-cell']">
               <span :class="$style['sub-title']">
-                {{ $text("S_SERIAL_CHANGE", "流水要求") }}
+                流水要求
               </span>
               <span :class="$style['money']">
                 {{ serialNumberData.total.audit_amount }}
@@ -82,13 +82,10 @@
         </div>
 
         <div :class="$style['check-button-wrap']">
-          <div
-            :class="$style['check-btn']"
-            @click="$router.push('/mobile/mcenter/help/withdraw?&key=6')"
-          >
+          <div :class="$style['check-btn']" @click="handleCheckRule">
             查看规则
           </div>
-          <div :class="$style['check-btn']" @click="$router.back()">
+          <div :class="$style['check-btn']" @click="closeTips">
             继续游戏
           </div>
           <div
@@ -134,6 +131,10 @@ export default {
   methods: {
     closeTips() {
       this.$emit('close');
+    },
+    handleCheckRule() {
+      this.$emit('saveValue', true);
+      this.$router.push('/mobile/mcenter/help/withdraw?&key=6');
     }
   },
   watch: {

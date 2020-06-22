@@ -306,6 +306,7 @@
         :withdraw-value="+withdrawValue"
         @close="closeTips"
         @submit="handleSubmit"
+        @save-value="saveCurrentValue"
       />
       <!-- 流水檢查 -->
       <serial-number v-if="isSerial" :handle-close="toggleSerial" />
@@ -382,9 +383,10 @@ export default {
         setTimeout(() => {
           localStorage.removeItem('tmp_w_selectedCard');
           localStorage.removeItem('tmp_w_amount');
-          if (localStorage.getItem('tmp_w_1')) {
+          if (localStorage.getItem('tmp_w_1') && localStorage.getItem('tmp_w_rule') !== "1") {
             this.handleSubmit();
           }
+          localStorage.removeItem('tmp_w_rule');
         })
 
         this.isLoading = false;
@@ -593,6 +595,13 @@ export default {
     },
     closeTips() {
       this.isShowCheck = false;
+    },
+    saveCurrentValue(fromRule) {
+      if (fromRule) {
+        localStorage.setItem('tmp_w_selectedCard', this.selectedCard);
+        localStorage.setItem('tmp_w_amount', this.withdrawValue);
+        localStorage.setItem('tmp_w_rule', "1");
+      }
     },
     handleSubmit() {
       if (this.memInfo.config.withdraw_player_verify && !localStorage.getItem('tmp_w_1')) {
