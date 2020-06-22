@@ -6,7 +6,7 @@
           $getCdnPath('/static/image/_new/mcenter/information/no_message.png')
         "
       />
-      <div>还没有新的消息</div>
+      <div>还没有新通知</div>
     </div>
   </div>
   <div v-else :class="$style['message-wrap']">
