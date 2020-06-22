@@ -42,7 +42,8 @@ export default {
         };
     },
     watch: {
-        webviewOpenUrl() {
+        webviewOpenUrl(val) {
+            console.log(val);
             setTimeout(() => { document.location.href = this.webviewOpenUrl }, 500);
         }
     },
