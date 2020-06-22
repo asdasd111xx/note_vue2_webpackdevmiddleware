@@ -476,5 +476,9 @@ export default {
     // 推廣連結
     [types.SET_AGENTLINK](state, data) {
         state.agentLink = data
+    },
+    // 鴨脖配置
+    [types.SET_YABOCONFIG](state, data) {
+        state.yaboConfig = data
     }
 };

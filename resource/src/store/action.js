@@ -24,6 +24,7 @@ import member from '@/api/member';
 // eslint-disable-next-line import/no-cycle
 import openGame from '@/lib/open_game';
 import router from '../router';
+import yaboRequest from '@/api/yaboRequest';
 
 let memstatus = true;
 let agentstatus = true;
@@ -533,6 +534,7 @@ export const actionMemInit = ({ state, dispatch, commit }) => {
         }
 
         dispatch('actionSetSiteConfig', configInfo);
+        dispatch('actionSetYaboConfig');
 
         if (state.loginStatus) {
             const params = {
@@ -1052,5 +1054,23 @@ export const actionSetAgentLink = ({ commit }) => {
 
     Promise.all([domain, agentCode]).then(([domain, agentCode]) => {
         commit(types.SET_AGENTLINK, `https://${domain}/a/${agentCode}`);
+    });
+};
+// 鴨脖配置
+export const actionSetYaboConfig = ({ state, dispatch, commit }, next) => {
+    let configInfo = {};
+    if (state.webInfo.is_production) {
+        configInfo = siteConfigOfficial[`site_${state.webInfo.alias}`] || siteConfigOfficial.preset;
+    } else {
+        configInfo = siteConfigTest[`site_${state.webInfo.alias}`] || siteConfigTest.preset;
+    }
+
+    yaboRequest({
+        method: 'get',
+        url: configInfo.YABO_API_DOMAIN + '/system/switch',
+    }).then((res) => {
+        if (res && res.data) {
+            commit(types.SET_YABOCONFIG, res.data);
+        }
     });
 };

@@ -75,6 +75,7 @@ export default {
       memInfo: 'getMemInfo',
       loginStatus: 'getLoginStatus',
       siteConfig: 'getSiteConfig',
+      yaboConfig: 'getYaboConfig'
     }),
     playsinline() {
       return "true"
@@ -429,23 +430,15 @@ export default {
     }
   },
   created() {
-    //   暫時 待搬移
-    yaboRequest({
-      method: 'get',
-      url: this.siteConfig.YABO_API_DOMAIN + '/system/switch',
-    }).then((res) => {
-      if (res && res.data && res.data[2]) {
-        this.isUnloginMode = !this.loginStatus && Boolean(res.data[2].value);
-        setTimeout(() => {
-          this.$nextTick(() => {
-            if (!this.loginStatus && !this.isUnloginMode) {
-              this.$refs.bonunsDialog.isShow = true
-              this.dialogType = 'tips';
-            }
-          })
-        }, 200)
-      }
-    });
+    this.isUnloginMode = this.yaboConfig && this.yaboConfig[2] ? Boolean(this.yaboConfig[2].value) : false
+    setTimeout(() => {
+      this.$nextTick(() => {
+        if (!this.loginStatus && !this.isUnloginMode) {
+          this.$refs.bonunsDialog.isShow = true
+          this.dialogType = 'tips';
+        }
+      })
+    }, 200)
 
     const self = this;
     const listner = function () {
