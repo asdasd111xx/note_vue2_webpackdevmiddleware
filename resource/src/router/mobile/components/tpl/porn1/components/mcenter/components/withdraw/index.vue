@@ -1,5 +1,5 @@
 <template>
-  <mobile-container :header-config="headerConfig">
+  <mobile-container :header-config="headerConfig" :has-footer="false">
     <div slot="content" :class="$style['content-wrap']">
       <message v-if="msg" @close="msg = ''">
         <div slot="msg">

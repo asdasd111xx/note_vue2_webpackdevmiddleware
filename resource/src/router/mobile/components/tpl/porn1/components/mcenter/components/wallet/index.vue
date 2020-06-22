@@ -1,5 +1,9 @@
 <template>
-  <mobile-container :header-config="headerConfig" :class="$style.container">
+  <mobile-container
+    :header-config="headerConfig"
+    :class="$style.container"
+    :has-footer="false"
+  >
     <div slot="content" :class="$style['my-wallet-wrap']">
       <div :class="$style['wallet-info-wrap']">
         <div>总金额(元)</div>

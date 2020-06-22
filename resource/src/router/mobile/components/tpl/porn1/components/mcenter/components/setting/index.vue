@@ -1,5 +1,9 @@
 <template>
-  <mobile-container :header-config="headerConfig" :class="$style.container">
+  <mobile-container
+    :header-config="headerConfig"
+    :class="$style.container"
+    :has-footer="false"
+  >
     <div slot="content" :class="$style['setting-wrap']">
       <div
         v-for="listInfo in list"

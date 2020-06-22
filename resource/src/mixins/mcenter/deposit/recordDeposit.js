@@ -135,6 +135,9 @@ export default {
                 if (response.result === 'ok') {
                     this.paymentGroups = response.ret.payment_group;
                 }
+                if (response && response.result !== 'ok') {
+                    this.msg = response.msg;
+                }
             });
         },
         getSerialValue(info, objKey) {
