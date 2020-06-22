@@ -54,6 +54,12 @@
         </div>
       </template>
     </template>
+    <template v-if="gameData === favoriteData && gameData.length === 0">
+      <div :class="$style['empty-wrap']">
+        <div :class="$style['empty-icon']" />
+        <div>{{ $text("S_NO_GAME", "未查询到相关游戏") }}</div>
+      </div>
+    </template>
     <gameSearch
       v-if="isShowSearch"
       :text="paramsData.name"
@@ -209,8 +215,6 @@ export default {
         this.hasBankCard = res.ret && res.ret.length > 0
       });
     }
-  },
-  mounted() {
   },
   methods: {
     ...mapActions([
@@ -449,7 +453,7 @@ export default {
 };
 </script>
 
-<style lang="scss" scoped>
+<style lang="scss" module>
 .game-item-wrap {
   background: #f8f8f7;
   min-height: calc(100vh - 88px);
