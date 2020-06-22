@@ -126,12 +126,16 @@
         height: 20px;
         width: 100%;
 
-        >div:last-child {
+        .btn-wrap {
             padding: 0 5px;
             width: 75px;
             position: absolute;
             right: 14px;
             color: $main_text_color4;
+
+            >.disable {
+                color: $main_text_color5;
+            }
         }
     }
 }

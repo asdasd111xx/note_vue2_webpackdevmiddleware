@@ -202,7 +202,7 @@ export default {
           this.handleSubmit();
         },
         funcBtn: this.$text('S_COMPLETE', '完成'),
-        funcBtnActive: !!(this.newValue)
+        funcBtnActive: !!(this.newValue) && !!(this.codeValue)
       };
     },
     fieldValue() {

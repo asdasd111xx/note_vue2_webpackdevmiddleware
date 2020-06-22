@@ -102,8 +102,9 @@ export default {
       }
     },
     onClick(id) {
+      let source = this.$route.query.source;
       this.$emit('leave', () => {
-        window.location.href = `/mobile/videoPlay/${id}?source=${this.$route.query.source}`;
+        window.location.href = `/mobile/videoPlay/${id}?source=${source}`;
       });
     }
   }

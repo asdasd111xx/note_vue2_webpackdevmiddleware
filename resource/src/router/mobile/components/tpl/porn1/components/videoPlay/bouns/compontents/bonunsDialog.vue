@@ -38,7 +38,9 @@
           超高清超流畅观影送钱
         </template>
         <template v-else>
-          {{ $text("S_ACTIVITY_SLOGAN", "看视频送现金 天天看天天送") }}
+          <span style="margin-top: 12%;display: block;">
+            {{ $text("S_ACTIVITY_SLOGAN", "看视频送现金 天天看天天送") }}
+          </span>
         </template>
       </div>
       <!-- 第二行文字或按鈕 -->

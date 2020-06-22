@@ -171,6 +171,9 @@ export default {
     }
   },
   methods: {
+    ...mapActions([
+      'actionSetYaboConfig'
+    ]),
     handleCloseDialog(keepPlay) {
       this.keepPlay = keepPlay;
       if (this.breakwaitCallback) {
@@ -430,15 +433,21 @@ export default {
     }
   },
   created() {
-    this.isUnloginMode = !this.loginStatus && (this.yaboConfig && this.yaboConfig[2] ? Boolean(this.yaboConfig[2].value) : false);
-    setTimeout(() => {
-      this.$nextTick(() => {
-        if (!this.loginStatus && !this.isUnloginMode) {
-          this.$refs.bonunsDialog.isShow = true
-          this.dialogType = 'tips';
-        }
-      })
-    }, 200)
+    this.actionSetYaboConfig().then(() => {
+      this.isUnloginMode = !this.loginStatus &&
+        this.yaboConfig &&
+        this.yaboConfig[2] &&
+        this.yaboConfig[2].value == "true";
+
+      setTimeout(() => {
+        this.$nextTick(() => {
+          if (!this.loginStatus && !this.isUnloginMode) {
+            this.$refs.bonunsDialog.isShow = true
+            this.dialogType = 'tips';
+          }
+        })
+      }, 200)
+    });
 
     const self = this;
     const listner = function () {
