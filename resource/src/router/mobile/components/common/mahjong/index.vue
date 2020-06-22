@@ -40,6 +40,12 @@
         </div>
       </template>
     </template>
+    <template v-if="gameData === favoriteData && gameData.length === 0">
+      <div :class="$style['empty-wrap']">
+        <div :class="$style['empty-icon']" />
+        <div>{{ $text("S_NO_GAME", "未查询到相关游戏") }}</div>
+      </div>
+    </template>
     <gameSearch
       v-if="isShowSearch"
       :text="paramsData.name"
@@ -315,9 +321,24 @@ export default {
 };
 </script>
 
-<style lang="scss" scoped>
+<style lang="scss" module>
 .game-item-wrap {
   background: #f8f8f7;
   min-height: calc(100vh - 88px);
+}
+
+.empty-wrap {
+  padding-top: 90px;
+  color: #a6a9b2;
+  font-size: 16px;
+  text-align: center;
+}
+
+.empty-icon {
+  margin: 0 auto 20px;
+  width: 62px;
+  height: 62px;
+  background: url("/static/image/_new/common/search_none.png") 0 0 / contain
+    no-repeat;
 }
 </style>
