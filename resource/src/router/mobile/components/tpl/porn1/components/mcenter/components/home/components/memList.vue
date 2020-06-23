@@ -109,7 +109,7 @@ export default {
           path: '/mobile/mcenter/help',
           pageName: 'help',
           image: 'help',
-          info: '存取款、投注有疑问，看这里',
+          info: '存提现、投注有疑问，看这里',
           isPart: true
 
         },
@@ -444,7 +444,7 @@ export default {
   }
 }
 .list-info {
-  color: #cbced8;
+  color: #9ca3bf;
   font-size: 12px;
   position: absolute;
   right: 38px;

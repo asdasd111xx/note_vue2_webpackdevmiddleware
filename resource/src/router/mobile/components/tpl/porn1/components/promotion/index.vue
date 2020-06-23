@@ -64,11 +64,11 @@ export default {
     this.getPromotionList(this.tabId);
   },
   computed: {
-        headerConfig() {
-            return {
-                title: this.$text('S_PROMOTIONS', '优惠活动')
-            };
-        }
+    headerConfig() {
+      return {
+        title: this.$text('S_PROMOTIONS', '优惠活动')
+      };
+    }
   },
   methods: {
     handleClickTab(tab, index) {
@@ -152,6 +152,7 @@ $fixed_spacing_height: 43px;
 .promotion-wrap {
   background: #fefffe;
   padding: $fixed_spacing_height 0 10px;
+  min-height: calc(100vh - 105px);
 }
 
 .type-wrap {
@@ -160,8 +161,8 @@ $fixed_spacing_height: 43px;
   height: $fixed_spacing_height;
   position: fixed;
   top: $fixed_spacing_height;
-  background-color: #FEFFFE;
-  border-bottom: 1px solid #EEE;
+  background-color: #fefffe;
+  border-bottom: 1px solid #eee;
   z-index: 1;
 }
 
@@ -216,18 +217,18 @@ $fixed_spacing_height: 43px;
 }
 
 .latest-wrap {
-    position: absolute;
-    background: url('/static/image/_new/promotion/pic_latest.png');
-    background-position: 50% 50%;
-    background-size: cover;
-    top: 6px;
-    left: -8px;
-    width: 47px;
-    height: 25px;
-    color: $main_white_color1;
-    font-size: 12px;
-    text-align: center;
-    line-height: 20px;
+  position: absolute;
+  background: url("/static/image/_new/promotion/pic_latest.png");
+  background-position: 50% 50%;
+  background-size: cover;
+  top: 6px;
+  left: -8px;
+  width: 47px;
+  height: 25px;
+  color: $main_white_color1;
+  font-size: 12px;
+  text-align: center;
+  line-height: 20px;
 }
 
 .text-wrap {

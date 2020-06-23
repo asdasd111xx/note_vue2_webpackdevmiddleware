@@ -149,7 +149,7 @@ export default {
           isShow: true,
           onClick: () => {
             window.open(
-              "https://apps.apple.com/cn/app/id1517374530",
+              "https://apps.apple.com/cn/app/id1516100581",
               "_blank"
             );
           }
