@@ -36,6 +36,15 @@ export const actionSetWebview = ({ commit }) => {
 
 // 設定後台資料
 export const actionSetWebInfo = ({ state, commit, dispatch }, domain) => {
+    let platform = 'G';
+    const urlParams = new URLSearchParams(window.location.search);
+    if (urlParams && urlParams.get('platform')) {
+        platform = urlParams.get('platform');
+    } else if (window.location.hostname === 'yaboxxxapp02.com') {
+        platform = 'H'
+    }
+    Vue.cookie.set('platform', platform);
+
     // cache 10分鐘
     const timestamp = Math.floor(Date.parse(new Date()) / 600000);
     // 模式：一般/預覽
