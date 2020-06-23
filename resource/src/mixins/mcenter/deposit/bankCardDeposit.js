@@ -485,6 +485,8 @@ export default {
             if (!this.isDepositAi && this.curModeGroup.channel_display && (this.curPayInfo.bank_id || this.selectedBank.value || isOtherBank)) {
                 this.getPayPass();
             }
+
+            this.checkDepositInput();
         },
         /**
          * 切換支付方式
@@ -517,6 +519,8 @@ export default {
             if (this.yourBankData.length > 0 && this.curPayInfo.payment_type_id === 5) {
                 this.defaultCurPayBank()
             }
+
+            this.checkDepositInput();
         },
         /**
          * 切換通道
@@ -841,6 +845,13 @@ export default {
             this.msg = "已复制到剪贴板";
         },
         checkOrderData() {
+
+            // 針對在銀行匯款、網銀有出現Deposit-input
+            if (this.isDisableDepositInput) {
+                this.checkSuccess = false;
+                return
+            }
+
             // 金額輸入錯誤
             if (((this.isErrorMoney || !this.moneyValue) && !this.curModeGroup.uri) || (this.depositInterval.minMoney && this.depositInterval.minMoney > this.moneyValue) || (this.depositInterval.maxMoney && this.depositInterval.maxMoney < this.moneyValue)) {
                 this.checkSuccess = false;
@@ -892,13 +903,22 @@ export default {
 
             this.checkSuccess = true;
         },
+        checkDepositInput() {
+            // 銀行匯款 or 網銀
+            if ([5, 6].includes(this.curPayInfo.payment_type_id) || (this.curPayInfo.payment_type_id === 1 && this.curPayInfo.payment_type_id === 1 )) {
+                if(!this.isSelectValue) {
+                    this.isDisableDepositInput = true;
+                    this.checkSuccess = false;
+                }
+            }
+        },
         defaultCurPayBank() {
             let target = this.allBanks.find(item => {
-                return item.value === this.curPayInfo.bank_id
+                return item.value === this.curPayInfo.bank_id;
             })
 
-            this.isSelectValue = target.label
-            this.bankSelectValue = target
+            this.isSelectValue = target.label;
+            this.bankSelectValue = target;
         }
     }
 };

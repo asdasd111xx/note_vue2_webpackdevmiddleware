@@ -248,6 +248,10 @@
     color: #222;
     background: #FFF;
 
+    &.disable {
+        pointer-events: none;
+    }
+
     // Chrome/Opera/Safari
     &::-webkit-input-placeholder {
         color: #CBCED8;
