@@ -188,5 +188,6 @@ export default {
     getMcenterBindMessage: (state) => state.mcenterBindMessage,
     // 推廣連結
     getAgentLink: (state) => state.agentLink,
-    getYaboConfig: (state) => state.yaboConfig
+    getYaboConfig: (state) => state.yaboConfig,
+    getGlobalMessage: (state) => state.globalMessage
 };

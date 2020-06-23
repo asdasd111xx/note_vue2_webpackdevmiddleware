@@ -72,6 +72,21 @@ export default {
       temp.code = code;
     }
 
+    if (localStorage.getItem('open-game-link')) {
+      let openGameLink = localStorage.getItem('open-game-link');
+      this.isLoading = false;
+
+      if (!isMobileFuc() && (vendor === 'sp' || vendor === 'mg')) {
+        this.urlData = openGameLink;
+        return;
+      }
+
+      window.location.href = openGameLink;
+      localStorage.removeItem('open-game-link');
+      return;
+    }
+
+    // 舊版開啟方式
     game.gameLink({
       params: temp,
       errorAlert: false,
@@ -80,6 +95,8 @@ export default {
         if (result !== 'ok') {
           return;
         }
+
+        this.isLoading = false;
 
         // 80桌參數
         let query = '';
@@ -100,7 +117,6 @@ export default {
           return;
         }
 
-        this.isLoading = false;
         window.location.href = ret.url + query;
       },
       fail: (res) => {

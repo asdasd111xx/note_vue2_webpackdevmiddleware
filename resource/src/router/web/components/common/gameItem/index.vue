@@ -5,7 +5,7 @@
     :show-jackpot="showJackpot"
     :show-favor="showFavor"
     :show-button="showButton"
-    :before-on-enter="beforeOnEnter"
+    :redirect-card="redirectCard"
   />
 </template>
 
@@ -35,7 +35,7 @@ export default {
       type: Boolean,
       default: true
     },
-    beforeOnEnter: {
+    redirectCard: {
       type: Function,
       required: true
     }

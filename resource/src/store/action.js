@@ -1083,3 +1083,7 @@ export const actionSetYaboConfig = ({ state, dispatch, commit }, next) => {
         }
     });
 };
+
+export const actionSetGlobalMessage = ({ commit }, data) => {
+    commit(types.SET_GLOBALMESSAGE, data);
+};

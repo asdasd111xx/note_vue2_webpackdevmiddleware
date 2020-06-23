@@ -3,20 +3,6 @@
     <template v-for="slotKey in slotSort">
       <template v-if="slotKey === 'list'">
         <div :key="`slot-${slotKey}`" class="game-item-wrap clearfix">
-          <message
-            v-if="msg"
-            @close="msg = ''"
-            :callback="
-              () => {
-                $router.push(`/mobile/mcenter/mahjong?mahjonglobby=${vendor}`);
-              }
-            "
-          >
-            <div slot="msg">
-              {{ msg }}
-            </div>
-          </message>
-
           <template v-for="(gameInfo, index) in gameData">
             <game-item
               :key="`game-${gameInfo.vendor}-${index}`"
@@ -25,7 +11,7 @@
               :show-jackpot="gameShowJackpot"
               :show-favor="gameShowFavor"
               :show-button="gameShowButton"
-              :before-on-enter="beforeOnEnter"
+              :redirect-card="redirectBankCard"
             />
           </template>
           <!-- 捲動加載 -->
@@ -67,7 +53,6 @@ import ajax from '@/lib/ajax';
 import { gameType, gameList } from '@/config/api';
 import gameItem from '@/router/web/components/common/gameItem';
 import gameSearch from '../search';
-import message from "@/router/mobile/components/tpl/porn1/components/common/new/message"
 
 /**
  * 共用元件 - 手機網頁版電子遊戲頁共用框 (邏輯共用)
@@ -82,7 +67,6 @@ export default {
     gameSearch,
     gameItem,
     InfiniteLoading,
-    message
   },
   props: {
     slotSort: {
@@ -127,8 +111,6 @@ export default {
       labelData: [],
       isGameDataReceive: false,
       gameData: [],
-      msg: '',
-      hasBankCard: false
     };
   },
   computed: {
@@ -179,13 +161,10 @@ export default {
     ...mapActions([
       'actionSetFavoriteGame'
     ]),
-    beforeOnEnter() {
-      if (this.hasBankCard) {
-        return true
-      } else {
-        this.msg = "请先绑定提现银行卡"
-        return false
-      }
+    redirectBankCard() {
+      this.$router.push(
+        `/mobile/mcenter/bankcard?redirect=mahjonglobby-${this.vendor}-${this.paramsData.label}`
+      );
     },
     /**
      * 取得遊戲平台分類

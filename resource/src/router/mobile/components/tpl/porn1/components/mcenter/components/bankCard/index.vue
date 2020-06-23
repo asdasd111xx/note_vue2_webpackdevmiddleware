@@ -110,18 +110,21 @@ export default {
         return;
       }
 
-      if (this.addBankCardStep === 'two') {
-        this.step = 'one';
-        return;
-      }
-
       if (this.$route.query) {
         if (this.$route.query.redirect === "home") {
           this.$router.push('/mobile');
+          return;
         } else if (this.$route.query.redirect === "liveStream") {
           this.$router.push('/mobile/liveStream');
+          return;
         }
         this.$router.back();
+        return;
+      }
+
+      if (this.addBankCardStep === 'two') {
+        this.step = 'one';
+        return;
       }
 
       this.currentPage = 'bankCardInfo';
