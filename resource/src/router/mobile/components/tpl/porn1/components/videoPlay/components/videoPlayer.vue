@@ -434,19 +434,20 @@ export default {
   },
   created() {
     this.actionSetYaboConfig().then(() => {
-      this.isUnloginMode = !this.loginStatus &&
-        this.yaboConfig &&
-        this.yaboConfig[2] &&
-        this.yaboConfig[2].value == "true";
+      if (this.yaboConfig) {
+        let noLoginVideoSwitch = this.yaboConfig.find(i => i.name === "NoLoginVideoSwitch").value;
+        this.isUnloginMode = !this.loginStatus &&
+          noLoginVideoSwitch == "true";
 
-      setTimeout(() => {
-        this.$nextTick(() => {
-          if (!this.loginStatus && !this.isUnloginMode) {
-            this.$refs.bonunsDialog.isShow = true
-            this.dialogType = 'tips';
-          }
-        })
-      }, 200)
+        setTimeout(() => {
+          this.$nextTick(() => {
+            if (!this.loginStatus && !this.isUnloginMode) {
+              this.$refs.bonunsDialog.isShow = true
+              this.dialogType = 'tips';
+            }
+          })
+        }, 200)
+      }
     });
 
     const self = this;

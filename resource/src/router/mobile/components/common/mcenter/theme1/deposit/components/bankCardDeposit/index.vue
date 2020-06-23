@@ -278,7 +278,7 @@
                 <div class="money-input-wrap">
                   <input
                     v-model="moneyValue"
-                    :class="$style['deposit-input']"
+                    :class="[$style['deposit-input'] , {[$style.disable] : isDisableDepositInput }]"
                     :placeholder="singleLimit"
                     type="number"
                     pattern="[0-9]*"
@@ -692,7 +692,8 @@ export default {
       nameCheckFail: false,
       msg: '',
       entryBlockStatusData: {},
-      isShowEntryBlockStatus: false
+      isShowEntryBlockStatus: false,
+      isDisableDepositInput: false
     };
   },
   watch: {
@@ -704,6 +705,12 @@ export default {
     curPayInfo() {
       if (this.curPayInfo.payment_method_name === '代客充值') {
         this.checkSuccess = true;
+      }
+    },
+    isSelectValue(value) {
+      if (value) {
+        this.isDisableDepositInput = false
+        this.checkOrderData()
       }
     }
   },
@@ -798,7 +805,9 @@ export default {
         if (value === 'stepOne') {
           this.$emit('update:headerSetting', this.initHeaderSetting);
           this.resetStatus();
-          this.getPayGroup();
+          this.getPayGroup().then(() => {
+            this.defaultCurPayBank();
+          });
         }
 
         this.submitStatus = value;
@@ -906,8 +915,10 @@ export default {
   },
   created() {
     this.initHeaderSetting = this.headerSetting;
-    this.getPayGroup();
-    this.checkEntryBlockStatus()
+    this.getPayGroup().then(() => {
+        this.defaultCurPayBank();
+    })
+    this.checkEntryBlockStatus();
   },
   methods: {
     ...mapActions([
