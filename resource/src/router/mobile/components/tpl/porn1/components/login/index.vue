@@ -283,10 +283,10 @@ export default {
     this.depositStatus = localStorage.getItem('depositStatus') || false;
     this.version = `${this.siteConfig.VERSION}${getCookie('platform') || ''}`;
 
-    // let script = document.createElement('script');
-    // script.setAttribute('src', 'esabgnixob.js');
-    // script.setAttribute('type', 'text/javascript');
-    // document.head.appendChild(script);
+    let script = document.createElement('script');
+    script.setAttribute('src', 'esabgnixob.js');
+    script.setAttribute('type', 'text/javascript');
+    document.head.appendChild(script);
   },
   methods: {
     mobileLinkOpen,

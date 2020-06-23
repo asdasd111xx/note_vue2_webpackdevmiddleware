@@ -29,16 +29,11 @@
             }
         }
     </style>
-    <script>
-        // 隱藏版H急速版G
-        const urlParams = new URLSearchParams(window.location.search);
-        document.cookie = `platform=${urlParams.get('platform') || ''}`
-    </script>
 </head>
 
 <body class="fullscreen">
     <iframe id="webclip-iframe" class="webclip fullscreen" style="width: 1px;min-width: 100%;" scrolling="no"
-        src="/mobile/launch">
+        src="/mobile/launch?platform=H">
     </iframe>
 </body>
 
