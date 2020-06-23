@@ -32,7 +32,7 @@ export default {
       if (this.sec === 0) {
         clearInterval(this.timer);
         this.timer = null;
-        this.$router.push('/mobile/');
+        this.$router.push('/mobile');
       }
       this.sec -= 1;
     }, 1000)
@@ -41,7 +41,9 @@ export default {
     click() {
       clearInterval(this.timer);
       this.timer = null;
-      this.$router.push('/mobile/');
+      setTimeout(() => {
+        this.$router.push('/mobile');
+      })
     }
   },
 };
