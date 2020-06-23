@@ -219,8 +219,6 @@ export default {
               this.superErrorMsg = `${msg} ${errorCode}`;
               return;
             }
-            this.requiredMoneyStatus = 'ok';
-
             if (ret && +ret >= requiredMoney) {
               this.requiredMoneyStatus = 'ok';
               return;
