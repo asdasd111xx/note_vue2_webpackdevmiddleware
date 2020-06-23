@@ -49,7 +49,8 @@ export default {
   },
   mounted() {
     this.hasCid = getCookie('cid') || false;
-    this.$router.push("/mobile/mcenter/help")
+    this.$router.push("/mobile/mcenter/help");
+    document.title = this.$text('S_HELP_CENTER', '帮助中心')
   },
   computed: {
     ...mapGetters({
@@ -57,10 +58,7 @@ export default {
     }),
     isApp() {
       let isApp = !!((this.$route.query && this.$route.query.app) || (this.$route.query && this.$route.query.APP))
-      if (isApp)
-        document.title = "8日内充值记录"
-
-      return isApp
+      return isApp;
     },
     headerConfig() {
       return {
