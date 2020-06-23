@@ -1,6 +1,6 @@
 import Vue from 'vue';
-import VueI18n from 'vue-i18n';
 import VueCookie from 'vue-cookie';
+import VueI18n from 'vue-i18n';
 
 Vue.use(VueI18n);
 
@@ -21,18 +21,18 @@ if (VueCookie.get('lang') === null) {
     lang = lang.toLowerCase();
 
     switch (true) {
-        case /^en-/.test(lang):
-            lang = 'en';
-            break;
-        case /^vi$|^vi-/.test(lang):
-            lang = 'vi';
-            break;
-        case /^ja$|^ja-/.test(lang):
-            lang = 'ja';
-            break;
-        case /^zh-tw$|^zh-hk$/.test(lang):
-            lang = 'zh-tw';
-            break;
+        // case /^en-/.test(lang):
+        //     lang = 'en';
+        //     break;
+        // case /^vi$|^vi-/.test(lang):
+        //     lang = 'vi';
+        //     break;
+        // case /^ja$|^ja-/.test(lang):
+        //     lang = 'ja';
+        //     break;
+        // case /^zh-tw$|^zh-hk$/.test(lang):
+        //     lang = 'zh-tw';
+        //     break;
         default:
             lang = 'zh-cn';
             break;
