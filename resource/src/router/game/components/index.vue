@@ -1,7 +1,7 @@
 <template>
   <!-- pc版 mg遊戲嵌iframe -->
   <div>
-    <message v-if="msg" @close="msg = ''" :callback="clearMsg">
+    <message v-if="msg" :callback="clearMsg">
       <div slot="msg">
         {{ msg }}
       </div>

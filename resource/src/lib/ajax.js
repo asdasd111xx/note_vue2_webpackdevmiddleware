@@ -46,14 +46,22 @@ export default ({
             }
 
             // 收到重新登入需要導向登入頁面
-            if (error && error.response && error.response.data && error.response.data.code === "M00001") {
-                if (getCookie('cid') && !errorAlert) {
-                    alert(`${error.response.data.msg} ${error.response.data.code ? `(${error.response.data.code})` : ''}`);
+            if (error && error.response && error.response.data) {
+                if (error.response.data.code === "M00001") {
+                    if (getCookie('cid') && !errorAlert) {
+                        alert(`${error.response.data.msg} ${error.response.data.code ? `(${error.response.data.code})` : ''}`);
+                    }
+                    setCookie('cid', '');
+                    setCookie('aid', '');
+                    window.location.reload();
+                    window.location.href = '/mobile/login';
+                    return;
                 }
-                setCookie('cid', '');
-                setCookie('aid', '');
-                window.location.reload();
-                window.location.href = '/mobile/login';
+                // 維護中導向
+                if (error.response.data.code === "M00002" && !window.location.href.includes('upup')) {
+                    window.location.href = '/upup';
+                    return;
+                }
             }
 
             if (error.response) {

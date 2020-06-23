@@ -194,7 +194,7 @@ export default {
     handleClick(field) {
       if (field.key === "phone") {
         //   手機未驗證能設定
-        if (!this.mobileCheck) {
+        if (!field.verification) {
           this.$router.push({
             path: `/mobile/mcenter/accountData/phone`
           });
@@ -204,6 +204,20 @@ export default {
           return;
         }
       }
+
+      //   if (field.key === "email") {
+      //     if (!field.verification) {
+      //       this.$router.push({
+      //         path: `/mobile/mcenter/accountData/email`
+      //       });
+      //     }
+
+      //     // 只能設定一次
+      //     if (this.memInfo.user.email) {
+      //       return;
+      //     }
+      //   }
+
 
       if (!field.btnShow) {
         return;

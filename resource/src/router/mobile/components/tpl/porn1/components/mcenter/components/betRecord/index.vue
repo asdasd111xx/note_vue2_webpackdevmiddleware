@@ -64,6 +64,9 @@
                             <div :class="$style['time-confirm']" @click="setCustomTime">{{ $text('S_CONFIRM', '确认') }}</div>
                         </div>
                     </template>
+                    <div v-if="setStartTime.valueOf() > setEndTime.valueOf()" :class="[$style['date-tip']] ">
+                      开始日期不能大于结束日期
+                    </div>
                 </div>
                 <div
                     v-if="selectMenu !== ''"

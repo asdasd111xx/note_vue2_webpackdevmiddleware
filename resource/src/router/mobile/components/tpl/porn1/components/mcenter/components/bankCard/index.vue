@@ -26,11 +26,9 @@
 </template>
 
 <script>
-import mobileContainer from '../../../common/new/mobileContainer';
 
 export default {
   components: {
-    mobileContainer,
     bankCardInfo: () => import(/* webpackChunkName: 'bankCardInfo' */ './bankCardInfo'),
     addBankCard: () => import(/* webpackChunkName: 'addBankCard' */ './addBankCard')
   },
@@ -66,7 +64,7 @@ export default {
       return false;
     },
     headerTitle() {
-      if (this.hasRedirect) {
+      if (this.hasRedirect && this.$route.query.redirect !== "withdraw") {
         return '提现银行卡';
       }
       return this.$text(...this.currentPage === 'bankCardInfo' ? ['S_CARD_MANAGEMENT', '卡片管理'] : ['S_ADD_BANKCARD', '添加银行卡']);
@@ -118,6 +116,11 @@ export default {
       }
 
       if (this.$route.query) {
+        if (this.$route.query.redirect === "home") {
+          this.$router.push('/mobile');
+        } else if (this.$route.query.redirect === "liveStream") {
+          this.$router.push('/mobile/liveStream');
+        }
         this.$router.back();
       }
 

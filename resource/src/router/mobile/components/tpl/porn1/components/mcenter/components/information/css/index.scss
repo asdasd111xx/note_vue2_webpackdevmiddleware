@@ -1,5 +1,10 @@
 @import "~@/css/variable.scss";
 
+.container {
+    position: relative;
+    background-color: #f8f8f7;
+}
+
 .menu-list-wrap {
     max-width: $mobile_max_width;
     position: fixed;

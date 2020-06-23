@@ -1,6 +1,6 @@
-import ajax from '@/lib/ajax';
 import { API_WITHDRAW_ASSIST } from '@/config/api';
 import EST from '@/lib/EST';
+import ajax from '@/lib/ajax';
 
 export default {
     data() {
@@ -64,25 +64,29 @@ export default {
                 }
             ],
             nowTime: EST(new Date()),
-            isShow: false
         };
     },
-    created() {
-        this.isShow = true;
-
-        // 取得流水
-        ajax({
-            method: 'get',
-            url: API_WITHDRAW_ASSIST,
-            errorAlert: false
-        }).then((response) => {
-            if (response.result === 'ok') {
-                this.serialNumberData = response;
-                this.isShow = false;
-            }
-        });
-    },
     methods: {
+        getFixed(number) {
+            return Number(number).toFixed(2);
+        },
+        // 轉換扣除金額
+        getDeductionNumber(number) {
+            let _n = Number(number).toFixed(2);
+            return Number(_n) > 0 ? `-${_n}` : _n;
+        },
+        // 取得流水
+        getSerialNumberData() {
+            ajax({
+                method: 'get',
+                url: API_WITHDRAW_ASSIST,
+                errorAlert: false
+            }).then((response) => {
+                if (response.result === 'ok') {
+                    this.serialNumberData = response;
+                }
+            });
+        },
         /**
          * 取得流水值
          * @method getRecordData

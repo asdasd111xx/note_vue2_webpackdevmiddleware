@@ -98,7 +98,7 @@
                     </div>
                     <div :class="$style['info-wrap']">
                         <div :class="$style.text">
-                            {{ $text("S_WEEK_NO_LOGIN", "7日未登入") }}
+                            {{ $text("S_WEEK_NO_LOGIN", "七日未登入") }}
                         </div>
                         <div
                             :class="[

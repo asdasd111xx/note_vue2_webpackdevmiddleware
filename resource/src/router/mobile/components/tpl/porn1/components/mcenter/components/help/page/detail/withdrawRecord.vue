@@ -100,13 +100,17 @@ export default {
   },
   mounted() {
     this.getData();
+    document.title = "近10笔提现纪录";
   },
   computed: {
     ...mapGetters({
       loginStatus: 'getLoginStatus',
-      siteConfig: 'getSiteConfig',
       memInfo: 'getMemInfo'
     }),
+    isApp() {
+      let isApp = !!((this.$route.query && this.$route.query.app) || (this.$route.query && this.$route.query.APP))
+      return isApp
+    },
   },
   watch: {
     data() {

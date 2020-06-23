@@ -1,5 +1,5 @@
 <template>
-  <mobile-container :header-config="headerConfig">
+  <mobile-container :header-config="headerConfig" :has-footer="false">
     <div slot="content" :class="$style['content-wrap']">
       <message v-if="msg" @close="msg = ''">
         <div slot="msg">
@@ -208,12 +208,7 @@
 
       <!-- 額度提示訊息 -->
       <template
-        v-if="
-          withdrawUserData &&
-            withdrawData.payment_charge &&
-            withdrawUserData.account &&
-            withdrawUserData.account.length > 0
-        "
+        v-if="withdrawData.payment_charge && withdrawData.payment_charge.ret"
       >
         <div :class="$style['tips']">
           {{ getWithdrawTips }}
@@ -259,10 +254,12 @@
       </template>
 
       <!-- 到帳金額 -->
-      <div v-if="actualMoney" :class="[$style['actual-money']]">
+      <div :class="[$style['actual-money']]">
         <span :class="$style['monet-currency']">到帐金额</span>
         <span :class="$style['monet-currency']">¥</span>
-        <span :class="$style['monet-currency']">{{ actualMoney }}</span>
+        <span :class="$style['monet-currency']">{{
+          actualMoney.toFixed(2)
+        }}</span>
 
         <span :class="[$style['serial']]" @click="toggleSerial">
           詳請
@@ -282,7 +279,7 @@
         "
         :class="[$style['submit-btn'], { [$style['disabled']]: lockSubmit }]"
       >
-        <div @click="handleSubmit()">
+        <div @click="checkSubmit()">
           立即提现
         </div>
       </div>
@@ -302,6 +299,15 @@
         </template>
       </div>
 
+      <!-- 提款前提示彈窗 -->
+      <widthdraw-tips
+        :show="isShowCheck"
+        :actual-money="+actualMoney"
+        :withdraw-value="+withdrawValue"
+        @close="closeTips"
+        @submit="handleSubmit"
+        @save-value="saveCurrentValue"
+      />
       <!-- 流水檢查 -->
       <serial-number v-if="isSerial" :handle-close="toggleSerial" />
 
@@ -322,6 +328,9 @@ import balanceTran from "@/components/mcenter/components/balanceTran";
 import message from '../../../common/new/message'
 import serialNumber from './serialNumber'
 import ajax from '@/lib/ajax';
+import EST from '@/lib/EST';
+import widthdrawTips from './widthdrawTips';
+
 import {
   API_MCENTER_WITHDRAW,
   API_TRADE_RELAY,
@@ -349,8 +358,9 @@ export default {
       msg: '',
       selectedCard: '',
       errTips: '',
-      actualMoney: '',
+      actualMoney: 0,
       hasBankCard: false,
+      isShowCheck: false,
     }
   },
   components: {
@@ -358,7 +368,8 @@ export default {
     mobileContainer,
     balanceTran,
     message,
-    serialNumber
+    serialNumber,
+    widthdrawTips
   },
   watch: {
     withdrawUserData() {
@@ -372,9 +383,10 @@ export default {
         setTimeout(() => {
           localStorage.removeItem('tmp_w_selectedCard');
           localStorage.removeItem('tmp_w_amount');
-          if (localStorage.getItem('tmp_w_1')) {
+          if (localStorage.getItem('tmp_w_1') && localStorage.getItem('tmp_w_rule') !== "1") {
             this.handleSubmit();
           }
+          localStorage.removeItem('tmp_w_rule');
         })
 
         this.isLoading = false;
@@ -397,11 +409,11 @@ export default {
           this.actualMoney = _actualMoney;
           if (_actualMoney <= 0) {
             this.errTips = '实际提现金额须大于0，请重新输入';
-            this.actualMoney = "0.00";
+            this.actualMoney = 0;
           }
         }
         else {
-          this.actualMoney = "";
+          this.actualMoney = 0;
           this.errTips = "";
         }
       }
@@ -553,7 +565,7 @@ export default {
       let result = Number(withdraw_max) >= Number(balance) ? balance : withdraw_max;
       this.withdrawValue = Math.floor(Number(result));
     },
-    handleSubmit() {
+    checkSubmit() {
       const islock = () => {
         if (this.errTips || !this.withdrawValue || this.isSendSubmit || !this.selectedCard) {
           return true;
@@ -579,6 +591,19 @@ export default {
         return;
       }
 
+      this.isShowCheck = true;
+    },
+    closeTips() {
+      this.isShowCheck = false;
+    },
+    saveCurrentValue(fromRule) {
+      if (fromRule) {
+        localStorage.setItem('tmp_w_selectedCard', this.selectedCard);
+        localStorage.setItem('tmp_w_amount', this.withdrawValue);
+        localStorage.setItem('tmp_w_rule', "1");
+      }
+    },
+    handleSubmit() {
       if (this.memInfo.config.withdraw_player_verify && !localStorage.getItem('tmp_w_1')) {
         localStorage.setItem('tmp_w_selectedCard', this.selectedCard);
         localStorage.setItem('tmp_w_amount', this.withdrawValue);
@@ -648,6 +673,8 @@ export default {
           if (response && response.result === 'ok') {
             if (this.memInfo.config.withdraw === '迅付') {
               this.msg = "提现成功";
+              this.withdrawValue = '';
+
               // 舊的第二次寫單才需要
               // 迅付寫單
               //   ajax({

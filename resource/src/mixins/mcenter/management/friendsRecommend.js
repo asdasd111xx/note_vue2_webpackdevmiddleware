@@ -94,10 +94,11 @@ export default {
                 name: /^[^0-9，:;！@#$%^&*?<>()+=`|[\]{}\\"/.\s~\-_']*$/
             };
 
-            if (key === "username") {
+            if (key === "username" || key === "password" || key === "confirm_password") {
                 allValue[key] = value.toLowerCase()
                     .replace(' ', '')
-                    .trim();
+                    .trim()
+                    .replace(/[\W]/g, '')
             } else {
                 allValue[key] = value;
             }

@@ -33,8 +33,14 @@
           v-else-if="missionDesc && type.includes('wait')"
           v-html="getDesc(missionDesc)"
         ></div>
+        <template v-else-if="isUnloginMode">
+          加入会员享有<br />
+          超高清超流畅观影送钱
+        </template>
         <template v-else>
-          {{ $text("S_ACTIVITY_SLOGAN", "看视频送现金 天天看天天送") }}
+          <span style="margin-top: 12%;display: block;">
+            {{ $text("S_ACTIVITY_SLOGAN", "看视频送现金 天天看天天送") }}
+          </span>
         </template>
       </div>
       <!-- 第二行文字或按鈕 -->
@@ -55,6 +61,9 @@
             @click="handleClose"
           >
             {{ "继续看" }}
+          </div>
+          <div v-else-if="isUnloginMode" @click="handleClose">
+            继续观影
           </div>
           <div v-else @click="$router.push('/mobile')">
             {{ $text("S_FIRST_LOOK", "先去逛逛") }}
@@ -99,13 +108,13 @@
               <span>
                 恭喜获得今日最高彩金
               </span>
-              <span> ¥&nbsp;{{ limitAmount }} </span>
+              <span>&nbsp;¥&nbsp;{{ limitAmount }} </span>
             </template>
             <template v-else>
               <span>
                 恭喜获得彩金
               </span>
-              <span> ¥&nbsp;{{ earnCurrentNum }} </span>
+              <span>&nbsp;¥&nbsp;{{ earnCurrentNum }} </span>
             </template>
           </div>
           <div :class="$style['earn-cell-wrap']">
@@ -153,7 +162,7 @@
 </template>
 <script>
 import { getCookie } from '@/lib/cookie';
-import axios from 'axios';
+import yaboRequest from '@/api/yaboRequest';
 import { mapGetters } from 'vuex';
 
 export default {
@@ -166,6 +175,9 @@ export default {
       type: Number,
       default: ""
     },
+    isUnloginMode: {
+      type: Boolean
+    }
   },
   watch: {
     earnCellNum() {
@@ -278,24 +290,19 @@ export default {
     },
     unlockTag() {
       let cid = getCookie('cid');
-      axios({
+      yaboRequest({
         method: 'put',
         url: `${this.siteConfig.YABO_API_DOMAIN}/Account/UnlockTagId?`,
         headers: {
-          'AuthToken': 'YaboAPIforDev0nly',
           'x-domain': this.memInfo.user.domain,
-          'Content-Type': 'application/json; charset=utf-8'
         },
-        data: {
+        params: {
           cid: cid,
           userid: this.memInfo.user.id,
           tagId: this.tagId,
           domain: this.memInfo.user.domain
         },
       }).then((res) => {
-        // if (res && res.data === "ok") {
-        //   window.YABO_SOCKET_RECONNECT();
-        // }
         setTimeout(() => {
           this.$router.push(`/mobile/mcenter/makeMoney?&refresh=1`);
         }, 200)

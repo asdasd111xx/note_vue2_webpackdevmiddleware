@@ -81,6 +81,72 @@
               </div>
             </div>
           </div>
+
+          <!-- 選擇銀行 or 選擇點卡 -->
+          <!-- To Do: payment_type_id === 5 就顯示 -->
+          <div
+            v-if="
+              (curPayInfo.banks && curPayInfo.banks.length > 0) ||
+                (yourBankData.length > 0 && curPayInfo.payment_type_id === 5)
+            "
+            :class="[
+              $style['feature-wrap'],
+              $style['select-card-wrap'],
+              'clearfix'
+            ]"
+            @click="changeType('chagneBank'), (isShowPop = true)"
+          >
+            <span
+              v-if="curPayInfo.payment_type_id === 5"
+              :class="$style['select-bank-title']"
+            >
+              {{ $text("S_YOUR_BANK", "您的银行") }}
+            </span>
+            <span v-else :class="$style['select-bank-title']"
+              >{{
+                curPayInfo.payment_method_id === 2
+                  ? $text("S_SELECT_POINT_CARD", "请选择点卡")
+                  : $text("S_SELECT_BANKS", "请选择银行")
+              }}
+            </span>
+            <div :class="$style['select-bank-item']">
+              {{ isSelectValue }}
+            </div>
+            <img
+              :class="$style['select-bank-icon']"
+              src="/static/image/_new/common/arrow_next.png"
+            />
+            <div v-if="isShowPop" :class="$style['pop-wrap']">
+              <div
+                :class="$style['pop-mask']"
+                @click.stop="isShowPop = false"
+              />
+              <div :class="$style['pop-menu']">
+                <div :class="$style['pop-title']">
+                  <span @click.stop="isShowPop = false">{{
+                    $text("S_CANCEL", "取消")
+                  }}</span>
+                  选择银行
+                </div>
+                <ul :class="$style['pop-list']">
+                  <li
+                    v-for="item in paySelectData['chagneBank'].allData"
+                    :key="item.selectId"
+                    @click.stop="changeSelectValue(item.value)"
+                  >
+                    <img v-lazy="getImg(item)" />
+                    {{ item.label }}
+                    <icon
+                      v-if="item.value === selectedBank.value"
+                      :class="$style['select-active']"
+                      name="check"
+                    />
+                  </li>
+                </ul>
+              </div>
+            </div>
+          </div>
+
           <template v-if="curPayInfo.payment_method_id !== 20">
             <!-- 充值人姓名 -->
             <div
@@ -120,59 +186,6 @@
                 ]"
               >
                 为即时到账，请务必输入正确的汇款人姓名
-              </div>
-            </div>
-
-            <!-- 選擇銀行 or 選擇點卡 -->
-            <div
-              v-if="curPayInfo.banks && curPayInfo.banks.length > 0"
-              :class="[
-                $style['feature-wrap'],
-                $style['select-card-wrap'],
-                'clearfix'
-              ]"
-              @click="changeType('chagneBank'), (isShowPop = true)"
-            >
-              <span :class="$style['select-bank-title']">{{
-                curPayInfo.payment_method_id === 2
-                  ? $text("S_SELECT_POINT_CARD", "请选择点卡")
-                  : $text("S_SELECT_BANKS", "请选择银行")
-              }}</span>
-              <div :class="$style['select-bank-item']">
-                {{ isSelectValue }}
-              </div>
-              <img
-                :class="$style['select-bank-icon']"
-                src="/static/image/_new/common/arrow_next.png"
-              />
-              <div v-if="isShowPop" :class="$style['pop-wrap']">
-                <div
-                  :class="$style['pop-mask']"
-                  @click.stop="isShowPop = false"
-                />
-                <div :class="$style['pop-menu']">
-                  <div :class="$style['pop-title']">
-                    <span @click.stop="isShowPop = false">{{
-                      $text("S_CANCEL", "取消")
-                    }}</span>
-                    选择银行
-                  </div>
-                  <ul :class="$style['pop-list']">
-                    <li
-                      v-for="item in paySelectData['chagneBank'].allData"
-                      :key="item.selectId"
-                      @click.stop="changeSelectValue(item.value)"
-                    >
-                      <img v-lazy="getImg(item)" />
-                      {{ item.label }}
-                      <icon
-                        v-if="item.value === selectedBank.value"
-                        :class="$style['select-active']"
-                        name="check"
-                      />
-                    </li>
-                  </ul>
-                </div>
               </div>
             </div>
 
@@ -491,7 +504,6 @@
               <ul :class="$style['message-content']">
                 <li>• 实际到账： {{ realSaveMoney }}</li>
                 <template v-if="curPayInfo.offer_enable">
-                  •
                   <li :class="$style['tip-list']" v-html="promitionText" />
                 </template>
                 <li
@@ -516,7 +528,15 @@
               { [$style.disabled]: !checkSuccess }
             ]"
             :title="$text('S_ENTER_PAY', '立即充值')"
-            @click="submitInfo"
+            @click="
+              () => {
+                if (this.entryBlockStatusData.status === 0) {
+                  this.submitInfo();
+                } else {
+                  this.isShowEntryBlockStatus = true;
+                }
+              }
+            "
           >
             {{ $text("S_ENTER_PAY", "立即充值") }}
           </div>
@@ -562,7 +582,15 @@
           <div
             :class="$style['pay-button']"
             title="立即充值"
-            @click="submitInfo"
+            @click="
+              () => {
+                if (this.entryBlockStatusData.status === 0) {
+                  this.submitInfo();
+                } else {
+                  this.isShowEntryBlockStatus = true;
+                }
+              }
+            "
           >
             立即充值
           </div>
@@ -596,12 +624,37 @@
         />
       </div>
     </message>
+
+    <div v-if="isShowEntryBlockStatus">
+      <div :class="$style['pop-message-mark']" />
+      <div :class="$style['entry-message-container']">
+        <div :class="$style['entry-message-content']">
+          <p>{{ $text("S_TIPS", "温馨提示") }}</p>
+          <div>
+            {{ statusText }}
+          </div>
+        </div>
+        <ul
+          :class="$style['entry-message-confirm']"
+          @click="isShowEntryBlockStatus = false"
+        >
+          <li
+            v-if="entryBlockStatusData.status === 2"
+            @click="goToValetDeposit"
+          >
+            前往代客充值
+          </li>
+          <li @click="submitInfo">确定</li>
+        </ul>
+      </div>
+    </div>
   </div>
 </template>
 
 <script>
 import { mapGetters, mapActions } from 'vuex';
 import { Swiper, SwiperSlide } from 'vue-awesome-swiper';
+import bbosRequest from "@/api/bbosRequest";
 import DatePicker from 'vue2-datepicker';
 import mixin from '@/mixins/mcenter/deposit/bankCardDeposit';
 import message from '../../../../../../tpl/porn1/components/common/new/message';
@@ -637,13 +690,20 @@ export default {
       showRealStatus: false,
       isShowMethodsPop: false,
       nameCheckFail: false,
-      msg: ''
+      msg: '',
+      entryBlockStatusData: {},
+      isShowEntryBlockStatus: false
     };
   },
   watch: {
     getPassRoadOrAi() {
       if (this.getPassRoadOrAi.amounts && this.getPassRoadOrAi.amounts.length > 0) {
         this.moneyValue = this.getPassRoadOrAi.amounts[0];
+      }
+    },
+    curPayInfo() {
+      if (this.curPayInfo.payment_method_name === '代客充值') {
+        this.checkSuccess = true;
       }
     }
   },
@@ -824,11 +884,30 @@ export default {
         showCondition: this.curPayInfo.field.find((e) => e.name === 'pay_username' && e.required),
         isError: this.showError && this.curPayInfo.field.find((item) => item.name === 'pay_username' && item.required) && !this.speedField.depositName
       };
+    },
+    statusText() {
+      switch (this.entryBlockStatusData.status) {
+        case 1:
+          return `您已多次提单未完成支付，请尝试其他充值通道，若多次提单不充值，帐号可能会被暂停充值。祝您游戏愉快!`
+          break;
+
+        case 2:
+          return `您已多次提单未完成支付，建议您可以谘询在线客服或是尝试代客充值方式。祝您游戏愉快!`
+          break;
+
+        case 3:
+          return `为了保证您的使用安全，规避IP监控，我方将为您暂停${this.entryBlockStatusData.block_times}小时的充值服务功能，如需继续存款，请联繫我方客服。祝您游戏愉快!`
+          break;
+
+        default:
+          break;
+      }
     }
   },
   created() {
     this.initHeaderSetting = this.headerSetting;
     this.getPayGroup();
+    this.checkEntryBlockStatus()
   },
   methods: {
     ...mapActions([
@@ -851,8 +930,14 @@ export default {
     modeChange(listItem, index) {
       this.changeMode(listItem);
 
+      // 進來充值頁面，沒有 bankSelectValue 的預設值才觸發，再切換其它類別不再觸發
       if (Object.keys(this.selectedBank).length === 0) {
         this.bankSelectValue = this.allBanks[0] || {};
+      }
+
+      // 銀行轉帳 payment_type_id === 5，將您的銀行，預設成當前選擇的支付銀行
+      if (this.yourBankData.length > 0 && this.curPayInfo.payment_type_id === 5) {
+        this.defaultCurPayBank()
       }
     },
     /**
@@ -902,6 +987,12 @@ export default {
  * @method submitInfo
  */
     submitInfo() {
+      if (this.entryBlockStatusData.status === 3) {
+        return;
+      }
+
+      this.isShowEntryBlockStatus = false;
+
       this.submitList().then((response) => {
         if (response) {
           if (response.status === 'NameFail') {
@@ -960,6 +1051,58 @@ export default {
       this.isShowPop = false;
       const index = this.paySelectData[this.paySelectType].allData.map((item) => item.value).indexOf(val);
       this.nowSelectData = this.paySelectData[this.paySelectType].allData[index];
+    },
+    checkEntryBlockStatus() {
+      // 使用者存款封鎖狀態
+      bbosRequest({
+        method: 'get',
+        url: this.siteConfig.BBOS_DOMIAN + '/Ext/V2/CreateEntryBlock/User/Check',
+        reqHeaders: {
+          'vendor': this.memInfo.user.domain
+        },
+        params: {
+          "lang": "zh-cn",
+        },
+      }).then((res) => {
+        if (res.status === "000" && res.data && res.data.ret) {
+          this.entryBlockStatusData = res.data.ret
+        }
+      });
+    },
+    goToValetDeposit() {
+      this.isShowEntryBlockStatus = false;
+
+      let newWindow = '';
+      if (this.isPWA) {
+        newWindow = window.open('', '', '_blank', true);
+      }
+
+      const newWindowHref = (uri) => {
+        try {
+          newWindow.location.href = uri;
+        } catch (e) {
+          console.log(e);
+          console.log(newWindow);
+          console.log(uri)
+        }
+      }
+
+      // 前往代客充值
+      if (this.entryBlockStatusData.has_csr && this.entryBlockStatusData.external_url) {
+        if (this.isWebView) {
+          window.location.href = this.entryBlockStatusData.external_url;
+          return;
+        }
+        else if (this.isPWA) {
+          newWindowHref(this.entryBlockStatusData.external_url);
+          return;
+        }
+
+        window.open(this.entryBlockStatusData.external_url);
+        return;
+      }
+
+      return
     }
   }
 };

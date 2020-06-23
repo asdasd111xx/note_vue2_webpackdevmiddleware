@@ -1,7 +1,7 @@
 @import "~@/css/variable.scss";
 
 .content-wrap {
-    min-height: calc(100vh);
+    height: calc(100vh - 103px);
     background-color: $main_background_white1;
 }
 
@@ -20,12 +20,14 @@
         border-bottom: none;
     }
 
-    > .field-title {
-        height: 20px;
+    >.field-title {
+        height: 22px;
+        line-height: 22px;
     }
 
-    > .field-value {
-        height: 20px;
+    >.field-value {
+        height: 22px;
+        line-height: 22px;
     }
 }
 
@@ -46,7 +48,7 @@
     word-break: break-all;
     font-size: 14px;
     color: $main_text_color3;
-    height: 20px;
+    height: 22px;
 
     &.yet {
         color: #cbced8;
@@ -73,7 +75,7 @@
     display: flex;
     align-items: center;
 
-    > img {
+    >img {
         height: 14px;
         width: 14px;
     }
@@ -85,12 +87,12 @@
     font-size: 14px;
     background-color: white;
 
-    > .block:first-child {
+    >.block:first-child {
         margin-top: 35px;
         margin-bottom: 15px;
     }
 
-    > .field-title {
+    >.field-title {
         height: 20px;
     }
 
@@ -98,7 +100,7 @@
         width: 80%;
         height: 20px;
 
-        > input {
+        >input {
             height: 20px;
         }
 
@@ -106,7 +108,7 @@
         &.date-field {
             position: relative;
 
-            > input {
+            >input {
                 opacity: 0;
             }
 
@@ -124,12 +126,16 @@
         height: 20px;
         width: 100%;
 
-        > div:last-child {
+        .btn-wrap {
             padding: 0 5px;
             width: 75px;
             position: absolute;
             right: 14px;
             color: $main_text_color4;
+
+            >.disable {
+                color: $main_text_color5;
+            }
         }
     }
 }
@@ -143,13 +149,13 @@
     justify-content: center;
     background: $main_white_color1;
 
-    > div {
+    >div {
         height: 30px;
         display: inline-flex;
         line-height: 30px;
     }
 
-    > .title {
+    >.title {
         color: $main_text_color3;
     }
 }

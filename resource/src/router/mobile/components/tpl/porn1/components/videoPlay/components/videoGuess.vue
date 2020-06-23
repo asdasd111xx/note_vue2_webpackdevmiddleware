@@ -66,11 +66,11 @@ export default {
 
         case 'gay':
           return 3;
-        break;
+          break;
 
         case 'les':
           return 4;
-        break;
+          break;
 
         default:
           break;
@@ -102,7 +102,10 @@ export default {
       }
     },
     onClick(id) {
-      window.location.href = `/mobile/videoPlay/${id}?source=${this.$route.query.source}`;
+      let source = this.$route.query.source;
+      this.$emit('leave', () => {
+        window.location.href = `/mobile/videoPlay/${id}?source=${source}`;
+      });
     }
   }
 };

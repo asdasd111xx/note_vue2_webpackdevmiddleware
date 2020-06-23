@@ -135,6 +135,7 @@ import message from '../../common/new/message';
 import common from '@/api/common';
 import pornRequest from '@/api/pornRequest';
 import { getCookie, setCookie } from '@/lib/cookie';
+import yaboRequest from '@/api/yaboRequest';
 
 export default {
   components: {
@@ -316,31 +317,28 @@ export default {
     },
     // 取得所有遊戲
     getAllGame(setLocal) {
-      return axios({
+      return yaboRequest({
         method: 'get',
         url: `${this.siteConfig.YABO_API_DOMAIN}/game/list`,
-        timeout: 30000,
         headers: {
-          'AuthToken': 'YaboAPIforDev0nly',
-          Bundleid: 'chungyo.foxyporn.prod.enterprise.web',
-          Version: 1,
           'x-domain': this.memInfo.user.domain
         }
       }).then(response => {
-        if (response.status !== 200) {
+        if (!response.data) {
           return;
         }
+
         this.isReceive = true;
 
         try {
-          localStorage.setItem('game-list', JSON.stringify(response.data.data));
+          localStorage.setItem('game-list', JSON.stringify(response.data));
           localStorage.setItem('game-list-timestamp', Date.now());
         } catch (e) {
           console.log(e);
         }
 
         if (!setLocal) {
-          this.allGame = [...response.data.data];
+          this.allGame = [...response.data];
         }
       });
     },
@@ -463,18 +461,16 @@ export default {
       }
 
       if (path === 'deposit') {
-        axios({
+        yaboRequest({
           method: 'get',
           url: `${
             this.siteConfig.YABO_API_DOMAIN
             }/AccountBank/GetBankBindingStatus/${getCookie('cid')}`,
-          timeout: 30000,
           headers: {
-            'AuthToken': 'YaboAPIforDev0nly',
             'x-domain': this.memInfo.user.domain
           }
         }).then(res => {
-          if (res.data && res.data.data) {
+          if (res.data && res.data) {
             this.$router.push(`/mobile/mcenter/deposit`);
           } else {
             this.msg = '请先绑定提现银行卡';
@@ -502,18 +498,6 @@ export default {
       // GG => 女女視頻
 
       if (game.type === 'D') {
-        return;
-      }
-
-      if (!this.loginStatus) {
-        this.$router.push('/mobile/login');
-        return;
-      }
-
-      // 大廳
-      if (game.type === 'L' && [3, 5, 6].includes(game.kind)) {
-        const trans = { 3: 'casino', 5: 'card', 6: 'mahjong' };
-        this.$router.push(`/mobile/${trans[game.kind]}/${game.vendor}`);
         return;
       }
 
@@ -558,6 +542,19 @@ export default {
         }
         return;
       }
+
+      if (!this.loginStatus) {
+        this.$router.push('/mobile/login');
+        return;
+      }
+
+      // 大廳
+      if (game.type === 'L' && [3, 5, 6].includes(game.kind)) {
+        const trans = { 3: 'casino', 5: 'card', 6: 'mahjong' };
+        this.$router.push(`/mobile/${trans[game.kind]}/${game.vendor}`);
+        return;
+      }
+
 
       // 直播
       if (['BL', 'SL'].includes(game.type)) {

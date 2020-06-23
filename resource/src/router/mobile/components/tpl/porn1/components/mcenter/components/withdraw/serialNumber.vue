@@ -43,9 +43,10 @@
         <div :class="$style['serial-basic-cell']">
           <div :class="$style['serial-basic-title']">
             {{ $text("S_DEDUCTION_MONEY", "扣除金额") }}
+            行政费用:({{ `${serialNumberData.administrative_rate}%` }})
           </div>
           <div :class="$style['serial-basic-value']">
-            {{ serialNumberData.total.deduction }}
+            {{ getDeductionNumber(serialNumberData.total.deduction) }}
           </div>
         </div>
 
@@ -54,16 +55,16 @@
             {{ $text("S_FEE", "手续费") }}
           </div>
           <div :class="$style['serial-basic-value']">
-            {{ serialNumberData.total.fee }}
+            {{ getDeductionNumber(serialNumberData.total.fee) }}
           </div>
         </div>
 
         <div :class="$style['serial-basic-cell']">
           <div :class="$style['serial-basic-title']">
-            {{ $text("S_SERIAL_TOTAL", "合计") }}
+            扣除总计
           </div>
           <div :class="$style['serial-basic-value']">
-            {{ serialNumberData.total.total_deduction }}
+            {{ getDeductionNumber(serialNumberData.total.total_deduction) }}
           </div>
         </div>
       </div>
@@ -110,7 +111,7 @@
                   {{ $text("S_DEDUCTION_MONEY", "扣除金额") }}
                 </span>
                 <span :class="$style['money']">
-                  {{ serialInfo.deduction }}
+                  {{ getDeductionNumber(serialInfo.deduction) }}
                 </span>
               </div>
             </div>
@@ -155,6 +156,9 @@ export default {
       type: Function,
       default: () => { }
     }
+  },
+  created() {
+    this.getSerialNumberData();
   },
   watch: {
     serialNumberData() {

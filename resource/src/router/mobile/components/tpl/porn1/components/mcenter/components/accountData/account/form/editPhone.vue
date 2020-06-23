@@ -7,7 +7,6 @@
           {{ tipMsg }}
         </div>
       </div>
-
       <div :class="[$style.wrap, 'clearfix']">
         <template v-if="oldPhone.isShow">
           <div :class="$style.block">
@@ -116,7 +115,6 @@
     </div>
   </mobile-container>
 </template>
-
 <script>
 import axios from 'axios';
 import { mapGetters, mapActions } from 'vuex';
@@ -204,7 +202,7 @@ export default {
           this.handleSubmit();
         },
         funcBtn: this.$text('S_COMPLETE', '完成'),
-        funcBtnActive: !!(this.newValue)
+        funcBtnActive: !!(this.newValue) && !!(this.codeValue)
       };
     },
     fieldValue() {
@@ -249,6 +247,8 @@ export default {
     captchaData() {
       this.handleSend()
     }
+  },
+  mounted() {
   },
   created() {
     ajax({
@@ -318,18 +318,18 @@ export default {
       }, 1000);
     },
     showCaptchaPopup() {
-      if(this.newValue === '') {
-        return
+      if (this.newValue === '') {
+        return;
       }
 
       // 無認證直接呼叫
       if (this.memInfo.config.default_captcha_type === 0) {
-        this.handleSend()
-        return
+        this.handleSend();
+        return;
       }
 
       // 彈驗證窗並利用Watch captchaData來呼叫 getKeyring()
-      this.toggleCaptcha = true
+      this.toggleCaptcha = true;
     },
     handleSend() {
       if (!this.newValue || this.timer || this.isSendSMS) return;
@@ -417,7 +417,9 @@ export default {
               this.actionSetUserdata(true);
               this.actionSetWithdrawCheck();
               this.successMessage();
-              this.$router.push('/mobile/mcenter/accountData');
+              setTimeout(() => {
+                this.$router.push('/mobile/mcenter/accountData');
+              }, 200)
             },
             fail: (res) => {
               this.tipMsg = res.data.msg;
@@ -433,7 +435,9 @@ export default {
           success: () => {
             this.actionSetUserdata(true);
             this.successMessage();
-            this.$router.push('/mobile/mcenter/accountData');
+            setTimeout(() => {
+              this.$router.push('/mobile/mcenter/accountData');
+            }, 200)
           },
           fail: (res) => {
             this.tipMsg = res.data.msg;

@@ -85,7 +85,7 @@
               placeholder="请输入银行卡卡号(限定16位以上数字)"
               minlength="16"
               maxlength="19"
-              @input="checkData"
+              @input="verifyBankCardNumber($event.target.value)"
               @keypress="verifyNumber"
             />
           </div>
@@ -397,7 +397,15 @@ export default {
       this.currentBank = bank.name;
       this.checkData();
     },
-    checkData() {
+    verifyBankCardNumber(value) {
+      this.formData.account = value
+        .toLowerCase()
+        .replace(' ', '')
+        .trim()
+        .replace(/[\W]/g, '');
+      this.checkData();
+    },
+    checkData(e) {
       this.NextStepStatus = Object.keys(this.formData).every((key) => {
         if (this.addBankCardStep === 'one') {
           if (key === 'account') {
@@ -435,7 +443,7 @@ export default {
     },
     showCaptchaPopup() {
       // 無認證直接呼叫
-      if(this.memInfo.config.default_captcha_type === 0) {
+      if (this.memInfo.config.default_captcha_type === 0) {
         this.getKeyring()
         return
       }
@@ -457,42 +465,42 @@ export default {
           captcha_text: this.captchaData ? this.captchaData : ''
         }
       })
-      .then(res => {
-        axios({
-          method: "get",
-          url: "/api/v1/c/player/phone/ttl"
-        })
-          .then(res => {
-            this.lockStatus = false;
-            this.time = res.data.ret;
+        .then(res => {
+          axios({
+            method: "get",
+            url: "/api/v1/c/player/phone/ttl"
+          })
+            .then(res => {
+              this.lockStatus = false;
+              this.time = res.data.ret;
 
-            this.smsTimer = setInterval(() => {
-              if (this.time === 1) {
-                this.smsTimer = false;
-              }
+              this.smsTimer = setInterval(() => {
+                if (this.time === 1) {
+                  this.smsTimer = false;
+                }
 
-              if (this.time <= 0) {
-                clearInterval(this.smsTimer);
-                this.smsTimer = null;
+                if (this.time <= 0) {
+                  clearInterval(this.smsTimer);
+                  this.smsTimer = null;
+                  return;
+                }
+                this.time -= 1;
+              }, 1000);
+            })
+            .catch(error => {
+              if (error.response && error.response.status === "429") {
+                this.msg = "操作太频繁，请稍候在试";
                 return;
               }
-              this.time -= 1;
-            }, 1000);
-          })
-          .catch(error => {
-            if (error.response && error.response.status === "429") {
-              this.msg = "操作太频繁，请稍候在试";
-              return;
-            }
 
-            this.lockStatus = false;
-            this.errorMsg = error.response.data.msg;
-          });
-      })
-      .catch(error => {
-        this.lockStatus = false;
-        this.errorMsg = error.response.data.msg;
-      });
+              this.lockStatus = false;
+              this.errorMsg = error.response.data.msg;
+            });
+        })
+        .catch(error => {
+          this.lockStatus = false;
+          this.errorMsg = error.response.data.msg;
+        });
     },
     beforeDestroy() {
       clearInterval(this.smsTimer);

@@ -1,15 +1,13 @@
 @import "~@/css/variable.scss";
 
 .serial-header {
-    position: absolute;
-    top: 0;
-    left: 0;
     z-index: 3;
     width: 100%;
     height: 43px;
     padding: 0 17px;
     background: #fefffe;
     text-align: center;
+    position: relative;
 
     .title {
         width: 100%;
@@ -21,21 +19,20 @@
 
 .btn-prev {
     position: absolute;
-    top: 0;
-    bottom: 0;
-    left: 12px;
     width: 20px;
-    height: 20px;
-    margin: auto;
+    height: 100%;
+    display: flex;
+    align-items: center;
+    justify-content: center;
 
     >img {
-        height: 100%;
+        width: 20px;
+        height: 20px;
     }
 }
 
 .serial-number-wrap {
     background-color: #f8f8f8;
-    height: calc(100% - 100px);
     overflow-y: auto;
     margin-top: 43px;
 }
@@ -48,13 +45,12 @@
 }
 
 .serial-time {
-    background-color: #fefffe;
     width: 100%;
-    text-align: center;
-    font-size: 12px;
+    text-align: left;
+    font-size: 13px;
     color: #000000;
-    margin-top: 10px;
-    line-height: 30px;
+    padding-left: 14px;
+    line-height: 31px;
     height: 30px;
 }
 
@@ -88,6 +84,7 @@
 }
 
 .serial-number-block {
+    margin: 2px 0;
 
     >.serial-number-title {
         color: #414655;
@@ -98,9 +95,8 @@
 }
 
 .serial-number-cell {
-    height: 70px;
-    padding-left: 17px;
-    padding-right: 0;
+    height: 60px;
+    padding: 2.5px 0 2.5px 17px;
     margin-bottom: 1.5px;
     position: relative;
     background: #fefffe;
@@ -111,7 +107,11 @@
         display: flex;
         flex-direction: column;
         justify-content: center;
-        padding: 2px 0;
+
+        >div {
+            line-height: 25px;
+
+        }
     }
 
     >div:nth-child(2) {
@@ -120,17 +120,15 @@
         display: flex;
         flex-direction: column;
         justify-content: center;
-        padding: 2px 0;
         width: 40%;
 
+        >div {
+            line-height: 25px;
+        }
+
         span {
-            display: inline-block;
+            font-size: 13px;
             max-width: 45%;
-            overflow: hidden;
-            text-overflow: ellipsis;
-            white-space: nowrap;
-            height: 20px;
-            line-height: 20px;
         }
     }
 
@@ -150,19 +148,20 @@
 
     .time {
         color: #A6A9B2;
-        font-size: 12px;
+        font-size: 13px;
     }
 
     .title {
         font-size: 16px;
         color: #414655;
-        font-weight: 700;
     }
 
     .money {
         font-size: 14px;
         color: #414655;
-        font-weight: 700;
+        overflow: hidden;
+        text-overflow: ellipsis;
+        white-space: nowrap;
     }
 }
 
@@ -252,50 +251,6 @@
 
             .money {
                 font-size: 15px;
-            }
-        }
-    }
-}
-
-@media screen and (min-width: $pad) {
-    .detail-wrap {
-        font-size: 16px;
-    }
-
-    .tips {
-        font-size: 16px;
-    }
-
-    .serial-header {
-        .title {
-            font-size: 19px;
-        }
-
-        .serial-time {
-            font-size: 14px;
-
-        }
-
-        .serial-number-block {
-
-            >.serial-number-title {
-                font-size: 19px;
-            }
-        }
-
-        .serial-number-cell {
-            .time {
-
-                font-size: 14px;
-            }
-
-            .title {
-                font-size: 18px;
-
-            }
-
-            .money {
-                font-size: 16px;
             }
         }
     }

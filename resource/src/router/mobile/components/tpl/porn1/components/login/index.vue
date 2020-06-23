@@ -317,7 +317,7 @@ export default {
         case 3:
           // 拼圖驗證
           if (!this.puzzleObj) {
-            this.errMsg = "請先點擊按鈕進行驗證";
+            this.errMsg = "请先点击按钮进行验证";
             return;
           }
           this.loginCheck({ captcha: this.puzzleObj }, undefined, this.errorCallBack);

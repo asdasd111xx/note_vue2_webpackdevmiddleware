@@ -60,7 +60,7 @@ body,
     animation-timing-function: forwards;
     -webkit-animation-timing-function: forwards;
 
-    overflow: hidden;
+    overflow-y: auto;
     position: fixed;
     left: 0;
     top: 0;

@@ -17,11 +17,13 @@
         ref="bonunsDialog"
         :type="dialogType"
         :videoid="videoInfo.id"
+        :is-unlogin-mode="isUnloginMode"
         @close="handleCloseDialog"
       />
       <bonuns-process
         ref="bonunsProcess"
         :type="dialogType"
+        :is-unlogin-mode="isUnloginMode"
         @click="handleClickProcess"
       />
     </div>
@@ -35,6 +37,7 @@ import videojs from 'video.js';
 import bonunsDialog from '../bouns/compontents/bonunsDialog'
 import bonunsProcess from '../bouns/compontents/bonunsProcess'
 import { getCookie } from '@/lib/cookie';
+import yaboRequest from '@/api/yaboRequest';
 
 export default {
   components: {
@@ -63,8 +66,8 @@ export default {
       socketId: "",
       mission: null,
       keepPlay: false, // wait 任務未達成繼續觀看不發送play
+      isUnloginMode: false,
       breakwaitCallback: () => { },
-      isFULL: false
     };
   },
   computed: {
@@ -72,13 +75,14 @@ export default {
       memInfo: 'getMemInfo',
       loginStatus: 'getLoginStatus',
       siteConfig: 'getSiteConfig',
+      yaboConfig: 'getYaboConfig'
     }),
     playsinline() {
       return "true"
     },
     isDebug() {
-      return process.env.NODE_ENV === 'development' || (this.$route.query & this.$route.query.debug)
-    }
+      return process.env.NODE_ENV === 'development' || (this.$route.query & this.$route.query.testmode)
+    },
   },
   mounted() {
     //  暫時手動轉換https
@@ -104,6 +108,10 @@ export default {
         "nativeAudioTracks": false,
         "nativeVideoTracks": false,
       }
+    } else {
+      if (this.$route.query && this.$route.query.testmode) {
+        obj['crossOrigin'] = 'anonymous'
+      }
     }
     this.player = videojs(this.$refs['video-player'], obj);
 
@@ -122,7 +130,11 @@ export default {
         if (window.YABO_SOCKET && !this.keepPlay && !this.isFULL) {
           this.onSend("PLAY");
         }
-        this.keepPlay = false
+        this.keepPlay = false;
+
+        if (this.isUnloginMode) {
+          this.unloginModeAction("play");
+        }
       })
 
       // 快轉
@@ -139,7 +151,11 @@ export default {
           this.onSend("STOP");
           this.$refs.bonunsProcess.playCueTime("stop");
         }
-        this.keepPlay = false
+        this.keepPlay = false;
+
+        if (this.isUnloginMode) {
+          this.unloginModeAction("pause");
+        }
       })
 
       this.player.on("ended", () => {
@@ -152,14 +168,12 @@ export default {
       this.player.on("play", () => {
         this.handleClickVideo();
       })
-
-      if (!this.loginStatus) {
-        this.$refs.bonunsDialog.isShow = true
-        this.dialogType = 'tips';
-      }
     }
   },
   methods: {
+    ...mapActions([
+      'actionSetYaboConfig'
+    ]),
     handleCloseDialog(keepPlay) {
       this.keepPlay = keepPlay;
       if (this.breakwaitCallback) {
@@ -168,6 +182,13 @@ export default {
     },
     //   點擊進圖條任務彈窗
     handleClickProcess() {
+      if (this.isUnloginMode) {
+        this.$refs.bonunsDialog.isShow = true
+        this.dialogType = 'tips';
+        this.playerPause();
+        return;
+      }
+
       const bonunsProcess = this.$refs.bonunsProcess;
       const bonunsDialog = this.$refs.bonunsDialog;
       if (this.mission) {
@@ -185,9 +206,9 @@ export default {
       }
     },
     handleClickVideo() {
-      if (!this.isActiveBouns) return
+      if (!this.isActiveBouns) return;
       // 餘額夠可播放
-      if (!this.loginStatus) {
+      if (!this.loginStatus && !this.isUnloginMode) {
         this.dialogType = 'tips';
         this.$refs.bonunsDialog.isShow = true
         this.playerPause();
@@ -212,8 +233,6 @@ export default {
           console.log("[WS]: Video active message connected");
         }
         window.YABO_SOCKET_VIDEO_ONMESSAGE = this.onMessage;
-        clearTimeout(this.reconnectTimer);
-        this.reconnectTimer = null;
       } else {
         if (this.reconnectTimer) return;
         this.reconnectTimer = setTimeout(() => {
@@ -387,8 +406,50 @@ export default {
       }
       window.YABO_SOCKET.send(JSON.stringify(data));
     },
+    unloginModeAction(type) {
+      const bonunsProcess = this.$refs.bonunsProcess;
+      const bonunsDialog = this.$refs.bonunsDialog;
+      if (!bonunsProcess || !bonunsDialog) return;
+
+      switch (type) {
+        case "play":
+          bonunsProcess.playCueTime();
+          break;
+        case "pause":
+          bonunsProcess.playCueTime('stop');
+          break;
+      }
+    },
+    handleLeavePage(cb) {
+      this.onSend("STOP");
+      document.removeEventListener('visibilitychange', () => { }, false);
+      window.YABO_SOCKET_VIDEO_ONMESSAGE = null;
+      clearTimeout(this.reconnectTimer);
+      this.reconnectTimer = null;
+      this.player.dispose();
+      this.player = null;
+      if (cb) {
+        cb();
+      }
+    }
   },
   created() {
+    this.actionSetYaboConfig().then(() => {
+      this.isUnloginMode = !this.loginStatus &&
+        this.yaboConfig &&
+        this.yaboConfig[2] &&
+        this.yaboConfig[2].value == "true";
+
+      setTimeout(() => {
+        this.$nextTick(() => {
+          if (!this.loginStatus && !this.isUnloginMode) {
+            this.$refs.bonunsDialog.isShow = true
+            this.dialogType = 'tips';
+          }
+        })
+      }, 200)
+    });
+
     const self = this;
     const listner = function () {
       let isHiddenWindow = document.hidden;
@@ -412,7 +473,7 @@ export default {
     this.reconnectTimer = null;
     this.player.dispose();
     this.player = null;
-  }
+  },
 };
 </script>
 <style lang="scss" module>

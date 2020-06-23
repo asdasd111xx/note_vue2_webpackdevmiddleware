@@ -38,6 +38,7 @@ export default {
             },
             isShowPop: false,
             checkSuccess: false,
+            yourBankData: [],
             webviewOpenUrl: ''
         };
     },
@@ -59,6 +60,14 @@ export default {
          * @return array
          */
         allBanks() {
+            // 銀行匯款一律吃 your_Bank 裡面所有的資料
+            if (this.yourBankData.length > 0 && this.curPayInfo.payment_type_id === 5) {
+                return this.yourBankData.map((bankInfo) => ({
+                    label: bankInfo.name,
+                    value: bankInfo.id
+                }));
+            }
+
             if (!this.curPayInfo || !this.curPayInfo.banks) {
                 return [];
             }
@@ -332,6 +341,11 @@ export default {
             }).then((response) => {
                 this.isShow = false;
                 this.actionSetIsLoading(false);
+
+                if (response && response.result !== 'ok') {
+                    this.msg = response.msg;
+                }
+
                 if (response && response.result === 'ok') {
                     const filterData = response.ret.payment_group.filter((info) => !info.is_link)[0];
 
@@ -339,6 +353,10 @@ export default {
                     this.curPayInfo = filterData ? filterData.payment_group_content[0] : {};
                     this.depositData = response.ret.payment_group;
                     this.isDepositAi = response.ret.deposit_ai;
+
+                    if (response.ret.your_bank) {
+                        this.yourBankData = response.ret.your_bank;
+                    }
 
                     if (this.isDepositAi) {
                         this.PassRoadOrAi();
@@ -353,10 +371,6 @@ export default {
                     }
 
                     return { result: response.result };
-                }
-
-                if (response && response.result !== 'ok') {
-                    this.msg = response.msg;
                 }
 
                 return response;
@@ -498,6 +512,11 @@ export default {
 
             if (!this.isDepositAi && this.curModeGroup.channel_display && ((!this.curPayInfo.bank_id && isOtherBank) || (this.curPayInfo.bank_id || this.selectedBank.value))) {
                 this.getPayPass();
+            }
+
+            // 銀行轉帳(payment_type_id === 5)，將您的銀行，預設成當前選擇的支付銀行
+            if (this.yourBankData.length > 0 && this.curPayInfo.payment_type_id === 5) {
+                this.defaultCurPayBank()
             }
         },
         /**
@@ -873,6 +892,14 @@ export default {
             }
 
             this.checkSuccess = true;
+        },
+        defaultCurPayBank() {
+            let target = this.allBanks.find(item => {
+                return item.value === this.curPayInfo.bank_id
+            })
+
+            this.isSelectValue = target.label
+            this.bankSelectValue = target
         }
     }
 };

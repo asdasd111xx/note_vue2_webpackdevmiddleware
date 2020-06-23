@@ -178,7 +178,8 @@ import ajax from '@/lib/ajax';
 import message from '@/router/mobile/components/tpl/porn1/components/common/new/message';
 import confirm from '@/router/mobile/components/tpl/porn1/components/common/new/confirm';
 import { getCookie } from '@/lib/cookie';
-import axios from 'axios';
+import yaboRequest from '@/api/yaboRequest';
+
 export default {
   components: {
     ModelSelect,
@@ -338,10 +339,10 @@ export default {
       this.AutotransferLock = true;
       mcenter.balanceTranAutoEnable({
         success: () => {
-          this.msg = '归户成功';
+          this.msg = '切换成功';
           // alert(this.$t('S_SWITCH_AUTO_TRANSFER'));
           this.isAutotransfer = true;
-          this.backAccount();
+          this.backAccount({}, true);
           this.actionSetUserdata(true);
 
           this.AutotransferLock = false;
@@ -360,8 +361,7 @@ export default {
       this.AutotransferLock = true;
       mcenter.balanceTranAutoClose({
         success: () => {
-          this.msg = this.$t('S_SWITCH_SUCCESS');
-          // alert(this.$t('S_SWITCH_SUCCESS'));
+          this.msg = '切换成功';
           this.isAutotransfer = false;
           this.actionSetUserdata(true);
 
@@ -401,13 +401,15 @@ export default {
       this.showIntegerBackConfirm = false;
       this.backAccount();
     },
-    backAccount({ afterSetUserBalance } = {}) {
+    backAccount({ afterSetUserBalance } = {}, fromAuto) {
       mcenter.balanceTranBack({
         success: () => {
           this.lockSec = 0;
           this.actionSetUserBalance()
             .then(() => {
-              this.msg = '回收成功'
+              if (!fromAuto) {
+                this.msg = '回收成功'
+              }
               this.tranOut = '';
               if (afterSetUserBalance) {
                 afterSetUserBalance();
@@ -422,15 +424,14 @@ export default {
       });
     },
     checkBankCard() {
-      return axios({
+      return yaboRequest({
         method: 'get',
         url: `${this.siteConfig.YABO_API_DOMAIN}/AccountBank/GetBankBindingStatusTrans/${getCookie('cid')}`,
         headers: {
-          'AuthToken': 'YaboAPIforDev0nly',
           'x-domain': this.memInfo.user.domain
         }
       }).then((res) => {
-        return res.data && res.data.data
+        return res.data
       });
     },
     clearMsg() {

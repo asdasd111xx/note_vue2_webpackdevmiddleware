@@ -682,6 +682,7 @@ export default {
   position: absolute;
   text-align: center;
   line-height: 30px;
+  font-weight: 500;
 
   &.active {
     pointer-events: unset;

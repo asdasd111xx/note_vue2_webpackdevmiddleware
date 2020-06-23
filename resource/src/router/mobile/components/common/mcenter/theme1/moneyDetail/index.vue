@@ -76,6 +76,9 @@
                     <div :class="$style.cancel" @click="onCancel">取消</div>
                     <div :class="$style.confirm" @click="onConfirm">确定</div>
                 </div>
+                <div v-if="startTime.valueOf() > endTime.valueOf()" :class="[$style['date-tip']] ">
+                  开始日期不能大于结束日期
+                </div>
             </div>
         </div>
         <detail-info
