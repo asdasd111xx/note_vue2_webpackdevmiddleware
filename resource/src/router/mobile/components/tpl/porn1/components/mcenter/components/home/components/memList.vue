@@ -264,7 +264,7 @@ export default {
           if (isWebView) {
             window.location.href = appUrl;
           } else {
-            window.open('appUrl', '_blank');
+            window.open(appUrl, '_blank');
           }
         } else {
           this.msg = this.superErrorMsg;
