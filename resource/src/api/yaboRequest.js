@@ -27,7 +27,7 @@ export default ({
         ...headers,
         'cid': getCookie('cid'),
         'x-domain': getCookie('y-x-domain'),
-        'username': getCookie('y-username'),
+        // 'username': getCookie('y-username'),
     };
 
     if (!url.includes('GetAuthorizationToken')) {
