@@ -135,7 +135,7 @@ export default {
         },
         {
           text: "IOS版",
-          isShow: false,
+          isShow: true,
           onClick: () => {
             if (this.iOSBundle) {
               this.download("i", 1, this.iOSBundle);
