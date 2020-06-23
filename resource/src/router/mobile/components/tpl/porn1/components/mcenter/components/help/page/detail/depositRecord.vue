@@ -40,9 +40,14 @@
     />
 
     <div v-if="!recordData.length" :class="$style['no-data-wrap']">
-      <img :src="$getCdnPath('/static/image/_new/mcenter/moneyDetail/no_data.png')" />
+      <img
+        :src="$getCdnPath('/static/image/_new/mcenter/moneyDetail/no_data.png')"
+      />
       <div :class="$style['tips']">暂时没有新的充值记录</div>
-      <div :class="$style['btn-deposit']" @click="$router.push('/mobile/mcenter/deposit')">
+      <div
+        :class="$style['btn-deposit']"
+        @click="$router.push('/mobile/mcenter/deposit')"
+      >
         立即充值
       </div>
     </div>
@@ -70,13 +75,13 @@ export default {
   },
   mounted() {
     this.getData();
+    document.title = "8日内充值记录"
   },
   computed: {
     ...mapGetters({
       loginStatus: 'getLoginStatus',
-      siteConfig: 'getSiteConfig',
       memInfo: 'getMemInfo'
-    }),
+    })
   },
   methods: {
     getDepositInfo(entryId) {

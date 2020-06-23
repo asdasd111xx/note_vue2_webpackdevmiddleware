@@ -94,6 +94,7 @@ export default {
     if (query.key) {
       this.handleToggleContent(query.key);
     }
+    document.title = this.$text('S_HELP_CENTER', '帮助中心')
   },
   computed: {
     ...mapGetters({
@@ -101,10 +102,7 @@ export default {
     }),
     isApp() {
       let isApp = !!((this.$route.query && this.$route.query.app) || (this.$route.query && this.$route.query.APP))
-      if (isApp)
-        document.title = "近10笔提现纪录"
-
-      return isApp
+      return isApp;
     },
     headerConfig() {
       if (!this.isApp)
