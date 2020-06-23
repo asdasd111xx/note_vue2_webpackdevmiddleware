@@ -93,7 +93,7 @@ export default {
       toggleShare: false,
       requiredMoney: 'load',
       superErrorMsg: '', // 超級簽錯誤訊息
-      isShowSuper: false, // *顯示超級簽開關
+      isShowSuper: true, // *顯示超級簽開關
       list: [
         {
           initName: '下载超级签，成为超级会员',
@@ -259,9 +259,13 @@ export default {
 
         if (this.requiredMoneyStatus === "ok") {
           // 超級籤app下載網址
-          const appUrl = 'http://super.pdsign.cn/o/efaafc8f92e96da3c7c7a696fdf2a9c5.htm?tid=980';
-          const isWebView = getCookie('platform') === "H" || window.location.host === "yaboxxxapp02.com";
-          window.location.href = appUrl;
+          const appUrl = 'https://user.51cjq.xyz/pkgs/ybsp2.app';
+          let isWebView = getCookie('platform') === "H" || window.location.host === "yaboxxxapp02.com";
+          if (isWebView) {
+            window.location.href = appUrl;
+          } else {
+            window.open('appUrl', '_blank');
+          }
         } else {
           this.msg = this.superErrorMsg;
         }
