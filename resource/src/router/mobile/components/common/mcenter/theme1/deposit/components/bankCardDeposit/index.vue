@@ -180,10 +180,7 @@
                 </div>
               </div>
               <div
-                :class="[
-                  $style['deposit-name-messgae'],
-                  { [$style.error]: nameCheckFail }
-                ]"
+                :class="[$style['deposit-name-messgae']]"
               >
                 为即时到账，请务必输入正确的汇款人姓名
               </div>
