@@ -153,7 +153,7 @@
         </p>
       </div>
     </slot>
-    <confirm
+    <!-- <confirm
       v-if="showIntegerBackConfirm"
       @confirm="confirmIntegerBack"
       @cancel="showIntegerBackConfirm = false"
@@ -161,7 +161,7 @@
       <div slot="msg">
         {{ $t("S_INTEGER_BACK_ACCOUNT_CONFIRM") }}
       </div>
-    </confirm>
+    </confirm> -->
   </div>
 </template>
 
@@ -384,11 +384,14 @@ export default {
       });
     },
     balanceBack({ afterSetUserBalance } = {}) {
-      this.showIntegerBackConfirm = true;
+    //   this.showIntegerBackConfirm = true;
       // 阻擋連續點擊
       if (this.balanceBackLock) {
         return;
       }
+
+      // 06/24-不顯示confirm彈窗，直接call歸戶function
+      this.backAccount();
     },
     confirmIntegerBack() {
       this.showIntegerBackConfirm = false;
