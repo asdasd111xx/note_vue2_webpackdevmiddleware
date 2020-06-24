@@ -403,7 +403,7 @@ export default {
         this.errTips = "";
 
         //   withdrawData.audit.total.fee + withdrawData.audit.total.deduction
-        let _actualMoney = value - Number(this.withdrawData.audit.total.total_deduction)
+        let _actualMoney = value - Number(this.withdrawData.audit.total.total_deduction);
 
         if (_actualMoney !== value) {
           this.actualMoney = _actualMoney;
@@ -413,7 +413,7 @@ export default {
           }
         }
         else {
-          this.actualMoney = 0;
+          this.actualMoney = _actualMoney;
           this.errTips = "";
         }
       }
@@ -591,7 +591,11 @@ export default {
         return;
       }
 
-      this.isShowCheck = true;
+      if (Number(this.actualMoney) !== Number(this.withdrawValue)) {
+        this.isShowCheck = true;
+      } else {
+        this.handleSubmit();
+      }
     },
     closeTips() {
       this.isShowCheck = false;
