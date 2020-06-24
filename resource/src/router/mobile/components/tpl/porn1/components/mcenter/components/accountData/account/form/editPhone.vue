@@ -73,7 +73,7 @@
           </div>
         </template>
 
-        <template v-if="checkCode.isShow">
+        <template v-if="checkCode.isShow || isfromWithdraw">
           <div :class="$style.block">
             <div :class="$style.title">
               手机验证码
