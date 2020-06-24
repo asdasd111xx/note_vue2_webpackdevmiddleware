@@ -611,7 +611,7 @@ export default {
       if (fromRule) {
         localStorage.setItem('tmp_w_selectedCard', this.selectedCard);
         localStorage.setItem('tmp_w_amount', this.withdrawValue);
-        localStorage.setItem('tmp_w_rule', "1");
+        localStorage.removeItem('tmp_w_rule');
       }
     },
     handleSubmit() {
