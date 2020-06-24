@@ -44,18 +44,6 @@
           </div>
         </div>
       </div>
-
-      <!-- <div v-if="!isIos" :class="[$style['card'], $style['isSingle']]">
-        <div :class="[$style['img'], $style['isSingle']]">
-          <img :src="$getCdnPath(yaboIconSrc)" alt="icon" />
-        </div>
-        <div :class="$style['isSingle']">
-          <div :class="$style['text']">鸭脖直播APP</div>
-          <div :class="$style['download']" @click="download">
-            立即下载
-          </div>
-        </div>
-      </div> -->
     </div>
 
     <div :class="$style['info-card']" @click="clickService">
@@ -110,6 +98,8 @@ export default {
   data() {
     return {
       isIos: !!navigator.userAgent.match(/\(i[^;]+;( U;)? CPU.+Mac OS X/),
+      downloadConfigData: [],
+      downloadToggle: {},
       iconList: [
         {
           text: "多种玩法",
@@ -124,38 +114,7 @@ export default {
           imgSrc: "/static/image/_new/webview/ic_service05.png"
         }
       ],
-      yaboIconSrc: "/static/image/_new/webview/appicon_yabo.png",
-      iosCard: [
-        {
-          text: "极速版",
-          isShow: true,
-          onClick: () => {
-            this.download("p", 2, "yaboxxxapp01.com.platformG");
-          }
-        },
-        {
-          text: "IOS版",
-          isShow: true,
-          onClick: () => {
-            if (this.iOSBundle) {
-              this.download("i", 1, this.iOSBundle);
-            }
-          }
-        },
-        {
-          text: "隐藏版",
-          isShow: true,
-          onClick: () => {
-            window.open(
-              "https://apps.apple.com/cn/app/id1516100581",
-              "_blank"
-            );
-
-            // 目前正式站尚未確定是否開放API，如開放則可以使用
-            // this.download("h");
-          }
-        }
-      ].filter(item => item.isShow)
+      yaboIconSrc: "/static/image/_new/webview/appicon_yabo.png"
     };
   },
   computed: {
@@ -180,58 +139,95 @@ export default {
         default:
           break;
       }
+    },
+    iosCard() {
+      return [
+        {
+          text: "极速版",
+          isShow: this.downloadToggle.pwa,
+          onClick: () => {
+            this.download(2, "yaboxxxapp01.com.platformG");
+          }
+        },
+        {
+          text: "IOS版",
+          isShow: this.downloadToggle.ios,
+          onClick: () => {
+            if (this.iOSBundle) {
+              this.download(1, this.iOSBundle);
+            }
+          }
+        },
+        {
+          text: "隐藏版",
+          isShow: this.downloadToggle.hide,
+          onClick: () => {
+            const target = this.downloadConfigData.find(item => {
+              return item.name === "appStoreMajaLink";
+            });
+            window.open(target.value, "_blank");
+          }
+        }
+      ].filter(item => item.isShow === "true");
     }
+  },
+  created() {
+    // 取得開關設定 & 隱藏版 url
+    yaboRequest({
+      method: "get",
+      url: `${this.siteConfig.YABO_API_DOMAIN}/System/config`,
+      headers: {
+        AuthToken: "YaboAPIforDev0nly"
+      },
+      params: {
+        type: "lcf"
+      }
+    }).then(res => {
+      if ((res.status === "ok" || res.status === "000") && res.data) {
+        this.downloadConfigData = res.data;
+
+        const iTarget = this.downloadConfigData.find(item => {
+          return item.name === "showIPADownload";
+        });
+
+        const pTarget = this.downloadConfigData.find(item => {
+          return item.name === "showPWADownload";
+        });
+
+        const hTarget = this.downloadConfigData.find(item => {
+          return item.name === "showStoreDownload";
+        });
+
+        this.downloadToggle = {
+          ios: iTarget.value,
+          pwa: pTarget.value,
+          hide: hTarget.value
+        };
+      }
+    });
   },
   methods: {
     mobileLinkOpen,
     clickService() {
       this.mobileLinkOpen({ linkType: "static", linkTo: "service" });
     },
-    download(type = "", platform = null, bundleID = "") {
-      switch (type) {
-        case "h":
-          // 隱藏版
-          yaboRequest({
-            method: "get",
-            url: `${this.siteConfig.YABO_API_DOMAIN}/System/config`,
-            headers: {
-              AuthToken: "YaboAPIforDev0nly"
-            },
-            params: {
-              type: "lcf"
-            }
-          }).then(res => {
-            if ((res.status === "ok" || res.status === "000") && res.data) {
-              const target = res.data.find(item => {
-                return item.name === "appStoreMajaLink";
-              });
-              window.open(target.value, "_blank");
-            }
-          });
-          break;
-
-        case "p":
-        case "i":
-          // 極速版 & iOS
-          // platform: 1 -> PWA , 2 -> iOS
-          bbosRequest({
-            method: "get",
-            url: this.siteConfig.BBOS_DOMIAN + "/App/Download",
-            reqHeaders: {
-              Vendor: this.memInfo.user.domain
-            },
-            params: {
-              bundleID,
-              lang: "zh-cn",
-              platform
-            }
-          }).then(res => {
-            if (res.status === "000" && res.data) {
-              location.href = res.data.url;
-            }
-          });
-          break;
-      }
+    download(platform = null, bundleID = "") {
+      bbosRequest({
+        method: "get",
+        url: this.siteConfig.BBOS_DOMIAN + "/App/Download",
+        reqHeaders: {
+          Vendor: this.memInfo.user.domain
+        },
+        params: {
+          bundleID,
+          lang: "zh-cn",
+          platform
+        }
+      }).then(res => {
+        if (res.status === "000" && res.data) {
+          location.href = res.data.url;
+        }
+      });
     }
   }
 };

@@ -353,7 +353,8 @@ export default {
           },
           fail: (res) => {
             this.countdownSec = '';
-            this.tipMsg = res.data.msg;
+            this.tipMsg = `${res.data.msg}${res.data.code}`;
+
             this.isSendSMS = false;
           },
           success: (res) => {

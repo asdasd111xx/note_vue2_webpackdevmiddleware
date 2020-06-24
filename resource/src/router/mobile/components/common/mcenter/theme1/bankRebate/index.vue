@@ -142,8 +142,12 @@
             </div>
           </div>
         </div>
-        <div
+        <!-- <div
           v-if="rebateState !== 'initial' && rebateInitData.is_vip"
+          :class="[$style['real-vip-wrap'], 'clearfix']"
+        > -->
+        <div
+          v-if="rebateState !== 'initial'"
           :class="[$style['real-vip-wrap'], 'clearfix']"
         >
           <div :class="$style['real-vip-title']">
@@ -171,7 +175,7 @@
             <div :class="$style['rebate-header']">
               <ele-loading v-if="rebateState === 'loading'" />
               <template v-else>
-                <div v-if="rebateInitData.is_vip">{{ caculateList.vip_config_name ? caculateList.vip_config_name : "---" }}</div>
+                <div :class="$style['name-lable']" v-if="rebateInitData.is_vip">{{ caculateList.vip_config_name ? caculateList.vip_config_name : "---" }}</div>
                 <div :class="$style['rebate-btn']">
                   <template
                     v-if="

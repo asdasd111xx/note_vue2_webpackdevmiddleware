@@ -46,15 +46,22 @@ export default {
       if (this.globalMessage && this.globalMessage.code) {
         const code = this.globalMessage.code;
         const callback = this.globalMessage.cb;
+        const redirect = this.globalMessage.origin;
+
+        if (callback) {
+          callback();
+          return;
+        }
+
         switch (code) {
           // 充值
+          case "C50101":
           case "C50100":
-            this.$router.push('/mobile/mcenter/deposit?redirect=home');
+            this.$router.push(`/mobile/mcenter/deposit`);
             break;
           // 銀行卡
           case "C50099":
-            callback ? callback() :
-              this.$router.push('/mobile/mcenter/bankCard?redirect=home');
+            this.$router.push(`/mobile/mcenter/bankCard?redirect=${redirect ? redirect : 'home'}`);
             break;
           // 重新登入
           case "M00001":

@@ -153,7 +153,7 @@
         </p>
       </div>
     </slot>
-    <confirm
+    <!-- <confirm
       v-if="showIntegerBackConfirm"
       @confirm="confirmIntegerBack"
       @cancel="showIntegerBackConfirm = false"
@@ -161,7 +161,7 @@
       <div slot="msg">
         {{ $t("S_INTEGER_BACK_ACCOUNT_CONFIRM") }}
       </div>
-    </confirm>
+    </confirm> -->
   </div>
 </template>
 
@@ -332,7 +332,7 @@ export default {
       this.AutotransferLock = true;
       mcenter.balanceTranAutoEnable({
         success: () => {
-          this.actionSetGlobalMessage({ msg: '切换成功' });
+          this.actionSetGlobalMessage({ msg: '回收成功' });
           // alert(this.$t('S_SWITCH_AUTO_TRANSFER'));
           this.isAutotransfer = true;
           this.backAccount({}, true);
@@ -384,11 +384,14 @@ export default {
       });
     },
     balanceBack({ afterSetUserBalance } = {}) {
-      this.showIntegerBackConfirm = true;
+    //   this.showIntegerBackConfirm = true;
       // 阻擋連續點擊
       if (this.balanceBackLock) {
         return;
       }
+
+      // 06/24-不顯示confirm彈窗，直接call歸戶function
+      this.backAccount();
     },
     confirmIntegerBack() {
       this.showIntegerBackConfirm = false;
@@ -451,15 +454,17 @@ export default {
 
         if (+source === 0 || +target === 0) {
           this.actionSetGlobalMessage({ msg: this.$t('S_SELECT_ACCOUNT') });
-          // alert(this.$t('S_SELECT_ACCOUNT'));
+          this.btnLock = false;
           return;
         }
         if (money === '') {
           this.actionSetGlobalMessage({ msg: this.$t('S_AMOUNT_NULL_VALUE') });
+          this.btnLock = false;
           return;
         }
         if (!re.test(money)) {
           this.actionSetGlobalMessage({ msg: this.$t('S_DAW_ONLY_INT') });
+          this.btnLock = false;
           return;
         }
 
@@ -488,8 +493,11 @@ export default {
 
             this.btnLock = false;
           },
-          fail: () => {
+          fail: (res) => {
             this.btnLock = false;
+            this.actionSetGlobalMessage({
+              msg: res.data.msg, code: res.data.code, origin: "balanceTrans"
+            });
           }
         }, source, target);
       });

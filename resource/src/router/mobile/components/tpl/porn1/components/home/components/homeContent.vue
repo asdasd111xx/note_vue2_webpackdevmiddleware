@@ -610,8 +610,12 @@ export default {
       //   }
       const openGameFailFunc = (res) => {
         if (res && res.data) {
+          let msg = data.msg;
+          if (data.code !== "C50099" && data.code === "C50100" && data.code === "C50101") {
+            msg = `${data.msg}(${data.code})`
+          }
           let data = res.data;
-          this.actionSetGlobalMessage({ msg: data.msg, code: data.code })
+          this.actionSetGlobalMessage({ msg: msg, code: data.code, origin: 'home' })
         }
       };
       if (game.type === "R") {

@@ -191,6 +191,7 @@ export default {
         return ajax({
             method: 'put',
             url: `${apiUrl.API_MCENTER_BALANCE}/${source}/target/${target}`,
+            errorAlert: false,
             ...args
         });
     },
@@ -199,6 +200,7 @@ export default {
         return ajax({
             method: 'put',
             url: apiUrl.API_MCENTER_BALANCE_BACK,
+            errorAlert: false,
             ...args
         });
     },

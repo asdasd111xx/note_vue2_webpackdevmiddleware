@@ -212,7 +212,7 @@
               { [$style['active']]: username && email }
             ]"
           >
-            <div>{{ $t("S_JM_SURE_SEND") }}</div>
+            <div>{{ $t("S_SUBMIT") }}</div>
           </div>
           <div
             v-else
@@ -222,7 +222,7 @@
                 [$style['active']]:
                   currentMethod === 'phone-step-1'
                     ? username && keyring
-                    : password && confirm_password
+                    : (password === confirm_password) && password && confirm_password
               }
             ]"
             @click="send($route.params.type)"
@@ -299,7 +299,7 @@ export default {
     headerConfig() {
       return {
         prev: true,
-        title: '重设密码',
+        title: this.currentMethod === 'phone-step-2' ? '重设密码' : '找回密码',
         onClick: () => { this.$router.back(); }
       };
     },
@@ -389,7 +389,7 @@ export default {
         },
         fail: (res) => {
           if (res && res.data && res.data.msg) {
-            this.errMsg = res.data.msg
+            this.errMsg = `${res.data.msg}${res.data.code}`;
           }
         }
       };
@@ -480,15 +480,25 @@ export default {
             clearInterval(this.keyRingTimer)
             this.keyRingTimer = null;
             this.keyRingTime = 0;
-            return;
           }
           this.keyRingTime -= 1;
         }, 1000)
+
+        if(response.data.code) {
+          this.errMsg = `${response.data.msg}[${response.data.code}]`
+        } else {
+          this.errMsg = '已發送手機認證碼';
+        }
+
       }).catch(error => {
         if (error.response && error.response.data && error.response.data.msg) {
-          this.errMsg = error.response.data.msg;
+          this.errMsg = `${error.response.data.msg}`;
         }
       })
+
+      if(this.toggleCaptcha) {
+        this.toggleCaptcha = false
+      }
     },
     // 驗證簡訊(驗證碼)
     verifySms(type) {
@@ -508,7 +518,7 @@ export default {
         fail: (res) => {
           this.msg.keyring = '';
           if (res && res.data && res.data.msg) {
-            this.errMsg = res.data.msg
+            this.errMsg = `${res.data.msg}[${res.data.code}]`
           }
         }
       };
