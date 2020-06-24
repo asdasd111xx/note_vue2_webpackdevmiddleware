@@ -71,7 +71,7 @@
             <div :class="$style['desc-text']">
                 ●累计充值(元)：
                 <span :class="$style['money']">{{
-                    userVipInfo.amount_info.deposit_amount
+                    userVipInfo.amount_info.deposit_total
                 }}</span>
                 ({{ userVipInfo.amount_info.deposit_total }}/{{
                     userVipInfo.next_level_deposit_total
