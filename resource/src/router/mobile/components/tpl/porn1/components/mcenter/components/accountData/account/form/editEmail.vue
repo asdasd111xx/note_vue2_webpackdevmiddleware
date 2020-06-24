@@ -233,7 +233,9 @@ export default {
           this.tipMsg = `${this.$text("S_SEND_CHECK_CODE_VALID_TIME").replace("%s", 5)}${this.$text("S_FIND_TRASH")}`
         },
         fail: (res) => {
-          this.tipMsg = `${res.data.msg}${res.data.code}`;
+          if (res && res.data && res.data.msg) {
+            this.tipMsg = `${res.data.msg}(${res.data.code})`;
+          }
         }
       });
     },
@@ -252,7 +254,9 @@ export default {
             this.successMessage();
           },
           fail: (res) => {
-            this.tipMsg = res.data.msg;
+            if (res && res.data && res.data.msg) {
+              this.tipMsg = `${res.data.msg}(${res.data.code})`;
+            }
           }
         });
       }
@@ -270,7 +274,7 @@ export default {
         },
         fail: (res) => {
           if (res && res.data && res.data.msg) {
-            this.tipMsg = res.data.msg;
+            this.tipMsg = `${res.data.msg}(${res.data.code})`;
           }
         }
       });

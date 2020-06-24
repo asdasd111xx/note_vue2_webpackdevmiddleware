@@ -278,7 +278,7 @@ export default {
             }, 2000);
           },
           fail: res => {
-            this.errMsg = `${res.data.msg}`;
+            this.errMsg = `${res.data.msg}${res.data.code}`;
           }
         });
       } else {
@@ -297,7 +297,7 @@ export default {
             }, 2000);
           },
           fail: res => {
-            this.errMsg = `${res.data.msg}`;
+            this.errMsg = `${res.data.msg}${res.data.code}`;
           }
         });
       }

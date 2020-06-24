@@ -389,7 +389,7 @@ export default {
         },
         fail: (res) => {
           if (res && res.data && res.data.msg) {
-            this.errMsg = res.data.msg
+            this.errMsg = `${res.data.msg}${res.data.code}`;
           }
         }
       };
