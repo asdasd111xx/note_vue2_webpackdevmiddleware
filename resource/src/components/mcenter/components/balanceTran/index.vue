@@ -332,7 +332,7 @@ export default {
       this.AutotransferLock = true;
       mcenter.balanceTranAutoEnable({
         success: () => {
-          this.actionSetGlobalMessage({ msg: '切换成功' });
+          this.actionSetGlobalMessage({ msg: '回收成功' });
           // alert(this.$t('S_SWITCH_AUTO_TRANSFER'));
           this.isAutotransfer = true;
           this.backAccount({}, true);

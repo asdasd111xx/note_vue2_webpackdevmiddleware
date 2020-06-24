@@ -259,7 +259,7 @@ export default {
   },
   data() {
     return {
-      currentMethod: 'phone-step-1',
+      currentMethod: 'phone-step-2',
       resetKeyring: '',
       errMsg: '',
       keyRingTime: 0,

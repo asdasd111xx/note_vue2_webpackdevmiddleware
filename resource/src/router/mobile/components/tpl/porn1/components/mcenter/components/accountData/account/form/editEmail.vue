@@ -233,7 +233,7 @@ export default {
           this.tipMsg = `${this.$text("S_SEND_CHECK_CODE_VALID_TIME").replace("%s", 5)}${this.$text("S_FIND_TRASH")}`
         },
         fail: (res) => {
-          this.tipMsg = res.data.msg;
+          this.tipMsg = `${res.data.msg}${res.data.code}`;
         }
       });
     },
