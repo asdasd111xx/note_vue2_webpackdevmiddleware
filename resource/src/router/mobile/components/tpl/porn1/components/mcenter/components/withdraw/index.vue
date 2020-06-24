@@ -313,7 +313,7 @@
         :withdraw-value="+withdrawValue"
         @close="closeTips"
         @submit="handleSubmit"
-        @save-value="saveCurrentValue"
+        @save="saveCurrentValue"
       />
       <!-- 流水檢查 -->
       <serial-number v-if="isSerial" :handle-close="toggleSerial" />
@@ -386,7 +386,7 @@ export default {
         this.withdrawUserData.account.length > 0) {
         this.selectedCard = Number(localStorage.getItem('tmp_w_selectedCard')) ||
           this.withdrawUserData.account[0].id;
-        this.withdrawValue = localStorage.getItem('tmp_w_amount')
+        this.withdrawValue = localStorage.getItem('tmp_w_amount');
         setTimeout(() => {
           localStorage.removeItem('tmp_w_selectedCard');
           localStorage.removeItem('tmp_w_amount');
@@ -427,11 +427,6 @@ export default {
     }
   },
   created() {
-    if (!localStorage.getItem('tmp_w_1')) {
-      localStorage.removeItem('tmp_w_selectedCard');
-      localStorage.removeItem('tmp_w_amount');
-    }
-
     // 綁定銀行卡內無常用帳號
     common.bankCardCheck({
       success: ({ result, ret }) => {
