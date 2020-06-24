@@ -43,7 +43,8 @@ export default {
         };
     },
     watch: {
-        webviewOpenUrl() {
+        webviewOpenUrl(val) {
+            console.log(val);
             setTimeout(() => { document.location.href = this.webviewOpenUrl }, 500);
         }
     },
@@ -905,7 +906,7 @@ export default {
         },
         checkDepositInput() {
             // 銀行匯款 or 網銀
-            if ([5, 6].includes(this.curPayInfo.payment_type_id) || (this.curPayInfo.payment_type_id === 1 && this.curPayInfo.payment_type_id === 1 )) {
+            if (this.curPayInfo.payment_type_id === 5 || (this.curPayInfo.payment_type_id === 1 && this.curPayInfo.payment_type_id === 1 )) {
                 if(!this.isSelectValue) {
                     this.isDisableDepositInput = true;
                     this.checkSuccess = false;
@@ -917,8 +918,10 @@ export default {
                 return item.value === this.curPayInfo.bank_id;
             })
 
-            this.isSelectValue = target.label;
-            this.bankSelectValue = target;
+            if (target) {
+                this.isSelectValue = target.label;
+                this.bankSelectValue = target;
+            }
         }
     }
 };

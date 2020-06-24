@@ -112,34 +112,27 @@
         <div ref="wrap-buffer" :class="$style['wrap-buffer']" />
       </div>
     </div>
-    <message v-if="msg" @close="clearMsg">
-      <div slot="msg">
-        {{ msg }}
-      </div>
-    </message>
   </div>
 </template>
 
 <script>
 /* global $ */
-import { mapGetters } from 'vuex';
-import axios from 'axios';
-import querystring from 'querystring';
-import find from 'lodash/find';
-import { Swiper, SwiperSlide } from 'vue-awesome-swiper';
-import mcenter from '@/api/mcenter';
 import { API_GET_VENDOR } from '@/config/api';
-import ajax from '@/lib/ajax';
-import openGame from '@/lib/open_game';
-import message from '../../common/new/message';
-import common from '@/api/common';
-import pornRequest from '@/api/pornRequest';
 import { getCookie, setCookie } from '@/lib/cookie';
+import { mapGetters, mapActions } from 'vuex';
+import { Swiper, SwiperSlide } from 'vue-awesome-swiper';
+import ajax from '@/lib/ajax';
+import axios from 'axios';
+import common from '@/api/common';
+import find from 'lodash/find';
+import mcenter from '@/api/mcenter';
+import openGame from '@/lib/open_game';
+import pornRequest from '@/api/pornRequest';
+import querystring from 'querystring';
 import yaboRequest from '@/api/yaboRequest';
 
 export default {
   components: {
-    message,
     Swiper,
     SwiperSlide
   },
@@ -166,8 +159,6 @@ export default {
         { name: 'accountVip', text: 'VIP' },
         { name: 'grade', text: '等级' }
       ],
-      msg: '',
-      hasBankCard: false
     };
   },
   computed: {
@@ -221,15 +212,6 @@ export default {
     }
   },
   created() {
-    if (this.loginStatus) {
-      ajax({
-        method: 'get',
-        url: '/api/v1/c/player/user_bank/list',
-        errorAlert: false
-      }).then(res => {
-        this.hasBankCard = res.ret && res.ret.length > 0;
-      });
-    }
   },
   mounted() {
     $(window).on('resize', this.onResize);
@@ -282,6 +264,9 @@ export default {
     $(window).off('resize', this.onResize);
   },
   methods: {
+    ...mapActions([
+      'actionSetGlobalMessage'
+    ]),
     getImg(info) {
       return {
         src: info.image,
@@ -292,13 +277,6 @@ export default {
           `/static/image/_new/common/default_${info.imageType}.png`
         )
       };
-    },
-    clearMsg() {
-      if (this.msg.includes('银行卡')) {
-        this.$router.push('/mobile/mcenter/bankCard?redirect=home');
-      }
-
-      this.msg = '';
     },
     // 取得所有遊戲
     getAllGameFromCache() {
@@ -473,7 +451,7 @@ export default {
           if (res.data && res.data) {
             this.$router.push(`/mobile/mcenter/deposit`);
           } else {
-            this.msg = '请先绑定提现银行卡';
+            this.actionSetGlobalMessage({ type: 'bindcard', code: 'C50099' });
           }
         });
       } else if (path === 'grade') {
@@ -502,7 +480,7 @@ export default {
       }
 
       if (game.type === 'T') {
-        this.msg = '正在上线 敬请期待';
+        this.actionSetGlobalMessage({ type: 'incoming' });
         return;
       }
 
@@ -577,11 +555,6 @@ export default {
         return;
       }
 
-      if (!this.hasBankCard) {
-        this.msg = '请先绑定提现银行卡';
-        return;
-      }
-
       //   if (game.type === 'R') {
       //     let urlParams =
       //       game.vendor === 'lg_live' ? '&customize=yabo&tableType=3310' : '';
@@ -635,10 +608,16 @@ export default {
       //     });
       //     return;
       //   }
+      const openGameFailFunc = (res) => {
+        if (res && res.data) {
+          let data = res.data;
+          this.actionSetGlobalMessage({ msg: data.msg, code: data.code })
+        }
+      };
       if (game.type === "R") {
-        openGame({ kind: game.kind, vendor: game.vendor, code: game.code, gameType: game.type });
+        openGame({ kind: game.kind, vendor: game.vendor, code: game.code, gameType: game.type }, openGameFailFunc);
       } else {
-        openGame({ kind: game.kind, vendor: game.vendor, code: game.code });
+        openGame({ kind: game.kind, vendor: game.vendor, code: game.code }, openGameFailFunc);
       }
     }
   }

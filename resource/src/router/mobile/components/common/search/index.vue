@@ -25,31 +25,16 @@
           :show-jackpot="gameShowJackpot"
           :show-favor="gameShowFavor"
           :show-button="gameShowButton"
-          :before-on-enter="beforeOnEnter"
+          :redirect-card="redirectBankCard"
         />
       </template>
     </div>
-    <message
-      v-if="msg"
-      @close="msg = ''"
-      :callback="
-        () => {
-          $router.push(`/mobile/mcenter/bankcard?redirect=casino`);
-        }
-      "
-    >
-      <div slot="msg">
-        {{ msg }}
-      </div>
-    </message>
   </div>
 </template>
 
 <script>
 import debounce from 'lodash/debounce';
 import gameItem from '@/router/web/components/common/gameItem';
-import ajax from '@/lib/ajax';
-import message from "@/router/mobile/components/tpl/porn1/components/common/new/message"
 
 /**
  * 共用元件 - 手機網頁版 遊戲大廳使用搜尋框
@@ -61,13 +46,10 @@ import message from "@/router/mobile/components/tpl/porn1/components/common/new/
 export default {
   data() {
     return {
-      hasBankCard: false,
-      msg: ''
     }
   },
   components: {
     gameItem,
-    message
   },
   props: {
     type: {
@@ -122,22 +104,12 @@ export default {
     }
   },
   created() {
-    ajax({
-      method: 'get',
-      url: '/api/v1/c/player/user_bank/list',
-      errorAlert: false
-    }).then((res) => {
-      this.hasBankCard = res.ret && res.ret.length > 0
-    });
   },
   methods: {
-    beforeOnEnter() {
-      if (this.hasBankCard) {
-        return true
-      } else {
-        this.msg = "请先绑定提现银行卡"
-        return false
-      }
+    redirectBankCard() {
+      this.$router.push(
+        `/mobile/mcenter/bankcard?redirect=casino`
+      );
     },
   },
 };

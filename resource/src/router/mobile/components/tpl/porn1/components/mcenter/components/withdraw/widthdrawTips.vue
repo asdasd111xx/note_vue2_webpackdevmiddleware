@@ -85,7 +85,7 @@
           <div :class="$style['check-btn']" @click="handleCheckRule">
             查看规则
           </div>
-          <div :class="$style['check-btn']" @click="closeTips">
+          <div :class="$style['check-btn']" @click="handleBack">
             继续游戏
           </div>
           <div
@@ -135,6 +135,9 @@ export default {
     handleCheckRule() {
       this.$emit('saveValue', true);
       this.$router.push('/mobile/mcenter/help/withdraw?&key=6');
+    },
+    handleBack() {
+      this.$router.push('/mobile/mcenter/wallet');
     }
   },
   watch: {
