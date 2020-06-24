@@ -480,5 +480,9 @@ export default {
     // 鴨脖配置
     [types.SET_YABOCONFIG](state, data) {
         state.yaboConfig = data
+    },
+    // 鴨脖全站訊息
+    [types.SET_GLOBALMESSAGE](state, data) {
+        state.globalMessage = data
     }
 };

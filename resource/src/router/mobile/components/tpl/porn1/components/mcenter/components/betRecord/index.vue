@@ -374,6 +374,10 @@ export default {
             this.selectMenu = '';
         },
         setCustomTime() {
+            if (this.setStartTime > this.setEndTime) {
+                return;
+            }
+
             this.startTime = Vue.moment(this.setStartTime).format('YYYY-MM-DD');
             this.endTime = Vue.moment(this.setEndTime).format('YYYY-MM-DD');
             this.selectTime = `${this.startTime} ${this.endTime}`;

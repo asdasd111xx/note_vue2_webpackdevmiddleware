@@ -8,6 +8,7 @@
                 </div>
                 <span>{{ memInfo.user.username }}</span>
                 <span>VIP{{ userVipInfo.now_level_seq }}</span>
+                <!-- <span>{{ userVipInfo.now_level_alias }}</span> -->
             </div>
             <div :class="$style['user-vip-desc']">
                 <div
@@ -33,6 +34,7 @@
         <div :class="$style['run-block']">
             <div :class="[$style['run-level'], $style['current']]">
                 <p>VIP{{ userVipInfo.now_level_seq }}</p>
+                <!-- <p>{{ userVipInfo.now_level_alias }}</p> -->
             </div>
             <div :class="$style['run-bar']">
                 <div
@@ -63,6 +65,7 @@
 
             <div :class="[$style['run-level'], $style['next']]">
                 <p>VIP{{ userVipInfo.next_level_seq }}</p>
+                <!-- <p>{{ userVipInfo.next_level_alias }}</p> -->
             </div>
         </div>
 
@@ -71,7 +74,7 @@
             <div :class="$style['desc-text']">
                 ●累计充值(元)：
                 <span :class="$style['money']">{{
-                    userVipInfo.amount_info.deposit_amount
+                    userVipInfo.amount_info.deposit_total
                 }}</span>
                 ({{ userVipInfo.amount_info.deposit_total }}/{{
                     userVipInfo.next_level_deposit_total

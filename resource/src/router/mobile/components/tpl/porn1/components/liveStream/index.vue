@@ -1,12 +1,6 @@
 <template>
   <mobile-container :has-footer="false">
     <div slot="content" :class="$style['live-stream-wrap']">
-      <message v-if="msg" :callback="clearMsg">
-        <div slot="msg">
-          {{ msg }}
-        </div>
-      </message>
-
       <div :class="$style['btn-prev']" @click="$router.push('/mobile')">
         <img :src="$getCdnPath('/static/image/_new/common/btn_back.png')" />
       </div>
@@ -125,17 +119,15 @@
   </mobile-container>
 </template>
 <script>
-import { mapGetters } from 'vuex';
+import { mapGetters, mapActions } from 'vuex';
+import ajax from '@/lib/ajax';
 import axios from 'axios';
 import mobileContainer from '../common/new/mobileContainer';
-import pornRequest from '@/api/pornRequest';
-import message from '../common/new/message';
 import openGame from '@/lib/open_game';
-import ajax from '@/lib/ajax';
+import pornRequest from '@/api/pornRequest';
 
 export default {
   components: {
-    message,
     mobileContainer
   },
   data() {
@@ -143,8 +135,6 @@ export default {
       streamList: [],
       currentTab: this.$route.params.type || localStorage.getItem('streamType'),
       iframeHeight: 500,
-      msg: '',
-      hasBankCard: false
     };
   },
   computed: {
@@ -165,41 +155,29 @@ export default {
       this.streamList = response.result;
     });
 
-    if (this.loginStatus) {
-      ajax({
-        method: 'get',
-        url: '/api/v1/c/player/user_bank/list',
-        errorAlert: false
-      }).then((res) => {
-        this.hasBankCard = res.ret && res.ret.length > 0
-      });
-    }
-
     // 給體育遊戲觸發事件的function
     window.sportEvent = (type) => {
       if (type === 'GO_IM_SPORT') {
         if (!this.loginStatus) {
-          this.$router.push({ name: 'login' });
-          this.msg = this.$text('S_LOGIN_TIPS', '请先登入')
+          this.actionSetGlobalMessage({ msg: 'login', code: 'M00001' })
           return;
         } else {
-          if (!this.hasBankCard) {
-            this.msg = "请先绑定提现银行卡"
-            return;
-          }
-          openGame({ vendor: 'boe', kind: 1 });
+
+          const openGameFailFunc = (res) => {
+            if (res && res.data) {
+              let data = res.data;
+              this.actionSetGlobalMessage({ msg: data.msg, code: data.code })
+            }
+          };
+          openGame({ vendor: 'boe', kind: 1 }, openGameFailFunc);
         }
       }
     };
   },
   methods: {
-    clearMsg() {
-      if (this.msg.includes('银行卡')) {
-        this.$router.push('/mobile/mcenter/bankCard?redirect=liveStream');
-      }
-
-      this.msg = '';
-    },
+    ...mapActions([
+      'actionSetGlobalMessage'
+    ]),
     openLiveStream() {
       if (!this.loginStatus) {
         this.$router.push('/mobile/login');
@@ -207,10 +185,10 @@ export default {
       }
 
       if (this.memInfo.balance.total < 100) {
-        this.msg = this.$text('S_LIVE_BALANCE_NOT_LESS', '直播余额不低%s元').replace('%s', 100);
+        this.actionSetGlobalMessage({ msg: this.$text('S_LIVE_BALANCE_NOT_LESS', '直播余额不低%s元').replace('%s', 100) })
         return;
       }
-      this.msg = this.$text('S_BEAUTY_STAY_TUNED', '我们将在下个月帮您开通美眉直播，敬请期待！先去体验一下其它游戏吧！');
+      this.actionSetGlobalMessage({ msg: this.$text('S_BEAUTY_STAY_TUNED', '我们将在下个月帮您开通美眉直播，敬请期待！先去体验一下其它游戏吧！') })
     },
     getIframeHeight() {
       //   this.iframeHeight = this.$refs['js-set-height'].contentWindow.window.document.body.scrollHeight + 100;

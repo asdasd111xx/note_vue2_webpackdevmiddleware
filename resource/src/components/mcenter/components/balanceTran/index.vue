@@ -153,12 +153,7 @@
         </p>
       </div>
     </slot>
-    <message v-if="msg" @close="clearMsg">
-      <div slot="msg">
-        {{ msg }}
-      </div>
-    </message>
-    <confirm
+    <!-- <confirm
       v-if="showIntegerBackConfirm"
       @confirm="confirmIntegerBack"
       @cancel="showIntegerBackConfirm = false"
@@ -166,7 +161,7 @@
       <div slot="msg">
         {{ $t("S_INTEGER_BACK_ACCOUNT_CONFIRM") }}
       </div>
-    </confirm>
+    </confirm> -->
   </div>
 </template>
 
@@ -175,7 +170,6 @@ import { mapGetters, mapActions } from 'vuex';
 import { ModelSelect } from 'vue-search-select';
 import mcenter from '@/api/mcenter';
 import ajax from '@/lib/ajax';
-import message from '@/router/mobile/components/tpl/porn1/components/common/new/message';
 import confirm from '@/router/mobile/components/tpl/porn1/components/common/new/confirm';
 import { getCookie } from '@/lib/cookie';
 import yaboRequest from '@/api/yaboRequest';
@@ -183,12 +177,10 @@ import yaboRequest from '@/api/yaboRequest';
 export default {
   components: {
     ModelSelect,
-    message,
     confirm
   },
   data() {
     return {
-      msg: '',
       balanceLock: true,
       btnLock: false,
       balanceBackLock: false,
@@ -330,7 +322,8 @@ export default {
     ...mapActions([
       'actionSetUserBalance',
       'actionSetUserdata',
-      'actionSetIsLoading'
+      'actionSetIsLoading',
+      'actionSetGlobalMessage'
     ]),
     enableAutotransfer() {
       if (this.isAutotransfer || this.AutotransferLock) {
@@ -339,7 +332,7 @@ export default {
       this.AutotransferLock = true;
       mcenter.balanceTranAutoEnable({
         success: () => {
-          this.msg = '切换成功';
+          this.actionSetGlobalMessage({ msg: '回收成功' });
           // alert(this.$t('S_SWITCH_AUTO_TRANSFER'));
           this.isAutotransfer = true;
           this.backAccount({}, true);
@@ -361,7 +354,7 @@ export default {
       this.AutotransferLock = true;
       mcenter.balanceTranAutoClose({
         success: () => {
-          this.msg = '切换成功';
+          this.actionSetGlobalMessage({ msg: '切换成功' });
           this.isAutotransfer = false;
           this.actionSetUserdata(true);
 
@@ -391,11 +384,14 @@ export default {
       });
     },
     balanceBack({ afterSetUserBalance } = {}) {
-      this.showIntegerBackConfirm = true;
+    //   this.showIntegerBackConfirm = true;
       // 阻擋連續點擊
       if (this.balanceBackLock) {
         return;
       }
+
+      // 06/24-不顯示confirm彈窗，直接call歸戶function
+      this.backAccount();
     },
     confirmIntegerBack() {
       this.showIntegerBackConfirm = false;
@@ -408,7 +404,7 @@ export default {
           this.actionSetUserBalance()
             .then(() => {
               if (!fromAuto) {
-                this.msg = '回收成功'
+                this.actionSetGlobalMessage({ msg: '回收成功' });
               }
               this.tranOut = '';
               if (afterSetUserBalance) {
@@ -418,7 +414,7 @@ export default {
           this.balanceBackLock = false;
         },
         fail: (res) => {
-          this.msg = res.data.msg || '系统错误';
+          this.actionSetGlobalMessage({ msg: res.data.msg || '系统错误' });
           this.balanceBackLock = false;
         }
       });
@@ -434,13 +430,6 @@ export default {
         return res.data
       });
     },
-    clearMsg() {
-      if (this.msg.includes('银行卡')) {
-        this.$router.push('/mobile/mcenter/bankCard?redirect=balanceTrans');
-      }
-
-      this.msg = '';
-    },
     balanceTran({ customSucessAlert } = {}) {
       // 阻擋連續點擊
       if (this.btnLock) {
@@ -451,7 +440,11 @@ export default {
 
       this.checkBankCard().then((res) => {
         if (!res) {
-          this.msg = '请先绑定提现银行卡';
+          this.actionSetGlobalMessage({
+            type: 'bindcard', code: 'C50099', cb: () => {
+              this.$router.push('/mobile/mcenter/bankCard?redirect=balanceTrans');
+            }
+          });
           return;
         }
         const re = /^[1-9]*[1-9][0-9]*$/;
@@ -460,18 +453,18 @@ export default {
         const { money } = this;
 
         if (+source === 0 || +target === 0) {
-          this.msg = this.$t('S_SELECT_ACCOUNT');
-          // alert(this.$t('S_SELECT_ACCOUNT'));
+          this.actionSetGlobalMessage({ msg: this.$t('S_SELECT_ACCOUNT') });
+          this.btnLock = false;
           return;
         }
         if (money === '') {
-          this.msg = this.$t('S_AMOUNT_NULL_VALUE');
-          // alert(this.$t('S_AMOUNT_NULL_VALUE'));
+          this.actionSetGlobalMessage({ msg: this.$t('S_AMOUNT_NULL_VALUE') });
+          this.btnLock = false;
           return;
         }
         if (!re.test(money)) {
-          this.msg = this.$t('S_DAW_ONLY_INT');
-          // alert(this.$t('S_DAW_ONLY_INT'));
+          this.actionSetGlobalMessage({ msg: this.$t('S_DAW_ONLY_INT') });
+          this.btnLock = false;
           return;
         }
 
@@ -484,7 +477,7 @@ export default {
               customSucessAlert();
             }
             if (!customSucessAlert) {
-              this.msg = this.$t('S_CR_SUCCESS');
+              this.actionSetGlobalMessage({ msg: this.$t('S_CR_SUCCESS') });
               // alert(this.$t('S_CR_SUCCESS'));
             }
 
@@ -500,8 +493,11 @@ export default {
 
             this.btnLock = false;
           },
-          fail: () => {
+          fail: (res) => {
             this.btnLock = false;
+            this.actionSetGlobalMessage({
+              msg: res.data.msg, code: res.data.code, origin: "balanceTrans"
+            });
           }
         }, source, target);
       });

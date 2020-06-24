@@ -19,7 +19,8 @@
                         ]"
                         @click="onClickLevel(index)"
                     >
-                        VIP{{ item.seq }}
+                        <!-- VIP{{ item.seq }} -->
+                        {{ item.alias }}
                     </div>
                 </swiper-slide>
             </swiper>

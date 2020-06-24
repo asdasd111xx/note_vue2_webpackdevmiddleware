@@ -85,7 +85,7 @@ export default {
       type: Boolean,
       required: true
     },
-    beforeOnEnter: {
+    redirectCard: {
       type: Function,
       required: true
     }
@@ -288,7 +288,8 @@ export default {
   },
   methods: {
     ...mapActions([
-      'actionSetFavoriteGame'
+      'actionSetFavoriteGame',
+      'actionSetGlobalMessage'
     ]),
     /**
      * 取得Class名稱
@@ -316,7 +317,6 @@ export default {
      * @method onEnter
     */
     onEnter() {
-      if (!this.beforeOnEnter()) return
       if (this.isBackEnd) {
         return;
       }
@@ -358,11 +358,14 @@ export default {
         return;
       }
 
-      openGame({
-        vendor,
-        kind,
-        code
-      });
+      const openGameFailFunc = (res) => {
+        console.log(res)
+        if (res && res.data) {
+          let data = res.data;
+          this.actionSetGlobalMessage({ msg: data.msg, code: data.code, cb: this.redirectCard });
+        }
+      };
+      openGame({ vendor, kind, code }, openGameFailFunc);
     },
     /**
      * 切換最愛遊戲

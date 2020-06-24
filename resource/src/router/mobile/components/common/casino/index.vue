@@ -1,20 +1,5 @@
 <template>
   <div :class="`casino-wrap ${gameTheme}`">
-    <message
-      v-if="msg"
-      @close="msg = ''"
-      :callback="
-        () => {
-          $router.push(
-            `/mobile/mcenter/bankcard?redirect=casino-${vendor}-${paramsData.label}`
-          );
-        }
-      "
-    >
-      <div slot="msg">
-        {{ msg }}
-      </div>
-    </message>
     <template v-for="slotKey in slotSort">
       <template v-if="slotKey === 'label'">
         <gameLabel
@@ -38,7 +23,7 @@
                 :show-jackpot="gameShowJackpot"
                 :show-favor="gameShowFavor"
                 :show-button="gameShowButton"
-                :before-on-enter="beforeOnEnter"
+                :redirect-card="redirectBankCard"
               />
             </template>
             <!-- 捲動加載 -->
@@ -83,7 +68,6 @@ import { gameType, gameList } from '@/config/api';
 import gameItem from '@/router/web/components/common/gameItem';
 import gameLabel from '../gameLabel';
 import gameSearch from '../search';
-import message from "@/router/mobile/components/tpl/porn1/components/common/new/message"
 import common from '@/api/common';
 
 /**
@@ -103,7 +87,6 @@ export default {
     gameLabel,
     gameItem,
     InfiniteLoading,
-    message
   },
   props: {
     slotSort: {
@@ -161,8 +144,6 @@ export default {
       isGameDataReceive: false,
       gameData: [],
       activityData: [],
-      msg: '',
-      hasBankCard: false
     };
   },
   computed: {
@@ -203,30 +184,15 @@ export default {
   },
   created() {
     this.getGameLabelList();
-
-    if (this.loginStatus) {
-      this.actionSetFavoriteGame();
-
-      ajax({
-        method: 'get',
-        url: '/api/v1/c/player/user_bank/list',
-        errorAlert: false
-      }).then((res) => {
-        this.hasBankCard = res.ret && res.ret.length > 0
-      });
-    }
   },
   methods: {
     ...mapActions([
       'actionSetFavoriteGame'
     ]),
-    beforeOnEnter() {
-      if (this.hasBankCard) {
-        return true
-      } else {
-        this.msg = "请先绑定提现银行卡"
-        return false
-      }
+    redirectBankCard() {
+      this.$router.push(
+        `/mobile/mcenter/bankcard?redirect=casino-${this.vendor}-${this.paramsData.label}`
+      );
     },
     /**
      * 取得遊戲平台分類

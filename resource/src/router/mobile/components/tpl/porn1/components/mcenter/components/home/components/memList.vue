@@ -230,17 +230,16 @@ export default {
             ).replace('％s', requiredMoney);
           },
           fail: (error) => {
-            this.superErrorMsg =
-              `${error.data.msg} ${
-              error.data.code ? `(${error.data.code})` : ''
-              }`;
+            if (error && error.data) {
+              this.superErrorMsg = error.data.msg;
+            }
           }
         });
       },
       fail: (error) => {
-        this.superErrorMsg = `${error.data.msg} ${
-          error.data.code ? `(${error.data.code})` : ''
-          }`;
+        if (error && error.data) {
+          this.superErrorMsg = error.data.msg;
+        }
       }
     });
 

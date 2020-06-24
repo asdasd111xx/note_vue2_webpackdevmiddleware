@@ -12,21 +12,6 @@
       </template>
       <template v-if="slotKey === 'list'">
         <div :key="`slot-${slotKey}`" class="game-item-wrap clearfix">
-          <message
-            v-if="msg"
-            @close="msg = ''"
-            :callback="
-              () => {
-                $router.push(
-                  `/mobile/mcenter/bankcard?redirect=card-${vendor}-${paramsData.label}`
-                );
-              }
-            "
-          >
-            <div slot="msg">
-              {{ msg }}
-            </div>
-          </message>
           <template v-for="(gameInfo, index) in gameData">
             <game-item
               :key="`game-${gameInfo.vendor}-${index}`"
@@ -35,7 +20,7 @@
               :show-jackpot="gameShowJackpot"
               :show-favor="gameShowFavor"
               :show-button="gameShowButton"
-              :before-on-enter="beforeOnEnter"
+              :redirect-card="redirectBankCard"
             />
           </template>
           <!-- 捲動加載 -->
@@ -53,8 +38,8 @@
 
     <template v-if="gameData === favoriteData && gameData.length === 0">
       <div :class="$style['empty-wrap']">
-          <div :class="$style['empty-icon']" />
-          <div>{{ $text("S_NO_GAME", "未查询到相关游戏") }}</div>
+        <div :class="$style['empty-icon']" />
+        <div>{{ $text("S_NO_GAME", "未查询到相关游戏") }}</div>
       </div>
     </template>
     <gameSearch
@@ -79,7 +64,6 @@ import { gameType, gameList } from '@/config/api';
 import gameLabel from '../gameLabel';
 import gameItem from '@/router/web/components/common/gameItem';
 import gameSearch from '../search';
-import message from "@/router/mobile/components/tpl/porn1/components/common/new/message"
 
 /**
  * 共用元件 - 手機網頁版電子遊戲頁共用框 (邏輯共用)
@@ -95,7 +79,6 @@ export default {
     gameLabel,
     gameItem,
     InfiniteLoading,
-    message
   },
   props: {
     slotSort: {
@@ -140,8 +123,6 @@ export default {
       labelData: [],
       isGameDataReceive: false,
       gameData: [],
-      msg: '',
-      hasBankCard: false
     };
   },
   computed: {
@@ -182,26 +163,15 @@ export default {
     if (this.loginStatus) {
       this.actionSetFavoriteGame();
     }
-
-    ajax({
-      method: 'get',
-      url: '/api/v1/c/player/user_bank/list',
-      errorAlert: false
-    }).then((res) => {
-      this.hasBankCard = res.ret && res.ret.length > 0
-    });
   },
   methods: {
     ...mapActions([
       'actionSetFavoriteGame'
     ]),
-    beforeOnEnter() {
-      if (this.hasBankCard) {
-        return true
-      } else {
-        this.msg = "请先绑定提现银行卡"
-        return false
-      }
+    redirectBankCard() {
+      this.$router.push(
+        `/mobile/mcenter/bankcard?redirect=card-${this.vendor}-${this.paramsData.label}`
+      );
     },
     /**
      * 取得遊戲平台分類
