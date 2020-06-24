@@ -521,12 +521,13 @@
             </div>
           </div>
           <div
+            v-if="entryBlockStatusData"
             :class="[
               $style['pay-button'],
               { [$style.disabled]: !checkSuccess }
             ]"
             :title="$text('S_ENTER_PAY', '立即充值')"
-            @click="checkEntryBlockStatus"
+            @click="clickSubmit"
           >
             {{ $text("S_ENTER_PAY", "立即充值") }}
           </div>
@@ -570,9 +571,10 @@
             </div>
           </div>
           <div
+            v-if="entryBlockStatusData"
             :class="$style['pay-button']"
             title="立即充值"
-            @click="checkEntryBlockStatus"
+            @click="clickSubmit"
           >
             立即充值
           </div>
@@ -673,7 +675,7 @@ export default {
       isShowMethodsPop: false,
       nameCheckFail: false,
       msg: '',
-      entryBlockStatusData: {},
+      entryBlockStatusData: null,
       isShowEntryBlockStatus: false,
       isDisableDepositInput: false
     };
@@ -897,6 +899,7 @@ export default {
       };
     },
     statusText() {
+      if (!this.entryBlockStatusData) return;
       switch (this.entryBlockStatusData.status) {
         case 1:
           return `您已多次提单未完成支付，请尝试其他充值通道，若多次提单不充值，帐号可能会被暂停充值。祝您游戏愉快!`
@@ -920,7 +923,7 @@ export default {
     this.getPayGroup().then(() => {
       this.defaultCurPayBank();
     })
-    // this.checkEntryBlockStatus();
+    this.checkEntryBlockStatus();
   },
   methods: {
     ...mapActions([
@@ -995,17 +998,19 @@ export default {
 
       this.isSelectShow = !this.isSelectShow;
     },
+    clickSubmit() {
+      if (this.entryBlockStatusData.status !== 0) {
+        this.isShowEntryBlockStatus = true;
+      } else {
+        this.submitInfo();
+      }
+    },
     /**
  * 提交訂單
  * @method submitInfo
  */
     submitInfo() {
-      if (this.entryBlockStatusData.status === 3) {
-        return;
-      }
-
       this.isShowEntryBlockStatus = false;
-
       this.submitList().then((response) => {
         if (response) {
           if (response.status === 'NameFail') {
@@ -1079,12 +1084,6 @@ export default {
       }).then((res) => {
         if (res.status === "000" && res.data && res.data.ret) {
           this.entryBlockStatusData = res.data.ret
-
-          if (res.data.ret.status === 0) {
-            this.submitInfo();
-          } else {
-            this.isShowEntryBlockStatus = true;
-          }
         } else {
           this.msg = res.msg;
         }
@@ -1095,7 +1094,7 @@ export default {
 
       let newWindow = '';
       if (this.isPWA) {
-        newWindow = window.open('', '', '_blank', true);
+        newWindow = window.open(' ', '', '_blank', true);
       }
 
       const newWindowHref = (uri) => {

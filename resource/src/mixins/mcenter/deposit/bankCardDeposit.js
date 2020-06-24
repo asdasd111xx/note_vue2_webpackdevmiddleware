@@ -608,14 +608,15 @@ export default {
             }
 
             this.nameCheckFail = false;
-
             let isPWA = getCookie('platform') === "G" || window.location.host === "yaboxxxapp01.com";
             let isWebView = getCookie('platform') === "H" || window.location.host === "yaboxxxapp02.com";
-
-            let newWindow = '';
+            let newWindow;
             if (isPWA) {
-                newWindow = window.open('', '', '_blank', true);
+                newWindow = window.open(' ');
             }
+
+            console.log("newWindow:", newWindow);
+            console.log("isPWA:", isPWA, ",isWebView:", isWebView);
 
             const newWindowHref = (uri) => {
                 try {
@@ -820,6 +821,10 @@ export default {
                     eventLabel: 'failure'
                 });
 
+                if (response && response.result !== 'ok') {
+                    this.msg = response.msg;
+                }
+
                 if (_isPWA) {
                     newWindow.close();
                 }
@@ -827,10 +832,6 @@ export default {
                 if (response.code === 'TM020058' || response.code === 'TM020059' || response.code === 'TM020060') {
                     window.location.reload();
                     return { status: 'error' };
-                }
-
-                if (response && response.result !== 'ok') {
-                    this.msg = response.msg;
                 }
 
                 return { status: 'error' };
@@ -906,8 +907,8 @@ export default {
         },
         checkDepositInput() {
             // 銀行匯款 or 網銀
-            if (this.curPayInfo.payment_type_id === 5 || (this.curPayInfo.payment_type_id === 1 && this.curPayInfo.payment_type_id === 1 )) {
-                if(!this.isSelectValue) {
+            if (this.curPayInfo.payment_type_id === 5 || (this.curPayInfo.payment_type_id === 1 && this.curPayInfo.payment_type_id === 1)) {
+                if (!this.isSelectValue) {
                     this.isDisableDepositInput = true;
                     this.checkSuccess = false;
                 }
