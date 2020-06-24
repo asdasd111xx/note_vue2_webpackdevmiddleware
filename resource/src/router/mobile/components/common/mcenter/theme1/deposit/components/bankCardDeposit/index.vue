@@ -525,15 +525,7 @@
               { [$style.disabled]: !checkSuccess }
             ]"
             :title="$text('S_ENTER_PAY', '立即充值')"
-            @click="
-              () => {
-                if (this.entryBlockStatusData.status === 0) {
-                  this.submitInfo();
-                } else {
-                  this.isShowEntryBlockStatus = true;
-                }
-              }
-            "
+            @click="checkEntryBlockStatus"
           >
             {{ $text("S_ENTER_PAY", "立即充值") }}
           </div>
@@ -579,15 +571,7 @@
           <div
             :class="$style['pay-button']"
             title="立即充值"
-            @click="
-              () => {
-                if (this.entryBlockStatusData.status === 0) {
-                  this.submitInfo();
-                } else {
-                  this.isShowEntryBlockStatus = true;
-                }
-              }
-            "
+            @click="checkEntryBlockStatus"
           >
             立即充值
           </div>
@@ -935,7 +919,7 @@ export default {
     this.getPayGroup().then(() => {
         this.defaultCurPayBank();
     })
-    this.checkEntryBlockStatus();
+    // this.checkEntryBlockStatus();
   },
   methods: {
     ...mapActions([
@@ -1094,6 +1078,12 @@ export default {
       }).then((res) => {
         if (res.status === "000" && res.data && res.data.ret) {
           this.entryBlockStatusData = res.data.ret
+
+          if (this.entryBlockStatusData.status === 0) {
+            this.submitInfo();
+          } else {
+            this.isShowEntryBlockStatus = true;
+          }
         }
       });
     },
