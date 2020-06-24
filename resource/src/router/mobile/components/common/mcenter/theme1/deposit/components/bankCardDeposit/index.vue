@@ -1010,6 +1010,10 @@ export default {
  * @method submitInfo
  */
     submitInfo() {
+      if (this.entryBlockStatusData.status === 3) {
+        return;
+      }
+
       this.isShowEntryBlockStatus = false;
       this.submitList().then((response) => {
         if (response) {
