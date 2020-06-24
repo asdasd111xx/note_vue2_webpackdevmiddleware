@@ -480,15 +480,25 @@ export default {
             clearInterval(this.keyRingTimer)
             this.keyRingTimer = null;
             this.keyRingTime = 0;
-            return;
           }
           this.keyRingTime -= 1;
         }, 1000)
+
+        if(response.data.code) {
+          this.errMsg = `${response.data.msg}[${response.data.code}]`
+        } else {
+          this.errMsg = '已發送手機認證碼';
+        }
+
       }).catch(error => {
         if (error.response && error.response.data && error.response.data.msg) {
-          this.errMsg = error.response.data.msg;
+          this.errMsg = `${error.response.data.msg}`;
         }
       })
+
+      if(this.toggleCaptcha) {
+        this.toggleCaptcha = false
+      }
     },
     // 驗證簡訊(驗證碼)
     verifySms(type) {
@@ -508,7 +518,7 @@ export default {
         fail: (res) => {
           this.msg.keyring = '';
           if (res && res.data && res.data.msg) {
-            this.errMsg = res.data.msg
+            this.errMsg = `${res.data.msg}[${res.data.code}]`
           }
         }
       };
