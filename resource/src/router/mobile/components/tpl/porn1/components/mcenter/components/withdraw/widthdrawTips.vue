@@ -133,7 +133,7 @@ export default {
       this.$emit('close');
     },
     handleCheckRule() {
-      this.$emit('saveValue', true);
+      this.$emit('save', true);
       this.$router.push('/mobile/mcenter/help/withdraw?&key=6');
     },
     handleBack() {

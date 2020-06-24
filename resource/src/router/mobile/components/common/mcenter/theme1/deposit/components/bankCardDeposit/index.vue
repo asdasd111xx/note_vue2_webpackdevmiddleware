@@ -179,9 +179,7 @@
                   />
                 </div>
               </div>
-              <div
-                :class="[$style['deposit-name-messgae']]"
-              >
+              <div :class="[$style['deposit-name-messgae']]">
                 为即时到账，请务必输入正确的汇款人姓名
               </div>
             </div>
@@ -275,7 +273,10 @@
                 <div class="money-input-wrap">
                   <input
                     v-model="moneyValue"
-                    :class="[$style['deposit-input'] , {[$style.disable] : isDisableDepositInput }]"
+                    :class="[
+                      $style['deposit-input'],
+                      { [$style.disable]: isDisableDepositInput }
+                    ]"
                     :placeholder="singleLimit"
                     type="number"
                     pattern="[0-9]*"
@@ -827,7 +828,7 @@ export default {
               selectId: '16'
             }
           ],
-        //   showCondition: this.curPayInfo.field.find((e) => e.name === 'method' && e.required),
+          //   showCondition: this.curPayInfo.field.find((e) => e.name === 'method' && e.required),
           showCondition: this.curPayInfo.field.find((e) => e.name === 'method'),
           isError: false
         },
@@ -844,7 +845,7 @@ export default {
           title: '充值帐号',
           value: this.speedField.depositAccount,
           placeholderText: '请输入充值帐号',
-        //   showCondition: this.curPayInfo.field.find((e) => e.name === 'pay_account' && e.required),
+          //   showCondition: this.curPayInfo.field.find((e) => e.name === 'pay_account' && e.required),
           showCondition: this.curPayInfo.field.find((e) => e.name === 'pay_account'),
           isError: this.showError && this.curPayInfo.field.find((item) => item.name === 'pay_account' && item.required) && !this.speedField.depositAccount
         },
@@ -853,11 +854,11 @@ export default {
           title: '充值时间(北京)',
           value: this.speedField.depositTime,
           placeholderText: '请选择充值时间',
-        //   showCondition: this.curPayInfo.field.find((e) => e.name === 'deposit_at' && e.required),
+          //   showCondition: this.curPayInfo.field.find((e) => e.name === 'deposit_at' && e.required),
           showCondition: this.curPayInfo.field.find(e => {
             const isShow = e.name === 'deposit_at';
             // 目前需求：只有極速xx銀行，要在第一頁連同顯示此欄位
-            if(isShow && this.curPayInfo.payment_method_id === 6 && this.curPayInfo.payment_type_id === 5) {
+            if (isShow && this.curPayInfo.payment_method_id === 6 && this.curPayInfo.payment_type_id === 5) {
               return true
             } else {
               return false
@@ -870,11 +871,11 @@ export default {
           title: this.$text('S_SERIAL_NUMBER2', '流水号'),
           value: this.speedField.serialNumber,
           placeholderText: this.$text('S_PLZ_ENTER_SERIAL_NUMBER', '请输入流水号'),
-        //   showCondition: this.curPayInfo.field.find((e) => e.name === 'sn' && e.required),
-          showCondition: this.curPayInfo.field.find(e => {
+          //   showCondition: this.curPayInfo.field.find((e) => e.name === 'sn' && e.required),
+          showCondition: this.curPayInfo && this.curPayInfo.field && this.curPayInfo.field.find(e => {
             const isShow = e.name === 'sn';
             // 目前需求：只有極速xx銀行，要在第一頁連同顯示此欄位
-            if(isShow && this.curPayInfo.payment_method_id === 6 && this.curPayInfo.payment_type_id === 5) {
+            if (isShow && this.curPayInfo.payment_method_id === 6 && this.curPayInfo.payment_type_id === 5) {
               return true
             } else {
               return false
@@ -917,7 +918,7 @@ export default {
   created() {
     this.initHeaderSetting = this.headerSetting;
     this.getPayGroup().then(() => {
-        this.defaultCurPayBank();
+      this.defaultCurPayBank();
     })
     // this.checkEntryBlockStatus();
   },
@@ -1079,11 +1080,13 @@ export default {
         if (res.status === "000" && res.data && res.data.ret) {
           this.entryBlockStatusData = res.data.ret
 
-          if (this.entryBlockStatusData.status === 0) {
+          if (res.data.ret.status === 0) {
             this.submitInfo();
           } else {
             this.isShowEntryBlockStatus = true;
           }
+        } else {
+          this.msg = res.msg;
         }
       });
     },
