@@ -254,7 +254,14 @@
       </template>
 
       <!-- 到帳金額 -->
-      <div :class="[$style['actual-money']]">
+      <div
+        v-if="
+          withdrawUserData &&
+            withdrawUserData.account &&
+            withdrawUserData.account.length > 0
+        "
+        :class="[$style['actual-money']]"
+      >
         <span :class="$style['monet-currency']">到帐金额</span>
         <span :class="$style['monet-currency']">¥</span>
         <span :class="$style['monet-currency']">{{
@@ -604,7 +611,7 @@ export default {
       if (fromRule) {
         localStorage.setItem('tmp_w_selectedCard', this.selectedCard);
         localStorage.setItem('tmp_w_amount', this.withdrawValue);
-        localStorage.setItem('tmp_w_rule', "1");
+        localStorage.removeItem('tmp_w_rule');
       }
     },
     handleSubmit() {

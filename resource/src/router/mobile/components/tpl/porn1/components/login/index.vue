@@ -109,7 +109,7 @@
                 ref="captcha"
                 v-model="captcha"
                 :title="$text('S_RELOAD_PIC', '( 点选此处产生新验证码 )')"
-                :placeholder="$text('S_CHECK_CODE', '验证码')"
+                placeholder="请填写验证码"
                 class="login-input"
                 maxlength="4"
                 tabindex="3"
