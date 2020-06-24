@@ -451,15 +451,17 @@ export default {
 
         if (+source === 0 || +target === 0) {
           this.actionSetGlobalMessage({ msg: this.$t('S_SELECT_ACCOUNT') });
-          // alert(this.$t('S_SELECT_ACCOUNT'));
+          this.btnLock = false;
           return;
         }
         if (money === '') {
           this.actionSetGlobalMessage({ msg: this.$t('S_AMOUNT_NULL_VALUE') });
+          this.btnLock = false;
           return;
         }
         if (!re.test(money)) {
           this.actionSetGlobalMessage({ msg: this.$t('S_DAW_ONLY_INT') });
+          this.btnLock = false;
           return;
         }
 
@@ -488,8 +490,11 @@ export default {
 
             this.btnLock = false;
           },
-          fail: () => {
+          fail: (res) => {
             this.btnLock = false;
+            this.actionSetGlobalMessage({
+              msg: res.data.msg, code: res.data.code, origin: "balanceTrans"
+            });
           }
         }, source, target);
       });

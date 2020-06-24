@@ -299,7 +299,7 @@ export default {
     headerConfig() {
       return {
         prev: true,
-        title: '重设密码',
+        title: this.currentMethod === 'phone-step-2' ? '重设密码' : '找回密码',
         onClick: () => { this.$router.back(); }
       };
     },
