@@ -50,6 +50,7 @@
                 type="text"
                 name="join-captcha"
                 maxlength="4"
+                placeholder="请填写验证码"
                 @focus="getCaptcha()"
                 @input="verification(field.key)"
                 @keydown.13="keyDownSubmit()"
