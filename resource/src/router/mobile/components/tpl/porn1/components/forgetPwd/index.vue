@@ -212,7 +212,7 @@
               { [$style['active']]: username && email }
             ]"
           >
-            <div>{{ $t("S_JM_SURE_SEND") }}</div>
+            <div>{{ $t("S_SUBMIT") }}</div>
           </div>
           <div
             v-else
@@ -222,7 +222,7 @@
                 [$style['active']]:
                   currentMethod === 'phone-step-1'
                     ? username && keyring
-                    : password && confirm_password
+                    : (password === confirm_password) && password && confirm_password
               }
             ]"
             @click="send($route.params.type)"
@@ -259,7 +259,7 @@ export default {
   },
   data() {
     return {
-      currentMethod: 'phone-step-2',
+      currentMethod: 'phone-step-1',
       resetKeyring: '',
       errMsg: '',
       keyRingTime: 0,
