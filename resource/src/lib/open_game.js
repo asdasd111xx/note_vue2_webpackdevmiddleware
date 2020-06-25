@@ -32,7 +32,7 @@ export default (params, fail = () => { }) => {
         return;
     }
 
-    const { vendor, kind, code } = params;
+    const { vendor, kind, code, gameType } = params;
     const temp = { kind };
 
     if (code) {
@@ -55,9 +55,8 @@ export default (params, fail = () => { }) => {
                 localStorage.setItem("open-game-link", ret + query);
                 return;
             }
-
             // 80桌參數
-            if (vendor === "lg_live" && kind === "2" && this.$route.query && this.$route.query.q === "R") {
+            if (vendor === "lg_live" && String(kind) === "2" && gameType && gameType === "R") {
                 query = '&customize=yabo&tableType=3310';
             }
 
@@ -73,9 +72,6 @@ export default (params, fail = () => { }) => {
                 link += `/${settings.code}`;
             }
 
-            if (params.gameType) {
-                link += `/${settings.code}?q=${params.gameType}`;
-            }
             setTimeout(() => {
                 window.open(link, '', option);
             })

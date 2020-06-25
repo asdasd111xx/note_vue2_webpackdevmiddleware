@@ -63,10 +63,7 @@ export default {
     const { vendor, kind, code } = this.$route.params;
     const temp = { kind };
     this.vendor = vendor;
-
-    if (process.env.NODE_ENV === 'development') {
-      console.log(vendor, kind, code);
-    }
+    console.log("open-game-link", localStorage.getItem('open-game-link'));
 
     if (code) {
       temp.code = code;
@@ -100,7 +97,7 @@ export default {
 
         // 80桌參數
         let query = '';
-        if (vendor === "lg_live" && kind === "2" && this.$route.query && this.$route.query.q === "R") {
+        if (vendor === "lg_live" && String(kind) === "2" && this.$route.query && this.$route.query.q === "R") {
           query = '&customize=yabo&tableType=3310';
         }
 
