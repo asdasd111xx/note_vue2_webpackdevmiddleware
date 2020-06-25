@@ -95,10 +95,8 @@ export default {
         'x-domain': this.memInfo.user.domain
       }
     }).then((res) => {
-      if (res.data) {
-      }
-      else {
-        this.msg = "请先绑定提现银行卡"
+      if (res.data === false) {
+        this.msg = "请先绑定提现银行卡";
 
         setTimeout(() => {
           this.$router.push('/mobile/mcenter/bankCard?redirect=wallet');

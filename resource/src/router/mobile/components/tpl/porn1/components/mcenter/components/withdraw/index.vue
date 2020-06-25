@@ -311,6 +311,7 @@
         :show="isShowCheck"
         :actual-money="+actualMoney"
         :withdraw-value="+withdrawValue"
+        :type="widthdrawTipsType"
         @close="closeTips"
         @submit="handleSubmit"
         @save="saveCurrentValue"
@@ -368,6 +369,7 @@ export default {
       actualMoney: 0,
       hasBankCard: false,
       isShowCheck: false,
+      widthdrawTipsType: "tips"
     }
   },
   components: {
@@ -568,6 +570,15 @@ export default {
       this.withdrawValue = Math.floor(Number(result));
     },
     checkSubmit() {
+      // 提款前充值開關 to do
+      const depositBeforeWithdraw = this.memInfo.config.deposit_before_withdraw;
+
+      if (depositBeforeWithdraw) {
+        // this.widthdrawTipsType = "deposit";
+        // this.isShowCheck = true;
+        // return;
+      }
+
       const islock = () => {
         if (this.errTips || !this.withdrawValue || this.isSendSubmit || !this.selectedCard) {
           return true;
@@ -594,12 +605,14 @@ export default {
       }
 
       if (Number(this.actualMoney) !== Number(this.withdrawValue)) {
+        this.widthdrawTipsType = "tips";
         this.isShowCheck = true;
       } else {
         this.handleSubmit();
       }
     },
     closeTips() {
+      this.widthdrawTipsType = "";
       this.isShowCheck = false;
     },
     saveCurrentValue(fromRule) {

@@ -448,7 +448,7 @@ export default {
             'x-domain': this.memInfo.user.domain
           }
         }).then(res => {
-          if (res.data && res.data) {
+          if (res.data) {
             this.$router.push(`/mobile/mcenter/deposit`);
           } else {
             this.actionSetGlobalMessage({ type: 'bindcard', code: 'C50099' });

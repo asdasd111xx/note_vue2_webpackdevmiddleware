@@ -238,7 +238,7 @@ export default {
     sendBtn() {
       return {
         label: this.$text('S_GET_VERIFICATION_CODE', '获取验证码'),
-        isShow: this.info.verification,
+        isShow: this.info.verification || this.isfromWithdraw,
         countdownSec: this.countdownSec
       };
     }

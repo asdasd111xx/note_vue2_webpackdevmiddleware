@@ -684,6 +684,7 @@ export default {
     getPassRoadOrAi() {
       if (this.getPassRoadOrAi.amounts && this.getPassRoadOrAi.amounts.length > 0) {
         this.moneyValue = this.getPassRoadOrAi.amounts[0];
+        this.changeMoney(this.getPassRoadOrAi.amounts[0]);
       }
     },
     curPayInfo() {
@@ -1016,6 +1017,10 @@ export default {
 
       this.isShowEntryBlockStatus = false;
       this.submitList().then((response) => {
+        //   重置阻擋狀態
+        this.checkEntryBlockStatus();
+        this.entryBlockStatusData = null;
+
         if (response) {
           if (response.status === 'NameFail') {
             this.msg = '请输入正确名称';
@@ -1087,7 +1092,8 @@ export default {
         },
       }).then((res) => {
         if (res.status === "000" && res.data && res.data.ret) {
-          this.entryBlockStatusData = res.data.ret
+          this.entryBlockStatusData = res.data.ret;
+          console.log(res.data.ret.status)
         } else {
           this.msg = res.msg;
         }
