@@ -1093,7 +1093,6 @@ export default {
       }).then((res) => {
         if (res.status === "000" && res.data && res.data.ret) {
           this.entryBlockStatusData = res.data.ret;
-          console.log(res.data.ret.status)
         } else {
           this.msg = res.msg;
         }
@@ -1104,7 +1103,7 @@ export default {
 
       let newWindow = '';
       if (this.isPWA) {
-        newWindow = window.open(' ', '', '_blank', true);
+        newWindow = window.open('', '', '_blank', true);
       }
 
       const newWindowHref = (uri) => {
