@@ -945,6 +945,7 @@ export default {
       this.copyInfo(val)
     },
     modeChange(listItem, index) {
+      this.checkEntryBlockStatus();
       this.changeMode(listItem);
 
       // 進來充值頁面，沒有 bankSelectValue 的預設值才觸發，再切換其它類別不再觸發
