@@ -521,10 +521,9 @@
             </div>
           </div>
           <div
-            v-if="entryBlockStatusData"
             :class="[
               $style['pay-button'],
-              { [$style.disabled]: !checkSuccess }
+              { [$style.disabled]: !checkSuccess && isBlockChecked }
             ]"
             :title="$text('S_ENTER_PAY', '立即充值')"
             @click="clickSubmit"
