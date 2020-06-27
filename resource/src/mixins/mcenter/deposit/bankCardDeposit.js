@@ -612,7 +612,7 @@ export default {
             let isWebView = getCookie('platform') === "H" || window.location.host === "yaboxxxapp02.com";
             let newWindow;
             if (isPWA) {
-                newWindow = window.open(' ');
+                newWindow = window.open('');
             }
 
             console.log("newWindow:", newWindow);
