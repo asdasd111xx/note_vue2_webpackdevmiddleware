@@ -633,8 +633,8 @@ export default {
                 }).then((response) => {
                     this.isShow = false;
                     this.actionSetIsLoading(false);
-                    let _isWebview = getCookie('platform') === "H" || window.location.host === "yaboxxxapp02.com"
-                    let _isPWA = getCookie('platform') === "G" || window.location.host === "yaboxxxapp01.com"
+                    let _isWebview = getCookie('platform') === "H" || window.location.host === "yaboxxxapp02.com";
+                    let _isPWA = getCookie('platform') === "G" || window.location.host === "yaboxxxapp01.com";
 
                     if (response && response.result === 'ok') {
                         console.log(response.ret.uri);
@@ -742,8 +742,8 @@ export default {
 
                 this.isShow = false;
                 this.actionSetIsLoading(false);
-                let _isWebview = getCookie('platform') === "H" || window.location.host === "yaboxxxapp02.com"
-                let _isPWA = getCookie('platform') === "G" || window.location.host === "yaboxxxapp01.com"
+                let _isWebview = getCookie('platform') === "H" || window.location.host === "yaboxxxapp02.com";
+                let _isPWA = getCookie('platform') === "G" || window.location.host === "yaboxxxapp01.com";
 
                 if (response && response.result === 'ok') {
                     // 流量分析事件 - 成功
