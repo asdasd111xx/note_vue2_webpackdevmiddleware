@@ -523,7 +523,7 @@
           <div
             :class="[
               $style['pay-button'],
-              { [$style.disabled]: !checkSuccess && isBlockChecked }
+              { [$style.disabled]: !checkSuccess && !isBlockChecked }
             ]"
             :title="$text('S_ENTER_PAY', '立即充值')"
             @click="clickSubmit"
