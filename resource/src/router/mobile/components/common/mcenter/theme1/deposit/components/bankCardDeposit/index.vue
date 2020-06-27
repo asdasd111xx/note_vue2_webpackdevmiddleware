@@ -571,7 +571,7 @@
             </div>
           </div>
           <div
-            v-if="entryBlockStatusData"
+            v-if="isBlockChecked"
             :class="$style['pay-button']"
             title="立即充值"
             @click="clickSubmit"
@@ -677,7 +677,8 @@ export default {
       msg: '',
       entryBlockStatusData: null,
       isShowEntryBlockStatus: false,
-      isDisableDepositInput: false
+      isDisableDepositInput: false,
+      isBlockChecked: false
     };
   },
   watch: {
@@ -1081,6 +1082,7 @@ export default {
     },
     checkEntryBlockStatus() {
       // 使用者存款封鎖狀態
+      this.isBlockChecked = false;
       bbosRequest({
         method: 'get',
         url: this.siteConfig.BBOS_DOMIAN + '/Ext/V2/CreateEntryBlock/User/Check',
@@ -1091,6 +1093,7 @@ export default {
           "lang": "zh-cn",
         },
       }).then((res) => {
+        this.isBlockChecked = true;
         if (res.status === "000" && res.data && res.data.ret) {
           this.entryBlockStatusData = res.data.ret;
         } else {

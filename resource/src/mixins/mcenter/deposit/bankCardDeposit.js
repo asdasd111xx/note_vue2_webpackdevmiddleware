@@ -612,20 +612,16 @@ export default {
             let isWebView = getCookie('platform') === "H" || window.location.host === "yaboxxxapp02.com";
             let newWindow;
             if (isPWA) {
-                newWindow = window.open('');
+                newWindow = window.open('', '', '_blank', true);
             }
 
             console.log("newWindow:", newWindow);
             console.log("isPWA:", isPWA, ",isWebView:", isWebView);
 
             const newWindowHref = (uri) => {
-                try {
+                setTimeout(() => {
                     newWindow.location.href = uri;
-                } catch (e) {
-                    console.log(e);
-                    console.log(newWindow);
-                    console.log(uri)
-                }
+                }, 200)
             }
 
             // 第三方存款
