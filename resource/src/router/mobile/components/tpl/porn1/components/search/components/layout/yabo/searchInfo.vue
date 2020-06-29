@@ -33,7 +33,7 @@
       <div :class="$style['no-data']">
         <div :class="$style['search-img']">
           <img
-            :src="$getCdnPath('/static/image/_new/search/ic_search.png')"
+            :src="$getCdnPath('/static/image/_new/common/icon_search_n.png')"
             alt="search"
           />
         </div>
@@ -232,7 +232,8 @@ export default {
   p {
     font-size: 16px;
     margin-top: 10px;
-    color: $main_text_color5;
+    // color: $main_text_color5;
+    color: #000;
   }
 }
 
