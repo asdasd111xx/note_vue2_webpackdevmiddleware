@@ -369,7 +369,9 @@ export default {
       actualMoney: 0,
       hasBankCard: false,
       isShowCheck: false,
-      widthdrawTipsType: "tips"
+      widthdrawTipsType: "tips",
+      depositBeforeWithdraw: false,
+      firstDeposit: false
     }
   },
   components: {
@@ -429,6 +431,14 @@ export default {
     }
   },
   created() {
+    this.depositBeforeWithdraw = this.memInfo.config.deposit_before_withdraw || false;
+    this.firstDeposit = this.memInfo.user.first_deposit || false;
+    if (this.depositBeforeWithdraw && !this.firstDeposit) {
+      this.widthdrawTipsType = "deposit";
+      this.isShowCheck = true;
+      return;
+    }
+
     // 綁定銀行卡內無常用帳號
     common.bankCardCheck({
       success: ({ result, ret }) => {
@@ -570,15 +580,6 @@ export default {
       this.withdrawValue = Math.floor(Number(result));
     },
     checkSubmit() {
-      // 提款前充值開關 to do
-      const depositBeforeWithdraw = this.memInfo.config.deposit_before_withdraw;
-
-      if (depositBeforeWithdraw) {
-        // this.widthdrawTipsType = "deposit";
-        // this.isShowCheck = true;
-        // return;
-      }
-
       const islock = () => {
         if (this.errTips || !this.withdrawValue || this.isSendSubmit || !this.selectedCard) {
           return true;

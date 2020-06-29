@@ -7,6 +7,8 @@
 </template>
 
 <script>
+import { mapGetters, mapActions } from 'vuex';
+
 export default {
   props: {
     callback: {
@@ -54,11 +56,59 @@ export default {
     setTimeout(() => {
       this.isShow = false;
       setTimeout(() => {
-        this.$emit('close');
+        this.clearMsg();
         this.callback && this.callback();
       }, 300);
     }, 2000);
-  }
+  },
+  computed: {
+    ...mapGetters({
+      globalMessage: 'getGlobalMessage'
+    }),
+  },
+  methods: {
+    ...mapActions([
+      'actionSetGlobalMessage'
+    ]),
+    clearMsg() {
+      if (this.globalMessage && this.globalMessage.code) {
+        const msgObj = this.globalMessage;
+
+        if (process.env.NODE_ENV === "development") {
+          console.log("msg:", msgObj.msg, " origin:", msgObj.origin, " code:", msgObj.code)
+        }
+
+        const code = msgObj.code;
+        const callback = msgObj.cb;
+        const redirect = msgObj.origin;
+
+        if (callback) {
+          callback();
+          return;
+        }
+
+        switch (code) {
+          // 充值
+          case "C50101":
+          case "C50100":
+            this.$router.push(`/mobile/mcenter/deposit`);
+            break;
+          // 銀行卡
+          case "C50099":
+            this.$router.push(`/mobile/mcenter/bankCard?redirect=${redirect ? redirect : 'home'}`);
+            break;
+          // 重新登入
+          case "M00001":
+            this.$router.push('/mobile/login');
+            break;
+          default:
+            break;
+        }
+      }
+      this.actionSetGlobalMessage(null);
+      this.$emit('close');
+    }
+  },
 };
 </script>
 

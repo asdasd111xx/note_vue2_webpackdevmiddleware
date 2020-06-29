@@ -80,7 +80,7 @@
               <div>
                 <div v-if="currentMethod === 'email'" class="clearfix">
                   <div :class="$style['form-title']">
-                    {{ $t("S_NEW_EMAIL2") }}
+                    电子邮箱
                   </div>
                   <input
                     v-model="email"
@@ -222,7 +222,9 @@
                 [$style['active']]:
                   currentMethod === 'phone-step-1'
                     ? username && keyring
-                    : (password === confirm_password) && password && confirm_password
+                    : password === confirm_password &&
+                      password &&
+                      confirm_password
               }
             ]"
             @click="send($route.params.type)"
@@ -484,7 +486,7 @@ export default {
           this.keyRingTime -= 1;
         }, 1000)
 
-        if(response.data.code) {
+        if (response.data.code) {
           this.errMsg = `${response.data.msg}[${response.data.code}]`
         } else {
           this.errMsg = '已發送手機認證碼';
@@ -496,7 +498,7 @@ export default {
         }
       })
 
-      if(this.toggleCaptcha) {
+      if (this.toggleCaptcha) {
         this.toggleCaptcha = false
       }
     },

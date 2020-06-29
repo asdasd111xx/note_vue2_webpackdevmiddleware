@@ -34,8 +34,8 @@
           v-html="getDesc(missionDesc)"
         ></div>
         <template v-else-if="isUnloginMode">
-          加入会员享有<br />
-          超高清超流畅观影送钱
+          加入娱乐会员<br />
+          享有观影送钱
         </template>
         <template v-else>
           <span style="margin-top: 12%;display: block;">
