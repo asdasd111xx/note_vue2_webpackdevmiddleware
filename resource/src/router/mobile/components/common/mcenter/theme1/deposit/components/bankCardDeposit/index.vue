@@ -537,7 +537,7 @@
               >联系客服</span
             >
           </p>
-          <!-- 溫馨提醒 -->
+          <!-- 温馨提醒 -->
           <div
             v-if="curModeGroup.payment_group_memo"
             :class="[$style['feature-tip-wrap'], 'clearfix']"
@@ -832,7 +832,7 @@ export default {
             }
           ],
           showCondition: this.curPayInfo.field.find((e) => e.name === 'method' && e.required),
-        //   showCondition: this.curPayInfo.field.find((e) => e.name === 'method'),
+          //   showCondition: this.curPayInfo.field.find((e) => e.name === 'method'),
           isError: false
         },
         {
@@ -849,7 +849,7 @@ export default {
           value: this.speedField.depositAccount,
           placeholderText: '请输入充值帐号',
           showCondition: this.curPayInfo.field.find((e) => e.name === 'pay_account' && e.required),
-        //   showCondition: this.curPayInfo.field.find((e) => e.name === 'pay_account'),
+          //   showCondition: this.curPayInfo.field.find((e) => e.name === 'pay_account'),
           isError: this.showError && this.curPayInfo.field.find((item) => item.name === 'pay_account' && item.required) && !this.speedField.depositAccount
         },
         {

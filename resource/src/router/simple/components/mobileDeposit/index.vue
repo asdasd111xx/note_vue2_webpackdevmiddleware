@@ -244,7 +244,7 @@
               >
                 {{ $text("S_ENTER_PAY", "立即充值") }}
               </div>
-              <!-- 溫馨提醒 -->
+              <!-- 温馨提醒 -->
               <div
                 v-if="curModeGroup.payment_group_memo"
                 :class="[$style['feature-tip-wrap'], 'clearfix']"
