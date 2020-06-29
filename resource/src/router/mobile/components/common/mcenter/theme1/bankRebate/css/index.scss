@@ -211,6 +211,10 @@
         .calculate-button {
             color: #fff;
 
+            &.disable {
+                color: #F3EDE7;
+            }
+
             .calculate-button-title {
                 display: block;
                 overflow: hidden;
