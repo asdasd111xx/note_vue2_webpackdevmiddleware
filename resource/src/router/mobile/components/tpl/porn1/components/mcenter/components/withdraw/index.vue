@@ -269,7 +269,7 @@
         }}</span>
 
         <span :class="[$style['serial']]" @click="toggleSerial">
-          詳請
+          详情
         </span>
       </div>
 
