@@ -170,6 +170,7 @@
                     :class="$style['speed-deposit-input']"
                     :placeholder="depositNameInput.placeholderText"
                     @blur="verificationName"
+                    @keypress="verificationName"
                     @input="
                       submitDataInput(
                         $event.target.value,
@@ -179,7 +180,7 @@
                   />
                 </div>
               </div>
-              <div :class="[$style['deposit-name-messgae']]">
+              <div :class="[$style['deposit-name-messgae'], { [$style['hide']] : !nameCheckFail && speedField.depositName}]">
                 为即时到账，请务必输入正确的汇款人姓名
               </div>
             </div>
