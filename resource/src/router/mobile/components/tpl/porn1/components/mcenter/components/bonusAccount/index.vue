@@ -8,7 +8,7 @@
 
 <script>
 import bonusAccount from '@/router/mobile/components/common/mcenter/theme1/bonusAccount';
-import mobileContainer from '../../../common/mobileContainer';
+import mobileContainer from '../../../common/new/mobileContainer';
 
 export default {
     components: {

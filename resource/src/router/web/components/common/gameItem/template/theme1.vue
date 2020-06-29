@@ -359,7 +359,6 @@ export default {
       }
 
       const openGameFailFunc = (res) => {
-        console.log(res)
         if (res && res.data) {
           let data = res.data;
           this.actionSetGlobalMessage({ msg: data.msg, code: data.code, cb: this.redirectCard });

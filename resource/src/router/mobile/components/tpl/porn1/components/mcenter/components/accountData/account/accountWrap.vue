@@ -248,7 +248,9 @@ export default {
               ...itemNow,
               status: confirmSt,
               value: val,
-              btnShow: !keyValue || !this.verification[key] || (key === 'phone' && this.memInfo.config.user_edit_phone) || (key === 'email' && userConfig.user[key]),
+              btnShow: !keyValue || !this.verification[key] ||
+                (key === 'phone' && this.memInfo.config.user_edit_phone) ||
+                (key === 'email' && userConfig.user[key]),
               verification: this.verification[key],
               isShow: userConfig.config[key].display
             };

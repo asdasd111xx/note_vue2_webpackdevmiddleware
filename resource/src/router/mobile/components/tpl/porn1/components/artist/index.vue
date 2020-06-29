@@ -99,6 +99,7 @@ div.container {
     width: 100%;
     line-height: 43px;
     font-size: 17px;
+    font-weight: 500;
     height: 43px;
     color: black;
   }
