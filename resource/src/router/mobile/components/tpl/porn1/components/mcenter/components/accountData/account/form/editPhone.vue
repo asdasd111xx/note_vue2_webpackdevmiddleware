@@ -353,8 +353,7 @@ export default {
           },
           fail: (res) => {
             this.countdownSec = '';
-            this.tipMsg = `${res.data.msg}${res.data.code}`;
-
+            this.tipMsg = `${res.data.msg}(${res.data.code})`;
             this.isSendSMS = false;
           },
           success: (res) => {
@@ -382,7 +381,7 @@ export default {
           this.isSendSMS = false;
         }).catch(error => {
           this.countdownSec = '';
-          this.tipMsg = error.response.data.msg;
+          this.tipMsg = `${error.response.data.msg}(${error.response.data.code})`;
           this.isSendSMS = false;
         })
       }
@@ -397,7 +396,7 @@ export default {
             keyring: this.codeValue
           },
           fail: (res) => {
-            this.tipMsg = res.data.msg;
+            this.tipMsg = `${res.data.msg}(${res.data.code})`;
           },
           success: (res) => {
             if (res && res.result === 'ok') {
@@ -423,7 +422,7 @@ export default {
               }, 200)
             },
             fail: (res) => {
-              this.tipMsg = res.data.msg;
+              this.tipMsg = `${res.data.msg}(${res.data.code})`;
             }
           });
         }
@@ -441,7 +440,7 @@ export default {
             }, 200)
           },
           fail: (res) => {
-            this.tipMsg = res.data.msg;
+            this.tipMsg = `${res.data.msg}(${res.data.code})`;
           }
         });
       }

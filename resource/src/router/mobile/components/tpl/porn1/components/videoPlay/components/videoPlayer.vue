@@ -336,6 +336,7 @@ export default {
               case 'WAIT':
                 let mission = data.Mession;
                 this.mission = mission;
+                bonunsProcess.isForceWait = true;
 
                 if (mission) {
                   this.dialogType = 'tips-wait';
