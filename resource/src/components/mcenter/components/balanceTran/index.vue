@@ -384,7 +384,7 @@ export default {
       });
     },
     balanceBack({ afterSetUserBalance } = {}) {
-    //   this.showIntegerBackConfirm = true;
+      //   this.showIntegerBackConfirm = true;
       // 阻擋連續點擊
       if (this.balanceBackLock) {
         return;
@@ -441,9 +441,7 @@ export default {
       this.checkBankCard().then((res) => {
         if (!res) {
           this.actionSetGlobalMessage({
-            type: 'bindcard', code: 'C50099', cb: () => {
-              this.$router.push('/mobile/mcenter/bankCard?redirect=balanceTrans');
-            }
+            type: 'bindcard', code: 'C50099', origin: 'balanceTrans'
           });
           return;
         }

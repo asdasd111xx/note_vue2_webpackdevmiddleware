@@ -262,7 +262,7 @@ export default {
 
           // 每分鐘獲得最小彩金
           // bonunsProcess.earnCoin = Number(Number(data.Active.MinAmout) * Number(data.Active.CueTimes)).toFixed(2);
-          bonunsProcess.earnCoin = Number(data.Active.MinAmout);
+          bonunsProcess.earnCoin = Number(data.Active.MinAmout).toFixed(2);
 
           /* 每分鐘都顯示獲得金額 */
           // 當前累積時間(0-9)
@@ -270,17 +270,17 @@ export default {
           //   let n = Math.floor(Math.random() * 10);
 
           // 目前總獲得彩金
-          bonunsProcess.totalAmount = Number(data.TotalAmount);
+          bonunsProcess.totalAmount = Number(data.TotalAmount).toFixed(2);
           //   bonunsProcess.totalAmount = n * 10
 
           // 獲得彩金
           bonunsDialog.earnCurrentNum = parseFloat((Number(data.Active.BreakAmout) * Number(data.BreakTimes)).toFixed(2));
 
           // 可獲得最高彩金
-          bonunsDialog.limitAmount = Number(data.Active.LimitAmout);
+          bonunsDialog.limitAmount = Number(data.Active.LimitAmout).toFixed(2);
 
           // 每個中斷點獲得的彩金
-          bonunsDialog.earnSingleNum = Number(data.Active.BreakAmout);
+          bonunsDialog.earnSingleNum = Number(data.Active.BreakAmout).toFixed(2);
 
           // 可獲得中斷點數量
           bonunsDialog.earnCellNum = (Number(data.Active.LimitAmout) / Number(data.Active.BreakAmout));
