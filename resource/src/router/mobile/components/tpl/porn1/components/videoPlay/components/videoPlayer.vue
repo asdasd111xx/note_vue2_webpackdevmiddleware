@@ -127,7 +127,7 @@ export default {
       this.player.on("playing", () => {
         if (this.player.seeking()) return;
         this.isPlaying = true;
-        if (window.YABO_SOCKET && !this.keepPlay && !this.isFULL) {
+        if (window.YABO_SOCKET && !this.keepPlay) {
           this.onSend("PLAY");
         }
         this.keepPlay = false;
@@ -312,10 +312,10 @@ export default {
               case 'FULL':
                 bonunsProcess.isForceWait = true;
                 bonunsProcess.processType = 'wait';
-                bonunsDialog.isShow = true;
-                this.dialogType = 'tips-full';
                 this.isFULL = true;
-                this.playerPause();
+                // bonunsDialog.isShow = true;
+                // this.dialogType = 'tips-full';
+                // this.playerPause();
                 break;
               case 'POOR':
                 this.dialogType = 'tips-poor';
