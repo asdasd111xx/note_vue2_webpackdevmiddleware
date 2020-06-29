@@ -523,7 +523,7 @@
           <div
             :class="[
               $style['pay-button'],
-              { [$style.disabled]: !checkSuccess && !isBlockChecked }
+              { [$style.disabled]: !checkSuccess && isBlockChecked }
             ]"
             :title="$text('S_ENTER_PAY', '立即充值')"
             @click="clickSubmit"
@@ -831,8 +831,8 @@ export default {
               selectId: '16'
             }
           ],
-          //   showCondition: this.curPayInfo.field.find((e) => e.name === 'method' && e.required),
-          showCondition: this.curPayInfo.field.find((e) => e.name === 'method'),
+          showCondition: this.curPayInfo.field.find((e) => e.name === 'method' && e.required),
+        //   showCondition: this.curPayInfo.field.find((e) => e.name === 'method'),
           isError: false
         },
         {
@@ -848,8 +848,8 @@ export default {
           title: '充值帐号',
           value: this.speedField.depositAccount,
           placeholderText: '请输入充值帐号',
-          //   showCondition: this.curPayInfo.field.find((e) => e.name === 'pay_account' && e.required),
-          showCondition: this.curPayInfo.field.find((e) => e.name === 'pay_account'),
+          showCondition: this.curPayInfo.field.find((e) => e.name === 'pay_account' && e.required),
+        //   showCondition: this.curPayInfo.field.find((e) => e.name === 'pay_account'),
           isError: this.showError && this.curPayInfo.field.find((item) => item.name === 'pay_account' && item.required) && !this.speedField.depositAccount
         },
         {
@@ -857,7 +857,7 @@ export default {
           title: '充值时间(北京)',
           value: this.speedField.depositTime,
           placeholderText: '请选择充值时间',
-          //   showCondition: this.curPayInfo.field.find((e) => e.name === 'deposit_at' && e.required),
+          // showCondition: this.curPayInfo.field.find((e) => e.name === 'deposit_at' && e.required),
           showCondition: this.curPayInfo.field.find(e => {
             const isShow = e.name === 'deposit_at';
             // 目前需求：只有極速xx銀行，要在第一頁連同顯示此欄位
@@ -874,7 +874,7 @@ export default {
           title: this.$text('S_SERIAL_NUMBER2', '流水号'),
           value: this.speedField.serialNumber,
           placeholderText: this.$text('S_PLZ_ENTER_SERIAL_NUMBER', '请输入流水号'),
-          //   showCondition: this.curPayInfo.field.find((e) => e.name === 'sn' && e.required),
+          // showCondition: this.curPayInfo.field.find((e) => e.name === 'sn' && e.required),
           showCondition: this.curPayInfo && this.curPayInfo.field && this.curPayInfo.field.find(e => {
             const isShow = e.name === 'sn';
             // 目前需求：只有極速xx銀行，要在第一頁連同顯示此欄位

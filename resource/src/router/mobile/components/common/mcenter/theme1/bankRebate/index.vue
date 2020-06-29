@@ -134,7 +134,11 @@
               { [$style['disable']]: btnLock && formatTime }
             ]"
           >
-            <div :class="$style['calculate-button']" @click="rebateCaculate()">
+            <div :class="[
+              $style['calculate-button'],
+              { [$style['disable']]: btnLock && formatTime }
+            ]"
+            @click="rebateCaculate()">
               <div :class="$style['calculate-button-title']">
                 {{ $text("S_TRIAL_CALCULATION", "试算") }}
                 <div v-if="btnLock && formatTime">{{ `(${formatTime})` }}</div>

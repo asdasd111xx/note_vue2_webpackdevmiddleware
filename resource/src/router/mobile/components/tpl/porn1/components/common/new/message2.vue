@@ -89,7 +89,7 @@ export default {
 
         switch (code) {
           // 充值
-          case "C50101":
+          case "C50101":  // 轉帳需首充 暫時
           case "C50100":
             this.$router.push(`/mobile/mcenter/deposit`);
             break;
