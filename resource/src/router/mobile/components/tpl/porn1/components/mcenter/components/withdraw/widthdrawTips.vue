@@ -2,11 +2,18 @@
   <!-- 提款前提示彈窗 -->
   <transition name="fade">
     <div v-if="show" :class="$style['check-wrap']">
-      <div :class="$style['check-container']">
+      <div
+        :class="[
+          $style['check-container'],
+          {
+            [$style['deposit']]: type === 'deposit'
+          }
+        ]"
+      >
         <div :class="$style['check-header']">
           <div :class="$style['title']">溫馨提示</div>
           <div
-            v-if="type !== 'tips'"
+            v-if="type === 'tips'"
             :class="$style['btn-close']"
             @click="closeTips"
           >
@@ -87,29 +94,32 @@
               </div>
             </div>
           </template>
-          <template v-else>
-            <!-- to do -->
+          <template v-if="type === 'deposit'">
+            <div :class="$style['title']">只需充值一次 开通提现功能</div>
           </template>
         </div>
 
         <div :class="$style['check-button-wrap']">
-          <template v-if="type === 'tips'">
-            <div :class="$style['check-btn']" @click="handleCheckRule">
-              查看规则
-            </div>
-            <div :class="$style['check-btn']" @click="handleBack">
-              继续游戏
-            </div>
-            <div
-              :class="[$style['check-btn'], $style['submit']]"
-              @click="$emit('submit')"
-            >
-              确认提现
-            </div>
-          </template>
-          <template v-else>
-            <!-- to do -->
-          </template>
+          <div :class="$style['check-btn']" @click="handleCheckRule">
+            查看规则
+          </div>
+          <div :class="$style['check-btn']" @click="handleBack">
+            继续游戏
+          </div>
+          <div
+            v-if="type === 'tips'"
+            :class="[$style['check-btn'], $style['submit']]"
+            @click="$emit('submit')"
+          >
+            确认提现
+          </div>
+          <div
+            v-else="type === 'deposit'"
+            :class="[$style['check-btn'], $style['submit']]"
+            @click="$router.push('/mobile/mcenter/deposit')"
+          >
+            立即充值
+          </div>
         </div>
       </div>
     </div>
@@ -154,10 +164,18 @@ export default {
     },
     handleCheckRule() {
       this.$emit('save', true);
-      this.$router.push('/mobile/mcenter/help/withdraw?&key=6');
+      if (this.type === "tips") {
+        this.$router.push('/mobile/mcenter/help/withdraw?&key=6');
+      } else if (this.type === "deposit") {
+        this.$router.push('/mobile/mcenter/help/withdraw?&key=0');
+      }
     },
     handleBack() {
-      this.$router.push('/mobile/mcenter/wallet');
+      if (this.type === "tips") {
+        this.$router.push('/mobile/mcenter/wallet');
+      } else if (this.type === "deposit") {
+        this.$router.back();
+      }
     }
   },
   watch: {
