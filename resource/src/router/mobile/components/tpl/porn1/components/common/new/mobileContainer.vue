@@ -2,7 +2,7 @@
   <div
     :class="[
       $style.container,
-      { [$style['has-header']]: hasHeader, [$style['has-footer']]: hasFooter }
+      { [$style['has-header']]: hasHeader && !isApp, [$style['has-footer']]: hasFooter }
     ]"
   >
     <m-header
