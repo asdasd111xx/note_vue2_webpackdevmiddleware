@@ -11,7 +11,7 @@
         ]"
       >
         <div :class="$style['check-header']">
-          <div :class="$style['title']">溫馨提示</div>
+          <div :class="$style['title']">温馨提示</div>
           <div
             v-if="type === 'tips'"
             :class="$style['btn-close']"
