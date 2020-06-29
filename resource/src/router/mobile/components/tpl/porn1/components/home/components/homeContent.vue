@@ -611,7 +611,7 @@ export default {
       const openGameFailFunc = (res) => {
         if (res && res.data) {
           let msg = res.data.msg;
-          if (res.data.code !== "C50099" && res.data.code === "C50100" && res.data.code === "C50101") {
+          if (res.data.code !== "C50099" && res.data.code !== "C50100") {
             msg = `${res.data.msg}(${res.data.code})`
           }
           let data = res.data;
