@@ -95,6 +95,10 @@
         border-radius: 3px;
         text-align: center;
         color: $buttonTextColor;
+
+        &.disable {
+            opacity: 0.5;
+        }
     }
 }
 
