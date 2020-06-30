@@ -186,6 +186,18 @@ export default {
     }
   },
   created() {
+    // 會員存款狀態
+    ajax({
+      method: 'get',
+      url: '/api/v1/c/user-stat/deposit-withdraw',
+      params: {
+      },
+      success: ({ res }) => {
+      },
+      fail: (error) => {
+      }
+    });
+
     this.pornSwitchState = this.memInfo.config.content_rating && this.memInfo.user.content_rating;
     // 超級籤需滿足的最低金額
     const requiredMoney = 200;
