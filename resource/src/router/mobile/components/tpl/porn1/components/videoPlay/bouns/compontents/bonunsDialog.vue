@@ -54,8 +54,11 @@
       >
         <div :class="$style['bouns-func']">
           <!-- 左邊第一個按鈕 -->
+          <div v-if="isUnloginMode" @click="handleClose">
+            继续观影
+          </div>
           <div
-            v-if="
+            v-else-if="
               (missionDesc && type.includes('wait')) ||
                 earnCellNum === hadEarnNum
             "
@@ -63,27 +66,25 @@
           >
             {{ "继续看" }}
           </div>
-          <div v-else-if="isUnloginMode" @click="handleClose">
-            继续观影
-          </div>
+
           <div v-else @click="$router.push('/mobile')">
             {{ $text("S_FIRST_LOOK", "先去逛逛") }}
           </div>
 
           <!-- 右邊第一個按鈕 -->
           <div
-            v-if="type.includes('poor')"
+            v-if="isUnloginMode"
+            @click="$router.push('/mobile/login')"
+            :class="$style['active-btn']"
+          >
+            {{ $text("S_JOIN_MEMBER", "加入会员") }}
+          </div>
+          <div
+            v-else-if="type.includes('poor')"
             @click="$router.push('/mobile/mcenter/deposit')"
             :class="$style['active-btn']"
           >
             {{ $text("S_GO_DEPOSIT", "去充值") }}
-          </div>
-          <div
-            v-else-if="earnCellNum === hadEarnNum"
-            @click="$router.push('/mobile/mcenter/makeMoney')"
-            :class="$style['active-btn']"
-          >
-            去推广
           </div>
           <div
             v-else-if="type.includes('wait') && missionActionType"
@@ -91,6 +92,13 @@
             :class="$style['active-btn']"
           >
             {{ getActionName(missionActionType) }}
+          </div>
+          <div
+            v-else-if="earnCellNum === hadEarnNum && hadEarnNum !== 0"
+            @click="$router.push('/mobile/mcenter/makeMoney')"
+            :class="$style['active-btn']"
+          >
+            去推广
           </div>
           <div
             v-else
@@ -104,7 +112,7 @@
       <template v-else>
         <div :class="$style['bouns-earn-wrap']">
           <div :class="$style['earn-title']">
-            <template v-if="earnCellNum === hadEarnNum">
+            <template v-if="earnCellNum === hadEarnNum && hadEarnNum !== 0">
               <span>
                 恭喜获得今日最高彩金
               </span>

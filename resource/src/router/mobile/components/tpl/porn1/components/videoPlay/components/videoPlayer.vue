@@ -274,7 +274,7 @@ export default {
           //   bonunsProcess.totalAmount = n * 10
 
           // 獲得彩金
-          bonunsDialog.earnCurrentNum = parseFloat((Number(data.Active.BreakAmout) * Number(data.BreakTimes)).toFixed(2));
+          bonunsDialog.earnCurrentNum = parseFloat((Number(data.Active.BreakAmout) * Number(data.BreakTimes))).toFixed(2);
 
           // 可獲得最高彩金
           bonunsDialog.limitAmount = Number(data.Active.LimitAmout).toFixed(2);
