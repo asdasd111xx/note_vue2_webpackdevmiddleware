@@ -503,14 +503,14 @@ export default {
         }, 1000)
 
         if (response.data.code) {
-          this.errMsg = `${response.data.msg}(${response.data.code})`;
+          this.errMsg = `${response.data.msg}[${response.data.code}]`;
         } else {
           this.errMsg = '已發送手機認證碼';
         }
 
       }).catch(res => {
         if (res.response && res.response.data && res.response.data.msg) {
-          this.errMsg = `${res.response.data.msg}(${res.response.data.code})`;
+          this.errMsg = `${res.response.data.msg}[${res.response.data.code}]`;
         }
       })
 
