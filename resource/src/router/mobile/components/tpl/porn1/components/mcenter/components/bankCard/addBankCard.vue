@@ -126,6 +126,18 @@
           </div>
         </div>
       </template>
+      <div v-if="addBankCardStep === 'two'" :class="$style['tips']">
+        <div>
+          ♥️ 为确保您的资金安全，添加银行卡需进行简单的数据核实
+        </div>
+        <div>
+          ♥️ 因手机号码影响各项重要功能，请您务必谨慎填写
+        </div>
+        <div>
+          ♥️ 鸭脖视频时刻关心您的资金安全
+        </div>
+      </div>
+
       <div :class="$style['info-confirm']">
         <p :class="$style['confirm-remind']">
           {{
