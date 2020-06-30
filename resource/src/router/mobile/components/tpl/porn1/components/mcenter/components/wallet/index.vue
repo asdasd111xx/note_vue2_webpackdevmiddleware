@@ -237,7 +237,8 @@ export default {
       return {
         prev: true,
         onClick: () => {
-          this.$router.back();
+          //   this.$router.back();
+          this.$router.push('/mobile/mcenter');
         },
         title: this.$text('S_WALLET2', '钱包'),
         hasTransaction: true
