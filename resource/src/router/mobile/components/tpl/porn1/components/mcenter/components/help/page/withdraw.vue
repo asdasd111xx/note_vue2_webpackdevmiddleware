@@ -108,7 +108,7 @@ export default {
       if (!this.isApp)
         return {
           prev: true,
-          onClick: () => { this.$route.query.key === "0" ? this.$router.push("/mobile/mcenter/wallet") : this.$router.back(); },
+          onClick: () => { this.$route.query.key === "0" ? this.$router.push("/mobile/mcenter") : this.$router.back(); },
           title: this.$text('S_HELP_CENTER', '帮助中心'),
         };
     },
