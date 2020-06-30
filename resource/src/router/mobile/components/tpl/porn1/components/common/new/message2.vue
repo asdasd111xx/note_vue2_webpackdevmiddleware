@@ -140,7 +140,7 @@ export default {
   border-radius: 10px;
   margin-left: auto;
   margin-right: auto;
-  max-width: 200px;
+  //   min-width: 200px;
   padding: 15px;
   color: white;
 }
