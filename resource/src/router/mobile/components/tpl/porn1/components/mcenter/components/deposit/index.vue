@@ -45,7 +45,8 @@ export default {
             window.location.reload();
             this.$router.push('/mobile/mcenter/deposit');
           } else {
-            this.$router.back();
+            // this.$router.back();
+            this.$router.push('/mobile/mcenter');
           }
         },
       };
