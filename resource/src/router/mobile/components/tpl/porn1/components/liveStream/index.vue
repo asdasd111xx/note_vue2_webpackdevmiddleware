@@ -71,7 +71,7 @@
           ref="js-set-height"
           :class="$style['iframe-wrap']"
           :height="iframeHeight"
-          :src="`/exsport/live/?hall=${memInfo.user.domain}`"
+          :src="src"
           frameborder="0"
           @load="getIframeHeight"
         />
@@ -135,6 +135,7 @@ export default {
       streamList: [],
       currentTab: this.$route.params.type || localStorage.getItem('streamType'),
       iframeHeight: 500,
+      src: ''
     };
   },
   computed: {
@@ -174,6 +175,9 @@ export default {
       }
     };
   },
+  mounted() {
+    this.src = `/exsport/live/?hall=${this.memInfo.user.domain}`;
+  },
   methods: {
     ...mapActions([
       'actionSetGlobalMessage'
@@ -193,8 +197,10 @@ export default {
       this.actionSetGlobalMessage({ msg: this.$text('S_COMING_SOON2', '正在上线 敬请期待') })
     },
     getIframeHeight() {
+      this.$nextTick(() => {
+        this.iframeHeight = document.body.offsetHeight - 48;
+      });
       //   this.iframeHeight = this.$refs['js-set-height'].contentWindow.window.document.body.scrollHeight + 100;
-      this.iframeHeight = document.body.offsetHeight - 48
     },
     handleClickType(type) {
       this.currentTab = type
