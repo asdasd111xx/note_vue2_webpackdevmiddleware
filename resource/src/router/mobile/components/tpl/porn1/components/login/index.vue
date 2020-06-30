@@ -306,7 +306,15 @@ export default {
       this.isShowPwd = !this.isShowPwd;
     },
     handleClickLogin() {
-      if (!this.username || !this.password) return;
+      if (!this.username) {
+        this.errMsg = "用户名不得为空";
+        return;
+      }
+
+      if (!this.password) {
+        this.errMsg = "密码不得为空";
+        return;
+      }
 
       switch (this.memInfo.config.login_captcha_type) {
         case 1:

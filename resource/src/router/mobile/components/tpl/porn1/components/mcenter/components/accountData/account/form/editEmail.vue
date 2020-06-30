@@ -106,7 +106,7 @@ export default {
         text: 'SS_E_MAIL',
         status: '',
         value: '',
-        verification: true,
+        needVerification: true,
         isShow: true
       }
     };
@@ -119,7 +119,7 @@ export default {
       errorAlert: false
     }).then((response) => {
       if (response && response.result === 'ok') {
-        this.info.verification = response.ret.config[this.info.key].code;
+        this.info.needVerification = response.ret.config[this.info.key].code;
         this.info.isShow = response.ret.config[this.info.key].display;
       }
     });
@@ -164,7 +164,7 @@ export default {
     checkCode() {
       return {
         label: this.$text('S_CHECK_CODE'),
-        isShow: this.info.verification
+        isShow: this.info.needVerification
       };
     },
     sendBtn() {
@@ -172,7 +172,7 @@ export default {
         label: this.countdownSec
           ? this.$text('S_SEND_CHECK_CODE_ALREADY')
           : this.$text('S_SEND_CHECK_CODE'),
-        isShow: this.info.verification,
+        isShow: this.info.needVerification,
         countdownSec: this.countdownSec
       };
     },
@@ -185,7 +185,7 @@ export default {
           this.handleSubmit();
         },
         funcBtn: this.$text('S_COMPLETE', '完成'),
-        funcBtnActive: !!(this.newValue) && !!(this.codeValue)
+        funcBtnActive: !!(this.newValue) && (this.info.needVerification ? !!(this.codeValue) : true)
       };
     }
   },
@@ -241,7 +241,7 @@ export default {
     },
     handleSubmit() {
       // 驗證信箱
-      if (this.info.verification) {
+      if (this.info.needVerification) {
         return mcenter.accountMailCheck({
           params: {
             email: this.newValue,

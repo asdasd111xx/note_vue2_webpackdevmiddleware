@@ -30,7 +30,13 @@
     </div>
 
     <div v-if="headerConfig.title" :class="[$style.wrap, 'clearfix']">
-      <div :class="[[$style.title], $style[source] , { [$style['customTitle']]: headerConfig.customTitle}]">
+      <div
+        :class="[
+          [$style.title],
+          $style[source],
+          { [$style['customTitle']]: headerConfig.customTitle }
+        ]"
+      >
         {{ headerConfig.title }}
       </div>
       <div
@@ -60,7 +66,11 @@
       <div :class="[$style['search-wrap'], $style[source]]">
         <input
           v-model="headerConfig.keyWord"
-          :placeholder="source ==='gay' ? '请输入片名、男优或番号' : $text('S_PLEASE_INPUT_AV', '请输入片名、女优或番号')"
+          :placeholder="
+            source === 'gay'
+              ? '请输入片名、男优或番号'
+              : $text('S_PLEASE_INPUT_AV', '请输入片名、女优或番号')
+          "
           type="text"
           @keydown.enter="headerConfig.onSearchClick(headerConfig.keyWord)"
           :class="$style[source]"
@@ -449,6 +459,7 @@ export default {
   line-height: 22px;
   color: $main_title_color1;
   font-size: 17px;
+  font-weight: 500;
 
   &.les,
   &.gay {

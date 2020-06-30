@@ -603,7 +603,7 @@ export default {
       //           );
       //         }
       //         newWindow.close();
-      //         window.location.reload();
+      //         window.location.reload();d
       //       }
       //     });
       //     return;

@@ -640,7 +640,13 @@ export const actionSetUserdata = ({ commit }, forceUpdate = false) => {
                 503: '/upup' // 維護
             };
 
+
             Object.keys(statusLink).forEach((key) => {
+                // 獨立頁面不需判斷狀態
+                if (window.location.pathname.includes("/mobile/webview")) {
+                    return;
+                }
+
                 if (code === +key) {
                     window.location.href = statusLink[code];
                 }

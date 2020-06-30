@@ -314,7 +314,7 @@
               {{ feeText }}
             </li>
           </div>
-          <!-- 溫馨提醒 -->
+          <!-- 温馨提醒 -->
           <div
             v-if="curModeGroup.payment_group_memo"
             :class="[$style['feature-wrap'], 'clearfix']"

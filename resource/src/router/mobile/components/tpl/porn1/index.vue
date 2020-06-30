@@ -7,11 +7,7 @@
       <router-view />
     </transition>
     <notification />
-    <message
-      v-if="globalMessage"
-      :callback="clearMsg"
-      :msgObj="globalMessage"
-    />
+    <message v-if="globalMessage" :msgObj="globalMessage" />
   </div>
 </template>
 
@@ -30,49 +26,13 @@ export default {
     };
   },
   watch: {
-    globalMessage(val) {
+    globalMessage() {
     }
   },
   computed: {
     ...mapGetters({
       globalMessage: 'getGlobalMessage'
     }),
-  },
-  methods: {
-    ...mapActions([
-      'actionSetGlobalMessage'
-    ]),
-    clearMsg() {
-      if (this.globalMessage && this.globalMessage.code) {
-        const code = this.globalMessage.code;
-        const callback = this.globalMessage.cb;
-        const redirect = this.globalMessage.origin;
-
-        if (callback) {
-          callback();
-          return;
-        }
-
-        switch (code) {
-          // 充值
-          case "C50101":
-          case "C50100":
-            this.$router.push(`/mobile/mcenter/deposit`);
-            break;
-          // 銀行卡
-          case "C50099":
-            this.$router.push(`/mobile/mcenter/bankCard?redirect=${redirect ? redirect : 'home'}`);
-            break;
-          // 重新登入
-          case "M00001":
-            this.$router.push('/mobile/login');
-            break;
-          default:
-            break;
-        }
-      }
-      this.actionSetGlobalMessage(null);
-    }
   },
 };
 </script>

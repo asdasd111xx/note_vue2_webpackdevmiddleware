@@ -80,14 +80,13 @@
               <div>
                 <div v-if="currentMethod === 'email'" class="clearfix">
                   <div :class="$style['form-title']">
-                    {{ $t("S_NEW_EMAIL2") }}
+                    电子邮箱
                   </div>
                   <input
                     v-model="email"
                     :placeholder="$t('S_PLEASE_ENTER_EMAIL')"
                     :class="$style['form-input']"
                     type="text"
-                    @input="verification('email')"
                   />
                 </div>
                 <!-- eslint-disable vue/no-v-html -->
@@ -105,9 +104,14 @@
                 <input
                   v-model="keyring"
                   :placeholder="$t('S_ENABLE_KEYRING')"
-                  :class="$style['form-input']"
+                  :class="[$style['form-input'], $style['keyring-input']]"
                   type="text"
-                  @input="verification('keyring')"
+                  @input="
+                    keyring = $event.target.value
+                      .replace(' ', '')
+                      .trim()
+                      .replace(/[\W]/g, '')
+                  "
                 />
                 <div
                   :class="[
@@ -133,6 +137,7 @@
                       placeholder="请输入6-12位字母或数字"
                       type="password"
                       maxlength="12"
+                      @blur="verification('password', $event.target.value)"
                       @input="
                         password = $event.target.value
                           .toLowerCase()
@@ -170,6 +175,9 @@
                       placeholder="请再次输入密码"
                       type="password"
                       maxlength="12"
+                      @blur="
+                        verification('confirm_password', $event.target.value)
+                      "
                       @input="
                         confirm_password = $event.target.value
                           .toLowerCase()
@@ -219,10 +227,7 @@
             :class="[
               $style['forget-submit'],
               {
-                [$style['active']]:
-                  currentMethod === 'phone-step-1'
-                    ? username && keyring
-                    : (password === confirm_password) && password && confirm_password
+                [$style['active']]: checkSubmit
               }
             ]"
             @click="send($route.params.type)"
@@ -318,7 +323,15 @@ export default {
       set(value) {
         return this.captcha = value
       }
-    }
+    },
+    checkSubmit() {
+      if (this.currentMethod === 'phone-step-1') {
+        return this.username && this.keyring;
+      }
+      return this.password === this.confirm_password &&
+        this.password &&
+        this.confirm_password;
+    },
   },
   watch: {
     captchaData() {
@@ -350,29 +363,34 @@ export default {
       this.password = '';
       this.confirm_password = '';
     },
-    verification(target, value) {
-      // 前端先不驗證
-      return;
-      const data = joinMemInfo[target];
-      const re = data.regExp;
-      const errormMsg = data.errorMsg;
+    verification(key, value) {
+      const re = /^[a-z0-9._\-!@#$&*+=|]{6,12}$/;
+      const msg = this.$text("S_PASSWORD_ERROR", "请输入6-12码英文小写、数字");
 
-      this.$nextTick(() => {
-        if (!this[target]) {
-          this.msg[target] = this.$text('S_JM_FIELD_REQUIRE', '该栏位不得为空');
-          return;
-        }
-        if ((re && !re.test(this[target]))
-          || (target === 'confirm_password' && this.password !== this.confirm_password)
-          || (data.minimum && this[target].length < data.minimum)
-          || (data.maximum && this[target].length > data.maximum)
-        ) {
-          this.msg[target] = errormMsg;
-          return;
-        }
+      let errMsg = '';
 
-        this.msg[target] = '';
-      });
+      if (
+        this.password !== this.confirm_password
+      ) {
+        errMsg = '新密码与确认密码栏位不一致';
+      } else {
+        this.msg.password = '';
+        this.msg.confirm_password = '';
+      }
+
+      if (!value) {
+        errMsg = '该栏位不得为空';
+      }
+
+      if (!re.test(value)) {
+        errMsg = msg;
+      }
+
+      if (key === "password") {
+        this.msg.password = errMsg;
+      } else if (key === "confirm_password") {
+        this.msg.confirm_password = errMsg;
+      }
     },
     sendEmail(type) {
       const url = '/mobile/resetpwd';
@@ -389,7 +407,7 @@ export default {
         },
         fail: (res) => {
           if (res && res.data && res.data.msg) {
-            this.errMsg = `${res.data.msg}${res.data.code}`;
+            this.errMsg = `${res.data.msg}[${res.data.code}]`;
           }
         }
       };
@@ -452,7 +470,7 @@ export default {
         },
         fail: (res) => {
           if (res && res.data && res.data.msg) {
-            this.errMsg = res.data.msg
+            this.errMsg = `${res.data.msg}[${res.data.code}]`;
           }
         }
       };
@@ -484,19 +502,19 @@ export default {
           this.keyRingTime -= 1;
         }, 1000)
 
-        if(response.data.code) {
-          this.errMsg = `${response.data.msg}[${response.data.code}]`
+        if (response.data.code) {
+          this.errMsg = `${response.data.msg}(${response.data.code})`;
         } else {
           this.errMsg = '已發送手機認證碼';
         }
 
-      }).catch(error => {
-        if (error.response && error.response.data && error.response.data.msg) {
-          this.errMsg = `${error.response.data.msg}`;
+      }).catch(res => {
+        if (res.response && res.response.data && res.response.data.msg) {
+          this.errMsg = `${res.response.data.msg}(${res.response.data.code})`;
         }
       })
 
-      if(this.toggleCaptcha) {
+      if (this.toggleCaptcha) {
         this.toggleCaptcha = false
       }
     },
@@ -512,13 +530,13 @@ export default {
             //   驗證成功重設密碼
             this.resetKeyring = response.ret.keyring;
             this.currentMethod = 'phone-step-2';
-
+            this.errMsg = '';
           }
         },
         fail: (res) => {
           this.msg.keyring = '';
           if (res && res.data && res.data.msg) {
-            this.errMsg = `${res.data.msg}[${res.data.code}]`
+            this.errMsg = `${res.data.msg}[${res.data.code}]`;
           }
         }
       };
@@ -546,13 +564,14 @@ export default {
           keyring: this.resetKeyring
         },
         success: (response) => {
+          this.errMsg = '';
           if (response.result === 'ok') {
             this.$router.push(`/mobile/${type === 'agent' ? 'aglogin' : 'login'}`);
           }
         },
         fail: (res) => {
           if (res && res.data && res.data.msg) {
-            this.errMsg = res.data.msg
+            this.errMsg = `${res.data.msg}[${res.data.code}]`;
           }
         }
       };
@@ -580,6 +599,7 @@ export default {
   padding: 2px 0;
   color: $main_error_color1;
   min-height: 40px;
+  line-height: 40px;
 }
 
 .forget-password {
@@ -642,11 +662,17 @@ export default {
   &::placeholder {
     color: #cbced8;
   }
+
+  &.keyring-input {
+    width: 60%;
+  }
 }
 
 .errorTips {
-  color: #db6372;
-  text-align: left;
+  padding: 2px 0;
+  color: $main_error_color1;
+  min-height: 25px;
+  line-height: 25px;
 }
 
 .forget-submit {

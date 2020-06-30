@@ -158,7 +158,7 @@ export default {
 div.container {
   // Yabo & gay & les
   background-color: $main_white_color1;
-
+  overflow-x: hidden;
   &.smallPig {
     background-color: #333;
   }
@@ -172,14 +172,6 @@ div.container {
   height: 43px;
   padding: 0 14px;
   text-align: center;
-
-  > .title {
-    width: 100%;
-    line-height: 43px;
-    font-size: 17px;
-    height: 43px;
-    color: black;
-  }
 
   .btn-prev {
     position: absolute;

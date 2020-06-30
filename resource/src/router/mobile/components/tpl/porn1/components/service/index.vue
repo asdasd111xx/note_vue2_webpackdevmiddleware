@@ -207,6 +207,11 @@ export default {
     this.imgIndex = this.memInfo.user.image;
     this.imgID = this.memInfo.user.image;
 
+
+  },
+  mounted() {
+    this.divHeight = document.body.offsetHeight - 60;
+
     yaboRequest({
       method: "get",
       url: `${this.siteConfig.YABO_API_DOMAIN}/system/downloadlink`,
@@ -218,9 +223,6 @@ export default {
         this.linkArray = res.data;
       }
     });
-  },
-  mounted() {
-    this.divHeight = document.body.offsetHeight - 60;
   },
   computed: {
     ...mapGetters({
