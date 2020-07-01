@@ -54,7 +54,7 @@
         </div>
 
         <div :class="$style['btn-next']">
-          <img :src="$getCdnPath(`/static/image/_new/common/btn_next.png`)" />
+          <img :src="$getCdnPath(`/static/image/_new/webview/ic_service_arrow.png`)" />
         </div>
       </div>
 
@@ -72,7 +72,7 @@
         </div>
 
         <div :class="$style['btn-next']">
-          <img :src="$getCdnPath(`/static/image/_new/common/btn_next.png`)" />
+          <img :src="$getCdnPath(`/static/image/_new/webview/ic_service_arrow.png`)" />
         </div>
       </div>
 
