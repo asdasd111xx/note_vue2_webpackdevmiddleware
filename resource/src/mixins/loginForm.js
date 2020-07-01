@@ -83,6 +83,9 @@ export default {
                         this.login(loginInfo, callBackFuc, errorCB);
                     },
                     fail: (res) => {
+                        if (errorCB) {
+                            res.data ? errorCB(res.data) : errorCB(res);
+                        }
                     }
                 });
                 return;

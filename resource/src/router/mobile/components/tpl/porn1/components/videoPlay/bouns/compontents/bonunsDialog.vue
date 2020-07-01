@@ -38,7 +38,7 @@
           享有观影送钱
         </template>
         <template v-else>
-          <span style="margin-top: 12%;display: block;">
+          <span style="margin-top: 10%;display: block;">
             {{ $text("S_ACTIVITY_SLOGAN", "看视频送现金 天天看天天送") }}
           </span>
         </template>
