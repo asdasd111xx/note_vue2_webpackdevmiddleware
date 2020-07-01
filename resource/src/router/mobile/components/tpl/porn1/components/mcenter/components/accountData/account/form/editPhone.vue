@@ -244,7 +244,7 @@ export default {
     }
   },
   watch: {
-    captchaData() {
+    captchaData(val) {
       this.handleSend()
     }
   },
@@ -348,27 +348,23 @@ export default {
 
       this.isSendSMS = true;
       if (this.isfromWithdraw) {
-        ajax({
+        axios({
           method: 'post',
           url: '/api/v1/c/player/withdraw/verify/sms',
-          errorAlert: false,
-          params: {
-            phone: `${this.newCode.replace('+', '')}-${this.newValue}`
-          },
-          fail: (res) => {
-            this.countdownSec = '';
-            this.tipMsg = `${res.data.msg}(${res.data.code})`;
-            this.isSendSMS = false;
-          },
-          success: (res) => {
-            if (res && res.result === 'ok') {
-              this.actionSetUserdata(true);
-              this.locker();
-              this.tipMsg = this.$text("S_SEND_CHECK_CODE_VALID_TIME").replace("%s", 5)
-            }
-            this.isSendSMS = false;
+          data: {
+            phone: `${this.newCode.replace('+', '')}-${this.newValue}`,
+            captcha_text: this.captchaData ? this.captchaData : ''
           }
-        });
+        }).then(res => {
+          this.actionSetUserdata(true);
+          this.locker();
+          this.tipMsg = this.$text("S_SEND_CHECK_CODE_VALID_TIME").replace("%s", 5);
+          this.isSendSMS = false;
+        }).catch(error => {
+          this.countdownSec = '';
+          this.tipMsg = `${error.response.data.msg}(${error.response.data.code})`;
+          this.isSendSMS = false;
+        })
       } else {
         axios({
           method: 'post',
