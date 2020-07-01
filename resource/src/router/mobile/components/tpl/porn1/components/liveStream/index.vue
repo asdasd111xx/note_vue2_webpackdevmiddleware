@@ -133,7 +133,7 @@ export default {
   data() {
     return {
       streamList: [],
-      currentTab: this.$route.params.type || localStorage.getItem('streamType'),
+      currentTab: this.$route.params.type || localStorage.getItem('streamType') || 'cutiesLive',
       iframeHeight: 500,
       src: ''
     };
@@ -176,6 +176,8 @@ export default {
     };
   },
   mounted() {
+    // 測試用 正式站
+    // this.src = `https://yaboxxxapp01.com/exsport/live/?hall=67`;
     this.src = `/exsport/live/?hall=${this.memInfo.user.domain}`;
   },
   methods: {
@@ -190,9 +192,11 @@ export default {
 
       if (this.memInfo.balance.total < 100) {
         this.actionSetGlobalMessage({ msg: this.$text('S_LIVE_BALANCE_NOT_LESS', '直播余额不低%s元').replace('%s', 100) })
+        // this.actionSetGlobalMessage({ msg: this.$text('S_COMING_SOON2', '正在上线 敬请期待') })
         return;
       }
       this.actionSetGlobalMessage({ msg: this.$text('S_BEAUTY_STAY_TUNED', '我们将在下个月帮您开通美眉直播，敬请期待！先去体验一下其它游戏吧！') })
+      //   this.actionSetGlobalMessage({ msg: this.$text('S_COMING_SOON2', '正在上线 敬请期待') })
     },
     getIframeHeight() {
       this.$nextTick(() => {
@@ -264,6 +268,8 @@ export default {
   width: 100%;
   overflow: auto;
   -webkit-overflow-scrolling: touch;
+  margin: 0px;
+  padding: 0px;
 }
 
 .cuties-live-wrap {

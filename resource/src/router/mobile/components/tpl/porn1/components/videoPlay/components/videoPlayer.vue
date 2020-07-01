@@ -277,10 +277,10 @@ export default {
           bonunsDialog.earnCurrentNum = parseFloat((Number(data.Active.BreakAmout) * Number(data.BreakTimes))).toFixed(2);
 
           // 可獲得最高彩金
-          bonunsDialog.limitAmount = Number(data.Active.LimitAmout).toFixed(2);
+          bonunsDialog.limitAmount = parseFloat(Number(data.Active.LimitAmout)).toFixed(2);
 
           // 每個中斷點獲得的彩金
-          bonunsDialog.earnSingleNum = Number(data.Active.BreakAmout).toFixed(2);
+          bonunsDialog.earnSingleNum = parseFloat(Number(data.Active.BreakAmout)).toFixed(2);
 
           // 可獲得中斷點數量
           bonunsDialog.earnCellNum = (Number(data.Active.LimitAmout) / Number(data.Active.BreakAmout));
