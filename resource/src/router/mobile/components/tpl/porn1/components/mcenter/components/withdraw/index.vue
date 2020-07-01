@@ -488,7 +488,10 @@ export default {
         onClick: () => { this.$router.back(); },
         title: this.$text('S_WITHDRAWAL_TEXT', '提现'),
         hasHelp: true,
-        helpRouter: '/withdraw'
+        helpRouter: '/withdraw',
+        customEvent: () => {
+          this.saveCurrentValue(true);
+        },
       };
     },
     bankSrc() {
@@ -617,10 +620,10 @@ export default {
       this.isShowCheck = false;
     },
     saveCurrentValue(fromRule) {
+      localStorage.setItem('tmp_w_selectedCard', this.selectedCard);
+      localStorage.setItem('tmp_w_amount', this.withdrawValue);
       if (fromRule) {
-        localStorage.setItem('tmp_w_selectedCard', this.selectedCard);
-        localStorage.setItem('tmp_w_amount', this.withdrawValue);
-        localStorage.removeItem('tmp_w_rule');
+        localStorage.setItem('tmp_w_rule', "1");
       }
     },
     handleSubmit() {

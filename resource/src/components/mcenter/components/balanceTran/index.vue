@@ -438,67 +438,59 @@ export default {
 
       this.btnLock = true;
 
-      this.checkBankCard().then((res) => {
-        if (!res) {
-          this.actionSetGlobalMessage({
-            type: 'bindcard', code: 'C50099', origin: 'balanceTrans'
-          });
-          return;
-        }
-        const re = /^[1-9]*[1-9][0-9]*$/;
-        const source = this.tranOut;
-        const target = this.tranIn;
-        const { money } = this;
+      const re = /^[1-9]*[1-9][0-9]*$/;
+      const source = this.tranOut;
+      const target = this.tranIn;
+      const { money } = this;
 
-        if (+source === 0 || +target === 0) {
-          this.actionSetGlobalMessage({ msg: this.$t('S_SELECT_ACCOUNT') });
-          this.btnLock = false;
-          return;
-        }
-        if (money === '') {
-          this.actionSetGlobalMessage({ msg: this.$t('S_AMOUNT_NULL_VALUE') });
-          this.btnLock = false;
-          return;
-        }
-        if (!re.test(money)) {
-          this.actionSetGlobalMessage({ msg: this.$t('S_DAW_ONLY_INT') });
-          this.btnLock = false;
-          return;
-        }
+      if (+source === 0 || +target === 0) {
+        this.actionSetGlobalMessage({ msg: this.$t('S_SELECT_ACCOUNT') });
+        this.btnLock = false;
+        return;
+      }
+      if (money === '') {
+        this.actionSetGlobalMessage({ msg: this.$t('S_AMOUNT_NULL_VALUE') });
+        this.btnLock = false;
+        return;
+      }
+      if (!re.test(money)) {
+        this.actionSetGlobalMessage({ msg: this.$t('S_DAW_ONLY_INT') });
+        this.btnLock = false;
+        return;
+      }
 
-        mcenter.balanceTran({
-          params: {
-            amount: money
-          },
-          success: () => {
-            if (customSucessAlert) {
-              customSucessAlert();
-            }
-            if (!customSucessAlert) {
-              this.actionSetGlobalMessage({ msg: this.$t('S_CR_SUCCESS') });
-              // alert(this.$t('S_CR_SUCCESS'));
-            }
-
-            this.lockSec = 0;
-            this.balanceBackLock = false;
-            this.actionSetUserBalance();
-
-            this.tranIn = 0;
-            this.tranOut = 0;
-            this.money = '';
-            this.getDefaultTran.out = '';
-            this.getDefaultTran.in = '';
-
-            this.btnLock = false;
-          },
-          fail: (res) => {
-            this.btnLock = false;
-            this.actionSetGlobalMessage({
-              msg: res.data.msg, code: res.data.code, origin: "balanceTrans"
-            });
+      mcenter.balanceTran({
+        params: {
+          amount: money
+        },
+        success: () => {
+          if (customSucessAlert) {
+            customSucessAlert();
           }
-        }, source, target);
-      });
+          if (!customSucessAlert) {
+            this.actionSetGlobalMessage({ msg: this.$t('S_CR_SUCCESS') });
+            // alert(this.$t('S_CR_SUCCESS'));
+          }
+
+          this.lockSec = 0;
+          this.balanceBackLock = false;
+          this.actionSetUserBalance();
+
+          this.tranIn = 0;
+          this.tranOut = 0;
+          this.money = '';
+          this.getDefaultTran.out = '';
+          this.getDefaultTran.in = '';
+
+          this.btnLock = false;
+        },
+        fail: (res) => {
+          this.btnLock = false;
+          this.actionSetGlobalMessage({
+            msg: res.data.msg, code: res.data.code, origin: "balanceTrans"
+          });
+        }
+      }, source, target);
     },
     getRecentlyOpened() {
       mcenter.lastVendor({

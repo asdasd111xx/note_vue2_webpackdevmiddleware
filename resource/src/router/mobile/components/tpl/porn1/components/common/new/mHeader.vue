@@ -196,11 +196,14 @@
               )
             "
             @click="
-              $router.push(
-                `/mobile/mcenter/help${
-                  headerConfig.helpRouter ? headerConfig.helpRouter : ''
-                }`
-              )
+              () => {
+                headerConfig.customEvent ? headerConfig.customEvent() : '';
+                $router.push(
+                  `/mobile/mcenter/help${
+                    headerConfig.helpRouter ? headerConfig.helpRouter : ''
+                  }`
+                );
+              }
             "
           />
         </div>

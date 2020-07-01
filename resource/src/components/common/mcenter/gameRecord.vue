@@ -208,9 +208,6 @@ export default {
       this.onInquire();
     },
     onSearch() {
-      if (!this.checkDate) {
-        return;
-      }
       this.currentGame = this.inqGame;
       this.currentStart = this.inqStart;
       this.currentEnd = this.inqEnd;

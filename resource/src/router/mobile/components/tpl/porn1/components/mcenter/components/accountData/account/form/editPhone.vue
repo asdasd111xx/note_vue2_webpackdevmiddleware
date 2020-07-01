@@ -249,6 +249,9 @@ export default {
     }
   },
   mounted() {
+    this.countdownSec = "";
+    clearInterval(this.timer);
+    this.timer = null;
   },
   created() {
     ajax({
@@ -296,6 +299,7 @@ export default {
     });
   },
   beforeDestroy() {
+    this.countdownSec = "";
     clearInterval(this.timer);
     this.timer = null;
   },
