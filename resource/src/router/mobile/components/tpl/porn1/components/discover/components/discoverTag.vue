@@ -145,6 +145,11 @@ export default {
   align-items: center;
   justify-content: center;
   background-color: $main_white_color1;
+  height: 50px;
+  position: fixed;
+  top: 43px;
+  width: 100%;
+  max-width: $mobile_max_width;
 }
 
 .tag {
@@ -174,7 +179,7 @@ export default {
 }
 
 .list-wrap {
-  margin-top: 14px;
+  margin-top: 64px;
   margin-bottom: 20px;
   background-color: $main_background_white1;
   padding: 0 14px;
@@ -223,6 +228,7 @@ export default {
   height: 120px;
   padding: 5px 0;
   background-color: $main_white_color1;
+  max-width: $mobile_max_width;
 
   > div:first-child {
     text-align: center;
