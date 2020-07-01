@@ -75,7 +75,7 @@ export default {
       return {
         prev: true,
         isBackgroundGradient: true,
-        title: '篩選結果',
+        title: '筛选结果',
         onClick: () => { this.$router.back(); }
       };
     }
