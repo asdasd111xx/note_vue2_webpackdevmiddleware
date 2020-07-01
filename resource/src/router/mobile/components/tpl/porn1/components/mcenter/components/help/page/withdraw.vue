@@ -31,10 +31,10 @@
 
         <div
           v-for="(item, index) in data"
-          :id="`q-${index}`"
+          :id="`q-${item.key}`"
           :class="[$style['cell'], { [$style['active']]: item.isOpen }]"
           :key="item.key"
-          @click="item.content && handleToggleContent(index)"
+          @click="item.content && handleToggleContent(item.key)"
         >
           <template v-if="item.title && item.content">
             <div :class="$style['title']">
@@ -117,7 +117,12 @@ export default {
     handleToggleContent(key) {
       let target = document.getElementById(`q-${key}`);
       if (!target) return;
-      this.data[key].isOpen = !this.data[key].isOpen;
+
+      this.data.forEach((element, index) => {
+        if (Number(element.key) === Number(key)) {
+          element.isOpen = !element.isOpen;
+        }
+      });
     }
   },
 };
