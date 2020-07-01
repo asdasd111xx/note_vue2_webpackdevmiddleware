@@ -373,9 +373,11 @@ export default {
         this.password !== this.confirm_password
       ) {
         errMsg = '新密码与确认密码栏位不一致';
+        this.msg.confirm_password = errMsg;
+        return;
       } else {
-        this.msg.password = '';
         this.msg.confirm_password = '';
+        this.msg.password = '';
       }
 
       if (!value) {
@@ -386,11 +388,7 @@ export default {
         errMsg = msg;
       }
 
-      if (key === "password") {
-        this.msg.password = errMsg;
-      } else if (key === "confirm_password") {
-        this.msg.confirm_password = errMsg;
-      }
+      this.msg[key] = errMsg;
     },
     sendEmail(type) {
       const url = '/mobile/resetpwd';
