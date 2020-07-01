@@ -74,6 +74,10 @@ export default {
       type: Function,
       required: true
     },
+    setHasSearchBtn: {
+      type: Function,
+      required: true
+    },
     siteId: {
       type: Number,
       required: true

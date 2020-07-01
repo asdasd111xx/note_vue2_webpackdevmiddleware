@@ -4,8 +4,8 @@
     :style="{ background: bgColor }"
   >
     <div slot="content" :class="$style['content-wrap']">
-      <component
-        :is="template"
+      <platform-layout
+        :source="source"
         :set-header-title="setHeaderTitle"
         :set-has-search-btn="setHasSearchBtn"
       />
@@ -20,10 +20,7 @@ import mobileContainer from "../common/new/mobileContainer";
 export default {
   components: {
     mobileContainer,
-    yabo: () => import("./components/yabo/"),
-    smallPig: () => import("./components/smallPig/"),
-    gay: () => import("./components/gay/"),
-    les: () => import("./components/les/"),
+    platformLayout: () => import("./components/layout/")
   },
   data() {
     return {
@@ -42,8 +39,7 @@ export default {
     ...mapGetters({
       memInfo: "getMemInfo"
     }),
-
-    template() {
+    source() {
       /* source Type
          yabo => 鴨脖視頻
          smallPig => 小豬視頻
@@ -53,10 +49,9 @@ export default {
       let source = this.$route.query.source;
       return source;
     },
-
     bgColor() {
-      if (this.template) {
-        switch (this.template) {
+      if (this.source) {
+        switch (this.source) {
           case "yabo":
             return "#eee";
             break;
