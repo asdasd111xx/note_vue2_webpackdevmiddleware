@@ -68,7 +68,7 @@
               :min="fromDate"
               :max="inqEnd"
               type="date"
-              @blur="limitDate('start', $event.target.value)"
+              @input="limitDate('start', $event.target.value)"
             />
             <span>{{ inqStart | dateFormat }}</span>
           </div>
@@ -82,7 +82,7 @@
               :min="inqStart"
               :max="endDate"
               type="date"
-              @blur="limitDate('end', $event.target.value)"
+              @input="limitDate('end', $event.target.value)"
             />
             <span>{{ inqEnd | dateFormat }}</span>
           </div>
@@ -92,7 +92,15 @@
                 $style['btn-search'],
                 { [$style['disable']]: !checkDate }
               ]"
-              @click="onSearch"
+              @click="
+                () => {
+                  if (!checkDate) {
+                    return;
+                  } else {
+                    onSearch();
+                  }
+                }
+              "
             >
               {{ $text("S_INQUIRE") }}
             </div>
@@ -186,7 +194,7 @@ export default {
       inqGame: "",
       inqStart: Vue.moment(now).format("YYYY-MM-DD"),
       inqEnd: Vue.moment(now).format("YYYY-MM-DD"),
-      checkDate: false
+      checkDate: true
     };
   },
   computed: {
