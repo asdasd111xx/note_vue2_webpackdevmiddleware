@@ -29,7 +29,7 @@ export const preset = {
 // yaboapi.iguanagingercake.com
 
 /**
- * 鸭脖视频 正式站正式環境
+ * 鸭博娱乐 正式站正式環境
  */
 export const site_67 = {
     ...preset,
@@ -41,7 +41,7 @@ export const site_67 = {
 };
 
 /**
- * 鸭脖视频 正式站Demo環境
+ * 鸭博娱乐 正式站Demo環境
  */
 export const site_69 = {
     ...preset,

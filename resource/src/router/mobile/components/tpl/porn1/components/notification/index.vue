@@ -11,7 +11,7 @@
             <img src="/static/image/_new/about/appicon.png" />
           </div>
           <div :class="$style['title']">
-            鸭脖视频
+            鸭博娱乐
           </div>
           <div :class="$style['time']">
             {{ getTime(data.id) }}

@@ -30,11 +30,11 @@ export default {
   props: {
     setHeaderTitle: {
       type: Function,
-      default: () => {}
+      default: () => { }
     },
     setHasSearchBtn: {
       type: Function,
-      default: () => {}
+      default: () => { }
     }
   },
   data() {
@@ -49,7 +49,7 @@ export default {
         return;
       }
 
-      this.setHeaderTitle("鸭脖视频");
+      this.setHeaderTitle("鸭博娱乐");
     }
   }
 };

@@ -153,7 +153,7 @@ export default {
   created() {
     switch (this.source) {
       case "yabo":
-        this.setHeaderTitle("鸭脖视频");
+        this.setHeaderTitle(this.$text("鸭脖视频", "鸭脖视频"));
         break;
 
       case "gay":
