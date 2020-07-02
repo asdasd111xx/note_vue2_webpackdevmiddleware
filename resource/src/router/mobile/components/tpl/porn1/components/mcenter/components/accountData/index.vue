@@ -41,7 +41,16 @@
         </div>
 
         <div :class="$style['dialog-func']">
-          <div @click="handleClickFunc">从相册选取</div>
+          <div @click="handleClickFunc">
+            <input
+              :class="$style['img-input']"
+              ref="imgInput"
+              type="file"
+              accept="image/*"
+              capture="camera"
+            />
+            从相册选取
+          </div>
           <div @click="handleClickFunc">拍照</div>
           <div @click="isShow = false">{{ $text("S_CANCEL", "取消") }}</div>
         </div>
@@ -126,6 +135,9 @@ export default {
       'actionSetUserdata'
     ]),
     handleClickFunc() {
+      if (this.$route.query._db) {
+        this.$refs['imgInput'].click();
+      }
       this.msg = this.$text('S_COMING_SOON2', '正在上线 敬请期待');
     },
     dialogShow() {
@@ -271,5 +283,11 @@ export default {
       transform: translate(-50%, 0);
     }
   }
+}
+
+.img-input {
+  display: none;
+  border: unset;
+  outline: unset;
 }
 </style>
