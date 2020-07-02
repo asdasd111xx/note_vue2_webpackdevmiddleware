@@ -227,7 +227,7 @@ export default {
             this.isSelectShow = !this.isSelectShow;
         },
         verificationName() {
-            const reg = /^[^A-Za-z0-9，:;！@#$%^&*?<>()+=`|[\]{}\\"/~\-_']*$/;
+            const reg = /^[^A-Za-z0-9\uFF10-\uFF19\uFF41-\uFF5A\uFF21-\uFF3A，:;！@#$%^&*?<>()+=`|[\]{}\\"/~\-_']*$/;
             if (!reg.test(this.speedField.depositName)) {
                 this.actionSetGlobalMessage({ msg: '请输入正确名称' });
                 this.$emit('update:nameCheckFail' , true)

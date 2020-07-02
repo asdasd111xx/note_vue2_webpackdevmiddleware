@@ -932,7 +932,10 @@ export default {
       'actionSetUserBalance'
     ]),
     verificationName() {
-      const reg = /^[^A-Za-z0-9，:;！@#$%^&*?<>()+=`|[\]{}\\"/~\-_']*$/;
+      // 全型數字：[\uFF10-\uFF19]
+      // 全型英文小寫：[\uFF41-\uFF5A]
+      // 全型英文大寫：[\uFF21-\uFF3A]
+      const reg = /^[^A-Za-z0-9\uFF10-\uFF19\uFF41-\uFF5A\uFF21-\uFF3A，:;！@#$%^&*?<>()+=`|[\]{}\\"/~\-_']*$/;
       if (!reg.test(this.speedField.depositName)) {
         this.msg = '请输入正确名称';
         this.nameCheckFail = true;

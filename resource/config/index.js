@@ -4,8 +4,8 @@ const path = require('path');
 const outputDirName = process.env.CDN_HOST ? process.env.CDN_HOST.split('://')[1] : 'www';
 
 // 開發測試用
-// const domain = 'https://yb01.66boxing.com/';
-const domain = 'https://yb0t.66relish.com/';
+const domain = 'https://yb01.66boxing.com/';
+// const domain = 'https://yb0t.66relish.com/';
 // const domain = 'https://yaboxxxapp01.com/';
 // const domain = 'https://yaboxxxapp02.com/';
 
