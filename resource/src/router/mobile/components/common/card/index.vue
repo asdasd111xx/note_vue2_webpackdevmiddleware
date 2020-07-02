@@ -169,9 +169,7 @@ export default {
       'actionSetFavoriteGame'
     ]),
     redirectBankCard() {
-      this.$router.push(
-        `/mobile/mcenter/bankcard?redirect=card-${this.vendor}-${this.paramsData.label}`
-      );
+      return `card-${this.vendor}-${this.paramsData.label}`;
     },
     /**
      * 取得遊戲平台分類

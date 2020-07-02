@@ -23,7 +23,8 @@ export default {
   data() {
     return {
       isShow: false,
-      msg: ''
+      msg: '',
+      timer: null
     };
   },
   created() {
@@ -53,11 +54,10 @@ export default {
     }
 
     this.isShow = true;
-    setTimeout(() => {
+    this.timer = setTimeout(() => {
       this.isShow = false;
       setTimeout(() => {
         this.clearMsg();
-        this.callback && this.callback();
       }, 300);
     }, 2000);
   },
@@ -66,12 +66,17 @@ export default {
       globalMessage: 'getGlobalMessage'
     }),
   },
+  beforeDestroy() {
+    clearTimeout(this.timer);
+    this.actionSetGlobalMessage(null);
+    this.$emit('close');
+  },
   methods: {
     ...mapActions([
       'actionSetGlobalMessage'
     ]),
     clearMsg() {
-      if (this.globalMessage && this.globalMessage.code) {
+      if (this.globalMessage) {
         const msgObj = this.globalMessage;
 
         if (process.env.NODE_ENV === "development") {
@@ -82,6 +87,8 @@ export default {
         const callback = msgObj.cb;
         const redirect = msgObj.origin;
 
+        this.actionSetGlobalMessage(null);
+
         if (callback) {
           callback();
           return;
@@ -91,7 +98,7 @@ export default {
           // 充值
           case "C50101":  // 轉帳需首充 暫時
           case "C50100":
-            this.$router.push(`/mobile/mcenter/deposit`);
+            this.$router.push(`/mobile/mcenter/deposit?redirect=${redirect ? redirect : 'home'}`);
             break;
           // 銀行卡
           case "C50099":
@@ -105,9 +112,9 @@ export default {
           default:
             break;
         }
+
+        this.$emit('close');
       }
-      this.actionSetGlobalMessage(null);
-      this.$emit('close');
     }
   },
 };

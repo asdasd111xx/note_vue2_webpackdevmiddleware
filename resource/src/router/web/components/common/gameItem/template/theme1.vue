@@ -359,9 +359,10 @@ export default {
       }
 
       const openGameFailFunc = (res) => {
+        // this.redirectCard 個別大廳轉導位置
         if (res && res.data) {
           let data = res.data;
-          this.actionSetGlobalMessage({ msg: data.msg, code: data.code, cb: this.redirectCard });
+          this.actionSetGlobalMessage({ msg: data.msg, code: data.code, origin: this.redirectCard() });
         }
       };
       openGame({ vendor, kind, code }, openGameFailFunc);

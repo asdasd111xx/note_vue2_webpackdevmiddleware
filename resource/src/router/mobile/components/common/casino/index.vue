@@ -190,9 +190,7 @@ export default {
       'actionSetFavoriteGame'
     ]),
     redirectBankCard() {
-      this.$router.push(
-        `/mobile/mcenter/bankcard?redirect=casino-${this.vendor}-${this.paramsData.label}`
-      );
+      return `casino-${this.vendor}-${this.paramsData.label}`;
     },
     /**
      * 取得遊戲平台分類
