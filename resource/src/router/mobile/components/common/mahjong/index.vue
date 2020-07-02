@@ -162,9 +162,7 @@ export default {
       'actionSetFavoriteGame'
     ]),
     redirectBankCard() {
-      this.$router.push(
-        `/mobile/mcenter/bankcard?redirect=mahjonglobby-${this.vendor}-${this.paramsData.label}`
-      );
+      return `mahjonglobby-${this.vendor}-${this.paramsData.label}`;
     },
     /**
      * 取得遊戲平台分類
