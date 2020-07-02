@@ -932,7 +932,7 @@ export default {
       'actionSetUserBalance'
     ]),
     verificationName() {
-      const reg = /^[^，:;！@#$%^&*?<>()+=`|[\]{}\\"/.~\-_']*$/;
+      const reg = /^[^A-Za-z0-9，:;！@#$%^&*?<>()+=`|[\]{}\\"/~\-_']*$/;
       if (!reg.test(this.speedField.depositName)) {
         this.msg = '请输入正确名称';
         this.nameCheckFail = true;

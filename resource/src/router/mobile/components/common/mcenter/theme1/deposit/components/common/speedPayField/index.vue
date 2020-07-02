@@ -30,6 +30,22 @@
                             v-model="info.value"
                             :class="$style['speed-deposit-input']"
                             :placeholder="info.placeholderText"
+                            @blur="() => {
+                                if(info.objKey === 'depositName') {
+                                  verificationName();
+                                } else {
+                                  return
+                                }
+                              }
+                            "
+                            @keypress="() => {
+                                if(info.objKey === 'depositName') {
+                                  verificationName();
+                                } else {
+                                  return
+                                }
+                              }
+                            "
                             @input="submitInput($event.target.value, info.objKey)"
                         />
                     </template>
@@ -54,6 +70,7 @@
 </template>
 
 <script>
+import { mapActions } from 'vuex';
 import DatePicker from 'vue2-datepicker';
 
 export default {
@@ -94,6 +111,7 @@ export default {
     data() {
         return {
             isSelectShow: false,
+            nameCheckFail: false,
             // 只有show必填欄位的狀況下不顯示錯誤提示
             showError: !this.showByRequiredFields
         };
@@ -189,6 +207,9 @@ export default {
         }
     },
     methods: {
+        ...mapActions([
+            'actionSetGlobalMessage'
+        ]),
         submitInput(data, objKey) {
             this.$emit('update:speedField', { data, objKey });
         },
@@ -204,6 +225,16 @@ export default {
             }
 
             this.isSelectShow = !this.isSelectShow;
+        },
+        verificationName() {
+            const reg = /^[^A-Za-z0-9，:;！@#$%^&*?<>()+=`|[\]{}\\"/~\-_']*$/;
+            if (!reg.test(this.speedField.depositName)) {
+                this.actionSetGlobalMessage({ msg: '请输入正确名称' });
+                this.$emit('update:nameCheckFail' , true)
+            } else {
+                this.$emit('update:nameCheckFail' , false)
+                return
+            }
         }
     }
 };
