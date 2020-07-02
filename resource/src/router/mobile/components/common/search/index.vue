@@ -1,6 +1,10 @@
 <template>
   <div :class="$style['search-wrap']">
     <div :class="[$style['search-header'], 'clearfix']">
+      <img
+        :class="$style['search-input-img']"
+        :src="$getCdnPath('/static/image/_new/common/icon_search_n.png')"
+      />
       <input
         v-model="searchText"
         :class="$style['search-input']"
@@ -107,9 +111,7 @@ export default {
   },
   methods: {
     redirectBankCard() {
-      this.$router.push(
-        `/mobile/mcenter/bankcard?redirect=casino`
-      );
+      return `casino`;
     },
   },
 };
@@ -132,13 +134,19 @@ export default {
   background: #fff;
 }
 
+.search-input-img {
+  float: left;
+  height: 30px;
+  position: absolute;
+  width: 30px;
+}
+
 .search-input {
   float: left;
   width: calc(100% * 15 / 17);
   height: 30px;
   padding-left: 42px;
-  background: #eee url("/static/image/_new/common/icon_search_n.png") no-repeat
-    3px center;
+  background: #eee;
   border: none;
   border-radius: 5px;
 
