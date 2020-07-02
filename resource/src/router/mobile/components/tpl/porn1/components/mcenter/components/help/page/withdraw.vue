@@ -41,6 +41,24 @@
               {{ item.title }}
             </div>
             <div
+              v-if="item.key == 99"
+              :class="[$style['content'], { [$style['active']]: item.isOpen }]"
+              :style="{ 'max-height': item.isOpen ? `100vh` : 0 }"
+            >
+              <div
+                :class="[$style['content-text']]"
+                v-html="item.content"
+              ></div>
+              <div :class="[$style['content-img']]">
+                <img
+                  :src="
+                    $getCdnPath(`/static/image/_new/mcenter/help/sample_01.png`)
+                  "
+                />
+              </div>
+            </div>
+            <div
+              v-else
               :class="[$style['content'], { [$style['active']]: item.isOpen }]"
               :style="{ 'max-height': item.isOpen ? `100vh` : 0 }"
               v-html="item.content"
