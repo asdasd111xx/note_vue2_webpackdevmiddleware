@@ -61,7 +61,7 @@
                         </div>
                         <div :class="[$style['time-button-group'], 'clearfix']">
                             <div :class="$style['time-cancel']" @click="cancelCustomTime">{{ $text('S_CANCEL', '取消') }}</div>
-                            <div :class="$style['time-confirm']" @click="setCustomTime">{{ $text('S_CONFIRM', '确认') }}</div>
+                            <div :class="$style['time-confirm']" @click="setCustomTime">{{ $text('S_CONFIRM_2', '确定') }}</div>
                         </div>
                     </template>
                     <div v-if="setStartTime.valueOf() > setEndTime.valueOf()" :class="[$style['date-tip']] ">

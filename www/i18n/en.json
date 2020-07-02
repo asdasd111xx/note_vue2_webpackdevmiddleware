@@ -424,6 +424,7 @@
     "S_OPERATING": "operating",
     "S_CONFIRM_DELETE": "confirm deletion",
     "S_CONFIRM": "confirm",
+    "S_CONFIRM_2": "confirm",
     "S_PLAYED": "Played over",
     "S_HOME": "Home",
     "S_PROMOTION": "Offer",

@@ -31,16 +31,34 @@
 
         <div
           v-for="(item, index) in data"
-          :id="`q-${index}`"
+          :id="`q-${item.key}`"
           :class="[$style['cell'], { [$style['active']]: item.isOpen }]"
           :key="item.key"
-          @click="item.content && handleToggleContent(index)"
+          @click="item.content && handleToggleContent(item.key)"
         >
           <template v-if="item.title && item.content">
             <div :class="$style['title']">
               {{ item.title }}
             </div>
             <div
+              v-if="item.key == 99"
+              :class="[$style['content'], { [$style['active']]: item.isOpen }]"
+              :style="{ 'max-height': item.isOpen ? `100vh` : 0 }"
+            >
+              <div
+                :class="[$style['content-text']]"
+                v-html="item.content"
+              ></div>
+              <div :class="[$style['content-img']]">
+                <img
+                  :src="
+                    $getCdnPath(`/static/image/_new/mcenter/help/sample_01.png`)
+                  "
+                />
+              </div>
+            </div>
+            <div
+              v-else
               :class="[$style['content'], { [$style['active']]: item.isOpen }]"
               :style="{ 'max-height': item.isOpen ? `100vh` : 0 }"
               v-html="item.content"
@@ -117,7 +135,12 @@ export default {
     handleToggleContent(key) {
       let target = document.getElementById(`q-${key}`);
       if (!target) return;
-      this.data[key].isOpen = !this.data[key].isOpen;
+
+      this.data.forEach((element, index) => {
+        if (Number(element.key) === Number(key)) {
+          element.isOpen = !element.isOpen;
+        }
+      });
     }
   },
 };
