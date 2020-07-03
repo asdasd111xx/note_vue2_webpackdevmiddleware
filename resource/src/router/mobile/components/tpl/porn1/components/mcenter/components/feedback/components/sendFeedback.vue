@@ -122,6 +122,7 @@ export default {
   },
   data() {
     return {
+      isSend: '',
       msg: '',
       paramsData: {
         type_id: '',
@@ -205,7 +206,7 @@ export default {
       this.isShow = false;
     },
     submitFeedback() {
-      if (!this.paramsData.title) {
+      if (!this.paramsData.title || this.isSend) {
         if (this.popStatus) {
           return;
         }
@@ -218,6 +219,7 @@ export default {
         return;
       }
 
+      this.isSend = true;
       ajax({
         method: 'post',
         url: API_FEEDBACK_CREATED,
@@ -232,6 +234,7 @@ export default {
           });
 
           this.currentIndex = '';
+          this.isSend = false;
         }
       });
     },
