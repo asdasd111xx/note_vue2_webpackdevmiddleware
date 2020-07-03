@@ -26,26 +26,17 @@
                             />
                         </template>
                         <input
+                            v-else-if="info.objKey === 'depositName'"
+                            v-model="depositName"
+                            :class="$style['speed-deposit-input']"
+                            :placeholder="info.placeholderText"
+                            @input="submitInput($event.target.value, info.objKey)"
+                        />
+                        <input
                             v-else
                             v-model="info.value"
                             :class="$style['speed-deposit-input']"
                             :placeholder="info.placeholderText"
-                            @blur="() => {
-                                if(info.objKey === 'depositName') {
-                                  verificationName();
-                                } else {
-                                  return
-                                }
-                              }
-                            "
-                            @keypress="() => {
-                                if(info.objKey === 'depositName') {
-                                  verificationName();
-                                } else {
-                                  return
-                                }
-                              }
-                            "
                             @input="submitInput($event.target.value, info.objKey)"
                         />
                     </template>
@@ -110,8 +101,8 @@ export default {
     },
     data() {
         return {
+            depositName: this.speedField.depositName,
             isSelectShow: false,
-            nameCheckFail: false,
             // 只有show必填欄位的狀況下不顯示錯誤提示
             showError: !this.showByRequiredFields
         };
@@ -194,6 +185,7 @@ export default {
                 }
             ];
         },
+
         nowSelectData: {
             get() {
                 return {
@@ -211,6 +203,12 @@ export default {
             'actionSetGlobalMessage'
         ]),
         submitInput(data, objKey) {
+            if (objKey === 'depositName') {
+              const re = /[,:;!”@#$%^&*?<>()+=`|[\]{}\\"/~\-_'A-Za-z0-9\uFF10-\uFF19\uFF41-\uFF5A\uFF21-\uFF3A\uFF01-\uFF5E]/g;
+              this.depositName = data.replace(re, '');
+              data = data.replace(re, '');
+            }
+
             this.$emit('update:speedField', { data, objKey });
         },
         /**
@@ -225,16 +223,6 @@ export default {
             }
 
             this.isSelectShow = !this.isSelectShow;
-        },
-        verificationName() {
-            const reg = /^[^A-Za-z0-9\uFF10-\uFF19\uFF41-\uFF5A\uFF21-\uFF3A，:;！@#$%^&*?<>()+=`|[\]{}\\"/~\-_']*$/;
-            if (!reg.test(this.speedField.depositName)) {
-                // this.actionSetGlobalMessage({ msg: '请输入正确名称' });
-                this.$emit('update:nameCheckFail' , true)
-            } else {
-                this.$emit('update:nameCheckFail' , false)
-                return
-            }
         }
     }
 };

@@ -63,6 +63,10 @@
             color: $main_error_color1;
         }
 
+        &.has-detail {
+            color: #6AAAF5;
+        }
+
         &::before {
             content: "返利：";
             position: relative;

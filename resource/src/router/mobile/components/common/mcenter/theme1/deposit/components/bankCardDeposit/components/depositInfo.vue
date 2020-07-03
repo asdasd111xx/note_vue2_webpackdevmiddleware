@@ -112,13 +112,12 @@
         :is-edit="true"
         :method-id="orderData.method_id"
         :type-id="orderData.type_id"
-        :nameCheckFail.sync="nameCheckFail"
       />
     </div>
     <div
       :class="[
         $style['submit-btn'],
-        { [$style['disabled']]: isSubmitDisabled || nameCheckFail}
+        { [$style['disabled']]: isSubmitDisabled }
       ]"
       :title="
         orderData.methodType !== 'remit'
@@ -190,7 +189,6 @@ export default {
       moreShow: false,
       isAlertTip: false,
       isShowQrcode: false,
-      isCheckNameFail: false,
       qrcodeValue: '',
       qrcodeTitle: '',
       msg: ''
@@ -215,14 +213,6 @@ export default {
       set(value) {
         this.speedField[value.objKey] = value.data;
       }
-    },
-    nameCheckFail: {
-      get() {
-        return this.isCheckNameFail
-      },
-      set(value) {
-        this.isCheckNameFail = value
-      }
     }
   },
   methods: {
@@ -240,7 +230,7 @@ export default {
       window.scrollTo(0, 0);
     },
     submitData() {
-      if (this.isSubmitDisabled || this.nameCheckFail) {
+      if (this.isSubmitDisabled) {
         return;
       }
 
