@@ -1,6 +1,7 @@
+import axios from "axios";
 import { format, toDate, parseISO } from 'date-fns';
-import ajax from '@/lib/ajax';
 import { API_COMMISSION_LIST } from '@/config/api';
+import { mapActions } from 'vuex'
 
 export default {
     props: {
@@ -53,6 +54,9 @@ export default {
         }
     },
     methods: {
+        ...mapActions([
+            'actionSetGlobalMessage'
+        ]),
         /**
          * 取得佣金資料列表
          */
@@ -64,7 +68,7 @@ export default {
             const { startTime, endTime, state } = this.searchInfo;
             // startTime, endTime初始值為日期格式，若使用者選擇日期後將會變成串格式
             const start = typeof (startTime) === 'string' ? parseISO(startTime) : startTime;
-            const end = typeof (startTime) === 'string' ? parseISO(endTime) : endTime;
+            const end = typeof (endTime) === 'string' ? parseISO(endTime) : endTime;
 
             const params = {
                 start_at: format(toDate(Date.parse(start)), 'yyyy-MM-dd'),
@@ -80,27 +84,28 @@ export default {
                 params.order = this.order;
             }
 
-            ajax({
+            axios({
                 method: 'get',
                 url: API_COMMISSION_LIST,
-                params,
-                success: (response) => {
-                    this.showInfinite = true
+                params
+            }).then(response => {
+                this.showInfinite = true
 
-                    if (response.result !== 'ok' || response.ret.length === 0) {
-                        this.pageTotal = null
-                        this.allTotal = null
-                        this.commissionList = [];
-                        this.mainNoData = true;
-                        return;
-                    }
-
-                    this.isLoading = false;
-                    this.pageTotal = response.sub_total; // 小計
-                    this.allTotal = response.total; // 總計
-                    this.commissionList = response.ret; // 佣金資料列表
-                    this.mainNoData = false;
+                if (response.data.result !== 'ok' || response.data.ret.length === 0) {
+                    this.pageTotal = null
+                    this.allTotal = null
+                    this.commissionList = [];
+                    this.mainNoData = true;
+                    return;
                 }
+
+                this.isLoading = false;
+                this.pageTotal = response.data.sub_total; // 小計
+                this.allTotal = response.data.total; // 總計
+                this.commissionList = response.data.ret; // 佣金資料列表
+                this.mainNoData = false;
+            }).catch(error => {
+                this.actionSetGlobalMessage({msg: error.response.data.msg})
             })
         },
         /**

@@ -9,7 +9,7 @@ export default {
         return {
             estToday: now,
             limitDays: limit,
-            startTime: now,
+            startTime: start,
             endTime: now,
             state: '0',
             searchInfo: {

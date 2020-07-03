@@ -57,6 +57,7 @@ export default {
         accountDataEmailPorn1: () => import(/* webpackChunkName: 'accountDataEmailPorn1' */'../../tpl/porn1/components/mcenter/components/accountData/account/form/editEmail'),
         accountDataQqPorn1: () => import(/* webpackChunkName: 'accountDataQqPorn1' */'../../tpl/porn1/components/mcenter/components/accountData/account/form/editQq'),
         accountDataWeixinPorn1: () => import(/* webpackChunkName: 'accountDataWeixinPorn1' */'../../tpl/porn1/components/mcenter/components/accountData/account/form/editWeixin'),
+        accountDataBirthdayPorn1: () => import(/* webpackChunkName: 'accountDataBirthdayPorn1' */'../../tpl/porn1/components/mcenter/components/accountData/account/form/editBirthday'),
         walletPorn1: () => import(/* webpackChunkName: 'walletPorn1' */'../../tpl/porn1/components/mcenter/components/wallet'),
         makeMoneyPorn1: () => import(/* webpackChunkName: 'makeMoneyPorn1' */'../../tpl/porn1/components/mcenter/components/makeMoney')
     }

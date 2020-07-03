@@ -40,6 +40,11 @@ export default {
                     path: 'weixin',
                     name: 'mcenter-accountData-weixin',
                     component
+                },
+                {
+                    path: 'birthday',
+                    name: 'mcenter-accountData-birthday',
+                    component
                 }
             ]
         },

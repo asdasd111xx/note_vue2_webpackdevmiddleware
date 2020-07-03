@@ -205,25 +205,11 @@ export default {
         }
       }
 
-      //   if (field.key === "email") {
-      //     if (!field.verification) {
-      //       this.$router.push({
-      //         path: `/mobile/mcenter/accountData/email`
-      //       });
-      //     }
-
-      //     // 只能設定一次
-      //     if (this.memInfo.user.email) {
-      //       return;
-      //     }
-      //   }
-
-
       if (!field.btnShow) {
         return;
       }
 
-      if (['name', 'phone', 'email', 'qq', 'weixin'].includes(field.key)) {
+      if (['name', 'phone', 'email', 'qq', 'weixin', 'birthday'].includes(field.key)) {
         this.$router.push({
           path: `/mobile/mcenter/accountData/${field.key}`
         });
