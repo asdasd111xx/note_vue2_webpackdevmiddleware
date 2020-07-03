@@ -168,9 +168,12 @@ export default {
       memInfo: 'getMemInfo'
     }),
     isAdult() {
-      return (
-        this.memInfo.config.content_rating && this.memInfo.user.content_rating
-      );
+      let rating = localStorage.getItem('content_rating');
+      if (localStorage.getItem('content_rating')) {
+        return localStorage.getItem('content_rating') === "1" ? true : false;
+      } else {
+        return this.memInfo.config.content_rating && this.memInfo.user.content_rating;
+      }
     },
     typeList() {
       if (this.allGame) {

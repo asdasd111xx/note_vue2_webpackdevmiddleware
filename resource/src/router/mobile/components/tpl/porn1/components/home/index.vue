@@ -61,10 +61,10 @@ export default {
         },
         success: () => {
           this.actionSetUserdata(true);
-          window.location.reload();
+          window.location.reload(true);
         }
       });
-
+      localStorage.setItem('content_rating', "1");
       localStorage.removeItem('new_user');
     }
 
