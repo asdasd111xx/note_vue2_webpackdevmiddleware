@@ -61,10 +61,10 @@ export default {
         },
         success: () => {
           this.actionSetUserdata(true);
-          localStorage.removeItem('new_user');
           window.location.reload();
         }
       });
+      localStorage.removeItem('new_user');
     }
 
     if (!this.loginStatus) {
