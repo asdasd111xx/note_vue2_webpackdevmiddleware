@@ -1,21 +1,36 @@
 <template>
-  <div :class="[$style['field-editer'], 'clearfix']">
-    <div :class="$style['field-title']">{{ $text("S_BIRTHDAY_DATE") }}</div>
-    <div :class="$style['input-wrap']">
-      <div :class="[$style['field-value'], $style['date-field']]">
-        <input v-model="value" type="date" />
-        <span>{{ value | dateFormat }}</span>
+  <mobile-container :header-config="headerConfig">
+    <div slot="content" :class="$style['content-wrap']">
+      <div :class="[$style.wrap, 'clearfix']">
+        <!-- 錯誤訊息 -->
+        <div :class="$style['top-tips']">
+          <div v-show="tipMsg">
+            {{ tipMsg }}
+          </div>
+        </div>
+        <div :class="$style.block">
+          <div :class="$style.title">{{ $text("S_BIRTHDAY_DATE") }}</div>
+          <div :class="$style['input-wrap']">
+            <input
+              id="birthday-input"
+              ref="input"
+              :class="$style['birthday-input']"
+              v-model="value"
+              type="date"
+              placeholder="添加日期，确保您已满18岁"
+              @input="onInput"
+            />
+            <span
+              :class="[$style['birthday-text'], { [$style['unset']]: !value }]"
+              @click="handleClickText"
+              >{{ dateFormat }}</span
+            >
+          </div>
+        </div>
       </div>
-      <div :class="$style['btn-wrap']">
-        <span :class="$style['btn-cancel']" @click="$emit('cancel')">
-          {{ $text("S_CANCEL", "取消") }}
-        </span>
-        <span :class="$style['btn-confirm']" @click="handleSubmit()">
-          {{ $text("S_CONFIRM", "確認") }}
-        </span>
-      </div>
+      <service-tips />
     </div>
-  </div>
+  </mobile-container>
 </template>
 
 <script>
@@ -27,6 +42,7 @@ import mcenter from '@/api/mcenter';
 import { API_MCENTER_USER_CONFIG } from '@/config/api';
 import mobileContainer from '../../../../../common/new/mobileContainer';
 import serviceTips from '../../serviceTips';
+
 export default {
   components: {
     mobileContainer,
@@ -56,52 +72,62 @@ export default {
         funcBtn: this.$text('S_COMPLETE', '完成'),
         funcBtnActive: !!(this.value)
       };
-    }
-  },
-  filters: {
-    dateFormat(value) {
-      if (value) {
-        return Vue.moment(value).format('YYYY年MM月DD日')
+    },
+    dateFormat() {
+      if (this.value) {
+        return Vue.moment(this.value).format('YYYY年MM月DD日')
       } else {
-        return '年 / 月 / 日'
+        return '添加日期，确保您已满18岁'
       }
     }
   },
   methods: {
-    ...mapActions(['actionSetUserdata']),
-    handleSubmit() {
-      // 空值驗證
+    ...mapActions([
+      'actionSetUserdata',
+      'actionSetＭcenterBindMessage'
+    ]),
+    handleClickText() {
+      document.getElementById('birthday-input').click();
+    },
+    onInput(e) {
+      this.tipMsg = '';
+      this.value = e.target.value;
       if (this.value === '') {
-        this.$emit('msg', this.$text('S_CR_NUT_NULL'));
-        return Promise.resolve('error');
+        this.tipMsg = this.$text('S_CR_NUT_NULL');
       }
-
+    },
+    handleSubmit() {
       const valueDate = new Date(this.value);
       const limit = new Date(Vue.moment(this.systemTime).add(-18, 'year'));
       if (valueDate > limit) {
-        this.$emit('msg', '年龄未满十八岁,无法游戏');
-        return Promise.resolve('error');
+        this.tipMsg = `年龄未满十八岁,无法游戏`;
+        return;
       }
 
-      return mcenter.accountDataSet({
+      mcenter.accountDataSet({
         params: {
           birthday: Vue.moment(this.value).format()
         },
         success: () => {
-          this.$emit('msg', this.$text('S_CR_SUCCESS'));
-          this.$emit('cancel');
           this.actionSetUserdata(true);
+          this.$router.push('/mobile/mcenter/accountData');
+          this.successMessage();
         },
         fail: (res) => {
-          this.$emit('msg', res.msg);
-          this.$emit('cancel');
+          if (res && res.data && res.data.msg) {
+            this.tipMsg = `${res.data.msg}(${res.data.code})`;
+          }
         }
       });
+    },
+    successMessage() {
+      this.actionSetＭcenterBindMessage({
+        msg: this.$text('S_BIND_SUCCESSFULLY', '绑定成功'),
+        msgIcon: true
+      });
     }
-  }
-
+  },
 };
 
 </script>
-
-<style src="../../css/index.module.scss" lang="scss" module>
+<style src="../../css/index.module.scss" lang="scss" module />

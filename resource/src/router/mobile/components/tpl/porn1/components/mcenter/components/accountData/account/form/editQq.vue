@@ -69,7 +69,10 @@ export default {
     }
   },
   methods: {
-    ...mapActions(['actionSetUserdata']),
+    ...mapActions([
+      'actionSetUserdata',
+      'actionSetＭcenterBindMessage'
+    ]),
     onInput(e) {
       this.tipMsg = '';
       this.value = e.target.value;
@@ -83,13 +86,8 @@ export default {
 
     },
     handleSubmit() {
-      // 空值驗證
-      if (this.value === '') {
-        this.tipMsg = this.$text('S_CR_NUT_NULL');
-      }
-
-      if (!/^[0-9]+$/.test(this.value)) {
-        alert(this.$text('S_JM_AGENT_INPUT_NUMBER', '仅允许输入数字'));
+      if (this.tipMsg) {
+        return;
       }
 
       mcenter.accountDataSet({
@@ -106,6 +104,12 @@ export default {
             this.tipMsg = `${res.data.msg}(${res.data.code})`;
           }
         }
+      });
+    },
+    successMessage() {
+      this.actionSetＭcenterBindMessage({
+        msg: this.$text('S_BIND_SUCCESSFULLY', '绑定成功'),
+        msgIcon: true
       });
     }
   }

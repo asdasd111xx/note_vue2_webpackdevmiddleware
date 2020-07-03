@@ -69,8 +69,10 @@ export default {
     }
   },
   methods: {
-    ...mapActions(['actionSetUserdata']),
-    ...mapActions(['actionSetUserdata']),
+    ...mapActions([
+      'actionSetUserdata',
+      'actionSetＭcenterBindMessage'
+    ]),
     onInput(e) {
       this.tipMsg = '';
       this.value = e.target.value;
@@ -79,6 +81,10 @@ export default {
       }
     },
     handleSubmit() {
+      if (this.tipMsg) {
+        return;
+      }
+
       mcenter.accountDataSet({
         params: {
           weixin: this.value
@@ -93,6 +99,12 @@ export default {
             this.tipMsg = `${res.data.msg}(${res.data.code})`;
           }
         }
+      });
+    },
+    successMessage() {
+      this.actionSetＭcenterBindMessage({
+        msg: this.$text('S_BIND_SUCCESSFULLY', '绑定成功'),
+        msgIcon: true
       });
     }
   }
