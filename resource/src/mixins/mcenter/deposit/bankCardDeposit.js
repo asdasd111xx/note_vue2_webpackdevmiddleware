@@ -570,6 +570,11 @@ export default {
             this.checkOrderData();
         },
         submitDataInput(data, objKey) {
+            if (objKey === 'depositName') {
+              const re = /[,:;!”@#$%^&*?<>()+=`|[\]{}\\"/~\-_'A-Za-z0-9\uFF10-\uFF19\uFF41-\uFF5A\uFF21-\uFF3A\uFF01-\uFF5E]/g;
+              this.speedField.depositName = this.speedField.depositName.replace(re, '')
+            }
+
             this.$emit('update:speedField', { data, objKey });
             this.checkOrderData();
         },
