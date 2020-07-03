@@ -197,8 +197,13 @@ export default {
     //   fail: (error) => {
     //   }
     // });
+    let rating = localStorage.getItem('content_rating');
+    if (localStorage.getItem('content_rating')) {
+      this.pornSwitchState = localStorage.getItem('content_rating') === "1" ? true : false;
+    } else {
+      this.pornSwitchState = this.memInfo.config.content_rating && this.memInfo.user.content_rating;
+    }
 
-    this.pornSwitchState = this.memInfo.config.content_rating && this.memInfo.user.content_rating;
     // 超級籤需滿足的最低金額
     const requiredMoney = 200;
     if (!this.loginStatus) return;
@@ -345,6 +350,7 @@ export default {
           content_rating: +!this.pornSwitchState
         },
         success: () => {
+          localStorage.setItem('content_rating', (+!this.pornSwitchState));
           this.memInfo.user.content_rating = +!this.pornSwitchState;
           this.pornSwitchState = !this.pornSwitchState;
           this.isReceive = false;
