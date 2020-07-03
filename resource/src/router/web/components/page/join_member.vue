@@ -161,6 +161,7 @@ import split from 'lodash/split';
 import ajax from '@/lib/ajax';
 import appEvent from '@/lib/appEvent';
 import member from '@/api/member';
+import mcenter from '@/api/mcenter';
 import joinMemInfo from '@/config/joinMemInfo';
 import slideVerification from '@/components/slideVerification';
 import puzzleVerification from '@/components/puzzleVerification';
@@ -533,6 +534,7 @@ export default {
       }
       const self = this;
       const platform = getCookie('platform');
+
       bbosRequest({
         method: 'post',
         url: `${this.siteConfig.BBOS_DOMIAN}/Player/Add`,
@@ -572,11 +574,12 @@ export default {
             return;
           }
 
+          self.actionSetUserdata(true);
+          localStorage.setItem('new_user', true);
 
           setTimeout(() => {
-            this.actionSetUserdata(true);
             window.location.reload();
-          }, 500)
+          }, 800)
           return;
         }
 
