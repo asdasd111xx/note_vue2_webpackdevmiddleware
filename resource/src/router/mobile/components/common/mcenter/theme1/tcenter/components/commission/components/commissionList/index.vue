@@ -17,7 +17,7 @@
                         <span :class="$style['card-name']">{{
                             info.period
                         }}</span>
-                        <span :class="[$style['card-getNumber']]">{{
+                        <span :class="[$style['card-getNumber'] , {[$style['has-detail']]: info.show_detail } ]">{{
                             info.amount | amountFormat
                         }}</span>
                     </div>
@@ -98,7 +98,7 @@ export default {
     },
     methods: {
         onClick(info) {
-            if (info.state === 1) {
+            if (info.show_detail) {
                 this.setDetailData(info);
                 this.setTabState(false);
                 this.setHeaderTitle(info.period);
