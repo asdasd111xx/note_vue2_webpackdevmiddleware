@@ -34,7 +34,7 @@
         </div>
       </div>
       <div :class="[$style.detail, 'clearfix']">
-        <div :class="$style.title">備註</div>
+        <div :class="$style.title">备注</div>
         <div :class="$style.text">
           {{ detailInfo.memo ? detailInfo.memo : "--" }}
         </div>
