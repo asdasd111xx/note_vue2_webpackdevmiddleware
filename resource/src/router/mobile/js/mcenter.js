@@ -30,6 +30,16 @@ export default {
                     path: 'phone',
                     name: 'mcenter-accountData-phone',
                     component
+                },
+                {
+                    path: 'qq',
+                    name: 'mcenter-accountData-qq',
+                    component
+                },
+                {
+                    path: 'weixin',
+                    name: 'mcenter-accountData-weixin',
+                    component
                 }
             ]
         },

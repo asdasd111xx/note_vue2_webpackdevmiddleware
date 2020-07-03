@@ -76,7 +76,7 @@ export default {
           this.handleSubmit();
         },
         funcBtn: this.$text('S_COMPLETE', '完成'),
-        funcBtnActive: !!(this.value)
+        funcBtnActive: !!(this.value) && !this.tipMsg
       };
     }
   },
@@ -86,6 +86,7 @@ export default {
       'actionSetＭcenterBindMessage'
     ]),
     onInput(e) {
+      this.tipMsg = "";
       this.value = e.target.value;
 
       // 個人姓名限制輸入上限30字元
@@ -114,7 +115,6 @@ export default {
         success: () => {
           this.actionSetUserdata(true);
           this.$router.push('/mobile/mcenter/accountData');
-          //   this.$text('S_EDIT_SUCCESS')
           this.successMessage();
         },
         fail: (res) => {

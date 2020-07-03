@@ -160,11 +160,12 @@ import find from 'lodash/find';
 import mcenter from '@/api/mcenter';
 import { API_MCENTER_MESSAGES_CONTENT } from '@/config/api';
 import { getCookie, setCookie } from '@/lib/cookie';
+import EST from '@/lib/EST';
 
 export default {
   filters: {
     dateFormat(date) {
-      return Vue.moment(date).format('YYYY-MM-DD HH:mm:ss');
+      return EST(Vue.moment(date).format('YYYY-MM-DD HH:mm:ss'));
     },
     shortDateFormat(date) {
       return Vue.moment(date).format('YYYY-MM-DD');

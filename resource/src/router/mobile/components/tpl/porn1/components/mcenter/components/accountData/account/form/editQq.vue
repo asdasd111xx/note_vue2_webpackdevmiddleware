@@ -9,12 +9,12 @@
           </div>
         </div>
         <div :class="$style.block">
-          <div :class="$style.title">{{ $text("WECHAT") }}</div>
+          <div :class="$style.title">{{ $text("S_QQ") }}</div>
           <div :class="$style['input-wrap']">
             <input
               ref="input"
               :value="value"
-              :placeholder="$text('WECHAT')"
+              :placeholder="$text('S_QQ')"
               :class="$style.input"
               :maxlength="30"
               type="text"
@@ -59,7 +59,7 @@ export default {
       return {
         prev: true,
         onClick: () => { this.$router.back(); },
-        title: this.$text('WECHAT'),
+        title: this.$text('S_QQ'),
         onClickFunc: () => {
           this.handleSubmit();
         },
@@ -70,18 +70,31 @@ export default {
   },
   methods: {
     ...mapActions(['actionSetUserdata']),
-    ...mapActions(['actionSetUserdata']),
     onInput(e) {
       this.tipMsg = '';
       this.value = e.target.value;
       if (this.value === '') {
         this.tipMsg = this.$text('S_CR_NUT_NULL');
       }
+
+      if (!/^[0-9]+$/.test(this.value)) {
+        this.tipMsg = this.$text('S_JM_AGENT_INPUT_NUMBER', '仅允许输入数字');
+      }
+
     },
     handleSubmit() {
+      // 空值驗證
+      if (this.value === '') {
+        this.tipMsg = this.$text('S_CR_NUT_NULL');
+      }
+
+      if (!/^[0-9]+$/.test(this.value)) {
+        alert(this.$text('S_JM_AGENT_INPUT_NUMBER', '仅允许输入数字'));
+      }
+
       mcenter.accountDataSet({
         params: {
-          weixin: this.value
+          qq_num: this.value
         },
         success: () => {
           this.actionSetUserdata(true);

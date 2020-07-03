@@ -86,7 +86,7 @@ export default {
               placeholder: '绑定邮箱保护帐号安全'
             },
             qq_num: {
-              key: 'qq_num',
+              key: 'qq',
               text: 'S_QQ',
               status: '',
               value: '',
