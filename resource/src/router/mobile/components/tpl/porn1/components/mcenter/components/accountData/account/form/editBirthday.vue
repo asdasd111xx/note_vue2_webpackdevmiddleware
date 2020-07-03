@@ -1,21 +1,21 @@
 <template>
-    <div :class="[$style['field-editer'], 'clearfix']">
-        <div :class="$style['field-title']">{{ $text("S_BIRTHDAY_DATE") }}</div>
-        <div :class="$style['input-wrap']">
-            <div :class="[$style['field-value'], $style['date-field']]">
-                <input v-model="value" type="date" />
-                <span>{{ value | dateFormat }}</span>
-            </div>
-            <div :class="$style['btn-wrap']">
-                <span :class="$style['btn-cancel']" @click="$emit('cancel')">
-                    {{ $text("S_CANCEL", "取消") }}
-                </span>
-                <span :class="$style['btn-confirm']" @click="handleSubmit()">
-                    {{ $text("S_CONFIRM", "確認") }}
-                </span>
-            </div>
-        </div>
+  <div :class="[$style['field-editer'], 'clearfix']">
+    <div :class="$style['field-title']">{{ $text("S_BIRTHDAY_DATE") }}</div>
+    <div :class="$style['input-wrap']">
+      <div :class="[$style['field-value'], $style['date-field']]">
+        <input v-model="value" type="date" />
+        <span>{{ value | dateFormat }}</span>
+      </div>
+      <div :class="$style['btn-wrap']">
+        <span :class="$style['btn-cancel']" @click="$emit('cancel')">
+          {{ $text("S_CANCEL", "取消") }}
+        </span>
+        <span :class="$style['btn-confirm']" @click="handleSubmit()">
+          {{ $text("S_CONFIRM", "確認") }}
+        </span>
+      </div>
     </div>
+  </div>
 </template>
 
 <script>
@@ -24,60 +24,81 @@ import { mapGetters, mapActions } from 'vuex';
 import { format } from 'date-fns';
 import datepickerLang from '@/lib/datepicker_lang';
 import mcenter from '@/api/mcenter';
-
+import { API_MCENTER_USER_CONFIG } from '@/config/api';
+import mobileContainer from '../../../../../common/new/mobileContainer';
+import serviceTips from '../../serviceTips';
 export default {
-    data() {
-        return {
-            value: '',
-            dateLang: datepickerLang(this.$i18n.locale)
-        };
-    },
-    computed: {
-        ...mapGetters({
-            systemTime: 'getSystemTime'
-        })
-    },
-    filters: {
-        dateFormat(value) {
-            if(value) {
-                return Vue.moment(value).format('YYYY年MM月DD日')
-            } else {
-                return '年 / 月 / 日'
-            }
-        }
-    },
-    methods: {
-        ...mapActions(['actionSetUserdata']),
-        handleSubmit() {
-            // 空值驗證
-            if (this.value === '') {
-                this.$emit('msg', this.$text('S_CR_NUT_NULL'));
-                return Promise.resolve('error');
-            }
-
-            const valueDate = new Date(this.value);
-            const limit = new Date(Vue.moment(this.systemTime).add(-18, 'year'));
-            if (valueDate > limit) {
-                this.$emit('msg', '年龄未满十八岁,无法游戏');
-                return Promise.resolve('error');
-            }
-
-            return mcenter.accountDataSet({
-                params: {
-                    birthday: Vue.moment(this.value).format()
-                },
-                success: () => {
-                    this.$emit('msg', this.$text('S_CR_SUCCESS'));
-                    this.$emit('cancel');
-                    this.actionSetUserdata(true);
-                },
-                fail: (res) => {
-                    this.$emit('msg', res.msg);
-                    this.$emit('cancel');
-                }
-            });
-        }
+  components: {
+    mobileContainer,
+    serviceTips
+  },
+  data() {
+    return {
+      value: '',
+      dateLang: datepickerLang(this.$i18n.locale),
+      tipMsg: '',
+    };
+  },
+  computed: {
+    ...mapGetters({
+      memInfo: 'getMemInfo',
+      webInfo: 'getWebInfo',
+      systemTime: 'getSystemTime'
+    }),
+    headerConfig() {
+      return {
+        prev: true,
+        onClick: () => { this.$router.back(); },
+        title: this.$text('S_BIRTHDAY_DATE'),
+        onClickFunc: () => {
+          this.handleSubmit();
+        },
+        funcBtn: this.$text('S_COMPLETE', '完成'),
+        funcBtnActive: !!(this.value)
+      };
     }
+  },
+  filters: {
+    dateFormat(value) {
+      if (value) {
+        return Vue.moment(value).format('YYYY年MM月DD日')
+      } else {
+        return '年 / 月 / 日'
+      }
+    }
+  },
+  methods: {
+    ...mapActions(['actionSetUserdata']),
+    handleSubmit() {
+      // 空值驗證
+      if (this.value === '') {
+        this.$emit('msg', this.$text('S_CR_NUT_NULL'));
+        return Promise.resolve('error');
+      }
+
+      const valueDate = new Date(this.value);
+      const limit = new Date(Vue.moment(this.systemTime).add(-18, 'year'));
+      if (valueDate > limit) {
+        this.$emit('msg', '年龄未满十八岁,无法游戏');
+        return Promise.resolve('error');
+      }
+
+      return mcenter.accountDataSet({
+        params: {
+          birthday: Vue.moment(this.value).format()
+        },
+        success: () => {
+          this.$emit('msg', this.$text('S_CR_SUCCESS'));
+          this.$emit('cancel');
+          this.actionSetUserdata(true);
+        },
+        fail: (res) => {
+          this.$emit('msg', res.msg);
+          this.$emit('cancel');
+        }
+      });
+    }
+  }
 
 };
 

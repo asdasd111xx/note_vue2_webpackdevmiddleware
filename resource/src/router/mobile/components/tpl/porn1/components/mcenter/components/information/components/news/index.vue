@@ -56,11 +56,12 @@
 <script>
 import Vue from 'vue';
 import { mapGetters } from 'vuex';
+import EST from '@/lib/EST';
 
 export default {
   filters: {
     dateFormat(date) {
-      return Vue.moment(date).format('YYYY-MM-DD');
+      return EST(Vue.moment(date).format('YYYY-MM-DD HH:mm:ss'));
     },
     timeFormat(date) {
       return Vue.moment(date).format('YYYY-MM-DD HH:mm:ss');

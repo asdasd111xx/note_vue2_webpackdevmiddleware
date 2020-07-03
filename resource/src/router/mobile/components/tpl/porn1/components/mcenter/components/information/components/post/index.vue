@@ -65,11 +65,12 @@
 import Vue from 'vue';
 import { API_GET_POST } from '@/config/api';
 import ajax from '@/lib/ajax';
+import EST from '@/lib/EST';
 
 export default {
   filters: {
     dateFormat(date) {
-      return Vue.moment(date).format('YYYY-MM-DD HH:mm:ss');
+      return EST(Vue.moment(date).format('YYYY-MM-DD HH:mm:ss'));
     },
     shortDateFormat(date) {
       return Vue.moment(date).format('YYYY-MM-DD');

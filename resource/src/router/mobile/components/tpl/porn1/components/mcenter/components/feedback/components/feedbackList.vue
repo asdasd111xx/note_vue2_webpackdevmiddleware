@@ -61,7 +61,9 @@
             <img
               :class="$style['detail-icon']"
               :src="
-                `/static/image/_new/mcenter/default/avatar_${memInfo.user.image !== 0 ? memInfo.user.image : 1}.png`
+                `/static/image/_new/mcenter/default/avatar_${
+                  memInfo.user.image !== 0 ? memInfo.user.image : 1
+                }.png`
               "
             />
             <div :class="$style['question-info']">
@@ -87,7 +89,7 @@
             />
             <div :class="$style['question-info']">
               <div :class="$style['question-name']">
-                鸭脖视频
+                鸭博娱乐
               </div>
               <p
                 :class="$style['question-description']"
@@ -155,13 +157,13 @@ export default {
           96: 7
         },
         67: {
-            79: 1,
-            80: 2,
-            81: 3,
-            82: 4,
-            83: 5,
-            84: 6,
-            85: 7
+          79: 1,
+          80: 2,
+          81: 3,
+          82: 4,
+          83: 5,
+          84: 6,
+          85: 7
         }
       }
     };

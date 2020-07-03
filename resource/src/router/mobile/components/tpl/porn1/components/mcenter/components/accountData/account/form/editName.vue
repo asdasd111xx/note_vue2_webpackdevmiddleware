@@ -13,10 +13,10 @@
           <div :class="$style['input-wrap']">
             <input
               ref="input"
-              :value="value"
+              v-model="value"
               :placeholder="$text('S_ENTER_REAL_NAME', '请输入您的真实姓名')"
               :class="$style.input"
-              :maxlength="30"
+              maxlength="30"
               type="text"
               @input="onInput"
             />
@@ -76,7 +76,7 @@ export default {
           this.handleSubmit();
         },
         funcBtn: this.$text('S_COMPLETE', '完成'),
-        funcBtnActive: !!(this.value)
+        funcBtnActive: !!(this.value) && !this.tipMsg
       };
     }
   },
@@ -86,12 +86,8 @@ export default {
       'actionSetＭcenterBindMessage'
     ]),
     onInput(e) {
-      this.value = e.target.value;
-
-      // 個人姓名限制輸入上限30字元
-      if (this.value.length > 30) {
-        this.value = this.value.substring(0, 30);
-      }
+      const re = /[,:;!”@#$%^&*?<>()+=`|[\]{}\\"/~\-_'A-Za-z0-9\uFF10-\uFF19\uFF41-\uFF5A\uFF21-\uFF3A\uFF01-\uFF5E]/g;
+      this.value = this.value.replace(re, '')
     },
     handleSubmit() {
       if (!this.value || !this.value.length > 0) {
@@ -99,7 +95,8 @@ export default {
         return;
       }
 
-      const re = /^[^0-9，:;！@#$%^&*?<>()+=`|[\]{}\\"/.\s~\-_']*$/;
+      const re = /^[^A-Za-z0-9\uFF10-\uFF19\uFF41-\uFF5A\uFF21-\uFF3A，:;！@#$%^&*?<>()+=`|[\]{}\\"/\s~\-_']*$/;
+      //   const re = /[,:;!”@#$%^&*?<>()+=`|[\]{}\\"/~\-_'A-Za-z0-9\uFF10-\uFF19\uFF41-\uFF5A\uFF21-\uFF3A\uFF01-\uFF5E]/g;
       const msg = this.$text('S_NO_SYMBOL_DIGIT_CHEN', '请勿输入数字、空白及特殊符号');
 
       if (!re.test(this.value)) {
@@ -114,7 +111,6 @@ export default {
         success: () => {
           this.actionSetUserdata(true);
           this.$router.push('/mobile/mcenter/accountData');
-          //   this.$text('S_EDIT_SUCCESS')
           this.successMessage();
         },
         fail: (res) => {

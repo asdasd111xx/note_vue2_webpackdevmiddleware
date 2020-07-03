@@ -3,7 +3,7 @@
     <div :class="$style['header']">
       <div :class="$style['header-background']">
         <img
-          :src="$getCdnPath('/static/image/_new/webview/bg_service_app02.png')"
+          :src="$getCdnPath('/static/image/_new/webview/bg_service_app.png')"
           alt="background"
         />
       </div>
