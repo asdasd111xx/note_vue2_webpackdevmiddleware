@@ -63,11 +63,12 @@ export default {
                 setCookie('cid', '');
                 setCookie('aid', '');
                 localStorage.removeItem('type');
+                localStorage.removeItem('content_rating');
                 // GA流量統計
                 window.dataLayer.push({
                     ga_uid: undefined
                 });
-                window.location.reload();
+                window.location.reload(true)
                 this.$router.push("/mobile");
             }
         });
