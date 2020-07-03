@@ -585,6 +585,7 @@ export default {
             this.moneyValue = '';
             this.isErrorMoney = false;
             this.isSelectValue = '';
+            this.nameCheckFail = false;
 
             Object.keys(this.speedField).forEach((info) => {
                 if (info === 'depositMethod') {

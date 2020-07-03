@@ -46,7 +46,7 @@
         <th width="56%">備註</th>
     </tr>
     <tr>
-        <td>鸭脖视频測試站</td>
+        <td>鸭博娱乐測試站</td>
         <td><a href="https://yb01.66boxing.com/">客端</a></td>
         <td><a href="https://yb01.66polo.com/">廳主端</a></td>
         <td>500015</td>
@@ -56,7 +56,7 @@
         <td>只有手機網頁版</td>
     </tr>
     <tr>
-        <td>鸭脖视频正式站（測試環境）</td>
+        <td>鸭博娱乐正式站（測試環境）</td>
         <td><a href="https://yb0t.66relish.com/">客端</a></td>
         <td><a href="yb0t.88lard.com">廳主端</a></td>
         <td>69</td>
@@ -66,7 +66,7 @@
         <td>只有手機網頁版</td>
     </tr>
     <tr>
-        <td>鸭脖视频正式站</td>
+        <td>鸭博娱乐正式站</td>
         <td><a href="https://yaboxxxapp01.com/">客端</a></td>
         <td><a href="https://yb01.88lard.com/">廳主端</a></td>
         <td>67</td>

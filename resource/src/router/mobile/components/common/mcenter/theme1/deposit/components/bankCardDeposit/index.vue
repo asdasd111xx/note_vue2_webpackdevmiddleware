@@ -524,7 +524,7 @@
           <div
             :class="[
               $style['pay-button'],
-              { [$style.disabled]: !checkSuccess && isBlockChecked }
+              { [$style.disabled]: !checkSuccess && isBlockChecked || nameCheckFail }
             ]"
             :title="$text('S_ENTER_PAY', '立即充值')"
             @click="clickSubmit"
@@ -932,12 +932,15 @@ export default {
       'actionSetUserBalance'
     ]),
     verificationName() {
-      const reg = /^[^，:;！@#$%^&*?<>()+=`|[\]{}\\"/.~\-_']*$/;
+      // 全型數字：[\uFF10-\uFF19]
+      // 全型英文小寫：[\uFF41-\uFF5A]
+      // 全型英文大寫：[\uFF21-\uFF3A]
+      const reg = /^[^A-Za-z0-9\uFF10-\uFF19\uFF41-\uFF5A\uFF21-\uFF3A，:;！@#$%^&*?<>()+=`|[\]{}\\"/~\-_']*$/;
       if (!reg.test(this.speedField.depositName)) {
-        this.msg = '请输入正确名称';
+        // this.msg = '请输入正确名称';
         this.nameCheckFail = true;
       } else {
-        this.msg = '';
+        // this.msg = '';
         this.nameCheckFail = false;
       }
     },

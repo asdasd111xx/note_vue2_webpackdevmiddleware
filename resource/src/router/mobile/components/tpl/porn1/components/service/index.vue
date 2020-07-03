@@ -114,13 +114,13 @@
               />
             </div>
             <span
-              >尊敬的鸭脖视频会员，当iOS用户的鸭脖视频App掉签无法打开时，可以通过以下方法继续游戏</span
+              >尊敬的鸭博娱乐会员，当iOS用户的鸭博娱乐App掉签无法打开时，可以通过以下方法继续游戏</span
             >
           </div>
 
           <div :class="$style['content']">
             <div :class="$style['content-cell']">
-              <span>1.通过鸭脖视频图标上的网址，重新下载App：</span>
+              <span>1.通过鸭博娱乐图标上的网址，重新下载App：</span>
               <div :class="$style['content-img']">
                 <img
                   :src="
@@ -134,7 +134,7 @@
             </div>
 
             <div :class="$style['content-cell']">
-              <span>2.收藏鸭脖视频永久网址，浏览器打开，随时畅玩：</span>
+              <span>2.收藏鸭博娱乐永久网址，浏览器打开，随时畅玩：</span>
               <div
                 :class="$style['link']"
                 v-for="(item, index) in linkArray"

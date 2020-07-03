@@ -114,7 +114,7 @@ export default {
 
         },
         {
-          initName: '关于鸭脖视频',
+          initName: '关于鸭博娱乐',
           name: 'S_ABOUT_YABOLIVE',
           path: '/mobile/mcenter/about',
           pageName: 'about',

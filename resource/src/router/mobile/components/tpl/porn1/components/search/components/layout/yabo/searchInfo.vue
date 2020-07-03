@@ -169,7 +169,7 @@ export default {
 .wrap {
   position: relative;
   float: left;
-  height: 110px;
+  height: 115px;
   width: 49%;
   margin-left: 0.6%;
   margin-top: 5px;

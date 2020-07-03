@@ -9,7 +9,7 @@
     "ROUTER_404_TEXT2": "尊敬的用户，很抱歉，此页面未找到，请您联系客服为您提供解决方法，对您造成的不便，我们深表歉意，感谢您的理解与支持！",
     "ROUTER_500_TEXT": "内部伺服器错误",
     "ROUTER_NO_SERVICE_TITLE": "访问受限制",
-    "ROUTER_NO_SERVICE_TEXT1": "尊敬的用户，由于相关法规限制，您所在的地区无法使用鸭脖视频产品，如有任何疑问，请通过在线客服，或发邮件至",
+    "ROUTER_NO_SERVICE_TEXT1": "尊敬的用户，由于相关法规限制，您所在的地区无法使用鸭博娱乐产品，如有任何疑问，请通过在线客服，或发邮件至",
     "ROUTER_NO_SERVICE_TEXT2": "我们将第一时间给您回复，对您造成的不便，我们深表歉意，感谢您的理解与支持！",
     "ROUTER_UPUP_TITLE": "网站升级中",
     "ROUTER_UPUP_TEXT_1": "目前网站进行系统维护中，如有不便之处，敬请见谅。我们很快回来!请您稍后回来继续游戏喔!",
@@ -949,7 +949,7 @@
     "S_TRANSACTION_RECORD": "交易记录",
     "S_JOIN_PLAN": "合营计划",
     "S_ABOUT_THEME3": "关于威尼斯人",
-    "S_ABOUT_YABOLIVE": "关于鸭脖视频",
+    "S_ABOUT_YABOLIVE": "关于鸭博娱乐",
     "S_ESPORTS_THEME3": "威尼斯人体育",
     "S_RETRIEVE_PHONE": "手机验证",
     "S_RETRIEVE_EMAIL": "邮箱验证",
@@ -1467,7 +1467,7 @@
     "S_RESET_SEND": "重新发送",
     "S_LOCAL_TIME": "当地时间",
     "S_MILLER_ESPORT_SHORT": "必博电竞",
-    "S_COUNT_PORN_JOIN_DAYS": "加入鸭脖视频的第%s天",
+    "S_COUNT_PORN_JOIN_DAYS": "加入鸭博娱乐的第%s天",
     "S_CHANGE_WALLET": "选择转帐钱包",
     "S_OUT_WALLET": "转出钱包",
     "S_IN_WALLET": "转入钱包",
@@ -1687,5 +1687,7 @@
     "S_BIND_SUCCESSFULLY": "绑定成功",
     "S_PICTURE_SAVED_TO_LOCAL": "图片已保存到本地相册",
     "S_AUTO_SAVE": "自动保存",
-    "S_XBB_GAMIMG": "XBB麻将馆"
+    "S_XBB_GAMIMG": "XBB麻将馆",
+    "鸭脖视频": "鸭脖视频",
+    "鸭博娱乐": "鸭博娱乐"
 }

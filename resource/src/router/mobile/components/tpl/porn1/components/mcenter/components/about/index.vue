@@ -38,7 +38,7 @@
             <img
               :src="$getCdnPath(`/static/image/_new/about/logo_yabolive.png`)"
             />
-            <div>鸭脖视频</div>
+            <div>鸭博娱乐</div>
           </div>
           <div :class="$style['cell']">
             <img
@@ -114,7 +114,7 @@ export default {
       return {
         prev: true,
         onClick: () => { this.$router.back(); },
-        title: this.$text('S_ABOUT_YABOLIVE', '关于鸭脖视频'),
+        title: this.$text('S_ABOUT_YABOLIVE', '关于鸭博娱乐'),
       };
     },
   },

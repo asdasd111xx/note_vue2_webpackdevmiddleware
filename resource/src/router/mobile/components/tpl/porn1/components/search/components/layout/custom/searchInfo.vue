@@ -87,8 +87,8 @@ export default {
     getImg(image) {
       return {
         src: image,
-        error: this.$getCdnPath(`/static/image/_new/default/bg_video03_d.png`),
-        loading: this.$getCdnPath(`/static/image/_new/default/bg_video03_d.png`)
+        error: this.$getCdnPath(`/static/image/_new/default/bg_video03_1_d@3x.png`),
+        loading: this.$getCdnPath(`/static/image/_new/default/bg_video03_1_d@3x.png`)
       };
     },
     getSearchList(page) {
@@ -172,7 +172,7 @@ export default {
 .wrap {
   position: relative;
   float: left;
-  height: 110px;
+  height: 115px;
   width: 49%;
   margin-left: 0.6%;
   margin-top: 5px;
