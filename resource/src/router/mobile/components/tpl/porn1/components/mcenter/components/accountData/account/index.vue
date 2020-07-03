@@ -222,7 +222,7 @@ export default {
       if (!field.btnShow) {
         return;
       }
-      console.log(field.key)
+
       if (['name', 'phone', 'email', 'qq', 'weixin'].includes(field.key)) {
         this.$router.push({
           path: `/mobile/mcenter/accountData/${field.key}`
