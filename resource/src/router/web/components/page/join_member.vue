@@ -156,7 +156,6 @@
 </template>
 
 <script>
-import { mapGetters } from 'vuex';
 import capitalize from 'lodash/capitalize';
 import split from 'lodash/split';
 import ajax from '@/lib/ajax';
@@ -167,6 +166,7 @@ import slideVerification from '@/components/slideVerification';
 import puzzleVerification from '@/components/puzzleVerification';
 import { getCookie, setCookie } from '@/lib/cookie';
 import bbosRequest from "@/api/bbosRequest";
+import { mapGetters, mapActions } from 'vuex';
 
 export default {
   components: {
@@ -403,6 +403,7 @@ export default {
     });
   },
   methods: {
+    ...mapActions(['actionSetUserdata']),
     keyDownSubmit() {
       if (this.memInfo.config.register_captcha_type === 2) {
         return
@@ -530,7 +531,7 @@ export default {
       if (this.memInfo.config.register_captcha_type === 3) {
         delete params.confirm_password;
       }
-
+      const self = this;
       const platform = getCookie('platform');
       bbosRequest({
         method: 'post',
@@ -571,7 +572,11 @@ export default {
             return;
           }
 
-          window.location.reload();
+
+          setTimeout(() => {
+            this.actionSetUserdata(true);
+            window.location.reload();
+          }, 500)
           return;
         }
 
