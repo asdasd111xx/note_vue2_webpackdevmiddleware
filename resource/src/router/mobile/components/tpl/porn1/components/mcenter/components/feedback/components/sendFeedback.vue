@@ -41,7 +41,6 @@
       <span :class="$style['text-count']"
         >{{ paramsData.content.length }}/200</span
       >
-      <div v-if="popStatus" :class="$style['pop-message']" v-html="message" />
     </div>
     <div :class="$style['feedback-img']">
       <!-- <div :class="$style['img-count']">0/3</div> -->
@@ -64,7 +63,7 @@
     <div
       :class="[
         $style['submit'],
-        { [$style['disabled']]: paramsData.content.length < 20 }
+        { [$style['disabled']]: paramsData.content.length < 20 && !isSend }
       ]"
       @click="submitFeedback"
     >
@@ -102,28 +101,20 @@
         </ul>
       </div>
     </div>
-    <message v-if="msg" @close="msg = ''">
-      <div slot="msg">
-        {{ msg }}
-      </div>
-    </message>
   </div>
 </template>
 
 <script>
-import { mapGetters } from 'vuex';
+import { mapGetters, mapActions } from 'vuex';
 import ajax from '@/lib/ajax';
 import { API_FEEDBACK_TYPE_LIST, API_FEEDBACK_CREATED } from '@/config/api';
-import message from '../../../../common/new/message'
 
 export default {
   components: {
-    message
   },
   data() {
     return {
       isSend: '',
-      msg: '',
       paramsData: {
         type_id: '',
         title: '',
@@ -132,14 +123,12 @@ export default {
       currentIndex: '',
       typeList: [],
       isShow: false,
-      popStatus: false,
       stepText: [
         `${this.$text('S_FEEDBACK_TIP01', '步骤一： 点击「上传图片」前往网址')} (https://imgbb.com/)。`,
         this.$text('S_FEEDBACK_TIP02', '步骤二： 将图片上传并获取图片网址链结。'),
         this.$text('S_FEEDBACK_TIP03', '步骤三： 将获取的网址链结贴至对话输入框内。'),
         this.$text('S_FEEDBACK_TIP04', '特别说明： 部分浏览器不支援 拖曳 上传图片，请使用上传按钮')
       ],
-      message: '',
       iconList: {
         500015: {
           260: 1,
@@ -196,6 +185,9 @@ export default {
     });
   },
   methods: {
+    ...mapActions([
+      'actionSetGlobalMessage'
+    ]),
     setValue(value) {
       this.paramsData.content = value;
     },
@@ -206,16 +198,12 @@ export default {
       this.isShow = false;
     },
     submitFeedback() {
-      if (!this.paramsData.title || this.isSend) {
-        if (this.popStatus) {
-          return;
-        }
+      if (this.isSend) {
+        return;
+      }
 
-        this.message = this.$text('S_SELECT_QUESTION_CATEGORY', '请选择问题类型');
-        this.popStatus = true;
-        setTimeout(() => {
-          this.popStatus = false;
-        }, 2000);
+      if (!this.paramsData.title || this.isSend) {
+        this.actionSetGlobalMessage({ msg: this.$text('S_SELECT_QUESTION_CATEGORY', '请选择问题类型') });
         return;
       }
 
@@ -224,33 +212,28 @@ export default {
         method: 'post',
         url: API_FEEDBACK_CREATED,
         params: this.paramsData,
-        errorAlert: true
-      }).then((response) => {
-        if (response && response.result === 'ok') {
-          this.msg = this.$text('S_FEEDBACK_SUCCESS', '您的意见反馈已送出');
+        errorAlert: false,
+        fail: (res) => {
+          this.actionSetGlobalMessage({ msg: `${res.data.msg}(${res.data.code})` });
+        },
+      }).then((res) => {
+        this.isSend = false;
+        if (res && res.result === 'ok') {
 
+          this.actionSetGlobalMessage({ msg: this.$text('S_FEEDBACK_SUCCESS', '您的意见反馈已送出') });
           Object.keys(this.paramsData).forEach((info) => {
             this.paramsData[info] = '';
           });
 
           this.currentIndex = '';
-          this.isSend = false;
         }
       });
     },
     goImageRelease() {
       const url = 'https://imgbb.com/';
       if (window.matchMedia('(display-mode: standalone)').matches || window.navigator.standalone || window.location.hostname === 'yaboxxxapp02.com') {
-        if (this.popStatus) {
-          return;
-        }
-
         this.$copyText(url);
-        this.message = '「上传图片」链接已复制<br />请使用浏览器打开';
-        this.popStatus = true;
-        setTimeout(() => {
-          this.popStatus = false;
-        }, 2000);
+        this.actionSetGlobalMessage({ msg: `「上传图片」链接已复制<br />请使用浏览器打开` });
         return;
       }
 
