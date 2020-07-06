@@ -197,7 +197,6 @@ export default {
     //   fail: (error) => {
     //   }
     // });
-    let rating = localStorage.getItem('content_rating');
     if (localStorage.getItem('content_rating')) {
       this.pornSwitchState = localStorage.getItem('content_rating') === "1" ? true : false;
     } else {

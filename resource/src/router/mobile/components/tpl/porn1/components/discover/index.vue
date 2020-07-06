@@ -25,7 +25,6 @@ export default {
       memInfo: 'getMemInfo'
     }),
     isAdult() {
-      let rating = localStorage.getItem('content_rating');
       if (localStorage.getItem('content_rating')) {
         return localStorage.getItem('content_rating') === "1" ? true : false;
       } else {
