@@ -1,7 +1,7 @@
 <template>
   <mobile-container :header-config="headerConfig">
     <div slot="content" :class="[$style['content-wrap']]">
-      <component :is="template" :headerConfig.sync="headerConfig" />
+      <platform-layout :headerConfig.sync="headerConfig" :source="source" />
     </div>
   </mobile-container>
 </template>
@@ -9,14 +9,12 @@
 <script>
 import { mapGetters } from "vuex";
 import mobileContainer from "../common/new/mobileContainer";
+import platformLayout from "./components/layout/"
 
 export default {
   components: {
     mobileContainer,
-    yabo: () => import("./components/yabo/"),
-    smallPig: () => import("./components/smallPig/"),
-    gay: () => import("./components/gay/"),
-    les: () => import("./components/les/")
+    platformLayout
   },
   data() {
     return {
@@ -35,7 +33,7 @@ export default {
         this.headerObj = value;
       }
     },
-    template() {
+    source() {
       let source = this.$route.query.source || "yabo";
       return source;
     }
