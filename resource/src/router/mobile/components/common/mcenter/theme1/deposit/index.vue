@@ -87,22 +87,22 @@ export default {
     if (!this.loginStatus) {
       this.$router.push('/mobile/login');
     }
+    //   0706 統一RD5判斷銀行卡
+    // yaboRequest({
+    //   method: 'get',
+    //   url: `${this.siteConfig.YABO_API_DOMAIN}/AccountBank/GetBankBindingStatus/${getCookie('cid')}`,
+    //   headers: {
+    //     'x-domain': this.memInfo.user.domain
+    //   }
+    // }).then((res) => {
+    //   if (res.data === false) {
+    //     this.msg = "请先绑定提现银行卡";
 
-    yaboRequest({
-      method: 'get',
-      url: `${this.siteConfig.YABO_API_DOMAIN}/AccountBank/GetBankBindingStatus/${getCookie('cid')}`,
-      headers: {
-        'x-domain': this.memInfo.user.domain
-      }
-    }).then((res) => {
-      if (res.data === false) {
-        this.msg = "请先绑定提现银行卡";
-
-        setTimeout(() => {
-          this.$router.push('/mobile/mcenter/bankCard?redirect=wallet');
-        }, 2500)
-      }
-    });
+    //     setTimeout(() => {
+    //       this.$router.push('/mobile/mcenter/bankCard?redirect=wallet');
+    //     }, 2500)
+    //   }
+    // });
 
     this.isFastPay();
   },

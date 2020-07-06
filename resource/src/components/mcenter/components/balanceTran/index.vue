@@ -419,17 +419,6 @@ export default {
         }
       });
     },
-    checkBankCard() {
-      return yaboRequest({
-        method: 'get',
-        url: `${this.siteConfig.YABO_API_DOMAIN}/AccountBank/GetBankBindingStatusTrans/${getCookie('cid')}`,
-        headers: {
-          'x-domain': this.memInfo.user.domain
-        }
-      }).then((res) => {
-        return res.data
-      });
-    },
     balanceTran({ customSucessAlert } = {}) {
       // 阻擋連續點擊
       if (this.btnLock) {

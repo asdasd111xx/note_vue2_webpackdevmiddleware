@@ -603,7 +603,7 @@ export const actionSetUserdata = ({ commit }, forceUpdate = false) => {
 
     setTimeout(() => {
         memstatus = true;
-    }, 3000);
+    }, 1000);
 
     return member.data({
         timeout: 10000,
