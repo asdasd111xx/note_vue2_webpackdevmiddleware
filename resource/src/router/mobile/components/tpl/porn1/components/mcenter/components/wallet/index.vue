@@ -260,25 +260,27 @@ export default {
   },
   methods: {
     handleDeposit() {
-      yaboRequest({
-        method: 'get',
-        url: `${this.siteConfig.YABO_API_DOMAIN}/AccountBank/GetBankBindingStatus/${getCookie('cid')}`,
-        timeout: 30000,
-        headers: {
-          'x-domain': this.memInfo.user.domain
-        }
-      }).then((res) => {
-        if (res.data) {
-          this.$router.push(`/mobile/mcenter/deposit`);
-        }
-        else {
-          this.msg = "请先绑定提现银行卡"
+      this.$router.push('/mobile/mcenter/bankCard?redirect=wallet');
+      //   0706 統一RD5判斷銀行卡
+      //   yaboRequest({
+      //     method: 'get',
+      //     url: `${this.siteConfig.YABO_API_DOMAIN}/AccountBank/GetBankBindingStatus/${getCookie('cid')}`,
+      //     timeout: 30000,
+      //     headers: {
+      //       'x-domain': this.memInfo.user.domain
+      //     }
+      //   }).then((res) => {
+      //     if (res.data) {
+      //       this.$router.push(`/mobile/mcenter/deposit`);
+      //     }
+      //     else {
+      //       this.msg = "请先绑定提现银行卡"
 
-          setTimeout(() => {
-            this.$router.push('/mobile/mcenter/bankCard?redirect=wallet');
-          }, 2500)
-        }
-      });
+      //       setTimeout(() => {
+      //         this.$router.push('/mobile/mcenter/bankCard?redirect=wallet');
+      //       }, 2500)
+      //     }
+      //   });
     },
     handleClick(path) {
       this.$router.push(path);

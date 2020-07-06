@@ -49,6 +49,7 @@ export default {
       if (redirect && redirect.split('-')[0]) {
         switch (redirect.split('-')[0]) {
           case "casino":
+          case "deposit":
           case "withdraw":
           case "balanceTrans":
           case "home":

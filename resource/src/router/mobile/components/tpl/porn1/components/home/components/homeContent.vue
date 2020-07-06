@@ -168,7 +168,6 @@ export default {
       memInfo: 'getMemInfo'
     }),
     isAdult() {
-      let rating = localStorage.getItem('content_rating');
       if (localStorage.getItem('content_rating')) {
         return localStorage.getItem('content_rating') === "1" ? true : false;
       } else {
@@ -442,21 +441,23 @@ export default {
       }
 
       if (path === 'deposit') {
-        yaboRequest({
-          method: 'get',
-          url: `${
-            this.siteConfig.YABO_API_DOMAIN
-            }/AccountBank/GetBankBindingStatus/${getCookie('cid')}`,
-          headers: {
-            'x-domain': this.memInfo.user.domain
-          }
-        }).then(res => {
-          if (res.data) {
-            this.$router.push(`/mobile/mcenter/deposit`);
-          } else {
-            this.actionSetGlobalMessage({ type: 'bindcard', code: 'C50099' });
-          }
-        });
+        this.$router.push(`/mobile/mcenter/deposit`);
+        //   0706 統一RD5判斷銀行卡
+        // yaboRequest({
+        //   method: 'get',
+        //   url: `${
+        //     this.siteConfig.YABO_API_DOMAIN
+        //     }/AccountBank/GetBankBindingStatus/${getCookie('cid')}`,
+        //   headers: {
+        //     'x-domain': this.memInfo.user.domain
+        //   }
+        // }).then(res => {
+        //   if (res.data) {
+        //     this.$router.push(`/mobile/mcenter/deposit`);
+        //   } else {
+        //     this.actionSetGlobalMessage({ type: 'bindcard', code: 'C50099' });
+        //   }
+        // });
       } else if (path === 'grade') {
         this.$router.push('/mobile/mcenter/accountVip');
         return;

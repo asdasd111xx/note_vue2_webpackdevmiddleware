@@ -39,11 +39,12 @@ export default {
     }
   },
   created() {
-    if (
-      !this.memInfo.config.content_rating ||
-      !this.memInfo.user.content_rating
-    ) {
-      this.$router.push("/mobile");
+    if (localStorage.getItem('content_rating')) {
+      if (localStorage.getItem('content_rating') !== "1") {
+        this.$router.push('/mobile');
+      }
+    } else if (!this.memInfo.config.content_rating || !this.memInfo.user.content_rating) {
+      this.$router.push('/mobile');
     }
 
     if (!this.$route.query.source) {
