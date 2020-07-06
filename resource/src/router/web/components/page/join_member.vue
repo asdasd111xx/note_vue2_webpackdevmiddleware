@@ -62,31 +62,61 @@
                 @click="getCaptcha()"
               />
             </template>
-            <input
-              v-else-if="field.key === 'password'"
-              v-model="allValue[field.key]"
-              :class="[$style['join-input'], field.key]"
-              :name="field.key"
-              :placeholder="field.content.note1"
-              type="password"
-              maxlength="12"
-              @focus="onFocus(field.key)"
-              @blur="verification(field.key)"
-              @input="verification(field.key)"
-              @keydown.13="keyDownSubmit()"
-            />
-            <input
-              v-else-if="field.key === 'confirm_password'"
-              v-model="allValue[field.key]"
-              :class="[$style['join-input'], field.key]"
-              :name="field.key"
-              :placeholder="field.content.note1"
-              type="password"
-              maxlength="12"
-              @input="verification(field.key)"
-              @blur="verification(field.key)"
-              @keydown.13="keyDownSubmit()"
-            />
+            <template v-else-if="field.key === 'password'">
+              <input
+                id="pwd"
+                v-model="allValue[field.key]"
+                :class="[$style['join-input'], field.key]"
+                :name="field.key"
+                :placeholder="field.content.note1"
+                type="password"
+                maxlength="12"
+                @focus="onFocus(field.key)"
+                @blur="verification(field.key)"
+                @input="verification(field.key)"
+                @keydown.13="keyDownSubmit()"
+              />
+              <div :class="$style['eye']">
+                <img
+                  :src="
+                    $getCdnPath(
+                      `/static/image/_new/login/btn_eye_${
+                        isShowPwd ? 'n' : 'd'
+                      }.png`
+                    )
+                  "
+                  @click="toggleEye('confPwd')"
+                />
+              </div>
+            </template>
+
+            <template v-else-if="field.key === 'confirm_password'">
+              <input
+                id="confirm_pwd"
+                v-model="allValue[field.key]"
+                :class="[$style['join-input'], field.key]"
+                :name="field.key"
+                :placeholder="field.content.note1"
+                type="password"
+                maxlength="12"
+                @input="verification(field.key)"
+                @blur="verification(field.key)"
+                @keydown.13="keyDownSubmit()"
+              />
+              <div :class="$style['eye']">
+                <img
+                  :src="
+                    $getCdnPath(
+                      `/static/image/_new/login/btn_eye_${
+                        isShowPwd ? 'n' : 'd'
+                      }.png`
+                    )
+                  "
+                  @click="toggleEye('confPwd')"
+                />
+              </div>
+            </template>
+
             <input
               v-else-if="field.key === 'username'"
               :ref="field.key"
@@ -186,6 +216,7 @@ export default {
   },
   data() {
     return {
+      isShowPwd: false,
       errMsg: '',
       joinMemInfo,
       captchaImg: '',
@@ -438,6 +469,17 @@ export default {
         return
       }
       this.joinSubmit();
+    },
+    toggleEye() {
+      if (this.isShowPwd) {
+        document.getElementById("pwd").type = 'password';
+        document.getElementById("confirm_pwd").type = 'password';
+      } else {
+        document.getElementById("pwd").type = 'text';
+        document.getElementById("confirm_pwd").type = 'text';
+      }
+
+      this.isShowPwd = !this.isShowPwd;
     },
     getCaptcha() {
       bbosRequest({
