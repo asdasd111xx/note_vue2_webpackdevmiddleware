@@ -116,6 +116,7 @@ export default {
                     password: this.password,
                     captcha: this.captcha,
                     aid: this.aid || getCookie('aid') || '',
+                    host: window.location.host,
                     ...validate
                 },
                 fail: (res) => {

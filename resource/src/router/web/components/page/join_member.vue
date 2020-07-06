@@ -194,13 +194,41 @@ export default {
         username: '',
         password: '',
         confirm_password: '',
-        captcha_text: ''
+        captcha_text: '',
+
+        name: '',
+        email: '',
+        phone: '',
+        alias: '',
+        birthday: '',
+        gender: 0,
+        qq_num: '',
+        weixin: '',
+        line: '',
+        facebook: '',
+        skype: '',
+        zalo: '',
+        withdraw_password: '',
       },
       allTip: {
         username: '',
         password: '',
         confirm_password: '',
-        captcha_text: ''
+        captcha_text: '',
+
+        name: '',
+        email: '',
+        phone: '',
+        alias: '',
+        birthday: '',
+        gender: 0,
+        qq_num: '',
+        weixin: '',
+        line: '',
+        facebook: '',
+        skype: '',
+        zalo: '',
+        withdraw_password: '',
       },
       puzzleData: null,
       registerData: [],
@@ -436,6 +464,9 @@ export default {
     },
     verification(key) {
       const data = this.joinMemInfo[key];
+      if (!this.allValue[key]) {
+        return;
+      }
       this.allValue[key] = this.allValue[key].replace(/[\W]/g, '')
       if (key.includes('password') || key === "username") {
         this.allValue[key] = this.allValue[key].toLowerCase()
@@ -543,7 +574,8 @@ export default {
           'kind': platform === "H" ? 'h' : 'pwa'
         },
         params: {
-          ...params
+          ...params,
+          host: window.location.host,
         }
       }).then((res) => {
         if (this.$refs.puzzleVer) this.$refs.puzzleVer.ret = null;
@@ -578,7 +610,7 @@ export default {
           localStorage.setItem('new_user', true);
 
           setTimeout(() => {
-            window.location.reload();
+            window.location.reload(true);
           }, 800)
           return;
         }

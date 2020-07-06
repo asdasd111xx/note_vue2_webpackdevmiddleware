@@ -55,6 +55,8 @@ export default {
   },
   created() {
     if (localStorage.getItem('new_user')) {
+      localStorage.setItem('content_rating', "1");
+      localStorage.removeItem('new_user');
       mcenter.accountDataSet({
         params: {
           content_rating: 1
@@ -64,8 +66,6 @@ export default {
           window.location.reload(true);
         }
       });
-      localStorage.setItem('content_rating', "1");
-      localStorage.removeItem('new_user');
     }
 
     if (!this.loginStatus) {
