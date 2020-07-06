@@ -337,7 +337,19 @@ export default {
             return ajax({
                 method: 'get',
                 url: `${API_MCENTER_DEPOSIT_INPAY}?username=${this.username}`,
-                errorAlert: false
+                errorAlert: false,
+                fail: (res) => {
+                  if (res && res.data && res.data.msg && res.data.code) {
+                    if(res.data.code === 'C150099') {
+                        this.msg = `${res.data.msg}`
+                        setTimeout(() => {
+                            this.$router.push('/mobile/mcenter/bankCard?redirect=deposit')
+                        }, 2000)
+                    } else {
+                        this.msg = `${res.data.msg}(${res.data.code})`
+                    }
+                  }
+                }
             }).then((response) => {
                 this.isShow = false;
                 this.actionSetIsLoading(false);
@@ -442,6 +454,18 @@ export default {
                     payment_method_id: this.curPayInfo.payment_method_id,
                     bank_id: !isOtherBank ? nowBankId : '',
                     username: this.username
+                },
+                fail: (res) => {
+                  if (res && res.data && res.data.msg && res.data.code) {
+                    if(res.data.code === 'C150099') {
+                        this.msg = `${res.data.msg}`
+                        setTimeout(() => {
+                            this.$router.push('/mobile/mcenter/bankCard?redirect=deposit')
+                        }, 2000)
+                    } else {
+                        this.msg = `${res.data.msg}(${res.data.code})`
+                    }
+                  }
                 }
             }).then((response) => {
                 if (response.result === 'ok') {
@@ -743,7 +767,19 @@ export default {
                 method: 'post',
                 url: API_TRADE_RELAY,
                 errorAlert: false,
-                params: paramsData
+                params: paramsData,
+                fail: (res) => {
+                    if ( res && res.data && res.data.msg && res.data.code ) {
+                        if ( res.data.code === 'C150099' ) {
+                            this.msg = `${res.data.msg}`
+                            setTimeout(() => {
+                                this.$router.push('/mobile/mcenter/bankCard?redirect=deposit')
+                            }, 2000)
+                        } else {
+                            this.msg = `${res.data.msg}(${res.data.code})`
+                        }
+                    }
+                }
             }).then((response) => {
 
                 this.isShow = false;
