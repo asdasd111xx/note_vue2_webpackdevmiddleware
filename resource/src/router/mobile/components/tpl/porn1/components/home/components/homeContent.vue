@@ -480,6 +480,7 @@ export default {
       // GG => 女女視頻
 
       if (game.type === 'D') {
+        this.$router.push('/mobile/mcenter/makeMoney')
         return;
       }
 
