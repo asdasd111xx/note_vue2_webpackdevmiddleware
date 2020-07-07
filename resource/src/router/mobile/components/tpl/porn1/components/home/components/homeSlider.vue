@@ -1,6 +1,15 @@
 <template>
   <swiper v-if="options" :options="options">
-    <swiper-slide v-for="(info, key) in slider" :key="key">
+    <!-- 線上問題先固定圖片 -->
+    <swiper-slide>
+      <div :class="$style['phone-image-wrap']">
+        <img
+          :class="$style['phone-image']"
+          src="https://ya.alwm03.cn/cdn/template/381/159003139009.png"
+        />
+      </div>
+    </swiper-slide>
+    <!-- <swiper-slide v-for="(info, key) in slider" :key="key">
       <div :class="$style['phone-image-wrap']">
         <img
           :class="$style['phone-image']"
@@ -15,7 +24,7 @@
           :data-info="key"
         />
       </div>
-    </swiper-slide>
+    </swiper-slide> -->
     <div slot="pagination" class="swiper-pagination" />
   </swiper>
 </template>
@@ -74,7 +83,9 @@ export default {
       return list;
     },
     options() {
-      const hasData = this.slider.length > 1;
+      // <!-- 線上問題先固定圖片 -->
+      //   const hasData = this.slider.length > 1;
+      const hasData = false;
       const originSlider = this.slider;
       const options = {
         loop: hasData,
