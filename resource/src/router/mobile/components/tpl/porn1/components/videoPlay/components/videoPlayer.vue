@@ -240,7 +240,7 @@ export default {
             console.log("[WS]: Video active Reconnecting...");
           }
           this.connectWS();
-        }, 1000)
+        }, 3000)
       }
     },
     onMessage(e) {

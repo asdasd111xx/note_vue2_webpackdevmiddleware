@@ -10,24 +10,28 @@
     <div
       :class="[
         $style['bouns-process'],
-        { [$style['active']]: processType === 'earn' }
+        { [$style['active']]: processType === 'earn' },
+        { [$style['loading']]: processType === 'loading' }
       ]"
     >
       <div
         :class="[$style['coin-wrap'], { [$style['active']]: playingCueTime }]"
       >
-        <!-- 動畫進行中 -->
-        <template v-if="playingCueTime && processType !== 'earn'">
-          <div :class="$style['icon']">
-            <img
-              :src="
-                $getCdnPath(
-                  `/static/image/_new/actives/bouns/${curCoinSrc}.png`
-                )
-              "
-            />
-          </div>
+        <div :class="$style['icon']">
+          <img
+            :src="
+              $getCdnPath(`/static/image/_new/actives/bouns/${curCoinSrc}.png`)
+            "
+          />
+        </div>
 
+        <!-- 連接中/斷線 -->
+        <template v-if="processType === 'loading'">
+          <span :class="$style['loading-text']">连线中...</span>
+        </template>
+
+        <!-- 動畫進行中 -->
+        <template v-else-if="playingCueTime && processType !== 'earn'">
           <div class="circle_container">
             <div :class="`circle_loader ${isPause ? 'pause' : ''}`">
               <div id="halfclip">
@@ -41,15 +45,6 @@
 
         <!-- 一般顯示 -->
         <template v-else>
-          <div :class="$style['icon']">
-            <img
-              :src="
-                $getCdnPath(
-                  `/static/image/_new/actives/bouns/${curCoinSrc}.png`
-                )
-              "
-            />
-          </div>
           <span v-if="processType === 'earn'" :class="$style['earn']">
             {{ `+${earnCoin} ` }}元</span
           >
@@ -72,13 +67,14 @@ export default {
   data() {
     return {
       curCoinSrc: "coin_bg",
-      processType: "process", // 累加,達標,已完成
+      processType: "loading", // 累加,達標,已完成
       coinType:
         [{ key: 'done', src: 'coin_g' },
         { key: 'process', src: 'coin_bg' },
         { key: 'earn', src: 'coin_y' },
         { key: 'next', src: 'coin_next' },
         { key: 'wait', src: 'coin_open' },
+        { key: 'loading', src: 'coin_g' },
         ],
       isClose: false,
       isInit: false,
