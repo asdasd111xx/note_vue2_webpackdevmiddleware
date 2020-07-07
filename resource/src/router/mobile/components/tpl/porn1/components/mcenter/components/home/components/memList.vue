@@ -186,6 +186,7 @@ export default {
     }
   },
   created() {
+
     // 會員存款狀態
     // ajax({
     //   method: 'get',
