@@ -93,7 +93,7 @@ export default {
       toggleShare: false,
       requiredMoney: 'load',
       superErrorMsg: '', // 超級簽錯誤訊息
-      isShowSuper: true, // *顯示超級簽開關
+      isShowSuper: false, // *顯示超級簽開關
       list: [
         {
           initName: '下载超级签，成为超级会员',
