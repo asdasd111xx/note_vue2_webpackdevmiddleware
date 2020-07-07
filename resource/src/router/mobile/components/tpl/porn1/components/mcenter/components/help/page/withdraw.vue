@@ -34,10 +34,12 @@
           :id="`q-${item.key}`"
           :class="[$style['cell'], { [$style['active']]: item.isOpen }]"
           :key="item.key"
-          @click="item.content && handleToggleContent(item.key)"
         >
           <template v-if="item.title && item.content">
-            <div :class="$style['title']">
+            <div
+              :class="$style['title']"
+              @click="item.content && handleToggleContent(item.key)"
+            >
               {{ item.title }}
             </div>
             <div
@@ -68,6 +70,7 @@
                 $style['arrow-btn'],
                 { [$style['active']]: item.isOpen }
               ]"
+              @click="item.content && handleToggleContent(item.key)"
             >
               <img
                 :src="
