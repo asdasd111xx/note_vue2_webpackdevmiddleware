@@ -119,6 +119,9 @@ export default {
     let videoDom = document.getElementById("video-play");
     videoDom.insertBefore(document.getElementById("video-play-block"), videoDom.childNodes[0]);
 
+    window.YABO_SOCKET_VIDEO_DISCONNECT = this.onDisconnect;
+    window.YABO_SOCKET_VIDEO_CONNECT = this.connectWS;
+
     //活動開關
     if (this.isActiveBouns) {
       // connect websocket
@@ -232,6 +235,7 @@ export default {
         if (this.isDebug) {
           console.log("[WS]: Video active message connected");
         }
+
         window.YABO_SOCKET_VIDEO_ONMESSAGE = this.onMessage;
       } else {
         if (this.reconnectTimer) return;
@@ -239,9 +243,20 @@ export default {
           if (this.isDebug) {
             console.log("[WS]: Video active Reconnecting...");
           }
+
+          window.YABO_SOCKET_VIDEO_ONMESSAGE = null;
           this.connectWS();
         }, 3000)
       }
+    },
+    onDisconnect() {
+      if (this.isDebug) {
+        console.log("[WS]: Video active loading...");
+      }
+
+      const bonunsProcess = this.$refs.bonunsProcess;
+      const bonunsDialog = this.$refs.bonunsDialog;
+      bonunsProcess.processType = 'loading';
     },
     onMessage(e) {
       if (e && e.data) {
@@ -471,6 +486,8 @@ export default {
     this.onSend("STOP");
     document.removeEventListener('visibilitychange', () => { }, false);
     window.YABO_SOCKET_VIDEO_ONMESSAGE = null;
+    window.YABO_SOCKET_VIDEO_DISCONNECT = null;
+    window.YABO_SOCKET_VIDEO_CONNECT = null;
     clearTimeout(this.reconnectTimer);
     this.reconnectTimer = null;
     this.player.dispose();

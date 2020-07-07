@@ -66,7 +66,7 @@ export default {
   },
   data() {
     return {
-      curCoinSrc: "coin_bg",
+      curCoinSrc: "coin_disconnected",
       processType: "loading", // 累加,達標,已完成
       coinType:
         [{ key: 'done', src: 'coin_g' },

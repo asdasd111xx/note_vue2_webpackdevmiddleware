@@ -114,6 +114,10 @@ export default {
     },
     /* 彩金websocket */
     reconnectYaboWS() {
+      if (window.YABO_SOCKET_VIDEO_DISCONNECT) {
+        window.YABO_SOCKET_VIDEO_DISCONNECT();
+      }
+
       if (this.reconnectTimer) return;
       this.reconnectTimer = setInterval(() => {
         if (this.isDebug) {
@@ -156,6 +160,11 @@ export default {
           if (this.isDebug) {
             console.log("[WS]: onOpen: Success")
           }
+
+          if (window.YABO_SOCKET_VIDEO_CONNECT) {
+            window.YABO_SOCKET_VIDEO_CONNECT();
+          }
+
           clearInterval(this.reconnectTimer);
           this.reconnectTimer = null;
         };
