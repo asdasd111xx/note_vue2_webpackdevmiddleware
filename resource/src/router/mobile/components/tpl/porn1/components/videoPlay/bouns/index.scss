@@ -159,6 +159,7 @@ $bouns_color6: #FFF07B;
 
             &.loading-text {
                 position: relative;
+                font-size: 12px;
             }
 
             &.earn {
@@ -170,10 +171,10 @@ $bouns_color6: #FFF07B;
     }
 
     &.loading {
-        width: 105px;
+        width: 100px;
 
         .coin-wrap {
-            width: 105px;
+            width: 100px;
             justify-content: flex-start;
         }
     }

@@ -74,7 +74,7 @@ export default {
         { key: 'earn', src: 'coin_y' },
         { key: 'next', src: 'coin_next' },
         { key: 'wait', src: 'coin_open' },
-        { key: 'loading', src: 'coin_g' },
+        { key: 'loading', src: 'coin_disconnected' },
         ],
       isClose: false,
       isInit: false,
