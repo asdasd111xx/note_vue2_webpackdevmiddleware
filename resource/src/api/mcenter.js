@@ -320,6 +320,7 @@ export default {
         return ajax({
             method: 'get',
             url: apiUrl.API_MCENTER_MONEY_DETAIL,
+            errorAlert: false,
             ...args
         });
     },
