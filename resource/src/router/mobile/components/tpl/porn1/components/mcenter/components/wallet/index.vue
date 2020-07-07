@@ -260,7 +260,7 @@ export default {
   },
   methods: {
     handleDeposit() {
-      this.$router.push('/mobile/mcenter/bankCard?redirect=wallet');
+      this.$router.push(`/mobile/mcenter/deposit`);
       //   0706 統一RD5判斷銀行卡
       //   yaboRequest({
       //     method: 'get',
