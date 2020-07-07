@@ -367,7 +367,7 @@ export default {
   },
   data() {
     return {
-      transferMoney: 0,
+      transferMoney: null,
       headerSetting: {
         title: this.$text("S_TRANSDER", "转帐"),
         prev: true,
