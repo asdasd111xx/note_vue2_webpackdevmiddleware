@@ -6,14 +6,18 @@
       <img :src="$getCdnPath('/static/image/_new/status/logo_b.png')" />
     </div>
     <div :class="$style['title']">{{ $t("ROUTER_NO_SERVICE_TITLE") }}</div>
-    <div :class="$style['text']">IP所在区域不在我们服务范围内，造成您的困扰，很抱歉！若有任何疑惑，请与我们客户服务联络，谢谢。</div>
+    <div :class="$style['text']">
+      IP所在区域不在我们服务范围内，造成您的困扰，很抱歉！若有任何疑惑，请与我们客户服务联络，谢谢。
+    </div>
     <div :class="$style['text']">IP：{{ ip }}({{ code }})</div>
     <div :class="$style['main-img']">
       <img :src="$getCdnPath('/static/image/_new/status/pic_403.png')" />
     </div>
     <div :class="$style['desc']">
       {{ $t("ROUTER_NO_SERVICE_TEXT1") }}
-      <span>cs2@yaboxxx.net</span>
+      <a :class="$style['mail-link']" @click="mailTo">
+        <span>cs2@yaboxxx.net</span>
+      </a>
       {{ $t("ROUTER_NO_SERVICE_TEXT2") }}
     </div>
     <div :class="$style.tips">
@@ -47,6 +51,9 @@ export default {
         if (this.$route.params.mode && this.$route.params.mode === 'test') {
           this.status = true;
         } else {
+          if (this.$route.params.mode && this.$route.params.mode === 'test') {
+            return;
+          }
           this.$router.push({ path: '/' });
         }
       },
@@ -56,7 +63,13 @@ export default {
         this.status = true;
       }
     });
-  }
+  },
+  methods: {
+    mailTo() {
+      const mail = 'cs2@yaboxxx.net'
+      window.open("mailto:" + mail + '?&body=...');
+    }
+  },
 };
 </script>
 
