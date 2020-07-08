@@ -127,7 +127,7 @@ export default {
         `${this.$text('S_FEEDBACK_TIP01', '步骤一： 点击「上传图片」前往网址')} (https://imgbb.com/)。`,
         this.$text('S_FEEDBACK_TIP02', '步骤二： 将图片上传并获取图片网址链结。'),
         this.$text('S_FEEDBACK_TIP03', '步骤三： 将获取的网址链结贴至对话输入框内。'),
-        this.$text('S_FEEDBACK_TIP04', '特别说明： 部分浏览器不支援 拖曳 上传图片，请使用上传按钮')
+        this.$text('S_FEEDBACK_TIP04', '特别说明： 部分浏览器不支援拖曳上传图片，请使用上传按钮')
       ],
       iconList: {
         500015: {

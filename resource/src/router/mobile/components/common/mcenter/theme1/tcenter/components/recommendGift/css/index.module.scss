@@ -40,7 +40,7 @@
         margin-left: 5px;
         transform: translateY(2px);
         border: 4px solid transparent;
-        border-top-color: #A5A9B3;
+        border-top-color: #414655;
     }
 
     &.active {
@@ -129,8 +129,8 @@
             line-height: 33px;
             color: #FFF;
             background: #BD9D7D;
-            background-image: -webkit-linear-gradient(right ,#BD9D7D, #F9DDBD);
-            background-image: linear-gradient(right ,#BD9D7D, #F9DDBD);
+            background-image: -webkit-linear-gradient(right, #BD9D7D, #F9DDBD);
+            background-image: linear-gradient(right, #BD9D7D, #F9DDBD);
             border: none;
         }
 
@@ -194,8 +194,8 @@
 .time-confirm {
     color: #FFF;
     background: #BD9D7D;
-    background-image: -webkit-linear-gradient(right ,#BD9D7D, #F9DDBD);
-    background-image: linear-gradient(right ,#BD9D7D, #F9DDBD);
+    background-image: -webkit-linear-gradient(right, #BD9D7D, #F9DDBD);
+    background-image: linear-gradient(right, #BD9D7D, #F9DDBD);
 }
 
 .total-wrap {
@@ -238,16 +238,14 @@
     color: #A6A9B2;
 }
 
-.item-detail-result {
-
-}
+.item-detail-result {}
 
 .no-data-wrap {
     width: 180px;
     height: 292px;
     margin: 20% auto 0;
 
-    > img {
+    >img {
         display: block;
         width: 100%;
     }
