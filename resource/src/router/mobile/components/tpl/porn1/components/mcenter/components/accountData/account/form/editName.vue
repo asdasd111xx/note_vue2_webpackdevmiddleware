@@ -86,7 +86,7 @@ export default {
       'actionSetＭcenterBindMessage'
     ]),
     onInput(e) {
-      const re = /[,:;!”@#$%^&*?<>()+=`|[\]{}\\"/~\-_'A-Za-z0-9\uFF10-\uFF19\uFF41-\uFF5A\uFF21-\uFF3A\uFF01-\uFF5E]/g;
+      const re = /[^\u3000\u3400-\u4DBF\u4E00-\u9FFF.]/g;
       this.value = this.value.replace(re, '')
     },
     handleSubmit() {
