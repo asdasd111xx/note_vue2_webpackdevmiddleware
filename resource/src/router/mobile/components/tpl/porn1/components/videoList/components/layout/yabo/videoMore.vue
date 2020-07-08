@@ -26,7 +26,10 @@
       <div
         v-for="info in videoList"
         :key="info.id"
-        :class="[isSingle ? $style['single'] : $style['multiple']]"
+        :class="[
+          isSingle ? $style['single'] : $style['multiple'],
+          $style['video-cell']
+        ]"
         @click="
           $router.push({
             name: 'videoPlay',
@@ -108,7 +111,7 @@ export default {
         method: "get",
         url: `/video/sort`,
         params: {
-          tagId: !this.tagId ? '' : this.tagId ,
+          tagId: !this.tagId ? '' : this.tagId,
           siteId: this.siteId
         },
         timeout: 30000
@@ -207,8 +210,11 @@ export default {
 @import "~@/css/variable.scss";
 
 .box {
-  position: relative;
+  max-width: $mobile_max_width;
   padding-right: 40px;
+  position: fixed;
+  top: 43px;
+  z-index: 2;
 
   &.yabo {
     background: $main_white_color1;
@@ -220,6 +226,12 @@ export default {
 
   &.les {
     background: #cc4646;
+  }
+}
+
+@media (orientation: landscape) {
+  .box {
+    max-width: $mobile_max_landscape_width !important;
   }
 }
 
@@ -305,12 +317,16 @@ export default {
 }
 
 .video-list-wrap {
+  padding-top: 43px;
   width: 97%;
   margin: 5px auto 0;
 }
 
+.video-cell {
+  margin: 5px auto 0;
+}
+
 .multiple {
-  composes: video-list-wrap;
   position: relative;
   float: left;
   width: 49%;

@@ -20,7 +20,7 @@
       <div
         v-for="info in videoList"
         :key="info.id"
-        :class="$style['multiple']"
+        :class="[$style['multiple'], $style['video-cell']]"
         @click="
           $router.push({
             name: 'videoPlay',
@@ -102,7 +102,7 @@ export default {
         url: `/video/sort`,
         smallPig: true,
         params: {
-          tagId: !this.tagId ? '' : this.tagId ,
+          tagId: !this.tagId ? '' : this.tagId,
           siteId: this.siteId
         },
         timeout: 30000
@@ -206,8 +206,18 @@ export default {
 }
 
 .box {
-  position: relative;
   background: $main_white_color1;
+  max-width: $mobile_max_width;
+  padding-right: 40px;
+  position: fixed;
+  top: 43px;
+  z-index: 2;
+}
+
+@media (orientation: landscape) {
+  .box {
+    max-width: $mobile_max_landscape_width !important;
+  }
 }
 
 .tab {
@@ -240,12 +250,16 @@ export default {
 }
 
 .video-list-wrap {
+  padding-top: 43px;
   width: 97%;
   margin: 5px auto 0;
 }
 
+.video-cell {
+  margin: 5px auto 0;
+}
+
 .multiple {
-  composes: video-list-wrap;
   position: relative;
   float: left;
   width: 48%;
