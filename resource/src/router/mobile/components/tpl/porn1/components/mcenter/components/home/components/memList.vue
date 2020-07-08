@@ -209,6 +209,34 @@ export default {
       this.pornSwitchState = this.memInfo.config.content_rating && this.memInfo.user.content_rating;
     }
 
+    let type = "ccf";
+
+    // switch (this.memInfo.user.domain) {
+    //   case "500015":
+    //   case "69":
+    //     type = "ccf_demo";
+    //     break;
+    //   default:
+    //   case "67":
+    //     type = "ccf";
+    //     break;
+    // }
+
+    yaboRequest({
+      method: "get",
+      url: `${this.siteConfig.YABO_API_DOMAIN}/System/config`,
+      params: {
+        type: type
+      },
+      headers: {
+        AuthToken: "YaboAPIforDev0nly"
+      }
+    }).then(res => {
+      if (res && res.data) {
+        this.isShowSuper = res.data.find(i => i.name === "VipDownload").value === "true";
+      }
+    });
+
     // 超級籤需滿足的最低金額
     const requiredMoney = 200;
     if (!this.loginStatus) return;
@@ -262,34 +290,6 @@ export default {
         if (error && error.data) {
           this.superErrorMsg = error.data.msg;
         }
-      }
-    });
-
-    let type = "ccf";
-
-    // switch (this.memInfo.user.domain) {
-    //   case "500015":
-    //   case "69":
-    //     type = "ccf_demo";
-    //     break;
-    //   default:
-    //   case "67":
-    //     type = "ccf";
-    //     break;
-    // }
-
-    yaboRequest({
-      method: "get",
-      url: `${this.siteConfig.YABO_API_DOMAIN}/System/config`,
-      params: {
-        type: type
-      },
-      headers: {
-        AuthToken: "YaboAPIforDev0nly"
-      }
-    }).then(res => {
-      if (res && res.data) {
-        this.isShowSuper = res.data.find(i => i.name === "VipDownload").value === "true";
       }
     });
 
