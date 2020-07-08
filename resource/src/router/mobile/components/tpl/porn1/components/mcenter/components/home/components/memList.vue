@@ -81,6 +81,9 @@ import mobileLinkOpen from '@/lib/mobile_link_open';
 import share from './share';
 import message from '../../../../common/new/message';
 import { getCookie } from '@/lib/cookie';
+import yaboRequest from "@/api/yaboRequest";
+import bbosRequest from "@/api/bbosRequest";
+
 export default {
   components: {
     share,
@@ -93,7 +96,8 @@ export default {
       toggleShare: false,
       requiredMoney: 'load',
       superErrorMsg: '', // 超級簽錯誤訊息
-      isShowSuper: true, // *顯示超級簽開關
+      isShowSuper: false, // *顯示超級簽開關
+      superAppUrl: 'https://www.51cjq.xyz/pkgs/ybsp2.app', // 超級簽URL
       list: [
         {
           initName: '下载超级签，成为超级会员',
@@ -174,7 +178,8 @@ export default {
     ...mapGetters({
       memInfo: 'getMemInfo',
       onlineService: 'getOnlineService',
-      loginStatus: 'getLoginStatus'
+      loginStatus: 'getLoginStatus',
+      siteConfig: "getSiteConfig",
     }),
     isShowShare: {
       get() {
@@ -197,11 +202,40 @@ export default {
     //   fail: (error) => {
     //   }
     // });
+
     if (localStorage.getItem('content_rating')) {
       this.pornSwitchState = localStorage.getItem('content_rating') === "1" ? true : false;
     } else {
       this.pornSwitchState = this.memInfo.config.content_rating && this.memInfo.user.content_rating;
     }
+
+    let type = "ccf";
+
+    // switch (this.memInfo.user.domain) {
+    //   case "500015":
+    //   case "69":
+    //     type = "ccf_demo";
+    //     break;
+    //   default:
+    //   case "67":
+    //     type = "ccf";
+    //     break;
+    // }
+
+    yaboRequest({
+      method: "get",
+      url: `${this.siteConfig.YABO_API_DOMAIN}/System/config`,
+      params: {
+        type: type
+      },
+      headers: {
+        AuthToken: "YaboAPIforDev0nly"
+      }
+    }).then(res => {
+      if (res && res.data) {
+        this.isShowSuper = res.data.find(i => i.name === "VipDownload").value === "true";
+      }
+    });
 
     // 超級籤需滿足的最低金額
     const requiredMoney = 200;
@@ -259,6 +293,22 @@ export default {
       }
     });
 
+    setTimeout(() => {
+      bbosRequest({
+        method: "get",
+        url: this.siteConfig.BBOS_DOMIAN + "/App/Download",
+        reqHeaders: {
+          Vendor: 67
+        },
+        params: {
+          lang: 'zh-cn',
+          bundleID: 'chungyo.foxyporn.prod.enterprise.vip',
+          platform: 1,
+        }
+      }).then(res => {
+        this.superAppUrl = res.data.url;
+      });
+    })
   },
   methods: {
     ...mapActions(['actionEnterMCenterThirdPartyLink', 'actionSetUserdata']),

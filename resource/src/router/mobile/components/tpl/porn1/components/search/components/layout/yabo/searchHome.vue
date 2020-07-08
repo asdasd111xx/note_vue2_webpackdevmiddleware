@@ -296,6 +296,7 @@ export default {
   background: #fff;
   border-radius: 15px;
   box-shadow: 0 0 20px 0 rgba(0, 0, 0, 0.05);
+  margin-bottom: 40px;
 
   .tips-title {
     position: relative;

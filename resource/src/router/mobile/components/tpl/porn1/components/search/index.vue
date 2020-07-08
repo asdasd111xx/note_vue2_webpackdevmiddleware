@@ -61,5 +61,6 @@ export default {
 <style lang="scss" module>
 .content-wrap {
   background: #f8f8f7;
+  overflow-y: auto;
 }
 </style>
