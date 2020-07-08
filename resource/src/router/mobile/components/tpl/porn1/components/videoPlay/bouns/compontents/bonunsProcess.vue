@@ -100,6 +100,7 @@ export default {
     },
     isUnloginMode(val) {
       if (val) {
+        this.processType = 'process';
         this.curCoinSrc = this.coinType.find(i => i.key == "earn").src;
         this.earnCoin = "999";
       }
@@ -169,7 +170,7 @@ export default {
         this.playingCueTime = setTimeout(() => {
           clearTimeout(this.playingCueTime);
           this.playingCueTime = null;
-        }, 60000)
+        }, 59000)
       }
     }
   },
@@ -213,8 +214,8 @@ export default {
   position: absolute;
   overflow: hidden;
   transform-origin: left center;
-  animation: cliprotate 60s steps(2) infinite;
-  -webkit-animation: cliprotate 60s steps(2) infinite;
+  animation: cliprotate 59s steps(2) infinite;
+  -webkit-animation: cliprotate 59s steps(2) infinite;
 }
 
 .halfcircle {
