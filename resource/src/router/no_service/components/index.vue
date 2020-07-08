@@ -31,6 +31,7 @@
 import Vue from 'vue';
 import member from '@/api/member';
 import getLang from '@/lib/getLang';
+import { getCookie } from '@/lib/cookie';
 
 export default {
   data() {
@@ -66,8 +67,14 @@ export default {
   },
   methods: {
     mailTo() {
-      const mail = 'cs2@yaboxxx.net'
-      window.open("mailto:" + mail + '?&body=...');
+      const mail = 'cs2@yaboxxx.net';
+      const isWebView = getCookie('platform') === "H" || window.location.host === "yaboxxxapp02.com";
+      const url = `mailto:${mail}`;
+      if (isWebView) {
+        setTimeout(() => { document.location.href = url }, 200);
+      } else {
+        window.open(url);
+      }
     }
   },
 };

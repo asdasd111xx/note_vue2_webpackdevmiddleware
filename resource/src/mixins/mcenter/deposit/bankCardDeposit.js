@@ -9,7 +9,6 @@ import { mapActions, mapGetters } from 'vuex';
 import BigNumber from 'bignumber.js/bignumber';
 import ajax from '@/lib/ajax';
 import { getCookie } from '@/lib/cookie';
-import isMobile from '@/lib/is_mobile';
 
 export default {
     data() {
@@ -44,8 +43,7 @@ export default {
     },
     watch: {
         webviewOpenUrl(val) {
-            console.log(val);
-            setTimeout(() => { document.location.href = this.webviewOpenUrl }, 500);
+            setTimeout(() => { document.location.href = this.webviewOpenUrl }, 200);
         }
     },
     computed: {
@@ -339,16 +337,16 @@ export default {
                 url: `${API_MCENTER_DEPOSIT_INPAY}?username=${this.username}`,
                 errorAlert: false,
                 fail: (res) => {
-                  if (res && res.data && res.data.msg && res.data.code) {
-                    if(res.data.code === 'C150099') {
-                        this.msg = `${res.data.msg}`
-                        setTimeout(() => {
-                            this.$router.push('/mobile/mcenter/bankCard?redirect=deposit')
-                        }, 2000)
-                    } else {
-                        this.msg = `${res.data.msg}(${res.data.code})`
+                    if (res && res.data && res.data.msg && res.data.code) {
+                        if (res.data.code === 'C150099') {
+                            this.msg = `${res.data.msg}`
+                            setTimeout(() => {
+                                this.$router.push('/mobile/mcenter/bankCard?redirect=deposit')
+                            }, 2000)
+                        } else {
+                            this.msg = `${res.data.msg}(${res.data.code})`
+                        }
                     }
-                  }
                 }
             }).then((response) => {
                 this.isShow = false;
@@ -456,16 +454,16 @@ export default {
                     username: this.username
                 },
                 fail: (res) => {
-                  if (res && res.data && res.data.msg && res.data.code) {
-                    if(res.data.code === 'C150099') {
-                        this.msg = `${res.data.msg}`
-                        setTimeout(() => {
-                            this.$router.push('/mobile/mcenter/bankCard?redirect=deposit')
-                        }, 2000)
-                    } else {
-                        this.msg = `${res.data.msg}(${res.data.code})`
+                    if (res && res.data && res.data.msg && res.data.code) {
+                        if (res.data.code === 'C150099') {
+                            this.msg = `${res.data.msg}`
+                            setTimeout(() => {
+                                this.$router.push('/mobile/mcenter/bankCard?redirect=deposit')
+                            }, 2000)
+                        } else {
+                            this.msg = `${res.data.msg}(${res.data.code})`
+                        }
                     }
-                  }
                 }
             }).then((response) => {
                 if (response.result === 'ok') {
@@ -595,8 +593,8 @@ export default {
         },
         submitDataInput(data, objKey) {
             if (objKey === 'depositName') {
-              const re = /[,:;!”@#$%^&*?<>()+=`|[\]{}\\"/~\-_'A-Za-z0-9\uFF10-\uFF19\uFF41-\uFF5A\uFF21-\uFF3A\uFF01-\uFF5E]/g;
-              this.speedField.depositName = this.speedField.depositName.replace(re, '')
+                const re = /[^\u3000\u3400-\u4DBF\u4E00-\u9FFF.]/g;
+                this.speedField.depositName = this.speedField.depositName.replace(re, '')
             }
 
             this.$emit('update:speedField', { data, objKey });
@@ -769,8 +767,8 @@ export default {
                 errorAlert: false,
                 params: paramsData,
                 fail: (res) => {
-                    if ( res && res.data && res.data.msg && res.data.code ) {
-                        if ( res.data.code === 'C150099' ) {
+                    if (res && res.data && res.data.msg && res.data.code) {
+                        if (res.data.code === 'C150099') {
                             this.msg = `${res.data.msg}`
                             setTimeout(() => {
                                 this.$router.push('/mobile/mcenter/bankCard?redirect=deposit')
