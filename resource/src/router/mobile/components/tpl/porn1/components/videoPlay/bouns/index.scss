@@ -157,11 +157,27 @@ $bouns_color6: #FFF07B;
             top: 0;
             white-space: nowrap;
 
+            &.loading-text {
+                color: $bouns_color5;
+                position: relative;
+                font-size: 12px;
+            }
+
             &.earn {
+                color: $bouns_color5;
                 margin-left: 3px;
                 position: relative;
                 text-align: left;
             }
+        }
+    }
+
+    &.loading {
+        width: 90px;
+
+        .coin-wrap {
+            width: 90px;
+            justify-content: flex-start;
         }
     }
 
@@ -184,6 +200,8 @@ $bouns_color6: #FFF07B;
         border-radius: 20px;
         margin: 0px 20px;
     }
+
+
 }
 
 .bouns-earn-wrap {

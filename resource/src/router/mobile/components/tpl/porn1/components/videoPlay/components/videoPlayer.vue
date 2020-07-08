@@ -119,56 +119,53 @@ export default {
     let videoDom = document.getElementById("video-play");
     videoDom.insertBefore(document.getElementById("video-play-block"), videoDom.childNodes[0]);
 
-    //活動開關
-    if (this.isActiveBouns) {
-      // connect websocket
-      this.connectWS();
+    window.YABO_SOCKET_VIDEO_DISCONNECT = this.onDisconnect;
+    window.YABO_SOCKET_VIDEO_CONNECT = this.connectWS;
 
-      this.player.on("playing", () => {
-        if (this.player.seeking()) return;
-        this.isPlaying = true;
-        if (window.YABO_SOCKET && !this.keepPlay) {
-          this.onSend("PLAY");
-        }
-        this.keepPlay = false;
+    this.player.on("playing", () => {
+      if (this.player.seeking()) return;
+      this.isPlaying = true;
+      if (window.YABO_SOCKET && !this.keepPlay) {
+        this.onSend("PLAY");
+      }
+      this.keepPlay = false;
 
-        if (this.isUnloginMode) {
-          this.unloginModeAction("play");
-        }
-      })
+      if (this.isUnloginMode) {
+        this.unloginModeAction("play");
+      }
+    })
 
-      // 快轉
-      this.player.on("seeking", () => {
-      })
+    // 快轉
+    this.player.on("seeking", () => {
+    })
 
-      this.player.on("seeked", () => {
-      })
+    this.player.on("seeked", () => {
+    })
 
-      this.player.on("pause", () => {
-        if (this.player.seeking()) return;
-        this.isPlaying = false;
-        if (window.YABO_SOCKET && !this.keepPlay) {
-          this.onSend("STOP");
-          this.$refs.bonunsProcess.playCueTime("stop");
-        }
-        this.keepPlay = false;
-
-        if (this.isUnloginMode) {
-          this.unloginModeAction("pause");
-        }
-      })
-
-      this.player.on("ended", () => {
+    this.player.on("pause", () => {
+      if (this.player.seeking()) return;
+      this.isPlaying = false;
+      if (window.YABO_SOCKET && !this.keepPlay) {
+        this.onSend("STOP");
         this.$refs.bonunsProcess.playCueTime("stop");
-        this.isPlaying = false;
-        if (window.YABO_SOCKET)
-          this.onSend("STOP");
-      })
+      }
+      this.keepPlay = false;
 
-      this.player.on("play", () => {
-        this.handleClickVideo();
-      })
-    }
+      if (this.isUnloginMode) {
+        this.unloginModeAction("pause");
+      }
+    })
+
+    this.player.on("ended", () => {
+      this.$refs.bonunsProcess.playCueTime("stop");
+      this.isPlaying = false;
+      if (window.YABO_SOCKET)
+        this.onSend("STOP");
+    })
+
+    this.player.on("play", () => {
+      this.handleClickVideo();
+    })
   },
   methods: {
     ...mapActions([
@@ -227,21 +224,47 @@ export default {
         }
       }
     },
+    // 連接websocket message
     connectWS() {
+      if (!this.loginStatus) {
+        if (!this.isUnloginMode) {
+          const bonunsProcess = this.$refs.bonunsProcess;
+          const bonunsDialog = this.$refs.bonunsDialog;
+          bonunsProcess.processType = 'process';
+        }
+        return;
+      }
+
       if (window.YABO_SOCKET) {
         if (this.isDebug) {
-          console.log("[WS]: Video active message connected");
+          console.log("[WS]: Video active message connected SUCCESS");
         }
+
+        // message websocket 連線成功
         window.YABO_SOCKET_VIDEO_ONMESSAGE = this.onMessage;
+        const bonunsProcess = this.$refs.bonunsProcess;
+        const bonunsDialog = this.$refs.bonunsDialog;
+        bonunsProcess.processType = 'process';
       } else {
         if (this.reconnectTimer) return;
         this.reconnectTimer = setTimeout(() => {
           if (this.isDebug) {
             console.log("[WS]: Video active Reconnecting...");
           }
+
+          window.YABO_SOCKET_VIDEO_ONMESSAGE = null;
           this.connectWS();
-        }, 1000)
+        }, 3000)
       }
+    },
+    onDisconnect() {
+      if (this.isDebug) {
+        console.log("[WS]: Video active loading...");
+      }
+
+      const bonunsProcess = this.$refs.bonunsProcess;
+      const bonunsDialog = this.$refs.bonunsDialog;
+      bonunsProcess.processType = 'loading';
     },
     onMessage(e) {
       if (e && e.data) {
@@ -424,6 +447,8 @@ export default {
       this.onSend("STOP");
       document.removeEventListener('visibilitychange', () => { }, false);
       window.YABO_SOCKET_VIDEO_ONMESSAGE = null;
+      window.YABO_SOCKET_VIDEO_DISCONNECT = null;
+      window.YABO_SOCKET_VIDEO_CONNECT = null;
       clearTimeout(this.reconnectTimer);
       this.reconnectTimer = null;
       this.player.dispose();
@@ -439,16 +464,19 @@ export default {
         let noLoginVideoSwitch = this.yaboConfig.find(i => i.name === "NoLoginVideoSwitch").value;
         this.isUnloginMode = !this.loginStatus &&
           noLoginVideoSwitch == "true";
+        this.$refs.bonunsProcess.processType = 'process';
 
-        setTimeout(() => {
-          this.$nextTick(() => {
-            if (!this.loginStatus && !this.isUnloginMode) {
-              this.$refs.bonunsDialog.isShow = true
-              this.dialogType = 'tips';
-            }
-          })
-        }, 200)
+        this.$nextTick(() => {
+          if (!this.loginStatus && !this.isUnloginMode) {
+            this.$refs.bonunsDialog.isShow = true
+            this.dialogType = 'tips';
+          }
+        })
       }
+
+      setTimeout(() => {
+        this.connectWS();
+      }, 400)
     });
 
     const self = this;
@@ -467,13 +495,7 @@ export default {
     document.addEventListener('visibilitychange', listner, false);
   },
   beforeDestroy() {
-    this.onSend("STOP");
-    document.removeEventListener('visibilitychange', () => { }, false);
-    window.YABO_SOCKET_VIDEO_ONMESSAGE = null;
-    clearTimeout(this.reconnectTimer);
-    this.reconnectTimer = null;
-    this.player.dispose();
-    this.player = null;
+    this.handleLeavePage();
   },
 };
 </script>
