@@ -46,7 +46,7 @@ export default {
          gay => 男男視頻
          les => 女女視頻
       */
-      let source = this.$route.query.source;
+      let source = this.$route.query.source || 'yabo';
       return source;
     },
     bgColor() {
