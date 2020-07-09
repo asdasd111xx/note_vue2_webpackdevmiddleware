@@ -288,20 +288,6 @@ export default {
     this.password = localStorage.getItem('password') || '';
     this.depositStatus = localStorage.getItem('depositStatus') || false;
     this.version = `${this.siteConfig.VERSION}${getCookie('platform') || ''}`;
-
-    this.script = document.createElement('script');
-    this.script.setAttribute('type', 'text/javascript');
-
-    if (window.location.host.includes("localhost")) {
-      this.script.setAttribute('src', 'https://yb01.66boxing.com/mobile/esabgnixob.js');
-    } else {
-      this.script.setAttribute('src', 'esabgnixob.js');
-    }
-
-    document.head.appendChild(this.script);
-  },
-  beforeDestroy() {
-    document.body.removeChild(this.script);
   },
   methods: {
     mobileLinkOpen,
@@ -309,7 +295,7 @@ export default {
       if (this.memInfo.config.login_captcha_type === 2) {
         return
       }
-      this.loginCheck();
+      this.handleClickLogin();
     },
     toggleEye() {
       if (this.isShowPwd) {
