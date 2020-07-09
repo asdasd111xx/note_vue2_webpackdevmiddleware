@@ -44,15 +44,15 @@ export default {
   props: {
     source: {
       type: String,
-      default: ""
+      default: "yabo"
     },
     setHeaderTitle: {
       type: Function,
-      default: () => {}
+      default: () => { }
     },
     setHasSearchBtn: {
       type: Function,
-      default: () => {}
+      default: () => { }
     }
   },
   data() {

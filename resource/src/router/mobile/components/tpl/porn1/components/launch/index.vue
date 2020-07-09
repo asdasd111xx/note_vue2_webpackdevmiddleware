@@ -47,9 +47,9 @@ export default {
     click() {
       clearInterval(this.timer);
       this.timer = null;
-      setTimeout(() => {
+      this.$nextTick(() => {
         this.$router.push('/mobile');
-      }, 200)
+      });
     }
   },
 };

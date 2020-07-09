@@ -243,7 +243,7 @@ export default {
           this.pageAll = Math.ceil(+pagination.total / this.maxResults);
         },
         fail: (res) => {
-          this.actionSetGlobalMessage({ msg: `${res.data.msg}(${res.data.code})` });
+          this.actionSetGlobalMessage({ msg: `${res.data.msg}` });
         }
       });
     },

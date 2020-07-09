@@ -115,7 +115,7 @@ export default {
         },
         fail: (res) => {
           if (res && res.data && res.data.msg) {
-            this.tipMsg = `${res.data.msg}(${res.data.code})`;
+            this.tipMsg = `${res.data.msg}`;
           }
         }
       });

@@ -344,7 +344,7 @@ export default {
                                 this.$router.push('/mobile/mcenter/bankCard?redirect=deposit')
                             }, 2000)
                         } else {
-                            this.msg = `${res.data.msg}(${res.data.code})`
+                            this.msg = `${res.data.msg}`
                         }
                     }
                 }
@@ -461,7 +461,7 @@ export default {
                                 this.$router.push('/mobile/mcenter/bankCard?redirect=deposit')
                             }, 2000)
                         } else {
-                            this.msg = `${res.data.msg}(${res.data.code})`
+                            this.msg = `${res.data.msg}`
                         }
                     }
                 }
@@ -774,7 +774,7 @@ export default {
                                 this.$router.push('/mobile/mcenter/bankCard?redirect=deposit')
                             }, 2000)
                         } else {
-                            this.msg = `${res.data.msg}(${res.data.code})`
+                            this.msg = `${res.data.msg}`
                         }
                     }
                 }

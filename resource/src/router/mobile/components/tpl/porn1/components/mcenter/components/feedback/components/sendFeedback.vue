@@ -1,7 +1,7 @@
 <template>
   <div>
     <div :class="$style['question-category']">
-      {{ $text("S_QUESTION_TYPE", "问题类型") }}
+      {{ $text("S_QUESTION_TYPE", "问题类别") }}
     </div>
     <div :class="$style['select-category']" @click="isShow = true">
       <img
@@ -214,7 +214,7 @@ export default {
         params: this.paramsData,
         errorAlert: false,
         fail: (res) => {
-          this.actionSetGlobalMessage({ msg: `${res.data.msg}(${res.data.code})` });
+          this.actionSetGlobalMessage({ msg: `${res.data.msg}` });
         },
       }).then((res) => {
         this.isSend = false;

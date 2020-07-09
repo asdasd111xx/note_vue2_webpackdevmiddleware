@@ -171,9 +171,9 @@
             <div class="login-link-wrap">
               <!-- 加入會員 -->
               <div class="link-button link-join-mem">
-                <router-link to="/mobile/joinmember">{{
-                  $text("S_FREE_REGISTER", "免费注册")
-                }}</router-link>
+                <span @click="linktoJoin()">
+                  {{ $text("S_FREE_REGISTER", "免费注册") }}
+                </span>
               </div>
               <div
                 class="link-button link-submit"
@@ -230,7 +230,8 @@ export default {
       version: "",
       isShowPwd: false,
       puzzleData: null,
-      script: null
+      script: null,
+      toRegister: false
     };
   },
   watch: {
@@ -283,6 +284,20 @@ export default {
     }
   },
   created() {
+    if (!document.querySelector('script[data-name="esabgnixob"]')) {
+      this.script = document.createElement('script');
+      this.script.setAttribute('type', 'text/javascript');
+      this.script.setAttribute('data-name', 'esabgnixob');
+
+      if (window.location.host.includes("localhost")) {
+        this.script.setAttribute('src', 'https://yb01.66boxing.com/mobile/esabgnixob.js');
+      } else {
+        this.script.setAttribute('src', 'esabgnixob.js');
+      }
+
+      document.head.appendChild(this.script);
+    }
+
     this.username = localStorage.getItem('username') || '';
     this.password = localStorage.getItem('password') || '';
     this.depositStatus = localStorage.getItem('depositStatus') || false;
@@ -290,6 +305,12 @@ export default {
   },
   methods: {
     mobileLinkOpen,
+    linktoJoin() {
+      this.toRegister = true;
+      this.$nextTick(() => {
+        this.$router.push('/mobile/joinmember');
+      });
+    },
     keyDownSubmit() {
       if (this.memInfo.config.login_captcha_type === 2) {
         return

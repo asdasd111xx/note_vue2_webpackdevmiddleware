@@ -278,7 +278,7 @@ export default {
             }, 2000);
           },
           fail: res => {
-            this.errMsg = `${res.data.msg}[${res.data.code}]`;
+            this.errMsg = `${res.data.msg}`;
           }
         });
       } else {
@@ -297,7 +297,7 @@ export default {
             }, 2000);
           },
           fail: res => {
-            this.errMsg = `${res.data.msg}[${res.data.code}]`;
+            this.errMsg = `${res.data.msg}`;
           }
         });
       }
@@ -322,7 +322,7 @@ export default {
             }, 2000);
           },
           fail: res => {
-            this.errMsg = `${res.data.msg}[${res.data.code}]`;
+            this.errMsg = `${res.data.msg}`;
           }
         });
       } else {
@@ -335,7 +335,7 @@ export default {
             }, 2000);
           },
           fail: res => {
-            this.errMsg = `${res.data.msg}[${res.data.code}]`;
+            this.errMsg = `${res.data.msg}`;
           }
         });
       }

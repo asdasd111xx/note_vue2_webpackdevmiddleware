@@ -1,36 +1,33 @@
 <template>
-  <mobile-container :header-config="headerConfig">
-    <div slot="content" :class="$style['content-wrap']">
-      <div :class="[$style.wrap, 'clearfix']">
-        <!-- 錯誤訊息 -->
-        <div :class="$style['top-tips']">
-          <div v-show="tipMsg">
-            {{ tipMsg }}
-          </div>
-        </div>
-        <div :class="$style.block">
-          <div :class="$style.title">{{ $text("S_BIRTHDAY_DATE") }}</div>
-          <div :class="$style['input-wrap']">
-            <input
-              id="birthday-input"
-              ref="input"
-              :class="$style['birthday-input']"
-              v-model="value"
-              type="date"
-              placeholder="添加日期，确保您已满18岁"
-              @input="onInput"
-            />
-            <span
-              :class="[$style['birthday-text'], { [$style['unset']]: !value }]"
-              @click="handleClickText"
-              >{{ dateFormat }}</span
-            >
-          </div>
-        </div>
+  <div :class="[$style['field-editer'], 'clearfix']">
+    <div :class="$style['field-title']">{{ $text("S_BIRTHDAY_DATE") }}</div>
+    <div :class="$style['input-wrap']">
+      <div :class="[$style['field-value'], $style['date-field']]">
+        <input
+          id="birthday-input"
+          ref="input"
+          :class="$style['birthday-input']"
+          v-model="value"
+          type="date"
+          placeholder=""
+          @input="onInput"
+        />
+        <span
+          :class="[$style['birthday-text'], { [$style['unset']]: !value }]"
+          @click="handleClickText"
+          >{{ dateFormat }}</span
+        >
       </div>
-      <service-tips />
+      <div :class="$style['btn-wrap']">
+        <span :class="$style['btn-cancel']" @click="$emit('cancel')">
+          {{ $text("S_CANCEL", "取消") }}
+        </span>
+        <span :class="$style['btn-confirm']" @click="handleSubmit()">
+          {{ $text("S_CONFIRM", "確認") }}
+        </span>
+      </div>
     </div>
-  </mobile-container>
+  </div>
 </template>
 
 <script>
@@ -115,7 +112,7 @@ export default {
         },
         fail: (res) => {
           if (res && res.data && res.data.msg) {
-            this.tipMsg = `${res.data.msg}(${res.data.code})`;
+            this.tipMsg = `${res.data.msg}`;
           }
         }
       });

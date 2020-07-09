@@ -385,6 +385,7 @@ export default {
 }
 
 .tag-box {
+  width: 100%;
   max-width: $mobile_max_width;
   padding-right: 40px;
   position: fixed;
