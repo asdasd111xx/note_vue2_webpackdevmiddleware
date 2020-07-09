@@ -86,20 +86,14 @@
 
     <template v-if="headerConfig.hasSearchBtn">
       <div :class="$style['btn-search-wrap']" @click="goSearch">
-        <img
-          v-if="source === 'smallPig'"
-          :src="$getCdnPath('/static/image/_new/common/icon_search_gray.png')"
-        />
+        <div v-if="source === 'smallPig'" :class="$style['sp-search']" />
 
-        <img
+        <div
           v-else-if="source === 'gay' || source === 'les'"
-          :src="$getCdnPath('/static/image/_new/common/icon_search_white.png')"
+          :class="$style['gay-search']"
         />
 
-        <img
-          v-else
-          :src="$getCdnPath('/static/image/_new/common/icon_search_n.png')"
-        />
+        <div v-else :class="$style['normal-search']" />
       </div>
     </template>
 
@@ -706,5 +700,26 @@ export default {
   .title {
     font-size: 18px;
   }
+}
+
+.sp-search {
+  background: url("/static/image/_new/common/icon_search_gray.png");
+  width: 20px;
+  height: 20px;
+  background-size: contain;
+}
+
+.gay-search {
+  background: url("/static/image/_new/common/icon_search_white.png");
+  width: 20px;
+  height: 20px;
+  background-size: contain;
+}
+
+.normal-search {
+  background: url("/static/image/_new/common/icon_search_n.png");
+  width: 20px;
+  height: 20px;
+  background-size: contain;
 }
 </style>

@@ -27,7 +27,6 @@ export default {
       headerConfig: {
         // Title 由各接口設定
         prev: true,
-        isBackgroundGradient: true,
         hasSearchBtn: true,
         onClick: () => {
           this.$router.back();
