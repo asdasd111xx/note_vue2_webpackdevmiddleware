@@ -968,7 +968,7 @@
     "S_FEEDBACK_TIP04": "特别说明： 部分浏览器不支援拖曳上传图片，请使用上传按钮",
     "S_FEEDBACK_SUCCESS": "您的意见反馈已送出",
     "S_SUBMIT": "提交",
-    "S_QUESTION_TYPE": "问题类型",
+    "S_QUESTION_TYPE": "问题类别",
     "S_DESCRIBE_QUESTION": "问题描述",
     "S_DESCRIBE_QUESTION_TIP": "请详细描述您遇到的问题，字数上限100字",
     "S_WORD_COUNT": "字数上限100字",

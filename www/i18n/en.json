@@ -969,7 +969,7 @@
     "S_FEEDBACK_TIP04": "Reminder: Some browsers don’t support drag and drop upload. Please use Upload button.",
     "S_FEEDBACK_SUCCESS": "Your feedback has been sent.",
     "S_SUBMIT": "提交",
-    "S_QUESTION_TYPE": "问题类型",
+    "S_QUESTION_TYPE": "问题类别",
     "S_DESCRIBE_QUESTION": "问题描述",
     "S_DESCRIBE_QUESTION_TIP": "请详细描述您遇到的问题，字数上限100字",
     "S_WORD_COUNT": "字数上限100字",

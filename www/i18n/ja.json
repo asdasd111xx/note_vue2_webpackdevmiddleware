@@ -969,7 +969,7 @@
     "S_FEEDBACK_TIP04": "追加説明：ドラッグしてアップロード機能を対応しないブラウザでは、アップロードボタンを利用してください。",
     "S_FEEDBACK_SUCCESS": "フィードバックを送信しました",
     "S_SUBMIT": "提交",
-    "S_QUESTION_TYPE": "问题类型",
+    "S_QUESTION_TYPE": "问题类别",
     "S_DESCRIBE_QUESTION": "问题描述",
     "S_DESCRIBE_QUESTION_TIP": "请详细描述您遇到的问题，字数上限100字",
     "S_WORD_COUNT": "字数上限100字",

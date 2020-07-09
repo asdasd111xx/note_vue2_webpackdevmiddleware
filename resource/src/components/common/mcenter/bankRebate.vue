@@ -515,7 +515,6 @@ export default {
             });
         },
         closePopup() {
-          console.log('enter?');
           this.isShowPopup = false
         }
     }
