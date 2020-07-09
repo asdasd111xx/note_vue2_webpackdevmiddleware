@@ -406,7 +406,7 @@ export default {
         },
         fail: (res) => {
           if (res && res.data && res.data.msg) {
-            this.errMsg = `${res.data.msg}[${res.data.code}]`;
+            this.errMsg = `${res.data.msg}`;
           }
         }
       };
@@ -469,7 +469,7 @@ export default {
         },
         fail: (res) => {
           if (res && res.data && res.data.msg) {
-            this.errMsg = `${res.data.msg}[${res.data.code}]`;
+            this.errMsg = `${res.data.msg}`;
           }
         }
       };
@@ -489,7 +489,7 @@ export default {
           username: this.username,
           captcha_text: this.captchaData ? this.captchaData : ''
         }
-      }).then(response => {
+      }).then(res => {
         this.errMsg = "";
         this.keyRingTime = 60;
         this.keyRingTimer = setInterval(() => {
@@ -501,8 +501,8 @@ export default {
           this.keyRingTime -= 1;
         }, 1000)
 
-        if (response.data.code) {
-          this.errMsg = `${response.data.msg}[${response.data.code}]`;
+        if (res.data.code) {
+          this.errMsg = `${res.data.msg}`;
         } else {
           this.errMsg = '已發送手機認證碼';
         }
@@ -535,7 +535,7 @@ export default {
         fail: (res) => {
           this.msg.keyring = '';
           if (res && res.data && res.data.msg) {
-            this.errMsg = `${res.data.msg}[${res.data.code}]`;
+            this.errMsg = `${res.data.msg}`;
           }
         }
       };
@@ -570,7 +570,7 @@ export default {
         },
         fail: (res) => {
           if (res && res.data && res.data.msg) {
-            this.errMsg = `${res.data.msg}[${res.data.code}]`;
+            this.errMsg = `${res.data.msg}`;
           }
         }
       };

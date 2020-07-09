@@ -33,7 +33,8 @@ export default ({
         }
         if (response.data.result === 'error') {
             if (response.data.msg && errorAlert) {
-                alert(`${response.data.msg} ${response.data.code ? `(${response.data.code})` : ''}`);
+                console.log(`${response.data.msg}(${response.data.code})`);
+                alert(`${response.data.msg}`);
             }
 
             fail(response);
@@ -42,14 +43,15 @@ export default ({
     })
         .catch((error) => {
             if (error.response && error.response.data.msg && errorAlert) {
-                alert(`${error.response.data.msg} ${error.response.data.code ? `(${error.response.data.code})` : ''}`);
+                console.log(`${response.data.msg}(${response.data.code})`);
+                alert(`${response.data.msg}`);
             }
 
             // 收到重新登入需要導向登入頁面
             if (error && error.response && error.response.data) {
                 if (error.response.data.code === "M00001") {
                     if (getCookie('cid') && !errorAlert) {
-                        alert(`${error.response.data.msg} ${error.response.data.code ? `(${error.response.data.code})` : ''}`);
+                        alert(`${error.response.data.msg}`);
                     }
                     setCookie('cid', '');
                     setCookie('aid', '');

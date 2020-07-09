@@ -362,7 +362,7 @@ export default {
           this.isSendSMS = false;
         }).catch(error => {
           this.countdownSec = '';
-          this.tipMsg = `${error.response.data.msg}(${error.response.data.code})`;
+          this.tipMsg = `${error.response.data.msg}`;
           this.isSendSMS = false;
         })
       } else {
@@ -381,7 +381,7 @@ export default {
           this.isSendSMS = false;
         }).catch(error => {
           this.countdownSec = '';
-          this.tipMsg = `${error.response.data.msg}(${error.response.data.code})`;
+          this.tipMsg = `${error.response.data.msg}`;
           this.isSendSMS = false;
         })
       }
@@ -396,7 +396,7 @@ export default {
             keyring: this.codeValue
           },
           fail: (res) => {
-            this.tipMsg = `${res.data.msg}(${res.data.code})`;
+            this.tipMsg = `${res.data.msg}`;
           },
           success: (res) => {
             if (res && res.result === 'ok') {
@@ -422,7 +422,7 @@ export default {
               }, 200)
             },
             fail: (res) => {
-              this.tipMsg = `${res.data.msg}(${res.data.code})`;
+              this.tipMsg = `${res.data.msg}`;
             }
           });
         }
@@ -440,7 +440,7 @@ export default {
             }, 200)
           },
           fail: (res) => {
-            this.tipMsg = `${res.data.msg}(${res.data.code})`;
+            this.tipMsg = `${res.data.msg}`;
           }
         });
       }

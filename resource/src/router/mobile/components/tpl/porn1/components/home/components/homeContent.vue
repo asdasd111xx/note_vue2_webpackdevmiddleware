@@ -617,7 +617,7 @@ export default {
         if (res && res.data) {
           let msg = res.data.msg;
           if (res.data.code !== "C50099" && res.data.code !== "C50100") {
-            msg = `${res.data.msg}(${res.data.code})`
+            msg = `${res.data.msg}`
           }
           let data = res.data;
           this.actionSetGlobalMessage({ msg: msg, code: data.code, origin: 'home' })

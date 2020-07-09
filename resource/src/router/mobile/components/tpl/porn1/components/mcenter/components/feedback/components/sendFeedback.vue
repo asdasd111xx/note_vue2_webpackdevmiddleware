@@ -214,7 +214,7 @@ export default {
         params: this.paramsData,
         errorAlert: false,
         fail: (res) => {
-          this.actionSetGlobalMessage({ msg: `${res.data.msg}(${res.data.code})` });
+          this.actionSetGlobalMessage({ msg: `${res.data.msg}` });
         },
       }).then((res) => {
         this.isSend = false;
