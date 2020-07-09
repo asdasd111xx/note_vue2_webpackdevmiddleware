@@ -283,9 +283,8 @@ export default {
       loginStatus: "getLoginStatus"
     }),
     mainClass() {
-      // const config = this.headerConfig;
       const style = this.$style;
-      // 暫時移除底色渲染
+
       return {
         [style.header]: true,
         [style["is-home"]]: this.$route.name === "home",
@@ -293,7 +292,7 @@ export default {
         [style["search-page"]]: this.headerConfig.isSmallPigSearch
           ? true
           : false,
-        // [style['background-gradient']]: config.isBackgroundGradient ,
+        [style["no-border-bottom"]]: this.headerConfig.noBottomBorder,
         clearfix: true
       };
     },
@@ -344,6 +343,10 @@ export default {
   background: $main_white_color1;
   text-align: center;
   border-bottom: 1px solid #eee;
+
+  &.no-border-bottom {
+    border-bottom: unset;
+  }
 
   // 小豬視頻的search Header 為黑色底
   &.search-page {

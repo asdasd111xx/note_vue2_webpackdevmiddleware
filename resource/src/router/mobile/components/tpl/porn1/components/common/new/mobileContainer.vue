@@ -31,6 +31,7 @@
 <script>
 import { mapGetters } from 'vuex';
 import axios from 'axios'
+import { getCookie } from '@/lib/cookie';
 
 export default {
   components: {
@@ -64,7 +65,7 @@ export default {
     }
   },
   mounted() {
-    if (this.loginStatus) {
+    if (this.loginStatus && getCookie('cid')) {
       axios({
         method: 'get',
         url: '/api/v1/c/player/messages',

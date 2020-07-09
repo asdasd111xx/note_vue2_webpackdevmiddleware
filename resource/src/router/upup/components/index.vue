@@ -80,7 +80,8 @@ export default {
         localStorage.setItem('serviceUrl', on_service_url)
       }
 
-      window.location.href = `/static/upup/index.html?username=${this.username}`
+      window.location.href = `/static/upup/index.html?username=${this.username}`;
+      window.location.title = "在线客服";
     },
     setData(data) {
       if (!data || !data.end_at) return;

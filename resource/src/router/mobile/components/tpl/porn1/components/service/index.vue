@@ -54,7 +54,11 @@
         </div>
 
         <div :class="$style['btn-next']">
-          <img :src="$getCdnPath(`/static/image/_new/webview/ic_service_arrow.png`)" />
+          <img
+            :src="
+              $getCdnPath(`/static/image/_new/webview/ic_service_arrow.png`)
+            "
+          />
         </div>
       </div>
 
@@ -72,7 +76,11 @@
         </div>
 
         <div :class="$style['btn-next']">
-          <img :src="$getCdnPath(`/static/image/_new/webview/ic_service_arrow.png`)" />
+          <img
+            :src="
+              $getCdnPath(`/static/image/_new/webview/ic_service_arrow.png`)
+            "
+          />
         </div>
       </div>
 
@@ -267,7 +275,7 @@ div.container {
   background-image: url("/static/image/_new/service/header_bg.png");
   background-repeat: no-repeat;
   background-size: 100% auto;
-  background-position: 0 -60px;
+  background-position: 0 -70px;
   background-repeat: no-repeat;
 }
 
@@ -282,7 +290,7 @@ div.container {
   padding: 12px;
   background-color: white;
   margin: 0 14px;
-  margin-top: 25px;
+  margin-top: 30px;
   border-radius: 5px;
 
   -webkit-box-shadow: 0 0.2rem 0.4rem 0 rgba(0, 0, 0, 0.2);

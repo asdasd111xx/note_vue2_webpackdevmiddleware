@@ -1,6 +1,6 @@
 <template>
   <mobile-container :header-config="headerConfig" :hasFooter="false">
-    <div slot="content" class="content-wrap">
+    <div slot="content" :class="$style['content-wrap']">
       <div :class="$style['forget-password']">
         <div :class="$style['form-wrap']">
           <div :class="$style['form-data']">
@@ -305,7 +305,8 @@ export default {
       return {
         prev: true,
         title: this.currentMethod === 'phone-step-2' ? '重设密码' : '找回密码',
-        onClick: () => { this.$router.back(); }
+        onClick: () => { this.$router.back(); },
+        noBottomBorder: true
       };
     },
     isShowCaptcha: {
@@ -593,6 +594,11 @@ export default {
 <style lang="scss" module>
 @import "@/css/variable.scss";
 
+.content-wrap {
+  min-height: calc(100vh - 43px);
+  background: #fefefe;
+}
+
 .err-msg {
   padding: 2px 0;
   color: $main_error_color1;
@@ -611,7 +617,6 @@ export default {
 }
 
 .form-data {
-  margin-top: 11px;
   > div {
     position: relative;
   }

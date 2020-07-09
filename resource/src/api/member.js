@@ -68,8 +68,6 @@ export default {
                 window.dataLayer.push({
                     ga_uid: undefined
                 });
-                window.location.reload(true)
-                this.$router.push("/mobile");
             }
         });
     },

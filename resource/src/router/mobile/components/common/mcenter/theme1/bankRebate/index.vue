@@ -1,7 +1,7 @@
 <template>
   <bank-rebate :class="siteStyleClass">
     <template
-      scope="{ rebateInitData, messageText, shortDay, pageAll, caculateData, list, pickDateList, rebateCaculate, btnLock, btnReceiveLock, formatTime, rebateState, popReceive, amountCache, rebateSubTotal, immediateData, realTimeRebateTotal, maintainsList, receiveAll, isReceiveAll, realTimePeriod }"
+      scope="{ rebateInitData, messageText, shortDay, pageAll, caculateData, list, pickDateList, rebateCaculate, btnLock, btnReceiveLock, formatTime, rebateState, popReceive, amountCache, rebateSubTotal, immediateData, realTimeRebateTotal, maintainsList, receiveAll, isReceiveAll, realTimePeriod, isShowPopup, closePopup, popupMsg }"
     >
       <div :class="[$style['total-sub-wrap'], 'clearfix']">
         <div
@@ -312,6 +312,15 @@
               {{ $t("S_CURRENT_PLATFORM") }}：
               <span :class="$style['maintains-list']">{{ maintainsList }}</span>
             </div>
+          </div>
+        </div>
+
+        <div v-if="isShowPopup" :class="$style['popup']">
+          <div :class="$style['pop-mask']" @click="closePopup" />
+          <div :class="$style['content-block']">
+            <!-- <div :class="$style['msg']">{{ $text('S_TRY_AGAIN_LATER') }}</div> -->
+            <div :class="$style['msg']">{{ popupMsg }}</div>
+            <div :class="$style['close']" @click="closePopup">{{ $text('S_CONFIRM_2', '确定') }}</div>
           </div>
         </div>
       </template>

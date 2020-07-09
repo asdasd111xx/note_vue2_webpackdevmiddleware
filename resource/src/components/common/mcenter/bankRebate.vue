@@ -22,6 +22,9 @@
             :maintains-list="maintainsList"
             :is-receive-all="isReceiveAll"
             :real-time-period="realTimePeriod"
+            :is-show-popup="isShowPopup"
+            :close-popup="closePopup"
+            :popup-msg="popupMsg"
         />
     </div>
 </template>
@@ -39,6 +42,8 @@ import ajax from '@/lib/ajax';
 export default {
     data() {
         return {
+            popupMsg: '',
+            isShowPopup: false,
             isFisrtRequest: true,
             estToday: '',
             startTime: '',
@@ -360,7 +365,8 @@ export default {
 
                 if (seconds <= 1800) {
                     this.rebateState = 'initial';
-                    alert(i18n.t('S_TRY_AGAIN_LATER'));
+                    this.popupMsg = (i18n.t('S_TRY_AGAIN_LATER' , '美东时间00:30:00后可使用实时返水功能，请您稍后再试，谢谢。'));
+                    this.isShowPopup = true;
 
                     // 防連點
                     setTimeout(() => {
@@ -438,7 +444,8 @@ export default {
                 const caculateTime = new Date(this.caculateData[dataIndex].now_at.replace('+0800', '+08:00'));
                 const nowTime = new Date(this.systemTime);
                 if (caculateTime.getDate() !== nowTime.getDate()) {
-                    alert(i18n.t('S_RESET_TRIAL'));
+                    this.popupMsg = (i18n.t('S_RESET_TRIAL' , '请重新执行试算'));
+                    this.isShowPopup = true;
                     return;
                 }
 
@@ -506,6 +513,10 @@ export default {
                     this.init();
                 }
             });
+        },
+        closePopup() {
+          console.log('enter?');
+          this.isShowPopup = false
         }
     }
 };

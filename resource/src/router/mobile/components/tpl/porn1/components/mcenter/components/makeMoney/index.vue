@@ -67,12 +67,13 @@ export default {
       return `https://${this.domain}/a/${this.agentCode}`;
     }
   },
-  created() {
+  beforeCreate() {
     if (this.$route.query && this.$route.query.refresh) {
       window.location.replace('/mobile/mcenter/makeMoney');
       return;
     }
-
+  },
+  created() {
     this.getDomain();
     this.getAgentCode();
   },

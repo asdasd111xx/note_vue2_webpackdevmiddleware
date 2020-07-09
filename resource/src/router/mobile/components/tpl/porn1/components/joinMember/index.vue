@@ -38,23 +38,9 @@ export default {
     },
   },
   created() {
-    this.script = document.createElement('script');
-    this.script.setAttribute('type', 'text/javascript');
-
-    if (window.location.host.includes("localhost")) {
-      this.script.setAttribute('src', 'https://yb01.66boxing.com/mobile/esabgnixob.js');
-    } else {
-      this.script.setAttribute('src', 'esabgnixob.js');
-    }
-
-    document.head.appendChild(this.script);
-
     if (this.loginStatus) {
       this.$router.push('/mobile');
     }
-  },
-  beforeDestroy() {
-    document.body.removeChild(this.script);
   },
 };
 </script>

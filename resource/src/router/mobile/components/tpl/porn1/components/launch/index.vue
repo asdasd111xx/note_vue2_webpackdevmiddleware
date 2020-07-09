@@ -39,13 +39,17 @@ export default {
       this.sec -= 1;
     }, 1000)
   },
+  beforeDestroy() {
+    clearInterval(this.timer);
+    this.timer = null;
+  },
   methods: {
     click() {
       clearInterval(this.timer);
       this.timer = null;
       setTimeout(() => {
         this.$router.push('/mobile');
-      })
+      }, 200)
     }
   },
 };

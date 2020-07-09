@@ -293,6 +293,47 @@
     color: #2693fc;
 }
 
+.popup {
+  position: fixed;
+  top: 0;
+  right: 0;
+  left: 0;
+  bottom: 0;
+  z-index: 99;
+
+  .pop-mask {
+    width: 100%;
+    height: 100%;
+    background: #000;
+    opacity: 0.5;
+  }
+
+  .content-block {
+    position: absolute;
+    top: 50%;
+    left: 50%;
+    transform: translate(-50% , -50%);
+    width: 70%;
+    background: #fefefe;
+    border-radius: 5px;
+  }
+
+  .msg {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    min-height: 150px;
+    padding: 10px 25px;
+  }
+
+  .close {
+    text-align: center;
+    padding: 15px 0;
+    border-top: 2px solid #f9f9f8;
+    color: #e7d9ca;
+  }
+}
+
 .theme-miller {
     .history-top-wrap {
         background-color: #f7b500;
