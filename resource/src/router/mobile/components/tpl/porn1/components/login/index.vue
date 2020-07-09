@@ -278,6 +278,11 @@ export default {
       return true;
     }
   },
+  beforeCreate() {
+    if (this.$route.query.logout) {
+      window.location.replace('/mobile/login');
+    }
+  },
   created() {
     this.username = localStorage.getItem('username') || '';
     this.password = localStorage.getItem('password') || '';
