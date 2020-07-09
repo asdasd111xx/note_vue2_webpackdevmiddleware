@@ -52,7 +52,9 @@
           ]"
         >
           <span> {{ videoInfo.desc }}</span>
-          <span @click="toggleDialog = true"> {{ $text("S_DESC", "简介") }}</span>
+          <span @click="toggleDialog = true">
+            {{ $text("S_DESC", "简介") }}</span
+          >
           <img
             :src="$getCdnPath('/static/image/_new/source/smallPig/ic_more.png')"
           />
@@ -100,7 +102,7 @@ export default {
         return this.$getCdnPath("/static/image/_new/video/btn_arrow_close.png");
     },
     tabs() {
-      return [{ key: 0, name: "簡介" }];
+      return [{ key: 0, name: "简介" }];
     },
     isCustom() {
       return ["smallPig", "gay", "les"].includes(this.source);
