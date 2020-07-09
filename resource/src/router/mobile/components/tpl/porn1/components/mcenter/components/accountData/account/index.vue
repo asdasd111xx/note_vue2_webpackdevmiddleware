@@ -209,7 +209,7 @@ export default {
         return;
       }
 
-      if (['name', 'phone', 'email', 'qq', 'weixin', 'birthday'].includes(field.key)) {
+      if (['name', 'phone', 'email', 'qq', 'weixin'].includes(field.key)) {
         this.$router.push({
           path: `/mobile/mcenter/accountData/${field.key}`
         });
