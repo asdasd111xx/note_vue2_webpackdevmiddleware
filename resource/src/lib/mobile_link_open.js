@@ -1,10 +1,11 @@
-import Vue from 'vue';
 import * as moment from 'moment-timezone';
-import member from '@/api/member';
-import links from '@/config/links';
+
+import Vue from 'vue';
 import i18n from '@/config/i18n';
-import openGame from '@/lib/open_game';
+import links from '@/config/links';
 import mcenterPageAuthControl from '@/lib/mcenterPageAuthControl';
+import member from '@/api/member';
+import openGame from '@/lib/open_game';
 import router from '@/router';
 import store from '@/store';
 
@@ -77,11 +78,12 @@ export default ({ linkType = 'nolink', linkTo = '', linkItem = '' }) => {
 
         // 在線客服
         if (linkTo === 'service') {
-            window.open(
-                store.state.webInfo.on_service_url,
-                'mobile service',
-                `width=${store.state.webInfo.on_service_w}, height=${store.state.webInfo.on_service_h}`
-            );
+            let w =
+                window.open(
+                    store.state.webInfo.on_service_url,
+                    'mobile service',
+                    `width=${store.state.webInfo.on_service_w}, height=${store.state.webInfo.on_service_h}`
+                );
 
             // 在線客服流量分析事件
             window.dataLayer.push({
@@ -91,6 +93,7 @@ export default ({ linkType = 'nolink', linkTo = '', linkItem = '' }) => {
                 eventAction: 'online_service_contact',
                 eventLabel: 'online_service_contact'
             });
+            w.document.title = "在线客服";
             return;
         }
 

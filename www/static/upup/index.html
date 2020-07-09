@@ -357,11 +357,14 @@
   document.getElementById('username').innerText = user || '尊敬的用户';
 
   function service() {
-    window.open(
-      localStorage.getItem('serviceUrl'),
-      'mobile service',
-      `width=800, height=800`
-    );
+    let w =
+      window.open(
+        localStorage.getItem('serviceUrl'),
+        'mobile service',
+        `width=800, height=800`
+      );
+
+    w.document.title = "在线客服";
   }
 </script>
 
