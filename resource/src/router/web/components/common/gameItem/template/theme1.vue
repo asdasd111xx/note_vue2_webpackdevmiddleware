@@ -108,9 +108,9 @@ export default {
     vendorName() {
       if (this.gameInfo.vendor === 'mw') {
         if (this.curLang === 'zh-tw') {
-          return '大滿貫';
+          return '大满贯电子';
         } if (this.curLang === 'zh-cn') {
-          return '大满贯';
+          return '大满贯电子';
         }
       }
 
