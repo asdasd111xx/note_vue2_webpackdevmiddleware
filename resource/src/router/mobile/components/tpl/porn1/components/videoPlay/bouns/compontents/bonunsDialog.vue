@@ -60,14 +60,14 @@
           <div
             v-else-if="
               (missionDesc && type.includes('wait')) ||
-                earnCellNum === hadEarnNum
+                (earnCellNum === hadEarnNum && loginStatus)
             "
             @click="handleClose"
           >
             {{ "继续看" }}
           </div>
 
-          <div v-else @click="$router.push('/mobile')">
+          <div v-else @click="handleBack">
             {{ $text("S_FIRST_LOOK", "先去逛逛") }}
           </div>
 
@@ -219,6 +219,7 @@ export default {
     ...mapGetters({
       memInfo: 'getMemInfo',
       siteConfig: 'getSiteConfig',
+      loginStatus: 'getLoginStatus',
     }),
   },
   mounted() {
@@ -231,6 +232,9 @@ export default {
     window.removeEventListener('resize', this.getDialogHeight);
   },
   methods: {
+    handleBack() {
+      this.$router.back();
+    },
     getDesc(desc) {
       //   暫時修改標題
       //   return desc;
