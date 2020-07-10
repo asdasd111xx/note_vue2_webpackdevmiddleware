@@ -213,6 +213,7 @@ export default {
     },
     created() {
         this.actionSetIsLoading(true);
+
         // 取得取款初始資料
         ajax({
             method: 'get',
@@ -229,7 +230,8 @@ export default {
     },
     methods: {
         ...mapActions([
-            'actionSetIsLoading'
+            'actionSetIsLoading',
+            'actionSetUserdata'
         ]),
         /**
          * 取得取款帳戶
