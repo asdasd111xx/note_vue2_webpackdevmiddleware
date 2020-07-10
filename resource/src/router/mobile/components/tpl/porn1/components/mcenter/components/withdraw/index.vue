@@ -431,13 +431,15 @@ export default {
     }
   },
   created() {
-    this.depositBeforeWithdraw = this.memInfo.config.deposit_before_withdraw || false;
-    this.firstDeposit = this.memInfo.user.first_deposit || false;
-    if (this.depositBeforeWithdraw && !this.firstDeposit) {
-      this.widthdrawTipsType = "deposit";
-      this.isShowCheck = true;
-      return;
-    }
+    this.actionSetUserdata(true).then(() => {
+      this.depositBeforeWithdraw = this.memInfo.config.deposit_before_withdraw || false;
+      this.firstDeposit = this.memInfo.user.first_deposit || false;
+      if (this.depositBeforeWithdraw && !this.firstDeposit) {
+        this.widthdrawTipsType = "deposit";
+        this.isShowCheck = true;
+        return;
+      }
+    })
 
     // 綁定銀行卡內無常用帳號
     common.bankCardCheck({
