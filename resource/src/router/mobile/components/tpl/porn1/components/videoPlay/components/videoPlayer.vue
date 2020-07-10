@@ -122,18 +122,32 @@ export default {
     window.YABO_SOCKET_VIDEO_DISCONNECT = this.onDisconnect;
     window.YABO_SOCKET_VIDEO_CONNECT = this.connectWS;
 
-    this.player.on("playing", () => {
-      if (this.player.seeking()) return;
-      this.isPlaying = true;
-      if (window.YABO_SOCKET && !this.keepPlay) {
-        this.onSend("PLAY");
-      }
-      this.keepPlay = false;
+    //活動開關
+    if (this.isActiveBouns) {
+      // connect websocket
+      this.connectWS();
+
+      this.player.on("playing", () => {
+        if (this.player.seeking()) return;
+        this.isPlaying = true;
+        if (window.YABO_SOCKET && !this.keepPlay) {
+          this.onSend("PLAY");
+        }
+        this.keepPlay = false;
+
+        if (this.isUnloginMode) {
+          this.unloginModeAction("play");
+        }
+      })
+
+      // 快轉
+      this.player.on("seeking", () => {
+      })
 
       if (this.isUnloginMode) {
         this.unloginModeAction("play");
       }
-    })
+    }
 
     // 快轉
     this.player.on("seeking", () => {
@@ -240,7 +254,6 @@ export default {
           console.log("[WS]: Video active message connected SUCCESS");
         }
 
-        // message websocket 連線成功
         window.YABO_SOCKET_VIDEO_ONMESSAGE = this.onMessage;
         const bonunsProcess = this.$refs.bonunsProcess;
         const bonunsDialog = this.$refs.bonunsDialog;
@@ -256,6 +269,10 @@ export default {
           this.connectWS();
         }, 3000)
       }
+
+      const bonunsProcess = this.$refs.bonunsProcess;
+      const bonunsDialog = this.$refs.bonunsDialog;
+      bonunsProcess.processType = 'loading';
     },
     onDisconnect() {
       if (this.isDebug) {
@@ -496,7 +513,15 @@ export default {
     document.addEventListener('visibilitychange', listner, false);
   },
   beforeDestroy() {
-    this.handleLeavePage();
+    this.onSend("STOP");
+    document.removeEventListener('visibilitychange', () => { }, false);
+    window.YABO_SOCKET_VIDEO_ONMESSAGE = null;
+    window.YABO_SOCKET_VIDEO_DISCONNECT = null;
+    window.YABO_SOCKET_VIDEO_CONNECT = null;
+    clearTimeout(this.reconnectTimer);
+    this.reconnectTimer = null;
+    this.player.dispose();
+    this.player = null;
   },
 };
 </script>

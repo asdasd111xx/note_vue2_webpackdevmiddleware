@@ -158,7 +158,6 @@ $bouns_color6: #FFF07B;
             white-space: nowrap;
 
             &.loading-text {
-                color: $bouns_color5;
                 position: relative;
                 font-size: 12px;
             }
@@ -173,10 +172,10 @@ $bouns_color6: #FFF07B;
     }
 
     &.loading {
-        width: 90px;
+        width: 100px;
 
         .coin-wrap {
-            width: 90px;
+            width: 100px;
             justify-content: flex-start;
         }
     }
