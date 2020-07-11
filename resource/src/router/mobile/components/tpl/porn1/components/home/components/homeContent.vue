@@ -638,7 +638,7 @@ export default {
 
       setTimeout(() => {
         this.isOpenGame = false
-      }, 500)
+      }, 1500)
     }
   }
 };
