@@ -9,6 +9,8 @@ import store from '@/store';
  */
 // openGame({ kind: game.kind, vendor: game.vendor, code: game.code, gameType: game.type });
 export default (params, fail = () => { }) => {
+    localStorage.setItem("is-open-game", true);
+
     let width = 1024;
 
     // IM電競 在 IE 瀏覽器最小寬度要 1280
@@ -74,10 +76,18 @@ export default (params, fail = () => { }) => {
 
             setTimeout(() => {
                 window.open(link, '', option);
-            }, 500)
+            }, 200)
+
+            setTimeout(() => {
+                localStorage.removeItem("is-open-game");
+            }, 1500)
         },
         fail: (res) => {
             fail(res);
+
+            setTimeout(() => {
+                localStorage.removeItem("is-open-game");
+            }, 1500)
         }
     }, vendor);
 };

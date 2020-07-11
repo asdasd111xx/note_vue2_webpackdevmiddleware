@@ -64,6 +64,7 @@ export default {
                 setCookie('aid', '');
                 localStorage.removeItem('type');
                 localStorage.removeItem('content_rating');
+                localStorage.removeItem('is-open-game');
                 // GA流量統計
                 window.dataLayer.push({
                     ga_uid: undefined

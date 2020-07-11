@@ -28,6 +28,7 @@ export default {
   created() {
     //   初始化
     localStorage.removeItem('type');
+    localStorage.removeItem('is-open-game');
   },
   mounted() {
     this.timer = setInterval(() => {
