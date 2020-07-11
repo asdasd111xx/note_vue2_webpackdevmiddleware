@@ -74,7 +74,7 @@ export default (params, fail = () => { }) => {
 
             setTimeout(() => {
                 window.open(link, '', option);
-            })
+            }, 500)
         },
         fail: (res) => {
             fail(res);
