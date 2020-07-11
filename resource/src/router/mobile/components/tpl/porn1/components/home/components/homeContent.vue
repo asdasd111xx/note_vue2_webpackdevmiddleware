@@ -139,7 +139,6 @@ export default {
   data() {
     return {
       stopScroll: false,
-      isOpenGame: false,
       isReceive: false,
       isShowAllTag: false,
       isSliding: false,
@@ -468,11 +467,9 @@ export default {
     },
     // 開啟遊戲
     onOpenGame(game) {
-      if (this.isOpenGame) {
+      if (localStorage.getItem('is-open-game')) {
         return
       }
-
-      this.isOpenGame = true;
 
       // Game Type
       // L => 遊戲大廳
@@ -635,10 +632,6 @@ export default {
       } else {
         openGame({ kind: game.kind, vendor: game.vendor, code: game.code }, openGameFailFunc);
       }
-
-      setTimeout(() => {
-        this.isOpenGame = false
-      }, 1500)
     }
   }
 };

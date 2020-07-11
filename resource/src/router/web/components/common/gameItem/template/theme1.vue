@@ -317,6 +317,9 @@ export default {
      * @method onEnter
     */
     onEnter() {
+      if (localStorage.getItem('is-open-game')) {
+        return
+      }
       if (this.isBackEnd) {
         return;
       }
