@@ -525,7 +525,8 @@ export const actionMemInit = ({ state, dispatch, commit }) => {
     return (async () => {
         dispatch('actionSetSystemTime');
         dispatch('actionSetNews');
-        dispatch('actionSetAppDownloadInfo');
+        // 暫時移除
+        // dispatch('actionSetAppDownloadInfo');
 
         await dispatch('actionSetUserdata');
         await dispatch('actionSetWebInfo', state.memInfo.user.domain);
