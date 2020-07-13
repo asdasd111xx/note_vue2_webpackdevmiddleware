@@ -24,6 +24,9 @@
       如需帮助，请
       <span @click="$router.push('/mobile/service')">&nbsp;联系客服</span>
     </div>
+    <message v-if="msg" @close="msg = ''">
+      <div slot="msg">{{ msg }}</div>
+    </message>
   </div>
 </template>
 
@@ -32,13 +35,18 @@ import Vue from 'vue';
 import member from '@/api/member';
 import getLang from '@/lib/getLang';
 import { getCookie } from '@/lib/cookie';
+import message from '@/router/mobile/components/tpl/porn1/components/common/new/message';
 
 export default {
+  components: {
+    message
+  },
   data() {
     return {
       ip: '',
       code: '',
-      status: false
+      status: false,
+      msg: ''
     };
   },
   beforeRouteEnter(to, from, next) {
@@ -70,8 +78,9 @@ export default {
       const mail = 'cs2@yaboxxx.net';
       const isWebView = getCookie('platform') === "H" || window.location.host === "yaboxxxapp02.com";
       const url = `mailto:${mail}`;
-      if (isWebView) {
-        setTimeout(() => { document.location.href = url }, 200);
+      if (!isWebView) {
+        this.$copyText(mail);
+        this.msg = '复制成功';
       } else {
         window.open(url);
       }
