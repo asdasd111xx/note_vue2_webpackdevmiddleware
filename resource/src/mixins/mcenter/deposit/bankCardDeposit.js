@@ -36,6 +36,7 @@ export default {
                 serialNumber: ''
             },
             isShowPop: false,
+            isShowBlockTips: true,
             checkSuccess: false,
             yourBankData: [],
             webviewOpenUrl: ''
@@ -343,6 +344,8 @@ export default {
                             setTimeout(() => {
                                 this.$router.push('/mobile/mcenter/bankCard?redirect=deposit')
                             }, 2000)
+                        } else if (res.data.code === 'TM020067') {
+                            this.isShowBlockTips = true;
                         } else {
                             this.msg = `${res.data.msg}`
                         }

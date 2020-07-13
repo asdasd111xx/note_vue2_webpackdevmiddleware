@@ -341,6 +341,11 @@
           </template>
         </template>
       </balance-tran>
+
+      <template v-if="isShowBlockTips">
+        <block-list-tips type="transfer" @close="closeTips" />
+      </template>
+
       <message v-if="msg" @close="msg = ''">
         <div slot="msg">
           <div
@@ -354,14 +359,16 @@
 </template>
 
 <script>
-import { mapActions } from "vuex";
+import { mapGetters, mapActions } from "vuex";
 import balanceTran from "@/components/mcenter/components/balanceTran";
+import blockListTips from "../../../common/new/blockListTips";
 import mobileContainer from "../../../common/new/mobileContainer";
 import message from "../../../common/new/message";
 
 export default {
   components: {
     mobileContainer,
+    blockListTips,
     balanceTran,
     message
   },
@@ -377,6 +384,7 @@ export default {
         hasHelp: true
       },
       msg: "",
+      isShowBlockTips: false,
       isShowMore: true,
       isShowTransOutSelect: false,
       isShowTransInSelect: false,
@@ -384,8 +392,20 @@ export default {
       transOutText: "请选择帐户"
     };
   },
+  computed: {
+    ...mapGetters({
+      memInfo: "getMemInfo"
+    })
+  },
+  created() {
+    this.actionSetUserdata(true).then(() => {
+      if (this.memInfo.blacklist.includes(3)) {
+        this.isShowBlockTips = true;
+      }
+    });
+  },
   methods: {
-    ...mapActions(["actionSetUserBalance"]),
+    ...mapActions(["actionSetUserBalance", "actionSetUserdata"]),
     getMaxMoney(balanceList, setMoneyData, transferTargetOut) {
       if (balanceList.vendor[transferTargetOut]) {
         this.transferMoney = Math.floor(
@@ -403,7 +423,7 @@ export default {
         return;
       }
 
-      this.msg = this.$t('S_CR_SUCCESS');
+      this.msg = this.$t("S_CR_SUCCESS");
       this.transferMoney = 0;
     },
     toggleShowMore() {
@@ -440,6 +460,10 @@ export default {
           <p style="margin: 0 ; padding: 0 ; text-align: center">|</p>
           <span>${value.end_at}</span>
         `;
+    },
+    closeTips() {
+      this.isShowBlockTips = false;
+      this.$router.back();
     }
   }
 };

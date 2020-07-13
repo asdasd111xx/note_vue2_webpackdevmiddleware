@@ -306,6 +306,11 @@
         </template>
       </div>
 
+      <!-- 被列為黑名單提示彈窗 -->
+      <template v-if="isShowBlockTips">
+        <block-list-tips type="withdraw" @close="closeTips" />
+      </template>
+
       <!-- 提款前提示彈窗 -->
       <widthdraw-tips
         :show="isShowCheck"
@@ -332,6 +337,7 @@
 import mobileContainer from '../../../common/new/mobileContainer';
 import mixin from '@/mixins/mcenter/withdraw';
 import { mapGetters, mapActions } from 'vuex';
+import blockListTips from "../../../common/new/blockListTips";
 import balanceTran from "@/components/mcenter/components/balanceTran";
 import message from '../../../common/new/message'
 import serialNumber from './serialNumber'
@@ -362,6 +368,7 @@ export default {
       selectAccountValue: '',
       isSendSubmit: false,
 
+      isShowBlockTips: false,
       isShowMore: true,
       msg: '',
       selectedCard: '',
@@ -380,7 +387,8 @@ export default {
     balanceTran,
     message,
     serialNumber,
-    widthdrawTips
+    widthdrawTips,
+    blockListTips
   },
   watch: {
     withdrawUserData() {
@@ -432,6 +440,11 @@ export default {
   },
   created() {
     this.actionSetUserdata(true).then(() => {
+      if (this.memInfo.blacklist.includes(1)) {
+        this.isShowBlockTips = true;
+        return;
+      }
+
       this.depositBeforeWithdraw = this.memInfo.config.deposit_before_withdraw || false;
       this.firstDeposit = this.memInfo.user.first_deposit || false;
       if (this.depositBeforeWithdraw && !this.firstDeposit) {
@@ -618,8 +631,13 @@ export default {
       }
     },
     closeTips() {
-      this.widthdrawTipsType = "";
-      this.isShowCheck = false;
+      if (this.isShowCheck) {
+        this.widthdrawTipsType = "";
+        this.isShowCheck = false;
+      } else if (this.isShowBlockTips) {
+        this.isShowBlockTips = false;
+        this.$router.back();
+      }
     },
     saveCurrentValue(fromRule) {
       localStorage.setItem('tmp_w_selectedCard', this.selectedCard);
