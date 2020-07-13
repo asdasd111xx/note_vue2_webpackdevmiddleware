@@ -614,6 +614,11 @@
       </div>
     </message>
 
+     <!-- 被列為黑名單提示彈窗 -->
+    <template v-if="isShowBlockTips">
+      <block-list-tips type="deposit" @close="closeTips" />
+    </template>
+
     <div v-if="isShowEntryBlockStatus">
       <div :class="$style['pop-message-mark']" />
       <div :class="$style['entry-message-container']">
@@ -643,6 +648,7 @@
 <script>
 import { mapGetters, mapActions } from 'vuex';
 import { Swiper, SwiperSlide } from 'vue-awesome-swiper';
+import blockListTips from "../../../../../../tpl/porn1/components/common/new/blockListTips";
 import bbosRequest from "@/api/bbosRequest";
 import DatePicker from 'vue2-datepicker';
 import mixin from '@/mixins/mcenter/deposit/bankCardDeposit';
@@ -656,7 +662,8 @@ export default {
     Swiper,
     SwiperSlide,
     DatePicker,
-    message
+    message,
+    blockListTips
   },
   mixins: [mixin],
   props: {
@@ -1012,11 +1019,11 @@ export default {
       this.isSelectShow = !this.isSelectShow;
     },
     clickSubmit() {
-      if (this.entryBlockStatusData.status !== 0 &&
-        (this.curPayInfo.payment_method_name !== '代客充值' || this.curPayInfo.payment_method_id !== 20)) {
-        this.isShowEntryBlockStatus = true;
-      } else {
+      if (this.curPayInfo.payment_method_id === 20 || this.entryBlockStatusData.status === 0) {
         this.submitInfo();
+      }
+      else {
+        this.isShowEntryBlockStatus = true;
       }
     },
     /**
@@ -1147,6 +1154,10 @@ export default {
       }
 
       return
+    },
+    closeTips() {
+      this.isShowBlockTips = false;
+      this.$router.back();
     }
   }
 };

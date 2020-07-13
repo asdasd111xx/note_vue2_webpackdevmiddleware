@@ -36,6 +36,7 @@ export default {
                 serialNumber: ''
             },
             isShowPop: false,
+            isShowBlockTips: false,
             checkSuccess: false,
             yourBankData: [],
             webviewOpenUrl: ''
@@ -343,6 +344,8 @@ export default {
                             setTimeout(() => {
                                 this.$router.push('/mobile/mcenter/bankCard?redirect=deposit')
                             }, 2000)
+                        } else if (res.data.code === 'TM020067') {
+                            this.isShowBlockTips = true;
                         } else {
                             this.msg = `${res.data.msg}`
                         }
@@ -466,7 +469,7 @@ export default {
                     }
                 }
             }).then((response) => {
-                if (response.result === 'ok') {
+                if (response && response.result === 'ok') {
                     this.passRoad = response.ret.map((info, index) => ({
                         ...info,
                         mainTitle: this.$text('S_PASS_TEXT', { replace: [{ target: '%s', value: index + 1 }] })
