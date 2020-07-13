@@ -36,7 +36,7 @@ export default {
                 serialNumber: ''
             },
             isShowPop: false,
-            isShowBlockTips: true,
+            isShowBlockTips: false,
             checkSuccess: false,
             yourBankData: [],
             webviewOpenUrl: ''
