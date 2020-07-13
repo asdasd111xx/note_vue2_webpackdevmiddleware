@@ -4,7 +4,7 @@
     :has-footer="false"
     :class="$style.container"
   >
-    <div slot="content" :class="$style['setting-wrap']">
+    <div slot="content" :class="$style['help-wrap']">
       <message v-if="msg" @close="msg = ''">
         <div slot="msg">
           {{ msg }}
@@ -119,9 +119,6 @@ export default {
         this.$router.push(path)
       }
     },
-    logout() {
-      member.logout().then(() => { window.location.reload(); });
-    },
   }
 };
 </script>
@@ -133,7 +130,8 @@ export default {
   background-color: $main_background_white1;
 }
 
-.setting-wrap {
+.help-wrap {
+  overflow-x: hidden;
   color: $main_text_color3;
   position: relative;
 
@@ -177,15 +175,6 @@ export default {
       height: 14px;
       width: 14px;
     }
-  }
-
-  .logout {
-    background-color: $main_white_color1;
-    text-align: center;
-    width: 100%;
-    margin-top: 10px;
-    height: 50px;
-    line-height: 50px;
   }
 }
 </style>
