@@ -282,7 +282,7 @@ export default {
     created() {
         this.startTime = Vue.moment(this.estToday).format('YYYY-MM-DD');
         this.endTime = Vue.moment(this.estToday).format('YYYY-MM-DD');
-        this.limitDate = new Date(Vue.moment(this.estToday).add(-30, 'days').format('YYYY-MM-DD'));
+        this.limitDate = new Date(Vue.moment(this.estToday).add(-29, 'days').format('YYYY-MM-DD'));
         this.isLoading = true;
         this.getGiftList();
     },
