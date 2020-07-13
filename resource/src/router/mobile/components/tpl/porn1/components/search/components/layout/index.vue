@@ -154,6 +154,10 @@ export default {
             ? this.currentLayout.headerInfo.info
             : this.currentLayout.headerInfo.home
         );
+
+        if (this.$route.query.key) {
+          this.currentLayout.headerInfo.info.keyWord = this.$route.query.key;
+        }
       }
     }
   }
