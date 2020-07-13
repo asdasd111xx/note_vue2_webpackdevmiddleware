@@ -503,7 +503,7 @@
             <div :class="$style['pop-message-mark']" />
             <div :class="$style['message-container']">
               <ul :class="$style['message-content']">
-                <li>• 实际到账： {{ realSaveMoney }}</li>
+                <li>• 实际到账： ¥{{ realSaveMoney }}</li>
                 <template v-if="curPayInfo.offer_enable">
                   <li :class="$style['tip-list']" v-html="promitionText" />
                 </template>
@@ -513,6 +513,10 @@
                   "
                 >
                   • {{ feeText }}
+                </li>
+
+                <li>
+                  • 实际存入依审核结果为准
                 </li>
               </ul>
               <div
@@ -614,7 +618,7 @@
       </div>
     </message>
 
-     <!-- 被列為黑名單提示彈窗 -->
+    <!-- 被列為黑名單提示彈窗 -->
     <template v-if="isShowBlockTips">
       <block-list-tips type="deposit" @close="closeTips" />
     </template>

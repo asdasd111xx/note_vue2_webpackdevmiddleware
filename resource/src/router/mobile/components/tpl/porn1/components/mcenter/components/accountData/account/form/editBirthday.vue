@@ -3,6 +3,11 @@
     <div :class="$style['field-title']">{{ $text("S_BIRTHDAY_DATE") }}</div>
     <div :class="$style['input-wrap']">
       <div :class="[$style['field-value'], $style['date-field']]">
+        <span
+          :class="[$style['birthday-text'], { [$style['unset']]: !value }]"
+          @click="handleClickText"
+          >{{ dateFormat }}</span
+        >
         <input
           id="birthday-input"
           ref="input"
@@ -12,11 +17,6 @@
           placeholder=""
           @input="onInput"
         />
-        <span
-          :class="[$style['birthday-text'], { [$style['unset']]: !value }]"
-          @click="handleClickText"
-          >{{ dateFormat }}</span
-        >
       </div>
       <div :class="$style['btn-wrap']">
         <span :class="$style['btn-cancel']" @click="$emit('cancel')">
@@ -74,14 +74,15 @@ export default {
       if (this.value) {
         return Vue.moment(this.value).format('YYYY年MM月DD日')
       } else {
-        return '添加日期，确保您已满18岁'
+        return '年 / 月 / 日'
       }
     }
   },
   methods: {
     ...mapActions([
       'actionSetUserdata',
-      'actionSetＭcenterBindMessage'
+      'actionSetＭcenterBindMessage',
+      'actionSetGlobalMessage'
     ]),
     handleClickText() {
       document.getElementById('birthday-input').click();
@@ -92,12 +93,22 @@ export default {
       if (this.value === '') {
         this.tipMsg = this.$text('S_CR_NUT_NULL');
       }
+
+      const valueDate = new Date(this.value);
+      const limit = new Date(Vue.moment(this.systemTime).add(-18, 'year'));
+      if (valueDate > limit && this.firstInit) {
+        this.actionSetGlobalMessage({ msg: '年龄未满十八岁,无法游戏' })
+        this.value = '';
+      }
+
+      this.firstInit = true;
     },
     handleSubmit() {
       const valueDate = new Date(this.value);
       const limit = new Date(Vue.moment(this.systemTime).add(-18, 'year'));
       if (valueDate > limit) {
-        this.tipMsg = `年龄未满十八岁,无法游戏`;
+        this.actionSetGlobalMessage({ msg: '年龄未满十八岁,无法游戏' });
+        this.value = '';
         return;
       }
 
@@ -112,7 +123,7 @@ export default {
         },
         fail: (res) => {
           if (res && res.data && res.data.msg) {
-            this.tipMsg = `${res.data.msg}`;
+            this.actionSetGlobalMessage({ msg: `${res.data.msg}` })
           }
         }
       });

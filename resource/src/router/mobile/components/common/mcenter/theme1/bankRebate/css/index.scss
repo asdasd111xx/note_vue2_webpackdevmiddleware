@@ -1,10 +1,13 @@
+@import "~@/css/variable.scss";
+
 .total-sub-wrap {
     position: fixed;
     top: 43px;
-    right: 0;
-    left: 0;
     border-top: 1px solid #eee;
     background-color: #fff;
+    max-width: $mobile_max_width;
+    width: 100%;
+    z-index: 2;
 
     .top-sub-title {
         overflow: hidden;
@@ -31,6 +34,13 @@
         &.self {
             width: 100%;
         }
+    }
+}
+
+@media (orientation: landscape) {
+
+    .total-sub-wrap {
+        max-width: $mobile_max_landscape_width !important;
     }
 }
 
@@ -294,44 +304,44 @@
 }
 
 .popup {
-  position: fixed;
-  top: 0;
-  right: 0;
-  left: 0;
-  bottom: 0;
-  z-index: 99;
+    position: fixed;
+    top: 0;
+    right: 0;
+    left: 0;
+    bottom: 0;
+    z-index: 99;
 
-  .pop-mask {
-    width: 100%;
-    height: 100%;
-    background: #000;
-    opacity: 0.5;
-  }
+    .pop-mask {
+        width: 100%;
+        height: 100%;
+        background: #000;
+        opacity: 0.5;
+    }
 
-  .content-block {
-    position: absolute;
-    top: 50%;
-    left: 50%;
-    transform: translate(-50% , -50%);
-    width: 70%;
-    background: #fefefe;
-    border-radius: 5px;
-  }
+    .content-block {
+        position: absolute;
+        top: 50%;
+        left: 50%;
+        transform: translate(-50%, -50%);
+        width: 70%;
+        background: #fefefe;
+        border-radius: 5px;
+    }
 
-  .msg {
-    display: flex;
-    justify-content: center;
-    align-items: center;
-    min-height: 150px;
-    padding: 10px 25px;
-  }
+    .msg {
+        display: flex;
+        justify-content: center;
+        align-items: center;
+        min-height: 150px;
+        padding: 10px 25px;
+    }
 
-  .close {
-    text-align: center;
-    padding: 15px 0;
-    border-top: 2px solid #f9f9f8;
-    color: #e7d9ca;
-  }
+    .close {
+        text-align: center;
+        padding: 15px 0;
+        border-top: 2px solid #f9f9f8;
+        color: #e7d9ca;
+    }
 }
 
 .theme-miller {

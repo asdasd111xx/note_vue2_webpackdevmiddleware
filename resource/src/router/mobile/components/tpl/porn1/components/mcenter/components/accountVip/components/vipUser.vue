@@ -98,7 +98,7 @@ import { mapGetters, mapActions } from "vuex";
 export default {
   props: {
     userVipInfo: {
-      type: Object,
+      type: Object | null,
       required: true
     }
   },

@@ -18,7 +18,7 @@
             v-model="formData.account_name"
             type="text"
             placeholder="请输入持卡人姓名，仅支持中文、英文、“·”"
-            @input="checkData"
+            @input="checkData($event.target.value, 'account_name')"
           />
         </div>
       </div>
@@ -72,7 +72,7 @@
               type="text"
               placeholder="请输入开户支行名称"
               maxlength="36"
-              @input="checkData"
+              @input="checkData($event.target.value, 'branch')"
             />
           </div>
         </div>
@@ -411,7 +411,17 @@ export default {
         .replace(/[\W]/g, '');
       this.checkData();
     },
-    checkData(e) {
+    checkData(value, key) {
+      if (key === "account_name") {
+        const re = /[^\u3000\u3400-\u4DBF\u4E00-\u9FFF.]/g;
+        this.formData.account_name = value.replace(re, '')
+      }
+
+      if (key === "branch") {
+        const re = /[^\u3000\u3400-\u4DBF\u4E00-\u9FFF]/g;
+        this.formData.branch = value.replace(re, '')
+      }
+
       this.NextStepStatus = Object.keys(this.formData).every((key) => {
         if (this.addBankCardStep === 'one') {
           if (key === 'account') {

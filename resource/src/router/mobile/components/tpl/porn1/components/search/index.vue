@@ -1,6 +1,6 @@
 <template>
   <mobile-container :header-config="headerConfig">
-    <div slot="content" :class="[$style['content-wrap']]">
+    <div slot="content" :class="[$style['content-wrap']]" :style="{ height: divHeight + 'px' }">
       <platform-layout :headerConfig.sync="headerConfig" :source="source" />
     </div>
   </mobile-container>
@@ -18,7 +18,8 @@ export default {
   },
   data() {
     return {
-      headerObj: {}
+      headerObj: {},
+      divHeight: null
     };
   },
   computed: {
@@ -54,7 +55,10 @@ export default {
         replace: true
       });
     }
-  }
+  },
+  mounted() {
+    this.divHeight = document.body.offsetHeight - 103;
+  },
 };
 </script>
 
