@@ -41,14 +41,22 @@
         </div>
 
         <div :class="$style['dialog-func']">
+          <input
+            @change="uploadImgChange"
+            :class="$style['img-input']"
+            ref="albumInput"
+            type="file"
+            accept="image/*"
+            capture="camera"
+          />
+          <input
+            @change="uploadImgChange"
+            :class="$style['img-input']"
+            ref="albumInput"
+            type="file"
+            accept="image/*"
+          />
           <div @click="handleClickFunc">
-            <input
-              :class="$style['img-input']"
-              ref="imgInput"
-              type="file"
-              accept="image/*"
-              capture="camera"
-            />
             从相册选取
           </div>
           <div @click="handleClickFunc">拍照</div>
@@ -95,7 +103,8 @@ export default {
         { image: 'avatar_8', url: '/static/image/_new/mcenter/default/avatar_8.png' },
       ],
       imgID: 0,
-      imgIndex: 0
+      imgIndex: 0,
+      uploadImg: null
     };
   },
   created() {
@@ -134,9 +143,12 @@ export default {
     ...mapActions([
       'actionSetUserdata'
     ]),
+    uploadImgChange(e) {
+      console.log(e)
+    },
     handleClickFunc() {
       if (this.$route.query._db) {
-        this.$refs['imgInput'].click();
+        this.$refs['cameraInput'].click();
       }
       this.msg = this.$text('S_COMING_SOON2', '正在上线 敬请期待');
     },
