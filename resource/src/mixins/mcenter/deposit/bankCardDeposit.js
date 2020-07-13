@@ -469,7 +469,7 @@ export default {
                     }
                 }
             }).then((response) => {
-                if (response.result === 'ok') {
+                if (response && response.result === 'ok') {
                     this.passRoad = response.ret.map((info, index) => ({
                         ...info,
                         mainTitle: this.$text('S_PASS_TEXT', { replace: [{ target: '%s', value: index + 1 }] })

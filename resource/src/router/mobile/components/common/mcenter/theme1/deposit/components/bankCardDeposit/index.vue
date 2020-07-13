@@ -1019,11 +1019,11 @@ export default {
       this.isSelectShow = !this.isSelectShow;
     },
     clickSubmit() {
-      if (this.entryBlockStatusData.status !== 0 &&
-        (this.curPayInfo.payment_method_name !== '代客充值' || this.curPayInfo.payment_method_id !== 20)) {
-        this.isShowEntryBlockStatus = true;
-      } else {
+      if (this.curPayInfo.payment_method_id === 20 || this.entryBlockStatusData.status === 0) {
         this.submitInfo();
+      }
+      else {
+        this.isShowEntryBlockStatus = true;
       }
     },
     /**
