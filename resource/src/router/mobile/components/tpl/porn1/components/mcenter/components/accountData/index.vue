@@ -56,16 +56,13 @@
             type="file"
             accept="image/*"
           />
-          <div @click="handleClickFunc">
+          <div @click="handleClickFunc('album')">
             从相册选取
           </div>
-          <div @click="handleClickFunc">拍照</div>
+          <div @click="handleClickFunc('camera')">拍照</div>
           <div @click="isShow = false">{{ $text("S_CANCEL", "取消") }}</div>
         </div>
       </div>
-      <message v-if="msg" @close="msg = ''"
-        ><div slot="msg">{{ msg }}</div>
-      </message>
       <account />
       <service-tips />
     </div>
@@ -78,19 +75,17 @@ import account from './account/index';
 import mcenter from '@/api/mcenter';
 import member from '@/api/member';
 import mobileContainer from '../../../common/new/mobileContainer';
-import message from '../../../common/new/message'
 import serviceTips from './serviceTips'
+import axios from 'axios';
 
 export default {
   components: {
     mobileContainer,
     account,
-    message,
     serviceTips
   },
   data() {
     return {
-      msg: "",
       isShow: false,
       avatar: [
         { image: 'avatar_1', url: '/static/image/_new/mcenter/default/avatar_1.png' },
@@ -119,6 +114,11 @@ export default {
       return;
     }
 
+    // 是否自訂上傳頭像
+    if (this.memInfo.user.custom) {
+
+    }
+
     this.imgIndex = this.memInfo.user.image;
     this.imgID = this.memInfo.user.image;
   },
@@ -141,16 +141,35 @@ export default {
   },
   methods: {
     ...mapActions([
-      'actionSetUserdata'
+      'actionSetUserdata',
+      'actionSetGlobalMessage'
     ]),
     uploadImgChange(e) {
-      console.log(e)
-    },
-    handleClickFunc() {
-      if (this.$route.query._db) {
-        this.$refs['cameraInput'].click();
+      let files = e.target.files;
+      if (files && files[0]) {
+        axios({
+          method: 'post',
+          url: '/apiv1/c/player/custom-image',
+          data: {
+            custom_image: files[0],
+          },
+          headers: {
+            'Content-Type': 'multipart/form-data'
+          }
+        }).then(res => {
+          this.actionSetUserdata(true);
+        }).catch(error => {
+          this.actionSetGlobalMessage({ msg: error.data.msg });
+        })
       }
-      this.msg = this.$text('S_COMING_SOON2', '正在上线 敬请期待');
+    },
+    handleClickFunc(key) {
+      if (key === "camera") {
+        this.$refs['cameraInput'].click();
+      } else if (key === "album") {
+        this.$refs['albumInput'].click();
+      }
+      //   this.actionSetGlobalMessage({ type: 'incoming' });
     },
     dialogShow() {
       this.isShow = !this.isShow;
