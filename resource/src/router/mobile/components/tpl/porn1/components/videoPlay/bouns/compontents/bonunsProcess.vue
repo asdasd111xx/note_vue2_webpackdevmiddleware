@@ -105,7 +105,7 @@ export default {
         this.earnCoin = "999";
       }
     },
-    processType() {
+    processType(val) {
       if (this.isUnloginMode) {
         this.curCoinSrc = this.coinType.find(i => i.key == "earn").src;
       } else {
@@ -214,8 +214,8 @@ export default {
   position: absolute;
   overflow: hidden;
   transform-origin: left center;
-  animation: cliprotate 59s steps(2) infinite;
-  -webkit-animation: cliprotate 59s steps(2) infinite;
+  animation: cliprotate 60s steps(2) infinite;
+  -webkit-animation: cliprotate 60s steps(2) infinite;
 }
 
 .halfcircle {
