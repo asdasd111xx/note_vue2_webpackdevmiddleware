@@ -702,7 +702,7 @@ export default {
         _params = {
           ..._params,
           [`ext[api_uri]`]: '/api/trade/v2/c/withdraw/entry',
-          [`ext[method][${hasAccountId}]`]: this.withdrawAccount.id,
+          [`ext[method][${hasAccountId}]`]: this.selectedCard,
         }
       }
 
