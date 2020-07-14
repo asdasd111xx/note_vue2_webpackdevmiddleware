@@ -14,10 +14,20 @@
             $style['tab-item'],
             { [$style['is-current']]: currentTab === index }
           ]"
-          @click="setTabCurrent(index)"
+          @click="setCurrentTab(index)"
         >
           {{ item.text }}
         </div>
+        <div
+          :class="$style['active-slider']"
+          :style="{
+            left: `calc(16.5% + 33% * ${currentTab})`
+          }"
+        />
+      </div>
+
+      <div :class="[$style['credit-trans-container']]">
+        <component :is="currentTemplate" />
       </div>
     </div>
   </mobile-container>
@@ -28,12 +38,17 @@ import { mapGetters, mapActions } from "vuex";
 import balanceTran from "@/components/mcenter/components/balanceTran";
 import blockListTips from "../../../common/new/blockListTips";
 import mobileContainer from "../../../common/new/mobileContainer";
-
+import transderCreditTrans from './compontents/transderCreditTrans';
+import discountCreditTrans from './compontents/discountCreditTrans';
+import recoardCreditTrans from './compontents/recoardCreditTrans';
 export default {
   components: {
     mobileContainer,
     blockListTips,
     balanceTran,
+    transderCreditTrans,
+    discountCreditTrans,
+    recoardCreditTrans
   },
   data() {
     return {
@@ -49,7 +64,8 @@ export default {
       isShowMore: true,
       isShowTransOutSelect: false,
       isShowTransInSelect: false,
-      currentTab: "transder"
+      currentTab: 0, //discount transder recoard
+      currentTemplate: "discount-credit-trans"
     };
   },
   computed: {
@@ -82,6 +98,21 @@ export default {
       "actionSetUserdata",
       'actionSetGlobalMessage'
     ]),
+    setCurrentTab(index) {
+      this.currentTab = index;
+      switch (index) {
+        default:
+        case 0:
+          this.currentTemplate = "discount-credit-trans";
+          return;
+        case 1:
+          this.currentTemplate = "transder-credit-trans";
+          return;
+        case 2:
+          this.currentTemplate = "recoard-credit-trans";
+          return;
+      }
+    },
     closeTips() {
       this.isShowBlockTips = false;
       this.$router.back();

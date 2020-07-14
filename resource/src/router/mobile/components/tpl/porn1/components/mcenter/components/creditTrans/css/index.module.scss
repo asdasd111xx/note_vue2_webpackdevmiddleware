@@ -3,3 +3,34 @@
 .content-wrap {
     padding-top: 1px;
 }
+
+.tab-wrap {
+    display: flex;
+    background: #fff;
+    border-bottom: 2px solid #eee;
+    position: relative;
+}
+
+.tab-item {
+    position: relative;
+    height: 42px;
+    line-height: 42px;
+    text-align: center;
+    color: #A6A9B2;
+    width: 33%;
+
+    &.is-current {
+        color: #5E626D;
+    }
+}
+
+.active-slider {
+    position: absolute;
+    width: 40px;
+    height: 2px;
+    bottom: 1.5px;
+    transform: translateX(-50%);
+    background: #be9e7f;
+    left: calc(33% / 2 - 20px);
+    transition: left 0.31s;
+}
