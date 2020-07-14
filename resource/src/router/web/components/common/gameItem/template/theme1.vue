@@ -54,7 +54,7 @@
     <div v-if="showButton" :class="getClass(['btn-enter'])">
       {{ getBtnName }}
     </div>
-    <page-loading :isShow="isShowLoading" :click="handleClickLoading" />
+    <page-loading :isShow="isShowLoading" />
   </div>
 </template>
 
@@ -300,9 +300,6 @@ export default {
       'actionSetFavoriteGame',
       'actionSetGlobalMessage'
     ]),
-    handleClickLoading() {
-      this.isShowLoading = false;
-    },
     /**
      * 取得Class名稱
      * @method getClass

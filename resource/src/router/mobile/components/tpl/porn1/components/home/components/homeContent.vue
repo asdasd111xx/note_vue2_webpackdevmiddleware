@@ -114,7 +114,6 @@
     </div>
     <page-loading
      :isShow="isShowLoading"
-     :click="handleClickLoading"
     />
     </div>
   </div>
@@ -276,9 +275,6 @@ export default {
     ...mapActions([
       'actionSetGlobalMessage'
     ]),
-    handleClickLoading() {
-      this.isShowLoading = false;
-    },
     getImg(info) {
       return {
         src: info.image,

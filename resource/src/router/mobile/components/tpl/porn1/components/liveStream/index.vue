@@ -115,7 +115,7 @@
           </div>
         </div>
       </div>
-      <page-loading :isShow="isShowLoading" :click="handleClickLoading" />
+      <page-loading :isShow="isShowLoading" />
     </div>
   </mobile-container>
 </template>
@@ -191,9 +191,6 @@ export default {
     ...mapActions([
       'actionSetGlobalMessage'
     ]),
-    handleClickLoading() {
-      this.isShowLoading = false;
-    },
     openLiveStream() {
       if (!this.loginStatus) {
         this.$router.push('/mobile/login');
