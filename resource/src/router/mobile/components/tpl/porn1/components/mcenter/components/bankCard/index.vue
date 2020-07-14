@@ -111,7 +111,12 @@ export default {
         return;
       }
 
-      if (this.$route.query) {
+      if (this.addBankCardStep === 'two') {
+        this.step = 'one';
+        return;
+      }
+
+      if (this.$route.query && this.$route.query.redirect) {
         if (this.$route.query.redirect === "home") {
           this.$router.push('/mobile');
           return;
@@ -120,11 +125,6 @@ export default {
           return;
         }
         this.$router.back();
-        return;
-      }
-
-      if (this.addBankCardStep === 'two') {
-        this.step = 'one';
         return;
       }
 
