@@ -784,6 +784,7 @@
     "S_FORGET": "忘记?",
     "S_WELCOME": "欢迎您",
     "S_TRANSDER": "转帐",
+    "S_CREDIT_TRANSDER": "额度转让",
     "S_MARANGE_CARD": "卡片管理",
     "S_WALLET2": "钱包",
     "S_WALLET": "钱包：%S元",
