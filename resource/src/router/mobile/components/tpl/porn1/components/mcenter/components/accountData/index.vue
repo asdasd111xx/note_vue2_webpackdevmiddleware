@@ -44,7 +44,7 @@
           <input
             @change="uploadImgChange"
             :class="$style['img-input']"
-            ref="albumInput"
+            ref="cameraInput"
             type="file"
             accept="image/*"
             capture="camera"
