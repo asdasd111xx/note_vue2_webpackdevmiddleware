@@ -214,6 +214,7 @@ export default {
     }
   },
   created() {
+    localStorage.removeItem('is-open-game');
   },
   mounted() {
     $(window).on('resize', this.onResize);
