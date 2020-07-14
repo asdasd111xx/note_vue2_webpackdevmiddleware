@@ -74,7 +74,10 @@ export default (params, success = () => { }, fail = () => { }) => {
                 link += `/${settings.code}`;
             }
 
-            window.open(link, '', option);
+            let newWindow = window.open('', '', option);
+            if (!newWindow) { console.log('阻挡弹出式视窗') };
+            newWindow.location.href = link;
+            // window.open(link, '', option);
 
             setTimeout(() => {
                 localStorage.removeItem("is-open-game");
