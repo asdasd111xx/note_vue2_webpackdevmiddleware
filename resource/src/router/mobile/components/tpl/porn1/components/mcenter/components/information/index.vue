@@ -22,8 +22,8 @@
             >
               通知
             </div>
-            <div v-if="memInfo.msgCount" :class="$style['menu-tips']">
-              {{ memInfo.msgCount }}
+            <div v-if="msgCount" :class="$style['menu-tips']">
+              {{ msgCount }}
             </div>
           </div>
           <div
@@ -72,6 +72,11 @@ export default {
     news,
     post
   },
+  data() {
+    return {
+      msgCount: 0
+    }
+  },
   created() {
     if (['message', 'news', 'post'].includes(this.$route.params.page)) {
       this.actionSetMcenterMsgCount();
@@ -79,6 +84,12 @@ export default {
     }
 
     this.$router.push('/mobile/mcenter/information/message');
+  },
+  watch: {
+    memInfo() {
+      console.log(this.memInfo.msgCount)
+      this.msgCount = this.memInfo.msgCount;
+    }
   },
   methods: {
     ...mapActions([

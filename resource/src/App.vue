@@ -20,7 +20,8 @@ export default {
       setGtmCode: false, // GTM流量分析狀態,
       siteConfigLoad: false,
       memInfoLoad: false,
-      reconnectTimer: null // 重新連線WS timer
+      reconnectTimer: null, // 重新連線WS timer,
+      yToken: ''
     };
   },
   computed: {
@@ -39,14 +40,14 @@ export default {
       this.setGoogleAnalytics();
       this.memInfoLoad = this.memInfo && this.memInfo.user;
       if (this.memInfoLoad && this.siteConfigLoad) {
-        this.getYABOAPIToken();
+        if (!this.yToken) this.getYABOAPIToken();
         this.connectYaboWS();
       }
     },
     siteConfig() {
       this.siteConfigLoad = this.siteConfig && this.siteConfig.ACTIVES_BOUNS_WEBSOCKET;
       if (this.memInfoLoad && this.siteConfigLoad) {
-        this.getYABOAPIToken();
+        if (!this.yToken) this.getYABOAPIToken();
         this.connectYaboWS();
       }
     }
@@ -207,6 +208,7 @@ export default {
         url: this.siteConfig.YABO_API_DOMAIN + '/Account/GetAuthorizationToken',
       }).then((res) => {
         if (res.data) {
+          this.yToken = res.data;
           setCookie('y_token', res.data);
           return;
         }
