@@ -78,7 +78,7 @@ export default {
       const mail = 'cs2@yaboxxx.net';
       const isWebView = getCookie('platform') === "H" || window.location.host === "yaboxxxapp02.com";
       const url = `mailto:${mail}`;
-      if (!isWebView) {
+      if (isWebView) {
         this.$copyText(mail);
         this.msg = '复制成功';
       } else {
