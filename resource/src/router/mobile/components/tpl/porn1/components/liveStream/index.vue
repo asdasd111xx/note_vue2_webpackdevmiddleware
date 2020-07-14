@@ -115,6 +115,7 @@
           </div>
         </div>
       </div>
+      <page-loading :isShow="isShowLoading" :click="handleClickLoading" />
     </div>
   </mobile-container>
 </template>
@@ -128,6 +129,7 @@ import pornRequest from '@/api/pornRequest';
 
 export default {
   components: {
+    pageLoading: () => import(/* webpackChunkName: 'pageLoading' */ '@/router/mobile/components/tpl/porn1/components/common/new/pageLoading'),
     mobileContainer
   },
   data() {
@@ -135,7 +137,8 @@ export default {
       streamList: [],
       currentTab: this.$route.params.type || localStorage.getItem('streamType') || 'cutiesLive',
       iframeHeight: 500,
-      src: ''
+      src: '',
+      isShowLoading: false
     };
   },
   computed: {
@@ -164,13 +167,17 @@ export default {
           return;
         } else {
 
+          const openGameSuccessFunc = (res) => {
+            this.isShowLoading = false;
+          };
+
           const openGameFailFunc = (res) => {
             if (res && res.data) {
               let data = res.data;
               this.actionSetGlobalMessage({ msg: data.msg, code: data.code })
             }
           };
-          openGame({ vendor: 'boe', kind: 1 }, openGameFailFunc);
+          openGame({ vendor: 'boe', kind: 1 }, openGameSuccessFunc, openGameFailFunc);
         }
       }
     };
@@ -184,6 +191,9 @@ export default {
     ...mapActions([
       'actionSetGlobalMessage'
     ]),
+    handleClickLoading() {
+      this.isShowLoading = false;
+    },
     openLiveStream() {
       if (!this.loginStatus) {
         this.$router.push('/mobile/login');
