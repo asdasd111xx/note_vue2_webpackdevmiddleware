@@ -477,7 +477,6 @@ export default {
         return
       }
 
-      this.isShowLoading = true;
       // Game Type
       // L => 遊戲大廳
       // G => 遊戲
@@ -624,6 +623,9 @@ export default {
       //     });
       //     return;
       //   }
+
+      this.isShowLoading = true;
+
       const openGameSuccessFunc = (res) => {
         this.isShowLoading = false;
       };
