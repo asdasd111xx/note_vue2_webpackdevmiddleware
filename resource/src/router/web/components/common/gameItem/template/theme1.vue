@@ -54,6 +54,7 @@
     <div v-if="showButton" :class="getClass(['btn-enter'])">
       {{ getBtnName }}
     </div>
+    <page-loading :isShow="isShowLoading" :click="handleClickLoading" />
   </div>
 </template>
 
@@ -64,6 +65,14 @@ import openGame from '@/lib/open_game';
 import isMobile from '@/lib/is_mobile';
 
 export default {
+  components: {
+    pageLoading: () => import(/* webpackChunkName: 'pageLoading' */ '@/router/mobile/components/tpl/porn1/components/common/new/pageLoading'),
+  },
+  data() {
+    return {
+      isShowLoading: false
+    };
+  },
   props: {
     gameInfo: {
       type: Object,
@@ -291,6 +300,9 @@ export default {
       'actionSetFavoriteGame',
       'actionSetGlobalMessage'
     ]),
+    handleClickLoading() {
+      this.isShowLoading = false;
+    },
     /**
      * 取得Class名稱
      * @method getClass
@@ -324,6 +336,7 @@ export default {
         return;
       }
 
+      this.isShowLoading = true;
       let isMobileView;
 
       try {
@@ -360,6 +373,9 @@ export default {
 
         return;
       }
+      const openGameSuccessFunc = (res) => {
+        this.isShowLoading = false;
+      };
 
       const openGameFailFunc = (res) => {
         // this.redirectCard 個別大廳轉導位置
@@ -368,7 +384,7 @@ export default {
           this.actionSetGlobalMessage({ msg: data.msg, code: data.code, origin: this.redirectCard() });
         }
       };
-      openGame({ vendor, kind, code }, openGameFailFunc);
+      openGame({ vendor, kind, code }, openGameSuccessFunc, openGameFailFunc);
     },
     /**
      * 切換最愛遊戲

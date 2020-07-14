@@ -112,6 +112,11 @@
         <div ref="wrap-buffer" :class="$style['wrap-buffer']" />
       </div>
     </div>
+    <page-loading
+     :isShow="isShowLoading"
+     :click="handleClickLoading"
+    />
+    </div>
   </div>
 </template>
 
@@ -130,9 +135,9 @@ import openGame from '@/lib/open_game';
 import pornRequest from '@/api/pornRequest';
 import querystring from 'querystring';
 import yaboRequest from '@/api/yaboRequest';
-
 export default {
   components: {
+    pageLoading: () => import(/* webpackChunkName: 'pageLoading' */ '@/router/mobile/components/tpl/porn1/components/common/new/pageLoading'),
     Swiper,
     SwiperSlide
   },
@@ -152,12 +157,13 @@ export default {
       allGame: [],
       selectedIndex: 0,
       currentLevel: 0,
+      isShowLoading: false,
       mcenterList: [
         { name: 'deposit', text: '充值' },
         { name: 'balanceTrans', text: '转帐' },
         { name: 'withdraw', text: '提现' },
         { name: 'accountVip', text: 'VIP' },
-        { name: 'grade', text: '等级' }
+        { name: 'grade', text: '等级' },
       ],
     };
   },
@@ -214,6 +220,7 @@ export default {
     }
   },
   created() {
+    localStorage.removeItem('is-open-game');
   },
   mounted() {
     $(window).on('resize', this.onResize);
@@ -269,6 +276,9 @@ export default {
     ...mapActions([
       'actionSetGlobalMessage'
     ]),
+    handleClickLoading() {
+      this.isShowLoading = false;
+    },
     getImg(info) {
       return {
         src: info.image,
@@ -471,6 +481,7 @@ export default {
         return
       }
 
+      this.isShowLoading = true;
       // Game Type
       // L => 遊戲大廳
       // G => 遊戲
@@ -617,7 +628,13 @@ export default {
       //     });
       //     return;
       //   }
+      const openGameSuccessFunc = (res) => {
+        this.isShowLoading = false;
+      };
+
       const openGameFailFunc = (res) => {
+        this.isShowLoading = false;
+
         if (res && res.data) {
           let msg = res.data.msg;
           if (res.data.code !== "C50099" && res.data.code !== "C50100") {
@@ -628,9 +645,9 @@ export default {
         }
       };
       if (game.type === "R") {
-        openGame({ kind: game.kind, vendor: game.vendor, code: game.code, gameType: game.type }, openGameFailFunc);
+        openGame({ kind: game.kind, vendor: game.vendor, code: game.code, gameType: game.type }, openGameSuccessFunc, openGameFailFunc);
       } else {
-        openGame({ kind: game.kind, vendor: game.vendor, code: game.code }, openGameFailFunc);
+        openGame({ kind: game.kind, vendor: game.vendor, code: game.code }, openGameSuccessFunc, openGameFailFunc);
       }
     }
   }
