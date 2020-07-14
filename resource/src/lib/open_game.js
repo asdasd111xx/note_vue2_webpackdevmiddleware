@@ -8,7 +8,7 @@ import store from '@/store';
  * @param {object} params - 覆蓋預設設定資料
  */
 // openGame({ kind: game.kind, vendor: game.vendor, code: game.code, gameType: game.type });
-export default (params, fail = () => { }) => {
+export default (params, success = () => { }, fail = () => { }) => {
     localStorage.setItem("is-open-game", true);
 
     let width = 1024;
@@ -75,11 +75,17 @@ export default (params, fail = () => { }) => {
             }
 
             setTimeout(() => {
-                window.open(link, '', option);
+                try {
+                    window.open(link, '', option);
+                } catch (e) {
+                    console.log(e)
+                    console.log('阻挡弹出式视窗')
+                }
             }, 200)
 
             setTimeout(() => {
                 localStorage.removeItem("is-open-game");
+                success();
             }, 1500)
         },
         fail: (res) => {
