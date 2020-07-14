@@ -204,7 +204,8 @@ export default {
   },
   methods: {
     ...mapActions([
-      'actionSetMcenterMsgCount'
+      'actionSetMcenterMsgCount',
+      'actionSetUserdata'
     ]),
     getMessgae() {
       mcenter.message({
@@ -214,7 +215,7 @@ export default {
         }
       });
     },
-    getContent({ id, read }) {
+    getContent({ id, read }, isSetRead) {
       if (read) {
         return;
       }
@@ -223,7 +224,7 @@ export default {
           if (result !== 'ok') {
             return;
           }
-          this.actionSetMcenterMsgCount();
+          if (!isSetRead) this.actionSetMcenterMsgCount();
           this.messageData = this.messageData.map((message) => {
             if (message.id === id) {
               return { ...message, read: true };
@@ -243,13 +244,14 @@ export default {
       }
       this.isLoading = true;
       this.messageData.forEach((message, index) => {
-        this.getContent(message);
-        if (index < this.messageData.length - 1) {
+        this.getContent(message, true);
+        if (index === this.messageData.length - 1) {
+          setTimeout(() => {
+            this.isLoading = false;
+            this.actionSetUserdata(true);
+          }, 2000);
           return;
         }
-        setTimeout(() => {
-          this.isLoading = false;
-        }, 500);
       });
       this.isEditing = false;
       this.onShowFunction(false);

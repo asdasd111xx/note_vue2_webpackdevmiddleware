@@ -267,12 +267,11 @@ export default {
 
           window.YABO_SOCKET_VIDEO_ONMESSAGE = null;
           this.connectWS();
+          const bonunsProcess = this.$refs.bonunsProcess;
+          const bonunsDialog = this.$refs.bonunsDialog;
+          bonunsProcess.processType = 'loading';
         }, 3000)
       }
-
-      const bonunsProcess = this.$refs.bonunsProcess;
-      const bonunsDialog = this.$refs.bonunsDialog;
-      bonunsProcess.processType = 'loading';
     },
     onDisconnect() {
       if (this.isDebug) {
