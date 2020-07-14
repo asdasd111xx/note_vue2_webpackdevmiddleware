@@ -1,9 +1,24 @@
 <template>
   <mobile-container :header-config="headerSetting" :has-footer="false">
     <div slot="content" :class="[$style['content-wrap'], 'clearfix']">
+      <!-- 黑名單阻擋 -->
       <template v-if="isShowBlockTips">
         <block-list-tips type="transfer" @close="closeTips" />
       </template>
+
+      <div :class="[$style['tab-wrap']]">
+        <div
+          v-for="(item, index) in tabItem"
+          :key="`tab-${item.key}`"
+          :class="[
+            $style['tab-item'],
+            { [$style['is-current']]: currentTab === index }
+          ]"
+          @click="setTabCurrent(index)"
+        >
+          {{ item.text }}
+        </div>
+      </div>
     </div>
   </mobile-container>
 </template>
@@ -34,12 +49,29 @@ export default {
       isShowMore: true,
       isShowTransOutSelect: false,
       isShowTransInSelect: false,
+      currentTab: "transder"
     };
   },
   computed: {
     ...mapGetters({
       memInfo: "getMemInfo"
-    })
+    }),
+    tabItem() {
+      return [
+        {
+          key: "discount",
+          text: this.$text("S_CREDIT_DISCOUNT", "转让优惠"),
+        },
+        {
+          key: "transder",
+          text: this.$text("S_CREDIT_TRANSDER", "额度转让"),
+        },
+        {
+          key: "recoard",
+          text: this.$text("S_CREDIT_RECOARD", "转让纪录"),
+        },
+      ]
+    },
   },
   created() {
 
