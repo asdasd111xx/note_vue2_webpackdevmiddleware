@@ -30,8 +30,11 @@ export default {
     parseType() {
       switch (this.type) {
         case "transfer":
+          return "转帐";
+          break;
+
         case "withdraw":
-          return "取款";
+          return "提现";
           break;
 
         case "deposit":

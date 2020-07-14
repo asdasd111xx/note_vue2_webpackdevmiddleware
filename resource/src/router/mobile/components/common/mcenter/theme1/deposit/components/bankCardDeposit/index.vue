@@ -1120,7 +1120,10 @@ export default {
         if (res.status === "000" && res.data && res.data.ret) {
           this.entryBlockStatusData = res.data.ret;
         } else {
-          this.msg = res.msg;
+          // 存款功能無法使用
+          if (res.code !== "TM020074") {
+            this.msg = res.msg;
+          }
         }
       });
     },

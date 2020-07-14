@@ -355,10 +355,6 @@ export default {
                 this.isShow = false;
                 this.actionSetIsLoading(false);
 
-                if (response && response.result !== 'ok') {
-                    this.msg = response.msg;
-                }
-
                 if (response && response.result === 'ok') {
                     const filterData = response.ret.payment_group.filter((info) => !info.is_link)[0];
 
