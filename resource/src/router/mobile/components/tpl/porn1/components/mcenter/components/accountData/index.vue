@@ -99,7 +99,8 @@ export default {
       ],
       imgID: 0,
       imgIndex: 0,
-      uploadImg: null
+      uploadImg: null,
+      avatarSrc: `/static/image/_new/mcenter/avatar_nologin.png`,
     };
   },
   created() {
@@ -128,9 +129,6 @@ export default {
       memInfo: 'getMemInfo',
       memCurrency: 'getMemCurrency',
     }),
-    avatarSrc() {
-      return this.$getCdnPath(`/static/image/_new/mcenter/default/avatar_${this.imgIndex}.png`)
-    },
     headerConfig() {
       return {
         prev: true,
@@ -139,25 +137,50 @@ export default {
       };
     },
   },
+  mounted() {
+    this.getAvatarSrc();
+  },
   methods: {
     ...mapActions([
       'actionSetUserdata',
       'actionSetGlobalMessage'
     ]),
+    getAvatarSrc() {
+      if (this.memInfo.user && this.memInfo.user.custom) {
+        axios({
+          method: 'get',
+          url: this.memInfo.user.custom_image,
+        }).then(res => {
+          console.log(res)
+          if (res && res.data && res.data.result === "ok") {
+            this.avatarSrc = res.data.ret;
+          }
+        }).catch(error => {
+          this.actionSetGlobalMessage({ msg: error.data.msg });
+          this.avatarSrc = this.$getCdnPath(`/static/image/_new/mcenter/default/avatar_${this.imgIndex}.png`);
+        })
+      } else {
+        this.avatarSrc = this.$getCdnPath(`/static/image/_new/mcenter/default/avatar_${this.imgIndex}.png`);
+      }
+    },
     uploadImgChange(e) {
       let files = e.target.files;
+      let formData = new FormData();
+      formData.append('custom_image', files[0]);
       if (files && files[0]) {
         axios({
           method: 'post',
-          url: '/apiv1/c/player/custom-image',
-          data: {
-            custom_image: files[0],
-          },
+          url: '/api/v1/c/player/custom-image',
+          data: formData,
           headers: {
             'Content-Type': 'multipart/form-data'
           }
         }).then(res => {
+          if (res && res.data && res.data.result === "ok") {
+            this.customImage = res.data.custom_image;
+          }
           this.actionSetUserdata(true);
+          this.getAvatarSrc();
         }).catch(error => {
           this.actionSetGlobalMessage({ msg: error.data.msg });
         })
@@ -186,6 +209,7 @@ export default {
           this.actionSetUserdata(true);
           this.dialogShow();
           this.imgIndex = this.imgID;
+          this.getAvatarSrc();
         }
       });
     },
