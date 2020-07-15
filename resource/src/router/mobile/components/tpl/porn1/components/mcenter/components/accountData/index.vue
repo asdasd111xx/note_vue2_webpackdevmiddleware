@@ -37,7 +37,7 @@
             :src="$getCdnPath(avatarList.url)"
             @click="selectImg(index + 1)"
           />
-          <div v-if="imgID - 1 === index" :class="$style.check" />
+          <div v-if="imgID === index" :class="$style.check" />
         </div>
 
         <div :class="$style['dialog-func']">
@@ -49,13 +49,6 @@
             accept="image/*"
             capture="camera"
           />
-          <input
-            @change="uploadImgChange"
-            :class="$style['img-input']"
-            ref="albumInput"
-            type="file"
-            accept="image/*"
-          />
           <div @click="handleClickFunc('album')">
             从相册选取
           </div>
@@ -63,6 +56,15 @@
           <div @click="isShow = false">{{ $text("S_CANCEL", "取消") }}</div>
         </div>
       </div>
+      <avater-editer
+        v-if="isShowAvaterEditer"
+        ref="avater-editer"
+        :handle-close="
+          () => {
+            isShowAvaterEditer = false;
+          }
+        "
+      />
       <account />
       <service-tips />
     </div>
@@ -77,12 +79,13 @@ import member from '@/api/member';
 import mobileContainer from '../../../common/new/mobileContainer';
 import serviceTips from './serviceTips'
 import axios from 'axios';
-
+import avaterEditer from './avaterEditer'
 export default {
   components: {
     mobileContainer,
     account,
-    serviceTips
+    serviceTips,
+    avaterEditer
   },
   data() {
     return {
@@ -101,6 +104,7 @@ export default {
       imgIndex: 0,
       uploadImg: null,
       avatarSrc: `/static/image/_new/mcenter/avatar_nologin.png`,
+      isShowAvaterEditer: false
     };
   },
   created() {
@@ -151,7 +155,6 @@ export default {
           method: 'get',
           url: this.memInfo.user.custom_image,
         }).then(res => {
-          console.log(res)
           if (res && res.data && res.data.result === "ok") {
             this.avatarSrc = res.data.ret;
           }
@@ -168,21 +171,9 @@ export default {
       let formData = new FormData();
       formData.append('custom_image', files[0]);
       if (files && files[0]) {
-        axios({
-          method: 'post',
-          url: '/api/v1/c/player/custom-image',
-          data: formData,
-          headers: {
-            'Content-Type': 'multipart/form-data'
-          }
-        }).then(res => {
-          if (res && res.data && res.data.result === "ok") {
-            this.customImage = res.data.custom_image;
-          }
-          this.actionSetUserdata(true);
-          this.getAvatarSrc();
-        }).catch(error => {
-          this.actionSetGlobalMessage({ msg: error.data.msg });
+        this.isShowAvaterEditer = true;
+        this.$nextTick(() => {
+          this.$refs['avater-editer'].option.img = URL.createObjectURL(files[0]);
         })
       }
     },
@@ -190,9 +181,8 @@ export default {
       if (key === "camera") {
         this.$refs['cameraInput'].click();
       } else if (key === "album") {
-        this.$refs['albumInput'].click();
+        this.isShowAvaterEditer = true;
       }
-      //   this.actionSetGlobalMessage({ type: 'incoming' });
     },
     dialogShow() {
       this.isShow = !this.isShow;
@@ -256,25 +246,27 @@ export default {
 }
 
 // avatar dialog
-.dialog-mask,
-.dialog-wrap {
-  position: absolute;
-  top: 0;
-  left: 0;
-  padding: 0;
-  background: #000;
-  z-index: 100;
-}
 .dialog-mask {
+  position: fixed;
   width: 100%;
-  height: 100%;
-  opacity: 0.4;
-}
-.dialog-wrap {
-  bottom: 0;
   left: 0;
-  top: unset;
+  top: 0;
+  height: 100%;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  z-index: 100;
+  opacity: 0.4;
+  background-color: rgba($color: #161616, $alpha: 0.8);
+}
+
+.dialog-wrap {
   width: 100%;
+  position: absolute;
+  padding: 0;
+  z-index: 100;
+  bottom: 0;
+  max-width: $mobile_max_width;
   border-radius: 20px 20px 0 0;
   position: fixed;
   z-index: 100;
@@ -337,6 +329,12 @@ export default {
       -webkit-transform: translate(-50%, 0);
       transform: translate(-50%, 0);
     }
+  }
+}
+
+@media (orientation: landscape) {
+  .dialog-wrap {
+    max-width: $mobile_max_landscape_width !important;
   }
 }
 

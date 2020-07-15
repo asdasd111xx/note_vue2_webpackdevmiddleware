@@ -26,6 +26,7 @@ import VeeValidate from 'vee-validate';
 import Vue from 'vue';
 import VueClipboard from 'vue-clipboard2';
 import VueCookie from 'vue-cookie';
+import VueCropper from 'vue-cropper';
 import VueLazyload from 'vue-lazyload';
 import VueNativeSock from 'vue-native-websocket'
 import VueQrcode from '@chenfengyuan/vue-qrcode';
@@ -106,6 +107,7 @@ Vue.use(vStyle);
 Vue.use(VueClipboard);
 Vue.component(VueQrcode.name, VueQrcode);
 Vue.use(depositLink);
+Vue.use(VueCropper);
 Vue.component('icon', Icon);
 
 /* eslint-disable no-new */
