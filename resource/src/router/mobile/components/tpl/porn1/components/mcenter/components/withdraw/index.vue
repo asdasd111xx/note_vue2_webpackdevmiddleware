@@ -323,12 +323,7 @@
       />
       <!-- 流水檢查 -->
       <serial-number v-if="isSerial" :handle-close="toggleSerial" />
-
-      <div v-if="isLoading" :class="$style['loading-wrap']">
-        <div :class="$style['loading-item']">
-          <ele-loading />
-        </div>
-      </div>
+      <page-loading :isShow="isLoading" />
     </div>
   </mobile-container>
 </template>
@@ -382,7 +377,7 @@ export default {
     }
   },
   components: {
-    eleLoading: () => import(/* webpackChunkName: 'eleLoading' */ '@/router/web/components/tpl/common/element/loading/circle'),
+    pageLoading: () => import(/* webpackChunkName: 'pageLoading' */ '@/router/mobile/components/tpl/porn1/components/common/new/pageLoading'),
     mobileContainer,
     balanceTran,
     message,
@@ -445,9 +440,9 @@ export default {
     this.depositBeforeWithdraw = this.memInfo.config.deposit_before_withdraw || false;
     this.firstDeposit = this.memInfo.user.first_deposit || false;
     if (this.depositBeforeWithdraw && !this.firstDeposit) {
-    this.widthdrawTipsType = "deposit";
-    this.isShowCheck = true;
-    return;
+      this.widthdrawTipsType = "deposit";
+      this.isShowCheck = true;
+      return;
     }
 
     // 綁定銀行卡內無常用帳號
