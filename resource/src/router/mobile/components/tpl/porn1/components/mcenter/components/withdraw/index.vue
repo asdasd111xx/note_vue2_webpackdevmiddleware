@@ -439,20 +439,16 @@ export default {
     }
   },
   created() {
-    this.actionSetUserdata(true).then(() => {
-      if (this.memInfo.blacklist.includes(1)) {
-        this.isShowBlockTips = true;
-        return;
-      }
+    // 刷新 Player Api
+    this.actionSetUserdata(true)
 
-      this.depositBeforeWithdraw = this.memInfo.config.deposit_before_withdraw || false;
-      this.firstDeposit = this.memInfo.user.first_deposit || false;
-      if (this.depositBeforeWithdraw && !this.firstDeposit) {
-        this.widthdrawTipsType = "deposit";
-        this.isShowCheck = true;
-        return;
-      }
-    })
+    this.depositBeforeWithdraw = this.memInfo.config.deposit_before_withdraw || false;
+    this.firstDeposit = this.memInfo.user.first_deposit || false;
+    if (this.depositBeforeWithdraw && !this.firstDeposit) {
+    this.widthdrawTipsType = "deposit";
+    this.isShowCheck = true;
+    return;
+    }
 
     // 綁定銀行卡內無常用帳號
     common.bankCardCheck({
@@ -598,6 +594,11 @@ export default {
       this.withdrawValue = Math.floor(Number(result));
     },
     checkSubmit() {
+      if (this.memInfo.blacklist.includes(1)) {
+        this.isShowBlockTips = true;
+        return;
+      }
+
       const islock = () => {
         if (this.errTips || !this.withdrawValue || this.isSendSubmit || !this.selectedCard) {
           return true;
