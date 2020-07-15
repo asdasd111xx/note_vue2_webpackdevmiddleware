@@ -329,11 +329,17 @@
                 { [$style['is-disable']]: balanceTran.btnLock }
               ]"
               @click="
-                balanceTransfer({
-                  customSucessAlert: () => {
-                    transferSubmit(balanceTran.btnLock);
+                () => {
+                  if (memInfo.blacklist.includes(3)) {
+                    isShowBlockTips = true;
+                  } else {
+                    balanceTransfer({
+                      customSucessAlert: () => {
+                        transferSubmit(balanceTran.btnLock);
+                      }
+                    })
                   }
-                })
+                }
               "
             >
               立即转帐
@@ -398,11 +404,8 @@ export default {
     })
   },
   created() {
-    this.actionSetUserdata(true).then(() => {
-      if (this.memInfo.blacklist.includes(3)) {
-        this.isShowBlockTips = true;
-      }
-    });
+    // 刷新 Player Api
+    this.actionSetUserdata(true);
   },
   methods: {
     ...mapActions(["actionSetUserBalance", "actionSetUserdata"]),

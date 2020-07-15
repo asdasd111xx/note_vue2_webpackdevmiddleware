@@ -172,6 +172,8 @@ export default {
           };
 
           const openGameFailFunc = (res) => {
+            this.isShowLoading = false;
+
             if (res && res.data) {
               let data = res.data;
               this.actionSetGlobalMessage({ msg: data.msg, code: data.code })
