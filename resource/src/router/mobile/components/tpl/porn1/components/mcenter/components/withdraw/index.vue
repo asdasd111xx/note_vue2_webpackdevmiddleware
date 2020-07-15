@@ -175,7 +175,7 @@
           :class="$style['bank-card-cell']"
           @click="handleSelectCard(item)"
         >
-          <img :src="`${bankSrc}${item.bank_id}.png`" />
+          <img v-lazy="getBankImage(item.swift_code)" />
           <span>{{ item.alias }} </span>
           <div
             :class="[
@@ -509,11 +509,6 @@ export default {
         },
       };
     },
-    bankSrc() {
-      return !this.webInfo.is_production ?
-        'https://images.bbin-asia.com/icon/withdrawBank/' :
-        'https://images.dormousepie.com/icon/withdrawBank/'
-    },
     getWithdrawTips() {
       let string = [];
 
@@ -536,6 +531,13 @@ export default {
     },
   },
   methods: {
+    getBankImage(swiftCode) {
+      return {
+        src: `https://images.dormousepie.com/icon/bankIconBySwiftCode/${swiftCode}.png`,
+        error: this.$getCdnPath('/static/image/_new/default/bank_default_2.png'),
+        loading: this.$getCdnPath('/static/image/_new/default/bank_default_2.png')
+      };
+    },
     onClickMaintain(value) {
       this.msg = `美东时间：
           <br>

@@ -1069,7 +1069,7 @@ export default {
       });
     },
     getImg(info) {
-      let imgId = info.bank_id || info.selectId;
+      let imgId = info.swift_code || info.selectId;
 
       if (info.bank_id === 0) {
         if (info.payment_method_id === 20 && info.payment_type_id === 11) {
@@ -1083,12 +1083,13 @@ export default {
         if (info.payment_method_id === 1 && info.payment_type_id === 1) {
           imgId = 70002;
         }
+      } else {
+        return {
+          src: `https://images.dormousepie.com/icon/bankIconBySwiftCode/${imgId}.png`,
+          error: this.$getCdnPath('/static/image/_new/default/bank_default_2.png'),
+          loading: this.$getCdnPath('/static/image/_new/default/bank_default_2.png')
+        };
       }
-      return {
-        src: `https://images.dormousepie.com/icon/withdrawBank/${imgId}.png`,
-        error: this.$getCdnPath('/static/image/_new/mcenter/default.png'),
-        loading: this.$getCdnPath('/static/image/game_loading_s.gif')
-      };
     },
     curPay(curPayInfo) {
       if (Object.keys(curPayInfo).length
