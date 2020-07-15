@@ -38,9 +38,8 @@ export default {
     }),
   },
   created() {
-    let platform = this.$route.query.platform || getCookie('platform');;
+    let platform = getCookie('platform');
     this.platform = platform;
-    setCookie('platform', platform);
   },
   methods: {
     ...mapActions([
@@ -56,7 +55,7 @@ export default {
     },
     handleClick() {
       this.show = false;
-      window.open('/mobile/install' , "_blank")
+      window.open('/mobile/install', "_blank")
     }
   }
 };
