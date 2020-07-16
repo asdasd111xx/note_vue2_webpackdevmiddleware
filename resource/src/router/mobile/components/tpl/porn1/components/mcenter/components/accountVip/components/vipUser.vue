@@ -94,7 +94,7 @@
 
 <script>
 import { mapGetters, mapActions } from "vuex";
-
+import axios from 'axios';
 export default {
   props: {
     userVipInfo: {
@@ -104,40 +104,48 @@ export default {
   },
   data() {
     return {
-      imgIndex: 0,
+      avatarSrc: `/static/image/_new/mcenter/avatar_nologin.png`,
       levelIcon: "00"
     };
   },
   computed: {
     ...mapGetters({
-      memInfo: "getMemInfo"
+      memInfo: "getMemInfo",
+      loginStatus: 'getLoginStatus',
     }),
-    avatarSrc() {
-      return this.imgIndex == 0
-        ? this.$getCdnPath(
-          `/static/image/_new/mcenter/avatar_nologin.png`
-        )
-        : this.$getCdnPath(
-          `/static/image/_new/mcenter/default/avatar_${this.imgIndex}.png`
-        );
-    },
     runPercent() {
       return this.userVipInfo.percent + "%";
     }
   },
-  created() {
+  mounted() {
     this.actionSetUserdata(true).then(() => {
-      if (this.memInfo.user.image === 0 || !this.memInfo.user.image) {
-        this.imgIndex = 0;
-        return;
-      }
-      this.imgIndex = this.memInfo.user.image;
+      this.getAvatarSrc();
     })
   },
   methods: {
     ...mapActions([
       'actionSetUserdata'
     ]),
+    getAvatarSrc() {
+      if (!this.loginStatus) return;
+
+      const imgSrcIndex = this.memInfo.user.image;
+      if (this.memInfo.user && this.memInfo.user.custom) {
+        axios({
+          method: 'get',
+          url: this.memInfo.user.custom_image,
+        }).then(res => {
+          if (res && res.data && res.data.result === "ok") {
+            this.avatarSrc = res.data.ret;
+          }
+        }).catch(error => {
+          this.actionSetGlobalMessage({ msg: error.data.msg });
+          this.avatarSrc = this.$getCdnPath(`/static/image/_new/mcenter/default/avatar_${imgSrcIndex}.png`);
+        })
+      } else {
+        this.avatarSrc = this.$getCdnPath(`/static/image/_new/mcenter/default/avatar_${imgSrcIndex}.png`);
+      }
+    },
   },
 };
 </script>

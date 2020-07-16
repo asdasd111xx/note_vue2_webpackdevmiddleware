@@ -323,7 +323,7 @@
       />
       <!-- 流水檢查 -->
       <serial-number v-if="isSerial" :handle-close="toggleSerial" />
-      <page-loading :isShow="isLoading" />
+      <page-loading :is-show="isLoading" />
     </div>
   </mobile-container>
 </template>

@@ -1,23 +1,19 @@
 <template>
-  <div
-    :class="$style['mcenter-avatar-info-wrap']"
-    @click="
-      loginStatus
-        ? $router.push('/mobile/mcenter/accountData')
-        : $router.push('/mobile/login')
-    "
-  >
-    <message v-if="msg" @close="msg = ''"
-      ><div slot="msg">{{ msg }}</div>
-    </message>
-
+  <div :class="$style['mcenter-avatar-info-wrap']">
     <!-- 大頭照 -->
-    <div :class="$style['avatar-wrap']">
+    <div :class="$style['avatar-wrap']" @click="isShowAvatarDialog = true">
       <img :src="avatarSrc" />
     </div>
 
     <!-- 姓名/註冊 -->
-    <div :class="$style['info-wrap']">
+    <div
+      :class="$style['info-wrap']"
+      @click="
+        loginStatus
+          ? $router.push('/mobile/mcenter/accountData')
+          : $router.push('/mobile/login')
+      "
+    >
       <div>
         <template v-if="loginStatus">
           <span>
@@ -49,6 +45,9 @@
     <div :class="$style['btn-next']">
       <img :src="$getCdnPath(`/static/image/_new/mcenter/ic_arrow_next.png`)" />
     </div>
+
+    <!-- 頭像編輯彈窗 -->
+    <avatar-dialog :is-show="isShowAvatarDialog" @close="handleCloseDialog" />
   </div>
 </template>
 
@@ -61,10 +60,13 @@ import member from '@/api/member';
 import message from '../../../../common/new/message';
 import { getCookie, setCookie } from '@/lib/cookie';
 import yaboRequest from '@/api/yaboRequest';
+import avatarDialog from '../../accountData/avatarDialog'
+import axios from 'axios';
 
 export default {
   components: {
-    message
+    message,
+    avatarDialog
   },
   data() {
     return {
@@ -73,6 +75,8 @@ export default {
       imgID: 0,
       imgIndex: 0,
       viplevel: "",
+      avatarSrc: `/static/image/_new/mcenter/avatar_nologin.png`,
+      isShowAvatarDialog: false,
       avatar: [
         { image: 'avatar_1', url: '/static/image/_new/mcenter/default/avatar_1.png' },
         { image: 'avatar_2', url: '/static/image/_new/mcenter/default/avatar_2.png' },
@@ -91,11 +95,6 @@ export default {
       memBalance: 'getMemBalance',
       siteConfig: "getSiteConfig",
     }),
-    avatarSrc() {
-      return !this.loginStatus ?
-        this.$getCdnPath(`/static/image/_new/mcenter/avatar_nologin.png`) :
-        this.$getCdnPath(`/static/image/_new/mcenter/default/avatar_${this.imgIndex}.png`)
-    }
   },
   created() {
     if (this.memInfo.user.image === 0 || !(this.memInfo.user.image)) {
@@ -109,11 +108,39 @@ export default {
   },
   mounted() {
     this.getUserViplevel();
+    this.getAvatarSrc();
   },
   methods: {
     ...mapActions([
       'actionSetUserdata'
     ]),
+    handleCloseDialog() {
+      this.isShowAvatarDialog = false;
+
+      this.actionSetUserdata(true).then(() => {
+        this.getAvatarSrc();
+      });
+    },
+    getAvatarSrc() {
+      if (!this.loginStatus) return;
+
+      const imgSrcIndex = this.memInfo.user.image;
+      if (this.memInfo.user && this.memInfo.user.custom) {
+        axios({
+          method: 'get',
+          url: this.memInfo.user.custom_image,
+        }).then(res => {
+          if (res && res.data && res.data.result === "ok") {
+            this.avatarSrc = res.data.ret;
+          }
+        }).catch(error => {
+          this.actionSetGlobalMessage({ msg: error.data.msg });
+          this.avatarSrc = this.$getCdnPath(`/static/image/_new/mcenter/default/avatar_${imgSrcIndex}.png`);
+        })
+      } else {
+        this.avatarSrc = this.$getCdnPath(`/static/image/_new/mcenter/default/avatar_${imgSrcIndex}.png`);
+      }
+    },
     getUserViplevel() {
       let cid = getCookie("cid");
       if (!cid) { return }

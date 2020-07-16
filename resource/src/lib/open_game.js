@@ -97,6 +97,9 @@ export default (params, success = () => { }, fail = () => { }) => {
                     window.open(link, '', '_blank', true);
                 }
                 success();
+                setTimeout(() => {
+                    localStorage.removeItem('is-open-game');
+                }, 1500)
             }, 200)
         },
         fail: (res) => {
