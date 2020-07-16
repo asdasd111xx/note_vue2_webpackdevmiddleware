@@ -132,15 +132,15 @@ export default {
             });
         },
         onSort(sortValue) {
-            let orderstate = 'asc';
+            let orderState = 'asc';
 
             if (this.sort === sortValue) {
-                orderstate = (this.order === 'asc') ? 'desc' : 'asc';
+                orderState = (this.order === 'asc') ? 'desc' : 'asc';
             }
 
             this.showPage = 1;
             this.sort = sortValue;
-            this.order = orderstate;
+            this.order = orderState;
 
             this.getFriends();
         },

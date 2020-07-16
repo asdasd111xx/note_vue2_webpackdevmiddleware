@@ -30,13 +30,13 @@ export default {
         }
     },
     methods: {
-        setDetailData(detail) {
-            if (detail && detail.state !== 1) {
-                return;
-            }
+        // setDetailData(detail) {
+        //     if (detail && detail.state !== 1) {
+        //         return;
+        //     }
 
-            this.detailInfo = detail;
-        },
+        //     this.detailInfo = detail;
+        // },
         onSearch() {
             const { state, startTime, endTime } = this;
             this.searchInfo = { state, startTime, endTime };
