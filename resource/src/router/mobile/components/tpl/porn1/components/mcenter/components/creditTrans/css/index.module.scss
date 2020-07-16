@@ -34,3 +34,14 @@
     left: calc(33% / 2 - 20px);
     transition: left 0.31s;
 }
+
+.discount-item {
+  width: 90% ;
+  // height: 150px;
+  margin: 10px auto;
+
+  img {
+    width: 100%;
+    height: 100%;
+  }
+}
