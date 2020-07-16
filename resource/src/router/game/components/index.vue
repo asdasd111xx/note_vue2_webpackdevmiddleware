@@ -71,6 +71,8 @@ export default {
 
     if (localStorage.getItem('open-game-link')) {
       let openGameLink = localStorage.getItem('open-game-link');
+      localStorage.removeItem("open-game-link");
+
       this.isLoading = false;
 
       if (!isMobileFuc() && (vendor === 'sp' || vendor === 'mg')) {
@@ -79,59 +81,56 @@ export default {
       }
 
       window.location.href = openGameLink;
-      setTimeout(() => {
-        localStorage.removeItem('open-game-link');
-        localStorage.removeItem("is-open-game");
-      }, 1500)
       return;
     }
+    else {
+      console.log('open-game-link 遺失');
+      // 舊版開啟方式
+      game.gameLink({
+        params: temp,
+        errorAlert: false,
+        success: (response) => {
+          const { result, ret } = response;
+          if (result !== 'ok') {
+            return;
+          }
 
-    console.log('open-game-link 遺失');
-    // 舊版開啟方式
-    game.gameLink({
-      params: temp,
-      errorAlert: false,
-      success: (response) => {
-        const { result, ret } = response;
-        if (result !== 'ok') {
-          return;
-        }
-
-        this.isLoading = false;
-
-        // 80桌參數
-        let query = '';
-        if (vendor === "lg_live" && String(kind) === "2" && this.$route.query && this.$route.query.q === "R") {
-          query = '&customize=yabo&tableType=3310';
-        }
-
-        if (!this.isMobile && vendor === 'sp') {
           this.isLoading = false;
 
-          this.urlData = ret + query;
-          return;
-        }
+          // 80桌參數
+          let query = '';
+          if (vendor === "lg_live" && String(kind) === "2" && this.$route.query && this.$route.query.q === "R") {
+            query = '&customize=yabo&tableType=3310';
+          }
 
-        if (!this.isMobile && vendor === 'mg') {
-          this.isLoading = false;
-          this.urlData = ret + query;
-          return;
-        }
+          if (!this.isMobile && vendor === 'sp') {
+            this.isLoading = false;
 
-        window.location.href = ret.url + query;
-      },
-      fail: (res) => {
-        this.msg = res.data && res.data.msg ? res.data.msg : '';
-        setTimeout(() => {
-          this.$nextTick(() => {
-            window.close();
-            if (getCookie('platform') === "H") {
-              window.history.back();
-            }
-          });
-        }, 2500)
-      }
-    }, vendor);
+            this.urlData = ret + query;
+            return;
+          }
+
+          if (!this.isMobile && vendor === 'mg') {
+            this.isLoading = false;
+            this.urlData = ret + query;
+            return;
+          }
+
+          window.location.href = ret.url + query;
+        },
+        fail: (res) => {
+          this.msg = res.data && res.data.msg ? res.data.msg : '';
+          setTimeout(() => {
+            this.$nextTick(() => {
+              window.close();
+              if (getCookie('platform') === "H") {
+                window.history.back();
+              }
+            });
+          }, 2500)
+        }
+      }, vendor);
+    }
   },
   methods: {
     onClick() {
