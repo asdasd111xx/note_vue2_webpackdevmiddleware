@@ -79,7 +79,10 @@ export default {
       }
 
       window.location.href = openGameLink;
-      localStorage.removeItem('open-game-link');
+      setTimeout(() => {
+        localStorage.removeItem('open-game-link');
+        localStorage.removeItem("is-open-game");
+      }, 1500)
       return;
     }
 
