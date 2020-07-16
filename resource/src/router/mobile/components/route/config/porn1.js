@@ -28,6 +28,7 @@ export default {
         accountDataPorn1: () => import(/* webpackChunkName: 'accountDataPorn1' */'../../tpl/porn1/components/mcenter/components/accountData'),
         bindingDevicePorn1: () => import(/* webpackChunkName: 'bindingDevicePorn1' */'../../tpl/porn1/components/mcenter/components/bindingDevice'),
         balanceTransPorn1: () => import(/* webpackChunkName: 'balanceTransPorn1' */'../../tpl/porn1/components/mcenter/components/balanceTrans'),
+        creditTransPorn1: () => import(/* webpackChunkName: 'creditTransPorn1' */'../../tpl/porn1/components/mcenter/components/creditTrans'),
         bankCardPorn1: () => import(/* webpackChunkName: 'bankCardPorn1' */'../../tpl/porn1/components/mcenter/components/bankCard'),
         bankRebatePorn1: () => import(/* webpackChunkName: 'bankRebatePorn1' */'../../tpl/porn1/components/mcenter/components/bankRebate'),
         betRecordPorn1: () => import(/* webpackChunkName: 'betRecordPorn1' */'../../tpl/porn1/components/mcenter/components/betRecord'),

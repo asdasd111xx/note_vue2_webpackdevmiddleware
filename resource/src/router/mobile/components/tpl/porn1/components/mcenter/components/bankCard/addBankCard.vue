@@ -169,7 +169,7 @@
         <ul :class="$style['pop-list']">
           <li v-for="item in bankList" :key="item.id" @click="setBank(item)">
             <!-- <img :src="`https://bbos.bbin-asia.com/elibom/bank/${item.id}.png`" /> -->
-            <img v-lazy="getImg(item.id)" />
+            <img v-lazy="getBankImage(item.swift_code)" />
             {{ item.name }}
             <icon
               v-if="item.id === formData.bank_id"
@@ -450,11 +450,11 @@ export default {
         e.preventDefault();
       }
     },
-    getImg(id) {
+    getBankImage(swiftCode) {
       return {
-        src: `https://images.dormousepie.com/icon/cardBank/${id}.png`,
-        error: this.$getCdnPath('/static/image/_new/default/bank_card_default.png'),
-        loading: this.$getCdnPath('/static/image/game_loading_s.gif')
+        src: `https://images.dormousepie.com/icon/bankIconBySwiftCode/${swiftCode}.png`,
+        error: this.$getCdnPath('/static/image/_new/default/bank_default_2.png'),
+        loading: this.$getCdnPath('/static/image/_new/default/bank_default_2.png')
       };
     },
     showCaptchaPopup() {
