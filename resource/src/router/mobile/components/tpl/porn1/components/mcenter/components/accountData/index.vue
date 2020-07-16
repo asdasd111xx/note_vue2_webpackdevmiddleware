@@ -37,7 +37,7 @@
             :src="$getCdnPath(avatarList.url)"
             @click="selectImg(index + 1)"
           />
-          <div v-if="imgID - 1 === index" :class="$style.check" />
+          <div v-if="imgID === index" :class="$style.check" />
         </div>
 
         <div :class="$style['dialog-func']">
@@ -49,23 +49,22 @@
             accept="image/*"
             capture="camera"
           />
-          <input
-            @change="uploadImgChange"
-            :class="$style['img-input']"
-            ref="albumInput"
-            type="file"
-            accept="image/*"
-          />
-          <div @click="handleClickFunc">
+          <div @click="handleClickFunc('album')">
             从相册选取
           </div>
-          <div @click="handleClickFunc">拍照</div>
+          <div @click="handleClickFunc('camera')">拍照</div>
           <div @click="isShow = false">{{ $text("S_CANCEL", "取消") }}</div>
         </div>
       </div>
-      <message v-if="msg" @close="msg = ''"
-        ><div slot="msg">{{ msg }}</div>
-      </message>
+      <avater-editer
+        v-if="isShowAvaterEditer"
+        ref="avater-editer"
+        :handle-close="
+          () => {
+            isShowAvaterEditer = false;
+          }
+        "
+      />
       <account />
       <service-tips />
     </div>
@@ -78,19 +77,18 @@ import account from './account/index';
 import mcenter from '@/api/mcenter';
 import member from '@/api/member';
 import mobileContainer from '../../../common/new/mobileContainer';
-import message from '../../../common/new/message'
 import serviceTips from './serviceTips'
-
+import axios from 'axios';
+import avaterEditer from './avaterEditer'
 export default {
   components: {
     mobileContainer,
     account,
-    message,
-    serviceTips
+    serviceTips,
+    avaterEditer
   },
   data() {
     return {
-      msg: "",
       isShow: false,
       avatar: [
         { image: 'avatar_1', url: '/static/image/_new/mcenter/default/avatar_1.png' },
@@ -104,7 +102,9 @@ export default {
       ],
       imgID: 0,
       imgIndex: 0,
-      uploadImg: null
+      uploadImg: null,
+      avatarSrc: `/static/image/_new/mcenter/avatar_nologin.png`,
+      isShowAvaterEditer: false
     };
   },
   created() {
@@ -119,6 +119,11 @@ export default {
       return;
     }
 
+    // 是否自訂上傳頭像
+    if (this.memInfo.user.custom) {
+
+    }
+
     this.imgIndex = this.memInfo.user.image;
     this.imgID = this.memInfo.user.image;
   },
@@ -128,9 +133,6 @@ export default {
       memInfo: 'getMemInfo',
       memCurrency: 'getMemCurrency',
     }),
-    avatarSrc() {
-      return this.$getCdnPath(`/static/image/_new/mcenter/default/avatar_${this.imgIndex}.png`)
-    },
     headerConfig() {
       return {
         prev: true,
@@ -139,18 +141,48 @@ export default {
       };
     },
   },
+  mounted() {
+    this.getAvatarSrc();
+  },
   methods: {
     ...mapActions([
-      'actionSetUserdata'
+      'actionSetUserdata',
+      'actionSetGlobalMessage'
     ]),
-    uploadImgChange(e) {
-      console.log(e)
-    },
-    handleClickFunc() {
-      if (this.$route.query._db) {
-        this.$refs['cameraInput'].click();
+    getAvatarSrc() {
+      if (this.memInfo.user && this.memInfo.user.custom) {
+        axios({
+          method: 'get',
+          url: this.memInfo.user.custom_image,
+        }).then(res => {
+          if (res && res.data && res.data.result === "ok") {
+            this.avatarSrc = res.data.ret;
+          }
+        }).catch(error => {
+          this.actionSetGlobalMessage({ msg: error.data.msg });
+          this.avatarSrc = this.$getCdnPath(`/static/image/_new/mcenter/default/avatar_${this.imgIndex}.png`);
+        })
+      } else {
+        this.avatarSrc = this.$getCdnPath(`/static/image/_new/mcenter/default/avatar_${this.imgIndex}.png`);
       }
-      this.msg = this.$text('S_COMING_SOON2', '正在上线 敬请期待');
+    },
+    uploadImgChange(e) {
+      let files = e.target.files;
+      let formData = new FormData();
+      formData.append('custom_image', files[0]);
+      if (files && files[0]) {
+        this.isShowAvaterEditer = true;
+        this.$nextTick(() => {
+          this.$refs['avater-editer'].option.img = URL.createObjectURL(files[0]);
+        })
+      }
+    },
+    handleClickFunc(key) {
+      if (key === "camera") {
+        this.$refs['cameraInput'].click();
+      } else if (key === "album") {
+        this.isShowAvaterEditer = true;
+      }
     },
     dialogShow() {
       this.isShow = !this.isShow;
@@ -167,6 +199,7 @@ export default {
           this.actionSetUserdata(true);
           this.dialogShow();
           this.imgIndex = this.imgID;
+          this.getAvatarSrc();
         }
       });
     },
@@ -213,25 +246,27 @@ export default {
 }
 
 // avatar dialog
-.dialog-mask,
-.dialog-wrap {
-  position: absolute;
-  top: 0;
-  left: 0;
-  padding: 0;
-  background: #000;
-  z-index: 100;
-}
 .dialog-mask {
+  position: fixed;
   width: 100%;
-  height: 100%;
-  opacity: 0.4;
-}
-.dialog-wrap {
-  bottom: 0;
   left: 0;
-  top: unset;
+  top: 0;
+  height: 100%;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  z-index: 100;
+  opacity: 0.4;
+  background-color: rgba($color: #161616, $alpha: 0.8);
+}
+
+.dialog-wrap {
   width: 100%;
+  position: absolute;
+  padding: 0;
+  z-index: 100;
+  bottom: 0;
+  max-width: $mobile_max_width;
   border-radius: 20px 20px 0 0;
   position: fixed;
   z-index: 100;
@@ -294,6 +329,12 @@ export default {
       -webkit-transform: translate(-50%, 0);
       transform: translate(-50%, 0);
     }
+  }
+}
+
+@media (orientation: landscape) {
+  .dialog-wrap {
+    max-width: $mobile_max_landscape_width !important;
   }
 }
 

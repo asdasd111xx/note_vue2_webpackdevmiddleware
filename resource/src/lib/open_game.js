@@ -1,4 +1,5 @@
 import game from '@/api/game';
+import { getCookie } from '@/lib/cookie';
 import isMobileFuc from '@/lib/is_mobile';
 // eslint-disable-next-line import/no-cycle
 import store from '@/store';
@@ -76,10 +77,15 @@ export default (params, success = () => { }, fail = () => { }) => {
 
             setTimeout(() => {
                 try {
-                    window.open(link, '', option);
+                    let isWebview = getCookie("platform") === "H";
+                    if (isWebview) {
+                        window.location.href = link;
+                    } else {
+                        window.open(link, '', '_blank', true);
+                    }
                 } catch (e) {
-                    console.log(e)
-                    console.log('阻挡弹出式视窗')
+                    console.log(e);
+                    console.log('另开视窗失败 请关闭阻挡弹出式视窗');
                 }
             }, 200)
 
@@ -89,6 +95,8 @@ export default (params, success = () => { }, fail = () => { }) => {
             }, 1500)
         },
         fail: (res) => {
+            console.log('launch 失敗');
+            console.log(res);
             fail(res);
 
             setTimeout(() => {

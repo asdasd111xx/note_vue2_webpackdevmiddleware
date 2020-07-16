@@ -83,6 +83,7 @@ export default {
       return;
     }
 
+    console.log('open-game-link 遺失');
     // 舊版開啟方式
     game.gameLink({
       params: temp,

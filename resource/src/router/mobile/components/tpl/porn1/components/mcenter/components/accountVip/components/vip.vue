@@ -5,7 +5,7 @@
       <div :class="$style['header-block']">
         <div
           :class="$style['btn-back']"
-          @click="$router.push('/mobile/mcenter')"
+          @click="$router.back()"
         >
           <img
             :src="$getCdnPath(`/static/image/_new/common/btn_back.png`)"

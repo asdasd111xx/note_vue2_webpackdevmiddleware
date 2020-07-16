@@ -19,7 +19,7 @@
           >
             <div :class="[$style['bankcard-top'], 'clearfix']">
               <div :class="$style['bankcard-logo']">
-                <img v-lazy="getImg(item.bank_id)" />
+                <img v-lazy="getBankImage(item.swift_code)" />
               </div>
               <div :class="$style['bankcard-info']">
                 <div :class="$style['bankcard-name']">
@@ -62,7 +62,7 @@
       <div :class="$style['bankcard-item']">
         <div :class="[$style['bankcard-top'], 'clearfix']">
           <div :class="$style['bankcard-logo']">
-            <img v-lazy="getImg(bankCardDetail.bank_id)" />
+            <img v-lazy="getBankImage(bankCardDetail.swift_code)" />
           </div>
           <div :class="$style['bankcard-info']">
             <div :class="$style['bankcard-name']">
@@ -156,11 +156,11 @@ export default {
       }, 3000);
       this.$emit('update:editStatus', false);
     },
-    getImg(id) {
+    getBankImage(swiftCode) {
       return {
-        src: `https://images.dormousepie.com/icon/cardBank/${id}.png`,
-        error: this.$getCdnPath('/static/image/mcenter/bank/default.png'),
-        loading: this.$getCdnPath('/static/image/game_loading_s.gif')
+        src: `https://images.dormousepie.com/icon/bankIconBySwiftCode/${swiftCode}.png`,
+        error: this.$getCdnPath('/static/image/_new/default/bank_default_2.png'),
+        loading: this.$getCdnPath('/static/image/_new/default/bank_default_2.png')
       };
     }
   }

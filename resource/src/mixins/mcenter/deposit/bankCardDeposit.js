@@ -63,7 +63,8 @@ export default {
             if (this.yourBankData.length > 0 && this.curPayInfo.payment_type_id === 5) {
                 return this.yourBankData.map((bankInfo) => ({
                     label: bankInfo.name,
-                    value: bankInfo.id
+                    value: bankInfo.id,
+                    swift_code: bankInfo.swift_code
                 }));
             }
 
@@ -73,7 +74,8 @@ export default {
 
             return this.curPayInfo.banks.map((bankInfo) => ({
                 label: bankInfo.name,
-                value: bankInfo.id
+                value: bankInfo.id,
+                swift_code: bankInfo.swift_code
             }));
         },
         /**
@@ -285,7 +287,7 @@ export default {
                         copyShow: true
                     },
                     {
-                        objKey: 'withdrawAccount',
+                        objKey: 'a',
                         title: this.$text('S_WITHDRAW_ACCOUNT', '收款帐号'),
                         value: this.curPassRoad.bank_account,
                         isFontBold: true,

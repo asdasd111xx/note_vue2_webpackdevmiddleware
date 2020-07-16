@@ -58,6 +58,11 @@ export default {
             name: 'mcenter-balanceTrans',
             component
         },
+        { // 额度转让
+            path: 'creditTrans',
+            name: 'mcenter-creditTrans',
+            component
+        },
         { // 綁定銀行卡
             path: 'bankCard',
             name: 'mcenter-bankCard',
