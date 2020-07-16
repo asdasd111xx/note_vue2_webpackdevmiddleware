@@ -23,9 +23,6 @@
           {{ this.$text("S_FEEDBACK", "意见反馈") }}
         </div>
       </div>
-      <message v-if="msg" @close="msg = ''">
-        <div slot="msg">{{ msg }}</div>
-      </message>
       <div :class="$style['bg']" />
       <div :class="$style['avatar-info-wrap']">
         <div :class="$style['avatar-wrap']">
@@ -159,20 +156,18 @@
 </template>
 
 <script>
-import { mapGetters } from "vuex";
+import { mapGetters, mapActions } from "vuex";
 import mobileContainer from "../common/new/mobileContainer";
-import message from "../common/new/message";
 import mobileLinkOpen from "@/lib/mobile_link_open";
 import yaboRequest from '@/api/yaboRequest';
+import axios from 'axios';
 
 export default {
   components: {
     mobileContainer,
-    message
   },
   data() {
     return {
-      msg: "",
       imgID: 0,
       imgIndex: 0,
       avatar: [
@@ -203,21 +198,15 @@ export default {
       ],
       divHeight: 0,
       isShowPop: false,
-      linkArray: []
+      linkArray: [],
+      avatarSrc: `/static/image/_new/mcenter/avatar_nologin.png`,
     };
   },
-  created() {
-    if (this.memInfo.user.image === 0) {
-      this.imgIndex = 1;
-      this.imgID = 1;
-      return;
-    }
-    this.imgIndex = this.memInfo.user.image;
-    this.imgID = this.memInfo.user.image;
-
-
-  },
   mounted() {
+    this.actionSetUserdata(true).then(() => {
+      this.getAvatarSrc();
+    })
+
     this.divHeight = document.body.offsetHeight - 60;
 
     yaboRequest({
@@ -238,15 +227,6 @@ export default {
       memInfo: "getMemInfo",
       siteConfig: "getSiteConfig"
     }),
-    avatarSrc() {
-      return !this.loginStatus
-        ? this.$getCdnPath(
-          "/static/image/_new/mcenter/avatar_nologin.png"
-        )
-        : this.$getCdnPath(
-          `/static/image/_new/mcenter/default/avatar_${this.imgIndex}.png`
-        );
-    },
     name() {
       if (this.loginStatus) {
         return this.memInfo.user.show_alias
@@ -257,12 +237,35 @@ export default {
     }
   },
   methods: {
+    ...mapActions([
+      'actionSetUserdata'
+    ]),
     clickService() {
       mobileLinkOpen({ linkType: "static", linkTo: "service" });
     },
     clickPopTip() {
       this.isShowPop = true;
-    }
+    },
+    getAvatarSrc() {
+      if (!this.loginStatus) return;
+
+      const imgSrcIndex = this.memInfo.user.image;
+      if (this.memInfo.user && this.memInfo.user.custom) {
+        axios({
+          method: 'get',
+          url: this.memInfo.user.custom_image,
+        }).then(res => {
+          if (res && res.data && res.data.result === "ok") {
+            this.avatarSrc = res.data.ret;
+          }
+        }).catch(error => {
+          this.actionSetGlobalMessage({ msg: error.data.msg });
+          this.avatarSrc = this.$getCdnPath(`/static/image/_new/mcenter/default/avatar_${imgSrcIndex}.png`);
+        })
+      } else {
+        this.avatarSrc = this.$getCdnPath(`/static/image/_new/mcenter/default/avatar_${imgSrcIndex}.png`);
+      }
+    },
   }
 };
 </script>

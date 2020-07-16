@@ -54,7 +54,7 @@
     <div v-if="showButton" :class="getClass(['btn-enter'])">
       {{ getBtnName }}
     </div>
-    <page-loading :isShow="isShowLoading" />
+    <page-loading :is-show="isShowLoading" />
   </div>
 </template>
 

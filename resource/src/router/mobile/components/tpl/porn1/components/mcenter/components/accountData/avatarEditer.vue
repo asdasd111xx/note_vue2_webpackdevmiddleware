@@ -53,9 +53,7 @@
         </div>
       </div>
     </div>
-      <page-loading
-     :isShow="isShowLoading"
-    />
+
     </div>
   </div>
 </template>
@@ -82,7 +80,7 @@ export default {
       cropperImg: '',
       cropper: '',
       imgName: '',
-      isShowLoading: false,
+      isSend: false,
 
       option: {
         img: '', // 裁剪图片的地址
@@ -119,7 +117,6 @@ export default {
     },
   },
   mounted() {
-    // this.initCropper()
   },
   methods: {
     ...mapActions([
@@ -130,12 +127,13 @@ export default {
       this.$refs['albumInput'].click();
     },
     submit() {
-      if (this.isShowLoading) return;
+      if (this.isSend) return;
       if (!this.option.img) {
         this.actionSetGlobalMessage({ msg: '上传文件不能为空' })
+        return;
       }
-
-      this.isShowLoading = true;
+      this.isSend = true;
+      this.$emit('setPageLoading', true);
       this.$refs.cropper.getCropBlob((data) => {
         if (data) {
           let formData = new FormData();
@@ -150,12 +148,16 @@ export default {
           }).then(res => {
             if (res && res.data && res.data.result === "ok") {
               this.actionSetGlobalMessage({ msg: "上传成功", cb: () => { this.onClose(); } })
+              setTimeout(() => {
+                this.$emit('setPageLoading', false);
+                this.isSend = false;
+              }).catch(error => {
+              }, 500)
             }
-            this.isShowLoading = false;
-            this.actionSetUserdata(true);
-          }).catch(error => {
-            this.isShowLoading = false;
-            this.actionSetGlobalMessage({ msg: error.response.data.msg })
+
+            this.$emit('setPageLoading', false);
+            this.actionSetGlobalMessage({ msg: error.response.data.msg });
+            this.isSend = false;
           })
         }
 
@@ -172,13 +174,13 @@ export default {
       })
     },
     onClose() {
+      this.sliderClass = 'slider-close slider';
+
       this.$nextTick(() => {
         setTimeout(() => {
-          this.handleClose();
+          this.$emit('close');
         }, 280)
-
       });
-      this.sliderClass = 'slider-close slider'
     }
   },
 };
@@ -256,7 +258,7 @@ export default {
 
 .func-btn {
   display: flex;
-  margin: 10px 0;
+  margin: 15px 0;
 
   > div {
     width: 50%;
@@ -281,7 +283,13 @@ export default {
 }
 </style>
 <style>
+/* 複寫套件 */
+.vue-cropper {
+  background-image: unset !important;
+  background-color: rgba(0, 0, 0, 0.5);
+}
 .cropper-face {
   border-radius: 50% !important;
+  opacity: 0.2 !important;
 }
 </style>
