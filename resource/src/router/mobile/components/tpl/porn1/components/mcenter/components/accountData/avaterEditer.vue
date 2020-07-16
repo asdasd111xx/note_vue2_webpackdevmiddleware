@@ -17,7 +17,6 @@
       ref="albumInput"
       type="file"
       accept="image/*"
-      capture="camera"
     />
 
     <!-- 裁剪區塊 -->
@@ -54,6 +53,10 @@
         </div>
       </div>
     </div>
+      <page-loading
+     :isShow="isShowLoading"
+    />
+    </div>
   </div>
 </template>
 
@@ -63,6 +66,10 @@ import mcenter from '@/api/mcenter';
 import member from '@/api/member';
 import axios from 'axios';
 export default {
+  components: {
+    pageLoading: () => import(/* webpackChunkName: 'pageLoading' */ '@/router/mobile/components/tpl/porn1/components/common/new/pageLoading'),
+
+  },
   props: {
     handleClose: {
       type: Function,
@@ -75,7 +82,7 @@ export default {
       cropperImg: '',
       cropper: '',
       imgName: '',
-      isSubmit: false,
+      isShowLoading: false,
 
       option: {
         img: '', // 裁剪图片的地址
@@ -123,12 +130,12 @@ export default {
       this.$refs['albumInput'].click();
     },
     submit() {
-      if (this.isSubmit) return;
+      if (this.isShowLoading) return;
       if (!this.option.img) {
         this.actionSetGlobalMessage({ msg: '上传文件不能为空' })
       }
 
-      this.isSubmit = true;
+      this.isShowLoading = true;
       this.$refs.cropper.getCropBlob((data) => {
         if (data) {
           let formData = new FormData();
@@ -144,10 +151,10 @@ export default {
             if (res && res.data && res.data.result === "ok") {
               this.actionSetGlobalMessage({ msg: "上传成功", cb: () => { this.onClose(); } })
             }
-            this.isSubmit = false;
+            this.isShowLoading = false;
             this.actionSetUserdata(true);
           }).catch(error => {
-            this.isSubmit = false;
+            this.isShowLoading = false;
             this.actionSetGlobalMessage({ msg: error.response.data.msg })
           })
         }
