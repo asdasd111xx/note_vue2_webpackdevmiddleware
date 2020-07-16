@@ -142,9 +142,12 @@ export default {
       this.currentImgID = index;
       this.saveAvatar(index)
     },
-    handleCloseEditer() {
+    handleCloseEditer(isDone) {
       this.actionSetUserdata(true);
       this.isShowAvatarEditer = false;
+      if (isDone) {
+        this.onClose();
+      }
     },
     setPageLoading(set) {
       this.isPageLoading = set;

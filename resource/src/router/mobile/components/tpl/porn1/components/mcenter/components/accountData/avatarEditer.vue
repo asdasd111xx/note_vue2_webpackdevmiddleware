@@ -146,21 +146,21 @@ export default {
               'Content-Type': 'multipart/form-data'
             }
           }).then(res => {
+            this.isSend = false;
             if (res && res.data && res.data.result === "ok") {
-              this.actionSetGlobalMessage({ msg: "上传成功", cb: () => { this.onClose(); } })
+              this.actionSetGlobalMessage({ msg: "上传成功", cb: () => { this.onClose(true); } })
               setTimeout(() => {
                 this.$emit('setPageLoading', false);
-                this.isSend = false;
-              }).catch(error => {
-              }, 500)
+              }, 800)
+            } else {
+              this.$emit('setPageLoading', false);
+              this.actionSetGlobalMessage({ msg: res.data.msg });
             }
-
+          }).catch((error) => {
             this.$emit('setPageLoading', false);
             this.actionSetGlobalMessage({ msg: error.response.data.msg });
-            this.isSend = false;
           })
         }
-
       })
     },
     cancel() {
@@ -173,12 +173,12 @@ export default {
         this.dialogVisible = true
       })
     },
-    onClose() {
+    onClose(isDone) {
       this.sliderClass = 'slider-close slider';
 
       this.$nextTick(() => {
         setTimeout(() => {
-          this.$emit('close');
+          this.$emit('close', isDone);
         }, 280)
       });
     }
