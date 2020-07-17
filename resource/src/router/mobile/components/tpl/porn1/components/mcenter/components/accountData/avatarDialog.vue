@@ -46,11 +46,11 @@ import { mapGetters, mapActions } from 'vuex';
 import mcenter from '@/api/mcenter';
 import member from '@/api/member';
 import axios from 'axios';
-import AvatarEditer from './avatarEditer'
+import avatarEditer from './avatarEditer';
 export default {
   components: {
     pageLoading: () => import(/* webpackChunkName: 'pageLoading' */ '@/router/mobile/components/tpl/porn1/components/common/new/pageLoading'),
-    AvatarEditer
+    avatarEditer
   },
   props: {
     isShow: {
