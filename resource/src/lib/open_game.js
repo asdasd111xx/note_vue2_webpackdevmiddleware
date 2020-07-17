@@ -47,6 +47,9 @@ export default (params, success = () => { }, fail = () => { }) => {
 
     if (!isWebview) {
         newWindow = window.open('', '', '_blank', true);
+        setTimeout(() => {
+            newWindow.location = "/game/loading/true";
+        }, 200)
     }
 
     game.gameLink({

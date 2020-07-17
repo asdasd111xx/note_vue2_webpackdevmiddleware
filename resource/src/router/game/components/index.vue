@@ -61,9 +61,12 @@ export default {
   },
   created() {
     const { vendor, kind, code } = this.$route.params;
+    if (vendor === "loading" && kind === "true") {
+      return;
+    }
+    console.log("open-game-link", localStorage.getItem('open-game-link'));
     const temp = { kind };
     this.vendor = vendor;
-    console.log("open-game-link", localStorage.getItem('open-game-link'));
 
     if (code) {
       temp.code = code;
