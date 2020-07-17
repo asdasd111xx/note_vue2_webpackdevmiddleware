@@ -251,8 +251,10 @@ export default {
     },
     newValue() {
       if (this.newValue.length >= 11) {
+        this.tipMsg = ''
         this.isVerifyPhone = true;
       } else {
+        this.tipMsg = '手机格式不符合要求'
         this.isVerifyPhone = false;
       }
     }
