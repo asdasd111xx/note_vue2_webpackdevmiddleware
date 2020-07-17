@@ -1,19 +1,19 @@
 <template>
   <div :class="$style['mcenter-avatar-info-wrap']">
     <!-- 大頭照 -->
-    <div :class="$style['avatar-wrap']" @click="isShowAvatarDialog = true">
-      <img :src="avatarSrc" />
-    </div>
-
-    <!-- 姓名/註冊 -->
     <div
-      :class="$style['info-wrap']"
+      :class="$style['avatar-wrap']"
       @click="
         loginStatus
           ? $router.push('/mobile/mcenter/accountData')
           : $router.push('/mobile/login')
       "
     >
+      <img :src="avatarSrc" />
+    </div>
+
+    <!-- 姓名/註冊 -->
+    <div :class="$style['info-wrap']">
       <div>
         <template v-if="loginStatus">
           <span>
@@ -45,9 +45,6 @@
     <div :class="$style['btn-next']">
       <img :src="$getCdnPath(`/static/image/_new/mcenter/ic_arrow_next.png`)" />
     </div>
-
-    <!-- 頭像編輯彈窗 -->
-    <avatar-dialog :is-show="isShowAvatarDialog" @close="handleCloseDialog" />
   </div>
 </template>
 
@@ -60,13 +57,11 @@ import member from '@/api/member';
 import message from '../../../../common/new/message';
 import { getCookie, setCookie } from '@/lib/cookie';
 import yaboRequest from '@/api/yaboRequest';
-import avatarDialog from '../../accountData/avatarDialog'
 import axios from 'axios';
 
 export default {
   components: {
     message,
-    avatarDialog
   },
   data() {
     return {
@@ -76,7 +71,6 @@ export default {
       imgIndex: 0,
       viplevel: "",
       avatarSrc: `/static/image/_new/mcenter/avatar_nologin.png`,
-      isShowAvatarDialog: false,
       avatar: [
         { image: 'avatar_1', url: '/static/image/_new/mcenter/default/avatar_1.png' },
         { image: 'avatar_2', url: '/static/image/_new/mcenter/default/avatar_2.png' },
@@ -114,13 +108,6 @@ export default {
     ...mapActions([
       'actionSetUserdata'
     ]),
-    handleCloseDialog() {
-      this.isShowAvatarDialog = false;
-
-      this.actionSetUserdata(true).then(() => {
-        this.getAvatarSrc();
-      });
-    },
     getAvatarSrc() {
       if (!this.loginStatus) return;
 
@@ -154,25 +141,6 @@ export default {
         this.viplevel = res.data ? res.data[0] && res.data[0].now_level_seq : 0;
       });
     },
-    // 大頭貼
-    selectAvatar() {
-      if (this.memInfo.user.image === this.imgID) {
-        this.dialogShow();
-        return;
-      }
-
-      mcenter.accountDataSet({
-        params: { image: this.imgID },
-        success: () => {
-          this.actionSetUserdata();
-          this.dialogShow();
-          this.imgIndex = this.imgID;
-        }
-      });
-    },
-    selectImg(index) {
-      this.imgID = index + 1;
-    }
   }
 };
 </script>
