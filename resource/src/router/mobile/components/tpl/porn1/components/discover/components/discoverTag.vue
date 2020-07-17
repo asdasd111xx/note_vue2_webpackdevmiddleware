@@ -94,6 +94,7 @@ export default {
   methods: {
     onClick(id) {
       this.active = id;
+      $('#mobile-wrap').animate({ scrollTop: 0 });
     },
     onSelect(id) {
       if (this.selected.includes(id)) {
