@@ -103,7 +103,7 @@
               type="number"
               placeholder="11位手机号码"
               maxlength="36"
-              @input="checkData"
+              @input="checkData($event.target.value, 'phone')"
             />
           </div>
         </div>
@@ -118,7 +118,7 @@
               @input="checkData"
             />
             <div
-              :class="[$style['send-keyring'], { [$style.disabled]: smsTimer }]"
+              :class="[$style['send-keyring'], { [$style.disabled]: smsTimer || !isVerifyPhone }]"
               @click="showCaptchaPopup"
             >
               {{ time ? `${time}s` : "获取验证码" }}
@@ -222,6 +222,7 @@ export default {
       bankList: [],
       currentBank: '',
       isShowPop: false,
+      isVerifyPhone: false,
       formData: {
         account_name: '',
         bank_id: '',
@@ -286,6 +287,13 @@ export default {
     },
     captchaData() {
       this.getKeyring()
+    },
+    'formData.phone'() {
+      if (this.formData.phone.length >= 11) {
+        this.isVerifyPhone = true;
+      } else {
+        this.isVerifyPhone = false
+      }
     }
   },
   created() {
@@ -420,6 +428,11 @@ export default {
       if (key === "branch") {
         const re = /[^\u3000\u3400-\u4DBF\u4E00-\u9FFF]/g;
         this.formData.branch = value.replace(re, '')
+      }
+
+      if (key === "phone") {
+        const re = /[^0-9]/g;
+        this.formData.phone = value.replace(re, '');
       }
 
       this.NextStepStatus = Object.keys(this.formData).every((key) => {

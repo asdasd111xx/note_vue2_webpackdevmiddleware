@@ -67,6 +67,7 @@
                   $text('S_PLEASE_ENTER_MOBILE_NUMBER', '请输入手机号码')
                 "
                 :class="$style.input"
+                @input="onInput($event.target.value , 'phone')"
                 type="text"
               />
             </div>
@@ -90,7 +91,7 @@
                 v-if="sendBtn.isShow"
                 :class="[
                   $style['btn-send'],
-                  { [$style.active]: newValue && !timer }
+                  { [$style.active]: isVerifyPhone && !timer }
                 ]"
                 @click="showCaptchaPopup"
               >
@@ -146,6 +147,7 @@ export default {
       isLock: false,
       timer: null,
       isSendSMS: false,
+      isVerifyPhone: false,
       info: {
         key: 'phone',
         text: 'S_TEL',
@@ -246,6 +248,13 @@ export default {
   watch: {
     captchaData(val) {
       this.handleSend()
+    },
+    newValue() {
+      if (this.newValue.length >= 11) {
+        this.isVerifyPhone = true;
+      } else {
+        this.isVerifyPhone = false;
+      }
     }
   },
   mounted() {
@@ -320,6 +329,12 @@ export default {
         }
         this.countdownSec -= 1;
       }, 1000);
+    },
+    onInput(value , key) {
+      if (key === "phone") {
+        const re = /[^0-9]/g;
+        this.newValue = value.replace(re , '');
+      }
     },
     showCaptchaPopup() {
       if (this.newValue === '') {
