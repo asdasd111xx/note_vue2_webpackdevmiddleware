@@ -62,6 +62,7 @@
                 @click="getCaptcha()"
               />
             </template>
+
             <template v-else-if="field.key === 'password'">
               <input
                 id="pwd"
@@ -117,26 +118,34 @@
               </div>
             </template>
 
-            <input
-              v-else-if="field.key === 'username'"
-              :ref="field.key"
-              v-model="allValue[field.key]"
-              :class="[$style['join-input'], field.key]"
-              :name="field.key"
-              :placeholder="field.content.note1"
-              type="text"
-              maxlength="20"
-              @focus="onFocus(field.key)"
-              @blur="verification(field.key)"
-              @keydown.13="keyDownSubmit()"
-              @input="
-                allValue[field.key] = $event.target.value
-                  .toLowerCase()
-                  .replace(' ', '')
-                  .trim()
-                  .replace(/[\W]/g, '')
-              "
-            />
+            <template v-else-if="field.key === 'username'">
+              <input
+                :ref="field.key"
+                v-model="allValue[field.key]"
+                :class="[$style['join-input'], field.key]"
+                :name="field.key"
+                :placeholder="field.content.note1"
+                type="text"
+                maxlength="20"
+                @focus="onFocus(field.key)"
+                @blur="verification(field.key)"
+                @keydown.13="keyDownSubmit()"
+                @input="
+                  allValue[field.key] = $event.target.value
+                    .toLowerCase()
+                    .replace(' ', '')
+                    .trim()
+                    .replace(/[\W]/g, '')
+                "
+              />
+              <div :class="$style['clear']" v-if="allValue[field.key]">
+                <img
+                  :src="$getCdnPath(`/static/image/_new/common/ic_clear.png`)"
+                  @click="allValue[field.key] = ''"
+                />
+              </div>
+            </template>
+
             <input
               v-else
               :ref="field.key"

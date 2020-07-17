@@ -343,6 +343,21 @@
   max-width: 65%;
 }
 
+.clear {
+  display: flex;
+  align-items: center;
+  height: 100%;
+  width: 12px;
+  position: absolute;
+  right: 10px;
+  top: 0;
+
+  > img {
+    width: 12px;
+    height: 12px;
+  }
+}
+
 @media screen and (min-width: $pad) {
     .join {
         width: 700px;
