@@ -175,7 +175,7 @@
           :class="$style['bank-card-cell']"
           @click="handleSelectCard(item)"
         >
-          <img :src="`${bankSrc}${item.bank_id}.png`" />
+          <img v-lazy="getBankImage(item.swift_code)" />
           <span>{{ item.alias }} </span>
           <div
             :class="[
@@ -323,12 +323,7 @@
       />
       <!-- 流水檢查 -->
       <serial-number v-if="isSerial" :handle-close="toggleSerial" />
-
-      <div v-if="isLoading" :class="$style['loading-wrap']">
-        <div :class="$style['loading-item']">
-          <ele-loading />
-        </div>
-      </div>
+      <page-loading :is-show="isLoading" />
     </div>
   </mobile-container>
 </template>
@@ -382,7 +377,7 @@ export default {
     }
   },
   components: {
-    eleLoading: () => import(/* webpackChunkName: 'eleLoading' */ '@/router/web/components/tpl/common/element/loading/circle'),
+    pageLoading: () => import(/* webpackChunkName: 'pageLoading' */ '@/router/mobile/components/tpl/porn1/components/common/new/pageLoading'),
     mobileContainer,
     balanceTran,
     message,
@@ -439,20 +434,16 @@ export default {
     }
   },
   created() {
-    this.actionSetUserdata(true).then(() => {
-      if (this.memInfo.blacklist.includes(1)) {
-        this.isShowBlockTips = true;
-        return;
-      }
+    // 刷新 Player Api
+    this.actionSetUserdata(true)
 
-      this.depositBeforeWithdraw = this.memInfo.config.deposit_before_withdraw || false;
-      this.firstDeposit = this.memInfo.user.first_deposit || false;
-      if (this.depositBeforeWithdraw && !this.firstDeposit) {
-        this.widthdrawTipsType = "deposit";
-        this.isShowCheck = true;
-        return;
-      }
-    })
+    this.depositBeforeWithdraw = this.memInfo.config.deposit_before_withdraw || false;
+    this.firstDeposit = this.memInfo.user.first_deposit || false;
+    if (this.depositBeforeWithdraw && !this.firstDeposit) {
+      this.widthdrawTipsType = "deposit";
+      this.isShowCheck = true;
+      return;
+    }
 
     // 綁定銀行卡內無常用帳號
     common.bankCardCheck({
@@ -509,11 +500,6 @@ export default {
         },
       };
     },
-    bankSrc() {
-      return !this.webInfo.is_production ?
-        'https://images.bbin-asia.com/icon/withdrawBank/' :
-        'https://images.dormousepie.com/icon/withdrawBank/'
-    },
     getWithdrawTips() {
       let string = [];
 
@@ -536,6 +522,13 @@ export default {
     },
   },
   methods: {
+    getBankImage(swiftCode) {
+      return {
+        src: `https://images.dormousepie.com/icon/bankIconBySwiftCode/${swiftCode}.png`,
+        error: this.$getCdnPath('/static/image/_new/default/bank_default_2.png'),
+        loading: this.$getCdnPath('/static/image/_new/default/bank_default_2.png')
+      };
+    },
     onClickMaintain(value) {
       this.msg = `美东时间：
           <br>
@@ -598,6 +591,11 @@ export default {
       this.withdrawValue = Math.floor(Number(result));
     },
     checkSubmit() {
+      if (this.memInfo.blacklist.includes(1)) {
+        this.isShowBlockTips = true;
+        return;
+      }
+
       const islock = () => {
         if (this.errTips || !this.withdrawValue || this.isSendSubmit || !this.selectedCard) {
           return true;

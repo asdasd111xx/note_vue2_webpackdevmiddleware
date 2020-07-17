@@ -1,18 +1,14 @@
 <template>
-  <div
-    :class="$style['mcenter-avatar-info-wrap']"
-    @click="
-      loginStatus
-        ? $router.push('/mobile/mcenter/accountData')
-        : $router.push('/mobile/login')
-    "
-  >
-    <message v-if="msg" @close="msg = ''"
-      ><div slot="msg">{{ msg }}</div>
-    </message>
-
+  <div :class="$style['mcenter-avatar-info-wrap']">
     <!-- 大頭照 -->
-    <div :class="$style['avatar-wrap']">
+    <div
+      :class="$style['avatar-wrap']"
+      @click="
+        loginStatus
+          ? $router.push('/mobile/mcenter/accountData')
+          : $router.push('/mobile/login')
+      "
+    >
       <img :src="avatarSrc" />
     </div>
 
@@ -61,10 +57,11 @@ import member from '@/api/member';
 import message from '../../../../common/new/message';
 import { getCookie, setCookie } from '@/lib/cookie';
 import yaboRequest from '@/api/yaboRequest';
+import axios from 'axios';
 
 export default {
   components: {
-    message
+    message,
   },
   data() {
     return {
@@ -73,6 +70,7 @@ export default {
       imgID: 0,
       imgIndex: 0,
       viplevel: "",
+      avatarSrc: `/static/image/_new/mcenter/avatar_nologin.png`,
       avatar: [
         { image: 'avatar_1', url: '/static/image/_new/mcenter/default/avatar_1.png' },
         { image: 'avatar_2', url: '/static/image/_new/mcenter/default/avatar_2.png' },
@@ -91,11 +89,6 @@ export default {
       memBalance: 'getMemBalance',
       siteConfig: "getSiteConfig",
     }),
-    avatarSrc() {
-      return !this.loginStatus ?
-        this.$getCdnPath(`/static/image/_new/mcenter/avatar_nologin.png`) :
-        this.$getCdnPath(`/static/image/_new/mcenter/default/avatar_${this.imgIndex}.png`)
-    }
   },
   created() {
     if (this.memInfo.user.image === 0 || !(this.memInfo.user.image)) {
@@ -109,11 +102,32 @@ export default {
   },
   mounted() {
     this.getUserViplevel();
+    this.getAvatarSrc();
   },
   methods: {
     ...mapActions([
       'actionSetUserdata'
     ]),
+    getAvatarSrc() {
+      if (!this.loginStatus) return;
+
+      const imgSrcIndex = this.memInfo.user.image;
+      if (this.memInfo.user && this.memInfo.user.custom) {
+        axios({
+          method: 'get',
+          url: this.memInfo.user.custom_image,
+        }).then(res => {
+          if (res && res.data && res.data.result === "ok") {
+            this.avatarSrc = res.data.ret;
+          }
+        }).catch(error => {
+          this.actionSetGlobalMessage({ msg: error.data.msg });
+          this.avatarSrc = this.$getCdnPath(`/static/image/_new/mcenter/default/avatar_${imgSrcIndex}.png`);
+        })
+      } else {
+        this.avatarSrc = this.$getCdnPath(`/static/image/_new/mcenter/default/avatar_${imgSrcIndex}.png`);
+      }
+    },
     getUserViplevel() {
       let cid = getCookie("cid");
       if (!cid) { return }
@@ -127,25 +141,6 @@ export default {
         this.viplevel = res.data ? res.data[0] && res.data[0].now_level_seq : 0;
       });
     },
-    // 大頭貼
-    selectAvatar() {
-      if (this.memInfo.user.image === this.imgID) {
-        this.dialogShow();
-        return;
-      }
-
-      mcenter.accountDataSet({
-        params: { image: this.imgID },
-        success: () => {
-          this.actionSetUserdata();
-          this.dialogShow();
-          this.imgIndex = this.imgID;
-        }
-      });
-    },
-    selectImg(index) {
-      this.imgID = index + 1;
-    }
   }
 };
 </script>

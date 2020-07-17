@@ -1,4 +1,5 @@
 import game from '@/api/game';
+import { getCookie } from '@/lib/cookie';
 import isMobileFuc from '@/lib/is_mobile';
 // eslint-disable-next-line import/no-cycle
 import store from '@/store';
@@ -41,6 +42,16 @@ export default (params, success = () => { }, fail = () => { }) => {
         temp.code = code;
     }
 
+    let newWindow = '';
+    let isWebview = getCookie("platform") === "H";
+
+    if (!isWebview) {
+        newWindow = window.open('', '', '_blank', true);
+        setTimeout(() => {
+            newWindow.location = "/game/loading/true";
+        }, 200)
+    }
+
     game.gameLink({
         params: temp,
         errorAlert: false,
@@ -68,7 +79,7 @@ export default (params, success = () => { }, fail = () => { }) => {
             store.dispatch('actionSetCollectionStatus', false);
 
             let link = `/game/${settings.vendor}/${settings.kind}`;
-            const option = `width=${settings.width},height=${settings.height}${settings.kind === 4 ? ',scrollbars=yes, resizable=yes' : ''}`;
+            // const option = `width=${settings.width},height=${settings.height}${settings.kind === 4 ? ',scrollbars=yes, resizable=yes' : ''}`;
 
             if (settings.code) {
                 link += `/${settings.code}`;
@@ -76,19 +87,28 @@ export default (params, success = () => { }, fail = () => { }) => {
 
             setTimeout(() => {
                 try {
-                    window.open(link, '', option);
+                    let isWebview = getCookie("platform") === "H";
+                    if (isWebview) {
+                        window.location.href = link;
+                    } else {
+                        newWindow.location = link;
+                    }
                 } catch (e) {
-                    console.log(e)
-                    console.log('阻挡弹出式视窗')
+                    newWindow.close();
+                    console.log(e);
+                    console.log('另开视窗失败 请关闭阻挡弹出式视窗');
+                    window.open(link, '', '_blank', true);
                 }
-            }, 200)
-
-            setTimeout(() => {
-                localStorage.removeItem("is-open-game");
                 success();
-            }, 1500)
+                setTimeout(() => {
+                    localStorage.removeItem('is-open-game');
+                }, 1500)
+            }, 200)
         },
         fail: (res) => {
+            newWindow.close();
+            console.log('launch 失敗');
+            console.log(res);
             fail(res);
 
             setTimeout(() => {

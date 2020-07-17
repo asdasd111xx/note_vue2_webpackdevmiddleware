@@ -103,7 +103,7 @@
               type="number"
               placeholder="11位手机号码"
               maxlength="36"
-              @input="checkData"
+              @input="checkData($event.target.value, 'phone')"
             />
           </div>
         </div>
@@ -118,7 +118,7 @@
               @input="checkData"
             />
             <div
-              :class="[$style['send-keyring'], { [$style.disabled]: smsTimer }]"
+              :class="[$style['send-keyring'], { [$style.disabled]: smsTimer || !isVerifyPhone }]"
               @click="showCaptchaPopup"
             >
               {{ time ? `${time}s` : "获取验证码" }}
@@ -169,7 +169,7 @@
         <ul :class="$style['pop-list']">
           <li v-for="item in bankList" :key="item.id" @click="setBank(item)">
             <!-- <img :src="`https://bbos.bbin-asia.com/elibom/bank/${item.id}.png`" /> -->
-            <img v-lazy="getImg(item.id)" />
+            <img v-lazy="getBankImage(item.swift_code)" />
             {{ item.name }}
             <icon
               v-if="item.id === formData.bank_id"
@@ -222,6 +222,7 @@ export default {
       bankList: [],
       currentBank: '',
       isShowPop: false,
+      isVerifyPhone: false,
       formData: {
         account_name: '',
         bank_id: '',
@@ -282,10 +283,21 @@ export default {
         this.formData.keyring = '';
         this.errorMsg = '';
         this.checkData();
+      } else if (this.addBankCardStep === 'two') {
+        this.errorMsg = '';
       }
     },
     captchaData() {
       this.getKeyring()
+    },
+    'formData.phone'() {
+      if (this.formData.phone.length >= 11) {
+        this.errorMsg = ''
+        this.isVerifyPhone = true;
+      } else {
+        this.errorMsg = '手机格式不符合要求'
+        this.isVerifyPhone = false
+      }
     }
   },
   created() {
@@ -422,6 +434,11 @@ export default {
         this.formData.branch = value.replace(re, '')
       }
 
+      if (key === "phone") {
+        const re = /[^0-9]/g;
+        this.formData.phone = value.replace(re, '');
+      }
+
       this.NextStepStatus = Object.keys(this.formData).every((key) => {
         if (this.addBankCardStep === 'one') {
           if (key === 'account') {
@@ -450,11 +467,11 @@ export default {
         e.preventDefault();
       }
     },
-    getImg(id) {
+    getBankImage(swiftCode) {
       return {
-        src: `https://images.dormousepie.com/icon/cardBank/${id}.png`,
-        error: this.$getCdnPath('/static/image/_new/default/bank_card_default.png'),
-        loading: this.$getCdnPath('/static/image/game_loading_s.gif')
+        src: `https://images.dormousepie.com/icon/bankIconBySwiftCode/${swiftCode}.png`,
+        error: this.$getCdnPath('/static/image/_new/default/bank_default_2.png'),
+        loading: this.$getCdnPath('/static/image/_new/default/bank_default_2.png')
       };
     },
     showCaptchaPopup() {

@@ -1,7 +1,7 @@
 @charset 'UTF-8';
 
 /****** css reset ******/
-@import './normalize.scss';
+@import "./normalize.scss";
 @import "~@/css/variable.scss";
 
 html {
@@ -29,14 +29,13 @@ body,
 }
 
 @media (orientation: landscape) {
-
     body,
     #footer,
-    #header {
+    #header,
+    .slider {
         max-width: $mobile_max_landscape_width !important;
     }
 }
-
 
 /* clear float */
 .clearfix {
@@ -166,7 +165,10 @@ body,
         }
     }
 
-    .video-js .vjs-volume-panel .vjs-volume-control.vjs-slider-active.vjs-volume-vertical .vjs-volume-bar,
+    .video-js
+        .vjs-volume-panel
+        .vjs-volume-control.vjs-slider-active.vjs-volume-vertical
+        .vjs-volume-bar,
     .video-js .vjs-big-play-button,
     .vjs-flat-skin .vjs-fullscreen-control,
     .vjs-flat-skin .vjs-subtitles-button,

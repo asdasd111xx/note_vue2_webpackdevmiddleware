@@ -108,7 +108,7 @@ export default {
   },
   props: {
     currentLevelData: {
-      type: Object,
+      type: Object | null,
       required: true
     },
     vipLevelList: {

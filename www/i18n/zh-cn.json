@@ -786,6 +786,9 @@
     "S_FORGET": "忘记?",
     "S_WELCOME": "欢迎您",
     "S_TRANSDER": "转帐",
+    "S_CREDIT_TRANSDER": "额度转让",
+    "S_CREDIT_DISCOUNT": "转让优惠",
+    "S_CREDIT_RECOARD": "转让纪录",
     "S_MARANGE_CARD": "卡片管理",
     "S_WALLET2": "钱包",
     "S_WALLET": "钱包：%S元",
@@ -1690,5 +1693,6 @@
     "S_AUTO_SAVE": "自动保存",
     "S_XBB_GAMIMG": "XBB麻将馆",
     "鸭脖视频": "鸭脖视频",
-    "鸭博娱乐": "鸭博娱乐"
+    "鸭博娱乐": "鸭博娱乐",
+    "S_SET_AVATER": "设置头像"
 }

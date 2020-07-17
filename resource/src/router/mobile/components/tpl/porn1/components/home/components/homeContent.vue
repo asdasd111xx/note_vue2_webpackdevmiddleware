@@ -623,6 +623,7 @@ export default {
       //     });
       //     return;
       //   }
+
       this.isShowLoading = true;
 
       const openGameSuccessFunc = (res) => {

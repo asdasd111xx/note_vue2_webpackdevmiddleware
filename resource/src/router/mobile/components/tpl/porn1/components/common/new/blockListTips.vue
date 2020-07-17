@@ -38,7 +38,7 @@ export default {
           break;
 
         case "deposit":
-          return "存款";
+          return "充值";
           break;
       }
     }

@@ -115,7 +115,7 @@
           </div>
         </div>
       </div>
-      <page-loading :isShow="isShowLoading" />
+      <page-loading :is-show="isShowLoading" />
     </div>
   </mobile-container>
 </template>

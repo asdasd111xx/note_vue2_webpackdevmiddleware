@@ -1,73 +1,22 @@
 <template>
   <mobile-container :header-config="headerConfig" :has-footer="false">
     <div slot="content" :class="$style['content-wrap']">
-      <div v-if="isShow" :class="$style['dialog-mask']" />
-      <div v-if="isShow" :class="[$style['dialog-wrap'], 'clearfix']">
-        <div
-          v-for="(avatarList, index) in avatar"
-          :key="`avatar-${avatarList}`"
-          :class="$style['avatar-wrap']"
-        >
-          <img
-            :src="$getCdnPath(avatarList.url)"
-            @click="selectImg(index + 1)"
-          />
-          <div v-if="imgID - 1 === index" :class="$style.check" />
-        </div>
-      </div>
-
       <div :class="$style['mcenter-avatar-wrap']">
         <div>个人头像</div>
-        <div :class="$style['avatar']" @click="dialogShow()">
+        <div :class="$style['avatar']" @click="isShowAvatarDialog = true">
           <img :src="avatarSrc" />
           <img :src="$getCdnPath(`/static/image/_new/mcenter/icon_edit.png`)" />
         </div>
       </div>
 
-      <!-- avatar dialog -->
-      <div v-if="isShow" :class="$style['dialog-mask']" @click="saveAvatar()" />
-      <div v-if="isShow" :class="[$style['dialog-wrap'], 'clearfix']">
-        <div
-          v-for="(avatarList, index) in avatar"
-          :key="`avatar-${avatarList}`"
-          :class="$style['avatar-wrap']"
-        >
-          <img
-            :class="[{ [$style['active']]: imgID === index }]"
-            :src="$getCdnPath(avatarList.url)"
-            @click="selectImg(index + 1)"
-          />
-          <div v-if="imgID - 1 === index" :class="$style.check" />
-        </div>
-
-        <div :class="$style['dialog-func']">
-          <input
-            @change="uploadImgChange"
-            :class="$style['img-input']"
-            ref="cameraInput"
-            type="file"
-            accept="image/*"
-            capture="camera"
-          />
-          <input
-            @change="uploadImgChange"
-            :class="$style['img-input']"
-            ref="albumInput"
-            type="file"
-            accept="image/*"
-          />
-          <div @click="handleClickFunc">
-            从相册选取
-          </div>
-          <div @click="handleClickFunc">拍照</div>
-          <div @click="isShow = false">{{ $text("S_CANCEL", "取消") }}</div>
-        </div>
-      </div>
-      <message v-if="msg" @close="msg = ''"
-        ><div slot="msg">{{ msg }}</div>
-      </message>
+      <!-- 頭像編輯彈窗 -->
+      <avatar-dialog
+        :is-show="isShowAvatarDialog"
+        @close="handleCloseDialog"
+      />
       <account />
       <service-tips />
+    </div>
     </div>
   </mobile-container>
 </template>
@@ -78,33 +27,22 @@ import account from './account/index';
 import mcenter from '@/api/mcenter';
 import member from '@/api/member';
 import mobileContainer from '../../../common/new/mobileContainer';
-import message from '../../../common/new/message'
 import serviceTips from './serviceTips'
+import axios from 'axios';
+import avatarDialog from './avatarDialog'
 
 export default {
   components: {
     mobileContainer,
     account,
-    message,
-    serviceTips
+    serviceTips,
+    avatarDialog
   },
   data() {
     return {
-      msg: "",
-      isShow: false,
-      avatar: [
-        { image: 'avatar_1', url: '/static/image/_new/mcenter/default/avatar_1.png' },
-        { image: 'avatar_2', url: '/static/image/_new/mcenter/default/avatar_2.png' },
-        { image: 'avatar_3', url: '/static/image/_new/mcenter/default/avatar_3.png' },
-        { image: 'avatar_4', url: '/static/image/_new/mcenter/default/avatar_4.png' },
-        { image: 'avatar_5', url: '/static/image/_new/mcenter/default/avatar_5.png' },
-        { image: 'avatar_6', url: '/static/image/_new/mcenter/default/avatar_6.png' },
-        { image: 'avatar_7', url: '/static/image/_new/mcenter/default/avatar_7.png' },
-        { image: 'avatar_8', url: '/static/image/_new/mcenter/default/avatar_8.png' },
-      ],
-      imgID: 0,
-      imgIndex: 0,
-      uploadImg: null
+      avatarSrc: `/static/image/_new/mcenter/avatar_nologin.png`,
+      isShowAvatarDialog: false,
+      isPageLoading: false,
     };
   },
   created() {
@@ -113,14 +51,10 @@ export default {
       return;
     }
 
-    if (this.memInfo.user.image === 0) {
-      this.imgIndex = 1;
-      this.imgID = 1;
-      return;
-    }
+    // 是否自訂上傳頭像
+    if (this.memInfo.user.custom) {
 
-    this.imgIndex = this.memInfo.user.image;
-    this.imgID = this.memInfo.user.image;
+    }
   },
   computed: {
     ...mapGetters({
@@ -128,9 +62,6 @@ export default {
       memInfo: 'getMemInfo',
       memCurrency: 'getMemCurrency',
     }),
-    avatarSrc() {
-      return this.$getCdnPath(`/static/image/_new/mcenter/default/avatar_${this.imgIndex}.png`)
-    },
     headerConfig() {
       return {
         prev: true,
@@ -139,40 +70,43 @@ export default {
       };
     },
   },
+  mounted() {
+    this.getAvatarSrc();
+  },
   methods: {
     ...mapActions([
-      'actionSetUserdata'
+      'actionSetUserdata',
+      'actionSetGlobalMessage'
     ]),
-    uploadImgChange(e) {
-      console.log(e)
-    },
-    handleClickFunc() {
-      if (this.$route.query._db) {
-        this.$refs['cameraInput'].click();
-      }
-      this.msg = this.$text('S_COMING_SOON2', '正在上线 敬请期待');
-    },
-    dialogShow() {
-      this.isShow = !this.isShow;
-    },
-    saveAvatar() {
-      if (this.memInfo.user.image === this.imgID) {
-        this.dialogShow();
-        return;
-      }
+    getAvatarSrc() {
+      if (!this.loginStatus) return;
 
-      mcenter.accountDataSet({
-        params: { image: this.imgID },
-        success: () => {
-          this.actionSetUserdata(true);
-          this.dialogShow();
-          this.imgIndex = this.imgID;
-        }
-      });
+      const imgSrcIndex = this.memInfo.user.image;
+      if (this.memInfo.user && this.memInfo.user.custom) {
+        axios({
+          method: 'get',
+          url: this.memInfo.user.custom_image,
+        }).then(res => {
+          if (res && res.data && res.data.result === "ok") {
+            this.avatarSrc = res.data.ret;
+          }
+        }).catch(error => {
+          this.actionSetGlobalMessage({ msg: error.data.msg });
+          this.avatarSrc = this.$getCdnPath(`/static/image/_new/mcenter/default/avatar_${imgSrcIndex}.png`);
+        })
+      } else {
+        this.avatarSrc = this.$getCdnPath(`/static/image/_new/mcenter/default/avatar_${imgSrcIndex}.png`);
+      }
     },
-    selectImg(index) {
-      this.imgID = index;
-      this.saveAvatar()
+    showAvatarDialog() {
+      this.isShowAvatarDialog = !this.isShowAvatarDialog;
+    },
+    handleCloseDialog() {
+      this.isShowAvatarDialog = false;
+
+      this.actionSetUserdata(true).then(() => {
+        this.getAvatarSrc();
+      });
     }
   },
 };
@@ -210,96 +144,5 @@ export default {
       bottom: 0;
     }
   }
-}
-
-// avatar dialog
-.dialog-mask,
-.dialog-wrap {
-  position: absolute;
-  top: 0;
-  left: 0;
-  padding: 0;
-  background: #000;
-  z-index: 100;
-}
-.dialog-mask {
-  width: 100%;
-  height: 100%;
-  opacity: 0.4;
-}
-.dialog-wrap {
-  bottom: 0;
-  left: 0;
-  top: unset;
-  width: 100%;
-  border-radius: 20px 20px 0 0;
-  position: fixed;
-  z-index: 100;
-  min-height: 400px;
-  height: 40%;
-  background-color: $main_background_white1;
-
-  .dialog-func {
-    text-align: center;
-    color: $main_text_color4;
-    font-size: 17px;
-    position: absolute;
-    bottom: 0;
-    left: 0;
-    width: 100%;
-
-    > div:first {
-      padding-top: 1px;
-    }
-
-    > div {
-      background-color: $main_white_color1;
-      width: 100%;
-      height: 50px;
-      line-height: 50px;
-    }
-
-    > div:last-child {
-      margin-top: 20px;
-      color: black;
-    }
-  }
-
-  .avatar-wrap {
-    position: relative;
-    display: inline-block;
-    width: 25%;
-    padding-top: 2.5px;
-
-    text-align: center;
-    img {
-      border-radius: 50%;
-      width: 75%;
-      max-width: 100px;
-      margin: 5%;
-      &.active {
-        border: 2px solid transparent;
-        border-color: #d2b79c;
-      }
-    }
-
-    .check {
-      position: absolute;
-      bottom: 10%;
-      right: 5%;
-      background: url("/static/image/_new/mcenter/ic_check.png") 0 0 no-repeat;
-      background-size: 100%;
-      width: 18px;
-      height: 18px;
-      -webkit-transform: translate(-50%, 0);
-      transform: translate(-50%, 0);
-    }
-  }
-}
-
-.img-input {
-  display: none;
-  border: unset;
-  outline: unset;
 }
 </style>
