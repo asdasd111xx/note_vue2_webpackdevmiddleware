@@ -97,6 +97,10 @@ export default {
       this.$emit('close');
     },
     handleClickFunc(key) {
+      // 0714 上線
+      this.actionSetGlobalMessage({ type: "incoming" });
+      return;
+
       if (key === "camera") {
         this.$refs['cameraInput'].click();
       } else if (key === "album") {
