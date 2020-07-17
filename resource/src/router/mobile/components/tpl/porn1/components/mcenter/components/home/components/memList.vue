@@ -83,7 +83,7 @@ import message from '../../../../common/new/message';
 import { getCookie } from '@/lib/cookie';
 import yaboRequest from "@/api/yaboRequest";
 import bbosRequest from "@/api/bbosRequest";
-
+import axios from 'axios'
 export default {
   components: {
     share,
@@ -97,7 +97,7 @@ export default {
       requiredMoney: 'load',
       superErrorMsg: '', // 超級簽錯誤訊息
       isShowSuper: false, // *顯示超級簽開關
-      superAppUrl: 'https://www.51cjq.xyz/pkgs/ybsp2.app', // 超級簽URL
+      superAppUrl: '', // 超級簽URL
       list: [
         {
           initName: '下载超级签，成为超级会员',
@@ -191,18 +191,6 @@ export default {
     }
   },
   created() {
-    // 會員存款狀態
-    // ajax({
-    //   method: 'get',
-    //   url: '/api/v1/c/user-stat/deposit-withdraw',
-    //   params: {
-    //   },
-    //   success: ({ res }) => {
-    //   },
-    //   fail: (error) => {
-    //   }
-    // });
-
     if (localStorage.getItem('content_rating')) {
       this.pornSwitchState = localStorage.getItem('content_rating') === "1" ? true : false;
     } else {
@@ -241,57 +229,79 @@ export default {
     const requiredMoney = 200;
     if (!this.loginStatus) return;
 
-    common.systemTime({
-      success: (response) => {
-        let today = '';
-        if (response.result !== 'ok') {
-          today = new Date().toISOString()
+    // 會員存款狀態
+    axios({
+      method: 'get',
+      url: '/api/v1/c/user-stat/deposit-withdraw',
+    }).then(res => {
+      if (res && res.data && res.data.ret.deposit_total) {
+        const depositTotal = Number(res.data.ret.deposit_total);
+        //   超級簽需求200充值
+        if (depositTotal >= requiredMoney) {
+          this.requiredMoneyStatus = 'ok';
+          return;
         } else {
-          today = response.ret
-        }
-
-        ajax({
-          // 會員存款總額
-          method: 'get',
-          url: API_MCENTER_DESPOSIT_AMOUNT,
-          params: {
-            start_at: '2020-03-01 00:00:00-04:00',
-            end_at: Vue.moment(today).format(
-              'YYYY-MM-DD HH:mm:ss-04:00'
-            )
-          },
-          errorAlert: false,
-          success: ({
-            result, ret, msg, code
-          }) => {
-            if (result !== 'ok') {
-              const errorCode = code || '';
-              this.superErrorMsg = `${msg} ${errorCode}`;
-              return;
-            }
-            if (ret && +ret >= requiredMoney) {
-              this.requiredMoneyStatus = 'ok';
-              return;
-            }
-
-            this.superErrorMsg = this.$text(
-              'S_VIP_ONLY_DOWNLOAD',
-              '充值超过％s即可下载'
-            ).replace('％s', requiredMoney);
-          },
-          fail: (error) => {
-            if (error && error.data) {
-              this.superErrorMsg = error.data.msg;
-            }
-          }
-        });
-      },
-      fail: (error) => {
-        if (error && error.data) {
-          this.superErrorMsg = error.data.msg;
+          this.superErrorMsg = this.$text(
+            'S_VIP_ONLY_DOWNLOAD',
+            '充值超过％s即可下载'
+          ).replace('％s', requiredMoney);
         }
       }
-    });
+    }).catch(error => {
+      console.log(error);
+    })
+
+    // common.systemTime({
+    //   success: (response) => {
+    //     let today = '';
+    //     if (response.result !== 'ok') {
+    //       today = new Date().toISOString()
+    //     } else {
+    //       today = response.ret
+    //     }
+
+    //     ajax({
+    //       // 會員存款總額
+    //       method: 'get',
+    //       url: API_MCENTER_DESPOSIT_AMOUNT,
+    //       params: {
+    //         start_at: '2020-03-01 00:00:00-04:00',
+    //         end_at: Vue.moment(today).format(
+    //           'YYYY-MM-DD HH:mm:ss-04:00'
+    //         )
+    //       },
+    //       errorAlert: false,
+    //       success: ({
+    //         result, ret, msg, code
+    //       }) => {
+    //         if (result !== 'ok') {
+    //           const errorCode = code || '';
+    //           this.superErrorMsg = `${msg} ${errorCode}`;
+    //           return;
+    //         }
+    //         if (ret && +ret >= requiredMoney) {
+    //           this.requiredMoneyStatus = 'ok';
+    //           return;
+    //         }
+
+    //         this.superErrorMsg = this.$text(
+    //           'S_VIP_ONLY_DOWNLOAD',
+    //           '充值超过％s即可下载'
+    //         ).replace('％s', requiredMoney);
+    //       },
+    //       fail: (error) => {
+    //         if (error && error.data) {
+    //           this.superErrorMsg = error.data.msg;
+    //         }
+    //       }
+    //     });
+    //   },
+    //   fail: (error) => {
+    //     if (error && error.data) {
+    //       this.superErrorMsg = error.data.msg;
+    //     }
+    //   }
+    // });
 
     setTimeout(() => {
       bbosRequest({
@@ -322,7 +332,7 @@ export default {
 
         if (this.requiredMoneyStatus === "ok") {
           // 超級籤app下載網址
-          const appUrl = 'https://user.51cjq.xyz/pkgs/ybsp2.app';
+          const appUrl = this.superAppUrl || 'https://user.51cjq.xyz/pkgs/ybsp2.app';
           let isWebView = getCookie('platform') === "H" || window.location.host === "yaboxxxapp02.com";
           if (isWebView) {
             window.location.href = appUrl;
