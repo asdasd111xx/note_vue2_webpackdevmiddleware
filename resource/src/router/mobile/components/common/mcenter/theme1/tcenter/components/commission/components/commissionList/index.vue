@@ -34,7 +34,7 @@
 
           <div>
             <span>{{ $text("S_COMPUTE_METHOD", "结算方式") }}</span>
-            <span>投注返利 / 损益返利</span>
+            <span>{{ typeText(info.type) }}</span>
           </div>
         </div>
       </div>
@@ -88,9 +88,14 @@ export default {
   },
   methods: {
     onClick(info) {
-      this.setTabState(false);
-      this.setHeaderTitle(info.period);
-      this.$router.push("/mobile/mcenter/tcenter/commission/detail");
+      if (info.show_detail) {
+        this.setTabState(false);
+        this.setHeaderTitle(info.period);
+        this.$router.push({
+          path: "/mobile/mcenter/tcenter/commission/detail",
+          query: { period: info.period }
+        });
+      }
 
       // if (info.show_detail) {
       //   this.setTabState(false);
@@ -107,6 +112,17 @@ export default {
       // }
 
       // this.displayDetail = [...this.displayDetail, info.id];
+    },
+    typeText(type) {
+      switch (type) {
+        case 1:
+          return "投注返利";
+          break;
+
+        case 2:
+          return "损益返利";
+          break;
+      }
     }
   }
 };

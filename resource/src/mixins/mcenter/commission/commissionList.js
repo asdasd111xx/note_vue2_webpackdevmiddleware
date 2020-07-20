@@ -21,7 +21,6 @@ export default {
     },
     data() {
         return {
-            isReceive: false,
             sort: '',
             order: '',
             commissionState: {
