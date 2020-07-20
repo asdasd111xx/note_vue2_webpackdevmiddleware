@@ -258,14 +258,20 @@
                   <div
                     :class="[
                       $style['pay-money-item'],
+                      $style['custonm-item'],
                       { [$style['is-current']]: isCustonmAmount }
                     ]"
-                    @click="changeMoney("", true)"
+                    @click="changeMoney('', true)"
                   >
-                    其他金额<br />
-                    {{
-                      `${passRoad[0].per_trade_min}~${passRoad[0].per_trade_max}`
-                    }}
+                    <span>
+                      其他金额
+                    </span>
+                    <br />
+                    <span>
+                      {{
+                        `(${passRoad[0].per_trade_min}~${passRoad[0].per_trade_max})`
+                      }}
+                    </span>
                     <img
                       v-if="isCustonmAmount"
                       :class="$style['pay-active']"
