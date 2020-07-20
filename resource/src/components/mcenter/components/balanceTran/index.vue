@@ -390,6 +390,7 @@ export default {
         return;
       }
 
+      this.balanceBackLock = true;
       // 06/24-不顯示confirm彈窗，直接call歸戶function
       this.backAccount();
     },
@@ -411,11 +412,16 @@ export default {
                 afterSetUserBalance();
               }
             });
-          this.balanceBackLock = false;
+
+          setTimeout(() => {
+            this.balanceBackLock = false;
+          }, 1500)
         },
         fail: (res) => {
           this.actionSetGlobalMessage({ msg: res.data.msg || '系统错误' });
-          this.balanceBackLock = false;
+          setTimeout(() => {
+            this.balanceBackLock = false;
+          }, 1500)
         }
       });
     },
@@ -462,7 +468,9 @@ export default {
           }
 
           this.lockSec = 0;
-          this.balanceBackLock = false;
+          setTimeout(() => {
+            this.balanceBackLock = false;
+          }, 1500)
           this.actionSetUserBalance();
 
           this.tranIn = 0;

@@ -1,5 +1,5 @@
 <template>
-  <div slot="content" :class="[$style['content-wrap'], 'clearfix']">
+  <div slot="content" :class="['clearfix']">
     <div v-for="(item, index) in discountList" :class="$style['discount-item']">
       <img :src="$getCdnPath(item.imgSrc)" :alt="item.key" />
     </div>
@@ -16,12 +16,8 @@ export default {
       discountList: [
         {
           key: "discount-1",
-          imgSrc: "/static/image/_new/default/bg_banner_d.png"
+          imgSrc: "/static/image/_new/mcenter/creditTrans/promotion.png"
         },
-        {
-          key: "discount-1",
-          imgSrc: "/static/image/_new/default/bg_banner_d.png"
-        }
       ]
     };
   },
@@ -30,14 +26,14 @@ export default {
       memInfo: "getMemInfo"
     })
   },
-  created() {},
+  created() { },
   methods: {
     ...mapActions([
       "actionSetUserBalance",
       "actionSetUserdata",
       "actionSetGlobalMessage"
     ]),
-    setCurrentTab(index) {}
+    setCurrentTab(index) { }
   }
 };
 </script>

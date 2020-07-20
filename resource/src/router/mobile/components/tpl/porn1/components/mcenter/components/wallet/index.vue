@@ -217,6 +217,13 @@ export default {
           }
         },
         {
+          text: this.$text("S_CREDIT_TRANSDER", "额度转让"),
+          imgSrc: '/static/image/_new/mcenter/wallet/ic_wallet_trans.png',
+          onClick: () => {
+            this.$router.push('/mobile/mcenter/creditTrans');
+          }
+        },
+        {
           text: this.$text('S_MARANGE_CARD', '卡片管理'),
           imgSrc: '/static/image/_new/mcenter/wallet/ic_wallter_manage.png',
           onClick: () => {
