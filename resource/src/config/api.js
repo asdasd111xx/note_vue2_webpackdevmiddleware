@@ -124,6 +124,9 @@ export const API_COMMISSION_LAST = '/api/v1/c/wage/last/dispatch';
 // 佣金明細列表
 export const API_COMMISSION_LIST = '/api/v1/c/wage/entry/list';
 
+// 佣金明細詳細列表
+export const API_COMMISSIOM_DETAIL_LIST = '/api/v1/c/wage/entry/list/detail'
+
 // 特定期數各好友層級有效投注總額及佣金總額
 export const API_COMMISSION_LEVEL_LIST = '/api/v1/c/wage/amount_per_depth';
 

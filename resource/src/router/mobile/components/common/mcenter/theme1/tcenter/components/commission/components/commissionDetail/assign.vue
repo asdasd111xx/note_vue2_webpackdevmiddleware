@@ -1,8 +1,8 @@
 <template>
   <div :class="$style['assign-list-wrap']">
     <div :class="$style['total-block']">
-      <span>笔数：{{ commissionList.length }}</span>
-      <span>返利总计：{{ allTotal.amount | amountFormat }}</span>
+      <span>笔数：{{ detailList.length }}</span>
+      <span>返利总计：{{ allTotal.amount }}</span>
     </div>
 
     <div :class="$style['list-block']">
@@ -39,7 +39,6 @@
             commissionState[info.state].text
           }}</span>
         </div>
-
       </div>
     </div>
 
@@ -57,7 +56,7 @@
 <script>
 import axios from "axios";
 import { format, toDate, parseISO } from "date-fns";
-import { API_COMMISSION_LIST } from "@/config/api";
+import { API_COMMISSIOM_DETAIL_LIST } from "@/config/api";
 import { mapActions } from "vuex";
 import InfiniteLoading from "vue-infinite-loading";
 
@@ -65,40 +64,19 @@ export default {
   components: {
     InfiniteLoading
   },
-  props: {
-    setTabState: {
-      type: Function
-      // required: true
-    },
-    setHeaderTitle: {
-      type: Function
-      // required: true
-    },
-    // searchInfo: {
-    //   type: Object,
-    //   required: true
-    // },
-    // setDetailData: {
-    //   type: Function,
-    //   required: true
-    // }
-  },
   data() {
     return {
-      isReceive: false,
       sort: "",
       order: "",
       commissionState: {
-        0: { key: "all", text: this.$text("S_ALL", "全部") }, // 全部
         1: { key: "assigned", text: this.$text("S_ASSIGN_ALREADY", "已派发") }, // 已派發
         3: {
           key: "unqualified",
           text: this.$text("S_UNQUALIFIED_01", "资格不符")
         } // 資格不符
       },
-      commissionList: [],
-      pageTotal: null,
-      allTotal: null,
+      detailList: [],
+      allTotal: {} | null,
       mainNoData: true,
       showInfinite: true,
       isLoading: false,
@@ -120,37 +98,40 @@ export default {
   },
   computed: {
     controlData() {
-      return this.commissionList.filter(
+      return this.detailList.filter(
         (item, index) => index < this.maxResults * this.showPage
       );
+    },
+    getPeriod() {
+      return this.$route.query.period;
+    },
+    getDate() {
+      let period = String(this.$route.query.period);
+      let yyyy = period.slice(0, 4);
+      let mm = period.slice(4, 6);
+      let dd = period.slice(6, 8);
+
+      return `${yyyy}-${mm}-${dd}`;
     }
   },
-  watch: {
-    searchInfo() {
-      this.getListCommission();
-    }
+  created() {
+    this.getListDetail();
   },
   methods: {
     ...mapActions(["actionSetGlobalMessage"]),
     /**
-     * 取得佣金資料列表
+     * 取得佣金詳細資料列表
      */
-    getListCommission() {
+    getListDetail() {
       this.showInfinite = false;
       this.isLoading = true;
       this.showPage = 0;
 
-      const { startTime, endTime, state } = this.searchInfo;
-      // startTime, endTime初始值為日期格式，若使用者選擇日期後將會變成串格式
-      const start =
-        typeof startTime === "string" ? parseISO(startTime) : startTime;
-      const end = typeof endTime === "string" ? parseISO(endTime) : endTime;
-
       const params = {
-        start_at: format(toDate(Date.parse(start)), "yyyy-MM-dd"),
-        end_at: format(toDate(Date.parse(end)), "yyyy-MM-dd"),
-        state
+        start_at: this.getDate,
+        end_at: this.getDate
       };
+
       // 預設美東時間
       params.start_at += " 00:00:00-04:00";
       params.end_at += " 23:59:59-04:00";
@@ -162,24 +143,22 @@ export default {
 
       axios({
         method: "get",
-        url: API_COMMISSION_LIST,
+        url: API_COMMISSIOM_DETAIL_LIST,
         params
       })
         .then(response => {
           this.showInfinite = true;
 
           if (response.data.result !== "ok" || response.data.ret.length === 0) {
-            this.pageTotal = null;
             this.allTotal = null;
-            this.commissionList = [];
+            this.detailList = [];
             this.mainNoData = true;
             return;
           }
 
           this.isLoading = false;
-          this.pageTotal = response.data.sub_total; // 小計
           this.allTotal = response.data.total; // 總計
-          this.commissionList = response.data.ret; // 佣金資料列表
+          this.detailList = response.data.ret; // 佣金資料列表
           this.mainNoData = false;
         })
         .catch(error => {
@@ -193,18 +172,18 @@ export default {
      */
     infiniteHandler($state) {
       setTimeout(() => {
-        if (this.commissionList.length === 0) {
+        if (this.detailList.length === 0) {
           this.isLoading = false;
           $state.complete();
           return;
         }
 
-        if (this.commissionList.length / this.maxResults > this.showPage) {
+        if (this.detailList.length / this.maxResults > this.showPage) {
           this.showPage += 1;
           $state.loaded();
 
           if (
-            Math.ceil(this.commissionList.length / this.maxResults) ===
+            Math.ceil(this.detailList.length / this.maxResults) ===
             this.showPage
           ) {
             $state.complete();

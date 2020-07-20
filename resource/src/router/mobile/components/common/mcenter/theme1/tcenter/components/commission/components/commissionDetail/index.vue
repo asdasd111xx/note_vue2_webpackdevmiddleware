@@ -26,7 +26,6 @@
 
 <script>
 import { mapGetters } from "vuex";
-import commissionDetail from "@/mixins/mcenter/commission/commissionDetail";
 import assign from "./assign";
 import record from "./record";
 

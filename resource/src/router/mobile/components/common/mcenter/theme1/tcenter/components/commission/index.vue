@@ -69,7 +69,7 @@
       :show-no-data="isShowNoData"
     />
 
-    <commission-detail v-if="page === 'detail'" :detail-info="detailInfo" />
+    <commission-detail v-if="page === 'detail'" />
 
     <commission-rebates v-if="page === 'rebate'" />
   </div>
