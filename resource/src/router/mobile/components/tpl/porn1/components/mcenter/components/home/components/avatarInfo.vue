@@ -1,14 +1,14 @@
 <template>
-  <div :class="$style['mcenter-avatar-info-wrap']">
+  <div
+    :class="$style['mcenter-avatar-info-wrap']"
+    @click="
+      loginStatus
+        ? $router.push('/mobile/mcenter/accountData')
+        : $router.push('/mobile/login')
+    "
+  >
     <!-- 大頭照 -->
-    <div
-      :class="$style['avatar-wrap']"
-      @click="
-        loginStatus
-          ? $router.push('/mobile/mcenter/accountData')
-          : $router.push('/mobile/login')
-      "
-    >
+    <div :class="$style['avatar-wrap']">
       <img :src="avatarSrc" />
     </div>
 
@@ -162,6 +162,7 @@ export default {
   > img {
     height: 100%;
     border-radius: 50%;
+    width: 70px;
   }
 }
 
