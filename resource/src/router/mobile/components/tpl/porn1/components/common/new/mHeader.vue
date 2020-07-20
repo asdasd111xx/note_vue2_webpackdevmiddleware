@@ -298,7 +298,7 @@ export default {
     },
     handleClickAsk() {
       if (this.loginStatus) {
-        this.$router.push("/mobile/mcenter/information/message");
+        this.$router.push({name: 'mcenter-information'});
       } else {
         this.$router.push("/mobile/login");
       }

@@ -6,54 +6,37 @@
   >
     <div slot="content" class="content-wrap">
       <div class="information-wrap">
-        <div
-          v-if="!$route.params.pid"
-          :class="[$style['menu-list-wrap'], 'clearfix']"
-        >
+        <div v-if="!$route.query.pid" :class="[$style['menu-list-wrap'], 'clearfix']">
           <div
+            v-for="(item, index) in tabItem"
             :class="$style['menu-list']"
-            @click="$router.push({ params: { page: 'message' } })"
+            @click="setCurrentTab(index)"
           >
             <div
-              :class="[
-                $style['menu-title'],
-                { [$style.active]: $route.params.page === 'message' }
-              ]"
-            >
-              通知
+                :class="[
+                  $style['menu-title'],
+                  { [$style.active]: currentTemplate === item.key }
+                ]"
+              >
+              {{ item.text }}
             </div>
-            <div v-if="msgCount" :class="$style['menu-tips']">
+
+            <div
+              v-if="item.hasMsgCount && msgCount"
+              :class="$style['menu-tips']"
+            >
               {{ msgCount }}
             </div>
           </div>
           <div
-            :class="$style['menu-list']"
-            @click="$router.push({ params: { page: 'news' } })"
-          >
-            <div
-              :class="[
-                $style['menu-title'],
-                { [$style.active]: $route.params.page === 'news' }
-              ]"
-            >
-              活动
-            </div>
-          </div>
-          <div
-            :class="$style['menu-list']"
-            @click="$router.push({ params: { page: 'post' } })"
-          >
-            <div
-              :class="[
-                $style['menu-title'],
-                { [$style.active]: $route.params.page === 'post' }
-              ]"
-            >
-              公告
-            </div>
-          </div>
+            :class="$style['active-slider']"
+            :style="{
+              left: `calc(16.5% + 33% * ${currentTab})`
+            }"
+          />
         </div>
-        <component :is="$route.params.page" />
+
+        <component :is="currentTemplate" />
       </div>
     </div>
   </mobile-container>
@@ -74,16 +57,13 @@ export default {
   },
   data() {
     return {
-      msgCount: 0
+      msgCount: 0,
+      currentTab: 0, // 'message', 'news', 'post'
+      currentTemplate: 'message'
     }
   },
   created() {
-    if (['message', 'news', 'post'].includes(this.$route.params.page)) {
-      this.actionSetMcenterMsgCount();
-      return;
-    }
-
-    this.$router.push('/mobile/mcenter/information/message');
+    this.actionSetMcenterMsgCount();
   },
   watch: {
     memInfo() {
@@ -94,7 +74,23 @@ export default {
   methods: {
     ...mapActions([
       'actionSetMcenterMsgCount'
-    ])
+    ]),
+    setCurrentTab(index) {
+      this.currentTab = index;
+      switch (index) {
+        case 0:
+          this.currentTemplate = 'message'
+          break;
+
+        case 1:
+          this.currentTemplate = 'news'
+          break;
+
+        case 2:
+          this.currentTemplate = 'post'
+          break;
+      }
+    }
   },
   computed: {
     ...mapGetters({
@@ -105,17 +101,28 @@ export default {
 
       return {
         prev: true,
-        title: this.$route.params.pid ? trans[this.$route.params.page] : '消息中心',
+        title: this.$route.query.pid ? trans[this.currentTemplate] : '消息中心',
         onClick: () => {
-          if (this.$route.params.pid) {
-            this.$router.back();
-            return;
-          }
-
-          // eslint-disable-next-line vue/no-side-effects-in-computed-properties
-          this.$router.push('/mobile/mcenter/home');
+          this.$router.back();
         }
       };
+    },
+    tabItem() {
+      return [
+        {
+          key: 'message',
+          text: '通知',
+          hasMsgCount: true
+        },
+        {
+          key: 'news',
+          text: '活动'
+        },
+        {
+          key: 'post',
+          text: '公告'
+        }
+      ]
     }
   }
 };

@@ -21,7 +21,7 @@
         "
       />
     </div>
-    <div v-if="!$route.params.pid" :class="$style['btn-more']">
+    <div v-if="!$route.query.pid" :class="$style['btn-more']">
       <template v-if="isEditing">
         <span v-if="isSelectAll" @click="selectMessage = []">取消全选</span>
         <span v-else @click="onSelectAll">全选</span>
@@ -35,7 +35,7 @@
         />
       </template>
     </div>
-    <div v-if="!$route.params.pid" :class="$style['message-list']">
+    <div v-if="!$route.query.pid" :class="$style['message-list']">
       <div
         v-for="message in messageData"
         :key="message.id"
@@ -187,10 +187,10 @@ export default {
       memInfo: 'getMemInfo'
     }),
     currentMessage() {
-      if (!this.$route.params.pid) {
+      if (!this.$route.query.pid) {
         return null;
       }
-      return this.messageData.find((message) => message.id === this.$route.params.pid);
+      return this.messageData.find((message) => message.id === this.$route.query.pid);
     },
     isSelectAll() {
       return this.selectMessage.length === this.messageData.length;
@@ -266,7 +266,7 @@ export default {
         return;
       }
       this.getContent(info);
-      this.$router.push({ params: { pid: info.id } });
+      this.$router.push({ query: { pid: info.id } });
     },
     onSelectAll() {
       this.selectMessage = [...this.messageData.map((message) => message.id)];
@@ -407,6 +407,7 @@ export default {
 .message-content {
   min-height: calc(100vh - 43px - 10px);
   margin-top: 10px;
+  overflow-wrap: break-word;
 }
 
 .message {
