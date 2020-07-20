@@ -115,6 +115,8 @@ export default {
      * @returns {string} 平台名稱
      */
     vendorName() {
+      return this.gameInfo.vendor_abridge;
+
       if (this.gameInfo.vendor === 'mw') {
         if (this.curLang === 'zh-tw') {
           return '大满贯电子';
