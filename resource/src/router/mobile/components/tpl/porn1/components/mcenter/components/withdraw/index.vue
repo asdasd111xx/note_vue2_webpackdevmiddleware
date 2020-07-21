@@ -10,37 +10,13 @@
         </div>
       </message>
 
+ <!-- 一件回收 -->
+      <balance-back :has-link="true" />
+
       <balance-tran class="clearfix">
         <template
           scope="{ balanceTran, enableAutotransfer, closeAutotransfer, setTranOut, setTranIn, setMoney, balanceTransfer, balanceBack, getDefaultTran }"
         >
-          <div
-            :class="[$style['balance-wrap'], 'clearfix']"
-            @click="balanceBack"
-          >
-            <div :class="$style['balance-total-item']">
-              <img
-                :src="
-                  $getCdnPath(
-                    '/static/image/_new/mcenter/balanceTrans/ic_wallet_center.png'
-                  )
-                "
-              />
-              <span> {{ $text("S_MCENTER_WALLET", "中心钱包") }} </span>
-              <div :class="$style['balance-item-money']">
-                {{ balanceTran.membalance.vendor.default.amount }}
-              </div>
-            </div>
-
-            <div
-              :class="[
-                $style['recycle-btn'],
-                balanceTran.balanceBackLock ? $style.disable : ''
-              ]"
-            >
-              {{ $text("S_ONE_CLICK_TO_ACCOUNT") }}
-            </div>
-          </div>
           <!-- 個別餘額 -->
           <div :class="[$style['balance-item-wrap'], 'clearfix']">
             <template v-if="!isShowMore">
@@ -344,6 +320,7 @@ import serialNumber from './serialNumber'
 import ajax from '@/lib/ajax';
 import EST from '@/lib/EST';
 import widthdrawTips from './widthdrawTips';
+import balanceBack from "../../../mcenter/components/common/balanceBack";
 
 import {
   API_MCENTER_WITHDRAW,
@@ -388,7 +365,8 @@ export default {
     message,
     serialNumber,
     widthdrawTips,
-    blockListTips
+    blockListTips,
+    balanceBack
   },
   watch: {
     withdrawUserData() {

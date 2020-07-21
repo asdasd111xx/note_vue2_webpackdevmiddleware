@@ -156,7 +156,7 @@ export default {
         { name: 'deposit', text: '充值' },
         { name: 'balanceTrans', text: '转帐' },
         { name: 'withdraw', text: '提现' },
-        { name: 'accountVip', text: 'VIP' },
+        { name: 'creditTrans', text: '转让' },
         { name: 'grade', text: '等级' }
       ],
     };

@@ -2,10 +2,7 @@
   <balance-tran class="clearfix">
     <template scope="{ balanceTran , balanceBack}">
       <div>
-        <div
-          :class="[$style['balance-wrap'], 'clearfix']"
-          @click="balanceBack()"
-        >
+        <div :class="[$style['balance-wrap'], 'clearfix']">
           <div :class="$style['balance-total-item']">
             <img
               :src="
@@ -21,10 +18,19 @@
           </div>
 
           <div
+            v-if="hasLink"
+            @click="$router.push('/mobile/mcenter/creditTrans')"
+            :class="[$style['balance-total-item'], $style['credit-trans-link']]"
+          >
+            <span> {{ $text("S_CREDIT_TRANSFER", "额度转让") }} </span>
+          </div>
+
+          <div
             :class="[
               $style['recycle-btn'],
               balanceTran.balanceBackLock ? $style.disable : ''
             ]"
+            @click="balanceBack()"
           >
             {{ $text("S_ONE_CLICK_TO_ACCOUNT") }}
           </div>
@@ -39,6 +45,12 @@ import { mapGetters, mapActions } from "vuex";
 import balanceTran from '@/components/mcenter/components/balanceTran';
 
 export default {
+  props: {
+    hasLink: {
+      type: Boolean,
+      default: false
+    },
+  },
   components: {
     balanceTran,
   },
@@ -114,6 +126,11 @@ export default {
     img {
       max-width: 100%;
     }
+  }
+
+  .credit-trans-link {
+    font-size: 16px;
+    color: #be9e7f;
   }
 }
 </style>

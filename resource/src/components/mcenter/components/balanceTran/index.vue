@@ -415,13 +415,13 @@ export default {
 
           setTimeout(() => {
             this.balanceBackLock = false;
-          }, 1500)
+          }, 2000)
         },
         fail: (res) => {
           this.actionSetGlobalMessage({ msg: res.data.msg || '系统错误' });
           setTimeout(() => {
             this.balanceBackLock = false;
-          }, 1500)
+          }, 2000)
         }
       });
     },
@@ -470,7 +470,7 @@ export default {
           this.lockSec = 0;
           setTimeout(() => {
             this.balanceBackLock = false;
-          }, 1500)
+          }, 2000)
           this.actionSetUserBalance();
 
           this.tranIn = 0;

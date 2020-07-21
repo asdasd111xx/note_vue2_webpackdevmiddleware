@@ -12,8 +12,13 @@
       </div>
 
       <template v-for="item in inputInfo">
+        <div v-if="errorMessage[item.key]" :class="[$style['form-tips']]">
+          <div>
+            {{ errorMessage[item.key] }}
+          </div>
+        </div>
         <div
-          key="item.key"
+          :key="item.key"
           :class="[
             $style['form-content'],
             { [$style['keyring']]: item.key === 'keyring' }
@@ -73,6 +78,7 @@
       </div>
     </div>
 
+    <tips-credit-trans />
     <popup-verification
       v-if="isShowCaptcha"
       :is-show-captcha.sync="isShowCaptcha"
@@ -83,31 +89,23 @@
 
 <script>
 import { mapGetters, mapActions } from "vuex";
-import balanceBack from "../../../../common/new/balanceBack";
+import balanceBack from "../../../../mcenter/components/common/balanceBack";
 import popupVerification from '@/components/popupVerification';
 import axios from 'axios';
-
+import tipsCreditTrans from './tipsCreditTrans';
+import mixin from '@/mixins/mcenter/creditTrans/creditTrans'
 export default {
+  mixins: [mixin],
   data() {
     return {
-      formData: {
-        target_username: "", //接收使用者帳號
-        amount: "", //轉點額度
-        phone: "", //手機號碼
-        keyring: "", //驗證碼
-      },
       captcha: null,
       toggleCaptcha: false,
-      isSendKeyring: false,
-      isVerifyForm: false,
-      isVerifyPhone: false,
-      times: 0,
-      tipMsg: ''
     };
   },
   components: {
     balanceBack,
-    popupVerification
+    popupVerification,
+    tipsCreditTrans
   },
   computed: {
     ...mapGetters({
@@ -129,17 +127,11 @@ export default {
         return this.captcha = value
       }
     },
-    inputInfo() {
-      return [
-        { key: "target_username", title: "转入帐号", placeholder: "请输入下线帐号" },
-        { key: "amount", title: "转让金额", placeholder: "单笔转让不得少于199元" },
-        { key: "phone", title: "手机号码", placeholder: "请输入手机号码" },
-        { key: "keyring", title: "获取验证码", placeholder: "请输入验证码" }
-      ]
-    }
+
   },
   created() {
-
+    this.getRechargeBalance();
+    this.getRechargeConfig();
   },
   watch: {
     captchaData(val) {
@@ -158,54 +150,7 @@ export default {
       }
       this.toggleCaptcha = true;
     },
-    getKeyring() {
-      if (!this.formData.phone) {
-        return;
-      }
 
-      this.tipMsg = "";
-
-      axios({
-        method: 'post',
-        url: '/api/v1/c/player/valet/charge/sms',
-        data: {
-          phone: "+86" + this.formData.phone,
-          captcha_text: this.captchaData ? this.captchaData : ''
-        }
-      }).then(res => {
-        this.actionSetUserdata(true);
-        this.times = 60;
-        this.timer = setInterval(() => {
-          if (this.times === 0) {
-            clearInterval(this.timer);
-            this.timer = null;
-            return;
-          }
-          this.times -= 1;
-        }, 1000);
-        this.tipMsg = this.$text("S_SEND_CHECK_CODE_VALID_TIME").replace("%s", 5);
-        this.isSendKeyring = false;
-      }).catch(error => {
-        this.times = '';
-        this.tipMsg = `${error.response.data.msg}`;
-        this.isSendKeyring = false;
-      })
-    },
-    verification(item) {
-      if (item.key === "phone") {
-        if (this.formData.phone.length < 11) {
-          this.tipMsg = "手机格式不符合要求";
-          this.isVerifyPhone = false;
-        } else {
-          this.tipMsg = "";
-          this.isVerifyPhone = true;
-        }
-      }
-
-      this.inputInfo.forEach((item) => {
-        this.isVerifyForm = !!(this.formData[item.key]);
-      })
-    }
   }
 };
 </script>
@@ -215,6 +160,7 @@ export default {
 
 .form {
   background-color: #eeeeee;
+  font-size: 14px;
 }
 
 .form-content {
@@ -225,11 +171,31 @@ export default {
   color: #222222;
   background-color: #fefffe;
   margin-top: 1px;
-  font-size: 14px;
   font-family: Microsoft JhengHei, Microsoft JhengHei-Regular;
   font-weight: 400;
   line-height: 20px;
   position: relative;
+}
+
+.form-tips {
+  padding: 0 13px;
+  background-color: #fefffe;
+  margin-top: 1px;
+  font-family: Microsoft JhengHei, Microsoft JhengHei-Regular;
+  font-weight: 400;
+  line-height: 20px;
+  position: relative;
+  color: $main_error_color1;
+  display: block;
+  height: 30px;
+  line-height: 30px;
+  padding-top: 5px;
+}
+
+.form-tips {
+  + .form-content {
+    margin-top: unset;
+  }
 }
 
 .keyring {
@@ -308,7 +274,6 @@ input::placeholder {
     background: -moz-linear-gradient(to right, #f9ddbd, #bd9d7d);
     background: linear-gradient(to right, #f9ddbd, #bd9d7d);
     line-height: 43px;
-    font-size: 14px;
     font-family: Microsoft JhengHei, Microsoft JhengHei-Bold;
     font-weight: 700;
     text-align: center;
