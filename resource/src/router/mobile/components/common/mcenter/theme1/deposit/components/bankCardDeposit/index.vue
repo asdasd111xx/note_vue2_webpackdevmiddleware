@@ -1116,13 +1116,12 @@ export default {
         if (info.payment_method_id === 1 && info.payment_type_id === 1) {
           imgId = 70002;
         }
-      } else {
-        return {
-          src: `https://images.dormousepie.com/icon/bankIconBySwiftCode/${imgId}.png`,
-          error: this.$getCdnPath('/static/image/_new/default/bank_default_2.png'),
-          loading: this.$getCdnPath('/static/image/_new/default/bank_default_2.png')
-        };
       }
+      return {
+        src: `https://images.dormousepie.com/icon/bankIconBySwiftCode/${imgId}.png`,
+        error: this.$getCdnPath('/static/image/_new/default/bank_default_2.png'),
+        loading: this.$getCdnPath('/static/image/_new/default/bank_default_2.png')
+      };
     },
     curPay(curPayInfo) {
       if (Object.keys(curPayInfo).length
