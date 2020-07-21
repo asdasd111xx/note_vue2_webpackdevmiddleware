@@ -250,6 +250,35 @@
                     src="/static/image/_new/common/select_active.png"
                   />
                 </div>
+                <div
+                  v-if="passRoad && passRoad[0] && passRoad[0].is_custom_amount"
+                  :class="[$style['speed-money-wrap'], 'clearfix']"
+                >
+                  <!-- 自訂金額 -->
+                  <div
+                    :class="[
+                      $style['pay-money-item'],
+                      $style['custonm-item'],
+                      { [$style['is-current']]: isCustonmAmount }
+                    ]"
+                    @click="changeMoney('', true)"
+                  >
+                    <span>
+                      其他金额
+                    </span>
+                    <br />
+                    <span>
+                      {{
+                        `(${passRoad[0].per_trade_min}~${passRoad[0].per_trade_max})`
+                      }}
+                    </span>
+                    <img
+                      v-if="isCustonmAmount"
+                      :class="$style['pay-active']"
+                      src="/static/image/_new/common/select_active.png"
+                    />
+                  </div>
+                </div>
               </div>
               <!-- <div
                                 v-if="
@@ -698,6 +727,10 @@ export default {
     };
   },
   watch: {
+    //   channel
+    passRoad() {
+      console.log(this.passRoad[0])
+    },
     getPassRoadOrAi() {
       if (this.getPassRoadOrAi.amounts && this.getPassRoadOrAi.amounts.length > 0) {
         this.moneyValue = this.getPassRoadOrAi.amounts[0];

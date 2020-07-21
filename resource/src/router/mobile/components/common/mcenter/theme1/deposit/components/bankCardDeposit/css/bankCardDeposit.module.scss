@@ -180,8 +180,9 @@
 .pay-money-item {
     float: left;
     min-width: 23%;
-    height: 40px;
-    line-height: 40px;
+    width: 85px;
+    height: 45px;
+    line-height: 45px;
     margin: 2px 8px 2px 0;
     padding: 0 3px;
     text-align: center;
@@ -210,6 +211,10 @@
         border: 1px solid #D1B79C;
         background: linear-gradient(-45deg, #D1B79C 12px, hsla(0, 0%, 100%, 0) 0);
     }
+}
+
+.custonm-item {
+    line-height: 22.5px;
 }
 
 .pay-button {
@@ -561,7 +566,7 @@
     color: #DB6372;
 
     &.hide {
-      display: none;
+        display: none;
     }
 }
 
@@ -856,8 +861,8 @@
         font-weight: 700;
     }
 
-    > div {
-      line-height: 22px;
+    >div {
+        line-height: 22px;
     }
 
 }

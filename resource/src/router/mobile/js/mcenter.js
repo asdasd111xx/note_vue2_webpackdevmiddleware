@@ -89,7 +89,7 @@ export default {
             component
         },
         { // 信息中心
-            path: 'information/:page/:pid?',
+            path: 'information',
             name: 'mcenter-information',
             component
         },

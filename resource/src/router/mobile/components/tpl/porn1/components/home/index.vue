@@ -78,10 +78,11 @@ export default {
     if (this.isShow) {
       document.querySelector('body').style = 'overflow: hidden';
     }
-
+  },
+  mounted() {
     this.updateBalance = setInterval(() => {
-      this.actionSetUserBalance()
-    }, 20000)
+      this.actionSetUserBalance();
+    }, 30000)
   },
   beforeDestroy() {
     clearInterval(this.updateBalance)

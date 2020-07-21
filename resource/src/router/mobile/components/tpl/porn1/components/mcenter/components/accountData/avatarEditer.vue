@@ -43,7 +43,7 @@
     </div>
 
     <div :class="$style['avater-editer-func']">
-      <div :class="$style['choose-btn']" @click="choose">选择文件</div>
+      <div :class="$style['choose-btn']" @click="chooseFile">选择文件</div>
       <div :class="[$style['func-btn']]">
         <div :class="[$style['cancel-btn']]" @click="cancel">
           取消
@@ -123,7 +123,19 @@ export default {
       'actionSetUserdata',
       'actionSetGlobalMessage'
     ]),
-    choose() {
+    chooseFile() {
+      // 檢查相機權限 似乎沒用
+      //   try {
+      //     let handleSuccess = function (stream) {
+      //       console.log(stream)
+      //     };
+
+      //     navigator.mediaDevices.getUserMedia({ video: true })
+      //       .then(handleSuccess);
+      //   } catch (e) {
+      //     console.log(object)
+      //   }
+
       this.$refs['albumInput'].click();
     },
     submit() {
