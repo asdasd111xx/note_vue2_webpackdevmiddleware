@@ -560,7 +560,9 @@ export default {
          * @method changeMoney
          * @param {String} money - 金額
          */
-        changeMoney(money) {
+        changeMoney(money, isCustonmAmount) {
+            this.isCustonmAmount = isCustonmAmount;
+
             this.moneyValue = money;
             this.isErrorMoney = false;
             this.checkOrderData();
