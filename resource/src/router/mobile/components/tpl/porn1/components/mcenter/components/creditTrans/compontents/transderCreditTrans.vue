@@ -40,6 +40,7 @@
               <input
                 v-model="formData.keyring"
                 :placeholder="item.placeholder"
+                @input="verification(inputInfo[3])"
                 type="number"
               />
               <div
@@ -57,6 +58,19 @@
           </template>
         </div>
       </template>
+
+      <div
+        :class="[
+          $style['submit-wrap'],
+          {
+            [$style.disabled]: tipMsg || !isVerifyForm
+          }
+        ]"
+      >
+        <div>
+          立即转让
+        </div>
+      </div>
     </div>
 
     <popup-verification
@@ -85,6 +99,7 @@ export default {
       captcha: null,
       toggleCaptcha: false,
       isSendKeyring: false,
+      isVerifyForm: false,
       isVerifyPhone: false,
       times: 0,
       tipMsg: ''
@@ -186,6 +201,10 @@ export default {
           this.isVerifyPhone = true;
         }
       }
+
+      this.inputInfo.forEach((item) => {
+        this.isVerifyForm = !!(this.formData[item.key]);
+      })
     }
   }
 };
@@ -274,5 +293,37 @@ export default {
 
 input::placeholder {
   color: #aaaaaa;
+}
+
+.submit-wrap {
+  height: 43px;
+  margin: 15px auto;
+  padding: 0 13px;
+  max-width: $mobile_max_width;
+
+  > div {
+    border-radius: 3px;
+    background: -webkit-linear-gradient(to right, #f9ddbd, #bd9d7d);
+    background: -o-linear-gradient(to right, #f9ddbd, #bd9d7d);
+    background: -moz-linear-gradient(to right, #f9ddbd, #bd9d7d);
+    background: linear-gradient(to right, #f9ddbd, #bd9d7d);
+    line-height: 43px;
+    font-size: 14px;
+    font-family: Microsoft JhengHei, Microsoft JhengHei-Bold;
+    font-weight: 700;
+    text-align: center;
+    color: #f3ede7;
+    width: 100%;
+    height: 100%;
+  }
+
+  &.disabled {
+    > div {
+      background: -webkit-linear-gradient(to right, #eee5db, #e9dacb);
+      background: -o-linear-gradient(to right, #eee5db, #e9dacb);
+      background: -moz-linear-gradient(to right, #eee5db, #e9dacb);
+      background: linear-gradient(to right, #eee5db, #e9dacb);
+    }
+  }
 }
 </style>

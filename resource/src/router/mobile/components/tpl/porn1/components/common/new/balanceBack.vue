@@ -59,7 +59,7 @@ export default {
   margin-top: 3%;
   height: 65px;
   border-radius: 4px;
-  background: rgba(255, 255, 255, 0.65);
+  background: #fefefe;
   border-bottom: 1px solid #eeeeee;
 
   // 自動免轉區塊
