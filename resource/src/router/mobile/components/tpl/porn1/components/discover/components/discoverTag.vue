@@ -10,6 +10,7 @@
         {{ tag.name }}
       </div>
     </div>
+
     <div :class="[$style['list-wrap'], 'clearfix']">
       <div
         v-for="info in list"
@@ -26,6 +27,7 @@
         <span>{{ info.title }}</span>
       </div>
     </div>
+
     <div :class="[$style['select-wrap']]">
       <div v-if="selected.length > 0">
         <div :class="$style.tips">
@@ -47,7 +49,7 @@
 import axios from "axios";
 import find from "lodash/find";
 import join from "lodash/join";
-import pornRequest from '@/api/pornRequest';
+import pornRequest from "@/api/pornRequest";
 import message from "../../common/new/message";
 
 export default {
@@ -73,7 +75,7 @@ export default {
   created() {
     pornRequest({
       method: "get",
-      url: `/video/alltag`,
+      url: `/video/alltag`
     }).then(response => {
       if (response.status !== 200) {
         return;
@@ -86,15 +88,20 @@ export default {
         })
         .reduce((init, info) => {
           return [...init.concat(info)];
-        }, [])
+        }, []);
 
       this.active = this.tags[0].id;
     });
+
+    let tempTags = JSON.parse(localStorage.getItem("discover-tag"));
+    if (tempTags && tempTags.length > 0) {
+      this.selected = tempTags;
+    }
   },
   methods: {
     onClick(id) {
       this.active = id;
-      $('#mobile-wrap').animate({ scrollTop: 0 });
+      $("#mobile-wrap").animate({ scrollTop: 0 });
     },
     onSelect(id) {
       if (this.selected.includes(id)) {
@@ -121,6 +128,8 @@ export default {
         ],
         []
       );
+
+      localStorage.setItem("discover-tag", JSON.stringify(this.selected));
 
       this.$router.push({
         name: "tag",

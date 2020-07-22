@@ -68,6 +68,11 @@ export default {
       //     this.$router.push('/mobile/login');
       //     return;
       //   }  console.log(path)
+
+      if (key === 'discover') {
+        localStorage.removeItem('discover-tag');
+      }
+
       this.$router.push(path);
     },
     isActive(key) {
