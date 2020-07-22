@@ -55,7 +55,6 @@ export default {
       return [
         { key: 'home', name: this.$text('S_HOME', '首页'), path: '/mobile' },
         { key: 'promotion', name: this.$text('S_PROMOTION', '优惠'), path: '/mobile/promotion' },
-        // { key: 'liveStream', name: this.$text('S_LIVE_STREAM', '直播'), path: '/mobile/liveStream' },
         { key: 'service', name: this.$text('S_SERVIEC', '客服'), path: '/mobile/service' },
         { key: 'discover', name: this.$text('S_DISCOVER', '发现'), path: '/mobile/discover' },
         { key: 'mcenter-home', name: this.$text('S_INFORMATION', '我的'), path: '/mobile/mcenter/home' }
@@ -64,10 +63,10 @@ export default {
   },
   methods: {
     onClick({ key, path }) {
-      //   if ((key === 'mcenter-home' || key === 'liveStream') && !this.loginStatus) {
-      //     this.$router.push('/mobile/login');
-      //     return;
-      //   }  console.log(path)
+      if (key === 'discover') {
+        localStorage.removeItem('discover-tag');
+      }
+
       this.$router.push(path);
     },
     isActive(key) {
@@ -131,18 +130,6 @@ export default {
     text-align: center;
     text-overflow: ellipsis;
     white-space: nowrap;
-  }
-}
-
-.liveStream {
-  position: relative;
-  bottom: 16px;
-
-  img {
-    width: 40px;
-    height: 40px;
-    margin: 0 auto;
-    border-radius: 50%;
   }
 }
 

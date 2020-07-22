@@ -203,7 +203,7 @@ export default {
       mainNoData: false,
       walletIcons: [
         {
-          text: this.$text('S_TRANSDER', '转帐'),
+          text: this.$text('S_transfer', '转帐'),
           imgSrc: '/static/image/_new/mcenter/wallet/ic_wallter_tranfer.png',
           onClick: () => {
             this.$router.push('/mobile/mcenter/balanceTrans');
@@ -214,6 +214,13 @@ export default {
           imgSrc: '/static/image/_new/mcenter/wallet/ic_wallter_withdraw.png',
           onClick: () => {
             this.$router.push('/mobile/mcenter/withdraw');
+          }
+        },
+        {
+          text: this.$text("S_CREDIT_TRANSFER", "额度转让"),
+          imgSrc: '/static/image/_new/mcenter/wallet/ic_wallet_trans.png',
+          onClick: () => {
+            this.$router.push('/mobile/mcenter/creditTrans');
           }
         },
         {

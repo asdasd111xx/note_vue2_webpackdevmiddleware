@@ -98,8 +98,8 @@ export default {
     },
     handleClickFunc(key) {
       // 暫時關閉
-      this.actionSetGlobalMessage({ type: 'incoming' });
-      return;
+      //   this.actionSetGlobalMessage({ type: 'incoming' });
+      //   return;
 
       if (key === "camera") {
         this.$refs['cameraInput'].click();

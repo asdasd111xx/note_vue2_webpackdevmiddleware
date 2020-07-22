@@ -1,141 +1,22 @@
 <template>
-    <div :class="mainClass">
-        <div v-if="!detailInfo.oauth2" :class="$style['level-info']">
-            <div
-                :class="$style['card']"
-                v-for="item in summaryList"
-                :key="`level-${item.depth}`"
-            >
-                <div :class="$style['card-title']">
-                    {{ levelTrans[item.depth] }}
-                </div>
-                <div>
-                    <span>返利</span>
-                    <span>{{ item.amount }}</span>
-                </div>
-                <div>
-                    <span>{{ $text("S_VALID_BET", "有效投注") }}</span>
-                    <span>{{ item.valid_bet }}</span>
-                </div>
-            </div>
-        </div>
-        <div v-if="!detailInfo.oauth2" class="main-wrap">
-            <template v-if="friendsList.length">
-                <table :class="$style['main-table']">
-                    <thead>
-                        <tr>
-                            <th :class="$style.index">
-                                {{ $text("S_NUMBER_NO", "序") }}
-                            </th>
-                            <th :class="$style['first-level']">
-                                {{ $text("S_FIRST_LEVEL_FRIEND", "一级好友") }}
-                            </th>
-                            <th
-                                :class="[
-                                    $style['valid-bet'],
-                                    { [$style.active]: sort === 'valid_bet' }
-                                ]"
-                                @click="onSort('valid_bet')"
-                            >
-                                <span>{{
-                                    $text("S_VALID_BET", "有效投注")
-                                }}</span>
-                                <span v-if="sort === 'period'">
-                                    <icon
-                                        :name="
-                                            `${
-                                                order === 'desc'
-                                                    ? 'long-arrow-alt-down'
-                                                    : 'long-arrow-alt-up'
-                                            }`
-                                        "
-                                        width="5"
-                                        height="10"
-                                    />
-                                </span>
-                                <span v-else>
-                                    <icon
-                                        name="long-arrow-alt-up"
-                                        width="5"
-                                        height="10"
-                                    />
-                                    <icon
-                                        name="long-arrow-alt-down"
-                                        width="5"
-                                        height="10"
-                                    />
-                                </span>
-                            </th>
-                            <th :class="$style.commission">
-                                {{ $text("S_COMMISSION_01", "返利") }}
-                            </th>
-                        </tr>
-                    </thead>
-                    <tbody>
-                        <tr
-                            v-for="(info, index) in controlData"
-                            :key="`list-${info.id}`"
-                        >
-                            <td>{{ index + 1 }}</td>
-                            <td>{{ info.username }}</td>
-                            <td>
-                                <div>{{ info.valid_bet | commaFormat }}</div>
-                            </td>
-                            <td>
-                                <div>{{ info.wage_amount | commaFormat }}</div>
-                            </td>
-                        </tr>
-                    </tbody>
-                </table>
-                <infinite-loading
-                    v-if="showInfinite"
-                    ref="infiniteLoading"
-                    @infinite="infiniteHandler"
-                >
-                    <span slot="no-more" />
-                    <span slot="no-results" />
-                </infinite-loading>
-            </template>
-            <template v-else>
-                <div :class="$style['no-data']">
-                    {{ $text("S_NO_DATA_TPL") }}
-                </div>
-            </template>
-        </div>
-
-        <div v-else class="main-wrap">
-            <div :class="$style['detail-wrap']">
-                <div :class="$style['rebate-wrap']">
-                    <div :class="[$style.detail, 'clearfix']">
-                        <span :class="[$style.text, $style.main]">
-                            {{
-                                $text("S_EXPECTED_LOSS_REBATE", "盈亏返利预估")
-                            }}
-                        </span>
-                        <span
-                            :class="[
-                                $style.amount,
-                                { [$style.deficit]: +detailList.amount < 0 }
-                            ]"
-                        >
-                            {{ detailList.amount }}
-                        </span>
-                    </div>
-                    <div :class="[$style.detail, 'clearfix']">
-                        <span :class="[$style.text, $style.main]">
-                            {{ $text("S_REBATE_LEVEL", "返利级别") }}
-                        </span>
-                        <span :class="[$style.amount]">
-                            {{ detailList.rate }} %
-                        </span>
-                    </div>
-                </div>
-
-                <div :class="$style.date">
-                    ({{ detailList.start_at | dateFormat }}-{{
-                        detailList.end_at | dateFormat
-                    }})
-                </div>
+  <div :class="$style['commission-detail-wrap']">
+    <div :class="$style['tab-wrap']">
+      <div
+        v-for="(item, index) in tabItem"
+        :key="`tab-${item.key}`"
+        :class="[
+          $style['tab-item'],
+          { [$style['is-current']]: currentTab === index }
+        ]"
+        @click="setCurrentTab(index)"
+      >
+        {{ item.text }}
+      </div>
+      <div
+        :class="$style['active-slider']"
+        :style="{ left: `calc(25% + 50% * ${currentTab})` }"
+      />
+    </div>
 
                 <div :class="$style['list-wrap']">
                     <div :class="[$style.detail, 'clearfix']">
@@ -234,29 +115,88 @@
 
 <script>
 import { mapGetters } from "vuex";
-import InfiniteLoading from 'vue-infinite-loading';
-import commissionDetail from "@/mixins/mcenter/commission/commissionDetail";
+import assign from "./assign";
+import record from "./record";
 
 export default {
-    components: {
-        InfiniteLoading
-    },
-    mixins: [commissionDetail],
-    computed: {
-        ...mapGetters({
-            memInfo: "getMemInfo"
-        }),
-        mainClass() {
-            const site = `site-${this.memInfo.user.domain}`;
-
-            return {
-                "commission-detail-wrap": true,
-                [this.$style[site]]: this.$style[site],
-                [this.$style["preset-color"]]: !this.$style[site]
-            };
+  components: {
+    assign,
+    record
+  },
+  data() {
+    return {
+      currentTab: 0,
+      currentTemplate: "assign"
+    };
+  },
+  computed: {
+    ...mapGetters({
+      memInfo: "getMemInfo"
+    }),
+    tabItem() {
+      return [
+        {
+          key: "assign",
+          text: this.$text("S_ASSIGIN_DETAIL", "派发详情")
+        },
+        {
+          key: "record",
+          text: this.$text("S_RECORD_DETAIL", "统计详情")
         }
+      ];
     }
-};
+  },
+  methods: {
+    setCurrentTab(index) {
+      this.currentTab = index;
+      switch (index) {
+        case 0:
+          this.currentTemplate = "assign";
+          break;
+
+          return {
+            "commission-detail-wrap": true,
+            [this.$style[site]]: this.$style[site],
+            [this.$style["preset-color"]]: !this.$style[site]
+          };
+      }
+    }
+  }}
 </script>
 
-<style lang="scss" src="./css/index.scss" module></style>
+<style lang="scss" module>
+@import "~@/css/variable.scss";
+.tab-wrap {
+  position: relative;
+  display: flex;
+  background: #fff;
+  border-bottom: 2px solid #eee;
+}
+
+.tab-item {
+  flex: 1;
+  position: relative;
+  height: 42px;
+  line-height: 42px;
+  text-align: center;
+  color: $main_text_color2;
+  overflow: hidden;
+  text-overflow: ellipsis;
+  white-space: nowrap;
+
+  &.is-current {
+    color: $main_text_color4;
+  }
+}
+
+.active-slider {
+  position: absolute;
+  width: 40px;
+  height: 2px;
+  bottom: 0;
+  transform: translateX(-50%);
+  background: #be9e7f;
+  // left: calc(50% / 2 - 20px);
+  transition: left 0.31s;
+}
+</style>

@@ -55,6 +55,12 @@ export default {
     }
   },
   mounted() {
+    // 無需驗證 to do 驗證碼
+    if (this.captchaType === 0 || this.captchaType === 1) {
+      this.$emit("update:captcha", {});
+      this.$emit("update:isShowCaptcha", false);
+    }
+
     // 拼圖認證
     if (this.captchaType === 3) {
       this.showPuzzleCaptcha();

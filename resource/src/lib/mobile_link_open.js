@@ -77,10 +77,14 @@ export default ({ linkType = 'nolink', linkTo = '', linkItem = '' }) => {
         }
 
         // 在線客服
+
         if (linkTo === 'service') {
+            let url = store.state.webInfo.on_service_url.replace('gid=default', 'gid=yb04')
+                .replace('gid=yb01', 'gid=yb04')
+
             let w =
                 window.open(
-                    store.state.webInfo.on_service_url,
+                    url,
                     'mobile service',
                     `width=${store.state.webInfo.on_service_w}, height=${store.state.webInfo.on_service_h}`
                 );
