@@ -115,11 +115,7 @@
     </div>
     <div
       v-if="isEditing"
-      :class="[
-        $style['bottom-button'],
-        { [$style.show]: selectMessage.length },
-        'clearfix'
-      ]"
+      :class="[$style['bottom-button'], { [$style.show]: true }, 'clearfix']"
     >
       <div
         :class="[$style.read, { [$style.disable]: hasAllRead }]"
