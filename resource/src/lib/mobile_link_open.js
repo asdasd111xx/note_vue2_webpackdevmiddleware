@@ -97,27 +97,6 @@ export default ({ linkType = 'nolink', linkTo = '', linkItem = '' }) => {
             return;
         }
 
-        // 在線客服
-        if (linkTo === 'service1') {
-            let w =
-                window.open(
-                    'https://31zfyq.italking.asia/guest.php?gid=yb04',
-                    'mobile service',
-                    `width=${store.state.webInfo.on_service_w}, height=${store.state.webInfo.on_service_h}`
-                );
-
-            // 在線客服流量分析事件
-            window.dataLayer.push({
-                dep: 2,
-                event: 'ga_click',
-                eventCategory: 'online_service',
-                eventAction: 'online_service_contact',
-                eventLabel: 'online_service_contact'
-            });
-            w.document.title = "在线客服";
-            return;
-        }
-
         // 手機下注
         if (linkTo === 'mobileBet') {
             if (store.state.loginStatus || store.state.appInfo.unsafe_download) {
