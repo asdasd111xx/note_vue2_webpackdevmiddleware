@@ -59,7 +59,7 @@
         </div>
       </div>
 
-      <div :class="$style['info-card2']" @click="clickService">
+      <div :class="$style['info-card2']" @click="clickService(2)">
         <div>
           <div>
             <img
@@ -240,8 +240,8 @@ export default {
     ...mapActions([
       'actionSetUserdata'
     ]),
-    clickService() {
-      mobileLinkOpen({ linkType: "static", linkTo: "service" });
+    clickService(type = "") {
+      mobileLinkOpen({ linkType: "static", linkTo: `service${type}` });
     },
     clickPopTip() {
       this.isShowPop = true;
