@@ -131,7 +131,7 @@ export default {
             key: 'username',
             text: 'S_ACCOUNT',
             type: 'text',
-            regExp: /^[a-z][a-z0-9]{3,19}$/,
+            regExp: /^[a-z1-9][a-z0-9]{3,19}$/,
             errorMsg: 'S_USERNAME_ERROR',
             defaultErrMsg: '请输入4-20码英文小写、数字，首字不得为数字0'
         },

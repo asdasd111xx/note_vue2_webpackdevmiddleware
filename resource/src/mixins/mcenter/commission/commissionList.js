@@ -8,10 +8,6 @@ export default {
         searchInfo: {
             type: Object,
             required: true
-        },
-        setDetailData: {
-            type: Function,
-            required: true
         }
     },
     filters: {
@@ -25,7 +21,6 @@ export default {
     },
     data() {
         return {
-            isReceive: false,
             sort: '',
             order: '',
             commissionState: {

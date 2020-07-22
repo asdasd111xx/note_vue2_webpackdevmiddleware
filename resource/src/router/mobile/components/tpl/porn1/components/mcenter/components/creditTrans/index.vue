@@ -38,23 +38,24 @@ import { mapGetters, mapActions } from "vuex";
 import balanceTran from "@/components/mcenter/components/balanceTran";
 import blockListTips from "../../../common/new/blockListTips";
 import mobileContainer from "../../../common/new/mobileContainer";
-import transderCreditTrans from './compontents/transderCreditTrans';
+import transferCreditTrans from './compontents/transferCreditTrans';
 import discountCreditTrans from './compontents/discountCreditTrans';
 import recoardCreditTrans from './compontents/recoardCreditTrans';
+
 export default {
   components: {
     mobileContainer,
     blockListTips,
     balanceTran,
-    transderCreditTrans,
+    transferCreditTrans,
     discountCreditTrans,
-    recoardCreditTrans
+    recoardCreditTrans,
   },
   data() {
     return {
       transferMoney: null,
       headerSetting: {
-        title: this.$text("S_CREDIT_TRANSDER", "额度转让"),
+        title: this.$text("S_CREDIT_TRANSFER", "额度转让"),
         prev: true,
         onClick: () => {
           this.$router.back();
@@ -64,8 +65,8 @@ export default {
       isShowMore: true,
       isShowTransOutSelect: false,
       isShowTransInSelect: false,
-      currentTab: 0, //discount transder recoard
-      currentTemplate: "discount-credit-trans"
+      currentTab: 1, //discount transfer recoard
+      currentTemplate: "transfer-credit-trans"
     };
   },
   computed: {
@@ -79,8 +80,8 @@ export default {
           text: this.$text("S_CREDIT_DISCOUNT", "转让优惠"),
         },
         {
-          key: "transder",
-          text: this.$text("S_CREDIT_TRANSDER", "额度转让"),
+          key: "transfer",
+          text: this.$text("S_CREDIT_TRANSFER", "额度转让"),
         },
         {
           key: "recoard",
@@ -106,7 +107,7 @@ export default {
           this.currentTemplate = "discount-credit-trans";
           return;
         case 1:
-          this.currentTemplate = "transder-credit-trans";
+          this.currentTemplate = "transfer-credit-trans";
           return;
         case 2:
           this.currentTemplate = "recoard-credit-trans";

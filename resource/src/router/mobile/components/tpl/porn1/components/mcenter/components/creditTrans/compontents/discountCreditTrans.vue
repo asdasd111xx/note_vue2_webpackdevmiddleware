@@ -1,6 +1,8 @@
 <template>
-  <div slot="content" :class="[$style['content-wrap'], 'clearfix']">
-    1
+  <div slot="content" :class="['clearfix']">
+    <div v-for="(item, index) in discountList" :class="$style['discount-item']">
+      <img :src="$getCdnPath(item.imgSrc)" :alt="item.key" />
+    </div>
   </div>
 </template>
 
@@ -8,30 +10,30 @@
 import { mapGetters, mapActions } from "vuex";
 
 export default {
-  components: {
-  },
+  components: {},
   data() {
     return {
-
+      discountList: [
+        {
+          key: "discount-1",
+          imgSrc: "/static/image/_new/mcenter/creditTrans/promotion.png"
+        },
+      ]
     };
   },
   computed: {
     ...mapGetters({
       memInfo: "getMemInfo"
-    }),
+    })
   },
-  created() {
-
-  },
+  created() { },
   methods: {
     ...mapActions([
       "actionSetUserBalance",
       "actionSetUserdata",
-      'actionSetGlobalMessage'
+      "actionSetGlobalMessage"
     ]),
-    setCurrentTab(index) {
-
-    },
+    setCurrentTab(index) { }
   }
 };
 </script>
