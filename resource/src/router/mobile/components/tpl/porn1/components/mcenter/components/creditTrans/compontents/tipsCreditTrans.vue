@@ -29,30 +29,12 @@
 import { mapGetters, mapActions } from "vuex";
 
 export default {
-  components: {
-  },
-  data() {
-    return {
-
-    };
-  },
-  computed: {
-    ...mapGetters({
-      memInfo: "getMemInfo"
-    }),
-  },
-  created() {
-
-  },
   methods: {
     ...mapActions([
       "actionSetUserBalance",
       "actionSetUserdata",
       'actionSetGlobalMessage'
     ]),
-    setCurrentTab(index) {
-
-    },
   }
 };
 </script>

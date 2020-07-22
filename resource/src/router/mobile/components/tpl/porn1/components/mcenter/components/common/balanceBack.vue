@@ -53,10 +53,7 @@ export default {
   },
   components: {
     balanceTran,
-  },
-  created() {
-
-  },
+  }
 };
 </script>
 <style lang="scss" module>

@@ -1,5 +1,5 @@
 <template>
-  <div slot="content" :class="['clearfix']">
+  <div :class="['clearfix']">
     <!-- 一件回收 -->
     <balance-back />
 
@@ -142,7 +142,6 @@ export default {
         return this.captcha = value
       }
     },
-
   },
   created() {
     this.getRechargeBalance();
@@ -155,8 +154,6 @@ export default {
   },
   methods: {
     ...mapActions([
-      "actionSetUserBalance",
-      "actionSetUserdata",
       'actionSetGlobalMessage'
     ]),
     showCaptcha() {
@@ -165,7 +162,6 @@ export default {
       }
       this.toggleCaptcha = true;
     },
-
   }
 };
 </script>

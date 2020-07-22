@@ -1,6 +1,6 @@
 <template>
-  <div slot="content" :class="[$style['content-wrap'], 'clearfix']">
-    3
+  <div :class="[$style['recoard-credit-trans'], ['clearfix']]">
+    <div></div>
   </div>
 </template>
 
@@ -35,4 +35,13 @@ export default {
   }
 };
 </script>
-<style lang="scss" src="../css/index.module.scss" module></style>
+
+<style lang="scss" module>
+@import "../css/index.module.scss";
+.recoard-credit-trans {
+  overflow-x: hidden;
+  overflow-y: auto;
+  position: relative;
+  width: 100%;
+}
+</style>
