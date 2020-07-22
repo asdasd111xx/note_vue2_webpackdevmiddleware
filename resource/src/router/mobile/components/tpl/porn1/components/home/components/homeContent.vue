@@ -553,16 +553,10 @@ export default {
       if (['BL', 'SL'].includes(game.type)) {
         switch (game.type) {
           case 'BL':
-            this.$router.push({
-              name: 'liveStream',
-              params: { type: 'cutiesLive' }
-            });
+            this.$router.push('/mobile/liveStream?type=cutiesLive');
             break;
           case 'SL':
-            this.$router.push({
-              name: 'liveStream',
-              params: { type: 'ballLive' }
-            });
+            this.$router.push('/mobile/liveStream?type=ballLive');
             break;
           default:
             break;

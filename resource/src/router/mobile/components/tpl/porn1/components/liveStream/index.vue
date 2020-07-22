@@ -65,9 +65,12 @@
           >
         </div>
       </div>
-      <div :class="$style['iframe-bg-wrap']">
+      <div
+        v-if="currentTab === 'ballLive'"
+        :class="$style['iframe-bg-wrap']"
+        :style="{ height: `${iframeHeight}px` }"
+      >
         <iframe
-          v-if="currentTab === 'ballLive'"
           ref="js-set-height"
           :class="$style['iframe-wrap']"
           :height="iframeHeight"
@@ -135,7 +138,7 @@ export default {
   data() {
     return {
       streamList: [],
-      currentTab: this.$route.params.type || localStorage.getItem('streamType') || 'cutiesLive',
+      currentTab: 'cutiesLive',
       iframeHeight: 500,
       src: '',
       isShowLoading: false
@@ -148,13 +151,11 @@ export default {
     }),
   },
   created() {
-    // 從首頁點擊進來並記錄
-    localStorage.setItem('streamType', this.$route.params.type)
+    this.currentTab = this.$route.query.type ? this.$route.query.type : 'cutiesLive';
 
     pornRequest({
       method: 'get',
       url: `/video/livelist`,
-
     }).then((response) => {
       this.streamList = response.result;
     });
@@ -215,7 +216,6 @@ export default {
     },
     handleClickType(type) {
       this.currentTab = type
-      localStorage.setItem('streamType', type)
     }
   }
 };
@@ -267,18 +267,13 @@ export default {
 }
 
 .iframe-bg-wrap {
-  overflow: auto;
-  -webkit-overflow-scrolling: touch;
   background-color: #fff;
-  height: 100%;
 }
 
 .iframe-wrap {
   width: 100%;
-  overflow: auto;
-  -webkit-overflow-scrolling: touch;
-  margin: 0px;
-  padding: 0px;
+  overflow: auto !important;
+  -webkit-overflow-scrolling: touch !important;
 }
 
 .cuties-live-wrap {
