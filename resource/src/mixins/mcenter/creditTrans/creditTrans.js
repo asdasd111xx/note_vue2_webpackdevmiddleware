@@ -22,6 +22,7 @@ export default {
             },
             tipMsg: '', // api message
             isSendKeyring: false,
+            isSendRecharge: false,
             isVerifyForm: false,
             isVerifyPhone: false,
             times: 0,
@@ -33,14 +34,15 @@ export default {
     },
     computed: {
         ...mapGetters({
-            memInfo: "getMemInfo"
+            memInfo: "getMemInfo",
+            pwdResetInfo: 'getPwdResetInfo',
         }),
         inputInfo() {
             return [
                 { key: "target_username", title: "转入帐号", error: "", placeholder: "请输入下线帐号", },
                 { key: "amount", title: "转让金额", error: "", placeholder: `单笔转让不得少于${this.rechargeConfig.recharge_limit}元` },
-                { key: "phone", title: "手机号码", error: "", placeholder: "请输入手机号码" },
-                { key: "keyring", title: "获取验证码", error: "", placeholder: "请输入验证码" }
+                { key: "phone", title: "手机号码", error: "", placeholder: "请输入手机号码", maxlength: 11 },
+                { key: "keyring", title: "获取验证码", error: "", placeholder: "请输入验证码", maxlength: 4 }
             ]
         },
 
@@ -49,7 +51,7 @@ export default {
         ...mapActions([
             "actionSetUserBalance",
             "actionSetUserdata",
-            'actionSetGlobalMessage'
+            'actionSetGlobalMessage',
         ]),
         verification(item) {
             let errorMessage = '';
@@ -73,18 +75,41 @@ export default {
                 }
             }
 
+            if (item.key == "target_username") {
+                const data = this.pwdResetInfo["username"];
+                const re = new RegExp(data.regExp);
+                const msg = this.$t(data.errorMsg);
+
+                this.formData.target_username = this.formData.target_username
+                    .replace(' ', '')
+                    .trim()
+                    .replace(/[\W]/g, '');
+
+                console.log(re.test(this.formData.target_username))
+                if (!re.test(this.formData.target_username)) {
+                    errorMessage = msg;
+                }
+
+            }
+
             this.errorMessage[item.key] = errorMessage;
 
-            let verify = true;
             // 檢查無錯誤訊息
-            // Object.keys(this.errorMessage).every((key) => {
-            //     console.log(key)
-            //     if (!this.errorMessage[key]) {
-            //         verify = false;
-            //         return;
-            //     }
-            // })
-            this.isVerifyForm = verify;
+            const noError = this.inputInfo.every((item) => {
+                if (this.errorMessage[item.key]) {
+                    return false;
+                } else {
+                    return true;
+                }
+            })
+            const hasValue = this.inputInfo.every((item) => {
+                if (!this.formData[item.key]) {
+                    return false;
+                } else {
+                    return true;
+                }
+            })
+            this.isVerifyForm = noError && hasValue;
         },
         // 是否進行轉讓額度
         getRechargeBalance() {
@@ -104,6 +129,8 @@ export default {
             }).then(res => {
                 if (res && res.data && res.data.result === "ok") {
                     this.rechargeConfig = res.data.ret;
+                } else {
+                    this.actionSetGlobalMessage(res.data.msg);
                 }
             }).catch(error => {
                 console.log(error)
@@ -111,11 +138,12 @@ export default {
         },
         // 獲取驗證碼
         getKeyring() {
-            if (!this.formData.phone) {
+            if (!this.formData.phone && this.isSendKeyring) {
                 return;
             }
 
             this.tipMsg = "";
+            this.isSendKeyring = true;
             axios({
                 method: 'post',
                 url: '/api/v1/c/player/valet/recharge/sms',
@@ -124,23 +152,63 @@ export default {
                     captcha_text: this.captchaData ? this.captchaData : ''
                 }
             }).then(res => {
-                this.actionSetUserdata(true);
-                this.times = 60;
-                this.timer = setInterval(() => {
-                    if (this.times === 0) {
-                        clearInterval(this.timer);
-                        this.timer = null;
-                        return;
-                    }
-                    this.times -= 1;
-                }, 1000);
-                this.tipMsg = this.$text("S_SEND_CHECK_CODE_VALID_TIME").replace("%s", 5);
-                this.isSendKeyring = false;
+                if (res && res.data && res.data.result === "ok") {
+                    this.times = 60;
+                    this.timer = setInterval(() => {
+                        if (this.times === 0) {
+                            this.isSendKeyring = false;
+                            clearInterval(this.timer);
+                            this.timer = null;
+                            return;
+                        }
+                        this.times -= 1;
+                    }, 1000);
+                    this.tipMsg = this.$text("S_SEND_CHECK_CODE_VALID_TIME").replace("%s", 5);
+                } else {
+                    setTimeout(() => {
+                        this.isSendKeyring = false;
+                    }, 1500)
+                    this.tipMsg = `${res.data.msg}`;
+                }
             }).catch(error => {
                 this.times = '';
                 this.tipMsg = `${error.response.data.msg}`;
-                this.isSendKeyring = false;
+                setTimeout(() => {
+                    this.isSendKeyring = false;
+                }, 1500)
             })
         },
+        sendRecharge() {
+            if (!isVerifyForm || !isSendRecharge) {
+                return;
+            }
+            this.isSendRecharge = true;
+
+            axios({
+                method: 'post',
+                url: '/api/v1/c/recharge',
+                data: {
+                    ...this.formData,
+                    amount: Number(this.formData.amount),
+                    phone: "86-" + this.formData.phone,
+                }
+            }).then(res => {
+                if (res && res.data && res.data.result === "ok") {
+                    this.actionSetGlobalMessage("转让成功");
+                } else {
+                    this.tipMsg = `${res.data.msg}`;
+                }
+
+                this.actionSetUserdata(true);
+                setTimeout(() => {
+                    this.isSendRecharge = false;
+                }, 1500)
+            }).catch(error => {
+                this.tipMsg = `${error.response.data.msg}`;
+                setTimeout(() => {
+                    this.isSendRecharge = false;
+                }, 1500)
+            })
+        }
     }
 };

@@ -24,7 +24,45 @@
             { [$style['keyring']]: item.key === 'keyring' }
           ]"
         >
-          <template v-if="item.key !== 'keyring'">
+          <template v-if="item.key === 'target_username'">
+            <div :class="$style['form-title']">
+              {{ item.title }}
+            </div>
+            <div :class="$style['form-input']">
+              <input
+                v-model="formData[item.key]"
+                @input="verification(item)"
+                :placeholder="item.placeholder"
+                type="text"
+              />
+            </div>
+          </template>
+          <template v-else-if="item.key === 'keyring'">
+            <div :class="[$style['keyring-title']]">
+              {{ item.title }}
+            </div>
+            <div :class="[$style['keyring-input']]">
+              <input
+                v-model="formData.keyring"
+                :placeholder="item.placeholder"
+                @input="verification(inputInfo[3])"
+                :maxlength="item.maxlength"
+                type="number"
+              />
+              <div
+                :class="[
+                  $style['send-keyring'],
+                  {
+                    [$style.disabled]: isSendKeyring || !isVerifyPhone
+                  }
+                ]"
+                @click="showCaptcha"
+              >
+                {{ times ? `${times}s` : "获取验证码" }}
+              </div>
+            </div>
+          </template>
+          <template v-else>
             <div :class="$style['form-title']">
               {{ item.title }}
             </div>
@@ -37,30 +75,6 @@
               />
             </div>
           </template>
-          <template v-else>
-            <div :class="[$style['keyring-title']]">
-              {{ item.title }}
-            </div>
-            <div :class="[$style['keyring-input']]">
-              <input
-                v-model="formData.keyring"
-                :placeholder="item.placeholder"
-                @input="verification(inputInfo[3])"
-                type="number"
-              />
-              <div
-                :class="[
-                  $style['send-keyring'],
-                  {
-                    [$style.disabled]: isSendKeyring || !isVerifyPhone || tipMsg
-                  }
-                ]"
-                @click="showCaptcha"
-              >
-                {{ times ? `${times}s` : "获取验证码" }}
-              </div>
-            </div>
-          </template>
         </div>
       </template>
 
@@ -68,9 +82,10 @@
         :class="[
           $style['submit-wrap'],
           {
-            [$style.disabled]: tipMsg || !isVerifyForm
+            [$style.disabled]: !isVerifyForm || isSendRecharge
           }
         ]"
+        @click="sendRecharge"
       >
         <div>
           立即转让
@@ -135,7 +150,7 @@ export default {
   },
   watch: {
     captchaData(val) {
-      this.getKeyring()
+      this.getKeyring();
     },
   },
   methods: {
@@ -288,6 +303,7 @@ input::placeholder {
       background: -o-linear-gradient(to right, #eee5db, #e9dacb);
       background: -moz-linear-gradient(to right, #eee5db, #e9dacb);
       background: linear-gradient(to right, #eee5db, #e9dacb);
+      pointer-events: none;
     }
   }
 }
