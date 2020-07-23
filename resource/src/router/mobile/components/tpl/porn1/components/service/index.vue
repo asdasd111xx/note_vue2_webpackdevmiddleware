@@ -37,7 +37,7 @@
         </div>
       </div>
 
-      <div :class="$style['info-card']" @click="clickService">
+      <div :class="$style['info-card']" @click="clickService(2)">
         <div>
           <div>
             <img
@@ -59,7 +59,7 @@
         </div>
       </div>
 
-      <div :class="$style['info-card2']" @click="clickService(2)">
+      <div :class="$style['info-card2']" @click="clickService">
         <div>
           <div>
             <img
