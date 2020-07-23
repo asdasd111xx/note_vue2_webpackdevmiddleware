@@ -27,7 +27,13 @@
         <img v-lazy="getImg(video.image)" />
       </div>
       <div :class="$style['info-wrap']">
-        <div :class="$style['video-title']">{{ video.title }}</div>
+        <div
+          :class="
+            [$style['video-title'] ,
+            { [$style['custom']]: ['smallPig'].includes(source) }
+          ]">
+            {{ video.title }}
+        </div>
         <video-tag :tag="video.tag" />
         <div :class="$style['views']">
           <img :src="$getCdnPath('/static/image/_new/discover/ic_video.png')" />
@@ -184,12 +190,16 @@ export default {
   font-size: 10px;
   text-overflow: ellipsis;
   white-space: nowrap;
+
+  &.custom {
+    color: #BFBFBF;
+  }
 }
 
 .views {
   height: 12px;
   line-height: 12px;
-  color: $main_text_color4;
+  color: $main_text_color2;
   font-size: 9px;
   display: flex;
   align-items: center;
