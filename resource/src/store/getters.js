@@ -189,5 +189,7 @@ export default {
     // 推廣連結
     getAgentLink: (state) => state.agentLink,
     getYaboConfig: (state) => state.yaboConfig,
-    getGlobalMessage: (state) => state.globalMessage
+    getGlobalMessage: (state) => state.globalMessage,
+    getRechargeConfig: (state) => state.rechargeConfig,
+    getHasBank: (state) => state.hasBank,
 };

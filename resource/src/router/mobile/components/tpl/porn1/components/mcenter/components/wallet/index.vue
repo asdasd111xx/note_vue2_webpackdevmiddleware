@@ -175,7 +175,7 @@
 
 
 <script>
-import { mapGetters } from 'vuex';
+import { mapGetters, mapActions } from 'vuex';
 import Vue from 'vue';
 import ajax from '@/lib/ajax';
 import EST from '@/lib/EST';
@@ -220,7 +220,11 @@ export default {
           text: this.$text("S_CREDIT_TRANSFER", "额度转让"),
           imgSrc: '/static/image/_new/mcenter/wallet/ic_wallet_trans.png',
           onClick: () => {
-            this.$router.push('/mobile/mcenter/creditTrans');
+            if (!this.hasBank) {
+              this.actionSetGlobalMessage({ code: 'C50099', origin: 'wallet', type: 'bindcard' });
+            } else {
+              this.$router.push('/mobile/mcenter/creditTrans');
+            }
           }
         },
         {
@@ -239,6 +243,7 @@ export default {
       memInfo: 'getMemInfo',
       gameData: 'getGameData',
       siteConfig: 'getSiteConfig',
+      hasBank: 'getHasBank'
     }),
     headerConfig() {
       return {
@@ -266,6 +271,9 @@ export default {
     this.getRecordList();
   },
   methods: {
+    ...mapActions([
+      'actionSetGlobalMessage'
+    ]),
     handleDeposit() {
       this.$router.push(`/mobile/mcenter/deposit`);
       //   0706 統一RD5判斷銀行卡

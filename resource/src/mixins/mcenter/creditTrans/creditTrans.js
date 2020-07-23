@@ -1,5 +1,7 @@
 import { mapActions, mapGetters } from 'vuex';
 
+import EST from '@/lib/EST';
+import Vue from 'vue';
 import axios from 'axios';
 
 export default {
@@ -7,7 +9,11 @@ export default {
 
     },
     data() {
+        const estToday = EST(new Date(), '', true);
+        const startTime = estToday;
+        const endTime = estToday;
         return {
+            // 額度轉讓
             formData: {
                 target_username: "", //接收使用者帳號
                 amount: "", //轉點額度
@@ -25,11 +31,20 @@ export default {
             isSendRecharge: false,
             isVerifyForm: false,
             isVerifyPhone: false,
+            isShowLoading: true,
             times: 0,
+
             //轉讓額度設定
+            maxRechargeBalance: 0,
             rechargeConfig: {
                 recharge_limit: 0 // 最低限額
-            }
+            },
+
+            // 轉讓紀錄
+            rechargeRecoard: null,
+            detailRecoard: null,
+            startTime,
+            endTime,
         };
     },
     computed: {
@@ -45,6 +60,8 @@ export default {
                 { key: "keyring", title: "获取验证码", error: "", placeholder: "请输入验证码", maxlength: 4 }
             ]
         },
+    },
+    created() {
 
     },
     methods: {
@@ -67,9 +84,13 @@ export default {
 
             if (item.key === "amount") {
                 const limit = Number(this.rechargeConfig.recharge_limit) || 0;
+                const amount = Number(this.formData.amount);
+                console.log(amount, this.maxRechargeBalance)
                 if (limit &&
-                    Number(this.formData.amount) < limit) {
+                    amount < limit) {
                     errorMessage = "转帐金额低于最低限额";
+                } else if (amount > this.maxRechargeBalance) {
+                    errorMessage = "馀额不足";
                 } else {
                     errorMessage = "";
                 }
@@ -85,7 +106,6 @@ export default {
                     .trim()
                     .replace(/[\W]/g, '');
 
-                console.log(re.test(this.formData.target_username))
                 if (!re.test(this.formData.target_username)) {
                     errorMessage = msg;
                 }
@@ -111,19 +131,24 @@ export default {
             })
             this.isVerifyForm = noError && hasValue;
         },
-        // 是否進行轉讓額度
+        // 可轉讓額度
         getRechargeBalance() {
-            axios({
+            return axios({
                 method: 'get',
                 url: '/api/v1/c/recharge/balance'
             }).then(res => {
+                if (res && res.data && res.data.result === "ok") {
+                    this.maxRechargeBalance = res.data.ret.balance;
+                } else {
+                    this.actionSetGlobalMessage(res.data.msg);
+                }
             }).catch(error => {
-                console.log(error)
+                this.tipMsg = `${error.response.data.msg}`;
             })
         },
         // 轉讓額度設定
         getRechargeConfig() {
-            axios({
+            return axios({
                 method: 'get',
                 url: '/api/v1/c/recharge/config'
             }).then(res => {
@@ -133,7 +158,7 @@ export default {
                     this.actionSetGlobalMessage(res.data.msg);
                 }
             }).catch(error => {
-                console.log(error)
+                this.tipMsg = `${error.response.data.msg}`;
             })
         },
         // 獲取驗證碼
@@ -179,11 +204,40 @@ export default {
             })
         },
         sendRecharge() {
-            if (!isVerifyForm || !isSendRecharge) {
+            if (!this.isVerifyForm || this.isSendRecharge) {
                 return;
             }
+            this.tipMsg = "";
             this.isSendRecharge = true;
 
+            // 客制錯誤訊息
+            const setErrorCode = (data) => {
+                const code = data.code;
+                const msg = data.msg;
+                switch (code) {
+                    case "C650001":
+                    case "C650008":
+                    case "C650009":
+                        this.errorMessage.target_username = msg;
+                        break;
+                    case "C650004":
+                    case "C650005":
+                    case "C650006":
+                    case "C650007":
+                        this.errorMessage.amount = msg;
+                        break;
+                    case "C650011":
+                        this.errorMessage.phone = msg;
+                        break;
+                    case "C650012":
+                    case "C650013":
+                        this.errorMessage.keyring = msg;
+                        break;
+                    default:
+                        this.tipMsg = msg;
+                        break;
+                }
+            }
             axios({
                 method: 'post',
                 url: '/api/v1/c/recharge',
@@ -194,9 +248,9 @@ export default {
                 }
             }).then(res => {
                 if (res && res.data && res.data.result === "ok") {
-                    this.actionSetGlobalMessage("转让成功");
+                    this.actionSetGlobalMessage({ msg: "转让成功" });
                 } else {
-                    this.tipMsg = `${res.data.msg}`;
+                    setErrorCode(res.data);
                 }
 
                 this.actionSetUserdata(true);
@@ -204,11 +258,38 @@ export default {
                     this.isSendRecharge = false;
                 }, 1500)
             }).catch(error => {
-                this.tipMsg = `${error.response.data.msg}`;
+                setErrorCode(error.response.data);
                 setTimeout(() => {
                     this.isSendRecharge = false;
                 }, 1500)
             })
+        },
+        getRechargeRecoard() {
+            return axios({
+                method: 'get',
+                url: '/api/v1/c/cash/entry',
+                params: {
+                    start_at: Vue.moment(this.startTime).format('YYYY-MM-DD 00:00:00-04:00'),
+                    end_at: Vue.moment(this.endTime).format('YYYY-MM-DD 23:59:59-04:00'),
+                    category: "ingroup_transfer",
+                    firstResult: 0, // 每頁起始筆數
+                    // maxResults: 20, // 每頁顯示幾筆
+                }
+            }).then(res => {
+                if (res && res.data && res.data.result === "ok") {
+                    this.rechargeRecoard = res.data.ret;
+                } else {
+                    this.actionSetGlobalMessage({ msg: res.data.msg });
+                }
+            }).catch(error => {
+                this.actionSetGlobalMessage({ msg: error.response.data.msg });
+            })
+        },
+        showDetail(item) {
+            this.detailRecoard = item;
+        },
+        closeDetail() {
+            this.detailRecoard = null;
         }
     }
 };

@@ -58,7 +58,8 @@ export default {
         title: this.$text("S_CREDIT_TRANSFER", "额度转让"),
         prev: true,
         onClick: () => {
-          this.$router.back();
+          //   this.$router.back();
+          this.$router.push('/mobile/mcenter')
         },
       },
       isShowBlockTips: false,
@@ -91,7 +92,9 @@ export default {
     },
   },
   created() {
-
+    if (this.$route.query && this.$route.query.tab) {
+      this.setCurrentTab(Number(this.$route.query.tab));
+    }
   },
   methods: {
     ...mapActions([
