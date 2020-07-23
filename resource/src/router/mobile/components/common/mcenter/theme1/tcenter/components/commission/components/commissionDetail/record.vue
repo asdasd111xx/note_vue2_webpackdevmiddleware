@@ -1,6 +1,6 @@
 <template>
   <div :class="$style['record-wrap']">
-    <template v-if="!detailInfo.oauth2">
+    <template v-if="!currentInfo.oauth2">
       <div :class="$style['level-info']">
         <div
           :class="$style['card']"
@@ -24,6 +24,7 @@
           </div>
         </div>
       </div>
+
       <div class="main-wrap">
         <template v-if="friendsList.length">
           <table :class="$style['main-table']">
@@ -87,6 +88,7 @@
                       height="10"
                     />
                   </span>
+
                   <span v-else>
                     <icon name="long-arrow-alt-up" width="5" height="10" />
                     <icon name="long-arrow-alt-down" width="5" height="10" />
@@ -98,6 +100,7 @@
                 </th>
               </tr>
             </thead>
+
             <tbody>
               <tr v-for="(info, index) in controlData" :key="`list-${info.id}`">
                 <td>{{ index + 1 }}</td>
@@ -111,6 +114,7 @@
               </tr>
             </tbody>
           </table>
+
           <infinite-loading
             v-if="showInfinite"
             ref="infiniteLoading"
@@ -120,6 +124,7 @@
             <span slot="no-results" />
           </infinite-loading>
         </template>
+
         <template v-else>
           <div :class="$style['no-data']">
             {{ $text("S_NO_DATA_TPL") }}
@@ -169,6 +174,7 @@
                 {{ $text("S_PERSON", "人") }}
               </div>
             </div>
+
             <div :class="[$style.detail, 'clearfix']">
               <div :class="$style.text">
                 {{ $text("S_VALID_BET", "有效投注") }}
@@ -177,6 +183,7 @@
                 {{ detailList.valid_bet }}
               </div>
             </div>
+
             <div :class="[$style.detail, 'clearfix']">
               <div :class="$style.text">
                 {{ $text("S_GAME_LOSS", "游戏盈亏") }}
@@ -190,6 +197,7 @@
                 {{ detailList.profit }}
               </div>
             </div>
+
             <div :class="[$style.detail, 'clearfix']">
               <div :class="$style.text">
                 {{ $text("S_SENT_RAKEBACK", "已派返水") }}
@@ -198,6 +206,7 @@
                 {{ detailList.dispatched_rebate }}
               </div>
             </div>
+
             <div :class="[$style.detail, 'clearfix']">
               <div :class="$style.text">
                 {{ $text("S_SENT_PROMOTIONS", "已派优惠") }}
@@ -206,6 +215,7 @@
                 {{ detailList.dispatched_offer }}
               </div>
             </div>
+
             <div :class="[$style.detail, 'clearfix']">
               <div :class="$style.text">
                 {{ $text("S_MEM_DEPOSIT", "会员入款") }}
@@ -214,6 +224,7 @@
                 {{ detailList.deposit }}
               </div>
             </div>
+
             <div :class="[$style.detail, 'clearfix']">
               <div :class="$style.text">
                 {{ $text("S_MEM_WITHDRAW", "会员出款") }}
@@ -222,6 +233,7 @@
                 {{ detailList.withdraw }}
               </div>
             </div>
+
             <div :class="[$style.detail, 'clearfix']">
               <div :class="$style.text">
                 {{ $text("S_PLATFORM_COST", "平台费") }}
@@ -230,6 +242,7 @@
                 {{ detailList.vendor_fee }}
               </div>
             </div>
+
             <div
               v-if="detailList.shift_amount"
               :class="[$style.detail, 'clearfix']"
@@ -241,6 +254,7 @@
                 {{ $text("S_HAVE", "有") }}
               </div>
             </div>
+
             <div :class="$style.tips">
               如需帮助，请<span
                 :class="$style['service-btn']"
@@ -248,6 +262,7 @@
                 >联系客服</span
               >
             </div>
+
           </div>
         </div>
       </div>

@@ -79,6 +79,10 @@ export default {
     showNoData: {
       type: Boolean,
       required: true
+    },
+    currentInfo: {
+      type: Object | null,
+      required: true
     }
   },
   data() {
@@ -91,27 +95,11 @@ export default {
       if (info.show_detail) {
         this.setTabState(false);
         this.setHeaderTitle(info.period);
+        this.$emit("update:currentInfo", info);
         this.$router.push({
-          path: "/mobile/mcenter/tcenter/commission/detail",
-          query: { period: info.period }
+          path: "/mobile/mcenter/tcenter/commission/detail"
         });
       }
-
-      // if (info.show_detail) {
-      //   this.setTabState(false);
-      //   this.setHeaderTitle(info.period);
-      //   this.$router.push("/mobile/mcenter/tcenter/commission/detail");
-      //   return;
-      // }
-
-      // if (this.displayDetail.includes(info.id)) {
-      //   this.displayDetail = [
-      //     ...this.displayDetail.filter(value => value !== info.id)
-      //   ];
-      //   return;
-      // }
-
-      // this.displayDetail = [...this.displayDetail, info.id];
     },
     typeText(type) {
       switch (type) {

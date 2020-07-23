@@ -19,7 +19,9 @@
     </div>
 
     <div :class="$style['detail-container']">
-      <component :is="currentTemplate" />
+      <!-- <component :is="currentTemplate" /> -->
+      <assign v-if="currentTemplate === 'assign'" :currentInfo="currentInfo" />
+      <record v-if="currentTemplate === 'record'" :currentInfo="currentInfo" />
     </div>
   </div>
 </template>
@@ -33,6 +35,12 @@ export default {
   components: {
     assign,
     record
+  },
+  props: {
+    currentInfo: {
+      type: Object,
+      required: true
+    }
   },
   data() {
     return {

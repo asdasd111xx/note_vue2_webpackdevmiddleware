@@ -64,6 +64,12 @@ export default {
   components: {
     InfiniteLoading
   },
+  props: {
+    currentInfo: {
+      type: Object | null,
+      required: true
+    }
+  },
   data() {
     return {
       sort: "",
@@ -102,11 +108,8 @@ export default {
         (item, index) => index < this.maxResults * this.showPage
       );
     },
-    getPeriod() {
-      return this.$route.query.period;
-    },
     getDate() {
-      let period = String(this.$route.query.period);
+      let period = String(this.currentInfo.period);
       let yyyy = period.slice(0, 4);
       let mm = period.slice(4, 6);
       let dd = period.slice(6, 8);
