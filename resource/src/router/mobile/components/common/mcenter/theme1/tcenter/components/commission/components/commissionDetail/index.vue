@@ -1,6 +1,6 @@
 <template>
   <div :class="$style['commission-detail-wrap']">
-    <div :class="$style['tab-wrap']">
+    <div v-if="!currentInfo.oauth2" :class="$style['tab-wrap']">
       <div
         v-for="(item, index) in tabItem"
         :key="`tab-${item.key}`"
@@ -18,11 +18,8 @@
       />
     </div>
 
-    <div :class="$style['detail-container']">
-      <!-- <component :is="currentTemplate" /> -->
-      <assign v-if="currentTemplate === 'assign'" :currentInfo="currentInfo" />
-      <record v-if="currentTemplate === 'record'" :currentInfo="currentInfo" />
-    </div>
+    <assign v-if="currentTemplate === 'assign'" :currentInfo="currentInfo" />
+    <record v-if="currentTemplate === 'record'" :currentInfo="currentInfo" />
   </div>
 </template>
 
@@ -63,6 +60,13 @@ export default {
           text: this.$text("S_RECORD_DETAIL", "统计详情")
         }
       ];
+    }
+  },
+  created() {
+    //　第三方
+    if (this.currentInfo.oauth2) {
+      this.currentTemplate = "record";
+      return;
     }
   },
   methods: {
@@ -119,8 +123,5 @@ export default {
   background: #be9e7f;
   // left: calc(50% / 2 - 20px);
   transition: left 0.31s;
-}
-
-.detail-container {
 }
 </style>
