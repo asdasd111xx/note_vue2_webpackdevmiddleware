@@ -1,5 +1,5 @@
 <template>
-  <div slot="content" :class="['clearfix']">
+  <div :class="['clearfix']">
     <!-- 一件回收 -->
     <balance-back />
 
@@ -12,16 +12,21 @@
       </div>
 
       <template v-for="item in inputInfo">
-        <div v-if="errorMessage[item.key]" :class="[$style['form-tips']]">
+        <!-- 各欄位錯誤訊息 -->
+        <div
+          v-if="errorMessage[item.key] && item.key !== 'keyring'"
+          :class="[$style['form-tips']]"
+        >
           <div>
             {{ errorMessage[item.key] }}
           </div>
         </div>
+
         <div
           :key="item.key"
           :class="[
             $style['form-content'],
-            { [$style['keyring']]: item.key === 'keyring' }
+            { [$style['keyring-content']]: item.key === 'keyring' }
           ]"
         >
           <template v-if="item.key === 'target_username'">
@@ -31,7 +36,7 @@
             <div :class="$style['form-input']">
               <input
                 v-model="formData[item.key]"
-                @input="verification(item)"
+                @blur="verification(item)"
                 :placeholder="item.placeholder"
                 type="text"
               />
@@ -40,12 +45,20 @@
           <template v-else-if="item.key === 'keyring'">
             <div :class="[$style['keyring-title']]">
               {{ item.title }}
+
+              &nbsp; &nbsp;
+              <span
+                v-if="errorMessage['keyring']"
+                :class="[$style['keyring-tips']]"
+              >
+                {{ errorMessage["keyring"] }}
+              </span>
             </div>
             <div :class="[$style['keyring-input']]">
               <input
                 v-model="formData.keyring"
                 :placeholder="item.placeholder"
-                @input="verification(inputInfo[3])"
+                @blur="verification(inputInfo[3])"
                 :maxlength="item.maxlength"
                 type="number"
               />
@@ -69,7 +82,7 @@
             <div :class="$style['form-input']">
               <input
                 v-model="formData[item.key]"
-                @input="verification(item)"
+                @blur="verification(item)"
                 :placeholder="item.placeholder"
                 type="number"
               />
@@ -142,7 +155,6 @@ export default {
         return this.captcha = value
       }
     },
-
   },
   created() {
     this.getRechargeBalance();
@@ -155,8 +167,6 @@ export default {
   },
   methods: {
     ...mapActions([
-      "actionSetUserBalance",
-      "actionSetUserdata",
       'actionSetGlobalMessage'
     ]),
     showCaptcha() {
@@ -165,7 +175,6 @@ export default {
       }
       this.toggleCaptcha = true;
     },
-
   }
 };
 </script>
@@ -192,6 +201,10 @@ export default {
   position: relative;
 }
 
+.keyring-tips {
+  color: $main_error_color1;
+}
+
 .form-tips {
   padding: 0 13px;
   background-color: #fefffe;
@@ -213,7 +226,7 @@ export default {
   }
 }
 
-.keyring {
+.keyring-content {
   height: auto;
   display: block;
   padding-top: 17px;

@@ -67,7 +67,12 @@
                   $text('S_PLEASE_ENTER_MOBILE_NUMBER', '请输入手机号码')
                 "
                 :class="$style.input"
-                @input="onInput($event.target.value , 'phone')"
+                @input="
+                  newValue = $event.target.value
+                    .replace(' ', '')
+                    .trim()
+                    .replace(/[^0-9]/g, '')
+                "
                 type="text"
               />
             </div>
@@ -331,12 +336,6 @@ export default {
         }
         this.countdownSec -= 1;
       }, 1000);
-    },
-    onInput(value , key) {
-      if (key === "phone") {
-        const re = /[^0-9]/g;
-        this.newValue = value.replace(re , '');
-      }
     },
     showCaptchaPopup() {
       if (this.newValue === '') {

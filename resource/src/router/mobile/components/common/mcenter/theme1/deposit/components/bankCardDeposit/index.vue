@@ -80,6 +80,24 @@
                 />
               </div>
             </div>
+
+            <!-- 客製額度轉帳入口 -->
+            <div
+              :class="[
+                $style['pay-mode-item-wrap'],
+                'clearfix',
+                $style['credit-trans']
+              ]"
+            >
+              <div
+                :class="[$style['pay-mode-item']]"
+                @click="handleCreditTrans"
+              >
+                <div :class="$style['pay-sub-title']">代收代付</div>
+                <div :class="$style['pay-main-title']">返利1%+</div>
+                <div :class="$style['pay-main-title']">代理分红</div>
+              </div>
+            </div>
           </div>
 
           <!-- 選擇銀行 or 選擇點卡 -->
@@ -729,7 +747,7 @@ export default {
   watch: {
     //   channel
     passRoad() {
-      console.log(this.passRoad[0])
+      console.log("passRoad", this.passRoad[0])
     },
     getPassRoadOrAi() {
       if (this.getPassRoadOrAi.amounts && this.getPassRoadOrAi.amounts.length > 0) {
@@ -740,6 +758,11 @@ export default {
     curPayInfo() {
       if (this.curPayInfo.payment_method_name === '代客充值') {
         this.checkSuccess = true;
+      }
+      console.log(this.curPayInfo.banks)
+      console.log(this.paySelectData['chagneBank'].allData[0])
+      if (this.curPayInfo.banks.length === 1 && this.paySelectData['chagneBank']) {
+        this.changeSelectValue(this.paySelectData['chagneBank'].allData[0]);
       }
     },
     isSelectValue(value) {
@@ -980,6 +1003,9 @@ export default {
     ...mapActions([
       'actionSetUserBalance'
     ]),
+    handleCreditTrans() {
+      this.$router.push('/mobile/mcenter/creditTrans?tab=0');
+    },
     verificationName() {
       /* ---------------------------
          全型數字：[\uFF10-\uFF19]

@@ -78,10 +78,12 @@ export default ({ linkType = 'nolink', linkTo = '', linkItem = '' }) => {
 
         // 在線客服
 
-        if (linkTo === 'service') {
-            let url = store.state.webInfo.on_service_url.replace('gid=default', 'gid=yb04')
-                .replace('gid=yb01', 'gid=yb04')
-
+        if (linkTo.includes('service')) {
+            let url = store.state.webInfo.on_service_url;
+            if (linkTo === "service2") {
+                url = store.state.webInfo.on_service_url.replace('gid=default', 'gid=yb04')
+                    .replace('gid=yb01', 'gid=yb04');
+            }
             let w =
                 window.open(
                     url,

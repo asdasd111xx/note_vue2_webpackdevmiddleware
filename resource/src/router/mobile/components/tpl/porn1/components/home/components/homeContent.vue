@@ -170,7 +170,9 @@ export default {
     ...mapGetters({
       siteConfig: 'getSiteConfig',
       loginStatus: 'getLoginStatus',
-      memInfo: 'getMemInfo'
+      memInfo: 'getMemInfo',
+      rechargeConfig: 'getRechargeConfig',
+      hasBank: 'getHasBank'
     }),
     isAdult() {
       if (localStorage.getItem('content_rating')) {
@@ -466,6 +468,15 @@ export default {
         // });
       } else if (path === 'grade') {
         this.$router.push('/mobile/mcenter/accountVip');
+        return;
+      } else if (path === 'creditTrans') {
+        if (!this.hasBank) {
+          this.actionSetGlobalMessage({ code: 'C50099', origin: 'home', type: 'bindcard' });
+        } else if (this.rechargeConfig && !this.rechargeConfig.enable) {
+          this.actionSetGlobalMessage({ msg: '额度转让升级中' });
+        } else {
+          this.$router.push('/mobile/mcenter/creditTrans');
+        }
         return;
       } else {
         this.$router.push(`/mobile/mcenter/${path}`);

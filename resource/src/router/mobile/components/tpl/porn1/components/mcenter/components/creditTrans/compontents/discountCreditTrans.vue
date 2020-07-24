@@ -1,40 +1,34 @@
 <template>
-  <div slot="content" :class="['clearfix']">
-    <div v-for="(item, index) in discountList" :class="$style['discount-item']">
-      <img :src="$getCdnPath(item.imgSrc)" :alt="item.key" />
+  <div :class="['clearfix']">
+    <div v-for="(item, index) in imgList" :class="$style['discount-item']">
+      <img :src="$getCdnPath(item)" :key="index" />
     </div>
   </div>
 </template>
 
 <script>
 import { mapGetters, mapActions } from "vuex";
+import yaboRequest from '@/api/yaboRequest';
 
 export default {
-  components: {},
   data() {
     return {
-      discountList: [
-        {
-          key: "discount-1",
-          imgSrc: "/static/image/_new/mcenter/creditTrans/promotion.png"
-        },
-      ]
+      imgList: []
     };
   },
   computed: {
     ...mapGetters({
-      memInfo: "getMemInfo"
-    })
+      siteConfig: "getSiteConfig"
+    }),
   },
-  created() { },
-  methods: {
-    ...mapActions([
-      "actionSetUserBalance",
-      "actionSetUserdata",
-      "actionSetGlobalMessage"
-    ]),
-    setCurrentTab(index) { }
-  }
+  mounted() {
+    yaboRequest({
+      method: 'get',
+      url: this.siteConfig.YABO_API_DOMAIN + '/System/quotaad',
+    }).then((res) => {
+      this.imgList = res.data;
+    });
+  },
 };
 </script>
 <style lang="scss" src="../css/index.module.scss" module></style>

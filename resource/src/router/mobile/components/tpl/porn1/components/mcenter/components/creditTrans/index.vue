@@ -58,7 +58,8 @@ export default {
         title: this.$text("S_CREDIT_TRANSFER", "额度转让"),
         prev: true,
         onClick: () => {
-          this.$router.back();
+          //   this.$router.back();
+          this.$router.push('/mobile/mcenter')
         },
       },
       isShowBlockTips: false,
@@ -71,7 +72,8 @@ export default {
   },
   computed: {
     ...mapGetters({
-      memInfo: "getMemInfo"
+      memInfo: "getMemInfo",
+      rechargeConfig: "getRechargeConfig"
     }),
     tabItem() {
       return [
@@ -91,7 +93,9 @@ export default {
     },
   },
   created() {
-
+    if (this.$route.query && this.$route.query.tab) {
+      this.setCurrentTab(Number(this.$route.query.tab));
+    }
   },
   methods: {
     ...mapActions([
@@ -100,19 +104,23 @@ export default {
       'actionSetGlobalMessage'
     ]),
     setCurrentTab(index) {
-      this.currentTab = index;
       switch (index) {
         default:
         case 0:
           this.currentTemplate = "discount-credit-trans";
-          return;
+          break;
         case 1:
+          if (this.rechargeConfig && !this.rechargeConfig.enable) {
+            this.actionSetGlobalMessage({ msg: '额度转让升级中' });
+            return;
+          }
           this.currentTemplate = "transfer-credit-trans";
-          return;
+          break;
         case 2:
           this.currentTemplate = "recoard-credit-trans";
-          return;
+          break;
       }
+      this.currentTab = index;
     },
     closeTips() {
       this.isShowBlockTips = false;

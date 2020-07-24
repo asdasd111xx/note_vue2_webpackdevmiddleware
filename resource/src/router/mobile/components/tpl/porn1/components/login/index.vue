@@ -338,6 +338,10 @@ export default {
       }
 
       switch (this.memInfo.config.login_captcha_type) {
+        case 0:
+          this.loginCheck(undefined, undefined, this.errorCallBack);
+          break;
+
         case 1:
           // 數字驗證
           this.loginCheck(undefined, undefined, this.errorCallBack);

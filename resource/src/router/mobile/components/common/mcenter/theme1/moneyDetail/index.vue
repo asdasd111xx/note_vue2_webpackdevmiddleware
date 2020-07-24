@@ -1,107 +1,118 @@
 <template>
-  <div class="money-detail-wrap">
-    <div
-      v-if="$route.params.page !== 'detail' || !detailInfo"
-      :class="[$style['top-link'], 'clearfix']"
-    >
-      <div :class="$style['link-wrap']" @click="changeCondition('category')">
-        <div>{{ currentCategory.text }}</div>
-        <span
-          :class="{ [$style['arrow-top']]: showCondition === 'category' }"
-        />
+  <div :class="$style['money-detail-wrap']">
+    <template v-if="pageType !== 'ingroup_transfer'">
+      <div
+        v-if="$route.params.page !== 'detail' || !detailInfo"
+        :class="[$style['top-link'], 'clearfix']"
+      >
+        <div :class="$style['link-wrap']" @click="changeCondition('category')">
+          <div>{{ currentCategory.text }}</div>
+          <span
+            :class="{ [$style['arrow-top']]: showCondition === 'category' }"
+          />
+        </div>
+        <div
+          :class="[
+            $style['link-wrap'],
+            { [$style['has-date']]: currentDate.key === 'custom' }
+          ]"
+          @click="changeCondition('date')"
+        >
+          <div v-if="currentDate.key === 'custom'">
+            {{ startTime | dateFormat }}<br />{{ endTime | dateFormat }}
+          </div>
+          <div v-else>{{ currentDate.text }}</div>
+          <span :class="{ [$style['arrow-top']]: showCondition === 'date' }" />
+        </div>
       </div>
       <div
-        :class="[
-          $style['link-wrap'],
-          { [$style['has-date']]: currentDate.key === 'custom' }
-        ]"
-        @click="changeCondition('date')"
+        v-if="showCondition === 'category'"
+        :class="[$style['record-select']]"
       >
-        <div v-if="currentDate.key === 'custom'">
-          {{ startTime | dateFormat }}<br />{{ endTime | dateFormat }}
-        </div>
-        <div v-else>{{ currentDate.text }}</div>
-        <span :class="{ [$style['arrow-top']]: showCondition === 'date' }" />
-      </div>
-    </div>
-    <div v-if="showCondition === 'category'" :class="[$style['record-select']]">
-      <div :class="[$style['select-wrap'], 'clearfix']">
-        <div
-          v-for="option in categoryOptions"
-          :key="option.key"
-          :class="[
-            $style.select,
-            { [$style.active]: currentCategory.key === option.key }
-          ]"
-          @click="setCategory(option)"
-        >
-          <span>{{ option.text }}</span>
-        </div>
-      </div>
-    </div>
-    <div v-if="showCondition === 'date'" :class="[$style['record-select']]">
-      <div :class="[$style['select-wrap'], 'clearfix']">
-        <div :class="$style['select-tip']">
-          *当前系统支持查询最近30日的交易记录
-        </div>
-        <div
-          v-for="option in dateOptions"
-          :key="option.key"
-          :class="[
-            $style['select-time'],
-            { [$style.active]: currentDate.key === option.key }
-          ]"
-          @click="setDate(option)"
-        >
-          <span>{{ option.text }}</span>
-        </div>
-      </div>
-      <div v-if="showDatePicker" :class="$style['date-wrap']">
-        <div
-          :class="[$style['picker-wrap'], 'clearfix']"
-          @click="changeDatePicker('start')"
-        >
-          <div :class="$style['date-text']">开始日期</div>
-          <div :class="$style['select-date']">{{ startTime | dateFormat }}</div>
-          <div :class="$style['icon-arrow']">
-            <icon name="chevron-right" width="10" height="16" />
+        <div :class="[$style['select-wrap'], 'clearfix']">
+          <div
+            v-for="option in categoryOptions"
+            :key="option.key"
+            :class="[
+              $style.select,
+              { [$style.active]: currentCategory.key === option.key }
+            ]"
+            @click="setCategory(option)"
+          >
+            <span>{{ option.text }}</span>
           </div>
         </div>
-        <date-picker
-          v-if="currentDatePicker === 'start'"
-          :key="'start-date-picker'"
-          :date.sync="startTime"
-          :min-limit="limitTime"
-          :max-limit="estToday"
-        />
-        <div
-          :class="[$style['picker-wrap'], 'clearfix']"
-          @click="changeDatePicker('end')"
-        >
-          <div :class="$style['date-text']">结束日期</div>
-          <div :class="$style['select-date']">{{ endTime | dateFormat }}</div>
-          <div :class="$style['icon-arrow']">
-            <icon name="chevron-right" width="10" height="16" />
+      </div>
+      <div v-if="showCondition === 'date'" :class="[$style['record-select']]">
+        <div :class="[$style['select-wrap'], 'clearfix']">
+          <div :class="$style['select-tip']">
+            *当前系统支持查询最近30日的交易记录
+          </div>
+          <div
+            v-for="option in dateOptions"
+            :key="option.key"
+            :class="[
+              $style['select-time'],
+              { [$style.active]: currentDate.key === option.key }
+            ]"
+            @click="setDate(option)"
+          >
+            <span>{{ option.text }}</span>
           </div>
         </div>
-        <date-picker
-          v-if="currentDatePicker === 'end'"
-          :key="'end-date-picker'"
-          :date.sync="endTime"
-          :min-limit="limitTime"
-          :max-limit="estToday"
-        />
-        <div :class="['picker-button-wrap', 'clearfix']">
-          <div :class="$style.cancel" @click="onCancel">取消</div>
-          <div :class="$style.confirm" @click="onConfirm">确定</div>
-        </div>
-        <!-- <div v-if="startTime.valueOf() > endTime.valueOf()" :class="[$style['date-tip']] ">
+        <div v-if="showDatePicker" :class="$style['date-wrap']">
+          <div
+            :class="[$style['picker-wrap'], 'clearfix']"
+            @click="changeDatePicker('start')"
+          >
+            <div :class="$style['date-text']">开始日期</div>
+            <div :class="$style['select-date']">
+              {{ startTime | dateFormat }}
+            </div>
+            <div :class="$style['icon-arrow']">
+              <icon name="chevron-right" width="10" height="16" />
+            </div>
+          </div>
+          <date-picker
+            v-if="currentDatePicker === 'start'"
+            :key="'start-date-picker'"
+            :date.sync="startTime"
+            :min-limit="limitTime"
+            :max-limit="estToday"
+          />
+          <div
+            :class="[$style['picker-wrap'], 'clearfix']"
+            @click="changeDatePicker('end')"
+          >
+            <div :class="$style['date-text']">结束日期</div>
+            <div :class="$style['select-date']">{{ endTime | dateFormat }}</div>
+            <div :class="$style['icon-arrow']">
+              <icon name="chevron-right" width="10" height="16" />
+            </div>
+          </div>
+          <date-picker
+            v-if="currentDatePicker === 'end'"
+            :key="'end-date-picker'"
+            :date.sync="endTime"
+            :min-limit="limitTime"
+            :max-limit="estToday"
+          />
+          <div :class="['picker-button-wrap', 'clearfix']">
+            <div :class="$style.cancel" @click="onCancel">取消</div>
+            <div :class="$style.confirm" @click="onConfirm">确定</div>
+          </div>
+          <!-- <div v-if="startTime.valueOf() > endTime.valueOf()" :class="[$style['date-tip']] ">
                   开始日期不能大于结束日期
                 </div> -->
+        </div>
       </div>
-    </div>
+    </template>
     <detail-info
-      v-if="$route.params.page === 'detail' && detailInfo"
+      v-if="
+        $route.params.page === 'detail' &&
+          detailInfo &&
+          pageType !== 'ingroup_transfer'
+      "
       :current-category="currentCategory"
       :opcode-list="opcodeList"
       :detail-info.sync="detailInfo"
@@ -112,16 +123,19 @@
       :opcode-list="opcodeList"
       :detail-list="detailList"
       :detail-info.sync="detailInfo"
+      :page-type="pageType"
     />
     <!-- 捲動加載 -->
     <infinite-loading
-      v-if="showInfinite"
+      v-if="showInfinite && pageType !== 'ingroup_transfer'"
       ref="infiniteLoading"
       @infinite="infiniteHandler"
     >
       <span slot="no-more" />
       <span slot="no-results" />
     </infinite-loading>
+
+    <page-loading :is-show="isLoading" />
   </div>
 </template>
 
@@ -134,15 +148,28 @@ import mcenter from '@/api/mcenter';
 import EST from '@/lib/EST';
 
 export default {
+  props: {
+    pageType: {
+      default: ''
+    }
+  },
   components: {
     InfiniteLoading,
     detailList: () => import(/* webpackChunkName: 'detailList' */ './components/detailList'),
     detailInfo: () => import(/* webpackChunkName: 'detailInfo' */ './components/detailInfo'),
-    datePicker: () => import(/* webpackChunkName: 'datePicker' */ '../../../datePicker/index')
+    datePicker: () => import(/* webpackChunkName: 'datePicker' */ '../../../datePicker/index'),
+    pageLoading: () => import(/* webpackChunkName: 'pageLoading' */ '@/router/mobile/components/tpl/porn1/components/common/new/pageLoading'),
   },
   filters: {
     dateFormat(date) {
       return Vue.moment(date).format('YYYY-MM-DD');
+    }
+  },
+  watch: {
+    detailInfo(val) {
+      if (this.pageType === 'ingroup_transfer') {
+        this.$emit("showDetail", val);
+      }
     }
   },
   data() {
@@ -169,7 +196,8 @@ export default {
       firstResult: 0, // 每頁起始筆數
       maxResults: 20, // 每頁顯示幾筆
       pageNow: 1, // 當前頁
-      pageAll: 1 // 總頁數
+      pageAll: 1, // 總頁數
+      isLoading: true,
     };
   },
   computed: {
@@ -180,7 +208,8 @@ export default {
         { key: 'withdraw', text: '提现' },
         { key: 'bonus', text: '红利' },
         { key: 'manual', text: '人工' },
-        { key: 'wage', text: '返利' }
+        { key: 'wage', text: '返利' },
+        { key: 'ingroup_transfer', text: '转让' }
       ];
     },
     dateOptions() {
@@ -196,6 +225,7 @@ export default {
   created() {
     if (this.$route.params.page === 'detail' && !this.detailInfo) {
       this.$router.push('/mobile/mcenter/moneyDetail');
+      return;
     }
 
     common.opcode({
@@ -206,12 +236,18 @@ export default {
         this.opcodeList = ret;
       }
     });
+
+    // 共用額度轉移紀錄
+    if (this.pageType === 'ingroup_transfer') {
+      this.setDefaultCreditTrans();
+    }
   },
   methods: {
     ...mapActions([
       'actionSetGlobalMessage'
     ]),
     getData() {
+      this.isLoading = true;
       return mcenter.moneyDetail({
         params: {
           start_at: Vue.moment(this.startTime).format('YYYY-MM-DD 00:00:00-04:00'),
@@ -222,6 +258,8 @@ export default {
           max_results: this.maxResults
         },
         success: ({ result, pagination, ret }) => {
+          this.isLoading = false;
+
           if (result !== 'ok' || ret.length === 0) {
             return;
           }
@@ -243,9 +281,16 @@ export default {
           this.pageAll = Math.ceil(+pagination.total / this.maxResults);
         },
         fail: (res) => {
+          this.isLoading = false;
           this.actionSetGlobalMessage({ msg: `${res.data.msg}` });
         }
       });
+    },
+    setDefaultCreditTrans() {
+      this.type = ["ingroup_transfer"];
+      this.startTime = new Date(Vue.moment(this.estToday).add(-29, 'days'));
+      this.endTime = new Date(Vue.moment(this.estToday));
+      this.setCategory({ key: 'ingroup_transfer', text: '转让' });
     },
     setCategory(value) {
       this.currentCategory = value;
@@ -324,6 +369,7 @@ export default {
 
       this.changeCondition('');
       this.changeDatePicker('');
+      console.log('onConfirm')
       this.getData();
     },
     /**
@@ -333,7 +379,7 @@ export default {
      */
     infiniteHandler($state) {
       // 防止在切換類別的時候馬上觸發捲動加載，造成有遊戲重複出現的情況
-      if (this.isReceive) {
+      if (this.isReceive && this.pageType === "ingroup_transfer") {
         return;
       }
 
