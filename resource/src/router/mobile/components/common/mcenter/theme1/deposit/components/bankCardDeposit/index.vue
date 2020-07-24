@@ -80,6 +80,24 @@
                 />
               </div>
             </div>
+
+            <!-- 客製額度轉帳入口 -->
+            <div
+              :class="[
+                $style['pay-mode-item-wrap'],
+                'clearfix',
+                $style['credit-trans']
+              ]"
+            >
+              <div
+                :class="[$style['pay-mode-item']]"
+                @click="handleCreditTrans"
+              >
+                <div :class="$style['pay-sub-title']">代收代付</div>
+                <div :class="$style['pay-main-title']">返利1%+</div>
+                <div :class="$style['pay-main-title']">代理分红</div>
+              </div>
+            </div>
           </div>
 
           <!-- 選擇銀行 or 選擇點卡 -->
@@ -980,6 +998,9 @@ export default {
     ...mapActions([
       'actionSetUserBalance'
     ]),
+    handleCreditTrans() {
+      this.$router.push('/mobile/mcenter/creditTrans?tab=0');
+    },
     verificationName() {
       /* ---------------------------
          全型數字：[\uFF10-\uFF19]

@@ -74,6 +74,10 @@
 
 .pay-mode-item-wrap {
     margin-top: 5px;
+
+    &.credit-trans {
+        margin-top: unset;
+    }
 }
 
 .pay-mode-item {
