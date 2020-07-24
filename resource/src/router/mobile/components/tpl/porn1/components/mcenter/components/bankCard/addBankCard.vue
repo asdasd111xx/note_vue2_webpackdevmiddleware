@@ -425,7 +425,7 @@ export default {
     },
     checkData(value, key) {
       if (key === "account_name") {
-        const re = /[^\u3000\u3400-\u4DBF\u4E00-\u9FFF.]/g;
+        const re = /[^\u3000\u3400-\u4DBF\u4E00-\u9FFF.．·]/g;
         this.formData.account_name = value.replace(re, '')
       }
 

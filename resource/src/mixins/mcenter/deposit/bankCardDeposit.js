@@ -596,7 +596,7 @@ export default {
         },
         submitDataInput(data, objKey) {
             if (objKey === 'depositName') {
-                const re = /[^\u3000\u3400-\u4DBF\u4E00-\u9FFF.]/g;
+                const re = /[^\u3000\u3400-\u4DBF\u4E00-\u9FFF.．·]/g;
                 this.speedField.depositName = this.speedField.depositName.replace(re, '')
             }
 
