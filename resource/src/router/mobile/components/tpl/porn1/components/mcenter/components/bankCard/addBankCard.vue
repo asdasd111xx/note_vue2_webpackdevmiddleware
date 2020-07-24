@@ -100,10 +100,15 @@
           <div :class="$style['input-wrap']">
             <input
               v-model="formData.phone"
-              type="number"
+              type="text"
               placeholder="11位手机号码"
               maxlength="36"
-              @input="checkData($event.target.value, 'phone')"
+              @input="
+                formData.phone = $event.target.value
+                  .replace(' ', '')
+                  .trim()
+                  .replace(/[^0-9]/g, '')
+              "
             />
           </div>
         </div>
@@ -434,10 +439,10 @@ export default {
         this.formData.branch = value.replace(re, '')
       }
 
-      if (key === "phone") {
-        const re = /[^0-9]/g;
-        this.formData.phone = value.replace(re, '');
-      }
+      // if (key === "phone") {
+      //   const re = /[^0-9]/g;
+      //   this.formData.phone = value.replace(re, '');
+      // }
 
       this.NextStepStatus = Object.keys(this.formData).every((key) => {
         if (this.addBankCardStep === 'one') {
