@@ -6,26 +6,29 @@
   >
     <div slot="content" class="content-wrap">
       <div class="information-wrap">
-        <div v-if="!$route.query.pid" :class="[$style['menu-list-wrap'], 'clearfix']">
+        <div
+          v-if="!$route.query.pid"
+          :class="[$style['menu-list-wrap'], 'clearfix']"
+        >
           <div
             v-for="(item, index) in tabItem"
             :class="$style['menu-list']"
             @click="setCurrentTab(index)"
           >
             <div
-                :class="[
-                  $style['menu-title'],
-                  { [$style.active]: currentTemplate === item.key }
-                ]"
-              >
+              :class="[
+                $style['menu-title'],
+                { [$style.active]: currentTemplate === item.key }
+              ]"
+            >
               {{ item.text }}
             </div>
 
             <div
-              v-if="item.hasMsgCount && msgCount"
+              v-if="item.hasMsgCount && memInfo.msgCount"
               :class="$style['menu-tips']"
             >
-              {{ msgCount }}
+              {{ memInfo.msgCount }}
             </div>
           </div>
           <div
@@ -64,12 +67,6 @@ export default {
   },
   created() {
     this.actionSetMcenterMsgCount();
-  },
-  watch: {
-    memInfo() {
-      console.log(this.memInfo.msgCount)
-      this.msgCount = this.memInfo.msgCount;
-    }
   },
   methods: {
     ...mapActions([

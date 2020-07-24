@@ -747,7 +747,7 @@ export default {
   watch: {
     //   channel
     passRoad() {
-      console.log(this.passRoad[0])
+      console.log("passRoad", this.passRoad[0])
     },
     getPassRoadOrAi() {
       if (this.getPassRoadOrAi.amounts && this.getPassRoadOrAi.amounts.length > 0) {
@@ -758,6 +758,11 @@ export default {
     curPayInfo() {
       if (this.curPayInfo.payment_method_name === '代客充值') {
         this.checkSuccess = true;
+      }
+      console.log(this.curPayInfo.banks)
+      console.log(this.paySelectData['chagneBank'].allData[0])
+      if (this.curPayInfo.banks.length === 1 && this.paySelectData['chagneBank']) {
+        this.changeSelectValue(this.paySelectData['chagneBank'].allData[0]);
       }
     },
     isSelectValue(value) {
