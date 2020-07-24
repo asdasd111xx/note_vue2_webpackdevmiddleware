@@ -518,6 +518,10 @@ export default {
          * @param {Object} info - 支付方式資訊
          */
         changePayMode(info, index = null) {
+            if (info.payment_method_id === this.curPayInfo.payment_method_id) {
+                return;
+            }
+
             this.resetStatus();
             this.curPayInfo = info;
 

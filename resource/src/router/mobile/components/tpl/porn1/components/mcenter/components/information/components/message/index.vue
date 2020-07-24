@@ -225,12 +225,6 @@ export default {
             return;
           }
           if (!isSetRead) this.actionSetMcenterMsgCount();
-          if (isLastMsg) {
-            setTimeout(() => {
-              this.actionSetMcenterMsgCount();
-              this.isLoading = false;
-            }, 1500);
-          }
           this.messageData = this.messageData.map((message) => {
             if (message.id === id) {
               return { ...message, read: true };
@@ -251,8 +245,13 @@ export default {
       this.isLoading = true;
       this.messageData.forEach((message, index) => {
         if (index === this.messageData.length - 1) {
-          this.actionSetUserdata(true);
-          this.getContent(message, true, true);
+          setTimeout(() => {
+            this.$nextTick(() => {
+              this.actionSetMcenterMsgCount();
+              this.isLoading = false;
+              window.location.reload();
+            })
+          }, 1000)
           return;
         } else {
           this.getContent(message, true);

@@ -561,7 +561,7 @@
               $style['pay-button'],
               {
                 [$style.disabled]:
-                  (!checkSuccess && isBlockChecked) || nameCheckFail
+                  !checkSuccess || !isBlockChecked || nameCheckFail
               }
             ]"
             :title="$text('S_ENTER_PAY', '立即充值')"
@@ -741,10 +741,11 @@ export default {
       if (this.curPayInfo.payment_method_name === '代客充值') {
         this.checkSuccess = true;
       }
-      console.log(this.curPayInfo.banks)
-      console.log(this.paySelectData['chagneBank'].allData[0])
-      if (this.curPayInfo.banks.length === 1 && this.paySelectData['chagneBank']) {
-        this.changeSelectValue(this.paySelectData['chagneBank'].allData[0]);
+
+      if (this.curPayInfo.banks.length === 1 && this.paySelectData['chagneBank'] && this.paySelectData['chagneBank'].allData) {
+        this.checkSuccess = true;
+        this.paySelectType = "chagneBank"
+        this.changeSelectValue(this.paySelectData['chagneBank'].allData[0].value);
       }
     },
     isSelectValue(value) {
