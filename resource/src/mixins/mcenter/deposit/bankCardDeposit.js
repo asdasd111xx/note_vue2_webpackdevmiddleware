@@ -518,7 +518,8 @@ export default {
          * @param {Object} info - 支付方式資訊
          */
         changePayMode(info, index = null) {
-            if (info.payment_method_id === this.curPayInfo.payment_method_id) {
+            if (info.payment_method_id === this.curPayInfo.payment_method_id &&
+                info.bank_id === this.curPayInfo.bank_id) {
                 return;
             }
 
