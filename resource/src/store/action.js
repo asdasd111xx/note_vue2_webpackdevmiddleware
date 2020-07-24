@@ -611,7 +611,6 @@ export const actionSetUserdata = ({ commit }, forceUpdate = false) => {
         method: 'get',
         url: '/api/v1/c/player/user_bank/list'
     }).then(res => {
-        console.log(res.data.ret.length > 0)
         if (res && res.data && res.data.result === "ok") {
             commit(types.SET_HASBANK, res.data.ret.length > 0);
         }

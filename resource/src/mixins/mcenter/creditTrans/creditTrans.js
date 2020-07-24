@@ -64,6 +64,13 @@ export default {
     created() {
 
     },
+    watch: {
+        rechargeConfig() {
+            if (this.rechargeConfig && !this.rechargeConfig.enable) {
+                this.actionSetGlobalMessage({ msg: '额度转让升级中' });
+            }
+        }
+    },
     methods: {
         ...mapActions([
             "actionSetUserBalance",

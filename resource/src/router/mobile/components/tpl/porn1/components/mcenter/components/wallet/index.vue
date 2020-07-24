@@ -222,6 +222,8 @@ export default {
           onClick: () => {
             if (!this.hasBank) {
               this.actionSetGlobalMessage({ code: 'C50099', origin: 'wallet', type: 'bindcard' });
+            } else if (this.rechargeConfig && !this.rechargeConfig.enable) {
+              this.actionSetGlobalMessage({ msg: '额度转让升级中' });
             } else {
               this.$router.push('/mobile/mcenter/creditTrans');
             }
@@ -243,7 +245,8 @@ export default {
       memInfo: 'getMemInfo',
       gameData: 'getGameData',
       siteConfig: 'getSiteConfig',
-      hasBank: 'getHasBank'
+      hasBank: 'getHasBank',
+      rechargeConfig: 'getRechargeConfig',
     }),
     headerConfig() {
       return {

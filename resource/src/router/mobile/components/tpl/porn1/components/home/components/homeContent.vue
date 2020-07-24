@@ -472,6 +472,8 @@ export default {
       } else if (path === 'creditTrans') {
         if (!this.hasBank) {
           this.actionSetGlobalMessage({ code: 'C50099', origin: 'home', type: 'bindcard' });
+        } else if (this.rechargeConfig && !this.rechargeConfig.enable) {
+          this.actionSetGlobalMessage({ msg: '额度转让升级中' });
         } else {
           this.$router.push('/mobile/mcenter/creditTrans');
         }

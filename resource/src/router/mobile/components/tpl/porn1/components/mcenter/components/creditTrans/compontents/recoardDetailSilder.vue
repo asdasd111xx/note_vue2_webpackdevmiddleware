@@ -7,19 +7,48 @@
           @click="onClose()"
         />
       </div>
-      <span :class="$style['title']"> 交易详情</span>
+      <div :class="$style['title']">交易详情</div>
     </div>
+    <detailInfo
+      v-if="opcodeList"
+      :detail-info="detailInfo"
+      :current-category="{ text: '转让' }"
+      :opcode-list="opcodeList"
+    />
+    <page-loading :is-show="!opcodeList" />
   </div>
 </template>
 
 <script>
 import { mapGetters, mapActions } from "vuex";
+import detailInfo from '@/router/mobile/components/common/mcenter/theme1/moneyDetail/components/detailInfo/';
+import common from '@/api/common';
 
 export default {
+  props: {
+    detailInfo: {
+      type: Object,
+      default: null
+    },
+  },
+  components: {
+    pageLoading: () => import(/* webpackChunkName: 'pageLoading' */ '@/router/mobile/components/tpl/porn1/components/common/new/pageLoading'),
+    detailInfo,
+  },
+  mounted() {
+    common.opcode({
+      success: ({ result, ret }) => {
+        if (result !== 'ok') {
+          return;
+        }
+        this.opcodeList = ret;
+      }
+    });
+  },
   data() {
     return {
       sliderClass: 'slider',
-
+      opcodeList: null
     }
   },
   methods: {

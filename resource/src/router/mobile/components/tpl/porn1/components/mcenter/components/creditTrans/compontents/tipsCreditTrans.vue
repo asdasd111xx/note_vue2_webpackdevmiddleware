@@ -13,7 +13,11 @@
     <div :class="$style['content']">
       <div>●&nbsp;限制代理转让给旗下会员</div>
       <div>●&nbsp;单笔转让不得少于199元</div>
-      <div>●&nbsp;完成提现流水要求，额度转让即赠返利1%</div>
+      <div>
+        ●&nbsp;完成提现流水要求，额度转让即赠返利{{
+          rechargeConfig.recharger_offer_audit_rate || 0
+        }}%
+      </div>
       <div>●&nbsp;未完成提现流水要求，额度转让无返利</div>
       <div
         :class="$style['link']"
@@ -29,6 +33,11 @@
 import { mapGetters, mapActions } from "vuex";
 
 export default {
+  computed: {
+    ...mapGetters({
+      rechargeConfig: 'getRechargeConfig',
+    }),
+  },
   methods: {
     ...mapActions([
       "actionSetUserBalance",

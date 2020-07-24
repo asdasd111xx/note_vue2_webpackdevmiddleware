@@ -19,7 +19,7 @@
 
           <div
             v-if="hasLink"
-            @click="$router.push('/mobile/mcenter/creditTrans')"
+            @click="handleCreditTrans"
             :class="[$style['balance-total-item'], $style['credit-trans-link']]"
           >
             <span> {{ $text("S_CREDIT_TRANSFER", "额度转让") }} </span>
@@ -53,7 +53,24 @@ export default {
   },
   components: {
     balanceTran,
-  }
+  },
+  computed: {
+    ...mapGetters({
+      rechargeConfig: 'getRechargeConfig',
+    }),
+  },
+  methods: {
+    ...mapActions([
+      'actionSetGlobalMessage'
+    ]),
+    handleCreditTrans() {
+      if (this.rechargeConfig && !this.rechargeConfig.enable) {
+        this.actionSetGlobalMessage({ msg: '额度转让升级中' });
+      } else {
+        this.$router.push('/mobile/mcenter/creditTrans');
+      }
+    }
+  },
 };
 </script>
 <style lang="scss" module>
