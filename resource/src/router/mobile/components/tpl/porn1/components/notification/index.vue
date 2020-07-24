@@ -118,7 +118,7 @@ export default {
         case 'C_WS_INBOX':
         case 'C_WS_FEEDBACK_REPLY':
         default:
-          this.$router.push('/mobile/mcenter/information/message');
+          this.$router.push('/mobile/mcenter/information');
           break;
         case 'C_WS_DEPOSIT':
         case 'C_WS_WITHDRAW':

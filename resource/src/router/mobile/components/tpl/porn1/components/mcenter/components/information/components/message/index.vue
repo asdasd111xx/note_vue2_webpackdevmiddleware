@@ -215,7 +215,7 @@ export default {
         }
       });
     },
-    getContent({ id, read }, isSetRead) {
+    getContent({ id, read }, isSetRead, isLastMsg) {
       if (read) {
         return;
       }
@@ -225,6 +225,12 @@ export default {
             return;
           }
           if (!isSetRead) this.actionSetMcenterMsgCount();
+          if (isLastMsg) {
+            setTimeout(() => {
+              this.actionSetMcenterMsgCount();
+              this.isLoading = false;
+            }, 1500);
+          }
           this.messageData = this.messageData.map((message) => {
             if (message.id === id) {
               return { ...message, read: true };
@@ -244,13 +250,12 @@ export default {
       }
       this.isLoading = true;
       this.messageData.forEach((message, index) => {
-        this.getContent(message, true);
         if (index === this.messageData.length - 1) {
-          setTimeout(() => {
-            this.isLoading = false;
-            this.actionSetUserdata(true);
-          }, 2000);
+          this.actionSetUserdata(true);
+          this.getContent(message, true, true);
           return;
+        } else {
+          this.getContent(message, true);
         }
       });
       this.isEditing = false;
