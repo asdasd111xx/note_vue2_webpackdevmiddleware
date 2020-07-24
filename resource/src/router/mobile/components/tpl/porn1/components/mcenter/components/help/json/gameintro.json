@@ -55,8 +55,8 @@
                     "key": 5,
                     "title": "体育投注金额？",
                     "content": [
-                        "1. 单关最低投注金额是：2元。",
-                        "2. 连串过关与复式连串最低金额是2元。"
+                        "1. 单关最低投注金额是：10元。",
+                        "2. 连串过关与复式连串最低金额是0.5元。"
                     ]
                 },
                 {
@@ -362,7 +362,9 @@
                     "content": [
                         "请您通过在线客服或者添加我们在线客服或者添加我们potato公众号，联系我们客服人员，并提供以下信息：",
                         "1.您的鸭博娱乐账号",
-                        "游戏详情，包括：游戏名称、投注编号、金额、时间。"
+                        "游戏详情，包括：游戏名称、投注编号、金额、时间。",
+                        "<span style='width:100% ; text-align: center; margin-right: 0'>鸭博娱乐 Potato公众号二维码</span>",
+                        "<div style='width:200px; height:200px; position: absolute; left: 50%; transform: translateX(-50%);'><img src='/static/image/_new/mcenter/help/help_support_qrcode.png' style='width:100% ; height: 100%'/></div>"
                     ]
                 }
             ]
