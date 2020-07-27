@@ -42,9 +42,9 @@
           </div>
           <div :class="$style['cell']">
             <img
-              :src="$getCdnPath(`/static/image/_new/about/logo_yaboball.png`)"
+              :src="$getCdnPath(`/static/image/_new/about/logo_sigua.png`)"
             />
-            <div>亚博体育</div>
+            <div>丝瓜视频</div>
           </div>
           <div :class="$style['cell']">
             <img
