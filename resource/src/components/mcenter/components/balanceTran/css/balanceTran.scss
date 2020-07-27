@@ -1,0 +1,371 @@
+@import '~@/css/variable.scss';
+
+// 額度轉換
+.bank-balance-tran {
+    padding: 0 5.3%;
+
+    h1 {
+        margin: 0 0 20px;
+        font-size: 18px;
+    }
+
+    p {
+        margin: 0;
+        padding: 0;
+    }
+
+    .main-input {
+        border-radius: 4px;
+        border: 1px solid #E8E8E8;
+        background-color: #FFF;
+        height: 37px;
+        line-height: 37px;
+        color: #646E7D;
+        font-family: sans-serif;
+    }
+
+    .main-radio-wrap {
+        margin-bottom: 10px;
+    }
+
+    .tip-text {
+        line-height: 22px;
+        margin: 0 5.3%;
+        color: #7E7E7E;
+        white-space: pre-wrap;
+        padding-top: 22px;
+    }
+
+    .balance-detail-inner {
+        border: solid 1px #CCC;
+        border-radius: 3px;
+    }
+
+    .balance-total-price {
+        line-height: 30px;
+        font-weight: bold;
+        background-color: #292929;
+        color: #FFF;
+        padding: 5px 12px;
+
+        .icon-refresh {
+            color: #265691;
+            cursor: pointer;
+            -webkit-transform: rotate(90deg);
+            transform: rotate(90deg);
+            vertical-align: middle;
+            margin-left: 5px;
+
+            &.disable {
+                color: #CACACA;
+                cursor: default;
+            }
+        }
+    }
+
+    .price {
+        color: $priceColor;
+    }
+
+    .btn-back-account {
+        position: relative;
+        height: 32px;
+        line-height: 32px;
+        color: #FFF;
+        padding: 0 8px;
+        min-width: 90px;
+
+        &.disable {
+            cursor: no-drop;
+
+            &:before,
+            &:after {
+                position: absolute;
+                content: '';
+                top: 50%;
+                left: 50%;
+                width: 12px;
+                height: 12px;
+                border: solid .2em rgba(0, 0, 0, .15);
+                border-radius: 50%;
+                margin: -9px 0 0 -9px;
+            }
+
+            &:after {
+                animation: button-loading .6s linear;
+                -webkit-animation-iteration-count: infinite;
+                animation-iteration-count: infinite;
+                border-color: #FFF transparent transparent;
+            }
+        }
+    }
+
+    .main-account-price {
+        line-height: 40px;
+        color: #7E7E7E;
+        border-bottom: solid 1px #CCC;
+        padding-left: 12px;
+    }
+
+    .main-balance-inner {
+        padding: 0 12px 42px;
+    }
+
+    .manual-transfer-setting-inner {
+        background: url(/static/image/member_repeat_x.png) 50% 100% repeat-x;
+        padding: 12px 0 22px;
+        margin-bottom: 15px;
+
+        .tran-btn {
+            margin-top: 15px;
+            border-radius: 4px;
+            width: 100%;
+            height: 38px;
+            line-height: 38px;
+            color: $btnColor;
+            text-align: center;
+            cursor: pointer;
+
+            &.lock {
+                background: #F4F4F4;
+                color: #CBCBCB;
+                cursor: no-drop;
+
+                &:hover {
+                    background: #F4F4F4;
+                }
+            }
+        }
+    }
+
+    .main-btn {
+        height: 32px;
+        line-height: 32px;
+        color: $btnColor;
+        text-align: center;
+        cursor: pointer;
+        border-radius: 4px;
+        background: $btnColorBg;
+
+        &:hover {
+            background: $btnColorBgHover;
+        }
+    }
+
+    .balance-field-wrap {
+        .balance-field {
+            width: 100%;
+
+            label {
+                display: block;
+                margin-bottom: 5px;
+                color: #858585;
+                font-size: 15px;
+                line-height: 34px;
+            }
+
+            select {
+                padding-left: 5.2%;
+                width: 100%;
+                height: 41px;
+                line-height: 41px;
+            }
+
+            input {
+                padding-left: 6%;
+                width: 94%;
+
+                &.money {
+                    padding-right: 6%;
+                    width: 100%;
+                    height: 38px;
+                    line-height: 38px;
+                    text-align: right;
+                }
+            }
+
+            .ui.fluid.dropdown {
+                border-color: #E8E8E8;
+
+                .text {
+                    color: #646E7D;
+                }
+            }
+        }
+
+        .balance-info {
+            margin-top: 18px;
+            border: 1px solid #ECECEC;
+            width: 100%;
+            min-height: 37px;
+            line-height: 37px;
+
+            .balance-info-text {
+                float: left;
+                margin-left: 3.5%;
+                font-weight: bold;
+                white-space: nowrap;
+            }
+
+            .balance-recently-opened {
+                float: left;
+                color: #999;
+                padding-right: 3px;
+            }
+
+            .balance-info-money {
+                float: right;
+                margin-right: 4.7%;
+                color: #7A7A81;
+            }
+
+            .balance-info-maintain {
+                margin-right: 4.7%;
+                float: right;
+                color: #EA345C;
+                font-size: 14px;
+            }
+        }
+    }
+
+    .balance-recently-opened-notice {
+        color: #999;
+        padding-top: 15px;
+    }
+
+    .tooltip {
+        position: relative;
+        cursor: pointer;
+    }
+
+    .tooltip .tooltiptext {
+        visibility: hidden;
+        width: 250px;
+        background-color: #000;
+        color: #FFF;
+        font-size: 12px;
+        line-height: 20px;
+        text-align: left;
+        font-weight: normal;
+        border-radius: 6px;
+        padding: 5px;
+        position: absolute;
+        z-index: 1;
+        bottom: 100%;
+        right: -40px;
+        margin-left: -60px;
+        opacity: 0;
+        transition: opacity 1s;
+        cursor: auto;
+    }
+
+    .tooltip:hover .tooltiptext {
+        visibility: visible;
+        opacity: .8;
+    }
+}
+
+// pad
+@media screen and (min-width: $phone) {
+    .bank-balance-tran {
+        .balance-total-price {
+            .btn-back-account {
+                float: right;
+                padding: 0 8px;
+            }
+        }
+
+        .manual-transfer-setting-inner {
+            .tran-btn {
+                float: right;
+                margin-top: 39px;
+                width: 20%;
+            }
+        }
+
+        .balance-field-wrap {
+            .balance-field {
+                float: left;
+                width: 49%;
+
+                &.middle {
+                    margin-left: 2%;
+                }
+
+                &.money {
+                    width: 78%;
+                    clear: left;
+                }
+            }
+        }
+    }
+}
+
+// pc
+@media screen and (min-width: $pad) {
+    .bank-balance-tran {
+        .manual-transfer-setting-inner {
+            .tran-btn {
+                width: 12.5%;
+            }
+        }
+
+        .balance-field-wrap {
+            .balance-field {
+                width: 27.8%;
+
+                &.middle {
+                    margin: 0 1.4%;
+                }
+
+                &.money {
+                    width: 28.3%;
+                    clear: none;
+                }
+
+                /deep/ .ui.selection.dropdown .menu > .item[data-v-3a0c7bea] {
+                    overflow: hidden;
+                    text-overflow: ellipsis;
+                    white-space: nowrap;
+                }
+            }
+
+            .balance-info {
+                float: left;
+                width: 48.8%;
+
+                &.right {
+                    float: right;
+                }
+            }
+
+            /deep/ .ui.search.dropdown > .text[data-v-3a0c7bea] {
+                overflow: hidden;
+                text-overflow: ellipsis;
+                white-space: nowrap;
+            }
+        }
+    }
+}
+
+@-webkit-keyframes button-loading {
+    from {
+        -webkit-transform: rotate(0);
+        transform: rotate(0)
+    }
+    to {
+        -webkit-transform: rotate(360deg);
+        transform: rotate(360deg)
+    }
+}
+
+@keyframes button-loading {
+    from {
+        -webkit-transform: rotate(0);
+        transform: rotate(0)
+    }
+    to {
+        -webkit-transform: rotate(360deg);
+        transform: rotate(360deg)
+    }
+}

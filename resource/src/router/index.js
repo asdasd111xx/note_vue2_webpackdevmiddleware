@@ -1,17 +1,15 @@
-import Vue from 'vue';
 import Router from 'vue-router';
-import isMobile from '@/lib/is_mobile';
-import popControl from './popcontrol';
-import game from './game';
-import agent from './agent';
-import mobile from './mobile';
-import simple from './simple';
+import Vue from 'vue';
 import domain from './domain';
-import error500 from './500';
-import noService from './no_service';
-import upup from './upup';
-import timeout from './timeout';
 import error404 from './404';
+import error500 from './500';
+import game from './game';
+import isMobile from '@/lib/is_mobile';
+import mobile from './mobile';
+import noService from './no_service';
+import popControl from './popcontrol';
+import timeout from './timeout';
+import upup from './upup';
 
 // prevent NavigationDuplicated error see: https://github.com/vuejs/vue-router/issues/2881
 const originalPush = Router.prototype.push;
@@ -52,9 +50,8 @@ export default new Router({
         },
         popControl,
         game,
-        agent,
+        // agent,
         mobile,
-        simple,
         domain,
         error500,
         noService,
