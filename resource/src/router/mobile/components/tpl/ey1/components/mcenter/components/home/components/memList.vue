@@ -92,14 +92,14 @@ export default {
       isShowSuper: false, // *顯示超級簽開關
       superAppUrl: '', // 超級簽URL
       list: [
-        {
-          initName: '下载超级签，成为超级会员',
-          name: 'S_VIP_APP',
-          path: '',
-          pageName: 'super',
-          image: 'vip',
-          isPart: true
-        },
+        // {
+        //   initName: '下载超级签，成为超级会员',
+        //   name: 'S_VIP_APP',
+        //   path: '',
+        //   pageName: 'super',
+        //   image: 'vip',
+        //   isPart: true
+        // },
         {
           initName: '帮助中心',
           name: 'S_HELP_CENTER',
@@ -111,8 +111,8 @@ export default {
 
         },
         {
-          initName: '关于鸭博娱乐',
-          name: 'S_ABOUT_YABOLIVE',
+          initName: '关于亿元',
+          name: 'S_ABOUT_EY1',
           path: '/mobile/mcenter/about',
           pageName: 'about',
           image: 'about',

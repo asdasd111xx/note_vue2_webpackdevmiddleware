@@ -13,7 +13,7 @@
           :src="$getCdnPath('/static/image/_new/mcenter/ic_vipprivicege.png')"
         />
         <div>
-          <div>VIP特权</div>
+          <div>VIP独享</div>
           <div :class="$style['sub-text']">VIP PRIVILEGE</div>
         </div>
       </div>
@@ -29,7 +29,7 @@
           :src="$getCdnPath('/static/image/_new/mcenter/ic_promotion.png')"
         />
         <div>
-          <div>推广赚钱</div>
+          <div>一键快赚</div>
           <div :class="$style['sub-text']">PROMOTION</div>
         </div>
       </div>
