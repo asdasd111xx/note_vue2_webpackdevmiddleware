@@ -22,7 +22,7 @@
     </div>
     <div :class="$style.tips">
       如需帮助，请
-      <span @click="$router.push('/mobile/service')">&nbsp;联系客服</span>
+      <span @click="handleClick">&nbsp;联系客服</span>
     </div>
     <message v-if="msg" @close="msg = ''">
       <div slot="msg">{{ msg }}</div>
@@ -36,6 +36,7 @@ import member from '@/api/member';
 import getLang from '@/lib/getLang';
 import { getCookie } from '@/lib/cookie';
 import message from '@/router/mobile/components/tpl/porn1/components/common/new/message';
+import store from '@/store';
 
 export default {
   components: {
@@ -46,7 +47,8 @@ export default {
       ip: '',
       code: '',
       status: false,
-      msg: ''
+      msg: '',
+      username: ''
     };
   },
   beforeRouteEnter(to, from, next) {
@@ -74,6 +76,13 @@ export default {
     });
   },
   methods: {
+    handleClick() {
+      let on_service_url = store && store.state && store.state.webInfo && store.state.webInfo.on_service_url;
+      localStorage.setItem('serviceUrl', on_service_url || ' https://31zfyq.italking.asia:8866/guest.php?gid=yb01&dmsrc=&lang=zh-cn');
+
+      window.location.href = `/static/upup/index.html?username=${this.username}`;
+      window.location.title = "在线客服";
+    },
     mailTo() {
       const mail = 'cs2@yaboxxx.net';
       const isWebView = getCookie('platform') === "H" || window.location.host === "yaboxxxapp02.com";

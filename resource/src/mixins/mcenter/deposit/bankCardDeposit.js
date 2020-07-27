@@ -518,7 +518,8 @@ export default {
          * @param {Object} info - 支付方式資訊
          */
         changePayMode(info, index = null) {
-            if (info.payment_method_id === this.curPayInfo.payment_method_id) {
+            if (info.payment_method_id === this.curPayInfo.payment_method_id &&
+                info.bank_id === this.curPayInfo.bank_id) {
                 return;
             }
 
@@ -565,6 +566,12 @@ export default {
          * @param {String} money - 金額
          */
         changeMoney(money, isCustonmAmount) {
+            if (this.curPassRoad && this.curPassRoad.is_custom_amount) {
+                this.isDisableDepositInput = false;
+            } else {
+                this.isDisableDepositInput = true;
+            }
+
             this.isCustonmAmount = isCustonmAmount;
 
             this.moneyValue = money;
@@ -578,7 +585,7 @@ export default {
          */
         verificationMoney(money) {
             if (this.depositInterval.maxMoney) {
-                this.isErrorMoney = money > Number(this.depositInterval.maxMoney) || money < Number(this.depositInterval.minMoney);
+                this.isErrorMoney = Number(money) > Number(this.depositInterval.maxMoney) || Number(money) < Number(this.depositInterval.minMoney);
                 return;
             }
 
@@ -596,6 +603,7 @@ export default {
                 this.isErrorMoney = false;
             }
 
+            this.verificationMoney(value);
             this.checkOrderData();
         },
         submitDataInput(data, objKey) {
