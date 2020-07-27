@@ -21,7 +21,7 @@ export default {
           key: 'sponsor_yabolive',
         },
         {
-          key: 'sponsor_yaboball',
+          key: 'psponsor_sigualive',
         },
         {
           key: 'sponsor_hglive',
