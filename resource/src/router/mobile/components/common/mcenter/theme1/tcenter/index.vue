@@ -25,7 +25,7 @@
 
 <script>
 import { mapGetters, mapActions } from "vuex";
-import mcenterHeader from "../../../../tpl/porn1/components/common/new/mHeader";
+import mcenterHeader from "../../../../tpl/porn1/components/common/mHeader";
 
 export default {
   components: {

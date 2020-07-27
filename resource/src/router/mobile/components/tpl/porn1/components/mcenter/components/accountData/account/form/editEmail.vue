@@ -84,7 +84,7 @@ import { API_MCENTER_USER_CONFIG } from '@/config/api';
 import ajax from '@/lib/ajax';
 import member from '@/api/member';
 import mcenter from '@/api/mcenter';
-import mobileContainer from '../../../../../common/new/mobileContainer';
+import mobileContainer from '../../../../../common/mobileContainer';
 import serviceTips from '../../serviceTips';
 
 export default {

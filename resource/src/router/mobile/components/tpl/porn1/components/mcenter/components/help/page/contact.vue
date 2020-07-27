@@ -90,7 +90,7 @@
 
 <script>
 import { mapGetters } from 'vuex';
-import mobileContainer from '../../../../common/new/mobileContainer';
+import mobileContainer from '../../../../common/mobileContainer';
 import message from '../../../../common/new/message';
 import yaboRequest from '@/api/yaboRequest';
 

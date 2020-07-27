@@ -126,7 +126,7 @@
 import { mapGetters, mapActions } from 'vuex';
 import ajax from '@/lib/ajax';
 import axios from 'axios';
-import mobileContainer from '../common/new/mobileContainer';
+import mobileContainer from '../common/mobileContainer';
 import openGame from '@/lib/open_game';
 import pornRequest from '@/api/pornRequest';
 

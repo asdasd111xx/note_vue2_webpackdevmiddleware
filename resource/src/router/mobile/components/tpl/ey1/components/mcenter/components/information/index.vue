@@ -50,6 +50,7 @@ import { mapGetters, mapActions } from 'vuex';
 import mobileContainer from '../../../common/mobileContainer';
 import news from './components/news/index';
 import post from './components/post/index';
+
 export default {
   components: {
     mobileContainer,

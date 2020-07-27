@@ -177,9 +177,6 @@
       </div>
     </template>
 
-    <message v-if="msg" @close="msg = ''">
-      <div slot="msg">{{ msg }}</div>
-    </message>
     <template v-if="headerConfig.hasHelp">
       <div :class="$style['balance-wrap']" @click="setMenuState('balance')">
         <div>
@@ -237,10 +234,8 @@
 
 <script>
 import { mapGetters } from "vuex";
-import message from "./message";
 export default {
   components: {
-    message
     // sideBalance,
     // topGameList: () => import(/* webpackChunkName: 'topGameList' */'./topGameList')
   },
@@ -292,7 +287,7 @@ export default {
     },
     handleClickAsk() {
       if (this.loginStatus) {
-        this.$router.push({name: 'mcenter-information'});
+        this.$router.push({ name: 'mcenter-information' });
       } else {
         this.$router.push("/mobile/login");
       }

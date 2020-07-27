@@ -107,7 +107,7 @@
 <script>
 import { mapGetters, mapActions } from 'vuex';
 import resetPwd from '@/mixins/resetPwd';
-import mobileContainer from '../common/new/mobileContainer';
+import mobileContainer from '../common/mobileContainer';
 import message from '../common/new/message';
 import mcenter from '@/api/mcenter';
 import agcenter from '@/api/agcenter';

@@ -311,7 +311,7 @@
                       customSucessAlert: () => {
                         transferSubmit(balanceTran.btnLock);
                       }
-                    })
+                    });
                   }
                 }
               "
@@ -342,7 +342,7 @@
 import { mapGetters, mapActions } from "vuex";
 import balanceTran from "@/components/mcenter/components/balanceTran";
 import blockListTips from "../../../common/new/blockListTips";
-import mobileContainer from "../../../common/new/mobileContainer";
+import mobileContainer from "../../../common/mobileContainer";
 import message from "../../../common/new/message";
 import balanceBack from "../../../mcenter/components/common/balanceBack";
 

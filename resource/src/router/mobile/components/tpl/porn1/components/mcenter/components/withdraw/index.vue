@@ -315,7 +315,7 @@
 </template>
 
 <script>
-import mobileContainer from '../../../common/new/mobileContainer';
+import mobileContainer from '../../../common/mobileContainer';
 import mixin from '@/mixins/mcenter/withdraw';
 import { mapGetters, mapActions } from 'vuex';
 import blockListTips from "../../../common/new/blockListTips";

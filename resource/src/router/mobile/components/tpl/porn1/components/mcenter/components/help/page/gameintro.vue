@@ -73,7 +73,7 @@
 </template>
 
 <script>
-import mobileContainer from "../../../../common/new/mobileContainer";
+import mobileContainer from "../../../../common/mobileContainer";
 import info from "../json/gameintro.json";
 
 export default {
@@ -140,7 +140,7 @@ export default {
 
       this.$router.push(
         `/mobile/mcenter/help/detail?index=${this.currentIndex}&key=${
-          item.key
+        item.key
         }&type=gameintro${this.isApp ? "&app=true" : ""}`
       );
     }
