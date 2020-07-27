@@ -24,7 +24,6 @@
           <div :class="$style['image-wrap']">
             <img v-lazy="info.image" />
           </div>
-          <div :class="$style['latest-wrap']">最新</div>
           <div :class="$style['text-wrap']">
             <div :class="$style.time">
               <img
