@@ -10,7 +10,7 @@
         </div>
       </message>
 
- <!-- 一件回收 -->
+      <!-- 一件回收 -->
       <balance-back :has-link="true" />
 
       <balance-tran class="clearfix">
@@ -255,15 +255,25 @@
       </div>
 
       <div
+        :class="[$style['btn-wrap']]"
         v-if="
           withdrawUserData &&
             withdrawUserData.account &&
             withdrawUserData.account.length > 0
         "
-        :class="[$style['submit-btn'], { [$style['disabled']]: lockSubmit }]"
       >
-        <div @click="checkSubmit()">
-          立即提现
+        <div :class="[$style['submit-btn']]">
+          <div @click="linkToRecharge">
+            额度转让&nbsp;返佣70%
+          </div>
+        </div>
+
+        <div
+          :class="[$style['submit-btn'], { [$style['disabled']]: lockSubmit }]"
+        >
+          <div @click="checkSubmit">
+            立即提现
+          </div>
         </div>
       </div>
 
@@ -500,6 +510,9 @@ export default {
     },
   },
   methods: {
+    linkToRecharge() {
+      this.$router.push('/mobile/mcenter/creditTrans?tab=0')
+    },
     getBankImage(swiftCode) {
       return {
         src: `https://images.dormousepie.com/icon/bankIconBySwiftCode/${swiftCode}.png`,

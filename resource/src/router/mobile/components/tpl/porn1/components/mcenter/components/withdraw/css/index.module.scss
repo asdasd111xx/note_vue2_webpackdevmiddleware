@@ -205,6 +205,7 @@
     width: 100%;
     text-align: center;
     margin-top: 15px;
+    padding: 0 14px;
 
     >div {
         margin: 0 auto;
@@ -387,6 +388,11 @@
     position: fixed;
     margin: 0 auto;
     top: 40%;
+}
+
+.btn-wrap {
+    width: 100%;
+    display: inline-flex;
 }
 
 @media screen and (min-width: $phone) {
