@@ -49,7 +49,7 @@ import axios from 'axios';
 import avatarEditer from './avatarEditer';
 export default {
   components: {
-    pageLoading: () => import(/* webpackChunkName: 'pageLoading' */ '@/router/mobile/components/tpl/porn1/components/common/new/pageLoading'),
+    pageLoading: () => import(/* webpackChunkName: 'pageLoading' */ '@/router/mobile/components/common/pageLoading'),
     avatarEditer
   },
   props: {

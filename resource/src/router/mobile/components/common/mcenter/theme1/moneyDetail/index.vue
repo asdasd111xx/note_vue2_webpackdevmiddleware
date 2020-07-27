@@ -158,7 +158,8 @@ export default {
     detailList: () => import(/* webpackChunkName: 'detailList' */ './components/detailList'),
     detailInfo: () => import(/* webpackChunkName: 'detailInfo' */ './components/detailInfo'),
     datePicker: () => import(/* webpackChunkName: 'datePicker' */ '../../../datePicker/index'),
-    pageLoading: () => import(/* webpackChunkName: 'pageLoading' */ '@/router/mobile/components/tpl/porn1/components/common/new/pageLoading'),
+    pageLoading: () => import(/* webpackChunkName: 'pageLoading' */ '@/router/mobile/components/common/pageLoading'),
+
   },
   filters: {
     dateFormat(date) {
