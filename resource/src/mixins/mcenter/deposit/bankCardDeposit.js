@@ -566,6 +566,12 @@ export default {
          * @param {String} money - 金額
          */
         changeMoney(money, isCustonmAmount) {
+            if (this.curPassRoad && this.curPassRoad.is_custom_amount) {
+                this.isDisableDepositInput = false;
+            } else {
+                this.isDisableDepositInput = true;
+            }
+
             this.isCustonmAmount = isCustonmAmount;
 
             this.moneyValue = money;
@@ -579,7 +585,7 @@ export default {
          */
         verificationMoney(money) {
             if (this.depositInterval.maxMoney) {
-                this.isErrorMoney = money > Number(this.depositInterval.maxMoney) || money < Number(this.depositInterval.minMoney);
+                this.isErrorMoney = Number(money) > Number(this.depositInterval.maxMoney) || Number(money) < Number(this.depositInterval.minMoney);
                 return;
             }
 
@@ -597,6 +603,7 @@ export default {
                 this.isErrorMoney = false;
             }
 
+            this.verificationMoney(value);
             this.checkOrderData();
         },
         submitDataInput(data, objKey) {
