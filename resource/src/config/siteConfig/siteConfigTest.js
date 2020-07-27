@@ -26,4 +26,17 @@ export const site_500015 = {
     YABO_API_DOMAIN: 'https://yaboapi.bbin-asia.com/api',
     ACTIVES_BOUNS_WEBSOCKET: 'wss://yaboapi.bbin-asia.com/ws/promosocket',
 };
+
+
+/**
+ * 億元 測試站
+ */
+export const site_500023 = {
+    ...preset,
+    MOBILE_WEB_TPL: 'ey1', // 手機網頁版模版
+    IS_PWA: true,
+    BBOS_DOMIAN: 'https://bbos.bbin-asia.com/elibomApi/WebService',
+    YABO_API_DOMAIN: 'https://yaboapi.bbin-asia.com/api',
+    ACTIVES_BOUNS_WEBSOCKET: 'wss://yaboapi.bbin-asia.com/ws/promosocket',
+};
 /* eslint-enable camelcase */
