@@ -325,7 +325,10 @@
                     v-model="moneyValue"
                     :class="[
                       $style['deposit-input'],
-                      { [$style.disable]: isDisableDepositInput }
+                      {
+                        [$style.disable]:
+                          isDisableDepositInput || isLockDepositInput
+                      }
                     ]"
                     :placeholder="singleLimit"
                     type="number"
@@ -748,11 +751,9 @@ export default {
     //   channel
     passRoad() {
       console.log("all passRoad", this.passRoad)
-      this.isDisableDepositInput = false;
     },
     curPassRoad() {
       console.log("passRoad", this.curPassRoad)
-      this.isDisableDepositInput = false;
     },
     getPassRoadOrAi() {
       if (this.getPassRoadOrAi.amounts && this.getPassRoadOrAi.amounts.length > 0) {

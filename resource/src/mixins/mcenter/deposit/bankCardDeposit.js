@@ -39,7 +39,8 @@ export default {
             isShowBlockTips: false,
             checkSuccess: false,
             yourBankData: [],
-            webviewOpenUrl: ''
+            webviewOpenUrl: '',
+            isLockDepositInput: false,
         };
     },
     watch: {
@@ -567,9 +568,9 @@ export default {
          */
         changeMoney(money, isCustonmAmount) {
             if (this.curPassRoad && this.curPassRoad.is_custom_amount) {
-                this.isDisableDepositInput = false;
+                this.isLockDepositInput = false;
             } else {
-                this.isDisableDepositInput = true;
+                this.isLockDepositInput = true;
             }
 
             this.isCustonmAmount = isCustonmAmount;
