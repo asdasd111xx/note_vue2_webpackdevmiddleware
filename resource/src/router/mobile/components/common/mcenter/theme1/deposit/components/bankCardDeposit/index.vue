@@ -269,7 +269,7 @@
                   />
                 </div>
                 <div
-                  v-if="passRoad && passRoad[0] && passRoad[0].is_custom_amount"
+                  v-if="curPassRoad && curPassRoad.is_custom_amount"
                   :class="[$style['speed-money-wrap'], 'clearfix']"
                 >
                   <!-- 自訂金額 -->
@@ -287,7 +287,7 @@
                     <br />
                     <span>
                       {{
-                        `(${passRoad[0].per_trade_min}~${passRoad[0].per_trade_max})`
+                        `(${curPassRoad.per_trade_min}~${curPassRoad.per_trade_max})`
                       }}
                     </span>
                     <img
@@ -747,7 +747,10 @@ export default {
   watch: {
     //   channel
     passRoad() {
-      console.log("passRoad", this.passRoad[0])
+      console.log("all passRoad", this.passRoad)
+    },
+    curPassRoad() {
+      console.log("passRoad", this.curPassRoad)
     },
     getPassRoadOrAi() {
       if (this.getPassRoadOrAi.amounts && this.getPassRoadOrAi.amounts.length > 0) {
