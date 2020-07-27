@@ -18,7 +18,7 @@ import homeSlider from './components/homeSlider';
 import homeNew from './components/homeNew';
 import homeContent from './components/homeContent';
 import popup from './components/popup';
-import mobileContainer from '../common/new/mobileContainer';
+import mobileContainer from '../common/mobileContainer';
 import mcenter from '@/api/mcenter';
 
 export default {

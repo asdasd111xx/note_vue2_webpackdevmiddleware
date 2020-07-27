@@ -28,23 +28,15 @@
 
     <div :class="$style['func-wrap']">
       <div :class="$style['cancle']" @click="closeShare">取消</div>
-
-      <message v-if="msg" @close="msg = ''">
-        <div slot="msg">{{ msg }}</div>
-      </message>
     </div>
   </div>
 </template>
 
 <script>
 import { mapGetters, mapActions } from "vuex";
-import message from "../../../../common/new/message";
 import yaboRequest from '@/api/yaboRequest';
 
 export default {
-  components: {
-    message
-  },
   props: {
     isShowShare: {
       type: Boolean,

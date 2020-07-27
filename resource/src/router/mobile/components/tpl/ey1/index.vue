@@ -6,19 +6,19 @@
     <transition name="fade" mode="out-in">
       <router-view />
     </transition>
-    <!-- <notification /> -->
+    <notification />
     <message v-if="globalMessage" :msgObj="globalMessage" />
   </div>
 </template>
 
 <script>
-// import notification from './components/notification';
-import message from '@/router/mobile/components/tpl/porn1/components/common/new/message2';
+import notification from '@/router/mobile/components/common/notification';
+import message from '@/router/mobile/components/common/message2';
 import { mapGetters, mapActions } from 'vuex';
 
 export default {
   components: {
-    // notification,
+    notification,
     message
   },
   data() {
@@ -26,7 +26,7 @@ export default {
     };
   },
   mounted() {
-    console.log("ey")
+    console.log("===ey===")
   },
   computed: {
     ...mapGetters({

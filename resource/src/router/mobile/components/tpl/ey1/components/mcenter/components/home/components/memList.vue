@@ -61,11 +61,6 @@
     </div>
     <!-- Share Modal -->
     <share v-if="isShowShare" :is-show-share.sync="isShowShare" />
-    <message v-if="msg" @close="msg = ''">
-      <div slot="msg">
-        {{ msg }}
-      </div>
-    </message>
   </div>
 </template>
 
@@ -79,7 +74,6 @@ import ajax from '@/lib/ajax';
 import { API_MCENTER_DESPOSIT_AMOUNT } from '@/config/api';
 import mobileLinkOpen from '@/lib/mobile_link_open';
 import share from './share';
-import message from '../../../../common/new/message';
 import { getCookie } from '@/lib/cookie';
 import yaboRequest from "@/api/yaboRequest";
 import bbosRequest from "@/api/bbosRequest";
@@ -87,7 +81,6 @@ import axios from 'axios'
 export default {
   components: {
     share,
-    message
   },
   data() {
     return {
@@ -135,41 +128,6 @@ export default {
           info: '合营计划',
           isPart: false
         }
-        // {
-        //   initName: '分享APP', name: 'S_SHARE_APP', path: '/mobile/mcenter/about', pageName: 'share', image: 'share'
-        // },
-        // {
-        //   initName: '色站开关', name: 'S_PORN_SWITCH', path: '', pageName: '', image: '18+'
-        // },
-
-        // 原舊版亞博
-        // {
-        //   initName: '在线客服', name: 'S_CUSTOMER_SERVICE_ONLINE', path: '', pageName: 'service', image: 'service'
-        // }, // 在線客服
-        // {
-        //   initName: '帐户资料', name: 'S_ACCOUNT_DATA', path: '/mobile/mcenter/accountData', pageName: 'accountData', image: 'account_data'
-        // }, // 個人資料
-        // {
-        //   initName: '我的推广', name: 'S_TEAM_CENTER', path: '/mobile/mcenter/tcenter', pageName: 'tcenter', image: 'my_promote'
-        // }, // 我的推廣
-        // {
-        //   initName: '绑定银行卡', name: 'S_BIND_BANK', path: '/mobile/mcenter/bankCard', pageName: 'accountBankCard', image: 'bank_info'
-        // }, // 銀行卡管理
-        // {
-        //   initName: '资金明细', name: 'S_FUNDS_DETAILS', path: '/mobile/mcenter/moneyDetail', pageName: 'bankMoneyDetail', image: 'money_detail'
-        // }, // 交易記錄
-        // {
-        //   initName: '投注纪录', name: 'S_BETHISTORYBTN', path: '/mobile/mcenter/betRecord', pageName: 'betRecord', image: 'bet_record'
-        // }, // 投注記錄
-        // {
-        //   initName: '实时返水', name: 'S_REAL_TIME_REBATE', path: '/mobile/mcenter/bankRebate', pageName: 'bankRebate', image: 'bank_rebate'
-        // }, // 實時返水
-        // {
-        //   initName: '红利帐户', name: 'S_BONUS_ACCOUNT', path: '/mobile/mcenter/bonusAccount', pageName: 'bonusAccount', image: 'bonus_account'
-        // }, // 紅利帳戶
-        // {
-        //   initName: '信息中心', name: 'S_MSG_CENTER', path: '/mobile/mcenter/information/post', pageName: 'information', image: 'info_post'
-        // } // 信息中心
       ],
       pornSwitchState: false
     };
@@ -321,7 +279,10 @@ export default {
     })
   },
   methods: {
-    ...mapActions(['actionEnterMCenterThirdPartyLink', 'actionSetUserdata']),
+    ...mapActions([
+      'actionEnterMCenterThirdPartyLink',
+      'actionSetGlobalMessage',
+      'actionSetUserdata']),
     mobileLinkOpen,
     onListClick(item) {
       if (item.pageName === 'super') {
@@ -340,7 +301,7 @@ export default {
             window.open(appUrl, '_blank');
           }
         } else {
-          this.msg = this.superErrorMsg;
+          this.actionSetGlobalMessage({ msg: this.superErrorMsg });
         }
 
         return;

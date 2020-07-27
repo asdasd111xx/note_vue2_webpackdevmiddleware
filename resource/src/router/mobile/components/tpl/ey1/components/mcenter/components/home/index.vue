@@ -11,11 +11,12 @@
 
 <script>
 import { mapGetters, mapActions } from 'vuex';
-import mobileContainer from '../../../common/new/mobileContainer';
+import mobileContainer from '../../../common/mobileContainer';
 import shortcutInfo from './components/shortcutInfo';
 import memList from './components/memList';
-import avatarInfo from './components/avatarInfo'
-import appTip from './components/appTip'
+import avatarInfo from './components/avatarInfo';
+import appTip from './components/appTip';
+
 export default {
   components: {
     mobileContainer,
