@@ -464,7 +464,6 @@ export default {
           }
           if (!customSucessAlert) {
             this.actionSetGlobalMessage({ msg: '转帐成功' });
-            // alert(this.$t('S_CR_SUCCESS'));
           }
 
           this.lockSec = 0;

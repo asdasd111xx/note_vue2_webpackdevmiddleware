@@ -386,7 +386,11 @@ export default {
     this.actionSetUserdata(true);
   },
   methods: {
-    ...mapActions(["actionSetUserBalance", "actionSetUserdata"]),
+    ...mapActions([
+      'actionSetUserBalance',
+      'actionSetUserdata',
+      'actionSetGlobalMessage'
+    ]),
     getMaxMoney(balanceList, setMoneyData, transferTargetOut) {
       if (balanceList.vendor[transferTargetOut]) {
         this.transferMoney = Math.floor(
@@ -404,7 +408,7 @@ export default {
         return;
       }
 
-      this.msg = this.$t("S_CR_SUCCESS");
+      this.actionSetGlobalMessage({ msg: '转帐成功' });
       this.transferMoney = 0;
     },
     toggleShowMore() {
