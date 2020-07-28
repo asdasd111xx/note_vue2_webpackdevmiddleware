@@ -1,7 +1,6 @@
 <template>
   <mobile-container :header-config="headerConfig" :class="$style.container">
     <div slot="content" :class="$style['content-wrap']">
-      <app-tip @close="showTip = false" />
       <avatar-info />
       <shortcut-info />
       <mem-list />
@@ -10,29 +9,25 @@
 </template>
 
 <script>
-import { mapGetters, mapActions } from 'vuex';
-import mobileContainer from '../../../common/mobileContainer';
-import shortcutInfo from './components/shortcutInfo';
-import memList from './components/memList';
-import avatarInfo from './components/avatarInfo';
-import appTip from './components/appTip';
+import { mapGetters, mapActions } from "vuex";
+import mobileContainer from "../../../common/mobileContainer";
+import shortcutInfo from "./components/shortcutInfo";
+import memList from "./components/memList";
+import avatarInfo from "./components/avatarInfo";
 
 export default {
   components: {
     mobileContainer,
     shortcutInfo,
     avatarInfo,
-    memList,
-    appTip
+    memList
   },
   data() {
-    return {
-      isShowAppTip: true,
-    };
+    return {};
   },
   computed: {
     ...mapGetters({
-      loginStatus: 'getLoginStatus'
+      loginStatus: "getLoginStatus"
     }),
     headerConfig() {
       return {
@@ -40,19 +35,17 @@ export default {
         hasMemInfo: false,
         hasSearchBtn: false,
         isMCenter: true,
-        title: this.$text('S_INFORMATION', '我的'),
+        title: this.$text("S_INFORMATION", "我的")
       };
-    },
-  },
-  created() {
+    }
   },
   methods: {
     goMessage() {
       if (!this.loginStatus) {
-        this.$router.push('/mobile/login');
+        this.$router.push("/mobile/login");
         return;
       }
-      this.$router.push('/mobile/mcenter/information/message');
+      this.$router.push("/mobile/mcenter/information/message");
     }
   }
 };
