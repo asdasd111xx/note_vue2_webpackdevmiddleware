@@ -19,7 +19,7 @@
             <span>{{ item.valid_bet }}</span>
           </div>
           <div>
-            <span>{{ $text("S_PROFIT_AND_LOSS", "损益") }}</span>
+            <span>{{ $text("profit", "损益") }}</span>
             <span>{{ item.valid_bet }}</span>
           </div>
         </div>
@@ -67,13 +67,13 @@
 
                 <th
                   :class="[
-                    $style['profit-and-loss'],
-                    { [$style.active]: sort === 'profit_and_loss' }
+                    $style['profit'],
+                    { [$style.active]: sort === 'profit' }
                   ]"
-                  @click="onSort('profit_and_loss')"
+                  @click="onSort('profit')"
                 >
                   <span>
-                    {{ $text("S_PROFIT_AND_LOSS", "损益") }}
+                    {{ $text("profit", "损益") }}
                   </span>
                   <span v-if="sort === 'period'">
                     <icon
@@ -366,7 +366,7 @@ export default {
 
     // commission 目前先隱藏，到時如果顯示，還需要再調Width
     .commission,
-    .profit-and-loss {
+    .profit {
       width: 31%;
     }
   }
