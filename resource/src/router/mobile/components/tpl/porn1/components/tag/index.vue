@@ -62,7 +62,7 @@ import { mapGetters } from 'vuex';
 import InfiniteLoading from 'vue-infinite-loading';
 import axios from 'axios';
 import querystring from 'querystring';
-import mobileContainer from '../common/new/mobileContainer';
+import mobileContainer from '../common/mobileContainer';
 import pornRequest from '@/api/pornRequest';
 
 export default {

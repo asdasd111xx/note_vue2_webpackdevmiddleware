@@ -70,7 +70,7 @@
 /* global $ */
 import { mapGetters } from 'vuex';
 import { getCookie } from "@/lib/cookie";
-import mobileContainer from '../../../../common/new/mobileContainer';
+import mobileContainer from '../../../../common/mobileContainer';
 
 export default {
   components: {

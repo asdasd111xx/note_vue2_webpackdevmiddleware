@@ -180,7 +180,7 @@ import Vue from 'vue';
 import ajax from '@/lib/ajax';
 import EST from '@/lib/EST';
 import balanceTran from '@/components/mcenter/components/balanceTran';
-import mobileContainer from '../../../common/new/mobileContainer';
+import mobileContainer from '../../../common/mobileContainer';
 import message from '../../../common/new/message';
 import { getCookie } from '@/lib/cookie';
 import yaboRequest from '@/api/yaboRequest';

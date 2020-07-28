@@ -26,7 +26,7 @@
 </template>
 
 <script>
-import mobileContainer from "../../../common/new/mobileContainer";
+import mobileContainer from "../../../common/mobileContainer";
 import { API_PROMOTION_INFO } from "@/config/api";
 import axios from "axios";
 import message from "../../../common/new/message";

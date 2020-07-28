@@ -12,7 +12,7 @@
 
 <script>
 import depsoit from '@/router/mobile/components/common/mcenter/theme1/deposit';
-import mobileContainer from '../../../common/new/mobileContainer';
+import mobileContainer from '../../../common/mobileContainer';
 
 export default {
   data() {

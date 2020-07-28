@@ -92,7 +92,6 @@ export default {
             if (item.key === "amount") {
                 const limit = Number(this.rechargeConfig.recharge_limit) || 0;
                 const amount = Number(this.formData.amount);
-                console.log(amount, this.maxRechargeBalance)
                 if (limit &&
                     amount < limit) {
                     errorMessage = "转帐金额低于最低限额";

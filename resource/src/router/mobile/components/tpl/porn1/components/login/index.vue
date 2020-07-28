@@ -204,7 +204,7 @@ import loginForm from '@/mixins/loginForm';
 import slideVerification from '@/components/slideVerification';
 import puzzleVerification from '@/components/puzzleVerification';
 import joinMember from '@/router/web/components/page/join_member';
-import mobileContainer from '../common/new/mobileContainer';
+import mobileContainer from '../common/mobileContainer';
 import { getCookie, setCookie } from '@/lib/cookie';
 
 /**

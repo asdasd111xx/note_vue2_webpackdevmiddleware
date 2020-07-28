@@ -33,10 +33,11 @@ export default {
   computed: {
     ...mapGetters({
       loginStatus: 'getLoginStatus',
-      memInfo: 'getMemInfo'
+      memInfo: 'getMemInfo',
+      siteConfig: 'getSiteConfig'
     }),
     theme() {
-      return 'root-porn1';
+      return `root-${this.siteConfig.MOBILE_WEB_TPL}`;
     }
   },
   created() {

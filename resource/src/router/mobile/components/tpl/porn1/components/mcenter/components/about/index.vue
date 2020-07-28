@@ -93,7 +93,7 @@
 
 <script>
 import { mapGetters } from 'vuex';
-import mobileContainer from '../../../common/new/mobileContainer';
+import mobileContainer from '../../../common/mobileContainer';
 import { getCookie, setCookie } from '@/lib/cookie';
 
 export default {
@@ -114,7 +114,7 @@ export default {
       return {
         prev: true,
         onClick: () => { this.$router.back(); },
-        title: this.$text('S_ABOUT_YABOLIVE', '关于鸭博娱乐'),
+        title: `关于${this.siteConfig.SITE_NAME}`,
       };
     },
   },

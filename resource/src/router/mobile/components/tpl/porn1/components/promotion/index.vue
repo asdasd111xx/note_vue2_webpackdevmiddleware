@@ -45,7 +45,7 @@
 import { Swiper, SwiperSlide } from 'vue-awesome-swiper';
 import ajax from '@/lib/ajax';
 import { API_PROMOTION_LIST } from '@/config/api';
-import mobileContainer from '../common/new/mobileContainer';
+import mobileContainer from '../common/mobileContainer';
 
 export default {
   components: {
