@@ -18,6 +18,7 @@
 <script>
 import { mapGetters } from 'vuex';
 import mobileContainer from '../../../common/mobileContainer';
+import { getCookie, setCookie } from '@/lib/cookie';
 
 export default {
   data() {
