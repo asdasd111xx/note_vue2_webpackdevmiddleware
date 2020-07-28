@@ -2,42 +2,57 @@
   <mobile-container :header-config="headerConfig">
     <div slot="content" :class="$style['content-wrap']">
       <div :class="$style.title">{{ searchTags }}</div>
-      <div
-        v-for="video in videoList"
-        :key="video.id"
-        :class="[$style.video, 'clearfix']"
-        @click="$router.push({ name: 'videoPlay', params: { id: video.id } })"
-      >
-        <div :class="$style['image-wrap']">
-          <img v-lazy="getImg(video.image)" />
-        </div>
-        <div :class="$style['info-wrap']">
-          <div :class="$style['video-title']">{{ video.title }}</div>
-          <div :class="$style['tag-wrap']">
-            <div
-              v-for="(tag, index) in getTag(video.tag)"
-              :key="`tag-${index}`"
-            >
-              {{ tag }}
+      <template v-if="videoList.length > 0">
+        <div
+          v-for="video in videoList"
+          :key="video.id"
+          :class="[$style.video, 'clearfix']"
+          @click="$router.push({ name: 'videoPlay', params: { id: video.id } })"
+        >
+          <div :class="$style['image-wrap']">
+            <img v-lazy="getImg(video.image)" />
+          </div>
+          <div :class="$style['info-wrap']">
+            <div :class="$style['video-title']">{{ video.title }}</div>
+            <div :class="$style['tag-wrap']">
+              <div
+                v-for="(tag, index) in getTag(video.tag)"
+                :key="`tag-${index}`"
+              >
+                {{ tag }}
+              </div>
+            </div>
+            <div :class="$style.views">
+              <img
+                :src="$getCdnPath('/static/image/_new/discover/ic_video.png')"
+              />
+              {{ video.views }}
             </div>
           </div>
-          <div :class="$style.views">
-            <img
-              :src="$getCdnPath('/static/image/_new/discover/ic_video.png')"
-            />
-            {{ video.views }}
-          </div>
         </div>
-      </div>
-      <!-- 捲動加載 -->
-      <infinite-loading
-        v-if="hasInfinite"
-        ref="infiniteLoading"
-        @infinite="infiniteHandler"
-      >
-        <span slot="no-more" />
-        <span slot="no-results" />
-      </infinite-loading>
+        <!-- 捲動加載 -->
+        <infinite-loading
+          v-if="hasInfinite"
+          ref="infiniteLoading"
+          @infinite="infiniteHandler"
+        >
+          <span slot="no-more" />
+          <span slot="no-results" />
+        </infinite-loading>
+      </template>
+
+      <template v-else-if="videoList.length === 0 && !isLoading">
+        <div :class="$style['no-data']">
+          <div :class="$style['search-img']">
+            <img
+              :src="$getCdnPath('/static/image/_new/common/icon_search_n.png')"
+              alt="search"
+            />
+          </div>
+          <p>无视频资料</p>
+        </div>
+      </template>
+      <page-loading :is-show="isLoading" />
     </div>
   </mobile-container>
 </template>
@@ -52,11 +67,13 @@ import pornRequest from '@/api/pornRequest';
 
 export default {
   components: {
+    pageLoading: () => import(/* webpackChunkName: 'pageLoading' */ '@/router/mobile/components/tpl/porn1/components/common/new/pageLoading'),
     InfiniteLoading,
     mobileContainer
   },
   data() {
     return {
+      isLoading: true,
       isReceive: false,
       hasInfinite: false,
       videoList: [],
@@ -118,6 +135,7 @@ export default {
       this.hasInfinite = false;
 
       this.getVideoList(1).then((response) => {
+        this.isLoading = false;
         this.isReceive = false;
 
         if (response.status !== 200) {
@@ -168,7 +186,7 @@ export default {
 @import "~@/css/variable.scss";
 
 .content-wrap {
-  padding: 53px 0 10px;
+  //   padding: 53px 0 10px;
 }
 
 .title {
@@ -273,6 +291,34 @@ export default {
     width: 13px;
     height: 13px;
     margin-right: 2.5px;
+  }
+}
+
+.no-data {
+  position: absolute;
+  width: 100%;
+  height: calc(100vh - 100px);
+  background: $main_background_white1;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  flex-direction: column;
+
+  .search-img {
+    position: relative;
+    width: 63px;
+    height: 63px;
+
+    img {
+      width: 100%;
+      height: 100%;
+    }
+  }
+
+  p {
+    font-size: 16px;
+    margin-top: 10px;
+    color: #000;
   }
 }
 

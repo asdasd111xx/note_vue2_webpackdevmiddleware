@@ -1,6 +1,6 @@
 <template>
   <div :class="$style['search-info-wrap']">
-    <template v-if="searchList.length">
+    <template v-if="searchList.length > 0">
       <div :class="[$style['list-wrap'], 'clearfix']">
         <div v-for="info in searchList" :key="info.id" :class="$style.wrap">
           <div
@@ -29,7 +29,7 @@
       </infinite-loading>
     </template>
 
-    <template v-else>
+    <template v-else-if="searchList.length === 0 && !isLoading">
       <div :class="$style['no-data']">
         <div :class="$style['search-img']">
           <img
@@ -40,6 +40,7 @@
         <p>无视频资料</p>
       </div>
     </template>
+    <page-loading :is-show="isLoading" />
   </div>
 </template>
 
@@ -51,6 +52,7 @@ import pornRequest from "@/api/pornRequest";
 
 export default {
   components: {
+    pageLoading: () => import(/* webpackChunkName: 'pageLoading' */ '@/router/mobile/components/tpl/porn1/components/common/new/pageLoading'),
     InfiniteLoading
   },
   props: {
@@ -65,6 +67,7 @@ export default {
   },
   data() {
     return {
+      isLoading: true,
       isReceive: false,
       hasInfinite: false,
       searchList: [],
@@ -104,10 +107,12 @@ export default {
         return;
       }
 
+      this.isLoading = true;
       this.isReceive = true;
       this.hasInfinite = false;
 
       this.getSearchList(1).then(response => {
+        this.isLoading = false;
         this.isReceive = false;
 
         if (response.status !== 200) {
