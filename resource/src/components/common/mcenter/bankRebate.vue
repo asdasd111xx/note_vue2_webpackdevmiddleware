@@ -365,7 +365,7 @@ export default {
 
                 if (seconds <= 1800) {
                     this.rebateState = 'initial';
-                    this.popupMsg = (i18n.t('S_TRY_AGAIN_LATER' , '美东时间00:30:00后可使用实时返水功能，请您稍后再试，谢谢。'));
+                    this.popupMsg = i18n.t('S_TRY_AGAIN_LATER' , '美东时间00:30:00后可使用实时返水功能，请您稍后再试，谢谢(250119)');
                     this.isShowPopup = true;
 
                     // 防連點
@@ -444,7 +444,7 @@ export default {
                 const caculateTime = new Date(this.caculateData[dataIndex].now_at.replace('+0800', '+08:00'));
                 const nowTime = new Date(this.systemTime);
                 if (caculateTime.getDate() !== nowTime.getDate()) {
-                    this.popupMsg = (i18n.t('S_RESET_TRIAL' , '请重新执行试算'));
+                    this.popupMsg = i18n.t('S_RESET_TRIAL' , '请重新执行试算');
                     this.isShowPopup = true;
                     return;
                 }
