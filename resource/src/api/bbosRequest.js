@@ -51,7 +51,7 @@ export default ({
     return axios(obj).then((response) => {
         if (process.env.NODE_ENV === "development") {
             console.log("[bbos request]")
-            console.log(response.data)
+            console.log(url, response.data)
         }
 
         if (response && response.data && response.data.status === "000") {

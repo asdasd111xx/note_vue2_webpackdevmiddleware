@@ -15,13 +15,15 @@ export default {
     },
     data() {
         return {
+            isLoading: false,
             username: '',
             password: '',
             captcha: '',
             captchaImg: '',
             depositStatus: false,
             checkItem: '',
-            aid: '' // repcatcha
+            aid: '', // repcatcha
+            errMsg: ''
         };
     },
     computed: {
@@ -33,8 +35,13 @@ export default {
     },
     methods: {
         ...mapActions([
-            'actionIsLogin'
+            'actionIsLogin',
+            'actionSetGlobalMessage'
         ]),
+        // 圖形驗證格式
+        captchaVerification(val) {
+            this.captcha = val.replace(/[\W\_]/g, '');
+        },
         /**
          * 取得驗證碼圖片
          * @method getCaptcha
@@ -61,8 +68,7 @@ export default {
                 }
             });
         },
-        loginCheck(loginInfo, callBackFuc, errorCB) {
-
+        loginCheck(loginInfo, callBackFuc) {
             if (this.isBackEnd) {
                 return;
             }
@@ -80,29 +86,27 @@ export default {
                             this.checkItem = res.ret.check_item;
                             return;
                         }
-                        this.login(loginInfo, callBackFuc, errorCB);
+                        this.login(loginInfo, callBackFuc);
                     },
                     fail: (res) => {
-                        if (errorCB) {
-                            res.data ? errorCB(res.data) : errorCB(res);
-                        }
+                        console.log(res)
                     }
                 });
                 return;
             }
 
-            this.login(loginInfo, callBackFuc, errorCB);
+            this.login(loginInfo, callBackFuc);
         },
         /**
          * 會員登入
          * @method login
          */
-        login(validate = {}, callBackFuc, errorCB) {
-
-            if (this.isBackEnd) {
+        login(validate = {}, callBackFuc) {
+            if (this.isBackEnd || this.isLoading) {
                 return null;
             }
 
+            this.isLoading = true;
             const platform = getCookie('platform');
             return bbosRequest({
                 method: 'put',
@@ -119,13 +123,14 @@ export default {
                     host: window.location.host,
                     ...validate
                 },
-                fail: (res) => {
-                    if (errorCB) {
-                        res.data ? errorCB(res.data) : errorCB(res);
-                    }
-                }
             }).then((res) => {
+                this.isLoading = false;
+
+                // 重置驗證碼
                 if (this.$refs.puzzleVer) this.$refs.puzzleVer.ret = null;
+
+                this.captcha = '';
+                this.getCaptcha();
 
                 if (res && res.data && res.data && res.data.cookie && res.data.cookie.cid) {
                     try {
@@ -134,53 +139,44 @@ export default {
                             setCookie(key, value);
                         }
                     } catch (e) {
-                        //若不支持至少保留cid cookie
                         setCookie('cid', res.data.cookie.cid);
                     }
 
-                    ajax({
-                        method: 'get',
-                        url: apis.API_MEMBER_ANNOUNCEMENT,
-                        errorAlert: false,
-                        success: (response) => {
-                            if (response.result === 'ok') {
-                                response.ret.forEach((post) => {
-                                    // 登入公告
-                                    // alert(post.content);
-                                });
-                            }
-                        }
-                    }).then(() => {
-                        this.actionIsLogin(true);
-                        if (this.redirect) {
-                            window.location.href = this.redirect;
-                            return;
-                        }
-                        window.location.reload();
-                    });
+                    this.actionIsLogin(true);
+                    if (this.redirect) {
+                        window.location.href = this.redirect;
+                        return;
+                    }
+                    window.location.reload(true);
+                    // 登入公告
+                    // ajax({
+                    //     method: 'get',
+                    //     url: apis.API_MEMBER_ANNOUNCEMENT,
+                    //     errorAlert: false,
+                    //     success: (response) => {
+                    //         if (response.result === 'ok') {
+                    //             response.ret.forEach((post) => {
+                    //             });
+                    //         }
+                    //     }
+                    // }).then(() => {
+                    // });
+
                     return;
                 }
 
                 if (res && res.status !== '000') {
-                    if (errorCB) {
-                        res.data ? errorCB(res.data) : errorCB(res);
+                    if (res.msg) {
+                        this.errMsg = res.msg;
+                        return;
                     }
+
+                    this.errMsg = res.status;
                 }
-
-                // if (res.data && res.data.code === 'C10004') {
-                //     if (this.redirect) {
-                //         window.location.href = this.redirect;
-                //         return;
-                //     }
-
-                //     window.location.reload();
-                // }
 
                 if (callBackFuc) {
                     callBackFuc.reset();
                 }
-
-                this.captcha = '';
             });
         },
         /**
