@@ -3,10 +3,7 @@
     <div :class="$style['vip-top-info']">
       <!-- Header -->
       <div :class="$style['header-block']">
-        <div
-          :class="$style['btn-back']"
-          @click="$router.back()"
-        >
+        <div :class="$style['btn-back']" @click="$router.back()">
           <img
             :src="$getCdnPath(`/static/image/_new/common/btn_back.png`)"
             alt="btn_back"
@@ -28,10 +25,6 @@
             >{{ item.config_name }}</span
           >
         </div>
-
-        <message v-if="msg" @close="msg = ''">
-          <div slot="msg">{{ msg }}</div>
-        </message>
       </div>
 
       <!-- user info -->
@@ -72,7 +65,6 @@ import vipLevelCard from "./vipLevelCard";
 import vipInfo from "./vipInfo";
 import liveInfo from "./liveInfo";
 import mcenter from "@/api/mcenter";
-import message from "../../../../common/new/message";
 import yaboRequest from '@/api/yaboRequest';
 
 export default {
@@ -83,11 +75,9 @@ export default {
     vipLevelCard,
     vipInfo,
     liveInfo,
-    message
   },
   data() {
     return {
-      msg: "",
       currentConfigID: 0,
       userVipInfo: null,
       vipLevelList: [],

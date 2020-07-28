@@ -702,11 +702,11 @@
 <script>
 import { mapGetters, mapActions } from 'vuex';
 import { Swiper, SwiperSlide } from 'vue-awesome-swiper';
-import blockListTips from "../../../../../../tpl/porn1/components/common/new/blockListTips";
+import blockListTips from "../../../../../../tpl/porn1/components/common/blockListTips";
 import bbosRequest from "@/api/bbosRequest";
 import DatePicker from 'vue2-datepicker';
 import mixin from '@/mixins/mcenter/deposit/bankCardDeposit';
-import message from '../../../../../../tpl/porn1/components/common/new/message';
+import message from "@/router/mobile/components/common/message";
 
 export default {
   components: {

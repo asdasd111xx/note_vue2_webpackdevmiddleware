@@ -120,7 +120,7 @@
 </template>
 
 <script>
-import message from '../../../../common/new/message';
+import message from "@/router/mobile/components/common/message";
 import { mapGetters, mapActions } from 'vuex';
 
 export default {

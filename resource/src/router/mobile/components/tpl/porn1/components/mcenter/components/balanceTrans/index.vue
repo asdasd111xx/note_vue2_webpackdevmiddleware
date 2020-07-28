@@ -343,9 +343,9 @@
 <script>
 import { mapGetters, mapActions } from "vuex";
 import balanceTran from "@/components/mcenter/components/balanceTran";
-import blockListTips from "../../../common/new/blockListTips";
+import blockListTips from "../../../common/blockListTips";
 import mobileContainer from "../../../common/mobileContainer";
-import message from "../../../common/new/message";
+import message from "@/router/mobile/components/common/message";
 import balanceBack from "../../../mcenter/components/common/balanceBack";
 
 export default {

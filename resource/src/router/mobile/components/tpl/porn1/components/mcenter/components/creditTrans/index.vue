@@ -36,7 +36,7 @@
 <script>
 import { mapGetters, mapActions } from "vuex";
 import balanceTran from "@/components/mcenter/components/balanceTran";
-import blockListTips from "../../../common/new/blockListTips";
+import blockListTips from "../../../common/blockListTips";
 import mobileContainer from "../../../common/mobileContainer";
 import transferCreditTrans from './compontents/transferCreditTrans';
 import discountCreditTrans from './compontents/discountCreditTrans';

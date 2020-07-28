@@ -113,7 +113,7 @@
                 class="login-input"
                 maxlength="4"
                 tabindex="3"
-                @focus="getCaptcha"
+                @input="captchaVerification($event.target.value)"
                 @keydown.13="keyDownSubmit()"
               />
               <div class="input-icon">
@@ -201,7 +201,6 @@
 <script>
 import { mapGetters } from 'vuex';
 import loginForm from '@/mixins/loginForm';
-import mobileLinkOpen from '@/lib/mobile_link_open';
 import slideVerification from '@/components/slideVerification';
 import puzzleVerification from '@/components/puzzleVerification';
 import joinMember from '@/router/web/components/page/join_member';
@@ -227,7 +226,6 @@ export default {
   },
   data() {
     return {
-      errMsg: "",
       version: "",
       isShowPwd: false,
       puzzleData: null,
@@ -299,13 +297,13 @@ export default {
       document.head.appendChild(this.script);
     }
 
+    this.getCaptcha();
     this.username = localStorage.getItem('username') || '';
     this.password = localStorage.getItem('password') || '';
     this.depositStatus = localStorage.getItem('depositStatus') || false;
     this.version = `${this.siteConfig.VERSION}${getCookie('platform') || ''}`;
   },
   methods: {
-    mobileLinkOpen,
     linktoJoin() {
       this.toRegister = true;
       this.$nextTick(() => {
@@ -339,22 +337,23 @@ export default {
       }
 
       switch (this.memInfo.config.login_captcha_type) {
+        // 無驗證
         case 0:
-          this.loginCheck(undefined, undefined, this.errorCallBack);
+          this.loginCheck();
           break;
 
+        // 數字驗證
         case 1:
-          // 數字驗證
-          this.loginCheck(undefined, undefined, this.errorCallBack);
+          this.loginCheck();
           break;
 
+        // 拼圖驗證
         case 3:
-          // 拼圖驗證
           if (!this.puzzleObj) {
             this.errMsg = "请先点击按钮进行验证";
             return;
           }
-          this.loginCheck({ captcha: this.puzzleObj }, undefined, this.errorCallBack);
+          this.loginCheck({ captcha: this.puzzleObj });
           this.puzzleData = null;
           break;
 
@@ -363,18 +362,8 @@ export default {
       }
     },
     slideLogin(loginInfo) {
-      this.loginCheck({ captcha: loginInfo.data }, loginInfo.slideFuc, this.errorCallBack);
+      this.loginCheck({ captcha: loginInfo.data }, loginInfo.slideFuc);
     },
-    // 錯誤訊息call back
-    errorCallBack(res) {
-      if (res && res.msg) {
-        this.errMsg = `${res.msg}(${res.code})`;
-      } else if (res && res.status) {
-        this.errMsg = res.status;
-      } else if (res && res.data) {
-        this.errMsg = res.data.msg;
-      }
-    }
   }
 };
 </script>
@@ -533,7 +522,8 @@ export default {
 .err-msg {
   padding: 2px 0;
   color: $main_error_color1;
-  min-height: 40px;
+  min-height: 25px;
+  line-height: 25px;
 }
 
 .eye {

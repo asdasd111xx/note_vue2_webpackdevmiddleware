@@ -318,9 +318,9 @@
 import mobileContainer from '../../../common/mobileContainer';
 import mixin from '@/mixins/mcenter/withdraw';
 import { mapGetters, mapActions } from 'vuex';
-import blockListTips from "../../../common/new/blockListTips";
+import blockListTips from "../../../common/blockListTips";
 import balanceTran from "@/components/mcenter/components/balanceTran";
-import message from '../../../common/new/message'
+import message from "@/router/mobile/components/common/message";
 import serialNumber from './serialNumber'
 import ajax from '@/lib/ajax';
 import EST from '@/lib/EST';

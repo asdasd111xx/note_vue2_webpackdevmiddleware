@@ -75,10 +75,6 @@
           </div>
         </div>
       </div>
-      <message v-if="msg" @close="msg = ''">
-        <div slot="msg">{{ msg }}</div>
-      </message>
-
       <div :class="$style['online-btn']">
         <div @click="$router.push('/mobile/service')">
           7*24在线客服
@@ -89,15 +85,13 @@
 </template>
 
 <script>
-import { mapGetters } from 'vuex';
 import mobileContainer from '../../../../common/mobileContainer';
-import message from '../../../../common/new/message';
 import yaboRequest from '@/api/yaboRequest';
+import { mapGetters, mapActions } from 'vuex';
 
 export default {
   components: {
     mobileContainer,
-    message
   },
   //   {
   //         id: 1,
@@ -138,11 +132,14 @@ export default {
     });
   },
   methods: {
+    ...mapActions([
+      'actionSetGlobalMessage'
+    ]),
     copy(key) {
       const string = this.list[key].value;
       if (!string) return;
       this.$copyText(string);
-      this.msg = '复制成功';
+      this.actionSetGlobalMessage({ msg: '复制成功' });
     }
   }
 };

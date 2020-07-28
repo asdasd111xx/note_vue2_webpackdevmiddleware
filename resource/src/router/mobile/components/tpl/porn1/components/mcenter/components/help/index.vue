@@ -42,7 +42,7 @@
 import { mapGetters } from 'vuex';
 import member from '@/api/member';
 import mobileContainer from '../../../common/mobileContainer';
-import message from "../../../common/new/message"
+import message from "@/router/mobile/components/common/message";
 
 export default {
   components: {

@@ -61,11 +61,6 @@
     </div>
     <!-- Share Modal -->
     <share v-if="isShowShare" :is-show-share.sync="isShowShare" />
-    <message v-if="msg" @close="msg = ''">
-      <div slot="msg">
-        {{ msg }}
-      </div>
-    </message>
   </div>
 </template>
 
@@ -79,7 +74,6 @@ import ajax from '@/lib/ajax';
 import { API_MCENTER_DESPOSIT_AMOUNT } from '@/config/api';
 import mobileLinkOpen from '@/lib/mobile_link_open';
 import share from './share';
-import message from '../../../../common/new/message';
 import { getCookie } from '@/lib/cookie';
 import yaboRequest from "@/api/yaboRequest";
 import bbosRequest from "@/api/bbosRequest";
@@ -87,11 +81,9 @@ import axios from 'axios'
 export default {
   components: {
     share,
-    message
   },
   data() {
     return {
-      msg: '',
       isReceive: false,
       toggleShare: false,
       requiredMoney: 'load',
@@ -321,7 +313,10 @@ export default {
     })
   },
   methods: {
-    ...mapActions(['actionEnterMCenterThirdPartyLink', 'actionSetUserdata']),
+    ...mapActions(['actionEnterMCenterThirdPartyLink',
+      'actionSetUserdata',
+      'actionSetGlobalMessage'
+    ]),
     mobileLinkOpen,
     onListClick(item) {
       if (item.pageName === 'super') {
@@ -340,7 +335,7 @@ export default {
             window.open(appUrl, '_blank');
           }
         } else {
-          this.msg = this.superErrorMsg;
+          this.actionSetGlobalMessage({ msg: this.superErrorMsg });
         }
 
         return;

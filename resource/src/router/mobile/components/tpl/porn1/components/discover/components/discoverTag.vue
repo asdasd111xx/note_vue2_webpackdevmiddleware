@@ -39,9 +39,6 @@
         确定
       </div>
     </div>
-    <message v-if="msg" @close="msg = ''"
-      ><div slot="msg">{{ msg }}</div>
-    </message>
   </div>
 </template>
 
@@ -50,18 +47,16 @@ import axios from "axios";
 import find from "lodash/find";
 import join from "lodash/join";
 import pornRequest from "@/api/pornRequest";
-import message from "../../common/new/message";
+import { mapGetters, mapActions } from 'vuex';
 
 export default {
   components: {
-    message
   },
   data() {
     return {
       tags: [],
       active: 0,
       selected: [],
-      msg: "",
       totalLists: []
     };
   },
@@ -99,6 +94,9 @@ export default {
     }
   },
   methods: {
+    ...mapActions([
+      'actionSetGlobalMessage'
+    ]),
     onClick(id) {
       this.active = id;
       $("#mobile-wrap").animate({ scrollTop: 0 });
@@ -110,7 +108,7 @@ export default {
       }
 
       if (this.selected.length == 5) {
-        this.msg = "一次最多选5个标签";
+        this.actionSetGlobalMessage({ msg: '一次最多选5个标签' });
         return;
       }
 

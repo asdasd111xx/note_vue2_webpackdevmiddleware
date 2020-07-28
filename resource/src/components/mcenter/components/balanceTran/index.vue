@@ -153,15 +153,6 @@
         </p>
       </div>
     </slot>
-    <!-- <confirm
-      v-if="showIntegerBackConfirm"
-      @confirm="confirmIntegerBack"
-      @cancel="showIntegerBackConfirm = false"
-    >
-      <div slot="msg">
-        {{ $t("S_INTEGER_BACK_ACCOUNT_CONFIRM") }}
-      </div>
-    </confirm> -->
   </div>
 </template>
 
@@ -170,14 +161,12 @@ import { mapGetters, mapActions } from 'vuex';
 import { ModelSelect } from 'vue-search-select';
 import mcenter from '@/api/mcenter';
 import ajax from '@/lib/ajax';
-import confirm from '@/router/mobile/components/tpl/porn1/components/common/new/confirm';
 import { getCookie } from '@/lib/cookie';
 import yaboRequest from '@/api/yaboRequest';
 
 export default {
   components: {
     ModelSelect,
-    confirm
   },
   data() {
     return {
