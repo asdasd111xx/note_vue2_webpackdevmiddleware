@@ -365,7 +365,10 @@ export default {
         onClick: () => {
           this.$router.back();
         },
-        hasHelp: true
+        hasHelp: {
+          type: '',
+          url: '/mobile/mcenter/help/',
+        },
       },
       msg: "",
       isShowBlockTips: false,

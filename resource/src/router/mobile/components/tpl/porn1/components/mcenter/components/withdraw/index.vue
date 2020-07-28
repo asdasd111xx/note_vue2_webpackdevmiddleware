@@ -481,10 +481,12 @@ export default {
         prev: true,
         onClick: () => { this.$router.back(); },
         title: this.$text('S_WITHDRAWAL_TEXT', '提现'),
-        hasHelp: true,
-        helpRouter: '/withdraw',
-        customEvent: () => {
-          this.saveCurrentValue(true);
+        hasHelp: {
+          type: 'withdraw',
+          url: '/mobile/mcenter/help/withdraw',
+          func: () => {
+            this.saveCurrentValue(true);
+          }
         },
       };
     },

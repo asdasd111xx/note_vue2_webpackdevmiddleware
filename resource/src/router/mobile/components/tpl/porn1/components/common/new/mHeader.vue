@@ -177,45 +177,6 @@
       </div>
     </template>
 
-    <message v-if="msg" @close="msg = ''">
-      <div slot="msg">{{ msg }}</div>
-    </message>
-    <template v-if="headerConfig.hasHelp">
-      <div :class="$style['balance-wrap']" @click="setMenuState('balance')">
-        <div>
-          <img
-            :src="
-              $getCdnPath(
-                '/static/image/_new/mcenter/balanceTrans/btn_help.png'
-              )
-            "
-            @click="
-              () => {
-                headerConfig.customEvent ? headerConfig.customEvent() : '';
-                $router.push(
-                  `/mobile/mcenter/help${
-                    headerConfig.helpRouter ? headerConfig.helpRouter : ''
-                  }`
-                );
-              }
-            "
-          />
-        </div>
-      </div>
-    </template>
-
-    <template v-if="headerConfig.hasDespositHelp">
-      <div :class="$style['deposit-wrap']">
-        教程
-        <img
-          :src="
-            $getCdnPath('/static/image/_new/mcenter/balanceTrans/btn_help.png')
-          "
-          @click="headerConfig.customEvent"
-        />
-      </div>
-    </template>
-
     <template v-if="headerConfig.hasTransaction">
       <div
         :class="$style['btn-feedback']"
@@ -224,6 +185,7 @@
         {{ $text("S_TRANSACTION_RECORD", "交易记录") }}
       </div>
     </template>
+
     <template v-if="headerConfig.recommendGift">
       <div
         :class="$style['btn-feedback']"
@@ -232,11 +194,30 @@
         礼金明细
       </div>
     </template>
+
+    <!-- 幫助中心連結 -->
+    <template v-if="headerConfig.hasHelp">
+      <div :class="[$style['btn-help']]">
+        <span v-if="headerConfig.hasHelp.type === 'deposit'">
+          教程
+        </span>
+        <div :class="$style['btn-icon']">
+          <img
+            :src="
+              $getCdnPath(
+                '/static/image/_new/mcenter/balanceTrans/btn_help.png'
+              )
+            "
+            @click="handleHelpLinkTo"
+          />
+        </div>
+      </div>
+    </template>
   </div>
 </template>
 
 <script>
-import { mapGetters } from "vuex";
+import { mapGetters, mapActions } from "vuex";
 import message from "./message";
 export default {
   components: {
@@ -286,13 +267,30 @@ export default {
     },
   },
   methods: {
+    ...mapActions([
+      'actionSetGlobalMessage'
+    ]),
+    // 自訂幫助中心事件
+    handleHelpLinkTo() {
+      if (this.headerConfig.hasHelp && this.headerConfig.hasHelp.func) {
+        this.headerConfig.hasHelp.func();
+      }
+
+      // 充值不開放
+      if (this.headerConfig.hasHelp.type === "deposit") {
+        this.actionSetGlobalMessage({ type: "incoming" });
+        return;
+      }
+
+      this.$router.push(this.headerConfig.hasHelp.url);
+    },
     // 設定選單狀態
     setMenuState(value) {
       this.currentMenu = this.currentMenu === value ? "" : value;
     },
     handleClickAsk() {
       if (this.loginStatus) {
-        this.$router.push({name: 'mcenter-information'});
+        this.$router.push({ name: 'mcenter-information' });
       } else {
         this.$router.push("/mobile/login");
       }
@@ -614,25 +612,26 @@ export default {
   color: #414655;
 }
 
-.deposit-wrap {
+.btn-icon {
+  height: 20px;
+  width: 20px;
+  > img {
+    height: 100%;
+    width: 100%;
+  }
+}
+
+.btn-help {
+  height: 100%;
+  align-items: center;
+  color: #5e626d;
+  display: flex;
   position: absolute;
   right: 17px;
-  top: 50%;
-  transform: translateY(-50%);
-  display: flex;
+  top: 0;
 
-  > img {
-    display: inline-block;
-    height: 20px;
-    width: 20px;
-    margin-left: 1.5px;
-  }
-
-  &::before {
-    content: "";
-    display: inline-block;
-    height: 100%;
-    vertical-align: middle;
+  > span {
+    margin: 0 5px;
   }
 }
 

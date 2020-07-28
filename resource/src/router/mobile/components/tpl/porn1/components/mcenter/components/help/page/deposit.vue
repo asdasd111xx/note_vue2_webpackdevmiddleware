@@ -49,7 +49,6 @@ export default {
   },
   mounted() {
     this.hasCid = getCookie('cid') || false;
-    this.$router.push("/mobile/mcenter/help");
     document.title = this.$text('S_HELP_CENTER', '帮助中心')
   },
   computed: {
