@@ -300,7 +300,9 @@
             <div
               :class="[
                 $style['transfer-btn'],
-                { [$style['is-disable']]: balanceTran.btnLock }
+                {
+                  [$style['is-disable']]: balanceTran.btnLock || !transferMoney
+                }
               ]"
               @click="
                 () => {
@@ -311,7 +313,7 @@
                       customSucessAlert: () => {
                         transferSubmit(balanceTran.btnLock);
                       }
-                    })
+                    });
                   }
                 }
               "

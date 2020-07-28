@@ -463,7 +463,7 @@ export default {
             customSucessAlert();
           }
           if (!customSucessAlert) {
-            this.actionSetGlobalMessage({ msg: this.$t('S_CR_SUCCESS') });
+            this.actionSetGlobalMessage({ msg: '转帐成功' });
             // alert(this.$t('S_CR_SUCCESS'));
           }
 
