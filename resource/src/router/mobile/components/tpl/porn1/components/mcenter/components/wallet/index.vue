@@ -180,8 +180,8 @@ import Vue from 'vue';
 import ajax from '@/lib/ajax';
 import EST from '@/lib/EST';
 import balanceTran from '@/components/mcenter/components/balanceTran';
-import mobileContainer from '../../../common/new/mobileContainer';
-import message from '../../../common/new/message';
+import mobileContainer from '../../../common/mobileContainer';
+import message from "@/router/mobile/components/common/message";
 import { getCookie } from '@/lib/cookie';
 import yaboRequest from '@/api/yaboRequest';
 
@@ -220,7 +220,7 @@ export default {
           text: this.$text("S_CREDIT_TRANSFER", "额度转让"),
           imgSrc: '/static/image/_new/mcenter/wallet/ic_wallet_trans.png',
           onClick: () => {
-            if (!this.hasBank) {
+            if (this.rechargeConfig && this.rechargeConfig.bank_required && !this.hasBank) {
               this.actionSetGlobalMessage({ code: 'C50099', origin: 'wallet', type: 'bindcard' });
             } else if (this.rechargeConfig && !this.rechargeConfig.enable) {
               this.actionSetGlobalMessage({ msg: '额度转让升级中' });

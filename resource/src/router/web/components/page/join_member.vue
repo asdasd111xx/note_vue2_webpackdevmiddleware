@@ -585,6 +585,12 @@ export default {
         }
       }
 
+      if (key === "captcha_text") {
+        // 圖形驗證格式
+        this.allValue.captcha_text = this.allValue['captcha_text']
+          .replace(/[\W\_]/g, '');
+      }
+
       this.allTip[key] = '';
       this.currentTip = '';
     },
@@ -608,12 +614,7 @@ export default {
         aid: this.aid || getCookie('aid') || '',
         speedy: true
       };
-      delete params.captcha_text;
-      delete params.withdraw_Password;
 
-      if (this.memInfo.config.register_captcha_type === 3) {
-        delete params.confirm_password;
-      }
       const self = this;
       const platform = getCookie('platform');
 

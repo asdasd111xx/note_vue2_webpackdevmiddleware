@@ -123,7 +123,10 @@
               @input="checkData"
             />
             <div
-              :class="[$style['send-keyring'], { [$style.disabled]: smsTimer || !isVerifyPhone }]"
+              :class="[
+                $style['send-keyring'],
+                { [$style.disabled]: smsTimer || !isVerifyPhone }
+              ]"
               @click="showCaptchaPopup"
             >
               {{ time ? `${time}s` : "获取验证码" }}
@@ -204,7 +207,7 @@
 import axios from 'axios';
 import { mapGetters, mapActions } from 'vuex';
 import ajax from '@/lib/ajax';
-import message from '../../../common/new/message';
+import message from "@/router/mobile/components/common/message";
 import popupVerification from '@/components/popupVerification';
 
 export default {

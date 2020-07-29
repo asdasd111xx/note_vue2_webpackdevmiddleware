@@ -1,6 +1,10 @@
 <template>
   <mobile-container :header-config="headerConfig">
-    <div slot="content" :class="[$style['content-wrap']]" :style="{ height: divHeight + 'px' }">
+    <div
+      slot="content"
+      :class="[$style['content-wrap']]"
+      :style="{ height: divHeight + 'px' }"
+    >
       <platform-layout :headerConfig.sync="headerConfig" :source="source" />
     </div>
   </mobile-container>
@@ -8,7 +12,7 @@
 
 <script>
 import { mapGetters } from "vuex";
-import mobileContainer from "../common/new/mobileContainer";
+import mobileContainer from "../common/mobileContainer";
 import platformLayout from "./components/layout/"
 
 export default {

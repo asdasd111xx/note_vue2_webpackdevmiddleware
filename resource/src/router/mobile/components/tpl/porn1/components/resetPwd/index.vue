@@ -5,10 +5,6 @@
     :has-footer="hasFooter"
   >
     <div slot="content" :class="$style['content-wrap']">
-      <message v-if="msg" @close="msg = ''">
-        <div slot="msg">{{ msg }}</div>
-      </message>
-
       <!-- 錯誤訊息 -->
       <div :class="$style['err-msg']">
         <div v-show="errMsg">
@@ -107,8 +103,7 @@
 <script>
 import { mapGetters, mapActions } from 'vuex';
 import resetPwd from '@/mixins/resetPwd';
-import mobileContainer from '../common/new/mobileContainer';
-import message from '../common/new/message';
+import mobileContainer from '../common/mobileContainer';
 import mcenter from '@/api/mcenter';
 import agcenter from '@/api/agcenter';
 import member from '@/api/member';
@@ -228,6 +223,9 @@ export default {
     }
   },
   methods: {
+    ...mapActions([
+      'actionSetGlobalMessage'
+    ]),
     toggleEye(key) {
       const target = this.pwdResetInfo[key];
       if (target.eyeShow) {
@@ -272,7 +270,7 @@ export default {
         agcenter.accountPassword({
           params: pwdInfo,
           success: () => {
-            this.msg = this.$t('S_EDIT_SUCCESS');
+            this.actionSetGlobalMessage({ msg: this.$t('S_EDIT_SUCCESS') });
             setTimeout(() => {
               this.$router.push('/mobile/mcenter/setting');
             }, 2000);
@@ -285,7 +283,7 @@ export default {
         mcenter.accountPassword({
           params: pwdInfo,
           success: () => {
-            this.msg = this.$t('S_EDIT_SUCCESS');
+            this.actionSetGlobalMessage({ msg: this.$t('S_EDIT_SUCCESS') });
             setTimeout(() => {
               if (this.memInfo.user.password_reset) {
                 this.actionSetUserdata(true).then(() => {
@@ -316,7 +314,7 @@ export default {
         agent.pwdReset({
           params: pwdInfo,
           success: () => {
-            this.msg = this.$t('S_EDIT_SUCCESS');
+            this.actionSetGlobalMessage({ msg: this.$t('S_EDIT_SUCCESS') });
             setTimeout(() => {
               this.$router.push('/mobile/mcenter/setting');
             }, 2000);
@@ -329,7 +327,7 @@ export default {
         member.pwdReset({
           params: pwdInfo,
           success: () => {
-            this.msg = this.$t('S_EDIT_SUCCESS');
+            this.actionSetGlobalMessage({ msg: this.$t('S_EDIT_SUCCESS') });
             setTimeout(() => {
               this.$router.push('/mobile/mcenter/setting');
             }, 2000);

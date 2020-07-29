@@ -315,12 +315,12 @@
 </template>
 
 <script>
-import mobileContainer from '../../../common/new/mobileContainer';
+import mobileContainer from '../../../common/mobileContainer';
 import mixin from '@/mixins/mcenter/withdraw';
 import { mapGetters, mapActions } from 'vuex';
-import blockListTips from "../../../common/new/blockListTips";
+import blockListTips from "../../../common/blockListTips";
 import balanceTran from "@/components/mcenter/components/balanceTran";
-import message from '../../../common/new/message'
+import message from "@/router/mobile/components/common/message";
 import serialNumber from './serialNumber'
 import ajax from '@/lib/ajax';
 import EST from '@/lib/EST';
@@ -364,7 +364,8 @@ export default {
     }
   },
   components: {
-    pageLoading: () => import(/* webpackChunkName: 'pageLoading' */ '@/router/mobile/components/tpl/porn1/components/common/new/pageLoading'),
+    pageLoading: () => import(/* webpackChunkName: 'pageLoading' */ '@/router/mobile/components/common/pageLoading'),
+
     mobileContainer,
     balanceTran,
     message,
@@ -481,10 +482,12 @@ export default {
         prev: true,
         onClick: () => { this.$router.back(); },
         title: this.$text('S_WITHDRAWAL_TEXT', '提现'),
-        hasHelp: true,
-        helpRouter: '/withdraw',
-        customEvent: () => {
-          this.saveCurrentValue(true);
+        hasHelp: {
+          type: 'withdraw',
+          url: '/mobile/mcenter/help/withdraw',
+          func: () => {
+            this.saveCurrentValue(true);
+          }
         },
       };
     },

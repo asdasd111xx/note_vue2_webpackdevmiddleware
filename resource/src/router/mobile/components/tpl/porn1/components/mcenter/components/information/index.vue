@@ -47,16 +47,17 @@
 
 <script>
 import { mapGetters, mapActions } from 'vuex';
-import message from './components/message/index';
-import mobileContainer from '../../../common/new/mobileContainer';
+import mobileContainer from '../../../common/mobileContainer';
 import news from './components/news/index';
 import post from './components/post/index';
+import message from './components/message/index';
+
 export default {
   components: {
     mobileContainer,
-    message,
     news,
-    post
+    post,
+    message
   },
   data() {
     return {

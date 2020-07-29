@@ -61,11 +61,6 @@
     </div>
     <!-- Share Modal -->
     <share v-if="isShowShare" :is-show-share.sync="isShowShare" />
-    <message v-if="msg" @close="msg = ''">
-      <div slot="msg">
-        {{ msg }}
-      </div>
-    </message>
   </div>
 </template>
 
@@ -79,7 +74,6 @@ import ajax from '@/lib/ajax';
 import { API_MCENTER_DESPOSIT_AMOUNT } from '@/config/api';
 import mobileLinkOpen from '@/lib/mobile_link_open';
 import share from './share';
-import message from '../../../../common/new/message';
 import { getCookie } from '@/lib/cookie';
 import yaboRequest from "@/api/yaboRequest";
 import bbosRequest from "@/api/bbosRequest";
@@ -87,25 +81,50 @@ import axios from 'axios'
 export default {
   components: {
     share,
-    message
   },
   data() {
     return {
-      msg: '',
       isReceive: false,
       toggleShare: false,
       requiredMoney: 'load',
       superErrorMsg: '', // 超級簽錯誤訊息
       isShowSuper: false, // *顯示超級簽開關
       superAppUrl: '', // 超級簽URL
-      list: [
+      pornSwitchState: false
+    };
+  },
+  computed: {
+    ...mapGetters({
+      memInfo: 'getMemInfo',
+      onlineService: 'getOnlineService',
+      loginStatus: 'getLoginStatus',
+      siteConfig: "getSiteConfig",
+    }),
+    isShowShare: {
+      get() {
+        return this.toggleShare;
+      },
+      set(value) {
+        this.toggleShare = value;
+      }
+    },
+    isShowPromotion() {
+      if (this.memInfo.user.show_promotion) {
+        return this.memInfo.user.show_promotion;
+      } else {
+        return true;
+      }
+    },
+    list() {
+      return [
         {
           initName: '下载超级签，成为超级会员',
           name: 'S_VIP_APP',
           path: '',
           pageName: 'super',
           image: 'vip',
-          isPart: true
+          isPart: true,
+          show: true
         },
         {
           initName: '帮助中心',
@@ -114,8 +133,8 @@ export default {
           pageName: 'help',
           image: 'help',
           info: '存提现、投注有疑问，看这里',
-          isPart: true
-
+          isPart: true,
+          show: true
         },
         {
           initName: '关于鸭博娱乐',
@@ -123,8 +142,8 @@ export default {
           path: '/mobile/mcenter/about',
           pageName: 'about',
           image: 'about',
-          isPart: false
-
+          isPart: false,
+          show: true
         },
         {
           initName: '我的推广',
@@ -133,7 +152,8 @@ export default {
           pageName: 'mypromotion',
           image: 'mypromotion',
           info: '合营计划',
-          isPart: false
+          isPart: false,
+          show: this.isShowPromotion
         }
         // {
         //   initName: '分享APP', name: 'S_SHARE_APP', path: '/mobile/mcenter/about', pageName: 'share', image: 'share'
@@ -170,24 +190,7 @@ export default {
         // {
         //   initName: '信息中心', name: 'S_MSG_CENTER', path: '/mobile/mcenter/information/post', pageName: 'information', image: 'info_post'
         // } // 信息中心
-      ],
-      pornSwitchState: false
-    };
-  },
-  computed: {
-    ...mapGetters({
-      memInfo: 'getMemInfo',
-      onlineService: 'getOnlineService',
-      loginStatus: 'getLoginStatus',
-      siteConfig: "getSiteConfig",
-    }),
-    isShowShare: {
-      get() {
-        return this.toggleShare;
-      },
-      set(value) {
-        this.toggleShare = value;
-      }
+      ].filter(item => item.show)
     }
   },
   created() {
@@ -321,7 +324,10 @@ export default {
     })
   },
   methods: {
-    ...mapActions(['actionEnterMCenterThirdPartyLink', 'actionSetUserdata']),
+    ...mapActions(['actionEnterMCenterThirdPartyLink',
+      'actionSetUserdata',
+      'actionSetGlobalMessage'
+    ]),
     mobileLinkOpen,
     onListClick(item) {
       if (item.pageName === 'super') {
@@ -340,7 +346,7 @@ export default {
             window.open(appUrl, '_blank');
           }
         } else {
-          this.msg = this.superErrorMsg;
+          this.actionSetGlobalMessage({ msg: this.superErrorMsg });
         }
 
         return;

@@ -57,11 +57,11 @@
 
 <script>
 import Vue from 'vue';
-import Message from '../../../../../tpl/porn1/components/common/new/message';
+import message from "@/router/mobile/components/common/message";
 
 export default {
   components: {
-    Message
+    message
   },
   data() {
     return {

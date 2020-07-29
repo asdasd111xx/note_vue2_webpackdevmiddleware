@@ -16,25 +16,19 @@
           </div>
         </template>
       </div>
-      <message v-if="msg" @close="msg = ''">
-        <div slot="msg">
-          {{ msg }}
-        </div>
-      </message>
     </div>
   </mobile-container>
 </template>
 
 <script>
-import mobileContainer from "../../../common/new/mobileContainer";
+import mobileContainer from "../../../common/mobileContainer";
 import { API_PROMOTION_INFO } from "@/config/api";
 import axios from "axios";
-import message from "../../../common/new/message";
+import { mapGetters, mapActions } from 'vuex';
 
 export default {
   components: {
     mobileContainer,
-    message
   },
   data() {
     return {
@@ -78,9 +72,12 @@ export default {
     this.getAgentCode();
   },
   methods: {
+    ...mapActions([
+      'actionSetGlobalMessage'
+    ]),
     copyCode() {
       this.$copyText(this.agentLink).then(() => {
-        this.msg = "复制成功";
+        this.actionSetGlobalMessage({ msg: "复制成功" })
       });
     },
     getDomain() {

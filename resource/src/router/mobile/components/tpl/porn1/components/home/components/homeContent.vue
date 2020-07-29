@@ -136,7 +136,7 @@ import querystring from 'querystring';
 import yaboRequest from '@/api/yaboRequest';
 export default {
   components: {
-    pageLoading: () => import(/* webpackChunkName: 'pageLoading' */ '@/router/mobile/components/tpl/porn1/components/common/new/pageLoading'),
+    pageLoading: () => import(/* webpackChunkName: 'pageLoading' */ '@/router/mobile/components/common/pageLoading'),
     Swiper,
     SwiperSlide
   },
@@ -470,7 +470,7 @@ export default {
         this.$router.push('/mobile/mcenter/accountVip');
         return;
       } else if (path === 'creditTrans') {
-        if (!this.hasBank) {
+        if (this.rechargeConfig && this.rechargeConfig.bank_required && !this.hasBank) {
           this.actionSetGlobalMessage({ code: 'C50099', origin: 'home', type: 'bindcard' });
         } else if (this.rechargeConfig && !this.rechargeConfig.enable) {
           this.actionSetGlobalMessage({ msg: '额度转让升级中' });

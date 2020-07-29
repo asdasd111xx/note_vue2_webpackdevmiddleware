@@ -35,7 +35,7 @@ import Vue from 'vue';
 import member from '@/api/member';
 import getLang from '@/lib/getLang';
 import { getCookie } from '@/lib/cookie';
-import message from '@/router/mobile/components/tpl/porn1/components/common/new/message';
+import message from '@/router/mobile/components/common/message';
 import store from '@/store';
 
 export default {

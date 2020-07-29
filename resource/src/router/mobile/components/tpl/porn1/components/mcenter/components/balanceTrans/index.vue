@@ -300,7 +300,9 @@
             <div
               :class="[
                 $style['transfer-btn'],
-                { [$style['is-disable']]: balanceTran.btnLock }
+                {
+                  [$style['is-disable']]: balanceTran.btnLock || !transferMoney
+                }
               ]"
               @click="
                 () => {
@@ -311,7 +313,7 @@
                       customSucessAlert: () => {
                         transferSubmit(balanceTran.btnLock);
                       }
-                    })
+                    });
                   }
                 }
               "
@@ -341,9 +343,9 @@
 <script>
 import { mapGetters, mapActions } from "vuex";
 import balanceTran from "@/components/mcenter/components/balanceTran";
-import blockListTips from "../../../common/new/blockListTips";
-import mobileContainer from "../../../common/new/mobileContainer";
-import message from "../../../common/new/message";
+import blockListTips from "../../../common/blockListTips";
+import mobileContainer from "../../../common/mobileContainer";
+import message from "@/router/mobile/components/common/message";
 import balanceBack from "../../../mcenter/components/common/balanceBack";
 
 export default {
@@ -363,7 +365,10 @@ export default {
         onClick: () => {
           this.$router.back();
         },
-        hasHelp: true
+        hasHelp: {
+          type: '',
+          url: '/mobile/mcenter/help/',
+        },
       },
       msg: "",
       isShowBlockTips: false,
@@ -384,7 +389,11 @@ export default {
     this.actionSetUserdata(true);
   },
   methods: {
-    ...mapActions(["actionSetUserBalance", "actionSetUserdata"]),
+    ...mapActions([
+      'actionSetUserBalance',
+      'actionSetUserdata',
+      'actionSetGlobalMessage'
+    ]),
     getMaxMoney(balanceList, setMoneyData, transferTargetOut) {
       if (balanceList.vendor[transferTargetOut]) {
         this.transferMoney = Math.floor(
@@ -402,7 +411,7 @@ export default {
         return;
       }
 
-      this.msg = this.$t("S_CR_SUCCESS");
+      this.actionSetGlobalMessage({ msg: '转帐成功' });
       this.transferMoney = 0;
     },
     toggleShowMore() {

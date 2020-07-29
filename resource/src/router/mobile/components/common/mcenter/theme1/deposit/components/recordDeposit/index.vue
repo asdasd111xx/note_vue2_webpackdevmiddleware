@@ -63,7 +63,7 @@
 
 <script>
 import mixin from '@/mixins/mcenter/deposit/recordDeposit';
-import message from '@/router/mobile/components/tpl/porn1/components/common/new/message';
+import message from '@/router/mobile/components/common/message';
 
 export default {
   components: {

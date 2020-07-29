@@ -64,7 +64,9 @@ export default {
       'actionSetGlobalMessage'
     ]),
     handleCreditTrans() {
-      if (this.rechargeConfig && !this.rechargeConfig.enable) {
+      if (this.rechargeConfig && this.rechargeConfig.bank_required && !this.hasBank) {
+        this.actionSetGlobalMessage({ code: 'C50099', origin: 'home', type: 'bindcard' });
+      } else if (this.rechargeConfig && !this.rechargeConfig.enable) {
         this.actionSetGlobalMessage({ msg: '额度转让升级中' });
       } else {
         this.$router.push('/mobile/mcenter/creditTrans');

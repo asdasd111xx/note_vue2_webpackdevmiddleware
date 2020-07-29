@@ -27,7 +27,6 @@ export default ({
         headers: {
             ...pornHeader,
             ...reqHeaders,
-            origin: location.host
         },
         params: {
             ...params

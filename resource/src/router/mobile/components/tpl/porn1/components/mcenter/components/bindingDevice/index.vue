@@ -8,7 +8,7 @@
 
 <script>
 import bindingDevice from '@/router/mobile/components/common/mcenter/theme1/bindingDevice';
-import mobileContainer from '../../../common/new/mobileContainer';
+import mobileContainer from '../../../common/mobileContainer';
 
 export default {
   components: {

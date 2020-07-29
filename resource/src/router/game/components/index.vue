@@ -34,7 +34,7 @@
 import { mapGetters } from 'vuex';
 import game from '@/api/game';
 import isMobileFuc from '@/lib/is_mobile';
-import message from "@/router/mobile/components/tpl/porn1/components/common/new/message"
+import message from "@/router/mobile/components/common/message";
 import { getCookie } from '@/lib/cookie';
 
 export default {

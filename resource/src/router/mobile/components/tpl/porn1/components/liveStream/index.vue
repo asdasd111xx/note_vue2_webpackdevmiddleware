@@ -126,13 +126,13 @@
 import { mapGetters, mapActions } from 'vuex';
 import ajax from '@/lib/ajax';
 import axios from 'axios';
-import mobileContainer from '../common/new/mobileContainer';
+import mobileContainer from '../common/mobileContainer';
 import openGame from '@/lib/open_game';
 import pornRequest from '@/api/pornRequest';
 
 export default {
   components: {
-    pageLoading: () => import(/* webpackChunkName: 'pageLoading' */ '@/router/mobile/components/tpl/porn1/components/common/new/pageLoading'),
+    pageLoading: () => import(/* webpackChunkName: 'pageLoading' */ '@/router/mobile/components/common/pageLoading'),
     mobileContainer
   },
   data() {

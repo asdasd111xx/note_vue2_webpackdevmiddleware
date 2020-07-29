@@ -40,7 +40,7 @@
 <script>
 import { mapGetters } from 'vuex';
 import member from '@/api/member';
-import mobileContainer from '../../../common/new/mobileContainer';
+import mobileContainer from '../../../common/mobileContainer';
 import { getCookie, setCookie } from '@/lib/cookie';
 
 export default {

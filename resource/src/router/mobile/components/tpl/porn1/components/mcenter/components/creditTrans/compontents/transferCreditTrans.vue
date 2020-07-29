@@ -37,6 +37,7 @@
               <input
                 v-model="formData[item.key]"
                 @blur="verification(item)"
+                @input="verification(item)"
                 :placeholder="item.placeholder"
                 type="text"
               />
@@ -59,6 +60,7 @@
                 v-model="formData.keyring"
                 :placeholder="item.placeholder"
                 @blur="verification(inputInfo[3])"
+                @input="verification(inputInfo[3])"
                 :maxlength="item.maxlength"
                 type="number"
               />
@@ -83,6 +85,7 @@
               <input
                 v-model="formData[item.key]"
                 @blur="verification(item)"
+                @input="verification(item)"
                 :placeholder="item.placeholder"
                 type="number"
               />

@@ -41,8 +41,8 @@
 <script>
 import { mapGetters } from 'vuex';
 import member from '@/api/member';
-import mobileContainer from '../../../common/new/mobileContainer';
-import message from "../../../common/new/message"
+import mobileContainer from '../../../common/mobileContainer';
+import message from "@/router/mobile/components/common/message";
 
 export default {
   components: {
@@ -104,10 +104,6 @@ export default {
     },
   },
   created() {
-    // if (!this.loginStatus) {
-    //   this.$router.push("/mobile/login")
-    // }
-
     // 針對遊戲介紹
     localStorage.removeItem("help_gameIntro");
   },

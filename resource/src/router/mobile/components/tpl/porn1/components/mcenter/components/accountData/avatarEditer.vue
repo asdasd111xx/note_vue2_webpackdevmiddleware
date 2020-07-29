@@ -65,7 +65,8 @@ import member from '@/api/member';
 import axios from 'axios';
 export default {
   components: {
-    pageLoading: () => import(/* webpackChunkName: 'pageLoading' */ '@/router/mobile/components/tpl/porn1/components/common/new/pageLoading'),
+    pageLoading: () => import(/* webpackChunkName: 'pageLoading' */ '@/router/mobile/components/common/pageLoading'),
+
 
   },
   props: {
