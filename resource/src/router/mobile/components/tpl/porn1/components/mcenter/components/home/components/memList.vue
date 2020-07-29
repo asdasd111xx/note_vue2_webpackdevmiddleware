@@ -90,14 +90,41 @@ export default {
       superErrorMsg: '', // 超級簽錯誤訊息
       isShowSuper: false, // *顯示超級簽開關
       superAppUrl: '', // 超級簽URL
-      list: [
+      pornSwitchState: false
+    };
+  },
+  computed: {
+    ...mapGetters({
+      memInfo: 'getMemInfo',
+      onlineService: 'getOnlineService',
+      loginStatus: 'getLoginStatus',
+      siteConfig: "getSiteConfig",
+    }),
+    isShowShare: {
+      get() {
+        return this.toggleShare;
+      },
+      set(value) {
+        this.toggleShare = value;
+      }
+    },
+    isShowPromotion() {
+      if (this.memInfo.user.show_promotion) {
+        return this.memInfo.user.show_promotion;
+      } else {
+        return true;
+      }
+    },
+    list() {
+      return [
         {
           initName: '下载超级签，成为超级会员',
           name: 'S_VIP_APP',
           path: '',
           pageName: 'super',
           image: 'vip',
-          isPart: true
+          isPart: true,
+          show: true
         },
         {
           initName: '帮助中心',
@@ -106,8 +133,8 @@ export default {
           pageName: 'help',
           image: 'help',
           info: '存提现、投注有疑问，看这里',
-          isPart: true
-
+          isPart: true,
+          show: true
         },
         {
           initName: '关于鸭博娱乐',
@@ -115,8 +142,8 @@ export default {
           path: '/mobile/mcenter/about',
           pageName: 'about',
           image: 'about',
-          isPart: false
-
+          isPart: false,
+          show: true
         },
         {
           initName: '我的推广',
@@ -125,7 +152,8 @@ export default {
           pageName: 'mypromotion',
           image: 'mypromotion',
           info: '合营计划',
-          isPart: false
+          isPart: false,
+          show: this.isShowPromotion
         }
         // {
         //   initName: '分享APP', name: 'S_SHARE_APP', path: '/mobile/mcenter/about', pageName: 'share', image: 'share'
@@ -162,24 +190,7 @@ export default {
         // {
         //   initName: '信息中心', name: 'S_MSG_CENTER', path: '/mobile/mcenter/information/post', pageName: 'information', image: 'info_post'
         // } // 信息中心
-      ],
-      pornSwitchState: false
-    };
-  },
-  computed: {
-    ...mapGetters({
-      memInfo: 'getMemInfo',
-      onlineService: 'getOnlineService',
-      loginStatus: 'getLoginStatus',
-      siteConfig: "getSiteConfig",
-    }),
-    isShowShare: {
-      get() {
-        return this.toggleShare;
-      },
-      set(value) {
-        this.toggleShare = value;
-      }
+      ].filter(item => item.show)
     }
   },
   created() {
