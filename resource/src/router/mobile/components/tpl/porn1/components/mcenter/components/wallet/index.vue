@@ -220,7 +220,7 @@ export default {
           text: this.$text("S_CREDIT_TRANSFER", "额度转让"),
           imgSrc: '/static/image/_new/mcenter/wallet/ic_wallet_trans.png',
           onClick: () => {
-            if (!this.hasBank) {
+            if (this.rechargeConfig && this.rechargeConfig.bank_required && !this.hasBank) {
               this.actionSetGlobalMessage({ code: 'C50099', origin: 'wallet', type: 'bindcard' });
             } else if (this.rechargeConfig && !this.rechargeConfig.enable) {
               this.actionSetGlobalMessage({ msg: '额度转让升级中' });
