@@ -20,7 +20,7 @@
           </div>
           <div>
             <span>{{ $text("profit", "损益") }}</span>
-            <span>{{ item.valid_bet }}</span>
+            <span>{{ item.profit }}</span>
           </div>
         </div>
       </div>
@@ -109,7 +109,7 @@
                   <div>{{ info.valid_bet | commaFormat }}</div>
                 </td>
                 <td>
-                  <div>{{ info.wage_amount | commaFormat }}</div>
+                  <div>{{ info.profit | commaFormat }}</div>
                 </td>
               </tr>
             </tbody>
