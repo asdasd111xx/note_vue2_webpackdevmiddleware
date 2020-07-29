@@ -4,21 +4,21 @@
     ref="home-wrap"
     :class="[$style['home-wrap'], 'clearfix']"
   >
-   <!-- 上方功能列 -->
-      <div :class="$style['top-wrap']">
-        <!-- 會員中心連結 -->
-        <div :class="[$style['mcenter-func-wrap'], 'clearfix']">
+    <!-- 上方功能列 -->
+    <div :class="$style['top-wrap']">
+      <!-- 會員中心連結 -->
+      <div :class="[$style['mcenter-func-wrap'], 'clearfix']">
         <div :class="$style['mcenter-login-status-wrap']">
-              <div>
+          <div>
             <div>
-                您还未登录
+              您还未登录
             </div>
             <div>
-             请先登录&nbsp;/&nbsp;注册后查看
+              请先登录&nbsp;/&nbsp;注册后查看
             </div>
-            </div>
+          </div>
         </div>
-           <div :class="$style['mcenter-func']">
+        <div :class="$style['mcenter-func']">
           <div
             v-for="(info, index) in mcenterList"
             :key="`mcenter-${index}`"
@@ -46,9 +46,9 @@
               <div>{{ info.text }}</div>
             </template>
           </div>
-            </div>
         </div>
       </div>
+    </div>
     <!-- 左側分類 -->
     <div
       v-show="isShow"
@@ -124,10 +124,7 @@
         <div ref="wrap-buffer" :class="$style['wrap-buffer']" />
       </div>
     </div>
-    <page-loading
-     :isShow="isShowLoading"
-    />
-    </div>
+    <page-loading :isShow="isShowLoading" />
   </div>
 </template>
 
@@ -149,6 +146,7 @@ import yaboRequest from '@/api/yaboRequest';
 export default {
   components: {
     pageLoading: () => import(/* webpackChunkName: 'pageLoading' */ '@/router/mobile/components/common/pageLoading'),
+
     Swiper,
     SwiperSlide
   },

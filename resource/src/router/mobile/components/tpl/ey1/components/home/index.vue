@@ -1,6 +1,7 @@
 <template>
   <mobile-container :header-config="headerConfig" :class="$style.container">
     <div slot="content" class="content-wrap">
+      <div :class="$style['top-bg']" />
       <home-slider />
       <home-new />
       <home-content />
@@ -46,7 +47,6 @@ export default {
       return {
         hasLogo: true,
         hasMemInfo: true,
-        hasSearchBtn: false,
         onClick: () => {
           this.onClick();
         }
@@ -102,6 +102,26 @@ export default {
 </script>
 
 <style lang="scss" module>
+@import "~@/css/variable.scss";
+
+.top-bg {
+  background-repeat: no-repeat;
+  background-size: 100% 100%;
+  background: url("/static/image/ey1/common/pic_top.png");
+  height: 18%;
+  max-height: 130px;
+  max-width: $mobile_max_width;
+  position: absolute;
+  top: 0;
+  width: 100vw;
+}
+
+@media (orientation: landscape) {
+  .top-bg {
+    max-width: $mobile_max_landscape_width !important;
+  }
+}
+
 div.container {
   background-color: #fff;
 }

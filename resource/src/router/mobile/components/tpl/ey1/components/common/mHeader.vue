@@ -108,14 +108,10 @@
 
     <!-- 登錄&註冊 -->
     <template v-if="headerConfig.hasMemInfo">
-      <div
-        v-if="loginStatus"
-        :class="$style['balance-wrap']"
-        @click="setMenuState('balance')"
-      >
-        <span>
+      <div :class="$style['balance-wrap']" @click="setMenuState('balance')">
+        <!-- <span>
           {{ membalance.total }}
-        </span>
+        </span> -->
         <div>
           <img
             :src="$getCdnPath('/static/image/ey1/common/icon_ask.png')"
@@ -124,23 +120,12 @@
           <div v-show="hasUnreadMessage" :class="$style['red-dot']" />
         </div>
       </div>
-      <div v-else :class="$style['login-wrap']">
-        <span @click="$router.push('/mobile/login')">
-          {{ $text("S_LOGON", "登录") }}
-        </span>
-        <span @click="$router.push('/mobile/joinmember')">
-          {{ $text("S_REGISTER", "注册") }}
-        </span>
-        <img
-          :src="$getCdnPath('/static/image/ey1/common/icon_ask.png')"
-          @click="handleClickAsk"
-        />
-      </div>
+
       <!-- 側開額度 -->
-      <side-balance
+      <!-- <side-balance
         v-if="currentMenu === 'balance'"
         :open-state.sync="currentMenu"
-      />
+      /> -->
     </template>
 
     <template v-if="headerConfig.isMCenter">
@@ -325,7 +310,7 @@ export default {
   width: 100%;
   height: 43px;
   padding: 0 17px;
-  background: $main_white_color1;
+  //   background: $main_white_color1;
   text-align: center;
   border-bottom: 1px solid #eee;
 
