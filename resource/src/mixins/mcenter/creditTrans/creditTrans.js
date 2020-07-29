@@ -108,6 +108,7 @@ export default {
                 const msg = this.$t(data.errorMsg);
 
                 this.formData.target_username = this.formData.target_username
+                    .toLowerCase()
                     .replace(' ', '')
                     .trim()
                     .replace(/[\W]/g, '');
@@ -199,7 +200,7 @@ export default {
                     setTimeout(() => {
                         this.isSendKeyring = false;
                     }, 1500)
-                    this.tipMsg = `${res.data.msg}`;
+                    this.errorMessage.phone = `${res.data.msg}`;
                 }
             }).catch(error => {
                 this.times = '';
