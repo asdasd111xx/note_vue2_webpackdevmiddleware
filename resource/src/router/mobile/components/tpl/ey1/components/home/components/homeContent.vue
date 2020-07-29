@@ -4,6 +4,51 @@
     ref="home-wrap"
     :class="[$style['home-wrap'], 'clearfix']"
   >
+   <!-- 上方功能列 -->
+      <div :class="$style['top-wrap']">
+        <!-- 會員中心連結 -->
+        <div :class="[$style['mcenter-func-wrap'], 'clearfix']">
+        <div :class="$style['mcenter-login-status-wrap']">
+              <div>
+            <div>
+                您还未登录
+            </div>
+            <div>
+             请先登录&nbsp;/&nbsp;注册后查看
+            </div>
+            </div>
+        </div>
+           <div :class="$style['mcenter-func']">
+          <div
+            v-for="(info, index) in mcenterList"
+            :key="`mcenter-${index}`"
+            :class="$style['mcenter-cell']"
+            @click="onGoToMcenter(info.name)"
+          >
+            <template v-if="info.name === 'grade'">
+              <img
+                :src="
+                  $getCdnPath(
+                    `/static/image/_new/level/icon_level_${vipLevel}.png`
+                  )
+                "
+              />
+              <div>{{ vipLevel === "max" ? vipLevel : info.text }}</div>
+            </template>
+            <template v-else>
+              <img
+                :src="
+                  $getCdnPath(
+                    `/static/image/ey1/wallet/icon_wallet_${info.name}.png`
+                  )
+                "
+              />
+              <div>{{ info.text }}</div>
+            </template>
+          </div>
+            </div>
+        </div>
+      </div>
     <!-- 左側分類 -->
     <div
       v-show="isShow"
@@ -49,39 +94,6 @@
     </div>
     <!-- 右側內容 -->
     <div v-show="isShow" :class="$style['all-game-wrap']">
-      <!-- 上方功能列 -->
-      <div :class="$style['top-wrap']">
-        <!-- 會員中心連結 -->
-        <div :class="[$style['mcenter-func-wrap'], 'clearfix']">
-          <div
-            v-for="(info, index) in mcenterList"
-            :key="`mcenter-${index}`"
-            :class="$style['mcenter-wrap']"
-            @click="onGoToMcenter(info.name)"
-          >
-            <template v-if="info.name === 'grade'">
-              <img
-                :src="
-                  $getCdnPath(
-                    `/static/image/_new/level/icon_level_${vipLevel}.png`
-                  )
-                "
-              />
-              <div>{{ vipLevel === "max" ? vipLevel : info.text }}</div>
-            </template>
-            <template v-else>
-              <img
-                :src="
-                  $getCdnPath(
-                    `/static/image/_new/wallet/icon_wallet_${info.name}.png`
-                  )
-                "
-              />
-              <div>{{ info.text }}</div>
-            </template>
-          </div>
-        </div>
-      </div>
       <!-- 下方影片與遊戲 -->
       <div
         ref="game-wrap"
@@ -137,7 +149,6 @@ import yaboRequest from '@/api/yaboRequest';
 export default {
   components: {
     pageLoading: () => import(/* webpackChunkName: 'pageLoading' */ '@/router/mobile/components/common/pageLoading'),
-
     Swiper,
     SwiperSlide
   },
@@ -162,8 +173,7 @@ export default {
         { name: 'deposit', text: '充值' },
         { name: 'balanceTrans', text: '转帐' },
         { name: 'withdraw', text: '提现' },
-        { name: 'creditTrans', text: '转让' },
-        { name: 'grade', text: '等级' }
+        { name: 'vip', text: 'vip' },
       ],
     };
   },
@@ -663,12 +673,13 @@ export default {
   overflow: hidden;
   position: relative;
   padding: 0 18px 0 13px;
+  margin-top: 1px;
 }
 
 .type-wrap {
   overflow-y: auto;
   position: absolute;
-  top: 0;
+  top: 65px;
   bottom: 0;
   left: 13px;
   z-index: 1;
@@ -721,7 +732,7 @@ export default {
 }
 
 .top-wrap {
-  height: 50px;
+  height: 65px;
 }
 
 .tag {
@@ -747,12 +758,44 @@ export default {
   }
 }
 
+.mcenter-login-status-wrap {
+  width: 50%;
+  height: 100%;
+
+  > div {
+    height: 50%;
+    line-height: 25px;
+  }
+
+  > div {
+    font-size: 17px;
+    font-weight: 700;
+    text-align: left;
+    color: #fe9154;
+
+    > div:last-of-type {
+      font-size: 13px;
+      font-weight: 400;
+      text-align: left;
+      color: #4e5159;
+    }
+  }
+}
+
 .mcenter-func-wrap {
   width: 100%;
+  display: flex;
   transition: all 0.5s;
 }
 
-.mcenter-wrap {
+.mcenter-func {
+  float: right;
+  width: 50%;
+  display: flex;
+  justify-content: space-between;
+}
+
+.mcenter-cell {
   float: left;
   width: 20%;
 

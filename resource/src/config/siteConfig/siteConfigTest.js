@@ -27,7 +27,7 @@ export const site_500015 = {
 
 
 /**
- * 億元 測試站
+ * 亿元 測試站
  */
 export const site_500023 = {
     ...preset,

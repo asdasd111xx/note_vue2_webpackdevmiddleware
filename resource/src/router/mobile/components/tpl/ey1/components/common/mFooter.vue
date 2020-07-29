@@ -92,12 +92,10 @@ export default {
   width: 100%;
   min-height: 60px;
   z-index: 2;
-
-  background: -webkit-linear-gradient(right, #ffffff, #f8e6e6);
-  background: -o-linear-gradient(left, #ffffff, #f8e6e6);
-  background: -moz-linear-gradient(left, #ffffff, #f8e6e6);
-  background: linear-gradient(to left, #ffffff, #f8e6e6);
-
+  background: -webkit-linear-gradient(top, #ffffff, #f8e6e6);
+  background: -o-linear-gradient(bottom, #ffffff, #f8e6e6);
+  background: -moz-linear-gradient(bottom, #ffffff, #f8e6e6);
+  background: linear-gradient(to bottom, #ffffff, #f8e6e6);
   border-radius: 20px 20px 0 0;
   box-shadow: 0pt -7px 7px 0 rgba(0, 0, 0, 0.05);
 }
@@ -106,11 +104,11 @@ export default {
   float: left;
   width: 20%;
   height: 45px;
-  color: $main_footer_color1;
+  color: $ey_text_color1;
   position: relative;
 
   &.active {
-    color: $main_footer_active_color1;
+    color: #e42a30;
   }
 
   > div {
@@ -142,21 +140,5 @@ export default {
   height: 6px;
   top: 5px;
   right: 33%;
-}
-
-@media screen and (min-width: $phone) {
-  .footer-item {
-    > div {
-      font-size: 13px;
-    }
-  }
-}
-
-@media screen and (min-width: $pad) {
-  .footer-item {
-    > div {
-      font-size: 15px;
-    }
-  }
 }
 </style>

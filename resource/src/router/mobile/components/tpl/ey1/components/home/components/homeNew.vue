@@ -1,7 +1,7 @@
 <template>
   <div class="news-wrap">
     <div class="news-icon">
-      <img :src="$getCdnPath('/static/image/_new/common/icon_news.png')" />
+      <img :src="$getCdnPath('/static/image/ey1/common/icon_news.png')" />
     </div>
     <div ref="container" class="news-content" @click="togglePopup">
       <div
@@ -125,6 +125,8 @@ export default {
 </script>
 
 <style lang="scss" scoped>
+@import "~@/css/variable.scss";
+
 .news-wrap {
   display: flex;
   align-content: center;
@@ -146,7 +148,7 @@ export default {
   cursor: pointer;
   line-height: 12px;
   margin-left: 6px;
-  color: #9ca3bf;
+  color: $ey_text_color1;
   font-size: 12px;
   overflow: hidden;
 }

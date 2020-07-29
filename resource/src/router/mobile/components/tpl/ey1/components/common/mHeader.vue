@@ -5,7 +5,7 @@
       :class="[$style['logo-wrap']]"
       @click="headerConfig.onClick"
     >
-      <img :src="$getCdnPath('/static/image/_new/common/logo.png')" />
+      <img :src="$getCdnPath('/static/image/ey1/common/logo.png')" />
     </div>
 
     <div
@@ -118,21 +118,21 @@
         </span>
         <div>
           <img
-            :src="$getCdnPath('/static/image/_new/common/icon_ask.png')"
+            :src="$getCdnPath('/static/image/ey1/common/icon_ask.png')"
             @click="handleClickAsk"
           />
           <div v-show="hasUnreadMessage" :class="$style['red-dot']" />
         </div>
       </div>
       <div v-else :class="$style['login-wrap']">
-        <span @click="$router.push('/mobile/login')">{{
-          $text("S_LOGON", "登录")
-        }}</span>
-        <span @click="$router.push('/mobile/joinmember')">{{
-          $text("S_REGISTER", "注册")
-        }}</span>
+        <span @click="$router.push('/mobile/login')">
+          {{ $text("S_LOGON", "登录") }}
+        </span>
+        <span @click="$router.push('/mobile/joinmember')">
+          {{ $text("S_REGISTER", "注册") }}
+        </span>
         <img
-          :src="$getCdnPath('/static/image/_new/common/icon_ask.png')"
+          :src="$getCdnPath('/static/image/ey1/common/icon_ask.png')"
           @click="handleClickAsk"
         />
       </div>
