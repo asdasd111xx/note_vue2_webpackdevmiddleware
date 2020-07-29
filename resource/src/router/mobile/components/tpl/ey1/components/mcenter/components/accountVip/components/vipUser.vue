@@ -93,12 +93,16 @@
 import vipUserMixin from "@/mixins/mcenter/accountVip/vipUser";
 
 export default {
-  mixins: [vipUserMixin]
+  mixins: [vipUserMixin],
+  mounted() {
+    this.actionSetUserdata(true).then(() => {
+      this.getAvatarSrc();
+    });
+  }
 };
 </script>
 
 <style lang="scss" module>
-
 .user-info-wrap {
   position: relative;
   width: 100%;

@@ -26,13 +26,6 @@ export default {
       }
     }
   },
-  created() {
-    this.getUserDetail();
-
-    if (!this.loginStatus) {
-      this.$router.push("/mobile/login");
-    }
-  },
   methods: {
     getUserDetail() {
       yaboRequest({

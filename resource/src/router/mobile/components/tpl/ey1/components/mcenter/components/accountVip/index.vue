@@ -65,7 +65,7 @@ import vipUser from "./components/vipUser";
 import vipLevelCard from "./components/vipLevelCard";
 import vipInfo from "./components/vipInfo";
 import yaboRequest from "@/api/yaboRequest";
-import VipMixin from "@/mixins/mcenter/accountVip/index"
+import VipMixin from "@/mixins/mcenter/accountVip/index";
 
 export default {
   components: {
@@ -73,7 +73,14 @@ export default {
     vipLevelCard,
     vipInfo
   },
-  mixins: [VipMixin]
+  mixins: [VipMixin],
+  created() {
+    this.getUserDetail();
+
+    if (!this.loginStatus) {
+      this.$router.push("/mobile/login");
+    }
+  }
 };
 </script>
 

@@ -99,21 +99,59 @@
 
 <script>
 import { Swiper, SwiperSlide } from "vue-awesome-swiper";
-import vipLevelMixin from "@/mixins/mcenter/accountVip/vipLevel"
+import vipLeveCardlMixin from "@/mixins/mcenter/accountVip/vipLevelCard";
 
 export default {
   components: {
     Swiper,
     SwiperSlide
   },
-  mixins: [vipLevelMixin]
+  mixins: [vipLevelMixin],
+  data() {
+    return {
+      swiperWidth: null
+    };
+  },
+  computed: {
+    vipLevelOption() {
+      return {
+        slidesPerView: "auto"
+        // allowTouchMove: false
+      };
+    },
+    vipCardOption() {
+      return {
+        slidesOffsetBefore: 15,
+        width: this.swiperWidth,
+        spaceBetween: 10
+      };
+    }
+  },
+  created() {
+    this.swiperWidth = document.body.offsetWidth - 65;
+  },
+  mounted() {
+    const swiperLevel = this.$refs.swiperLevel.$swiper;
+    const swiperCard = this.$refs.swiperCard.$swiper;
+
+    // 根據當前VIP等級進行初始化
+    // this.initSwiper();
+    this.$nextTick(() => {
+      swiperCard.on("slideChange", () => {
+        this.selectedIndex = swiperCard.realIndex;
+        swiperLevel.slideTo(this.selectedIndex, 500, false);
+        this.$emit(
+          "update:currentLevelData",
+          this.vipLevelList[this.selectedIndex]
+        );
+      });
+    });
+  }
 };
 </script>
 
 <style lang="scss" module>
 @import "~@/css/variable.scss";
-
-$card-width: calc(100% - 30px);
 
 .vip-card-wrap {
   position: relative;
@@ -169,7 +207,6 @@ $card-width: calc(100% - 30px);
 
 .card-desc-container {
   position: relative;
-  // width: $card-width;
   height: 135px;
   text-align: center;
   margin: 0 auto;
@@ -223,7 +260,7 @@ $card-width: calc(100% - 30px);
 }
 
 .card-page {
-  width: $card-width;
+  width: calc(100% - 30px);
   padding: 15px 10px 15px 0;
   margin: 0 auto;
   text-align: right;
