@@ -67,9 +67,9 @@
 </template>
 
 <script>
-/* global $ */
-import mobileContainer from '../../../../common/mobileContainer';
-import vipDetailMixin from "@/mixins/mcenter/accountVip/vipDetail"
+import { getCookie } from "@/lib/cookie";
+import mobileContainer from "../../../../common/mobileContainer";
+import vipDetailMixin from "@/mixins/mcenter/accountVip/vipDetail";
 
 export default {
   components: {
@@ -77,8 +77,84 @@ export default {
   },
   mixins: [vipDetailMixin],
   created() {
-    this.platformName = '亿元'
+    this.platformName = "亿元";
+
+    if (getCookie("cid")) {
+      return;
+    }
+
+    if (!this.loginStatus) {
+      this.$router.push("/mobile/login");
+    }
   },
+  computed: {
+    contentList() {
+      return [
+        {
+          number: "❶",
+          title: "晋级标准",
+          content:
+            "会员的累计充值以及累计流水达到相应级别的要求。即可在次日04点晋级相应的VIP等级。"
+        },
+        {
+          number: "❷",
+          title: "晋级顺序",
+          content:
+            "VIP等级达到相应的要求可每天晋级一级，但VIP等级不可越级晋级。"
+        },
+        {
+          number: "❸",
+          title: "保级要求",
+          content:
+            "会员在达到某VIP等级后，90天内需达到相对应的推广会员人数，如果在此期间完成晋级保级要求。"
+        },
+        {
+          number: "❹",
+          title: "降级标准",
+          content:
+            "如果会员在一个季度(90天计算)内没有完成相应的保级要求，系统会自动降级一个等级，相应的返水及其它优惠也会随之调整至降级后的等级。"
+        },
+        {
+          number: "❺",
+          title: "晋级礼金",
+          content:
+            "晋级礼金在会员达到该会员等级后系统自动派发，每个级别的晋级礼金，每位会员仅能领取1次。"
+        },
+        {
+          number: "❻",
+          title: "生日礼金",
+          content:
+            "将会在生日的隔月5日前，系统自动派发。每年仅可领取一次。(生日彩金1倍流水即可提現)"
+        },
+        {
+          number: "❼",
+          title: "每月红包",
+          content:
+            "会员在上个月有过至少1次的成功充值，即可在每月1号获得上个月相应等级的每月红包彩金。"
+        },
+        {
+          number: "❽",
+          title: `${this.platformName}保留对活动的修改，停止及最终解释权。`,
+          content: ""
+        }
+      ];
+    }
+  },
+  methods: {
+    headerConfig() {
+      if (this.isApp) {
+        return {};
+      }
+
+      return {
+        prev: true,
+        onClick: () => {
+          this.$router.back();
+        },
+        title: "VIP详请"
+      };
+    }
+  }
 };
 </script>
 
@@ -87,8 +163,8 @@ export default {
 
 @mixin grid-style {
   display: grid;
-  grid-template-columns: 68px repeat(5, 1fr);
-  height: 40px;
+  grid-template-columns: 68px repeat(6, 1fr);
+  height: 43px;
   text-align: center;
 }
 
@@ -143,7 +219,11 @@ export default {
 
   .header-item {
     @include grid-item-style();
+    width: 30px;
+    margin: 0 auto;
+
     &:first-of-type {
+      width: 100%;
       background: #d3c3b4;
     }
   }

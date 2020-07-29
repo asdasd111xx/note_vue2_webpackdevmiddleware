@@ -22,11 +22,6 @@ export default {
       return this.userVipInfo.percent + "%";
     }
   },
-  mounted() {
-    this.actionSetUserdata(true).then(() => {
-      this.getAvatarSrc();
-    })
-  },
   methods: {
     ...mapActions([
       'actionSetUserdata'
