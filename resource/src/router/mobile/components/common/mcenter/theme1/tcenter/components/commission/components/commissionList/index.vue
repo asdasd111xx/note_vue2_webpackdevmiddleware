@@ -26,10 +26,10 @@
 
           <div>
             <span>{{ $text("S_COMPUTE_WAGER_INTERVAL", "结算区间") }}</span>
-            <span
-              >{{ info.start_at | dateFormat }} ~
-              {{ info.end_at | dateFormat }}</span
-            >
+            <div :class="$style['period']">
+              <span>{{ info.start_at | dateFormat }} 00:00:00 </span>
+              <span>{{ info.end_at | dateFormat }} 23:59:59</span>
+            </div>
           </div>
 
           <div>
