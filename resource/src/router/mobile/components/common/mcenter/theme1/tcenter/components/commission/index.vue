@@ -67,9 +67,10 @@
       :set-header-title="setHeaderTitle"
       :search-info="searchInfo"
       :show-no-data="isShowNoData"
+      :current-info.sync="commissionInfo"
     />
 
-    <commission-detail v-if="page === 'detail'" />
+    <commission-detail v-if="page === 'detail'" :currentInfo="getCommissionInfo" />
 
     <commission-rebates v-if="page === 'rebate'" />
   </div>
@@ -116,7 +117,8 @@ export default {
     return {
       isShowNoData: false,
       isShowRebate: true,
-      hasSearch: this.$route.params.page === "record"
+      hasSearch: this.$route.params.page === "record",
+      commissionInfo: {}
     };
   },
   computed: {
@@ -138,6 +140,14 @@ export default {
       },
       set(date) {
         this.endTime = date;
+      }
+    },
+    getCommissionInfo: {
+      get() {
+        return this.commissionInfo;
+      },
+      set(data) {
+        this.commissionInfo = data;
       }
     },
     mainClass() {
