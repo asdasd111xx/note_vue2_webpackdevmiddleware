@@ -15,7 +15,7 @@
           v-if="isActive(info.key)"
           :src="
             $getCdnPath(
-              `/static/image/_new/common/footer/icon_${info.key}_h.png`
+              `/static/image/ey1/common/footer/icon_tab_${info.key}_sel.png`
             )
           "
         />
@@ -23,7 +23,7 @@
           v-else
           :src="
             $getCdnPath(
-              `/static/image/_new/common/footer/icon_${info.key}_n.png`
+              `/static/image/ey1/common/footer/icon_tab_${info.key}_normal.png`
             )
           "
         />
@@ -53,10 +53,11 @@ export default {
     }),
     list() {
       return [
+
         { key: 'home', name: this.$text('S_HOME', '首页'), path: '/mobile' },
         { key: 'promotion', name: this.$text('S_PROMOTION', '优惠'), path: '/mobile/promotion' },
         { key: 'service', name: this.$text('S_SERVIEC', '客服'), path: '/mobile/service' },
-        { key: 'S_GIFT', name: this.$text('S_GIFT', '礼包'), path: '/mobile/gift' },
+        { key: 'gift', name: this.$text('S_GIFT', '礼包'), path: '/mobile/gift' },
         { key: 'mcenter-home', name: this.$text('S_INFORMATION', '我的'), path: '/mobile/mcenter/home' }
       ];
     }
@@ -92,10 +93,10 @@ export default {
   min-height: 60px;
   z-index: 2;
 
-  background: -webkit-linear-gradient(right, #ffffff, #eeeeee);
-  background: -o-linear-gradient(left, #ffffff, #eeeeee);
-  background: -moz-linear-gradient(left, #ffffff, #eeeeee);
-  background: linear-gradient(to left, #ffffff, #eeeeee);
+  background: -webkit-linear-gradient(right, #ffffff, #f8e6e6);
+  background: -o-linear-gradient(left, #ffffff, #f8e6e6);
+  background: -moz-linear-gradient(left, #ffffff, #f8e6e6);
+  background: linear-gradient(to left, #ffffff, #f8e6e6);
 
   border-radius: 20px 20px 0 0;
   box-shadow: 0pt -7px 7px 0 rgba(0, 0, 0, 0.05);
