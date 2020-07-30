@@ -170,6 +170,7 @@ export default {
               this.actionSetGlobalMessage({ msg: res.data.msg });
             }
           }).catch((error) => {
+            this.isSend = false;
             this.$emit('setPageLoading', false);
             this.actionSetGlobalMessage({ msg: error.response.data.msg });
           })
