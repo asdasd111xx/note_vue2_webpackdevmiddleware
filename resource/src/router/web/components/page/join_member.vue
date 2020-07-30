@@ -146,6 +146,67 @@
               </div>
             </template>
 
+            <template v-else-if="field.key === 'gender'">
+              <v-select
+                v-model="selectData['gender'].selected"
+                :options="selectData['gender'].options"
+                :searchable="false"
+                :class="$style['join-input-gender']"
+                @input="changSelect(field.key)"
+              />
+            </template>
+
+            <template v-else-if="field.key === 'phone'">
+              <!-- <v-select
+                v-model="selectData[field.key].selected"
+                :options="selectData[field.key].options"
+                :searchable="false"
+                :class="$style['join-select-phone']"
+                @input="changSelect(field.key)"
+              /> -->
+              <input
+                v-model="allValue['phone']"
+                :class="[$style['join-input'], field.key]"
+                :name="field.key"
+                :placeholder="field.content.note1"
+                type="number"
+                @input="verification(field.key)"
+                @keydown.13="joinSubmit()"
+              />
+            </template>
+
+            <template v-else-if="field.key === 'birthday'">
+              <datepicker
+                v-if="field.key === 'birthday'"
+                v-model="allValue[field.key]"
+                :language="dateLang"
+                :disabled="{ from: ageLimit }"
+                :open-date="ageLimit"
+                :clear-button="true"
+                :monday-first="true"
+                :placeholder="field.content.note1"
+                :input-class="$style['join-input-birthday']"
+                name="birthday"
+                format="yyyy/MM/dd"
+                initial-view="year"
+                @cleared="verification(field.key)"
+                @input="verification(field.key)"
+              />
+            </template>
+
+            <template v-else-if="field.key === 'withdraw_password'">
+              <input
+                v-model="allValue['withdraw_password']"
+                :class="[$style['join-input'], field.key]"
+                :name="field.key"
+                :placeholder="field.content.note1"
+                type="number"
+                maxlength="4"
+                @input="verification(field.key)"
+                @keydown.13="joinSubmit()"
+              />
+            </template>
+
             <input
               v-else
               :ref="field.key"
@@ -195,23 +256,27 @@
 </template>
 
 <script>
-import capitalize from 'lodash/capitalize';
-import split from 'lodash/split';
+import { getCookie, setCookie } from '@/lib/cookie';
+import { mapGetters, mapActions } from 'vuex';
 import ajax from '@/lib/ajax';
 import appEvent from '@/lib/appEvent';
-import member from '@/api/member';
-import mcenter from '@/api/mcenter';
-import joinMemInfo from '@/config/joinMemInfo';
-import slideVerification from '@/components/slideVerification';
-import puzzleVerification from '@/components/puzzleVerification';
-import { getCookie, setCookie } from '@/lib/cookie';
 import bbosRequest from "@/api/bbosRequest";
-import { mapGetters, mapActions } from 'vuex';
+import capitalize from 'lodash/capitalize';
+import joinMemInfo from '@/config/joinMemInfo';
+import mcenter from '@/api/mcenter';
+import member from '@/api/member';
+import puzzleVerification from '@/components/puzzleVerification';
+import slideVerification from '@/components/slideVerification';
+import split from 'lodash/split';
+import vSelect from 'vue-select';
+import datepicker from 'vuejs-datepicker';
 
 export default {
   components: {
     slideVerification,
     puzzleVerification,
+    vSelect,
+    datepicker
   },
   props: {
     theme: {
@@ -388,7 +453,6 @@ export default {
         }
 
         Object.keys(this.joinMemInfo).forEach((key) => {
-          // 因為研五API沒有上開關，所以先不判斷開關一律顯示色情影片
           if (key === 'captcha_text' && this.memInfo.config.register_captcha_type !== 1) {
             this.joinMemInfo[key].show = false;
             return;
@@ -518,13 +582,14 @@ export default {
       if (!this.allValue[key]) {
         return;
       }
-      this.allValue[key] = this.allValue[key].replace(/[\W]/g, '')
-      if (key.includes('password') || key === "username") {
+
+      if (key.includes('password') || key === "username" || key === "phone" || key === "qq_num" || key === "withdraw_password") {
         this.allValue[key] = this.allValue[key].toLowerCase()
           .replace(' ', '')
           .trim()
           .replace(/[\W]/g, '');
       }
+
       if (key === 'name' && this.allValue[key].length > 30) {
         this.allValue[key] = this.allValue[key].substring(0, 30);
         return;
@@ -591,6 +656,11 @@ export default {
           .replace(/[\W\_]/g, '');
       }
 
+      //   if (key === 'withdraw_password' && this.allValue.withdraw_password.length < 4 && data.isRequired) {
+      //     this.allTip[key] = this.$t('S_JM_MSG_COMPLETE');
+      //     return;
+      //   }
+
       this.allTip[key] = '';
       this.currentTip = '';
     },
@@ -606,7 +676,6 @@ export default {
         this.puzzleData = null;
       }
 
-      // 暫時調整欄位
       const params = {
         ...this.allValue,
         captchaText: this.allValue.captcha_text,
@@ -638,7 +707,6 @@ export default {
               setCookie(key, value);
             }
           } catch (e) {
-            // 若不支持至少保留cid cookie
             setCookie('cid', res.data.cookie.cid);
           }
 

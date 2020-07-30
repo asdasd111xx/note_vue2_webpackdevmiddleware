@@ -5,7 +5,7 @@
       :class="[$style['logo-wrap']]"
       @click="headerConfig.onClick"
     >
-      <img :src="$getCdnPath('/static/image/ey1/common/logo.png')" />
+      <img :src="$getCdnPath('/static/image/ey1/common/logo_b.png')" />
     </div>
 
     <div
@@ -14,14 +14,9 @@
       @click="headerConfig.onClick"
     >
       <img
-        v-if="source === 'gay' || source === 'les'"
-        :src="$getCdnPath(`/static/image/_new/common/btn_back_w.png`)"
-      />
-      <img
-        v-else
         :src="
           $getCdnPath(
-            `/static/image/_new/common/btn_${
+            `/static/image/ey1/common/btn_${
               headerConfig.hasClose ? 'close' : 'back'
             }.png`
           )
@@ -310,28 +305,10 @@ export default {
   width: 100%;
   height: 43px;
   padding: 0 17px;
-  //   background: $main_white_color1;
+  background: linear-gradient(#fe2a2a, #b60303);
+  color: #ffffff;
   text-align: center;
   border-bottom: 1px solid #eee;
-
-  &.no-border-bottom {
-    border-bottom: unset;
-  }
-
-  // 小豬視頻的search Header 為黑色底
-  &.search-page {
-    background: #414141;
-  }
-
-  &.gay {
-    background: #4a8cb8;
-    border-bottom: none;
-  }
-
-  &.les {
-    background: #d64545;
-    border-bottom: none;
-  }
 
   &::before {
     content: "";
@@ -357,38 +334,6 @@ export default {
     display: block;
     height: 33px;
     width: 100%;
-  }
-}
-
-.login-wrap {
-  height: 100%;
-  display: flex;
-  align-items: center;
-  float: right;
-  > span {
-    display: inline-block;
-    height: 20px;
-    line-height: 20px;
-    margin: 0 1.5px;
-    padding: 0 3px;
-    color: black;
-    font-size: 17px;
-    vertical-align: middle;
-  }
-
-  img {
-    display: inline-block;
-    height: 20px;
-    width: 20px;
-    margin-left: 1.5px;
-    vertical-align: middle;
-  }
-
-  &::before {
-    content: "";
-    display: inline-block;
-    height: 100%;
-    vertical-align: middle;
   }
 }
 
@@ -439,18 +384,9 @@ export default {
   float: left;
   height: 22px;
   line-height: 22px;
-  color: $main_title_color1;
+  color: #ffffff;
   font-size: 17px;
   font-weight: 500;
-
-  &.les,
-  &.gay {
-    color: #fff;
-  }
-
-  &.customTitle {
-    font-weight: 500;
-  }
 }
 
 .btn-game-list {

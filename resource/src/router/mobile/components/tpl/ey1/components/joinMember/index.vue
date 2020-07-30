@@ -42,12 +42,6 @@ export default {
       };
     },
   },
-  beforeDestroy() {
-    // let script = document.querySelector('script[data-name="esabgnixob"]');
-    // if (script) {
-    //   script.parentElement.removeChild(script);
-    // }
-  },
   created() {
     if (this.loginStatus) {
       this.$router.push('/mobile');

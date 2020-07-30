@@ -8,7 +8,7 @@
       <div class="container">
         <div class="login-wrap clearfix">
           <div class="login-logo">
-            <img :src="'/static/image/_new/common/logo.png'" />
+            <img :src="'/static/image/ey1/common/logo_b.png'" />
           </div>
           <div class="login-form-wrap">
             <!-- 錯誤訊息 -->
@@ -18,7 +18,6 @@
               </div>
             </div>
 
-            <!-- 帳號 -->
             <span class="login-unit login-unit-username">
               <input
                 ref="username"
@@ -52,7 +51,6 @@
                 />
               </div>
             </span>
-            <!-- 密碼 -->
             <span class="login-unit login-unit-password">
               <input
                 ref="password"
@@ -94,13 +92,11 @@
                 />
               </div>
             </span>
-            <!-- 拼圖驗證 -->
             <puzzle-verification
               v-if="memInfo.config.login_captcha_type === 3"
               ref="puzzleVer"
               :puzzle-obj.sync="puzzleObj"
             />
-            <!-- 驗證碼 -->
             <span
               v-if="hasCaptchaText"
               class="login-unit login-unit-captcha clearfix"
@@ -131,23 +127,6 @@
                 @click="getCaptcha"
               />
             </span>
-            <div class="login-bottom-wrap">
-              <!-- 滑動驗證 -->
-              <slide-verification
-                v-if="memInfo.config.login_captcha_type === 2"
-                :is-enable="isSlideAble"
-                :success-fuc="slideLogin"
-                page-status="login"
-              />
-              <!-- 登入鈕 -->
-              <div
-                v-else
-                class="login-button login-submit"
-                @click="handleClickLogin"
-              >
-                {{ $text("S_LOGIN_TITLE", "登录") }}
-              </div>
-            </div>
             <div class="login-deposit-username clearfix" @click="onSaveAccount">
               <div class="icon-wrap" @click="depositStatus = !depositStatus">
                 <img
@@ -161,15 +140,29 @@
               <span class="deposit-text">{{
                 $text("S_SAVE_PASSWORD", "记住密码")
               }}</span>
-              <!-- 忘記密碼 -->
               <span
                 class="login-unit-link"
                 @click="$router.push('/mobile/forgetpwd/member')"
                 >{{ $text("S_PASSWORD_FORGET", "忘记密码") }}?</span
               >
             </div>
+            <div class="login-bottom-wrap">
+              <!-- 滑動驗證 -->
+              <slide-verification
+                v-if="memInfo.config.login_captcha_type === 2"
+                :is-enable="isSlideAble"
+                :success-fuc="slideLogin"
+                page-status="login"
+              />
+              <div
+                v-else
+                class="login-button login-submit"
+                @click="handleClickLogin"
+              >
+                {{ $text("S_LOGIN_TITLE", "登录") }}
+              </div>
+            </div>
             <div class="login-link-wrap">
-              <!-- 加入會員 -->
               <div class="link-button link-join-mem">
                 <span @click="linktoJoin()">
                   {{ $text("S_FREE_REGISTER", "免费注册") }}
@@ -183,6 +176,7 @@
               </div>
             </div>
           </div>
+
           <security-check
             v-if="checkItem"
             :check-item.sync="checkItem"
@@ -203,13 +197,9 @@ import { mapGetters } from 'vuex';
 import loginForm from '@/mixins/loginForm';
 import slideVerification from '@/components/slideVerification';
 import puzzleVerification from '@/components/puzzleVerification';
-import joinMember from '@/router/web/components/page/join_member';
 import mobileContainer from '../common/mobileContainer';
 import { getCookie, setCookie } from '@/lib/cookie';
 
-/**
- * 登入共用元件
- */
 export default {
   components: {
     securityCheck: () => import(/* webpackChunkName: 'securityCheck' */'@/router/web/components/common/securityCheck'),
@@ -230,7 +220,6 @@ export default {
       isShowPwd: false,
       puzzleData: null,
       script: null,
-      toRegister: false
     };
   },
   watch: {
@@ -305,7 +294,6 @@ export default {
   },
   methods: {
     linktoJoin() {
-      this.toRegister = true;
       this.$nextTick(() => {
         this.$router.push('/mobile/joinmember');
       });
@@ -387,23 +375,22 @@ export default {
   position: relative;
   margin: 194px auto 0;
   border-radius: 4px;
-  background: #222;
+  background: #fff;
   padding-bottom: 24px;
   box-shadow: 0 2px 8px rgba(0, 0, 0, 0.33);
   max-width: 340px;
-  color: #fff;
   font-size: 14px;
 }
 
 .title {
   margin-bottom: 16px;
   padding: 15px 20%;
-  background: #493535;
+  background: #ff8400;
   width: 100%;
   font-size: 20px;
   line-height: 20px;
   text-align: center;
-  color: #fff;
+  color: #ffffff;
   text-overflow: ellipsis;
   overflow: hidden;
   white-space: nowrap;
@@ -418,14 +405,14 @@ export default {
 
   input {
     display: block;
-    background-color: #56433c;
+    background-color: #e3e3e3;
     border: none;
     border-radius: 8px;
     width: 100%;
     height: 40px;
     text-indent: 10px;
     outline: none;
-    color: #fff;
+    color: #a5a5a5;
 
     &::-webkit-input-placeholder {
       color: #fff;
@@ -433,17 +420,14 @@ export default {
   }
 }
 
-.link-submit {
-  color: $main_text_color1;
-}
 .submit {
   margin: 0 auto;
   border-radius: 8px;
-  background: #f2c925;
+  background: #e42a30;
   width: 80%;
   height: 40px;
   line-height: 40px;
-  color: #493535;
+  color: #ffffff;
   cursor: pointer;
   text-align: center;
 }
@@ -460,7 +444,7 @@ export default {
   color: #fff;
   cursor: pointer;
   transition: all 0.3s ease;
-
+  background-image: url("/static/image/ey1/common/btn_close.png");
   &:hover {
     transform: rotate(90deg);
   }
@@ -471,7 +455,7 @@ export default {
   width: 80%;
   font-size: 15px;
   text-align: center;
-  color: #f94444;
+  color: #ff1010;
 }
 
 .mask {
@@ -521,7 +505,7 @@ export default {
 
 .err-msg {
   padding: 2px 0;
-  color: $main_error_color1;
+  color: #ff1010;
   min-height: 25px;
   line-height: 25px;
 }

@@ -9,12 +9,29 @@
       <!-- 會員中心連結 -->
       <div :class="[$style['mcenter-func-wrap'], 'clearfix']">
         <div :class="$style['mcenter-login-status-wrap']">
-          <div>
+          <div
+            v-if="!loginStatus"
+            :class="$style['not-login-wrap']"
+            @click="$router.push('/mobile/login')"
+          >
             <div>
               您还未登录
             </div>
             <div>
               请先登录&nbsp;/&nbsp;注册后查看
+            </div>
+          </div>
+          <div v-else :class="$style['is-login-wrap']">
+            <div>
+              <span>
+                {{ memInfo.user.name }}
+              </span>
+              <div :class="$style['vip-level']">
+                <div>VIP&nbsp;{{ userViplevel }}</div>
+              </div>
+            </div>
+            <div>
+              {{ `¥${membalance.total}` }}
             </div>
           </div>
         </div>
@@ -143,10 +160,10 @@ import openGame from '@/lib/open_game';
 import pornRequest from '@/api/pornRequest';
 import querystring from 'querystring';
 import yaboRequest from '@/api/yaboRequest';
+
 export default {
   components: {
     pageLoading: () => import(/* webpackChunkName: 'pageLoading' */ '@/router/mobile/components/common/pageLoading'),
-
     Swiper,
     SwiperSlide
   },
@@ -154,7 +171,6 @@ export default {
     return {
       stopScroll: false,
       isReceive: false,
-      isShowAllTag: false,
       isSliding: false,
       isTop: false,
       isShow: false,
@@ -173,6 +189,7 @@ export default {
         { name: 'withdraw', text: '提现' },
         { name: 'vip', text: 'vip' },
       ],
+      userViplevel: ''
     };
   },
   computed: {
@@ -226,7 +243,7 @@ export default {
       return { ...this.allGameList[index] };
     },
     vipLevel() {
-      return this.currentLevel <= 10 ? this.currentLevel : 'max';
+      return this.userViplevel <= 10 ? this.userViplevel : 'max';
     }
   },
   created() {
@@ -269,15 +286,7 @@ export default {
       return;
     }
 
-    mcenter.vipUserDetail({
-      success: ({ result, ret }) => {
-        if (result !== 'ok') {
-          return;
-        }
-
-        this.currentLevel = ret.find(item => item.complex).now_level_seq;
-      }
-    });
+    this.getUserViplevel();
   },
   beforeDestroy() {
     $(window).off('resize', this.onResize);
@@ -459,22 +468,6 @@ export default {
 
       if (path === 'deposit') {
         this.$router.push(`/mobile/mcenter/deposit`);
-        //   0706 統一RD5判斷銀行卡
-        // yaboRequest({
-        //   method: 'get',
-        //   url: `${
-        //     this.siteConfig.YABO_API_DOMAIN
-        //     }/AccountBank/GetBankBindingStatus/${getCookie('cid')}`,
-        //   headers: {
-        //     'x-domain': this.memInfo.user.domain
-        //   }
-        // }).then(res => {
-        //   if (res.data) {
-        //     this.$router.push(`/mobile/mcenter/deposit`);
-        //   } else {
-        //     this.actionSetGlobalMessage({ type: 'bindcard', code: 'C50099' });
-        //   }
-        // });
       } else if (path === 'grade') {
         this.$router.push('/mobile/mcenter/accountVip');
         return;
@@ -584,60 +577,6 @@ export default {
         return;
       }
 
-      //   if (game.type === 'R') {
-      //     let urlParams =
-      //       game.vendor === 'lg_live' ? '&customize=yabo&tableType=3310' : '';
-      //     let newWindow = '';
-      //     // 辨別裝置是否為ios寰宇瀏覽器
-      //     const isUBMobile =
-      //       navigator.userAgent.match(/UBiOS/) !== null &&
-      //       navigator.userAgent.match(/iPhone/) !== null;
-      //     // 暫時用來判斷馬甲包
-      //     const webview = window.location.hostname === 'yaboxxxapp02.com';
-
-      //     // ios寰宇瀏覽器目前另開頁面需要與電腦版開啟方式相同
-      //     if (!isUBMobile && !webview) {
-      //       newWindow = window.open('', '_blank');
-      //     }
-      //     ajax({
-      //       method: 'get',
-      //       url: `${API_GET_VENDOR}/${game.vendor}/game/launch`,
-      //       errorAlert: false,
-      //       params: { kind: game.kind },
-      //       success: ({ result, ret }) => {
-      //         if (result !== 'ok') {
-      //           if (!isUBMobile && !webview) {
-      //             newWindow.close();
-      //           }
-      //           return;
-      //         }
-
-      //         if (webview) {
-      //           window.location.href = ret.url + urlParams;
-      //           return;
-      //         }
-      //         if (!isUBMobile) {
-      //           newWindow.location.href = ret.url + urlParams;
-      //           return;
-      //         }
-
-      //         window.open(ret.url + urlParams);
-      //       },
-      //       fail: error => {
-      //         if (!isUBMobile || !webview) {
-      //           newWindow.alert(
-      //             `${error.data.msg} ${
-      //             error.data.code ? `(${error.data.code})` : ''
-      //             }`
-      //           );
-      //         }
-      //         newWindow.close();
-      //         window.location.reload();d
-      //       }
-      //     });
-      //     return;
-      //   }
-
       this.isShowLoading = true;
 
       const openGameSuccessFunc = (res) => {
@@ -661,6 +600,19 @@ export default {
       } else {
         openGame({ kind: game.kind, vendor: game.vendor, code: game.code }, openGameSuccessFunc, openGameFailFunc);
       }
+    },
+    getUserViplevel() {
+      let cid = getCookie("cid");
+      if (!cid && this.loginStatus) { return; }
+      yaboRequest({
+        method: "get",
+        url: `${
+          this.siteConfig.YABO_API_DOMAIN
+          }/player/vipinfo/${cid}`,
+        headers: { "x-domain": this.memInfo.user.domain }
+      }).then(res => {
+        this.userViplevel = res.data ? res.data[0] && res.data[0].now_level_seq : 0;
+      });
     }
   }
 };
@@ -757,50 +709,93 @@ export default {
 }
 
 .mcenter-login-status-wrap {
-  width: 50%;
+  padding-left: 5px;
+  float: left;
   height: 100%;
 
-  > div {
-    height: 50%;
-    line-height: 25px;
-  }
+  > .not-login-wrap {
+    > div {
+      height: 50%;
+      line-height: 25px;
+    }
 
-  > div {
     font-size: 17px;
     font-weight: 700;
     text-align: left;
     color: #fe9154;
 
     > div:last-of-type {
+      height: 50%;
+      line-height: 25px;
       font-size: 13px;
       font-weight: 400;
       text-align: left;
       color: #4e5159;
     }
   }
+
+  .is-login-wrap {
+    > div {
+      height: 50%;
+      line-height: 25px;
+    }
+
+    > div:first-of-type {
+      display: flex;
+      font-size: 13px;
+      font-weight: 400;
+      text-align: left;
+      color: #4e5159;
+    }
+
+    > div:last-of-type {
+      font-size: 16px;
+      font-family: Segoe UI, Segoe UI-Bold;
+      font-weight: 700;
+      text-align: left;
+      color: #4e5159;
+    }
+  }
+}
+
+.vip-level {
+  margin-left: 3px;
+  align-items: center;
+  color: #ffffff;
+  font-weight: 700;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+
+  > div {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    height: 16px;
+    width: 40px;
+    font-size: 12px;
+    background: linear-gradient(#ffd68a, #fe9154);
+    border-radius: 3px;
+  }
 }
 
 .mcenter-func-wrap {
   width: 100%;
-  display: flex;
   transition: all 0.5s;
 }
 
 .mcenter-func {
   float: right;
-  width: 50%;
-  display: flex;
-  justify-content: space-between;
 }
 
 .mcenter-cell {
   float: left;
-  width: 20%;
+  margin: 0 5px;
 
   > img {
     display: block;
-    width: 33px;
-    height: 33px;
+    width: 40px;
+    height: 40px;
     margin: 0 auto 1px;
   }
 
