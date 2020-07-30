@@ -5,16 +5,34 @@
     :class="$style.container"
   >
     <div slot="content">
-      <div v-for="item in 6" :key="`img${item}`" :class="$style['img-wrap']">
+      <div :class="$style['img-wrap']">
         <img
-          :src="`/static/image/_new/mcenter/makeMoney/promotion_${item}.png`"
+          :class="$style['img-wrap']"
+          :src="`/static/image/_new/mcenter/makeMoney/pic_promotion_banner.png`"
         />
-        <template v-if="item === 2">
-          <span>{{ agentCode }}</span>
-          <div :class="$style['copy-btn']" @click="copyCode">
-            复制
-          </div>
-        </template>
+      </div>
+      <div :class="$style['img-wrap']">
+        <img
+          @click="copyCode"
+          :class="$style['img-wrap']"
+          :src="`/static/image/_new/mcenter/makeMoney/img001.png`"
+        />
+        <span>{{ agentCode }}</span>
+        <div :class="$style['copy-btn']">
+          复制
+        </div>
+      </div>
+      <div :class="$style['img-wrap']">
+        <img
+          :class="$style['img-wrap']"
+          :src="`/static/image/_new/mcenter/makeMoney/img002.png`"
+        />
+      </div>
+      <div :class="$style['img-wrap']">
+        <img
+          :class="$style['img-wrap']"
+          :src="`/static/image/_new/mcenter/makeMoney/img003.png`"
+        />
       </div>
     </div>
   </mobile-container>
@@ -122,7 +140,7 @@ export default {
 
   span {
     position: absolute;
-    bottom: 6vw;
+    bottom: 4vw;
     left: 46%;
     font-weight: 700;
     color: #424654;
@@ -131,7 +149,7 @@ export default {
   .copy-btn {
     padding: 3px 10px;
     position: absolute;
-    bottom: calc(6vw - 3px);
+    bottom: calc(4vw - 3px);
     right: 5%;
     font-weight: 700;
     color: #fff;
