@@ -22,10 +22,10 @@
 
         <div>
           <span>{{ $text("S_COMPUTE_WAGER_INTERVAL", "结算区间") }}</span>
-          <span
-            >{{ info.start_at | dateFormat }} ~
-            {{ info.end_at | dateFormat }}</span
-          >
+          <div :class="$style['period']">
+            <span>{{ info.start_at | dateFormat }} 00:00:00 </span>
+            <span>{{ info.end_at | dateFormat }} 23:59:59</span>
+          </div>
         </div>
 
         <div>
@@ -63,6 +63,12 @@ import InfiniteLoading from "vue-infinite-loading";
 export default {
   components: {
     InfiniteLoading
+  },
+  props: {
+    currentInfo: {
+      type: Object | null,
+      required: true
+    }
   },
   data() {
     return {
@@ -102,11 +108,8 @@ export default {
         (item, index) => index < this.maxResults * this.showPage
       );
     },
-    getPeriod() {
-      return this.$route.query.period;
-    },
     getDate() {
-      let period = String(this.$route.query.period);
+      let period = String(this.currentInfo.period);
       let yyyy = period.slice(0, 4);
       let mm = period.slice(4, 6);
       let dd = period.slice(6, 8);
@@ -236,6 +239,7 @@ export default {
   div {
     display: flex;
     justify-content: space-between;
+    align-items: center;
     font-size: 14px;
     // padding-top: 9px;
     padding: 9px 9px 0 12px;
@@ -254,6 +258,12 @@ export default {
   .card-name {
     font-size: 16px;
     font-weight: 700;
+  }
+
+  .period.period {
+    display: flex;
+    flex-direction: column;
+    padding: 0;
   }
 
   .card-getNumber {

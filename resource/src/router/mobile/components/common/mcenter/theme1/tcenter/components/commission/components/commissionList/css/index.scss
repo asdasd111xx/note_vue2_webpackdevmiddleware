@@ -38,6 +38,7 @@
     div {
         display: flex;
         justify-content: space-between;
+        align-items: center;
         font-size: 14px;
         // padding-top: 9px;
         padding: 9px 9px 0 12px;
@@ -56,6 +57,12 @@
     .card-name {
         font-size: 16px;
         font-weight: 700;
+    }
+
+    .period.period {
+      display: flex;
+      flex-direction: column;
+      padding: 0;
     }
 
     .card-getNumber {

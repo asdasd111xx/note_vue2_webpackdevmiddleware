@@ -1,6 +1,6 @@
 <template>
   <div :class="$style['record-wrap']">
-    <template v-if="!detailInfo.oauth2">
+    <template v-if="!currentInfo.oauth2">
       <div :class="$style['level-info']">
         <div
           :class="$style['card']"
@@ -19,11 +19,12 @@
             <span>{{ item.valid_bet }}</span>
           </div>
           <div>
-            <span>{{ $text("S_PROFIT_AND_LOSS", "损益") }}</span>
-            <span>{{ item.valid_bet }}</span>
+            <span>{{ $text("profit", "损益") }}</span>
+            <span>{{ item.profit }}</span>
           </div>
         </div>
       </div>
+
       <div class="main-wrap">
         <template v-if="friendsList.length">
           <table :class="$style['main-table']">
@@ -66,13 +67,13 @@
 
                 <th
                   :class="[
-                    $style['profit-and-loss'],
-                    { [$style.active]: sort === 'profit_and_loss' }
+                    $style['profit'],
+                    { [$style.active]: sort === 'profit' }
                   ]"
-                  @click="onSort('profit_and_loss')"
+                  @click="onSort('profit')"
                 >
                   <span>
-                    {{ $text("S_PROFIT_AND_LOSS", "损益") }}
+                    {{ $text("profit", "损益") }}
                   </span>
                   <span v-if="sort === 'period'">
                     <icon
@@ -87,6 +88,7 @@
                       height="10"
                     />
                   </span>
+
                   <span v-else>
                     <icon name="long-arrow-alt-up" width="5" height="10" />
                     <icon name="long-arrow-alt-down" width="5" height="10" />
@@ -98,6 +100,7 @@
                 </th>
               </tr>
             </thead>
+
             <tbody>
               <tr v-for="(info, index) in controlData" :key="`list-${info.id}`">
                 <td>{{ index + 1 }}</td>
@@ -106,11 +109,12 @@
                   <div>{{ info.valid_bet | commaFormat }}</div>
                 </td>
                 <td>
-                  <div>{{ info.wage_amount | commaFormat }}</div>
+                  <div>{{ info.profit | commaFormat }}</div>
                 </td>
               </tr>
             </tbody>
           </table>
+
           <infinite-loading
             v-if="showInfinite"
             ref="infiniteLoading"
@@ -120,6 +124,7 @@
             <span slot="no-results" />
           </infinite-loading>
         </template>
+
         <template v-else>
           <div :class="$style['no-data']">
             {{ $text("S_NO_DATA_TPL") }}
@@ -139,23 +144,23 @@
               <span
                 :class="[
                   $style.amount,
-                  { [$style.deficit]: +detailList.amount < 0 }
+                  { [$style.deficit]: +currentInfo.amount < 0 }
                 ]"
               >
-                {{ detailList.amount }}
+                {{ currentInfo.amount }}
               </span>
             </div>
             <div :class="[$style.detail, 'clearfix']">
               <span :class="[$style.text, $style.main]">
                 {{ $text("S_REBATE_LEVEL", "返利级别") }}
               </span>
-              <span :class="[$style.amount]"> {{ detailList.rate }} % </span>
+              <span :class="[$style.amount]"> {{ currentInfo.rate }} % </span>
             </div>
           </div>
 
           <div :class="$style.date">
-            ({{ detailList.start_at | dateFormat }}-{{
-              detailList.end_at | dateFormat
+            ({{ currentInfo.start_at | dateFormat }}-{{
+              currentInfo.end_at | dateFormat
             }})
           </div>
 
@@ -165,18 +170,20 @@
                 {{ $text("S_ACH_VALID_MEMBERS", "有效会员") }}
               </div>
               <div :class="$style.amount">
-                {{ detailList.valid_user }}
+                {{ currentInfo.valid_user }}
                 {{ $text("S_PERSON", "人") }}
               </div>
             </div>
+
             <div :class="[$style.detail, 'clearfix']">
               <div :class="$style.text">
                 {{ $text("S_VALID_BET", "有效投注") }}
               </div>
               <div :class="$style.amount">
-                {{ detailList.valid_bet }}
+                {{ currentInfo.valid_bet }}
               </div>
             </div>
+
             <div :class="[$style.detail, 'clearfix']">
               <div :class="$style.text">
                 {{ $text("S_GAME_LOSS", "游戏盈亏") }}
@@ -184,54 +191,60 @@
               <div
                 :class="[
                   $style.amount,
-                  { [$style.deficit]: +detailList.profit < 0 }
+                  { [$style.deficit]: +currentInfo.profit < 0 }
                 ]"
               >
-                {{ detailList.profit }}
+                {{ currentInfo.profit }}
               </div>
             </div>
+
             <div :class="[$style.detail, 'clearfix']">
               <div :class="$style.text">
                 {{ $text("S_SENT_RAKEBACK", "已派返水") }}
               </div>
               <div :class="$style.amount">
-                {{ detailList.dispatched_rebate }}
+                {{ currentInfo.dispatched_rebate }}
               </div>
             </div>
+
             <div :class="[$style.detail, 'clearfix']">
               <div :class="$style.text">
                 {{ $text("S_SENT_PROMOTIONS", "已派优惠") }}
               </div>
               <div :class="$style.amount">
-                {{ detailList.dispatched_offer }}
+                {{ currentInfo.dispatched_offer }}
               </div>
             </div>
+
             <div :class="[$style.detail, 'clearfix']">
               <div :class="$style.text">
                 {{ $text("S_MEM_DEPOSIT", "会员入款") }}
               </div>
               <div :class="$style.amount">
-                {{ detailList.deposit }}
+                {{ currentInfo.deposit }}
               </div>
             </div>
+
             <div :class="[$style.detail, 'clearfix']">
               <div :class="$style.text">
                 {{ $text("S_MEM_WITHDRAW", "会员出款") }}
               </div>
               <div :class="$style.amount">
-                {{ detailList.withdraw }}
+                {{ currentInfo.withdraw }}
               </div>
             </div>
+
             <div :class="[$style.detail, 'clearfix']">
               <div :class="$style.text">
                 {{ $text("S_PLATFORM_COST", "平台费") }}
               </div>
               <div :class="$style.amount">
-                {{ detailList.vendor_fee }}
+                {{ currentInfo.vendor_fee }}
               </div>
             </div>
+
             <div
-              v-if="detailList.shift_amount"
+              v-if="currentInfo.shift_amount"
               :class="[$style.detail, 'clearfix']"
             >
               <div :class="$style.text">
@@ -241,6 +254,7 @@
                 {{ $text("S_HAVE", "有") }}
               </div>
             </div>
+
             <div :class="$style.tips">
               如需帮助，请<span
                 :class="$style['service-btn']"
@@ -248,6 +262,7 @@
                 >联系客服</span
               >
             </div>
+
           </div>
         </div>
       </div>
@@ -351,7 +366,7 @@ export default {
 
     // commission 目前先隱藏，到時如果顯示，還需要再調Width
     .commission,
-    .profit-and-loss {
+    .profit {
       width: 31%;
     }
   }

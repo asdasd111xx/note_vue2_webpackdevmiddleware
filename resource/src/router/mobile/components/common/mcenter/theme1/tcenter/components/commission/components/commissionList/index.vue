@@ -26,10 +26,10 @@
 
           <div>
             <span>{{ $text("S_COMPUTE_WAGER_INTERVAL", "结算区间") }}</span>
-            <span
-              >{{ info.start_at | dateFormat }} ~
-              {{ info.end_at | dateFormat }}</span
-            >
+            <div :class="$style['period']">
+              <span>{{ info.start_at | dateFormat }} 00:00:00 </span>
+              <span>{{ info.end_at | dateFormat }} 23:59:59</span>
+            </div>
           </div>
 
           <div>
@@ -79,6 +79,10 @@ export default {
     showNoData: {
       type: Boolean,
       required: true
+    },
+    currentInfo: {
+      type: Object | null,
+      required: true
     }
   },
   data() {
@@ -91,27 +95,11 @@ export default {
       if (info.show_detail) {
         this.setTabState(false);
         this.setHeaderTitle(info.period);
+        this.$emit("update:currentInfo", info);
         this.$router.push({
-          path: "/mobile/mcenter/tcenter/commission/detail",
-          query: { period: info.period }
+          path: "/mobile/mcenter/tcenter/commission/detail"
         });
       }
-
-      // if (info.show_detail) {
-      //   this.setTabState(false);
-      //   this.setHeaderTitle(info.period);
-      //   this.$router.push("/mobile/mcenter/tcenter/commission/detail");
-      //   return;
-      // }
-
-      // if (this.displayDetail.includes(info.id)) {
-      //   this.displayDetail = [
-      //     ...this.displayDetail.filter(value => value !== info.id)
-      //   ];
-      //   return;
-      // }
-
-      // this.displayDetail = [...this.displayDetail, info.id];
     },
     typeText(type) {
       switch (type) {

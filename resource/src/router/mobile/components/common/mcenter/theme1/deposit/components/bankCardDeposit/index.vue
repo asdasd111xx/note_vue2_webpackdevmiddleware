@@ -79,16 +79,8 @@
                   src="/static/image/_new/common/select_active.png"
                 />
               </div>
-            </div>
 
-            <!-- 客製額度轉帳入口 -->
-            <div
-              :class="[
-                $style['pay-mode-item-wrap'],
-                'clearfix',
-                $style['credit-trans']
-              ]"
-            >
+              <!-- 客製額度轉帳入口 -->
               <div
                 :class="[$style['pay-mode-item']]"
                 @click="handleCreditTrans"

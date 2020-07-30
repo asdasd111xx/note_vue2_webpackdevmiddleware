@@ -9,6 +9,8 @@ const domain = 'https://yb01.66boxing.com/';
 // const domain = 'https://yaboxxxapp01.com/';
 // const domain = 'https://yaboxxxapp02.com/';
 
+// const domain = 'https://ey.688lg.com/';
+
 module.exports = {
     build: {
         env: require('./prod.env'),
