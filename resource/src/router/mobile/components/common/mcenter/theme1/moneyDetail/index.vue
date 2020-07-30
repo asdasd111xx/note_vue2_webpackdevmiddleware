@@ -249,15 +249,21 @@ export default {
     ]),
     getData() {
       this.isLoading = true;
+      let params = {
+        start_at: Vue.moment(this.startTime).format('YYYY-MM-DD 00:00:00-04:00'),
+        end_at: Vue.moment(this.endTime).format('YYYY-MM-DD 23:59:59-04:00'),
+        category: this.type,
+        order: this.sort,
+        first_result: this.firstResult,
+        max_results: this.maxResults
+      }
+
+      if (this.type.find(i => i === "ingroup_transfer")) {
+        params['opcode'] = ['8007', '1049', '5017', '5016'];
+      }
+
       return mcenter.moneyDetail({
-        params: {
-          start_at: Vue.moment(this.startTime).format('YYYY-MM-DD 00:00:00-04:00'),
-          end_at: Vue.moment(this.endTime).format('YYYY-MM-DD 23:59:59-04:00'),
-          category: this.type,
-          order: this.sort,
-          first_result: this.firstResult,
-          max_results: this.maxResults
-        },
+        params: params,
         success: ({ result, pagination, ret }) => {
           this.isLoading = false;
 

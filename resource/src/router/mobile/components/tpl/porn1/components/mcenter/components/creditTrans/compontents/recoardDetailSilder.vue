@@ -33,10 +33,6 @@ export default {
   },
   components: {
     pageLoading: () => import(/* webpackChunkName: 'pageLoading' */ '@/router/mobile/components/common/pageLoading'),
-
-
-    pageLoading: () => import(/* webpackChunkName: 'pageLoading' */ '@/router/mobile/components/common/pageLoading'),
-
     detailInfo,
   },
   mounted() {
