@@ -1,0 +1,15 @@
+@import "./basic.module.scss";
+
+.nav-item {
+    button {
+        border: 1px solid #cccccc;
+        color: #CCCCCC;
+        border-radius: 5px;
+
+        &:active,
+        &.is-current {
+            background: #e42a30;
+            color: #FFF;
+        }
+    }
+}

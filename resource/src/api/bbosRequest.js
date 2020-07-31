@@ -11,8 +11,6 @@ export default ({
     fail = () => { },
 }) => {
     const bbosHeader = {
-        // to do 廳別應該統一控制
-        // "Vendor": '500015' | '67' | '69',
         "Useragent": navigator.userAgent,
         "Ekey": "sobb",
         'Content-Type': 'application/json',

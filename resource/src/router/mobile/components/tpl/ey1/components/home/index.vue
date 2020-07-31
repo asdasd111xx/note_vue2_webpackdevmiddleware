@@ -21,6 +21,7 @@ import homeContent from './components/homeContent';
 import popup from './components/popup';
 import mobileContainer from '../common/mobileContainer';
 import mcenter from '@/api/mcenter';
+import { getCookie, setCookie } from '@/lib/cookie';
 
 export default {
   components: {
@@ -81,12 +82,19 @@ export default {
   },
   mounted() {
     this.updateBalance = setInterval(() => {
-      this.actionSetUserBalance();
+      let cid = getCookie("cid");
+
+      if (!cid) {
+        clearInterval(this.updateBalance);
+        this.updateBalance = null;
+      } else {
+        this.actionSetUserBalance();
+      }
     }, 30000)
   },
   beforeDestroy() {
-    clearInterval(this.updateBalance)
-    this.updateBalance = null
+    clearInterval(this.updateBalance);
+    this.updateBalance = null;
   },
   methods: {
     ...mapActions([

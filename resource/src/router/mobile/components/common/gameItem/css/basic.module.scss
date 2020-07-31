@@ -3,9 +3,7 @@
 .game-item {
     position: relative;
     display: inline-block;
-    // width: 108px;
     width: calc(100% / 3 - 10px);
-    // margin: 0 5px 26px;
     height: 86px;
     margin: 0 5px 32px;
     text-align: center;
@@ -112,44 +110,3 @@
 .btn-enter {
     display: none;
 }
-
-// @media screen and (min-width: $phone + $sidebar) {
-//     .game-item {
-//         margin: 0 4px 30px;
-//     }
-
-//     .game-title {
-//         font-size: 16px;
-//         bottom: -22px;
-//     }
-
-//     .game-vendor {
-//         font-size: 16px;
-//     }
-//     .icon-star {
-//         width: 18px;
-//         height: 17px;
-//         top: 7%;
-//     }
-// }
-
-// @media screen and (min-width: $pad + $sidebar) {
-//     .game-item {
-//         margin: 0 4px 32px;
-//     }
-
-//     .game-title {
-//         font-size: 20px;
-//         bottom: -24px;
-//     }
-
-//     .game-vendor {
-//         font-size: 20px;
-//     }
-
-//     .icon-star {
-//         width: 24px;
-//         height: 23px;
-//         top: 7%;
-//     }
-// }
