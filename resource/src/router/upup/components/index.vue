@@ -1,11 +1,21 @@
 <template>
-  <div :class="$style['content']">
+  <div
+    v-if="imgSite"
+    :class="[
+      $style['content'],
+      {
+        [$style['ey1']]: imgSite === 'ey1'
+      }
+    ]"
+  >
     <div :class="$style['logo-header']">
-      <img :src="$getCdnPath('/static/image/_new/status/logo_b.png')" />
+      <img :src="$getCdnPath(`/static/image/${imgSite}/common/logo_b.png`)" />
     </div>
     <div :class="$style['title']">{{ $t("ROUTER_UPUP_TITLE") }}</div>
     <div :class="$style['main-img']">
-      <img :src="$getCdnPath('/static/image/_new/status/pic_maintain.png')" />
+      <img
+        :src="$getCdnPath(`/static/image/${imgSite}/status/pic_maintain.png`)"
+      />
     </div>
     <div :class="[$style['desc'], $style['has-time']]">
       {{ $t("ROUTER_UPUP_TEXT_1") }}
@@ -32,13 +42,15 @@ import Vue from 'vue';
 import store from '@/store';
 import member from '@/api/member';
 import getLang from '@/lib/getLang';
+import mixin from '@/mixins/status';
 
 export default {
+  mixins: [mixin],
   data() {
     return {
       start: '',
       end: '',
-      username: ''
+      username: '',
     };
   },
   beforeRouteEnter(to, from, next) {

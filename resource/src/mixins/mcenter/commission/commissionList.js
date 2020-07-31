@@ -1,4 +1,5 @@
 import axios from "axios";
+import EST from '@/lib/EST';
 import { format, toDate, parseISO } from 'date-fns';
 import { API_COMMISSION_LIST } from '@/config/api';
 import { mapActions } from 'vuex'
@@ -52,6 +53,7 @@ export default {
         ...mapActions([
             'actionSetGlobalMessage'
         ]),
+        EST,
         /**
          * 取得佣金資料列表
          */

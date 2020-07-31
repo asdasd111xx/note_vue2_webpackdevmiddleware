@@ -23,8 +23,8 @@
         <div>
           <span>{{ $text("S_COMPUTE_WAGER_INTERVAL", "结算区间") }}</span>
           <div :class="$style['period']">
-            <span>{{ info.start_at | dateFormat }} 00:00:00 </span>
-            <span>{{ info.end_at | dateFormat }} 23:59:59</span>
+            <span>{{ EST(info.start_at) }} </span>
+            <span>{{ EST(info.end_at) }} </span>
           </div>
         </div>
 
@@ -55,6 +55,7 @@
 
 <script>
 import axios from "axios";
+import EST from "@/lib/EST"
 import { format, toDate, parseISO } from "date-fns";
 import { API_COMMISSIOM_DETAIL_LIST } from "@/config/api";
 import { mapActions } from "vuex";
@@ -122,6 +123,7 @@ export default {
   },
   methods: {
     ...mapActions(["actionSetGlobalMessage"]),
+    EST,
     /**
      * 取得佣金詳細資料列表
      */

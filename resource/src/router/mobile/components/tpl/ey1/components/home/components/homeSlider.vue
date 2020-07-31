@@ -8,13 +8,13 @@
           :data-info="key"
         />
       </div>
-      <div>
+      <!-- <div>
         <img
           :class="$style['pad-image']"
           :src="$getCdnPath(info.padImg[curLang])"
           :data-info="key"
         />
-      </div>
+      </div> -->
     </swiper-slide>
     <div slot="pagination" class="swiper-pagination" />
   </swiper>
@@ -175,28 +175,22 @@ export default {
 }
 
 .phone-image-wrap {
-  padding: 0 17px;
+  padding: 2px 17px;
 }
 
 .phone-image {
   border-radius: 7px;
   display: block;
   width: 100%;
+  background: #ffffff;
+  box-shadow: 0px 2px 10px 0px rgba(220, 0, 0, 0.3);
 }
 
-.pad-image {
-  border-radius: 7px;
-  display: none;
-  width: 100%;
-}
-
-@media screen and (min-width: 640px) {
-  .phone-image {
-    display: none;
-  }
-
-  .pad-image {
-    display: block;
-  }
-}
+// .pad-image {
+//    border-radius: 7px;
+//   display: none;
+//   width: 100%;
+//   background: #ffffff;
+//   box-shadow: 0px 2px 10px 0px rgba(220, 0, 0, 0.3);
+// }
 </style>

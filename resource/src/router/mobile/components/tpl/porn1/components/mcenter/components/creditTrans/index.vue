@@ -86,7 +86,7 @@ export default {
         },
         {
           key: "recoard",
-          text: this.$text("S_CREDIT_RECOARD", "转让纪录"),
+          text: this.$text("S_CREDIT_RECOARD", "转让记录"),
         },
       ]
     },

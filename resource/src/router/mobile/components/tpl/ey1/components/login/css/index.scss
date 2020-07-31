@@ -4,13 +4,8 @@
     background-color: #FFF;
 }
 
-.title {
-    color: $main_title_color1;
-    font-size: 16px;
-}
-
 .login-wrap {
-    background-image: url("/static/image/_new/common/bg.png");
+    background-image: url("/static/image/ey1/common/bg.png");
     background-repeat: no-repeat;
     background-size: cover;
     font-size: 14px;
@@ -37,8 +32,7 @@
 
 .login-form-wrap {
     height: 360px;
-    margin: 0 34px;
-    padding: 0 9%;
+    margin: 0 36px;
 
     .login-unit {
         display: block;
@@ -94,7 +88,7 @@
     }
 
     .login-deposit-username {
-        margin: 20px 0 40px;
+        margin: 10px 0 40px;
 
         img {
             display: block;
@@ -125,14 +119,15 @@
         color: white;
         text-align: center;
         line-height: 50px;
-        background: linear-gradient(to left, #BD9D7D 0%, #F9DDBD 100%);
-        border-radius: 25px;
+        background: #e42a30;
+        border-radius: 5px;
         font-size: 13px;
         font-weight: 700;
     }
 }
 
 .login-link-wrap {
+    margin-top: 20px;
     text-align: center;
 
     .link-button {
@@ -141,11 +136,7 @@
         margin: 0 10px;
 
         &.link-submit {
-            color: $main_text_color1;
-        }
-
-        a {
-            color: $main_text_color4;
+            color: #FF8400;
         }
     }
 }
