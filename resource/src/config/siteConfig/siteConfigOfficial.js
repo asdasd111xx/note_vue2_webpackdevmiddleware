@@ -55,4 +55,14 @@ export const site_41 = {
     VERSION: getVersion('ey1'),
     SITE_NAME: '亿元'
 };
+
+/**
+ * 亿元 正式站Demo環境
+ */
+export const site_74 = {
+    ...preset,
+    MOBILE_WEB_TPL: 'ey1',
+    VERSION: getVersion('ey1'),
+    SITE_NAME: '亿元'
+};
 /* eslint-enable camelcase */

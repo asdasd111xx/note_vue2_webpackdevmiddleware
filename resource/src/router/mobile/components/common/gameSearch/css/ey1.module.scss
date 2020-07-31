@@ -1,0 +1,39 @@
+@import "./basic.module.scss";
+
+.search-header {
+    background: linear-gradient(#fe2a2a, #b60303);
+}
+
+.search-input-img {
+    background: url("/static/image/ey1/common/icon_search_n.png");
+    background-size: 20px 20px;
+    background-position: center;
+    background-repeat: no-repeat;
+}
+
+.search-input {
+    color: #ffffff;
+    background: rgba(255, 255, 255, 0.2);
+    border-radius: 10px;
+
+    &::-webkit-input-placeholder {
+        color: white;
+    }
+
+    &::-moz-placeholder {
+        color: white;
+    }
+
+    &:-ms-input-placeholder {
+        color: white;
+    }
+
+    &::placeholder {
+        color: white;
+    }
+}
+
+
+.search-cancel {
+    color: white;
+}

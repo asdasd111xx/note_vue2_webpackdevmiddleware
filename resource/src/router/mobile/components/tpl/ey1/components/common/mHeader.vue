@@ -57,38 +57,9 @@
       <top-game-list :is-list-visible.sync="currentMenu" />
     </div>
 
-    <template v-if="headerConfig.hasSearchBar">
-      <div :class="[$style['search-wrap'], $style[source]]">
-        <input
-          v-model="headerConfig.keyWord"
-          :placeholder="
-            source === 'gay'
-              ? '请输入片名、男优或番号'
-              : $text('S_PLEASE_INPUT_AV', '请输入片名、女优或番号')
-          "
-          type="text"
-          @keydown.enter="headerConfig.onSearchClick(headerConfig.keyWord)"
-          :class="$style[source]"
-        />
-        <div
-          :class="[$style['icon-search'], $style[source]]"
-          @click="headerConfig.onSearchClick(headerConfig.keyWord)"
-        >
-          <icon name="search" width="20" height="20" />
-        </div>
-      </div>
-    </template>
-
     <template v-if="headerConfig.hasSearchBtn">
       <div :class="$style['btn-search-wrap']" @click="goSearch">
-        <div v-if="source === 'smallPig'" :class="$style['sp-search']" />
-
-        <div
-          v-else-if="source === 'gay' || source === 'les'"
-          :class="$style['gay-search']"
-        />
-
-        <div v-else :class="$style['normal-search']" />
+        <div :class="$style['normal-search']" />
       </div>
     </template>
 
@@ -101,12 +72,8 @@
       </div>
     </template>
 
-    <!-- 登錄&註冊 -->
     <template v-if="headerConfig.hasMemInfo">
       <div :class="$style['balance-wrap']" @click="setMenuState('balance')">
-        <!-- <span>
-          {{ membalance.total }}
-        </span> -->
         <div>
           <img
             :src="$getCdnPath('/static/image/ey1/common/icon_ask.png')"
@@ -319,12 +286,12 @@ export default {
 
   &.is-home {
     border-bottom: none;
+    background: unset;
   }
 }
 
 .logo-wrap {
   float: left;
-  width: 99px;
   height: 100%;
   display: flex;
   align-items: center;
@@ -332,8 +299,7 @@ export default {
 
   > img {
     display: block;
-    height: 33px;
-    width: 100%;
+    height: 100%;
   }
 }
 
@@ -624,22 +590,8 @@ export default {
   }
 }
 
-.sp-search {
-  background: url("/static/image/_new/common/icon_search_gray.png");
-  width: 20px;
-  height: 20px;
-  background-size: contain;
-}
-
-.gay-search {
-  background: url("/static/image/_new/common/icon_search_white.png");
-  width: 20px;
-  height: 20px;
-  background-size: contain;
-}
-
 .normal-search {
-  background: url("/static/image/_new/common/icon_search_n.png");
+  background: url("/static/image/ey1/common/icon_search_n.png");
   width: 20px;
   height: 20px;
   background-size: contain;

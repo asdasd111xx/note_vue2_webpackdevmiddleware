@@ -83,7 +83,7 @@
     width: 100%;
     height: calc(100vh - 138px);
     position: absolute;
-    top: 50px;
+    top: 75px;
     left: 0;
     z-index: 4;
     background: #000;
@@ -95,7 +95,7 @@
     padding: 15px 7px 15px 17px;
     margin: 0;
     position: absolute;
-    top: 50px;
+    top: 75px;
     left: 0;
     z-index: 5;
     background: #FFF;
@@ -282,4 +282,10 @@
     padding: 5px 10px;
     margin-top: 2%;
     background: #dbdbdb;
+}
+
+.search-tips {
+    height: 25px;
+    line-height: 25px;
+    color: #A6A9B2;
 }

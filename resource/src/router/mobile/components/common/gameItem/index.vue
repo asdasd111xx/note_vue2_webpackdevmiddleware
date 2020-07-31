@@ -67,7 +67,6 @@ import isMobile from '@/lib/is_mobile';
 export default {
   components: {
     pageLoading: () => import(/* webpackChunkName: 'pageLoading' */ '@/router/mobile/components/common/pageLoading'),
-
   },
   data() {
     return {
@@ -75,25 +74,29 @@ export default {
     };
   },
   props: {
+    theme: {
+      type: String,
+      default: "porn1"
+    },
     gameInfo: {
       type: Object,
       required: true
     },
     showVendor: {
       type: Boolean,
-      required: true
+      default: true
     },
     showJackpot: {
       type: Boolean,
-      required: true
+      default: true
     },
     showFavor: {
       type: Boolean,
-      required: true
+      default: true
     },
     showButton: {
       type: Boolean,
-      required: true
+      default: true
     },
     redirectCard: {
       type: Function,
@@ -311,7 +314,7 @@ export default {
      * @returns {object} Class Object
     */
     getClass(className, classInfo) {
-      const style = this.$style_porn1;
+      const style = this[`$style_${this.theme}`] || this.$style_porn1;
       const classObj = {};
 
       className.forEach((name) => {
@@ -378,7 +381,6 @@ export default {
       };
 
       const openGameFailFunc = (res) => {
-        // this.redirectCard 個別大廳轉導位置
         this.isShowLoading = false;
 
         if (res && res.data) {
@@ -414,4 +416,6 @@ export default {
 };
 </script>
 
-<style lang="scss" src="../css/porn1.module.scss" module="$style_porn1"></style>
+
+<style lang="scss" src="./css/porn1.module.scss" module="$style_porn1"></style>
+<style lang="scss" src="./css/ey1.module.scss" module="$style_ey1"></style>

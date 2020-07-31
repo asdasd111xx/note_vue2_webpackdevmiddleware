@@ -198,7 +198,8 @@ export default {
       loginStatus: 'getLoginStatus',
       memInfo: 'getMemInfo',
       rechargeConfig: 'getRechargeConfig',
-      hasBank: 'getHasBank'
+      hasBank: 'getHasBank',
+      membalance: 'getMemBalance',
     }),
     isAdult() {
       if (localStorage.getItem('content_rating')) {

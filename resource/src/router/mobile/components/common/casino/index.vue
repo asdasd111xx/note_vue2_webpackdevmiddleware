@@ -2,7 +2,7 @@
   <div :class="`casino-wrap ${gameTheme}`">
     <template v-for="slotKey in slotSort">
       <template v-if="slotKey === 'label'">
-        <gameLabel
+        <game-label
           :key="`slot-${slotKey}`"
           :theme="labelTheme"
           :is-label-receive="isLabelReceive"
@@ -45,7 +45,7 @@
         <div>{{ $text("S_NO_GAME", "未查询到相关游戏") }}</div>
       </div>
     </template>
-    <gameSearch
+    <game-search
       v-if="isShowSearch"
       :text="paramsData.name"
       :set-search-text="setSearchText"
@@ -65,9 +65,9 @@ import { mapGetters, mapActions } from 'vuex';
 import InfiniteLoading from 'vue-infinite-loading';
 import ajax from '@/lib/ajax';
 import { gameType, gameList } from '@/config/api';
-import gameItem from '@/router/web/components/common/gameItem';
+import gameItem from '../gameItem';
 import gameLabel from '../gameLabel';
-import gameSearch from '../search';
+import gameSearch from '../gameSearch';
 import common from '@/api/common';
 
 /**
@@ -99,11 +99,11 @@ export default {
     },
     labelTheme: {
       type: String,
-      default: '1'
+      default: 'porn1'
     },
     gameTheme: {
       type: String,
-      default: ''
+      default: 'porn1'
     },
     gameShowVendor: {
       type: Boolean,

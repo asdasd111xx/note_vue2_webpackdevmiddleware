@@ -21,6 +21,7 @@ export const getDoamin = () => {
                     break;
                 case '500023':
                 case '41':
+                case '74':
                     result['site'] = 'ey1';
                     break;
             }
