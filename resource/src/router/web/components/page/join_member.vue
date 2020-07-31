@@ -262,6 +262,8 @@ import ajax from '@/lib/ajax';
 import appEvent from '@/lib/appEvent';
 import bbosRequest from "@/api/bbosRequest";
 import capitalize from 'lodash/capitalize';
+import datepicker from 'vuejs-datepicker';
+import datepickerLang from '@/lib/datepicker_lang';
 import joinMemInfo from '@/config/joinMemInfo';
 import mcenter from '@/api/mcenter';
 import member from '@/api/member';
@@ -269,7 +271,7 @@ import puzzleVerification from '@/components/puzzleVerification';
 import slideVerification from '@/components/slideVerification';
 import split from 'lodash/split';
 import vSelect from 'vue-select';
-import datepicker from 'vuejs-datepicker';
+import Vue from 'vue';
 
 export default {
   components: {
@@ -290,6 +292,8 @@ export default {
   },
   data() {
     return {
+      dateLang: datepickerLang(this.$i18n.locale),
+      ageLimit: new Date(Vue.moment(new Date()).add(-18, 'year')),
       isShowPwd: false,
       errMsg: '',
       joinMemInfo,
@@ -299,8 +303,7 @@ export default {
         username: '',
         password: '',
         confirm_password: '',
-        captcha_text: '',
-
+        introducer: this.$cookie.get('a') || '',
         name: '',
         email: '',
         phone: '',
@@ -314,19 +317,19 @@ export default {
         skype: '',
         zalo: '',
         withdraw_password: '',
+        captcha_text: ''
       },
       allTip: {
         username: '',
         password: '',
         confirm_password: '',
-        captcha_text: '',
-
+        introducer: '',
         name: '',
         email: '',
         phone: '',
         alias: '',
         birthday: '',
-        gender: 0,
+        gender: '',
         qq_num: '',
         weixin: '',
         line: '',
@@ -334,7 +337,26 @@ export default {
         skype: '',
         zalo: '',
         withdraw_password: '',
+        captcha_text: ''
       },
+      checkFail: false,
+      registerData: [],
+      withdraw_passwordStatus: false,
+      joinAgree: false,
+      accountTextStatus: false,
+      isVerifying: false,
+      isVerified: {
+        email: false,
+        phone: false
+      },
+      currentVerify: '',
+      oldValue: {
+        email: '',
+        phone: ''
+      },
+      countryCode: '',
+      verifyTips: '',
+      lock: false,
       puzzleData: null,
       registerData: [],
       currentTip: '',
@@ -391,14 +413,11 @@ export default {
       return this.$styleDefault;
     },
     isSlideAble() {
-      if (this.memInfo.config.register_captcha_type === 3 && !this.puzzleObj) {
-        return false;
-      }
-
       return this.registerData
         .filter((field) => this.joinMemInfo[field.key].show)
         .every((field) => {
-          if (this.allTip[field.key] || this.currentTip) {
+
+          if (this.allTip[field.key]) {
             return false;
           }
 
@@ -407,9 +426,24 @@ export default {
               return false;
             }
 
-            return this.allValue[field.key] ? this.allValue[field.key].replace(/(^\s*)|(\s*$)/g, '') !== '' : false;
-          }
+            if (this.joinMemInfo[field.key].type !== 'select' && field.key !== 'birthday') {
+              return this.allValue[field.key].replace(/(^\s*)|(\s*$)/g, '') !== '';
+            }
 
+            if (field.key === 'gender') {
+              return +this.allValue[field.key] !== 0;
+            }
+
+            if (field.key === 'withdraw_password') {
+              return this.allValue.withdraw_password.length === 4;
+            }
+
+            // if (field.key === 'phone') {
+            //   return this.joinMemInfo[field.key].hasVerify && this.countryCode;
+            // }
+
+            return this.allValue[field.key];
+          }
           return true;
         });
     }
@@ -472,14 +506,14 @@ export default {
             return;
           }
 
-          if (key === 'phone') {
-            this.selectData.phone.options = [
-              ...this.selectData.phone.options,
-              ...ret[key].country_codes.map((label) => ({ label, value: label }))
-            ];
+          //   if (key === 'phone') {
+          //     this.selectData.phone.options = [
+          //       ...this.selectData.phone.options,
+          //       ...ret[key].country_codes.map((label) => ({ label, value: label }))
+          //     ];
 
-            [this.selectData.phone.selected] = this.selectData.phone.options;
-          }
+          //     [this.selectData.phone.selected] = this.selectData.phone.options;
+          //   }
 
           this.joinMemInfo[key] = {
             ...this.joinMemInfo[key],
@@ -663,6 +697,28 @@ export default {
 
       this.allTip[key] = '';
       this.currentTip = '';
+    },
+    changSelect(key) {
+      //   if (key === 'phone') {
+      //     if (!this.selectData[key].selected) {
+      //       this.selectData[key].selected = {
+      //         label: this.countryCode,
+      //         value: this.countryCode
+      //       };
+      //       return;
+      //     }
+
+      //     this.countryCode = this.selectData[key].selected.value;
+      //     return;
+      //   }
+
+      if (this.selectData[key].selected && !this.selectData[key].selected.value) {
+        this.allValue[key] = '0';
+        return;
+      }
+
+      this.allValue[key] = this.selectData[key].selected ? this.selectData[key].selected.value : '0';
+      this.verification(key);
     },
     joinSubmit(captchaInfo) {
       // 滑動
