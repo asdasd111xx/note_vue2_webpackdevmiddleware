@@ -27,8 +27,8 @@
           <div>
             <span>{{ $text("S_COMPUTE_WAGER_INTERVAL", "结算区间") }}</span>
             <div :class="$style['period']">
-              <span>{{ info.start_at | dateFormat }} 00:00:00 </span>
-              <span>{{ info.end_at | dateFormat }} 23:59:59</span>
+              <span>{{ EST(info.start_at) }}  </span>
+              <span>{{ EST(info.end_at) }} </span>
             </div>
           </div>
 
@@ -86,9 +86,7 @@ export default {
     }
   },
   data() {
-    return {
-      // displayDetail: []
-    };
+    return {};
   },
   methods: {
     onClick(info) {
