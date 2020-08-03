@@ -3,8 +3,7 @@ export default {
     return {
       currentPage: 'cardInfo',
       showDetailStatus: false,
-      hideDetailIcon: false,
-      editDetailIcon: false,
+      editDetailStatus: false,
       step: 'one'
     }
   },
@@ -41,10 +40,10 @@ export default {
     },
     editStatus: {
       get() {
-        return this.editDetailIcon;
+        return this.editDetailStatus;
       },
       set(value) {
-        this.editDetailIcon = value;
+        this.editDetailStatus = value;
       }
     },
     addBankCardStep: {

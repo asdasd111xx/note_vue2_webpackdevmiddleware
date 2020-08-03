@@ -200,6 +200,10 @@ export default {
     popupVerification
   },
   props: {
+    currentKind: {
+      type: String,
+      required: true
+    },
     changePage: {
       type: Function,
       default: () => { }
@@ -362,7 +366,7 @@ export default {
       this.msg = '';
       let redirect = query.redirect;
       if (!redirect) {
-        this.changePage('bankCardInfo');
+        this.changePage('cardInfo');
         return;
       }
 
@@ -397,7 +401,7 @@ export default {
           this.$router.push(`/mobile/${redirect}`);
           return
         default:
-          this.changePage('bankCardInfo');
+          this.changePage('cardInfo');
           return;
       }
     },
