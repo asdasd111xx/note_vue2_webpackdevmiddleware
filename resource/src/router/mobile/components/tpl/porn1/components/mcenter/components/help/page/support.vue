@@ -9,25 +9,41 @@
       <div :class="$style['section']" style="margin-top: 10px">
         <div
           v-for="(item, index) in data"
-          :id="`q-${index}`"
-          :class="[$style['cell'], $style['flex']]"
+          :id="`q-${item.key}`"
+          :class="$style['cell']"
           :key="item.key"
-          @click="
-            $router.push(
-              `/mobile/mcenter/help/detail?key=${item.key}&type=support${
-                isApp ? '&app=true' : ''
-              }`
-            )
-          "
+          @click="handleToggleContent(item.key)"
         >
-          <div :class="$style['title-icon']">
-            <img
-              :src="$getCdnPath('/static/image/_new/mcenter/ic_help.png')"
-              alt="help"
+          <div :class="$style['cell-header']">
+            <div :class="$style['title-icon']">
+              <img
+                :src="$getCdnPath('/static/image/_new/mcenter/ic_help.png')"
+                alt="help"
+              />
+            </div>
+
+            <div :class="$style['title']">
+              {{ item.title }}
+            </div>
+          </div>
+
+          <div
+            :class="[$style['content'], { [$style['active']]: item.isOpen }]"
+            :style="{ 'max-height': item.isOpen ? `150vh` : 0 }"
+          >
+            <div
+              v-for="(item, index) in item.list"
+              :class="$style['text-block']"
+              v-html="item"
             />
           </div>
-          <div :class="$style['title']" style="font-weight: 400">
-            {{ item.title }}
+
+          <div
+            :class="[$style['arrow-btn'], { [$style['active']]: item.isOpen }]"
+          >
+            <img
+              :src="$getCdnPath(`/static/image/_new/mcenter/ic_arrow_next.png`)"
+            />
           </div>
         </div>
       </div>
@@ -42,6 +58,15 @@ import info from "../json/support.json";
 export default {
   components: {
     mobileContainer
+  },
+  data() {
+    return {
+      data: info.data.map(el => {
+        let _o = Object.assign({}, el);
+        _o.isOpen = false;
+        return _o;
+      })
+    };
   },
   mounted() {
     if (!info) this.$router.back();
@@ -65,10 +90,17 @@ export default {
           },
           title: this.$text("S_TECH_SUP", "技术支持")
         };
-    },
-    data() {
-      return info.data.map(item => {
-        return item;
+    }
+  },
+  methods: {
+    handleToggleContent(key) {
+      let target = document.getElementById(`q-${key}`);
+      if (!target) return;
+
+      this.data.forEach((element, index) => {
+        if (Number(element.key) === Number(key)) {
+          element.isOpen = !element.isOpen;
+        }
       });
     }
   }
