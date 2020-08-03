@@ -8976,10 +8976,10 @@ vue-cookie@1.1.4:
   dependencies:
     tiny-cookie "^1.0"
 
-vue-cropper@^0.5.4:
-  version "0.5.4"
-  resolved "https://registry.yarnpkg.com/vue-cropper/-/vue-cropper-0.5.4.tgz#0db3776894eea8673a3203a1513882a0eb4558ad"
-  integrity sha512-9wwHOk1eHdl+nyq2fnIFDeDMjaXPh1dqfY+FdeEGU7Z/cKVOyH0pLrW0/5NH3xnRzqrU3DAQ8LjC/9/eHdvqKA==
+vue-cropper@^0.5.5:
+  version "0.5.5"
+  resolved "https://registry.yarnpkg.com/vue-cropper/-/vue-cropper-0.5.5.tgz#9bd1ba563c7faa268abd52fb2af4c6c28d33c962"
+  integrity sha512-5mGaBlS1EwLxUFwHHX2Q8zOZSiVfBUjOfolR+ZNKwu7Rh3u+GhwHYOyFkgZHhhoQBBNdyVB28O6W+MpMimhCbA==
 
 vue-draggable-resizable@2.0.0-rc1:
   version "2.0.0-rc1"
