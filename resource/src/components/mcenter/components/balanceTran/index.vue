@@ -416,7 +416,7 @@ export default {
     },
     balanceTran({ customSucessAlert } = {}) {
       // 阻擋連續點擊
-      if (this.btnLock) {
+      if (this.btnLock || this.balanceTran.btnLock) {
         return;
       }
 
@@ -514,11 +514,11 @@ export default {
         in: this.scopeData.transIn[transInIndex].value
       };
 
-      if (this.siteConfig.MOBILE_WEB_TPL === 'porn1') {
-        this.tranOut = this.getDefaultTran.out;
-        this.tranIn = this.getDefaultTran.in;
-      }
-    }
+      //   if (this.siteConfig.MOBILE_WEB_TPL === 'porn1') {
+      //     this.tranOut = this.getDefaultTran.out;
+      //     this.tranIn = this.getDefaultTran.in;
+      //   }
+    },
   }
 };
 </script>

@@ -10,9 +10,9 @@
       </div>
 
       <div
-        v-if="showDetail && !hideDeatilIcon"
+        v-if="showDetail"
         :class="$style['icon-edit']"
-        @click="editDeatilStatus = true"
+        @click="editDetailStatus = true"
       >
         <icon name="ellipsis-h" />
       </div>
@@ -38,6 +38,7 @@
 
     <component
       :is="currentPage"
+      :current-kind="currentKind"
       :change-page="changePage"
       :show-detail.sync="showDetail"
       :edit-status.sync="editStatus"
@@ -54,10 +55,10 @@ export default {
   components: {
     cardInfo: () =>
       import(
-        /* webpackChunkName: 'cardInfo' */ "./components/cardInfoEntry"
+        /* webpackChunkName: 'cardInfo' */ "./components/cardInfo"
       ),
     addCard: () =>
-      import(/* webpackChunkName: 'addCard' */ "./components/addCardEntry")
+      import(/* webpackChunkName: 'addCard' */ "./components/addCard")
   },
   mixins: [entryMixin],
   data() {

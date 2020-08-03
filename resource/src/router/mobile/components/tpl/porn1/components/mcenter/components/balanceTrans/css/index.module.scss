@@ -411,6 +411,7 @@
         background: -moz-linear-gradient(to left, #e9dacb, #eee5db);
         background: -webkit-linear-gradient(to left, #e9dacb, #eee5db);
         background: -o-linear-gradient(to left, #e9dacb, #eee5db);
+        pointer-events: none;
     }
 }
 
