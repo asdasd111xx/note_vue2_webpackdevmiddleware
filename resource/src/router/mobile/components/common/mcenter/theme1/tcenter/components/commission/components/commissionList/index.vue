@@ -85,9 +85,6 @@ export default {
       required: true
     }
   },
-  data() {
-    return {};
-  },
   methods: {
     onClick(info) {
       if (info.show_detail) {
