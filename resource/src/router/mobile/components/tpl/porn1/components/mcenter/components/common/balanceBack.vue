@@ -57,6 +57,7 @@ export default {
   computed: {
     ...mapGetters({
       rechargeConfig: 'getRechargeConfig',
+      hasBank: 'getHasBank'
     }),
   },
   methods: {

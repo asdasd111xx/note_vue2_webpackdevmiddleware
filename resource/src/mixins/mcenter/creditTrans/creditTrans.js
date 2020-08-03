@@ -51,6 +51,7 @@ export default {
         ...mapGetters({
             memInfo: "getMemInfo",
             pwdResetInfo: 'getPwdResetInfo',
+            membalance: "getMemBalance",
         }),
         inputInfo() {
             return [
@@ -65,6 +66,9 @@ export default {
 
     },
     watch: {
+        membalance() {
+            this.getRechargeBalance();
+        },
         rechargeConfig() {
             if (this.rechargeConfig && !this.rechargeConfig.enable) {
                 this.actionSetGlobalMessage({ msg: '额度转让升级中' });
@@ -96,7 +100,7 @@ export default {
                     amount < limit) {
                     errorMessage = "转帐金额低于最低限额";
                 } else if (amount > this.maxRechargeBalance) {
-                    errorMessage = "馀额不足";
+                    // errorMessage = "馀额不足";
                 } else {
                     errorMessage = "";
                 }
@@ -254,6 +258,7 @@ export default {
                     phone: "86-" + this.formData.phone,
                 }
             }).then(res => {
+                this.actionSetUserBalance();
                 if (res && res.data && res.data.result === "ok") {
                     this.actionSetGlobalMessage({ msg: "转让成功" });
                 } else {

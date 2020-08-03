@@ -195,16 +195,21 @@
             </template>
 
             <template v-else-if="field.key === 'withdraw_password'">
-              <input
-                v-model="allValue['withdraw_password']"
-                :class="[$style['join-input'], field.key]"
-                :name="field.key"
-                :placeholder="field.content.note1"
-                type="number"
-                maxlength="4"
-                @input="verification(field.key)"
-                @keydown.13="joinSubmit()"
-              />
+              <div>
+                <v-select
+                  v-for="(num, index) in 4"
+                  :key="index"
+                  v-model="selectData[field.key][index].selected"
+                  :class="
+                    num === 4
+                      ? $style['join-input-withdraw-last']
+                      : $style['join-input-withdraw']
+                  "
+                  :options="selectData[field.key][index].options"
+                  :searchable="false"
+                  @input="changWithdrawPassword(field.key, num)"
+                />
+              </div>
             </template>
 
             <input
@@ -449,6 +454,14 @@ export default {
     }
   },
   created() {
+    // 補取款密碼options
+    for (let index = 0; index < 10; index += 1) {
+      const option = { label: `${index}`, value: index };
+      for (let i = 0; i < 4; i += 1) {
+        this.selectData.withdraw_password[i].options.push(option);
+      }
+    }
+
     let joinConfig = [];
     let joinReminder = {};
     const username = {
@@ -610,6 +623,24 @@ export default {
     onFocus(key) {
       this.currentTip = this.allTip[key];
       this.allTip[key] = '';
+    },
+    changWithdrawPassword(key, num) {
+      this.allValue[key] = '';
+      Object.keys(this.selectData.withdraw_password).forEach((index) => {
+        if (this.selectData.withdraw_password[index].selected) {
+          this.allValue[key] += this.selectData.withdraw_password[index].selected.value;
+        }
+      });
+
+      if (!this.withdraw_passwordStatus) {
+        if (num === 4) {
+          this.withdraw_passwordStatus = true;
+        }
+        return;
+      }
+
+      // 驗證輸入值
+      this.verification(key);
     },
     verification(key) {
       const data = this.joinMemInfo[key];

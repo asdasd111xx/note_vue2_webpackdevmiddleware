@@ -72,7 +72,8 @@ export default {
   computed: {
     ...mapGetters({
       memInfo: "getMemInfo",
-      rechargeConfig: "getRechargeConfig"
+      rechargeConfig: "getRechargeConfig",
+      hasBank: 'getHasBank',
     }),
     tabItem() {
       return [

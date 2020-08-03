@@ -62,15 +62,14 @@ export default {
             this.isLoading = true;
             this.showPage = 0
 
-            const { startTime, endTime, state } = this.searchInfo;
+            const { startTime, endTime } = this.searchInfo;
             // startTime, endTime初始值為日期格式，若使用者選擇日期後將會變成串格式
             const start = typeof (startTime) === 'string' ? parseISO(startTime) : startTime;
             const end = typeof (endTime) === 'string' ? parseISO(endTime) : endTime;
 
             const params = {
                 start_at: format(toDate(Date.parse(start)), 'yyyy-MM-dd'),
-                end_at: format(toDate(Date.parse(end)), 'yyyy-MM-dd'),
-                state
+                end_at: format(toDate(Date.parse(end)), 'yyyy-MM-dd')
             };
             // 預設美東時間
             params.start_at += ' 00:00:00-04:00';
