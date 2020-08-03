@@ -191,7 +191,7 @@ export default {
     uploadImgChange(event) {
       const img = event.target.files[0];
       this.$nextTick(() => {
-        if (img.size / 1024 / 1024 > 10) {
+        if (img && img.size && img.size / 1024 / 1024 > 20) {
           this.actionSetGlobalMessage({ msg: '图片超出档案限制大小' });
         } else {
           this.option.img = URL.createObjectURL(img);
