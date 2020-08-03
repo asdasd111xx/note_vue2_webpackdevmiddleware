@@ -21,18 +21,6 @@
 
     <div v-if="page === 'record' && hasSearch" class="search-wrap">
       <div :class="$style['search-form']">
-        <div :class="$style['form-row']">
-          <div :class="$style['form-title']">
-            {{ $text("S_PLEASE_SELECT_TYPE") }}
-          </div>
-          <select v-model="state">
-            <template v-for="info in options">
-              <option :key="`option-${info.value}`" :value="info.value">{{
-                info.text
-              }}</option>
-            </template>
-          </select>
-        </div>
 
         <div :class="[$style['form-row'], 'clearfix']">
           <div :class="$style['form-date-start']">
