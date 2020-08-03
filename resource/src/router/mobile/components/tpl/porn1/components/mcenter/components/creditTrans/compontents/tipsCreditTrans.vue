@@ -15,7 +15,7 @@
       <div>●&nbsp;单笔转让最低{{ rechargeConfig.recharge_limit }}元</div>
       <div>
         ●&nbsp;完成提现流水要求，额度转让即赠返利{{
-          rechargeConfig.recharger_offer_audit_rate || 0
+          rechargeConfig.recharger_offer_percent || 0
         }}%，转让无上限
       </div>
       <div>●&nbsp;未完成提现流水要求，额度转让无返利，单笔最高转让1000</div>
