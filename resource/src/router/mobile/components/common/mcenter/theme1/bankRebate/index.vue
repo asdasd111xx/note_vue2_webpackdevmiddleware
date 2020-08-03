@@ -318,7 +318,6 @@
         <div v-if="isShowPopup" :class="$style['popup']">
           <div :class="$style['pop-mask']" @click="closePopup" />
           <div :class="$style['content-block']">
-            <!-- <div :class="$style['msg']">{{ $text('S_TRY_AGAIN_LATER') }}</div> -->
             <div :class="$style['msg']">{{ popupMsg }}</div>
             <div :class="$style['close']" @click="closePopup">{{ $text('S_CONFIRM_2', '确定') }}</div>
           </div>

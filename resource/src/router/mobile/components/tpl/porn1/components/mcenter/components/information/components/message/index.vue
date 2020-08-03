@@ -204,6 +204,7 @@ export default {
       'actionSetUserdata'
     ]),
     getMessgae() {
+      this.actionSetMcenterMsgCount();
       mcenter.message({
         success: (response) => {
           this.messageData = response.ret;
@@ -211,11 +212,11 @@ export default {
         }
       });
     },
-    getContent({ id, read }, isSetRead, isLastMsg) {
+    getContent({ id, read }, isSetRead) {
       if (read) {
         return;
       }
-      mcenter.messageContent({
+      return mcenter.messageContent({
         success: ({ result }) => {
           if (result !== 'ok') {
             return;
@@ -238,20 +239,22 @@ export default {
       if (this.memInfo.msgCount === 0) {
         return;
       }
+
       this.isLoading = true;
+      const params = [];
       this.messageData.forEach((message, index) => {
         if (index === this.messageData.length - 1) {
-          setTimeout(() => {
-            this.$nextTick(() => {
-              this.actionSetMcenterMsgCount();
+          Promise.all(params).then(() => {
+            setTimeout(() => {
               this.isLoading = false;
-              window.location.reload();
-            })
-          }, 1000)
-          return;
-        } else {
-          this.getContent(message, true);
+              this.$nextTick(() => {
+                window.location.reload(true);
+              })
+            }, 1000)
+          });
         }
+
+        params.push(this.getContent(message, true));
       });
       this.isEditing = false;
       this.onShowFunction(false);

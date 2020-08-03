@@ -109,11 +109,15 @@ export default {
           this.currentTemplate = "discount-credit-trans";
           break;
         case 1:
-          if (this.rechargeConfig && !this.rechargeConfig.enable) {
+          if (this.rechargeConfig && this.rechargeConfig.bank_required && !this.hasBank) {
+            this.actionSetGlobalMessage({ code: 'C50099', origin: 'home', type: 'bindcard' });
+            return;
+          } else if (this.rechargeConfig && !this.rechargeConfig.enable) {
             this.actionSetGlobalMessage({ msg: '额度转让升级中' });
             return;
+          } else {
+            this.currentTemplate = "transfer-credit-trans";
           }
-          this.currentTemplate = "transfer-credit-trans";
           break;
         case 2:
           this.currentTemplate = "recoard-credit-trans";
