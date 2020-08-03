@@ -112,7 +112,6 @@ import agent from '@/api/agent';
 export default {
   components: {
     mobileContainer,
-    message
   },
   // 原公用驗證
   //   mixins: [resetPwd],

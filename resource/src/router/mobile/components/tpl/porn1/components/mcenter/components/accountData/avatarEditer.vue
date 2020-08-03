@@ -66,8 +66,6 @@ import axios from 'axios';
 export default {
   components: {
     pageLoading: () => import(/* webpackChunkName: 'pageLoading' */ '@/router/mobile/components/common/pageLoading'),
-
-
   },
   props: {
     handleClose: {
@@ -84,14 +82,15 @@ export default {
       isSend: false,
 
       option: {
+        maxImgSize: '2000',
         img: '', // 裁剪图片的地址
         info: true, // 裁剪框的大小信息
         outputSize: 0.8, // 裁剪生成图片的质量
         outputType: 'png', // 裁剪生成图片的格式
-        canScale: true, // 图片是否允许滚轮缩放
+        canScale: false, // 图片是否允许滚轮缩放
         autoCrop: true, // 是否默认生成截图框
-        autoCropWidth: 300, // 默认生成截图框宽度
-        autoCropHeight: 300, // 默认生成截图框高度
+        autoCropWidth: 100, // 默认生成截图框宽度
+        autoCropHeight: 100, // 默认生成截图框高度
         fixedBox: false, // 固定截图框大小 不允许改变
         fixed: true, // 是否开启截图框宽高固定比例
         fixedNumber: [1, 1], // 截图框的宽高比例
@@ -99,7 +98,7 @@ export default {
         canMoveBox: true, // 截图框能否拖动
         original: false, // 上传图片按照原始比例渲染
         centerBox: false, // 截图框是否被限制在图片里面
-        infoTrue: true // true 为展示真实输出图片宽高 false 展示看到的截图框宽高
+        infoTrue: false, // true 为展示真实输出图片宽高 false 展示看到的截图框宽高
       },
     };
   },
@@ -125,7 +124,7 @@ export default {
       'actionSetGlobalMessage'
     ]),
     chooseFile() {
-      // 檢查相機權限 似乎沒用
+      // 檢查相機權限 web clip似乎沒用
       //   try {
       //     let handleSuccess = function (stream) {
       //       console.log(stream)
@@ -147,35 +146,44 @@ export default {
       }
       this.isSend = true;
       this.$emit('setPageLoading', true);
-      this.$refs.cropper.getCropBlob((data) => {
-        if (data) {
-          let formData = new FormData();
-          formData.append('custom_image', data);
-          axios({
-            method: 'post',
-            url: '/api/v1/c/player/custom-image',
-            data: formData,
-            headers: {
-              'Content-Type': 'multipart/form-data'
-            }
-          }).then(res => {
-            this.isSend = false;
-            if (res && res.data && res.data.result === "ok") {
-              this.actionSetGlobalMessage({ msg: "上传成功", cb: () => { this.onClose(true); } })
-              setTimeout(() => {
+
+      try {
+        this.$refs.cropper.getCropBlob((data) => {
+          if (data) {
+            let formData = new FormData();
+            formData.append('custom_image', data);
+            axios({
+              method: 'post',
+              url: '/api/v1/c/player/custom-image',
+              data: formData,
+              headers: {
+                'Content-Type': 'multipart/form-data'
+              }
+            }).then(res => {
+              this.isSend = false;
+              if (res && res.data && res.data.result === "ok") {
+                this.actionSetGlobalMessage({ msg: "上传成功", cb: () => { this.onClose(true); } })
+                setTimeout(() => {
+                  this.$emit('setPageLoading', false);
+                }, 800)
+              } else {
                 this.$emit('setPageLoading', false);
-              }, 800)
-            } else {
+                this.actionSetGlobalMessage({ msg: res.data.msg });
+              }
+            }).catch((error) => {
+              this.isSend = false;
               this.$emit('setPageLoading', false);
-              this.actionSetGlobalMessage({ msg: res.data.msg });
-            }
-          }).catch((error) => {
-            this.isSend = false;
+              this.actionSetGlobalMessage({ msg: error.response.data.msg });
+            })
+          } else {
             this.$emit('setPageLoading', false);
-            this.actionSetGlobalMessage({ msg: error.response.data.msg });
-          })
-        }
-      })
+            this.actionSetGlobalMessage({ msg: '图片超出档案限制大小' });
+          }
+        })
+      } catch (e) {
+        this.$emit('setPageLoading', false);
+        this.actionSetGlobalMessage({ msg: e });
+      }
     },
     cancel() {
       this.onClose();
@@ -183,8 +191,12 @@ export default {
     uploadImgChange(event) {
       const img = event.target.files[0];
       this.$nextTick(() => {
-        this.option.img = URL.createObjectURL(img);
-        this.dialogVisible = true
+        if (img.size / 1024 / 1024 > 3) {
+          this.actionSetGlobalMessage({ msg: '图片超出档案限制大小' });
+        } else {
+          this.option.img = URL.createObjectURL(img);
+          this.dialogVisible = true
+        }
       })
     },
     onClose(isDone) {
