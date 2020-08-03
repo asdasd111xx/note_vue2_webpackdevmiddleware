@@ -23,23 +23,43 @@
         </div>
 
         <div
-          v-for="(item, index) in lists[currentIndex]"
-          :id="`q-${index}`"
-          :class="[$style['cell'], $style['flex']]"
+          v-for="(item, index) in lists[currentIndex].list"
+          :id="`q-${item.key}`"
+          :class="$style['cell']"
           :key="item.key"
-          @click="clickGotoDetail(item)"
+          @click="handleToggleContent(item.key)"
         >
-          <template v-if="item.title && item.content">
+          <div :class="$style['cell-header']">
             <div :class="$style['title-icon']">
               <img
                 :src="$getCdnPath('/static/image/_new/mcenter/ic_help.png')"
                 alt="help"
               />
             </div>
+
             <div :class="$style['title']">
               {{ item.title }}
             </div>
-          </template>
+          </div>
+
+          <div
+            :class="[$style['content'], { [$style['active']]: item.isOpen }]"
+            :style="{ 'max-height': item.isOpen ? `100%` : 0 }"
+          >
+            <div
+              v-for="(item, index) in item.content"
+              :class="$style['text-block']"
+              v-html="item"
+            />
+          </div>
+
+          <div
+            :class="[$style['arrow-btn'], { [$style['active']]: item.isOpen }]"
+          >
+            <img
+              :src="$getCdnPath(`/static/image/_new/mcenter/ic_arrow_next.png`)"
+            />
+          </div>
         </div>
       </div>
 
@@ -83,16 +103,9 @@ export default {
   data() {
     return {
       currentIndex: 0,
-      isShowPop: false
+      isShowPop: false,
+      lists: info.data
     };
-  },
-  mounted() {
-    if (!info) this.$router.back();
-
-    this.$nextTick(() => {
-      // 在幫助中心有清除該local，故新增預設為0
-      this.currentIndex = Number(localStorage.getItem("help_gameIntro")) || 0;
-    });
   },
   computed: {
     isApp() {
@@ -118,16 +131,6 @@ export default {
       return info.data.map(item => {
         return item.category;
       });
-    },
-    kind() {
-      return info.data.map(item => {
-        return item.kind;
-      });
-    },
-    lists() {
-      return info.data.map(item => {
-        return item.list;
-      });
     }
   },
   methods: {
@@ -135,15 +138,33 @@ export default {
       this.currentIndex = index;
       this.isShowPop = false;
     },
-    clickGotoDetail(item) {
-      localStorage.setItem("help_gameIntro", this.currentIndex);
+    handleToggleContent(key) {
+      let target = document.getElementById(`q-${key}`);
+      if (!target) return;
 
-      this.$router.push(
-        `/mobile/mcenter/help/detail?index=${this.currentIndex}&key=${
-        item.key
-        }&type=gameintro${this.isApp ? "&app=true" : ""}`
-      );
+      this.lists[this.currentIndex].list.forEach((element, index) => {
+        if (Number(element.key) === Number(key)) {
+          element.isOpen = !element.isOpen;
+        }
+      });
+    },
+    addSwitchToList() {
+      let tempList = this.lists[this.currentIndex].list.map(el => {
+        let _o = Object.assign({}, el);
+        _o.isOpen = false;
+        return _o;
+      });
+      this.lists[this.currentIndex].list = tempList;
     }
+  },
+  watch: {
+    currentIndex() {
+      this.addSwitchToList();
+    }
+  },
+  mounted() {
+    if (!info) this.$router.back();
+    this.addSwitchToList();
   }
 };
 </script>
