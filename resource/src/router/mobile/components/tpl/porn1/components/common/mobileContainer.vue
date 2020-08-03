@@ -62,7 +62,7 @@ export default {
     }
   },
   mounted() {
-    if (this.loginStatus && getCookie('cid')) {
+    if (this.loginStatus && getCookie('cid') && !this.$route.query.setReadAll) {
       axios({
         method: 'get',
         url: '/api/v1/c/player/messages',

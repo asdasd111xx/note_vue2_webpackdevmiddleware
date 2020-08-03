@@ -40,9 +40,9 @@ export default ({
         store.state.memInfo.user &&
         store.state.memInfo.user.domain;
 
-    if (domain === '500015') {
-        obj['url'] = S_PORN_DOMAIN + url;
-    }
+    // if (domain === '500015') {
+    //     obj['url'] = S_PORN_DOMAIN + url;
+    // }
 
     // if (smallPig) {
     //     // obj['withCredentials'] = true;

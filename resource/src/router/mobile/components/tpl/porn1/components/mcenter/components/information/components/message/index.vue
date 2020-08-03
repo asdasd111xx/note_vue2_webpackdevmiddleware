@@ -245,9 +245,10 @@ export default {
             this.$nextTick(() => {
               this.actionSetMcenterMsgCount();
               this.isLoading = false;
-              window.location.reload();
+              window.location.replace('/mobile/mcenter/information?setReadAll=true');
+              window.location.reload(true)
             })
-          }, 1000)
+          }, 3500)
           return;
         } else {
           this.getContent(message, true);
