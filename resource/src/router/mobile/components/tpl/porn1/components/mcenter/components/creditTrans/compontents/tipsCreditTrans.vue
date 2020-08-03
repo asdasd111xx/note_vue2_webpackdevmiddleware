@@ -12,13 +12,13 @@
     </div>
     <div :class="$style['content']">
       <div>●&nbsp;限制代理转让给旗下会员</div>
-      <div>●&nbsp;单笔转让不得少于{{ rechargeConfig.recharge_limit }}元</div>
+      <div>●&nbsp;单笔转让最低{{ rechargeConfig.recharge_limit }}元</div>
       <div>
         ●&nbsp;完成提现流水要求，额度转让即赠返利{{
           rechargeConfig.recharger_offer_audit_rate || 0
-        }}%
+        }}%，转让无上限
       </div>
-      <div>●&nbsp;未完成提现流水要求，额度转让无返利</div>
+      <div>●&nbsp;未完成提现流水要求，额度转让无返利，单笔最高转让1000</div>
       <div
         :class="$style['link']"
         @click="$router.push('/mobile/mcenter/help/withdraw?key=6')"
