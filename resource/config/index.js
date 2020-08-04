@@ -12,7 +12,10 @@ const domain = 'https://yb01.66boxing.com/';
 
 // 亿元
 // const domain = 'https://35.201.222.5/';
+// const domain = 'https://eyt.66boxing.com/';
 // const domain = 'https://ey.688lg.com/';
+// const domain = 'https://eyd.688lg.com/';
+
 
 module.exports = {
     build: {
