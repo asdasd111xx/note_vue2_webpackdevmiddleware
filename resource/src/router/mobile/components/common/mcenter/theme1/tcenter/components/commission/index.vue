@@ -54,7 +54,6 @@
       :set-tab-state="setTabState"
       :set-header-title="setHeaderTitle"
       :search-info="searchInfo"
-      :show-no-data="isShowNoData"
       :current-info.sync="commissionInfo"
     />
 
@@ -103,7 +102,6 @@ export default {
   },
   data() {
     return {
-      isShowNoData: false,
       isShowRebate: true,
       hasSearch: this.$route.params.page === "record",
       commissionInfo: {}
@@ -194,12 +192,10 @@ export default {
     onClick(page) {
       this.hasSearch = page === "record";
       this.$router.push(`/mobile/mcenter/tcenter/commission/${page}`);
-      this.isShowNoData = false;
     },
     onInquire() {
       this.onSearch();
       this.hasSearch = false;
-      this.isShowNoData = true;
     },
     getRebateSwitch() {
       // 因開關在此 api 的回傳，所以在入口點先呼叫此 api

@@ -1,11 +1,11 @@
 <template>
   <div :class="$style['commission-list-wrap']">
-    <template v-if="!mainNoData">
-      <div :class="$style['total-block']">
-        <span>笔数：{{ commissionList.length }}</span>
-        <span>返利总计：{{ allTotal.amount | amountFormat }}</span>
-      </div>
+    <div :class="$style['total-block']">
+      <span>笔数：{{ commissionList.length }}</span>
+      <span>返利总计：{{ allTotal.amount | amountFormat }}</span>
+    </div>
 
+    <template v-if="!mainNoData">
       <div :class="$style['list-block']">
         <div
           :class="$style['card']"
@@ -20,14 +20,15 @@
                 $style['card-getNumber'],
                 { [$style['has-detail']]: info.show_detail }
               ]"
-              >{{ info.amount | amountFormat }}</span
             >
+              {{ info.amount | amountFormat }}
+            </span>
           </div>
 
           <div>
             <span>{{ $text("S_COMPUTE_WAGER_INTERVAL", "结算区间") }}</span>
             <div :class="$style['period']">
-              <span>{{ EST(info.start_at) }}  </span>
+              <span>{{ EST(info.start_at) }} </span>
               <span>{{ EST(info.end_at) }} </span>
             </div>
           </div>
@@ -50,8 +51,8 @@
     </template>
 
     <template v-else>
-      <div :class="$style['no-data']" v-if="showNoData">
-        <img src="/static/image/_new/mcenter/no_data.png" />
+      <div :class="$style['no-data']" v-if="mainNoData">
+        <img src="/static/image/_new/mcenter/ic_nodata.png" />
         <p>{{ $text("S_NO_DATA_YET", "暂无资料") }}</p>
       </div>
     </template>
@@ -74,10 +75,6 @@ export default {
     },
     setHeaderTitle: {
       type: Function,
-      required: true
-    },
-    showNoData: {
-      type: Boolean,
       required: true
     },
     currentInfo: {
