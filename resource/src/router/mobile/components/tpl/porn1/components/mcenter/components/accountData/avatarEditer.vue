@@ -82,10 +82,10 @@ export default {
       isSend: false,
 
       option: {
-        maxImgSize: '2000',
+        maxImgSize: '1500',
         img: '', // 裁剪图片的地址
         info: true, // 裁剪框的大小信息
-        outputSize: 0.6, // 裁剪生成图片的质量
+        outputSize: 0.2, // 裁剪生成图片的质量
         outputType: 'png', // 裁剪生成图片的格式
         canScale: false, // 图片是否允许滚轮缩放
         autoCrop: true, // 是否默认生成截图框
