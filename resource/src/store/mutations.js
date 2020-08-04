@@ -492,5 +492,8 @@ export default {
     // 是否有銀行卡
     [types.SET_HASBANK](state, data) {
         state.hasBank = data
+    },
+    [types.SET_VIDEO_BOUNS_PAGE_STATUS](state, data) {
+        state.videoBounsPageStatus = data
     }
 };

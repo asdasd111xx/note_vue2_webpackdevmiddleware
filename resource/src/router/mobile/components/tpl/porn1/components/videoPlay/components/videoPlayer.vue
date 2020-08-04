@@ -183,7 +183,8 @@ export default {
   },
   methods: {
     ...mapActions([
-      'actionSetYaboConfig'
+      'actionSetYaboConfig',
+      'actionSetVideoBounsPageStatus'
     ]),
     handleCloseDialog(keepPlay) {
       this.keepPlay = keepPlay;
@@ -249,7 +250,7 @@ export default {
         return;
       }
 
-      if (window.YABO_SOCKET) {
+      if (window.YABO_SOCKET && window.YABO_SOCKET.readyState === 1) {
         if (this.isDebug) {
           console.log("[WS]: Video active message connected SUCCESS");
         }
@@ -476,6 +477,7 @@ export default {
     }
   },
   created() {
+    this.actionSetVideoBounsPageStatus(true);
     this.actionSetYaboConfig().then(() => {
       if (this.yaboConfig) {
         let noLoginVideoSwitch = this.yaboConfig.find(i => i.name === "NoLoginVideoSwitch").value;
@@ -521,6 +523,7 @@ export default {
     this.reconnectTimer = null;
     this.player.dispose();
     this.player = null;
+    this.actionSetVideoBounsPageStatus(false);
   },
 };
 </script>

@@ -1126,3 +1126,8 @@ export const actionSetRechargeConfig = ({ commit }, data) => {
         }
     })
 };
+
+export const actionSetVideoBounsPageStatus = ({ commit }, data) => {
+    commit(types.SET_VIDEO_BOUNS_PAGE_STATUS, data);
+};
+

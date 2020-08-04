@@ -192,4 +192,5 @@ export default {
     getGlobalMessage: (state) => state.globalMessage,
     getRechargeConfig: (state) => state.rechargeConfig,
     getHasBank: (state) => state.hasBank,
+    getVideoBounsPageStatus: (state) => state.videoBounsPageStatus,
 };
