@@ -11,7 +11,7 @@
               { [$style['has-name']]: memInfo.user.name }
             ]"
           >
-            {{ username }}
+            {{ username }}**
           </div>
           <input
             v-else
@@ -276,12 +276,19 @@ export default {
         return '';
       }
 
-      return this.memInfo.user.name.split('').map((item, index) => {
-        if (index === 0) {
-          return item;
-        }
-        return '*';
-      }).join('');
+      return this.memInfo.user.name.slice(0,1);
+
+    //   return this.memInfo.user.name.split('').map((item, index) => {
+    //     if (index === 0) {
+    //       return item;
+    //     }
+
+    //     if (index > 2) {
+    //       return;
+    //     }
+
+    //     return '*';
+    //   }).join('');
     }
   },
   watch: {
