@@ -84,17 +84,18 @@ export default {
       option: {
         maxImgSize: '1500',
         img: '', // 裁剪图片的地址
+        enlarge: 0.5,
         info: true, // 裁剪框的大小信息
-        outputSize: 0.2, // 裁剪生成图片的质量
+        outputSize: 0.1, // 裁剪生成图片的质量
         outputType: 'png', // 裁剪生成图片的格式
         canScale: false, // 图片是否允许滚轮缩放
         autoCrop: true, // 是否默认生成截图框
-        autoCropWidth: 100, // 默认生成截图框宽度
-        autoCropHeight: 100, // 默认生成截图框高度
+        autoCropWidth: 80, // 默认生成截图框宽度
+        autoCropHeight: 80, // 默认生成截图框高度
         fixedBox: false, // 固定截图框大小 不允许改变
         fixed: true, // 是否开启截图框宽高固定比例
         fixedNumber: [1, 1], // 截图框的宽高比例
-        full: true, // 是否输出原图比例的截图
+        full: false, // 是否输出原图比例的截图
         canMoveBox: true, // 截图框能否拖动
         original: false, // 上传图片按照原始比例渲染
         centerBox: false, // 截图框是否被限制在图片里面
