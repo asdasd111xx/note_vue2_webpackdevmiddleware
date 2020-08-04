@@ -1,16 +1,24 @@
 import axios from 'axios';
 
 export const getDoamin = () => {
+
     return axios({
         method: 'get',
         url: '/api/v1/c/domain-config',
+        // url: 'https://35.201.222.5/conf/domain',
     }).then(res => {
         let result = {
             domain: '',
             site: ''
         }
+        // to do nginx 配置
+        // const site = res && res.data && String(res.data.site) || '';
+        // const domain = res && res.data && String(res.data.domain) || '';
+        // result['site'] = site;
+        // result['domain'] = domain;
+        // return result;
+
         if (res && res.data && res.data.ret && res.data.ret.domain) {
-            let domain = String(res.data.ret.domain);
             result['domain'] = domain;
             switch (domain) {
                 case '500015':
