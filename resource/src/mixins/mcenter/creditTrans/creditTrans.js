@@ -56,7 +56,7 @@ export default {
         inputInfo() {
             return [
                 { key: "target_username", title: "转入帐号", error: "", placeholder: "请输入下线帐号", },
-                { key: "amount", title: "转让金额", error: "", placeholder: `单笔转让不得少于${this.rechargeConfig.recharge_limit}元` },
+                { key: "amount", title: "转让金额", error: "", placeholder: `单笔转让最低${this.rechargeConfig.recharge_limit}元` },
                 { key: "phone", title: "手机号码", error: "", placeholder: "请输入手机号码", maxlength: 11 },
                 { key: "keyring", title: "获取验证码", error: "", placeholder: "请输入验证码", maxlength: 4 }
             ]

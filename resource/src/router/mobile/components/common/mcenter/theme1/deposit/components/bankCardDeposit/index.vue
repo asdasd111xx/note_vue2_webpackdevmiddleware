@@ -65,7 +65,7 @@
                 <div :class="$style['pay-main-title']">
                   {{ info.short_name }}
                 </div>
-                <div :class="$style['pay-sub-title']" style="color:black">
+                <div :class="$style['pay-sub-title']">
                   <template v-if="[5, 6].includes(info.payment_type_id)">
                     返利1%无上限
                   </template>
@@ -86,8 +86,12 @@
                 @click="handleCreditTrans"
               >
                 <div :class="$style['pay-sub-title']">代收代付</div>
-                <div :class="$style['pay-main-title']">返利1%+</div>
-                <div :class="$style['pay-main-title']">代理分红</div>
+                <div :class="$style['pay-main-title']" style="color:black">
+                  返利1%+
+                </div>
+                <div :class="$style['pay-main-title']" style="color:black">
+                  代理分红
+                </div>
               </div>
             </div>
           </div>
