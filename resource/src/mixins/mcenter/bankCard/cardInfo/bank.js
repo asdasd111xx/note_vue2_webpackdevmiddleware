@@ -1,5 +1,5 @@
-import axios from "axios"
-import { mapActions } from "vuex"
+import axios from "axios";
+import { mapActions } from "vuex";
 
 export default {
   data() {
@@ -10,16 +10,18 @@ export default {
   },
   methods: {
     ...mapActions(['actionSetGlobalMessage']),
-    checkHasBank() {
-      return axios({
-        method: "get",
-        url: "/api/v1/c/user/has-bank",
-      })
-    },
     getUserBankList() {
       return axios({
         method: "get",
         url: "/api/v1/c/player/user_bank/list"
+      }).then(response => {
+        const { ret, result } = response.data;
+        this.isRevice = true;
+        if (!response || result !== "ok") {
+          return;
+        }
+
+        this.bank_card = ret.filter((item, index) => index < 3);
       })
     },
     getBankDetail(info) {
