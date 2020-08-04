@@ -1,7 +1,7 @@
 <template>
   <div :class="['clearfix']">
     <div v-for="(item, index) in imgList" :class="$style['discount-item']">
-      <img :src="$getCdnPath(item)" :key="index" />
+      <img :src="item" :key="index" />
     </div>
   </div>
 </template>
