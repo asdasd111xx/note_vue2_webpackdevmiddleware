@@ -27,10 +27,11 @@ export const getDoamin = () => {
             }
         }
         return result
-    }).catch(e => {
+    }).catch((res) => {
+        console.log(res)
         return {
             domain: '',
-            site: ''
+            site: 'porn1'
         }
     })
 };
