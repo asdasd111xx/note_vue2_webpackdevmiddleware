@@ -43,14 +43,9 @@ import Vue from 'vue';
 import member from '@/api/member';
 import getLang from '@/lib/getLang';
 import { getCookie } from '@/lib/cookie';
-<<<<<<< HEAD
-import message from '@/router/mobile/components/tpl/porn1/components/common/new/message';
-import store from '@/store';
-=======
 import message from '@/router/mobile/components/common/message';
 import store from '@/store';
 import mixin from '@/mixins/status';
->>>>>>> develop
 
 export default {
   mixins: [mixin],
@@ -63,11 +58,7 @@ export default {
       code: '',
       status: false,
       msg: '',
-<<<<<<< HEAD
-      username: ''
-=======
       username: '',
->>>>>>> develop
     };
   },
   beforeRouteEnter(to, from, next) {
