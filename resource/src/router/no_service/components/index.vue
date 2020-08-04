@@ -1,9 +1,17 @@
 <template>
   <!-- <div class="text">{{ $t("ROUTER_NO_SERVICE_TITLE") }}</div>
     <div class="text">IP：{{ ip }}({{ code }})</div> -->
-  <div :class="$style['content']">
+  <div
+    v-if="imgSite"
+    :class="[
+      $style['content'],
+      {
+        [$style['ey1']]: imgSite === 'ey1'
+      }
+    ]"
+  >
     <div :class="$style['logo-header']">
-      <img :src="$getCdnPath('/static/image/_new/status/logo_b.png')" />
+      <img :src="$getCdnPath(`/static/image/${imgSite}/common/logo_b.png`)" />
     </div>
     <div :class="$style['title']">{{ $t("ROUTER_NO_SERVICE_TITLE") }}</div>
     <div :class="$style['text']">
@@ -11,7 +19,7 @@
     </div>
     <div :class="$style['text']">IP：{{ ip }}({{ code }})</div>
     <div :class="$style['main-img']">
-      <img :src="$getCdnPath('/static/image/_new/status/pic_403.png')" />
+      <img :src="$getCdnPath(`/static/image/${imgSite}/status/pic_403.png`)" />
     </div>
     <div :class="$style['desc']">
       {{ $t("ROUTER_NO_SERVICE_TEXT1") }}
@@ -35,10 +43,17 @@ import Vue from 'vue';
 import member from '@/api/member';
 import getLang from '@/lib/getLang';
 import { getCookie } from '@/lib/cookie';
+<<<<<<< HEAD
 import message from '@/router/mobile/components/tpl/porn1/components/common/new/message';
 import store from '@/store';
+=======
+import message from '@/router/mobile/components/common/message';
+import store from '@/store';
+import mixin from '@/mixins/status';
+>>>>>>> develop
 
 export default {
+  mixins: [mixin],
   components: {
     message
   },
@@ -48,7 +63,11 @@ export default {
       code: '',
       status: false,
       msg: '',
+<<<<<<< HEAD
       username: ''
+=======
+      username: '',
+>>>>>>> develop
     };
   },
   beforeRouteEnter(to, from, next) {

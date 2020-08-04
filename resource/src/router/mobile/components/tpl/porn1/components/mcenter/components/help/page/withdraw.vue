@@ -42,6 +42,7 @@
             >
               {{ item.title }}
             </div>
+
             <div
               v-if="item.key == 99"
               :class="[$style['content'], { [$style['active']]: item.isOpen }]"
@@ -59,12 +60,14 @@
                 />
               </div>
             </div>
+
             <div
               v-else
               :class="[$style['content'], { [$style['active']]: item.isOpen }]"
               :style="{ 'max-height': item.isOpen ? `100vh` : 0 }"
               v-html="item.content"
             ></div>
+
             <div
               :class="[
                 $style['arrow-btn'],
@@ -88,7 +91,7 @@
 <script>
 import { mapGetters } from 'vuex';
 import member from '@/api/member';
-import mobileContainer from '../../../../common/new/mobileContainer';
+import mobileContainer from '../../../../common/mobileContainer';
 import info from '../json/withdraw.json';
 import { getCookie } from '@/lib/cookie';
 

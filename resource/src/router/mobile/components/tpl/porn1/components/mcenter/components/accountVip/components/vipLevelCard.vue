@@ -122,7 +122,8 @@ export default {
   },
   data() {
     return {
-      selectedIndex: 0
+      selectedIndex: 0,
+      swiperWidth: null
     };
   },
   filters: {
@@ -139,9 +140,14 @@ export default {
     },
     vipCardOption() {
       return {
+        slidesOffsetBefore: 15,
+        width: this.swiperWidth,
         spaceBetween: 10
       };
     }
+  },
+  created() {
+    this.swiperWidth = document.body.offsetWidth - 65;
   },
   mounted() {
     const swiperLevel = this.$refs.swiperLevel.$swiper;
@@ -193,7 +199,6 @@ export default {
 @import "~@/css/variable.scss";
 
 $card-width: calc(100% - 30px);
-$border-radius: 10px;
 
 .vip-card-wrap {
   position: relative;
@@ -249,7 +254,7 @@ $border-radius: 10px;
 
 .card-desc-container {
   position: relative;
-  width: $card-width;
+  // width: $card-width;
   height: 135px;
   text-align: center;
   margin: 0 auto;

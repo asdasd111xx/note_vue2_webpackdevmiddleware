@@ -35,7 +35,7 @@
 <script>
 import { mapGetters } from 'vuex';
 import member from '@/api/member';
-import mobileContainer from '../../../../common/new/mobileContainer';
+import mobileContainer from '../../../../common/mobileContainer';
 import { getCookie } from '@/lib/cookie';
 
 export default {
@@ -49,7 +49,6 @@ export default {
   },
   mounted() {
     this.hasCid = getCookie('cid') || false;
-    this.$router.push("/mobile/mcenter/help");
     document.title = this.$text('S_HELP_CENTER', '帮助中心')
   },
   computed: {

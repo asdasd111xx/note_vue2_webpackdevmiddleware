@@ -79,6 +79,20 @@
                   src="/static/image/_new/common/select_active.png"
                 />
               </div>
+
+              <!-- 客製額度轉帳入口 -->
+              <div
+                :class="[$style['pay-mode-item']]"
+                @click="handleCreditTrans"
+              >
+                <div :class="$style['pay-sub-title']">代收代付</div>
+                <div :class="$style['pay-main-title']" style="color:black">
+                  返利1%+
+                </div>
+                <div :class="$style['pay-main-title']" style="color:black">
+                  代理分红
+                </div>
+              </div>
             </div>
           </div>
 
@@ -684,11 +698,11 @@
 <script>
 import { mapGetters, mapActions } from 'vuex';
 import { Swiper, SwiperSlide } from 'vue-awesome-swiper';
-import blockListTips from "../../../../../../tpl/porn1/components/common/new/blockListTips";
+import blockListTips from "../../../../../../tpl/porn1/components/common/blockListTips";
 import bbosRequest from "@/api/bbosRequest";
 import DatePicker from 'vue2-datepicker';
 import mixin from '@/mixins/mcenter/deposit/bankCardDeposit';
-import message from '../../../../../../tpl/porn1/components/common/new/message';
+import message from "@/router/mobile/components/common/message";
 
 export default {
   components: {
@@ -992,6 +1006,9 @@ export default {
     ...mapActions([
       'actionSetUserBalance'
     ]),
+    handleCreditTrans() {
+      this.$router.push('/mobile/mcenter/creditTrans?tab=0');
+    },
     verificationName() {
       /* ---------------------------
          全型數字：[\uFF10-\uFF19]

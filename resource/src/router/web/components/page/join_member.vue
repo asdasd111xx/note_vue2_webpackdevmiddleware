@@ -146,6 +146,72 @@
               </div>
             </template>
 
+            <template v-else-if="field.key === 'gender'">
+              <v-select
+                v-model="selectData['gender'].selected"
+                :options="selectData['gender'].options"
+                :searchable="false"
+                :class="$style['join-input-gender']"
+                @input="changSelect(field.key)"
+              />
+            </template>
+
+            <template v-else-if="field.key === 'phone'">
+              <!-- <v-select
+                v-model="selectData[field.key].selected"
+                :options="selectData[field.key].options"
+                :searchable="false"
+                :class="$style['join-select-phone']"
+                @input="changSelect(field.key)"
+              /> -->
+              <input
+                v-model="allValue['phone']"
+                :class="[$style['join-input'], field.key]"
+                :name="field.key"
+                :placeholder="field.content.note1"
+                type="number"
+                @input="verification(field.key)"
+                @keydown.13="joinSubmit()"
+              />
+            </template>
+
+            <template v-else-if="field.key === 'birthday'">
+              <datepicker
+                v-if="field.key === 'birthday'"
+                v-model="allValue[field.key]"
+                :language="dateLang"
+                :disabled="{ from: ageLimit }"
+                :open-date="ageLimit"
+                :clear-button="true"
+                :monday-first="true"
+                :placeholder="field.content.note1"
+                :input-class="$style['join-input-birthday']"
+                name="birthday"
+                format="yyyy/MM/dd"
+                initial-view="year"
+                @cleared="verification(field.key)"
+                @input="verification(field.key)"
+              />
+            </template>
+
+            <template v-else-if="field.key === 'withdraw_password'">
+              <div>
+                <v-select
+                  v-for="(num, index) in 4"
+                  :key="index"
+                  v-model="selectData[field.key][index].selected"
+                  :class="
+                    num === 4
+                      ? $style['join-input-withdraw-last']
+                      : $style['join-input-withdraw']
+                  "
+                  :options="selectData[field.key][index].options"
+                  :searchable="false"
+                  @input="changWithdrawPassword(field.key, num)"
+                />
+              </div>
+            </template>
+
             <input
               v-else
               :ref="field.key"
@@ -195,23 +261,29 @@
 </template>
 
 <script>
-import capitalize from 'lodash/capitalize';
-import split from 'lodash/split';
+import { getCookie, setCookie } from '@/lib/cookie';
+import { mapGetters, mapActions } from 'vuex';
 import ajax from '@/lib/ajax';
 import appEvent from '@/lib/appEvent';
-import member from '@/api/member';
-import mcenter from '@/api/mcenter';
-import joinMemInfo from '@/config/joinMemInfo';
-import slideVerification from '@/components/slideVerification';
-import puzzleVerification from '@/components/puzzleVerification';
-import { getCookie, setCookie } from '@/lib/cookie';
 import bbosRequest from "@/api/bbosRequest";
-import { mapGetters, mapActions } from 'vuex';
+import capitalize from 'lodash/capitalize';
+import datepicker from 'vuejs-datepicker';
+import datepickerLang from '@/lib/datepicker_lang';
+import joinMemInfo from '@/config/joinMemInfo';
+import mcenter from '@/api/mcenter';
+import member from '@/api/member';
+import puzzleVerification from '@/components/puzzleVerification';
+import slideVerification from '@/components/slideVerification';
+import split from 'lodash/split';
+import vSelect from 'vue-select';
+import Vue from 'vue';
 
 export default {
   components: {
     slideVerification,
     puzzleVerification,
+    vSelect,
+    datepicker
   },
   props: {
     theme: {
@@ -225,6 +297,8 @@ export default {
   },
   data() {
     return {
+      dateLang: datepickerLang(this.$i18n.locale),
+      ageLimit: new Date(Vue.moment(new Date()).add(-18, 'year')),
       isShowPwd: false,
       errMsg: '',
       joinMemInfo,
@@ -234,8 +308,7 @@ export default {
         username: '',
         password: '',
         confirm_password: '',
-        captcha_text: '',
-
+        introducer: this.$cookie.get('a') || '',
         name: '',
         email: '',
         phone: '',
@@ -249,19 +322,19 @@ export default {
         skype: '',
         zalo: '',
         withdraw_password: '',
+        captcha_text: ''
       },
       allTip: {
         username: '',
         password: '',
         confirm_password: '',
-        captcha_text: '',
-
+        introducer: '',
         name: '',
         email: '',
         phone: '',
         alias: '',
         birthday: '',
-        gender: 0,
+        gender: '',
         qq_num: '',
         weixin: '',
         line: '',
@@ -269,7 +342,26 @@ export default {
         skype: '',
         zalo: '',
         withdraw_password: '',
+        captcha_text: ''
       },
+      checkFail: false,
+      registerData: [],
+      withdraw_passwordStatus: false,
+      joinAgree: false,
+      accountTextStatus: false,
+      isVerifying: false,
+      isVerified: {
+        email: false,
+        phone: false
+      },
+      currentVerify: '',
+      oldValue: {
+        email: '',
+        phone: ''
+      },
+      countryCode: '',
+      verifyTips: '',
+      lock: false,
       puzzleData: null,
       registerData: [],
       currentTip: '',
@@ -326,14 +418,11 @@ export default {
       return this.$styleDefault;
     },
     isSlideAble() {
-      if (this.memInfo.config.register_captcha_type === 3 && !this.puzzleObj) {
-        return false;
-      }
-
       return this.registerData
         .filter((field) => this.joinMemInfo[field.key].show)
         .every((field) => {
-          if (this.allTip[field.key] || this.currentTip) {
+
+          if (this.allTip[field.key]) {
             return false;
           }
 
@@ -342,14 +431,37 @@ export default {
               return false;
             }
 
-            return this.allValue[field.key] ? this.allValue[field.key].replace(/(^\s*)|(\s*$)/g, '') !== '' : false;
-          }
+            if (this.joinMemInfo[field.key].type !== 'select' && field.key !== 'birthday') {
+              return this.allValue[field.key].replace(/(^\s*)|(\s*$)/g, '') !== '';
+            }
 
+            if (field.key === 'gender') {
+              return +this.allValue[field.key] !== 0;
+            }
+
+            if (field.key === 'withdraw_password') {
+              return this.allValue.withdraw_password.length === 4;
+            }
+
+            // if (field.key === 'phone') {
+            //   return this.joinMemInfo[field.key].hasVerify && this.countryCode;
+            // }
+
+            return this.allValue[field.key];
+          }
           return true;
         });
     }
   },
   created() {
+    // 補取款密碼options
+    for (let index = 0; index < 10; index += 1) {
+      const option = { label: `${index}`, value: index };
+      for (let i = 0; i < 4; i += 1) {
+        this.selectData.withdraw_password[i].options.push(option);
+      }
+    }
+
     let joinConfig = [];
     let joinReminder = {};
     const username = {
@@ -388,7 +500,6 @@ export default {
         }
 
         Object.keys(this.joinMemInfo).forEach((key) => {
-          // 因為研五API沒有上開關，所以先不判斷開關一律顯示色情影片
           if (key === 'captcha_text' && this.memInfo.config.register_captcha_type !== 1) {
             this.joinMemInfo[key].show = false;
             return;
@@ -408,14 +519,14 @@ export default {
             return;
           }
 
-          if (key === 'phone') {
-            this.selectData.phone.options = [
-              ...this.selectData.phone.options,
-              ...ret[key].country_codes.map((label) => ({ label, value: label }))
-            ];
+          //   if (key === 'phone') {
+          //     this.selectData.phone.options = [
+          //       ...this.selectData.phone.options,
+          //       ...ret[key].country_codes.map((label) => ({ label, value: label }))
+          //     ];
 
-            [this.selectData.phone.selected] = this.selectData.phone.options;
-          }
+          //     [this.selectData.phone.selected] = this.selectData.phone.options;
+          //   }
 
           this.joinMemInfo[key] = {
             ...this.joinMemInfo[key],
@@ -513,18 +624,37 @@ export default {
       this.currentTip = this.allTip[key];
       this.allTip[key] = '';
     },
+    changWithdrawPassword(key, num) {
+      this.allValue[key] = '';
+      Object.keys(this.selectData.withdraw_password).forEach((index) => {
+        if (this.selectData.withdraw_password[index].selected) {
+          this.allValue[key] += this.selectData.withdraw_password[index].selected.value;
+        }
+      });
+
+      if (!this.withdraw_passwordStatus) {
+        if (num === 4) {
+          this.withdraw_passwordStatus = true;
+        }
+        return;
+      }
+
+      // 驗證輸入值
+      this.verification(key);
+    },
     verification(key) {
       const data = this.joinMemInfo[key];
       if (!this.allValue[key]) {
         return;
       }
-      this.allValue[key] = this.allValue[key].replace(/[\W]/g, '')
-      if (key.includes('password') || key === "username") {
+
+      if (key.includes('password') || key === "username" || key === "phone" || key === "qq_num" || key === "withdraw_password") {
         this.allValue[key] = this.allValue[key].toLowerCase()
           .replace(' ', '')
           .trim()
           .replace(/[\W]/g, '');
       }
+
       if (key === 'name' && this.allValue[key].length > 30) {
         this.allValue[key] = this.allValue[key].substring(0, 30);
         return;
@@ -585,8 +715,41 @@ export default {
         }
       }
 
+      if (key === "captcha_text") {
+        // 圖形驗證格式
+        this.allValue.captcha_text = this.allValue['captcha_text']
+          .replace(/[\W\_]/g, '');
+      }
+
+      //   if (key === 'withdraw_password' && this.allValue.withdraw_password.length < 4 && data.isRequired) {
+      //     this.allTip[key] = this.$t('S_JM_MSG_COMPLETE');
+      //     return;
+      //   }
+
       this.allTip[key] = '';
       this.currentTip = '';
+    },
+    changSelect(key) {
+      //   if (key === 'phone') {
+      //     if (!this.selectData[key].selected) {
+      //       this.selectData[key].selected = {
+      //         label: this.countryCode,
+      //         value: this.countryCode
+      //       };
+      //       return;
+      //     }
+
+      //     this.countryCode = this.selectData[key].selected.value;
+      //     return;
+      //   }
+
+      if (this.selectData[key].selected && !this.selectData[key].selected.value) {
+        this.allValue[key] = '0';
+        return;
+      }
+
+      this.allValue[key] = this.selectData[key].selected ? this.selectData[key].selected.value : '0';
+      this.verification(key);
     },
     joinSubmit(captchaInfo) {
       // 滑動
@@ -600,7 +763,6 @@ export default {
         this.puzzleData = null;
       }
 
-      // 暫時調整欄位
       const params = {
         ...this.allValue,
         captchaText: this.allValue.captcha_text,
@@ -608,12 +770,7 @@ export default {
         aid: this.aid || getCookie('aid') || '',
         speedy: true
       };
-      delete params.captcha_text;
-      delete params.withdraw_Password;
 
-      if (this.memInfo.config.register_captcha_type === 3) {
-        delete params.confirm_password;
-      }
       const self = this;
       const platform = getCookie('platform');
 
@@ -637,7 +794,6 @@ export default {
               setCookie(key, value);
             }
           } catch (e) {
-            // 若不支持至少保留cid cookie
             setCookie('cid', res.data.cookie.cid);
           }
 

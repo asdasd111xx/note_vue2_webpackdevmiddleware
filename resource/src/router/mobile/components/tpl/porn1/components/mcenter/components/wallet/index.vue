@@ -175,13 +175,13 @@
 
 
 <script>
-import { mapGetters } from 'vuex';
+import { mapGetters, mapActions } from 'vuex';
 import Vue from 'vue';
 import ajax from '@/lib/ajax';
 import EST from '@/lib/EST';
 import balanceTran from '@/components/mcenter/components/balanceTran';
-import mobileContainer from '../../../common/new/mobileContainer';
-import message from '../../../common/new/message';
+import mobileContainer from '../../../common/mobileContainer';
+import message from "@/router/mobile/components/common/message";
 import { getCookie } from '@/lib/cookie';
 import yaboRequest from '@/api/yaboRequest';
 
@@ -203,7 +203,7 @@ export default {
       mainNoData: false,
       walletIcons: [
         {
-          text: this.$text('S_TRANSDER', '转帐'),
+          text: this.$text('S_transfer', '转帐'),
           imgSrc: '/static/image/_new/mcenter/wallet/ic_wallter_tranfer.png',
           onClick: () => {
             this.$router.push('/mobile/mcenter/balanceTrans');
@@ -214,6 +214,19 @@ export default {
           imgSrc: '/static/image/_new/mcenter/wallet/ic_wallter_withdraw.png',
           onClick: () => {
             this.$router.push('/mobile/mcenter/withdraw');
+          }
+        },
+        {
+          text: this.$text("S_CREDIT_TRANSFER", "额度转让"),
+          imgSrc: '/static/image/_new/mcenter/wallet/ic_wallet_trans.png',
+          onClick: () => {
+            if (this.rechargeConfig && this.rechargeConfig.bank_required && !this.hasBank) {
+              this.actionSetGlobalMessage({ code: 'C50099', origin: 'wallet', type: 'bindcard' });
+            } else if (this.rechargeConfig && !this.rechargeConfig.enable) {
+              this.actionSetGlobalMessage({ msg: '额度转让升级中' });
+            } else {
+              this.$router.push('/mobile/mcenter/creditTrans');
+            }
           }
         },
         {
@@ -232,6 +245,8 @@ export default {
       memInfo: 'getMemInfo',
       gameData: 'getGameData',
       siteConfig: 'getSiteConfig',
+      hasBank: 'getHasBank',
+      rechargeConfig: 'getRechargeConfig',
     }),
     headerConfig() {
       return {
@@ -259,6 +274,9 @@ export default {
     this.getRecordList();
   },
   methods: {
+    ...mapActions([
+      'actionSetGlobalMessage'
+    ]),
     handleDeposit() {
       this.$router.push(`/mobile/mcenter/deposit`);
       //   0706 統一RD5判斷銀行卡

@@ -136,7 +136,7 @@ import querystring from 'querystring';
 import yaboRequest from '@/api/yaboRequest';
 export default {
   components: {
-    pageLoading: () => import(/* webpackChunkName: 'pageLoading' */ '@/router/mobile/components/tpl/porn1/components/common/new/pageLoading'),
+    pageLoading: () => import(/* webpackChunkName: 'pageLoading' */ '@/router/mobile/components/common/pageLoading'),
     Swiper,
     SwiperSlide
   },
@@ -161,8 +161,8 @@ export default {
         { name: 'deposit', text: '充值' },
         { name: 'balanceTrans', text: '转帐' },
         { name: 'withdraw', text: '提现' },
-        { name: 'accountVip', text: 'VIP' },
-        { name: 'grade', text: '等级' },
+        { name: 'creditTrans', text: '转让' },
+        { name: 'grade', text: '等级' }
       ],
     };
   },
@@ -170,7 +170,9 @@ export default {
     ...mapGetters({
       siteConfig: 'getSiteConfig',
       loginStatus: 'getLoginStatus',
-      memInfo: 'getMemInfo'
+      memInfo: 'getMemInfo',
+      rechargeConfig: 'getRechargeConfig',
+      hasBank: 'getHasBank'
     }),
     isAdult() {
       if (localStorage.getItem('content_rating')) {
@@ -467,6 +469,15 @@ export default {
       } else if (path === 'grade') {
         this.$router.push('/mobile/mcenter/accountVip');
         return;
+      } else if (path === 'creditTrans') {
+        if (this.rechargeConfig && this.rechargeConfig.bank_required && !this.hasBank) {
+          this.actionSetGlobalMessage({ code: 'C50099', origin: 'home', type: 'bindcard' });
+        } else if (this.rechargeConfig && !this.rechargeConfig.enable) {
+          this.actionSetGlobalMessage({ msg: '额度转让升级中' });
+        } else {
+          this.$router.push('/mobile/mcenter/creditTrans');
+        }
+        return;
       } else {
         this.$router.push(`/mobile/mcenter/${path}`);
       }
@@ -553,16 +564,10 @@ export default {
       if (['BL', 'SL'].includes(game.type)) {
         switch (game.type) {
           case 'BL':
-            this.$router.push({
-              name: 'liveStream',
-              params: { type: 'cutiesLive' }
-            });
+            this.$router.push('/mobile/liveStream?type=cutiesLive');
             break;
           case 'SL':
-            this.$router.push({
-              name: 'liveStream',
-              params: { type: 'ballLive' }
-            });
+            this.$router.push('/mobile/liveStream?type=ballLive');
             break;
           default:
             break;

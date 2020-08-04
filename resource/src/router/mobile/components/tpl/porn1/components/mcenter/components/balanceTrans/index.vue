@@ -1,38 +1,12 @@
 <template>
   <mobile-container :header-config="headerSetting" :has-footer="false">
     <div slot="content" :class="[$style['content-wrap'], 'clearfix']">
+      <!-- 一件回收 -->
+      <balance-back :has-link="true" />
       <balance-tran class="clearfix">
         <template
           scope="{ balanceTran, enableAutotransfer, closeAutotransfer, setTranOut, setTranIn, setMoney, balanceTransfer, balanceBack, getDefaultTran }"
         >
-          <div
-            :class="[$style['balance-wrap'], 'clearfix']"
-            @click="balanceBack"
-          >
-            <div :class="$style['balance-total-item']">
-              <img
-                :src="
-                  $getCdnPath(
-                    '/static/image/_new/mcenter/balanceTrans/ic_wallet_center.png'
-                  )
-                "
-              />
-              <span> {{ $text("S_MCENTER_WALLET", "中心钱包") }} </span>
-              <div :class="$style['balance-item-money']">
-                {{ balanceTran.membalance.vendor.default.amount }}
-              </div>
-            </div>
-
-            <div
-              :class="[
-                $style['recycle-btn'],
-                balanceTran.balanceBackLock ? $style.disable : ''
-              ]"
-            >
-              {{ $text("S_ONE_CLICK_TO_ACCOUNT") }}
-            </div>
-          </div>
-
           <div :class="[$style['balance-wrap'], 'clearfix']">
             <div :class="$style['balance-total-icon']">
               <img
@@ -326,7 +300,9 @@
             <div
               :class="[
                 $style['transfer-btn'],
-                { [$style['is-disable']]: balanceTran.btnLock }
+                {
+                  [$style['is-disable']]: balanceTran.btnLock || !transferMoney
+                }
               ]"
               @click="
                 () => {
@@ -337,7 +313,7 @@
                       customSucessAlert: () => {
                         transferSubmit(balanceTran.btnLock);
                       }
-                    })
+                    });
                   }
                 }
               "
@@ -367,27 +343,32 @@
 <script>
 import { mapGetters, mapActions } from "vuex";
 import balanceTran from "@/components/mcenter/components/balanceTran";
-import blockListTips from "../../../common/new/blockListTips";
-import mobileContainer from "../../../common/new/mobileContainer";
-import message from "../../../common/new/message";
+import blockListTips from "../../../common/blockListTips";
+import mobileContainer from "../../../common/mobileContainer";
+import message from "@/router/mobile/components/common/message";
+import balanceBack from "../../../mcenter/components/common/balanceBack";
 
 export default {
   components: {
     mobileContainer,
     blockListTips,
     balanceTran,
-    message
+    message,
+    balanceBack
   },
   data() {
     return {
       transferMoney: null,
       headerSetting: {
-        title: this.$text("S_TRANSDER", "转帐"),
+        title: this.$text("S_transfer", "转帐"),
         prev: true,
         onClick: () => {
           this.$router.back();
         },
-        hasHelp: true
+        hasHelp: {
+          type: '',
+          url: '/mobile/mcenter/help/',
+        },
       },
       msg: "",
       isShowBlockTips: false,
@@ -408,7 +389,11 @@ export default {
     this.actionSetUserdata(true);
   },
   methods: {
-    ...mapActions(["actionSetUserBalance", "actionSetUserdata"]),
+    ...mapActions([
+      'actionSetUserBalance',
+      'actionSetUserdata',
+      'actionSetGlobalMessage'
+    ]),
     getMaxMoney(balanceList, setMoneyData, transferTargetOut) {
       if (balanceList.vendor[transferTargetOut]) {
         this.transferMoney = Math.floor(
@@ -426,7 +411,7 @@ export default {
         return;
       }
 
-      this.msg = this.$t("S_CR_SUCCESS");
+      this.actionSetGlobalMessage({ msg: '转帐成功' });
       this.transferMoney = 0;
     },
     toggleShowMore() {

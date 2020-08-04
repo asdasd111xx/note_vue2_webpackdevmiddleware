@@ -10,37 +10,13 @@
         </div>
       </message>
 
+      <!-- 一件回收 -->
+      <balance-back :has-link="true" />
+
       <balance-tran class="clearfix">
         <template
           scope="{ balanceTran, enableAutotransfer, closeAutotransfer, setTranOut, setTranIn, setMoney, balanceTransfer, balanceBack, getDefaultTran }"
         >
-          <div
-            :class="[$style['balance-wrap'], 'clearfix']"
-            @click="balanceBack"
-          >
-            <div :class="$style['balance-total-item']">
-              <img
-                :src="
-                  $getCdnPath(
-                    '/static/image/_new/mcenter/balanceTrans/ic_wallet_center.png'
-                  )
-                "
-              />
-              <span> {{ $text("S_MCENTER_WALLET", "中心钱包") }} </span>
-              <div :class="$style['balance-item-money']">
-                {{ balanceTran.membalance.vendor.default.amount }}
-              </div>
-            </div>
-
-            <div
-              :class="[
-                $style['recycle-btn'],
-                balanceTran.balanceBackLock ? $style.disable : ''
-              ]"
-            >
-              {{ $text("S_ONE_CLICK_TO_ACCOUNT") }}
-            </div>
-          </div>
           <!-- 個別餘額 -->
           <div :class="[$style['balance-item-wrap'], 'clearfix']">
             <template v-if="!isShowMore">
@@ -279,15 +255,25 @@
       </div>
 
       <div
+        :class="[$style['btn-wrap']]"
         v-if="
           withdrawUserData &&
             withdrawUserData.account &&
             withdrawUserData.account.length > 0
         "
-        :class="[$style['submit-btn'], { [$style['disabled']]: lockSubmit }]"
       >
-        <div @click="checkSubmit()">
-          立即提现
+        <div :class="[$style['submit-btn']]">
+          <div @click="linkToRecharge">
+            额度转让&nbsp;返佣70%
+          </div>
+        </div>
+
+        <div
+          :class="[$style['submit-btn'], { [$style['disabled']]: lockSubmit }]"
+        >
+          <div @click="checkSubmit">
+            立即提现
+          </div>
         </div>
       </div>
 
@@ -329,16 +315,17 @@
 </template>
 
 <script>
-import mobileContainer from '../../../common/new/mobileContainer';
+import mobileContainer from '../../../common/mobileContainer';
 import mixin from '@/mixins/mcenter/withdraw';
 import { mapGetters, mapActions } from 'vuex';
-import blockListTips from "../../../common/new/blockListTips";
+import blockListTips from "../../../common/blockListTips";
 import balanceTran from "@/components/mcenter/components/balanceTran";
-import message from '../../../common/new/message'
+import message from "@/router/mobile/components/common/message";
 import serialNumber from './serialNumber'
 import ajax from '@/lib/ajax';
 import EST from '@/lib/EST';
 import widthdrawTips from './widthdrawTips';
+import balanceBack from "../../../mcenter/components/common/balanceBack";
 
 import {
   API_MCENTER_WITHDRAW,
@@ -377,13 +364,15 @@ export default {
     }
   },
   components: {
-    pageLoading: () => import(/* webpackChunkName: 'pageLoading' */ '@/router/mobile/components/tpl/porn1/components/common/new/pageLoading'),
+    pageLoading: () => import(/* webpackChunkName: 'pageLoading' */ '@/router/mobile/components/common/pageLoading'),
+
     mobileContainer,
     balanceTran,
     message,
     serialNumber,
     widthdrawTips,
-    blockListTips
+    blockListTips,
+    balanceBack
   },
   watch: {
     withdrawUserData() {
@@ -493,10 +482,12 @@ export default {
         prev: true,
         onClick: () => { this.$router.back(); },
         title: this.$text('S_WITHDRAWAL_TEXT', '提现'),
-        hasHelp: true,
-        helpRouter: '/withdraw',
-        customEvent: () => {
-          this.saveCurrentValue(true);
+        hasHelp: {
+          type: 'withdraw',
+          url: '/mobile/mcenter/help/withdraw',
+          func: () => {
+            this.saveCurrentValue(true);
+          }
         },
       };
     },
@@ -522,6 +513,9 @@ export default {
     },
   },
   methods: {
+    linkToRecharge() {
+      this.$router.push('/mobile/mcenter/creditTrans?tab=0')
+    },
     getBankImage(swiftCode) {
       return {
         src: `https://images.dormousepie.com/icon/bankIconBySwiftCode/${swiftCode}.png`,

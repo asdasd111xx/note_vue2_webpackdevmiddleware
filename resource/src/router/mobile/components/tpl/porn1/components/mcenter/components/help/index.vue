@@ -31,7 +31,7 @@
 
         <span> {{ listInfo.name }} </span>
         <div :class="$style['btn-next']">
-          <img :src="$getCdnPath(`/static/image/_new/common/btn_next.png`)" />
+          <img :src="$getCdnPath(`/static/image/_new/common/arrow_next.png`)" />
         </div>
       </div>
     </div>
@@ -41,8 +41,8 @@
 <script>
 import { mapGetters } from 'vuex';
 import member from '@/api/member';
-import mobileContainer from '../../../common/new/mobileContainer';
-import message from "../../../common/new/message"
+import mobileContainer from '../../../common/mobileContainer';
+import message from "@/router/mobile/components/common/message";
 
 export default {
   components: {
@@ -104,16 +104,13 @@ export default {
     },
   },
   created() {
-    // if (!this.loginStatus) {
-    //   this.$router.push("/mobile/login")
-    // }
-
     // 針對遊戲介紹
     localStorage.removeItem("help_gameIntro");
   },
   methods: {
     handleClick(path) {
-      if (path.includes('gameintro') || path.includes('support') || path.includes('deposit')) {
+      // if (path.includes('gameintro') || path.includes('support') || path.includes('deposit')) {
+      if (path.includes('deposit')) {
         this.msg = '正在上线 敬请期待'
       } else {
         this.$router.push(path)

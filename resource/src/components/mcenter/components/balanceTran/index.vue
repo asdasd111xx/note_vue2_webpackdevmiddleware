@@ -153,15 +153,6 @@
         </p>
       </div>
     </slot>
-    <!-- <confirm
-      v-if="showIntegerBackConfirm"
-      @confirm="confirmIntegerBack"
-      @cancel="showIntegerBackConfirm = false"
-    >
-      <div slot="msg">
-        {{ $t("S_INTEGER_BACK_ACCOUNT_CONFIRM") }}
-      </div>
-    </confirm> -->
   </div>
 </template>
 
@@ -170,14 +161,12 @@ import { mapGetters, mapActions } from 'vuex';
 import { ModelSelect } from 'vue-search-select';
 import mcenter from '@/api/mcenter';
 import ajax from '@/lib/ajax';
-import confirm from '@/router/mobile/components/tpl/porn1/components/common/new/confirm';
 import { getCookie } from '@/lib/cookie';
 import yaboRequest from '@/api/yaboRequest';
 
 export default {
   components: {
     ModelSelect,
-    confirm
   },
   data() {
     return {
@@ -390,6 +379,7 @@ export default {
         return;
       }
 
+      this.balanceBackLock = true;
       // 06/24-不顯示confirm彈窗，直接call歸戶function
       this.backAccount();
     },
@@ -411,17 +401,22 @@ export default {
                 afterSetUserBalance();
               }
             });
-          this.balanceBackLock = false;
+
+          setTimeout(() => {
+            this.balanceBackLock = false;
+          }, 2000)
         },
         fail: (res) => {
           this.actionSetGlobalMessage({ msg: res.data.msg || '系统错误' });
-          this.balanceBackLock = false;
+          setTimeout(() => {
+            this.balanceBackLock = false;
+          }, 2000)
         }
       });
     },
     balanceTran({ customSucessAlert } = {}) {
       // 阻擋連續點擊
-      if (this.btnLock) {
+      if (this.btnLock || this.balanceTran.btnLock) {
         return;
       }
 
@@ -457,12 +452,13 @@ export default {
             customSucessAlert();
           }
           if (!customSucessAlert) {
-            this.actionSetGlobalMessage({ msg: this.$t('S_CR_SUCCESS') });
-            // alert(this.$t('S_CR_SUCCESS'));
+            this.actionSetGlobalMessage({ msg: '转帐成功' });
           }
 
           this.lockSec = 0;
-          this.balanceBackLock = false;
+          setTimeout(() => {
+            this.balanceBackLock = false;
+          }, 2000)
           this.actionSetUserBalance();
 
           this.tranIn = 0;
@@ -518,11 +514,11 @@ export default {
         in: this.scopeData.transIn[transInIndex].value
       };
 
-      if (this.siteConfig.MOBILE_WEB_TPL === 'porn1') {
-        this.tranOut = this.getDefaultTran.out;
-        this.tranIn = this.getDefaultTran.in;
-      }
-    }
+      //   if (this.siteConfig.MOBILE_WEB_TPL === 'porn1') {
+      //     this.tranOut = this.getDefaultTran.out;
+      //     this.tranIn = this.getDefaultTran.in;
+      //   }
+    },
   }
 };
 </script>

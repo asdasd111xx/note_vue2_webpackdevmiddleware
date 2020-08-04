@@ -484,5 +484,13 @@ export default {
     // 鴨脖全站訊息
     [types.SET_GLOBALMESSAGE](state, data) {
         state.globalMessage = data
+    },
+    // 額度轉讓配置
+    [types.SET_RECHARGECONFIG](state, data) {
+        state.rechargeConfig = data
+    },
+    // 是否有銀行卡
+    [types.SET_HASBANK](state, data) {
+        state.hasBank = data
     }
 };

@@ -54,14 +54,12 @@ import moment from 'moment';
 import mcenterPageAuthControl from '@/lib/mcenterPageAuthControl';
 import mcenter from '@/api/mcenter';
 import member from '@/api/member';
-import message from '../../../../common/new/message';
 import { getCookie, setCookie } from '@/lib/cookie';
 import yaboRequest from '@/api/yaboRequest';
 import axios from 'axios';
 
 export default {
   components: {
-    message,
   },
   data() {
     return {

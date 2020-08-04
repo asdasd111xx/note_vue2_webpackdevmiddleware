@@ -120,7 +120,7 @@
 </template>
 
 <script>
-import message from '../../../../common/new/message';
+import message from "@/router/mobile/components/common/message";
 import { mapGetters, mapActions } from 'vuex';
 
 export default {
@@ -130,15 +130,12 @@ export default {
     editAlias: () => import(/* webpackChunkName: 'editAlias' */'./form/editAlias'),
     editEmail: () => import(/* webpackChunkName: 'editEmail' */'./form/editEmail'),
     editPhone: () => import(/* webpackChunkName: 'editPhone' */'./form/editPhone'),
-    editPassword: () => import(/* webpackChunkName: 'editPassword' */'./form/editPassword'),
-    editWithdrawPwd: () => import(/* webpackChunkName: 'editWithdrawPwd' */'./form/editWithdrawPwd'),
     editBirthday: () => import(/* webpackChunkName: 'editBirthday' */'./form/editBirthday'),
     editGender: () => import(/* webpackChunkName: 'editGender' */'./form/editGender'),
     editQq: () => import(/* webpackChunkName: 'editQq' */'./form/editQq'),
     editWeixin: () => import(/* webpackChunkName: 'editWeixin' */'./form/editWeixin'),
     editLine: () => import(/* webpackChunkName: 'editLine' */'./form/editLine'),
     editFacebook: () => import(/* webpackChunkName: 'editFacebook' */'./form/editFacebook'),
-    editSkype: () => import(/* webpackChunkName: 'editSkype' */'./form/editSkype'),
     editZalo: () => import(/* webpackChunkName: 'editZalo' */'./form/editZalo'),
     message
   },

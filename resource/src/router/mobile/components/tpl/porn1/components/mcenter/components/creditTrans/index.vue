@@ -36,25 +36,26 @@
 <script>
 import { mapGetters, mapActions } from "vuex";
 import balanceTran from "@/components/mcenter/components/balanceTran";
-import blockListTips from "../../../common/new/blockListTips";
-import mobileContainer from "../../../common/new/mobileContainer";
-import transderCreditTrans from './compontents/transderCreditTrans';
+import blockListTips from "../../../common/blockListTips";
+import mobileContainer from "../../../common/mobileContainer";
+import transferCreditTrans from './compontents/transferCreditTrans';
 import discountCreditTrans from './compontents/discountCreditTrans';
 import recoardCreditTrans from './compontents/recoardCreditTrans';
+
 export default {
   components: {
     mobileContainer,
     blockListTips,
     balanceTran,
-    transderCreditTrans,
+    transferCreditTrans,
     discountCreditTrans,
-    recoardCreditTrans
+    recoardCreditTrans,
   },
   data() {
     return {
       transferMoney: null,
       headerSetting: {
-        title: this.$text("S_CREDIT_TRANSDER", "额度转让"),
+        title: this.$text("S_CREDIT_TRANSFER", "额度转让"),
         prev: true,
         onClick: () => {
           this.$router.back();
@@ -64,13 +65,15 @@ export default {
       isShowMore: true,
       isShowTransOutSelect: false,
       isShowTransInSelect: false,
-      currentTab: 0, //discount transder recoard
-      currentTemplate: "discount-credit-trans"
+      currentTab: 1, //discount transfer recoard
+      currentTemplate: "transfer-credit-trans"
     };
   },
   computed: {
     ...mapGetters({
-      memInfo: "getMemInfo"
+      memInfo: "getMemInfo",
+      rechargeConfig: "getRechargeConfig",
+      hasBank: 'getHasBank',
     }),
     tabItem() {
       return [
@@ -79,18 +82,20 @@ export default {
           text: this.$text("S_CREDIT_DISCOUNT", "转让优惠"),
         },
         {
-          key: "transder",
-          text: this.$text("S_CREDIT_TRANSDER", "额度转让"),
+          key: "transfer",
+          text: this.$text("S_CREDIT_TRANSFER", "额度转让"),
         },
         {
           key: "recoard",
-          text: this.$text("S_CREDIT_RECOARD", "转让纪录"),
+          text: this.$text("S_CREDIT_RECOARD", "转让记录"),
         },
       ]
     },
   },
   created() {
-
+    if (this.$route.query && this.$route.query.tab) {
+      this.setCurrentTab(Number(this.$route.query.tab));
+    }
   },
   methods: {
     ...mapActions([
@@ -99,19 +104,27 @@ export default {
       'actionSetGlobalMessage'
     ]),
     setCurrentTab(index) {
-      this.currentTab = index;
       switch (index) {
         default:
         case 0:
           this.currentTemplate = "discount-credit-trans";
-          return;
+          break;
         case 1:
-          this.currentTemplate = "transder-credit-trans";
-          return;
+          if (this.rechargeConfig && this.rechargeConfig.bank_required && !this.hasBank) {
+            this.actionSetGlobalMessage({ code: 'C50099', origin: 'home', type: 'bindcard' });
+            return;
+          } else if (this.rechargeConfig && !this.rechargeConfig.enable) {
+            this.actionSetGlobalMessage({ msg: '额度转让升级中' });
+            return;
+          } else {
+            this.currentTemplate = "transfer-credit-trans";
+          }
+          break;
         case 2:
           this.currentTemplate = "recoard-credit-trans";
-          return;
+          break;
       }
+      this.currentTab = index;
     },
     closeTips() {
       this.isShowBlockTips = false;

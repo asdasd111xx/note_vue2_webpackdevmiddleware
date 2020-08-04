@@ -1,0 +1,90 @@
+@import "~@/css/variable.scss";
+
+.search-wrap {
+    width: 100%;
+    min-height: 100vh;
+    position: fixed;
+    top: 0;
+    bottom: 0;
+    z-index: 99;
+    background: #f8f8f7;
+    overflow-y: scroll;
+}
+
+.search-header {
+    padding: 5px 10px;
+    background: #fff;
+    position: relative;
+    display: flex;
+    align-items: center;
+}
+
+.search-input-img {
+    float: left;
+    height: 33px;
+    position: absolute;
+    width: 30px;
+    display: flex;
+    align-items: center;
+    background: url("/static/image/_new/common/icon_search_n.png");
+    background-size: 20px 20px;
+    background-position: center;
+    background-repeat: no-repeat;
+}
+
+.search-input {
+    float: left;
+    width: calc(100% * 15 / 17);
+    height: 33px;
+    padding-left: 42px;
+    background: #eee;
+    border: none;
+    border-radius: 5px;
+    -webkit-appearance: unset;
+    appearance: none;
+
+    &::-webkit-input-placeholder {
+        color: #a6a9b2;
+    }
+
+    &::-moz-placeholder {
+        color: #a6a9b2;
+    }
+
+    &:-ms-input-placeholder {
+        color: #a6a9b2;
+    }
+
+    &::placeholder {
+        color: #a6a9b2;
+    }
+}
+
+.search-cancel {
+    float: left;
+    width: calc(100% * 2 / 17);
+    line-height: 43px;
+    text-align: right;
+    font-size: 14px;
+    font-weight: 700;
+    color: #5e626d;
+}
+
+.empty-wrap {
+    padding-top: 90px;
+    color: #a6a9b2;
+    font-size: 16px;
+    text-align: center;
+}
+
+.empty-icon {
+    margin: 0 auto 20px;
+    width: 62px;
+    height: 62px;
+    background: url("/static/image/_new/common/search_none.png") 0 0 / contain no-repeat;
+}
+
+.game-item-content {
+    padding: 18px 10px;
+    margin: 0 auto;
+}

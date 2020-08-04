@@ -168,4 +168,9 @@ export default [
         name: 'launch',
         component
     },
+    {
+        path: 'gift',
+        name: 'gift',
+        component
+    },
 ];

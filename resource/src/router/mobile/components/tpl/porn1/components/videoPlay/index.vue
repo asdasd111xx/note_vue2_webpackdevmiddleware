@@ -36,7 +36,7 @@ import videoPlayer from './components/videoPlayer';
 import videoInfo from './components/videoInfo';
 import videoGuess from './components/videoGuess';
 import videoTag from './components/videoTag';
-import mobileContainer from '../common/new/mobileContainer';
+import mobileContainer from '../common/mobileContainer';
 import pornRequest from '@/api/pornRequest';
 
 export default {

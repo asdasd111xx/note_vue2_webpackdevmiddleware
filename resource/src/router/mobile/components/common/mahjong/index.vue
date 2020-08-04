@@ -6,6 +6,7 @@
           <template v-for="(gameInfo, index) in gameData">
             <game-item
               :key="`game-${gameInfo.vendor}-${index}`"
+              :theme="gameTheme"
               :game-info="gameInfo"
               :show-vendor="gameShowVendor"
               :show-jackpot="gameShowJackpot"
@@ -37,6 +38,7 @@
       :text="paramsData.name"
       :set-search-text="setSearchText"
       :update-search-status="updateSearchStatus"
+      :theme="gameTheme"
       :game-data="gameData"
       :game-show-vendor="gameShowVendor"
       :game-show-jackpot="gameShowJackpot"
@@ -51,8 +53,8 @@ import { mapGetters, mapActions } from 'vuex';
 import InfiniteLoading from 'vue-infinite-loading';
 import ajax from '@/lib/ajax';
 import { gameType, gameList } from '@/config/api';
-import gameItem from '@/router/web/components/common/gameItem';
-import gameSearch from '../search';
+import gameItem from '../gameItem';
+import gameSearch from '../gameSearch';
 
 /**
  * 共用元件 - 手機網頁版電子遊戲頁共用框 (邏輯共用)
@@ -72,6 +74,14 @@ export default {
     slotSort: {
       type: Array,
       default: () => (['search', 'label', 'list'])
+    },
+    labelTheme: {
+      type: String,
+      default: 'porn1'
+    },
+    gameTheme: {
+      type: String,
+      default: 'porn1'
     },
     gameShowVendor: {
       type: Boolean,
@@ -146,16 +156,6 @@ export default {
   },
   created() {
     this.getGameLabelList();
-    if (this.loginStatus) {
-      this.actionSetFavoriteGame();
-      ajax({
-        method: 'get',
-        url: '/api/v1/c/player/user_bank/list',
-        errorAlert: false
-      }).then((res) => {
-        this.hasBankCard = res.ret && res.ret.length > 0
-      });
-    }
   },
   methods: {
     ...mapActions([

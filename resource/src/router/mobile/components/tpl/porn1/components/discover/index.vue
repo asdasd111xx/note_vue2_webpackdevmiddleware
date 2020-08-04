@@ -8,7 +8,7 @@
 
 <script>
 import { mapGetters } from 'vuex';
-import mobileContainer from '../common/new/mobileContainer';
+import mobileContainer from '../common/mobileContainer';
 
 export default {
   components: {
@@ -46,7 +46,10 @@ export default {
         isBackgroundGradient: true,
         hasSearchBtn: name === 'home' && this.isAdult,
         title: trans[name],
-        onClick: () => { this.$router.back(); }
+        onClick: () => {
+          localStorage.removeItem('discover-tag');
+          this.$router.back();
+        }
       };
     },
     template() {

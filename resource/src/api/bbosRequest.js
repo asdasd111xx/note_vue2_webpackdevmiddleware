@@ -11,8 +11,6 @@ export default ({
     fail = () => { },
 }) => {
     const bbosHeader = {
-        // to do 廳別應該統一控制
-        // "Vendor": '500015' | '67' | '69',
         "Useragent": navigator.userAgent,
         "Ekey": "sobb",
         'Content-Type': 'application/json',
@@ -51,7 +49,7 @@ export default ({
     return axios(obj).then((response) => {
         if (process.env.NODE_ENV === "development") {
             console.log("[bbos request]")
-            console.log(response.data)
+            console.log(url, response.data)
         }
 
         if (response && response.data && response.data.status === "000") {

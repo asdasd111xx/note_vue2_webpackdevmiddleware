@@ -26,7 +26,7 @@ import { mapGetters, mapActions } from 'vuex';
 import account from './account/index';
 import mcenter from '@/api/mcenter';
 import member from '@/api/member';
-import mobileContainer from '../../../common/new/mobileContainer';
+import mobileContainer from '../../../common/mobileContainer';
 import serviceTips from './serviceTips'
 import axios from 'axios';
 import avatarDialog from './avatarDialog'

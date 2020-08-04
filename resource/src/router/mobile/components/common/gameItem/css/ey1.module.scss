@@ -1,0 +1,17 @@
+@import "./basic.module.scss";
+
+.game-title {
+    color: #4E5159;
+}
+
+.game-vendor {
+    color: #cccccc;
+}
+
+.icon-star {
+    background: url('/static/image/ey1/common/ic_favorite_n.png') 50% 0 no-repeat;
+
+    &.is-favorite {
+        background: url('/static/image/ey1/common/ic_favorite_h.png') 50% 0 no-repeat;
+    }
+}

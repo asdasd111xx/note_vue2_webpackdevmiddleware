@@ -12,8 +12,8 @@
 </template>
 
 <script>
-import notification from './components/notification';
-import message from '@/router/mobile/components/tpl/porn1/components/common/new/message2';
+import notification from '@/router/mobile/components/common/notification';
+import message from '@/router/mobile/components/common/message2';
 import { mapGetters, mapActions } from 'vuex';
 
 export default {

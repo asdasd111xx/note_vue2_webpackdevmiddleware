@@ -103,7 +103,7 @@
                   {{ $text("S_SERIAL_CHANGE", "流水要求") }}
                 </span>
                 <span :class="$style['money']">
-                  {{ serialInfo.audit_amount }}
+                  {{ serialInfo.total_audit_amount }}
                 </span>
               </div>
               <div>

@@ -72,8 +72,8 @@ export default {
         },
         // 轉換扣除金額
         getDeductionNumber(number) {
-            let _n = Number(number).toFixed(2);
-            return Number(_n) > 0 ? `-${_n}` : _n;
+            return Number(number).toFixed(2);
+            // return Number(_n) > 0 ? `-${_n}` : _n;
         },
         // 取得流水
         getSerialNumberData() {

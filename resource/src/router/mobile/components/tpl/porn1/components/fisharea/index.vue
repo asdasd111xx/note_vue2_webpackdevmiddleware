@@ -12,7 +12,7 @@
 
 <script>
 import fishareaWrap from '@/router/mobile/components/common/fisharea';
-import mobileContainer from '../common/new/mobileContainer';
+import mobileContainer from '../common/mobileContainer';
 
 export default {
   components: {

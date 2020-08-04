@@ -39,7 +39,7 @@
         </div>
 
         <div :class="$style['views']">
-          <span> {{ videoInfo.created_at }} </span>
+          <span> {{ videoInfo.updated_at }} </span>
           <img :src="$getCdnPath('/static/image/_new/discover/ic_video.png')" />
           <span> {{ videoInfo.views }}</span>
         </div>

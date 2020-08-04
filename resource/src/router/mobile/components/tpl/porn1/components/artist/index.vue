@@ -30,7 +30,7 @@ import axios from 'axios';
 import querystring from 'querystring';
 import artistInfo from './components/artistInfo';
 import artistVideo from './components/artistVideo';
-import mobileContainer from '../common/new/mobileContainer';
+import mobileContainer from '../common/mobileContainer';
 import pornRequest from '@/api/pornRequest';
 
 export default {

@@ -17,7 +17,7 @@
 <script>
 import { mapGetters } from 'vuex';
 import joinMember from '@/router/web/components/page/join_member';
-import mobileContainer from '../common/new/mobileContainer'
+import mobileContainer from '../common/mobileContainer'
 
 export default {
   components: {

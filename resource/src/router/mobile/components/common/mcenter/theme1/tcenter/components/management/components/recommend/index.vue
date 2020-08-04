@@ -117,7 +117,7 @@
 import { mapGetters } from 'vuex';
 import friendsRecommend from '@/mixins/mcenter/management/friendsRecommend';
 import promoteFunction from '@/mixins/mcenter/management/promoteFunction';
-import message from '@/router/mobile/components/tpl/porn1/components/common/new/message';
+import message from '@/router/mobile/components/common/message';
 
 export default {
   components: {

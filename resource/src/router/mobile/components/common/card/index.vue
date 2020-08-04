@@ -2,8 +2,9 @@
   <div class="card-wrap">
     <template v-for="slotKey in slotSort">
       <template v-if="slotKey === 'label'">
-        <gameLabel
+        <game-label
           :key="`slot-${slotKey}`"
+          :theme="labelTheme"
           :is-label-receive="isLabelReceive"
           :label="paramsData.label.toString()"
           :label-data="labelData"
@@ -16,6 +17,7 @@
             <game-item
               :key="`game-${gameInfo.vendor}-${index}`"
               :game-info="gameInfo"
+              :theme="gameTheme"
               :show-vendor="gameShowVendor"
               :show-jackpot="gameShowJackpot"
               :show-favor="gameShowFavor"
@@ -42,11 +44,12 @@
         <div>{{ $text("S_NO_GAME", "未查询到相关游戏") }}</div>
       </div>
     </template>
-    <gameSearch
+    <game-search
       v-if="isShowSearch"
       :text="paramsData.name"
       :set-search-text="setSearchText"
       :update-search-status="updateSearchStatus"
+      :theme="gameTheme"
       :game-data="gameData"
       :game-show-vendor="gameShowVendor"
       :game-show-jackpot="gameShowJackpot"
@@ -62,8 +65,8 @@ import InfiniteLoading from 'vue-infinite-loading';
 import ajax from '@/lib/ajax';
 import { gameType, gameList } from '@/config/api';
 import gameLabel from '../gameLabel';
-import gameItem from '@/router/web/components/common/gameItem';
-import gameSearch from '../search';
+import gameItem from '../gameItem';
+import gameSearch from '../gameSearch';
 
 /**
  * 共用元件 - 手機網頁版電子遊戲頁共用框 (邏輯共用)
@@ -84,6 +87,14 @@ export default {
     slotSort: {
       type: Array,
       default: () => (['search', 'label', 'list'])
+    },
+    labelTheme: {
+      type: String,
+      default: 'porn1'
+    },
+    gameTheme: {
+      type: String,
+      default: 'porn1'
     },
     gameShowVendor: {
       type: Boolean,

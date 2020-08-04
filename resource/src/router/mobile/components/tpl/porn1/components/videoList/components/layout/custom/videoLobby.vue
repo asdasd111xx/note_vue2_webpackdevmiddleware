@@ -96,7 +96,7 @@
 import axios from "axios";
 import find from "lodash/find";
 import pornRequest from "@/api/pornRequest";
-import message from "@/router/mobile/components/tpl/porn1/components/common/new/message";
+import message from "@/router/mobile/components/common/message";
 
 export default {
   components: {

@@ -545,6 +545,7 @@ export const actionMemInit = ({ state, dispatch, commit }) => {
 
         dispatch('actionSetSiteConfig', configInfo);
         dispatch('actionSetYaboConfig');
+        dispatch('actionSetRechargeConfig');
 
         if (state.loginStatus) {
             const params = {
@@ -605,6 +606,18 @@ export const actionSetUserdata = ({ commit }, forceUpdate = false) => {
     setTimeout(() => {
         memstatus = true;
     }, 1000);
+
+    const hasLogin = Vue.cookie.get('cid');
+    if (hasLogin) {
+        axios({
+            method: 'get',
+            url: '/api/v1/c/player/user_bank/list'
+        }).then(res => {
+            if (res && res.data && res.data.result === "ok") {
+                commit(types.SET_HASBANK, res.data.ret.length > 0);
+            }
+        })
+    }
 
     return member.data({
         timeout: 10000,
@@ -672,6 +685,10 @@ export const actionIsLogin = ({ commit }, isLogin) => {
 };
 // 會員端-設定會員餘額
 export const actionSetUserBalance = ({ commit }) => {
+    const hasLogin = Vue.cookie.get('cid');
+    if (!hasLogin) {
+        return;
+    }
     member.balance({
         success: (response) => {
             commit(types.SETUSERBALANCE, response);
@@ -1093,4 +1110,19 @@ export const actionSetYaboConfig = ({ state, dispatch, commit }, next) => {
 
 export const actionSetGlobalMessage = ({ commit }, data) => {
     commit(types.SET_GLOBALMESSAGE, data);
+};
+
+export const actionSetRechargeConfig = ({ commit }, data) => {
+    const hasLogin = Vue.cookie.get('cid');
+    if (!hasLogin) {
+        return;
+    }
+    axios({
+        method: 'get',
+        url: '/api/v1/c/recharge/config'
+    }).then(res => {
+        if (res && res.data && res.data.result === "ok") {
+            commit(types.SET_RECHARGECONFIG, res.data.ret);
+        }
+    })
 };
