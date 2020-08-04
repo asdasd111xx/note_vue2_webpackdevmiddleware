@@ -2,7 +2,10 @@
   <div :class="$style['wrap']">
     <div :class="$style['header']">
       <div :class="$style['btn-prev']" @click="backPre">
-        <img src="/static/image/_new/common/btn_back.png" />
+        <img
+          :src="$getCdnPath('/static/image/_new/common/btn_back_w.png')"
+          alt="more"
+        />
       </div>
 
       <div :class="[$style['content'], 'clearfix']">
@@ -14,7 +17,10 @@
         :class="$style['icon-edit']"
         @click="editDetailStatus = true"
       >
-        <icon name="ellipsis-h" />
+        <img
+          :src="$getCdnPath('/static/image/_new/common/btn_more_w.png')"
+          alt="more"
+        />
       </div>
     </div>
 
@@ -54,9 +60,7 @@ import entryMixin from "@/mixins/mcenter/bankCard/index";
 export default {
   components: {
     cardInfo: () =>
-      import(
-        /* webpackChunkName: 'cardInfo' */ "./components/cardInfo"
-      ),
+      import(/* webpackChunkName: 'cardInfo' */ "./components/cardInfo"),
     addCard: () =>
       import(/* webpackChunkName: 'addCard' */ "./components/addCard")
   },
@@ -94,6 +98,15 @@ export default {
       );
     }
   },
+  created() {
+    // todo: 判斷 bank & virtualBank 是否有被啟用
+    /*
+    //   return axios({
+    //     method: "get",
+    //     url: "api/v1/c/levels/by_user",
+    //   }).then(response => {
+    */
+  },
   methods: {
     setCurrentTab(index) {
       this.currentTab = index;
@@ -128,9 +141,9 @@ export default {
   width: 100%;
   height: 43px;
   padding: 0 17px;
-  background: #fefffe;
   text-align: center;
   border-bottom: 1px solid #eee;
+  background: linear-gradient(#fe2a2a, #b60303);
 
   &::before {
     content: "";
@@ -159,7 +172,7 @@ export default {
   float: left;
   height: 22px;
   line-height: 22px;
-  color: #000;
+  color: #fff;
   font-size: 17px;
 }
 
@@ -177,18 +190,13 @@ export default {
   width: 20px;
   height: 20px;
   margin: auto;
-
-  > svg {
-    display: block;
-    width: 100%;
-  }
 }
 
 .tab-wrap {
   position: relative;
   display: flex;
   background: #fff;
-  border-bottom: 2px solid #eee;
+  border-bottom: 1px solid #eee;
 }
 
 .tab-item {
@@ -209,11 +217,11 @@ export default {
 
 .active-slider {
   position: absolute;
-  width: 50%;
+  width: 12%;
   height: 2px;
   bottom: 0;
   transform: translateX(-50%);
-  background: #be9e7f;
+  background: #e42a30;
   transition: left 0.31s;
 }
 </style>
