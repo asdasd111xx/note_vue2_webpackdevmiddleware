@@ -24,7 +24,7 @@
       </div>
     </div>
 
-    <div :class="$style['tab-wrap']">
+    <div v-if="isShowTab" :class="$style['tab-wrap']">
       <div
         v-for="(item, index) in tabItem"
         :key="`tab-${item.key}`"
@@ -44,8 +44,8 @@
 
     <component
       :is="currentPage"
-      :current-kind="currentKind"
       :change-page="changePage"
+      :show-tab="showTab"
       :show-detail.sync="showDetail"
       :edit-status.sync="editStatus"
       :add-bank-card-step.sync="addBankCardStep"
@@ -59,16 +59,27 @@ import entryMixin from "@/mixins/mcenter/bankCard/index";
 
 export default {
   components: {
-    cardInfo: () =>
-      import(/* webpackChunkName: 'cardInfo' */ "./components/cardInfo"),
-    addCard: () =>
-      import(/* webpackChunkName: 'addCard' */ "./components/addCard")
+    bankCardInfo: () =>
+      import(
+        /* webpackChunkName: 'bankCardInfo' */ "./components/bank/cardInfo"
+      ),
+    addBankCard: () =>
+      import(/* webpackChunkName: 'addBankCard' */ "./components/bank/addCard"),
+    virtualBankCardInfo: () =>
+      import(
+        /* webpackChunkName: 'virtualBankCardInfo' */ "./components/virtualBank/cardInfo"
+      ),
+    addVirtualBankCard: () =>
+      import(
+        /* webpackChunkName: 'addVirtualBankCard' */ "./components/virtualBank/addCard"
+      )
   },
   mixins: [entryMixin],
   data() {
     return {
       currentTab: 0,
-      currentKind: "bank"
+      currentKind: "bank",
+      isShowTab: true
     };
   },
   computed: {
@@ -91,11 +102,17 @@ export default {
       if (this.hasRedirect && this.$route.query.redirect !== "withdraw") {
         return "提现银行卡";
       }
-      return this.$text(
-        ...(this.currentPage === "cardInfo"
-          ? ["S_CARD_MANAGEMENT", "卡片管理"]
-          : ["S_ADD_BANKCARD", "添加银行卡"])
-      );
+
+      switch (this.currentPage) {
+        case "bankCardInfo":
+        case "virtualBankCardInfo":
+          return this.$text("S_CARD_MANAGEMENT", "卡片管理");
+
+        default:
+          return this.currentKind === "bank"
+            ? this.$text("S_ADD_BANKCARD", "添加银行卡")
+            : this.$text("S_ADD_VIRTUAL_BANKCARD", "添加电子钱包");
+      }
     }
   },
   created() {
@@ -113,11 +130,62 @@ export default {
       switch (index) {
         case 0:
           this.currentKind = "bank";
+          this.currentPage = "bankCardInfo";
           break;
 
         case 1:
           this.currentKind = "virtualBank";
+          this.currentPage = "virtualBankCardInfo";
           break;
+      }
+    },
+    showTab(value) {
+      console.log(value);
+      this.isShowTab = value;
+    },
+    backPre() {
+      // 當頁面停留在卡片管理
+      if (
+        this.currentPage === "bankCardInfo" ||
+        this.currentPage === "virtualBankCardInfo"
+      ) {
+        // 卡片管理-詳細頁面
+        if (this.showDetail) {
+          this.showDetail = false;
+          this.isShowTab = true;
+          return;
+        }
+        this.$router.back();
+        return;
+      }
+
+      // 目前只有銀行卡有分兩階段
+      if (this.addBankCardStep === "two") {
+        this.step = "one";
+        return;
+      }
+
+      if (this.$route.query && this.$route.query.redirect) {
+        if (this.$route.query.redirect === "home") {
+          this.$router.push("/mobile");
+          return;
+        } else if (this.$route.query.redirect === "liveStream") {
+          this.$router.push("/mobile/liveStream");
+          return;
+        }
+        this.$router.back();
+        return;
+      }
+
+      // 當頁面停留在添加卡片
+      if (this.currentKind === "bank") {
+        this.isShowTab = true;
+        this.currentPage = "bankCardInfo";
+        return;
+      } else if (this.currentKind === "virtualBank") {
+        this.isShowTab = true;
+        this.currentPage = "virtualBankCardInfo";
+        return;
       }
     }
   }

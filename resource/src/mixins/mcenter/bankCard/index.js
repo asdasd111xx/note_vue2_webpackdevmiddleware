@@ -1,7 +1,7 @@
 export default {
   data() {
     return {
-      currentPage: 'cardInfo',
+      currentPage: 'bankCardInfo',
       showDetailStatus: false,
       editDetailStatus: false,
       step: 'one'
@@ -24,7 +24,7 @@ export default {
           case "liveStream":
           case "videoPlay":
           case "wallet":
-            this.currentPage = 'addCard';
+            this.currentPage = 'addBankCard';
             return true;
         }
       }
@@ -58,35 +58,6 @@ export default {
   methods: {
     changePage(value) {
       this.currentPage = value;
-    },
-    backPre() {
-      if (this.currentPage === 'cardInfo') {
-        if (this.showDetail) {
-          this.showDetail = false;
-          return;
-        }
-        this.$router.back();
-        return;
-      }
-
-      if (this.addBankCardStep === 'two') {
-        this.step = 'one';
-        return;
-      }
-
-      if (this.$route.query && this.$route.query.redirect) {
-        if (this.$route.query.redirect === "home") {
-          this.$router.push('/mobile');
-          return;
-        } else if (this.$route.query.redirect === "liveStream") {
-          this.$router.push('/mobile/liveStream');
-          return;
-        }
-        this.$router.back();
-        return;
-      }
-
-      this.currentPage = 'cardInfo';
     }
   },
 }

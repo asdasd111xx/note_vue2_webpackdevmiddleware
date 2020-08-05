@@ -32,9 +32,9 @@
         <div :class="$style['info-item']">
           <p :class="$style['input-title']">所属银行</p>
           <div :class="$style['select-bank']" @click="isShowPop = true">
-            <span :class="{ [$style['select-active']]: currentBank }">{{
-              currentBank ? currentBank : "请选择银行"
-            }}</span>
+            <span :class="{ [$style['select-active']]: currentBank }">
+              {{ currentBank ? currentBank : "请选择银行" }}
+            </span>
             <img
               :class="$style['arrow-icon']"
               src="/static/image/_new/common/arrow_next.png"
@@ -153,9 +153,9 @@
       <div :class="$style['pop-mask']" @click="isShowPop = false" />
       <div :class="$style['pop-menu']">
         <div :class="$style['pop-title']">
-          <span @click="isShowPop = false">{{
-            $text("S_CANCEL", "取消")
-          }}</span>
+          <span @click="isShowPop = false">
+            {{ $text("S_CANCEL", "取消") }}
+          </span>
           选择所属银行
         </div>
         <ul :class="$style['pop-list']">
@@ -188,11 +188,11 @@
 </template>
 
 <script>
-import axios from 'axios';
-import { mapGetters, mapActions } from 'vuex';
-import ajax from '@/lib/ajax';
+import axios from "axios";
+import { mapGetters, mapActions } from "vuex";
+import ajax from "@/lib/ajax";
 import message from "@/router/mobile/components/common/message";
-import popupVerification from '@/components/popupVerification';
+import popupVerification from "@/components/popupVerification";
 
 export default {
   components: {
@@ -200,13 +200,9 @@ export default {
     popupVerification
   },
   props: {
-    currentKind: {
-      type: String,
-      required: true
-    },
     changePage: {
       type: Function,
-      default: () => { }
+      default: () => {}
     },
     addBankCardStep: {
       type: String,
@@ -216,24 +212,24 @@ export default {
   data() {
     return {
       bankList: [],
-      currentBank: '',
+      currentBank: "",
       isShowPop: false,
       isVerifyPhone: false,
       formData: {
-        account_name: '',
-        bank_id: '',
+        account_name: "",
+        bank_id: "",
         // province: '',
         // city: '',
-        branch: '',
-        account: '',
-        phone: '',
-        keyring: ''
+        branch: "",
+        account: "",
+        phone: "",
+        keyring: ""
       },
       NextStepStatus: false,
-      errorMsg: '',
+      errorMsg: "",
       lockStatus: false,
       time: 0,
-      msg: '',
+      msg: "",
       smsTimer: null,
       toggleCaptcha: false,
       captcha: null
@@ -241,58 +237,61 @@ export default {
   },
   computed: {
     ...mapGetters({
-      memInfo: 'getMemInfo'
+      memInfo: "getMemInfo"
     }),
     isShowCaptcha: {
       get() {
-        return this.toggleCaptcha
+        return this.toggleCaptcha;
       },
       set(value) {
-        return this.toggleCaptcha = value
+        return (this.toggleCaptcha = value);
       }
     },
     captchaData: {
       get() {
-        return this.captcha
+        return this.captcha;
       },
       set(value) {
-        return this.captcha = value
+        return (this.captcha = value);
       }
     },
     username() {
       if (!this.memInfo.user.name) {
-        return '';
+        return "";
       }
 
-      return this.memInfo.user.name.split('').map((item, index) => {
-        if (index === 0) {
-          return item;
-        }
-        return '*';
-      }).join('');
+      return this.memInfo.user.name
+        .split("")
+        .map((item, index) => {
+          if (index === 0) {
+            return item;
+          }
+          return "*";
+        })
+        .join("");
     }
   },
   watch: {
     addBankCardStep() {
-      if (this.addBankCardStep === 'one') {
-        this.formData.phone = '';
-        this.formData.keyring = '';
-        this.errorMsg = '';
+      if (this.addBankCardStep === "one") {
+        this.formData.phone = "";
+        this.formData.keyring = "";
+        this.errorMsg = "";
         this.checkData();
-      } else if (this.addBankCardStep === 'two') {
-        this.errorMsg = '';
+      } else if (this.addBankCardStep === "two") {
+        this.errorMsg = "";
       }
     },
     captchaData() {
-      this.getKeyring()
+      this.getKeyring();
     },
-    'formData.phone'() {
+    "formData.phone"() {
       if (this.formData.phone.length >= 11) {
-        this.errorMsg = ''
+        this.errorMsg = "";
         this.isVerifyPhone = true;
       } else {
-        this.errorMsg = '手机格式不符合要求'
-        this.isVerifyPhone = false
+        this.errorMsg = "手机格式不符合要求";
+        this.isVerifyPhone = false;
       }
     }
   },
@@ -300,11 +299,11 @@ export default {
     this.formData.account_name = this.memInfo.user.name;
 
     ajax({
-      method: 'get',
-      url: '/api/payment/v1/c/withdraw/bank/list',
+      method: "get",
+      url: "/api/payment/v1/c/withdraw/bank/list",
       errorAlert: false
-    }).then((response) => {
-      if (!response || response.result !== 'ok') {
+    }).then(response => {
+      if (!response || response.result !== "ok") {
         return;
       }
 
@@ -312,13 +311,14 @@ export default {
     });
   },
   methods: {
-    ...mapActions([
-      'actionSetUserdata'
-    ]),
+    ...mapActions(["actionSetUserdata"]),
     sendData() {
-      if (this.addBankCardStep === 'one' && this.memInfo.config.player_user_bank_mobile) {
+      if (
+        this.addBankCardStep === "one" &&
+        this.memInfo.config.player_user_bank_mobile
+      ) {
         this.NextStepStatus = false;
-        this.$emit('update:addBankCardStep', 'two');
+        this.$emit("update:addBankCardStep", "two");
         return;
       }
 
@@ -334,22 +334,22 @@ export default {
       };
 
       ajax({
-        method: 'post',
-        url: '/api/v1/c/player/user_bank',
+        method: "post",
+        url: "/api/v1/c/player/user_bank",
         errorAlert: false,
         params,
         success: () => {
-          this.msg = '绑定成功';
+          this.msg = "绑定成功";
           this.lockStatus = false;
           if (!this.memInfo.user.name) {
             this.actionSetUserdata(true);
           }
         },
-        fail: (error) => {
+        fail: error => {
           this.lockStatus = false;
           this.errorMsg = error.data.msg;
 
-          if (this.addBankCardStep === 'one') {
+          if (this.addBankCardStep === "one") {
             this.msg = error.data.msg;
           }
         }
@@ -357,23 +357,23 @@ export default {
     },
     clearMsg() {
       const { query } = this.$route;
-      if (!this.msg.includes('绑定成功')) {
-        this.msg = '';
+      if (!this.msg.includes("绑定成功")) {
+        this.msg = "";
         return;
       }
 
       // 綁定成功後添加成功後回到遊戲 影片
-      this.msg = '';
+      this.msg = "";
       let redirect = query.redirect;
       if (!redirect) {
-        this.changePage('cardInfo');
+        this.changePage("cardInfo");
         return;
       }
 
       clearInterval(this.smsTimer);
       this.smsTimer = null;
 
-      let split = redirect.split('-');
+      let split = redirect.split("-");
       if (split.length === 2) {
         this.$router.push(`/mobile/${split[0]}/${split[1]}`);
         return;
@@ -399,9 +399,9 @@ export default {
         case "liveStream":
         case "home":
           this.$router.push(`/mobile/${redirect}`);
-          return
+          return;
         default:
-          this.changePage('cardInfo');
+          this.changePage("cardInfo");
           return;
       }
     },
@@ -414,36 +414,36 @@ export default {
     verifyBankCardNumber(value) {
       this.formData.account = value
         .toLowerCase()
-        .replace(' ', '')
+        .replace(" ", "")
         .trim()
-        .replace(/[\W]/g, '');
+        .replace(/[\W]/g, "");
       this.checkData();
     },
     checkData(value, key) {
       if (key === "account_name") {
         const re = /[^\u3000\u3400-\u4DBF\u4E00-\u9FFF.．·]/g;
-        this.formData.account_name = value.replace(re, '')
+        this.formData.account_name = value.replace(re, "");
       }
 
       if (key === "branch") {
         const re = /[^\u3000\u3400-\u4DBF\u4E00-\u9FFF]/g;
-        this.formData.branch = value.replace(re, '')
+        this.formData.branch = value.replace(re, "");
       }
 
-      this.NextStepStatus = Object.keys(this.formData).every((key) => {
-        if (this.addBankCardStep === 'one') {
-          if (key === 'account') {
+      this.NextStepStatus = Object.keys(this.formData).every(key => {
+        if (this.addBankCardStep === "one") {
+          if (key === "account") {
             return this.formData[key].length > 15;
           }
-          if (key !== 'phone' && key !== 'keyring') {
+          if (key !== "phone" && key !== "keyring") {
             return this.formData[key];
           }
           return true;
         }
 
-        if (this.addBankCardStep === 'two') {
-          if (key === 'phone' || key === 'keyring') {
-            this.errorMsg = '';
+        if (this.addBankCardStep === "two") {
+          if (key === "phone" || key === "keyring") {
+            this.errorMsg = "";
             return this.formData[key];
           }
           return true;
@@ -453,7 +453,7 @@ export default {
       });
     },
     verifyNumber(e) {
-      const regex = /^[0-9]+$/
+      const regex = /^[0-9]+$/;
       if (!regex.test(e.key)) {
         e.preventDefault();
       }
@@ -461,19 +461,23 @@ export default {
     getBankImage(swiftCode) {
       return {
         src: `https://images.dormousepie.com/icon/bankIconBySwiftCode/${swiftCode}.png`,
-        error: this.$getCdnPath('/static/image/_new/default/bank_default_2.png'),
-        loading: this.$getCdnPath('/static/image/_new/default/bank_default_2.png')
+        error: this.$getCdnPath(
+          "/static/image/_new/default/bank_default_2.png"
+        ),
+        loading: this.$getCdnPath(
+          "/static/image/_new/default/bank_default_2.png"
+        )
       };
     },
     showCaptchaPopup() {
       // 無認證直接呼叫
       if (this.memInfo.config.default_captcha_type === 0) {
-        this.getKeyring()
-        return
+        this.getKeyring();
+        return;
       }
 
       // 彈驗證窗並利用Watch captchaData來呼叫 getKeyring()
-      this.toggleCaptcha = true
+      this.toggleCaptcha = true;
     },
     getKeyring() {
       if (this.lockStatus || this.smsTimer) {
@@ -486,7 +490,7 @@ export default {
         url: "/api/v1/c/player/verify/user_bank/sms",
         data: {
           phone: `86-${this.formData.phone}`,
-          captcha_text: this.captchaData ? this.captchaData : ''
+          captcha_text: this.captchaData ? this.captchaData : ""
         }
       })
         .then(res => {
@@ -529,9 +533,9 @@ export default {
     beforeDestroy() {
       clearInterval(this.smsTimer);
       this.smsTimer = null;
-    },
+    }
   }
 };
 </script>
 
-<style lang="scss" src="./css/addCard.module.scss" module />
+<style lang="scss" src="../css/addCard.module.scss" module />

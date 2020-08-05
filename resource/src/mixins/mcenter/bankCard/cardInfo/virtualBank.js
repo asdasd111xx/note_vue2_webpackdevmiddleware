@@ -25,7 +25,7 @@ export default {
         this.virtualBank_card = ret.filter((item, index) => index < 15);
       })
     },
-    getVirturlBankDetail(info) {
+    getVirtualBankDetail(info) {
       this.virtualBank_cardDetail = info
       this.$emit("update:showDetail", true)
     },
