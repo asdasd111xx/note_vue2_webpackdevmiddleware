@@ -235,6 +235,8 @@ export default {
                     case "C650005":
                     case "C650006":
                     case "C650007":
+                    case "C650016":
+                    case "C650017":
                         this.errorMessage.amount = msg;
                         break;
                     case "C650011":
