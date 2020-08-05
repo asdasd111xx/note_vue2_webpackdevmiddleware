@@ -129,6 +129,7 @@ export default {
 
         // 是否要啟用重新連接
         if (window.YABO_SOCKET_RECONNECT_ACTIVE) {
+          this.isConnecting = false;
           this.connectYaboWS();
 
           if (this.isDebug) {
@@ -138,7 +139,10 @@ export default {
       }, 3000)
     },
     connectYaboWS() {
+      if (this.isConnecting) return;
+
       try {
+        this.isConnecting = true;
         let cid = getCookie('cid') || '';
         if (!cid) return;
         let uri = this.siteConfig.ACTIVES_BOUNS_WEBSOCKET + `?cid=${cid}&domain=${this.memInfo.user.domain}&userid=${this.memInfo.user.id}`;
@@ -180,6 +184,7 @@ export default {
           this.reconnectTimer = null;
         };
       } catch (e) {
+        this.isConnecting = false;
         console.log("[WS]: connectYaboWS Error:", e);
       }
     },
