@@ -22,7 +22,14 @@
 
       <!-- 裁剪區塊 -->
       <div :class="$style['avater-editer-conatainer']">
-        <div :class="$style['cropper']">
+        <div
+          :class="[
+            $style['cropper'],
+            {
+              [$style['active']]: option.img
+            }
+          ]"
+        >
           <vueCropper
             ref="cropper"
             :img="option.img"
@@ -39,6 +46,9 @@
             :centerBox="option.centerBox"
             :infoTrue="option.infoTrue"
             :fixedBox="option.fixedBox"
+            :autoCropWidth="option.autoCropWidth"
+            :autoCropHeight="option.autoCropHeight"
+            :maxImgSize="option.maxImgSize"
           ></vueCropper>
         </div>
       </div>
@@ -84,14 +94,13 @@ export default {
       option: {
         maxImgSize: '1500',
         img: '', // 裁剪图片的地址
-        enlarge: 0.5,
         info: true, // 裁剪框的大小信息
         outputSize: 0.1, // 裁剪生成图片的质量
         outputType: 'png', // 裁剪生成图片的格式
         canScale: false, // 图片是否允许滚轮缩放
         autoCrop: true, // 是否默认生成截图框
-        autoCropWidth: 80, // 默认生成截图框宽度
-        autoCropHeight: 80, // 默认生成截图框高度
+        autoCropWidth: 200, // 默认生成截图框宽度
+        autoCropHeight: 200, // 默认生成截图框高度
         fixedBox: false, // 固定截图框大小 不允许改变
         fixed: true, // 是否开启截图框宽高固定比例
         fixedNumber: [1, 1], // 截图框的宽高比例
@@ -254,10 +263,18 @@ export default {
 
 .cropper {
   position: relative;
-  height: 350px;
+  height: 400px;
   margin: 5px;
   border: dashed #cacaca 1px;
   text-align: center;
+  background-image: url("/static/image/_new/mcenter/avatar_nologin.png");
+  background-position: center;
+  background-size: 250px 250px;
+  background-repeat: no-repeat;
+
+  &.active {
+    background-image: unset;
+  }
 
   img {
     max-width: 100%;
