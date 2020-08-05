@@ -43,7 +43,7 @@ export default {
       'actionSetRechargeConfig'
     ]),
   },
-  mounted() {
+  created() {
     this.actionSetRechargeConfig();
   },
 };
