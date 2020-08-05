@@ -1,0 +1,159 @@
+@import "@/css/variable.scss";
+
+.content-wrap {
+    min-height: calc(100vh - 43px);
+    background: #fefefe;
+}
+
+.err-msg {
+    padding: 2px 0;
+    color: $main_error_color1;
+    min-height: 40px;
+    line-height: 40px;
+}
+
+.forget-password {
+    min-height: 100%;
+    font-size: 14px;
+}
+
+.form-wrap {
+    margin: 0 auto;
+    padding: 0 14px;
+}
+
+.form-data {
+    >div {
+        position: relative;
+    }
+}
+
+.method-item {
+    width: 49%;
+    display: inline-block;
+    height: 42px;
+    line-height: 42px;
+    text-align: center;
+    color: #a6a9b2;
+    position: relative;
+
+    &.active {
+        color: #5e626d;
+    }
+}
+
+.active-slider {
+    position: absolute;
+    bottom: 1.5px;
+    left: calc(25% - 25px);
+    height: 2px;
+    background-color: #be9e7f;
+    width: 45px;
+    transition: left 0.31s;
+}
+
+.form-control {
+    margin-bottom: 12px;
+    position: relative;
+}
+
+.form-input {
+    font-size: 14px;
+    float: left;
+    width: 88%;
+    padding: 8px 0 17px 0;
+    background: transparent;
+    border: none;
+    border-bottom: 1px solid #f8f8f7;
+    outline: 0;
+    color: #414655;
+
+    &::placeholder {
+        color: #cbced8;
+    }
+
+    &.keyring-input {
+        width: 60%;
+    }
+}
+
+.errorTips {
+    padding: 2px 0;
+    color: $main_error_color1;
+    min-height: 25px;
+    line-height: 25px;
+}
+
+.forget-submit {
+    margin-top: 20px;
+    height: 45px;
+    width: 100%;
+    line-height: 45px;
+    color: #f3ede7;
+    text-align: center;
+
+    >div {
+        max-width: 375px;
+        width: 100%;
+        border-radius: 3px;
+        background: linear-gradient(to left, #e9dacb 0%, #eee5db 100%);
+        margin: 0 auto;
+    }
+
+    &.active {
+        >div {
+            color: #ffffff;
+            background: linear-gradient(to left, #bd9d7d 0%, #f9ddbd 100%);
+        }
+    }
+}
+
+.form-title {
+    height: 20px;
+    line-height: 20px;
+    font-size: 14px;
+    text-align: left;
+    color: #414655;
+}
+
+.send-keyring {
+    color: white;
+    width: 100px;
+    height: 30px;
+    background: #e9dacc;
+    border-radius: 3px;
+    pointer-events: none;
+    right: 14px;
+    position: absolute;
+    text-align: center;
+    line-height: 30px;
+    font-weight: 500;
+
+    &.active {
+        pointer-events: unset;
+        background: #bd9d7d;
+    }
+}
+
+.eye {
+    display: flex;
+    align-items: center;
+    height: 25px;
+    width: 18px;
+    position: absolute;
+    right: 14px;
+    top: 25px;
+
+    >img {
+        width: 18px;
+        height: 18px;
+    }
+}
+
+.tip {
+    margin-top: 15px;
+    font-size: 12px;
+    font-weight: 400;
+    text-align: left;
+    color: #a6a9b2;
+}

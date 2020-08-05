@@ -1,0 +1,34 @@
+@import "./porn1.module.scss";
+
+.active-slider {
+    background-color: #E42A30;
+}
+
+.method-item {
+
+    &.active {
+        color: #222222;
+    }
+}
+
+.forget-submit {
+
+    >div {
+        background: #FDCCCC;
+    }
+
+    &.active {
+        >div {
+            background-color: #E42A30;
+            color: #ffffff;
+        }
+    }
+}
+
+.send-keyring {
+    background: #FDCCCC;
+
+    &.active {
+        background: #E42A30;
+    }
+}
