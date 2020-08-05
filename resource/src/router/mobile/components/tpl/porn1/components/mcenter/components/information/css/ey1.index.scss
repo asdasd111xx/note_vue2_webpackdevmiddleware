@@ -1,0 +1,17 @@
+@import "~@/css/variable.scss";
+@import "./porn1.index.scss";
+
+.menu-title {
+    &.active {
+        color: #222222;
+    }
+}
+
+.menu-tips {
+    background-color: #DB6372;
+    color: #FFF;
+}
+
+.active-slider {
+    background: #E42A30;
+}

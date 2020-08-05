@@ -3,37 +3,60 @@
     <div :class="$style['no-data-wrap']">
       <img
         :src="
-          $getCdnPath('/static/image/_new/mcenter/information/no_message.png')
+          $getCdnPath('/static/image/porn1/mcenter/information/no_message.png')
         "
       />
       <div>还没有新通知</div>
     </div>
   </div>
   <div v-else :class="$style['message-wrap']">
-    <div
-      v-if="isEditing"
-      :class="$style['btn-close']"
-      @click="isEditing = false"
-    >
-      <img
-        :src="
-          $getCdnPath('/static/image/_new/mcenter/information/btn_close.png')
-        "
-      />
-    </div>
-    <div v-if="!$route.query.pid" :class="$style['btn-more']">
-      <template v-if="isEditing">
-        <span v-if="isSelectAll" @click="selectMessage = []">取消全选</span>
-        <span v-else @click="onSelectAll">全选</span>
-      </template>
-      <template v-else>
+    <div id="header" :class="[$style['message-header']]">
+      <div
+        v-if="!isEditing"
+        :class="$style['btn-close']"
+        @click="$router.back()"
+      >
         <img
           :src="
-            $getCdnPath('/static/image/_new/mcenter/information/btn_more.png')
+            $getCdnPath(
+              `/static/image/${siteConfig.MOBILE_WEB_TPL}/common/btn_back.png`
+            )
           "
-          @click="onShowFunction(true)"
         />
-      </template>
+      </div>
+      <div
+        v-if="isEditing"
+        :class="$style['btn-close']"
+        @click="isEditing = false"
+      >
+        <img
+          :src="
+            $getCdnPath(
+              `/static/image/${siteConfig.MOBILE_WEB_TPL}/common/btn_close.png`
+            )
+          "
+        />
+      </div>
+      <div :class="$style['message-header-title']">
+        消息中心
+      </div>
+
+      <div v-if="!$route.query.pid" :class="$style['btn-more']">
+        <template v-if="isEditing">
+          <span v-if="isSelectAll" @click="selectMessage = []">取消全选</span>
+          <span v-else @click="onSelectAll">全选</span>
+        </template>
+        <template v-else>
+          <img
+            :src="
+              $getCdnPath(
+                `/static/image/${siteConfig.MOBILE_WEB_TPL}/mcenter/information/btn_more.png`
+              )
+            "
+            @click="onShowFunction(true)"
+          />
+        </template>
+      </div>
     </div>
     <div v-if="!$route.query.pid" :class="$style['message-list']">
       <div
@@ -57,7 +80,7 @@
           <img
             :src="
               $getCdnPath(
-                '/static/image/_new/mcenter/information/icon_information.png'
+                '/static/image/porn1/mcenter/information/icon_information.png'
               )
             "
           />
@@ -80,7 +103,7 @@
           <img
             :src="
               $getCdnPath(
-                '/static/image/_new/mcenter/information/icon_information.png'
+                '/static/image/porn1/mcenter/information/icon_information.png'
               )
             "
           />
@@ -141,7 +164,9 @@
           <div :class="$style['delete-cancel']" @click="isDelete = false">
             取消
           </div>
-          <div :class="$style['delete-confirm']" @click="onDelete">确定</div>
+          <div :class="[$style['delete-confirm']]" @click="onDelete">
+            确定
+          </div>
         </div>
       </div>
     </div>
@@ -180,8 +205,13 @@ export default {
   },
   computed: {
     ...mapGetters({
-      memInfo: 'getMemInfo'
+      memInfo: 'getMemInfo',
+      siteConfig: 'getSiteConfig'
     }),
+    $style() {
+      const style = this[`$style_${this.siteConfig.MOBILE_WEB_TPL}`] || this.$style_porn1;
+      return style;
+    },
     currentMessage() {
       if (!this.$route.query.pid) {
         return null;
@@ -324,405 +354,6 @@ export default {
 };
 </script>
 
-<style lang="scss" module>
-@keyframes slide-up {
-  from {
-    bottom: -162px;
-  }
 
-  to {
-    bottom: 0;
-  }
-}
-
-.no-data {
-  position: relative;
-  min-height: calc(100vh - 43px - 42px - 10px);
-  margin-top: 52px;
-  background-color: #fefffe;
-}
-
-.no-data-wrap {
-  position: absolute;
-  top: 0;
-  right: 0;
-  bottom: 0;
-  left: 0;
-  width: 180px;
-  height: 220px;
-  margin: auto;
-
-  > img {
-    display: block;
-    width: 100%;
-  }
-
-  > div {
-    height: 20px;
-    line-height: 20px;
-    margin-top: 20px;
-    color: #a5a9b3;
-    font-size: 14px;
-    text-align: center;
-  }
-}
-
-.btn-close {
-  position: fixed;
-  top: 12px;
-  left: 14px;
-  z-index: 5;
-  width: 20px;
-  height: 20px;
-  background-color: #fefffe;
-
-  > img {
-    display: block;
-    width: 100%;
-  }
-}
-
-.btn-more {
-  position: fixed;
-  top: 12px;
-  right: 14px;
-  z-index: 5;
-  height: 20px;
-  line-height: 20px;
-  color: #414655;
-  font-size: 16px;
-
-  > img {
-    display: block;
-    width: 20px;
-  }
-}
-
-.message-wrap {
-  background-color: #fefffe;
-}
-
-.message-list {
-  min-height: calc(100vh - 43px - 42px - 10px);
-  margin-top: 52px;
-}
-
-.message-content {
-  min-height: calc(100vh - 43px - 10px);
-  margin-top: 10px;
-  overflow-wrap: break-word;
-}
-
-.message {
-  height: 67px;
-  margin: 0 7px;
-  padding: 0 7px;
-  border-bottom: 1px solid #eee;
-  background-color: #fefffe;
-
-  .icon-message {
-    margin: 17px 0;
-  }
-
-  .wrap {
-    padding: 13px 0;
-
-    .title {
-      max-width: calc(100% - 70px);
-      float: left;
-    }
-
-    .msg-time {
-      float: right;
-      color: #a6a9b2;
-      font-size: 12px;
-    }
-  }
-}
-
-.edit-mode {
-  position: relative;
-  padding-left: 41px;
-}
-
-.icon-edit {
-  position: absolute;
-  top: 24px;
-  left: 13px;
-  width: 18px;
-  height: 18px;
-  border: 1px solid #cbced8;
-  border-radius: 50%;
-  background-color: #fff;
-
-  &.active {
-    border: none;
-    background: url("/static/image/_new/mcenter/information/icon_check.png") 0 0
-      no-repeat;
-    background-size: 18px 18px;
-  }
-}
-
-.content-title {
-  padding-left: 14px;
-
-  .icon-message {
-    margin: 13px 0;
-  }
-
-  .wrap {
-    padding: 10px 0;
-    border-bottom: 1px solid #eee;
-  }
-}
-
-.content-wrap {
-  padding: 8px 18px;
-  color: #414655;
-  font-size: 14px;
-}
-
-.icon-message {
-  position: relative;
-  float: left;
-  width: 32px;
-  height: 32px;
-
-  > img {
-    display: block;
-    width: 100%;
-  }
-
-  > span {
-    position: absolute;
-    top: 0;
-    right: 0;
-    display: block;
-    width: 8px;
-    height: 8px;
-    border-radius: 50%;
-    background-color: #db6372;
-  }
-}
-
-.wrap {
-  float: left;
-  width: calc(100% - 32px - 10px);
-  margin-left: 10px;
-
-  p {
-    overflow: hidden;
-    text-overflow: ellipsis;
-    white-space: nowrap;
-  }
-}
-
-.title {
-  height: 20px;
-  line-height: 20px;
-  color: #414655;
-  font-size: 14px;
-}
-
-.content {
-  height: 17px;
-  line-height: 17px;
-  margin-top: 3px;
-  color: #a6a9b2;
-  font-size: 12px;
-  overflow: hidden;
-  text-overflow: ellipsis;
-  white-space: nowrap;
-}
-
-.time {
-  height: 12px;
-  line-height: 12px;
-  margin-top: 6px;
-  color: #a6a9b2;
-  font-size: 12px;
-}
-
-.function-button {
-  position: fixed;
-  top: 0;
-  right: 0;
-  bottom: 0;
-  left: 0;
-  z-index: 5;
-  background-color: rgba(0, 0, 0, 0.4);
-  transition: background-color 0.3s;
-}
-
-.button-wrap {
-  position: fixed;
-  right: 0;
-  bottom: 0;
-  left: 0;
-  background-color: #f8f8f8;
-  animation: slide-up 0.3s;
-}
-
-.button {
-  height: 50px;
-  line-height: 50px;
-  background-color: #fff;
-  color: #5e626d;
-  font-size: 17px;
-  text-align: center;
-
-  &.disable {
-    color: #cbced8;
-  }
-}
-
-.divider {
-  height: 1px;
-  background-color: #f9f9f9;
-}
-
-.cancel {
-  composes: button;
-  margin-top: 11px;
-}
-
-.bottom-button {
-  position: fixed;
-  right: 0;
-  bottom: -50px;
-  left: 0;
-  height: 50px;
-  line-height: 50px;
-  padding: 0 20px;
-  background-color: #eee;
-  transition: bottom 0.3s;
-
-  &.show {
-    bottom: 0;
-  }
-}
-
-.read {
-  float: left;
-  color: #6aaaf5;
-  font-size: 16px;
-
-  &.disable {
-    color: #cbced8;
-  }
-}
-
-.delete {
-  float: right;
-  color: #db6372;
-  font-size: 16px;
-}
-
-.loading {
-  position: fixed;
-  top: 0;
-  right: 0;
-  bottom: 0;
-  left: 0;
-  z-index: 10;
-}
-
-.loading-wrap {
-  position: absolute;
-  top: 0;
-  right: 0;
-  bottom: 0;
-  left: 0;
-  width: 100px;
-  height: 85px;
-  margin: auto;
-  padding: 15px;
-  border-radius: 5px;
-  background-color: rgba(65, 70, 85, 0.8);
-}
-
-.icon-loading {
-  width: 32px;
-  height: 32px;
-  margin: 0 auto;
-  color: #9ca29f;
-
-  > svg {
-    display: block;
-  }
-}
-
-.loading-text {
-  height: 18px;
-  line-height: 18px;
-  margin-top: 5px;
-  color: #fff;
-  font-size: 12px;
-  text-align: center;
-}
-
-.delete-tips {
-  position: fixed;
-  top: 0;
-  right: 0;
-  bottom: 0;
-  left: 0;
-  z-index: 10;
-  background-color: rgba(0, 0, 0, 0.4);
-}
-
-.tips-wrap {
-  position: absolute;
-  top: 0;
-  right: 0;
-  bottom: 0;
-  left: 0;
-  width: 270px;
-  height: 130px;
-  margin: auto;
-  padding-top: 15px;
-  border-radius: 10px;
-  background-color: #fff;
-}
-
-.tips-title {
-  height: 18px;
-  line-height: 18px;
-  margin-bottom: 13px;
-  padding: 0 13px;
-  color: #000;
-  font-size: 18px;
-  text-align: center;
-}
-
-.tips-text {
-  height: 18px;
-  line-height: 18px;
-  margin-bottom: 15px;
-  padding: 0 20px;
-  color: #888;
-  font-size: 12px;
-  text-align: center;
-}
-
-.tips-button {
-  border-top: 1px solid #f7f7f7;
-
-  > div {
-    float: left;
-    width: 50%;
-    height: 50px;
-    line-height: 50px;
-    font-size: 18px;
-    text-align: center;
-  }
-}
-
-.delete-cancel {
-  color: #000;
-}
-
-.delete-confirm {
-  color: #d2b79c;
-}
-</style>
+<style lang="scss" src="../../css/porn1.message.scss" module="$style_porn1"></style>
+<style lang="scss" src="../../css/ey1.message.scss" module="$style_ey1"></style>

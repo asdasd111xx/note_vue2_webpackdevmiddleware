@@ -28,7 +28,7 @@ export default {
         //     betRecordEy1: () => import(/* webpackChunkName: 'betRecordEy1' */'../../tpl/ey1/components/mcenter/components/betRecord'),
         //     bonusAccountEy1: () => import(/* webpackChunkName: 'bonusAccountEy1' */'../../tpl/ey1/components/mcenter/components/bonusAccount'),
         //     moneyDetailEy1: () => import(/* webpackChunkName: 'moneyDetailEy1' */'../../tpl/ey1/components/mcenter/components/moneyDetail'),
-        //     informationEy1: () => import(/* webpackChunkName: 'informationEy1' */'../../tpl/ey1/components/mcenter/components/information'),
+        informationEy1: () => import(/* webpackChunkName: 'informationEy1' */'../../tpl/ey1/components/mcenter/components/information'),
         //     withdrawEy1: () => import(/* webpackChunkName: 'withdrawEy1' */'../../tpl/ey1/components/mcenter/components/withdraw'),
         //     depositEy1: () => import(/* webpackChunkName: 'depositEy1' */'../../tpl/ey1/components/mcenter/components/deposit'),
         accountVipEy1: () => import(/* webpackChunkName: 'accountVipEy1' */'../../tpl/ey1/components/mcenter/components/accountVip'),

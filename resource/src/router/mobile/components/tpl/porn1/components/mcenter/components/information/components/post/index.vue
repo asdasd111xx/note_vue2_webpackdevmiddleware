@@ -3,7 +3,7 @@
     <div :class="$style['no-data-wrap']">
       <img
         :src="
-          $getCdnPath('/static/image/_new/mcenter/information/no_message.png')
+          $getCdnPath('/static/image/porn1/mcenter/information/no_message.png')
         "
       />
       <div>还没有新公告</div>
@@ -16,7 +16,7 @@
           <img
             :src="
               $getCdnPath(
-                '/static/image/_new/mcenter/information/icon_information.png'
+                '/static/image/porn1/mcenter/information/icon_information.png'
               )
             "
           />
@@ -41,7 +41,7 @@
           <img
             :src="
               $getCdnPath(
-                '/static/image/_new/mcenter/information/icon_information.png'
+                '/static/image/porn1/mcenter/information/icon_information.png'
               )
             "
           />

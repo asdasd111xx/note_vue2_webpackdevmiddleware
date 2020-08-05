@@ -74,7 +74,7 @@ export default {
     };
   },
   props: {
-    theme: {
+    thi: {
       type: String,
       default: "porn1"
     },
