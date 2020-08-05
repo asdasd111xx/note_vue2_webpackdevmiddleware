@@ -7,7 +7,7 @@ export default {
         mahjongEy1: () => import(/* webpackChunkName: 'mahjongEy1' */'../../tpl/ey1/components/mahjong'),
         promotionEy1: () => import(/* webpackChunkName: 'promotionEy1' */'../../tpl/ey1/components/promotion'),
         giftEy1: () => import(/* webpackChunkName: 'giftEy1' */'../../tpl/ey1/components/gift'),
-        // forgetPwdEy1: () => import(/* webpackChunkName: 'forgetPwdEy1' */'../../tpl/ey1/components/forgetPwd'),
+        forgetPwdEy1: () => import(/* webpackChunkName: 'forgetPwdEy1' */'../../tpl/ey1/components/forgetPwd'),
         // resetPwdEy1: () => import(/* webpackChunkName: 'resetPwdEy1' */'../../tpl/ey1/components/resetPwd'),
         joinMemberEy1: () => import(/* webpackChunkName: 'joinMemberEy1' */'../../tpl/ey1/components/joinMember'),
         // fishareaEy1: () => import(/* webpackChunkName: 'fishareaEy1' */'../../tpl/ey1/components/fisharea'),

@@ -11,7 +11,7 @@ import axios from 'axios';
 import { mapGetters } from 'vuex';
 import member from '@/api/member';
 import mobileContainer from '../common/mobileContainer';
-import forgetPwd from './components/index';
+import forgetPwd from "@/router/mobile/components/tpl/porn1/components/forgetPwd/components/index";
 
 export default {
   components: {
