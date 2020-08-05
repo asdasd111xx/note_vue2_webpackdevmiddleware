@@ -1,59 +1,59 @@
 <template>
   <div :class="sliderClass">
-    <div :class="$style['avater-editer-header']">
-      <div :class="$style['btn-prev']">
-        <img
-          :src="$getCdnPath('/static/image/_new/common/btn_back.png')"
-          @click="onClose()"
-        />
-      </div>
-      <span :class="$style['title']">
-        {{ $text("S_SET_AVATER", "设置头像") }}</span
-      >
-    </div>
-    <input
-      @change="uploadImgChange"
-      :class="$style['img-input']"
-      ref="albumInput"
-      type="file"
-      accept="image/*"
-    />
-
-    <!-- 裁剪區塊 -->
-    <div :class="$style['avater-editer-conatainer']">
-      <div :class="$style['cropper']">
-        <vueCropper
-          ref="cropper"
-          :img="option.img"
-          :outputSize="option.size"
-          :outputType="option.outputType"
-          :info="true"
-          :full="option.full"
-          :canMove="option.canMove"
-          :canMoveBox="option.canMoveBox"
-          :original="option.original"
-          :autoCrop="option.autoCrop"
-          :fixed="option.fixed"
-          :fixedNumber="option.fixedNumber"
-          :centerBox="option.centerBox"
-          :infoTrue="option.infoTrue"
-          :fixedBox="option.fixedBox"
-        ></vueCropper>
-      </div>
-    </div>
-
-    <div :class="$style['avater-editer-func']">
-      <div :class="$style['choose-btn']" @click="chooseFile">选择文件</div>
-      <div :class="[$style['func-btn']]">
-        <div :class="[$style['cancel-btn']]" @click="cancel">
-          取消
+    <div :class="$style['container']">
+      <div :class="$style['avater-editer-header']">
+        <div :class="$style['btn-prev']">
+          <img
+            :src="$getCdnPath('/static/image/_new/common/btn_back.png')"
+            @click="onClose()"
+          />
         </div>
-        <div :class="[$style['submit-btn']]" @click="submit">
-          上传头像
+        <span :class="$style['title']">
+          {{ $text("S_SET_AVATER", "设置头像") }}</span
+        >
+      </div>
+      <input
+        @change="uploadImgChange"
+        :class="$style['img-input']"
+        ref="albumInput"
+        type="file"
+        accept="image/*"
+      />
+
+      <!-- 裁剪區塊 -->
+      <div :class="$style['avater-editer-conatainer']">
+        <div :class="$style['cropper']">
+          <vueCropper
+            ref="cropper"
+            :img="option.img"
+            :outputSize="option.size"
+            :outputType="option.outputType"
+            :info="true"
+            :full="option.full"
+            :canMove="option.canMove"
+            :canMoveBox="option.canMoveBox"
+            :original="option.original"
+            :autoCrop="option.autoCrop"
+            :fixed="option.fixed"
+            :fixedNumber="option.fixedNumber"
+            :centerBox="option.centerBox"
+            :infoTrue="option.infoTrue"
+            :fixedBox="option.fixedBox"
+          ></vueCropper>
         </div>
       </div>
-    </div>
 
+      <div :class="$style['avater-editer-func']">
+        <div :class="$style['choose-btn']" @click="chooseFile">选择文件</div>
+        <div :class="[$style['func-btn']]">
+          <div :class="[$style['cancel-btn']]" @click="cancel">
+            取消
+          </div>
+          <div :class="[$style['submit-btn']]" @click="submit">
+            上传头像
+          </div>
+        </div>
+      </div>
     </div>
   </div>
 </template>
@@ -216,12 +216,16 @@ export default {
 <style lang="scss" module>
 @import "~@/css/variable.scss";
 
+.container {
+  background-color: #ffffff;
+}
+
 .avater-editer-header {
   z-index: 3;
   width: 100%;
   height: 43px;
   padding: 0 17px;
-  background: #fefffe;
+  background: #ffffff;
   text-align: center;
   position: relative;
 
@@ -230,6 +234,7 @@ export default {
     text-align: center;
     font-size: 17px;
     line-height: 43px;
+    font-weight: 700;
   }
 }
 
@@ -284,11 +289,10 @@ export default {
 }
 
 .func-btn {
-  display: flex;
   margin: 15px 0;
 
   > div {
-    width: 50%;
+    width: 48%;
     display: inline-block;
     font-weight: 400;
     height: 45px;
@@ -302,11 +306,13 @@ export default {
 .cancel-btn {
   background: #faf5f0;
   color: #be9e7f;
+  float: left;
 }
 
 .submit-btn {
   background: linear-gradient(to left, #bd9d7d, #f9ddbd);
   color: #ffffff;
+  float: right;
 }
 </style>
 <style>
