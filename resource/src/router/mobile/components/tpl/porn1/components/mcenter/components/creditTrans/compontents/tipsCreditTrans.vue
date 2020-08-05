@@ -40,11 +40,12 @@ export default {
   },
   methods: {
     ...mapActions([
-      "actionSetUserBalance",
-      "actionSetUserdata",
-      'actionSetGlobalMessage'
+      'actionSetRechargeConfig'
     ]),
-  }
+  },
+  mounted() {
+    this.actionSetRechargeConfig();
+  },
 };
 </script>
 <style lang="scss"  module>

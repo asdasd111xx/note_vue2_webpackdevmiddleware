@@ -59,33 +59,9 @@
         </div>
       </div>
 
-      <div :class="$style['info-card2']" @click="clickService">
-        <div>
-          <div>
-            <img
-              :src="$getCdnPath(`/static/image/_new/service/ic_service02.png`)"
-            />
-            &nbsp;
-            <span>在线客服2</span>
-          </div>
-          <div>Reserve Customer Support</div>
-          <div>7*24小时专线服务 贴心至上</div>
-        </div>
-
-        <div :class="$style['btn-next']">
-          <img
-            :src="
-              $getCdnPath(`/static/image/_new/webview/ic_service_arrow.png`)
-            "
-          />
-        </div>
-      </div>
-
       <div :class="$style['tip-block']" @click="clickPopTip">
         <div :class="$style['tip-img']">
-          <img
-            :src="$getCdnPath(`/static/image/_new/service/appicon_yabo.png`)"
-          />
+          <img :src="$getCdnPath(`/static/image/ey1/common/appicon.png`)" />
         </div>
 
         <div :class="$style['tip-text']">永久网址</div>
@@ -275,11 +251,17 @@ export default {
 
 div.container {
   background-color: #fff;
-  background-image: url("/static/image/_new/service/header_bg.png");
+  background-image: url("/static/image/ey1/service/bg_service.png");
   background-repeat: no-repeat;
   background-size: 100% auto;
-  background-position: 0 -70px;
+  background-position: 0 -40px;
   background-repeat: no-repeat;
+}
+
+@media (orientation: landscape) {
+  div.container {
+    background-position: 0 -40%;
+  }
 }
 
 .content-wrap {
@@ -346,21 +328,18 @@ div.container {
 .info-card,
 .info-card2 {
   color: white;
-  background-image: -webkit-linear-gradient(196deg, #f8d5c0, #ce8a70);
-  background-image: linear-gradient(254deg, #f8d5c0, #ce8a70);
+  background: linear-gradient(#f6d2bd, #e5997a);
+  box-shadow: 0px 20px 40px 0px rgba(0, 0, 0, 0.15);
   margin: 15px;
   height: 100px;
   border-radius: 10px;
   position: relative;
 
-  -webkit-box-shadow: 0 0.2rem 0.4rem 0 rgba(0, 0, 0, 0.2);
-  box-shadow: 0 0.2rem 0.4rem 0 rgba(0, 0, 0, 0.2);
-
   > div:first-child {
     display: flex;
     flex-direction: column;
     padding: 14px;
-    background-image: url("/static/image/_new/service/service_card.png");
+    background-image: url("/static/image/ey1/service/bg_service01.png");
     background-size: auto 100%;
     background-position: top 0 right 0;
     height: 100%;
@@ -432,12 +411,14 @@ div.container {
 }
 
 .tip-img {
-  width: 65px;
-  height: 65px;
+  width: 50px;
+  height: 50px;
+  margin: 0 auto;
 
   img {
     width: 100%;
     height: 100%;
+    border-radius: 50%;
   }
 }
 
@@ -448,9 +429,10 @@ div.container {
   margin: 0 auto;
   font-size: 12px;
   color: #fff;
-  background: #be9e7f;
+  background: #e42a30;
   border-radius: 12px;
   box-shadow: 0pt 2px 5px 0pt rgba(0, 0, 0, 0.16);
+  margin-top: 5px;
 }
 
 .pop-wrap {
