@@ -431,6 +431,7 @@ export default {
   top: 0;
   width: 20px;
   position: absolute;
+  z-index: 2;
 
   > img {
     width: 20px;
