@@ -87,12 +87,12 @@
     <template v-if="headerConfig.isMCenter">
       <div :class="$style['mcenter-wrap']">
         <img
-          :src="$getCdnPath('/static/image/_new/common/btn_setting.png')"
+          :src="$getCdnPath('/static/image/ey1/mcenter/btn_setting.png')"
           @click="handleClickSetting"
         />
         <div>
           <img
-            :src="$getCdnPath('/static/image/_new/common/icon_ask.png')"
+            :src="$getCdnPath('/static/image/ey1/common/icon_ask.png')"
             @click="handleClickAsk"
           />
           <div v-show="hasUnreadMessage" :class="$style['red-dot']" />

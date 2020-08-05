@@ -10,7 +10,7 @@
         "
       >
         <img
-          :src="$getCdnPath('/static/image/_new/mcenter/ic_vipprivicege.png')"
+          :src="$getCdnPath('/static/image/ey1/mcenter/ic_vipprivicege.png')"
         />
         <div>
           <div>VIP独享</div>
@@ -25,9 +25,7 @@
             : $router.push('/mobile/login')
         "
       >
-        <img
-          :src="$getCdnPath('/static/image/_new/mcenter/ic_promotion.png')"
-        />
+        <img :src="$getCdnPath('/static/image/ey1/mcenter/ic_promotion.png')" />
         <div>
           <div>一键快赚</div>
           <div :class="$style['sub-text']">PROMOTION</div>
