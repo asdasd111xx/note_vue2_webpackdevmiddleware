@@ -1703,5 +1703,8 @@
     "S_COMPUTE_METHOD": "结算方式",
     "S_AUTO_SAVE": "自动保存",
     "S_XBB_GAMIMG": "XBB麻将馆",
-    "S_SET_AVATER": "设置头像"
+    "S_SET_AVATER": "设置头像",
+    "S_WALLET_TYPE": "钱包类型",
+    "S_SELECT_WALLET_TYPE": "请选择钱包类型",
+    "S_WALLET_ADDRESS": "钱包地址"
 }
