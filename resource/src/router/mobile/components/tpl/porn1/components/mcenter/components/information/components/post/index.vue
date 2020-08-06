@@ -10,7 +10,7 @@
     </div>
   </div>
   <div v-else :class="$style['post-wrap']">
-    <div v-if="$route.params.pid" :class="$style['post-content']">
+    <div v-if="$route.query.pid" :class="$style['post-content']">
       <div :class="[$style['content-title'], 'clearfix']">
         <div :class="$style['icon-post']">
           <img
@@ -35,7 +35,7 @@
         v-for="post in postData"
         :key="post.id"
         :class="[$style.post, 'clearfix']"
-        @click="$router.push({ params: { pid: post.id } })"
+        @click="$router.push({ query: { pid: post.id } })"
       >
         <div :class="$style['icon-post']">
           <img
@@ -84,10 +84,10 @@ export default {
   },
   computed: {
     currentPost() {
-      if (!this.$route.params.pid) {
+      if (!this.$route.query.pid) {
         return null;
       }
-      return this.postData.find((post) => post.id === this.$route.params.pid);
+      return this.postData.find((post) => post.id === this.$route.query.pid);
     }
   },
   created() {
