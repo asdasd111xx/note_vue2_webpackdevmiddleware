@@ -1,0 +1,23 @@
+@import './porn1.index.scss';
+
+.time-cancel {
+    background: #222222;
+    color: #fff;
+}
+
+.time-confirm {
+    color: #FFF;
+    background: #E42A30;
+    background-image: unset;
+}
+
+.dropdown-wrap {
+    li {
+        &.active {
+            color: #FFF;
+            background: #E42A30;
+            background-image: unset;
+        }
+    }
+
+}

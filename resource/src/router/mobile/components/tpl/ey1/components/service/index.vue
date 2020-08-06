@@ -6,9 +6,6 @@
       :style="{ height: this.divHeight + 'px' }"
     >
       <div :class="$style['service-header']">
-        <div :class="$style['btn-prev']" @click="$router.back()">
-          <img :src="$getCdnPath('/static/image/_new/common/btn_back_w.png')" />
-        </div>
         <div :class="$style.title">我的客服</div>
         <div
           :class="$style.feedback"
@@ -52,9 +49,7 @@
 
         <div :class="$style['btn-next']">
           <img
-            :src="
-              $getCdnPath(`/static/image/_new/webview/ic_service_arrow.png`)
-            "
+            :src="$getCdnPath(`/static/image/ey1/webview/ic_service_arrow.png`)"
           />
         </div>
       </div>
@@ -74,7 +69,7 @@
             <img
               :src="
                 $getCdnPath(
-                  '/static/image/_new/service/popup/popup_ic_close.png'
+                  '/static/image/ey1/service/popup/popup_ic_close.png'
                 )
               "
               alt="close"
@@ -87,35 +82,19 @@
             <div :class="$style['title-img']">
               <img
                 :src="
-                  $getCdnPath(
-                    '/static/image/_new/service/popup/popup_img01.png'
-                  )
+                  $getCdnPath('/static/image/ey1/service/popup/popup_img01.png')
                 "
                 alt="img01"
               />
             </div>
-            <span
-              >尊敬的鸭博娱乐会员，当iOS用户的鸭博娱乐App掉签无法打开时，可以通过以下方法继续游戏</span
-            >
+            <span>
+              尊敬的亿元会员，当iOS用户的亿元App掉签无法打开时，可以通过以下方法继续游戏
+            </span>
           </div>
 
           <div :class="$style['content']">
             <div :class="$style['content-cell']">
-              <span>1.通过鸭博娱乐图标上的网址，重新下载App：</span>
-              <div :class="$style['content-img']">
-                <img
-                  :src="
-                    $getCdnPath(
-                      '/static/image/_new/service/popup/popup_img02.png'
-                    )
-                  "
-                  alt="img02"
-                />
-              </div>
-            </div>
-
-            <div :class="$style['content-cell']">
-              <span>2.收藏鸭博娱乐永久网址，浏览器打开，随时畅玩：</span>
+              <span>收藏亿元永久网址，浏览器打开，随时畅玩：</span>
               <div
                 :class="$style['link']"
                 v-for="(item, index) in linkArray"
@@ -389,21 +368,6 @@ div.container {
   height: 100%;
 }
 
-.btn-prev {
-  position: absolute;
-  top: 0;
-  bottom: 0;
-  left: 12px;
-  width: 20px;
-  height: 20px;
-  margin: auto;
-
-  > img {
-    display: block;
-    width: 100%;
-  }
-}
-
 .tip-block {
   position: absolute;
   right: 20px;
@@ -484,7 +448,7 @@ div.container {
       padding: 0 5px;
       font-size: 12px;
       color: #fff;
-      background: #be9e7f;
+      background: #e42a30;
       border-radius: 9px 0 0 9px;
     }
   }
@@ -498,7 +462,6 @@ div.container {
 
   .title-img {
     width: 100%;
-    height: 80px;
 
     img {
       width: 100%;

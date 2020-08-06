@@ -1,5 +1,5 @@
 <template>
-  <div :class="mainClass">
+  <div>
     <game-record
       :inq-game.sync="inqGame"
       :inq-start.sync="inqStart"
@@ -199,17 +199,13 @@ export default {
   },
   computed: {
     ...mapGetters({
-      memInfo: "getMemInfo"
+      memInfo: "getMemInfo",
+      siteConfig: 'getSiteConfig',
     }),
-    mainClass() {
-      const site = `site-${this.memInfo.user.domain}`;
-
-      return {
-        [this.$style["main-wrap"]]: true,
-        [this.$style[site]]: this.$style[site],
-        [this.$style["preset-color"]]: !this.$style[site]
-      };
-    }
+    $style() {
+      const style = this[`$style_${this.siteConfig.MOBILE_WEB_TPL}`] || this.$style_porn1;
+      return style;
+    },
   },
   methods: {
     ...mapActions([
@@ -239,4 +235,5 @@ export default {
 };
 </script>
 
-<style lang="scss" src="./css/index.scss" module></style>
+<style lang="scss" src="./css/porn1.module.scss" module="$style_porn1"></style>
+<style lang="scss" src="./css/ey1.module.scss" module="$style_ey1"></style>

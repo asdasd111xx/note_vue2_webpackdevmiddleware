@@ -87,7 +87,7 @@
           v-if="typeList[selectedIndex].icon === type.icon"
           :src="
             $getCdnPath(
-              `/static/image/_new/platform/icon/icon_${type.icon}_h.png`
+              `/static/image/ey1/platform/icon/icon_${type.icon}_h.png`
             )
           "
         />
@@ -95,7 +95,7 @@
           v-else
           :src="
             $getCdnPath(
-              `/static/image/_new/platform/icon/icon_${type.icon}_n.png`
+              `/static/image/ey1/platform/icon/icon_${type.icon}_n.png`
             )
           "
         />
@@ -129,7 +129,14 @@
           <div
             v-for="(game, i) in currentGame.vendors"
             :key="`game-${i}-${game.image}`"
-            :class="[$style.game, { [$style['is-full']]: game.imageType > 0 }]"
+            :class="[
+              $style.game,
+              {
+                [$style['is-full']]:
+                  game.imageType === 1 || game.imageType === 2
+              },
+              { [$style['is-trip']]: game.imageType === 3 }
+            ]"
             @click.stop="onOpenGame(game)"
           >
             <img v-lazy="getImg(game)" />
@@ -643,7 +650,7 @@ export default {
   position: relative;
   width: 63px;
   height: 63px;
-  background-image: url("/static/image/_new/platform/icon/icon_bg_n.png");
+  background-image: url("/static/image/ey1/platform/icon/btn_menu_n.png");
   background-position: 0 0;
   background-size: 63px 63px;
   background-repeat: no-repeat;
@@ -660,7 +667,7 @@ export default {
   }
 
   &.active {
-    background-image: url("/static/image/_new/platform/icon/icon_bg_h.png");
+    background-image: url("/static/image/ey1/platform/icon/btn_menu_h.png");
   }
 }
 
@@ -861,6 +868,10 @@ export default {
 
   &.is-full {
     width: 100%;
+  }
+
+  &.is-trip {
+    width: 33%;
   }
 }
 

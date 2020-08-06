@@ -1,0 +1,21 @@
+@import "./porn1.index.scss";
+
+.select,
+.select-time {
+
+    &.active {
+        border-radius: 5px;
+        background: #E42A30;
+        color: #FFF;
+    }
+}
+
+.cancel {
+    background: #222222;
+    color: #fff;
+}
+
+.confirm {
+    background: #E42A30;
+    color: #FFF;
+}

@@ -4,37 +4,37 @@ export const getDoamin = () => {
 
     return axios({
         method: 'get',
-        url: '/api/v1/c/domain-config',
-        // url: 'https://35.201.222.5/conf/domain',
+        // url: '/api/v1/c/domain-config',
+        url: '/conf/domain',
     }).then(res => {
         let result = {
             domain: '',
-            site: ''
+            site: 'porn1'
         }
         // to do nginx 配置
-        // const site = res && res.data && String(res.data.site) || '';
-        // const domain = res && res.data && String(res.data.domain) || '';
-        // result['site'] = site;
-        // result['domain'] = domain;
-        // return result;
+        const site = res && res.data && String(res.data.site) || '';
+        const domain = res && res.data && String(res.data.domain) || '';
+        result['site'] = site;
+        result['domain'] = domain;
+        return result;
 
-        if (res && res.data && res.data.ret && res.data.ret.domain) {
-            result['domain'] = domain;
-            switch (domain) {
-                case '500015':
-                case '67':
-                case '69':
-                default:
-                    result['site'] = 'porn1';
-                    break;
-                case '500023':
-                case '41':
-                case '74':
-                    result['site'] = 'ey1';
-                    break;
-            }
-        }
-        return result
+        // if (res && res.data && res.data.ret && res.data.ret.domain) {
+        //     result['domain'] = domain;
+        //     switch (domain) {
+        //         case '500015':
+        //         case '67':
+        //         case '69':
+        //         default:
+        //             result['site'] = 'porn1';
+        //             break;
+        //         case '500023':
+        //         case '41':
+        //         case '74':
+        //             result['site'] = 'ey1';
+        //             break;
+        //     }
+        // }
+        // return result
     }).catch((res) => {
         console.log(res)
         return {

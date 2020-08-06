@@ -3,9 +3,7 @@
     <div :class="$style['pic-wrap']">
       <div :class="$style['img']">
         <img
-          :src="
-            $getCdnPath(`/static/image/_new/mcenter/share/shareapp_save.png`)
-          "
+          :src="$getCdnPath(`/static/image/ey1/mcenter/share/share_app_f.png`)"
           alt="shareApp"
         />
 
@@ -143,7 +141,7 @@ export default {
   border-radius: 8px;
   // overflow: hidden;
   .img {
-    height: 347px;
+    height: 370px;
     overflow: hidden;
     img {
       width: 100%;

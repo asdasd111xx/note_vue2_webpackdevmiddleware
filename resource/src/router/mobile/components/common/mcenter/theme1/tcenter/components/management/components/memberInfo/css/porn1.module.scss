@@ -1,0 +1,104 @@
+@import "@/css/variable.scss";
+
+.date-wrap {
+    margin-bottom: 10px;
+    background-color: #fff;
+
+    >div {
+        position: relative;
+        float: left;
+        width: 33.333%;
+        height: 42px;
+        line-height: 42px;
+        border-bottom: 2px solid transparent;
+        color: $main_text_color2;
+        font-size: 14px;
+        text-align: center;
+
+        &.active {
+            color: #5e525d;
+
+            &::after {
+                content: "";
+                position: absolute;
+                width: 43px;
+                height: 2px;
+                left: 50%;
+                bottom: 0;
+                transform: translateX(-50%);
+                background: #be9e7f;
+            }
+        }
+    }
+}
+
+.member-total {
+    padding: 0 23px;
+    background-color: #e9dacc;
+
+    >div {
+        height: 37px;
+        line-height: 37px;
+        font-size: 14px;
+    }
+}
+
+.member-text {
+    float: left;
+    color: $main_discover_color1;
+}
+
+.member-count {
+    float: right;
+    color: $main_title_color1;
+}
+
+.info-wrap {
+    float: left;
+    width: 50%;
+    padding: 11px 0;
+    border-bottom: 1px solid #f6f6f6;
+    background-color: #fff;
+    text-align: center;
+
+    &:nth-child(2n + 1) {
+        border-right: 1px solid #f6f6f6;
+    }
+}
+
+.text {
+    overflow: hidden;
+    line-height: 14px;
+    padding: 0 3px;
+    color: #aaa;
+    font-size: 14px;
+    text-overflow: ellipsis;
+    white-space: nowrap;
+}
+
+.count {
+    overflow: hidden;
+    line-height: 20px;
+    margin-top: 15px;
+    padding: 0 3px;
+    color: #000;
+    font-size: 20px;
+    text-overflow: ellipsis;
+    white-space: nowrap;
+
+    &.deficit {
+        color: #f00;
+    }
+}
+
+.btn-check {
+    width: 90%;
+    height: 47px;
+    line-height: 47px;
+    margin: 45px auto;
+    border-radius: 4px;
+    background: linear-gradient(to left, #bd9d7d, #f9ddbd);
+    color: #fff;
+    font-size: 15px;
+    text-align: center;
+}

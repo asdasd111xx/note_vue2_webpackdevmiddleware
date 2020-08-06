@@ -69,14 +69,17 @@ export default {
       this.currentTab = index;
       switch (index) {
         case 0:
+          this.$emit('update:currentTemplate', 'message');
           this.currentTemplate = 'message'
           break;
 
         case 1:
+          this.$emit('update:currentTemplate', 'news');
           this.currentTemplate = 'news'
           break;
 
         case 2:
+          this.$emit('update:currentTemplate', 'post');
           this.currentTemplate = 'post'
           break;
       }

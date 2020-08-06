@@ -6,9 +6,6 @@
       :style="{ height: this.divHeight + 'px' }"
     >
       <div :class="$style['service-header']">
-        <div :class="$style['btn-prev']" @click="$router.back()">
-          <img :src="$getCdnPath('/static/image/_new/common/btn_back_w.png')" />
-        </div>
         <div :class="$style.title">我的客服</div>
         <div
           :class="$style.feedback"

@@ -126,13 +126,24 @@
         {{ $text("S_TRANSACTION_RECORD", "交易记录") }}
       </div>
     </template>
-
-    <template v-if="headerConfig.recommendGift">
+    <!-- 自訂右側按鈕 -->
+    <template v-if="headerConfig.customLinkTitle">
       <div
-        :class="$style['btn-feedback']"
-        @click="$router.push('/mobile/mcenter/tcenter/recommendGift')"
+        :class="[
+          $style['header-custom-wrap'],
+          {
+            [$style[headerConfig.customLinkStyle]]: headerConfig.customLinkStyle
+          }
+        ]"
+        @click="
+          headerConfig.customLinkAction
+            ? headerConfig.customLinkAction()
+            : () => {}
+        "
       >
-        礼金明细
+        <div :class="[$style['header-custom-btn']]">
+          {{ headerConfig.customLinkTitle }}
+        </div>
       </div>
     </template>
 
@@ -379,12 +390,6 @@ export default {
   width: calc(100% - 10% - 24px);
   margin: 6px 0 0 24px;
 
-  &.smallPig,
-  &.gay,
-  &.les {
-    border-radius: 18px;
-  }
-
   > input {
     width: 100%;
     height: 35px;
@@ -500,6 +505,25 @@ export default {
     display: inline-block;
     height: 100%;
     vertical-align: middle;
+  }
+}
+
+.header-custom-wrap {
+  height: 43px;
+  width: 100%;
+  position: fixed;
+  top: 0;
+
+  .header-custom-btn {
+    line-height: 43px;
+    position: fixed;
+    right: 14px;
+    top: 0;
+    color: #ffffff;
+    font-family: Arial, Arial-Bold;
+    font-size: 14px;
+    font-weight: 500;
+    text-align: center;
   }
 }
 

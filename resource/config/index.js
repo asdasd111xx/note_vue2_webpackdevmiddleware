@@ -87,6 +87,11 @@ module.exports = {
                 target: domain,
                 changeOrigin: true,
                 secure: false
+            },
+            '/conf': {
+                target: domain,
+                changeOrigin: true,
+                secure: false
             }
         },
         cssSourceMap: false

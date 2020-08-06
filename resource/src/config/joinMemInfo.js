@@ -37,7 +37,7 @@ export default {
         isRequired: true,
         hasVerify: false,
         show: true,
-        // regExp: enableUserNameDigit ? /^[a-z1-9][a-z0-9]{3,19}$/ : /^[a-z][a-z0-9]{3,19}$/,
+        regExp: enableUserNameDigit ? /^[a-z1-9][a-z0-9]{3,19}$/ : /^[a-z][a-z0-9]{3,19}$/,
         regExp: /^[a-z1-9][a-z0-9]{3,19}$/,
         errorMsg: enableUserNameDigit
             ? i18n.t('S_ENABLE_NUM_CHAR').replace('%s', '4').replace('%s', '20')

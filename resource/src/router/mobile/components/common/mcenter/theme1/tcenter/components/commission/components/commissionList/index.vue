@@ -62,6 +62,7 @@
 <script>
 import InfiniteLoading from "vue-infinite-loading";
 import commissionList from "@/mixins/mcenter/commission/commissionList";
+import { mapGetters } from "vuex";
 
 export default {
   components: {
@@ -81,6 +82,15 @@ export default {
       type: Object | null,
       required: true
     }
+  },
+  computed: {
+      ...mapGetters({
+      siteConfig: "getSiteConfig"
+    }),
+    $style() {
+      const style = this[`$style_${this.siteConfig.MOBILE_WEB_TPL}`] || this.$style_porn1;
+      return style;
+    },
   },
   methods: {
     onClick(info) {
@@ -108,4 +118,5 @@ export default {
 };
 </script>
 
-<style lang="scss" src="./css/index.scss" module></style>
+<style lang="scss" src="./css/porn1.module.scss" module="$style_porn1"></style>
+<style lang="scss" src="./css/ey1.module.scss" module="$style_ey1"></style>
