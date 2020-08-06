@@ -5,7 +5,7 @@
     :class="$style.container"
   >
     <div slot="content" class="content-wrap">
-      <information />
+      <information :currentTemplate.sync="currentTemplate" />
     </div>
   </mobile-container>
 </template>
@@ -22,6 +22,7 @@ export default {
   },
   data() {
     return {
+      currentTemplate: "message"
     }
   },
   created() {
