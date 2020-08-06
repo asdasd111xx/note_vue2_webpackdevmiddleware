@@ -1,6 +1,6 @@
 <template>
   <div :class="$style['container']">
-    <img src="/static/image/_new/common/loading.png" />
+    <img src="/static/image/ey1/common/loading.png" />
     <div :class="$style['timer']" @click="click">
       <span>{{ sec }}</span>
       <span>|</span>

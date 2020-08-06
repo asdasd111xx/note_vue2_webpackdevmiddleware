@@ -30,13 +30,7 @@
     </div>
 
     <div v-if="headerConfig.title" :class="[$style.wrap, 'clearfix']">
-      <div
-        :class="[
-          [$style.title],
-          $style[source],
-          { [$style['customTitle']]: headerConfig.customTitle }
-        ]"
-      >
+      <div :class="[[$style.title], $style[source]]">
         {{ headerConfig.title }}
       </div>
       <div
@@ -428,43 +422,41 @@ export default {
     }
   }
 }
+
 .btn-prev {
-  position: absolute;
-  top: 0;
   bottom: 0;
-  //   left: 5%;
-  left: 12px;
-  width: 20px;
   height: 20px;
+  left: 12px;
   margin: auto;
+  top: 0;
+  width: 20px;
+  position: absolute;
+  z-index: 2;
 
   > img {
-    display: block;
-    width: 100%;
+    width: 20px;
+    height: 20px;
   }
 }
 
 .wrap {
-  display: inline-block;
-  margin: 0 24px;
-  vertical-align: middle;
+  position: absolute;
+  top: 0;
+  left: 0;
+  width: 100%;
 }
 
 .title {
-  float: left;
-  height: 22px;
-  line-height: 22px;
-  color: $main_title_color1;
+  height: 43px;
+  line-height: 43px;
+  color: #000000;
   font-size: 17px;
   font-weight: 500;
+  margin: 0 auto;
 
   &.les,
   &.gay {
     color: #fff;
-  }
-
-  &.customTitle {
-    font-weight: 500;
   }
 }
 

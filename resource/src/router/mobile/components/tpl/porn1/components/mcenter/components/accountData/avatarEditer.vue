@@ -1,59 +1,69 @@
 <template>
   <div :class="sliderClass">
-    <div :class="$style['avater-editer-header']">
-      <div :class="$style['btn-prev']">
-        <img
-          :src="$getCdnPath('/static/image/_new/common/btn_back.png')"
-          @click="onClose()"
-        />
-      </div>
-      <span :class="$style['title']">
-        {{ $text("S_SET_AVATER", "设置头像") }}</span
-      >
-    </div>
-    <input
-      @change="uploadImgChange"
-      :class="$style['img-input']"
-      ref="albumInput"
-      type="file"
-      accept="image/*"
-    />
-
-    <!-- 裁剪區塊 -->
-    <div :class="$style['avater-editer-conatainer']">
-      <div :class="$style['cropper']">
-        <vueCropper
-          ref="cropper"
-          :img="option.img"
-          :outputSize="option.size"
-          :outputType="option.outputType"
-          :info="true"
-          :full="option.full"
-          :canMove="option.canMove"
-          :canMoveBox="option.canMoveBox"
-          :original="option.original"
-          :autoCrop="option.autoCrop"
-          :fixed="option.fixed"
-          :fixedNumber="option.fixedNumber"
-          :centerBox="option.centerBox"
-          :infoTrue="option.infoTrue"
-          :fixedBox="option.fixedBox"
-        ></vueCropper>
-      </div>
-    </div>
-
-    <div :class="$style['avater-editer-func']">
-      <div :class="$style['choose-btn']" @click="chooseFile">选择文件</div>
-      <div :class="[$style['func-btn']]">
-        <div :class="[$style['cancel-btn']]" @click="cancel">
-          取消
+    <div :class="$style['container']">
+      <div :class="$style['avater-editer-header']">
+        <div :class="$style['btn-prev']">
+          <img
+            :src="$getCdnPath('/static/image/_new/common/btn_back.png')"
+            @click="onClose()"
+          />
         </div>
-        <div :class="[$style['submit-btn']]" @click="submit">
-          上传头像
+        <span :class="$style['title']">
+          {{ $text("S_SET_AVATER", "设置头像") }}</span
+        >
+      </div>
+      <input
+        @change="uploadImgChange"
+        :class="$style['img-input']"
+        ref="albumInput"
+        type="file"
+        accept="image/*"
+      />
+
+      <!-- 裁剪區塊 -->
+      <div :class="$style['avater-editer-conatainer']">
+        <div
+          :class="[
+            $style['cropper'],
+            {
+              [$style['active']]: option.img
+            }
+          ]"
+        >
+          <vueCropper
+            ref="cropper"
+            :img="option.img"
+            :outputSize="option.size"
+            :outputType="option.outputType"
+            :info="true"
+            :full="option.full"
+            :canMove="option.canMove"
+            :canMoveBox="option.canMoveBox"
+            :original="option.original"
+            :autoCrop="option.autoCrop"
+            :fixed="option.fixed"
+            :fixedNumber="option.fixedNumber"
+            :centerBox="option.centerBox"
+            :infoTrue="option.infoTrue"
+            :fixedBox="option.fixedBox"
+            :autoCropWidth="option.autoCropWidth"
+            :autoCropHeight="option.autoCropHeight"
+            :maxImgSize="option.maxImgSize"
+          ></vueCropper>
         </div>
       </div>
-    </div>
 
+      <div :class="$style['avater-editer-func']">
+        <div :class="$style['choose-btn']" @click="chooseFile">选择文件</div>
+        <div :class="[$style['func-btn']]">
+          <div :class="[$style['cancel-btn']]" @click="cancel">
+            取消
+          </div>
+          <div :class="[$style['submit-btn']]" @click="submit">
+            上传头像
+          </div>
+        </div>
+      </div>
     </div>
   </div>
 </template>
@@ -82,19 +92,19 @@ export default {
       isSend: false,
 
       option: {
-        maxImgSize: '2000',
+        maxImgSize: '1500',
         img: '', // 裁剪图片的地址
         info: true, // 裁剪框的大小信息
-        outputSize: 0.6, // 裁剪生成图片的质量
+        outputSize: 0.1, // 裁剪生成图片的质量
         outputType: 'png', // 裁剪生成图片的格式
         canScale: false, // 图片是否允许滚轮缩放
         autoCrop: true, // 是否默认生成截图框
-        autoCropWidth: 100, // 默认生成截图框宽度
-        autoCropHeight: 100, // 默认生成截图框高度
+        autoCropWidth: 200, // 默认生成截图框宽度
+        autoCropHeight: 200, // 默认生成截图框高度
         fixedBox: false, // 固定截图框大小 不允许改变
         fixed: true, // 是否开启截图框宽高固定比例
         fixedNumber: [1, 1], // 截图框的宽高比例
-        full: true, // 是否输出原图比例的截图
+        full: false, // 是否输出原图比例的截图
         canMoveBox: true, // 截图框能否拖动
         original: false, // 上传图片按照原始比例渲染
         centerBox: false, // 截图框是否被限制在图片里面
@@ -215,12 +225,16 @@ export default {
 <style lang="scss" module>
 @import "~@/css/variable.scss";
 
+.container {
+  background-color: #ffffff;
+}
+
 .avater-editer-header {
   z-index: 3;
   width: 100%;
   height: 43px;
   padding: 0 17px;
-  background: #fefffe;
+  background: #ffffff;
   text-align: center;
   position: relative;
 
@@ -229,6 +243,7 @@ export default {
     text-align: center;
     font-size: 17px;
     line-height: 43px;
+    font-weight: 700;
   }
 }
 
@@ -248,10 +263,18 @@ export default {
 
 .cropper {
   position: relative;
-  height: 350px;
+  height: 400px;
   margin: 5px;
   border: dashed #cacaca 1px;
   text-align: center;
+  background-image: url("/static/image/_new/mcenter/avatar_nologin.png");
+  background-position: center;
+  background-size: 250px 250px;
+  background-repeat: no-repeat;
+
+  &.active {
+    background-image: unset;
+  }
 
   img {
     max-width: 100%;
@@ -283,11 +306,10 @@ export default {
 }
 
 .func-btn {
-  display: flex;
   margin: 15px 0;
 
   > div {
-    width: 50%;
+    width: 48%;
     display: inline-block;
     font-weight: 400;
     height: 45px;
@@ -301,11 +323,13 @@ export default {
 .cancel-btn {
   background: #faf5f0;
   color: #be9e7f;
+  float: left;
 }
 
 .submit-btn {
   background: linear-gradient(to left, #bd9d7d, #f9ddbd);
   color: #ffffff;
+  float: right;
 }
 </style>
 <style>

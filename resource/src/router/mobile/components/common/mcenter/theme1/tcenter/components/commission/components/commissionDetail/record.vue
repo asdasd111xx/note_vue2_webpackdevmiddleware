@@ -19,7 +19,7 @@
             <span>{{ item.valid_bet }}</span>
           </div>
           <div>
-            <span>{{ $text("profit", "损益") }}</span>
+            <span>{{ $text("S_PROFIT", "损益") }}</span>
             <span>{{ item.profit }}</span>
           </div>
         </div>
@@ -73,7 +73,7 @@
                   @click="onSort('profit')"
                 >
                   <span>
-                    {{ $text("profit", "损益") }}
+                    {{ $text("S_PROFIT", "损益") }}
                   </span>
                   <span v-if="sort === 'period'">
                     <icon

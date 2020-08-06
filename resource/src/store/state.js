@@ -454,5 +454,6 @@ export default {
     yaboConfig: {},
     globalMessage: '',
     rechargeConfig: {},
-    hasBank: false
+    hasBank: false,
+    videoBounsPageStatus: false,
 };

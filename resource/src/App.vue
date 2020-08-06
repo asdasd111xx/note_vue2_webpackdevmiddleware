@@ -21,7 +21,7 @@ export default {
       siteConfigLoad: false,
       memInfoLoad: false,
       reconnectTimer: null, // 重新連線WS timer,
-      yToken: ''
+      yToken: '',
     };
   },
   computed: {
@@ -29,12 +29,17 @@ export default {
       siteConfig: 'getSiteConfig',
       memInfo: 'getMemInfo',
       loginStatus: 'getLoginStatus',
+      videoBounsPageStatus: 'getVideoBounsPageStatus',
     }),
     isDebug() {
       return process.env.NODE_ENV === 'development' || (this.$route.query & this.$route.query._db)
     }
   },
   watch: {
+    // 彩金頁面才需要重新連線
+    videoBounsPageStatus(val) {
+      window.YABO_SOCKET_RECONNECT_ACTIVE = val;
+    },
     memInfo() {
       this.setAnalyticsCode();
       this.setGoogleAnalytics();
@@ -121,14 +126,23 @@ export default {
 
       if (this.reconnectTimer) return;
       this.reconnectTimer = setInterval(() => {
-        if (this.isDebug) {
-          console.log("[WS]: Reconnecting");
+
+        // 是否要啟用重新連接
+        if (window.YABO_SOCKET_RECONNECT_ACTIVE) {
+          this.isConnecting = false;
+          this.connectYaboWS();
+
+          if (this.isDebug) {
+            console.log("[WS]: Reconnecting");
+          }
         }
-        this.connectYaboWS();
       }, 3000)
     },
     connectYaboWS() {
+      if (this.isConnecting) return;
+
       try {
+        this.isConnecting = true;
         let cid = getCookie('cid') || '';
         if (!cid) return;
         let uri = this.siteConfig.ACTIVES_BOUNS_WEBSOCKET + `?cid=${cid}&domain=${this.memInfo.user.domain}&userid=${this.memInfo.user.id}`;
@@ -170,6 +184,7 @@ export default {
           this.reconnectTimer = null;
         };
       } catch (e) {
+        this.isConnecting = false;
         console.log("[WS]: connectYaboWS Error:", e);
       }
     },

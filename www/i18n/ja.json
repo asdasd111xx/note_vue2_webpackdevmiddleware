@@ -1618,9 +1618,13 @@
     "S_CUSTOM_DATE": "自定义",
     "S_CARD_MANAGEMENT": "卡片管理",
     "S_ADD_BANKCARD": "添加银行卡",
+    "S_ADD_VIRTUAL_BANKCARD": "添加电子钱包",
     "S_BANKCARD_LIMIT": "最多支持添加%s张银行卡",
+    "S_VIRTUAL_BANKCARD_LIMIT": "最多添加%s张电子钱包",
     "S_BANKCARD": "银行卡",
+    "S_VIRTUAL_BANKCARD": "电子钱包",
     "S_MY_CRAD": "我的卡",
+    "S_MY_VIRTUAL_BANKCARD": "我的电子钱包",
     "S_WITHRAW_NOW": "立即提现",
     "S_WITHRAW_DESC": "今日可用提现次数：%s，今日可用提款额度：%s，单次最高提现额度：%s",
     "S_WITHRAW_PLACEHOLDER": "请输入提现金额(%s-%s)",
@@ -1696,9 +1700,12 @@
     "S_ASSIGIN_DETAIL": "派发详情",
     "S_RECORD_DETAIL": "统计详情",
     "S_RECOMMEND_GIFT": "推荐礼金",
-    "S_PROFIT_AND_LOSS": "损益",
+    "S_PROFIT": "损益",
     "S_COMPUTE_METHOD": "结算方式",
     "S_AUTO_SAVE": "自动保存",
     "S_XBB_GAMIMG": "XBB麻将馆",
-    "S_SET_AVATER": "设置头像"
+    "S_SET_AVATER": "设置头像",
+    "S_WALLET_TYPE": "钱包类型",
+    "S_SELECT_WALLET_TYPE": "请选择钱包类型",
+    "S_WALLET_ADDRESS": "钱包地址"
 }

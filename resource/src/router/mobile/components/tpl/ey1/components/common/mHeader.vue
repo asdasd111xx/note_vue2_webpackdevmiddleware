@@ -25,13 +25,7 @@
     </div>
 
     <div v-if="headerConfig.title" :class="[$style.wrap, 'clearfix']">
-      <div
-        :class="[
-          [$style.title],
-          $style[source],
-          { [$style['customTitle']]: headerConfig.customTitle }
-        ]"
-      >
+      <div :class="[[$style.title], $style[source]]">
         {{ headerConfig.title }}
       </div>
       <div
@@ -93,12 +87,12 @@
     <template v-if="headerConfig.isMCenter">
       <div :class="$style['mcenter-wrap']">
         <img
-          :src="$getCdnPath('/static/image/_new/common/btn_setting.png')"
+          :src="$getCdnPath('/static/image/ey1/mcenter/btn_setting.png')"
           @click="handleClickSetting"
         />
         <div>
           <img
-            :src="$getCdnPath('/static/image/_new/common/icon_ask.png')"
+            :src="$getCdnPath('/static/image/ey1/common/icon_ask.png')"
             @click="handleClickAsk"
           />
           <div v-show="hasUnreadMessage" :class="$style['red-dot']" />
@@ -324,15 +318,16 @@ export default {
     }
   }
 }
+
 .btn-prev {
   position: absolute;
   top: 0;
   bottom: 0;
-  //   left: 5%;
   left: 12px;
   width: 20px;
   height: 20px;
   margin: auto;
+  z-index: 2;
 
   > img {
     display: block;
@@ -341,18 +336,19 @@ export default {
 }
 
 .wrap {
-  display: inline-block;
-  margin: 0 24px;
-  vertical-align: middle;
+  position: absolute;
+  top: 0;
+  left: 0;
+  width: 100%;
 }
 
 .title {
-  float: left;
-  height: 22px;
-  line-height: 22px;
+  height: 43px;
+  line-height: 43px;
   color: #ffffff;
   font-size: 17px;
   font-weight: 500;
+  margin: 0 auto;
 }
 
 .btn-game-list {
@@ -401,34 +397,6 @@ export default {
     font-size: 14px;
     outline: none;
 
-    &.smallPig,
-    &.gay,
-    &.les {
-      border-radius: 18px;
-    }
-
-    &.smallPig {
-      background-color: #333;
-    }
-
-    &.gay {
-      color: #fff;
-      background-color: #3a79a1;
-
-      &::placeholder {
-        color: #fff;
-      }
-    }
-
-    &.les {
-      color: #fff;
-      background-color: #b73939;
-
-      &::placeholder {
-        color: #fff;
-      }
-    }
-
     &::placeholder {
       color: $main_text_color2;
     }
@@ -447,25 +415,6 @@ export default {
   color: white;
   margin: 0 auto;
   text-align: center;
-
-  &.smallPig,
-  &.gay,
-  &.les {
-    width: 85px;
-    border-radius: 0 18px 18px 0;
-  }
-
-  &.smallPig {
-    background: #1e1e1e;
-  }
-
-  &.gay {
-    background: #3e81ac;
-  }
-
-  &.les {
-    background: #c54242;
-  }
 
   > img {
     width: 21px;

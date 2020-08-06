@@ -6,11 +6,22 @@
   >
     <div slot="content" :class="$style['content-wrap']">
       <div :class="$style['logo']">
-        <img
-          :src="$getCdnPath(`/static/image/_new/ey1/common/app-icon-tmp.png`)"
-        />
+        <img :src="$getCdnPath(`/static/image/ey1/common/appicon.png`)" />
       </div>
       <div :class="$style['version']">版本号 {{ version }}</div>
+
+      <div :class="$style['partner-wrap']">
+        <div :class="$style['partner-title']">
+          合作伙伴
+        </div>
+        <div v-for="item in partners" :class="$style['partner-cell']">
+          <img
+            :src="
+              $getCdnPath(`/static/image/ey1/mcenter/about/logo_${item}.png`)
+            "
+          />
+        </div>
+      </div>
     </div>
   </mobile-container>
 </template>
@@ -23,7 +34,10 @@ import { getCookie, setCookie } from '@/lib/cookie';
 export default {
   data() {
     return {
-      version: ''
+      version: '',
+      partners: [
+        'bbin', 'xbb', 'ag', 'ob', 'pt', 'mg', 'jdb', 'saba', 'cs', 'im', 'ky', 'cq9'
+      ]
     }
   },
   components: {
@@ -78,5 +92,34 @@ export default {
   font-size: 13px;
   text-align: center;
   width: 100%;
+  color: #a6a9b2;
+}
+
+.partner-wrap {
+  margin-top: 70px;
+}
+
+.partner-title {
+  font-size: 17px;
+  font-weight: 700;
+  text-align: center;
+  color: #414655;
+  width: 100%;
+  text-align: center;
+  margin: 0 auto;
+  margin-bottom: 30px;
+}
+
+.partner-cell {
+  width: 33%;
+  height: 40px;
+  float: left;
+  margin-bottom: 30px;
+  text-align: center;
+
+  > img {
+    width: 90px;
+    height: 40px;
+  }
 }
 </style>

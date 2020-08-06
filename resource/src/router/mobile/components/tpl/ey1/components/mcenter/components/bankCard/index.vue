@@ -2,7 +2,10 @@
   <div :class="$style['wrap']">
     <div :class="$style['header']">
       <div :class="$style['btn-prev']" @click="backPre">
-        <img src="/static/image/_new/common/btn_back.png" />
+        <img
+          :src="$getCdnPath('/static/image/_new/common/btn_back_w.png')"
+          alt="more"
+        />
       </div>
 
       <div :class="[$style['content'], 'clearfix']">
@@ -14,11 +17,14 @@
         :class="$style['icon-edit']"
         @click="editDetailStatus = true"
       >
-        <icon name="ellipsis-h" />
+        <img
+          :src="$getCdnPath('/static/image/_new/common/btn_more_w.png')"
+          alt="more"
+        />
       </div>
     </div>
 
-    <div :class="$style['tab-wrap']">
+    <div v-if="isShowTab" :class="$style['tab-wrap']">
       <div
         v-for="(item, index) in tabItem"
         :key="`tab-${item.key}`"
@@ -38,8 +44,8 @@
 
     <component
       :is="currentPage"
-      :current-kind="currentKind"
       :change-page="changePage"
+      :show-tab="showTab"
       :show-detail.sync="showDetail"
       :edit-status.sync="editStatus"
       :add-bank-card-step.sync="addBankCardStep"
@@ -53,18 +59,27 @@ import entryMixin from "@/mixins/mcenter/bankCard/index";
 
 export default {
   components: {
-    cardInfo: () =>
+    bankCardInfo: () =>
       import(
-        /* webpackChunkName: 'cardInfo' */ "./components/cardInfo"
+        /* webpackChunkName: 'bankCardInfo' */ "./components/bank/cardInfo"
       ),
-    addCard: () =>
-      import(/* webpackChunkName: 'addCard' */ "./components/addCard")
+    addBankCard: () =>
+      import(/* webpackChunkName: 'addBankCard' */ "./components/bank/addCard"),
+    virtualBankCardInfo: () =>
+      import(
+        /* webpackChunkName: 'virtualBankCardInfo' */ "./components/virtualBank/cardInfo"
+      ),
+    addVirtualBankCard: () =>
+      import(
+        /* webpackChunkName: 'addVirtualBankCard' */ "./components/virtualBank/addCard"
+      )
   },
   mixins: [entryMixin],
   data() {
     return {
       currentTab: 0,
-      currentKind: "bank"
+      currentKind: "bank",
+      isShowTab: true
     };
   },
   computed: {
@@ -87,12 +102,27 @@ export default {
       if (this.hasRedirect && this.$route.query.redirect !== "withdraw") {
         return "提现银行卡";
       }
-      return this.$text(
-        ...(this.currentPage === "cardInfo"
-          ? ["S_CARD_MANAGEMENT", "卡片管理"]
-          : ["S_ADD_BANKCARD", "添加银行卡"])
-      );
+
+      switch (this.currentPage) {
+        case "bankCardInfo":
+        case "virtualBankCardInfo":
+          return this.$text("S_CARD_MANAGEMENT", "卡片管理");
+
+        default:
+          return this.currentKind === "bank"
+            ? this.$text("S_ADD_BANKCARD", "添加银行卡")
+            : this.$text("S_ADD_VIRTUAL_BANKCARD", "添加电子钱包");
+      }
     }
+  },
+  created() {
+    // todo: 判斷 bank & virtualBank 是否有被啟用
+    /*
+    //   return axios({
+    //     method: "get",
+    //     url: "api/v1/c/levels/by_user",
+    //   }).then(response => {
+    */
   },
   methods: {
     setCurrentTab(index) {
@@ -100,11 +130,62 @@ export default {
       switch (index) {
         case 0:
           this.currentKind = "bank";
+          this.currentPage = "bankCardInfo";
           break;
 
         case 1:
           this.currentKind = "virtualBank";
+          this.currentPage = "virtualBankCardInfo";
           break;
+      }
+    },
+    showTab(value) {
+      console.log(value);
+      this.isShowTab = value;
+    },
+    backPre() {
+      // 當頁面停留在卡片管理
+      if (
+        this.currentPage === "bankCardInfo" ||
+        this.currentPage === "virtualBankCardInfo"
+      ) {
+        // 卡片管理-詳細頁面
+        if (this.showDetail) {
+          this.showDetail = false;
+          this.isShowTab = true;
+          return;
+        }
+        this.$router.back();
+        return;
+      }
+
+      // 目前只有銀行卡有分兩階段
+      if (this.addBankCardStep === "two") {
+        this.step = "one";
+        return;
+      }
+
+      if (this.$route.query && this.$route.query.redirect) {
+        if (this.$route.query.redirect === "home") {
+          this.$router.push("/mobile");
+          return;
+        } else if (this.$route.query.redirect === "liveStream") {
+          this.$router.push("/mobile/liveStream");
+          return;
+        }
+        this.$router.back();
+        return;
+      }
+
+      // 當頁面停留在添加卡片
+      if (this.currentKind === "bank") {
+        this.isShowTab = true;
+        this.currentPage = "bankCardInfo";
+        return;
+      } else if (this.currentKind === "virtualBank") {
+        this.isShowTab = true;
+        this.currentPage = "virtualBankCardInfo";
+        return;
       }
     }
   }
@@ -128,9 +209,9 @@ export default {
   width: 100%;
   height: 43px;
   padding: 0 17px;
-  background: #fefffe;
   text-align: center;
   border-bottom: 1px solid #eee;
+  background: linear-gradient(#fe2a2a, #b60303);
 
   &::before {
     content: "";
@@ -159,7 +240,7 @@ export default {
   float: left;
   height: 22px;
   line-height: 22px;
-  color: #000;
+  color: #fff;
   font-size: 17px;
 }
 
@@ -177,18 +258,13 @@ export default {
   width: 20px;
   height: 20px;
   margin: auto;
-
-  > svg {
-    display: block;
-    width: 100%;
-  }
 }
 
 .tab-wrap {
   position: relative;
   display: flex;
   background: #fff;
-  border-bottom: 2px solid #eee;
+  border-bottom: 1px solid #eee;
 }
 
 .tab-item {
@@ -209,11 +285,11 @@ export default {
 
 .active-slider {
   position: absolute;
-  width: 50%;
+  width: 12%;
   height: 2px;
   bottom: 0;
   transform: translateX(-50%);
-  background: #be9e7f;
+  background: #e42a30;
   transition: left 0.31s;
 }
 </style>
