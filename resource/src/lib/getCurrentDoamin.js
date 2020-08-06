@@ -3,7 +3,7 @@ import axios from 'axios';
 export const getDoamin = () => {
     return axios({
         method: 'get',
-        url: '/api/v1/c/domain-config',
+        url: '/api/v1/c/domain-config'
     }).then(res => {
         let result = {
             domain: '',
