@@ -43,6 +43,7 @@ import mobileContainer from "../../../common/mobileContainer";
 import { API_PROMOTION_INFO } from "@/config/api";
 import axios from "axios";
 import { mapGetters, mapActions } from 'vuex';
+import yaboRequest from '@/api/yaboRequest';
 
 export default {
   components: {
@@ -55,7 +56,32 @@ export default {
       agentCode: ""
     };
   },
+  mounted() {
+    const query = this.$route.query;
+
+    if (query && query.check && query.cid && query.userid && query.tagId && query.domain) {
+      yaboRequest({
+        method: 'put',
+        url: `${this.siteConfig.YABO_API_DOMAIN}/Account/UnlockTagId?`,
+        headers: {
+          'x-domain': query.domain,
+        },
+        params: {
+          cid: query.cid,
+          userid: query.userid,
+          tagId: query.tagId,
+          domain: query.domain
+        },
+      }).then((res) => {
+      }).catch(e => {
+        console.log(e)
+      });
+    }
+  },
   computed: {
+    ...mapGetters({
+      siteConfig: "getSiteConfig",
+    }),
     headerConfig() {
       return {
         prev: true,

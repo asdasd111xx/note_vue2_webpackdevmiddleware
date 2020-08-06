@@ -7,7 +7,7 @@ export const getDoamin = () => {
     }).then(res => {
         let result = {
             domain: '',
-            site: ''
+            site: 'porn1'
         }
         if (res && res.data && res.data.ret && res.data.ret.domain) {
             let domain = String(res.data.ret.domain);
