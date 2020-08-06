@@ -1,0 +1,12 @@
+@import "./porn1.module.scss";
+
+.top-link-wrap {
+
+    >div {
+        color: #A6A9B2;
+
+        &.active {
+            color: #222222;
+        }
+    }
+}

@@ -42,6 +42,7 @@ export default {
 .mobile-wrap {
   height: 100%;
   overflow-y: auto;
+  overflow-x: hidden;
 }
 
 :global {

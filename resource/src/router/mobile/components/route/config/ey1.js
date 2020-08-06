@@ -8,7 +8,7 @@ export default {
         promotionEy1: () => import(/* webpackChunkName: 'promotionEy1' */'../../tpl/ey1/components/promotion'),
         giftEy1: () => import(/* webpackChunkName: 'giftEy1' */'../../tpl/ey1/components/gift'),
         forgetPwdEy1: () => import(/* webpackChunkName: 'forgetPwdEy1' */'../../tpl/ey1/components/forgetPwd'),
-        // resetPwdEy1: () => import(/* webpackChunkName: 'resetPwdEy1' */'../../tpl/ey1/components/resetPwd'),
+        resetPwdEy1: () => import(/* webpackChunkName: 'resetPwdEy1' */'../../tpl/ey1/components/resetPwd'),
         joinMemberEy1: () => import(/* webpackChunkName: 'joinMemberEy1' */'../../tpl/ey1/components/joinMember'),
         // fishareaEy1: () => import(/* webpackChunkName: 'fishareaEy1' */'../../tpl/ey1/components/fisharea'),
         serviceEy1: () => import(/* webpackChunkName: 'serviceEy1' */'../../tpl/ey1/components/service'),
@@ -33,14 +33,14 @@ export default {
         //     depositEy1: () => import(/* webpackChunkName: 'depositEy1' */'../../tpl/ey1/components/mcenter/components/deposit'),
         accountVipEy1: () => import(/* webpackChunkName: 'accountVipEy1' */'../../tpl/ey1/components/mcenter/components/accountVip'),
         accountVipDetailEy1: () => import(/* webpackChunkName: 'accountVipDetailEy1' */'../../tpl/ey1/components/mcenter/components/accountVip/components/vipDetail'),
-        //     tcenterCommissionEy1: () => import(/* webpackChunkName: 'tcenterCommissionEy1' */'../../tpl/ey1/components/mcenter/components/tcenter/components/commission'),
-        //     tcenterGameRecordEy1: () => import(/* webpackChunkName: 'tcenterGameRecordEy1' */'../../tpl/ey1/components/mcenter/components/tcenter/components/gameRecord'),
-        //     tcenterManagementEy1: () => import(/* webpackChunkName: 'tcenterManagementEy1' */'../../tpl/ey1/components/mcenter/components/tcenter/components/management'),
-        //     tcenterRecommendGiftEy1: () => import(/* webpackChunkName: 'tcenteRecommendGiftEy1' */'../../tpl/ey1/components/mcenter/components/tcenter/components/recommendGift'),
+        tcenterCommissionEy1: () => import(/* webpackChunkName: 'tcenterCommissionEy1' */'../../tpl/ey1/components/mcenter/components/tcenter/components/commission'),
+        tcenterGameRecordEy1: () => import(/* webpackChunkName: 'tcenterGameRecordEy1' */'../../tpl/ey1/components/mcenter/components/tcenter/components/gameRecord'),
+        tcenterManagementEy1: () => import(/* webpackChunkName: 'tcenterManagementEy1' */'../../tpl/ey1/components/mcenter/components/tcenter/components/management'),
+        tcenterRecommendGiftEy1: () => import(/* webpackChunkName: 'tcenteRecommendGiftEy1' */'../../tpl/ey1/components/mcenter/components/tcenter/components/recommendGift'),
         aboutEy1: () => import(/* webpackChunkName: 'aboutEy1' */'../../tpl/ey1/components/mcenter/components/about'),
         settingEy1: () => import(/* webpackChunkName: 'settingEy1' */'../../tpl/ey1/components/mcenter/components/setting'),
         //     feedbackEy1: () => import(/* webpackChunkName: 'feedbackEy1' */'../../tpl/ey1/components/mcenter/components/feedback'),
-        //     helpEy1: () => import(/* webpackChunkName: 'helpEy1' */'../../tpl/ey1/components/mcenter/components/help'),
+        helpEy1: () => import(/* webpackChunkName: 'helpEy1' */'../../tpl/ey1/components/mcenter/components/help'),
         //     helpDepositEy1: () => import(/* webpackChunkName: 'helpDepositEy1' */'../../tpl/ey1/components/mcenter/components/help/page/deposit'),
         //     helpWithdrawEy1: () => import(/* webpackChunkName: 'helpWithdrawEy1' */'../../tpl/ey1/components/mcenter/components/help/page/withdraw'),
         //     helpGameintroEy1: () => import(/* webpackChunkName: 'helpGameintroEy1' */'../../tpl/ey1/components/mcenter/components/help/page/gameintro'),
@@ -54,6 +54,6 @@ export default {
         //     accountDataWeixinEy1: () => import(/* webpackChunkName: 'accountDataWeixinEy1' */'../../tpl/ey1/components/mcenter/components/accountData/account/form/editWeixin'),
         //     accountDataBirthdayEy1: () => import(/* webpackChunkName: 'accountDataBirthdayEy1' */'../../tpl/ey1/components/mcenter/components/accountData/account/form/editBirthday'),
         //     walletEy1: () => import(/* webpackChunkName: 'walletEy1' */'../../tpl/ey1/components/mcenter/components/wallet'),
-        //     makeMoneyEy1: () => import(/* webpackChunkName: 'makeMoneyEy1' */'../../tpl/ey1/components/mcenter/components/makeMoney')
+        makeMoneyEy1: () => import(/* webpackChunkName: 'makeMoneyEy1' */'../../tpl/ey1/components/mcenter/components/makeMoney')
     }
 };

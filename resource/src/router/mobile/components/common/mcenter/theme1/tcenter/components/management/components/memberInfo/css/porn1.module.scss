@@ -1,29 +1,42 @@
+@import "@/css/variable.scss";
+
 .date-wrap {
     margin-bottom: 10px;
-    background-color: $dateBackgroundColor;
+    background-color: #fff;
 
-    > div {
+    >div {
+        position: relative;
         float: left;
         width: 33.333%;
-        height: 40px;
-        line-height: 38px;
+        height: 42px;
+        line-height: 42px;
         border-bottom: 2px solid transparent;
-        color: $dateTextColor;
+        color: $main_text_color2;
         font-size: 14px;
         text-align: center;
 
         &.active {
-            border-color: $dateBorderColor;
-            color: $dateTextColorActive;
+            color: #5e525d;
+
+            &::after {
+                content: "";
+                position: absolute;
+                width: 43px;
+                height: 2px;
+                left: 50%;
+                bottom: 0;
+                transform: translateX(-50%);
+                background: #be9e7f;
+            }
         }
     }
 }
 
 .member-total {
     padding: 0 23px;
-    background-color: #3E3E3E;
+    background-color: #e9dacc;
 
-    > div {
+    >div {
         height: 37px;
         line-height: 37px;
         font-size: 14px;
@@ -32,24 +45,24 @@
 
 .member-text {
     float: left;
-    color: $titleColor;
+    color: $main_discover_color1;
 }
 
 .member-count {
     float: right;
-    color: #FFF;
+    color: $main_title_color1;
 }
 
 .info-wrap {
     float: left;
     width: 50%;
     padding: 11px 0;
-    border-bottom: 1px solid #F6F6F6;
-    background-color: #FFF;
+    border-bottom: 1px solid #f6f6f6;
+    background-color: #fff;
     text-align: center;
 
-    &:nth-child(2n+1) {
-        border-right: 1px solid #F6F6F6;
+    &:nth-child(2n + 1) {
+        border-right: 1px solid #f6f6f6;
     }
 }
 
@@ -57,7 +70,7 @@
     overflow: hidden;
     line-height: 14px;
     padding: 0 3px;
-    color: #AAA;
+    color: #aaa;
     font-size: 14px;
     text-overflow: ellipsis;
     white-space: nowrap;
@@ -74,7 +87,7 @@
     white-space: nowrap;
 
     &.deficit {
-        color: #F00;
+        color: #f00;
     }
 }
 
@@ -84,8 +97,8 @@
     line-height: 47px;
     margin: 45px auto;
     border-radius: 4px;
-    background-color: $buttonBackgroundColor;
-    color: $buttonTextColor;
+    background: linear-gradient(to left, #bd9d7d, #f9ddbd);
+    color: #fff;
     font-size: 15px;
     text-align: center;
 }

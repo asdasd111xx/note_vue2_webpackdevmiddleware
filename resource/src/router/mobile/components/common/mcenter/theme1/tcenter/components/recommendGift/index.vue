@@ -223,6 +223,7 @@ import InfiniteLoading from 'vue-infinite-loading';
 import EST from '@/lib/EST';
 import ajax from '@/lib/ajax';
 import datePicker from '@/router/mobile/components/common/datePicker';
+import { mapGetters, mapActions } from 'vuex';
 
 export default {
   components: {
@@ -314,6 +315,13 @@ export default {
     };
   },
   computed: {
+    ...mapGetters({
+      siteConfig: 'getSiteConfig',
+    }),
+    $style() {
+      const style = this[`$style_${this.siteConfig.MOBILE_WEB_TPL}`] || this.$style_porn1;
+      return style;
+    },
     setStartTime: {
       get() {
         return new Date(this.startTime);
@@ -490,4 +498,5 @@ export default {
 };
 </script>
 
-<style lang="scss" src="./css/index.module.scss" module />
+<style lang="scss" src="./css/porn1.module.scss" module="$style_porn1"></style>
+<style lang="scss" src="./css/ey1.module.scss" module="$style_ey1"></style>

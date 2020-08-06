@@ -1,0 +1,20 @@
+@import "./porn1.module.scss";
+
+.search-tab {
+    color: #A6A9B2;
+
+    &.active {
+        color: #222222;
+    }
+}
+
+.field-search-wrap {
+    .btn-search {
+        background: #E42A30;
+        color: white;
+
+        &.disable {
+            opacity: 0.5;
+        }
+    }
+}

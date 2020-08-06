@@ -1,5 +1,5 @@
 <template>
-  <div :class="mainClass">
+  <div>
     <div :class="[$style['code-wrap'], 'clearfix']">
       <div :class="$style.title">
         {{ $text("S_PROMOTION_CODE", "推广代码") }}
@@ -114,10 +114,10 @@
 </template>
 
 <script>
-import { mapGetters } from 'vuex';
 import friendsRecommend from '@/mixins/mcenter/management/friendsRecommend';
 import promoteFunction from '@/mixins/mcenter/management/promoteFunction';
 import message from '@/router/mobile/components/common/message';
+import { mapGetters, mapActions } from 'vuex';
 
 export default {
   components: {
@@ -152,20 +152,16 @@ export default {
   },
   computed: {
     ...mapGetters({
-      memInfo: 'getMemInfo'
+      memInfo: 'getMemInfo',
+      siteConfig: 'getSiteConfig',
     }),
-    mainClass() {
-      const site = `site-${this.memInfo.user.domain}`;
-
-      return {
-        'recommend-wrap': true,
-        'main-class': true,
-        [this.$style[site]]: this.$style[site],
-        [this.$style['preset-color']]: !this.$style[site]
-      };
-    }
+    $style() {
+      const style = this[`$style_${this.siteConfig.MOBILE_WEB_TPL}`] || this.$style_porn1;
+      return style;
+    },
   }
 };
 </script>
 
-<style lang="scss" src="./css/index.scss" module></style>
+<style lang="scss" src="./css/porn1.module.scss" module="$style_porn1"></style>
+<style lang="scss" src="./css/ey1.module.scss" module="$style_ey1"></style>

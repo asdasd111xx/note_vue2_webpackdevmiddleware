@@ -1,6 +1,5 @@
 <template>
-  <div :class="mainClass">
-    <mcenter-header :header-config="headerConfig" />
+  <div>
     <div v-if="tabState" :class="[$style['tab-wrap'], 'clearfix']">
       <div
         v-for="(item, index) in tabItem"
@@ -25,11 +24,9 @@
 
 <script>
 import { mapGetters, mapActions } from "vuex";
-import mcenterHeader from "../../../../tpl/porn1/components/common/mHeader";
 
 export default {
   components: {
-    mcenterHeader,
     gameRecord: () =>
       import(
         /* webpackChunkName: 'mcenter_pron1_gameRecord' */ "./components/gameRecord/"
@@ -87,16 +84,9 @@ export default {
       memInfo: "getMemInfo",
       siteConfig: "getSiteConfig"
     }),
-    mainClass() {
-      const theme = `theme-${this.siteConfig.MOBILE_WEB_TPL}`;
-      const site = `site-${this.memInfo.user.domain}`;
-
-      return {
-        "team-center-wrap": true,
-        [this.$style[theme]]: this.$style[theme],
-        [this.$style[site]]: this.$style[site],
-        [this.$style["preset-color"]]: !this.$style[site]
-      };
+    $style() {
+      const style = this[`$style_${this.siteConfig.MOBILE_WEB_TPL}`] || this.$style_porn1;
+      return style;
     },
     tabItem() {
       return [
@@ -164,4 +154,5 @@ export default {
 };
 </script>
 
-<style lang="scss" src="./css/index.scss" module></style>
+<style lang="scss" src="./css/porn1.module.scss" module="$style_porn1"></style>
+<style lang="scss" src="./css/ey1.module.scss" module="$style_ey1"></style>
