@@ -13,7 +13,7 @@
         <div :class="$style['list-icon']">
           <img
             :src="
-              $getCdnPath(`/static/image/_new/mcenter/ic_${listInfo.image}.png`)
+              $getCdnPath(`/static/image/ey1/mcenter/ic_${listInfo.image}.png`)
             "
           />
         </div>
@@ -24,7 +24,7 @@
         </div>
         <div :class="$style['btn-next']">
           <img
-            :src="$getCdnPath(`/static/image/_new/mcenter/ic_arrow_next.png`)"
+            :src="$getCdnPath(`/static/image/ey1/common/ic_arrow_next.png`)"
           />
         </div>
       </div>
@@ -32,14 +32,12 @@
 
     <div :class="$style.list" @click="showShare">
       <div :class="$style['list-icon']">
-        <img :src="$getCdnPath(`/static/image/_new/mcenter/ic_share.png`)" />
+        <img :src="$getCdnPath(`/static/image/ey1/mcenter/ic_share.png`)" />
       </div>
       <span>{{ $text("S_SHARE_APP", "分享APP") }}</span>
 
       <div :class="$style['btn-next']">
-        <img
-          :src="$getCdnPath(`/static/image/_new/mcenter/ic_arrow_next.png`)"
-        />
+        <img :src="$getCdnPath(`/static/image/ey1/common/ic_arrow_next.png`)" />
       </div>
     </div>
 
@@ -109,7 +107,7 @@ export default {
       }
     }
   },
-  created() {},
+  created() { },
   methods: {
     ...mapActions([
       "actionEnterMCenterThirdPartyLink",
