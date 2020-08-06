@@ -9,7 +9,7 @@
 <script>
 import { mapGetters } from 'vuex';
 import mobileContainer from '../../../common/mobileContainer';
-import betRecoard from './components/index';
+import betRecoard from '@/router/mobile/components/tpl/porn1/components/mcenter/components/betRecord/components/index';
 
 export default {
   components: {

@@ -58,6 +58,7 @@
 <script>
 import Vue from 'vue';
 import message from "@/router/mobile/components/common/message";
+import { mapGetters } from 'Vuex';
 
 export default {
   components: {
@@ -72,6 +73,15 @@ export default {
     dateFormat(date) {
       return Vue.moment(date).utcOffset(-4).format('YYYY-MM-DD HH:mm:ss');
     }
+  },
+  computed: {
+    ...mapGetters({
+      siteConfig: "getSiteConfig"
+    }),
+    $style() {
+      const style = this[`$style_${this.siteConfig.MOBILE_WEB_TPL}`] || this.$style_porn1;
+      return style;
+    },
   },
   props: {
     currentCategory: {
@@ -99,76 +109,5 @@ export default {
 };
 </script>
 
-<style lang="scss" module>
-.detail-info-wrap {
-  height: calc(100vh - 49px);
-  margin-top: 6px;
-  padding-top: 32px;
-  background-color: #fefffe;
-}
-
-.amount {
-  height: 25px;
-  line-height: 25px;
-  color: #414655;
-  text-align: center;
-
-  > span {
-    display: inline-block;
-    vertical-align: top;
-  }
-}
-
-.symbol {
-  font-size: 12px;
-  transform: translateY(2px);
-}
-
-.number {
-  font-weight: 700;
-  font-size: 22px;
-}
-
-.wrap {
-  margin: 39px 25px 46px;
-}
-
-.detail {
-  line-height: 16px;
-  margin-bottom: 22px;
-}
-
-.title {
-  float: left;
-  color: #a6a9b2;
-  font-size: 14px;
-}
-
-.text {
-  float: right;
-  color: #414655;
-  font-size: 14px;
-
-  .copyImg {
-    display: inline-block;
-    width: 12px;
-    height: 12px;
-    margin-left: 10px;
-
-    img {
-      width: 100%;
-      height: 100%;
-    }
-  }
-}
-
-.tips {
-  color: #a6a9b2;
-  font-size: 14px;
-  text-align: center;
-
-  > span {
-    color: #6aaaf5;
-  }
-}
-</style>
+<style lang="scss" src="../css/porn1.info.scss" module="$style_porn1"></style>
+<style lang="scss" src="../css/ey1.info.scss" module="$style_ey1"></style>
