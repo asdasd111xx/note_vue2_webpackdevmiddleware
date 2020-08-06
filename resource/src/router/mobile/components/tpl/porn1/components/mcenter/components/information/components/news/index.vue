@@ -10,7 +10,7 @@
     </div>
   </div>
   <div v-else :class="$style['news-wrap']">
-    <div v-if="$route.params.pid" :class="$style['news-content']">
+    <div v-if="$route.query.pid" :class="$style['news-content']">
       <div :class="[$style['content-title'], 'clearfix']">
         <div :class="$style['icon-news']">
           <img
@@ -33,7 +33,7 @@
         v-for="news in newsData"
         :key="news.id"
         :class="[$style.news, 'clearfix']"
-        @click="$router.push({ params: { pid: news.id } })"
+        @click="$router.push({ query: { pid: news.id } })"
       >
         <div :class="$style['icon-news']">
           <img
@@ -72,10 +72,10 @@ export default {
       newsData: 'getNews'
     }),
     currentNews() {
-      if (!this.$route.params.pid) {
+      if (!this.$route.query.pid) {
         return null;
       }
-      return this.newsData.find((news) => news.id === this.$route.params.pid);
+      return this.newsData.find((news) => news.id === this.$route.query.pid);
     }
   }
 };
