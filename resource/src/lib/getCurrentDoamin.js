@@ -9,7 +9,7 @@ export const getDoamin = () => {
     }).then(res => {
         let result = {
             domain: '',
-            site: ''
+            site: 'porn1'
         }
         // to do nginx 配置
         const site = res && res.data && String(res.data.site) || '';
