@@ -40,7 +40,8 @@ export default {
             checkSuccess: false,
             yourBankData: [],
             webviewOpenUrl: '',
-            isLockDepositInput: false,
+            isSelectedCustomMoney: false,
+            isDisableDepositInput: false,
         };
     },
     watch: {
@@ -560,21 +561,17 @@ export default {
         changePassRoad(info) {
             this.curPassRoad = info;
             this.PassRoadOrAi();
+            this.changeMoney('', this.curPassRoad.amounts && this.curPassRoad.amounts.length === 0);
         },
         /**
          * 選擇通道金額
          * @method changeMoney
          * @param {String} money - 金額
          */
-        changeMoney(money, isCustonmAmount) {
-            if (this.curPassRoad && this.curPassRoad.is_custom_amount) {
-                this.isLockDepositInput = false;
-            } else {
-                this.isLockDepositInput = true;
-            }
-
-            this.isCustonmAmount = isCustonmAmount;
-
+        changeMoney(money, canCustomMoney) {
+            this.isSelectedCustomMoney = !!canCustomMoney;
+            this.isDisableDepositInput = !canCustomMoney;
+            console.log(this.isDisableDepositInput)
             this.moneyValue = money;
             this.isErrorMoney = false;
             this.checkOrderData();
@@ -899,7 +896,6 @@ export default {
             this.msg = "已复制到剪贴板";
         },
         checkOrderData() {
-
             // 針對在銀行匯款、網銀有出現Deposit-input
             if (this.isDisableDepositInput) {
                 this.checkSuccess = false;
@@ -958,8 +954,15 @@ export default {
             this.checkSuccess = true;
         },
         checkDepositInput() {
+            // 自訂金額可填
+            if (this.isSelectedCustomMoney) {
+                this.isDisableDepositInput = false;
+                this.checkSuccess = false;
+                return;
+            }
+
             // 銀行匯款 or 網銀
-            if (this.curPayInfo.payment_type_id === 5 || (this.curPayInfo.payment_type_id === 1 && this.curPayInfo.payment_type_id === 1)) {
+            if (this.curPayInfo.payment_type_id === 5 || this.curPayInfo.payment_type_id === 1) {
                 if (!this.isSelectValue) {
                     this.isDisableDepositInput = true;
                     this.checkSuccess = false;
