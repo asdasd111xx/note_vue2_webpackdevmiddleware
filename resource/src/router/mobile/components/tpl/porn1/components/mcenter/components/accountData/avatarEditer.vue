@@ -262,15 +262,17 @@ export default {
 }
 
 .cropper {
-  position: relative;
-  height: 400px;
-  margin: 5px;
-  border: dashed #cacaca 1px;
-  text-align: center;
+  height: 294px;
+  margin: 5px auto;
+  max-width: 100%;
+  width: 375px;
   background-image: url("/static/image/_new/mcenter/avatar_nologin.png");
   background-position: center;
-  background-size: 250px 250px;
   background-repeat: no-repeat;
+  background-size: 250px 250px;
+  border: dashed #cacaca 1px;
+  position: relative;
+  text-align: center;
 
   &.active {
     background-image: unset;
