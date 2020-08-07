@@ -1,0 +1,377 @@
+@import "~@/css/variable.scss";
+
+.my-wallet-wrap {
+    padding: 0 17px;
+    padding-bottom: 45px;
+}
+
+.wallet-info-wrap {
+    background: $main_white_color1;
+    color: $main_text_color3;
+    font-size: 12px;
+    margin-top: 12px;
+    padding: 12px 17px 0;
+    font-weight: 400;
+    border-radius: 8px;
+    box-shadow: 0 0 10px 0 rgba(0, 0, 0, 0.1);
+
+    .money-block {
+        display: flex;
+        justify-content: space-between;
+        align-items: center;
+
+        .money {
+            margin-left: 2px;
+            font-size: 22px;
+            font-weight: 700;
+
+            &::before {
+                content: "¥";
+                position: relative;
+                margin-right: 2px;
+                font-size: 14px;
+                font-weight: 400;
+                vertical-align: top;
+            }
+        }
+
+        .goDeposit {
+            width: 72px;
+            height: 30px;
+            line-height: 30px;
+            text-align: center;
+            background: linear-gradient(to right, #99a3c1, #636f93);
+            color: $main_white_color1;
+            border-radius: 15px;
+            box-shadow: 0 3px 5px 0 rgba(0, 0, 0, 0.3);
+        }
+    }
+
+    .icon-block {
+        display: flex;
+        justify-content: space-around;
+        align-items: center;
+        margin-top: 40px;
+
+        .icon-cell {
+            text-align: center;
+
+            .image {
+                width: 35px;
+                height: 35px;
+                margin: 0 auto;
+
+                img {
+                    width: 100%;
+                    height: 100%;
+                }
+            }
+        }
+    }
+
+    .wallet-desc-block {
+        display: flex;
+        justify-content: space-between;
+        font-size: 12px;
+        padding: 23px 0 11px;
+        color: #414655;
+
+        div:last-of-type {
+            position: relative;
+            font-size: 10px;
+            color: $main_text_color2;
+            padding-right: 24px;
+            height: 15px;
+        }
+    }
+}
+
+.expand {
+    content: "";
+    position: absolute;
+    top: 0;
+    right: 0;
+    width: 15px;
+    height: 15px;
+    background: url("/static/image/_new/mcenter/wallet/ic_wallter_details_expand.png") center center / 100% 100%;
+
+    &.collapse {
+        background: url("/static/image/_new/mcenter/wallet/ic_wallter_details_collapse.png") center center / 100% 100%;
+    }
+}
+
+.balance-total-item {
+    flex: 1;
+    font-size: 12px;
+    font-weight: 700;
+    color: $main_text_color3;
+
+    img {
+        width: 13px;
+        height: 13px;
+        vertical-align: text-bottom;
+    }
+
+    .balance-item-money {
+        font-size: 16px;
+        color: #be9e7f;
+    }
+}
+
+.balance-wrap {
+    position: relative;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    text-align: center;
+    margin-top: 3%;
+    height: 65px;
+    border-radius: 4px;
+    background: rgba(255, 255, 255, 0.65);
+    border-bottom: 1px solid #dad6d6;
+
+    // 自動免轉區塊
+    &:nth-child(2) {
+        height: 48px;
+    }
+
+    .balance-total-item {
+        flex: 1;
+        font-size: 12px;
+        font-weight: 700;
+        color: $main_text_color3;
+
+        img {
+            width: 13px;
+            height: 13px;
+            vertical-align: text-bottom;
+        }
+
+        .balance-item-money {
+            font-size: 16px;
+            color: #be9e7f;
+        }
+    }
+
+    .recycle-btn {
+        position: relative;
+        flex: 1;
+        font-size: 16px;
+        color: #be9e7f;
+        font-weight: 700;
+
+        &::before {
+            content: "";
+            position: absolute;
+            width: 1px;
+            height: 20px;
+            background: #eee;
+            left: 0;
+            top: 0;
+        }
+
+        &.disable {
+            opacity: 0.5;
+        }
+    }
+
+    .balance-total-icon {
+        width: 30px;
+        height: 30px;
+
+        img {
+            max-width: 100%;
+        }
+    }
+}
+
+.balance-item-wrap {
+    font-size: 12px;
+    border-radius: 4px;
+    background: rgba(255, 255, 255, 0.65);
+
+    .balance-item {
+        position: relative;
+        display: inline-block;
+        box-sizing: border-box;
+        width: 25%;
+        height: 65px;
+        padding: 10px 4px 15px;
+        text-align: center;
+        font-size: 14px;
+        color: $main_text_color3;
+        border-bottom: 1px solid #dad6d6;
+
+        &:not(:nth-child(4n + 1)):before {
+            content: "";
+            position: absolute;
+            left: 0;
+            top: 50%;
+            transform: translateY(-50%);
+            width: 1px;
+            height: 23px;
+            background: #eee;
+        }
+
+        &.is-last-item {
+            border-bottom: none;
+        }
+    }
+
+    &.collapse {
+        float: right;
+        color: $main_text_color2;
+        border-bottom: none;
+
+        .icon {
+            width: 15px;
+            height: 15px;
+            margin: 2px auto;
+
+            img {
+                width: 100%;
+                height: 100%;
+            }
+        }
+    }
+
+    .balance-item-vendor {
+        display: block;
+    }
+
+    .balance-info-maintain {
+        font-size: 12px;
+        color: $main_error_color1;
+    }
+
+    .balance-wrench {
+        height: 12px;
+        width: 12px;
+        vertical-align: middle;
+    }
+
+    .balance-item-money {
+        display: block;
+        color: $main_text_color2;
+    }
+}
+
+.invite-wrap {
+    position: relative;
+    width: 100%;
+    height: 70px;
+    margin-top: 12px;
+    background: #f2e2d1;
+    border-radius: 34px;
+
+    .content {
+        width: 60%;
+        display: flex;
+        flex-direction: column;
+        color: #be9e7f;
+        padding: 16px 0 16px 39px;
+        font-size: 14px;
+        font-weight: 700;
+
+        div:last-of-type {
+            font-size: 10px;
+            font-weight: 400;
+            padding-top: 3px;
+        }
+    }
+
+    .image {
+        position: absolute;
+        top: 0;
+        right: 28px;
+        width: 100px;
+        height: 68px;
+
+        img {
+            width: 100%;
+            height: 100%;
+        }
+    }
+}
+
+.wager-wrap {
+    margin-top: 22px;
+
+    .title {
+        position: relative;
+        display: flex;
+        justify-content: space-between;
+        font-size: 14px;
+        font-weight: 700;
+        color: $main_title_color1;
+        padding-left: 7px;
+
+        &::before {
+            content: "";
+            content: "";
+            position: absolute;
+            display: inline-block;
+            width: 3px;
+            height: 14px;
+            top: 2.5px;
+            left: 0;
+            background: linear-gradient(#d2bba4, #f1e5db);
+        }
+
+        // 查看更多
+        span {
+            position: relative;
+            font-size: 10px;
+            font-weight: 400;
+            color: $main_text_color2;
+            padding-right: 24px;
+
+            &::after {
+                content: "";
+                position: absolute;
+                width: 15px;
+                height: 15px;
+                right: 0;
+                top: 1;
+                background: url("/static/image/_new/common/arrow_next.png") center center / 100% 100%;
+            }
+        }
+    }
+
+    .list {
+        margin-top: 7px;
+
+        .cell {
+            padding: 10px 7px;
+            border-bottom: 1px solid #eee;
+
+            .vendor {
+                font-size: 10px;
+                color: $main_text_color2;
+            }
+
+            .game-desc {
+                display: flex;
+                justify-content: space-between;
+                color: $main_text_color3;
+                padding-top: 6px;
+            }
+
+            .game {
+                font-size: 12px;
+            }
+
+            .money {
+                font-size: 14px;
+                padding-right: 7px;
+            }
+        }
+    }
+
+    .no-data {
+        font-size: 12px;
+        text-align: center;
+        margin: 35px 0;
+        color: $main_text_color2;
+    }
+}

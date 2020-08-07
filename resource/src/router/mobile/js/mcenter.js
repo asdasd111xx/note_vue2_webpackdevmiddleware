@@ -41,9 +41,14 @@ export default {
                     name: 'mcenter-accountData-weixin',
                     component
                 },
+                // {
+                //     path: 'birthday',
+                //     name: 'mcenter-accountData-birthday',
+                //     component
+                // },
                 {
-                    path: 'birthday',
-                    name: 'mcenter-accountData-birthday',
+                    path: 'line',
+                    name: 'mcenter-accountData-line',
                     component
                 }
             ]

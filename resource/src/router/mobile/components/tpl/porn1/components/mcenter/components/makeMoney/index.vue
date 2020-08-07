@@ -86,7 +86,10 @@ export default {
       return {
         prev: true,
         title: "推广赚钱",
-        recommendGift: true,
+        customLinkTitle: '礼金明细',
+        customLinkAction: () => {
+          this.$router.push('/mobile/mcenter/tcenter/recommendGift');
+        },
         onClick: () => {
           this.$router.back();
         }

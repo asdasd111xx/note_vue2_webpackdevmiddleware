@@ -1,5 +1,5 @@
 <template>
-  <bank-rebate :class="siteStyleClass">
+  <bank-rebate>
     <template
       scope="{ rebateInitData, messageText, shortDay, pageAll, caculateData, list, pickDateList, rebateCaculate, btnLock, btnReceiveLock, formatTime, rebateState, popReceive, amountCache, rebateSubTotal, immediateData, realTimeRebateTotal, maintainsList, receiveAll, isReceiveAll, realTimePeriod, isShowPopup, closePopup, popupMsg }"
     >
@@ -25,6 +25,7 @@
           {{ $text("S_REAL_TIME_REBATE", "实时返水") }}
         </div>
       </div>
+
       <template v-if="mcenterBankRebateType === 'history'">
         <div :class="$style['history-top-wrap']">
           <swiper :options="categoryOptions">
@@ -58,6 +59,7 @@
             </swiper-slide>
           </swiper>
         </div>
+
         <div :class="$style['content-wrap']">
           <div v-if="pageAll > 0">
             <div
@@ -98,6 +100,7 @@
               </div>
             </div>
           </div>
+
           <div v-else :class="$style['content-item']">
             <div
               v-if="mcenterBankRebateInterval === 'week'"
@@ -112,13 +115,18 @@
             </div>
             <div :class="$style['rebate-nodata']">
               <img
-                :src="$getCdnPath('/static/image/_new/mcenter/ic_nodata.png')"
+                :src="
+                  $getCdnPath(
+                    `/static/image/${siteConfig.MOBILE_WEB_TPL}/mcenter/ic_nodata.png`
+                  )
+                "
               />
               <p>{{ $text("S_NO_DATA_YET", "暂无资料") }}</p>
             </div>
           </div>
         </div>
       </template>
+
       <template v-else>
         <div :class="$style['real-top-wrap']">
           <div :class="$style['real-top-title']">
@@ -134,11 +142,13 @@
               { [$style['disable']]: btnLock && formatTime }
             ]"
           >
-            <div :class="[
-              $style['calculate-button'],
-              { [$style['disable']]: btnLock && formatTime }
-            ]"
-            @click="rebateCaculate()">
+            <div
+              :class="[
+                $style['calculate-button'],
+                { [$style['disable']]: btnLock && formatTime }
+              ]"
+              @click="rebateCaculate()"
+            >
               <div :class="$style['calculate-button-title']">
                 {{ $text("S_TRIAL_CALCULATION", "试算") }}
                 <div v-if="btnLock && formatTime">{{ `(${formatTime})` }}</div>
@@ -179,7 +189,13 @@
             <div :class="$style['rebate-header']">
               <ele-loading v-if="rebateState === 'loading'" />
               <template v-else>
-                <div :class="$style['name-lable']" v-if="rebateInitData.is_vip">{{ caculateList.vip_config_name ? caculateList.vip_config_name : "---" }}</div>
+                <div :class="$style['name-lable']" v-if="rebateInitData.is_vip">
+                  {{
+                    caculateList.vip_config_name
+                      ? caculateList.vip_config_name
+                      : "---"
+                  }}
+                </div>
                 <div :class="$style['rebate-btn']">
                   <template
                     v-if="
@@ -319,7 +335,9 @@
           <div :class="$style['pop-mask']" @click="closePopup" />
           <div :class="$style['content-block']">
             <div :class="$style['msg']">{{ popupMsg }}</div>
-            <div :class="$style['close']" @click="closePopup">{{ $text('S_CONFIRM_2', '确定') }}</div>
+            <div :class="$style['close']" @click="closePopup">
+              {{ $text("S_CONFIRM_2", "确定") }}
+            </div>
           </div>
         </div>
       </template>
@@ -381,15 +399,10 @@ export default {
       siteConfig: "getSiteConfig",
       memInfo: "getMemInfo"
     }),
-    siteStyleClass() {
-      return {
-        [this.$style[`site-${this.memInfo.user.domain}`]]: this.$style[
-          `site-${this.memInfo.user.domain}`
-        ],
-        [this.$style["preset-color"]]: !this.$style[
-          `site-${this.memInfo.user.domain}`
-        ]
-      };
+    $style() {
+      const style =
+        this[`$style_${this.siteConfig.MOBILE_WEB_TPL}`] || this.$style_porn1;
+      return style;
     }
   },
   methods: {
@@ -418,4 +431,5 @@ export default {
 };
 </script>
 
-<style lang="scss" src="./css/index.scss" module></style>
+<style lang="scss" src="./css/porn1.index.scss" module="$style_porn1"></style>
+<style lang="scss" src="./css/ey1.index.scss" module="$style_ey1"></style>

@@ -1,0 +1,64 @@
+@import "./porn1.index.scss";
+$main-color: #e42a30;
+$disable-color: #fdcccc;
+
+.total-sub-wrap {
+  .top-sub-title {
+    &.active {
+      border-bottom: 2px solid $main-color;
+    }
+  }
+}
+
+.history-top-wrap {
+  .total-item {
+    .total-item-money {
+      &.week {
+        color: $main-color;
+      }
+
+      &.is-current {
+        color: $main-color;
+      }
+    }
+  }
+}
+
+.content-wrap {
+  .content-item {
+    .rebate-btn {
+      a {
+        background: $main-color;
+
+        &.disable {
+          color: #fff;
+          background: $disable-color;
+        }
+      }
+    }
+  }
+}
+
+.real-top-wrap {
+  .real-top-btn {
+    background: $main-color;
+
+    &.disable {
+      background: $disable-color;
+    }
+
+    .calculate-button {
+      &.disable {
+        color: #fff;
+      }
+    }
+  }
+}
+
+.receive-vip-btn {
+  background: $main-color;
+
+  &.is-disabled {
+    background: $disable-color;
+  }
+}

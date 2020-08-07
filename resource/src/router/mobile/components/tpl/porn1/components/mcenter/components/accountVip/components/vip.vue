@@ -5,7 +5,7 @@
       <div :class="$style['header-block']">
         <div :class="$style['btn-back']" @click="$router.back()">
           <img
-            :src="$getCdnPath(`/static/image/_new/common/btn_back.png`)"
+            :src="$getCdnPath(`/static/image/${siteConfig.MOBILE_WEB_TPL}/common/btn_back_b.png`)"
             alt="btn_back"
           />
         </div>
@@ -63,7 +63,6 @@ import { getCookie } from "@/lib/cookie";
 import vipUser from "./vipUser";
 import vipLevelCard from "./vipLevelCard";
 import vipInfo from "./vipInfo";
-import liveInfo from "./liveInfo";
 import mcenter from "@/api/mcenter";
 import yaboRequest from '@/api/yaboRequest';
 
@@ -73,8 +72,7 @@ export default {
     SwiperSlide,
     vipUser,
     vipLevelCard,
-    vipInfo,
-    liveInfo,
+    vipInfo
   },
   data() {
     return {
@@ -90,6 +88,10 @@ export default {
       memInfo: "getMemInfo",
       loginStatus: "getLoginStatus"
     }),
+    $style() {
+      const style = this[`$style_${this.siteConfig.MOBILE_WEB_TPL}`] || this.$style_porn1;
+      return style;
+    },
     setCurrentLevel: {
       get() {
         return this.currentLevelData;
@@ -152,60 +154,5 @@ export default {
 };
 </script>
 
-<style lang="scss" module>
-@import "~@/css/variable.scss";
-
-.vip-container {
-  width: 100%;
-  height: calc(100% - 60px);
-}
-
-.vip-top-info {
-  position: relative;
-  width: 100%;
-  height: 320px;
-  background: white url("/static/image/_new/mcenter/vip/vip_bg.png") no-repeat;
-  background-size: cover;
-  background-position: center;
-}
-
-.header-block {
-  position: relative;
-  height: 30px;
-  text-align: center;
-  margin: 0 17px;
-  display: flex;
-  justify-content: center;
-  align-items: flex-end;
-
-  .btn-back {
-    position: absolute;
-    width: 20px;
-    height: 20px;
-    left: 0;
-    bottom: 0px;
-  }
-}
-
-.header-title {
-  width: 80%;
-  font-size: 16px;
-  color: $main_text_color1;
-  font-weight: 700;
-  overflow: auto hidden;
-  white-space: nowrap;
-
-  // 針對 Chrome 與 Safari 隱藏滾動條
-  &::-webkit-scrollbar {
-    display: none !important;
-  }
-
-  span {
-    padding: 0 7.5px;
-
-    &.active {
-      color: #000000;
-    }
-  }
-}
-</style>
+<style lang="scss" src="./css/porn1.vip.scss" module="$style_porn1"></style>
+<style lang="scss" src="./css/ey1.vip.scss" module="$style_ey1"></style>

@@ -1,23 +1,23 @@
 <template>
-    <div :class="$style['content-wrap']">
-        <vip />
-    </div>
+  <div :class="$style['content-wrap']">
+    <vip />
+  </div>
 </template>
 
 <script>
 import vip from "./components/vip";
 
 export default {
-    components: {
-        vip
-    }
+  components: {
+    vip
+  }
 };
 </script>
 
 <style lang="scss" module>
 .content-wrap {
-    padding-bottom: 60px;
-    background: #eee;
-    overflow: hidden auto;
+  padding-bottom: 60px;
+  background: #eee;
+  overflow: hidden auto;
 }
 </style>

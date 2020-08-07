@@ -40,7 +40,7 @@
           <div :class="$style['card-thumb-cell']">
             <img
               :src="
-                $getCdnPath(`/static/image/_new/mcenter/vip/vipcard_bg.png`)
+                $getCdnPath(`/static/image/${siteConfig.MOBILE_WEB_TPL}/mcenter/vip/vipcard_bg.png`)
               "
               alt="vipcard_bg"
             />
@@ -54,7 +54,7 @@
               :class="$style['card-level-image']"
               :src="
                 $getCdnPath(
-                  `/static/image/_new/mcenter/vip/ic_vip${item.seq}.png`
+                  `/static/image/${siteConfig.MOBILE_WEB_TPL}/mcenter/vip/ic_vip${item.seq}.png`
                 )
               "
               alt="vipLevel_bg"
@@ -65,7 +65,7 @@
               :class="$style['card-level-image']"
               :src="
                 $getCdnPath(
-                  `/static/image/_new/mcenter/vip/ic_s_vip${item.seq}.png`
+                  `/static/image/${siteConfig.MOBILE_WEB_TPL}/mcenter/vip/ic_s_vip${item.seq}.png`
                 )
               "
               alt="vipLevel_bg"
@@ -100,6 +100,7 @@
 
 <script>
 import { Swiper, SwiperSlide } from "vue-awesome-swiper";
+import { mapGetters } from "vuex";
 
 export default {
   components: {
@@ -132,6 +133,14 @@ export default {
     }
   },
   computed: {
+    ...mapGetters({
+      siteConfig: "getSiteConfig"
+    }),
+    $style() {
+      const style =
+        this[`$style_${this.siteConfig.MOBILE_WEB_TPL}`] || this.$style_porn1;
+      return style;
+    },
     vipLevelOption() {
       return {
         slidesPerView: "auto"
@@ -195,128 +204,5 @@ export default {
 };
 </script>
 
-<style lang="scss" module>
-@import "~@/css/variable.scss";
-
-$card-width: calc(100% - 30px);
-
-.vip-card-wrap {
-  position: relative;
-  // height: 260px;
-  padding: 0px 17px;
-  box-shadow: 0px 5px 5px 0px rgba(0, 0, 0, 0.16);
-  background: white;
-  overflow: hidden;
-}
-
-.vipSwiperContainer {
-  margin-left: 0;
-  margin-right: 0;
-}
-
-.card-level-container {
-  position: relative;
-  width: 100%;
-  height: auto;
-  padding: 30px 0 25px 0;
-
-  .level-slide {
-    width: 90px !important;
-    &:not(:last-of-type)::before {
-      content: "";
-      width: 105%;
-      height: 3px;
-      background: #e9e7e4;
-      position: absolute;
-      top: 50%;
-      z-index: -1;
-    }
-  }
-
-  .level-thumb-cell {
-    width: fit-content;
-    min-width: 35px;
-    padding: 0px 3px;
-    font-size: 12px;
-    text-align: center;
-    color: #6f748b;
-    background: #d4d5df;
-    border: 2px solid #bcc1ca;
-    border-radius: 15px;
-
-    &.active {
-      color: white;
-      background: #757a90;
-      border: 2px solid #bcc1ca;
-    }
-  }
-}
-
-.card-desc-container {
-  position: relative;
-  // width: $card-width;
-  height: 135px;
-  text-align: center;
-  margin: 0 auto;
-}
-
-.card-thumb-cell {
-  position: relative;
-  width: 100%;
-  height: 140px;
-  color: #fff;
-
-  img {
-    width: 100%;
-    height: 100%;
-  }
-
-  // VIP等級
-  .card-level-text {
-    position: absolute;
-    font-size: 22px;
-    font-weight: 700;
-    top: 25px;
-    left: 30px;
-  }
-
-  // VIP徽章
-  .card-level-image {
-    position: absolute;
-    width: 50px;
-    height: 60px;
-    top: 0;
-    right: 10%;
-  }
-
-  // VIP下方資訊
-  .card-desc-block {
-    position: absolute;
-    display: flex;
-    justify-content: space-around;
-    width: calc(100% - 20px);
-    height: 35px;
-    bottom: 25px;
-    font-size: 12px;
-    left: 50%;
-    transform: translateX(-50%);
-
-    div {
-      min-width: 65px;
-    }
-  }
-}
-
-.card-page {
-  width: $card-width;
-  padding: 15px 10px 15px 0;
-  margin: 0 auto;
-  text-align: right;
-  font-size: 12px;
-  color: #bcc1ca;
-
-  span:first-of-type {
-    color: #7e818b;
-  }
-}
-</style>
+<style lang="scss" src="./css/porn1.vipLevelCard.scss" module="$style_porn1"></style>
+<style lang="scss" src="./css/ey1.vipLevelCard.scss" module="$style_ey1"></style>

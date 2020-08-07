@@ -65,8 +65,6 @@ export default {
     return {
       isShow: false,
       msg: "",
-      imgID: 0,
-      imgIndex: 0,
       viplevel: "",
       avatarSrc: `/static/image/_new/mcenter/avatar_nologin.png`,
       avatar: [
@@ -87,16 +85,6 @@ export default {
       memBalance: 'getMemBalance',
       siteConfig: "getSiteConfig",
     }),
-  },
-  created() {
-    if (this.memInfo.user.image === 0 || !(this.memInfo.user.image)) {
-      this.imgIndex = 1;
-      this.imgID = 1;
-      return;
-    }
-
-    this.imgIndex = this.memInfo.user.image;
-    this.imgID = this.memInfo.user.image;
   },
   mounted() {
     this.getUserViplevel();
