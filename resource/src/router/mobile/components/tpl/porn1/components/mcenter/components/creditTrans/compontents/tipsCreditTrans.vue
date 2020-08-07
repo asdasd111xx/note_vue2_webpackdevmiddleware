@@ -12,13 +12,10 @@
     </div>
     <div :class="$style['content']">
       <div>●&nbsp;限制代理转让给旗下会员</div>
-      <div>●&nbsp;单笔转让最低{{ rechargeConfig.recharge_limit }}元</div>
-      <div>
-        ●&nbsp;完成提现流水要求，额度转让即赠返利{{
-          rechargeConfig.recharger_offer_percent || 0
-        }}%，转让无上限
-      </div>
-      <div>●&nbsp;未完成提现流水要求，额度转让无返利，单笔最高转让1000</div>
+      <div>●&nbsp;{{ tipContent1 }}</div>
+      <div>&nbsp;&nbsp;&nbsp;&nbsp;{{ tipContent1_desc }}</div>
+      <div>●&nbsp;{{ tipContent2 }}</div>
+      <div>&nbsp;&nbsp;&nbsp;&nbsp;{{ tipContent2_desc }}</div>
       <div
         :class="$style['link']"
         @click="$router.push('/mobile/mcenter/help/withdraw?key=6')"
@@ -33,6 +30,14 @@
 import { mapGetters, mapActions } from "vuex";
 
 export default {
+  data() {
+    return {
+      tipContent1: "",
+      tipContent1_desc: "",
+      tipContent2: "",
+      tipContent2_desc: "",
+    }
+  },
   computed: {
     ...mapGetters({
       rechargeConfig: 'getRechargeConfig',
@@ -45,6 +50,31 @@ export default {
   },
   created() {
     this.actionSetRechargeConfig();
+  },
+  mounted() {
+    const config = this.rechargeConfig;
+
+    this.tipContent1 = `完成提现流水要求，`;
+    if (Number(config.recharger_offer_percent) === 0) {
+      this.tipContent1 += `额度转让无返利`;
+    } else {
+      this.tipContent1 += `额度转让即赠返利${config.recharger_offer_percent}%`;
+    }
+
+    this.tipContent1_desc = `单笔转让最低${config.recharge_limit_audited_min}元、`;
+    if (config.recharge_limit_audited_max_enable) {
+      this.tipContent1_desc += `最高${config.recharge_limit_audited_max}元`;
+    } else {
+      this.tipContent1_desc += `转让无上限`;
+    }
+
+    this.tipContent2 = `未完成提现流水要求，额度转让无返利`;
+    this.tipContent2_desc = `单笔转让最低${config.recharge_limit_unaudited_min}元、`;
+    if (config.recharge_limit_unaudited_max_enable) {
+      this.tipContent2_desc += `最高${config.recharge_limit_unaudited_max}元`;
+    } else {
+      this.tipContent2_desc += `转让无上限`;
+    }
   },
 };
 </script>
