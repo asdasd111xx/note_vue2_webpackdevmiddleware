@@ -1,19 +1,20 @@
 export default {
   data() {
     return {
-      currentPage: 'bankCardInfo',
-      showDetailStatus: false,
+      currentPage: "bankCardInfo",
       editDetailStatus: false,
-      step: 'one'
-    }
+      showDetailStatus: false,
+      showHistoryStatus: false,
+      step: "one"
+    };
   },
   computed: {
     hasRedirect() {
       // 預設提現銀行卡添加
       const { query } = this.$route;
       let redirect = query.redirect;
-      if (redirect && redirect.split('-')[0]) {
-        switch (redirect.split('-')[0]) {
+      if (redirect && redirect.split("-")[0]) {
+        switch (redirect.split("-")[0]) {
           case "casino":
           case "deposit":
           case "withdraw":
@@ -24,7 +25,7 @@ export default {
           case "liveStream":
           case "videoPlay":
           case "wallet":
-            this.currentPage = 'addBankCard';
+            this.currentPage = "addBankCard";
             return true;
         }
       }
@@ -36,6 +37,14 @@ export default {
       },
       set(value) {
         this.showDetailStatus = value;
+      }
+    },
+    showHistory: {
+      get() {
+        return this.showHistoryStatus;
+      },
+      set(value) {
+        this.showHistoryStatus = value
       }
     },
     editStatus: {
@@ -58,6 +67,9 @@ export default {
   methods: {
     changePage(value) {
       this.currentPage = value;
+    },
+    changeToHistory() {
+
     }
-  },
-}
+  }
+};

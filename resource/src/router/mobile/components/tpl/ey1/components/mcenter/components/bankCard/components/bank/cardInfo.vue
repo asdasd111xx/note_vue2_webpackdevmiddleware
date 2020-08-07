@@ -39,7 +39,7 @@
 
       <div :class="{ [$style['no-data']]: bank_card.length === 0 }">
         <div v-if="bank_card.length === 0" :class="$style['no-bankcard']">
-          <img src="/static/image/_new/mcenter/no_bankcard.png" />
+          <img src="/static/image/ey1/mcenter/bankCard/no_bankcard.png" />
         </div>
 
         <template v-if="bank_card.length < 3">
@@ -49,7 +49,7 @@
                 :class="$style['add-btn']"
                 @click="changePage('addBankCard'), showTab(false)"
               >
-                <img src="/static/image/_new/mcenter/add.png" />
+                <img src="/static/image/ey1/mcenter/add.png" />
                 <span>{{ $text("S_ADD_BANKCARD", "添加银行卡") }}</span>
               </div>
             </div>

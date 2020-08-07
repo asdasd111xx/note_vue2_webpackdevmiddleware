@@ -37,7 +37,7 @@
             </span>
             <img
               :class="$style['arrow-icon']"
-              src="/static/image/_new/common/arrow_next.png"
+              src="/static/image/ey1/common/arrow_next.png"
             />
           </div>
         </div>

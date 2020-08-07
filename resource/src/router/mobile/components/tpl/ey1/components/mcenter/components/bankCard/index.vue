@@ -3,7 +3,7 @@
     <div :class="$style['header']">
       <div :class="$style['btn-prev']" @click="backPre">
         <img
-          :src="$getCdnPath('/static/image/_new/common/btn_back_w.png')"
+          :src="$getCdnPath('/static/image/ey1/common/btn_back_w.png')"
           alt="more"
         />
       </div>
@@ -18,7 +18,18 @@
         @click="editDetailStatus = true"
       >
         <img
-          :src="$getCdnPath('/static/image/_new/common/btn_more_w.png')"
+          :src="$getCdnPath('/static/image/ey1/common/btn_more_w.png')"
+          alt="more"
+        />
+      </div>
+
+      <div
+        v-if="showHistory"
+        :class="$style['icon-edit']"
+        @click="showHistoryStatus = true"
+      >
+        <img
+          :src="$getCdnPath('/static/image/ey1/mcenter/bankCard/btn_history.png')"
           alt="more"
         />
       </div>
@@ -140,7 +151,6 @@ export default {
       }
     },
     showTab(value) {
-      console.log(value);
       this.isShowTab = value;
     },
     backPre() {
