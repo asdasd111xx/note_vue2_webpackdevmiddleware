@@ -279,7 +279,7 @@
                     :class="[
                       $style['pay-money-item'],
                       $style['custonm-item'],
-                      { [$style['is-current']]: isCustonmAmount }
+                      { [$style['is-current']]: isSelectedCustomMoney }
                     ]"
                     @click="changeMoney('', true)"
                   >
@@ -293,7 +293,7 @@
                       }}
                     </span>
                     <img
-                      v-if="isCustonmAmount"
+                      v-if="isSelectedCustomMoney"
                       :class="$style['pay-active']"
                       src="/static/image/_new/common/select_active.png"
                     />
@@ -328,8 +328,7 @@
                     :class="[
                       $style['deposit-input'],
                       {
-                        [$style.disable]:
-                          isDisableDepositInput || isLockDepositInput
+                        [$style.disable]: isDisableDepositInput
                       }
                     ]"
                     :placeholder="singleLimit"
@@ -745,7 +744,6 @@ export default {
       msg: '',
       entryBlockStatusData: null,
       isShowEntryBlockStatus: false,
-      isDisableDepositInput: false,
       isBlockChecked: false
     };
   },
