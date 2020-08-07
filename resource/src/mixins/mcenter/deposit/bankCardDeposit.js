@@ -571,7 +571,6 @@ export default {
         changeMoney(money, canCustomMoney) {
             this.isSelectedCustomMoney = !!canCustomMoney;
             this.isDisableDepositInput = !canCustomMoney;
-            console.log(this.isDisableDepositInput)
             this.moneyValue = money;
             this.isErrorMoney = false;
             this.checkOrderData();
@@ -896,12 +895,6 @@ export default {
             this.msg = "已复制到剪贴板";
         },
         checkOrderData() {
-            // 針對在銀行匯款、網銀有出現Deposit-input
-            if (this.isDisableDepositInput) {
-                this.checkSuccess = false;
-                return
-            }
-
             // 金額輸入錯誤
             if (((this.isErrorMoney || !this.moneyValue) && !this.curModeGroup.uri) || (this.depositInterval.minMoney && this.depositInterval.minMoney > this.moneyValue) || (this.depositInterval.maxMoney && this.depositInterval.maxMoney < this.moneyValue)) {
                 this.checkSuccess = false;
@@ -959,14 +952,6 @@ export default {
                 this.isDisableDepositInput = false;
                 this.checkSuccess = false;
                 return;
-            }
-
-            // 銀行匯款 or 網銀
-            if (this.curPayInfo.payment_type_id === 5 || this.curPayInfo.payment_type_id === 1) {
-                if (!this.isSelectValue) {
-                    this.isDisableDepositInput = true;
-                    this.checkSuccess = false;
-                }
             }
         },
         defaultCurPayBank() {
