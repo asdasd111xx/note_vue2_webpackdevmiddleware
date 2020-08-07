@@ -3,21 +3,21 @@
     <template v-if="!showDetail">
       <div v-if="virtualBank_card.length > 0" :class="$style['my-card']">
         <p :class="[$style['card-count'], 'clearfix']">
-          <span :class="$style['title']">{{
-            $text("S_MY_VIRTUAL_BANKCARD", "我的电子钱包")
-          }}</span>
+          <span :class="$style['title']">
+            {{ $text("S_MY_VIRTUAL_BANKCARD", "我的电子钱包") }}
+          </span>
 
           <span :class="$style['count']">{{
             $text("S_CRAD_COUNT", "共%s张").replace(
               "%s",
-              virtualbank_card.length
+              virtualBank_card.length
             )
           }}</span>
         </p>
 
         <div :class="$style['card-list']">
           <div
-            v-for="item in virtualbank_card"
+            v-for="item in virtualBank_card"
             :key="item.id"
             :class="$style['virtual-bankcard-item']"
             @click="getVirtualBankDetail(item), showTab(false)"
@@ -29,11 +29,11 @@
 
               <div :class="$style['card-info']">
                 <div :class="$style['card-name']">
-                  {{ item.bank_name }}
+                  {{ item.payment_gateway_name }}
                 </div>
 
                 <div :class="$style['card-number']">
-                  12312313123123
+                  {{ item.address }}
                 </div>
               </div>
             </div>
@@ -46,7 +46,7 @@
           v-if="virtualBank_card.length === 0"
           :class="$style['no-bankcard']"
         >
-          <img src="/static/image/_new/mcenter/no_bankcard.png" />
+          <img src="/static/image/ey1/mcenter/bankCard/no_bankcard.png" />
         </div>
 
         <template v-if="virtualBank_card.length < 15">
@@ -56,7 +56,7 @@
                 :class="$style['add-btn']"
                 @click="changePage('addVirtualBankCard'), showTab(false)"
               >
-                <img src="/static/image/_new/mcenter/add.png" />
+                <img src="/static/image/ey1/mcenter/add.png" />
                 <span>{{
                   $text("S_ADD_VIRTUAL_BANKCARD", "添加电子钱包")
                 }}</span>
@@ -65,7 +65,11 @@
           </div>
 
           <p :class="$style['remind']">
-            {{ $t("S_VIRTUAL_BANKCARD_LIMIT").replace("%s", 15) }}
+            <span
+              >{{ $t("S_VIRTUAL_BANKCARD_LIMIT").replace("%s", 15) }} ({{
+                virtualBank_card.length
+              }}/15)
+            </span>
           </p>
         </template>
       </div>
@@ -79,11 +83,11 @@
           </div>
           <div :class="$style['card-info']">
             <div :class="$style['card-name']">
-              {{ virtualBank_cardDetail.bank_name }}
+              {{ virtualBank_cardDetail.payment_gateway_name }}
             </div>
 
             <div :class="$style['card-number']">
-              12312313123123
+              {{ virtualBank_cardDetail.address }}
             </div>
           </div>
         </div>
@@ -113,7 +117,6 @@
 </template>
 
 <script>
-import ajax from "@/lib/ajax";
 import virtualMixin from "@/mixins/mcenter/bankCard/cardInfo/virtualBank";
 
 export default {
@@ -137,9 +140,7 @@ export default {
     }
   },
   data() {
-    return {
-      isRevice: false
-    };
+    return {};
   },
   created() {
     console.log("virtualBankCardInfo");

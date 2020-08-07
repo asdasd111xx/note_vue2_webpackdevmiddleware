@@ -58,7 +58,7 @@
 <script>
 import Vue from 'vue';
 import message from "@/router/mobile/components/common/message";
-import { mapGetters } from 'Vuex';
+import { mapGetters } from 'vuex';
 
 export default {
   components: {

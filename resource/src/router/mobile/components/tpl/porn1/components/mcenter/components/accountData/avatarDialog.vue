@@ -1,18 +1,20 @@
 <template>
   <transition name="fade">
-    <div v-show="isShow" :class="$style['dialog']">
+    <div v-if="isShow" :class="$style['dialog']">
       <div :class="[$style['dialog-wrap'], 'clearfix']">
         <div
           v-for="(item, index) in defaultAvatarList"
           :key="`avatar-${index}`"
           :class="$style['avatar-wrap']"
         >
-          <img
-            :class="[{ [$style['active']]: currentImgID === index }]"
-            :src="$getCdnPath(item.url)"
-            @click="selectImg(index)"
-          />
-          <div v-if="currentImgID === index" :class="$style.check" />
+          <div :class="$style['avatar-cell']">
+            <img
+              :class="[{ [$style['active']]: currentImgID === index }]"
+              :src="$getCdnPath(item.url)"
+              @click="selectImg(index)"
+            />
+            <div v-if="currentImgID === index" :class="$style.check" />
+          </div>
         </div>
 
         <div :class="$style['dialog-func']">
@@ -174,17 +176,15 @@ export default {
 }
 
 .dialog-wrap {
-  width: 100%;
-  position: absolute;
-  padding: 0;
-  z-index: 100;
+  background-color: $main_background_white1;
+  border-radius: 20px 20px 0 0;
   bottom: 0;
   max-width: $mobile_max_width;
-  border-radius: 20px 20px 0 0;
-  position: fixed;
-  z-index: 100;
   min-height: 375px;
-  background-color: $main_background_white1;
+  padding-top: 14px;
+  position: fixed;
+  width: 100%;
+  z-index: 100;
 
   .dialog-func {
     text-align: center;
@@ -212,18 +212,15 @@ export default {
     }
   }
 
-  .avatar-wrap {
+  .avatar-cell {
+    width: 65px;
     position: relative;
-    display: inline-block;
-    width: 25%;
-    padding-top: 2.5px;
+    margin: 0 auto;
 
-    text-align: center;
     img {
       border-radius: 50%;
-      width: 65px;
-      max-width: 100px;
-      margin: 5%;
+      width: 98%;
+
       &.active {
         border: 2px solid transparent;
         border-color: #d2b79c;
@@ -233,7 +230,7 @@ export default {
     .check {
       position: absolute;
       bottom: 10%;
-      right: 5%;
+      right: -10px;
       background: url("/static/image/_new/mcenter/ic_check.png") 0 0 no-repeat;
       background-size: 100%;
       width: 18px;
@@ -241,6 +238,14 @@ export default {
       -webkit-transform: translate(-50%, 0);
       transform: translate(-50%, 0);
     }
+  }
+
+  .avatar-wrap {
+    position: relative;
+    display: inline-block;
+    width: 25%;
+    margin-top: 14px;
+    text-align: center;
   }
 }
 

@@ -21,7 +21,7 @@
 
           <img
             :class="$style['arrow-icon']"
-            src="/static/image/_new/common/arrow_next.png"
+            src="/static/image/ey1/common/arrow_next.png"
           />
         </div>
       </div>
@@ -50,7 +50,7 @@
           @click="isShowPopQrcode = true"
         >
           <img
-            :src="$getCdnPath('/static/image/_new/mcenter/ic_qrcode.png')"
+            :src="$getCdnPath('/static/image/ey1/mcenter/bankCard/ic_qrcode.png')"
             alt="qrcode"
           />
         </div>
@@ -235,7 +235,7 @@ export default {
       axios({
         method: "post",
         url: "/api/v1/c/player/user_virtual_bank",
-        params: {
+        data: {
           address: this.formData.walletAddress,
           payment_gateway_id: this.formData.bank_id
         }
