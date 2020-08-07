@@ -85,7 +85,9 @@ export default {
   mounted() {
     // 是否自訂上傳頭像
     // 八張預設圖
-    this.currentImgID = this.memInfo.user.custom ? '999' : this.memInfo.user.image;
+    this.actionSetUserdata(true).then(() => {
+      this.currentImgID = this.memInfo.user.custom ? '999' : this.memInfo.user.image;
+    })
   },
   methods: {
     ...mapActions([
