@@ -48,5 +48,4 @@ export default {
   }
 };
 </script>
-
-<style src="../../css/index.module.scss" lang="scss" module>
+<style src="../../../css/index.module.scss" lang="scss" module>

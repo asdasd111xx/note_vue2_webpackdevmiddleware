@@ -206,7 +206,7 @@ export default {
         return;
       }
 
-      if (['name', 'phone', 'email', 'qq', 'weixin'].includes(field.key)) {
+      if (['name', 'phone', 'email', 'qq', 'weixin', 'line'].includes(field.key)) {
         this.$router.push({
           path: `/mobile/mcenter/accountData/${field.key}`
         });
@@ -226,4 +226,4 @@ export default {
   }
 };
 </script>
-<style lang="scss" src="../css/index.module.scss" module></style>
+<style lang="scss" src="../../css/index.module.scss" module></style>

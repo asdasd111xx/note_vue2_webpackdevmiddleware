@@ -17,8 +17,6 @@ export default {
       type: String
     }
   },
-  methods: {
-  }
 };
 </script>
 <style lang="scss" module>

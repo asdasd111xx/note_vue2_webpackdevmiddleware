@@ -1,31 +1,30 @@
 <template>
-  <mobile-container :header-config="headerConfig">
-    <div slot="content" :class="$style['content-wrap']">
-      <div :class="[$style.wrap, 'clearfix']">
-        <!-- 錯誤訊息 -->
-        <div :class="$style['top-tips']">
-          <div v-show="tipMsg">
-            {{ tipMsg }}
-          </div>
-        </div>
-        <div :class="$style.block">
-          <div :class="$style.title">{{ $text("S_REAL_NAME") }}</div>
-          <div :class="$style['input-wrap']">
-            <input
-              ref="input"
-              v-model="value"
-              :placeholder="$text('S_ENTER_REAL_NAME', '请输入您的真实姓名')"
-              :class="$style.input"
-              maxlength="30"
-              type="text"
-              @input="onInput"
-            />
-          </div>
+  <div slot="content" :class="$style['content-wrap']">
+    <account-header :header-config="headerConfig" />
+    <div :class="[$style.wrap, 'clearfix']">
+      <!-- 錯誤訊息 -->
+      <div :class="$style['top-tips']">
+        <div v-show="tipMsg">
+          {{ tipMsg }}
         </div>
       </div>
-      <service-tips />
+      <div :class="$style.block">
+        <div :class="$style.title">{{ $text("S_REAL_NAME") }}</div>
+        <div :class="$style['input-wrap']">
+          <input
+            ref="input"
+            v-model="value"
+            :placeholder="$text('S_ENTER_REAL_NAME', '请输入您的真实姓名')"
+            :class="$style.input"
+            maxlength="30"
+            type="text"
+            @input="onInput"
+          />
+        </div>
+      </div>
     </div>
-  </mobile-container>
+    <service-tips />
+  </div>
 </template>
 
 <script>
@@ -33,21 +32,15 @@ import { mapGetters, mapActions } from 'vuex';
 import { API_MCENTER_USER_CONFIG } from '@/config/api';
 import ajax from '@/lib/ajax';
 import member from '@/api/member';
-import mobileContainer from '../../../../../common/mobileContainer';
 import serviceTips from '../../serviceTips';
 import mcenter from '@/api/mcenter';
+import accountHeader from '../../accountHeader';
 
 export default {
   components: {
-    mobileContainer,
-    serviceTips
+    serviceTips,
+    accountHeader
   },
-  // props: {
-  //     info: {
-  //         type: Object,
-  //         required: true
-  //     }
-  // },
   data() {
     return {
       value: '',
@@ -129,4 +122,4 @@ export default {
   }
 };
 </script>
-<style src="../../css/index.module.scss" lang="scss" module>
+<style src="../../../css/index.module.scss" lang="scss" module>

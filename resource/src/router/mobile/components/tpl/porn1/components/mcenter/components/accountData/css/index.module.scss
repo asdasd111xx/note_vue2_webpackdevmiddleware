@@ -1,8 +1,7 @@
 @import "~@/css/variable.scss";
 
 .content-wrap {
-    height: calc(100vh - 110px);
-    background-color: $main_background_white1;
+    padding-top: 43px;
 }
 
 .account-data-field {

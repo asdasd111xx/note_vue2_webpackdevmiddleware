@@ -1,20 +1,20 @@
 <template>
-  <mobile-container :header-config="headerConfig">
-    <div slot="content" :class="$style['content-wrap']">
-      <!-- 錯誤訊息 -->
-      <div :class="$style['top-tips']">
-        <div v-show="tipMsg">
-          {{ tipMsg }}
-        </div>
+  <div slot="content" :class="$style['content-wrap']">
+    <account-header :header-config="headerConfig" />
+    <!-- 錯誤訊息 -->
+    <div :class="$style['top-tips']">
+      <div v-show="tipMsg">
+        {{ tipMsg }}
       </div>
-      <div :class="[$style.wrap, 'clearfix']">
-        <template v-if="oldPhone.isShow">
-          <div :class="$style.block">
-            <div :class="$style.title">
-              {{ $text("S_MOBILE_NUMBER", "手机号码") }}
-            </div>
-            <div :class="$style['input-wrap']">
-              <!-- <select
+    </div>
+    <div :class="[$style.wrap, 'clearfix']">
+      <template v-if="oldPhone.isShow">
+        <div :class="$style.block">
+          <div :class="$style.title">
+            {{ $text("S_MOBILE_NUMBER", "手机号码") }}
+          </div>
+          <div :class="$style['input-wrap']">
+            <!-- <select
                 v-model="oldCode"
                 :class="[$style.select, $style['phone-select']]"
                 :readonly="true"
@@ -29,23 +29,23 @@
                   >
                 </template>
               </select> -->
-              <input
-                v-model="oldValue"
-                :placeholder="oldPhone.label"
-                :class="$style.input"
-                type="text"
-              />
-            </div>
+            <input
+              v-model="oldValue"
+              :placeholder="oldPhone.label"
+              :class="$style.input"
+              type="text"
+            />
           </div>
-        </template>
+        </div>
+      </template>
 
-        <template v-if="newPhone.isShow">
-          <div :class="$style.block">
-            <div :class="$style.title">
-              {{ $text("S_MOBILE_NUMBER", "手机号码") }}
-            </div>
-            <div :class="$style['input-wrap']">
-              <!-- <select
+      <template v-if="newPhone.isShow">
+        <div :class="$style.block">
+          <div :class="$style.title">
+            {{ $text("S_MOBILE_NUMBER", "手机号码") }}
+          </div>
+          <div :class="$style['input-wrap']">
+            <!-- <select
                 v-model="newCode"
                 :class="[$style.select, $style['phone-select']]"
                 :readonly="true"
@@ -61,65 +61,64 @@
                 </template>
               </select> -->
 
-              <input
-                v-model="newValue"
-                :placeholder="
-                  $text('S_PLEASE_ENTER_MOBILE_NUMBER', '请输入手机号码')
-                "
-                :class="$style.input"
-                @input="
-                  newValue = $event.target.value
-                    .replace(' ', '')
-                    .trim()
-                    .replace(/[^0-9]/g, '')
-                "
-                type="text"
-              />
+            <input
+              v-model="newValue"
+              :placeholder="
+                $text('S_PLEASE_ENTER_MOBILE_NUMBER', '请输入手机号码')
+              "
+              :class="$style.input"
+              @input="
+                newValue = $event.target.value
+                  .replace(' ', '')
+                  .trim()
+                  .replace(/[^0-9]/g, '')
+              "
+              type="text"
+            />
+          </div>
+        </div>
+      </template>
+
+      <template v-if="checkCode.isShow || isfromWithdraw">
+        <div :class="$style.block">
+          <div :class="$style.title">
+            手机验证码
+          </div>
+          <div :class="$style['input-wrap']">
+            <input
+              v-model="codeValue"
+              :placeholder="$text('S_MOBILE_CAPTCHA', '请输入手机验证码')"
+              :class="$style.input"
+              type="text"
+            />
+
+            <div
+              v-if="sendBtn.isShow"
+              :class="[
+                $style['btn-send'],
+                { [$style.active]: isVerifyPhone && !timer }
+              ]"
+              @click="showCaptchaPopup"
+            >
+              <template>
+                <span v-if="sendBtn.countdownSec">{{
+                  `${countdownSec}s`
+                }}</span>
+                <span v-else> {{ sendBtn.label }} </span>
+              </template>
             </div>
           </div>
-        </template>
-
-        <template v-if="checkCode.isShow || isfromWithdraw">
-          <div :class="$style.block">
-            <div :class="$style.title">
-              手机验证码
-            </div>
-            <div :class="$style['input-wrap']">
-              <input
-                v-model="codeValue"
-                :placeholder="$text('S_MOBILE_CAPTCHA', '请输入手机验证码')"
-                :class="$style.input"
-                type="text"
-              />
-
-              <div
-                v-if="sendBtn.isShow"
-                :class="[
-                  $style['btn-send'],
-                  { [$style.active]: isVerifyPhone && !timer }
-                ]"
-                @click="showCaptchaPopup"
-              >
-                <template>
-                  <span v-if="sendBtn.countdownSec">{{
-                    `${countdownSec}s`
-                  }}</span>
-                  <span v-else> {{ sendBtn.label }} </span>
-                </template>
-              </div>
-            </div>
-          </div>
-        </template>
-      </div>
-
-      <popup-verification
-        v-if="isShowCaptcha"
-        :is-show-captcha.sync="isShowCaptcha"
-        :captcha.sync="captchaData"
-      />
-      <service-tips :type="'phone'" />
+        </div>
+      </template>
     </div>
-  </mobile-container>
+
+    <popup-verification
+      v-if="isShowCaptcha"
+      :is-show-captcha.sync="isShowCaptcha"
+      :captcha.sync="captchaData"
+    />
+    <service-tips :type="'phone'" />
+  </div>
 </template>
 <script>
 import axios from 'axios';
@@ -127,16 +126,16 @@ import { mapGetters, mapActions } from 'vuex';
 import { API_MCENTER_USER_CONFIG } from '@/config/api';
 import ajax from '@/lib/ajax';
 import member from '@/api/member';
-import mobileContainer from '../../../../../common/mobileContainer';
 import serviceTips from '../../serviceTips';
 import mcenter from '@/api/mcenter';
 import popupVerification from '@/components/popupVerification';
+import accountHeader from '../../accountHeader';
 
 export default {
   components: {
-    mobileContainer,
     serviceTips,
-    popupVerification
+    popupVerification,
+    accountHeader
   },
   data() {
     return {
@@ -209,7 +208,7 @@ export default {
           this.handleSubmit();
         },
         funcBtn: this.$text('S_COMPLETE', '完成'),
-        funcBtnActive: !!(this.newValue) && !!(this.codeValue)
+        funcBtnActive: this.checkCode.isShow ? !!(this.newValue) && !!(this.codeValue) && !this.tipMsg : !!(this.newValue) && !this.tipMsg
       };
     },
     fieldValue() {
@@ -256,7 +255,7 @@ export default {
     },
     newValue() {
       if (this.newValue.length >= 11) {
-        this.tipMsg = ''
+        this.tipMsg = '';
         this.isVerifyPhone = true;
       } else {
         this.tipMsg = '手机格式不符合要求'
@@ -470,5 +469,4 @@ export default {
   }
 };
 </script>
-<style src="../../css/index.module.scss" lang="scss" module>
-</style>
+<style src="../../../css/index.module.scss" lang="scss" module>

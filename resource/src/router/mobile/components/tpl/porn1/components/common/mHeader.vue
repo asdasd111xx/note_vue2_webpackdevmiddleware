@@ -152,33 +152,6 @@
         </div>
       </div>
     </template>
-    <template v-if="headerConfig.onClickFunc">
-      <div
-        :class="$style['save-wrap']"
-        @click="
-          () => {
-            headerConfig.funcBtnActive ? headerConfig.onClickFunc() : '';
-          }
-        "
-      >
-        <div :class="headerConfig.funcBtnActive ? $style['active'] : ''">
-          {{
-            headerConfig.funcBtn
-              ? headerConfig.funcBtn
-              : $text("S_COMPLETE", "完成")
-          }}
-        </div>
-      </div>
-    </template>
-
-    <template v-if="headerConfig.recommendGift">
-      <div
-        :class="$style['btn-feedback']"
-        @click="$router.push('/mobile/mcenter/tcenter/recommendGift')"
-      >
-        礼金明细
-      </div>
-    </template>
 
     <!-- 自訂右側按鈕 -->
     <template v-if="headerConfig.customLinkTitle">

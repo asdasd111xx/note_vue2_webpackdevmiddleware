@@ -37,13 +37,8 @@ import { format } from 'date-fns';
 import datepickerLang from '@/lib/datepicker_lang';
 import mcenter from '@/api/mcenter';
 import { API_MCENTER_USER_CONFIG } from '@/config/api';
-import mobileContainer from '../../../../../common/mobileContainer';
-import serviceTips from '../../serviceTips';
-
 export default {
   components: {
-    mobileContainer,
-    serviceTips
   },
   data() {
     return {
@@ -56,7 +51,8 @@ export default {
     ...mapGetters({
       memInfo: 'getMemInfo',
       webInfo: 'getWebInfo',
-      systemTime: 'getSystemTime'
+      systemTime: 'getSystemTime',
+      siteConfig: "getSiteConfig"
     }),
     headerConfig() {
       return {
@@ -138,4 +134,4 @@ export default {
 };
 
 </script>
-<style src="../../css/index.module.scss" lang="scss" module />
+<style src="../../../css/index.module.scss" lang="scss" module />

@@ -1,0 +1,18 @@
+@import "./porn1.header.scss";
+
+.account-header {
+    background: linear-gradient(#fe2a2a, #b60303);
+}
+
+.save-wrap {
+    color: #ff7171;
+
+    >.active {
+        color: #ffffff;
+    }
+}
+
+
+.title {
+    color: #ffffff;
+}

@@ -1,81 +1,78 @@
 <template>
-  <mobile-container :header-config="headerConfig">
-    <div slot="content" :class="$style['content-wrap']">
-      <div :class="[$style.wrap, 'clearfix']">
-        <!-- 錯誤訊息 -->
-        <div :class="$style['top-tips']">
-          <div v-show="tipMsg">
-            {{ tipMsg }}
+  <div slot="content" :class="$style['content-wrap']">
+    <account-header :header-config="headerConfig" />
+    <div :class="[$style.wrap, 'clearfix']">
+      <!-- 錯誤訊息 -->
+      <div :class="$style['top-tips']">
+        <div v-show="tipMsg">
+          {{ tipMsg }}
+        </div>
+      </div>
+
+      <template v-if="oldEmail.isShow">
+        <div :class="$style.block">
+          <div :class="$style.title">{{ oldEmail.label }}</div>
+          <div :class="$style['input-wrap']">
+            <input
+              v-model="oldValue"
+              :placeholder="oldEmail.label"
+              :class="$style.input"
+              type="text"
+            />
           </div>
         </div>
+      </template>
 
-        <template v-if="oldEmail.isShow">
-          <div :class="$style.block">
-            <div :class="$style.title">{{ oldEmail.label }}</div>
-            <div :class="$style['input-wrap']">
-              <input
-                v-model="oldValue"
-                :placeholder="oldEmail.label"
-                :class="$style.input"
-                type="text"
-              />
+      <template v-if="newEmail.isShow">
+        <div :class="$style.block">
+          <div :class="$style.title">
+            {{ $text("S_NEW_EMAIL2", "邮箱账号") }}
+          </div>
+          <div :class="$style['input-wrap']">
+            <input
+              v-model="newValue"
+              :placeholder="$text('S_PLS_ENTER_NEW_EMAIL', '请输入邮箱账号')"
+              :class="$style.input"
+              type="text"
+            />
+          </div>
+        </div>
+      </template>
+
+      <template v-if="checkCode.isShow">
+        <div :class="$style.block">
+          <div :class="$style.title">
+            {{ $text("S_MAIL_CHECK_CODE", "邮箱验证码") }}
+          </div>
+          <div :class="$style['input-wrap']">
+            <input
+              v-model="codeValue"
+              :placeholder="$text('S_PLS_ENTER_MAIL_CODE', '请输入邮箱验证码')"
+              :class="$style.input"
+              type="text"
+            />
+
+            <div
+              v-if="sendBtn.isShow"
+              :class="[
+                $style['btn-send'],
+                { [$style.active]: newValue && !timer }
+              ]"
+              @click="handleSend()"
+            >
+              <template>
+                <span v-if="sendBtn.countdownSec">{{
+                  `${countdownSec}s`
+                }}</span>
+                <span v-else> {{ sendBtn.label }} </span>
+              </template>
             </div>
           </div>
-        </template>
-
-        <template v-if="newEmail.isShow">
-          <div :class="$style.block">
-            <div :class="$style.title">
-              {{ $text("S_NEW_EMAIL2", "邮箱账号") }}
-            </div>
-            <div :class="$style['input-wrap']">
-              <input
-                v-model="newValue"
-                :placeholder="$text('S_PLS_ENTER_NEW_EMAIL', '请输入邮箱账号')"
-                :class="$style.input"
-                type="text"
-              />
-            </div>
-          </div>
-        </template>
-
-        <template v-if="checkCode.isShow">
-          <div :class="$style.block">
-            <div :class="$style.title">
-              {{ $text("S_MAIL_CHECK_CODE", "邮箱验证码") }}
-            </div>
-            <div :class="$style['input-wrap']">
-              <input
-                v-model="codeValue"
-                :placeholder="
-                  $text('S_PLS_ENTER_MAIL_CODE', '请输入邮箱验证码')
-                "
-                :class="$style.input"
-                type="text"
-              />
-
-              <div
-                v-if="sendBtn.isShow"
-                :class="[
-                  $style['btn-send'],
-                  { [$style.active]: newValue && !timer }
-                ]"
-                @click="handleSend()"
-              >
-                <template>
-                  <span v-if="sendBtn.countdownSec">{{
-                    `${countdownSec}s`
-                  }}</span>
-                  <span v-else> {{ sendBtn.label }} </span>
-                </template>
-              </div>
-            </div>
-          </div>
-        </template>
-      </div>
-      <service-tips />
+        </div>
+      </template>
     </div>
-  </mobile-container>
+    <service-tips />
+  </div>
 </template>
 
 <script>
@@ -84,12 +81,12 @@ import { API_MCENTER_USER_CONFIG } from '@/config/api';
 import ajax from '@/lib/ajax';
 import member from '@/api/member';
 import mcenter from '@/api/mcenter';
-import mobileContainer from '../../../../../common/mobileContainer';
 import serviceTips from '../../serviceTips';
+import accountHeader from '../../accountHeader';
 
 export default {
   components: {
-    mobileContainer,
+    accountHeader,
     serviceTips
   },
   data() {
@@ -142,7 +139,8 @@ export default {
   computed: {
     ...mapGetters({
       memInfo: 'getMemInfo',
-      webInfo: 'getWebInfo'
+      webInfo: 'getWebInfo',
+      siteConfig: "getSiteConfig"
     }),
     fieldValue() {
       return this.memInfo.email.email;
@@ -288,4 +286,4 @@ export default {
   }
 };
 </script>
-<style src="../../css/index.module.scss" lang="scss" module>
+<style src="../../../css/index.module.scss" lang="scss" module>
