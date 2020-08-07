@@ -5,9 +5,9 @@ const outputDirName = process.env.CDN_HOST ? process.env.CDN_HOST.split('://')[1
 
 // 鸭博娱乐
 // 鴨脖
-// const domain = 'https://yb01.66boxing.com/';
+const domain = 'https://yb01.66boxing.com/';
 // const domain = 'https://yb0t.66relish.com/';
-const domain = 'https://yaboxxxapp01.com/';
+// const domain = 'https://yaboxxxapp01.com/';
 // const domain = 'https://yaboxxxapp02.com/';
 
 // 亿元
