@@ -1,0 +1,36 @@
+@import "./porn1.vipUser.scss";
+$main-color: #e42a30;
+
+.user-info-block {
+  .user-info-name {
+    // vip text
+    span:last-of-type {
+      background: linear-gradient(to right, #ffd68a, #fe9154);
+    }
+  }
+}
+
+.run-level {
+  &.current {
+    background: $main-color;
+  }
+}
+
+.user-desc-block {
+  .money {
+    color: $main-color;
+  }
+}
+
+.run-bar {
+  background: url(/static/image/ey1/mcenter/vip/vip_runbg.png);
+  background-size: cover;
+  background-repeat: no-repeat;
+}
+
+.run-ok-bar {
+  background: url(/static/image/ey1/mcenter/vip/vip_runok.png);
+
+  background-size: cover;
+  background-repeat: no-repeat;
+}

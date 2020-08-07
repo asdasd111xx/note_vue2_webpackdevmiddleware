@@ -8,7 +8,6 @@
         </div>
         <span>{{ memInfo.user.username }}</span>
         <span>VIP{{ userVipInfo.now_level_seq }}</span>
-        <!-- <span>{{ userVipInfo.now_level_alias }}</span> -->
       </div>
       <div :class="$style['user-vip-desc']">
         <div
@@ -21,7 +20,7 @@
           <img
             :src="
               $getCdnPath(
-                `/static/image/_new/mcenter/vip/ic_vip${userVipInfo.now_level_seq}.png`
+                `/static/image/${siteConfig.MOBILE_WEB_TPL}/mcenter/vip/ic_vip${userVipInfo.now_level_seq}.png`
               )
             "
             alt="vip"
@@ -34,12 +33,11 @@
     <div :class="$style['run-block']">
       <div :class="[$style['run-level'], $style['current']]">
         <p>VIP{{ userVipInfo.now_level_seq }}</p>
-        <!-- <p>{{ userVipInfo.now_level_alias }}</p> -->
       </div>
       <div :class="$style['run-bar']">
         <div :class="$style['run-ok-bar']" :style="{ width: runPercent }">
           <img
-            :src="$getCdnPath(`/static/image/_new/mcenter/vip/vip_run.png`)"
+            :src="$getCdnPath(`/static/image/${siteConfig.MOBILE_WEB_TPL}/mcenter/vip/vip_run.png`)"
             :style="
               `right: ${
                 userVipInfo.percent > 77 ? userVipInfo.percent - 100 : -23
@@ -55,7 +53,6 @@
 
       <div :class="[$style['run-level'], $style['next']]">
         <p>VIP{{ userVipInfo.next_level_seq }}</p>
-        <!-- <p>{{ userVipInfo.next_level_alias }}</p> -->
       </div>
     </div>
 
@@ -94,7 +91,7 @@
 
 <script>
 import { mapGetters, mapActions } from "vuex";
-import axios from 'axios';
+import axios from "axios";
 export default {
   props: {
     userVipInfo: {
@@ -104,220 +101,61 @@ export default {
   },
   data() {
     return {
-      avatarSrc: `/static/image/_new/mcenter/avatar_nologin.png`,
+      avatarSrc: '',
       levelIcon: "00"
     };
   },
   computed: {
     ...mapGetters({
       memInfo: "getMemInfo",
-      loginStatus: 'getLoginStatus',
+      loginStatus: "getLoginStatus",
+      siteConfig: "getSiteConfig"
     }),
+    $style() {
+      const style = this[`$style_${this.siteConfig.MOBILE_WEB_TPL}`] || this.$style_porn1;
+      return style;
+    },
     runPercent() {
       return this.userVipInfo.percent + "%";
     }
   },
   mounted() {
+    this.avatarSrc = `/static/image/${this.siteConfig.MOBILE_WEB_TPL}/mcenter/avatar_nologin.png`
     this.actionSetUserdata(true).then(() => {
       this.getAvatarSrc();
-    })
+    });
   },
   methods: {
-    ...mapActions([
-      'actionSetUserdata'
-    ]),
+    ...mapActions(["actionSetUserdata"]),
     getAvatarSrc() {
       if (!this.loginStatus) return;
 
       const imgSrcIndex = this.memInfo.user.image;
       if (this.memInfo.user && this.memInfo.user.custom) {
         axios({
-          method: 'get',
-          url: this.memInfo.user.custom_image,
-        }).then(res => {
-          if (res && res.data && res.data.result === "ok") {
-            this.avatarSrc = res.data.ret;
-          }
-        }).catch(error => {
-          this.actionSetGlobalMessage({ msg: error.data.msg });
-          this.avatarSrc = this.$getCdnPath(`/static/image/_new/mcenter/default/avatar_${imgSrcIndex}.png`);
+          method: "get",
+          url: this.memInfo.user.custom_image
         })
+          .then(res => {
+            if (res && res.data && res.data.result === "ok") {
+              this.avatarSrc = res.data.ret;
+            }
+          })
+          .catch(error => {
+            this.actionSetGlobalMessage({ msg: error.data.msg });
+            this.avatarSrc = this.$getCdnPath(
+              `/static/image/${this.siteConfig.MOBILE_WEB_TPL}/mcenter/default/avatar_${imgSrcIndex}.png`
+            );
+          });
       } else {
-        this.avatarSrc = this.$getCdnPath(`/static/image/_new/mcenter/default/avatar_${imgSrcIndex}.png`);
+        this.avatarSrc = this.$getCdnPath(
+          `/static/image/${this.siteConfig.MOBILE_WEB_TPL}/mcenter/default/avatar_${imgSrcIndex}.png`
+        );
       }
-    },
-  },
+    }
+  }
 };
 </script>
 
-<style lang="scss" module>
-$main-linear-background: linear-gradient(to right, #f9ddbd, #bd9d7d);
-
-.user-info-wrap {
-  position: relative;
-  width: 100%;
-  height: 290px;
-  padding: 10px 17px 0;
-}
-
-.user-info-block {
-  position: relative;
-  height: 110px;
-  display: flex;
-  justify-content: space-between;
-
-  .user-info-name {
-    position: relative;
-    align-self: center;
-    display: flex;
-
-    .avatar {
-      width: 48px;
-      height: 48px;
-
-      img {
-        width: 100%;
-        height: 100%;
-      }
-    }
-
-    // name text
-    span:first-of-type {
-      color: #484c59;
-      font-size: 16px;
-      font-weight: 700;
-      padding: 2.5px 5px 0px 10px;
-    }
-
-    // vip text
-    span:last-of-type {
-      background: linear-gradient(to right, #eeddd0, #d5b69c);
-      margin: 5px 0 0 5px;
-      padding: 0px 5px;
-      font-size: 12px;
-      line-height: 20px;
-      height: 20px;
-      color: #ffffff;
-      text-align: center;
-      font-weight: 700;
-      border-radius: 4px;
-    }
-  }
-
-  .user-vip-desc {
-    width: 80px;
-    height: 100%;
-    text-align: center;
-
-    // VIP 詳情
-    .vip-text {
-      font-size: 14px;
-      font-weight: 700;
-    }
-
-    // VIP 详情的image
-    .vip-level {
-      width: 100%;
-
-      img {
-        width: 80px;
-        height: 90px;
-      }
-    }
-  }
-}
-
-.run-block {
-  position: relative;
-  display: flex;
-  width: 100%;
-  height: 30px;
-  margin: 10px 0;
-  padding-right: 10px;
-  align-items: center;
-}
-
-.run-level {
-  width: 40px;
-  color: white;
-  text-align: center;
-  align-self: center;
-  border-radius: 14px;
-  font-size: 12px;
-
-  p {
-    width: 30px;
-    margin: 0 auto;
-    line-height: 1;
-    padding: 2px 0;
-  }
-
-  &.current {
-    background: #ceb89f;
-  }
-
-  &.next {
-    background: linear-gradient(to left, rgba(black, 0.1), #b4b9cf, #bcc1ca);
-  }
-}
-
-.run-bar {
-  position: relative;
-  flex: 1;
-  margin: 0px 5px;
-  height: 15px;
-  background: url(/static/image/_new/mcenter/vip/vip_runbg.png);
-  background-size: cover;
-  background-repeat: no-repeat;
-}
-
-.run-ok-bar {
-  position: relative;
-  background: url(/static/image/_new/mcenter/vip/vip_runok.png);
-  background-size: cover;
-  background-repeat: no-repeat;
-  width: 20%; // 要透過JS動態給值
-  height: 15px;
-
-  img {
-    position: absolute;
-    width: 23px;
-    height: 15px;
-    bottom: 3px;
-    right: -23px;
-  }
-
-  span {
-    position: absolute;
-    font-size: 12px;
-    font-weight: 700;
-    bottom: 25px;
-    right: -15px;
-
-    &::after {
-      content: "";
-      position: absolute;
-      bottom: 2px;
-      right: 12.5px;
-      transform: translate(50%, 100%);
-      border-top: 7px solid black;
-      border-left: 4px solid transparent;
-      border-right: 4px solid transparent;
-    }
-  }
-}
-
-.user-desc-block {
-  padding-top: 5px;
-  color: #9ba3bf;
-  font-size: 12px;
-
-  .desc-text {
-    padding: 2.5px 0px;
-  }
-
-  .money {
-    color: #000000;
-  }
-}
-</style>
+<style lang="scss" src="./css/porn1.vipUser.scss" module="$style_porn1"></style>
+<style lang="scss" src="./css/ey1.vipUser.scss" module="$style_ey1"></style>

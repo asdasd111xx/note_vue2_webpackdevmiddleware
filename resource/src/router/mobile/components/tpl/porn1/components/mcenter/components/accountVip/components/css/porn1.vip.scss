@@ -1,0 +1,60 @@
+@import "~@/css/variable.scss";
+
+.vip-container {
+  width: 100%;
+  height: calc(100% - 60px);
+}
+
+.vip-top-info {
+  position: relative;
+  width: 100%;
+  height: 320px;
+  background: white url("/static/image/porn1/mcenter/vip/vip_bg.png") no-repeat;
+  background-size: cover;
+  background-position: 100% 100%;
+}
+
+.header-block {
+  position: relative;
+  height: 30px;
+  text-align: center;
+  margin: 0 17px;
+  display: flex;
+  justify-content: center;
+  align-items: flex-end;
+
+  .btn-back {
+    position: absolute;
+    width: 20px;
+    height: 20px;
+    left: 0;
+    bottom: 0px;
+
+    img {
+      width: 100%;
+      height: 100%;
+    }
+  }
+}
+
+.header-title {
+  width: 80%;
+  font-size: 16px;
+  color: $main_text_color1;
+  font-weight: 700;
+  overflow: auto hidden;
+  white-space: nowrap;
+
+  // 針對 Chrome 與 Safari 隱藏滾動條
+  &::-webkit-scrollbar {
+    display: none !important;
+  }
+
+  span {
+    padding: 0 7.5px;
+
+    &.active {
+      color: #000000;
+    }
+  }
+}
