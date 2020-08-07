@@ -87,7 +87,13 @@
               >
                 <div :class="$style['pay-sub-title']">代收代付</div>
                 <div :class="$style['pay-main-title']" style="color:black">
-                  返利1%+
+                  {{
+                    `${
+                      Number(rechargeConfig.recharger_offer_percent) !== 0
+                        ? `返利${rechargeConfig.recharger_offer_percent}%+`
+                        : "额度转让"
+                    }`
+                  }}
                 </div>
                 <div :class="$style['pay-main-title']" style="color:black">
                   代理分红
@@ -778,7 +784,8 @@ export default {
   computed: {
     ...mapGetters({
       siteConfig: 'getSiteConfig',
-      memInfo: 'getMemInfo'
+      memInfo: 'getMemInfo',
+      rechargeConfig: 'getRechargeConfig',
     }),
     colorClass() {
       return [
@@ -1001,10 +1008,12 @@ export default {
       this.defaultCurPayBank();
     })
     this.checkEntryBlockStatus();
+    this.actionSetRechargeConfig();
   },
   methods: {
     ...mapActions([
-      'actionSetUserBalance'
+      'actionSetUserBalance',
+      'actionSetRechargeConfig'
     ]),
     handleCreditTrans() {
       this.$router.push('/mobile/mcenter/creditTrans?tab=0');

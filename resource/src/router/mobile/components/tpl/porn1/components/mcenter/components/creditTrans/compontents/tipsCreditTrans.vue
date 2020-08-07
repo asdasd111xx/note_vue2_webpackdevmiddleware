@@ -52,13 +52,29 @@ export default {
     this.actionSetRechargeConfig();
   },
   mounted() {
-    this.tipContent1 = `完成提现流水要求，额度转让即赠返利${this.rechargeConfig.recharger_offer_percent || 0}%，转让无上限`;
-    this.tipContent1_desc = `单笔转让最低${this.rechargeConfig.recharge_limit}元、最高${this.rechargeConfig.recharge_limit}元`;
+    const config = this.rechargeConfig;
+
+    this.tipContent1 = `完成提现流水要求，`;
+    if (Number(config.recharger_offer_percent) === 0) {
+      this.tipContent1 += `额度转让无返利`;
+    } else {
+      this.tipContent1 += `额度转让即赠返利${config.recharger_offer_percent}%`;
+    }
+
+    this.tipContent1_desc = `单笔转让最低${config.recharge_limit_audited_min}元、`;
+    if (config.recharge_limit_audited_max_enable) {
+      this.tipContent1_desc += `最高${config.recharge_limit_audited_max}元`;
+    } else {
+      this.tipContent1_desc += `转让无上限`;
+    }
 
     this.tipContent2 = `未完成提现流水要求，额度转让无返利`;
-    this.tipContent2_desc = `单笔转让最低${this.rechargeConfig.recharge_limit}元、最高${this.rechargeConfig.recharge_limit}元`;
-
-    // this.tipContent2 = `未完成提现流水要求，额度转让无返利`;
+    this.tipContent2_desc = `单笔转让最低${config.recharge_limit_unaudited_min}元、`;
+    if (config.recharge_limit_unaudited_max_enable) {
+      this.tipContent2_desc += `最高${config.recharge_limit_unaudited_max}元`;
+    } else {
+      this.tipContent2_desc += `转让无上限`;
+    }
   },
 };
 </script>

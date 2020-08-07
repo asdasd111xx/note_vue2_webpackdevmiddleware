@@ -36,9 +36,6 @@ export default {
 
             //轉讓額度設定
             maxRechargeBalance: 0,
-            rechargeConfig: {
-                recharge_limit: 0 // 最低限額
-            },
 
             // 轉讓紀錄
             rechargeRecoard: null,
@@ -52,6 +49,7 @@ export default {
             memInfo: "getMemInfo",
             pwdResetInfo: 'getPwdResetInfo',
             membalance: "getMemBalance",
+            rechargeConfig: "getRechargeConfig"
         }),
         inputInfo() {
             return [
@@ -63,23 +61,19 @@ export default {
         },
     },
     created() {
-
+        this.actionSetRechargeConfig();
     },
     watch: {
         membalance() {
             this.getRechargeBalance();
         },
-        rechargeConfig() {
-            if (this.rechargeConfig && !this.rechargeConfig.enable) {
-                this.actionSetGlobalMessage({ msg: '额度转让升级中' });
-            }
-        }
     },
     methods: {
         ...mapActions([
-            "actionSetUserBalance",
-            "actionSetUserdata",
+            'actionSetUserBalance',
+            'actionSetUserdata',
             'actionSetGlobalMessage',
+            'actionSetRechargeConfig'
         ]),
         verification(item) {
             let errorMessage = '';
@@ -157,21 +151,6 @@ export default {
                 this.tipMsg = `${error.response.data.msg}`;
             })
         },
-        // 轉讓額度設定
-        getRechargeConfig() {
-            return axios({
-                method: 'get',
-                url: '/api/v1/c/recharge/config'
-            }).then(res => {
-                if (res && res.data && res.data.result === "ok") {
-                    this.rechargeConfig = res.data.ret;
-                } else {
-                    this.actionSetGlobalMessage(res.data.msg);
-                }
-            }).catch(error => {
-                this.tipMsg = `${error.response.data.msg}`;
-            })
-        },
         // 獲取驗證碼
         getKeyring() {
             if (!this.formData.phone && this.isSendKeyring) {
@@ -222,6 +201,24 @@ export default {
             this.isSendRecharge = true;
 
             // 客制錯誤訊息
+            const setErrorMsg = (msg, isAudit) => {
+                this.actionSetRechargeConfig().then(() => {
+                    const config = this.rechargeConfig;
+                    let msg_desc = msg;
+
+                    if (isAudit && config.recharge_limit_audited_max_enable) {
+                        msg_desc += `，单笔转让最低${config.recharge_limit_audited_min}元、最高${config.recharge_limit_audited_max}元`;
+                    }
+
+                    if (config.recharge_limit_unaudited_max_enable) {
+                        msg_desc += `，单笔转让最低${config.recharge_limit_unaudited_min}元、最高${config.recharge_limit_unaudited_max}元`;
+                    }
+
+                    this.errorMessage.amount = msg_desc;
+                })
+            }
+
+            // 客制錯誤訊息
             const setErrorCode = (data) => {
                 const code = data.code;
                 const msg = data.msg;
@@ -236,8 +233,15 @@ export default {
                     case "C650006":
                     case "C650007":
                     case "C650016":
-                    case "C650017":
                         this.errorMessage.amount = msg;
+                        break;
+                    // msg: "完成提现流水要求"
+                    case "C650016":
+                        setErrorMsg(msg, true);
+                        break;
+                    // msg: "未完成提现流水要求"
+                    case "C650017":
+                        setErrorMsg(msg);
                         break;
                     case "C650011":
                         this.errorMessage.phone = msg;
