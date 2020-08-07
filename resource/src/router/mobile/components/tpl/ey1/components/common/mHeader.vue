@@ -57,15 +57,6 @@
       </div>
     </template>
 
-    <template v-if="headerConfig.hasFeedBackBtn">
-      <div
-        :class="$style['btn-feedback']"
-        @click="$router.push('/mobile/mcenter/feedback/feedbackList')"
-      >
-        {{ $text("S_MY_FEEDBACK", "我的反馈") }}
-      </div>
-    </template>
-
     <template v-if="headerConfig.hasMemInfo">
       <div :class="$style['balance-wrap']" @click="setMenuState('balance')">
         <div>
@@ -118,14 +109,6 @@
       </div>
     </template>
 
-    <template v-if="headerConfig.hasTransaction">
-      <div
-        :class="$style['btn-feedback']"
-        @click="$router.push('/mobile/mcenter/moneyDetail')"
-      >
-        {{ $text("S_TRANSACTION_RECORD", "交易记录") }}
-      </div>
-    </template>
     <!-- 自訂右側按鈕 -->
     <template v-if="headerConfig.customLinkTitle">
       <div
@@ -443,13 +426,6 @@ export default {
     width: 20px;
     height: 20px;
   }
-}
-
-.btn-feedback {
-  position: absolute;
-  top: calc(50% - 10px);
-  right: 12px;
-  color: #414655;
 }
 
 .btn-icon {

@@ -171,21 +171,33 @@
       </div>
     </template>
 
-    <template v-if="headerConfig.hasTransaction">
-      <div
-        :class="$style['btn-feedback']"
-        @click="$router.push('/mobile/mcenter/moneyDetail')"
-      >
-        {{ $text("S_TRANSACTION_RECORD", "交易记录") }}
-      </div>
-    </template>
-
     <template v-if="headerConfig.recommendGift">
       <div
         :class="$style['btn-feedback']"
         @click="$router.push('/mobile/mcenter/tcenter/recommendGift')"
       >
         礼金明细
+      </div>
+    </template>
+
+    <!-- 自訂右側按鈕 -->
+    <template v-if="headerConfig.customLinkTitle">
+      <div
+        :class="[
+          $style['header-custom-wrap'],
+          {
+            [$style[headerConfig.customLinkStyle]]: headerConfig.customLinkStyle
+          }
+        ]"
+        @click="
+          headerConfig.customLinkAction
+            ? headerConfig.customLinkAction()
+            : () => {}
+        "
+      >
+        <div :class="[$style['header-custom-btn']]">
+          {{ headerConfig.customLinkTitle }}
+        </div>
       </div>
     </template>
 

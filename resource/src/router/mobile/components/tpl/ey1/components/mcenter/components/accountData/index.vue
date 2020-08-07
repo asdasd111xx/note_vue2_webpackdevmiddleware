@@ -4,21 +4,16 @@
     :has-footer="false"
     :class="$style.container"
   >
-    <div slot="content" class="content-wrap">
-      <wallet />
-    </div>
+    <div slot="content" class="content-wrap"></div>
   </mobile-container>
 </template>
 
 <script>
-import { mapGetters, mapActions } from 'vuex';
 import mobileContainer from '../../../common/mobileContainer';
-import wallet from './components/index';
 
 export default {
   components: {
     mobileContainer,
-    wallet
   },
   data() {
     return {
@@ -27,20 +22,13 @@ export default {
   methods: {
   },
   computed: {
-    ...mapGetters({
-      memInfo: 'getMemInfo'
-    }),
     headerConfig() {
       return {
         prev: true,
         onClick: () => {
           this.$router.push('/mobile/mcenter');
         },
-        title: this.$text('S_WALLET2', '钱包'),
-        customLinkTitle: this.$text("S_TRANSACTION_RECORD", "交易记录"),
-        customLinkAction: () => {
-          this.$router.push('/mobile/mcenter/moneyDetail')
-        }
+        title: '',
       };
     }
   }

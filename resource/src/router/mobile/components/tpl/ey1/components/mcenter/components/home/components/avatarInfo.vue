@@ -26,7 +26,9 @@
           <span :class="$style['vip-level']"> VIP{{ viplevel }} </span>
         </div>
 
-        <div>加入亿元第n天</div>
+        <div>
+          {{ `加入亿元第${day}天` }}
+        </div>
       </template>
 
       <template v-else>
@@ -51,14 +53,13 @@ import member from '@/api/member';
 import { getCookie, setCookie } from '@/lib/cookie';
 import yaboRequest from '@/api/yaboRequest';
 import axios from 'axios';
+import Vue from "vue";
 
 export default {
   data() {
     return {
       isShow: false,
       msg: "",
-      imgID: 0,
-      imgIndex: 0,
       viplevel: "",
       avatarSrc: `/static/image/_new/mcenter/avatar_nologin.png`,
       avatar: [
@@ -86,7 +87,8 @@ export default {
           image: "avatar_6",
           url: "/static/image/_new/mcenter/default/avatar_6.png"
         }
-      ]
+      ],
+      day: ""
     };
   },
   computed: {
@@ -98,19 +100,12 @@ export default {
       siteConfig: "getSiteConfig"
     })
   },
-  created() {
-    if (this.memInfo.user.image === 0 || !this.memInfo.user.image) {
-      this.imgIndex = 1;
-      this.imgID = 1;
-      return;
-    }
-
-    this.imgIndex = this.memInfo.user.image;
-    this.imgID = this.memInfo.user.image;
-  },
   mounted() {
     this.getUserViplevel();
     this.getAvatarSrc();
+    if (this.loginStatus) {
+      this.day = moment().diff(Vue.moment(this.memInfo.user.created_at), 'days');
+    }
   },
   methods: {
     ...mapActions(["actionSetUserdata"]),
@@ -212,9 +207,9 @@ export default {
   font-weight: bold;
   width: 40px;
   border-radius: 4px;
-  background: -webkit-linear-gradient(left, #eeddd0, #d5b69c);
-  background: -o-linear-gradient(right, #eeddd0, #d5b69c);
-  background: -moz-linear-gradient(right, #eeddd0, #d5b69c);
-  background: linear-gradient(to right, #eeddd0, #d5b69c);
+  background: -webkit-linear-gradient(left, #ffd68a, #fe9154);
+  background: -o-linear-gradient(right, #ffd68a, #fe9154);
+  background: -moz-linear-gradient(right, #ffd68a, #fe9154);
+  background: linear-gradient(to right, #ffd68a, #fe9154);
 }
 </style>

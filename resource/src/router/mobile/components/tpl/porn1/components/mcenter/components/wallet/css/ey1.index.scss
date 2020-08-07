@@ -1,0 +1,18 @@
+@import "./porn1.index.scss";
+
+.wallet-info-wrap {
+    .money-block {
+        .goDeposit {
+            background: #E74151;
+            color: #FFB4BD;
+        }
+    }
+}
+
+.wager-wrap {
+    .title {
+        &::before {
+            background: linear-gradient(#FE2A2A, #B60303);
+        }
+    }
+}

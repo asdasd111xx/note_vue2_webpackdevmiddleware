@@ -21,7 +21,10 @@ export default {
         prev: true,
         title: this.$route.params.page === 'sendFeedback'
           ? this.$text('S_FEEDBACK', '意见反馈') : this.$text(...this.$route.params.id ? ['S_FEEDBACK_DETAIL', '反馈详情'] : ['S_MY_FEEDBACK', '我的反馈']),
-        hasFeedBackBtn: this.$route.params.page === 'sendFeedback',
+        customLinkTitle: this.$route.params.page === 'sendFeedback' ? this.$text("S_TRANSACTION_RECORD", "交易记录") : false,
+        customLinkAction: () => {
+          this.$router.push('/mobile/mcenter/moneyDetail')
+        },
         onClick: () => { this.$router.back(); }
       };
     }

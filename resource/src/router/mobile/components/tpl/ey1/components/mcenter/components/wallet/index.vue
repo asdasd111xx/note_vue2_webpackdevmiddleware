@@ -11,9 +11,8 @@
 </template>
 
 <script>
-import { mapGetters, mapActions } from 'vuex';
 import mobileContainer from '../../../common/mobileContainer';
-import wallet from './components/index';
+import wallet from '@/router/mobile/components/tpl/porn1/components/mcenter/components/wallet/components/index';
 
 export default {
   components: {
@@ -27,9 +26,6 @@ export default {
   methods: {
   },
   computed: {
-    ...mapGetters({
-      memInfo: 'getMemInfo'
-    }),
     headerConfig() {
       return {
         prev: true,
