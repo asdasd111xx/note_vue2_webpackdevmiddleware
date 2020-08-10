@@ -129,14 +129,9 @@
           <div
             v-for="(game, i) in currentGame.vendors"
             :key="`game-${i}-${game.image}`"
-            :class="[
-              $style.game,
-              {
-                [$style['is-full']]:
-                  game.imageType === 1 || game.imageType === 2
-              },
-              { [$style['is-trip']]: game.imageType === 3 }
-            ]"
+            :data-img-type="game.imageType"
+            :data-type="game.type"
+            :class="[$style.game, { [$style['is-full']]: game.imageType > 0 }]"
             @click.stop="onOpenGame(game)"
           >
             <img v-lazy="getImg(game)" />
