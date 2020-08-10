@@ -1,0 +1,16 @@
+@import "./index.module.scss";
+
+.add-bank-card {
+    color: #414655;
+}
+
+.bank-card-cell {
+
+    >.check-box {
+        border: #CBCED8 solid 1px;
+
+        &.checked {
+            background: url("/static/image/ey1/mcenter/ic_check.png") 0 0 no-repeat;
+        }
+    }
+}

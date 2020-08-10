@@ -120,11 +120,7 @@
         </span>
         <div :class="$style['btn-icon']">
           <img
-            :src="
-              $getCdnPath(
-                '/static/image/_new/mcenter/balanceTrans/btn_help.png'
-              )
-            "
+            :src="$getCdnPath('/static/image/ey1/common/btn_help.png')"
             @click="handleHelpLinkTo"
           />
         </div>
