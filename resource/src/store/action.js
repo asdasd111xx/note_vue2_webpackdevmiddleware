@@ -1131,3 +1131,102 @@ export const actionSetVideoBounsPageStatus = ({ commit }, data) => {
     commit(types.SET_VIDEO_BOUNS_PAGE_STATUS, data);
 };
 
+export const actionGetRechargeStatus = ({ state, dispatch, commit }, data) => {
+    if (window.CHECKRECHARGETSTATUS) {
+        return;
+    }
+    window.CHECKRECHARGETSTATUS = true;
+    return axios({
+        method: 'get',
+        url: '/api/v1/c/recharge/config'
+    }).then((res) => {
+        const config = res.data.ret;
+
+        let bank_required = config.bank_required;
+        let enable = config.enable;
+        let enabled_by_deposit = config.enabled_by_deposit;
+        if (!enable) {
+            return {
+                msg: '额度转让升级中'
+            }
+        }
+
+        const params = [];
+        let result = {
+            status: '',
+            code: '',
+            type: '',
+            msg: ''
+        }
+
+        if (bank_required) {
+            const user_bank =
+                axios({
+                    method: 'get',
+                    url: '/api/v1/c/player/user_bank/list'
+                }).then(res => {
+                    if (res && res.data && res.data.result === "ok" && res.data.ret.length > 0) {
+                        result = {
+                            status: 'ok',
+                        }
+                    } else {
+                        result = {
+                            status: 'bindcard',
+                            code: 'C50099',
+                            type: "bindcard"
+                        }
+                    }
+                }).catch(error => {
+                    console.log(error);
+
+                    result = {
+                        status: 'bindcard',
+                        code: 'C50099',
+                        type: "bindcard"
+                    }
+                })
+
+            params.push(user_bank);
+        }
+
+        if (enabled_by_deposit) {
+            const userStat =
+                axios({
+                    method: 'get',
+                    url: '/api/v1/c/user-stat/deposit-withdraw',
+                }).then(res => {
+                    console.log(res)
+                    if (res && res.data && Number(res.data.ret.deposit_count) > 0) {
+                        result = {
+                            status: 'ok',
+                        }
+                    } else {
+                        result = {
+                            code: 'recharge_deposit',
+                            msg: '只需充值一次 开通转让功能'
+                        }
+                    }
+                }).catch(error => {
+                    console.log(error);
+                    result = {
+                        code: 'recharge_deposit',
+                        msg: '只需充值一次 开通转让功能'
+                    }
+                })
+
+            params.push(userStat);
+        }
+
+        Promise.all(params).then(() => {
+            if (result.status === "ok") {
+                window.location.href = '/mobile/mcenter/creditTrans';
+            }
+
+            dispatch('actionSetGlobalMessage', { code: result.code, origin: 'home', type: result.type, msg: result.msg });
+            return result
+        });
+        setTimeout(() => {
+            window.CHECKRECHARGETSTATUS = undefined;
+        }, 1000)
+    });
+};

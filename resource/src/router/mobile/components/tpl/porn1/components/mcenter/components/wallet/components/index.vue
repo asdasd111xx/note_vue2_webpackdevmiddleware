@@ -229,13 +229,7 @@ export default {
           text: this.$text("S_CREDIT_TRANSFER", "额度转让"),
           imgSrc: '/static/image/_new/mcenter/wallet/ic_wallet_trans.png',
           onClick: () => {
-            if (this.rechargeConfig && this.rechargeConfig.bank_required && !this.hasBank) {
-              this.actionSetGlobalMessage({ code: 'C50099', origin: 'wallet', type: 'bindcard' });
-            } else if (this.rechargeConfig && !this.rechargeConfig.enable) {
-              this.actionSetGlobalMessage({ msg: '额度转让升级中' });
-            } else {
-              this.$router.push('/mobile/mcenter/creditTrans');
-            }
+            this.actionGetRechargeStatus();
           }
         },
         {
@@ -279,7 +273,8 @@ export default {
   },
   methods: {
     ...mapActions([
-      'actionSetGlobalMessage'
+      'actionSetGlobalMessage',
+      'actionGetRechargeStatus'
     ]),
     handleDeposit() {
       this.$router.push(`/mobile/mcenter/deposit`);

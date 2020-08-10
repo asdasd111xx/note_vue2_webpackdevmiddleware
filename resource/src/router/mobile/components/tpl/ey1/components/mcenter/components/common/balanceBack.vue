@@ -104,7 +104,7 @@ export default {
 
     .balance-item-money {
       font-size: 16px;
-      color: #be9e7f;
+      color: #e42a30;
     }
   }
 
@@ -112,7 +112,7 @@ export default {
     position: relative;
     flex: 1;
     font-size: 16px;
-    color: #be9e7f;
+    color: #e42a30;
     font-weight: 700;
 
     &::before {
@@ -141,7 +141,7 @@ export default {
 
   .credit-trans-link {
     font-size: 16px;
-    color: #be9e7f;
+    color: #e42a30;
   }
 }
 </style>

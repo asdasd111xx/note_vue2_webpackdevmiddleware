@@ -72,6 +72,8 @@
       >
         <iframe
           ref="js-set-height"
+          allowfullscreen="allowfullscreen"
+          allow="fullscreen"
           :class="$style['iframe-wrap']"
           :height="iframeHeight"
           :src="src"
