@@ -41,24 +41,6 @@
         <div v-if="bank_card.length === 0" :class="$style['no-bankcard']">
           <img src="/static/image/ey1/mcenter/bankCard/no_bankcard.png" />
         </div>
-
-        <template v-if="bank_card.length < 3">
-          <div :class="$style['add-card']">
-            <div :class="$style['add-wrap']">
-              <div
-                :class="$style['add-btn']"
-                @click="changePage('addBankCard'), showTab(false)"
-              >
-                <img src="/static/image/ey1/mcenter/add.png" />
-                <span>{{ $text("S_ADD_BANKCARD", "添加银行卡") }}</span>
-              </div>
-            </div>
-          </div>
-
-          <p :class="$style['remind']">
-            {{ $t("S_BANKCARD_LIMIT").replace("%s", 3) }}
-          </p>
-        </template>
       </div>
     </template>
 
@@ -99,16 +81,13 @@
           </div>
         </div>
       </div>
-      <!-- <div v-if="popStatus" :class="$style['pop-message']">
-          正在上线 敬请期待
-        </div> -->
     </div>
   </div>
 </template>
 
 <script>
 import ajax from "@/lib/ajax";
-import bankMixin from "@/mixins/mcenter/bankCard/cardInfo/bank";
+import bankMixin from "@/mixins/mcenter/historyCard/cardInfo/bank";
 
 export default {
   mixins: [bankMixin],

@@ -3,6 +3,12 @@
 $linear_first_color: (#45b784, #d57175, #4378be);
 $linear_end_color: #6bd9b7, #f6aaad, #85b9f7;
 
+$ey1_card_linear_first_color: #ffe0e2;
+$ey1_card_linear_end_color: #eaa8ab;
+
+$ey1_card_history_linear_first_color: #fde6e7;
+$ey1_card_history_linear_end_color: #f4dbdc;
+
 @mixin baseCardItemSetting {
   .card-top {
     margin-bottom: 10px;
@@ -36,7 +42,7 @@ $linear_end_color: #6bd9b7, #f6aaad, #85b9f7;
   .card-name {
     font-size: 18px;
     font-weight: 500;
-    color: #fefffe;
+    color: $main_white_color1;
   }
 }
 
@@ -76,7 +82,7 @@ $linear_end_color: #6bd9b7, #f6aaad, #85b9f7;
     margin-left: 6px;
     font-size: 16px;
     font-weight: 700;
-    color: #414655;
+    color: $main_text_color3;
   }
 
   .add-btn {
@@ -110,12 +116,12 @@ $linear_end_color: #6bd9b7, #f6aaad, #85b9f7;
       margin-right: 8px;
       font-size: 18px;
       font-weight: 700;
-      color: #414655;
+      color: $main_text_color3;
     }
 
     .count {
       font-size: 12px;
-      color: #414655;
+      color: $main_text_color3;
     }
   }
 }
@@ -181,31 +187,81 @@ $linear_end_color: #6bd9b7, #f6aaad, #85b9f7;
 .virtual-bankcard-item {
   @include baseCardItemSetting();
 
+  position: relative;
   height: 70px;
   padding: 15px 16px;
   margin-bottom: 10px;
   border-radius: 8px;
-  background: nth($linear_first_color, 1);
   background-image: -webkit-linear-gradient(
     top,
-    nth($linear_first_color, 1),
-    nth($linear_end_color, 1)
+    $ey1_card_linear_first_color,
+    $ey1_card_linear_end_color
   );
   background-image: linear-gradient(
     top,
-    nth($linear_first_color, 1),
-    nth($linear_end_color, 1)
+    $ey1_card_linear_first_color,
+    $ey1_card_linear_end_color
   );
 
+  &.history {
+    background-image: -webkit-linear-gradient(
+      top,
+      $ey1_card_history_linear_first_color,
+      $ey1_card_history_linear_end_color
+    );
+    background-image: linear-gradient(
+      top,
+      $ey1_card_history_linear_first_color,
+      $ey1_card_history_linear_end_color
+    );
+  }
+
+  .card-name {
+    color: $main_text_color3;
+  }
+
   .card-number {
-    color: #fefffe;
+    color: $main_text_color3;
     padding-top: 4px;
     font-weight: 400;
+  }
+
+  .audit-tip {
+    position: absolute;
+    display: flex;
+    bottom: 0;
+    background: #000;
+    opacity: 0.8;
+    width: 100%;
+    height: 33px;
+    border-radius: 0 0 10px 10px;
+    left: 0;
+    color: #db6372;
+    justify-content: center;
+    align-items: center;
+    font-weight: 700;
   }
 }
 
 .card-detail {
   padding: 10px 17px 0;
+}
+
+.audit-block {
+  position: relative;
+  text-align: center;
+  padding: 18px 0 20px;
+
+  div {
+    color: #db6372;
+    font-size: 16px;
+    font-weight: 700;
+    padding-bottom: 2px;
+  }
+
+  span {
+    color: #979797;
+  }
 }
 
 .edit-mask {
@@ -243,5 +299,74 @@ $linear_end_color: #6bd9b7, #f6aaad, #85b9f7;
 
   &.cancel {
     color: #067afc;
+  }
+}
+
+// Popup Style
+.pop-wrap {
+  position: fixed;
+  top: 0;
+  right: 0;
+  left: 0;
+  bottom: 0;
+  z-index: 99;
+}
+
+.pop-mask {
+  width: 100%;
+  height: 100%;
+  background: #000;
+  opacity: 0.5;
+}
+
+.pop-block {
+  position: absolute;
+  width: 75%;
+  top: 50%;
+  left: 50%;
+  transform: translate(-50%, -50%);
+  background: $main_white_color1;
+  border-radius: 8px;
+}
+
+.content {
+  padding: 17px 18px;
+  color: $main_text_color2;
+  text-align: center;
+
+  .title {
+    color: $main_text_color3;
+    font-size: 18px;
+    font-weight: 700;
+    margin-bottom: 10px;
+  }
+}
+
+.button-block {
+  position: relative;
+  display: flex;
+  height: 50px;
+  align-items: center;
+  border-top: 1px solid #f7f8fb;
+
+  &::after {
+    content: "";
+    position: absolute;
+    width: 3px;
+    height: 100%;
+    left: 50%;
+    transform: translateX(-50%);
+    background: #f7f8fb;
+  }
+
+  span {
+    flex: 1;
+    text-align: center;
+    font-size: 18px;
+    font-weight: 700;
+
+    &:nth-child(2) {
+      color: #e42a30;
+    }
   }
 }

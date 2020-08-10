@@ -1,25 +1,26 @@
 <template>
   <div v-if="isRevice">
     <template v-if="!showDetail">
-      <div v-if="virtualBank_card.length > 0" :class="$style['my-card']">
+      <div :class="$style['my-card']">
         <p :class="[$style['card-count'], 'clearfix']">
           <span :class="$style['title']">
-            {{ $text("S_MY_VIRTUAL_BANKCARD", "我的电子钱包") }}
+            {{ $text("S_HISTORY_WALLET", "历史钱包") }}
           </span>
 
-          <span :class="$style['count']">{{
-            $text("S_CRAD_COUNT", "共%s张").replace(
-              "%s",
-              virtualBank_card.length
-            )
-          }}</span>
+          <span :class="$style['count']">
+            {{
+              $text("S_CRAD_COUNT", "共%s张").replace(
+                "%s",
+                virtualBank_card.length
+              )
+            }}
+          </span>
         </p>
-
-        <div :class="$style['card-list']">
+        <div v-if="virtualBank_card.length > 0" :class="$style['card-list']">
           <div
             v-for="item in virtualBank_card"
             :key="item.id"
-            :class="$style['virtual-bankcard-item']"
+            :class="[$style['virtual-bankcard-item'], $style['history']]"
             @click="getVirtualBankDetail(item), showTab(false)"
           >
             <div :class="[$style['card-top'], 'clearfix']">
@@ -36,10 +37,10 @@
                   {{ item.address }}
                 </div>
               </div>
-            </div>
 
-            <div v-if="item.auditing" :class="$style['audit-tip']">
-              删除审核中
+              <div v-if="item.auditing" :class="$style['audit-tip']">
+                删除审核中
+              </div>
             </div>
           </div>
         </div>
@@ -52,30 +53,6 @@
         >
           <img src="/static/image/ey1/mcenter/bankCard/no_bankcard.png" />
         </div>
-
-        <template v-if="virtualBank_card.length < 15">
-          <div :class="$style['add-card']">
-            <div :class="$style['add-wrap']">
-              <div
-                :class="$style['add-btn']"
-                @click="changePage('addVirtualBankCard'), showTab(false)"
-              >
-                <img src="/static/image/ey1/mcenter/add.png" />
-                <span>{{
-                  $text("S_ADD_VIRTUAL_BANKCARD", "添加电子钱包")
-                }}</span>
-              </div>
-            </div>
-          </div>
-
-          <p :class="$style['remind']">
-            <span
-              >{{ $t("S_VIRTUAL_BANKCARD_LIMIT").replace("%s", 15) }} ({{
-                virtualBank_card.length
-              }}/15)
-            </span>
-          </p>
-        </template>
       </div>
     </template>
 
@@ -89,12 +66,11 @@
           <span>审核通过后，系统会自动删除银行卡</span>
         </div>
 
-        <div :class="$style['virtual-bankcard-item']">
+        <div :class="[$style['virtual-bankcard-item'], $style['history']]">
           <div :class="[$style['card-top'], 'clearfix']">
             <div :class="$style['card-logo']">
               <img v-lazy="getBankImage(virtualBank_cardDetail.swift_code)" />
             </div>
-
             <div :class="$style['card-info']">
               <div :class="$style['card-name']">
                 {{ virtualBank_cardDetail.payment_gateway_name }}
@@ -111,7 +87,7 @@
           <div :class="$style['edit-mask']" />
           <div :class="$style['edit-button']">
             <div :class="$style['edit-option-item']" @click="moveCard">
-              移至历史帐号
+              移至我的电子钱包
             </div>
 
             <div
@@ -159,7 +135,7 @@
 </template>
 
 <script>
-import virtualMixin from "@/mixins/mcenter/bankCard/cardInfo/virtualBank";
+import virtualMixin from "@/mixins/mcenter/historyCard/cardInfo/virtualBank";
 
 export default {
   mixins: [virtualMixin],

@@ -7,7 +7,7 @@ export default {
       isRevice: false,
       virtualBank_card: [],
       virtualBank_cardDetail: {},
-      isShowPop: false,
+      isShowPop: false
     }
   },
   computed: {
@@ -24,7 +24,7 @@ export default {
         method: "get",
         url: "/api/v1/c/player/user_virtual_bank/list",
         params: {
-          common: true
+          common: false
         }
       }).then(response => {
         const { ret, result } = response.data;
@@ -42,7 +42,7 @@ export default {
       this.$emit("update:showDetail", true);
 
       if (info.auditing) {
-        this.$emit('update:isAudit', true)
+        this.$emit('update:isAudit', true);
       }
     },
     moveCard() {
@@ -54,7 +54,7 @@ export default {
         data: {
           old_address: address,
           payment_gateway_id: String(payment_gateway_id),
-          common: false
+          common: true
         }
       }).then(response => {
         const { result } = response.data;
@@ -62,7 +62,7 @@ export default {
           return;
         }
 
-        this.actionSetGlobalMessage({ msg: '移至历史帐号 成功' });
+        this.actionSetGlobalMessage({ msg: '移至我的电子钱包 成功' });
         this.getUserVirtualBankList().then(() => {
           // 切換當前頁面狀態
           this.$emit("update:showDetail", false);

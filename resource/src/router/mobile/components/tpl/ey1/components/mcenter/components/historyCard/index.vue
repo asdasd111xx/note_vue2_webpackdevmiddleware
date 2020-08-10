@@ -14,28 +14,11 @@
 
       <div
         v-if="showDetail && !isAudit"
-        :class="$style['header-icon']"
+        :class="$style['icon-edit']"
         @click="editDetailStatus = true"
       >
         <img
           :src="$getCdnPath('/static/image/ey1/common/btn_more_w.png')"
-          alt="more"
-        />
-      </div>
-
-      <div
-        v-if="
-          currentKind === 'virtualBank' &&
-            currentPage === 'virtualBankCardInfo' &&
-            !showDetail
-        "
-        :class="$style['header-icon']"
-        @click="changeToHistory"
-      >
-        <img
-          :src="
-            $getCdnPath('/static/image/ey1/mcenter/bankCard/btn_history.png')
-          "
           alt="more"
         />
       </div>
@@ -66,14 +49,13 @@
       :show-detail.sync="showDetail"
       :edit-status.sync="editStatus"
       :is-audit.sync="isAudit"
-      :add-bank-card-step.sync="addBankCardStep"
     />
   </div>
 </template>
 
 <script>
 import { mapGetters } from "vuex";
-import entryMixin from "@/mixins/mcenter/bankCard/index";
+import entryMixin from "@/mixins/mcenter/historyCard/index";
 
 export default {
   components: {
@@ -81,15 +63,9 @@ export default {
       import(
         /* webpackChunkName: 'bankCardInfo' */ "./components/bank/cardInfo"
       ),
-    addBankCard: () =>
-      import(/* webpackChunkName: 'addBankCard' */ "./components/bank/addCard"),
     virtualBankCardInfo: () =>
       import(
         /* webpackChunkName: 'virtualBankCardInfo' */ "./components/virtualBank/cardInfo"
-      ),
-    addVirtualBankCard: () =>
-      import(
-        /* webpackChunkName: 'addVirtualBankCard' */ "./components/virtualBank/addCard"
       )
   },
   mixins: [entryMixin],
@@ -117,30 +93,14 @@ export default {
       ];
     },
     headerTitle() {
-      if (this.hasRedirect && this.$route.query.redirect !== "withdraw") {
-        return "提现银行卡";
-      }
-
-      switch (this.currentPage) {
-        case "bankCardInfo":
-        case "virtualBankCardInfo":
-          return this.$text("S_CARD_MANAGEMENT", "卡片管理");
-
-        default:
-          return this.currentKind === "bank"
-            ? this.$text("S_ADD_BANKCARD", "添加银行卡")
-            : this.$text("S_ADD_VIRTUAL_BANKCARD", "添加电子钱包");
+      if (this.showDetail) {
+        return this.currentPage === "virtualBankCardInfo"
+          ? this.$text("S_VIRTUAL_BANKCARD")
+          : this.$text("S_BANKCARD");
+      } else {
+        return this.$text("S_HISTORY_ACCOUNT", "历史帐号");
       }
     }
-  },
-  created() {
-    // todo: 判斷 bank & virtualBank 是否有被啟用
-    /*
-    //   return axios({
-    //     method: "get",
-    //     url: "api/v1/c/levels/by_user",
-    //   }).then(response => {
-    */
   },
   methods: {
     setCurrentTab(index) {
@@ -173,35 +133,6 @@ export default {
           return;
         }
         this.$router.back();
-        return;
-      }
-
-      // 目前只有銀行卡有分兩階段
-      if (this.addBankCardStep === "two") {
-        this.step = "one";
-        return;
-      }
-
-      if (this.$route.query && this.$route.query.redirect) {
-        if (this.$route.query.redirect === "home") {
-          this.$router.push("/mobile");
-          return;
-        } else if (this.$route.query.redirect === "liveStream") {
-          this.$router.push("/mobile/liveStream");
-          return;
-        }
-        this.$router.back();
-        return;
-      }
-
-      // 當頁面停留在添加卡片
-      if (this.currentKind === "bank") {
-        this.isShowTab = true;
-        this.currentPage = "bankCardInfo";
-        return;
-      } else if (this.currentKind === "virtualBank") {
-        this.isShowTab = true;
-        this.currentPage = "virtualBankCardInfo";
         return;
       }
     }
@@ -267,7 +198,7 @@ export default {
   vertical-align: middle;
 }
 
-.header-icon {
+.icon-edit {
   position: absolute;
   top: 0;
   bottom: 0;

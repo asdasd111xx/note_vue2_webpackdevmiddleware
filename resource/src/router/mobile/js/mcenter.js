@@ -73,6 +73,12 @@ export default {
             name: 'mcenter-bankCard',
             component
         },
+        {
+          // 歷史銀行卡/電子錢包
+            path: 'historyCard',
+            name: 'mcenter-historyCard',
+            component
+        },
         { // 我的返水
             path: 'bankRebate',
             name: 'mcenter-bankRebate',
