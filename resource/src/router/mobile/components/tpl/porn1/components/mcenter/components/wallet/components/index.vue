@@ -13,7 +13,10 @@
       <div :class="$style['icon-block']">
         <div
           v-for="(item, index) in walletIcons"
-          v-if="item.show"
+          v-if="
+            item.show ||
+              (item.key === 'recharge' && siteConfig.MOBILE_WEB_TPL !== 'ey1')
+          "
           :key="'icon-' + index"
           :class="$style['icon-cell']"
           @click="item.onClick"
@@ -222,7 +225,7 @@ export default {
         },
         {
           key: 'recharge',
-          show: this.siteConfig && this.siteConfig.MOBILE_WEB_TPL !== 'ey1',
+          show: false,
           text: this.$text("S_CREDIT_TRANSFER", "额度转让"),
           imgSrc: '/static/image/_new/mcenter/wallet/ic_wallet_trans.png',
           onClick: () => {

@@ -61,35 +61,7 @@ export default {
   },
   data() {
     return {
-      toggleShare: false,
-      list: [
-        {
-          initName: "帮助中心",
-          name: "S_HELP_CENTER",
-          path: "/mobile/mcenter/help",
-          pageName: "help",
-          image: "help",
-          info: "存提现、投注有疑问，看这里",
-          isPart: true
-        },
-        {
-          initName: "关于亿元",
-          name: "S_ABOUT_EY1",
-          path: "/mobile/mcenter/about",
-          pageName: "about",
-          image: "about",
-          isPart: false
-        },
-        {
-          initName: "我的推广",
-          name: "S_TEAM_CENTER",
-          path: "/mobile/mcenter/tcenter/management",
-          pageName: "mypromotion",
-          image: "mypromotion",
-          info: "合营计划",
-          isPart: false
-        }
-      ]
+      toggleShare: false
     };
   },
   computed: {
@@ -105,9 +77,49 @@ export default {
       set(value) {
         this.toggleShare = value;
       }
+    },
+    isShowPromotion() {
+      if (this.memInfo.user.show_promotion) {
+        return this.memInfo.user.show_promotion;
+      } else {
+        return true;
+      }
+    },
+    list() {
+      return [
+        {
+          initName: "帮助中心",
+          name: "S_HELP_CENTER",
+          path: "/mobile/mcenter/help",
+          pageName: "help",
+          image: "help",
+          info: "存提现、投注有疑问，看这里",
+          isPart: true,
+          show: true
+        },
+        {
+          initName: "关于亿元",
+          name: "S_ABOUT_EY1",
+          path: "/mobile/mcenter/about",
+          pageName: "about",
+          image: "about",
+          isPart: false,
+          show: true
+        },
+        {
+          initName: "我的推广",
+          name: "S_TEAM_CENTER",
+          path: "/mobile/mcenter/tcenter/management",
+          pageName: "mypromotion",
+          image: "mypromotion",
+          info: "合营计划",
+          isPart: false,
+          show: this.isShowPromotion
+        }
+      ].filter(item => item.show);
     }
   },
-  created() { },
+  created() {},
   methods: {
     ...mapActions([
       "actionEnterMCenterThirdPartyLink",
