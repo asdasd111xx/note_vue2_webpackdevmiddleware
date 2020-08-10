@@ -1136,6 +1136,10 @@ export const actionGetRechargeStatus = ({ state, dispatch, commit }, data) => {
         return;
     }
     window.CHECKRECHARGETSTATUS = true;
+    setTimeout(() => {
+        window.CHECKRECHARGETSTATUS = undefined;
+    }, 1200)
+
     return axios({
         method: 'get',
         url: '/api/v1/c/recharge/config'
@@ -1145,10 +1149,10 @@ export const actionGetRechargeStatus = ({ state, dispatch, commit }, data) => {
         let bank_required = config.bank_required;
         let enable = config.enable;
         let enabled_by_deposit = config.enabled_by_deposit;
+
         if (!enable) {
-            return {
-                msg: '额度转让升级中'
-            }
+            dispatch('actionSetGlobalMessage', { msg: '额度转让升级中' });
+            return;
         }
 
         const params = [];
@@ -1220,13 +1224,15 @@ export const actionGetRechargeStatus = ({ state, dispatch, commit }, data) => {
         Promise.all(params).then(() => {
             if (result.status === "ok") {
                 window.location.href = '/mobile/mcenter/creditTrans';
+                return;
             }
 
             dispatch('actionSetGlobalMessage', { code: result.code, origin: 'home', type: result.type, msg: result.msg });
-            return result
+            return result;
         });
-        setTimeout(() => {
-            window.CHECKRECHARGETSTATUS = undefined;
-        }, 1000)
+
+        if (!bank_required && !enabled_by_deposit) {
+            window.location.href = '/mobile/mcenter/creditTrans';
+        }
     });
 };
