@@ -521,6 +521,25 @@ export default {
   }
 }
 
+.header-custom-wrap {
+  height: 43px;
+  width: 100%;
+  position: fixed;
+  top: 0;
+
+  .header-custom-btn {
+    line-height: 43px;
+    position: fixed;
+    right: 14px;
+    top: 0;
+    color: #414655;
+    font-family: Arial, Arial-Bold;
+    font-size: 14px;
+    font-weight: 500;
+    text-align: center;
+  }
+}
+
 .icon-search {
   position: absolute;
   top: 0;
