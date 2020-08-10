@@ -41,6 +41,7 @@ import mobileContainer from "../../../common/mobileContainer";
 import transferCreditTrans from './compontents/transferCreditTrans';
 import discountCreditTrans from './compontents/discountCreditTrans';
 import recoardCreditTrans from './compontents/recoardCreditTrans';
+import axios from 'axios';
 
 export default {
   components: {
@@ -110,12 +111,31 @@ export default {
           this.currentTemplate = "discount-credit-trans";
           break;
         case 1:
-          if (this.rechargeConfig && this.rechargeConfig.bank_required && !this.hasBank) {
-            this.actionSetGlobalMessage({ code: 'C50099', origin: 'home', type: 'bindcard' });
-            return;
-          } else if (this.rechargeConfig && !this.rechargeConfig.enable) {
+          if (this.isLock) return;
+          this.isLock = true;
+          if (this.rechargeConfig && !this.rechargeConfig.enable) {
             this.actionSetGlobalMessage({ msg: '额度转让升级中' });
             return;
+          } else if (this.rechargeConfig && this.rechargeConfig.bank_required && !this.hasBank) {
+            this.actionSetGlobalMessage({ code: 'C50099', origin: 'home', type: 'bindcard' });
+            return;
+          } else if (this.rechargeConfig && this.rechargeConfig.enabled_by_deposit) {
+            axios({
+              method: 'get',
+              url: '/api/v1/c/user-stat/deposit-withdraw',
+            }).then(res => {
+              if (res && res.data && Number(res.data.ret.deposit_count) > 0) {
+                this.currentTemplate = "transfer-credit-trans";
+              } else {
+                this.actionSetGlobalMessage({ code: 'recharge_deposit', origin: 'creditTrans', msg: '只需充值一次 开通转让功能' });
+              }
+            }).catch(error => {
+              this.actionSetGlobalMessage({ code: 'recharge_deposit', origin: 'creditTrans', msg: '只需充值一次 开通转让功能' });
+            })
+
+            setTimeout(() => {
+              this.isLock = false
+            }, 1000)
           } else {
             this.currentTemplate = "transfer-credit-trans";
           }

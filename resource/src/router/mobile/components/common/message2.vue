@@ -98,6 +98,8 @@ export default {
           // 充值
           case "C50101":  // 轉帳需首充 暫時
           case "C50100":
+          // 只需充值一次 开通转让功能
+          case "recharge_deposit":
             this.$router.push(`/mobile/mcenter/deposit?redirect=${redirect ? redirect : 'home'}`);
             break;
           // 銀行卡
