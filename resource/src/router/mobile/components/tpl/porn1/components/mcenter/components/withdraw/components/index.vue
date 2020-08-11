@@ -165,6 +165,34 @@
       </span>
     </div>
 
+    <!-- to do 顯示條件 -->
+    <div v-if="themeTPL === 'ey1'" :class="[$style['add-bank-card']]">
+      <img :src="$getCdnPath(`/static/image/${themeTPL}/mcenter/add.png`)" />
+      &nbsp;
+      <span @click="showMoreMethod = true">
+        {{ "更多提现方式" }}
+      </span>
+    </div>
+
+    <!-- 更多提现方式彈窗 -->
+    <withdraw-more-method
+      :show="showMoreMethod"
+      @close="
+        () => {
+          showMoreMethod = false;
+        }
+      "
+    />
+
+    <!-- 添加电子钱包 -->
+    <div v-if="themeTPL === 'ey1'" :class="[$style['add-bank-card']]">
+      <img :src="$getCdnPath(`/static/image/${themeTPL}/mcenter/add.png`)" />
+      &nbsp;
+      <span @click="$router.push('/mobile/mcenter/bankcard?redirect=withdraw')">
+        {{ $text("S_ADD_VIRTUAL_BANKCARD", "添加电子钱包") }}
+      </span>
+    </div>
+
     <!-- 額度提示訊息 -->
     <template
       v-if="withdrawData.payment_charge && withdrawData.payment_charge.ret"
@@ -310,6 +338,7 @@ import message from "@/router/mobile/components/common/message";
 import mixin from '@/mixins/mcenter/withdraw';
 import serialNumber from './serialNumber'
 import widthdrawTips from './widthdrawTips';
+import withdrawMoreMethod from './withdrawMoreMethod';
 
 import {
   API_MCENTER_WITHDRAW,
@@ -340,6 +369,7 @@ export default {
       msg: '',
       selectAccountValue: '',
       selectedCard: '',
+      showMoreMethod: false,
       widthdrawTipsType: "tips",
     }
   },
@@ -350,6 +380,7 @@ export default {
     serialNumber,
     widthdrawTips,
     blockListTips,
+    withdrawMoreMethod
   },
   watch: {
     withdrawUserData() {
