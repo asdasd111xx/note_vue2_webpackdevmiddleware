@@ -50,7 +50,9 @@
           @click="isShowPopQrcode = true"
         >
           <img
-            :src="$getCdnPath('/static/image/ey1/mcenter/bankCard/ic_qrcode.png')"
+            :src="
+              $getCdnPath('/static/image/ey1/mcenter/bankCard/ic_qrcode.png')
+            "
             alt="qrcode"
           />
         </div>
@@ -207,7 +209,7 @@ export default {
     this.getVirtualBankList();
   },
   methods: {
-    ...mapActions(["actionSetUserdata"]),
+    ...mapActions(["actionSetUserdata", "actionSetGlobalMessage"]),
     setBank(bank) {
       this.isShowPop = false;
       this.currentVBank = bank.name;
@@ -231,6 +233,7 @@ export default {
       }
 
       this.lockStatus = true;
+      this.errorMsg = "";
 
       axios({
         method: "post",
@@ -242,6 +245,10 @@ export default {
       })
         .then(res => {
           this.lockStatus = false;
+          // Todo 將所有 msg 替換成 actionSetGlobalMessage
+          this.actionSetGlobalMessage({ msg: "绑定成功" });
+          this.showTab(true);
+          this.changePage("virtualBankCardInfo");
         })
         .catch(res => {
           if (res.response && res.response.data && res.response.data.msg) {

@@ -55,6 +55,7 @@ export default {
         accountDataWeixinEy1: () => import(/* webpackChunkName: 'accountDataWeixinEy1' */'../../tpl/porn1/components/mcenter/components/accountData/components/account/form/editWeixin'),
         accountDataBirthdayEy1: () => import(/* webpackChunkName: 'accountDataBirthdayEy1' */'../../tpl/porn1/components/mcenter/components/accountData/components/account/form/editBirthday'),
         walletEy1: () => import(/* webpackChunkName: 'walletEy1' */'../../tpl/ey1/components/mcenter/components/wallet'),
-        makeMoneyEy1: () => import(/* webpackChunkName: 'makeMoneyEy1' */'../../tpl/ey1/components/mcenter/components/makeMoney')
+        makeMoneyEy1: () => import(/* webpackChunkName: 'makeMoneyEy1' */'../../tpl/ey1/components/mcenter/components/makeMoney'),
+        historyCardEy1: () => import(/* webpackChunkName: 'historyCardEy1 */'../../tpl/ey1/components/mcenter/components/historyCard')
     }
 };

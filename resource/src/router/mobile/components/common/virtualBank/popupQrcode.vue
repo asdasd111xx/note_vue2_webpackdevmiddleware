@@ -66,9 +66,9 @@ export default {
       memInfo: "getMemInfo"
     }),
     title() {
-      if (this.walletId === 21) {
+      if (this.walletId === 37) {
         return "绑定购宝钱包";
-      } else if (this.walletId === 37) {
+      } else if (this.walletId === 21) {
         return "扫描绑定";
       }
     }
@@ -78,6 +78,8 @@ export default {
     this.getQrcode();
   },
   methods: {
+    // walletGatewayId = 3 ---> CGPay ??
+    // 購寶 id ?
     getQrcode() {
       bbosRequest({
         url: this.siteConfig.BBOS_DOMIAN + "/Ext/V2/Withdraw/Bind/Wallet",
@@ -87,7 +89,8 @@ export default {
         },
         params: {
           bindType: "withdraw",
-          walletGatewayId: 1
+          walletGatewayId: 3,
+          lang: "zh-cn"
         }
       }).then(res => {
         console.log(res);
