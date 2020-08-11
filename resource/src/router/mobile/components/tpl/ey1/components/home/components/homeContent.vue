@@ -31,7 +31,7 @@
               </div>
             </div>
             <div>
-              {{ `¥${membalance.total}` }}
+              {{ `¥${membalance && membalance.total}` }}
             </div>
           </div>
         </div>

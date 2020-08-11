@@ -137,6 +137,7 @@ export default {
     editLine: () => import(/* webpackChunkName: 'editLine' */'./form/editLine'),
     editFacebook: () => import(/* webpackChunkName: 'editFacebook' */'./form/editFacebook'),
     editZalo: () => import(/* webpackChunkName: 'editZalo' */'./form/editZalo'),
+    editWithdrawPwd: () => import(/* webpackChunkName: 'editWithdrawPwd' */'./form/editWithdrawPwd'),
     message
   },
   data() {
@@ -206,7 +207,7 @@ export default {
         return;
       }
 
-      if (['name', 'phone', 'email', 'qq', 'weixin', 'line'].includes(field.key)) {
+      if (['name', 'phone', 'email', 'qq', 'weixin', 'line', 'withdrawPwd'].includes(field.key)) {
         this.$router.push({
           path: `/mobile/mcenter/accountData/${field.key}`
         });
