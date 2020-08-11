@@ -90,7 +90,9 @@ export default {
             if (item.key === "amount") {
                 const limit = Number(this.rechargeConfig.recharge_limit) || 0;
                 const amount = Number(this.formData.amount);
-                if (limit &&
+                if (!amount || amount === 0) {
+                    errorMessage = "请输入转让金额";
+                } else if (limit &&
                     amount < limit) {
                     errorMessage = "转帐金额低于最低限额";
                 } else if (amount > this.maxRechargeBalance) {
