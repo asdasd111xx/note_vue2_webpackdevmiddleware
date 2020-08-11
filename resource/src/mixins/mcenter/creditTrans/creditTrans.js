@@ -96,7 +96,7 @@ export default {
                     amount < limit) {
                     errorMessage = "转帐金额低于最低限额";
                 } else if (amount > this.maxRechargeBalance) {
-                    errorMessage = "馀额不足";
+                    // errorMessage = "馀额不足";
                 } else {
                     errorMessage = "";
                 }
