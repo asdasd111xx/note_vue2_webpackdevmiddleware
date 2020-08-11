@@ -209,11 +209,23 @@ export default {
                     let msg_desc = msg;
 
                     if (isAudit && config.recharge_limit_audited_max_enable) {
-                        msg_desc += `，单笔转让最低${config.recharge_limit_audited_min}元、最高${config.recharge_limit_audited_max}元`;
+                        msg_desc += `，单笔转让最低${config.recharge_limit_audited_min}元`;
+
+                        if (config.recharge_limit_audited_max_enable) {
+                            msg_desc += `、最高${config.recharge_limit_audited_max}元`;
+                        }
+
+                        this.errorMessage.amount = msg_desc;
+                        return;
                     }
 
+                    msg_desc += `，单笔转让最低${config.recharge_limit_unaudited_min}元`;
+
                     if (config.recharge_limit_unaudited_max_enable) {
-                        msg_desc += `，单笔转让最低${config.recharge_limit_unaudited_min}元、最高${config.recharge_limit_unaudited_max}元`;
+                        msg_desc += `、最高${config.recharge_limit_unaudited_max}元`;
+
+                        this.errorMessage.amount = msg_desc;
+                        return;
                     }
 
                     this.errorMessage.amount = msg_desc;
@@ -243,7 +255,7 @@ export default {
                         break;
                     // msg: "未完成提现流水要求"
                     case "C650017":
-                        setErrorMsg(msg);
+                        setErrorMsg(msg, false);
                         break;
                     case "C650011":
                         this.errorMessage.phone = msg;
