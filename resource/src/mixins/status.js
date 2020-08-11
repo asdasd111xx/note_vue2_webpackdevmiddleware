@@ -4,17 +4,19 @@ import { getDoamin } from '@/lib/getCurrentDoamin';
 export default {
     data() {
         return {
-            imgSite: '',
+            imgSite: 'porn1',
             domain: {
                 domain: '',
-                site: ''
+                site: 'porn1'
             }
         }
     },
     created() {
         getDoamin().then((res) => {
-            this.domain = res;
-            this.imgSite = res.site;
+            if (res) {
+                this.domain = res;
+                this.imgSite = res.site;
+            }
         })
     },
 };

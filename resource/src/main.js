@@ -54,8 +54,6 @@ import vStyle from './lib/vStyle';
 
 /* eslint-disable */
 /* plugins css - end */
-
-
 // 推播中心websocket api
 let cid = getCookie('cid')
 if (cid) {
