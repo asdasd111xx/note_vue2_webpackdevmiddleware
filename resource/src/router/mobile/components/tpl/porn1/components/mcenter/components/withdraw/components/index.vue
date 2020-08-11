@@ -632,7 +632,6 @@ export default {
       this.isSendSubmit = true;
       this.submitWithdraw({
         user_bank_id: this.selectedCard,
-        userBankId: this.selectedCard,
         keyring: localStorage.getItem('tmp_w_1') // 手機驗證成功後回傳
       }).then((response) => {
         setTimeout(() => {
@@ -646,7 +645,6 @@ export default {
       localStorage.removeItem('tmp_w_selectedCard');
       localStorage.removeItem('tmp_w_amount');
     },
-    // 搬移原提現方法
     /**
        * 送出取款資訊
        * @method submitWithdraw
@@ -658,7 +656,7 @@ export default {
       //不需要取款密碼,並且可選銀行卡
       let _params = {
         amount: this.withdrawValue,
-        // withdraw_password: this.withdrawPwd,
+        withdraw_password: this.withdrawPwd,
         forward: true,
         confirm: true,
         max_id: this.withdrawData.audit.total.max_id,
@@ -753,7 +751,6 @@ export default {
           } else {
             this.msg = '提现已取消，请重新提交申请';
           }
-
 
           this.isLoading = false;
           this.actionSetIsLoading(false);
