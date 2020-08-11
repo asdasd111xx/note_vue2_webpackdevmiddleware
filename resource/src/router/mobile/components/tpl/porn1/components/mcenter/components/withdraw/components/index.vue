@@ -316,6 +316,17 @@
     />
     <!-- 流水檢查 -->
     <serial-number v-if="isSerial" :handle-close="toggleSerial" />
+
+    <!-- 帐户资料 -->
+    <withdrawAccount
+      v-if="showAccount"
+      @close="
+        () => {
+          showAccount = false;
+        }
+      "
+      :column="accountShowColumn"
+    />
     <page-loading :is-show="isLoading" />
     <message v-if="msg" @close="msg = ''">
       <div slot="msg">
@@ -339,7 +350,7 @@ import mixin from '@/mixins/mcenter/withdraw';
 import serialNumber from './serialNumber'
 import widthdrawTips from './widthdrawTips';
 import withdrawMoreMethod from './withdrawMoreMethod';
-
+import withdrawAccount from './withdrawAccount'
 import {
   API_MCENTER_WITHDRAW,
   API_TRADE_RELAY,
@@ -371,6 +382,12 @@ export default {
       selectedCard: '',
       showMoreMethod: false,
       widthdrawTipsType: "tips",
+      accountShowColumn: {
+        showName: false,
+        withdrawPwd: false,
+        phone: false
+      },
+      showAccount: false
     }
   },
   components: {
@@ -380,7 +397,8 @@ export default {
     serialNumber,
     widthdrawTips,
     blockListTips,
-    withdrawMoreMethod
+    withdrawMoreMethod,
+    withdrawAccount
   },
   watch: {
     withdrawUserData() {

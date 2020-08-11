@@ -65,17 +65,6 @@ export default {
     },
   },
   mounted() {
-    // to do api 決定哪需要顯示
-    // methodList
-
-    // axios({
-    //   method: '',
-    //   url: '',
-    // }).then(res => {
-
-    // }).catch(res => {
-    // this.actionSetGlobalMessage({ msg: res.data.msg })
-    // })
   },
   methods: {
     ...mapActions([
