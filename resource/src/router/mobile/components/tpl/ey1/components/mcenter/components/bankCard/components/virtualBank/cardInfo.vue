@@ -7,12 +7,14 @@
             {{ $text("S_MY_VIRTUAL_BANKCARD", "我的电子钱包") }}
           </span>
 
-          <span :class="$style['count']">{{
-            $text("S_CRAD_COUNT", "共%s张").replace(
-              "%s",
-              virtualBank_card.length
-            )
-          }}</span>
+          <span :class="$style['count']">
+            {{
+              $text("S_CRAD_COUNT", "共%s张").replace(
+                "%s",
+                virtualBank_card.length
+              )
+            }}
+          </span>
         </p>
 
         <div :class="$style['card-list']">
@@ -69,8 +71,17 @@
           </div>
 
           <p :class="$style['remind']">
-            <span
-              >{{ $t("S_VIRTUAL_BANKCARD_LIMIT").replace("%s", 15) }} ({{
+            <span v-if="userLevelObj.virtual_bank_single">
+              {{
+                $t("S_VIRTUAL_BANKCARD_TYPE_LIMIT").replace(
+                  "%s",
+                  vBankList.length
+                )
+              }}
+            </span>
+
+            <span v-else>
+              {{ $t("S_VIRTUAL_BANKCARD_LIMIT").replace("%s", 15) }} ({{
                 virtualBank_card.length
               }}/15)
             </span>
@@ -110,7 +121,15 @@
         <div v-if="editStatus" :class="$style['edit-bankcard']">
           <div :class="$style['edit-mask']" />
           <div :class="$style['edit-button']">
-            <div :class="$style['edit-option-item']" @click="moveCard">
+            <div
+              v-if="userLevelObj.virtual_bank_single && hasSameTypeCard"
+              :class="$style['edit-option-item']"
+              @click="moveCard"
+            >
+              停用
+            </div>
+
+            <div v-else :class="$style['edit-option-item']" @click="moveCard">
               移至历史帐号
             </div>
 
@@ -183,9 +202,14 @@ export default {
     isAudit: {
       type: Boolean,
       required: true
+    },
+    userLevelObj: {
+      type: Object,
+      default: {}
     }
   },
   created() {
+    this.getVirtualBankList();
     this.getUserVirtualBankList();
   },
   methods: {

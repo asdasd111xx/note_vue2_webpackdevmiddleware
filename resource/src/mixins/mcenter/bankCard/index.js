@@ -4,8 +4,9 @@ export default {
       currentPage: "bankCardInfo",
       editDetailStatus: false,
       isAuditStatus: false,
+      userLevelObj: {},
       showDetailStatus: false,
-      step: "one"
+      step: "one",
     };
   },
   computed: {
