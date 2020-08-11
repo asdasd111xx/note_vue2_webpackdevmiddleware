@@ -47,6 +47,11 @@ export default {
                 //     component
                 // },
                 {
+                    path: 'withdrawPwd',
+                    name: 'mcenter-accountData-withdrawPwd',
+                    component
+                },
+                {
                     path: 'line',
                     name: 'mcenter-accountData-line',
                     component
@@ -74,7 +79,7 @@ export default {
             component
         },
         {
-          // 歷史銀行卡/電子錢包
+            // 歷史銀行卡/電子錢包
             path: 'historyCard',
             name: 'mcenter-historyCard',
             component

@@ -138,6 +138,15 @@ export default {
               btnShow: true,
               isShow: false,
               popTitle: ''
+            },
+            withdrawPwd: {
+              key: 'withdrawPwd',
+              text: '提现密码',
+              status: '',
+              value: '',
+              btnShow: true,
+              isShow: true,
+              popTitle: ''
             }
           }
         },
@@ -228,6 +237,7 @@ export default {
       if (Object.keys(userConfig).length === 0) {
         return;
       }
+
       Object.keys(this.dataList).forEach((item) => {
         Object.keys(this.dataList[item].field).forEach((key) => {
           let itemNow = this.dataList[item].field[key];
@@ -262,9 +272,19 @@ export default {
               btnShow: true,
               isShow: userConfig.config[key].display
             };
+          } else if (key === 'withdrawPwd') {
+            const wdStatus = this.memInfo.user.has_withdraw_password;
+            itemNow = {
+              ...itemNow,
+              status: wdStatus ? 'already' : 'yet',
+              value: wdStatus ? this.$t('S_SET_CL_ALREADY') : this.$t('S_YET_SET'),
+              btnShow: !wdStatus,
+              isShow: userConfig.config.withdraw_password.display
+            }
           } else {
             const keyValue = this.memInfo.user[key];
             let checkValue = keyValue;
+
             if (keyValue) {
               if (key === 'gender') {
                 checkValue = this.$t('S_MALE');
