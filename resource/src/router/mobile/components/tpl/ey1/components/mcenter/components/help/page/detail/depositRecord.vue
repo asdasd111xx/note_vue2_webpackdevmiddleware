@@ -31,14 +31,6 @@
         </div>
       </div>
     </div>
-
-    <edit-deposit-field
-      v-if="isShowDepositInfo"
-      :required-fields="requiredFields"
-      :deposit-data="singleDeposit"
-      :close-fuc="showDepositInfo"
-    />
-
     <div v-if="!recordData.length" :class="$style['no-data-wrap']">
       <img
         :src="$getCdnPath('/static/image/_new/mcenter/moneyDetail/no_data.png')"
@@ -60,11 +52,9 @@ import member from '@/api/member';
 import ajax from '@/lib/ajax';
 import { getCookie } from '@/lib/cookie';
 import mixin from '@/mixins/mcenter/deposit/recordDeposit';
-import editDepositField from './editDepositField'
 export default {
   mixins: [mixin],
   components: {
-    editDepositField
   },
   data() {
     return {
