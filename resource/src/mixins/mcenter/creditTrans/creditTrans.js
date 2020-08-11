@@ -208,7 +208,7 @@ export default {
                     const config = this.rechargeConfig;
                     let msg_desc = msg;
 
-                    if (isAudit && config.recharge_limit_audited_max_enable) {
+                    if (isAudit) {
                         msg_desc += `，单笔转让最低${config.recharge_limit_audited_min}元`;
 
                         if (config.recharge_limit_audited_max_enable) {
@@ -217,18 +217,16 @@ export default {
 
                         this.errorMessage.amount = msg_desc;
                         return;
-                    }
+                    } else {
+                        msg_desc += `，单笔转让最低${config.recharge_limit_unaudited_min}元`;
 
-                    msg_desc += `，单笔转让最低${config.recharge_limit_unaudited_min}元`;
-
-                    if (config.recharge_limit_unaudited_max_enable) {
-                        msg_desc += `、最高${config.recharge_limit_unaudited_max}元`;
+                        if (config.recharge_limit_unaudited_max_enable) {
+                            msg_desc += `、最高${config.recharge_limit_unaudited_max}元`;
+                        }
 
                         this.errorMessage.amount = msg_desc;
                         return;
                     }
-
-                    this.errorMessage.amount = msg_desc;
                 })
             }
 
