@@ -50,13 +50,6 @@
       </div>
     </div>
 
-    <edit-withdraw-field
-      v-if="editOpen"
-      :third-url.sync="thirdUrl"
-      :withdraw-data="withdrawData"
-      :close-fuc="() => (editOpen = false)"
-    />
-
     <div v-if="!list.length" :class="$style['no-data-wrap']">
       <img
         :src="$getCdnPath('/static/image/_new/mcenter/moneyDetail/no_data.png')"
@@ -75,12 +68,8 @@ import member from '@/api/member';
 import ajax from '@/lib/ajax';
 import bbosRequest from "@/api/bbosRequest";
 import { getCookie } from '@/lib/cookie';
-import editWithdrawField from './editWithdrawField'
 import { API_WITHDRAW_RECORD } from '@/config/api';
 export default {
-  components: {
-    editWithdrawField
-  },
   data() {
     return {
       total: 0,

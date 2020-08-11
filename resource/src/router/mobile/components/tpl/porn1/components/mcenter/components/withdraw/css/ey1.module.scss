@@ -14,3 +14,29 @@
         }
     }
 }
+
+.check-container {
+
+    .check-header {
+        background: #222222;
+        color: #ffffff;
+
+        .title {
+            color: #ffffff;
+        }
+    }
+
+    .check-button-wrap {
+        color: white;
+
+        .check-btn {
+            color: white;
+            background: #222222;
+
+            &.submit {
+                color: white;
+                background: #E42A30;
+            }
+        }
+    }
+}

@@ -128,6 +128,7 @@
 
 <script>
 import mixin from '@/mixins/mcenter/withdraw/serialNumber';
+import { mapGetters } from 'vuex';
 
 export default {
   mixins: [mixin],
@@ -158,6 +159,14 @@ export default {
   },
   mounted() {
   },
+  computed: {
+    ...mapGetters({
+      siteConfig: 'getSiteConfig',
+    }),
+    $style() {
+      return this[`$style_${this.siteConfig.MOBILE_WEB_TPL}`] || this.$style_porn1;
+    },
+  },
   methods: {
     closeTips() {
       this.$emit('close');
@@ -184,10 +193,9 @@ export default {
         this.getSerialNumberData();
       }
     },
-    serialNumberData() {
-    }
   }
 };
 </script>
 
-<style lang="scss" src="../css/index.module.scss" module></style>
+<style lang="scss" src="../css/index.module.scss" module="$style_porn1"></style>
+<style lang="scss" src="../css/ey1.module.scss" module="$style_ey1"></style>
