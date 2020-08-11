@@ -208,7 +208,7 @@ export default {
           this.handleSubmit();
         },
         funcBtn: this.$text('S_COMPLETE', '完成'),
-        funcBtnActive: this.checkCode.isShow ? !!(this.newValue) && !!(this.codeValue) && !this.tipMsg : !!(this.newValue) && !this.tipMsg
+        funcBtnActive: this.checkCode.isShow || this.$route.query.redirect === "withdraw" ? !!(this.newValue) && !!(this.codeValue) : !!(this.newValue)
       };
     },
     fieldValue() {
