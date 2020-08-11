@@ -1156,12 +1156,8 @@ export const actionGetRechargeStatus = ({ state, dispatch, commit }, data) => {
         }
 
         const params = [];
-        let result = {
-            status: '',
-            code: '',
-            type: '',
-            msg: ''
-        }
+        let bank_required_result = {};
+        let deposit_result = {};
 
         if (bank_required) {
             const user_bank =
@@ -1170,20 +1166,18 @@ export const actionGetRechargeStatus = ({ state, dispatch, commit }, data) => {
                     url: '/api/v1/c/player/user_bank/list'
                 }).then(res => {
                     if (res && res.data && res.data.result === "ok" && res.data.ret.length > 0) {
-                        result = {
+                        bank_required_result = {
                             status: 'ok',
                         }
                     } else {
-                        result = {
+                        bank_required_result = {
                             status: 'bindcard',
                             code: 'C50099',
                             type: "bindcard"
                         }
                     }
                 }).catch(error => {
-                    console.log(error);
-
-                    result = {
+                    bank_required_result = {
                         status: 'bindcard',
                         code: 'C50099',
                         type: "bindcard"
@@ -1199,20 +1193,18 @@ export const actionGetRechargeStatus = ({ state, dispatch, commit }, data) => {
                     method: 'get',
                     url: '/api/v1/c/user-stat/deposit-withdraw',
                 }).then(res => {
-                    console.log(res)
                     if (res && res.data && Number(res.data.ret.deposit_count) > 0) {
-                        result = {
+                        deposit_result = {
                             status: 'ok',
                         }
                     } else {
-                        result = {
+                        deposit_result = {
                             code: 'recharge_deposit',
                             msg: '只需充值一次 开通转让功能'
                         }
                     }
                 }).catch(error => {
-                    console.log(error);
-                    result = {
+                    deposit_result = {
                         code: 'recharge_deposit',
                         msg: '只需充值一次 开通转让功能'
                     }
@@ -1222,12 +1214,27 @@ export const actionGetRechargeStatus = ({ state, dispatch, commit }, data) => {
         }
 
         Promise.all(params).then(() => {
-            if (result.status === "ok") {
-                window.location.href = '/mobile/mcenter/creditTrans';
-                return;
+            let result = null;
+            if (bank_required && bank_required_result.status !== "ok") {
+                result = bank_required_result;
             }
 
-            dispatch('actionSetGlobalMessage', { code: result.code, origin: 'home', type: result.type, msg: result.msg });
+            else if (enabled_by_deposit && deposit_result.status !== "ok") {
+                result = deposit_result;
+            }
+
+            if (result) {
+                dispatch('actionSetGlobalMessage',
+                    {
+                        code: result.code,
+                        origin: 'home',
+                        type: result.type,
+                        msg: result.msg
+                    });
+                return result;
+            }
+
+            window.location.href = '/mobile/mcenter/creditTrans';
             return result;
         });
 
