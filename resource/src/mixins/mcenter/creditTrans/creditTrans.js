@@ -244,7 +244,6 @@ export default {
                     case "C650005":
                     case "C650006":
                     case "C650007":
-                    case "C650016":
                         this.errorMessage.amount = msg;
                         break;
                     // msg: "完成提现流水要求"
