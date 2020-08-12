@@ -14,21 +14,6 @@
             {{ $text("S_MOBILE_NUMBER", "手机号码") }}
           </div>
           <div :class="$style['input-wrap']">
-            <!-- <select
-                v-model="oldCode"
-                :class="[$style.select, $style['phone-select']]"
-                :readonly="true"
-                :disabled="true"
-              >
-                <template v-for="option in countryCodes.options">
-                  <option
-                    :key="option"
-                    :value="option"
-                    :selected="option == '+86'"
-                    >{{ option }}</option
-                  >
-                </template>
-              </select> -->
             <input
               v-model="oldValue"
               :placeholder="oldPhone.label"
@@ -45,22 +30,6 @@
             {{ $text("S_MOBILE_NUMBER", "手机号码") }}
           </div>
           <div :class="$style['input-wrap']">
-            <!-- <select
-                v-model="newCode"
-                :class="[$style.select, $style['phone-select']]"
-                :readonly="true"
-                :disabled="true"
-              >
-                <template v-for="option in countryCodes.options">
-                  <option
-                    :key="option"
-                    :value="option"
-                    :selected="option == '+86'"
-                    >{{ option }}</option
-                  >
-                </template>
-              </select> -->
-
             <input
               v-model="newValue"
               :placeholder="

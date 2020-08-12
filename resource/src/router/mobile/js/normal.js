@@ -173,4 +173,9 @@ export default [
         name: 'gift',
         component
     },
+    {
+        path: 'withdrawAccount',
+        name: 'withdrawAccount',
+        component
+    },
 ];

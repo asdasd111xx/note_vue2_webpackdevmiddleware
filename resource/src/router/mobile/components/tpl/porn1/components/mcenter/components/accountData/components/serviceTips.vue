@@ -19,17 +19,4 @@ export default {
   },
 };
 </script>
-<style lang="scss" module>
-@import "~@/css/variable.scss";
-.service-tip {
-  margin-top: 19px;
-  text-align: center;
-  width: 100%;
-  color: $main_text_color2;
-  font-size: 14px;
-  height: 250px;
-  > span {
-    color: #6aaaf5;
-  }
-}
-</style>
+<style src="../css/index.module.scss" lang="scss" module>
