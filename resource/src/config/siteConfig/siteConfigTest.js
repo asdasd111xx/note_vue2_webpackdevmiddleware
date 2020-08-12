@@ -33,6 +33,7 @@ export const site_500023 = {
     ...preset,
     MOBILE_WEB_TPL: 'ey1',
     VERSION: getVersion('ey1'),
-    SITE_NAME: '亿元'
+    SITE_NAME: '亿元',
+    YABO_API_DOMAIN: 'https://cxbb.bbin-asia.com/api',
 };
 /* eslint-enable camelcase */

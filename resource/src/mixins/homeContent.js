@@ -392,10 +392,10 @@ export default {
                     case 'STB':
                     case 'JPB':
                     case 'DSC':
-                        let newWindow = window.open(' ');
-                        axios({
+                        let newWindow = window.open('');
+                        yaboRequest({
                             method: 'get',
-                            url: `${this.siteConfig.YABO_API_DOMAIN}/thirdparty/url​`,
+                            url: `${this.siteConfig.YABO_API_DOMAIN}/thirdparty/url`,
                             headers: {
                                 'x-domain': this.memInfo.user.domain
                             },
@@ -403,12 +403,12 @@ export default {
                                 type: game.type,
                             },
                         }).then(res => {
-                            newWindow.location.href = res.data.data;
+                            newWindow.location.href = res.data;
                         }).catch(error => {
                             newWindow.close();
                         })
-                        break;
 
+                        break;
                     case 'YV':
                         this.$router.push({
                             name: 'videoList',
