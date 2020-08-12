@@ -1,5 +1,16 @@
 @import '~@/css/variable.scss';
 
+.time-tip {
+    background: #f2f2f2;
+    padding: 10px;
+
+    span {
+        font-weight: 700;
+        padding: 0 5px;
+        color: $main_error_color1;
+    }
+}
+
 .deposit-info-wrap {
     margin-top: 10px;
 }

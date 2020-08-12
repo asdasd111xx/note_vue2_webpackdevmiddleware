@@ -1,5 +1,9 @@
 <template>
   <div :class="[$style['deposit-info-wrap'], 'clearfix', colorClass]">
+    <!-- 訂單時間 -->
+    <div v-if="countdownSec && countdownSec > 0" :class="$style['time-tip']">
+      收款帐户不定期更换，请於<span>{{ countdownSec }}</span>内完成转帐款
+    </div>
     <!-- 收款帳號 -->
     <div
       :class="[$style['info-wrap'], $style['info-wrap-account'], 'clearfix']"
@@ -182,6 +186,10 @@ export default {
     submitStatus: {
       type: String,
       default: ''
+    },
+    limitTime: {
+        type: String,
+        default: ''
     }
   },
   data() {
@@ -191,7 +199,9 @@ export default {
       isShowQrcode: false,
       qrcodeValue: '',
       qrcodeTitle: '',
-      msg: ''
+      msg: '',
+      countdownSec: null,
+      timer: null
     };
   },
   computed: {
@@ -212,6 +222,22 @@ export default {
       },
       set(value) {
         this.speedField[value.objKey] = value.data;
+      }
+    }
+  },
+  created() {
+    if (this.limitTime) {
+      this.countdownSec = this.limitTime;
+
+      if (this.countdownSec) {
+        this.timer = setInterval(() => {
+          if (this.countdownSec === 0) {
+            clearInterval(this.timer);
+            this.timer = null;
+            return;
+          }
+          this.countdownSec -= 1;
+        }, 1000);
       }
     }
   },
@@ -248,8 +274,15 @@ export default {
       this.qrcodeValue = value;
       this.isShowQrcode = enable;
       this.qrcodeTitle = text;
+    },
+    formatTime(value) {
+
     }
-  }
+  },
+  beforeDestroy() {
+    clearInterval(this.timer);
+    this.timer = null
+  },
 };
 </script>
 

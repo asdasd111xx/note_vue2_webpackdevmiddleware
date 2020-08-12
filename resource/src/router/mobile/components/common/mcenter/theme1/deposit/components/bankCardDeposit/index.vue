@@ -654,6 +654,7 @@
       :is-show.sync="isShow"
       :required-fields="curPayInfo.field"
       :submit-status.sync="nowSubmitStatus"
+      :limit-time="limitTime"
     />
     <div v-if="isShow" :class="$style['loading-wrap']">
       <div :class="$style['loading-item']">
