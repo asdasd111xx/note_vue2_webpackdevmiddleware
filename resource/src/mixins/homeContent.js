@@ -442,9 +442,12 @@ export default {
                                 type: game.type,
                             },
                         }).then(res => {
-                            newWindow.location.href = res.data;
+                            if (res.data) {
+                                newWindow.location.href = res.data;
+                            } else {
+                                newWindow.close();
+                            }
                         }).catch(error => {
-                            newWindow.close();
                         })
 
                         break;
