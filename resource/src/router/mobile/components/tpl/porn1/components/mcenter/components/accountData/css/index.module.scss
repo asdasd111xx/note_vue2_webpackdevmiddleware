@@ -117,7 +117,7 @@
 
     .input-wrap {
         display: inline-flex;
-        height: 20px;
+        min-height: 20px;
         width: 100%;
         position: relative;
 
@@ -144,12 +144,19 @@
     justify-content: center;
     background: $main_white_color1;
     position: relative;
+    margin-bottom: 14px;
 
     >div {
         height: 30px;
         display: inline-flex;
         line-height: 30px;
         position: relative;
+    }
+
+    &.withdraw-password {
+        >div {
+            height: 100%;
+        }
     }
 
     >.title {
@@ -192,6 +199,7 @@ input {
         background-color: #d1b79c;
     }
 }
+
 
 .top-tips {
     background: $main_white_color1;
@@ -251,4 +259,44 @@ input {
     position: absolute;
     width: calc(100% - 80px);
     color: rgba(0, 0, 0, 0);
+}
+
+.withdraw-pwd-input {
+    border: none;
+    color: #414655;
+    display: block;
+    height: 40px;
+    outline: none;
+    padding: 0;
+    width: 100%;
+
+    &::-webkit-input-placeholder {
+        color: #cbced8;
+    }
+}
+
+.withdraw-pwd-input {
+    background: #ffffff;
+    border: 2px solid #cecece;
+    display: inline-block;
+    height: 40px;
+    text-align: center;
+    width: 40px;
+}
+
+.withdraw-pwd-input:not(:first-of-type) {
+    margin-left: 7.5px;
+}
+
+.service-tip {
+    margin-top: 19px;
+    text-align: center;
+    width: 100%;
+    color: $main_text_color2;
+    font-size: 14px;
+    height: 250px;
+
+    >span {
+        color: #6aaaf5;
+    }
 }

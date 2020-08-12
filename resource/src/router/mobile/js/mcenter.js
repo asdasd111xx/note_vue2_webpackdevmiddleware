@@ -47,8 +47,8 @@ export default {
                 //     component
                 // },
                 {
-                    path: 'withdrawPwd',
-                    name: 'mcenter-accountData-withdrawPwd',
+                    path: 'withdrawpwd',
+                    name: 'mcenter-accountData-withdrawpwd',
                     component
                 },
                 {

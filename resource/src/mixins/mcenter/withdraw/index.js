@@ -10,7 +10,7 @@ import {
 import { mapActions, mapGetters } from 'vuex';
 
 import ajax from '@/lib/ajax';
-import bbosRequest from "@/api/bbosRequest";
+import axios from 'axios';
 import isMobile from '@/lib/is_mobile';
 
 export default {
@@ -32,7 +32,8 @@ export default {
             },
             isLoading: false,
             cgpayBindingAccount: {},
-            thirdUrl: ''
+            thirdUrl: '',
+            showAccount: false // 帳戶資料檢查
         };
     },
     computed: {
@@ -40,7 +41,7 @@ export default {
             mobileCheck: 'getMobileCheck',
             memInfo: 'getMemInfo',
             noticeData: 'getNoticeData',
-            webInfo: 'getWebInfo'
+            webInfo: 'getWebInfo',
         }),
         /**
          * 使用者所有取款帳戶
@@ -231,8 +232,39 @@ export default {
     methods: {
         ...mapActions([
             'actionSetIsLoading',
-            'actionSetUserdata'
+            'actionSetUserdata',
+            'actionSetGlobalMessage'
         ]),
+        checkAccountData(target) {
+            this.getAccountDataStatus().then((data) => {
+                let check = true;
+                Object.keys(data.ret).every(i => {
+                    if (!data.ret[i]) {
+                        this.showAccount = true;
+                        check = false;
+                        return;
+                    }
+                })
+
+                if (check && target === "virtualBank") {
+                    this.$router.push('/mobile/mcenter/bankcard?redirect=withdraw')
+                }
+            })
+        },
+        getAccountDataStatus() {
+            return axios({
+                method: 'get',
+                url: '/api/v2/c/withdraw/check',
+            }).then((res) => {
+                if (res.data.result === "ok") {
+                    return res.data;
+                } else {
+                    this.actionSetGlobalMessage({ msg: res.data.msg })
+                }
+            }).catch(res => {
+                this.actionSetGlobalMessage({ msg: res.response.data.msg })
+            });
+        },
         /**
          * 取得取款帳戶
          * @method getWithdrawAccount

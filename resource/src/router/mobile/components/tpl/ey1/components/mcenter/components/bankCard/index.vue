@@ -27,7 +27,8 @@
         v-if="
           currentKind === 'virtualBank' &&
             currentPage === 'virtualBankCardInfo' &&
-            !showDetail
+            !showDetail &&
+            !userLevelObj.virtual_bank_single
         "
         :class="$style['header-icon']"
         @click="changeToHistory"
@@ -67,12 +68,14 @@
       :edit-status.sync="editStatus"
       :is-audit.sync="isAudit"
       :add-bank-card-step.sync="addBankCardStep"
+      :user-level-obj="userLevelObj"
     />
   </div>
 </template>
 
 <script>
-import { mapGetters } from "vuex";
+import axios from "axios";
+import { mapGetters, mapActions } from "vuex";
 import entryMixin from "@/mixins/mcenter/bankCard/index";
 
 export default {
@@ -134,15 +137,37 @@ export default {
     }
   },
   created() {
+    this.actionSetUserdata(true);
     // todo: 判斷 bank & virtualBank 是否有被啟用
-    /*
-    //   return axios({
-    //     method: "get",
-    //     url: "api/v1/c/levels/by_user",
-    //   }).then(response => {
-    */
+    return axios({
+      method: "get",
+      url: "/api/v1/c/levels/by_user"
+    }).then(response => {
+      const { result, ret } = response.data;
+      if (!response || result !== "ok") {
+        return;
+      }
+
+      this.userLevelObj = ret;
+
+      // 銀行卡/電子錢包，其中有一方關閉
+      // if (!this.userLevelObj.bank || !this.userLevelObj.virtual_bank) {
+      //   this.isShowTab = false;
+
+      //   if (this.userLevelObj.bank) {
+      //     this.currentKind = "bank";
+      //     this.currentPage = "bankCardInfo";
+      //   }
+
+      //   if (this.userLevelObj.virtual_bank) {
+      //     this.currentKind = "virtualBank";
+      //     this.currentPage = "virtualBankCardInfo";
+      //   }
+      // }
+    });
   },
   methods: {
+    ...mapActions(["actionSetUserdata"]),
     setCurrentTab(index) {
       this.currentTab = index;
       switch (index) {

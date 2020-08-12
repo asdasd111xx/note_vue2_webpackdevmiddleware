@@ -15,7 +15,8 @@ export default {
         // webviewEy1: () => import(/* webpackChunkName: 'webviewEy1' */'../../tpl/ey1/components/webview'),
         // installEy1: () => import(/* webpackChunkName: 'installEy1' */'../../tpl/ey1/components/install'),
         // shareDownloadEy1: () => import(/* webpackChunkName: 'shareDownloadEy1' */ '../../tpl/ey1/components/shareDownload'),
-        launchEy1: () => import(/* webpackChunkName: 'launchEy1' */ '../../tpl/ey1/components/launch')
+        launchEy1: () => import(/* webpackChunkName: 'launchEy1' */ '../../tpl/ey1/components/launch'),
+        withdrawAccountEy1: () => import(/* webpackChunkName: 'withdrawAccountEy1' */ '../../common/withdrawAccount')
     },
     mcenter: {
         homeEy1: () => import(/* webpackChunkName: 'homeEy1' */'../../tpl/ey1/components/mcenter/components/home'),
@@ -54,9 +55,9 @@ export default {
         accountDataLineEy1: () => import(/* webpackChunkName: 'accountDataLineEy1' */'../../tpl/porn1/components/mcenter/components/accountData/components/account/form/editLine'),
         accountDataWeixinEy1: () => import(/* webpackChunkName: 'accountDataWeixinEy1' */'../../tpl/porn1/components/mcenter/components/accountData/components/account/form/editWeixin'),
         accountDataBirthdayEy1: () => import(/* webpackChunkName: 'accountDataBirthdayEy1' */'../../tpl/porn1/components/mcenter/components/accountData/components/account/form/editBirthday'),
-        accountDataWithdrawPwdEy1: () => import(/* webpackChunkName: 'accountDataWithdrawPwdEy1' */'../../tpl/porn1/components/mcenter/components/accountData/components/account/form/editWithdrawPwd'),
+        accountDataWithdrawpwdEy1: () => import(/* webpackChunkName: 'accountDataWithdrawpwdEy1' */'../../tpl/porn1/components/mcenter/components/accountData/components/account/form/editWithdrawPwd'),
         walletEy1: () => import(/* webpackChunkName: 'walletEy1' */'../../tpl/ey1/components/mcenter/components/wallet'),
         makeMoneyEy1: () => import(/* webpackChunkName: 'makeMoneyEy1' */'../../tpl/ey1/components/mcenter/components/makeMoney'),
-        historyCardEy1: () => import(/* webpackChunkName: 'historyCardEy1 */'../../tpl/ey1/components/mcenter/components/historyCard')
+        historyCardEy1: () => import(/* webpackChunkName: 'historyCardEy1' */'../../tpl/ey1/components/mcenter/components/historyCard')
     }
 };

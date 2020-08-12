@@ -38,7 +38,7 @@
       </div>
       <div :class="{ [$style['no-data']]: bankCard.length === 0 }">
         <div v-if="bankCard.length === 0" :class="$style['no-bankcard']">
-          <img src="/static/image/_new/mcenter/no_bankcard.png" />
+          <img src="/static/image/porn1/mcenter/bankCard/no_bankcard.png" />
         </div>
         <template v-if="bankCard.length < 3">
           <div :class="$style['add-card']">
@@ -47,7 +47,7 @@
                 :class="$style['add-btn']"
                 @click="changePage('addBankCard')"
               >
-                <img src="/static/image/_new/mcenter/add.png" />
+                <img src="/static/image/porn1/mcenter/add_2.png" />
                 <span>{{ $text("S_ADD_BANKCARD", "添加银行卡") }}</span>
               </div>
             </div>
@@ -159,8 +159,8 @@ export default {
     getBankImage(swiftCode) {
       return {
         src: `https://images.dormousepie.com/icon/bankIconBySwiftCode/${swiftCode}.png`,
-        error: this.$getCdnPath('/static/image/_new/default/bank_default_2.png'),
-        loading: this.$getCdnPath('/static/image/_new/default/bank_default_2.png')
+        error: this.$getCdnPath('/static/image/porn1/default/bank_default_2.png'),
+        loading: this.$getCdnPath('/static/image/porn1/default/bank_default_2.png')
       };
     }
   }

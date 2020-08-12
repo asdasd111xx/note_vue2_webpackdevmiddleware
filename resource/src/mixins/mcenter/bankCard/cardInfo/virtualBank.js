@@ -5,9 +5,11 @@ export default {
   data() {
     return {
       isRevice: false,
+      isShowPop: false,
+      hasSameTypeCard: false,
+      vBankList: [],
       virtualBank_card: [],
       virtualBank_cardDetail: {},
-      isShowPop: false,
     }
   },
   computed: {
@@ -17,6 +19,19 @@ export default {
   },
   methods: {
     ...mapActions(['actionSetGlobalMessage']),
+    getVirtualBankList() {
+      // Get 錢包類型
+      axios({
+        method: "get",
+        url: "/api/payment/v1/c/virtual/bank/list"
+      }).then(res => {
+        if (!res.data || res.data.result !== "ok") {
+          return;
+        }
+
+        this.vBankList = res.data.ret;
+      });
+    },
     getUserVirtualBankList() {
       this.isRevice = false;
 
@@ -39,10 +54,25 @@ export default {
     },
     getVirtualBankDetail(info) {
       this.virtualBank_cardDetail = info;
+      this.hasSameTypeCard = false;
+
+      // Find the mutiple same type card
+      let count =
+        this.virtualBank_card
+          .filter(item => {
+            return info.payment_gateway_id === item.payment_gateway_id;
+          }).length
+
+      if (count > 1) {
+        this.hasSameTypeCard = true;
+      }
+
+      this.$emit('update:isAudit', false)
       this.$emit("update:showDetail", true);
 
       if (info.auditing) {
-        this.$emit('update:isAudit', true)
+        this.$emit('update:isAudit', true);
+        return;
       }
     },
     moveCard() {

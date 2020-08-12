@@ -21,7 +21,8 @@ export default {
         webviewPorn1: () => import(/* webpackChunkName: 'webviewPorn1' */'../../tpl/porn1/components/webview'),
         installPorn1: () => import(/* webpackChunkName: 'installPorn1' */'../../tpl/porn1/components/install'),
         shareDownloadPorn1: () => import(/* webpackChunkName: 'shareDownloadPorn1' */ '../../tpl/porn1/components/shareDownload'),
-        launchPorn1: () => import(/* webpackChunkName: 'launchPorn1' */ '../../tpl/porn1/components/launch')
+        launchPorn1: () => import(/* webpackChunkName: 'launchPorn1' */ '../../tpl/porn1/components/launch'),
+        withdrawAccountPorn1: () => import(/* webpackChunkName: 'withdrawAccountPorn1' */ '../../common/withdrawAccount')
     },
     mcenter: {
         homePorn1: () => import(/* webpackChunkName: 'homePorn1' */'../../tpl/porn1/components/mcenter/components/home'),
@@ -60,7 +61,7 @@ export default {
         accountDataLinePorn1: () => import(/* webpackChunkName: 'accountDataLinePorn1' */'../../tpl/porn1/components/mcenter/components/accountData/components/account/form/editLine'),
         accountDataWeixinPorn1: () => import(/* webpackChunkName: 'accountDataWeixinPorn1' */'../../tpl/porn1/components/mcenter/components/accountData/components/account/form/editWeixin'),
         accountDataBirthdayPorn1: () => import(/* webpackChunkName: 'accountDataBirthdayPorn1' */'../../tpl/porn1/components/mcenter/components/accountData/components/account/form/editBirthday'),
-        accountDataWithdrawPwdPorn1: () => import(/* webpackChunkName: 'accountDataBirthdayPorn1' */'../../tpl/porn1/components/mcenter/components/accountData/components/account/form/editWithdrawPwd'),
+        accountDataWithdrawpwdPorn1: () => import(/* webpackChunkName: 'accountDataWithdrawpwdPorn1' */'../../tpl/porn1/components/mcenter/components/accountData/components/account/form/editWithdrawPwd'),
         walletPorn1: () => import(/* webpackChunkName: 'walletPorn1' */'../../tpl/porn1/components/mcenter/components/wallet'),
         makeMoneyPorn1: () => import(/* webpackChunkName: 'makeMoneyPorn1' */'../../tpl/porn1/components/mcenter/components/makeMoney')
     }

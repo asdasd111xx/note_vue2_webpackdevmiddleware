@@ -6,24 +6,30 @@
         <div :class="$style['title']">{{ title }}</div>
 
         <div :class="$style['qrcode-img']">
-          <!-- <qrcode
-            :value="qrcodeLink"
-            :options="{ width: 75, margin: 1 }"
-            tag="img"
-          /> -->
+          <template v-if="qrcodeLink">
+            <img ref="qrcodeRef" :src="qrcodeLink" alt="qrcode" />
+          </template>
         </div>
         <p>长按下载图片</p>
 
-        <div :class="$style['timer']">{{ timer }}秒后连结失败，并关闭视窗</div>
+        <div :class="$style['countdownSec']">
+          <span v-if="countdownSec">{{ countdownSec }}</span>
+          秒后连结失败，并关闭视窗
+        </div>
 
         <div :class="$style['tips']">
-          <template v-if="walletId === 37">
+          <template v-if="walletId === 21">
             <div>● 请使用CGPay内扫描器扫描二維碼</div>
             <div>● 成功绑定钱包后，此视窗自动关闭</div>
-            <div>● 没有CGPay帐号?<span>立即申请</span></div>
+            <div>
+              ● 没有CGPay帐号?
+              <span :class="$style['url']" @click="openLink('http://oinbox.io')"
+                >立即申请</span
+              >
+            </div>
           </template>
 
-          <template v-if="walletId === 21">
+          <template v-if="walletId === 37">
             <div>● 请使用扫描器扫描二維碼</div>
             <div>● 成功绑定钱包后，此视窗自动关闭</div>
           </template>
@@ -32,7 +38,7 @@
 
       <div :class="$style['button-block']">
         <span @click="$emit('update:isShowPop', false)">关闭</span>
-        <span>长按下载图片</span>
+        <span @click="downloadImage">长按下载图片</span>
       </div>
     </div>
   </div>
@@ -40,7 +46,7 @@
 
 <script>
 import axios from "axios";
-import bbosRequest from "@/api/bbosRequest";
+import html2canvas from "html2canvas";
 import { mapGetters } from "vuex";
 
 export default {
@@ -56,7 +62,8 @@ export default {
   },
   data() {
     return {
-      timer: 60,
+      countdownSec: 0,
+      timer: null,
       qrcodeLink: ""
     };
   },
@@ -74,28 +81,69 @@ export default {
     }
   },
   created() {
-    console.log(this.walletId);
     this.getQrcode();
   },
   methods: {
-    // walletGatewayId = 3 ---> CGPay ??
-    // 購寶 id ?
     getQrcode() {
-      bbosRequest({
-        url: this.siteConfig.BBOS_DOMIAN + "/Ext/V2/Withdraw/Bind/Wallet",
+      // walletGatewayId = 3 -> CGPay
+      // walletGatewayId = 2 -> 購寶
+      let id = null;
+      if (this.walletId === 37) {
+        id = 2;
+      } else if (this.walletId === 21) {
+        id = 3;
+      }
+
+      axios({
+        url: "/api/v1/c/ext/inpay?api_uri=/api/trade/v2/c/withdraw/bind_wallet",
         method: "get",
-        reqHeaders: {
-          Vendor: this.memInfo.user.domain
-        },
         params: {
-          bindType: "withdraw",
-          walletGatewayId: 3,
-          lang: "zh-cn"
+          bind_type: "withdraw",
+          wallet_gateway_id: id
         }
-      }).then(res => {
-        console.log(res);
-      });
+      })
+        .then(res => {
+          const { result, ret } = res.data;
+          if (!res && result !== "ok") {
+            return;
+          }
+          this.countdownSec = ret.expire_at;
+          this.qrcodeLink = ret.url;
+        })
+        .then(() => {
+          this.timer = setInterval(() => {
+            if (this.countdownSec === 0) {
+              clearInterval(this.timer);
+              this.timer = null;
+              this.$emit("update:isShowPop", false);
+              return;
+            }
+            this.countdownSec -= 1;
+          }, 1000);
+        });
+    },
+    openLink(url) {
+      window.open(url);
+    },
+    downloadImage() {
+      if (this.qrcodeLink) {
+        html2canvas(this.$refs["qrcodeRef"], {
+          allowTaint: false,
+          useCORS: true
+        }).then(canvas => {
+          let link = document.createElement("a");
+          link.href = canvas.toDataURL("image/png");
+          link.setAttribute("download", "qrcode.png");
+          link.style.display = "none";
+          document.body.appendChild(link);
+          link.click();
+        });
+      }
     }
+  },
+  beforeDestroy() {
+    clearInterval(this.timer);
+    this.timer = null;
   }
 };
 </script>
@@ -142,12 +190,14 @@ export default {
 
   .qrcode-img {
     position: relative;
-    width: 83px;
-    height: 83px;
+    margin: 0 auto;
+    margin-top: 10px;
+    min-height: 80px;
 
     img {
-      width: 100%;
-      height: 100%;
+      width: 80px;
+      height: 80px;
+      vertical-align: middle;
     }
   }
 
@@ -156,13 +206,18 @@ export default {
     margin: 8px 0;
   }
 
-  .timer {
+  .countdownSec {
     color: $main_error_color1;
   }
 
   .tips {
     padding: 16px 0;
     text-align: left;
+  }
+
+  .url {
+    color: #6aaaf5;
+    text-decoration: underline;
   }
 }
 

@@ -184,11 +184,11 @@
       "
     />
 
-    <!-- 添加电子钱包 -->
+    <!-- to do 添加电子钱包 -->
     <div v-if="themeTPL === 'ey1'" :class="[$style['add-bank-card']]">
       <img :src="$getCdnPath(`/static/image/${themeTPL}/mcenter/add.png`)" />
       &nbsp;
-      <span @click="$router.push('/mobile/mcenter/bankcard?redirect=withdraw')">
+      <span @click="checkAccountData('virtualBank')">
         {{ $text("S_ADD_VIRTUAL_BANKCARD", "添加电子钱包") }}
       </span>
     </div>
@@ -320,12 +320,12 @@
     <!-- 帐户资料 -->
     <withdrawAccount
       v-if="showAccount"
+      :isSlider="true"
       @close="
         () => {
           showAccount = false;
         }
       "
-      :column="accountShowColumn"
     />
     <page-loading :is-show="isLoading" />
     <message v-if="msg" @close="msg = ''">
@@ -349,8 +349,9 @@ import message from "@/router/mobile/components/common/message";
 import mixin from '@/mixins/mcenter/withdraw';
 import serialNumber from './serialNumber'
 import widthdrawTips from './widthdrawTips';
+import withdrawAccount from '@/router/mobile/components/common/withdrawAccount/index';
 import withdrawMoreMethod from './withdrawMoreMethod';
-import withdrawAccount from './withdrawAccount'
+
 import {
   API_MCENTER_WITHDRAW,
   API_TRADE_RELAY,
@@ -382,12 +383,6 @@ export default {
       selectedCard: '',
       showMoreMethod: false,
       widthdrawTipsType: "tips",
-      accountShowColumn: {
-        showName: false,
-        withdrawPwd: false,
-        phone: false
-      },
-      showAccount: false
     }
   },
   components: {

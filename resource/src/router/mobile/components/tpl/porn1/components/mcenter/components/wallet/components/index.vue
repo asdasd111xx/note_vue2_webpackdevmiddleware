@@ -181,12 +181,14 @@
 
 <script>
 import { mapGetters, mapActions } from 'vuex';
-import Vue from 'vue';
-import ajax from '@/lib/ajax';
-import EST from '@/lib/EST';
-import balanceTran from '@/components/mcenter/components/balanceTran';
-import message from "@/router/mobile/components/common/message";
 import { getCookie } from '@/lib/cookie';
+import ajax from '@/lib/ajax';
+import axios from 'axios'
+import balanceTran from '@/components/mcenter/components/balanceTran';
+import EST from '@/lib/EST';
+import message from "@/router/mobile/components/common/message";
+import Vue from 'vue';
+import withdrawAccount from '@/router/mobile/components/common/withdrawAccount/index';
 import yaboRequest from '@/api/yaboRequest';
 
 export default {
@@ -204,6 +206,7 @@ export default {
       isShowTrans: false,
       mainListData: [],
       mainNoData: false,
+      isCheckWithdraw: false,
       walletIcons: [
         {
           key: 'transfer',
@@ -220,7 +223,43 @@ export default {
           text: this.$text('S_WITHDRAWAL_TEXT', '提现'),
           imgSrc: '/static/image/_new/mcenter/wallet/ic_wallter_withdraw.png',
           onClick: () => {
-            this.$router.push('/mobile/mcenter/withdraw');
+            if (this.siteConfig.MOBILE_WEB_TPL !== 'ey1') {
+              this.$router.push('/mobile/mcenter/withdraw');
+              return;
+            }
+
+            if (this.isCheckWithdraw) { return; }
+            this.isCheckWithdraw = true;
+            axios({
+              method: 'get',
+              url: '/api/v2/c/withdraw/check',
+            }).then((res) => {
+              this.isCheckWithdraw = false;
+              if (res.data.result === "ok") {
+                let check = true;
+
+                Object.keys(res.data.ret).every(i => {
+                  if (i === "bank" && !res.data.ret[i]) {
+                    this.actionSetGlobalMessage({ type: 'bindcard', origin: 'withdraw', code: 'bindcard' })
+                    check = false;
+                    return;
+                  }
+                  else if (i !== "bank" && !data.ret[i]) {
+                    this.$router.push('/mobile/withdrawAccount');
+                    check = false;
+                    return;
+                  }
+                })
+                if (check) {
+                  this.$router.push('/mobile/mcenter/withdraw');
+                }
+              } else {
+                this.actionSetGlobalMessage({ msg: res.data.msg })
+              }
+            }).catch(res => {
+              this.isCheckWithdraw = false;
+              this.actionSetGlobalMessage({ msg: res.response.data.msg })
+            });
           }
         },
         {

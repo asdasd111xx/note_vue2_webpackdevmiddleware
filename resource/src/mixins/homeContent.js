@@ -24,6 +24,7 @@ export default {
             selectedIndex: 0,
             currentLevel: 0,
             isShowLoading: false,
+            isCheckWithdraw: false,
             mcenterList: [
                 { name: 'deposit', text: '充值' },
                 { name: 'balanceTrans', text: '转帐' },
@@ -347,6 +348,44 @@ export default {
             } else if (path === 'creditTrans') {
                 this.actionGetRechargeStatus('home');
                 return;
+            } else if (path === "withdraw") {
+                if (this.siteConfig.MOBILE_WEB_TPL !== 'ey1') {
+                    this.$router.push('/mobile/mcenter/withdraw');
+                    return;
+                }
+
+                if (this.isCheckWithdraw) { return; }
+                this.isCheckWithdraw = true;
+                axios({
+                    method: 'get',
+                    url: '/api/v2/c/withdraw/check',
+                }).then((res) => {
+                    this.isCheckWithdraw = false;
+                    if (res.data.result === "ok") {
+                        let check = true;
+
+                        Object.keys(res.data.ret).every(i => {
+                            if (i === "bank" && !res.data.ret[i]) {
+                                this.actionSetGlobalMessage({ type: 'bindcard', origin: 'withdraw', code: 'bindcard' })
+                                check = false;
+                                return;
+                            }
+                            else if (i !== "bank" && !data.ret[i]) {
+                                this.$router.push('/mobile/withdrawAccount');
+                                check = false;
+                                return;
+                            }
+                        })
+                        if (check) {
+                            this.$router.push('/mobile/mcenter/withdraw');
+                        }
+                    } else {
+                        this.actionSetGlobalMessage({ msg: res.data.msg })
+                    }
+                }).catch(res => {
+                    this.isCheckWithdraw = false;
+                    this.actionSetGlobalMessage({ msg: res.response.data.msg })
+                });
             } else {
                 this.$router.push(`/mobile/mcenter/${path}`);
             }
@@ -392,10 +431,10 @@ export default {
                     case 'STB':
                     case 'JPB':
                     case 'DSC':
-                        let newWindow = window.open(' ');
-                        axios({
+                        let newWindow = window.open('');
+                        yaboRequest({
                             method: 'get',
-                            url: `${this.siteConfig.YABO_API_DOMAIN}/thirdparty/url​`,
+                            url: `${this.siteConfig.YABO_API_DOMAIN}/thirdparty/url`,
                             headers: {
                                 'x-domain': this.memInfo.user.domain
                             },
@@ -403,12 +442,12 @@ export default {
                                 type: game.type,
                             },
                         }).then(res => {
-                            newWindow.location.href = res.data.data;
+                            newWindow.location.href = res.data;
                         }).catch(error => {
                             newWindow.close();
                         })
-                        break;
 
+                        break;
                     case 'YV':
                         this.$router.push({
                             name: 'videoList',

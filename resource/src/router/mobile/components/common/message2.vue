@@ -105,6 +105,7 @@ export default {
           // 銀行卡
           case "C50099":
           case "C50102":
+          case "bindcard":
             this.$router.push(`/mobile/mcenter/bankCard?redirect=${redirect ? redirect : 'home'}`);
             break;
           // 重新登入
