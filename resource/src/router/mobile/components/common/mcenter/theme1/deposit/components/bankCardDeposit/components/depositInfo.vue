@@ -129,7 +129,10 @@
     <div
       :class="[
         $style['submit-btn'],
-        { [$style['disabled']]: isSubmitDisabled }
+        {
+          [$style['disabled']]:
+            isSubmitDisabled || (countdownSec < 1 && isShowTimer)
+        }
       ]"
       :title="
         orderData.methodType !== 'remit'
@@ -215,6 +218,7 @@ export default {
       msg: "",
       // 計時器 params
       countdownSec: this.limitTime,
+      // countdownSec: 70, // 測試用
       timer: null,
       isShowTimer: false
     };
@@ -251,7 +255,6 @@ export default {
         if (this.countdownSec === 0) {
           clearInterval(this.timer);
           this.timer = null;
-          this.isShowTimer = false;
           return;
         }
         this.countdownSec -= 1;
