@@ -1,0 +1,9 @@
+@import './sendFeedback.module.scss';
+
+.submit {
+    background: #E42A30;
+
+    &.disabled {
+        background: #FDCCCC;
+    }
+}

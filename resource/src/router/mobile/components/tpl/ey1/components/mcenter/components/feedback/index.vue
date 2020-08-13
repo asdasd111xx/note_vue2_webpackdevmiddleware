@@ -12,7 +12,7 @@ import mobileContainer from '../../../common/mobileContainer';
 export default {
   components: {
     mobileContainer,
-    feedback: () => import(/* webpackChunkName: 'sendFeedback' */ './components/index'),
+    feedback: () => import(/* webpackChunkName: 'sendFeedback' */ '@/router/mobile/components/tpl/porn1/components/mcenter/components/feedback/components/index'),
   },
   computed: {
     headerConfig() {
