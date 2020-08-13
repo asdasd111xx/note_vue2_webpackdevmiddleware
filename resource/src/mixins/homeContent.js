@@ -35,7 +35,7 @@ export default {
             mcenterEy1List: [
                 { name: 'deposit', text: '充值' },
                 { name: 'balanceTrans', text: '转帐' },
-                { name: 'withdraw', text: '提现' },
+                { name: 'makemoney', text: '推广' },
                 { name: 'vip', text: 'vip' },
             ]
         };
@@ -157,10 +157,10 @@ export default {
             return {
                 src: info.image,
                 error: this.$getCdnPath(
-                    `/static/image/_new/common/default_${info.imageType}.png`
+                    `/static/image/${this.siteConfig.MOBILE_WEB_TPL}/default/default_${info.imageType}.png`
                 ),
                 loading: this.$getCdnPath(
-                    `/static/image/_new/common/default_${info.imageType}.png`
+                    `/static/image/${this.siteConfig.MOBILE_WEB_TPL}/default/default_${info.imageType}.png`
                 )
             };
         },
