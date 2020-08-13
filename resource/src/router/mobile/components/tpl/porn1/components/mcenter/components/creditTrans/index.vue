@@ -111,7 +111,7 @@ export default {
           this.currentTemplate = "discount-credit-trans";
           break;
         case 1:
-          if (this.isLock) return;
+          if (this.isLock || this.currentTemplate === "transfer-credit-trans") return;
           this.isLock = true;
           if (this.rechargeConfig && !this.rechargeConfig.enable) {
             this.actionSetGlobalMessage({ msg: '额度转让升级中' });
@@ -133,12 +133,12 @@ export default {
               this.actionSetGlobalMessage({ code: 'recharge_deposit', origin: 'creditTrans', msg: '只需充值一次 开通转让功能' });
             })
 
-            setTimeout(() => {
-              this.isLock = false
-            }, 1000)
           } else {
             this.currentTemplate = "transfer-credit-trans";
           }
+          setTimeout(() => {
+            this.isLock = false
+          }, 1000)
           break;
         case 2:
           this.currentTemplate = "recoard-credit-trans";

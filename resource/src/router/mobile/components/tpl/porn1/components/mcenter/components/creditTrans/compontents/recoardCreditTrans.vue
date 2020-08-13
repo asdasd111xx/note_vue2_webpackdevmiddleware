@@ -11,7 +11,7 @@
 
 <script>
 import { mapGetters, mapActions } from "vuex";
-import mixin from '@/mixins/mcenter/creditTrans/creditTrans';
+import mixin from '@/mixins/mcenter/creditTrans/recharge';
 import recoardDetailSlider from './recoardDetailSilder';
 
 export default {

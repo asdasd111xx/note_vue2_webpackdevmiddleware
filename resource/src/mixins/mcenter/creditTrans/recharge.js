@@ -159,10 +159,10 @@ export default {
             }
 
             this.isSendKeyring = true;
-            axios({
+            return axios({
                 method: 'get',
                 url: '/api/v1/c/recharge/check',
-                data: {
+                params: {
                     target_username: this.formData.target_username,
                     amount: this.formData.amount
                 }
@@ -171,13 +171,15 @@ export default {
                 this.isSendKeyring = false;
 
                 if (res && res.data && res.data.result === "ok") {
-                    this.getKeyring();
+                    return true;
                 } else {
                     this.setErrorCode(res.data);
+                    return false;
                 }
             }).catch(error => {
                 this.isSendKeyring = false;
                 this.setErrorCode(error.response.data);
+                return false;
             })
         },
         // 獲取驗證碼
