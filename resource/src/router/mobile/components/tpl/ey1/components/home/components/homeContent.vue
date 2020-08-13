@@ -276,11 +276,17 @@ export default {
   }
 }
 
+@media only screen and (max-width: 374px) {
+  .mcenter-login-status-wrap {
+    max-width: 33%;
+  }
+}
+
 .mcenter-login-status-wrap {
   padding-left: 5px;
   float: left;
   height: 100%;
-  width: 33%;
+  width: 140px;
 
   > .not-login-wrap {
     > div {
@@ -295,7 +301,7 @@ export default {
 
     > div:last-of-type {
       height: 50%;
-      line-height: 25px;
+      line-height: 20px;
       font-size: 13px;
       font-weight: 400;
       text-align: left;
