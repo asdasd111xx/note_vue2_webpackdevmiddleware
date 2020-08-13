@@ -59,7 +59,7 @@ export default {
     headerConfig() {
       return {
         prev: true,
-        title: "推广赚钱",
+        title: "一键快赚",
         customLinkTitle: '礼金明细',
         customLinkAction: () => {
           this.$router.push('/mobile/mcenter/tcenter/recommendGift');

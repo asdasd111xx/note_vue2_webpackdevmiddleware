@@ -15,7 +15,7 @@
             />
           </div>
           <div :class="$style['title']">
-            鸭博娱乐
+            {{ siteName }}
           </div>
           <div :class="$style['time']">
             {{ getTime(data.id) }}
@@ -113,6 +113,9 @@ export default {
       loginStatus: 'getLoginStatus',
       noticeData: 'getNoticeData',
     }),
+    siteName() {
+      return this.siteConfig.SITE_NAME;
+    }
   },
   methods: {
     ...mapActions([

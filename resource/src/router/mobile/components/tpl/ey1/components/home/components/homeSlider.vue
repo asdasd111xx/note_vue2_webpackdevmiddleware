@@ -103,11 +103,11 @@ export default {
         ...init,
         image: {
           ...init.image,
-          [key]: `/static/image/_new/default/bg_banner_d.png`
+          [key]: `/static/image/ey1/default/bg_banner_d.png`
         },
         padImg: {
           ...init.padImg,
-          [key]: `/static/image/_new/default/bg_banner_d.png`
+          [key]: `/static/image/ey1/default/bg_banner_d.png`
         }
       }), {});
 
