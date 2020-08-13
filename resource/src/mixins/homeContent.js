@@ -431,6 +431,11 @@ export default {
                     case 'STB':
                     case 'JPB':
                     case 'DSC':
+                        if (!this.loginStatus) {
+                            this.$router.push('/mobile/login');
+                            return;
+                        }
+
                         let newWindow = window.open('');
                         yaboRequest({
                             method: 'get',
