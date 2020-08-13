@@ -73,7 +73,9 @@ export default {
   watch: {
     noticeData() {
       if (this.noticeData && this.noticeData.length > 0) {
-        this.data = this.noticeData.pop();
+        // this.data = this.noticeData.pop();
+        this.data = this.noticeData[this.noticeData.length - 1];
+
         // 目前只接通知
         if (this.data.event === ("notice")) {
           this.show();

@@ -47,7 +47,7 @@
 <script>
 import axios from "axios";
 import html2canvas from "html2canvas";
-import { mapGetters } from "vuex";
+import { mapGetters, mapActions } from "vuex";
 
 export default {
   props: {
@@ -84,6 +84,7 @@ export default {
     this.getQrcode();
   },
   methods: {
+    ...mapActions(["actionSetGlobalMessage"]),
     getQrcode() {
       // walletGatewayId = 3 -> CGPay
       // walletGatewayId = 2 -> 購寶
@@ -101,16 +102,20 @@ export default {
           bind_type: "withdraw",
           wallet_gateway_id: id
         }
-      })
-        .then(res => {
-          const { result, ret } = res.data;
-          if (!res && result !== "ok") {
-            return;
-          }
-          this.countdownSec = ret.expire_at;
-          this.qrcodeLink = ret.url;
-        })
-        .then(() => {
+      }).then(res => {
+        const { result, ret } = res.data;
+        if (result !== "ok") {
+          this.actionSetGlobalMessage({ msg: res.data.msg });
+
+          setTimeout(() => {
+            this.$emit("update:isShowPop", false);
+          }, 3000);
+          return;
+        }
+        this.countdownSec = ret.expire_at;
+        this.qrcodeLink = ret.url;
+
+        if (this.countdownSec) {
           this.timer = setInterval(() => {
             if (this.countdownSec === 0) {
               clearInterval(this.timer);
@@ -120,7 +125,8 @@ export default {
             }
             this.countdownSec -= 1;
           }, 1000);
-        });
+        }
+      });
     },
     openLink(url) {
       window.open(url);
