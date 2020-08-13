@@ -40,7 +40,7 @@ export default {
         tcenterRecommendGiftEy1: () => import(/* webpackChunkName: 'tcenteRecommendGiftEy1' */'../../tpl/ey1/components/mcenter/components/tcenter/components/recommendGift'),
         aboutEy1: () => import(/* webpackChunkName: 'aboutEy1' */'../../tpl/ey1/components/mcenter/components/about'),
         settingEy1: () => import(/* webpackChunkName: 'settingEy1' */'../../tpl/ey1/components/mcenter/components/setting'),
-        // feedbackEy1: () => import(/* webpackChunkName: 'feedbackEy1' */'../../tpl/ey1/components/mcenter/components/feedback'),
+        feedbackEy1: () => import(/* webpackChunkName: 'feedbackEy1' */'../../tpl/ey1/components/mcenter/components/feedback'),
         helpEy1: () => import(/* webpackChunkName: 'helpEy1' */'../../tpl/ey1/components/mcenter/components/help'),
         //     helpDepositEy1: () => import(/* webpackChunkName: 'helpDepositEy1' */'../../tpl/ey1/components/mcenter/components/help/page/deposit'),
         //     helpWithdrawEy1: () => import(/* webpackChunkName: 'helpWithdrawEy1' */'../../tpl/ey1/components/mcenter/components/help/page/withdraw'),

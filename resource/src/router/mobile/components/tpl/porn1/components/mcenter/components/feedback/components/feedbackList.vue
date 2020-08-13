@@ -19,15 +19,16 @@
             @click="getCurrentMassage(message)"
           >
             <div :class="$style['feedback-icon']">
-              <img
-                :src="
-                  `/static/image/_new/mcenter/feedback/question_${
-                    iconList[memInfo.user.domain][message.type_id]
-                      ? iconList[memInfo.user.domain][message.type_id]
-                      : 8
-                  }.png`
-                "
-              />
+              <template v-if="typeList.length > 0">
+                <img
+                  :src="
+                    `/static/image/_new/mcenter/feedback/question_${
+                      typeList.find(i => i.id === String(message.type_id))
+                        .imageId
+                    }.png`
+                  "
+                />
+              </template>
             </div>
             <div :class="$style['feedback-content']">
               <div class="clearfix">
@@ -46,26 +47,20 @@
       <div :class="$style['feedback-detail']">
         <div :class="$style['detail-content']">
           <div :class="[$style['detail-title'], 'clearfix']">
-            <img
-              :src="
-                `/static/image/_new/mcenter/feedback/question_${
-                  iconList[memInfo.user.domain][currentFeedback.type_id]
-                    ? iconList[memInfo.user.domain][currentFeedback.type_id]
-                    : 8
-                }.png`
-              "
-            />
+            <template v-if="typeList.length > 0">
+              <img
+                :src="
+                  `/static/image/_new/mcenter/feedback/question_${
+                    typeList.find(i => i.id === String(currentFeedback.type_id))
+                      .imageId
+                  }.png`
+                "
+              />
+            </template>
             <h3>{{ currentFeedback.title }}</h3>
           </div>
           <div :class="[$style['detail-question'], 'clearfix']">
-            <img
-              :class="$style['detail-icon']"
-              :src="
-                `/static/image/_new/mcenter/default/avatar_${
-                  memInfo.user.image !== 0 ? memInfo.user.image : 1
-                }.png`
-              "
-            />
+            <img :class="$style['detail-icon']" :src="avatarSrc" />
             <div :class="$style['question-info']">
               <div :class="$style['question-name']">
                 {{ memInfo.user.username }}
@@ -89,7 +84,7 @@
             />
             <div :class="$style['question-info']">
               <div :class="$style['question-name']">
-                鸭博娱乐
+                {{ siteName }}
               </div>
               <p
                 :class="$style['question-description']"
@@ -114,6 +109,17 @@ import { API_FEEDBACK_REPLIED_LIST } from '@/config/api';
 import EST from '@/lib/EST';
 
 export default {
+  props: {
+    typeList: {
+      type: Array,
+      default: () => []
+    }
+  },
+  watch: {
+    typeList() {
+      console.log(this.typeList)
+    }
+  },
   filters: {
     getTime(time) {
       if (!time) {
@@ -137,52 +143,27 @@ export default {
       unReadCount: 0,
       repliedList: [],
       isReceive: false,
-      iconList: {
-        500015: {
-          260: 1,
-          261: 2,
-          262: 3,
-          263: 4,
-          264: 5,
-          265: 6,
-          266: 7
-        },
-        69: {
-          90: 1,
-          91: 2,
-          92: 3,
-          93: 4,
-          94: 5,
-          95: 6,
-          96: 7
-        },
-        67: {
-          79: 1,
-          80: 2,
-          81: 3,
-          82: 4,
-          83: 5,
-          84: 6,
-          85: 7
-        }
-      }
+      avatarSrc: `/static/image/_new/mcenter/avatar_nologin.png`,
     };
   },
   computed: {
     ...mapGetters({
-      memInfo: 'getMemInfo'
-    })
-    // currentData() {
-    //     if (!this.$route.params.pid) {
-    //         return '';
-    //     }
-
-    //     return this.currentFeedback;
-    // }
+      memInfo: 'getMemInfo',
+      siteConfig: 'getSiteConfig',
+      loginStatus: 'getLoginStatus',
+    }),
+    $style() {
+      const style = this[`$style_${this.siteConfig.MOBILE_WEB_TPL}`] || this.$style_porn1;
+      return style;
+    },
+    siteName() {
+      return this.siteConfig.SITE_NAME;
+    }
   },
   created() {
     this.getFeedbackRecord();
     this.getRepliedList();
+    this.getAvatarSrc();
   },
   methods: {
     getFeedbackRecord() {
@@ -208,9 +189,30 @@ export default {
         }
         this.repliedList = response.ret;
       });
-    }
+    },
+    getAvatarSrc() {
+      if (!this.loginStatus) return;
+
+      const imgSrcIndex = this.memInfo.user.image;
+      if (this.memInfo.user && this.memInfo.user.custom) {
+        axios({
+          method: 'get',
+          url: this.memInfo.user.custom_image,
+        }).then(res => {
+          if (res && res.data && res.data.result === "ok") {
+            this.avatarSrc = res.data.ret;
+          }
+        }).catch(error => {
+          this.actionSetGlobalMessage({ msg: error.data.msg });
+          this.avatarSrc = this.$getCdnPath(`/static/image/_new/mcenter/default/avatar_${imgSrcIndex}.png`);
+        })
+      } else {
+        this.avatarSrc = this.$getCdnPath(`/static/image/_new/mcenter/default/avatar_${imgSrcIndex}.png`);
+      }
+    },
   }
 };
 </script>
 
-<style lang="scss" src="./css/feedbackList.module.scss" module />
+<style lang="scss" src="./css/feedbackList.module.scss" module="$style_porn1"></style>
+<style lang="scss" src="./css/ey1.feedbackList.scss" module="$style_ey1"></style>

@@ -9,12 +9,11 @@
         :class="$style['select-icon']"
         :src="
           `/static/image/_new/mcenter/feedback/question_${
-            iconList[memInfo.user.domain][paramsData.type_id]
-              ? iconList[memInfo.user.domain][paramsData.type_id]
-              : 8
+            typeList.find(i => i.id === String(paramsData.type_id)).imageId
           }.png`
         "
       />
+
       <span :class="{ [$style['select-active']]: paramsData.title }">
         {{
           paramsData.title ||
@@ -84,11 +83,7 @@
           >
             <img
               :src="
-                `/static/image/_new/mcenter/feedback/question_${
-                  iconList[memInfo.user.domain][item.id]
-                    ? iconList[memInfo.user.domain][item.id]
-                    : 8
-                }.png`
+                `/static/image/_new/mcenter/feedback/question_${item.imageId}.png`
               "
             />
             {{ item.content }}
@@ -107,10 +102,14 @@
 <script>
 import { mapGetters, mapActions } from 'vuex';
 import ajax from '@/lib/ajax';
-import { API_FEEDBACK_TYPE_LIST, API_FEEDBACK_CREATED } from '@/config/api';
+import { API_FEEDBACK_CREATED } from '@/config/api';
 
 export default {
-  components: {
+  props: {
+    typeList: {
+      type: Array,
+      default: () => []
+    }
   },
   data() {
     return {
@@ -121,7 +120,6 @@ export default {
         content: ''
       },
       currentIndex: '',
-      typeList: [],
       isShow: false,
       stepText: [
         `${this.$text('S_FEEDBACK_TIP01', '步骤一： 点击「上传图片」前往网址')} (https://imgbb.com/)。`,
@@ -129,41 +127,17 @@ export default {
         this.$text('S_FEEDBACK_TIP03', '步骤三： 将获取的网址链结贴至对话输入框内。'),
         this.$text('S_FEEDBACK_TIP04', '特别说明： 部分浏览器不支援拖曳上传图片，请使用上传按钮')
       ],
-      iconList: {
-        500015: {
-          260: 1,
-          261: 2,
-          262: 3,
-          263: 4,
-          264: 5,
-          265: 6,
-          266: 7
-        },
-        69: {
-          90: 1,
-          91: 2,
-          92: 3,
-          93: 4,
-          94: 5,
-          95: 6,
-          96: 7
-        },
-        67: {
-          79: 1,
-          80: 2,
-          81: 3,
-          82: 4,
-          83: 5,
-          84: 6,
-          85: 7
-        }
-      }
     };
   },
+
   computed: {
     ...mapGetters({
-      memInfo: 'getMemInfo'
+      siteConfig: 'getSiteConfig'
     }),
+    $style() {
+      const style = this[`$style_${this.siteConfig.MOBILE_WEB_TPL}`] || this.$style_porn1;
+      return style;
+    },
     contextLimit() {
       return this.$text('S_CONTEXT_LIMIT', {
         replace: [
@@ -172,17 +146,6 @@ export default {
         ]
       });
     }
-  },
-  created() {
-    ajax({
-      method: 'get',
-      url: API_FEEDBACK_TYPE_LIST,
-      errorAlert: false
-    }).then((response) => {
-      if (response && response.result === 'ok') {
-        this.typeList = response.ret;
-      }
-    });
   },
   methods: {
     ...mapActions([
@@ -243,4 +206,5 @@ export default {
 };
 </script>
 
-<style lang="scss" src="./css/sendFeedback.module.scss" module />
+<style lang="scss" src="./css/sendFeedback.module.scss" module="$style_porn1"></style>
+<style lang="scss" src="./css/ey1.sendFeedback.scss" module="$style_ey1"></style>
