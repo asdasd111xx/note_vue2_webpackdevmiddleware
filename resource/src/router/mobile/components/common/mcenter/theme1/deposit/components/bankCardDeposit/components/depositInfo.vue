@@ -1,8 +1,16 @@
 <template>
   <div :class="[$style['deposit-info-wrap'], 'clearfix', colorClass]">
     <!-- 訂單時間 -->
-    <div v-if="countdownSec && countdownSec > 0" :class="$style['time-tip']">
-      收款帐户不定期更换，请於<span>{{ countdownSec }}</span>内完成转帐款
+    <div v-if="isShowTimer" :class="$style['time-tip']">
+      <template v-if="countdownSec > 0">
+        收款帐户不定期更换，请於
+        <span>{{ timeToDate() }}</span>
+        内完成转帐款
+      </template>
+
+      <template v-else>
+        已经超过有效时间，请重新申请
+      </template>
     </div>
     <!-- 收款帳號 -->
     <div
@@ -162,22 +170,27 @@
 </template>
 
 <script>
-import { mapGetters } from 'vuex';
-import mixin from '@/mixins/mcenter/deposit/depositInfo';
-import message from '@/router/mobile/components/common/message';
+import { mapGetters } from "vuex";
+import mixin from "@/mixins/mcenter/deposit/depositInfo";
+import message from "@/router/mobile/components/common/message";
 
 export default {
   components: {
     message,
-    depositAlert: () => import(/* webpackChunkName: 'depositAlert' */ './depositAlert'),
-    speedPayField: () => import(/* webpackChunkName: 'speedPayField' */ '../../common/speedPayField'),
-    depositPopup: () => import(/* webpackChunkName: 'depositPopup' */ './depositPopup')
+    depositAlert: () =>
+      import(/* webpackChunkName: 'depositAlert' */ "./depositAlert"),
+    speedPayField: () =>
+      import(
+        /* webpackChunkName: 'speedPayField' */ "../../common/speedPayField"
+      ),
+    depositPopup: () =>
+      import(/* webpackChunkName: 'depositPopup' */ "./depositPopup")
   },
   mixins: [mixin],
   props: {
     orderData: {
       type: Object,
-      default: () => { }
+      default: () => {}
     },
     isShow: {
       type: Boolean,
@@ -185,11 +198,11 @@ export default {
     },
     submitStatus: {
       type: String,
-      default: ''
+      default: ""
     },
     limitTime: {
-        type: String,
-        default: ''
+      type: Number,
+      default: 0
     }
   },
   data() {
@@ -197,22 +210,28 @@ export default {
       moreShow: false,
       isAlertTip: false,
       isShowQrcode: false,
-      qrcodeValue: '',
-      qrcodeTitle: '',
-      msg: '',
-      countdownSec: null,
-      timer: null
+      qrcodeValue: "",
+      qrcodeTitle: "",
+      msg: "",
+      // 計時器 params
+      countdownSec: this.limitTime,
+      timer: null,
+      isShowTimer: false
     };
   },
   computed: {
     ...mapGetters({
-      memInfo: 'getMemInfo'
+      memInfo: "getMemInfo"
     }),
     colorClass() {
       return [
         {
-          [this.$style[`site-${this.memInfo.user.domain}`]]: this.$style[`site-${this.memInfo.user.domain}`],
-          [this.$style['preset-color']]: !this.$style[`site-${this.memInfo.user.domain}`]
+          [this.$style[`site-${this.memInfo.user.domain}`]]: this.$style[
+            `site-${this.memInfo.user.domain}`
+          ],
+          [this.$style["preset-color"]]: !this.$style[
+            `site-${this.memInfo.user.domain}`
+          ]
         }
       ];
     },
@@ -226,25 +245,23 @@ export default {
     }
   },
   created() {
-    if (this.limitTime) {
-      this.countdownSec = this.limitTime;
-
-      if (this.countdownSec) {
-        this.timer = setInterval(() => {
-          if (this.countdownSec === 0) {
-            clearInterval(this.timer);
-            this.timer = null;
-            return;
-          }
-          this.countdownSec -= 1;
-        }, 1000);
-      }
+    if (this.countdownSec) {
+      this.isShowTimer = true;
+      this.timer = setInterval(() => {
+        if (this.countdownSec === 0) {
+          clearInterval(this.timer);
+          this.timer = null;
+          this.isShowTimer = false;
+          return;
+        }
+        this.countdownSec -= 1;
+      }, 1000);
     }
   },
   methods: {
     handleCopy(val) {
       this.msg = "已复制到剪贴板";
-      this.copyInfo(val)
+      this.copyInfo(val);
     },
     /**
      * 回填寫存款資料頁
@@ -252,7 +269,7 @@ export default {
      */
     goBack() {
       this.isAlertTip = false;
-      this.$emit('update:submitStatus', 'stepOne');
+      this.$emit("update:submitStatus", "stepOne");
       window.scrollTo(0, 0);
     },
     submitData() {
@@ -260,14 +277,14 @@ export default {
         return;
       }
 
-      this.$emit('update:isShow', true);
+      this.$emit("update:isShow", true);
 
-      this.confirmDeposit().then((response) => {
-        if (response.status === 'ok') {
+      this.confirmDeposit().then(response => {
+        if (response.status === "ok") {
           this.isAlertTip = true;
         }
 
-        this.$emit('update:isShow', false);
+        this.$emit("update:isShow", false);
       });
     },
     switchQrcodePopup(enable, value, text) {
@@ -275,14 +292,39 @@ export default {
       this.isShowQrcode = enable;
       this.qrcodeTitle = text;
     },
-    formatTime(value) {
+    timeToDate() {
+      let hours = Math.floor(this.countdownSec / 3600);
+      let minutes = Math.floor((this.countdownSec - hours * 3600) / 60);
+      let sec = this.countdownSec - hours * 3600 - minutes * 60;
 
+      if (hours < 10) {
+        hours = "0" + hours;
+      }
+      if (minutes < 10) {
+        minutes = "0" + minutes;
+      }
+      if (sec < 10) {
+        sec = "0" + sec;
+      }
+
+      switch (true) {
+        case this.countdownSec >= 3600:
+          return `${hours}時${minutes}分${sec}秒`;
+          break;
+
+        case this.countdownSec >= 60:
+          return `${minutes}分${sec}秒`;
+          break;
+
+        default:
+          return `${sec}秒`;
+      }
     }
   },
   beforeDestroy() {
     clearInterval(this.timer);
-    this.timer = null
-  },
+    this.timer = null;
+  }
 };
 </script>
 
