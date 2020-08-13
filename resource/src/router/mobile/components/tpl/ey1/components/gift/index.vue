@@ -1,6 +1,6 @@
 <template>
   <mobile-container :class="$style.container" :header-config="headerConfig">
-    <div slot="content" class="content-wrap">
+    <div slot="content" :class="$style['content-wrap']">
       <div v-for="list in currentMenu">
         <div :class="$style['item-header']">
           <div :class="$style['item-icon']">
@@ -115,6 +115,14 @@ export default {
   color: #4e5159;
   height: 35px;
   line-height: 35px;
+  margin-top: 17px;
+  margin-bottom: 5px;
+}
+
+.content-wrap {
+  > .item-header:first-of-type {
+    margin-top: unset;
+  }
 }
 
 .item-icon {
@@ -131,9 +139,9 @@ export default {
   background-color: white;
   color: #4e5159;
   display: flex;
-  font-size: 13px;
-  height: 30px;
-  line-height: 30px;
+  font-size: 17px;
+  height: 45px;
+  line-height: 45px;
   margin-bottom: 1px;
   padding-left: 48px;
   text-align: left;

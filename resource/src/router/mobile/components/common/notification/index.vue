@@ -8,7 +8,11 @@
       <div :class="$style['container']">
         <div :class="$style['notification-header']">
           <div :class="$style['icon']">
-            <img src="/static/image/_new/about/appicon.png" />
+            <img
+              :src="
+                `/static/image/${siteConfig.MOBILE_WEB_TPL}/common/appicon.png`
+              "
+            />
           </div>
           <div :class="$style['title']">
             鸭博娱乐

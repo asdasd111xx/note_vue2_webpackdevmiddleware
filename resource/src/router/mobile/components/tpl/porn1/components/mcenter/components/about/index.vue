@@ -6,7 +6,7 @@
   >
     <div slot="content" :class="$style['content-wrap']">
       <div :class="$style['yabo']">
-        <img :src="$getCdnPath(`/static/image/_new/about/appicon.png`)" />
+        <img :src="$getCdnPath(`/static/image/porn1/common/appicon.png`)" />
       </div>
       <div :class="$style['version']">版本号 {{ version }}</div>
       <div :class="$style['officel']">

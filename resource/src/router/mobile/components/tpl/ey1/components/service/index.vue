@@ -56,7 +56,7 @@
 
       <div :class="$style['tip-block']" @click="clickPopTip">
         <div :class="$style['tip-img']">
-          <img :src="$getCdnPath(`/static/image/ey1/common/appicon.png`)" />
+          <img :src="$getCdnPath(`/static/image/ey1/service/appicon.png`)" />
         </div>
 
         <div :class="$style['tip-text']">永久网址</div>
@@ -94,7 +94,18 @@
 
           <div :class="$style['content']">
             <div :class="$style['content-cell']">
-              <span>收藏亿元永久网址，浏览器打开，随时畅玩：</span>
+              <span>1.通过亿元图标上的网址，重新下载APP：</span>
+              <img
+                :class="$style['url-image']"
+                :src="
+                  $getCdnPath('/static/image/ey1/service/popup/popup_img02.png')
+                "
+                alt="img02"
+              />
+            </div>
+
+            <div :class="$style['content-cell']">
+              <span>2.收藏亿元永久网址，浏览器打开，随时畅玩：</span>
               <div
                 :class="$style['link']"
                 v-for="(item, index) in linkArray"
@@ -172,7 +183,9 @@ export default {
       }
     }).then(res => {
       if (res && res.data) {
-        this.linkArray = res.data;
+        // this.linkArray = res.data;
+        this.linkArray = [{ value: 'w123.123' }, { value: 'w123.123' }, { value: 'w123.123' }];
+
       }
     });
   },
@@ -375,8 +388,8 @@ div.container {
 }
 
 .tip-img {
-  width: 50px;
-  height: 50px;
+  width: 60px;
+  height: 60px;
   margin: 0 auto;
 
   img {
@@ -455,7 +468,7 @@ div.container {
 
   .title,
   .content {
-    margin: 0 17px;
+    margin: 5px 17px;
     color: $main_text_color2;
     font-size: 12px;
   }
@@ -490,10 +503,11 @@ div.container {
       position: relative;
       width: 180px;
       margin: 10px auto;
-      padding: 0 0 0 40px;
       background: #ffffff;
       border: 1px solid $main_text_color2;
       border-radius: 10px;
+      color: #414655;
+      text-align: center;
 
       &::before {
         content: "";
@@ -506,6 +520,14 @@ div.container {
         width: 12px;
         height: 12px;
         background-size: cover;
+      }
+    }
+
+    .url-image {
+      width: 100%;
+
+      > img {
+        width: 100%;
       }
     }
   }
