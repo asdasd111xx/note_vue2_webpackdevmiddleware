@@ -153,6 +153,35 @@ export default {
                 this.tipMsg = `${error.response.data.msg}`;
             })
         },
+        rechargeCheck() {
+            if (!this.formData.phone && this.isSendKeyring) {
+                return;
+            }
+
+            this.isSendKeyring = true;
+            return axios({
+                method: 'get',
+                url: '/api/v1/c/recharge/check',
+                params: {
+                    target_username: this.formData.target_username,
+                    amount: this.formData.amount
+                }
+            }).then(res => {
+                this.actionSetUserBalance();
+                this.isSendKeyring = false;
+
+                if (res && res.data && res.data.result === "ok") {
+                    return true;
+                } else {
+                    this.setErrorCode(res.data);
+                    return false;
+                }
+            }).catch(error => {
+                this.isSendKeyring = false;
+                this.setErrorCode(error.response.data);
+                return false;
+            })
+        },
         // 獲取驗證碼
         getKeyring() {
             if (!this.formData.phone && this.isSendKeyring) {
@@ -202,70 +231,6 @@ export default {
             this.tipMsg = "";
             this.isSendRecharge = true;
 
-            // 客制錯誤訊息
-            const setErrorMsg = (msg, isAudit) => {
-                this.actionSetRechargeConfig().then(() => {
-                    const config = this.rechargeConfig;
-                    let msg_desc = msg;
-
-                    if (isAudit) {
-                        msg_desc += `，单笔转让最低${config.recharge_limit_audited_min}元`;
-
-                        if (config.recharge_limit_audited_max_enable) {
-                            msg_desc += `、最高${config.recharge_limit_audited_max}元`;
-                        }
-
-                        this.errorMessage.amount = msg_desc;
-                        return;
-                    } else {
-                        msg_desc += `，单笔转让最低${config.recharge_limit_unaudited_min}元`;
-
-                        if (config.recharge_limit_unaudited_max_enable) {
-                            msg_desc += `、最高${config.recharge_limit_unaudited_max}元`;
-                        }
-
-                        this.errorMessage.amount = msg_desc;
-                        return;
-                    }
-                })
-            }
-
-            // 客制錯誤訊息
-            const setErrorCode = (data) => {
-                const code = data.code;
-                const msg = data.msg;
-                switch (code) {
-                    case "C650001":
-                    case "C650008":
-                    case "C650009":
-                        this.errorMessage.target_username = msg;
-                        break;
-                    case "C650004":
-                    case "C650005":
-                    case "C650006":
-                    case "C650007":
-                        this.errorMessage.amount = msg;
-                        break;
-                    // msg: "完成提现流水要求"
-                    case "C650016":
-                        setErrorMsg(msg, true);
-                        break;
-                    // msg: "未完成提现流水要求"
-                    case "C650017":
-                        setErrorMsg(msg, false);
-                        break;
-                    case "C650011":
-                        this.errorMessage.phone = msg;
-                        break;
-                    case "C650012":
-                    case "C650013":
-                        this.errorMessage.keyring = msg;
-                        break;
-                    default:
-                        this.tipMsg = msg;
-                        break;
-                }
-            }
             axios({
                 method: 'post',
                 url: '/api/v1/c/recharge',
@@ -279,7 +244,7 @@ export default {
                 if (res && res.data && res.data.result === "ok") {
                     this.actionSetGlobalMessage({ msg: "转让成功" });
                 } else {
-                    setErrorCode(res.data);
+                    this.setErrorCode(res.data);
                 }
 
                 this.actionSetUserdata(true);
@@ -287,7 +252,7 @@ export default {
                     this.isSendRecharge = false;
                 }, 1500)
             }).catch(error => {
-                setErrorCode(error.response.data);
+                this.setErrorCode(error.response.data);
                 setTimeout(() => {
                     this.isSendRecharge = false;
                 }, 1500)
@@ -319,6 +284,72 @@ export default {
         },
         closeDetail() {
             this.detailRecoard = null;
+        },
+        // 客制錯誤訊息
+        setErrorCode(data) {
+            const setErrorMsg = (msg, isAudit) => {
+                this.actionSetRechargeConfig().then(() => {
+                    const config = this.rechargeConfig;
+                    let msg_desc = msg;
+
+                    if (isAudit) {
+                        msg_desc += `，单笔转让最低${config.recharge_limit_audited_min}元`;
+
+                        if (config.recharge_limit_audited_max_enable) {
+                            msg_desc += `、最高${config.recharge_limit_audited_max}元`;
+                        }
+
+                        this.errorMessage.amount = msg_desc;
+                        return;
+                    } else {
+                        msg_desc += `，单笔转让最低${config.recharge_limit_unaudited_min}元`;
+
+                        if (config.recharge_limit_unaudited_max_enable) {
+                            msg_desc += `、最高${config.recharge_limit_unaudited_max}元`;
+                        }
+
+                        this.errorMessage.amount = msg_desc;
+                        return;
+                    }
+                })
+            }
+
+            const code = data.code;
+            const msg = data.msg;
+            switch (code) {
+                case "C650001":
+                case "C650008":
+                case "C650009":
+                case "C650018":
+                    this.errorMessage.target_username = msg;
+                    break;
+                case "C650004":
+                case "C650005":
+                case "C650006":
+                case "C650007":
+                case "C650019":
+                case "C650020":
+                    this.errorMessage.amount = msg;
+                    break;
+                // msg: "完成提现流水要求"
+                case "C650016":
+                    setErrorMsg(msg, true);
+                    break;
+                // msg: "未完成提现流水要求"
+                case "C650017":
+                    setErrorMsg(msg, false);
+                    break;
+                case "C650011":
+                    this.errorMessage.phone = msg;
+                    break;
+                case "C650012":
+                case "C650013":
+                    this.errorMessage.keyring = msg;
+                    break;
+                default:
+                    this.tipMsg = msg;
+                    break;
+            }
         }
     }
 };

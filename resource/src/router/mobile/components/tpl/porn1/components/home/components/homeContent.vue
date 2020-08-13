@@ -102,22 +102,29 @@
             :key="`game-${i}-${game.image}`"
             :data-img-type="game.imageType"
             :data-type="game.type"
-            :class="[$style.game, { [$style['is-full']]: game.imageType > 0 }]"
+            :class="[
+              $style.game,
+              { [$style['is-full']]: [1, 2, 3].includes(game.imageType) },
+              { [$style['is-third']]: [4].includes(game.imageType) }
+            ]"
             @click.stop="onOpenGame(game)"
           >
-            <img v-lazy="getImg(game)" />
-            <!-- <span v-if="!['D', 'R'].includes(game.type) && game.name">{{
-              game.name
-            }}</span> -->
+            <template v-if="game.imageType === 4">
+              <div :class="[$style['third-iamge-wrap']]">
+                <!-- <div :class="[$style['vendor']]">{{ game.vendor }}</div> -->
+                <img v-lazy="getImg(game)" />
+                <div :class="[$style['name']]">{{ game.name }}</div>
+              </div>
+            </template>
+            <template v-else>
+              <img v-lazy="getImg(game)" />
+            </template>
           </div>
         </template>
         <div ref="wrap-buffer" :class="$style['wrap-buffer']" />
       </div>
     </div>
-    <page-loading
-     :isShow="isShowLoading"
-    />
-    </div>
+    <page-loading :isShow="isShowLoading" />
   </div>
 </template>
 
@@ -282,7 +289,7 @@ export default {
     font-size: 12px;
   }
 
-  > div {
+  > div:not(.third-iamge-wrap) {
     overflow: hidden;
     position: absolute;
     right: 0;
@@ -305,8 +312,40 @@ export default {
   &.is-full {
     width: 100%;
   }
+
+  &.is-third {
+    width: 33%;
+    min-height: 90px;
+  }
 }
 
+.third-iamge-wrap {
+  height: 100px;
+  text-overflow: ellipsis;
+  white-space: nowrap;
+  overflow: hidden;
+
+  > div {
+    height: 10%;
+    color: #4e5159;
+    font-size: 11px;
+  }
+
+  > img {
+    height: 80%;
+    display: block;
+    width: 100%;
+    padding: 0 2px;
+  }
+
+  > .vendor {
+    text-align: left;
+  }
+
+  > .name {
+    text-align: center;
+  }
+}
 .wrap-buffer {
   width: 100%;
   height: 12%;

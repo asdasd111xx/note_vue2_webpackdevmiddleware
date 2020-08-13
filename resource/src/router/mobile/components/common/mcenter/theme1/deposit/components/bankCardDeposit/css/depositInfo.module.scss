@@ -1,5 +1,15 @@
 @import '~@/css/variable.scss';
 
+.time-tip {
+    background: #f2f2f2;
+    padding: 10px;
+
+    span {
+        font-weight: 700;
+        color: $main_error_color1;
+    }
+}
+
 .deposit-info-wrap {
     margin-top: 10px;
 }
@@ -214,7 +224,7 @@
     }
 
     &.disabled {
-        cursor: not-allowed;
+        pointer-events: none;
         opacity: 0.5;
     }
 }

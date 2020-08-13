@@ -8,10 +8,14 @@
       <div :class="$style['container']">
         <div :class="$style['notification-header']">
           <div :class="$style['icon']">
-            <img src="/static/image/_new/about/appicon.png" />
+            <img
+              :src="
+                `/static/image/${siteConfig.MOBILE_WEB_TPL}/common/appicon.png`
+              "
+            />
           </div>
           <div :class="$style['title']">
-            鸭博娱乐
+            {{ siteName }}
           </div>
           <div :class="$style['time']">
             {{ getTime(data.id) }}
@@ -73,7 +77,9 @@ export default {
   watch: {
     noticeData() {
       if (this.noticeData && this.noticeData.length > 0) {
-        this.data = this.noticeData.pop();
+        // this.data = this.noticeData.pop();
+        this.data = this.noticeData[this.noticeData.length - 1];
+
         // 目前只接通知
         if (this.data.event === ("notice")) {
           this.show();
@@ -107,6 +113,9 @@ export default {
       loginStatus: 'getLoginStatus',
       noticeData: 'getNoticeData',
     }),
+    siteName() {
+      return this.siteConfig.SITE_NAME;
+    }
   },
   methods: {
     ...mapActions([

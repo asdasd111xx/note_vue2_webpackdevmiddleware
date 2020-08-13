@@ -181,7 +181,9 @@ export default {
   },
   computed: {
     ...mapGetters({
-      memInfo: "getMemInfo"
+      memInfo: "getMemInfo",
+      noticeData: "getNoticeData",
+      siteConfig: "getSiteConfig"
     }),
     showPopQrcode: {
       get() {
@@ -222,6 +224,18 @@ export default {
         case 38:
           this.placeholdTips = "请输入VenusPoint取款帐号";
           break;
+      }
+    },
+    noticeData(value) {
+      if (this.noticeData && this.noticeData.length > 0) {
+        let data = this.noticeData[0];
+
+        if (data.event === "trade_bind_wallet" && data.result === "ok") {
+          // Todo 將所有 msg 替換成 actionSetGlobalMessage
+          this.actionSetGlobalMessage({ msg: "绑定成功" });
+          this.showTab(true);
+          this.changePage('virtualBankCardInfo');
+        }
       }
     }
   },
@@ -325,31 +339,32 @@ export default {
 
       this.lockStatus = true;
       this.errorMsg = "";
-      // axios({
-      //   method: "post",
-      //   url:
-      //     "/api/v1/c/ext/inpay?api_uri=/api/trade/v2/c/withdraw/bind_wallet_by_token",
-      //   data: {
-      //     bind_type: "deposit",
-      //     wallet_gateway_id: 3, // 3 為CGpay
-      //     wallet_account: this.formData.walletAddress,
-      //     wallet_token: this.formData.cgpPwd
-      //   }
-      // })
-      //   .then(res => {
-      //     this.lockStatus = false;
-      //     // Todo 將所有 msg 替換成 actionSetGlobalMessage
-      //     this.actionSetGlobalMessage({ msg: "绑定成功" });
-      //     this.showTab(true);
-      //     this.changePage("virtualBankCardInfo");
-      //   })
-      //   .catch(res => {
-      //     if (res.response && res.response.data && res.response.data.msg) {
-      //       this.errorMsg = `${res.response.data.msg}[${res.response.data.code}]`;
-      //       this.lockStatus = false;
-      //       return;
-      //     }
-      //   });
+
+      axios({
+        method: "post",
+        url:
+          "/api/v1/c/ext/inpay?api_uri=/api/trade/v2/c/withdraw/bind_wallet_by_token",
+        data: {
+          bind_type: "withdraw",
+          wallet_gateway_id: 3, // 3 為CGpay
+          wallet_account: this.formData.walletAddress,
+          wallet_token: this.formData.cgpPwd
+        }
+      })
+        .then(res => {
+          this.lockStatus = false;
+          // Todo 將所有 msg 替換成 actionSetGlobalMessage
+          this.actionSetGlobalMessage({ msg: "绑定成功" });
+          this.showTab(true);
+          this.changePage("virtualBankCardInfo");
+        })
+        .catch(res => {
+          if (res.response && res.response.data && res.response.data.msg) {
+            this.errorMsg = `${res.response.data.msg}[${res.response.data.code}]`;
+            this.lockStatus = false;
+            return;
+          }
+        });
     },
     clearMsg() {
       const { query } = this.$route;
@@ -408,11 +423,9 @@ export default {
     getBankImage(swiftCode) {
       return {
         src: `https://images.dormousepie.com/icon/bankIconBySwiftCode/${swiftCode}.png`,
-        error: this.$getCdnPath(
-          "/static/image/_new/default/bank_default_2.png"
-        ),
+        error: this.$getCdnPath("/static/image/ey1/default/bank_default_2.png"),
         loading: this.$getCdnPath(
-          "/static/image/_new/default/bank_default_2.png"
+          "/static/image/ey1/default/bank_default_2.png"
         )
       };
     }

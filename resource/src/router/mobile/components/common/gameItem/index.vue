@@ -74,7 +74,7 @@ export default {
     };
   },
   props: {
-    thi: {
+    theme: {
       type: String,
       default: "porn1"
     },
@@ -207,10 +207,12 @@ export default {
         resultUrl = this.$getCdnPath('/static/image/casino/event_icon.png');
       }
 
+      const ey1_default_img = '/static/image/ey1/default/pic_gamebg_d.png'
+
       return {
         src: resultUrl,
-        error: this.$getCdnPath('/static/image/game_loading_s.gif'),
-        loading: this.$getCdnPath('/static/image/game_loading_s.gif')
+        error: this.theme === "ey1" ? ey1_default_img : this.$getCdnPath('/static/image/game_loading_s.gif'),
+        loading: this.theme === "ey1" ? ey1_default_img : this.$getCdnPath('/static/image/game_loading_s.gif')
       };
     },
     /**

@@ -42,6 +42,7 @@ export default {
             webviewOpenUrl: '',
             isSelectedCustomMoney: false,
             isDisableDepositInput: false,
+            limitTime: 0
         };
     },
     watch: {
@@ -807,6 +808,10 @@ export default {
                     });
 
                     console.log(response.ret, _isWebview)
+
+                    if (response.ret.remit.limit_time) {
+                      this.limitTime = response.ret.remit.limit_time;
+                    }
 
                     if (response.ret.deposit.url) {
                         if (_isWebview) {

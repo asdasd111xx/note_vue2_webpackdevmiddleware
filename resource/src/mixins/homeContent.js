@@ -35,7 +35,7 @@ export default {
             mcenterEy1List: [
                 { name: 'deposit', text: '充值' },
                 { name: 'balanceTrans', text: '转帐' },
-                { name: 'withdraw', text: '提现' },
+                { name: 'makemoney', text: '推广' },
                 { name: 'vip', text: 'vip' },
             ]
         };
@@ -157,10 +157,10 @@ export default {
             return {
                 src: info.image,
                 error: this.$getCdnPath(
-                    `/static/image/_new/common/default_${info.imageType}.png`
+                    `/static/image/${this.siteConfig.MOBILE_WEB_TPL}/default/default_${info.imageType}.png`
                 ),
                 loading: this.$getCdnPath(
-                    `/static/image/_new/common/default_${info.imageType}.png`
+                    `/static/image/${this.siteConfig.MOBILE_WEB_TPL}/default/default_${info.imageType}.png`
                 )
             };
         },
@@ -431,6 +431,11 @@ export default {
                     case 'STB':
                     case 'JPB':
                     case 'DSC':
+                        if (!this.loginStatus) {
+                            this.$router.push('/mobile/login');
+                            return;
+                        }
+
                         let newWindow = window.open('');
                         yaboRequest({
                             method: 'get',
@@ -442,9 +447,12 @@ export default {
                                 type: game.type,
                             },
                         }).then(res => {
-                            newWindow.location.href = res.data;
+                            if (res.data) {
+                                newWindow.location.href = res.data;
+                            } else {
+                                newWindow.close();
+                            }
                         }).catch(error => {
-                            newWindow.close();
                         })
 
                         break;
