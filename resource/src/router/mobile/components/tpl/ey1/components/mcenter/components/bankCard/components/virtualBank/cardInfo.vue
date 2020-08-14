@@ -229,5 +229,5 @@ export default {
 </script>
 
 <style lang="scss" module>
-@import "~@/css/page/cardInfo.module.scss";
+@import "@/css/page/cardInfo.module.scss";
 </style>
