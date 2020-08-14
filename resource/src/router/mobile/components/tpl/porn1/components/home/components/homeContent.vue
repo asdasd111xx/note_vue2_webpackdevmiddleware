@@ -111,8 +111,10 @@
           >
             <template v-if="game.imageType === 4">
               <div :class="[$style['third-iamge-wrap']]">
-                <!-- <div :class="[$style['vendor']]">{{ game.vendor }}</div> -->
-                <img v-lazy="getImg(game)" />
+                <div :class="[$style['vendor']]">{{ game.vendor_abridge }}</div>
+                <div :class="[$style['third-iamge']]">
+                  <img v-lazy="getImg(game)" />
+                </div>
                 <div :class="[$style['name']]">{{ game.name }}</div>
               </div>
             </template>
@@ -314,38 +316,68 @@ export default {
   }
 
   &.is-third {
-    width: 33%;
-    min-height: 90px;
+    width: 31%;
+    height: 25%;
+    position: relative;
+    min-height: 126px;
+    background-image: url("/static/image/ey1/game/pic_gamebg.png");
+    background-size: 100% 100%;
+    background-position: center;
+    background-size: auto;
+    margin: 0 1%;
   }
 }
 
 .third-iamge-wrap {
-  height: 100px;
   text-overflow: ellipsis;
   white-space: nowrap;
   overflow: hidden;
+  background-image: url("/static/image/ey1/game/pic_gamebg.png") no-repeat
+    center center fixed;
+  -webkit-background-size: cover;
+  -moz-background-size: cover;
+  -o-background-size: cover;
+  background-size: cover;
+  height: 100%;
 
-  > div {
-    height: 10%;
-    color: #4e5159;
-    font-size: 11px;
+  .third-iamge {
+    position: absolute;
+    left: 0;
+    top: 14px;
+    width: 100%;
+    height: 80%;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+
+    > img {
+      display: block;
+      margin: 0 auto;
+      max-height: 100%;
+      padding: 5px;
+      width: 100%;
+    }
   }
 
-  > img {
-    height: 80%;
-    display: block;
+  > div:not(.third-iamge) {
+    height: 14px;
+    color: #4e5159;
+    font-size: 11px;
     width: 100%;
-    padding: 0 2px;
   }
 
   > .vendor {
     text-align: left;
+    margin: 5px;
   }
 
   > .name {
     text-align: center;
+    position: absolute;
+    bottom: 5px;
   }
 }
+
 .wrap-buffer {
   width: 100%;
   height: 12%;
