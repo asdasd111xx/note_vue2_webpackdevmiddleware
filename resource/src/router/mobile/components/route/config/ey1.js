@@ -22,7 +22,7 @@ export default {
         homeEy1: () => import(/* webpackChunkName: 'homeEy1' */'../../tpl/ey1/components/mcenter/components/home'),
         accountDataEy1: () => import(/* webpackChunkName: 'accountDataEy1' */'../../tpl/ey1/components/mcenter/components/accountData'),
         //     bindingDeviceEy1: () => import(/* webpackChunkName: 'bindingDeviceEy1' */'../../tpl/ey1/components/mcenter/components/bindingDevice'),
-        //     balanceTransEy1: () => import(/* webpackChunkName: 'balanceTransEy1' */'../../tpl/ey1/components/mcenter/components/balanceTrans'),
+        balanceTransEy1: () => import(/* webpackChunkName: 'balanceTransEy1' */'../../tpl/ey1/components/mcenter/components/balanceTrans'),
         //     creditTransEy1: () => import(/* webpackChunkName: 'creditTransEy1' */'../../tpl/ey1/components/mcenter/components/creditTrans'),
         bankCardEy1: () => import(/* webpackChunkName: 'bankCardEy1' */'../../tpl/ey1/components/mcenter/components/bankCard'),
         bankRebateEy1: () => import(/* webpackChunkName: 'bankRebateEy1' */'../../tpl/ey1/components/mcenter/components/bankRebate'),

@@ -1,0 +1,656 @@
+<template>
+  <div :class="['clearfix']">
+    <div :class="[$style['balance-wrap'], 'clearfix']">
+      <div :class="$style['balance-total-icon']">
+        <img
+          :src="
+            $getCdnPath('/static/image/_new/mcenter/wallet/ic_autotransfer.png')
+          "
+        />
+      </div>
+
+      <div :class="$style['balance-tip-wrap']">
+        {{ $text("S_AUTO_FREE_TRANSFER", "自动免转") }}
+        <span :class="$style['balance-auto-tip']"
+          >({{
+            $text("S_AUTOSWTICH_HINT_GAME", "开启后余额自动转入游戏场馆")
+          }})</span
+        >
+      </div>
+
+      <div class="ui fitted toggle checkbox field-checkbox">
+        <input
+          :checked="isAutotransfer"
+          type="checkbox"
+          @click="isAutotransfer ? closeAutotransfer() : enableAutotransfer()"
+        />
+        <label />
+      </div>
+    </div>
+
+    <div :class="[$style['balance-item-wrap'], 'clearfix']">
+      <template v-if="!isShowMore">
+        <div
+          v-for="(item, key, index) in firstThirdBalanceInfo"
+          :key="`balance-item-${key}`"
+          :class="[
+            $style['balance-item'],
+            {
+              [$style['is-last-item']]:
+                Object.keys(firstThirdBalanceInfo).length - index <=
+                (Object.keys(firstThirdBalanceInfo).length % 4 || 4)
+            }
+          ]"
+        >
+          <span :class="$style['balance-item-vendor']">{{ item.text }}</span>
+          <span
+            v-if="item.maintain"
+            :class="$style['balance-info-maintain']"
+            @click="onClickMaintain(item.maintain)"
+          >
+            <img
+              :src="
+                $getCdnPath(
+                  '/static/image/_new/mcenter/balanceTrans/icon_transfer_tips_info.png'
+                )
+              "
+              :class="$style['balance-wrench']"
+            />
+            {{ $t("S_MAINTAIN") }}
+          </span>
+          <span v-else :class="$style['balance-item-money']">{{
+            item.amount
+          }}</span>
+        </div>
+
+        <div
+          :class="[$style['balance-item'], $style['expend']]"
+          @click="toggleShowMore"
+        >
+          <span :class="$style['balance-item-vendor']">更多</span>
+          <div :class="[$style['icon']]">
+            <img
+              :src="
+                $getCdnPath(
+                  `/static/image/_new/mcenter/balanceTrans/ic_expand.png`
+                )
+              "
+              alt="expend"
+            />
+          </div>
+        </div>
+      </template>
+
+      <template v-else>
+        <div
+          v-for="(item, key, index) in balanceInfo"
+          :key="`balance-item-${key}`"
+          :class="[
+            $style['balance-item'],
+            {
+              [$style['is-last-item']]:
+                Object.keys(balanceInfo).length - index <=
+                (Object.keys(balanceInfo).length % 4 || 4)
+            }
+          ]"
+        >
+          <span :class="$style['balance-item-vendor']">{{ item.text }}</span>
+          <span
+            v-if="item.maintain"
+            :class="$style['balance-info-maintain']"
+            @click="onClickMaintain(item.maintain)"
+          >
+            {{ $t("S_MAINTAIN") }}
+            <img
+              :src="
+                $getCdnPath(
+                  '/static/image/_new/mcenter/balanceTrans/icon_transfer_tips_info.png'
+                )
+              "
+              :class="$style['balance-wrench']"
+            />
+          </span>
+          <span v-else :class="$style['balance-item-money']">{{
+            item.amount
+          }}</span>
+        </div>
+
+        <div
+          :class="[$style['balance-item'], $style['collapse']]"
+          @click="toggleShowMore"
+        >
+          <span :class="$style['balance-item-vendor']">收起</span>
+          <div :class="[$style['icon']]">
+            <img
+              :src="
+                $getCdnPath(
+                  `/static/image/_new/mcenter/balanceTrans/ic_collapse.png`
+                )
+              "
+              alt="collapse"
+            />
+          </div>
+        </div>
+      </template>
+    </div>
+
+    <!-- 手動轉換功能 -->
+    <template v-if="!isAutotransfer">
+      <div :class="[$style['balance-manual-wrap'], 'clearfix']">
+        <span :class="$style['wallet-title']">{{
+          $text("S_CHANGE_WALLET", "选择转帐钱包")
+        }}</span>
+
+        <div :class="[$style['balance-transfer-wrap'], 'clearfix']">
+          <div :class="$style['balance-select-wrap']">
+            <div :class="$style['select-title']">
+              {{ $text("S_OUT_WALLET", "转出钱包") }}
+            </div>
+            <div
+              :class="$style['balance-transfer-list']"
+              @click="isShowTransOutSelect = true"
+            >
+              {{ transOutText }}
+              <span :class="$style['select-arrow-icon']"></span>
+            </div>
+
+            <div
+              v-if="isShowTransOutSelect"
+              :class="$style['select-container']"
+            >
+              <div :class="$style['select-wrap']">
+                <div :class="$style['select-header']">
+                  <span :class="$style['cancel']" @click="closeSelect">
+                    取消
+                  </span>
+                  选择钱包
+                </div>
+
+                <div :class="$style['select-content']">
+                  <div
+                    :class="$style['option']"
+                    v-for="vendor in transOut"
+                    :key="vendor.value"
+                    @click="setTranOut(vendor)"
+                  >
+                    <span>{{ vendor.text }}</span>
+                    <img
+                      v-if="transOutText === vendor.text"
+                      :src="
+                        $getCdnPath(
+                          `/static/image/${siteConfig.MOBILE_WEB_TPL}/mcenter/balanceTrans/ic_transfer_sel.png`
+                        )
+                      "
+                      alt="sel"
+                    />
+                  </div>
+                </div>
+              </div>
+            </div>
+          </div>
+
+          <div
+            :class="[
+              $style['balance-select-wrap'],
+              $style['select-right-wrap']
+            ]"
+          >
+            <div :class="$style['select-title']">
+              {{ $text("S_IN_WALLET", "转入钱包") }}
+            </div>
+            <div
+              :class="$style['balance-transfer-list']"
+              @click="isShowTransInSelect = true"
+            >
+              {{ transInText }}
+              <span :class="$style['select-arrow-icon']"></span>
+            </div>
+
+            <div v-if="isShowTransInSelect" :class="$style['select-container']">
+              <div :class="$style['select-wrap']">
+                <div :class="$style['select-header']">
+                  <span :class="$style['cancel']" @click="closeSelect">
+                    取消
+                  </span>
+                  选择钱包
+                </div>
+
+                <div :class="$style['select-content']">
+                  <div
+                    :class="$style['option']"
+                    v-for="vendor in transIn"
+                    :key="vendor.value"
+                    @click="setTranIn(vendor)"
+                  >
+                    {{ vendor.text }}
+                    <img
+                      v-if="transInText === vendor.text"
+                      :src="
+                        $getCdnPath(
+                          `/static/image/${siteConfig.MOBILE_WEB_TPL}/mcenter/balanceTrans/ic_transfer_sel.png`
+                        )
+                      "
+                      alt="sel"
+                    />
+                  </div>
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+
+      <div :class="[$style['balance-manual-wrap'], 'clearfix']">
+        <span :class="$style['wallet-title']">{{
+          $text("S_TRANSFER_MONEY", "转帐金额")
+        }}</span>
+        <div :class="[$style['balance-input-wrap'], 'clearfix']">
+          <span :class="$style['transfer-money']">
+            <span>¥</span>
+            <input
+              v-model="transferMoney"
+              :class="$style['transfer-money-input']"
+              type="number"
+              placeholder="请输入转帐金额"
+            />
+          </span>
+          <div
+            :class="$style['max-money-btn']"
+            @click="getMaxMoney(membalance, tranOut)"
+          >
+            {{ $text("S_MAX", "最大") }}
+          </div>
+        </div>
+      </div>
+      <div
+        :class="[
+          $style['transfer-btn'],
+          {
+            [$style['is-disable']]: btnLock || !transferMoney
+          }
+        ]"
+        @click="
+          () => {
+            if (memInfo.blacklist.includes(3)) {
+              this.$emit('update:isShowBlockTips', true);
+            } else {
+              sendBalanceTran();
+            }
+          }
+        "
+      >
+        立即转帐
+      </div>
+    </template>
+
+    <message v-if="msg" @close="msg = ''">
+      <div slot="msg">
+        <div
+          v-html="msg"
+          style="background-color: transparent ; margin: 0 ; padding: 0"
+        ></div>
+      </div>
+    </message>
+  </div>
+</template>
+
+<script>
+import { getCookie } from '@/lib/cookie';
+import { mapGetters, mapActions } from "vuex";
+import { ModelSelect } from 'vue-search-select';
+import ajax from '@/lib/ajax';
+import mcenter from '@/api/mcenter';
+import message from "@/router/mobile/components/common/message";
+import yaboRequest from '@/api/yaboRequest';
+
+export default {
+  components: {
+    message,
+  },
+  data() {
+    return {
+      balanceLock: true,
+      btnLock: false,
+      timer: null,
+      lockSec: 0,
+
+      tranOut: '',
+      tranIn: '',
+
+      transferMoney: null,
+      balanceList: {},
+      total: 0,
+      isAutotransfer: '',
+      AutotransferLock: false,
+      recentlyData: {},
+      tranOutList: {},
+      msg: "",
+      isShowMore: true,
+      isShowTransOutSelect: false,
+      isShowTransInSelect: false,
+      transInText: "请选择帐户",
+      transOutText: "请选择帐户"
+    };
+  },
+  computed: {
+    ...mapGetters({
+      memInfo: 'getMemInfo',
+      membalance: 'getMemBalance',
+      siteConfig: 'getSiteConfig'
+    }),
+    $style() {
+      const style =
+        this[`$style_${this.siteConfig.MOBILE_WEB_TPL}`] || this.$style_porn1;
+      return style;
+    },
+    /**
+   * 組轉出列表
+   *
+   * @return array
+   */
+    transOut() {
+      const list = [{ value: '', text: this.$t('S_SELECT_ACCOUNT') }];
+      // 轉出列表只塞有額度的平台（額度需>=1，只有小數位不允許轉）
+      // 維護時不可轉出
+      Object.keys(this.membalance.vendor).forEach((index) => {
+        if (this.membalance.vendor[index].amount !== '--'
+          && +this.membalance.vendor[index].amount >= 1
+          && !this.membalance.vendor[index].maintain
+        ) {
+          const text = index === 'default' ? '中心钱包' : this.membalance.vendor[index].text;
+          list.push({ value: index, text });
+        }
+      });
+      return list;
+    },
+    /**
+     * 組轉入列表
+     *
+     * @return array
+     */
+    transIn() {
+      const list = [{ value: '', text: this.$t('S_SELECT_ACCOUNT') }];
+      // 維護時不可轉入
+      Object.keys(this.membalance.vendor).forEach((index) => {
+        if (!this.membalance.vendor[index].maintain) {
+          const text = index === 'default' ? '中心钱包' : this.membalance.vendor[index].text;
+          list.push({ value: index, text });
+        }
+      });
+      return list;
+    },
+    balanceInfo() {
+      const data = {};
+
+      Object.keys(this.membalance.vendor).forEach((key) => {
+        if (key === 'default') {
+          return;
+        }
+
+        data[key] = this.membalance.vendor[key];
+      });
+
+      return data;
+    },
+    firstThirdBalanceInfo() {
+      const data = {};
+      Object.keys(this.membalance.vendor).slice(0, 4).forEach((key) => {
+        if (key === 'default') {
+          return;
+        }
+
+        data[key] = this.membalance.vendor[key];
+      });
+
+      return data;
+    },
+    tipText() {
+      return this.$text('S_AUTO_SWITCH', {
+        text: '切换为【自动转换】模式重新开启游戏平台，系统会自动将主帐户余额转入正在进行中的游戏 (包含新入款成功)。',
+        replace: [
+          { target: '%s', value: '<br/>' },
+          { target: '%s', value: '<br/>' }
+        ]
+      });
+    },
+  },
+  created() {
+    // 刷新 Player Api
+    this.actionSetUserdata(true);
+
+    // this.getRecentlyOpened()
+    const params = [this.getBalanceAll(), , this.setDefaultTran()];
+    Promise.all(params).then(() => {
+      // do something
+    });
+
+    this.isAutotransfer = this.memInfo.auto_transfer.enable;
+  },
+  methods: {
+    ...mapActions([
+      'actionSetUserBalance',
+      'actionSetUserdata',
+      'actionSetGlobalMessage'
+    ]),
+    getBalanceAll(status) {
+      if (status === 'lockStatus' && this.balanceLock) {
+        return;
+      }
+
+      this.balanceLock = true;
+      this.actionSetUserBalance().then(() => {
+        this.timer = setInterval(() => {
+          if (this.lockSec >= 15) {
+            clearInterval(this.timer);
+            this.lockSec = 0;
+            this.balanceLock = false;
+            return;
+          }
+          this.lockSec += 1;
+        }, 1000);
+      });
+    },
+    getMaxMoney(balanceList, transferTargetOut) {
+      if (balanceList.vendor[transferTargetOut]) {
+        this.transferMoney = Math.floor(
+          +balanceList.vendor[transferTargetOut].amount
+        );
+        return;
+      }
+
+      this.transferMoney = 0;
+    },
+    toggleShowMore() {
+      this.isShowMore = !this.isShowMore;
+    },
+    closeSelect() {
+      this.isShowTransOutSelect = false;
+      this.isShowTransInSelect = false;
+    },
+    setTransInText(value) {
+      this.transInText = value;
+      this.closeSelect();
+    },
+    onClickMaintain(value) {
+      this.msg = `美东时间：
+          <br>
+          <span>${value.etc_start_at}</span>
+          <p style="margin: 0 ; padding: 0 ; text-align: center">|</p>
+          <span>${value.etc_end_at}</span>
+          <p></p>
+          北京时间：
+          <br>
+          <span>${value.start_at}</span>
+          <p style="margin: 0 ; padding: 0 ; text-align: center">|</p>
+          <span>${value.end_at}</span>
+        `;
+    },
+    enableAutotransfer() {
+      if (this.isAutotransfer || this.AutotransferLock) {
+        return;
+      }
+      this.AutotransferLock = true;
+      mcenter.balanceTranAutoEnable({
+        success: () => {
+          this.actionSetGlobalMessage({ msg: '回收成功' });
+          // alert(this.$t('S_SWITCH_AUTO_TRANSFER'));
+          this.isAutotransfer = true;
+          this.backAccount({}, true);
+          this.actionSetUserdata(true);
+
+          this.AutotransferLock = false;
+        },
+        fail: () => {
+          this.AutotransferLock = false;
+        }
+      });
+
+      this.getRecentlyOpened();
+    },
+    closeAutotransfer() {
+      if (!this.isAutotransfer || this.AutotransferLock) {
+        return;
+      }
+      this.AutotransferLock = true;
+      mcenter.balanceTranAutoClose({
+        success: () => {
+          this.actionSetGlobalMessage({ msg: '切换成功' });
+          this.isAutotransfer = false;
+          this.actionSetUserdata(true);
+
+          this.AutotransferLock = false;
+        },
+        fail: () => {
+          this.AutotransferLock = false;
+        }
+      });
+    },
+    getBalanceAll(status) {
+      if (status === 'lockStatus' && this.balanceLock) {
+        return;
+      }
+
+      this.balanceLock = true;
+      this.actionSetUserBalance().then(() => {
+        this.timer = setInterval(() => {
+          if (this.lockSec >= 15) {
+            clearInterval(this.timer);
+            this.lockSec = 0;
+            this.balanceLock = false;
+            return;
+          }
+          this.lockSec += 1;
+        }, 1000);
+      });
+    },
+    backAccount({ afterSetUserBalance } = {}, fromAuto) {
+      mcenter.balanceTranBack({
+        success: () => {
+          this.lockSec = 0;
+          this.actionSetUserBalance()
+            .then(() => {
+              if (!fromAuto) {
+                this.actionSetGlobalMessage({ msg: '回收成功' });
+              }
+              this.tranOut = '';
+              if (afterSetUserBalance) {
+                afterSetUserBalance();
+              }
+            });
+        },
+        fail: (res) => {
+          this.actionSetGlobalMessage({ msg: res.data.msg || '系统错误' });
+        }
+      });
+    },
+    sendBalanceTran() {
+      // 阻擋連續點擊
+      if (this.btnLock) {
+        return;
+      }
+
+      this.btnLock = true;
+
+      const re = /^[1-9]*[1-9][0-9]*$/;
+      const source = this.tranOut;
+      const target = this.tranIn;
+      console.log(this.tranOut)
+      const money = this.transferMoney;
+
+      if (+source === 0 || +target === 0) {
+        this.actionSetGlobalMessage({ msg: this.$t('S_SELECT_ACCOUNT') });
+        this.btnLock = false;
+        return;
+      }
+      if (money === '') {
+        this.actionSetGlobalMessage({ msg: this.$t('S_AMOUNT_NULL_VALUE') });
+        this.btnLock = false;
+        return;
+      }
+      if (!re.test(money)) {
+        this.actionSetGlobalMessage({ msg: this.$t('S_DAW_ONLY_INT') });
+        this.btnLock = false;
+        return;
+      }
+
+      mcenter.balanceTran({
+        params: {
+          amount: money
+        },
+        success: () => {
+          this.actionSetGlobalMessage({ msg: '转帐成功' });
+
+          this.lockSec = 0;
+          this.actionSetUserBalance();
+          this.transferMoney = '';
+
+          this.btnLock = false;
+        },
+        fail: (res) => {
+          this.btnLock = false;
+          this.actionSetGlobalMessage({
+            msg: res.data.msg, code: res.data.code, origin: "balanceTrans"
+          });
+        }
+      }, source, target);
+    },
+    getRecentlyOpened() {
+      mcenter.lastVendor({
+        success: (response) => {
+          this.recentlyData = response.ret;
+        }
+      });
+    },
+    /**
+     * 設定轉出對象
+     * @param {String} vendor
+     */
+    setTranOut(vendor) {
+      this.tranOut = vendor.value;
+      this.transOutText = vendor.text;
+      this.closeSelect();
+    },
+    /**
+     * 設定轉入對象
+     * @param {String} vendor
+     */
+    setTranIn(vendor) {
+      this.tranIn = vendor.value;
+      this.transInText = vendor.text;
+      this.closeSelect();
+    },
+    setDefaultTran() {
+      const tranIndx = this.transOut.length < 2 ? 0 : 1;
+      const transInIndex = this.transIn.length < 3 ? 0 : 2;
+
+      //   this.getDefaultTran = {
+      //     out: this.transOut[tranIndx].value,
+      //     in: this.transIn[transInIndex].value
+      //   };
+    },
+  }
+};
+</script>
+
+<style lang="scss" src="../css/porn1.module.scss" module="$style_porn1"></style>
+<style lang="scss" src="../css/ey1.module.scss" module="$style_ey1"></style>
