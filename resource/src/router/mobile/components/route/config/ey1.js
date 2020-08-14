@@ -31,7 +31,7 @@ export default {
         moneyDetailEy1: () => import(/* webpackChunkName: 'moneyDetailEy1' */'../../tpl/ey1/components/mcenter/components/moneyDetail'),
         informationEy1: () => import(/* webpackChunkName: 'informationEy1' */'../../tpl/ey1/components/mcenter/components/information'),
         withdrawEy1: () => import(/* webpackChunkName: 'withdrawEy1' */'../../tpl/ey1/components/mcenter/components/withdraw'),
-        //     depositEy1: () => import(/* webpackChunkName: 'depositEy1' */'../../tpl/ey1/components/mcenter/components/deposit'),
+        depositEy1: () => import(/* webpackChunkName: 'depositEy1' */'../../tpl/ey1/components/mcenter/components/deposit'),
         accountVipEy1: () => import(/* webpackChunkName: 'accountVipEy1' */'../../tpl/ey1/components/mcenter/components/accountVip'),
         accountVipDetailEy1: () => import(/* webpackChunkName: 'accountVipDetailEy1' */'../../tpl/ey1/components/mcenter/components/vipDetail'),
         tcenterCommissionEy1: () => import(/* webpackChunkName: 'tcenterCommissionEy1' */'../../tpl/ey1/components/mcenter/components/tcenter/components/commission'),
