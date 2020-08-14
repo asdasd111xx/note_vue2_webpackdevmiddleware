@@ -36,7 +36,7 @@
             }}</span>
             <img
               :class="$style['arrow-icon']"
-              src="/static/image/_new/common/arrow_next.png"
+              src="/static/image/porn1/common/arrow_next.png"
             />
           </div>
         </div>
@@ -485,8 +485,8 @@ export default {
     getBankImage(swiftCode) {
       return {
         src: `https://images.dormousepie.com/icon/bankIconBySwiftCode/${swiftCode}.png`,
-        error: this.$getCdnPath('/static/image/_new/default/bank_default_2.png'),
-        loading: this.$getCdnPath('/static/image/_new/default/bank_default_2.png')
+        error: this.$getCdnPath('/static/image/porn1/default/bank_default_2.png'),
+        loading: this.$getCdnPath('/static/image/porn1/default/bank_default_2.png')
       };
     },
     showCaptchaPopup() {
