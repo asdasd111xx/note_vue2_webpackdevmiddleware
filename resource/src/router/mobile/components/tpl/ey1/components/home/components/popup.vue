@@ -2,7 +2,7 @@
   <div :class="$style['popup']">
     <div :class="$style['mask']" />
     <div :class="$style['modal-wrap']">
-      <div :class="$style['modal-content']">
+      <div v-if="!sitePostList" :class="$style['modal-content']">
         <div :class="$style['modal-news']">
           <div
             v-for="item in post.list"
@@ -21,10 +21,32 @@
           <span :class="$style['checkbox-text']">不再提示</span>
         </div>
       </div>
-      <div class="clearfix">
-        <div :class="$style['modal-button']" @click="closePop">知道了</div>
-        <div :class="$style['modal-button']" @click="closePop('mcenter')">
+
+      <div v-else-if="sitePostList" :class="$style['modal-content']">
+        <div :class="$style['post-header']">
+          网站公告
+        </div>
+        <div :class="$style['modal-news']">
+          <div
+            v-for="item in sitePostList"
+            :key="item.id"
+            :class="$style['news-item']"
+          >
+            <p :class="$style['news-content']" v-html="item.content" />
+          </div>
+        </div>
+      </div>
+
+      <div v-if="!sitePostList" class="clearfix">
+        <div :class="$style['modal-button']" @click="closePop()">知道了</div>
+        <div :class="$style['modal-button']" @click="closePop(true)">
           查看详情
+        </div>
+      </div>
+
+      <div v-else-if="sitePostList" class="clearfix">
+        <div :class="[$style['modal-button-center']]" @click="closePop()">
+          关闭
         </div>
       </div>
     </div>
@@ -35,6 +57,11 @@
 import { mapGetters } from 'vuex';
 
 export default {
+  props: {
+    sitePostList: {
+      default: null
+    }
+  },
   data() {
     return {
       isTick: false
@@ -46,18 +73,21 @@ export default {
     })
   },
   methods: {
-    closePop(path) {
-      if (path === 'mcenter') {
+    closePop(showDetail) {
+      if (showDetail) {
         this.$router.push('mobile/mcenter/information/post');
+        return;
       }
 
       if (this.isTick) {
-        this.$cookie.set(`hidepop${this.post.config.last_modified_at}`, true, { path: '/', expires: '' });
+        localStorage.setItem('do-not-show-home-post', true);
       }
 
-      this.$emit('close');
-      localStorage.setItem('pop', '');
-      document.querySelector('body').style = '';
+      if (!!this.sitePostList) {
+        localStorage.setItem('is-show-popup-announcement', true);
+      }
+
+      this.$emit('close', !!this.sitePostList);
     }
   }
 };
@@ -153,12 +183,28 @@ export default {
   font-size: 18px;
 
   &:first-child {
-    color: #414655;
+    color: #000;
     border-right: 1px solid #eee;
   }
 
   &:last-child {
-    color: #e42a30;
+    color: #d2b79c;
   }
+}
+
+.modal-button-center {
+  width: 100%;
+  height: 50px;
+  line-height: 50px;
+  text-align: center;
+  font-size: 18px;
+}
+
+.post-header {
+  font-size: 18px;
+  font-weight: normal;
+  text-align: center;
+  width: 100%;
+  margin-bottom: 5px;
 }
 </style>

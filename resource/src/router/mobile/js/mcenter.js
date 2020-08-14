@@ -105,7 +105,7 @@ export default {
             component
         },
         { // 信息中心
-            path: 'information',
+            path: 'information/:page?',
             name: 'mcenter-information',
             component
         },
