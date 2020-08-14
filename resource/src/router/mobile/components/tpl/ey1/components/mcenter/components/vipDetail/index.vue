@@ -14,7 +14,7 @@
 import { mapGetters } from "vuex";
 import { getCookie } from "@/lib/cookie";
 import mobileContainer from "../../../common/mobileContainer";
-import vipDetail from '@/router/mobile/components/tpl/porn1/components/mcenter/components/vipDetail/components/index';
+import vipDetail from './components/index';
 
 export default {
   components: {

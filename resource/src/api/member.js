@@ -65,6 +65,8 @@ export default {
                 localStorage.removeItem('type');
                 localStorage.removeItem('content_rating');
                 localStorage.removeItem('is-open-game');
+                localStorage.removeItem('do-not-show-home-post');
+                localStorage.removeItem('is-show-popup-announcement');
                 // GA流量統計
                 window.dataLayer.push({
                     ga_uid: undefined

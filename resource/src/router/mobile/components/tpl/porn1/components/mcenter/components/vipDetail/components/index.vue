@@ -169,5 +169,5 @@ export default {
 };
 </script>
 
-<style lang="scss" src="./css/porn1.index.scss" module="$style_porn1"></style>
-<style lang="scss" src="./css/ey1.index.scss" module="$style_ey1"></style>
+<style lang="scss" src="@/css/page/vipDetail/porn1.index.scss" module="$style_porn1"></style>
+<style lang="scss" src="@/css/page/vipDetail/ey1.index.scss" module="$style_ey1"></style>

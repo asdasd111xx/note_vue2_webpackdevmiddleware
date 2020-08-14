@@ -183,7 +183,7 @@
         <div :class="$style['btn-icon']">
           <img
             :src="$getCdnPath('/static/image/_new/common/btn_help.png')"
-            @click="handleHelpLinkTo"
+            @click="$router.push('/mobile/mcenter/help/')"
           />
         </div>
       </div>

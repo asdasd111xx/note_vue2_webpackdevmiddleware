@@ -1,27 +1,24 @@
 <template>
   <mobile-container :header-config="headerConfig" :class="$style.container">
     <div slot="content" class="content-wrap">
-      <div :class="$style['top-bg']" />
       <home-slider />
       <home-new />
       <home-content />
-      <popup
-        v-if="popStatus && isShow && !isHidePop"
-        @close="popStatus = false"
-      />
+      <popup v-if="isShowPop" @close="closePop" :sitePostList="sitePostList" />
     </div>
   </mobile-container>
 </template>
 
 <script>
-import { mapGetters, mapActions } from 'vuex';
-import homeSlider from './components/homeSlider';
-import homeNew from './components/homeNew';
-import homeContent from './components/homeContent';
-import popup from './components/popup';
-import mobileContainer from '../common/mobileContainer';
-import mcenter from '@/api/mcenter';
 import { getCookie, setCookie } from '@/lib/cookie';
+import { mapGetters, mapActions } from 'vuex';
+import axios from 'axios';
+import homeContent from './components/homeContent';
+import homeNew from './components/homeNew';
+import homeSlider from './components/homeSlider';
+import mcenter from '@/api/mcenter';
+import mobileContainer from '../common/mobileContainer';
+import popup from './components/popup';
 
 export default {
   components: {
@@ -34,9 +31,8 @@ export default {
   data() {
     return {
       updateBalance: null,
-      popStatus: false,
-      isShow: false,
-      isHidePop: false
+      isShowPop: false,
+      sitePostList: null,
     };
   },
   computed: {
@@ -48,6 +44,7 @@ export default {
       return {
         hasLogo: true,
         hasMemInfo: true,
+        hasSearchBtn: false,
         onClick: () => {
           this.onClick();
         }
@@ -69,15 +66,26 @@ export default {
       });
     }
 
-    if (!this.loginStatus) {
-      localStorage.setItem('pop', true);
-      return;
+    // 先顯示彈跳公告關閉後再顯示一般公告
+    if (this.loginStatus && !localStorage.getItem('is-show-popup-announcement')) {
+      axios({
+        method: 'get',
+        url: '/api/v1/c/player/popup-announcement',
+      }).then((res) => {
+        if (res.data && res.data.ret && res.data.ret.length > 0) {
+          this.sitePostList = res.data.ret;
+          this.isShowPop = true;
+        }
+      }).catch(res => { });
     }
-    this.isHidePop = this.$cookie.get(`hidepop${this.post.config.last_modified_at}`) || false;
-    this.popStatus = this.post.list.length > 0;
-    this.isShow = localStorage.getItem('pop') || false;
-    if (this.isShow) {
-      document.querySelector('body').style = 'overflow: hidden';
+  },
+  watch: {
+    isShowPop(val) {
+      if (val) {
+        document.querySelector('body').style = 'overflow: hidden';
+      } else {
+        document.querySelector('body').style = '';
+      }
     }
   },
   mounted() {
@@ -104,10 +112,25 @@ export default {
     ]),
     onClick() {
       this.$router.push('/mobile');
+    },
+    closePop(isSitePost) {
+      this.isShowPop = false;
+      this.sitePostList = null;
+
+      if (!localStorage.getItem('do-not-show-home-post')) {
+        setTimeout(() => {
+          this.$nextTick(() => {
+            if (isSitePost) {
+              this.isShowPop = true;
+            }
+          })
+        }, 500)
+      }
     }
   }
 };
 </script>
+
 
 <style lang="scss" module>
 @import "~@/css/variable.scss";

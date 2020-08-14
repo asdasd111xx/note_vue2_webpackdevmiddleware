@@ -58,11 +58,11 @@ export default {
                 }
             ]
         },
-        { // 裝置管理
-            path: 'bindingDevice',
-            name: 'mcenter-bindingDevice',
-            component
-        },
+        // { // 裝置管理
+        //     path: 'bindingDevice',
+        //     name: 'mcenter-bindingDevice',
+        //     component
+        // },
         { // 額度轉換
             path: 'balanceTrans',
             name: 'mcenter-balanceTrans',
@@ -94,18 +94,18 @@ export default {
             name: 'mcenter-betRecord',
             component
         },
-        { // 紅利帳戶
-            path: 'bonusAccount',
-            name: 'mcenter-bonusAccount',
-            component
-        },
+        // { // 紅利帳戶
+        //     path: 'bonusAccount',
+        //     name: 'mcenter-bonusAccount',
+        //     component
+        // },
         { // 資金明細
             path: 'moneyDetail/:page?',
             name: 'mcenter-moneyDetail',
             component
         },
         { // 信息中心
-            path: 'information',
+            path: 'information/:page?',
             name: 'mcenter-information',
             component
         },

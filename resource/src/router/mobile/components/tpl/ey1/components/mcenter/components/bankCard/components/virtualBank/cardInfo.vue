@@ -22,7 +22,7 @@
             v-for="item in virtualBank_card"
             :key="item.id"
             :class="$style['virtual-bankcard-item']"
-            @click="getVirtualBankDetail(item), showTab(false)"
+            @click="onClickDetail(item), showTab(false)"
           >
             <div :class="[$style['card-top'], 'clearfix']">
               <div :class="$style['card-logo']">
@@ -75,7 +75,7 @@
               {{
                 $t("S_VIRTUAL_BANKCARD_TYPE_LIMIT").replace(
                   "%s",
-                  vBankList.length
+                  nowOpenVirtualBank.length
                 )
               }}
             </span>
@@ -133,8 +133,12 @@
               移至历史帐号
             </div>
 
+            <!-- 目前購寶暫不支援刪除 -->
             <div
-              v-if="memInfo.config.delete_bank_card"
+              v-if="
+                memInfo.config.delete_bank_card &&
+                  virtualBank_cardDetail.payment_gateway_id !== 37
+              "
               :class="$style['edit-option-item']"
               @click="isShowPop = true"
             >
@@ -209,19 +213,15 @@ export default {
     }
   },
   created() {
-    this.getVirtualBankList();
+    this.getNowOpenVirtualBank();
     this.getUserVirtualBankList();
   },
   methods: {
     getBankImage(swiftCode) {
       return {
         src: `https://images.dormousepie.com/icon/bankIconBySwiftCode/${swiftCode}.png`,
-        error: this.$getCdnPath(
-          "/static/image/ey1/default/bank_default_2.png"
-        ),
-        loading: this.$getCdnPath(
-          "/static/image/ey1/default/bank_default_2.png"
-        )
+        error: this.$getCdnPath("/static/image/ey1/default/bank_default_2.png"),
+        loading: this.$getCdnPath("/static/image/ey1/default/bank_default_2.png")
       };
     }
   }
@@ -229,5 +229,5 @@ export default {
 </script>
 
 <style lang="scss" module>
-@import "~@/css/page/cardInfo.module.scss";
+@import "@/css/page/cardInfo.module.scss";
 </style>

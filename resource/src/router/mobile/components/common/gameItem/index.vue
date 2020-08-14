@@ -120,31 +120,6 @@ export default {
      */
     vendorName() {
       return this.gameInfo.vendor_abridge;
-
-      if (this.gameInfo.vendor === 'mw') {
-        if (this.curLang === 'zh-tw') {
-          return '大满贯电子';
-        } if (this.curLang === 'zh-cn') {
-          return '大满贯电子';
-        }
-      }
-
-      if (this.gameInfo.vendor === 'mg2') {
-        return 'MG';
-      }
-
-      if (this.gameInfo.vendor === 'rt') {
-        if (this.curLang === 'zh-tw' || this.curLang === 'zh-cn') {
-          return '申博';
-        }
-        return 'SBG';
-      }
-
-      if (['lg_casino', 'lg_card'].includes(this.gameInfo.vendor)) {
-        return 'XBB';
-      }
-
-      return this.gameInfo.vendor.split('_')[0].toUpperCase();
     },
     /**
      * 遊戲名稱顯示
@@ -207,7 +182,7 @@ export default {
         resultUrl = this.$getCdnPath('/static/image/casino/event_icon.png');
       }
 
-      const ey1_default_img = '/static/image/ey1/default/pic_gamebg_d.png'
+      const ey1_default_img = '/static/image/ey1/default/bg_gamecard_d.png'
 
       return {
         src: resultUrl,
@@ -397,10 +372,10 @@ export default {
      * @method toggleFavorite
      */
     toggleFavorite() {
-      if (this.isBackEnd) {
+      if (this.isBackEnd || this.isSetFavorite) {
         return;
       }
-
+      this.isSetFavorite = true;
       const actionType = this.checkFavorite ? 'deleteFavoriteGame' : 'setFavoriteGame';
       const { vendor, kind, code } = this.gameInfo;
 
@@ -411,7 +386,9 @@ export default {
           code
         }
       }).then(() => {
-        this.actionSetFavoriteGame();
+        this.actionSetFavoriteGame().then(() => {
+          this.isSetFavorite = false;
+        });
       });
     }
   }

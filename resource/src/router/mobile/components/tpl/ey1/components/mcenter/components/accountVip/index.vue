@@ -5,7 +5,7 @@
 </template>
 
 <script>
-import vip from "@/router/mobile/components/tpl/porn1/components/mcenter/components/accountVip/components/vip";
+import vip from "./components/vip";
 
 export default {
   components: {

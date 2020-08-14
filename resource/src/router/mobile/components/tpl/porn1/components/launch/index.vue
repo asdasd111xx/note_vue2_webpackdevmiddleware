@@ -29,6 +29,8 @@ export default {
     //   初始化
     localStorage.removeItem('type');
     localStorage.removeItem('is-open-game');
+    localStorage.removeItem('do-not-show-home-post');
+    localStorage.removeItem('is-show-popup-announcement');
   },
   mounted() {
     this.timer = setInterval(() => {

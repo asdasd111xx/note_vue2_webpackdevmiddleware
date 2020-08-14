@@ -63,7 +63,6 @@ export default {
 
 <style lang="scss" module>
 @import "~@/css/variable.scss";
-@import "@/router/mobile/components/tpl/porn1/components/mcenter/components/balanceTrans/css/index.module.scss";
 .content-wrap {
   background-color: $main_background_white1;
   color: #414655;

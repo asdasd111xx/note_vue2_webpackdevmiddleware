@@ -3,7 +3,7 @@
 @mixin grid-style {
   display: grid;
   grid-template-columns: 68px repeat(6, 1fr);
-  height: 43px;
+  min-height: 43px;
   text-align: center;
 }
 

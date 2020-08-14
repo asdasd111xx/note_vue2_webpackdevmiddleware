@@ -1,0 +1,14 @@
+@import "./porn1.module.scss";
+
+.max-money-btn {
+    color: #fff;
+    background: #E42A30;
+}
+
+.transfer-btn {
+    background: #E42A30;
+
+    &.is-disable {
+        background: #FDCCCC;
+    }
+}
