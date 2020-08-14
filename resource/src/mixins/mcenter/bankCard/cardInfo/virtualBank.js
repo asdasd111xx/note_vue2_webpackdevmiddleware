@@ -7,7 +7,7 @@ export default {
       isRevice: false,
       isShowPop: false,
       hasSameTypeCard: false,
-      vBankList: [],
+      nowOpenVirtualBank: [],
       virtualBank_card: [],
       virtualBank_cardDetail: {},
     }
@@ -19,17 +19,19 @@ export default {
   },
   methods: {
     ...mapActions(['actionSetGlobalMessage']),
-    getVirtualBankList() {
+    getNowOpenVirtualBank() {
       // Get 錢包類型
       axios({
         method: "get",
         url: "/api/payment/v1/c/virtual/bank/list"
-      }).then(res => {
-        if (!res.data || res.data.result !== "ok") {
+      }).then(response => {
+        const { ret, result } = response.data;
+
+        if (!response || result !== "ok") {
           return;
         }
 
-        this.vBankList = res.data.ret;
+        this.nowOpenVirtualBank = ret;
       });
     },
     getUserVirtualBankList() {
@@ -52,7 +54,8 @@ export default {
         this.virtualBank_card = ret.filter((item, index) => index < 15);
       })
     },
-    getVirtualBankDetail(info) {
+
+    onClickDetail(info) {
       this.virtualBank_cardDetail = info;
       this.hasSameTypeCard = false;
 

@@ -132,7 +132,7 @@
     <popup-qrcode
       v-if="isShowPopQrcode"
       :isShowPop.sync="isShowPopQrcode"
-      :walletId="selectTarget.bank_id"
+      :paymentGatewayId="selectTarget.bank_id"
     />
 
     <message v-if="msg" @close="clearMsg">

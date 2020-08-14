@@ -18,7 +18,7 @@
         </div>
 
         <div :class="$style['tips']">
-          <template v-if="walletId === 21">
+          <template v-if="paymentGatewayId === 21">
             <div>● 请使用CGPay内扫描器扫描二維碼</div>
             <div>● 成功绑定钱包后，此视窗自动关闭</div>
             <div>
@@ -29,7 +29,7 @@
             </div>
           </template>
 
-          <template v-if="walletId === 37">
+          <template v-if="paymentGatewayId === 37">
             <div>● 请使用扫描器扫描二維碼</div>
             <div>● 成功绑定钱包后，此视窗自动关闭</div>
           </template>
@@ -55,7 +55,7 @@ export default {
       type: Boolean,
       require: true
     },
-    walletId: {
+    paymentGatewayId: {
       type: Number,
       require: true
     }
@@ -73,9 +73,9 @@ export default {
       memInfo: "getMemInfo"
     }),
     title() {
-      if (this.walletId === 37) {
+      if (this.paymentGatewayId === 37) {
         return "绑定购宝钱包";
-      } else if (this.walletId === 21) {
+      } else if (this.paymentGatewayId === 21) {
         return "扫描绑定";
       }
     }
@@ -89,9 +89,9 @@ export default {
       // walletGatewayId = 3 -> CGPay
       // walletGatewayId = 2 -> 購寶
       let id = null;
-      if (this.walletId === 37) {
+      if (this.paymentGatewayId === 37) {
         id = 2;
-      } else if (this.walletId === 21) {
+      } else if (this.paymentGatewayId === 21) {
         id = 3;
       }
 
