@@ -93,12 +93,6 @@ export default {
   components: {
     mobileContainer,
   },
-  //   {
-  //         id: 1,
-  //         type: "cu",
-  //         name: "投诉建义",
-  //         value: "cs@yaboxxx.net"
-  //    }
   data() {
     return {
       msg: '',
@@ -126,7 +120,7 @@ export default {
       url: `${this.siteConfig.YABO_API_DOMAIN}/system/contactus`,
       headers: { 'x-domain': this.memInfo.user.domain, }
     }).then((res) => {
-      if (res && res.data) {
+      if (res && res.data && res.data.length > 0) {
         this.list = res.data;
       }
     });
@@ -160,7 +154,7 @@ export default {
   .block {
     width: 2.5px;
     height: 17px;
-    background: linear-gradient(to top, #dccab8, #d2b496);
+    background: linear-gradient(to top, #fe2a2a, #b60303);
     border-radius: 1px;
     margin-right: 10px;
   }
@@ -216,11 +210,7 @@ export default {
     border-radius: 5px;
     font-size: 16px;
     line-height: 45px;
-
-    background: -webkit-linear-gradient(right, #dccab8, #d2b496);
-    background: -o-linear-gradient(left, #9c856e, #d2b496);
-    background: -moz-linear-gradient(left, #9c856e, #d2b496);
-    background: linear-gradient(to left, #9c856e, #d2b496);
+    background: #e42a30;
   }
 }
 </style>

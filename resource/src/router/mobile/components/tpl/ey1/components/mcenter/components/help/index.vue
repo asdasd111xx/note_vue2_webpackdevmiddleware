@@ -5,22 +5,19 @@
     :class="$style.container"
   >
     <div slot="content" :class="$style['help-wrap']">
-      <message v-if="msg" @close="msg = ''">
-        <div slot="msg">
-          {{ msg }}
-        </div>
-      </message>
       <div
         v-for="listInfo in list"
         v-if="listInfo.needLogin ? loginStatus : true"
         :key="`list-${listInfo.name}`"
         :class="$style.list"
-        @click="handleClick(listInfo.path)"
+        @click="handleClick(listInfo)"
       >
         <div :class="$style['list-icon']">
           <img
             :src="
-              $getCdnPath(`/static/image/_new/mcenter/help/${listInfo.img}.png`)
+              $getCdnPath(
+                `/static/image/ey1/mcenter/help/ic_help_${listInfo.img}.png`
+              )
             "
           />
         </div>
@@ -39,15 +36,13 @@
 </template>
 
 <script>
-import { mapGetters } from 'vuex';
 import member from '@/api/member';
 import mobileContainer from '../../../common/mobileContainer';
-import message from "@/router/mobile/components/common/message";
+import { mapGetters, mapActions } from 'vuex';
 
 export default {
   components: {
     mobileContainer,
-    message
   },
   data() {
     return {
@@ -55,35 +50,49 @@ export default {
       list: [
         {
           name: '充值教程',
-          path: '/mobile/mcenter/help/deposit',
+          key: 'deposit',
           img: 'deposit',
           info: '充值极速到账',
           needLogin: true
         },
         {
           name: '提现教程',
-          path: '/mobile/mcenter/help/withdraw',
+          key: 'withdraw',
           img: 'withdraw',
           info: '极速提现仅需30秒',
           needLogin: false
         },
         {
           name: this.$text('S_GAME_INTR', '游戏介绍'),
-          path: '/mobile/mcenter/help/gameintro',
+          key: 'gameintro',
           img: 'gameintro',
           info: '主流体育彩票玩法',
           needLogin: false
         },
         {
           name: this.$text('S_TECH_SUP', '技术支持'),
-          path: '/mobile/mcenter/help/support',
+          key: 'support',
           img: 'support',
           info: '提供全面技术支持',
           needLogin: false
         },
         {
+          name: '常见问题',
+          key: 'faq',
+          img: 'faq',
+          info: '',
+          needLogin: false
+        },
+        {
+          name: '会员协议规章',
+          key: 'rules',
+          img: 'rules',
+          info: '',
+          needLogin: false
+        },
+        {
           name: this.$text('S_CONTACT_US', '联系我们'),
-          path: '/mobile/mcenter/help/contact',
+          key: 'contact',
           img: 'contact',
           info: '为您提供全天候服务',
           needLogin: false
@@ -108,13 +117,24 @@ export default {
     localStorage.removeItem("help_gameIntro");
   },
   methods: {
-    handleClick(path) {
-      // if (path.includes('gameintro') || path.includes('support') || path.includes('deposit')) {
-      if (path.includes('deposit')) {
-        this.msg = '正在上线 敬请期待'
-      } else {
-        this.$router.push(path)
+    ...mapActions([
+      'actionSetGlobalMessage'
+    ]),
+    handleClick(item) {
+      if (item.key === "contact") {
+        this.$router.push({ path: `/mobile/mcenter/help/contact` })
+        return;
       }
+
+      if (item.key === "faq") {
+        this.$router.push({ path: `/mobile/mcenter/helpCenter/${item.key}` })
+        return;
+      } else {
+        this.actionSetGlobalMessage({ msg: '即将开业 敬请期待' });
+        return;
+      }
+
+      this.$router.push({ path: `/mobile/mcenter/helpCenter/${item.key}` })
     },
   }
 };
@@ -144,8 +164,8 @@ export default {
     }
 
     .list-icon {
-      width: 30px;
-      height: 30px;
+      width: 24px;
+      height: 24px;
       display: flex;
       align-items: center;
       margin-right: 5px;
