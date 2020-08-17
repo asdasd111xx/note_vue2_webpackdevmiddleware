@@ -120,8 +120,20 @@ export default {
       ];
     },
     headerTitle() {
-      if (this.hasRedirect && this.$route.query.redirect !== "withdraw") {
+      if (
+        this.hasRedirect &&
+        this.$route.query.type === "bankCard" &&
+        this.$route.query.redirect !== "withdraw"
+      ) {
         return "提现银行卡";
+      }
+
+      if (this.hasRedirect && this.$route.query.type === "bankCard") {
+        return this.$text("S_ADD_BANKCARD", "添加银行卡");
+      }
+
+      if (this.hasRedirect && this.$route.query.type === "virtualBank") {
+        return this.$text("S_ADD_VIRTUAL_BANKCARD", "添加电子钱包");
       }
 
       switch (this.currentPage) {
@@ -148,21 +160,30 @@ export default {
         return;
       }
 
+      // 如果是從其它頁導轉過來，會進到添加卡片頁面，不用判斷開關
+      if (this.hasRedirect) {
+        return;
+      }
+
       this.userLevelObj = ret;
 
       // 銀行卡/電子錢包，其中有一方關閉
       if (!this.userLevelObj.bank || !this.userLevelObj.virtual_bank) {
         this.isShowTab = false;
 
-        if (this.userLevelObj.bank) {
-          this.currentKind = "bank";
-          this.currentPage = "bankCardInfo";
-        }
+        this.$nextTick(() => {
+          if (this.userLevelObj.bank) {
+            this.currentKind = "bank";
+            this.currentPage = "bankCardInfo";
+            return;
+          }
 
-        if (this.userLevelObj.virtual_bank) {
-          this.currentKind = "virtualBank";
-          this.currentPage = "virtualBankCardInfo";
-        }
+          if (this.userLevelObj.virtual_bank) {
+            this.currentKind = "virtualBank";
+            this.currentPage = "virtualBankCardInfo";
+            return;
+          }
+        });
       }
     });
   },
@@ -207,6 +228,7 @@ export default {
         return;
       }
 
+      // 從其它頁面進入到此頁面
       if (this.$route.query && this.$route.query.redirect) {
         if (this.$route.query.redirect === "home") {
           this.$router.push("/mobile");

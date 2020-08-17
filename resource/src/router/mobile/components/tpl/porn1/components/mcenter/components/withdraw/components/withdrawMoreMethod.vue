@@ -24,15 +24,29 @@
         </div>
       </div>
     </div>
+
+    <popup-qrcode
+      v-if="isShowPopQrcode"
+      :isShowPop.sync="isShowPopQrcode"
+      :paymentGatewayId="bank_id"
+    />
   </transition>
 </template>
 
 <script>
 import axios from "axios";
 import { mapGetters, mapActions } from "vuex";
+import popupQrcode from "@/router/mobile/components/common/virtualBank/popupQrcode";
 
 export default {
+  components: {
+    popupQrcode
+  },
   props: {
+    checkAccountData: {
+      type: Function,
+      default: () => {}
+    },
     show: {
       type: Boolean,
       default: false
@@ -48,14 +62,19 @@ export default {
   },
   data() {
     return {
+      bank_id: "",
       bindWallets: {
         cgPay: false,
-        goBao: false,
-        nowOpenVirtualBank: []
-      }
+        goBao: false
+      },
+      isShowPopQrcode: false,
+      nowOpenVirtualBank: []
     };
   },
   computed: {
+    ...mapGetters({
+      noticeData: "getNoticeData",
+    }),
     methodList() {
       // Todo: show -> 是否同卡片管理一樣，顯示的部份依限綁一組來吃不同的邏輯
       return [
@@ -112,6 +131,30 @@ export default {
       }
 
       return false;
+    },
+    showPopQrcode: {
+      get() {
+        return this.isShowPopQrcode;
+      },
+      set(value) {
+        this.isShowPopQrcode = value;
+      }
+    }
+  },
+  watch: {
+    noticeData(value) {
+      if (this.noticeData && this.noticeData.length > 0) {
+        let data = this.noticeData[0];
+
+        if (data.event === "trade_bind_wallet" && data.result === "ok") {
+          this.actionSetGlobalMessage({
+            msg: "绑定成功",
+            cb: () => {
+              window.location.reload();
+            }
+          });
+        }
+      }
     }
   },
   created() {
@@ -126,7 +169,26 @@ export default {
     },
     addMethod(item) {
       //  to do 添加選擇方式
-      console.log(item);
+      switch (item.key) {
+        case "bankCard":
+          this.checkAccountData("bankCard");
+          break;
+
+        case "virtualBank":
+          this.checkAccountData("virtualBank");
+          break;
+
+        case "CGPay":
+          this.$router.push(
+            "/mobile/mcenter/bankcard?redirect=withdraw&type=virtualBank&wallet=CGPay"
+          );
+          break;
+
+        case "goBao":
+          this.isShowPopQrcode = true;
+          this.bank_id = 37;
+          break;
+      }
       this.close();
     },
     checkBindCGpay() {
