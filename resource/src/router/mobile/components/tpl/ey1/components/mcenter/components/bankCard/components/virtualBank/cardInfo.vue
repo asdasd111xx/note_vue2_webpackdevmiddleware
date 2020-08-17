@@ -55,7 +55,14 @@
           <img src="/static/image/ey1/mcenter/bankCard/no_bankcard.png" />
         </div>
 
-        <template v-if="virtualBank_card.length < 15">
+        <template
+          v-if="
+            (!userLevelObj.virtual_bank_single &&
+              virtualBank_card.length < 15) ||
+              (userLevelObj.virtual_bank_single &&
+                virtualBank_card.length < nowOpenVirtualBank.length)
+          "
+        >
           <div :class="$style['add-card']">
             <div :class="$style['add-wrap']">
               <div
@@ -221,7 +228,9 @@ export default {
       return {
         src: `https://images.dormousepie.com/icon/bankIconBySwiftCode/${swiftCode}.png`,
         error: this.$getCdnPath("/static/image/ey1/default/bank_default_2.png"),
-        loading: this.$getCdnPath("/static/image/ey1/default/bank_default_2.png")
+        loading: this.$getCdnPath(
+          "/static/image/ey1/default/bank_default_2.png"
+        )
       };
     }
   }

@@ -1,6 +1,6 @@
 @import '~@/css/variable.scss';
 
-&.deposit-alert-wrap {
+.deposit-alert-wrap {
     position: absolute;
     width: 100%;
     height: 100%;
@@ -41,7 +41,7 @@
     top: 50%;
     right: 7px;
     cursor: pointer;
-    color: $alertCloseColor;
+    color: #FFF;
 
     div {
         position: relative;

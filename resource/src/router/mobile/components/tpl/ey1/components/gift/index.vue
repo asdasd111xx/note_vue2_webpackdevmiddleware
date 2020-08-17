@@ -59,10 +59,70 @@ export default {
           title: "服务",
           icon: '/static/image/ey1/gift/icon_gift_service.png',
           items: [
-            { name: "天推", url: "" },
-            { name: "通讯软体", url: "" },
-            { name: "新媒体", url: "" },
-            { name: "资源引流", url: "" }
+            {
+              title: "服务",
+              name: "天推",
+              icon: '/static/image/ey1/gift/icon_gift_service.png',
+              items: [
+                {
+                  title: "天推",
+                  icon: '/static/image/ey1/gift/icon_gift_service.png',
+                  items: [
+                    { name: "天气广告", url: "" },
+                    { name: "体育广告", url: "" },
+                    { name: "贴吧广告", url: "" },
+                  ]
+                },
+              ]
+            },
+            {
+              title: "服务",
+              name: "通讯软体",
+              icon: '/static/image/ey1/gift/icon_gift_service.png',
+              items: [
+                {
+                  title: "通讯软体",
+                  icon: '/static/image/ey1/gift/icon_gift_service.png',
+                  items: [
+                    { name: "微信推广", params: 'wechat' },
+                    { name: "QQ推广", url: "" },
+                    { name: "苹果推", url: "" },
+                  ]
+                },
+              ]
+            },
+            {
+              title: "服务",
+              name: "新媒体",
+              icon: '/static/image/ey1/gift/icon_gift_service.png',
+              items: [
+                {
+                  title: "新媒体",
+                  icon: '/static/image/ey1/gift/icon_gift_service.png',
+                  items: [
+                    { name: "YY推广", url: "" },
+                    { name: "抖音推广", url: "" },
+                    { name: "斗鱼推广", url: "" },
+                  ]
+                },
+              ]
+            },
+            {
+              title: "服务",
+              name: "资源引流",
+              icon: '/static/image/ey1/gift/icon_gift_service.png',
+              items: [
+                {
+                  title: "资源引流",
+                  icon: '/static/image/ey1/gift/icon_gift_service.png',
+                  items: [
+                    { name: "名单购买", url: "" },
+                    { name: "短信投放", url: "" },
+                    { name: "EDM投放", url: "" },
+                  ]
+                },
+              ]
+            },
           ]
         }
       ]
@@ -82,6 +142,11 @@ export default {
         prev: true,
         title: "礼包",
         onClick: () => {
+          if (this.$route.query.q) {
+            this.currentMenu = this.giftMenuList;
+            this.$router.push('/mobile/gift');
+            return;
+          }
           this.$router.back();
         }
       };
@@ -92,11 +157,20 @@ export default {
       'actionSetGlobalMessage'
     ]),
     linkTo(item) {
+      if (item.items && item.items.length > 0) {
+        this.$router.push({ query: { q: item.name } })
+        this.currentMenu = item.items;
+        return;
+      }
+
       if (item.url) {
         window.open(item.url);
-      } else {
-        this.actionSetGlobalMessage({ type: 'incoming' });
-
+      }
+      else if (item.params) {
+        this.$router.push(`/mobile/gift/detail/${item.params}`);
+      }
+      else {
+        this.actionSetGlobalMessage({ msg: '即将开业 敬请期待' });
       }
     }
   },
@@ -129,6 +203,10 @@ export default {
   width: 21px;
   height: 21px;
   margin-right: 5px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+
   > img {
     height: 100%;
   }

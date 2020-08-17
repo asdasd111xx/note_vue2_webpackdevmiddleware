@@ -33,7 +33,8 @@ export default {
             isLoading: false,
             cgpayBindingAccount: {},
             thirdUrl: '',
-            showAccount: false // 帳戶資料檢查
+            showAccount: false, // 帳戶資料檢查
+            userLevelObj: {}, // 存放 Card type 開關 & 限綁一組開關
         };
     },
     computed: {
@@ -214,6 +215,7 @@ export default {
     },
     created() {
         this.actionSetIsLoading(true);
+        this.getUserLevel();
 
         // 取得取款初始資料
         ajax({
@@ -359,6 +361,23 @@ export default {
                     this.msg = '回收成功';
                 }
             });
+        },
+        /**
+         * 使用者層級並取得 card type & 電子錢包綁綁開關
+         * @method getUserLevel
+         */
+        getUserLevel() {
+          axios({
+            method: "get",
+            url: "/api/v1/c/levels/by_user"
+          }).then(response => {
+            const { result, ret } = response.data;
+            if (!response || result !== "ok") {
+              return;
+            }
+
+            this.userLevelObj = ret;
+          });
         }
     }
 };

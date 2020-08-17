@@ -138,7 +138,7 @@ export default {
   },
   created() {
     this.actionSetUserdata(true);
-    // todo: 判斷 bank & virtualBank 是否有被啟用
+    // 判斷 bank & virtualBank 是否有被啟用
     return axios({
       method: "get",
       url: "/api/v1/c/levels/by_user"
@@ -151,19 +151,19 @@ export default {
       this.userLevelObj = ret;
 
       // 銀行卡/電子錢包，其中有一方關閉
-      // if (!this.userLevelObj.bank || !this.userLevelObj.virtual_bank) {
-      //   this.isShowTab = false;
+      if (!this.userLevelObj.bank || !this.userLevelObj.virtual_bank) {
+        this.isShowTab = false;
 
-      //   if (this.userLevelObj.bank) {
-      //     this.currentKind = "bank";
-      //     this.currentPage = "bankCardInfo";
-      //   }
+        if (this.userLevelObj.bank) {
+          this.currentKind = "bank";
+          this.currentPage = "bankCardInfo";
+        }
 
-      //   if (this.userLevelObj.virtual_bank) {
-      //     this.currentKind = "virtualBank";
-      //     this.currentPage = "virtualBankCardInfo";
-      //   }
-      // }
+        if (this.userLevelObj.virtual_bank) {
+          this.currentKind = "virtualBank";
+          this.currentPage = "virtualBankCardInfo";
+        }
+      }
     });
   },
   methods: {

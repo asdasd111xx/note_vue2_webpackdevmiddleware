@@ -113,14 +113,14 @@ export default {
     onClick() {
       this.$router.push('/mobile');
     },
-    closePop(isSitePost) {
+    closePop(isFromSitePost) {
       this.isShowPop = false;
       this.sitePostList = null;
 
       if (!localStorage.getItem('do-not-show-home-post')) {
         setTimeout(() => {
           this.$nextTick(() => {
-            if (isSitePost) {
+            if (isFromSitePost && this.post && this.post.list.length > 0) {
               this.isShowPop = true;
             }
           })

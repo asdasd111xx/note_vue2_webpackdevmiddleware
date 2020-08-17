@@ -1,5 +1,5 @@
 <template>
-  <div :class="[$style['deposit-info-wrap'], 'clearfix', colorClass]">
+  <div :class="[$style['deposit-info-wrap'], 'clearfix']">
     <!-- 訂單時間 -->
     <div v-if="isShowTimer" :class="$style['time-tip']">
       <template v-if="countdownSec > 0">
@@ -193,7 +193,7 @@ export default {
   props: {
     orderData: {
       type: Object,
-      default: () => {}
+      default: () => { }
     },
     isShow: {
       type: Boolean,
@@ -227,17 +227,9 @@ export default {
     ...mapGetters({
       memInfo: "getMemInfo"
     }),
-    colorClass() {
-      return [
-        {
-          [this.$style[`site-${this.memInfo.user.domain}`]]: this.$style[
-            `site-${this.memInfo.user.domain}`
-          ],
-          [this.$style["preset-color"]]: !this.$style[
-            `site-${this.memInfo.user.domain}`
-          ]
-        }
-      ];
+    $style() {
+      const style = this[`$style_${this.siteConfig.MOBILE_WEB_TPL}`] || this.$style_porn1;
+      return style;
     },
     resultSpeedField: {
       get() {
@@ -331,4 +323,5 @@ export default {
 };
 </script>
 
-<style lang="scss" src="../css/indexDepositInfo.module.scss" module></style>
+<style lang="scss" src="../css/depositInfo/porn1.scss" module="$style_porn1"></style>
+<style lang="scss" src="../css/depositInfo/ey1.scss" module="$style_ey1"></style>

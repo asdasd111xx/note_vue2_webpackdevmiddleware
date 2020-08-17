@@ -149,49 +149,75 @@
       </div>
     </div>
 
-    <!-- 添加银行卡 -->
-    <div
-      v-if="
-        withdrawUserData &&
-          withdrawUserData.account &&
-          withdrawUserData.account.length < 3
-      "
-      :class="[$style['add-bank-card']]"
-    >
-      <img :src="$getCdnPath(`/static/image/${themeTPL}/mcenter/add.png`)" />
-      &nbsp;
-      <span @click="$router.push('/mobile/mcenter/bankcard?redirect=withdraw')">
-        {{ $text("S_ADD_BANKCARD", "添加银行卡") }}
-      </span>
-    </div>
+    <!-- 因按鈕顯示邏輯不同，所以獨立成兩份 -->
+    <!-- 億元 -->
+    <template v-if="themeTPL === 'ey1'">
+      <!-- 添加银行卡 -->
+      <div
+        v-if="allWithdrawAccount.length === 0 && userLevelObj.bank"
+        :class="[$style['add-bank-card']]"
+      >
+        <img :src="$getCdnPath(`/static/image/${themeTPL}/mcenter/add.png`)" />
+        &nbsp;
+        <span @click="$router.push('/mobile/mcenter/bankcard?redirect=withdraw')">
+          {{ $text("S_ADD_BANKCARD", "添加银行卡") }}
+        </span>
+      </div>
 
-    <!-- to do 顯示條件 -->
-    <div v-if="themeTPL === 'ey1'" :class="[$style['add-bank-card']]">
-      <img :src="$getCdnPath(`/static/image/${themeTPL}/mcenter/add.png`)" />
-      &nbsp;
-      <span @click="showMoreMethod = true">
-        {{ "更多提现方式" }}
-      </span>
-    </div>
+      <!-- to do 添加电子钱包 -->
+      <div
+        v-if="allWithdrawAccount.length === 0 && userLevelObj.virtual_bank"
+        :class="[$style['add-bank-card']]"
+      >
+        <img :src="$getCdnPath(`/static/image/${themeTPL}/mcenter/add.png`)" />
+        &nbsp;
+        <span @click="checkAccountData('virtualBank')">
+          {{ $text("S_ADD_VIRTUAL_BANKCARD", "添加电子钱包") }}
+        </span>
+      </div>
 
-    <!-- 更多提现方式彈窗 -->
-    <withdraw-more-method
-      :show="showMoreMethod"
-      @close="
-        () => {
-          showMoreMethod = false;
-        }
-      "
-    />
+      <!-- to do 顯示條件  -->
+      <div
+        v-if="allWithdrawAccount.length > 0"
+        :class="[$style['add-bank-card']]"
+      >
+        <img :src="$getCdnPath(`/static/image/${themeTPL}/mcenter/add.png`)" />
+        &nbsp;
+        <span @click="showMoreMethod = true">
+            {{ "更多提现方式" }}
+        </span>
+      </div>
 
-    <!-- to do 添加电子钱包 -->
-    <div v-if="themeTPL === 'ey1'" :class="[$style['add-bank-card']]">
-      <img :src="$getCdnPath(`/static/image/${themeTPL}/mcenter/add.png`)" />
-      &nbsp;
-      <span @click="checkAccountData('virtualBank')">
-        {{ $text("S_ADD_VIRTUAL_BANKCARD", "添加电子钱包") }}
-      </span>
-    </div>
+      <!-- 更多提现方式彈窗 -->
+      <withdraw-more-method
+        :show="showMoreMethod"
+        :user-level-obj="userLevelObj"
+        :withdraw-user-data="withdrawUserData"
+        @close="
+            () => {
+            showMoreMethod = false;
+            }
+        "
+      />
+    </template>
+
+    <!-- Yabo -->
+    <template v-if="themeTPL === 'porn1'">
+      <div
+        v-if="
+          withdrawUserData &&
+            withdrawUserData.account &&
+            withdrawUserData.account.length < 3
+        "
+        :class="[$style['add-bank-card']]"
+      >
+        <img :src="$getCdnPath(`/static/image/${themeTPL}/mcenter/add.png`)" />
+        &nbsp;
+        <span @click="$router.push('/mobile/mcenter/bankcard?redirect=withdraw')">
+          {{ $text("S_ADD_BANKCARD", "添加银行卡") }}
+        </span>
+      </div>
+    </template>
 
     <!-- 額度提示訊息 -->
     <template

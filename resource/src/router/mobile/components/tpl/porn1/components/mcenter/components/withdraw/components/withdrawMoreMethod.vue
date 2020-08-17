@@ -28,61 +28,156 @@
 </template>
 
 <script>
-import axios from 'axios';
-import { mapGetters, mapActions } from 'vuex';
+import axios from "axios";
+import { mapGetters, mapActions } from "vuex";
 
 export default {
-  data() {
-    return {
-      methodList: [
-        {
-          key: 'bankCard',
-          title: '添加 提现银行卡',
-          isShow: true,
-        },
-        {
-          key: '',
-          title: '添加 电子钱包',
-          isShow: true,
-        },
-        {
-          key: 'CGPay',
-          title: '新增 CGPay',
-          isShow: true,
-        },
-        {
-          key: '',
-          title: '新增 购宝钱包',
-          isShow: true,
-        }
-      ]
-    }
-  },
   props: {
     show: {
       type: Boolean,
-      default: false,
+      default: false
     },
+    userLevelObj: {
+      type: Object,
+      default: {}
+    },
+    withdrawUserData: {
+      type: Object,
+      default: {}
+    }
   },
-  mounted() {
+  data() {
+    return {
+      bindWallets: {
+        cgPay: false,
+        goBao: false,
+        nowOpenVirtualBank: []
+      }
+    };
+  },
+  computed: {
+    methodList() {
+      // Todo: show -> 是否同卡片管理一樣，顯示的部份依限綁一組來吃不同的邏輯
+      return [
+        {
+          key: "bankCard",
+          title: "添加 提现银行卡",
+          isShow: this.showAddBankCard
+        },
+        {
+          key: "virtualBank",
+          title: "添加 电子钱包",
+          isShow: this.showAddVirtualBank
+        },
+        {
+          key: "CGPay",
+          title: "新增 CGPay",
+          isShow: !this.bindWallets.cgPay
+        },
+        {
+          key: "goBao",
+          title: "新增 购宝钱包",
+          isShow: !this.bindWallets.goBao
+        }
+      ].filter(item => item.isShow);
+    },
+    showAddBankCard() {
+      return (
+        this.userLevelObj.bank &&
+        this.withdrawUserData &&
+        this.withdrawUserData.account &&
+        this.withdrawUserData.account.length < 3
+      );
+    },
+    showAddVirtualBank() {
+      // 尚未打開電子錢包開關
+      if (!this.userLevelObj.virtual_bank) {
+        return false;
+      }
+
+      // 已開啟電子錢包開關 & 未開啟限綁一組開關
+      let noSingleLimit =
+        !this.userLevelObj.virtual_bank_single &&
+        this.withdrawUserData.wallet &&
+        this.withdrawUserData.wallet.length < 15;
+
+      // 已開啟電子錢包開關 & 已開啟限綁一組開關
+      let singleLimit =
+        this.userLevelObj.virtual_bank_single &&
+        this.withdrawUserData.wallet &&
+        this.withdrawUserData.wallet.length < this.nowOpenVirtualBank.length;
+
+      if (noSingleLimit || singleLimit) {
+        return true;
+      }
+
+      return false;
+    }
+  },
+  created() {
+    this.checkBindCGpay();
+    this.checkBindGoBao();
+    this.getNowOpenVirtualBank();
   },
   methods: {
-    ...mapActions([
-      'actionSetGlobalMessage'
-    ]),
+    ...mapActions(["actionSetGlobalMessage"]),
     close() {
-      this.$emit('close');
+      this.$emit("close");
     },
     addMethod(item) {
       //  to do 添加選擇方式
       console.log(item);
       this.close();
     },
-  },
+    checkBindCGpay() {
+      return axios({
+        method: "get",
+        url:
+          "/api/v1/c/ext/inpay?api_uri=/api/trade/v2/c/withdraw/user/cgp_info"
+      }).then(response => {
+        const { ret, result } = response.data;
+
+        if (!response || result !== "ok") {
+          return;
+        }
+
+        this.bindWallets.cgPay = ret.is_bind_wallet;
+      });
+    },
+    checkBindGoBao() {
+      return axios({
+        method: "get",
+        url: "/api/v1/c/ext/inpay?api_uri=/api/trade/v2/c/vendor/is_bind"
+      }).then(response => {
+        const { ret, result } = response.data;
+
+        if (!response || result !== "ok") {
+          return;
+        }
+
+        this.bindWallets.goBao = ret;
+      });
+    },
+    getNowOpenVirtualBank() {
+      // Get 錢包類型
+      axios({
+        method: "get",
+        url: "/api/payment/v1/c/virtual/bank/list"
+      }).then(response => {
+        const { ret, result } = response.data;
+
+        if (!response || result !== "ok") {
+          return;
+        }
+
+        this.nowOpenVirtualBank = ret;
+      });
+    }
+  }
 };
 </script>
 
-<style lang="scss"  module>
+<style lang="scss" module>
 .more-method-wrap {
   background-color: rgba(0, 0, 0, 0.8);
   color: #414655;

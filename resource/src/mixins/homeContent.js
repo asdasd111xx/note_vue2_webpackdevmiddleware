@@ -423,71 +423,88 @@ export default {
                 return;
             }
 
-            // 福利
-            if (['YV', 'PV', 'BB', 'GG', 'LF', 'BALE', 'STB', 'SF', 'DSC', 'JPB'].includes(game.type)) {
-                switch (game.type) {
-                    case 'LF':
-                    case 'BALE':
-                    case 'STB':
-                    case 'JPB':
-                    case 'DSC':
-                        if (!this.loginStatus) {
-                            this.$router.push('/mobile/login');
-                            return;
+            // 福利 全部
+            switch (game.type) {
+                case 'LF':
+                case 'BALE':
+                case 'STB':
+                case 'JPB':
+                case 'DSC':
+                    if (!this.loginStatus) {
+                        this.$router.push('/mobile/login');
+                        return;
+                    }
+
+                    let newWindow = window.open('');
+                    yaboRequest({
+                        method: 'get',
+                        url: `${this.siteConfig.YABO_API_DOMAIN}/thirdparty/url`,
+                        headers: {
+                            'x-domain': this.memInfo.user.domain
+                        },
+                        params: {
+                            type: game.type,
+                        },
+                    }).then(res => {
+                        if (res.data) {
+                            newWindow.location.href = res.data;
+                        } else {
+                            newWindow.close();
                         }
+                    }).catch(error => {
+                    })
 
-                        let newWindow = window.open('');
-                        yaboRequest({
-                            method: 'get',
-                            url: `${this.siteConfig.YABO_API_DOMAIN}/thirdparty/url`,
-                            headers: {
-                                'x-domain': this.memInfo.user.domain
-                            },
-                            params: {
-                                type: game.type,
-                            },
-                        }).then(res => {
-                            if (res.data) {
-                                newWindow.location.href = res.data;
-                            } else {
-                                newWindow.close();
-                            }
-                        }).catch(error => {
-                        })
+                    break;
+                case 'YV':
+                    this.$router.push({
+                        name: 'videoList',
+                        query: { source: 'yabo' }
+                    });
+                    break;
 
-                        break;
-                    case 'YV':
-                        this.$router.push({
-                            name: 'videoList',
-                            query: { source: 'yabo' }
-                        });
-                        break;
+                case 'PV':
+                    this.$router.push({
+                        name: 'videoList',
+                        query: { source: 'smallPig' }
+                    });
+                    break;
 
-                    case 'PV':
-                        this.$router.push({
-                            name: 'videoList',
-                            query: { source: 'smallPig' }
-                        });
-                        break;
+                case 'BB':
+                    this.$router.push({
+                        name: 'videoList',
+                        query: { source: 'gay' }
+                    });
+                    break;
 
-                    case 'BB':
-                        this.$router.push({
-                            name: 'videoList',
-                            query: { source: 'gay' }
-                        });
-                        break;
+                case 'GG':
+                    this.$router.push({
+                        name: 'videoList',
+                        query: { source: 'les' }
+                    });
+                    break;
 
-                    case 'GG':
-                        this.$router.push({
-                            name: 'videoList',
-                            query: { source: 'les' }
-                        });
-                        break;
+                case 'SLG':
+                    this.onChangeSelectIndex(14, true);
+                    return;
 
-                    default:
-                        break;
-                }
-                return;
+                case 'BG':
+                    this.onChangeSelectIndex(11, true);
+                    return;
+
+                case 'LTG':
+                    this.onChangeSelectIndex(13, true);
+                    return;
+
+                case 'VG':
+                    this.onChangeSelectIndex(16, true);
+                    return;
+
+                case 'SPG':
+                    this.onChangeSelectIndex(15, true);
+                    return;
+
+                default:
+                    break;
             }
 
             if (!this.loginStatus) {
@@ -516,6 +533,7 @@ export default {
                 }
                 return;
             }
+
 
             //   if (game.type === 'R') {
             //     let urlParams =

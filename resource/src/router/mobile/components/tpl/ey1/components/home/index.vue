@@ -1,6 +1,7 @@
 <template>
   <mobile-container :header-config="headerConfig" :class="$style.container">
     <div slot="content" class="content-wrap">
+      <div :class="$style['top-bg']" />
       <home-slider />
       <home-new />
       <home-content />
@@ -113,14 +114,14 @@ export default {
     onClick() {
       this.$router.push('/mobile');
     },
-    closePop(isSitePost) {
+    closePop(isFromSitePost) {
       this.isShowPop = false;
       this.sitePostList = null;
 
       if (!localStorage.getItem('do-not-show-home-post')) {
         setTimeout(() => {
           this.$nextTick(() => {
-            if (isSitePost) {
+            if (isFromSitePost) {
               this.isShowPop = true;
             }
           })

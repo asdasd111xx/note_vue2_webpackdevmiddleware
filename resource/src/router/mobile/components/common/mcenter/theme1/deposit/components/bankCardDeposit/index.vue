@@ -1,11 +1,5 @@
 <template>
-  <div
-    :class="[
-      $style['mode-wrap'],
-      $style[`theme-${siteConfig.MCENTER_COLOR}`],
-      colorClass
-    ]"
-  >
+  <div :class="[$style['mode-wrap']]">
     <swiper
       v-if="depositData.length > 1"
       :options="categoryOptions"
@@ -786,13 +780,9 @@ export default {
       memInfo: 'getMemInfo',
       rechargeConfig: 'getRechargeConfig',
     }),
-    colorClass() {
-      return [
-        {
-          [this.$style[`site-${this.memInfo.user.domain}`]]: this.$style[`site-${this.memInfo.user.domain}`],
-          [this.$style['preset-color']]: !this.$style[`site-${this.memInfo.user.domain}`]
-        }
-      ];
+    $style() {
+      const style = this[`$style_${this.siteConfig.MOBILE_WEB_TPL}`] || this.$style_porn1;
+      return style;
     },
     paySelectData() {
       return {
@@ -1240,4 +1230,5 @@ export default {
 };
 </script>
 
-<style lang="scss" src="./css/index.module.scss" module></style>
+<style lang="scss" src="./css/bankCardDeposit/porn1.scss" module="$style_porn1"></style>
+<style lang="scss" src="./css/bankCardDeposit/ey1.scss" module="$style_ey1"></style>
