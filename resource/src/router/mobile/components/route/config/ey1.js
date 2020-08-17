@@ -14,7 +14,7 @@ export default {
         serviceEy1: () => import(/* webpackChunkName: 'serviceEy1' */'../../tpl/ey1/components/service'),
         // webviewEy1: () => import(/* webpackChunkName: 'webviewEy1' */'../../tpl/ey1/components/webview'),
         // installEy1: () => import(/* webpackChunkName: 'installEy1' */'../../tpl/ey1/components/install'),
-        // shareDownloadEy1: () => import(/* webpackChunkName: 'shareDownloadEy1' */ '../../tpl/ey1/components/shareDownload'),
+        shareDownloadEy1: () => import(/* webpackChunkName: 'shareDownloadEy1' */ '../../tpl/ey1/components/shareDownload'),
         launchEy1: () => import(/* webpackChunkName: 'launchEy1' */ '../../tpl/ey1/components/launch'),
         withdrawAccountEy1: () => import(/* webpackChunkName: 'withdrawAccountEy1' */ '../../common/withdrawAccount'),
         giftDetailEy1: () => import(/* webpackChunkName: 'giftDetailEy1' */ '../../tpl/ey1/components/gift/detail')
