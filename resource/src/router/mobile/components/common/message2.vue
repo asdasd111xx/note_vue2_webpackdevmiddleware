@@ -108,6 +108,11 @@ export default {
           case "bindcard":
             this.$router.push(`/mobile/mcenter/bankCard?redirect=${redirect ? redirect : 'home'}`);
             break;
+          // 電子錢包
+          case "C50104":
+          case "C50103":
+          case "bindVirtualCard":
+            this.$router.push(`/mobile/mcenter/bankCard?redirect=${redirect ? redirect : 'home'}`)
           // 重新登入
           case "M00001":
             this.$router.push('/mobile/login');

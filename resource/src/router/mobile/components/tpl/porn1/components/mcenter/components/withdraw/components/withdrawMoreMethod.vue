@@ -28,61 +28,125 @@
 </template>
 
 <script>
-import axios from 'axios';
-import { mapGetters, mapActions } from 'vuex';
+import axios from "axios";
+import { mapGetters, mapActions } from "vuex";
 
 export default {
-  data() {
-    return {
-      methodList: [
-        {
-          key: 'bankCard',
-          title: '添加 提现银行卡',
-          isShow: true,
-        },
-        {
-          key: '',
-          title: '添加 电子钱包',
-          isShow: true,
-        },
-        {
-          key: 'CGPay',
-          title: '新增 CGPay',
-          isShow: true,
-        },
-        {
-          key: '',
-          title: '新增 购宝钱包',
-          isShow: true,
-        }
-      ]
-    }
-  },
   props: {
     show: {
       type: Boolean,
-      default: false,
+      default: false
     },
+    userLevelObj: {
+      type: Object,
+      default: {}
+    }
   },
-  mounted() {
+  data() {
+    return {
+      // methodList: [
+      //   {
+      //     key: "bankCard",
+      //     title: "添加 提现银行卡",
+      //     isShow: true
+      //   },
+      //   {
+      //     key: "",
+      //     title: "添加 电子钱包",
+      //     isShow: true
+      //   },
+      //   {
+      //     key: "CGPay",
+      //     title: "新增 CGPay",
+      //     isShow: true
+      //   },
+      //   {
+      //     key: "",
+      //     title: "新增 购宝钱包",
+      //     isShow: true
+      //   }
+      // ]
+      bindWallets: {
+        cgPay: false,
+        goBao: false
+      }
+    };
+  },
+  computed: {
+    methodList() {
+      // Todo: show -> 是否同卡片管理一樣，顯示的部份依限綁一組來吃不同的邏輯
+      return [
+        {
+          key: "bankCard",
+          title: "添加 提现银行卡",
+          isShow: this.userLevelObj.bank
+        },
+        {
+          key: "virtualBank",
+          title: "添加 电子钱包",
+          isShow: this.userLevelObj.virtual_bank
+        },
+        {
+          key: "CGPay",
+          title: "新增 CGPay",
+          isShow: this.bindWallets.cgPay
+        },
+        {
+          key: "goBao",
+          title: "新增 购宝钱包",
+          isShow: this.bindWallets.goBao
+        }
+      ].filter(item => item.isShow);
+    }
+  },
+  created() {
+    this.checkBindCGpay();
+    this.checkBindGoBao();
   },
   methods: {
-    ...mapActions([
-      'actionSetGlobalMessage'
-    ]),
+    ...mapActions(["actionSetGlobalMessage"]),
     close() {
-      this.$emit('close');
+      this.$emit("close");
     },
     addMethod(item) {
       //  to do 添加選擇方式
       console.log(item);
       this.close();
     },
-  },
+    checkBindCGpay() {
+      return axios({
+        method: "get",
+        url:
+          "/api/v1/c/ext/inpay?api_uri=/api/trade/v2/c/withdraw/user/cgp_info"
+      }).then(response => {
+        const { ret, result } = response.data;
+
+        if (!response || result !== "ok") {
+          return;
+        }
+
+        this.bindWallets.cgPay = ret.is_bind_wallet;
+      });
+    },
+    checkBindGoBao() {
+      return axios({
+        method: "get",
+        url: "/api/v1/c/ext/inpay?api_uri=/api/trade/v2/c/vendor/is_bind"
+      }).then(response => {
+        const { ret, result } = response.data;
+
+        if (!response || result !== "ok") {
+          return;
+        }
+
+        this.bindWallets.goBao = ret;
+      });
+    }
+  }
 };
 </script>
 
-<style lang="scss"  module>
+<style lang="scss" module>
 .more-method-wrap {
   background-color: rgba(0, 0, 0, 0.8);
   color: #414655;
