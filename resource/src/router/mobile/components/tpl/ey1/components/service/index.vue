@@ -173,7 +173,7 @@ export default {
       this.getAvatarSrc();
     })
 
-    this.divHeight = document.body.offsetHeight - 60;
+    this.divHeight = document.body.offsetHeight - 120;
 
     yaboRequest({
       method: "get",
@@ -183,9 +183,7 @@ export default {
       }
     }).then(res => {
       if (res && res.data) {
-        // this.linkArray = res.data;
-        this.linkArray = [{ value: 'w123.123' }, { value: 'w123.123' }, { value: 'w123.123' }];
-
+        this.linkArray = res.data;
       }
     });
   },

@@ -423,6 +423,7 @@ export default {
                 return;
             }
 
+            console.log(game.type)
             // 福利 全部
             switch (game.type) {
                 case 'LF':
@@ -430,6 +431,7 @@ export default {
                 case 'STB':
                 case 'JPB':
                 case 'DSC':
+                case 'PPV':
                     if (!this.loginStatus) {
                         this.$router.push('/mobile/login');
                         return;

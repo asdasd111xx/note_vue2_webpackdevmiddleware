@@ -166,6 +166,7 @@ export default {
         //     name: 'mcenter-play',
         //     component
         // },
+
         { // 幫助中心
             path: 'help',
             name: 'mcenter-help',
@@ -236,6 +237,11 @@ export default {
                     component
                 }
             ]
+        },
+        {
+            path: 'helpCenter/:key?',
+            name: 'mcenter-help-center',
+            component
         },
         { // 關於我們
             path: 'about',

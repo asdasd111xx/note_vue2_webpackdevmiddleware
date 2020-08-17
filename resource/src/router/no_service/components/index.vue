@@ -1,15 +1,5 @@
 <template>
-  <!-- <div class="text">{{ $t("ROUTER_NO_SERVICE_TITLE") }}</div>
-    <div class="text">IP：{{ ip }}({{ code }})</div> -->
-  <div
-    v-if="imgSite"
-    :class="[
-      $style['content'],
-      {
-        [$style['ey1']]: imgSite === 'ey1'
-      }
-    ]"
-  >
+  <div v-if="imgSite && imgSite === 'porn1'" :class="[$style['content']]">
     <div :class="$style['logo-header']">
       <img :src="$getCdnPath(`/static/image/${imgSite}/common/logo_b.png`)" />
     </div>
@@ -23,10 +13,40 @@
     </div>
     <div :class="$style['desc']">
       {{ $t("ROUTER_NO_SERVICE_TEXT1") }}
-      <a :class="$style['mail-link']" @click="mailTo">
+      <a :class="$style['mail-link']" @click="mailTo('cs2@yaboxxx.net')">
         <span>cs2@yaboxxx.net</span>
       </a>
       {{ $t("ROUTER_NO_SERVICE_TEXT2") }}
+    </div>
+    <div :class="$style.tips">
+      如需帮助，请
+      <span @click="handleClick">&nbsp;联系客服</span>
+    </div>
+    <message v-if="msg" @close="msg = ''">
+      <div slot="msg">{{ msg }}</div>
+    </message>
+  </div>
+
+  <div
+    v-else-if="imgSite && imgSite === 'ey1'"
+    :class="[$style['content'], $style['ey1']]"
+  >
+    <div :class="$style['logo-header']">
+      <img :src="$getCdnPath(`/static/image/${imgSite}/common/logo_b.png`)" />
+    </div>
+    <div :class="$style['title']">{{ $t("ROUTER_NO_SERVICE_TITLE") }}</div>
+    <!-- <div :class="$style['text']">IP：{{ ip }}({{ code }})</div> -->
+    <div :class="$style['main-img']">
+      <img :src="$getCdnPath(`/static/image/${imgSite}/status/pic_403.png`)" />
+    </div>
+    <div :class="$style['desc']">
+      尊敬的用户，由于相关法规限制，您所在的地区无法使用亿元产品，如有任何疑问，请通过在线客服，或发邮件至
+      <br />
+      <a :class="$style['mail-link']" @click="mailTo('ey888@ur188.net')">
+        <span>ey888@ur188.net</span>
+      </a>
+      <br />
+      我们将第一时间给您回复，对您造成的不便，我们深表歉意，感谢您的理解与支持！
     </div>
     <div :class="$style.tips">
       如需帮助，请
@@ -93,10 +113,9 @@ export default {
       window.location.href = `/static/upup/index.html?username=${this.username}`;
       window.location.title = "在线客服";
     },
-    mailTo() {
-      const mail = 'cs2@yaboxxx.net';
+    mailTo(target) {
       const isWebView = getCookie('platform') === "H" || window.location.host === "yaboxxxapp02.com";
-      const url = `mailto:${mail}`;
+      const url = `mailto:${target}`;
       if (isWebView) {
         this.$copyText(mail);
         this.msg = '复制成功';

@@ -97,6 +97,10 @@
   color: #a6a9b2;
   position: relative;
 
+  &.disable {
+    pointer-events: none;
+  }
+
   .arrow-icon {
     display: block;
     width: 14px;

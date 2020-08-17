@@ -42,6 +42,9 @@ export default {
           case "bindcard":
             this.msg = "请先绑定提现银行卡"
             break;
+          case "bindVirtualBank":
+            this.msg = "请先绑定电子钱包"
+            break;
           case "login":
             this.msg = "请先登入"
             break;
@@ -106,13 +109,14 @@ export default {
           case "C50099":
           case "C50102":
           case "bindcard":
-            this.$router.push(`/mobile/mcenter/bankCard?redirect=${redirect ? redirect : 'home'}`);
+            this.$router.push(`/mobile/mcenter/bankCard?redirect=${redirect ? redirect : 'home'}&type=bankCard`);
             break;
           // 電子錢包
           case "C50104":
           case "C50103":
-          case "bindVirtualCard":
-            this.$router.push(`/mobile/mcenter/bankCard?redirect=${redirect ? redirect : 'home'}`)
+          case "bindVirtualBank":
+            this.$router.push(`/mobile/mcenter/bankCard?redirect=${redirect ? redirect : 'home'}&type=virtualBank`)
+            break;
           // 重新登入
           case "M00001":
             this.$router.push('/mobile/login');

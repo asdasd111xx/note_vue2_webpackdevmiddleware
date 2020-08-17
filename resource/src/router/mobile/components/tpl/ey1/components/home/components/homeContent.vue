@@ -140,9 +140,13 @@
           >
             <template v-if="game.imageType === 4">
               <div :class="[$style['third-iamge-wrap']]">
-                <div :class="[$style['vendor']]">{{ game.vendor_abridge }}</div>
-                <div :class="[$style['third-iamge']]">
-                  <img v-lazy="getImg(game)" />
+                <div :class="[$style['third-iamge-bg']]">
+                  <div :class="[$style['vendor']]">
+                    {{ game.vendor_abridge }}
+                  </div>
+                  <div :class="[$style['third-iamge']]">
+                    <img v-lazy="getImg(game)" />
+                  </div>
                 </div>
                 <div :class="[$style['name']]">{{ game.name }}</div>
               </div>
@@ -459,12 +463,9 @@ export default {
   &.is-third {
     width: 31%;
     height: 25%;
+    max-height: 150px;
     position: relative;
     min-height: 126px;
-    background-image: url("/static/image/ey1/game/pic_gamebg.png");
-    background-size: 100% 100%;
-    background-position: center;
-    background-size: auto;
     margin: 0 1%;
   }
 }
@@ -473,12 +474,6 @@ export default {
   text-overflow: ellipsis;
   white-space: nowrap;
   overflow: hidden;
-  background-image: url("/static/image/ey1/game/pic_gamebg.png") no-repeat
-    center center fixed;
-  -webkit-background-size: cover;
-  -moz-background-size: cover;
-  -o-background-size: cover;
-  background-size: cover;
   height: 100%;
 
   .third-iamge {
@@ -500,23 +495,33 @@ export default {
     }
   }
 
-  > div:not(.third-iamge) {
+  > div:not(.third-iamge):not(.third-iamge-bg) {
     height: 14px;
     color: #4e5159;
     font-size: 11px;
-    width: 100%;
   }
 
-  > .vendor {
+  .vendor {
     text-align: left;
-    margin: 5px;
+    padding-left: 10%;
+    padding-top: 10%;
   }
 
-  > .name {
+  .name {
     text-align: center;
     position: absolute;
-    bottom: 5px;
+    bottom: 4px;
+    width: 100%;
   }
+}
+
+.third-iamge-bg {
+  background: url("/static/image/ey1/game/pic_gamebg.png");
+  background-size: 115% 100%;
+  background-repeat: no-repeat;
+  background-position: -7px -5px;
+  width: 100%;
+  height: 100%;
 }
 
 .wrap-buffer {

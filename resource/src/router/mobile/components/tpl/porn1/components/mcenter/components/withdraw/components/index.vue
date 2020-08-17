@@ -159,7 +159,7 @@
       >
         <img :src="$getCdnPath(`/static/image/${themeTPL}/mcenter/add.png`)" />
         &nbsp;
-        <span @click="$router.push('/mobile/mcenter/bankcard?redirect=withdraw')">
+        <span @click="checkAccountData('bankCard')">
           {{ $text("S_ADD_BANKCARD", "添加银行卡") }}
         </span>
       </div>
@@ -193,9 +193,10 @@
         :show="showMoreMethod"
         :user-level-obj="userLevelObj"
         :withdraw-user-data="withdrawUserData"
+        :check-account-data="checkAccountData"
         @close="
             () => {
-            showMoreMethod = false;
+                showMoreMethod = false;
             }
         "
       />
