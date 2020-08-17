@@ -11,9 +11,10 @@ export default {
   },
   computed: {
     hasRedirect() {
-      // 預設提現銀行卡添加
+      // 預設提現銀行卡添加 & 電子錢包添加
       const { query } = this.$route;
       let redirect = query.redirect;
+      let type = query.type;
       if (redirect && redirect.split("-")[0]) {
         switch (redirect.split("-")[0]) {
           case "casino":
@@ -26,7 +27,16 @@ export default {
           case "liveStream":
           case "videoPlay":
           case "wallet":
-            this.currentPage = "addBankCard";
+            this.isShowTab = false;
+
+            if (type && type === 'bankCard') {
+              this.currentPage = "addBankCard";
+            }
+
+            if (type && type === 'virtualBank') {
+              this.currentPage = "addVirtualBankCard";
+            }
+
             return true;
         }
       }
