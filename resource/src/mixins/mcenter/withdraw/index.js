@@ -248,8 +248,12 @@ export default {
                     }
                 })
 
+                if (check && target === "bankCard") {
+                    this.$router.push('/mobile/mcenter/bankcard?redirect=withdraw&type=bankCard')
+                }
+
                 if (check && target === "virtualBank") {
-                    this.$router.push('/mobile/mcenter/bankcard?redirect=withdraw')
+                    this.$router.push('/mobile/mcenter/bankcard?redirect=withdraw&type=virtualBank')
                 }
             })
         },

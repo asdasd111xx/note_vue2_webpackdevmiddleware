@@ -11,7 +11,13 @@
           {{ $text("S_WALLET_TYPE", "钱包类型") }}
         </p>
 
-        <div :class="$style['select-bank']" @click="isShowPop = true">
+        <div
+          :class="[
+            $style['select-bank'],
+            { [$style['disable']]: selectTarget.fixed }
+          ]"
+          @click="isShowPop = true"
+        >
           <span
             :class="{ [$style['select-active']]: selectTarget.virtualBank }"
           >
@@ -23,6 +29,7 @@
           </span>
 
           <img
+            v-if="!selectTarget.fixed"
             :class="$style['arrow-icon']"
             src="/static/image/ey1/common/arrow_next.png"
           />
@@ -147,7 +154,7 @@
 import axios from "axios";
 import { mapGetters, mapActions } from "vuex";
 import i18n from "@/config/i18n";
-import virtualBankMixin from "@/mixins/mcenter/bankCard/addCard/virtualBank";
+// import virtualBankMixin from "@/mixins/mcenter/bankCard/addCard/virtualBank";
 import message from "@/router/mobile/components/common/message";
 import popupQrcode from "@/router/mobile/components/common/virtualBank/popupQrcode";
 
@@ -175,7 +182,8 @@ export default {
       // 卡片有關參數
       selectTarget: {
         bank_id: "",
-        virtualBank: ""
+        virtualBank: "",
+        fixed: false
       },
       virtualBankList: [],
       userBindVirtualBankList: [],
@@ -213,10 +221,10 @@ export default {
     }),
     showPopQrcode: {
       get() {
-        return this.showPopupQrcode;
+        return this.isShowPopQrcode;
       },
       set(value) {
-        this.showPopupQrcode = value;
+        this.isShowPopQrcode = value;
       }
     }
   },
@@ -262,10 +270,24 @@ export default {
 
         if (data.event === "trade_bind_wallet" && data.result === "ok") {
           // Todo 將所有 msg 替換成 actionSetGlobalMessage
-          this.actionSetGlobalMessage({ msg: "绑定成功" });
-          this.showTab(true);
-          this.changePage("virtualBankCardInfo");
+          this.actionSetGlobalMessage({
+            msg: "绑定成功",
+            cb: () => {
+              this.showTab(true);
+              this.changePage("virtualBankCardInfo");
+            }
+          });
         }
+      }
+    },
+    virtualBankList() {
+      // 從提現頁進來，且只選擇 CGPay
+      if (this.$route.query.wallet && this.$route.query.wallet === "CGPay") {
+        let item = this.virtualBankList.find(item => {
+          return item.id === 21;
+        });
+        this.setBank(item);
+        this.selectTarget.fixed = true;
       }
     }
   },
@@ -302,12 +324,12 @@ export default {
         lock = true;
       }
 
-      //
+      // 針對 CGpay
       if (this.selectTarget.bank_id === 21 && !this.formData["cgpPwd"].value) {
         lock = true;
       }
 
-      this.lockStatus = check;
+      this.lockStatus = lock;
     },
     checkBindCGpay() {
       return axios({
