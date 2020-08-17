@@ -137,7 +137,7 @@ export default {
           show: true
         },
         {
-          initName: '关于鸭博娱乐',
+          initName: '关於鸭博娱乐',
           name: 'S_ABOUT_YABOLIVE',
           path: '/mobile/mcenter/about',
           pageName: 'about',

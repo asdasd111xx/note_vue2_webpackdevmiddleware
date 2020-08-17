@@ -8,7 +8,7 @@
     </div>
     <div :class="$style['pic-wrap']">
       <img
-        :src="$getCdnPath(`/static/image/_new/mcenter/share/shareapp_save.png`)"
+        :src="$getCdnPath(`/static/image/ey1/mcenter/share/shareapp_save.png`)"
         alt="shareApp"
       />
 
@@ -38,11 +38,10 @@ export default {
   },
   computed: {
     ...mapGetters({
-      isPwa: "getIsPwa",
       loginStatus: "getLoginStatus",
       siteConfig: "getSiteConfig",
+      agentLink: "getAgentLink",
       memInfo: 'getMemInfo',
-      agentLink: "getAgentLink"
     })
   },
   created() {
@@ -97,7 +96,7 @@ export default {
 
   .qrcode-wrap {
     position: absolute;
-    bottom: 24.5%;
+    bottom: 29.5%;
     left: 50%;
     transform: translateX(-50%);
     width: 25%;

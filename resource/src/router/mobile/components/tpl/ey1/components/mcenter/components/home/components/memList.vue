@@ -98,7 +98,7 @@ export default {
           show: true
         },
         {
-          initName: "关于亿元",
+          initName: "关於亿元娱乐",
           name: "S_ABOUT_EY1",
           path: "/mobile/mcenter/about",
           pageName: "about",
@@ -119,7 +119,7 @@ export default {
       ].filter(item => item.show);
     }
   },
-  created() {},
+  created() { },
   methods: {
     ...mapActions([
       "actionEnterMCenterThirdPartyLink",
