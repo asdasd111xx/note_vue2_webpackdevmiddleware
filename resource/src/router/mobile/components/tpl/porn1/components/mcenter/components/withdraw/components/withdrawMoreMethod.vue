@@ -40,35 +40,18 @@ export default {
     userLevelObj: {
       type: Object,
       default: {}
+    },
+    withdrawUserData: {
+      type: Object,
+      default: {}
     }
   },
   data() {
     return {
-      // methodList: [
-      //   {
-      //     key: "bankCard",
-      //     title: "添加 提现银行卡",
-      //     isShow: true
-      //   },
-      //   {
-      //     key: "",
-      //     title: "添加 电子钱包",
-      //     isShow: true
-      //   },
-      //   {
-      //     key: "CGPay",
-      //     title: "新增 CGPay",
-      //     isShow: true
-      //   },
-      //   {
-      //     key: "",
-      //     title: "新增 购宝钱包",
-      //     isShow: true
-      //   }
-      // ]
       bindWallets: {
         cgPay: false,
-        goBao: false
+        goBao: false,
+        nowOpenVirtualBank: []
       }
     };
   },
@@ -79,29 +62,62 @@ export default {
         {
           key: "bankCard",
           title: "添加 提现银行卡",
-          isShow: this.userLevelObj.bank
+          isShow: this.showAddBankCard
         },
         {
           key: "virtualBank",
           title: "添加 电子钱包",
-          isShow: this.userLevelObj.virtual_bank
+          isShow: this.showAddVirtualBank
         },
         {
           key: "CGPay",
           title: "新增 CGPay",
-          isShow: this.bindWallets.cgPay
+          isShow: !this.bindWallets.cgPay
         },
         {
           key: "goBao",
           title: "新增 购宝钱包",
-          isShow: this.bindWallets.goBao
+          isShow: !this.bindWallets.goBao
         }
       ].filter(item => item.isShow);
+    },
+    showAddBankCard() {
+      return (
+        this.userLevelObj.bank &&
+        this.withdrawUserData &&
+        this.withdrawUserData.account &&
+        this.withdrawUserData.account.length < 3
+      );
+    },
+    showAddVirtualBank() {
+      // 尚未打開電子錢包開關
+      if (!this.userLevelObj.virtual_bank) {
+        return false;
+      }
+
+      // 已開啟電子錢包開關 & 未開啟限綁一組開關
+      let noSingleLimit =
+        !this.userLevelObj.virtual_bank_single &&
+        this.withdrawUserData.wallet &&
+        this.withdrawUserData.wallet.length < 15;
+
+      // 已開啟電子錢包開關 & 已開啟限綁一組開關
+      let singleLimit =
+        this.userLevelObj.virtual_bank_single &&
+        this.withdrawUserData.wallet &&
+        this.withdrawUserData.wallet.length < this.nowOpenVirtualBank.length;
+
+      if (noSingleLimit || singleLimit) {
+        return true;
+      }
+
+      return false;
     }
   },
   created() {
     this.checkBindCGpay();
     this.checkBindGoBao();
+    this.getNowOpenVirtualBank();
   },
   methods: {
     ...mapActions(["actionSetGlobalMessage"]),
@@ -140,6 +156,21 @@ export default {
         }
 
         this.bindWallets.goBao = ret;
+      });
+    },
+    getNowOpenVirtualBank() {
+      // Get 錢包類型
+      axios({
+        method: "get",
+        url: "/api/payment/v1/c/virtual/bank/list"
+      }).then(response => {
+        const { ret, result } = response.data;
+
+        if (!response || result !== "ok") {
+          return;
+        }
+
+        this.nowOpenVirtualBank = ret;
       });
     }
   }

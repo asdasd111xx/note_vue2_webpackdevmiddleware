@@ -149,7 +149,7 @@
       </div>
     </div>
 
-    <!-- 因按鈕顯示邏輯不同，所以獨立成兩份 -->\
+    <!-- 因按鈕顯示邏輯不同，所以獨立成兩份 -->
     <!-- 億元 -->
     <template v-if="themeTPL === 'ey1'">
       <!-- 添加银行卡 -->
@@ -192,6 +192,7 @@
       <withdraw-more-method
         :show="showMoreMethod"
         :user-level-obj="userLevelObj"
+        :withdraw-user-data="withdrawUserData"
         @close="
             () => {
             showMoreMethod = false;
