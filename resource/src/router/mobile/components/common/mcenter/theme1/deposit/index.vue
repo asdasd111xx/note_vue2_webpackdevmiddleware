@@ -47,6 +47,10 @@ export default {
       siteConfig: 'getSiteConfig',
       loginStatus: 'getLoginStatus',
     }),
+    $style() {
+      const style = this[`$style_${this.siteConfig.MOBILE_WEB_TPL}`] || this.$style_porn1;
+      return style;
+    },
     nowTabCurrent: {
       get() {
         return this.tabCurrent;
@@ -87,22 +91,6 @@ export default {
     if (!this.loginStatus) {
       this.$router.push('/mobile/login');
     }
-    //   0706 統一RD5判斷銀行卡
-    // yaboRequest({
-    //   method: 'get',
-    //   url: `${this.siteConfig.YABO_API_DOMAIN}/AccountBank/GetBankBindingStatus/${getCookie('cid')}`,
-    //   headers: {
-    //     'x-domain': this.memInfo.user.domain
-    //   }
-    // }).then((res) => {
-    //   if (res.data === false) {
-    //     this.msg = "请先绑定提现银行卡";
-
-    //     setTimeout(() => {
-    //       this.$router.push('/mobile/mcenter/bankCard?redirect=wallet');
-    //     }, 2500)
-    //   }
-    // });
 
     this.isFastPay();
   },
@@ -129,4 +117,5 @@ export default {
 };
 </script>
 
-<style lang="scss" src="./css/index.scss" module></style>
+<style lang="scss" src="./css/porn1.module.scss" module="$style_porn1"></style>
+<style lang="scss" src="./css/ey1.module.scss" module="$style_ey1"></style>

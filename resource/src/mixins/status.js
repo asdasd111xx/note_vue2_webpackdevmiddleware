@@ -4,7 +4,7 @@ import { getDoamin } from '@/lib/getCurrentDoamin';
 export default {
     data() {
         return {
-            imgSite: 'porn1',
+            imgSite: '',
             domain: {
                 domain: '',
                 site: 'porn1'
@@ -13,10 +13,8 @@ export default {
     },
     created() {
         getDoamin().then((res) => {
-            if (res) {
-                this.domain = res;
-                this.imgSite = res.site;
-            }
+            this.domain = res || '';
+            this.imgSite = res && res.site ? res.site : 'porn1';
         })
     },
 };

@@ -29,9 +29,10 @@ export default (params, success = () => { }, fail = () => { }) => {
     };
 
     if (!settings.vendor || !settings.kind) {
-        if (process.env.NODE_ENV === 'development') {
-            console.error('未傳 vendor 或 kind');
-        }
+        fail({ data: { msg: 'vendor 遗失' } });
+        setTimeout(() => {
+            localStorage.removeItem("is-open-game");
+        }, 1500)
         return;
     }
 
