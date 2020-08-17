@@ -174,6 +174,11 @@ export default [
         component
     },
     {
+        path: 'gift/detail/:key?',
+        name: 'giftDetail',
+        component
+    },
+    {
         path: 'withdrawAccount',
         name: 'withdrawAccount',
         component
