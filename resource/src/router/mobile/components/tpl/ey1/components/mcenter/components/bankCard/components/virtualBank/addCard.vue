@@ -141,12 +141,6 @@
       :isShowPop.sync="isShowPopQrcode"
       :paymentGatewayId="selectTarget.bank_id"
     />
-
-    <message v-if="msg" @close="clearMsg">
-      <div slot="msg">
-        {{ msg }}
-      </div>
-    </message>
   </div>
 </template>
 
@@ -155,7 +149,6 @@ import axios from "axios";
 import { mapGetters, mapActions } from "vuex";
 import i18n from "@/config/i18n";
 // import virtualBankMixin from "@/mixins/mcenter/bankCard/addCard/virtualBank";
-import message from "@/router/mobile/components/common/message";
 import popupQrcode from "@/router/mobile/components/common/virtualBank/popupQrcode";
 
 export default {
@@ -449,9 +442,10 @@ export default {
             return;
           }
 
-          this.actionSetGlobalMessage({ msg: "绑定成功" });
-          this.showTab(true);
-          this.changePage("virtualBankCardInfo");
+          this.actionSetGlobalMessage({
+            msg: "绑定成功",
+            cb: this.clearMsgCallback
+          });
         })
         .catch(res => {
           if (res.response && res.response.data && res.response.data.msg) {
@@ -489,9 +483,10 @@ export default {
             return;
           }
 
-          this.actionSetGlobalMessage({ msg: "绑定成功" });
-          this.showTab(true);
-          this.changePage("virtualBankCardInfo");
+          this.actionSetGlobalMessage({
+            msg: "绑定成功",
+            cb: this.clearMsgCallback
+          });
         })
         .catch(res => {
           if (res.response && res.response.data && res.response.data.msg) {
@@ -506,17 +501,13 @@ export default {
       this.selectTarget.virtualBank = bank.name;
       this.selectTarget.bank_id = bank.id;
     },
-    clearMsg() {
+    clearMsgCallback() {
       const { query } = this.$route;
-      if (!this.msg.includes("绑定成功")) {
-        this.msg = "";
-        return;
-      }
 
-      // 綁定成功後添加成功後回到遊戲 影片
-      this.msg = "";
       let redirect = query.redirect;
+
       if (!redirect) {
+        this.showTab(true);
         this.changePage("virtualBankCardInfo");
         return;
       }

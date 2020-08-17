@@ -1,43 +1,59 @@
 @import "./index.module.scss";
 
 .add-bank-card {
-    color: #414655;
+  color: #414655;
 }
 
 .bank-card-cell {
+  > .check-box {
+    border: #cbced8 solid 1px;
 
-    >.check-box {
-        border: #CBCED8 solid 1px;
-
-        &.checked {
-            background: url("/static/image/ey1/mcenter/ic_check.png") 0 0 no-repeat;
-            background-size: 100%;
-        }
+    &.checked {
+      background: url("/static/image/ey1/mcenter/ic_check.png") 0 0 no-repeat;
+      background-size: 100%;
     }
+  }
 }
 
 .check-container {
+  .check-header {
+    background: #222222;
+    color: #ffffff;
 
-    .check-header {
-        background: #222222;
-        color: #ffffff;
-
-        .title {
-            color: #ffffff;
-        }
+    .title {
+      color: #ffffff;
     }
+  }
 
-    .check-button-wrap {
+  .check-button-wrap {
+    color: white;
+
+    .check-btn {
+      color: white;
+      background: #222222;
+
+      &.submit {
         color: white;
-
-        .check-btn {
-            color: white;
-            background: #222222;
-
-            &.submit {
-                color: white;
-                background: #E42A30;
-            }
-        }
+        background: #e42a30;
+      }
     }
+  }
+}
+
+.withdraw-max {
+  > span {
+    background: #e42a30;
+  }
+}
+
+.submit-btn {
+  > div {
+    background: #e42a30;
+  }
+
+  &.disabled {
+    div {
+      background: #fdcccc;
+    }
+  }
 }

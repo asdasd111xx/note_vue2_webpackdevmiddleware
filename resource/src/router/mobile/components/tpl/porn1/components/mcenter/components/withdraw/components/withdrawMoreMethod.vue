@@ -73,7 +73,7 @@ export default {
   },
   computed: {
     ...mapGetters({
-      noticeData: "getNoticeData",
+      noticeData: "getNoticeData"
     }),
     methodList() {
       // Todo: show -> 是否同卡片管理一樣，顯示的部份依限綁一組來吃不同的邏輯
@@ -168,7 +168,6 @@ export default {
       this.$emit("close");
     },
     addMethod(item) {
-      //  to do 添加選擇方式
       switch (item.key) {
         case "bankCard":
           this.checkAccountData("bankCard");
