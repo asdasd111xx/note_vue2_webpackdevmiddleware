@@ -97,7 +97,7 @@ export default {
 
   .qrcode-wrap {
     position: absolute;
-    bottom: 24.5%;
+    bottom: 29.5%;
     left: 50%;
     transform: translateX(-50%);
     width: 25%;
