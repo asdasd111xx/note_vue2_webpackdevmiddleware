@@ -450,6 +450,7 @@ export default {
                         },
                         params: {
                             type: game.type,
+                            userid: this.memInfo.user.id
                         },
                     }).then(res => {
                         if (res.data) {
