@@ -418,7 +418,6 @@ export default {
 .btn-help {
   height: 100%;
   align-items: center;
-  color: #5e626d;
   display: flex;
   position: absolute;
   right: 17px;

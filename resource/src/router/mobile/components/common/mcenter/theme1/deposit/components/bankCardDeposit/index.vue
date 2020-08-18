@@ -21,6 +21,7 @@
         }}</span>
       </swiper-slide>
     </swiper>
+
     <div
       v-if="depositData.length > 0 && submitStatus === 'stepOne'"
       :class="$style['deposit-edit-wrap']"
