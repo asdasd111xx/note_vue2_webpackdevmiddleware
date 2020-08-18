@@ -117,7 +117,12 @@ export default {
       loginStatus: 'getLoginStatus',
       memInfo: 'getMemInfo',
       memCurrency: 'getMemCurrency',
+      siteConfig: "getSiteConfig"
     }),
+    $style() {
+      const style = this[`$style_${this.siteConfig.MOBILE_WEB_TPL}`] || this.$style_porn1;
+      return style;
+    },
     headerConfig() {
       return {
         prev: true,
@@ -222,118 +227,8 @@ export default {
 };
 </script>
 
-<style lang="scss" module>
-@import "~@/css/variable.scss";
-
-.container {
-  background-color: #ffffff;
-}
-
-.avater-editer-header {
-  z-index: 3;
-  width: 100%;
-  height: 43px;
-  padding: 0 17px;
-  background: #ffffff;
-  text-align: center;
-  position: relative;
-
-  .title {
-    width: 100%;
-    text-align: center;
-    font-size: 17px;
-    line-height: 43px;
-    font-weight: 700;
-  }
-}
-
-.btn-prev {
-  position: absolute;
-  width: 20px;
-  height: 100%;
-  display: flex;
-  align-items: center;
-  justify-content: center;
-
-  > img {
-    width: 20px;
-    height: 20px;
-  }
-}
-
-.cropper {
-  height: 294px;
-  margin: 5px auto;
-  max-width: 100%;
-  width: 375px;
-  background-image: url("/static/image/_new/mcenter/avatar_nologin.png");
-  background-position: center;
-  background-repeat: no-repeat;
-  background-size: 250px 250px;
-  border: dashed #cacaca 1px;
-  position: relative;
-  text-align: center;
-
-  &.active {
-    background-image: unset;
-  }
-
-  img {
-    max-width: 100%;
-    max-height: 100%;
-  }
-}
-
-.img-input {
-  display: none;
-  border: unset;
-  outline: unset;
-}
-
-.avater-editer-func {
-  margin-top: 50px;
-  padding: 0 10px;
-}
-
-.choose-btn {
-  background: linear-gradient(to left, #bd9d7d, #f9ddbd);
-  border-radius: 3px;
-  color: #ffffff;
-  font-size: 14px;
-  font-weight: 400;
-  height: 45px;
-  line-height: 45px;
-  margin: 10px 0;
-  text-align: center;
-}
-
-.func-btn {
-  margin: 15px 0;
-
-  > div {
-    width: 48%;
-    display: inline-block;
-    font-weight: 400;
-    height: 45px;
-    line-height: 45px;
-    text-align: center;
-    font-size: 14px;
-    border-radius: 3px;
-  }
-}
-
-.cancel-btn {
-  background: #faf5f0;
-  color: #be9e7f;
-  float: left;
-}
-
-.submit-btn {
-  background: linear-gradient(to left, #bd9d7d, #f9ddbd);
-  color: #ffffff;
-  float: right;
-}
-</style>
+<style lang="scss" src="../css/porn1.avater.scss" module="$style_porn1"></style>
+<style lang="scss" src="../css/ey1.avater.scss" module="$style_ey1"></style>
 <style>
 /* 複寫套件 */
 .vue-cropper {

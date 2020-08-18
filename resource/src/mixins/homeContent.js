@@ -417,7 +417,6 @@ export default {
                 return;
             }
 
-            console.log(game.type)
             // 福利 全部
             switch (game.type) {
                 // 鴨脖影視(人人影視) -> PPV

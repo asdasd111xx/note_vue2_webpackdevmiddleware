@@ -84,18 +84,11 @@
         @click="onChangeSelectIndex(index)"
       >
         <img
-          v-if="typeList[selectedIndex].icon === type.icon"
           :src="
             $getCdnPath(
-              `/static/image/ey1/platform/icon/icon_${type.icon}_h.png`
-            )
-          "
-        />
-        <img
-          v-else
-          :src="
-            $getCdnPath(
-              `/static/image/ey1/platform/icon/icon_${type.icon}_n.png`
+              `/static/image/ey1/platform/icon/icon2_${type.icon.toLowerCase()}_${
+                typeList[selectedIndex].icon === type.icon ? 'h' : 'n'
+              }.png`
             )
           "
         />
