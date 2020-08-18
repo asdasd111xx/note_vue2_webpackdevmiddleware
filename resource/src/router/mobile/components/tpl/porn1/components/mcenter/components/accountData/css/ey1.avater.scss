@@ -1,0 +1,42 @@
+@import './porn1.avater.scss';
+
+.dialog-wrap {
+    .avatar-cell {
+
+        img {
+            &.active {
+                border: 2px solid transparent;
+                border-color: #E42A30;
+            }
+        }
+
+        .check {
+            background: url("/static/image/ey1/mcenter/ic_check.png") 0 0 no-repeat;
+            background-size: 100%;
+        }
+    }
+}
+
+.avater-editer-header {
+    background: linear-gradient(#fe2a2a, #b60303);
+    color: #ffffff;
+
+    .title {
+        color: #ffffff;
+    }
+}
+
+.choose-btn {
+    background: #E42A30;
+    color: #ffffff;
+}
+
+.cancel-btn {
+    background: #222222;
+    color: #ffffff;
+}
+
+.submit-btn {
+    background: #E42A30;
+    color: #ffffff;
+}

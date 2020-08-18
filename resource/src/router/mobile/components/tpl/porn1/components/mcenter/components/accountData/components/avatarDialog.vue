@@ -80,7 +80,12 @@ export default {
   computed: {
     ...mapGetters({
       memInfo: 'getMemInfo',
+      siteConfig: 'getSiteConfig'
     }),
+    $style() {
+      const style = this[`$style_${this.siteConfig.MOBILE_WEB_TPL}`] || this.$style_porn1;
+      return style;
+    },
   },
   mounted() {
     // 是否自訂上傳頭像
@@ -161,105 +166,5 @@ export default {
 };
 </script>
 
-<style lang="scss" module>
-@import "~@/css/variable.scss";
-// avatar dialog
-.dialog {
-  position: fixed;
-  width: 100%;
-  left: 0;
-  top: 0;
-  height: 100%;
-  display: flex;
-  justify-content: center;
-  align-items: center;
-  z-index: 100;
-  background-color: rgba($color: #161616, $alpha: 0.4);
-}
-
-.dialog-wrap {
-  background-color: $main_background_white1;
-  border-radius: 20px 20px 0 0;
-  bottom: 0;
-  max-width: $mobile_max_width;
-  min-height: 375px;
-  padding-top: 14px;
-  position: fixed;
-  width: 100%;
-  z-index: 100;
-
-  .dialog-func {
-    text-align: center;
-    color: $main_text_color4;
-    font-size: 17px;
-    position: absolute;
-    bottom: 0;
-    left: 0;
-    width: 100%;
-
-    > div:first {
-      padding-top: 1px;
-    }
-
-    > div {
-      background-color: $main_white_color1;
-      width: 100%;
-      height: 50px;
-      line-height: 50px;
-    }
-
-    > div:last-child {
-      margin-top: 20px;
-      color: black;
-    }
-  }
-
-  .avatar-cell {
-    width: 65px;
-    position: relative;
-    margin: 0 auto;
-
-    img {
-      border-radius: 50%;
-      width: 98%;
-
-      &.active {
-        border: 2px solid transparent;
-        border-color: #d2b79c;
-      }
-    }
-
-    .check {
-      position: absolute;
-      bottom: 10%;
-      right: -10px;
-      background: url("/static/image/_new/mcenter/ic_check.png") 0 0 no-repeat;
-      background-size: 100%;
-      width: 18px;
-      height: 18px;
-      -webkit-transform: translate(-50%, 0);
-      transform: translate(-50%, 0);
-    }
-  }
-
-  .avatar-wrap {
-    position: relative;
-    display: inline-block;
-    width: 25%;
-    margin-top: 14px;
-    text-align: center;
-  }
-}
-
-@media (orientation: landscape) {
-  .dialog-wrap {
-    max-width: $mobile_max_landscape_width !important;
-  }
-}
-
-.img-input {
-  display: none;
-  border: unset;
-  outline: unset;
-}
-</style>
+<style lang="scss" src="../css/porn1.avater.scss" module="$style_porn1"></style>
+<style lang="scss" src="../css/ey1.avater.scss" module="$style_ey1"></style>
