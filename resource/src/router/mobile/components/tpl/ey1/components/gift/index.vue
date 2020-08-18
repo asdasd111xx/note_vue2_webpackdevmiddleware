@@ -1,6 +1,7 @@
 <template>
   <mobile-container :class="$style.container" :header-config="headerConfig">
     <div slot="content" :class="$style['content-wrap']">
+      <page-loading :is-show="isLoading" />
       <div v-for="list in currentMenu">
         <div :class="$style['item-header']">
           <div :class="$style['item-icon']">
@@ -18,7 +19,7 @@
           <div>
             {{ item.name }}
           </div>
-          <div v-if="item.url" :class="$style['icon-next']">
+          <div :class="$style['icon-next']">
             <img src="/static/image/ey1/common/btn_next.png" />
           </div>
         </div>
@@ -30,29 +31,31 @@
 <script>
 import mobileContainer from '../common/mobileContainer';
 import { mapGetters, mapActions } from 'vuex';
+import axios from 'axios';
 
 export default {
   data() {
     return {
+      isLoading: false,
       currentMenu: [],
       giftMenuList: [
         {
           title: "福利",
           icon: '/static/image/ey1/gift/icon_gift_bonus.png',
           items: [
-            { name: "每日签到", url: "https://tinyurl.com/y7o9cq8q" },
-            { name: "好运转盘", url: "https://tinyurl.com/ydgbbp9r" },
-            { name: "积分商城", url: "https://tinyurl.com/y7umnchy" }
+            { name: "每日签到", thirdUrl: "https://fn139.com/plugin.php?id=lezhi99_lottery&view=sign&mobile=2" },
+            { name: "好运转盘", thirdUrl: "https://fn139.com/plugin.php?id=lezhi99_lottery" },
+            { name: "积分商城", thirdUrl: "https://fn139.com/keke_integralmall-index.html" }
           ]
         },
         {
           title: "娱乐",
           icon: '/static/image/ey1/gift/icon_gift_video.png',
           items: [
-            { name: "日本有码", url: " https://tinyurl.com/y9lyf3he" },
-            { name: "中文有码", url: "https://tinyurl.com/yb9wuhqj" },
-            { name: "日本无码", url: "https://tinyurl.com/ybtpfyxv" },
-            { name: "免费偷看", url: "https://tinyurl.com/y8aoghzj" }
+            { name: "日本有码", url: "https://94i88.com/mobile/list.html?category=1" },
+            { name: "中文有码", url: "https://94i88.com/mobile/list.html?category=9" },
+            { name: "日本无码", url: "https://94i88.com/mobile/list.html?category=8" },
+            { name: "免费偷看", url: "https://94i88.com/mobile/free_list.html" }
           ]
         },
         {
@@ -130,6 +133,7 @@ export default {
   },
   components: {
     mobileContainer,
+    pageLoading: () => import(/* webpackChunkName: 'pageLoading' */ '@/router/mobile/components/common/pageLoading'),
   },
   mounted() {
     this.currentMenu = this.giftMenuList;
@@ -156,6 +160,30 @@ export default {
     ...mapActions([
       'actionSetGlobalMessage'
     ]),
+    getThridUrl(url, target) {
+      this.isLoading = true;
+      let newWindow = window.open('');
+
+      axios({
+        method: 'get',
+        url: '/api/v1/c/link/customize',
+        params: {
+          code: 'fengniao',
+          client_uri: url
+        }
+      }).then(res => {
+        this.isLoading = false;
+        if (res && res.data && res.data.ret) {
+          newWindow.location = res.data.ret.uri;
+        }
+      }).catch(error => {
+        this.isLoading = false;
+        newWindow.close();
+        if (error && error.data && error.date.msg) {
+          this.actionSetGlobalMessage({ msg: error.data.msg });
+        }
+      })
+    },
     linkTo(item) {
       if (item.items && item.items.length > 0) {
         this.$router.push({ query: { q: item.name } })
@@ -168,6 +196,9 @@ export default {
       }
       else if (item.params) {
         this.$router.push(`/mobile/gift/detail/${item.params}`);
+      }
+      else if (item.thirdUrl) {
+        this.getThridUrl(item.thirdUrl);
       }
       else {
         this.actionSetGlobalMessage({ msg: '即将开业 敬请期待' });

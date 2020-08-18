@@ -1,10 +1,6 @@
 <template>
   <mobile-container :class="$style.container">
-    <div
-      slot="content"
-      :class="$style['content-wrap']"
-      :style="{ height: this.divHeight + 'px' }"
-    >
+    <div slot="content" :class="$style['content-wrap']">
       <div :class="$style['service-header']">
         <div :class="$style.title">我的客服</div>
         <div
@@ -162,7 +158,6 @@ export default {
           url: "/static/image/_new/mcenter/default/avatar_6.png"
         }
       ],
-      divHeight: 0,
       isShowPop: false,
       linkArray: [],
       avatarSrc: `/static/image/_new/mcenter/avatar_nologin.png`,
@@ -172,8 +167,6 @@ export default {
     this.actionSetUserdata(true).then(() => {
       this.getAvatarSrc();
     })
-
-    this.divHeight = document.body.offsetHeight - 120;
 
     yaboRequest({
       method: "get",
@@ -382,7 +375,7 @@ div.container {
 .tip-block {
   position: absolute;
   right: 20px;
-  bottom: 20px;
+  bottom: 65px;
 }
 
 .tip-img {
