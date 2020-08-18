@@ -173,8 +173,10 @@ export default {
         }
       }).then(res => {
         this.isLoading = false;
-        if (res && res.data && res.data.ret) {
+        if (res && res.data && res.data.ret && res.data.ret.uri) {
           newWindow.location = res.data.ret.uri;
+        } else {
+          newWindow.close();
         }
       }).catch(error => {
         this.isLoading = false;

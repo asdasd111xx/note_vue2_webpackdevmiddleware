@@ -407,12 +407,6 @@ export default {
             // PV => 小豬視頻
             // BB => 男男視頻
             // GG => 女女視頻
-            // 絲瓜 LF
-            // 芭樂  BALE
-            // 草莓  STB
-            // 向日葵 SF
-            // 屌絲漫畫 DSC
-            // 日本花花公子 JPB
             if (game.type === 'D') {
                 this.$router.push('/mobile/mcenter/makeMoney')
                 return;
@@ -426,12 +420,22 @@ export default {
             console.log(game.type)
             // 福利 全部
             switch (game.type) {
+                // 鴨脖影視(人人影視) -> PPV
+                // 美國花花公子 -> APB
+                // 日本花花公子 -> JPB
+                // 絲瓜-> LF
+                // 芭樂 -> BALE
+                // 草莓 -> STB
+                // 向日葵 -> SF
+                // 屌絲漫畫->DSC
                 case 'LF':
+                case 'APB':
                 case 'BALE':
                 case 'STB':
                 case 'JPB':
                 case 'DSC':
                 case 'PPV':
+                case 'SF':
                     if (!this.loginStatus) {
                         this.$router.push('/mobile/login');
                         return;
@@ -454,36 +458,37 @@ export default {
                             newWindow.close();
                         }
                     }).catch(error => {
+                        newWindow.close();
                     })
 
-                    break;
+                    return;
                 case 'YV':
                     this.$router.push({
                         name: 'videoList',
                         query: { source: 'yabo' }
                     });
-                    break;
+                    return;
 
                 case 'PV':
                     this.$router.push({
                         name: 'videoList',
                         query: { source: 'smallPig' }
                     });
-                    break;
+                    return;
 
                 case 'BB':
                     this.$router.push({
                         name: 'videoList',
                         query: { source: 'gay' }
                     });
-                    break;
+                    return;
 
                 case 'GG':
                     this.$router.push({
                         name: 'videoList',
                         query: { source: 'les' }
                     });
-                    break;
+                    return;
 
                 case 'SLG':
                     this.onChangeSelectIndex(14, true);
