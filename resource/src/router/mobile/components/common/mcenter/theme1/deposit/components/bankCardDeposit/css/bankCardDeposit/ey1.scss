@@ -1,1 +1,58 @@
-@import './porn1.scss';
+@import "./porn1.scss";
+$main_color: #e42a30;
+
+.swiper-item {
+  span {
+    line-height: unset;
+  }
+
+  &.is-current {
+    color: #222;
+
+    span {
+      border-bottom: 2px solid $main_color;
+    }
+  }
+}
+
+.pay-mode-item {
+  &.is-current {
+    border: 1px solid $main_color;
+    color: $main_color;
+    background: linear-gradient(
+      -45deg,
+      $main_color 10px,
+      hsla(0, 0%, 100%, 0) 0
+    );
+  }
+}
+
+.current-data {
+  background-color: #fff;
+  color: $main_color;
+  border: 1px solid $main_color;
+  background: linear-gradient(-45deg, $main_color 12px, hsla(0, 0%, 100%, 0) 0);
+}
+
+.pay-money-item {
+  &.is-current {
+    background-color: #fff;
+    color: $main_color;
+    border: 1px solid $main_color;
+    background: linear-gradient(
+      -45deg,
+      $main_color 12px,
+      hsla(0, 0%, 100%, 0) 0
+    );
+  }
+}
+
+.pay-button {
+    color: #FFF;
+    background: $main_color;
+}
+
+.message-close {
+  color: $main_color;
+}
+

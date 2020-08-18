@@ -58,6 +58,10 @@ export default {
     paymentGatewayId: {
       type: Number,
       require: true
+    },
+    bindType: {
+      type: String,
+      default: "withdraw"
     }
   },
   data() {
@@ -99,7 +103,7 @@ export default {
         url: "/api/v1/c/ext/inpay?api_uri=/api/trade/v2/c/withdraw/bind_wallet",
         method: "get",
         params: {
-          bind_type: "withdraw",
+          bind_type: this.bindType,
           wallet_gateway_id: id
         }
       }).then(res => {

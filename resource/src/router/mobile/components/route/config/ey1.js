@@ -16,7 +16,7 @@ export default {
         // installEy1: () => import(/* webpackChunkName: 'installEy1' */'../../tpl/ey1/components/install'),
         shareDownloadEy1: () => import(/* webpackChunkName: 'shareDownloadEy1' */ '../../tpl/ey1/components/shareDownload'),
         launchEy1: () => import(/* webpackChunkName: 'launchEy1' */ '../../tpl/ey1/components/launch'),
-        withdrawAccountEy1: () => import(/* webpackChunkName: 'withdrawAccountEy1' */ '../../common/withdrawAccount'),
+        withdrawAccountEy1: () => import(/* webpackChunkName: 'withdrawAccountEy1' */ '../../common/withdrawAccount/withdrawAccount'),
         giftDetailEy1: () => import(/* webpackChunkName: 'giftDetailEy1' */ '../../tpl/ey1/components/gift/detail')
     },
     mcenter: {
@@ -44,7 +44,6 @@ export default {
         feedbackEy1: () => import(/* webpackChunkName: 'feedbackEy1' */'../../tpl/ey1/components/mcenter/components/feedback'),
         helpEy1: () => import(/* webpackChunkName: 'helpEy1' */'../../tpl/ey1/components/mcenter/components/help'),
         helpCenterEy1: () => import(/* webpackChunkName: 'helpCenterEy1' */'../../tpl/ey1/components/mcenter/components/help/components'),
-        helpContactEy1: () => import(/* webpackChunkName: 'helpContactEy1' */'../../tpl/ey1/components/mcenter/components/help/page/contact'),
         accountDataNameEy1: () => import(/* webpackChunkName: 'accountDataNameEy1' */'../../tpl/porn1/components/mcenter/components/accountData/components/account/form/editName'),
         accountDataPhoneEy1: () => import(/* webpackChunkName: 'accountDataPhoneEy1' */'../../tpl/porn1/components/mcenter/components/accountData/components/account/form/editPhone'),
         accountDataEmailEy1: () => import(/* webpackChunkName: 'accountDataEmailEy1' */'../../tpl/porn1/components/mcenter/components/accountData/components/account/form/editEmail'),

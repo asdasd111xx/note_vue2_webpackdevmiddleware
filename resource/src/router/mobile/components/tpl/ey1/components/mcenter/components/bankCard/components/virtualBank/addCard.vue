@@ -153,7 +153,6 @@ import popupQrcode from "@/router/mobile/components/common/virtualBank/popupQrco
 
 export default {
   components: {
-    message,
     popupQrcode
   },
   props: {

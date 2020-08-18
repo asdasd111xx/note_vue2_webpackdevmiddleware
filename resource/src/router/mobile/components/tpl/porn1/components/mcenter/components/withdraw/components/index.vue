@@ -256,7 +256,11 @@
 
     <!-- 額度提示訊息 -->
     <template
-      v-if="withdrawData.payment_charge && withdrawData.payment_charge.ret"
+      v-if="
+        withdrawData &&
+          withdrawData.payment_charge &&
+          withdrawData.payment_charge.ret
+      "
     >
       <div :class="$style['tips']">
         {{ getWithdrawTips }}
@@ -475,7 +479,7 @@ import message from "@/router/mobile/components/common/message";
 import mixin from "@/mixins/mcenter/withdraw";
 import serialNumber from "./serialNumber";
 import widthdrawTips from "./widthdrawTips";
-import withdrawAccount from "@/router/mobile/components/common/withdrawAccount/index";
+import withdrawAccount from "@/router/mobile/components/common/withdrawAccount/withdrawAccount";
 import withdrawMoreMethod from "./withdrawMoreMethod";
 
 import {
@@ -763,7 +767,7 @@ export default {
       ) {
         this.errTips = `单笔提现金额最小为${withdrawMin}元，最大为${
           withdrawMax ? `${withdrawMax}元` : "无限制"
-        }`;
+          }`;
         return;
       }
     },

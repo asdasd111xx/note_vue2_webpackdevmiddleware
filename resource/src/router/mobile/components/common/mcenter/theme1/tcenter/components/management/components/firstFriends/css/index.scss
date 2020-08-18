@@ -122,13 +122,11 @@
     width: 16px;
     height: 16px;
     margin: 0 2% 0 4%;
-    background: url("/static/image/_new/mcenter/tcenter/btn_expand2.png") 0 0
-        no-repeat;
+    background: url("/static/image/_new/mcenter/tcenter/btn_expand2.png") 0 0 no-repeat;
     background-size: 16px;
 
     &.expend {
-        background: url("/static/image/_new/mcenter/tcenter/btn_collapse2.png") 0
-            0 no-repeat;
+        background: url("/static/image/_new/mcenter/tcenter/btn_collapse2.png") 0 0 no-repeat;
     }
 }
 
@@ -152,7 +150,8 @@
 
     .info-status {
         .enable {
-            color: #009685;
+            // color: #009685;
+            color: #000;
         }
 
         .disable,

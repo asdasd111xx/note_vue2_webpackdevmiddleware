@@ -188,7 +188,7 @@ import balanceTran from '@/components/mcenter/components/balanceTran';
 import EST from '@/lib/EST';
 import message from "@/router/mobile/components/common/message";
 import Vue from 'vue';
-import withdrawAccount from '@/router/mobile/components/common/withdrawAccount/index';
+import withdrawAccount from '@/router/mobile/components/common/withdrawAccount/withdrawAccount';
 import yaboRequest from '@/api/yaboRequest';
 
 export default {

@@ -22,7 +22,7 @@ export default {
         installPorn1: () => import(/* webpackChunkName: 'installPorn1' */'../../tpl/porn1/components/install'),
         shareDownloadPorn1: () => import(/* webpackChunkName: 'shareDownloadPorn1' */ '../../tpl/porn1/components/shareDownload'),
         launchPorn1: () => import(/* webpackChunkName: 'launchPorn1' */ '../../tpl/porn1/components/launch'),
-        withdrawAccountPorn1: () => import(/* webpackChunkName: 'withdrawAccountPorn1' */ '../../common/withdrawAccount')
+        withdrawAccountPorn1: () => import(/* webpackChunkName: 'withdrawAccountPorn1' */ '../../common/withdrawAccount/withdrawAccount')
     },
     mcenter: {
         homePorn1: () => import(/* webpackChunkName: 'homePorn1' */'../../tpl/porn1/components/mcenter/components/home'),

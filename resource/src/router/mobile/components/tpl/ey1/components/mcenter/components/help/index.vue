@@ -121,20 +121,8 @@ export default {
       'actionSetGlobalMessage'
     ]),
     handleClick(item) {
-      if (item.key === "contact") {
-        this.$router.push({ path: `/mobile/mcenter/help/contact` })
-        return;
-      }
-
-      if (item.key === "faq") {
-        this.$router.push({ path: `/mobile/mcenter/helpCenter/${item.key}` })
-        return;
-      } else {
-        this.actionSetGlobalMessage({ msg: '即将开业 敬请期待' });
-        return;
-      }
-
       this.$router.push({ path: `/mobile/mcenter/helpCenter/${item.key}` })
+      //   this.actionSetGlobalMessage({ msg: '即将开业 敬请期待' });
     },
   }
 };
