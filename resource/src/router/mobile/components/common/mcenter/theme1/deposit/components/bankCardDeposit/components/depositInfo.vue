@@ -225,6 +225,7 @@ export default {
   },
   computed: {
     ...mapGetters({
+      siteConfig: "getSiteConfig",
       memInfo: "getMemInfo"
     }),
     $style() {

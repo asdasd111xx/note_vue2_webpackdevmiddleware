@@ -209,7 +209,9 @@ export default {
     ...mapGetters({
       memInfo: "getMemInfo",
       noticeData: "getNoticeData",
-      siteConfig: "getSiteConfig"
+      siteConfig: "getSiteConfig",
+      isBindGoBao: "getHasBindGoBao",
+      isBindCGPay: "getHasBindCGPay"
     }),
     showPopQrcode: {
       get() {
@@ -293,7 +295,12 @@ export default {
     });
   },
   methods: {
-    ...mapActions(["actionSetUserdata", "actionSetGlobalMessage"]),
+    ...mapActions([
+      "actionSetUserdata",
+      "actionSetGlobalMessage",
+      "actionBindGoBao",
+      "actionBindCGPay"
+    ]),
     verification(key, index) {
       let target = this.formData[key];
       let lock = false;
