@@ -1,84 +1,82 @@
 <template>
-  <div :class="$style['popup']">
-    <div :class="$style['mask']" />
-    <div :class="$style['block']">
-      <div :class="$style['content']">
-        <div :class="$style['title']">{{ title }}</div>
+  <div>
+    <template v-if="!qrcodeObj.isShow">
+      <div :class="$style['popup']">
+        <div :class="$style['mask']" />
+        <div :class="$style['block']">
+          <div :class="$style['content']">
+            <div :class="$style['title']">{{ title }}</div>
 
-        <p :class="[$style['error-msg'], { [$style['is-hide']]: !errorMsg }]">
-          {{ errorMsg }}
-        </p>
+            <p
+              :class="[$style['error-msg'], { [$style['is-hide']]: !errorMsg }]"
+            >
+              {{ errorMsg }}
+            </p>
 
-        <div :class="$style['info-item']">
-          <div :class="$style['input-title']">
-            {{ formData["walletAddress"].title }}
+            <div :class="$style['info-item']">
+              <div :class="$style['input-title']">
+                {{ formData["walletAddress"].title }}
+              </div>
+
+              <div :class="$style['input-wrap']">
+                <input
+                  v-model="formData['walletAddress'].value"
+                  type="text"
+                  :placeholder="formData['walletAddress'].placeholder"
+                />
+              </div>
+            </div>
+
+            <template v-if="walletType === 'CGP'">
+              <div :class="$style['info-item']">
+                <div :class="$style['input-title']">
+                  {{ formData["cgpPwd"].title }}
+                </div>
+
+                <div :class="$style['input-wrap']">
+                  <input
+                    v-model="formData['cgpPwd'].value"
+                    type="text"
+                    :placeholder="formData['cgpPwd'].placeholder"
+                  />
+                </div>
+              </div>
+
+              <div :class="$style['tips-text']">
+                <p>
+                  ● 可使用输入或
+                  <span @click="tipMethod(0)">扫码绑定</span>
+                </p>
+
+                <p>●<span @click="tipMethod(1)"> CGP是什么?</span></p>
+
+                <p>●<span @click="tipMethod(2)"> 如何透过CGP存款?</span></p>
+
+                <p>
+                  ● 沒有CGP帐号?
+                  <span @click="tipMethod(3)">立即申请</span>
+                </p>
+              </div>
+            </template>
           </div>
 
-          <div :class="$style['input-wrap']">
-            <input
-              v-model="formData['walletAddress'].value"
-              type="text"
-              :placeholder="formData['walletAddress'].placeholder"
-            />
+          <div :class="$style['close']">
+            <span @click="closeTips">取消</span>
+            <span @click="submitByToken">送出</span>
           </div>
         </div>
-
-        <template v-if="walletType === 'CGP'">
-          <div :class="$style['info-item']">
-            <div :class="$style['input-title']">
-              {{ formData["cgpPwd"].title }}
-            </div>
-
-            <div :class="$style['input-wrap']">
-              <input
-                v-model="formData['cgpPwd'].value"
-                type="text"
-                :placeholder="formData['cgpPwd'].placeholder"
-              />
-            </div>
-          </div>
-
-          <div :class="$style['tips-text']">
-            <p>
-              ● 可使用输入或
-              <span @click="closeTips">扫码绑定</span>
-            </p>
-
-            <p>
-              ●<span
-                @click="
-                  $router.push(
-                    'https://cgpayintroduction.azurewebsites.net/index.aspx'
-                  )
-                "
-              >
-                CGP是什么?</span
-              >
-            </p>
-
-            <p>●<span> 如何透过CGP存款?</span></p>
-
-            <p>
-              ● 沟有CGP帐号?
-              <span @click="$router.push('http://oinbox.io')">立即申请</span>
-            </p>
-          </div>
-        </template>
       </div>
+    </template>
 
-      <div :class="$style['close']">
-        <span @click="closeTips">取消</span>
-        <span @click="submitByToken">送出</span>
-      </div>
-    </div>
-
-    <!-- Qrcode Popup -->
-    <popup-qrcode
-      v-if="qrcodeObj.isShow"
-      :isShowPop.sync="qrcodeObj.isShow"
-      :paymentGatewayId="qrcodeObj.bank_id"
-      :bindType="qrcodeObj.bind_type"
-    />
+    <template v-else>
+      <!-- Qrcode Popup -->
+      <popup-qrcode
+        v-if="qrcodeObj.isShow"
+        :isShowPop.sync="qrcodeObj.isShow"
+        :paymentGatewayId="qrcodeObj.bank_id"
+        :bindType="qrcodeObj.bind_type"
+      />
+    </template>
   </div>
 </template>
 
@@ -130,6 +128,14 @@ export default {
       }
     }
   },
+  watch: {
+    "qrcodeObj.isShow"(value) {
+      // 切換到 Qrcode 頁面，連同整個 popup 關掉
+      if (!value) {
+        this.closeTips();
+      }
+    }
+  },
   created() {
     switch (this.walletType) {
       case "CGP":
@@ -144,6 +150,25 @@ export default {
   },
   methods: {
     ...mapActions(["actionSetGlobalMessage"]),
+    tipMethod(index) {
+      switch (index) {
+        case 0:
+          this.qrcodeObj.isShow = true;
+          break;
+
+        case 1:
+          window.open("https://cgpayintroduction.azurewebsites.net/index.aspx");
+          break;
+
+        case 2:
+          window.open("");
+          break;
+
+        case 3:
+          window.open("http://oinbox.io");
+          break;
+      }
+    },
     closeTips() {
       this.$emit("close");
     },
@@ -177,7 +202,9 @@ export default {
 
           this.actionSetGlobalMessage({
             msg: "绑定成功",
-            cb: () => {}
+            cb: () => {
+              window.location.reload();
+            }
           });
         })
         .catch(res => {
@@ -189,33 +216,28 @@ export default {
         });
     },
     verification(key, index) {
-      let target = this.formData[key];
-      let lock = false;
-
-      if (key === "walletAddress") {
-        target.value = target.value.replace(" ", "").trim();
-      }
-
-      if (key === "cgpPwd") {
-        target.value = target.value
-          .replace(" ", "")
-          .trim()
-          .replace(/[^0-9]/g, "");
-      }
-
-      if (
-        !this.selectTarget.virtualBank ||
-        !this.formData["walletAddress"].value
-      ) {
-        lock = true;
-      }
-
-      // 針對 CGpay
-      if (this.selectTarget.bank_id === 21 && !this.formData["cgpPwd"].value) {
-        lock = true;
-      }
-
-      this.lockStatus = lock;
+      // let target = this.formData[key];
+      // let lock = false;
+      // if (key === "walletAddress") {
+      //   target.value = target.value.replace(" ", "").trim();
+      // }
+      // if (key === "cgpPwd") {
+      //   target.value = target.value
+      //     .replace(" ", "")
+      //     .trim()
+      //     .replace(/[^0-9]/g, "");
+      // }
+      // if (
+      //   !this.selectTarget.virtualBank ||
+      //   !this.formData["walletAddress"].value
+      // ) {
+      //   lock = true;
+      // }
+      // // 針對 CGpay
+      // if (this.selectTarget.bank_id === 21 && !this.formData["cgpPwd"].value) {
+      //   lock = true;
+      // }
+      // // this.lockStatus = lock;
     }
   }
 };

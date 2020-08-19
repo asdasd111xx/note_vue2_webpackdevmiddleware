@@ -261,6 +261,24 @@
                 'clearfix'
               ]"
             >
+              <!-- If 選擇 CGPay且已綁定 : 顯示 CGPay 餘額 -->
+              <div
+                v-if="curPayInfo.payment_method_id === 16 && isBindCGPay"
+                :class="$style['CGPay-money']"
+              >
+                <span>CGPay余额：---</span>
+                <div :class="$style['money-update']">
+                  <img
+                    :src="
+                      $getCdnPath(
+                        `/static/image/${siteConfig.MOBILE_WEB_TPL}/common/btn_update.png`
+                      )
+                    "
+                    alt=""
+                  />
+                </div>
+              </div>
+
               <div :class="$style['bank-card-title']">充值金额</div>
 
               <div
@@ -371,6 +389,63 @@
                 {{ singleLimit }}
               </div>
               <!-- 實際存入 -->
+            </div>
+
+            <!-- 驗證方式 -->
+            <!-- If 選擇 CGPay且已綁定 : 顯示 CGPay 餘額 -->
+            <div
+              v-if="curPayInfo.payment_method_id === 16 && isBindCGPay"
+              :class="[$style['feature-wrap'], 'clearfix']"
+            >
+              <span :class="$style['bank-card-title']">验证方式</span>
+              <div :class="$style['bank-feature-wrap']">
+                <!-- 支付密碼 -->
+                <div
+                  :class="[
+                    $style['pay-auth-method'],
+                    {
+                      [$style['current-data']]: walletData['CGPay'].method === 0
+                    }
+                  ]"
+                  @click="walletData['CGPay'].method = 0"
+                >
+                  CGP支付密码
+                  <img
+                    v-if="walletData['CGPay'].method === 0"
+                    :class="$style['pay-active']"
+                    src="/static/image/_new/common/select_active.png"
+                  />
+                </div>
+
+                <div
+                  :class="[
+                    $style['pay-auth-method'],
+                    {
+                      [$style['current-data']]: walletData['CGPay'].method === 1
+                    }
+                  ]"
+                  @click="walletData['CGPay'].method = 1"
+                >
+                  扫码支付
+                  <img
+                    v-if="walletData['CGPay'].method === 1"
+                    :class="$style['pay-active']"
+                    src="/static/image/_new/common/select_active.png"
+                  />
+                </div>
+
+                <div
+                  v-if="walletData['CGPay'].method === 0"
+                  :class="$style['input-wrap']"
+                >
+                  <input
+                    :class="$style['wallet-password']"
+                    v-model="walletData['CGPay'].password"
+                    type="text"
+                    :placeholder="walletData['CGPay'].placeholder"
+                  />
+                </div>
+              </div>
             </div>
 
             <div v-if="curPay(curPayInfo)" :class="$style['speed-input-wrap']">
@@ -753,7 +828,7 @@
 
     <!-- 綁定 CGPay Popup -->
     <template v-if="isShowCGPayBind">
-      <bind-wallet-popup :walletType="'CGP'" @close="isShowCGPayBind = false"/>
+      <bind-wallet-popup :walletType="'CGP'" @close="isShowCGPayBind = false" />
     </template>
   </div>
 </template>
@@ -821,9 +896,6 @@ export default {
     };
   },
   watch: {
-    curModeGroup() {
-      console.log("curModeGroup", this.curModeGroup);
-    },
     //   channel
     passRoad() {
       console.log("all passRoad", this.passRoad);
@@ -841,7 +913,6 @@ export default {
       }
     },
     curPayInfo() {
-      console.log(this.curPayInfo);
       if (this.curPayInfo.payment_method_name === "代客充值") {
         this.checkSuccess = true;
       }
@@ -859,7 +930,6 @@ export default {
       }
     },
     isSelectValue(value) {
-      console.log(value);
       if (value) {
         this.isDisableDepositInput = false;
         this.checkOrderData();
@@ -873,7 +943,8 @@ export default {
           this.actionSetGlobalMessage({
             msg: "绑定成功",
             cb: () => {
-              this.qrcodeObj.isShow = false;
+              // this.qrcodeObj.isShow = false;
+              window.location.reload();
             }
           });
         }
@@ -1290,8 +1361,8 @@ export default {
 
       this.isShowEntryBlockStatus = false;
 
-      // 如購寶未綁定，跳出 Qrcode 綁定
-      if (!this.isBindGoBao) {
+      // 點選到購寶錢包 且 如購寶未綁定，跳出 Qrcode 綁定
+      if (!this.isBindGoBao && this.curPayInfo.payment_method_id === 22) {
         this.qrcodeObj.bank_id = 37;
         this.qrcodeObj.isShow = true;
         return;
