@@ -248,7 +248,6 @@ div.container {
 }
 
 .content-wrap {
-  position: relative;
 }
 
 .avatar-info-wrap {

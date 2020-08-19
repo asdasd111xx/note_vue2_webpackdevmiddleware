@@ -20,11 +20,12 @@ export default {
   components: {
     mobileContainer,
     contact: () => import(/* webpackChunkName: 'contact' */ './template/contact'),
+    deposit: () => import(/* webpackChunkName: 'deposit' */ './template/deposit'),
     faq: () => import(/* webpackChunkName: 'faq' */ './template/faq'),
-    withdraw: () => import(/* webpackChunkName: 'withdraw' */ './template/withdraw'),
     gameintro: () => import(/* webpackChunkName: 'gameintro' */ './template/gameintro'),
-    support: () => import(/* webpackChunkName: 'support' */ './template/support'),
     rules: () => import(/* webpackChunkName: 'rules' */ './template/rules'),
+    support: () => import(/* webpackChunkName: 'support' */ './template/support'),
+    withdraw: () => import(/* webpackChunkName: 'withdraw' */ './template/withdraw'),
   },
   data() {
     return {
@@ -69,15 +70,12 @@ export default {
         return {
           prev: true,
           onClick: () => {
-            this.$router.back();
+            this.$router.push('/mobile/mcenter/help');
           },
           title: this.title
         };
     }
   },
-  methods: {
-
-  }
 };
 </script>
 <style lang="scss" module>

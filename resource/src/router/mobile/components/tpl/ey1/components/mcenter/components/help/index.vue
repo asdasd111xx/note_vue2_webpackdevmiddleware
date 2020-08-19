@@ -113,15 +113,13 @@ export default {
     },
   },
   created() {
-    // 針對遊戲介紹
-    localStorage.removeItem("help_gameIntro");
   },
   methods: {
     ...mapActions([
       'actionSetGlobalMessage'
     ]),
     handleClick(item) {
-      this.$router.push({ path: `/mobile/mcenter/helpCenter/${item.key}` })
+      this.$router.push(`/mobile/mcenter/helpCenter/${item.key}`);
       //   this.actionSetGlobalMessage({ msg: '即将开业 敬请期待' });
     },
   }

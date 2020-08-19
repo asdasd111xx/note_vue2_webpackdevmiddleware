@@ -59,7 +59,7 @@
       <div :class="$style['pop-mask']" @click="category_isShowPop = false" />
       <div :class="$style['pop-menu']">
         <div :class="$style['pop-title']">
-          <span @click="isShowPop = false">{{
+          <span @click="category_isShowPop = false">{{
             $text("S_CANCEL", "取消")
           }}</span>
           选择游戏类别

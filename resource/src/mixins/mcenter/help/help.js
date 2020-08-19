@@ -20,30 +20,19 @@ export default {
                 this.handleToggleContent(query.key);
             })
         }
-        this.$nextTick(() => {
-            // if (this.isCategoryMode) {
-            //     this.addSwitchToList();
-            // }
-        })
     },
     watch: {
         source(val) {
+            // 補 isOpen 參數
             if (this.isCategoryMode) {
-                this.data = val.data;
+                this.data = val.data.map(i => {
+                    return { ...i, list: i.list.map(obj => ({ ...obj, isOpen: false })) };
+                });
                 return;
             }
 
-            this.data = val.data.map(function (el) {
-                let _o = Object.assign({}, el);
-                _o.isOpen = false;
-                return _o;
-            });
+            this.data = val.data.map(obj => ({ ...obj, isOpen: false }));
         },
-        category_currentIndex() {
-            // if (this.isCategoryMode) {
-            //     this.addSwitchToList();
-            // }
-        }
     },
     computed: {
         ...mapGetters({
@@ -71,7 +60,7 @@ export default {
                 });
             } else {
                 this.data.forEach((element, index) => {
-                    if (Number(element.key) === Number(key)) {
+                    if (index === Number(key)) {
                         element.isOpen = !element.isOpen;
                     }
                 });
@@ -81,13 +70,5 @@ export default {
             this.category_currentIndex = index;
             this.category_isShowPop = false;
         },
-        // addSwitchToList() {
-        //     console.log(this.data)
-        //     this.category_list[this.category_currentIndex].list = this.data[this.category_currentIndex].list.map(el => {
-        //         let _o = Object.assign({}, el);
-        //         _o.isOpen = false;
-        //         return _o;
-        //     });
-        // }
     },
 };
