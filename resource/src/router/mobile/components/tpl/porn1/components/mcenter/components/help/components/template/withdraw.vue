@@ -1,10 +1,4 @@
 <template>
-  <mobile-container
-    :header-config="headerConfig"
-    :has-footer="false"
-    :is-app="isApp"
-    :class="$style.container"
-  >
     <div slot="content">
       <div :class="$style['section']">
         <div
@@ -91,13 +85,11 @@
 <script>
 import { mapGetters } from 'vuex';
 import member from '@/api/member';
-import mobileContainer from '../../../../common/mobileContainer';
-import info from '../json/withdraw.json';
+import info from '../../json/withdraw.json';
 import { getCookie } from '@/lib/cookie';
 
 export default {
   components: {
-    mobileContainer,
   },
   data() {
     return {
@@ -151,5 +143,4 @@ export default {
   },
 };
 </script>
-
-<style src="../css/index.module.scss" lang="scss" module>
+<style src="../../css/index.module.scss" lang="scss" module>

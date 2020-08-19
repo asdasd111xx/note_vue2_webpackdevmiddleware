@@ -46,7 +46,6 @@ export default {
   },
   data() {
     return {
-      msg: '',
       list: [
         {
           name: '充值教程',
@@ -119,7 +118,7 @@ export default {
       'actionSetGlobalMessage'
     ]),
     handleClick(item) {
-      this.$router.push(`/mobile/mcenter/helpCenter/${item.key}`);
+      this.$router.push(`/mobile/mcenter/help/${item.key}`);
       //   this.actionSetGlobalMessage({ msg: '即将开业 敬请期待' });
     },
   }

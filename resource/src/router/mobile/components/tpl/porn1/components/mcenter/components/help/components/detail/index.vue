@@ -32,7 +32,7 @@ import ajax from "@/lib/ajax";
 import depositRecord from "./detail/depositRecord";
 import gameintro from "./detail/gameintro";
 import member from "@/api/member";
-import mobileContainer from "../../../../common/mobileContainer";
+import mobileContainer from "../../../../../common/mobileContainer";
 import support from "./detail/support";
 import withdrawRecord from "./detail/withdrawRecord";
 
