@@ -380,7 +380,7 @@ export default {
 }
 
 .mcenter-cell {
-  float: right;
+  float: left;
   margin: 0 5px;
 
   > img {

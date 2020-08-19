@@ -456,4 +456,10 @@ export default {
     rechargeConfig: {},
     hasBank: false,
     videoBounsPageStatus: false,
+
+    // ＝＝＝＝＝＝＝＝＝＝＝＝＝＝＝＝＝＝
+    //   　電子錢包綁定相關
+    // ＝＝＝＝＝＝＝＝＝＝＝＝＝＝＝＝＝＝
+    hasBindGoBao: false,
+    hasBindCGPay: false,
 };

@@ -73,7 +73,9 @@ export default {
   },
   computed: {
     ...mapGetters({
-      noticeData: "getNoticeData"
+      noticeData: "getNoticeData",
+      isBindGoBao:"getHasBindGoBao",
+      isBindCGPay:"getHasBindCGPay"
     }),
     methodList() {
       // Todo: show -> 是否同卡片管理一樣，顯示的部份依限綁一組來吃不同的邏輯
@@ -160,10 +162,16 @@ export default {
   created() {
     this.checkBindCGpay();
     this.checkBindGoBao();
+    // this.actionBindGoBao();
+    // this.actionBindCGPay();
     this.getNowOpenVirtualBank();
   },
   methods: {
-    ...mapActions(["actionSetGlobalMessage"]),
+    ...mapActions([
+      "actionSetGlobalMessage",
+      "actionBindGoBao",
+      "actionBindCGPay"
+    ]),
     close() {
       this.$emit("close");
     },

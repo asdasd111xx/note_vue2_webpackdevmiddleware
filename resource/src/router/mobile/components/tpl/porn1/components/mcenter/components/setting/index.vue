@@ -76,7 +76,7 @@ export default {
     }
   },
   created() {
-    if (!this.loginStatus) {
+    if (!this.loginStatus || getCookie('cid')) {
       this.$router.push('/mobile/home');
     }
   },

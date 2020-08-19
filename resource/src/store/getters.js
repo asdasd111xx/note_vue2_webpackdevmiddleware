@@ -193,4 +193,10 @@ export default {
     getRechargeConfig: (state) => state.rechargeConfig,
     getHasBank: (state) => state.hasBank,
     getVideoBounsPageStatus: (state) => state.videoBounsPageStatus,
+
+    // ＝＝＝＝＝＝＝＝＝＝＝＝＝＝＝＝＝＝
+    //   　電子錢包綁定相關
+    // ＝＝＝＝＝＝＝＝＝＝＝＝＝＝＝＝＝＝
+    getHasBindGoBao: (state) => state.hasBindGoBao,
+    getHasBindCGPay: (state) => state.hasBindCGPay
 };

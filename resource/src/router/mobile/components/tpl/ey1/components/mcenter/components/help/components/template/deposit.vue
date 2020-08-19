@@ -3,14 +3,14 @@
     <div :class="$style['section']">
       <div
         v-for="(item, index) in data"
-        :id="`q-${item.key}`"
+        :id="`q-${index}`"
         :class="[$style['cell'], { [$style['active']]: item.isOpen }]"
-        :key="item.key"
+        :key="index"
       >
         <template v-if="item.title && item.content">
           <div
             :class="$style['title']"
-            @click="item.content && handleToggleContent(item.key)"
+            @click="item.content && handleToggleContent(index)"
           >
             {{ item.title }}
           </div>
@@ -19,17 +19,12 @@
             :class="[$style['content'], { [$style['active']]: item.isOpen }]"
             :style="{ 'max-height': item.isOpen ? `unset` : 0 }"
           >
-            <div
-              v-for="(item, index) in item.content"
-              :class="$style['text-block']"
-              :key="`content-${index}`"
-              v-html="item"
-            />
+            <div :class="$style['text-block']" v-html="item.content" />
           </div>
 
           <div
             :class="[$style['arrow-btn'], { [$style['active']]: item.isOpen }]"
-            @click="item.content && handleToggleContent(item.key)"
+            @click="item.content && handleToggleContent(index)"
           >
             <img
               :src="$getCdnPath(`/static/image/_new/mcenter/ic_arrow_next.png`)"

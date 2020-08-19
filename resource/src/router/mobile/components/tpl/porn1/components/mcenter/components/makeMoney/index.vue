@@ -45,10 +45,11 @@
 </template>
 
 <script>
-import mobileContainer from "../../../common/mobileContainer";
 import { API_PROMOTION_INFO } from "@/config/api";
-import axios from "axios";
+import { getCookie, setCookie } from '@/lib/cookie';
 import { mapGetters, mapActions } from 'vuex';
+import axios from "axios";
+import mobileContainer from "../../../common/mobileContainer";
 import yaboRequest from '@/api/yaboRequest';
 
 export default {
@@ -59,13 +60,14 @@ export default {
     return {
       msg: "",
       domain: "",
-      agentCode: ""
+      agentCode: "",
+      yToken: ''
     };
   },
-  mounted() {
-    const query = this.$route.query;
+  watch: {
+    yToken() {
+      const query = this.$route.query;
 
-    if (query && query.check && query.cid && query.userid && query.tagId && query.domain) {
       yaboRequest({
         method: 'put',
         url: `${this.siteConfig.YABO_API_DOMAIN}/Account/UnlockTagId?`,
@@ -81,6 +83,23 @@ export default {
       }).then((res) => {
       }).catch(e => {
         console.log(e)
+      });
+    }
+  },
+  mounted() {
+    const query = this.$route.query;
+    if (query && query.check && query.cid && query.userid && query.tagId && query.domain) {
+      setCookie('cid', query.cid);
+
+      yaboRequest({
+        method: 'get',
+        url: this.siteConfig.YABO_API_DOMAIN + '/Account/GetAuthorizationToken',
+      }).then((res) => {
+        if (res.data) {
+          this.yToken = res.data;
+          setCookie('y_token', res.data);
+          return;
+        }
       });
     }
   },

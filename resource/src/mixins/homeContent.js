@@ -36,7 +36,7 @@ export default {
                 { name: 'deposit', text: '充值' },
                 { name: 'balanceTrans', text: '转帐' },
                 { name: 'makemoney', text: '推广' },
-                { name: 'vip', text: 'vip' },
+                { name: 'vip', text: 'VIP' },
             ]
         };
     },
