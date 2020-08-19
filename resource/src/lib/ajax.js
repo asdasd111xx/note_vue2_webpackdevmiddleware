@@ -42,31 +42,40 @@ export default ({
         return response.data;
     })
         .catch((error) => {
-            if (error.response && error.response.data.msg && errorAlert) {
-                console.log(`${response.data.msg}(${response.data.code})`);
-                alert(`${response.data.msg}`);
+            const errorResponse = error && error.response && error.response.data;
+
+            if (process.env.NODE_ENV === "development") {
+                console.log("[/api request]")
+                console.log(url, errorResponse)
+            }
+
+            if (errorResponse && errorResponse.msg && errorAlert) {
+                alert(`${errorResponse.msg}`);
             }
 
             // 收到重新登入需要導向登入頁面
-            if (error && error.response && error.response.data) {
-                if (error.response.data.code === "M00001") {
-                    if (getCookie('cid') && !errorAlert) {
-                        alert(`${error.response.data.msg}`);
+            if (errorResponse) {
+                if (errorResponse.code === "M00001") {
+                    if (getCookie('cid')) {
+                        alert(`${errorResponse.msg}`);
                     }
+
                     setCookie('cid', '');
+                    setCookie('y_token', '');
                     setCookie('aid', '');
-                    window.location.reload();
+
+                    window.location.reload(true);
                     window.location.href = '/mobile/login';
                     return;
                 }
                 // 維護中導向
-                if (error.response.data.code === "M00002" && !window.location.href.includes('upup')) {
+                if (errorResponse.code === "M00002" && !window.location.href.includes('upup')) {
                     window.location.href = '/upup';
                     return;
                 }
             }
 
-            if (error.response) {
+            if (error && error.response) {
                 fail(error.response);
             } else {
                 fail(error.toString());

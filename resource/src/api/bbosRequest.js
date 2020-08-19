@@ -51,13 +51,31 @@ export default ({
             console.log("[bbos request]")
             console.log(url, response.data)
         }
+        const responseData = response && response.data;
 
-        if (response && response.data && response.data.status === "000") {
-            return response.data;
-        } else {
-            fail(response.data);
+        if (responseData) {
+            if (responseData.status === "000") {
+                return responseData;
+            }
+
+            if (responseData && responseData.code === "M00001") {
+                if (getCookie('cid')) {
+                    alert(`${response.data.msg}`);
+                }
+
+                setCookie('cid', '');
+                setCookie('y_token', '');
+                setCookie('aid', '');
+
+                window.location.reload(true);
+                window.location.href = '/mobile/login';
+                return;
+            }
+
+            // fail
+            fail(responseData);
+            return responseData;
         }
-        return response.data;
     })
         .catch((error) => {
             console.log(error);
