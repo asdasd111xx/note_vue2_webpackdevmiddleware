@@ -115,11 +115,6 @@ export default {
       default: () => []
     }
   },
-  watch: {
-    typeList() {
-      console.log(this.typeList)
-    }
-  },
   filters: {
     getTime(time) {
       if (!time) {
