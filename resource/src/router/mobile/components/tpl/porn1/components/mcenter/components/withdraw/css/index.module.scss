@@ -80,8 +80,8 @@
     background-color: $main_white_color1;
     padding: 1px 18px;
     color: #414655;
-    height: 50px;
-    line-height: 50px;
+    min-height: 50px;
+    // line-height: 50px;
     display: flex;
     align-items: center;
     margin-bottom: 2px;
