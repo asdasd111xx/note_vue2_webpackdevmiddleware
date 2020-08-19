@@ -1127,6 +1127,37 @@ export const actionSetRechargeConfig = ({ commit }, data) => {
     })
 };
 
+export const actionBindGoBao = ({ commit }) => {
+    return axios({
+      method: "get",
+      url: "/api/v1/c/ext/inpay?api_uri=/api/trade/v2/c/vendor/is_bind"
+    }).then(response => {
+      const { ret, result } = response.data;
+
+      if (!response || result !== "ok") {
+        return;
+      }
+
+      commit(types.SET_HASBINDGOBAO, ret);
+    });
+}
+
+export const actionBindCGPay = ({ commit }) => {
+    return axios({
+      method: "get",
+      url:
+        "/api/v1/c/ext/inpay?api_uri=/api/trade/v2/c/withdraw/user/cgp_info"
+    }).then(response => {
+      const { ret, result } = response.data;
+
+      if (!response || result !== "ok") {
+        return;
+      }
+
+      commit(types.SET_HASBINDCGPAY, ret.is_bind_wallet);
+    });
+}
+
 export const actionSetVideoBounsPageStatus = ({ commit }, data) => {
     commit(types.SET_VIDEO_BOUNS_PAGE_STATUS, data);
 };

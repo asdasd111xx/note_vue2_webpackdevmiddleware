@@ -187,6 +187,15 @@
     background: linear-gradient(-45deg, #D1B79C 12px, hsla(0, 0%, 100%, 0) 0);
 }
 
+.no-bind-CGPay {
+  color: #979797;
+
+  > span {
+    color: #6aaaf5;
+    border-bottom: 1px solid #6aaaf5;
+  }
+}
+
 
 .pay-money-item {
     float: left;

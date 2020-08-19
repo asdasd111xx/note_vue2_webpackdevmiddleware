@@ -142,3 +142,8 @@ export const SET_RECHARGECONFIG = 'SET_RECHARGECONFIG';
 export const SET_HASBANK = 'SET_HASBANK';
 export const SET_VIDEO_BOUNS_PAGE_STATUS = 'SET_VIDEO_BOUNS_PAGE_STATUS';
 
+// ＝＝＝＝＝＝＝＝＝＝＝＝＝＝＝＝＝＝
+//   　電子錢包綁定相關
+// ＝＝＝＝＝＝＝＝＝＝＝＝＝＝＝＝＝＝
+export const SET_HASBINDGOBAO = "SET_HASBINDGOBAO";
+export const SET_HASBINDCGPAY = "SET_HASBINDCGPAY";
