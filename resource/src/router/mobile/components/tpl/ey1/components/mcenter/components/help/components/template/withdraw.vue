@@ -3,39 +3,49 @@
     <div :class="$style['section']">
       <div
         v-for="(item, index) in data"
-        :id="`q-${item.key}`"
+        :id="`q-${index}`"
         :class="[$style['cell'], { [$style['active']]: item.isOpen }]"
-        :key="item.key"
+        :key="index"
       >
         <template v-if="item.title && item.content">
           <div
             :class="$style['title']"
-            @click="item.content && handleToggleContent(item.key)"
+            @click="item.content && handleToggleContent(index)"
           >
             {{ item.title }}
           </div>
 
           <div
             :class="[$style['content'], { [$style['active']]: item.isOpen }]"
-            :style="{ 'max-height': item.isOpen ? `unset` : 0 }"
           >
             <div
-              v-for="(item, index) in item.content"
-              :class="$style['text-block']"
-              :key="`content-${index}`"
-              v-html="item"
+              v-for="(string, stringIndex) in item.content"
+              :data-key="`${index}`"
+              :class="[
+                $style['text-block'],
+                {
+                  [$style['red']]:
+                    (stringIndex === 5 && index === 0) ||
+                    (stringIndex === 12 && index === 1)
+                }
+              ]"
+              :key="`content-${stringIndex}`"
+              v-html="string"
             />
           </div>
 
           <div
             :class="[$style['arrow-btn'], { [$style['active']]: item.isOpen }]"
-            @click="item.content && handleToggleContent(item.key)"
+            @click="item.content && handleToggleContent(index)"
           >
             <img
               :src="$getCdnPath(`/static/image/_new/mcenter/ic_arrow_next.png`)"
             />
           </div>
         </template>
+      </div>
+      <div :class="$style['tips']" @click="$router.push('/mobile/service')">
+        如有任何问题，请洽24小时<a>在线客服</a>，将有专人亲切的为您服务。
       </div>
     </div>
   </div>

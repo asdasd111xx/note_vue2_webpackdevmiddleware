@@ -3,36 +3,20 @@
     <div :class="$style['section']">
       <div
         v-for="(item, index) in data"
-        :id="`q-${item.key}`"
-        :class="[$style['cell'], { [$style['active']]: item.isOpen }]"
-        :key="item.key"
+        :id="`q-${index}`"
+        :class="[$style['cell'], { [$style['active']]: true }]"
+        :key="index"
       >
         <template v-if="item.title && item.content">
-          <div
-            :class="$style['title']"
-            @click="item.content && handleToggleContent(item.key)"
-          >
+          <div :class="[$style['title'], $style['red']]">
             {{ item.title }}
           </div>
 
-          <div
-            :class="[$style['content'], { [$style['active']]: item.isOpen }]"
-            :style="{ 'max-height': item.isOpen ? `unset` : 0 }"
-          >
+          <div :class="[$style['content'], { [$style['active']]: true }]">
             <div
               v-for="(item, index) in item.content"
               :class="$style['text-block']"
-              :key="`content-${index}`"
               v-html="item"
-            />
-          </div>
-
-          <div
-            :class="[$style['arrow-btn'], { [$style['active']]: item.isOpen }]"
-            @click="item.content && handleToggleContent(item.key)"
-          >
-            <img
-              :src="$getCdnPath(`/static/image/_new/mcenter/ic_arrow_next.png`)"
             />
           </div>
         </template>
@@ -55,3 +39,4 @@ export default {
 <style lang="scss" module>
 @import "../../css/index.module.scss";
 </style>
+
