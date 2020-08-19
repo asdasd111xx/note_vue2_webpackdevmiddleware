@@ -17,7 +17,6 @@
 
           <div
             :class="[$style['content'], { [$style['active']]: item.isOpen }]"
-            :style="{ 'max-height': item.isOpen ? `unset` : 0 }"
           >
             <div :class="$style['text-block']" v-html="item.content" />
           </div>
@@ -31,6 +30,9 @@
             />
           </div>
         </template>
+      </div>
+      <div :class="$style['tips']" @click="$router.push('/mobile/service')">
+        如有任何问题，请洽24小时<a>在线客服</a>，将有专人亲切的为您服务。
       </div>
     </div>
   </div>

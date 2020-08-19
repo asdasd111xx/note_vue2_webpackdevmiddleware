@@ -34,10 +34,7 @@
           <div :class="$style['title']">{{ item.title }}</div>
         </div>
 
-        <div
-          :class="[$style['content'], { [$style['active']]: item.isOpen }]"
-          :style="{ 'max-height': item.isOpen ? `100%` : 0 }"
-        >
+        <div :class="[$style['content'], { [$style['active']]: item.isOpen }]">
           <div
             v-for="(item, index) in item.content"
             :class="$style['text-block']"
@@ -54,32 +51,33 @@
         </div>
       </div>
     </div>
-
-    <div v-if="category_isShowPop" :class="$style['pop-wrap']">
-      <div :class="$style['pop-mask']" @click="category_isShowPop = false" />
-      <div :class="$style['pop-menu']">
-        <div :class="$style['pop-title']">
-          <span @click="category_isShowPop = false">{{
-            $text("S_CANCEL", "取消")
-          }}</span>
-          选择游戏类别
+    <transition name="fade">
+      <div v-if="category_isShowPop" :class="$style['pop-wrap']">
+        <div :class="$style['pop-mask']" @click="category_isShowPop = false" />
+        <div :class="$style['pop-menu']">
+          <div :class="$style['pop-title']">
+            <span @click="category_isShowPop = false">{{
+              $text("S_CANCEL", "取消")
+            }}</span>
+            选择游戏类别
+          </div>
+          <ul :class="$style['pop-list']">
+            <li
+              v-for="(item, index) in categorys"
+              :key="index"
+              @click="setType(index)"
+            >
+              {{ item }}
+              <icon
+                v-if="category_currentIndex === index"
+                :class="$style['select-icon']"
+                name="check"
+              />
+            </li>
+          </ul>
         </div>
-        <ul :class="$style['pop-list']">
-          <li
-            v-for="(item, index) in categorys"
-            :key="index"
-            @click="setType(index)"
-          >
-            {{ item }}
-            <icon
-              v-if="category_currentIndex === index"
-              :class="$style['select-icon']"
-              name="check"
-            />
-          </li>
-        </ul>
       </div>
-    </div>
+    </transition>
   </div>
 </template>
 
