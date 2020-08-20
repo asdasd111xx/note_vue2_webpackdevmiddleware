@@ -169,7 +169,8 @@ export default {
   computed: {
     ...mapGetters({
       memInfo: 'getMemInfo',
-      webInfo: 'getWebInfo'
+      webInfo: 'getWebInfo',
+      siteConfig: "getSiteConfig"
     }),
     // 過濾特例的資料
     filteredDataList() {
