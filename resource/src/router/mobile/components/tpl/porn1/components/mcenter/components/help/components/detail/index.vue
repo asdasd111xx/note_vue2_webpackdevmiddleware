@@ -14,13 +14,13 @@
         <deposit-record />
       </template>
 
-      <template v-if="type == 'gameintro'">
+      <!-- <template v-if="type == 'gameintro'">
         <gameintro :index="$route.query.index" :keys="$route.query.key" />
       </template>
 
       <template v-if="type == 'support'">
         <support :keys="$route.query.key" />
-      </template>
+      </template> -->
     </div>
   </mobile-container>
 </template>
@@ -29,24 +29,20 @@
 import { API_WITHDRAW_RECORD } from "@/config/api";
 import { mapGetters } from "vuex";
 import ajax from "@/lib/ajax";
-import depositRecord from "./detail/depositRecord";
-import gameintro from "./detail/gameintro";
+import depositRecord from "./depositRecord";
 import member from "@/api/member";
 import mobileContainer from "../../../../../common/mobileContainer";
-import support from "./detail/support";
-import withdrawRecord from "./detail/withdrawRecord";
+import withdrawRecord from "./withdrawRecord";
 
 export default {
   components: {
     mobileContainer,
     depositRecord,
-    gameintro,
-    support,
     withdrawRecord
   },
   data() {
     return {
-      type: "withdraw" | "deposit" | "gameintro" | "support"
+      type: "withdraw" | "deposit"
     };
   },
   created() {
@@ -56,18 +52,13 @@ export default {
     ) {
       this.type = query.type;
     } else {
-      this.$router.push("/mobile/mcenter/help");
+      this.$router.push("/mobile/mcenter/helpCenter");
     }
   },
   computed: {
     ...mapGetters({
       loginStatus: "getLoginStatus"
     }),
-    // isWithdraw() {
-    //     return this.type
-    //         ? this.type.toLocaleLowerCase() === "withdraw"
-    //         : false;
-    // },
     title() {
       switch (this.type.toLocaleLowerCase()) {
         case "withdraw":
@@ -76,14 +67,6 @@ export default {
 
         case "deposit":
           return this.$text("S_RECENTLY_DEPOSIT", "8日内充值记录");
-          break;
-
-        case "gameintro":
-          return this.$text("S_GAME_INTR", "游戏介绍");
-          break;
-
-        case "support":
-          return this.$text("S_TECH_SUP", "技术支持");
           break;
 
         default:
@@ -95,29 +78,9 @@ export default {
         (this.$route.query && this.$route.query.app) ||
         (this.$route.query && this.$route.query.APP)
       );
-      // if (isApp && this.isWithdraw)
-      //     document.title = this.$text(
-      //         "S_RECENTLY_WITHDRAW",
-      //         "近10笔提现纪录"
-      //     );
-      // else if (isApp && !this.isWithdraw) {
-      //     document.title = this.$text(
-      //         "S_RECENTLY_DEPOSIT",
-      //         "8日内充值记录"
-      //     );
-      // }
-
-      if (isApp) {
-        document.title = this.title;
-      }
-
       return isApp;
     },
     headerConfig() {
-      // let title = this.isWithdraw
-      //     ? this.$text("S_RECENTLY_WITHDRAW", "近10笔提现纪录")
-      //     : this.$text("S_RECENTLY_DEPOSIT", "近10笔充值纪录");
-
       if (!this.isApp) {
         return {
           prev: true,
@@ -132,4 +95,4 @@ export default {
 };
 </script>
 
-<style src="../css/index.module.scss" lang="scss" module />
+<style src="../../css/index.module.scss" lang="scss" module />

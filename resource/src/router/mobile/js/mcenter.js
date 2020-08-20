@@ -161,14 +161,14 @@ export default {
             path: 'help/:key?',
             name: 'mcenter-help',
             component,
-            // children: [
-            //     // 存取款細節頁面
-            //     {
-            //         path: 'detail',
-            //         name: 'mcenter-help-detail',
-            //         component
-            //     }
-            // ]
+            children: [
+                // 存取款細節頁面
+                {
+                    path: 'detail',
+                    name: 'mcenter-help-detail',
+                    component
+                }
+            ]
         },
         {
             path: 'helpCenter',

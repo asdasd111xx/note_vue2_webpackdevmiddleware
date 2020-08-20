@@ -90,7 +90,7 @@ export default {
         {
           initName: "帮助中心",
           name: "S_HELP_CENTER",
-          path: "/mobile/mcenter/help",
+          path: "/mobile/mcenter/helpCenter",
           pageName: "help",
           image: "help",
           info: "存提现、投注有疑问，看这里",

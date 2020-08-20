@@ -122,7 +122,7 @@
         <div :class="$style['btn-icon']">
           <img
             :src="$getCdnPath('/static/image/ey1/common/btn_help.png')"
-            @click="$router.push('/mobile/mcenter/help/')"
+            @click="$router.push('/mobile/mcenter/helpCenter/')"
           />
         </div>
       </div>

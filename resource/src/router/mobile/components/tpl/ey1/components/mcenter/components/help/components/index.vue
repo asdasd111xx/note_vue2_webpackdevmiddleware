@@ -70,7 +70,7 @@ export default {
         return {
           prev: true,
           onClick: () => {
-            this.$router.push('/mobile/mcenter/help');
+            this.$router.back();
           },
           title: this.title
         };
