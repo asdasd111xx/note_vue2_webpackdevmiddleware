@@ -121,10 +121,13 @@ export default {
         target.value[index] = target.value[index].substring(0, 1);
       }
 
-      for (let i = 0; i < 4; i++) {
-        if (!this.formData['old_withdraw_password'].value[i]) {
-          this.checkFormData = false;
-          return;
+
+      if (this.memInfo.user.has_withdraw_password) {
+        for (let i = 0; i < 4; i++) {
+          if (!this.formData['old_withdraw_password'].value[i]) {
+            this.checkFormData = false;
+            return;
+          }
         }
       }
 

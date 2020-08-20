@@ -192,6 +192,9 @@ export default {
             maintain: {}
         }
     },
+    // 會員資訊 v3
+    memInfoV3: {
+    },
     // 會員端-登入狀態
     loginStatus: false,
     // 會員端-跑馬燈

@@ -121,6 +121,9 @@ export default {
           case "M00001":
             this.$router.push('/mobile/login');
             break;
+          case "C50104":
+            this.$router.push('/mobile/login');
+            break;
           default:
             break;
         }

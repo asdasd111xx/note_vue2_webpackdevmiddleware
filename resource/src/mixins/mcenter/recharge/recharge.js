@@ -173,12 +173,20 @@ export default {
                 if (res && res.data && res.data.result === "ok") {
                     return true;
                 } else {
-                    this.setErrorCode(res.data);
+                    if (res.data.errors.amount) {
+                        this.errorMessage.amount = res.data.errors.amount;
+                    }
+
+                    if (res.data.errors.user) {
+                        this.errorMessage.target_username = res.data.errors.user;
+                    }
+
+                    this.setErrorCode(res.data, res.data.errors.amount);
                     return false;
                 }
             }).catch(error => {
                 this.isSendKeyring = false;
-                this.setErrorCode(error.response.data);
+                this.setErrorCode(error.response.data, res.data.errors.amount);
                 return false;
             })
         },
@@ -286,7 +294,7 @@ export default {
             this.detailRecoard = null;
         },
         // 客制錯誤訊息
-        setErrorCode(data) {
+        setErrorCode(data, amountMsg = '') {
             const setErrorMsg = (msg, isAudit) => {
                 this.actionSetRechargeConfig().then(() => {
                     const config = this.rechargeConfig;
@@ -315,7 +323,7 @@ export default {
             }
 
             const code = data.code;
-            const msg = data.msg;
+            const msg = amountMsg || data.msg;
             switch (code) {
                 case "C650001":
                 case "C650008":
@@ -333,10 +341,12 @@ export default {
                     break;
                 // msg: "完成提现流水要求"
                 case "C650016":
+                case "C650021":
                     setErrorMsg(msg, true);
                     break;
                 // msg: "未完成提现流水要求"
                 case "C650017":
+                case "C650022":
                     setErrorMsg(msg, false);
                     break;
                 case "C650011":

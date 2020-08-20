@@ -40,8 +40,6 @@ export const actionSetWebInfo = ({ state, commit, dispatch }, domain) => {
     const urlParams = new URLSearchParams(window.location.search);
     if (urlParams && urlParams.get('platform')) {
         platform = urlParams.get('platform');
-    } else if (window.location.hostname === 'yaboxxxapp02.com') {
-        platform = 'H'
     }
     Vue.cookie.set('platform', platform);
 
@@ -530,7 +528,7 @@ export const actionMemInit = ({ state, dispatch, commit }) => {
 
         await dispatch('actionSetUserdata');
         await dispatch('actionSetWebInfo', state.memInfo.user.domain);
-
+        await dispatch('actionGetMemInfoV3');
         const defaultLang = ['47', '70', '71'].includes(state.memInfo.user.domain) && state.webInfo.is_production ? 'vi' : 'zh-cn';
         await getLang(state.webInfo.language, defaultLang);
 
@@ -1129,32 +1127,32 @@ export const actionSetRechargeConfig = ({ commit }, data) => {
 
 export const actionBindGoBao = ({ commit }) => {
     return axios({
-      method: "get",
-      url: "/api/v1/c/ext/inpay?api_uri=/api/trade/v2/c/vendor/is_bind"
+        method: "get",
+        url: "/api/v1/c/ext/inpay?api_uri=/api/trade/v2/c/vendor/is_bind"
     }).then(response => {
-      const { ret, result } = response.data;
+        const { ret, result } = response.data;
 
-      if (!response || result !== "ok") {
-        return;
-      }
+        if (!response || result !== "ok") {
+            return;
+        }
 
-      commit(types.SET_HASBINDGOBAO, ret);
+        commit(types.SET_HASBINDGOBAO, ret);
     });
 }
 
 export const actionSetCGPayInfo = ({ commit }) => {
     return axios({
-      method: "get",
-      url:
-        "/api/v1/c/ext/inpay?api_uri=/api/trade/v2/c/withdraw/user/cgp_info"
+        method: "get",
+        url:
+            "/api/v1/c/ext/inpay?api_uri=/api/trade/v2/c/withdraw/user/cgp_info"
     }).then(response => {
-      const { ret, result } = response.data;
+        const { ret, result } = response.data;
 
-      if (!response || result !== "ok") {
-        return;
-      }
+        if (!response || result !== "ok") {
+            return;
+        }
 
-      commit(types.SET_CGPAYINFO, ret);
+        commit(types.SET_CGPAYINFO, ret);
     });
 }
 
@@ -1170,6 +1168,24 @@ export const actionGetRechargeStatus = ({ state, dispatch, commit }, data) => {
     setTimeout(() => {
         window.CHECKRECHARGETSTATUS = undefined;
     }, 1200)
+
+    const info = state.memInfoV3.user;
+    if (!!info.bankrupt) {
+        dispatch('actionSetGlobalMessage', { msg: '您的钱包已停权，请联系线上客服！' });
+        return;
+    }
+
+    if (!!info.locked || !!info.tied) {
+        dispatch('actionSetGlobalMessage', {
+            msg: '请先登入', cb: () => {
+                member.logout().then(() => {
+                    window.location.href = "/mobile/login?logout=true";
+                });
+            }
+        });
+
+        return;
+    }
 
     return axios({
         method: 'get',
@@ -1272,20 +1288,46 @@ export const actionGetRechargeStatus = ({ state, dispatch, commit }, data) => {
         if (!bank_required && !enabled_by_deposit) {
             window.location.href = '/mobile/mcenter/creditTrans';
         }
+    }).catch(error => {
+        console.log(error.response)
+        if (error.response.data.code === 'M00001') {
+            dispatch('actionSetGlobalMessage', {
+                msg: '请先登入', cb: () => {
+                    member.logout().then(() => {
+                        window.location.href = "/mobile/login?logout=true";
+                    });
+                }
+            });
+        }
+
+        else {
+            dispatch('actionSetGlobalMessage', { msg: error.response.data.msg })
+        }
     });
 };
 
 export const actionSetUserLevels = ({ commit }) => {
     return axios({
-      method: "get",
-      url: "/api/v1/c/levels/by_user"
+        method: "get",
+        url: "/api/v1/c/levels/by_user"
     }).then(response => {
-      const { ret, result } = response.data;
+        const { ret, result } = response.data;
 
-      if (!response || result !== "ok") {
-        return;
-      }
+        if (!response || result !== "ok") {
+            return;
+        }
 
-      commit(types.SET_USER_LEVELS, ret);
+        commit(types.SET_USER_LEVELS, ret);
     });
+}
+export const actionGetMemInfoV3 = ({ commit }) => {
+    axios({
+        method: 'get',
+        url: '/api/v3/c/player'
+    }).then(res => {
+        if (res && res.data && res.data.result === "ok") {
+            console.log(res.data.ret)
+            commit(types.SETMEMINFOV3, res.data.ret);
+        }
+    })
 }

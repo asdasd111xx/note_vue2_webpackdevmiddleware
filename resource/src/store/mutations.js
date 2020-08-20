@@ -180,6 +180,11 @@ export default {
             ...info
         };
     },
+    [types.SETMEMINFOV3](state, info) {
+        state.memInfoV3 = {
+            ...info
+        };
+    },
     // 會員端-設定登入狀態
     [types.ISLOGIN](state, isLogin) {
         state.loginStatus = isLogin;

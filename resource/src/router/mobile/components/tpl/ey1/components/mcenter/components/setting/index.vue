@@ -76,9 +76,9 @@ export default {
     }
   },
   created() {
-    // if (!this.loginStatus) {
-    //   this.$router.push('/mobile/home');
-    // }
+    if (!this.loginStatus || !getCookie('cid')) {
+      this.$router.push('/mobile/home');
+    }
   },
   methods: {
     handleClick(path) {

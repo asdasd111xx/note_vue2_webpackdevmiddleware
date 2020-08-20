@@ -55,6 +55,8 @@ export const SET_COLLECTION_STATUS = 'SET_COLLECTION_STATUS';
 // 會員端-使用者層級
 export const SET_USER_LEVELS = 'SET_USER_LEVELS';
 
+// 會員端-會員資料 v3
+export const SETMEMINFOV3 = 'SETMEMINFOV3';
 // ＝＝＝＝＝＝＝＝＝＝＝＝＝＝＝＝＝＝
 //     AGENT 代理相關
 // ＝＝＝＝＝＝＝＝＝＝＝＝＝＝＝＝＝＝
