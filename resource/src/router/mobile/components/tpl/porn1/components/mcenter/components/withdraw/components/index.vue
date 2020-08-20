@@ -190,7 +190,13 @@
         <!-- 列出所有帳號-->
         <div
           v-for="item in allWithdrawAccount"
-          :class="$style['bank-card-cell']"
+          :class="[
+            $style['bank-card-cell'],
+            {
+              [$style['disable']]:
+                withdrawUserData.force_cgp_withdraw && !item.allow
+            }
+          ]"
           @click="handleSelectCard(item)"
         >
           <img v-lazy="getBankImage(item.swift_code)" />

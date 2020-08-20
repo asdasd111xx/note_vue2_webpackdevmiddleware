@@ -106,6 +106,6 @@ export default {
 }
 
 .has-footer {
-  padding-bottom: 45px;
+  padding-bottom: 65px;
 }
 </style>

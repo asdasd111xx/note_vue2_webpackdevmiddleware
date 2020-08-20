@@ -244,6 +244,8 @@ export default {
         this.currentPage = "virtualBankCardInfo";
         return;
       }
+
+      this.$router.back();
     }
   }
 };

@@ -68,7 +68,8 @@ export default {
   overflow-x: hidden;
   width: 100%;
   height: 100%;
-  padding-bottom: 5px;
+  padding-bottom: 15px;
+  padding-top: 1px;
 
   > img {
     width: 100%;

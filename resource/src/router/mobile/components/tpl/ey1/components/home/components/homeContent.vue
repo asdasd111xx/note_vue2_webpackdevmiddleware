@@ -235,7 +235,7 @@ export default {
   top: 32px;
   right: 0;
   left: 0;
-  color: #a6a9b2;
+  color: #ff7171;
   font-size: 12px;
   text-align: center;
 

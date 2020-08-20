@@ -45,7 +45,6 @@ export default {
       return {
         hasLogo: true,
         hasMemInfo: true,
-        hasSearchBtn: false,
         onClick: () => {
           this.onClick();
         }
