@@ -299,7 +299,7 @@ export default {
       "actionSetUserdata",
       "actionSetGlobalMessage",
       "actionBindGoBao",
-      "actionBindCGPay"
+      "actionSetCGPayInfo"
     ]),
     verification(key, index) {
       let target = this.formData[key];

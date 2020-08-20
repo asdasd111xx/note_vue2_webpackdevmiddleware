@@ -100,13 +100,14 @@
             [$style[headerConfig.customLinkStyle]]: headerConfig.customLinkStyle
           }
         ]"
-        @click="
+      >
+        <div
+          :class="[$style['header-custom-btn']]"
+          @click="
           headerConfig.customLinkAction
             ? headerConfig.customLinkAction()
             : () => {}
-        "
-      >
-        <div :class="[$style['header-custom-btn']]">
+        ">
           {{ headerConfig.customLinkTitle }}
         </div>
       </div>
@@ -121,7 +122,7 @@
         <div :class="$style['btn-icon']">
           <img
             :src="$getCdnPath('/static/image/ey1/common/btn_help.png')"
-            @click="$router.push('/mobile/mcenter/help/')"
+            @click="$router.push('/mobile/mcenter/helpCenter/')"
           />
         </div>
       </div>

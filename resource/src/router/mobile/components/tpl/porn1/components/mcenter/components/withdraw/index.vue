@@ -12,12 +12,10 @@
 import { mapGetters, mapActions } from 'vuex';
 import ajax from '@/lib/ajax';
 import balanceBack from "../../../mcenter/components/common/balanceBack";
-import mixin from '@/mixins/mcenter/withdraw';
 import mobileContainer from '../../../common/mobileContainer';
 import withdraw from '@/router/mobile/components/tpl/porn1/components/mcenter/components/withdraw/components/index'
 
 export default {
-  mixins: [mixin],
   data() {
     return {
     }

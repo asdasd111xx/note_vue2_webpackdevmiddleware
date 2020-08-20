@@ -9,28 +9,6 @@ export default {
     };
   },
   computed: {
-    hasRedirect() {
-      // 預設提現銀行卡添加
-      const { query } = this.$route;
-      let redirect = query.redirect;
-      if (redirect && redirect.split("-")[0]) {
-        switch (redirect.split("-")[0]) {
-          case "casino":
-          case "deposit":
-          case "withdraw":
-          case "balanceTrans":
-          case "home":
-          case "card":
-          case "mahjong":
-          case "liveStream":
-          case "videoPlay":
-          case "wallet":
-            this.currentPage = "addBankCard";
-            return true;
-        }
-      }
-      return false;
-    },
     showDetail: {
       get() {
         return this.showDetailStatus;

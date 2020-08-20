@@ -107,7 +107,7 @@ export default {
         full: false, // 是否输出原图比例的截图
         canMoveBox: true, // 截图框能否拖动
         original: false, // 上传图片按照原始比例渲染
-        centerBox: false, // 截图框是否被限制在图片里面
+        centerBox: true, // 截图框是否被限制在图片里面
         infoTrue: false, // true 为展示真实输出图片宽高 false 展示看到的截图框宽高
       },
     };

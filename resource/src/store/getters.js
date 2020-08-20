@@ -129,6 +129,8 @@ export default {
     getNews: (state) => state.news,
     // 會員端-公告
     getPost: (state) => state.post,
+    // 會員端-使用者層級
+    getUserLevels: (state) => state.userLevels,
     // ＝＝＝＝＝＝＝＝＝＝＝＝＝＝＝＝＝＝
     //  AGENT 代理相關
     // ＝＝＝＝＝＝＝＝＝＝＝＝＝＝＝＝＝＝
@@ -193,10 +195,10 @@ export default {
     getRechargeConfig: (state) => state.rechargeConfig,
     getHasBank: (state) => state.hasBank,
     getVideoBounsPageStatus: (state) => state.videoBounsPageStatus,
-
+    getMemInfoV3: (state) => state.memInfoV3,
     // ＝＝＝＝＝＝＝＝＝＝＝＝＝＝＝＝＝＝
     //   　電子錢包綁定相關
     // ＝＝＝＝＝＝＝＝＝＝＝＝＝＝＝＝＝＝
     getHasBindGoBao: (state) => state.hasBindGoBao,
-    getHasBindCGPay: (state) => state.hasBindCGPay
+    getCGPayInfo: (state) => state.CGPayInfo
 };

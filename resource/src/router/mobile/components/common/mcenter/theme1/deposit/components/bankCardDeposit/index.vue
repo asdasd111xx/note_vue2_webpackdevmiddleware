@@ -243,7 +243,9 @@
 
             <!-- 尚未綁定 CGPay -->
             <div
-              v-if="curPayInfo.payment_method_id === 16 && !isBindCGPay"
+              v-if="
+                curPayInfo.payment_method_id === 16 && !CGPayInfo.is_bind_wallet
+              "
               :class="[$style['feature-wrap'], 'clearfix']"
             >
               <span :class="$style['bank-card-title']">验证方式</span>
@@ -254,7 +256,13 @@
             </div>
 
             <!-- 存款金額 -->
+            <!-- 出現條件：1.選擇CGPay且已綁定 2.選非CGPay的支付方式 -->
             <div
+              v-if="
+                (curPayInfo.payment_method_id === 16 &&
+                  CGPayInfo.is_bind_wallet) ||
+                  curPayInfo.payment_method_id !== 16
+              "
               :class="[
                 $style['feature-wrap'],
                 $style['select-money'],
@@ -263,18 +271,24 @@
             >
               <!-- If 選擇 CGPay且已綁定 : 顯示 CGPay 餘額 -->
               <div
-                v-if="curPayInfo.payment_method_id === 16 && isBindCGPay"
+                v-if="
+                  curPayInfo.payment_method_id === 16 &&
+                    CGPayInfo.is_bind_wallet
+                "
                 :class="$style['CGPay-money']"
               >
-                <span>CGPay余额：---</span>
-                <div :class="$style['money-update']">
+                <span>CGPay余额：{{ CGPayInfo.balance }}</span>
+                <div
+                  :class="$style['money-update']"
+                  @click="actionSetCGPayInfo"
+                >
                   <img
                     :src="
                       $getCdnPath(
                         `/static/image/${siteConfig.MOBILE_WEB_TPL}/common/btn_update.png`
                       )
                     "
-                    alt=""
+                    alt="update"
                   />
                 </div>
               </div>
@@ -394,7 +408,9 @@
             <!-- 驗證方式 -->
             <!-- If 選擇 CGPay且已綁定 : 顯示 CGPay 餘額 -->
             <div
-              v-if="curPayInfo.payment_method_id === 16 && isBindCGPay"
+              v-if="
+                curPayInfo.payment_method_id === 16 && CGPayInfo.is_bind_wallet
+              "
               :class="[$style['feature-wrap'], 'clearfix']"
             >
               <span :class="$style['bank-card-title']">验证方式</span>
@@ -866,7 +882,7 @@ export default {
   props: {
     headerSetting: {
       type: Object,
-      default: () => {}
+      default: () => { }
     }
   },
   data() {
@@ -957,7 +973,7 @@ export default {
       memInfo: "getMemInfo",
       rechargeConfig: "getRechargeConfig",
       isBindGoBao: "getHasBindGoBao",
-      isBindCGPay: "getHasBindCGPay",
+      CGPayInfo: "getCGPayInfo",
       noticeData: "getNoticeData"
     }),
     $style() {
@@ -1248,14 +1264,14 @@ export default {
   mounted() {
     // 檢查錢包綁定
     this.actionBindGoBao();
-    this.actionBindCGPay();
+    this.actionSetCGPayInfo();
   },
   methods: {
     ...mapActions([
       "actionSetUserBalance",
       "actionSetRechargeConfig",
       "actionBindGoBao",
-      "actionBindCGPay"
+      "actionSetCGPayInfo"
     ]),
     handleCreditTrans() {
       this.$router.push("/mobile/mcenter/creditTrans?tab=0");
@@ -1282,7 +1298,7 @@ export default {
     modeChange(listItem, index) {
       this.checkEntryBlockStatus();
       this.actionBindGoBao();
-      this.actionBindCGPay();
+      this.actionSetCGPayInfo();
       this.changeMode(listItem);
 
       // 進來充值頁面，沒有 bankSelectValue 的預設值才觸發，再切換其它類別不再觸發
@@ -1375,7 +1391,7 @@ export default {
 
         // 刷新錢包綁定狀態
         this.actionBindGoBao();
-        this.actionBindCGPay();
+        this.actionSetCGPayInfo();
 
         if (response) {
           if (response.status === "NameFail") {

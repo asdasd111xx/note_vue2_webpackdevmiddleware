@@ -180,6 +180,11 @@ export default {
             ...info
         };
     },
+    [types.SETMEMINFOV3](state, info) {
+        state.memInfoV3 = {
+            ...info
+        };
+    },
     // 會員端-設定登入狀態
     [types.ISLOGIN](state, isLogin) {
         state.loginStatus = isLogin;
@@ -280,6 +285,10 @@ export default {
     // 會員端-設定下方遊戲框顯示狀態
     [types.SET_COLLECTION_STATUS](state, status) {
         state.showCollection = status;
+    },
+    // 會員端-設定使用者層級
+    [types.SET_USER_LEVELS](state, data) {
+        state.userLevels = data;
     },
 
     // ＝＝＝＝＝＝＝＝＝＝＝＝＝＝＝＝＝＝
@@ -501,7 +510,7 @@ export default {
         state.hasBindGoBao = data
     },
     // 是否有綁定CGPay
-    [types.SET_HASBINDCGPAY](state, data) {
-        state.hasBindCGPay = data
+    [types.SET_CGPAYINFO](state, data) {
+        state.CGPayInfo = data
     },
 };

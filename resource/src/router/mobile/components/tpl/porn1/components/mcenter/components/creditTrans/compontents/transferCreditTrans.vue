@@ -124,7 +124,7 @@ import balanceBack from "../../../../mcenter/components/common/balanceBack";
 import popupVerification from '@/components/popupVerification';
 import axios from 'axios';
 import tipsCreditTrans from './tipsCreditTrans';
-import mixin from '@/mixins/mcenter/creditTrans/recharge';
+import mixin from '@/mixins/mcenter/recharge/recharge';
 export default {
   mixins: [mixin],
   data() {
@@ -176,15 +176,11 @@ export default {
         return;
       }
 
-      this.toggleCaptcha = true;
-      return;
-
-      //  0825 第二階段 送出前檢查
-      //   this.rechargeCheck().then((res) => {
-      //     if (res) {
-      //       this.toggleCaptcha = true;
-      //     }
-      //   });
+      this.rechargeCheck().then((res) => {
+        if (res) {
+          this.toggleCaptcha = true;
+        }
+      });
     },
   }
 };

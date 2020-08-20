@@ -63,10 +63,6 @@ export default {
   data() {
     return {
       bank_id: "",
-      bindWallets: {
-        cgPay: false,
-        goBao: false
-      },
       isShowPopQrcode: false,
       nowOpenVirtualBank: []
     };
@@ -75,10 +71,9 @@ export default {
     ...mapGetters({
       noticeData: "getNoticeData",
       isBindGoBao:"getHasBindGoBao",
-      isBindCGPay:"getHasBindCGPay"
+      CGPayInfo:"getCGPayInfo"
     }),
     methodList() {
-      // Todo: show -> 是否同卡片管理一樣，顯示的部份依限綁一組來吃不同的邏輯
       return [
         {
           key: "bankCard",
@@ -93,12 +88,12 @@ export default {
         {
           key: "CGPay",
           title: "新增 CGPay",
-          isShow: !this.bindWallets.cgPay
+          isShow: !this.CGPayInfo.is_bind_wallet
         },
         {
           key: "goBao",
           title: "新增 购宝钱包",
-          isShow: !this.bindWallets.goBao
+          isShow: !this.isBindGoBao
         }
       ].filter(item => item.isShow);
     },
@@ -160,17 +155,15 @@ export default {
     }
   },
   created() {
-    this.checkBindCGpay();
-    this.checkBindGoBao();
-    // this.actionBindGoBao();
-    // this.actionBindCGPay();
+    this.actionBindGoBao();
+    this.actionSetCGPayInfo();
     this.getNowOpenVirtualBank();
   },
   methods: {
     ...mapActions([
       "actionSetGlobalMessage",
       "actionBindGoBao",
-      "actionBindCGPay"
+      "actionSetCGPayInfo"
     ]),
     close() {
       this.$emit("close");
@@ -197,35 +190,6 @@ export default {
           break;
       }
       this.close();
-    },
-    checkBindCGpay() {
-      return axios({
-        method: "get",
-        url:
-          "/api/v1/c/ext/inpay?api_uri=/api/trade/v2/c/withdraw/user/cgp_info"
-      }).then(response => {
-        const { ret, result } = response.data;
-
-        if (!response || result !== "ok") {
-          return;
-        }
-
-        this.bindWallets.cgPay = ret.is_bind_wallet;
-      });
-    },
-    checkBindGoBao() {
-      return axios({
-        method: "get",
-        url: "/api/v1/c/ext/inpay?api_uri=/api/trade/v2/c/vendor/is_bind"
-      }).then(response => {
-        const { ret, result } = response.data;
-
-        if (!response || result !== "ok") {
-          return;
-        }
-
-        this.bindWallets.goBao = ret;
-      });
     },
     getNowOpenVirtualBank() {
       // Get 錢包類型

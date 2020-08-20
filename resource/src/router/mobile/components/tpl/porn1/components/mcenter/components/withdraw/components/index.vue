@@ -273,7 +273,7 @@
           v-model="withdrawValue"
           autocomplete="off"
           type="number"
-          @blur="validateWithdrawValue($event.target.value)"
+          @blur="verification('withdrawValue', $event.target.value)"
           :placeholder="
             $text('S_WITHRAW_PLACEHOLDER', {
               replace: [
@@ -401,8 +401,9 @@
         <input
           v-model="withdrawPwd"
           autocomplete="off"
-          type="number"
           placeholder="请输入提现密码(限定4码数字)"
+          type="text"
+          @input="verification('withdrawPwd', $event.target.value)"
         />
       </div>
 
@@ -748,27 +749,42 @@ export default {
     toggleSerial() {
       this.isSerial = !this.isSerial;
     },
-    validateWithdrawValue(value) {
-      if (!this.withdrawData) return;
+    verification(key, value) {
+      if (key === "withdrawValue") {
+        if (!this.withdrawData) return;
 
-      const withdrawMax = Number(
-        this.withdrawData.payment_charge.ret.withdraw_max
-      );
-      const withdrawMin = Number(
-        this.withdrawData.payment_charge.ret.withdraw_min
-      );
+        const withdrawMax = Number(
+          this.withdrawData.payment_charge.ret.withdraw_max
+        );
+        const withdrawMin = Number(
+          this.withdrawData.payment_charge.ret.withdraw_min
+        );
 
-      if (
-        this.realWithdrawMoney === "--" ||
-        +this.realWithdrawMoney <= 0 ||
-        +value <= 0 ||
-        +value < withdrawMin ||
-        (withdrawMax > 0 && Number(this.withdrawValue) > withdrawMax)
-      ) {
-        this.errTips = `单笔提现金额最小为${withdrawMin}元，最大为${
-          withdrawMax ? `${withdrawMax}元` : "无限制"
+        if (
+          this.realWithdrawMoney === "--" ||
+          +this.realWithdrawMoney <= 0 ||
+          +value <= 0 ||
+          +value < withdrawMin ||
+          (withdrawMax > 0 && Number(this.withdrawValue) > withdrawMax)
+        ) {
+          this.errTips = `单笔提现金额最小为${withdrawMin}元，最大为${
+            withdrawMax ? `${withdrawMax}元` : "无限制"
           }`;
-        return;
+          return;
+        }
+      }
+
+      if (key === "withdrawPwd") {
+        const re = /[^0-9]/g;
+
+        if (this.withdrawPwd.length > 4) {
+          this.withdrawPwd = this.withdrawPwd.substring(0, 4);
+        }
+
+        this.withdrawPwd = this.withdrawPwd
+          .replace(" ", "")
+          .trim()
+          .replace(re, "");
       }
     },
     toggleShowMore() {
@@ -952,6 +968,7 @@ export default {
             if (this.memInfo.config.withdraw === "迅付") {
               this.msg = "提现成功";
               this.withdrawValue = "";
+              this.withdrawPwd = "";
 
               // 舊的第二次寫單才需要
               // 迅付寫單

@@ -156,80 +156,12 @@ export default {
                 }
             ]
         },
-        // { // 贊助信息
-        //     path: 'sponsor',
-        //     name: 'mcenter-sponsor',
-        //     component
-        // },
-        // { // 玩法教程
-        //     path: 'play',
-        //     name: 'mcenter-play',
-        //     component
-        // },
-
-        { // 幫助中心
-            path: 'help',
+        // 幫助中心
+        {
+            path: 'help/:key?',
             name: 'mcenter-help',
             component,
             children: [
-                {
-                    path: 'electronic',
-                    name: 'mcenter-help-electronic',
-                    component
-                },
-                {
-                    path: 'lottery',
-                    name: 'mcenter-help-lottery',
-                    component
-                },
-                {
-                    path: 'question',
-                    name: 'mcenter-help-question',
-                    component
-                },
-                {
-                    path: 'real',
-                    name: 'mcenter-help-real',
-                    component
-                },
-                {
-                    path: 'recharge',
-                    name: 'mcenter-help-recharge',
-                    component
-                },
-                {
-                    path: 'sport',
-                    name: 'mcenter-help-sport',
-                    component
-                },
-
-                // 幫助中心
-
-                {
-                    path: 'deposit',
-                    name: 'mcenter-help-deposit',
-                    component
-                },
-                {
-                    path: 'withdraw',
-                    name: 'mcenter-help-withdraw',
-                    component
-                },
-                {
-                    path: 'gameintro',
-                    name: 'mcenter-help-gameintro',
-                    component,
-                },
-                {
-                    path: 'support',
-                    name: 'mcenter-help-support',
-                    component
-                },
-                {
-                    path: 'contact',
-                    name: 'mcenter-help-contact',
-                    component
-                },
                 // 存取款細節頁面
                 {
                     path: 'detail',
@@ -239,9 +171,9 @@ export default {
             ]
         },
         {
-            path: 'helpCenter/:key?',
+            path: 'helpCenter',
             name: 'mcenter-help-center',
-            component
+            component,
         },
         { // 關於我們
             path: 'about',

@@ -192,6 +192,9 @@ export default {
             maintain: {}
         }
     },
+    // 會員資訊 v3
+    memInfoV3: {
+    },
     // 會員端-登入狀態
     loginStatus: false,
     // 會員端-跑馬燈
@@ -201,6 +204,8 @@ export default {
         config: {},
         list: []
     },
+    // 會員端-使用者層級
+    userLevels: {},
     // ＝＝＝＝＝＝＝＝＝＝＝＝＝＝＝＝＝＝
     //     AGENT 代理相關
     // ＝＝＝＝＝＝＝＝＝＝＝＝＝＝＝＝＝＝
@@ -461,5 +466,5 @@ export default {
     //   　電子錢包綁定相關
     // ＝＝＝＝＝＝＝＝＝＝＝＝＝＝＝＝＝＝
     hasBindGoBao: false,
-    hasBindCGPay: false,
+    CGPayInfo: {},
 };

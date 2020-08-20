@@ -1,75 +1,26 @@
 <template>
   <div>
-    <div v-if="list" :class="$style['content']">
+    <div v-if="list" v-for="item in list" :class="$style['content']">
       <div :class="$style['title']">
         <div :class="$style['block']" />
-        反馈或建议
+        {{ item.categoryName }}
       </div>
-      <div :class="$style['cell']">
+      <div v-for="cell in item.itemData" :class="$style['cell']">
         <div>
-          <img :src="(list[4] && list[4].value) || defaultImgSrc" />
+          <img :src="cell.iconUrl" />
         </div>
         <div>
           <div>
-            <div>{{ list[0].name }}</div>
-            <div>{{ list[0].value }}</div>
+            <div>{{ cell.name }}</div>
+            <div>{{ cell.value }}</div>
           </div>
         </div>
         <div :class="$style['copy-btn']">
-          <div @click="copy(0)">{{ $text("S_COPY", "复制") }}</div>
-        </div>
-      </div>
-
-      <div :class="$style['cell']">
-        <div>
-          <img :src="(list[5] && list[5].value) || defaultImgSrc" />
-        </div>
-        <div>
-          <div>
-            <div>{{ list[1].name }}</div>
-            <div>{{ list[1].value }}</div>
-          </div>
-        </div>
-        <div :class="$style['copy-btn']">
-          <div @click="copy(1)">{{ $text("S_COPY", "复制") }}</div>
+          <div @click="copy(cell.value)">{{ $text("S_COPY", "复制") }}</div>
         </div>
       </div>
     </div>
-    <div v-if="list" :class="$style['content']">
-      <div :class="$style['title']">
-        <div :class="$style['block']" />
-        成为合营伙伴
-      </div>
-      <div :class="$style['cell']">
-        <div>
-          <img :src="(list[6] && list[6].value) || defaultImgSrc" />
-        </div>
-        <div>
-          <div>
-            <div>{{ list[2].name }}</div>
-            <div>{{ list[2].value }}</div>
-          </div>
-        </div>
-        <div :class="$style['copy-btn']">
-          <div @click="copy(2)">{{ $text("S_COPY", "复制") }}</div>
-        </div>
-      </div>
 
-      <div :class="$style['cell']">
-        <div>
-          <img :src="(list[7] && list[7].value) || defaultImgSrc" />
-        </div>
-        <div>
-          <div>
-            <div>{{ list[3].name }}</div>
-            <div>{{ list[3].value }}</div>
-          </div>
-        </div>
-        <div :class="$style['copy-btn']">
-          <div @click="copy(3)">{{ $text("S_COPY", "复制") }}</div>
-        </div>
-      </div>
-    </div>
     <div :class="$style['online-btn']">
       <div @click="$router.push('/mobile/service')">
         7*24在线客服
@@ -112,10 +63,8 @@ export default {
     ...mapActions([
       'actionSetGlobalMessage'
     ]),
-    copy(key) {
-      const string = this.list[key].value;
-      if (!string) return;
-      this.$copyText(string);
+    copy(value) {
+      this.$copyText(value);
       this.actionSetGlobalMessage({ msg: '复制成功' });
     }
   }

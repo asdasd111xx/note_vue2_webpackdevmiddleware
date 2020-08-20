@@ -1,104 +1,88 @@
 <template>
-  <mobile-container
-    :header-config="headerConfig"
-    :has-footer="false"
-    :class="$style.container"
-  >
-    <div slot="content">
-      <div v-if="list" :class="$style['content']">
-        <div :class="$style['title']">
-          <div :class="$style['block']" />
-          反馈或建议
+  <div>
+    <div v-if="list" :class="$style['content']">
+      <div :class="$style['title']">
+        <div :class="$style['block']" />
+        反馈或建议
+      </div>
+      <div :class="$style['cell']">
+        <div>
+          <img :src="(list[4] && list[4].value) || defaultImgSrc" />
         </div>
-        <div :class="$style['cell']">
+        <div>
           <div>
-            <img :src="(list[4] && list[4].value) || defaultImgSrc" />
-          </div>
-          <div>
-            <div>
-              <div>{{ list[0].name }}</div>
-              <div>{{ list[0].value }}</div>
-            </div>
-          </div>
-          <div :class="$style['copy-btn']">
-            <div @click="copy(0)">{{ $text("S_COPY", "复制") }}</div>
+            <div>{{ list[0].name }}</div>
+            <div>{{ list[0].value }}</div>
           </div>
         </div>
-
-        <div :class="$style['cell']">
-          <div>
-            <img :src="(list[5] && list[5].value) || defaultImgSrc" />
-          </div>
-          <div>
-            <div>
-              <div>{{ list[1].name }}</div>
-              <div>{{ list[1].value }}</div>
-            </div>
-          </div>
-          <div :class="$style['copy-btn']">
-            <div @click="copy(1)">{{ $text("S_COPY", "复制") }}</div>
-          </div>
+        <div :class="$style['copy-btn']">
+          <div @click="copy(0)">{{ $text("S_COPY", "复制") }}</div>
         </div>
       </div>
-      <div v-if="list" :class="$style['content']">
-        <div :class="$style['title']">
-          <div :class="$style['block']" />
-          成为合营伙伴
-        </div>
-        <div :class="$style['cell']">
-          <div>
-            <img :src="(list[6] && list[6].value) || defaultImgSrc" />
-          </div>
-          <div>
-            <div>
-              <div>{{ list[2].name }}</div>
-              <div>{{ list[2].value }}</div>
-            </div>
-          </div>
-          <div :class="$style['copy-btn']">
-            <div @click="copy(2)">{{ $text("S_COPY", "复制") }}</div>
-          </div>
-        </div>
 
-        <div :class="$style['cell']">
+      <div :class="$style['cell']">
+        <div>
+          <img :src="(list[5] && list[5].value) || defaultImgSrc" />
+        </div>
+        <div>
           <div>
-            <img :src="(list[7] && list[7].value) || defaultImgSrc" />
-          </div>
-          <div>
-            <div>
-              <div>{{ list[3].name }}</div>
-              <div>{{ list[3].value }}</div>
-            </div>
-          </div>
-          <div :class="$style['copy-btn']">
-            <div @click="copy(3)">{{ $text("S_COPY", "复制") }}</div>
+            <div>{{ list[1].name }}</div>
+            <div>{{ list[1].value }}</div>
           </div>
         </div>
-      </div>
-      <div :class="$style['online-btn']">
-        <div @click="$router.push('/mobile/service')">
-          7*24在线客服
+        <div :class="$style['copy-btn']">
+          <div @click="copy(1)">{{ $text("S_COPY", "复制") }}</div>
         </div>
       </div>
     </div>
-  </mobile-container>
+    <div v-if="list" :class="$style['content']">
+      <div :class="$style['title']">
+        <div :class="$style['block']" />
+        成为合营伙伴
+      </div>
+      <div :class="$style['cell']">
+        <div>
+          <img :src="(list[6] && list[6].value) || defaultImgSrc" />
+        </div>
+        <div>
+          <div>
+            <div>{{ list[2].name }}</div>
+            <div>{{ list[2].value }}</div>
+          </div>
+        </div>
+        <div :class="$style['copy-btn']">
+          <div @click="copy(2)">{{ $text("S_COPY", "复制") }}</div>
+        </div>
+      </div>
+
+      <div :class="$style['cell']">
+        <div>
+          <img :src="(list[7] && list[7].value) || defaultImgSrc" />
+        </div>
+        <div>
+          <div>
+            <div>{{ list[3].name }}</div>
+            <div>{{ list[3].value }}</div>
+          </div>
+        </div>
+        <div :class="$style['copy-btn']">
+          <div @click="copy(3)">{{ $text("S_COPY", "复制") }}</div>
+        </div>
+      </div>
+    </div>
+    <div :class="$style['online-btn']">
+      <div @click="$router.push('/mobile/service')">
+        7*24在线客服
+      </div>
+    </div>
+  </div>
 </template>
 
 <script>
-import mobileContainer from '../../../../common/mobileContainer';
 import yaboRequest from '@/api/yaboRequest';
 import { mapGetters, mapActions } from 'vuex';
 
 export default {
-  components: {
-    mobileContainer,
-  },
-  //   {
-  //         id: 1,
-  //         type: "cu",
-  //         name: "投诉建义",
-  //         value: "cs@yaboxxx.net"
-  //    }
   data() {
     return {
       msg: '',
@@ -112,13 +96,6 @@ export default {
       loginStatus: 'getLoginStatus',
       siteConfig: 'getSiteConfig'
     }),
-    headerConfig() {
-      return {
-        prev: true,
-        onClick: () => { this.$router.back(); },
-        title: this.$text('S_CONTACT_US', '联系我们')
-      };
-    }
   },
   created() {
     yaboRequest({
@@ -126,7 +103,7 @@ export default {
       url: `${this.siteConfig.YABO_API_DOMAIN}/system/contactus`,
       headers: { 'x-domain': this.memInfo.user.domain, }
     }).then((res) => {
-      if (res && res.data) {
+      if (res && res.data && res.data.length > 0) {
         this.list = res.data;
       }
     });
@@ -182,7 +159,7 @@ export default {
       justify-content: center;
       margin: 10px 20px 10px 0;
       img {
-        width: 36px;
+        width: 28px;
       }
     }
 
@@ -208,8 +185,8 @@ export default {
   margin-top: 30px;
   margin-left: 12px;
   margin-right: 12px;
-
   text-align: center;
+
   > div {
     color: white;
     height: 45px;
