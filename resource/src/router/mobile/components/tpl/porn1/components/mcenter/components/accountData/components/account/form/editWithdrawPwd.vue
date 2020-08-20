@@ -22,7 +22,7 @@
               :maxlength="1"
               :minlength="1"
               :placeholder="formData['old_withdraw_password'].placeholder"
-              type="number"
+              type="tel"
             />
           </div>
         </div>
@@ -42,7 +42,7 @@
             :maxlength="1"
             :minlength="1"
             :placeholder="formData['new_withdraw_password'].placeholder"
-            type="number"
+            type="tel"
           />
         </div>
       </div>
@@ -116,11 +116,14 @@ export default {
       let errorMsg = '';
       let check = true;
 
-      target.value[index] = target.value[index].replace(' ', '').trim();
+      target.value[index] = target.value[index]
+        .replace(' ', '')
+        .trim()
+        .replace(/[^\d+]$/g, '');
+
       if (target.value[index].length > 1) {
         target.value[index] = target.value[index].substring(0, 1);
       }
-
 
       if (this.memInfo.user.has_withdraw_password) {
         for (let i = 0; i < 4; i++) {

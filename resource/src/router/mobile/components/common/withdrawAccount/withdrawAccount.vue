@@ -54,7 +54,7 @@
               :maxlength="1"
               :minlength="1"
               :placeholder="formData['withdraw_password'].placeholder"
-              type="number"
+              type="tel"
             />
           </div>
           <div :class="$style['withdraw-password-tips']">
@@ -277,7 +277,11 @@ export default {
       }
 
       if (key === "withdraw_password") {
-        target.value[index] = target.value[index].replace(' ', '').trim();
+        target.value[index] = target.value[index]
+          .replace(' ', '')
+          .trim()
+          .replace(/[^0-9]/g, '');
+
         if (target.value[index].length > 1) {
           target.value[index] = target.value[index].substring(0, 1);
         }
@@ -394,7 +398,7 @@ export default {
           this.actionSetUserdata(true).then(() => {
             this.onClose();
 
-            if(!this.checkBankSwitch) {
+            if (!this.checkBankSwitch) {
               this.$router.push(`/mobile/mcenter/bankCard?redirect=home&type=virtualBank`)
             }
           });

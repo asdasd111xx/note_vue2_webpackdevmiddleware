@@ -2,13 +2,17 @@
   <div :class="$style['vip-info-wrap']">
     <template v-if="currentLevelData && currentLevelData.withdraw_fee">
       <!-- <div :class="$style['title']">VIP {{ currentLevelData.seq }}尊享</div> -->
-      <div :class="$style['title']">{{ currentLevelData.alias }}</div>
+      <div :class="$style['title']">{{ `${currentLevelData.alias}尊享` }}</div>
 
       <div :class="$style['cells-block']">
         <div :class="$style['cell']">
           <div :class="$style['cell-icon']">
             <img
-              :src="$getCdnPath(`/static/image/${siteConfig.MOBILE_WEB_TPL}/mcenter/vip/pic_vip_1.png`)"
+              :src="
+                $getCdnPath(
+                  `/static/image/${siteConfig.MOBILE_WEB_TPL}/mcenter/vip/pic_vip_1.png`
+                )
+              "
               alt="icon"
             />
           </div>
@@ -32,7 +36,11 @@
         <div :class="$style['cell']">
           <div :class="$style['cell-icon']">
             <img
-              :src="$getCdnPath(`/static/image/${siteConfig.MOBILE_WEB_TPL}/mcenter/vip/pic_vip_2.png`)"
+              :src="
+                $getCdnPath(
+                  `/static/image/${siteConfig.MOBILE_WEB_TPL}/mcenter/vip/pic_vip_2.png`
+                )
+              "
               alt="icon"
             />
           </div>
@@ -53,7 +61,11 @@
         <div :class="$style['cell']">
           <div :class="$style['cell-icon']">
             <img
-              :src="$getCdnPath(`/static/image/${siteConfig.MOBILE_WEB_TPL}/mcenter/vip/pic_vip_3.png`)"
+              :src="
+                $getCdnPath(
+                  `/static/image/${siteConfig.MOBILE_WEB_TPL}/mcenter/vip/pic_vip_3.png`
+                )
+              "
               alt="icon"
             />
           </div>
@@ -66,7 +78,11 @@
         <div :class="$style['cell']">
           <div :class="$style['cell-icon']">
             <img
-              :src="$getCdnPath(`/static/image/${siteConfig.MOBILE_WEB_TPL}/mcenter/vip/pic_vip_4.png`)"
+              :src="
+                $getCdnPath(
+                  `/static/image/${siteConfig.MOBILE_WEB_TPL}/mcenter/vip/pic_vip_4.png`
+                )
+              "
               alt="icon"
             />
           </div>
@@ -79,7 +95,11 @@
         <div :class="$style['cell']">
           <div :class="$style['cell-icon']">
             <img
-              :src="$getCdnPath(`/static/image/${siteConfig.MOBILE_WEB_TPL}/mcenter/vip/pic_vip_5.png`)"
+              :src="
+                $getCdnPath(
+                  `/static/image/${siteConfig.MOBILE_WEB_TPL}/mcenter/vip/pic_vip_5.png`
+                )
+              "
               alt="icon"
             />
           </div>

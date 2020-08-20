@@ -229,8 +229,9 @@ input {
     line-height: 43px;
     top: 0;
     color: #cbced8;
+    outline: none;
 
-    &active {
+    &.active {
         color: $main_text_color3;
     }
 }
