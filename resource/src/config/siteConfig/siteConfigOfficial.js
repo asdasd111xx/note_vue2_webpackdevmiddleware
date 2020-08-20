@@ -61,11 +61,16 @@ export const site_41 = {
 /**
  * 亿元 正式站Demo環境
  */
+// cxbb.mangochess.com
+// cxbb.lemonchess.com
+// cxbb.pomelochess.com
+// cxbb.litchichess.com
+// cxbb.pearchess.com
 export const site_74 = {
     ...preset,
     MOBILE_WEB_TPL: 'ey1',
     VERSION: getVersion('ey1'),
     SITE_NAME: '亿元',
-    YABO_API_DOMAIN: 'https://cxbb.bbin-asia.com/api-demo',
+    YABO_API_DOMAIN: 'https://cxbb.mangochess.com/api-demo',
 };
 /* eslint-enable camelcase */
