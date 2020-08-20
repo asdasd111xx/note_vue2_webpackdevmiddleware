@@ -54,7 +54,7 @@
 </template>
 
 <script>
-import { mapGetters } from "vuex";
+import { mapGetters, mapActions } from "vuex";
 import entryMixin from "@/mixins/mcenter/historyCard/index";
 
 export default {
@@ -78,7 +78,8 @@ export default {
   },
   computed: {
     ...mapGetters({
-      memInfo: "getMemInfo"
+      memInfo: "getMemInfo",
+      userLevelObj: "getUserLevels"
     }),
     tabItem() {
       return [
@@ -102,7 +103,30 @@ export default {
       }
     }
   },
+  created() {
+    this.actionSetUserLevels().then(() => {
+      // 銀行卡/電子錢包，其中有一方關閉
+      if (!this.userLevelObj.bank || !this.userLevelObj.virtual_bank) {
+        this.isShowTab = false;
+
+        this.$nextTick(() => {
+          if (this.userLevelObj.bank) {
+            this.currentKind = "bank";
+            this.currentPage = "bankCardInfo";
+            return;
+          }
+
+          if (this.userLevelObj.virtual_bank) {
+            this.currentKind = "virtualBank";
+            this.currentPage = "virtualBankCardInfo";
+            return;
+          }
+        });
+      }
+    });
+  },
   methods: {
+    ...mapActions(["actionSetUserLevels"]),
     setCurrentTab(index) {
       this.currentTab = index;
       switch (index) {
@@ -121,6 +145,9 @@ export default {
       this.isShowTab = value;
     },
     backPre() {
+      const isOneTab =
+        !this.userLevelObj.bank || !this.userLevelObj.virtual_bank;
+
       // 當頁面停留在卡片管理
       if (
         this.currentPage === "bankCardInfo" ||
@@ -129,7 +156,7 @@ export default {
         // 卡片管理-詳細頁面
         if (this.showDetail) {
           this.showDetail = false;
-          this.isShowTab = true;
+          this.isShowTab = isOneTab ? false : true;
           return;
         }
         this.$router.back();
@@ -166,6 +193,12 @@ export default {
     display: inline-block;
     height: 100%;
     vertical-align: middle;
+  }
+}
+
+@media (orientation: landscape) {
+  .header {
+    max-width: 768px !important;
   }
 }
 

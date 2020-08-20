@@ -281,6 +281,10 @@ export default {
     [types.SET_COLLECTION_STATUS](state, status) {
         state.showCollection = status;
     },
+    // 會員端-設定使用者層級
+    [types.SET_USER_LEVELS](state, data) {
+        state.userLevels = data;
+    },
 
     // ＝＝＝＝＝＝＝＝＝＝＝＝＝＝＝＝＝＝
     //     AGENT 代理相關

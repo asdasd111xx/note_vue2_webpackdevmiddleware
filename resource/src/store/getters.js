@@ -129,6 +129,8 @@ export default {
     getNews: (state) => state.news,
     // 會員端-公告
     getPost: (state) => state.post,
+    // 會員端-使用者層級
+    getUserLevels: (state) => state.userLevels,
     // ＝＝＝＝＝＝＝＝＝＝＝＝＝＝＝＝＝＝
     //  AGENT 代理相關
     // ＝＝＝＝＝＝＝＝＝＝＝＝＝＝＝＝＝＝

@@ -293,6 +293,7 @@ export default {
                 this.actionSetIsLoading(false);
 
                 if (response.result === 'ok') {
+                    console.log(response.ret);
                     this.withdrawUserData = response.ret;
 
                     if (Object.keys(this.cgpayBindingAccount).length > 0) {

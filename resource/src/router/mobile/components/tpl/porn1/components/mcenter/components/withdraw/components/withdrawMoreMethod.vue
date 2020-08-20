@@ -74,7 +74,6 @@ export default {
       CGPayInfo:"getCGPayInfo"
     }),
     methodList() {
-      // Todo: show -> 是否同卡片管理一樣，顯示的部份依限綁一組來吃不同的邏輯
       return [
         {
           key: "bankCard",

@@ -105,7 +105,8 @@ export default {
   },
   computed: {
     ...mapGetters({
-      memInfo: "getMemInfo"
+      memInfo: "getMemInfo",
+      userLevelObj: "getUserLevels"
     }),
     tabItem() {
       return [
@@ -150,22 +151,11 @@ export default {
   },
   created() {
     this.actionSetUserdata(true);
-    // 判斷 bank & virtualBank 是否有被啟用
-    return axios({
-      method: "get",
-      url: "/api/v1/c/levels/by_user"
-    }).then(response => {
-      const { result, ret } = response.data;
-      if (!response || result !== "ok") {
-        return;
-      }
-
-      // 如果是從其它頁導轉過來，會進到添加卡片頁面，不用判斷開關
+    this.actionSetUserLevels().then(() => {
+      // 如果是從其它頁導轉過來，會進到添加卡片頁面，不用判斷開關(已 Set 為 False)
       if (this.hasRedirect) {
         return;
       }
-
-      this.userLevelObj = ret;
 
       // 銀行卡/電子錢包，其中有一方關閉
       if (!this.userLevelObj.bank || !this.userLevelObj.virtual_bank) {
@@ -188,7 +178,7 @@ export default {
     });
   },
   methods: {
-    ...mapActions(["actionSetUserdata"]),
+    ...mapActions(["actionSetUserdata", "actionSetUserLevels"]),
     setCurrentTab(index) {
       this.currentTab = index;
       switch (index) {
@@ -207,6 +197,9 @@ export default {
       this.isShowTab = value;
     },
     backPre() {
+      const isOneTab =
+        !this.userLevelObj.bank || !this.userLevelObj.virtual_bank;
+
       // 當頁面停留在卡片管理
       if (
         this.currentPage === "bankCardInfo" ||
@@ -215,7 +208,7 @@ export default {
         // 卡片管理-詳細頁面
         if (this.showDetail) {
           this.showDetail = false;
-          this.isShowTab = true;
+          this.isShowTab = isOneTab ? false : true;
           return;
         }
         this.$router.back();
@@ -228,7 +221,7 @@ export default {
         return;
       }
 
-      // 從其它頁面進入到此頁面
+      // 從其它頁面進入到此頁面(通常停留在添加卡片的頁面)
       if (this.$route.query && this.$route.query.redirect) {
         if (this.$route.query.redirect === "home") {
           this.$router.push("/mobile");
@@ -243,11 +236,11 @@ export default {
 
       // 當頁面停留在添加卡片
       if (this.currentKind === "bank") {
-        this.isShowTab = true;
+        this.isShowTab = isOneTab ? false : true;
         this.currentPage = "bankCardInfo";
         return;
       } else if (this.currentKind === "virtualBank") {
-        this.isShowTab = true;
+        this.isShowTab = isOneTab ? false : true;
         this.currentPage = "virtualBankCardInfo";
         return;
       }
@@ -282,6 +275,12 @@ export default {
     display: inline-block;
     height: 100%;
     vertical-align: middle;
+  }
+}
+
+@media (orientation: landscape) {
+  .header {
+    max-width: 768px !important;
   }
 }
 

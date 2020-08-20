@@ -1274,3 +1274,18 @@ export const actionGetRechargeStatus = ({ state, dispatch, commit }, data) => {
         }
     });
 };
+
+export const actionSetUserLevels = ({ commit }) => {
+    return axios({
+      method: "get",
+      url: "/api/v1/c/levels/by_user"
+    }).then(response => {
+      const { ret, result } = response.data;
+
+      if (!response || result !== "ok") {
+        return;
+      }
+
+      commit(types.SET_USER_LEVELS, ret);
+    });
+}

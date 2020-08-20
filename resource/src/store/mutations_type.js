@@ -52,6 +52,8 @@ export const SETPOST = 'SETPOST';
 export const SETFAVORITEGAME = 'SETFAVORITEGAME';
 // 會員端-設定下方遊戲框顯示狀態
 export const SET_COLLECTION_STATUS = 'SET_COLLECTION_STATUS';
+// 會員端-使用者層級
+export const SET_USER_LEVELS = 'SET_USER_LEVELS';
 
 // ＝＝＝＝＝＝＝＝＝＝＝＝＝＝＝＝＝＝
 //     AGENT 代理相關
