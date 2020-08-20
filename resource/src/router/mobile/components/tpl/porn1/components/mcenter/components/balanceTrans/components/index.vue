@@ -574,7 +574,6 @@ export default {
       const re = /^[1-9]*[1-9][0-9]*$/;
       const source = this.tranOut;
       const target = this.tranIn;
-      console.log(this.tranOut)
       const money = this.transferMoney;
 
       if (+source === 0 || +target === 0) {

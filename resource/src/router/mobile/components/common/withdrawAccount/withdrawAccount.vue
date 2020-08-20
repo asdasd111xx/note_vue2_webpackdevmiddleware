@@ -154,6 +154,7 @@ export default {
       isSendKeyring: false,
       isSendForm: false,
       countdownSec: 0,
+      checkBankSwitch: false,
       timer: null,
       toggleCaptcha: false,
       captcha: null,
@@ -199,6 +200,8 @@ export default {
     // });
     this.isLoading = true;
     this.getAccountDataStatus().then((data) => {
+      this.checkBankSwitch = data.ret.bank
+
       this.isLoading = false;
       Object.keys(data.ret).forEach(i => {
         if (this.formData[i]) {
@@ -390,6 +393,10 @@ export default {
         } else {
           this.actionSetUserdata(true).then(() => {
             this.onClose();
+
+            if(!this.checkBankSwitch) {
+              this.$router.push(`/mobile/mcenter/bankCard?redirect=home&type=virtualBank`)
+            }
           });
         }
       }).catch(error => {

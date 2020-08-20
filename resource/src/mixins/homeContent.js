@@ -348,45 +348,6 @@ export default {
             } else if (path === 'creditTrans') {
                 this.actionGetRechargeStatus('home');
                 return;
-            } else if (path === 'balanceTrans') {
-                if (this.siteConfig.MOBILE_WEB_TPL !== 'ey1') {
-                    this.$router.push('/mobile/mcenter/balanceTrans');
-                    return;
-                }
-
-                if (this.isCheckWithdraw) { return; }
-                this.isCheckWithdraw = true;
-                axios({
-                    method: 'get',
-                    url: '/api/v2/c/withdraw/check',
-                }).then((res) => {
-                    this.isCheckWi2hdraw = false;
-                    if (res.data.result === "ok") {
-                        let check = true;
-
-                        Object.keys(res.data.ret).every(i => {
-                            if (i !== "bank" && !data.ret[i]) {
-                                this.actionSetGlobalMessage({
-                                    msg: res.data.msg, code: res.data.msg.code, cb: () => {
-                                        {
-                                            this.$router.push('/mobile/withdrawAccount');
-                                        }
-                                    }
-                                })
-                                check = false;
-                                return;
-                            }
-                        })
-                        if (check) {
-                            this.$router.push('/mobile/mcenter/balanceTrans');
-                        }
-                    } else {
-                        this.actionSetGlobalMessage({ msg: res.data.msg, code: res.data.msg.code });
-                    }
-                }).catch(res => {
-                    this.isCheckWithdraw = false;
-                    this.actionSetGlobalMessage({ msg: res.data.msg, code: res.data.msg.code });
-                });
             }
             else if (path === "withdraw") {
                 if (this.siteConfig.MOBILE_WEB_TPL !== 'ey1') {

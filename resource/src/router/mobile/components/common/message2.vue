@@ -112,7 +112,6 @@ export default {
             this.$router.push(`/mobile/mcenter/bankCard?redirect=${redirect ? redirect : 'home'}&type=bankCard`);
             break;
           // 電子錢包
-          case "C50104":
           case "C50103":
           case "bindVirtualBank":
             this.$router.push(`/mobile/mcenter/bankCard?redirect=${redirect ? redirect : 'home'}&type=virtualBank`)
@@ -122,7 +121,8 @@ export default {
             this.$router.push('/mobile/login');
             break;
           case "C50104":
-            this.$router.push('/mobile/login');
+          case "C50106":
+            this.$router.push('/mobile/withdrawAccount');
             break;
           default:
             break;
