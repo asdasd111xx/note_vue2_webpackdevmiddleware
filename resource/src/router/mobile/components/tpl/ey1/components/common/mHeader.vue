@@ -472,13 +472,14 @@ export default {
 
 .header-custom-wrap {
   height: 43px;
-  width: 100%;
-  position: fixed;
+  position: absolute;
+  right: 0;
   top: 0;
+  width: 100%;
 
   .header-custom-btn {
     line-height: 43px;
-    position: fixed;
+    position: absolute;
     right: 14px;
     top: 0;
     color: #ffffff;

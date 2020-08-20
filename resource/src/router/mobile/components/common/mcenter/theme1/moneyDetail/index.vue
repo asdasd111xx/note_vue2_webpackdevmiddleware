@@ -31,7 +31,7 @@
       >
         <div :class="[$style['select-wrap'], 'clearfix']">
           <div
-            v-for="option in categoryOptions"
+            v-for="option in categoryOpt"
             :key="option.key"
             :class="[
               $style.select,
@@ -199,6 +199,7 @@ export default {
       pageNow: 1, // 當前頁
       pageAll: 1, // 總頁數
       isLoading: true,
+      categoryOpt: []
     };
   },
   computed: {
@@ -234,6 +235,12 @@ export default {
     if (this.$route.params.page === 'detail' && !this.detailInfo) {
       this.$router.push('/mobile/mcenter/moneyDetail');
       return;
+    }
+
+    if (this.siteConfig.MOBILE_WEB_TPL !== 'porn1') {
+      this.categoryOpt = this.categoryOptions.filter(i => i.key !== "ingroup_transfer");
+    } else {
+      this.categoryOpt = this.categoryOptions;
     }
 
     common.opcode({
