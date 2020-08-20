@@ -501,7 +501,7 @@ export default {
         state.hasBindGoBao = data
     },
     // 是否有綁定CGPay
-    [types.SET_HASBINDCGPAY](state, data) {
-        state.hasBindCGPay = data
+    [types.SET_CGPAYINFO](state, data) {
+        state.CGPayInfo = data
     },
 };

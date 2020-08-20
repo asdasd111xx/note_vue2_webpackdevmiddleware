@@ -198,5 +198,5 @@ export default {
     //   　電子錢包綁定相關
     // ＝＝＝＝＝＝＝＝＝＝＝＝＝＝＝＝＝＝
     getHasBindGoBao: (state) => state.hasBindGoBao,
-    getHasBindCGPay: (state) => state.hasBindCGPay
+    getCGPayInfo: (state) => state.CGPayInfo
 };

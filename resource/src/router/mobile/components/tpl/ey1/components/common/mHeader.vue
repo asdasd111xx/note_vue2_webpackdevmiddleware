@@ -100,13 +100,14 @@
             [$style[headerConfig.customLinkStyle]]: headerConfig.customLinkStyle
           }
         ]"
-        @click="
+      >
+        <div
+          :class="[$style['header-custom-btn']]"
+          @click="
           headerConfig.customLinkAction
             ? headerConfig.customLinkAction()
             : () => {}
-        "
-      >
-        <div :class="[$style['header-custom-btn']]">
+        ">
           {{ headerConfig.customLinkTitle }}
         </div>
       </div>

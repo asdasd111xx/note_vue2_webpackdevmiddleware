@@ -673,7 +673,7 @@ export default {
         }, 200)
       }
 
-      // 第三方存款 08/19:似乎都不會進到此判斷?
+      // 第三方存款 似乎都不會進到此判斷?
       if (this.curModeGroup.uri) {
         return ajax({
           method: 'get',

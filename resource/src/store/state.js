@@ -461,5 +461,5 @@ export default {
     //   　電子錢包綁定相關
     // ＝＝＝＝＝＝＝＝＝＝＝＝＝＝＝＝＝＝
     hasBindGoBao: false,
-    hasBindCGPay: false,
+    CGPayInfo: {},
 };

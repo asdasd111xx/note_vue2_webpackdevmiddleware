@@ -5,7 +5,8 @@ import {
     API_WITHDRAW_BALANCE_BACK,
     API_WITHDRAW_CGPAY_BINDING,
     API_WITHDRAW_INFO,
-    API_WITHDRAW_WRITE
+    API_WITHDRAW_WRITE,
+    API_AGCENTER_USER_LEVELS
 } from '@/config/api';
 import { mapActions, mapGetters } from 'vuex';
 
@@ -377,7 +378,7 @@ export default {
         getUserLevel() {
             axios({
                 method: "get",
-                url: "/api/v1/c/levels/by_user"
+                url: API_AGCENTER_USER_LEVELS
             }).then(response => {
                 const { result, ret } = response.data;
                 if (!response || result !== "ok") {

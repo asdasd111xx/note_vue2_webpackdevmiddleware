@@ -1142,7 +1142,7 @@ export const actionBindGoBao = ({ commit }) => {
     });
 }
 
-export const actionBindCGPay = ({ commit }) => {
+export const actionSetCGPayInfo = ({ commit }) => {
     return axios({
       method: "get",
       url:
@@ -1154,7 +1154,7 @@ export const actionBindCGPay = ({ commit }) => {
         return;
       }
 
-      commit(types.SET_HASBINDCGPAY, ret.is_bind_wallet);
+      commit(types.SET_CGPAYINFO, ret);
     });
 }
 
