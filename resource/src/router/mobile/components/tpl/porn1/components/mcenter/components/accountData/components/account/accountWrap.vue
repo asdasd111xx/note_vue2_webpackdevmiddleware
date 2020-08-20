@@ -279,7 +279,7 @@ export default {
               status: wdStatus ? 'already' : 'yet',
               value: wdStatus ? this.$t('S_SET_CL_ALREADY') : this.$t('S_YET_SET'),
               btnShow: !wdStatus,
-              isShow: userConfig.config.withdraw_password.display
+              isShow: userConfig.config.withdraw_password.display && this.siteConfig.MOBILE_WEB_TPL !== 'porn1'
             }
           } else {
             const keyValue = this.memInfo.user[key];
