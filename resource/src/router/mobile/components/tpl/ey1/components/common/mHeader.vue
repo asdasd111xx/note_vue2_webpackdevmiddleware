@@ -42,6 +42,7 @@
         />
       </div>
     </div>
+
     <div
       v-if="headerConfig.gameList"
       v-show="currentMenu === 'gameList'"
@@ -58,7 +59,7 @@
     </template>
 
     <template v-if="headerConfig.hasMemInfo">
-      <div :class="$style['balance-wrap']" @click="setMenuState('balance')">
+      <div v-if="loginStatus" :class="$style['balance-wrap']">
         <div>
           <img
             :src="$getCdnPath('/static/image/ey1/common/icon_ask.png')"
@@ -67,12 +68,18 @@
           <div v-show="hasUnreadMessage" :class="$style['red-dot']" />
         </div>
       </div>
-
-      <!-- 側開額度 -->
-      <!-- <side-balance
-        v-if="currentMenu === 'balance'"
-        :open-state.sync="currentMenu"
-      /> -->
+      <div v-else :class="$style['login-wrap']">
+        <span @click="$router.push('/mobile/login')">{{
+          $text("S_LOGON", "登录")
+        }}</span>
+        <span @click="$router.push('/mobile/joinmember')">{{
+          $text("S_REGISTER", "注册")
+        }}</span>
+        <img
+          :src="$getCdnPath('/static/image/ey1/common/icon_ask.png')"
+          @click="handleClickAsk"
+        />
+      </div>
     </template>
 
     <template v-if="headerConfig.isMCenter">
@@ -104,10 +111,11 @@
         <div
           :class="[$style['header-custom-btn']]"
           @click="
-          headerConfig.customLinkAction
-            ? headerConfig.customLinkAction()
-            : () => {}
-        ">
+            headerConfig.customLinkAction
+              ? headerConfig.customLinkAction()
+              : () => {}
+          "
+        >
           {{ headerConfig.customLinkTitle }}
         </div>
       </div>
@@ -505,15 +513,36 @@ export default {
   top: -2px;
 }
 
-@media screen and (min-width: $pad) {
-  .login-wrap {
-    > span {
-      font-size: 18px;
-    }
+.login-wrap {
+  align-items: center;
+  color: #ffffff;
+  display: flex;
+  float: right;
+  height: 100%;
+
+  > span {
+    display: inline-block;
+    height: 20px;
+    line-height: 20px;
+    margin: 0 1.5px;
+    padding: 0 3px;
+    font-size: 17px;
+    vertical-align: middle;
   }
 
-  .title {
-    font-size: 18px;
+  img {
+    display: inline-block;
+    height: 20px;
+    width: 20px;
+    margin-left: 1.5px;
+    vertical-align: middle;
+  }
+
+  &::before {
+    content: "";
+    display: inline-block;
+    height: 100%;
+    vertical-align: middle;
   }
 }
 

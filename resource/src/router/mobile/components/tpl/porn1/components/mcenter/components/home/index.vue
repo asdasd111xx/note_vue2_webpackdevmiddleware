@@ -35,9 +35,6 @@ export default {
     }),
     headerConfig() {
       return {
-        hasLogo: false,
-        hasMemInfo: false,
-        hasSearchBtn: false,
         isMCenter: true,
         title: this.$text('S_INFORMATION', '我的'),
       };
