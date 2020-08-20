@@ -126,7 +126,7 @@ export default {
         text: 'S_TEL',
         status: '',
         value: '',
-        verification: true,
+        verification: false,
         isShow: true
       },
       toggleCaptcha: false,
@@ -248,39 +248,40 @@ export default {
       }
     });
 
-    // 取驗證倒數秒數
-    member.joinConfig({
-      success: (response) => {
-        // 從舊版複製過來，不良的寫法，後續再優化
-        this.info.verification = response.ret.phone.code;
+    // // 取驗證倒數秒數
+    // member.joinConfig({
+    //   success: (response) => {
+    //     // 從舊版複製過來，不良的寫法，後續再優化
+    //     this.info.verification = response.ret.phone.code;
 
-        if (response.ret.phone.code) {
-          mcenter.accountPhoneSec({
-            success: (data) => {
-              if (data.ret > 0) {
-                this.countdownSec = data.ret;
-                this.locker();
-              }
-            }
-          });
-        }
-      }
-    });
+    //     if (response.ret.phone.code) {
+    //       mcenter.accountPhoneSec({
+    //         success: (data) => {
+    //           if (data.ret > 0) {
+    //             this.countdownSec = data.ret;
+    //             this.locker();
+    //           }
+    //         }
+    //       });
+    //     }
+    //   }
+    // });
 
-    ajax({
-      method: 'get',
-      url: '/api/v1/c/player/country_codes',
-      success: ({ result, ret }) => {
-        if (result !== 'ok') {
-          return;
-        }
+    // 手機區碼
+    // ajax({
+    //   method: 'get',
+    //   url: '/api/v1/c/player/country_codes',
+    //   success: ({ result, ret }) => {
+    //     if (result !== 'ok') {
+    //       return;
+    //     }
 
-        this.options = ret;
+    //     this.options = ret;
 
-        // this.$emit('update:newCode', ret[0]);
-        // this.$emit('update:oldCode', ret[0]);
-      }
-    });
+    //     // this.$emit('update:newCode', ret[0]);
+    //     // this.$emit('update:oldCode', ret[0]);
+    //   }
+    // });
   },
   beforeDestroy() {
     this.countdownSec = "";

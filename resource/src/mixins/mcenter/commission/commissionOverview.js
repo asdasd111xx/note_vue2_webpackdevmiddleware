@@ -1,7 +1,8 @@
-import { mapGetters } from 'vuex';
-import { format, getYear, getMonth, parseISO } from 'date-fns';
-import ajax from '@/lib/ajax';
+import { format, getMonth, getYear, parseISO } from 'date-fns';
+
 import { API_COMMISSION_SUMMARY } from '@/config/api';
+import ajax from '@/lib/ajax';
+import { mapGetters } from 'vuex';
 
 export default {
     data() {
@@ -63,7 +64,7 @@ export default {
             const trans = {
                 today: this.$text('S_GOT_TODAY', '今日已领'),
                 yesterday: this.$text('S_GOT_YESTERDAY', '昨日已领'),
-                monthly: this.$text('S_GOT_MONTH', '本月已領'),
+                monthly: '預估返利',
                 expected: this.$text('S_EXPECTED_REBATE', '预估返利')
             };
             const sort = this.rewardOnlyLocal ? ['today', 'yesterday', 'monthly'] : ['today', 'yesterday', 'expected'];

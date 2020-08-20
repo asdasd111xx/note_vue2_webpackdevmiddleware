@@ -231,7 +231,8 @@ export default {
   methods: {
     ...mapActions([
       'actionSetMcenterMsgCount',
-      'actionSetUserdata'
+      'actionSetUserdata',
+      'actionSetGlobalMessage'
     ]),
     getMessgae() {
       this.actionSetMcenterMsgCount();
@@ -329,22 +330,15 @@ export default {
         method: 'delete',
         url: API_MCENTER_MESSAGES_CONTENT,
         data: { message_ids: this.selectMessage.map((id) => +id) }
-      }).then((response) => {
-        setTimeout(() => {
-          this.isLoading = false;
-        }, 500);
-        if (response.data.result !== 'ok') {
-          return;
+      }).then((res) => {
+        this.isLoading = false;
 
-          if (response.data.code = "M00001") {
-            if (getCookie('cid')) {
-              alert(`${error.response.data.msg} ${error.response.data.code ? `(${error.response.data.code})` : ''}`);
-            }
-            setCookie('cid', '');
-            window.location.href = '/mobile/login';
-          }
+        if (res.data.result !== 'ok') {
+          this.actionSetGlobalMessage({ msg: res.data.msg, code: res.data.code })
+          return;
         }
 
+        this.actionSetGlobalMessage({ msg: '消息删除成功' })
         this.getMessgae();
         this.onShowFunction(false);
         this.isEditing = false;
