@@ -32,7 +32,7 @@ export default {
                 tipImgSrc: ''
             },
             isLoading: false,
-            cgpayBindingAccount: {},
+            // cgpayBindingAccount: {},
             thirdUrl: '',
             showAccount: false, // 帳戶資料檢查
             userLevelObj: {}, // 存放 Card type 開關 & 限綁一組開關
@@ -296,10 +296,10 @@ export default {
                     console.log(response.ret);
                     this.withdrawUserData = response.ret;
 
-                    if (Object.keys(this.cgpayBindingAccount).length > 0) {
-                        this.withdrawAccount = this.allWithdrawAccount.filter((info) => Number(info.id) === Number(this.cgpayBindingAccount.ret.external_wallet_id));
-                        return;
-                    }
+                    // if (Object.keys(this.cgpayBindingAccount).length > 0) {
+                    //     this.withdrawAccount = this.allWithdrawAccount.filter((info) => Number(info.id) === Number(this.cgpayBindingAccount.ret.external_wallet_id));
+                    //     return;
+                    // }
 
                     [this.withdrawAccount] = this.allWithdrawAccount;
                 } else {
@@ -328,7 +328,7 @@ export default {
             this.withdrawValue = '';
             this.withdrawPwd = '';
             this.withdrawAccount = {};
-            this.cgpayBindingAccount = {};
+            // this.cgpayBindingAccount = {};
         },
         /**
          * 更新帳戶金額
