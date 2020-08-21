@@ -24,15 +24,16 @@
       @click="onClick(video.id)"
     >
       <div :class="$style['image-wrap']">
-        <img v-lazy="getImg(video.image)" />
+        <img :src="img" :img-id="video.id" />
       </div>
       <div :class="$style['info-wrap']">
         <div
-          :class="
-            [$style['video-title'] ,
+          :class="[
+            $style['video-title'],
             { [$style['custom']]: ['smallPig'].includes(source) }
-          ]">
-            {{ video.title }}
+          ]"
+        >
+          {{ video.title }}
         </div>
         <video-tag :tag="video.tag" />
         <div :class="$style['views']">
@@ -48,6 +49,7 @@
 import axios from 'axios';
 import videoTag from './videoTag';
 import pornRequest from '@/api/pornRequest';
+import { getEncryptImage } from '@/lib/crypto';
 
 export default {
   components: {
@@ -56,7 +58,8 @@ export default {
   data() {
     return {
       source: this.$route.query.source,
-      videoList: []
+      videoList: [],
+      img: this.$getCdnPath(`/static/image/_new/default/bg_video03_d.png`)
     };
   },
   computed: {
@@ -97,15 +100,21 @@ export default {
       }
 
       this.videoList = [...response.result.data];
+      this.videoList.forEach(item => {
+        getEncryptImage(item);
+      })
     });
   },
   methods: {
-    getImg(image) {
-      return {
-        src: image,
-        error: this.$getCdnPath(`/static/image/_new/default/bg_video03_d.png`),
-        loading: this.$getCdnPath(`/static/image/_new/default/bg_video03_d.png`)
-      }
+    getImg(info) {
+      getEncryptImage(info).then((res) => {
+        console.log(res)
+      })
+      //   return {
+      //     src:
+      //     // error: this.$getCdnPath(`/static/image/_new/default/bg_video03_d.png`),
+      //     // loading: this.$getCdnPath(`/static/image/_new/default/bg_video03_d.png`)
+      //   }
     },
     onClick(id) {
       let source = this.$route.query.source;
@@ -192,7 +201,7 @@ export default {
   white-space: nowrap;
 
   &.custom {
-    color: #BFBFBF;
+    color: #bfbfbf;
   }
 }
 

@@ -21,6 +21,7 @@
         "bignumber.js": "9.0.0",
         "core-js": "3",
         "cropperjs": "^1.5.7",
+        "crypto-js": "^4.0.0",
         "date-fns": "2.11.0",
         "fine-uploader-wrappers": "1.0.1",
         "flatpickr": "4.6.1",
