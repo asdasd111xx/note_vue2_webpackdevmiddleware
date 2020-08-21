@@ -66,7 +66,7 @@ export default {
       isShowMore: true,
       isShowTransOutSelect: false,
       isShowTransInSelect: false,
-      currentTab: 1, //discount transfer recoard
+      currentTab: 1, //promotion transfer recoard
       currentTemplate: "transfer-credit-trans"
     };
   },
@@ -79,7 +79,7 @@ export default {
     tabItem() {
       return [
         {
-          key: "discount",
+          key: "promotion",
           text: this.$text("S_CREDIT_DISCOUNT", "转让优惠"),
         },
         {
@@ -108,7 +108,7 @@ export default {
       switch (index) {
         default:
         case 0:
-          this.currentTemplate = "discount-credit-trans";
+          this.currentTemplate = "promotion-credit-trans";
           break;
         case 1:
           if (this.isLock || this.currentTemplate === "transfer-credit-trans") return;

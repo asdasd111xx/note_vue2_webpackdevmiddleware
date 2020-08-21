@@ -1326,7 +1326,6 @@ export const actionGetMemInfoV3 = ({ commit }) => {
         url: '/api/v3/c/player'
     }).then(res => {
         if (res && res.data && res.data.result === "ok") {
-            console.log(res.data.ret)
             commit(types.SETMEMINFOV3, res.data.ret);
         }
     })

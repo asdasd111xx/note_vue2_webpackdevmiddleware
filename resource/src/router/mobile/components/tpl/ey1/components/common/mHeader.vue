@@ -5,7 +5,7 @@
       :class="[$style['logo-wrap']]"
       @click="headerConfig.onClick"
     >
-      <img :src="$getCdnPath('/static/image/ey1/common/logo_b.png')" />
+      <img :src="$getCdnPath('/static/image/ey1/common/logo.png')" />
     </div>
 
     <div
