@@ -39,7 +39,7 @@ import balanceTran from "@/components/mcenter/components/balanceTran";
 import blockListTips from "../../../common/blockListTips";
 import mobileContainer from "../../../common/mobileContainer";
 import transferCreditTrans from './compontents/transferCreditTrans';
-import discountCreditTrans from './compontents/discountCreditTrans';
+import promotionCreditTrans from './compontents/promotionCreditTrans';
 import recoardCreditTrans from './compontents/recoardCreditTrans';
 import axios from 'axios';
 
@@ -49,7 +49,7 @@ export default {
     blockListTips,
     balanceTran,
     transferCreditTrans,
-    discountCreditTrans,
+    promotionCreditTrans,
     recoardCreditTrans,
   },
   data() {

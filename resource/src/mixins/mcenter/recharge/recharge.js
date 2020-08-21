@@ -42,6 +42,8 @@ export default {
             detailRecoard: null,
             startTime,
             endTime,
+
+            promotionTips: ''
         };
     },
     computed: {
@@ -62,6 +64,7 @@ export default {
     },
     created() {
         this.actionSetRechargeConfig();
+        this.setPromotionTips();
     },
     watch: {
         membalance() {
@@ -75,6 +78,22 @@ export default {
             'actionSetGlobalMessage',
             'actionSetRechargeConfig'
         ]),
+        setPromotionTips() {
+            let result = ''
+            if (+this.rechargeConfig.monthly_bonus) {
+                result += `<div>喜讯：首次额度转让给旗下会员加赠代理彩金${this.rechargeConfig.monthly_bonus}元/位<div>`;
+            }
+
+            if (+this.rechargeConfig.weekly_bonus) {
+                result += `<div>喜讯：每周首次额度转让给旗下会员赠代理彩金${this.rechargeConfig.weekly_bonus}元/位<div>`;
+            }
+
+            if (+this.rechargeConfig.first_bonus) {
+                result += `<div>喜讯：每周首次额度转让给旗下会员赠代理彩金${this.rechargeConfig.first_bonus}元/位<div>`;
+            }
+
+            this.promotionTips = result;
+        },
         verification(item) {
             let errorMessage = '';
             if (item.key === "phone") {
