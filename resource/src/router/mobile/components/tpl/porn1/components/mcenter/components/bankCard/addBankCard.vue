@@ -276,19 +276,19 @@ export default {
         return '';
       }
 
-      return this.memInfo.user.name.slice(0,1);
+      return this.memInfo.user.name.slice(0, 1);
 
-    //   return this.memInfo.user.name.split('').map((item, index) => {
-    //     if (index === 0) {
-    //       return item;
-    //     }
+      //   return this.memInfo.user.name.split('').map((item, index) => {
+      //     if (index === 0) {
+      //       return item;
+      //     }
 
-    //     if (index > 2) {
-    //       return;
-    //     }
+      //     if (index > 2) {
+      //       return;
+      //     }
 
-    //     return '*';
-    //   }).join('');
+      //     return '*';
+      //   }).join('');
     }
   },
   watch: {
@@ -514,38 +514,42 @@ export default {
         }
       })
         .then(res => {
+          this.errorMsg = this.$text("S_SEND_CHECK_CODE_VALID_TIME").replace("%s", 5);
+
+          this.time = 60;
+          this.smsTimer = setInterval(() => {
+            if (this.time === 0) {
+              clearInterval(this.smsTimer);
+              this.smsTimer = null;
+              this.lockStatus = false;
+              return;
+            }
+            this.time -= 1;
+          }, 1000);
+
           axios({
             method: "get",
             url: "/api/v1/c/player/phone/ttl"
           })
             .then(res => {
               this.lockStatus = false;
-              this.time = res.data.ret;
-
-              this.smsTimer = setInterval(() => {
-                if (this.time === 1) {
-                  this.smsTimer = false;
-                }
-
-                if (this.time <= 0) {
-                  clearInterval(this.smsTimer);
-                  this.smsTimer = null;
-                  return;
-                }
-                this.time -= 1;
-              }, 1000);
+              //   this.time = res.data.ret;
+              this.time = 60;
             })
             .catch(error => {
               if (error.response && error.response.status === "429") {
                 this.msg = "操作太频繁，请稍候在试";
                 return;
               }
-
-              this.lockStatus = false;
               this.errorMsg = error.response.data.msg;
             });
         })
         .catch(error => {
+          if (error.response && error.response.status === "429") {
+            this.msg = "操作太频繁，请稍候在试";
+            return;
+          }
+
           this.lockStatus = false;
           this.errorMsg = error.response.data.msg;
         });
