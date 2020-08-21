@@ -274,7 +274,7 @@ export default {
 
   > img {
     display: block;
-    height: 100%;
+    height: 30px;
   }
 }
 

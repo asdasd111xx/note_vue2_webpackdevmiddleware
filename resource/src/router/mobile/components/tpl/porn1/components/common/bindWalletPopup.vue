@@ -50,7 +50,7 @@
 
                 <p>●<span @click="tipMethod(1)"> CGP是什么?</span></p>
 
-                <p>●<span @click="tipMethod(2)"> 如何透过CGP存款?</span></p>
+                <!-- <p>●<span @click="tipMethod(2)"> 如何透过CGP存款?</span></p> -->
 
                 <p>
                   ● 沒有CGP帐号?

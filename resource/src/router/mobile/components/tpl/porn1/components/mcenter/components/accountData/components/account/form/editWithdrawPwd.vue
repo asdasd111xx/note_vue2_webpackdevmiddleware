@@ -18,6 +18,7 @@
               :key="`widthdrawPwd-${index}`"
               @input="verification('old_withdraw_password', index)"
               @blur="verification('old_withdraw_password', index)"
+              :data-key="`old-withdraw-password-${index}`"
               :class="$style['withdraw-pwd-input']"
               :maxlength="1"
               :minlength="1"
@@ -38,6 +39,7 @@
             :key="`widthdrawPwd-${index}`"
             @input="verification('new_withdraw_password', index)"
             @blur="verification('new_withdraw_password', index)"
+            :data-key="`new-withdraw-password-${index}`"
             :class="$style['withdraw-pwd-input']"
             :maxlength="1"
             :minlength="1"
@@ -83,8 +85,12 @@ export default {
       },
     };
   },
-  created() {
-
+  mounted() {
+    if (this.memInfo.user.has_withdraw_password) {
+      document.querySelector('input[data-key="old-withdraw-password-0"]').focus();
+    } else {
+      document.querySelector('input[data-key="new-withdraw-password-0"]').focus();
+    }
   },
   computed: {
     ...mapGetters({

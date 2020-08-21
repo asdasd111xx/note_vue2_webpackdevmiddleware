@@ -509,7 +509,7 @@ export default {
         method: "post",
         url: "/api/v1/c/player/verify/user_bank/sms",
         data: {
-          phone: `86-${this.formData.phone}`,
+          phone: `816-${this.formData.phone}`,
           captcha_text: this.captchaData ? this.captchaData : ''
         }
       })

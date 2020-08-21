@@ -14,7 +14,7 @@
 
         <div :class="$style['countdownSec']">
           <span v-if="countdownSec">{{ countdownSec }}</span>
-          秒后连结失败，并关闭视窗
+          秒后连结失效，并关闭视窗
         </div>
 
         <div :class="$style['tips']">
