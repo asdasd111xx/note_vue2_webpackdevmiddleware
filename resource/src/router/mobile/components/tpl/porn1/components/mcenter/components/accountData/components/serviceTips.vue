@@ -1,6 +1,6 @@
 <template>
   <div :class="$style['service-tip']">
-    <template v-if="type !== 'phone'">
+    <template v-if="theme === 'ey1' || type !== 'phone'">
       为了你的隐私安全，信息在确认后将无法修改
     </template>
     <br />
@@ -10,11 +10,20 @@
 </template>
 
 <script>
+import { mapGetters } from "vuex";
 
 export default {
   props: {
     type: {
       type: String
+    }
+  },
+  computed: {
+    ...mapGetters({
+      siteConfig: "getSiteConfig",
+    }),
+    theme() {
+      return this.siteConfig.MOBILE_WEB_TPL;
     }
   },
 };
