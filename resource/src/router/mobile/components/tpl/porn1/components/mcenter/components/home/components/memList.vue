@@ -109,11 +109,7 @@ export default {
       }
     },
     isShowPromotion() {
-      if (this.memInfo.user.show_promotion) {
-        return this.memInfo.user.show_promotion;
-      } else {
-        return true;
-      }
+      return this.loginStatus ? this.memInfo.user.show_promotion : true;
     },
     list() {
       return [
