@@ -23,14 +23,14 @@
           </div>
           <div v-else :class="$style['is-login-wrap']">
             <div>
-              <span>
-                {{ memInfo.user.username }}
-              </span>
-              <div :class="$style['vip-level']">
-                <div>VIP&nbsp;{{ userViplevel }}</div>
-              </div>
+              {{ memInfo.user.username }}
             </div>
-            <div>
+            <div :class="$style['vip-level']">
+              <div>VIP&nbsp;{{ userViplevel }}</div>
+            </div>
+            <div
+              :class="{ [$style['normal']]: memInfo.user.username.length < 11 }"
+            >
               {{ `¥${membalance && membalance.total ? membalance.total : ""}` }}
             </div>
           </div>
@@ -76,6 +76,7 @@
     >
       <div
         v-for="(type, index) in typeList"
+        :data-seq="`${type.sequence}`"
         :key="`type-${index}`"
         :class="[
           $style['type-swiper'],
@@ -196,7 +197,7 @@ export default {
 .type-wrap {
   overflow-y: auto;
   position: absolute;
-  top: 65px;
+  top: 72px;
   bottom: 0;
   left: 13px;
   z-index: 1;
@@ -249,7 +250,7 @@ export default {
 }
 
 .top-wrap {
-  height: 65px;
+  height: 72px;
 }
 
 .tag {
@@ -282,6 +283,7 @@ export default {
 }
 
 .mcenter-login-status-wrap {
+  position: relative;
   padding-left: 5px;
   float: left;
   height: 100%;
@@ -311,27 +313,14 @@ export default {
   .is-login-wrap {
     position: relative;
 
-    > div {
-      height: 50%;
-      line-height: 25px;
-    }
-
     > div:first-of-type {
-      display: flex;
-      font-size: 13px;
+      font-size: 12px;
       font-weight: 400;
       text-align: left;
       color: #4e5159;
       position: relative;
-
-      > span {
-        overflow: hidden;
-        text-overflow: ellipsis;
-        white-space: nowrap;
-        display: block;
-        max-width: 100%;
-        margin-right: 40px;
-      }
+      word-break: break-all;
+      display: inline-block;
     }
 
     > div:last-of-type {
@@ -340,22 +329,19 @@ export default {
       font-weight: 700;
       text-align: left;
       color: #4e5159;
+
+      &.normal {
+        margin-top: 5px;
+      }
     }
   }
 }
 
 .vip-level {
-  margin-left: 3px;
-  align-items: center;
+  margin-left: 4px;
   color: #ffffff;
   font-weight: 700;
-  display: flex;
-  align-items: center;
-  justify-content: center;
-  float: right;
-  position: absolute;
-  right: 0;
-  top: 4px;
+  display: inline-block;
 
   > div {
     display: flex;
@@ -371,6 +357,7 @@ export default {
 
 .mcenter-func-wrap {
   width: 100%;
+  height: 72px;
   transition: all 0.5s;
 }
 
@@ -393,7 +380,7 @@ export default {
   > div {
     height: 16px;
     line-height: 16px;
-    color: #ad9982;
+    color: #ff8400;
     font-size: 12px;
     text-align: center;
   }

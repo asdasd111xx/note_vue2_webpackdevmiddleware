@@ -16,7 +16,7 @@
             v-model="value"
             :placeholder="$text('S_ENTER_REAL_NAME', '请输入您的真实姓名')"
             :class="$style.input"
-            maxlength="30"
+            :maxlength="30"
             type="text"
             @input="onInput"
           />

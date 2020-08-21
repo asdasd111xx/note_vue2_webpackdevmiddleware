@@ -60,6 +60,8 @@ export default {
             if (this.allGame) {
                 let typeList = this.allGame
                     .map(game => ({
+                        category: game.category,
+                        sequence: game.sequence,
                         icon: game.iconName,
                         name: game.name
                     }))
@@ -110,7 +112,8 @@ export default {
                 this.isReceive = true;
                 setTimeout(() => {
                     $(window).trigger('resize');
-                    const defaultType = localStorage.getItem('type') || 'Welfare';
+
+                    const defaultType = localStorage.getItem('type') || this.siteConfig.MOBILE_WEB_TPL === "porn1" ? 'Welfare' : 'All';
                     const defaultIndex = this.typeList.findIndex(
                         type => type.icon === defaultType
                     );
@@ -348,6 +351,8 @@ export default {
             } else if (path === 'creditTrans') {
                 this.actionGetRechargeStatus('home');
                 return;
+            } else if (path === "makemoney") {
+                this.$router.push('/mobile/mcenter/tcenter/management');
             }
             else if (path === "withdraw") {
                 if (this.siteConfig.MOBILE_WEB_TPL !== 'ey1') {
@@ -493,23 +498,11 @@ export default {
                     return;
 
                 case 'SLG':
-                    this.onChangeSelectIndex(14, true);
-                    return;
-
                 case 'BG':
-                    this.onChangeSelectIndex(11, true);
-                    return;
-
                 case 'LTG':
-                    this.onChangeSelectIndex(13, true);
-                    return;
-
                 case 'VG':
-                    this.onChangeSelectIndex(16, true);
-                    return;
-
                 case 'SPG':
-                    this.onChangeSelectIndex(15, true);
+                    this.onChangeSelectIndex(+game.targetSequence + 9);
                     return;
 
                 default:

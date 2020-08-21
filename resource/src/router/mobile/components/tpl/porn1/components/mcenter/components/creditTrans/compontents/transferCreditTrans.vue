@@ -2,7 +2,7 @@
   <div :class="['clearfix']">
     <!-- 一件回收 -->
     <balance-back />
-
+    <div :class="$style['promotion-tips']" v-html="promotionTips" />
     <div :class="$style['form']">
       <!-- 錯誤訊息 -->
       <div v-show="tipMsg" :class="$style['top-tips']">

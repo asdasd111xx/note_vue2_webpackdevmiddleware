@@ -273,7 +273,7 @@ export default {
       }
 
       if (this.type.find(i => i === "ingroup_transfer")) {
-        params['opcode'] = ['8007', '1049', '5017', '5016'];
+        params['opcode'] = ['8007', '1049', '5020', '5018', '5019', '5017', '5016'];
       }
 
       return mcenter.moneyDetail({

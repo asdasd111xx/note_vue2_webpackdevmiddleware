@@ -183,7 +183,7 @@ export default {
   display: block;
   width: 100%;
   background: #ffffff;
-  box-shadow: 0px 2px 10px 0px rgba(220, 0, 0, 0.3);
+  //   box-shadow: 0px 2px 10px 0px rgba(220, 0, 0, 0.3);
 }
 
 // .pad-image {

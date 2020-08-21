@@ -3,62 +3,70 @@ $main-color: #e42a30;
 $disable-color: #fdcccc;
 
 .total-sub-wrap {
-  .top-sub-title {
-    &.active {
-      border-bottom: 2px solid $main-color;
+    .top-sub-title {
+        &.active {
+            border-bottom: 2px solid $main-color;
+        }
     }
-  }
 }
 
 .history-top-wrap {
-  .total-item {
-    .total-item-money {
-      &.week {
-        color: $main-color;
-      }
+    .total-item {
+        .total-item-money {
+            &.week {
+                color: $main-color;
+            }
 
-      &.is-current {
-        color: $main-color;
-      }
+            &.is-current {
+                color: $main-color;
+            }
+        }
     }
-  }
 }
 
 .content-wrap {
-  .content-item {
-    .rebate-btn {
-      a {
-        background: $main-color;
+    .content-item {
+        .rebate-btn {
+            a {
+                background: $main-color;
 
-        &.disable {
-          color: #fff;
-          background: $disable-color;
+                &.disable {
+                    color: #fff;
+                    background: $disable-color;
+                }
+            }
         }
-      }
     }
-  }
 }
 
 .real-top-wrap {
-  .real-top-btn {
-    background: $main-color;
+    .real-top-btn {
+        background: $main-color;
 
-    &.disable {
-      background: $disable-color;
-    }
+        &.disable {
+            background: $disable-color;
+        }
 
-    .calculate-button {
-      &.disable {
-        color: #fff;
-      }
+        .calculate-button {
+            &.disable {
+                color: #fff;
+            }
+        }
     }
-  }
 }
 
 .receive-vip-btn {
-  background: $main-color;
+    background: $main-color;
 
-  &.is-disabled {
-    background: $disable-color;
-  }
+    &.is-disabled {
+        background: $disable-color;
+    }
+}
+
+
+.popup {
+
+    .close {
+        color: #e42a30;
+    }
 }
