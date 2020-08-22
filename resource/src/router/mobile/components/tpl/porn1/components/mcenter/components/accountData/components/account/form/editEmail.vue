@@ -19,6 +19,12 @@
               :class="$style.input"
               type="text"
             />
+            <div :class="$style['clear-input']" v-if="oldValue">
+              <img
+                :src="$getCdnPath(`/static/image/_new/common/ic_clear.png`)"
+                @click="oldValue = ''"
+              />
+            </div>
           </div>
         </div>
       </template>
@@ -35,6 +41,12 @@
               :class="$style.input"
               type="text"
             />
+            <div :class="$style['clear-input']" v-if="newValue">
+              <img
+                :src="$getCdnPath(`/static/image/_new/common/ic_clear.png`)"
+                @click="newValue = ''"
+              />
+            </div>
           </div>
         </div>
       </template>
@@ -51,7 +63,12 @@
               :class="$style.input"
               type="text"
             />
-
+            <div :class="$style['clear-input']" v-if="codeValue">
+              <img
+                :src="$getCdnPath(`/static/image/_new/common/ic_clear.png`)"
+                @click="codeValue = ''"
+              />
+            </div>
             <div
               v-if="sendBtn.isShow"
               :class="[

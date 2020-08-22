@@ -70,7 +70,8 @@ export default {
       if (this.value) {
         return Vue.moment(this.value).format('YYYY年MM月DD日')
       } else {
-        return '年 / 月 / 日'
+        // return '年 / 月 / 日';
+        return '';
       }
     }
   },

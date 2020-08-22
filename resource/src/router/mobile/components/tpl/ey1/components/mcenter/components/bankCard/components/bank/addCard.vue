@@ -67,6 +67,12 @@
               @input="verifyBankCardNumber($event.target.value)"
               @keypress="verifyNumber"
             />
+            <div :class="$style['clear-input']" v-if="formData.account">
+              <img
+                :src="$getCdnPath(`/static/image/_new/common/ic_clear.png`)"
+                @click="formData.account = ''"
+              />
+            </div>
           </div>
         </div>
       </template>
@@ -202,11 +208,11 @@ export default {
   props: {
     changePage: {
       type: Function,
-      default: () => {}
+      default: () => { }
     },
     showTab: {
       type: Function,
-      default: () => {}
+      default: () => { }
     },
     addBankCardStep: {
       type: String,

@@ -18,8 +18,14 @@
               v-model="oldValue"
               :placeholder="oldPhone.label"
               :class="$style.input"
-              type="text"
+              type="tel"
             />
+            <div :class="$style['clear-input']" v-if="oldValue">
+              <img
+                :src="$getCdnPath(`/static/image/_new/common/ic_clear.png`)"
+                @click="oldValue = ''"
+              />
+            </div>
           </div>
         </div>
       </template>
@@ -42,8 +48,14 @@
                   .trim()
                   .replace(/[^0-9]/g, '')
               "
-              type="text"
+              type="tel"
             />
+            <div :class="$style['clear-input']" v-if="newValue">
+              <img
+                :src="$getCdnPath(`/static/image/_new/common/ic_clear.png`)"
+                @click="newValue = ''"
+              />
+            </div>
           </div>
         </div>
       </template>
@@ -60,7 +72,12 @@
               :class="$style.input"
               type="text"
             />
-
+            <div :class="$style['clear-input']" v-if="codeValue">
+              <img
+                :src="$getCdnPath(`/static/image/_new/common/ic_clear.png`)"
+                @click="codeValue = ''"
+              />
+            </div>
             <div
               v-if="sendBtn.isShow"
               :class="[
@@ -136,7 +153,8 @@ export default {
   computed: {
     ...mapGetters({
       memInfo: 'getMemInfo',
-      webInfo: 'getWebInfo'
+      webInfo: 'getWebInfo',
+      siteConfig: "getSiteConfig",
     }),
     isShowCaptcha: {
       get() {
@@ -223,6 +241,10 @@ export default {
       this.handleSend()
     },
     newValue() {
+      if (this.siteConfig.MOBILE_WEB_TPL === 'ey1') {
+        return
+      }
+
       if (this.newValue.length >= 11) {
         this.tipMsg = '';
         this.isVerifyPhone = true;

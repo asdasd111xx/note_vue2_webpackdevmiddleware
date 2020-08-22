@@ -345,7 +345,7 @@
                     <br />
                     <span>
                       {{
-                        `(${curPassRoad.per_trade_min}~${curPassRoad.per_trade_max})`
+                        `(¥${curPassRoad.per_trade_min}~¥${curPassRoad.per_trade_max})`
                       }}
                     </span>
                     <img
@@ -425,7 +425,7 @@
                   ]"
                   @click="walletData['CGPay'].method = 0"
                 >
-                  CGP支付密码
+                  CGP安全防护码
                   <img
                     v-if="walletData['CGPay'].method === 0"
                     :class="$style['pay-active']"
