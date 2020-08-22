@@ -63,6 +63,7 @@
               {{ $text(texts[key].placeholder) }}
             </template>
             <input
+              v-if="key !== 'password' && key !== 'confirm_password'"
               v-validate="'required'"
               :class="[
                 {
@@ -72,8 +73,24 @@
                 }
               ]"
               :maxlength="allText[key].maxLength"
-              :type="allText[key].type"
-              :value="allValue[key]"
+              v-model="allValue[key]"
+              data-vv-scope="form-page"
+              @input="onInput($event.target.value, key)"
+              @keydown.13="onSubmit"
+            />
+            <input
+              v-else="key === 'password' || key === 'confirm_password'"
+              v-validate="'required'"
+              :class="[
+                {
+                  [$style.active]: allValue[key],
+                  [$style.error]: allText[key].error,
+                  [$style['show-placeholder']]: !allValue[key]
+                }
+              ]"
+              :maxlength="allText[key].maxLength"
+              v-model="allValue[key]"
+              type="password"
               data-vv-scope="form-page"
               @input="onInput($event.target.value, key)"
               @keydown.13="onSubmit"
