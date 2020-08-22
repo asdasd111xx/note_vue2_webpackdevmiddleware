@@ -71,6 +71,6 @@ export const site_74 = {
     MOBILE_WEB_TPL: 'ey1',
     VERSION: getVersion('ey1'),
     SITE_NAME: '亿元',
-    YABO_API_DOMAIN: 'https://cxbb.mangochess.com/',
+    YABO_API_DOMAIN: 'https://cxbb.mangochess.com/api',
 };
 /* eslint-enable camelcase */
