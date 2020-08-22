@@ -79,12 +79,11 @@ export default {
   min-height: 100vh;
   background-repeat: no-repeat;
   background-size: cover;
-  background-image: url("/static/image/_new/common/bg.png");
+  background-image: url("/static/image/ey1/common/bg.png");
 }
 
 .join-wrap {
   height: 100%;
-  padding-top: 40px;
   color: #5e626d;
 }
 
@@ -99,7 +98,7 @@ export default {
 
 .field-wrap {
   position: relative;
-  margin-bottom: 20px;
+  margin-bottom: 15x;
 }
 
 .join-input-captcha {

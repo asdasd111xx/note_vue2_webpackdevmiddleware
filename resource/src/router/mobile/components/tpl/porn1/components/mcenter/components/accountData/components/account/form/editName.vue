@@ -16,10 +16,16 @@
             v-model="value"
             :placeholder="$text('S_ENTER_REAL_NAME', '请输入您的真实姓名')"
             :class="$style.input"
-            :maxlength="30"
+            :maxlength="50"
             type="text"
             @input="onInput"
           />
+          <div :class="$style['clear-input']" v-if="value">
+            <img
+              :src="$getCdnPath(`/static/image/_new/common/ic_clear.png`)"
+              @click="value = ''"
+            />
+          </div>
         </div>
       </div>
     </div>
@@ -80,7 +86,8 @@ export default {
     ]),
     onInput(e) {
       const re = /[^\u3000\u3400-\u4DBF\u4E00-\u9FFF.．·]/g;
-      this.value = this.value.replace(re, '')
+      this.value = this.value.replace(re, '');
+      this.value = this.value.substring(0, 50);
     },
     handleSubmit() {
       if (!this.value || !this.value.length > 0) {
@@ -99,7 +106,7 @@ export default {
 
       mcenter.accountDataSet({
         params: {
-          name: this.value.substring(0, 30)
+          name: this.value.substring(0, 50)
         },
         success: () => {
           this.actionSetUserdata(true);

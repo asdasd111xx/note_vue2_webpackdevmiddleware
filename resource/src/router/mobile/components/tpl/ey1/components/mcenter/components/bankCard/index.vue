@@ -35,7 +35,7 @@
       >
         <img
           :src="
-            $getCdnPath('/static/image/ey1/mcenter/bankCard/btn_history.png')
+            $getCdnPath('/static/image/ey1/mcenter/bankCard/ic_history.png')
           "
           alt="more"
         />
@@ -323,6 +323,10 @@ export default {
   width: 20px;
   height: 20px;
   margin: auto;
+
+  > img {
+    width: 100%;
+  }
 }
 
 .tab-wrap {

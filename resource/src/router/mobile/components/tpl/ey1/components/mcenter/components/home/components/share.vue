@@ -134,7 +134,7 @@ export default {
 
 .pic-wrap {
   position: absolute;
-  width: 270px;
+  width: 281px;
   top: 50%;
   left: 50%;
   transform: translate(-50%, -50%);

@@ -90,7 +90,6 @@ export default {
 
 .join-wrap {
   height: 100%;
-  padding-top: 40px;
   color: #5e626d;
 }
 
@@ -105,7 +104,7 @@ export default {
 
 .field-wrap {
   position: relative;
-  margin-bottom: 20px;
+  margin-bottom: 15px;
 }
 
 .join-input-captcha {

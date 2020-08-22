@@ -45,7 +45,7 @@
           />
         </div>
         <div :class="$style.wrap">
-          <div :class="$style.date">{{ news.time | dateFormat }}</div>
+          <div :class="$style.date">{{ news.time | dateFormat2 }}</div>
           <div :class="$style.content" v-html="news.content" />
         </div>
       </div>
@@ -60,6 +60,9 @@ import EST from '@/lib/EST';
 
 export default {
   filters: {
+    dateFormat2(date) {
+      return Vue.moment(EST(date)).format('YYYY-MM-DD');
+    },
     dateFormat(date) {
       return EST(Vue.moment(date).format('YYYY-MM-DD HH:mm:ss'));
     },

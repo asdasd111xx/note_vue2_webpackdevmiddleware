@@ -72,7 +72,6 @@
                 :placeholder="field.content.note1"
                 type="password"
                 maxlength="12"
-                @focus="onFocus(field.key)"
                 @blur="verification(field.key)"
                 @input="verification(field.key)"
                 @keydown.13="keyDownSubmit()"
@@ -93,7 +92,7 @@
 
             <template v-else-if="field.key === 'confirm_password'">
               <input
-                id="confirm_pwd"
+                id="confirm_password"
                 v-model="allValue[field.key]"
                 :class="[$style['join-input'], field.key]"
                 :name="field.key"
@@ -127,7 +126,6 @@
                 :placeholder="field.content.note1"
                 type="text"
                 maxlength="20"
-                @focus="onFocus(field.key)"
                 @blur="verification(field.key)"
                 @keydown.13="keyDownSubmit()"
                 @input="
@@ -364,7 +362,6 @@ export default {
       lock: false,
       puzzleData: null,
       registerData: [],
-      currentTip: '',
       selectData: {
         phone: {
           options: [],
@@ -593,10 +590,10 @@ export default {
     toggleEye() {
       if (this.isShowPwd) {
         document.getElementById("pwd").type = 'password';
-        document.getElementById("confirm_pwd").type = 'password';
+        document.getElementById("confirm_password").type = 'password';
       } else {
         document.getElementById("pwd").type = 'text';
-        document.getElementById("confirm_pwd").type = 'text';
+        document.getElementById("confirm_password").type = 'text';
       }
 
       this.isShowPwd = !this.isShowPwd;
@@ -619,10 +616,6 @@ export default {
           setCookie('aid', res.data.cookie.aid);
         }
       });
-    },
-    onFocus(key) {
-      this.currentTip = this.allTip[key];
-      this.allTip[key] = '';
     },
     changWithdrawPassword(key, num) {
       this.allValue[key] = '';
@@ -648,11 +641,18 @@ export default {
         return;
       }
 
-      if (key.includes('password') || key === "username" || key === "phone" || key === "qq_num" || key === "withdraw_password") {
-        this.allValue[key] = this.allValue[key].toLowerCase()
-          .replace(' ', '')
-          .trim()
-          .replace(/[\W]/g, '');
+      switch (key) {
+        case 'password':
+        case 'username':
+        case 'phone':
+        case 'qq_num':
+        case 'withdraw_password':
+        case 'confirm_password':
+          this.allValue[key] = this.allValue[key].toLowerCase()
+            .replace(' ', '')
+            .trim()
+            .replace(/[\W]/g, '');
+          break;
       }
 
       if (key === 'name' && this.allValue[key].length > 30) {
@@ -687,16 +687,15 @@ export default {
       }
 
       if (key === 'confirm_password') {
-        const password = split(this.allValue.password, '');
-        const confirmPassword = split(this.allValue.confirm_password, '');
-        const isSame = confirmPassword.every((value, index) => password[index] === value);
 
-        if (isSame || this.allValue.confirm_password === this.allValue.password) {
-          this.allTip.confirm_password = '';
+        if (this.allValue.confirm_password !== this.allValue.password) {
+          this.allTip.confirm_password = msg;
           return;
+        } else {
+          this.allTip.confirm_password = '';
+
         }
 
-        this.allTip.confirm_password = msg;
         return;
       }
 
@@ -721,13 +720,7 @@ export default {
           .replace(/[\W\_]/g, '');
       }
 
-      //   if (key === 'withdraw_password' && this.allValue.withdraw_password.length < 4 && data.isRequired) {
-      //     this.allTip[key] = this.$t('S_JM_MSG_COMPLETE');
-      //     return;
-      //   }
-
       this.allTip[key] = '';
-      this.currentTip = '';
     },
     changSelect(key) {
       //   if (key === 'phone') {

@@ -1,1 +1,19 @@
 @import './porn1.scss';
+$main_color: #e42a30;
+
+.alert-title {
+    color: #FFF;
+    background: $main_color;
+}
+
+.success-icon,
+.success-title {
+    color: $main_color;
+}
+
+
+.confirm-btn {
+    color: #FFF;
+    background: $main_color;
+    background-image: unset;
+}
