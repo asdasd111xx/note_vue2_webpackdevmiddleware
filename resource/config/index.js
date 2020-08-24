@@ -5,7 +5,7 @@ const outputDirName = process.env.CDN_HOST ? process.env.CDN_HOST.split('://')[1
 
 // 鸭博娱乐
 // 鴨脖
-// const domain = 'https://yb01.66boxing.com/';
+const domain = 'https://yb01.66boxing.com/';
 // const domain = 'https://yb0t.66relish.com/';
 // const domain = 'https://yaboxxxapp01.com/';
 // const domain = 'https://yaboxxxapp02.com/';
@@ -14,7 +14,7 @@ const outputDirName = process.env.CDN_HOST ? process.env.CDN_HOST.split('://')[1
 // const domain = 'https://35.201.222.5/';
 // const domain = 'https://eyt.66boxing.com/';
 // const domain = 'https://ey.688lg.com/';
-const domain = 'https://eyd.688lg.com/';
+// const domain = 'https://eyd.688lg.com/';
 
 
 module.exports = {
