@@ -27,6 +27,7 @@
         background: transparent;
         border: none;
         outline: 0;
+        padding: 0;
 
         &::-webkit-input-placeholder {
             font-size: 14px;
@@ -100,7 +101,7 @@
     }
 
     .select-active {
-        font-size: 16px;
+        font-size: 14px;
         color: #414655;
     }
 }
@@ -208,7 +209,7 @@
     font-size: 14px;
     color: #FFF;
     text-align: center;
-    border-radius: 5px;
+    border-radius: 3px;
 
     &.disabled {
         opacity: 0.5;
@@ -250,7 +251,7 @@
     top: -4px;
     background: #D2B79C;
     color: #FFF;
-    border-radius: 5px;
+    border-radius: 3px;
 
     &.disabled {
         pointer-events: none;
