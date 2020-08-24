@@ -60,7 +60,7 @@
                 <img v-lazy="getImg(info)" :class="$style['pay-mode-img']" />
 
                 <div :class="$style['pay-main-title']">
-                  {{ info.short_name }}
+                  {{ info.short_name ? info.short_name : info.payment_type_name }}
                 </div>
 
                 <div :class="$style['pay-sub-title']">

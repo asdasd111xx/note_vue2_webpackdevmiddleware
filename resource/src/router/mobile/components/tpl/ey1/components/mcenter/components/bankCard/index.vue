@@ -163,14 +163,12 @@ export default {
 
         this.$nextTick(() => {
           if (this.userLevelObj.bank) {
-            this.currentKind = "bank";
-            this.currentPage = "bankCardInfo";
+            this.setCurrentTab(0);
             return;
           }
 
           if (this.userLevelObj.virtual_bank) {
-            this.currentKind = "virtualBank";
-            this.currentPage = "virtualBankCardInfo";
+            this.setCurrentTab(1);
             return;
           }
         });

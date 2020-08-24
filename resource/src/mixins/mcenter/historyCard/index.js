@@ -5,7 +5,6 @@ export default {
       editDetailStatus: false,
       isAuditStatus: false,
       showDetailStatus: false,
-      step: "one"
     };
   },
   computed: {
@@ -32,22 +31,11 @@ export default {
       set(value) {
         this.isAuditStatus = value;
       }
-    },
-    addBankCardStep: {
-      get() {
-        return this.step;
-      },
-      set(value) {
-        this.step = value;
-      }
     }
   },
   methods: {
     changePage(value) {
       this.currentPage = value;
-    },
-    changeToHistory() {
-      this.$router.push('/mobile/mcenter/historyCard');
     }
   }
 };
