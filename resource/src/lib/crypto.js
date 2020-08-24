@@ -1,9 +1,22 @@
 import CryptoJS from 'crypto-js';
 import axios from 'axios';
-
+function convertWordArrayToUint8Array(wordArray) {
+    var arrayOfWords = wordArray.hasOwnProperty("words") ? wordArray.words : [];
+    var length = wordArray.hasOwnProperty("sigBytes") ? wordArray.sigBytes : arrayOfWords.length * 4;
+    var uInt8Array = new Uint8Array(length), index = 0, word, i;
+    for (i = 0; i < length; i++) {
+        word = arrayOfWords[i];
+        uInt8Array[index++] = word >> 24;
+        uInt8Array[index++] = (word >> 16) & 0xff;
+        uInt8Array[index++] = (word >> 8) & 0xff;
+        uInt8Array[index++] = word & 0xff;
+    }
+    return uInt8Array;
+}
 export const getEncryptImage = (info) => {
     if (!info.image_IV || !info.image_key) {
-        return info.image
+        document.querySelector(`img[img-id="${info.id}"]`).src = info.image;
+        return info.image;
     }
 
     const data = {
@@ -20,47 +33,50 @@ export const getEncryptImage = (info) => {
 
     return axios({
         url: data.image.split('?')[0],
-        // url: data.image,
         method: 'GET',
-        // responseType: 'blob',
+        responseType: 'blob',
     }).then((response) => {
-        // const url = window.URL.createObjectURL(new Blob([response.data]));
+        const reader = new FileReader();
+        reader.addEventListener('loadend', (e) => {
+            let key = CryptoJS.enc.Hex.parse(data.key); // 16進制
+            let iv = CryptoJS.enc.Hex.parse(data.iv);
 
-        // var reader = new FileReader();
+            // let key = data.key;
+            // let iv = data.iv;
 
-        // reader.addEventListener("load", function () {
-        //     console.log(reader.result)
+            // let key = CryptoJS.enc.Utf8.parse(data.key); // Utf8
+            // let iv = CryptoJS.enc.Utf8.parse(data.iv);
 
-        // }, false);
+            // let key = CryptoJS.enc.Base64.parse(data.key); // Base64
+            // let iv = CryptoJS.enc.Base64.parse(data.iv);
 
-        // reader.readAsDataURL(url);
-        // console.log(img)
+            let decrypted = CryptoJS.AES.decrypt(reader.result, key, {
+                iv: iv,
+                mode: CryptoJS.mode.CBC,
+                padding: CryptoJS.pad.NoPadding
+            });
 
-        // 讀取檔案
-        // let img = CryptoJS.enc.Hex.parse(response.data);
-        // let img = CryptoJS.enc.Base64.parse(response.data);
-        // let img = CryptoJS.enc.Utf8.parse(response.data);
-        // key iv 16進位轉化
-        const key = CryptoJS.enc.Utf8.parse(data.key);
-        const iv = CryptoJS.enc.Utf8.parse(data.iv);
+            // var dcBase64String = decrypted.toString(CryptoJS.enc.Base64).toString(CryptoJS.enc.Utf8);
+            // console.log(dcBase64String);
 
-        const key2 = CryptoJS.enc.Hex.parse(data.key);
-        const iv2 = CryptoJS.enc.Hex.parse(data.iv);
+            var typedArray = convertWordArrayToUint8Array(decrypted);
 
-        // 解密
-        let decrypt = CryptoJS.AES.decrypt(response.data, data.key, {
-            iv: data.iv,
-            mode: CryptoJS.mode.CBC,
-            padding: CryptoJS.pad.NoPadding
+            // 轉換file
+            var fileDec = new Blob([typedArray], { type: 'image/png' });
+
+            console.log('decrypted:', decrypted)
+            console.log('fileDec:', fileDec)
+
+            // 轉換blob
+            const url = window.URL.createObjectURL(fileDec);
+            // const url = window.URL.createObjectURL(new Blob([decrypted], { type: 'image/png' }));
+
+            document.querySelector(`img[img-id="${info.id}"]`).src = url;
+            // document.querySelector(`img[img-id="${info.id}"]`).src = 'data:image/png;base64,' + dcBase64String;
+            // window.URL.revokeObjectURL(url);
         });
 
-        let base64 = '';
-        base64 = CryptoJS.enc.Base64.stringify(decrypt);
-
-        console.log(decrypt.toString());
-        console.log('Base64:', base64)
-        // 測試
-        // base64 = 'https://www.google.com/images/branding/googlelogo/2x/googlelogo_color_92x30dp.png';
-        document.querySelector(`img[img-id="${info.id}"]`).src = 'data:image/png;base64,' + decrypt.toString();
+        reader.readAsDataURL(response.data);
+        return;
     });
 };

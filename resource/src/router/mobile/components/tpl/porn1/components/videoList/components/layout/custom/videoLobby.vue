@@ -97,6 +97,7 @@ import axios from "axios";
 import find from "lodash/find";
 import pornRequest from "@/api/pornRequest";
 import message from "@/router/mobile/components/common/message";
+import { getEncryptImage } from '@/lib/crypto';
 
 export default {
   components: {

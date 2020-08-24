@@ -107,9 +107,9 @@ export default {
   },
   methods: {
     getImg(info) {
-      getEncryptImage(info).then((res) => {
-        console.log(res)
-      })
+      //   getEncryptImage(info).then((res) => {
+      //     console.log(res)
+      //   })
       //   return {
       //     src:
       //     // error: this.$getCdnPath(`/static/image/_new/default/bg_video03_d.png`),
