@@ -24,7 +24,8 @@
       </div>
     </div>
 
-    <div v-if="isShowTab" :class="$style['tab-wrap']">
+    <!-- 目前還未有歷史銀行卡的需求，先一律隱藏 Tab -->
+    <!-- <div v-if="isShowTab" :class="$style['tab-wrap']">
       <div
         v-for="(item, index) in tabItem"
         :key="`tab-${item.key}`"
@@ -40,7 +41,7 @@
         :class="$style['active-slider']"
         :style="{ left: `calc(25% + 50% * ${currentTab})` }"
       />
-    </div>
+    </div> -->
 
     <component
       :is="currentPage"
@@ -105,24 +106,27 @@ export default {
   },
   created() {
     this.actionSetUserLevels().then(() => {
+      // 目前尚有歷史銀行卡的頁面，故預設為電子錢包
+      this.setCurrentTab(1);
+
       // 銀行卡/電子錢包，其中有一方關閉
-      if (!this.userLevelObj.bank || !this.userLevelObj.virtual_bank) {
-        this.isShowTab = false;
-
-        this.$nextTick(() => {
-          if (this.userLevelObj.bank) {
-            this.currentKind = "bank";
-            this.currentPage = "bankCardInfo";
-            return;
-          }
-
-          if (this.userLevelObj.virtual_bank) {
-            this.currentKind = "virtualBank";
-            this.currentPage = "virtualBankCardInfo";
-            return;
-          }
-        });
-      }
+      // if (!this.userLevelObj.bank || !this.userLevelObj.virtual_bank) {
+      //   this.isShowTab = false;
+      //   this.$nextTick(() => {
+      //     if (this.userLevelObj.bank) {
+      //       // this.currentKind = "bank";
+      //       // this.currentPage = "bankCardInfo";
+      //       this.setCurrentTab(0);
+      //       return;
+      //     }
+      //     if (this.userLevelObj.virtual_bank) {
+      //       // this.currentKind = "virtualBank";
+      //       // this.currentPage = "virtualBankCardInfo";
+      //       this.setCurrentTab(1);
+      //       return;
+      //     }
+      //   });
+      // }
     });
   },
   methods: {
@@ -162,6 +166,8 @@ export default {
         this.$router.back();
         return;
       }
+
+      this.$router.back();
     }
   }
 };

@@ -39,6 +39,7 @@ export default {
     },
     getVirtualBankDetail(info) {
       this.virtualBank_cardDetail = info;
+      this.$emit('update:isAudit', false)
       this.$emit("update:showDetail", true);
 
       if (info.auditing) {

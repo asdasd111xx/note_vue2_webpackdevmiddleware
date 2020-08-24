@@ -1619,7 +1619,7 @@
     "S_ADD_BANKCARD": "添加银行卡",
     "S_ADD_VIRTUAL_BANKCARD": "添加电子钱包",
     "S_BANKCARD_LIMIT": "最多支持添加%s张银行卡",
-    "S_VIRTUAL_BANKCARD_LIMIT": "最多添加%s张电子钱包",
+    "S_VIRTUAL_BANKCARD_LIMIT": "最多支持添加%s张电子钱包",
     "S_VIRTUAL_BANKCARD_TYPE_LIMIT": "最多添加%s张不同类型电子钱包",
     "S_BANKCARD": "银行卡",
     "S_VIRTUAL_BANKCARD": "电子钱包",
