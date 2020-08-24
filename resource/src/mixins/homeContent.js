@@ -112,11 +112,17 @@ export default {
                 this.isReceive = true;
                 setTimeout(() => {
                     $(window).trigger('resize');
+                    let defaultType = this.siteConfig.MOBILE_WEB_TPL === "porn1" ? 'Welfare' : 'All'
+                    if (localStorage.getItem('type')) {
+                        defaultType = localStorage.getItem('type')
+                    }
 
-                    const defaultType = localStorage.getItem('type') || this.siteConfig.MOBILE_WEB_TPL === "porn1" ? 'Welfare' : 'All';
-                    const defaultIndex = this.typeList.findIndex(
-                        type => type.icon === defaultType
-                    );
+                    let defaultIndex = this.typeList.findIndex((type) => {
+                        return type.icon.toLowerCase() === defaultType.toLowerCase()
+                    });
+
+                    defaultIndex = defaultIndex >= 0 ? defaultIndex : 0;
+
                     const selectIndex = this.typeList.length / 3 + defaultIndex;
                     this.onChangeSelectIndex(selectIndex);
                     this.isShow = true;
