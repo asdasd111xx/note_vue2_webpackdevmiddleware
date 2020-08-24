@@ -211,6 +211,7 @@ export default {
   padding: 8px 18px;
   color: #414655;
   font-size: 14px;
+  word-break: break-all;
 }
 
 .date {

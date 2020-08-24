@@ -12,9 +12,9 @@ const outputDirName = process.env.CDN_HOST ? process.env.CDN_HOST.split('://')[1
 
 // 亿元
 // const domain = 'https://35.201.222.5/';
-const domain = 'https://eyt.66boxing.com/';
+// const domain = 'https://eyt.66boxing.com/';
 // const domain = 'https://ey.688lg.com/';
-// const domain = 'https://eyd.688lg.com/';
+const domain = 'https://eyd.688lg.com/';
 
 
 module.exports = {
