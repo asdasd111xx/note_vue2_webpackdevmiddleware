@@ -21,6 +21,7 @@ export default {
   },
   data() {
     return {
+      currentTemplate: "message"
     }
   },
   created() {
@@ -34,7 +35,7 @@ export default {
     }),
     headerConfig() {
       const trans = { message: '通知', news: '活动', post: '公告' };
-
+      console.log(this.currentTemplate)
       return {
         prev: true,
         title: this.$route.query.pid ? trans[this.currentTemplate] : '消息中心',

@@ -3,7 +3,7 @@
     <div slot="content" :class="$style['content-wrap']">
       <page-loading :is-show="isLoading" />
       <div v-for="list in currentMenu">
-        <div :class="$style['item-header']">
+        <div v-if="isMounted" :class="$style['item-header']">
           <div :class="$style['item-icon']">
             <img :src="$getCdnPath(list.icon)" />
           </div>
@@ -38,6 +38,7 @@ export default {
     return {
       isLoading: false,
       currentMenu: [],
+      isMounted: true,
       giftMenuList: [
         {
           title: "福利",
@@ -144,10 +145,11 @@ export default {
     headerConfig() {
       return {
         prev: true,
-        title: "礼包",
+        title: this.$route.query.q ? this.$route.query.q : "礼包",
         onClick: () => {
           if (this.$route.query.q) {
             this.currentMenu = this.giftMenuList;
+            this.isMounted = true;
             this.$router.push('/mobile/gift');
             return;
           }
@@ -190,6 +192,7 @@ export default {
       if (item.items && item.items.length > 0) {
         this.$router.push({ query: { q: item.name } })
         this.currentMenu = item.items;
+        this.isMounted = false;
         return;
       }
 
