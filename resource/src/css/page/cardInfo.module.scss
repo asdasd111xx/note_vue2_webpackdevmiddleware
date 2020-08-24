@@ -56,8 +56,12 @@ $ey1_card_history_linear_end_color: #f4dbdc;
 .no-data {
   padding-top: 125px;
 
+  &.history {
+    padding-top: 95px;
+  }
+
   .no-bankcard {
-    width: 165px;
+    width: 180px;
     margin: 0 auto 25px;
 
     img {

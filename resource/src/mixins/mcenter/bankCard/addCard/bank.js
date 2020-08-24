@@ -32,7 +32,8 @@ export default {
     },
     computed: {
         ...mapGetters({
-            memInfo: "getMemInfo"
+            memInfo: "getMemInfo",
+            siteConfig: "getSiteConfig"
         }),
         isShowCaptcha: {
             get() {
@@ -143,14 +144,6 @@ export default {
             this.currentBank = bank.name;
             this.checkData();
         },
-        verifyBankCardNumber(value) {
-            this.formData.account = value
-                .toLowerCase()
-                .replace(" ", "")
-                .trim()
-                .replace(/[\W]/g, "");
-            this.checkData();
-        },
         checkData(value, key) {
             if (key === "account_name") {
                 const re = /[^\u3000\u3400-\u4DBF\u4E00-\u9FFF.．·]/g;
@@ -160,6 +153,15 @@ export default {
             if (key === "branch") {
                 const re = /[^\u3000\u3400-\u4DBF\u4E00-\u9FFF]/g;
                 this.formData.branch = value.replace(re, "");
+            }
+
+            if (key === "account") {
+                const re = /[^0-9]/g;
+
+                this.formData.account = value
+                  .replace(" ", "")
+                  .trim()
+                  .replace(re, "");
             }
 
             this.NextStepStatus = Object.keys(this.formData).every(key => {
@@ -183,12 +185,6 @@ export default {
 
                 return true;
             });
-        },
-        verifyNumber(e) {
-            const regex = /^[0-9]+$/;
-            if (!regex.test(e.key)) {
-                e.preventDefault();
-            }
         },
         getBankImage(swiftCode) {
             return {

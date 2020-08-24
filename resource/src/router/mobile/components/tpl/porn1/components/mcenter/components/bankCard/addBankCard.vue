@@ -81,12 +81,11 @@
           <div :class="$style['input-wrap']">
             <input
               v-model="formData.account"
-              type="number"
+              type="text"
               placeholder="请输入银行卡卡号(限定16位以上数字)"
               minlength="16"
               maxlength="19"
-              @input="verifyBankCardNumber($event.target.value)"
-              @keypress="verifyNumber"
+              @input="checkData($event.target.value, 'account')"
             />
           </div>
         </div>
@@ -430,14 +429,6 @@ export default {
       this.currentBank = bank.name;
       this.checkData();
     },
-    verifyBankCardNumber(value) {
-      this.formData.account = value
-        .toLowerCase()
-        .replace(' ', '')
-        .trim()
-        .replace(/[\W]/g, '');
-      this.checkData();
-    },
     checkData(value, key) {
       if (key === "account_name") {
         const re = /[^\u3000\u3400-\u4DBF\u4E00-\u9FFF.．·]/g;
@@ -453,6 +444,15 @@ export default {
       //   const re = /[^0-9]/g;
       //   this.formData.phone = value.replace(re, '');
       // }
+
+      if (key === "account") {
+        const re = /[^0-9]/g;
+
+        this.formData.account = value
+          .replace(" ", "")
+          .trim()
+          .replace(re, "");
+      }
 
       this.NextStepStatus = Object.keys(this.formData).every((key) => {
         if (this.addBankCardStep === 'one') {
@@ -475,12 +475,6 @@ export default {
 
         return true;
       });
-    },
-    verifyNumber(e) {
-      const regex = /^[0-9]+$/
-      if (!regex.test(e.key)) {
-        e.preventDefault();
-      }
     },
     getBankImage(swiftCode) {
       return {

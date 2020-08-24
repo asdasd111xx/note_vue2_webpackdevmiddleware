@@ -110,7 +110,7 @@
 
     <div v-if="isShowPop" :class="$style['pop-wrap']">
       <div :class="$style['pop-mask']" @click="isShowPop = false" />
-      <div :class="$style['pop-menu']">
+      <div :class="[$style['pop-menu'], $style['custom1']]">
         <div :class="$style['pop-title']">
           <span @click="isShowPop = false">
             {{ $text("S_CANCEL", "取消") }}
@@ -253,6 +253,10 @@ export default {
           break;
         case 38:
           text = "请输入VenusPoint取款帐号";
+          break;
+
+        default:
+          text = "请输入钱包地址";
           break;
       }
 
