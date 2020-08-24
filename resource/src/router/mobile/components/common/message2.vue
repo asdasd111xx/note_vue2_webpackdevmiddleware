@@ -66,7 +66,8 @@ export default {
   },
   computed: {
     ...mapGetters({
-      globalMessage: 'getGlobalMessage'
+      globalMessage: 'getGlobalMessage',
+      siteConfig: 'getSiteConfig',
     }),
   },
   beforeDestroy() {
@@ -122,7 +123,11 @@ export default {
             break;
           case "C50104":
           case "C50106":
-            this.$router.push('/mobile/withdrawAccount');
+            if (this.siteConfig.MOBILE_WEB_TPL === "ey1") {
+              this.$router.push('/mobile/withdrawAccount');
+            } else {
+              this.$router.push('/mobile/accountData');
+            }
             break;
           default:
             break;
