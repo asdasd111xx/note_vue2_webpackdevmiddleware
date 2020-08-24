@@ -88,9 +88,7 @@
             </span>
 
             <span v-else>
-              {{ $t("S_VIRTUAL_BANKCARD_LIMIT").replace("%s", 15) }} ({{
-                virtualBank_card.length
-              }}/15)
+              {{ $t("S_VIRTUAL_BANKCARD_LIMIT").replace("%s", 15) }}
             </span>
           </p>
         </template>

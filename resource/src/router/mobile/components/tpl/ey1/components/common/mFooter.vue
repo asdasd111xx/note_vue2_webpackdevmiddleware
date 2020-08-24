@@ -114,9 +114,9 @@ export default {
   > div {
     img {
       display: block;
-      width: 18px;
-      height: 18px;
-      margin: 6px auto 0;
+      width: 23px;
+      height: 23px;
+      margin: 11px auto 0;
     }
   }
 

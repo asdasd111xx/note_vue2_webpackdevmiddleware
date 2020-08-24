@@ -42,6 +42,31 @@
           </div>
         </div>
 
+        <!-- <div :class="$style['info-item']">
+          <p :class="$style['input-title']">省/直辖市</p>
+          <div :class="$style['input-wrap']">
+            <input
+              v-model.trim="formData.province"
+              type="text"
+              placeholder="请输入省/直辖市"
+              maxlength="36"
+              @input="checkData"
+            />
+          </div>
+        </div>
+        <div :class="$style['info-item']">
+          <p :class="$style['input-title']">县/市</p>
+          <div :class="$style['input-wrap']">
+            <input
+              v-model.trim="formData.city"
+              type="text"
+              placeholder="请输入县/市"
+              maxlength="36"
+              @input="checkData"
+            />
+          </div>
+        </div> -->
+
         <div :class="$style['info-item']">
           <p :class="$style['input-title']">开户支行</p>
           <div :class="$style['input-wrap']">
@@ -60,12 +85,11 @@
           <div :class="$style['input-wrap']">
             <input
               v-model="formData.account"
-              type="number"
+              type="text"
               placeholder="请输入银行卡卡号(限定16位以上数字)"
               minlength="16"
               maxlength="19"
-              @input="verifyBankCardNumber($event.target.value)"
-              @keypress="verifyNumber"
+              @input="checkData($event.target.value, 'account')"
             />
             <div :class="$style['clear-input']" v-if="formData.account">
               <img
@@ -131,7 +155,7 @@
           <p v-else>
             1. 为确保您的资金安全，添加银行卡需进行简单的数据核实 <br />
             2. 因手机号码影响各项重要功能，请您务必谨慎填写 <br />
-            3. 鸭博娱乐时刻关心您的资金安全
+            3. {{ siteConfig.SITE_NAME }}娱乐时刻关心您的资金安全
           </p>
         </div>
         <div
@@ -208,11 +232,11 @@ export default {
   props: {
     changePage: {
       type: Function,
-      default: () => { }
+      default: () => {}
     },
     showTab: {
       type: Function,
-      default: () => { }
+      default: () => {}
     },
     addBankCardStep: {
       type: String,

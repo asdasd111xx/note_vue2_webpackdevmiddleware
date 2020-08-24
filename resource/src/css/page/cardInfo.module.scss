@@ -56,8 +56,12 @@ $ey1_card_history_linear_end_color: #f4dbdc;
 .no-data {
   padding-top: 125px;
 
+  &.history {
+    padding-top: 95px;
+  }
+
   .no-bankcard {
-    width: 165px;
+    width: 180px;
     margin: 0 auto 25px;
 
     img {
@@ -107,11 +111,10 @@ $ey1_card_history_linear_end_color: #f4dbdc;
 // -----銀行卡列表-----
 
 .my-card {
-  padding: 0 17px;
+  padding: 17px 17px 0;
 
   .card-count {
-    padding: 5px 0;
-    margin-bottom: 5px;
+    margin-bottom: 12px;
 
     span {
       float: left;
@@ -120,13 +123,13 @@ $ey1_card_history_linear_end_color: #f4dbdc;
 
     .title {
       margin-right: 8px;
-      font-size: 18px;
+      font-size: 20px;
       font-weight: 700;
       color: $main_text_color3;
     }
 
     .count {
-      font-size: 12px;
+      font-size: 14px;
       color: $main_text_color3;
     }
   }

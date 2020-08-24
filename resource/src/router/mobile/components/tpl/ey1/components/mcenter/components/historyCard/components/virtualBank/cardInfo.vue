@@ -46,14 +46,13 @@
         </div>
       </div>
 
-      <div :class="{ [$style['no-data']]: virtualBank_card.length === 0 }">
-        <div
-          v-if="virtualBank_card.length === 0"
-          :class="$style['no-bankcard']"
-        >
-          <img src="/static/image/ey1/mcenter/bankCard/no_bankcard.png" />
+      <template v-if="virtualBank_card.length === 0">
+        <div :class="[$style['no-data'], $style['history']]">
+          <div :class="$style['no-bankcard']">
+            <img src="/static/image/ey1/mcenter/bankCard/no_bankcard.png" />
+          </div>
         </div>
-      </div>
+      </template>
     </template>
 
     <template v-if="showDetail && virtualBank_cardDetail">

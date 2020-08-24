@@ -34,6 +34,7 @@
         background: transparent;
         border: none;
         outline: 0;
+        padding: 0;
 
         &::-webkit-input-placeholder {
             font-size: 14px;
@@ -122,7 +123,7 @@
     }
 
     .select-active {
-        font-size: 16px;
+        font-size: 14px;
         color: #414655;
     }
 }
@@ -151,6 +152,10 @@
     left: 0;
     background: #f8f8f7;
     border-radius: 20px 20px 0 0;
+
+    &.custom1 {
+      height: 45%;
+    }
 }
 
 .pop-title {
@@ -169,7 +174,7 @@
         padding: 0 14px;
         position: absolute;
         left: 0;
-        color: #be9e7f;
+        color: #000;
     }
 }
 
@@ -230,11 +235,12 @@
     font-size: 14px;
     color: #fff;
     text-align: center;
-    border-radius: 5px;
+    border-radius: 3px;
 
     &.disabled {
         opacity: 0.5;
         pointer-events: none;
+        background: #fdcccc;
     }
 }
 
@@ -272,7 +278,7 @@
     top: -4px;
     background: #E42A30;
     color: #fff;
-    border-radius: 5px;
+    border-radius: 3px;
 
     &.disabled {
         pointer-events: none;

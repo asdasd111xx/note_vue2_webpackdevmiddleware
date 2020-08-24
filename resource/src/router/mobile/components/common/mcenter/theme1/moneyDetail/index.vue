@@ -225,8 +225,8 @@ export default {
       return [
         { key: 'today', text: '今日' },
         { key: 'yesterday', text: '昨日' },
-        { key: 'week', text: '近7天' },
-        { key: 'thirty', text: '近30天' },
+        { key: 'week', text: '近7日' },
+        { key: 'thirty', text: '近30日' },
         { key: 'custom', text: '自定义' }
       ];
     }
