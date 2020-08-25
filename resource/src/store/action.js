@@ -635,10 +635,11 @@ export const actionSetUserdata = ({ state, dispatch, commit }, forceUpdate = fal
             let configInfo;
 
             if (state.webInfo.is_production) {
-                configInfo = siteConfigOfficial[`site_${state.webInfo.alias}`] || siteConfigOfficial.preset;
+                configInfo = siteConfigOfficial[`site_${state.memInfo.user.domain}`] || siteConfigOfficial.preset;
             } else {
-                configInfo = siteConfigTest[`site_${state.webInfo.alias}`] || siteConfigTest.preset;
+                configInfo = siteConfigTest[`site_${state.memInfo.user.domain}`] || siteConfigTest.preset;
             }
+
             // 設置cdn圖片路徑
             if (headers['x-cdn-ey'] &&
                 configInfo.MOBILE_WEB_TPL === "ey1") {
