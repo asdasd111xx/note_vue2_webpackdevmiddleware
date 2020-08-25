@@ -76,7 +76,7 @@
             @click.stop="handleVideo(i, video)"
           >
             <div :class="$style['video-img']">
-              <img v-lazy="getImg(video.image)" />
+              <img :src="defaultImg" :img-id="video.id" />
             </div>
             <p :class="$style['video-title']">{{ video.title }}</p>
           </div>
@@ -97,6 +97,7 @@ import axios from "axios";
 import find from "lodash/find";
 import pornRequest from "@/api/pornRequest";
 import message from "@/router/mobile/components/common/message";
+import { getEncryptImage } from '@/lib/crypto';
 
 export default {
   components: {
@@ -128,6 +129,10 @@ export default {
     };
   },
   computed: {
+    defaultImg() {
+      const isYabo = this.source === 'yabo';
+      return this.$getCdnPath(`/static/image/_new/default/${isYabo ? 'bg_video03_d' : 'bg_video03_1_d@3x'}.png`)
+    },
     allVideoList() {
       const videoRecommand =
         this.videoType.id === 0 ? [...this.videoRecommand] : [];
@@ -172,14 +177,6 @@ export default {
           sortId: +videoData.id || 0
         }
       })
-    },
-    getImg(img) {
-      const isYabo = this.source === 'yabo';
-      return {
-        src: img,
-        error: this.$getCdnPath(`/static/image/_new/default/${isYabo ? 'bg_video03_d' : 'bg_video03_1_d@3x'}.png`),
-        loading: this.$getCdnPath(`/static/image/_new/default/${isYabo ? 'bg_video03_d' : 'bg_video03_1_d@3x'}.png`),
-      };
     },
     getVideoTag() {
       try {
@@ -278,6 +275,9 @@ export default {
         }
 
         this.videoRecommand = [...response.result];
+        this.$nextTick(() => {
+          this.videoRecommand.forEach(item => getEncryptImage(item));
+        })
       });
     },
     // 取得所有影片(熱門推薦除外)
@@ -323,6 +323,8 @@ export default {
 
         this.videoList = [...response.result];
         this.$nextTick(() => {
+          this.videoList.forEach(i => { i.list.forEach(item => getEncryptImage(item)) });
+
           if (window.location.hash) {
             const hash = Number(window.location.hash.replace('#', '')) || 0;
             const wrap = document.getElementById('video-lobby-container');

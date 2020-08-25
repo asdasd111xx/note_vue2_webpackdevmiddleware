@@ -89,7 +89,7 @@
             :class="[$style['video'], $style[source]]"
             @click.stop="handleVideo(i, video)"
           >
-            <img v-lazy="getImg(video.image)" />
+            <img :src="defaultImg" :img-id="video.id" />
             <div>{{ video.title }}</div>
           </div>
         </div>
@@ -103,6 +103,7 @@ import axios from "axios";
 import find from "lodash/find";
 import { Swiper, SwiperSlide } from "vue-awesome-swiper";
 import pornRequest from "@/api/pornRequest";
+import { getEncryptImage } from '@/lib/crypto';
 
 export default {
   components: {
@@ -135,6 +136,10 @@ export default {
     };
   },
   computed: {
+    defaultImg() {
+      const isYabo = this.source === 'yabo';
+      return this.$getCdnPath(`/static/image/_new/default/${isYabo ? 'bg_video03_d' : 'bg_video03_1_d@3x'}.png`)
+    },
     allVideoList() {
       const videoRecommand =
         this.videoType.id === 0 ? [...this.videoRecommand] : [];
@@ -310,6 +315,11 @@ export default {
         }
 
         this.videoRecommand = [...response.result];
+        this.$nextTick(() => {
+          this.videoRecommand.forEach(item => {
+            getEncryptImage(item);
+          })
+        })
       });
     },
     // 取得所有影片(熱門推薦除外)
@@ -353,7 +363,10 @@ export default {
         }
 
         this.videoList = [...response.result];
+
         this.$nextTick(() => {
+          this.videoList.forEach(i => { i.list.forEach(item => getEncryptImage(item)) });
+
           if (window.location.hash) {
             const hash = Number(window.location.hash.replace('#', '')) || 0;
             const wrap = document.getElementById('video-list-wrap');
