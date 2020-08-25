@@ -640,9 +640,9 @@ export const actionSetUserdata = ({ state, dispatch, commit }, forceUpdate = fal
                 configInfo = siteConfigTest[`site_${state.webInfo.alias}`] || siteConfigTest.preset;
             }
             // 設置cdn圖片路徑
-            if (headers['X-CDN-EY'] &&
+            if (headers['x-cdn-ey'] &&
                 configInfo.MOBILE_WEB_TPL === "ey1") {
-                commit(types.SETCDNROOT, `https://${headers['X-CDN-EY']}`);
+                commit(types.SETCDNROOT, `https://${headers['x-cdn-ey']}`);
             }
 
             if (headers['x-cdn-yb'] &&
