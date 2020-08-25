@@ -1,19 +1,65 @@
-import CryptoJS from 'crypto-js';
+import aesjs from 'AES-JS'
 import axios from 'axios';
-function convertWordArrayToUint8Array(wordArray) {
-    var arrayOfWords = wordArray.hasOwnProperty("words") ? wordArray.words : [];
-    var length = wordArray.hasOwnProperty("sigBytes") ? wordArray.sigBytes : arrayOfWords.length * 4;
-    var uInt8Array = new Uint8Array(length), index = 0, word, i;
-    for (i = 0; i < length; i++) {
-        word = arrayOfWords[i];
-        uInt8Array[index++] = word >> 24;
-        uInt8Array[index++] = (word >> 16) & 0xff;
-        uInt8Array[index++] = (word >> 8) & 0xff;
-        uInt8Array[index++] = word & 0xff;
+const base64abc = [
+    "A", "B", "C", "D", "E", "F", "G", "H", "I", "J", "K", "L", "M",
+    "N", "O", "P", "Q", "R", "S", "T", "U", "V", "W", "X", "Y", "Z",
+    "a", "b", "c", "d", "e", "f", "g", "h", "i", "j", "k", "l", "m",
+    "n", "o", "p", "q", "r", "s", "t", "u", "v", "w", "x", "y", "z",
+    "0", "1", "2", "3", "4", "5", "6", "7", "8", "9", "+", "/"
+];
+function bytesToBase64(bytes) {
+    let result = '', i, l = bytes.length;
+    for (i = 2; i < l; i += 3) {
+        result += base64abc[bytes[i - 2] >> 2];
+        result += base64abc[((bytes[i - 2] & 0x03) << 4) | (bytes[i - 1] >> 4)];
+        result += base64abc[((bytes[i - 1] & 0x0F) << 2) | (bytes[i] >> 6)];
+        result += base64abc[bytes[i] & 0x3F];
     }
-    return uInt8Array;
+    if (i === l + 1) { // 1 octet yet to write
+        result += base64abc[bytes[i - 2] >> 2];
+        result += base64abc[(bytes[i - 2] & 0x03) << 4];
+        result += "==";
+    }
+    if (i === l) { // 2 octets yet to write
+        result += base64abc[bytes[i - 2] >> 2];
+        result += base64abc[((bytes[i - 2] & 0x03) << 4) | (bytes[i - 1] >> 4)];
+        result += base64abc[(bytes[i - 1] & 0x0F) << 2];
+        result += "=";
+    }
+    return result;
 }
+
+function getImageType(data) {
+    if (data.charAt(0) == '/') {
+        return "image/jpeg";
+    } else if (data.charAt(0) == 'R') {
+        return "image/gif";
+    } else if (data.charAt(0) == 'i') {
+        return "image/png";
+    }
+}
+
+function toDataURL(url, callback) {
+    var xhr = new XMLHttpRequest();
+    xhr.onload = function () {
+        var reader = new FileReader();
+        reader.onloadend = function () {
+            var bytes = reader.result
+            var uint8View = new Uint8Array(bytes);
+            callback(uint8View);
+        }
+        reader.readAsArrayBuffer(xhr.response);
+    };
+    xhr.open('GET', url);
+    xhr.responseType = 'blob';
+    xhr.send();
+}
+
 export const getEncryptImage = (info) => {
+    if (!document.querySelector(`img[img-id="${info.id}"]`)) {
+        return;
+    }
+
     if (!info.image_IV || !info.image_key) {
         document.querySelector(`img[img-id="${info.id}"]`).src = info.image;
         return info.image;
@@ -38,45 +84,29 @@ export const getEncryptImage = (info) => {
     }).then((response) => {
         const reader = new FileReader();
         reader.addEventListener('loadend', (e) => {
-            let key = CryptoJS.enc.Hex.parse(data.key); // 16進制
-            let iv = CryptoJS.enc.Hex.parse(data.iv);
+            var bytes = reader.result
+            var dataUrl = new Uint8Array(bytes);
 
-            // let key = data.key;
-            // let iv = data.iv;
+            // 16進制轉換
+            var key = aesjs.utils.hex.toBytes(data.key)
+            var iv = aesjs.utils.hex.toBytes(data.iv)
 
-            // let key = CryptoJS.enc.Utf8.parse(data.key); // Utf8
-            // let iv = CryptoJS.enc.Utf8.parse(data.iv);
+            var aesCbc = new aesjs.ModeOfOperation.cbc(key, iv);
+            var decryptedBytes = aesCbc.decrypt(dataUrl);
+            var decryptedText = aesjs.utils.utf8.fromBytes(decryptedBytes);
 
-            // let key = CryptoJS.enc.Base64.parse(data.key); // Base64
-            // let iv = CryptoJS.enc.Base64.parse(data.iv);
+            var base64String = bytesToBase64(decryptedBytes);
+            var type = getImageType(base64String)
 
-            let decrypted = CryptoJS.AES.decrypt(reader.result, key, {
-                iv: iv,
-                mode: CryptoJS.mode.CBC,
-                padding: CryptoJS.pad.NoPadding
-            });
+            // 放回image src
+            if (!document.querySelector(`img[img-id="${info.id}"]`)) {
+                return;
+            }
 
-            // var dcBase64String = decrypted.toString(CryptoJS.enc.Base64).toString(CryptoJS.enc.Utf8);
-            // console.log(dcBase64String);
-
-            var typedArray = convertWordArrayToUint8Array(decrypted);
-
-            // 轉換file
-            var fileDec = new Blob([typedArray], { type: 'image/png' });
-
-            console.log('decrypted:', decrypted)
-            console.log('fileDec:', fileDec)
-
-            // 轉換blob
-            const url = window.URL.createObjectURL(fileDec);
-            // const url = window.URL.createObjectURL(new Blob([decrypted], { type: 'image/png' }));
-
-            document.querySelector(`img[img-id="${info.id}"]`).src = url;
-            // document.querySelector(`img[img-id="${info.id}"]`).src = 'data:image/png;base64,' + dcBase64String;
-            // window.URL.revokeObjectURL(url);
+            document.querySelector(`img[img-id="${info.id}"]`).src = `data:${type};base64,${base64String}`;
         });
 
-        reader.readAsDataURL(response.data);
+        reader.readAsArrayBuffer(response.data);
         return;
     });
 };

@@ -315,6 +315,11 @@ export default {
         }
 
         this.videoRecommand = [...response.result];
+        this.$nextTick(() => {
+          this.videoRecommand.forEach(item => {
+            getEncryptImage(item);
+          })
+        })
       });
     },
     // 取得所有影片(熱門推薦除外)
@@ -358,11 +363,10 @@ export default {
         }
 
         this.videoList = [...response.result];
-        this.videoList.forEach(item => {
-          getEncryptImage(item);
-        })
 
         this.$nextTick(() => {
+          this.videoList.forEach(i => { i.list.forEach(item => getEncryptImage(item)) });
+
           if (window.location.hash) {
             const hash = Number(window.location.hash.replace('#', '')) || 0;
             const wrap = document.getElementById('video-list-wrap');
