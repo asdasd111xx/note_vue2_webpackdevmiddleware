@@ -1,7 +1,11 @@
 <template>
-  <div v-if="isRevice">
+  <div>
+    <!-- 卡片管理列表 -->
     <template v-if="!showDetail">
-      <div v-if="virtualBank_card.length > 0" :class="$style['my-card']">
+      <div
+        v-if="isRevice && virtualBank_card.length > 0"
+        :class="$style['my-card']"
+      >
         <p :class="[$style['card-count'], 'clearfix']">
           <span :class="$style['title']">
             {{ $text("S_MY_VIRTUAL_BANKCARD", "我的电子钱包") }}
@@ -47,54 +51,54 @@
         </div>
       </div>
 
-      <div :class="{ [$style['no-data']]: virtualBank_card.length === 0 }">
-        <div
-          v-if="virtualBank_card.length === 0"
-          :class="$style['no-bankcard']"
-        >
+      <!-- 無資料時 -->
+      <div
+        v-if="!isRevice || virtualBank_card.length === 0"
+        :class="$style['no-data']"
+      >
+        <div :class="$style['no-bankcard']">
           <img src="/static/image/ey1/mcenter/bankCard/no_bankcard.png" />
         </div>
+      </div>
 
-        <template
-          v-if="
-            (!userLevelObj.virtual_bank_single &&
-              virtualBank_card.length < 15) ||
-              (userLevelObj.virtual_bank_single &&
-                virtualBank_card.length < nowOpenVirtualBank.length)
-          "
-        >
-          <div :class="$style['add-card']">
-            <div :class="$style['add-wrap']">
-              <div
-                :class="$style['add-btn']"
-                @click="changePage('addVirtualBankCard'), showTab(false)"
-              >
-                <img src="/static/image/ey1/mcenter/add.png" />
-                <span>{{
-                  $text("S_ADD_VIRTUAL_BANKCARD", "添加电子钱包")
-                }}</span>
-              </div>
+      <!-- 添加卡片按鈕區塊 -->
+      <template
+        v-if="
+          (!userLevelObj.virtual_bank_single && virtualBank_card.length < 15) ||
+            (userLevelObj.virtual_bank_single &&
+              virtualBank_card.length < nowOpenVirtualBank.length)
+        "
+      >
+        <div :class="$style['add-card']">
+          <div :class="$style['add-wrap']">
+            <div
+              :class="$style['add-btn']"
+              @click="changePage('addVirtualBankCard'), showTab(false)"
+            >
+              <img src="/static/image/ey1/mcenter/add.png" />
+              <span>{{ $text("S_ADD_VIRTUAL_BANKCARD", "添加电子钱包") }}</span>
             </div>
           </div>
+        </div>
 
-          <p :class="$style['remind']">
-            <span v-if="userLevelObj.virtual_bank_single">
-              {{
-                $t("S_VIRTUAL_BANKCARD_TYPE_LIMIT").replace(
-                  "%s",
-                  nowOpenVirtualBank.length
-                )
-              }}
-            </span>
+        <p :class="$style['remind']">
+          <span v-if="userLevelObj.virtual_bank_single">
+            {{
+              $t("S_VIRTUAL_BANKCARD_TYPE_LIMIT").replace(
+                "%s",
+                nowOpenVirtualBank.length
+              )
+            }}
+          </span>
 
-            <span v-else>
-              {{ $t("S_VIRTUAL_BANKCARD_LIMIT").replace("%s", 15) }}
-            </span>
-          </p>
-        </template>
-      </div>
+          <span v-else>
+            {{ $t("S_VIRTUAL_BANKCARD_LIMIT").replace("%s", 15) }}
+          </span>
+        </p>
+      </template>
     </template>
 
+    <!-- 卡片詳細資料 -->
     <template v-if="showDetail && virtualBank_cardDetail">
       <div :class="$style['card-detail']">
         <div

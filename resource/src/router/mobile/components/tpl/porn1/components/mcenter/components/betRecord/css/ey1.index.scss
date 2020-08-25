@@ -1,23 +1,37 @@
-@import './porn1.index.scss';
+@import "./porn1.index.scss";
 
 .time-cancel {
-    background: #222222;
-    color: #fff;
+  background: #222222;
+  color: #fff;
 }
 
 .time-confirm {
-    color: #FFF;
-    background: #E42A30;
-    background-image: unset;
+  color: #fff;
+  background: #e42a30;
+  background-image: unset;
 }
 
 .dropdown-wrap {
-    li {
-        &.active {
-            color: #FFF;
-            background: #E42A30;
-            background-image: unset;
-        }
+  li {
+    &.active {
+      color: #fff;
+      background: #e42a30;
+      background-image: unset;
     }
+  }
+}
 
+.game-name {
+  &:before {
+    display: block;
+    width: 3px;
+    height: 14px;
+    position: absolute;
+    left: 0;
+    top: 50%;
+    transform: translateY(-50%);
+    background-image: -webkit-linear-gradient(#fe2a2a, #b60303);
+    background-image: linear-gradient(#fe2a2a, #b60303);
+    content: "";
+  }
 }

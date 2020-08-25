@@ -1,18 +1,37 @@
 @import "./porn1.index.scss";
+$main_color: #e42a30;
 
 .wallet-info-wrap {
-    .money-block {
-        .goDeposit {
-            background: #E74151;
-            color: #fefffe;
-        }
+  .money-block {
+    .goDeposit {
+      background: #e74151;
+      color: #fefffe;
     }
+  }
 }
 
 .wager-wrap {
-    .title {
-        &::before {
-            background: linear-gradient(#FE2A2A, #B60303);
-        }
+  .title {
+    &::before {
+      background: linear-gradient(#fe2a2a, #b60303);
     }
+  }
+}
+
+.balance-total-item {
+  .balance-item-money {
+    color: $main_color;
+  }
+}
+
+.balance-wrap {
+  .balance-total-item {
+    .balance-item-money {
+      color: $main_color;
+    }
+  }
+
+  .recycle-btn {
+    color: $main_color;
+  }
 }

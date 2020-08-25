@@ -593,7 +593,7 @@ export const actionMemInit = ({ state, dispatch, commit }) => {
     })();
 };
 // 會員端-設定會員資訊
-export const actionSetUserdata = ({ commit }, forceUpdate = false) => {
+export const actionSetUserdata = ({ state, dispatch, commit }, forceUpdate = false) => {
     // 強制更新, memstatus 變更為 true
     memstatus = forceUpdate || memstatus;
 
@@ -639,7 +639,6 @@ export const actionSetUserdata = ({ commit }, forceUpdate = false) => {
             } else {
                 configInfo = siteConfigTest[`site_${state.webInfo.alias}`] || siteConfigTest.preset;
             }
-
             // 設置cdn圖片路徑
             if (headers['X-CDN-EY'] &&
                 configInfo.MOBILE_WEB_TPL === "ey1") {
