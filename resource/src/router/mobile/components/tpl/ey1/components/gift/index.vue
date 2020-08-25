@@ -153,7 +153,7 @@ export default {
     }),
     headerConfig() {
       return {
-        prev: true,
+        prev: !!this.$route.query.q,
         title: this.$route.query.q ? this.$route.query.q : "礼包",
         onClick: () => {
           if (this.$route.query.q) {

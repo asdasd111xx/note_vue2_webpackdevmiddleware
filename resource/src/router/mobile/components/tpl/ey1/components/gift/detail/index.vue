@@ -34,7 +34,7 @@ export default {
     headerConfig() {
       if (this.$route.params.key === "wechat") {
         this.type = 'wechat';
-        this.title = '微信'
+        this.title = '微信推广'
       }
 
       return {

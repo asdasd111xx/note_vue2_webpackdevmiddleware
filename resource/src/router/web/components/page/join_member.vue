@@ -255,6 +255,14 @@
         />
       </div>
 
+      <div
+        :class="
+          allTip['captcha_text'] ? $style['join-tip-show'] : $style['join-tip']
+        "
+        :style="{ 'padding-right': '40px', 'padding-top': '0' }"
+        v-html="allTip['captcha_text']"
+      />
+
       <slide-verification
         v-if="memInfo.config.register_captcha_type === 2"
         :class="$style['join-btn-wrap']"
@@ -463,14 +471,6 @@ export default {
     }
   },
   created() {
-    // 補取款密碼options
-    for (let index = 0; index < 10; index += 1) {
-      const option = { label: `${index}`, value: index };
-      for (let i = 0; i < 4; i += 1) {
-        this.selectData.withdraw_password[i].options.push(option);
-      }
-    }
-
     let joinConfig = [];
     let joinReminder = {};
     const username = {

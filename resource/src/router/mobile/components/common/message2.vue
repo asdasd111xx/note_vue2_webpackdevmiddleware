@@ -1,7 +1,7 @@
 <template>
   <transition name="fade">
     <div v-show="isShow && msg" class="dialog">
-      <div>{{ msg }}</div>
+      <div v-html="msg" />
     </div>
   </transition>
 </template>

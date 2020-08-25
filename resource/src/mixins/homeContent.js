@@ -26,17 +26,17 @@ export default {
             isShowLoading: false,
             isCheckWithdraw: false,
             mcenterList: [
-                { name: 'deposit', text: '充值' },
-                { name: 'balanceTrans', text: '转帐' },
-                { name: 'withdraw', text: '提现' },
-                { name: 'creditTrans', text: '转让' },
-                { name: 'grade', text: '等级' }
+                { name: 'deposit', text: '充值', path: 'deposit' },
+                { name: 'balanceTrans', text: '转帐', path: 'balanceTrans' },
+                { name: 'withdraw', text: '提现', path: 'withdraw' },
+                { name: 'creditTrans', text: '转让', path: 'creditTrans' },
+                { name: 'grade', text: '等级', path: 'accountVip' }
             ],
             mcenterEy1List: [
-                { name: 'deposit', text: '充值' },
-                { name: 'balanceTrans', text: '转帐' },
-                { name: 'makemoney', text: '推广' },
-                { name: 'vip', text: 'VIP' },
+                { name: 'deposit', text: '充值', path: 'deposit' },
+                { name: 'balanceTrans', text: '转帐', path: 'balanceTrans' },
+                { name: 'makemoney', text: '推广', path: 'makemoney' },
+                { name: 'vip', text: 'VIP', path: 'accountVip' },
             ]
         };
     },
@@ -351,9 +351,6 @@ export default {
                 //     this.actionSetGlobalMessage({ type: 'bindcard', code: 'C50099' });
                 //   }
                 // });
-            } else if (path === 'grade') {
-                this.$router.push('/mobile/mcenter/accountVip');
-                return;
             } else if (path === 'creditTrans') {
                 this.actionGetRechargeStatus('home');
                 return;

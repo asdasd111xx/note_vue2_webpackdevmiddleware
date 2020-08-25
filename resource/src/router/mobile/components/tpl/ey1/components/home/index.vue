@@ -1,5 +1,9 @@
 <template>
-  <mobile-container :header-config="headerConfig" :class="$style.container">
+  <mobile-container
+    :header-config="headerConfig"
+    :class="$style.container"
+    :is-home="true"
+  >
     <div slot="content" class="content-wrap">
       <div :class="$style['top-bg']" />
       <home-slider />

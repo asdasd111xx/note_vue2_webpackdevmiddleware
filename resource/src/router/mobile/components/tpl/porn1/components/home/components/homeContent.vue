@@ -57,7 +57,7 @@
             v-for="(info, index) in mcenterList"
             :key="`mcenter-${index}`"
             :class="$style['mcenter-wrap']"
-            @click="onGoToMcenter(info.name)"
+            @click="onGoToMcenter(info.path)"
           >
             <template v-if="info.name === 'grade'">
               <img

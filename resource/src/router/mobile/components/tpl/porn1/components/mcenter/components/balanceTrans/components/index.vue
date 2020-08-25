@@ -439,7 +439,6 @@ export default {
       // 轉出列表只塞有額度的平台（額度需>=1，只有小數位不允許轉）
       // 維護時不可轉出
       Object.keys(this.membalance.vendor).forEach((index) => {
-        console.log(index, this.tranIn)
         if (index === this.tranIn) {
           return;
         }

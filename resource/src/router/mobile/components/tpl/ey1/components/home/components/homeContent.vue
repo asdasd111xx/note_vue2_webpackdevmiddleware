@@ -40,7 +40,7 @@
             v-for="(info, index) in mcenterEy1List"
             :key="`mcenter-${index}`"
             :class="$style['mcenter-cell']"
-            @click="onGoToMcenter(info.name)"
+            @click="onGoToMcenter(info.path)"
           >
             <template v-if="info.name === 'grade'">
               <img
