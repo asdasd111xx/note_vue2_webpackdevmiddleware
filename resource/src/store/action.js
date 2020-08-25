@@ -638,16 +638,15 @@ export const actionSetUserdata = ({ state, dispatch, commit }, forceUpdate = fal
                 case '500015':
                 case '69':
                 case '67':
+                default:
                     configInfo = siteConfigOfficial[`site_67`];
                     break;
-                case '50023':
+                case '500023':
                 case '41':
                 case '74':
                     configInfo = siteConfigOfficial[`site_41`];
                     break;
             }
-            console.log(configInfo.MOBILE_WEB_TPL)
-
             // 設置cdn圖片路徑
             if (headers['x-cdn-ey'] &&
                 configInfo.MOBILE_WEB_TPL === "ey1") {

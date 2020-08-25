@@ -52,7 +52,7 @@ export default {
           key: 'deposit',
           img: 'deposit',
           info: '充值极速到账',
-          needLogin: true
+          needLogin: false
         },
         {
           name: '提现教程',
