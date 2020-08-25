@@ -1,0 +1,79 @@
+.header-wrap {
+    margin: 0 auto;
+    width: 1000px;
+    font-size: 14px;
+
+    .header-top {
+        padding-top: 8px;
+        line-height: 28px;
+    }
+
+    /deep/ {
+        @import "./memLogin.scss";
+        @import "./memInfo.scss";
+        @import "./memMenu.scss";
+        @import './langSelect.scss';
+        @import './nav.scss';
+
+        // Fixed 定位樣式
+        .fixed-wrap {
+            height: 38px;
+
+            &.fixed {
+                .fixed-block {
+                    position: fixed;
+                    top: 0;
+                    left: 0;
+                    z-index: 10;
+                    margin: 0 auto;
+                    width: 100%;
+                    min-width: 1280px;
+                    background-color: #CCC;
+                }
+            }
+        }
+
+        .header-logo-wrap {
+            position: relative; //勿刪，後台logo編輯使用
+            float: left;
+            margin-top: 8px;
+            border: 1px solid #FAFAFA;
+            cursor: pointer;
+
+            img {
+                display: block;
+                width: inherit;
+                height: inherit;
+            }
+        }
+    }
+
+    .agent-join,
+    .agent-login {
+        float: left;
+        margin-left: 4px;
+        cursor: pointer;
+    }
+
+    // 跑馬燈
+    .news-wrap {
+        position: relative;
+        clear: left;
+        padding-left: 80px;
+        height: 26px;
+        line-height: 26px;
+
+        .news-title {
+            position: absolute;
+            left: 0;
+            right: 0;
+            width: 80px;
+            height: inherit;
+            line-height: inherit;
+        }
+
+         /deep/ .news-content {
+            cursor: pointer;
+        }
+    }
+}
