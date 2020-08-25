@@ -1342,6 +1342,11 @@ export const actionSetUserLevels = ({ commit }) => {
     });
 }
 export const actionGetMemInfoV3 = ({ commit }) => {
+    const hasLogin = Vue.cookie.get('cid');
+    if (!hasLogin) {
+        return;
+    }
+
     axios({
         method: 'get',
         url: '/api/v3/c/player'

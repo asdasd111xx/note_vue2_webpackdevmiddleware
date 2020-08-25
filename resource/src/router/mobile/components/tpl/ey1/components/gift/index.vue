@@ -20,7 +20,9 @@
             {{ item.name }}
           </div>
           <div
-            v-if="item && (item.url || item.thirdUrl || item.items)"
+            v-if="
+              item && (item.url || item.thirdUrl || item.items || item.params)
+            "
             :class="$style['icon-next']"
           >
             <img src="/static/image/ey1/common/btn_next.png" />

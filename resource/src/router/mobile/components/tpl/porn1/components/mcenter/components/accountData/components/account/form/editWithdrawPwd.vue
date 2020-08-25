@@ -120,7 +120,6 @@ export default {
     verification(key, index) {
       let target = this.formData[key];
       let errorMsg = '';
-      let check = true;
       let correct_value = target.value[index]
         .replace(' ', '')
         .trim()
@@ -137,8 +136,6 @@ export default {
       if (target.value[index].length > 1) {
         target.value[index] = target.value[index].substring(0, 1);
       }
-
-
 
       if (this.memInfo.user.has_withdraw_password) {
         for (let i = 0; i < 4; i++) {

@@ -53,7 +53,6 @@ export default {
     }),
     list() {
       return [
-
         { key: 'home', name: this.$text('S_HOME', '首页'), path: '/mobile' },
         { key: 'promotion', name: this.$text('S_PROMOTION', '优惠'), path: '/mobile/promotion' },
         { key: 'service', name: this.$text('S_SERVIEC', '客服'), path: '/mobile/service' },
@@ -71,8 +70,8 @@ export default {
       this.$router.push(path);
     },
     isActive(key) {
-      if (key === 'discover') {
-        return [key, 'artist', 'videoPlay', 'tag'].indexOf(this.$route.name) >= 0;
+      if (key === 'gift') {
+        return ['gift', 'giftDetail'].indexOf(this.$route.name) >= 0;
       }
       return key === this.$route.name;
     }
@@ -138,7 +137,7 @@ export default {
   border-radius: 50%;
   width: 6px;
   height: 6px;
-  top: 5px;
+  top: 10px;
   right: 33%;
 }
 </style>

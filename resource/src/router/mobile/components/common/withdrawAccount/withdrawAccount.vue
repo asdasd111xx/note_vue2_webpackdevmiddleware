@@ -76,7 +76,7 @@
               @blur="verification('phone')"
               :class="$style['phone-input']"
               :placeholder="formData['phone'].placeholder"
-              type="number"
+              type="tel"
             />
           </div>
         </div>
@@ -299,6 +299,12 @@ export default {
             .trim()
             .replace(/[^0-9]/g, '');
         }
+      }
+
+      if (key === "keyring") {
+        target.value = target.value.replace(' ', '')
+          .trim()
+          .replace(/[^0-9A-Za-z]/g, '');
       }
 
       let check = true;
