@@ -1,4 +1,4 @@
-import aesjs from 'AES-JS'
+import aesjs from 'aes-js';
 import axios from 'axios';
 const base64abc = [
     "A", "B", "C", "D", "E", "F", "G", "H", "I", "J", "K", "L", "M",

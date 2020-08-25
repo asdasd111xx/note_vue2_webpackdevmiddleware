@@ -632,8 +632,22 @@ export const actionSetUserdata = ({ commit }, forceUpdate = false) => {
             commit(types.ISLOGIN, true);
         },
         headers: (headers) => {
+            let configInfo;
+
+            if (state.webInfo.is_production) {
+                configInfo = siteConfigOfficial[`site_${state.webInfo.alias}`] || siteConfigOfficial.preset;
+            } else {
+                configInfo = siteConfigTest[`site_${state.webInfo.alias}`] || siteConfigTest.preset;
+            }
+
             // 設置cdn圖片路徑
-            if (headers['x-cdn-yb']) {
+            if (headers['X-CDN-EY'] &&
+                configInfo.MOBILE_WEB_TPL === "ey1") {
+                commit(types.SETCDNROOT, `https://${headers['X-CDN-EY']}`);
+            }
+
+            if (headers['x-cdn-yb'] &&
+                configInfo.MOBILE_WEB_TPL === "porn1") {
                 commit(types.SETCDNROOT, `https://${headers['x-cdn-yb']}`);
             }
         },

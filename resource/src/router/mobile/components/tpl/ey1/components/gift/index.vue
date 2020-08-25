@@ -19,8 +19,14 @@
           <div>
             {{ item.name }}
           </div>
-          <div :class="$style['icon-next']">
+          <div
+            v-if="item && (item.url || item.thirdUrl || item.items)"
+            :class="$style['icon-next']"
+          >
             <img src="/static/image/ey1/common/btn_next.png" />
+          </div>
+          <div v-else :class="$style['incoming']">
+            即将开业 敬请期待
           </div>
         </div>
       </div>
@@ -211,7 +217,7 @@ export default {
         this.getThridUrl(item.thirdUrl);
       }
       else {
-        this.actionSetGlobalMessage({ msg: '即将开业 敬请期待' });
+        // this.actionSetGlobalMessage({ msg: '即将开业 敬请期待' });
       }
     }
   },
@@ -278,5 +284,14 @@ export default {
       height: 18px;
     }
   }
+}
+
+.incoming {
+  height: 100%;
+  display: flex;
+  align-items: center;
+  position: absolute;
+  right: 18px;
+  color: #a6a9b2;
 }
 </style>
