@@ -4,6 +4,7 @@ import { mapActions } from "vuex";
 export default {
   data() {
     return {
+      isRevice: false,
       bank_card: [],
       bank_cardDetail: {}
     }
@@ -11,6 +12,8 @@ export default {
   methods: {
     ...mapActions(['actionSetGlobalMessage']),
     getUserBankList() {
+      this.isRevice = false;
+
       return axios({
         method: "get",
         url: "/api/v1/c/player/user_bank/list"

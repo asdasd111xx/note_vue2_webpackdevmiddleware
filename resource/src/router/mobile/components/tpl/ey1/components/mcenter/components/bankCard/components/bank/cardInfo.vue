@@ -1,15 +1,19 @@
 <template>
-  <div v-if="isRevice">
+  <div>
+    <!-- 卡片管理列表 -->
     <template v-if="!showDetail">
-      <div v-if="bank_card.length > 0" :class="$style['my-card']">
+      <div v-if="isRevice && bank_card.length > 0" :class="$style['my-card']">
         <p :class="[$style['card-count'], 'clearfix']">
-          <span :class="$style['title']">{{
-            $text("S_MY_CRAD", "我的卡")
-          }}</span>
-          <span :class="$style['count']">{{
-            $text("S_CRAD_COUNT", "共%s张").replace("%s", bank_card.length)
-          }}</span>
+          <span :class="$style['title']">
+            {{ $text("S_MY_CRAD", "我的卡") }}
+          </span>
+          <span :class="$style['count']">
+            {{
+              $text("S_CRAD_COUNT", "共%s张").replace("%s", bank_card.length)
+            }}
+          </span>
         </p>
+
         <div :class="$style['card-list']">
           <div
             v-for="item in bank_card"
@@ -21,15 +25,18 @@
               <div :class="$style['card-logo']">
                 <img v-lazy="getBankImage(item.swift_code)" />
               </div>
+
               <div :class="$style['card-info']">
                 <div :class="$style['card-name']">
                   {{ item.bank_name }}
                 </div>
+
                 <div :class="$style['card-type']">
                   {{ item.type }}
                 </div>
               </div>
             </div>
+
             <div :class="$style['card-number']">
               **** **** **** <span>{{ item.account.slice(-4) }}</span>
             </div>
@@ -37,46 +44,55 @@
         </div>
       </div>
 
-      <div :class="{ [$style['no-data']]: bank_card.length === 0 }">
-        <div v-if="bank_card.length === 0" :class="$style['no-bankcard']">
+      <!-- 無資料時 -->
+      <div
+        v-if="!isRevice || bank_card.length === 0"
+        :class="$style['no-data']"
+      >
+        <div :class="$style['no-bankcard']">
           <img src="/static/image/ey1/mcenter/bankCard/no_bankcard.png" />
         </div>
+      </div>
 
-        <template v-if="bank_card.length < 3">
-          <div :class="$style['add-card']">
-            <div :class="$style['add-wrap']">
-              <div
-                :class="$style['add-btn']"
-                @click="changePage('addBankCard'), showTab(false)"
-              >
-                <img src="/static/image/ey1/mcenter/add.png" />
-                <span>{{ $text("S_ADD_BANKCARD", "添加银行卡") }}</span>
-              </div>
+      <!-- 添加卡片按鈕區塊 -->
+      <template v-if="isRevice && bank_card.length < 3">
+        <div :class="$style['add-card']">
+          <div :class="$style['add-wrap']">
+            <div
+              :class="$style['add-btn']"
+              @click="changePage('addBankCard'), showTab(false)"
+            >
+              <img src="/static/image/ey1/mcenter/add.png" />
+              <span>{{ $text("S_ADD_BANKCARD", "添加银行卡") }}</span>
             </div>
           </div>
+        </div>
 
-          <p :class="$style['remind']">
-            {{ $t("S_BANKCARD_LIMIT").replace("%s", 3) }}
-          </p>
-        </template>
-      </div>
+        <p :class="$style['remind']">
+          {{ $t("S_BANKCARD_LIMIT").replace("%s", 3) }}
+        </p>
+      </template>
     </template>
 
-    <div v-else :class="$style['card-detail']">
+    <!-- 卡片詳細資料 -->
+    <div v-if="showDetail && bank_cardDetail" :class="$style['card-detail']">
       <div :class="$style['bankcard-item']">
         <div :class="[$style['card-top'], 'clearfix']">
           <div :class="$style['card-logo']">
             <img v-lazy="getBankImage(bank_cardDetail.swift_code)" />
           </div>
+
           <div :class="$style['card-info']">
             <div :class="$style['card-name']">
               {{ bank_cardDetail.bank_name }}
             </div>
+
             <div :class="$style['card-type']">
               {{ bank_cardDetail.type }}
             </div>
           </div>
         </div>
+
         <div :class="$style['card-number']">
           **** **** **** <span>{{ bank_cardDetail.account.slice(-4) }}</span>
         </div>
@@ -91,6 +107,7 @@
           >
             解除绑定
           </div>
+
           <div
             :class="[$style['edit-option-item'], $style['cancel']]"
             @click="$emit('update:editStatus', false)"
@@ -130,11 +147,6 @@ export default {
       required: true
     }
   },
-  data() {
-    return {
-      isRevice: false
-    };
-  },
   created() {
     this.getUserBankList();
   },
@@ -142,9 +154,7 @@ export default {
     getBankImage(swiftCode) {
       return {
         src: `https://images.dormousepie.com/icon/bankIconBySwiftCode/${swiftCode}.png`,
-        error: this.$getCdnPath(
-          "/static/image/ey1/default/bank_default_2.png"
-        ),
+        error: this.$getCdnPath("/static/image/ey1/default/bank_default_2.png"),
         loading: this.$getCdnPath(
           "/static/image/ey1/default/bank_default_2.png"
         )

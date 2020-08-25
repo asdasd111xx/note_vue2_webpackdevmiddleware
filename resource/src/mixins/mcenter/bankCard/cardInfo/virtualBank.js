@@ -19,13 +19,19 @@ export default {
   },
   methods: {
     ...mapActions(['actionSetGlobalMessage']),
+    /*************************
+     * 取得目前開放的銀行列表    *
+     *************************/
     getNowOpenVirtualBank() {
+      this.isRevice = false;
+
       // Get 錢包類型
       axios({
         method: "get",
         url: "/api/payment/v1/c/virtual/bank/list"
       }).then(response => {
         const { ret, result } = response.data;
+        this.isRevice = true;
 
         if (!response || result !== "ok") {
           return;
@@ -34,6 +40,9 @@ export default {
         this.nowOpenVirtualBank = ret;
       });
     },
+     /*************************
+      * 目前 User 擁有的卡片     *
+      *************************/
     getUserVirtualBankList() {
       this.isRevice = false;
 
