@@ -631,14 +631,22 @@ export const actionSetUserdata = ({ state, dispatch, commit }, forceUpdate = fal
             }
             commit(types.ISLOGIN, true);
         },
-        headers: (headers) => {
+        headers: (headers, data) => {
+            let domain = data.ret.user.domain.toString();
             let configInfo;
-
-            if (state.webInfo.is_production) {
-                configInfo = siteConfigOfficial[`site_${state.memInfo.user.domain}`] || siteConfigOfficial.preset;
-            } else {
-                configInfo = siteConfigTest[`site_${state.memInfo.user.domain}`] || siteConfigTest.preset;
+            switch (domain) {
+                case '500015':
+                case '69':
+                case '67':
+                    configInfo = siteConfigOfficial[`site_67`];
+                    break;
+                case '50023':
+                case '41':
+                case '74':
+                    configInfo = siteConfigOfficial[`site_41`];
+                    break;
             }
+            console.log(configInfo.MOBILE_WEB_TPL)
 
             // 設置cdn圖片路徑
             if (headers['x-cdn-ey'] &&
