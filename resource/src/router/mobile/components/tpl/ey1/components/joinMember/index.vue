@@ -48,19 +48,19 @@ export default {
       return;
     }
 
-    if (!document.querySelector('script[data-name="esabgnixob"]')) {
-      this.script = document.createElement('script');
-      this.script.setAttribute('type', 'text/javascript');
-      this.script.setAttribute('data-name', 'esabgnixob');
+    // if (!document.querySelector('script[data-name="esabgnixob"]')) {
+    //   this.script = document.createElement('script');
+    //   this.script.setAttribute('type', 'text/javascript');
+    //   this.script.setAttribute('data-name', 'esabgnixob');
 
-      if (window.location.host.includes("localhost")) {
-        this.script.setAttribute('src', 'https://yb01.66boxing.com/mobile/esabgnixob.js');
-      } else {
-        this.script.setAttribute('src', 'esabgnixob.js');
-      }
+    //   if (window.location.host.includes("localhost")) {
+    //     this.script.setAttribute('src', 'https://yb01.66boxing.com/mobile/esabgnixob.js');
+    //   } else {
+    //     this.script.setAttribute('src', 'esabgnixob.js');
+    //   }
 
-      document.head.appendChild(this.script);
-    }
+    //   document.head.appendChild(this.script);
+    // }
   },
 };
 </script>

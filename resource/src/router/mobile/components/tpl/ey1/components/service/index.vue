@@ -37,7 +37,7 @@
               :src="$getCdnPath(`/static/image/_new/service/ic_service01.png`)"
             />
             &nbsp;
-            <span>在线客服1</span>
+            <span>在线客服</span>
           </div>
           <div>Main Customer Support</div>
           <div>7*24小时专线服务 贴心至上</div>
