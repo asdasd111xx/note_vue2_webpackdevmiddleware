@@ -29,7 +29,7 @@ export default ({
     return axios(obj).then((response) => {
         if (response.data.result === 'ok') {
             success(response.data);
-            headers(response.headers);
+            headers(response.headers, response.data);
         }
         if (response.data.result === 'error') {
             if (response.data.msg && errorAlert) {
