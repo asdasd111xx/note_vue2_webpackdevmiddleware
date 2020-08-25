@@ -48,6 +48,7 @@
             :class="$style['balance-info-maintain']"
             @click="onClickMaintain(item.maintain)"
           >
+            {{ $t("S_MAINTAIN") }}
             <img
               :src="
                 $getCdnPath(
@@ -56,7 +57,6 @@
               "
               :class="$style['balance-wrench']"
             />
-            {{ $t("S_MAINTAIN") }}
           </span>
           <span v-else :class="$style['balance-item-money']">{{
             item.amount

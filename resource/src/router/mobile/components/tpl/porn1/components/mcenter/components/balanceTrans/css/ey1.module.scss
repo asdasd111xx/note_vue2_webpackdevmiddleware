@@ -1,14 +1,28 @@
 @import "./porn1.module.scss";
 
 .max-money-btn {
-    color: #fff;
-    background: #E42A30;
+  color: #fff;
+  background: #e42a30;
 }
 
 .transfer-btn {
-    background: #E42A30;
+  background: #e42a30;
 
-    &.is-disable {
-        background: #FDCCCC;
+  &.is-disable {
+    background: #fdcccc;
+  }
+}
+
+.select-container {
+  .select-header {
+    span {
+      color: #414655;
     }
+  }
+}
+
+.balance-transfer-list {
+  &::after {
+    border-top: 5px solid #cbced8;
+  }
 }
