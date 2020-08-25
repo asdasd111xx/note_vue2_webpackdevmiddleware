@@ -629,7 +629,7 @@ export default {
         fail: (res) => {
           this.btnLock = false;
           this.actionSetGlobalMessage({
-            msg: res.data.msg, code: res.data.code, origin: "balanceTrans"
+            code: res.data.code, origin: "balanceTrans", type: "balanceTrans"
           });
         }
       }, source, target);

@@ -45,6 +45,9 @@ export default {
           case "bindVirtualBank":
             this.msg = "请先绑定电子钱包"
             break;
+          case "balanceTrans":
+            this.msg = "请先完成提现信息"
+            break;
           case "login":
             this.msg = "请先登入"
             break;
