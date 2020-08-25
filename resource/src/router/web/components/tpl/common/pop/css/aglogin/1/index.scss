@@ -1,0 +1,176 @@
+@import "~@/css/variable.scss";
+
+.ag-login-wrap {
+    position: relative;
+    width: 98%;
+    max-width: 430px;
+    margin: 194px auto 0;
+    padding: 50px 0;
+    background: url('/static/image/agent/agcenter_login_bg.png') 50% 0 repeat-y;
+    color: #000;
+    text-align: center;
+    .close-btn {
+        position: absolute;
+        top: 15px;
+        right: 15px;
+        width: 30px;
+        height: 30px;
+        line-height: 30px;
+        font-size: 60px;
+        font-family: initial;
+        color: #8190AA;
+        cursor: pointer;
+        transition: all .3s ease;
+        &:hover {
+            transform:rotate(90deg);
+        }
+    }
+    .title {
+        margin: 0 auto 35px;
+        width: 190px;
+        height: 70px;
+        
+        &.zh-cn {
+            background: url('/static/image/agent/agent_title/lang/zh-cn/agcenter_login_title.png') 50% 0 no-repeat;
+        }
+
+        &.zh-tw {
+            background: url('/static/image/agent/agent_title/lang/zh-tw/agcenter_login_title.png') 50% 0 no-repeat;
+        }
+
+        &.en {
+            background: url('/static/image/agent/agent_title/lang/en/agcenter_login_title.png') 50% 0 no-repeat;
+        }
+
+        &.ja {
+            background: url('/static/image/agent/agent_title/lang/ja/agcenter_login_title.png') 50% 0 no-repeat;
+        }
+    }
+    .content {
+        margin: 0 auto;
+        width: 277px;
+    }
+    .cheader {
+        background: url('/static/image/agent/agcenter_login_top.png') 50% 0 no-repeat;
+        height: 73px;
+    }
+    .cbody {
+        padding: 20px 0;
+        background: url('/static/image/agent/agcenter_login_body_y.png') 50% 0 repeat-y;
+        .field {
+            position: relative;
+            margin: 0 auto;
+            padding: 0 10px;
+            width: 82%;
+            height: 40px;
+            line-height: 40px;
+            border-bottom: 1px solid #EDEDED;
+
+            input {
+                display: block;
+                border: none;
+                background: transparent;
+                width: 100%;
+                height: 40px;
+                line-height: 40px;
+                color: #313F52;
+                font-size: 16px;
+                outline: none;
+
+                &::-webkit-input-placeholder { /* Chrome/Opera/Safari */
+                    color: #999;
+                }
+                &::placeholder {
+                    color: #999;
+                }
+            }
+            &.password {
+                margin: 20px auto;
+            }
+            &.captcha {
+                margin-bottom: 40px;
+                img {
+                    position: absolute;
+                    top: 0;
+                    right: 0;
+                    background: #F3F3F3;
+                    cursor: pointer;
+                }
+            }
+        }
+    }
+    .submit-btn {
+        margin: 0 auto;
+        padding: 0 20px;
+        background: url('/static/image/agent/agcenter_login_btn.png') 50% 0 no-repeat;
+        width: 202px;
+        height: 72px;
+        line-height: 72px;
+        color: #FFF;
+        text-overflow: ellipsis;
+        overflow: hidden;
+        white-space: nowrap;
+        cursor: pointer;
+        &:hover {
+            color: #FF8989;
+        }
+    }
+    .forgetpwd-btn {
+        margin: 10px auto;
+        width: 182px;
+        cursor: pointer;
+        text-overflow: ellipsis;
+        overflow: hidden;
+        white-space: nowrap;
+        &:hover {
+            color: #FF8989;
+            text-decoration: underline;
+        }
+    }
+    .cfooter {
+        position: relative;
+        top: -5px;
+        background: url('/static/image/agent/agcenter_login_bottom.png') 50% 100% no-repeat;
+        height: 55px;
+    }
+    .join-btn {
+        display: inline-block;
+        margin: 0 auto;
+        padding-left: 35px;
+        background: url('/static/image/agent/agcenter_login_icon2.png') 0 0 no-repeat;
+        max-width: 180px;
+        height: 48px;
+        line-height: 48px;
+        color: #FFF;
+        text-overflow: ellipsis;
+        overflow: hidden;
+        white-space: nowrap;
+        cursor: pointer;
+        &:hover {
+            color: #FF8989;
+        }
+    }
+}
+
+@media screen and (min-width: $phone + $sidebar) {
+    .ag-login-wrap {
+        .content {
+            width: 382px;
+        }
+        .cheader {
+            width: 382px;
+            height: 100px;
+            background: url('/static/image/agent/agcenter_login_top2.png') 50% 0 no-repeat;
+        }
+        .cbody {
+            background: url('/static/image/agent/agcenter_login_body_y2.png') 50% 0 repeat-y;
+        }
+        .field {
+            max-width: 280px;
+        }
+        .cfooter {
+            width: 382px;
+            background: url('/static/image/agent/agcenter_login_bottom2.png') 50% 100% no-repeat;
+        }
+    }
+}
