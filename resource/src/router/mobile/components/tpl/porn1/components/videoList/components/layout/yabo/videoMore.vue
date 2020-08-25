@@ -170,10 +170,6 @@ export default {
 
         this.hasInfinite = true;
       });
-
-      this.videoList.forEach(item => {
-        getEncryptImage(item);
-      })
     },
     infiniteHandler($state) {
       if (this.isReceive) {
@@ -204,6 +200,15 @@ export default {
   watch: {
     sortId() {
       this.setVideoList();
+    },
+    videoList(val) {
+      this.$nextTick(() => {
+        setTimeout(() => {
+          this.videoList.forEach(item => {
+            getEncryptImage(item);
+          })
+        }, 100)
+      })
     }
   }
 };

@@ -156,6 +156,12 @@ export default {
         [...videoRecommand]
       );
 
+      setTimeout(() => {
+        videoList.forEach(item => {
+          getEncryptImage(item);
+        })
+      }, 1000)
+
       return videoList;
     }
   },
@@ -315,11 +321,6 @@ export default {
         }
 
         this.videoRecommand = [...response.result];
-        this.$nextTick(() => {
-          this.videoRecommand.forEach(item => {
-            getEncryptImage(item);
-          })
-        })
       });
     },
     // 取得所有影片(熱門推薦除外)
@@ -365,7 +366,6 @@ export default {
         this.videoList = [...response.result];
 
         this.$nextTick(() => {
-          this.videoList.forEach(i => { i.list.forEach(item => getEncryptImage(item)) });
 
           if (window.location.hash) {
             const hash = Number(window.location.hash.replace('#', '')) || 0;
