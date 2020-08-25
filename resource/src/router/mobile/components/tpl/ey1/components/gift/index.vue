@@ -44,9 +44,9 @@ export default {
           title: "福利",
           icon: '/static/image/ey1/gift/icon_gift_bonus.png',
           items: [
-            { name: "每日签到", thirdUrl: "https://fn139.com/plugin.php?id=lezhi99_lottery&view=sign&mobile=2" },
-            { name: "好运转盘", thirdUrl: "https://fn139.com/plugin.php?id=lezhi99_lottery" },
-            { name: "积分商城", thirdUrl: "https://fn139.com/keke_integralmall-index.html" }
+            { name: "每日签到", login: true, thirdUrl: "https://fn139.com/plugin.php?id=lezhi99_lottery&view=sign&mobile=2" },
+            { name: "好运转盘", login: true, thirdUrl: "https://fn139.com/plugin.php?id=lezhi99_lottery" },
+            { name: "积分商城", login: true, thirdUrl: "https://fn139.com/keke_integralmall-index.html" }
           ]
         },
         {
@@ -141,6 +141,7 @@ export default {
   },
   computed: {
     ...mapGetters({
+      loginStatus: 'getLoginStatus',
     }),
     headerConfig() {
       return {
@@ -189,6 +190,10 @@ export default {
       })
     },
     linkTo(item) {
+      if (item.login && !this.loginStatus) {
+        this.$router.push('/mobile/login');
+        return;
+      }
       if (item.items && item.items.length > 0) {
         this.$router.push({ query: { q: item.name } })
         this.currentMenu = item.items;

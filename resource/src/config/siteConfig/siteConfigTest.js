@@ -4,8 +4,6 @@
  */
 import { basic, getVersion } from './basic';
 
-import version from '../../config/version.json';
-
 export const preset = {
     ...basic,
     BBOS_DOMIAN: 'https://bbos.bbin-asia.com/elibomApi/WebService',

@@ -39,7 +39,7 @@
         "
       >
         <div :class="$style['image-wrap']">
-          <img v-lazy="getImg(info.image)" />
+          <img :src="defaultImg" :img-id="info.id" />
         </div>
         <div :class="$style['title']">{{ info.title }}</div>
         <div v-if="isSingle" :class="$style['views']">
@@ -65,6 +65,7 @@ import InfiniteLoading from "vue-infinite-loading";
 import axios from "axios";
 import { Swiper, SwiperSlide } from "vue-awesome-swiper";
 import pornRequest from "@/api/pornRequest";
+import { getEncryptImage } from '@/lib/crypto';
 
 export default {
   components: {
@@ -105,6 +106,12 @@ export default {
     this.getVideoTab();
     this.setVideoList();
   },
+  computed: {
+    defaultImg() {
+      const isYabo = this.source === 'yabo';
+      return this.$getCdnPath(`/static/image/_new/default/${isYabo ? 'bg_video03_d' : 'bg_video03_1_d@3x'}.png`)
+    },
+  },
   methods: {
     getVideoTab() {
       pornRequest({
@@ -125,14 +132,6 @@ export default {
     },
     setSortId(value) {
       this.sortId = value;
-    },
-    getImg(img) {
-      const isYabo = this.source === 'yabo';
-      return {
-        src: img,
-        error: this.$getCdnPath(`/static/image/_new/default/${isYabo ? 'bg_video03_d' : 'bg_video03_1_d@3x'}.png`),
-        loading: this.$getCdnPath(`/static/image/_new/default/${isYabo ? 'bg_video03_d' : 'bg_video03_1_d@3x'}.png`),
-      };
     },
     getVideoList(page) {
       return pornRequest({
@@ -171,6 +170,10 @@ export default {
 
         this.hasInfinite = true;
       });
+
+      this.videoList.forEach(item => {
+        getEncryptImage(item);
+      })
     },
     infiniteHandler($state) {
       if (this.isReceive) {
@@ -211,6 +214,7 @@ export default {
 
 .box {
   max-width: $mobile_max_width;
+  width: 100%;
   padding-right: 40px;
   position: fixed;
   top: 43px;

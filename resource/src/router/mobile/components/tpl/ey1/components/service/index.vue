@@ -310,7 +310,7 @@ div.container {
 .info-card,
 .info-card2 {
   color: white;
-  background: linear-gradient(#f6d2bd, #e5997a);
+  background: linear-gradient(to left, #f6d2bd, #e5997a);
   box-shadow: 0px 20px 40px 0px rgba(0, 0, 0, 0.15);
   margin: 15px;
   height: 100px;
