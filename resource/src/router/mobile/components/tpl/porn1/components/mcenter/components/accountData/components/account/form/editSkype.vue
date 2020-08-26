@@ -1,12 +1,12 @@
 <template>
   <div :class="[$style['field-editer'], 'clearfix']">
-    <div :class="$style['field-title']">{{ $text("S_ZALO") }}</div>
+    <div :class="$style['field-title']">{{ $text("S_SKYPE") }}</div>
     <div :class="$style['input-wrap']">
       <div :class="$style['field-value']">
         <input
           ref="input"
           v-model="value"
-          :placeholder="$text('S_ZALO')"
+          :placeholder="$text('S_SKYPE')"
           :class="$style.input"
           maxlength="100"
           type="text"
@@ -45,7 +45,7 @@ export default {
     handleSubmit() {
       mcenter.accountDataSet({
         params: {
-          zalo: this.value.substring(0, 50)
+          skype: this.value.substring(0, 50)
         },
         success: () => {
           localStorage.setItem('set-account-success', true);
