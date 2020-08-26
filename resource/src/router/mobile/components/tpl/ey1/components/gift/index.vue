@@ -61,10 +61,10 @@ export default {
           title: "娱乐",
           icon: '/static/image/ey1/gift/icon_gift_video.png',
           items: [
-            { name: "日本有码", url: "https://94i88.com/mobile/list.html?category=1" },
-            { name: "中文有码", url: "https://94i88.com/mobile/list.html?category=9" },
-            { name: "日本无码", url: "https://94i88.com/mobile/list.html?category=8" },
-            { name: "免费偷看", url: "https://94i88.com/mobile/free_list.html" }
+            { name: "日本有码", login: true, url: "https://94i88.com/mobile/list.html?category=1" },
+            { name: "中文有码", login: true, url: "https://94i88.com/mobile/list.html?category=9" },
+            { name: "日本无码", login: true, url: "https://94i88.com/mobile/list.html?category=8" },
+            { name: "免费偷看", login: true, url: "https://94i88.com/mobile/free_list.html" }
           ]
         },
         {

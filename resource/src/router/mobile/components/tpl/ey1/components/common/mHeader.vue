@@ -123,15 +123,12 @@
 
     <!-- 幫助中心連結 -->
     <template v-if="headerConfig.hasHelp">
-      <div :class="[$style['btn-help']]">
+      <div :class="[$style['btn-help']]" @click="handleHelpLinkTo">
         <span v-if="headerConfig.hasHelp.type === 'deposit'">
           教程
         </span>
         <div :class="$style['btn-icon']">
-          <img
-            :src="$getCdnPath('/static/image/ey1/common/btn_help.png')"
-            @click="$router.push('/mobile/mcenter/helpCenter/')"
-          />
+          <img :src="$getCdnPath('/static/image/ey1/common/btn_help.png')" />
         </div>
       </div>
     </template>
@@ -195,12 +192,6 @@ export default {
     handleHelpLinkTo() {
       if (this.headerConfig.hasHelp && this.headerConfig.hasHelp.func) {
         this.headerConfig.hasHelp.func();
-      }
-
-      // 充值不開放
-      if (this.headerConfig.hasHelp.type === "deposit") {
-        this.actionSetGlobalMessage({ type: "incoming" });
-        return;
       }
 
       this.$router.push(this.headerConfig.hasHelp.url);

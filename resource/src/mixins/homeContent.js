@@ -298,6 +298,10 @@ export default {
         },
         // 切換當前分類
         onChangeSelectIndex(index, isSetEnd = false) {
+            if (index === this.selectedIndex) {
+                return;
+            }
+
             this.isSliding = true;
             this.isTop = false;
             this.isBottom = false;
