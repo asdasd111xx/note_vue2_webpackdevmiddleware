@@ -1,7 +1,11 @@
 <template>
-  <mobile-container :class="$style.container">
+  <mobile-container :class="$style.container" :has-footer="!hasPrev">
     <div slot="content" :class="$style['content-wrap']">
       <div :class="$style['service-header']">
+        <div v-if="hasPrev" :class="$style['btn-prev']" @click="$router.back()">
+          <img :src="$getCdnPath(`/static/image/ey1/common/btn_back.png`)" />
+        </div>
+
         <div :class="$style.title">我的客服</div>
         <div
           :class="$style.feedback"
@@ -50,7 +54,11 @@
         </div>
       </div>
 
-      <div :class="$style['tip-block']" @click="clickPopTip">
+      <div
+        :class="$style['tip-block']"
+        @click="clickPopTip"
+        :style="hasPrev ? { bottom: '15px' } : {}"
+      >
         <div :class="$style['tip-img']">
           <img :src="$getCdnPath(`/static/image/ey1/service/appicon.png`)" />
         </div>
@@ -132,36 +140,17 @@ export default {
     return {
       imgID: 0,
       imgIndex: 0,
-      avatar: [
-        {
-          image: "avatar_1",
-          url: "/static/image/_new/mcenter/default/avatar_1.png"
-        },
-        {
-          image: "avatar_2",
-          url: "/static/image/_new/mcenter/default/avatar_2.png"
-        },
-        {
-          image: "avatar_3",
-          url: "/static/image/_new/mcenter/default/avatar_3.png"
-        },
-        {
-          image: "avatar_4",
-          url: "/static/image/_new/mcenter/default/avatar_4.png"
-        },
-        {
-          image: "avatar_5",
-          url: "/static/image/_new/mcenter/default/avatar_5.png"
-        },
-        {
-          image: "avatar_6",
-          url: "/static/image/_new/mcenter/default/avatar_6.png"
-        }
-      ],
       isShowPop: false,
       linkArray: [],
       avatarSrc: `/static/image/_new/mcenter/avatar_nologin.png`,
+      hasPrev: true,
     };
+  },
+  created() {
+    // 跳轉頁面需要有返回及不顯示tabbar
+    if (this.$route.query.prev !== undefined) {
+      this.hasPrev = this.$route.query.prev === "true";
+    }
   },
   mounted() {
     this.actionSetUserdata(true).then(() => {
@@ -247,9 +236,6 @@ div.container {
   }
 }
 
-.content-wrap {
-}
-
 .avatar-info-wrap {
   height: 90px;
   display: flex;
@@ -307,8 +293,7 @@ div.container {
   }
 }
 
-.info-card,
-.info-card2 {
+.info-card {
   color: white;
   background: linear-gradient(to left, #f6d2bd, #e5997a);
   box-shadow: 0px 20px 40px 0px rgba(0, 0, 0, 0.15);
@@ -347,12 +332,6 @@ div.container {
       height: 24px;
     }
   }
-}
-
-.info-card2 {
-  margin-top: 20px;
-  background-image: -webkit-linear-gradient(16deg, #8ab3e2, #b5d0ef);
-  background-image: linear-gradient(74deg, #8ab3e2, #b5d0ef);
 }
 
 .btn-next {
@@ -520,6 +499,22 @@ div.container {
         width: 100%;
       }
     }
+  }
+}
+
+.btn-prev {
+  position: absolute;
+  top: 0;
+  bottom: 0;
+  left: 12px;
+  width: 20px;
+  height: 20px;
+  margin: auto;
+  z-index: 2;
+
+  > img {
+    display: block;
+    width: 100%;
   }
 }
 </style>
