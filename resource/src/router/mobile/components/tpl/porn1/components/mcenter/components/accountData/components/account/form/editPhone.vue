@@ -156,6 +156,10 @@ export default {
       webInfo: 'getWebInfo',
       siteConfig: "getSiteConfig",
     }),
+    $style() {
+      const style = this[`$style_${this.siteConfig.MOBILE_WEB_TPL}`] || this.$style_porn1;
+      return style;
+    },
     isShowCaptcha: {
       get() {
         return this.toggleCaptcha
@@ -437,4 +441,7 @@ export default {
   }
 };
 </script>
-<style src="../../../css/index.module.scss" lang="scss" module>
+
+<style lang="scss" src="../../../css/index.module.scss" module="$style_porn1"></style>
+<style lang="scss" src="../../../css/ey1.module.scss" module="$style_ey1"></style>
+

@@ -114,7 +114,7 @@ export default {
       tipMsg: '',
       timer: '',
       countdownSec: 0,
-
+      isSendSMS: false,
       info: {
         key: 'email',
         text: 'SS_E_MAIL',
@@ -159,6 +159,10 @@ export default {
       webInfo: 'getWebInfo',
       siteConfig: "getSiteConfig"
     }),
+    $style() {
+      const style = this[`$style_${this.siteConfig.MOBILE_WEB_TPL}`] || this.$style_porn1;
+      return style;
+    },
     fieldValue() {
       return this.memInfo.email.email;
     },
@@ -186,7 +190,7 @@ export default {
       return {
         label: this.countdownSec
           ? this.$text('S_SEND_CHECK_CODE_ALREADY')
-          : this.$text('S_SEND_CHECK_CODE'),
+          : this.$text('S_GET_VERIFICATION_CODE'),
         isShow: this.info.verification,
         countdownSec: this.countdownSec
       };
@@ -227,8 +231,9 @@ export default {
       }, 1000);
     },
     handleSend(send) {
-      if (!this.newValue || this.timer) return;
+      if (!this.newValue || this.timer || this.isSendSMS) return;
 
+      this.isSendSMS = true;
       const getOldEmail = () => {
         if (this.fieldValue) {
           return this.info.status === 'ok' ? this.newValue : this.oldValue;
@@ -244,9 +249,11 @@ export default {
         success: () => {
           this.actionSetUserdata(true);
           this.locker();
+          this.isSendSMS = false;
           this.tipMsg = `${this.$text("S_SEND_CHECK_CODE_VALID_TIME").replace("%s", 5)}${this.$text("S_FIND_TRASH")}`
         },
         fail: (res) => {
+          this.isSendSMS = false;
           if (res && res.data && res.data.msg) {
             this.tipMsg = `${res.data.msg}`;
           }
@@ -294,4 +301,7 @@ export default {
   }
 };
 </script>
-<style src="../../../css/index.module.scss" lang="scss" module>
+
+<style lang="scss" src="../../../css/index.module.scss" module="$style_porn1"></style>
+<style lang="scss" src="../../../css/ey1.module.scss" module="$style_ey1"></style>
+
