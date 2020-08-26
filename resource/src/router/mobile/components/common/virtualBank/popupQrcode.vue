@@ -12,9 +12,15 @@
         </div>
         <p>长按下载图片</p>
 
-        <div :class="$style['countdownSec']">
-          <span v-if="countdownSec">{{ countdownSec }}</span>
-          秒后连结失效，并关闭视窗
+        <div :class="$style['timer-block']">
+          <div v-if="bindType === 'deposit' && paymentGatewayId === 37">
+            入款前请先绑定钱包
+          </div>
+
+          <div>
+            <span v-if="countdownSec">{{ countdownSec }}</span>
+            秒后连结失效，并关闭视窗
+          </div>
         </div>
 
         <div :class="$style['tips']">
@@ -179,7 +185,7 @@ export default {
 
 .pop-block {
   position: absolute;
-  width: 85%;
+  width: 75%;
   top: 50%;
   left: 50%;
   transform: translate(-50%, -50%);
@@ -213,15 +219,19 @@ export default {
 
   > p {
     font-size: 12px;
-    margin: 8px 0;
+    margin: 6px 0;
   }
 
-  .countdownSec {
+  .timer-block {
+    div {
+      margin-bottom: 5px;
+    }
+
     color: $main_error_color1;
   }
 
   .tips {
-    padding: 16px 0;
+    padding: 13px 0;
     text-align: left;
   }
 
