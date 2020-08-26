@@ -114,7 +114,7 @@ export default {
       tipMsg: '',
       timer: '',
       countdownSec: 0,
-
+      isSendSMS: false,
       info: {
         key: 'email',
         text: 'SS_E_MAIL',
@@ -159,6 +159,10 @@ export default {
       webInfo: 'getWebInfo',
       siteConfig: "getSiteConfig"
     }),
+    $style() {
+      const style = this[`$style_${this.siteConfig.MOBILE_WEB_TPL}`] || this.$style_porn1;
+      return style;
+    },
     fieldValue() {
       return this.memInfo.email.email;
     },
@@ -186,7 +190,7 @@ export default {
       return {
         label: this.countdownSec
           ? this.$text('S_SEND_CHECK_CODE_ALREADY')
-          : this.$text('S_SEND_CHECK_CODE'),
+          : this.$text('S_GET_VERIFICATION_CODE'),
         isShow: this.info.verification,
         countdownSec: this.countdownSec
       };
@@ -211,7 +215,6 @@ export default {
   methods: {
     ...mapActions([
       'actionSetUserdata',
-      'actionSetＭcenterBindMessage'
     ]),
     locker() {
       if (this.countdownSec === 0) {
@@ -228,8 +231,9 @@ export default {
       }, 1000);
     },
     handleSend(send) {
-      if (!this.newValue || this.timer) return;
+      if (!this.newValue || this.timer || this.isSendSMS) return;
 
+      this.isSendSMS = true;
       const getOldEmail = () => {
         if (this.fieldValue) {
           return this.info.status === 'ok' ? this.newValue : this.oldValue;
@@ -245,9 +249,11 @@ export default {
         success: () => {
           this.actionSetUserdata(true);
           this.locker();
+          this.isSendSMS = false;
           this.tipMsg = `${this.$text("S_SEND_CHECK_CODE_VALID_TIME").replace("%s", 5)}${this.$text("S_FIND_TRASH")}`
         },
         fail: (res) => {
+          this.isSendSMS = false;
           if (res && res.data && res.data.msg) {
             this.tipMsg = `${res.data.msg}`;
           }
@@ -263,10 +269,9 @@ export default {
             keyring: this.codeValue
           },
           success: () => {
-            this.actionSetUserdata(true);
-            this.tipMsg = this.$text('S_CR_SUCCESS');
+            localStorage.setItem('set-account-success', true);
             this.$router.push('/mobile/mcenter/accountData');
-            this.successMessage();
+            this.$emit('success');
           },
           fail: (res) => {
             if (res && res.data && res.data.msg) {
@@ -282,10 +287,9 @@ export default {
           email: this.newValue
         },
         success: () => {
-          this.actionSetUserdata(true);
-          this.tipMsg = this.$text('S_CR_SUCCESS');
+          localStorage.setItem('set-account-success', true);
           this.$router.push('/mobile/mcenter/accountData');
-          this.successMessage();
+          this.$emit('success');
         },
         fail: (res) => {
           if (res && res.data && res.data.msg) {
@@ -294,13 +298,10 @@ export default {
         }
       });
     },
-    successMessage() {
-      this.actionSetＭcenterBindMessage({
-        msg: this.$text('S_BIND_SUCCESSFULLY', '绑定成功'),
-        msgIcon: true
-      });
-    }
   }
 };
 </script>
-<style src="../../../css/index.module.scss" lang="scss" module>
+
+<style lang="scss" src="../../../css/index.module.scss" module="$style_porn1"></style>
+<style lang="scss" src="../../../css/ey1.module.scss" module="$style_ey1"></style>
+

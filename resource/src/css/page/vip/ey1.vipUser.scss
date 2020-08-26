@@ -2,10 +2,12 @@
 $main-color: #e42a30;
 
 .user-info-block {
-  .user-info-name {
-    // vip text
-    span:last-of-type {
-      background: linear-gradient(to right, #ffd68a, #fe9154);
+  .user-info {
+    .name {
+      // vip text
+      span:last-of-type {
+        background: linear-gradient(to right, #ffd68a, #fe9154);
+      }
     }
   }
 }

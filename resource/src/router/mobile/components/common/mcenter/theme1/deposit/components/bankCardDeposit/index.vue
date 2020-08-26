@@ -60,7 +60,9 @@
                 <img v-lazy="getImg(info)" :class="$style['pay-mode-img']" />
 
                 <div :class="$style['pay-main-title']">
-                  {{ info.short_name ? info.short_name : info.payment_type_name }}
+                  {{
+                    info.short_name ? info.short_name : info.payment_type_name
+                  }}
                 </div>
 
                 <div :class="$style['pay-sub-title']">
@@ -345,7 +347,11 @@
                     <br />
                     <span>
                       {{
-                        `(¥${curPassRoad.per_trade_min}~¥${curPassRoad.per_trade_max})`
+                        `(¥${curPassRoad.per_trade_min}~¥${
+                          curPassRoad.per_trade_max === 0 || "0"
+                            ? "无限制"
+                            : curPassRoad.per_trade_max
+                        })`
                       }}
                     </span>
                     <img
@@ -882,7 +888,7 @@ export default {
   props: {
     headerSetting: {
       type: Object,
-      default: () => { }
+      default: () => {}
     }
   },
   data() {

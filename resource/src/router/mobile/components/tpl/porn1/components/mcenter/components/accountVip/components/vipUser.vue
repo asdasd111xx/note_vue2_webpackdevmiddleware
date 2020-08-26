@@ -2,13 +2,19 @@
   <div :class="$style['user-info-wrap']">
     <!-- 個人資訊 -->
     <div :class="$style['user-info-block']">
-      <div :class="$style['user-info-name']">
+      <div ref="user-info" :class="$style['user-info']">
         <div :class="$style['avatar']">
           <img :src="avatarSrc" alt="avatar" />
         </div>
-        <span>{{ memInfo.user.username }}</span>
-        <span>VIP{{ userVipInfo.now_level_seq }}</span>
+
+        <div ref="name" :class="$style['name']">
+          <span>{{ memInfo.user.username }}</span>
+          <span :style="`display: ${setVipTextDisplay}`">
+            VIP{{ userVipInfo.now_level_seq }}
+          </span>
+        </div>
       </div>
+
       <div :class="$style['user-vip-desc']">
         <div
           :class="$style['vip-text']"
@@ -37,7 +43,11 @@
       <div :class="$style['run-bar']">
         <div :class="$style['run-ok-bar']" :style="{ width: runPercent }">
           <img
-            :src="$getCdnPath(`/static/image/${siteConfig.MOBILE_WEB_TPL}/mcenter/vip/vip_run.png`)"
+            :src="
+              $getCdnPath(
+                `/static/image/${siteConfig.MOBILE_WEB_TPL}/mcenter/vip/vip_run.png`
+              )
+            "
             :style="
               `right: ${
                 userVipInfo.percent > 77 ? userVipInfo.percent - 100 : -23
@@ -101,8 +111,9 @@ export default {
   },
   data() {
     return {
-      avatarSrc: '',
-      levelIcon: "00"
+      avatarSrc: "",
+      levelIcon: "00",
+      setVipTextDisplay: "inline"
     };
   },
   computed: {
@@ -112,7 +123,8 @@ export default {
       siteConfig: "getSiteConfig"
     }),
     $style() {
-      const style = this[`$style_${this.siteConfig.MOBILE_WEB_TPL}`] || this.$style_porn1;
+      const style =
+        this[`$style_${this.siteConfig.MOBILE_WEB_TPL}`] || this.$style_porn1;
       return style;
     },
     runPercent() {
@@ -120,9 +132,20 @@ export default {
     }
   },
   mounted() {
-    this.avatarSrc = `/static/image/${this.siteConfig.MOBILE_WEB_TPL}/mcenter/avatar_nologin.png`
+    this.avatarSrc = `/static/image/${this.siteConfig.MOBILE_WEB_TPL}/mcenter/avatar_nologin.png`;
     this.actionSetUserdata(true).then(() => {
       this.getAvatarSrc();
+    });
+
+    this.$nextTick(() => {
+      const userInfo = this.$refs["user-info"];
+      const name = this.$refs["name"];
+
+      if (name && userInfo) {
+        if (name.offsetWidth > userInfo.offsetWidth - (48 + 5)) {
+          this.setVipTextDisplay = "block";
+        }
+      }
     });
   },
   methods: {
@@ -157,5 +180,13 @@ export default {
 };
 </script>
 
-<style lang="scss" src="@/css/page/vip/porn1.vipUser.scss" module="$style_porn1"></style>
-<style lang="scss" src="@/css/page/vip/ey1.vipUser.scss" module="$style_ey1"></style>
+<style
+  lang="scss"
+  src="@/css/page/vip/porn1.vipUser.scss"
+  module="$style_porn1"
+></style>
+<style
+  lang="scss"
+  src="@/css/page/vip/ey1.vipUser.scss"
+  module="$style_ey1"
+></style>

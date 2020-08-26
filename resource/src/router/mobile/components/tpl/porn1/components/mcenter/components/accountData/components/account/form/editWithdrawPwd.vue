@@ -162,7 +162,7 @@ export default {
         this.$set(this[field], index, '');
       }
     },
-    handleSubmit(submit) {
+    handleSubmit() {
       axios({
         method: 'put',
         url: '/api/v1/c/withdraw_password',
@@ -171,19 +171,13 @@ export default {
           new_password: this.formData['new_withdraw_password'].value.join(''),
         }
       }).then(res => {
-        this.actionSetUserdata(true);
+        localStorage.setItem('set-account-success', true);
         this.$router.push('/mobile/mcenter/accountData');
-        this.successMessage();
+        this.$emit('success');
       }).catch(error => {
         this.tipMsg = `${error.response.data.msg}`;
       })
     },
-    successMessage() {
-      this.actionSetＭcenterBindMessage({
-        msg: this.$text('S_BIND_SUCCESSFULLY', '绑定成功'),
-        msgIcon: true
-      });
-    }
   }
 };
 </script>

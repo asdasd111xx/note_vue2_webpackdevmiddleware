@@ -15,7 +15,7 @@
         <span :class="$style['btn-cancel']" @click="$emit('cancel')">
           {{ $text("S_CANCEL", "取消") }}
         </span>
-        <span :class="$style['btn-confirm']" @click="handleSubmit(onSubmit)">
+        <span :class="$style['btn-confirm']" @click="handleSubmit()">
           {{ $text("S_CONFIRM", "確認") }}
         </span>
       </div>
@@ -24,11 +24,9 @@
 </template>
 
 <script>
-
+import { mapGetters, mapActions } from 'vuex';
+import mcenter from '@/api/mcenter';
 export default {
-  components: {
-    editFacebook
-  },
   data() {
     return {
       value: ''
@@ -38,15 +36,27 @@ export default {
     this.$refs.input.focus()
   },
   methods: {
-    handleSubmit(submit) {
-      submit(this.value).then((response) => {
-        if (response === 'error') {
-          return;
-        }
+    ...mapActions(['actionSetUserdata', 'actionSetGlobalMessage']),
+    handleSubmit() {
+      if (this.tipMsg) {
+        return;
+      }
 
-        this.$emit('cancel');
+      mcenter.accountDataSet({
+        params: {
+          facebook: this.value
+        },
+        success: () => {
+          localStorage.setItem('set-account-success', true);
+          this.$emit('success');
+        },
+        fail: (res) => {
+          if (res && res.data && res.data.msg) {
+            this.tipMsg = `${res.data.msg}`;
+          }
+        }
       });
-    }
+    },
   }
 };
 </script>

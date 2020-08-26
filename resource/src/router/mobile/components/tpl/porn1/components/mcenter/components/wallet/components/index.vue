@@ -235,26 +235,42 @@ export default {
               url: '/api/v2/c/withdraw/check',
             }).then((res) => {
               this.isCheckWithdraw = false;
+
               if (res.data.result === "ok") {
                 let check = true;
 
-                Object.keys(res.data.ret).every(i => {
-                  if (i === "bank" && !res.data.ret[i]) {
-                    this.actionSetGlobalMessage({ type: 'bindcard', origin: 'withdraw', code: 'bindcard' })
-                    check = false;
-                    return;
-                  }
-                  else if (i !== "bank" && !data.ret[i]) {
-                    this.$router.push('/mobile/withdrawAccount');
+                Object.keys(res.data.ret).forEach(i => {
+                  if (i !== "bank" && !res.data.ret[i]) {
+                    if (this.siteConfig.MOBILE_WEB_TPL === 'ey1') {
+                      this.actionSetGlobalMessage({
+                        msg: '请先完成您的出款资讯', cb: () => {
+                          {
+                            this.$router.push('/mobile/withdrawAccount');
+                          }
+                        }
+                      })
+                    }
+
+                    if (this.siteConfig.MOBILE_WEB_TPL === 'porn1') {
+                      this.actionSetGlobalMessage({
+                        msg: '请先设定提现资料', cb: () => {
+                          {
+                            this.$router.push('/mobile/mcenter/accountData');
+                          }
+                        }
+                      })
+                    }
+
                     check = false;
                     return;
                   }
                 })
+
                 if (check) {
                   this.$router.push('/mobile/mcenter/withdraw');
                 }
               } else {
-                this.actionSetGlobalMessage({ msg: res.data.msg })
+                this.actionSetGlobalMessage({ msg: res.data.msg, code: res.data.msg.code });
               }
             }).catch(res => {
               this.isCheckWithdraw = false;

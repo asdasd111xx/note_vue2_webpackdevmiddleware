@@ -85,6 +85,7 @@ export default {
       'actionSetＭcenterBindMessage'
     ]),
     onInput(e) {
+      this.tipMsg = '';
       const re = /[^\u3000\u3400-\u4DBF\u4E00-\u9FFF.．·]/g;
       this.value = this.value.replace(re, '');
       this.value = this.value.substring(0, 50);
@@ -109,9 +110,9 @@ export default {
           name: this.value.substring(0, 50)
         },
         success: () => {
-          this.actionSetUserdata(true);
+          localStorage.setItem('set-account-success', true);
           this.$router.push('/mobile/mcenter/accountData');
-          this.successMessage();
+          this.$emit('success');
         },
         fail: (res) => {
           if (res && res.data && res.data.msg) {
@@ -120,12 +121,6 @@ export default {
         }
       });
     },
-    successMessage() {
-      this.actionSetＭcenterBindMessage({
-        msg: this.$text('S_BIND_SUCCESSFULLY', '绑定成功'),
-        msgIcon: true
-      });
-    }
   }
 };
 </script>

@@ -46,7 +46,7 @@ export default {
     this.$refs.input.focus()
   },
   methods: {
-    ...mapActions(['actionSetUserdata']),
+    ...mapActions(['actionSetUserdata', 'actionSetGlobalMessage']),
     handleSubmit() {
       // 空值驗證
       if (this.value === '') {
@@ -59,12 +59,13 @@ export default {
           gender: this.value
         },
         success: () => {
-          this.$emit('msg', this.$text('S_CR_SUCCESS'));
-          this.$emit('cancel');
-          this.actionSetUserdata(true);
+          this.$emit('success');
         },
         fail: (res) => {
-          this.$emit('msg', res.msg);
+          if (res && res.data && res.data.msg) {
+            this.actionSetGlobalMessage({ msg: `${res.data.msg}` })
+          }
+
           this.$emit('cancel');
         }
       });

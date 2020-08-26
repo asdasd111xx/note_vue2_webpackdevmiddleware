@@ -1,0 +1,11 @@
+@import "./index.module.scss";
+
+.btn-send {
+    background-color: #FDCCCC;
+    color: white;
+
+    &.active {
+        color: #ffffff;
+        background-color: #E42A30;
+    }
+}

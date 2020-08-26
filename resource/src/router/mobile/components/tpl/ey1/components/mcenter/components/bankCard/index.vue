@@ -25,10 +25,10 @@
 
       <div
         v-if="
-          currentKind === 'virtualBank' &&
-            currentPage === 'virtualBankCardInfo' &&
+          (currentPage === 'bankCardInfo' ||
+            currentPage === 'virtualBankCardInfo') &&
             !showDetail &&
-            !userLevelObj.virtual_bank_single
+            userLevelObj.virtual_bank_single
         "
         :class="$style['header-icon']"
         @click="changeToHistory"

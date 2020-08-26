@@ -85,9 +85,9 @@ export default {
           line: this.value
         },
         success: () => {
-          this.actionSetUserdata(true);
-          this.$router.push('/mobile/mcenter/accountData');
-          this.successMessage();
+          localStorage.setItem('set-account-success', true);
+          this.$router.push('/mobile/mcenter/accountData?success=true');
+          this.$emit('success');
         },
         fail: (res) => {
           if (res && res.data && res.data.msg) {
@@ -96,12 +96,6 @@ export default {
         }
       });
     },
-    successMessage() {
-      this.actionSetＭcenterBindMessage({
-        msg: this.$text('S_BIND_SUCCESSFULLY', '绑定成功'),
-        msgIcon: true
-      });
-    }
   }
 };
 </script>

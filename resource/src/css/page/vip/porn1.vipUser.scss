@@ -11,41 +11,46 @@
   display: flex;
   justify-content: space-between;
 
-  .user-info-name {
+  .user-info {
     position: relative;
-    align-self: center;
     display: flex;
+    align-self: center;
+    width: 100%;
 
     .avatar {
       width: 48px;
       height: 48px;
 
       img {
-        width: 100%;
         height: 100%;
       }
     }
 
-    // name text
-    span:first-of-type {
-      color: #484c59;
-      font-size: 16px;
-      font-weight: 700;
+    .name {
       padding: 2.5px 5px 0px 10px;
-    }
 
-    // vip text
-    span:last-of-type {
-      background: linear-gradient(to right, #eeddd0, #d5b69c);
-      margin: 5px 0 0 5px;
-      padding: 0px 5px;
-      font-size: 12px;
-      line-height: 20px;
-      height: 20px;
-      color: #ffffff;
-      text-align: center;
-      font-weight: 700;
-      border-radius: 4px;
+      // name text
+      span:first-of-type {
+        color: #484c59;
+        font-size: 16px;
+        font-weight: 700;
+        word-break: break-word;
+      }
+
+      // vip text
+      span:last-of-type {
+        background: linear-gradient(to right, #eeddd0, #d5b69c);
+        margin: 5px 0 0 0;
+        padding: 0px 5px;
+        font-size: 12px;
+        line-height: 20px;
+        height: 20px;
+        color: #ffffff;
+        text-align: center;
+        font-weight: 700;
+        border-radius: 4px;
+        max-width: 36px;
+      }
     }
   }
 

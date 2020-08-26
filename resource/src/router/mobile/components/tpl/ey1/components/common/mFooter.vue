@@ -55,7 +55,7 @@ export default {
       return [
         { key: 'home', name: this.$text('S_HOME', '首页'), path: '/mobile' },
         { key: 'promotion', name: this.$text('S_PROMOTION', '优惠'), path: '/mobile/promotion' },
-        { key: 'service', name: this.$text('S_SERVIEC', '客服'), path: '/mobile/service' },
+        { key: 'service', name: this.$text('S_SERVIEC', '客服'), path: '/mobile/service?prev=false' },
         { key: 'gift', name: this.$text('S_GIFT', '礼包'), path: '/mobile/gift' },
         { key: 'mcenter-home', name: this.$text('S_INFORMATION', '我的'), path: '/mobile/mcenter/home' }
       ];

@@ -120,6 +120,10 @@ export default {
     },
     /* 彩金websocket */
     reconnectYaboWS() {
+      if (this.siteConfig.MOBILE_WEB_TPL !== 'porn1') {
+        return;
+      }
+
       if (window.YABO_SOCKET_VIDEO_DISCONNECT) {
         window.YABO_SOCKET_VIDEO_DISCONNECT();
       }

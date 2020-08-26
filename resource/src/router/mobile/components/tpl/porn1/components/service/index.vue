@@ -1,11 +1,10 @@
 <template>
-  <mobile-container :class="$style.container">
-    <div
-      slot="content"
-      :class="$style['content-wrap']"
-      :style="{ height: this.divHeight + 'px' }"
-    >
+  <mobile-container :class="$style.container" :has-footer="!hasPrev">
+    <div slot="content" :class="$style['content-wrap']">
       <div :class="$style['service-header']">
+        <div v-if="hasPrev" :class="$style['btn-prev']" @click="$router.back()">
+          <img :src="$getCdnPath(`/static/image/ey1/common/btn_back.png`)" />
+        </div>
         <div :class="$style.title">我的客服</div>
         <div
           :class="$style.feedback"
@@ -78,7 +77,11 @@
         </div>
       </div>
 
-      <div :class="$style['tip-block']" @click="clickPopTip">
+      <div
+        :class="$style['tip-block']"
+        @click="clickPopTip"
+        :style="hasPrev ? { bottom: '15px' } : {}"
+      >
         <div :class="$style['tip-img']">
           <img
             :src="$getCdnPath(`/static/image/_new/service/appicon_yabo.png`)"
@@ -167,37 +170,18 @@ export default {
     return {
       imgID: 0,
       imgIndex: 0,
-      avatar: [
-        {
-          image: "avatar_1",
-          url: "/static/image/_new/mcenter/default/avatar_1.png"
-        },
-        {
-          image: "avatar_2",
-          url: "/static/image/_new/mcenter/default/avatar_2.png"
-        },
-        {
-          image: "avatar_3",
-          url: "/static/image/_new/mcenter/default/avatar_3.png"
-        },
-        {
-          image: "avatar_4",
-          url: "/static/image/_new/mcenter/default/avatar_4.png"
-        },
-        {
-          image: "avatar_5",
-          url: "/static/image/_new/mcenter/default/avatar_5.png"
-        },
-        {
-          image: "avatar_6",
-          url: "/static/image/_new/mcenter/default/avatar_6.png"
-        }
-      ],
+      hasPrev: true,
       divHeight: 0,
       isShowPop: false,
       linkArray: [],
       avatarSrc: `/static/image/_new/mcenter/avatar_nologin.png`,
     };
+  },
+  created() {
+    // 跳轉頁面需要有返回及不顯示tabbar
+    if (this.$route.query.prev !== undefined) {
+      this.hasPrev = this.$route.query.prev === "true";
+    }
   },
   mounted() {
     this.actionSetUserdata(true).then(() => {
@@ -277,10 +261,6 @@ div.container {
   background-size: 100% auto;
   background-position: 0 -70px;
   background-repeat: no-repeat;
-}
-
-.content-wrap {
-  position: relative;
 }
 
 .avatar-info-wrap {
@@ -425,7 +405,7 @@ div.container {
 .tip-block {
   position: absolute;
   right: 20px;
-  bottom: 20px;
+  bottom: 65px;
 }
 
 .tip-img {
@@ -560,6 +540,22 @@ div.container {
         background-size: cover;
       }
     }
+  }
+}
+
+.btn-prev {
+  position: absolute;
+  top: 0;
+  bottom: 0;
+  left: 12px;
+  width: 20px;
+  height: 20px;
+  margin: auto;
+  z-index: 2;
+
+  > img {
+    display: block;
+    width: 100%;
   }
 }
 </style>

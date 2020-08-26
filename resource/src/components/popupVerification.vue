@@ -69,6 +69,10 @@ export default {
   methods: {
     getSlideData(dataInfo) {
       this.$emit("update:captcha", dataInfo.data);
+
+      if (dataInfo.data) {
+        this.$emit('update:isShowCaptcha', false)
+      }
     },
     showPuzzleCaptcha() {
       let captcha = new TencentCaptcha("2028894711", res => {

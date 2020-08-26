@@ -70,15 +70,19 @@ export default {
       if (this.value) {
         return Vue.moment(this.value).format('YYYY年MM月DD日')
       } else {
-        // return '年 / 月 / 日';
-        return '';
+        return '添加日期，确保您已满18岁';
       }
     }
+  },
+  mounted() {
+    this.$refs.input.focus();
+    setTimeout(() => {
+      this.$refs.input.click();
+    })
   },
   methods: {
     ...mapActions([
       'actionSetUserdata',
-      'actionSetＭcenterBindMessage',
       'actionSetGlobalMessage'
     ]),
     handleClickText() {
@@ -114,9 +118,8 @@ export default {
           birthday: Vue.moment(this.value).format()
         },
         success: () => {
-          this.actionSetUserdata(true);
-          this.$router.push('/mobile/mcenter/accountData');
-          this.successMessage();
+          this.$router.push('/mobile/mcenter/accountData?success=true');
+          this.$emit('success');
         },
         fail: (res) => {
           if (res && res.data && res.data.msg) {
@@ -125,12 +128,6 @@ export default {
         }
       });
     },
-    successMessage() {
-      this.actionSetＭcenterBindMessage({
-        msg: this.$text('S_BIND_SUCCESSFULLY', '绑定成功'),
-        msgIcon: true
-      });
-    }
   },
 };
 
