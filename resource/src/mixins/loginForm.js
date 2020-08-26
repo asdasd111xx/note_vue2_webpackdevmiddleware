@@ -141,7 +141,7 @@ export default {
                     } catch (e) {
                         setCookie('cid', res.data.cookie.cid);
                     }
-
+                    this.handleSaveAccont();
                     this.actionIsLogin(true);
                     if (this.redirect) {
                         window.location.href = this.redirect;
@@ -184,10 +184,12 @@ export default {
          * @method onSaveAccount
          */
         onSaveAccount() {
-            if (this.isBackEnd) {
+            this.saveAccount = true;
+        },
+        handleSaveAccont() {
+            if (!this.saveAccount) {
                 return;
             }
-
             if (!this.depositStatus) {
                 localStorage.removeItem('username');
                 localStorage.removeItem('password');

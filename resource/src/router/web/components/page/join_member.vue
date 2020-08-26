@@ -193,7 +193,24 @@
             </template>
 
             <template v-else-if="field.key === 'withdraw_password'">
-              <div>
+              <!-- 有問題待修正 -->
+              <!-- <div :class="$style['withdraw-password-wrap']">
+                <input
+                  v-for="(item, index) in allValue['withdraw_password'].value"
+                  v-model="allValue['withdraw_password'].value[index]"
+                  :key="`widthdrawPwd-${index}`"
+                  @input="verification('withdraw_password', index)"
+                  @blur="verification('withdraw_password', index)"
+                  :data-key="`withdraw_password${index}`"
+                  :class="$style['withdraw-pwd-input']"
+                  :maxlength="1"
+                  :minlength="1"
+                  :placeholder="formData['new_withdraw_password'].placeholder"
+                  type="tel"
+                />
+              </div> -->
+
+              <!-- <div>
                 <v-select
                   v-for="(num, index) in 4"
                   :key="index"
@@ -207,7 +224,7 @@
                   :searchable="false"
                   @input="changWithdrawPassword(field.key, num)"
                 />
-              </div>
+              </div> -->
             </template>
 
             <input
@@ -237,6 +254,14 @@
           :puzzle-obj.sync="puzzleObj"
         />
       </div>
+
+      <div
+        :class="
+          allTip['captcha_text'] ? $style['join-tip-show'] : $style['join-tip']
+        "
+        :style="{ 'padding-right': '40px', 'padding-top': '0' }"
+        v-html="allTip['captcha_text']"
+      />
 
       <slide-verification
         v-if="memInfo.config.register_captcha_type === 2"
@@ -319,7 +344,9 @@ export default {
         facebook: '',
         skype: '',
         zalo: '',
-        withdraw_password: '',
+        withdraw_password: {
+          value: ['', '', '', ''],
+        },
         captcha_text: ''
       },
       allTip: {
@@ -375,14 +402,7 @@ export default {
           ],
           selected: { label: this.$i18n.t('S_SELECTED'), value: '' }
         },
-        withdraw_password: [
-          { options: [{ label: '-', value: '' }], selected: { label: '-', value: '' } },
-          { options: [{ label: '-', value: '' }], selected: { label: '-', value: '' } },
-          { options: [{ label: '-', value: '' }], selected: { label: '-', value: '' } },
-          { options: [{ label: '-', value: '' }], selected: { label: '-', value: '' } }
-        ]
       }
-
     };
   },
   computed: {
@@ -451,14 +471,6 @@ export default {
     }
   },
   created() {
-    // 補取款密碼options
-    for (let index = 0; index < 10; index += 1) {
-      const option = { label: `${index}`, value: index };
-      for (let i = 0; i < 4; i += 1) {
-        this.selectData.withdraw_password[i].options.push(option);
-      }
-    }
-
     let joinConfig = [];
     let joinReminder = {};
     const username = {
@@ -580,7 +592,10 @@ export default {
     });
   },
   methods: {
-    ...mapActions(['actionSetUserdata']),
+    ...mapActions([
+      'actionSetUserdata',
+      'actionSetGlobalMessage'
+    ]),
     keyDownSubmit() {
       if (this.memInfo.config.register_captcha_type === 2) {
         return
@@ -687,7 +702,6 @@ export default {
       }
 
       if (key === 'confirm_password') {
-
         if (this.allValue.confirm_password !== this.allValue.password) {
           this.allTip.confirm_password = msg;
           return;
@@ -697,6 +711,34 @@ export default {
         }
 
         return;
+      }
+
+      if (key == 'withdraw_password') {
+        let target = this.allTip.withdraw_password.value[key];
+        let errorMsg = '';
+        let correct_value = target.value[index]
+          .replace(' ', '')
+          .trim()
+          .replace(/[^\d+]$/g, '');
+
+        if (target.value[index] === correct_value && correct_value !== '') {
+          if (index < 3) {
+            document.querySelector(`input[data-key="${key}_${index + 1}"]`).focus();
+          }
+        }
+
+        target.value[index] = correct_value;
+
+        if (target.value[index].length > 1) {
+          target.value[index] = target.value[index].substring(0, 1);
+        }
+
+        for (let i = 0; i < 4; i++) {
+          if (!this.allTip.withdraw_password.value[i]) {
+            this.checkFormData = false;
+            return;
+          }
+        }
       }
 
       if ((re && !re.test(this.allValue[key]))
@@ -808,10 +850,7 @@ export default {
 
           self.actionSetUserdata(true);
           localStorage.setItem('new_user', true);
-
-          setTimeout(() => {
-            window.location.reload(true);
-          }, 800)
+          this.actionSetGlobalMessage({ msg: "注册成功", cb: () => { window.location.reload(true) } })
           return;
         }
 

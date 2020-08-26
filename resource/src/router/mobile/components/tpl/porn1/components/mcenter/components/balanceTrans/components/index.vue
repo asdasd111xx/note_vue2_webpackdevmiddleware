@@ -48,6 +48,7 @@
             :class="$style['balance-info-maintain']"
             @click="onClickMaintain(item.maintain)"
           >
+            {{ $t("S_MAINTAIN") }}
             <img
               :src="
                 $getCdnPath(
@@ -56,7 +57,6 @@
               "
               :class="$style['balance-wrench']"
             />
-            {{ $t("S_MAINTAIN") }}
           </span>
           <span v-else :class="$style['balance-item-money']">{{
             item.amount
@@ -169,7 +169,7 @@
                 <div :class="$style['select-content']">
                   <div
                     :class="$style['option']"
-                    v-for="vendor in transOut"
+                    v-for="vendor in transOutList"
                     :key="vendor.value"
                     @click="setTranOut(vendor)"
                   >
@@ -218,7 +218,7 @@
                 <div :class="$style['select-content']">
                   <div
                     :class="$style['option']"
-                    v-for="vendor in transIn"
+                    v-for="vendor in transInList"
                     :key="vendor.value"
                     @click="setTranIn(vendor)"
                   >
@@ -250,7 +250,8 @@
             <input
               v-model="transferMoney"
               :class="$style['transfer-money-input']"
-              type="number"
+              @input="verification()"
+              type="tel"
               placeholder="请输入转帐金额"
             />
           </span>
@@ -329,7 +330,9 @@ export default {
       isShowTransOutSelect: false,
       isShowTransInSelect: false,
       transInText: "请选择帐户",
-      transOutText: "请选择帐户"
+      transOutText: "请选择帐户",
+      transInList: [],
+      transOutList: []
     };
   },
   computed: {
@@ -342,42 +345,6 @@ export default {
       const style =
         this[`$style_${this.siteConfig.MOBILE_WEB_TPL}`] || this.$style_porn1;
       return style;
-    },
-    /**
-   * 組轉出列表
-   *
-   * @return array
-   */
-    transOut() {
-      const list = [{ value: '', text: this.$t('S_SELECT_ACCOUNT') }];
-      // 轉出列表只塞有額度的平台（額度需>=1，只有小數位不允許轉）
-      // 維護時不可轉出
-      Object.keys(this.membalance.vendor).forEach((index) => {
-        if (this.membalance.vendor[index].amount !== '--'
-          && +this.membalance.vendor[index].amount >= 1
-          && !this.membalance.vendor[index].maintain
-        ) {
-          const text = index === 'default' ? '中心钱包' : this.membalance.vendor[index].text;
-          list.push({ value: index, text });
-        }
-      });
-      return list;
-    },
-    /**
-     * 組轉入列表
-     *
-     * @return array
-     */
-    transIn() {
-      const list = [{ value: '', text: this.$t('S_SELECT_ACCOUNT') }];
-      // 維護時不可轉入
-      Object.keys(this.membalance.vendor).forEach((index) => {
-        if (!this.membalance.vendor[index].maintain) {
-          const text = index === 'default' ? '中心钱包' : this.membalance.vendor[index].text;
-          list.push({ value: index, text });
-        }
-      });
-      return list;
     },
     balanceInfo() {
       const data = {};
@@ -415,16 +382,20 @@ export default {
     },
   },
   created() {
-    // 刷新 Player Api
-    this.actionSetUserdata(true);
+    this.actionSetUserdata(true).then(() => {
+      this.isAutotransfer = this.memInfo.auto_transfer.enable;
+      if (this.isAutotransfer) {
+        this.backAccount();
+      }
+    });
 
     // this.getRecentlyOpened()
-    const params = [this.getBalanceAll(), , this.setDefaultTran()];
+    const params = [this.getBalanceAll()];
     Promise.all(params).then(() => {
       // do something
     });
-
-    this.isAutotransfer = this.memInfo.auto_transfer.enable;
+    this.setTranInList();
+    this.setTranOutList();
   },
   methods: {
     ...mapActions([
@@ -432,6 +403,56 @@ export default {
       'actionSetUserdata',
       'actionSetGlobalMessage'
     ]),
+    verification() {
+      this.transferMoney = this.transferMoney.replace(' ', '')
+        .trim()
+        .replace(/[^0-9]/g, '');
+    },
+    setTranOut(vendor) {
+      this.tranOut = vendor.value;
+      this.transOutText = vendor.text;
+      this.closeSelect();
+      this.setTranInList();
+    },
+    setTranIn(vendor) {
+      this.tranIn = vendor.value;
+      this.transInText = vendor.text;
+      this.closeSelect();
+      this.setTranOutList();
+    },
+    setTranInList() {
+      const list = [{ value: '', text: this.$t('S_SELECT_ACCOUNT') }];
+      // 維護時不可轉入
+      Object.keys(this.membalance.vendor).forEach((index) => {
+        if (index === this.tranOut) {
+          return;
+        }
+        if (!this.membalance.vendor[index].maintain) {
+          const text = index === 'default' ? '中心钱包' : this.membalance.vendor[index].text;
+          list.push({ value: index, text });
+        }
+      });
+      this.transInList = list;
+    },
+    setTranOutList() {
+      const list = [{ value: '', text: this.$t('S_SELECT_ACCOUNT') }];
+      // 轉出列表只塞有額度的平台（額度需>=1，只有小數位不允許轉）
+      // 維護時不可轉出
+      Object.keys(this.membalance.vendor).forEach((index) => {
+        if (index === this.tranIn) {
+          return;
+        }
+
+        if (this.membalance.vendor[index].amount !== '--'
+          && +this.membalance.vendor[index].amount >= 1
+          && !this.membalance.vendor[index].maintain
+        ) {
+          const text = index === 'default' ? '中心钱包' : this.membalance.vendor[index].text;
+          list.push({ value: index, text });
+        }
+      });
+      this.transOutList = list;
+    },
     getBalanceAll(status) {
       if (status === 'lockStatus' && this.balanceLock) {
         return;
@@ -608,7 +629,7 @@ export default {
         fail: (res) => {
           this.btnLock = false;
           this.actionSetGlobalMessage({
-            msg: res.data.msg, code: res.data.code, origin: "balanceTrans"
+            code: res.data.code, origin: "balanceTrans", type: "balanceTrans"
           });
         }
       }, source, target);
@@ -619,33 +640,6 @@ export default {
           this.recentlyData = response.ret;
         }
       });
-    },
-    /**
-     * 設定轉出對象
-     * @param {String} vendor
-     */
-    setTranOut(vendor) {
-      this.tranOut = vendor.value;
-      this.transOutText = vendor.text;
-      this.closeSelect();
-    },
-    /**
-     * 設定轉入對象
-     * @param {String} vendor
-     */
-    setTranIn(vendor) {
-      this.tranIn = vendor.value;
-      this.transInText = vendor.text;
-      this.closeSelect();
-    },
-    setDefaultTran() {
-      const tranIndx = this.transOut.length < 2 ? 0 : 1;
-      const transInIndex = this.transIn.length < 3 ? 0 : 2;
-
-      //   this.getDefaultTran = {
-      //     out: this.transOut[tranIndx].value,
-      //     in: this.transIn[transInIndex].value
-      //   };
     },
   }
 };

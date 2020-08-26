@@ -4,7 +4,7 @@
       $style.container,
       {
         [$style['has-header']]: hasHeader && !isApp,
-        [$style['has-footer']]: hasFooter
+        [$style['has-footer']]: hasFooter && !isHome
       }
     ]"
   >
@@ -50,6 +50,10 @@ export default {
     headerConfig: {
       type: Object,
       default: null
+    },
+    isHome: {
+      type: Boolean,
+      default: false
     },
     hasFooter: {
       type: Boolean,

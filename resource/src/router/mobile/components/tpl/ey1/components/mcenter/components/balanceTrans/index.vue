@@ -1,7 +1,7 @@
 <template>
   <mobile-container :header-config="headerConfig" :has-footer="false">
     <div slot="content" :class="$style['content-wrap']">
-      <balanceBack :has-link="true" />
+      <balanceBack :has-link="false" />
       <balanceTrans :is-show-block-tips.sync="isShowBlockTips" />
       <blockListTips
         v-if="isShowBlockTips"
