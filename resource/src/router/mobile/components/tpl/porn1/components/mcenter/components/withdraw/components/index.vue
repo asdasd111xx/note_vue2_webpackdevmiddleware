@@ -595,8 +595,8 @@ export default {
     this.actionSetUserdata(true);
 
     this.depositBeforeWithdraw =
-      this.memInfo.config.deposit_before_withdraw || false;
-    this.firstDeposit = this.memInfo.user.first_deposit || false;
+      this.memInfo.config.deposit_before_withdraw;
+    this.firstDeposit = this.memInfo.user.first_deposit;
     if (this.depositBeforeWithdraw && !this.firstDeposit) {
       this.widthdrawTipsType = "deposit";
       this.isShowCheck = true;
@@ -776,7 +776,7 @@ export default {
         ) {
           this.errTips = `单笔提现金额最小为${withdrawMin}元，最大为${
             withdrawMax ? `${withdrawMax}元` : "无限制"
-          }`;
+            }`;
           return;
         }
       }
