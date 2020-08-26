@@ -211,7 +211,6 @@ export default {
   methods: {
     ...mapActions([
       'actionSetUserdata',
-      'actionSetＭcenterBindMessage'
     ]),
     locker() {
       if (this.countdownSec === 0) {
@@ -263,10 +262,9 @@ export default {
             keyring: this.codeValue
           },
           success: () => {
-            this.actionSetUserdata(true);
-            this.tipMsg = this.$text('S_CR_SUCCESS');
+            localStorage.setItem('set-account-success', true);
             this.$router.push('/mobile/mcenter/accountData');
-            this.successMessage();
+            this.$emit('success');
           },
           fail: (res) => {
             if (res && res.data && res.data.msg) {
@@ -282,10 +280,9 @@ export default {
           email: this.newValue
         },
         success: () => {
-          this.actionSetUserdata(true);
-          this.tipMsg = this.$text('S_CR_SUCCESS');
+          localStorage.setItem('set-account-success', true);
           this.$router.push('/mobile/mcenter/accountData');
-          this.successMessage();
+          this.$emit('success');
         },
         fail: (res) => {
           if (res && res.data && res.data.msg) {
@@ -294,12 +291,6 @@ export default {
         }
       });
     },
-    successMessage() {
-      this.actionSetＭcenterBindMessage({
-        msg: this.$text('S_BIND_SUCCESSFULLY', '绑定成功'),
-        msgIcon: true
-      });
-    }
   }
 };
 </script>

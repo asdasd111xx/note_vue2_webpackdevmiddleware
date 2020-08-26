@@ -1,7 +1,6 @@
 <template>
   <div :class="[$style['field-editer'], 'clearfix']">
     <div :class="$style['field-title']">{{ $text("S_NICKNAME") }}</div>
-
     <div :class="$style['input-wrap']">
       <div :class="$style['field-value']">
         <input
@@ -65,7 +64,7 @@ export default {
     this.value = this.memInfo.user.alias;
   },
   methods: {
-    ...mapActions(['actionSetUserdata']),
+    ...mapActions(['actionSetUserdata', 'actionSetGlobalMessage']),
     onToggle() {
       this.showNickname = !this.showNickname;
     },
@@ -97,9 +96,7 @@ export default {
       let self = this;
       return Promise.all([setNickname, setShowNickname]).then((response) => {
         if (response.every((res) => res.result === 'ok')) {
-          self.$emit('msg', this.$text('S_CR_SUCCESS'));
-          self.actionSetUserdata(true);
-          self.$emit('cancel');
+          self.$emit('success');
         }
       });
     }

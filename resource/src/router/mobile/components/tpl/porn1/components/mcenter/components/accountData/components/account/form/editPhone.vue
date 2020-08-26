@@ -11,7 +11,7 @@
       <template v-if="oldPhone.isShow">
         <div :class="$style.block">
           <div :class="$style.title">
-            {{ $text("S_MOBILE_NUMBER", "手机号码") }}
+            {{ oldPhone.label }}
           </div>
           <div :class="$style['input-wrap']">
             <input
@@ -33,7 +33,7 @@
       <template v-if="newPhone.isShow">
         <div :class="$style.block">
           <div :class="$style.title">
-            {{ $text("S_MOBILE_NUMBER", "手机号码") }}
+            {{ newPhone.label }}
           </div>
           <div :class="$style['input-wrap']">
             <input
@@ -198,9 +198,6 @@ export default {
         funcBtnActive: this.checkCode.isShow || this.$route.query.redirect === "withdraw" ? !!(this.newValue) && !!(this.codeValue) : !!(this.newValue)
       };
     },
-    fieldValue() {
-      return this.memInfo.phone.phone;
-    },
     countryCodes() {
       return {
         label: this.$text('S_COUNTRY_CODE', '国码'),
@@ -211,12 +208,12 @@ export default {
     oldPhone() {
       return {
         label: this.$text('S_ORIGINAL_PHONE'),
-        isShow: this.fieldValue && this.info.status === 'already'
+        isShow: this.memInfo.phone.phone
       };
     },
     newPhone() {
       return {
-        label: this.fieldValue && this.info.status === 'already'
+        label: this.memInfo.phone.phone
           ? this.$text('S_NEW_PHONE')
           : this.$text('S_TEL'),
         isShow: true
@@ -241,10 +238,6 @@ export default {
       this.handleSend()
     },
     newValue() {
-      if (this.siteConfig.MOBILE_WEB_TPL === 'ey1') {
-        return
-      }
-
       if (this.newValue.length >= 11) {
         this.tipMsg = '';
         this.isVerifyPhone = true;
@@ -314,7 +307,6 @@ export default {
     ...mapActions([
       'actionSetUserdata',
       'actionSetWithdrawCheck',
-      'actionSetＭcenterBindMessage'
     ]),
     locker() {
       if (this.timer) return;
@@ -344,14 +336,6 @@ export default {
     },
     handleSend() {
       if (!this.newValue || this.timer || this.isSendSMS) return;
-
-      const getOldPhone = () => {
-        if (this.fieldValue) {
-          return this.info.status === 'ok' ? `${this.newCode.replace('+', '')}-${this.newValue}` : `${this.oldCode.replace('+', '')}-${this.oldValue}`;
-        }
-
-        return '';
-      };
 
       this.isSendSMS = true;
       if (this.isfromWithdraw) {
@@ -394,6 +378,7 @@ export default {
       }
     },
     handleSubmit() {
+      // 提款手機驗證
       if (this.isfromWithdraw) {
         ajax({
           method: 'put',
@@ -421,11 +406,9 @@ export default {
               keyring: this.codeValue
             },
             success: (res) => {
-              this.actionSetUserdata(true);
               this.actionSetWithdrawCheck();
-              this.successMessage();
               setTimeout(() => {
-                this.$router.push('/mobile/mcenter/accountData');
+                this.$router.push('/mobile/mcenter/accountData?success=true');
               }, 200)
             },
             fail: (res) => {
@@ -440,9 +423,8 @@ export default {
             phone: `${this.newCode.replace('+', '')}-${this.newValue}`
           },
           success: () => {
-            this.actionSetUserdata(true);
-            this.successMessage();
             setTimeout(() => {
+              localStorage.setItem('set-account-success', true);
               this.$router.push('/mobile/mcenter/accountData');
             }, 200)
           },
@@ -452,12 +434,6 @@ export default {
         });
       }
     },
-    successMessage() {
-      this.actionSetＭcenterBindMessage({
-        msg: this.$text('S_BIND_SUCCESSFULLY', '绑定成功'),
-        msgIcon: true
-      });
-    }
   }
 };
 </script>

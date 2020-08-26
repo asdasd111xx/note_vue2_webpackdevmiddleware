@@ -141,7 +141,7 @@ export default {
             },
             withdrawPwd: {
               key: 'withdrawPwd',
-              text: '提现密码',
+              text: 'S_DAW_DRWAL_PASSWORD',
               status: '',
               value: '',
               btnShow: true,

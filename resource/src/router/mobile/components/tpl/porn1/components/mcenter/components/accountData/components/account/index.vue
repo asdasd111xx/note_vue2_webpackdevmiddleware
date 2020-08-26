@@ -1,32 +1,21 @@
 <template>
   <div>
-    <message v-if="msg" @close="handleCloseMsg">
-      <div slot="msg">
-        <img
-          v-if="msg === $text('S_CR_SUCCESS') || msgIcon"
-          :class="$style['success-icon']"
-          :src="$getCdnPath('/static/image/_new/mcenter/popup_ic_success.png')"
-        />
-        <span :class="$style.meg">{{ msg }}</span>
+    <transition name="fade">
+      <div v-show="showSuccess" :class="$style['success-dialog-masker']">
+        <div :class="$style['success-dialog-wrap']">
+          <img
+            :class="$style['success-icon']"
+            :src="
+              $getCdnPath('/static/image/_new/mcenter/popup_ic_success.png')
+            "
+          />
+          <span :class="$style.meg">绑定成功</span>
+        </div>
       </div>
-    </message>
+    </transition>
 
     <account-wrap>
       <template scope="{ filteredDataList }">
-        <!-- <div :class="[$style['account-list-wrap'], 'clearfix']">
-          <div
-            v-for="(item, index) in filteredDataList"
-            :key="`account-list-${index}`"
-            :class="[
-              $style['account-list-item'],
-              { [$style['is-current']]: currentTab === index }
-            ]"
-            :style="{ width: `${100 / filteredDataList.length}%` }"
-            @click="currentTab = index"
-          >
-            {{ $t(item.text) }}
-          </div>
-        </div> -->
         <template v-for="(item, index) in filteredDataList">
           <div
             v-if="currentTab === index && index === 1"
@@ -70,10 +59,9 @@
                 :key="`${currentEdit}-${fieldIndex}`"
                 refs="isComponent"
                 :class="[$style['account-data-field']]"
-                :test-fuc="currentTab"
                 :info="field"
-                @msg="setMessage"
                 @cancel="currentEdit = ''"
+                @success="editedSuccess"
               />
 
               <!-- 顯示欄位 -->
@@ -120,7 +108,6 @@
 </template>
 
 <script>
-import message from "@/router/mobile/components/common/message";
 import { mapGetters, mapActions } from 'vuex';
 
 export default {
@@ -138,57 +125,30 @@ export default {
     editFacebook: () => import(/* webpackChunkName: 'editFacebook' */'./form/editFacebook'),
     editZalo: () => import(/* webpackChunkName: 'editZalo' */'./form/editZalo'),
     editWithdrawPwd: () => import(/* webpackChunkName: 'editWithdrawPwd' */'./form/editWithdrawPwd'),
-    message
   },
   data() {
     return {
-      headerSetting: {
-        title: this.$text('S_ACCOUNT_DATA', '帐户资料'),
-        leftBtns: {
-          icon: 'arrow',
-          onClick: () => this.$router.push('/mobile/mcenter')
-        },
-        balance: true
-      },
       currentTab: 0,
       currentEdit: '',
-      msg: '',
-      msgIcon: false
+      showSuccess: false,
     };
   },
   computed: {
     ...mapGetters({
       siteConfig: 'getSiteConfig',
       memInfo: 'getMemInfo',
-      mcenterBindMessage: 'getMcenterBindMessage',
-      mobileCheck: 'getMobileCheck'
     }),
-    colorClass() {
-      return [
-        {
-          [this.$style[`site-${this.memInfo.user.domain}`]]: this.$style[`site-${this.memInfo.user.domain}`],
-          [this.$style['preset-color']]: !this.$style[`site-${this.memInfo.user.domain}`]
-        }
-      ];
-    }
-  },
-  created() {
-    this.setMessage(this.mcenterBindMessage);
   },
   mounted() {
-    // this.actionSetUserdata(true);
+    if (localStorage.getItem('set-account-success')) {
+      this.editedSuccess();
+      localStorage.removeItem('set-account-success');
+    }
   },
   methods: {
     ...mapActions([
-      'actionSetＭcenterBindMessage', 'actionSetUserdata'
+      'actionSetUserdata'
     ]),
-    handleCloseMsg() {
-      this.msg = '';
-      this.actionSetＭcenterBindMessage({
-        msg: '',
-        msgIcon: false
-      })
-    },
     handleClick(field) {
       if (field.key === "phone") {
         //   手機未驗證能設定
@@ -215,14 +175,13 @@ export default {
       }
       this.currentEdit = field.key;
     },
-    setMessage(msg) {
+    editedSuccess(msg) {
       this.actionSetUserdata(true);
-      if (msg instanceof Object) {
-        this.msg = msg.msg;
-        this.msgIcon = msg.msgIcon;
-        return;
-      }
-      this.msg = msg;
+      this.currentEdit = '';
+      this.showSuccess = true;
+      setTimeout(() => {
+        this.showSuccess = false;
+      }, 3000)
     }
   }
 };

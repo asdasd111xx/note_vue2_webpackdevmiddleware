@@ -22,6 +22,7 @@
 </template>
 
 <script>
+import { mapGetters, mapActions } from 'vuex';
 
 export default {
   components: {
@@ -36,13 +37,25 @@ export default {
     this.$refs.input.focus()
   },
   methods: {
-    handleSubmit(submit) {
-      submit(this.value).then((response) => {
-        if (response === 'error') {
-          return;
+    ...mapActions([
+      'actionSetUserdata',
+      'actionSetGlobalMessage'
+    ]),
+    handleSubmit() {
+      mcenter.accountDataSet({
+        params: {
+          zalo: this.value.substring(0, 50)
+        },
+        success: () => {
+          localStorage.setItem('set-account-success', true);
+          this.$router.push('/mobile/mcenter/accountData?success=true');
+          this.$emit('success');
+        },
+        fail: (res) => {
+          if (res && res.data && res.data.msg) {
+            this.actionSetGlobalMessage({ msg: `${res.data.msg}` })
+          }
         }
-
-        this.$emit('cancel');
       });
     }
   }

@@ -303,7 +303,7 @@ input {
 }
 
 .clear-input {
-    position: absolute;
+    position: relative;
     right: 14px;
     height: 100%;
     width: 12px;
@@ -311,5 +311,29 @@ input {
     >img {
         height: 12px;
         width: 12px;
+    }
+}
+
+.success-dialog-masker {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    width: 100%;
+    height: 100%;
+    position: absolute;
+    top: 0;
+    left: 0;
+    z-index: 500;
+
+    .success-dialog-wrap {
+        background: #5E626D;
+        border-radius: 5px;
+        border: 5px;
+        color: #FFFFFF;
+        height: 110px;
+        left: 0;
+        margin: 0 auto;
+        width: 117px;
+        z-index: 500;
     }
 }

@@ -38,15 +38,26 @@ export default {
     this.$refs.input.focus()
   },
   methods: {
-    handleSubmit(submit) {
-      submit(this.value).then((response) => {
-        if (response === 'error') {
-          return;
-        }
+    ...mapActions(['actionSetUserdata', 'actionSetGlobalMessage']),
+    handleSubmit() {
+      if (this.tipMsg) {
+        return;
+      }
 
-        this.$emit('cancel');
+      mcenter.accountDataSet({
+        params: {
+          facebook: this.value
+        },
+        success: () => {
+          this.$emit('success');
+        },
+        fail: (res) => {
+          if (res && res.data && res.data.msg) {
+            this.tipMsg = `${res.data.msg}`;
+          }
+        }
       });
-    }
+    },
   }
 };
 </script>
