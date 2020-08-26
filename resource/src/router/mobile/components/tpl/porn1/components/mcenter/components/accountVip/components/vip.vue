@@ -117,7 +117,6 @@ export default {
           }/player/vipinfo/${getCookie("cid")}`,
         headers: { "x-domain": this.memInfo.user.domain }
       }).then(res => {
-        console.log(res)
         this.userVipInfo = res.data;
 
         // 起始預設 config_id 為分類中的第一筆
