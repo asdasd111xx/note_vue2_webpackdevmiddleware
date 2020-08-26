@@ -222,8 +222,9 @@ export default {
   position: relative;
   color: $main_error_color1;
   display: block;
-  height: 30px;
-  line-height: 30px;
+  word-break: break-all;
+  //   height: 30px;
+  //   line-height: 30px;
   padding-top: 5px;
 }
 
