@@ -280,6 +280,7 @@
           autocomplete="off"
           type="number"
           @blur="verification('withdrawValue', $event.target.value)"
+          @input="verification('withdrawValue', $event.target.value)"
           :placeholder="
             $text('S_WITHRAW_PLACEHOLDER', {
               replace: [
@@ -562,32 +563,6 @@ export default {
 
         this.isLoading = false;
       }
-    },
-    withdrawValue() {
-      if (!this.withdrawValue && this.withdrawValue !== 0) return;
-
-      let value = Number(this.withdrawValue);
-
-      if (!Number.isInteger(value) && this.withdrawValue) {
-        this.errTips = "提现金额必需为整数";
-      } else {
-        this.errTips = "";
-
-        //   withdrawData.audit.total.fee + withdrawData.audit.total.deduction
-        let _actualMoney =
-          value - Number(this.withdrawData.audit.total.total_deduction);
-
-        if (_actualMoney !== value) {
-          this.actualMoney = _actualMoney;
-          if (_actualMoney <= 0) {
-            this.errTips = "实际提现金额须大于0，请重新输入";
-            this.actualMoney = 0;
-          }
-        } else {
-          this.actualMoney = _actualMoney;
-          this.errTips = "";
-        }
-      }
     }
   },
   created() {
@@ -758,30 +733,54 @@ export default {
     },
     verification(key, value) {
       if (key === "withdrawValue") {
-        if (!this.withdrawData) return;
+        value = +value;
 
-        const withdrawMax = Number(
-          this.withdrawData.payment_charge.ret.withdraw_max
-        );
-        const withdrawMin = Number(
-          this.withdrawData.payment_charge.ret.withdraw_min
-        );
+        // 1.判斷是否為整數
+        if (!Number.isInteger(value)) {
+          this.errTips = "提现金额必需为整数";
+          return;
+        }
 
+        // 實際金額
+        let _actualMoney =
+          value - +this.withdrawData.audit.total.total_deduction;
+        // 2.判斷是否 > 0
+        if (_actualMoney !== value) {
+          this.actualMoney = _actualMoney;
+          if (_actualMoney <= 0) {
+            this.errTips = "实际提现金额须大于0，请重新输入";
+            this.actualMoney = 0;
+            return;
+          }
+        } else {
+          this.actualMoney = _actualMoney;
+          this.errTips = "";
+          return;
+        }
+
+        // 最大值
+        const withdrawMax = +this.withdrawData.payment_charge.ret.withdraw_max;
+        // 最小值
+        const withdrawMin = +this.withdrawData.payment_charge.ret.withdraw_min;
+        // 3.判斷是否有超過最大、最小值
         if (
-          this.realWithdrawMoney === "--" ||
-          +this.realWithdrawMoney <= 0 ||
-          +value <= 0 ||
-          +value < withdrawMin ||
-          (withdrawMax > 0 && Number(this.withdrawValue) > withdrawMax)
+          this._actualMoney <= 0 ||
+          value <= 0 ||
+          value < withdrawMin ||
+          (withdrawMax > 0 && value > withdrawMax)
         ) {
           this.errTips = `单笔提现金额最小为${withdrawMin}元，最大为${
             withdrawMax ? `${withdrawMax}元` : "无限制"
             }`;
           return;
         }
+
+        this.errTips = "";
       }
 
       if (key === "withdrawPwd") {
+        this.errTips = "";
+
         const re = /[^0-9]/g;
 
         if (this.withdrawPwd.length > 4) {
@@ -929,7 +928,7 @@ export default {
       this.isLoading = true;
       this.actionSetIsLoading(true);
 
-      console.log(this.withdrawAccount);
+      // console.log(this.withdrawAccount);
 
       //不需要取款密碼,並且可選銀行卡
       let _params = {
@@ -976,6 +975,7 @@ export default {
               this.msg = "提现成功";
               this.withdrawValue = "";
               this.withdrawPwd = "";
+              this.actualMoney = 0;
 
               // 舊的第二次寫單才需要
               // 迅付寫單
