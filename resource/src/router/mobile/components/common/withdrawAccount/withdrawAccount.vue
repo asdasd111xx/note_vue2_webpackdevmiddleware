@@ -346,7 +346,7 @@ export default {
 
       axios({
         method: 'post',
-        url: '/api/v1/c/player/verify/phone',
+        url: '/api/v1/c/player/verify/user_bank/sms',
         data: {
           phone: `86-${this.formData.phone.value}`,
           captcha_text: this.captchaData ? this.captchaData : ''
