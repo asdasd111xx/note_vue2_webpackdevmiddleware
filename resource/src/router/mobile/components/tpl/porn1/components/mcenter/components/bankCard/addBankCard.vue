@@ -516,6 +516,9 @@ export default {
               clearInterval(this.smsTimer);
               this.smsTimer = null;
               this.lockStatus = false;
+              if (this.tipMsg.indexOf('已发送')) {
+                this.errorMsg = ''
+              }
               return;
             }
             this.time -= 1;

@@ -358,6 +358,9 @@ export default {
           if (this.countdownSec === 0) {
             clearInterval(this.timer);
             this.timer = null;
+            if (this.tipMsg.indexOf('已发送')) {
+              this.tipMsg = ''
+            }
             return;
           }
           this.countdownSec -= 1;
