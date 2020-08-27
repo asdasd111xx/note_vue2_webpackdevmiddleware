@@ -87,7 +87,7 @@
                 @blur="verification(item)"
                 @input="verification(item)"
                 :placeholder="item.placeholder"
-                type="number"
+                type="tel"
               />
             </div>
           </template>

@@ -97,6 +97,9 @@ export default {
         verification(item) {
             let errorMessage = '';
             if (item.key === "phone") {
+                this.formData.phone = this.formData.phone
+                    .replace(/[^0-9]/g, '');
+
                 if (this.formData.phone.length < 11) {
                     errorMessage = "手机格式不符合要求";
                     this.isVerifyPhone = false;
@@ -109,6 +112,10 @@ export default {
             if (item.key === "amount") {
                 const limit = Number(this.rechargeConfig.recharge_limit) || 0;
                 const amount = Number(this.formData.amount);
+
+                this.formData.amount = this.formData.amount
+                    .replace(/[^0-9]/g, '');
+
                 if (!amount || amount === 0) {
                     errorMessage = "请输入转让金额";
                 } else if (limit &&
