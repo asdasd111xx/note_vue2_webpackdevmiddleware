@@ -71,17 +71,18 @@
         </div>
       </div>
 
+      <!-- CGPay 支付密碼欄位 -->
       <div v-if="selectTarget.bank_id === 21" :class="$style['info-item']">
         <p :class="$style['input-title']">
-          {{ formData["cgpPwd"].title }}
+          {{ formData["CGPPwd"].title }}
         </p>
         <div :class="$style['input-wrap']">
           <input
-            v-model="formData['cgpPwd'].value"
-            type="text"
-            :placeholder="formData['cgpPwd'].placeholder"
-            @input="verification('cgpPwd')"
-            @blur="verification('cgpPwd')"
+            v-model="formData['CGPPwd'].value"
+            type="tel"
+            :placeholder="formData['CGPPwd'].placeholder"
+            @input="verification('CGPPwd')"
+            @blur="verification('CGPPwd')"
           />
         </div>
       </div>
@@ -194,7 +195,7 @@ export default {
           value: "",
           placeholder: ""
         },
-        cgpPwd: {
+        CGPPwd: {
           title: "CGP安全防护码",
           value: "",
           placeholder: "请输入CGP安全防护码"
@@ -225,7 +226,7 @@ export default {
   watch: {
     "selectTarget.bank_id"(value) {
       // 不確定點擊相同錢包時，是否要清除資料?假如有，將以下 code 搬至 setBank
-      this.formData["cgpPwd"].value = "";
+      this.formData["CGPPwd"].value = "";
       this.formData["walletAddress"].value = "";
       this.isGoBaoWallet = false;
 
@@ -313,7 +314,7 @@ export default {
         target.value = target.value.replace(" ", "").trim();
       }
 
-      if (key === "cgpPwd") {
+      if (key === "CGPPwd") {
         target.value = target.value
           .replace(" ", "")
           .trim()
@@ -328,7 +329,7 @@ export default {
       }
 
       // 針對 CGpay
-      if (this.selectTarget.bank_id === 21 && !this.formData["cgpPwd"].value) {
+      if (this.selectTarget.bank_id === 21 && !this.formData["CGPPwd"].value) {
         lock = true;
       }
 
@@ -481,7 +482,7 @@ export default {
           bind_type: "withdraw",
           wallet_gateway_id: 3, // 3 為CGpay
           wallet_account: this.formData["walletAddress"].value,
-          wallet_token: this.formData["cgpPwd"].value
+          wallet_token: this.formData["CGPPwd"].value
         }
       })
         .then(response => {
