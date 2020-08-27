@@ -70,14 +70,14 @@ export default {
 
       yaboRequest({
         method: 'put',
-        url: `${this.siteConfig.YABO_API_DOMAIN}/Account/UnlockTagId?`,
+        url: `${this.siteConfig.YABO_API_DOMAIN}/Account/UnlockTagId`,
         headers: {
           'x-domain': query.domain,
         },
         params: {
           cid: query.cid,
           userid: query.userid,
-          tagId: query.tagId,
+          tagId: Number(query.tagId),
           domain: query.domain
         },
       }).then((res) => {
