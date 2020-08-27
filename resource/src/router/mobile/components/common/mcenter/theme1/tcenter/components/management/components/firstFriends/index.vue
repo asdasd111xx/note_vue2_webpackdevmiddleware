@@ -31,19 +31,17 @@
                     <div :class="[$style.column, $style.status]">
                         <!-- 啟用 -->
                         <template v-if="info.enable">
-                            <span :class="{ [$style.enable]: info.enable }">{{ $text('S_ENABLE') }}</span>
+                            <!-- 凍結 -->
+                            <span v-if="info.locked" :class="{ [$style.locked]: info.locked }">{{ $text('S_LOCKED') }}</span>
+                            <!-- 停權 -->
+                            <span v-else-if="info.bankrupt" :class="{ [$style.bankrupt]: info.bankrupt }">{{ $text('S_BANKRUPT') }}</span>
+                            <!-- 啟用 -->
+                            <span v-else :class="{ [$style.enable]: info.enable }">{{ $text('S_ENABLE') }}</span>
                         </template>
+
                         <!-- 停用 -->
-                        <template v-else>
+                        <template v-if="!info.enable">
                             <span :class="{ [$style.disable]: !info.enable }">{{ $text('S_DISABLE') }}</span>
-                        </template>
-                        <!-- 凍結 -->
-                        <template v-if="info.locked">
-                            <span :class="{ [$style.locked]: info.locked }">{{ $text('S_LOCKED') }}</span>
-                        </template>
-                        <!-- 停權 -->
-                        <template v-if="info.bankrupt">
-                            <span :class="{ [$style.bankrupt]: info.bankrupt }">{{ $text('S_BANKRUPT') }}</span>
                         </template>
                     </div>
                     <!-- 主帳戶餘額 -->

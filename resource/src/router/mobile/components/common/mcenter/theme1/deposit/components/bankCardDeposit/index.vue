@@ -431,7 +431,7 @@
                   ]"
                   @click="walletData['CGPay'].method = 0"
                 >
-                  CGP安全防护码
+                  CGP支付密码
                   <img
                     v-if="walletData['CGPay'].method === 0"
                     :class="$style['pay-active']"
@@ -463,8 +463,9 @@
                   <input
                     :class="$style['wallet-password']"
                     v-model="walletData['CGPay'].password"
-                    type="text"
+                    type="tel"
                     :placeholder="walletData['CGPay'].placeholder"
+                    @input="verification('CGPPwd', $event.target.value)"
                   />
                 </div>
               </div>
@@ -1282,21 +1283,21 @@ export default {
     handleCreditTrans() {
       this.$router.push("/mobile/mcenter/creditTrans?tab=0");
     },
-    verificationName() {
-      /* ---------------------------
-         全型數字：[\uFF10-\uFF19]
-         全型英文小寫：[\uFF41-\uFF5A]
-         全型英文大寫：[\uFF21-\uFF3A]
-        --------------------------- */
-      const reg = /^[^A-Za-z0-9\uFF10-\uFF19\uFF41-\uFF5A\uFF21-\uFF3A，:;！@#$%^&*?<>()+=`|[\]{}\\"/~\-_']*$/;
-      if (!reg.test(this.speedField.depositName)) {
-        // this.msg = '请输入正确名称';
-        this.nameCheckFail = true;
-      } else {
-        // this.msg = '';
-        this.nameCheckFail = false;
-      }
-    },
+    // verificationName() {
+    //   /* ---------------------------
+    //      全型數字：[\uFF10-\uFF19]
+    //      全型英文小寫：[\uFF41-\uFF5A]
+    //      全型英文大寫：[\uFF21-\uFF3A]
+    //     --------------------------- */
+    //   const reg = /^[^A-Za-z0-9\uFF10-\uFF19\uFF41-\uFF5A\uFF21-\uFF3A，:;！@#$%^&*?<>()+=`|[\]{}\\"/~\-_']*$/;
+    //   if (!reg.test(this.speedField.depositName)) {
+    //     // this.msg = '请输入正确名称';
+    //     this.nameCheckFail = true;
+    //   } else {
+    //     // this.msg = '';
+    //     this.nameCheckFail = false;
+    //   }
+    // },
     handleCopy(val) {
       this.msg = "已复制到剪贴板";
       this.copyInfo(val);
@@ -1492,6 +1493,7 @@ export default {
         }
       });
     },
+    // 代客充值
     goToValetDeposit() {
       this.isShowEntryBlockStatus = false;
 
@@ -1532,6 +1534,15 @@ export default {
     closeTips() {
       this.isShowBlockTips = false;
       this.$router.back();
+    },
+    // 08/27 後續關於 Input 事件的輸入驗證將統一到這裡
+    verification(key, value) {
+      if (key === "CGPPwd") {
+        this.walletData["CGPay"].password = value
+          .replace(" ", "")
+          .trim()
+          .replace(/[^0-9]/g, "");
+      }
     }
   }
 };

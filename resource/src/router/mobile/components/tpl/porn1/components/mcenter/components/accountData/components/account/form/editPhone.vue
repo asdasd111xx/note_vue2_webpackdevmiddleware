@@ -70,6 +70,11 @@
               v-model="codeValue"
               :placeholder="$text('S_MOBILE_CAPTCHA', '请输入手机验证码')"
               :class="$style.input"
+              @input="
+                codeValue = $event.target.value
+                  .trim()
+                  .replace(/[^0-9A-Za-z]/g, '')
+              "
               type="text"
             />
             <div :class="$style['clear-input']" v-if="codeValue">
@@ -189,6 +194,21 @@ export default {
       }
     },
     headerConfig() {
+      let _funcBtnActive = true;
+      let checkActiveArray = [this.newValue];
+      //  提現前驗證不需要舊手機欄位
+      if (this.checkCode.isShow || this.isfromWithdraw) {
+        checkActiveArray.push(!!(this.codeValue));
+      }
+
+      if (this.memInfo.phone.phone && !this.isfromWithdraw) {
+        checkActiveArray.push(!!(this.oldValue));
+      }
+
+      checkActiveArray.forEach((status) => {
+        if (!status) _funcBtnActive = false;
+      })
+
       return {
         prev: true,
         onClick: () => {
@@ -199,7 +219,7 @@ export default {
           this.handleSubmit();
         },
         funcBtn: this.$text('S_COMPLETE', '完成'),
-        funcBtnActive: this.checkCode.isShow || this.$route.query.redirect === 'withdraw' ? !!(this.newValue) && !!(this.codeValue) : !!(this.newValue)
+        funcBtnActive: _funcBtnActive
       };
     },
     countryCodes() {
@@ -212,7 +232,7 @@ export default {
     oldPhone() {
       return {
         label: this.$text('S_ORIGINAL_PHONE'),
-        isShow: this.memInfo.phone.phone
+        isShow: this.isfromWithdraw ? false : this.memInfo.phone.phone
       };
     },
     newPhone() {
@@ -319,6 +339,9 @@ export default {
         if (this.countdownSec === 0) {
           clearInterval(this.timer);
           this.timer = null;
+          if (this.tipMsg.indexOf('已发送')) {
+            this.tipMsg = ''
+          }
           return;
         }
         this.countdownSec -= 1;

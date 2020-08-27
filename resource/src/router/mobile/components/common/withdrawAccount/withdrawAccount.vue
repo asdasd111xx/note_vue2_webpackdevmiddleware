@@ -346,7 +346,7 @@ export default {
 
       axios({
         method: 'post',
-        url: '/api/v1/c/player/verify/phone',
+        url: '/api/v1/c/player/verify/user_bank/sms',
         data: {
           phone: `86-${this.formData.phone.value}`,
           captcha_text: this.captchaData ? this.captchaData : ''
@@ -358,6 +358,9 @@ export default {
           if (this.countdownSec === 0) {
             clearInterval(this.timer);
             this.timer = null;
+            if (this.tipMsg.indexOf('已发送')) {
+              this.tipMsg = ''
+            }
             return;
           }
           this.countdownSec -= 1;
