@@ -362,10 +362,10 @@ export default {
                 this.$router.push('/mobile/mcenter/tcenter/management');
             }
             else if (path === "withdraw") {
-                // if (this.siteConfig.MOBILE_WEB_TPL !== 'ey1') {
-                //     this.$router.push('/mobile/mcenter/withdraw');
-                //     return;
-                // }
+                if (this.siteConfig.MOBILE_WEB_TPL !== 'ey1') {
+                    this.$router.push('/mobile/mcenter/withdraw');
+                    return;
+                }
 
                 if (this.isCheckWithdraw) { return; }
                 this.isCheckWithdraw = true;
