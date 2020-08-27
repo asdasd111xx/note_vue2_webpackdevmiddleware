@@ -349,7 +349,7 @@ export default {
             }
 
             const code = data.code;
-            const msg = amountMsg;
+            const msg = amountMsg || data.msg;
             switch (code) {
                 case "C650001":
                 case "C650008":
