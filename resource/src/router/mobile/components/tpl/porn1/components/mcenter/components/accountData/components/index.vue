@@ -9,7 +9,7 @@
     </div>
 
     <!-- 頭像編輯彈窗 -->
-    <avatar-dialog :is-show="isShowAvatarDialog" @close="handleCloseDialog" />
+    <avatar-dialog v-if="isShowAvatarDialog" @close="handleCloseDialog" />
     <account />
     <service-tips />
   </div>
