@@ -68,7 +68,11 @@
                 :class="[
                   $style['send-keyring'],
                   {
-                    [$style.disabled]: isSendKeyring || !isVerifyPhone
+                    [$style.disabled]:
+                      isSendKeyring ||
+                      !isVerifyPhone ||
+                      !formData.target_username ||
+                      !formData.amount
                   }
                 ]"
                 @click="showCaptcha"

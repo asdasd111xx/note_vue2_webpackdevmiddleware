@@ -148,20 +148,20 @@ export default {
             this.errorMessage[item.key] = errorMessage;
 
             // 檢查無錯誤訊息
-            const noError = this.inputInfo.every((item) => {
+            let noError = true;
+            this.inputInfo.forEach((item) => {
                 if (this.errorMessage[item.key]) {
-                    return false;
-                } else {
-                    return true;
+                    noError = false;
                 }
             })
-            const hasValue = this.inputInfo.every((item) => {
+
+            let hasValue = true;
+            this.inputInfo.forEach((item) => {
                 if (!this.formData[item.key]) {
-                    return false;
-                } else {
-                    return true;
+                    hasValue = false;
                 }
             })
+
             this.isVerifyForm = noError && hasValue;
         },
         // 可轉讓額度
@@ -239,6 +239,9 @@ export default {
                             this.isSendKeyring = false;
                             clearInterval(this.timer);
                             this.timer = null;
+                            if (this.tipMsg.indexOf('已发送')) {
+                                this.tipMsg = ''
+                            }
                             return;
                         }
                         this.times -= 1;
@@ -276,6 +279,10 @@ export default {
             }).then(res => {
                 this.actionSetUserBalance();
                 if (res && res.data && res.data.result === "ok") {
+                    this.formData.amount = "";
+                    this.formData.phone = "";
+                    this.formData.target_username = "";
+                    this.formData.keyring = "";
                     this.actionSetGlobalMessage({ msg: "转让成功" });
                 } else {
                     this.setErrorCode(res.data);
