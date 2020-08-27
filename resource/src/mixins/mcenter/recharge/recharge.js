@@ -328,6 +328,7 @@ export default {
         },
         // 客制錯誤訊息
         setErrorCode(data, amountMsg = '') {
+            this.isVerifyForm = false;
             const setErrorMsg = (msg, isAudit) => {
                 this.actionSetRechargeConfig().then(() => {
                     const config = this.rechargeConfig;
