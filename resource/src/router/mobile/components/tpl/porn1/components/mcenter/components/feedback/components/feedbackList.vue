@@ -3,7 +3,9 @@
     <template v-if="!$route.params.id">
       <template v-if="isReceive">
         <div v-if="feedbackList.length === 0" :class="$style['no-feedback']">
-          <img src="/static/image/_new/mcenter/feedback/no_feedback.png" />
+          <img
+            :src="`/static/image/${theme}/mcenter/feedback/no_feedback.png`"
+          />
           <p>{{ $text("S_NO_FEEDBACK", "暂无反馈记录") }}</p>
           <button
             @click="$router.push('/mobile/mcenter/feedback/sendFeedback')"
@@ -19,10 +21,10 @@
             @click="getCurrentMassage(message)"
           >
             <div :class="$style['feedback-icon']">
-              <template v-if="typeList.length > 0">
+              <template v-if="typeList && typeList.length > 0">
                 <img
                   :src="
-                    `/static/image/_new/mcenter/feedback/question_${
+                    `/static/image/${theme}/mcenter/feedback/question_${
                       typeList.find(i => i.id === String(message.type_id))
                         .imageId
                     }.png`
@@ -47,10 +49,10 @@
       <div :class="$style['feedback-detail']">
         <div :class="$style['detail-content']">
           <div :class="[$style['detail-title'], 'clearfix']">
-            <template v-if="typeList.length > 0">
+            <template v-if="typeList && typeList.length > 0">
               <img
                 :src="
-                  `/static/image/_new/mcenter/feedback/question_${
+                  `/static/image/${theme}/mcenter/feedback/question_${
                     typeList.find(i => i.id === String(currentFeedback.type_id))
                       .imageId
                   }.png`
@@ -80,7 +82,9 @@
           >
             <img
               :class="$style['detail-icon']"
-              src="/static/image/_new/mcenter/feedback/feedback_yabo.png"
+              :src="
+                `/static/image/${theme}/mcenter/feedback/ic_feedback_answer.png`
+              "
             />
             <div :class="$style['question-info']">
               <div :class="$style['question-name']">
@@ -107,12 +111,13 @@ import mcenter from '@/api/mcenter';
 import ajax from '@/lib/ajax';
 import { API_FEEDBACK_REPLIED_LIST } from '@/config/api';
 import EST from '@/lib/EST';
+import axios from 'axios';
 
 export default {
   props: {
     typeList: {
       type: Array,
-      default: () => []
+      default: null
     }
   },
   filters: {
@@ -151,6 +156,9 @@ export default {
       const style = this[`$style_${this.siteConfig.MOBILE_WEB_TPL}`] || this.$style_porn1;
       return style;
     },
+    theme() {
+      return this.siteConfig.MOBILE_WEB_TPL;
+    },
     siteName() {
       return this.siteConfig.SITE_NAME;
     }
@@ -159,6 +167,10 @@ export default {
     this.getFeedbackRecord();
     this.getRepliedList();
     this.getAvatarSrc();
+
+    if (this.typeList.length === 0) {
+      this.$emit('getType');
+    }
   },
   methods: {
     getFeedbackRecord() {
@@ -199,10 +211,10 @@ export default {
           }
         }).catch(error => {
           this.actionSetGlobalMessage({ msg: error.data.msg });
-          this.avatarSrc = this.$getCdnPath(`/static/image/_new/mcenter/default/avatar_${imgSrcIndex}.png`);
+          this.avatarSrc = this.$getCdnPath(`/static/image/${this.theme}/mcenter/default/avatar_${imgSrcIndex}.png`);
         })
       } else {
-        this.avatarSrc = this.$getCdnPath(`/static/image/_new/mcenter/default/avatar_${imgSrcIndex}.png`);
+        this.avatarSrc = this.$getCdnPath(`/static/image/${this.theme}/mcenter/default/avatar_${imgSrcIndex}.png`);
       }
     },
   }
