@@ -1710,5 +1710,7 @@
     "S_SELECT_WALLET_TYPE": "请选择钱包类型",
     "S_WALLET_ADDRESS": "钱包地址",
     "S_HISTORY_ACCOUNT": "历史帐号",
-    "S_HISTORY_WALLET": "历史钱包"
+    "S_HISTORY_WALLET": "历史钱包",
+    "S_RECEIVE_REBATE": "可领返水",
+    "S_ALL_GET": "一键全领"
 }

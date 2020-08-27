@@ -22,7 +22,7 @@
             :maintains-list="maintainsList"
             :is-receive-all="isReceiveAll"
             :real-time-period="realTimePeriod"
-            :is-show-popup="isShowPopup"
+            :is-show-popup="isShowMsgPopup"
             :close-popup="closePopup"
             :popup-msg="popupMsg"
         />
@@ -43,7 +43,7 @@ export default {
     data() {
         return {
             popupMsg: '',
-            isShowPopup: false,
+            isShowMsgPopup: false,
             isFisrtRequest: true,
             estToday: '',
             startTime: '',
@@ -145,12 +145,13 @@ export default {
          * @returns {number} 實時返水總金額
          */
         realTimeRebateTotal() {
-            if (!this.rebateInitData.is_vip) {
-                return '--';
+            // if (!this.rebateInitData.is_vip) {
+            //     return '--';
+            // }
+            if (this.immediateData && this.immediateData.length > 0) {
+                const allTotal = this.immediateData.reduce((item, nextItem) => Number(item) + Number(nextItem.rebate), 0);
+                return allTotal ? allTotal.toFixed(2) : '--';
             }
-
-            const allTotal = this.immediateData.reduce((item, nextItem) => Number(item) + Number(nextItem.rebate), 0);
-            return allTotal ? allTotal.toFixed(2) : '--';
         },
         /**
          * 一鍵全領是否可按
@@ -366,7 +367,7 @@ export default {
                 if (seconds <= 1800) {
                     this.rebateState = 'initial';
                     this.popupMsg = i18n.t('S_TRY_AGAIN_LATER');
-                    this.isShowPopup = true;
+                    this.isShowMsgPopup = true;
 
                     // 防連點
                     setTimeout(() => {
@@ -445,7 +446,7 @@ export default {
                 const nowTime = new Date(this.systemTime);
                 if (caculateTime.getDate() !== nowTime.getDate()) {
                     this.popupMsg = i18n.t('S_RESET_TRIAL');
-                    this.isShowPopup = true;
+                    this.isShowMsgPopup = true;
                     return;
                 }
 
@@ -515,7 +516,7 @@ export default {
             });
         },
         closePopup() {
-          this.isShowPopup = false
+          this.isShowMsgPopup = false
         }
     }
 };

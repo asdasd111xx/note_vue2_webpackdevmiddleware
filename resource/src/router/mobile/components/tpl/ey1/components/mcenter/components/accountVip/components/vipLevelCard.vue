@@ -40,7 +40,9 @@
           <div :class="$style['card-thumb-cell']">
             <img
               :src="
-                $getCdnPath(`/static/image/${siteConfig.MOBILE_WEB_TPL}/mcenter/vip/vipcard_bg.png`)
+                $getCdnPath(
+                  `/static/image/${siteConfig.MOBILE_WEB_TPL}/mcenter/vip/vipcard_bg.png`
+                )
               "
               alt="vipcard_bg"
             />
@@ -72,12 +74,13 @@
             />
             <div :class="$style['card-desc-block']">
               <div>
-                {{ item.deposit_total }}
+                {{ commaFormat(item.deposit_total) }}
                 <br />
                 累计充值
               </div>
               <div>
-                {{ item.valid_bet_limit }} <br />
+                {{ commaFormat(item.valid_bet_limit) }}
+                <br />
                 流水要求
               </div>
               <div>
@@ -192,6 +195,9 @@ export default {
         "update:currentLevelData",
         this.vipLevelList[this.selectedIndex]
       );
+    },
+    commaFormat(value) {
+      return value.toString().replace(/\B(?=(\d{3})+(?!\d))/g, ",");
     }
   },
   watch: {
@@ -204,5 +210,13 @@ export default {
 };
 </script>
 
-<style lang="scss" src="@/css/page/vip/porn1.vipLevelCard.scss" module="$style_porn1"></style>
-<style lang="scss" src="@/css/page/vip/ey1.vipLevelCard.scss" module="$style_ey1"></style>
+<style
+  lang="scss"
+  src="@/css/page/vip/porn1.vipLevelCard.scss"
+  module="$style_porn1"
+></style>
+<style
+  lang="scss"
+  src="@/css/page/vip/ey1.vipLevelCard.scss"
+  module="$style_ey1"
+></style>

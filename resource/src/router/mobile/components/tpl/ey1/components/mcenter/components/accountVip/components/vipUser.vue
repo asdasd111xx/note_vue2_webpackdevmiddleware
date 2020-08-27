@@ -15,11 +15,11 @@
         </div>
       </div>
 
-      <div :class="$style['user-vip-desc']">
-        <div
-          :class="$style['vip-text']"
-          @click="$router.push('/mobile/mcenter/accountVIP/detail')"
-        >
+      <div
+        :class="$style['user-vip-desc']"
+        @click="$router.push('/mobile/mcenter/accountVIP/detail')"
+      >
+        <div :class="$style['vip-text']">
           VIP详情
         </div>
         <div :class="$style['vip-level']">

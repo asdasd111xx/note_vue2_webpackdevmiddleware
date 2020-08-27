@@ -46,13 +46,14 @@
           </div>
           <div :class="$style['cell-text']">
             <div>
-              {{
-                currentLevelData.withdraw_fee
-                  ? +currentLevelData.withdraw_fee.withdraw_limit
-                    ? currentLevelData.withdraw_fee.withdraw_limit
-                    : "--"
-                  : "--"
-              }}
+              <div>
+                <span v-if="currentLevelData.withdraw_fee.withdraw_limit === ''"
+                  >--</span
+                >
+                <span v-else>
+                  {{ currentLevelData.withdraw_fee.withdraw_limit }}
+                </span>
+              </div>
             </div>
             <div>每日提现额度</div>
           </div>
@@ -87,7 +88,7 @@
             />
           </div>
           <div :class="$style['cell-text']">
-            <div>{{ currentLevelData.monthly_gift }}</div>
+            <div>{{ currentLevelData.weekly_gift }}</div>
             <div>每週红包(月初自动派发)</div>
           </div>
         </div>
