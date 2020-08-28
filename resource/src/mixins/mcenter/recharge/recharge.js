@@ -94,7 +94,9 @@ export default {
             'actionSetUserdata',
             'actionSetGlobalMessage',
             'actionSetRechargeConfig',
-            'actionVerificationPhone'
+            'actionVerificationPhone',
+            'actionGetMemInfoV3',
+            'actionGetRechargeStatus'
         ]),
         setPromotionTips() {
             let result = ''
@@ -204,35 +206,38 @@ export default {
             }
 
             this.isSendKeyring = true;
-            return axios({
-                method: 'get',
-                url: '/api/v1/c/recharge/check',
-                params: {
-                    target_username: this.formData.target_username,
-                    amount: this.formData.amount
-                }
-            }).then(res => {
-                this.actionSetUserBalance();
-                this.isSendKeyring = false;
 
-                if (res && res.data && res.data.result === "ok") {
-                    return true;
-                } else {
-                    if (res.data.errors.amount) {
-                        this.errorMessage.amount = res.data.errors.amount;
+            return this.actionGetRechargeStatus("recharge").then(() => {
+                return axios({
+                    method: 'get',
+                    url: '/api/v1/c/recharge/check',
+                    params: {
+                        target_username: this.formData.target_username,
+                        amount: this.formData.amount
                     }
+                }).then(res => {
+                    this.actionSetUserBalance();
+                    this.isSendKeyring = false;
 
-                    if (res.data.errors.user) {
-                        this.errorMessage.target_username = res.data.errors.user;
+                    if (res && res.data && res.data.result === "ok") {
+                        return true;
+                    } else {
+                        if (res.data.errors.amount) {
+                            this.errorMessage.amount = res.data.errors.amount;
+                        }
+
+                        if (res.data.errors.user) {
+                            this.errorMessage.target_username = res.data.errors.user;
+                        }
+
+                        this.setErrorCode(res.data);
+                        return false;
                     }
-
-                    this.setErrorCode(res.data, res.data.errors.amount);
+                }).catch(error => {
+                    this.isSendKeyring = false;
+                    this.setErrorCode(error.response.data);
                     return false;
-                }
-            }).catch(error => {
-                this.isSendKeyring = false;
-                this.setErrorCode(error.response.data, res.data.errors.amount);
-                return false;
+                })
             })
         },
         // 獲取驗證碼
@@ -287,35 +292,38 @@ export default {
             this.tipMsg = "";
             this.isSendRecharge = true;
 
-            axios({
-                method: 'post',
-                url: '/api/v1/c/recharge',
-                data: {
-                    ...this.formData,
-                    amount: Number(this.formData.amount),
-                    phone: "86-" + this.formData.phone,
-                }
-            }).then(res => {
-                this.actionSetUserBalance();
-                if (res && res.data && res.data.result === "ok") {
-                    this.formData.amount = "";
-                    this.formData.phone = "";
-                    this.formData.target_username = "";
-                    this.formData.keyring = "";
-                    this.actionSetGlobalMessage({ msg: "转让成功" });
-                } else {
-                    this.setErrorCode(res.data);
-                }
+            return this.actionGetRechargeStatus("recharge").then(() => {
 
-                this.actionSetUserdata(true);
-                setTimeout(() => {
-                    this.isSendRecharge = false;
-                }, 1500)
-            }).catch(error => {
-                this.setErrorCode(error.response.data);
-                setTimeout(() => {
-                    this.isSendRecharge = false;
-                }, 1500)
+                axios({
+                    method: 'post',
+                    url: '/api/v1/c/recharge',
+                    data: {
+                        ...this.formData,
+                        amount: Number(this.formData.amount),
+                        phone: "86-" + this.formData.phone,
+                    }
+                }).then(res => {
+                    this.actionSetUserBalance();
+                    if (res && res.data && res.data.result === "ok") {
+                        this.formData.amount = "";
+                        this.formData.phone = "";
+                        this.formData.target_username = "";
+                        this.formData.keyring = "";
+                        this.actionSetGlobalMessage({ msg: "转让成功" });
+                    } else {
+                        this.setErrorCode(res.data);
+                    }
+
+                    this.actionSetUserdata(true);
+                    setTimeout(() => {
+                        this.isSendRecharge = false;
+                    }, 1500)
+                }).catch(error => {
+                    this.setErrorCode(error.response.data);
+                    setTimeout(() => {
+                        this.isSendRecharge = false;
+                    }, 1500)
+                })
             })
         },
         getRechargeRecoard() {
@@ -346,7 +354,7 @@ export default {
             this.detailRecoard = null;
         },
         // 客制錯誤訊息
-        setErrorCode(data, amountMsg = '') {
+        setErrorCode(data) {
             this.isVerifyForm = false;
             const setErrorMsg = (msg, isAudit) => {
                 this.actionSetRechargeConfig().then(() => {
@@ -376,8 +384,11 @@ export default {
             }
 
             const code = data.code;
-            const msg = amountMsg || data.msg;
+            const msg = data.msg;
             switch (code) {
+                case "M00001":
+                    this.actionSetGlobalMessage({ code: code, msg: msg });
+                    break;
                 case "C650001":
                 case "C650008":
                 case "C650009":
@@ -395,12 +406,12 @@ export default {
                 // msg: "完成提现流水要求"
                 case "C650016":
                 case "C650021":
-                    setErrorMsg('完成提现流水要求', true);
+                    setErrorMsg(data.errors ? data.errors.amount : data.msg, true);
                     break;
                 // msg: "未完成提现流水要求"
                 case "C650017":
                 case "C650022":
-                    setErrorMsg('未完成提现流水要求', false);
+                    setErrorMsg(data.errors ? data.errors.amount : data.msg, false);
                     break;
                 case "C650011":
                 case "C20182":

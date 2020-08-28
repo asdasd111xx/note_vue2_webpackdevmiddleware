@@ -8,6 +8,7 @@
 
 <script>
 import { mapGetters, mapActions } from 'vuex';
+import { setCookie } from '@/lib/cookie';
 
 export default {
   props: {
@@ -122,6 +123,9 @@ export default {
             break;
           // 重新登入
           case "M00001":
+            setCookie('cid', '');
+            setCookie('y_token', '');
+            setCookie('aid', '');
             this.$router.push('/mobile/login');
             break;
           case "C50104":
