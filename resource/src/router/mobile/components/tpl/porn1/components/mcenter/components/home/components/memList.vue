@@ -85,12 +85,13 @@ export default {
   data() {
     return {
       isReceive: false,
-      toggleShare: false,
-      requiredMoney: 'load',
-      superErrorMsg: '', // 超級簽錯誤訊息
+      isShowPromotion: true,
       isShowSuper: false, // *顯示超級簽開關
+      pornSwitchState: false,
+      requiredMoney: 'load',
       superAppUrl: '', // 超級簽URL
-      pornSwitchState: false
+      superErrorMsg: '', // 超級簽錯誤訊息
+      toggleShare: false,
     };
   },
   computed: {
@@ -108,9 +109,6 @@ export default {
         this.toggleShare = value;
       }
     },
-    isShowPromotion() {
-      return this.loginStatus ? this.memInfo.user.show_promotion : true;
-    },
     list() {
       return [
         {
@@ -125,7 +123,7 @@ export default {
         {
           initName: '帮助中心',
           name: 'S_HELP_CENTER',
-          path: '/mobile/mcenter/helpCenter',
+          path: '/mobile/mcenter/help',
           pageName: 'help',
           image: 'help',
           info: '存提现、投注有疑问，看这里',
@@ -198,17 +196,6 @@ export default {
 
     let type = "ccf";
 
-    // switch (this.memInfo.user.domain) {
-    //   case "500015":
-    //   case "69":
-    //     type = "ccf_demo";
-    //     break;
-    //   default:
-    //   case "67":
-    //     type = "ccf";
-    //     break;
-    // }
-
     yaboRequest({
       method: "get",
       url: `${this.siteConfig.YABO_API_DOMAIN}/System/config`,
@@ -224,9 +211,19 @@ export default {
       }
     });
 
+    if (this.loginStatus) {
+      this.isShowPromotion = !!localStorage.getItem('is-show-promotion');
+      this.actionSetUserdata(true).then(() => {
+        this.isShowPromotion = this.memInfo.user.show_promotion;
+        localStorage.setItem('is-show-promotion', this.memInfo.user.show_promotion);
+      })
+    } else {
+      this.isShowPromotion = true
+      return;
+    }
+
     // 超級籤需滿足的最低金額
     const requiredMoney = 200;
-    if (!this.loginStatus) return;
 
     // 會員存款狀態
     axios({
@@ -250,58 +247,6 @@ export default {
       console.log(error);
     })
 
-    // common.systemTime({
-    //   success: (response) => {
-    //     let today = '';
-    //     if (response.result !== 'ok') {
-    //       today = new Date().toISOString()
-    //     } else {
-    //       today = response.ret
-    //     }
-
-    //     ajax({
-    //       // 會員存款總額
-    //       method: 'get',
-    //       url: API_MCENTER_DESPOSIT_AMOUNT,
-    //       params: {
-    //         start_at: '2020-03-01 00:00:00-04:00',
-    //         end_at: Vue.moment(today).format(
-    //           'YYYY-MM-DD HH:mm:ss-04:00'
-    //         )
-    //       },
-    //       errorAlert: false,
-    //       success: ({
-    //         result, ret, msg, code
-    //       }) => {
-    //         if (result !== 'ok') {
-    //           const errorCode = code || '';
-    //           this.superErrorMsg = `${msg} ${errorCode}`;
-    //           return;
-    //         }
-    //         if (ret && +ret >= requiredMoney) {
-    //           this.requiredMoneyStatus = 'ok';
-    //           return;
-    //         }
-
-    //         this.superErrorMsg = this.$text(
-    //           'S_VIP_ONLY_DOWNLOAD',
-    //           '充值超过％s即可下载'
-    //         ).replace('％s', requiredMoney);
-    //       },
-    //       fail: (error) => {
-    //         if (error && error.data) {
-    //           this.superErrorMsg = error.data.msg;
-    //         }
-    //       }
-    //     });
-    //   },
-    //   fail: (error) => {
-    //     if (error && error.data) {
-    //       this.superErrorMsg = error.data.msg;
-    //     }
-    //   }
-    // });
-
     setTimeout(() => {
       bbosRequest({
         method: "get",
@@ -318,6 +263,7 @@ export default {
         this.superAppUrl = res.data.url;
       });
     })
+
   },
   methods: {
     ...mapActions(['actionEnterMCenterThirdPartyLink',
