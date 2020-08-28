@@ -3,6 +3,7 @@ import { mapActions, mapGetters } from 'vuex';
 import EST from '@/lib/EST';
 import Vue from 'vue';
 import axios from 'axios';
+import { getCookie } from '@/lib/cookie'
 
 export default {
     props: {
@@ -43,7 +44,8 @@ export default {
             startTime,
             endTime,
 
-            promotionTips: ''
+            promotionTips: '',
+            updateBalance: null
         };
     },
     computed: {
@@ -62,9 +64,24 @@ export default {
             ]
         },
     },
+    beforeDestroy() {
+        clearInterval(this.updateBalance);
+        this.updateBalance = null;
+    },
     created() {
         this.actionSetRechargeConfig();
         this.setPromotionTips();
+
+        this.updateBalance = setInterval(() => {
+            let cid = getCookie("cid");
+
+            if (!cid) {
+                clearInterval(this.updateBalance);
+                this.updateBalance = null;
+            } else {
+                this.actionSetUserBalance();
+            }
+        }, 30000)
     },
     watch: {
         membalance() {
