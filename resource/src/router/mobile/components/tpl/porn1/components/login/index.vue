@@ -278,6 +278,9 @@ export default {
   },
   beforeCreate() {
     if (this.$route.query.logout) {
+      setCookie('cid', '');
+      setCookie('y_token', '');
+      setCookie('aid', '');
       window.location.replace('/mobile/login');
     }
   },

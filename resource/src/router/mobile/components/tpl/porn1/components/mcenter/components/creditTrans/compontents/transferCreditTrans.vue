@@ -304,7 +304,7 @@ input::placeholder {
 .submit-wrap {
   height: 43px;
   margin: 15px auto;
-  padding: 0 13px;
+  padding: 0 14px;
   max-width: $mobile_max_width;
 
   > div {

@@ -1356,7 +1356,7 @@ export const actionGetMemInfoV3 = ({ commit }) => {
         return;
     }
 
-    axios({
+    return axios({
         method: 'get',
         url: '/api/v3/c/player'
     }).then(res => {
