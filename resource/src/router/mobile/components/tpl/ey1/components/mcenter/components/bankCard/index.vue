@@ -100,7 +100,7 @@ export default {
     return {
       currentTab: 0,
       currentKind: "bank",
-      isShowTab: true
+      isShowTab: false
     };
   },
   computed: {
@@ -172,7 +172,11 @@ export default {
             return;
           }
         });
+
+        return;
       }
+
+      this.isShowTab = true;
     });
   },
   methods: {

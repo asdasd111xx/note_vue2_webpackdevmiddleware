@@ -22,7 +22,7 @@
             :maintains-list="maintainsList"
             :is-receive-all="isReceiveAll"
             :real-time-period="realTimePeriod"
-            :is-show-popup="isShowMsgPopup"
+            :is-show-msg-popup="isShowMsgPopup"
             :close-popup="closePopup"
             :popup-msg="popupMsg"
         />

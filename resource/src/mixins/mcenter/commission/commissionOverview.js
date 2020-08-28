@@ -64,10 +64,15 @@ export default {
             const trans = {
                 today: this.$text('S_GOT_TODAY', '今日已领'),
                 yesterday: this.$text('S_GOT_YESTERDAY', '昨日已领'),
-                monthly: '預估返利',
+                monthly: this.$text('S_GOT_MONTH', '本月已領'),
                 expected: this.$text('S_EXPECTED_REBATE', '预估返利')
             };
-            const sort = this.rewardOnlyLocal ? ['today', 'yesterday', 'monthly'] : ['today', 'yesterday', 'expected'];
+
+            // 08/28: 如果有需要判斷本站或第三方，才把註解拿掉
+            // const sort = this.rewardOnlyLocal ? ['today', 'yesterday', 'monthly'] : ['today', 'yesterday', 'expected'];
+
+            // 因 Android & iOS 寫死，固定回傳第三方資料
+            const sort = ['today', 'yesterday', 'expected'];
 
             return sort.map((key) => ({
                 key,
@@ -83,13 +88,19 @@ export default {
                 return [];
             }
 
-            const sort = this.rewardOnlyLocal ? ['today', 'yesterday', 'monthly'] : ['today', 'yesterday', 'expected'];
-            // 當本站＋第三方時，要顯示「投注返利」以及「盈亏返利」
-            // 僅有本站時，要顯示「投注返利」
-            // 僅有第三方時，要顯示「盈亏返利」
-            const text = this.memInfo.config.wage.length === 2 || this.rewardOnlyLocal ? this.$text('S_BET_REBATE', '投注返利') : '';
-            const oauthText = this.memInfo.config.wage.length === 2 || !this.rewardOnlyLocal ? this.$text('S_LOSS_REBATE', '盈亏返利') : '';
-            const wage = this.rewardOnlyLocal ? 'local' : 'oauth2';
+            // 08/28: 如果有需要判斷本站或第三方，才把註解拿掉
+            // const sort = this.rewardOnlyLocal ? ['today', 'yesterday', 'monthly'] : ['today', 'yesterday', 'expected'];
+            // // 當本站＋第三方時，要顯示「投注返利」以及「盈亏返利」
+            // // 僅有本站時，要顯示「投注返利」
+            // // 僅有第三方時，要顯示「盈亏返利」
+            // const text = this.memInfo.config.wage.length === 2 || this.rewardOnlyLocal ? this.$text('S_BET_REBATE', '投注返利') : '';
+            // const oauthText = this.memInfo.config.wage.length === 2 || !this.rewardOnlyLocal ? this.$text('S_LOSS_REBATE', '盈亏返利') : '';
+            // const wage = this.rewardOnlyLocal ? 'local' : 'oauth2';
+
+            const sort = ['today', 'yesterday', 'expected'];
+            const text = '';
+            const oauthText = '';
+            const wage = 'oauth2';
 
             return sort.map((key) => {
                 // 預估返利(第三方)
