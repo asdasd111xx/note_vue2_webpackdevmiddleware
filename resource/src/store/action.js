@@ -1299,6 +1299,7 @@ export const actionGetRechargeStatus = ({ state, dispatch, commit }, data) => {
                         type: result.type,
                         msg: result.msg
                     });
+                return result;
             }
 
             if (data !== "recharge") {
@@ -1323,11 +1324,14 @@ export const actionGetRechargeStatus = ({ state, dispatch, commit }, data) => {
                     });
                 }
             });
+
         }
 
         else {
             dispatch('actionSetGlobalMessage', { msg: error.response.data.msg })
         }
+
+        return "error";
     });
 };
 
@@ -1345,6 +1349,7 @@ export const actionSetUserLevels = ({ commit }) => {
         commit(types.SET_USER_LEVELS, ret);
     });
 }
+
 export const actionGetMemInfoV3 = ({ commit }) => {
     const hasLogin = Vue.cookie.get('cid');
     if (!hasLogin) {
