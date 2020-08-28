@@ -18,6 +18,7 @@
               v-model="oldValue"
               :placeholder="oldPhone.label"
               :class="$style.input"
+              @input="verification($event.target.value, 'oldValue')"
               type="tel"
             />
             <div :class="$style['clear-input']" v-if="oldValue">
@@ -42,12 +43,7 @@
                 $text('S_PLEASE_ENTER_MOBILE_NUMBER', '请输入手机号码')
               "
               :class="$style.input"
-              @input="
-                newValue = $event.target.value
-                  .replace(' ', '')
-                  .trim()
-                  .replace(/[^0-9]/g, '')
-              "
+              @input="verification($event.target.value, 'newValue')"
               type="tel"
             />
             <div :class="$style['clear-input']" v-if="newValue">
@@ -331,7 +327,19 @@ export default {
     ...mapActions([
       'actionSetUserdata',
       'actionSetWithdrawCheck',
+      'actionVerificationPhone'
     ]),
+    verification(value, target) {
+      this.actionVerificationPhone(value).then((res => {
+        if (target === "newValue") {
+          this.newValue = res;
+        }
+
+        if (target === "oldValue") {
+          this.oldValue = res;
+        }
+      }));
+    },
     locker() {
       if (this.timer) return;
       this.countdownSec = 60;

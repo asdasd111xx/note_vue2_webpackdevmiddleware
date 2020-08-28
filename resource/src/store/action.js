@@ -1360,3 +1360,34 @@ export const actionGetMemInfoV3 = ({ commit }) => {
         }
     })
 }
+
+// 手機欄位驗證
+export const actionVerificationPhone = ({ state, dispatch, commit }, data) => {
+    let configInfo;
+
+    if (state.webInfo.is_production) {
+        configInfo = siteConfigOfficial[`site_${state.webInfo.alias}`] || siteConfigOfficial.preset;
+    } else {
+        configInfo = siteConfigTest[`site_${state.webInfo.alias}`] || siteConfigTest.preset;
+    }
+
+    let site = configInfo.MOBILE_WEB_TPL;
+    let maxLength = 11;
+    switch (site) {
+        case 'ey1':
+            maxLength = 36;
+            break;
+        case 'porn1':
+        default:
+            maxLength = 11;
+            break;
+    }
+
+    let val = data
+        .replace(' ', '')
+        .trim()
+        .replace(/[^0-9]/g, '')
+        .substring(0, maxLength);
+
+    return val;
+};

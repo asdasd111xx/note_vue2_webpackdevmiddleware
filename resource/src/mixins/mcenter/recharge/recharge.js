@@ -93,7 +93,8 @@ export default {
             'actionSetUserBalance',
             'actionSetUserdata',
             'actionSetGlobalMessage',
-            'actionSetRechargeConfig'
+            'actionSetRechargeConfig',
+            'actionVerificationPhone'
         ]),
         setPromotionTips() {
             let result = ''
@@ -114,8 +115,9 @@ export default {
         verification(item) {
             let errorMessage = '';
             if (item.key === "phone") {
-                this.formData.phone = this.formData.phone
-                    .replace(/[^0-9]/g, '');
+                this.actionVerificationPhone(this.formData.phone).then((res => {
+                    this.formData.phone = res;
+                }));
 
                 if (this.formData.phone.length < 11) {
                     errorMessage = "手机格式不符合要求";
