@@ -135,7 +135,6 @@ export default {
   },
   methods: {
     ...mapActions([
-      'actionSetUserdata',
       'actionSetGlobalMessage'
     ]),
     chooseFile() {

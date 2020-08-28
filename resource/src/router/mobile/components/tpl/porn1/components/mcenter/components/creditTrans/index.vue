@@ -102,7 +102,8 @@ export default {
     ...mapActions([
       "actionSetUserBalance",
       "actionSetUserdata",
-      'actionSetGlobalMessage'
+      'actionSetGlobalMessage',
+      "actionGetRechargeStatus"
     ]),
     setCurrentTab(index) {
       switch (index) {
@@ -112,33 +113,10 @@ export default {
           break;
         case 1:
           if (this.isLock || this.currentTemplate === "transfer-credit-trans") return;
-          this.isLock = true;
-          if (this.rechargeConfig && !this.rechargeConfig.enable) {
-            this.actionSetGlobalMessage({ msg: '额度转让升级中' });
-            return;
-          } else if (this.rechargeConfig && this.rechargeConfig.bank_required && !this.hasBank) {
-            this.actionSetGlobalMessage({ code: 'C50099', origin: 'home', type: 'bindcard' });
-            return;
-          } else if (this.rechargeConfig && this.rechargeConfig.enabled_by_deposit) {
-            axios({
-              method: 'get',
-              url: '/api/v1/c/user-stat/deposit-withdraw',
-            }).then(res => {
-              if (res && res.data && Number(res.data.ret.deposit_count) > 0) {
-                this.currentTemplate = "transfer-credit-trans";
-              } else {
-                this.actionSetGlobalMessage({ code: 'recharge_deposit', origin: 'creditTrans', msg: '只需充值一次 开通转让功能' });
-              }
-            }).catch(error => {
-              this.actionSetGlobalMessage({ code: 'recharge_deposit', origin: 'creditTrans', msg: '只需充值一次 开通转让功能' });
-            })
-
-          } else {
-            this.currentTemplate = "transfer-credit-trans";
-          }
-          setTimeout(() => {
-            this.isLock = false
-          }, 1000)
+          this.actionGetRechargeStatus("recharge").then((res) => {
+            if (res === "ok")
+              this.currentTemplate = "transfer-credit-trans";
+          });
           break;
         case 2:
           this.currentTemplate = "recoard-credit-trans";

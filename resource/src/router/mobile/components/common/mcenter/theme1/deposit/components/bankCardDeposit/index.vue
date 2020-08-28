@@ -889,7 +889,7 @@ export default {
   props: {
     headerSetting: {
       type: Object,
-      default: () => {}
+      default: () => { }
     }
   },
   data() {

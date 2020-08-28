@@ -1,7 +1,7 @@
 <template>
   <bank-rebate>
     <template
-      scope="{ rebateInitData, messageText, shortDay, pageAll, caculateData, list, pickDateList, rebateCaculate, btnLock, btnReceiveLock, formatTime, rebateState, popReceive, amountCache, rebateSubTotal, immediateData, realTimeRebateTotal, maintainsList, receiveAll, isReceiveAll, realTimePeriod, isShowPopup, closePopup, popupMsg }"
+      scope="{ rebateInitData, messageText, shortDay, pageAll, caculateData, list, pickDateList, rebateCaculate, btnLock, btnReceiveLock, formatTime, rebateState, popReceive, amountCache, rebateSubTotal, immediateData, realTimeRebateTotal, maintainsList, receiveAll, isReceiveAll, realTimePeriod, isShowMsgPopup, closePopup, popupMsg }"
     >
       <div :class="[$style['total-sub-wrap'], 'clearfix']">
         <div
@@ -237,26 +237,30 @@
                 }}</span>
                 <div :class="$style['content-right']">
                   <ele-loading v-if="rebateState === 'loading'" />
-                  <template v-else
-                    >{{ caculateList.start_at }}~{{
-                      caculateList.end_at
-                    }}</template
-                  >
+                  <template v-else>
+                    <div>{{ caculateList.start_at }} ~</div>
+
+                    <div>
+                      {{ caculateList.end_at }}
+                    </div>
+                  </template>
                 </div>
               </div>
+
               <div :class="$style['detail-content']">
-                <span :class="$style['content-left']">{{
-                  $text("S_VALID_BET", "有效投注")
-                }}</span>
+                <span :class="$style['content-left']">
+                  {{ $text("S_VALID_BET", "有效投注") }}
+                </span>
                 <div :class="$style['content-right']">
                   <ele-loading v-if="rebateState === 'loading'" />
                   <template v-else>{{ caculateList.total }}</template>
                 </div>
               </div>
+
               <div :class="$style['detail-content']">
-                <span :class="$style['content-left']">{{
-                  $text("S_PREMIUM_AMOUNT", "返水金额")
-                }}</span>
+                <span :class="$style['content-left']">
+                  {{ $text("S_PREMIUM_AMOUNT", "返水金额") }}
+                </span>
                 <div :class="$style['content-right']">
                   <template
                     v-if="
@@ -268,18 +272,20 @@
                   <template v-else>{{ caculateList.rebate }}</template>
                 </div>
               </div>
+
               <div :class="$style['detail-content']">
-                <span :class="$style['content-left']">{{
-                  $text("S_MINIMUM_PREMIUM_AMOUNT", "最低返水金额")
-                }}</span>
+                <span :class="$style['content-left']">
+                  {{ $text("S_MINIMUM_PREMIUM_AMOUNT", "最低返水金额") }}
+                </span>
                 <div :class="$style['content-right']">
                   {{ caculateList.min_rebate }}
                 </div>
               </div>
+
               <div :class="$style['detail-content']">
-                <span :class="$style['content-left']">{{
-                  $text("S_RECEIVE_NUMBER_TIMES", "可领取次数")
-                }}</span>
+                <span :class="$style['content-left']">
+                  {{ $text("S_RECEIVE_NUMBER_TIMES", "可领取次数") }}
+                </span>
                 <div :class="$style['content-right']">
                   {{
                     caculateList.remaining_times
@@ -291,6 +297,7 @@
             </div>
           </div>
         </div>
+
         <div
           :class="$style['rebate-manual-title']"
           @click="isShowTip = !isShowTip"
@@ -303,6 +310,7 @@
             $text("S_REAL_DIRECTIONS", "实返说明")
           }}</span>
         </div>
+
         <div v-if="isShowTip" :class="$style['rebate-manual-wrap']">
           <div :class="$style['manual-line']" />
           <div :class="$style['rebate-manual-tip']">
@@ -331,7 +339,7 @@
           </div>
         </div>
 
-        <div v-if="isShowPopup" :class="$style['popup']">
+        <div v-if="isShowMsgPopup" :class="$style['popup']">
           <div :class="$style['pop-mask']" @click="closePopup" />
           <div :class="$style['content-block']">
             <div :class="$style['msg']">{{ popupMsg }}</div>

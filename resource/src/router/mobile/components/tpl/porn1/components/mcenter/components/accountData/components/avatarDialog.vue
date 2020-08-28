@@ -1,6 +1,6 @@
 <template>
   <transition name="fade">
-    <div v-if="isShow" :class="$style['dialog']">
+    <div :class="$style['dialog']">
       <div :class="[$style['dialog-wrap'], 'clearfix']">
         <div
           v-for="(item, index) in defaultAvatarList"
@@ -62,7 +62,7 @@ export default {
   },
   data() {
     return {
-      currentImgID: 0,
+      currentImgID: 999,
       isShowAvatarEditer: false,
       defaultAvatarList: [
         { url: '/static/image/_new/mcenter/default/avatar_0.png' },
@@ -103,10 +103,6 @@ export default {
       this.$emit('close');
     },
     handleClickFunc(key) {
-      // 暫時關閉
-      //   this.actionSetGlobalMessage({ type: 'incoming' });
-      //   return;
-
       if (key === "camera") {
         this.$refs['cameraInput'].click();
       } else if (key === "album") {
@@ -156,7 +152,9 @@ export default {
       this.actionSetUserdata(true);
       this.isShowAvatarEditer = false;
       if (isDone) {
-        this.onClose();
+        this.$nextTick(() => {
+          this.onClose();
+        });
       }
     },
     setPageLoading(set) {

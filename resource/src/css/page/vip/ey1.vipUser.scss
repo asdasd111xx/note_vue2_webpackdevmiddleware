@@ -12,15 +12,18 @@ $main-color: #e42a30;
   }
 }
 
-.run-level {
-  &.current {
-    background: $main-color;
+.user-desc-block {
+  color: #5e626d;
+
+  .money {
+    color: #222;
   }
 }
 
-.user-desc-block {
-  .money {
-    color: $main-color;
+
+.run-level {
+  &.current {
+    background: $main-color;
   }
 }
 

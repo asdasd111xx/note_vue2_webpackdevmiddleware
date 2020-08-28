@@ -1,5 +1,9 @@
 <template>
-  <component :is="$route.params.page" :type-list="typeList" />
+  <component
+    :is="$route.params.page"
+    :type-list="typeList"
+    @get-type="getTypeList"
+  />
 </template>
 
 <script>
@@ -20,20 +24,25 @@ export default {
     sendFeedback: () => import(/* webpackChunkName: 'sendFeedback' */ './sendFeedback'),
     feedbackList: () => import(/* webpackChunkName: 'feedbackList' */ './feedbackList')
   },
-  created() {
-    ajax({
-      method: 'get',
-      url: API_FEEDBACK_TYPE_LIST,
-      errorAlert: false
-    }).then((res) => {
-      this.typeList = res.ret.map((item, index) => {
-        return {
-          id: item.id,
-          content: item.content,
-          imageId: index + 1 < 8 ? index + 1 : 8
-        }
-      })
-    });
+  methods: {
+    getTypeList() {
+      ajax({
+        method: 'get',
+        url: API_FEEDBACK_TYPE_LIST,
+        errorAlert: false
+      }).then((res) => {
+        this.typeList = res.ret.map((item, index) => {
+          return {
+            id: item.id,
+            content: item.content,
+            imageId: index + 1 < 8 ? index + 1 : 8
+          }
+        })
+      });
+    }
   },
+  created() {
+    this.getTypeList();
+  }
 };
 </script>

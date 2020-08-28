@@ -5,10 +5,10 @@
     </div>
     <div :class="$style['select-category']" @click="isShow = true">
       <img
-        v-if="currentIndex !== ''"
+        v-if="currentIndex !== '' && typeList && typeList.length > 0"
         :class="$style['select-icon']"
         :src="
-          `/static/image/_new/mcenter/feedback/question_${
+          `/static/image/${theme}/mcenter/feedback/question_${
             typeList.find(i => i.id === String(paramsData.type_id)).imageId
           }.png`
         "
@@ -22,7 +22,7 @@
       </span>
       <img
         :class="$style['arrow-icon']"
-        src="/static/image/_new/common/arrow_next.png"
+        :src="`/static/image/${theme}/common/arrow_next.png`"
       />
     </div>
     <div :class="$style['question-description']">
@@ -45,7 +45,7 @@
       <!-- <div :class="$style['img-count']">0/3</div> -->
       <div :class="$style['img-wrap']">
         <img
-          src="/static/image/_new/mcenter/img_upload.png"
+          :src="`/static/image/${theme}/mcenter/img_upload.png`"
           @click="goImageRelease"
         />
       </div>
@@ -83,7 +83,7 @@
           >
             <img
               :src="
-                `/static/image/_new/mcenter/feedback/question_${item.imageId}.png`
+                `/static/image/${theme}/mcenter/feedback/question_${item.imageId}.png`
               "
             />
             {{ item.content }}
@@ -129,11 +129,18 @@ export default {
       ],
     };
   },
-
+  created() {
+    if (this.typeList.length === 0) {
+      this.$emit('getType');
+    }
+  },
   computed: {
     ...mapGetters({
       siteConfig: 'getSiteConfig'
     }),
+    theme() {
+      return this.siteConfig.MOBILE_WEB_TPL;
+    },
     $style() {
       const style = this[`$style_${this.siteConfig.MOBILE_WEB_TPL}`] || this.$style_porn1;
       return style;

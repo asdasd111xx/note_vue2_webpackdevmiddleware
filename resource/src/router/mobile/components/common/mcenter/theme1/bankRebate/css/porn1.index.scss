@@ -105,6 +105,9 @@
             padding: 10px 0;
 
             .detail-content {
+                display: flex;
+                justify-content: space-between;
+                align-items: center;
                 padding: 2px 17px;
 
                 .content-left {
@@ -112,7 +115,6 @@
                 }
 
                 .content-right {
-                    float: right;
                     color: #222;
                 }
             }

@@ -46,13 +46,14 @@
           </div>
           <div :class="$style['cell-text']">
             <div>
-              {{
-                currentLevelData.withdraw_fee
-                  ? +currentLevelData.withdraw_fee.withdraw_limit
-                    ? currentLevelData.withdraw_fee.withdraw_limit
-                    : "--"
-                  : "--"
-              }}
+              <div>
+                <span v-if="currentLevelData.withdraw_fee.withdraw_limit === ''"
+                  >--</span
+                >
+                <span v-else>
+                  {{ currentLevelData.withdraw_fee.withdraw_limit }}
+                </span>
+              </div>
             </div>
             <div>每日提现额度</div>
           </div>
@@ -143,5 +144,13 @@ export default {
 };
 </script>
 
-<style lang="scss" src="@/css/page/vip/porn1.vipInfo.scss" module="$style_porn1"></style>
-<style lang="scss" src="@/css/page/vip/ey1.vipInfo.scss" module="$style_ey1"></style>
+<style
+  lang="scss"
+  src="@/css/page/vip/porn1.vipInfo.scss"
+  module="$style_porn1"
+></style>
+<style
+  lang="scss"
+  src="@/css/page/vip/ey1.vipInfo.scss"
+  module="$style_ey1"
+></style>

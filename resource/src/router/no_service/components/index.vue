@@ -108,7 +108,7 @@ export default {
   methods: {
     handleClick() {
       let on_service_url = store && store.state && store.state.webInfo && store.state.webInfo.on_service_url;
-      localStorage.setItem('serviceUrl', on_service_url || ' https://31zfyq.italking.asia:8866/guest.php?gid=yb01&dmsrc=&lang=zh-cn');
+      localStorage.setItem('serviceUrl', on_service_url || 'https://31zfyq.italking.asia:8866/guest.php?gid=yb01&dmsrc=&lang=zh-cn');
 
       window.location.href = `/static/upup/index.html?username=${this.username}`;
       window.location.title = "在线客服";
