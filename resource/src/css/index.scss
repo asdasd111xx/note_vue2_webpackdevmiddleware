@@ -54,7 +54,7 @@ body,
 /* Slider */
 .slider {
     height: 100%;
-    animation: slide-in 0.31s forwards;
+    animation: slide-in .31s forwards;
     opacity: 1;
     -webkit-opacity: 1;
     animation-timing-function: forwards;
@@ -70,7 +70,7 @@ body,
 }
 
 .slider-close {
-    animation: slide-out 0.31s;
+    animation: slide-out .31s !important;
 }
 
 :global {
@@ -108,12 +108,12 @@ body,
 
     @-webkit-keyframes slide-out {
         0% {
-            right: calc(-100%);
+            right: 0;
         }
 
         100% {
             display: none;
-            right: 0;
+            right: calc(-100%);
             opacity: 0;
         }
     }
