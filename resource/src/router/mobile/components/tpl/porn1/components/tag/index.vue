@@ -186,7 +186,7 @@ export default {
 @import "~@/css/variable.scss";
 
 .content-wrap {
-  //   padding: 53px 0 10px;
+  padding-top: 45px;
 }
 
 .title {
