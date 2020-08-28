@@ -405,12 +405,12 @@ export default {
                     break;
                 // msg: "完成提现流水要求"
                 case "C650016":
-                case "C650021":
+                case "C650022":
                     setErrorMsg(data.errors ? data.errors.amount : data.msg, true);
                     break;
                 // msg: "未完成提现流水要求"
                 case "C650017":
-                case "C650022":
+                case "C650021":
                     setErrorMsg(data.errors ? data.errors.amount : data.msg, false);
                     break;
                 case "C650011":
