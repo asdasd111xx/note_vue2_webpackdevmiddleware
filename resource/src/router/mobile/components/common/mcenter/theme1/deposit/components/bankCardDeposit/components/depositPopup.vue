@@ -16,6 +16,8 @@
 </template>
 
 <script>
+import { mapGetters } from "vuex";
+
 export default {
   props: {
     value: {
@@ -24,14 +26,18 @@ export default {
     },
     title: {
       type: String,
-      default: ''
+      default: ""
     }
-  }, computed: {
+  },
+  computed: {
+    ...mapGetters({
+      siteConfig: 'getSiteConfig',
+    }),
     $style() {
       const style = this[`$style_${this.siteConfig.MOBILE_WEB_TPL}`] || this.$style_porn1;
       return style;
-    },
-  },
+    }
+  }
 };
 </script>
 
