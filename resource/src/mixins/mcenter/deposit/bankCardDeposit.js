@@ -431,7 +431,7 @@ export default {
                 this.isShow = false;
                 this.actionSetIsLoading(false);
                 if (response && response.result === 'ok') {
-                    this.depositData.push(...response.ret.deposit.filter((info) => info.name !== '迅付'));
+                    // this.depositData.push(...response.ret.deposit.filter((info) => info.name !== '迅付'));
 
                     if (this.mixingDeposit !== 'onlyFastPay' && Object.keys(this.curModeGroup).length === 0) {
                         [this.curModeGroup] = response.ret.deposit.filter((info) => info.name !== '迅付');

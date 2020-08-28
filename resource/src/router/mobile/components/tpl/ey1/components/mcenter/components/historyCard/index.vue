@@ -74,7 +74,7 @@ export default {
     return {
       currentTab: 0,
       currentKind: "bank",
-      isShowTab: true
+      isShowTab: false
     };
   },
   computed: {
@@ -110,23 +110,22 @@ export default {
       this.setCurrentTab(1);
 
       // 銀行卡/電子錢包，其中有一方關閉
-      // if (!this.userLevelObj.bank || !this.userLevelObj.virtual_bank) {
-      //   this.isShowTab = false;
-      //   this.$nextTick(() => {
-      //     if (this.userLevelObj.bank) {
-      //       // this.currentKind = "bank";
-      //       // this.currentPage = "bankCardInfo";
-      //       this.setCurrentTab(0);
-      //       return;
-      //     }
-      //     if (this.userLevelObj.virtual_bank) {
-      //       // this.currentKind = "virtualBank";
-      //       // this.currentPage = "virtualBankCardInfo";
-      //       this.setCurrentTab(1);
-      //       return;
-      //     }
-      //   });
-      // }
+      if (!this.userLevelObj.bank || !this.userLevelObj.virtual_bank) {
+        this.isShowTab = false;
+        this.$nextTick(() => {
+          if (this.userLevelObj.bank) {
+            this.setCurrentTab(0);
+            return;
+          }
+          if (this.userLevelObj.virtual_bank) {
+            this.setCurrentTab(1);
+            return;
+          }
+        });
+
+        return;
+      }
+      this.isShowTab = true;
     });
   },
   methods: {
