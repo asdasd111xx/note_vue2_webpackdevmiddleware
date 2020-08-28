@@ -1299,18 +1299,22 @@ export const actionGetRechargeStatus = ({ state, dispatch, commit }, data) => {
                         type: result.type,
                         msg: result.msg
                     });
-                return result;
             }
 
-            window.location.href = '/mobile/mcenter/creditTrans';
-            return result;
+            if (data !== "recharge") {
+                window.location.href = '/mobile/mcenter/creditTrans';
+            }
+            return "ok";
         });
 
         if (!bank_required && !enabled_by_deposit) {
-            window.location.href = '/mobile/mcenter/creditTrans';
+            if (data !== "recharge") {
+                window.location.href = '/mobile/mcenter/creditTrans';
+            }
+            return "ok";
         }
+
     }).catch(error => {
-        console.log(error.response)
         if (error.response.data.code === 'M00001') {
             dispatch('actionSetGlobalMessage', {
                 msg: '请先登入', cb: () => {
