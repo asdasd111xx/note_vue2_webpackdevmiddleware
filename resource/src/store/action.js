@@ -1299,6 +1299,7 @@ export const actionGetRechargeStatus = ({ state, dispatch, commit }, data) => {
                         type: result.type,
                         msg: result.msg
                     });
+                return result;
             }
 
             if (data !== "recharge") {
@@ -1323,11 +1324,14 @@ export const actionGetRechargeStatus = ({ state, dispatch, commit }, data) => {
                     });
                 }
             });
+
         }
 
         else {
             dispatch('actionSetGlobalMessage', { msg: error.response.data.msg })
         }
+
+        return "error";
     });
 };
 
@@ -1345,6 +1349,7 @@ export const actionSetUserLevels = ({ commit }) => {
         commit(types.SET_USER_LEVELS, ret);
     });
 }
+
 export const actionGetMemInfoV3 = ({ commit }) => {
     const hasLogin = Vue.cookie.get('cid');
     if (!hasLogin) {
@@ -1360,3 +1365,34 @@ export const actionGetMemInfoV3 = ({ commit }) => {
         }
     })
 }
+
+// 手機欄位驗證
+export const actionVerificationPhone = ({ state, dispatch, commit }, data) => {
+    let configInfo;
+
+    if (state.webInfo.is_production) {
+        configInfo = siteConfigOfficial[`site_${state.webInfo.alias}`] || siteConfigOfficial.preset;
+    } else {
+        configInfo = siteConfigTest[`site_${state.webInfo.alias}`] || siteConfigTest.preset;
+    }
+
+    let site = configInfo.MOBILE_WEB_TPL;
+    let maxLength = 11;
+    switch (site) {
+        case 'ey1':
+            maxLength = 36;
+            break;
+        case 'porn1':
+        default:
+            maxLength = 11;
+            break;
+    }
+
+    let val = data
+        .replace(' ', '')
+        .trim()
+        .replace(/[^0-9]/g, '')
+        .substring(0, maxLength);
+
+    return val;
+};

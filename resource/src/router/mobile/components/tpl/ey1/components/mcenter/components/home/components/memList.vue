@@ -61,7 +61,8 @@ export default {
   },
   data() {
     return {
-      toggleShare: false
+      toggleShare: false,
+      isShowPromotion: true,
     };
   },
   computed: {
@@ -77,9 +78,6 @@ export default {
       set(value) {
         this.toggleShare = value;
       }
-    },
-    isShowPromotion() {
-      return this.loginStatus ? this.memInfo.user.show_promotion : true;
     },
     list() {
       return [
@@ -115,7 +113,18 @@ export default {
       ].filter(item => item.show);
     }
   },
-  created() { },
+  created() {
+    if (this.loginStatus) {
+      this.isShowPromotion = !!localStorage.getItem('is-show-promotion');
+      this.actionSetUserdata(true).then(() => {
+        this.isShowPromotion = this.memInfo.user.show_promotion;
+        localStorage.setItem('is-show-promotion', this.memInfo.user.show_promotion);
+      })
+    } else {
+      this.isShowPromotion = true
+      return;
+    }
+  },
   methods: {
     ...mapActions([
       "actionEnterMCenterThirdPartyLink",

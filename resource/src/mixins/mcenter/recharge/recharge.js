@@ -3,6 +3,7 @@ import { mapActions, mapGetters } from 'vuex';
 import EST from '@/lib/EST';
 import Vue from 'vue';
 import axios from 'axios';
+import { getCookie } from '@/lib/cookie'
 
 export default {
     props: {
@@ -43,7 +44,8 @@ export default {
             startTime,
             endTime,
 
-            promotionTips: ''
+            promotionTips: '',
+            updateBalance: null
         };
     },
     computed: {
@@ -62,9 +64,24 @@ export default {
             ]
         },
     },
+    beforeDestroy() {
+        clearInterval(this.updateBalance);
+        this.updateBalance = null;
+    },
     created() {
         this.actionSetRechargeConfig();
         this.setPromotionTips();
+
+        this.updateBalance = setInterval(() => {
+            let cid = getCookie("cid");
+
+            if (!cid) {
+                clearInterval(this.updateBalance);
+                this.updateBalance = null;
+            } else {
+                this.actionSetUserBalance();
+            }
+        }, 30000)
     },
     watch: {
         membalance() {
@@ -76,7 +93,8 @@ export default {
             'actionSetUserBalance',
             'actionSetUserdata',
             'actionSetGlobalMessage',
-            'actionSetRechargeConfig'
+            'actionSetRechargeConfig',
+            'actionVerificationPhone'
         ]),
         setPromotionTips() {
             let result = ''
@@ -97,8 +115,9 @@ export default {
         verification(item) {
             let errorMessage = '';
             if (item.key === "phone") {
-                this.formData.phone = this.formData.phone
-                    .replace(/[^0-9]/g, '');
+                this.actionVerificationPhone(this.formData.phone).then((res => {
+                    this.formData.phone = res;
+                }));
 
                 if (this.formData.phone.length < 11) {
                     errorMessage = "手机格式不符合要求";

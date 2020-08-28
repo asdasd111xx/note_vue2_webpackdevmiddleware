@@ -99,15 +99,9 @@
           <div :class="$style['input-wrap']">
             <input
               v-model="formData.phone"
-              type="text"
+              type="tel"
               placeholder="11位手机号码"
-              maxlength="36"
-              @input="
-                formData.phone = $event.target.value
-                  .replace(' ', '')
-                  .trim()
-                  .replace(/[^0-9]/g, '')
-              "
+              @input="verification($event.target.value)"
             />
           </div>
         </div>
@@ -247,12 +241,13 @@ export default {
       msg: '',
       smsTimer: null,
       toggleCaptcha: false,
-      captcha: null
+      captcha: null,
     };
   },
   computed: {
     ...mapGetters({
-      memInfo: 'getMemInfo'
+      memInfo: 'getMemInfo',
+      siteConfig: 'getSiteConfig',
     }),
     isShowCaptcha: {
       get() {
@@ -331,8 +326,14 @@ export default {
   },
   methods: {
     ...mapActions([
-      'actionSetUserdata'
+      'actionSetUserdata',
+      'actionVerificationPhone'
     ]),
+    verification(value) {
+      this.actionVerificationPhone(value).then((res => {
+        this.formData.phone = res;
+      }));
+    },
     sendData() {
       if (this.addBankCardStep === 'one' && this.memInfo.config.player_user_bank_mobile) {
         this.NextStepStatus = false;
@@ -516,7 +517,7 @@ export default {
               clearInterval(this.smsTimer);
               this.smsTimer = null;
               this.lockStatus = false;
-              if (this.tipMsg.indexOf('已发送')) {
+              if (this.errorMsg.indexOf('已发送')) {
                 this.errorMsg = ''
               }
               return;

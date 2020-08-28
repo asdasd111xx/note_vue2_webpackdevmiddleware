@@ -250,7 +250,8 @@ export default {
   },
   methods: {
     ...mapActions([
-      'actionSetGlobalMessage'
+      'actionSetGlobalMessage',
+      'actionVerificationPhone'
     ]),
     onClose() {
       if (this.isSlider) {
@@ -294,11 +295,9 @@ export default {
           errorMsg = '手机格式不符合要求';
         }
 
-        if (target.value.length > 1) {
-          target.value = target.value.replace(' ', '')
-            .trim()
-            .replace(/[^0-9]/g, '');
-        }
+        this.actionVerificationPhone(target.value).then((res => {
+          target.value = res;
+        }));
       }
 
       if (key === "keyring") {
