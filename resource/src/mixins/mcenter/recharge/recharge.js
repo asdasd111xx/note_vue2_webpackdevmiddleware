@@ -73,12 +73,11 @@ export default {
 
         this.updateBalance = setInterval(() => {
             let cid = getCookie("cid");
+            this.actionSetUserBalance();
 
             if (!cid) {
                 clearInterval(this.updateBalance);
                 this.updateBalance = null;
-            } else {
-                this.actionSetUserBalance();
             }
         }, 30000)
     },
