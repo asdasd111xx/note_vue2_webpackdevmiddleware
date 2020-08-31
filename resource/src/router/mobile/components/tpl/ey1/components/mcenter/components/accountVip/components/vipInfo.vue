@@ -89,7 +89,7 @@
           </div>
           <div :class="$style['cell-text']">
             <div>{{ currentLevelData.weekly_gift }}</div>
-            <div>每週红包(月初自动派发)</div>
+            <div>每週红包(周一自动派发)</div>
           </div>
         </div>
 

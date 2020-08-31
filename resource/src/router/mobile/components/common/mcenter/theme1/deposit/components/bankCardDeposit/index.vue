@@ -668,7 +668,16 @@
             </div>
           </template>
 
-          <div :class="$style['money-info-wrap']">
+          <!-- 實際到帳 -->
+          <!-- 出現條件：1.選擇CGPay且已綁定 2.選非CGPay的支付方式 -->
+          <div
+            v-if="
+              (curPayInfo.payment_method_id === 16 &&
+                CGPayInfo.is_bind_wallet) ||
+                curPayInfo.payment_method_id !== 16
+            "
+            :class="$style['money-info-wrap']"
+          >
             <span
               v-if="realSaveMoney > 0"
               :class="[$style['feature-tip-title'], $style.success]"
@@ -889,7 +898,7 @@ export default {
   props: {
     headerSetting: {
       type: Object,
-      default: () => { }
+      default: () => {}
     }
   },
   data() {
