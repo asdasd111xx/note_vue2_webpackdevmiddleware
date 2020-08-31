@@ -314,7 +314,7 @@ export default {
       let check = true;
       if (this.formData['name'].show && !this.formData['name'].value ||
         (this.formData['phone'].show && !this.formData['phone'].value) ||
-        (this.formData['keyring'].show && !this.formData['keyring'].value)) {
+        (this.formData['keyring'].show && !this.formData['keyring'].value && this.showKeyring)) {
         check = false;
       }
 
