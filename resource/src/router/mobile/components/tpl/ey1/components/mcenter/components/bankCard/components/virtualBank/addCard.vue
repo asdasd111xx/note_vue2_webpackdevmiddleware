@@ -89,6 +89,9 @@
 
       <!-- Confirm Button -->
       <div v-if="!isGoBaoWallet" :class="$style['info-confirm']">
+        <p v-if="selectTarget.virtualBank">
+          请认真校对钱包地址，地址错误资金将无法到帐
+        </p>
         <!-- 針對 CGpay -->
         <div
           v-if="selectTarget.bank_id === 21"
@@ -108,6 +111,14 @@
         </div>
       </div>
     </div>
+
+    <p v-if="selectTarget.virtualBank" :class="$style['service-remind']">
+      如需帮助，请<span
+        :class="$style['service-btn']"
+        @click="$router.push('/mobile/service')"
+        >联系客服</span
+      >
+    </p>
 
     <div v-if="isShowPop" :class="$style['pop-wrap']">
       <div :class="$style['pop-mask']" @click="isShowPop = false" />

@@ -357,11 +357,12 @@ export default {
                 this.actionSetRechargeConfig().then(() => {
                     const config = this.rechargeConfig;
 
-                    let msg_desc = msg ? msg + '，' : '';
-                    if (!msg_desc) {
-                        this.errorMessage.amount = '余额不足';
+                    if (!msg_desc || msg == '馀额不足') {
+                        this.errorMessage.amount = msg;
                         return;
                     }
+
+                    let msg_desc = msg ? msg + '，' : '';
 
                     if (isAudit) {
                         msg_desc += `单笔转让最低${config.recharge_limit_audited_min}元`;
@@ -407,12 +408,12 @@ export default {
                     break;
                 // msg: "完成提现流水要求"
                 case "C650016":
-                case "C650022":
+                case "C650021":
                     setErrorMsg(data.errors ? data.errors.amount : data.msg, true);
                     break;
                 // msg: "未完成提现流水要求"
                 case "C650017":
-                case "C650021":
+                case "C650022":
                     setErrorMsg(data.errors ? data.errors.amount : data.msg, false);
                     break;
                 case "C650011":

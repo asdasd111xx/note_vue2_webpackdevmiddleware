@@ -18,7 +18,16 @@
         :key="`title-${info.key}`"
         :class="$style.wrap"
       >
-        <div :class="[$style['title-wrap'], 'clearfix']" @click="onClick(info)">
+        <div
+          :class="[
+            $style['title-wrap'],
+            'clearfix',
+            {
+              [$style['expend']]: isSummaryShow[info.key]
+            }
+          ]"
+          @click="onClick(info)"
+        >
           <div :class="$style['btn-arrow']">
             <icon
               v-if="isSummaryShow[info.key]"
@@ -192,7 +201,7 @@
 </template>
 
 <script>
-import commissionOverview from '@/mixins/mcenter/commission/commissionOverview';
+import commissionOverview from "@/mixins/mcenter/commission/commissionOverview";
 import { mapGetters } from "vuex";
 
 export default {
@@ -212,9 +221,10 @@ export default {
       siteConfig: "getSiteConfig"
     }),
     $style() {
-      const style = this[`$style_${this.siteConfig.MOBILE_WEB_TPL}`] || this.$style_porn1;
+      const style =
+        this[`$style_${this.siteConfig.MOBILE_WEB_TPL}`] || this.$style_porn1;
       return style;
-    },
+    }
   },
   methods: {
     onClick({ key }) {
