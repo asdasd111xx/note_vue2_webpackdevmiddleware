@@ -39,13 +39,15 @@
                   {{ message.created_at | getTime }}
                 </p>
               </div>
-              <p :class="$style['question']">{{ message.content }}</p>
+              <p :class="$style['question']">
+                {{ getShortConetent(message.content) }}
+              </p>
             </div>
           </li>
         </ul>
       </template>
     </template>
-    <template v-else>
+    <template v-else-if="currentFeedback">
       <div :class="$style['feedback-detail']">
         <div :class="$style['detail-content']">
           <div :class="[$style['detail-title'], 'clearfix']">
@@ -67,9 +69,9 @@
               <div :class="$style['question-name']">
                 {{ memInfo.user.username }}
               </div>
-              <p
+              <div
                 :class="$style['question-description']"
-                v-html="currentFeedback.content"
+                v-html="setContent(currentFeedback.content)"
               />
               <p :class="$style['question-time']">
                 {{ currentFeedback.created_at | getDeatilTime }}
@@ -92,7 +94,7 @@
               </div>
               <p
                 :class="$style['question-description']"
-                v-html="currentFeedback.reply_content"
+                v-html="setContent(currentFeedback.reply_content)"
               />
               <p :class="$style['question-time']">
                 {{ currentFeedback.replied_at | getDeatilTime }}
@@ -114,12 +116,6 @@ import EST from '@/lib/EST';
 import axios from 'axios';
 
 export default {
-  props: {
-    typeList: {
-      type: Array,
-      default: null
-    }
-  },
   filters: {
     getTime(time) {
       if (!time) {
@@ -134,15 +130,16 @@ export default {
       }
 
       return EST(time);
-    }
+    },
   },
   data() {
     return {
       feedbackList: [],
-      currentFeedback: {},
+      currentFeedback: null,
       unReadCount: 0,
       repliedList: [],
       isReceive: false,
+      typeList: null,
       avatarSrc: `/static/image/_new/mcenter/avatar_nologin.png`,
     };
   },
@@ -161,22 +158,52 @@ export default {
     },
     siteName() {
       return this.siteConfig.SITE_NAME;
-    }
+    },
+
   },
   created() {
-    this.getFeedbackRecord();
-    this.getRepliedList();
-    this.getAvatarSrc();
+    const params = [this.getFeedbackRecord(),
+    this.getRepliedList(),
+    this.getAvatarSrc(),
+    this.getTypeList()];
 
-    if (this.typeList.length === 0) {
-      this.$emit('getType');
+    Promise.all(params).then(() => {
+      this.isReceive = true;
+    });
+
+    //  to do
+    if (this.currentFeedback === null) {
+      this.$router.push(`/mobile/mcenter/feedback/feedbackList/`);
     }
   },
   methods: {
+    getShortConetent(content) {
+      return content;
+    },
+    getTypeList() {
+      ajax({
+        method: 'get',
+        url: '/api/v1/c/feedback_type/list',
+        errorAlert: false
+      }).then((res) => {
+        this.typeList = res.ret.map((item, index) => {
+          return {
+            id: item.id,
+            content: item.content,
+            imageId: index + 1 < 8 ? index + 1 : 8
+          }
+        })
+      });
+    },
+    setContent(content) {
+      let urlRegex = /(https?:\/\/[^\s]+)/g;
+      return content.replace(/\n/g, '<br/>').replace(urlRegex, function (url) {
+        return '<a href="' + url + '" target="_blank">' + url + '</a>';
+      })
+    },
     getFeedbackRecord() {
       mcenter.feedbackRecord({
         success: (response) => {
-          this.isReceive = true;
           this.feedbackList = response.ret;
         }
       });
