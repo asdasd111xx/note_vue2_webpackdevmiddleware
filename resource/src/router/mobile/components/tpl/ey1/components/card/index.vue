@@ -36,6 +36,8 @@ export default {
         case 'all':
           textCode = 'S_ALL';
           break;
+        case 'ace':
+          return 'ACE棋牌';
         default:
           textCode = `S_${vendor}`.toUpperCase();
           break;

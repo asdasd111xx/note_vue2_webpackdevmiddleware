@@ -62,10 +62,14 @@ export default {
         case 'mt_casino':
           textCode = `S_${vendor}`.toUpperCase();
           break;
+        case 'wm':
+          return 'WM电子';
         default:
           textCode = `S_${vendor}_CASINO`.toUpperCase();
           break;
       }
+
+      console.log(textCode)
       return this.$text(textCode);
     },
     headerConfig() {

@@ -119,7 +119,7 @@
               </div>
             </template>
             <template v-else>
-              <img v-lazy="getImg(game)" />
+              <img v-lazy="getImg(game)" :alt="game.name" />
             </template>
           </div>
         </template>
