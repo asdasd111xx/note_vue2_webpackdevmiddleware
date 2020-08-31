@@ -165,6 +165,7 @@ export default {
   },
   created() {
     this.getRechargeBalance();
+    this.actionSetRechargeConfig();
   },
   watch: {
     captchaData(val) {

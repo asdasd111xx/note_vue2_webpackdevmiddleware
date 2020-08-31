@@ -81,7 +81,10 @@
           </div>
         </div>
 
-        <div v-if="formData['phone'].show" :class="$style['cell']">
+        <div
+          v-if="formData['phone'].show && showKeyring"
+          :class="$style['cell']"
+        >
           <div :class="$style['err-msg']">
             {{ formData["keyring"].msg }}
           </div>
@@ -226,6 +229,9 @@ export default {
     themeTPL() {
       return this.siteConfig.MOBILE_WEB_TPL;
     },
+    showKeyring() {
+      return this.memInfo.config.player_user_bank_mobile;
+    },
     isShowCaptcha: {
       get() {
         return this.toggleCaptcha
@@ -251,7 +257,7 @@ export default {
   methods: {
     ...mapActions([
       'actionSetGlobalMessage',
-      'actionVerificationPhone'
+      'actionVerificationFormData'
     ]),
     onClose() {
       if (this.isSlider) {
@@ -294,8 +300,7 @@ export default {
         if (!this.isVerifyPhone) {
           errorMsg = '手机格式不符合要求';
         }
-
-        this.actionVerificationPhone(target.value).then((res => {
+        this.actionVerificationFormData({ target: 'phone', value: target.value }).then((res => {
           target.value = res;
         }));
       }
