@@ -62,10 +62,14 @@ export default {
         case 'mt_casino':
           textCode = `S_${vendor}`.toUpperCase();
           break;
+        case 'wm':
+          return 'WM电子';
         default:
           textCode = `S_${vendor}_CASINO`.toUpperCase();
           break;
       }
+
+      console.log(textCode)
       return this.$text(textCode);
     },
     headerConfig() {
@@ -102,22 +106,14 @@ export default {
     max-width: 960px;
     min-width: 320px;
     margin: 0 auto;
-    padding: 18px 10px;
+    padding: 45px 10px;
   }
 }
 
 @media screen and (min-width: $phone) {
   :global {
     .game-item-wrap {
-      padding: 13px 20px;
-    }
-  }
-}
-
-@media screen and (min-width: $pad) {
-  :global {
-    .game-item-wrap {
-      padding: 13px 40px;
+      padding: 62px 20px;
     }
   }
 }
