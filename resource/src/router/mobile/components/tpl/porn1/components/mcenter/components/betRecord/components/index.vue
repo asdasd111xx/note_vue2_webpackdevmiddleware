@@ -137,7 +137,7 @@
       <div v-if="!mainNoData" :class="$style['data-wrap']">
         <ul :class="[$style['total-wrap'], 'clearfix']">
           <li :class="$style['total-count']">
-            {{ $text("S_DATA_COUNT", "笔数") }} : {{ mainListData.length }}
+            {{ $text("S_DATA_COUNT", "笔数") }} : {{ mainTotal.count }}
           </li>
           <li :class="$style['total-water']">
             {{ $text("S_TOTAL_WATER", "流水") }} :
@@ -195,6 +195,10 @@
                     {{ gameDetail.game_name }}
                   </div>
                   <div :class="[$style['game-count'], 'clearfix']">
+                    <div :class="$style['game-counts']">
+                      {{ $text("S_DATA_COUNT", "笔数") }} :
+                      {{ gameDetail.count }}
+                    </div>
                     <div :class="$style['game-water']">
                       {{ $text("S_TOTAL_WATER", "流水") }} :
                       {{ parseFloat(gameDetail.valid_bet).toFixed(2) }}

@@ -1350,7 +1350,7 @@ export const actionSetUserLevels = ({ commit }) => {
     });
 }
 
-export const actionGetMemInfoV3 = ({ commit }) => {
+export const actionGetMemInfoV3 = ({ state, dispatch, commit }) => {
     const hasLogin = Vue.cookie.get('cid');
     if (!hasLogin) {
         return;
@@ -1363,11 +1363,20 @@ export const actionGetMemInfoV3 = ({ commit }) => {
         if (res && res.data && res.data.result === "ok") {
             commit(types.SETMEMINFOV3, res.data.ret);
         }
+    }).catch((error) => {
+        if (error.response.data.code === "M00001") {
+            dispatch('actionSetGlobalMessage', {
+                msg: error.response.data.msg, cb: () => {
+                    member.logout().then(() => {
+                        window.location.href = "/mobile/login?logout=true";
+                    });
+                }
+            });
+        }
     })
 }
-
-// 手機欄位驗證
-export const actionVerificationPhone = ({ state, dispatch, commit }, data) => {
+// 輸入欄位驗證
+export const actionVerificationFormData = ({ state, dispatch, commit }, data) => {
     let configInfo;
 
     if (state.webInfo.is_production) {
@@ -1377,22 +1386,52 @@ export const actionVerificationPhone = ({ state, dispatch, commit }, data) => {
     }
 
     let site = configInfo.MOBILE_WEB_TPL;
-    let maxLength = 11;
-    switch (site) {
-        case 'ey1':
-            maxLength = 36;
-            break;
-        case 'porn1':
-        default:
-            maxLength = 11;
-            break;
-    }
+    let regex = '';
+    let val = data.value.replace(' ', '')
+        .trim();
 
-    let val = data
-        .replace(' ', '')
-        .trim()
-        .replace(/[^0-9]/g, '')
-        .substring(0, maxLength);
+    switch (data.target) {
+        case 'username':
+            val = val
+                .replace(/[\W]/g, '')
+                .substring(0, 20)
+                .toLowerCase();
+            break;
+
+        case 'phone':
+            let maxLength = 11;
+            switch (site) {
+                case 'ey1':
+                    maxLength = 36;
+                    break;
+                case 'porn1':
+                default:
+                    maxLength = 11;
+                    break;
+            }
+
+            val = val
+                .replace(/[^0-9]/g, '')
+                .substring(0, maxLength);
+            break;
+
+        case 'password':
+        case 'confirm_password':
+            val = val
+                .replace(/[\W]/g, '')
+                .substring(0, 50);
+            break;
+
+        case 'name':
+            regex = /[^\u3000\u3400-\u4DBF\u4E00-\u9FFF.．·]/g;
+            //   const regex = /^[^A-Za-z0-9\uFF10-\uFF19\uFF41-\uFF5A\uFF21-\uFF3A，:;！@#$%^&*?<>()+=`|[\]{}\\"/\s~\-_']*$/;
+
+            val = val
+                .replace(regex, '')
+                .substring(0, 50);
+            break;
+
+    }
 
     return val;
 };

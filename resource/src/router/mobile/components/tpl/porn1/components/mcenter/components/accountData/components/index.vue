@@ -43,9 +43,8 @@ export default {
       return;
     }
 
-    // 是否自訂上傳頭像
-    if (this.memInfo.user.custom) {
-
+    if (this.$route.query.reqAccount) {
+      this.actionSetGlobalMessage({ msg: '请填写 真实姓名 与 手机号码' })
     }
   },
   computed: {

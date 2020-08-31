@@ -133,7 +133,7 @@ export default {
             if (this.siteConfig.MOBILE_WEB_TPL === "ey1") {
               this.$router.push('/mobile/withdrawAccount');
             } else {
-              this.$router.push('/mobile/mcenter/accountData');
+              this.$router.push(`/mobile/mcenter/accountData?reqAccount=${redirect ? redirect : 'home'}`);
             }
             break;
           default:

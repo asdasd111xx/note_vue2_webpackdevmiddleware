@@ -223,10 +223,10 @@ export default {
           text: this.$text('S_WITHDRAWAL_TEXT', '提现'),
           imgSrc: '/static/image/_new/mcenter/wallet/ic_wallter_withdraw.png',
           onClick: () => {
-            if (this.siteConfig.MOBILE_WEB_TPL !== 'ey1') {
-              this.$router.push('/mobile/mcenter/withdraw');
-              return;
-            }
+            // if (this.siteConfig.MOBILE_WEB_TPL !== 'ey1') {
+            //   this.$router.push('/mobile/mcenter/withdraw');
+            //   return;
+            // }
 
             if (this.isCheckWithdraw) { return; }
             this.isCheckWithdraw = true;
@@ -255,7 +255,7 @@ export default {
                       this.actionSetGlobalMessage({
                         msg: '请先设定提现资料', cb: () => {
                           {
-                            this.$router.push('/mobile/mcenter/accountData');
+                            this.$router.push(`/mobile/mcenter/accountData?reqAccount=${redirect ? redirect : 'home'}`);
                           }
                         }
                       })
@@ -284,7 +284,9 @@ export default {
           text: this.$text("S_CREDIT_TRANSFER", "额度转让"),
           imgSrc: '/static/image/_new/mcenter/wallet/ic_wallet_trans.png',
           onClick: () => {
-            this.actionGetRechargeStatus();
+            this.actionGetMemInfoV3().then(() => {
+              this.actionGetRechargeStatus('');
+            })
           }
         },
         {
@@ -329,7 +331,8 @@ export default {
   methods: {
     ...mapActions([
       'actionSetGlobalMessage',
-      'actionGetRechargeStatus'
+      'actionGetRechargeStatus',
+      'actionGetMemInfoV3'
     ]),
     handleDeposit() {
       this.$router.push(`/mobile/mcenter/deposit`);

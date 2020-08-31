@@ -327,11 +327,11 @@ export default {
   methods: {
     ...mapActions([
       'actionSetUserdata',
-      'actionVerificationPhone'
+      'actionVerificationFormData'
     ]),
     verification(value) {
-      this.actionVerificationPhone(value).then((res => {
-        this.formData.phone = res;
+      this.actionVerificationFormData({ target: 'phone', value: value }).then((val => {
+        this.formData.phone = val;
       }));
     },
     sendData() {

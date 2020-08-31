@@ -69,7 +69,6 @@ export default {
         this.updateBalance = null;
     },
     created() {
-        this.actionSetRechargeConfig();
         this.setPromotionTips();
 
         this.updateBalance = setInterval(() => {
@@ -94,9 +93,9 @@ export default {
             'actionSetUserdata',
             'actionSetGlobalMessage',
             'actionSetRechargeConfig',
-            'actionVerificationPhone',
+            'actionVerificationFormData',
             'actionGetMemInfoV3',
-            'actionGetRechargeStatus'
+            'actionGetRechargeStatus',
         ]),
         setPromotionTips() {
             let result = ''
@@ -117,8 +116,8 @@ export default {
         verification(item) {
             let errorMessage = '';
             if (item.key === "phone") {
-                this.actionVerificationPhone(this.formData.phone).then((res => {
-                    this.formData.phone = res;
+                this.actionVerificationFormData({ target: 'phone', value: this.formData.phone }).then((val => {
+                    this.formData.phone = val;
                 }));
 
                 if (this.formData.phone.length < 11) {
@@ -154,11 +153,10 @@ export default {
                 const re = new RegExp(data.regExp);
                 const msg = this.$t(data.errorMsg);
 
-                this.formData.target_username = this.formData.target_username
-                    .toLowerCase()
-                    .replace(' ', '')
-                    .trim()
-                    .replace(/[\W]/g, '');
+                this.actionVerificationFormData({ target: 'username', value: this.formData.target_username }).then((val => {
+                    this.formData.target_username = val;
+                }));
+
 
                 if (!re.test(this.formData.target_username)) {
                     errorMessage = msg;
@@ -359,7 +357,12 @@ export default {
             const setErrorMsg = (msg, isAudit) => {
                 this.actionSetRechargeConfig().then(() => {
                     const config = this.rechargeConfig;
+
                     let msg_desc = msg ? msg + '，' : '';
+                    if (!msg_desc) {
+                        this.errorMessage.amount = '余额不足';
+                        return;
+                    }
 
                     if (isAudit) {
                         msg_desc += `单笔转让最低${config.recharge_limit_audited_min}元`;

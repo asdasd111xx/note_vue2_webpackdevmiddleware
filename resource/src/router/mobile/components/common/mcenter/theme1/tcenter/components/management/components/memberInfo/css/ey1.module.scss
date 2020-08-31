@@ -1,17 +1,27 @@
 @import "./porn1.module.scss";
+$main_color: #e42a30;
+
+.date-wrap {
+  > div {
+    &.active {
+      &::after {
+        background: $main_color;
+      }
+    }
+  }
+}
 
 .member-total {
-    background-color: #e9dacc;
-    color: #222222;
+  background-color: #e9dacc;
+  color: #222222;
 }
 
 .btn-check {
-    border-radius: 5px;
-    background: #E42A30;
-    color: white;
+  border-radius: 5px;
+  background: $main_color;
+  color: white;
 }
 
-
 .member-text {
-    color: #222222;
+  color: #222222;
 }

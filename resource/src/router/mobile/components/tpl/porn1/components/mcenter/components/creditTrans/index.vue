@@ -103,26 +103,32 @@ export default {
       "actionSetUserBalance",
       "actionSetUserdata",
       'actionSetGlobalMessage',
-      "actionGetRechargeStatus"
+      "actionGetRechargeStatus",
+      'actionGetMemInfoV3'
     ]),
     setCurrentTab(index) {
       switch (index) {
         default:
         case 0:
           this.currentTemplate = "promotion-credit-trans";
+          this.currentTab = index;
+
           break;
         case 1:
-          if (this.isLock || this.currentTemplate === "transfer-credit-trans") return;
-          this.actionGetRechargeStatus("recharge").then((res) => {
-            if (res === "ok")
-              this.currentTemplate = "transfer-credit-trans";
-          });
+          if (this.currentTemplate === "transfer-credit-trans") return;
+          this.actionGetMemInfoV3().then(() => {
+            this.actionGetRechargeStatus("recharge").then((res) => {
+              if (res === "ok")
+                this.currentTemplate = "transfer-credit-trans";
+              this.currentTab = index;
+            });
+          })
           break;
         case 2:
           this.currentTemplate = "recoard-credit-trans";
+          this.currentTab = index;
           break;
       }
-      this.currentTab = index;
     },
     closeTips() {
       this.isShowBlockTips = false;

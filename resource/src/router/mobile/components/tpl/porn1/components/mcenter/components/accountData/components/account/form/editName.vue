@@ -82,13 +82,14 @@ export default {
   methods: {
     ...mapActions([
       'actionSetUserdata',
-      'actionSetＭcenterBindMessage'
+      'actionSetＭcenterBindMessage',
+      'actionVerificationFormData'
     ]),
     onInput(e) {
       this.tipMsg = '';
-      const re = /[^\u3000\u3400-\u4DBF\u4E00-\u9FFF.．·]/g;
-      this.value = this.value.replace(re, '');
-      this.value = this.value.substring(0, 50);
+      this.actionVerificationFormData({ target: 'name', value: value }).then((val => {
+        this.value = val
+      }));
     },
     handleSubmit() {
       if (!this.value || !this.value.length > 0) {

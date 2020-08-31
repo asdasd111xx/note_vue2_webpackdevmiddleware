@@ -1,7 +1,8 @@
+import { mapActions, mapGetters } from 'vuex';
+
 import { API_FIRST_LEVEL_REGISTER } from '@/config/api';
 import ajax from '@/lib/ajax';
 import isMobile from '@/lib/is_mobile';
-import { mapGetters } from 'vuex';
 
 export default {
     provide() {
@@ -66,6 +67,11 @@ export default {
         })
     },
     methods: {
+        ...mapActions([
+            'actionSetGlobalMessage',
+            'actionVerificationFormData'
+        ]),
+
         /**
          * 取得 Class
          * @method mainClass
@@ -91,19 +97,15 @@ export default {
                 username: /^[a-z1-9][a-z0-9]{3,19}$/,
                 password: /^[a-z0-9._\-!@#$&*+=|]{6,12}$/,
                 confirm_password: /^[a-z0-9._\-!@#$&*+=|]{6,12}$/,
-                name: /^[^0-9，:;！@#$%^&*?<>()+=`|[\]{}\\"/.\s~\-_']*$/
             };
-
-            if (key === "username" || key === "password" || key === "confirm_password") {
-                allValue[key] = value.toLowerCase()
-                    .replace(' ', '')
-                    .trim()
-                    .replace(/[\W]/g, '')
-            } else {
-                allValue[key] = value;
+            if (key === "username" || key === "password" || key === "confirm_password" || key === "name") {
+                this.actionVerificationFormData({ target: key, value: value }).then((val => {
+                    allValue[key] = val
+                }));
             }
 
-            if (!reg[key].test(allValue[key])) {
+
+            if (reg[key] && !reg[key].test(allValue[key])) {
                 allText[key].error = true;
                 return;
             }

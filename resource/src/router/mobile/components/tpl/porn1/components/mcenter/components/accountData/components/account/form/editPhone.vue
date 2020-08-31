@@ -327,16 +327,16 @@ export default {
     ...mapActions([
       'actionSetUserdata',
       'actionSetWithdrawCheck',
-      'actionVerificationPhone'
+      'actionVerificationFormData'
     ]),
     verification(value, target) {
-      this.actionVerificationPhone(value).then((res => {
+      this.actionVerificationFormData({ target: 'phone', value: value }).then((val => {
         if (target === "newValue") {
-          this.newValue = res;
+          this.newValue = val;
         }
 
         if (target === "oldValue") {
-          this.oldValue = res;
+          this.oldValue = val;
         }
       }));
     },
