@@ -36,7 +36,6 @@
             <div :class="$style['form-input']">
               <input
                 v-model="formData[item.key]"
-                @blur="verification(item)"
                 @input="verification(item)"
                 :placeholder="item.placeholder"
                 type="text"
@@ -88,7 +87,13 @@
             <div :class="$style['form-input']">
               <input
                 v-model="formData[item.key]"
-                @blur="verification(item)"
+                @blur="
+                  () => {
+                    if (item.key === 'amount') {
+                      verification(item);
+                    }
+                  }
+                "
                 @input="verification(item)"
                 :placeholder="item.placeholder"
                 type="tel"
