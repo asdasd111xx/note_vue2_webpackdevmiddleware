@@ -62,10 +62,13 @@ export default {
   methods: {
     ...mapActions([
       'actionSetGlobalMessage',
-      'actionGetRechargeStatus'
+      'actionGetRechargeStatus',
+      'actionGetMemInfoV3'
     ]),
     handleCreditTrans() {
-      this.actionGetRechargeStatus();
+      this.actionGetMemInfoV3().then(() => {
+        this.actionGetRechargeStatus('');
+      })
     }
   },
 };

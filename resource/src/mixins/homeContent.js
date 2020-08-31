@@ -160,7 +160,8 @@ export default {
     methods: {
         ...mapActions([
             'actionSetGlobalMessage',
-            'actionGetRechargeStatus'
+            'actionGetRechargeStatus',
+            'actionGetMemInfoV3'
         ]),
         getImg(info) {
             return {
@@ -356,7 +357,9 @@ export default {
                 //   }
                 // });
             } else if (path === 'creditTrans') {
-                this.actionGetRechargeStatus('home');
+                this.actionGetMemInfoV3().then(() => {
+                    this.actionGetRechargeStatus('home');
+                })
                 return;
             } else if (path === "makemoney") {
                 this.$router.push('/mobile/mcenter/tcenter/management');

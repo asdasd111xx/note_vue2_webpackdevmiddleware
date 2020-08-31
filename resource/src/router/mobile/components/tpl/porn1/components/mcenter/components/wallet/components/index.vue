@@ -284,7 +284,9 @@ export default {
           text: this.$text("S_CREDIT_TRANSFER", "额度转让"),
           imgSrc: '/static/image/_new/mcenter/wallet/ic_wallet_trans.png',
           onClick: () => {
-            this.actionGetRechargeStatus();
+            this.actionGetMemInfoV3().then(() => {
+              this.actionGetRechargeStatus('');
+            })
           }
         },
         {
@@ -329,7 +331,8 @@ export default {
   methods: {
     ...mapActions([
       'actionSetGlobalMessage',
-      'actionGetRechargeStatus'
+      'actionGetRechargeStatus',
+      'actionGetMemInfoV3'
     ]),
     handleDeposit() {
       this.$router.push(`/mobile/mcenter/deposit`);

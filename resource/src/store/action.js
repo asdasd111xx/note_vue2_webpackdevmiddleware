@@ -1350,7 +1350,7 @@ export const actionSetUserLevels = ({ commit }) => {
     });
 }
 
-export const actionGetMemInfoV3 = ({ commit }) => {
+export const actionGetMemInfoV3 = ({ state, dispatch, commit }) => {
     const hasLogin = Vue.cookie.get('cid');
     if (!hasLogin) {
         return;
@@ -1362,6 +1362,16 @@ export const actionGetMemInfoV3 = ({ commit }) => {
     }).then(res => {
         if (res && res.data && res.data.result === "ok") {
             commit(types.SETMEMINFOV3, res.data.ret);
+        }
+    }).catch((error) => {
+        if (error.response.data.code === "M00001") {
+            dispatch('actionSetGlobalMessage', {
+                msg: error.response.data.msg, cb: () => {
+                    member.logout().then(() => {
+                        window.location.href = "/mobile/login?logout=true";
+                    });
+                }
+            });
         }
     })
 }

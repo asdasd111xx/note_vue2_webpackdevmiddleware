@@ -95,7 +95,7 @@ export default {
             'actionSetRechargeConfig',
             'actionVerificationFormData',
             'actionGetMemInfoV3',
-            'actionGetRechargeStatus'
+            'actionGetRechargeStatus',
         ]),
         setPromotionTips() {
             let result = ''
@@ -357,7 +357,12 @@ export default {
             const setErrorMsg = (msg, isAudit) => {
                 this.actionSetRechargeConfig().then(() => {
                     const config = this.rechargeConfig;
+
                     let msg_desc = msg ? msg + '，' : '';
+                    if (!msg_desc) {
+                        this.errorMessage.amount = '余额不足';
+                        return;
+                    }
 
                     if (isAudit) {
                         msg_desc += `单笔转让最低${config.recharge_limit_audited_min}元`;
