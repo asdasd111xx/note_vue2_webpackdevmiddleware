@@ -73,7 +73,6 @@ export default {
           break;
       }
 
-      console.log(textCode)
       return this.$text(textCode);
     },
     headerConfig() {
