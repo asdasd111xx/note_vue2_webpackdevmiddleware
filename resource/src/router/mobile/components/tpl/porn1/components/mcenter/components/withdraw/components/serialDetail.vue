@@ -1,9 +1,9 @@
 <template>
   <div :class="sliderClass">
-    <div :class="$style['serial-header']">
+    <div :class="[$style['serial-header'], [$style[theme]]]">
       <div :class="$style['btn-prev']">
         <img
-          :src="$getCdnPath('/static/image/_new/common/btn_back.png')"
+          :src="$getCdnPath(`/static/image/${theme}/common/btn_back.png`)"
           @click="onClose()"
         />
       </div>
@@ -71,6 +71,7 @@
 
 <script>
 import mixin from '@/mixins/mcenter/withdraw/serialNumber';
+import { mapGetters, mapActions } from 'vuex';
 
 export default {
   mixins: [mixin],
@@ -91,6 +92,12 @@ export default {
     }
   },
   computed: {
+    ...mapGetters({
+      siteConfig: "getSiteConfig",
+    }),
+    theme() {
+      return this.siteConfig.MOBILE_WEB_TPL;
+    },
     detailList() {
       return [{ title: this.$text('S_CREATED_TIME', '建立时间'), value: this.data.confirm_at },
       { title: this.$text('S_REMARK', '备注'), value: this.data.memo },
