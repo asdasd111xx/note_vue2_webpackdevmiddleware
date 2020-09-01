@@ -1,12 +1,12 @@
 import {
+    API_AGCENTER_USER_LEVELS,
     API_MCENTER_WITHDRAW,
     API_TRADE_RELAY,
     API_WITHDRAW,
     API_WITHDRAW_BALANCE_BACK,
     API_WITHDRAW_CGPAY_BINDING,
     API_WITHDRAW_INFO,
-    API_WITHDRAW_WRITE,
-    API_AGCENTER_USER_LEVELS
+    API_WITHDRAW_WRITE
 } from '@/config/api';
 import { mapActions, mapGetters } from 'vuex';
 
@@ -226,7 +226,13 @@ export default {
             fail: (res) => {
                 this.actionSetIsLoading(false);
                 if (res.data && res.data.msg) {
-                    this.actionSetGlobalMessage({ msg: res.data.msg })
+                    this.actionSetGlobalMessage({
+                        msg: res.data.msg, cb: () => {
+                            if (res.data.code == "C600001") {
+                                this.$router.back();
+                            }
+                        }
+                    })
                 }
             }
         }).then((res) => {
