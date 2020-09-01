@@ -73,7 +73,7 @@ export default {
 
         this.updateBalance = setInterval(() => {
             this.actionSetUserBalance();
-        }, 10000)
+        }, 30000)
     },
     watch: {
         membalance() {

@@ -129,6 +129,10 @@ export default {
         if (index < 3) {
           document.querySelector(`input[data-key="${key}_${index + 1}"]`).focus();
         }
+      } else if (target.value[index] === correct_value && correct_value === '') {
+        if (index > 0) {
+          document.querySelector(`input[data-key="${key}_${index - 1}"]`).focus();
+        }
       }
 
       target.value[index] = correct_value

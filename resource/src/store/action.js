@@ -1295,7 +1295,7 @@ export const actionGetRechargeStatus = ({ state, dispatch, commit }, data) => {
             params.push(userStat);
         }
 
-        Promise.all(params).then(() => {
+        return Promise.all(params).then(() => {
             let result = null;
             if (bank_required && bank_required_result.status !== "ok") {
                 result = bank_required_result;
@@ -1316,19 +1316,19 @@ export const actionGetRechargeStatus = ({ state, dispatch, commit }, data) => {
                 return result;
             }
 
+            // 不用檢查銀行卡及充值
+            if (!bank_required && !enabled_by_deposit) {
+                if (data !== "recharge") {
+                    window.location.href = '/mobile/mcenter/creditTrans';
+                }
+                return "ok";
+            }
+
             if (data !== "recharge") {
                 window.location.href = '/mobile/mcenter/creditTrans';
             }
             return "ok";
         });
-
-        if (!bank_required && !enabled_by_deposit) {
-            if (data !== "recharge") {
-                window.location.href = '/mobile/mcenter/creditTrans';
-            }
-            return "ok";
-        }
-
     }).catch(error => {
         if (error.response.data.code === 'M00001') {
             dispatch('actionSetGlobalMessage', {
