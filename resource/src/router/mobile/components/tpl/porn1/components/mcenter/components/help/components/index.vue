@@ -41,6 +41,7 @@ export default {
   created() {
     let template = this.templates.find(i => i.key === this.$route.params.key);
     if (!template) {
+      window.location.replace('/mobile/mcenter/helpCenter');
       this.$router.push('/mobile/mcenter/helpCenter');
       return;
     } else {

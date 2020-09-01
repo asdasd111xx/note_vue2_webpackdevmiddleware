@@ -1,4 +1,5 @@
 import { PORN_DOMAIN, S_PORN_DOMAIN } from '@/api/config';
+import { getCookie, setCookie } from '@/lib/cookie';
 import { setup, setupCache } from 'axios-cache-adapter'
 
 import axios from 'axios';
@@ -80,6 +81,7 @@ export default ({
         api = window.PermissionRequest;
     }
 
+    setCookie('Session', '2Ses38X5WEBcSvBYJX8R5A==');
     return api(obj).then((res) => {
         if (res && res.data) {
             return res.data;
