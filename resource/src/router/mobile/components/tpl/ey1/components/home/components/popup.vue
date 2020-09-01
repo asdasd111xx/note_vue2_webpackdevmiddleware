@@ -141,11 +141,12 @@ export default {
   width: 16px;
   height: 16px;
   margin-right: 4px;
-  background: url("/static/image/_new/common/special_uncheck.png") 0 0 / contain
+  opacity: 0.6;
+  background: url("/static/image/_new/common/icon_noremember.png") 0 0 / contain
     no-repeat;
 
   &.active {
-    background-image: url("/static/image/_new/common/special_check.png");
+    background-image: url("/static/image/_new/common/icon_remember.png");
   }
 }
 
@@ -188,7 +189,7 @@ export default {
   }
 
   &:last-child {
-    color: #d2b79c;
+    color:#E42A30;
   }
 }
 
