@@ -64,9 +64,9 @@ export default {
       import(
         /* webpackChunkName: 'bankCardInfo' */ "./components/bank/cardInfo"
       ),
-    virtualBankCardInfo: () =>
+    walletCardInfo: () =>
       import(
-        /* webpackChunkName: 'virtualBankCardInfo' */ "./components/virtualBank/cardInfo"
+        /* webpackChunkName: 'walletCardInfo' */ "./components/wallet/cardInfo"
       )
   },
   mixins: [entryMixin],
@@ -89,14 +89,14 @@ export default {
           text: "银行卡"
         },
         {
-          key: "virtualBank",
+          key: "wallet",
           text: "电子钱包"
         }
       ];
     },
     headerTitle() {
       if (this.showDetail) {
-        return this.currentPage === "virtualBankCardInfo"
+        return this.currentPage === "walletCardInfo"
           ? this.$text("S_VIRTUAL_BANKCARD")
           : this.$text("S_BANKCARD");
       } else {
@@ -139,8 +139,8 @@ export default {
           break;
 
         case 1:
-          this.currentKind = "virtualBank";
-          this.currentPage = "virtualBankCardInfo";
+          this.currentKind = "wallet";
+          this.currentPage = "walletCardInfo";
           break;
       }
     },
@@ -154,7 +154,7 @@ export default {
       // 當頁面停留在卡片管理
       if (
         this.currentPage === "bankCardInfo" ||
-        this.currentPage === "virtualBankCardInfo"
+        this.currentPage === "walletCardInfo"
       ) {
         // 卡片管理-詳細頁面
         if (this.showDetail) {

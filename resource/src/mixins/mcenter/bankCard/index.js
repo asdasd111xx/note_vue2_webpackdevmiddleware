@@ -32,8 +32,8 @@ export default {
               this.currentPage = "addBankCard";
             }
 
-            if (type && type === 'virtualBank') {
-              this.currentPage = "addVirtualBankCard";
+            if (type && type === 'wallet') {
+              this.currentPage = "addWalletCard";
             }
 
             return true;

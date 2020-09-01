@@ -5,11 +5,9 @@ export default {
   data() {
     return {
       isRevice: false,
-      isShowPop: false,
-      hasSameTypeCard: false,
-      nowOpenVirtualBank: [],
-      virtualBank_card: [],
-      virtualBank_cardDetail: {},
+      wallet_card: [],
+      wallet_cardDetail: {},
+      isShowPop: false
     }
   },
   computed: {
@@ -19,38 +17,14 @@ export default {
   },
   methods: {
     ...mapActions(['actionSetGlobalMessage']),
-    /*************************
-     * 取得目前開放的銀行列表    *
-     *************************/
-    getNowOpenVirtualBank() {
-      this.isRevice = false;
-
-      // Get 錢包類型
-      axios({
-        method: "get",
-        url: "/api/payment/v1/c/virtual/bank/list"
-      }).then(response => {
-        const { ret, result } = response.data;
-        this.isRevice = true;
-
-        if (!response || result !== "ok") {
-          return;
-        }
-
-        this.nowOpenVirtualBank = ret;
-      });
-    },
-     /*************************
-      * 目前 User 擁有的卡片     *
-      *************************/
-    getUserVirtualBankList() {
+    getUserWalletList() {
       this.isRevice = false;
 
       return axios({
         method: "get",
         url: "/api/v1/c/player/user_virtual_bank/list",
         params: {
-          common: true
+          common: false
         }
       }).then(response => {
         const { ret, result } = response.data;
@@ -60,35 +34,20 @@ export default {
           return;
         }
 
-        this.virtualBank_card = ret.filter((item, index) => index < 15);
+        this.wallet_card = ret.filter((item, index) => index < 15);
       })
     },
-
-    onClickDetail(info) {
-      this.virtualBank_cardDetail = info;
-      this.hasSameTypeCard = false;
-
-      // Find the mutiple same type card
-      let count =
-        this.virtualBank_card
-          .filter(item => {
-            return info.payment_gateway_id === item.payment_gateway_id;
-          }).length
-
-      if (count > 1) {
-        this.hasSameTypeCard = true;
-      }
-
+    getWalletDetail(info) {
+      this.wallet_cardDetail = info;
       this.$emit('update:isAudit', false)
       this.$emit("update:showDetail", true);
 
       if (info.auditing) {
         this.$emit('update:isAudit', true);
-        return;
       }
     },
     moveCard() {
-      const { address, payment_gateway_id } = this.virtualBank_cardDetail;
+      const { address, payment_gateway_id } = this.wallet_cardDetail;
 
       axios({
         method: "put",
@@ -96,7 +55,7 @@ export default {
         data: {
           old_address: address,
           payment_gateway_id: String(payment_gateway_id),
-          common: false
+          common: true
         }
       }).then(response => {
         const { result } = response.data;
@@ -104,8 +63,8 @@ export default {
           return;
         }
 
-        this.actionSetGlobalMessage({ msg: '移至历史帐号 成功' });
-        this.getUserVirtualBankList().then(() => {
+        this.actionSetGlobalMessage({ msg: '移至我的电子钱包 成功' });
+        this.getUserWalletList().then(() => {
           // 切換當前頁面狀態
           this.$emit("update:showDetail", false);
           this.$emit('update:editStatus', false);
@@ -116,9 +75,9 @@ export default {
     onDelete() {
       axios({
         method: "put",
-        url: `/api/v1/c/player/user_virtual_bank/${this.virtualBank_cardDetail.id}/delete/apply`,
+        url: `/api/v1/c/player/user_virtual_bank/${this.wallet_cardDetail.id}/delete/apply`,
         data: {
-          userVirtualBankId: this.virtualBank_cardDetail.id
+          userVirtualBankId: this.wallet_cardDetail.id
         }
       }).then(response => {
         const { result } = response.data;
@@ -129,12 +88,12 @@ export default {
         this.isShowPop = false;
         this.$emit('update:editStatus', false);
 
-        this.getUserVirtualBankList().then(() => {
-          // 更新 virtualBank_cardDetail
-          let temp = this.virtualBank_card.find(item => {
-            return item.id === this.virtualBank_cardDetail.id;
+        this.getUserWalletList().then(() => {
+          // 更新 wallet_cardDetail
+          let temp = this.wallet_card.find(item => {
+            return item.id === this.wallet_cardDetail.id;
           })
-          this.virtualBank_cardDetail = temp;
+          this.wallet_cardDetail = temp;
         }).then(() => {
           if (this.memInfo.config.manual_delete_bank_card) {
             this.actionSetGlobalMessage({ msg: '删除审核中' });

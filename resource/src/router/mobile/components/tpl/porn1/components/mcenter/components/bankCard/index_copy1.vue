@@ -3,7 +3,7 @@
     <div :class="$style['header']">
       <div :class="$style['btn-prev']" @click="backPre">
         <img
-          :src="$getCdnPath('/static/image/ey1/common/btn_back_w.png')"
+          :src="$getCdnPath('/static/image/porn1/common/btn_back.png')"
           alt="more"
         />
       </div>
@@ -18,25 +18,7 @@
         @click="editDetailStatus = true"
       >
         <img
-          :src="$getCdnPath('/static/image/ey1/common/btn_more_w.png')"
-          alt="more"
-        />
-      </div>
-
-      <div
-        v-if="
-          (currentPage === 'bankCardInfo' ||
-            currentPage === 'walletCardInfo') &&
-            !showDetail &&
-            userLevelObj.virtual_bank_single
-        "
-        :class="$style['header-icon']"
-        @click="changeToHistory"
-      >
-        <img
-          :src="
-            $getCdnPath('/static/image/ey1/mcenter/bankCard/ic_history.png')
-          "
+          :src="$getCdnPath('/static/image/porn1/common/btn_more.png')"
           alt="more"
         />
       </div>
@@ -86,13 +68,13 @@ export default {
       ),
     addBankCard: () =>
       import(/* webpackChunkName: 'addBankCard' */ "./components/bank/addCard"),
-    walletCardInfo: () =>
+    digitalCurrencyCardInfo: () =>
       import(
-        /* webpackChunkName: 'walletCardInfo' */ "./components/wallet/cardInfo"
+        /* webpackChunkName: 'digitalCurrencyCardInfo' */ "./components/digitalCurrency/cardInfo"
       ),
-    addWalletCard: () =>
+    addDigitalCurrencyCard: () =>
       import(
-        /* webpackChunkName: 'addWalletCard' */ "./components/wallet/addCard"
+        /* webpackChunkName: 'addDigitalCurrencyCard' */ "./components/digitalCurrency/addCard"
       )
   },
   mixins: [entryMixin],
@@ -115,8 +97,8 @@ export default {
           text: "银行卡"
         },
         {
-          key: "wallet",
-          text: "电子钱包"
+          key: "digitalCurrency",
+          text: "数字货币"
         }
       ];
     },
@@ -133,19 +115,19 @@ export default {
         return this.$text("S_ADD_BANKCARD", "添加银行卡");
       }
 
-      if (this.hasRedirect && this.$route.query.type === "wallet") {
-        return this.$text("S_ADD_VIRTUAL_BANKCARD", "添加电子钱包");
+      if (this.hasRedirect && this.$route.query.type === "digitalCurrency") {
+        return this.$text("S_ADD_DIGITAL_CIRRENCY", "添加数字货币");
       }
 
       switch (this.currentPage) {
         case "bankCardInfo":
-        case "walletCardInfo":
+        case "digitalCurrencyCardInfo":
           return this.$text("S_CARD_MANAGEMENT", "卡片管理");
 
         default:
           return this.currentKind === "bank"
             ? this.$text("S_ADD_BANKCARD", "添加银行卡")
-            : this.$text("S_ADD_VIRTUAL_BANKCARD", "添加电子钱包");
+            : this.$text("S_ADD_DIGITAL_CIRRENCY", "添加数字货币");
       }
     }
   },
@@ -190,8 +172,8 @@ export default {
           break;
 
         case 1:
-          this.currentKind = "wallet";
-          this.currentPage = "walletCardInfo";
+          this.currentKind = "digitalCurrency";
+          this.currentPage = "digitalCurrencyCardInfo";
           break;
       }
     },
@@ -205,7 +187,7 @@ export default {
       // 當頁面停留在卡片管理
       if (
         this.currentPage === "bankCardInfo" ||
-        this.currentPage === "walletCardInfo"
+        this.currentPage === "digitalCurrencyCardInfo"
       ) {
         // 卡片管理-詳細頁面
         if (this.showDetail) {
@@ -241,9 +223,9 @@ export default {
         this.isShowTab = isOneTab ? false : true;
         this.currentPage = "bankCardInfo";
         return;
-      } else if (this.currentKind === "wallet") {
+      } else if (this.currentKind === "digitalCurrency") {
         this.isShowTab = isOneTab ? false : true;
-        this.currentPage = "walletCardInfo";
+        this.currentPage = "digitalCurrencyCardInfo";
         return;
       }
 
@@ -270,9 +252,9 @@ export default {
   width: 100%;
   height: 43px;
   padding: 0 17px;
+  background: #fefffe;
   text-align: center;
   border-bottom: 1px solid #eee;
-  background: linear-gradient(#fe2a2a, #b60303);
 
   &::before {
     content: "";
@@ -307,7 +289,7 @@ export default {
   float: left;
   height: 22px;
   line-height: 22px;
-  color: #fff;
+  color: #000;
   font-size: 17px;
 }
 
@@ -360,7 +342,7 @@ export default {
   height: 2px;
   bottom: 0;
   transform: translateX(-50%);
-  background: #e42a30;
+  background: #be9e7f;
   transition: left 0.31s;
 }
 </style>

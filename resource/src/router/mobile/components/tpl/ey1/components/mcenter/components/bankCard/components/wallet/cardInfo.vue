@@ -3,7 +3,7 @@
     <!-- 卡片管理列表 -->
     <template v-if="!showDetail">
       <div
-        v-if="isRevice && virtualBank_card.length > 0"
+        v-if="isRevice && wallet_card.length > 0"
         :class="$style['my-card']"
       >
         <p :class="[$style['card-count'], 'clearfix']">
@@ -15,7 +15,7 @@
             {{
               $text("S_CRAD_COUNT", "共%s张").replace(
                 "%s",
-                virtualBank_card.length
+                wallet_card.length
               )
             }}
           </span>
@@ -23,7 +23,7 @@
 
         <div :class="$style['card-list']">
           <div
-            v-for="item in virtualBank_card"
+            v-for="item in wallet_card"
             :key="item.id"
             :class="$style['virtual-bankcard-item']"
             @click="onClickDetail(item), showTab(false)"
@@ -53,7 +53,7 @@
 
       <!-- 無資料時 -->
       <div
-        v-if="!isRevice || virtualBank_card.length === 0"
+        v-if="!isRevice || wallet_card.length === 0"
         :class="$style['no-data']"
       >
         <div :class="$style['no-bankcard']">
@@ -64,16 +64,16 @@
       <!-- 添加卡片按鈕區塊 -->
       <template
         v-if="
-          (!userLevelObj.virtual_bank_single && virtualBank_card.length < 15) ||
+          (!userLevelObj.virtual_bank_single && wallet_card.length < 15) ||
             (userLevelObj.virtual_bank_single &&
-              virtualBank_card.length < nowOpenVirtualBank.length)
+              wallet_card.length < nowOpenWallet.length)
         "
       >
         <div :class="$style['add-card']">
           <div :class="$style['add-wrap']">
             <div
               :class="$style['add-btn']"
-              @click="changePage('addVirtualBankCard'), showTab(false)"
+              @click="changePage('addWalletCard'), showTab(false)"
             >
               <img src="/static/image/ey1/mcenter/add.png" />
               <span>{{ $text("S_ADD_VIRTUAL_BANKCARD", "添加电子钱包") }}</span>
@@ -86,7 +86,7 @@
             {{
               $t("S_VIRTUAL_BANKCARD_TYPE_LIMIT").replace(
                 "%s",
-                nowOpenVirtualBank.length
+                nowOpenWallet.length
               )
             }}
           </span>
@@ -99,10 +99,10 @@
     </template>
 
     <!-- 卡片詳細資料 -->
-    <template v-if="showDetail && virtualBank_cardDetail">
+    <template v-if="showDetail && wallet_cardDetail">
       <div :class="$style['card-detail']">
         <div
-          v-if="virtualBank_cardDetail.auditing"
+          v-if="wallet_cardDetail.auditing"
           :class="$style['audit-block']"
         >
           <div>删除审核中</div>
@@ -112,16 +112,16 @@
         <div :class="$style['virtual-bankcard-item']">
           <div :class="[$style['card-top'], 'clearfix']">
             <div :class="$style['card-logo']">
-              <img v-lazy="getBankImage(virtualBank_cardDetail.swift_code)" />
+              <img v-lazy="getBankImage(wallet_cardDetail.swift_code)" />
             </div>
 
             <div :class="$style['card-info']">
               <div :class="$style['card-name']">
-                {{ virtualBank_cardDetail.payment_gateway_name }}
+                {{ wallet_cardDetail.payment_gateway_name }}
               </div>
 
               <div :class="$style['card-number']">
-                {{ virtualBank_cardDetail.address }}
+                {{ wallet_cardDetail.address }}
               </div>
             </div>
           </div>
@@ -146,7 +146,7 @@
             <div
               v-if="
                 memInfo.config.delete_bank_card &&
-                  virtualBank_cardDetail.payment_gateway_id !== 37
+                  wallet_cardDetail.payment_gateway_id !== 37
               "
               :class="$style['edit-option-item']"
               @click="isShowPop = true"
@@ -191,7 +191,7 @@
 </template>
 
 <script>
-import virtualMixin from "@/mixins/mcenter/bankCard/cardInfo/virtualBank";
+import virtualMixin from "@/mixins/mcenter/bankCard/cardInfo/wallet";
 
 export default {
   mixins: [virtualMixin],
@@ -222,8 +222,8 @@ export default {
     }
   },
   created() {
-    this.getNowOpenVirtualBank();
-    this.getUserVirtualBankList();
+    this.getNowOpenWallet();
+    this.getUserWalletList();
   },
   methods: {
     getBankImage(swiftCode) {
@@ -240,5 +240,5 @@ export default {
 </script>
 
 <style lang="scss" module>
-@import "@/css/page/cardInfo.module.scss";
+@import "~@/css/page/bankCard/ey1.cardInfo.module.scss";
 </style>
