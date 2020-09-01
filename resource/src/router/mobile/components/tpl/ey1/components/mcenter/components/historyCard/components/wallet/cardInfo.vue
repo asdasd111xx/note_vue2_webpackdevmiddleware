@@ -11,17 +11,17 @@
             {{
               $text("S_CRAD_COUNT", "共%s张").replace(
                 "%s",
-                virtualBank_card.length
+                wallet_card.length
               )
             }}
           </span>
         </p>
-        <div v-if="virtualBank_card.length > 0" :class="$style['card-list']">
+        <div v-if="wallet_card.length > 0" :class="$style['card-list']">
           <div
-            v-for="item in virtualBank_card"
+            v-for="item in wallet_card"
             :key="item.id"
             :class="[$style['virtual-bankcard-item'], $style['history']]"
-            @click="getVirtualBankDetail(item), showTab(false)"
+            @click="getWalletDetail(item), showTab(false)"
           >
             <div :class="[$style['card-top'], 'clearfix']">
               <div :class="$style['card-logo']">
@@ -46,7 +46,7 @@
         </div>
       </div>
 
-      <template v-if="virtualBank_card.length === 0">
+      <template v-if="wallet_card.length === 0">
         <div :class="[$style['no-data'], $style['history']]">
           <div :class="$style['no-bankcard']">
             <img src="/static/image/ey1/mcenter/bankCard/no_bankcard.png" />
@@ -55,10 +55,10 @@
       </template>
     </template>
 
-    <template v-if="showDetail && virtualBank_cardDetail">
+    <template v-if="showDetail && wallet_cardDetail">
       <div :class="$style['card-detail']">
         <div
-          v-if="virtualBank_cardDetail.auditing"
+          v-if="wallet_cardDetail.auditing"
           :class="$style['audit-block']"
         >
           <div>删除审核中</div>
@@ -68,15 +68,15 @@
         <div :class="[$style['virtual-bankcard-item'], $style['history']]">
           <div :class="[$style['card-top'], 'clearfix']">
             <div :class="$style['card-logo']">
-              <img v-lazy="getBankImage(virtualBank_cardDetail.swift_code)" />
+              <img v-lazy="getBankImage(wallet_cardDetail.swift_code)" />
             </div>
             <div :class="$style['card-info']">
               <div :class="$style['card-name']">
-                {{ virtualBank_cardDetail.payment_gateway_name }}
+                {{ wallet_cardDetail.payment_gateway_name }}
               </div>
 
               <div :class="$style['card-number']">
-                {{ virtualBank_cardDetail.address }}
+                {{ wallet_cardDetail.address }}
               </div>
             </div>
           </div>
@@ -134,7 +134,7 @@
 </template>
 
 <script>
-import virtualMixin from "@/mixins/mcenter/historyCard/cardInfo/virtualBank";
+import virtualMixin from "@/mixins/mcenter/historyCard/cardInfo/wallet";
 
 export default {
   mixins: [virtualMixin],
@@ -161,7 +161,7 @@ export default {
     }
   },
   created() {
-    this.getUserVirtualBankList();
+    this.getUserWalletList();
   },
   methods: {
     getBankImage(swiftCode) {
@@ -180,5 +180,5 @@ export default {
 </script>
 
 <style lang="scss" module>
-@import "~@/css/page/cardInfo.module.scss";
+@import "~@/css/page/bankCard/ey1.cardInfo.module.scss";
 </style>

@@ -334,4 +334,6 @@ export default {
 };
 </script>
 
-<style lang="scss" src="../css/addCard.module.scss" module />
+<style lang="scss" module>
+@import "~@/css/page/bankCard/ey1.addCard.module.scss";
+</style>
