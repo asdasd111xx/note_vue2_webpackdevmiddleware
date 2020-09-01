@@ -396,7 +396,7 @@ export default {
                                     this.actionSetGlobalMessage({
                                         msg: '请先设定提现资料', cb: () => {
                                             {
-                                                this.$router.push(`/mobile/mcenter/accountData?reqAccount=${redirect ? redirect : 'home'}`);
+                                                this.$router.push(`/mobile/mcenter/accountData?reqAccount=home`);
                                             }
                                         }
                                     })
@@ -414,8 +414,10 @@ export default {
                         this.actionSetGlobalMessage({ msg: res.data.msg, code: res.data.msg.code });
                     }
                 }).catch(res => {
+                    if (res.response.data) {
+                        this.actionSetGlobalMessage({ msg: res.response.data.msg, code: res.response.data.code });
+                    }
                     this.isCheckWithdraw = false;
-                    this.actionSetGlobalMessage({ msg: res.data.msg, code: res.data.msg.code });
                 });
             } else {
                 this.$router.push(`/mobile/mcenter/${path}`);

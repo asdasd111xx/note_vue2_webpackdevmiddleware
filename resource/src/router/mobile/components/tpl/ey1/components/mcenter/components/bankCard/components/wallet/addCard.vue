@@ -19,11 +19,11 @@
           @click="isShowPop = true"
         >
           <span
-            :class="{ [$style['select-active']]: selectTarget.virtualBank }"
+            :class="{ [$style['select-active']]: selectTarget.walletName }"
           >
             {{
-              selectTarget.virtualBank
-                ? selectTarget.virtualBank
+              selectTarget.walletName
+                ? selectTarget.walletName
                 : $text("S_SELECT_WALLET_TYPE", "请选择钱包类型")
             }}
           </span>
@@ -37,7 +37,7 @@
       </div>
 
       <!-- Input -->
-      <div v-if="selectTarget.virtualBank" :class="$style['info-item']">
+      <div v-if="selectTarget.walletName" :class="$style['info-item']">
         <p :class="$style['input-title']">
           {{ formData["walletAddress"].title }}
         </p>
@@ -58,7 +58,7 @@
         </div>
 
         <div
-          v-if="selectTarget.bank_id === 21 || isGoBaoWallet"
+          v-if="selectTarget.walletId === 21 || isGoBaoWallet"
           :class="$style['qrcode']"
           @click="isShowPopQrcode = true"
         >
@@ -72,7 +72,7 @@
       </div>
 
       <!-- CGPay 支付密碼欄位 -->
-      <div v-if="selectTarget.bank_id === 21" :class="$style['info-item']">
+      <div v-if="selectTarget.walletId === 21" :class="$style['info-item']">
         <p :class="$style['input-title']">
           {{ formData["CGPPwd"].title }}
         </p>
@@ -89,9 +89,12 @@
 
       <!-- Confirm Button -->
       <div v-if="!isGoBaoWallet" :class="$style['info-confirm']">
+        <p v-if="selectTarget.walletName">
+          请认真校对钱包地址，地址错误资金将无法到帐
+        </p>
         <!-- 針對 CGpay -->
         <div
-          v-if="selectTarget.bank_id === 21"
+          v-if="selectTarget.walletId === 21"
           :class="[$style['submit'], { [$style['disabled']]: lockStatus }]"
           @click="submitByToken"
         >
@@ -109,6 +112,14 @@
       </div>
     </div>
 
+    <p v-if="selectTarget.walletName" :class="$style['service-remind']">
+      如需帮助，请<span
+        :class="$style['service-btn']"
+        @click="$router.push('/mobile/service')"
+        >联系客服</span
+      >
+    </p>
+
     <div v-if="isShowPop" :class="$style['pop-wrap']">
       <div :class="$style['pop-mask']" @click="isShowPop = false" />
       <div :class="[$style['pop-menu'], $style['custom1']]">
@@ -121,14 +132,14 @@
 
         <ul :class="$style['pop-list']">
           <li
-            v-for="item in virtualBankList"
+            v-for="item in walletList"
             :key="item.id"
             @click="setBank(item)"
           >
             <img v-lazy="getBankImage(item.swift_code)" />
             {{ item.name }}
             <icon
-              v-if="item.id === selectTarget.bank_id"
+              v-if="item.id === selectTarget.walletId"
               :class="$style['select-icon']"
               name="check"
             />
@@ -140,7 +151,7 @@
     <popup-qrcode
       v-if="isShowPopQrcode"
       :isShowPop.sync="isShowPopQrcode"
-      :paymentGatewayId="selectTarget.bank_id"
+      :paymentGatewayId="selectTarget.walletId"
     />
   </div>
 </template>
@@ -174,20 +185,22 @@ export default {
     return {
       // 卡片有關參數
       selectTarget: {
-        bank_id: "",
-        virtualBank: "",
+        walletId: "",
+        walletName: "",
         fixed: false
       },
-      virtualBankList: [],
-      userBindVirtualBankList: [],
+      walletList: [],
+      userBindWalletList: [],
       bindWallets: {
         cgPay: false,
         goBao: false,
         ids: [] // If true then push
       },
+
       isShowPop: false,
       isShowPopQrcode: false,
       isGoBaoWallet: false,
+
       // 欄位資料
       formData: {
         walletAddress: {
@@ -224,7 +237,7 @@ export default {
     }
   },
   watch: {
-    "selectTarget.bank_id"(value) {
+    "selectTarget.walletId"(value) {
       // 不確定點擊相同錢包時，是否要清除資料?假如有，將以下 code 搬至 setBank
       this.formData["CGPPwd"].value = "";
       this.formData["walletAddress"].value = "";
@@ -273,16 +286,16 @@ export default {
             msg: "绑定成功",
             cb: () => {
               this.showTab(true);
-              this.changePage("virtualBankCardInfo");
+              this.changePage("walletCardInfo");
             }
           });
         }
       }
     },
-    virtualBankList() {
+    walletList() {
       // 從提現頁進來，且只選擇 CGPay
       if (this.$route.query.wallet && this.$route.query.wallet === "CGPay") {
-        let item = this.virtualBankList.find(item => {
+        let item = this.walletList.find(item => {
           return item.id === 21;
         });
         this.setBank(item);
@@ -296,7 +309,7 @@ export default {
       this.checkBindGoBao(),
       this.getUserBindList()
     ]).then(() => {
-      this.getVirtualBankList();
+      this.getWalletList();
     });
   },
   methods: {
@@ -322,14 +335,14 @@ export default {
       }
 
       if (
-        !this.selectTarget.virtualBank ||
+        !this.selectTarget.walletName ||
         !this.formData["walletAddress"].value
       ) {
         lock = true;
       }
 
       // 針對 CGpay
-      if (this.selectTarget.bank_id === 21 && !this.formData["CGPPwd"].value) {
+      if (this.selectTarget.walletId === 21 && !this.formData["CGPPwd"].value) {
         lock = true;
       }
 
@@ -386,10 +399,10 @@ export default {
           return;
         }
 
-        this.userBindVirtualBankList = ret.filter((item, index) => index < 15);
+        this.userBindWalletList = ret.filter((item, index) => index < 15);
       });
     },
-    getVirtualBankList() {
+    getWalletList() {
       axios({
         method: "get",
         url: "/api/payment/v1/c/virtual/bank/list"
@@ -405,14 +418,14 @@ export default {
         if (this.userLevelObj.virtual_bank_single) {
           let idArr = [
             ...new Set(
-              this.userBindVirtualBankList.map(item => {
+              this.userBindWalletList.map(item => {
                 return item.payment_gateway_id;
               })
             )
           ];
 
           if (idArr) {
-            this.virtualBankList = ret.filter(item => {
+            this.walletList = ret.filter(item => {
               if (!idArr.includes(item.id)) {
                 return item;
               }
@@ -420,7 +433,7 @@ export default {
           }
         } else {
           // 沒有開啟綁定一組開關，需 Check 是否有綁定 CGPay 與 購寶
-          this.virtualBankList = ret.filter(item => {
+          this.walletList = ret.filter(item => {
             if (!this.bindWallets.ids.includes(item.id)) {
               return item;
             }
@@ -441,7 +454,7 @@ export default {
         url: "/api/v1/c/player/user_virtual_bank",
         data: {
           address: this.formData["walletAddress"].value,
-          payment_gateway_id: this.selectTarget.bank_id
+          payment_gateway_id: this.selectTarget.walletId
         }
       })
         .then(response => {
@@ -509,8 +522,8 @@ export default {
     },
     setBank(bank) {
       this.isShowPop = false;
-      this.selectTarget.virtualBank = bank.name;
-      this.selectTarget.bank_id = bank.id;
+      this.selectTarget.walletName = bank.name;
+      this.selectTarget.walletId = bank.id;
     },
     clearMsgCallback() {
       const { query } = this.$route;
@@ -519,7 +532,7 @@ export default {
 
       if (!redirect) {
         this.showTab(true);
-        this.changePage("virtualBankCardInfo");
+        this.changePage("walletCardInfo");
         return;
       }
 
@@ -551,7 +564,7 @@ export default {
           this.$router.push(`/mobile/${redirect}`);
           return;
         default:
-          this.changePage("virtualBankCardInfo");
+          this.changePage("walletCardInfo");
           return;
       }
     },
@@ -574,4 +587,6 @@ export default {
 };
 </script>
 
-<style lang="scss" src="../css/addCard.module.scss" module />
+<style lang="scss" module>
+@import "~@/css/page/bankCard/ey1.addCard.module.scss";
+</style>

@@ -77,6 +77,14 @@
               maxlength="36"
               @input="checkData($event.target.value, 'branch')"
             />
+            <div :class="$style['clear-input']" v-if="formData.branch">
+              <img
+                :src="
+                  $getCdnPath(`/static/image/${themeTPL}/common/ic_clear.png`)
+                "
+                @click="formData.branch = ''"
+              />
+            </div>
           </div>
         </div>
 
@@ -93,7 +101,9 @@
             />
             <div :class="$style['clear-input']" v-if="formData.account">
               <img
-                :src="$getCdnPath(`/static/image/_new/common/ic_clear.png`)"
+                :src="
+                  $getCdnPath(`/static/image/${themeTPL}/common/ic_clear.png`)
+                "
                 @click="formData.account = ''"
               />
             </div>
@@ -262,6 +272,11 @@ export default {
     clearInterval(this.smsTimer);
     this.smsTimer = null;
   },
+  computed: {
+    themeTPL() {
+      return this.siteConfig.MOBILE_WEB_TPL;
+    }
+  },
   methods: {
     clearMsg() {
       const { query } = this.$route;
@@ -319,4 +334,6 @@ export default {
 };
 </script>
 
-<style lang="scss" src="../css/addCard.module.scss" module />
+<style lang="scss" module>
+@import "~@/css/page/bankCard/ey1.addCard.module.scss";
+</style>

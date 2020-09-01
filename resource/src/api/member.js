@@ -53,13 +53,11 @@ export default {
     },
     // 會員登出
     logout(args) {
-        return ajax({
-            method: 'put',
+        return axios({
+            method: 'get',
             url: apiUrl.API_LOGOUT,
-            // errorAlert: false,
-            ...args
-        }).then((response) => {
-            if (response && response.result === 'ok') {
+        }).then(res => {
+            if (res && res.data && res.data.result === "ok") {
                 setCookie('cid', '');
                 setCookie('aid', '');
                 localStorage.removeItem('type');
@@ -72,7 +70,25 @@ export default {
                     ga_uid: undefined
                 });
             }
-        });
+
+            window.location.href = '/mobile/login?logout=true';
+        }).catch((error) => {
+            if (error.response.data.code === "M00001") {
+                setCookie('cid', '');
+                setCookie('aid', '');
+                localStorage.removeItem('type');
+                localStorage.removeItem('content_rating');
+                localStorage.removeItem('is-open-game');
+                localStorage.removeItem('do-not-show-home-post');
+                localStorage.removeItem('is-show-popup-announcement');
+                // GA流量統計
+                window.dataLayer.push({
+                    ga_uid: undefined
+                });
+            }
+
+            window.location.href = '/mobile/login?logout=true';
+        })
     },
     // 會員忘記密碼
     pwdForget(args) {

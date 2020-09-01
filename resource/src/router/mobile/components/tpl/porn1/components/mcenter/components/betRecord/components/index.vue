@@ -24,9 +24,14 @@
         </div>
         <span v-else>{{ selectTime }}</span>
       </div>
+
       <ul
         v-if="selectMenu === 'game'"
-        :class="[$style['dropdown-wrap'], 'clearfix']"
+        :class="[
+          $style['dropdown-wrap'],
+          'clearfix',
+          { [$style['game']]: selectMenu === 'game' }
+        ]"
       >
         <li
           v-for="(game, index) in options"
@@ -40,6 +45,7 @@
           {{ game.alias }}
         </li>
       </ul>
+
       <div
         v-if="selectMenu === 'time'"
         :class="[
@@ -236,12 +242,12 @@
 </template>
 
 <script>
-import { mapGetters } from 'vuex';
-import Vue from 'vue';
-import InfiniteLoading from 'vue-infinite-loading';
-import EST from '@/lib/EST';
-import ajax from '@/lib/ajax';
-import datePicker from '@/router/mobile/components/common/datePicker';
+import { mapGetters } from "vuex";
+import Vue from "vue";
+import InfiniteLoading from "vue-infinite-loading";
+import EST from "@/lib/EST";
+import ajax from "@/lib/ajax";
+import datePicker from "@/router/mobile/components/common/datePicker";
 
 export default {
   components: {
@@ -250,46 +256,46 @@ export default {
   },
   data() {
     return {
-      options: [{ vendor: 'all', alias: this.$t('S_ALL'), kind: '' }],
-      selectMenu: '',
-      selectType: { vendor: 'all', alias: this.$t('S_ALL'), kind: '' },
+      options: [{ vendor: "all", alias: this.$t("S_ALL"), kind: "" }],
+      selectMenu: "",
+      selectType: { vendor: "all", alias: this.$t("S_ALL"), kind: "" },
       isCustomTime: false,
-      currentSelectTime: this.$t('S_TODDAY'),
-      selectTime: this.$t('S_TODDAY'),
-      estToday: EST(new Date(), '', true),
-      limitDate: '',
-      startTime: '',
-      endTime: '',
+      currentSelectTime: this.$t("S_TODDAY"),
+      selectTime: this.$t("S_TODDAY"),
+      estToday: EST(new Date(), "", true),
+      limitDate: "",
+      startTime: "",
+      endTime: "",
       mainListData: [],
       mainTotal: {},
       mainTime: [],
       mainNoData: true,
-      currentCustomDate: '',
+      currentCustomDate: "",
       isShowDatePicker: false,
       allTotalData: [
         {
-          text: this.$text('S_TODDAY', '今日'),
-          name: 'today',
+          text: this.$text("S_TODDAY", "今日"),
+          name: "today",
           value: 0
         },
         {
-          text: this.$text('S_YESTERDAY', '昨日'),
-          name: 'yesterday',
+          text: this.$text("S_YESTERDAY", "昨日"),
+          name: "yesterday",
           value: 1
         },
         {
-          text: this.$text('S_SEVEN_DAY', '近7日'),
-          name: 'week',
+          text: this.$text("S_SEVEN_DAY", "近7日"),
+          name: "week",
           value: 7
         },
         {
-          text: this.$text('S_THIRTY_DAY', '近30日'),
-          name: 'month',
+          text: this.$text("S_THIRTY_DAY", "近30日"),
+          name: "month",
           value: 29
         },
         {
-          text: this.$text('S_CUSTOM_DATE', '自定义'),
-          name: 'custom',
+          text: this.$text("S_CUSTOM_DATE", "自定义"),
+          name: "custom",
           value: 29
         }
       ],
@@ -303,12 +309,13 @@ export default {
   },
   computed: {
     ...mapGetters({
-      memInfo: 'getMemInfo',
-      gameData: 'getGameData',
-      siteConfig: 'getSiteConfig',
+      memInfo: "getMemInfo",
+      gameData: "getGameData",
+      siteConfig: "getSiteConfig"
     }),
     $style() {
-      const style = this[`$style_${this.siteConfig.MOBILE_WEB_TPL}`] || this.$style_porn1;
+      const style =
+        this[`$style_${this.siteConfig.MOBILE_WEB_TPL}`] || this.$style_porn1;
       return style;
     },
     setStartTime: {
@@ -316,7 +323,7 @@ export default {
         return new Date(this.startTime);
       },
       set(value) {
-        this.startTime = Vue.moment(value).format('YYYY-MM-DD');
+        this.startTime = Vue.moment(value).format("YYYY-MM-DD");
       }
     },
     setEndTime: {
@@ -324,33 +331,41 @@ export default {
         return new Date(this.endTime);
       },
       set(value) {
-        this.endTime = Vue.moment(value).format('YYYY-MM-DD');
+        this.endTime = Vue.moment(value).format("YYYY-MM-DD");
       }
     },
     controlData() {
-      return this.mainTime.map((item) => ({
-        ...item,
-        list: this.mainListData.filter((game) => game.day === item.day)
-      })).filter((data) => data.list.length > 0);
+      return this.mainTime
+        .map(item => ({
+          ...item,
+          list: this.mainListData.filter(game => game.day === item.day)
+        }))
+        .filter(data => data.list.length > 0);
     },
     showData() {
       if (this.mainData.length === 0) {
         return false;
       }
-      return this.mainData.some((item) => this.controlData.some((data) => item.day === data.day));
+      return this.mainData.some(item =>
+        this.controlData.some(data => item.day === data.day)
+      );
     }
   },
   created() {
     this.options = [...this.options, ...this.memInfo.vendors];
-    this.startTime = Vue.moment(this.estToday).format('YYYY-MM-DD');
-    this.endTime = Vue.moment(this.estToday).format('YYYY-MM-DD');
-    this.limitDate = new Date(Vue.moment(this.estToday).add(-30, 'days').format('YYYY-MM-DD'));
+    this.startTime = Vue.moment(this.estToday).format("YYYY-MM-DD");
+    this.endTime = Vue.moment(this.estToday).format("YYYY-MM-DD");
+    this.limitDate = new Date(
+      Vue.moment(this.estToday)
+        .add(-30, "days")
+        .format("YYYY-MM-DD")
+    );
     this.isLoading = true;
     this.getTotalTime();
   },
   methods: {
     getGameRecord(data) {
-      this.selectMenu = '';
+      this.selectMenu = "";
       this.selectType = data;
       this.showPage = 0;
       this.mainTotal = {};
@@ -363,14 +378,18 @@ export default {
     getTimeRecord(data) {
       this.currentSelectTime = data.text;
 
-      this.startTime = Vue.moment(this.estToday).add(-data.value, 'days').format('YYYY-MM-DD');
-      this.endTime = Vue.moment(this.estToday).format('YYYY-MM-DD');
+      this.startTime = Vue.moment(this.estToday)
+        .add(-data.value, "days")
+        .format("YYYY-MM-DD");
+      this.endTime = Vue.moment(this.estToday).format("YYYY-MM-DD");
 
-      if (data.name === 'yesterday') {
-        this.endTime = Vue.moment(this.estToday).add(-data.value, 'days').format('YYYY-MM-DD');
+      if (data.name === "yesterday") {
+        this.endTime = Vue.moment(this.estToday)
+          .add(-data.value, "days")
+          .format("YYYY-MM-DD");
       }
 
-      if (data.name === 'custom') {
+      if (data.name === "custom") {
         this.isShowDatePicker = true;
         return;
       }
@@ -378,7 +397,7 @@ export default {
       this.selectTime = data.text;
       this.isShowDatePicker = false;
       this.isCustomTime = false;
-      this.selectMenu = '';
+      this.selectMenu = "";
       this.showPage = 0;
       this.pagination = {};
       this.mainTotal = {};
@@ -389,8 +408,10 @@ export default {
     },
     getTotalTime() {
       const params = {
-        start_at: Vue.moment(this.startTime).format('YYYY-MM-DD 00:00:00-04:00'),
-        end_at: Vue.moment(this.endTime).format('YYYY-MM-DD 23:59:59-04:00')
+        start_at: Vue.moment(this.startTime).format(
+          "YYYY-MM-DD 00:00:00-04:00"
+        ),
+        end_at: Vue.moment(this.endTime).format("YYYY-MM-DD 23:59:59-04:00")
       };
 
       if (this.selectType.kind) {
@@ -400,11 +421,11 @@ export default {
 
       // 注單統計總資料(依投注日期)
       return ajax({
-        method: 'get',
-        url: '/api/v1/c/stats/wager-report/by-day',
+        method: "get",
+        url: "/api/v1/c/stats/wager-report/by-day",
         params,
-        success: (response) => {
-          this.mainTime = response.ret.map((item) => ({
+        success: response => {
+          this.mainTime = response.ret.map(item => ({
             bet: parseFloat(item.bet).toFixed(2),
             count: item.count,
             day: item.day,
@@ -418,8 +439,10 @@ export default {
     },
     getGameDetail() {
       const params = {
-        start_at: Vue.moment(this.startTime).format('YYYY-MM-DD 00:00:00-04:00'),
-        end_at: Vue.moment(this.endTime).format('YYYY-MM-DD 23:59:59-04:00'),
+        start_at: Vue.moment(this.startTime).format(
+          "YYYY-MM-DD 00:00:00-04:00"
+        ),
+        end_at: Vue.moment(this.endTime).format("YYYY-MM-DD 23:59:59-04:00"),
         max_results: this.maxResults,
         first_result: this.maxResults * this.showPage
       };
@@ -429,15 +452,15 @@ export default {
         params.kind = this.selectType.kind;
       }
 
-      this.startTime = Vue.moment(this.startTime).format('YYYY-MM-DD');
-      this.endTime = Vue.moment(this.endTime).format('YYYY-MM-DD');
+      this.startTime = Vue.moment(this.startTime).format("YYYY-MM-DD");
+      this.endTime = Vue.moment(this.endTime).format("YYYY-MM-DD");
 
       // 各遊戲注單統計資料(依投注日期)
       return ajax({
-        method: 'get',
-        url: '/api/v1/c/stats/wager-report/by-day-game',
+        method: "get",
+        url: "/api/v1/c/stats/wager-report/by-day-game",
         params,
-        success: (response) => {
+        success: response => {
           if (response.ret.length === 0) {
             return;
           }
@@ -459,43 +482,55 @@ export default {
       });
     },
     cancelCustomTime() {
-      if (this.allTotalData.some((item) => item.text === this.selectTime)) {
+      if (this.allTotalData.some(item => item.text === this.selectTime)) {
         this.currentSelectTime = this.selectTime;
         this.isShowDatePicker = false;
       }
 
-      this.selectMenu = '';
+      this.selectMenu = "";
     },
     setCustomTime() {
       if (this.setStartTime > this.setEndTime) {
         return;
       }
 
-      this.startTime = Vue.moment(this.setStartTime).format('YYYY-MM-DD');
-      this.endTime = Vue.moment(this.setEndTime).format('YYYY-MM-DD');
+      this.startTime = Vue.moment(this.setStartTime).format("YYYY-MM-DD");
+      this.endTime = Vue.moment(this.setEndTime).format("YYYY-MM-DD");
       this.selectTime = `${this.startTime} ${this.endTime}`;
       this.isCustomTime = true;
-      this.currentCustomDate = '';
-      this.selectMenu = '';
+      this.currentCustomDate = "";
+      this.selectMenu = "";
       this.getTotalTime();
     },
     getMonthDay(date) {
-      return `${Vue.moment(date).format('MM-DD').replace('-', '月')}日`;
+      return `${Vue.moment(date)
+        .format("MM-DD")
+        .replace("-", "月")}日`;
     },
     getVendorName(vendor, kind) {
-      if (!this.memInfo.vendors.find((item) => item.vendor === vendor && item.kind === kind)) {
-        return this.$t(Object.keys(this.gameData).map((key) => {
-          if (this.gameData[key].vendor === vendor) {
-            return this.gameData[key].text;
-          }
+      if (
+        !this.memInfo.vendors.find(
+          item => item.vendor === vendor && item.kind === kind
+        )
+      ) {
+        return this.$t(
+          Object.keys(this.gameData)
+            .map(key => {
+              if (this.gameData[key].vendor === vendor) {
+                return this.gameData[key].text;
+              }
 
-          return '';
-        }).join(''));
+              return "";
+            })
+            .join("")
+        );
       }
-      return this.memInfo.vendors.find((item) => item.vendor === vendor && item.kind === kind).alias;
+      return this.memInfo.vendors.find(
+        item => item.vendor === vendor && item.kind === kind
+      ).alias;
     },
     getCount(date) {
-      return this.mainListData.filter((item) => item.day === date).length;
+      return this.mainListData.filter(item => item.day === date).length;
     },
     /**
      * 捲動加載
@@ -511,11 +546,14 @@ export default {
       this.getGameDetail().then(({ result }) => {
         this.isLoading = false;
         this.isReceive = false;
-        if (result !== 'ok') {
+        if (result !== "ok") {
           return;
         }
 
-        if (!this.pagination.total || this.mainListData.length === +this.pagination.total) {
+        if (
+          !this.pagination.total ||
+          this.mainListData.length === +this.pagination.total
+        ) {
           $state.complete();
           return;
         }

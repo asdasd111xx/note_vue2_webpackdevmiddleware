@@ -703,16 +703,30 @@ export const actionIsLogin = ({ commit }, isLogin) => {
     commit(types.ISLOGIN, isLogin);
 };
 // 會員端-設定會員餘額
-export const actionSetUserBalance = ({ commit }) => {
-    const hasLogin = Vue.cookie.get('cid');
-    if (!hasLogin) {
-        return;
-    }
-    member.balance({
-        success: (response) => {
-            commit(types.SETUSERBALANCE, response);
+export const actionSetUserBalance = ({ commit, dispatch }) => {
+    axios({
+        method: 'get',
+        url: '/api/v1/c/vendor/all/balance'
+    }).then(res => {
+        if (res && res.data && res.data.result === "ok") {
+            commit(types.SETUSERBALANCE, res.data);
         }
-    });
+    }).catch((error) => {
+        const data = error && error.response && error.response.data;
+        if (data && data.code === "M00001") {
+            dispatch('actionSetGlobalMessage', {
+                msg: data.msg, cb: () => {
+                    member.logout().then(() => {
+                        window.location.href = "/mobile/login?logout=true";
+                    });
+                }
+            });
+        } else {
+            dispatch('actionSetGlobalMessage', {
+                msg: data.msg, code: data.code
+            });
+        }
+    })
 };
 // 會員端-設定APP下載資訊
 export const actionSetAppDownloadInfo = ({ commit }) => {
@@ -1281,7 +1295,7 @@ export const actionGetRechargeStatus = ({ state, dispatch, commit }, data) => {
             params.push(userStat);
         }
 
-        Promise.all(params).then(() => {
+        return Promise.all(params).then(() => {
             let result = null;
             if (bank_required && bank_required_result.status !== "ok") {
                 result = bank_required_result;
@@ -1302,19 +1316,19 @@ export const actionGetRechargeStatus = ({ state, dispatch, commit }, data) => {
                 return result;
             }
 
+            // 不用檢查銀行卡及充值
+            if (!bank_required && !enabled_by_deposit) {
+                if (data !== "recharge") {
+                    window.location.href = '/mobile/mcenter/creditTrans';
+                }
+                return "ok";
+            }
+
             if (data !== "recharge") {
                 window.location.href = '/mobile/mcenter/creditTrans';
             }
             return "ok";
         });
-
-        if (!bank_required && !enabled_by_deposit) {
-            if (data !== "recharge") {
-                window.location.href = '/mobile/mcenter/creditTrans';
-            }
-            return "ok";
-        }
-
     }).catch(error => {
         if (error.response.data.code === 'M00001') {
             dispatch('actionSetGlobalMessage', {
@@ -1328,7 +1342,7 @@ export const actionGetRechargeStatus = ({ state, dispatch, commit }, data) => {
         }
 
         else {
-            dispatch('actionSetGlobalMessage', { msg: error.response.data.msg })
+            dispatch('actionSetGlobalMessage', { msg: error.response.data.msg, code: error.response.data.code })
         }
 
         return "error";
@@ -1352,9 +1366,14 @@ export const actionSetUserLevels = ({ commit }) => {
 
 export const actionGetMemInfoV3 = ({ state, dispatch, commit }) => {
     const hasLogin = Vue.cookie.get('cid');
-    if (!hasLogin) {
+    if (!hasLogin || window.CHECKV3PLAYERSTATUS) {
         return;
     }
+    window.CHECKV3PLAYERSTATUS = true;
+
+    setTimeout(() => {
+        window.CHECKV3PLAYERSTATUS = undefined;
+    }, 1200)
 
     return axios({
         method: 'get',
@@ -1364,12 +1383,10 @@ export const actionGetMemInfoV3 = ({ state, dispatch, commit }) => {
             commit(types.SETMEMINFOV3, res.data.ret);
         }
     }).catch((error) => {
-        if (error.response.data.code === "M00001") {
+        if (error.response.data.code === "M00001" || error.response.data.code === "C600001") {
             dispatch('actionSetGlobalMessage', {
                 msg: error.response.data.msg, cb: () => {
-                    member.logout().then(() => {
-                        window.location.href = "/mobile/login?logout=true";
-                    });
+                    member.logout().then(() => { });
                 }
             });
         }

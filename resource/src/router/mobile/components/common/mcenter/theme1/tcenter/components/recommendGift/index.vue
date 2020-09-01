@@ -39,7 +39,7 @@
         </li>
       </ul>
       <div v-if="selectMenu === 'time'" :class="$style['search-tips']">
-        当前系统支持查询最近30日的投注纪录
+        *当前系统支持查询最近30日的投注纪录
       </div>
       <div
         v-if="selectMenu === 'time'"
@@ -318,6 +318,9 @@ export default {
     ...mapGetters({
       siteConfig: 'getSiteConfig',
     }),
+    themeTPL() {
+      return this.siteConfig.MOBILE_WEB_TPL;
+    },
     $style() {
       const style = this[`$style_${this.siteConfig.MOBILE_WEB_TPL}`] || this.$style_porn1;
       return style;

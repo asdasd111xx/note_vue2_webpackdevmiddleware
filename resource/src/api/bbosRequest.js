@@ -58,7 +58,7 @@ export default ({
                 return responseData;
             }
 
-            if (responseData && responseData.code === "M00001") {
+            if (responseData.code === "M00001" || responseData.code === "C600001") {
                 if (getCookie('cid')) {
                     alert(`${response.data.msg}`);
                 }

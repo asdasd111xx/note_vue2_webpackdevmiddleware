@@ -72,14 +72,7 @@ export default {
         this.setPromotionTips();
 
         this.updateBalance = setInterval(() => {
-            let cid = getCookie("cid");
-
-            if (!cid) {
-                clearInterval(this.updateBalance);
-                this.updateBalance = null;
-            } else {
-                this.actionSetUserBalance();
-            }
+            this.actionSetUserBalance();
         }, 30000)
     },
     watch: {
@@ -100,7 +93,7 @@ export default {
         setPromotionTips() {
             let result = ''
             if (+this.rechargeConfig.monthly_bonus) {
-                result += `<div>喜讯：首次额度转让给旗下会员加赠代理彩金${this.rechargeConfig.monthly_bonus}元/位<div>`;
+                result += `<div>喜讯：每月首次额度转让给旗下会员赠代理彩金${this.rechargeConfig.monthly_bonus}元/位<div>`;
             }
 
             if (+this.rechargeConfig.weekly_bonus) {
@@ -134,7 +127,8 @@ export default {
                 const amount = Number(this.formData.amount);
 
                 this.formData.amount = this.formData.amount
-                    .replace(/[^0-9]/g, '');
+                    .replace(/[^0-9]/g, '')
+                    .substring(0, 16);
 
                 if (!amount || amount === 0) {
                     errorMessage = "请输入转让金额";
@@ -359,12 +353,20 @@ export default {
                     const config = this.rechargeConfig;
 
                     let msg_desc = msg ? msg + '，' : '';
-                    if (!msg_desc) {
-                        this.errorMessage.amount = '余额不足';
+
+                    if (!msg_desc || msg == '馀额不足') {
+                        this.errorMessage.amount = msg;
                         return;
                     }
+                    if (!isAudit || msg.includes('未完成')) {
+                        msg_desc += `单笔转让最低${config.recharge_limit_unaudited_min}元`;
 
-                    if (isAudit) {
+                        if (config.recharge_limit_unaudited_max_enable) {
+                            msg_desc += `、最高${config.recharge_limit_unaudited_max}元`;
+                        }
+                        this.errorMessage.amount = msg_desc;
+                        return;
+                    } else if (isAudit || msg.includes('完成')) {
                         msg_desc += `单笔转让最低${config.recharge_limit_audited_min}元`;
 
                         if (config.recharge_limit_audited_max_enable) {
@@ -374,12 +376,6 @@ export default {
                         this.errorMessage.amount = msg_desc;
                         return;
                     } else {
-                        msg_desc += `单笔转让最低${config.recharge_limit_unaudited_min}元`;
-
-                        if (config.recharge_limit_unaudited_max_enable) {
-                            msg_desc += `、最高${config.recharge_limit_unaudited_max}元`;
-                        }
-
                         this.errorMessage.amount = msg_desc;
                         return;
                     }
@@ -390,6 +386,7 @@ export default {
             const msg = data.msg;
             switch (code) {
                 case "M00001":
+                case "C600001":
                     this.actionSetGlobalMessage({ code: code, msg: msg });
                     break;
                 case "C650001":
@@ -408,13 +405,13 @@ export default {
                     break;
                 // msg: "完成提现流水要求"
                 case "C650016":
-                case "C650022":
-                    setErrorMsg(data.errors ? data.errors.amount : data.msg, true);
+                case "C650021":
+                    setErrorMsg(data.errors ? data.errors.amount : msg, true);
                     break;
                 // msg: "未完成提现流水要求"
                 case "C650017":
-                case "C650021":
-                    setErrorMsg(data.errors ? data.errors.amount : data.msg, false);
+                case "C650022":
+                    setErrorMsg(data.errors ? data.errors.amount : msg, false);
                     break;
                 case "C650011":
                 case "C20182":

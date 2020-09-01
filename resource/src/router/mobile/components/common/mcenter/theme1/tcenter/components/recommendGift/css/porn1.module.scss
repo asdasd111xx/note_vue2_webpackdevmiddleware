@@ -4,8 +4,6 @@
     width: 100%;
     padding: 8px 17px;
     background: #FFF;
-    border-top: 1px solid #EEE;
-    border-bottom: 1px solid #EEE;
     position: relative;
 }
 
@@ -53,7 +51,7 @@
             border: 4px solid transparent;
             // border-top-color: #A5A9B3;
 
-            border-bottom-color: #A5A9B3;
+            border-bottom-color: #414655;
             transform: translateY(-3px);
         }
     }
@@ -95,13 +93,14 @@
 .dropdown-wrap {
     width: 100%;
     padding: 15px 7px 15px 17px;
-    margin: 0;
+    margin: 7px 0 0;
     position: absolute;
-    top: 75px;
+    // top: 75px;
     left: 0;
     z-index: 5;
     background: #FFF;
     list-style: none;
+    border-top: 1px solid #eee;
 
     ul {
         padding: 0 8px 0 15px;

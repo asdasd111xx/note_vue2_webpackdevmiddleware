@@ -177,7 +177,7 @@ $fixed_spacing_height: 43px;
   bottom: 1.5px;
   left: calc(50% - 25px);
   height: 2px;
-  background-color: #be9e7f;
+  background-color: #e42a30;
   width: 50px;
   transition: left 0.31s;
 }

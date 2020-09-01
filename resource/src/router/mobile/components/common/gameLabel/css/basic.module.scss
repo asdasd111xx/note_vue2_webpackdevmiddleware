@@ -10,6 +10,11 @@
     max-width: 768px;
     min-width: 320px;
     padding-left: 18px;
+    position: fixed;
+    width: 100%;
+    max-width: $mobile_max_width;
+    z-index: 2;
+    background: white;
 }
 
 .nav-item {

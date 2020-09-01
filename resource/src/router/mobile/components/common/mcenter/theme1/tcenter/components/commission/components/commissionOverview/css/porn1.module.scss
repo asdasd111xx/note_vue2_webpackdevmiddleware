@@ -1,121 +1,124 @@
 @import "@/css/variable.scss";
 
 .date-wrap {
-    padding: 0 23px;
-    background-color: #e9dacc;
+  padding: 0 23px;
+  background-color: #e9dacc;
 
-    > div {
-        height: 37px;
-        line-height: 37px;
-        font-size: 14px;
-    }
+  > div {
+    height: 37px;
+    line-height: 37px;
+    font-size: 14px;
+  }
 }
 
 .date {
-    float: left;
-    color: $main_discover_color1;
+  float: left;
+  color: $main_discover_color1;
 }
 
 .remainder {
-    float: right;
-    color: $main_title_color1;
+  float: right;
+  color: $main_title_color1;
 }
 
 .summary-wrap {
-    background-color: #fff;
+  background-color: #fff;
 }
 
 .wrap {
-    margin: 0 19px;
+  margin: 0 19px;
 
-    &:nth-child(even) {
-        padding: 0 19px;
-        margin: 0;
-        background: #f6f4f4;
-    }
+  &:nth-child(even) {
+    padding: 0 19px;
+    margin: 0;
+    background: #f6f4f4;
+  }
 }
 
 .title-wrap {
+  padding: 12px 0;
+  font-size: 14px;
+
+  &.expend {
     border-bottom: 1px solid #ccc;
-    padding: 12px 0;
-    font-size: 14px;
+  }
 
-    .btn-arrow {
-        float: left;
-        margin-left: 10px;
-        color: #000;
-    }
+  .btn-arrow {
+    float: left;
+    margin-left: 10px;
+    color: #000;
+  }
 
-    .title {
-        float: left;
-        margin-left: 13px;
-        color: #555;
-    }
+  .title {
+    float: left;
+    margin-left: 13px;
+    color: #555;
+  }
 
-    .amount {
-        float: right;
-        color: #000;
-    }
+  .amount {
+    float: right;
+    color: #000;
+  }
 }
 
 .detail-wrap {
-    padding: 5px 0;
+  padding: 5px 0;
 
-    .detail {
-        padding: 0 34px;
+  .detail {
+    padding: 0 34px;
+  }
+
+  .text {
+    float: left;
+    color: #555;
+    font-size: 12px;
+
+    &.main {
+      color: #55b9ff;
+    }
+  }
+
+  .amount {
+    float: right;
+    color: #555;
+    font-size: 12px;
+
+    &.main {
+      color: #55b9ff;
     }
 
-    .text {
-        float: left;
-        color: #555;
-        font-size: 12px;
-
-        &.main {
-            color: #55b9ff;
-        }
+    &.deficit {
+      color: #f00;
     }
+  }
+  .summary-date {
+    position: relative;
+    color: #aaaaaa;
+    font-size: 12px;
+    padding: 11px 34px 8px;
 
-    .amount {
-        float: right;
-        color: #555;
-        font-size: 12px;
-
-        &.main {
-            color: #55b9ff;
-        }
-
-        &.deficit {
-            color: #f00;
-        }
+    &::before {
+      content: "";
+      position: absolute;
+      width: 100%;
+      height: 1px;
+      left: 0;
+      top: 0;
+      background: #ccc;
     }
-    .summary-date {
-        position: relative;
-        color: #aaaaaa;
-        font-size: 12px;
-        padding: 11px 34px 8px;
+  }
 
-        &::before {
-            content: "";
-            position: absolute;
-            width: 100%;
-            height: 1px;
-            left: 0;
-            top: 0;
-            background: #ccc;
-        }
-    }
-
-    .tips {
-        margin: 14px 0 11px;
-        color: #222;
-        font-size: 12px;
-        text-align: center;
-    }
+  .tips {
+    margin: 14px 0 11px;
+    color: #222;
+    font-size: 12px;
+    text-align: center;
+  }
 }
 
 .no-data {
-    padding: 12px 0;
-    color: #aaa;
-    font-size: 14px;
-    text-align: center;
+  padding: 12px 0;
+  color: #aaa;
+  font-size: 14px;
+  text-align: center;
 }
