@@ -116,11 +116,13 @@ export default {
           break;
         case 1:
           if (this.currentTemplate === "transfer-credit-trans") return;
+          const self = this;
           this.actionGetMemInfoV3().then(() => {
             this.actionGetRechargeStatus("recharge").then((res) => {
-              if (res === "ok")
-                this.currentTemplate = "transfer-credit-trans";
-              this.currentTab = index;
+              if (res === "ok") {
+                self.currentTemplate = "transfer-credit-trans";
+                self.currentTab = index;
+              }
             });
           })
           break;
