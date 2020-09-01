@@ -1,83 +1,27 @@
 <template>
   <div :class="$style['content-wrap']">
-    <div v-if="category_list && data" :class="$style['section']">
+    <div :class="$style['section']">
       <div
-        v-if="category_list"
-        :class="[$style['cell']]"
-        :style="{ 'margin-bottom': '10px' }"
-        @click="category_isShowPop = true"
-      >
-        <div :class="$style['title']">
-          {{ categorys[category_currentIndex] }}
-        </div>
-        <div :class="[$style['arrow-btn']]">
-          <img
-            :src="$getCdnPath(`/static/image/_new/mcenter/ic_arrow_next.png`)"
-          />
-        </div>
-      </div>
-      <div
-        v-for="(item, index) in data[category_currentIndex].list"
+        v-for="(item, index) in data"
         :id="`q-${index}`"
-        :class="$style['cell']"
-        :key="`q-${index}`"
-        @click="handleToggleContent(index, true)"
+        :class="[$style['cell'], $style['active']]"
+        :key="index"
       >
-        <div :class="$style['cell-header']">
-          <div :class="$style['title-icon']">
-            <img
-              :src="$getCdnPath('/static/image/_new/mcenter/ic_help.png')"
-              alt="help"
-            />
-          </div>
-
-          <div :class="$style['title']">{{ item.title }}</div>
+        <div v-if="item.title" :class="[$style['title'], $style['big']]">
+          {{ item.title }}
         </div>
 
-        <div :class="[$style['content'], { [$style['active']]: item.isOpen }]">
+        <div :class="[$style['content'], $style['active']]">
           <div
-            v-for="(item, index) in item.content"
-            :class="$style['text-block']"
-            v-html="item"
-          />
-        </div>
-
-        <div
-          :class="[$style['arrow-btn'], { [$style['active']]: item.isOpen }]"
-        >
-          <img
-            :src="$getCdnPath(`/static/image/_new/mcenter/ic_arrow_next.png`)"
+            v-for="(string, stringIndex) in item.content"
+            :data-key="`${index}`"
+            :class="[$style['text-block']]"
+            :key="`content-${stringIndex}`"
+            v-html="string"
           />
         </div>
       </div>
     </div>
-    <transition name="fade">
-      <div v-if="category_isShowPop" :class="$style['pop-wrap']">
-        <div :class="$style['pop-mask']" @click="category_isShowPop = false" />
-        <div :class="$style['pop-menu']">
-          <div :class="$style['pop-title']">
-            <span @click="category_isShowPop = false">{{
-              $text("S_CANCEL", "取消")
-            }}</span>
-            选择游戏类别
-          </div>
-          <ul :class="$style['pop-list']">
-            <li
-              v-for="(item, index) in categorys"
-              :key="index"
-              @click="setType(index)"
-            >
-              {{ item }}
-              <icon
-                v-if="category_currentIndex === index"
-                :class="$style['select-icon']"
-                name="check"
-              />
-            </li>
-          </ul>
-        </div>
-      </div>
-    </transition>
   </div>
 </template>
 

@@ -84,14 +84,14 @@ export default {
         },
         {
           name: '用户须知',
-          img: 'tips',
+          img: 'support',
           key: 'tips',
           info: '确保您的权益',
           needLogin: false
         },
         {
           name: '隐私政策',
-          img: 'privacy',
+          img: 'support',
           key: 'privacy',
           info: '保障您的隐私',
           needLogin: false
