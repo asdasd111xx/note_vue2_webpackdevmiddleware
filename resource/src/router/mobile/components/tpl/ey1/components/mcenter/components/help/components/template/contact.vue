@@ -22,37 +22,37 @@
     </div>
 
     <div :class="$style['online-btn']">
-      <div @click="$router.push('/mobile/service')">
-        7*24在线客服
-      </div>
+      <div @click="$router.push('/mobile/service')">7*24在线客服</div>
     </div>
   </div>
 </template>
 
 <script>
-import yaboRequest from '@/api/yaboRequest';
-import { mapGetters, mapActions } from 'vuex';
+import yaboRequest from "@/api/yaboRequest";
+import { mapGetters, mapActions } from "vuex";
 
 export default {
   data() {
     return {
-      msg: '',
+      msg: "",
       list: null,
-      defaultImgSrc: this.$getCdnPath('/static/image/_new/mcenter/help/email.png')
+      defaultImgSrc: this.$getCdnPath(
+        "/static/image/_new/mcenter/help/email.png"
+      ),
     };
   },
   computed: {
     ...mapGetters({
-      memInfo: 'getMemInfo',
-      loginStatus: 'getLoginStatus',
-      siteConfig: 'getSiteConfig'
+      memInfo: "getMemInfo",
+      loginStatus: "getLoginStatus",
+      siteConfig: "getSiteConfig",
     }),
   },
   created() {
     yaboRequest({
-      method: 'get',
+      method: "get",
       url: `${this.siteConfig.YABO_API_DOMAIN}/system/contactus`,
-      headers: { 'x-domain': this.memInfo.user.domain, }
+      headers: { "x-domain": this.memInfo.user.domain },
     }).then((res) => {
       if (res && res.data && res.data.length > 0) {
         this.list = res.data;
@@ -60,14 +60,12 @@ export default {
     });
   },
   methods: {
-    ...mapActions([
-      'actionSetGlobalMessage'
-    ]),
+    ...mapActions(["actionSetGlobalMessage"]),
     copy(value) {
       this.$copyText(value);
-      this.actionSetGlobalMessage({ msg: '复制成功' });
-    }
-  }
+      this.actionSetGlobalMessage({ msg: "复制成功" });
+    },
+  },
 };
 </script>
 
@@ -80,14 +78,17 @@ export default {
 
 .title {
   height: 40px;
-  margin: 5px 8px;
+  width: 100%;
+  //margin: 5px 8px;
   display: inline-flex;
   align-items: center;
+  background: #ffffff;
   .block {
     width: 2.5px;
     height: 17px;
     background: linear-gradient(to top, #b60303, #fe2a2a);
     border-radius: 1px;
+    margin-left: 10px;
     margin-right: 10px;
   }
 }
@@ -99,7 +100,6 @@ export default {
     align-items: center;
     padding: 0 12px;
     height: 70px;
-
     > div:first-child {
       width: 40px;
       height: 40px;
@@ -107,6 +107,8 @@ export default {
       align-items: center;
       justify-content: center;
       margin: 10px 20px 10px 0;
+      padding-right: 20px;
+      border-right: #F8F8F7 solid 1px;
       img {
         width: 28px;
       }

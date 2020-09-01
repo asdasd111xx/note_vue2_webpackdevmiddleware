@@ -64,6 +64,10 @@ export default {
           break;
         case 'wm':
           return 'WM电子';
+        case 'bng2':
+          return 'BNG电子';
+        case 'ps':
+          return 'PS电子';
         default:
           textCode = `S_${vendor}_CASINO`.toUpperCase();
           break;
