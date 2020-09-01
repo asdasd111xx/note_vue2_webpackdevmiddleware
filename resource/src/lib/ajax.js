@@ -46,7 +46,7 @@ export default ({
 
             if (process.env.NODE_ENV === "development") {
                 console.log("[/api request]")
-                console.log(url, errorResponse)
+                console.log(errorResponse)
             }
 
             if (errorResponse && errorResponse.msg && errorAlert) {

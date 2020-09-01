@@ -85,9 +85,7 @@ export default {
       this.$router.push(path);
     },
     logout() {
-      member.logout().then(() => {
-        this.$router.push("/mobile/login?logout=true");
-      });
+      member.logout().then(() => { });
     }
   }
 };
