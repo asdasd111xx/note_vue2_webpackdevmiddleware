@@ -72,14 +72,8 @@ export default {
         this.setPromotionTips();
 
         this.updateBalance = setInterval(() => {
-            let cid = getCookie("cid");
             this.actionSetUserBalance();
-
-            if (!cid) {
-                clearInterval(this.updateBalance);
-                this.updateBalance = null;
-            }
-        }, 30000)
+        }, 10000)
     },
     watch: {
         membalance() {
