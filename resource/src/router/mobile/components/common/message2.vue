@@ -118,11 +118,18 @@ export default {
             break;
           // 電子錢包
           case "C50103":
+          case "C50105":
           case "bindVirtualBank":
-            this.$router.push(`/mobile/mcenter/bankCard?redirect=${redirect ? redirect : 'home'}&type=virtualBank`)
+            if (this.siteConfig.MOBILE_WEB_TPL === "ey1") {
+              this.$router.push(`/mobile/mcenter/bankCard?redirect=${redirect ? redirect : 'home'}&type=wallet`)
+            } else {
+              this.$router.push(`/mobile/mcenter/bankCard?redirect=${redirect ? redirect : 'home'}&type=bankCard`);
+            }
             break;
           // 重新登入
           case "M00001":
+          // 停權
+          case "C600001":
             setCookie('cid', '');
             setCookie('y_token', '');
             setCookie('aid', '');

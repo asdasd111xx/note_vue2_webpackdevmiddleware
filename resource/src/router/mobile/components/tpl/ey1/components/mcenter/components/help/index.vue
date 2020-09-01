@@ -143,7 +143,7 @@ export default {
     display: flex;
     align-items: center;
     background-color: $main_white_color1;
-
+    border-bottom: 1px solid #F8F8F7;
     > span {
       width: 100%;
     }

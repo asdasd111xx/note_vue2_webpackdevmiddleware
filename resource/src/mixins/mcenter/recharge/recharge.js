@@ -392,6 +392,7 @@ export default {
             const msg = data.msg;
             switch (code) {
                 case "M00001":
+                case "C600001":
                     this.actionSetGlobalMessage({ code: code, msg: msg });
                     break;
                 case "C650001":

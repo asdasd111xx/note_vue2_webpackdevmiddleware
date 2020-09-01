@@ -717,7 +717,6 @@ export const actionSetUserBalance = ({ commit, dispatch }) => {
             commit(types.SETUSERBALANCE, res.data);
         }
     }).catch((error) => {
-        console.log(error.response)
         const data = error && error.response && error.response.data;
         if (data && data.code === "M00001") {
             dispatch('actionSetGlobalMessage', {
@@ -1348,7 +1347,7 @@ export const actionGetRechargeStatus = ({ state, dispatch, commit }, data) => {
         }
 
         else {
-            dispatch('actionSetGlobalMessage', { msg: error.response.data.msg })
+            dispatch('actionSetGlobalMessage', { msg: error.response.data.msg, code: error.response.data.code })
         }
 
         return "error";
@@ -1389,7 +1388,7 @@ export const actionGetMemInfoV3 = ({ state, dispatch, commit }) => {
             commit(types.SETMEMINFOV3, res.data.ret);
         }
     }).catch((error) => {
-        if (error.response.data.code === "M00001") {
+        if (error.response.data.code === "M00001" || error.response.data.code === "C600001") {
             dispatch('actionSetGlobalMessage', {
                 msg: error.response.data.msg, cb: () => {
                     member.logout().then(() => { });
