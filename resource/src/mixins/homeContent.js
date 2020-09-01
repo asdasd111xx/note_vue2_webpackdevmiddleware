@@ -414,8 +414,10 @@ export default {
                         this.actionSetGlobalMessage({ msg: res.data.msg, code: res.data.msg.code });
                     }
                 }).catch(res => {
+                    if (res.response.data) {
+                        this.actionSetGlobalMessage({ msg: res.data.msg, code: res.data.msg.code });
+                    }
                     this.isCheckWithdraw = false;
-                    this.actionSetGlobalMessage({ msg: res.data.msg, code: res.data.msg.code });
                 });
             } else {
                 this.$router.push(`/mobile/mcenter/${path}`);

@@ -703,16 +703,36 @@ export const actionIsLogin = ({ commit }, isLogin) => {
     commit(types.ISLOGIN, isLogin);
 };
 // 會員端-設定會員餘額
-export const actionSetUserBalance = ({ commit }) => {
+export const actionSetUserBalance = ({ commit, dispatch }) => {
     const hasLogin = Vue.cookie.get('cid');
     if (!hasLogin) {
         return;
     }
-    member.balance({
-        success: (response) => {
-            commit(types.SETUSERBALANCE, response);
+
+    axios({
+        method: 'get',
+        url: '/api/v1/c/vendor/all/balance'
+    }).then(res => {
+        if (res && res.data && res.data.result === "ok") {
+            commit(types.SETUSERBALANCE, res.data);
         }
-    });
+    }).catch((error) => {
+        console.log(error.response)
+        const data = error && error.response && error.response.data;
+        if (data && data.code === "M00001") {
+            dispatch('actionSetGlobalMessage', {
+                msg: data.msg, cb: () => {
+                    member.logout().then(() => {
+                        window.location.href = "/mobile/login?logout=true";
+                    });
+                }
+            });
+        } else {
+            dispatch('actionSetGlobalMessage', {
+                msg: data.msg, code: data.code
+            });
+        }
+    })
 };
 // 會員端-設定APP下載資訊
 export const actionSetAppDownloadInfo = ({ commit }) => {
@@ -1352,9 +1372,14 @@ export const actionSetUserLevels = ({ commit }) => {
 
 export const actionGetMemInfoV3 = ({ state, dispatch, commit }) => {
     const hasLogin = Vue.cookie.get('cid');
-    if (!hasLogin) {
+    if (!hasLogin || window.CHECKV3PLAYERSTATUS) {
         return;
     }
+    window.CHECKV3PLAYERSTATUS = true;
+
+    setTimeout(() => {
+        window.CHECKV3PLAYERSTATUS = undefined;
+    }, 1200)
 
     return axios({
         method: 'get',
@@ -1367,9 +1392,7 @@ export const actionGetMemInfoV3 = ({ state, dispatch, commit }) => {
         if (error.response.data.code === "M00001") {
             dispatch('actionSetGlobalMessage', {
                 msg: error.response.data.msg, cb: () => {
-                    member.logout().then(() => {
-                        window.location.href = "/mobile/login?logout=true";
-                    });
+                    member.logout().then(() => { });
                 }
             });
         }

@@ -99,7 +99,7 @@ export default {
         setPromotionTips() {
             let result = ''
             if (+this.rechargeConfig.monthly_bonus) {
-                result += `<div>喜讯：首次额度转让给旗下会员加赠代理彩金${this.rechargeConfig.monthly_bonus}元/位<div>`;
+                result += `<div>喜讯：每月首次额度转让给旗下会员赠代理彩金${this.rechargeConfig.monthly_bonus}元/位<div>`;
             }
 
             if (+this.rechargeConfig.weekly_bonus) {
@@ -133,7 +133,8 @@ export default {
                 const amount = Number(this.formData.amount);
 
                 this.formData.amount = this.formData.amount
-                    .replace(/[^0-9]/g, '');
+                    .replace(/[^0-9]/g, '')
+                    .substring(0, 16);
 
                 if (!amount || amount === 0) {
                     errorMessage = "请输入转让金额";

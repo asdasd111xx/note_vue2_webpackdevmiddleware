@@ -261,13 +261,7 @@
     </template>
 
     <!-- 額度提示訊息 -->
-    <template
-      v-if="
-        withdrawData &&
-          withdrawData.payment_charge &&
-          withdrawData.payment_charge.ret
-      "
-    >
+    <template>
       <div :class="$style['tips']">
         {{ getWithdrawTips }}
       </div>
@@ -281,24 +275,7 @@
           type="number"
           @blur="verification('withdrawValue', $event.target.value)"
           @input="verification('withdrawValue', $event.target.value)"
-          :placeholder="
-            $text('S_WITHRAW_PLACEHOLDER', {
-              replace: [
-                {
-                  target: '%s',
-                  value:
-                    withdrawData.payment_charge.ret &&
-                    validateMoney(withdrawData.payment_charge.ret.withdraw_min)
-                },
-                {
-                  target: '%s',
-                  value:
-                    withdrawData.payment_charge.ret &&
-                    validateMoney(withdrawData.payment_charge.ret.withdraw_max)
-                }
-              ]
-            })
-          "
+          :placeholder="valuePlaceholder"
         />
         <span :class="[$style['withdraw-max']]">
           <span @click="handleMaxWithdraw">
@@ -600,6 +577,28 @@ export default {
       memInfo: "getMemInfo",
       webInfo: "getWebInfo"
     }),
+    valuePlaceholder() {
+      if (this.withdrawData &&
+        this.withdrawData.payment_charge &&
+        this.withdrawData.payment_charge.ret) {
+        return this.$text('S_WITHRAW_PLACEHOLDER', {
+          replace: [
+            {
+              target: '%s',
+              value:
+                this.validateMoney(this.withdrawData.payment_charge.ret.withdraw_min)
+            },
+            {
+              target: '%s',
+              value:
+                this.validateMoney(this.withdrawData.payment_charge.ret.withdraw_max)
+            }
+          ]
+        })
+      } else {
+        return '';
+      }
+    },
     themeTPL() {
       return this.siteConfig.MOBILE_WEB_TPL;
     },
@@ -674,7 +673,7 @@ export default {
     getWithdrawTips() {
       let string = [];
 
-      if (this.withdrawData && this.withdrawData.payment_charge.ret) {
+      if (this.withdrawData && this.withdrawData.payment_charge && this.withdrawData.payment_charge.ret) {
         const ret = this.withdrawData.payment_charge.ret;
         if (ret.withdraw_count && Number(ret.withdraw_count) > 0) {
           string.push(`今日可用提现次数：${ret.allow_withdraw_count}次`);
