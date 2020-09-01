@@ -110,12 +110,14 @@
 
             <div :class="$style['content-cell']">
               <span>2.收藏亿元永久网址，浏览器打开，随时畅玩：</span>
-              <div
-                :class="$style['link']"
-                v-for="(item, index) in linkArray"
-                :key="index"
-              >
-                {{ item.value }}
+              <div :class="$style['content-link']">
+                <div
+                  :class="$style['link']"
+                  v-for="(item, index) in linkArray"
+                  :key="index"
+                >
+                  {{ item.value }}
+                </div>
               </div>
             </div>
           </div>
@@ -403,12 +405,12 @@ div.container {
   top: 50%;
   left: 50%;
   transform: translate(-50%, -50%);
-  background: #f8f8f7;
+  background: #FFFFFF;
   border-radius: 8px;
 
   .close {
     position: absolute;
-    top: -40px;
+    top: -25px;
     right: 0;
     width: 21px;
     height: 21px;
@@ -467,7 +469,13 @@ div.container {
         height: 100%;
       }
     }
-
+    .content-link {
+        width: 100%;
+        height: 100%;
+        background-color: #F7F7F7;
+        border-radius:10px;
+        padding:3px;
+    }
     .link {
       position: relative;
       width: 180px;
@@ -494,6 +502,7 @@ div.container {
 
     .url-image {
       width: 100%;
+
 
       > img {
         width: 100%;
