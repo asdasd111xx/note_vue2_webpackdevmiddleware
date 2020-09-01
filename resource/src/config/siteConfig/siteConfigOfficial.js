@@ -43,7 +43,7 @@ export const site_69 = {
     MOBILE_WEB_TPL: 'porn1',
     VERSION: getVersion('porn1'),
     SITE_NAME: '鸭博娱乐',
-    YABO_API_DOMAIN: 'https://yaboapi.canarycherrytart.com/api-demo',
+    YABO_API_DOMAIN: 'https://yaboapi.canarycherrytart.com/api',
 };
 
 
