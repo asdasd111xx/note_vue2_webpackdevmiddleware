@@ -10,7 +10,7 @@
         <div v-if="agentLink || landingLink" :class="$style['qrcode-wrap']">
           <qrcode
             :value="loginStatus ? agentLink : landingLink"
-            :options="{ width: 75, margin: 1 }"
+            :options="{ width: 60, margin: 1 }"
             tag="img"
           />
         </div>
