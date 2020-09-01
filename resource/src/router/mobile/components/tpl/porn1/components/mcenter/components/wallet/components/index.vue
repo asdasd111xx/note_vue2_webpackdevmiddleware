@@ -274,7 +274,7 @@ export default {
               }
             }).catch(res => {
               if (res.response.data) {
-                this.actionSetGlobalMessage({ msg: res.response.data.msg, code: res.response.data.code });
+                this.actionSetGlobalMessage({ msg: res.response.data.msg, code: res.data.msg.code, cb: () => { } });
               }
               this.isCheckWithdraw = false;
             });

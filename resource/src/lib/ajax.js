@@ -55,7 +55,7 @@ export default ({
 
             // 收到重新登入需要導向登入頁面
             if (errorResponse) {
-                if (errorResponse.code === "M00001" || errorResponse.code === "C600001") {
+                if (errorResponse.code === "M00001") {
                     if (getCookie('cid')) {
                         alert(`${errorResponse.msg}`);
                     }

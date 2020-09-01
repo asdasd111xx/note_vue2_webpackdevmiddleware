@@ -30,7 +30,7 @@
         "
       >
         <div :class="$style['image-wrap']">
-          <img :src="defaultImg" :img-id="video.id" />
+          <img :src="defaultImg" :img-id="info.id" />
         </div>
         <div :class="$style['title']">{{ info.title }}</div>
       </div>

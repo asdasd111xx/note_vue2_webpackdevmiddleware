@@ -158,9 +158,11 @@ export default {
 
       setTimeout(() => {
         videoList.forEach(item => {
-          getEncryptImage(item);
+          item.list.forEach((i) => {
+            getEncryptImage(i);
+          })
         })
-      }, 1000)
+      }, 300)
 
       return videoList;
     }
@@ -215,16 +217,16 @@ export default {
       };
     },
     getVideoTag() {
-      try {
-        let videolistStorage = localStorage.getItem(`${this.source}-video-tag`);
-        if (videolistStorage) {
-          this.videoTag = JSON.parse(
-            localStorage.getItem(`${this.source}-video-tag`)
-          );
-        }
-      } catch (e) {
-        console.log(e);
-      }
+      //   try {
+      //     let videolistStorage = localStorage.getItem(`${this.source}-video-tag`);
+      //     if (videolistStorage) {
+      //       this.videoTag = JSON.parse(
+      //         localStorage.getItem(`${this.source}-video-tag`)
+      //       );
+      //     }
+      //   } catch (e) {
+      //     console.log(e);
+      //   }
 
       return pornRequest({
         url: "/video/tag",
@@ -237,18 +239,18 @@ export default {
           return;
         }
 
-        try {
-          localStorage.setItem(
-            `${this.source}-video-tag`,
-            JSON.stringify([{ id: 0, title: "全部" }, ...response.result])
-          );
-          localStorage.setItem(
-            `${this.source}-video-tag-timestamp`,
-            Date.now()
-          );
-        } catch (e) {
-          console.log(e);
-        }
+        // try {
+        //   localStorage.setItem(
+        //     `${this.source}-video-tag`,
+        //     JSON.stringify([{ id: 0, title: "全部" }, ...response.result])
+        //   );
+        //   localStorage.setItem(
+        //     `${this.source}-video-tag-timestamp`,
+        //     Date.now()
+        //   );
+        // } catch (e) {
+        //   console.log(e);
+        // }
 
         this.videoTag = [{ id: 0, title: "全部" }, ...response.result];
       });
@@ -268,18 +270,18 @@ export default {
     },
     // 取得影片排序
     getVideoSort() {
-      try {
-        let videolistStorage = localStorage.getItem(
-          `${this.source}-video-sort`
-        );
-        if (videolistStorage) {
-          this.videoSort = JSON.parse(
-            localStorage.getItem(`${this.source}-video-sort`)
-          );
-        }
-      } catch (e) {
-        console.log(e);
-      }
+      //   try {
+      //     let videolistStorage = localStorage.getItem(
+      //       `${this.source}-video-sort`
+      //     );
+      //     if (videolistStorage) {
+      //       this.videoSort = JSON.parse(
+      //         localStorage.getItem(`${this.source}-video-sort`)
+      //       );
+      //     }
+      //   } catch (e) {
+      //     console.log(e);
+      //   }
 
       return pornRequest({
         method: "get",
@@ -292,18 +294,18 @@ export default {
           return;
         }
 
-        try {
-          localStorage.setItem(
-            `${this.source}-video-sort`,
-            JSON.stringify(response.result)
-          );
-          localStorage.setItem(
-            `${this.source}-video-sort-timestamp`,
-            Date.now()
-          );
-        } catch (e) {
-          console.log(e);
-        }
+        // try {
+        //   localStorage.setItem(
+        //     `${this.source}-video-sort`,
+        //     JSON.stringify(response.result)
+        //   );
+        //   localStorage.setItem(
+        //     `${this.source}-video-sort-timestamp`,
+        //     Date.now()
+        //   );
+        // } catch (e) {
+        //   console.log(e);
+        // }
 
         this.videoSort = [...response.result];
       });
@@ -325,18 +327,18 @@ export default {
     },
     // 取得所有影片(熱門推薦除外)
     getVideoList() {
-      try {
-        let videolistStorage = localStorage.getItem(
-          `${this.source}-video-list`
-        );
-        if (videolistStorage) {
-          this.videoList = JSON.parse(
-            localStorage.getItem(`${this.source}-video-list`)
-          );
-        }
-      } catch (e) {
-        console.log(e);
-      }
+      //   try {
+      //     let videolistStorage = localStorage.getItem(
+      //       `${this.source}-video-list`
+      //     );
+      //     if (videolistStorage) {
+      //       this.videoList = JSON.parse(
+      //         localStorage.getItem(`${this.source}-video-list`)
+      //       );
+      //     }
+      //   } catch (e) {
+      //     console.log(e);
+      //   }
 
       return pornRequest({
         method: "post",
@@ -350,18 +352,18 @@ export default {
           return;
         }
 
-        try {
-          localStorage.setItem(
-            `${this.source}-video-list`,
-            JSON.stringify(response.result)
-          );
-          localStorage.setItem(
-            `${this.source}-video-list-timestamp`,
-            Date.now()
-          );
-        } catch (e) {
-          console.log(e);
-        }
+        // try {
+        //   localStorage.setItem(
+        //     `${this.source}-video-list`,
+        //     JSON.stringify(response.result)
+        //   );
+        //   localStorage.setItem(
+        //     `${this.source}-video-list-timestamp`,
+        //     Date.now()
+        //   );
+        // } catch (e) {
+        //   console.log(e);
+        // }
 
         this.videoList = [...response.result];
 

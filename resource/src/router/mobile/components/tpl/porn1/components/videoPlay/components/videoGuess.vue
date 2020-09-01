@@ -100,9 +100,12 @@ export default {
       }
 
       this.videoList = [...response.result.data];
-      this.videoList.forEach(item => {
-        getEncryptImage(item);
-      })
+
+      setTimeout(() => {
+        this.videoList.forEach(item => {
+          getEncryptImage(item);
+        })
+      }, 300)
     });
   },
   methods: {

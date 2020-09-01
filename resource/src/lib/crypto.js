@@ -57,7 +57,7 @@ function toDataURL(url, callback) {
 
 export const getEncryptImage = (info) => {
     if (!document.querySelector(`img[img-id="${info.id}"]`)) {
-        return;
+        return info.image;
     }
 
     if (!info.image_IV || !info.image_key) {
@@ -76,9 +76,8 @@ export const getEncryptImage = (info) => {
     // let encryptedHexStr = CryptoJS.enc.Hex.parse(data.image.split('?')[0]);
     // let srcs = CryptoJS.enc.Base64.stringify(encryptedHexStr);
     // console.log(data.image.split('?')[0])
-
     return axios({
-        url: data.image.split('?')[0],
+        url: data.image.includes('?') ? data.image.split('?')[0] : data.image,
         method: 'GET',
         responseType: 'blob',
     }).then((response) => {

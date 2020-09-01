@@ -16,6 +16,19 @@
         font-weight: 700;
         line-height: 43px;
     }
+
+    &.ey1 {
+        background: linear-gradient(#fe2a2a, #b60303);
+
+        .title {
+            color: white
+        }
+
+    }
+
+    &.porn1 {
+        background: #fefffe;
+    }
 }
 
 .btn-prev {
