@@ -357,14 +357,21 @@ export default {
                 this.actionSetRechargeConfig().then(() => {
                     const config = this.rechargeConfig;
 
+                    let msg_desc = msg ? msg + '，' : '';
+
                     if (!msg_desc || msg == '馀额不足') {
                         this.errorMessage.amount = msg;
                         return;
                     }
+                    if (!isAudit || msg.includes('未完成')) {
+                        msg_desc += `单笔转让最低${config.recharge_limit_unaudited_min}元`;
 
-                    let msg_desc = msg ? msg + '，' : '';
-
-                    if (isAudit) {
+                        if (config.recharge_limit_unaudited_max_enable) {
+                            msg_desc += `、最高${config.recharge_limit_unaudited_max}元`;
+                        }
+                        this.errorMessage.amount = msg_desc;
+                        return;
+                    } else if (isAudit || msg.includes('完成')) {
                         msg_desc += `单笔转让最低${config.recharge_limit_audited_min}元`;
 
                         if (config.recharge_limit_audited_max_enable) {
@@ -374,12 +381,6 @@ export default {
                         this.errorMessage.amount = msg_desc;
                         return;
                     } else {
-                        msg_desc += `单笔转让最低${config.recharge_limit_unaudited_min}元`;
-
-                        if (config.recharge_limit_unaudited_max_enable) {
-                            msg_desc += `、最高${config.recharge_limit_unaudited_max}元`;
-                        }
-
                         this.errorMessage.amount = msg_desc;
                         return;
                     }
@@ -409,12 +410,12 @@ export default {
                 // msg: "完成提现流水要求"
                 case "C650016":
                 case "C650021":
-                    setErrorMsg(data.errors ? data.errors.amount : data.msg, true);
+                    setErrorMsg(data.errors ? data.errors.amount : msg, true);
                     break;
                 // msg: "未完成提现流水要求"
                 case "C650017":
                 case "C650022":
-                    setErrorMsg(data.errors ? data.errors.amount : data.msg, false);
+                    setErrorMsg(data.errors ? data.errors.amount : msg, false);
                     break;
                 case "C650011":
                 case "C20182":

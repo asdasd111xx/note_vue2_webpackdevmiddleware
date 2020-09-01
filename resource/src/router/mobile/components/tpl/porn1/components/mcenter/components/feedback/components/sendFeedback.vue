@@ -105,12 +105,6 @@ import ajax from '@/lib/ajax';
 import { API_FEEDBACK_CREATED } from '@/config/api';
 
 export default {
-  props: {
-    typeList: {
-      type: Array,
-      default: () => []
-    }
-  },
   data() {
     return {
       isSend: '',
@@ -119,6 +113,7 @@ export default {
         title: '',
         content: ''
       },
+      typeList: null,
       currentIndex: '',
       isShow: false,
       stepText: [
@@ -130,9 +125,7 @@ export default {
     };
   },
   created() {
-    if (this.typeList.length === 0) {
-      this.$emit('getType');
-    }
+    this.getTypeList();
   },
   computed: {
     ...mapGetters({
@@ -158,6 +151,21 @@ export default {
     ...mapActions([
       'actionSetGlobalMessage'
     ]),
+    getTypeList() {
+      ajax({
+        method: 'get',
+        url: '/api/v1/c/feedback_type/list',
+        errorAlert: false
+      }).then((res) => {
+        this.typeList = res.ret.map((item, index) => {
+          return {
+            id: item.id,
+            content: item.content,
+            imageId: index + 1 < 8 ? index + 1 : 8
+          }
+        })
+      });
+    },
     setValue(value) {
       this.paramsData.content = value;
     },
@@ -181,7 +189,10 @@ export default {
       ajax({
         method: 'post',
         url: API_FEEDBACK_CREATED,
-        params: this.paramsData,
+        params: {
+          ...this.paramsData,
+          //  content: this.paramsData.content.replace(/\n/g, '<br/>')
+        },
         errorAlert: false,
         fail: (res) => {
           this.actionSetGlobalMessage({ msg: `${res.data.msg}` });

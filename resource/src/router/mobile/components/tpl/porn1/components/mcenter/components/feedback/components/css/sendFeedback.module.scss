@@ -147,22 +147,17 @@
 }
 
 .submit {
-    // width: 6.8rem;
-    width: 340px;
-    // height: 0.9rem;
+    max-width: 340px;
+    width: 85%;
     height: 45px;
-    // line-height: 0.9rem;
     line-height: 45px;
-    // margin: 0.4rem auto 0;
     margin: 20px auto 0;
     background: #BD9D7D;
     background-image: -webkit-linear-gradient(right, #BD9D7D, #F9DDBD);
     background-image: linear-gradient(right, #BD9D7D, #F9DDBD);
-    // font-size: 0.28rem;
     font-size: 14px;
     color: #FFF;
     text-align: center;
-    // border-radius: 0.1rem;
     border-radius: 5px;
 
     &.disabled {
