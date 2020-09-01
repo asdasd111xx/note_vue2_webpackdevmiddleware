@@ -86,7 +86,7 @@ export default {
   .block {
     width: 2.5px;
     height: 17px;
-    background: linear-gradient(to top, #b60303, #fe2a2a);
+    background: linear-gradient(to top, #fe2a2a, #fe2a2a);
     border-radius: 1px;
     margin-left: 10px;
     margin-right: 10px;
