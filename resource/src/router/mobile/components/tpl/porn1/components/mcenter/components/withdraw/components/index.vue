@@ -739,23 +739,21 @@ export default {
           this.errTips = "提现金额必需为整数";
           return;
         }
-        this.actualMoney = value;
-        // // 實際金額
-        // let _actualMoney =
-        //   value - +this.withdrawData.audit.total.total_deduction;
-        // // 2.判斷是否 > 0
-        // if (_actualMoney !== value) {
-        //   this.actualMoney = _actualMoney;
-        //   if (_actualMoney <= 0) {
-        //     this.errTips = "实际提现金额须大于0，请重新输入";
-        //     this.actualMoney = 0;
-        //     return;
-        //   }
-        // } else {
-        //   this.actualMoney = _actualMoney;
-        //   this.errTips = "";
-        //   return;
-        // }
+        // 實際金額
+        let _actualMoney = value - +this.withdrawData.audit.total.total_deduction;
+        // 2.判斷是否 > 0
+        if (_actualMoney !== value) {
+          this.actualMoney = _actualMoney;
+          if (_actualMoney <= 0) {
+            this.errTips = "实际提现金额须大于0，请重新输入";
+            this.actualMoney = 0;
+            return;
+          }
+        } else {
+          this.actualMoney = _actualMoney;
+          this.errTips = "";
+          return;
+        }
 
         // 最大值
         const withdrawMax = +this.withdrawData.payment_charge.ret.withdraw_max;
@@ -763,7 +761,6 @@ export default {
         const withdrawMin = +this.withdrawData.payment_charge.ret.withdraw_min;
         // 3.判斷是否有超過最大、最小值
         if (
-          this.actualMoney <= 0 ||
           value <= 0 ||
           value < withdrawMin ||
           (withdrawMax > 0 && value > withdrawMax)
