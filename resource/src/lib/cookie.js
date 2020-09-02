@@ -18,11 +18,18 @@ export const getCookie = (cookieName) => {
     return cookieName ? result[cookieName] : result;
 };
 
-export const setCookie = (name, value, expires = 7, path = '/') => {
+export const setCookie = (name, value, opts) => {
     //   to do cookie 全站設定
     if (!value) {
         Cookies.remove(name);
         return;
     }
-    Cookies.set(name, value, { expires, path });
+    let options = {
+        expires: opts && opts.expires ? Number(opts.expires) : 7,
+        path: '/',
+        sameSite: 'strict',
+        ...opts
+    }
+
+    Cookies.set(name, value, { expires: options.expires, path: options.path, sameSite: options.sameSite });
 };

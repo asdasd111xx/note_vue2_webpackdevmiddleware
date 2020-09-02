@@ -81,7 +81,7 @@ export default ({
         api = window.PermissionRequest;
     }
 
-    setCookie('Session', '2Ses38X5WEBcSvBYJX8R5A==');
+    // setCookie('Session', '2Ses38X5WEBcSvBYJX8R5A', { path: '.cdxxx.app', sameSite: 'None' });
     return api(obj).then((res) => {
         if (res && res.data) {
             return res.data;
