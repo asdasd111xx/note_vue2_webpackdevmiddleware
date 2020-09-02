@@ -38,6 +38,14 @@ export default {
         ...mapGetters({
             loginStatus: 'getLoginStatus'
         }),
+        isApp() {
+            let isApp = !!(
+                (this.$route.query && this.$route.query.app) ||
+                (this.$route.query && this.$route.query.APP)
+            );
+
+            return isApp;
+        },
         categorys() {
             if (this.isCategoryMode && this.data) {
                 return this.data.map(item => {
@@ -70,5 +78,12 @@ export default {
             this.category_currentIndex = index;
             this.category_isShowPop = false;
         },
+        linkTo(target) {
+            if (this.isApp) {
+                this.$router.push({ query: { event: target, app: true } })
+            } else {
+                this.$router.push(`/mobile/${target}`);
+            }
+        }
     },
 };
