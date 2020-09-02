@@ -4,7 +4,7 @@ import * as siteConfigOfficial from '@/config/siteConfig/siteConfigOfficial';
 import * as siteConfigTest from '@/config/siteConfig/siteConfigTest';
 import * as types from './mutations_type';
 
-import { API_GETAPPINFO, API_QRCODE } from '@/config/api';
+import { API_GETAPPINFO, API_QRCODE, API_MCENTER_USER_CONFIG, API_AGENT_USER_CONFIG } from '@/config/api';
 
 import EST from '@/lib/EST';
 import Vue from 'vue';
@@ -558,6 +558,7 @@ export const actionMemInit = ({ state, dispatch, commit }) => {
             // dispatch('actionSetVip');
             dispatch('actionSetPost');
             dispatch('actionSetUserBalance');
+            dispatch('actionSetUserConfig');
             // 取得會員我的返水
             mcenter.rebate({
                 success: (response) => {
@@ -797,6 +798,7 @@ export const actionAgentInit = ({ state, dispatch, commit }, next) => {
                 commit(types.SET_AGENT_USER_LEVELS, response.ret);
             }
         });
+        dispatch('actionSetAgentUserConfig');
         dispatch('actionSetGameData');
         dispatch('actionSetAgentNews');
     })()]).then(() => {
@@ -1243,3 +1245,27 @@ export const actionGetRechargeStatus = ({ state, dispatch, commit }, data) => {
         }
     });
 };
+
+// 會員端-帳戶資料欄位開關
+export const actionSetUserConfig = ({ commit }) => ajax({
+    method: 'get',
+    url: API_MCENTER_USER_CONFIG,
+    errorAlert: false,
+    success: (response) => {
+        if (response && response.result === 'ok') {
+            commit(types.SET_MCENTER_USER_CONFIG, response.ret);
+        }
+    }
+});
+
+// 代理端-帳戶資料欄位開關
+export const actionSetAgentUserConfig = ({ commit }) => ajax({
+    method: 'get',
+    url: API_AGENT_USER_CONFIG,
+    errorAlert: false,
+    success: (response) => {
+        if (response && response.result === 'ok') {
+            commit(types.SET_AGENT_USER_CONFIG, response.ret);
+        }
+    }
+});

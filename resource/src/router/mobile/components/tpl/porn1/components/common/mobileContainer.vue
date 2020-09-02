@@ -16,7 +16,7 @@
     />
     <slot name="content" />
     <m-footer
-      v-if="hasFooter && !isApp"
+      v-if="hasFooter && !isApp && path[1] !== 'agcenter'"
       :has-unread-message="hasUnreadMessage"
     />
     <!-- <ele-pop /> -->

@@ -1,0 +1,29 @@
+$titleColor: #FFF;
+$detailTitleColor: #FFF;
+$borderRadius: 0;
+$btnBg: #F97D61;
+$btnHoverBg: #DB6348;
+$btnColor: #FFF;
+$importantColor: #CA8C54;
+$importantHoverColor: #FFD4AD;
+
+// table
+$theadBorder: #CA8C54;
+$theadBg: #CECECE;
+$theadColor: #000;
+$tableBorder: #CA8C54;
+$tableBg: #FFF;
+$tableColor: #000;
+$tableBottomBorder: 1px solid #CA8C54;
+
+// pager
+$pagerBtnBg: rgba(255, 255, 255, .1);
+$pagerTextColor: #FFF;
+
+&.page-financeReward {
+    .main-table {
+        th {
+            font-size: 15px;
+        }
+    }
+}

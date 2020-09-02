@@ -25,7 +25,7 @@ export const site_500015 = {
     SITE_NAME: '鸭博娱乐'
 };
 
-
+export const site_129 = site_500015
 /**
  * 亿元 測試站
  */

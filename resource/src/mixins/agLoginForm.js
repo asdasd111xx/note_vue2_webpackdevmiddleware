@@ -1,8 +1,15 @@
 import { mapGetters, mapActions } from 'vuex';
 import ajax from '@/lib/ajax';
+import ajax2 from '@/lib/ajax2';
 import * as apis from '@/config/api';
+import * as constants from '@/config/constant';
+import slideVerification from '@/components/slideVerification';
+import createPuzzle from '@/lib/puzzleVerification';
 
 export default {
+    components: {
+        slideVerification
+    },
     props: {
         redirect: {
             type: String,
@@ -13,16 +20,58 @@ export default {
         return {
             username: '',
             password: '',
-            captcha: '',
+            captchaValue: '',
             captchaImg: '',
-            checkItem: ''
+            passwordVisible: false,
+            checkItemColumn: '',
+            loginInfoData: {},
+            callBackFuc: null,
+            constants
         };
     },
     computed: {
         ...mapGetters({
             isBackEnd: 'getIsBackEnd',
             memInfo: 'getMemInfo'
-        })
+        }),
+        checkItem: {
+            get() {
+                return this.checkItemColumn;
+            },
+            set(val) {
+                this.checkItemColumn = val;
+                if (val) {
+                    return;
+                }
+                if (this.memInfo.config.login_captcha_type === constants.CAPTCHA_SLIDE) {
+                    if (this.callBackFuc) {
+                        this.callBackFuc.reset();
+                        this.loginInfoData = {};
+                        this.callBackFuc = null;
+                    }
+                }
+            }
+        },
+        captcha: {
+            get() {
+                return this.captchaValue;
+            },
+            set(value) {
+                this.captchaValue = value;
+                this.captchaValue = this.captchaValue.replace(/[^A-Za-z0-9]/g, '');
+            }
+        },
+        /**
+         * 滑動驗證是否啟動
+         */
+        isSlideAble() {
+            return !!(this.username && this.password);
+        }
+    },
+    created() {
+        if (this.memInfo.config.login_captcha_type === constants.CAPTCHA_GRAPH) {
+            this.getCaptcha();
+        }
     },
     methods: {
         ...mapActions([
@@ -40,17 +89,20 @@ export default {
             ajax({
                 method: 'post',
                 url: apis.API_CAPTCHA,
+                params: { scene: 'agent-login' },
                 errorAlert: false,
                 success: (response) => {
                     this.captchaImg = response.ret;
                 }
             });
         },
-        loginCheck() {
-            if (this.isBackEnd) {
-                return;
+        clickCaptcha() {
+            this.getCaptcha();
+            if (this.$refs['login-captcha']) {
+                this.$refs['login-captcha'].focus();
             }
-
+        },
+        loginCheck() {
             if (this.memInfo.config.login_security) {
                 ajax({
                     method: 'put',
@@ -79,16 +131,27 @@ export default {
                 return null;
             }
 
-            return ajax({
+            return ajax2({
                 method: 'put',
                 url: apis.API_AGENT_LOGIN,
                 params: {
                     username: this.username,
                     password: this.password,
                     captcha_text: this.captcha,
-                    ...validate
-                },
-                success: () => {
+                    ...validate,
+                    ...this.loginInfoData
+                }
+            }).then((res) => {
+                if (res && res.result === 'ok') {
+                    // GA流量統計
+                    window.dataLayer.push({
+                        dep: 2,
+                        event: 'ga_click',
+                        eventCategory: 'user_login',
+                        eventAction: 'user_login',
+                        eventLabel: 'agent_login'
+                    });
+
                     ajax({
                         method: 'get',
                         url: apis.API_AGENT_ANNOUNCEMENT,
@@ -108,20 +171,80 @@ export default {
                         }
                         window.location.href = '/agent';
                     });
-                },
-                fail: (res) => {
-                    if (res.data.code === 'C10004') {
-                        if (this.redirect) {
-                            window.location.href = this.redirect;
-                            return;
-                        }
-                        window.location.reload();
-                    }
-                    this.captcha = '';
+                    return;
                 }
-            }).then(() => {
+
+                if (res.data && res.data.code === 'C10004') {
+                    if (this.redirect) {
+                        window.location.href = this.redirect;
+                        return;
+                    }
+                    window.location.reload();
+                }
+
                 this.checkItem = '';
+
+                this.captcha = '';
+                if (this.memInfo.config.login_captcha_type === constants.CAPTCHA_GRAPH) {
+                    const captchaErrorCode = ['C00006', 'C00007', 'C00011', 'C00016', 'C00018', 'C00024'];
+                    if (res.data && captchaErrorCode.includes(res.data.code)) {
+                        this.clickCaptcha();
+                    } else {
+                        this.getCaptcha();
+                    }
+                }
+
+                this.loginInfoData = {};
+                if (this.callBackFuc) {
+                    this.callBackFuc.reset();
+                    this.callBackFuc = null;
+                }
             });
+        },
+        toggleVisible() {
+            this.passwordVisible = !this.passwordVisible;
+            this.$refs.password.type = this.passwordVisible ? 'text' : 'password';
+        },
+        /**
+         * 圖形驗證與拼圖驗證分流
+         * @method submitCheck
+         */
+        submitCheck(loginInfo) {
+            if (this.isBackEnd) {
+                return;
+            }
+
+            if (!this.isSlideAble) {
+                alert(this.$text('S_LOGIN_ERROR', '帐号或密码错误'));
+                return;
+            }
+
+            if ((this.memInfo.config.login_captcha_type === constants.CAPTCHA_SLIDE
+                || this.memInfo.config.login_captcha_type === constants.CAPTCHA_PUZZLE)
+                && loginInfo.type === 'keydown') {
+                return;
+            }
+
+            if (this.memInfo.config.login_captcha_type === constants.CAPTCHA_PUZZLE) {
+                createPuzzle(this.externalLogin);
+                return;
+            }
+
+            this.loginCheck();
+        },
+        /**
+         * 滑動/圖形驗證登入
+         * @param {Object} loginInfo 滑動/圖形驗證參數
+         * @method externalLogin
+         */
+        externalLogin(loginInfo) {
+            if (this.isBackEnd) {
+                return;
+            }
+
+            this.loginInfoData = { captcha_text: loginInfo.data };
+            this.callBackFuc = loginInfo.slideFuc;
+            this.loginCheck();
         }
     }
 };

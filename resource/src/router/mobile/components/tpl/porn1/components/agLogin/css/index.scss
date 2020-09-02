@@ -1,0 +1,295 @@
+.container {
+    background-color: #000;
+}
+
+.ag-login-wrap {
+    min-height: 100vh;
+    margin: 0 auto;
+    font-size: 12px;
+}
+
+.ag-login-logo {
+    width: 185px;
+    height: 57px;
+    margin: 31px auto 0;
+
+    img {
+        width: 100%;
+        height: 100%;
+    }
+}
+
+.ag-login-form-wrap {
+    height: 430px;
+    margin: 40px 6% 0;
+    padding: 0 9%;
+    background-color: #392A2A;
+    border: 1px solid #57443D;
+
+    .ag-login-form-title {
+        margin: 11px 0 33px;
+        font-size: 21px;
+        text-align: center;
+        font-weight: bolder;
+        color: #E0BD63;
+    }
+
+    .ag-login-unit {
+        display: block;
+        height: 40px;
+        margin-bottom: 11px;
+
+        input {
+            display: block;
+            width: 100%;
+            height: 100%;
+            padding: 0 38px;
+            border: 1px solid #56433C;
+            border-radius: 3px;
+            background-color: #56433C;
+            color: #FFF;
+
+            &::placeholder {
+                color: #FFF;
+            }
+        }
+
+        .input-icon {
+            display: inline-block;
+            position: relative;
+            left: 15px;
+            bottom: 26px;
+            width: 13px;
+            height: 16px;
+            background-repeat: no-repeat;
+            background-position: 0 50%;
+            background-size: contain;
+        }
+    }
+
+    .ag-login-unit-username {
+        .input-icon {
+            background-image: url('/static/image/mobile/tpl/brilliant/login/username.png');
+        }
+    }
+
+    .ag-login-unit-password {
+        .input-icon {
+            background-image: url('/static/image/mobile/tpl/brilliant/login/password.png');
+        }
+
+        .pwd-eye {
+            display: block;
+            width: 20px;
+            height: 20px;
+            position: absolute;
+            top: 50%;
+            right: 75px;
+            z-index: 99;
+            transform: translateY(-50%);
+        }
+    }
+
+    .ag-login-unit-password {
+        position: relative;
+
+        .ag-login-unit-link {
+            position: absolute;
+            right: 15px;
+            top: 11px;
+
+            a {
+                color: #FFF;
+            }
+        }
+    }
+
+    .ag-login-unit-captcha {
+        position: relative;
+        margin-bottom: 19px;
+
+        .input-icon {
+            background-image: url('/static/image/mobile/tpl/brilliant/login/captcha.png');
+        }
+
+        .redo-wrap {
+            position: absolute;
+            top: 12px;
+            right: 85px;
+        }
+
+        .captcha-reform {
+            width: 16px;
+            height: 16px;
+            color: #A6A9B2;
+            cursor: pointer;
+        }
+
+        .captcha-img {
+            position: absolute;
+            top: 9px;
+            right: 15px;
+            width: 62px;
+            height: 21px;
+            background-color: #000;
+            cursor: pointer;
+        }
+    }
+
+    .ag-login-deposit-username {
+        margin: 0 0 29px 14px;
+
+        img {
+            display: block;
+            width: 14px;
+            height: 14px;
+        }
+
+        .icon-wrap {
+            float: left;
+        }
+
+        .deposit-text {
+            float: left;
+            position: relative;
+            bottom: 3px;
+            margin-left: 6px;
+            color: #FFF;
+        }
+    }
+
+    .ag-login-button {
+        width: 48%;
+        height: 40px;
+        color: #392A2A;
+        text-align: center;
+        line-height: 40px;
+        border-radius: 3px;
+
+        &.ag-login-join-mem {
+            float: left;
+            background-color: #E0BD63;
+
+            a {
+                color: #392A2A;
+            }
+        }
+
+        &.ag-login-submit {
+            float: right;
+            background-color: #F2C925;
+        }
+    }
+}
+
+.ag-login-member-link {
+    margin: 10px auto 0;
+
+    .ag-member-link-button {
+        float: left;
+        height: 40px;
+        text-align: center;
+        line-height: 40px;
+        width: 48%;
+        position: relative;
+
+        & + .ag-member-link-button {
+            float: right;
+        }
+
+        & + .ag-member-link-button:before {
+            content: '|';
+            display: inline-block;
+            position: absolute;
+            top: 0px;
+            left: -5px;
+            color: #fff;
+        }
+
+        a {
+            color: #fff;
+        }
+    }
+}
+
+.ag-go-first {
+    a {
+        display: block;
+        text-align: center;
+        border: 1px solid #f2c826;
+        color: #f2c826;
+        border-radius: 3px;
+        line-height: 40px;
+        margin: 15px 0 0 0;
+    }
+}
+
+// 藍紫色系
+.bluePurple {
+    background: url('/static/image/mobile/tpl/brilliant/bluePurple/login_bg.png') 0 0/cover no-repeat;
+
+    .ag-login-form-wrap {
+        background: none;
+        border: none;
+    }
+
+    .ag-login-form-title {
+        color: #BABAFF;
+    }
+
+    .ag-login-unit input {
+        background: #6A69F5;
+        border: none;
+    }
+
+    .ag-login-unit-username {
+        .input-icon {
+            background-image: url('/static/image/mobile/tpl/brilliant/bluePurple/username.png');
+        }
+    }
+
+    .ag-login-unit-password {
+        .input-icon {
+            background-image: url('/static/image/mobile/tpl/brilliant/bluePurple/password.png');
+        }
+    }
+
+    .ag-login-unit-captcha {
+        .input-icon {
+            background-image: url('/static/image/mobile/tpl/brilliant/bluePurple/captcha.png');
+        }
+    }
+
+    .ag-login-deposit-username {
+        svg {
+            border: 1px solid #BABAFF;
+            color: #473F8A;
+            background-color: #BABAFF;
+        }
+    }
+
+    .ag-login-button.ag-login-join-mem {
+        background-color: #6A69F5;
+
+        a {
+            color: #FFF;
+        }
+    }
+
+    .ag-login-button.ag-login-submit {
+        background-color: #CE5CEF;
+        color: #FFF;
+    }
+
+    .ag-go-first {
+        a {
+            display: block;
+            text-align: center;
+            border: 1px solid #7c7bff;
+            color: #7c7bff;
+            border-radius: 3px;
+            line-height: 40px;
+            margin: 15px 0 0 0;
+        }
+    }
+}

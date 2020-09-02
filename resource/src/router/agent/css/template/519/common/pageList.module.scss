@@ -1,0 +1,93 @@
+@import "~@/css/variable.scss";
+
+.list-wrap {
+    float: left;
+    border-radius: 32px 0 0 32px;
+    padding: 50px 0 50px 26px;
+    width: 252px;
+}
+
+.agcenter-select {
+    display: none;
+}
+
+.logo {
+    display: none;
+}
+
+.agcenter-list {
+    background: transparent;
+}
+
+.list-category {
+    background: url('/static/image/agent/519/mcenter_line.png') 0 100% no-repeat;
+    padding-bottom: 50px;
+}
+
+.list-title {
+    margin-bottom: 12px;
+    font-size: 24px;
+    color: #A5A2A5;
+    overflow: hidden;
+    text-overflow: ellipsis;
+    white-space: nowrap;
+}
+
+.list-title-current {
+    composes: list-title
+}
+
+.list-item {
+    position: relative;
+    margin-bottom: 4px;
+    padding-left: 60px;
+    height: 44px;
+    line-height: 44px;
+    color: #5C6783;
+    font-size: 16px;
+    overflow: hidden;
+    text-overflow: ellipsis;
+    white-space: nowrap;
+    cursor: pointer;
+
+    &::before {
+        content: '';
+        display: block;
+        position: absolute;
+        left: 0;
+        top: 0;
+        background: url('/static/image/agent/519/member_sidebar_icon.png') no-repeat;
+        width: 44px;
+        height: 44px;
+    }
+
+    &:hover {
+        color: #CA8C54;
+
+        &::before {
+            background-position-x: -64px;
+        }
+    }
+}
+
+$list-item: accountData 0, accountBankCard 1, financeWithdraw 3, financeReward 7,
+        reportMember 11, reportGameRecord 12, infoMessage 9,
+        infoPost 10, downloadApp 13;
+
+@each $item in $list-item {
+    $item-name: nth($item, 1);
+    $pic-index: nth($item, 2);
+
+    .list-item-#{$item-name}::before {
+        background-position: 0 ($pic-index * -44px);
+    }
+}
+
+.list-item-current {
+    composes: list-item;
+    color: #CA8C54;
+
+    &::before {
+        background-position-x: -64px;
+    }
+}

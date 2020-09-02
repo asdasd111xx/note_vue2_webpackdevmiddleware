@@ -129,6 +129,8 @@ export default {
     getNews: (state) => state.news,
     // 會員端-公告
     getPost: (state) => state.post,
+    // 會員端-帳戶資料欄位開關
+    getMemUserConfig: (state) => state.memUserConfig,
     // ＝＝＝＝＝＝＝＝＝＝＝＝＝＝＝＝＝＝
     //  AGENT 代理相關
     // ＝＝＝＝＝＝＝＝＝＝＝＝＝＝＝＝＝＝
@@ -142,6 +144,8 @@ export default {
     getAgentPost: (state) => state.agentPost,
     // 代理端-使用者層級
     getAgentUserLevels: (state) => state.agentUserLevels,
+    // 代理端-帳戶資料欄位開關
+    getAgentUserConfig: (state) => state.agentUserConfig,
     // ＝＝＝＝＝＝＝＝＝＝＝＝＝＝＝＝＝＝
     //     MCENTER 會員中心
     // ＝＝＝＝＝＝＝＝＝＝＝＝＝＝＝＝＝＝

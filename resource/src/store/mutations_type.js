@@ -52,6 +52,8 @@ export const SETPOST = 'SETPOST';
 export const SETFAVORITEGAME = 'SETFAVORITEGAME';
 // 會員端-設定下方遊戲框顯示狀態
 export const SET_COLLECTION_STATUS = 'SET_COLLECTION_STATUS';
+// 會員端-帳戶資料欄位開關
+export const SET_MCENTER_USER_CONFIG = 'SET_MCENTER_USER_CONFIG';
 
 // ＝＝＝＝＝＝＝＝＝＝＝＝＝＝＝＝＝＝
 //     AGENT 代理相關
@@ -66,6 +68,8 @@ export const SETAGENTNEWS = 'SETAGENTNEWS';
 export const SETAGENTPOST = 'SETAGENTPOST';
 // 代理端-使用者層級
 export const SET_AGENT_USER_LEVELS = 'SET_AGENT_USER_LEVELS';
+// 代理端-帳戶資料欄位開關
+export const SET_AGENT_USER_CONFIG = 'SET_AGENT_USER_CONFIG';
 
 // ＝＝＝＝＝＝＝＝＝＝＝＝＝＝＝＝＝＝
 //     MCENTER 會員中心
