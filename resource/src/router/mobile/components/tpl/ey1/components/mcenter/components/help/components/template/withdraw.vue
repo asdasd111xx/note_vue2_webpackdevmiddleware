@@ -44,14 +44,10 @@
             </div>
           </div>
           <div v-else-if="index == 1 && item.isOpen" :class="$style['tips']">
-            <div :class="$style['tips-title']">
-              ※ 亲切提醒 ※
-            </div>
             <div>
               如有任何问题，请洽24小时
-              <a @click="linkTo('service')">
-                在线客服 </a
-              >， 将有专人亲切的为您服务。
+              <a @click="linkTo('service')"> 在线客服 </a>，
+              将有专人亲切的为您服务。
             </div>
             <div>
               ♠ 亿元相关优惠，欢迎参阅『
