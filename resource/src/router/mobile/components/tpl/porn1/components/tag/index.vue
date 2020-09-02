@@ -10,7 +10,7 @@
           @click="$router.push({ name: 'videoPlay', params: { id: video.id } })"
         >
           <div :class="$style['image-wrap']">
-            <img v-lazy="getImg(video.image)" />
+            <img :src="img" :img-id="video.id" />
           </div>
           <div :class="$style['info-wrap']">
             <div :class="$style['video-title']">{{ video.title }}</div>
@@ -64,6 +64,7 @@ import axios from 'axios';
 import querystring from 'querystring';
 import mobileContainer from '../common/mobileContainer';
 import pornRequest from '@/api/pornRequest';
+import { getEncryptImage } from '@/lib/crypto';
 
 export default {
   components: {
@@ -79,6 +80,7 @@ export default {
       videoList: [],
       current: 0,
       total: 0,
+      img: this.$getCdnPath(`/static/image/_new/default/bg_video03_d.png`)
     };
   },
   computed: {
@@ -145,6 +147,12 @@ export default {
         this.videoList = [...response.result.data];
         this.current = response.result.current_page;
         this.total = response.result.last_page;
+
+        setTimeout(() => {
+          this.videoList.forEach(item => {
+            getEncryptImage(item);
+          })
+        }, 300)
 
         if (response.result.current_page >= response.result.last_page) {
           return;
