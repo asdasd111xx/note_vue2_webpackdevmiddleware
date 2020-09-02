@@ -34,6 +34,34 @@
             />
           </div>
 
+          <div v-if="index == 0 && item.isOpen" :class="$style['tips']">
+            <div :class="$style['tips-title']">
+              ※ 取款注意事项 ※
+            </div>
+            <div>
+              ❶亲切提醒您～联系资料变更时，请您立即联系24小时在线客服人员，即时更新您的联络方式；
+              如有任何问题，方便億元客服人员第一时间与您联系。
+            </div>
+          </div>
+          <div v-else-if="index == 1 && item.isOpen" :class="$style['tips']">
+            <div :class="$style['tips-title']">
+              ※ 亲切提醒 ※
+            </div>
+            <div>
+              如有任何问题，请洽24小时
+              <a @click="linkTo('service')">
+                在线客服 </a
+              >， 将有专人亲切的为您服务。
+            </div>
+            <div>
+              ♠ 亿元相关优惠，欢迎参阅『
+              <a @click="linkTo('promotion')">
+                优惠活动
+              </a>
+              ，』♠
+            </div>
+          </div>
+
           <div
             :class="[$style['arrow-btn'], { [$style['active']]: item.isOpen }]"
             @click="item.content && handleToggleContent(index)"
@@ -43,9 +71,6 @@
             />
           </div>
         </template>
-      </div>
-      <div :class="$style['tips']" @click="$router.push('/mobile/service')">
-        如有任何问题，请洽24小时<a>在线客服</a>，将有专人亲切的为您服务。
       </div>
     </div>
   </div>

@@ -106,7 +106,7 @@
               @click="showCaptchaPopup"
             >
               <span v-if="countdownSec">{{ `${countdownSec}s` }}</span>
-              <span v-else> {{ "手机验证码" }} </span>
+              <span v-else> {{ "获取验证码" }} </span>
             </div>
           </div>
         </div>
@@ -412,7 +412,7 @@ export default {
             this.onClose();
 
             if (!this.checkBankSwitch) {
-              this.$router.push(`/mobile/mcenter/bankCard?redirect=home&type=virtualBank`)
+              this.$router.push(`/mobile/mcenter/bankCard?redirect=home&type=wallet`)
             }
           });
         }

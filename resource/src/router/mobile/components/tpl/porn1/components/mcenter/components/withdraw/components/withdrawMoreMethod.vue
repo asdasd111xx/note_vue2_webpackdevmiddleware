@@ -64,7 +64,7 @@ export default {
     return {
       bank_id: "",
       isShowPopQrcode: false,
-      nowOpenVirtualBank: []
+      nowOpenWallet: []
     };
   },
   computed: {
@@ -81,9 +81,9 @@ export default {
           isShow: this.showAddBankCard
         },
         {
-          key: "virtualBank",
+          key: "wallet",
           title: "添加 电子钱包",
-          isShow: this.showAddVirtualBank
+          isShow: this.showAddWallet
         },
         {
           key: "CGPay",
@@ -105,7 +105,7 @@ export default {
         this.withdrawUserData.account.length < 3
       );
     },
-    showAddVirtualBank() {
+    showAddWallet() {
       // 尚未打開電子錢包開關
       if (!this.userLevelObj.virtual_bank) {
         return false;
@@ -121,7 +121,7 @@ export default {
       let singleLimit =
         this.userLevelObj.virtual_bank_single &&
         this.withdrawUserData.wallet &&
-        this.withdrawUserData.wallet.length < this.nowOpenVirtualBank.length;
+        this.withdrawUserData.wallet.length < this.nowOpenWallet.length;
 
       if (noSingleLimit || singleLimit) {
         return true;
@@ -157,7 +157,7 @@ export default {
   created() {
     this.actionBindGoBao();
     this.actionSetCGPayInfo();
-    this.getNowOpenVirtualBank();
+    this.getNowOpenWallet();
   },
   methods: {
     ...mapActions([
@@ -174,13 +174,13 @@ export default {
           this.checkAccountData("bankCard");
           break;
 
-        case "virtualBank":
-          this.checkAccountData("virtualBank");
+        case "wallet":
+          this.checkAccountData("wallet");
           break;
 
         case "CGPay":
           this.$router.push(
-            "/mobile/mcenter/bankcard?redirect=withdraw&type=virtualBank&wallet=CGPay"
+            "/mobile/mcenter/bankcard?redirect=withdraw&type=wallet&wallet=CGPay"
           );
           break;
 
@@ -191,7 +191,7 @@ export default {
       }
       this.close();
     },
-    getNowOpenVirtualBank() {
+    getNowOpenWallet() {
       // Get 錢包類型
       axios({
         method: "get",
@@ -203,7 +203,7 @@ export default {
           return;
         }
 
-        this.nowOpenVirtualBank = ret;
+        this.nowOpenWallet = ret;
       });
     }
   }

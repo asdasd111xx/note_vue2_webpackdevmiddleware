@@ -82,6 +82,20 @@ export default {
           info: '为您提供全天候服务',
           needLogin: false
         },
+        {
+          name: '用户须知',
+          img: 'support',
+          key: 'tips',
+          info: '确保您的权益',
+          needLogin: false
+        },
+        {
+          name: '隐私政策',
+          img: 'support',
+          key: 'privacy',
+          info: '保障您的隐私',
+          needLogin: false
+        },
       ],
     };
   },

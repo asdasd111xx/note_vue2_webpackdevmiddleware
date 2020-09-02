@@ -263,8 +263,8 @@ export default {
                     this.$router.push('/mobile/mcenter/bankcard?redirect=withdraw&type=bankCard')
                 }
 
-                if (check && target === "virtualBank") {
-                    this.$router.push('/mobile/mcenter/bankcard?redirect=withdraw&type=virtualBank')
+                if (check && target === "wallet") {
+                    this.$router.push('/mobile/mcenter/bankcard?redirect=withdraw&type=wallet')
                 }
             })
         },

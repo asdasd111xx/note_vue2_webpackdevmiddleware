@@ -56,7 +56,7 @@
                         v-if="errors.has(caseData.key[curLang]) && !isBackEnd"
                         class="ui pointing red basic label"
                     >
-                        {{ $text('S_FORM_ACCOUNT_ERROR', { text: '请输入4-20码英文小写、数字，首字不得为数字', replace: [{ target: '%s', value: '<br />'}] }) }}
+                        {{ $text('S_FORM_ACCOUNT_ERROR', { text: '请输入4-20位英文小写、数字，首字不得为数字', replace: [{ target: '%s', value: '<br />'}] }) }}
                     </div>
                 </div>
                 <div

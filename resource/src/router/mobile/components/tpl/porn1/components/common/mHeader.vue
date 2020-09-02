@@ -162,13 +162,15 @@
             [$style[headerConfig.customLinkStyle]]: headerConfig.customLinkStyle
           }
         ]"
-        @click="
-          headerConfig.customLinkAction
-            ? headerConfig.customLinkAction()
-            : () => {}
-        "
       >
-        <div :class="[$style['header-custom-btn']]">
+        <div
+          :class="[$style['header-custom-btn']]"
+          @click="
+            headerConfig.customLinkAction
+              ? headerConfig.customLinkAction()
+              : () => {}
+          "
+        >
           {{ headerConfig.customLinkTitle }}
         </div>
       </div>
@@ -522,11 +524,6 @@ export default {
 }
 
 .header-custom-wrap {
-  height: 43px;
-  width: 100%;
-  position: fixed;
-  top: 0;
-
   .header-custom-btn {
     line-height: 43px;
     position: fixed;

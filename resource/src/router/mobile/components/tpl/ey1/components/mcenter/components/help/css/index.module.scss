@@ -225,8 +225,8 @@
 }
 
 .tips {
-    margin-top: 14px;
-    padding: 0 14px;
+    background-color: #fefefe;
+    padding: 14px 0;
     font-size: 14px;
     font-family: Microsoft JhengHei, Microsoft JhengHei-Regular;
     font-weight: 400;
@@ -234,6 +234,11 @@
 
     >a {
         color: #6AAAF5;
+    }
+
+    >.tips-title {
+        color: #ff1010;
+        margin-bottom: 5px;
     }
 }
 

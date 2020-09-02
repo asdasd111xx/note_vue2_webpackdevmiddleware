@@ -462,12 +462,6 @@ export default {
 }
 
 .header-custom-wrap {
-  height: 43px;
-  position: absolute;
-  right: 0;
-  top: 0;
-  width: 100%;
-
   .header-custom-btn {
     line-height: 43px;
     position: absolute;
