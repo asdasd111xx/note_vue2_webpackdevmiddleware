@@ -121,8 +121,10 @@ export default {
     width: 56px;
     margin: 6px 0 13px;
     position: relative;
+
     > img:first-child {
-      height: 100%;
+      height: 56px;
+      width: 56px;
       border-radius: 50%;
     }
 
