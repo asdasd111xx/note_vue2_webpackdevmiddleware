@@ -67,11 +67,9 @@
               :placeholder="$text('S_MOBILE_CAPTCHA', '请输入手机验证码')"
               :class="$style.input"
               @input="
-                codeValue = $event.target.value
-                  .trim()
-                  .replace(/[^0-9A-Za-z]/g, '')
+                codeValue = $event.target.value.trim().replace(/[^0-9]/g, '')
               "
-              type="text"
+              type="tel"
             />
             <div :class="$style['clear-input']" v-if="codeValue">
               <img

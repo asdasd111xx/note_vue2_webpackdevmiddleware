@@ -61,7 +61,10 @@
               v-model="codeValue"
               :placeholder="$text('S_PLS_ENTER_MAIL_CODE', '请输入邮箱验证码')"
               :class="$style.input"
-              type="text"
+              @input="
+                codeValue = $event.target.value.trim().replace(/[^0-9]/g, '')
+              "
+              type="tel"
             />
             <div :class="$style['clear-input']" v-if="codeValue">
               <img
