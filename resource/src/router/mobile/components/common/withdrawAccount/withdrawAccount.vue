@@ -106,7 +106,7 @@
               @click="showCaptchaPopup"
             >
               <span v-if="countdownSec">{{ `${countdownSec}s` }}</span>
-              <span v-else> {{ "手机验证码" }} </span>
+              <span v-else> {{ "获取验证码" }} </span>
             </div>
           </div>
         </div>
