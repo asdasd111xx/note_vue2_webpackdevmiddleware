@@ -133,7 +133,7 @@ export default {
             type: 'text',
             regExp: /^[a-z1-9][a-z0-9]{3,19}$/,
             errorMsg: 'S_USERNAME_ERROR',
-            defaultErrMsg: '请输入4-20码英文小写、数字，首字不得为数字0'
+            defaultErrMsg: '请输入4-20位英文小写、数字，首字不得为数字0'
         },
         email: {
             key: 'email',
@@ -149,7 +149,7 @@ export default {
             type: 'password',
             regExp: /^[a-z0-9._\-!@#$&*+=|]{6,12}$/,
             errorMsg: 'S_PASSWORD_ERROR',
-            defaultErrMsg: '请输入6-12码英文小写、数字'
+            defaultErrMsg: '请输入6-12位英文小写、数字'
         },
         chkPwd: {
             key: 'chkPwd',

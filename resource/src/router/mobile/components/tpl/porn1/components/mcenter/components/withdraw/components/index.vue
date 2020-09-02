@@ -385,7 +385,7 @@
         <input
           v-model="withdrawPwd"
           autocomplete="off"
-          placeholder="请输入提现密码(限定4码数字)"
+          placeholder="请输入提现密码(限定4位数字)"
           type="password"
           maxlength="4"
           @input="verification('withdrawPwd', $event.target.value)"

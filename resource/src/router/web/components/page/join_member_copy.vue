@@ -735,7 +735,7 @@ export default {
       }
 
       if (this.allValue.password !== '' && !this.joinMemInfo.password.regExp.test(this.allValue.password)) {
-        this.allTip.password = this.$text('S_PASSWORD_ERROR', '请输入6-12码英文小写、数字');
+        this.allTip.password = this.$text('S_PASSWORD_ERROR', '请输入6-12位英文小写、数字');
       }
 
       if (this.allValue.username !== '' && this.allValue.password === this.allValue.username) {
