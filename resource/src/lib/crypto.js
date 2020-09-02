@@ -81,8 +81,15 @@ export const getEncryptImage = (info) => {
         method: 'GET',
         responseType: 'blob',
     }).then((response) => {
+        if (!document.querySelector(`img[img-id="${info.id}"]`)) {
+            return info.image;
+        }
+
         const reader = new FileReader();
         reader.addEventListener('loadend', (e) => {
+            if (!document.querySelector(`img[img-id="${info.id}"]`)) {
+                return info.image;
+            }
             var bytes = reader.result
             var dataUrl = new Uint8Array(bytes);
 
@@ -99,7 +106,7 @@ export const getEncryptImage = (info) => {
 
             // 放回image src
             if (!document.querySelector(`img[img-id="${info.id}"]`)) {
-                return;
+                return info.image;
             }
 
             document.querySelector(`img[img-id="${info.id}"]`).src = `data:${type};base64,${base64String}`;

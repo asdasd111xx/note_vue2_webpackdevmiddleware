@@ -13,7 +13,7 @@
               })
             "
           >
-            <img v-lazy="getImg(info.image)" />
+            <img :src="img" :img-id="info.id" />
           </div>
           <div :class="$style.title">{{ info.title }}</div>
         </div>
@@ -49,6 +49,7 @@ import InfiniteLoading from "vue-infinite-loading";
 import axios from "axios";
 import querystring from "querystring";
 import pornRequest from "@/api/pornRequest";
+import { getEncryptImage } from '@/lib/crypto';
 
 export default {
   components: {
@@ -72,7 +73,8 @@ export default {
       hasInfinite: false,
       searchList: [],
       current: 0,
-      total: 0
+      total: 0,
+      img: this.$getCdnPath(`/static/image/_new/default/bg_video03_1_d@3x.png`)
     };
   },
   watch: {
@@ -123,6 +125,12 @@ export default {
         this.current = response.result.current_page;
         this.total = response.result.last_page;
 
+        setTimeout(() => {
+          this.searchList.forEach(item => {
+            getEncryptImage(item);
+          })
+        }, 300)
+
         if (response.result.current_page >= response.result.last_page) {
           return;
         }
@@ -146,6 +154,12 @@ export default {
         this.current = response.result.current_page;
         this.total = response.result.last_page;
         this.isReceive = false;
+
+        setTimeout(() => {
+          this.searchList.forEach(item => {
+            getEncryptImage(item);
+          })
+        }, 300)
 
         if (response.result.current_page >= response.result.last_page) {
           $state.complete();
