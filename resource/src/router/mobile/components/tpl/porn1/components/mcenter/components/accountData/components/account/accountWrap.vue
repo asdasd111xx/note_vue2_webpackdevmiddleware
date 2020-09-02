@@ -254,14 +254,16 @@ export default {
                 confirmSt = 'already';
               }
             }
-
             itemNow = {
               ...itemNow,
               status: confirmSt,
               value: val,
               btnShow: !keyValue || !this.verification[key] ||
                 (key === 'phone' && this.memInfo.config.user_edit_phone) ||
-                (key === 'email' && userConfig.user[key]),
+                (key === 'phone' && this.mcenterUserField.config.phone.code) ||
+                (key === 'email' && userConfig.user[key]) ||
+                (key === 'email' && this.mcenterUserField.config.email.code)
+              ,
               verification: this.verification[key],
               isShow: userConfig.config[key].display
             };

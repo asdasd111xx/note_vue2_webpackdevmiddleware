@@ -117,6 +117,7 @@ import serviceTips from '../../serviceTips';
 import mcenter from '@/api/mcenter';
 import popupVerification from '@/components/popupVerification';
 import accountHeader from '../../accountHeader';
+import { getCookie, setCookie } from '@/lib/cookie';
 
 export default {
   components: {
@@ -257,6 +258,13 @@ export default {
     captchaData(val) {
       this.handleSend()
     },
+    oldValue() {
+      if (this.oldValue.length >= 11) {
+        this.tipMsg = '';
+      } else {
+        this.tipMsg = '手机格式不符合要求'
+      }
+    },
     newValue() {
       if (this.newValue.length >= 11) {
         this.tipMsg = '';
@@ -373,20 +381,24 @@ export default {
       if (!this.newValue || this.timer || this.isSendSMS) return;
 
       this.isSendSMS = true;
+      let aid = getCookie('popup-verification-aid') || '';
       if (this.isfromWithdraw) {
         axios({
           method: 'post',
           url: '/api/v1/c/player/withdraw/verify/sms',
           data: {
             phone: `${this.newCode.replace('+', '')}-${this.newValue}`,
-            captcha_text: this.captchaData ? this.captchaData : ''
+            captcha_text: this.captchaData ? this.captchaData : '',
+            aid: aid,
           }
         }).then(res => {
+          this.toggleCaptcha = false;
           this.actionSetUserdata(true);
           this.locker();
           this.tipMsg = this.$text("S_SEND_CHECK_CODE_VALID_TIME").replace("%s", 5);
           this.isSendSMS = false;
         }).catch(error => {
+          this.toggleCaptcha = false;
           this.countdownSec = '';
           this.tipMsg = `${error.response.data.msg}`;
           this.isSendSMS = false;
@@ -398,19 +410,23 @@ export default {
           data: {
             old_phone: this.memInfo.phone.phone ? `${this.newCode.replace('+', '')}-${this.oldValue}` : '',
             phone: `${this.newCode.replace('+', '')}-${this.newValue}`,
-            captcha_text: this.captchaData ? this.captchaData : ''
+            captcha_text: this.captchaData ? this.captchaData : '',
+            aid: aid,
           }
         }).then(res => {
+          this.toggleCaptcha = false;
           this.actionSetUserdata(true);
           this.locker();
           this.tipMsg = this.$text("S_SEND_CHECK_CODE_VALID_TIME").replace("%s", 5);
           this.isSendSMS = false;
         }).catch(error => {
+          this.toggleCaptcha = false;
           this.countdownSec = '';
           this.tipMsg = `${error.response.data.msg}`;
           this.isSendSMS = false;
         })
       }
+      setCookie('popup-verification-aid', '');
     },
     handleSubmit() {
       // 提款手機驗證

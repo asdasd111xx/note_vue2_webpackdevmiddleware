@@ -1,0 +1,572 @@
+<template>
+  <div :class="$style['add-bankcard']">
+    <div :class="$style['card-info']">
+      <p :class="[$style['error-msg'], { [$style['is-hide']]: !errorMsg }]">
+        {{ errorMsg }}
+      </p>
+
+      <!-- Select Wallet Type -->
+      <div :class="$style['wallet-block']">
+        <p :class="$style['wallet-text']">
+          {{ $text("S_WALLET_TYPE", "钱包类型") }}
+        </p>
+
+        <ul :class="$style['wallet-list']">
+          <li
+            :class="[
+              $style['wallet-item'],
+              {
+                [$style['is-current']]: item.id === selectTarget.walletId
+              }
+            ]"
+            v-for="item in walletList"
+            :key="item.id"
+            @click="setBank(item)"
+          >
+            {{ item.name }}
+
+            <img
+              v-if="item.id === selectTarget.walletId"
+              :class="$style['select-wallet-img']"
+              src="/static/image/porn1/common/select_active.png"
+            />
+          </li>
+        </ul>
+      </div>
+
+      <!-- Input -->
+      <div v-if="selectTarget.walletName" :class="$style['info-item']">
+        <p :class="$style['input-title']">
+          {{ formData["walletAddress"].title }}
+        </p>
+
+        <div
+          :class="[
+            $style['input-wrap'],
+            { [$style['disable']]: isGoBaoWallet }
+          ]"
+        >
+          <input
+            v-model="formData['walletAddress'].value"
+            type="text"
+            :placeholder="formData['walletAddress'].placeholder"
+            @input="verification('walletAddress')"
+            @blur="verification('walletAddress')"
+          />
+        </div>
+
+        <div
+          v-if="selectTarget.walletId === 21 || isGoBaoWallet"
+          :class="$style['qrcode']"
+          @click="isShowPopQrcode = true"
+        >
+          <img
+            :src="
+              $getCdnPath('/static/image/porn1/mcenter/bankCard/ic_qrcode.png')
+            "
+            alt="qrcode"
+          />
+        </div>
+      </div>
+
+      <!-- CGPay 支付密碼欄位 -->
+      <div v-if="selectTarget.walletId === 21" :class="$style['info-item']">
+        <p :class="$style['input-title']">
+          {{ formData["CGPPwd"].title }}
+        </p>
+        <div :class="$style['input-wrap']">
+          <input
+            v-model="formData['CGPPwd'].value"
+            type="tel"
+            :placeholder="formData['CGPPwd'].placeholder"
+            @input="verification('CGPPwd')"
+            @blur="verification('CGPPwd')"
+          />
+        </div>
+      </div>
+
+      <!-- Confirm Button -->
+      <div :class="$style['info-confirm']">
+        <!-- 上方 Tip 顯示 -->
+        <template v-if="selectTarget.walletName">
+          <template v-if="selectTarget.walletId === 21">
+            <li>可输入CGPay帐号或扫码绑定</li>
+            <li>
+              没有CGPay帐号？
+              <a
+                href="https://cgpayintroduction.azurewebsites.net/index.aspx"
+                target="_blank"
+                >立即申请</a
+              >
+            </li>
+          </template>
+
+          <template v-if="selectTarget.walletId === 37">
+            <li>请使用扫码绑定</li>
+            <li>
+              没有CGPay帐号？<a
+                href="https://www.gamewallet.asia/"
+                target="_blank"
+                >立即申请</a
+              >
+            </li>
+          </template>
+
+          <template v-if="selectTarget.walletId === 39">
+            <li>
+              还没有数字货币帐号？<span @click="isShowPopTip = true"
+                >后我查看交易所</span
+              >
+            </li>
+          </template>
+        </template>
+
+        <!-- 確認鈕 -->
+        <!-- 針對 CGpay -->
+        <div
+          v-if="selectTarget.walletId === 21"
+          :class="[$style['submit'], { [$style['disabled']]: lockStatus }]"
+          @click="submitByToken"
+        >
+          {{ $text("S_CONFIRM", "确认") }}
+        </div>
+
+        <!-- 新增一般錢包 -->
+        <div
+          v-else
+          :class="[$style['submit'], { [$style['disabled']]: lockStatus }]"
+          @click="submitByNormal"
+        >
+          {{ $text("S_CONFIRM", "确认") }}
+        </div>
+      </div>
+    </div>
+
+    <p v-if="selectTarget.walletName" :class="$style['service-remind']">
+      如需帮助，请<span
+        :class="$style['service-btn']"
+        @click="$router.push('/mobile/service')"
+        >联系客服</span
+      >
+    </p>
+
+    <!-- USDT Tip 彈窗 -->
+    <popup-tip v-if="isShowPopTip" :isShowPop.sync="isShowPopTip" />
+
+    <popup-qrcode
+      v-if="isShowPopQrcode"
+      :isShowPop.sync="isShowPopQrcode"
+      :paymentGatewayId="selectTarget.walletId"
+    />
+  </div>
+</template>
+
+<script>
+import axios from "axios";
+import { mapGetters, mapActions } from "vuex";
+import i18n from "@/config/i18n";
+// import virtualBankMixin from "@/mixins/mcenter/bankCard/addCard/virtualBank";
+import popupQrcode from "@/router/mobile/components/common/virtualBank/popupQrcode";
+import popupTip from "../popupTip";
+
+export default {
+  components: {
+    popupQrcode,
+    popupTip
+  },
+  props: {
+    changePage: {
+      type: Function,
+      default: () => {}
+    },
+    showTab: {
+      type: Function,
+      default: () => {}
+    },
+    userLevelObj: {
+      type: Object,
+      default: {}
+    }
+  },
+  data() {
+    return {
+      // 卡片有關參數
+      selectTarget: {
+        walletId: "",
+        walletName: "",
+        fixed: false
+      },
+      walletList: [],
+      userBindWalletList: [],
+      bindWallets: {
+        cgPay: false,
+        goBao: false,
+        ids: [] // If true then push
+      },
+
+      isShowPopTip: false,
+      isShowPopQrcode: false,
+      isGoBaoWallet: false,
+
+      // 欄位資料
+      formData: {
+        walletAddress: {
+          title: i18n.t("S_WALLET_ADDRESS"),
+          value: "",
+          placeholder: ""
+        },
+        CGPPwd: {
+          title: "CGP安全防护码",
+          value: "",
+          placeholder: "请输入CGP安全防护码"
+        }
+      },
+      lockStatus: true,
+      errorMsg: "",
+      msg: ""
+    };
+  },
+  computed: {
+    ...mapGetters({
+      memInfo: "getMemInfo",
+      noticeData: "getNoticeData",
+      siteConfig: "getSiteConfig"
+    }),
+    showPopQrcode: {
+      get() {
+        return this.isShowPopQrcode;
+      },
+      set(value) {
+        this.isShowPopQrcode = value;
+      }
+    },
+    showPopTip: {
+      get() {
+        return this.isShowPopTip;
+      },
+      set(value) {
+        this.isShowPopTip = value;
+      }
+    },
+    walletTips() {
+      let text = "";
+      switch (this.selectTarget.walletId) {
+        case 21:
+          // CGPay
+          text = `可输入CGPay帐号或扫码绑定<br>没有CGPay帐号？
+           <a href="https://cgpayintroduction.azurewebsites.net/index.aspx" target="_blank">立即申请</a>
+          `;
+          break;
+
+        case 37:
+          // 購寶
+          text = `请使用扫码绑定<br>没有CGPay帐号？
+          <a href="https://www.gamewallet.asia/" target="_blank">立即申请</a>
+          `;
+          break;
+
+        case 39:
+          // USDT
+          text = `还没有数字货币帐号？<span>后我查看交易所</span>`;
+          break;
+      }
+      return text;
+    }
+  },
+  watch: {
+    "selectTarget.walletId"(value) {
+      // 不確定點擊相同錢包時，是否要清除資料?假如有，將以下 code 搬至 setBank
+      this.formData["CGPPwd"].value = "";
+      this.formData["walletAddress"].value = "";
+      this.isGoBaoWallet = false;
+
+      let text = "";
+
+      switch (value) {
+        case 21:
+          text = "请输入CGP邮箱/手机号或扫扫二维码";
+          break;
+        case 33:
+          text = "请输入比特币取款地址";
+          break;
+        case 34:
+          text = "请输入Ecopayz取款帐号";
+          break;
+        case 35:
+          text = "请输入iWallet取款帐号";
+          break;
+        case 36:
+          text = "请输入STICPAY注册信箱";
+          break;
+        case 37:
+          text = "请点击二維碼綁定";
+          this.isGoBaoWallet = true;
+          break;
+        case 38:
+          text = "请输入VenusPoint取款帐号";
+          break;
+
+        default:
+          text = "请输入钱包地址";
+          break;
+      }
+
+      this.formData["walletAddress"].placeholder = text;
+    },
+    noticeData(value) {
+      if (this.noticeData && this.noticeData.length > 0) {
+        let data = this.noticeData[0];
+
+        if (data.event === "trade_bind_wallet" && data.result === "ok") {
+          // Todo 將所有 msg 替換成 actionSetGlobalMessage
+          this.actionSetGlobalMessage({
+            msg: "绑定成功",
+            cb: () => {
+              this.showTab(true);
+              this.changePage("walletCardInfo");
+            }
+          });
+        }
+      }
+    },
+    walletList() {
+      // 從提現頁進來，且只選擇 CGPay
+      if (this.$route.query.wallet && this.$route.query.wallet === "CGPay") {
+        let item = this.walletList.find(item => {
+          return item.id === 21;
+        });
+        this.setBank(item);
+        this.selectTarget.fixed = true;
+      }
+    }
+  },
+  created() {
+    Promise.all([this.getUserBindList()]).then(() => {
+      this.getWalletList();
+    });
+  },
+  methods: {
+    ...mapActions(["actionSetUserdata", "actionSetGlobalMessage"]),
+    verification(key, index) {
+      let target = this.formData[key];
+      let lock = false;
+
+      if (key === "walletAddress") {
+        target.value = target.value.replace(" ", "").trim();
+      }
+
+      if (key === "CGPPwd") {
+        target.value = target.value
+          .replace(" ", "")
+          .trim()
+          .replace(/[^0-9]/g, "");
+      }
+
+      if (
+        !this.selectTarget.walletName ||
+        !this.formData["walletAddress"].value
+      ) {
+        lock = true;
+      }
+
+      // 針對 CGpay
+      if (this.selectTarget.walletId === 21 && !this.formData["CGPPwd"].value) {
+        lock = true;
+      }
+
+      this.lockStatus = lock;
+    },
+    getUserBindList() {
+      return axios({
+        method: "get",
+        url: "/api/v1/c/player/user_virtual_bank/list",
+        params: {
+          common: true
+        }
+      }).then(response => {
+        const { ret, result } = response.data;
+
+        if (!response || result !== "ok") {
+          return;
+        }
+
+        this.userBindWalletList = ret.filter((item, index) => index < 15);
+      });
+    },
+    getWalletList() {
+      axios({
+        method: "get",
+        url: "/api/payment/v1/c/virtual/bank/list"
+      }).then(response => {
+        const { ret, result } = response.data;
+
+        if (!response || result !== "ok") {
+          return;
+        }
+
+        // 辨别目前使用者已绑定的錢包，並過濾出尚未綁定的錢包
+        let idArr = [
+          ...new Set(
+            this.userBindWalletList.map(item => {
+              return item.payment_gateway_id;
+            })
+          )
+        ];
+
+        if (idArr) {
+          this.walletList = ret.filter(item => {
+            if (!idArr.includes(item.id)) {
+              return item;
+            }
+          });
+        }
+      });
+    },
+    submitByNormal() {
+      if (this.lockStatus) {
+        return;
+      }
+
+      this.lockStatus = true;
+      this.errorMsg = "";
+
+      axios({
+        method: "post",
+        url: "/api/v1/c/player/user_virtual_bank",
+        data: {
+          address: this.formData["walletAddress"].value,
+          payment_gateway_id: this.selectTarget.walletId
+        }
+      })
+        .then(response => {
+          const { result, msg } = response.data;
+          this.lockStatus = false;
+
+          if (result !== "ok" || result === "error") {
+            this.errorMsg = `${msg}[${code}]`;
+            return;
+          }
+
+          this.actionSetGlobalMessage({
+            msg: "绑定成功",
+            cb: this.clearMsgCallback
+          });
+        })
+        .catch(res => {
+          if (res.response && res.response.data && res.response.data.msg) {
+            this.errorMsg = `${res.response.data.msg}[${res.response.data.code}]`;
+            this.lockStatus = false;
+            return;
+          }
+        });
+    },
+    submitByToken() {
+      if (this.lockStatus) {
+        return;
+      }
+
+      this.lockStatus = true;
+      this.errorMsg = "";
+
+      axios({
+        method: "post",
+        url: "/api/v1/c/ext/inpay",
+        data: {
+          api_uri: "/api/trade/v2/c/withdraw/bind_wallet_by_token",
+          bind_type: "withdraw",
+          wallet_gateway_id: 3, // 3 為CGpay
+          wallet_account: this.formData["walletAddress"].value,
+          wallet_token: this.formData["CGPPwd"].value
+        }
+      })
+        .then(response => {
+          const { result, msg, code } = response.data;
+          this.lockStatus = false;
+
+          if (result !== "ok" || result === "error") {
+            this.errorMsg = `${msg}[${code}]`;
+            return;
+          }
+
+          this.actionSetGlobalMessage({
+            msg: "绑定成功",
+            cb: this.clearMsgCallback
+          });
+        })
+        .catch(res => {
+          if (res.response && res.response.data && res.response.data.msg) {
+            this.errorMsg = `${res.response.data.msg}[${res.response.data.code}]`;
+            this.lockStatus = false;
+            return;
+          }
+        });
+    },
+    setBank(bank) {
+      this.selectTarget.walletName = bank.name;
+      this.selectTarget.walletId = bank.id;
+    },
+    clearMsgCallback() {
+      const { query } = this.$route;
+
+      let redirect = query.redirect;
+
+      if (!redirect) {
+        this.showTab(true);
+        this.changePage("walletCardInfo");
+        return;
+      }
+
+      let split = redirect.split("-");
+      if (split.length === 2) {
+        this.$router.push(`/mobile/${split[0]}/${split[1]}`);
+        return;
+      }
+
+      // 有分類的遊戲大廳 card casino
+      if (split.length === 3) {
+        this.$router.push(`/mobile/${split[0]}/${split[1]}?label=${split[2]}`);
+        return;
+      }
+
+      switch (redirect) {
+        case "deposit":
+          this.$router.push(`/mobile/mcenter/deposit`);
+          return;
+        case "wallet":
+          this.$router.push(`/mobile/mcenter/wallet`);
+          return;
+        case "withdraw":
+        case "balanceTrans":
+          this.$router.push(`/mobile/mcenter/${redirect}`);
+          return;
+        case "liveStream":
+        case "home":
+          this.$router.push(`/mobile/${redirect}`);
+          return;
+        default:
+          this.changePage("walletCardInfo");
+          return;
+      }
+    },
+    verifyNumber(e) {
+      const regex = /^[0-9]+$/;
+      if (!regex.test(e.key)) {
+        e.preventDefault();
+      }
+    },
+    getBankImage(swiftCode) {
+      return {
+        src: `https://images.dormousepie.com/icon/bankIconBySwiftCode/${swiftCode}.png`,
+        error: this.$getCdnPath("/static/image/porn1/default/bank_default_2.png"),
+        loading: this.$getCdnPath(
+          "/static/image/porn1/default/bank_default_2.png"
+        )
+      };
+    }
+  }
+};
+</script>
+
+<style lang="scss" module>
+@import "~@/css/page/bankCard/porn1.addCard.module.scss";
+</style>

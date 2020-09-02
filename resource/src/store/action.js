@@ -1448,6 +1448,14 @@ export const actionVerificationFormData = ({ state, dispatch, commit }, data) =>
                 .substring(0, 50);
             break;
 
+        case 'graphicVerification':
+            regex = /[^0-9a-zA-Z]/g;
+
+            val = val
+                .replace(regex, '')
+                .substring(0, 16);
+            break;
+
     }
 
     return val;

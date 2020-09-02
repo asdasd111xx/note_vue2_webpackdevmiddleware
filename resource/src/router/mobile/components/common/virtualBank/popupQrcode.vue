@@ -29,7 +29,20 @@
             <div>● 成功绑定钱包后，此视窗自动关闭</div>
             <div>
               ● 没有CGPay帐号?
-              <span :class="$style['url']" @click="openLink('http://oinbox.io')"
+              <span
+                :class="$style['url']"
+                @click="
+                  () => {
+                    if (themeTPL === 'porn1') {
+                      openLink(
+                        'https://cgpayintroduction.azurewebsites.net/index.aspx'
+                      );
+                    }
+                    if (themeTPL === 'ey1') {
+                      openLink('http://oinbox.io');
+                    }
+                  }
+                "
                 >立即申请</span
               >
             </div>
@@ -38,6 +51,14 @@
           <template v-if="paymentGatewayId === 37">
             <div>● 请使用扫描器扫描二維碼</div>
             <div>● 成功绑定钱包后，此视窗自动关闭</div>
+            <div v-if="themeTPL === 'ey1'">
+              ● 没有购宝钱包帐号?
+              <span
+                :class="$style['url']"
+                @click="openLink('https://www.gamewallet.asia/')"
+                >立即申请</span
+              >
+            </div>
           </template>
         </div>
       </div>
@@ -82,6 +103,14 @@ export default {
       siteConfig: "getSiteConfig",
       memInfo: "getMemInfo"
     }),
+    themeTPL() {
+      return this.siteConfig.MOBILE_WEB_TPL;
+    },
+    $style() {
+      const style =
+        this[`$style_${this.siteConfig.MOBILE_WEB_TPL}`] || this.$style_porn1;
+      return style;
+    },
     title() {
       if (this.paymentGatewayId === 37) {
         return "绑定购宝钱包";
@@ -164,109 +193,14 @@ export default {
 };
 </script>
 
-<style lang="scss" module>
-@import "@/css/variable.scss";
+<style
+  lang="scss"
+  src="./css/porn1.popupQrcode.module.scss"
+  module="$style_porn1"
+></style>
 
-.pop-wrap {
-  position: fixed;
-  top: 0;
-  right: 0;
-  left: 0;
-  bottom: 0;
-  z-index: 99;
-}
-
-.pop-mask {
-  width: 100%;
-  height: 100%;
-  background: #000;
-  opacity: 0.5;
-}
-
-.pop-block {
-  position: absolute;
-  width: 75%;
-  top: 50%;
-  left: 50%;
-  transform: translate(-50%, -50%);
-  background: $main_white_color1;
-  border-radius: 8px;
-}
-
-.content {
-  padding: 17px 18px;
-  color: $main_text_color2;
-  text-align: center;
-
-  .title {
-    color: $main_text_color3;
-    font-size: 18px;
-    font-weight: 700;
-  }
-
-  .qrcode-img {
-    position: relative;
-    margin: 0 auto;
-    margin-top: 10px;
-    min-height: 80px;
-
-    img {
-      width: 80px;
-      height: 80px;
-      vertical-align: middle;
-    }
-  }
-
-  > p {
-    font-size: 12px;
-    margin: 6px 0;
-  }
-
-  .timer-block {
-    div {
-      margin-bottom: 5px;
-    }
-
-    color: $main_error_color1;
-  }
-
-  .tips {
-    padding: 13px 0;
-    text-align: left;
-  }
-
-  .url {
-    color: #6aaaf5;
-    text-decoration: underline;
-  }
-}
-
-.button-block {
-  position: relative;
-  display: flex;
-  height: 50px;
-  align-items: center;
-  border-top: 1px solid #f7f8fb;
-
-  &::after {
-    content: "";
-    position: absolute;
-    width: 3px;
-    height: 100%;
-    left: 50%;
-    transform: translateX(-50%);
-    background: #f7f8fb;
-  }
-
-  span {
-    flex: 1;
-    text-align: center;
-    font-size: 18px;
-    font-weight: 700;
-
-    &:nth-child(2) {
-      color: #e42a30;
-    }
-  }
-}
-</style>
+<style
+  lang="scss"
+  src="./css/ey1.popupQrcode.module.scss"
+  module="$style_ey1"
+></style>
