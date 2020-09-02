@@ -229,7 +229,7 @@
       >
         <img :src="$getCdnPath(`/static/image/${themeTPL}/mcenter/add.png`)" />
         &nbsp;
-        <span @click="checkAccountData('virtualBank')">
+        <span @click="checkAccountData('wallet')">
           {{ $text("S_ADD_VIRTUAL_BANKCARD", "添加电子钱包") }}
         </span>
       </div>

@@ -14,8 +14,12 @@ export default {
   },
   computed: {
     ...mapGetters({
-      memInfo: "getMemInfo"
-    })
+      memInfo: "getMemInfo",
+      siteConfig: "getSiteConfig"
+    }),
+    themeTPL() {
+      return this.siteConfig.MOBILE_WEB_TPL;
+    }
   },
   methods: {
     ...mapActions(['actionSetGlobalMessage']),
@@ -40,9 +44,9 @@ export default {
         this.nowOpenWallet = ret;
       });
     },
-     /*************************
-      * 目前 User 擁有的卡片     *
-      *************************/
+    /*************************
+     * 目前 User 擁有的卡片     *
+     *************************/
     getUserWalletList() {
       this.isRevice = false;
 
@@ -137,9 +141,25 @@ export default {
           this.wallet_cardDetail = temp;
         }).then(() => {
           if (this.memInfo.config.manual_delete_bank_card) {
-            this.actionSetGlobalMessage({ msg: '删除审核中' });
+            switch (this.themeTPL) {
+              case 'porn1':
+                this.actionSetGlobalMessage({ msg: '钱包删除审核中' });
+                break;
+
+              case 'ey1':
+                this.actionSetGlobalMessage({ msg: '删除审核中' });
+                break;
+            }
           } else {
-            this.actionSetGlobalMessage({ msg: '刪除成功' });
+            switch (this.themeTPL) {
+              case 'porn1':
+                this.actionSetGlobalMessage({ msg: '钱包刪除成功' });
+                break;
+
+              case 'ey1':
+                this.actionSetGlobalMessage({ msg: '刪除成功' });
+                break;
+            }
             this.$emit("update:showDetail", false);
             this.showTab(true);
           }

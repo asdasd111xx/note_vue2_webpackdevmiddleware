@@ -412,7 +412,7 @@ export default {
             this.onClose();
 
             if (!this.checkBankSwitch) {
-              this.$router.push(`/mobile/mcenter/bankCard?redirect=home&type=virtualBank`)
+              this.$router.push(`/mobile/mcenter/bankCard?redirect=home&type=wallet`)
             }
           });
         }

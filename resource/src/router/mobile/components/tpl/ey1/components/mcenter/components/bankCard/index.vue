@@ -332,10 +332,13 @@ export default {
 }
 
 .tab-wrap {
-  position: relative;
+  position: fixed;
   display: flex;
   background: #fff;
   border-bottom: 1px solid #eee;
+  width: 100%;
+  max-width: $mobile_max_width;
+  z-index: 10;
 }
 
 .tab-item {
