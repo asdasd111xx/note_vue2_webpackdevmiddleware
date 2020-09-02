@@ -57,6 +57,7 @@ export default {
             method: 'get',
             url: apiUrl.API_LOGOUT,
         }).then(res => {
+            let t=res;
             if (res && res.data && res.data.result === "ok") {
                 setCookie('cid', '');
                 setCookie('aid', '');
@@ -69,11 +70,12 @@ export default {
                 window.dataLayer.push({
                     ga_uid: undefined
                 });
+                window.location.href = '/mobile/login?logout=true';
             }
 
-            window.location.href = '/mobile/login?logout=true';
+            
         }).catch((error) => {
-            if (error.response.data.code === "M00001") {
+            
                 setCookie('cid', '');
                 setCookie('aid', '');
                 localStorage.removeItem('type');
@@ -81,6 +83,7 @@ export default {
                 localStorage.removeItem('is-open-game');
                 localStorage.removeItem('do-not-show-home-post');
                 localStorage.removeItem('is-show-popup-announcement');
+                if (error.response.data.code === "M00001") {
                 // GA流量統計
                 window.dataLayer.push({
                     ga_uid: undefined
