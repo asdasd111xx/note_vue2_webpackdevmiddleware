@@ -18,17 +18,17 @@
               </div>
             </div>
 
+            <!-- 帳號 -->
             <span class="login-unit login-unit-username">
               <input
                 ref="username"
                 v-model="username"
                 :title="$text('S_ACCOUNT', '帐号')"
-                :placeholder="'请输入4-20位字母或数字'"
+                :placeholder="$text('S_USER_NAME', '用户名')"
                 class="login-input"
                 maxlength="20"
                 tabindex="1"
                 @keydown.13="keyDownSubmit()"
-                @change="onSaveAccount"
                 @input="
                   username = $event.target.value
                     .toLowerCase()
@@ -51,13 +51,14 @@
                 />
               </div>
             </span>
+            <!-- 密碼 -->
             <span class="login-unit login-unit-password">
               <input
                 ref="password"
                 id="pwd"
                 v-model="password"
                 :title="$text('S_PASSWORD', '密码')"
-                :placeholder="'请输入6-12位字母或数字'"
+                :placeholder="$text('S_PASSWORD', '密码')"
                 class="login-input"
                 type="password"
                 maxlength="12"
@@ -70,7 +71,6 @@
                     .replace(/[\W]/g, '')
                 "
                 @keydown.13="keyDownSubmit()"
-                @change="onSaveAccount"
               />
               <div :class="$style['eye']">
                 <img
@@ -92,11 +92,13 @@
                 />
               </div>
             </span>
+            <!-- 拼圖驗證 -->
             <puzzle-verification
               v-if="memInfo.config.login_captcha_type === 3"
               ref="puzzleVer"
               :puzzle-obj.sync="puzzleObj"
             />
+            <!-- 驗證碼 -->
             <span
               v-if="hasCaptchaText"
               class="login-unit login-unit-captcha clearfix"
@@ -127,12 +129,12 @@
                 @click="getCaptcha"
               />
             </span>
-            <div class="login-deposit-username clearfix" @click="onSaveAccount">
-              <div class="icon-wrap" @click="depositStatus = !depositStatus">
+            <div class="login-deposit-username clearfix">
+              <div class="icon-wrap" @click="rememberPwd = !rememberPwd">
                 <img
                   :src="
                     `/static/image/_new/common/icon_${
-                      depositStatus ? '' : 'no'
+                      rememberPwd ? '' : 'no'
                     }remember.png`
                   "
                 />
@@ -140,6 +142,7 @@
               <span class="deposit-text">{{
                 $text("S_SAVE_PASSWORD", "记住密码")
               }}</span>
+              <!-- 忘記密碼 -->
               <span
                 class="login-unit-link"
                 @click="$router.push('/mobile/forgetpwd/member')"
@@ -154,6 +157,7 @@
                 :success-fuc="slideLogin"
                 page-status="login"
               />
+              <!-- 登入鈕 -->
               <div
                 v-else
                 class="login-button login-submit"
@@ -162,7 +166,9 @@
                 {{ $text("S_LOGIN_TITLE", "登录") }}
               </div>
             </div>
+
             <div class="login-link-wrap">
+              <!-- 加入會員 -->
               <div class="link-button link-join-mem">
                 <span @click="linktoJoin()">
                   {{ $text("S_FREE_REGISTER", "免费注册") }}
@@ -200,6 +206,9 @@ import puzzleVerification from '@/components/puzzleVerification';
 import mobileContainer from '../common/mobileContainer';
 import { getCookie, setCookie } from '@/lib/cookie';
 
+/**
+ * 登入共用元件
+ */
 export default {
   components: {
     securityCheck: () => import(/* webpackChunkName: 'securityCheck' */'@/router/web/components/common/securityCheck'),
@@ -216,8 +225,6 @@ export default {
   },
   data() {
     return {
-      version: "",
-      isShowPwd: false,
       puzzleData: null,
       script: null,
     };
@@ -275,69 +282,8 @@ export default {
     }
   },
   created() {
-    this.getCaptcha();
-    this.username = localStorage.getItem('username') || '';
-    this.password = localStorage.getItem('password') || '';
-    this.depositStatus = localStorage.getItem('depositStatus') || false;
-    this.version = `${this.siteConfig.VERSION}${getCookie('platform') || ''}`;
   },
   methods: {
-    linktoJoin() {
-      this.$nextTick(() => {
-        this.$router.push('/mobile/joinmember');
-      });
-    },
-    keyDownSubmit() {
-      if (this.memInfo.config.login_captcha_type === 2) {
-        return
-      }
-      this.handleClickLogin();
-    },
-    toggleEye() {
-      if (this.isShowPwd) {
-        document.getElementById("pwd").type = 'password';
-      } else {
-        document.getElementById("pwd").type = 'text';
-      }
-
-      this.isShowPwd = !this.isShowPwd;
-    },
-    handleClickLogin() {
-      if (!this.username) {
-        this.errMsg = "用户名不得为空";
-        return;
-      }
-
-      if (!this.password) {
-        this.errMsg = "密码不得为空";
-        return;
-      }
-
-      switch (this.memInfo.config.login_captcha_type) {
-        // 無驗證
-        case 0:
-          this.loginCheck();
-          break;
-
-        // 數字驗證
-        case 1:
-          this.loginCheck();
-          break;
-
-        // 拼圖驗證
-        case 3:
-          if (!this.puzzleObj) {
-            this.errMsg = "请先点击按钮进行验证";
-            return;
-          }
-          this.loginCheck({ captcha: this.puzzleObj });
-          this.puzzleData = null;
-          break;
-
-        default:
-          break;
-      }
-    },
     slideLogin(loginInfo) {
       this.loginCheck({ captcha: loginInfo.data }, loginInfo.slideFuc);
     },

@@ -15,15 +15,17 @@ export default {
     },
     data() {
         return {
-            isLoading: false,
-            username: '',
-            password: '',
+            aid: '', // repcatcha
             captcha: '',
             captchaImg: '',
-            depositStatus: false,
             checkItem: '',
-            aid: '', // repcatcha
-            errMsg: ''
+            errMsg: '',
+            isLoading: false,
+            password: '',
+            rememberPwd: false,
+            username: '',
+            version: "",
+            isShowPwd: false,
         };
     },
     computed: {
@@ -33,11 +35,79 @@ export default {
             memInfo: 'getMemInfo'
         })
     },
+    watch: {
+        rememberPwd(val) {
+            localStorage.setItem('rememberPwd', val);
+        }
+    },
+    created() {
+        this.getCaptcha();
+        this.username = localStorage.getItem('username') || '';
+        this.password = localStorage.getItem('password') || '';
+        this.rememberPwd = localStorage.getItem('rememberPwd') === "true";
+        this.version = `${this.siteConfig.VERSION}${getCookie('platform') || ''}`;
+    },
     methods: {
         ...mapActions([
             'actionIsLogin',
             'actionSetGlobalMessage'
         ]),
+        linktoJoin() {
+            this.$nextTick(() => {
+                this.$router.push('/mobile/joinmember');
+            });
+        },
+        keyDownSubmit() {
+            if (this.memInfo.config.login_captcha_type === 2) {
+                return
+            }
+            this.handleClickLogin();
+        },
+        toggleEye() {
+            if (this.isShowPwd) {
+                document.getElementById("pwd").type = 'password';
+            } else {
+                document.getElementById("pwd").type = 'text';
+            }
+
+            this.isShowPwd = !this.isShowPwd;
+        },
+        handleClickLogin() {
+            if (!this.username) {
+                this.errMsg = "用户名不得为空";
+                return;
+            }
+
+            if (!this.password) {
+                this.errMsg = "密码不得为空";
+                return;
+            }
+
+            switch (this.memInfo.config.login_captcha_type) {
+                // 無驗證
+                case 0:
+                    this.loginCheck();
+                    break;
+
+                // 數字驗證
+                case 1:
+                    this.loginCheck();
+                    break;
+
+                // 拼圖驗證
+                case 3:
+                    if (!this.puzzleObj) {
+                        this.errMsg = "请先点击按钮进行验证";
+                        return;
+                    }
+                    this.loginCheck({ captcha: this.puzzleObj });
+                    this.puzzleData = null;
+                    break;
+
+                default:
+                    break;
+            }
+        },
         // 圖形驗證格式
         captchaVerification(val) {
             this.captcha = val.replace(/[\W\_]/g, '');
@@ -179,27 +249,17 @@ export default {
                 }
             });
         },
-        /**
-         * 儲存帳號
-         * @method onSaveAccount
-         */
-        onSaveAccount() {
-            this.saveAccount = true;
-        },
         handleSaveAccont() {
-            if (!this.saveAccount) {
-                return;
-            }
-            if (!this.depositStatus) {
+            if (!this.rememberPwd) {
                 localStorage.removeItem('username');
                 localStorage.removeItem('password');
-                localStorage.removeItem('depositStatus');
+                localStorage.removeItem('rememberPwd');
                 return;
             }
 
             localStorage.setItem('username', this.username);
             localStorage.setItem('password', this.password);
-            localStorage.setItem('depositStatus', this.depositStatus);
+            localStorage.setItem('rememberPwd', this.rememberPwd);
         }
     }
 };

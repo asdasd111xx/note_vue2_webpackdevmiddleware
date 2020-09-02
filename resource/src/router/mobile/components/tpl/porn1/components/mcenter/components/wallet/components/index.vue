@@ -223,10 +223,10 @@ export default {
           text: this.$text('S_WITHDRAWAL_TEXT', '提现'),
           imgSrc: '/static/image/_new/mcenter/wallet/ic_wallter_withdraw.png',
           onClick: () => {
-            // if (this.siteConfig.MOBILE_WEB_TPL !== 'ey1') {
-            //   this.$router.push('/mobile/mcenter/withdraw');
-            //   return;
-            // }
+            if (this.siteConfig.MOBILE_WEB_TPL !== 'ey1') {
+              this.$router.push('/mobile/mcenter/withdraw');
+              return;
+            }
 
             if (this.isCheckWithdraw) { return; }
             this.isCheckWithdraw = true;

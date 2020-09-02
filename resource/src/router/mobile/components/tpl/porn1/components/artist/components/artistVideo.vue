@@ -20,7 +20,7 @@
         @click="$router.push({ name: 'videoPlay', params: { id: video.id } })"
       >
         <div :class="$style['image-wrap']">
-          <img v-lazy="getImg(video.image)" />
+          <img :src="img" :img-id="video.id" />
         </div>
         <div :class="$style['video-title']">{{ video.title }}</div>
       </div>
@@ -38,12 +38,26 @@
 </template>
 
 <script>
+import { getEncryptImage } from '@/lib/crypto';
+
 export default {
+  data() {
+    return {
+      img: this.$getCdnPath(`/static/image/_new/default/bg_video03_d.png`)
+    }
+  },
   props: {
     videoList: {
       type: Array,
       required: true
     }
+  },
+  mounted() {
+    setTimeout(() => {
+      this.videoList.forEach(item => {
+        getEncryptImage(item);
+      })
+    }, 300)
   },
   methods: {
     getImg(image) {

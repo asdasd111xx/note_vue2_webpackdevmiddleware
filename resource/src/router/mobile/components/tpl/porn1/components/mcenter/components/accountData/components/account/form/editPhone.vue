@@ -396,7 +396,7 @@ export default {
           method: 'post',
           url: '/api/v1/c/player/verify/phone',
           data: {
-            old_phone: this.memInfo.phone.phone ? `${this.newCode.replace('+', '')}-${this.newValue}` : '',
+            old_phone: this.memInfo.phone.phone ? `${this.newCode.replace('+', '')}-${this.oldValue}` : '',
             phone: `${this.newCode.replace('+', '')}-${this.newValue}`,
             captcha_text: this.captchaData ? this.captchaData : ''
           }
@@ -437,6 +437,7 @@ export default {
         if (this.info.verification) {
           return mcenter.accountPhoneCheck({
             params: {
+              old_phone: this.memInfo.phone.phone ? `${this.newCode.replace('+', '')}-${this.oldValue}` : '',
               phone: `${this.newCode.replace('+', '')}-${this.newValue}`,
               keyring: this.codeValue
             },

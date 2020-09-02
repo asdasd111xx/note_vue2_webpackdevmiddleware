@@ -850,7 +850,19 @@ export default {
 
           self.actionSetUserdata(true);
           localStorage.setItem('new_user', true);
-          this.actionSetGlobalMessage({ msg: "注册成功", cb: () => { window.location.reload(true) } })
+          this.actionSetGlobalMessage({
+            msg: "注册成功", cb: () => {
+              if (localStorage.getItem('rememberPwd')) {
+                localStorage.setItem('username', this.allValue.username)
+                localStorage.setItem('password', this.allValue.password);
+              } else {
+                localStorage.removeItem('username');
+                localStorage.removeItem('password');
+              }
+
+              window.location.reload(true);
+            }
+          })
           return;
         }
 
