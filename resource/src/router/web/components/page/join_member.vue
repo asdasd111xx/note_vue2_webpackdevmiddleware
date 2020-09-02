@@ -476,7 +476,7 @@ export default {
     const username = {
       key: 'username',
       content: {
-        note1: this.$text('S_ACCOUNT_PLACEHOLDER', '请输入4-20码英文小写或数字'),
+        note1: this.$text('S_ACCOUNT_PLACEHOLDER', '请输入4-20位字母或数字'),
         note2: ''
       }
     };
