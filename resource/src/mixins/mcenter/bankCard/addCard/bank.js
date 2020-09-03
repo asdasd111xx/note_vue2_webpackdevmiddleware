@@ -224,7 +224,7 @@ export default {
                 .then(res => {
                     this.lockStatus = false;
                     if (res && res.data && res.data.result === "ok") {
-                        this.time = res.data.ret;
+                        this.time = 60;
                         this.errorMsg = this.$text("S_SEND_CHECK_CODE_VALID_TIME").replace("%s", 5);
 
                         this.smsTimer = setInterval(() => {
