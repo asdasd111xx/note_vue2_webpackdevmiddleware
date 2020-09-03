@@ -154,6 +154,8 @@ export default {
     text-align: center;
     font-size: 12px;
     z-index: 999;
+    border-radius: 0 0 3px 3px;
+
     img {
       vertical-align: middle;
     }

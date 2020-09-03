@@ -321,6 +321,7 @@ export default {
       position: relative;
       word-break: break-all;
       display: inline-block;
+      margin-right: 4px;
     }
 
     > div:last-of-type {
@@ -338,7 +339,6 @@ export default {
 }
 
 .vip-level {
-  margin-left: 4px;
   color: #ffffff;
   font-weight: 700;
   display: inline-block;

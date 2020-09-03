@@ -56,6 +56,7 @@
               :key="`widthdrawPwd-${index}`"
               @input="verification('withdraw_password', index)"
               @blur="verification('withdraw_password', index)"
+              :data-key="`withdraw_password_${index}`"
               :class="$style['withdraw-pwd-input']"
               :maxlength="1"
               :minlength="1"
@@ -290,14 +291,25 @@ export default {
       }
 
       if (key === "withdraw_password") {
-        target.value[index] = target.value[index]
+        let correct_value = target.value[index]
           .replace(' ', '')
           .trim()
-          .replace(/[^0-9]/g, '');
+          .replace(/[^\d+]$/g, '');
 
         if (target.value[index].length > 1) {
           target.value[index] = target.value[index].substring(0, 1);
         }
+
+        if (target.value[index] === correct_value && correct_value !== '') {
+          if (index < 3) {
+            document.querySelector(`input[data-key="${key}_${index + 1}"]`).focus();
+          }
+        } else if (target.value[index] === correct_value && correct_value === '') {
+          if (index > 0) {
+            document.querySelector(`input[data-key="${key}_${index - 1}"]`).focus();
+          }
+        }
+        target.value[index] = correct_value
       }
 
       if (key === "phone") {
