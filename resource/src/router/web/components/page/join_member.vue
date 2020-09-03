@@ -43,15 +43,19 @@
             }}</span>
           </label>
           <div :class="[$style['field-right'], 'clearfix']">
-            <template v-if="field.key === 'captcha_text'">
+            <div
+              v-if="field.key === 'captcha_text'"
+              :class="$style['captchaText-wrap']"
+            >
               <input
                 v-model="allValue[field.key]"
                 :class="[$style['join-input-captcha'], field.key]"
                 type="text"
+                :ref="'captcha'"
+                id="captcha"
                 name="join-captcha"
                 maxlength="4"
                 placeholder="请填写验证码"
-                @focus="getCaptcha()"
                 @input="verification(field.key)"
                 @keydown.13="keyDownSubmit()"
               />
@@ -59,9 +63,13 @@
                 v-if="captchaImg"
                 :src="captchaImg"
                 :class="$style['captcha-img']"
-                @click="getCaptcha()"
               />
-            </template>
+              <div :class="$style['captchaText-refresh']" @click="getCaptcha">
+                <img
+                  :src="'/static/image/porn1/common/ic_verification_reform.png'"
+                />
+              </div>
+            </div>
 
             <template v-else-if="field.key === 'password'">
               <input
@@ -255,14 +263,6 @@
         />
       </div>
 
-      <div
-        :class="
-          allTip['captcha_text'] ? $style['join-tip-show'] : $style['join-tip']
-        "
-        :style="{ 'padding-right': '40px', 'padding-top': '0' }"
-        v-html="allTip['captcha_text']"
-      />
-
       <slide-verification
         v-if="memInfo.config.register_captcha_type === 2"
         :class="$style['join-btn-wrap']"
@@ -402,7 +402,8 @@ export default {
           ],
           selected: { label: this.$i18n.t('S_SELECTED'), value: '' }
         },
-      }
+      },
+      isGetCaptcha: false
     };
   },
   computed: {
@@ -471,6 +472,7 @@ export default {
     }
   },
   created() {
+    this.getCaptcha();
     let joinConfig = [];
     let joinReminder = {};
     const username = {
@@ -490,7 +492,7 @@ export default {
     const confirmPassword = {
       key: 'confirm_password',
       content: {
-        note1: '请再次输入设置密码',
+        note1: '请再次输入设置密碼',
         note2: ''
       }
     };
@@ -614,6 +616,15 @@ export default {
       this.isShowPwd = !this.isShowPwd;
     },
     getCaptcha() {
+      if (this.isGetCaptcha) {
+        return;
+      }
+
+      this.isGetCaptcha = true;
+      setTimeout(() => {
+        this.isGetCaptcha = false;
+      }, 800);
+
       bbosRequest({
         method: 'post',
         url: `${this.siteConfig.BBOS_DOMIAN}/Captcha`,
@@ -651,10 +662,17 @@ export default {
       this.verification(key);
     },
     verification(key) {
+
       const data = this.joinMemInfo[key];
-      if (!this.allValue[key]) {
+
+      if (data.isRequired && this.allValue[key] === '') {
+        this.allTip[key] = '该栏位不得为空';
         return;
       }
+
+      //if (!this.allValue[key]) {
+      //  return;
+      //}
 
       switch (key) {
         case 'password':
@@ -678,11 +696,6 @@ export default {
       //  非必填欄位，空值不做驗證
       if (!data.isRequired && this.allValue[key] === '') {
         this.allTip[key] = '';
-        return;
-      }
-
-      if (data.isRequired && this.allValue[key] === '') {
-        this.allTip[key] = '该栏位不得为空';
         return;
       }
 
@@ -878,12 +891,22 @@ export default {
         }
 
         if (res.status !== '000') {
+          this.getCaptcha();
+
           if (res.errors && Object.keys(res.errors)) {
             Object.keys(res.errors).forEach((item) => {
-              this.allTip[item] = res.errors[item]
+              this.allTip[item] = res.errors[item];
+
+               // msg: "验证码错误"
+            if (item === "captcha_text") {
+              if (document.getElementById('captcha')) {
+                document.getElementById('captcha').focus();
+              }
+            }
             })
             return;
           }
+
           this.errMsg = res.msg;
         }
       });
