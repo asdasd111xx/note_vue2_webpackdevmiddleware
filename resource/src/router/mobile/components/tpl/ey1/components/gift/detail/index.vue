@@ -45,7 +45,7 @@ export default {
           window.open('https://ey.italking.asia:5569/guest.php?gid=eyag');
         },
         onClick: () => {
-          this.$router.back();
+          this.$router.back('/mobile/gift?q=通讯软体');
         }
       };
     },

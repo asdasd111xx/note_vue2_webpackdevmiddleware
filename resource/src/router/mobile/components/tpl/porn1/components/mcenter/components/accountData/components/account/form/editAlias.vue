@@ -8,6 +8,7 @@
           v-model="value"
           :placeholder="$text('S_NICKNAME')"
           :class="$style.input"
+          @input="onInput"
           maxlength="100"
           type="text"
         />
@@ -64,9 +65,14 @@ export default {
     this.value = this.memInfo.user.alias;
   },
   methods: {
-    ...mapActions(['actionSetUserdata', 'actionSetGlobalMessage']),
+    ...mapActions(['actionSetUserdata', 'actionSetGlobalMessage', 'actionVerificationFormData']),
     onToggle() {
       this.showNickname = !this.showNickname;
+    },
+    onInput(e) {
+      this.actionVerificationFormData({ target: 'alias', value: e.target.value }).then((val => {
+        this.value = val
+      }));
     },
     handleSubmit() {
       // 空值驗證

@@ -63,11 +63,7 @@ export default {
       );
     },
     btnTickText() {
-      return this.$text(
-        ...(this.isException
-          ? ["S_SCREENSHOT_SAVE", "点击截屏保存"]
-          : ["S_AUTO_SAVE", "自动保存"])
-      );
+      return '点击截屏保存';
     }
   },
   created() {
@@ -154,6 +150,8 @@ export default {
     text-align: center;
     font-size: 12px;
     z-index: 999;
+    border-radius: 0 0 3px 3px;
+
     img {
       vertical-align: middle;
     }

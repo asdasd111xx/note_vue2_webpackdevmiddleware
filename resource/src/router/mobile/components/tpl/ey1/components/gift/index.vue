@@ -145,7 +145,28 @@ export default {
     pageLoading: () => import(/* webpackChunkName: 'pageLoading' */ '@/router/mobile/components/common/pageLoading'),
   },
   mounted() {
-    this.currentMenu = this.giftMenuList;
+    if (this.$route.query.q === '通讯软体') {
+      //  to do
+      //   let cur = this.giftMenuList.find(i => i.items.find(y => y.name === this.$route.query.q));
+      this.linkTo({
+        title: "服务",
+        name: "通讯软体",
+        icon: '/static/image/ey1/gift/icon_gift_service.png',
+        items: [
+          {
+            title: "通讯软体",
+            icon: '/static/image/ey1/gift/icon_gift_service.png',
+            items: [
+              { name: "微信推广", params: 'wechat' },
+              { name: "QQ推广", url: "" },
+              { name: "苹果推", url: "" },
+            ]
+          },
+        ]
+      })
+    } else {
+      this.currentMenu = this.giftMenuList;
+    }
   },
   computed: {
     ...mapGetters({
@@ -198,6 +219,7 @@ export default {
       })
     },
     linkTo(item) {
+      console.log(item)
       if (item.login && !this.loginStatus) {
         this.$router.push('/mobile/login');
         return;

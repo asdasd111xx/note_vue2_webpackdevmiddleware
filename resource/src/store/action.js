@@ -1445,7 +1445,14 @@ export const actionVerificationFormData = ({ state, dispatch, commit }, data) =>
 
             val = val
                 .replace(regex, '')
-                .substring(0, 50);
+                .substring(0, 20);
+            break;
+
+        case 'alias':
+            regex = /[，:;！@#$%^&*?<>()+=`|[\]{}\\"/.~\-_']*/g;
+            val = val
+                .replace(regex, '')
+                .substring(0, 20);
             break;
 
         case 'graphicVerification':

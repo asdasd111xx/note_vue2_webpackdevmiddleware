@@ -50,7 +50,7 @@
     </div>
     <div :class="$style.tips">
       如需帮助，请
-      <span @click="handleClick">&nbsp;联系客服</span>
+      <span @click="linkToService">&nbsp;联系客服</span>
     </div>
     <message v-if="msg" @close="msg = ''">
       <div slot="msg">{{ msg }}</div>
@@ -106,13 +106,6 @@ export default {
     });
   },
   methods: {
-    handleClick() {
-      let on_service_url = store && store.state && store.state.webInfo && store.state.webInfo.on_service_url;
-      localStorage.setItem('serviceUrl', on_service_url || 'https://31zfyq.italking.asia:8866/guest.php?gid=yb01&dmsrc=&lang=zh-cn');
-
-      window.location.href = `/static/upup/index.html?username=${this.username}`;
-      window.location.title = "在线客服";
-    },
     mailTo(target) {
       const isWebView = getCookie('platform') === "H" || window.location.host === "yaboxxxapp02.com";
       const url = `mailto:${target}`;

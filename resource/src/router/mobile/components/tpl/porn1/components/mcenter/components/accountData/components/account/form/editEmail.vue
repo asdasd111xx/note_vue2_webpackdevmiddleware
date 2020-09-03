@@ -103,6 +103,7 @@ import member from '@/api/member';
 import mcenter from '@/api/mcenter';
 import serviceTips from '../../serviceTips';
 import accountHeader from '../../accountHeader';
+import axios from 'axios'
 
 export default {
   components: {
@@ -117,6 +118,7 @@ export default {
       tipMsg: '',
       timer: '',
       countdownSec: 0,
+      ttl: 60,
       isSendSMS: false,
       info: {
         key: 'email',
@@ -147,7 +149,7 @@ export default {
           mcenter.accountMailSec({
             success: (data) => {
               if (data.ret > 0) {
-                this.countdownSec = data.ret;
+                this.ttl = data.ret;
                 this.locker();
               }
             }
@@ -212,6 +214,12 @@ export default {
     }
   },
   beforeDestroy() {
+    this.countdownSec = "";
+    clearInterval(this.timer);
+    this.timer = null;
+  },
+  mounted() {
+    this.countdownSec = "";
     clearInterval(this.timer);
     this.timer = null;
   },
@@ -221,7 +229,7 @@ export default {
     ]),
     locker() {
       if (this.countdownSec === 0) {
-        this.countdownSec = 60;
+        this.countdownSec = this.ttl;
       }
 
       this.timer = setInterval(() => {

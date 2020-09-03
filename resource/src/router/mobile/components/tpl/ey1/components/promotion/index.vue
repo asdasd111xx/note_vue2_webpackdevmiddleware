@@ -92,7 +92,7 @@ export default {
         this.tabList[0].name = "全部"
       });
     },
-    onClick({ link }) {
+    onClick({ link, name }) {
       let newWindow = '';
       // 辨別裝置是否為ios寰宇瀏覽器
       const isUBMobile = navigator.userAgent.match(/UBiOS/) !== null && navigator.userAgent.match(/iPhone/) !== null;
@@ -133,6 +133,7 @@ export default {
           }
 
           window.open(ret.uri);
+          window.document.title = name;
         },
         fail: (error) => {
           if (!isUBMobile || !webview) {
