@@ -509,38 +509,22 @@ export default {
         }
       })
         .then(res => {
-          this.errorMsg = this.$text("S_SEND_CHECK_CODE_VALID_TIME").replace("%s", 5);
+          this.lockStatus = false;
+          if (res && res.data && res.data.result === "ok") {
+            this.time = res.data.ret;
+            this.errorMsg = this.$text("S_SEND_CHECK_CODE_VALID_TIME").replace("%s", 5);
 
-          this.time = 60;
-          this.smsTimer = setInterval(() => {
-            if (this.time === 0) {
-              clearInterval(this.smsTimer);
-              this.smsTimer = null;
-              this.lockStatus = false;
-              if (this.errorMsg.indexOf('已发送')) {
-                this.errorMsg = ''
-              }
-              return;
-            }
-            this.time -= 1;
-          }, 1000);
-
-          axios({
-            method: "get",
-            url: "/api/v1/c/player/phone/ttl"
-          })
-            .then(res => {
-              this.lockStatus = false;
-              //   this.time = res.data.ret;
-              this.time = 60;
-            })
-            .catch(error => {
-              if (error.response && error.response.status === "429") {
-                this.msg = "操作太频繁，请稍候在试";
+            this.smsTimer = setInterval(() => {
+              if (this.time <= 0) {
+                clearInterval(this.smsTimer);
+                this.smsTimer = null;
                 return;
               }
-              this.errorMsg = error.response.data.msg;
-            });
+              this.time -= 1;
+            }, 1000);
+          } else {
+            this.errorMsg = res.data.msg;
+          }
         })
         .catch(error => {
           if (error.response && error.response.status === "429") {
