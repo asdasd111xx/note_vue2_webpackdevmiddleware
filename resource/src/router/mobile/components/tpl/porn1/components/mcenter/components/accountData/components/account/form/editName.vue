@@ -87,7 +87,7 @@ export default {
     ]),
     onInput(e) {
       this.tipMsg = '';
-      this.actionVerificationFormData({ target: 'name', value: value }).then((val => {
+      this.actionVerificationFormData({ target: 'name', value: e.target.value }).then((val => {
         this.value = val
       }));
     },
