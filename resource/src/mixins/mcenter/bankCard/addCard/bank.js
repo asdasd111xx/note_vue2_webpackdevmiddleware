@@ -214,12 +214,15 @@ export default {
             this.lockStatus = true;
 
             let captchaParams = {};
-            if (this.memInfo.config.default_captcha_type === 1) {
-                captchaParams['aid'] = this.captchaData.aid;
-                captchaParams['captcha'] = this.captchaData.captcha;
-            } else {
-                captchaParams['captcha_text'] = this.captchaData || "";
-            }
+            captchaParams['captcha_text'] = this.captchaData || "";
+
+            // if (this.memInfo.config.default_captcha_type === 1) {
+            //     // captchaParams['aid'] = this.captchaData.aid;
+            //     // captchaParams['captcha'] = this.captchaData.captcha;
+            //     captchaParams['captcha_text'] = this.captchaData.captcha;
+            // } else {
+            //     captchaParams['captcha_text'] = this.captchaData || "";
+            // }
 
             axios({
                 method: "post",
@@ -230,33 +233,22 @@ export default {
                 }
             })
                 .then(res => {
-                    axios({
-                        method: "get",
-                        url: "/api/v1/c/player/phone/ttl"
-                    })
-                        .then(res => {
-                            this.lockStatus = false;
-                            this.time = res.data.ret;
-                            this.errorMsg = this.$text("S_SEND_CHECK_CODE_VALID_TIME").replace("%s", 5);
+                    this.lockStatus = false;
+                    if (res && res.data && res.data.result === "ok") {
+                        this.time = res.data.ret;
+                        this.errorMsg = this.$text("S_SEND_CHECK_CODE_VALID_TIME").replace("%s", 5);
 
-                            this.smsTimer = setInterval(() => {
-                                if (this.time <= 0) {
-                                    clearInterval(this.smsTimer);
-                                    this.smsTimer = null;
-                                    return;
-                                }
-                                this.time -= 1;
-                            }, 1000);
-                        })
-                        .catch(error => {
-                            if (error.response && error.response.status === "429") {
-                                this.msg = "操作太频繁，请稍候在试";
+                        this.smsTimer = setInterval(() => {
+                            if (this.time <= 0) {
+                                clearInterval(this.smsTimer);
+                                this.smsTimer = null;
                                 return;
                             }
-
-                            this.lockStatus = false;
-                            this.errorMsg = error.response.data.msg;
-                        });
+                            this.time -= 1;
+                        }, 1000);
+                    } else {
+                        this.errorMsg = res.data.msg;
+                    }
                 })
                 .catch(error => {
                     if (error.response && error.response.status === "429") {

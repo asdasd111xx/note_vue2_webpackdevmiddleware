@@ -54,6 +54,7 @@ import { mapGetters, mapActions } from "vuex";
 import bbosRequest from "@/api/bbosRequest";
 import puzzleVerification from "@/components/puzzleVerification";
 import slideVerification from "@/components/slideVerification";
+import axios from 'axios';
 
 export default {
   components: {
@@ -119,24 +120,16 @@ export default {
       }
 
       this.isGetCaptchaImg = true;
-      bbosRequest({
+      axios({
         method: 'post',
-        url: this.siteConfig.BBOS_DOMIAN + '/Captcha',
-        reqHeaders: {
-          'Vendor': this.memInfo.user.domain
-        },
-        params: {
-          "lang": "zh-cn",
-          "format": "png",
-        },
+        url: '/api/v1/captcha',
       }).then((res) => {
         setTimeout(() => {
           this.isGetCaptchaImg = false;
         }, 800);
-
-        if (res.data && res.data.data) {
-          this.captchaImg = res.data.data;
-          setCookie('popup-verification-aid', res.data.cookie.aid);
+        if (res.data && res.data) {
+          this.captchaImg = res.data.ret;
+          //   setCookie('aid', res.data.cookie.aid);
         }
       });
     },
@@ -172,7 +165,8 @@ export default {
       }
     },
     submit() {
-      this.$emit("update:captcha", { captcha: this.captchaText, aid: getCookie('popup-verification-aid') });
+      //   this.$emit("update:captcha", { captcha: this.captchaText, aid: getCookie('aid') });
+      this.$emit("update:captcha", this.captchaText);
       // $emit('update:isShowCaptcha', false)
     }
   }

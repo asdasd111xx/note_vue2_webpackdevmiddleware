@@ -379,22 +379,35 @@ export default {
       if (!this.newValue || this.timer || this.isSendSMS) return;
 
       this.isSendSMS = true;
-      let aid = getCookie('popup-verification-aid') || '';
+      let captchaParams = {};
+      captchaParams['captcha_text'] = this.captchaData || "";
+
+      //   if (this.memInfo.config.default_captcha_type === 1) {
+      //     // captchaParams['aid'] = this.captchaData.aid;
+      //     // captchaParams['captcha'] = this.captchaData.captcha;
+      //     captchaParams['captcha_text'] = this.captchaData;
+      //   } else {
+      //     captchaParams['captcha_text'] = this.captchaData || "";
+      //   }
+
       if (this.isfromWithdraw) {
         axios({
           method: 'post',
           url: '/api/v1/c/player/withdraw/verify/sms',
           data: {
             phone: `${this.newCode.replace('+', '')}-${this.newValue}`,
-            captcha_text: this.captchaData ? this.captchaData : '',
-            aid: aid,
+            ...captchaParams,
           }
         }).then(res => {
-          this.toggleCaptcha = false;
-          this.actionSetUserdata(true);
-          this.locker();
-          this.tipMsg = this.$text("S_SEND_CHECK_CODE_VALID_TIME").replace("%s", 5);
-          this.isSendSMS = false;
+          if (res && res.data && res.data.result === "ok") {
+            this.toggleCaptcha = false;
+            this.actionSetUserdata(true);
+            this.locker();
+            this.tipMsg = this.$text("S_SEND_CHECK_CODE_VALID_TIME").replace("%s", 5);
+            this.isSendSMS = false;
+          } else {
+            this.tipMsg = res.data.msg;
+          }
         }).catch(error => {
           this.toggleCaptcha = false;
           this.countdownSec = '';
@@ -408,15 +421,18 @@ export default {
           data: {
             old_phone: this.memInfo.phone.phone ? `${this.newCode.replace('+', '')}-${this.oldValue}` : '',
             phone: `${this.newCode.replace('+', '')}-${this.newValue}`,
-            captcha_text: this.captchaData ? this.captchaData : '',
-            aid: aid,
+            ...captchaParams,
           }
         }).then(res => {
-          this.toggleCaptcha = false;
-          this.actionSetUserdata(true);
-          this.locker();
-          this.tipMsg = this.$text("S_SEND_CHECK_CODE_VALID_TIME").replace("%s", 5);
-          this.isSendSMS = false;
+          if (res && res.data && res.data.result === "ok") {
+            this.toggleCaptcha = false;
+            this.actionSetUserdata(true);
+            this.locker();
+            this.tipMsg = this.$text("S_SEND_CHECK_CODE_VALID_TIME").replace("%s", 5);
+            this.isSendSMS = false;
+          } else {
+            this.tipMsg = res.data.msg;
+          }
         }).catch(error => {
           this.toggleCaptcha = false;
           this.countdownSec = '';
@@ -424,7 +440,6 @@ export default {
           this.isSendSMS = false;
         })
       }
-      setCookie('popup-verification-aid', '');
     },
     handleSubmit() {
       // 提款手機驗證
@@ -458,6 +473,7 @@ export default {
             success: (res) => {
               this.actionSetWithdrawCheck();
               setTimeout(() => {
+                localStorage.setItem('set-account-success', true);
                 this.$router.push('/mobile/mcenter/accountData?success=true');
               }, 200)
             },

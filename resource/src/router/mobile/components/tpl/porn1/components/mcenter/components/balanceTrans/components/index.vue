@@ -18,7 +18,8 @@
         >
       </div>
 
-      <div class="ui fitted toggle checkbox field-checkbox">
+     <!-- <div :class="siteConfig.MOBILE_WEB_TPL==='ey1'? 'ui fitted toggle checkbox field-checkbox ey':'ui fitted toggle checkbox field-checkbox'">-->
+        <div :class="`ui fitted toggle checkbox field-checkbox ${siteConfig.MOBILE_WEB_TPL}`">
         <input
           :checked="isAutotransfer"
           type="checkbox"
@@ -382,6 +383,9 @@ export default {
     },
   },
   created() {
+
+    console.log(`test=${this.siteConfig.MOBILE_WEB_TPL}`);
+
     this.actionSetUserdata(true).then(() => {
       this.isAutotransfer = this.memInfo.auto_transfer.enable;
       if (this.isAutotransfer) {
