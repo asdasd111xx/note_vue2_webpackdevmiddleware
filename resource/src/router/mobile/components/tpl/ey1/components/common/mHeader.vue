@@ -128,7 +128,10 @@
           教程
         </span>
         <div :class="$style['btn-icon']">
-          <img :src="$getCdnPath('/static/image/ey1/common/btn_help.png')" />
+          <img
+            :src="$getCdnPath('/static/image/ey1/common/btn_help.png')"
+            @click="$router.push('/mobile/mcenter/helpCenter/')"
+          />
         </div>
       </div>
     </template>
