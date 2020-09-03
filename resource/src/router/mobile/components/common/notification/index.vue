@@ -124,8 +124,10 @@ export default {
     handleClick() {
       let content = this.data.content;
       switch (content) {
-        case 'C_WS_INBOX':
         case 'C_WS_FEEDBACK_REPLY':
+          this.$router.push('/mobile/mcenter/feedback/feedbackList');
+          break;
+        case 'C_WS_INBOX':
         default:
           this.$router.push('/mobile/mcenter/information');
           break;
