@@ -163,7 +163,7 @@
         <img :src="$getCdnPath(`/static/image/${themeTPL}/mcenter/add.png`)" />
         &nbsp;
         <span
-          @click="$router.push('/mobile/mcenter/bankcard?redirect=withdraw')"
+          @click="$router.push('/mobile/mcenter/bankcard?redirect=withdraw&type=bankCard')"
         >
           {{ $text("S_ADD_BANKCARD", "添加银行卡") }}
         </span>
@@ -515,7 +515,34 @@ export default {
     withdrawAccount
   },
   watch: {
-    withdrawUserData() {
+    allWithdrawAccount(value) {
+      // 後續將 Yabo 的 withdrawUserData 統一使用這個顯示
+      // 預設選擇第一張卡 或是從電話驗證成功後直接送出
+      if (
+        !this.selectedCard &&
+        this.allWithdrawAccount &&
+        this.allWithdrawAccount.length > 0
+      ) {
+        this.selectedCard =
+          Number(localStorage.getItem("tmp_w_selectedCard")) ||
+          this.allWithdrawAccount[0].id;
+        this.withdrawValue = localStorage.getItem("tmp_w_amount");
+        setTimeout(() => {
+          localStorage.removeItem("tmp_w_selectedCard");
+          localStorage.removeItem("tmp_w_amount");
+          if (
+            localStorage.getItem("tmp_w_1") &&
+            localStorage.getItem("tmp_w_rule") !== "1"
+          ) {
+            this.handleSubmit();
+          }
+          localStorage.removeItem("tmp_w_rule");
+        });
+
+        this.isLoading = false;
+      }
+    },
+    withdrawUserData(value) {
       // 預設選擇第一張卡 或是從電話驗證成功後直接送出
       if (
         !this.selectedCard &&
@@ -928,7 +955,7 @@ export default {
 
       // console.log(this.withdrawAccount);
 
-      //不需要取款密碼,並且可選銀行卡
+      // 不需要取款密碼,並且可選銀行卡
       let _params = {
         amount: this.withdrawValue,
         withdraw_password: this.withdrawPwd,
