@@ -380,12 +380,15 @@ export default {
 
       this.isSendSMS = true;
       let captchaParams = {};
-      if (this.memInfo.config.default_captcha_type === 1) {
-        captchaParams['aid'] = this.captchaData.aid;
-        captchaParams['captcha'] = this.captchaData.captcha;
-      } else {
-        captchaParams['captcha_text'] = this.captchaData || "";
-      }
+      captchaParams['captcha_text'] = this.captchaData || "";
+
+      //   if (this.memInfo.config.default_captcha_type === 1) {
+      //     // captchaParams['aid'] = this.captchaData.aid;
+      //     // captchaParams['captcha'] = this.captchaData.captcha;
+      //     captchaParams['captcha_text'] = this.captchaData;
+      //   } else {
+      //     captchaParams['captcha_text'] = this.captchaData || "";
+      //   }
 
       if (this.isfromWithdraw) {
         axios({
@@ -437,7 +440,6 @@ export default {
           this.isSendSMS = false;
         })
       }
-      setCookie('popup-verification-aid', '');
     },
     handleSubmit() {
       // 提款手機驗證

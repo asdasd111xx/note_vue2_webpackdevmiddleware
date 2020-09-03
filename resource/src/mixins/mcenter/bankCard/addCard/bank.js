@@ -214,12 +214,15 @@ export default {
             this.lockStatus = true;
 
             let captchaParams = {};
-            if (this.memInfo.config.default_captcha_type === 1) {
-                captchaParams['aid'] = this.captchaData.aid;
-                captchaParams['captcha'] = this.captchaData.captcha;
-            } else {
-                captchaParams['captcha_text'] = this.captchaData || "";
-            }
+            captchaParams['captcha_text'] = this.captchaData || "";
+
+            // if (this.memInfo.config.default_captcha_type === 1) {
+            //     // captchaParams['aid'] = this.captchaData.aid;
+            //     // captchaParams['captcha'] = this.captchaData.captcha;
+            //     captchaParams['captcha_text'] = this.captchaData.captcha;
+            // } else {
+            //     captchaParams['captcha_text'] = this.captchaData || "";
+            // }
 
             axios({
                 method: "post",
