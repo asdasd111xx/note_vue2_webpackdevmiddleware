@@ -67,11 +67,7 @@ export default {
       );
     },
     btnTickText() {
-      return this.$text(
-        ...(this.isException
-          ? ["S_SCREENSHOT_SAVE", "点击截屏保存"]
-          : ["S_AUTO_SAVE", "自动保存"])
-      );
+      return '点击截屏保存';
     }
   },
   created() {
