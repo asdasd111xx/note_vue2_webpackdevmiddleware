@@ -80,7 +80,8 @@ export default {
         },
         linkTo(target) {
             if (this.isApp) {
-                this.$router.push({ query: { event: target, app: true } })
+                this.$router.push({ query: { event: target, app: true } });
+                window.location.reload();
             } else {
                 this.$router.push(`/mobile/${target}`);
             }
