@@ -281,7 +281,7 @@ export default {
               ...itemNow,
               status: wdStatus ? 'already' : 'yet',
               value: wdStatus ? this.$t('S_SET_CL_ALREADY') : this.$t('S_YET_SET'),
-              btnShow: !wdStatus,
+              btnShow: true,//提現密碼可修改btnShow: !wdStatus,
               isShow: userConfig.config.withdraw_password.display && this.siteConfig.MOBILE_WEB_TPL !== 'porn1'
             }
           } else {
