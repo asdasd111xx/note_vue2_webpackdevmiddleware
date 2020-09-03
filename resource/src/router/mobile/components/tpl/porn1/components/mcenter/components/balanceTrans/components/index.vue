@@ -383,9 +383,6 @@ export default {
     },
   },
   created() {
-
-    console.log(`test=${this.siteConfig.MOBILE_WEB_TPL}`);
-
     this.actionSetUserdata(true).then(() => {
       this.isAutotransfer = this.memInfo.auto_transfer.enable;
       if (this.isAutotransfer) {
