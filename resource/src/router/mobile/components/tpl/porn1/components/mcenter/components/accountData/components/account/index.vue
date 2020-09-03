@@ -79,7 +79,10 @@
                         $style['field-text'],
                         { [$style.yet]: field.status === 'yet' }
                       ]"
-                      >{{ field.value }}
+                      >{{
+                        //提現密碼*呈現
+                        (field.text === 'S_DAW_DRWAL_PASSWORD' && field.status === 'already') ? '****' : field.value
+                       }}
                     </span>
                   </template>
 
