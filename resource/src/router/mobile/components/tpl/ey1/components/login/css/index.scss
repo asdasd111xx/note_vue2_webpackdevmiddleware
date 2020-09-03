@@ -76,14 +76,29 @@
     .login-unit-captcha {
         position: relative;
         margin-bottom: 19px;
+        display: flex;
+        align-items: center;
 
         .captchaImg {
             position: absolute;
             top: 9px;
-            right: 15px;
+            right: 30px;
             width: 62px;
             height: 21px;
             background-color: #000;
+        }
+
+        .captchaText-refresh {
+            width: 20px;
+            position: absolute;
+            right: 0;
+            top: calc(50% - 10px);
+            margin: 0px 5px;
+
+            >img {
+                width: 20px;
+                height: 20px;
+            }
         }
     }
 
