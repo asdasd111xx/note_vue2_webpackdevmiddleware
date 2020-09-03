@@ -258,12 +258,13 @@ export default {
               ...itemNow,
               status: confirmSt,
               value: val,
-              btnShow: !keyValue || !this.verification[key] ||
-                (key === 'phone' && this.memInfo.config.user_edit_phone) ||
-                (key === 'phone' && this.mcenterUserField.config.phone.code) ||
-                (key === 'email' && userConfig.user[key]) ||
-                (key === 'email' && this.mcenterUserField.config.email.code)
-              ,
+              // btnShow: !keyValue || !this.verification[key] ||
+              //   (key === 'phone' && this.memInfo.config.user_edit_phone) ||
+              //   (key === 'phone' && this.mcenterUserField.config.phone.code) ||
+              //   (key === 'email' && userConfig.user[key]) ||
+              //   (key === 'email' && this.mcenterUserField.config.email.code)
+              // ,
+              btnShow: !keyValue || !this.verification[key],
               verification: this.verification[key],
               isShow: userConfig.config[key].display
             };
