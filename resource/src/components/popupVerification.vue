@@ -83,8 +83,6 @@ export default {
       memInfo: 'getMemInfo'
     }),
     captchaType() {
-      return 1;
-      //
       return this.memInfo.config.default_captcha_type;
     }
   },
@@ -174,7 +172,7 @@ export default {
       }
     },
     submit() {
-      this.$emit("update:captcha", this.captchaText);
+      this.$emit("update:captcha", { captcha: this.captchaText, aid: getCookie('popup-verification-aid') });
       // $emit('update:isShowCaptcha', false)
     }
   }
@@ -249,8 +247,9 @@ export default {
   border-radius: 10px;
 
   > input {
+    border: unset;
+    box-shadow: none;
     outline: none;
-    border-radius: 0;
     width: 80%;
     padding-left: 5px;
     color: #5e626d;
