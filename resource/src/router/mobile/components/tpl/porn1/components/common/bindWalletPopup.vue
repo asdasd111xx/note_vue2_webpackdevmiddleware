@@ -30,14 +30,16 @@
             <template v-if="walletType === 'CGP'">
               <div :class="$style['info-item']">
                 <div :class="$style['input-title']">
-                  {{ formData["cgpPwd"].title }}
+                  {{ formData["CGPPwd"].title }}
                 </div>
 
                 <div :class="$style['input-wrap']">
                   <input
-                    v-model="formData['cgpPwd'].value"
-                    type="text"
-                    :placeholder="formData['cgpPwd'].placeholder"
+                    v-model="formData['CGPPwd'].value"
+                    type="password"
+                    :placeholder="formData['CGPPwd'].placeholder"
+                    @input="verification('CGPPwd')"
+                    @blur="verification('CGPPwd')"
                   />
                 </div>
               </div>
@@ -105,7 +107,7 @@ export default {
           value: "",
           placeholder: "必填"
         },
-        cgpPwd: {
+        CGPPwd: {
           title: "CGP安全防护码",
           value: "",
           placeholder: "必填"
@@ -188,7 +190,7 @@ export default {
           bind_type: "deposit",
           wallet_gateway_id: 3, // 3 為CGpay
           wallet_account: this.formData["walletAddress"].value,
-          wallet_token: this.formData["cgpPwd"].value
+          wallet_token: this.formData["CGPPwd"].value
         }
       })
         .then(response => {
@@ -216,17 +218,17 @@ export default {
         });
     },
     verification(key, index) {
-      // let target = this.formData[key];
+      let target = this.formData[key];
       // let lock = false;
       // if (key === "walletAddress") {
       //   target.value = target.value.replace(" ", "").trim();
       // }
-      // if (key === "cgpPwd") {
-      //   target.value = target.value
-      //     .replace(" ", "")
-      //     .trim()
-      //     .replace(/[^0-9]/g, "");
-      // }
+      if (key === "CGPPwd") {
+        target.value = target.value
+          .replace(" ", "")
+          .trim()
+          .replace(/[^0-9]/g, "");
+      }
       // if (
       //   !this.selectTarget.virtualBank ||
       //   !this.formData["walletAddress"].value
@@ -234,7 +236,7 @@ export default {
       //   lock = true;
       // }
       // // 針對 CGpay
-      // if (this.selectTarget.bank_id === 21 && !this.formData["cgpPwd"].value) {
+      // if (this.selectTarget.bank_id === 21 && !this.formData["CGPPwd"].value) {
       //   lock = true;
       // }
       // // this.lockStatus = lock;

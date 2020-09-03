@@ -79,7 +79,7 @@
         <div :class="$style['input-wrap']">
           <input
             v-model="formData['CGPPwd'].value"
-            type="tel"
+            type="password"
             :placeholder="formData['CGPPwd'].placeholder"
             @input="verification('CGPPwd')"
             @blur="verification('CGPPwd')"

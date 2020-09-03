@@ -490,7 +490,7 @@ export default {
     const confirmPassword = {
       key: 'confirm_password',
       content: {
-        note1: '请再次输入设置密码',
+        note1: '请再次输入设置密碼',
         note2: ''
       }
     };
@@ -651,10 +651,17 @@ export default {
       this.verification(key);
     },
     verification(key) {
+
       const data = this.joinMemInfo[key];
-      if (!this.allValue[key]) {
+
+      if (data.isRequired && this.allValue[key] === '') {
+        this.allTip[key] = '该栏位不得为空';
         return;
       }
+
+      //if (!this.allValue[key]) {
+      //  return;
+      //}
 
       switch (key) {
         case 'password':
@@ -678,11 +685,6 @@ export default {
       //  非必填欄位，空值不做驗證
       if (!data.isRequired && this.allValue[key] === '') {
         this.allTip[key] = '';
-        return;
-      }
-
-      if (data.isRequired && this.allValue[key] === '') {
-        this.allTip[key] = '该栏位不得为空';
         return;
       }
 
