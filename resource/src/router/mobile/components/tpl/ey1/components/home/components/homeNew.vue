@@ -103,10 +103,12 @@ export default {
     ]),
     // 開啟最新消息方式
     togglePopup() {
+      /*
       this.paused = !this.paused;
       if (!this.paused) {
         this.startMove();
       }
+      */
       document.querySelector('body').style = !this.newsPopControl.status ? 'overflow: hidden' : '';
       this.actionNewsPopControl({ type: this.dataSource, status: !this.newsPopControl.status });
     },
