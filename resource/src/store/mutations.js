@@ -290,7 +290,10 @@ export default {
     [types.SET_USER_LEVELS](state, data) {
         state.userLevels = data;
     },
-
+    // 會員端-帳戶資料欄位開關
+    [types.SET_MCENTER_USER_CONFIG](state, data) {
+        state.memUserConfig = data;
+    },
     // ＝＝＝＝＝＝＝＝＝＝＝＝＝＝＝＝＝＝
     //     AGENT 代理相關
     // ＝＝＝＝＝＝＝＝＝＝＝＝＝＝＝＝＝＝
@@ -340,6 +343,10 @@ export default {
             ...state.agentUserLevels,
             ...obj
         };
+    },
+    //  代理端-帳戶資料欄位開關
+    [types.SET_AGENT_USER_CONFIG](state, data) {
+        state.agentUserConfig = data;
     },
     // ＝＝＝＝＝＝＝＝＝＝＝＝＝＝＝＝＝＝
     //     MCENTER 會員中心

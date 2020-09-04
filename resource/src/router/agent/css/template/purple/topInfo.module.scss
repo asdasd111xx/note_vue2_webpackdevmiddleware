@@ -1,0 +1,118 @@
+@import "~@/css/variable.scss";
+
+.agcenter-content-top {
+    padding: 18px 5.3% 15px;
+    color: #7E7E7E;
+    font-size: 13px;
+    line-height: 22px;
+}
+
+.content-top-title {
+    span {
+        display: inline-block;
+    }
+
+    .change-name-wrap {
+        vertical-align: middle;
+        padding-bottom: 3px;
+        cursor: pointer;
+    }
+
+    .change-name-img {
+        display: block;
+    }
+}
+
+.account {
+    margin: 0 4px;
+    color: #A389E8;
+    font-size: 16px;
+}
+
+.prompt {
+    padding: 0 8px 0 1px;
+    border: 1px solid #FF4C72;
+    border-radius: 19px;
+    color: #FF4C72;
+}
+
+.warning {
+    margin-top: 1px;
+    vertical-align: top;
+}
+
+.content-top-info {
+    margin-top: 18px;
+
+    span {
+        &.message {
+            color: #A389E8;
+            font-size: 16px;
+
+            &:hover {
+                text-decoration: underline;
+                cursor: pointer;
+            }
+        }
+    }
+}
+
+.info-item {
+    span {
+        color: #333;
+    }
+}
+
+.agcenter-title-wrap {
+    display: none;
+}
+
+@media screen and (min-width: $pad) {
+    .agcenter-content-top {
+        border-bottom: 1px solid #DDD;
+    }
+
+    .agcenter-info-wrap {
+        float: left;
+        width: 65%;
+    }
+
+    .agcenter-title-wrap {
+        display: block;
+        float: right;
+        width: 260px;
+        height: 115px;
+        margin: 10px 5px 0 0;
+        border: 1px solid #CCC;
+        border-top: 6px solid #A389E8;
+    }
+
+    .user-icon {
+        float: left;
+        width: 85px;
+        height: 85px;
+        margin: 12px 0 0 20px;
+        border-radius: 100%;
+        background: url("/static/image/agent/user_icon.png") #A389E8 50% 0 no-repeat;
+        background-size: 85px;
+    }
+
+    .info-wrap {
+        float: right;
+        width: 138px;
+        margin-top: 28px;
+        text-align: left;
+    }
+
+    .title-text {
+        line-height: 26px;
+        padding-left: 4px;
+        font-size: 18px;
+        border-bottom: 1px solid #CCC;
+        color: #292929;
+    }
+
+    .sub-text {
+        margin: 1px 0 0 5px;
+    }
+}

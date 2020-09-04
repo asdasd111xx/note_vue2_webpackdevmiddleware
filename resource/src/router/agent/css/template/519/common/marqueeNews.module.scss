@@ -1,0 +1,27 @@
+@import "~@/css/variable.scss";
+
+.news-wrap {
+    position: relative;
+    background: url('/static/image/agent/519/news01_bg01.png') 0 0 no-repeat;
+    margin: 20px auto 0;
+    padding-left: 200px;
+    padding-right: 20px;
+    width: 1280px;
+    height: 74px;
+
+    .news-title {
+        position: absolute;
+        top: 0;
+        left: 42px;
+        background: url('/static/image/agent/519/news01-1.png') 0 50% no-repeat;
+        width: 153px;
+        height: inherit;
+        text-indent: -9999px;
+    }
+
+    :global(.news-content) {
+        float: right;
+        color: #CCC;
+        line-height: 74px;
+    }
+}

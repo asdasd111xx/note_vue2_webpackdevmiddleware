@@ -1,23 +1,14 @@
 <template>
-    <div>
-        <theme1
-            v-if="theme === '1'"
-            :class="commonClass"
+    <div class="news-content-wrap">
+        <components
+            :is="`theme${theme}`"
+            v-if="newsData.length !== 0"
             :data="newsData"
-            :speed="speed"
+            :duration="speed"
             :direction="direction"
             :view-full-content="viewFullContent"
             :toggle-popup="togglePopup"
-            :update-news="updateNews"
-        />
-        <theme2
-            v-if="theme === '2'"
-            :class="commonClass"
-            :data="newsData"
-            :speed="speed"
-            :direction="direction"
-            :view-full-content="viewFullContent"
-            :toggle-popup="togglePopup"
+            :custom-event="customEvent"
         />
     </div>
 </template>
@@ -28,15 +19,15 @@ import { mapGetters, mapActions } from 'vuex';
 /**
  * 共用元件 - 最新消息
  * @param {String} [theme=1] - 樣式; 值：1
- * @param {String} [dataSource=mem] - 最新消息資料來源; 值：mem,agent
- * @param {Number} [speed=85] - 移動速度
+ * @param {String} [dataSource=mem] - 最新消息資料來源; 值：mem、agent
+ * @param {Number} [speed=20] - 移動速度, 越小越快
  * @param {String} [direction=left] - 移動方向; 值：left、right、up、down
  * @param {Boolean} [viewFullContent=true] - 點擊查看細項功能
+ * @param {Function} [customEvent=() => {}] - 客製事件
  */
 export default {
     components: {
-        theme1: () => import(/* webpackChunkName: 'theme1' */'./template/theme1'),
-        theme2: () => import(/* webpackChunkName: 'theme1' */'./template/theme2/')
+        theme1: () => import(/* webpackChunkName: 'theme1' */'./template/theme1')
     },
     props: {
         theme: {
@@ -49,7 +40,7 @@ export default {
         },
         speed: {
             type: Number,
-            default: 85
+            default: 20
         },
         direction: {
             type: String,
@@ -59,15 +50,10 @@ export default {
             type: Boolean,
             default: true
         },
-        updateNews: {
+        customEvent: {
             type: Function,
-            default: () => {}
+            default: null
         }
-    },
-    data() {
-        return {
-            commonClass: ['news-content-wrap', 'clearfix']
-        };
     },
     computed: {
         ...mapGetters({
@@ -77,7 +63,7 @@ export default {
             agentNewsData: 'getAgentNews'
         }),
         newsData() {
-            return (this.dataSource === 'mem') ? this.memNewsData : this.agentNewsData;
+            return this.dataSource === 'mem' ? this.memNewsData : this.agentNewsData;
         }
     },
     methods: {
@@ -85,8 +71,14 @@ export default {
             'actionNewsPopControl'
         ]),
         // 開啟最新消息方式
-        togglePopup() {
+        togglePopup(params) {
+            console.log('w2323ds', this.viewFullContent, this.customEvent, this.dataSource, this.newsPopControl.status);
             if (this.isBackEnd || !this.viewFullContent) {
+                return;
+            }
+
+            if (this.customEvent) {
+                this.customEvent(params, this.dataSource);
                 return;
             }
 

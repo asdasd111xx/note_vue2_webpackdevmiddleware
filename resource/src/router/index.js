@@ -10,6 +10,7 @@ import noService from './no_service';
 import popControl from './popcontrol';
 import timeout from './timeout';
 import upup from './upup';
+import agent from './agent';
 
 // prevent NavigationDuplicated error see: https://github.com/vuejs/vue-router/issues/2881
 const originalPush = Router.prototype.push;
@@ -50,7 +51,7 @@ export default new Router({
         },
         popControl,
         game,
-        // agent,
+        agent,
         mobile,
         domain,
         error500,

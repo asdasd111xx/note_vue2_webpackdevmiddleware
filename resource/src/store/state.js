@@ -206,6 +206,8 @@ export default {
     },
     // 會員端-使用者層級
     userLevels: {},
+    // 會員端-帳戶資料欄位開關
+    memUserConfig: {},
     // ＝＝＝＝＝＝＝＝＝＝＝＝＝＝＝＝＝＝
     //     AGENT 代理相關
     // ＝＝＝＝＝＝＝＝＝＝＝＝＝＝＝＝＝＝
@@ -227,6 +229,8 @@ export default {
     },
     // 代理端-使用者層級
     agentUserLevels: {},
+    // 代理端-帳戶資料欄位開關
+    agentUserConfig: {},
     // ＝＝＝＝＝＝＝＝＝＝＝＝＝＝＝＝＝＝
     //     MCENTER 會員中心
     // ＝＝＝＝＝＝＝＝＝＝＝＝＝＝＝＝＝＝
