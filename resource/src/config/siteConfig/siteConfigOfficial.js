@@ -44,7 +44,7 @@ export const site_69 = {
     VERSION: getVersion('porn1'),
     SITE_NAME: '鸭博娱乐',
     YABO_API_DOMAIN: window.location.host === 'ybbe1.qghco.com' ?
-        'https://ybbe1.qghco.com/api' :
+        'https://ybbe2.qghco.com/api' :
         'https://yaboapi.canarycherrytart.com/api-demo',
 };
 
