@@ -1,0 +1,72 @@
+.theme-basic {
+    @import './style/basic.scss';
+    @import '../../../css/common/table.scss';
+    @import './infoPost.scss';
+}
+
+.theme-519 {
+    @import './style/519.scss';
+    @import '../../../css/common/table.scss';
+    @import './infoPost.scss';
+}
+
+.theme-porn1 {
+    @import './style/basic.scss';
+    @import '../../../css/common/table.scss';
+    @import './infoPost.scss';
+}
+
+.theme-theme3 {
+    @import './style/theme3.scss';
+    @import '../../../css/common/table.scss';
+    @import './infoPost.scss';
+}
+
+.theme-miller {
+    @import './style/miller.scss';
+    @import '../../../css/common/table.scss';
+    @import './infoPost.scss';
+}
+
+.theme-purple {
+    @import './style/purple.scss';
+    @import '../../../css/common/table.scss';
+    @import './infoPost.scss';
+
+    .icon-wrap {
+        height: 300px;
+        border: 1px solid #CCC;
+        text-align: center;
+
+        >span {
+            font-size: 20px;
+        }
+    }
+
+    .icon {
+        display: block;
+        margin: 30px auto;
+    }
+}
+
+.theme-esball {
+    @import './style/esball.scss';
+    @import '../../../css/common/table.scss';
+    @import './infoPost.scss';
+
+    .icon-wrap {
+        height: 300px;
+        border: 1px solid #CCC;
+        text-align: center;
+
+        >span {
+            font-size: 20px;
+        }
+    }
+
+    .icon {
+        display: block;
+        margin: 30px auto;
+        color: #643DCA;
+    }
+}
