@@ -118,11 +118,7 @@ export default {
       'actionSetGlobalMessage'
     ]),
     handleClick(item) {
-      if (item.key === 'deposit') {
-        this.actionSetGlobalMessage({ type: 'incoming' });
-      } else {
-        this.$router.push(`/mobile/mcenter/help/${item.key}`);
-      }
+      this.$router.push(`/mobile/mcenter/help/${item.key}`);
     },
   }
 };

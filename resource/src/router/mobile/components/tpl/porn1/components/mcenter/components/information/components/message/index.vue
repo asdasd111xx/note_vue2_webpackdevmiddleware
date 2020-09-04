@@ -37,8 +37,8 @@
           "
         />
       </div>
-      <div :class="$style['message-header-title']">
-        消息中心
+       <div  :class="$style['message-header-title']">
+         {{ $route.query.pid ? '通知' : '消息中心' }}
       </div>
 
       <div v-if="!$route.query.pid" :class="$style['btn-more']">
@@ -184,6 +184,12 @@ import { getCookie, setCookie } from '@/lib/cookie';
 import EST from '@/lib/EST';
 
 export default {
+  props:{
+   headerConfig: {
+      type: Object | null,
+      default: null
+    }
+  },
   filters: {
     dateFormat(date) {
       return EST(Vue.moment(date).format('YYYY-MM-DD HH:mm:ss'));
@@ -344,6 +350,7 @@ export default {
         this.isEditing = false;
       });
     }
+     
   }
 };
 </script>

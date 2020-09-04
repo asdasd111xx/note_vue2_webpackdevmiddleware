@@ -5,6 +5,7 @@ $disable-color: #fdcccc;
 .total-sub-wrap {
     .top-sub-title {
         &.active { 
+            border-top:0;
             border-bottom: 2px solid ;
             border-image: linear-gradient(to right, #FFFFFF, #FFFFFF 38%, $main-color 38%, $main-color 62%, #FFFFFF 62%) 5;
         }

@@ -21,11 +21,18 @@
         }"
       />
     </div> -->
-    <div v-if="list" :class="$style['detail-content-wrap']">
-      <div v-for="(item, index) in list" :class="$style['detail-block']">
+    <div v-if="data" :class="$style['detail-content-wrap']">
+      <div v-for="(item, index) in data" :class="$style['detail-block']">
         <div :class="[$style['detail-cell'], $style['item-status']]">
-          <div :class="$style['title']">
+          <div :class="[$style['title']]">
             {{ $text("S_STATUS", "状态") }}
+          </div>
+          <div
+            v-if="item.status !== 'processing' && item.memo"
+            :class="$style['processing-icon']"
+            @click="showDetailPop(item)"
+          >
+            <img src="/static/image/porn1/mcenter/ic_remark.png" />
           </div>
           <div
             v-if="!item.locked"
@@ -34,7 +41,20 @@
           >
             {{ $text("S_SUBMIT_WITHDRAW", "重新提交") }}
           </div>
-          <div v-else="" :class="$style['value']">
+          <div
+            v-else
+            @click="
+              () => {
+                item.status !== 'processing' && item.memo
+                  ? showDetailPop(item)
+                  : '';
+              }
+            "
+            :class="[
+              $style['value'],
+              { [$style['processing']]: item.status === 'processing' }
+            ]"
+          >
             {{ getStatus(item.status) }}
           </div>
         </div>
@@ -50,6 +70,22 @@
       </div>
     </div>
 
+    <div v-if="detailRate" :class="$style['tips-wrap']">
+      <div :class="$style['tips-mask']" @click="detailRate = null" />
+
+      <div :class="$style['tips-block']">
+        <div :class="$style['tips-content']" v-html="detailRate.memo" />
+        <!-- <div :class="$style['tips-cell']">
+          實際匯率:&nbsp;{{ detailRate && detailRate.withdraw_rate }}
+        </div>
+        <div :class="$style['tips-cell']">
+          入帳數量:&nbsp;{{ detailRate && detailRate.real_amount }}
+        </div> -->
+        <div :class="[$style['close']]" @click="detailRate = null">
+          关闭
+        </div>
+      </div>
+    </div>
     <edit-withdraw-field
       v-if="editOpen"
       :third-url.sync="thirdUrl"
@@ -57,7 +93,7 @@
       :close-fuc="() => (editOpen = false)"
     />
 
-    <div v-if="!list.length" :class="$style['no-data-wrap']">
+    <div v-if="!data.length" :class="$style['no-data-wrap']">
       <img
         :src="$getCdnPath('/static/image/_new/mcenter/moneyDetail/no_data.png')"
       />
@@ -70,13 +106,12 @@
 </template>
 
 <script>
-import { mapGetters } from 'vuex';
-import member from '@/api/member';
-import ajax from '@/lib/ajax';
-import bbosRequest from "@/api/bbosRequest";
 import { getCookie } from '@/lib/cookie';
+import { mapGetters, mapActions } from 'vuex';
+import axios from 'axios';
 import editWithdrawField from './editWithdrawField'
-import { API_WITHDRAW_RECORD } from '@/config/api';
+import member from '@/api/member';
+
 export default {
   components: {
     editWithdrawField
@@ -85,14 +120,22 @@ export default {
     return {
       total: 0,
       data: [],
-      list: [],
+      detailRate: null,
       curStatus: 0,
-      columns: [{ key: "at", title: "S_DATE" },
-      { key: "id", title: "S_ORDER_NUMBER" },
-      { key: "amount", title: "S_WITHDRAW_MONEY" },
-      { key: "deduction", title: "S_DEDUCTION_MONEY" },
-      { key: "real_amount", title: "S_REAL_WITHDRAW" }],
-
+      columns: [
+        // 日期
+        { key: "at", title: "S_DATE" },
+        // 单号
+        { key: "id", title: "S_ORDER_NUMBER" },
+        // 提现金额
+        { key: "amount", title: "S_WITHDRAW_MONEY" },
+        // 扣除金额
+        { key: "deduction", title: "S_DEDUCTION_MONEY" },
+        // 实际到账
+        { key: "real_amount", title: "S_REAL_WITHDRAW" },
+        // 提现类型
+        { key: "withdraw", title: "S_WITHDRAW_TYPE" }
+      ],
       editOpen: false,
       withdrawData: {},
       thirdUrl: ''
@@ -100,7 +143,7 @@ export default {
   },
   mounted() {
     this.getData();
-    document.title = "近10笔提现纪录";
+    document.title = "近10笔提现记录";
   },
   computed: {
     ...mapGetters({
@@ -112,24 +155,26 @@ export default {
       return isApp
     },
   },
-  watch: {
-    data() {
-      this.filterStatus(this.curStatus)
-    }
-  },
   methods: {
+    ...mapActions([
+      'actionSetGlobalMessage'
+    ]),
+    showDetailPop(item) {
+      // withdraw_rate
+      this.detailRate = item;
+    },
     filterStatus(status) {
       this.curStatus = status;
 
       // 已申請
       if (status == 0) {
-        this.list = this.data.filter((info) => info.status === 'finished' || info.locked)
+        this.data = this.data.filter((info) => info.status === 'finished' || info.locked)
         return
       }
 
       // 未完成
       if (status == 1) {
-        this.list = this.data.filter((info) => info.process && !info.locked)
+        this.data = this.data.filter((info) => info.process && !info.locked)
         return
       }
     },
@@ -142,41 +187,25 @@ export default {
       let cid = getCookie('cid');
       if (!cid) return
 
-      // RD7 BBOS API
-      //   params['cid'] = this.cid || getCookie('cid');
-      //   params['vendor'] = this.vendor || this.memInfo.user.domain
-      //   console.log(params)
-
-      ajax({
+      axios({
         method: 'get',
-        url: API_WITHDRAW_RECORD,
+        url: '/api/payment/v1/c/withdraw/list',
         errorAlert: false,
         params: params
       }).then((res) => {
-        if (res.result === 'ok') {
-          this.data = res.ret;
-          this.total = res.pagination.total;
+        if (res && res.data && res.data.result === 'ok') {
+          this.data = res.data.ret;
+          this.total = res.data.pagination.total;
+          this.filterStatus();
         }
+      }).catch((error) => {
+        this.actionSetGlobalMessage({ msg: error.response.data.msg, code: error.response.data.code });
       });
-
-      //   bbosRequest({
-      //     method: 'post',
-      //     url: this.siteConfig.BBOS_DOMIAN + '/Payment/Withdraw/List',
-      //     reqHeaders: {
-      //       'vendor': this.memInfo.user.domain
-      //     },
-      //     params: {
-      //       ...params,
-      //       "lang": "zh-cn",
-      //     },
-      //   }).then((res) => {
-      //     console.log(res)
-      //   });
-
     },
     getStatus(status) {
       status = status.toLowerCase();
       switch (status) {
+        //   (處理中/processing、已完成/finished、已確認/confirm、已取消/cancel、已拒絕/reject)
         case 'processing':
           return this.$text('S_PROCESSING_TEXT', '处理中');
         case 'cancel':

@@ -87,6 +87,7 @@ export default {
           this.currentTemplate = 'post'
           break;
       }
+      this.$emit('getCurrentTemplate', this.currentTemplate);
     }
   },
   computed: {

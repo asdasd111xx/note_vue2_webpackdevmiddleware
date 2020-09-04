@@ -13,14 +13,6 @@
       <template v-if="type == 'deposit'">
         <deposit-record />
       </template>
-
-      <!-- <template v-if="type == 'gameintro'">
-        <gameintro :index="$route.query.index" :keys="$route.query.key" />
-      </template>
-
-      <template v-if="type == 'support'">
-        <support :keys="$route.query.key" />
-      </template> -->
     </div>
   </mobile-container>
 </template>
@@ -62,7 +54,7 @@ export default {
     title() {
       switch (this.type.toLocaleLowerCase()) {
         case "withdraw":
-          return this.$text("S_RECENTLY_WITHDRAW", "近10笔提现纪录");
+          return this.$text("S_RECENTLY_WITHDRAW", "近10笔提现记录");
           break;
 
         case "deposit":

@@ -1,33 +1,67 @@
 <template>
   <div :class="$style['detail-wrap']">
-    <div v-if="recordData" :class="$style['detail-content-wrap']">
-      <div v-for="(item, index) in recordData" :class="$style['detail-block']">
+    <div v-if="data" :class="$style['detail-content-wrap']">
+      <div v-for="(item, index) in data" :class="$style['detail-block']">
         <div :class="[$style['detail-cell'], $style['item-status']]">
-          <div :class="$style['title']">
+          <div :class="[$style['title']]">
             {{ $text("S_STATUS", "状态") }}
+          </div>
+          <div
+            v-if="item.status !== 'processing' && item.memo"
+            :class="$style['processing-icon']"
+            @click="showDetailPop(item)"
+          >
+            <img src="/static/image/porn1/mcenter/ic_remark.png" />
           </div>
           <div
             v-if="item.status === 'submit_data'"
             :class="[$style['value'], $style['edit']]"
-            @click="getDepositInfo(item.order_number)"
+            @click="openEdit(item)"
           >
-            {{ $text("S_SUBMIT_DEPOSIT", "重新提交") }}
+            {{ $text("S_SUBMIT_WITHDRAW", "重新提交") }}
           </div>
-          <div v-else="" :class="$style['value']">
+          <div
+            v-else
+            @click="
+              () => {
+                item.status !== 'processing' && item.memo
+                  ? showDetailPop(item)
+                  : '';
+              }
+            "
+            :class="[
+              $style['value'],
+              { [$style['processing']]: item.status === 'processing' }
+            ]"
+          >
             {{ getStatus(item.status) }}
           </div>
         </div>
         <div :class="$style['item-status-border']" />
-        <div
-          v-for="(col, index) in recordHeader"
-          :class="$style['detail-cell']"
-        >
+        <div v-for="(col, index) in columns" :class="$style['detail-cell']">
           <div :class="$style['title']">
-            {{ item.hasOwnProperty(col.objKey) && col.value }}
+            {{ item.hasOwnProperty(col.key) && $text(col.title) }}
           </div>
           <div :class="$style['value']">
-            {{ item[col.objKey] }}
+            {{ item[col.key] }}
           </div>
+        </div>
+      </div>
+    </div>
+
+    <div v-if="detailRate" :class="$style['tips-wrap']">
+      <div :class="$style['tips-mask']" @click="detailRate = null" />
+
+      <div :class="$style['tips-block']">
+        <div :class="$style['tips-cell']">
+          實際匯率:&nbsp;{{ detailRate && detailRate.crypto_rate }}
+        </div>
+        <div :class="$style['tips-cell']">
+          入帳數量:&nbsp;{{ detailRate && detailRate.crypto_num }}
+        </div>
+        <div :class="$style['tips-content']" v-html="detailRate.memo" />
+        <div :class="[$style['close']]" @click="detailRate = null">
+          关闭
         </div>
       </div>
     </div>
@@ -39,7 +73,7 @@
       :close-fuc="showDepositInfo"
     />
 
-    <div v-if="!recordData.length" :class="$style['no-data-wrap']">
+    <div v-if="!data.length" :class="$style['no-data-wrap']">
       <img
         :src="$getCdnPath('/static/image/_new/mcenter/moneyDetail/no_data.png')"
       />
@@ -55,22 +89,36 @@
 </template>
 
 <script>
-import { mapGetters } from 'vuex';
-import member from '@/api/member';
-import ajax from '@/lib/ajax';
 import { getCookie } from '@/lib/cookie';
-import mixin from '@/mixins/mcenter/deposit/recordDeposit';
-import editDepositField from './editDepositField'
+import { mapGetters, mapActions } from 'vuex';
+import editDepositField from './editDepositField';
+import member from '@/api/member';
+// import mixin from '@/mixins/mcenter/deposit/recordDeposit';
+import axios from 'axios';
+
 export default {
-  mixins: [mixin],
+  //   mixins: [mixin],
   components: {
     editDepositField
   },
   data() {
     return {
+      data: [],
+      detailRate: null,
       editOpen: false,
-      depositData: {},
-      isShowDepositInfo: false
+      isShowDepositInfo: false,
+      columns: [
+        // 日期
+        { key: "created_at", title: "S_DATE" },
+        // 单号
+        { key: "order_number", title: "S_ORDER_NUMBER" },
+        // 实际到账
+        { key: "method_name", title: "S_DEPOSIT_METHOD" },
+        // 申请金额
+        { key: "amount", title: "S_APPLICATION_AMOUNT" },
+        // 实际到账
+        { key: "actual_deposit", title: "S_REAL_ENTER" },
+      ],
     };
   },
   mounted() {
@@ -84,9 +132,11 @@ export default {
     })
   },
   methods: {
-    getDepositInfo(entryId) {
-      this.getSingleInfo(entryId);
-      this.showDepositInfo();
+    ...mapActions([
+      'actionSetGlobalMessage'
+    ]),
+    showDetailPop(item) {
+      this.detailRate = item;
     },
     getData() {
       let params = {
@@ -97,12 +147,22 @@ export default {
       let cid = getCookie('cid');
       if (!cid) return
 
-      this.getRecordData();
+      axios({
+        method: 'get',
+        url: '/api/v1/c/ext/inpay?api_uri=/api/trade/v2/c/stat/list',
+        errorAlert: false,
+        params: params
+      }).then((res) => {
+        if (res && res.data && res.data.result === 'ok') {
+          console.log(res.data)
+          this.data = res.data.ret;
+          this.total = res.data.pagination.total;
+        }
+      }).catch((error) => {
+        this.actionSetGlobalMessage({ msg: error.response.data.msg, code: error.response.data.code });
+      });
     },
-    getStatus(status, color) {
-      if (!status) {
-        return "";
-      }
+    getStatus(status) {
       status = status.toLowerCase();
 
       switch (status) {
