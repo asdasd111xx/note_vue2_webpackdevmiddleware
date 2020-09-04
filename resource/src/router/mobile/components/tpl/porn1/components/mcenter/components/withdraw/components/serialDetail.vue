@@ -116,7 +116,7 @@ export default {
         {
           title: this.$text('S_SERIAL_NUMBER', '流水要求'),
           rateValue: this.data.audit_amount,
-          value: this.getFixed(this.data.deduction),
+          value: this.getFixed(this.data.amount),
           deduction: this.$text('S_DEDUCTION_MONEY', '扣除金额')
         },
       ],
