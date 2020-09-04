@@ -469,7 +469,7 @@ export default {
     > img {
       display: block;
       margin: 0 auto;
-      max-height: 100%;
+      max-height: 85%;
       padding: 5px;
       width: 100%;
     }
