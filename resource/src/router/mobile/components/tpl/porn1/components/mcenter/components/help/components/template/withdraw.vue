@@ -14,7 +14,7 @@
           "
         >
           <div :class="$style['title']">
-            {{ $text("S_RECENTLY_WITHDRAW", "近10笔提现纪录") }}
+            {{ $text("S_RECENTLY_WITHDRAW", "近10笔提现记录") }}
           </div>
           <div :class="[$style['arrow-btn']]">
             <img

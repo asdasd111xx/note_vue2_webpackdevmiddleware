@@ -5,14 +5,15 @@
       @click="$emit('update:isShowCaptcha', false)"
     />
 
-    <!-- 滑動認證 -->
     <div :class="$style['slide-block']">
+      <!-- 滑動認證 -->
       <slide-verification
         v-if="captchaType === 2"
         :is-enable="true"
         :success-fuc="getSlideData"
         page-status="verify"
       />
+      <!-- 圖形認證 -->
       <div v-else-if="captchaType === 1" :class="$style['captchaText-wrap']">
         <input
           v-model="captchaText"

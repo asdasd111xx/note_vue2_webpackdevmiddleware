@@ -163,7 +163,11 @@
         <img :src="$getCdnPath(`/static/image/${themeTPL}/mcenter/add.png`)" />
         &nbsp;
         <span
-          @click="$router.push('/mobile/mcenter/bankcard?redirect=withdraw&type=bankCard')"
+          @click="
+            $router.push(
+              '/mobile/mcenter/bankcard?redirect=withdraw&type=bankCard'
+            )
+          "
         >
           {{ $text("S_ADD_BANKCARD", "添加银行卡") }}
         </span>
@@ -917,6 +921,7 @@ export default {
       }
     },
     handleSubmit() {
+      this.closeTips();
       if (
         this.memInfo.config.withdraw_player_verify &&
         !localStorage.getItem("tmp_w_1")
