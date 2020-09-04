@@ -52,19 +52,19 @@ export default {
           title: "福利",
           icon: '/static/image/ey1/gift/icon_gift_bonus.png',
           items: [
-            { name: "每日签到", login: true, thirdUrl: "https://fn139.com/plugin.php?id=lezhi99_lottery&view=sign&mobile=2" },
-            { name: "好运转盘", login: true, thirdUrl: "https://fn139.com/plugin.php?id=lezhi99_lottery" },
-            { name: "积分商城", login: true, thirdUrl: "https://fn139.com/keke_integralmall-index.html" }
+            { name: "每日签到", login: true, thirdUrl: "https://tinyurl.com/y7o9cq8q" },
+            { name: "好运转盘", login: true, thirdUrl: "https://tinyurl.com/ydgbbp9r" },
+            { name: "积分商城", login: true, thirdUrl: "https://tinyurl.com/y7umnchy" }
           ]
         },
         {
           title: "娱乐",
           icon: '/static/image/ey1/gift/icon_gift_video.png',
           items: [
-            { name: "日本有码", login: true, url: "https://94i88.com/mobile/list.html?category=1" },
-            { name: "中文有码", login: true, url: "https://94i88.com/mobile/list.html?category=9" },
-            { name: "日本无码", login: true, url: "https://94i88.com/mobile/list.html?category=8" },
-            { name: "免费偷看", login: true, url: "https://94i88.com/mobile/free_list.html" }
+            { name: "日本有码", login: true, url: "https://tinyurl.com/y9lyf3he" },
+            { name: "中文有码", login: true, url: "https://tinyurl.com/yb9wuhqj" },
+            { name: "日本无码", login: true, url: "https://tinyurl.com/ybtpfyxv" },
+            { name: "免费偷看", login: true, url: "https://tinyurl.com/y8aoghzj" }
           ]
         },
         {
