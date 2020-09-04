@@ -139,16 +139,15 @@ export default {
 <style lang="scss" module>
 @import "~@/css/variable.scss";
 
-.top-bg {
-  background-repeat: no-repeat;
-  background-size: 100% 100%;
-  background: url("/static/image/ey1/common/pic_top.png");
-  height: 18%;
-  max-height: 130px;
-  max-width: $mobile_max_width;
-  position: absolute;
+.top-bg {  
+  background:url('/static/image/ey1/common/pic_top.png');  
+  filter:"progid:DXImageTransform.Microsoft.AlphaImageLoader(sizingMethod='scale')";  
+  -moz-background-size:100% 100%; 
+  background-size:100% 100%;  
+  height: 120px;
+  width: $mobile_max_width;
   top: 0;
-  width: 100vw;
+  position: absolute;
 }
 
 @media (orientation: landscape) {
