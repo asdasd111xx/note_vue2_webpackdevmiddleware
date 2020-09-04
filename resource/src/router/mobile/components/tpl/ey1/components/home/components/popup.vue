@@ -18,7 +18,7 @@
             :class="[$style['checkbox-circle'], { [$style.active]: isTick }]"
             @click="isTick = !isTick"
           />
-          <span :class="$style['checkbox-text']">不再提示</span>
+          <span :class="$style['checkbox-text']"  @click="isTick = !isTick">不再提示</span>
         </div>
       </div>
 
