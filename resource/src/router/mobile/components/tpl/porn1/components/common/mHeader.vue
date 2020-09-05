@@ -525,6 +525,11 @@ export default {
 
 .header-custom-wrap {
   .header-custom-btn {
+    -webkit-appearance: none;
+    -moz-appearance: none;
+    -webkit-tap-highlight-color: rgba(0, 0, 0, 0);
+    -moz-tap-highlight-color: rgba(0, 0, 0, 0);
+    cursor: pointer;
     line-height: 43px;
     position: fixed;
     right: 14px;
