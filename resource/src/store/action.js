@@ -615,6 +615,12 @@ export const actionSetUserdata = ({ state, dispatch, commit }, forceUpdate = fal
             if (res && res.data && res.data.result === "ok") {
                 commit(types.SET_HASBANK, res.data.ret.length > 0);
             }
+        }).catch((error) => {
+            if (error.response && error.response.data.code === "M00001") {
+                dispatch('actionSetGlobalMessage', {
+                    msg: error.response.data.msg, code: error.response.data.code
+                });
+            }
         })
     }
 

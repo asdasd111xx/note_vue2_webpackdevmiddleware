@@ -67,14 +67,6 @@ export default {
       msg: "",
       viplevel: "",
       avatarSrc: `/static/image/_new/mcenter/avatar_nologin.png`,
-      avatar: [
-        { image: 'avatar_1', url: '/static/image/_new/mcenter/default/avatar_1.png' },
-        { image: 'avatar_2', url: '/static/image/_new/mcenter/default/avatar_2.png' },
-        { image: 'avatar_3', url: '/static/image/_new/mcenter/default/avatar_3.png' },
-        { image: 'avatar_4', url: '/static/image/_new/mcenter/default/avatar_4.png' },
-        { image: 'avatar_5', url: '/static/image/_new/mcenter/default/avatar_5.png' },
-        { image: 'avatar_6', url: '/static/image/_new/mcenter/default/avatar_6.png' }
-      ],
     };
   },
   computed: {
