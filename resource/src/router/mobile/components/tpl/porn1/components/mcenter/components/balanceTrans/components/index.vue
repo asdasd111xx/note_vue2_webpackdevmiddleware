@@ -18,8 +18,12 @@
         >
       </div>
 
-     <!-- <div :class="siteConfig.MOBILE_WEB_TPL==='ey1'? 'ui fitted toggle checkbox field-checkbox ey':'ui fitted toggle checkbox field-checkbox'">-->
-        <div :class="`ui fitted toggle checkbox field-checkbox ${siteConfig.MOBILE_WEB_TPL}`">
+      <!-- <div :class="siteConfig.MOBILE_WEB_TPL==='ey1'? 'ui fitted toggle checkbox field-checkbox ey':'ui fitted toggle checkbox field-checkbox'">-->
+      <div
+        :class="
+          `ui fitted toggle checkbox field-checkbox ${siteConfig.MOBILE_WEB_TPL}`
+        "
+      >
         <input
           :checked="isAutotransfer"
           type="checkbox"
@@ -336,6 +340,11 @@ export default {
       transOutList: []
     };
   },
+  watch: {
+    transferMoney(val) {
+      localStorage.setItem('tranfer-money', val);
+    }
+  },
   computed: {
     ...mapGetters({
       memInfo: 'getMemInfo',
@@ -385,9 +394,11 @@ export default {
   created() {
     this.actionSetUserdata(true).then(() => {
       this.isAutotransfer = this.memInfo.auto_transfer.enable;
-      if (this.isAutotransfer) {
-        this.backAccount();
-      }
+      //   http://fb.vir888.com/default.asp?438355#3743844
+      //   進到轉帳頁面不需自動回收額度
+      //   if (this.isAutotransfer) {
+      //     this.backAccount();
+      //   }
     });
 
     // this.getRecentlyOpened()
@@ -397,6 +408,25 @@ export default {
     });
     this.setTranInList();
     this.setTranOutList();
+  },
+  mounted() {
+    //   保留輸入資料
+    if (localStorage.getItem('form-withdraw-account')) {
+      this.transferMoney = localStorage.getItem('tranfer-money') || '';
+      if (localStorage.getItem('tranfer-tranIn')) {
+        this.setTranIn(JSON.parse(localStorage.getItem('tranfer-tranIn')));
+      }
+
+      if (localStorage.getItem('tranfer-tranOut')) {
+        this.setTranOut(JSON.parse(localStorage.getItem('tranfer-tranOut')));
+      }
+
+      localStorage.removeItem('form-withdraw-account');
+      localStorage.removeItem('tranfer-money');
+      localStorage.removeItem('tranfer-tranIn');
+      localStorage.removeItem('tranfer-tranOut');
+    }
+
   },
   methods: {
     ...mapActions([
@@ -414,12 +444,14 @@ export default {
       this.transOutText = vendor.text;
       this.closeSelect();
       this.setTranInList();
+      localStorage.setItem('tranfer-tranOut', JSON.stringify(vendor));
     },
     setTranIn(vendor) {
       this.tranIn = vendor.value;
       this.transInText = vendor.text;
       this.closeSelect();
       this.setTranOutList();
+      localStorage.setItem('tranfer-tranIn', JSON.stringify(vendor));
     },
     setTranInList() {
       const list = [{ value: '', text: this.$t('S_SELECT_ACCOUNT') }];
@@ -515,7 +547,6 @@ export default {
       mcenter.balanceTranAutoEnable({
         success: () => {
           this.actionSetGlobalMessage({ msg: '回收成功' });
-          // alert(this.$t('S_SWITCH_AUTO_TRANSFER'));
           this.isAutotransfer = true;
           this.backAccount({}, true);
           this.actionSetUserdata(true);
@@ -620,6 +651,9 @@ export default {
         },
         success: () => {
           this.actionSetGlobalMessage({ msg: '转帐成功' });
+          localStorage.removeItem('tranfer-money');
+          localStorage.removeItem('tranfer-tranIn');
+          localStorage.removeItem('tranfer-tranOut');
 
           this.lockSec = 0;
           this.actionSetUserBalance();
