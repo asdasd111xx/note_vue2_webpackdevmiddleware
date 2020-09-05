@@ -136,13 +136,7 @@
                 maxlength="20"
                 @blur="verification(field.key)"
                 @keydown.13="keyDownSubmit()"
-                @input="
-                  allValue[field.key] = $event.target.value
-                    .toLowerCase()
-                    .replace(' ', '')
-                    .trim()
-                    .replace(/[\W]/g, '')
-                "
+                @input="verification(field.key)"
               />
               <div :class="$style['clear']" v-if="allValue[field.key]">
                 <img
@@ -897,12 +891,12 @@ export default {
             Object.keys(res.errors).forEach((item) => {
               this.allTip[item] = res.errors[item];
 
-               // msg: "验证码错误"
-            if (item === "captcha_text") {
-              if (document.getElementById('captcha')) {
-                document.getElementById('captcha').focus();
+              // msg: "验证码错误"
+              if (item === "captcha_text") {
+                if (document.getElementById('captcha')) {
+                  document.getElementById('captcha').focus();
+                }
               }
-            }
             })
             return;
           }
