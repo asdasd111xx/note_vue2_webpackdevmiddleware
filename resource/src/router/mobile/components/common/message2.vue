@@ -137,6 +137,7 @@ export default {
             break;
           case "C50104":
           case "C50106":
+            localStorage.setItem('form-withdraw-account', true);
             if (this.siteConfig.MOBILE_WEB_TPL === "ey1") {
               this.$router.push('/mobile/withdrawAccount');
             } else {

@@ -121,7 +121,7 @@
         <div
           :class="[
             $style['btn-submit'],
-            { [$style.active]: !isSendForm && checkFormData }
+            { [$style.active]: !isSendForm && checkFormData && isVerifyPhone }
           ]"
           @click="sendFormData"
         >
