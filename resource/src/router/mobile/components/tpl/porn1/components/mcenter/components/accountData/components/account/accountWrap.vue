@@ -213,7 +213,8 @@ export default {
     getData() {
       ajax({
         method: 'get',
-        url: API_MCENTER_USER_CONFIG,
+        url: '/api/v1/c/player/user_info_config/with_verify',
+        // url: API_MCENTER_USER_CONFIG,
         errorAlert: false
       }).then((response) => {
         if (response && response.result === 'ok') {

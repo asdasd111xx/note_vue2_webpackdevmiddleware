@@ -34,10 +34,15 @@
         :value="paramsData.content"
         :placeholder="$t('S_DESCRIBE_PROBLEM').replace('%s', 20)"
         minlength="20"
-        maxlength="200"
         @input="setValue($event.target.value)"
       />
-      <span :class="$style['text-count']"
+      <span
+        :class="[
+          $style['text-count'],
+          {
+            [$style['red']]: paramsData.content.length > 200
+          }
+        ]"
         >{{ paramsData.content.length }}/200</span
       >
     </div>
@@ -62,7 +67,11 @@
     <div
       :class="[
         $style['submit'],
-        { [$style['disabled']]: paramsData.content.length < 20 && !isSend }
+        {
+          [$style['disabled']]:
+            (paramsData.content.length < 20 && !isSend) ||
+            paramsData.content.length > 200
+        }
       ]"
       @click="submitFeedback"
     >

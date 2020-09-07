@@ -120,62 +120,80 @@
     </balance-tran>
 
     <!-- 因底下商業邏輯皆不同，獨立 template 出來 -->
-    <!-- Yabo -->
+    <!-- Yabo : 銀行卡列表 + 更多提現方式按鈕 -->
     <template v-if="themeTPL === 'porn1'">
       <!-- 銀行卡 -->
       <div
-        v-if="
-          withdrawUserData &&
-            withdrawUserData.account &&
-            withdrawUserData.account.length !== 0
-        "
+        v-if="allWithdrawAccount && allWithdrawAccount.length !== 0"
         :class="$style['bank-card-wrap']"
       >
         <div :class="$style['bank-card-cell']">
-          {{ $text("S_BANKCARD", "银行卡") }}
+          {{ $text("S_WITHDRAW_ACCOUNT02", "提现帐号") }}
+          <!-- 會員首次出款 + 需用銀行卡提現一次(強制銀行卡出款) -->
+          <span
+            v-if="isFirstWithdraw && forceStatus === 1"
+            :class="$style['withdraw-status-tip']"
+          >
+            银行卡提现一次，开通数字货币提现功能
+          </span>
+
+          <!-- 非首次出款 + 強制使用 CGPay 出款 -->
+          <span
+            v-if="!isFirstWithdraw && forceStatus === 2"
+            :class="$style['withdraw-status-tip']"
+          >
+            仅限使用 CGPay 出款
+          </span>
         </div>
 
-        <!-- 取前三個銀行卡 不應該超過三張 -->
+        <!-- 列出所有帐号 -->
+        <!-- Question: 如果強制使用銀行卡出款，是否數字貨幣卡片 allow 狀態會為 false ? -->
         <div
-          v-for="item in withdrawUserData.account.slice(0, 3)"
-          :class="$style['bank-card-cell']"
+          v-for="item in allWithdrawAccount"
+          :class="[
+            $style['bank-card-cell'],
+            {
+              [$style['disable']]:
+                (forceStatus === 2 || forceStatus === 1) && !item.allow
+            }
+          ]"
           @click="handleSelectCard(item)"
         >
           <img v-lazy="getBankImage(item.swift_code)" />
+          <!-- Todo: 銀行卡號的顯示需要調整 -->
           <span>{{ item.alias }} </span>
           <div
             :class="[
               $style['check-box'],
-              { [$style['checked']]: item.id === selectedCard }
+              { [$style['checked']]: item.id === selectedCard.id }
             ]"
           />
         </div>
       </div>
 
+      <!-- 更多提现方式 -->
+      <!-- 銀行卡超過3張 + 所有數字貨幣的錢包都有添加 => 則隱藏按鈕 -->
+      <!-- 狀態由 withdrawMoreMethod 組件回傳 -->
       <div
-        v-if="
-          withdrawUserData &&
-            withdrawUserData.account &&
-            withdrawUserData.account.length < 3
-        "
+        v-if="moreMethodStatusObj.bankCard && moreMethodStatusObj.wallet"
         :class="[$style['add-bank-card']]"
       >
         <img :src="$getCdnPath(`/static/image/${themeTPL}/mcenter/add.png`)" />
         &nbsp;
         <span
           @click="
-            $router.push(
-              '/mobile/mcenter/bankcard?redirect=withdraw&type=bankCard'
-            )
+            () => {
+              showMoreMethod = true;
+            }
           "
         >
-          {{ $text("S_ADD_BANKCARD", "添加银行卡") }}
+          {{ "更多提现方式" }}
         </span>
       </div>
     </template>
 
     <!-- 因按鈕顯示邏輯不同，所以獨立成兩份 -->
-    <!-- 億元 -->
+    <!-- 億元 : 銀行卡列表 + 更多提現方式按鈕 -->
     <template v-if="themeTPL === 'ey1'">
       <!-- 提現帳號 -->
       <div
@@ -184,11 +202,9 @@
       >
         <div :class="$style['bank-card-cell']">
           {{ $text("S_BANKCARD", "银行卡") }}
-          <span
-            v-if="withdrawUserData.force_cgp_withdraw"
-            :class="$style['cgp-tips']"
-            >（请使用 CGPay 出款）</span
-          >
+          <span v-if="forceStatus === 2" :class="$style['withdraw-status-tip']">
+            （请使用 CGPay 出款）
+          </span>
         </div>
 
         <!-- 列出所有帳號-->
@@ -197,8 +213,7 @@
           :class="[
             $style['bank-card-cell'],
             {
-              [$style['disable']]:
-                withdrawUserData.force_cgp_withdraw && !item.allow
+              [$style['disable']]: forceStatus === 2 && !item.allow
             }
           ]"
           @click="handleSelectCard(item)"
@@ -208,7 +223,7 @@
           <div
             :class="[
               $style['check-box'],
-              { [$style['checked']]: item.id === selectedCard }
+              { [$style['checked']]: item.id === selectedCard.id }
             ]"
           />
         </div>
@@ -245,23 +260,16 @@
       >
         <img :src="$getCdnPath(`/static/image/${themeTPL}/mcenter/add.png`)" />
         &nbsp;
-        <span @click="showMoreMethod = true">
+        <span
+          @click="
+            () => {
+              showMoreMethod = true;
+            }
+          "
+        >
           {{ "更多提现方式" }}
         </span>
       </div>
-
-      <!-- 更多提现方式彈窗 -->
-      <withdraw-more-method
-        :show="showMoreMethod"
-        :user-level-obj="userLevelObj"
-        :withdraw-user-data="withdrawUserData"
-        :check-account-data="checkAccountData"
-        @close="
-          () => {
-            showMoreMethod = false;
-          }
-        "
-      />
     </template>
 
     <!-- 額度提示訊息 -->
@@ -271,8 +279,9 @@
       </div>
 
       <!-- 提現輸入 -->
+      <!-- hasBankCard 似乎要再調整判斷 -->
       <div v-if="hasBankCard" :class="[$style['withdraw-input']]">
-        <span :class="$style['monet-currency']">¥</span>
+        <span :class="$style['money-currency']">¥</span>
         <input
           v-model="withdrawValue"
           autocomplete="off"
@@ -294,22 +303,37 @@
     <template v-if="themeTPL === 'porn1'">
       <!-- 到帳金額 -->
       <div
-        v-if="
-          withdrawUserData &&
-            withdrawUserData.account &&
-            withdrawUserData.account.length > 0
-        "
+        v-if="allWithdrawAccount && allWithdrawAccount.length !== 0"
         :class="[$style['actual-money']]"
       >
-        <span :class="$style['monet-currency']">到帐金额</span>
-        <span :class="$style['monet-currency']">¥</span>
-        <span :class="$style['monet-currency']">{{
-          actualMoney.toFixed(2)
-        }}</span>
+        <div>{{ selectedCard.name }}到帐金额</div>
+        <div>
+          <span :class="$style['money-currency']">¥</span>
+          <span :class="$style['money-currency']">
+            <template v-if="selectedCard.withdrawType !== 'crypto_id'">
+              {{ actualMoney.toFixed(2) }}
+            </template>
 
-        <span :class="[$style['serial']]" @click="toggleSerial">
-          详情
-        </span>
+            <template v-else>
+              {{ cryptoMoney }}
+            </template>
+          </span>
+
+          <span
+            v-if="selectedCard.withdrawType === 'crypto_id'"
+            :class="[
+              $style['conversion-btn'],
+              {
+                [$style['disable']]: !withdrawValue || conversionBtnLock
+              }
+            ]"
+            @click="convertCryptoMoney"
+            >汇率试算</span
+          >
+          <span :class="[$style['serial']]" @click="toggleSerial">
+            详情
+          </span>
+        </div>
       </div>
     </template>
 
@@ -320,11 +344,11 @@
         v-if="allWithdrawAccount && allWithdrawAccount.length !== 0"
         :class="[$style['actual-money']]"
       >
-        <span :class="$style['monet-currency']">到帐金额</span>
-        <span :class="$style['monet-currency']">¥</span>
-        <span :class="$style['monet-currency']">{{
-          actualMoney.toFixed(2)
-        }}</span>
+        <span :class="$style['money-currency']">到帐金额</span>
+        <span :class="$style['money-currency']">¥</span>
+        <span :class="$style['money-currency']">
+          {{ actualMoney.toFixed(2) }}
+        </span>
 
         <span :class="[$style['serial']]" @click="toggleSerial">
           详情
@@ -342,11 +366,7 @@
     <template v-if="themeTPL === 'porn1'">
       <div
         :class="[$style['btn-wrap']]"
-        v-if="
-          withdrawUserData &&
-            withdrawUserData.account &&
-            withdrawUserData.account.length > 0
-        "
+        v-if="allWithdrawAccount && allWithdrawAccount.length !== 0"
       >
         <div :class="[$style['submit-btn']]">
           <div @click="linkToRecharge">
@@ -364,15 +384,10 @@
       </div>
 
       <div :class="$style['tips']">
-        <template
-          v-if="
-            withdrawUserData &&
-              withdrawUserData.account &&
-              withdrawUserData.account.length > 0
-          "
-        >
+        <template v-if="allWithdrawAccount && allWithdrawAccount.length !== 0">
           为了方便您快速提现，请先将所有场馆钱包金额回收至中心钱包
         </template>
+
         <template v-else>
           请先绑定一张银行卡，用于收款
         </template>
@@ -447,6 +462,21 @@
         }
       "
     />
+
+    <!-- 更多提现方式彈窗 -->
+    <withdraw-more-method
+      :show="showMoreMethod"
+      :user-level-obj="userLevelObj"
+      :withdraw-user-data="withdrawUserData"
+      :check-account-data="checkAccountData"
+      :more-method-status.sync="resultMoreMethodStatus"
+      @close="
+        () => {
+          showMoreMethod = false;
+        }
+      "
+    />
+
     <page-loading :is-show="isLoading" />
     <message v-if="msg" @close="msg = ''">
       <div slot="msg">
@@ -499,10 +529,23 @@ export default {
       isShowCheck: false,
       isShowMore: true,
       msg: "",
+      moreMethodStatusObj: {
+        bankCard: true,
+        wallet: true
+      },
       selectAccountValue: "",
-      selectedCard: "",
+      selectedCard: {
+        id: "",
+        name: "",
+        withdrawType: ""
+      },
       showMoreMethod: false,
-      widthdrawTipsType: "tips"
+      widthdrawTipsType: "tips",
+
+      // 匯率試算相關
+      timer: null,
+      countdownSec: 0,
+      conversionBtnLock: false
     };
   },
   components: {
@@ -520,17 +563,24 @@ export default {
   },
   watch: {
     allWithdrawAccount(value) {
+      console.log(value);
       // 後續將 Yabo 的 withdrawUserData 統一使用這個顯示
       // 預設選擇第一張卡 或是從電話驗證成功後直接送出
+      // Todo : 需再判斷當各種判斷時，選擇跳過 disable 的選項
       if (
-        !this.selectedCard &&
+        !this.selectedCard.id &&
         this.allWithdrawAccount &&
         this.allWithdrawAccount.length > 0
       ) {
-        this.selectedCard =
-          Number(localStorage.getItem("tmp_w_selectedCard")) ||
-          this.allWithdrawAccount[0].id;
+        const defaultCard = this.allWithdrawAccount.find(item => {
+          return item.allow;
+        });
+
+        this.selectedCard.id =
+          Number(localStorage.getItem("tmp_w_selectedCard")) || defaultCard.id;
+
         this.withdrawValue = localStorage.getItem("tmp_w_amount");
+
         setTimeout(() => {
           localStorage.removeItem("tmp_w_selectedCard");
           localStorage.removeItem("tmp_w_amount");
@@ -549,11 +599,11 @@ export default {
     withdrawUserData(value) {
       // 預設選擇第一張卡 或是從電話驗證成功後直接送出
       if (
-        !this.selectedCard &&
+        !this.selectedCard.id &&
         this.withdrawUserData.account &&
         this.withdrawUserData.account.length > 0
       ) {
-        this.selectedCard =
+        this.selectedCard.id =
           Number(localStorage.getItem("tmp_w_selectedCard")) ||
           this.withdrawUserData.account[0].id;
         this.withdrawValue = localStorage.getItem("tmp_w_amount");
@@ -577,8 +627,7 @@ export default {
     // 刷新 Player Api
     this.actionSetUserdata(true);
 
-    this.depositBeforeWithdraw =
-      this.memInfo.config.deposit_before_withdraw;
+    this.depositBeforeWithdraw = this.memInfo.config.deposit_before_withdraw;
     this.firstDeposit = this.memInfo.user.first_deposit;
     if (this.depositBeforeWithdraw && !this.firstDeposit) {
       this.widthdrawTipsType = "deposit";
@@ -609,25 +658,29 @@ export default {
       webInfo: "getWebInfo"
     }),
     valuePlaceholder() {
-      if (this.withdrawData &&
+      if (
+        this.withdrawData &&
         this.withdrawData.payment_charge &&
-        this.withdrawData.payment_charge.ret) {
-        return this.$text('S_WITHRAW_PLACEHOLDER', {
+        this.withdrawData.payment_charge.ret
+      ) {
+        return this.$text("S_WITHRAW_PLACEHOLDER", {
           replace: [
             {
-              target: '%s',
-              value:
-                this.validateMoney(this.withdrawData.payment_charge.ret.withdraw_min)
+              target: "%s",
+              value: this.validateMoney(
+                this.withdrawData.payment_charge.ret.withdraw_min
+              )
             },
             {
-              target: '%s',
-              value:
-                this.validateMoney(this.withdrawData.payment_charge.ret.withdraw_max)
+              target: "%s",
+              value: this.validateMoney(
+                this.withdrawData.payment_charge.ret.withdraw_max
+              )
             }
           ]
-        })
+        });
       } else {
-        return '';
+        return "";
       }
     },
     themeTPL() {
@@ -643,7 +696,7 @@ export default {
         this.errTips ||
         !this.withdrawValue ||
         this.isSendSubmit ||
-        !this.selectedCard
+        !this.selectedCard.id
       ) {
         return true;
       }
@@ -685,26 +738,14 @@ export default {
       }
       return false;
     },
-    headerConfig() {
-      return {
-        prev: true,
-        onClick: () => {
-          this.$router.back();
-        },
-        title: this.$text("S_WITHDRAWAL_TEXT", "提现"),
-        hasHelp: {
-          type: "withdraw",
-          url: "/mobile/mcenter/help/withdraw",
-          func: () => {
-            this.saveCurrentValue(true);
-          }
-        }
-      };
-    },
     getWithdrawTips() {
       let string = [];
 
-      if (this.withdrawData && this.withdrawData.payment_charge && this.withdrawData.payment_charge.ret) {
+      if (
+        this.withdrawData &&
+        this.withdrawData.payment_charge &&
+        this.withdrawData.payment_charge.ret
+      ) {
         const ret = this.withdrawData.payment_charge.ret;
         if (ret.withdraw_count && Number(ret.withdraw_count) > 0) {
           string.push(`今日可用提现次数：${ret.allow_withdraw_count}次`);
@@ -719,6 +760,22 @@ export default {
         }
 
         return string.join("，");
+      }
+    },
+    // 是否首次出款
+    isFirstWithdraw() {
+      return this.memInfo.config.player_ub_first_withdraw;
+    },
+    // 強制出款狀態
+    forceStatus() {
+      return this.withdrawUserData.force_status;
+    },
+    resultMoreMethodStatus: {
+      get() {
+        return this.moreMethodStatusObj;
+      },
+      set(value) {
+        this.moreMethodStatusObj[value.objKey] = value.data;
       }
     }
   },
@@ -771,7 +828,8 @@ export default {
           return;
         }
         // 實際金額
-        let _actualMoney = value - +this.withdrawData.audit.total.total_deduction;
+        let _actualMoney =
+          value - +this.withdrawData.audit.total.total_deduction;
         // 2.判斷是否 > 0
         if (_actualMoney !== value) {
           this.actualMoney = _actualMoney;
@@ -798,7 +856,7 @@ export default {
         ) {
           this.errTips = `单笔提现金额最小为${withdrawMin}元，最大为${
             withdrawMax ? `${withdrawMax}元` : "无限制"
-            }`;
+          }`;
           return;
         }
 
@@ -824,7 +882,21 @@ export default {
       this.isShowMore = !this.isShowMore;
     },
     handleSelectCard(item) {
-      this.selectedCard = item.id;
+      this.selectedCard.id = item.id;
+      this.selectedCard.withdrawType = item.withdrawType;
+
+      switch (item.withdrawType) {
+        case "account_id":
+          this.selectedCard.name = "";
+          break;
+
+        default:
+          this.selectedCard.name = item.alias.substring(
+            0,
+            item.alias.indexOf("-")
+          );
+          break;
+      }
     },
     // 最高提現
     handleMaxWithdraw() {
@@ -856,10 +928,11 @@ export default {
           this.errTips ||
           !this.withdrawValue ||
           this.isSendSubmit ||
-          !this.selectedCard
+          !this.selectedCard.id
         ) {
           return true;
         }
+
         if (
           this.withdrawData &&
           this.withdrawData.payment_charge &&
@@ -914,7 +987,7 @@ export default {
       }
     },
     saveCurrentValue(fromRule) {
-      localStorage.setItem("tmp_w_selectedCard", this.selectedCard);
+      localStorage.setItem("tmp_w_selectedCard", this.selectedCard.id);
       localStorage.setItem("tmp_w_amount", this.withdrawValue);
       if (fromRule) {
         localStorage.setItem("tmp_w_rule", "1");
@@ -926,7 +999,7 @@ export default {
         this.memInfo.config.withdraw_player_verify &&
         !localStorage.getItem("tmp_w_1")
       ) {
-        localStorage.setItem("tmp_w_selectedCard", this.selectedCard);
+        localStorage.setItem("tmp_w_selectedCard", this.selectedCard.id);
         localStorage.setItem("tmp_w_amount", this.withdrawValue);
         this.$router.push(
           "/mobile/mcenter/accountData/phone?redirect=withdraw"
@@ -936,7 +1009,7 @@ export default {
 
       this.isSendSubmit = true;
       this.submitWithdraw({
-        user_bank_id: this.selectedCard,
+        user_bank_id: this.selectedCard.id,
         keyring: localStorage.getItem("tmp_w_1") // 手機驗證成功後回傳
       }).then(response => {
         setTimeout(() => {
@@ -985,7 +1058,7 @@ export default {
         _params = {
           ..._params,
           [`ext[api_uri]`]: "/api/trade/v2/c/withdraw/entry",
-          [`ext[method][${hasAccountId}]`]: this.selectedCard,
+          [`ext[method][${hasAccountId}]`]: this.selectedCard.id,
           password: +this.withdrawPwd
         };
       }
