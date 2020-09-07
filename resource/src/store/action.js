@@ -1400,7 +1400,7 @@ export const actionGetMemInfoV3 = ({ state, dispatch, commit }) => {
         }
     })
 }
-// 輸入欄位驗證
+// 輸入欄位共用驗證
 export const actionVerificationFormData = ({ state, dispatch, commit }, data) => {
     let configInfo;
 
@@ -1427,7 +1427,7 @@ export const actionVerificationFormData = ({ state, dispatch, commit }, data) =>
             let maxLength = 11;
             switch (site) {
                 case 'ey1':
-                    maxLength = 36;
+                    maxLength = 0;
                     break;
                 case 'porn1':
                 default:
@@ -1435,9 +1435,12 @@ export const actionVerificationFormData = ({ state, dispatch, commit }, data) =>
                     break;
             }
 
-            val = val
-                .replace(/[^0-9]/g, '')
-                .substring(0, maxLength);
+            val = val.replace(/[^0-9]/g, '');
+
+            if (maxLength) {
+                val = val.substring(0, maxLength);
+            }
+
             break;
 
         case 'password':
