@@ -300,7 +300,6 @@ export default {
             success: (data) => {
               if (data.ret > 0) {
                 this.ttl = data.ret;
-                this.locker();
               }
             }
           });

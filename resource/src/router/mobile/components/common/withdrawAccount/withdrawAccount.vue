@@ -169,6 +169,8 @@ export default {
       toggleCaptcha: false,
       captcha: null,
       checkFormData: false,
+      isLoading: false,
+      ttl: 60,
       formData: {
         name: {
           title: '持卡人姓名',
@@ -208,6 +210,18 @@ export default {
     // }).then((res) => {
 
     // });
+
+    axios({
+      method: 'get',
+      url: '/api/v1/c/player/phone/ttl',
+
+    }).then(res => {
+      if (res && res.data && res.data.ret && res.data.ret > 0) {
+        this.ttl = res.data.ret || 60;
+      }
+    })
+
+
     this.isLoading = true;
     this.getAccountDataStatus().then((data) => {
       this.checkBankSwitch = data.ret.bank
@@ -375,7 +389,7 @@ export default {
         }
       }).then(res => {
         if (this.timer) return;
-        this.countdownSec = 60;
+        this.countdownSec = this.ttl;
         this.timer = setInterval(() => {
           if (this.countdownSec === 0) {
             clearInterval(this.timer);
