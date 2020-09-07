@@ -149,6 +149,7 @@ import EST from '@/lib/EST';
 
 export default {
   props: {
+    //  額度轉讓共用
     pageType: {
       default: ''
     }
@@ -232,9 +233,13 @@ export default {
     }
   },
   created() {
-    if (this.$route.params.page === 'detail' && !this.detailInfo) {
-      this.$router.push('/mobile/mcenter/moneyDetail');
-      return;
+    if (this.$route.params.page === 'detail') {
+      let detailparams = localStorage.getItem('money-detail-params');
+
+      if (!this.detailInfo && !detailparams) {
+        this.$router.push('/mobile/mcenter/moneyDetail');
+        return;
+      }
     }
 
     if (this.siteConfig.MOBILE_WEB_TPL !== 'porn1') {
@@ -261,20 +266,30 @@ export default {
     ...mapActions([
       'actionSetGlobalMessage'
     ]),
-    getData() {
+    getData(cacheParams = null) {
       this.isLoading = true;
-      let params = {
-        start_at: Vue.moment(this.startTime).format('YYYY-MM-DD 00:00:00-04:00'),
-        end_at: Vue.moment(this.endTime).format('YYYY-MM-DD 23:59:59-04:00'),
-        category: this.type,
-        order: this.sort,
-        first_result: this.firstResult,
-        max_results: this.maxResults
+      let params = {}
+      console.log('getData', cacheParams)
+      if (cacheParams) {
+        params = cacheParams;
+      } else {
+        params = {
+          start_at: Vue.moment(this.startTime).format('YYYY-MM-DD 00:00:00-04:00'),
+          end_at: Vue.moment(this.endTime).format('YYYY-MM-DD 23:59:59-04:00'),
+          category: this.type,
+          order: this.sort,
+          first_result: this.firstResult,
+          max_results: this.maxResults
+        }
       }
 
       if (this.type.find(i => i === "ingroup_transfer")) {
         params['opcode'] = ['8007', '1049', '5020', '5018', '5019', '5017', '5016'];
       }
+
+      localStorage.setItem('money-detail-params', JSON.stringify(params));
+      localStorage.setItem('money-detail-params-category', JSON.stringify(this.currentCategory));
+      localStorage.setItem('money-detail-params-date', JSON.stringify(this.currentDate));
 
       return mcenter.moneyDetail({
         params: params,
@@ -300,6 +315,10 @@ export default {
           }
 
           this.pageAll = Math.ceil(+pagination.total / this.maxResults);
+
+          if (cacheParams) {
+            this.detailInfo = ret.find(i => i.id === this.$route.query.id);
+          }
         },
         fail: (res) => {
           this.isLoading = false;
@@ -324,7 +343,9 @@ export default {
 
       this.changeCondition('');
       this.changeDatePicker('');
-      this.getData();
+      if (!localStorage.getItem('money-detail-params-service') || this.pageType === "ingroup_transfer") {
+        this.getData();
+      }
     },
     setDate(value) {
       switch (value.key) {
@@ -361,7 +382,9 @@ export default {
 
       this.changeCondition('');
       this.changeDatePicker('');
-      this.getData();
+      if (!localStorage.getItem('money-detail-params-service') || this.pageType === "ingroup_transfer") {
+        this.getData();
+      }
     },
     changeCondition(value) {
       this.showDatePicker = this.currentDate.key === 'custom';
@@ -390,7 +413,6 @@ export default {
 
       this.changeCondition('');
       this.changeDatePicker('');
-      console.log('onConfirm')
       this.getData();
     },
     /**
@@ -406,7 +428,23 @@ export default {
 
       this.isReceive = true;
 
-      this.getData().then(({ result }) => {
+      let isFromService = localStorage.getItem('money-detail-params-service');
+
+      let _params = null;
+      if (isFromService) {
+        _params = JSON.parse(localStorage.getItem('money-detail-params')) || null;
+        this.setCategory(JSON.parse(localStorage.getItem('money-detail-params-category')));
+        this.setDate(JSON.parse(localStorage.getItem('money-detail-params-date')));
+      }
+
+      this.getData(_params).then(({ result }) => {
+        setTimeout(() => {
+          localStorage.removeItem('money-detail-params');
+          localStorage.removeItem('money-detail-params-service');
+          localStorage.removeItem('money-detail-params-category');
+          localStorage.removeItem('money-detail-params-date');
+        }, 1000)
+
         this.isReceive = false;
 
         if (result !== 'ok') {

@@ -88,7 +88,7 @@ export default {
     onClick(info) {
       this.$emit('update:detailInfo', info);
       if (this.pageType !== 'ingroup_transfer') {
-        this.$router.push('/mobile/mcenter/moneyDetail/detail');
+        this.$router.push('/mobile/mcenter/moneyDetail/detail?id=' + info.id);
       }
     }
   }
