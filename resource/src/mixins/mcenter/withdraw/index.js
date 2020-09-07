@@ -6,8 +6,7 @@ import {
   API_WITHDRAW_BALANCE_BACK,
   API_WITHDRAW_CGPAY_BINDING,
   API_WITHDRAW_INFO,
-  API_WITHDRAW_WRITE,
-  API_CRYPTO_MONEY
+  API_WITHDRAW_WRITE
 } from '@/config/api';
 import { mapActions, mapGetters } from 'vuex';
 
@@ -37,7 +36,6 @@ export default {
       thirdUrl: '',
       showAccount: false, // 帳戶資料檢查
       userLevelObj: {}, // 存放 Card type 開關 & 限綁一組開關
-      cryptoMoney: "--"
     };
   },
   computed: {
@@ -396,26 +394,6 @@ export default {
 
         this.userLevelObj = ret;
       });
-    },
-    // 取得存/取款加密貨幣試算金額
-    convertCryptoMoney() {
-      axios({
-        method: 'get',
-        url: API_CRYPTO_MONEY,
-        params: {
-          type: 2,
-          amount: this.withdrawValue
-        }
-      }).then(response => {
-        const { result, ret } = response.data;
-        if (!response || result !== "ok") return;
-
-        this.cryptoMoney = ret.crypto_amount;
-        this.countdownSec = ret.ttl;
-        this.conversionBtnLock = true;
-        // this.errTips = ""
-        console.log(this.cryptoMoney, this.countdownSec);
-      })
     }
   }
 };
