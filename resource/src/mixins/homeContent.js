@@ -101,7 +101,6 @@ export default {
     created() {
         localStorage.removeItem('is-open-game');
         this.showPromotion = this.memInfo.user.show_promotion;
-        console.log(this.showPromotion)
     },
     mounted() {
         $(window).on('resize', this.onResize);
