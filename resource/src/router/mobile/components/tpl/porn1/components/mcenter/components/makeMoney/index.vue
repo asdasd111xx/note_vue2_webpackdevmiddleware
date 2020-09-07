@@ -64,32 +64,9 @@ export default {
       yToken: ''
     };
   },
-  watch: {
-    yToken() {
-      const query = this.$route.query;
-
-      yaboRequest({
-        method: 'put',
-        url: `${this.siteConfig.YABO_API_DOMAIN}/Account/UnlockTagId`,
-        headers: {
-          'x-domain': query.domain,
-        },
-        params: {
-          cid: query.cid,
-          userid: query.userid,
-          tagId: Number(query.tagId),
-          domain: query.domain
-        },
-      }).then((res) => {
-      }).catch(e => {
-        console.log(e)
-      });
-    }
-  },
   mounted() {
     const query = this.$route.query;
     if (query && query.check && query.cid && query.userid && query.tagId && query.domain) {
-      setCookie('cid', query.cid);
 
       yaboRequest({
         method: 'get',
@@ -98,6 +75,26 @@ export default {
         if (res.data) {
           this.yToken = res.data;
           setCookie('y_token', res.data);
+
+          setTimeout(() => {
+            yaboRequest({
+              method: 'put',
+              url: `${this.siteConfig.YABO_API_DOMAIN}/Account/UnlockTagId`,
+              headers: {
+                'x-domain': query.domain,
+              },
+              params: {
+                cid: query.cid,
+                userid: query.userid,
+                tagId: Number(query.tagId),
+                domain: query.domain
+              },
+            }).then((res) => {
+            }).catch(e => {
+              console.log(e)
+            });
+          }, 500)
+
           return;
         }
       });
@@ -111,7 +108,7 @@ export default {
       return {
         prev: true,
         title: "推广赚钱",
-        customLinkTitle: '礼金明细',
+        customLinkTitle: this.$router.query.check ? '' : '礼金明细',
         customLinkAction: () => {
           this.$router.push('/mobile/mcenter/tcenter/recommendGift');
         },
