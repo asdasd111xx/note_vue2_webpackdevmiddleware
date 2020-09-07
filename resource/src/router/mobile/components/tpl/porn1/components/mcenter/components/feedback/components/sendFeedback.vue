@@ -40,10 +40,10 @@
         :class="[
           $style['text-count'],
           {
-            [$style['red']]: paramsData.content.length > 200
+            [$style['red']]: contentLenght > 200
           }
         ]"
-        >{{ paramsData.content.length }}/200</span
+        >{{ contentLenght }}/200</span
       >
     </div>
     <div :class="$style['feedback-img']">
@@ -69,8 +69,7 @@
         $style['submit'],
         {
           [$style['disabled']]:
-            (paramsData.content.length < 20 && !isSend) ||
-            paramsData.content.length > 200
+            (contentLenght < 20 && !isSend) || contentLenght > 200
         }
       ]"
       @click="submitFeedback"
@@ -140,6 +139,9 @@ export default {
     ...mapGetters({
       siteConfig: 'getSiteConfig'
     }),
+    contentLenght() {
+      return this.paramsData.content.trim().replace(' ', '').length;
+    },
     theme() {
       return this.siteConfig.MOBILE_WEB_TPL;
     },
