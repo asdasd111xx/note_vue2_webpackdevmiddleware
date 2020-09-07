@@ -3,6 +3,7 @@
 export const PORN_DOMAIN = 'https://foxyjizz.com/api/v1';
 // temp
 // export const PORN_DOMAIN = 'https://allforyouedu.com/api/v1';
+// export const PORN_DOMAIN = 'https://foxyjizz.com/api/v1';
 // export const PORN_DOMAIN = 'http://192.168.136.135/api/v1';
 
 // 色站Lucas機器 測試站 api domain
