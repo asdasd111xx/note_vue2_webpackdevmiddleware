@@ -66,7 +66,12 @@ export default {
   },
   mounted() {
     const query = this.$route.query;
-    if (query && query.check && query.cid && query.userid && query.tagId && query.domain) {
+    if (query &&
+      query.check &&
+      query.cid &&
+      query.userid &&
+      query.tagId &&
+      query.domain) {
 
       yaboRequest({
         method: 'get',
@@ -97,6 +102,8 @@ export default {
 
           return;
         }
+      }).catch(e => {
+        console.log(e)
       });
     }
   },
@@ -108,7 +115,7 @@ export default {
       return {
         prev: true,
         title: "推广赚钱",
-        customLinkTitle: this.$router.query.check ? '' : '礼金明细',
+        customLinkTitle: this.$route.query.check ? '' : '礼金明细',
         customLinkAction: () => {
           this.$router.push('/mobile/mcenter/tcenter/recommendGift');
         },
