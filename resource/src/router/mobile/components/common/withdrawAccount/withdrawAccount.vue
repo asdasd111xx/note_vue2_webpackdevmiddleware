@@ -231,6 +231,8 @@ export default {
         if (this.formData[i]) {
           if (i === "phone") {
             this.formData['keyring'].show = !data.ret[i];
+            // 無手機欄位時候不需要驗證
+            this.isVerifyPhone = true;
           }
 
           this.formData[i].show = !data.ret[i];
