@@ -27,7 +27,7 @@
         </div>
 
         <div>
-          {{ `加入亿元第${day + 1}天` }}
+          {{ `加入亿元第${day}天` }}
         </div>
       </template>
 
@@ -77,8 +77,15 @@ export default {
   mounted() {
     this.getUserViplevel();
     this.getAvatarSrc();
-    if (this.loginStatus) {
-      this.day = moment().diff(Vue.moment(this.memInfo.user.created_at), 'days');
+    if (this.loginStatus) {      
+      var oldDays=this.day = moment().diff(Vue.moment(this.memInfo.user.created_at), 'days');      
+
+      var nowUTC = moment.utc();
+      var createUTC = moment.utc(this.memInfo.user.created_at);
+      var newDays = nowUTC.diff(createUTC, 'days');
+
+      this.day = newDays +1;//{{ `加入亿元第${day + 1}天` }}
+      console.log('v1.0.24 ( '+ oldDays +'days ) , v1.0.26 ( ' + newDays +'days )');
     }
   },
   methods: {
