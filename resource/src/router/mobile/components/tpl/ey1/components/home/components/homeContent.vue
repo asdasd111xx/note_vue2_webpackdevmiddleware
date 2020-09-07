@@ -52,7 +52,7 @@
               />
               <div>{{ vipLevel === "max" ? vipLevel : info.text }}</div>
             </template>
-            <template v-else>
+            <template v-else-if="info.name !== 'makemoney' || showPromotion">
               <img
                 :src="
                   $getCdnPath(
