@@ -93,7 +93,7 @@
           <div :class="$style['input-wrap']">
             <input
               v-model="formData.account"
-              type="text"
+              type="tel"
               placeholder="请输入银行卡卡号(限定16位以上数字)"
               minlength="16"
               maxlength="19"
@@ -242,11 +242,11 @@ export default {
   props: {
     changePage: {
       type: Function,
-      default: () => {}
+      default: () => { }
     },
     showTab: {
       type: Function,
-      default: () => {}
+      default: () => { }
     },
     addBankCardStep: {
       type: String,
