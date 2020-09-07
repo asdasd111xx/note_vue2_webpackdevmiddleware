@@ -362,7 +362,7 @@ export default {
     },
     verification(key, value) {
       const re = /^[a-z0-9._\-!@#$&*+=|]{6,12}$/;
-      const msg = this.$text("S_PASSWORD_ERROR", "请输入6-12位英文小写、数字");
+      const msg = this.$text("S_PASSWORD_ERROR", "请输入6-12位字母或数字");
 
       let errMsg = '';
 

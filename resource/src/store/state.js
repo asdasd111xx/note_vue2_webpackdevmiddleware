@@ -149,7 +149,7 @@ export default {
             type: 'password',
             regExp: /^[a-z0-9._\-!@#$&*+=|]{6,12}$/,
             errorMsg: 'S_PASSWORD_ERROR',
-            defaultErrMsg: '请输入6-12位英文小写、数字'
+            defaultErrMsg: '请输入6-12位字母或数字'
         },
         chkPwd: {
             key: 'chkPwd',

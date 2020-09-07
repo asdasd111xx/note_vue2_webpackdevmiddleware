@@ -146,7 +146,8 @@ export default {
     no-repeat;
 
   &.active {
-    background-image: url("/static/image/_new/common/icon_remember.png");
+    background-image: url("/static/image/_new/common/icon_notips_active.png");
+    opacity: 0.5;
   }
 }
 
