@@ -722,20 +722,20 @@ export default {
       this.verifyTips = '';
     },
     onFocus() {
-    //   if (this.allValue.username === '') {
-    //     this.allTip.username = this.$text('S_JM_FIELD_REQUIRE', '该栏位不得为空');
-    //   }
+      //   if (this.allValue.username === '') {
+      //     this.allTip.username = this.$text('S_JM_FIELD_REQUIRE', '该栏位不得为空');
+      //   }
 
-    //   if (this.allValue.password === '') {
-    //     this.allTip.password = this.$text('S_JM_FIELD_REQUIRE', '该栏位不得为空');
-    //   }
+      //   if (this.allValue.password === '') {
+      //     this.allTip.password = this.$text('S_JM_FIELD_REQUIRE', '该栏位不得为空');
+      //   }
 
-    if (this.allValue.password !== '' && this.allValue.password !== this.allValue.confirm_password) {
+      if (this.allValue.password !== '' && this.allValue.password !== this.allValue.confirm_password) {
         this.allTip.confirm_password = '确认密码预设要与密码一致';
       }
 
       if (this.allValue.password !== '' && !this.joinMemInfo.password.regExp.test(this.allValue.password)) {
-        this.allTip.password = this.$text('S_PASSWORD_ERROR', '请输入6-12位英文小写、数字');
+        this.allTip.password = this.$text('S_PASSWORD_ERROR', '请输入6-12位字母或数字');
       }
 
       if (this.allValue.username !== '' && this.allValue.password === this.allValue.username) {

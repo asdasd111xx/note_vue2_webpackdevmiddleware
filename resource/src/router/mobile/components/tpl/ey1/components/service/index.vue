@@ -41,7 +41,7 @@
               :src="$getCdnPath(`/static/image/_new/service/ic_service01.png`)"
             />
             &nbsp;
-            <span>在线客服1</span>
+            <span>在线客服</span>
           </div>
           <div>Main Customer Support</div>
           <div>7*24小时专线服务 贴心至上</div>
@@ -405,7 +405,7 @@ div.container {
   top: 50%;
   left: 50%;
   transform: translate(-50%, -50%);
-  background: #FFFFFF;
+  background: #ffffff;
   border-radius: 8px;
 
   .close {
@@ -470,11 +470,11 @@ div.container {
       }
     }
     .content-link {
-        width: 100%;
-        height: 100%;
-        background-color: #F7F7F7;
-        border-radius:10px;
-        padding:3px;
+      width: 100%;
+      height: 100%;
+      background-color: #f7f7f7;
+      border-radius: 10px;
+      padding: 3px;
     }
     .link {
       position: relative;
@@ -502,7 +502,6 @@ div.container {
 
     .url-image {
       width: 100%;
-
 
       > img {
         width: 100%;

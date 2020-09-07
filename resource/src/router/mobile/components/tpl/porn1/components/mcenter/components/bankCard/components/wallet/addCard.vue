@@ -112,7 +112,7 @@
             </li>
           </template>
 
-          <template v-if="selectTarget.walletId === 39">
+          <template v-if="selectTarget.swiftCode === 'BBUSDTCN1'">
             <li>
               还没有数字货币帐号？<span @click="isShowPopTip = true"
                 >后我查看交易所</span
@@ -194,6 +194,7 @@ export default {
       selectTarget: {
         walletId: "",
         walletName: "",
+        swiftCode: "",
         fixed: false
       },
       walletList: [],
@@ -504,6 +505,7 @@ export default {
     setBank(bank) {
       this.selectTarget.walletName = bank.name;
       this.selectTarget.walletId = bank.id;
+      this.selectTarget.swiftCode = bank.swift_code;
     },
     clearMsgCallback() {
       const { query } = this.$route;

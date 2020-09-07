@@ -345,6 +345,8 @@ export const API_WITHDRAW_BALANCE_BACK = '/api/v1/c/vendor/recycle/balance';
 export const API_WITHDRAW_INFO = '/api/v1/c/withdraw/info';
 // 會員中心 - 取款 - 本站取款寫單
 export const API_WITHDRAW_WRITE = '/api/payment/v1/c/withdraw';
+// 會員中心 - 存/取款 - 取得加密貨幣试算
+export const API_CRYPTO_MONEY = '/api/v1/c/crypto/amount';
 
 // 會員中心 - 取款 - 本站取款寫單 新版
 export const API_WITHDRAW_WRITE_2 = '/api/v1/c/withdraw/inpay';

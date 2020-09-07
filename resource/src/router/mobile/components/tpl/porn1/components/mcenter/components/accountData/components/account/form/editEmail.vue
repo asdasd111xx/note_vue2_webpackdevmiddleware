@@ -150,7 +150,6 @@ export default {
             success: (data) => {
               if (data.ret > 0) {
                 this.ttl = data.ret;
-                this.locker();
               }
             }
           });
@@ -228,9 +227,7 @@ export default {
       'actionSetUserdata',
     ]),
     locker() {
-      if (this.countdownSec === 0) {
-        this.countdownSec = this.ttl;
-      }
+      this.countdownSec = this.ttl;
 
       this.timer = setInterval(() => {
         if (this.countdownSec === 0) {

@@ -51,7 +51,7 @@
     </div>
     <div
       :class="$style['service-tip']"
-      :style="{ 'text-align': 'left', 'padding-left': '14px' }"
+      :style="{ 'text-align': 'left', 'padding-left': '35px','color': '#414655' }"
     >
       {{ "请输入0-9数字" }}
     </div>

@@ -42,7 +42,7 @@
     </div>
     <div :class="$style.tips">
       如需帮助，请
-      <span @click="$router.push('/mobile/service')">联系客服</span>
+      <span @click="linkToService">联系客服</span>
     </div>
     <message v-if="msg" @close="msg = ''">
       <div slot="msg">
@@ -98,6 +98,10 @@ export default {
     }
   },
   methods: {
+    linkToService() {
+      localStorage.setItem('money-detail-params-service', true);
+      this.$router.push('/mobile/service');
+    },
     oncopy() {
       this.$copyText(this.detailInfo.ref_id);
       this.msg = '已复制到剪贴板'

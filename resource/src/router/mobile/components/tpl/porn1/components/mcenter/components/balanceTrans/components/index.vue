@@ -1,6 +1,6 @@
 <template>
   <div :class="['clearfix']">
-    <div :class="[$style['balance-wrap'], 'clearfix']">
+    <div v-if="isReceiveAuto" :class="[$style['balance-wrap'], 'clearfix']">
       <div :class="$style['balance-total-icon']">
         <img
           :src="
@@ -27,7 +27,17 @@
         <input
           :checked="isAutotransfer"
           type="checkbox"
-          @click="isAutotransfer ? closeAutotransfer() : enableAutotransfer()"
+          @click="
+            () => {
+              if (isReceiveAuto) {
+                if (isAutotransfer) {
+                  closeAutotransfer();
+                } else {
+                  enableAutotransfer();
+                }
+              }
+            }
+          "
         />
         <label />
       </div>
@@ -327,6 +337,7 @@ export default {
       balanceList: {},
       total: 0,
       isAutotransfer: '',
+      isReceiveAuto: false,
       AutotransferLock: false,
       recentlyData: {},
       tranOutList: {},
@@ -394,6 +405,7 @@ export default {
   created() {
     this.actionSetUserdata(true).then(() => {
       this.isAutotransfer = this.memInfo.auto_transfer.enable;
+      this.isReceiveAuto = true;
       //   http://fb.vir888.com/default.asp?438355#3743844
       //   進到轉帳頁面不需自動回收額度
       //   if (this.isAutotransfer) {
