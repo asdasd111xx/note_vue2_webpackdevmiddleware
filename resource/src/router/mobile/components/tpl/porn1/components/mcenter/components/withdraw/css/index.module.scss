@@ -136,7 +136,6 @@
   padding: 0 14px;
   width: 100%;
   margin-top: 5px;
-  border-bottom: 2px solid #eee;
 
   > input {
     border: unset;
@@ -161,6 +160,7 @@
   padding: 5px 14px 0;
   font-size: 14px;
   color: #cbced8;
+  min-height: 30px;
 
   > div {
     min-height: 30px;
@@ -168,14 +168,21 @@
   }
 
   .conversion-btn {
-    padding: 3px 12px;
+    display: inline-block;
     margin-left: 10px;
     background: linear-gradient(to left, #bd9d7d, #f9ddbd);
-    border-radius: 30px;
     color: #fff;
+    width: 80px;
+    height: 21px;
+    line-height: 21px;
+    border-radius: 15px;
+    text-align: center;
 
     &.disable {
       pointer-events: none;
+    }
+
+    &.unInput {
       background: linear-gradient(#e9dacb, #eee5db);
       color: #f3ede7;
     }
@@ -269,7 +276,7 @@
 
 .check-container {
   width: 320px;
-  height: 400px;
+  min-height: 390px;
   z-index: 3;
   background-color: #ffffff;
   border-radius: 4px;
@@ -359,16 +366,32 @@
       font-weight: 700;
     }
 
+    &.check-crypto {
+      color: #be9e7f;
+    }
+
     > span:last-child {
       float: right;
+    }
+
+    .money::after {
+      content: "CNY";
+      color: #cbced8;
+      padding-left: 10px;
+      font-weight: 400;
+    }
+
+    .money {
+      &.check-crypto::after {
+        color: #e9dacc;
+      }
     }
   }
 
   .check-button-wrap {
-    padding: 0 11px;
+    padding: 10px 11px;
     color: #be9e7f;
     text-align: center;
-    position: absolute;
     bottom: 12px;
     width: 100%;
 

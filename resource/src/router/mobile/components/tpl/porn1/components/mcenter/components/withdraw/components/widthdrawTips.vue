@@ -86,10 +86,22 @@
 
               <div :class="[$style['check-cell'], $style['check-actual']]">
                 <span :class="$style['sub-title']">
-                  实际到账金额
+                  实际提现金额
                 </span>
                 <span :class="$style['money']">
                   {{ actualMoney.toFixed(2) }}
+                </span>
+              </div>
+
+              <div
+                v-if="selectedCard.withdrawType === 'crypto_id'"
+                :class="[$style['check-cell'], $style['check-crypto']]"
+              >
+                <span :class="$style['sub-title']">
+                  USDT到帐
+                </span>
+                <span :class="[$style['money'], $style['check-crypto']]">
+                  {{ cryptoMoney }}
                 </span>
               </div>
             </div>
@@ -127,14 +139,13 @@
 </template>
 
 <script>
-import mixin from '@/mixins/mcenter/withdraw/serialNumber';
-import { mapGetters } from 'vuex';
+import mixin from "@/mixins/mcenter/withdraw/serialNumber";
+import { mapGetters } from "vuex";
 
 export default {
   mixins: [mixin],
   data() {
-    return {
-    }
+    return {};
   },
   props: {
     type: {
@@ -143,9 +154,13 @@ export default {
     },
     show: {
       type: Boolean,
-      default: false,
+      default: false
     },
     actualMoney: {
+      type: Number,
+      default: 0
+    },
+    cryptoMoney: {
       type: Number,
       default: 0
     },
@@ -156,32 +171,37 @@ export default {
     closeFunc: {
       type: Function
     },
+    selectedCard: {
+      type: Object,
+      default: {}
+    }
   },
-  mounted() {
-  },
+  mounted() {},
   computed: {
     ...mapGetters({
-      siteConfig: 'getSiteConfig',
+      siteConfig: "getSiteConfig"
     }),
     $style() {
-      return this[`$style_${this.siteConfig.MOBILE_WEB_TPL}`] || this.$style_porn1;
-    },
+      return (
+        this[`$style_${this.siteConfig.MOBILE_WEB_TPL}`] || this.$style_porn1
+      );
+    }
   },
   methods: {
     closeTips() {
-      this.$emit('close');
+      this.$emit("close");
     },
     handleCheckRule() {
-      this.$emit('save', true);
+      this.$emit("save", true);
       if (this.type === "tips") {
-        this.$router.push('/mobile/mcenter/help/withdraw?&key=6');
+        this.$router.push("/mobile/mcenter/help/withdraw?&key=6");
       } else if (this.type === "deposit") {
-        this.$router.push('/mobile/mcenter/help/withdraw?&key=0');
+        this.$router.push("/mobile/mcenter/help/withdraw?&key=0");
       }
     },
     handleBack() {
       if (this.type === "tips") {
-        this.$router.push('/mobile/mcenter/wallet');
+        this.$router.push("/mobile/mcenter/wallet");
       } else if (this.type === "deposit") {
         this.$router.back();
       }
@@ -192,7 +212,7 @@ export default {
       if (val) {
         this.getSerialNumberData();
       }
-    },
+    }
   }
 };
 </script>
