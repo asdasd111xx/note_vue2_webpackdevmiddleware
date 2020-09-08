@@ -88,6 +88,7 @@
                   [$style['show-placeholder']]: !allValue[key]
                 }
               ]"
+              :data-key="key"
               :maxlength="allText[key].maxLength"
               v-model="allValue[key]"
               type="password"
@@ -101,7 +102,7 @@
                 $style['btn-show-password'],
                 { [$style.active]: allText[key].type === 'text' }
               ]"
-              @click="onShowPassword(allText[key].type)"
+              @click="onShowPassword()"
             />
           </div>
           <!-- 錯誤訊息 -->

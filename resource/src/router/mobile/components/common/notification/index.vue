@@ -3,7 +3,7 @@
     <div
       v-show="isShow && data"
       :class="[$style['notification-wrap'], { [$style['close']]: !isShow }]"
-      @click="handleClick"
+      @click.stop="handleClick"
     >
       <div :class="$style['container']">
         <div :class="$style['notification-header']">
@@ -149,7 +149,7 @@ export default {
           clearTimeout(this.closeTimer);
           this.closeTimer = null;
         }, 800);
-      }, 3500);
+      }, 3000);
     },
     getTime(string) {
       return Vue.moment(string).format("llll");
