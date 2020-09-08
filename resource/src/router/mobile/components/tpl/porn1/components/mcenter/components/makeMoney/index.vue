@@ -65,31 +65,37 @@ export default {
     };
   },
   mounted() {
-    const query = this.$route.query;
-    if (query &&
-      query.check &&
-      query.cid &&
-      query.userid &&
-      query.tagId &&
-      query.domain) {
+    this.$nextTick(() => {
+      const query = this.$route.query;
+      if (query &&
+        query.check &&
+        query.cid &&
+        query.userid &&
+        query.tagId &&
+        query.domain) {
 
-      let cid = query.cid,
-        userid = query.userid || query.userId,
-        tagId = query.tagId,
-        domain = query.domain;
+        let cid = query.cid,
+          userid = query.userid || query.userId,
+          tagId = query.tagId,
+          domain = query.domain;
 
-      setCookie('cid', cid);
+        setCookie('cid', cid);
 
-      yaboRequest({
-        method: 'get',
-        url: this.siteConfig.YABO_API_DOMAIN + '/Account/GetAuthorizationToken',
-      }).then((res) => {
-        if (res.data) {
-          this.yToken = res.data;
-          setCookie('y_token', res.data);
+        let _headers = {
+          'cid': cid,
+          'x-domain': domain,
+        };
 
-          setTimeout(() => {
-            yaboRequest({
+        axios({
+          method: 'get',
+          url: this.siteConfig.YABO_API_DOMAIN + '/Account/GetAuthorizationToken',
+          headers: _headers
+        }).then((res) => {
+          if (res.data && res.data.data) {
+            this.yToken = res.data.data;
+            setCookie('y_token', res.data.data);
+
+            axios({
               method: 'put',
               url: `${this.siteConfig.YABO_API_DOMAIN}/Account/UnlockTagId`,
               headers: {
@@ -105,14 +111,14 @@ export default {
             }).catch(e => {
               console.log(e)
             });
-          }, 500)
 
-          return;
-        }
-      }).catch(e => {
-        console.log(e)
-      });
-    }
+            return;
+          }
+        }).catch(e => {
+          console.log(e)
+        });
+      }
+    })
   },
   computed: {
     ...mapGetters({
