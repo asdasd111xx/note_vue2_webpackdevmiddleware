@@ -141,7 +141,7 @@ export default {
   width: 16px;
   height: 16px;
   margin-right: 4px;
-  opacity: 0.6;
+  opacity: 0.5;
   background: url("/static/image/_new/common/icon_noremember.png") 0 0 / contain
     no-repeat;
 
