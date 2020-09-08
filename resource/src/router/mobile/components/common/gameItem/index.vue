@@ -185,7 +185,7 @@ export default {
       const ey1_default_img = '/static/image/ey1/default/bg_gamecard_d.png'
 
       return {
-        src: resultUrl,
+        src: `${resultUrl}?v=${Date.now().toString()}`,
         error: this.theme === "ey1" ? ey1_default_img : this.$getCdnPath('/static/image/game_loading_s.gif'),
         loading: this.theme === "ey1" ? ey1_default_img : this.$getCdnPath('/static/image/game_loading_s.gif')
       };
