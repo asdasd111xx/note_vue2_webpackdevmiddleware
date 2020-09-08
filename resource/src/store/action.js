@@ -1009,6 +1009,10 @@ export const actionContactUs = (_, postData) => new Promise((resolve) => member.
 // ＝＝＝＝＝＝＝＝＝＝＝＝＝＝＝＝＝＝
 export const actionGetMobileInfo = ({ commit }, tpl) => {
     const status = Vue.cookie.get('newsite') ? 'New' : '';
+    let manifest = document.createElement('link');
+    manifest.rel = 'manifest';
+    manifest.href = `/static/tpl/analytics/${tpl}/manifest.json`;
+    document.querySelector('head').append(manifest);
 
     return ajax({
         url: `/tpl/${tpl}/mobile${status}.json`,
