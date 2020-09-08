@@ -58,8 +58,8 @@ export default {
 <style lang="scss" module>
 .content-wrap {
   position: relative;
-  min-height: calc(100vh - 60px);
-  padding-bottom: 45px;
+  overflow-y: auto;
+  padding-bottom: 60px;
   background: #eee;
 }
 </style>

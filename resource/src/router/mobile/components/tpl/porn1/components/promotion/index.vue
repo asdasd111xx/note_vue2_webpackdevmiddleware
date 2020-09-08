@@ -132,6 +132,8 @@ export default {
           }
 
           window.open(ret.uri);
+          window.document.title = '最新优惠';
+          //   window.document.title = name;
         },
         fail: (error) => {
           if (!isUBMobile || !webview) {

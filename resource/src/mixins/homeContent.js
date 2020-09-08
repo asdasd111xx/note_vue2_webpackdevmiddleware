@@ -23,6 +23,7 @@ export default {
             allGame: [],
             selectedIndex: 0,
             currentLevel: 0,
+            showPromotion: false,
             isShowLoading: false,
             isCheckWithdraw: false,
             mcenterList: [
@@ -35,7 +36,7 @@ export default {
             mcenterEy1List: [
                 { name: 'deposit', text: '充值', path: 'deposit' },
                 { name: 'balanceTrans', text: '转帐', path: 'balanceTrans' },
-                { name: 'makemoney', text: '推广', path: 'makemoney' },
+                { name: 'makemoney', text: '推广', path: 'makemoney' },//rollback 億元隱藏推廣
                 { name: 'vip', text: 'VIP', path: 'accountVip' },
             ]
         };
@@ -99,6 +100,7 @@ export default {
     },
     created() {
         localStorage.removeItem('is-open-game');
+        this.showPromotion = this.memInfo.user.show_promotion;
     },
     mounted() {
         $(window).on('resize', this.onResize);

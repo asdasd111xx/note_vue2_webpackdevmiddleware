@@ -113,7 +113,7 @@ export default {
     startMove() {
       if (this.paused || !this.$refs.container) return;
       if (Math.abs(this.currentLeft) < this.totalWidth) {
-        this.currentLeft -= this.$refs.container.offsetWidth / 250;
+        this.currentLeft -= this.$refs.container.offsetWidth / 350;
         window.requestAnimationFrame(this.startMove);
       } else {
         this.currentLeft = this.$refs.container.offsetWidth;
