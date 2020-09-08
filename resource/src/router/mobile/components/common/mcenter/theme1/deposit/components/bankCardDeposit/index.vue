@@ -346,14 +346,34 @@
                     </span>
                     <br />
                     <span>
-                      {{
-                        `(¥${curPassRoad.per_trade_min}~¥${
-                          curPassRoad.per_trade_max === 0 || "0"
-                            ? "无限制"
-                            : curPassRoad.per_trade_max
-                        })`
-                      }}
+                      <!-- 最大金額不為0的時候，顯示最小值~最大值 -->
+                      <template
+                        v-if="
+                          curPassRoad.per_trade_min !== (0 || '0') &&
+                            curPassRoad.per_trade_max !== (0 || '0')
+                        "
+                      >
+                        {{
+                          `(¥${curPassRoad.per_trade_min} ~ ¥${curPassRoad.per_trade_max})`
+                        }}
+                      </template>
+
+                      <!-- 最小金額不為0的時候，顯示最低金額 -->
+                      <template
+                        v-else-if="
+                          curPassRoad.per_trade_min !== (0 || '0') &&
+                            curPassRoad.per_trade_max === (0 || '0')
+                        "
+                      >
+                        {{ `(最低金额¥${curPassRoad.per_trade_min} ~ 无限制)` }}
+                      </template>
+
+                      <!-- 最大金額 & 最低金額 都為0的時候，顯示無限制-->
+                      <template v-else>
+                        {{ `无限制` }}
+                      </template>
                     </span>
+
                     <img
                       v-if="isSelectedCustomMoney"
                       :class="$style['pay-active']"
