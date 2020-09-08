@@ -61,12 +61,10 @@ export default {
     ...mapActions([
       'actionSetGlobalMessage'
     ]),
-    copy(key) {
-      const string = this.list[key].value;
-      if (!string) return;
-      this.$copyText(string);
-      this.actionSetGlobalMessage({ msg: '复制成功' });
-    }
+    copy(value) {
+      this.$copyText(value);
+      this.actionSetGlobalMessage({ msg: "复制成功" });
+    },
   }
 };
 </script>
