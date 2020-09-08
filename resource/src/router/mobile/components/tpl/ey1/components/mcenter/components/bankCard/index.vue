@@ -23,12 +23,14 @@
         />
       </div>
 
+      <!-- 歷史錢包 -->
+      <!-- 出現條件: 1.停留在卡片資訊頁面 2.不顯示卡片資訊詳細頁中 3.當銀行卡(電子錢包)綁定開關為『限制1組』時，會隱藏『歷史銀行卡』、『歷史錢包』 -->
       <div
         v-if="
           (currentPage === 'bankCardInfo' ||
             currentPage === 'walletCardInfo') &&
             !showDetail &&
-            userLevelObj.virtual_bank_single
+            (!userLevelObj.virtual_bank_single || !userLevelObj.bank_single)
         "
         :class="$style['header-icon']"
         @click="changeToHistory"

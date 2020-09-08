@@ -324,7 +324,20 @@ export default {
             return false;
         },
         singleLimit() {
-            return `单笔充值金额： ${Number(this.depositInterval.maxMoney) === 0 ? this.$text('S_UNLIMITED', '无限制') : this.$text('S_MONEY_RANGE_SHORT', { replace: [{ target: '%s', value: this.depositInterval.minMoney }, { target: '%s', value: this.depositInterval.maxMoney }] })}`;
+            // 最大金額不為0的時候，顯示最小值~最大值
+            if (Number(this.depositInterval.minMoney) !== 0 && Number(this.depositInterval.maxMoney) !== 0) {
+                return `单笔充值金额：¥${this.depositInterval.minMoney} ~ ¥${this.depositInterval.maxMoney}`
+            }
+
+            // 最小金額不為0的時候，顯示最低金額~无限制
+            if (Number(this.depositInterval.minMoney) !== 0 && Number(this.depositInterval.maxMoney) === 0) {
+                return `单笔充值金额：最低金额¥${this.depositInterval.minMoney} ~ 无限制`
+            }
+
+            // 最大金額 & 最低金額 都為0的時候，顯示無限制
+            if (Number(this.depositInterval.minMoney) === 0 && Number(this.depositInterval.maxMoney) === 0) {
+                return `单笔充值金额：无限制`
+            }
         }
     },
     methods: {

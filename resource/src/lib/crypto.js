@@ -69,8 +69,6 @@ export const getEncryptImage = (info) => {
         image: info.image,
         iv: info.image_IV,
         key: info.image_key,
-        // file: info.image_new,
-        // bak: info.image_bak,
     }
 
     // let encryptedHexStr = CryptoJS.enc.Hex.parse(data.image.split('?')[0]);
@@ -81,6 +79,7 @@ export const getEncryptImage = (info) => {
         method: 'GET',
         responseType: 'blob',
     }).then((response) => {
+
         if (!document.querySelector(`img[img-id="${info.id}"]`)) {
             return info.image;
         }
@@ -109,7 +108,10 @@ export const getEncryptImage = (info) => {
                 return info.image;
             }
 
-            document.querySelector(`img[img-id="${info.id}"]`).src = `data:${type};base64,${base64String}`;
+            let dom = document.querySelectorAll(`img[img-id="${info.id}"]`)
+            dom.forEach(i => {
+                i.src = `data:${type};base64,${base64String}`;
+            })
         });
 
         reader.readAsArrayBuffer(response.data);
