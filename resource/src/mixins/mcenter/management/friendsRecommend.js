@@ -210,9 +210,10 @@ export default {
                 });
             });
         },
-        onShowPassword(type) {
-            this.allText.password.type = type === 'password' ? 'text' : 'password';
-            this.allText.confirm_password.type = type === 'password' ? 'text' : 'password';
+        onShowPassword() {
+            let curType = document.querySelector(`input[data-key="password"]`).type;
+            document.querySelector(`input[data-key="password"]`).type = curType === 'password' ? 'text' : 'password';
+            document.querySelector(`input[data-key="confirm_password"]`).type = curType === 'password' ? 'text' : 'password';
         }
     }
 };
