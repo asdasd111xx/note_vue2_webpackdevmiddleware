@@ -74,6 +74,9 @@ export default {
         query.tagId &&
         query.domain) {
 
+        setCookie('y_token', '');
+        setCookie('cid', '');
+
         let cid = query.cid,
           userid = query.userid || query.userId,
           tagId = query.tagId,
@@ -99,9 +102,11 @@ export default {
               method: 'put',
               url: `${this.siteConfig.YABO_API_DOMAIN}/Account/UnlockTagId`,
               headers: {
+                'cid': cid,
                 'x-domain': query.domain,
+                'AuthToken': res.data.data
               },
-              params: {
+              data: {
                 cid: cid,
                 userid: userid,
                 tagId: Number(tagId),
