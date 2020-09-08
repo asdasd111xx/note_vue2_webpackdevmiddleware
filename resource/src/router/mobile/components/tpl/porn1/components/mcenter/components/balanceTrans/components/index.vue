@@ -447,7 +447,7 @@ export default {
       'actionSetGlobalMessage'
     ]),
     verification() {
-      this.transferMoney = this.transferMoney.replace(' ', '')
+      this.transferMoney = String(this.transferMoney)
         .trim()
         .replace(/[^0-9]/g, '');
     },
