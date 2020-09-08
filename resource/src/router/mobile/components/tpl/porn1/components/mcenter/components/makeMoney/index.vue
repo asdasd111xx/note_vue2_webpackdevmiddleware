@@ -73,6 +73,13 @@ export default {
       query.tagId &&
       query.domain) {
 
+      let cid = query.cid,
+        userid = query.userid || query.userId,
+        tagId = query.tagId,
+        domain = query.domain;
+
+      setCookie('cid', cid);
+
       yaboRequest({
         method: 'get',
         url: this.siteConfig.YABO_API_DOMAIN + '/Account/GetAuthorizationToken',
@@ -89,10 +96,10 @@ export default {
                 'x-domain': query.domain,
               },
               params: {
-                cid: query.cid,
-                userid: query.userid,
-                tagId: Number(query.tagId),
-                domain: query.domain
+                cid: cid,
+                userid: userid,
+                tagId: Number(tagId),
+                domain: domain
               },
             }).then((res) => {
             }).catch(e => {
