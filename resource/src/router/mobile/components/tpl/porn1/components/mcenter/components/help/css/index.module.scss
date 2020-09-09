@@ -144,6 +144,11 @@
 // 詳細資料--存款 & 提現
 .detail-wrap {
     background-color: #f8f8f8;
+
+    &.ey1 {
+        background-color: unset;
+        background: unset;
+    }
 }
 
 .status-wrap {
@@ -407,6 +412,10 @@
         font-weight: 700;
         font-size: 14px;
         text-align: center;
+
+        &.ey1 {
+            background: #E42A30;
+        }
     }
 }
 

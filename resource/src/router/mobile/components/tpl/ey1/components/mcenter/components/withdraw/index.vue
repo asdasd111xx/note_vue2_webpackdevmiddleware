@@ -1,7 +1,6 @@
 <template>
   <mobile-container :header-config="headerConfig" :has-footer="false">
     <div slot="content" :class="$style['content-wrap']">
-      <!-- 一件回收 -->
       <!-- 額度轉讓連結 false -->
       <balance-back :has-link="false" />
       <withdraw ref="withdraw" />

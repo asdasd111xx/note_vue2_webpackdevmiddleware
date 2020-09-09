@@ -55,9 +55,6 @@
 }
 
 .save-wrap {
-    -webkit-tap-highlight-color: rgba(0, 0, 0, 0);
-    -moz-tap-highlight-color: rgba(0, 0, 0, 0);
-    border: unset;
     box-shadow: none;
     color: $main_text_color2;
     font-size: 15px;
@@ -67,6 +64,7 @@
     position: absolute;
     right: 14px;
     top: 0;
+    border: unset;
 
     >.active {
         color: $main_text_color3;

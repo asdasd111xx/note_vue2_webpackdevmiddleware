@@ -2,518 +2,520 @@
 @import "../../../../../components/mcenter/components/balanceTrans/css/porn1.module.scss";
 
 .content-wrap {
-  min-height: calc(100vh);
-  color: #414655;
-  background-color: $main_background_white1;
+    min-height: calc(100vh);
+    color: #414655;
+    background-color: $main_background_white1;
 }
 
 // 中心錢包
 .balance-wrap-wrap {
-  background-color: $main_white_color1;
-  height: 67px;
-  display: flex;
-  align-items: center;
-  margin-top: 11px;
+    background-color: $main_white_color1;
+    height: 67px;
+    display: flex;
+    align-items: center;
+    margin-top: 11px;
 
-  > div {
-    width: 50%;
-  }
-
-  > .balance-wrap {
-    > div:first-child {
-      text-align: center;
-
-      > img {
-        width: 14px;
-        height: 14px;
-      }
-
-      > span {
-        color: #5e626d;
-      }
+    >div {
+        width: 50%;
     }
 
-    > div:last-child {
-      color: #be9e7f;
-      text-align: center;
-      font-size: 16px;
-    }
-  }
+    >.balance-wrap {
+        >div:first-child {
+            text-align: center;
 
-  .recycle-btn {
-    color: #be9e7f;
-    text-align: center;
-    font-size: 16px;
-  }
+            >img {
+                width: 14px;
+                height: 14px;
+            }
+
+            >span {
+                color: #5e626d;
+            }
+        }
+
+        >div:last-child {
+            color: #be9e7f;
+            text-align: center;
+            font-size: 16px;
+        }
+    }
+
+    .recycle-btn {
+        color: #be9e7f;
+        text-align: center;
+        font-size: 16px;
+    }
 }
 
 //增加銀行卡
 .add-bank-card {
-  background-color: $main_white_color1;
-  color: #be9e7f;
-  font-size: 15px;
-  height: 50px;
-  line-height: 50px;
-  margin-top: 5px;
-  width: 100%;
-  text-align: center;
-  display: inline-flex;
-  align-items: center;
-  justify-content: center;
-  font-weight: bold;
+    background-color: $main_white_color1;
+    color: #be9e7f;
+    font-size: 15px;
+    height: 50px;
+    line-height: 50px;
+    margin-top: 5px;
+    width: 100%;
+    text-align: center;
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    font-weight: bold;
 
-  > img {
-    width: 18px;
-    height: 18px;
-  }
+    >img {
+        width: 18px;
+        height: 18px;
+    }
 }
 
 .bank-card-wrap {
-  background-color: $main_background_white1;
-  margin-top: 10px;
+    background-color: $main_background_white1;
+    margin-top: 10px;
 }
 
 .bank-card-cell {
-  position: relative;
-  background-color: $main_white_color1;
-  padding: 1px 18px;
-  color: #414655;
-  min-height: 50px;
-  // line-height: 50px;
-  display: flex;
-  align-items: center;
-  margin-bottom: 2px;
+    position: relative;
+    background-color: $main_white_color1;
+    padding: 1px 18px;
+    color: #414655;
+    min-height: 50px;
+    // line-height: 50px;
+    display: flex;
+    align-items: center;
+    margin-bottom: 2px;
 
-  &.disable {
-    pointer-events: none;
-    opacity: 0.5;
-  }
-
-  > img {
-    width: 25px;
-    height: 25px;
-  }
-
-  > span {
-    margin-left: 3px;
-    width: 100%;
-
-    &.withdraw-status-tip {
-      color: #e42a30;
-      width: fit-content;
+    &.disable {
+        pointer-events: none;
+        opacity: 0.5;
     }
-  }
 
-  > .check-box {
-    position: absolute;
-    width: 18px;
-    height: 18px;
-    border-radius: 50%;
-    border: #cbced8 solid 1px;
-    right: 18px;
-
-    &.checked {
-      background: url("/static/image/_new/mcenter/ic_check.png") 0 0 no-repeat;
-      background-size: 100%;
-      width: 18px;
-      height: 18px;
+    >img {
+        width: 25px;
+        height: 25px;
     }
-  }
+
+    >span {
+        margin-left: 3px;
+        width: 100%;
+
+        &.withdraw-status-tip {
+            color: #e42a30;
+            width: fit-content;
+        }
+    }
+
+    >.check-box {
+        position: absolute;
+        width: 18px;
+        height: 18px;
+        border-radius: 50%;
+        border: #cbced8 solid 1px;
+        right: 18px;
+
+        &.checked {
+            background: url("/static/image/_new/mcenter/ic_check.png") 0 0 no-repeat;
+            background-size: 100%;
+            width: 18px;
+            height: 18px;
+        }
+    }
 }
 
 .tips {
-  margin-top: 12px;
-  color: #a6a9b2;
-  font-size: 12px;
-  padding: 0 14px;
+    margin-top: 12px;
+    color: #a6a9b2;
+    font-size: 12px;
+    padding: 0 14px;
 }
 
 .withdraw-input {
-  height: 54px;
-  background-color: $main_white_color1;
-  color: #414655;
-  line-height: 54px;
-  padding: 0 14px;
-  width: 100%;
-  margin-top: 5px;
-
-  > input {
-    border: unset;
-    box-shadow: none;
-    outline: none;
-    width: calc(100% - 110px);
-    height: 32px;
+    height: 54px;
+    background-color: $main_white_color1;
     color: #414655;
-    font-size: 16px;
-    border-radius: 0;
-    line-height: 32px;
+    line-height: 54px;
+    padding: 0 14px;
+    width: 100%;
+    margin-top: 5px;
 
-    &::placeholder {
-      color: #cbced8;
-      font-size: 14px;
+    >input {
+        border: unset;
+        box-shadow: none;
+        outline: none;
+        width: calc(100% - 110px);
+        height: 32px;
+        color: #414655;
+        font-size: 16px;
+        border-radius: 0;
+        line-height: 32px;
+
+        &::placeholder {
+            color: #cbced8;
+            font-size: 14px;
+        }
     }
-  }
 }
 
 .actual-money {
-  background-color: $main_white_color1;
-  padding: 5px 14px 0;
-  font-size: 14px;
-  color: #cbced8;
-  min-height: 30px;
-
-  > div {
+    background-color: $main_white_color1;
+    padding: 5px 14px 0;
+    font-size: 14px;
+    color: #cbced8;
     min-height: 30px;
-    line-height: 30px;
-  }
 
-  .conversion-btn {
-    display: inline-block;
-    margin-left: 10px;
-    background: linear-gradient(to left, #bd9d7d, #f9ddbd);
-    color: #fff;
-    width: 80px;
-    height: 21px;
-    line-height: 21px;
-    border-radius: 15px;
-    text-align: center;
-
-    &.disable {
-      pointer-events: none;
+    >div {
+        min-height: 30px;
+        line-height: 30px;
     }
 
-    &.unInput {
-      background: linear-gradient(#e9dacb, #eee5db);
-      color: #f3ede7;
-    }
-  }
+    .conversion-btn {
+        display: inline-block;
+        margin-left: 10px;
+        background: linear-gradient(to left, #bd9d7d, #f9ddbd);
+        color: #fff;
+        width: 80px;
+        height: 21px;
+        line-height: 21px;
+        border-radius: 15px;
+        text-align: center;
 
-  .serial {
-    float: right;
-    padding-right: 10px;
-  }
+        &.disable {
+            pointer-events: none;
+        }
+
+        &.unInput {
+            background: linear-gradient(#e9dacb, #eee5db);
+            color: #f3ede7;
+        }
+    }
+
+    .serial {
+        float: right;
+        padding-right: 10px;
+    }
 }
 
 .withdraw-max {
-  height: 100%;
-  display: inline-flex;
-  align-items: center;
-  justify-content: center;
-  float: right;
-
-  > span {
-    font-size: 14px;
-    background: -webkit-linear-gradient(right, #bd9d7d, #f9ddbd);
-    background: -o-linear-gradient(left, #bd9d7d, #f9ddbd);
-    background: -moz-linear-gradient(left, #bd9d7d, #f9ddbd);
-    background: linear-gradient(to left, #bd9d7d, #f9ddbd);
-    color: white;
-    border-radius: 11px;
-    width: 82px;
-    height: 21px;
-    display: flex;
+    height: 100%;
+    display: inline-flex;
     align-items: center;
     justify-content: center;
-  }
+    float: right;
+
+    >span {
+        font-size: 14px;
+        background: -webkit-linear-gradient(right, #bd9d7d, #f9ddbd);
+        background: -o-linear-gradient(left, #bd9d7d, #f9ddbd);
+        background: -moz-linear-gradient(left, #bd9d7d, #f9ddbd);
+        background: linear-gradient(to left, #bd9d7d, #f9ddbd);
+        color: white;
+        border-radius: 11px;
+        width: 82px;
+        height: 21px;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+    }
 }
 
 .withdraw-error-tips {
-  background-color: $main_white_color1;
-  padding: 0 14px;
-  color: #db6372;
-  font-size: 14px;
-  height: 50px;
-  line-height: 50px;
+    background-color: $main_white_color1;
+    padding: 0 14px;
+    color: #db6372;
+    font-size: 14px;
+    height: 50px;
+    line-height: 50px;
 }
 
 .submit-btn {
-  width: 100%;
-  text-align: center;
-  margin-top: 15px;
-  padding: 0 14px;
-
-  > div {
-    margin: 0 auto;
-    height: 45px;
-    background: -webkit-linear-gradient(right, #bd9d7d, #f9ddbd);
-    background: -o-linear-gradient(left, #bd9d7d, #f9ddbd);
-    background: -moz-linear-gradient(left, #bd9d7d, #f9ddbd);
-    background: linear-gradient(to left, #bd9d7d, #f9ddbd);
-    border-radius: 3px;
     width: 100%;
-    max-width: 340px;
-    line-height: 45px;
-    font-size: 14px;
-    font-weight: 700;
     text-align: center;
-    color: #ffffff;
-  }
+    margin-top: 15px;
+    padding: 0 14px;
 
-  &.disabled {
-    div {
-      pointer-events: none;
-      background: -webkit-linear-gradient(right, #e9dacb, #eee5db);
-      background: -o-linear-gradient(left, #e9dacb, #eee5db);
-      background: -moz-linear-gradient(left, #e9dacb, #eee5db);
-      background: linear-gradient(to left, #e9dacb, #eee5db);
+    >div {
+        margin: 0 auto;
+        height: 45px;
+        background: -webkit-linear-gradient(right, #bd9d7d, #f9ddbd);
+        background: -o-linear-gradient(left, #bd9d7d, #f9ddbd);
+        background: -moz-linear-gradient(left, #bd9d7d, #f9ddbd);
+        background: linear-gradient(to left, #bd9d7d, #f9ddbd);
+        border-radius: 3px;
+        width: 100%;
+        max-width: 340px;
+        line-height: 45px;
+        font-size: 14px;
+        font-weight: 700;
+        text-align: center;
+        color: #ffffff;
     }
-  }
+
+    &.disabled {
+        div {
+            pointer-events: none;
+            background: -webkit-linear-gradient(right, #e9dacb, #eee5db);
+            background: -o-linear-gradient(left, #e9dacb, #eee5db);
+            background: -moz-linear-gradient(left, #e9dacb, #eee5db);
+            background: linear-gradient(to left, #e9dacb, #eee5db);
+        }
+    }
 }
 
 // 檢查提現提示彈窗
 .check-wrap {
-  position: fixed;
-  top: 0;
-  left: 0;
-  width: 100%;
-  height: 100%;
-  background: rgba(0, 0, 0, 0.4);
-  z-index: 10;
-  display: flex;
-  justify-content: center;
-  align-items: center;
+    position: fixed;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    background: rgba(0, 0, 0, 0.4);
+    z-index: 10;
+    display: flex;
+    justify-content: center;
+    align-items: center;
 }
 
 .check-container {
-  width: 320px;
-  min-height: 390px;
-  z-index: 3;
-  background-color: #ffffff;
-  border-radius: 4px;
-  position: relative;
-
-  &.deposit {
-    height: unset;
-    max-height: 400px;
-  }
-
-  .check-header {
-    width: 100%;
-    height: 50px;
-    background: #be9e7f;
-    border-radius: 3px 3px 0 0;
-    color: white;
-    position: relative;
-    line-height: 50px;
-
-    .title {
-      width: 100%;
-      font-size: 17px;
-      font-weight: 400;
-      text-align: center;
-    }
-
-    .btn-close {
-      width: 23px;
-      height: 100%;
-      position: absolute;
-      right: 10px;
-      top: 0;
-      display: flex;
-      align-items: center;
-      justify-content: center;
-
-      img {
-        height: 23px;
-        width: 100%;
-      }
-    }
-  }
-
-  .hr {
-    width: 100%;
-    height: 2px;
-    background-color: #f8f8f7;
-  }
-
-  .check-content {
+    width: 320px;
+    min-height: 390px;
+    z-index: 3;
     background-color: #ffffff;
-    font-size: 15px;
+    border-radius: 4px;
+    position: relative;
 
-    .title {
-      font-size: 16px;
-      font-weight: 700;
-      color: #414655;
-      text-align: center;
-      height: 140px;
-      line-height: 67px;
+    &.deposit {
+        height: unset;
+        max-height: 400px;
     }
 
-    .time {
-      width: 100%;
-      height: 24px;
-      line-height: 24px;
-      font-size: 12px;
-      font-weight: 400;
-      text-align: center;
-      color: $main_text_color3;
-    }
-  }
-
-  .check-cell {
-    color: $main_text_color2;
-    height: 33px;
-    line-height: 33px;
-    margin: 2px 11px;
-
-    &.check-total {
-      color: $main_text_color3;
-      background: $main_background_white1;
-    }
-
-    &.check-actual {
-      color: $main_text_color3;
-      font-weight: 700;
-    }
-
-    &.check-crypto {
-      color: #be9e7f;
-    }
-
-    > span:last-child {
-      float: right;
-    }
-
-    .money::after {
-      content: "CNY";
-      color: #cbced8;
-      padding-left: 10px;
-      font-weight: 400;
-    }
-
-    .money {
-      &.check-crypto::after {
-        color: #e9dacc;
-      }
-    }
-  }
-
-  .check-button-wrap {
-    padding: 10px 11px;
-    color: #be9e7f;
-    text-align: center;
-    bottom: 12px;
-    width: 100%;
-
-    .check-btn {
-      width: 90px;
-      height: 45px;
-      line-height: 45px;
-      background: #faf5f0;
-      border-radius: 3px;
-      margin: 0 3px;
-      display: inline-block;
-
-      &.submit {
+    .check-header {
+        width: 100%;
+        height: 50px;
+        background: #be9e7f;
+        border-radius: 3px 3px 0 0;
         color: white;
-        background: linear-gradient(to left, #bd9d7d, #f9ddbd);
-      }
+        position: relative;
+        line-height: 50px;
+
+        .title {
+            width: 100%;
+            font-size: 17px;
+            font-weight: 400;
+            text-align: center;
+        }
+
+        .btn-close {
+            width: 23px;
+            height: 100%;
+            position: absolute;
+            right: 10px;
+            top: 0;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+
+            img {
+                height: 23px;
+                width: 100%;
+            }
+        }
     }
-  }
+
+    .hr {
+        width: 100%;
+        height: 2px;
+        background-color: #f8f8f7;
+    }
+
+    .check-content {
+        background-color: #ffffff;
+        font-size: 15px;
+
+        .title {
+            font-size: 16px;
+            font-weight: 700;
+            color: #414655;
+            text-align: center;
+            height: 140px;
+            line-height: 67px;
+        }
+
+        .time {
+            width: 100%;
+            height: 24px;
+            line-height: 24px;
+            font-size: 12px;
+            font-weight: 400;
+            text-align: center;
+            color: $main_text_color3;
+        }
+    }
+
+    .check-cell {
+        color: $main_text_color2;
+        height: 33px;
+        line-height: 33px;
+        margin: 2px 11px;
+
+        &.check-total {
+            color: $main_text_color3;
+            background: $main_background_white1;
+        }
+
+        &.check-actual {
+            color: $main_text_color3;
+            font-weight: 700;
+        }
+
+        &.check-crypto {
+            color: #be9e7f;
+        }
+
+        >span:last-child {
+            float: right;
+        }
+
+        .money::after {
+            content: "CNY";
+            color: #cbced8;
+            padding-left: 10px;
+            font-weight: 400;
+        }
+
+        .money {
+            &.check-crypto::after {
+                color: #e9dacc;
+            }
+        }
+    }
+
+    .check-button-wrap {
+        padding: 10px 11px;
+        color: #be9e7f;
+        text-align: center;
+        bottom: 12px;
+        width: 100%;
+
+        .check-btn {
+            width: 90px;
+            height: 45px;
+            line-height: 45px;
+            background: #faf5f0;
+            border-radius: 3px;
+            margin: 0 3px;
+            display: inline-block;
+
+            &.submit {
+                color: white;
+                background: linear-gradient(to left, #bd9d7d, #f9ddbd);
+            }
+        }
+    }
 }
 
 .loading-wrap {
-  position: absolute;
-  width: 100%;
-  height: 100%;
-  margin: 0 auto;
-  display: flex;
-  top: 0;
-  left: 0;
-  text-align: center;
-  background: rgba(0, 0, 0, 0.4);
-  justify-content: center;
+    position: absolute;
+    width: 100%;
+    height: 100%;
+    margin: 0 auto;
+    display: flex;
+    top: 0;
+    left: 0;
+    text-align: center;
+    background: rgba(0, 0, 0, 0.4);
+    justify-content: center;
 }
 
 .loading-item {
-  position: fixed;
-  margin: 0 auto;
-  top: 40%;
+    position: fixed;
+    margin: 0 auto;
+    top: 40%;
 }
 
 .withdraw-pwd-input {
-  height: 54px;
-  background-color: $main_white_color1;
-  color: #414655;
-  line-height: 54px;
-  padding: 0 14px;
-  width: 100%;
-  margin-top: 5px;
-
-  > input {
-    border: unset;
-    box-shadow: none;
-    outline: none;
-    width: calc(100% - 110px);
-    height: 32px;
+    height: 54px;
+    background-color: $main_white_color1;
     color: #414655;
-    font-size: 16px;
-    border-radius: 0;
-    line-height: 32px;
+    line-height: 54px;
+    padding: 0 14px;
+    width: 100%;
+    margin-top: 5px;
+    -webkit-text-security: disc;
 
-    &::placeholder {
-      color: #cbced8;
-      font-size: 14px;
+    >input {
+
+        border: unset;
+        box-shadow: none;
+        outline: none;
+        width: calc(100% - 110px);
+        height: 32px;
+        color: #414655;
+        font-size: 16px;
+        border-radius: 0;
+        line-height: 32px;
+
+        &::placeholder {
+            color: #cbced8;
+            font-size: 14px;
+        }
     }
-  }
 }
 
 .btn-wrap {
-  width: 100%;
-  display: inline-flex;
+    width: 100%;
+    display: inline-flex;
 }
 
 @media screen and (min-width: $phone) {
-  > .balance-wrap {
-    > div:last-child {
-      font-size: 17px;
+    >.balance-wrap {
+        >div:last-child {
+            font-size: 17px;
+        }
     }
-  }
 
-  .recycle-btn {
-    font-size: 17px;
-  }
+    .recycle-btn {
+        font-size: 17px;
+    }
 
-  .add-bank-card {
-    font-size: 16px;
-  }
+    .add-bank-card {
+        font-size: 16px;
+    }
 
-  .tips {
-    font-size: 13px;
-  }
+    .tips {
+        font-size: 13px;
+    }
 
-  .money-currency {
-    font-size: 18px;
-  }
+    .money-currency {
+        font-size: 18px;
+    }
 
-  .withdraw-input {
-    > input {
-      font-size: 17px;
+    .withdraw-input {
+        >input {
+            font-size: 17px;
 
-      &::placeholder {
-        color: #cbced8;
+            &::placeholder {
+                color: #cbced8;
+                font-size: 15px;
+            }
+        }
+    }
+
+    .actual-money {
         font-size: 15px;
-      }
     }
-  }
 
-  .actual-money {
-    font-size: 15px;
-  }
-
-  .withdraw-max {
-    > span {
-      font-size: 15px;
+    .withdraw-max {
+        >span {
+            font-size: 15px;
+        }
     }
-  }
 
-  .withdraw-error-tips {
-    font-size: 15px;
-  }
-
-  .submit-btn {
-    > div {
-      font-size: 15px;
+    .withdraw-error-tips {
+        font-size: 15px;
     }
-  }
+
+    .submit-btn {
+        >div {
+            font-size: 15px;
+        }
+    }
 }

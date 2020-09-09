@@ -153,12 +153,6 @@ export default {
         this.total = response.result.last_page;
         this.isReceive = false;
 
-        setTimeout(() => {
-          this.videoList.forEach(item => {
-            getEncryptImage(item);
-          })
-        }, 300)
-
         if (response.result.current_page >= response.result.last_page) {
           $state.complete();
           return;

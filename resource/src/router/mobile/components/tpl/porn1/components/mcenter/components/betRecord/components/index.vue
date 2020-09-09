@@ -173,7 +173,7 @@
                 <ul :class="[$style['single-data-count'], 'clearfix']">
                   <li :class="$style['single-count']">
                     {{ $text("S_DATA_COUNT", "笔数") }} :
-                    {{ item.list.length }}
+                    {{ mainTotal.count }}
                   </li>
                   <li :class="$style['single-water']">
                     {{ $text("S_TOTAL_WATER", "流水") }} :

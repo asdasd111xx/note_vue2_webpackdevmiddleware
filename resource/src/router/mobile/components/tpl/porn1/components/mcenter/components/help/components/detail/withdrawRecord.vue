@@ -1,5 +1,12 @@
 <template>
-  <div :class="$style['detail-wrap']">
+  <div
+    :class="[
+      $style['detail-wrap'],
+      {
+        [$style['ey1']]: theme === 'ey1'
+      }
+    ]"
+  >
     <!-- 狀態暫時移除 -->
     <!-- <div :class="$style['status-wrap']">
       <div
@@ -148,8 +155,12 @@ export default {
   computed: {
     ...mapGetters({
       loginStatus: 'getLoginStatus',
-      memInfo: 'getMemInfo'
+      memInfo: 'getMemInfo',
+      siteConfig: "getSiteConfig",
     }),
+    theme() {
+      return this.siteConfig.MOBILE_WEB_TPL;
+    },
     isApp() {
       let isApp = !!((this.$route.query && this.$route.query.app) || (this.$route.query && this.$route.query.APP))
       return isApp

@@ -524,8 +524,8 @@ export default {
   .header-custom-btn {
     -webkit-appearance: none;
     -moz-appearance: none;
-    -webkit-tap-highlight-color: unset;
-    -moz-tap-highlight-color: unset;
+    -webkit-tap-highlight-color: rgba(0, 0, 0, 0);
+    -moz-tap-highlight-color: rgba(0, 0, 0, 0);
     cursor: pointer;
     line-height: 43px;
     position: fixed;
@@ -655,6 +655,20 @@ export default {
     display: inline-block;
     height: 100%;
     vertical-align: middle;
+  }
+}
+
+.save-wrap {
+  font-size: 15px;
+  position: absolute;
+  line-height: 43px;
+  top: 0;
+  height: 100%;
+  right: 14px;
+  color: $main_text_color2;
+
+  > .active {
+    color: $main_text_color3;
   }
 }
 

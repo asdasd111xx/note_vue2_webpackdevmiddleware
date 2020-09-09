@@ -55,7 +55,7 @@
       </div>
 
       <!-- 添加卡片按鈕區塊 -->
-      <template v-if="bank_card.length < 3">
+      <template v-if="isRevice && bank_card.length < 3">
         <div :class="$style['add-card']">
           <div :class="$style['add-wrap']">
             <div

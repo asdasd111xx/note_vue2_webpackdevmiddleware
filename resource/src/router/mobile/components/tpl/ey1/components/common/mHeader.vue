@@ -475,6 +475,20 @@ export default {
   }
 }
 
+.save-wrap {
+  font-size: 15px;
+  position: absolute;
+  line-height: 43px;
+  top: 0;
+  height: 100%;
+  right: 14px;
+  color: $main_text_color2;
+
+  > .active {
+    color: $main_text_color3;
+  }
+}
+
 .red-dot {
   position: absolute;
   right: -4px;
