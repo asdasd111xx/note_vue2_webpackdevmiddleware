@@ -2,6 +2,28 @@
   <div :class="$style['content-wrap']">
     <div :class="$style['section']">
       <div
+        v-if="hasCid"
+        :class="[$style['cell']]"
+        :style="{ 'margin-bottom': '10px' }"
+        @click="
+          $router.push(
+            `/mobile/mcenter/help/detail?type=withdraw${
+              isApp ? '&app=true' : ''
+            }`
+          )
+        "
+      >
+        <div :class="$style['title']">
+          {{ $text("S_RECENTLY_WITHDRAW", "近10笔提现记录") }}
+        </div>
+        <div :class="[$style['arrow-btn']]">
+          <img
+            :src="$getCdnPath(`/static/image/_new/mcenter/ic_arrow_next.png`)"
+          />
+        </div>
+      </div>
+
+      <div
         v-for="(item, index) in data"
         :id="`q-${index}`"
         :class="[$style['cell'], { [$style['active']]: item.isOpen }]"

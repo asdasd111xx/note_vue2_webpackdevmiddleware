@@ -1,3 +1,4 @@
+import { getCookie, setCookie } from '@/lib/cookie';
 import { mapActions, mapGetters } from 'vuex';
 
 export default {
@@ -38,6 +39,9 @@ export default {
         ...mapGetters({
             loginStatus: 'getLoginStatus'
         }),
+        hasCid() {
+            return getCookie('cid') || false;
+        },
         isApp() {
             let isApp = !!(
                 (this.$route.query && this.$route.query.app) ||
