@@ -19,7 +19,7 @@
                 [$style['is-current']]: item.id === selectTarget.walletId
               }
             ]"
-            v-for="item in walletList"
+            v-for="item in selectTarget.fixed ? filterWalletList : walletList"
             :key="item.id"
             @click="setBank(item)"
           >
@@ -198,6 +198,7 @@ export default {
         fixed: false
       },
       walletList: [],
+      filterWalletList: [],
       userBindWalletList: [],
       bindWallets: {
         cgPay: false,
@@ -248,30 +249,6 @@ export default {
       set(value) {
         this.isShowPopTip = value;
       }
-    },
-    walletTips() {
-      let text = "";
-      switch (this.selectTarget.walletId) {
-        case 21:
-          // CGPay
-          text = `可输入CGPay帐号或扫码绑定<br>没有CGPay帐号？
-           <a href="https://cgpayintroduction.azurewebsites.net/index.aspx" target="_blank">立即申请</a>
-          `;
-          break;
-
-        case 37:
-          // 購寶
-          text = `请使用扫码绑定<br>没有CGPay帐号？
-          <a href="https://www.gamewallet.asia/" target="_blank">立即申请</a>
-          `;
-          break;
-
-        case 39:
-          // USDT
-          text = `还没有数字货币帐号？<span>后我查看交易所</span>`;
-          break;
-      }
-      return text;
     }
   },
   watch: {
@@ -331,12 +308,28 @@ export default {
       }
     },
     walletList() {
-      // 從提現頁進來，且只選擇 CGPay
-      if (this.$route.query.wallet && this.$route.query.wallet === "CGPay") {
-        let item = this.walletList.find(item => {
-          return item.id === 21;
-        });
-        this.setBank(item);
+      if (this.$route.query.wallet) {
+        switch (this.$route.query.wallet) {
+          case "CGPay":
+            this.filterWalletList = this.walletList.filter(item => {
+              return item.id === 21;
+            });
+            break;
+
+          case "goBao":
+            this.filterWalletList = this.walletList.filter(item => {
+              return item.id === 37;
+            });
+            break;
+
+          case "usdt":
+            this.filterWalletList = this.walletList.filter(item => {
+              return item.swift_code === "BBUSDTCN1";
+            });
+            break;
+        }
+
+        this.setBank(this.filterWalletList[0]);
         this.selectTarget.fixed = true;
       }
     }
@@ -559,7 +552,9 @@ export default {
     getBankImage(swiftCode) {
       return {
         src: `https://images.dormousepie.com/icon/bankIconBySwiftCode/${swiftCode}.png`,
-        error: this.$getCdnPath("/static/image/porn1/default/bank_default_2.png"),
+        error: this.$getCdnPath(
+          "/static/image/porn1/default/bank_default_2.png"
+        ),
         loading: this.$getCdnPath(
           "/static/image/porn1/default/bank_default_2.png"
         )

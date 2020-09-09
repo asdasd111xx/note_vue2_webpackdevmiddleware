@@ -128,6 +128,8 @@ export default {
       // walletGatewayId = 3 -> CGPay
       // walletGatewayId = 2 -> 購寶
       let id = null;
+      let queryType = this.$route.query.redirect === "deposit" ? "deposit" : "";
+
       if (this.paymentGatewayId === 37) {
         id = 2;
       } else if (this.paymentGatewayId === 21) {
@@ -138,7 +140,7 @@ export default {
         url: "/api/v1/c/ext/inpay?api_uri=/api/trade/v2/c/withdraw/bind_wallet",
         method: "get",
         params: {
-          bind_type: this.bindType,
+          bind_type: queryType ? queryType : this.bindType,
           wallet_gateway_id: id
         }
       }).then(res => {

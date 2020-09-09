@@ -2,9 +2,11 @@ import {
   API_MCENTER_DEPOSIT_CHANNEL,
   API_MCENTER_DEPOSIT_INPAY,
   API_MCENTER_DEPOSIT_THIRD,
-  API_TRADE_RELAY
+  API_TRADE_RELAY,
+  API_CRYPTO_MONEY
 } from '@/config/api';
 import { mapActions, mapGetters } from 'vuex';
+import axios from "axios";
 
 import BigNumber from 'bignumber.js/bignumber';
 import ajax from '@/lib/ajax';
@@ -42,14 +44,21 @@ export default {
       webviewOpenUrl: '',
       isSelectedCustomMoney: false,
       isDisableDepositInput: false,
-      limitTime: 0,
       walletData: {
         CGPay: {
           method: 0,
           password: "",
           placeholder: "请输入CGPay支付密码"
         }
-      }
+      },
+
+      // 匯率試算相關
+      cryptoMoney: "--",
+      isClickCoversionBtn: false,
+
+      // 倒數器
+      timer: null,
+      limitTime: 0,
     };
   },
   watch: {
@@ -322,9 +331,6 @@ export default {
       }
 
       return false;
-    },
-    singleLimit() {
-      return `单笔充值金额： ${Number(this.depositInterval.maxMoney) === 0 ? this.$text('S_UNLIMITED', '无限制') : this.$text('S_MONEY_RANGE_SHORT', { replace: [{ target: '%s', value: this.depositInterval.minMoney }, { target: '%s', value: this.depositInterval.maxMoney }] })}`;
     }
   },
   methods: {
@@ -986,6 +992,69 @@ export default {
         this.isSelectValue = target.label;
         this.bankSelectValue = target;
       }
+    },
+    getSingleLimit(minMoney, maxMoney) {
+      // 最大金額不為0的時候，顯示最小值~最大值
+      if (Number(minMoney) !== 0 && Number(maxMoney) !== 0) {
+        return `¥${minMoney} ~ ¥${maxMoney}`;
+      }
+
+      // 最小金額不為0的時候，顯示最低金額~无限制
+      if (Number(minMoney) !== 0 && Number(maxMoney) === 0) {
+        return `最低金额¥${minMoney} ~ 无限制`;
+      }
+
+      // 最大金額 & 最低金額 都為0的時候，顯示無限制
+      if (Number(minMoney) === 0 && Number(maxMoney) === 0) {
+        return `无限制`;
+      }
+
+      return '';
+    },
+    // 取得存/取款加密貨幣試算金額
+    convertCryptoMoney() {
+      return axios({
+        method: "get",
+        url: API_CRYPTO_MONEY,
+        params: {
+          type: 1,
+          amount: this.moneyValue
+        }
+      }).then(response => {
+        const { result, ret } = response.data;
+        if (!response || result !== "ok") return;
+
+        this.cryptoMoney = ret.crypto_amount;
+        this.isClickCoversionBtn = true;
+        this.limitTime = this.limitTime ? this.limitTime : ret.ttl;
+
+        // 僅限按下按鈕觸發，@input & @blur 皆不會觸發
+        if (this.limitTime && !this.timer) {
+          this.timer = setInterval(() => {
+            if (this.limitTime === 0) {
+              clearInterval(this.timer);
+              this.limitTime = 0;
+              this.isClickCoversionBtn = false;
+              this.timer = null;
+              return;
+            }
+            this.limitTime -= 1;
+          }, 1000);
+        }
+      });
+    },
+    formatCountdownSec() {
+      let minutes = Math.floor(this.limitTime / 60);
+      let sec = this.limitTime - minutes * 60;
+
+      if (minutes < 10) {
+        minutes = "0" + minutes;
+      }
+      if (sec < 10) {
+        sec = "0" + sec;
+      }
+
+      return `${minutes}:${sec}`;
     }
   }
 };
