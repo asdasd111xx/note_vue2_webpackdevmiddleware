@@ -125,8 +125,7 @@ export default {
       videoSort: [],
       videoRecommand: [],
       videoList: [],
-      videoType: { id: 0, title: "" },
-      isLoadVideoList: false
+      videoType: { id: 0, title: "" }
     };
   },
   computed: {
@@ -165,11 +164,8 @@ export default {
     this.setHasSearchBtn(false);
     this.getVideoTag();
     this.getVideoSort();
-    let vidoeListParams = [this.getVideoRecommand(), this.getVideoList()]
-    Promise.all(vidoeListParams).then(() => {
-      // 所有影片在進行解密圖片
-      this.isLoadVideoList = true;
-    });
+    this.getVideoRecommand();
+    this.getVideoList();
   },
   methods: {
     handleVideo(tag, video) {
@@ -352,27 +348,6 @@ export default {
       this.$router.push({ name, ...routerParam });
     }
   },
-  watch: {
-    videoType() {
-      this.isLoadVideoList = false;
-      let vidoeListParams = [this.getVideoList()]
-      Promise.all(vidoeListParams).then(() => {
-        // 所有影片在進行解密圖片
-        this.isLoadVideoList = true;
-      });
-    },
-    isLoadVideoList(val) {
-      if (val) {
-        this.$nextTick(() => {
-          this.allVideoList.forEach(item => {
-            item.list.forEach((i) => {
-              getEncryptImage(i);
-            })
-          })
-        })
-      }
-    }
-  }
 };
 </script>
 

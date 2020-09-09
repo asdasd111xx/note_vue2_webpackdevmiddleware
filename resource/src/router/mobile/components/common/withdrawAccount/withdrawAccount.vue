@@ -164,7 +164,7 @@ export default {
       isSendKeyring: false,
       isSendForm: false,
       countdownSec: 0,
-      hasBank: false,
+      checkBankSwitch: false,
       timer: null,
       toggleCaptcha: false,
       captcha: null,
@@ -204,19 +204,12 @@ export default {
     }
   },
   mounted() {
+    // axios({
+    //   method: 'get',
+    //   url: '/api/v2/c/withdraw/check',
+    // }).then((res) => {
 
-    // 20200908
-    // 投注:
-    // C50103 -> 跳轉電子錢包頁面
-    // C50104 -> 跳轉補充個人資料頁面，如果發現沒有任何銀行卡，填完個人資料後須繼續綁定電子錢包
-
-    // 轉帳:
-    // C50105 -> 跳轉電子錢包頁面
-    // C50106 -> 跳轉補充個人資料頁面，如果發現沒有任何銀行卡，填完個人資料後須繼續綁定電子錢包
-
-    // 提現：
-    // 點擊提現按鈕時呼叫 API 檢查個人資料是否完善
-    // 如果有缺資料，跳轉補充個人資料頁面，，如果發現沒有任何銀行卡，填完個人資料後須繼續綁定電子錢包
+    // });
 
     axios({
       method: 'get',
@@ -231,7 +224,7 @@ export default {
 
     this.isLoading = true;
     this.getAccountDataStatus().then((data) => {
-      this.hasBank = data.ret.bank;
+      this.checkBankSwitch = data.ret.bank
 
       this.isLoading = false;
       Object.keys(data.ret).forEach(i => {
@@ -452,8 +445,8 @@ export default {
           this.actionSetUserdata(true).then(() => {
             this.onClose();
 
-            if (!this.hasBank) {
-              this.$router.push(`/mobile/mcenter/bankCard?&type=bankCard`);
+            if (!this.checkBankSwitch) {
+              this.$router.push(`/mobile/mcenter/bankCard?redirect=home&type=wallet`)
             }
           });
         }
