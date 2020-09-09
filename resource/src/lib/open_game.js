@@ -93,6 +93,7 @@ export default (params, success = () => { }, fail = () => { }) => {
                         window.location.href = link;
                     } else {
                         newWindow.location = link;
+                        console.log('openWindow:', newWindow);
                     }
                 } catch (e) {
                     newWindow.close();

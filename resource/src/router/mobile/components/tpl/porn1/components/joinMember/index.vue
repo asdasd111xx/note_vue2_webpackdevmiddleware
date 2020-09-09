@@ -104,6 +104,10 @@ export default {
   font-weight: 700;
   text-align: center;
   color: #ffffff;
+
+  &.disable {
+    background: linear-gradient(#e9dacb, #eee5db);
+  }
 }
 
 .js-nc-check-bar {
