@@ -81,8 +81,11 @@
                       ]"
                       >{{
                         //提現密碼*呈現
-                        (field.text === 'S_DAW_DRWAL_PASSWORD' && field.status === 'already') ? '****' : field.value
-                       }}
+                        field.text === "S_DAW_DRWAL_PASSWORD" &&
+                        field.status === "already"
+                          ? "****"
+                          : field.value
+                      }}
                     </span>
                   </template>
 
@@ -145,7 +148,7 @@ export default {
   mounted() {
     if (localStorage.getItem('set-account-success')) {
       this.editedSuccess();
-      localStorage.removeItem('set-account-success');
+      this.$router.push({ query: { success: true } });
     }
   },
   methods: {
@@ -182,6 +185,7 @@ export default {
       this.actionSetUserdata(true);
       this.currentEdit = '';
       this.showSuccess = true;
+      localStorage.removeItem('set-account-success');
       setTimeout(() => {
         this.showSuccess = false;
       }, 3000)

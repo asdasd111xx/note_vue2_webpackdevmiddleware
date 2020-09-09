@@ -67,6 +67,11 @@ export default {
       };
     }
   },
+  created() {
+    if (this.memInfo.user.qq_num) {
+      this.$router.push('/mobile/mcenter/accountData');
+    }
+  },
   methods: {
     ...mapActions([
       'actionSetUserdata',

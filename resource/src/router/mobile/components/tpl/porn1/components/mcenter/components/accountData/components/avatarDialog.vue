@@ -13,7 +13,7 @@
               :src="$getCdnPath(item.url)"
               @click="selectImg(index)"
             />
-             <!-- <div v-if="currentImgID === index" :class="$style.check" />  -->
+            <div v-if="currentImgID === index" :class="$style.check" />
           </div>
         </div>
 
