@@ -100,7 +100,7 @@ export default {
     },
     created() {
         localStorage.removeItem('is-open-game');
-        this.showPromotion = this.memInfo.user.show_promotion;
+        this.showPromotion = this.loginStatus ? this.memInfo.user.show_promotion : true;
     },
     mounted() {
         $(window).on('resize', this.onResize);
