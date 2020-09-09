@@ -178,15 +178,12 @@
 
     <!-- 幫助中心連結 -->
     <template v-if="headerConfig.hasHelp">
-      <div :class="[$style['btn-help']]">
+      <div :class="[$style['btn-help']]" @click="handleHelpLinkTo">
         <span v-if="headerConfig.hasHelp.type === 'deposit'">
           教程
         </span>
         <div :class="$style['btn-icon']">
-          <img
-            :src="$getCdnPath('/static/image/_new/common/btn_help.png')"
-            @click="$router.push('/mobile/mcenter/helpCenter/')"
-          />
+          <img :src="$getCdnPath('/static/image/_new/common/btn_help.png')" />
         </div>
       </div>
     </template>
