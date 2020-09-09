@@ -129,9 +129,9 @@
       >
         <div :class="$style['bank-card-cell']">
           {{ $text("S_WITHDRAW_ACCOUNT02", "提现帐号") }}
-          <!-- 會員首次出款 + 需用銀行卡提現一次(強制銀行卡出款) -->
+          <!-- 會員首次出款 or 需用銀行卡提現一次(強制銀行卡出款) -->
           <span
-            v-if="isFirstWithdraw && forceStatus === 1"
+            v-if="!isFirstWithdraw || forceStatus === 1"
             :class="$style['withdraw-status-tip']"
           >
             银行卡提现一次，开通数字货币提现功能
@@ -139,7 +139,7 @@
 
           <!-- 非首次出款 + 強制使用 CGPay 出款 -->
           <span
-            v-if="!isFirstWithdraw && forceStatus === 2"
+            v-else-if="forceStatus === 2"
             :class="$style['withdraw-status-tip']"
           >
             仅限使用 CGPay 出款
@@ -148,6 +148,7 @@
 
         <!-- 列出所有帐号 -->
         <!-- Question: 如果強制使用銀行卡出款，是否數字貨幣卡片 allow 狀態會為 false ? -->
+        <!-- disable 的狀態需要與 RD5 請示 -->
         <div
           v-for="item in allWithdrawAccount"
           :class="[
@@ -605,6 +606,7 @@ export default {
           localStorage.removeItem("tmp_w_rule");
         });
 
+        // this.actionSetIsLoading(false);
         this.isLoading = false;
       }
     }

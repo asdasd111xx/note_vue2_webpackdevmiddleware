@@ -12,7 +12,7 @@
           <img
             :src="
               $getCdnPath(
-                `/static/image/_new/mcenter/moneyDetail/icon_${currentCategory.key}.png`
+                `/static/image/${themeTPL}/mcenter/moneyDetail/icon_${currentCategory.key}.png`
               )
             "
           />
@@ -58,6 +58,9 @@ export default {
     ...mapGetters({
       siteConfig: "getSiteConfig"
     }),
+    themeTPL() {
+      return this.siteConfig.MOBILE_WEB_TPL;
+    },
     $style() {
       const style = this[`$style_${this.siteConfig.MOBILE_WEB_TPL}`] || this.$style_porn1;
       return style;
