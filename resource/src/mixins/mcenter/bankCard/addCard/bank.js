@@ -94,7 +94,7 @@ export default {
         }
     },
     methods: {
-        ...mapActions(['actionSetUserdata', 'actionVerificationFormData']),
+        ...mapActions(['actionSetUserdata', 'actionVerificationFormData', 'actionVerificationFormData']),
         sendData() {
             if (
                 this.addBankCardStep === "one" &&
@@ -156,12 +156,9 @@ export default {
             }
 
             if (key === "account") {
-                const re = /[^0-9]/g;
-
-                this.formData.account = value
-                    .replace(" ", "")
-                    .trim()
-                    .replace(re, "");
+                this.actionVerificationFormData({ target: 'bankCard', value: value }).then((val => {
+                    this.formData.account = val;
+                }));
             }
 
             this.NextStepStatus = Object.keys(this.formData).every(key => {
