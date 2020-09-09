@@ -31,7 +31,7 @@ export default {
     headerConfig() {
       return {
         prev: true,
-        onClick: () => { this.$router.back(); },
+        onClick: () => { this.$router.push('/mobile/mcenter/home'); },
         title: this.$text("S_PERSON_INFO", "个人资料"),
       };
     },
