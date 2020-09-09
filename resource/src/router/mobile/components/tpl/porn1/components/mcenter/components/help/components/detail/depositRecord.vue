@@ -1,5 +1,12 @@
 <template>
-  <div :class="$style['detail-wrap']">
+  <div
+    :class="[
+      $style['detail-wrap'],
+      {
+        [$style['ey1']]: theme === 'ey1'
+      }
+    ]"
+  >
     <div v-if="data" :class="$style['detail-content-wrap']">
       <div v-for="(item, index) in data" :class="$style['detail-block']">
         <div :class="[$style['detail-cell'], $style['item-status']]">
@@ -79,7 +86,12 @@
       />
       <div :class="$style['tips']">暂时没有新的充值记录</div>
       <div
-        :class="$style['btn-deposit']"
+        :class="[
+          $style['btn-deposit'],
+          {
+            [$style['ey1']]: theme === 'ey1'
+          }
+        ]"
         @click="$router.push('/mobile/mcenter/deposit')"
       >
         立即充值
@@ -128,8 +140,12 @@ export default {
   computed: {
     ...mapGetters({
       loginStatus: 'getLoginStatus',
-      memInfo: 'getMemInfo'
-    })
+      memInfo: 'getMemInfo',
+      siteConfig: "getSiteConfig",
+    }),
+    theme() {
+      return this.siteConfig.MOBILE_WEB_TPL;
+    }
   },
   methods: {
     ...mapActions([
@@ -154,7 +170,6 @@ export default {
         params: params
       }).then((res) => {
         if (res && res.data && res.data.result === 'ok') {
-          console.log(res.data)
           this.data = res.data.ret;
           this.total = res.data.pagination.total;
         }

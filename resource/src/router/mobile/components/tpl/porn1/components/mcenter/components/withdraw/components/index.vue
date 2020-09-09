@@ -416,7 +416,7 @@
           v-model="withdrawPwd"
           autocomplete="off"
           placeholder="请输入提现密码(限定4位数字)"
-          type="password"
+          type="tel"
           maxlength="4"
           @input="verification('withdrawPwd', $event.target.value)"
         />
@@ -885,7 +885,7 @@ export default {
         ) {
           this.errTips = `单笔提现金额最小为${withdrawMin}元，最大为${
             withdrawMax ? `${withdrawMax}元` : "无限制"
-          }`;
+            }`;
           return;
         }
 

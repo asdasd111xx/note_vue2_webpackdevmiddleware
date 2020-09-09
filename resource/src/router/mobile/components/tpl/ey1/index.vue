@@ -7,7 +7,10 @@
       <router-view />
     </transition>
     <notification />
-    <message v-if="globalMessage" :msgObj="globalMessage" />
+    <message
+      v-if="globalMessage && $route.name !== 'launch'"
+      :msgObj="globalMessage"
+    />
   </div>
 </template>
 
