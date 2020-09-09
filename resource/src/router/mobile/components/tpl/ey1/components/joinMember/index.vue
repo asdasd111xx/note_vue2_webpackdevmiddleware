@@ -84,6 +84,11 @@ export default {
   font-weight: 700;
   text-align: center;
   color: #ffffff;
+
+  &.disabled {
+    background-color: #fdcccc;
+    pointer-events: none;
+  }
 }
 
 .js-nc-check-bar {
