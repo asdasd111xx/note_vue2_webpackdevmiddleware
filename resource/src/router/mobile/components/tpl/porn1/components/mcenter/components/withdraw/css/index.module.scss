@@ -95,8 +95,10 @@
     }
 
     >span {
-        margin-left: 3px;
-        width: 100%;
+        padding: 0 10px;
+        width: 80%;
+        overflow: hidden;
+        text-overflow: ellipsis;
 
         &.withdraw-status-tip {
             color: #e42a30;

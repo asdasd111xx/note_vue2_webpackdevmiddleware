@@ -260,6 +260,7 @@ export default {
       });
     },
     onSearchBet(username) {
+      if (username === this.selectedUser) return;
       this.selectedUser = username;
       this.onInquireBet();
     },

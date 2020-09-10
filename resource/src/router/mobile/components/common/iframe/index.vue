@@ -6,6 +6,7 @@
         [$style['has-header']]: headerConfig.hasHeader
       }
     ]"
+    :style="{ height: `calc(100vh - ${iframeHeight})` }"
   >
     <div v-if="headerConfig.hasHeader" id="header" :class="$style['header']">
       <div :class="$style['btn-prev']" @click="headerConfig.onClick">
@@ -73,8 +74,28 @@ export default {
             userid: this.memInfo.user.id
           },
         }).then(res => {
-          console.log(res)
           this.src = res.data;
+        })
+        break;
+      case 'THIRD':
+        axios({
+          method: 'get',
+          url: '/api/v1/c/link/customize',
+          params: {
+            code: 'fengniao',
+            client_uri: localStorage.getItem('iframe-third-url')
+          }
+        }).then(res => {
+          this.isLoading = false;
+          if (res && res.data && res.data.ret && res.data.ret.uri) {
+            this.src = res.data.ret.uri;
+          } else {
+          }
+        }).catch(error => {
+          this.isLoading = false;
+          if (error && error.data && error.date.msg) {
+            this.actionSetGlobalMessage({ msg: error.data.msg });
+          }
         })
         break;
       default:
@@ -88,13 +109,26 @@ export default {
       siteConfig: 'getSiteConfig',
       memInfo: 'getMemInfo',
     }),
+    iframeHeight() {
+      let result = [];
+      if (this.headerConfig.hasHeader) {
+        result.push(43);
+      }
+
+      if (this.headerConfig.hasFooter) {
+        result.push(65);
+      }
+      console.log(result)
+      return result.length > 0 ? result.reduce((a, b) => a + b) : 0;
+    },
     themeTPL() {
       return this.siteConfig.MOBILE_WEB_TPL;
     },
     headerConfig() {
       const query = this.$route.query;
       return {
-        hasHeader: query.hasHeader === undefined ? false : query.hasHeader,
+        hasHeader: query.hasHeader === undefined ? false : query.hasHeader === 'true',
+        hasFooter: query.hasFooter === undefined ? false : query.hasFooter === 'true',
         prev: query.prev === undefined ? true : query.prev,
         title: query.title || '',
         onClick: () => {
@@ -147,13 +181,12 @@ export default {
 @import "~@/css/variable.scss";
 
 .iframe-wrap {
-  height: calc(100vh - 65px);
+  height: calc(100vh);
   width: 100%;
   overflow-x: hidden;
 
   &.has-header {
     padding-top: 43px;
-    height: calc(100vh - 108px);
   }
 }
 
