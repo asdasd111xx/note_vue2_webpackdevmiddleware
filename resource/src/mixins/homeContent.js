@@ -475,31 +475,29 @@ export default {
                         return;
                     }
 
-                    if (game.type === 'PPV') {
-                        this.$router.push(`/mobile/iframe/PPV?hasHeader=true&title=${game.name}`);
-                        return;
-                    }
-
-                    let newWindow = window.open('');
-                    yaboRequest({
-                        method: 'get',
-                        url: `${this.siteConfig.YABO_API_DOMAIN}/thirdparty/url`,
-                        headers: {
-                            'x-domain': this.memInfo.user.domain
-                        },
-                        params: {
-                            type: game.type,
-                            userid: this.memInfo.user.id
-                        },
-                    }).then(res => {
-                        if (res.data) {
-                            newWindow.location.href = res.data;
-                        } else {
-                            newWindow.close();
-                        }
-                    }).catch(error => {
-                        newWindow.close();
-                    })
+                    this.$router.push(`/mobile/iframe/${game.type}?&title=${game.name}`);
+                    return;
+                    // 調整iframe內嵌
+                    // let newWindow = window.open('');
+                    // yaboRequest({
+                    //     method: 'get',
+                    //     url: `${this.siteConfig.YABO_API_DOMAIN}/thirdparty/url`,
+                    //     headers: {
+                    //         'x-domain': this.memInfo.user.domain
+                    //     },
+                    //     params: {
+                    //         type: game.type,
+                    //         userid: this.memInfo.user.id
+                    //     },
+                    // }).then(res => {
+                    //     if (res.data) {
+                    //         newWindow.location.href = res.data;
+                    //     } else {
+                    //         newWindow.close();
+                    //     }
+                    // }).catch(error => {
+                    //     newWindow.close();
+                    // })
 
                     return;
                 case 'YV':
