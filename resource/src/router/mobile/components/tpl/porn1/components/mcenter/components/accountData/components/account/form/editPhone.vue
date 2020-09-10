@@ -233,7 +233,7 @@ export default {
     },
     newPhone() {
       return {
-        label: this.memInfo.phone.phone
+        label: this.memInfo.phone.phone && !this.isfromWithdraw
           ? this.$text('S_NEW_PHONE')
           : this.$text('S_TEL'),
         isShow: true
