@@ -104,6 +104,7 @@
               :placeholder="formData['keyring'].placeholder"
               @input="verification('keyring')"
               @blur="verification('keyring')"
+              type="tel"
             />
             <div
               :class="[
@@ -341,8 +342,8 @@ export default {
 
       if (key === "keyring") {
         target.value = target.value.replace(' ', '')
-          .trim()
-          .replace(/[^0-9A-Za-z]/g, '');
+          .replace(/[^0-9]/g, '')
+          .substring(0, 6);
       }
 
       let check = true;
