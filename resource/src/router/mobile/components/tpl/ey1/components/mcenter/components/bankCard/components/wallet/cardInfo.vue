@@ -39,8 +39,9 @@
                 </div>
 
                 <div :class="$style['card-number']">
-                  {{ item.address }}
-                </div>
+                  {{ item.address.slice(0,4) }} **** ****
+                 <span>{{ item.address.slice(-4) }}</span>
+                 </div>
               </div>
             </div>
 

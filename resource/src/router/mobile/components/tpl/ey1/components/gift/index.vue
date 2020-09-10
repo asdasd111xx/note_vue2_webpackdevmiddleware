@@ -25,9 +25,7 @@
             "
             :class="$style['icon-next']"
           >
-            <a :href="item.url" target="_blank">
-              <img src="/static/image/ey1/common/btn_next.png"
-            /></a>
+            <img src="/static/image/ey1/common/btn_next.png" />
           </div>
           <div v-else :class="$style['incoming']">
             即将开业 敬请期待
