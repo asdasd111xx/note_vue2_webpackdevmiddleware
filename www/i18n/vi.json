@@ -1028,6 +1028,7 @@
     "S_DEPOSIT_RECORD": "Lịch sử nạp tiền trong vòng 8 ngày",
     "S_SUBMIT_DEPOSIT": "提交资料",
     "S_ORDER_NUMBER": "Mã đơn hàng",
+    "S_ORDER_NUMBER_2": "订单号",
     "S_LAST_SUBMIT_TIME": "Lần gửi cuối cùng",
     "S_RECORD_TIP01": "sẽ lấy thông tin nạp tiền lần cuối của bạn để xét duyệt",
     "S_ENTER_SHORT": "Gửi đi",
@@ -1708,5 +1709,7 @@
     "S_HISTORY_ACCOUNT": "历史帐号",
     "S_HISTORY_WALLET": "历史钱包",
     "S_RECEIVE_REBATE": "可领返水",
-    "S_ALL_GET": "一键全领"
+    "S_ALL_GET": "一键全领",
+    "S_RECEIVE_WITHDRAW_ADDRESS": "收款钱包位址",
+    "S_NEED_TRANSFER_IN_COUNT": "需转入数量"
 }

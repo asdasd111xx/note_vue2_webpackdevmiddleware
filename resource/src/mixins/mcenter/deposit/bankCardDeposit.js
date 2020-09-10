@@ -639,7 +639,9 @@ export default {
       this.isErrorMoney = false;
       this.isSelectValue = '';
       this.nameCheckFail = false;
-      this.walletData['CGPay'].password = ""
+      this.walletData['CGPay'].password = '';
+      this.cryptoMoney = '--'
+      this.resetTimerStatus();
 
       Object.keys(this.speedField).forEach((info) => {
         if (info === 'depositMethod') {
@@ -789,9 +791,8 @@ export default {
       }
 
       // CGPay：選擇支付密碼
-      if ( this.curPayInfo.payment_method_id === 16 &&
-           this.walletData['CGPay'].method === 0)
-      {
+      if (this.curPayInfo.payment_method_id === 16 &&
+        this.walletData['CGPay'].method === 0) {
         paramsData = {
           ...paramsData,
           wallet_token: +this.walletData['CGPay'].password
@@ -868,16 +869,15 @@ export default {
           }
 
           Object.keys(response.ret).forEach((info) => {
-            if (info === 'deposit' || info === 'wallet' || info === 'remit') {
+            if (info === 'deposit' || info === 'wallet' || info === 'remit' || info === 'crypto') {
               return;
             }
 
-            if (response.ret[info] && (info === 'is_deposit' || info === 'is_wallet' || info === 'is_remit')) {
+            if (response.ret[info] && (info === 'is_deposit' || info === 'is_wallet' || info === 'is_crypto' || info === 'is_remit')) {
               const typeKey = info.split('_')[1];
 
               this.orderData.orderInfo = response.ret[typeKey];
               this.orderData.methodType = typeKey;
-              return;
             }
 
             this.orderData[info] = response.ret[info];
@@ -885,6 +885,21 @@ export default {
 
           if (_isPWA) {
             newWindow.close();
+          }
+
+          // CGPay 不需要進入詳細入款單
+          if (this.curPayInfo.payment_method_id === 16) {
+            // 將「confirmOneBtn」彈窗打開
+            this.confirmPopupObj = {
+              isShow: true,
+              msg: '支付成功',
+              btnText: '关闭',
+              cb: () => {
+                this.confirmPopupObj.isShow = false
+              }
+            }
+
+            return { status: 'third' };
           }
 
           return { status: 'local' };
@@ -1032,10 +1047,19 @@ export default {
         if (this.limitTime && !this.timer) {
           this.timer = setInterval(() => {
             if (this.limitTime === 0) {
-              clearInterval(this.timer);
-              this.limitTime = 0;
-              this.isClickCoversionBtn = false;
-              this.timer = null;
+              this.resetTimerStatus();
+
+              // 將「confirmOneBtn」彈窗打開
+              this.confirmPopupObj = {
+                isShow: true,
+                msg: '汇率已失效',
+                btnText: '刷新汇率',
+                cb: () => {
+                  this.confirmPopupObj.isShow = false
+                  this.convertCryptoMoney()
+                }
+              }
+
               return;
             }
             this.limitTime -= 1;
@@ -1055,6 +1079,12 @@ export default {
       }
 
       return `${minutes}:${sec}`;
+    },
+    resetTimerStatus() {
+      clearInterval(this.timer);
+      this.timer = null;
+      this.limitTime = 0;
+      this.isClickCoversionBtn = false;
     }
   }
 };
