@@ -1,5 +1,5 @@
 <template>
-  <mobile-container>
+  <mobile-container :has-footer="hasFooter">
     <div slot="content" :class="$style['content-wrap']">
       <iframe-content />
     </div>
@@ -14,6 +14,11 @@ export default {
   components: {
     mobileContainer,
     iframeContent
+  },
+  computed: {
+    hasFooter() {
+      return this.$route.query.hasFooter !== undefined ? this.$route.query.hasFooter === 'true' : true;
+    }
   },
 };
 

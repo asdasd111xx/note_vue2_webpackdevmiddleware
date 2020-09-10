@@ -199,32 +199,10 @@ export default {
     ]),
     getThridUrl(url, target) {
       this.isLoading = true;
-      let newWindow = window.open(' ');
-
-      axios({
-        method: 'get',
-        url: '/api/v1/c/link/customize',
-        params: {
-          code: 'fengniao',
-          client_uri: url
-        }
-      }).then(res => {
-        this.isLoading = false;
-        if (res && res.data && res.data.ret && res.data.ret.uri) {
-          newWindow.location = res.data.ret.uri;
-        } else {
-          newWindow.close();
-        }
-      }).catch(error => {
-        this.isLoading = false;
-        newWindow.close();
-        if (error && error.data && error.date.msg) {
-          this.actionSetGlobalMessage({ msg: error.data.msg });
-        }
-      })
+      localStorage.setItem('iframe-third-url', url);
+      this.$router.push(`/mobile/iframe/third?hasFooter=false`);
     },
     linkTo(item) {
-      console.log(item)
       if (item.login && !this.loginStatus) {
         this.$router.push('/mobile/login');
         return;
@@ -244,9 +222,6 @@ export default {
       }
       else if (item.thirdUrl) {
         this.getThridUrl(item.thirdUrl);
-      }
-      else {
-        // this.actionSetGlobalMessage({ msg: '即将开业 敬请期待' });
       }
     }
   },
