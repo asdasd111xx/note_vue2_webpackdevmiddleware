@@ -46,8 +46,8 @@ export default {
           //     this.$router.back();
           //     return;
           //   }
-
-          this.$router.push("/mobile/mcenter");
+          this.$router.back();
+          //this.$router.push("/mobile/mcenter/makeMoney");
         }
       };
     },

@@ -1,6 +1,6 @@
 export default {
     normal: {
-        iframeEy1: () => import(/* webpackChunkName: 'iframeEy1' */'../../../components/common/iframe'),
+        iframeEy1: () => import(/* webpackChunkName: 'iframeEy1' */'../../tpl/ey1/components/iframe'),
         homeEy1: () => import(/* webpackChunkName: 'homeEy1' */'../../tpl/ey1/components/home'),
         loginEy1: () => import(/* webpackChunkName: 'loginEy1' */'../../tpl/ey1/components/login'),
         casinoEy1: () => import(/* webpackChunkName: 'casinoEy1' */'../../tpl/ey1/components/casino'),

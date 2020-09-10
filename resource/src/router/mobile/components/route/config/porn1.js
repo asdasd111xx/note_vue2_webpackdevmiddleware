@@ -1,6 +1,6 @@
 export default {
     normal: {
-        iframePorn1: () => import(/* webpackChunkName: 'iframePorn1' */'../../../components/common/iframe'),
+        iframePorn1: () => import(/* webpackChunkName: 'iframePorn1' */'../../tpl/porn1/components/iframe'),
         homePorn1: () => import(/* webpackChunkName: 'homePorn1' */'../../tpl/porn1/components/home'),
         loginPorn1: () => import(/* webpackChunkName: 'loginPorn1' */'../../tpl/porn1/components/login'),
         casinoPorn1: () => import(/* webpackChunkName: 'casinoPorn1' */'../../tpl/porn1/components/casino'),

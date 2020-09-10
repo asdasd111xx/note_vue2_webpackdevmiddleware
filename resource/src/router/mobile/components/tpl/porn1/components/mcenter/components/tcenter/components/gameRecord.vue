@@ -46,8 +46,12 @@ export default {
           //     this.$router.back();
           //     return;
           //   }
-
-          this.$router.push("/mobile/mcenter");
+          if (this.$route.params.page === "bet"){
+            this.$router.push("/mobile/mcenter/tcenter/gameRecord/main");
+          }else{
+            this.$router.push("/mobile/mcenter");
+          }
+          
         }
       };
     },

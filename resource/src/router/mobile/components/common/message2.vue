@@ -106,9 +106,15 @@ export default {
           // 充值
           case "C50101":  // 轉帳需首充 暫時
           case "C50100":
+          case "C650018":
           // 只需充值一次 开通转让功能
           case "recharge_deposit":
             this.$router.push(`/mobile/mcenter/deposit?redirect=${redirect ? redirect : 'home'}`);
+            break;
+          // 只需提现一次 开通转让功能
+          case "C650023":
+          case "recharge_withdraw":
+            this.$router.push(`/mobile/mcenter/withdraw`);
             break;
           // 銀行卡
           case "C50099":
