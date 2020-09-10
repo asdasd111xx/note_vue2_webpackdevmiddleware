@@ -188,7 +188,7 @@ export default {
 
     return {
       fromDate: Vue.moment(now)
-        .add(-60, "days")
+        .add(-29, "days")
         .format("YYYY-MM-DD"),
       endDate: Vue.moment(now).format("YYYY-MM-DD"),
       inqGame: "",
@@ -212,8 +212,8 @@ export default {
       'actionSetGlobalMessage'
     ]),
     limitDate(key, val) {
-      let _value = Vue.moment(val);
-      let _today = Vue.moment(new Date()).add(-30, 'days');
+      let _value = Vue.moment(val).format('YYYY/MM/DD');
+      let _today = Vue.moment(new Date()).add(-29, 'days').format('YYYY/MM/DD');
 
       if (_value < _today) {
         this.checkDate = false;
