@@ -475,6 +475,11 @@ export default {
                         return;
                     }
 
+                    if (game.type === 'PPV') {
+                        this.$router.push(`/mobile/iframe/PPV?hasHeader=true&title=${game.name}`);
+                        return;
+                    }
+
                     let newWindow = window.open('');
                     yaboRequest({
                         method: 'get',
