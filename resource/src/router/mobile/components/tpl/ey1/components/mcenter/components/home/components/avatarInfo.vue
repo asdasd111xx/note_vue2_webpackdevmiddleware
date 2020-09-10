@@ -82,12 +82,9 @@ export default {
 
       var nowUTC = moment.utc();
       var createUTC = moment.utc(this.memInfo.user.created_at);
-      var newDays = nowUTC.diff(createUTC, 'days');
+      var newDays = nowUTC.diff(createUTC, 'days');      
 
-      if(newDays==0)
-
-      this.day = (newDays==0) ? 1 : newDays;//{{ `加入亿元第${day + 1}天` }}
-      //console.log('v1.0.24 ( '+ oldDays +'days ) , v1.0.26 ( ' + newDays +'days )');
+      this.day = (newDays==0) ? 1 : newDays;//{{ `加入亿元第${day + 1}天` }}      
     }
   },
   methods: {

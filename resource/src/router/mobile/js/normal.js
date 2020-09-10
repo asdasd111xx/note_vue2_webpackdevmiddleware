@@ -183,4 +183,9 @@ export default [
         name: 'withdrawAccount',
         component
     },
+    {
+        path: 'iframe/:page?',
+        name: 'iframe',
+        component
+    },
 ];

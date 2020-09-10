@@ -1,0 +1,209 @@
+<template>
+  <div :class="$style['container']">
+    <div v-if="headerConfig.hasHeader" id="header" :class="$style['header']">
+      <div :class="$style['btn-prev']" @click="headerConfig.onClick">
+        <img
+          :src="$getCdnPath(`/static/image/${themeTPL}/common/btn_back.png`)"
+        />
+      </div>
+      <div v-if="headerConfig.title" :class="[$style.title]">
+        <div :class="[[$style.title], $style[source]]">
+          {{ headerConfig.title }}
+        </div>
+      </div>
+    </div>
+    <iframe
+      :ref="'iframe'"
+      :class="[
+        $style['iframe'],
+        {
+          [$style['has-header']]: headerConfig.hasHeader
+        }
+      ]"
+      :src="src"
+      @load="onLoadiframe"
+      allow="fullscreen"
+      allowfullscreen="allowfullscreen"
+      frameborder="0"
+      crossorigin
+    />
+    <page-loading :is-show="isLoading" />
+  </div>
+</template>
+
+<script>
+import { mapGetters, mapActions } from 'vuex';
+import axios from 'axios';
+import yaboRequest from '@/api/yaboRequest';
+
+export default {
+  data() {
+    return {
+      isLoading: true,
+      src: '',
+    }
+  },
+  components: {
+    pageLoading: () => import(/* webpackChunkName: 'pageLoading' */ '@/router/mobile/components/common/pageLoading'),
+  },
+  created() {
+    // localStorage.setItem('open-game-link', 'https://star.xbb-slot-test.com:8888/starfruit/slot/1000030?lang=zh-cn&sid=8eedfbc72ec4e46dc8e83fcafee5c7afe292dcc40546150ce9dffdd54116ff14')
+  },
+  mounted() {
+    const params = this.$route.params;
+    console.log(params)
+    switch (params.page.toUpperCase()) {
+      case 'PPV':
+        yaboRequest({
+          method: 'get',
+          url: `${this.siteConfig.YABO_API_DOMAIN}/thirdparty/url`,
+          headers: {
+            'x-domain': this.memInfo.user.domain
+          },
+          params: {
+            type: 'PPV',
+            userid: this.memInfo.user.id
+          },
+        }).then(res => {
+          console.log(res)
+          this.src = res.data;
+        })
+        break;
+      default:
+        this.$router.back();
+        break;
+    }
+  },
+  computed: {
+    ...mapGetters({
+      loginStatus: 'getLoginStatus',
+      siteConfig: 'getSiteConfig',
+      memInfo: 'getMemInfo',
+    }),
+    themeTPL() {
+      return this.siteConfig.MOBILE_WEB_TPL;
+    },
+    headerConfig() {
+      const query = this.$route.query;
+      return {
+        hasHeader: query.hasHeader === undefined ? false : query.hasHeader,
+        prev: query.prev === undefined ? true : query.prev,
+        title: query.title || '',
+        onClick: () => {
+          this.$router.push('/mobile/')
+          if (query.prev) {
+          }
+        }
+      };
+    },
+  },
+  watch: {
+
+  },
+  methods: {
+    ...mapActions([
+      'actionSetGlobalMessage'
+    ]),
+    onLoadiframe(event) {
+      console.log('onLoadiframe:', event)
+      console.log(this.$refs.iframe)
+      this.isLoading = false;
+      try {
+        window.addEventListener('message', function (event) {
+          console.log(event)
+        });
+        const self = this;
+        this.$refs.iframe.contentWindow.onbeforeunload = (e) => {
+          console.log(e)
+          // 取消預設關閉 取代成回上一頁
+          e.preventDefault();
+          e.stopPropagation();
+          //   self.$router.back();
+        }
+      } catch (e) {
+        console.log('onbeforeunload Catch:', e)
+      }
+    },
+    linkTo(item) {
+
+    }
+  },
+};
+</script>
+
+<style lang="scss" module>
+@import "~@/css/variable.scss";
+
+.container {
+  height: 100%;
+  width: 100%;
+  overflow-x: hidden;
+}
+
+.header {
+  margin: 0 auto;
+  max-width: $mobile_max_width;
+  position: fixed;
+  top: 0;
+  z-index: 3;
+  width: 100%;
+  height: 43px;
+  padding: 0 17px;
+  //   background: linear-gradient(#fe2a2a, #b60303);
+  background: #c7c7cc;
+  color: #ffffff;
+  text-align: center;
+  border-bottom: 1px solid #eee;
+}
+
+.btn-prev {
+  position: absolute;
+  top: 0;
+  bottom: 0;
+  left: 12px;
+  width: 20px;
+  height: 20px;
+  margin: auto;
+  z-index: 2;
+
+  > img {
+    display: block;
+    width: 100%;
+  }
+}
+
+.wrap {
+  position: absolute;
+  top: 0;
+  left: 0;
+  width: 100%;
+}
+
+.title {
+  height: 43px;
+  line-height: 43px;
+  color: #ffffff;
+  font-size: 17px;
+  font-weight: 500;
+  margin: 0 auto;
+}
+
+.iframe {
+  //   overflow: auto !important;
+  //   -webkit-overflow-scrolling: touch !important;
+
+  background-color: #f2f2f2;
+  border: none;
+  display: block;
+  height: 100%;
+  margin: 0 auto;
+  max-width: $mobile_max_width;
+  min-width: 0;
+  padding: 0;
+  width: 100%;
+
+  &.has-header {
+    padding-top: 43px;
+  }
+}
+</style>

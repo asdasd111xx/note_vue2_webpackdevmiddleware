@@ -53,7 +53,7 @@ export default (params, success = () => { }, fail = () => { }) => {
         }, 200)
     }
 
-    game.gameLink({
+    return game.gameLink({
         params: temp,
         errorAlert: false,
         success: (response) => {
@@ -73,7 +73,6 @@ export default (params, success = () => { }, fail = () => { }) => {
             if (vendor === "lg_live" && String(kind) === "2" && gameType && gameType === "R") {
                 query = '&customize=yabo&tableType=3310';
             }
-
             localStorage.setItem("open-game-link", ret.url + query);
 
             // 開啟遊戲時強制關閉下方最愛遊戲框
