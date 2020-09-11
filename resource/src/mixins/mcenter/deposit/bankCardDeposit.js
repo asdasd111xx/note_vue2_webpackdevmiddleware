@@ -889,7 +889,7 @@ export default {
           }
 
           // CGPay 不需要進入詳細入款單
-          if (this.curPayInfo.payment_method_id === 16) {
+          if (this.curPayInfo.payment_method_id === 16 && response.result === 'ok') {
             // 將「confirmOneBtn」彈窗打開
             this.confirmPopupObj = {
               isShow: true,
@@ -1050,16 +1050,17 @@ export default {
             if (this.limitTime === 0) {
               this.resetTimerStatus();
 
+              // 需重新判斷
               // 將「confirmOneBtn」彈窗打開
-              this.confirmPopupObj = {
-                isShow: true,
-                msg: '汇率已失效',
-                btnText: '刷新汇率',
-                cb: () => {
-                  this.confirmPopupObj.isShow = false
-                  this.convertCryptoMoney()
-                }
-              }
+              // this.confirmPopupObj = {
+              //   isShow: true,
+              //   msg: '汇率已失效',
+              //   btnText: '刷新汇率',
+              //   cb: () => {
+              //     this.confirmPopupObj.isShow = false
+              //     this.convertCryptoMoney()
+              //   }
+              // }
 
               return;
             }

@@ -566,7 +566,7 @@
                     @click="convertCryptoMoney"
                   >
                     {{
-                      limitTime > 0 ? `(${formatCountdownSec()})` : `汇率试算`
+                      limitTime > 0 ? `${formatCountdownSec()}` : `汇率试算`
                     }}
                   </div>
                 </div>
