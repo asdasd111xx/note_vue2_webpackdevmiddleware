@@ -88,6 +88,7 @@ export default {
         }).then(res => {
           this.isLoading = false;
           if (res && res.data && res.data.ret && res.data.ret.uri) {
+            console.log(res.data.ret.uri);
             this.src = res.data.ret.uri;
           }
         }).catch(error => {
@@ -108,6 +109,9 @@ export default {
       siteConfig: 'getSiteConfig',
       memInfo: 'getMemInfo',
     }),
+    type() {
+      return this.$route.params.page.toUpperCase();
+    },
     iframeHeight() {
       let result = [];
       if (this.headerConfig.hasHeader) {
@@ -131,9 +135,12 @@ export default {
         prev: query.prev === undefined ? true : query.prev,
         title: query.title || '',
         onClick: () => {
-          this.$router.push('/mobile/')
-          if (query.prev) {
+          if (this.type === 'THIRD') {
+            this.$router.push('/mobile/gift')
+            return;
           }
+
+          this.$router.push('/mobile/');
         }
       };
     },
