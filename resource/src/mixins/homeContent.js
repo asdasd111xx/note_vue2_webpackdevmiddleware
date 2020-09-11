@@ -41,6 +41,13 @@ export default {
             ]
         };
     },
+    watch: {
+        isReceive() {
+            this.$nextTick(() => {
+                this.onResize();
+            })
+        }
+    },
     computed: {
         ...mapGetters({
             siteConfig: 'getSiteConfig',

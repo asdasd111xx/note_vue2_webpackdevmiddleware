@@ -21,7 +21,7 @@ export default {
     methods: {
         linkToService() {
             let on_service_url = store && store.state && store.state.webInfo && store.state.webInfo.on_service_url;
-            localStorage.setItem('serviceUrl', on_service_url || 'https://31zfyq.italking.asia:8866/guest.php?gid=yb01&dmsrc=&lang=zh-cn');
+            localStorage.setItem('serviceUrl', on_service_url || 'https://yaboxxxcs.net/chat/text/chat_1A09E4.html?skill=8ae482827375169c017375f1528b2446');
 
             if (this.domain.site === "ey1") {
                 window.location.href = `/static/upup/ey1/index.html?username=${this.username}`;

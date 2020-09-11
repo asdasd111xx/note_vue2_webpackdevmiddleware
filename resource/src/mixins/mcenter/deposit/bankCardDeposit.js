@@ -636,11 +636,12 @@ export default {
       this.passRoad = [];
       this.curPassRoad = {};
       this.moneyValue = '';
+      this.isDisableDepositInput = false;
       this.isErrorMoney = false;
       this.isSelectValue = '';
       this.nameCheckFail = false;
       this.walletData['CGPay'].password = '';
-      this.cryptoMoney = '--'
+      this.cryptoMoney = '--';
       this.resetTimerStatus();
 
       Object.keys(this.speedField).forEach((info) => {

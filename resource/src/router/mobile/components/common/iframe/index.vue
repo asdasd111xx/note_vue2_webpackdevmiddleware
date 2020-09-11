@@ -111,8 +111,12 @@ export default {
       siteConfig: 'getSiteConfig',
       memInfo: 'getMemInfo',
     }),
-    type() {
-      return this.$route.params.page.toUpperCase();
+    originUrl() {
+      if (this.$route.params.page.toUpperCase() === 'THIRD') {
+        return '/mobile/gift';
+      }
+
+      return '/mobile/';
     },
     iframeHeight() {
       let result = [];
@@ -137,12 +141,7 @@ export default {
         prev: query.prev === undefined ? true : query.prev,
         title: query.title || '',
         onClick: () => {
-          if (this.type === 'THIRD') {
-            this.$router.push('/mobile/gift')
-            return;
-          }
-
-          this.$router.push('/mobile/');
+          this.$router.push(this.originUrl);
         }
       };
     },
@@ -155,7 +154,17 @@ export default {
       'actionSetGlobalMessage'
     ]),
     onListener(event) {
-      //   console.log(event)
+      //  需要監聽的白名單
+      let whiteList = [window.location.origin, ''];
+      if (whiteList.includes(event.origin) && event.data) {
+        let data = event.data;
+        switch (data.event) {
+          default:
+          case 'close':
+            this.$router.push(this.originUrl);
+            return;
+        }
+      }
     },
     onLoadiframe(event) {
       console.log('onLoadiframe:', event)
@@ -168,10 +177,10 @@ export default {
         window.addEventListener('message', this.onListener);
         const self = this;
         this.$refs.iframe.contentWindow.onbeforeunload = (e) => {
-          console.log(e)
-          // 取消預設關閉 取代成回上一頁
-          e.preventDefault();
-          e.stopPropagation();
+          //   console.log(e)
+          //   // 取消預設關閉 取代成回上一頁
+          //   e.preventDefault();
+          //   e.stopPropagation();
           //   self.$router.back();
         }
       } catch (e) {
