@@ -129,6 +129,9 @@ export default {
             ? this.$text("S_ADD_BANKCARD", "添加银行卡")
             : this.$text("S_ADD_DIGITAL_CURRENCY", "添加数字货币");
       }
+    },
+    isOneTab() {
+      return !this.userLevelObj.bank || !this.userLevelObj.virtual_bank;
     }
   },
   created() {
@@ -178,12 +181,9 @@ export default {
       }
     },
     showTab(value) {
-      this.isShowTab = value;
+      this.isShowTab = this.isOneTab ? false : value;
     },
     backPre() {
-      const isOneTab =
-        !this.userLevelObj.bank || !this.userLevelObj.virtual_bank;
-
       // 當頁面停留在卡片管理
       if (
         this.currentPage === "bankCardInfo" ||
@@ -192,7 +192,7 @@ export default {
         // 卡片管理-詳細頁面
         if (this.showDetail) {
           this.showDetail = false;
-          this.isShowTab = isOneTab ? false : true;
+          this.isShowTab = this.isOneTab ? false : true;
           return;
         }
         this.$router.back();
@@ -220,12 +220,12 @@ export default {
 
       // 當頁面停留在添加卡片
       if (this.currentKind === "bank") {
-        this.isShowTab = isOneTab ? false : true;
-        this.currentPage = "bankCardInfo";
+        this.isShowTab = this.isOneTab ? false : true;
+        this.setCurrentTab(0);
         return;
       } else if (this.currentKind === "wallet") {
-        this.isShowTab = isOneTab ? false : true;
-        this.currentPage = "walletCardInfo";
+        this.isShowTab = this.isOneTab ? false : true;
+        this.setCurrentTab(1);
         return;
       }
 

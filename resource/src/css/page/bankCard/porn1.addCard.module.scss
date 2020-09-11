@@ -195,6 +195,10 @@
     background-image: -webkit-linear-gradient(right, #e9dacb, #eee5db);
     background: linear-gradient(right, #e9dacb, #eee5db);
   }
+
+  &.hidden {
+    display: none;
+  }
 }
 
 // 聯繫客服
