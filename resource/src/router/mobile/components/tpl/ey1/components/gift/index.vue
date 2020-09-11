@@ -197,10 +197,10 @@ export default {
     ...mapActions([
       'actionSetGlobalMessage'
     ]),
-    getThridUrl(url, target) {
+    getThridUrl(target) {
       this.isLoading = true;
-      localStorage.setItem('iframe-third-url', url);
-      this.$router.push(`/mobile/iframe/third?hasFooter=false`);
+      localStorage.setItem('iframe-third-url', target.thirdUrl);
+      this.$router.push(`/mobile/iframe/third?hasFooter=false&hasHeader=true&title=${target.name}`);
     },
     linkTo(item) {
       if (item.login && !this.loginStatus) {
@@ -221,7 +221,7 @@ export default {
         this.$router.push(`/mobile/gift/detail/${item.params}`);
       }
       else if (item.thirdUrl) {
-        this.getThridUrl(item.thirdUrl);
+        this.getThridUrl(item);
       }
     }
   },

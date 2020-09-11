@@ -131,7 +131,7 @@
           {{ $text("S_WITHDRAW_ACCOUNT02", "提现帐号") }}
           <!-- 會員首次出款 or 需用銀行卡提現一次(強制銀行卡出款) -->
           <span
-            v-if="!isFirstWithdraw || forceStatus === 1"
+            v-if="isFirstWithdraw || forceStatus === 1"
             :class="$style['withdraw-status-tip']"
           >
             银行卡提现一次，开通数字货币提现功能
@@ -317,36 +317,54 @@
         v-if="allWithdrawAccount && allWithdrawAccount.length !== 0"
         :class="[$style['actual-money']]"
       >
-        <div>{{ selectedCard.name }}到帐金额</div>
-        <div>
-          <span :class="$style['money-currency']">¥</span>
-          <span :class="$style['money-currency']">
-            {{
-              selectedCard.withdrawType !== "crypto_id"
-                ? actualMoney.toFixed(2)
-                : cryptoMoney
-            }}
-          </span>
+        <span :class="$style['money-currency']">
+          {{
+            `${
+              selectedCard.name && selectedCard.withdrawType !== "crypto_id"
+                ? selectedCard.name
+                : ""
+            }${
+              selectedCard.name && selectedCard.withdrawType !== "crypto_id"
+                ? "到帐"
+                : "实际提现金额"
+            }`
+          }}
+        </span>
+        <span :class="$style['money-currency']">¥</span>
+        <span :class="$style['money-currency']">
+          {{ actualMoney.toFixed(2) }}
+        </span>
 
-          <div
-            v-if="selectedCard.withdrawType === 'crypto_id'"
-            :class="[
-              $style['conversion-btn'],
-              {
-                [$style['disable']]: isClickCoversionBtn
-              },
-              {
-                [$style['unInput']]: !withdrawValue
-              }
-            ]"
-            @click="convertCryptoMoney"
-          >
-            {{ countdownSec > 0 ? `(${formatCountdownSec()})` : `汇率试算` }}
-          </div>
+        <span :class="[$style['serial']]" @click="toggleSerial">
+          详情
+        </span>
+      </div>
 
-          <span :class="[$style['serial']]" @click="toggleSerial">
-            详情
-          </span>
+      <div
+        v-if="selectedCard.withdrawType === 'crypto_id'"
+        :class="$style['crypto-block']"
+      >
+        <span :class="$style['money-currency']">¥</span>
+        <span :class="$style['money-currency']">
+          {{ selectedCard.name }}到帐
+        </span>
+        <span :class="$style['money-currency']">
+          {{ cryptoMoney }}
+        </span>
+
+        <div
+          :class="[
+            $style['conversion-btn'],
+            {
+              [$style['disable']]: isClickCoversionBtn
+            },
+            {
+              [$style['unInput']]: !withdrawValue || +actualMoney <= 0
+            }
+          ]"
+          @click="convertCryptoMoney"
+        >
+          {{ countdownSec > 0 ? `${formatCountdownSec()}` : `汇率试算` }}
         </div>
       </div>
     </template>
@@ -887,7 +905,7 @@ export default {
         ) {
           this.errTips = `单笔提现金额最小为${withdrawMin}元，最大为${
             withdrawMax ? `${withdrawMax}元` : "无限制"
-            }`;
+          }`;
           return;
         }
 

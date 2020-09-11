@@ -89,7 +89,6 @@ export default {
           this.isLoading = false;
           if (res && res.data && res.data.ret && res.data.ret.uri) {
             this.src = res.data.ret.uri;
-          } else {
           }
         }).catch(error => {
           this.isLoading = false;
@@ -118,7 +117,7 @@ export default {
       if (this.headerConfig.hasFooter) {
         result.push(65);
       }
-      console.log(result)
+
       return result.length > 0 ? result.reduce((a, b) => a + b) : 0;
     },
     themeTPL() {
@@ -147,7 +146,7 @@ export default {
       'actionSetGlobalMessage'
     ]),
     onListener(event) {
-      console.log(event)
+      //   console.log(event)
     },
     onLoadiframe(event) {
       console.log('onLoadiframe:', event)

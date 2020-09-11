@@ -119,7 +119,8 @@
   z-index: 5;
   background: #fff;
   list-style: none;
-  overflow: hidden auto;
+  overflow-x: hidden;
+  overflow-y: auto;
 
   &.game {
     min-height: 400px;

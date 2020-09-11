@@ -1040,6 +1040,7 @@
     "S_DEPOSIT_RECORD": "8日内の入金履歴",
     "S_SUBMIT_DEPOSIT": "提交资料",
     "S_ORDER_NUMBER": "受付番号",
+    "S_ORDER_NUMBER_2": "订单号",
     "S_LAST_SUBMIT_TIME": "上次提交时间",
     "S_RECORD_TIP01": "将以您最后提交时的充值资料做审核",
     "S_ENTER_SHORT": "送り出す",
@@ -1717,5 +1718,7 @@
     "S_HISTORY_ACCOUNT": "历史帐号",
     "S_HISTORY_WALLET": "历史钱包",
     "S_RECEIVE_REBATE": "可领返水",
-    "S_ALL_GET": "一键全领"
+    "S_ALL_GET": "一键全领",
+    "S_RECEIVE_WITHDRAW_ADDRESS": "收款钱包位址",
+    "S_NEED_TRANSFER_IN_COUNT": "需转入数量"
 }
