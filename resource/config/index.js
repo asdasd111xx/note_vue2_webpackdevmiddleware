@@ -92,6 +92,11 @@ module.exports = {
                 target: domain,
                 changeOrigin: true,
                 secure: false
+            },
+            '/qybtv': {
+                target: domain,
+                changeOrigin: true,
+                secure: false
             }
         },
         cssSourceMap: false
