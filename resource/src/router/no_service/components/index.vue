@@ -20,7 +20,7 @@
     </div>
     <div :class="$style.tips">
       如需帮助，请
-      <span @click="handleClick">&nbsp;联系客服</span>
+      <span @click="linkToService">&nbsp;联系客服</span>
     </div>
     <message v-if="msg" @close="msg = ''">
       <div slot="msg">{{ msg }}</div>
