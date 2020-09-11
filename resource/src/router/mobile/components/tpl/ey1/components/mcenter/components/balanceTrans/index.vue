@@ -43,7 +43,9 @@ export default {
         onClick: () => {
           this.$router.back();
         },
-        hasHelp: true,
+        hasHelp: {
+          url: '/mobile/mcenter/helpCenter'
+        },
       };
     },
   },
