@@ -8,16 +8,18 @@
     ]"
     :style="{ height: `calc(100vh - ${iframeHeight})` }"
   >
-    <div v-if="headerConfig.hasHeader" id="header" :class="$style['header']">
+    <div
+      v-if="headerConfig.hasHeader"
+      id="header"
+      :class="[$style['header'], $style[themeTPL]]"
+    >
       <div :class="$style['btn-prev']" @click="headerConfig.onClick">
         <img
           :src="$getCdnPath(`/static/image/${themeTPL}/common/btn_back.png`)"
         />
       </div>
-      <div v-if="headerConfig.title" :class="[$style.title]">
-        <div :class="[[$style.title]]">
-          {{ headerConfig.title }}
-        </div>
+      <div v-if="headerConfig.title" :class="[$style.title, $style[themeTPL]]">
+        {{ headerConfig.title }}
       </div>
     </div>
     <iframe
@@ -205,11 +207,18 @@ export default {
   width: 100%;
   height: 43px;
   padding: 0 17px;
-  //   background: linear-gradient(#fe2a2a, #b60303);
-  background: #c7c7cc;
+  background: white;
   color: #ffffff;
   text-align: center;
   border-bottom: 1px solid #eee;
+
+  &.ey1 {
+    background: linear-gradient(#fe2a2a, #b60303);
+  }
+
+  &.porn1 {
+    background: white;
+  }
 }
 
 .btn-prev {
@@ -238,10 +247,18 @@ export default {
 .title {
   height: 43px;
   line-height: 43px;
-  color: #ffffff;
+  color: black;
   font-size: 17px;
   font-weight: 500;
   margin: 0 auto;
+
+  &.ey1 {
+    color: white;
+  }
+
+  &.porn1 {
+    color: black;
+  }
 }
 
 .iframe {
