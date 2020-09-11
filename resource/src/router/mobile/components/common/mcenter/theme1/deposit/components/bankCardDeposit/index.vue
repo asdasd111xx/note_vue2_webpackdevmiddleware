@@ -401,7 +401,14 @@
                     $style['pay-money-item'],
                     { [$style['is-current']]: moneyValue === item }
                   ]"
-                  @click="changeMoney(item)"
+                  @click="
+                    () => {
+                      changeMoney(item);
+                      if (isSelectBindWallet(402) && isClickCoversionBtn) {
+                        convertCryptoMoney();
+                      }
+                    }
+                  "
                 >
                   ¥ {{ item }}
                   <img
@@ -473,7 +480,15 @@
                     (Object.keys(curPassRoad).length === 0 ||
                       curPassRoad.is_custom_amount)
                 "
-                :class="$style['feature-deposit-wrap']"
+                :class="[
+                  $style['feature-deposit-wrap'],
+                  {
+                    [$style['hidden']]:
+                      curPassRoad.is_custom_amount &&
+                      isSelectValue &&
+                      isDisableDepositInput
+                  }
+                ]"
               >
                 <div class="money-input-wrap">
                   <input
@@ -833,8 +848,9 @@
             <span
               v-else-if="curPayInfo.payment_method_name !== '代客充值'"
               :class="$style['feature-tip-title']"
-              >实际到账： {{ realSaveMoney }}</span
             >
+              实际到账： {{ realSaveMoney }}
+            </span>
           </div>
 
           <div v-if="showRealStatus" :class="$style['pop-message']">
@@ -1443,7 +1459,7 @@ export default {
     this.actionSetRechargeConfig();
   },
   mounted() {
-    // 檢查錢包綁定
+    // Get CGPay 錢包狀態
     this.actionSetCGPayInfo();
   },
   destroyed() {
@@ -1491,7 +1507,6 @@ export default {
     },
     modeChange(listItem, index) {
       this.checkEntryBlockStatus();
-      this.actionSetCGPayInfo();
       this.changeMode(listItem);
 
       // 進來充值頁面，沒有 bankSelectValue 的預設值才觸發，再切換其它類別不再觸發
@@ -1589,7 +1604,7 @@ export default {
         this.checkEntryBlockStatus();
         this.entryBlockStatusData = null;
 
-        // 刷新錢包綁定狀態
+        // 刷新CGPay錢包狀態
         this.actionSetCGPayInfo();
 
         if (response) {
