@@ -2,10 +2,7 @@
   <div>
     <!-- 卡片管理列表 -->
     <template v-if="!showDetail">
-      <div
-        v-if="isRevice && wallet_card.length > 0"
-        :class="$style['my-card']"
-      >
+      <div v-if="isRevice && wallet_card.length > 0" :class="$style['my-card']">
         <p :class="[$style['card-count'], 'clearfix']">
           <span :class="$style['title']">
             {{ $text("S_MY_VIRTUAL_BANKCARD", "我的电子钱包") }}
@@ -13,10 +10,7 @@
 
           <span :class="$style['count']">
             {{
-              $text("S_CRAD_COUNT", "共%s张").replace(
-                "%s",
-                wallet_card.length
-              )
+              $text("S_CRAD_COUNT", "共%s张").replace("%s", wallet_card.length)
             }}
           </span>
         </p>
@@ -26,7 +20,12 @@
             v-for="item in wallet_card"
             :key="item.id"
             :class="$style['virtual-bankcard-item']"
-            @click="onClickDetail(item), showTab(false)"
+            @click="
+              () => {
+                onClickDetail(item);
+                setPageStatus(1, 'walletCardInfo', false);
+              }
+            "
           >
             <div :class="[$style['card-top'], 'clearfix']">
               <div :class="$style['card-logo']">
@@ -39,9 +38,9 @@
                 </div>
 
                 <div :class="$style['card-number']">
-                  {{ item.address.slice(0,4) }} **** ****
-                 <span>{{ item.address.slice(-4) }}</span>
-                 </div>
+                  {{ item.address.slice(0, 4) }} **** ****
+                  <span>{{ item.address.slice(-4) }}</span>
+                </div>
               </div>
             </div>
 
@@ -74,7 +73,7 @@
           <div :class="$style['add-wrap']">
             <div
               :class="$style['add-btn']"
-              @click="changePage('addWalletCard'), showTab(false)"
+              @click="setPageStatus(1, 'addWalletCard', false)"
             >
               <img src="/static/image/ey1/mcenter/add.png" />
               <span>{{ $text("S_ADD_VIRTUAL_BANKCARD", "添加电子钱包") }}</span>
@@ -102,10 +101,7 @@
     <!-- 卡片詳細資料 -->
     <template v-if="showDetail && wallet_cardDetail">
       <div :class="$style['card-detail']">
-        <div
-          v-if="wallet_cardDetail.auditing"
-          :class="$style['audit-block']"
-        >
+        <div v-if="wallet_cardDetail.auditing" :class="$style['audit-block']">
           <div>删除审核中</div>
           <span>审核通过后，系统会自动删除银行卡</span>
         </div>
@@ -197,11 +193,7 @@ import virtualMixin from "@/mixins/mcenter/bankCard/cardInfo/wallet";
 export default {
   mixins: [virtualMixin],
   props: {
-    changePage: {
-      type: Function,
-      default: () => {}
-    },
-    showTab: {
+    setPageStatus: {
       type: Function,
       default: () => {}
     },
