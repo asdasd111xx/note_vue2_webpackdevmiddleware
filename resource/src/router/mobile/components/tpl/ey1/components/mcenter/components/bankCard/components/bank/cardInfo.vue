@@ -19,7 +19,12 @@
             v-for="item in bank_card"
             :key="item.id"
             :class="$style['bankcard-item']"
-            @click="getBankDetail(item), showTab(false)"
+            @click="
+              () => {
+                getBankDetail(item);
+                setPageStatus(0, 'bankCardInfo', false);
+              }
+            "
           >
             <div :class="[$style['card-top'], 'clearfix']">
               <div :class="$style['card-logo']">
@@ -60,7 +65,7 @@
           <div :class="$style['add-wrap']">
             <div
               :class="$style['add-btn']"
-              @click="changePage('addBankCard'), showTab(false)"
+              @click="setPageStatus(0, 'addBankCard', false)"
             >
               <img src="/static/image/ey1/mcenter/add.png" />
               <span>{{ $text("S_ADD_BANKCARD", "添加银行卡") }}</span>
@@ -130,11 +135,7 @@ import bankMixin from "@/mixins/mcenter/bankCard/cardInfo/bank";
 export default {
   mixins: [bankMixin],
   props: {
-    changePage: {
-      type: Function,
-      default: () => {}
-    },
-    showTab: {
+    setPageStatus: {
       type: Function,
       default: () => {}
     },

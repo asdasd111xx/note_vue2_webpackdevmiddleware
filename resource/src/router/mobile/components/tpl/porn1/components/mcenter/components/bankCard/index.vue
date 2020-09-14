@@ -44,8 +44,6 @@
 
     <component
       :is="currentPage"
-      :change-page="changePage"
-      :show-tab="showTab"
       :set-page-status="setPageStatus"
       :show-detail.sync="showDetail"
       :edit-status.sync="editStatus"
@@ -185,9 +183,6 @@ export default {
           this.currentPage = "walletCardInfo";
           break;
       }
-    },
-    showTab(value) {
-      this.isShowTab = this.isOneTab ? false : value;
     },
     backPre() {
       // 目前只有銀行卡有分兩階段

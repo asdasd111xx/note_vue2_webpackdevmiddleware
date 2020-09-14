@@ -113,7 +113,7 @@ export default {
           // 切換當前頁面狀態
           this.$emit("update:showDetail", false);
           this.$emit('update:editStatus', false);
-          this.showTab(true);
+          this.setPageStatus(1, "walletCardInfo", true);
         })
       })
     },
@@ -161,7 +161,7 @@ export default {
                 break;
             }
             this.$emit("update:showDetail", false);
-            this.showTab(true);
+            this.setPageStatus(1, "walletCardInfo", true);
           }
         })
       })

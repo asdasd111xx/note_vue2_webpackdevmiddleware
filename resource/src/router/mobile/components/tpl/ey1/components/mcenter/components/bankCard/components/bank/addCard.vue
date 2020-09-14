@@ -240,13 +240,9 @@ export default {
     popupVerification
   },
   props: {
-    changePage: {
+    setPageStatus: {
       type: Function,
-      default: () => { }
-    },
-    showTab: {
-      type: Function,
-      default: () => { }
+      default: () => {}
     },
     addBankCardStep: {
       type: String,
@@ -289,8 +285,7 @@ export default {
       this.msg = "";
       let redirect = query.redirect;
       if (!redirect) {
-        this.changePage("bankCardInfo");
-        this.showTab(true);
+        this.setPageStatus(0, "bankCardInfo", true);
         return;
       }
 
@@ -325,8 +320,7 @@ export default {
           this.$router.push(`/mobile/${redirect}`);
           return;
         default:
-          this.changePage("bankCardInfo");
-          this.showTab(true);
+          this.setPageStatus(0, "bankCardInfo", true);
           return;
       }
     }
