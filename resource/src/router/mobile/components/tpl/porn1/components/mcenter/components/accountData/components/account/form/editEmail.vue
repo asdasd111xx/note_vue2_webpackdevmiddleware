@@ -140,20 +140,6 @@ export default {
         this.info.isShow = response.ret.config[this.info.key].display;
       }
     });
-
-    member.joinConfig({
-      success: (response) => {
-        if (response.ret.email.code) {
-          mcenter.accountMailSec({
-            success: (data) => {
-              if (data.ret > 0) {
-                this.ttl = data.ret;
-              }
-            }
-          });
-        }
-      }
-    });
   },
   computed: {
     ...mapGetters({
@@ -272,10 +258,29 @@ export default {
           email: this.newValue
         },
         success: () => {
-          this.actionSetUserdata(true);
-          this.locker();
-          this.isSendSMS = false;
-          this.tipMsg = `${this.$text("S_SEND_CHECK_CODE_VALID_TIME").replace("%s", 5)}${this.$text("S_FIND_TRASH")}`;
+          member.joinConfig({
+            success: (response) => {
+              if (response.ret.email.code) {
+                mcenter.accountMailSec({
+                  success: (data) => {
+                    if (data.ret > 0) {
+                      this.ttl = data.ret;
+                    }
+                    this.actionSetUserdata(true);
+                    this.locker();
+                    this.isSendSMS = false;
+                    this.tipMsg = `${this.$text("S_SEND_CHECK_CODE_VALID_TIME").replace("%s", 5)}${this.$text("S_FIND_TRASH")}`;
+                  },
+                  fail: (res) => {
+                    this.isSendSMS = false;
+                    if (res && res.data && res.data.msg) {
+                      this.tipMsg = `${res.data.msg}`;
+                    }
+                  }
+                });
+              }
+            }
+          });
         },
         fail: (res) => {
           this.isSendSMS = false;

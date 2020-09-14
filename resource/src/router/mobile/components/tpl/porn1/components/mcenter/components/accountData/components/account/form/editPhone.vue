@@ -288,23 +288,6 @@ export default {
       }
     });
 
-    // 取驗證倒數秒數
-    member.joinConfig({
-      success: (response) => {
-        // 從舊版複製過來，不良的寫法，後續再優化
-
-        if (response.ret.phone.code) {
-          mcenter.accountPhoneSec({
-            success: (data) => {
-              if (data.ret > 0) {
-                this.ttl = data.ret;
-              }
-            }
-          });
-        }
-      }
-    });
-
     // 手機區碼
     // ajax({
     //   method: 'get',
@@ -354,6 +337,8 @@ export default {
     locker() {
       if (this.timer) return;
       this.countdownSec = this.ttl;
+      this.tipMsg = this.$text("S_SEND_CHECK_CODE_VALID_TIME").replace("%s", 5);
+
       this.timer = setInterval(() => {
         if (this.countdownSec === 0) {
           clearInterval(this.timer);
@@ -380,20 +365,25 @@ export default {
       // 彈驗證窗並利用Watch captchaData來呼叫 getKeyring()
       this.toggleCaptcha = true;
     },
+    // 回傳會員手機驗證簡訊剩餘秒數可以重送
+    getPhoneTTL() {
+      return axios({
+        method: 'get',
+        url: '/api/v1/c/player/phone/ttl',
+      }).then(res => {
+        if (res && res.data && res.data.result === "ok") {
+          this.ttl = res.data.ret;
+        }
+      }).catch(error => {
+        this.tipMsg = `${error.response.data.msg}`;
+      })
+    },
     handleSend() {
       if (!this.newValue || this.timer || this.isSendSMS) return;
 
       this.isSendSMS = true;
       let captchaParams = {};
       captchaParams['captcha_text'] = this.captchaData || "";
-
-      //   if (this.memInfo.config.default_captcha_type === 1) {
-      //     // captchaParams['aid'] = this.captchaData.aid;
-      //     // captchaParams['captcha'] = this.captchaData.captcha;
-      //     captchaParams['captcha_text'] = this.captchaData;
-      //   } else {
-      //     captchaParams['captcha_text'] = this.captchaData || "";
-      //   }
 
       if (this.isfromWithdraw) {
         axios({
@@ -405,11 +395,11 @@ export default {
           }
         }).then(res => {
           if (res && res.data && res.data.result === "ok") {
-            this.toggleCaptcha = false;
-            this.actionSetUserdata(true);
-            this.locker();
-            this.tipMsg = this.$text("S_SEND_CHECK_CODE_VALID_TIME").replace("%s", 5);
-            this.isSendSMS = false;
+            this.getPhoneTTL().then(() => {
+              this.toggleCaptcha = false;
+              this.locker();
+              this.isSendSMS = false;
+            })
           } else {
             this.tipMsg = res.data.msg;
           }
@@ -430,11 +420,11 @@ export default {
           }
         }).then(res => {
           if (res && res.data && res.data.result === "ok") {
-            this.toggleCaptcha = false;
-            this.actionSetUserdata(true);
-            this.locker();
-            this.tipMsg = this.$text("S_SEND_CHECK_CODE_VALID_TIME").replace("%s", 5);
-            this.isSendSMS = false;
+            this.getPhoneTTL().then(() => {
+              this.locker();
+              this.toggleCaptcha = false;
+              this.isSendSMS = false;
+            })
           } else {
             this.tipMsg = res.data.msg;
           }

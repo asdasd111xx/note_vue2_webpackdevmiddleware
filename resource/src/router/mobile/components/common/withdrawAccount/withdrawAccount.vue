@@ -212,17 +212,6 @@ export default {
 
     // });
 
-    axios({
-      method: 'get',
-      url: '/api/v1/c/player/phone/ttl',
-
-    }).then(res => {
-      if (res && res.data && res.data.ret && res.data.ret > 0) {
-        this.ttl = res.data.ret || 60;
-      }
-    })
-
-
     this.isLoading = true;
     this.getAccountDataStatus().then((data) => {
       this.checkBankSwitch = data.ret.bank
@@ -379,6 +368,19 @@ export default {
       // 彈驗證窗並利用Watch captchaData來呼叫 getKeyring()
       this.toggleCaptcha = true;
     },
+    // 回傳會員手機驗證簡訊剩餘秒數可以重送
+    getPhoneTTL() {
+      return axios({
+        method: 'get',
+        url: '/api/v1/c/player/phone/ttl',
+      }).then(res => {
+        if (res && res.data && res.data.result === "ok") {
+          this.ttl = res.data.ret;
+        }
+      }).catch(error => {
+        this.tipMsg = `${error.response.data.msg}`;
+      })
+    },
     sendKeyring() {
       this.isSendKeyring = true;
       this.tipMsg = '';
@@ -392,20 +394,23 @@ export default {
         }
       }).then(res => {
         if (this.timer) return;
-        this.countdownSec = this.ttl;
-        this.timer = setInterval(() => {
-          if (this.countdownSec === 0) {
-            clearInterval(this.timer);
-            this.timer = null;
-            if (this.tipMsg.indexOf('已发送')) {
-              this.tipMsg = ''
+
+        this.getPhoneTTL().then(() => {
+          this.countdownSec = this.ttl;
+          this.timer = setInterval(() => {
+            if (this.countdownSec === 0) {
+              clearInterval(this.timer);
+              this.timer = null;
+              if (this.tipMsg.indexOf('已发送')) {
+                this.tipMsg = ''
+              }
+              return;
             }
-            return;
-          }
-          this.countdownSec -= 1;
-        }, 1000);
-        this.tipMsg = this.$text("S_SEND_CHECK_CODE_VALID_TIME").replace("%s", 5);
-        this.isSendKeyring = false;
+            this.countdownSec -= 1;
+          }, 1000);
+          this.tipMsg = this.$text("S_SEND_CHECK_CODE_VALID_TIME").replace("%s", 5);
+          this.isSendKeyring = false;
+        })
       }).catch(error => {
         this.countdownSec = '';
         this.tipMsg = `${error.response.data.msg}`;
