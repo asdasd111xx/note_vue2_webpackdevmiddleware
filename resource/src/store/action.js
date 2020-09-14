@@ -1486,7 +1486,9 @@ export const actionVerificationFormData = ({ state, dispatch, commit }, data) =>
             break;
 
         case 'alias':
-            regex = /[，:;！@#$%^&*?<>()+=`|[\]{}\\"/.~\-_']*/g;
+            // regex = /[，:;！@#$%^&*?<>()+=`|[\]{}\\"/.~\-_']*/g;
+
+            regex = /[^\u3000\u3400-\u4DBF\u4E00-\u9FFF.．·]/g;
             val = val
                 .replace(regex, '')
                 .substring(0, 20);
@@ -1497,12 +1499,17 @@ export const actionVerificationFormData = ({ state, dispatch, commit }, data) =>
 
             val = val
                 .replace(regex, '')
-                .substring(0, 16);
+                .substring(0, 4);
             break;
 
         case 'bankCard':
             val = val.replace(/[^0-9]/g, '')
                 .substring(0, 36);
+            break;
+
+        case 'code':
+            val = val.replace(/[^0-9]/g, '')
+                .substring(0, 6);
             break;
 
     }

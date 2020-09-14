@@ -173,7 +173,7 @@ export default {
         return;
       }
 
-      if (['name', 'phone', 'email', 'qq', 'weixin', 'line', 'withdrawPwd'].includes(field.key)) {
+      if (['alias', 'name', 'phone', 'email', 'qq', 'weixin', 'line', 'withdrawPwd'].includes(field.key)) {
         this.$router.push({
           path: `/mobile/mcenter/accountData/${field.key}`
         });
