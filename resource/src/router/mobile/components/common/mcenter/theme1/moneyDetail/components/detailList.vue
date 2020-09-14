@@ -32,7 +32,7 @@
   </div>
   <div v-else :class="$style['no-data-wrap']">
     <img
-      :src="$getCdnPath('/static/image/_new/mcenter/moneyDetail/no_data.png')"
+      :src="$getCdnPath(`/static/image/${themeTPL}/mcenter/moneyDetail/no_data.png`)"
     />
     <div :class="$style.tips">暂时没有新的{{ currentCategory.text }}记录</div>
     <div

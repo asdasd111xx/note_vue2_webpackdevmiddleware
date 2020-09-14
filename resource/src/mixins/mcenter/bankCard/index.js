@@ -1,7 +1,11 @@
 export default {
   data() {
     return {
+      // Page 相關參數
+      currentTab: 0,
       currentPage: "bankCardInfo",
+      isShowTab: true,
+
       editDetailStatus: false,
       isAuditStatus: false,
       showDetailStatus: false,
@@ -26,14 +30,13 @@ export default {
           case "liveStream":
           case "videoPlay":
           case "wallet":
-            this.isShowTab = false;
 
             if (type && type === 'bankCard') {
-              this.currentPage = "addBankCard";
+              this.setPageStatus(0, "addBankCard", false);
             }
 
             if (type && type === 'wallet') {
-              this.currentPage = "addWalletCard";
+              this.setPageStatus(1, "addWalletCard"), false;
             }
 
             return true;
