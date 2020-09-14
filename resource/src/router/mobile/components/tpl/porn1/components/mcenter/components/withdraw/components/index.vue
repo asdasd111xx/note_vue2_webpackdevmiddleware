@@ -131,7 +131,12 @@
           {{ $text("S_WITHDRAW_ACCOUNT02", "提现帐号") }}
           <!-- 會員首次出款 or 需用銀行卡提現一次(強制銀行卡出款) -->
           <span
-            v-if="isFirstWithdraw || forceStatus === 1"
+            v-if="
+              forceStatus === 1 &&
+                userWithdrawCount === 0 &&
+                isFirstWithdraw &&
+                withdrawUserData.wallet.length > 0
+            "
             :class="$style['withdraw-status-tip']"
           >
             银行卡提现一次，开通数字货币提现功能
@@ -154,8 +159,7 @@
           :class="[
             $style['bank-card-cell'],
             {
-              [$style['disable']]:
-                (forceStatus === 2 || forceStatus === 1) && !item.allow
+              [$style['disable']]: !item.allow
             }
           ]"
           @click="handleSelectCard(item)"
@@ -165,7 +169,10 @@
           <div
             :class="[
               $style['check-box'],
-              { [$style['checked']]: item.id === selectedCard.id }
+              { [$style['checked']]: item.id === selectedCard.id },
+              {
+                [$style['disable']]: !item.allow
+              }
             ]"
           />
         </div>
@@ -574,6 +581,9 @@ export default {
       },
       showMoreMethod: false,
       widthdrawTipsType: "tips",
+
+      // 記錄使用者目前出款總次數
+      userWithdrawCount: null,
 
       // 匯率試算相關
       cryptoMoney: "--",
@@ -1080,7 +1090,7 @@ export default {
       this.isLoading = true;
       this.actionSetIsLoading(true);
 
-      // console.log(this.withdrawAccount);
+      console.log(this.withdrawAccount);
 
       // 不需要取款密碼,並且可選銀行卡
       let _params = {
@@ -1099,15 +1109,16 @@ export default {
         _params = { ..._params, ...params };
       }
 
-      const hasAccountId = !this.withdrawAccount.withdrawType
-        ? "account_id"
-        : this.withdrawAccount.withdrawType;
+      // const hasAccountId = !this.withdrawAccount.withdrawType
+      //   ? "account_id"
+      //   : this.withdrawAccount.withdrawType;
 
       if (this.memInfo.config.withdraw === "迅付") {
         _params = {
           ..._params,
           [`ext[api_uri]`]: "/api/trade/v2/c/withdraw/entry",
-          [`ext[method][${hasAccountId}]`]: this.selectedCard.id,
+          [`ext[method][${this.selectedCard.withdrawType}]`]: this.selectedCard
+            .id,
           password: +this.withdrawPwd
         };
       }
