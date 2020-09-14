@@ -488,26 +488,26 @@ export default {
                         return;
                     }
                     // 調整iframe內嵌
-                    // let newWindow = window.open('');
-                    // yaboRequest({
-                    //     method: 'get',
-                    //     url: `${this.siteConfig.YABO_API_DOMAIN}/thirdparty/url`,
-                    //     headers: {
-                    //         'x-domain': this.memInfo.user.domain
-                    //     },
-                    //     params: {
-                    //         type: game.type,
-                    //         userid: this.memInfo.user.id
-                    //     },
-                    // }).then(res => {
-                    //     if (res.data) {
-                    //         newWindow.location.href = res.data;
-                    //     } else {
-                    //         newWindow.close();
-                    //     }
-                    // }).catch(error => {
-                    //     newWindow.close();
-                    // })
+                    let newWindow = window.open('');
+                    yaboRequest({
+                        method: 'get',
+                        url: `${this.siteConfig.YABO_API_DOMAIN}/thirdparty/url`,
+                        headers: {
+                            'x-domain': this.memInfo.user.domain
+                        },
+                        params: {
+                            type: game.type,
+                            userid: this.memInfo.user.id
+                        },
+                    }).then(res => {
+                        if (res.data) {
+                            newWindow.location.href = res.data;
+                        } else {
+                            newWindow.close();
+                        }
+                    }).catch(error => {
+                        newWindow.close();
+                    })
 
                     return;
                 case 'YV':

@@ -118,8 +118,13 @@ export default {
       'actionSetGlobalMessage'
     ]),
     handleClick(item) {
+      // 充值不開放
+      if (item.key === "deposit") {
+        this.actionSetGlobalMessage({ type: "incoming" });
+        return;
+      }
+
       this.$router.push(`/mobile/mcenter/help/${item.key}`);
-      //   this.actionSetGlobalMessage({ msg: '即将开业 敬请期待' });
     },
   }
 };
@@ -143,7 +148,7 @@ export default {
     display: flex;
     align-items: center;
     background-color: $main_white_color1;
-    border-bottom: 1px solid #F8F8F7;
+    border-bottom: 1px solid #f8f8f7;
     > span {
       width: 100%;
     }
