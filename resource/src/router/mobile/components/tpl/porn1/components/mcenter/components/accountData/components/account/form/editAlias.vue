@@ -17,7 +17,7 @@
             :placeholder="$text('S_NICKNAME')"
             :class="$style.input"
             @input="onInput"
-            :maxlength="50"
+            :maxlength="20"
             type="text"
           />
           <div :class="$style['clear-input']" v-if="value">
@@ -91,7 +91,7 @@ export default {
 
       const setNickname = mcenter.accountDataSet({
         params: {
-          alias: this.value.substring(0, 50)
+          alias: this.value.substring(0, 20)
         }
       });
 
