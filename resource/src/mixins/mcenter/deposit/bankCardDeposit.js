@@ -51,6 +51,8 @@ export default {
           placeholder: "请输入CGPay支付密码"
         }
       },
+      // 傳遞給 depositInfo (訂單限時)
+      limitTime: 0,
 
       // 匯率試算相關
       cryptoMoney: "--",
@@ -58,7 +60,7 @@ export default {
 
       // 倒數器
       timer: null,
-      limitTime: 0,
+      countdownSec: 0
     };
   },
   watch: {
@@ -508,6 +510,7 @@ export default {
       }
 
       this.resetStatus();
+      this.resetTimerStatus();
       this.curModeGroup = mode;
 
       if (this.isDepositAi && this.curModeGroup.payment_group_content) {
@@ -540,6 +543,7 @@ export default {
       }
 
       this.resetStatus();
+      this.resetTimerStatus();
       this.curPayInfo = info;
 
       if (info.payment_method_id === 20) {
@@ -642,7 +646,7 @@ export default {
       this.nameCheckFail = false;
       this.walletData['CGPay'].password = '';
       this.cryptoMoney = '--';
-      this.resetTimerStatus();
+      // this.resetTimerStatus();
 
       Object.keys(this.speedField).forEach((info) => {
         if (info === 'depositMethod') {
@@ -835,6 +839,7 @@ export default {
 
           console.log(response.ret, _isWebview)
 
+          // 如有回傳限制時間
           if (response.ret.remit.limit_time) {
             this.limitTime = response.ret.remit.limit_time;
           }
@@ -1042,36 +1047,38 @@ export default {
 
         this.cryptoMoney = ret.crypto_amount;
         this.isClickCoversionBtn = true;
-        this.limitTime = this.limitTime ? this.limitTime : ret.ttl;
+        this.countdownSec = this.countdownSec ? this.countdownSec : ret.ttl;
 
         // 僅限按下按鈕觸發，@input & @blur 皆不會觸發
-        if (this.limitTime && !this.timer) {
+        if (this.countdownSec && !this.timer) {
           this.timer = setInterval(() => {
-            if (this.limitTime === 0) {
+            if (this.countdownSec === 0) {
+
+              if (this.submitStatus !== "stepTwo") {
+                // 需重新判斷
+                // 將「confirmOneBtn」彈窗打開
+                this.confirmPopupObj = {
+                  isShow: true,
+                  msg: '汇率已失效',
+                  btnText: '刷新汇率',
+                  cb: () => {
+                    this.confirmPopupObj.isShow = false;
+                    this.convertCryptoMoney();
+                  }
+                }
+              }
+
               this.resetTimerStatus();
-
-              // 需重新判斷
-              // 將「confirmOneBtn」彈窗打開
-              // this.confirmPopupObj = {
-              //   isShow: true,
-              //   msg: '汇率已失效',
-              //   btnText: '刷新汇率',
-              //   cb: () => {
-              //     this.confirmPopupObj.isShow = false
-              //     this.convertCryptoMoney()
-              //   }
-              // }
-
               return;
             }
-            this.limitTime -= 1;
+            this.countdownSec -= 1;
           }, 1000);
         }
       });
     },
     formatCountdownSec() {
-      let minutes = Math.floor(this.limitTime / 60);
-      let sec = this.limitTime - minutes * 60;
+      let minutes = Math.floor(this.countdownSec / 60);
+      let sec = this.countdownSec - minutes * 60;
 
       if (minutes < 10) {
         minutes = "0" + minutes;
@@ -1085,7 +1092,7 @@ export default {
     resetTimerStatus() {
       clearInterval(this.timer);
       this.timer = null;
-      this.limitTime = 0;
+      this.countdownSec = 0;
       this.isClickCoversionBtn = false;
     }
   }

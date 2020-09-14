@@ -74,31 +74,31 @@
 }
 
 .bank-card-cell {
-    position: relative;
-    background-color: $main_white_color1;
-    padding: 1px 18px;
-    color: #414655;
-    min-height: 50px;
-    // line-height: 50px;
-    display: flex;
-    align-items: center;
-    margin-bottom: 2px;
+  position: relative;
+  background-color: $main_white_color1;
+  padding: 1px 18px;
+  color: #414655;
+  min-height: 50px;
+  // line-height: 50px;
+  display: flex;
+  align-items: center;
+  margin-bottom: 2px;
 
-    &.disable {
-        pointer-events: none;
-        opacity: 0.5;
-    }
+  &.disable {
+    pointer-events: none;
+    opacity: 0.5;
+  }
 
-    >img {
-        width: 25px;
-        height: 25px;
-    }
+  > img {
+    width: 25px;
+    height: 25px;
+  }
 
-    >span {
-        padding: 0 10px;
-        width: 80%;
-        overflow: hidden;
-        text-overflow: ellipsis;
+  > span {
+    padding: 0 10px;
+    width: 80%;
+    overflow: hidden;
+    text-overflow: ellipsis;
 
     &.withdraw-status-tip {
       color: #e42a30;
@@ -115,10 +115,15 @@
     right: 18px;
 
     &.checked {
-      background: url("/static/image/_new/mcenter/ic_check.png") 0 0 no-repeat;
+      background: url("/static/image/porn1/mcenter/ic_check.png") 0 0 no-repeat;
       background-size: 100%;
       width: 18px;
       height: 18px;
+    }
+
+    &.disable {
+      background: #cbced8;
+      pointer-events: none;
     }
   }
 }

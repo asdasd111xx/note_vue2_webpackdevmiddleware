@@ -404,7 +404,11 @@
                   @click="
                     () => {
                       changeMoney(item);
-                      if (isSelectBindWallet(402) && isClickCoversionBtn) {
+                      if (
+                        isSelectBindWallet(402) &&
+                        isClickCoversionBtn &&
+                        moneyValue > 0
+                      ) {
                         convertCryptoMoney();
                       }
                     }
@@ -432,7 +436,11 @@
                     @click="
                       () => {
                         changeMoney('', true);
-                        if (isSelectBindWallet(402) && isClickCoversionBtn) {
+                        if (
+                          isSelectBindWallet(402) &&
+                          isClickCoversionBtn &&
+                          moneyValue > 0
+                        ) {
                           convertCryptoMoney();
                         }
                       }
@@ -485,7 +493,7 @@
                   {
                     [$style['hidden']]:
                       curPassRoad.is_custom_amount &&
-                      isSelectValue &&
+                      moneyValue &&
                       isDisableDepositInput
                   }
                 ]"
@@ -566,7 +574,7 @@
                     @click="convertCryptoMoney"
                   >
                     {{
-                      limitTime > 0 ? `${formatCountdownSec()}` : `汇率试算`
+                      countdownSec > 0 ? `${formatCountdownSec()}` : `汇率试算`
                     }}
                   </div>
                 </div>
@@ -1585,9 +1593,6 @@ export default {
 
       this.isShowEntryBlockStatus = false;
 
-      // 點選加密貨幣的匯率試算，在提交時需將時間設為0
-      this.limitTime = 0;
-
       // 億元: 點選到購寶錢包 且 如購寶未綁定，跳出 Qrcode 綁定
       if (
         this.themeTPL === "ey1" &&
@@ -1615,6 +1620,7 @@ export default {
           if (response.status === "local") {
             this.checkSuccess = false;
             this.submitStatus = "stepTwo";
+
             this.$emit("update:headerSetting", {
               ...this.initHeaderSetting,
               leftBtns: {
@@ -1626,6 +1632,9 @@ export default {
               },
               submitStatus: this.submitStatus
             });
+
+            // 點選加密貨幣的匯率試算，在需將時間設為0
+            this.countdownSec = 0;
           }
         }
       });

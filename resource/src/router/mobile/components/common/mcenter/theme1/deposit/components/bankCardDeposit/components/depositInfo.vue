@@ -83,15 +83,14 @@
               ]"
             >
               {{ info.value }}
-              <div
-                v-if="info.copyShow"
-                :class="$style['icon-wrap']"
-                @click="handleCopy(info.value)"
-              >
-                <div>
-                  <img :src="`/static/image/${themeTPL}/mcenter/ic_copy.png`" />
-                </div>
-              </div>
+            </div>
+            <!-- icon -->
+            <div
+              v-if="info.copyShow"
+              :class="$style['icon-wrap']"
+              @click="handleCopy(info.value)"
+            >
+              <img :src="`/static/image/${themeTPL}/mcenter/ic_copy.png`" />
             </div>
           </div>
           <div
@@ -140,7 +139,7 @@
     <!-- Only 加密貨幣 顯示注意事項 -->
     <div v-if="orderData.is_crypto" :class="$style['remider-block']">
       注意事項
-      <div v-html="orderData.reminder.replace(/\n/ig, '<br/>')" />
+      <div v-html="orderData.reminder.replace(/\n/gi, '<br/>')" />
     </div>
 
     <!-- 提交按鈕 -->
