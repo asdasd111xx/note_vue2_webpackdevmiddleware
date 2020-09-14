@@ -39,8 +39,7 @@ export default {
         { key: 'support', title: '技术支持' },
         { key: 'withdraw', title: '提现教程' },
         { key: 'deposit', title: '常見問題' },
-        { key: 'rules', title: '会员协议规章' },
-
+        { key: 'rules', title: '会员协议规章' }
       ]
     };
   },
