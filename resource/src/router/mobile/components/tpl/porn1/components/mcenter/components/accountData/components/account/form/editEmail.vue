@@ -61,9 +61,7 @@
               v-model="codeValue"
               :placeholder="$text('S_PLS_ENTER_MAIL_CODE', '请输入邮箱验证码')"
               :class="$style.input"
-              @input="
-                codeValue = $event.target.value.trim().replace(/[^0-9]/g, '')
-              "
+              @input="verification($event.target.value, 'code')"
               type="tel"
             />
             <div :class="$style['clear-input']" v-if="codeValue">
@@ -225,6 +223,7 @@ export default {
   methods: {
     ...mapActions([
       'actionSetUserdata',
+      'actionVerificationFormData'
     ]),
     locker() {
       this.countdownSec = this.ttl;
@@ -240,6 +239,21 @@ export default {
         }
         this.countdownSec -= 1;
       }, 1000);
+    },
+    verification(value, target) {
+      this.actionVerificationFormData({ target: target, value: value }).then((val => {
+        if (target === 'code') {
+          this.codeValue = val;
+        }
+        // 尚未實作
+        // if (target === 'newValue') {
+        //   this.newValue = val;
+        // }
+
+        // if (target === 'oldValue') {
+        //   this.oldValue = val;
+        // }
+      }));
     },
     handleSend(send) {
       if (!this.newValue || this.timer || this.isSendSMS) return;

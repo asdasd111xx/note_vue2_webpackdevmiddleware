@@ -341,9 +341,9 @@ export default {
       }
 
       if (key === "keyring") {
-        target.value = target.value.replace(' ', '')
-          .replace(/[^0-9]/g, '')
-          .substring(0, 6);
+        this.actionVerificationFormData({ target: 'code', value: target.value }).then((res => {
+          target.value = res;
+        }));
       }
 
       let check = true;

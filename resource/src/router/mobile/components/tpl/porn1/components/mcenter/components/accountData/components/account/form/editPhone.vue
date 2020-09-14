@@ -66,9 +66,7 @@
               v-model="codeValue"
               :placeholder="$text('S_MOBILE_CAPTCHA', '请输入手机验证码')"
               :class="$style.input"
-              @input="
-                codeValue = $event.target.value.trim().replace(/[^0-9]/g, '')
-              "
+              @input="verification($event.target.value, 'code')"
               type="tel"
             />
             <div :class="$style['clear-input']" v-if="codeValue">
@@ -335,15 +333,23 @@ export default {
       'actionVerificationFormData'
     ]),
     verification(value, target) {
-      this.actionVerificationFormData({ target: 'phone', value: value }).then((val => {
-        if (target === "newValue") {
-          this.newValue = val;
-        }
+      if (target === 'newValue' || target === 'oldValue') {
+        this.actionVerificationFormData({ target: 'phone', value: value }).then((val => {
+          if (target === "newValue") {
+            this.newValue = val;
+          }
 
-        if (target === "oldValue") {
-          this.oldValue = val;
-        }
-      }));
+          if (target === "oldValue") {
+            this.oldValue = val;
+          }
+        }));
+      }
+
+      if (target === 'code') {
+        this.actionVerificationFormData({ target: 'code', value: value }).then((val => {
+          this.codeValue = val;
+        }));
+      }
     },
     locker() {
       if (this.timer) return;
