@@ -53,6 +53,7 @@ export default {
         helpPorn1: () => import(/* webpackChunkName: 'helpPorn1' */'../../tpl/porn1/components/mcenter/components/help/components'),
         helpCenterPorn1: () => import(/* webpackChunkName: 'helpCenterPorn1' */'../../tpl/porn1/components/mcenter/components/help'),
         helpDetailPorn1: () => import(/* webpackChunkName: 'helpDetailPorn1' */'../../tpl/porn1/components/mcenter/components/help/components/detail'),
+        accountDataAliasPorn1: () => import(/* webpackChunkName: 'accountDataAliasPorn1' */'../../tpl/porn1/components/mcenter/components/accountData/components/account/form/editAlias'),
         accountDataNamePorn1: () => import(/* webpackChunkName: 'accountDataNamePorn1' */'../../tpl/porn1/components/mcenter/components/accountData/components/account/form/editName'),
         accountDataPhonePorn1: () => import(/* webpackChunkName: 'accountDataPhonePorn1' */'../../tpl/porn1/components/mcenter/components/accountData/components/account/form/editPhone'),
         accountDataEmailPorn1: () => import(/* webpackChunkName: 'accountDataEmailPorn1' */'../../tpl/porn1/components/mcenter/components/accountData/components/account/form/editEmail'),
