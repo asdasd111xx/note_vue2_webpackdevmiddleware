@@ -11,10 +11,10 @@ export default {
             isShowPop: false,
             isVerifyPhone: false,
             formData: {
-                account_name: "",
+                // account_name: "",
                 bank_id: "",
-                // province: '',
-                // city: '',
+                province: '',
+                city: '',
                 branch: "",
                 account: "",
                 phone: "",
@@ -145,10 +145,10 @@ export default {
             this.checkData();
         },
         checkData(value, key) {
-            if (key === "account_name") {
-                const re = /[^\u3000\u3400-\u4DBF\u4E00-\u9FFF.．·]/g;
-                this.formData.account_name = value.replace(re, "");
-            }
+            // if (key === "account_name") {
+            //     const re = /[^\u3000\u3400-\u4DBF\u4E00-\u9FFF.．·]/g;
+            //     this.formData.account_name = value.replace(re, "");
+            // }
 
             if (key === "branch") {
                 const re = /[^\u3000\u3400-\u4DBF\u4E00-\u9FFF]/g;
