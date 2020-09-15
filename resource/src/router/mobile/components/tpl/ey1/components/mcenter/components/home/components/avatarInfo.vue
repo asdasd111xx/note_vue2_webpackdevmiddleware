@@ -78,13 +78,20 @@ export default {
     this.getUserViplevel();
     this.getAvatarSrc();
     if (this.loginStatus) {      
-      //var oldDays=this.day = moment().diff(Vue.moment(this.memInfo.user.created_at), 'days');      
+      //var oldDays=this.day = moment().diff(Vue.moment(this.memInfo.user.created_at), 'days');   
+
+      
 
       var nowUTC = moment.utc();
       var createUTC = moment.utc(this.memInfo.user.created_at);
       var newDays = nowUTC.diff(createUTC, 'days');      
 
-      this.day = (newDays==0) ? 1 : newDays;//{{ `加入亿元第${day + 1}天` }}      
+      console.log('now:  ');
+      console.log(nowUTC);
+      console.log('created_at:  ');
+      console.log(createUTC);
+
+      this.day = newDays + 1 ;//(newDays==0) ? 1 : newDays;//{{ `加入亿元第${day + 1}天` }}      
     }
   },
   methods: {
