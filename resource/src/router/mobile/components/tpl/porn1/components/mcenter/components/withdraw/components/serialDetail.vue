@@ -91,6 +91,9 @@ export default {
 
     }
   },
+  created() {
+    console.log(this.data)
+  },
   computed: {
     ...mapGetters({
       siteConfig: "getSiteConfig",
@@ -107,16 +110,26 @@ export default {
       ]
     },
     auditList() {
+      // 2020/09/15
+      // 充值稽核倍数 audit_rate
+      // 充值稽核扣除金額 administrative_amount
+      // 充值稽核流水要求 audit_amount
+      // 完成/未完成 administrative_checked
+
+      // 优惠稽核倍数 offer_audit_rate
+      // 優惠稽核扣除金額 offer
+      // 優惠稽核流水要求 offer_audit_amount
+      // 完成/未完成 offer_checked
       return [[
         {
           title: this.$text('S_SERIAL_AUDIT', '充值稽核倍数'),
           rateValue: this.data.audit_rate,
-          value: this.getFixed(this.data.administrative_checked)
+          value: this.data.administrative_checked
         },
         {
           title: this.$text('S_SERIAL_NUMBER', '流水要求'),
           rateValue: this.data.audit_amount,
-          value: this.getFixed(this.data.deduction),
+          value: this.getFixed(this.data.administrative_amount),
           deduction: this.$text('S_DEDUCTION_MONEY', '扣除金额')
         },
       ],
@@ -128,8 +141,8 @@ export default {
         },
         {
           title: this.$text('S_SERIAL_NUMBER', '流水要求'),
-          rateValue: this.data.offer_audit_amount,
-          value: this.getFixed(this.data.offer_deduction),
+          rateValue: this.data.offer,
+          value: this.getFixed(this.data.offer_audit_amount),
           deduction: this.$text('S_DEDUCTION_MONEY', '扣除金额')
         },
       ]]
