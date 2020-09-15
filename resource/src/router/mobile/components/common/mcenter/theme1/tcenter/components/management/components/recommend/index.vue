@@ -4,12 +4,12 @@
       <div :class="$style.title">
         {{ $text("S_PROMOTION_CODE", "推广代码") }}
       </div>
-      <div :class="$style.code">{{ agentCode }}</div>
+      <div :class="$style.code">{{ agentLink.agentCode }}</div>
     </div>
-    <div v-if="agentLink" :class="[$style['promote-wrap'], 'clearfix']">
+    <div v-if="getAgentLink" :class="[$style['promote-wrap'], 'clearfix']">
       <div :class="$style['qrcode-wrap']">
         <qrcode
-          :value="agentLink"
+          :value="getAgentLink"
           :options="{ width: 129, margin: 2 }"
           tag="img"
         />
@@ -21,13 +21,13 @@
             $text("S_DOWNLOAD_QRCODE", "下载二维码")
           }}</span>
         </div>
-        <div class="copy-link" @click="onCopy('link')">
+        <div class="copy-link" @click="onCopy('LINK')">
           <span :class="[$style.icon, $style['icon-copy']]" />
           <span :class="$style['button-text']">{{
             $text("S_COPY_PROMOTION_LINK", "复制推广连结")
           }}</span>
         </div>
-        <div class="copy-code" @click="onCopy('code')">
+        <div class="copy-code" @click="onCopy('CODE')">
           <span :class="[$style.icon, $style['icon-copy']]" />
           <span :class="$style['button-text']">{{
             $text("S_COPY_PROMOTION_CODE", "复制推广代码")
@@ -125,7 +125,7 @@
     <popup
       v-if="isPopup"
       :type="popupType"
-      :link="agentLink"
+      :link="getAgentLink"
       @close="onPopupClose"
     />
   </div>

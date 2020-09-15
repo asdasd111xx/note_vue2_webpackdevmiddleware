@@ -25,6 +25,7 @@ import member from '@/api/member';
 import openGame from '@/lib/open_game';
 import router from '../router';
 import yaboRequest from '@/api/yaboRequest';
+import bbosRequest from '@/api/bbosRequest';
 
 let memstatus = true;
 let agentstatus = true;
@@ -1106,34 +1107,56 @@ export const actionSetＭcenterBindMessage = ({ commit }, data) => {
 };
 
 // 設定推廣連結
-export const actionSetAgentLink = ({ commit }) => {
-    const domain = new Promise((resolve) => {
-        axios({
-            method: "get",
-            url: "/api/v1/c/hostnames"
+export const actionSetAgentLink = ({ state, commit }) => {
+  let configInfo = {};
+    if (state.webInfo.is_production) {
+        configInfo = siteConfigOfficial[`site_${state.webInfo.alias}`] || siteConfigOfficial.preset;
+    } else {
+        configInfo = siteConfigTest[`site_${state.webInfo.alias}`] || siteConfigTest.preset;
+    }
+
+    let domain = new Promise((resolve) => {
+        bbosRequest({
+          method: "get",
+          url: configInfo.BBOS_DOMIAN + '/Domain/Hostnames',
+          reqHeaders: {
+              'Vendor': state.memInfo.user.domain
+          },
+          params: {
+              "lang": "zh-cn"
+          },
         }).then((res) => {
-            if (res.data.result !== "ok") {
-                return
-            }
-            return resolve(res.data.ret[0])
+          if (res.errorCode !== '00' || res.status !== '000') {
+            return
+          }
+            return resolve(res.data[0])
         })
     })
+
     let agentCode = new Promise((resolve) => {
-        axios({
-            method: "get",
-            url: "/api/v1/c/player/promotion"
+        bbosRequest({
+          method: "get",
+          url: configInfo.BBOS_DOMIAN + '/Player/Promotion',
+          reqHeaders: {
+              'Vendor': state.memInfo.user.domain
+          },
+          params: {
+              "lang": "zh-cn"
+          },
         }).then((res) => {
-            if (res.data.result !== "ok") {
-                return
-            }
-            return resolve(res.data.ret.code)
+          if (res.errorCode !== '00' || res.status !== '000') {
+            return
+          }
+            return resolve(res.data.code)
         })
     })
 
     Promise.all([domain, agentCode]).then(([domain, agentCode]) => {
-        commit(types.SET_AGENTLINK, `https://${domain}/a/${agentCode}`);
+        commit(types.SET_AGENTLINK, { domain , agentCode });
     });
+
 };
+
 // 鴨脖配置
 export const actionSetYaboConfig = ({ state, dispatch, commit }, next) => {
     let configInfo = {};

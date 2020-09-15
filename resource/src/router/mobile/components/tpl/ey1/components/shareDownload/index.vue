@@ -12,9 +12,9 @@
         alt="shareApp"
       />
 
-      <div v-if="agentLink || landingLink" :class="$style['qrcode-wrap']">
+      <div v-if="getAgentLink || landingLink" :class="$style['qrcode-wrap']">
         <qrcode
-          :value="loginStatus ? agentLink : landingLink"
+          :value="loginStatus ? getAgentLink : landingLink"
           :options="{ width: 75, margin: 1 }"
           tag="img"
         />
@@ -31,9 +31,7 @@ import yaboRequest from '@/api/yaboRequest';
 export default {
   data() {
     return {
-      landingLink: "",
-      domain: "",
-      agentCode: ""
+      landingLink: ""
     };
   },
   computed: {
@@ -42,7 +40,14 @@ export default {
       siteConfig: "getSiteConfig",
       agentLink: "getAgentLink",
       memInfo: 'getMemInfo',
-    })
+    }),
+    getAgentLink() {
+      if (!this.agentLink.domain || !this.agentLink.agentCode) {
+        return "";
+      }
+
+      return `https://${this.agentLink.domain}/a/${this.agentLink.agentCode}`;
+    }
   },
   created() {
     if (this.loginStatus) {

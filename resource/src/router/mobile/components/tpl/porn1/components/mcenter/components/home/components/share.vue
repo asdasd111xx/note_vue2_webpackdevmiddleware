@@ -9,9 +9,9 @@
           alt="shareApp"
         />
 
-        <div v-if="agentLink || landingLink" :class="$style['qrcode-wrap']">
+        <div v-if="getAgentLink || landingLink" :class="$style['qrcode-wrap']">
           <qrcode
-            :value="loginStatus ? agentLink : landingLink"
+            :value="loginStatus ? getAgentLink : landingLink"
             :options="{ width: 75, margin: 1 }"
             tag="img"
           />
@@ -34,11 +34,10 @@
 
 <script>
 import { mapGetters, mapActions } from "vuex";
-import yaboRequest from '@/api/yaboRequest';
+import yaboRequest from "@/api/yaboRequest";
 
 export default {
-  components: {
-  },
+  components: {},
   props: {
     isShowShare: {
       type: Boolean,
@@ -47,10 +46,7 @@ export default {
   },
   data() {
     return {
-      msg: "",
-      landingLink: "",
-      domain: "",
-      agentCode: ""
+      landingLink: ""
     };
   },
   computed: {
@@ -59,15 +55,20 @@ export default {
       loginStatus: "getLoginStatus",
       siteConfig: "getSiteConfig",
       agentLink: "getAgentLink",
-      memInfo: 'getMemInfo',
+      memInfo: "getMemInfo"
     }),
     isException() {
-      return (
-        window.location.hostname === "yaboxxxapp02.com" || this.isPwa
-      );
+      return window.location.hostname === "yaboxxxapp02.com" || this.isPwa;
     },
     btnTickText() {
-      return '点击截屏保存';
+      return "点击截屏保存";
+    },
+    getAgentLink() {
+      if (!this.agentLink.domain || !this.agentLink.agentCode) {
+        return "";
+      }
+
+      return `https://${this.agentLink.domain}/a/${this.agentLink.agentCode}`;
     }
   },
   created() {
@@ -80,12 +81,11 @@ export default {
         method: "get",
         url: `${this.siteConfig.YABO_API_DOMAIN}/system/downloadlink`,
         headers: {
-          'AuthToken': 'YaboAPIforDev0nly'
+          AuthToken: "YaboAPIforDev0nly"
         }
       }).then(res => {
         if (res && res.data && res.data) {
-          this.landingLink =
-            res.data[0].value || res.data[1].value;
+          this.landingLink = res.data[0].value || res.data[1].value;
         }
       });
     }

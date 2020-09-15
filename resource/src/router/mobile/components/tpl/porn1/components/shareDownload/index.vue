@@ -12,9 +12,9 @@
         alt="shareApp"
       />
 
-      <div v-if="agentLink || landingLink" :class="$style['qrcode-wrap']">
+      <div v-if="getAgentLink || landingLink" :class="$style['qrcode-wrap']">
         <qrcode
-          :value="loginStatus ? agentLink : landingLink"
+          :value="loginStatus ? getAgentLink : landingLink"
           :options="{ width: 75, margin: 1 }"
           tag="img"
         />
@@ -25,15 +25,12 @@
 
 <script>
 import { mapGetters, mapActions } from "vuex";
-import yaboRequest from '@/api/yaboRequest';
-
+import yaboRequest from "@/api/yaboRequest";
 
 export default {
   data() {
     return {
-      landingLink: "",
-      domain: "",
-      agentCode: ""
+      landingLink: ""
     };
   },
   computed: {
@@ -41,9 +38,16 @@ export default {
       isPwa: "getIsPwa",
       loginStatus: "getLoginStatus",
       siteConfig: "getSiteConfig",
-      memInfo: 'getMemInfo',
+      memInfo: "getMemInfo",
       agentLink: "getAgentLink"
-    })
+    }),
+    getAgentLink() {
+      if (!this.agentLink.domain || !this.agentLink.agentCode) {
+        return "";
+      }
+
+      return `https://${this.agentLink.domain}/a/${this.agentLink.agentCode}`;
+    }
   },
   created() {
     if (this.loginStatus) {
@@ -55,12 +59,11 @@ export default {
         method: "get",
         url: `${this.siteConfig.YABO_API_DOMAIN}/system/downloadlink`,
         headers: {
-          'x-domain': this.memInfo.user.domain
+          "x-domain": this.memInfo.user.domain
         }
       }).then(res => {
         if (res && res.data) {
-          this.landingLink =
-            res.data[0].value || res.data[1].value;
+          this.landingLink = res.data[0].value || res.data[1].value;
         }
       });
     }
