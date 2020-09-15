@@ -42,30 +42,32 @@
           </div>
         </div>
 
-        <!-- <div :class="$style['info-item']">
-          <p :class="$style['input-title']">省/直辖市</p>
-          <div :class="$style['input-wrap']">
-            <input
-              v-model.trim="formData.province"
-              type="text"
-              placeholder="请输入省/直辖市"
-              maxlength="36"
-              @input="checkData"
-            />
+        <template v-if="memInfo.config.player_user_bank">
+          <div :class="$style['info-item']">
+            <p :class="$style['input-title']">省/直辖市</p>
+            <div :class="$style['input-wrap']">
+              <input
+                v-model.trim="formData.province"
+                type="text"
+                placeholder="请输入省/直辖市"
+                maxlength="36"
+                @input="checkData"
+              />
+            </div>
           </div>
-        </div>
-        <div :class="$style['info-item']">
-          <p :class="$style['input-title']">县/市</p>
-          <div :class="$style['input-wrap']">
-            <input
-              v-model.trim="formData.city"
-              type="text"
-              placeholder="请输入县/市"
-              maxlength="36"
-              @input="checkData"
-            />
+          <div :class="$style['info-item']">
+            <p :class="$style['input-title']">县/市</p>
+            <div :class="$style['input-wrap']">
+              <input
+                v-model.trim="formData.city"
+                type="text"
+                placeholder="请输入县/市"
+                maxlength="36"
+                @input="checkData"
+              />
+            </div>
           </div>
-        </div> -->
+        </template>
 
         <div :class="$style['info-item']">
           <p :class="$style['input-title']">开户支行</p>
@@ -242,7 +244,7 @@ export default {
   props: {
     setPageStatus: {
       type: Function,
-      default: () => {}
+      default: () => { }
     },
     addBankCardStep: {
       type: String,
@@ -251,7 +253,8 @@ export default {
   },
   mixins: [bankMixin],
   created() {
-    this.formData.account_name = this.memInfo.user.name;
+    // 真實姓名不送
+    // this.formData.account_name = this.memInfo.user.name;
 
     axios({
       method: "get",

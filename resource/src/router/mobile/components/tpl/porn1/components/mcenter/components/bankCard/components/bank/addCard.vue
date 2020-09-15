@@ -242,7 +242,7 @@ export default {
   props: {
     setPageStatus: {
       type: Function,
-      default: () => {}
+      default: () => { }
     },
     addBankCardStep: {
       type: String,
@@ -251,7 +251,8 @@ export default {
   },
   mixins: [bankMixin],
   created() {
-    this.formData.account_name = this.memInfo.user.name;
+    // 真實姓名不送
+    // this.formData.account_name = this.memInfo.user.name;
 
     axios({
       method: "get",
