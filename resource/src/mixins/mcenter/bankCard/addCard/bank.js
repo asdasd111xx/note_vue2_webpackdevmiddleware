@@ -11,7 +11,7 @@ export default {
             isShowPop: false,
             isVerifyPhone: false,
             formData: {
-                // account_name: "",
+                account_name: "",
                 bank_id: "",
                 province: '',
                 city: '',
@@ -93,6 +93,17 @@ export default {
             }
         }
     },
+    created() {
+        // 已經有真實姓名時不送該欄位
+        if (this.memInfo.user.name) {
+            delete this.formData['account_name'];
+        }
+
+        if (this.siteConfig.MOBILE_WEB_TPL !== 'ey1') {
+            delete this.formData['city'];
+            delete this.formData['province'];
+        }
+    },
     methods: {
         ...mapActions(['actionSetUserdata', 'actionVerificationFormData', 'actionVerificationFormData']),
         sendData() {
@@ -111,6 +122,11 @@ export default {
 
             this.lockStatus = true;
 
+            // 已經有真實姓名時不送該欄位
+            if (this.memInfo.user.name) {
+                delete this.formData['account_name'];
+            }
+
             const params = {
                 ...this.formData,
                 phone: `86-${this.formData.phone}`
@@ -124,6 +140,8 @@ export default {
                 success: () => {
                     this.msg = "绑定成功";
                     this.lockStatus = false;
+                    this.addBankCardStep === "one";
+
                     if (!this.memInfo.user.name) {
                         this.actionSetUserdata(true);
                     }
@@ -145,10 +163,17 @@ export default {
             this.checkData();
         },
         checkData(value, key) {
-            // if (key === "account_name") {
-            //     const re = /[^\u3000\u3400-\u4DBF\u4E00-\u9FFF.．·]/g;
-            //     this.formData.account_name = value.replace(re, "");
-            // }
+            if (key === "account_name" && this.memInfo.user.name === '') {
+                this.actionVerificationFormData({ target: 'name', value: value }).then((val => {
+                    this.formData.account_name = val;
+                }));
+            }
+
+            if (key === "province" || key === "city") {
+                this.actionVerificationFormData({ target: 'name', value: value }).then((val => {
+                    this.formData[key] = val;
+                }));
+            }
 
             if (key === "branch") {
                 const re = /[^\u3000\u3400-\u4DBF\u4E00-\u9FFF]/g;
@@ -174,7 +199,12 @@ export default {
                         }
                     }
 
-                    if (key !== "phone" && key !== "keyring") {
+                    // 需要填入時才檢查
+                    if (key === "account_name" && this.memInfo.user.name === '') {
+                        return this.formData['account_name'];
+                    }
+
+                    if (key !== "phone" && key !== "keyring" && key !== 'city' && key !== 'province') {
                         return this.formData[key];
                     }
 
@@ -222,14 +252,6 @@ export default {
             let captchaParams = {};
             captchaParams['captcha_text'] = this.captchaData || "";
 
-            // if (this.memInfo.config.default_captcha_type === 1) {
-            //     // captchaParams['aid'] = this.captchaData.aid;
-            //     // captchaParams['captcha'] = this.captchaData.captcha;
-            //     captchaParams['captcha_text'] = this.captchaData.captcha;
-            // } else {
-            //     captchaParams['captcha_text'] = this.captchaData || "";
-            // }
-
             axios({
                 method: "post",
                 url: "/api/v1/c/player/verify/user_bank/sms",
@@ -241,17 +263,27 @@ export default {
                 .then(res => {
                     this.lockStatus = false;
                     if (res && res.data && res.data.result === "ok") {
-                        this.time = 60;
-                        this.errorMsg = this.$text("S_SEND_CHECK_CODE_VALID_TIME").replace("%s", 5);
+                        axios({
+                            method: 'get',
+                            url: '/api/v1/c/player/phone/ttl',
+                        }).then(res => {
+                            if (res && res.data && res.data.result === "ok") {
+                                this.time = res.data.ret;
+                                this.errorMsg = this.$text("S_SEND_CHECK_CODE_VALID_TIME").replace("%s", 5);
 
-                        this.smsTimer = setInterval(() => {
-                            if (this.time <= 0) {
-                                clearInterval(this.smsTimer);
-                                this.smsTimer = null;
-                                return;
+                                this.smsTimer = setInterval(() => {
+                                    if (this.time <= 0) {
+                                        clearInterval(this.smsTimer);
+                                        this.smsTimer = null;
+                                        return;
+                                    }
+                                    this.time -= 1;
+                                }, 1000);
                             }
-                            this.time -= 1;
-                        }, 1000);
+                        }).catch(error => {
+                            this.errorMsg = `${error.response.data.msg}`;
+                        })
+
                     } else {
                         this.errorMsg = res.data.msg;
                     }

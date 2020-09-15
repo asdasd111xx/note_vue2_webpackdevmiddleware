@@ -243,7 +243,7 @@ export default {
                   if (i !== "bank" && !res.data.ret[i]) {
                     if (this.siteConfig.MOBILE_WEB_TPL === 'ey1') {
                       this.actionSetGlobalMessage({
-                        msg: '请先完成您的出款资讯', cb: () => {
+                        msg: '请先设定提现资料', cb: () => {
                           {
                             this.$router.push('/mobile/withdrawAccount');
                           }
