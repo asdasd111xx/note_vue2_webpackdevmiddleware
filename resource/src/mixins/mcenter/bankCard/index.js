@@ -36,7 +36,7 @@ export default {
             }
 
             if (type && type === 'wallet') {
-              this.setPageStatus(1, "addWalletCard"), false;
+              this.setPageStatus(1, "addWalletCard", false);
             }
 
             return true;
