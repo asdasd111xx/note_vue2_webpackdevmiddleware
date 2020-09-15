@@ -14,10 +14,10 @@ export default ({ linkType = 'nolink', linkTo = '', linkItem = '' }) => {
     if (linkType === 'nolink') {
         return;
     }
-
+    let newWindow = '';
     // 外部連結
     if (linkType === 'external') {
-        window.open(linkTo, '_blank');
+        newWindow = window.open(linkTo, '_blank');
         return;
     }
 
@@ -44,7 +44,7 @@ export default ({ linkType = 'nolink', linkTo = '', linkItem = '' }) => {
 
                 // 活動進行中
                 if (now.isBetween(start, end)) {
-                    window.open(`/popcontrol/festival/${key.vendor}/${key.id}`, '_blank');
+                    newWindow = window.open(`/popcontrol/festival/${key.vendor}/${key.id}`, '_blank');
                 }
             };
 
@@ -63,7 +63,7 @@ export default ({ linkType = 'nolink', linkTo = '', linkItem = '' }) => {
 
         // 優小祕
         if (linkTo === 'promotion' && linkItem) {
-            window.open(`/popcontrol/promo/${JSON.stringify({ linkItem })}`, '_blank');
+            newWindow = window.open(`/popcontrol/promo/${JSON.stringify({ linkItem })}`, '_blank');
             return;
         }
 
@@ -85,7 +85,7 @@ export default ({ linkType = 'nolink', linkTo = '', linkItem = '' }) => {
                     .replace('gid=yb01', 'gid=yb04');
             }
             let w =
-                window.open(
+                newWindow = window.open(
                     url,
                     'mobile service',
                     `width=${store.state.webInfo.on_service_w}, height=${store.state.webInfo.on_service_h}`
@@ -106,7 +106,7 @@ export default ({ linkType = 'nolink', linkTo = '', linkItem = '' }) => {
         // 手機下注
         if (linkTo === 'mobileBet') {
             if (store.state.loginStatus || store.state.appInfo.unsafe_download) {
-                window.open(store.state.qrcodeInfo.url);
+                newWindow = window.open(store.state.qrcodeInfo.url);
                 return;
             }
             router.push('/mobile/login');
@@ -167,7 +167,14 @@ export default ({ linkType = 'nolink', linkTo = '', linkItem = '' }) => {
         }
 
         if (linkTo === 'domain') {
-            window.open('/mobile/domain', '_blank');
+            newWindow = window.open('/mobile/domain', '_blank');
+            return;
+        }
+
+        if (linkTo === 'cgPay') {
+            router.push(
+                "/mobile/mcenter/bankcard?redirect=home&type=wallet&wallet=CGPay"
+            );
             return;
         }
 
