@@ -51,7 +51,7 @@
                 type="text"
                 placeholder="请输入省/直辖市"
                 maxlength="36"
-                @input="checkData"
+                @input="checkData($event.target.value, 'province')"
               />
             </div>
           </div>
@@ -63,7 +63,7 @@
                 type="text"
                 placeholder="请输入县/市"
                 maxlength="36"
-                @input="checkData"
+                @input="checkData($event.target.value, 'city')"
               />
             </div>
           </div>
