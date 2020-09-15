@@ -204,7 +204,7 @@ export default {
       }
     }
   },
-  mounted() {
+  created() {
     // axios({
     //   method: 'get',
     //   url: '/api/v2/c/withdraw/check',
@@ -216,18 +216,26 @@ export default {
     this.getAccountDataStatus().then((data) => {
       this.checkBankSwitch = data.ret.bank
 
-      this.isLoading = false;
       Object.keys(data.ret).forEach(i => {
         if (this.formData[i]) {
           if (i === "phone") {
             this.formData['keyring'].show = !data.ret[i];
             // 無手機欄位時候不需要驗證
-            this.isVerifyPhone = true;
+            this.isVerifyPhone = data.ret[i];
           }
 
           this.formData[i].show = !data.ret[i];
         }
       })
+
+      if (!this.formData.name.show &&
+        !this.formData.phone.show &&
+        !this.formData.withdraw_password.show) {
+        if (!this.checkBankSwitch) {
+          this.$router.push(`/mobile/mcenter/bankCard?redirect=home&type=wallet`)
+        }
+      }
+      this.isLoading = false;
     });
   },
   computed: {
