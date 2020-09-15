@@ -890,6 +890,7 @@ export default {
         let _actualMoney =
           value - +this.withdrawData.audit.total.total_deduction;
         // 2.判斷是否 > 0
+        // 有流水的情況
         if (_actualMoney !== value) {
           this.actualMoney = _actualMoney;
           if (_actualMoney <= 0) {
@@ -898,8 +899,9 @@ export default {
             return;
           }
         } else {
+          // 無流水時
           this.actualMoney = _actualMoney;
-          this.errTips = "";
+          this.errTips = _actualMoney <= 0 ? "实际提现金额须大于0，请重新输入" : "";
           return;
         }
 
@@ -915,7 +917,7 @@ export default {
         ) {
           this.errTips = `单笔提现金额最小为${withdrawMin}元，最大为${
             withdrawMax ? `${withdrawMax}元` : "无限制"
-            }`;
+          }`;
           return;
         }
 

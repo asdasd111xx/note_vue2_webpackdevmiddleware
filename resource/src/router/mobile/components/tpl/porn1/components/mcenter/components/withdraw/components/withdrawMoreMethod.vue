@@ -25,7 +25,7 @@
                 alt="add"
               />
             </div>
-            {{ item.title() }}
+            {{ item.title }}
           </div>
         </div>
       </div>
@@ -96,32 +96,12 @@ export default {
       return [
         {
           key: "bankCard",
-          title: () => {
-            switch (this.themeTPL) {
-              case "porn1":
-                return "添加银行卡";
-                break;
-
-              case "ey1":
-                return "添加 提现银行卡";
-                break;
-            }
-          },
+          title: this.themeTPL === "porn1" ? "添加银行卡" : "添加 提现银行卡",
           isShow: this.showAddBankCard
         },
         {
           key: "wallet",
-          title: () => {
-            switch (this.themeTPL) {
-              case "porn1":
-                return "添加数字货币";
-                break;
-
-              case "ey1":
-                return "添加 电子钱包";
-                break;
-            }
-          },
+          title: this.themeTPL === "porn1" ? "添加数字货币" : "添加 电子钱包",
           isShow: this.showAddWallet
         },
         {

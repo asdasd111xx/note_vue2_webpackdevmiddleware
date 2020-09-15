@@ -395,7 +395,6 @@ export default {
                 case "C650001":
                 case "C650008":
                 case "C650009":
-                case "C650018":
                     this.errorMessage.target_username = msg;
                     break;
                 case "C650004":

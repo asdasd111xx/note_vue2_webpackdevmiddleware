@@ -166,9 +166,18 @@ export default {
                     if (key === "account") {
                         return this.formData[key].length > 15;
                     }
+
+                    if (this.siteConfig.MOBILE_WEB_TPL === 'ey1') {
+                        if ((this.memInfo.config.player_user_bank && key === 'city') &&
+                            (this.memInfo.config.player_user_bank && key === 'province')) {
+                            return this.formData[key];
+                        }
+                    }
+
                     if (key !== "phone" && key !== "keyring") {
                         return this.formData[key];
                     }
+
                     return true;
                 }
 
