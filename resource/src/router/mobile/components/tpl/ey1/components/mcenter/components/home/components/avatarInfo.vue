@@ -77,21 +77,37 @@ export default {
   mounted() {
     this.getUserViplevel();
     this.getAvatarSrc();
-    if (this.loginStatus) {      
-      //var oldDays=this.day = moment().diff(Vue.moment(this.memInfo.user.created_at), 'days');   
-
+    if (this.loginStatus) {
+      
+      var nowUTC = moment().format('YYYY-MM-DD');      
+      var createUTC = moment(this.memInfo.user.created_at).format('YYYY-MM-DD');   
+      
       
 
-      var nowUTC = moment.utc();
-      var createUTC = moment.utc(this.memInfo.user.created_at);
-      var newDays = nowUTC.diff(createUTC, 'days');      
+      var date1 = nowUTC;
+      var date2 = createUTC;   
+      date1 = date1.split("-");
+      var year = date1[0];
+      var month = date1[1];
+      var day =  date1[2]; 
+      date1=new Date(year, month - 1, day) ;
+      
+      date2 = date2.split("-");
+      year = date2[0];  
+      month = date2[1];  
+      day =  date2[2]; 
+      date2=new Date(year, month - 1 , day) ;
+      
+      var ONE_DAY = 1000 * 60 * 60 * 24;
+      var date1_ms = date1.getTime();
+      var date2_ms = date2.getTime();
+      var difference_ms = Math.abs(date1_ms - date2_ms);
+      var diff_days = Math.round(difference_ms/ONE_DAY);
+      
+      // console.log('now:  '+nowUTC);
+      // console.log('created_at:  '+createUTC);
 
-      console.log('now:  ');
-      console.log(nowUTC);
-      console.log('created_at:  ');
-      console.log(createUTC);
-
-      this.day = newDays + 1 ;//(newDays==0) ? 1 : newDays;//{{ `加入亿元第${day + 1}天` }}      
+      this.day = (diff_days + 1);//{{ `加入亿元第${day + 1}天` }}
     }
   },
   methods: {
