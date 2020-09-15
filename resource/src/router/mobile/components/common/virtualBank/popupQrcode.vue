@@ -19,7 +19,9 @@
 
           <div>
             <span v-if="countdownSec">{{ countdownSec }}</span>
-            秒后连结失效，并关闭视窗
+            {{
+              themeTPL === "porn1" ? "秒后关闭视窗" : "秒后连结失效，并关闭视窗"
+            }}
           </div>
         </div>
 
@@ -51,7 +53,7 @@
           <template v-if="paymentGatewayId === 37">
             <div>● 请使用扫描器扫描二維碼</div>
             <div>● 成功绑定钱包后，此视窗自动关闭</div>
-            <div v-if="themeTPL === 'ey1'">
+            <div>
               ● 没有购宝钱包帐号?
               <span
                 :class="$style['url']"
@@ -115,7 +117,7 @@ export default {
       if (this.paymentGatewayId === 37) {
         return "绑定购宝钱包";
       } else if (this.paymentGatewayId === 21) {
-        return "扫描绑定";
+        return this.themeTPL === "porn1" ? "绑定CGPay" : "扫描绑定";
       }
     }
   },

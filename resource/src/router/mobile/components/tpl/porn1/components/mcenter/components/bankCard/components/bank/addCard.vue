@@ -240,11 +240,7 @@ export default {
     popupVerification
   },
   props: {
-    changePage: {
-      type: Function,
-      default: () => { }
-    },
-    showTab: {
+    setPageStatus: {
       type: Function,
       default: () => { }
     },
@@ -255,7 +251,8 @@ export default {
   },
   mixins: [bankMixin],
   created() {
-    this.formData.account_name = this.memInfo.user.name;
+    // 真實姓名不送
+    // this.formData.account_name = this.memInfo.user.name;
 
     axios({
       method: "get",
@@ -289,8 +286,7 @@ export default {
       this.msg = "";
       let redirect = query.redirect;
       if (!redirect) {
-        this.changePage("bankCardInfo");
-        this.showTab(true);
+        this.setPageStatus(0, "bankCardInfo", true);
         return;
       }
 
@@ -325,8 +321,7 @@ export default {
           this.$router.push(`/mobile/${redirect}`);
           return;
         default:
-          this.changePage("bankCardInfo");
-          this.showTab(true);
+          this.setPageStatus(0, "bankCardInfo", true);
           return;
       }
     }

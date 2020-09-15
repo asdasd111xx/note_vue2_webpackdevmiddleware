@@ -194,6 +194,12 @@ export default {
         this.headerConfig.hasHelp.func();
       }
 
+      // 充值不開放
+      if (this.headerConfig.hasHelp.type === "deposit") {
+        this.actionSetGlobalMessage({ type: "incoming" });
+        return;
+      }
+
       this.$router.push(this.headerConfig.hasHelp.url);
     },
     // 設定選單狀態
@@ -463,6 +469,11 @@ export default {
 
 .header-custom-wrap {
   .header-custom-btn {
+    -webkit-appearance: none;
+    -moz-appearance: none;
+    -webkit-tap-highlight-color: rgba(0, 0, 0, 0);
+    -moz-tap-highlight-color: rgba(0, 0, 0, 0);
+    cursor: pointer;
     line-height: 43px;
     position: absolute;
     right: 14px;
@@ -472,20 +483,6 @@ export default {
     font-size: 14px;
     font-weight: 500;
     text-align: center;
-  }
-}
-
-.save-wrap {
-  font-size: 15px;
-  position: absolute;
-  line-height: 43px;
-  top: 0;
-  height: 100%;
-  right: 14px;
-  color: $main_text_color2;
-
-  > .active {
-    color: $main_text_color3;
   }
 }
 

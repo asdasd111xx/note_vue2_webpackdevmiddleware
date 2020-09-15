@@ -101,9 +101,7 @@
     />
 
     <div v-if="!data.length" :class="$style['no-data-wrap']">
-      <img
-        :src="$getCdnPath('/static/image/_new/mcenter/moneyDetail/no_data.png')"
-      />
+      <img :src="$getCdnPath(`/static/image/${theme}/mcenter/no_data.png`)" />
       <div v-if="curStatus === 0" :class="$style['tips']">
         暂时没有新的提现记录
       </div>

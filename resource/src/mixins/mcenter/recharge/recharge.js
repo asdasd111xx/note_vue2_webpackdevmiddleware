@@ -101,7 +101,7 @@ export default {
             }
 
             if (+this.rechargeConfig.first_bonus) {
-                result += `<div>喜讯：每周首次额度转让给旗下会员赠代理彩金${this.rechargeConfig.first_bonus}元/位<div>`;
+                result += `<div>喜讯：首次额度转让给旗下会员加赠代理彩金${this.rechargeConfig.first_bonus}元/位<div>`;
             }
 
             this.promotionTips = result;

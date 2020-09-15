@@ -89,36 +89,18 @@
       <div :class="$style['info-confirm']">
         <!-- 上方 Tip 顯示 -->
         <template v-if="selectTarget.walletName">
-          <template v-if="selectTarget.walletId === 21">
-            <li>可输入CGPay帐号或扫码绑定</li>
-            <li>
-              没有CGPay帐号？
-              <a
-                href="https://cgpayintroduction.azurewebsites.net/index.aspx"
-                target="_blank"
-                >立即申请</a
-              >
-            </li>
-          </template>
-
-          <template v-if="selectTarget.walletId === 37">
-            <li>请使用扫码绑定</li>
-            <li>
-              没有CGPay帐号？<a
-                href="https://www.gamewallet.asia/"
-                target="_blank"
-                >立即申请</a
-              >
-            </li>
-          </template>
-
-          <template v-if="selectTarget.swiftCode === 'BBUSDTCN1'">
-            <li>
-              还没有数字货币帐号？<span @click="isShowPopTip = true"
-                >后我查看交易所</span
-              >
-            </li>
-          </template>
+          <li
+            v-for="(item, index) in walletTipInfo"
+            :key="`${item.key}-${index}`"
+          >
+            {{ item.text }}
+            <a v-if="item.hasLink" :href="item.dataObj.src" target="_blank">
+              {{ item.dataObj.text }}
+            </a>
+            <span v-if="item.hasPopupTip" @click="item.dataObj.cb">
+              {{ item.dataObj.text }}
+            </span>
+          </li>
         </template>
 
         <!-- 確認鈕 -->
@@ -134,7 +116,13 @@
         <!-- 新增一般錢包 -->
         <div
           v-else
-          :class="[$style['submit'], { [$style['disabled']]: lockStatus }]"
+          :class="[
+            $style['submit'],
+            { [$style['disabled']]: lockStatus },
+            {
+              [$style['hidden']]: isGoBaoWallet
+            }
+          ]"
           @click="submitByNormal"
         >
           {{ $text("S_CONFIRM", "确认") }}
@@ -175,11 +163,7 @@ export default {
     popupTip
   },
   props: {
-    changePage: {
-      type: Function,
-      default: () => {}
-    },
-    showTab: {
+    setPageStatus: {
       type: Function,
       default: () => {}
     },
@@ -225,7 +209,9 @@ export default {
       },
       lockStatus: true,
       errorMsg: "",
-      msg: ""
+      msg: "",
+
+      walletTipInfo: []
     };
   },
   computed: {
@@ -257,12 +243,13 @@ export default {
       this.formData["CGPPwd"].value = "";
       this.formData["walletAddress"].value = "";
       this.isGoBaoWallet = false;
+      this.walletTipInfo = [];
 
       let text = "";
-
       switch (value) {
         case 21:
           text = "请输入CGP邮箱/手机号或扫扫二维码";
+          this.getWalletTipInfo();
           break;
         case 33:
           text = "请输入比特币取款地址";
@@ -279,6 +266,7 @@ export default {
         case 37:
           text = "请点击二維碼綁定";
           this.isGoBaoWallet = true;
+          this.getWalletTipInfo();
           break;
         case 38:
           text = "请输入VenusPoint取款帐号";
@@ -286,6 +274,7 @@ export default {
 
         default:
           text = "请输入钱包地址";
+          this.getWalletTipInfo();
           break;
       }
 
@@ -300,8 +289,7 @@ export default {
           this.actionSetGlobalMessage({
             msg: "绑定成功",
             cb: () => {
-              this.showTab(true);
-              this.changePage("walletCardInfo");
+              this.setPageStatus(1, "walletCardInfo", true);
             }
           });
         }
@@ -322,9 +310,11 @@ export default {
             });
             break;
 
+          // 目前僅開放 USDT(ERC20)
           case "usdt":
             this.filterWalletList = this.walletList.filter(item => {
-              return item.swift_code === "BBUSDTCN1";
+              // return item.swift_code === "BBUSDTCN1";
+              return item.id === 39;
             });
             break;
         }
@@ -506,8 +496,7 @@ export default {
       let redirect = query.redirect;
 
       if (!redirect) {
-        this.showTab(true);
-        this.changePage("walletCardInfo");
+        this.setPageStatus(1, "walletCardInfo", true);
         return;
       }
 
@@ -539,7 +528,7 @@ export default {
           this.$router.push(`/mobile/${redirect}`);
           return;
         default:
-          this.changePage("walletCardInfo");
+          this.setPageStatus(1, "walletCardInfo", true);
           return;
       }
     },
@@ -559,6 +548,62 @@ export default {
           "/static/image/porn1/default/bank_default_2.png"
         )
       };
+    },
+    getWalletTipInfo() {
+      if (this.selectTarget.walletId === 21) {
+        this.walletTipInfo = [
+          {
+            key: "CGPay",
+            text: `可输入${this.selectTarget.walletName}帐号或扫码绑定`
+          },
+          {
+            key: "CGPay",
+            text: `没有${this.selectTarget.walletName}帐号？`,
+            hasLink: true,
+            dataObj: {
+              src: "https://cgpayintroduction.azurewebsites.net/index.aspx",
+              text: "立即申请"
+            }
+          }
+        ];
+        return;
+      }
+
+      if (this.selectTarget.walletId === 37) {
+        this.walletTipInfo = [
+          {
+            key: "goBao",
+            text: "请使用扫码绑定"
+          },
+          {
+            key: "goBao",
+            text: `没有${this.selectTarget.walletName}帐号？`,
+            hasLink: true,
+            dataObj: {
+              src: "https://www.gamewallet.asia/",
+              text: "立即申请"
+            }
+          }
+        ];
+        return;
+      }
+
+      if (this.selectTarget.swiftCode === "BBUSDTCN1") {
+        this.walletTipInfo = [
+          {
+            key: "USDT",
+            text: `还没有数字货币帐号？`,
+            hasPopupTip: true,
+            dataObj: {
+              text: "后我查看交易所",
+              cb: () => {
+                this.isShowPopTip = true;
+              }
+            }
+          }
+        ];
+        return;
+      }
     }
   }
 };

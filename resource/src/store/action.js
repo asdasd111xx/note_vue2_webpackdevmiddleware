@@ -1243,6 +1243,7 @@ export const actionGetRechargeStatus = ({ state, dispatch, commit }, data) => {
         let bank_required = config.bank_required;
         let enable = config.enable;
         let enabled_by_deposit = config.enabled_by_deposit;
+        let enabled_by_withdraw = config.enabled_by_withdraw;
 
         if (!enable) {
             dispatch('actionSetGlobalMessage', { msg: '额度转让升级中' });
@@ -1252,6 +1253,7 @@ export const actionGetRechargeStatus = ({ state, dispatch, commit }, data) => {
         const params = [];
         let bank_required_result = {};
         let deposit_result = {};
+        let withdraw_result = {};
 
         if (bank_required) {
             const user_bank =
@@ -1281,7 +1283,7 @@ export const actionGetRechargeStatus = ({ state, dispatch, commit }, data) => {
             params.push(user_bank);
         }
 
-        if (enabled_by_deposit) {
+        if (enabled_by_deposit || enabled_by_withdraw) {
             const userStat =
                 axios({
                     method: 'get',
@@ -1297,10 +1299,26 @@ export const actionGetRechargeStatus = ({ state, dispatch, commit }, data) => {
                             msg: '只需充值一次 开通转让功能'
                         }
                     }
+
+                    if (res && res.data && Number(res.data.ret.withdraw_count) > 0) {
+                        withdraw_result = {
+                            status: 'ok',
+                        }
+                    } else {
+                        withdraw_result = {
+                            code: 'recharge_withdraw',
+                            msg: '只需提现一次 开通转让功能'
+                        }
+                    }
                 }).catch(error => {
                     deposit_result = {
                         code: 'recharge_deposit',
                         msg: '只需充值一次 开通转让功能'
+                    }
+
+                    withdraw_result = {
+                        code: 'recharge_withdraw',
+                        msg: '只需提现一次 开通转让功能'
                     }
                 })
 
@@ -1315,6 +1333,10 @@ export const actionGetRechargeStatus = ({ state, dispatch, commit }, data) => {
 
             else if (enabled_by_deposit && deposit_result.status !== "ok") {
                 result = deposit_result;
+            }
+
+            else if (enabled_by_withdraw && withdraw_result.status !== "ok") {
+                result = withdraw_result;
             }
 
             if (result) {
@@ -1464,7 +1486,9 @@ export const actionVerificationFormData = ({ state, dispatch, commit }, data) =>
             break;
 
         case 'alias':
-            regex = /[，:;！@#$%^&*?<>()+=`|[\]{}\\"/.~\-_']*/g;
+            // regex = /[，:;！@#$%^&*?<>()+=`|[\]{}\\"/.~\-_']*/g;
+
+            regex = /[^\u3000\u3400-\u4DBF\u4E00-\u9FFF.．·]/g;
             val = val
                 .replace(regex, '')
                 .substring(0, 20);
@@ -1475,12 +1499,17 @@ export const actionVerificationFormData = ({ state, dispatch, commit }, data) =>
 
             val = val
                 .replace(regex, '')
-                .substring(0, 16);
+                .substring(0, 4);
             break;
 
         case 'bankCard':
             val = val.replace(/[^0-9]/g, '')
-                .substring(0, 19);
+                .substring(0, 36);
+            break;
+
+        case 'code':
+            val = val.replace(/[^0-9]/g, '')
+                .substring(0, 6);
             break;
 
     }

@@ -55,6 +55,11 @@ export default {
                     path: 'line',
                     name: 'mcenter-accountData-line',
                     component
+                },
+                {
+                    path: 'alias',
+                    name: 'mcenter-accountData-alias',
+                    component
                 }
             ]
         },

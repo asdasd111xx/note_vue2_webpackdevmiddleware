@@ -16,9 +16,11 @@
     <div
       :class="[$style['info-wrap'], $style['info-wrap-account'], 'clearfix']"
     >
-      <div :class="$style['deposit-info-title']">
+      <!-- 只有非 crypto 的存款單才顯示 -->
+      <div v-if="!orderData.is_crypto" :class="$style['deposit-info-title']">
         {{ $text("S_WITHDRAW_ACCOUNT", "收款帐号") }}
       </div>
+
       <div :class="$style['deposit-submit-info']">
         <template v-for="(info, index) in receiptInfo">
           <div
@@ -71,17 +73,24 @@
               v-html="info.value"
             />
             <!-- eslint-enable vue/no-v-html -->
-            <div v-else :class="$style['basic-info-text']">
+            <div
+              v-else
+              :class="[
+                $style['basic-info-text'],
+                {
+                  [$style['highlight']]: info.isHighlightValue
+                }
+              ]"
+            >
               {{ info.value }}
-              <div
-                v-if="info.copyShow"
-                :class="$style['icon-wrap']"
-                @click="handleCopy(info.value)"
-              >
-                <div>
-                  <img src="/static/image/_new/mcenter/deposit/more_info.png" />
-                </div>
-              </div>
+            </div>
+            <!-- icon -->
+            <div
+              v-if="info.copyShow"
+              :class="$style['icon-wrap']"
+              @click="handleCopy(info.value)"
+            >
+              <img :src="`/static/image/${themeTPL}/mcenter/ic_copy.png`" />
             </div>
           </div>
           <div
@@ -93,9 +102,9 @@
     </div>
     <!-- 存款信息 -->
     <div :class="[$style['info-wrap'], 'clearfix']">
-      <div :class="$style['deposit-info-title']">
+      <!-- <div :class="$style['deposit-info-title']">
         {{ $text("S_DEPOSIT_TIP04", "填寫匯款資料，加速到帳") }}
-      </div>
+      </div> -->
       <div
         :class="[$style['deposit-submit-info'], $style['application-table']]"
       >
@@ -126,6 +135,14 @@
         :type-id="orderData.type_id"
       />
     </div>
+
+    <!-- Only 加密貨幣 顯示注意事項 -->
+    <div v-if="orderData.is_crypto" :class="$style['remider-block']">
+      注意事項
+      <div v-html="orderData.reminder.replace(/\n/gi, '<br/>')" />
+    </div>
+
+    <!-- 提交按鈕 -->
     <div
       :class="[
         $style['submit-btn'],
@@ -193,7 +210,7 @@ export default {
   props: {
     orderData: {
       type: Object,
-      default: () => { }
+      default: () => {}
     },
     isShow: {
       type: Boolean,
@@ -226,10 +243,14 @@ export default {
   computed: {
     ...mapGetters({
       memInfo: "getMemInfo",
-      siteConfig: 'getSiteConfig',
+      siteConfig: "getSiteConfig"
     }),
+    themeTPL() {
+      return this.siteConfig.MOBILE_WEB_TPL;
+    },
     $style() {
-      const style = this[`$style_${this.siteConfig.MOBILE_WEB_TPL}`] || this.$style_porn1;
+      const style =
+        this[`$style_${this.siteConfig.MOBILE_WEB_TPL}`] || this.$style_porn1;
       return style;
     },
     resultSpeedField: {
@@ -324,5 +345,13 @@ export default {
 };
 </script>
 
-<style lang="scss" src="../css/depositInfo/porn1.scss" module="$style_porn1"></style>
-<style lang="scss" src="../css/depositInfo/ey1.scss" module="$style_ey1"></style>
+<style
+  lang="scss"
+  src="../css/depositInfo/porn1.scss"
+  module="$style_porn1"
+></style>
+<style
+  lang="scss"
+  src="../css/depositInfo/ey1.scss"
+  module="$style_ey1"
+></style>

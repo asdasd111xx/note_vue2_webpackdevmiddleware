@@ -131,7 +131,12 @@
           {{ $text("S_WITHDRAW_ACCOUNT02", "提现帐号") }}
           <!-- 會員首次出款 or 需用銀行卡提現一次(強制銀行卡出款) -->
           <span
-            v-if="!isFirstWithdraw || forceStatus === 1"
+            v-if="
+              forceStatus === 1 &&
+                userWithdrawCount === 0 &&
+                isFirstWithdraw &&
+                withdrawUserData.wallet.length > 0
+            "
             :class="$style['withdraw-status-tip']"
           >
             银行卡提现一次，开通数字货币提现功能
@@ -154,8 +159,7 @@
           :class="[
             $style['bank-card-cell'],
             {
-              [$style['disable']]:
-                (forceStatus === 2 || forceStatus === 1) && !item.allow
+              [$style['disable']]: !item.allow
             }
           ]"
           @click="handleSelectCard(item)"
@@ -165,7 +169,10 @@
           <div
             :class="[
               $style['check-box'],
-              { [$style['checked']]: item.id === selectedCard.id }
+              { [$style['checked']]: item.id === selectedCard.id },
+              {
+                [$style['disable']]: !item.allow
+              }
             ]"
           />
         </div>
@@ -317,36 +324,54 @@
         v-if="allWithdrawAccount && allWithdrawAccount.length !== 0"
         :class="[$style['actual-money']]"
       >
-        <div>{{ selectedCard.name }}到帐金额</div>
-        <div>
-          <span :class="$style['money-currency']">¥</span>
-          <span :class="$style['money-currency']">
-            {{
-              selectedCard.withdrawType !== "crypto_id"
-                ? actualMoney.toFixed(2)
-                : cryptoMoney
-            }}
-          </span>
+        <span :class="$style['money-currency']">
+          {{
+            `${
+              selectedCard.name && selectedCard.withdrawType !== "crypto_id"
+                ? selectedCard.name
+                : ""
+            }${
+              selectedCard.name && selectedCard.withdrawType !== "crypto_id"
+                ? "到帐"
+                : "实际提现金额"
+            }`
+          }}
+        </span>
+        <span :class="$style['money-currency']">¥</span>
+        <span :class="$style['money-currency']">
+          {{ actualMoney.toFixed(2) }}
+        </span>
 
-          <div
-            v-if="selectedCard.withdrawType === 'crypto_id'"
-            :class="[
-              $style['conversion-btn'],
-              {
-                [$style['disable']]: isClickCoversionBtn
-              },
-              {
-                [$style['unInput']]: !withdrawValue
-              }
-            ]"
-            @click="convertCryptoMoney"
-          >
-            {{ countdownSec > 0 ? `(${formatCountdownSec()})` : `汇率试算` }}
-          </div>
+        <span :class="[$style['serial']]" @click="toggleSerial">
+          详情
+        </span>
+      </div>
 
-          <span :class="[$style['serial']]" @click="toggleSerial">
-            详情
-          </span>
+      <div
+        v-if="selectedCard.withdrawType === 'crypto_id'"
+        :class="$style['crypto-block']"
+      >
+        <span :class="$style['money-currency']">¥</span>
+        <span :class="$style['money-currency']">
+          {{ selectedCard.name }}到帐
+        </span>
+        <span :class="$style['money-currency']">
+          {{ cryptoMoney }}
+        </span>
+
+        <div
+          :class="[
+            $style['conversion-btn'],
+            {
+              [$style['disable']]: isClickCoversionBtn
+            },
+            {
+              [$style['unInput']]: !withdrawValue || +actualMoney <= 0
+            }
+          ]"
+          @click="convertCryptoMoney"
+        >
+          {{ countdownSec > 0 ? `${formatCountdownSec()}` : `汇率试算` }}
         </div>
       </div>
     </template>
@@ -416,7 +441,7 @@
         <input
           v-model="withdrawPwd"
           autocomplete="off"
-          placeholder="请输入提现密码(限定4位数字)"
+          placeholder="请输入提现密码(限定4码数字)"
           type="tel"
           maxlength="4"
           @input="verification('withdrawPwd', $event.target.value)"
@@ -556,6 +581,9 @@ export default {
       },
       showMoreMethod: false,
       widthdrawTipsType: "tips",
+
+      // 記錄使用者目前出款總次數
+      userWithdrawCount: null,
 
       // 匯率試算相關
       cryptoMoney: "--",
@@ -1062,7 +1090,7 @@ export default {
       this.isLoading = true;
       this.actionSetIsLoading(true);
 
-      // console.log(this.withdrawAccount);
+      console.log(this.withdrawAccount);
 
       // 不需要取款密碼,並且可選銀行卡
       let _params = {
@@ -1081,15 +1109,16 @@ export default {
         _params = { ..._params, ...params };
       }
 
-      const hasAccountId = !this.withdrawAccount.withdrawType
-        ? "account_id"
-        : this.withdrawAccount.withdrawType;
+      // const hasAccountId = !this.withdrawAccount.withdrawType
+      //   ? "account_id"
+      //   : this.withdrawAccount.withdrawType;
 
       if (this.memInfo.config.withdraw === "迅付") {
         _params = {
           ..._params,
           [`ext[api_uri]`]: "/api/trade/v2/c/withdraw/entry",
-          [`ext[method][${hasAccountId}]`]: this.selectedCard.id,
+          [`ext[method][${this.selectedCard.withdrawType}]`]: this.selectedCard
+            .id,
           password: +this.withdrawPwd
         };
       }

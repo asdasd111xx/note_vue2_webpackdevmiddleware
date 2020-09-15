@@ -524,6 +524,10 @@
   &.is-error-line {
     border-bottom: 1px solid #eee;
   }
+
+  &.hidden {
+    display: none;
+  }
 }
 
 .speed-money-wrap {

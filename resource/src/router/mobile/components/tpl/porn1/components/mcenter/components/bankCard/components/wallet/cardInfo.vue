@@ -21,7 +21,12 @@
             v-for="item in wallet_card"
             :key="item.id"
             :class="$style['bankcard-item']"
-            @click="onClickDetail(item), showTab(false)"
+            @click="
+              () => {
+                onClickDetail(item);
+                setPageStatus(1, 'walletCardInfo', false);
+              }
+            "
           >
             <div :class="[$style['card-top'], 'clearfix']">
               <div :class="$style['card-logo']">
@@ -36,7 +41,7 @@
             </div>
 
             <div :class="$style['card-number']">
-              {{ item.address.slice(0,4) }} **** ****
+              {{ item.address.slice(0, 4) }} **** ****
               <span>{{ item.address.slice(-4) }}</span>
             </div>
 
@@ -63,7 +68,7 @@
           <div :class="$style['add-wrap']">
             <div
               :class="$style['add-btn']"
-              @click="changePage('addWalletCard'), showTab(false)"
+              @click="setPageStatus(1, 'addWalletCard', false)"
             >
               <img src="/static/image/porn1/mcenter/add_2.png" />
               <span>{{ $text("S_ADD_DIGITAL_CURRENCY", "添加数字货币") }}</span>
@@ -99,7 +104,7 @@
           </div>
 
           <div :class="$style['card-number']">
-            {{ wallet_cardDetail.address.slice(4) }} **** ****
+            {{ wallet_cardDetail.address.slice(0,4) }} **** ****
             <span>{{ wallet_cardDetail.address.slice(-4) }}</span>
           </div>
         </div>
@@ -161,11 +166,7 @@ import virtualMixin from "@/mixins/mcenter/bankCard/cardInfo/wallet";
 export default {
   mixins: [virtualMixin],
   props: {
-    changePage: {
-      type: Function,
-      default: () => {}
-    },
-    showTab: {
+    setPageStatus: {
       type: Function,
       default: () => {}
     },

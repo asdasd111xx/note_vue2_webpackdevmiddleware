@@ -106,13 +106,20 @@ export default {
           // 充值
           case "C50101":  // 轉帳需首充 暫時
           case "C50100":
+          case "C650018":
           // 只需充值一次 开通转让功能
           case "recharge_deposit":
             this.$router.push(`/mobile/mcenter/deposit?redirect=${redirect ? redirect : 'home'}`);
             break;
+          // 只需提现一次 开通转让功能
+          case "C650023":
+          case "recharge_withdraw":
+            this.$router.push(`/mobile/mcenter/withdraw`);
+            break;
           // 銀行卡
           case "C50099":
           case "C50102":
+          case "C650003":
           case "bindcard":
             this.$router.push(`/mobile/mcenter/bankCard?redirect=${redirect ? redirect : 'home'}&type=bankCard`);
             break;
@@ -120,10 +127,11 @@ export default {
           case "C50103":
           case "C50105":
           case "bindVirtualBank":
-            if (this.siteConfig.MOBILE_WEB_TPL === "ey1") {
-              this.$router.push(`/mobile/mcenter/bankCard?redirect=${redirect ? redirect : 'home'}&type=wallet`)
+            if (this.siteConfig.MOBILE_WEB_TPL === "porn1") {
+              this.$router.push(`/mobile/mcenter/bankCard?redirect=${redirect ? redirect : 'home'}&type=bankCard`)
             } else {
-              this.$router.push(`/mobile/mcenter/bankCard?redirect=${redirect ? redirect : 'home'}&type=bankCard`);
+              // 億元
+              this.$router.push('/mobile/withdrawAccount');
             }
             break;
           // 重新登入
@@ -138,10 +146,11 @@ export default {
           case "C50104":
           case "C50106":
             localStorage.setItem('form-withdraw-account', true);
-            if (this.siteConfig.MOBILE_WEB_TPL === "ey1") {
-              this.$router.push('/mobile/withdrawAccount');
-            } else {
+            if (this.siteConfig.MOBILE_WEB_TPL === "porn1") {
               this.$router.push(`/mobile/mcenter/accountData?reqAccount=${redirect ? redirect : 'home'}`);
+            } else {
+              // 億元
+              this.$router.push('/mobile/withdrawAccount');
             }
             break;
           default:

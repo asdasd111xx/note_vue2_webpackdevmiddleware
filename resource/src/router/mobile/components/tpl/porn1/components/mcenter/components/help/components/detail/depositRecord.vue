@@ -74,16 +74,18 @@
     </div>
 
     <edit-deposit-field
-      v-if="isShowDepositInfo"
+      v-if="editOpen"
       :required-fields="requiredFields"
-      :deposit-data="singleDeposit"
-      :close-fuc="showDepositInfo"
+      :depositData="singleDeposit"
+      :close-fuc="
+        () => {
+          editOpen = false;
+        }
+      "
     />
 
     <div v-if="!data.length" :class="$style['no-data-wrap']">
-      <img
-        :src="$getCdnPath('/static/image/_new/mcenter/moneyDetail/no_data.png')"
-      />
+      <img :src="$getCdnPath(`/static/image/${theme}/mcenter/no_data.png`)" />
       <div :class="$style['tips']">暂时没有新的充值记录</div>
       <div
         :class="[
@@ -105,11 +107,11 @@ import { getCookie } from '@/lib/cookie';
 import { mapGetters, mapActions } from 'vuex';
 import editDepositField from './editDepositField';
 import member from '@/api/member';
-// import mixin from '@/mixins/mcenter/deposit/recordDeposit';
+import mixin from '@/mixins/mcenter/deposit/recordDeposit';
 import axios from 'axios';
 
 export default {
-  //   mixins: [mixin],
+  mixins: [mixin],
   components: {
     editDepositField
   },
@@ -191,9 +193,9 @@ export default {
           return this.$text('S_PROCESSING_TEXT', '处理中');
       }
     },
-    showDepositInfo() {
-      this.isShowDepositInfo = !this.isShowDepositInfo;
+    openEdit(info) {
       this.editOpen = true;
+      this.getSingleInfo(info.order_number);
       this.getData();
     }
   },

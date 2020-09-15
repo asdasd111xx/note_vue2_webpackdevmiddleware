@@ -192,11 +192,7 @@
         </div>
       </template>
       <div v-else :class="$style['no-data-wrap']">
-        <img
-          :src="
-            $getCdnPath('/static/image/_new/mcenter/moneyDetail/no_data.png')
-          "
-        />
+      <img :src="$getCdnPath(`/static/image/${themeTPL}/mcenter/no_data.png`)" />
         <div :class="$style.tips">还没有任何记录</div>
         <div
           :class="$style['btn-money']"

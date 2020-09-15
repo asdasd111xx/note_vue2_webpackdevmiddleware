@@ -91,15 +91,6 @@
       </div>
     </template>
 
-    <template v-if="headerConfig.hasFeedBackBtn">
-      <div
-        :class="$style['btn-feedback']"
-        @click="$router.push('/mobile/mcenter/feedback/feedbackList')"
-      >
-        {{ $text("S_MY_FEEDBACK", "我的反馈") }}
-      </div>
-    </template>
-
     <!-- 登錄&註冊 -->
     <template v-if="headerConfig.hasMemInfo">
       <div
@@ -655,20 +646,6 @@ export default {
     display: inline-block;
     height: 100%;
     vertical-align: middle;
-  }
-}
-
-.save-wrap {
-  font-size: 15px;
-  position: absolute;
-  line-height: 43px;
-  top: 0;
-  height: 100%;
-  right: 14px;
-  color: $main_text_color2;
-
-  > .active {
-    color: $main_text_color3;
   }
 }
 

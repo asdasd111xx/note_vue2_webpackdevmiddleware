@@ -41,6 +41,13 @@ export default {
             ]
         };
     },
+    watch: {
+        isReceive() {
+            this.$nextTick(() => {
+                this.onResize();
+            })
+        }
+    },
     computed: {
         ...mapGetters({
             siteConfig: 'getSiteConfig',
@@ -462,19 +469,25 @@ export default {
                 // 草莓 -> STB
                 // 向日葵 -> SF
                 // 屌絲漫畫->DSC
-                case 'LF':
+                case 'PPV':
                 case 'APB':
+                case 'JPB':
+                    if (!this.loginStatus) {
+                        this.$router.push('/mobile/login');
+                        return;
+                    }
+                    this.$router.push(`/mobile/iframe/${game.type}?&title=${game.name}`);
+                    return;
+                case 'LF':
                 case 'BALE':
                 case 'STB':
-                case 'JPB':
                 case 'DSC':
-                case 'PPV':
                 case 'SF':
                     if (!this.loginStatus) {
                         this.$router.push('/mobile/login');
                         return;
                     }
-
+                    // 調整iframe內嵌
                     let newWindow = window.open('');
                     yaboRequest({
                         method: 'get',

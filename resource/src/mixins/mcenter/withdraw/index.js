@@ -226,6 +226,7 @@ export default {
   created() {
     this.actionSetIsLoading(true);
     this.getUserLevel();
+    this.getUserStat();
 
     // 取得取款初始資料
     ajax({
@@ -402,6 +403,20 @@ export default {
 
         this.userLevelObj = ret;
       });
+    },
+    /**
+   * 回傳使用者出入款統計資料
+   * @method getUserStat
+   */
+    getUserStat() {
+      axios({
+        method: 'get',
+        url: '/api/v1/c/user-stat/deposit-withdraw',
+      }).then(res => {
+        if (res && res.data) {
+          this.userWithdrawCount = res.data.ret.withdraw_count;
+        }
+      })
     }
   }
 };
