@@ -546,7 +546,6 @@ import {
   API_TRADE_RELAY,
   API_CRYPTO_MONEY,
   API_WITHDRAW,
-  API_WITHDRAW_BALANCE_BACK,
   API_WITHDRAW_CGPAY_BINDING,
   API_WITHDRAW_INFO,
   API_WITHDRAW_WRITE_2
@@ -688,9 +687,9 @@ export default {
     });
   },
   mounted() {
-    if (this.memInfo.auto_transfer.enable) {
-      this.balanceBack();
-    }
+    // if (this.memInfo.auto_transfer.enable) {
+    //   this.balanceBack();
+    // }
   },
   computed: {
     ...mapGetters({
@@ -917,7 +916,7 @@ export default {
         ) {
           this.errTips = `单笔提现金额最小为${withdrawMin}元，最大为${
             withdrawMax ? `${withdrawMax}元` : "无限制"
-          }`;
+            }`;
           return;
         }
 
