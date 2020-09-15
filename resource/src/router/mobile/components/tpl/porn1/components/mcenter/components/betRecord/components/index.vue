@@ -173,7 +173,7 @@
                 <ul :class="[$style['single-data-count'], 'clearfix']">
                   <li :class="$style['single-count']">
                     {{ $text("S_DATA_COUNT", "笔数") }} :
-                    {{ mainTotal.count }}
+                    {{ item.count }}
                   </li>
                   <li :class="$style['single-water']">
                     {{ $text("S_TOTAL_WATER", "流水") }} :
@@ -210,7 +210,7 @@
                       {{ parseFloat(gameDetail.valid_bet).toFixed(2) }}
                     </div>
                     <div :class="$style['game-money']">
-                      {{ $text("S_WIN_LOSE", "输赢") }} :
+                      {{ "输/赢"}} :
                       <span
                         :class="{
                           [$style['is-win']]: parseFloat(gameDetail.payoff) > 0

@@ -187,7 +187,7 @@ export default {
       }
 
       this.rechargeCheck().then((res) => {
-        if (res) {
+        if (res === true) {
           this.toggleCaptcha = true;
         }
       });

@@ -96,7 +96,6 @@
               type="tel"
               placeholder="请输入银行卡卡号(限定16位以上数字)"
               minlength="16"
-              maxlength="19"
               @input="checkData($event.target.value, 'account')"
             />
             <div :class="$style['clear-input']" v-if="formData.account">
