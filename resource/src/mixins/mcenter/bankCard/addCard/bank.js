@@ -166,7 +166,9 @@ export default {
                     if (key === "account") {
                         return this.formData[key].length > 15;
                     }
-                    if (key !== "phone" && key !== "keyring") {
+                    if (key !== "phone" && key !== "keyring" &&
+                        (this.memInfo.config.player_user_bank && key === 'city') &&
+                        (this.memInfo.config.player_user_bank && key === 'province')) {
                         return this.formData[key];
                     }
                     return true;
