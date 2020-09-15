@@ -199,7 +199,10 @@ export default {
 
             this.isSendKeyring = true;
 
-            return this.actionGetRechargeStatus("recharge").then(() => {
+            return this.actionGetRechargeStatus("recharge").then((res) => {
+                if (res !== 'ok') {
+                    return res;
+                }
                 return axios({
                     method: 'get',
                     url: '/api/v1/c/recharge/check',
@@ -422,6 +425,8 @@ export default {
                     this.errorMessage.keyring = msg;
                     break;
                 case "C650023":
+                case "C650003":
+                case "C650018":
                     break;
                 default:
                     this.tipMsg = msg;
