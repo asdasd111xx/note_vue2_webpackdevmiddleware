@@ -60,9 +60,15 @@ export default {
       yToken: ""
     };
   },
-  mounted() {
+  created() {
+    if (this.$route.query.cid) {
+      setCookie("cid", this.$route.query.cid);
+      this.actionSetAgentLink();
+    }
+
     this.$nextTick(() => {
       const query = this.$route.query;
+
       if (
         query &&
         query.check &&
@@ -88,8 +94,7 @@ export default {
 
         axios({
           method: "get",
-          url:
-            this.siteConfig.YABO_API_DOMAIN + "/Account/GetAuthorizationToken",
+          url: this.siteConfig.YABO_API_DOMAIN + "/Account/GetAuthorizationToken",
           headers: _headers
         })
           .then(res => {
@@ -112,7 +117,7 @@ export default {
                   domain: domain
                 }
               })
-                .then(res => {})
+                .then(res => { })
                 .catch(e => {
                   console.log(e);
                 });
@@ -162,9 +167,6 @@ export default {
       window.location.replace("/mobile/mcenter/makeMoney");
       return;
     }
-  },
-  created() {
-    this.actionSetAgentLink();
   },
   methods: {
     ...mapActions(["actionSetGlobalMessage", "actionSetAgentLink"]),
