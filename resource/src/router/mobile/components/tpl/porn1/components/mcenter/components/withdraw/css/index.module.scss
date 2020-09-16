@@ -290,6 +290,7 @@
   &.deposit {
     height: unset;
     max-height: 400px;
+    min-height: unset;
   }
 
   .check-header {
@@ -340,7 +341,8 @@
       font-weight: 700;
       color: #414655;
       text-align: center;
-      height: 140px;
+    //   height: 140px;
+      min-height: 67px;
       line-height: 67px;
     }
 
