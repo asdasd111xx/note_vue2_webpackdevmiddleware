@@ -1,8 +1,8 @@
 <template>
     <div class="top-link clearfix">
         <div :class="{ 'link-item': true, 'has-promotion': !agentInfo.user.show_promotion }" @click="onListClick(0)">
-            <img :src="$getCdnPath('/static/image/mobile/mcenter/icon_proxylist_n.png')" />
-            <img :src="$getCdnPath('/static/image/mobile/mcenter/icon_proxylist_h.png')" class="is-active" />
+            <img :src="$getCdnPath('/static/image/porn1/agent/mcenter/icon_proxylist_n.png')" />
+            <img :src="$getCdnPath('/static/image/porn1/agent/mcenter/icon_proxylist_h.png')" class="is-active" />
             {{ $t('S_COMMISSION_DETAILS') }}
         </div>
         <div
@@ -10,13 +10,13 @@
             class="link-item"
             @click="onListClick(1)"
         >
-            <img :src="$getCdnPath('/static/image/mobile/mcenter/icon_memberlist_n.png')" />
-            <img :src="$getCdnPath('/static/image/mobile/mcenter/icon_memberlist_h.png')" class="is-active" />
+            <img :src="$getCdnPath('/static/image/porn1/agent/mcenter/icon_memberlist_n.png')" />
+            <img :src="$getCdnPath('/static/image/porn1/agent/mcenter/icon_memberlist_h.png')" class="is-active" />
             {{ $t('S_MEMBER_LIST') }}
         </div>
         <div :class="{ 'link-item': true, 'has-promotion': !agentInfo.user.show_promotion }" @click="onListClick(2)">
-            <img :src="$getCdnPath('/static/image/mobile/mcenter/icon_withdrawals_n.png')" />
-            <img :src="$getCdnPath('/static/image/mobile/mcenter/icon_withdrawals_h.png')" class="is-active" />
+            <img :src="$getCdnPath('/static/image/porn1/agent/mcenter/icon_withdrawals_n.png')" />
+            <img :src="$getCdnPath('/static/image/porn1/agent/mcenter/icon_withdrawals_h.png')" class="is-active" />
             {{ $t('S_ACCOUNT_WITHDRAW') }}
         </div>
     </div>

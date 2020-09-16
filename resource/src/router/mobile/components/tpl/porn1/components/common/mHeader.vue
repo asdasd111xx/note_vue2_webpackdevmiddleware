@@ -220,6 +220,7 @@ export default {
 
       return {
         [style.header]: true,
+        [style.agent]: this.path[1] === 'agcenter',
         [style["is-home"]]: this.$route.name === "home",
         [style[this.source]]: this.source ? this.source : "",
         [style["search-page"]]: this.headerConfig.isSmallPigSearch
@@ -229,6 +230,9 @@ export default {
         clearfix: true
       };
     },
+    path() {
+      return this.$route.path.split('/').filter((path) => path);
+    }
   },
   methods: {
     ...mapActions([
@@ -323,6 +327,15 @@ export default {
   &.is-home {
     border-bottom: none;
   }
+}
+
+.agent {
+    background: url('/static/image/porn1/agent/common/herder_bg.png');
+    border-bottom: 1px solid #000;
+
+    .title {
+        color: #FFF;
+    }
 }
 
 .logo-wrap {

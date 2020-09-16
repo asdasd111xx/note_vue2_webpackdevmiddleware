@@ -90,7 +90,7 @@
                 border-collapse: $tableCollapse;
                 width: 100%;
                 margin-bottom: 40px;
-                border-bottom: $tableBottomBorder;
+                border: $tableBottomBorder;
                 td {
                     &.caption {
                         padding-left: 3%;

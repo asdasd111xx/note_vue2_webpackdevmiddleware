@@ -103,7 +103,7 @@ export default {
                     '%s',
                     `<span class="${this.$style.account}"> ${name}</span>
                     <span class="${this.$style['change-name-wrap']}">
-                        <img class="${this.$style['change-name-img']}" src="${this.$getCdnPath('/static/image/agent/change_icon.png')}" />
+                        <img class="${this.$style['change-name-img']}" src="${this.$getCdnPath('/static/image/porn1/agent/mcenter/change_icon.png')}" />
                     </span>`
                 );
             }
