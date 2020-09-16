@@ -29,7 +29,13 @@ export default {
     },
     getBankDetail(info) {
       this.bank_cardDetail = info;
+      this.$emit('update:isAudit', false)
       this.$emit("update:showDetail", true);
+
+      if (info.auditing) {
+        this.$emit('update:isAudit', true);
+        return;
+      }
     },
     removeBankCard() {
       this.actionSetGlobalMessage({ msg: "正在上线 敬请期待" });

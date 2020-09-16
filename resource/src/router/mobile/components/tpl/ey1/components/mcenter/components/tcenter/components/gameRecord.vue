@@ -46,8 +46,17 @@ export default {
           //     this.$router.back();
           //     return;
           //   }
+        //if(localStorage.getItem('back')==='home')
+        //  this.$router.push("/mobile/");
+        //else
+        //  this.$router.push("/mobile/mcenter");
 
-          this.$router.push("/mobile/mcenter");
+        if (this.$route.params.page === "bet"){
+            this.$router.push("/mobile/mcenter/tcenter/gameRecord/main");
+          }else{
+            this.$router.push("/mobile/mcenter");
+          }
+
         }
       };
     },

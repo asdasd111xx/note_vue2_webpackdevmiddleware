@@ -54,7 +54,8 @@ export const SETFAVORITEGAME = 'SETFAVORITEGAME';
 export const SET_COLLECTION_STATUS = 'SET_COLLECTION_STATUS';
 // 會員端-使用者層級
 export const SET_USER_LEVELS = 'SET_USER_LEVELS';
-
+// 會員端-帳戶資料欄位開關
+export const SET_MCENTER_USER_CONFIG = 'SET_MCENTER_USER_CONFIG';
 // 會員端-會員資料 v3
 export const SETMEMINFOV3 = 'SETMEMINFOV3';
 // ＝＝＝＝＝＝＝＝＝＝＝＝＝＝＝＝＝＝
@@ -70,6 +71,8 @@ export const SETAGENTNEWS = 'SETAGENTNEWS';
 export const SETAGENTPOST = 'SETAGENTPOST';
 // 代理端-使用者層級
 export const SET_AGENT_USER_LEVELS = 'SET_AGENT_USER_LEVELS';
+// 代理端-帳戶資料欄位開關
+export const SET_AGENT_USER_CONFIG = 'SET_AGENT_USER_CONFIG';
 
 // ＝＝＝＝＝＝＝＝＝＝＝＝＝＝＝＝＝＝
 //     MCENTER 會員中心

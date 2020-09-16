@@ -15,7 +15,7 @@ export default {
     },
     allVip: [],
     // 推廣連結
-    agentLink: '',
+    agentLink: {},
     // ＝＝＝＝＝＝＝＝＝＝＝＝＝＝＝＝＝＝
     //     後台(mangosteen_front)共用
     // ＝＝＝＝＝＝＝＝＝＝＝＝＝＝＝＝＝＝
@@ -133,7 +133,7 @@ export default {
             type: 'text',
             regExp: /^[a-z1-9][a-z0-9]{3,19}$/,
             errorMsg: 'S_USERNAME_ERROR',
-            defaultErrMsg: '请输入4-20码英文小写、数字，首字不得为数字0'
+            defaultErrMsg: '请输入4-20位英文小写、数字，首字不得为数字0'
         },
         email: {
             key: 'email',
@@ -149,7 +149,7 @@ export default {
             type: 'password',
             regExp: /^[a-z0-9._\-!@#$&*+=|]{6,12}$/,
             errorMsg: 'S_PASSWORD_ERROR',
-            defaultErrMsg: '请输入6-12码英文小写、数字'
+            defaultErrMsg: '请输入6-12位字母或数字'
         },
         chkPwd: {
             key: 'chkPwd',
@@ -206,6 +206,8 @@ export default {
     },
     // 會員端-使用者層級
     userLevels: {},
+    // 會員端-帳戶資料欄位開關
+    memUserConfig: {},
     // ＝＝＝＝＝＝＝＝＝＝＝＝＝＝＝＝＝＝
     //     AGENT 代理相關
     // ＝＝＝＝＝＝＝＝＝＝＝＝＝＝＝＝＝＝
@@ -227,6 +229,8 @@ export default {
     },
     // 代理端-使用者層級
     agentUserLevels: {},
+    // 代理端-帳戶資料欄位開關
+    agentUserConfig: {},
     // ＝＝＝＝＝＝＝＝＝＝＝＝＝＝＝＝＝＝
     //     MCENTER 會員中心
     // ＝＝＝＝＝＝＝＝＝＝＝＝＝＝＝＝＝＝

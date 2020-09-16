@@ -34,11 +34,16 @@
         :value="paramsData.content"
         :placeholder="$t('S_DESCRIBE_PROBLEM').replace('%s', 20)"
         minlength="20"
-        maxlength="200"
         @input="setValue($event.target.value)"
       />
-      <span :class="$style['text-count']"
-        >{{ paramsData.content.length }}/200</span
+      <span
+        :class="[
+          $style['text-count'],
+          {
+            [$style['red']]: contentLenght > 200
+          }
+        ]"
+        >{{ contentLenght }}/200</span
       >
     </div>
     <div :class="$style['feedback-img']">
@@ -62,7 +67,10 @@
     <div
       :class="[
         $style['submit'],
-        { [$style['disabled']]: paramsData.content.length < 20 && !isSend }
+        {
+          [$style['disabled']]:
+            (contentLenght < 20 && !isSend) || contentLenght > 200
+        }
       ]"
       @click="submitFeedback"
     >
@@ -131,6 +139,9 @@ export default {
     ...mapGetters({
       siteConfig: 'getSiteConfig'
     }),
+    contentLenght() {
+      return this.paramsData.content.trim().replace(' ', '').length;
+    },
     theme() {
       return this.siteConfig.MOBILE_WEB_TPL;
     },

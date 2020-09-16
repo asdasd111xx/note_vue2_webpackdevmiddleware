@@ -10,7 +10,7 @@
             <div :class="$style['date']">{{ data.day }}</div>
             <div :class="$style['card']" v-for="(info, index) in data.list">
                 <div :class="$style['card-title']">
-                    <span :class="$style['header']">{{ info.vendor }}</span>
+                    <span :class="$style['header']">{{ info.vendor_alias }}</span>
                     <span
                         :class="[
                             $style['payout'],

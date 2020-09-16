@@ -46,8 +46,11 @@ export default {
           //     this.$router.back();
           //     return;
           //   }
-
-          this.$router.push("/mobile/mcenter");
+        this.$router.back();
+        //if(localStorage.getItem('back')==='home')
+          //this.$router.push("/mobile/");
+        //else
+          //this.$router.push("/mobile/mcenter");
         }
       };
     },

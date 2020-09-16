@@ -12,7 +12,7 @@
           <img
             :src="
               $getCdnPath(
-                `/static/image/_new/mcenter/moneyDetail/icon_${currentCategory.key}.png`
+                `/static/image/${themeTPL}/mcenter/moneyDetail/icon_${currentCategory.key}.png`
               )
             "
           />
@@ -31,9 +31,7 @@
     </div>
   </div>
   <div v-else :class="$style['no-data-wrap']">
-    <img
-      :src="$getCdnPath('/static/image/_new/mcenter/moneyDetail/no_data.png')"
-    />
+    <img :src="$getCdnPath(`/static/image/${themeTPL}/mcenter/no_data.png`)" />
     <div :class="$style.tips">暂时没有新的{{ currentCategory.text }}记录</div>
     <div
       v-if="currentCategory.key === 'deposit'"
@@ -58,6 +56,9 @@ export default {
     ...mapGetters({
       siteConfig: "getSiteConfig"
     }),
+    themeTPL() {
+      return this.siteConfig.MOBILE_WEB_TPL;
+    },
     $style() {
       const style = this[`$style_${this.siteConfig.MOBILE_WEB_TPL}`] || this.$style_porn1;
       return style;
@@ -88,7 +89,7 @@ export default {
     onClick(info) {
       this.$emit('update:detailInfo', info);
       if (this.pageType !== 'ingroup_transfer') {
-        this.$router.push('/mobile/mcenter/moneyDetail/detail');
+        this.$router.push('/mobile/mcenter/moneyDetail/detail?id=' + info.id);
       }
     }
   }

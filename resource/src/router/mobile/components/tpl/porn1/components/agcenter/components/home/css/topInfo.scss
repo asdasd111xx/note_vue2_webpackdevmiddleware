@@ -1,0 +1,58 @@
+.top-info {
+    position: relative;
+    background: #262626;
+    padding-top: 11px;
+    border-bottom: 1px solid #111;
+
+    .logo {
+        position: absolute;
+        top: 16px;
+        left: 20px;
+        width: 100px;
+        height: 31px;
+
+        img {
+            width: inherit;
+            height: inherit;
+        }
+    }
+
+    .info {
+        float: right;
+        margin-right: 17px;
+        min-width: 166px;
+        min-height: 52px;
+        line-height: 52px;
+        font-size: 14px;
+        color: #CCC;
+    }
+
+    .balance-wrap {
+        clear: right;
+        background-color: #111;
+        padding-top: 15px;
+        padding-bottom: 10px;
+        color: #999;
+        font-size: 12px;
+
+        .balance-item {
+            margin: 0 auto 5px;
+            width: 174px;
+
+            .col-vendor {
+                float: left;
+                width: 75px;
+                text-align: right;
+            }
+
+            .col-balance {
+                float: left;
+                width: 99px;
+            }
+        }
+    }
+
+    .top-link {
+        clear: right;
+    }
+}

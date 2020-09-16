@@ -44,7 +44,7 @@ export const site_69 = {
     VERSION: getVersion('porn1'),
     SITE_NAME: '鸭博娱乐',
     YABO_API_DOMAIN: window.location.host === 'ybbe1.qghco.com' ?
-        'https://ybbe1.qghco.com/api' :
+        'https://ybbe2.qghco.com/api' :
         'https://yaboapi.canarycherrytart.com/api-demo',
 };
 
@@ -57,12 +57,17 @@ export const site_41 = {
     MOBILE_WEB_TPL: 'ey1',
     VERSION: getVersion('ey1'),
     SITE_NAME: '亿元',
-    YABO_API_DOMAIN: 'https://cxbb.bbin-asia.com/api',
+    YABO_API_DOMAIN: 'https://cxbb.chessrunroll.com/api',
 };
 
 /**
  * 亿元 正式站Demo環境
  */
+// cxbb.chesspink.com
+// cxbb.casterchess.com
+// cxbb.chessrunroll.com
+// cxbb.sdkchess.com
+// cxbb.jellychess.com
 // cxbb.mangochess.com
 // cxbb.lemonchess.com
 // cxbb.pomelochess.com

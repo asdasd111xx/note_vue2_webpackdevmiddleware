@@ -1,5 +1,6 @@
 export default {
     normal: {
+        iframePorn1: () => import(/* webpackChunkName: 'iframePorn1' */'../../tpl/porn1/components/iframe'),
         homePorn1: () => import(/* webpackChunkName: 'homePorn1' */'../../tpl/porn1/components/home'),
         loginPorn1: () => import(/* webpackChunkName: 'loginPorn1' */'../../tpl/porn1/components/login'),
         casinoPorn1: () => import(/* webpackChunkName: 'casinoPorn1' */'../../tpl/porn1/components/casino'),
@@ -22,7 +23,9 @@ export default {
         installPorn1: () => import(/* webpackChunkName: 'installPorn1' */'../../tpl/porn1/components/install'),
         shareDownloadPorn1: () => import(/* webpackChunkName: 'shareDownloadPorn1' */ '../../tpl/porn1/components/shareDownload'),
         launchPorn1: () => import(/* webpackChunkName: 'launchPorn1' */ '../../tpl/porn1/components/launch'),
-        withdrawAccountPorn1: () => import(/* webpackChunkName: 'withdrawAccountPorn1' */ '../../common/withdrawAccount/withdrawAccount')
+        withdrawAccountPorn1: () => import(/* webpackChunkName: 'withdrawAccountPorn1' */ '../../common/withdrawAccount/withdrawAccount'),
+        agLoginPorn1: () => import(/* webpackChunkName: 'agLoginPorn1' */'../../tpl/porn1/components/agLogin/components'),
+        joinAgentPorn1: () => import(/* webpackChunkName: 'joinAgentPorn1' */'../../tpl/porn1/components/joinAgent/components')
     },
     mcenter: {
         homePorn1: () => import(/* webpackChunkName: 'homePorn1' */'../../tpl/porn1/components/mcenter/components/home'),
@@ -50,6 +53,7 @@ export default {
         helpPorn1: () => import(/* webpackChunkName: 'helpPorn1' */'../../tpl/porn1/components/mcenter/components/help/components'),
         helpCenterPorn1: () => import(/* webpackChunkName: 'helpCenterPorn1' */'../../tpl/porn1/components/mcenter/components/help'),
         helpDetailPorn1: () => import(/* webpackChunkName: 'helpDetailPorn1' */'../../tpl/porn1/components/mcenter/components/help/components/detail'),
+        accountDataAliasPorn1: () => import(/* webpackChunkName: 'accountDataAliasPorn1' */'../../tpl/porn1/components/mcenter/components/accountData/components/account/form/editAlias'),
         accountDataNamePorn1: () => import(/* webpackChunkName: 'accountDataNamePorn1' */'../../tpl/porn1/components/mcenter/components/accountData/components/account/form/editName'),
         accountDataPhonePorn1: () => import(/* webpackChunkName: 'accountDataPhonePorn1' */'../../tpl/porn1/components/mcenter/components/accountData/components/account/form/editPhone'),
         accountDataEmailPorn1: () => import(/* webpackChunkName: 'accountDataEmailPorn1' */'../../tpl/porn1/components/mcenter/components/accountData/components/account/form/editEmail'),
@@ -60,5 +64,17 @@ export default {
         accountDataWithdrawpwdPorn1: () => import(/* webpackChunkName: 'accountDataWithdrawpwdPorn1' */'../../tpl/porn1/components/mcenter/components/accountData/components/account/form/editWithdrawPwd'),
         walletPorn1: () => import(/* webpackChunkName: 'walletPorn1' */'../../tpl/porn1/components/mcenter/components/wallet'),
         makeMoneyPorn1: () => import(/* webpackChunkName: 'makeMoneyPorn1' */'../../tpl/porn1/components/mcenter/components/makeMoney')
+    },
+    agcenter: {
+        homePorn1: () => import(/* webpackChunkName: 'homePorn1' */'../../tpl/porn1/components/agcenter/components/home/components'),
+        accountDataPorn1: () => import(/* webpackChunkName: 'accountDataPorn1' */'../../tpl/porn1/components/agcenter/components/accountData/components'),
+        bankCardPorn1: () => import(/* webpackChunkName: 'bankCardPorn1' */'../../tpl/porn1/components/agcenter/components/bankCard/components'),
+        financeRewardPorn1: () => import(/* webpackChunkName: 'financeRewardPorn1' */'../../tpl/porn1/components/agcenter/components/financeReward/components'),
+        financeWithdrawPorn1: () => import(/* webpackChunkName: 'financeWithdrawPorn1' */'../../tpl/porn1/components/agcenter/components/financeWithdraw/components'),
+        gameRecordPorn1: () => import(/* webpackChunkName: 'gameRecordPorn1' */'../../tpl/porn1/components/agcenter/components/gameRecord/components'),
+        messagePorn1: () => import(/* webpackChunkName: 'messagePorn1' */'../../tpl/porn1/components/agcenter/components/message/components'),
+        postPorn1: () => import(/* webpackChunkName: 'postPorn1' */'../../tpl/porn1/components/agcenter/components/post/components'),
+        feedBackPorn1: () => import(/* webpackChunkName: 'feedBackPorn1' */'../../tpl/porn1/components/agcenter/components/feedBack/components'),
+        reportMemberPorn1: () => import(/* webpackChunkName: 'reportMemberPorn1' */'../../tpl/porn1/components/agcenter/components/reportMember/components')
     }
 };

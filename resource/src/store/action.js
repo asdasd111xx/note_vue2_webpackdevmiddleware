@@ -4,7 +4,7 @@ import * as siteConfigOfficial from '@/config/siteConfig/siteConfigOfficial';
 import * as siteConfigTest from '@/config/siteConfig/siteConfigTest';
 import * as types from './mutations_type';
 
-import { API_GETAPPINFO, API_QRCODE } from '@/config/api';
+import { API_AGENT_USER_CONFIG, API_GETAPPINFO, API_MCENTER_USER_CONFIG, API_QRCODE } from '@/config/api';
 
 import EST from '@/lib/EST';
 import Vue from 'vue';
@@ -25,6 +25,7 @@ import member from '@/api/member';
 import openGame from '@/lib/open_game';
 import router from '../router';
 import yaboRequest from '@/api/yaboRequest';
+import bbosRequest from '@/api/bbosRequest';
 
 let memstatus = true;
 let agentstatus = true;
@@ -556,6 +557,7 @@ export const actionMemInit = ({ state, dispatch, commit }) => {
             // dispatch('actionSetVip');
             dispatch('actionSetPost');
             dispatch('actionSetUserBalance');
+            dispatch('actionSetUserConfig');
             // 取得會員我的返水
             mcenter.rebate({
                 success: (response) => {
@@ -613,6 +615,12 @@ export const actionSetUserdata = ({ state, dispatch, commit }, forceUpdate = fal
         }).then(res => {
             if (res && res.data && res.data.result === "ok") {
                 commit(types.SET_HASBANK, res.data.ret.length > 0);
+            }
+        }).catch((error) => {
+            if (error.response && error.response.data.code === "M00001") {
+                dispatch('actionSetGlobalMessage', {
+                    msg: error.response.data.msg, code: error.response.data.code
+                });
             }
         })
     }
@@ -830,6 +838,7 @@ export const actionAgentInit = ({ state, dispatch, commit }, next) => {
                 commit(types.SET_AGENT_USER_LEVELS, response.ret);
             }
         });
+        dispatch('actionSetAgentUserConfig');
         dispatch('actionSetGameData');
         dispatch('actionSetAgentNews');
     })()]).then(() => {
@@ -1001,6 +1010,10 @@ export const actionContactUs = (_, postData) => new Promise((resolve) => member.
 // ＝＝＝＝＝＝＝＝＝＝＝＝＝＝＝＝＝＝
 export const actionGetMobileInfo = ({ commit }, tpl) => {
     const status = Vue.cookie.get('newsite') ? 'New' : '';
+    let manifest = document.createElement('link');
+    manifest.rel = 'manifest';
+    manifest.href = `/static/tpl/analytics/${tpl}/manifest.json`;
+    document.querySelector('head').append(manifest);
 
     return ajax({
         url: `/tpl/${tpl}/mobile${status}.json`,
@@ -1094,34 +1107,56 @@ export const actionSetＭcenterBindMessage = ({ commit }, data) => {
 };
 
 // 設定推廣連結
-export const actionSetAgentLink = ({ commit }) => {
-    const domain = new Promise((resolve) => {
-        axios({
-            method: "get",
-            url: "/api/v1/c/hostnames"
+export const actionSetAgentLink = ({ state, commit }) => {
+  let configInfo = {};
+    if (state.webInfo.is_production) {
+        configInfo = siteConfigOfficial[`site_${state.webInfo.alias}`] || siteConfigOfficial.preset;
+    } else {
+        configInfo = siteConfigTest[`site_${state.webInfo.alias}`] || siteConfigTest.preset;
+    }
+
+    let domain = new Promise((resolve) => {
+        bbosRequest({
+          method: "get",
+          url: configInfo.BBOS_DOMIAN + '/Domain/Hostnames',
+          reqHeaders: {
+              'Vendor': state.memInfo.user.domain
+          },
+          params: {
+              "lang": "zh-cn"
+          },
         }).then((res) => {
-            if (res.data.result !== "ok") {
-                return
-            }
-            return resolve(res.data.ret[0])
+          if (res.errorCode !== '00' || res.status !== '000') {
+            return
+          }
+            return resolve(res.data[0])
         })
     })
+
     let agentCode = new Promise((resolve) => {
-        axios({
-            method: "get",
-            url: "/api/v1/c/player/promotion"
+        bbosRequest({
+          method: "get",
+          url: configInfo.BBOS_DOMIAN + '/Player/Promotion',
+          reqHeaders: {
+              'Vendor': state.memInfo.user.domain
+          },
+          params: {
+              "lang": "zh-cn"
+          },
         }).then((res) => {
-            if (res.data.result !== "ok") {
-                return
-            }
-            return resolve(res.data.ret.code)
+          if (res.errorCode !== '00' || res.status !== '000') {
+            return
+          }
+            return resolve(res.data.code)
         })
     })
 
     Promise.all([domain, agentCode]).then(([domain, agentCode]) => {
-        commit(types.SET_AGENTLINK, `https://${domain}/a/${agentCode}`);
+        commit(types.SET_AGENTLINK, { domain , agentCode });
     });
+
 };
+
 // 鴨脖配置
 export const actionSetYaboConfig = ({ state, dispatch, commit }, next) => {
     let configInfo = {};
@@ -1231,6 +1266,7 @@ export const actionGetRechargeStatus = ({ state, dispatch, commit }, data) => {
         let bank_required = config.bank_required;
         let enable = config.enable;
         let enabled_by_deposit = config.enabled_by_deposit;
+        let enabled_by_withdraw = config.enabled_by_withdraw;
 
         if (!enable) {
             dispatch('actionSetGlobalMessage', { msg: '额度转让升级中' });
@@ -1240,6 +1276,7 @@ export const actionGetRechargeStatus = ({ state, dispatch, commit }, data) => {
         const params = [];
         let bank_required_result = {};
         let deposit_result = {};
+        let withdraw_result = {};
 
         if (bank_required) {
             const user_bank =
@@ -1269,7 +1306,7 @@ export const actionGetRechargeStatus = ({ state, dispatch, commit }, data) => {
             params.push(user_bank);
         }
 
-        if (enabled_by_deposit) {
+        if (enabled_by_deposit || enabled_by_withdraw) {
             const userStat =
                 axios({
                     method: 'get',
@@ -1285,10 +1322,26 @@ export const actionGetRechargeStatus = ({ state, dispatch, commit }, data) => {
                             msg: '只需充值一次 开通转让功能'
                         }
                     }
+
+                    if (res && res.data && Number(res.data.ret.withdraw_count) > 0) {
+                        withdraw_result = {
+                            status: 'ok',
+                        }
+                    } else {
+                        withdraw_result = {
+                            code: 'recharge_withdraw',
+                            msg: '只需提现一次 开通转让功能'
+                        }
+                    }
                 }).catch(error => {
                     deposit_result = {
                         code: 'recharge_deposit',
                         msg: '只需充值一次 开通转让功能'
+                    }
+
+                    withdraw_result = {
+                        code: 'recharge_withdraw',
+                        msg: '只需提现一次 开通转让功能'
                     }
                 })
 
@@ -1303,6 +1356,10 @@ export const actionGetRechargeStatus = ({ state, dispatch, commit }, data) => {
 
             else if (enabled_by_deposit && deposit_result.status !== "ok") {
                 result = deposit_result;
+            }
+
+            else if (enabled_by_withdraw && withdraw_result.status !== "ok") {
+                result = withdraw_result;
             }
 
             if (result) {
@@ -1392,7 +1449,7 @@ export const actionGetMemInfoV3 = ({ state, dispatch, commit }) => {
         }
     })
 }
-// 輸入欄位驗證
+// 輸入欄位共用驗證
 export const actionVerificationFormData = ({ state, dispatch, commit }, data) => {
     let configInfo;
 
@@ -1419,7 +1476,7 @@ export const actionVerificationFormData = ({ state, dispatch, commit }, data) =>
             let maxLength = 11;
             switch (site) {
                 case 'ey1':
-                    maxLength = 36;
+                    maxLength = 0;
                     break;
                 case 'porn1':
                 default:
@@ -1427,9 +1484,12 @@ export const actionVerificationFormData = ({ state, dispatch, commit }, data) =>
                     break;
             }
 
-            val = val
-                .replace(/[^0-9]/g, '')
-                .substring(0, maxLength);
+            val = val.replace(/[^0-9]/g, '');
+
+            if (maxLength) {
+                val = val.substring(0, maxLength);
+            }
+
             break;
 
         case 'password':
@@ -1445,10 +1505,60 @@ export const actionVerificationFormData = ({ state, dispatch, commit }, data) =>
 
             val = val
                 .replace(regex, '')
-                .substring(0, 50);
+                .substring(0, 20);
+            break;
+
+        case 'alias':
+            // regex = /[，:;！@#$%^&*?<>()+=`|[\]{}\\"/.~\-_']*/g;
+
+            regex = /[^\u3000\u3400-\u4DBF\u4E00-\u9FFF.．·]/g;
+            val = val
+                .replace(regex, '')
+                .substring(0, 20);
+            break;
+
+        case 'graphicVerification':
+            regex = /[^0-9a-zA-Z]/g;
+
+            val = val
+                .replace(regex, '')
+                .substring(0, 4);
+            break;
+
+        case 'bankCard':
+            val = val.replace(/[^0-9]/g, '')
+                .substring(0, 36);
+            break;
+
+        case 'code':
+            val = val.replace(/[^0-9]/g, '')
+                .substring(0, 6);
             break;
 
     }
 
     return val;
 };
+// 會員端-帳戶資料欄位開關
+export const actionSetUserConfig = ({ commit }) => ajax({
+    method: 'get',
+    url: API_MCENTER_USER_CONFIG,
+    errorAlert: false,
+    success: (response) => {
+        if (response && response.result === 'ok') {
+            commit(types.SET_MCENTER_USER_CONFIG, response.ret);
+        }
+    }
+});
+
+// 代理端-帳戶資料欄位開關
+export const actionSetAgentUserConfig = ({ commit }) => ajax({
+    method: 'get',
+    url: API_AGENT_USER_CONFIG,
+    errorAlert: false,
+    success: (response) => {
+        if (response && response.result === 'ok') {
+            commit(types.SET_AGENT_USER_CONFIG, response.ret);
+        }
+    }
+});

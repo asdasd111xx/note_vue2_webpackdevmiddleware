@@ -1,0 +1,51 @@
+@charset 'UTF-8';
+/* clear float */
+.clear {
+    margin: 0;
+    padding: 0;
+    clear: both;
+}
+.clearfix {
+    &:before {
+        display: table;
+        content: "";
+    }
+    &:after {
+        display: table;
+        content: "";
+        clear: both;
+    }
+}
+
+/* reset */
+.body {
+    overflow-x: auto;
+}
+
+input {
+    margin: 0;
+    padding: 0;
+}
+
+button {
+    margin: 0;
+    border: 0;
+    padding: 0;
+}
+
+a {
+    outline: none;
+}
+
+// ＝＝＝＝＝＝＝＝＝＝＝＝＝＝＝＝＝＝
+//     共用樣式(同會員端)
+// ＝＝＝＝＝＝＝＝＝＝＝＝＝＝＝＝＝＝
+@import "~@/css/variable.scss";
+@import "~@/css/normalize.scss";
+@import "~@/css/animation.scss";
+
+// ＝＝＝＝＝＝＝＝＝＝＝＝＝＝＝＝＝＝
+//     元件
+// ＝＝＝＝＝＝＝＝＝＝＝＝＝＝＝＝＝＝
+$mobile-sub-bg: rgb(185, 104, 104);
+@import "~@/css/tpl/common/header/lang.scss";

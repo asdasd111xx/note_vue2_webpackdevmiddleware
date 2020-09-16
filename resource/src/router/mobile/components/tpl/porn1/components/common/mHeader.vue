@@ -91,15 +91,6 @@
       </div>
     </template>
 
-    <template v-if="headerConfig.hasFeedBackBtn">
-      <div
-        :class="$style['btn-feedback']"
-        @click="$router.push('/mobile/mcenter/feedback/feedbackList')"
-      >
-        {{ $text("S_MY_FEEDBACK", "我的反馈") }}
-      </div>
-    </template>
-
     <!-- 登錄&註冊 -->
     <template v-if="headerConfig.hasMemInfo">
       <div
@@ -178,15 +169,12 @@
 
     <!-- 幫助中心連結 -->
     <template v-if="headerConfig.hasHelp">
-      <div :class="[$style['btn-help']]">
+      <div :class="[$style['btn-help']]" @click="handleHelpLinkTo">
         <span v-if="headerConfig.hasHelp.type === 'deposit'">
           教程
         </span>
         <div :class="$style['btn-icon']">
-          <img
-            :src="$getCdnPath('/static/image/_new/common/btn_help.png')"
-            @click="$router.push('/mobile/mcenter/helpCenter/')"
-          />
+          <img :src="$getCdnPath('/static/image/_new/common/btn_help.png')" />
         </div>
       </div>
     </template>
@@ -524,12 +512,12 @@ export default {
 }
 
 .header-custom-wrap {
-  height: 43px;
-  width: 100%;
-  position: fixed;
-  top: 0;
-
   .header-custom-btn {
+    -webkit-appearance: none;
+    -moz-appearance: none;
+    -webkit-tap-highlight-color: rgba(0, 0, 0, 0);
+    -moz-tap-highlight-color: rgba(0, 0, 0, 0);
+    cursor: pointer;
     line-height: 43px;
     position: fixed;
     right: 14px;
@@ -658,20 +646,6 @@ export default {
     display: inline-block;
     height: 100%;
     vertical-align: middle;
-  }
-}
-
-.save-wrap {
-  font-size: 15px;
-  position: absolute;
-  line-height: 43px;
-  top: 0;
-  height: 100%;
-  right: 14px;
-  color: $main_text_color2;
-
-  > .active {
-    color: $main_text_color3;
   }
 }
 

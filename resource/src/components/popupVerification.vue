@@ -5,27 +5,57 @@
       @click="$emit('update:isShowCaptcha', false)"
     />
 
-    <!-- 滑動認證 -->
-    <div v-if="captchaType === 2" :class="$style['slide-block']">
+    <div :class="$style['slide-block']">
+      <!-- 滑動認證 -->
       <slide-verification
+        v-if="captchaType === 2"
         :is-enable="true"
         :success-fuc="getSlideData"
         page-status="verify"
       />
+      <!-- 圖形認證 -->
+      <div v-else-if="captchaType === 1" :class="$style['captchaText-wrap']">
+        <input
+          v-model="captchaText"
+          :placeholder="'请输入验证码'"
+          @input="verification($event.target.value, 'captchaText')"
+          type="tel"
+        />
+        <img
+          :class="$style['captchaImg']"
+          v-if="captchaImg"
+          :src="captchaImg"
+          height="25"
+        />
+        <div :class="$style['captchaText-refresh']" @click="getCaptchaImage">
+          <img :src="'/static/image/porn1/common/ic_verification_reform.png'" />
+        </div>
+      </div>
       <div
-        :class="$style['close']"
+        :class="[
+          $style['close'],
+          {
+            [$style['is-captcha-image']]: captchaType === 1
+          }
+        ]"
         @click="$emit('update:isShowCaptcha', false)"
       >
         关闭
+      </div>
+      <div v-if="captchaType === 1" :class="$style['submit']" @click="submit">
+        确认送出
       </div>
     </div>
   </div>
 </template>
 
 <script>
-import { mapGetters } from "vuex";
-import slideVerification from "@/components/slideVerification";
+import { getCookie, setCookie } from '@/lib/cookie';
+import { mapGetters, mapActions } from "vuex";
+import bbosRequest from "@/api/bbosRequest";
 import puzzleVerification from "@/components/puzzleVerification";
+import slideVerification from "@/components/slideVerification";
+import axios from 'axios';
 
 export default {
   components: {
@@ -34,7 +64,7 @@ export default {
   },
   props: {
     captcha: {
-      type: Object || String,
+      type: Object | String,
       default: null
     },
     isShowCaptcha: {
@@ -43,30 +73,67 @@ export default {
   },
   data() {
     return {
-      info: null
+      info: null,
+      captchaText: '', // 圖形驗證
+      isGetCaptchaImg: false,
+      captchaImg: ''
     };
   },
   computed: {
     ...mapGetters({
-      memInfo: "getMemInfo"
+      siteConfig: 'getSiteConfig',
+      memInfo: 'getMemInfo'
     }),
     captchaType() {
       return this.memInfo.config.default_captcha_type;
     }
   },
   mounted() {
-    // 無需驗證 to do 驗證碼
-    if (this.captchaType === 0 || this.captchaType === 1) {
-      this.$emit("update:captcha", {});
-      this.$emit("update:isShowCaptcha", false);
-    }
+    switch (this.captchaType) {
+      default:
+      case 0:
+        this.$emit("update:captcha", {});
+        this.$emit("update:isShowCaptcha", false);
+        return;
 
-    // 拼圖認證
-    if (this.captchaType === 3) {
-      this.showPuzzleCaptcha();
+      // 圖形驗證
+      case 1:
+        this.getCaptchaImage();
+        break;
+
+      // 滑動驗證
+      case 2:
+        break;
+
+      //拼圖驗證
+      case 3:
+        this.showPuzzleCaptcha();
+        break;
     }
   },
   methods: {
+    ...mapActions([
+      'actionVerificationFormData'
+    ]),
+    getCaptchaImage() {
+      if (this.isGetCaptchaImg) {
+        return;
+      }
+
+      this.isGetCaptchaImg = true;
+      axios({
+        method: 'post',
+        url: '/api/v1/captcha',
+      }).then((res) => {
+        setTimeout(() => {
+          this.isGetCaptchaImg = false;
+        }, 800);
+        if (res.data && res.data) {
+          this.captchaImg = res.data.ret;
+          //   setCookie('aid', res.data.cookie.aid);
+        }
+      });
+    },
     getSlideData(dataInfo) {
       this.$emit("update:captcha", dataInfo.data);
 
@@ -90,6 +157,18 @@ export default {
       });
 
       captcha.show();
+    },
+    verification(value, key) {
+      if (key === "captchaText") {
+        this.actionVerificationFormData({ target: 'graphicVerification', value: value }).then((val => {
+          this.captchaText = val;
+        }));
+      }
+    },
+    submit() {
+      //   this.$emit("update:captcha", { captcha: this.captchaText, aid: getCookie('aid') });
+      this.$emit("update:captcha", this.captchaText);
+      // $emit('update:isShowCaptcha', false)
     }
   }
 };
@@ -121,15 +200,74 @@ export default {
   transform: translate(-50%, -50%);
   background: #fefefe;
   border-radius: 8px;
+}
 
-  .close {
-    padding: 12px 0;
-    margin-top: 40px;
-    text-align: center;
-    font-size: 18px;
-    font-weight: 700;
-    color: #d1b79c;
-    border-top: 1px solid #f8f8f7;
+.close {
+  padding: 12px 0;
+  margin-top: 40px;
+  text-align: center;
+  font-size: 18px;
+  font-weight: 700;
+  color: #d1b79c;
+  border-top: 1px solid #f8f8f7;
+
+  &.is-captcha-image {
+    color: #414655;
+    display: inline-block;
+    width: 48%;
+  }
+}
+
+.submit {
+  padding: 12px 0;
+  margin-top: 40px;
+  text-align: center;
+  font-size: 18px;
+  font-weight: 700;
+  color: #d1b79c;
+  display: inline-block;
+  width: 48%;
+  border-top: 1px solid #f8f8f7;
+  border-left: 1px solid #f8f8f7;
+}
+
+.captchaText-wrap {
+  height: 48px;
+  width: 100%;
+  max-width: 275px;
+  display: flex;
+  align-items: center;
+  background: #ffffff;
+  border: 1px solid #e3e3e3;
+  border-radius: 10px;
+
+  > input {
+    border: unset;
+    box-shadow: none;
+    outline: none;
+    width: 80%;
+    padding-left: 5px;
+    color: #5e626d;
+  }
+
+  > .captchaImg {
+    width: 70px;
+    height: 30px;
+    background-color: #000;
+  }
+}
+
+.captchaText-refresh {
+  width: 20px;
+  height: 100%;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  margin: 0px 10px;
+
+  > img {
+    width: 20px;
+    height: 20px;
   }
 }
 </style>

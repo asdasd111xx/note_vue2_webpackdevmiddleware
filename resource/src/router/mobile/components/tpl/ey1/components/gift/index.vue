@@ -52,19 +52,19 @@ export default {
           title: "福利",
           icon: '/static/image/ey1/gift/icon_gift_bonus.png',
           items: [
-            { name: "每日签到", login: true, thirdUrl: "https://fn139.com/plugin.php?id=lezhi99_lottery&view=sign&mobile=2" },
-            { name: "好运转盘", login: true, thirdUrl: "https://fn139.com/plugin.php?id=lezhi99_lottery" },
-            { name: "积分商城", login: true, thirdUrl: "https://fn139.com/keke_integralmall-index.html" }
+            { name: "每日签到", login: true, thirdUrl: "https://fengniao131.com/member.php?mod=logging&action=login&mobile=2" },
+            { name: "好运转盘", login: true, thirdUrl: "https://fengniao131.com/plugin.php?id=lezhi99_lottery" },
+            { name: "积分商城", login: true, thirdUrl: "https://fengniao131.com/keke_integralmall-index.html" }
           ]
         },
         {
           title: "娱乐",
           icon: '/static/image/ey1/gift/icon_gift_video.png',
           items: [
-            { name: "日本有码", login: true, url: "https://94i88.com/mobile/list.html?category=1" },
-            { name: "中文有码", login: true, url: "https://94i88.com/mobile/list.html?category=9" },
-            { name: "日本无码", login: true, url: "https://94i88.com/mobile/list.html?category=8" },
-            { name: "免费偷看", login: true, url: "https://94i88.com/mobile/free_list.html" }
+            { name: "日本有码", login: true, url: "https://tinyurl.com/y9lyf3he" },
+            { name: "中文有码", login: true, url: "https://tinyurl.com/yb9wuhqj" },
+            { name: "日本无码", login: true, url: "https://tinyurl.com/ybtpfyxv" },
+            { name: "免费偷看", login: true, url: "https://tinyurl.com/y8aoghzj" }
           ]
         },
         {
@@ -145,7 +145,28 @@ export default {
     pageLoading: () => import(/* webpackChunkName: 'pageLoading' */ '@/router/mobile/components/common/pageLoading'),
   },
   mounted() {
-    this.currentMenu = this.giftMenuList;
+    if (this.$route.query.q === '通讯软体') {
+      //  to do
+      //   let cur = this.giftMenuList.find(i => i.items.find(y => y.name === this.$route.query.q));
+      this.linkTo({
+        title: "服务",
+        name: "通讯软体",
+        icon: '/static/image/ey1/gift/icon_gift_service.png',
+        items: [
+          {
+            title: "通讯软体",
+            icon: '/static/image/ey1/gift/icon_gift_service.png',
+            items: [
+              { name: "微信推广", params: 'wechat' },
+              { name: "QQ推广", url: "" },
+              { name: "苹果推", url: "" },
+            ]
+          },
+        ]
+      })
+    } else {
+      this.currentMenu = this.giftMenuList;
+    }
   },
   computed: {
     ...mapGetters({
@@ -167,35 +188,19 @@ export default {
       };
     },
   },
+  watch: {
+    openLink() {
+
+    }
+  },
   methods: {
     ...mapActions([
       'actionSetGlobalMessage'
     ]),
-    getThridUrl(url, target) {
+    getThridUrl(target) {
       this.isLoading = true;
-      let newWindow = window.open('');
-
-      axios({
-        method: 'get',
-        url: '/api/v1/c/link/customize',
-        params: {
-          code: 'fengniao',
-          client_uri: url
-        }
-      }).then(res => {
-        this.isLoading = false;
-        if (res && res.data && res.data.ret && res.data.ret.uri) {
-          newWindow.location = res.data.ret.uri;
-        } else {
-          newWindow.close();
-        }
-      }).catch(error => {
-        this.isLoading = false;
-        newWindow.close();
-        if (error && error.data && error.date.msg) {
-          this.actionSetGlobalMessage({ msg: error.data.msg });
-        }
-      })
+      localStorage.setItem('iframe-third-url', target.thirdUrl);
+      this.$router.push(`/mobile/iframe/third?hasFooter=false&hasHeader=true&title=${target.name}`);
     },
     linkTo(item) {
       if (item.login && !this.loginStatus) {
@@ -216,10 +221,7 @@ export default {
         this.$router.push(`/mobile/gift/detail/${item.params}`);
       }
       else if (item.thirdUrl) {
-        this.getThridUrl(item.thirdUrl);
-      }
-      else {
-        // this.actionSetGlobalMessage({ msg: '即将开业 敬请期待' });
+        this.getThridUrl(item);
       }
     }
   },

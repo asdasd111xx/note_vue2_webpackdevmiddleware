@@ -1,0 +1,410 @@
+<html>
+
+<head>
+    <meta charset="utf-8">
+    <meta name="description" content="">
+    <meta name="keywords" content="">
+    <meta name="viewport"
+        content="width=device-width, initial-scale=1.0, minimum-scale=1.0, maximum-scale=1.0, user-scalable=no">
+    <meta name="apple-mobile-web-app-capable" content="yes">
+    <meta http-equiv="x-dns-prefetch-control" content="on">
+    <link rel="shortcut icon" type="image/x-icon" href="">
+    <style type="text/css">
+        body {
+            max-width: 420px;
+            min-width: 0;
+            height: 100%;
+            width: 100%;
+            padding: 0;
+            border: none;
+            display: block;
+            background-color: #f2f2f2;
+            margin: 0 auto;
+        }
+
+        .container__2tjgt {
+            min-width: 320px;
+            min-height: calc(100vh);
+        }
+
+        .has-header__3TdXH {
+            padding-top: 43px;
+        }
+
+        .has-footer__1-VbG {
+            padding-bottom: 65px;
+        }
+    </style>
+    <style type="text/css">
+        /* RWD 斷點 */
+        /*   亿元   */
+        div.container__2Z53m {
+            background-color: #fff;
+            background-image: url("/static/image/ey1/service/bg_service.png");
+            background-repeat: no-repeat;
+            background-size: 100% auto;
+            background-position: 0 -40px;
+            background-repeat: no-repeat;
+        }
+
+        @media (orientation: landscape) {
+            div.container__2Z53m {
+                background-position: 0 -40%;
+            }
+        }
+
+        .avatar-info-wrap__4S0AI {
+            /* height: 90px; */
+            display: flex;
+            align-items: center;
+            padding: 12px;
+            background-color: white;
+            margin: 0 14px;
+            margin-top: 30px;
+            border-radius: 5px;
+            -webkit-box-shadow: 0 0.2rem 0.4rem 0 rgba(0, 0, 0, 0.2);
+            box-shadow: 0 0.2rem 0.4rem 0 rgba(0, 0, 0, 0.2);
+        }
+
+        .avatar-info-wrap__4S0AI .info-wrap__1nVQ9 {
+            padding-left: 10px;
+            height: 70px;
+        }
+
+        .avatar-info-wrap__4S0AI .info-wrap__1nVQ9 span {
+            height: 35px;
+            display: flex;
+            align-items: center;
+        }
+
+        .avatar-info-wrap__4S0AI .info-wrap__1nVQ9>span:last-child {
+            color: #a5a9b3;
+        }
+
+        .avatar-info-wrap__4S0AI .avatar-wrap__2D9Gj {
+            height: 70px;
+            width: 70px;
+        }
+
+        .avatar-info-wrap__4S0AI .avatar-wrap__2D9Gj>img {
+            height: 100%;
+            border-radius: 50%;
+        }
+
+        .service-header__1owle {
+            text-align: center;
+            position: relative;
+            height: 43px;
+            color: white;
+            font-size: 17px;
+        }
+
+        .service-header__1owle .title__1e5NJ {
+            line-height: 43px;
+        }
+
+        .service-header__1owle .feedback__3gIcT {
+            line-height: 43px;
+            position: absolute;
+            top: 0;
+            right: 12px;
+        }
+
+        .info-card__2BiSJ {
+            color: white;
+            background: linear-gradient(to left, #f6d2bd, #e5997a);
+            box-shadow: 0px 20px 40px 0px rgba(0, 0, 0, 0.15);
+            margin: 15px;
+            height: 100px;
+            border-radius: 10px;
+            position: relative;
+        }
+
+        .info-card__2BiSJ>div:first-child {
+            display: flex;
+            flex-direction: column;
+            padding: 14px;
+            background-image: url("/static/image/ey1/service/bg_service01.png");
+            background-size: auto 100%;
+            background-position: top 0 right 0;
+            height: 100%;
+            background-repeat: no-repeat;
+        }
+
+        .info-card__2BiSJ>div:first-child>div {
+            height: 25px;
+            line-height: 25px;
+        }
+
+        .info-card__2BiSJ>div:first-child>div:first-child {
+            font-size: 20px;
+            display: flex;
+            align-items: center;
+        }
+
+        .info-card__2BiSJ>div:first-child>div:nth-child(2) {
+            color: rgba(255, 255, 255, 0.5);
+        }
+
+        .info-card__2BiSJ>div:first-child>div>img {
+            width: 24px;
+            height: 24px;
+        }
+
+        .btn-next__3cUsV {
+            position: absolute;
+            height: 100%;
+            top: calc(50% - 7px);
+            right: 14px;
+        }
+
+        .btn-next__3cUsV>img {
+            height: 14px;
+            width: 14px;
+        }
+
+        .card-bg__2kOv- {
+            height: 100%;
+        }
+
+        .tip-block__1RxjF {
+            position: absolute;
+            right: 20px;
+            bottom: 65px;
+        }
+
+        .tip-img__1elg6 {
+            width: 60px;
+            height: 60px;
+            margin: 0 auto;
+        }
+
+        .tip-img__1elg6 img {
+            width: 100%;
+            height: 100%;
+            border-radius: 50%;
+        }
+
+        .tip-text__2b_Zl {
+            width: fit-content;
+            text-align: center;
+            padding: 0 5px;
+            margin: 0 auto;
+            font-size: 12px;
+            color: #fff;
+            background: #e42a30;
+            border-radius: 12px;
+            box-shadow: 0pt 2px 5px 0pt rgba(0, 0, 0, 0.16);
+            margin-top: 5px;
+        }
+
+        .pop-wrap__1IH1p {
+            position: fixed;
+            top: 0;
+            right: 0;
+            left: 0;
+            bottom: 0;
+            z-index: 99;
+        }
+
+        .pop-mask__DEeLI {
+            width: 100%;
+            height: 100%;
+            background: #000;
+            opacity: 0.5;
+        }
+
+        .pop-block__3IvYO {
+            position: absolute;
+            width: 85%;
+            top: 50%;
+            left: 50%;
+            transform: translate(-50%, -50%);
+            background: #FFFFFF;
+            border-radius: 8px;
+        }
+
+        .pop-block__3IvYO .close__1h41k {
+            position: absolute;
+            top: -25px;
+            right: 0;
+            width: 21px;
+            height: 21px;
+        }
+
+        .pop-block__3IvYO .close__1h41k img {
+            width: 100%;
+            height: 100%;
+        }
+
+        .pop-block__3IvYO .tip__38vK4 {
+            display: flex;
+            flex-direction: row-reverse;
+            align-items: center;
+            height: 40px;
+            text-align: right;
+        }
+
+        .pop-block__3IvYO .tip__38vK4 span {
+            padding: 0 5px;
+            font-size: 12px;
+            color: #fff;
+            background: #e42a30;
+            border-radius: 9px 0 0 9px;
+        }
+
+        .pop-block__3IvYO .title__1e5NJ,
+        .pop-block__3IvYO .content__lVia6 {
+            margin: 5px 17px;
+            color: #A6A9B2;
+            font-size: 12px;
+        }
+
+        .pop-block__3IvYO .title-img__2jWH6 {
+            width: 100%;
+        }
+
+        .pop-block__3IvYO .title-img__2jWH6 img {
+            width: 100%;
+            height: 100%;
+        }
+
+        .pop-block__3IvYO .content-cell__36ead {
+            margin-top: 12px;
+        }
+
+        .pop-block__3IvYO .content-cell__36ead span {
+            padding: 2px 0;
+        }
+
+        .pop-block__3IvYO .content-cell__36ead .content-img__xFIdd {
+            width: 100%;
+            height: 100px;
+        }
+
+        .pop-block__3IvYO .content-cell__36ead .content-img__xFIdd img {
+            width: 100%;
+            height: 100%;
+        }
+
+        .pop-block__3IvYO .content-cell__36ead .content-link__2HB3c {
+            width: 100%;
+            height: 100%;
+            background-color: #F7F7F7;
+            border-radius: 10px;
+            padding: 3px;
+        }
+
+        .pop-block__3IvYO .content-cell__36ead .link__2LVEX {
+            position: relative;
+            width: 180px;
+            margin: 10px auto;
+            background: #ffffff;
+            border: 1px solid #A6A9B2;
+            border-radius: 10px;
+            color: #414655;
+            text-align: center;
+        }
+
+        .pop-block__3IvYO .content-cell__36ead .link__2LVEX::before {
+            content: "";
+            position: absolute;
+            top: 50%;
+            left: 20px;
+            transform: translateY(-50%);
+            background: url("/static/image/_new/service/popup/popup_ic_search.png") no-repeat;
+            width: 12px;
+            height: 12px;
+            background-size: cover;
+        }
+
+        .pop-block__3IvYO .content-cell__36ead .url-image__2WT1X {
+            width: 100%;
+        }
+
+        .pop-block__3IvYO .content-cell__36ead .url-image__2WT1X>img {
+            width: 100%;
+        }
+
+        .btn-prev__25YFA {
+            position: absolute;
+            top: 0;
+            bottom: 0;
+            left: 12px;
+            width: 20px;
+            height: 20px;
+            margin: auto;
+            z-index: 2;
+        }
+
+        .btn-prev__25YFA>img {
+            display: block;
+            width: 100%;
+        }
+    </style>
+</head>
+
+<body class="body">
+    <div id="mobile-wrap" class="mobile-wrap__2z1mx">
+        <div class="container__2tjgt container__2Z53m">
+            <!---->
+            <div>
+                <div class="service-header__1owle">
+                    <div class="btn-prev__25YFA" onclick="window.history.back()"><img
+                            src="/static/image/ey1/common/btn_back.png?v=99124533.1"></div>
+                    <div class="title__1e5NJ">我的客服</div>
+                    <div class="feedback__3gIcT" onclick="window.location.href='/mobile/mcenter/feedback/sendFeedback'">
+                        意见反馈
+                    </div>
+                </div>
+
+                <div class="avatar-info-wrap__4S0AI" onclick="window.location.href='/mobile'">
+                    <div class="avatar-wrap__2D9Gj">
+                        <img src="/static/image/_new/mcenter/default/avatar_nologin.png" />
+                    </div>
+                    <div class="info-wrap__1nVQ9"><span>Hi,&nbsp;
+                            <span id="username"></span>
+                        </span> <span>欢迎来到客服中心</span></div>
+                </div>
+                <div class="info-card__2BiSJ">
+                    <div onclick="service()">
+                        <div><img src="/static/image/_new/service/ic_service01.png?v=99124533.1">
+                            &nbsp;
+                            <span>在线客服1</span></div>
+                        <div>Main Customer Support</div>
+                        <div>7*24小时专线服务 贴心至上</div>
+                    </div>
+                    <div class="btn-next__3cUsV"><img src="/static/image/ey1/webview/ic_service_arrow.png?v=99124533.1">
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+</body>
+
+<script>
+    const urlParams = new URLSearchParams(window.location.search);
+    const user = urlParams.get('username') || '';
+    document.getElementById('username').innerText = user || '尊敬的用户';
+
+    function service(target) {
+        let url = localStorage.getItem('serviceUrl');
+
+        if (url && target === 2) {
+            url = url.replace('gid=default', 'gid=yb04')
+                .replace('gid=yb01', 'gid=yb04');
+        }
+
+        let w =
+            window.open(
+                url,
+                'mobile service',
+                `width=800, height=800`
+            );
+
+        w.document.title = "在线客服";
+    }
+</script>
+
+</html>

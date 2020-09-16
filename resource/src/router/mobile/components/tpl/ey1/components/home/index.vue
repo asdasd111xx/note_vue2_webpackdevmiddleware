@@ -140,15 +140,14 @@ export default {
 @import "~@/css/variable.scss";
 
 .top-bg {
-  background-repeat: no-repeat;
-  background-size: 100% 100%;
   background: url("/static/image/ey1/common/pic_top.png");
-  height: 18%;
-  max-height: 130px;
+  -moz-background-size: 100% 100%;
+  background-size: 100% 100%;
+  height: 120px;
+  width: 100%;
   max-width: $mobile_max_width;
-  position: absolute;
   top: 0;
-  width: 100vw;
+  position: absolute;
 }
 
 @media (orientation: landscape) {

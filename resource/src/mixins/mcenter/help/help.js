@@ -1,3 +1,4 @@
+import { getCookie, setCookie } from '@/lib/cookie';
 import { mapActions, mapGetters } from 'vuex';
 
 export default {
@@ -38,6 +39,17 @@ export default {
         ...mapGetters({
             loginStatus: 'getLoginStatus'
         }),
+        hasCid() {
+            return getCookie('cid') || false;
+        },
+        isApp() {
+            let isApp = !!(
+                (this.$route.query && this.$route.query.app) ||
+                (this.$route.query && this.$route.query.APP)
+            );
+
+            return isApp;
+        },
         categorys() {
             if (this.isCategoryMode && this.data) {
                 return this.data.map(item => {
@@ -70,5 +82,13 @@ export default {
             this.category_currentIndex = index;
             this.category_isShowPop = false;
         },
+        linkTo(target) {
+            if (this.isApp) {
+                this.$router.push({ query: { event: target, app: true } });
+                window.location.reload();
+            } else {
+                this.$router.push(`/mobile/${target}`);
+            }
+        }
     },
 };

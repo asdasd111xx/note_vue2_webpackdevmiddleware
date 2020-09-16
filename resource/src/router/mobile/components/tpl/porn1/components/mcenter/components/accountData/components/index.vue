@@ -53,13 +53,6 @@ export default {
       memInfo: 'getMemInfo',
       memCurrency: 'getMemCurrency',
     }),
-    headerConfig() {
-      return {
-        prev: true,
-        onClick: () => { this.$router.back(); },
-        title: this.$text("S_PERSON_INFO", "个人资料"),
-      };
-    },
   },
   mounted() {
     this.getAvatarSrc();
@@ -121,8 +114,10 @@ export default {
     width: 56px;
     margin: 6px 0 13px;
     position: relative;
+
     > img:first-child {
-      height: 100%;
+      height: 56px;
+      width: 56px;
       border-radius: 50%;
     }
 

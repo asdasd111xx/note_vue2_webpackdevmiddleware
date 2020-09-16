@@ -202,8 +202,8 @@ export default {
       this.$emit("update:inqEnd", date);
 
       this.currentGame = this.inqGame;
-      this.currentStart = this.inqStart;
-      this.currentEnd = this.inqEnd;
+      this.currentStart = date;
+      this.currentEnd = date;
 
       this.onInquire();
     },
@@ -260,6 +260,7 @@ export default {
       });
     },
     onSearchBet(username) {
+      if (username === this.selectedUser) return;
       this.selectedUser = username;
       this.onInquireBet();
     },

@@ -92,16 +92,16 @@ export default {
         ]),
         setPromotionTips() {
             let result = ''
+            if (+this.rechargeConfig.first_bonus) {
+                result += `<div>喜讯：首次额度转让给旗下会员加赠代理彩金${this.rechargeConfig.first_bonus}元/位<div>`;
+            }
+
             if (+this.rechargeConfig.monthly_bonus) {
                 result += `<div>喜讯：每月首次额度转让给旗下会员赠代理彩金${this.rechargeConfig.monthly_bonus}元/位<div>`;
             }
 
             if (+this.rechargeConfig.weekly_bonus) {
                 result += `<div>喜讯：每周首次额度转让给旗下会员赠代理彩金${this.rechargeConfig.weekly_bonus}元/位<div>`;
-            }
-
-            if (+this.rechargeConfig.first_bonus) {
-                result += `<div>喜讯：每周首次额度转让给旗下会员赠代理彩金${this.rechargeConfig.first_bonus}元/位<div>`;
             }
 
             this.promotionTips = result;
@@ -199,7 +199,10 @@ export default {
 
             this.isSendKeyring = true;
 
-            return this.actionGetRechargeStatus("recharge").then(() => {
+            return this.actionGetRechargeStatus("recharge").then((res) => {
+                if (res !== 'ok') {
+                    return res;
+                }
                 return axios({
                     method: 'get',
                     url: '/api/v1/c/recharge/check',
@@ -392,7 +395,6 @@ export default {
                 case "C650001":
                 case "C650008":
                 case "C650009":
-                case "C650018":
                     this.errorMessage.target_username = msg;
                     break;
                 case "C650004":
@@ -420,6 +422,10 @@ export default {
                 case "C650012":
                 case "C650013":
                     this.errorMessage.keyring = msg;
+                    break;
+                case "C650023":
+                case "C650003":
+                case "C650018":
                     break;
                 default:
                     this.tipMsg = msg;

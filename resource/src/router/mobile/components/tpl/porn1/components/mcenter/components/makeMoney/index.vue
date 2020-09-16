@@ -17,7 +17,7 @@
           :class="$style['img-wrap']"
           :src="`/static/image/_new/mcenter/makeMoney/img001.png`"
         />
-        <span>{{ agentCode }}</span>
+        <span>{{ agentLink.agentCode }}</span>
         <div :class="$style['copy-btn']">
           复制
         </div>
@@ -45,97 +45,104 @@
 </template>
 
 <script>
-import { API_PROMOTION_INFO } from "@/config/api";
-import { getCookie, setCookie } from '@/lib/cookie';
-import { mapGetters, mapActions } from 'vuex';
+import { getCookie, setCookie } from "@/lib/cookie";
+import { mapGetters, mapActions } from "vuex";
 import axios from "axios";
 import mobileContainer from "../../../common/mobileContainer";
-import yaboRequest from '@/api/yaboRequest';
+import yaboRequest from "@/api/yaboRequest";
 
 export default {
   components: {
-    mobileContainer,
+    mobileContainer
   },
   data() {
     return {
-      msg: "",
-      domain: "",
-      agentCode: "",
-      yToken: ''
+      yToken: ""
     };
   },
-  mounted() {
+  created() {
+    if (this.$route.query.cid) {
+      setCookie("cid", this.$route.query.cid);
+      this.actionSetAgentLink();
+    }
+
     this.$nextTick(() => {
       const query = this.$route.query;
-      if (query &&
+
+      if (
+        query &&
         query.check &&
         query.cid &&
         query.userid &&
         query.tagId &&
-        query.domain) {
-
-        setCookie('y_token', '');
-        setCookie('cid', '');
+        query.domain
+      ) {
+        setCookie("y_token", "");
+        setCookie("cid", "");
 
         let cid = query.cid,
           userid = query.userid || query.userId,
           tagId = query.tagId,
           domain = query.domain;
 
-        setCookie('cid', cid);
+        setCookie("cid", cid);
 
         let _headers = {
-          'cid': cid,
-          'x-domain': domain,
+          cid: cid,
+          "x-domain": domain
         };
 
         axios({
-          method: 'get',
-          url: this.siteConfig.YABO_API_DOMAIN + '/Account/GetAuthorizationToken',
+          method: "get",
+          url: this.siteConfig.YABO_API_DOMAIN + "/Account/GetAuthorizationToken",
           headers: _headers
-        }).then((res) => {
-          if (res.data && res.data.data) {
-            this.yToken = res.data.data;
-            setCookie('y_token', res.data.data);
+        })
+          .then(res => {
+            if (res.data && res.data.data) {
+              this.yToken = res.data.data;
+              setCookie("y_token", res.data.data);
 
-            axios({
-              method: 'put',
-              url: `${this.siteConfig.YABO_API_DOMAIN}/Account/UnlockTagId`,
-              headers: {
-                'cid': cid,
-                'x-domain': query.domain,
-                'AuthToken': res.data.data
-              },
-              data: {
-                cid: cid,
-                userid: userid,
-                tagId: Number(tagId),
-                domain: domain
-              },
-            }).then((res) => {
-            }).catch(e => {
-              console.log(e)
-            });
+              axios({
+                method: "put",
+                url: `${this.siteConfig.YABO_API_DOMAIN}/Account/UnlockTagId`,
+                headers: {
+                  cid: cid,
+                  "x-domain": query.domain,
+                  AuthToken: res.data.data
+                },
+                data: {
+                  cid: cid,
+                  userid: userid,
+                  tagId: Number(tagId),
+                  domain: domain
+                }
+              })
+                .then(res => { })
+                .catch(e => {
+                  console.log(e);
+                });
 
-            return;
-          }
-        }).catch(e => {
-          console.log(e)
-        });
+              return;
+            }
+          })
+          .catch(e => {
+            console.log(e);
+          });
       }
-    })
+    });
   },
   computed: {
     ...mapGetters({
       siteConfig: "getSiteConfig",
+      agentLink: "getAgentLink"
     }),
     headerConfig() {
       return {
         prev: true,
         title: "推广赚钱",
-        customLinkTitle: this.$route.query.check ? '' : '礼金明细',
+        customLinkTitle: this.$route.query.check ? "" : "礼金明细",
         customLinkAction: () => {
-          this.$router.push('/mobile/mcenter/tcenter/recommendGift');
+          this.$router.push("/mobile/mcenter/tcenter/recommendGift");
         },
         onClick: () => {
           this.$router.back();
@@ -147,53 +154,25 @@ export default {
      * @method agentLink
      * @returns {String} 推廣連結
      */
-    agentLink() {
-      if (!this.domain || !this.agentCode) {
+    getAgentLink() {
+      if (!this.agentLink.domain || !this.agentLink.agentCode) {
         return "";
       }
 
-      return `https://${this.domain}/a/${this.agentCode}`;
+      return `https://${this.agentLink.domain}/a/${this.agentLink.agentCode}`;
     }
   },
   beforeCreate() {
     if (this.$route.query && this.$route.query.refresh) {
-      window.location.replace('/mobile/mcenter/makeMoney');
+      window.location.replace("/mobile/mcenter/makeMoney");
       return;
     }
   },
-  created() {
-    this.getDomain();
-    this.getAgentCode();
-  },
   methods: {
-    ...mapActions([
-      'actionSetGlobalMessage'
-    ]),
+    ...mapActions(["actionSetGlobalMessage", "actionSetAgentLink"]),
     copyCode() {
-      this.$copyText(this.agentLink).then(() => {
-        this.actionSetGlobalMessage({ msg: "复制成功" })
-      });
-    },
-    getDomain() {
-      axios({
-        method: "get",
-        url: "/api/v1/c/hostnames"
-      }).then(res => {
-        if (res.data.result !== "ok") {
-          return;
-        }
-        this.domain = res.data.ret[0];
-      });
-    },
-    getAgentCode() {
-      axios({
-        method: "get",
-        url: API_PROMOTION_INFO
-      }).then(res => {
-        if (res.data.result !== "ok") {
-          return;
-        }
-        this.agentCode = res.data.ret.code;
+      this.$copyText(this.getAgentLink).then(() => {
+        this.actionSetGlobalMessage({ msg: "复制成功" });
       });
     }
   }

@@ -103,17 +103,19 @@ export default {
     ]),
     // 開啟最新消息方式
     togglePopup() {
+      /*
       this.paused = !this.paused;
       if (!this.paused) {
         this.startMove();
       }
+      */
       document.querySelector('body').style = !this.newsPopControl.status ? 'overflow: hidden' : '';
       this.actionNewsPopControl({ type: this.dataSource, status: !this.newsPopControl.status });
     },
     startMove() {
       if (this.paused || !this.$refs.container) return;
       if (Math.abs(this.currentLeft) < this.totalWidth) {
-        this.currentLeft -= this.$refs.container.offsetWidth / 250;
+        this.currentLeft -= this.$refs.container.offsetWidth / 350;
         window.requestAnimationFrame(this.startMove);
       } else {
         this.currentLeft = this.$refs.container.offsetWidth;

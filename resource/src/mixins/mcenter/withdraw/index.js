@@ -51,14 +51,23 @@ export default {
          * @return Array
          */
         allWithdrawAccount() {
-            if (!this.withdrawUserData.account && !this.withdrawUserData.wallet) {
+            if (!this.withdrawUserData.account && !this.withdrawUserData.wallet && !this.withdrawUserData.crypto) {
                 return [];
             }
 
-            const resulAccount = [
+            let resulAccount = [
                 ...this.withdrawUserData.account.map((info) => ({ ...info, withdrawType: 'account_id' })),
-                ...this.withdrawUserData.wallet.map((info) => ({ ...info, withdrawType: 'wallet_id' }))
+                ...this.withdrawUserData.wallet.map((info) => ({ ...info, withdrawType: 'wallet_id' })),
+
             ];
+
+            // 因億元尚未有開加密貨幣的欄位
+            if (this.withdrawUserData.crypto) {
+                resulAccount = [
+                    ...resulAccount,
+                    ...this.withdrawUserData.crypto.map((info) => ({ ...info, withdrawType: 'crypto_id' }))
+                ]
+            }
 
             if (this.withdrawUserData.isSupportCGPay && !isMobile()) {
                 return resulAccount.concat({ id: 'cgpay', alias: this.$text('S_ADD_CGPAY', '新增CGPay') });
@@ -217,6 +226,7 @@ export default {
     created() {
         this.actionSetIsLoading(true);
         this.getUserLevel();
+        this.getUserStat();
 
         // 取得取款初始資料
         ajax({
@@ -263,8 +273,8 @@ export default {
                     this.$router.push('/mobile/mcenter/bankcard?redirect=withdraw&type=bankCard')
                 }
 
-                if (check && target === "virtualBank") {
-                    this.$router.push('/mobile/mcenter/bankcard?redirect=withdraw&type=virtualBank')
+                if (check && target === "wallet") {
+                    this.$router.push('/mobile/mcenter/bankcard?redirect=withdraw&type=wallet')
                 }
             })
         },
@@ -356,28 +366,6 @@ export default {
             });
         },
         /**
-         * 一鍵歸戶
-         * @method balanceBack
-         */
-        balanceBack() {
-            if (this.isAjaxUse) {
-                return;
-            }
-            this.isAjaxUse = true;
-
-            ajax({
-                method: 'put',
-                url: API_WITHDRAW_BALANCE_BACK,
-                errorAlert: false
-            }).then((response) => {
-                if (response.result === 'ok') {
-                    this.isAjaxUse = false;
-                    this.updateAmount();
-                    this.msg = '回收成功';
-                }
-            });
-        },
-        /**
          * 使用者層級並取得 card type & 電子錢包綁綁開關
          * @method getUserLevel
          */
@@ -393,6 +381,20 @@ export default {
 
                 this.userLevelObj = ret;
             });
+        },
+        /**
+       * 回傳使用者出入款統計資料
+       * @method getUserStat
+       */
+        getUserStat() {
+            axios({
+                method: 'get',
+                url: '/api/v1/c/user-stat/deposit-withdraw',
+            }).then(res => {
+                if (res && res.data) {
+                    this.userWithdrawCount = res.data.ret.withdraw_count;
+                }
+            })
         }
     }
 };

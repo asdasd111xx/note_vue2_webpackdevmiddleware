@@ -228,9 +228,13 @@ export default {
     toggleEye(key) {
       const target = this.pwdResetInfo[key];
       if (target.eyeShow) {
-        document.getElementById(key).type = 'password';
+        document.getElementById('newPwd').type = 'password';
+        document.getElementById('confNewPwd').type = 'password';
+        document.getElementById('pwd').type = 'password';
       } else {
-        document.getElementById(key).type = 'text';
+        document.getElementById('newPwd').type = 'text';
+        document.getElementById('confNewPwd').type = 'text';
+        document.getElementById('pwd').type = 'text';
       }
 
       this.pwdResetInfo[key].eyeShow = !this.pwdResetInfo[key].eyeShow;

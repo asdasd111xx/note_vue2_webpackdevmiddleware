@@ -66,12 +66,8 @@
               v-model="codeValue"
               :placeholder="$text('S_MOBILE_CAPTCHA', '请输入手机验证码')"
               :class="$style.input"
-              @input="
-                codeValue = $event.target.value
-                  .trim()
-                  .replace(/[^0-9A-Za-z]/g, '')
-              "
-              type="text"
+              @input="verification($event.target.value, 'code')"
+              type="tel"
             />
             <div :class="$style['clear-input']" v-if="codeValue">
               <img
@@ -117,6 +113,7 @@ import serviceTips from '../../serviceTips';
 import mcenter from '@/api/mcenter';
 import popupVerification from '@/components/popupVerification';
 import accountHeader from '../../accountHeader';
+import { getCookie, setCookie } from '@/lib/cookie';
 
 export default {
   components: {
@@ -137,6 +134,7 @@ export default {
       options: {},
       isLock: false,
       timer: null,
+      ttl: 60,
       isSendSMS: false,
       isVerifyPhone: false,
       info: {
@@ -257,6 +255,13 @@ export default {
     captchaData(val) {
       this.handleSend()
     },
+    oldValue() {
+      if (this.oldValue.length >= 11) {
+        this.tipMsg = '';
+      } else {
+        this.tipMsg = '手机格式不符合要求'
+      }
+    },
     newValue() {
       if (this.newValue.length >= 11) {
         this.tipMsg = '';
@@ -282,25 +287,6 @@ export default {
         this.info.verification = response.ret.config[this.info.key].code;
       }
     });
-
-    // // 取驗證倒數秒數
-    // member.joinConfig({
-    //   success: (response) => {
-    //     // 從舊版複製過來，不良的寫法，後續再優化
-    //     this.info.verification = response.ret.phone.code;
-
-    //     if (response.ret.phone.code) {
-    //       mcenter.accountPhoneSec({
-    //         success: (data) => {
-    //           if (data.ret > 0) {
-    //             this.countdownSec = data.ret;
-    //             this.locker();
-    //           }
-    //         }
-    //       });
-    //     }
-    //   }
-    // });
 
     // 手機區碼
     // ajax({
@@ -330,19 +316,29 @@ export default {
       'actionVerificationFormData'
     ]),
     verification(value, target) {
-      this.actionVerificationFormData({ target: 'phone', value: value }).then((val => {
-        if (target === "newValue") {
-          this.newValue = val;
-        }
+      if (target === 'newValue' || target === 'oldValue') {
+        this.actionVerificationFormData({ target: 'phone', value: value }).then((val => {
+          if (target === "newValue") {
+            this.newValue = val;
+          }
 
-        if (target === "oldValue") {
-          this.oldValue = val;
-        }
-      }));
+          if (target === "oldValue") {
+            this.oldValue = val;
+          }
+        }));
+      }
+
+      if (target === 'code') {
+        this.actionVerificationFormData({ target: 'code', value: value }).then((val => {
+          this.codeValue = val;
+        }));
+      }
     },
     locker() {
       if (this.timer) return;
-      this.countdownSec = 60;
+      this.countdownSec = this.ttl;
+      this.tipMsg = this.$text("S_SEND_CHECK_CODE_VALID_TIME").replace("%s", 5);
+
       this.timer = setInterval(() => {
         if (this.countdownSec === 0) {
           clearInterval(this.timer);
@@ -369,17 +365,25 @@ export default {
       // 彈驗證窗並利用Watch captchaData來呼叫 getKeyring()
       this.toggleCaptcha = true;
     },
+    // 回傳會員手機驗證簡訊剩餘秒數可以重送
+    getPhoneTTL() {
+      return axios({
+        method: 'get',
+        url: '/api/v1/c/player/phone/ttl',
+      }).then(res => {
+        if (res && res.data && res.data.result === "ok") {
+          this.ttl = res.data.ret;
+        }
+      }).catch(error => {
+        this.tipMsg = `${error.response.data.msg}`;
+      })
+    },
     handleSend() {
       if (!this.newValue || this.timer || this.isSendSMS) return;
 
       this.isSendSMS = true;
       let captchaParams = {};
-      if (this.memInfo.config.default_captcha_type === 1) {
-        captchaParams['aid'] = this.captchaData.aid;
-        captchaParams['captcha'] = this.captchaData.captcha;
-      } else {
-        captchaParams['captcha_text'] = this.captchaData || "";
-      }
+      captchaParams['captcha_text'] = this.captchaData || "";
 
       if (this.isfromWithdraw) {
         axios({
@@ -391,15 +395,16 @@ export default {
           }
         }).then(res => {
           if (res && res.data && res.data.result === "ok") {
-            this.toggleCaptcha = false;
-            this.actionSetUserdata(true);
-            this.locker();
-            this.tipMsg = this.$text("S_SEND_CHECK_CODE_VALID_TIME").replace("%s", 5);
-            this.isSendSMS = false;
+            this.getPhoneTTL().then(() => {
+              this.toggleCaptcha = false;
+              this.locker();
+              this.isSendSMS = false;
+            })
           } else {
             this.tipMsg = res.data.msg;
           }
         }).catch(error => {
+          this.toggleCaptcha = false;
           this.countdownSec = '';
           this.tipMsg = `${error.response.data.msg}`;
           this.isSendSMS = false;
@@ -415,15 +420,16 @@ export default {
           }
         }).then(res => {
           if (res && res.data && res.data.result === "ok") {
-            this.toggleCaptcha = false;
-            this.actionSetUserdata(true);
-            this.locker();
-            this.tipMsg = this.$text("S_SEND_CHECK_CODE_VALID_TIME").replace("%s", 5);
-            this.isSendSMS = false;
+            this.getPhoneTTL().then(() => {
+              this.locker();
+              this.toggleCaptcha = false;
+              this.isSendSMS = false;
+            })
           } else {
             this.tipMsg = res.data.msg;
           }
         }).catch(error => {
+          this.toggleCaptcha = false;
           this.countdownSec = '';
           this.tipMsg = `${error.response.data.msg}`;
           this.isSendSMS = false;

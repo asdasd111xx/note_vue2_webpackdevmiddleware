@@ -28,7 +28,7 @@
           (currentPage === 'bankCardInfo' ||
             currentPage === 'walletCardInfo') &&
             !showDetail &&
-            userLevelObj.virtual_bank_single
+            !userLevelObj.virtual_bank_single
         "
         :class="$style['header-icon']"
         @click="changeToHistory"
@@ -62,8 +62,7 @@
 
     <component
       :is="currentPage"
-      :change-page="changePage"
-      :show-tab="showTab"
+      :set-page-status="setPageStatus"
       :show-detail.sync="showDetail"
       :edit-status.sync="editStatus"
       :is-audit.sync="isAudit"
@@ -97,11 +96,7 @@ export default {
   },
   mixins: [entryMixin],
   data() {
-    return {
-      currentTab: 0,
-      currentKind: "bank",
-      isShowTab: false
-    };
+    return {};
   },
   computed: {
     ...mapGetters({
@@ -142,11 +137,15 @@ export default {
         case "walletCardInfo":
           return this.$text("S_CARD_MANAGEMENT", "卡片管理");
 
-        default:
-          return this.currentKind === "bank"
-            ? this.$text("S_ADD_BANKCARD", "添加银行卡")
-            : this.$text("S_ADD_VIRTUAL_BANKCARD", "添加电子钱包");
+        case "addBankCard":
+          return this.$text("S_ADD_BANKCARD", "添加银行卡");
+
+        case "addWalletCard":
+          return this.$text("S_ADD_VIRTUAL_BANKCARD", "添加电子钱包");
       }
+    },
+    isOneTab() {
+      return !this.userLevelObj.bank || !this.userLevelObj.virtual_bank;
     }
   },
   created() {
@@ -158,17 +157,15 @@ export default {
       }
 
       // 銀行卡/電子錢包，其中有一方關閉
-      if (!this.userLevelObj.bank || !this.userLevelObj.virtual_bank) {
-        this.isShowTab = false;
-
+      if (this.isOneTab) {
         this.$nextTick(() => {
           if (this.userLevelObj.bank) {
-            this.setCurrentTab(0);
+            this.setPageStatus(0, "bankCardInfo", false);
             return;
           }
 
           if (this.userLevelObj.virtual_bank) {
-            this.setCurrentTab(1);
+            this.setPageStatus(1, "walletCardInfo"), false;
             return;
           }
         });
@@ -176,75 +173,97 @@ export default {
         return;
       }
 
-      this.isShowTab = true;
+      // 預設頁面
+      this.setPageStatus(this.currentTab, this.currentPage, this.isShowTab);
     });
   },
   methods: {
     ...mapActions(["actionSetUserdata", "actionSetUserLevels"]),
+    setPageStatus(tabIndex, pageName, isShowTab) {
+      this.currentTab = tabIndex;
+      this.currentPage = pageName;
+
+      // 當 Tab 在某些頁面不用顯示，this.isShowTab = false
+      if (!isShowTab) {
+        this.isShowTab = false;
+      } else {
+        this.isShowTab = this.isOneTab ? false : true;
+      }
+    },
     setCurrentTab(index) {
       this.currentTab = index;
       switch (index) {
         case 0:
-          this.currentKind = "bank";
           this.currentPage = "bankCardInfo";
           break;
 
         case 1:
-          this.currentKind = "wallet";
           this.currentPage = "walletCardInfo";
           break;
       }
     },
-    showTab(value) {
-      this.isShowTab = value;
-    },
     backPre() {
-      const isOneTab =
-        !this.userLevelObj.bank || !this.userLevelObj.virtual_bank;
-
-      // 當頁面停留在卡片管理
-      if (
-        this.currentPage === "bankCardInfo" ||
-        this.currentPage === "walletCardInfo"
-      ) {
-        // 卡片管理-詳細頁面
-        if (this.showDetail) {
-          this.showDetail = false;
-          this.isShowTab = isOneTab ? false : true;
-          return;
-        }
-        this.$router.back();
-        return;
-      }
-
       // 目前只有銀行卡有分兩階段
-      if (this.addBankCardStep === "two") {
+      if (
+        this.currentPage === "addBankCard" &&
+        this.addBankCardStep === "two"
+      ) {
         this.step = "one";
         return;
       }
 
       // 從其它頁面進入到此頁面(通常停留在添加卡片的頁面)
       if (this.$route.query && this.$route.query.redirect) {
-        if (this.$route.query.redirect === "home") {
-          this.$router.push("/mobile");
-          return;
-        } else if (this.$route.query.redirect === "liveStream") {
-          this.$router.push("/mobile/liveStream");
-          return;
+        switch (this.$route.query.redirect) {
+          case "home":
+            this.$router.push("/mobile");
+
+            break;
+
+          case "liveStream":
+            this.$router.push("/mobile/liveStream");
+            break;
+
+          default:
+            this.$router.back();
+            break;
         }
-        this.$router.back();
         return;
       }
 
-      // 當頁面停留在添加卡片
-      if (this.currentKind === "bank") {
-        this.isShowTab = isOneTab ? false : true;
-        this.currentPage = "bankCardInfo";
-        return;
-      } else if (this.currentKind === "wallet") {
-        this.isShowTab = isOneTab ? false : true;
-        this.currentPage = "walletCardInfo";
-        return;
+      switch (this.currentPage) {
+        // 當頁面停留在卡片管理
+        case "bankCardInfo":
+        case "walletCardInfo":
+          // 卡片管理-詳細頁面
+          if (this.showDetail) {
+            this.showDetail = false;
+            this.setPageStatus(this.currentTab, this.currentPage, true);
+            return;
+          }
+
+          this.$router.back();
+          return;
+
+          break;
+
+        // 當頁面停留在添加卡片
+        case "addBankCard":
+          this.setPageStatus(0, "bankCardInfo", true);
+          return;
+
+          break;
+
+        case "addWalletCard":
+          this.setPageStatus(1, "walletCardInfo", true);
+          return;
+
+          break;
+
+        default:
+          break;
+
+          return;
       }
 
       this.$router.back();
@@ -332,10 +351,14 @@ export default {
 }
 
 .tab-wrap {
+  // position: fixed;
   position: relative;
   display: flex;
   background: #fff;
   border-bottom: 1px solid #eee;
+  width: 100%;
+  max-width: $mobile_max_width;
+  // z-index: 10;
 }
 
 .tab-item {

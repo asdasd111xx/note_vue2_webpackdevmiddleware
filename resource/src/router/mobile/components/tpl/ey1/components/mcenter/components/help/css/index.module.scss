@@ -11,6 +11,7 @@
     margin-top: 5px;
     position: relative;
     width: 100%;
+    padding-bottom: 43px;
 }
 
 .cell {
@@ -137,7 +138,7 @@
 
 // 詳細資料--存款 & 提現
 .detail-wrap {
-    background-color: #f8f8f8;
+    // background-color: #f8f8f8;
 }
 
 .status-wrap {
@@ -225,15 +226,20 @@
 }
 
 .tips {
-    margin-top: 14px;
-    padding: 0 14px;
+    background-color: #fefefe;
+    padding: 14px 0;
     font-size: 14px;
     font-family: Microsoft JhengHei, Microsoft JhengHei-Regular;
     font-weight: 400;
-    color: #a6a9b2;
+    // color: #a6a9b2;
 
     >a {
         color: #6AAAF5;
+    }
+
+    >.tips-title {
+        color: #ff1010;
+        margin-bottom: 5px;
     }
 }
 
@@ -309,38 +315,6 @@
     height: 15px;
     color: #be9e7f;
     transform: translateY(-50%);
-}
-
-.no-data-wrap {
-    width: 180px;
-    height: 292px;
-    margin: 20% auto 0;
-
-    >img {
-        display: block;
-        width: 100%;
-    }
-
-    .tips {
-        line-height: 22px;
-        margin: 16px 0 29px;
-        color: #a6a9b2;
-        font-size: 16px;
-        text-align: center;
-    }
-
-    .btn-deposit {
-        width: 140px;
-        height: 45px;
-        line-height: 45px;
-        margin: 0 auto;
-        border-radius: 3px;
-        background: linear-gradient(to left, #bd9d7d, #f9ddbd);
-        color: #fff;
-        font-weight: 700;
-        font-size: 14px;
-        text-align: center;
-    }
 }
 
 .content-img {

@@ -19,6 +19,12 @@
             :class="$style['cell']"
             @click="addMethod(item)"
           >
+            <div v-if="themeTPL === 'porn1'" :class="$style['add-block']">
+              <img
+                :src="$getCdnPath(`/static/image/porn1/mcenter/add.png`)"
+                alt="add"
+              />
+            </div>
             {{ item.title }}
           </div>
         </div>
@@ -43,6 +49,10 @@ export default {
     popupQrcode
   },
   props: {
+    moreMethodStatus: {
+      type: Object,
+      default: () => {}
+    },
     checkAccountData: {
       type: Function,
       default: () => {}
@@ -64,70 +74,131 @@ export default {
     return {
       bank_id: "",
       isShowPopQrcode: false,
-      nowOpenVirtualBank: []
+      nowOpenWallet: []
     };
   },
   computed: {
     ...mapGetters({
       noticeData: "getNoticeData",
-      isBindGoBao:"getHasBindGoBao",
-      CGPayInfo:"getCGPayInfo"
+      isBindGoBao: "getHasBindGoBao",
+      CGPayInfo: "getCGPayInfo",
+      siteConfig: "getSiteConfig"
     }),
+    themeTPL() {
+      return this.siteConfig.MOBILE_WEB_TPL;
+    },
+    $style() {
+      return (
+        this[`$style_${this.siteConfig.MOBILE_WEB_TPL}`] || this.$style_porn1
+      );
+    },
     methodList() {
       return [
         {
           key: "bankCard",
-          title: "添加 提现银行卡",
+          title: this.themeTPL === "porn1" ? "添加银行卡" : "添加 提现银行卡",
           isShow: this.showAddBankCard
         },
         {
-          key: "virtualBank",
-          title: "添加 电子钱包",
-          isShow: this.showAddVirtualBank
+          key: "wallet",
+          title: this.themeTPL === "porn1" ? "添加数字货币" : "添加 电子钱包",
+          isShow: this.showAddWallet
         },
         {
           key: "CGPay",
           title: "新增 CGPay",
-          isShow: !this.CGPayInfo.is_bind_wallet
+          isShow: this.themeTPL === "ey1" && !this.CGPayInfo.is_bind_wallet
         },
         {
           key: "goBao",
           title: "新增 购宝钱包",
-          isShow: !this.isBindGoBao
+          isShow: this.themeTPL === "ey1" && !this.isBindGoBao
         }
       ].filter(item => item.isShow);
     },
     showAddBankCard() {
-      return (
+      if (
         this.userLevelObj.bank &&
         this.withdrawUserData &&
         this.withdrawUserData.account &&
         this.withdrawUserData.account.length < 3
-      );
+      ) {
+        this.$emit("update:moreMethodStatus", {
+          objKey: "bankCard",
+          data: true
+        });
+        return true;
+      } else {
+        this.$emit("update:moreMethodStatus", {
+          objKey: "bankCard",
+          data: false
+        });
+        return false;
+      }
     },
-    showAddVirtualBank() {
+    showAddWallet() {
       // 尚未打開電子錢包開關
       if (!this.userLevelObj.virtual_bank) {
+        this.$emit("update:moreMethodStatus", {
+          objKey: "wallet",
+          data: false
+        });
         return false;
       }
 
-      // 已開啟電子錢包開關 & 未開啟限綁一組開關
-      let noSingleLimit =
-        !this.userLevelObj.virtual_bank_single &&
-        this.withdrawUserData.wallet &&
-        this.withdrawUserData.wallet.length < 15;
+      if (this.themeTPL === "porn1") {
+        let nowBindWalletCount = 0;
+        let idArr = [
+          ...new Set(
+            this.withdrawUserData.wallet.map(item => {
+              return item.payment_gateway_id;
+            })
+          )
+        ];
 
-      // 已開啟電子錢包開關 & 已開啟限綁一組開關
-      let singleLimit =
-        this.userLevelObj.virtual_bank_single &&
-        this.withdrawUserData.wallet &&
-        this.withdrawUserData.wallet.length < this.nowOpenVirtualBank.length;
+        if (idArr) {
+          this.nowOpenWallet.forEach(item => {
+            if (idArr.includes(item.id)) {
+              nowBindWalletCount += 1;
+            }
+          });
 
-      if (noSingleLimit || singleLimit) {
+          // 當使用者已綁定目前所有開放的電子錢包時
+          if (nowBindWalletCount >= this.nowOpenWallet.length) {
+            this.$emit("update:moreMethodStatus", {
+              objKey: "wallet",
+              data: false
+            });
+            return false;
+          }
+        }
+
+        this.$emit("update:moreMethodStatus", {
+          objKey: "wallet",
+          data: true
+        });
         return true;
       }
 
-      return false;
+      if (this.themeTPL === "ey1") {
+        // 已開啟電子錢包開關 & 未開啟限綁一組開關
+        let noSingleLimit =
+          !this.userLevelObj.virtual_bank_single &&
+          this.withdrawUserData.wallet &&
+          this.withdrawUserData.wallet.length < 15;
+
+        // 已開啟電子錢包開關 & 已開啟限綁一組開關
+        let singleLimit =
+          this.userLevelObj.virtual_bank_single &&
+          this.withdrawUserData.wallet &&
+          this.withdrawUserData.wallet.length < this.nowOpenWallet.length;
+
+        if (noSingleLimit || singleLimit) {
+          return true;
+        }
+
+        return false;
+      }
     },
     showPopQrcode: {
       get() {
@@ -157,7 +228,7 @@ export default {
   created() {
     this.actionBindGoBao();
     this.actionSetCGPayInfo();
-    this.getNowOpenVirtualBank();
+    this.getNowOpenWallet();
   },
   methods: {
     ...mapActions([
@@ -174,13 +245,13 @@ export default {
           this.checkAccountData("bankCard");
           break;
 
-        case "virtualBank":
-          this.checkAccountData("virtualBank");
+        case "wallet":
+          this.checkAccountData("wallet");
           break;
 
         case "CGPay":
           this.$router.push(
-            "/mobile/mcenter/bankcard?redirect=withdraw&type=virtualBank&wallet=CGPay"
+            "/mobile/mcenter/bankcard?redirect=withdraw&type=wallet&wallet=CGPay"
           );
           break;
 
@@ -191,7 +262,7 @@ export default {
       }
       this.close();
     },
-    getNowOpenVirtualBank() {
+    getNowOpenWallet() {
       // Get 錢包類型
       axios({
         method: "get",
@@ -203,69 +274,20 @@ export default {
           return;
         }
 
-        this.nowOpenVirtualBank = ret;
+        this.nowOpenWallet = ret;
       });
     }
   }
 };
 </script>
 
-<style lang="scss" module>
-.more-method-wrap {
-  background-color: rgba(0, 0, 0, 0.8);
-  color: #414655;
-  height: 100%;
-  margin: 0;
-  overflow: hidden;
-  position: fixed;
-  top: 0;
-  width: 100%;
-  z-index: 10;
-  max-width: 420px;
-}
-
-.more-method-container {
-  background-color: #f8f8f7;
-  border-radius: 20px 20px 0px 0px;
-  bottom: 0;
-  height: 312px;
-  overflow: hidden;
-  position: absolute;
-  width: 100%;
-}
-
-.more-method-header {
-  background-color: #ffffff;
-  color: #414655;
-  font-size: 17px;
-  height: 75px;
-  line-height: 75px;
-
-  .prev {
-    left: 14px;
-    position: absolute;
-    text-align: center;
-    width: 40px;
-  }
-
-  .title {
-    width: 100%;
-    text-align: center;
-  }
-}
-
-.more-method-content {
-  background-color: #f8f8f7;
-  margin-top: 10px;
-
-  .cell {
-    font-size: 14px;
-    background-color: #ffffff;
-    color: #0477e9;
-    height: 50px;
-    line-height: 50px;
-    margin-bottom: 1px;
-    padding-left: 23px;
-  }
-}
-</style>
+<style
+  lang="scss"
+  src="../css/withdrawMoreMethod/porn1.index.module.scss"
+  module="$style_porn1"
+></style>
+<style
+  lang="scss"
+  src="../css/withdrawMoreMethod/ey1.index.module.scss"
+  module="$style_ey1"
+></style>

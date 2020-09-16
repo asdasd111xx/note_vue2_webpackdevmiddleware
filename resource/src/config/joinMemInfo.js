@@ -33,7 +33,7 @@ export default {
         key: 'username',
         text: 'S_ACCOUNT',
         type: 'text',
-        placeholder: '请输入4-20码英文小写、数字',
+        placeholder: '请输入4-20位英文小写、数字',
         isRequired: true,
         hasVerify: false,
         show: true,

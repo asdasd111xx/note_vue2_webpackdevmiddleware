@@ -1,0 +1,18 @@
+@import "./porn1.popup.scss";
+
+.title {
+  background-color: #222;
+}
+
+.button-wrap {
+  .button-item {
+    &.close {
+      color: #fff;
+      background: #222;
+    }
+
+    &.confirm {
+      background: #e42a30;
+    }
+  }
+}

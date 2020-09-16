@@ -99,14 +99,13 @@
               :puzzle-obj.sync="puzzleObj"
             />
             <!-- 驗證碼 -->
-            <span
+            <div
               v-if="hasCaptchaText"
               class="login-unit login-unit-captcha clearfix"
             >
               <input
                 ref="captcha"
                 v-model="captcha"
-                :title="$text('S_RELOAD_PIC', '( 点选此处产生新验证码 )')"
                 placeholder="请填写验证码"
                 class="login-input"
                 maxlength="4"
@@ -126,9 +125,13 @@
                 v-if="captchaImg"
                 :src="captchaImg"
                 height="25"
-                @click="getCaptcha"
               />
-            </span>
+              <div class="captchaText-refresh" @click="getCaptcha">
+                <img
+                  :src="'/static/image/porn1/common/ic_verification_reform.png'"
+                />
+              </div>
+            </div>
             <div class="login-deposit-username clearfix">
               <div class="icon-wrap" @click="rememberPwd = !rememberPwd">
                 <img
@@ -400,30 +403,6 @@ export default {
   background-color: rgba(0, 0, 0, 0.5);
   width: 100%;
   height: 100%;
-}
-
-// 藍紫色系
-:global(.bluePurple) :local {
-  .content {
-    background: #1b1a44;
-
-    .title {
-      background: #6a69f5;
-    }
-  }
-
-  .field input {
-    background: #6a69f5;
-  }
-
-  .submit {
-    background: #ce5cef;
-    color: #fff;
-  }
-
-  .mask {
-    background-color: rgba(0, 0, 0, 0.8);
-  }
 }
 </style>
 

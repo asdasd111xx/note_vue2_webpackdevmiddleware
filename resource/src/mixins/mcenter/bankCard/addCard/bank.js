@@ -13,8 +13,8 @@ export default {
             formData: {
                 account_name: "",
                 bank_id: "",
-                // province: '',
-                // city: '',
+                province: '',
+                city: '',
                 branch: "",
                 account: "",
                 phone: "",
@@ -93,8 +93,19 @@ export default {
             }
         }
     },
+    created() {
+        // 已經有真實姓名時不送該欄位
+        if (this.memInfo.user.name) {
+            delete this.formData['account_name'];
+        }
+
+        if (this.siteConfig.MOBILE_WEB_TPL !== 'ey1') {
+            delete this.formData['city'];
+            delete this.formData['province'];
+        }
+    },
     methods: {
-        ...mapActions(['actionSetUserdata', 'actionVerificationFormData']),
+        ...mapActions(['actionSetUserdata', 'actionVerificationFormData', 'actionVerificationFormData']),
         sendData() {
             if (
                 this.addBankCardStep === "one" &&
@@ -111,6 +122,11 @@ export default {
 
             this.lockStatus = true;
 
+            // 已經有真實姓名時不送該欄位
+            if (this.memInfo.user.name) {
+                delete this.formData['account_name'];
+            }
+
             const params = {
                 ...this.formData,
                 phone: `86-${this.formData.phone}`
@@ -124,6 +140,8 @@ export default {
                 success: () => {
                     this.msg = "绑定成功";
                     this.lockStatus = false;
+                    this.addBankCardStep === "one";
+
                     if (!this.memInfo.user.name) {
                         this.actionSetUserdata(true);
                     }
@@ -145,9 +163,16 @@ export default {
             this.checkData();
         },
         checkData(value, key) {
-            if (key === "account_name") {
-                const re = /[^\u3000\u3400-\u4DBF\u4E00-\u9FFF.．·]/g;
-                this.formData.account_name = value.replace(re, "");
+            if (key === "account_name" && this.memInfo.user.name === '') {
+                this.actionVerificationFormData({ target: 'name', value: value }).then((val => {
+                    this.formData.account_name = val;
+                }));
+            }
+
+            if (key === "province" || key === "city") {
+                this.actionVerificationFormData({ target: 'name', value: value }).then((val => {
+                    this.formData[key] = val;
+                }));
             }
 
             if (key === "branch") {
@@ -156,12 +181,9 @@ export default {
             }
 
             if (key === "account") {
-                const re = /[^0-9]/g;
-
-                this.formData.account = value
-                    .replace(" ", "")
-                    .trim()
-                    .replace(re, "");
+                this.actionVerificationFormData({ target: 'bankCard', value: value }).then((val => {
+                    this.formData.account = val;
+                }));
             }
 
             this.NextStepStatus = Object.keys(this.formData).every(key => {
@@ -169,9 +191,23 @@ export default {
                     if (key === "account") {
                         return this.formData[key].length > 15;
                     }
-                    if (key !== "phone" && key !== "keyring") {
+
+                    if (this.siteConfig.MOBILE_WEB_TPL === 'ey1') {
+                        if ((this.memInfo.config.player_user_bank && key === 'city') &&
+                            (this.memInfo.config.player_user_bank && key === 'province')) {
+                            return this.formData[key];
+                        }
+                    }
+
+                    // 需要填入時才檢查
+                    if (key === "account_name" && this.memInfo.user.name === '') {
+                        return this.formData['account_name'];
+                    }
+
+                    if (key !== "phone" && key !== "keyring" && key !== 'city' && key !== 'province') {
                         return this.formData[key];
                     }
+
                     return true;
                 }
 
@@ -213,28 +249,41 @@ export default {
             }
             this.lockStatus = true;
 
+            let captchaParams = {};
+            captchaParams['captcha_text'] = this.captchaData || "";
+
             axios({
                 method: "post",
                 url: "/api/v1/c/player/verify/user_bank/sms",
                 data: {
                     phone: `86-${this.formData.phone}`,
-                    captcha_text: this.captchaData ? this.captchaData : ""
+                    ...captchaParams
                 }
             })
                 .then(res => {
                     this.lockStatus = false;
                     if (res && res.data && res.data.result === "ok") {
-                        this.time = 60;
-                        this.errorMsg = this.$text("S_SEND_CHECK_CODE_VALID_TIME").replace("%s", 5);
+                        axios({
+                            method: 'get',
+                            url: '/api/v1/c/player/phone/ttl',
+                        }).then(res => {
+                            if (res && res.data && res.data.result === "ok") {
+                                this.time = res.data.ret;
+                                this.errorMsg = this.$text("S_SEND_CHECK_CODE_VALID_TIME").replace("%s", 5);
 
-                        this.smsTimer = setInterval(() => {
-                            if (this.time <= 0) {
-                                clearInterval(this.smsTimer);
-                                this.smsTimer = null;
-                                return;
+                                this.smsTimer = setInterval(() => {
+                                    if (this.time <= 0) {
+                                        clearInterval(this.smsTimer);
+                                        this.smsTimer = null;
+                                        return;
+                                    }
+                                    this.time -= 1;
+                                }, 1000);
                             }
-                            this.time -= 1;
-                        }, 1000);
+                        }).catch(error => {
+                            this.errorMsg = `${error.response.data.msg}`;
+                        })
+
                     } else {
                         this.errorMsg = res.data.msg;
                     }

@@ -31,7 +31,7 @@
 
     <div :class="$style.tips">
       如需帮助，请
-      <span @click="handleClick">&nbsp;联系客服</span>
+      <span @click="linkToService">&nbsp;联系客服</span>
     </div>
   </div>
 </template>
@@ -86,12 +86,6 @@ export default {
     $(document).prop('title', this.$t('S_UNDER_MAINTENANCE'));
   },
   methods: {
-    handleClick() {
-      localStorage.setItem('serviceUrl', 'https://yaboxxxcs.net/chat/text/chat_1A09E4.html?skill=8ae482827375169c017375f1528b2446');
-
-      window.location.href = `/static/upup/index.html?username=${this.username}`;
-      window.location.title = "在线客服";
-    },
     setData(data) {
       if (!data || !data.end_at) return;
 

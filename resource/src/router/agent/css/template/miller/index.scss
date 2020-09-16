@@ -1,0 +1,54 @@
+@charset 'UTF-8';
+
+@import "~@/css/variable.scss";
+
+.agcenter-bg {
+    min-width: 1255px;
+    min-height: 100%;
+    word-break: break-all;
+    background: #EFF0F0;
+
+    &.zh-cn {
+        font-family: STHeiti,"Microsoft YaHei", "微软雅黑", "SimSun", "宋体",arial;
+    }
+    &.zh-tw {
+        font-family: "Microsoft JhengHei","微軟正黑體",arial,helvetica,sans-serif;
+    }
+}
+
+.agcenter-wrap {
+    width: 100%;
+    max-width: 1200px;
+    margin: 24px auto 60px;
+    box-shadow: 0 0 13px rgba(94, 91, 91, .13);
+    background-color: #FFF;
+}
+
+// 右側外框
+.agcenter-content-wrap {
+    float: right;
+    width: 900px;
+}
+
+.agcenter-content {
+    background-color: #FFF;
+}
+
+.agcenter-content-main {
+    min-height: 670px;
+    padding: 18px 5.3% 56px;
+
+    &.page-accountBankCard,
+    &.page-financeWithdraw {
+        padding: 18px 2%;
+    }
+
+    &.page-accountData {
+        min-height: 0;
+        padding: 0;
+    }
+}
+
+.mcenter-feedback {
+    border: 1px solid #E5E5E5;
+}

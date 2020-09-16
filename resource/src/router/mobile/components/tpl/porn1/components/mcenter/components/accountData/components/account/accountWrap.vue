@@ -213,7 +213,8 @@ export default {
     getData() {
       ajax({
         method: 'get',
-        url: API_MCENTER_USER_CONFIG,
+        url: '/api/v1/c/player/user_info_config/with_verify',
+        // url: API_MCENTER_USER_CONFIG,
         errorAlert: false
       }).then((response) => {
         if (response && response.result === 'ok') {
@@ -254,14 +255,17 @@ export default {
                 confirmSt = 'already';
               }
             }
-
             itemNow = {
               ...itemNow,
               status: confirmSt,
               value: val,
-              btnShow: !keyValue || !this.verification[key] ||
-                (key === 'phone' && this.memInfo.config.user_edit_phone) ||
-                (key === 'email' && userConfig.user[key]),
+              // btnShow: !keyValue || !this.verification[key] ||
+              //   (key === 'phone' && this.memInfo.config.user_edit_phone) ||
+              //   (key === 'phone' && this.mcenterUserField.config.phone.code) ||
+              //   (key === 'email' && userConfig.user[key]) ||
+              //   (key === 'email' && this.mcenterUserField.config.email.code)
+              // ,
+              btnShow: !keyValue || !this.verification[key],
               verification: this.verification[key],
               isShow: userConfig.config[key].display
             };
@@ -279,7 +283,7 @@ export default {
               ...itemNow,
               status: wdStatus ? 'already' : 'yet',
               value: wdStatus ? this.$t('S_SET_CL_ALREADY') : this.$t('S_YET_SET'),
-              btnShow: !wdStatus,
+              btnShow: true,//提現密碼可修改btnShow: !wdStatus,
               isShow: userConfig.config.withdraw_password.display && this.siteConfig.MOBILE_WEB_TPL !== 'porn1'
             }
           } else {

@@ -26,6 +26,7 @@ export default {
             username: '',
             version: "",
             isShowPwd: false,
+            isGetCaptcha: false // 重新取得驗證碼
         };
     },
     computed: {
@@ -117,9 +118,15 @@ export default {
          * @method getCaptcha
          */
         getCaptcha() {
-            if (this.isBackEnd) {
+            if (this.isBackEnd || this.isGetCaptcha) {
                 return;
             }
+
+            this.isGetCaptcha = true;
+            setTimeout(() => {
+                this.isGetCaptcha = false;
+            }, 800);
+
             bbosRequest({
                 method: 'post',
                 url: this.siteConfig.BBOS_DOMIAN + '/Captcha',
@@ -236,8 +243,13 @@ export default {
                 }
 
                 if (res && res.status !== '000') {
+
                     if (res.msg) {
                         this.errMsg = res.msg;
+                        // msg: "验证码错误"
+                        if (res.code === "C00024") {
+                            this.$refs.captcha.focus();
+                        }
                         return;
                     }
 

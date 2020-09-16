@@ -173,7 +173,7 @@
                 <ul :class="[$style['single-data-count'], 'clearfix']">
                   <li :class="$style['single-count']">
                     {{ $text("S_DATA_COUNT", "笔数") }} :
-                    {{ item.list.length }}
+                    {{ item.count }}
                   </li>
                   <li :class="$style['single-water']">
                     {{ $text("S_TOTAL_WATER", "流水") }} :
@@ -210,7 +210,7 @@
                       {{ parseFloat(gameDetail.valid_bet).toFixed(2) }}
                     </div>
                     <div :class="$style['game-money']">
-                      {{ $text("S_WIN_LOSE", "输赢") }} :
+                      {{ "输/赢"}} :
                       <span
                         :class="{
                           [$style['is-win']]: parseFloat(gameDetail.payoff) > 0
@@ -226,7 +226,9 @@
         </div>
       </div>
       <div v-if="mainNoData" :class="$style['no-data']">
-        <img src="/static/image/_new/mcenter/no_data.png" />
+        <img
+          :src="$getCdnPath(`/static/image/${themeTPL}/mcenter/no_data.png`)"
+        />
         <p>{{ $text("S_NO_BETRECORD", "还没有任何投注记录") }}</p>
       </div>
     </template>
@@ -313,6 +315,9 @@ export default {
       gameData: "getGameData",
       siteConfig: "getSiteConfig"
     }),
+    themeTPL() {
+      return this.siteConfig.MOBILE_WEB_TPL;
+    },
     $style() {
       const style =
         this[`$style_${this.siteConfig.MOBILE_WEB_TPL}`] || this.$style_porn1;

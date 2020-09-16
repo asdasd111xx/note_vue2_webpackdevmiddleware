@@ -62,32 +62,6 @@ export default {
       msg: "",
       viplevel: "",
       avatarSrc: `/static/image/_new/mcenter/avatar_nologin.png`,
-      avatar: [
-        {
-          image: "avatar_1",
-          url: "/static/image/_new/mcenter/default/avatar_1.png"
-        },
-        {
-          image: "avatar_2",
-          url: "/static/image/_new/mcenter/default/avatar_2.png"
-        },
-        {
-          image: "avatar_3",
-          url: "/static/image/_new/mcenter/default/avatar_3.png"
-        },
-        {
-          image: "avatar_4",
-          url: "/static/image/_new/mcenter/default/avatar_4.png"
-        },
-        {
-          image: "avatar_5",
-          url: "/static/image/_new/mcenter/default/avatar_5.png"
-        },
-        {
-          image: "avatar_6",
-          url: "/static/image/_new/mcenter/default/avatar_6.png"
-        }
-      ],
       day: ""
     };
   },
@@ -104,7 +78,36 @@ export default {
     this.getUserViplevel();
     this.getAvatarSrc();
     if (this.loginStatus) {
-      this.day = moment().diff(Vue.moment(this.memInfo.user.created_at), 'days');
+      
+      var nowUTC = moment().format('YYYY-MM-DD');      
+      var createUTC = moment(this.memInfo.user.created_at).format('YYYY-MM-DD');   
+      
+      
+
+      var date1 = nowUTC;
+      var date2 = createUTC;   
+      date1 = date1.split("-");
+      var year = date1[0];
+      var month = date1[1];
+      var day =  date1[2]; 
+      date1=new Date(year, month - 1, day) ;
+      
+      date2 = date2.split("-");
+      year = date2[0];  
+      month = date2[1];  
+      day =  date2[2]; 
+      date2=new Date(year, month - 1 , day) ;
+      
+      var ONE_DAY = 1000 * 60 * 60 * 24;
+      var date1_ms = date1.getTime();
+      var date2_ms = date2.getTime();
+      var difference_ms = Math.abs(date1_ms - date2_ms);
+      var diff_days = Math.round(difference_ms/ONE_DAY);
+      
+      // console.log('now:  '+nowUTC);
+      // console.log('created_at:  '+createUTC);
+
+      this.day = (diff_days + 1);//{{ `加入亿元第${day + 1}天` }}
     }
   },
   methods: {

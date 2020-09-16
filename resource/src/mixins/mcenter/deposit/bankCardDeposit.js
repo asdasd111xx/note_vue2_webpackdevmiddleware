@@ -2,9 +2,11 @@ import {
   API_MCENTER_DEPOSIT_CHANNEL,
   API_MCENTER_DEPOSIT_INPAY,
   API_MCENTER_DEPOSIT_THIRD,
-  API_TRADE_RELAY
+  API_TRADE_RELAY,
+  API_CRYPTO_MONEY
 } from '@/config/api';
 import { mapActions, mapGetters } from 'vuex';
+import axios from "axios";
 
 import BigNumber from 'bignumber.js/bignumber';
 import ajax from '@/lib/ajax';
@@ -42,14 +44,23 @@ export default {
       webviewOpenUrl: '',
       isSelectedCustomMoney: false,
       isDisableDepositInput: false,
-      limitTime: 0,
       walletData: {
         CGPay: {
           method: 0,
           password: "",
           placeholder: "请输入CGPay支付密码"
         }
-      }
+      },
+      // 傳遞給 depositInfo (訂單限時)
+      limitTime: 0,
+
+      // 匯率試算相關
+      cryptoMoney: "--",
+      isClickCoversionBtn: false,
+
+      // 倒數器
+      timer: null,
+      countdownSec: 0
     };
   },
   watch: {
@@ -322,9 +333,6 @@ export default {
       }
 
       return false;
-    },
-    singleLimit() {
-      return `单笔充值金额： ${Number(this.depositInterval.maxMoney) === 0 ? this.$text('S_UNLIMITED', '无限制') : this.$text('S_MONEY_RANGE_SHORT', { replace: [{ target: '%s', value: this.depositInterval.minMoney }, { target: '%s', value: this.depositInterval.maxMoney }] })}`;
     }
   },
   methods: {
@@ -502,6 +510,7 @@ export default {
       }
 
       this.resetStatus();
+      this.resetTimerStatus();
       this.curModeGroup = mode;
 
       if (this.isDepositAi && this.curModeGroup.payment_group_content) {
@@ -534,6 +543,7 @@ export default {
       }
 
       this.resetStatus();
+      this.resetTimerStatus();
       this.curPayInfo = info;
 
       if (info.payment_method_id === 20) {
@@ -630,10 +640,13 @@ export default {
       this.passRoad = [];
       this.curPassRoad = {};
       this.moneyValue = '';
+      this.isDisableDepositInput = false;
       this.isErrorMoney = false;
       this.isSelectValue = '';
       this.nameCheckFail = false;
-      this.walletData['CGPay'].password = ""
+      this.walletData['CGPay'].password = '';
+      this.cryptoMoney = '--';
+      // this.resetTimerStatus();
 
       Object.keys(this.speedField).forEach((info) => {
         if (info === 'depositMethod') {
@@ -783,9 +796,8 @@ export default {
       }
 
       // CGPay：選擇支付密碼
-      if ( this.curPayInfo.payment_method_id === 16 &&
-           this.walletData['CGPay'].method === 0)
-      {
+      if (this.curPayInfo.payment_method_id === 16 &&
+        this.walletData['CGPay'].method === 0) {
         paramsData = {
           ...paramsData,
           wallet_token: +this.walletData['CGPay'].password
@@ -827,6 +839,7 @@ export default {
 
           console.log(response.ret, _isWebview)
 
+          // 如有回傳限制時間
           if (response.ret.remit.limit_time) {
             this.limitTime = response.ret.remit.limit_time;
           }
@@ -862,16 +875,15 @@ export default {
           }
 
           Object.keys(response.ret).forEach((info) => {
-            if (info === 'deposit' || info === 'wallet' || info === 'remit') {
+            if (info === 'deposit' || info === 'wallet' || info === 'remit' || info === 'crypto') {
               return;
             }
 
-            if (response.ret[info] && (info === 'is_deposit' || info === 'is_wallet' || info === 'is_remit')) {
+            if (response.ret[info] && (info === 'is_deposit' || info === 'is_wallet' || info === 'is_crypto' || info === 'is_remit')) {
               const typeKey = info.split('_')[1];
 
               this.orderData.orderInfo = response.ret[typeKey];
               this.orderData.methodType = typeKey;
-              return;
             }
 
             this.orderData[info] = response.ret[info];
@@ -879,6 +891,21 @@ export default {
 
           if (_isPWA) {
             newWindow.close();
+          }
+
+          // CGPay 不需要進入詳細入款單
+          if (this.curPayInfo.payment_method_id === 16 && response.result === 'ok') {
+            // 將「confirmOneBtn」彈窗打開
+            this.confirmPopupObj = {
+              isShow: true,
+              msg: '支付成功',
+              btnText: '关闭',
+              cb: () => {
+                this.confirmPopupObj.isShow = false
+              }
+            }
+
+            return { status: 'third' };
           }
 
           return { status: 'local' };
@@ -986,6 +1013,87 @@ export default {
         this.isSelectValue = target.label;
         this.bankSelectValue = target;
       }
+    },
+    getSingleLimit(minMoney, maxMoney) {
+      // 最大金額不為0的時候，顯示最小值~最大值
+      if (Number(minMoney) !== 0 && Number(maxMoney) !== 0) {
+        return `¥${minMoney} ~ ¥${maxMoney}`;
+      }
+
+      // 最小金額不為0的時候，顯示最低金額~无限制
+      if (Number(minMoney) !== 0 && Number(maxMoney) === 0) {
+        return `最低金额¥${minMoney} ~ 无限制`;
+      }
+
+      // 最大金額 & 最低金額 都為0的時候，顯示無限制
+      if (Number(minMoney) === 0 && Number(maxMoney) === 0) {
+        return `无限制`;
+      }
+
+      return '';
+    },
+    // 取得存/取款加密貨幣試算金額
+    convertCryptoMoney() {
+      return axios({
+        method: "get",
+        url: API_CRYPTO_MONEY,
+        params: {
+          type: 1,
+          amount: this.moneyValue
+        }
+      }).then(response => {
+        const { result, ret } = response.data;
+        if (!response || result !== "ok") return;
+
+        this.cryptoMoney = ret.crypto_amount;
+        this.isClickCoversionBtn = true;
+        this.countdownSec = this.countdownSec ? this.countdownSec : ret.ttl;
+
+        // 僅限按下按鈕觸發，@input & @blur 皆不會觸發
+        if (this.countdownSec && !this.timer) {
+          this.timer = setInterval(() => {
+            if (this.countdownSec === 0) {
+
+              if (this.submitStatus !== "stepTwo") {
+                // 需重新判斷
+                // 將「confirmOneBtn」彈窗打開
+                this.confirmPopupObj = {
+                  isShow: true,
+                  msg: '汇率已失效',
+                  btnText: '刷新汇率',
+                  cb: () => {
+                    this.confirmPopupObj.isShow = false;
+                    this.convertCryptoMoney();
+                  }
+                }
+              }
+
+              this.resetTimerStatus();
+              return;
+            }
+            this.countdownSec -= 1;
+          }, 1000);
+        }
+      });
+    },
+    formatCountdownSec() {
+      let minutes = Math.floor(this.countdownSec / 60);
+      let sec = this.countdownSec - minutes * 60;
+
+      if (minutes < 10) {
+        minutes = "0" + minutes;
+      }
+      if (sec < 10) {
+        sec = "0" + sec;
+      }
+
+      return `${minutes}:${sec}`;
+    },
+    resetTimerStatus() {
+      clearInterval(this.timer);
+      this.timer = null;
+      this.countdownSec = 0;
+      this.isClickCoversionBtn = false;
     }
   }
 };

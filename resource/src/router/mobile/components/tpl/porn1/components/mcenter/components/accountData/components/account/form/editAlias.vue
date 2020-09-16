@@ -1,53 +1,52 @@
 <template>
-  <div :class="[$style['field-editer'], 'clearfix']">
-    <div :class="$style['field-title']">{{ $text("S_NICKNAME") }}</div>
-    <div :class="$style['input-wrap']">
-      <div :class="$style['field-value']">
-        <input
-          ref="input"
-          v-model="value"
-          :placeholder="$text('S_NICKNAME')"
-          :class="$style.input"
-          maxlength="100"
-          type="text"
-        />
+  <div slot="content" :class="$style['content-wrap']">
+    <account-header :header-config="headerConfig" />
+    <div :class="[$style.wrap, 'clearfix']">
+      <!-- 錯誤訊息 -->
+      <div :class="$style['top-tips']">
+        <div v-show="tipMsg">
+          {{ tipMsg }}
+        </div>
       </div>
-      <!-- <div :class="$style['toggle-nickname']" @click="onToggle">
-          <span>{{ $text("S_NICKNAME_SHOW", "显示昵称") }}</span>
-          <div :class="['ui toggle checkbox']">
-            <input
-              :checked="showNickname"
-              :disabled="isFetching"
-              type="checkbox"
+      <div :class="$style.block">
+        <div :class="$style.title">{{ $text("S_NICKNAME") }}</div>
+        <div :class="$style['input-wrap']">
+          <input
+            ref="input"
+            v-model="value"
+            :placeholder="$text('S_NICKNAME')"
+            :class="$style.input"
+            @input="onInput"
+            :maxlength="20"
+            type="text"
+          />
+          <div :class="$style['clear-input']" v-if="value">
+            <img
+              :src="$getCdnPath(`/static/image/_new/common/ic_clear.png`)"
+              @click="value = ''"
             />
-            <label />
           </div>
-        </div> -->
-      <div :class="$style['btn-wrap']">
-        <span :class="$style['btn-cancel']" @click="$emit('cancel')">
-          {{ $text("S_CANCEL", "取消") }}
-        </span>
-        <span :class="$style['btn-confirm']" @click="handleSubmit()">
-          {{ $text("S_CONFIRM", "確認") }}
-        </span>
+        </div>
       </div>
     </div>
   </div>
 </template>
 
 <script>
+import { API_MCENTER_ENABLE_ALIAS, API_MCENTER_DISABLE_ALIAS } from '@/config/api';
 import { mapGetters, mapActions } from 'vuex';
+import accountHeader from '../../accountHeader';
 import ajax from '@/lib/ajax';
 import mcenter from '@/api/mcenter';
-import { API_MCENTER_ENABLE_ALIAS, API_MCENTER_DISABLE_ALIAS } from '@/config/api';
 
 export default {
   components: {
+    accountHeader
   },
   data() {
     return {
       value: '',
-      isFetching: false,
+      tipMsg: '',
       showNickname: false
     };
   },
@@ -57,33 +56,42 @@ export default {
   computed: {
     ...mapGetters({
       memInfo: 'getMemInfo'
-    })
+    }),
+    headerConfig() {
+      return {
+        prev: true,
+        onClick: () => { this.$router.back(); },
+        title: this.$text('S_NICKNAME', '真实姓名'),
+        onClickFunc: () => {
+          this.handleSubmit();
+        },
+        funcBtn: this.$text('S_COMPLETE', '完成'),
+        funcBtnActive: !!(this.value) && !this.tipMsg
+      };
+    }
   },
   created() {
+    //  是否顯示暱稱 尚未實作
     this.showNickname = this.memInfo.user.show_alias;
     this.value = this.memInfo.user.alias;
   },
   methods: {
-    ...mapActions(['actionSetUserdata', 'actionSetGlobalMessage']),
-    onToggle() {
-      this.showNickname = !this.showNickname;
+    ...mapActions(['actionSetUserdata', 'actionSetGlobalMessage', 'actionVerificationFormData']),
+    onInput(e) {
+      this.actionVerificationFormData({ target: 'alias', value: e.target.value }).then((val => {
+        this.value = val
+      }));
     },
     handleSubmit() {
-      // 空值驗證
-      if (this.value === '') {
-        this.$emit('msg', this.$text('S_CR_NUT_NULL'));
-        return Promise.resolve(result);
-      }
-
       // 驗證失敗
-      if (!/^[^，:;！@#$%^&*?<>()+=`|[\]{}\\"/.~\-_']*$/.test(this.value)) {
-        this.$emit('msg', this.$text('S_NO_SYMBOL', '请勿输入特殊符号(允许空白)'));
-        return Promise.resolve(result);
-      }
+      //   if (!/^[^，:;！@#$%^&*?<>()+=`|[\]{}\\"/.~\-_']*$/.test(this.value)) {
+      //     this.$emit('msg', this.$text('S_NO_SYMBOL', '请勿输入特殊符号(允许空白)'));
+      //     return Promise.resolve(result);
+      //   }
 
       const setNickname = mcenter.accountDataSet({
         params: {
-          alias: this.value
+          alias: this.value.substring(0, 20)
         }
       });
 
@@ -93,10 +101,10 @@ export default {
         errorAlert: false
       });
 
-      let self = this;
       return Promise.all([setNickname, setShowNickname]).then((response) => {
         if (response.every((res) => res.result === 'ok')) {
-          self.$emit('success');
+          localStorage.setItem('set-account-success', true);
+          this.$router.push('/mobile/mcenter/accountData');
         }
       });
     }

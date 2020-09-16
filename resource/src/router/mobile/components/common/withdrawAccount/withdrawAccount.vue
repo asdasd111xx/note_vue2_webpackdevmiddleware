@@ -13,6 +13,12 @@
           />
         </div>
         <span :class="$style['title']"> {{ "帐户资料" }}</span>
+        <div :class="$style['btn-icon']">
+          <img
+            :src="$getCdnPath('/static/image/ey1/common/btn_help.png')"
+            @click="$router.push('/mobile/mcenter/helpCenter/')"
+          />
+        </div>
       </div>
 
       <div :class="$style['wiithdraw-account-wrap']">
@@ -50,6 +56,7 @@
               :key="`widthdrawPwd-${index}`"
               @input="verification('withdraw_password', index)"
               @blur="verification('withdraw_password', index)"
+              :data-key="`withdraw_password_${index}`"
               :class="$style['withdraw-pwd-input']"
               :maxlength="1"
               :minlength="1"
@@ -97,6 +104,7 @@
               :placeholder="formData['keyring'].placeholder"
               @input="verification('keyring')"
               @blur="verification('keyring')"
+              type="tel"
             />
             <div
               :class="[
@@ -106,7 +114,7 @@
               @click="showCaptchaPopup"
             >
               <span v-if="countdownSec">{{ `${countdownSec}s` }}</span>
-              <span v-else> {{ "手机验证码" }} </span>
+              <span v-else> {{ "获取验证码" }} </span>
             </div>
           </div>
         </div>
@@ -114,7 +122,7 @@
         <div
           :class="[
             $style['btn-submit'],
-            { [$style.active]: !isSendForm && checkFormData }
+            { [$style.active]: !isSendForm && checkFormData && isVerifyPhone }
           ]"
           @click="sendFormData"
         >
@@ -162,6 +170,8 @@ export default {
       toggleCaptcha: false,
       captcha: null,
       checkFormData: false,
+      isLoading: false,
+      ttl: 60,
       formData: {
         name: {
           title: '持卡人姓名',
@@ -194,27 +204,38 @@ export default {
       }
     }
   },
-  mounted() {
+  created() {
     // axios({
     //   method: 'get',
     //   url: '/api/v2/c/withdraw/check',
     // }).then((res) => {
 
     // });
+
     this.isLoading = true;
     this.getAccountDataStatus().then((data) => {
       this.checkBankSwitch = data.ret.bank
 
-      this.isLoading = false;
       Object.keys(data.ret).forEach(i => {
         if (this.formData[i]) {
           if (i === "phone") {
             this.formData['keyring'].show = !data.ret[i];
+            // 無手機欄位時候不需要驗證
+            this.isVerifyPhone = data.ret[i];
           }
 
           this.formData[i].show = !data.ret[i];
         }
       })
+
+      if (!this.formData.name.show &&
+        !this.formData.phone.show &&
+        !this.formData.withdraw_password.show) {
+        if (!this.checkBankSwitch) {
+          this.$router.push(`/mobile/mcenter/bankCard?redirect=home&type=wallet`)
+        }
+      }
+      this.isLoading = false;
     });
   },
   computed: {
@@ -284,14 +305,25 @@ export default {
       }
 
       if (key === "withdraw_password") {
-        target.value[index] = target.value[index]
+        let correct_value = target.value[index]
           .replace(' ', '')
           .trim()
-          .replace(/[^0-9]/g, '');
+          .replace(/[^\d+]$/g, '');
 
         if (target.value[index].length > 1) {
           target.value[index] = target.value[index].substring(0, 1);
         }
+
+        if (target.value[index] === correct_value && correct_value !== '') {
+          if (index < 3) {
+            document.querySelector(`input[data-key="${key}_${index + 1}"]`).focus();
+          }
+        } else if (target.value[index] === correct_value && correct_value === '') {
+          if (index > 0) {
+            document.querySelector(`input[data-key="${key}_${index - 1}"]`).focus();
+          }
+        }
+        target.value[index] = correct_value
       }
 
       if (key === "phone") {
@@ -306,9 +338,9 @@ export default {
       }
 
       if (key === "keyring") {
-        target.value = target.value.replace(' ', '')
-          .trim()
-          .replace(/[^0-9A-Za-z]/g, '');
+        this.actionVerificationFormData({ target: 'code', value: target.value }).then((res => {
+          target.value = res;
+        }));
       }
 
       let check = true;
@@ -344,6 +376,19 @@ export default {
       // 彈驗證窗並利用Watch captchaData來呼叫 getKeyring()
       this.toggleCaptcha = true;
     },
+    // 回傳會員手機驗證簡訊剩餘秒數可以重送
+    getPhoneTTL() {
+      return axios({
+        method: 'get',
+        url: '/api/v1/c/player/phone/ttl',
+      }).then(res => {
+        if (res && res.data && res.data.result === "ok") {
+          this.ttl = res.data.ret;
+        }
+      }).catch(error => {
+        this.tipMsg = `${error.response.data.msg}`;
+      })
+    },
     sendKeyring() {
       this.isSendKeyring = true;
       this.tipMsg = '';
@@ -357,20 +402,23 @@ export default {
         }
       }).then(res => {
         if (this.timer) return;
-        this.countdownSec = 60;
-        this.timer = setInterval(() => {
-          if (this.countdownSec === 0) {
-            clearInterval(this.timer);
-            this.timer = null;
-            if (this.tipMsg.indexOf('已发送')) {
-              this.tipMsg = ''
+
+        this.getPhoneTTL().then(() => {
+          this.countdownSec = this.ttl;
+          this.timer = setInterval(() => {
+            if (this.countdownSec === 0) {
+              clearInterval(this.timer);
+              this.timer = null;
+              if (this.tipMsg.indexOf('已发送')) {
+                this.tipMsg = ''
+              }
+              return;
             }
-            return;
-          }
-          this.countdownSec -= 1;
-        }, 1000);
-        this.tipMsg = this.$text("S_SEND_CHECK_CODE_VALID_TIME").replace("%s", 5);
-        this.isSendKeyring = false;
+            this.countdownSec -= 1;
+          }, 1000);
+          this.tipMsg = this.$text("S_SEND_CHECK_CODE_VALID_TIME").replace("%s", 5);
+          this.isSendKeyring = false;
+        })
       }).catch(error => {
         this.countdownSec = '';
         this.tipMsg = `${error.response.data.msg}`;
@@ -412,7 +460,7 @@ export default {
             this.onClose();
 
             if (!this.checkBankSwitch) {
-              this.$router.push(`/mobile/mcenter/bankCard?redirect=home&type=virtualBank`)
+              this.$router.push(`/mobile/mcenter/bankCard?redirect=home&type=wallet`)
             }
           });
         }

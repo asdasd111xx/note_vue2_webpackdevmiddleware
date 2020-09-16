@@ -150,6 +150,7 @@ export default {
     }
   },
   created() {
+    console.log(this.depositData)
     this.speedField = {
       ...this.speedField,
       depositTime: this.depositData.deposit_at,

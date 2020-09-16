@@ -23,6 +23,7 @@ export default {
             allGame: [],
             selectedIndex: 0,
             currentLevel: 0,
+            showPromotion: false,
             isShowLoading: false,
             isCheckWithdraw: false,
             mcenterList: [
@@ -35,10 +36,17 @@ export default {
             mcenterEy1List: [
                 { name: 'deposit', text: '充值', path: 'deposit' },
                 { name: 'balanceTrans', text: '转帐', path: 'balanceTrans' },
-                { name: 'makemoney', text: '推广', path: 'makemoney' },
+                { name: 'makemoney', text: '推广', path: 'makemoney' },//rollback 億元隱藏推廣
                 { name: 'vip', text: 'VIP', path: 'accountVip' },
             ]
         };
+    },
+    watch: {
+        isReceive() {
+            this.$nextTick(() => {
+                this.onResize();
+            })
+        }
     },
     computed: {
         ...mapGetters({
@@ -99,6 +107,7 @@ export default {
     },
     created() {
         localStorage.removeItem('is-open-game');
+        this.showPromotion = this.loginStatus ? this.memInfo.user.show_promotion : true;
     },
     mounted() {
         $(window).on('resize', this.onResize);
@@ -376,7 +385,7 @@ export default {
                     method: 'get',
                     url: '/api/v2/c/withdraw/check',
                 }).then((res) => {
-                    this.isCheckWi2hdraw = false;
+                    this.isCheckWithdraw = false;
                     if (res.data.result === "ok") {
                         let check = true;
 
@@ -384,7 +393,7 @@ export default {
                             if (i !== "bank" && !res.data.ret[i]) {
                                 if (this.siteConfig.MOBILE_WEB_TPL === 'ey1') {
                                     this.actionSetGlobalMessage({
-                                        msg: '请先完成您的出款资讯', cb: () => {
+                                        msg: '请先设定提现资料', cb: () => {
                                             {
                                                 this.$router.push('/mobile/withdrawAccount');
                                             }
@@ -460,19 +469,25 @@ export default {
                 // 草莓 -> STB
                 // 向日葵 -> SF
                 // 屌絲漫畫->DSC
-                case 'LF':
+                case 'PPV':
                 case 'APB':
+                case 'JPB':
+                    if (!this.loginStatus) {
+                        this.$router.push('/mobile/login');
+                        return;
+                    }
+                    this.$router.push(`/mobile/iframe/${game.type}?&title=${game.name}`);
+                    return;
+                case 'LF':
                 case 'BALE':
                 case 'STB':
-                case 'JPB':
                 case 'DSC':
-                case 'PPV':
                 case 'SF':
                     if (!this.loginStatus) {
                         this.$router.push('/mobile/login');
                         return;
                     }
-
+                    // 調整iframe內嵌
                     let newWindow = window.open('');
                     yaboRequest({
                         method: 'get',

@@ -45,7 +45,7 @@
         v-if="showFavor && loginStatus"
         :class="
           getClass(['icon-star', 'is-favorite'], {
-            'is-favorite': checkFavorite
+            'is-favorite': isFavorite
           })
         "
       />
@@ -70,8 +70,12 @@ export default {
   },
   data() {
     return {
-      isShowLoading: false
+      isShowLoading: false,
+      isFavorite: false // 客端顯示是否最愛
     };
+  },
+  mounted() {
+    this.isFavorite = !!this.favoriteGame.find(i => i.vendor === this.gameInfo.vendor && i.code === this.gameInfo.code);
   },
   props: {
     theme: {
@@ -372,6 +376,7 @@ export default {
      * @method toggleFavorite
      */
     toggleFavorite() {
+
       if (this.isBackEnd || this.isSetFavorite) {
         return;
       }
@@ -386,8 +391,11 @@ export default {
           code
         }
       }).then(() => {
+        this.isFavorite = !this.isFavorite;
         this.actionSetFavoriteGame().then(() => {
-          this.isSetFavorite = false;
+          setTimeout(() => {
+            this.isSetFavorite = false;
+          }, 300)
         });
       });
     }

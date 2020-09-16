@@ -107,6 +107,8 @@ export default {
       'actionGetMemInfoV3'
     ]),
     setCurrentTab(index) {
+      this.$router.push({ query: { 'tab': index } });
+
       switch (index) {
         default:
         case 0:

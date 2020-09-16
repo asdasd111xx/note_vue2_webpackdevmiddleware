@@ -1,9 +1,21 @@
 @import "../variable.scss";
 
-.join-wrap {
-    margin: 0 auto;
-    max-width: $layoutWidth;
-    color: #FFF;
+.err-msg {
+    padding: 2px 0;
+    color: $main_error_color1;
+    min-height: 40px;
+}
+
+.join-member-wrap {
+    min-height: 100vh;
+    background-repeat: no-repeat;
+    background-size: cover;
+    background-image: url("/static/image/ey1/common/bg.png");
+}
+
+.title {
+    color: black;
+    font-size: 16px;
 }
 
 .join {
@@ -23,52 +35,29 @@
     line-height: 76px;
 }
 
-.join-banner-icon {
-    position: absolute;
-    top: -30px;
-    left: 14px;
-    background: url("/static/image/join_icon.png") 0 0 no-repeat;
-    width: 109px;
-    height: 109px;
-}
-
-.join-ag-banner {
-    composes: join-banner;
-    padding-left: 112px;
-    font-size: 27px;
-    line-height: 94px;
-}
-
-.join-ag-banner-icon {
-    composes: join-banner-icon;
-    top: 14px;
-    background: url("/static/image/agent/agent_icon.png") 0 0 no-repeat;
-    width: 70px;
-    height: 64px;
-}
-
 .join-content {
     margin: 0 auto;
     width: 90%;
     padding-bottom: 10px;
 }
 
+.join-content {
+    width: 90%;
+}
+
 .field-wrap {
+    position: relative;
     margin-bottom: 15px;
 }
 
 .captcha-img {
     position: absolute;
     top: 11px;
-    right: 8px;
+    right: 30px;
     background: #000;
     cursor: pointer;
-}
-
-.field-title {
-    display: block;
-    line-height: 39px;
-    width: 100%;
+    width: 62px;
+    height: 21px;
 }
 
 .field-text {
@@ -81,9 +70,10 @@
 }
 
 .join-star {
-    float: left;
-    margin-left: 5px;
-    color: #D01C1C;
+    visibility: hidden;
+    position: absolute;
+    left: 0;
+    color: #d01c1c;
 }
 
 .join-input {
@@ -93,7 +83,6 @@
     height: 40px;
     border: 1px solid #595959;
     border-radius: 5px;
-    // color: #A5A5A5;
     font-size: 14px;
     outline: 0;
 }
@@ -111,7 +100,7 @@
 
 .join-input-captcha {
     composes: join-input;
-    height: 72px;
+    height: 40px;
 }
 
 .join-input-birthday {
@@ -210,17 +199,33 @@
     cursor: no-drop;
 }
 
+.field-title {
+    display: inline-block;
+    padding-left: 10px;
+    width: 90px;
+    z-index: 1;
+    overflow: hidden;
+    text-align: right;
+    text-overflow: ellipsis;
+    white-space: nowrap;
+    vertical-align: top;
+    color: #5e626d;
+    line-height: 40px;
+}
+
 .field-right {
     position: relative;
-    width: 100%;
+    display: inline-block;
+    width: 65%;
     text-align: right;
+    vertical-align: middle;
 
     :global(.vdp-datepicker) {
         width: 100%;
 
         :global(.vdp-datepicker__calendar) {
             top: 35px;
-            right: -21px;
+            right: 0;
             color: #000;
             text-align: left;
         }
@@ -297,8 +302,10 @@
 }
 
 .join-btn-wrap {
+    width: 100%;
+    max-width: 300px;
+    padding: 0;
     margin: 0 auto;
-    width: 80%;
 }
 
 .join-btn {
@@ -311,10 +318,7 @@
     text-align: center;
     cursor: pointer;
 
-    &:hover {}
-
     &.disabled {
-        opacity: 0.5;
         pointer-events: none;
     }
 }
@@ -355,67 +359,45 @@
     }
 }
 
-@media screen and (min-width: $pad) {
-    .join {
-        width: 700px;
-    }
 
-    .join-banner {
-        width: 100%;
-    }
+.captchaText-wrap {
+    .captchaText-refresh {
+        width: 20px;
+        position: absolute;
+        right: 0;
+        top: calc(50% - 10px);
+        margin: 0px 5px;
 
-    .join-content {
-        width: 58%;
-    }
-
-    .join-btn-wrap {
-        padding-left: 16.4%;
-        width: 58%;
-    }
-
-    .field-wrap {
-        margin-bottom: 15px;
-    }
-
-    .field-title {
-        float: left;
-        width: 25%;
-        text-align: right;
-    }
-
-    .field-right {
-        float: left;
-        margin-left: 3.4%;
-        width: 71.6%;
-    }
-
-    .join-line {
-        width: 100%;
+        >img {
+            width: 20px;
+            height: 20px;
+        }
     }
 }
 
-@media screen and (min-width: $phone) {
-    .join-banner {
-        padding-left: 160px;
-    }
+:global {
+    .v-select {
+        .dropdown-toggle {
+            border: 0;
+        }
 
-    .join-ag-banner {
-        composes: join-banner;
-        padding-left: 132px;
-        font-size: 27px;
-        line-height: 94px;
-    }
+        &.open {
+            .open-indicator {
+                bottom: 16px;
+            }
+        }
 
-    .join-banner-icon {
-        left: 34px;
-    }
+        .open-indicator {
+            right: 4px;
+            bottom: 16px;
+            width: 6px;
+            height: 6px;
 
-    .join-content,
-    .join-btn-wrap {
-        width: 70%;
-    }
-
-    .join-input {
-        font-size: 15px;
+            &::before {
+                height: 6px;
+                width: 6px;
+                border-width: 1px 1px 0 0;
+            }
+        }
     }
 }

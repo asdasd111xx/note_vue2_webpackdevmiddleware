@@ -18,9 +18,7 @@
           ]"
           @click="isShowPop = true"
         >
-          <span
-            :class="{ [$style['select-active']]: selectTarget.walletName }"
-          >
+          <span :class="{ [$style['select-active']]: selectTarget.walletName }">
             {{
               selectTarget.walletName
                 ? selectTarget.walletName
@@ -79,7 +77,7 @@
         <div :class="$style['input-wrap']">
           <input
             v-model="formData['CGPPwd'].value"
-            type="tel"
+            type="password"
             :placeholder="formData['CGPPwd'].placeholder"
             @input="verification('CGPPwd')"
             @blur="verification('CGPPwd')"
@@ -131,11 +129,7 @@
         </div>
 
         <ul :class="$style['pop-list']">
-          <li
-            v-for="item in walletList"
-            :key="item.id"
-            @click="setBank(item)"
-          >
+          <li v-for="item in walletList" :key="item.id" @click="setBank(item)">
             <img v-lazy="getBankImage(item.swift_code)" />
             {{ item.name }}
             <icon
@@ -168,11 +162,7 @@ export default {
     popupQrcode
   },
   props: {
-    changePage: {
-      type: Function,
-      default: () => {}
-    },
-    showTab: {
+    setPageStatus: {
       type: Function,
       default: () => {}
     },
@@ -285,8 +275,7 @@ export default {
           this.actionSetGlobalMessage({
             msg: "绑定成功",
             cb: () => {
-              this.showTab(true);
-              this.changePage("walletCardInfo");
+              this.setPageStatus(1, "walletCardInfo", true);
             }
           });
         }
@@ -531,8 +520,7 @@ export default {
       let redirect = query.redirect;
 
       if (!redirect) {
-        this.showTab(true);
-        this.changePage("walletCardInfo");
+        this.setPageStatus(1, "walletCardInfo", true);
         return;
       }
 
@@ -564,7 +552,7 @@ export default {
           this.$router.push(`/mobile/${redirect}`);
           return;
         default:
-          this.changePage("walletCardInfo");
+          this.setPageStatus(1, "walletCardInfo", true);
           return;
       }
     },

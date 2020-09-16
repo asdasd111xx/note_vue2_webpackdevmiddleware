@@ -52,7 +52,7 @@
               />
               <div>{{ vipLevel === "max" ? vipLevel : info.text }}</div>
             </template>
-            <template v-else>
+            <template v-else-if="info.name !== 'makemoney' || showPromotion">
               <img
                 :src="
                   $getCdnPath(
@@ -321,6 +321,7 @@ export default {
       position: relative;
       word-break: break-all;
       display: inline-block;
+      margin-right: 4px;
     }
 
     > div:last-of-type {
@@ -338,7 +339,6 @@ export default {
 }
 
 .vip-level {
-  margin-left: 4px;
   color: #ffffff;
   font-weight: 700;
   display: inline-block;
@@ -390,6 +390,7 @@ export default {
   overflow-y: auto;
   touch-action: default; // 誤刪，否則在touchmove事件會有cancelable錯誤
   -webkit-overflow-scrolling: touch; // 誤刪，維持touchmove滾動順暢
+  min-height: 284px;
 }
 
 .wrap {
@@ -469,7 +470,7 @@ export default {
     > img {
       display: block;
       margin: 0 auto;
-      max-height: 100%;
+      max-height: 85%;
       padding: 5px;
       width: 100%;
     }

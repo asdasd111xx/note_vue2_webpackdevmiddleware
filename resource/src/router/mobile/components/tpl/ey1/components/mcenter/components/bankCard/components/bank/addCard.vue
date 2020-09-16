@@ -42,30 +42,32 @@
           </div>
         </div>
 
-        <!-- <div :class="$style['info-item']">
-          <p :class="$style['input-title']">省/直辖市</p>
-          <div :class="$style['input-wrap']">
-            <input
-              v-model.trim="formData.province"
-              type="text"
-              placeholder="请输入省/直辖市"
-              maxlength="36"
-              @input="checkData"
-            />
+        <template v-if="memInfo.config.player_user_bank">
+          <div :class="$style['info-item']">
+            <p :class="$style['input-title']">省/直辖市</p>
+            <div :class="$style['input-wrap']">
+              <input
+                v-model.trim="formData.province"
+                type="text"
+                placeholder="请输入省/直辖市"
+                maxlength="36"
+                @input="checkData($event.target.value, 'province')"
+              />
+            </div>
           </div>
-        </div>
-        <div :class="$style['info-item']">
-          <p :class="$style['input-title']">县/市</p>
-          <div :class="$style['input-wrap']">
-            <input
-              v-model.trim="formData.city"
-              type="text"
-              placeholder="请输入县/市"
-              maxlength="36"
-              @input="checkData"
-            />
+          <div :class="$style['info-item']">
+            <p :class="$style['input-title']">县/市</p>
+            <div :class="$style['input-wrap']">
+              <input
+                v-model.trim="formData.city"
+                type="text"
+                placeholder="请输入县/市"
+                maxlength="36"
+                @input="checkData($event.target.value, 'city')"
+              />
+            </div>
           </div>
-        </div> -->
+        </template>
 
         <div :class="$style['info-item']">
           <p :class="$style['input-title']">开户支行</p>
@@ -93,10 +95,10 @@
           <div :class="$style['input-wrap']">
             <input
               v-model="formData.account"
-              type="text"
+              type="tel"
               placeholder="请输入银行卡卡号(限定16位以上数字)"
               minlength="16"
-              maxlength="19"
+              maxlength="36"
               @input="checkData($event.target.value, 'account')"
             />
             <div :class="$style['clear-input']" v-if="formData.account">
@@ -240,13 +242,9 @@ export default {
     popupVerification
   },
   props: {
-    changePage: {
+    setPageStatus: {
       type: Function,
-      default: () => {}
-    },
-    showTab: {
-      type: Function,
-      default: () => {}
+      default: () => { }
     },
     addBankCardStep: {
       type: String,
@@ -255,7 +253,8 @@ export default {
   },
   mixins: [bankMixin],
   created() {
-    this.formData.account_name = this.memInfo.user.name;
+    // 真實姓名不送
+    // this.formData.account_name = this.memInfo.user.name;
 
     axios({
       method: "get",
@@ -289,8 +288,7 @@ export default {
       this.msg = "";
       let redirect = query.redirect;
       if (!redirect) {
-        this.changePage("bankCardInfo");
-        this.showTab(true);
+        this.setPageStatus(0, "bankCardInfo", true);
         return;
       }
 
@@ -325,8 +323,7 @@ export default {
           this.$router.push(`/mobile/${redirect}`);
           return;
         default:
-          this.changePage("bankCardInfo");
-          this.showTab(true);
+          this.setPageStatus(0, "bankCardInfo", true);
           return;
       }
     }

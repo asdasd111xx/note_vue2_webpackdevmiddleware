@@ -17,7 +17,7 @@
               v-model="formData['old_withdraw_password'].value[index]"
               :key="`widthdrawPwd-${index}`"
               @input="verification('old_withdraw_password', index)"
-              @blur="verification('old_withdraw_password', index)"
+              @blur="verification('old_withdraw_password', index, true)"
               :data-key="`old_withdraw_password_${index}`"
               :class="$style['withdraw-pwd-input']"
               :maxlength="1"
@@ -38,7 +38,7 @@
             v-model="formData['new_withdraw_password'].value[index]"
             :key="`widthdrawPwd-${index}`"
             @input="verification('new_withdraw_password', index)"
-            @blur="verification('new_withdraw_password', index)"
+            @blur="verification('new_withdraw_password', index, true)"
             :data-key="`new_withdraw_password_${index}`"
             :class="$style['withdraw-pwd-input']"
             :maxlength="1"
@@ -51,7 +51,7 @@
     </div>
     <div
       :class="$style['service-tip']"
-      :style="{ 'text-align': 'left', 'padding-left': '14px' }"
+      :style="{ 'text-align': 'left', 'padding-left': '35px','color': '#414655' }"
     >
       {{ "请输入0-9数字" }}
     </div>
@@ -117,7 +117,7 @@ export default {
       'actionSetGlobalMessage',
       'actionSetＭcenterBindMessage'
     ]),
-    verification(key, index) {
+    verification(key, index, blur = false) {
       let target = this.formData[key];
       let errorMsg = '';
       let correct_value = target.value[index]
@@ -125,13 +125,15 @@ export default {
         .trim()
         .replace(/[^\d+]$/g, '');
 
-      if (target.value[index] === correct_value && correct_value !== '') {
-        if (index < 3) {
-          document.querySelector(`input[data-key="${key}_${index + 1}"]`).focus();
-        }
-      } else if (target.value[index] === correct_value && correct_value === '') {
-        if (index > 0) {
-          document.querySelector(`input[data-key="${key}_${index - 1}"]`).focus();
+      if (!blur) {
+        if (target.value[index] === correct_value && correct_value !== '') {
+          if (index < 3) {
+            document.querySelector(`input[data-key="${key}_${index + 1}"]`).focus();
+          }
+        } else if (target.value[index] === correct_value && correct_value === '') {
+          if (index > 0) {
+            document.querySelector(`input[data-key="${key}_${index - 1}"]`).focus();
+          }
         }
       }
 

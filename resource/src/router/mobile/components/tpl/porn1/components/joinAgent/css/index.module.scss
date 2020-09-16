@@ -1,0 +1,501 @@
+@import "~@/css/variable.scss";
+
+div.container {
+    background-color: #000;
+}
+
+.join-wrap {
+    margin: 0 auto;
+    padding: 28px 0 32px;
+    max-width: $layoutWidth;
+    color: #FFF;
+}
+
+.join {
+    margin: 0 auto;
+    padding-bottom: 20px;
+    width: 100%;
+}
+
+.join-content {
+    margin: 0 auto;
+    width: 80%;
+}
+
+.field-wrap {
+    position: relative;
+    margin-bottom: 20px;
+}
+
+.redo-wrap {
+    position: absolute;
+    top: 12px;
+    right: 10px;
+}
+
+.captcha-reform {
+    display: block;
+    width: 16px;
+    height: 16px;
+    color: #FFF;
+    cursor: pointer;
+
+    &.is-mobile {
+        color: #A6A9B2;
+    }
+}
+
+.captcha-img {
+    position: absolute;
+    width: 23%;
+    top: 21%;
+    right: 30px;
+    cursor: pointer;
+    background: #000;
+}
+
+.join-star {
+    position: absolute;
+    left: 0;
+    top: 4px;
+    color: #D01C1C;
+}
+
+.field-title {
+    position: absolute;
+    left: 6%;
+    z-index: 1;
+    display: block;
+    padding-left: 8px;
+    width: 23%;
+    line-height: 39px;
+    text-overflow : ellipsis;
+    white-space : nowrap;
+    overflow : hidden;
+}
+
+.field-title-phone,
+.field-title-withdraw_password {
+    composes: field-title;
+    position: static;
+    width: 100%;
+    line-height: 2;
+}
+
+.join-input {
+    background-color: #493535;
+    padding: 10px 3.5% 10px 29%;
+    width: 100%;
+    height: 40px;
+    border: none;
+    border-radius: 5px;
+    color: #FFF;
+    font-size: 14px;
+    outline: 0;
+
+    // Chrome/Opera/Safari
+    &::-webkit-input-placeholder {
+        text-align: right;
+    }
+    // Firefox 19+
+    &::-moz-placeholder {
+        text-align: right;
+    }
+    // IE 10+
+    &:-ms-input-placeholder {
+        text-align: right;
+    }
+    // Firefox 18-
+    &:-moz-placeholder {
+        text-align: right;
+    }
+
+    &:global(.currency) {
+        background-color: #392A2A;
+    }
+}
+
+.join-input:placeholder-shown {
+    text-overflow: ellipsis;
+}
+
+.join-input-email {
+    padding-right: 82px;
+}
+
+.join-input-phone {
+    float: left;
+    width: 68%;
+    margin-left: 2%;
+    padding-right: 82px;
+    padding-left: 3px;
+}
+
+.join-input-captcha {
+    composes: join-input;
+    padding-right: 28%;
+}
+
+.join-input-birthday {
+    composes: join-input;
+    margin-left: 0;
+    padding: 10px 3%;
+    width: 100%;
+    cursor: pointer;
+}
+
+.join-input-select {
+    composes: join-input;
+    padding: 0;
+
+    &.show {
+        border-color: #C24141;
+    }
+
+    :global(.clear) {
+        display: none;
+    }
+
+    :global(.open-indicator:before) {
+        border-color: #FFF;
+    }
+
+    :global(span.selected-tag) {
+        position: relative;
+        left: 26%;
+        top: 2px;
+        margin-right: 0;
+        margin-left: 0;
+        padding-right: 13px;
+        color: #FFF;
+    }
+
+    :global(input.form-control) {
+        margin-right: 0;
+        margin-left: 0;
+        padding-right: 13px;
+        color: #A5A5A5;
+    }
+
+    :global(.dropdown-toggle) {
+        height: 100%;
+        border: none;
+    }
+
+    span, input {
+        color: #646981;
+    }
+}
+
+.join-select-phone {
+    composes: join-input-select;
+    float: left;
+    width: 30%;
+
+    :global(input.form-control) {
+        position: absolute;
+        top: 0;
+        left: 0;
+        width: 100%;
+    }
+}
+
+.join-input-gender {
+    composes: join-input-select;
+
+    &:global(.open) {
+        :global(.selected-tag) {
+            display: block;
+            float: none;
+            top: 0;
+            right: 0;
+            left: 0;
+            height: 38px;
+            line-height: 38px;
+            margin: 0;
+            padding: 0 30px;
+            border-width: 0;
+            text-align: center;
+        }
+    }
+}
+
+.join-input-withdraw {
+    composes: join-input-select;
+    position: relative;
+    float: left;
+    width: 22%;
+    margin-right: 4%;
+
+    &:global(.open) {
+        :global(.selected-tag) {
+            position: static;
+        }
+    }
+
+    &:global(.v-select) {
+        input {
+            position: absolute;
+            left: 0;
+        }
+    }
+}
+
+.join-input-withdraw-last {
+    composes: join-input-withdraw;
+    margin-right: 0;
+}
+
+.join-input-disable {
+    composes: join-input;
+    cursor: no-drop;
+}
+
+.field-right {
+    position: relative;
+    text-align: right;
+
+    :global(.vdp-datepicker) {
+        width: 100%;
+
+        :global(.vdp-datepicker__calendar) {
+            top: 35px;
+            right: -21px;
+            color: #000;
+            text-align: left;
+        }
+
+        :global(.vdp-datepicker__clear-button) {
+            position: absolute;
+            top: 8px;
+            right: 10px;
+        }
+    }
+}
+
+.pwd-eye {
+    display: block;
+    width: 20px;
+    height: 20px;
+    position: absolute;
+    right: 6%;
+    top: 10px;
+    z-index: 10;
+}
+
+.join-tip {
+    display: none;
+    padding: 5px 10px;
+    border-radius: 5px;
+    color: #F94444;
+}
+
+.join-tip-show {
+    composes: join-tip;
+    display: inline-block;
+}
+
+.join-msg {
+    padding: 5px 10px;
+    color: #FFF;
+    text-align: left;
+    word-break: break-all;
+}
+
+.join-msg-icon {
+    display: none;
+    margin-right: 5px;
+    color: #44C07D;
+    vertical-align: middle;
+}
+
+.icon-verify {
+    position: absolute;
+    top: 12px;
+    right: 12px;
+    width: 18px;
+    height: 18px;
+    border: 1px solid #F1CA3C;
+    border-radius: 50%;
+    background-color: #F1CA3C;
+    color: #493535;
+
+    > svg {
+        display: block;
+    }
+}
+
+.btn-verify {
+    position: absolute;
+    top: 6px;
+    right: 6px;
+    height: 28px;
+    line-height: 28px;
+    padding: 0 6px;
+    background-color: #FFDFAF;
+    color: #2D284B;
+    font-size: 12px;
+    cursor: pointer;
+}
+
+.join-line {
+    display: none;
+    margin: 29px auto;
+    background: #B8BAC1;
+    width: 90%;
+    height: 1px;
+}
+
+.join-btn-wrap {
+    margin: 0 auto;
+    width: 80%;
+    height: 43px;
+    line-height: 43px;
+}
+
+.join-btn {
+    border-radius: 5px;
+    width: 100%;
+    height: inherit;
+    color: #392A2A;
+    background-color: #F2C925;
+    font-size: 15px;
+    text-align: center;
+    cursor: pointer;
+}
+
+:global(div.bluePurple) :local {
+    background-color: #2A2967;
+
+    .join-input {
+        background-color: #6A69F5;
+
+        &::placeholder {
+            color: #BABAFF;
+        }
+
+        &:global(.currency) {
+            background-color: #473F8A;
+        }
+    }
+
+    .join-tip {
+        color: #FFF;
+    }
+
+    .join-btn {
+        background-color: #CE5CEF;
+        color: #FFF;
+    }
+}
+
+@media screen and (min-width: $phone) {
+    .field-title {
+        line-height: 44px;
+        font-size: 16px;
+    }
+
+    .join-input {
+        height: 44px;
+        font-size: 16px;
+    }
+
+    .join-input-select {
+        :global(.selected-tag) {
+            top: 5px;
+        }
+    }
+
+    .join-input-gender {
+        &:global(.open) {
+            :global(.selected-tag) {
+                height: 44px;
+                line-height: 44px;
+            }
+        }
+    }
+
+    .join-btn-wrap {
+        height: 53px;
+        line-height: 53px;
+    }
+
+    .join-btn {
+        font-size: 21px;
+    }
+
+    .redo-wrap {
+        top: 15px;
+        right: 10px;
+    }
+
+    .captcha-reform {
+        width: 16px;
+        height: 16px;
+    }
+}
+
+@media screen and (min-width: $pad) {
+    .field-title {
+        line-height: 71px;
+        font-size: 26px;
+    }
+
+    .join-input {
+        height: 71px;
+        font-size: 26px;
+    }
+
+    .join-input-select {
+        :global(.selected-tag) {
+            top: 18px;
+        }
+
+        :global(.open-indicator) {
+            bottom: 21px;
+        }
+
+        &:global(.open) {
+            :global(.open-indicator) {
+                bottom: 16px;
+            }
+        }
+    }
+
+    .join-input-gender {
+        &:global(.open) {
+            :global(.selected-tag) {
+                height: 71px;
+                line-height: 71px;
+            }
+        }
+    }
+
+    .join-tip,
+    .join-msg {
+        font-size: 20px;
+    }
+
+    .join-btn-wrap {
+        height: 86px;
+        line-height: 86px;
+    }
+
+    .join-btn {
+        font-size: 34px;
+    }
+
+    .captcha-img {
+        right: 35px;
+    }
+
+    .redo-wrap {
+        top: 28px;
+        right: 10px;
+    }
+
+    .captcha-reform {
+        width: 20px;
+        height: 20px;
+    }
+}

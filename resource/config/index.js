@@ -10,11 +10,18 @@ const domain = 'https://yb01.66boxing.com/';
 // const domain = 'https://yaboxxxapp01.com/';
 // const domain = 'https://yaboxxxapp02.com/';
 
+// Beta
+// const domain = 'https://ybbe1.qghco.com/';
+
+
 // 亿元
-// const domain = 'https://35.201.222.5/';
 // const domain = 'https://eyt.66boxing.com/';
-// const domain = 'https://ey.688lg.com/';
 // const domain = 'https://eyd.688lg.com/';
+// const domain = 'https://ey02.66poo.com/';
+// const domain = 'https://ey.688lg.com/';
+
+// Beta
+// const domain = 'https://ey01.66boxing-beta.com/';
 
 
 module.exports = {
@@ -89,6 +96,11 @@ module.exports = {
                 secure: false
             },
             '/conf': {
+                target: domain,
+                changeOrigin: true,
+                secure: false
+            },
+            '/qybtv': {
                 target: domain,
                 changeOrigin: true,
                 secure: false

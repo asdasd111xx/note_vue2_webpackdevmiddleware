@@ -55,13 +55,20 @@
 }
 
 .save-wrap {
-    font-size: 15px;
-    position: absolute;
-    line-height: 43px;
-    top: 0;
-    height: 100%;
-    right: 14px;
+    -webkit-appearance: none;
+    -moz-appearance: none;
+    -webkit-tap-highlight-color: rgba(0, 0, 0, 0);
+    -moz-tap-highlight-color: rgba(0, 0, 0, 0);
+    box-shadow: none;
     color: $main_text_color2;
+    font-size: 15px;
+    height: 100%;
+    line-height: 43px;
+    outline: none;
+    position: absolute;
+    right: 14px;
+    top: 0;
+    border: unset;
 
     >.active {
         color: $main_text_color3;

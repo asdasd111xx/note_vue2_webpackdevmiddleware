@@ -90,3 +90,4 @@ import 'vue-awesome/icons/exclamation';
 import 'vue-awesome/icons/ellipsis-h';
 import 'vue-awesome/icons/angle-up';
 import 'vue-awesome/icons/angle-down';
+import 'vue-awesome/icons/redo-alt';

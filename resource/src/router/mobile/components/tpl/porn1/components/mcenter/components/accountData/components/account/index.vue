@@ -79,7 +79,13 @@
                         $style['field-text'],
                         { [$style.yet]: field.status === 'yet' }
                       ]"
-                      >{{ field.value }}
+                      >{{
+                        //提現密碼*呈現
+                        field.text === "S_DAW_DRWAL_PASSWORD" &&
+                        field.status === "already"
+                          ? "****"
+                          : field.value
+                      }}
                     </span>
                   </template>
 
@@ -142,7 +148,7 @@ export default {
   mounted() {
     if (localStorage.getItem('set-account-success')) {
       this.editedSuccess();
-      localStorage.removeItem('set-account-success');
+      this.$router.push({ query: { success: true } });
     }
   },
   methods: {
@@ -167,7 +173,7 @@ export default {
         return;
       }
 
-      if (['name', 'phone', 'email', 'qq', 'weixin', 'line', 'withdrawPwd'].includes(field.key)) {
+      if (['alias', 'name', 'phone', 'email', 'qq', 'weixin', 'line', 'withdrawPwd'].includes(field.key)) {
         this.$router.push({
           path: `/mobile/mcenter/accountData/${field.key}`
         });
@@ -179,6 +185,7 @@ export default {
       this.actionSetUserdata(true);
       this.currentEdit = '';
       this.showSuccess = true;
+      localStorage.removeItem('set-account-success');
       setTimeout(() => {
         this.showSuccess = false;
       }, 3000)

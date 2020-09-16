@@ -2,6 +2,27 @@
   <div :class="$style['content-wrap']">
     <div :class="$style['section']">
       <div
+        v-if="hasCid"
+        :class="[$style['cell']]"
+        :style="{ 'margin-bottom': '10px' }"
+        @click="
+          $router.push(
+            `/mobile/mcenter/help/detail?type=deposit${
+              isApp ? '&app=true' : ''
+            }`
+          )
+        "
+      >
+        <div :class="$style['title']">
+          {{ $text("S_RECENTLY_DEPOSIT", "8日内充值记录") }}
+        </div>
+        <div :class="[$style['arrow-btn']]">
+          <img
+            :src="$getCdnPath(`/static/image/_new/mcenter/ic_arrow_next.png`)"
+          />
+        </div>
+      </div>
+      <div
         v-for="(item, index) in data"
         :id="`q-${index}`"
         :class="[$style['cell'], { [$style['active']]: item.isOpen }]"
@@ -21,6 +42,14 @@
             <div :class="$style['text-block']" v-html="item.content" />
           </div>
 
+          <div v-if="index == 1 && item.isOpen" :class="$style['tips']">
+            <div>
+              如有任何问题，请洽24小时
+              <a @click="linkTo('service')">在线客服</a>
+              ，将有专人亲切的为您服务。
+            </div>
+          </div>
+
           <div
             :class="[$style['arrow-btn'], { [$style['active']]: item.isOpen }]"
             @click="item.content && handleToggleContent(index)"
@@ -30,9 +59,6 @@
             />
           </div>
         </template>
-      </div>
-      <div :class="$style['tips']" @click="$router.push('/mobile/service')">
-        如有任何问题，请洽24小时<a>在线客服</a>，将有专人亲切的为您服务。
       </div>
     </div>
   </div>

@@ -1,5 +1,6 @@
 export default {
     normal: {
+        iframeEy1: () => import(/* webpackChunkName: 'iframeEy1' */'../../tpl/ey1/components/iframe'),
         homeEy1: () => import(/* webpackChunkName: 'homeEy1' */'../../tpl/ey1/components/home'),
         loginEy1: () => import(/* webpackChunkName: 'loginEy1' */'../../tpl/ey1/components/login'),
         casinoEy1: () => import(/* webpackChunkName: 'casinoEy1' */'../../tpl/ey1/components/casino'),
@@ -44,7 +45,8 @@ export default {
         feedbackEy1: () => import(/* webpackChunkName: 'feedbackEy1' */'../../tpl/ey1/components/mcenter/components/feedback'),
         helpEy1: () => import(/* webpackChunkName: 'helpEy1' */'../../tpl/ey1/components/mcenter/components/help/components'),
         helpCenterEy1: () => import(/* webpackChunkName: 'helpCenterEy1' */'../../tpl/ey1/components/mcenter/components/help'),
-        // helpDetailEy1: () => import(/* webpackChunkName: 'helpDetailEy1' */'../../tpl/ey1/components/mcenter/components/help/components/detail'),
+        helpDetailEy1: () => import(/* webpackChunkName: 'helpDetailEy1' */'../../tpl/ey1/components/mcenter/components/help/components/detail'),
+        accountDataAliasEy1: () => import(/* webpackChunkName: 'accountDataAliasEy1' */'../../tpl/porn1/components/mcenter/components/accountData/components/account/form/editAlias'),
         accountDataNameEy1: () => import(/* webpackChunkName: 'accountDataNameEy1' */'../../tpl/porn1/components/mcenter/components/accountData/components/account/form/editName'),
         accountDataPhoneEy1: () => import(/* webpackChunkName: 'accountDataPhoneEy1' */'../../tpl/porn1/components/mcenter/components/accountData/components/account/form/editPhone'),
         accountDataEmailEy1: () => import(/* webpackChunkName: 'accountDataEmailEy1' */'../../tpl/porn1/components/mcenter/components/accountData/components/account/form/editEmail'),

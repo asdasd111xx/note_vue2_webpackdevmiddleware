@@ -35,7 +35,7 @@
                             class="inputColor"
                         />
                         <div v-if="errors.has(caseData.key[curLang]) && !isBackEnd" class="ui pointing red basic label">
-                            {{ $text('S_FORM_ACCOUNT_ERROR', '请输入4-20码英文小写、数字，首字不得为数字') }}
+                            {{ $text('S_FORM_ACCOUNT_ERROR', '请输入4-20位英文小写、数字，首字不得为数字') }}
                         </div>
                     </div>
                     <div v-if="caseData.key[curLang] === 'phone' && caseData.state[curLang]==='Y'" class="field element clearfix">
@@ -52,7 +52,7 @@
                             class="inputColor"
                         />
                         <div v-if="errors.has(caseData.key[curLang]) && !isBackEnd" class="ui pointing red basic label">
-                            {{ $text('S_FORM_PHONE_ERROR', '请输入7-15码，仅允许输入数字（开头可输入+）') }}
+                            {{ $text('S_FORM_PHONE_ERROR', '请输入7-15位，仅允许输入数字（开头可输入+）') }}
                         </div>
                     </div>
 
@@ -87,7 +87,7 @@
                             class="inputColor"
                         />
                         <div v-if="errors.has(caseData.key[curLang]) && !isBackEnd" class="ui pointing red basic label">
-                            {{ $text('S_FORM_WECHAT_ERROR', '请输入6-20码字母、数字、下划线、减号, 首字须为字母') }}
+                            {{ $text('S_FORM_WECHAT_ERROR', '请输入6-20位字母、数字、下划线、减号, 首字须为字母') }}
                         </div>
                     </div>
                     <div v-if="caseData.key[curLang] === 'email' && caseData.state[curLang]==='Y'" class="field element clearfix">

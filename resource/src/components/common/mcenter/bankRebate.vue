@@ -2,9 +2,8 @@
     <div class="bank-rebate-data">
         <slot
             :rebate-init-data="rebateInitData"
-            :caculate-data="caculateData"
+
             :message-text="messageText"
-            :short-day="shortDay"
             :page-all="pageAll"
             :list="list"
             :pick-date-list="pickDateList"
@@ -14,10 +13,10 @@
             :format-time="formatTime"
             :rebate-state="rebateState"
             :pop-receive="popReceive"
-            :amountCache="amountCache"
             :rebate-sub-total="rebateSubTotal"
             :immediate-data="immediateData"
             :real-time-rebate-total="realTimeRebateTotal"
+            :real-time-valid-bet-total="realTimeValidBetTotal"
             :receive-all="receiveAll"
             :maintains-list="maintainsList"
             :is-receive-all="isReceiveAll"
@@ -25,6 +24,7 @@
             :is-show-msg-popup="isShowMsgPopup"
             :close-popup="closePopup"
             :popup-msg="popupMsg"
+            :receive-data="receiveData"
         />
     </div>
 </template>
@@ -150,6 +150,19 @@ export default {
             // }
             if (this.immediateData && this.immediateData.length > 0) {
                 const allTotal = this.immediateData.reduce((item, nextItem) => Number(item) + Number(nextItem.rebate), 0);
+                return allTotal ? allTotal.toFixed(2) : '--';
+            }
+        },
+        /**
+         * 總有效投注
+         * @returns {number} 總有效投注
+         */
+        realTimeValidBetTotal() {
+            // if (!this.rebateInitData.is_vip) {
+            //     return '--';
+            // }
+            if (this.immediateData && this.immediateData.length > 0) {
+                const allTotal = this.immediateData.reduce((item, nextItem) => Number(item) + Number(nextItem.total), 0);
                 return allTotal ? allTotal.toFixed(2) : '--';
             }
         },
@@ -464,7 +477,7 @@ export default {
                             end_at: `${this.EST(this.rebateInitData.event_end_at)}-04:00`
                         };
 
-                        this.actionSetPop({ type: 'rebate', data: receiveData });
+                        // this.actionSetPop({ type: 'rebate', data: receiveData });
                         this.bankRebateInit();
                     },
                     fail: () => {

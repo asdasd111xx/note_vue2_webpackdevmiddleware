@@ -118,7 +118,7 @@
     .input-wrap {
         display: inline-flex;
         min-height: 20px;
-        width: 100%;
+        width: 80%;
         position: relative;
 
         .btn-wrap {
@@ -161,6 +161,10 @@
 
     >.title {
         color: $main_text_color3;
+    }
+
+    >.input-wrap input {
+        padding-right: 18px;
     }
 }
 
@@ -296,6 +300,7 @@ input {
     color: $main_text_color2;
     font-size: 14px;
     height: 100px;
+    line-height: 21px;
 
     >span {
         color: #6aaaf5;

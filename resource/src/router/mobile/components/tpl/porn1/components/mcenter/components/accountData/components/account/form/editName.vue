@@ -79,6 +79,11 @@ export default {
       };
     }
   },
+  created() {
+    if (this.memInfo.user.name) {
+      this.$router.push('/mobile/mcenter/accountData');
+    }
+  },
   methods: {
     ...mapActions([
       'actionSetUserdata',
@@ -87,7 +92,7 @@ export default {
     ]),
     onInput(e) {
       this.tipMsg = '';
-      this.actionVerificationFormData({ target: 'name', value: value }).then((val => {
+      this.actionVerificationFormData({ target: 'name', value: e.target.value }).then((val => {
         this.value = val
       }));
     },
@@ -113,7 +118,6 @@ export default {
         success: () => {
           localStorage.setItem('set-account-success', true);
           this.$router.push('/mobile/mcenter/accountData');
-          this.$emit('success');
         },
         fail: (res) => {
           if (res && res.data && res.data.msg) {

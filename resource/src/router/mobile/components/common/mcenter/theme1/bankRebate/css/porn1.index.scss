@@ -160,14 +160,10 @@
         }
 
         .rebate-nodata {
-            height: 180px;
             text-align: center;
-            display: flex;
-            align-items: center;
-            justify-content: center;
+            padding: 50px 0;
 
             img {
-                display: inline-block;
                 width: 60px;
                 height: 60px;
                 margin-bottom: 14px;
@@ -240,18 +236,17 @@
 .real-vip-wrap {
     margin-top: 5px;
     padding: 0 10px;
-    height: 50px;
-    line-height: 50px;
+    line-height: 25px;
     color: #000;
     background-color: #f6f4f4;
+    display: flex;
 }
 
-.real-vip-title {
-    float: left;
+.real-vip-block {
+    flex: 1;
 }
 
 .receive-vip-btn {
-    float: right;
     width: 110px;
     height: 33px;
     line-height: 33px;

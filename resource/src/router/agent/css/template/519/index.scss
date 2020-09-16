@@ -1,0 +1,114 @@
+@charset 'UTF-8';
+
+@import "~@/css/variable.scss";
+
+.agcenter-container {
+    background: url('/static/image/agent/519/bg.jpg') 50% 0 #000 no-repeat;
+    padding-bottom: 20px;
+    min-width: 1280px;
+    word-break: break-all;
+
+    &.zh-cn {
+        font-family: STHeiti,"Microsoft YaHei", "微软雅黑", "SimSun", "宋体",arial;
+    }
+
+    &.zh-tw {
+        font-family: "Microsoft JhengHei","微軟正黑體",arial,helvetica,sans-serif;
+    }
+
+    .agcenter-info {
+        margin: 0 auto;
+        width: 1280px;
+        height: 63px;
+        line-height: 63px;
+        text-align: right;
+
+        .agcenter-logout {
+            display: inline-block;
+            margin-right: 10px;
+            color: #FFF;
+            font-weight: bold;
+            text-decoration: none;
+            cursor: pointer;
+        }
+
+        /deep/ {
+            .lang-wrap {
+                display: inline-block;
+                vertical-align: middle;
+
+                .lang-item {
+                    float: left;
+                    background-position: 0 0;
+                    background-repeat: no-repeat;
+                    background-size: 25px 25px;
+                    margin-left: 10px;
+                    width: 25px;
+                    height: 25px;
+
+                    &.zh-cn {
+                        background-image: url('/static/image/lang/flag/cycle/zh-cn.png');
+                    }
+
+                    &.zh-tw {
+                        background-image: url('/static/image/lang/flag/cycle/zh-tw.png');
+                    }
+
+                    &.en {
+                        background-image: url('/static/image/lang/flag/cycle/en.png');
+                    }
+
+                    &.ja {
+                        background-image: url('/static/image/lang/flag/cycle/ja.png');
+                    }
+                }
+            }
+        }
+    }
+
+    .agcenter-wrap {
+        background: url('/static/image/agent/519/member_container_bg.png') 50% 0 repeat-y;
+        margin: 0 auto;
+        width: 1280px;
+        border: 1px solid #FFF;
+        border-radius: 32px;
+        overflow: hidden;
+    }
+
+    .agcenter-content-wrap {
+        float: right;
+        border-radius: inherit;
+        width: 1026px;
+
+        .agcenter-info {
+            position: static;
+            top: auto;
+            left: auto;
+            .lang {
+                margin-top: 10px;
+            }
+        }
+
+        .agcenter-content {
+            padding-top: 0;
+        }
+    }
+}
+
+.agcenter-content-main {
+    padding: 18px 5.3% 56px;
+    min-height: 670px;
+
+    &.page-accountBankCard,
+    &.page-financeWithdraw {
+        padding: 18px 2%;
+    }
+    &.page-accountData {
+        min-height: 0;
+        padding: 0;
+    }
+}
+
+.mcenter-feedback {
+    border: 1px solid #E5E5E5;
+}

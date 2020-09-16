@@ -218,8 +218,11 @@
             </div>
 
             <!-- 支付通道 -->
+            <!-- 加密貨幣會隱藏 -->
             <div
-              v-if="!isDepositAi && passRoad.length > 0"
+              v-if="
+                !isDepositAi && passRoad.length > 0 && !isSelectBindWallet(402)
+              "
               :class="[$style['feature-wrap'], 'clearfix']"
             >
               <span :class="$style['bank-card-title']">支付通道</span>
@@ -243,26 +246,87 @@
               </div>
             </div>
 
-            <!-- 尚未綁定 CGPay -->
+            <!-- Yabo -->
+            <!-- 尚未綁定 CGPay(16) || 購寶(22) || USDT(402) -->
             <div
               v-if="
-                curPayInfo.payment_method_id === 16 && !CGPayInfo.is_bind_wallet
+                themeTPL === 'porn1' &&
+                  isSelectBindWallet() &&
+                  !this.curPassRoad.is_bind_wallet
               "
               :class="[$style['feature-wrap'], 'clearfix']"
             >
-              <span :class="$style['bank-card-title']">验证方式</span>
-              <div :class="$style['no-bind-CGPay']">
+              <!-- Yabo: 尚未綁定直接跳轉到添加卡片頁面 -->
+              <span :class="[$style['bank-card-title'], $style['no-margin']]">
+                充值前请先绑定{{
+                  curPayInfo.short_name
+                    ? curPayInfo.short_name
+                    : curPayInfo.payment_type_name
+                }}帐号
+
+                <div :class="$style['no-bind-wallet']">
+                  <span @click="handleBindWallet">立即绑定</span>
+                </div>
+              </span>
+            </div>
+
+            <!-- 億元 -->
+            <!-- 尚未綁定 CGPay(16) -->
+            <div
+              v-if="
+                themeTPL === 'ey1' &&
+                  isSelectBindWallet() &&
+                  !this.curPassRoad.is_bind_wallet
+              "
+              :class="[$style['feature-wrap'], 'clearfix']"
+            >
+              <!-- 億元: 尚未綁定會彈窗 -->
+              <span :class="$style['bank-card-title']">
+                验证方式
+              </span>
+
+              <div :class="$style['no-bind-wallet']">
                 尚未绑定CGPay钱包
                 <span @click="isShowCGPayBind = true">立即绑定</span>
               </div>
             </div>
 
-            <!-- 存款金額 -->
-            <!-- 出現條件：1.選擇CGPay且已綁定 2.選非CGPay的支付方式 -->
+            <!-- Yabo：顯示 CGPay 餘額 -->
+            <!-- IF 選擇 CGPay 且 已綁定 -->
             <div
               v-if="
+                themeTPL === 'porn1' &&
+                  isSelectBindWallet(16) &&
+                  curPassRoad.is_bind_wallet
+              "
+              :class="[$style['feature-wrap'], 'clearfix']"
+            >
+              <span :class="$style['bank-card-title']">
+                CG币余额
+
+                <img
+                  :class="$style['CGPay-update-img']"
+                  :src="
+                    $getCdnPath(
+                      `/static/image/${siteConfig.MOBILE_WEB_TPL}/common/btn_update.png`
+                    )
+                  "
+                  alt="update"
+                  @click="actionSetCGPayInfo"
+                />
+              </span>
+
+              <div :class="$style['CGPay-money']">
+                CGP <span>{{ CGPayInfo.balance }}</span>
+              </div>
+            </div>
+
+            <!-- 存款金額 -->
+            <!-- 出現條件：1.選擇CGPay且已綁定 2.選非CGPay的支付方式 -->
+            <!-- <div
+              v-if="
                 (curPayInfo.payment_method_id === 16 &&
-                  CGPayInfo.is_bind_wallet) ||
+                  curPassRoad.is_bind_wallet) ||
                   curPayInfo.payment_method_id !== 16
               "
               :class="[
@@ -270,30 +334,48 @@
                 $style['select-money'],
                 'clearfix'
               ]"
+            > -->
+
+            <!-- 存款金額 -->
+            <!-- 出現條件：選擇需要绑定的錢包且已綁定 || 選非綁定錢包的支付方式 -->
+            <div
+              v-if="
+                (isSelectBindWallet() && curPassRoad.is_bind_wallet) ||
+                  !isSelectBindWallet()
+              "
+              :class="[
+                $style['feature-wrap'],
+                $style['select-money'],
+                'clearfix'
+              ]"
             >
-              <!-- If 選擇 CGPay且已綁定 : 顯示 CGPay 餘額 -->
-              <div
+              <!-- 億元：顯示 CGPay 餘額 -->
+              <!-- If 選擇 CGPay 且 已綁定 -->
+              <template
                 v-if="
-                  curPayInfo.payment_method_id === 16 &&
-                    CGPayInfo.is_bind_wallet
+                  themeTPL === 'ey1' &&
+                    isSelectBindWallet(16) &&
+                    curPassRoad.is_bind_wallet
                 "
-                :class="$style['CGPay-money']"
               >
-                <span>CGPay余额：{{ CGPayInfo.balance }}</span>
-                <div
-                  :class="$style['money-update']"
-                  @click="actionSetCGPayInfo"
-                >
-                  <img
-                    :src="
-                      $getCdnPath(
-                        `/static/image/${siteConfig.MOBILE_WEB_TPL}/common/btn_update.png`
-                      )
-                    "
-                    alt="update"
-                  />
+                <div :class="$style['CGPay-money']">
+                  <div>CGPay余额：{{ CGPayInfo.balance }}</div>
+
+                  <div
+                    :class="$style['money-update']"
+                    @click="actionSetCGPayInfo"
+                  >
+                    <img
+                      :src="
+                        $getCdnPath(
+                          `/static/image/${siteConfig.MOBILE_WEB_TPL}/common/btn_update.png`
+                        )
+                      "
+                      alt="update"
+                    />
+                  </div>
                 </div>
-              </div>
+              </template>
 
               <div :class="$style['bank-card-title']">充值金额</div>
 
@@ -307,6 +389,7 @@
                 提交订单时，系统自动调配最佳充值金额
               </div>
 
+              <!-- 選擇金額區塊 -->
               <div
                 v-if="isDepositAi || curPassRoad.is_recommend_amount"
                 :class="[$style['speed-money-wrap'], 'clearfix']"
@@ -318,7 +401,18 @@
                     $style['pay-money-item'],
                     { [$style['is-current']]: moneyValue === item }
                   ]"
-                  @click="changeMoney(item)"
+                  @click="
+                    () => {
+                      changeMoney(item);
+                      if (
+                        isSelectBindWallet(402) &&
+                        isClickCoversionBtn &&
+                        moneyValue > 0
+                      ) {
+                        convertCryptoMoney();
+                      }
+                    }
+                  "
                 >
                   ¥ {{ item }}
                   <img
@@ -328,18 +422,29 @@
                   />
                 </div>
 
+                <!-- 自訂金額 -->
                 <div
                   v-if="curPassRoad && curPassRoad.is_custom_amount"
                   :class="[$style['speed-money-wrap'], 'clearfix']"
                 >
-                  <!-- 自訂金額 -->
                   <div
                     :class="[
                       $style['pay-money-item'],
-                      $style['custonm-item'],
+                      $style['custom-item'],
                       { [$style['is-current']]: isSelectedCustomMoney }
                     ]"
-                    @click="changeMoney('', true)"
+                    @click="
+                      () => {
+                        changeMoney('', true);
+                        if (
+                          isSelectBindWallet(402) &&
+                          isClickCoversionBtn &&
+                          moneyValue > 0
+                        ) {
+                          convertCryptoMoney();
+                        }
+                      }
+                    "
                   >
                     <span>
                       其他金额
@@ -347,11 +452,10 @@
                     <br />
                     <span>
                       {{
-                        `(¥${curPassRoad.per_trade_min}~¥${
-                          curPassRoad.per_trade_max === 0 || "0"
-                            ? "无限制"
-                            : curPassRoad.per_trade_max
-                        })`
+                        `(${getSingleLimit(
+                          curPassRoad.per_trade_min,
+                          curPassRoad.per_trade_max
+                        )})`
                       }}
                     </span>
                     <img
@@ -376,13 +480,23 @@
                                     --
                                 </div>
                             </div> -->
+
+              <!-- 金額輸入欄 -->
               <div
                 v-if="
                   !isDepositAi &&
                     (Object.keys(curPassRoad).length === 0 ||
                       curPassRoad.is_custom_amount)
                 "
-                :class="$style['feature-deposit-wrap']"
+                :class="[
+                  $style['feature-deposit-wrap'],
+                  {
+                    [$style['hidden']]:
+                      curPassRoad.is_custom_amount &&
+                      moneyValue &&
+                      isDisableDepositInput
+                  }
+                ]"
               >
                 <div class="money-input-wrap">
                   <input
@@ -393,30 +507,84 @@
                         [$style.disable]: isDisableDepositInput
                       }
                     ]"
-                    :placeholder="singleLimit"
+                    :placeholder="
+                      `单笔充值金额：${getSingleLimit(
+                        this.depositInterval.minMoney,
+                        this.depositInterval.maxMoney
+                      )}
+                      `
+                    "
                     type="number"
                     pattern="[0-9]*"
-                    @blur="verificationMoney(moneyValue)"
+                    @blur="
+                      () => {
+                        verificationMoney(moneyValue);
+                        if (
+                          isSelectBindWallet(402) &&
+                          isClickCoversionBtn &&
+                          moneyValue
+                        ) {
+                          convertCryptoMoney();
+                        }
+                      }
+                    "
                     @input="updateInput($event, $event.target.value)"
                   />
                 </div>
                 <span :class="$style['deposit-input-icon']">¥</span>
               </div>
+
+              <!-- 金額錯誤訊息 -->
               <div
                 v-if="!isDepositAi && isErrorMoney"
                 :class="$style['money-input-tip']"
               >
-                {{ singleLimit }}
+                {{
+                  `单笔充值金额：${getSingleLimit(
+                    this.depositInterval.minMoney,
+                    this.depositInterval.maxMoney
+                  )}`
+                }}
               </div>
-              <!-- 實際存入 -->
+
+              <!-- USDT 匯率試算 -->
+              <div
+                v-if="isSelectBindWallet(402)"
+                :class="$style['crypto-block']"
+              >
+                <span>转入数量</span>
+                <div :class="$style['content']">
+                  <span :class="$style['money']">
+                    {{
+                      `${cryptoMoney} ${
+                        curPayInfo.short_name
+                          ? curPayInfo.short_name
+                          : curPayInfo.payment_type_name
+                      }
+                      `
+                    }}
+                  </span>
+                  <div
+                    :class="[
+                      $style['conversion-btn'],
+                      {
+                        [$style['disable']]: isClickCoversionBtn
+                      }
+                    ]"
+                    @click="convertCryptoMoney"
+                  >
+                    {{
+                      countdownSec > 0 ? `${formatCountdownSec()}` : `汇率试算`
+                    }}
+                  </div>
+                </div>
+              </div>
             </div>
 
             <!-- 驗證方式 -->
             <!-- If 選擇 CGPay且已綁定 : 顯示 CGPay 餘額 -->
             <div
-              v-if="
-                curPayInfo.payment_method_id === 16 && CGPayInfo.is_bind_wallet
-              "
+              v-if="isSelectBindWallet(16) && curPassRoad.is_bind_wallet"
               :class="[$style['feature-wrap'], 'clearfix']"
             >
               <span :class="$style['bank-card-title']">验证方式</span>
@@ -456,6 +624,7 @@
                   />
                 </div>
 
+                <!-- CGP 安全防護碼 -->
                 <div
                   v-if="walletData['CGPay'].method === 0"
                   :class="$style['input-wrap']"
@@ -669,12 +838,11 @@
           </template>
 
           <!-- 實際到帳 -->
-          <!-- 出現條件：1.選擇CGPay且已綁定 2.選非CGPay的支付方式 -->
+          <!-- 出現條件：選擇需要绑定的錢包且已綁定 || 選非綁定錢包的支付方式 -->
           <div
             v-if="
-              (curPayInfo.payment_method_id === 16 &&
-                CGPayInfo.is_bind_wallet) ||
-                curPayInfo.payment_method_id !== 16
+              (isSelectBindWallet() && curPassRoad.is_bind_wallet) ||
+                !isSelectBindWallet()
             "
             :class="$style['money-info-wrap']"
           >
@@ -688,8 +856,9 @@
             <span
               v-else-if="curPayInfo.payment_method_name !== '代客充值'"
               :class="$style['feature-tip-title']"
-              >实际到账： {{ realSaveMoney }}</span
             >
+              实际到账： {{ realSaveMoney }}
+            </span>
           </div>
 
           <div v-if="showRealStatus" :class="$style['pop-message']">
@@ -721,12 +890,16 @@
             </div>
           </div>
 
+          <!-- Todo: disable 狀態統整 -->
           <div
             :class="[
               $style['pay-button'],
               {
                 [$style.disabled]:
-                  !checkSuccess || !isBlockChecked || nameCheckFail
+                  !checkSuccess ||
+                  !isBlockChecked ||
+                  nameCheckFail ||
+                  (isSelectBindWallet(402) && !isClickCoversionBtn)
               }
             ]"
             :title="$text('S_ENTER_PAY', '立即充值')"
@@ -862,6 +1035,11 @@
     <template v-if="isShowCGPayBind">
       <bind-wallet-popup :walletType="'CGP'" @close="isShowCGPayBind = false" />
     </template>
+
+    <!-- 支付成功 || 刷新匯率 popup -->
+    <template v-if="confirmPopupObj.isShow">
+      <confirm-one-btn :data="confirmPopupObj" @close="confirmPopupObj.cb" />
+    </template>
   </div>
 </template>
 
@@ -875,6 +1053,7 @@ import DatePicker from "vue2-datepicker";
 import mixin from "@/mixins/mcenter/deposit/bankCardDeposit";
 import message from "@/router/mobile/components/common/message";
 import popupQrcode from "@/router/mobile/components/common/virtualBank/popupQrcode";
+import confirmOneBtn from "@/router/mobile/components/common/confirmOneBtn";
 
 export default {
   components: {
@@ -892,7 +1071,8 @@ export default {
     message,
     blockListTips,
     bindWalletPopup,
-    popupQrcode
+    popupQrcode,
+    confirmOneBtn
   },
   mixins: [mixin],
   props: {
@@ -924,6 +1104,12 @@ export default {
         isShow: false,
         bank_id: null,
         bind_type: "deposit"
+      },
+      confirmPopupObj: {
+        isShow: false,
+        msg: "",
+        btnText: "",
+        cb: () => {}
       }
     };
   },
@@ -944,7 +1130,7 @@ export default {
         this.changeMoney(this.getPassRoadOrAi.amounts[0]);
       }
     },
-    curPayInfo() {
+    curPayInfo(value) {
       if (this.curPayInfo.payment_method_name === "代客充值") {
         this.checkSuccess = true;
       }
@@ -988,7 +1174,6 @@ export default {
       siteConfig: "getSiteConfig",
       memInfo: "getMemInfo",
       rechargeConfig: "getRechargeConfig",
-      isBindGoBao: "getHasBindGoBao",
       CGPayInfo: "getCGPayInfo",
       noticeData: "getNoticeData"
     }),
@@ -1168,20 +1353,22 @@ export default {
           title: "充值时间(北京)",
           value: this.speedField.depositTime,
           placeholderText: "请选择充值时间",
-          // showCondition: this.curPayInfo.field.find((e) => e.name === 'deposit_at' && e.required),
-          showCondition: this.curPayInfo.field.find(e => {
-            const isShow = e.name === "deposit_at";
-            // 目前需求：只有極速xx銀行，要在第一頁連同顯示此欄位
-            if (
-              isShow &&
-              this.curPayInfo.payment_method_id === 6 &&
-              this.curPayInfo.payment_type_id === 5
-            ) {
-              return true;
-            } else {
-              return false;
-            }
-          }),
+          showCondition: this.curPayInfo.field.find(
+            e => e.name === "deposit_at" && e.required
+          ),
+          // showCondition: this.curPayInfo.field.find(e => {
+          //   const isShow = e.name === "deposit_at";
+          //   // 目前需求：只有極速xx銀行，要在第一頁連同顯示此欄位
+          //   if (
+          //     isShow &&
+          //     this.curPayInfo.payment_method_id === 6 &&
+          //     this.curPayInfo.payment_type_id === 5
+          //   ) {
+          //     return true;
+          //   } else {
+          //     return false;
+          //   }
+          // }),
           isError:
             this.showError &&
             this.curPayInfo.field.find(
@@ -1197,23 +1384,25 @@ export default {
             "S_PLZ_ENTER_SERIAL_NUMBER",
             "请输入流水号"
           ),
-          // showCondition: this.curPayInfo.field.find((e) => e.name === 'sn' && e.required),
-          showCondition:
-            this.curPayInfo &&
-            this.curPayInfo.field &&
-            this.curPayInfo.field.find(e => {
-              const isShow = e.name === "sn";
-              // 目前需求：只有極速xx銀行，要在第一頁連同顯示此欄位
-              if (
-                isShow &&
-                this.curPayInfo.payment_method_id === 6 &&
-                this.curPayInfo.payment_type_id === 5
-              ) {
-                return true;
-              } else {
-                return false;
-              }
-            }),
+          showCondition: this.curPayInfo.field.find(
+            e => e.name === "sn" && e.required
+          ),
+          // showCondition:
+          //   this.curPayInfo &&
+          //   this.curPayInfo.field &&
+          //   this.curPayInfo.field.find(e => {
+          //     const isShow = e.name === "sn";
+          //     // 目前需求：只有極速xx銀行，要在第一頁連同顯示此欄位
+          //     if (
+          //       isShow &&
+          //       this.curPayInfo.payment_method_id === 6 &&
+          //       this.curPayInfo.payment_type_id === 5
+          //     ) {
+          //       return true;
+          //     } else {
+          //       return false;
+          //     }
+          //   }),
           isError:
             this.showError &&
             this.curPayInfo.field.find(
@@ -1278,43 +1467,54 @@ export default {
     this.actionSetRechargeConfig();
   },
   mounted() {
-    // 檢查錢包綁定
-    this.actionBindGoBao();
+    // Get CGPay 錢包狀態
     this.actionSetCGPayInfo();
+  },
+  destroyed() {
+    this.resetTimerStatus();
   },
   methods: {
     ...mapActions([
       "actionSetUserBalance",
       "actionSetRechargeConfig",
-      "actionBindGoBao",
       "actionSetCGPayInfo"
     ]),
+
     handleCreditTrans() {
       this.$router.push("/mobile/mcenter/creditTrans?tab=0");
     },
-    // verificationName() {
-    //   /* ---------------------------
-    //      全型數字：[\uFF10-\uFF19]
-    //      全型英文小寫：[\uFF41-\uFF5A]
-    //      全型英文大寫：[\uFF21-\uFF3A]
-    //     --------------------------- */
-    //   const reg = /^[^A-Za-z0-9\uFF10-\uFF19\uFF41-\uFF5A\uFF21-\uFF3A，:;！@#$%^&*?<>()+=`|[\]{}\\"/~\-_']*$/;
-    //   if (!reg.test(this.speedField.depositName)) {
-    //     // this.msg = '请输入正确名称';
-    //     this.nameCheckFail = true;
-    //   } else {
-    //     // this.msg = '';
-    //     this.nameCheckFail = false;
-    //   }
-    // },
+    handleBindWallet() {
+      switch (this.curPayInfo.payment_method_id) {
+        // CGPay
+        case 16:
+          this.$router.push(
+            "/mobile/mcenter/bankcard?redirect=deposit&type=wallet&wallet=CGPay"
+          );
+          break;
+
+        // 購寶
+        case 22:
+          this.$router.push(
+            "/mobile/mcenter/bankcard?redirect=deposit&type=wallet&wallet=goBao"
+          );
+
+          break;
+
+        // usdt
+        case 402:
+          this.$router.push(
+            "/mobile/mcenter/bankcard?redirect=deposit&type=wallet&wallet=usdt"
+          );
+
+          break;
+      }
+    },
     handleCopy(val) {
       this.msg = "已复制到剪贴板";
       this.copyInfo(val);
     },
     modeChange(listItem, index) {
       this.checkEntryBlockStatus();
-      this.actionBindGoBao();
-      this.actionSetCGPayInfo();
       this.changeMode(listItem);
 
       // 進來充值頁面，沒有 bankSelectValue 的預設值才觸發，再切換其它類別不再觸發
@@ -1393,8 +1593,12 @@ export default {
 
       this.isShowEntryBlockStatus = false;
 
-      // 點選到購寶錢包 且 如購寶未綁定，跳出 Qrcode 綁定
-      if (!this.isBindGoBao && this.curPayInfo.payment_method_id === 22) {
+      // 億元: 點選到購寶錢包 且 如購寶未綁定，跳出 Qrcode 綁定
+      if (
+        this.themeTPL === "ey1" &&
+        !this.curPassRoad.is_bind_wallet &&
+        this.curPayInfo.payment_method_id === 22
+      ) {
         this.qrcodeObj.bank_id = 37;
         this.qrcodeObj.isShow = true;
         return;
@@ -1405,8 +1609,7 @@ export default {
         this.checkEntryBlockStatus();
         this.entryBlockStatusData = null;
 
-        // 刷新錢包綁定狀態
-        this.actionBindGoBao();
+        // 刷新CGPay錢包狀態
         this.actionSetCGPayInfo();
 
         if (response) {
@@ -1417,6 +1620,7 @@ export default {
           if (response.status === "local") {
             this.checkSuccess = false;
             this.submitStatus = "stepTwo";
+
             this.$emit("update:headerSetting", {
               ...this.initHeaderSetting,
               leftBtns: {
@@ -1428,6 +1632,9 @@ export default {
               },
               submitStatus: this.submitStatus
             });
+
+            // 點選加密貨幣的匯率試算，在需將時間設為0
+            this.countdownSec = 0;
           }
         }
       });
@@ -1551,6 +1758,29 @@ export default {
           .replace(" ", "")
           .trim()
           .replace(/[^0-9]/g, "");
+      }
+    },
+    isSelectBindWallet(...args) {
+      // 選擇特定錢包種類
+      if (args.length > 0) {
+        return args.includes(this.curPayInfo.payment_method_id);
+      }
+
+      switch (this.themeTPL) {
+        case "porn1":
+          // 如沒傳值，則預設全選
+          // 檢查購寶 or CGPay or USDT
+          return (
+            this.curPayInfo.payment_method_id === 16 ||
+            this.curPayInfo.payment_method_id === 22 ||
+            this.curPayInfo.payment_method_id === 402
+          );
+          break;
+
+        case "ey1":
+          // 檢查 CGPay
+          return this.curPayInfo.payment_method_id === 16;
+          break;
       }
     }
   }

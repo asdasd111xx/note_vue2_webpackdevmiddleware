@@ -18,7 +18,7 @@
             :class="[$style['checkbox-circle'], { [$style.active]: isTick }]"
             @click="isTick = !isTick"
           />
-          <span :class="$style['checkbox-text']">不再提示</span>
+          <span :class="$style['checkbox-text']"  @click="isTick = !isTick">不再提示</span>
         </div>
       </div>
 
@@ -141,12 +141,13 @@ export default {
   width: 16px;
   height: 16px;
   margin-right: 4px;
-  opacity: 0.6;
+  opacity: 0.5;
   background: url("/static/image/_new/common/icon_noremember.png") 0 0 / contain
     no-repeat;
 
   &.active {
-    background-image: url("/static/image/_new/common/icon_remember.png");
+    background-image: url("/static/image/_new/common/icon_notips_active.png");
+    opacity: 0.5;
   }
 }
 

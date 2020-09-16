@@ -24,6 +24,8 @@ export default {
     gameintro: () => import(/* webpackChunkName: 'gameintro' */ './template/gameintro'),
     support: () => import(/* webpackChunkName: 'support' */ './template/support'),
     withdraw: () => import(/* webpackChunkName: 'withdraw' */ './template/withdraw'),
+    tips: () => import(/* webpackChunkName: 'tips' */ './template/tips'),
+    privacy: () => import(/* webpackChunkName: 'privacy' */ './template/privacy'),
   },
   data() {
     return {
@@ -35,6 +37,8 @@ export default {
         { key: 'gameintro', title: '游戏介绍' },
         { key: 'support', title: '技术支持' },
         { key: 'withdraw', title: '提现教程' },
+        { key: 'tips', title: '用户须知' },
+        { key: 'privacy', title: '隐私政策' },
       ]
     };
   },
