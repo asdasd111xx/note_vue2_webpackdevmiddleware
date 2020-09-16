@@ -54,6 +54,7 @@ import { getCookie, setCookie } from '@/lib/cookie';
 import yaboRequest from '@/api/yaboRequest';
 import axios from 'axios';
 import Vue from "vue";
+import EST from '@/lib/EST';
 
 export default {
   data() {
@@ -78,36 +79,8 @@ export default {
     this.getUserViplevel();
     this.getAvatarSrc();
     if (this.loginStatus) {
-      
-      var nowUTC = moment().format('YYYY-MM-DD');      
-      var createUTC = moment(this.memInfo.user.created_at).format('YYYY-MM-DD');   
-      
-      
-
-      var date1 = nowUTC;
-      var date2 = createUTC;   
-      date1 = date1.split("-");
-      var year = date1[0];
-      var month = date1[1];
-      var day =  date1[2]; 
-      date1=new Date(year, month - 1, day) ;
-      
-      date2 = date2.split("-");
-      year = date2[0];  
-      month = date2[1];  
-      day =  date2[2]; 
-      date2=new Date(year, month - 1 , day) ;
-      
-      var ONE_DAY = 1000 * 60 * 60 * 24;
-      var date1_ms = date1.getTime();
-      var date2_ms = date2.getTime();
-      var difference_ms = Math.abs(date1_ms - date2_ms);
-      var diff_days = Math.round(difference_ms/ONE_DAY);
-      
-      // console.log('now:  '+nowUTC);
-      // console.log('created_at:  '+createUTC);
-
-      this.day = (diff_days + 1);//{{ `加入亿元第${day + 1}天` }}
+      const today = Vue.moment(new Date());
+      this.day = Number(today.diff(Vue.moment(this.memInfo.user.created_at), 'days')) + 1;
     }
   },
   methods: {
