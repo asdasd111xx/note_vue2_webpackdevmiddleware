@@ -28,6 +28,7 @@
         </div>
         <binding-device v-if="agentInfo.config.app_is_ready && agentInfo.config.slide_login" />
         <receipt-address />
+        <elePop />
     </div>
 </template>
 
@@ -41,7 +42,8 @@ export default {
     components: {
         topInfo,
         bindingDevice,
-        receiptAddress
+        receiptAddress,
+        elePop: () => import(/* webpackChunkName: 'elePop' */'@/router/web/components/tpl/common/pop')
     },
     mixins: [mixin]
 };
