@@ -159,9 +159,11 @@ export default {
       if (whiteList.includes(event.origin) && event.data) {
         let data = event.data;
         switch (data.event) {
-          default:
           case 'close':
             this.$router.push(this.originUrl);
+            return;
+          default:
+            console.log(data);
             return;
         }
       }
