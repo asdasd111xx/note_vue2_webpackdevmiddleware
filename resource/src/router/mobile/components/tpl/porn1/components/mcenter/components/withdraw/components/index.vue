@@ -162,9 +162,7 @@
       >
         <img :src="$getCdnPath(`/static/image/${themeTPL}/mcenter/add.png`)" />
         &nbsp;
-        <span
-          @click="$router.push('/mobile/mcenter/bankcard?redirect=withdraw&type=bankCard')"
-        >
+        <span @click="checkAccountData('bankCard')">
           {{ $text("S_ADD_BANKCARD", "添加银行卡") }}
         </span>
       </div>
