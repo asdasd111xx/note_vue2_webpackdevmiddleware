@@ -258,11 +258,7 @@
             >
               <!-- Yabo: 尚未綁定直接跳轉到添加卡片頁面 -->
               <span :class="[$style['bank-card-title'], $style['no-margin']]">
-                充值前请先绑定{{
-                  curPayInfo.short_name
-                    ? curPayInfo.short_name
-                    : curPayInfo.payment_type_name
-                }}帐号
+                充值前请先绑定{{ curPayInfo.curPayInfo.payment_type_name }}帐号
 
                 <div :class="$style['no-bind-wallet']">
                   <span @click="handleBindWallet">立即绑定</span>
@@ -556,11 +552,7 @@
                 <div :class="$style['content']">
                   <span :class="$style['money']">
                     {{
-                      `${cryptoMoney} ${
-                        curPayInfo.short_name
-                          ? curPayInfo.short_name
-                          : curPayInfo.payment_type_name
-                      }
+                      `${cryptoMoney} ${curPayInfo.payment_method_name}
                       `
                     }}
                   </span>

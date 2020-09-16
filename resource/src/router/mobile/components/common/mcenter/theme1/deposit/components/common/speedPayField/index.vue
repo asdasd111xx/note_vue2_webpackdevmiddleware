@@ -72,7 +72,7 @@ export default {
     props: {
         showByRequiredFields: {
             type: Boolean,
-            default: false
+            default: true
         },
         requiredFields: {
             type: Array,

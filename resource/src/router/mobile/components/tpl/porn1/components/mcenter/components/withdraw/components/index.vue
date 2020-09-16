@@ -616,8 +616,16 @@ export default {
           return item.allow;
         });
 
-        this.selectedCard.id =
-          Number(localStorage.getItem("tmp_w_selectedCard")) || defaultCard.id;
+        this.selectedCard = {
+          id:
+            Number(localStorage.getItem("tmp_w_selectedCard")) ||
+            defaultCard.id,
+          name:
+            defaultCard.withdrawType === "account_id"
+              ? ""
+              : defaultCard.alias.substring(0, defaultCard.alias.indexOf("-")),
+          withdrawType: defaultCard.withdrawType
+        };
 
         this.withdrawValue = localStorage.getItem("tmp_w_amount");
 
@@ -900,7 +908,8 @@ export default {
         } else {
           // 無流水時
           this.actualMoney = _actualMoney;
-          this.errTips = _actualMoney <= 0 ? "实际提现金额须大于0，请重新输入" : "";
+          this.errTips =
+            _actualMoney <= 0 ? "实际提现金额须大于0，请重新输入" : "";
           return;
         }
 
@@ -916,7 +925,7 @@ export default {
         ) {
           this.errTips = `单笔提现金额最小为${withdrawMin}元，最大为${
             withdrawMax ? `${withdrawMax}元` : "无限制"
-            }`;
+          }`;
           return;
         }
 
@@ -1091,8 +1100,6 @@ export default {
       this.isLoading = true;
       this.actionSetIsLoading(true);
 
-      console.log(this.withdrawAccount);
-
       // 不需要取款密碼,並且可選銀行卡
       let _params = {
         amount: this.withdrawValue,
@@ -1139,7 +1146,8 @@ export default {
               this.msg = "提现成功";
               this.withdrawValue = "";
               this.withdrawPwd = "";
-              this.actualMoney = 0;
+              this.cryptoMoney = "--";
+              this.resetTimerStatus();
 
               // 舊的第二次寫單才需要
               // 迅付寫單
@@ -1249,16 +1257,19 @@ export default {
         if (this.countdownSec && !this.timer) {
           this.timer = setInterval(() => {
             if (this.countdownSec === 0) {
-              clearInterval(this.timer);
-              this.countdownSec = 0;
-              this.isClickCoversionBtn = false;
-              this.timer = null;
+              this.resetTimerStatus();
               return;
             }
             this.countdownSec -= 1;
           }, 1000);
         }
       });
+    },
+    resetTimerStatus() {
+      clearInterval(this.timer);
+      this.timer = null;
+      this.countdownSec = 0;
+      this.isClickCoversionBtn = false;
     },
     formatCountdownSec() {
       let minutes = Math.floor(this.countdownSec / 60);
@@ -1295,9 +1306,7 @@ export default {
     }
   },
   destroyed() {
-    this.countdownSec = 0;
-    clearInterval(this.timer);
-    this.timer = null;
+    this.resetTimerStatus();
   }
 };
 </script>
