@@ -13,7 +13,6 @@
 <script>
 import tcenter from "@/router/mobile/components/common/mcenter/theme1/tcenter";
 import mobileContainer from '../../../../common/mobileContainer';
-
 export default {
   components: {
     mobileContainer,
@@ -30,26 +29,7 @@ export default {
         title: this.$text("S_TEAM_CENTER", "我的推广"),
         prev: true,
         onClick: () => {
-          //   if (
-          //     this.func === "management" &&
-          //     this.$route.params.page === "member" &&
-          //     this.$route.params.date
-          //   ) {
-          //     this.$router.push("/mobile/mcenter/tcenter/management/member");
-          //     return;
-          //   }
-
-          //   if (
-          //     (this.func === "gameRecord" && this.$route.params.page === "bet") ||
-          //     (this.func === "commission" && this.$route.params.page === "detail")
-          //   ) {
-          //     this.$router.back();
-          //     return;
-          //   }
-        if(localStorage.getItem('back')==='home')
-          this.$router.push("/mobile/");
-        else
-          this.$router.push("/mobile/mcenter");
+          this.$router.back();
         }
       };
     },
