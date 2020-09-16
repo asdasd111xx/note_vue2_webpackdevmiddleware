@@ -12,11 +12,6 @@ export default {
         Vue.prototype.$depositLink = () => {
             // 存款頁內嵌
             if (store.state.loginStatus) {
-                if (store.state.memInfo.user.bankrupt) {
-                    alert(i18n.t('S_BANKRUPT_TIP'));
-                    return;
-                }
-
                 // eslint-disable-next-line
                 if (isMobile()) {
                     router.push('/mobile/mcenter/deposit');

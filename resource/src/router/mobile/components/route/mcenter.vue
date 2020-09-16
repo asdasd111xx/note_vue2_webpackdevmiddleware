@@ -25,11 +25,6 @@ export default {
     }
   },
   beforeRouteEnter(to, from, next) {
-    if (from.name === 'home') {
-      localStorage.setItem('back', 'home');
-    } else if (from.name ==='mcenter-home') {
-      localStorage.removeItem('back');
-    }
     next();
   },
   render(createElement) {

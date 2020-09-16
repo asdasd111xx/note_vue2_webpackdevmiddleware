@@ -8,7 +8,8 @@
     @import './note.scss';
 }
 
-.theme-brilliant {
+.theme-brilliant,
+.theme-porn1 {
     @import './style/brilliant/index.scss';
     @import './note.scss';
     position: fixed;
@@ -19,6 +20,7 @@
         left: 1%;
         right: 1%;
         margin: -144px auto 0;
+        z-index: 1;
     }
 }
 

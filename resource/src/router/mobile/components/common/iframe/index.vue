@@ -80,25 +80,26 @@ export default {
         })
         break;
       case 'THIRD':
-        axios({
-          method: 'get',
-          url: '/api/v1/c/link/customize',
-          params: {
-            code: 'fengniao',
-            client_uri: localStorage.getItem('iframe-third-url')
-          }
-        }).then(res => {
-          this.isLoading = false;
-          if (res && res.data && res.data.ret && res.data.ret.uri) {
-            console.log(res.data.ret.uri);
-            this.src = res.data.ret.uri;
-          }
-        }).catch(error => {
-          this.isLoading = false;
-          if (error && error.data && error.date.msg) {
-            this.actionSetGlobalMessage({ msg: error.data.msg });
-          }
-        })
+        this.src = localStorage.getItem('iframe-third-url');
+        // axios({
+        //   method: 'get',
+        //   url: '/api/v1/c/link/customize',
+        //   params: {
+        //     code: 'fengniao',
+        //     client_uri: localStorage.getItem('iframe-third-url')
+        //   }
+        // }).then(res => {
+        //   this.isLoading = false;
+        //   if (res && res.data && res.data.ret && res.data.ret.uri) {
+        //     console.log(res.data.ret.uri);
+        //     this.src = res.data.ret.uri;
+        //   }
+        // }).catch(error => {
+        //   this.isLoading = false;
+        //   if (error && error.data && error.date.msg) {
+        //     this.actionSetGlobalMessage({ msg: error.data.msg });
+        //   }
+        // })
         break;
       default:
         this.$router.back();
@@ -159,9 +160,11 @@ export default {
       if (whiteList.includes(event.origin) && event.data) {
         let data = event.data;
         switch (data.event) {
-          default:
           case 'close':
             this.$router.push(this.originUrl);
+            return;
+          default:
+            console.log(data);
             return;
         }
       }
