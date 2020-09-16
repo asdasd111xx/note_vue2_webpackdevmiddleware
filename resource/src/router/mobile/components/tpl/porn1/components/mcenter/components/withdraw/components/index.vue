@@ -1158,19 +1158,29 @@ export default {
         _params = { ..._params, ...params };
       }
 
-      // const hasAccountId = !this.withdrawAccount.withdrawType
-      //   ? "account_id"
-      //   : this.withdrawAccount.withdrawType;
+      const hasAccountId = !this.withdrawAccount.withdrawType
+        ? "account_id"
+        : this.withdrawAccount.withdrawType;
 
       if (this.memInfo.config.withdraw === "迅付") {
         _params = {
           ..._params,
           [`ext[api_uri]`]: "/api/trade/v2/c/withdraw/entry",
-          [`ext[method][${this.selectedCard.withdrawType}]`]: this.selectedCard
+          [`ext[method][${hasAccountId}]`]: this.selectedCard
             .id,
           password: +this.withdrawPwd
         };
       }
+
+    //   if (this.memInfo.config.withdraw === "迅付") {
+    //     _params = {
+    //       ..._params,
+    //       [`ext[api_uri]`]: "/api/trade/v2/c/withdraw/entry",
+    //       [`ext[method][${this.selectedCard.withdrawType}]`]: this.selectedCard
+    //         .id,
+    //       password: +this.withdrawPwd
+    //     };
+    //   }
 
       return ajax({
         method: "post",
