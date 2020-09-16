@@ -146,7 +146,7 @@
           <div
             :class="[
               $style['check-box'],
-              { [$style['checked']]: item.id === selectedCard }
+              { [$style['checked']]: item.id === selectedCard.id }
             ]"
           />
         </div>
@@ -163,7 +163,7 @@
         <img :src="$getCdnPath(`/static/image/${themeTPL}/mcenter/add.png`)" />
         &nbsp;
         <span
-          @click="$router.push('/mobile/mcenter/bankcard?redirect=withdraw')"
+          @click="$router.push('/mobile/mcenter/bankcard?redirect=withdraw&type=bankCard')"
         >
           {{ $text("S_ADD_BANKCARD", "添加银行卡") }}
         </span>
@@ -372,7 +372,7 @@
         :class="[$style['actual-money']]"
       >
         <span :class="$style['money-currency']">
-          {{
+          <!-- {{
             `${
               selectedCard.name && selectedCard.withdrawType !== "crypto_id"
                 ? selectedCard.name
@@ -382,7 +382,8 @@
                 ? "到帐"
                 : "实际提现金额"
             }`
-          }}
+          }} -->
+         到帐金额
         </span>
         <span :class="$style['money-currency']">¥</span>
         <span :class="$style['money-currency']">
