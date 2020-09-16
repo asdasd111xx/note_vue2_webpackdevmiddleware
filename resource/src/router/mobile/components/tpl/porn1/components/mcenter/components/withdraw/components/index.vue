@@ -124,13 +124,60 @@
     <template v-if="themeTPL === 'porn1'">
       <!-- 銀行卡 -->
       <div
+        v-if="
+          withdrawUserData &&
+            withdrawUserData.account &&
+            withdrawUserData.account.length !== 0
+        "
+        :class="$style['bank-card-wrap']"
+      >
+        <div :class="$style['bank-card-cell']">
+          {{ $text("S_BANKCARD", "银行卡") }}
+        </div>
+
+        <!-- 取前三個銀行卡 不應該超過三張 -->
+        <div
+          v-for="item in withdrawUserData.account.slice(0, 3)"
+          :class="$style['bank-card-cell']"
+          @click="handleSelectCard(item)"
+        >
+          <img v-lazy="getBankImage(item.swift_code)" />
+          <span>{{ item.alias }} </span>
+          <div
+            :class="[
+              $style['check-box'],
+              { [$style['checked']]: item.id === selectedCard }
+            ]"
+          />
+        </div>
+      </div>
+
+      <div
+        v-if="
+          withdrawUserData &&
+            withdrawUserData.account &&
+            withdrawUserData.account.length < 3
+        "
+        :class="[$style['add-bank-card']]"
+      >
+        <img :src="$getCdnPath(`/static/image/${themeTPL}/mcenter/add.png`)" />
+        &nbsp;
+        <span
+          @click="$router.push('/mobile/mcenter/bankcard?redirect=withdraw')"
+        >
+          {{ $text("S_ADD_BANKCARD", "添加银行卡") }}
+        </span>
+      </div>
+
+      <!-- 銀行卡 -->
+      <!-- <div
         v-if="allWithdrawAccount && allWithdrawAccount.length !== 0"
         :class="$style['bank-card-wrap']"
       >
         <div :class="$style['bank-card-cell']">
-          {{ $text("S_WITHDRAW_ACCOUNT02", "提现帐号") }}
+          {{ $text("S_WITHDRAW_ACCOUNT02", "提现帐号") }} -->
           <!-- 會員首次出款 or 需用銀行卡提現一次(強制銀行卡出款) -->
-          <span
+          <!-- <span
             v-if="
               forceStatus === 1 &&
                 userWithdrawCount === 0 &&
@@ -140,21 +187,21 @@
             :class="$style['withdraw-status-tip']"
           >
             银行卡提现一次，开通数字货币提现功能
-          </span>
+          </span> -->
 
           <!-- 非首次出款 + 強制使用 CGPay 出款 -->
-          <span
+          <!-- <span
             v-else-if="forceStatus === 2"
             :class="$style['withdraw-status-tip']"
           >
             仅限使用 CGPay 出款
           </span>
-        </div>
+        </div> -->
 
         <!-- 列出所有帐号 -->
         <!-- Question: 如果強制使用銀行卡出款，是否數字貨幣卡片 allow 狀態會為 false ? -->
         <!-- disable 的狀態需要與 RD5 請示 -->
-        <div
+        <!-- <div
           v-for="item in allWithdrawAccount"
           :class="[
             $style['bank-card-cell'],
@@ -175,13 +222,13 @@
               }
             ]"
           />
-        </div>
-      </div>
+        </div> -->
+      <!-- </div> -->
 
       <!-- 更多提现方式 -->
       <!-- 銀行卡超過3張 + 所有數字貨幣的錢包都有添加 => 則隱藏按鈕 -->
       <!-- 狀態由 withdrawMoreMethod 組件回傳 -->
-      <div
+      <!-- <div
         v-if="moreMethodStatusObj.bankCard && moreMethodStatusObj.wallet"
         :class="[$style['add-bank-card']]"
       >
@@ -196,7 +243,7 @@
         >
           {{ "更多提现方式" }}
         </span>
-      </div>
+      </div> -->
     </template>
 
     <!-- 因按鈕顯示邏輯不同，所以獨立成兩份 -->
@@ -636,33 +683,33 @@ export default {
         // this.actionSetIsLoading(false);
         this.isLoading = false;
       }
-    }
-    // withdrawUserData(value) {
-    //   // 預設選擇第一張卡 或是從電話驗證成功後直接送出
-    //   if (
-    //     !this.selectedCard.id &&
-    //     this.withdrawUserData.account &&
-    //     this.withdrawUserData.account.length > 0
-    //   ) {
-    //     this.selectedCard.id =
-    //       Number(localStorage.getItem("tmp_w_selectedCard")) ||
-    //       this.withdrawUserData.account[0].id;
-    //     this.withdrawValue = localStorage.getItem("tmp_w_amount");
-    //     setTimeout(() => {
-    //       localStorage.removeItem("tmp_w_selectedCard");
-    //       localStorage.removeItem("tmp_w_amount");
-    //       if (
-    //         localStorage.getItem("tmp_w_1") &&
-    //         localStorage.getItem("tmp_w_rule") !== "1"
-    //       ) {
-    //         this.handleSubmit();
-    //       }
-    //       localStorage.removeItem("tmp_w_rule");
-    //     });
+    },
+    withdrawUserData(value) {
+      // 預設選擇第一張卡 或是從電話驗證成功後直接送出
+      if (
+        !this.selectedCard.id &&
+        this.withdrawUserData.account &&
+        this.withdrawUserData.account.length > 0
+      ) {
+        this.selectedCard.id =
+          Number(localStorage.getItem("tmp_w_selectedCard")) ||
+          this.withdrawUserData.account[0].id;
+        this.withdrawValue = localStorage.getItem("tmp_w_amount");
+        setTimeout(() => {
+          localStorage.removeItem("tmp_w_selectedCard");
+          localStorage.removeItem("tmp_w_amount");
+          if (
+            localStorage.getItem("tmp_w_1") &&
+            localStorage.getItem("tmp_w_rule") !== "1"
+          ) {
+            this.handleSubmit();
+          }
+          localStorage.removeItem("tmp_w_rule");
+        });
 
-    //     this.isLoading = false;
-    //   }
-    // }
+        this.isLoading = false;
+      }
+    }
   },
   created() {
     // 刷新 Player Api
