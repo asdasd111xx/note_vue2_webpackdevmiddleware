@@ -258,7 +258,7 @@
             >
               <!-- Yabo: 尚未綁定直接跳轉到添加卡片頁面 -->
               <span :class="[$style['bank-card-title'], $style['no-margin']]">
-                充值前请先绑定{{ curPayInfo.curPayInfo.payment_type_name }}帐号
+                充值前请先绑定{{ curPayInfo.payment_type_name }}帐号
 
                 <div :class="$style['no-bind-wallet']">
                   <span @click="handleBindWallet">立即绑定</span>
@@ -1469,7 +1469,8 @@ export default {
     ...mapActions([
       "actionSetUserBalance",
       "actionSetRechargeConfig",
-      "actionSetCGPayInfo"
+      "actionSetCGPayInfo",
+      "actionVerificationFormData"
     ]),
 
     handleCreditTrans() {
