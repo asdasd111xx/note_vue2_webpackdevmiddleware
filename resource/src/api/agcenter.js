@@ -248,5 +248,14 @@ export default {
             errorAlert: false,
             ...args
         });
+    },
+    // 登入後-是否綁定銀行卡
+    bankCardCheck(args) {
+        return ajax({
+            method: 'get',
+            url: apiUrl.API_BANK_CARD_CHECK,
+            errorAlert: false,
+            ...args
+        });
     }
 };
