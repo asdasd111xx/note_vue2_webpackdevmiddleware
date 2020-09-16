@@ -218,6 +218,7 @@ export default {
         errorAlert: false
       }).then((response) => {
         if (response && response.result === 'ok') {
+          // 手機/信箱是否驗證過
           Object.keys(this.verification).forEach((key) => {
             this.verification[key] = response.ret.user[key];
           });
@@ -227,7 +228,6 @@ export default {
               this.dataList[item].isShow = response.ret.config.address.display;
             }
           });
-
           this.mcenterUserField = response.ret;
           this.setData(response.ret);
         }
