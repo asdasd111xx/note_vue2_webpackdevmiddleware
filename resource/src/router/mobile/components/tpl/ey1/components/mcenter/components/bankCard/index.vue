@@ -134,14 +134,25 @@ export default {
 
       switch (this.currentPage) {
         case "bankCardInfo":
+          return this.showDetail
+            ? this.$text("S_BANKCARD", "银行卡")
+            : this.$text("S_CARD_MANAGEMENT", "卡片管理");
+          break;
+
         case "walletCardInfo":
-          return this.$text("S_CARD_MANAGEMENT", "卡片管理");
+          return this.showDetail
+            ? this.$text("S_VIRTUAL_BANKCARD", "电子钱包")
+            : this.$text("S_CARD_MANAGEMENT", "卡片管理");
+          break;
+          break;
 
         case "addBankCard":
           return this.$text("S_ADD_BANKCARD", "添加银行卡");
+          break;
 
         case "addWalletCard":
           return this.$text("S_ADD_VIRTUAL_BANKCARD", "添加电子钱包");
+          break;
       }
     },
     isOneTab() {
