@@ -1116,7 +1116,7 @@ export const actionSetAgentLink = ({ state, commit }, data) => {
     }
 
     let reqHeaders = {};
-    if (data.reqHeaders) {
+    if (data && data.reqHeaders) {
         reqHeaders['cid'] = data.reqHeaders.cid;
     }
 
