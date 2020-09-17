@@ -11,6 +11,7 @@ import Vue from 'vue';
 import agcenter from '@/api/agcenter';
 import agent from '@/api/agent';
 import ajax from '@/lib/ajax';
+import bbosRequest from '@/api/bbosRequest';
 import common from '@/api/common';
 import { errorAlarm } from '@/lib/error_console';
 import game from '@/api/game';
@@ -25,7 +26,6 @@ import member from '@/api/member';
 import openGame from '@/lib/open_game';
 import router from '../router';
 import yaboRequest from '@/api/yaboRequest';
-import bbosRequest from '@/api/bbosRequest';
 
 let memstatus = true;
 let agentstatus = true;
@@ -1107,52 +1107,59 @@ export const actionSetＭcenterBindMessage = ({ commit }, data) => {
 };
 
 // 設定推廣連結
-export const actionSetAgentLink = ({ state, commit }) => {
-  let configInfo = {};
+export const actionSetAgentLink = ({ state, commit }, data) => {
+    let configInfo = {};
     if (state.webInfo.is_production) {
         configInfo = siteConfigOfficial[`site_${state.webInfo.alias}`] || siteConfigOfficial.preset;
     } else {
         configInfo = siteConfigTest[`site_${state.webInfo.alias}`] || siteConfigTest.preset;
     }
 
+    let reqHeaders = {};
+    if (data && data.reqHeaders) {
+        reqHeaders['cid'] = data.reqHeaders.cid;
+    }
+
     let domain = new Promise((resolve) => {
         bbosRequest({
-          method: "get",
-          url: configInfo.BBOS_DOMIAN + '/Domain/Hostnames',
-          reqHeaders: {
-              'Vendor': state.memInfo.user.domain
-          },
-          params: {
-              "lang": "zh-cn"
-          },
+            method: "get",
+            url: configInfo.BBOS_DOMIAN + '/Domain/Hostnames',
+            reqHeaders: {
+                'Vendor': state.memInfo.user.domain,
+                ...reqHeaders
+            },
+            params: {
+                "lang": "zh-cn"
+            },
         }).then((res) => {
-          if (res.errorCode !== '00' || res.status !== '000') {
-            return
-          }
+            if (res.errorCode !== '00' || res.status !== '000') {
+                return
+            }
             return resolve(res.data[0])
         })
     })
 
     let agentCode = new Promise((resolve) => {
         bbosRequest({
-          method: "get",
-          url: configInfo.BBOS_DOMIAN + '/Player/Promotion',
-          reqHeaders: {
-              'Vendor': state.memInfo.user.domain
-          },
-          params: {
-              "lang": "zh-cn"
-          },
+            method: "get",
+            url: configInfo.BBOS_DOMIAN + '/Player/Promotion',
+            reqHeaders: {
+                'Vendor': state.memInfo.user.domain,
+                ...reqHeaders
+            },
+            params: {
+                "lang": "zh-cn"
+            },
         }).then((res) => {
-          if (res.errorCode !== '00' || res.status !== '000') {
-            return
-          }
+            if (res.errorCode !== '00' || res.status !== '000') {
+                return
+            }
             return resolve(res.data.code)
         })
     })
 
     Promise.all([domain, agentCode]).then(([domain, agentCode]) => {
-        commit(types.SET_AGENTLINK, { domain , agentCode });
+        commit(types.SET_AGENTLINK, { domain, agentCode });
     });
 
 };

@@ -472,12 +472,13 @@ export default {
                 case 'PPV':
                 case 'APB':
                 case 'JPB':
-                    if (!this.loginStatus) {
-                        this.$router.push('/mobile/login');
-                        return;
-                    }
-                    this.$router.push(`/mobile/iframe/${game.type}?&title=${game.name}`);
-                    return;
+                // 正式站 先不用獨立開啟
+                // if (!this.loginStatus) {
+                //     this.$router.push('/mobile/login');
+                //     return;
+                // }
+                // this.$router.push(`/mobile/iframe/${game.type}?&title=${game.name}`);
+                // return;
                 case 'LF':
                 case 'BALE':
                 case 'STB':
