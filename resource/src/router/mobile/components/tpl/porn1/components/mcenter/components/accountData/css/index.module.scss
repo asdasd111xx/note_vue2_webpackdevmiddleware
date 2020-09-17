@@ -163,7 +163,7 @@
         color: $main_text_color3;
     }
 
-    >.input-wrap input {
+    >.input-wrap input:not(.withdraw-pwd-input) {
         padding-right: 18px;
     }
 }
