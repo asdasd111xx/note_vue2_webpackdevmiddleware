@@ -600,35 +600,13 @@ export default {
      */
     verificationMoney(money) {
       if (this.depositInterval.maxMoney) {
-        this.isErrorMoney = Number(money) > Number(this.depositInterval.maxMoney) || Number(money) < Number(this.depositInterval.minMoney);
+        this.isErrorMoney =
+          Number(money) > Number(this.depositInterval.maxMoney) ||
+          Number(money) < Number(this.depositInterval.minMoney);
         return;
       }
 
       this.isErrorMoney = !money;
-    },
-    /**
-     * 金額輸入
-     * @method submitInput
-     * @param {String} moneyValue - 輸入金額
-     */
-    submitInput(value) {
-      this.moneyValue = value.replace(/[^\d]/g, '');
-
-      if (value.replace(/[^\d]/g, '')) {
-        this.isErrorMoney = false;
-      }
-
-      this.verificationMoney(value);
-      this.checkOrderData();
-    },
-    submitDataInput(data, objKey) {
-      if (objKey === 'depositName') {
-        const re = /[^\u3000\u3400-\u4DBF\u4E00-\u9FFF.．·]/g;
-        this.speedField.depositName = this.speedField.depositName.replace(re, '')
-      }
-
-      this.$emit('update:speedField', { data, objKey });
-      this.checkOrderData();
     },
     /**
      * 資料重置
@@ -1028,7 +1006,7 @@ export default {
 
       // 最小金額不為0的時候，顯示最低金額~无限制
       if (Number(minMoney) !== 0 && Number(maxMoney) === 0) {
-        return `最低金额¥${minMoney} ~ 无限制`;
+        return `¥${minMoney} ~ 无限制`;
       }
 
       // 最大金額 & 最低金額 都為0的時候，顯示無限制

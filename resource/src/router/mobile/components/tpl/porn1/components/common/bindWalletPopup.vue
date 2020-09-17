@@ -198,7 +198,7 @@ export default {
           // this.lockStatus = false;
 
           if (result !== "ok" || result === "error") {
-            this.errorMsg = `${msg}[${code}]`;
+            this.errorMsg = `${msg}`;
             return;
           }
 
@@ -211,7 +211,7 @@ export default {
         })
         .catch(res => {
           if (res.response && res.response.data && res.response.data.msg) {
-            this.errorMsg = `${res.response.data.msg}[${res.response.data.code}]`;
+            this.errorMsg = `${res.response.data.msg}`;
             // this.lockStatus = false;
             return;
           }

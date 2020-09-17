@@ -265,7 +265,7 @@ export default {
                         }
                         this.times -= 1;
                     }, 1000);
-                    this.tipMsg = this.$text("S_SEND_CHECK_CODE_VALID_TIME").replace("%s", 5);
+                    this.tipMsg = this.$text("S_SEND_CHECK_CODE_VALID_TIME").replace("%s", '五');
                 } else {
                     setTimeout(() => {
                         this.isSendKeyring = false;

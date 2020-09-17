@@ -1543,7 +1543,7 @@ export const actionVerificationFormData = ({ state, dispatch, commit }, data) =>
             break;
 
         case 'money':
-            val = val.replace(/[^0-9]/g, '')
+            val = val.replace(/[^0-9.]/g, '')
                 .substring(0, 13);
             break;
     }

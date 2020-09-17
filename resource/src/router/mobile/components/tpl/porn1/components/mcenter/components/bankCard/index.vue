@@ -1,5 +1,5 @@
 <template>
-  <div :class="$style['wrap']">
+  <div :class="[$style['wrap']]">
     <div :class="$style['header']">
       <div :class="$style['btn-prev']" @click="backPre">
         <img
@@ -43,6 +43,7 @@
     </div>
 
     <component
+      :is-show-tab="isShowTab"
       :is="currentPage"
       :set-page-status="setPageStatus"
       :show-detail.sync="showDetail"
@@ -116,14 +117,25 @@ export default {
 
       switch (this.currentPage) {
         case "bankCardInfo":
+          return this.showDetail
+            ? this.$text("S_BANKCARD", "银行卡")
+            : this.$text("S_CARD_MANAGEMENT", "卡片管理");
+          break;
+
         case "walletCardInfo":
-          return this.$text("S_CARD_MANAGEMENT", "卡片管理");
+          return this.showDetail
+            ? this.$text("S_VIRTUAL_BANKCARD", "电子钱包")
+            : this.$text("S_CARD_MANAGEMENT", "卡片管理");
+          break;
+          break;
 
         case "addBankCard":
           return this.$text("S_ADD_BANKCARD", "添加银行卡");
+          break;
 
         case "addWalletCard":
-          return this.$text("S_ADD_DIGITAL_CURRENCY", "添加数字货币");
+          return this.$text("S_ADD_VIRTUAL_BANKCARD", "添加电子钱包");
+          break;
       }
     },
     isOneTab() {
@@ -328,14 +340,13 @@ export default {
 }
 
 .tab-wrap {
-  // position: fixed;
-  position: relative;
+  position: fixed;
+  width: 100%;
+  z-index: 2;
   display: flex;
   background: #fff;
   border-bottom: 1px solid #eee;
-  width: 100%;
   max-width: $mobile_max_width;
-  // z-index: 10;
 }
 
 .tab-item {

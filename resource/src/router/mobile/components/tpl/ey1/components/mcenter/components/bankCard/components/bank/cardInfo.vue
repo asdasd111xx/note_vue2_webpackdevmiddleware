@@ -3,7 +3,7 @@
     <!-- 卡片管理列表 -->
     <template v-if="!showDetail">
       <div v-if="isRevice && bank_card.length > 0" :class="$style['my-card']">
-        <p :class="[$style['card-count'], 'clearfix']">
+        <div :class="[$style['card-count'], 'clearfix']">
           <span :class="$style['title']">
             {{ $text("S_MY_CRAD", "我的卡") }}
           </span>
@@ -12,7 +12,7 @@
               $text("S_CRAD_COUNT", "共%s张").replace("%s", bank_card.length)
             }}
           </span>
-        </p>
+        </div>
 
         <div :class="$style['card-list']">
           <div
@@ -44,6 +44,10 @@
 
             <div :class="$style['card-number']">
               **** **** **** <span>{{ item.account.slice(-4) }}</span>
+            </div>
+
+            <div v-if="item.auditing" :class="$style['audit-tip']">
+              删除审核中
             </div>
           </div>
         </div>
@@ -80,50 +84,77 @@
     </template>
 
     <!-- 卡片詳細資料 -->
-    <div v-if="showDetail && bank_cardDetail" :class="$style['card-detail']">
-      <div :class="$style['bankcard-item']">
-        <div :class="[$style['card-top'], 'clearfix']">
-          <div :class="$style['card-logo']">
-            <img v-lazy="getBankImage(bank_cardDetail.swift_code)" />
-          </div>
+    <template v-if="showDetail && bank_cardDetail">
+      <div :class="$style['card-detail']">
+        <div v-if="bank_cardDetail.auditing" :class="$style['audit-block']">
+          <div>删除审核中</div>
+          <span>审核通过后，系统会自动刪除錢包</span>
+        </div>
 
-          <div :class="$style['card-info']">
-            <div :class="$style['card-name']">
-              {{ bank_cardDetail.bank_name }}
+        <div :class="$style['bankcard-item']">
+          <div :class="[$style['card-top'], 'clearfix']">
+            <div :class="$style['card-logo']">
+              <img v-lazy="getBankImage(bank_cardDetail.swift_code)" />
             </div>
 
-            <div :class="$style['card-type']">
-              {{ bank_cardDetail.type }}
+            <div :class="$style['card-info']">
+              <div :class="$style['card-name']">
+                {{ bank_cardDetail.bank_name }}
+              </div>
+
+              <div :class="$style['card-type']">
+                {{ bank_cardDetail.type }}
+              </div>
+            </div>
+          </div>
+
+          <div :class="$style['card-number']">
+            **** **** **** <span>{{ bank_cardDetail.account.slice(-4) }}</span>
+          </div>
+        </div>
+
+        <div v-if="editStatus" :class="$style['edit-bankcard']">
+          <div :class="$style['edit-mask']" />
+          <div :class="$style['edit-button']">
+            <div
+              :class="[$style['edit-option-item'], $style['confirm']]"
+              @click="isShowPop = true"
+            >
+              解除绑定
+            </div>
+
+            <div
+              :class="[$style['edit-option-item'], $style['cancel']]"
+              @click="$emit('update:editStatus', false)"
+            >
+              取消
             </div>
           </div>
         </div>
-
-        <div :class="$style['card-number']">
-          **** **** **** <span>{{ bank_cardDetail.account.slice(-4) }}</span>
-        </div>
       </div>
+    </template>
 
-      <div v-if="editStatus" :class="$style['edit-bankcard']">
-        <div :class="$style['edit-mask']" />
-        <div :class="$style['edit-button']">
-          <div
-            :class="[$style['edit-option-item'], $style['confirm']]"
-            @click="removeBankCard"
-          >
-            解除绑定
+    <div v-if="isShowPop" :class="$style['pop-wrap']">
+      <div :class="$style['pop-mask']" />
+      <div :class="$style['pop-block']">
+        <div :class="$style['content']">
+          <div :class="$style['title']">
+            {{ $text("S_TIPS", "温馨提示") }}
           </div>
 
-          <div
-            :class="[$style['edit-option-item'], $style['cancel']]"
-            @click="$emit('update:editStatus', false)"
-          >
-            取消
-          </div>
+          <span>确定解除绑定该钱包？</span>
+        </div>
+
+        <div :class="$style['button-block']">
+          <span @click="isShowPop = false">
+            {{ $text("S_CANCEL", "取消") }}
+          </span>
+
+          <span @click="onDelete">
+            {{ $text("S_CONFIRM_2", "确定") }}
+          </span>
         </div>
       </div>
-      <!-- <div v-if="popStatus" :class="$style['pop-message']">
-          正在上线 敬请期待
-        </div> -->
     </div>
   </div>
 </template>
@@ -137,7 +168,7 @@ export default {
   props: {
     setPageStatus: {
       type: Function,
-      default: () => {}
+      default: () => { }
     },
     showDetail: {
       type: Boolean,

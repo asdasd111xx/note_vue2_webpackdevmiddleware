@@ -165,7 +165,7 @@ export default {
   props: {
     setPageStatus: {
       type: Function,
-      default: () => {}
+      default: () => { }
     },
     userLevelObj: {
       type: Object,
@@ -399,8 +399,7 @@ export default {
 
         if (idArr) {
           this.walletList = ret.filter(item => {
-            // 109/09/17 因目前加密貨幣只開放 USDT(ERC20)，需先過濾掉其餘加密貨幣
-            if (!idArr.includes(item.id) && item.id !== 40) {
+            if (!idArr.includes(item.id)) {
               return item;
             }
           });
@@ -428,7 +427,7 @@ export default {
           this.lockStatus = false;
 
           if (result !== "ok" || result === "error") {
-            this.errorMsg = `${msg}[${code}]`;
+            this.errorMsg = `${msg}`;
             return;
           }
 
@@ -439,7 +438,7 @@ export default {
         })
         .catch(res => {
           if (res.response && res.response.data && res.response.data.msg) {
-            this.errorMsg = `${res.response.data.msg}[${res.response.data.code}]`;
+            this.errorMsg = `${res.response.data.msg}`;
             this.lockStatus = false;
             return;
           }
@@ -469,7 +468,7 @@ export default {
           this.lockStatus = false;
 
           if (result !== "ok" || result === "error") {
-            this.errorMsg = `${msg}[${code}]`;
+            this.errorMsg = `${msg}`;
             return;
           }
 
@@ -480,7 +479,7 @@ export default {
         })
         .catch(res => {
           if (res.response && res.response.data && res.response.data.msg) {
-            this.errorMsg = `${res.response.data.msg}[${res.response.data.code}]`;
+            this.errorMsg = `${res.response.data.msg}`;
             this.lockStatus = false;
             return;
           }

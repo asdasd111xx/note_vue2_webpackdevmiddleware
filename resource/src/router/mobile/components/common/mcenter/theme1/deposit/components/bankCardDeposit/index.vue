@@ -193,15 +193,17 @@
                 <div :class="$style['field-title']">
                   {{ depositNameInput.title }}
                 </div>
+
                 <div :class="$style['field-info']">
                   <input
                     v-model="speedField.depositName"
                     :class="$style['speed-deposit-input']"
                     :placeholder="depositNameInput.placeholderText"
                     @input="
-                      submitDataInput(
+                      verification(
+                        depositNameInput.objKey,
                         $event.target.value,
-                        depositNameInput.objKey
+                        true
                       )
                     "
                   />
@@ -510,11 +512,10 @@
                       )}
                       `
                     "
-                    type="number"
-                    pattern="[0-9]*"
+                    type="text"
                     @blur="
-                      () => {
-                        verificationMoney(moneyValue);
+                      $event => {
+                        verification('money', $event.target.value);
                         if (
                           isSelectBindWallet(402) &&
                           isClickCoversionBtn &&
@@ -524,7 +525,7 @@
                         }
                       }
                     "
-                    @input="updateInput($event, $event.target.value)"
+                    @input="verification('money', $event.target.value)"
                   />
                 </div>
                 <span :class="$style['deposit-input-icon']">¥</span>
@@ -719,7 +720,7 @@
                         type="datetime"
                         format="YYYY-MM-DD HH:mm:ss"
                         value-type="format"
-                        @input="submitDataInput(info.value, info.objKey)"
+                        @input="verification(info.objKey, info.value, true)"
                       />
                     </template>
 
@@ -728,7 +729,9 @@
                       v-model="speedField[info.objKey]"
                       :class="$style['speed-deposit-input']"
                       :placeholder="info.placeholderText"
-                      @input="submitDataInput($event.target.value, info.objKey)"
+                      @input="
+                        verification(info.objKey, $event.target.value, true)
+                      "
                     />
                   </div>
                 </div>
@@ -1534,25 +1537,6 @@ export default {
       this.paySelectType = payType;
     },
     /**
-     * 金額輸入
-     * @method updateInput
-     * @param {String} moneyValue - 輸入金額
-     */
-    updateInput(e, value) {
-      let nowValue = value;
-
-      if (!value && e.data) {
-        nowValue = this.moneyValue + e.data;
-      }
-
-      // 因input number無法阻擋e-+*，為阻擋這些符號，強制input更新
-      this.moneyValue = nowValue;
-
-      this.$nextTick(() => {
-        this.submitInput(this.moneyValue);
-      });
-    },
-    /**
      * 是否顯示選擇框
      * @method isShowSelect
      * @param {Boolean} show - 是否顯示
@@ -1745,12 +1729,44 @@ export default {
       this.$router.back();
     },
     // 08/27 後續關於 Input 事件的輸入驗證將統一到這裡
-    verification(key, value) {
-      if (key === "CGPPwd") {
-        this.walletData["CGPay"].password = value
-          .replace(" ", "")
-          .trim()
-          .replace(/[^0-9]/g, "");
+    verification(target, value, isSpeedField) {
+      if (target === "CGPPwd") {
+        this.actionVerificationFormData({
+          target: "code",
+          value: value
+        }).then(val => {
+          this.walletData["CGPay"].password = val;
+        });
+      }
+
+      if (target === "money") {
+        this.actionVerificationFormData({
+          target: "money",
+          value: value
+        }).then(val => {
+          this.moneyValue = val;
+          this.isErrorMoney = false;
+
+          this.verificationMoney(this.moneyValue);
+          this.checkOrderData();
+        });
+      }
+
+      // 如果是迅付欄位
+      if (isSpeedField) {
+        if (target === "depositName") {
+          this.actionVerificationFormData({
+            target: "name",
+            value: value
+          }).then(val => {
+            this.speedField.depositName = val;
+            this.$emit("update:speedField", { val, target });
+          });
+        } else {
+          this.$emit("update:speedField", { value, target });
+        }
+
+        this.checkOrderData();
       }
     },
     isSelectBindWallet(...args) {
