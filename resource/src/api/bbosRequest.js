@@ -18,6 +18,8 @@ export default ({
 
     if (getCookie('cid')) {
         bbosHeader['Cid'] = getCookie('cid');
+    } else if (reqHeaders && reqHeaders.cid) {
+        bbosHeader['Cid'] = reqHeaders.cid;
     }
 
     const bbosParams = {
