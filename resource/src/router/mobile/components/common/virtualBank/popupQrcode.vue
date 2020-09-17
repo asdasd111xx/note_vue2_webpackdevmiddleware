@@ -7,10 +7,12 @@
 
         <div :class="$style['qrcode-img']">
           <template v-if="qrcodeLink">
-            <img ref="qrcodeRef" :src="qrcodeLink" alt="qrcode" />
+            <a :href="qrcodeLink" :download="qrcodeLink">
+              <img ref="qrcodeRef" :src="qrcodeLink" alt="qrcode" />
+            </a>
           </template>
         </div>
-        <p>长按下载图片</p>
+        <a :href="qrcodeLink" :download="qrcodeLink"> 长按下载图片</a>
 
         <div :class="$style['timer-block']">
           <div v-if="bindType === 'deposit' && paymentGatewayId === 37">
@@ -67,7 +69,9 @@
 
       <div :class="$style['button-block']">
         <span @click="$emit('update:isShowPop', false)">关闭</span>
-        <span @click="downloadImage">长按下载图片</span>
+        <span @click="downloadImage">
+          <a :href="qrcodeLink" :download="qrcodeLink"> 长按下载图片</a></span
+        >
       </div>
     </div>
   </div>
@@ -99,6 +103,28 @@ export default {
       timer: null,
       qrcodeLink: ""
     };
+  },
+  watch: {
+    qrcodeLink(val) {
+      function toDataURL(url, callback) {
+        var xhr = new XMLHttpRequest();
+        xhr.onload = function () {
+          var reader = new FileReader();
+          reader.onloadend = function () {
+            callback(reader.result);
+          }
+          reader.readAsDataURL(val);
+        };
+        xhr.open('GET', url);
+        xhr.responseType = 'blob';
+        xhr.send();
+      }
+
+      toDataURL(val, function (dataUrl) {
+        console.log('RESULT:', dataUrl)
+      })
+
+    }
   },
   computed: {
     ...mapGetters({
