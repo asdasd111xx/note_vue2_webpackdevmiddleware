@@ -1,5 +1,12 @@
 @import "~@/css/variable.scss";
 
+a {
+    color: unset;
+    outline: unset;
+    text-decoration: unset;
+    background-color: unset;
+}
+
 .pop-wrap {
     position: fixed;
     top: 0;
