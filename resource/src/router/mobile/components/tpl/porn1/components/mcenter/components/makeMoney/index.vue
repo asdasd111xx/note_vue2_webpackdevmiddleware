@@ -65,6 +65,8 @@ export default {
     if (this.$route.query.cid) {
       setCookie("cid", this.$route.query.cid);
       this.actionSetAgentLink({ reqHeaders: { cid: this.$route.query.cid } });
+    } else {
+      this.actionSetAgentLink();
     }
 
     this.$nextTick(() => {
