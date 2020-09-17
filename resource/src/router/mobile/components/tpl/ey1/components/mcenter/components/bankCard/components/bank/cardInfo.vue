@@ -3,7 +3,7 @@
     <!-- 卡片管理列表 -->
     <template v-if="!showDetail">
       <div v-if="isRevice && bank_card.length > 0" :class="$style['my-card']">
-        <p :class="[$style['card-count'], 'clearfix']">
+        <div :class="[$style['card-count'], 'clearfix']">
           <span :class="$style['title']">
             {{ $text("S_MY_CRAD", "我的卡") }}
           </span>
@@ -12,7 +12,7 @@
               $text("S_CRAD_COUNT", "共%s张").replace("%s", bank_card.length)
             }}
           </span>
-        </p>
+        </div>
 
         <div :class="$style['card-list']">
           <div
@@ -168,7 +168,7 @@ export default {
   props: {
     setPageStatus: {
       type: Function,
-      default: () => {}
+      default: () => { }
     },
     showDetail: {
       type: Boolean,

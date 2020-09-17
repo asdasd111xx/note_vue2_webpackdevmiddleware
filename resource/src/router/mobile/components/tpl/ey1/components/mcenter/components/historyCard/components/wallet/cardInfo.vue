@@ -2,20 +2,17 @@
   <div v-if="isRevice">
     <template v-if="!showDetail">
       <div :class="$style['my-card']">
-        <p :class="[$style['card-count'], 'clearfix']">
+        <div :class="[$style['card-count'], 'clearfix']">
           <span :class="$style['title']">
             {{ $text("S_HISTORY_WALLET", "历史钱包") }}
           </span>
 
           <span :class="$style['count']">
             {{
-              $text("S_CRAD_COUNT", "共%s张").replace(
-                "%s",
-                wallet_card.length
-              )
+              $text("S_CRAD_COUNT", "共%s张").replace("%s", wallet_card.length)
             }}
           </span>
-        </p>
+        </div>
         <div v-if="wallet_card.length > 0" :class="$style['card-list']">
           <div
             v-for="item in wallet_card"
@@ -57,10 +54,7 @@
 
     <template v-if="showDetail && wallet_cardDetail">
       <div :class="$style['card-detail']">
-        <div
-          v-if="wallet_cardDetail.auditing"
-          :class="$style['audit-block']"
-        >
+        <div v-if="wallet_cardDetail.auditing" :class="$style['audit-block']">
           <div>删除审核中</div>
           <span>审核通过后，系统会自动删除银行卡</span>
         </div>
@@ -141,11 +135,11 @@ export default {
   props: {
     changePage: {
       type: Function,
-      default: () => {}
+      default: () => { }
     },
     showTab: {
       type: Function,
-      default: () => {}
+      default: () => { }
     },
     showDetail: {
       type: Boolean,

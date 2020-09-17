@@ -3,7 +3,10 @@
     <!-- 卡片管理列表 -->
     <template v-if="!showDetail">
       <div v-if="isRevice && wallet_card.length > 0" :class="$style['my-card']">
-        <p :class="[$style['card-count'], 'clearfix']">
+        <div
+          :class="[$style['card-count'], 'clearfix']"
+          :style="isShowTab ? {} : { top: '43px' }"
+        >
           <span :class="$style['title']">
             {{ $text("S_MY_DIGITAL_CURRENCY_WALLET", "我的数字货币钱包") }}
           </span>
@@ -13,10 +16,13 @@
               $text("S_CRAD_COUNT", "共%s张").replace("%s", wallet_card.length)
             }}
           </span>
-        </p>
+        </div>
 
         <!-- 需調整版型與銀行一致 -->
-        <div :class="$style['card-list']">
+        <div
+          :class="$style['card-list']"
+          :style="isShowTab ? {} : { 'margin-top': '41px' }"
+        >
           <div
             v-for="item in wallet_card"
             :key="item.id"
@@ -104,7 +110,7 @@
           </div>
 
           <div :class="$style['card-number']">
-            {{ wallet_cardDetail.address.slice(0,4) }} **** ****
+            {{ wallet_cardDetail.address.slice(0, 4) }} **** ****
             <span>{{ wallet_cardDetail.address.slice(-4) }}</span>
           </div>
         </div>
@@ -166,9 +172,13 @@ import virtualMixin from "@/mixins/mcenter/bankCard/cardInfo/wallet";
 export default {
   mixins: [virtualMixin],
   props: {
+    isShowTab: {
+      type: Boolean,
+      required: true
+    },
     setPageStatus: {
       type: Function,
-      default: () => {}
+      default: () => { }
     },
     showDetail: {
       type: Boolean,

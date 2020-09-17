@@ -2,14 +2,14 @@
   <div v-if="isRevice">
     <template v-if="!showDetail">
       <div v-if="bank_card.length > 0" :class="$style['my-card']">
-        <p :class="[$style['card-count'], 'clearfix']">
+        <div :class="[$style['card-count'], 'clearfix']">
           <span :class="$style['title']">{{
             $text("S_MY_CRAD", "我的卡")
           }}</span>
           <span :class="$style['count']">{{
             $text("S_CRAD_COUNT", "共%s张").replace("%s", bank_card.length)
           }}</span>
-        </p>
+        </div>
         <div :class="$style['card-list']">
           <div
             v-for="item in bank_card"
@@ -136,11 +136,11 @@ export default {
   props: {
     changePage: {
       type: Function,
-      default: () => {}
+      default: () => { }
     },
     showTab: {
       type: Function,
-      default: () => {}
+      default: () => { }
     },
     showDetail: {
       type: Boolean,

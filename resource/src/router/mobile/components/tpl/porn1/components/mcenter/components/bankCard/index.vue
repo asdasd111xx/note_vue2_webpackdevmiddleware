@@ -1,5 +1,5 @@
 <template>
-  <div :class="$style['wrap']">
+  <div :class="[$style['wrap']]">
     <div :class="$style['header']">
       <div :class="$style['btn-prev']" @click="backPre">
         <img
@@ -43,6 +43,7 @@
     </div>
 
     <component
+      :is-show-tab="isShowTab"
       :is="currentPage"
       :set-page-status="setPageStatus"
       :show-detail.sync="showDetail"
@@ -339,14 +340,13 @@ export default {
 }
 
 .tab-wrap {
-  // position: fixed;
-  position: relative;
+  position: fixed;
+  width: 100%;
+  z-index: 2;
   display: flex;
   background: #fff;
   border-bottom: 1px solid #eee;
-  width: 100%;
   max-width: $mobile_max_width;
-  // z-index: 10;
 }
 
 .tab-item {
