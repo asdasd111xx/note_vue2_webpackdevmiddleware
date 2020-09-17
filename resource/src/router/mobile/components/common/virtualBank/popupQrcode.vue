@@ -7,14 +7,17 @@
 
         <div :class="$style['qrcode-img']">
           <template v-if="qrcodeLink">
-            <a :href="qrcodeLink" :download="qrcodeLink" target="_blank">
-              <img ref="qrcodeRef" :src="qrcodeLink" alt="qrcode" />
-            </a>
+            <img
+              @click="downloadImage"
+              ref="qrcodeRef"
+              :src="qrcodeLink"
+              alt="qrcode"
+            />
           </template>
         </div>
-        <a :href="qrcodeLink" :download="qrcodeLink" target="_blank">
-          长按下载图片</a
-        >
+        <p @click="downloadImage">
+          长按下载图片
+        </p>
 
         <div :class="$style['timer-block']">
           <div v-if="bindType === 'deposit' && paymentGatewayId === 37">
@@ -71,9 +74,7 @@
 
       <div :class="$style['button-block']">
         <span @click="$emit('update:isShowPop', false)">关闭</span>
-        <span @click="downloadImage">
-          <a :href="qrcodeLink" :download="qrcodeLink"> 长按下载图片</a></span
-        >
+        <span @click="downloadImage"> 长按下载图片</span>
       </div>
     </div>
   </div>
@@ -105,28 +106,6 @@ export default {
       timer: null,
       qrcodeLink: ""
     };
-  },
-  watch: {
-    qrcodeLink(val) {
-      function toDataURL(url, callback) {
-        var xhr = new XMLHttpRequest();
-        xhr.onload = function () {
-          var reader = new FileReader();
-          reader.onloadend = function () {
-            callback(reader.result);
-          }
-          reader.readAsDataURL(val);
-        };
-        xhr.open('GET', url);
-        xhr.responseType = 'blob';
-        xhr.send();
-      }
-
-      toDataURL(val, function (dataUrl) {
-        console.log('RESULT:', dataUrl)
-      })
-
-    }
   },
   computed: {
     ...mapGetters({
@@ -203,18 +182,36 @@ export default {
       window.open(url);
     },
     downloadImage() {
+      //   <a :href="qrcodeLink" :download="qrcodeLink" target="_blank">
+      console.log(this.qrcodeLink)
       if (this.qrcodeLink) {
-        html2canvas(this.$refs["qrcodeRef"], {
-          allowTaint: false,
-          useCORS: true
-        }).then(canvas => {
-          let link = document.createElement("a");
-          link.href = canvas.toDataURL("image/png");
-          link.setAttribute("download", "qrcode.png");
-          link.style.display = "none";
-          document.body.appendChild(link);
-          link.click();
-        });
+
+        if (this.qrcodeLink.includes('base64')) {
+          html2canvas(this.$refs["qrcodeRef"], {
+            allowTaint: false,
+            useCORS: true
+          }).then(canvas => {
+            let link = document.createElement("a");
+            link.href = canvas.toDataURL("image/png");
+            link.setAttribute("download", "qrcode.png");
+            link.style.display = "none";
+            document.body.appendChild(link);
+            link.click();
+          });
+        } else {
+          let a = document.createElement('a');
+          a.download = 'qrcode.png';
+          a.target = "_blank";
+          a.href = this.qrcodeLink;
+
+          a.style.display = 'none';
+          document.body.appendChild(a);
+
+          setTimeout(() => {
+            a.click();
+            document.body.removeChild(a);
+          }, 300)
+        }
       }
     }
   },

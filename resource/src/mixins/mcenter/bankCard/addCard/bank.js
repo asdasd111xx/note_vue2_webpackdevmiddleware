@@ -193,8 +193,8 @@ export default {
                     }
 
                     if (this.siteConfig.MOBILE_WEB_TPL === 'ey1') {
-                        if ((this.memInfo.config.player_user_bank && key === 'city') &&
-                            (this.memInfo.config.player_user_bank && key === 'province')) {
+                        if ((!this.memInfo.config.player_user_bank && key === 'city') &&
+                            (!this.memInfo.config.player_user_bank && key === 'province')) {
                             return this.formData[key];
                         }
                     }

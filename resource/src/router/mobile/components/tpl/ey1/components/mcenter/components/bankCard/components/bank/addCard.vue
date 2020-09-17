@@ -42,7 +42,7 @@
           </div>
         </div>
 
-        <template v-if="memInfo.config.player_user_bank">
+        <template v-if="!memInfo.config.player_user_bank">
           <div :class="$style['info-item']">
             <p :class="$style['input-title']">省/直辖市</p>
             <div :class="$style['input-wrap']">
