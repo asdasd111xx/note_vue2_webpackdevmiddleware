@@ -48,7 +48,8 @@ export default {
           break;
 
         case 'LINK':
-          value = this.agentLink.domain;
+        //   value = this.agentLink.domain;
+          value = this.getAgentLink;
           type = key
           break;
       }

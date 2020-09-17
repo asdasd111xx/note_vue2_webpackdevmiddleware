@@ -902,6 +902,12 @@ export default {
               btnText: '关闭',
               cb: () => {
                 this.confirmPopupObj.isShow = false
+
+                this.$emit("update:headerSetting", this.initHeaderSetting);
+                this.resetStatus();
+                this.getPayGroup().then(() => {
+                  this.defaultCurPayBank();
+                });
               }
             }
 
