@@ -7,12 +7,14 @@
 
         <div :class="$style['qrcode-img']">
           <template v-if="qrcodeLink">
-            <a :href="qrcodeLink" :download="qrcodeLink">
+            <a :href="qrcodeLink" :download="qrcodeLink" target="_blank">
               <img ref="qrcodeRef" :src="qrcodeLink" alt="qrcode" />
             </a>
           </template>
         </div>
-        <a :href="qrcodeLink" :download="qrcodeLink"> 长按下载图片</a>
+        <a :href="qrcodeLink" :download="qrcodeLink" target="_blank">
+          长按下载图片</a
+        >
 
         <div :class="$style['timer-block']">
           <div v-if="bindType === 'deposit' && paymentGatewayId === 37">
