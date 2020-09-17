@@ -158,19 +158,15 @@ export default {
 
       // 銀行卡/電子錢包，其中有一方關閉
       if (this.isOneTab) {
-        this.$nextTick(() => {
-          if (this.userLevelObj.bank) {
-            this.setPageStatus(0, "bankCardInfo", false);
-            return;
-          }
+        if (this.userLevelObj.bank) {
+          this.setPageStatus(0, "bankCardInfo", false);
+          return;
+        }
 
-          if (this.userLevelObj.virtual_bank) {
-            this.setPageStatus(1, "walletCardInfo"), false;
-            return;
-          }
-        });
-
-        return;
+        if (this.userLevelObj.virtual_bank) {
+          this.setPageStatus(1, "walletCardInfo", false);
+          return;
+        }
       }
 
       // 預設頁面

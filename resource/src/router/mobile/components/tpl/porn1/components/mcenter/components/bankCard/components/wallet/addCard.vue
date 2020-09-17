@@ -399,7 +399,8 @@ export default {
 
         if (idArr) {
           this.walletList = ret.filter(item => {
-            if (!idArr.includes(item.id)) {
+            // 109/09/17 因目前加密貨幣只開放 USDT(ERC20)，需先過濾掉其餘加密貨幣
+            if (!idArr.includes(item.id) && item.id !== 40) {
               return item;
             }
           });
