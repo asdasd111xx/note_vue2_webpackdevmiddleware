@@ -245,7 +245,7 @@ export default {
                       this.actionSetGlobalMessage({
                         msg: '请先设定提现资料', cb: () => {
                           {
-                            this.$router.push('/mobile/withdrawAccount');
+                            this.$router.push('/mobile/withdrawAccount?redirect=wallet');
                           }
                         }
                       })
