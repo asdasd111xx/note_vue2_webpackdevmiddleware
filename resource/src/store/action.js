@@ -1501,9 +1501,7 @@ export const actionVerificationFormData = ({ state, dispatch, commit }, data) =>
             break;
 
         case 'alias':
-            // regex = /[，:;！@#$%^&*?<>()+=`|[\]{}\\"/.~\-_']*/g;
-
-            regex = /[^\u3000\u3400-\u4DBF\u4E00-\u9FFF.．·]/g;
+            regex = /[，:;！@#$%^&*?<>()+=`|[\]{}\\"/.~\-_']*/g;
             val = val
                 .replace(regex, '')
                 .substring(0, 20);
