@@ -320,21 +320,6 @@
             </div>
 
             <!-- 存款金額 -->
-            <!-- 出現條件：1.選擇CGPay且已綁定 2.選非CGPay的支付方式 -->
-            <!-- <div
-              v-if="
-                (curPayInfo.payment_method_id === 16 &&
-                  curPassRoad.is_bind_wallet) ||
-                  curPayInfo.payment_method_id !== 16
-              "
-              :class="[
-                $style['feature-wrap'],
-                $style['select-money'],
-                'clearfix'
-              ]"
-            > -->
-
-            <!-- 存款金額 -->
             <!-- 出現條件：選擇需要绑定的錢包且已綁定 || 選非綁定錢包的支付方式 -->
             <div
               v-if="

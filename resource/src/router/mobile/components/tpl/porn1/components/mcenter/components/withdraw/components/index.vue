@@ -607,12 +607,14 @@ export default {
       errTips: "",
       firstDeposit: false,
       hasBankCard: false,
+
       isLoading: true,
       isSendSubmit: false,
       isSerial: false,
       isShowBlockTips: false,
       isShowCheck: false,
       isShowMore: true,
+
       msg: "",
       moreMethodStatusObj: {
         bankCard: true,
@@ -925,8 +927,8 @@ export default {
       this.isSerial = !this.isSerial;
     },
 
-    verification(key, value) {
-      if (key === "withdrawValue") {
+    verification(target, value) {
+      if (target === "withdrawValue") {
         value = +value;
 
         // 針對加密貨幣
@@ -978,19 +980,13 @@ export default {
         this.errTips = "";
       }
 
-      if (key === "withdrawPwd") {
-        this.errTips = "";
-
-        const re = /[^0-9]/g;
-
-        if (this.withdrawPwd.length > 4) {
-          this.withdrawPwd = this.withdrawPwd.substring(0, 4);
-        }
-
-        this.withdrawPwd = this.withdrawPwd
-          .replace(" ", "")
-          .trim()
-          .replace(re, "");
+      if (target === "withdrawPwd") {
+        this.actionVerificationFormData({
+          target: "withdrawPwd",
+          value: value
+        }).then(val => {
+          this.withdrawPwd = val;
+        });
       }
     },
     toggleShowMore() {

@@ -1531,6 +1531,11 @@ export const actionVerificationFormData = ({ state, dispatch, commit }, data) =>
             val = val.replace(/[^0-9.]/g, '')
                 .substring(0, 13);
             break;
+
+        case 'withdrawPwd':
+            val = val.replace(/[^0-9]/g, '')
+                .substring(0, 4);
+            break
     }
 
     return val;

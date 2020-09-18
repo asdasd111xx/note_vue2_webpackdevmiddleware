@@ -256,7 +256,8 @@ export default {
         ...mapActions([
             'actionSetIsLoading',
             'actionSetUserdata',
-            'actionSetGlobalMessage'
+            'actionSetGlobalMessage',
+            "actionVerificationFormData"
         ]),
         checkAccountData(target) {
             this.getAccountDataStatus().then((data) => {
