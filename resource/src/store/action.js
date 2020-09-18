@@ -1202,21 +1202,6 @@ export const actionSetRechargeConfig = ({ commit }, data) => {
     })
 };
 
-export const actionBindGoBao = ({ commit }) => {
-    return axios({
-        method: "get",
-        url: "/api/v1/c/ext/inpay?api_uri=/api/trade/v2/c/vendor/is_bind"
-    }).then(response => {
-        const { ret, result } = response.data;
-
-        if (!response || result !== "ok") {
-            return;
-        }
-
-        commit(types.SET_HASBINDGOBAO, ret);
-    });
-}
-
 export const actionSetCGPayInfo = ({ commit }) => {
     return axios({
         method: "get",

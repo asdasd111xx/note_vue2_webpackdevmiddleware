@@ -512,10 +512,6 @@ export default {
     [types.SET_VIDEO_BOUNS_PAGE_STATUS](state, data) {
         state.videoBounsPageStatus = data
     },
-    // 是否有綁定購寶
-    [types.SET_HASBINDGOBAO](state, data) {
-        state.hasBindGoBao = data
-    },
     // 是否有綁定CGPay
     [types.SET_CGPAYINFO](state, data) {
         state.CGPayInfo = data

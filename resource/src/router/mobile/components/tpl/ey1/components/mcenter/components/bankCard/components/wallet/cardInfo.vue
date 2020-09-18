@@ -196,6 +196,10 @@ import virtualMixin from "@/mixins/mcenter/bankCard/cardInfo/wallet";
 export default {
   mixins: [virtualMixin],
   props: {
+    isShowTab: {
+      type: Boolean,
+      required: true
+    },
     setPageStatus: {
       type: Function,
       default: () => { }

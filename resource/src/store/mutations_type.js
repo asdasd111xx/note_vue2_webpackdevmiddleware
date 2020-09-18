@@ -152,5 +152,4 @@ export const SET_VIDEO_BOUNS_PAGE_STATUS = 'SET_VIDEO_BOUNS_PAGE_STATUS';
 // ＝＝＝＝＝＝＝＝＝＝＝＝＝＝＝＝＝＝
 //   　電子錢包綁定相關
 // ＝＝＝＝＝＝＝＝＝＝＝＝＝＝＝＝＝＝
-export const SET_HASBINDGOBAO = "SET_HASBINDGOBAO";
 export const SET_CGPAYINFO = "SET_CGPAYINFO";

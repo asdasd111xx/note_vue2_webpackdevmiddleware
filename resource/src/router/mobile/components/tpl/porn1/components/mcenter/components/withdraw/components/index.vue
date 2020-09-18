@@ -123,7 +123,7 @@
     <!-- Yabo : 銀行卡列表 + 更多提現方式按鈕 -->
     <template v-if="themeTPL === 'porn1'">
       <!-- 銀行卡 -->
-      <div
+      <!-- <div
         v-if="
           withdrawUserData &&
             withdrawUserData.account &&
@@ -135,8 +135,7 @@
           {{ $text("S_BANKCARD", "银行卡") }}
         </div>
 
-        <!-- 取前三個銀行卡 不應該超過三張 -->
-        <div
+      <div
           v-for="item in withdrawUserData.account.slice(0, 3)"
           :class="$style['bank-card-cell']"
           @click="handleSelectCard(item)"
@@ -167,17 +166,17 @@
         >
           {{ $text("S_ADD_BANKCARD", "添加银行卡") }}
         </span>
-      </div>
+      </div> -->
 
       <!-- 銀行卡 -->
-      <!-- <div
+      <div
         v-if="allWithdrawAccount && allWithdrawAccount.length !== 0"
         :class="$style['bank-card-wrap']"
       >
         <div :class="$style['bank-card-cell']">
-          {{ $text("S_WITHDRAW_ACCOUNT02", "提现帐号") }} -->
+          {{ $text("S_WITHDRAW_ACCOUNT02", "提现帐号") }}
           <!-- 會員首次出款 or 需用銀行卡提現一次(強制銀行卡出款) -->
-          <!-- <span
+          <span
             v-if="
               forceStatus === 1 &&
                 userWithdrawCount === 0 &&
@@ -187,21 +186,21 @@
             :class="$style['withdraw-status-tip']"
           >
             银行卡提现一次，开通数字货币提现功能
-          </span> -->
+          </span>
 
           <!-- 非首次出款 + 強制使用 CGPay 出款 -->
-          <!-- <span
+          <span
             v-else-if="forceStatus === 2"
             :class="$style['withdraw-status-tip']"
           >
             仅限使用 CGPay 出款
           </span>
-        </div> -->
+        </div>
 
         <!-- 列出所有帐号 -->
         <!-- Question: 如果強制使用銀行卡出款，是否數字貨幣卡片 allow 狀態會為 false ? -->
         <!-- disable 的狀態需要與 RD5 請示 -->
-        <!-- <div
+        <div
           v-for="item in allWithdrawAccount"
           :class="[
             $style['bank-card-cell'],
@@ -222,13 +221,13 @@
               }
             ]"
           />
-        </div> -->
-      <!-- </div> -->
+        </div>
+      </div>
 
       <!-- 更多提现方式 -->
       <!-- 銀行卡超過3張 + 所有數字貨幣的錢包都有添加 => 則隱藏按鈕 -->
       <!-- 狀態由 withdrawMoreMethod 組件回傳 -->
-      <!-- <div
+      <div
         v-if="moreMethodStatusObj.bankCard && moreMethodStatusObj.wallet"
         :class="[$style['add-bank-card']]"
       >
@@ -243,7 +242,7 @@
         >
           {{ "更多提现方式" }}
         </span>
-      </div> -->
+      </div>
     </template>
 
     <!-- 因按鈕顯示邏輯不同，所以獨立成兩份 -->
