@@ -1074,9 +1074,11 @@ export default {
       showRealStatus: false,
       isShowMethodsPop: false,
       nameCheckFail: false,
+
       entryBlockStatusData: null,
       isShowEntryBlockStatus: false,
       isBlockChecked: false,
+
       isShowCGPayBind: false,
       qrcodeObj: {
         isShow: false,
@@ -1539,7 +1541,6 @@ export default {
       switch (this.entryBlockStatusData.status) {
         case 0:
           this.submitInfo();
-
           break;
 
         case 4:

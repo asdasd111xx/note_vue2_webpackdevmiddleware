@@ -1081,11 +1081,21 @@ export default {
         return;
       }
 
-      if (Number(this.actualMoney) !== Number(this.withdrawValue)) {
-        this.widthdrawTipsType = "tips";
-        this.isShowCheck = true;
-      } else {
-        this.handleSubmit();
+      switch (this.themeTPL) {
+        case "porn1":
+          if (Number(this.actualMoney) !== Number(this.withdrawValue)) {
+            this.widthdrawTipsType = "tips";
+            this.isShowCheck = true;
+          } else {
+            this.handleSubmit();
+          }
+          break;
+
+        // 一律顯示溫馨
+        case "ey1":
+          this.widthdrawTipsType = "tips";
+          this.isShowCheck = true;
+          break;
       }
     },
     closeTips() {
