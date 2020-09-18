@@ -15,7 +15,10 @@
           </span>
         </div>
 
-        <div :class="$style['card-list']">
+        <div
+          :class="$style['card-list']"
+          :style="isShowTab ? {} : { 'margin-top': '41px' }"
+        >
           <div
             v-for="item in wallet_card"
             :key="item.id"
