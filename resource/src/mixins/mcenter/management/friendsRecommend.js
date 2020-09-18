@@ -100,14 +100,12 @@ export default {
             };
             if (key === "username" || key === "password" || key === "confirm_password" || key === "name") {
                 this.actionVerificationFormData({ target: key, value: value }).then((val => {
-                    allValue[key] = val
+                    allValue[key] = val;
+                    if (reg[key] && !reg[key].test(allValue[key])) {
+                        allText[key].error = true;
+                        return;
+                    }
                 }));
-            }
-
-
-            if (reg[key] && !reg[key].test(allValue[key])) {
-                allText[key].error = true;
-                return;
             }
 
             if (['password', 'confirm_password'].includes(key)) {
