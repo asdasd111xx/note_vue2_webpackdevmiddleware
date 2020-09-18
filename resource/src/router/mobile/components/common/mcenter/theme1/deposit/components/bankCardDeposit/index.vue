@@ -799,7 +799,7 @@
                       <div
                         v-if="info.copyShow"
                         :class="$style['icon-wrap']"
-                        @click="handleCopy(info.value)"
+                        @click="copyInfo(info.value)"
                       >
                         <div>
                           <icon name="regular/copy" width="12" height="12" />
@@ -964,15 +964,6 @@
       </div>
     </div>
 
-    <message v-if="msg" @close="msg = ''">
-      <div slot="msg">
-        <div
-          style="background-color: transparent ; margin: 0 ; padding: 0"
-          v-html="msg"
-        />
-      </div>
-    </message>
-
     <!-- 被列為黑名單提示彈窗 -->
     <template v-if="isShowBlockTips">
       <block-list-tips type="deposit" @close="closeTips" />
@@ -992,13 +983,13 @@
           :class="$style['entry-message-confirm']"
           @click="isShowEntryBlockStatus = false"
         >
+          <li @click="submitInfo">确定</li>
           <li
             v-if="entryBlockStatusData.status === 2"
             @click="goToValetDeposit"
           >
             前往代客充值
           </li>
-          <li @click="submitInfo">确定</li>
         </ul>
       </div>
     </div>
@@ -1031,7 +1022,6 @@ import bindWalletPopup from "@/router/mobile/components/tpl/porn1/components/com
 import bbosRequest from "@/api/bbosRequest";
 import DatePicker from "vue2-datepicker";
 import mixin from "@/mixins/mcenter/deposit/bankCardDeposit";
-import message from "@/router/mobile/components/common/message";
 import popupQrcode from "@/router/mobile/components/common/virtualBank/popupQrcode";
 import confirmOneBtn from "@/router/mobile/components/common/confirmOneBtn";
 
@@ -1048,7 +1038,6 @@ export default {
     Swiper,
     SwiperSlide,
     DatePicker,
-    message,
     blockListTips,
     bindWalletPopup,
     popupQrcode,
@@ -1075,7 +1064,6 @@ export default {
       showRealStatus: false,
       isShowMethodsPop: false,
       nameCheckFail: false,
-      msg: "",
       entryBlockStatusData: null,
       isShowEntryBlockStatus: false,
       isBlockChecked: false,
@@ -1458,7 +1446,8 @@ export default {
       "actionSetUserBalance",
       "actionSetRechargeConfig",
       "actionSetCGPayInfo",
-      "actionVerificationFormData"
+      "actionVerificationFormData",
+      "actionSetGlobalMessage"
     ]),
 
     handleCreditTrans() {
@@ -1489,10 +1478,6 @@ export default {
 
           break;
       }
-    },
-    handleCopy(val) {
-      this.msg = "已复制到剪贴板";
-      this.copyInfo(val);
     },
     modeChange(listItem, index) {
       this.checkEntryBlockStatus();
@@ -1535,13 +1520,30 @@ export default {
       this.isSelectShow = !this.isSelectShow;
     },
     clickSubmit() {
-      if (
-        this.curPayInfo.payment_method_id === 20 ||
-        this.entryBlockStatusData.status === 0
-      ) {
+      // 代客充值
+      if (this.curPayInfo.payment_method_id === 20) {
         this.submitInfo();
-      } else {
-        this.isShowEntryBlockStatus = true;
+      }
+
+      // 使用者存款封鎖狀態
+      switch (this.entryBlockStatusData.status) {
+        case 0:
+          this.submitInfo();
+
+          break;
+
+        case 4:
+          this.actionSetGlobalMessage({
+            msg: this.entryBlockStatusData.custom_point,
+            cb: () => {
+              window.open(this.entryBlockStatusData.external_url)
+            }
+          });
+          break;
+
+        default:
+          this.isShowEntryBlockStatus = true;
+          break;
       }
     },
     /**
@@ -1549,6 +1551,7 @@ export default {
      * @method submitInfo
      */
     submitInfo() {
+      // 因 status = 3，會暫停充值功能
       if (this.entryBlockStatusData.status === 3) {
         return;
       }
@@ -1576,7 +1579,9 @@ export default {
 
         if (response) {
           if (response.status === "NameFail") {
-            this.msg = "请输入正确名称";
+            this.actionSetGlobalMessage({
+              msg: "请输入正确名称"
+            });
             this.nameCheckFail = true;
           }
           if (response.status === "local") {
@@ -1666,7 +1671,9 @@ export default {
         } else {
           // 存款功能無法使用
           if (res.code !== "TM020074") {
-            this.msg = res.msg;
+            this.actionSetGlobalMessage({
+              msg: res.msg
+            });
           }
         }
       });

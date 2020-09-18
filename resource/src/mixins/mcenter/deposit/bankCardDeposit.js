@@ -360,14 +360,18 @@ export default {
         fail: (res) => {
           if (res && res.data && res.data.msg && res.data.code) {
             if (res.data.code === 'C150099') {
-              this.msg = `${res.data.msg}`
+              this.actionSetGlobalMessage({
+                msg: res.data.msg
+              });
               setTimeout(() => {
                 this.$router.push('/mobile/mcenter/bankCard?redirect=deposit')
               }, 2000)
             } else if (res.data.code === 'TM020067') {
               this.isShowBlockTips = true;
             } else {
-              this.msg = `${res.data.msg}`
+              this.actionSetGlobalMessage({
+                msg: res.data.msg
+              });
             }
           }
         }
@@ -475,12 +479,16 @@ export default {
         fail: (res) => {
           if (res && res.data && res.data.msg && res.data.code) {
             if (res.data.code === 'C150099') {
-              this.msg = `${res.data.msg}`
+              this.actionSetGlobalMessage({
+                msg: res.data.msg
+              });
               setTimeout(() => {
                 this.$router.push('/mobile/mcenter/bankCard?redirect=deposit')
               }, 2000)
             } else {
-              this.msg = `${res.data.msg}`
+              this.actionSetGlobalMessage({
+                msg: res.data.msg
+              });
             }
           }
         }
@@ -709,7 +717,9 @@ export default {
           });
 
           if (response && response.result !== 'ok') {
-            this.msg = response.msg;
+            this.actionSetGlobalMessage({
+              msg: response.msg
+            });
           }
 
           if (_isPWA) {
@@ -790,12 +800,16 @@ export default {
         fail: (res) => {
           if (res && res.data && res.data.msg && res.data.code) {
             if (res.data.code === 'C150099') {
-              this.msg = `${res.data.msg}`
+              this.actionSetGlobalMessage({
+                msg: res.data.msg
+              });
               setTimeout(() => {
                 this.$router.push('/mobile/mcenter/bankCard?redirect=deposit')
               }, 2000)
             } else {
-              this.msg = `${res.data.msg}`
+              this.actionSetGlobalMessage({
+                msg: res.data.msg
+              });
             }
           }
         }
@@ -904,7 +918,9 @@ export default {
         });
 
         if (response && response.result !== 'ok') {
-          this.msg = response.msg;
+          this.actionSetGlobalMessage({
+            msg: response.msg
+          });
         }
 
         if (_isPWA) {
@@ -926,7 +942,9 @@ export default {
      */
     copyInfo(text) {
       this.$copyText(text);
-      this.msg = "已复制到剪贴板";
+      this.actionSetGlobalMessage({
+        msg: "已复制到剪贴板"
+      });
     },
     checkOrderData() {
       // 金額輸入錯誤
