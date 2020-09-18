@@ -1,5 +1,8 @@
 <template>
   <div :class="[$style['mode-wrap']]">
+    <div v-if="themeTPL === 'porn1'" :class="$style['top-promotion']">
+      {{ this.topPromotionMessage }}
+    </div>
     <swiper
       v-if="depositData.length > 1"
       :options="categoryOptions"
@@ -286,6 +289,13 @@
               <div :class="$style['no-bind-wallet']">
                 尚未绑定CGPay钱包
                 <span @click="isShowCGPayBind = true">立即绑定</span>
+              </div>
+
+              <div
+                v-if="themeTPL === 'porn1'"
+                :class="$style['cgpay-promotion']"
+              >
+                {{ this.cgPromotionMessage }}
               </div>
             </div>
 
@@ -1047,7 +1057,7 @@ export default {
   props: {
     headerSetting: {
       type: Object,
-      default: () => {}
+      default: () => { }
     }
   },
   data() {
@@ -1077,7 +1087,7 @@ export default {
         isShow: false,
         msg: "",
         btnText: "",
-        cb: () => {}
+        cb: () => { }
       }
     };
   },
