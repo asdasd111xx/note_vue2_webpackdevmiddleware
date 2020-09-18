@@ -227,12 +227,13 @@ export default {
           this.formData[i].show = !data.ret[i];
         }
       })
-
       if (!this.formData.name.show &&
         !this.formData.phone.show &&
         !this.formData.withdraw_password.show) {
         if (!this.checkBankSwitch) {
           this.$router.push(`/mobile/mcenter/bankCard?redirect=home&type=wallet`)
+        } else {
+          this.$router.back();
         }
       }
       this.isLoading = false;
@@ -289,6 +290,17 @@ export default {
         });
         this.sliderClass = 'slider-close slider'
       } else {
+        let redirect = this.$route.query.redirect;
+        if (redirect) {
+          switch (redirect) {
+            case 'home':
+              this.$router.push(`/mobile/`);
+            default:
+              this.$router.push(`/mobile/mcenter/${redirect}`);
+          }
+          return;
+        }
+
         this.$router.back();
       }
     },

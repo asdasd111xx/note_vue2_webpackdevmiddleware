@@ -131,7 +131,7 @@ export default {
               this.$router.push(`/mobile/mcenter/bankCard?redirect=${redirect ? redirect : 'home'}&type=bankCard`)
             } else {
               // 億元
-              this.$router.push('/mobile/withdrawAccount');
+              this.$router.push(`/mobile/withdrawAccount?redirect=${redirect ? redirect : 'home'}`);
             }
             break;
           // 重新登入
@@ -150,7 +150,7 @@ export default {
               this.$router.push(`/mobile/mcenter/accountData?reqAccount=${redirect ? redirect : 'home'}`);
             } else {
               // 億元
-              this.$router.push('/mobile/withdrawAccount');
+              this.$router.push(`/mobile/withdrawAccount?redirect=${redirect ? redirect : 'home'}`);
             }
             break;
           default:
