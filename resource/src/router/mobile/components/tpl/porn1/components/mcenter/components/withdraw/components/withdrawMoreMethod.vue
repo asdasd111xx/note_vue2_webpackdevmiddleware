@@ -80,7 +80,6 @@ export default {
   computed: {
     ...mapGetters({
       noticeData: "getNoticeData",
-      isBindGoBao: "getHasBindGoBao",
       CGPayInfo: "getCGPayInfo",
       siteConfig: "getSiteConfig"
     }),
@@ -112,7 +111,11 @@ export default {
         {
           key: "goBao",
           title: "新增 购宝钱包",
-          isShow: this.themeTPL === "ey1" && !this.isBindGoBao
+          isShow:
+            this.themeTPL === "ey1" &&
+            !this.withdrawUserData.wallet.find(item => {
+              return item.bank_id === 2016;
+            })
         }
       ].filter(item => item.isShow);
     },
@@ -226,16 +229,11 @@ export default {
     }
   },
   created() {
-    this.actionBindGoBao();
     this.actionSetCGPayInfo();
     this.getNowOpenWallet();
   },
   methods: {
-    ...mapActions([
-      "actionSetGlobalMessage",
-      "actionBindGoBao",
-      "actionSetCGPayInfo"
-    ]),
+    ...mapActions(["actionSetGlobalMessage", "actionSetCGPayInfo"]),
     close() {
       this.$emit("close");
     },
