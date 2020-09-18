@@ -3,6 +3,7 @@ const path = require('path');
 
 const outputDirName = process.env.CDN_HOST ? process.env.CDN_HOST.split('://')[1] : 'www';
 
+
 // 鸭博娱乐
 // 鴨脖
 const domain = 'https://yb01.66boxing.com/';
