@@ -664,22 +664,41 @@ export default {
           return item.allow;
         });
 
-        this.selectedCard = {
-          id:
-            Number(localStorage.getItem("tmp_w_selectedCard")) ||
-            defaultCard.id,
-          name:
-            defaultCard.withdrawType === "account_id"
-              ? ""
-              : defaultCard.alias.substring(0, defaultCard.alias.indexOf("-")),
-          withdrawType: defaultCard.withdrawType
-        };
+        // 卡片資料
+        this.selectedCard = localStorage.getItem("tmp_w_selectedCard")
+          ? {
+              id: JSON.parse(localStorage.getItem("tmp_w_selectedCard"))["id"],
+              name: JSON.parse(localStorage.getItem("tmp_w_selectedCard"))[
+                "name"
+              ],
+              withdrawType: JSON.parse(
+                localStorage.getItem("tmp_w_selectedCard")
+              )["withdrawType"]
+            }
+          : {
+              id: defaultCard.id,
+              name:
+                defaultCard.withdrawType === "account_id"
+                  ? ""
+                  : defaultCard.alias.substring(
+                      0,
+                      defaultCard.alias.indexOf("-")
+                    ),
+              withdrawType: defaultCard.withdrawType
+            };
 
+        // 金額部份
         this.withdrawValue = localStorage.getItem("tmp_w_amount");
+        this.actualMoney =
+          JSON.parse(localStorage.getItem("tmp_w_actualAmount")) ||
+          this.actualMoney;
+
+        // 提現密碼
+        this.withdrawPwd = localStorage.getItem("tmp_w_withdrawPwd");
 
         setTimeout(() => {
-          localStorage.removeItem("tmp_w_selectedCard");
-          localStorage.removeItem("tmp_w_amount");
+          this.removeCurrentValue();
+
           if (
             localStorage.getItem("tmp_w_1") &&
             localStorage.getItem("tmp_w_rule") !== "1"
@@ -692,33 +711,33 @@ export default {
         // this.actionSetIsLoading(false);
         this.isLoading = false;
       }
-    },
-    withdrawUserData(value) {
-      // 預設選擇第一張卡 或是從電話驗證成功後直接送出
-      if (
-        !this.selectedCard.id &&
-        this.withdrawUserData.account &&
-        this.withdrawUserData.account.length > 0
-      ) {
-        this.selectedCard.id =
-          Number(localStorage.getItem("tmp_w_selectedCard")) ||
-          this.withdrawUserData.account[0].id;
-        this.withdrawValue = localStorage.getItem("tmp_w_amount");
-        setTimeout(() => {
-          localStorage.removeItem("tmp_w_selectedCard");
-          localStorage.removeItem("tmp_w_amount");
-          if (
-            localStorage.getItem("tmp_w_1") &&
-            localStorage.getItem("tmp_w_rule") !== "1"
-          ) {
-            this.handleSubmit();
-          }
-          localStorage.removeItem("tmp_w_rule");
-        });
-
-        this.isLoading = false;
-      }
     }
+    // withdrawUserData(value) {
+    //   // 預設選擇第一張卡 或是從電話驗證成功後直接送出
+    //   if (
+    //     !this.selectedCard.id &&
+    //     this.withdrawUserData.account &&
+    //     this.withdrawUserData.account.length > 0
+    //   ) {
+    //     this.selectedCard.id =
+    //       Number(localStorage.getItem("tmp_w_selectedCard_id")) ||
+    //       this.withdrawUserData.account[0].id;
+    //     this.withdrawValue = localStorage.getItem("tmp_w_amount");
+    //     setTimeout(() => {
+    //       localStorage.removeItem("tmp_w_selectedCard_id");
+    //       localStorage.removeItem("tmp_w_amount");
+    //       if (
+    //         localStorage.getItem("tmp_w_1") &&
+    //         localStorage.getItem("tmp_w_rule") !== "1"
+    //       ) {
+    //         this.handleSubmit();
+    //       }
+    //       localStorage.removeItem("tmp_w_rule");
+    //     });
+
+    //     this.isLoading = false;
+    //   }
+    // }
   },
   created() {
     // 刷新 Player Api
@@ -1108,10 +1127,29 @@ export default {
       }
     },
     saveCurrentValue(fromRule) {
-      localStorage.setItem("tmp_w_selectedCard", this.selectedCard.id);
+      localStorage.setItem(
+        "tmp_w_selectedCard",
+        JSON.stringify(this.selectedCard)
+      );
+
       localStorage.setItem("tmp_w_amount", this.withdrawValue);
+      localStorage.setItem(
+        ("tmp_w_actualAmount", JSON.stringify(this.actualMoney))
+      );
+
+      localStorage.setItem("tmp_w_withdrawPwd", this.withdrawPwd);
       if (fromRule) {
         localStorage.setItem("tmp_w_rule", "1");
+      }
+    },
+    removeCurrentValue(needDeleteRule) {
+      localStorage.removeItem("tmp_w_selectedCard");
+      localStorage.removeItem("tmp_w_amount");
+      localStorage.removeItem("tmp_w_actualAmount");
+      localStorage.removeItem("tmp_w_withdrawPwd");
+
+      if (needDeleteRule) {
+        localStorage.removeItem("tmp_w_1");
       }
     },
     handleSubmit() {
@@ -1120,8 +1158,7 @@ export default {
         this.memInfo.config.withdraw_player_verify &&
         !localStorage.getItem("tmp_w_1")
       ) {
-        localStorage.setItem("tmp_w_selectedCard", this.selectedCard.id);
-        localStorage.setItem("tmp_w_amount", this.withdrawValue);
+        this.saveCurrentValue();
         this.$router.push(
           "/mobile/mcenter/accountData/phone?redirect=withdraw"
         );
@@ -1140,9 +1177,8 @@ export default {
           });
         }, 200);
       });
-      localStorage.removeItem("tmp_w_1");
-      localStorage.removeItem("tmp_w_selectedCard");
-      localStorage.removeItem("tmp_w_amount");
+
+      this.removeCurrentValue(true);
     },
     /**
      * 送出取款資訊
