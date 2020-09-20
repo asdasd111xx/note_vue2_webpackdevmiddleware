@@ -142,12 +142,8 @@
               移至历史帐号
             </div>
 
-            <!-- 目前購寶暫不支援刪除 -->
             <div
-              v-if="
-                memInfo.config.delete_bank_card &&
-                  wallet_cardDetail.payment_gateway_id !== 37
-              "
+              v-if="memInfo.config.delete_bank_card"
               :class="$style['edit-option-item']"
               @click="isShowPop = true"
             >
@@ -202,7 +198,7 @@ export default {
     },
     setPageStatus: {
       type: Function,
-      default: () => { }
+      default: () => {}
     },
     showDetail: {
       type: Boolean,

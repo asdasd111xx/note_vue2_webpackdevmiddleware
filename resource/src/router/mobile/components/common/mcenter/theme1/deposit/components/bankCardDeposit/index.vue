@@ -889,6 +889,7 @@
                   !checkSuccess ||
                   !isBlockChecked ||
                   nameCheckFail ||
+                  (isSelectBindWallet() && !this.curPassRoad.is_bind_wallet) ||
                   (isSelectBindWallet(402) && !isClickCoversionBtn)
               }
             ]"
@@ -1057,7 +1058,7 @@ export default {
   props: {
     headerSetting: {
       type: Object,
-      default: () => { }
+      default: () => {}
     }
   },
   data() {
@@ -1089,7 +1090,7 @@ export default {
         isShow: false,
         msg: "",
         btnText: "",
-        cb: () => { }
+        cb: () => {}
       }
     };
   },
@@ -1547,7 +1548,7 @@ export default {
           this.actionSetGlobalMessage({
             msg: this.entryBlockStatusData.custom_point,
             cb: () => {
-              window.open(this.entryBlockStatusData.external_url)
+              window.open(this.entryBlockStatusData.external_url);
             }
           });
           break;

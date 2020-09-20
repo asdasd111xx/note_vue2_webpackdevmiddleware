@@ -644,11 +644,15 @@ export default {
             this.selectedBank = {};
             this.passRoad = [];
             this.curPassRoad = {};
+
             this.moneyValue = '';
+            this.isSelectValue = '';
+
             this.isDisableDepositInput = false;
             this.isErrorMoney = false;
-            this.isSelectValue = '';
             this.nameCheckFail = false;
+            this.checkSuccess = false;
+
             this.walletData['CGPay'].password = '';
             this.cryptoMoney = '--';
             // this.resetTimerStatus();

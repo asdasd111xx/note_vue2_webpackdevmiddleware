@@ -15,7 +15,7 @@
             v-for="item in bank_card"
             :key="item.id"
             :class="$style['bankcard-item']"
-            @click="getBankDetail(item), showTab(false)"
+            @click="onClickDetail(item), showTab(false)"
           >
             <div :class="[$style['card-top'], 'clearfix']">
               <div :class="$style['card-logo']">

@@ -4,10 +4,13 @@ import { mapActions, mapGetters } from "vuex";
 export default {
   data() {
     return {
-      isRevice: false,
       bank_card: [],
       bank_cardDetail: {},
+      isRevice: false,
       isShowPop: false,
+
+      // 控制詳細頁卡片顏色
+      colorRepeatIndex: null,
     }
   },
   computed: {
@@ -37,7 +40,10 @@ export default {
         this.bank_card = ret.filter((item, index) => index < 3);
       })
     },
-    getBankDetail(info) {
+    onClickDetail(info, index) {
+      // 取餘數的數量，取決於幾種顏色循環，目前 Yabo 共 3 種顏色循環，加 1 是方便 scss 判斷
+      this.colorRepeatIndex = (index + 1) % 4
+
       this.bank_cardDetail = info;
       this.$emit('update:isAudit', false)
       this.$emit("update:showDetail", true);

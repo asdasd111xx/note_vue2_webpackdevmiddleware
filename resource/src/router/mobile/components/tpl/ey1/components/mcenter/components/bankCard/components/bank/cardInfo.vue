@@ -27,7 +27,7 @@
             :class="$style['bankcard-item']"
             @click="
               () => {
-                getBankDetail(item);
+                onClickDetail(item);
                 setPageStatus(0, 'bankCardInfo', false);
               }
             "
