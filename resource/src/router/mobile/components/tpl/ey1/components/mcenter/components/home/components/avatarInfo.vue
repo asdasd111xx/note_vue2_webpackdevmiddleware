@@ -80,8 +80,8 @@ export default {
     this.getAvatarSrc();
     if (this.loginStatus) {
       const today = new Date().getTime();
-      const created_at = new Date(this.memInfo.user.created_at).getTime();
-      const diff = today - created_at;
+      const created_at = moment(this.memInfo.user.created_at).format('x');
+      const diff = +today - +created_at;
       this.day = Math.floor(diff / 1000 / 60 / 60 / 24) + 1;
     }
   },

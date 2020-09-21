@@ -372,6 +372,24 @@ export default {
                 this.isShow = false;
                 this.actionSetIsLoading(false);
 
+                if (res.status !== '000' || res.errorCode !== '00') {
+                    if (res.code === 'C150099') {
+                        this.actionSetGlobalMessage({
+                            msg: res.msg
+                        });
+                        setTimeout(() => {
+                            this.$router.push('/mobile/mcenter/bankCard?redirect=deposit')
+                        }, 2000)
+                    } else if (res.code === 'TM020067') {
+                        this.isShowBlockTips = true;
+                    } else {
+                        this.actionSetGlobalMessage({
+                            msg: res.msg
+                        });
+                    }
+                    return;
+                }
+
                 if (res && res.data) {
                     let extraArray = res.data.extraArray;
                     if (extraArray && extraArray.switchPromotionTypeCGPay) {

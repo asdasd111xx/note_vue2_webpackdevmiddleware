@@ -8,7 +8,11 @@
           :style="isShowTab ? {} : { top: '43px' }"
         >
           <span :class="$style['title']">
-            {{ $text("S_MY_DIGITAL_CURRENCY_WALLET", "我的数字货币钱包") }}
+            {{
+              themeTPL === "porn1"
+                ? $text("S_MY_DIGITAL_CURRENCY_WALLET", "我的数字货币钱包")
+                : $text("S_MY_VIRTUAL_BANKCARD", "我的电子钱包")
+            }}
           </span>
 
           <span :class="$style['count']">
@@ -23,38 +27,16 @@
           :class="$style['card-list']"
           :style="isShowTab ? {} : { 'margin-top': '41px' }"
         >
-          <div
-            v-for="item in wallet_card"
+          <card-item
+            v-for="(item, index) in wallet_card"
             :key="item.id"
-            :class="$style['bankcard-item']"
-            @click="
-              () => {
-                onClickDetail(item);
-                setPageStatus(1, 'walletCardInfo', false);
-              }
-            "
-          >
-            <div :class="[$style['card-top'], 'clearfix']">
-              <div :class="$style['card-logo']">
-                <img v-lazy="getBankImage(item.swift_code)" />
-              </div>
-
-              <div :class="$style['card-info']">
-                <div :class="$style['card-name']">
-                  {{ item.payment_gateway_name }}
-                </div>
-              </div>
-            </div>
-
-            <div :class="$style['card-number']">
-              {{ item.address.slice(0, 4) }} **** ****
-              <span>{{ item.address.slice(-4) }}</span>
-            </div>
-
-            <div v-if="item.auditing" :class="$style['audit-tip']">
-              删除审核中
-            </div>
-          </div>
+            :index="index"
+            :data="item"
+            :isDetailPage="false"
+            :type="'wallet'"
+            @onClick="onClickDetail(item, index)"
+            @setPageStatus="setPageStatus(1, 'walletCardInfo', false)"
+          />
         </div>
       </div>
 
@@ -64,26 +46,49 @@
         :class="$style['no-data']"
       >
         <div :class="$style['no-bankcard']">
-          <img src="/static/image/porn1/mcenter/bankCard/no_bankcard.png" />
+          <img
+            :src="`/static/image/${themeTPL}/mcenter/bankCard/no_bankcard.png`"
+          />
         </div>
       </div>
 
       <!-- 添加卡片按鈕區塊 -->
-      <template v-if="!isBindNowOpenAllWallets">
-        <div :class="$style['add-card']">
-          <div :class="$style['add-wrap']">
-            <div
-              :class="$style['add-btn']"
-              @click="setPageStatus(1, 'addWalletCard', false)"
-            >
-              <img src="/static/image/porn1/mcenter/add_2.png" />
-              <span>{{ $text("S_ADD_DIGITAL_CURRENCY", "添加数字货币") }}</span>
-            </div>
+      <template v-if="isShowAddCardButton">
+        <div :class="$style['add-wrap']">
+          <div
+            :class="$style['add-btn']"
+            @click="setPageStatus(1, 'addWalletCard', false)"
+          >
+            <img :src="`/static/image/${themeTPL}/mcenter/add_2.png`" />
+            <span>
+              {{
+                themeTPL === "porn1"
+                  ? $text("S_ADD_DIGITAL_CURRENCY", "添加数字货币")
+                  : $text("S_ADD_VIRTUAL_BANKCARD", "添加电子钱包")
+              }}
+            </span>
           </div>
         </div>
 
         <p :class="$style['remind']">
-          {{ $t("S_DIGITAL_CURRENCY_LIMIT").replace("%s", 1) }}
+          <template v-if="themeTPL === 'porn1'">
+            {{ $t("S_DIGITAL_CURRENCY_LIMIT").replace("%s", 1) }}
+          </template>
+
+          <template v-if="themeTPL === 'ey1'">
+            <span v-if="userLevelObj.virtual_bank_single">
+              {{
+                $t("S_VIRTUAL_BANKCARD_TYPE_LIMIT").replace(
+                  "%s",
+                  nowOpenWallet.length
+                )
+              }}
+            </span>
+
+            <span v-else>
+              {{ $t("S_VIRTUAL_BANKCARD_LIMIT").replace("%s", 15) }}
+            </span>
+          </template>
         </p>
       </template>
     </template>
@@ -92,42 +97,48 @@
     <template v-if="showDetail && wallet_cardDetail">
       <div v-if="wallet_cardDetail.auditing" :class="$style['audit-block']">
         <div>删除审核中</div>
-        <span>审核通过后，系统会自动刪除錢包</span>
+        <span>
+          审核通过后，系统会自动刪除{{
+            themeTPL === "porn1" ? "钱包" : "银行卡"
+          }}
+        </span>
       </div>
 
-      <div
-        :class="[
-          $style['bankcard-item'],
-          $style[`colorIndex-${colorRepeatIndex}`]
-        ]"
-      >
-        <div :class="[$style['card-top'], 'clearfix']">
-          <div :class="$style['card-logo']">
-            <img v-lazy="getBankImage(wallet_cardDetail.swift_code)" />
-          </div>
-
-          <div :class="$style['card-info']">
-            <div :class="$style['card-name']">
-              {{ wallet_cardDetail.payment_gateway_name }}
-            </div>
-          </div>
-        </div>
-
-        <div :class="$style['card-number']">
-          {{ wallet_cardDetail.address.slice(0, 4) }} **** ****
-          <span>{{ wallet_cardDetail.address.slice(-4) }}</span>
-        </div>
-      </div>
+      <card-item
+        :data="wallet_cardDetail"
+        :index="colorRepeatIndex"
+        :isDetailPage="true"
+        :type="'wallet'"
+      />
 
       <div v-if="editStatus" :class="$style['edit-bankcard']">
         <div :class="$style['edit-mask']" />
         <div :class="$style['edit-button']">
+          <template
+            v-if="themeTPL === 'ey1' && !userLevelObj.virtual_bank_single"
+          >
+            <div
+              v-if="userLevelObj.virtual_bank_single && hasSameTypeCard"
+              :class="$style['edit-option-item']"
+              @click="moveCard"
+            >
+              停用
+            </div>
+
+            <div v-else :class="$style['edit-option-item']" @click="moveCard">
+              移至历史帐号
+            </div>
+          </template>
+
           <div
             v-if="memInfo.config.delete_bank_card"
-            :class="[$style['edit-option-item'], $style['confirm']]"
+            :class="[
+              $style['edit-option-item'],
+              { [$style['confirm']]: themeTPL === 'porn1' }
+            ]"
             @click="isShowPop = true"
           >
-            解除綁定
+            {{ themeTPL === "porn1" ? "解除綁定" : "删除电子钱包" }}
           </div>
 
           <div
@@ -148,7 +159,13 @@
             {{ $text("S_TIPS", "温馨提示") }}
           </div>
 
-          <span>确定解除绑定该钱包？</span>
+          <span>
+            {{
+              themeTPL === "porn1"
+                ? "确定解除绑定该钱包？"
+                : "确定删除该张卡片吗？"
+            }}
+          </span>
         </div>
 
         <div :class="$style['button-block']">
@@ -167,8 +184,12 @@
 
 <script>
 import virtualMixin from "@/mixins/mcenter/bankCard/cardInfo/wallet";
+import cardItem from "../cardItem";
 
 export default {
+  components: {
+    cardItem
+  },
   mixins: [virtualMixin],
   props: {
     isShowTab: {
@@ -223,6 +244,22 @@ export default {
       }
 
       return false;
+    },
+    isShowAddCardButton() {
+      switch (this.themeTPL) {
+        case "porn1":
+          return !this.isBindNowOpenAllWallets;
+          break;
+
+        case "ey1":
+          return (
+            (!this.userLevelObj.virtual_bank_single &&
+              this.wallet_card.length < 15) ||
+            (this.userLevelObj.virtual_bank_single &&
+              this.wallet_card.length < this.nowOpenWallet.length)
+          );
+          break;
+      }
     }
   },
   methods: {
@@ -230,10 +267,10 @@ export default {
       return {
         src: `https://images.dormousepie.com/icon/bankIconBySwiftCode/${swiftCode}.png`,
         error: this.$getCdnPath(
-          "/static/image/porn1/default/bank_default_2.png"
+          `/static/image/${this.themeTPL}/default/bank_default_2.png`
         ),
         loading: this.$getCdnPath(
-          "/static/image/porn1/default/bank_default_2.png"
+          `/static/image/${this.themeTPL}/default/bank_default_2.png`
         )
       };
     }
@@ -241,6 +278,14 @@ export default {
 };
 </script>
 
-<style lang="scss" module>
-@import "~@/css/page/bankCard/porn1.cardInfo.module.scss";
-</style>
+<style
+  lang="scss"
+  src="@/css/page/bankCard/porn1.cardInfo.module.scss"
+  module="$style_porn1"
+></style>
+
+<style
+  lang="scss"
+  src="@/css/page/bankCard/ey1.cardInfo.module.scss"
+  module="$style_ey1"
+></style>

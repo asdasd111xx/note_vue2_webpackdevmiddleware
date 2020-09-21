@@ -21,41 +21,16 @@
           :class="$style['card-list']"
           :style="isShowTab ? {} : { 'margin-top': '41px' }"
         >
-          <div
+          <card-item
             v-for="(item, index) in bank_card"
             :key="item.id"
-            :class="$style['bankcard-item']"
-            @click="
-              () => {
-                onClickDetail(item, index);
-                setPageStatus(0, 'bankCardInfo', false);
-              }
-            "
-          >
-            <div :class="[$style['card-top'], 'clearfix']">
-              <div :class="$style['card-logo']">
-                <img v-lazy="getBankImage(item.swift_code)" />
-              </div>
-
-              <div :class="$style['card-info']">
-                <div :class="$style['card-name']">
-                  {{ item.bank_name }}
-                </div>
-
-                <div :class="$style['card-type']">
-                  {{ item.type }}
-                </div>
-              </div>
-            </div>
-
-            <div :class="$style['card-number']">
-              **** **** **** <span>{{ item.account.slice(-4) }}</span>
-            </div>
-
-            <div v-if="item.auditing" :class="$style['audit-tip']">
-              删除审核中
-            </div>
-          </div>
+            :index="index"
+            :data="item"
+            :isDetailPage="false"
+            :type="'bankCard'"
+            @onClick="onClickDetail(item, index)"
+            @setPageStatus="setPageStatus(0, 'bankCardInfo', false)"
+          />
         </div>
       </div>
 
@@ -65,21 +40,21 @@
         :class="$style['no-data']"
       >
         <div :class="$style['no-bankcard']">
-          <img src="/static/image/porn1/mcenter/bankCard/no_bankcard.png" />
+          <img
+            :src="`/static/image/${themeTPL}/mcenter/bankCard/no_bankcard.png`"
+          />
         </div>
       </div>
 
       <!-- 添加卡片按鈕區塊 -->
       <template v-if="isRevice && bank_card.length < 3">
-        <div :class="$style['add-card']">
-          <div :class="$style['add-wrap']">
-            <div
-              :class="$style['add-btn']"
-              @click="setPageStatus(0, 'addBankCard', false)"
-            >
-              <img src="/static/image/porn1/mcenter/add_2.png" />
-              <span>{{ $text("S_ADD_BANKCARD", "添加银行卡") }}</span>
-            </div>
+        <div :class="$style['add-wrap']">
+          <div
+            :class="$style['add-btn']"
+            @click="setPageStatus(0, 'addBankCard', false)"
+          >
+            <img :src="`/static/image/${themeTPL}/mcenter/add_2.png`" />
+            <span>{{ $text("S_ADD_BANKCARD", "添加银行卡") }}</span>
           </div>
         </div>
 
@@ -96,32 +71,12 @@
         <span>审核通过后，系统会自动刪除錢包</span>
       </div>
 
-      <div
-        :class="[
-          $style['bankcard-item'],
-          $style[`colorIndex-${colorRepeatIndex}`]
-        ]"
-      >
-        <div :class="[$style['card-top'], 'clearfix']">
-          <div :class="$style['card-logo']">
-            <img v-lazy="getBankImage(bank_cardDetail.swift_code)" />
-          </div>
-
-          <div :class="$style['card-info']">
-            <div :class="$style['card-name']">
-              {{ bank_cardDetail.bank_name }}
-            </div>
-
-            <div :class="$style['card-type']">
-              {{ bank_cardDetail.type }}
-            </div>
-          </div>
-        </div>
-
-        <div :class="$style['card-number']">
-          **** **** **** <span>{{ bank_cardDetail.account.slice(-4) }}</span>
-        </div>
-      </div>
+      <card-item
+        :data="bank_cardDetail"
+        :index="colorRepeatIndex"
+        :isDetailPage="true"
+        :type="'bankCard'"
+      />
 
       <div v-if="editStatus" :class="$style['edit-bankcard']">
         <div :class="$style['edit-mask']" />
@@ -169,10 +124,13 @@
 </template>
 
 <script>
-import ajax from "@/lib/ajax";
 import bankMixin from "@/mixins/mcenter/bankCard/cardInfo/bank";
+import cardItem from "../cardItem";
 
 export default {
+  components: {
+    cardItem
+  },
   mixins: [bankMixin],
   props: {
     isShowTab: {
@@ -200,10 +158,10 @@ export default {
       return {
         src: `https://images.dormousepie.com/icon/bankIconBySwiftCode/${swiftCode}.png`,
         error: this.$getCdnPath(
-          "/static/image/porn1/default/bank_default_2.png"
+          `/static/image/${this.themeTPL}/default/bank_default_2.png`
         ),
         loading: this.$getCdnPath(
-          "/static/image/porn1/default/bank_default_2.png"
+          `/static/image/${this.themeTPL}/default/bank_default_2.png`
         )
       };
     }
@@ -211,6 +169,14 @@ export default {
 };
 </script>
 
-<style lang="scss" module>
-@import "~@/css/page/bankCard/porn1.cardInfo.module.scss";
-</style>
+<style
+  lang="scss"
+  src="@/css/page/bankCard/porn1.cardInfo.module.scss"
+  module="$style_porn1"
+></style>
+
+<style
+  lang="scss"
+  src="@/css/page/bankCard/ey1.cardInfo.module.scss"
+  module="$style_ey1"
+></style>

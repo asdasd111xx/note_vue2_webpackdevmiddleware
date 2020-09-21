@@ -287,7 +287,7 @@
         v-if="allWithdrawAccount.length === 0 && userLevelObj.bank"
         :class="[$style['add-bank-card']]"
       >
-        <img :src="$getCdnPath(`/static/image/${themeTPL}/mcenter/add.png`)" />
+        <img :src="$getCdnPath(`/static/image/${themeTPL}/mcenter/add_2.png`)" />
         &nbsp;
         <span @click="checkAccountData('bankCard')">
           {{ $text("S_ADD_BANKCARD", "添加银行卡") }}
@@ -299,7 +299,7 @@
         v-if="allWithdrawAccount.length === 0 && userLevelObj.virtual_bank"
         :class="[$style['add-bank-card']]"
       >
-        <img :src="$getCdnPath(`/static/image/${themeTPL}/mcenter/add.png`)" />
+        <img :src="$getCdnPath(`/static/image/${themeTPL}/mcenter/add_2.png`)" />
         &nbsp;
         <span @click="checkAccountData('wallet')">
           {{ $text("S_ADD_VIRTUAL_BANKCARD", "添加电子钱包") }}
@@ -311,7 +311,7 @@
         v-if="allWithdrawAccount.length > 0"
         :class="[$style['add-bank-card']]"
       >
-        <img :src="$getCdnPath(`/static/image/${themeTPL}/mcenter/add.png`)" />
+        <img :src="$getCdnPath(`/static/image/${themeTPL}/mcenter/add_2.png`)" />
         &nbsp;
         <span
           @click="
@@ -914,10 +914,10 @@ export default {
       return {
         src: `https://images.dormousepie.com/icon/bankIconBySwiftCode/${swiftCode}.png`,
         error: this.$getCdnPath(
-          "/static/image/_new/default/bank_default_2.png"
+          `/static/image/${this.themeTPL}/default/bank_default_2.png`
         ),
         loading: this.$getCdnPath(
-          "/static/image/_new/default/bank_default_2.png"
+          `/static/image/${this.themeTPL}/default/bank_default_2.png`
         )
       };
     },

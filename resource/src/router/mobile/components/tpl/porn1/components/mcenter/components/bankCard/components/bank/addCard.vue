@@ -31,41 +31,44 @@
       <template v-if="addBankCardStep === 'one'">
         <div :class="$style['info-item']">
           <p :class="$style['input-title']">所属银行</p>
-          <div :class="$style['select-bank']" @click="isShowPop = true">
+          <div :class="$style['select-bank']" @click="isShowPopBankList = true">
             <span :class="{ [$style['select-active']]: currentBank }">
               {{ currentBank ? currentBank : "请选择银行" }}
             </span>
             <img
               :class="$style['arrow-icon']"
-              src="/static/image/porn1/common/arrow_next.png"
+              :src="`/static/image/${themeTPL}/common/arrow_next.png`"
             />
           </div>
         </div>
 
-        <!-- <div :class="$style['info-item']">
-          <p :class="$style['input-title']">省/直辖市</p>
-          <div :class="$style['input-wrap']">
-            <input
-              v-model.trim="formData.province"
-              type="text"
-              placeholder="请输入省/直辖市"
-              maxlength="36"
-              @input="checkData"
-            />
+        <template v-if="themeTPL === 'ey1' && !memInfo.config.player_user_bank">
+          <div :class="$style['info-item']">
+            <p :class="$style['input-title']">省/直辖市</p>
+            <div :class="$style['input-wrap']">
+              <input
+                v-model.trim="formData.province"
+                type="text"
+                placeholder="请输入省/直辖市"
+                maxlength="36"
+                @input="checkData($event.target.value, 'province')"
+              />
+            </div>
           </div>
-        </div>
-        <div :class="$style['info-item']">
-          <p :class="$style['input-title']">县/市</p>
-          <div :class="$style['input-wrap']">
-            <input
-              v-model.trim="formData.city"
-              type="text"
-              placeholder="请输入县/市"
-              maxlength="36"
-              @input="checkData"
-            />
+
+          <div :class="$style['info-item']">
+            <p :class="$style['input-title']">县/市</p>
+            <div :class="$style['input-wrap']">
+              <input
+                v-model.trim="formData.city"
+                type="text"
+                placeholder="请输入县/市"
+                maxlength="36"
+                @input="checkData($event.target.value, 'city')"
+              />
+            </div>
           </div>
-        </div> -->
+        </template>
 
         <div :class="$style['info-item']">
           <p :class="$style['input-title']">开户支行</p>
@@ -184,16 +187,16 @@
     <p :class="$style['service-remind']">
       如需帮助，请<span
         :class="$style['service-btn']"
-        @click="$router.push('/mobile/service')"
+        @click="$router.push('/mobile/service?redirect=bankCard')"
         >联系客服</span
       >
     </p>
 
-    <div v-if="isShowPop" :class="$style['pop-wrap']">
-      <div :class="$style['pop-mask']" @click="isShowPop = false" />
+    <div v-if="isShowPopBankList" :class="$style['pop-wrap']">
+      <div :class="$style['pop-mask']" @click="isShowPopBankList = false" />
       <div :class="$style['pop-menu']">
         <div :class="$style['pop-title']">
-          <span @click="isShowPop = false">
+          <span @click="isShowPopBankList = false">
             {{ $text("S_CANCEL", "取消") }}
           </span>
           选择所属银行
@@ -270,6 +273,11 @@ export default {
     this.smsTimer = null;
   },
   computed: {
+    $style() {
+      const style =
+        this[`$style_${this.siteConfig.MOBILE_WEB_TPL}`] || this.$style_porn1;
+      return style;
+    },
     themeTPL() {
       return this.siteConfig.MOBILE_WEB_TPL;
     }
@@ -329,6 +337,14 @@ export default {
 };
 </script>
 
-<style lang="scss" module>
-@import "~@/css/page/bankCard/porn1.addCard.module.scss";
-</style>
+<style
+  lang="scss"
+  src="@/css/page/bankCard/porn1.addCard.module.scss"
+  module="$style_porn1"
+></style>
+
+<style
+  lang="scss"
+  src="@/css/page/bankCard/ey1.addCard.module.scss"
+  module="$style_ey1"
+></style>

@@ -1,7 +1,11 @@
 export default {
   data() {
     return {
-      currentPage: "bankCardInfo",
+      // Page 相關參數
+      currentTab: 1,
+      currentPage: "walletCardInfo",
+      isShowTab: false,
+
       editDetailStatus: false,
       isAuditStatus: false,
       showDetailStatus: false,

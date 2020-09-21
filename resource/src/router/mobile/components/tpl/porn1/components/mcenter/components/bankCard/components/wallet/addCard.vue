@@ -6,33 +6,67 @@
       </p>
 
       <!-- Select Wallet Type -->
-      <div :class="$style['wallet-block']">
-        <p :class="$style['wallet-text']">
-          {{ $text("S_WALLET_TYPE", "钱包类型") }}
-        </p>
+      <!-- Yabo -->
+      <template v-if="themeTPL === 'porn1'">
+        <div :class="$style['wallet-block']">
+          <p :class="$style['wallet-text']">
+            {{ $text("S_WALLET_TYPE", "钱包类型") }}
+          </p>
 
-        <ul :class="$style['wallet-list']">
-          <li
+          <ul :class="$style['wallet-list']">
+            <li
+              :class="[
+                $style['wallet-item'],
+                {
+                  [$style['is-current']]: item.id === selectTarget.walletId
+                }
+              ]"
+              v-for="item in selectTarget.fixed ? filterWalletList : walletList"
+              :key="item.id"
+              @click="setBank(item)"
+            >
+              {{ item.name }}
+
+              <img
+                v-if="item.id === selectTarget.walletId"
+                :class="$style['select-wallet-img']"
+                src="/static/image/porn1/common/select_active.png"
+              />
+            </li>
+          </ul>
+        </div>
+      </template>
+
+      <!-- 億元 -->
+      <template v-if="themeTPL === 'ey1'">
+        <div :class="$style['info-item']">
+          <p :class="$style['input-title']">
+            {{ $text("S_WALLET_TYPE", "钱包类型") }}
+          </p>
+          <div
             :class="[
-              $style['wallet-item'],
-              {
-                [$style['is-current']]: item.id === selectTarget.walletId
-              }
+              $style['select-bank'],
+              { [$style['disable']]: selectTarget.fixed }
             ]"
-            v-for="item in selectTarget.fixed ? filterWalletList : walletList"
-            :key="item.id"
-            @click="setBank(item)"
+            @click="isShowPopBankList = true"
           >
-            {{ item.name }}
-
+            <span
+              :class="{ [$style['select-active']]: selectTarget.walletName }"
+            >
+              {{
+                selectTarget.walletName
+                  ? selectTarget.walletName
+                  : $text("S_SELECT_WALLET_TYPE", "请选择钱包类型")
+              }}
+            </span>
             <img
-              v-if="item.id === selectTarget.walletId"
-              :class="$style['select-wallet-img']"
-              src="/static/image/porn1/common/select_active.png"
+              v-if="!selectTarget.fixed"
+              :class="$style['arrow-icon']"
+              src="/static/image/ey1/common/arrow_next.png"
             />
-          </li>
-        </ul>
-      </div>
+          </div>
+        </div>
+      </template>
 
       <!-- Input -->
       <div v-if="selectTarget.walletName" :class="$style['info-item']">
@@ -62,7 +96,9 @@
         >
           <img
             :src="
-              $getCdnPath('/static/image/porn1/mcenter/bankCard/ic_qrcode.png')
+              $getCdnPath(
+                `/static/image/${themeTPL}/mcenter/bankCard/ic_qrcode.png`
+              )
             "
             alt="qrcode"
           />
@@ -87,8 +123,8 @@
 
       <!-- Confirm Button -->
       <div :class="$style['info-confirm']">
-        <!-- 上方 Tip 顯示 -->
-        <template v-if="selectTarget.walletName">
+        <!-- Yabo : 上方 Tip 顯示 -->
+        <template v-if="themeTPL === 'porn1' && selectTarget.walletName">
           <li
             v-for="(item, index) in walletTipInfo"
             :key="`${item.key}-${index}`"
@@ -101,6 +137,13 @@
               {{ item.dataObj.text }}
             </span>
           </li>
+        </template>
+
+        <!-- 億元：確認鈕上方text -->
+        <template v-if="themeTPL === 'ey1' && selectTarget.walletName">
+          <p v-if="!isGoBaoWallet">
+            请认真校对钱包地址，地址错误资金将无法到帐
+          </p>
         </template>
 
         <!-- 確認鈕 -->
@@ -138,8 +181,40 @@
       >
     </p>
 
+    <!-- 錢包類型選單 -->
+    <template v-if="themeTPL === 'ey1'">
+      <div v-if="isShowPopBankList" :class="$style['pop-wrap']">
+        <div :class="$style['pop-mask']" @click="isShowPopBankList = false" />
+        <div :class="[$style['pop-menu'], $style['custom1']]">
+          <div :class="$style['pop-title']">
+            <span @click="isShowPopBankList = false">
+              {{ $text("S_CANCEL", "取消") }}
+            </span>
+            请选择钱包类型
+          </div>
+          <ul :class="$style['pop-list']">
+            <li
+              v-for="item in walletList"
+              :key="item.id"
+              @click="setBank(item)"
+            >
+              <img v-lazy="getBankImage(item.swift_code)" />
+              {{ item.name }}
+              <icon
+                v-if="item.id === selectTarget.walletId"
+                :class="$style['select-icon']"
+                name="check"
+              />
+            </li>
+          </ul>
+        </div>
+      </div>
+    </template>
+
     <!-- USDT Tip 彈窗 -->
-    <popup-tip v-if="isShowPopTip" :isShowPop.sync="isShowPopTip" />
+    <template v-if="themeTPL === 'porn1'">
+      <popup-tip v-if="isShowPopTip" :isShowPop.sync="isShowPopTip" />
+    </template>
 
     <popup-qrcode
       v-if="isShowPopQrcode"
@@ -165,7 +240,7 @@ export default {
   props: {
     setPageStatus: {
       type: Function,
-      default: () => { }
+      default: () => {}
     },
     userLevelObj: {
       type: Object,
@@ -184,12 +259,8 @@ export default {
       walletList: [],
       filterWalletList: [],
       userBindWalletList: [],
-      bindWallets: {
-        cgPay: false,
-        goBao: false,
-        ids: [] // If true then push
-      },
 
+      isShowPopBankList: false,
       isShowPopTip: false,
       isShowPopQrcode: false,
       isGoBaoWallet: false,
@@ -220,6 +291,14 @@ export default {
       noticeData: "getNoticeData",
       siteConfig: "getSiteConfig"
     }),
+    $style() {
+      const style =
+        this[`$style_${this.siteConfig.MOBILE_WEB_TPL}`] || this.$style_porn1;
+      return style;
+    },
+    themeTPL() {
+      return this.siteConfig.MOBILE_WEB_TPL;
+    },
     showPopQrcode: {
       get() {
         return this.isShowPopQrcode;
@@ -246,6 +325,7 @@ export default {
       this.walletTipInfo = [];
 
       let text = "";
+
       switch (value) {
         case 21:
           text = "请输入CGP邮箱/手机号或扫扫二维码";
@@ -296,7 +376,8 @@ export default {
       }
     },
     walletList() {
-      if (this.$route.query.wallet) {
+      // Yabo
+      if (this.themeTPL === "porn1" && this.$route.query.wallet) {
         switch (this.$route.query.wallet) {
           case "CGPay":
             this.filterWalletList = this.walletList.filter(item => {
@@ -320,6 +401,20 @@ export default {
         }
 
         this.setBank(this.filterWalletList[0]);
+        this.selectTarget.fixed = true;
+      }
+
+      // 億元
+      // 從提現頁進來，且只選擇 CGPay
+      if (
+        this.themeTPL === "ey1" &&
+        this.$route.query.wallet &&
+        this.$route.query.wallet === "CGPay"
+      ) {
+        let item = this.walletList.find(item => {
+          return item.id === 21;
+        });
+        this.setBank(item);
         this.selectTarget.fixed = true;
       }
     }
@@ -388,21 +483,53 @@ export default {
           return;
         }
 
-        // 辨别目前使用者已绑定的錢包，並過濾出尚未綁定的錢包
-        let idArr = [
-          ...new Set(
-            this.userBindWalletList.map(item => {
-              return item.payment_gateway_id;
-            })
-          )
-        ];
+        // 預設錢包
+        this.walletList = ret;
 
-        if (idArr) {
-          this.walletList = ret.filter(item => {
-            if (!idArr.includes(item.id)) {
-              return item;
-            }
+        // Yabo：辨别目前使用者已绑定的錢包，並過濾出尚未綁定的錢包
+        // 億元：如果已綁定過相同類型錢包時，錢包類型就不出現選項。因此 CGPay 與 購寶 只能綁定一組的條件已符合
+        // Yabo 目前與 億元　等同條件判斷
+        if (
+          this.themeTPL === "porn1" ||
+          (this.themeTPL === "ey1" && this.userLevelObj.virtual_bank_single)
+        ) {
+          let idArr = [
+            ...new Set(
+              this.userBindWalletList.map(item => {
+                return item.payment_gateway_id;
+              })
+            )
+          ];
+
+          if (idArr) {
+            this.walletList = ret.filter(item => {
+              if (!idArr.includes(item.id)) {
+                return item;
+              }
+            });
+          }
+        } else {
+          // 億元：沒有開啟綁定一組開關，需 Check 是否有綁定 CGPay 與 購寶
+          let idArr = [
+            ...new Set(
+              this.userBindWalletList.filter(item => {
+                return (
+                  item.payment_gateway_id === 21 ||
+                  item.payment_gateway_id === 37
+                );
+              })
+            )
+          ].map(item => {
+            return item.payment_gateway_id;
           });
+
+          if (idArr) {
+            this.walletList = ret.filter(item => {
+              if (!idArr.includes(item.id)) {
+                return item;
+              }
+            });
+          }
         }
       });
     },
@@ -486,6 +613,7 @@ export default {
         });
     },
     setBank(bank) {
+      this.isShowPopBankList = false;
       this.selectTarget.walletName = bank.name;
       this.selectTarget.walletId = bank.id;
       this.selectTarget.swiftCode = bank.swift_code;
@@ -542,14 +670,16 @@ export default {
       return {
         src: `https://images.dormousepie.com/icon/bankIconBySwiftCode/${swiftCode}.png`,
         error: this.$getCdnPath(
-          "/static/image/porn1/default/bank_default_2.png"
+          `/static/image/${this.themeTPL}/default/bank_default_2.png`
         ),
         loading: this.$getCdnPath(
-          "/static/image/porn1/default/bank_default_2.png"
+          `/static/image/${this.themeTPL}/default/bank_default_2.png`
         )
       };
     },
     getWalletTipInfo() {
+      if (this.themeTPL === "ey1") return;
+
       if (this.selectTarget.walletId === 21) {
         this.walletTipInfo = [
           {
@@ -609,6 +739,14 @@ export default {
 };
 </script>
 
-<style lang="scss" module>
-@import "~@/css/page/bankCard/porn1.addCard.module.scss";
-</style>
+<style
+  lang="scss"
+  src="@/css/page/bankCard/porn1.addCard.module.scss"
+  module="$style_porn1"
+></style>
+
+<style
+  lang="scss"
+  src="@/css/page/bankCard/ey1.addCard.module.scss"
+  module="$style_ey1"
+></style>

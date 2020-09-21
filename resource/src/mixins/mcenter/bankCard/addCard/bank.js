@@ -8,7 +8,7 @@ export default {
         return {
             bankList: [],
             currentBank: "",
-            isShowPop: false,
+            isShowPopBankList: false,
             isVerifyPhone: false,
             formData: {
                 account_name: "",
@@ -99,7 +99,9 @@ export default {
             delete this.formData['account_name'];
         }
 
-        if (this.siteConfig.MOBILE_WEB_TPL !== 'ey1') {
+        if (this.siteConfig.MOBILE_WEB_TPL !== 'ey1' ||
+           (this.memInfo.config.player_user_bank && this.siteConfig.MOBILE_WEB_TPL === 'ey1'))
+        {
             delete this.formData['city'];
             delete this.formData['province'];
         }
@@ -157,7 +159,7 @@ export default {
             });
         },
         setBank(bank) {
-            this.isShowPop = false;
+            this.isShowPopBankList = false;
             this.formData.bank_id = bank.id;
             this.currentBank = bank.name;
             this.checkData();

@@ -12,8 +12,17 @@ export default {
   },
   computed: {
     ...mapGetters({
-      memInfo: "getMemInfo"
-    })
+      memInfo: "getMemInfo",
+      siteConfig: "getSiteConfig"
+    }),
+    $style() {
+      const style =
+        this[`$style_${this.siteConfig.MOBILE_WEB_TPL}`] || this.$style_porn1;
+      return style;
+    },
+    themeTPL() {
+      return this.siteConfig.MOBILE_WEB_TPL;
+    },
   },
   methods: {
     ...mapActions(['actionSetGlobalMessage']),
@@ -68,7 +77,7 @@ export default {
           // 切換當前頁面狀態
           this.$emit("update:showDetail", false);
           this.$emit('update:editStatus', false);
-          this.showTab(true);
+          this.setPageStatus(1, "walletCardInfo", true);
         })
       })
     },
@@ -100,7 +109,7 @@ export default {
           } else {
             this.actionSetGlobalMessage({ msg: '刪除成功' });
             this.$emit("update:showDetail", false);
-            this.showTab(true);
+            this.setPageStatus(1, "walletCardInfo", true);
           }
         })
       })
