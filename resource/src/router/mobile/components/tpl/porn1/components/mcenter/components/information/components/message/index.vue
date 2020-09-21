@@ -37,8 +37,8 @@
           "
         />
       </div>
-       <div  :class="$style['message-header-title']">
-         {{ $route.query.pid ? '通知' : '消息中心' }}
+      <div :class="$style['message-header-title']">
+        {{ $route.query.pid ? "通知" : "消息中心" }}
       </div>
 
       <div v-if="!$route.query.pid" :class="$style['btn-more']">
@@ -184,8 +184,8 @@ import { getCookie, setCookie } from '@/lib/cookie';
 import EST from '@/lib/EST';
 
 export default {
-  props:{
-   headerConfig: {
+  props: {
+    headerConfig: {
       type: Object | null,
       default: null
     }
@@ -244,7 +244,7 @@ export default {
       this.actionSetMcenterMsgCount();
       mcenter.message({
         success: (response) => {
-          this.messageData = response.ret;
+          this.messageData = response.ret.sort((a, b) => Vue.moment(b.created_at) - Vue.moment(a.created_at));
           this.hasReceive = true;
         }
       });
@@ -350,7 +350,7 @@ export default {
         this.isEditing = false;
       });
     }
-     
+
   }
 };
 </script>
