@@ -1202,21 +1202,6 @@ export const actionSetRechargeConfig = ({ commit }, data) => {
     })
 };
 
-export const actionBindGoBao = ({ commit }) => {
-    return axios({
-        method: "get",
-        url: "/api/v1/c/ext/inpay?api_uri=/api/trade/v2/c/vendor/is_bind"
-    }).then(response => {
-        const { ret, result } = response.data;
-
-        if (!response || result !== "ok") {
-            return;
-        }
-
-        commit(types.SET_HASBINDGOBAO, ret);
-    });
-}
-
 export const actionSetCGPayInfo = ({ commit }) => {
     return axios({
         method: "get",
@@ -1516,9 +1501,7 @@ export const actionVerificationFormData = ({ state, dispatch, commit }, data) =>
             break;
 
         case 'alias':
-            // regex = /[，:;！@#$%^&*?<>()+=`|[\]{}\\"/.~\-_']*/g;
-
-            regex = /[^\u3000\u3400-\u4DBF\u4E00-\u9FFF.．·]/g;
+            regex = /[，:;！@#$%^&*?<>()+=`|[\]{}\\"/.~\-_']*/g;
             val = val
                 .replace(regex, '')
                 .substring(0, 20);
@@ -1546,6 +1529,11 @@ export const actionVerificationFormData = ({ state, dispatch, commit }, data) =>
             val = val.replace(/[^0-9.]/g, '')
                 .substring(0, 13);
             break;
+
+        case 'withdrawPwd':
+            val = val.replace(/[^0-9]/g, '')
+                .substring(0, 4);
+            break
     }
 
     return val;

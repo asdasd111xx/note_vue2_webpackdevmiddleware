@@ -123,7 +123,7 @@
     <!-- Yabo : 銀行卡列表 + 更多提現方式按鈕 -->
     <template v-if="themeTPL === 'porn1'">
       <!-- 銀行卡 -->
-      <div
+      <!-- <div
         v-if="
           withdrawUserData &&
             withdrawUserData.account &&
@@ -135,8 +135,7 @@
           {{ $text("S_BANKCARD", "银行卡") }}
         </div>
 
-        <!-- 取前三個銀行卡 不應該超過三張 -->
-        <div
+      <div
           v-for="item in withdrawUserData.account.slice(0, 3)"
           :class="$style['bank-card-cell']"
           @click="handleSelectCard(item)"
@@ -167,17 +166,17 @@
         >
           {{ $text("S_ADD_BANKCARD", "添加银行卡") }}
         </span>
-      </div>
+      </div> -->
 
       <!-- 銀行卡 -->
-      <!-- <div
+      <div
         v-if="allWithdrawAccount && allWithdrawAccount.length !== 0"
         :class="$style['bank-card-wrap']"
       >
         <div :class="$style['bank-card-cell']">
-          {{ $text("S_WITHDRAW_ACCOUNT02", "提现帐号") }} -->
+          {{ $text("S_WITHDRAW_ACCOUNT02", "提现帐号") }}
           <!-- 會員首次出款 or 需用銀行卡提現一次(強制銀行卡出款) -->
-          <!-- <span
+          <span
             v-if="
               forceStatus === 1 &&
                 userWithdrawCount === 0 &&
@@ -187,21 +186,21 @@
             :class="$style['withdraw-status-tip']"
           >
             银行卡提现一次，开通数字货币提现功能
-          </span> -->
+          </span>
 
           <!-- 非首次出款 + 強制使用 CGPay 出款 -->
-          <!-- <span
+          <span
             v-else-if="forceStatus === 2"
             :class="$style['withdraw-status-tip']"
           >
             仅限使用 CGPay 出款
           </span>
-        </div> -->
+        </div>
 
         <!-- 列出所有帐号 -->
         <!-- Question: 如果強制使用銀行卡出款，是否數字貨幣卡片 allow 狀態會為 false ? -->
         <!-- disable 的狀態需要與 RD5 請示 -->
-        <!-- <div
+        <div
           v-for="item in allWithdrawAccount"
           :class="[
             $style['bank-card-cell'],
@@ -222,13 +221,13 @@
               }
             ]"
           />
-        </div> -->
-      <!-- </div> -->
+        </div>
+      </div>
 
       <!-- 更多提现方式 -->
       <!-- 銀行卡超過3張 + 所有數字貨幣的錢包都有添加 => 則隱藏按鈕 -->
       <!-- 狀態由 withdrawMoreMethod 組件回傳 -->
-      <!-- <div
+      <div
         v-if="moreMethodStatusObj.bankCard && moreMethodStatusObj.wallet"
         :class="[$style['add-bank-card']]"
       >
@@ -243,7 +242,7 @@
         >
           {{ "更多提现方式" }}
         </span>
-      </div> -->
+      </div>
     </template>
 
     <!-- 因按鈕顯示邏輯不同，所以獨立成兩份 -->
@@ -608,12 +607,14 @@ export default {
       errTips: "",
       firstDeposit: false,
       hasBankCard: false,
+
       isLoading: true,
       isSendSubmit: false,
       isSerial: false,
       isShowBlockTips: false,
       isShowCheck: false,
       isShowMore: true,
+
       msg: "",
       moreMethodStatusObj: {
         bankCard: true,
@@ -663,22 +664,41 @@ export default {
           return item.allow;
         });
 
-        this.selectedCard = {
-          id:
-            Number(localStorage.getItem("tmp_w_selectedCard")) ||
-            defaultCard.id,
-          name:
-            defaultCard.withdrawType === "account_id"
-              ? ""
-              : defaultCard.alias.substring(0, defaultCard.alias.indexOf("-")),
-          withdrawType: defaultCard.withdrawType
-        };
+        // 卡片資料
+        this.selectedCard = localStorage.getItem("tmp_w_selectedCard")
+          ? {
+              id: JSON.parse(localStorage.getItem("tmp_w_selectedCard"))["id"],
+              name: JSON.parse(localStorage.getItem("tmp_w_selectedCard"))[
+                "name"
+              ],
+              withdrawType: JSON.parse(
+                localStorage.getItem("tmp_w_selectedCard")
+              )["withdrawType"]
+            }
+          : {
+              id: defaultCard.id,
+              name:
+                defaultCard.withdrawType === "account_id"
+                  ? ""
+                  : defaultCard.alias.substring(
+                      0,
+                      defaultCard.alias.indexOf("-")
+                    ),
+              withdrawType: defaultCard.withdrawType
+            };
 
+        // 金額部份
         this.withdrawValue = localStorage.getItem("tmp_w_amount");
+        this.actualMoney =
+          JSON.parse(localStorage.getItem("tmp_w_actualAmount")) ||
+          this.actualMoney;
+
+        // 提現密碼
+        this.withdrawPwd = localStorage.getItem("tmp_w_withdrawPwd");
 
         setTimeout(() => {
-          localStorage.removeItem("tmp_w_selectedCard");
-          localStorage.removeItem("tmp_w_amount");
+          this.removeCurrentValue();
+
           if (
             localStorage.getItem("tmp_w_1") &&
             localStorage.getItem("tmp_w_rule") !== "1"
@@ -691,33 +711,33 @@ export default {
         // this.actionSetIsLoading(false);
         this.isLoading = false;
       }
-    },
-    withdrawUserData(value) {
-      // 預設選擇第一張卡 或是從電話驗證成功後直接送出
-      if (
-        !this.selectedCard.id &&
-        this.withdrawUserData.account &&
-        this.withdrawUserData.account.length > 0
-      ) {
-        this.selectedCard.id =
-          Number(localStorage.getItem("tmp_w_selectedCard")) ||
-          this.withdrawUserData.account[0].id;
-        this.withdrawValue = localStorage.getItem("tmp_w_amount");
-        setTimeout(() => {
-          localStorage.removeItem("tmp_w_selectedCard");
-          localStorage.removeItem("tmp_w_amount");
-          if (
-            localStorage.getItem("tmp_w_1") &&
-            localStorage.getItem("tmp_w_rule") !== "1"
-          ) {
-            this.handleSubmit();
-          }
-          localStorage.removeItem("tmp_w_rule");
-        });
-
-        this.isLoading = false;
-      }
     }
+    // withdrawUserData(value) {
+    //   // 預設選擇第一張卡 或是從電話驗證成功後直接送出
+    //   if (
+    //     !this.selectedCard.id &&
+    //     this.withdrawUserData.account &&
+    //     this.withdrawUserData.account.length > 0
+    //   ) {
+    //     this.selectedCard.id =
+    //       Number(localStorage.getItem("tmp_w_selectedCard_id")) ||
+    //       this.withdrawUserData.account[0].id;
+    //     this.withdrawValue = localStorage.getItem("tmp_w_amount");
+    //     setTimeout(() => {
+    //       localStorage.removeItem("tmp_w_selectedCard_id");
+    //       localStorage.removeItem("tmp_w_amount");
+    //       if (
+    //         localStorage.getItem("tmp_w_1") &&
+    //         localStorage.getItem("tmp_w_rule") !== "1"
+    //       ) {
+    //         this.handleSubmit();
+    //       }
+    //       localStorage.removeItem("tmp_w_rule");
+    //     });
+
+    //     this.isLoading = false;
+    //   }
+    // }
   },
   created() {
     // 刷新 Player Api
@@ -926,8 +946,8 @@ export default {
       this.isSerial = !this.isSerial;
     },
 
-    verification(key, value) {
-      if (key === "withdrawValue") {
+    verification(target, value) {
+      if (target === "withdrawValue") {
         value = +value;
 
         // 針對加密貨幣
@@ -979,19 +999,13 @@ export default {
         this.errTips = "";
       }
 
-      if (key === "withdrawPwd") {
-        this.errTips = "";
-
-        const re = /[^0-9]/g;
-
-        if (this.withdrawPwd.length > 4) {
-          this.withdrawPwd = this.withdrawPwd.substring(0, 4);
-        }
-
-        this.withdrawPwd = this.withdrawPwd
-          .replace(" ", "")
-          .trim()
-          .replace(re, "");
+      if (target === "withdrawPwd") {
+        this.actionVerificationFormData({
+          target: "withdrawPwd",
+          value: value
+        }).then(val => {
+          this.withdrawPwd = val;
+        });
       }
     },
     toggleShowMore() {
@@ -1086,11 +1100,21 @@ export default {
         return;
       }
 
-      if (Number(this.actualMoney) !== Number(this.withdrawValue)) {
-        this.widthdrawTipsType = "tips";
-        this.isShowCheck = true;
-      } else {
-        this.handleSubmit();
+      switch (this.themeTPL) {
+        case "porn1":
+          if (Number(this.actualMoney) !== Number(this.withdrawValue)) {
+            this.widthdrawTipsType = "tips";
+            this.isShowCheck = true;
+          } else {
+            this.handleSubmit();
+          }
+          break;
+
+        // 一律顯示溫馨
+        case "ey1":
+          this.widthdrawTipsType = "tips";
+          this.isShowCheck = true;
+          break;
       }
     },
     closeTips() {
@@ -1103,10 +1127,29 @@ export default {
       }
     },
     saveCurrentValue(fromRule) {
-      localStorage.setItem("tmp_w_selectedCard", this.selectedCard.id);
+      localStorage.setItem(
+        "tmp_w_selectedCard",
+        JSON.stringify(this.selectedCard)
+      );
+
       localStorage.setItem("tmp_w_amount", this.withdrawValue);
+      localStorage.setItem(
+        ("tmp_w_actualAmount", JSON.stringify(this.actualMoney))
+      );
+
+      localStorage.setItem("tmp_w_withdrawPwd", this.withdrawPwd);
       if (fromRule) {
         localStorage.setItem("tmp_w_rule", "1");
+      }
+    },
+    removeCurrentValue(needDeleteRule) {
+      localStorage.removeItem("tmp_w_selectedCard");
+      localStorage.removeItem("tmp_w_amount");
+      localStorage.removeItem("tmp_w_actualAmount");
+      localStorage.removeItem("tmp_w_withdrawPwd");
+
+      if (needDeleteRule) {
+        localStorage.removeItem("tmp_w_1");
       }
     },
     handleSubmit() {
@@ -1115,8 +1158,7 @@ export default {
         this.memInfo.config.withdraw_player_verify &&
         !localStorage.getItem("tmp_w_1")
       ) {
-        localStorage.setItem("tmp_w_selectedCard", this.selectedCard.id);
-        localStorage.setItem("tmp_w_amount", this.withdrawValue);
+        this.saveCurrentValue();
         this.$router.push(
           "/mobile/mcenter/accountData/phone?redirect=withdraw"
         );
@@ -1135,9 +1177,8 @@ export default {
           });
         }, 200);
       });
-      localStorage.removeItem("tmp_w_1");
-      localStorage.removeItem("tmp_w_selectedCard");
-      localStorage.removeItem("tmp_w_amount");
+
+      this.removeCurrentValue(true);
     },
     /**
      * 送出取款資訊

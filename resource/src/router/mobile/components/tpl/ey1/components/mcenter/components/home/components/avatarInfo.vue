@@ -79,8 +79,10 @@ export default {
     this.getUserViplevel();
     this.getAvatarSrc();
     if (this.loginStatus) {
-      const today = Vue.moment(new Date());
-      this.day = Number(today.diff(Vue.moment(this.memInfo.user.created_at), 'days')) + 1;
+      const today = new Date().getTime();
+      const created_at = new Date(this.memInfo.user.created_at).getTime();
+      const diff = today - created_at;
+      this.day = Math.floor(diff / 1000 / 60 / 60 / 24) + 1;
     }
   },
   methods: {

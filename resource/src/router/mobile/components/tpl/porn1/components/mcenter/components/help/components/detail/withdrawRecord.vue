@@ -139,7 +139,7 @@ export default {
         // 实际到账
         { key: "real_amount", title: "S_REAL_WITHDRAW" },
         // 提现类型
-        { key: "withdraw", title: "S_WITHDRAW_TYPE" }
+        { key: "bank_name", title: "S_WITHDRAW_TYPE" }
       ],
       editOpen: false,
       withdrawData: {},

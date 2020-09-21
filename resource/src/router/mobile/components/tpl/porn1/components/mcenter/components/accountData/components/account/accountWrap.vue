@@ -265,7 +265,7 @@ export default {
               //   (key === 'email' && userConfig.user[key]) ||
               //   (key === 'email' && this.mcenterUserField.config.email.code)
               // ,
-              btnShow: !keyValue || !this.verification[key],
+              btnShow: !keyValue,
               verification: this.verification[key],
               isShow: userConfig.config[key].display
             };

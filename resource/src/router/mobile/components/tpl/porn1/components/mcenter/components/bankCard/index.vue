@@ -124,7 +124,7 @@ export default {
 
         case "walletCardInfo":
           return this.showDetail
-            ? this.$text("S_VIRTUAL_BANKCARD", "电子钱包")
+            ? this.$text("S_DIGITAL_CURRENCY", "数字货币")
             : this.$text("S_CARD_MANAGEMENT", "卡片管理");
           break;
           break;
@@ -134,7 +134,7 @@ export default {
           break;
 
         case "addWalletCard":
-          return this.$text("S_ADD_VIRTUAL_BANKCARD", "添加电子钱包");
+          return this.$text("S_ADD_DIGITAL_CURRENCY", "添加数字货币");
           break;
       }
     },

@@ -164,7 +164,7 @@ export default {
   props: {
     setPageStatus: {
       type: Function,
-      default: () => { }
+      default: () => {}
     },
     userLevelObj: {
       type: Object,
@@ -181,11 +181,6 @@ export default {
       },
       walletList: [],
       userBindWalletList: [],
-      bindWallets: {
-        cgPay: false,
-        goBao: false,
-        ids: [] // If true then push
-      },
 
       isShowPop: false,
       isShowPopQrcode: false,
@@ -213,9 +208,7 @@ export default {
     ...mapGetters({
       memInfo: "getMemInfo",
       noticeData: "getNoticeData",
-      siteConfig: "getSiteConfig",
-      isBindGoBao: "getHasBindGoBao",
-      isBindCGPay: "getHasBindCGPay"
+      siteConfig: "getSiteConfig"
     }),
     showPopQrcode: {
       get() {
@@ -293,21 +286,12 @@ export default {
     }
   },
   created() {
-    Promise.all([
-      this.checkBindCGpay(),
-      this.checkBindGoBao(),
-      this.getUserBindList()
-    ]).then(() => {
+    Promise.all([this.getUserBindList()]).then(() => {
       this.getWalletList();
     });
   },
   methods: {
-    ...mapActions([
-      "actionSetUserdata",
-      "actionSetGlobalMessage",
-      "actionBindGoBao",
-      "actionSetCGPayInfo"
-    ]),
+    ...mapActions(["actionSetUserdata", "actionSetGlobalMessage"]),
     verification(key, index) {
       let target = this.formData[key];
       let lock = false;
@@ -337,43 +321,6 @@ export default {
 
       this.lockStatus = lock;
     },
-    checkBindCGpay() {
-      return axios({
-        method: "get",
-        url:
-          "/api/v1/c/ext/inpay?api_uri=/api/trade/v2/c/withdraw/user/cgp_info"
-      }).then(response => {
-        const { ret, result } = response.data;
-
-        if (!response || result !== "ok") {
-          return;
-        }
-
-        this.bindWallets.cgPay = ret.is_bind_wallet;
-
-        if (this.bindWallets.cgPay) {
-          this.bindWallets.ids.push(21);
-        }
-      });
-    },
-    checkBindGoBao() {
-      return axios({
-        method: "get",
-        url: "/api/v1/c/ext/inpay?api_uri=/api/trade/v2/c/vendor/is_bind"
-      }).then(response => {
-        const { ret, result } = response.data;
-
-        if (!response || result !== "ok") {
-          return;
-        }
-
-        this.bindWallets.goBao = ret;
-
-        if (this.bindWallets.goBao) {
-          this.bindWallets.ids.push(37);
-        }
-      });
-    },
     getUserBindList() {
       return axios({
         method: "get",
@@ -402,6 +349,8 @@ export default {
           return;
         }
 
+        this.walletList = ret;
+
         // 有如果已綁定過相同類型錢包時，錢包類型就不出現選項
         // 因此 CGPay 與 購寶 只能綁定一組的條件已符合
         if (this.userLevelObj.virtual_bank_single) {
@@ -422,11 +371,27 @@ export default {
           }
         } else {
           // 沒有開啟綁定一組開關，需 Check 是否有綁定 CGPay 與 購寶
-          this.walletList = ret.filter(item => {
-            if (!this.bindWallets.ids.includes(item.id)) {
-              return item;
-            }
+          // CGPay or 購寶
+          let idArr = [
+            ...new Set(
+              this.userBindWalletList.filter(item => {
+                return (
+                  item.payment_gateway_id === 21 ||
+                  item.payment_gateway_id === 37
+                );
+              })
+            )
+          ].map(item => {
+            return item.payment_gateway_id;
           });
+
+          if (idArr) {
+            this.walletList = ret.filter(item => {
+              if (!idArr.includes(item.id)) {
+                return item;
+              }
+            });
+          }
         }
       });
     },

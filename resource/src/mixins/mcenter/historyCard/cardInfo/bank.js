@@ -40,7 +40,7 @@ export default {
         this.bank_card = ret.filter((item, index) => index < 3);
       })
     },
-    getBankDetail(info) {
+    onClickDetail(info) {
       this.bank_cardDetail = info;
       this.$emit('update:isAudit', false)
       this.$emit("update:showDetail", true);

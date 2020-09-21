@@ -1,8 +1,8 @@
 <template>
-  <div>
+  <div :class="$style['my-card']">
     <!-- 卡片管理列表 -->
     <template v-if="!showDetail">
-      <div v-if="isRevice && wallet_card.length > 0" :class="$style['my-card']">
+      <div v-if="isRevice && wallet_card.length > 0">
         <div
           :class="[$style['card-count'], 'clearfix']"
           :style="isShowTab ? {} : { top: '43px' }"
@@ -90,52 +90,51 @@
 
     <!-- 卡片詳細資料 -->
     <template v-if="showDetail && wallet_cardDetail">
-      <div :class="$style['card-detail']">
-        <div v-if="wallet_cardDetail.auditing" :class="$style['audit-block']">
-          <div>删除审核中</div>
-          <span>审核通过后，系统会自动刪除錢包</span>
-        </div>
+      <div v-if="wallet_cardDetail.auditing" :class="$style['audit-block']">
+        <div>删除审核中</div>
+        <span>审核通过后，系统会自动刪除錢包</span>
+      </div>
 
-        <div :class="$style['bankcard-item']">
-          <div :class="[$style['card-top'], 'clearfix']">
-            <div :class="$style['card-logo']">
-              <img v-lazy="getBankImage(wallet_cardDetail.swift_code)" />
-            </div>
-
-            <div :class="$style['card-info']">
-              <div :class="$style['card-name']">
-                {{ wallet_cardDetail.payment_gateway_name }}
-              </div>
-            </div>
+      <div
+        :class="[
+          $style['bankcard-item'],
+          $style[`colorIndex-${colorRepeatIndex}`]
+        ]"
+      >
+        <div :class="[$style['card-top'], 'clearfix']">
+          <div :class="$style['card-logo']">
+            <img v-lazy="getBankImage(wallet_cardDetail.swift_code)" />
           </div>
 
-          <div :class="$style['card-number']">
-            {{ wallet_cardDetail.address.slice(0, 4) }} **** ****
-            <span>{{ wallet_cardDetail.address.slice(-4) }}</span>
+          <div :class="$style['card-info']">
+            <div :class="$style['card-name']">
+              {{ wallet_cardDetail.payment_gateway_name }}
+            </div>
           </div>
         </div>
 
-        <div v-if="editStatus" :class="$style['edit-bankcard']">
-          <div :class="$style['edit-mask']" />
-          <div :class="$style['edit-button']">
-            <!-- 目前購寶暫不支援刪除 -->
-            <div
-              v-if="
-                memInfo.config.delete_bank_card &&
-                  wallet_cardDetail.payment_gateway_id !== 37
-              "
-              :class="[$style['edit-option-item'], $style['confirm']]"
-              @click="isShowPop = true"
-            >
-              解除綁定
-            </div>
+        <div :class="$style['card-number']">
+          {{ wallet_cardDetail.address.slice(0, 4) }} **** ****
+          <span>{{ wallet_cardDetail.address.slice(-4) }}</span>
+        </div>
+      </div>
 
-            <div
-              :class="[$style['edit-option-item'], $style['cancel']]"
-              @click="$emit('update:editStatus', false)"
-            >
-              取消
-            </div>
+      <div v-if="editStatus" :class="$style['edit-bankcard']">
+        <div :class="$style['edit-mask']" />
+        <div :class="$style['edit-button']">
+          <div
+            v-if="memInfo.config.delete_bank_card"
+            :class="[$style['edit-option-item'], $style['confirm']]"
+            @click="isShowPop = true"
+          >
+            解除綁定
+          </div>
+
+          <div
+            :class="[$style['edit-option-item'], $style['cancel']]"
+            @click="$emit('update:editStatus', false)"
+          >
+            取消
           </div>
         </div>
       </div>
@@ -178,7 +177,7 @@ export default {
     },
     setPageStatus: {
       type: Function,
-      default: () => { }
+      default: () => {}
     },
     showDetail: {
       type: Boolean,
