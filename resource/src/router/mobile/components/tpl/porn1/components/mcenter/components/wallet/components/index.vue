@@ -322,6 +322,8 @@ export default {
       this.$router.push('/mobile/login');
     }
 
+    this.actionSetUserBalance();
+
     this.startTime = Vue.moment(this.estToday)
       .add(-30, 'days')
       .format('YYYY-MM-DD');
@@ -334,7 +336,8 @@ export default {
     ...mapActions([
       'actionSetGlobalMessage',
       'actionGetRechargeStatus',
-      'actionGetMemInfoV3'
+      'actionGetMemInfoV3',
+      'actionSetUserBalance'
     ]),
     handleDeposit() {
       this.$router.push(`/mobile/mcenter/deposit`);
