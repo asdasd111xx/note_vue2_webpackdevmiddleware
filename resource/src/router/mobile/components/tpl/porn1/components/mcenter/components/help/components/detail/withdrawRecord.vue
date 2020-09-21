@@ -81,7 +81,7 @@
       <div :class="$style['tips-mask']" @click="detailRate = null" />
 
       <div :class="$style['tips-block']">
-        <div :class="$style['tips-content']" v-html="detailRate.memo" />
+        <div :class="$style['tips-content']" v-html="detailRate.memo.replace(/\n/gi, '<br/>')" />
         <!-- <div :class="$style['tips-cell']">
           實際匯率:&nbsp;{{ detailRate && detailRate.withdraw_rate }}
         </div>

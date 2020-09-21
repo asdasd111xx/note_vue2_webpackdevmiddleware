@@ -417,7 +417,11 @@
 
                 <!-- 自訂金額 -->
                 <div
-                  v-if="curPassRoad && curPassRoad.is_custom_amount"
+                  v-if="
+                    curPassRoad &&
+                      curPassRoad.is_custom_amount &&
+                      curPassRoad.amounts.length > 0
+                  "
                   :class="[$style['speed-money-wrap'], 'clearfix']"
                 >
                   <div

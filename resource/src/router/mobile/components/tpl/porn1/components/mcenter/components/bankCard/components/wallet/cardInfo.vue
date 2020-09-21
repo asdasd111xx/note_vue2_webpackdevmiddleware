@@ -99,7 +99,7 @@
         <div>删除审核中</div>
         <span>
           审核通过后，系统会自动刪除{{
-            themeTPL === "ponr1" ? "钱包" : "银行卡"
+            themeTPL === "porn1" ? "钱包" : "银行卡"
           }}
         </span>
       </div>
@@ -114,7 +114,9 @@
       <div v-if="editStatus" :class="$style['edit-bankcard']">
         <div :class="$style['edit-mask']" />
         <div :class="$style['edit-button']">
-          <template v-if="themeTPL === 'ey1'">
+          <template
+            v-if="themeTPL === 'ey1' && !userLevelObj.virtual_bank_single"
+          >
             <div
               v-if="userLevelObj.virtual_bank_single && hasSameTypeCard"
               :class="$style['edit-option-item']"
