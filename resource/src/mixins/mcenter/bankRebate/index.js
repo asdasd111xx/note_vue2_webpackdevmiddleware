@@ -455,7 +455,8 @@ export default {
             this.isShowReceivePopup = true;
             this.bankRebateInit();
           },
-          fail: () => {
+          fail: (error) => {
+            this.popupMsg = error.data.msg;
             this.rebateState = 'initial';
             this.init();
           }
@@ -500,7 +501,8 @@ export default {
           this.isShowReceivePopup = true;
           this.bankRebateInit();
         },
-        fail: () => {
+        fail: (error) => {
+          this.popupMsg = error.data.msg;
           this.rebateState = 'initial';
           this.init();
         }
