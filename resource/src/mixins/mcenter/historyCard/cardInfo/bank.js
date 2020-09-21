@@ -8,6 +8,9 @@ export default {
       bank_card: [],
       bank_cardDetail: {},
       isShowPop: false,
+
+      // 控制詳細頁卡片顏色
+      colorRepeatIndex: null,
     }
   },
   computed: {
@@ -15,6 +18,11 @@ export default {
       memInfo: "getMemInfo",
       siteConfig: "getSiteConfig"
     }),
+    $style() {
+      const style =
+        this[`$style_${this.siteConfig.MOBILE_WEB_TPL}`] || this.$style_porn1;
+      return style;
+    },
     themeTPL() {
       return this.siteConfig.MOBILE_WEB_TPL;
     }
@@ -41,6 +49,8 @@ export default {
       })
     },
     onClickDetail(info) {
+      this.colorRepeatIndex = index
+
       this.bank_cardDetail = info;
       this.$emit('update:isAudit', false)
       this.$emit("update:showDetail", true);

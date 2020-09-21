@@ -1,8 +1,11 @@
 <template>
-  <div v-if="isRevice">
+  <div :class="$style['my-card']">
     <template v-if="!showDetail">
-      <div :class="$style['my-card']">
-        <div :class="[$style['card-count'], 'clearfix']">
+      <div v-if="isRevice && wallet_card.length > 0">
+        <div
+          :class="[$style['card-count'], 'clearfix']"
+          :style="isShowTab ? {} : { top: '43px' }"
+        >
           <span :class="$style['title']">
             {{ $text("S_HISTORY_WALLET", "历史钱包") }}
           </span>
@@ -13,12 +16,21 @@
             }}
           </span>
         </div>
-        <div v-if="wallet_card.length > 0" :class="$style['card-list']">
+
+        <div
+          :class="$style['card-list']"
+          :style="isShowTab ? {} : { 'margin-top': '41px' }"
+        >
           <div
             v-for="item in wallet_card"
             :key="item.id"
             :class="[$style['virtual-bankcard-item'], $style['history']]"
-            @click="getWalletDetail(item), showTab(false)"
+            @click="
+              () => {
+                getWalletDetail(item),
+                  setPageStatus(1, 'walletCardInfo', false);
+              }
+            "
           >
             <div :class="[$style['card-top'], 'clearfix']">
               <div :class="$style['card-logo']">
@@ -44,60 +56,68 @@
         </div>
       </div>
 
-      <template v-if="wallet_card.length === 0">
-        <div :class="[$style['no-data'], $style['history']]">
-          <div :class="$style['no-bankcard']">
-            <img src="/static/image/ey1/mcenter/bankCard/no_bankcard.png" />
-          </div>
+      <!-- 無資料時 -->
+      <div
+        v-if="!isRevice || wallet_card.length === 0"
+        :class="[$style['no-data'], $style['history']]"
+      >
+        <div :class="$style['no-bankcard']">
+          <img
+            :src="`/static/image/${themeTPL}/mcenter/bankCard/no_bankcard.png`"
+          />
         </div>
-      </template>
+      </div>
     </template>
 
+    <!-- 卡片詳細資料 -->
     <template v-if="showDetail && wallet_cardDetail">
-      <div :class="$style['card-detail']">
-        <div v-if="wallet_cardDetail.auditing" :class="$style['audit-block']">
-          <div>删除审核中</div>
-          <span>审核通过后，系统会自动删除银行卡</span>
-        </div>
+      <div v-if="wallet_cardDetail.auditing" :class="$style['audit-block']">
+        <div>删除审核中</div>
+        <span>
+          审核通过后，系统会自动刪除{{
+            themeTPL === "ponr1" ? "钱包" : "银行卡"
+          }}
+        </span>
+      </div>
 
-        <div :class="[$style['virtual-bankcard-item'], $style['history']]">
-          <div :class="[$style['card-top'], 'clearfix']">
-            <div :class="$style['card-logo']">
-              <img v-lazy="getBankImage(wallet_cardDetail.swift_code)" />
+      <div :class="[$style['virtual-bankcard-item'], $style['history']]">
+        <div :class="[$style['card-top'], 'clearfix']">
+          <div :class="$style['card-logo']">
+            <img v-lazy="getBankImage(wallet_cardDetail.swift_code)" />
+          </div>
+
+          <div :class="$style['card-info']">
+            <div :class="$style['card-name']">
+              {{ wallet_cardDetail.payment_gateway_name }}
             </div>
-            <div :class="$style['card-info']">
-              <div :class="$style['card-name']">
-                {{ wallet_cardDetail.payment_gateway_name }}
-              </div>
 
-              <div :class="$style['card-number']">
-                {{ wallet_cardDetail.address }}
-              </div>
+            <div :class="$style['card-number']">
+              {{ wallet_cardDetail.address }}
             </div>
           </div>
         </div>
+      </div>
 
-        <div v-if="editStatus" :class="$style['edit-bankcard']">
-          <div :class="$style['edit-mask']" />
-          <div :class="$style['edit-button']">
-            <div :class="$style['edit-option-item']" @click="moveCard">
-              移至我的电子钱包
-            </div>
+      <div v-if="editStatus" :class="$style['edit-bankcard']">
+        <div :class="$style['edit-mask']" />
+        <div :class="$style['edit-button']">
+          <div :class="$style['edit-option-item']" @click="moveCard">
+            移至我的电子钱包
+          </div>
 
-            <div
-              v-if="memInfo.config.delete_bank_card"
-              :class="$style['edit-option-item']"
-              @click="isShowPop = true"
-            >
-              删除电子钱包
-            </div>
+          <div
+            v-if="memInfo.config.delete_bank_card"
+            :class="$style['edit-option-item']"
+            @click="isShowPop = true"
+          >
+            删除电子钱包
+          </div>
 
-            <div
-              :class="[$style['edit-option-item'], $style['cancel']]"
-              @click="$emit('update:editStatus', false)"
-            >
-              取消
-            </div>
+          <div
+            :class="[$style['edit-option-item'], $style['cancel']]"
+            @click="$emit('update:editStatus', false)"
+          >
+            取消
           </div>
         </div>
       </div>
@@ -134,13 +154,13 @@ import virtualMixin from "@/mixins/mcenter/historyCard/cardInfo/wallet";
 export default {
   mixins: [virtualMixin],
   props: {
-    changePage: {
-      type: Function,
-      default: () => { }
+    isShowTab: {
+      type: Boolean,
+      required: true
     },
-    showTab: {
+    setPageStatus: {
       type: Function,
-      default: () => { }
+      default: () => {}
     },
     showDetail: {
       type: Boolean,
@@ -163,10 +183,10 @@ export default {
       return {
         src: `https://images.dormousepie.com/icon/bankIconBySwiftCode/${swiftCode}.png`,
         error: this.$getCdnPath(
-          "/static/image/_new/default/bank_default_2.png"
+          `/static/image/${this.themeTPL}/default/bank_default_2.png`
         ),
         loading: this.$getCdnPath(
-          "/static/image/_new/default/bank_default_2.png"
+          `/static/image/${this.themeTPL}/default/bank_default_2.png`
         )
       };
     }
@@ -174,6 +194,14 @@ export default {
 };
 </script>
 
-<style lang="scss" module>
-@import "~@/css/page/bankCard/ey1.cardInfo.module.scss";
-</style>
+<style
+  lang="scss"
+  src="@/css/page/bankCard/porn1.cardInfo.module.scss"
+  module="$style_porn1"
+></style>
+
+<style
+  lang="scss"
+  src="@/css/page/bankCard/ey1.cardInfo.module.scss"
+  module="$style_ey1"
+></style>

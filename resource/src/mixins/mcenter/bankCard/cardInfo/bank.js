@@ -46,8 +46,6 @@ export default {
       })
     },
     onClickDetail(info, index) {
-      // 取餘數的數量，取決於幾種顏色循環，目前 Yabo 共 3 種顏色循環，加 1 是方便 scss 判斷
-      // this.colorRepeatIndex = (index + 1) % 4
       this.colorRepeatIndex = index
 
       this.bank_cardDetail = info;

@@ -21,6 +21,7 @@
         <div :class="$style['title']">{{ headerTitle }}</div>
       </div>
 
+      <!-- 詳細頁-編輯按鈕 -->
       <div
         v-if="showDetail && !isAudit"
         :class="$style['header-icon']"
@@ -41,6 +42,7 @@
         </template>
       </div>
 
+      <!-- 歷史錢包按鈕 -->
       <template v-if="this.themeTPL === 'ey1'">
         <div
           v-if="

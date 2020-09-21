@@ -2,10 +2,19 @@
   <div :class="$style['wrap']">
     <div :class="$style['header']">
       <div :class="$style['btn-prev']" @click="backPre">
-        <img
-          :src="$getCdnPath('/static/image/ey1/common/btn_back_w.png')"
-          alt="more"
-        />
+        <template v-if="themeTPL === 'porn1'">
+          <img
+            :src="$getCdnPath('/static/image/porn1/common/btn_back.png')"
+            alt="more"
+          />
+        </template>
+
+        <template v-if="themeTPL === 'ey1'">
+          <img
+            :src="$getCdnPath('/static/image/ey1/common/btn_back_w.png')"
+            alt="more"
+          />
+        </template>
       </div>
 
       <div :class="[$style['content'], 'clearfix']">
@@ -17,10 +26,19 @@
         :class="$style['icon-edit']"
         @click="editDetailStatus = true"
       >
-        <img
-          :src="$getCdnPath('/static/image/ey1/common/btn_more_w.png')"
-          alt="more"
-        />
+        <template v-if="themeTPL === 'porn1'">
+          <img
+            :src="$getCdnPath('/static/image/porn1/common/btn_more.png')"
+            alt="more"
+          />
+        </template>
+
+        <template v-if="themeTPL === 'ey1'">
+          <img
+            :src="$getCdnPath('/static/image/ey1/common/btn_more_w.png')"
+            alt="more"
+          />
+        </template>
       </div>
     </div>
 
@@ -45,8 +63,8 @@
 
     <component
       :is="currentPage"
-      :change-page="changePage"
-      :show-tab="showTab"
+      :is-show-tab="isShowTab"
+      :set-page-status="setPageStatus"
       :show-detail.sync="showDetail"
       :edit-status.sync="editStatus"
       :is-audit.sync="isAudit"
@@ -71,17 +89,22 @@ export default {
   },
   mixins: [entryMixin],
   data() {
-    return {
-      currentTab: 0,
-      currentKind: "bank",
-      isShowTab: false
-    };
+    return {};
   },
   computed: {
     ...mapGetters({
       memInfo: "getMemInfo",
-      userLevelObj: "getUserLevels"
+      userLevelObj: "getUserLevels",
+      siteConfig: "getSiteConfig"
     }),
+    $style() {
+      const style =
+        this[`$style_${this.siteConfig.MOBILE_WEB_TPL}`] || this.$style_porn1;
+      return style;
+    },
+    themeTPL() {
+      return this.siteConfig.MOBILE_WEB_TPL;
+    },
     tabItem() {
       return [
         {
@@ -90,7 +113,7 @@ export default {
         },
         {
           key: "wallet",
-          text: "电子钱包"
+          text: this.themeTPL === "porn1" ? "数字货币" : "电子钱包"
         }
       ];
     },
@@ -102,68 +125,76 @@ export default {
       } else {
         return this.$text("S_HISTORY_ACCOUNT", "历史帐号");
       }
+    },
+    isOneTab() {
+      return !this.userLevelObj.bank || !this.userLevelObj.virtual_bank;
     }
   },
   created() {
     this.actionSetUserLevels().then(() => {
       // 目前尚有歷史銀行卡的頁面，故預設為電子錢包
-      this.setCurrentTab(1);
 
       // 銀行卡/電子錢包，其中有一方關閉
-      if (!this.userLevelObj.bank || !this.userLevelObj.virtual_bank) {
-        this.isShowTab = false;
-        this.$nextTick(() => {
-          if (this.userLevelObj.bank) {
-            this.setCurrentTab(0);
-            return;
-          }
-          if (this.userLevelObj.virtual_bank) {
-            this.setCurrentTab(1);
-            return;
-          }
-        });
+      if (this.isOneTab) {
+        if (this.userLevelObj.bank) {
+          this.setPageStatus(0, "bankCardInfo", false);
+          return;
+        }
 
-        return;
+        if (this.userLevelObj.virtual_bank) {
+          this.setPageStatus(1, "walletCardInfo", false);
+          return;
+        }
       }
-      this.isShowTab = true;
+
+      // 預設頁面
+      this.setPageStatus(this.currentTab, this.currentPage, this.isShowTab);
     });
   },
   methods: {
     ...mapActions(["actionSetUserLevels"]),
+    setPageStatus(tabIndex, pageName, isShowTab) {
+      this.currentTab = tabIndex;
+      this.currentPage = pageName;
+      this.isShowTab = false;
+
+      // 歷史錢包目前只有電子錢包，等開放銀行卡在把它註解回來
+      // 當 Tab 在某些頁面不用顯示，this.isShowTab = false
+      // if (!isShowTab) {
+      //   this.isShowTab = false;
+      // } else {
+      //   this.isShowTab = this.isOneTab ? false : true;
+      // }
+    },
     setCurrentTab(index) {
       this.currentTab = index;
       switch (index) {
         case 0:
-          this.currentKind = "bank";
           this.currentPage = "bankCardInfo";
           break;
 
         case 1:
-          this.currentKind = "wallet";
           this.currentPage = "walletCardInfo";
           break;
       }
     },
-    showTab(value) {
-      this.isShowTab = value;
-    },
     backPre() {
-      const isOneTab =
-        !this.userLevelObj.bank || !this.userLevelObj.virtual_bank;
-
       // 當頁面停留在卡片管理
-      if (
-        this.currentPage === "bankCardInfo" ||
-        this.currentPage === "walletCardInfo"
-      ) {
-        // 卡片管理-詳細頁面
-        if (this.showDetail) {
-          this.showDetail = false;
-          this.isShowTab = isOneTab ? false : true;
+      switch (this.currentPage) {
+        // 當頁面停留在卡片管理
+        case "bankCardInfo":
+        case "walletCardInfo":
+          // 卡片管理-詳細頁面
+          if (this.showDetail) {
+            this.showDetail = false;
+            this.setPageStatus(this.currentTab, this.currentPage, true);
+            return;
+          }
+
+          this.$router.back();
           return;
-        }
-        this.$router.back();
-        return;
+
+          break;
       }
 
       this.$router.back();
@@ -172,110 +203,14 @@ export default {
 };
 </script>
 
-<style lang="scss" module>
-@import "~@/css/variable.scss";
-.wrap {
-  padding-top: 43px;
-  background: #f8f8f8;
-  min-height: 100vh;
-}
+<style
+  lang="scss"
+  src="@/css/page/bankCard/porn1.index.module.scss"
+  module="$style_porn1"
+></style>
 
-.header {
-  position: fixed;
-  top: 0;
-  z-index: 3;
-  max-width: $mobile_max_width;
-
-  width: 100%;
-  height: 43px;
-  padding: 0 17px;
-  text-align: center;
-  border-bottom: 1px solid #eee;
-  background: linear-gradient(#fe2a2a, #b60303);
-
-  &::before {
-    content: "";
-    display: inline-block;
-    height: 100%;
-    vertical-align: middle;
-  }
-}
-
-@media (orientation: landscape) {
-  .header {
-    max-width: 768px !important;
-  }
-}
-
-.btn-prev {
-  position: absolute;
-  top: 0;
-  bottom: 0;
-  left: 12px;
-  width: 20px;
-  height: 20px;
-  margin: auto;
-
-  > img {
-    display: block;
-    width: 100%;
-  }
-}
-
-.title {
-  float: left;
-  height: 22px;
-  line-height: 22px;
-  color: #fff;
-  font-size: 17px;
-}
-
-.content {
-  display: inline-block;
-  margin: 0 24px;
-  vertical-align: middle;
-}
-
-.icon-edit {
-  position: absolute;
-  top: 0;
-  bottom: 0;
-  right: 12px;
-  width: 20px;
-  height: 20px;
-  margin: auto;
-}
-
-.tab-wrap {
-  position: relative;
-  display: flex;
-  background: #fff;
-  border-bottom: 1px solid #eee;
-}
-
-.tab-item {
-  flex: 1;
-  position: relative;
-  height: 42px;
-  line-height: 42px;
-  text-align: center;
-  color: $main_text_color2;
-  overflow: hidden;
-  text-overflow: ellipsis;
-  white-space: nowrap;
-
-  &.is-current {
-    color: $main_text_color4;
-  }
-}
-
-.active-slider {
-  position: absolute;
-  width: 12%;
-  height: 2px;
-  bottom: 0;
-  transform: translateX(-50%);
-  background: #e42a30;
-  transition: left 0.31s;
-}
-</style>
+<style
+  lang="scss"
+  src="@/css/page/bankCard/ey1.index.module.scss"
+  module="$style_ey1"
+></style>
