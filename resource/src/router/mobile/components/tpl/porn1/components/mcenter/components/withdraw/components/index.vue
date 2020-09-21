@@ -531,7 +531,7 @@
       :selected-card="selectedCard"
       @close="closeTips"
       @submit="handleSubmit"
-      @save="saveCurrentValue"
+      @save="saveCurrentValue(true)"
     />
     <!-- 流水檢查 -->
     <serial-number v-if="isSerial" :handle-close="toggleSerial" />

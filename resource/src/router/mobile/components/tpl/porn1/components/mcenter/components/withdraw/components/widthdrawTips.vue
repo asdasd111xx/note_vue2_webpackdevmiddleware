@@ -192,7 +192,7 @@ export default {
       this.$emit("close");
     },
     handleCheckRule() {
-      this.$emit("save", true);
+      this.$emit("save");
       if (this.type === "tips") {
         this.$router.push("/mobile/mcenter/help/withdraw?&key=6");
       } else if (this.type === "deposit") {
