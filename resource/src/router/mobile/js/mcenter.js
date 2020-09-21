@@ -11,6 +11,11 @@ export default {
             name: 'mcenter-home',
             component
         },
+        { // 紅利彩金
+            path: 'bonus',
+            name: 'mcenter-bonus',
+            component
+        },
         { // 帳戶資料
             path: 'accountData/:id?',
             name: 'mcenter-accountData',
