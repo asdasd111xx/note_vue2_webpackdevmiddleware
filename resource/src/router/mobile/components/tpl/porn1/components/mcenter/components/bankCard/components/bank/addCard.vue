@@ -31,7 +31,7 @@
       <template v-if="addBankCardStep === 'one'">
         <div :class="$style['info-item']">
           <p :class="$style['input-title']">所属银行</p>
-          <div :class="$style['select-bank']" @click="isShowPop = true">
+          <div :class="$style['select-bank']" @click="isShowPopBankList = true">
             <span :class="{ [$style['select-active']]: currentBank }">
               {{ currentBank ? currentBank : "请选择银行" }}
             </span>
@@ -192,11 +192,11 @@
       >
     </p>
 
-    <div v-if="isShowPop" :class="$style['pop-wrap']">
-      <div :class="$style['pop-mask']" @click="isShowPop = false" />
+    <div v-if="isShowPopBankList" :class="$style['pop-wrap']">
+      <div :class="$style['pop-mask']" @click="isShowPopBankList = false" />
       <div :class="$style['pop-menu']">
         <div :class="$style['pop-title']">
-          <span @click="isShowPop = false">
+          <span @click="isShowPopBankList = false">
             {{ $text("S_CANCEL", "取消") }}
           </span>
           选择所属银行

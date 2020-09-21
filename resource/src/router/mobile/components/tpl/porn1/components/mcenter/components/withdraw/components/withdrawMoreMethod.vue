@@ -21,7 +21,7 @@
           >
             <div v-if="themeTPL === 'porn1'" :class="$style['add-block']">
               <img
-                :src="$getCdnPath(`/static/image/porn1/mcenter/add.png`)"
+                :src="$getCdnPath(`/static/image/ponr1/mcenter/add.png`)"
                 alt="add"
               />
             </div>

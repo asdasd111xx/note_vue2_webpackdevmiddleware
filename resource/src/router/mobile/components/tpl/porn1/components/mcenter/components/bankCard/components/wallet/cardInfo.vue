@@ -37,51 +37,6 @@
             @onClick="onClickDetail(item, index)"
             @setPageStatus="setPageStatus(1, 'walletCardInfo', false)"
           />
-
-          <!-- <div
-            v-for="(item, index) in wallet_card"
-            :key="item.id"
-            :class="[
-              { [$style['bankcard-item']]: themeTPL === 'porn1' },
-              { [$style['virtual-bankcard-item']]: themeTPL === 'ey1' }
-            ]"
-            @click="
-              () => {
-                onClickDetail(item, index);
-                setPageStatus(1, 'walletCardInfo', false);
-              }
-            "
-          >
-            <div :class="[$style['card-top'], 'clearfix']">
-              <div :class="$style['card-logo']">
-                <img v-lazy="getBankImage(item.swift_code)" />
-              </div>
-
-              <div :class="$style['card-info']">
-                <div :class="$style['card-name']">
-                  {{ item.payment_gateway_name }}
-                </div>
-
-                <template v-if="themeTPL === 'ey1'">
-                  <div :class="$style['card-number']">
-                    {{ item.address.slice(0, 4) }} **** ****
-                    <span>{{ item.address.slice(-4) }}</span>
-                  </div>
-                </template>
-              </div>
-            </div>
-
-            <template v-if="themeTPL === 'porn1'">
-              <div :class="$style['card-number']">
-                {{ item.address.slice(0, 4) }} **** ****
-                <span>{{ item.address.slice(-4) }}</span>
-              </div>
-            </template>
-
-            <div v-if="item.auditing" :class="$style['audit-tip']">
-              删除审核中
-            </div>
-          </div> -->
         </div>
       </div>
 
@@ -99,21 +54,19 @@
 
       <!-- 添加卡片按鈕區塊 -->
       <template v-if="isShowAddCardButton">
-        <div :class="$style['add-card']">
-          <div :class="$style['add-wrap']">
-            <div
-              :class="$style['add-btn']"
-              @click="setPageStatus(1, 'addWalletCard', false)"
-            >
-              <img :src="`/static/image/${themeTPL}/mcenter/add_2.png`" />
-              <span>
-                {{
-                  themeTPL === "porn1"
-                    ? $text("S_ADD_DIGITAL_CURRENCY", "添加数字货币")
-                    : $text("S_ADD_VIRTUAL_BANKCARD", "添加电子钱包")
-                }}
-              </span>
-            </div>
+        <div :class="$style['add-wrap']">
+          <div
+            :class="$style['add-btn']"
+            @click="setPageStatus(1, 'addWalletCard', false)"
+          >
+            <img :src="`/static/image/${themeTPL}/mcenter/add_2.png`" />
+            <span>
+              {{
+                themeTPL === "porn1"
+                  ? $text("S_ADD_DIGITAL_CURRENCY", "添加数字货币")
+                  : $text("S_ADD_VIRTUAL_BANKCARD", "添加电子钱包")
+              }}
+            </span>
           </div>
         </div>
 
@@ -157,30 +110,6 @@
         :isDetailPage="true"
         :type="'wallet'"
       />
-
-      <!-- <div
-        :class="[
-          $style['bankcard-item'],
-          $style[`colorIndex-${colorRepeatIndex}`]
-        ]"
-      >
-        <div :class="[$style['card-top'], 'clearfix']">
-          <div :class="$style['card-logo']">
-            <img v-lazy="getBankImage(wallet_cardDetail.swift_code)" />
-          </div>
-
-          <div :class="$style['card-info']">
-            <div :class="$style['card-name']">
-              {{ wallet_cardDetail.payment_gateway_name }}
-            </div>
-          </div>
-        </div>
-
-        <div :class="$style['card-number']">
-          {{ wallet_cardDetail.address.slice(0, 4) }} **** ****
-          <span>{{ wallet_cardDetail.address.slice(-4) }}</span>
-        </div>
-      </div> -->
 
       <div v-if="editStatus" :class="$style['edit-bankcard']">
         <div :class="$style['edit-mask']" />
