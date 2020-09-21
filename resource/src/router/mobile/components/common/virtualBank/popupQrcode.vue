@@ -1,7 +1,7 @@
 <template>
   <div v-if="isShowPop" :class="$style['pop-wrap']">
     <div :class="$style['pop-mask']" />
-    <div :class="$style['pop-block']">
+    <div v-if="qrcodeLink" :class="$style['pop-block']">
       <div :class="$style['content']">
         <div :class="$style['title']">{{ title }}</div>
 
@@ -16,7 +16,7 @@
           </template>
         </div>
         <p @click="downloadImage">
-          点击截屏保存
+          {{ downloadText }}
         </p>
 
         <div :class="$style['timer-block']">
@@ -74,7 +74,7 @@
 
       <div :class="$style['button-block']">
         <span @click="$emit('update:isShowPop', false)">关闭</span>
-        <span @click="downloadImage">点击截屏保存</span>
+        <span @click="downloadImage">{{ downloadText }}</span>
       </div>
     </div>
   </div>
@@ -104,7 +104,8 @@ export default {
     return {
       countdownSec: 0,
       timer: null,
-      qrcodeLink: ""
+      qrcodeLink: "",
+      downloadText: ""
     };
   },
   computed: {
@@ -130,6 +131,15 @@ export default {
   },
   created() {
     this.getQrcode();
+  },
+  watch: {
+    qrcodeLink(val) {
+      if (val.includes('base64')) {
+        this.downloadText = '长按下载图片';
+      } else {
+        this.downloadText = '点击截屏保存';
+      }
+    }
   },
   methods: {
     ...mapActions(["actionSetGlobalMessage"]),

@@ -353,9 +353,9 @@
                     <div class="btn-prev__25YFA" onclick="window.history.back()"><img
                             src="/static/image/ey1/common/btn_back.png?v=99124533.1"></div>
                     <div class="title__1e5NJ">我的客服</div>
-                    <div class="feedback__3gIcT" onclick="window.location.href='/mobile/mcenter/feedback/sendFeedback'">
+                    <!-- <div class="feedback__3gIcT" onclick="window.location.href='/mobile/mcenter/feedback/sendFeedback'">
                         意见反馈
-                    </div>
+                    </div> -->
                 </div>
 
                 <div class="avatar-info-wrap__4S0AI" onclick="window.location.href='/mobile'">
@@ -389,12 +389,12 @@
     document.getElementById('username').innerText = user || '尊敬的用户';
 
     function service(target) {
-        let url = localStorage.getItem('serviceUrl');
+        let url = 'https://yaboxxxcs.net/chat/text/chat_1A09E4.html?skill=8ae482827375169c017375f1528b2446';
 
-        if (url && target === 2) {
-            url = url.replace('gid=default', 'gid=yb04')
-                .replace('gid=yb01', 'gid=yb04');
-        }
+        // if (url && target === 2) {
+        //     url = url.replace('gid=default', 'gid=yb04')
+        //         .replace('gid=yb01', 'gid=yb04');
+        // }
 
         let w =
             window.open(
