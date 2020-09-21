@@ -20,6 +20,7 @@
             :class="[$style['feedback-item'], 'clearfix']"
             @click="getCurrentMassage(message)"
           >
+         
             <div :class="$style['feedback-icon']">
               <template v-if="typeList && typeList.length > 0">
                 <img
@@ -40,7 +41,8 @@
                 </p>
               </div>
               <p :class="$style['question']">
-                {{ getShortConetent(message.content) }}
+                {{ getShortConetentName(message.content) }}  
+                {{ getShortConetentURL(message.content) }}    
               </p>
             </div>
           </li>
@@ -82,6 +84,7 @@
             v-if="currentFeedback.reply_content"
             :class="[$style['detail-service'], 'clearfix']"
           >
+          
             <img
               :class="$style['detail-icon']"
               :src="
@@ -177,8 +180,18 @@ export default {
     }
   },
   methods: {
+    getShortConetentName(content) {
+      let res = content.split("\n");
+      return res[0];
+      
+    },
+    getShortConetentURL(content) {
+      let res = content.split('"');
+      return res[1];
+    },
     getShortConetent(content) {
       return content;
+      
     },
     getTypeList() {
       ajax({
@@ -196,10 +209,11 @@ export default {
       });
     },
     setContent(content) {
-      let urlRegex = /(https?:\/\/[^\s]+)/g;
-      return content.replace(/\n/g, '<br/>').replace(urlRegex, function (url) {
-        return '<a href="' + url + '" target="_blank">' + url + '</a>';
-      })
+      return content;
+      // let urlRegex = /(https?:\/\/[^\s]+)/g;
+      // return content.replace(/\n/g, '<br/>').replace(urlRegex, function (url) {
+      //   return '<a href="' + url + '" target="_blank">' + url + '</a>';
+      // })
     },
     getFeedbackRecord() {
       mcenter.feedbackRecord({
