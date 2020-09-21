@@ -2,11 +2,11 @@
   <div>
     <div :class="$style['menu-wrap-left']">
       <p :class="$style['small']">累计红利总计</p>
-      <p :class="$style['big']">{{(false)? "1,234,567.00":"0.00" }} </p>
+      <p :class="$style['big']">{{(mainNoData)? "0.00":info.total.amount }} </p>
     </div>
     <div :class="$style['menu-wrap-right']">
       <p :class="$style['small']">未兑现红利总计</p>
-      <p :class="$style['big']">{{(false)? "1,234,567.00":"0.00" }} </p>
+      <p :class="$style['big']">{{(mainNoData)? "0.00":info.total.balance }} </p>
     </div>
 
     <!-- v-if="!mainNoData"-->
@@ -14,15 +14,17 @@
       <div :class="$style['template']">
         <div :class="$style['amount']">
           <div :class="$style['list']">
-                笔数：{{"22345678"}}
+                笔数：{{info.ret.length}}
           </div>
           <hr>
         </div>
-        <div>  <!--v-for -->
+        <div v-for="ret in info"
+            :key="ret.id"
+        >  <!--v-for -->
           <div :class="$style['data-wrap']">
             <div>
               <div :class="$style['title']">
-                <p>{{"GNS電子"}}</p>
+                <p>{{ret.name}}</p>
               </div>
             </div>
             <div :class="$style['content']">
@@ -33,40 +35,13 @@
                 <p>未兑现红利</p>
               </div>
               <div :class="$style['content-right']">
-                <p>{{"123"}}</p>
-                <p>{{"456"}}</p>
-                <p>{{"789"}}</p>
-                <p>{{"2234"}}</p>
+                <p>{{ret.amount}}</p>
+                <p>{{ret.total}}</p>
+                <p>{{ret.aggreation}}</p>
+                <p>{{ret.balance}}</p>
               </div>
             </div>
           </div>
-
-          
-
-          <div :class="$style['data-wrap']">
-            <div>
-              <div :class="$style['title']">
-                <p>{{"GNS電子"}}</p>
-              </div>
-            </div>
-            <div :class="$style['content']">
-              <div :class="$style['content-left']">
-                <p>累积红利</p>
-                <p>流水要求</p>
-                <p>累积流水</p>
-                <p>未兑现红利</p>
-              </div>
-              <div :class="$style['content-right']">
-                <p>{{"123"}}</p>
-                <p>{{"456"}}</p>
-                <p>{{"789"}}</p>
-                <p>{{"2234"}}</p>
-              </div>
-            </div>
-          </div>
-          
-
-          
         </div>
       </div>
     </template>
@@ -131,19 +106,13 @@ export default {
   },
   mounted(){
     axios.get('/api/v1/c/gift-card').then(response=>this.info=response.data);
+    if(this.info!==null&&this.info.ret.length>0){
+      mainNoData=false;
+    }
 
   },
   methods :{
-    // bonus(){
-    //   return ajax({
-    //     method:'get',
-    //     url:'/api/v1/c/gift-card',
-    //     success: response=>{
-    //       this.info=reponse
-    //     }
-    //   })
-
-    // },
+  
 
 
     /**
