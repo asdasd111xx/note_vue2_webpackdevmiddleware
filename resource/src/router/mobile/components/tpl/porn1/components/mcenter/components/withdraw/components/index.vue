@@ -1331,7 +1331,7 @@ export default {
         url: API_CRYPTO_MONEY,
         params: {
           type: 2,
-          amount: this.withdrawValue
+          amount: this.actualMoney
         }
       }).then(response => {
         const { result, ret } = response.data;
