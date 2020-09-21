@@ -13,7 +13,7 @@
             }
           ]"
         >
-          <div @click="handleClick()">
+          <div @click="handleClick">
             {{ data.btnText }}
           </div>
         </div>

@@ -141,18 +141,18 @@ $linear_end_color: (#6bd9b7, #f6aaad, #85b9f7);
   // 針對銀行卡 item - 不同卡片做漸層處理
   // colorIndex -> 為了詳情設計
   // ---------------------------------
-  &:nth-child(3n + 1),
-  &.colorIndex-1 {
+  // &:nth-child(3n + 1),
+  &.colorIndex-0 {
     @include cardLinearColor(1);
   }
 
-  &:nth-child(3n + 2),
-  &.colorIndex-2 {
+  // &:nth-child(3n + 2),
+  &.colorIndex-1 {
     @include cardLinearColor(2);
   }
 
-  &:nth-child(3n + 3),
-  &.colorIndex-3 {
+  // &:nth-child(3n + 3),
+  &.colorIndex-2 {
     @include cardLinearColor(3);
   }
   // ---------------------------------

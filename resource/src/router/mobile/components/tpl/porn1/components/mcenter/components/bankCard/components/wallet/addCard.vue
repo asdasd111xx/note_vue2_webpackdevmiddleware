@@ -165,7 +165,7 @@ export default {
   props: {
     setPageStatus: {
       type: Function,
-      default: () => { }
+      default: () => {}
     },
     userLevelObj: {
       type: Object,
@@ -609,6 +609,14 @@ export default {
 };
 </script>
 
-<style lang="scss" module>
-@import "~@/css/page/bankCard/porn1.addCard.module.scss";
-</style>
+<style
+  lang="scss"
+  src="@/css/page/bankCard/porn1.addCard.module.scss"
+  module="$style_porn1"
+></style>
+
+<style
+  lang="scss"
+  src="@/css/page/bankCard/ey1.addCard.module.scss"
+  module="$style_ey1"
+></style>

@@ -37,35 +37,38 @@
             </span>
             <img
               :class="$style['arrow-icon']"
-              src="/static/image/porn1/common/arrow_next.png"
+              :src="`/static/image/${themeTPL}/common/arrow_next.png`"
             />
           </div>
         </div>
 
-        <!-- <div :class="$style['info-item']">
-          <p :class="$style['input-title']">省/直辖市</p>
-          <div :class="$style['input-wrap']">
-            <input
-              v-model.trim="formData.province"
-              type="text"
-              placeholder="请输入省/直辖市"
-              maxlength="36"
-              @input="checkData"
-            />
+        <template v-if="themeTPL === 'ey1' && !memInfo.config.player_user_bank">
+          <div :class="$style['info-item']">
+            <p :class="$style['input-title']">省/直辖市</p>
+            <div :class="$style['input-wrap']">
+              <input
+                v-model.trim="formData.province"
+                type="text"
+                placeholder="请输入省/直辖市"
+                maxlength="36"
+                @input="checkData($event.target.value, 'province')"
+              />
+            </div>
           </div>
-        </div>
-        <div :class="$style['info-item']">
-          <p :class="$style['input-title']">县/市</p>
-          <div :class="$style['input-wrap']">
-            <input
-              v-model.trim="formData.city"
-              type="text"
-              placeholder="请输入县/市"
-              maxlength="36"
-              @input="checkData"
-            />
+
+          <div :class="$style['info-item']">
+            <p :class="$style['input-title']">县/市</p>
+            <div :class="$style['input-wrap']">
+              <input
+                v-model.trim="formData.city"
+                type="text"
+                placeholder="请输入县/市"
+                maxlength="36"
+                @input="checkData($event.target.value, 'city')"
+              />
+            </div>
           </div>
-        </div> -->
+        </template>
 
         <div :class="$style['info-item']">
           <p :class="$style['input-title']">开户支行</p>
@@ -242,7 +245,7 @@ export default {
   props: {
     setPageStatus: {
       type: Function,
-      default: () => { }
+      default: () => {}
     },
     addBankCardStep: {
       type: String,
@@ -270,6 +273,11 @@ export default {
     this.smsTimer = null;
   },
   computed: {
+    $style() {
+      const style =
+        this[`$style_${this.siteConfig.MOBILE_WEB_TPL}`] || this.$style_porn1;
+      return style;
+    },
     themeTPL() {
       return this.siteConfig.MOBILE_WEB_TPL;
     }
@@ -329,6 +337,14 @@ export default {
 };
 </script>
 
-<style lang="scss" module>
-@import "~@/css/page/bankCard/porn1.addCard.module.scss";
-</style>
+<style
+  lang="scss"
+  src="@/css/page/bankCard/porn1.addCard.module.scss"
+  module="$style_porn1"
+></style>
+
+<style
+  lang="scss"
+  src="@/css/page/bankCard/ey1.addCard.module.scss"
+  module="$style_ey1"
+></style>

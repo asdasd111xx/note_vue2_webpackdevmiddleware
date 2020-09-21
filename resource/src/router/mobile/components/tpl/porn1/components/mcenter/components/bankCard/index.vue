@@ -2,10 +2,19 @@
   <div :class="[$style['wrap']]">
     <div :class="$style['header']">
       <div :class="$style['btn-prev']" @click="backPre">
-        <img
-          :src="$getCdnPath('/static/image/porn1/common/btn_back.png')"
-          alt="more"
-        />
+        <template v-if="themeTPL === 'porn1'">
+          <img
+            :src="$getCdnPath('/static/image/porn1/common/btn_back.png')"
+            alt="more"
+          />
+        </template>
+
+        <template v-if="themeTPL === 'ey1'">
+          <img
+            :src="$getCdnPath('/static/image/ey1/common/btn_back_w.png')"
+            alt="more"
+          />
+        </template>
       </div>
 
       <div :class="[$style['content'], 'clearfix']">
@@ -17,11 +26,40 @@
         :class="$style['header-icon']"
         @click="editDetailStatus = true"
       >
-        <img
-          :src="$getCdnPath('/static/image/porn1/common/btn_more.png')"
-          alt="more"
-        />
+        <template v-if="themeTPL === 'porn1'">
+          <img
+            :src="$getCdnPath('/static/image/porn1/common/btn_more.png')"
+            alt="more"
+          />
+        </template>
+
+        <template v-if="themeTPL === 'ey1'">
+          <img
+            :src="$getCdnPath('/static/image/ey1/common/btn_more_w.png')"
+            alt="more"
+          />
+        </template>
       </div>
+
+      <template v-if="this.themeTPL === 'ey1'">
+        <div
+          v-if="
+            (currentPage === 'bankCardInfo' ||
+              currentPage === 'walletCardInfo') &&
+              !showDetail &&
+              !userLevelObj.virtual_bank_single
+          "
+          :class="$style['header-icon']"
+          @click="changeToHistory"
+        >
+          <img
+            :src="
+              $getCdnPath('/static/image/ey1/mcenter/bankCard/ic_history.png')
+            "
+            alt="more"
+          />
+        </div>
+      </template>
     </div>
 
     <div v-if="isShowTab" :class="$style['tab-wrap']">
@@ -43,8 +81,8 @@
     </div>
 
     <component
-      :is-show-tab="isShowTab"
       :is="currentPage"
+      :is-show-tab="isShowTab"
       :set-page-status="setPageStatus"
       :show-detail.sync="showDetail"
       :edit-status.sync="editStatus"
@@ -84,8 +122,17 @@ export default {
   computed: {
     ...mapGetters({
       memInfo: "getMemInfo",
-      userLevelObj: "getUserLevels"
+      userLevelObj: "getUserLevels",
+      siteConfig: "getSiteConfig"
     }),
+    $style() {
+      const style =
+        this[`$style_${this.siteConfig.MOBILE_WEB_TPL}`] || this.$style_porn1;
+      return style;
+    },
+    themeTPL() {
+      return this.siteConfig.MOBILE_WEB_TPL;
+    },
     tabItem() {
       return [
         {
@@ -94,11 +141,12 @@ export default {
         },
         {
           key: "wallet",
-          text: "数字货币"
+          text: this.themeTPL === "porn1" ? "数字货币" : "电子钱包"
         }
       ];
     },
     headerTitle() {
+      // 非提現頁面跳轉過來 & 類型為銀行卡
       if (
         this.hasRedirect &&
         this.$route.query.type === "bankCard" &&
@@ -107,34 +155,67 @@ export default {
         return "提现银行卡";
       }
 
+      // 從其它頁面跳轉過來 & 類型為銀行卡
       if (this.hasRedirect && this.$route.query.type === "bankCard") {
         return this.$text("S_ADD_BANKCARD", "添加银行卡");
       }
 
+      // 從其它頁面跳轉過來 & 類型為錢包
       if (this.hasRedirect && this.$route.query.type === "wallet") {
-        return this.$text("S_ADD_DIGITAL_CURRENCY", "添加数字货币");
+        switch (this.themeTPL) {
+          case "porn1":
+            return this.$text("S_ADD_DIGITAL_CURRENCY", "添加数字货币");
+            break;
+
+          case "ey1":
+            return this.$text("S_ADD_VIRTUAL_BANKCARD", "添加电子钱包");
+            break;
+        }
       }
 
+      // 根據目前頁面
       switch (this.currentPage) {
+        // 銀行卡-卡片管理
         case "bankCardInfo":
           return this.showDetail
             ? this.$text("S_BANKCARD", "银行卡")
             : this.$text("S_CARD_MANAGEMENT", "卡片管理");
           break;
 
+        // 錢包-卡片管理
         case "walletCardInfo":
-          return this.showDetail
-            ? this.$text("S_DIGITAL_CURRENCY", "数字货币")
-            : this.$text("S_CARD_MANAGEMENT", "卡片管理");
-          break;
+          switch (this.themeTPL) {
+            case "porn1":
+              return this.showDetail
+                ? this.$text("S_DIGITAL_CURRENCY", "数字货币")
+                : this.$text("S_CARD_MANAGEMENT", "卡片管理");
+              break;
+
+            case "ey1":
+              return this.showDetail
+                ? this.$text("S_VIRTUAL_BANKCARD", "电子钱包")
+                : this.$text("S_CARD_MANAGEMENT", "卡片管理");
+              break;
+          }
+
           break;
 
+        // 添加銀行卡
         case "addBankCard":
           return this.$text("S_ADD_BANKCARD", "添加银行卡");
           break;
 
+        // 添加錢包
         case "addWalletCard":
-          return this.$text("S_ADD_DIGITAL_CURRENCY", "添加数字货币");
+          switch (this.themeTPL) {
+            case "porn1":
+              return this.$text("S_ADD_DIGITAL_CURRENCY", "添加数字货币");
+              break;
+
+            case "ey1":
+              return this.$text("S_ADD_VIRTUAL_BANKCARD", "添加电子钱包");
+              break;
+          }
           break;
       }
     },
@@ -249,11 +330,6 @@ export default {
           return;
 
           break;
-
-        default:
-          break;
-
-          return;
       }
       this.$router.back();
     }
@@ -261,117 +337,14 @@ export default {
 };
 </script>
 
-<style lang="scss" module>
-@import "~@/css/variable.scss";
-.wrap {
-  padding-top: 43px;
-  background: #f8f8f8;
-  min-height: 100vh;
-}
+<style
+  lang="scss"
+  src="@/css/page/bankCard/porn1.index.module.scss"
+  module="$style_porn1"
+></style>
 
-.header {
-  position: fixed;
-  top: 0;
-  z-index: 3;
-  max-width: $mobile_max_width;
-
-  width: 100%;
-  height: 43px;
-  padding: 0 17px;
-  background: #fefffe;
-  text-align: center;
-  border-bottom: 1px solid #eee;
-
-  &::before {
-    content: "";
-    display: inline-block;
-    height: 100%;
-    vertical-align: middle;
-  }
-}
-
-@media (orientation: landscape) {
-  .header {
-    max-width: 768px !important;
-  }
-}
-
-.btn-prev {
-  position: absolute;
-  top: 0;
-  bottom: 0;
-  left: 12px;
-  width: 20px;
-  height: 20px;
-  margin: auto;
-
-  > img {
-    display: block;
-    width: 100%;
-  }
-}
-
-.title {
-  float: left;
-  height: 22px;
-  line-height: 22px;
-  color: #000;
-  font-size: 17px;
-}
-
-.content {
-  display: inline-block;
-  margin: 0 24px;
-  vertical-align: middle;
-}
-
-.header-icon {
-  position: absolute;
-  top: 0;
-  bottom: 0;
-  right: 12px;
-  width: 20px;
-  height: 20px;
-  margin: auto;
-
-  > img {
-    width: 100%;
-  }
-}
-
-.tab-wrap {
-  position: fixed;
-  width: 100%;
-  z-index: 2;
-  display: flex;
-  background: #fff;
-  border-bottom: 1px solid #eee;
-  max-width: $mobile_max_width;
-}
-
-.tab-item {
-  flex: 1;
-  position: relative;
-  height: 42px;
-  line-height: 42px;
-  text-align: center;
-  color: $main_text_color2;
-  overflow: hidden;
-  text-overflow: ellipsis;
-  white-space: nowrap;
-
-  &.is-current {
-    color: $main_text_color4;
-  }
-}
-
-.active-slider {
-  position: absolute;
-  width: 12%;
-  height: 2px;
-  bottom: 0;
-  transform: translateX(-50%);
-  background: #be9e7f;
-  transition: left 0.31s;
-}
-</style>
+<style
+  lang="scss"
+  src="@/css/page/bankCard/ey1.index.module.scss"
+  module="$style_ey1"
+></style>
