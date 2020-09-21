@@ -119,10 +119,10 @@ export default {
     ]),
     handleClick(item) {
       // 充值不開放
-      if (item.key === "deposit") {
-        this.actionSetGlobalMessage({ type: "incoming" });
-        return;
-      }
+      //   if (item.key === "deposit") {
+      //     this.actionSetGlobalMessage({ type: "incoming" });
+      //     return;
+      //   }
 
       this.$router.push(`/mobile/mcenter/help/${item.key}`);
     },
