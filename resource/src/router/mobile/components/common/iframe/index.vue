@@ -80,26 +80,24 @@ export default {
         })
         break;
       case 'THIRD':
-        this.src = localStorage.getItem('iframe-third-url');
-        // axios({
-        //   method: 'get',
-        //   url: '/api/v1/c/link/customize',
-        //   params: {
-        //     code: 'fengniao',
-        //     client_uri: localStorage.getItem('iframe-third-url')
-        //   }
-        // }).then(res => {
-        //   this.isLoading = false;
-        //   if (res && res.data && res.data.ret && res.data.ret.uri) {
-        //     console.log(res.data.ret.uri);
-        //     this.src = res.data.ret.uri;
-        //   }
-        // }).catch(error => {
-        //   this.isLoading = false;
-        //   if (error && error.data && error.date.msg) {
-        //     this.actionSetGlobalMessage({ msg: error.data.msg });
-        //   }
-        // })
+        axios({
+          method: 'get',
+          url: '/api/v1/c/link/customize',
+          params: {
+            code: 'fengniao',
+            client_uri: localStorage.getItem('iframe-third-url') || ''
+          }
+        }).then(res => {
+          this.isLoading = false;
+          if (res && res.data && res.data.ret && res.data.ret.uri) {
+            this.src = res.data.ret.uri;
+          }
+        }).catch(error => {
+          this.isLoading = false;
+          if (error && error.data && error.date.msg) {
+            this.actionSetGlobalMessage({ msg: error.data.msg });
+          }
+        })
         break;
       default:
         this.$router.back();
@@ -210,6 +208,7 @@ export default {
   height: calc(100vh);
   width: 100%;
   overflow-x: hidden;
+  background-color: #fff;
 
   &.has-header {
     padding-top: 43px;
@@ -283,7 +282,6 @@ export default {
   //   overflow: auto !important;
   //   -webkit-overflow-scrolling: touch !important;
 
-  background-color: #f2f2f2;
   border: none;
   display: block;
   height: 100%;
