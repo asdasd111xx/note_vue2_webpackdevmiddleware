@@ -6,7 +6,7 @@
         [$style['has-header']]: headerConfig.hasHeader
       }
     ]"
-    :style="{ height: `calc(100vh - ${iframeHeight})` }"
+    :style="{ height: `calc(100vh - ${iframeHeight}px)` }"
   >
     <div
       v-if="headerConfig.hasHeader"
@@ -128,7 +128,6 @@ export default {
       if (this.headerConfig.hasFooter) {
         result.push(65);
       }
-
       return result.length > 0 ? result.reduce((a, b) => a + b) : 0;
     },
     themeTPL() {
@@ -138,7 +137,7 @@ export default {
       const query = this.$route.query;
       return {
         hasHeader: query.hasHeader === undefined ? false : query.hasHeader === 'true',
-        hasFooter: query.hasFooter === undefined ? false : query.hasFooter === 'true',
+        hasFooter: query.hasFooter === undefined ? true : query.hasFooter === 'true',
         prev: query.prev === undefined ? true : query.prev,
         title: query.title || '',
         onClick: () => {
@@ -156,9 +155,15 @@ export default {
     ]),
     onListener(event) {
       //  需要監聽的白名單
-      let whiteList = [window.location.origin, ''];
+      let whiteList = [window.location.origin,
+        'https://play.qybtv.xyz',
+        'https://play.pybtv.xyz',
+        'https://play.qybpb.xyz',
+        'https://play.pybpb.xyz'];
+
       if (whiteList.includes(event.origin) && event.data) {
         let data = event.data;
+        console.log(data)
         switch (data.event) {
           case 'EVENT_THIRDPARTY_CLOSE':
           case 'close':
@@ -181,7 +186,7 @@ export default {
         window.addEventListener('message', this.onListener);
         const self = this;
         this.$refs.iframe.contentWindow.onbeforeunload = (e) => {
-          //   console.log(e)
+          console.log(e)
           //   // 取消預設關閉 取代成回上一頁
           //   e.preventDefault();
           //   e.stopPropagation();
