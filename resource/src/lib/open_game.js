@@ -71,8 +71,13 @@ export default (params, success = () => { }, fail = () => { }) => {
             }
             // 80桌參數
             if (vendor === "lg_live" && String(kind) === "2" && gameType && gameType === "R") {
-                query = '&customize=yabo&tableType=3310';
+                query += '&customize=yabo&tableType=3310';
             }
+
+            if (vendor && vendor.toUpperCase() === 'ISB') {
+                query += '&allowFullScreen=false';
+            }
+
             localStorage.setItem("open-game-link", ret.url + query);
 
             // 開啟遊戲時強制關閉下方最愛遊戲框

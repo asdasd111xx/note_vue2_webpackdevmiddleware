@@ -160,6 +160,7 @@ export default {
       if (whiteList.includes(event.origin) && event.data) {
         let data = event.data;
         switch (data.event) {
+          case 'EVENT_THIRDPARTY_CLOSE':
           case 'close':
             this.$router.push(this.originUrl);
             return;

@@ -16,7 +16,7 @@
           </template>
         </div>
         <p @click="downloadImage">
-          长按下载图片
+          点击截屏保存
         </p>
 
         <div :class="$style['timer-block']">
@@ -74,7 +74,7 @@
 
       <div :class="$style['button-block']">
         <span @click="$emit('update:isShowPop', false)">关闭</span>
-        <span @click="downloadImage"> 长按下载图片</span>
+        <span @click="downloadImage">点击截屏保存</span>
       </div>
     </div>
   </div>
