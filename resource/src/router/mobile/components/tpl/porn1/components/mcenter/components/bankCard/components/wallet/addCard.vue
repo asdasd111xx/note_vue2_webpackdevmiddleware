@@ -369,7 +369,11 @@ export default {
           this.actionSetGlobalMessage({
             msg: "绑定成功",
             cb: () => {
-              this.setPageStatus(1, "walletCardInfo", true);
+              if (this.$route.query.redirect) {
+                this.$router.back();
+              } else {
+                this.setPageStatus(1, "walletCardInfo", true);
+              }
             }
           });
         }
