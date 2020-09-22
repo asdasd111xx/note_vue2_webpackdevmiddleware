@@ -381,18 +381,18 @@
             float: right;
         }
 
-        // .money::after {
-        //   content: "CNY";
-        //   color: #cbced8;
-        //   padding-left: 10px;
-        //   font-weight: 400;
-        // }
+        .money::after {
+          content: "CNY";
+          color: #cbced8;
+          padding-left: 10px;
+          font-weight: 400;
+        }
 
-        // .money {
-        //   &.check-crypto::after {
-        //     color: #e9dacc;
-        //   }
-        // }
+        .money {
+          &.check-crypto::after {
+            color: #e9dacc;
+          }
+        }
     }
 
     .check-button-wrap {
