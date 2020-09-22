@@ -392,7 +392,7 @@ export default {
 
                 if (res && res.data) {
                     let extraArray = res.data.extraArray;
-                    if (extraArray && extraArray.switchPromotionTypeCGPay) {
+                    if (extraArray && extraArray.switchPromotionTypeEletWallet) {
                         this.topPromotionMessage = extraArray.valuePromotionTypeEletWallet;
                     }
 

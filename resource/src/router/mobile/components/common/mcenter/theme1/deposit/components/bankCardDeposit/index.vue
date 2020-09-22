@@ -268,6 +268,13 @@
                 <div :class="$style['no-bind-wallet']">
                   <span @click="handleBindWallet">立即绑定</span>
                 </div>
+
+                <div
+                  v-if="isSelectBindWallet(16)"
+                  :class="$style['cgpay-promotion']"
+                >
+                  {{ this.cgPromotionMessage }}
+                </div>
               </span>
             </div>
 
@@ -289,13 +296,6 @@
               <div :class="$style['no-bind-wallet']">
                 尚未绑定CGPay钱包
                 <span @click="isShowCGPayBind = true">立即绑定</span>
-              </div>
-
-              <div
-                v-if="themeTPL === 'porn1'"
-                :class="$style['cgpay-promotion']"
-              >
-                {{ this.cgPromotionMessage }}
               </div>
             </div>
 
@@ -1064,7 +1064,7 @@ export default {
   props: {
     headerSetting: {
       type: Object,
-      default: () => {}
+      default: () => { }
     }
   },
   data() {
@@ -1096,7 +1096,7 @@ export default {
         isShow: false,
         msg: "",
         btnText: "",
-        cb: () => {}
+        cb: () => { }
       }
     };
   },
