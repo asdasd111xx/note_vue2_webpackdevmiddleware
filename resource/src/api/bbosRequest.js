@@ -1,5 +1,6 @@
+import { getCookie, setCookie } from '@/lib/cookie';
+
 import axios from 'axios';
-import { getCookie } from '@/lib/cookie';
 
 export default ({
     method = 'get',
@@ -16,10 +17,10 @@ export default ({
         'Content-Type': 'application/json',
     }
 
-    if (getCookie('cid')) {
-        bbosHeader['Cid'] = getCookie('cid');
-    } else if (reqHeaders && reqHeaders.cid) {
+    if (reqHeaders && reqHeaders.cid) {
         bbosHeader['Cid'] = reqHeaders.cid;
+    } else if (getCookie('cid')) {
+        bbosHeader['Cid'] = getCookie('cid');
     }
 
     const bbosParams = {
