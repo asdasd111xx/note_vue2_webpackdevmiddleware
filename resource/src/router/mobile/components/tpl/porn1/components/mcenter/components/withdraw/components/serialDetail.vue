@@ -13,7 +13,7 @@
     </div>
     <div :class="[$style['serial-number-wrap']]">
       <div :class="$style['serial-time']">
-        {{ $text("S_CHECK_TIME", "检查时间") }}：{{ nowTime }}
+        {{ $text("S_CHECK_TIME", "检查时间") }}：{{ getNowTime() }}
       </div>
 
       <div :class="[$style['basic-info-wrap'], 'clearfix']" v-if="data">
@@ -141,8 +141,8 @@ export default {
         },
         {
           title: this.$text('S_SERIAL_NUMBER', '流水要求'),
-          rateValue: this.data.offer,
-          value: this.getFixed(this.data.offer_audit_amount),
+          rateValue: this.data.offer_audit_amount,
+          value: this.getFixed(this.data.offer),
           deduction: this.$text('S_DEDUCTION_MONEY', '扣除金额')
         },
       ]]

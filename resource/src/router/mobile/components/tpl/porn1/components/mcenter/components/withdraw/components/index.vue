@@ -181,7 +181,9 @@
               forceStatus === 1 &&
                 userWithdrawCount === 0 &&
                 isFirstWithdraw &&
-                withdrawUserData.wallet.length > 0
+                withdrawUserData.wallet.length +
+                  withdrawUserData.crypto.length >
+                  0
             "
             :class="$style['withdraw-status-tip']"
           >
@@ -287,7 +289,9 @@
         v-if="allWithdrawAccount.length === 0 && userLevelObj.bank"
         :class="[$style['add-bank-card']]"
       >
-        <img :src="$getCdnPath(`/static/image/${themeTPL}/mcenter/add_2.png`)" />
+        <img
+          :src="$getCdnPath(`/static/image/${themeTPL}/mcenter/add_2.png`)"
+        />
         &nbsp;
         <span @click="checkAccountData('bankCard')">
           {{ $text("S_ADD_BANKCARD", "添加银行卡") }}
@@ -299,7 +303,9 @@
         v-if="allWithdrawAccount.length === 0 && userLevelObj.virtual_bank"
         :class="[$style['add-bank-card']]"
       >
-        <img :src="$getCdnPath(`/static/image/${themeTPL}/mcenter/add_2.png`)" />
+        <img
+          :src="$getCdnPath(`/static/image/${themeTPL}/mcenter/add_2.png`)"
+        />
         &nbsp;
         <span @click="checkAccountData('wallet')">
           {{ $text("S_ADD_VIRTUAL_BANKCARD", "添加电子钱包") }}
@@ -311,7 +317,9 @@
         v-if="allWithdrawAccount.length > 0"
         :class="[$style['add-bank-card']]"
       >
-        <img :src="$getCdnPath(`/static/image/${themeTPL}/mcenter/add_2.png`)" />
+        <img
+          :src="$getCdnPath(`/static/image/${themeTPL}/mcenter/add_2.png`)"
+        />
         &nbsp;
         <span
           @click="
@@ -1374,22 +1382,28 @@ export default {
     },
     parseCardName(value, withdrawType) {
       let result = "";
-      switch (withdrawType) {
-        // 银行卡：12个* + 最后4码
-        case "account_id":
-          result =
-            value.substring(0, value.indexOf("-") + 1) +
-            "************" +
-            value.substr(-4);
-          break;
-        // 数字货币：前4码 + 中间8个*  + 最后4码
-        default:
-          result =
-            value.substring(0, value.indexOf("-") + 5) +
-            "********" +
-            value.substr(-4);
-          break;
-      }
+      // 109/09/22 卡片統一:前4码 + 中间8个* + 最后4码
+      result =
+        value.substring(0, value.indexOf("-") + 5) +
+        " **** **** " +
+        value.substr(-4);
+
+      // switch (withdrawType) {
+      //   // 银行卡：12个* + 最后4码
+      //   case "account_id":
+      //     result =
+      //       value.substring(0, value.indexOf("-") + 1) +
+      //       "************" +
+      //       value.substr(-4);
+      //     break;
+      //   // 数字货币：前4码 + 中间8个*  + 最后4码
+      //   default:
+      //     result =
+      //       value.substring(0, value.indexOf("-") + 5) +
+      //       "********" +
+      //       value.substr(-4);
+      //     break;
+      // }
       return result;
     }
   },

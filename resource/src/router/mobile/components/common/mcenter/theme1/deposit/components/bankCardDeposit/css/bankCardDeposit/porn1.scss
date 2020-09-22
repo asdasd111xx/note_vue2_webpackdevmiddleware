@@ -317,20 +317,26 @@
     float: left;
     display: flex;
     justify-content: space-between;
+    align-items: center;
     width: 100%;
     height: 52px;
-    line-height: 52px;
     color: $main_text_color2;
 
     .content {
+        display: flex;
+        align-items: center;
         margin-right: 10px;
+    }
+
+    .money {
+        max-width: 100px;
+        word-break: break-all;
+        margin-right: 5px;
     }
 
     .conversion-btn {
         display: inline-block;
         margin-left: 10px;
-        // border: 1px solid #be9e7f;
-        // color: #be9e7f;
         border: 1px solid #e9dacb;
         color: #e9dacb;
         width: 80px;

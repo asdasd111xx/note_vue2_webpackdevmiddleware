@@ -25,7 +25,7 @@
         </div>
         <div :class="$style['check-content']">
           <template v-if="type === 'tips'">
-            <div :class="$style['time']">流水检查时间：{{ nowTime }}</div>
+            <div :class="$style['time']">流水检查时间：{{ getNowTime() }}</div>
             <div :class="$style['hr']" />
             <div v-if="serialNumberData && serialNumberData.total">
               <div :class="$style['check-cell']">
@@ -33,7 +33,7 @@
                   流水要求
                 </span>
                 <span :class="$style['money']">
-                  {{ serialNumberData.total.audit_amount }}
+                  {{ getDeductionNumber(serialNumberData.total.audit_amount) }}
                 </span>
               </div>
               <div :class="$style['check-cell']">
@@ -41,7 +41,7 @@
                   {{ $text("S_SERIAL_POOR", "流水不足") }}
                 </span>
                 <span :class="$style['money']">
-                  {{ serialNumberData.total.audit_amount_lack }}
+                  {{ getDeductionNumber(serialNumberData.total.audit_amount_lack) }}
                 </span>
               </div>
 
@@ -50,7 +50,7 @@
                   提现金额
                 </span>
                 <span :class="$style['money']">
-                  {{ withdrawValue }}
+                  {{ getDeductionNumber(withdrawValue) }}
                 </span>
               </div>
 
@@ -89,7 +89,7 @@
                   实际提现金额
                 </span>
                 <span :class="$style['money']">
-                  {{ actualMoney.toFixed(2) }}
+                  {{ getDeductionNumber(actualMoney) }}
                 </span>
               </div>
 
