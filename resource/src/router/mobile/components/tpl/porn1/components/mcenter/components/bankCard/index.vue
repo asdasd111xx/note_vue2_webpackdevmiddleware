@@ -234,7 +234,7 @@ export default {
           break;
 
         case "walletCardInfo":
-          this.showDetail && !this.isAudit;
+          return this.showDetail && !this.isAudit;
           break;
       }
     }

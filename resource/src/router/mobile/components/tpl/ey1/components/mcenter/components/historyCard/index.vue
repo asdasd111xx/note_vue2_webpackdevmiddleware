@@ -23,7 +23,7 @@
 
       <div
         v-if="showDetail && !isAudit"
-        :class="$style['icon-edit']"
+        :class="$style['header-icon']"
         @click="editDetailStatus = true"
       >
         <template v-if="themeTPL === 'porn1'">
