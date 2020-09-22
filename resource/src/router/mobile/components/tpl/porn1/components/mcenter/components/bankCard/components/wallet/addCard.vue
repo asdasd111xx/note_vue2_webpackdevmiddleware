@@ -90,7 +90,10 @@
         </div>
 
         <div
-          v-if="selectTarget.walletId === 21 || isGoBaoWallet"
+          v-if="
+            (themeTPL !== 'porn1' && selectTarget.walletId === 21) ||
+              isGoBaoWallet
+          "
           :class="$style['qrcode']"
           @click="isShowPopQrcode = true"
         >
@@ -240,7 +243,7 @@ export default {
   props: {
     setPageStatus: {
       type: Function,
-      default: () => {}
+      default: () => { }
     },
     userLevelObj: {
       type: Object,
@@ -328,7 +331,12 @@ export default {
 
       switch (value) {
         case 21:
-          text = "请输入CGP邮箱/手机号或扫扫二维码";
+          if (this.themeTPL === "porn1") {
+            text = "请输入CGP邮箱/手机号";
+          } else {
+            text = "请输入CGP邮箱/手机号或扫扫二维码";
+          }
+
           this.getWalletTipInfo();
           break;
         case 33:
