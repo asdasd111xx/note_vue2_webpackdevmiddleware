@@ -100,8 +100,7 @@ export default {
         }
 
         if (this.siteConfig.MOBILE_WEB_TPL !== 'ey1' ||
-           (this.memInfo.config.player_user_bank && this.siteConfig.MOBILE_WEB_TPL === 'ey1'))
-        {
+            (this.memInfo.config.player_user_bank && this.siteConfig.MOBILE_WEB_TPL === 'ey1')) {
             delete this.formData['city'];
             delete this.formData['province'];
         }
@@ -185,6 +184,12 @@ export default {
             if (key === "account") {
                 this.actionVerificationFormData({ target: 'bankCard', value: value }).then((val => {
                     this.formData.account = val;
+                }));
+            }
+
+            if (key === "keyring") {
+                this.actionVerificationFormData({ target: 'code', value: value }).then((val => {
+                    this.formData.keyring = val;
                 }));
             }
 
@@ -284,7 +289,7 @@ export default {
                             }
                         }).catch(error => {
                             if (error.response && error.response.status === 429) {
-                                this.errorMsg = "操作太频繁，请稍候在试";
+                                this.errorMsg = "今日发送次数已达上限";
                                 return;
                             }
 
@@ -300,7 +305,7 @@ export default {
                 })
                 .catch(error => {
                     if (error.response && error.response.status === 429) {
-                        this.errorMsg = "操作太频繁，请稍候在试";
+                        this.errorMsg = "今日发送次数已达上限";
                         return;
                     }
 

@@ -1120,6 +1120,7 @@ export const actionSetAgentLink = ({ state, commit }, data) => {
         reqHeaders['cid'] = data.reqHeaders.cid;
     }
 
+    console.log(reqHeaders)
     let domain = new Promise((resolve) => {
         bbosRequest({
             method: "get",
