@@ -13,7 +13,7 @@
     </div>
     <div :class="[$style['serial-number-wrap']]">
       <div :class="$style['serial-time']">
-        {{ $text("S_CHECK_TIME", "检查时间") }}：{{ nowTime }}
+        {{ $text("S_CHECK_TIME", "检查时间") }}：{{ getNowTime() }}
       </div>
 
       <div

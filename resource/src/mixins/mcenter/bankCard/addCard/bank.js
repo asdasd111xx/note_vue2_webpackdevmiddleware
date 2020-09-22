@@ -283,7 +283,15 @@ export default {
                                 }, 1000);
                             }
                         }).catch(error => {
-                            this.errorMsg = `${error.response.data.msg}`;
+                            if (error.response && error.response.status === 429) {
+                                this.errorMsg = "操作太频繁，请稍候在试";
+                                return;
+                            }
+
+                            if (error.response.data.msg) {
+                                this.errorMsg = `${error.response.data.msg}`;
+                                return;
+                            }
                         })
 
                     } else {
@@ -291,8 +299,8 @@ export default {
                     }
                 })
                 .catch(error => {
-                    if (error.response && error.response.status === "429") {
-                        this.msg = "操作太频繁，请稍候在试";
+                    if (error.response && error.response.status === 429) {
+                        this.errorMsg = "操作太频繁，请稍候在试";
                         return;
                     }
 

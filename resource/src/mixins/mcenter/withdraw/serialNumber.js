@@ -56,6 +56,9 @@ export default {
         };
     },
     methods: {
+        getNowTime() {
+          return EST(new Date());
+        },
         getFixed(number) {
             return Number(number).toFixed(2);
         },

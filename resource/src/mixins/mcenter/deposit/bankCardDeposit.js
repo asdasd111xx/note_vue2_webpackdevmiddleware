@@ -392,7 +392,7 @@ export default {
 
                 if (res && res.data) {
                     let extraArray = res.data.extraArray;
-                    if (extraArray && extraArray.switchPromotionTypeCGPay) {
+                    if (extraArray && extraArray.switchPromotionTypeEletWallet) {
                         this.topPromotionMessage = extraArray.valuePromotionTypeEletWallet;
                     }
 
@@ -1059,7 +1059,7 @@ export default {
         },
         getSingleLimit(minMoney, maxMoney) {
             // 最大金額不為0的時候，顯示最小值~最大值
-            if (Number(minMoney) !== 0 && Number(maxMoney) !== 0) {
+            if (Number(maxMoney) !== 0) {
                 return `¥${minMoney} ~ ¥${maxMoney}`;
             }
 

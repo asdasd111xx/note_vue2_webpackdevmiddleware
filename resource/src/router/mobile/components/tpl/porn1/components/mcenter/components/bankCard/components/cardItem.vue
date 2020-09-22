@@ -31,7 +31,8 @@
       </div>
 
       <div :class="$style['card-number']">
-        **** **** **** <span>{{ data.account.slice(-4) }}</span>
+        {{ data.account.slice(0, 4) }} **** ****
+        <span>{{ data.account.slice(-4) }}</span>
       </div>
     </template>
 
