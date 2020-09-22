@@ -31,11 +31,14 @@
               { [$style['is-even']]: index % 2 !== 0 }
             ]"
           >
+            <!-- Title -->
             <div
               :class="[$style['basic-info-text'], $style['basic-info-title']]"
             >
               {{ info.title }}
             </div>
+
+             <!-- Qrcode -->
             <div
               v-if="info.qrcode && info.qrcode.length > 0"
               :class="[$style['basic-info-text'], $style['qrcode-wrap']]"
@@ -63,7 +66,8 @@
                 </div>
               </template>
             </div>
-            <!-- eslint-disable vue/no-v-html -->
+
+            <!-- 以 v-html 呈現 -->
             <div
               v-else-if="info.htmlShow"
               :class="[
@@ -72,7 +76,8 @@
               ]"
               v-html="info.value"
             />
-            <!-- eslint-enable vue/no-v-html -->
+
+            <!-- 以正常 value 呈現 -->
             <div
               v-else
               :class="[
@@ -84,6 +89,7 @@
             >
               {{ info.value }}
             </div>
+
             <!-- icon -->
             <div
               v-if="info.copyShow"
@@ -102,9 +108,9 @@
     </div>
     <!-- 存款信息 -->
     <div :class="[$style['info-wrap'], 'clearfix']">
-      <!-- <div :class="$style['deposit-info-title']">
-        {{ $text("S_DEPOSIT_TIP04", "填寫匯款資料，加速到帳") }}
-      </div> -->
+      <div :class="$style['deposit-info-title']">
+        {{ $text("S_APPLICATION_INFORMATION", "您的申请资料") }}
+      </div>
       <div
         :class="[$style['deposit-submit-info'], $style['application-table']]"
       >

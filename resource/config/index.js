@@ -104,7 +104,12 @@ module.exports = {
                 target: domain,
                 changeOrigin: true,
                 secure: false
-            }
+            },
+            '/exsport': {
+                target: domain,
+                changeOrigin: true,
+                secure: false
+            },
         },
         cssSourceMap: false
     }

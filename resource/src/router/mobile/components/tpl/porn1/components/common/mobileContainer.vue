@@ -1,5 +1,6 @@
 <template>
   <div
+    id="mobile-container"
     :class="[
       $style.container,
       {
@@ -21,9 +22,12 @@
     />
     <!-- <ele-pop /> -->
     <!-- 會員中心彈窗 -->
-    <div v-if="popType === 'note' && path[1] === 'agcenter'" :class="[$style['note-content'], 'theme-porn1']">
-        <agent-note :position="popData" />
-        <div :class="$style.mask" />
+    <div
+      v-if="popType === 'note' && path[1] === 'agcenter'"
+      :class="[$style['note-content'], 'theme-porn1']"
+    >
+      <agent-note :position="popData" />
+      <div :class="$style.mask" />
     </div>
   </div>
 </template>
@@ -108,21 +112,21 @@ export default {
 }
 
 .note-content {
-    position: absolute;
-    top: 0;
-    left: 0;
-    width: 100%;
-    height: 100%;
-    z-index: 999;
+  position: absolute;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  z-index: 999;
 }
 
 .mask {
-    position: fixed;
-    top: 0;
-    left: 0;
-    background-color: rgba(0,0,0,.5);
-    width: 100%;
-    height: 100%;
-    z-index: 0;
+  position: fixed;
+  top: 0;
+  left: 0;
+  background-color: rgba(0, 0, 0, 0.5);
+  width: 100%;
+  height: 100%;
+  z-index: 0;
 }
 </style>

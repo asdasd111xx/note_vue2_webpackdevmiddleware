@@ -1,6 +1,6 @@
 <template>
   <mobile-container :has-footer="hasFooter">
-    <div slot="content" :class="$style['content-wrap']">
+    <div slot="content">
       <iframe-content />
     </div>
   </mobile-container>
@@ -17,17 +17,13 @@ export default {
   },
   computed: {
     hasFooter() {
-      return this.$route.query.hasFooter !== undefined ? this.$route.query.hasFooter === 'true' : true;
-    }
+      const query = this.$route.query;
+      return query.hasFooter === undefined ? true : query.hasFooter === 'true';
+    },
   },
 };
-
 </script>
 
 <style lang="scss" module>
 @import "~@/css/variable.scss";
-
-.content-wrap {
-  height: 100%;
-}
 </style>
