@@ -19,6 +19,7 @@ export default ({
 
     if (reqHeaders && reqHeaders.cid) {
         bbosHeader['Cid'] = reqHeaders.cid;
+        delete reqHeaders['cid'];
     } else if (getCookie('cid')) {
         bbosHeader['Cid'] = getCookie('cid');
     }
@@ -62,9 +63,9 @@ export default ({
             }
 
             if (responseData.code === "M00001" || responseData.code === "C600001") {
-                if (getCookie('cid')) {
-                    alert(`${response.data.msg}`);
-                }
+                // if (getCookie('cid')) {
+                //     alert(`${response.data.msg}`);
+                // }
 
                 setCookie('cid', '');
                 setCookie('y_token', '');
