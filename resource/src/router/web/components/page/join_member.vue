@@ -704,7 +704,6 @@ export default {
 
         if (this.allValue.confirm_password === this.allValue.password) {
           this.allTip.confirm_password = '';
-          return;
         }
       }
 
@@ -717,7 +716,6 @@ export default {
 
         }
 
-        return;
       }
 
       if (key == 'withdraw_password') {
