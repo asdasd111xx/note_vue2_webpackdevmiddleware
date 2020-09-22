@@ -58,7 +58,7 @@
           </template>
 
           <template v-if="paymentGatewayId === 37">
-            <div>● 请使用扫描器扫描二維碼</div>
+            <div>● 请使用扫描器扫描二维码</div>
             <div>● 成功绑定钱包后，此视窗自动关闭</div>
             <div>
               ● 没有购宝钱包帐号?

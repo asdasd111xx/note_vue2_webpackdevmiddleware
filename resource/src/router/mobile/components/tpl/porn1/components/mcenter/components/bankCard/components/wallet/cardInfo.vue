@@ -136,7 +136,7 @@
             ]"
             @click="isShowPop = true"
           >
-            {{ themeTPL === "porn1" ? "解除綁定" : "删除电子钱包" }}
+            {{ themeTPL === "porn1" ? "解除绑定" : "删除电子钱包" }}
           </div>
 
           <div
