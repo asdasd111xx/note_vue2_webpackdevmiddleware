@@ -737,7 +737,7 @@ export default {
             text: `还没有数字货币帐号？`,
             hasPopupTip: true,
             dataObj: {
-              text: "后我查看交易所",
+              text: "点我查看交易所",
               cb: () => {
                 this.isShowPopTip = true;
               }

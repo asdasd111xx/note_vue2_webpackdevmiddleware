@@ -188,6 +188,12 @@ export default {
                 }));
             }
 
+            if (key === "keyring") {
+                this.actionVerificationFormData({ target: 'code', value: value }).then((val => {
+                    this.formData.keyring = val;
+                }));
+            }
+
             this.NextStepStatus = Object.keys(this.formData).every(key => {
                 if (this.addBankCardStep === "one") {
                     if (key === "account") {

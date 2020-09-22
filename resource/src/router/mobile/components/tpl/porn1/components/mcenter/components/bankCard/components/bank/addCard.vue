@@ -125,7 +125,9 @@
             <input
               v-model="formData.phone"
               type="text"
-              placeholder="11位手机号码"
+              :placeholder="
+                themeTPL === 'porn1' ? '11位手机号码' : '请输入手机号码'
+              "
               maxlength="36"
               @input="
                 formData.phone = $event.target.value
@@ -142,10 +144,9 @@
           <div :class="$style['input-wrap']">
             <input
               v-model="formData.keyring"
-              type="number"
+              type="text"
               placeholder="请输入手机验证码"
-              maxlength="36"
-              @input="checkData"
+              @input="checkData($event.target.value, 'keyring')"
             />
             <div
               :class="[
@@ -245,7 +246,7 @@ export default {
   props: {
     setPageStatus: {
       type: Function,
-      default: () => { }
+      default: () => {}
     },
     addBankCardStep: {
       type: String,
