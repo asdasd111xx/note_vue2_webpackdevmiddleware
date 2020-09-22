@@ -300,11 +300,11 @@ export default {
       }
 
       // 從其它頁面進入到此頁面(通常停留在添加卡片的頁面)
-      if (this.$route.query && this.$route.query.redirect) {
-        switch (this.$route.query.redirect) {
+      let redirect = this.$route.query.redirect;
+      if (redirect) {
+        switch (redirect) {
           case "home":
             this.$router.push("/mobile");
-
             break;
 
           case "liveStream":
@@ -313,6 +313,7 @@ export default {
 
           default:
             this.$router.back();
+            // this.$router.push(`/mobile/mcenter/${redirect}`);
             break;
         }
         return;

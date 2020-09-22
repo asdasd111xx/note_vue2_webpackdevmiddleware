@@ -16,7 +16,7 @@
         <div :class="$style['btn-icon']">
           <img
             :src="$getCdnPath('/static/image/ey1/common/btn_help.png')"
-            @click="$router.push('/mobile/mcenter/helpCenter/')"
+            @click="$router.push('/mobile/mcenter/helpCenter')"
           />
         </div>
       </div>
@@ -231,7 +231,7 @@ export default {
         !this.formData.phone.show &&
         !this.formData.withdraw_password.show) {
         if (!this.checkBankSwitch) {
-          this.$router.push(`/mobile/mcenter/bankCard?redirect=home&type=wallet`)
+          this.$router.push(`/mobile/mcenter/bankCard?redirect=${this.redirect}&type=wallet`)
         } else {
           this.$router.back();
         }
@@ -270,6 +270,10 @@ export default {
         return this.captcha = value
       }
     },
+    redirect() {
+      let redirect = this.$route.query.redirect;
+      return this.$route.query.redirect;
+    }
   },
   watch: {
     captchaData(val) {
@@ -290,9 +294,8 @@ export default {
         });
         this.sliderClass = 'slider-close slider'
       } else {
-        let redirect = this.$route.query.redirect;
-        if (redirect) {
-          switch (redirect) {
+        if (this.redirect) {
+          switch (this.redirect) {
             case 'home':
               this.$router.push(`/mobile/`);
             default:
@@ -472,7 +475,7 @@ export default {
             this.onClose();
 
             if (!this.checkBankSwitch) {
-              this.$router.push(`/mobile/mcenter/bankCard?redirect=home&type=wallet`)
+              this.$router.push(`/mobile/mcenter/bankCard?redirect=${this.redirect}&type=wallet`)
             }
           });
         }
