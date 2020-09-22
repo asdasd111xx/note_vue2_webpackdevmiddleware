@@ -68,7 +68,7 @@
     <template v-if="showDetail && bank_cardDetail">
       <div v-if="bank_cardDetail.auditing" :class="$style['audit-block']">
         <div>删除审核中</div>
-        <span>审核通过后，系统会自动刪除錢包</span>
+        <span>审核通过后，系统会自动刪除銀行卡</span>
       </div>
 
       <card-item
@@ -82,6 +82,7 @@
         <div :class="$style['edit-mask']" />
         <div :class="$style['edit-button']">
           <div
+            v-if="memInfo.config.delete_bank_card"
             :class="[$style['edit-option-item'], $style['confirm']]"
             @click="isShowPop = true"
           >
@@ -106,7 +107,7 @@
             {{ $text("S_TIPS", "温馨提示") }}
           </div>
 
-          <span>确定解除绑定该钱包？</span>
+          <span>确定删除该张卡片吗？</span>
         </div>
 
         <div :class="$style['button-block']">
@@ -146,6 +147,10 @@ export default {
       required: true
     },
     editStatus: {
+      type: Boolean,
+      required: true
+    },
+    isAudit: {
       type: Boolean,
       required: true
     }
