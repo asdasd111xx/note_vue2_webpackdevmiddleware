@@ -172,6 +172,11 @@ export default ({ linkType = 'nolink', linkTo = '', linkItem = '' }) => {
         }
 
         if (linkTo === 'cgPay') {
+            if (!store.state.loginStatus) {
+                router.push('/mobile/login');
+                return;
+            }
+
             router.push(
                 "/mobile/mcenter/bankcard?redirect=home&type=wallet&wallet=CGPay"
             );
