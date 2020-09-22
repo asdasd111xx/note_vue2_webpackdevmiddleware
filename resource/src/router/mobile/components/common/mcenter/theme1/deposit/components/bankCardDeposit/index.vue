@@ -263,7 +263,13 @@
             >
               <!-- Yabo: 尚未綁定直接跳轉到添加卡片頁面 -->
               <span :class="[$style['bank-card-title'], $style['no-margin']]">
-                充值前请先绑定{{ curPayInfo.payment_type_name }}帐号
+                <template v-if="cgPromotionMessage">
+                  充值前请先绑定钱包
+                </template>
+
+                <template v-else>
+                  充值前请先绑定{{ curPayInfo.payment_type_name }}帐号
+                </template>
 
                 <div :class="$style['no-bind-wallet']">
                   <span @click="handleBindWallet">立即绑定</span>
@@ -273,7 +279,7 @@
                   v-if="isSelectBindWallet(16)"
                   :class="$style['cgpay-promotion']"
                 >
-                  {{ this.cgPromotionMessage }}
+                  {{ cgPromotionMessage }}
                 </div>
               </span>
             </div>

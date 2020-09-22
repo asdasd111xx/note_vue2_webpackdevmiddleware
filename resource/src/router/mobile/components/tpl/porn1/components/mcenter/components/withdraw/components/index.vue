@@ -1142,7 +1142,8 @@ export default {
 
       localStorage.setItem("tmp_w_amount", this.withdrawValue);
       localStorage.setItem(
-        ("tmp_w_actualAmount", JSON.stringify(this.actualMoney))
+        "tmp_w_actualAmount",
+        JSON.stringify(this.actualMoney)
       );
 
       localStorage.setItem("tmp_w_withdrawPwd", this.withdrawPwd);
