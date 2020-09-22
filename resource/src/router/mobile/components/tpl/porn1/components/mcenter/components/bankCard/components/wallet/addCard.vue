@@ -243,7 +243,7 @@ export default {
   props: {
     setPageStatus: {
       type: Function,
-      default: () => { }
+      default: () => {}
     },
     userLevelObj: {
       type: Object,
@@ -352,7 +352,7 @@ export default {
           text = "请输入STICPAY注册信箱";
           break;
         case 37:
-          text = "请点击二維碼綁定";
+          text = "请点击二维码綁定";
           this.isGoBaoWallet = true;
           this.getWalletTipInfo();
           break;
@@ -417,17 +417,32 @@ export default {
       }
 
       // 億元
-      // 從提現頁進來，且只選擇 CGPay
-      if (
-        this.themeTPL === "ey1" &&
-        this.$route.query.wallet &&
-        this.$route.query.wallet === "CGPay"
-      ) {
-        let item = this.walletList.find(item => {
-          return item.id === 21;
-        });
-        this.setBank(item);
-        this.selectTarget.fixed = true;
+      // 從首頁 or 提現頁進來，且只選擇 CGPay
+      if (this.themeTPL === "ey1" && this.$route.query.wallet) {
+        switch (this.$route.query.wallet) {
+          case "CGPay":
+            let item = this.walletList.find(item => {
+              return item.id === 21;
+            });
+
+            // 如果使用者未綁定，導到 CGPay 指定頁面
+            if (item) {
+              this.setBank(item);
+              this.selectTarget.fixed = true;
+              return;
+            } else {
+              // 如果已綁定，導到卡片管理-添加電子錢包
+              this.$router.replace({
+                path: "bankcard",
+                query: { type: "wallet" },
+                replace: true
+              });
+              this.setPageStatus(1, "walletCardInfo", true);
+              return;
+            }
+
+            break;
+        }
       }
     }
   },
