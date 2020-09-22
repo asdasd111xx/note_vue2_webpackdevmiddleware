@@ -231,7 +231,7 @@ export default {
         !this.formData.phone.show &&
         !this.formData.withdraw_password.show) {
         if (!this.checkBankSwitch) {
-          this.$router.push(`/mobile/mcenter/bankCard?redirect=${this.redirect}&type=wallet`)
+          this.$router.replace(`/mobile/mcenter/bankCard?redirect=${this.redirect}&type=wallet`)
         } else {
           this.$router.back();
         }
