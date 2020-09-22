@@ -40,10 +40,9 @@
                   {{ message.created_at | getTime }}
                 </p>
               </div>
-              <p :class="$style['question']">
-                {{ getShortConetentName(message.content) }}  
-                {{ getShortConetentURL(message.content) }}    
-              </p>
+              <p :class="$style['question']"
+                v-html="getShortConetent(message.content)"
+              ></p> 
             </div>
           </li>
         </ul>
@@ -180,15 +179,6 @@ export default {
     }
   },
   methods: {
-    getShortConetentName(content) {
-      let res = content.split("\n");
-      return res[0];
-      
-    },
-    getShortConetentURL(content) {
-      let res = content.split('"');
-      return res[1];
-    },
     getShortConetent(content) {
       return content;
       
