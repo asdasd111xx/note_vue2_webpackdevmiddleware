@@ -160,6 +160,8 @@ export default {
                 this.actionSetGlobalMessage({ msg: '删除审核中' });
                 break;
             }
+            this.$emit('update:isAudit', true);
+            return;
           } else {
             switch (this.themeTPL) {
               case 'porn1':
@@ -172,6 +174,7 @@ export default {
             }
             this.$emit("update:showDetail", false);
             this.setPageStatus(1, "walletCardInfo", true);
+            return;
           }
         })
       })

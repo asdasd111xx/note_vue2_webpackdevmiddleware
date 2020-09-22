@@ -23,7 +23,7 @@
 
       <!-- 詳細頁-編輯按鈕 -->
       <div
-        v-if="showDetail && !isAudit"
+        v-if="showDetailButton"
         :class="$style['header-icon']"
         @click="editDetailStatus = true"
       >
@@ -223,6 +223,20 @@ export default {
     },
     isOneTab() {
       return !this.userLevelObj.bank || !this.userLevelObj.virtual_bank;
+    },
+    showDetailButton() {
+      switch (this.currentPage) {
+        case "bankCardInfo":
+          return (
+            this.showDetail &&
+            !this.isAudit & this.memInfo.config.delete_bank_card
+          );
+          break;
+
+        case "walletCardInfo":
+          this.showDetail && !this.isAudit;
+          break;
+      }
     }
   },
   created() {
@@ -286,11 +300,11 @@ export default {
       }
 
       // 從其它頁面進入到此頁面(通常停留在添加卡片的頁面)
-      if (this.$route.query && this.$route.query.redirect) {
-        switch (this.$route.query.redirect) {
+      let redirect = this.$route.query.redirect;
+      if (redirect) {
+        switch (redirect) {
           case "home":
             this.$router.push("/mobile");
-
             break;
 
           case "liveStream":
@@ -299,6 +313,7 @@ export default {
 
           default:
             this.$router.back();
+            // this.$router.push(`/mobile/mcenter/${redirect}`);
             break;
         }
         return;

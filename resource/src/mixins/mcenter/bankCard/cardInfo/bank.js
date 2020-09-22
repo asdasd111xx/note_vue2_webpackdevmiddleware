@@ -81,7 +81,6 @@ export default {
           this.bank_cardDetail = temp;
         }).then(() => {
           if (this.memInfo.config.manual_delete_bank_card) {
-            this.actionSetGlobalMessage({ msg: '删除审核中' });
             switch (this.themeTPL) {
               case 'porn1':
                 this.actionSetGlobalMessage({ msg: '银行卡删除审核中' });
@@ -91,6 +90,8 @@ export default {
                 this.actionSetGlobalMessage({ msg: '删除审核中' });
                 break;
             }
+            this.$emit('update:isAudit', true);
+            return;
           } else {
             switch (this.themeTPL) {
               case 'porn1':
@@ -103,6 +104,7 @@ export default {
             }
             this.$emit("update:showDetail", false);
             this.setPageStatus(1, "walletCardInfo", true);
+            return;
           }
         })
       })
