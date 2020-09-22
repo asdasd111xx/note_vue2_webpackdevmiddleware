@@ -551,11 +551,13 @@
                 <span>转入数量</span>
                 <div :class="$style['content']">
                   <span :class="$style['money']">
-                    {{
-                      `${cryptoMoney} ${curPayInfo.payment_method_name}
-                      `
-                    }}
+                    {{ cryptoMoney }}
                   </span>
+
+                  <span>
+                    {{ curPayInfo.payment_method_name }}
+                  </span>
+
                   <div
                     :class="[
                       $style['conversion-btn'],
