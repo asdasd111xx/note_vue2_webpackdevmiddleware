@@ -23,7 +23,7 @@
 
       <!-- 詳細頁-編輯按鈕 -->
       <div
-        v-if="showDetail && !isAudit"
+        v-if="showDetailButton"
         :class="$style['header-icon']"
         @click="editDetailStatus = true"
       >
@@ -223,6 +223,20 @@ export default {
     },
     isOneTab() {
       return !this.userLevelObj.bank || !this.userLevelObj.virtual_bank;
+    },
+    showDetailButton() {
+      switch (this.currentPage) {
+        case "bankCardInfo":
+          return (
+            this.showDetail &&
+            !this.isAudit & this.memInfo.config.delete_bank_card
+          );
+          break;
+
+        case "walletCardInfo":
+          this.showDetail && !this.isAudit;
+          break;
+      }
     }
   },
   created() {
