@@ -51,10 +51,21 @@ export default {
   components: {
     pageLoading: () => import(/* webpackChunkName: 'pageLoading' */ '@/router/mobile/components/common/pageLoading'),
   },
+  beforeDestroy() {
+    let container = document.getElementById('mobile-container');
+    if (container && container.style) {
+      container.style = "";
+    }
+  },
   created() {
     // localStorage.setItem('open-game-link', 'https://star.xbb-slot-test.com:8888/starfruit/slot/1000030?lang=zh-cn&sid=8eedfbc72ec4e46dc8e83fcafee5c7afe292dcc40546150ce9dffdd54116ff14')
   },
   mounted() {
+    let container = document.getElementById('mobile-container');
+    if (container && container.style) {
+      container.style = "min-height:unset";
+    }
+
     const params = this.$route.params;
     switch (params.page.toUpperCase()) {
       case 'LF':
@@ -98,6 +109,9 @@ export default {
             this.actionSetGlobalMessage({ msg: error.data.msg });
           }
         })
+        break;
+      case 'SWAG':
+        this.src = 'https://feature-yabo.app.swag.live/';
         break;
       default:
         this.$router.back();
@@ -207,11 +221,11 @@ export default {
 .iframe-wrap {
   height: calc(100vh);
   width: 100%;
-  overflow-x: hidden;
   background-color: #fff;
+  overflow: hidden;
 
   &.has-header {
-    padding-top: 43px;
+    margin-top: 43px;
   }
 }
 

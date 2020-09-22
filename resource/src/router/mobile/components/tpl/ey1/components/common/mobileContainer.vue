@@ -1,5 +1,6 @@
 <template>
   <div
+    id="mobile-container"
     :class="[
       $style.container,
       {
