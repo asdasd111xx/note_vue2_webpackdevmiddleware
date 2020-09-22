@@ -98,9 +98,7 @@
       <div v-if="wallet_cardDetail.auditing" :class="$style['audit-block']">
         <div>删除审核中</div>
         <span>
-          审核通过后，系统会自动刪除{{
-            themeTPL === "porn1" ? "钱包" : "银行卡"
-          }}
+          审核通过后，系统会自动刪除钱包
         </span>
       </div>
 
