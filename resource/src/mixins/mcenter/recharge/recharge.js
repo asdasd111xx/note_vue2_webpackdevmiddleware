@@ -60,7 +60,7 @@ export default {
                 { key: "target_username", title: "转入帐号", error: "", placeholder: "请输入下线帐号", },
                 { key: "amount", title: "转让金额", error: "", placeholder: `请输入转让金额` },
                 { key: "phone", title: "手机号码", error: "", placeholder: "请输入手机号码", maxlength: 11 },
-                { key: "keyring", title: "获取验证码", error: "", placeholder: "请输入验证码", maxlength: 4 }
+                { key: "keyring", title: "获取验证码", error: "", placeholder: "请输入验证码", maxlength: 6 }
             ]
         },
     },
