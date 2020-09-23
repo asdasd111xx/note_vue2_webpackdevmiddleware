@@ -273,7 +273,7 @@ export default {
       if (cacheParams) {
         params = cacheParams;
       } else {
-        params = {
+        params = { 
           start_at: Vue.moment(this.startTime).format('YYYY-MM-DD 00:00:00-04:00'),
           end_at: Vue.moment(this.endTime).format('YYYY-MM-DD 23:59:59-04:00'),
           category: this.type,
@@ -399,12 +399,12 @@ export default {
       this.changeCondition('');
       this.changeDatePicker('');
     },
-    onConfirm() {
-      if (this.startTime > this.endTime) {
+    onConfirm() { 
+      if ((this.startTime > this.endTime) && (this.startTime.toDateString() !== this.endTime.toDateString()) ) {
         this.actionSetGlobalMessage({ msg: '开始日期不能大于结束日期' });
         return;
       }
-
+ 
       this.currentDate = { key: 'custom', text: '自定义' };
       this.detailList = null;
       this.firstResult = 0;
