@@ -299,7 +299,7 @@ export default {
             case 'home':
               this.$router.push(`/mobile/`);
             default:
-              this.$router.push(`/mobile/mcenter/${redirect}`);
+              this.$router.push(`/mobile/mcenter/${this.redirect}`);
           }
           return;
         }
