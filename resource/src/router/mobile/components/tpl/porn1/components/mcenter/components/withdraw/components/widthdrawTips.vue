@@ -41,7 +41,9 @@
                   {{ $text("S_SERIAL_POOR", "流水不足") }}
                 </span>
                 <span :class="$style['money']">
-                  {{ getDeductionNumber(serialNumberData.total.audit_amount_lack) }}
+                  {{
+                    getDeductionNumber(serialNumberData.total.audit_amount_lack)
+                  }}
                 </span>
               </div>
 
@@ -57,10 +59,10 @@
               <div :class="$style['check-cell']">
                 <span :class="$style['sub-title']">
                   {{ $text("S_DEDUCTION_MONEY", "扣除金额") }}
-                  行政费用:({{ `${serialNumberData.administrative_rate}%` }})
+                  (行政费用:{{ `${serialNumberData.administrative_rate}%` }})
                 </span>
                 <span :class="$style['money']">
-                  {{ getDeductionNumber(serialNumberData.total.deduction) }}
+                  -{{ getDeductionNumber(serialNumberData.total.deduction) }}
                 </span>
               </div>
 
@@ -69,7 +71,7 @@
                   {{ $text("S_FEE", "手续费") }}
                 </span>
                 <span :class="$style['money']">
-                  {{ getDeductionNumber(serialNumberData.total.fee) }}
+                  -{{ getDeductionNumber(serialNumberData.total.fee) }}
                 </span>
               </div>
 
@@ -78,7 +80,7 @@
                   扣除总计
                 </span>
                 <span :class="$style['money']">
-                  {{
+                  -{{
                     getDeductionNumber(serialNumberData.total.total_deduction)
                   }}
                 </span>
@@ -100,7 +102,7 @@
                 <span :class="$style['sub-title']">
                   USDT到帐
                 </span>
-                <span :class="[$style['money'], $style['check-crypto']]">
+                <span :class="$style['crypto-money']">
                   {{ cryptoMoney }}
                 </span>
               </div>

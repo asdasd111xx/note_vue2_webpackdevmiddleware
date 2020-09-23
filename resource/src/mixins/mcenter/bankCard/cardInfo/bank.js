@@ -103,7 +103,7 @@ export default {
                 break;
             }
             this.$emit("update:showDetail", false);
-            this.setPageStatus(1, "walletCardInfo", true);
+            this.setPageStatus(0, "bankCardInfo", true);
             return;
           }
         })

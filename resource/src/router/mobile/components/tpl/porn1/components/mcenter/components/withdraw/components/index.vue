@@ -1243,6 +1243,7 @@ export default {
               this.msg = "提现成功";
               this.withdrawValue = "";
               this.withdrawPwd = "";
+              this.actualMoney = 0;
               this.cryptoMoney = "--";
               this.resetTimerStatus();
 
@@ -1306,6 +1307,11 @@ export default {
 
                 if (res.result === "ok") {
                   this.msg = "提现成功";
+                  this.withdrawValue = "";
+                  this.withdrawPwd = "";
+                  this.actualMoney = 0;
+                  this.cryptoMoney = "--";
+                  this.resetTimerStatus();
                   this.thirdUrl = res.ret.uri;
                 }
               });

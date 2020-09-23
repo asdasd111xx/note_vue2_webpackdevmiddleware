@@ -388,10 +388,11 @@
           font-weight: 400;
         }
 
-        .money {
-          &.check-crypto::after {
-            color: #e9dacc;
-          }
+        .crypto-money::after {
+          content: "USDT";
+          color: #e9dacc;
+          padding-left: 10px;
+          font-weight: 400;
         }
     }
 
