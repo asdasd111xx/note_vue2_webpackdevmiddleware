@@ -61,7 +61,7 @@
                 @blur="verification(inputInfo[3])"
                 @input="verification(inputInfo[3])"
                 :maxlength="item.maxlength"
-                type="number"
+                type="tel"
               />
               <div
                 :class="[

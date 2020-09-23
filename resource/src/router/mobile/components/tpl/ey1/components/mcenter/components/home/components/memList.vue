@@ -103,7 +103,7 @@ export default {
         {
           initName: "我的推广",
           name: "S_TEAM_CENTER",
-          path: "/mobile/mcenter/tcenter/management",
+          path: "/mobile/mcenter/tcenter/management/member",
           pageName: "mypromotion",
           image: "mypromotion",
           info: "合营计划",

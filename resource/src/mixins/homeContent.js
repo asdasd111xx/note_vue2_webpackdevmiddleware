@@ -371,7 +371,7 @@ export default {
                 })
                 return;
             } else if (path === "makemoney") {
-                this.$router.push('/mobile/mcenter/tcenter/management');
+                this.$router.push('/mobile/mcenter/tcenter/management/member');
             }
             else if (path === "withdraw") {
                 if (this.siteConfig.MOBILE_WEB_TPL !== 'ey1') {
