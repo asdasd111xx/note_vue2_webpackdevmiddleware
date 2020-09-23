@@ -173,7 +173,7 @@ export const API_FEEDBACK_CREATED = '/api/v1/c/feedback';
 export const API_FEEDBACK_DELETE = '/api/v1/c/player/feedbacks';
 
 // 取得已回覆意見反饋列表
-export const API_FEEDBACK_REPLIED_LIST = '/api/v1/c/feedback/replied/list';
+export const API_FEEDBACK_REPLIED_LIST = '/api/v2/c/feedback/replied/list';
 
 // 取得已回覆且未讀取意見反饋數量
 export const API_FEEDBACK_UN_READ_COUNT = '/api/v1/c/feedback/un_read_count';
@@ -372,7 +372,7 @@ export const API_MCENTER_ADDRESS = '/api/v1/c/player/address';
 export const API_MCENTER_COUNTRY_CODES = '/api/v1/c/player/country_codes';
 
 // 會員意見反饋發送紀錄
-export const API_MCENTER_FEEDBACK_RECORD = '/api/v1/c/player/feedback/list';
+export const API_MCENTER_FEEDBACK_RECORD = '/api/v2/c/player/feedback/list';
 
 // ＝＝＝＝＝＝＝＝＝＝＝＝＝＝＝＝＝＝
 //     AGCENTER 代理中心
