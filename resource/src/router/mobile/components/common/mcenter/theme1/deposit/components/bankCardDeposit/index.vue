@@ -1,7 +1,10 @@
 <template>
   <div :class="[$style['mode-wrap']]">
-    <div v-if="themeTPL === 'porn1'" :class="$style['top-promotion']">
-      {{ this.topPromotionMessage }}
+    <div
+      v-if="themeTPL === 'porn1' && topPromotionMessage"
+      :class="$style['top-promotion']"
+    >
+      {{ topPromotionMessage }}
     </div>
     <swiper
       v-if="depositData.length > 1"
@@ -268,7 +271,7 @@
                 </template>
 
                 <template v-else>
-                  充值前请先绑定{{ curPayInfo.payment_type_name }}帐号
+                  充值前请先绑定{{ curPayInfo.payment_method_name }}帐号
                 </template>
 
                 <div :class="$style['no-bind-wallet']">
@@ -276,7 +279,7 @@
                 </div>
 
                 <div
-                  v-if="isSelectBindWallet(16)"
+                  v-if="isSelectBindWallet(16) && cgPromotionMessage"
                   :class="$style['cgpay-promotion']"
                 >
                   {{ cgPromotionMessage }}
