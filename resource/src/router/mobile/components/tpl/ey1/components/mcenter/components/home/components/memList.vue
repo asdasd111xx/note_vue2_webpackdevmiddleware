@@ -62,7 +62,7 @@ export default {
   data() {
     return {
       toggleShare: false,
-      isShowPromotion: true,
+      isShowPromotion: localStorage.getItem('is-show-promotion') ? localStorage.getItem('is-show-promotion') === 'true' : true,
     };
   },
   computed: {
@@ -115,7 +115,7 @@ export default {
   },
   created() {
     if (this.loginStatus) {
-      this.isShowPromotion = !!localStorage.getItem('is-show-promotion');
+      this.isShowPromotion = localStorage.getItem('is-show-promotion') === "true";
       this.actionSetUserdata(true).then(() => {
         this.isShowPromotion = this.memInfo.user.show_promotion;
         localStorage.setItem('is-show-promotion', this.memInfo.user.show_promotion);

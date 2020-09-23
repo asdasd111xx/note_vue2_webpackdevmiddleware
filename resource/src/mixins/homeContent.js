@@ -36,7 +36,7 @@ export default {
             mcenterEy1List: [
                 { name: 'deposit', text: '充值', path: 'deposit' },
                 { name: 'balanceTrans', text: '转帐', path: 'balanceTrans' },
-                { name: 'makemoney', text: '推广', path: 'makemoney' },//rollback 億元隱藏推廣
+                { name: 'makemoney', text: '推广', path: 'makemoney' },
                 { name: 'vip', text: 'VIP', path: 'accountVip' },
             ]
         };
