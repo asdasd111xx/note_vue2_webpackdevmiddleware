@@ -298,13 +298,21 @@ export default {
           switch (this.redirect) {
             case 'home':
               this.$router.push(`/mobile/`);
-            default:
+              return;
+            case "deposit":
+            case "withdraw":
+            case "balanceTrans":
+            case "wallet":
               this.$router.push(`/mobile/mcenter/${this.redirect}`);
+              return;
+            default:
+              this.$router.back();
+              return;
           }
-          return;
         }
 
         this.$router.back();
+        return;
       }
     },
     verification(key, index) {
