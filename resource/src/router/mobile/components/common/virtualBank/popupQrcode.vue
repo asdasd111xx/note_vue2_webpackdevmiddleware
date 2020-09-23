@@ -197,17 +197,29 @@ export default {
       if (this.qrcodeLink) {
 
         if (this.qrcodeLink.includes('base64')) {
-          html2canvas(this.$refs["qrcodeRef"], {
-            allowTaint: false,
-            useCORS: true
-          }).then(canvas => {
-            let link = document.createElement("a");
-            link.href = canvas.toDataURL("image/png");
-            link.setAttribute("download", "qrcode.png");
-            link.style.display = "none";
-            document.body.appendChild(link);
-            link.click();
-          });
+          let a = document.createElement('a');
+          a.download = 'qrcode.png';
+          a.href = this.qrcodeLink;
+
+          a.style.display = 'none';
+          document.body.appendChild(a);
+
+          setTimeout(() => {
+            a.click();
+            document.body.removeChild(a);
+          }, 300)
+
+          //   html2canvas(this.$refs["qrcodeRef"], {
+          //     allowTaint: false,
+          //     useCORS: true
+          //   }).then(canvas => {
+          //     let link = document.createElement("a");
+          //     link.href = canvas.toDataURL("image/png");
+          //     link.setAttribute("download", "qrcode.png");
+          //     link.style.display = "none";
+          //     document.body.appendChild(link);
+          //     link.click();
+          //   });
         } else {
           let a = document.createElement('a');
           a.download = 'qrcode.png';
