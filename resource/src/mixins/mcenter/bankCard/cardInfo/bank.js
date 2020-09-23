@@ -65,8 +65,9 @@ export default {
           userBankId: this.bank_cardDetail.id
         }
       }).then(response => {
-        const { result } = response.data;
+        const { result, msg } = response.data;
         if (!response || result !== 'ok') {
+          this.actionSetGlobalMessage({ msg: msg ? msg : '不开放删除'});
           return;
         }
 
