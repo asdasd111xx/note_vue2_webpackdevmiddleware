@@ -64,7 +64,7 @@
       </template>
     </div>
 
-    <div v-if="isShowTab" :class="$style['tab-wrap']">
+    <div v-if="isReceive && isShowTab" :class="$style['tab-wrap']">
       <div
         v-for="(item, index) in tabItem"
         :key="`tab-${item.key}`"
@@ -267,6 +267,7 @@ export default {
   methods: {
     ...mapActions(["actionSetUserdata", "actionSetUserLevels"]),
     setPageStatus(tabIndex, pageName, isShowTab) {
+      this.isReceive = false;
       this.currentTab = tabIndex;
       this.currentPage = pageName;
 
@@ -276,6 +277,8 @@ export default {
       } else {
         this.isShowTab = this.isOneTab ? false : true;
       }
+
+      this.isReceive = true;
     },
     setCurrentTab(index) {
       this.currentTab = index;
