@@ -48,15 +48,15 @@ export default {
       currentMenu: [],
       isMounted: true,
       giftMenuList: [
-        {
-          title: "福利",
-          icon: '/static/image/ey1/gift/icon_gift_bonus.png',
-          items: [
-            { name: "每日签到", login: true, thirdUrl: "https://fengniao131.com/member.php?mod=logging&action=login&mobile=2" },
-            { name: "好运转盘", login: true, thirdUrl: "https://fengniao131.com/plugin.php?id=lezhi99_lottery" },
-            { name: "积分商城", login: true, thirdUrl: "https://fengniao131.com/keke_integralmall-index.html" }
-          ]
-        },
+        // {
+        //   title: "福利",
+        //   icon: '/static/image/ey1/gift/icon_gift_bonus.png',
+        //   items: [
+        //     { name: "每日签到", login: true, thirdUrl: "https://fengniao131.com/member.php?mod=logging&action=login&mobile=2" },
+        //     { name: "好运转盘", login: true, thirdUrl: "https://fengniao131.com/plugin.php?id=lezhi99_lottery" },
+        //     { name: "积分商城", login: true, thirdUrl: "https://fengniao131.com/keke_integralmall-index.html" }
+        //   ]
+        // },
         {
           title: "娱乐",
           icon: '/static/image/ey1/gift/icon_gift_video.png',
