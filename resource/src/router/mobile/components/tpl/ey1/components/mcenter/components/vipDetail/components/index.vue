@@ -3,8 +3,7 @@
     <div :class="$style['table-container']">
       <div :class="$style['title']">活动内容</div>
       <div :class="$style['title-desc']">
-        活动期间内，满足累积存款额与全产品累积总有效投注的等级门槛，即可获得晋级金！
-        ！达指定等级，每周每月再奖！ ！
+        活动期间内，满足累积存款额与全产品累积总有效投注的等级门槛，即可获得晋级金！达指定等级，每周每月再领奖！！
       </div>
 
       <div :class="$style['table-wrap']">
