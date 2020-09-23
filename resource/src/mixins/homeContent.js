@@ -473,45 +473,50 @@ export default {
                 case 'APB':
                 case 'JPB':
                 case 'SWAG':
-                    // 正式站 先不用獨立開啟
-                    if (!this.loginStatus) {
-                        this.$router.push('/mobile/login');
-                        return;
-                    }
-                    this.$router.push(`/mobile/iframe/${game.type}?&title=${game.name}&hasFooter=false&hasHeader=true`);
-                    return;
                 case 'LF':
                 case 'BALE':
                 case 'STB':
                 case 'DSC':
                 case 'SF':
+                    // 正式站 先不用獨立開啟
                     if (!this.loginStatus) {
                         this.$router.push('/mobile/login');
                         return;
                     }
-                    // 調整iframe內嵌
-                    let newWindow = window.open('');
-                    yaboRequest({
-                        method: 'get',
-                        url: `${this.siteConfig.YABO_API_DOMAIN}/thirdparty/url`,
-                        headers: {
-                            'x-domain': this.memInfo.user.domain
-                        },
-                        params: {
-                            type: game.type,
-                            userid: this.memInfo.user.id
-                        },
-                    }).then(res => {
-                        if (res.data) {
-                            newWindow.location.href = res.data;
-                        } else {
-                            newWindow.close();
-                        }
-                    }).catch(error => {
-                        newWindow.close();
-                    })
-
+                    this.$router.push(`/mobile/iframe/${game.type}?&title=${game.name}&hasFooter=false&hasHeader=false`);
                     return;
+                // case 'LF':
+                // case 'BALE':
+                // case 'STB':
+                // case 'DSC':
+                // case 'SF':
+                //     if (!this.loginStatus) {
+                //         this.$router.push('/mobile/login');
+                //         return;
+                //     }
+                //     // 調整iframe內嵌
+                //     let newWindow = window.open('');
+                //     yaboRequest({
+                //         method: 'get',
+                //         url: `${this.siteConfig.YABO_API_DOMAIN}/thirdparty/url`,
+                //         headers: {
+                //             'x-domain': this.memInfo.user.domain
+                //         },
+                //         params: {
+                //             type: game.type,
+                //             userid: this.memInfo.user.id
+                //         },
+                //     }).then(res => {
+                //         if (res.data) {
+                //             newWindow.location.href = res.data;
+                //         } else {
+                //             newWindow.close();
+                //         }
+                //     }).catch(error => {
+                //         newWindow.close();
+                //     })
+
+                //     return;
                 case 'YV':
                     this.$router.push({
                         name: 'videoList',
