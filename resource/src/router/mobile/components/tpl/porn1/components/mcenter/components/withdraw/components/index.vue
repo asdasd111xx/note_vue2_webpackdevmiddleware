@@ -230,7 +230,7 @@
       <!-- 銀行卡超過3張 + 所有數字貨幣的錢包都有添加 => 則隱藏按鈕 -->
       <!-- 狀態由 withdrawMoreMethod 組件回傳 -->
       <div
-        v-if="moreMethodStatusObj.bankCard && moreMethodStatusObj.wallet"
+        v-if="moreMethodStatusObj.bankCard || moreMethodStatusObj.wallet"
         :class="[$style['add-bank-card']]"
       >
         <img :src="$getCdnPath(`/static/image/${themeTPL}/mcenter/add.png`)" />
