@@ -169,7 +169,7 @@
                 :class="[$style['join-input'], field.key]"
                 :name="field.key"
                 :placeholder="field.content.note1"
-                type="number"
+                type="tel"
                 @input="verification(field.key)"
                 @keydown.13="joinSubmit()"
               />
