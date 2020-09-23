@@ -251,89 +251,94 @@ export default {
          * @return string
          */
         receiptInfo() {
-            if (this.curPassRoad.safe_account === false) {
-                if ((this.curPayInfo.payment_method_id !== 3 && this.curPayInfo.payment_method_id !== 6) && (this.curPassRoad.qrcode || this.curPassRoad.photo)) {
-                    return [
-                        {
-                            objKey: 'withdrawAccount',
-                            title: this.$text('S_WITHDRAW_ACCOUNT', '收款帐号'),
-                            value: this.curPassRoad.bank_account,
-                            isFontBold: false,
-                            copyShow: true
-                        },
-                        {
-                            objKey: 'withdrawNickname',
-                            title: this.$text('S_WITHDRAW_NICKNAME', '收款昵称'),
-                            value: this.curPassRoad.bank_account_name,
-                            isFontBold: false,
-                            copyShow: false
-                        },
-                        {
-                            objKey: 'withdrawDeliver',
-                            title: this.$text('S_DELIVER_INFO', '收款资讯'),
-                            isFontBold: true,
-                            copyShow: false,
-                            qrcode: [
-                                {
-                                    title: this.curPassRoad.photo_name,
-                                    value: this.curPassRoad.photo
-                                },
-                                {
-                                    title: this.curPassRoad.qrcode_name,
-                                    value: this.curPassRoad.qrcode
-                                }
-                            ]
-                        },
-                        {
-                            objKey: 'memo',
-                            title: this.$text('S_DEPOSIT_TIP05', '提醒事项'),
-                            value: this.curPassRoad.reminder.replace(/\n/ig, '<br/>'),
-                            isFontBold: false,
-                            copyShow: false,
-                            htmlShow: true
-                        }
-                    ];
-                }
+            // 109/09/23 同 Android，它們寫死永遠不顯示
 
-                return [
-                    {
-                        objKey: 'withdrawBank',
-                        title: this.$text('S_WITHDRAW_BANK', '收款银行'),
-                        value: this.curPassRoad.bank_name,
-                        isFontBold: false,
-                        copyShow: true
-                    },
-                    {
-                        objKey: 'withdrawBranch',
-                        title: this.$text('S_WITHDRAW_BRANCH', '收款支行'),
-                        value: this.curPassRoad.bank_branch,
-                        isFontBold: false,
-                        copyShow: true
-                    },
-                    {
-                        objKey: 'a',
-                        title: this.$text('S_WITHDRAW_ACCOUNT', '收款帐号'),
-                        value: this.curPassRoad.bank_account,
-                        isFontBold: true,
-                        copyShow: true
-                    },
-                    {
-                        objKey: 'withdrawName',
-                        title: this.$text('S_WITHDRAW_NAME', '收款人姓名'),
-                        value: this.curPassRoad.bank_account_name,
-                        isFontBold: false,
-                        copyShow: true
-                    },
-                    {
-                        objKey: 'memo',
-                        title: this.$text('S_DEPOSIT_TIP05', '提醒事项'),
-                        value: this.curPassRoad.reminder.replace(/\n/ig, '<br/>'),
-                        isFontBold: false,
-                        copyShow: false,
-                        htmlShow: true
-                    }
-                ];
-            }
+            // if (this.curPassRoad.safe_account === false) {
+            //     if ((this.curPayInfo.payment_method_id !== 3 &&
+            //          this.curPayInfo.payment_method_id !== 6) &&
+            //         (this.curPassRoad.qrcode || this.curPassRoad.photo))
+            //     {
+            //         return [
+            //             {
+            //                 objKey: 'withdrawAccount',
+            //                 title: this.$text('S_WITHDRAW_ACCOUNT', '收款帐号'),
+            //                 value: this.curPassRoad.bank_account,
+            //                 isFontBold: false,
+            //                 copyShow: true
+            //             },
+            //             {
+            //                 objKey: 'withdrawNickname',
+            //                 title: this.$text('S_WITHDRAW_NICKNAME', '收款昵称'),
+            //                 value: this.curPassRoad.bank_account_name,
+            //                 isFontBold: false,
+            //                 copyShow: false
+            //             },
+            //             {
+            //                 objKey: 'withdrawDeliver',
+            //                 title: this.$text('S_DELIVER_INFO', '收款资讯'),
+            //                 isFontBold: true,
+            //                 copyShow: false,
+            //                 qrcode: [
+            //                     {
+            //                         title: this.curPassRoad.photo_name,
+            //                         value: this.curPassRoad.photo
+            //                     },
+            //                     {
+            //                         title: this.curPassRoad.qrcode_name,
+            //                         value: this.curPassRoad.qrcode
+            //                     }
+            //                 ]
+            //             },
+            //             {
+            //                 objKey: 'memo',
+            //                 title: this.$text('S_DEPOSIT_TIP05', '提醒事项'),
+            //                 value: this.curPassRoad.reminder.replace(/\n/ig, '<br/>'),
+            //                 isFontBold: false,
+            //                 copyShow: false,
+            //                 htmlShow: true
+            //             }
+            //         ];
+            //     }
+
+            //     return [
+            //         {
+            //             objKey: 'withdrawBank',
+            //             title: this.$text('S_WITHDRAW_BANK', '收款银行'),
+            //             value: this.curPassRoad.bank_name,
+            //             isFontBold: false,
+            //             copyShow: true
+            //         },
+            //         {
+            //             objKey: 'withdrawBranch',
+            //             title: this.$text('S_WITHDRAW_BRANCH', '收款支行'),
+            //             value: this.curPassRoad.bank_branch,
+            //             isFontBold: false,
+            //             copyShow: true
+            //         },
+            //         {
+            //             objKey: 'a',
+            //             title: this.$text('S_WITHDRAW_ACCOUNT', '收款帐号'),
+            //             value: this.curPassRoad.bank_account,
+            //             isFontBold: true,
+            //             copyShow: true
+            //         },
+            //         {
+            //             objKey: 'withdrawName',
+            //             title: this.$text('S_WITHDRAW_NAME', '收款人姓名'),
+            //             value: this.curPassRoad.bank_account_name,
+            //             isFontBold: false,
+            //             copyShow: true
+            //         },
+            //         {
+            //             objKey: 'memo',
+            //             title: this.$text('S_DEPOSIT_TIP05', '提醒事项'),
+            //             value: this.curPassRoad.reminder.replace(/\n/ig, '<br/>'),
+            //             isFontBold: false,
+            //             copyShow: false,
+            //             htmlShow: true
+            //         }
+            //     ];
+            // }
 
             return false;
         }
