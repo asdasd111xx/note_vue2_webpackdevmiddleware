@@ -6,7 +6,9 @@ const outputDirName = process.env.CDN_HOST ? process.env.CDN_HOST.split('://')[1
 // 鸭博娱乐
 // 鴨脖
 const domain = 'https://yb01.66boxing.com/';
+// Demo
 // const domain = 'https://yb0t.66relish.com/';
+// Prod
 // const domain = 'https://yaboxxxapp01.com/';
 // const domain = 'https://yaboxxxapp02.com/';
 
@@ -16,8 +18,14 @@ const domain = 'https://yb01.66boxing.com/';
 
 // 亿元
 // const domain = 'https://eyt.66boxing.com/';
+// Demo
 // const domain = 'https://eyd.688lg.com/';
+// const domain = 'https://ey01.66poo.com/';
+// Prod
 // const domain = 'https://ey02.66poo.com/';
+// const domain = 'https://ey6999.com/';
+// const domain = 'https://ey0099.com/';
+// const domain = 'https://ey8866.com/';
 // const domain = 'https://ey.688lg.com/';
 
 // Beta
