@@ -1,10 +1,12 @@
 export default {
     data() {
         return {
+            isReceive: false,
+
             // Page 相關參數
             currentTab: 0,
             currentPage: "bankCardInfo",
-            isShowTab: false,
+            isShowTab: true,
 
             editDetailStatus: false,
             isAuditStatus: false,
