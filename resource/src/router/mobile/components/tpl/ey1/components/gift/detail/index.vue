@@ -14,22 +14,36 @@
 <script>
 import mobileContainer from '../../common/mobileContainer';
 import { mapGetters, mapActions } from 'vuex';
+import jwt from 'jwt-simple';
 
 export default {
   data() {
     return {
       type: '',
-      title: ''
+      title: '',
+      url: 'https://ey.italking.asia/guest.php?gid=EY'
     }
   },
   components: {
     mobileContainer,
   },
   mounted() {
-
+    if (this.loginStatus && this.onlineService) {
+      const memberData = {
+        name: this.memInfo.user.name || '',
+        mobile: this.memInfo.user.phone || '',
+        account: this.memInfo.user.username
+      };
+      const rsaData = jwt.encode(memberData, 'T9AuSgQfh2');
+      this.url = `${this.onlineService.url}&jwtToken=${rsaData}`;
+    }
   },
   computed: {
     ...mapGetters({
+      loginStatus: 'getLoginStatus',
+      onlineService: 'getOnlineService',
+      memInfo: 'getMemInfo'
+
     }),
     headerConfig() {
       if (this.$route.params.key === "wechat") {
@@ -42,7 +56,7 @@ export default {
         title: this.title,
         customLinkTitle: '点我报价',
         customLinkAction: () => {
-          window.open('https://ey.italking.asia:5569/guest.php?gid=eyag');
+          window.open(this.url);
         },
         onClick: () => {
           this.$router.back('/mobile/gift?q=通讯软体');
@@ -55,7 +69,7 @@ export default {
       'actionSetGlobalMessage'
     ]),
     wechatClick() {
-      window.open('https://ey.italking.asia:5569/guest.php?gid=eyag');
+      window.open(this.url);
     }
   },
 };

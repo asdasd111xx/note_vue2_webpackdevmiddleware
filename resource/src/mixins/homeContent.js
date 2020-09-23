@@ -36,7 +36,7 @@ export default {
             mcenterEy1List: [
                 { name: 'deposit', text: '充值', path: 'deposit' },
                 { name: 'balanceTrans', text: '转帐', path: 'balanceTrans' },
-                { name: 'makemoney', text: '推广', path: 'makemoney' },//rollback 億元隱藏推廣
+                { name: 'makemoney', text: '推广', path: 'makemoney' },
                 { name: 'vip', text: 'VIP', path: 'accountVip' },
             ]
         };
@@ -371,7 +371,7 @@ export default {
                 })
                 return;
             } else if (path === "makemoney") {
-                this.$router.push('/mobile/mcenter/tcenter/management');
+                this.$router.push('/mobile/mcenter/tcenter/management/member');
             }
             else if (path === "withdraw") {
                 if (this.siteConfig.MOBILE_WEB_TPL !== 'ey1') {

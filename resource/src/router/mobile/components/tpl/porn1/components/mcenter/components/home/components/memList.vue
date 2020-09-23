@@ -85,7 +85,7 @@ export default {
   data() {
     return {
       isReceive: false,
-      isShowPromotion: true,
+      isShowPromotion: localStorage.getItem('is-show-promotion') ? localStorage.getItem('is-show-promotion') === 'true' : true,
       isShowSuper: false, // *顯示超級簽開關
       pornSwitchState: false,
       requiredMoney: 'load',
@@ -142,7 +142,7 @@ export default {
         {
           initName: '我的推广',
           name: 'S_TEAM_CENTER',
-          path: '/mobile/mcenter/tcenter/management',
+          path: '/mobile/mcenter/tcenter/management/member',
           pageName: 'mypromotion',
           image: 'mypromotion',
           info: '合营计划',
@@ -212,7 +212,7 @@ export default {
     });
 
     if (this.loginStatus) {
-      this.isShowPromotion = !!localStorage.getItem('is-show-promotion');
+      this.isShowPromotion = localStorage.getItem('is-show-promotion') === "true";
       this.actionSetUserdata(true).then(() => {
         this.isShowPromotion = this.memInfo.user.show_promotion;
         localStorage.setItem('is-show-promotion', this.memInfo.user.show_promotion);

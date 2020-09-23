@@ -45,7 +45,6 @@
           <template v-else-if="item.key === 'keyring'">
             <div :class="[$style['keyring-title']]">
               {{ item.title }}
-
               &nbsp; &nbsp;
               <span
                 v-if="errorMessage['keyring']"
@@ -61,7 +60,7 @@
                 @blur="verification(inputInfo[3])"
                 @input="verification(inputInfo[3])"
                 :maxlength="item.maxlength"
-                type="number"
+                type="tel"
               />
               <div
                 :class="[
@@ -86,14 +85,17 @@
             </div>
             <div :class="$style['form-input']">
               <input
+                v-if="item.key === 'amount'"
                 v-model="formData[item.key]"
-                @blur="
-                  () => {
-                    if (item.key === 'amount') {
-                      verification(item);
-                    }
-                  }
-                "
+                @blur="verification(item)"
+                @input="verification(item)"
+                :placeholder="item.placeholder"
+                type="text"
+                inputmode="decimal"
+              />
+              <input
+                v-else-if="item.key === 'phone'"
+                v-model="formData[item.key]"
                 @input="verification(item)"
                 :placeholder="item.placeholder"
                 type="tel"

@@ -346,7 +346,8 @@
         <input
           v-model="withdrawValue"
           autocomplete="off"
-          type="number"
+          type="text"
+          inputmode="decimal"
           @input="verification('withdrawValue', $event.target.value)"
           @blur="
             $event => {
@@ -675,25 +676,25 @@ export default {
         // 卡片資料
         this.selectedCard = localStorage.getItem("tmp_w_selectedCard")
           ? {
-              id: JSON.parse(localStorage.getItem("tmp_w_selectedCard"))["id"],
-              name: JSON.parse(localStorage.getItem("tmp_w_selectedCard"))[
-                "name"
-              ],
-              withdrawType: JSON.parse(
-                localStorage.getItem("tmp_w_selectedCard")
-              )["withdrawType"]
-            }
+            id: JSON.parse(localStorage.getItem("tmp_w_selectedCard"))["id"],
+            name: JSON.parse(localStorage.getItem("tmp_w_selectedCard"))[
+              "name"
+            ],
+            withdrawType: JSON.parse(
+              localStorage.getItem("tmp_w_selectedCard")
+            )["withdrawType"]
+          }
           : {
-              id: defaultCard.id,
-              name:
-                defaultCard.withdrawType === "account_id"
-                  ? ""
-                  : defaultCard.alias.substring(
-                      0,
-                      defaultCard.alias.indexOf("-")
-                    ),
-              withdrawType: defaultCard.withdrawType
-            };
+            id: defaultCard.id,
+            name:
+              defaultCard.withdrawType === "account_id"
+                ? ""
+                : defaultCard.alias.substring(
+                  0,
+                  defaultCard.alias.indexOf("-")
+                ),
+            withdrawType: defaultCard.withdrawType
+          };
 
         // 金額部份
         this.withdrawValue = localStorage.getItem("tmp_w_amount");
@@ -1000,7 +1001,7 @@ export default {
         ) {
           this.errTips = `单笔提现金额最小为${withdrawMin}元，最大为${
             withdrawMax ? `${withdrawMax}元` : "无限制"
-          }`;
+            }`;
           return;
         }
 

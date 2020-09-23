@@ -69,15 +69,20 @@ export default {
     // 先顯示彈跳公告關閉後再顯示一般公告
     // 顯示過公告 localStorage.getItem('is-show-popup-announcement')
     // 不在提示 localStorage.getItem('do-not-show-home-post')
-
     if (this.loginStatus && !localStorage.getItem('do-not-show-home-post')) {
       axios({
         method: 'get',
         url: '/api/v1/c/player/popup-announcement',
       }).then((res) => {
-        if (res.data && res.data.ret && res.data.ret.length > 0) {
-          this.sitePostList = res.data.ret;
-          this.isShowPop = true;
+        if (res.data) {
+          if (res.data.ret && res.data.ret.length > 0) {
+            // 顯示彈跳公告
+            this.sitePostList = res.data.ret;
+            this.isShowPop = true;
+          } else {
+            // 顯示一般公吿
+            this.closePop(true);
+          }
         }
       }).catch(res => { });
     }
@@ -127,7 +132,7 @@ export default {
               this.isShowPop = true;
             }
           })
-        }, 500)
+        }, 250)
       }
     }
   }

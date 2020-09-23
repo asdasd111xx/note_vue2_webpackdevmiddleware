@@ -31,7 +31,7 @@ export default {
         prev: true,
         onClick: () => {
           if (this.$route.params.page === "bet") {
-            this.$router.push("/mobile/mcenter/tcenter/gameRecord/main");
+            this.$router.replace("/mobile/mcenter/tcenter/gameRecord/main");
           } else {
             this.$router.back();
           }

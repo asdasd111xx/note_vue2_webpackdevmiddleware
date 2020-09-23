@@ -18,7 +18,9 @@
             :class="[$style['checkbox-circle'], { [$style.active]: isTick }]"
             @click="isTick = !isTick"
           />
-          <span :class="$style['checkbox-text']"  @click="isTick = !isTick">不再提示</span>
+          <span :class="$style['checkbox-text']" @click="isTick = !isTick"
+            >不再提示</span
+          >
         </div>
       </div>
 
@@ -83,9 +85,9 @@ export default {
         localStorage.setItem('do-not-show-home-post', true);
       }
 
-      if (!!this.sitePostList) {
-        localStorage.setItem('is-show-popup-announcement', true);
-      }
+      //   if (!!this.sitePostList) {
+      //     localStorage.setItem('is-show-popup-announcement', true);
+      //   }
 
       this.$emit('close', !!this.sitePostList);
     }
@@ -190,7 +192,7 @@ export default {
   }
 
   &:last-child {
-    color:#E42A30;
+    color: #e42a30;
   }
 }
 

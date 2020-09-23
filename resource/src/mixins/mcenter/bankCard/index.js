@@ -4,7 +4,7 @@ export default {
             // Page 相關參數
             currentTab: 0,
             currentPage: "bankCardInfo",
-            isShowTab: true,
+            isShowTab: false,
 
             editDetailStatus: false,
             isAuditStatus: false,

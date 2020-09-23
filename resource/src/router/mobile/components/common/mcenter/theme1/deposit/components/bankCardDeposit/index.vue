@@ -521,6 +521,7 @@
                       `
                     "
                     type="text"
+                    inputmode="decimal"
                     @blur="
                       $event => {
                         verification('money', $event.target.value);
