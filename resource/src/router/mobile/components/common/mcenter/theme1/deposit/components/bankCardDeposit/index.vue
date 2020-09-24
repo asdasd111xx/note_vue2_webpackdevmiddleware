@@ -1015,7 +1015,7 @@
             v-if="entryBlockStatusData.status === 2"
             @click="goToValetDeposit"
           >
-            前往代客充值
+            代客充值
           </li>
         </ul>
       </div>
@@ -1435,7 +1435,7 @@ export default {
           break;
 
         case 2:
-          return `您已多次提单未完成支付，建议您可以谘询在线客服或是尝试代客充值方式。祝您游戏愉快!`;
+          return `您有提单未完成支付，请尝试其它充值通道。若多次提单不充值，帐号可能会被暂停充值。祝您游戏愉快!`;
           break;
 
         case 3:
