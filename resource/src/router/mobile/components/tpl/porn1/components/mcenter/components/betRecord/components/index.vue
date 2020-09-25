@@ -538,8 +538,9 @@ export default {
       return this.mainListData.filter(item => item.day === date).length;
     },
     getNoRoundText(value) {
+      let val = String(value)
       // 需要無條件捨去小數點(不需要四捨五入)
-      return value.substr(0, value.indexOf(".") + 3);
+      return val.substr(0, val.indexOf(".") + 3);
     },
     /**
      * 捲動加載

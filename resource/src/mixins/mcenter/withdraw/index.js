@@ -319,7 +319,7 @@ export default {
 
                     [this.withdrawAccount] = this.allWithdrawAccount;
                 } else {
-                    this.msg = response && response.msg;
+                    this.actionSetGlobalMessage({ msg: response && response.msg })
                 }
             });
         },

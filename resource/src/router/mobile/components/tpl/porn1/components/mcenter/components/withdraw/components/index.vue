@@ -571,14 +571,6 @@
     />
 
     <page-loading :is-show="isLoading" />
-    <message v-if="msg" @close="msg = ''">
-      <div slot="msg">
-        <div
-          v-html="msg"
-          style="background-color: transparent ; margin: 0 ; padding: 0"
-        ></div>
-      </div>
-    </message>
   </div>
 </template>
 
@@ -589,7 +581,6 @@ import ajax from "@/lib/ajax";
 import balanceTran from "@/components/mcenter/components/balanceTran";
 import blockListTips from "../../../../common/blockListTips";
 import EST from "@/lib/EST";
-import message from "@/router/mobile/components/common/message";
 import mixin from "@/mixins/mcenter/withdraw";
 import serialNumber from "./serialNumber";
 import widthdrawTips from "./widthdrawTips";
@@ -624,7 +615,6 @@ export default {
       isShowCheck: false,
       isShowMore: true,
 
-      msg: "",
       moreMethodStatusObj: {
         bankCard: true,
         wallet: true
@@ -654,7 +644,6 @@ export default {
         /* webpackChunkName: 'pageLoading' */ "@/router/mobile/components/common/pageLoading"
       ),
     balanceTran,
-    message,
     serialNumber,
     widthdrawTips,
     blockListTips,
@@ -676,25 +665,25 @@ export default {
         // 卡片資料
         this.selectedCard = localStorage.getItem("tmp_w_selectedCard")
           ? {
-            id: JSON.parse(localStorage.getItem("tmp_w_selectedCard"))["id"],
-            name: JSON.parse(localStorage.getItem("tmp_w_selectedCard"))[
-              "name"
-            ],
-            withdrawType: JSON.parse(
-              localStorage.getItem("tmp_w_selectedCard")
-            )["withdrawType"]
-          }
+              id: JSON.parse(localStorage.getItem("tmp_w_selectedCard"))["id"],
+              name: JSON.parse(localStorage.getItem("tmp_w_selectedCard"))[
+                "name"
+              ],
+              withdrawType: JSON.parse(
+                localStorage.getItem("tmp_w_selectedCard")
+              )["withdrawType"]
+            }
           : {
-            id: defaultCard.id,
-            name:
-              defaultCard.withdrawType === "account_id"
-                ? ""
-                : defaultCard.alias.substring(
-                  0,
-                  defaultCard.alias.indexOf("-")
-                ),
-            withdrawType: defaultCard.withdrawType
-          };
+              id: defaultCard.id,
+              name:
+                defaultCard.withdrawType === "account_id"
+                  ? ""
+                  : defaultCard.alias.substring(
+                      0,
+                      defaultCard.alias.indexOf("-")
+                    ),
+              withdrawType: defaultCard.withdrawType
+            };
 
         // 金額部份
         this.withdrawValue = localStorage.getItem("tmp_w_amount");
@@ -931,7 +920,7 @@ export default {
       };
     },
     onClickMaintain(value) {
-      this.msg = `美东时间：
+      let text = `美东时间：
           <br>
           <span>${value.etc_start_at}</span>
           <p style="margin: 0 ; padding: 0 ; text-align: center">|</p>
@@ -943,6 +932,7 @@ export default {
           <p style="margin: 0 ; padding: 0 ; text-align: center">|</p>
           <span>${value.end_at}</span>
         `;
+      this.actionSetGlobalMessage({ msg: text });
     },
     validateMoney(target) {
       if (!target || Number(target) === 0) {
@@ -1001,7 +991,7 @@ export default {
         ) {
           this.errTips = `单笔提现金额最小为${withdrawMin}元，最大为${
             withdrawMax ? `${withdrawMax}元` : "无限制"
-            }`;
+          }`;
           return;
         }
 
@@ -1241,12 +1231,12 @@ export default {
         success: response => {
           if (response && response.result === "ok") {
             if (this.memInfo.config.withdraw === "迅付") {
-              this.msg = "提现成功";
-              this.withdrawValue = "";
-              this.withdrawPwd = "";
-              this.actualMoney = 0;
-              this.cryptoMoney = "--";
-              this.resetTimerStatus();
+              this.actionSetGlobalMessage({
+                msg: "提现成功",
+                cb: () => {
+                  window.location.reload();
+                }
+              });
 
               // 舊的第二次寫單才需要
               // 迅付寫單
@@ -1300,25 +1290,25 @@ export default {
                   check: true
                 },
                 fail: res => {
-                  this.msg = "提现已取消，请重新提交申请";
+                  this.actionSetGlobalMessage({
+                    msg: "提现已取消，请重新提交申请"
+                  });
                 }
               }).then(res => {
                 this.isLoading = false;
                 this.actionSetIsLoading(false);
 
                 if (res.result === "ok") {
-                  this.msg = "提现成功";
-                  this.withdrawValue = "";
-                  this.withdrawPwd = "";
-                  this.actualMoney = 0;
-                  this.cryptoMoney = "--";
-                  this.resetTimerStatus();
+                  this.actionSetGlobalMessage({
+                    msg: "提现成功"
+                  });
+
                   this.thirdUrl = res.ret.uri;
                 }
               });
             }
           } else {
-            this.msg = "提现已取消，请重新提交申请";
+            this.actionSetGlobalMessage({ msg: "提现已取消，请重新提交申请" });
           }
 
           this.isLoading = false;
@@ -1327,7 +1317,7 @@ export default {
         },
         fail: error => {
           if (error && error.data && error.data.msg) {
-            this.msg = error.data.msg;
+            this.actionSetGlobalMessage({ msg: error.data.msg });
             this.errTips = error.data.msg;
           }
 
