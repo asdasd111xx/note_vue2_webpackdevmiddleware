@@ -483,7 +483,7 @@ export default {
                         this.$router.push('/mobile/login');
                         return;
                     }
-                    this.$router.push(`/mobile/iframe/${game.type}?&title=${game.name}&hasFooter=false&hasHeader=false`);
+                    this.$router.push(`/mobile/iframe/${game.type}?&title=${game.name}&hasFooter=false&hasHeader=true`);
                     return;
                 // case 'LF':
                 // case 'BALE':
