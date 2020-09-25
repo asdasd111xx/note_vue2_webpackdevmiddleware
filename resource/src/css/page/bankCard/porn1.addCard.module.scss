@@ -31,21 +31,21 @@
 }
 
 .wallet-list {
-  padding: 0;
-  margin: 0;
-  display: flex;
-  flex-wrap: wrap;
-  font-size: 13px;
+    padding: 0;
+    margin: 0;
+    display: grid;
+    grid-template-columns: repeat(3,1fr);
+    grid-row-gap: 10px;
+    grid-column-gap: 10px;
+    font-size: 13px;
 
   .wallet-item {
     list-style-type: none;
     position: relative;
-    min-width: 80px;
     height: 40px;
     line-height: 40px;
     text-align: center;
     border: 1px solid #eee;
-    margin: 5px 5px 5px 0;
     cursor: pointer;
 
     &.is-current {
