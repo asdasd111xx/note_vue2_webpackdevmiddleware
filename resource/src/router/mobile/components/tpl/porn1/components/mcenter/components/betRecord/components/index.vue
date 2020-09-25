@@ -210,7 +210,7 @@
                       {{ parseFloat(gameDetail.valid_bet).toFixed(2) }}
                     </div>
                     <div :class="$style['game-money']">
-                      {{ "输/赢"}} :
+                      {{ "输/赢" }} :
                       <span
                         :class="{
                           [$style['is-win']]: parseFloat(gameDetail.payoff) > 0

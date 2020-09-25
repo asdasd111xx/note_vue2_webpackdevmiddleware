@@ -80,7 +80,6 @@ export default {
   computed: {
     ...mapGetters({
       noticeData: "getNoticeData",
-      CGPayInfo: "getCGPayInfo",
       siteConfig: "getSiteConfig"
     }),
     themeTPL() {
@@ -106,15 +105,19 @@ export default {
         {
           key: "CGPay",
           title: "新增 CGPay",
-          isShow: this.themeTPL === "ey1" && !this.CGPayInfo.is_bind_wallet
+          isShow:
+            this.themeTPL === "ey1" &&
+            this.withdrawUserData.support_binding.find(item => {
+              return item.wallet_gateway_id === 3;
+            })
         },
         {
           key: "goBao",
           title: "新增 购宝钱包",
           isShow:
             this.themeTPL === "ey1" &&
-            !this.withdrawUserData.wallet.find(item => {
-              return item.bank_id === 2016;
+            this.withdrawUserData.support_binding.find(item => {
+              return item.wallet_gateway_id === 2;
             })
         }
       ].filter(item => item.isShow);
@@ -229,11 +232,10 @@ export default {
     }
   },
   created() {
-    this.actionSetCGPayInfo();
     this.getNowOpenWallet();
   },
   methods: {
-    ...mapActions(["actionSetGlobalMessage", "actionSetCGPayInfo"]),
+    ...mapActions(["actionSetGlobalMessage"]),
     close() {
       this.$emit("close");
     },
