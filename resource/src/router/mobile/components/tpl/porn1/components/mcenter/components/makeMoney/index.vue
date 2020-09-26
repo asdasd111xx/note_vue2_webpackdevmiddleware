@@ -61,8 +61,9 @@ export default {
     };
   },
   created() {
-    console.log('query:', this.$route.query)
-    if (this.$route.query.cid) {
+    const query = this.$route.query;
+
+    if (query && query.cid) {
       setCookie("cid", "");
       setCookie("y_token", "");
       this.actionSetAgentLink({ reqHeaders: { cid: this.$route.query.cid } });
@@ -70,70 +71,64 @@ export default {
       this.actionSetAgentLink();
     }
 
-    this.$nextTick(() => {
-      const query = this.$route.query;
+    if (
+      query &&
+      query.check &&
+      query.cid &&
+      query.userid &&
+      query.tagId &&
+      query.domain
+    ) {
+      let cid = query.cid,
+        userid = query.userid || query.userId,
+        tagId = query.tagId,
+        domain = query.domain;
 
-      if (
-        query &&
-        query.check &&
-        query.cid &&
-        query.userid &&
-        query.tagId &&
-        query.domain
-      ) {
-        setCookie("y_token", "");
-        setCookie("cid", "");
+      setCookie("cid", cid);
 
-        let cid = query.cid,
-          userid = query.userid || query.userId,
-          tagId = query.tagId,
-          domain = query.domain;
+      let _headers = {
+        cid: cid,
+        "x-domain": domain
+      };
 
-        setCookie("cid", cid);
+      axios({
+        method: "get",
+        url: this.siteConfig.YABO_API_DOMAIN + "/Account/GetAuthorizationToken",
+        headers: _headers
+      })
+        .then(res => {
+          if (res.data && res.data.data) {
+            this.yToken = res.data.data;
+            setCookie("y_token", res.data.data);
+            console.log("authToken:", res.data.data);
 
-        let _headers = {
-          cid: cid,
-          "x-domain": domain
-        };
+            axios({
+              method: "put",
+              url: `${this.siteConfig.YABO_API_DOMAIN}/Account/UnlockTagId`,
+              headers: {
+                cid: cid,
+                "x-domain": query.domain,
+                AuthToken: res.data.data
+              },
+              data: {
+                cid: cid,
+                userid: userid,
+                tagId: Number(tagId),
+                domain: domain
+              }
+            })
+              .then(res => { console.log("ok") })
+              .catch(e => {
+                console.log(e);
+              });
 
-        axios({
-          method: "get",
-          url: this.siteConfig.YABO_API_DOMAIN + "/Account/GetAuthorizationToken",
-          headers: _headers
+            return;
+          }
         })
-          .then(res => {
-            if (res.data && res.data.data) {
-              this.yToken = res.data.data;
-              setCookie("y_token", res.data.data);
-
-              axios({
-                method: "put",
-                url: `${this.siteConfig.YABO_API_DOMAIN}/Account/UnlockTagId`,
-                headers: {
-                  cid: cid,
-                  "x-domain": query.domain,
-                  AuthToken: res.data.data
-                },
-                data: {
-                  cid: cid,
-                  userid: userid,
-                  tagId: Number(tagId),
-                  domain: domain
-                }
-              })
-                .then(res => { })
-                .catch(e => {
-                  console.log(e);
-                });
-
-              return;
-            }
-          })
-          .catch(e => {
-            console.log(e);
-          });
-      }
-    });
+        .catch(e => {
+          console.log(e);
+        });
+    }
   },
   computed: {
     ...mapGetters({

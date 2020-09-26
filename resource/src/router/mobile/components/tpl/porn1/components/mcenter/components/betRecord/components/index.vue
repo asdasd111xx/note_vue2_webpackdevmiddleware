@@ -147,7 +147,7 @@
           </li>
           <li :class="$style['total-water']">
             {{ $text("S_TOTAL_WATER", "流水") }} :
-            {{ parseFloat(mainTotal.valid_bet).toFixed(2) }}
+            {{ getNoRoundText(mainTotal.valid_bet) }}
           </li>
           <li :class="$style['total-money']">
             {{ $text("S_WIN_LOSE", "输赢") }} :
@@ -155,7 +155,7 @@
               :class="{
                 [$style['is-win']]: parseFloat(mainTotal.payoff) > 0
               }"
-              >{{ parseFloat(mainTotal.payoff).toFixed(2) }}</span
+              >{{ getNoRoundText(mainTotal.payoff) }}</span
             >
           </li>
         </ul>
@@ -177,13 +177,13 @@
                   </li>
                   <li :class="$style['single-water']">
                     {{ $text("S_TOTAL_WATER", "流水") }} :
-                    {{ item.valid_bet }}
+                    {{ getNoRoundText(item.valid_bet) }}
                   </li>
                   <li :class="$style['single-money']">
                     {{ $text("S_WIN_LOSE", "输赢") }} :
-                    <span :class="{ [$style['is-win']]: item.payoff > 0 }">{{
-                      item.payoff
-                    }}</span>
+                    <span :class="{ [$style['is-win']]: item.payoff > 0 }">
+                      {{ getNoRoundText(item.payoff) }}
+                    </span>
                   </li>
                 </ul>
               </div>
@@ -207,7 +207,7 @@
                     </div>
                     <div :class="$style['game-water']">
                       {{ $text("S_TOTAL_WATER", "流水") }} :
-                      {{ parseFloat(gameDetail.valid_bet).toFixed(2) }}
+                      {{ getNoRoundText(gameDetail.valid_bet) }}
                     </div>
                     <div :class="$style['game-money']">
                       {{ "输/赢" }} :
@@ -215,7 +215,7 @@
                         :class="{
                           [$style['is-win']]: parseFloat(gameDetail.payoff) > 0
                         }"
-                        >{{ parseFloat(gameDetail.payoff).toFixed(2) }}</span
+                        >{{ getNoRoundText(gameDetail.payoff) }}</span
                       >
                     </div>
                   </div>
@@ -431,11 +431,11 @@ export default {
         params,
         success: response => {
           this.mainTime = response.ret.map(item => ({
-            bet: parseFloat(item.bet).toFixed(2),
+            bet: item.bet,
             count: item.count,
             day: item.day,
-            payoff: parseFloat(item.payoff).toFixed(2),
-            valid_bet: parseFloat(item.valid_bet).toFixed(2),
+            payoff: item.payoff,
+            valid_bet: item.valid_bet,
             list: []
           }));
           this.updateGame();
@@ -536,6 +536,11 @@ export default {
     },
     getCount(date) {
       return this.mainListData.filter(item => item.day === date).length;
+    },
+    getNoRoundText(value) {
+      let val = String(value)
+      // 需要無條件捨去小數點(不需要四捨五入)
+      return val.substr(0, val.indexOf(".") + 3);
     },
     /**
      * 捲動加載
