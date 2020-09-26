@@ -56,25 +56,24 @@ export default ({
             console.log(url, response.data)
         }
         const responseData = response && response.data;
-
         if (responseData) {
             if (responseData.status === "000") {
                 return responseData;
             }
 
-            if (responseData.code === "M00001" || responseData.code === "C600001") {
-                // if (getCookie('cid')) {
-                //     alert(`${response.data.msg}`);
-                // }
+            // 0926 BBOS 重新登入先移除
+            // if (responseData.code === "M00001" || responseData.code === "C600001") {
+            //     // if (getCookie('cid')) {
+            //     //     alert(`${response.data.msg}`);
+            //     // }
 
-                setCookie('cid', '');
-                setCookie('y_token', '');
-                setCookie('aid', '');
+            //     setCookie('cid', '');
+            //     setCookie('y_token', '');
+            //     setCookie('aid', '');
 
-                window.location.reload(true);
-                window.location.href = '/mobile/login';
-                return;
-            }
+            //     // window.location.href = '/mobile/login';
+            //     return;
+            // }
 
             // fail
             fail(responseData);
