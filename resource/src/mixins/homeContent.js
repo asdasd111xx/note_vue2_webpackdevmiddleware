@@ -476,7 +476,6 @@ export default {
                 case 'LF':
                 case 'BALE':
                 case 'STB':
-                case 'DSC':
                 case 'SF':
                     // 正式站 先不用獨立開啟
                     if (!this.loginStatus) {
@@ -488,7 +487,7 @@ export default {
                 // case 'LF':
                 // case 'BALE':
                 // case 'STB':
-                // case 'DSC':
+                case 'DSC': // 屌絲有問題 改回外開
                 // case 'SF':
                 case 'PPV':
                 case 'APB':
