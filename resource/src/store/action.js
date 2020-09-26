@@ -543,7 +543,7 @@ export const actionMemInit = ({ state, dispatch, commit }) => {
         }
 
         dispatch('actionSetSiteConfig', configInfo);
-        dispatch('actionSetYaboConfig');
+        // dispatch('actionSetYaboConfig');
         dispatch('actionSetRechargeConfig');
 
         if (state.loginStatus) {
@@ -1120,7 +1120,6 @@ export const actionSetAgentLink = ({ state, commit }, data) => {
         reqHeaders['cid'] = data.reqHeaders.cid;
     }
 
-    console.log(reqHeaders)
     let domain = new Promise((resolve) => {
         bbosRequest({
             method: "get",

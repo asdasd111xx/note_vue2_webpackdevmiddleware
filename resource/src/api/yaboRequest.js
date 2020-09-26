@@ -25,8 +25,8 @@ export default ({
 
     let _headers = {
         ...headers,
-        'cid': getCookie('cid'),
-        'x-domain': getCookie('y-x-domain'),
+        'cid': getCookie('cid') || '',
+        'x-domain': getCookie('y-x-domain') || '',
         // 'username': getCookie('y-username'),
     };
 
