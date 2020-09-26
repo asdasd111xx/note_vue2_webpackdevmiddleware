@@ -469,10 +469,15 @@ export default {
                 // 草莓 -> STB
                 // 向日葵 -> SF
                 // 屌絲漫畫->DSC
-                case 'PPV':
-                case 'APB':
-                case 'JPB':
+                // case 'PPV':
+                // case 'APB':
+                // case 'JPB':
                 case 'SWAG':
+                case 'LF':
+                case 'BALE':
+                case 'STB':
+                case 'DSC':
+                case 'SF':
                     // 正式站 先不用獨立開啟
                     if (!this.loginStatus) {
                         this.$router.push('/mobile/login');
@@ -480,11 +485,14 @@ export default {
                     }
                     this.$router.push(`/mobile/iframe/${game.type}?&title=${game.name}&hasFooter=false&hasHeader=true`);
                     return;
-                case 'LF':
-                case 'BALE':
-                case 'STB':
-                case 'DSC':
-                case 'SF':
+                // case 'LF':
+                // case 'BALE':
+                // case 'STB':
+                // case 'DSC':
+                // case 'SF':
+                case 'PPV':
+                case 'APB':
+                case 'JPB':
                     if (!this.loginStatus) {
                         this.$router.push('/mobile/login');
                         return;

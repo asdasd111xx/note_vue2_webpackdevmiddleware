@@ -171,7 +171,12 @@ export default {
         'https://play.qybtv.xyz',
         'https://play.pybtv.xyz',
         'https://play.qybpb.xyz',
-        'https://play.pybpb.xyz'];
+        'https://play.pybpb.xyz',
+        'https://dglzsm.com',
+        'http://47.240.78.53',
+        'http://47.240.57.135',
+        'http://47.240.117.62'
+        ];
 
       if (whiteList.includes(event.origin) && event.data) {
         let data = event.data;
