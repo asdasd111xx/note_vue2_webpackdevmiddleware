@@ -1,6 +1,6 @@
 <template>
   <div :class="['clearfix']">
-    <serial-number v-if="isSerial" :handle-close="toggleSerial" />
+    <serial-number v-if="showSerial" :handle-close="toggleSerial" />
     <!-- 一件回收 -->
     <balance-back />
     <div :class="$style['promotion-tips']" v-html="promotionTips" />
@@ -80,27 +80,6 @@
               </div>
             </div>
           </template>
-          <template v-else-if =" item.key == 'amount'">
-            <div :class="$style['form-title']">
-              {{ item.title +""}}
-            </div>
-            <div :class="$style['form-input']">
-              <input
-                v-model="formData[item.key]"
-                @blur="
-                  () => {
-                    if (item.key === 'amount') {
-                      verification(item);
-                    }
-                  }
-                "
-                @input="verification(item)"
-                :placeholder="item.placeholder"
-                type="tel"
-              />
-            </div>
-            <a @click="toggleSerial" style="display:none">流水详情</a>
-          </template>
           <template v-else>
             <div :class="$style['form-title']">
               {{ item.title }}
@@ -122,6 +101,13 @@
                 :placeholder="item.placeholder"
                 type="tel"
               />
+            </div>
+            <div
+              :class="$style['serial-number-links']"
+              v-if="item.key === 'amount'"
+              @click="toggleSerial"
+            >
+              流水详情
             </div>
           </template>
         </div>
@@ -163,7 +149,7 @@ export default {
   mixins: [mixin],
   data() {
     return {
-      isSerial:false,
+      showSerial: false,
       captcha: null,
       toggleCaptcha: false,
     };
@@ -208,8 +194,8 @@ export default {
     ...mapActions([
       'actionSetGlobalMessage'
     ]),
-    toggleSerial(){
-      this.isSerial=!this.isSerial
+    toggleSerial() {
+      this.showSerial = !this.showSerial
     },
     showCaptcha() {
       if (!this.formData.phone) {
@@ -287,7 +273,6 @@ export default {
 }
 
 .form-input {
-  width: 45%;
   padding: 0 13px;
 
   input {
@@ -367,5 +352,13 @@ input::placeholder {
       pointer-events: none;
     }
   }
+}
+
+.serial-number-links {
+  display: none;
+  color: #6aaaf5;
+  //   display: block;
+  position: absolute;
+  right: 17px;
 }
 </style>
