@@ -176,7 +176,10 @@
       </div>
     </div>
 
-    <p v-if="selectTarget.walletName" :class="$style['service-remind']">
+    <p
+      v-if="themeTPL === 'porn1' || selectTarget.walletName"
+      :class="$style['service-remind']"
+    >
       如需帮助，请<span
         :class="$style['service-btn']"
         @click="$router.push('/mobile/service')"
@@ -243,7 +246,7 @@ export default {
   props: {
     setPageStatus: {
       type: Function,
-      default: () => {}
+      default: () => { }
     },
     userLevelObj: {
       type: Object,
