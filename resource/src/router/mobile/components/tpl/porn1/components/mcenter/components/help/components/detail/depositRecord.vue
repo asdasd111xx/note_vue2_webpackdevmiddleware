@@ -24,6 +24,9 @@
             v-if="item.status === 'submit_data'"
             :class="[$style['value'], $style['edit']]"
             @click="openEdit(item)"
+            :style="
+              item.status !== 'processing' && item.memo ? { right: '24px' } : {}
+            "
           >
             {{ $text("S_SUBMIT_WITHDRAW", "重新提交") }}
           </div>
@@ -40,19 +43,27 @@
               $style['value'],
               { [$style['processing']]: item.status === 'processing' }
             ]"
+            :style="
+              item.status !== 'processing' && item.memo ? { right: '24px' } : {}
+            "
           >
             {{ getStatus(item.status) }}
           </div>
         </div>
         <div :class="$style['item-status-border']" />
-        <div v-for="(col, index) in columns" :class="$style['detail-cell']">
-          <div :class="$style['title']">
-            {{ item.hasOwnProperty(col.key) && $text(col.title) }}
+        <template v-for="(col, index) in columns">
+          <div
+            v-if="item.hasOwnProperty(col.key)"
+            :class="$style['detail-cell']"
+          >
+            <div :class="$style['title']">
+              {{ $text(col.title) }}
+            </div>
+            <div :class="$style['value']">
+              {{ item[col.key] }}
+            </div>
           </div>
-          <div :class="$style['value']">
-            {{ item[col.key] }}
-          </div>
-        </div>
+        </template>
       </div>
     </div>
 

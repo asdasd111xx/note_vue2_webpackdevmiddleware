@@ -265,7 +265,7 @@ export default {
               //   (key === 'email' && userConfig.user[key]) ||
               //   (key === 'email' && this.mcenterUserField.config.email.code)
               // ,
-              btnShow: !keyValue,
+              btnShow: !keyValue || !userConfig.user[key],  // 未驗證 或者 未填 可修改
               verification: this.verification[key],
               isShow: userConfig.config[key].display
             };
