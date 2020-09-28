@@ -175,7 +175,8 @@ export default {
         'https://dglzsm.com',
         'http://47.240.78.53',
         'http://47.240.57.135',
-        'http://47.240.117.62'];
+        'http://47.240.117.62'
+        ];
 
       if (whiteList.includes(event.origin) && event.data) {
         let data = event.data;
