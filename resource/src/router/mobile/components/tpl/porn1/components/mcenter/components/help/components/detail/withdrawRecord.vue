@@ -44,6 +44,9 @@
           <div
             v-if="!item.locked"
             :class="[$style['value'], $style['edit']]"
+            :style="
+              item.status !== 'processing' && item.memo ? { right: '24px' } : {}
+            "
             @click="openEdit(item)"
           >
             {{ $text("S_SUBMIT_WITHDRAW", "重新提交") }}
@@ -61,19 +64,27 @@
               $style['value'],
               { [$style['processing']]: item.status === 'processing' }
             ]"
+            :style="
+              item.status !== 'processing' && item.memo ? { right: '24px' } : {}
+            "
           >
             {{ getStatus(item.status) }}
           </div>
         </div>
         <div :class="$style['item-status-border']" />
-        <div v-for="(col, index) in columns" :class="$style['detail-cell']">
-          <div :class="$style['title']">
-            {{ item.hasOwnProperty(col.key) && $text(col.title) }}
+        <template v-for="(col, index) in columns">
+          <div
+            v-if="item.hasOwnProperty(col.key)"
+            :class="$style['detail-cell']"
+          >
+            <div :class="$style['title']">
+              {{ $text(col.title) }}
+            </div>
+            <div :class="$style['value']">
+              {{ item[col.key] }}
+            </div>
           </div>
-          <div :class="$style['value']">
-            {{ item[col.key] }}
-          </div>
-        </div>
+        </template>
       </div>
     </div>
 
@@ -81,7 +92,10 @@
       <div :class="$style['tips-mask']" @click="detailRate = null" />
 
       <div :class="$style['tips-block']">
-        <div :class="$style['tips-content']" v-html="detailRate.memo.replace(/\n/gi, '<br/>')" />
+        <div
+          :class="$style['tips-content']"
+          v-html="detailRate.memo.replace(/\n/gi, '<br/>')"
+        />
         <!-- <div :class="$style['tips-cell']">
           實際匯率:&nbsp;{{ detailRate && detailRate.withdraw_rate }}
         </div>

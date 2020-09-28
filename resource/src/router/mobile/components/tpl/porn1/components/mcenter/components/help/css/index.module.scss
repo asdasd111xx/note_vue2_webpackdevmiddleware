@@ -218,7 +218,9 @@
     }
 
     >.value {
-        float: right;
+        position: absolute;
+        right: 0;
+        top: 0;
         color: #222222;
         white-space: nowrap;
         overflow: hidden;
@@ -241,7 +243,9 @@
         justify-content: center;
         align-items: center;
         margin-left: 5px;
-        float: right;
+        position: absolute;
+        right: 0;
+        top: 0;
 
         >img {
             width: 20px;
