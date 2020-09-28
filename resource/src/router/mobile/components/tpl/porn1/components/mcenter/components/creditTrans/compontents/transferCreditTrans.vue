@@ -1,5 +1,6 @@
 <template>
   <div :class="['clearfix']">
+    <serial-number v-if="isSerial" :handle-close="toggleSerial" />
     <!-- 一件回收 -->
     <balance-back />
     <div :class="$style['promotion-tips']" v-html="promotionTips" />
@@ -79,6 +80,27 @@
               </div>
             </div>
           </template>
+          <template v-else-if =" item.key == 'amount'">
+            <div :class="$style['form-title']">
+              {{ item.title +""}}
+            </div>
+            <div :class="$style['form-input']">
+              <input
+                v-model="formData[item.key]"
+                @blur="
+                  () => {
+                    if (item.key === 'amount') {
+                      verification(item);
+                    }
+                  }
+                "
+                @input="verification(item)"
+                :placeholder="item.placeholder"
+                type="tel"
+              />
+            </div>
+            <a @click="toggleSerial" style="display:none">流水详情</a>
+          </template>
           <template v-else>
             <div :class="$style['form-title']">
               {{ item.title }}
@@ -136,10 +158,12 @@ import popupVerification from '@/components/popupVerification';
 import axios from 'axios';
 import tipsCreditTrans from './tipsCreditTrans';
 import mixin from '@/mixins/mcenter/recharge/recharge';
+import serialNumber from "../../withdraw/components/serialNumber";
 export default {
   mixins: [mixin],
   data() {
     return {
+      isSerial:false,
       captcha: null,
       toggleCaptcha: false,
     };
@@ -147,7 +171,8 @@ export default {
   components: {
     balanceBack,
     popupVerification,
-    tipsCreditTrans
+    tipsCreditTrans,
+    serialNumber
   },
   computed: {
     ...mapGetters({
@@ -183,6 +208,9 @@ export default {
     ...mapActions([
       'actionSetGlobalMessage'
     ]),
+    toggleSerial(){
+      this.isSerial=!this.isSerial
+    },
     showCaptcha() {
       if (!this.formData.phone) {
         return;
@@ -259,7 +287,7 @@ export default {
 }
 
 .form-input {
-  width: 100%;
+  width: 45%;
   padding: 0 13px;
 
   input {

@@ -20,7 +20,6 @@ Router.prototype.push = function push(location, onResolve, onReject) {
 };
 
 const mainbody = () => import(/* webpackChunkName: 'mainbody' */'./web/components');
-
 Vue.use(Router);
 export default new Router({
     mode: 'history',
