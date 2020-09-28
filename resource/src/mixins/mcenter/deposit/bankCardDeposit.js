@@ -994,7 +994,9 @@ export default {
         },
         checkOrderData() {
             // 金額輸入錯誤
-            if (((this.isErrorMoney || !this.moneyValue) && !this.curModeGroup.uri) || (this.depositInterval.minMoney && this.depositInterval.minMoney > this.moneyValue) || (this.depositInterval.maxMoney && this.depositInterval.maxMoney < this.moneyValue)) {
+            if (((this.isErrorMoney || !this.moneyValue) && !this.curModeGroup.uri) ||
+                (this.depositInterval.minMoney && this.depositInterval.minMoney > this.moneyValue) ||
+                (this.depositInterval.maxMoney && this.depositInterval.maxMoney < this.moneyValue)) {
                 this.checkSuccess = false;
                 return;
             }
