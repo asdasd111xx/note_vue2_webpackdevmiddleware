@@ -117,7 +117,7 @@ export default {
                 domain: domain
               }
             })
-              .then(res => { console.log("ok") })
+              .then(res => { console.log(res) })
               .catch(e => {
                 console.log(e);
               });
