@@ -137,6 +137,7 @@ export default {
       ttl: 60,
       isSendSMS: false,
       isVerifyPhone: false,
+      hasVerified: false, // 手機號碼是否已經驗證
       info: {
         key: 'phone',
         text: 'S_TEL',
@@ -195,7 +196,7 @@ export default {
         checkActiveArray.push(!!(this.codeValue));
       }
 
-      if (this.memInfo.phone.phone && !this.isfromWithdraw) {
+      if (this.memInfo.phone.phone && this.oldPhone.isShow && !this.isfromWithdraw) {
         checkActiveArray.push(!!(this.oldValue));
       }
 
@@ -226,14 +227,17 @@ export default {
     oldPhone() {
       return {
         label: this.$text('S_ORIGINAL_PHONE'),
-        isShow: this.isfromWithdraw ? false : this.memInfo.phone.phone
+        // 目前億元/鴨博皆不可修改手機號碼
+        isShow: false,
+        // isShow: this.isfromWithdraw ? false : this.memInfo.phone.phone && this.hasVerified
       };
     },
     newPhone() {
       return {
-        label: this.memInfo.phone.phone && !this.isfromWithdraw
-          ? this.$text('S_NEW_PHONE')
-          : this.$text('S_TEL'),
+        // label: this.memInfo.phone.phone && !this.isfromWithdraw
+        //   ? this.$text('S_NEW_PHONE')
+        //   : this.$text('S_TEL'),
+        label: this.$text('S_TEL', '手机号码'),
         isShow: true
       };
     },
@@ -253,13 +257,19 @@ export default {
   },
   watch: {
     captchaData(val) {
-      this.handleSend()
+      this.handleSend();
     },
     oldValue() {
       if (this.oldValue.length >= 11) {
         this.tipMsg = '';
+        if (!this.hasVerified) {
+          this.isVerifyPhone = true;
+        }
       } else {
-        this.tipMsg = '手机格式不符合要求'
+        this.tipMsg = '手机格式不符合要求';
+        if (!this.hasVerified) {
+          this.isVerifyPhone = false;
+        }
       }
     },
     newValue() {
@@ -285,6 +295,7 @@ export default {
     }).then((response) => {
       if (response && response.result === 'ok') {
         this.info.verification = response.ret.config[this.info.key].code;
+        this.hasVerified = response.ret.user.phone;
       }
     });
 
@@ -352,10 +363,6 @@ export default {
       }, 1000);
     },
     showCaptchaPopup() {
-      if (this.newValue === '') {
-        return;
-      }
-
       // 無認證直接呼叫
       if (this.memInfo.config.default_captcha_type === 0) {
         this.handleSend();
@@ -379,7 +386,7 @@ export default {
       })
     },
     handleSend() {
-      if (!this.newValue || this.timer || this.isSendSMS) return;
+      if (this.timer || this.isSendSMS) return;
 
       this.isSendSMS = true;
       let captchaParams = {};
@@ -396,13 +403,14 @@ export default {
         }).then(res => {
           if (res && res.data && res.data.result === "ok") {
             this.getPhoneTTL().then(() => {
-              this.toggleCaptcha = false;
               this.locker();
               this.isSendSMS = false;
             })
           } else {
             this.tipMsg = res.data.msg;
           }
+          this.isSendSMS = false;
+          this.toggleCaptcha = false;
         }).catch(error => {
           this.toggleCaptcha = false;
           this.countdownSec = '';
@@ -410,24 +418,37 @@ export default {
           this.isSendSMS = false;
         })
       } else {
+        let params = {
+          old_phone: this.memInfo.phone.phone && !this.hasVerified ?
+            `${this.newCode.replace('+', '')}-${this.newValue}` :
+            this.oldPhone.isShow ?
+              `${this.newCode.replace('+', '')}-${this.oldValue}` :
+              '',
+          phone: `${this.newCode.replace('+', '')}-${this.newValue}`,
+          ...captchaParams
+        };
+
+        // if (!this.hasVerified) {
+        //   params['phone'] = this.memInfo.phone.phone ? `${this.newCode.replace('+', '')}-${this.oldValue}` : '';
+        // } else {
+        //   params['phone'] = `${this.newCode.replace('+', '')}-${this.newCode}`;
+        // }
+
         axios({
           method: 'post',
           url: '/api/v1/c/player/verify/phone',
-          data: {
-            old_phone: this.memInfo.phone.phone ? `${this.newCode.replace('+', '')}-${this.oldValue}` : '',
-            phone: `${this.newCode.replace('+', '')}-${this.newValue}`,
-            ...captchaParams,
-          }
+          data: params
         }).then(res => {
           if (res && res.data && res.data.result === "ok") {
             this.getPhoneTTL().then(() => {
               this.locker();
-              this.toggleCaptcha = false;
               this.isSendSMS = false;
             })
           } else {
             this.tipMsg = res.data.msg;
           }
+          this.isSendSMS = false;
+          this.toggleCaptcha = false;
         }).catch(error => {
           this.toggleCaptcha = false;
           this.countdownSec = '';
