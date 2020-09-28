@@ -34,6 +34,7 @@ export default {
             this.$route.params.page === "member" &&
             this.$route.params.date
           ) {
+            this.$router.back();
             this.$router.replace("/mobile/mcenter/tcenter/management/member");
             return;
           }
