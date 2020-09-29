@@ -194,11 +194,13 @@ export default {
     },
     downloadImage() {
       //   <a :href="qrcodeLink" :download="qrcodeLink" target="_blank">
-      console.log(this.qrcodeLink)
-      if (this.qrcodeLink) {
+      console.log(this.qrcodeLink);
+      localStorage.setItem('download-item', this.qrcodeLink);
 
+      if (this.qrcodeLink) {
+        downloadjs(this.qrcodeLink, 'qrcode.gif', 'img/gif');
         if (this.qrcodeLink.includes('base64')) {
-          downloadjs(this.qrcodeLink, 'qrcode.gif', 'img/gif')
+          let w = window.open(`${window.location.host}/download.html`);
           //   let a = document.createElement('a');
           //   a.download = 'qrcode.png';
           //   a.target = "_blank";

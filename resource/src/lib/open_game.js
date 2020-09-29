@@ -43,6 +43,10 @@ export default (params, success = () => { }, fail = () => { }) => {
         temp.code = code;
     }
 
+    if (vendor === "bbin") {
+        temp.mobile = "1";
+    }
+
     let newWindow = '';
     let isWebview = getCookie("platform") === "H";
 
