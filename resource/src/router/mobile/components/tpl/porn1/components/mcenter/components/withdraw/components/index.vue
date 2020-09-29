@@ -123,52 +123,6 @@
     <!-- Yabo : 銀行卡列表 + 更多提現方式按鈕 -->
     <template v-if="themeTPL === 'porn1'">
       <!-- 銀行卡 -->
-      <!-- <div
-        v-if="
-          withdrawUserData &&
-            withdrawUserData.account &&
-            withdrawUserData.account.length !== 0
-        "
-        :class="$style['bank-card-wrap']"
-      >
-        <div :class="$style['bank-card-cell']">
-          {{ $text("S_BANKCARD", "银行卡") }}
-        </div>
-
-      <div
-          v-for="item in withdrawUserData.account.slice(0, 3)"
-          :class="$style['bank-card-cell']"
-          @click="handleSelectCard(item)"
-        >
-          <img v-lazy="getBankImage(item.swift_code)" />
-          <span>{{ item.alias }} </span>
-          <div
-            :class="[
-              $style['check-box'],
-              { [$style['checked']]: item.id === selectedCard }
-            ]"
-          />
-        </div>
-      </div>
-
-      <div
-        v-if="
-          withdrawUserData &&
-            withdrawUserData.account &&
-            withdrawUserData.account.length < 3
-        "
-        :class="[$style['add-bank-card']]"
-      >
-        <img :src="$getCdnPath(`/static/image/${themeTPL}/mcenter/add.png`)" />
-        &nbsp;
-        <span
-          @click="$router.push('/mobile/mcenter/bankcard?redirect=withdraw')"
-        >
-          {{ $text("S_ADD_BANKCARD", "添加银行卡") }}
-        </span>
-      </div> -->
-
-      <!-- 銀行卡 -->
       <div
         v-if="allWithdrawAccount && allWithdrawAccount.length !== 0"
         :class="$style['bank-card-wrap']"
@@ -708,32 +662,6 @@ export default {
         this.isLoading = false;
       }
     }
-    // withdrawUserData(value) {
-    //   // 預設選擇第一張卡 或是從電話驗證成功後直接送出
-    //   if (
-    //     !this.selectedCard.id &&
-    //     this.withdrawUserData.account &&
-    //     this.withdrawUserData.account.length > 0
-    //   ) {
-    //     this.selectedCard.id =
-    //       Number(localStorage.getItem("tmp_w_selectedCard_id")) ||
-    //       this.withdrawUserData.account[0].id;
-    //     this.withdrawValue = localStorage.getItem("tmp_w_amount");
-    //     setTimeout(() => {
-    //       localStorage.removeItem("tmp_w_selectedCard_id");
-    //       localStorage.removeItem("tmp_w_amount");
-    //       if (
-    //         localStorage.getItem("tmp_w_1") &&
-    //         localStorage.getItem("tmp_w_rule") !== "1"
-    //       ) {
-    //         this.handleSubmit();
-    //       }
-    //       localStorage.removeItem("tmp_w_rule");
-    //     });
-
-    //     this.isLoading = false;
-    //   }
-    // }
   },
   created() {
     // 刷新 Player Api
@@ -915,8 +843,22 @@ export default {
         return obj;
       }
 
-      // Yabo
-      if (this.themeTPL === "porn1") {
+      // 億元 && 未開啟限綁一組開關
+      if (this.themeTPL === "ey1" && !this.userLevelObj.virtual_bank_single) {
+        // 已開啟電子錢包開關 & 未開啟限綁一組開關
+        let noSingleLimit =
+          this.withdrawUserData.wallet &&
+          this.withdrawUserData.wallet.length < 15;
+
+        obj.wallet = noSingleLimit ? true : false;
+        return obj;
+      }
+
+      // Yabo or 億元 && 開啟限綁一組開關
+      if (
+        this.themeTPL === "porn1" ||
+        (this.themeTPL === "ey1" && this.userLevelObj.virtual_bank_single)
+      ) {
         let nowBindWalletCount = 0;
 
         // 增加判空，否則報 map 錯誤
@@ -929,7 +871,10 @@ export default {
           let idArr = [
             ...new Set(
               this.withdrawData.user_virtual_bank.ret.map(item => {
-                return item.virtual ? item.payment_gateway_id : null
+                // 本廳是否支援此電子錢包 & 是否為常用帳戶
+                return item.virtual && item.common
+                  ? item.payment_gateway_id
+                  : null;
               })
             )
           ];
@@ -948,29 +893,6 @@ export default {
         }
 
         obj.wallet = true;
-        return obj;
-      }
-
-      // 億元
-      if (this.themeTPL === "ey1") {
-        // 已開啟電子錢包開關 & 未開啟限綁一組開關
-        let noSingleLimit =
-          !this.userLevelObj.virtual_bank_single &&
-          this.withdrawUserData.wallet &&
-          this.withdrawUserData.wallet.length < 15;
-
-        // 已開啟電子錢包開關 & 已開啟限綁一組開關
-        let singleLimit =
-          this.userLevelObj.virtual_bank_single &&
-          this.withdrawUserData.wallet &&
-          this.withdrawUserData.wallet.length < this.nowOpenWallet.length;
-
-        if (noSingleLimit || singleLimit) {
-          obj.wallet = true;
-          return obj;
-        }
-
-        obj.wallet = false;
         return obj;
       }
     }
