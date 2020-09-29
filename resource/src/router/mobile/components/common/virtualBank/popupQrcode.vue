@@ -84,6 +84,7 @@
 import axios from "axios";
 import html2canvas from "html2canvas";
 import { mapGetters, mapActions } from "vuex";
+import downloadjs from 'downloadjs';
 
 export default {
   props: {
@@ -197,17 +198,19 @@ export default {
       if (this.qrcodeLink) {
 
         if (this.qrcodeLink.includes('base64')) {
-          let a = document.createElement('a');
-          a.download = 'qrcode.png';
-          a.href = this.qrcodeLink;
+          downloadjs(this.qrcodeLink, 'qrcode.gif', 'img/gif')
+          //   let a = document.createElement('a');
+          //   a.download = 'qrcode.png';
+          //   a.target = "_blank";
+          //   a.href = this.qrcodeLink;
 
-          a.style.display = 'none';
-          document.body.appendChild(a);
+          //   a.style.display = 'none';
+          //   document.body.appendChild(a);
 
-          setTimeout(() => {
-            a.click();
-            document.body.removeChild(a);
-          }, 300)
+          //   setTimeout(() => {
+          //     a.click();
+          //     document.body.removeChild(a);
+          //   }, 300)
 
           //   html2canvas(this.$refs["qrcodeRef"], {
           //     allowTaint: false,
@@ -220,19 +223,6 @@ export default {
           //     document.body.appendChild(link);
           //     link.click();
           //   });
-        } else {
-          let a = document.createElement('a');
-          a.download = 'qrcode.png';
-          a.target = "_blank";
-          a.href = this.qrcodeLink;
-
-          a.style.display = 'none';
-          document.body.appendChild(a);
-
-          setTimeout(() => {
-            a.click();
-            document.body.removeChild(a);
-          }, 300)
         }
       }
     }
