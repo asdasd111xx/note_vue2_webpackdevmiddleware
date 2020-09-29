@@ -146,6 +146,7 @@
               v-model="formData.keyring"
               type="text"
               placeholder="请输入手机验证码"
+              id="phone-code"
               @input="checkData($event.target.value, 'keyring')"
             />
             <div
@@ -246,7 +247,7 @@ export default {
   props: {
     setPageStatus: {
       type: Function,
-      default: () => {}
+      default: () => { }
     },
     addBankCardStep: {
       type: String,
