@@ -64,6 +64,7 @@
           <div :class="$style['input-wrap']">
             <input
               v-model="codeValue"
+              id="phone-code"
               :placeholder="$text('S_MOBILE_CAPTCHA', '请输入手机验证码')"
               :class="$style.input"
               @input="verification($event.target.value, 'code')"

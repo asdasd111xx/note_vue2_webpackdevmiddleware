@@ -101,6 +101,7 @@
           <div :class="$style['form-input']">
             <input
               v-model="formData['keyring'].value"
+              id="phone-code"
               :placeholder="formData['keyring'].placeholder"
               @input="verification('keyring')"
               @blur="verification('keyring')"
