@@ -8,7 +8,9 @@ export const preset = {
     ...basic,
     BBOS_DOMIAN: 'https://bbos.canarycherrytart.com/elibomApi/WebService',
     YABO_API_DOMAIN: 'https://yaboapi.canarycherrytart.com/api',
-    ACTIVES_BOUNS_WEBSOCKET: 'wss://yaboapi.canarycherrytart.com/ws/promosocket'
+    ACTIVES_BOUNS_WEBSOCKET: window.location.host === 'ybbe1.qghco.com' ?
+        'wss://ybbe2.qghco.com/ws/promosocket' :
+        'wss://yaboapi.canarycherrytart.com/ws/promosocket'
 };
 
 /* ---------- ↓ 正式站 ---------- */

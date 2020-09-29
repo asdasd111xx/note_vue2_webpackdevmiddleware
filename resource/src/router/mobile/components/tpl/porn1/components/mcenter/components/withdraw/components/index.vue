@@ -929,7 +929,7 @@ export default {
           let idArr = [
             ...new Set(
               this.withdrawData.user_virtual_bank.ret.map(item => {
-                return item.payment_gateway_id && item.virtual;
+                return item.virtual ? item.payment_gateway_id : null
               })
             )
           ];

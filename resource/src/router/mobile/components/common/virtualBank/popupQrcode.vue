@@ -198,21 +198,31 @@ export default {
       localStorage.setItem('download-item', this.qrcodeLink);
 
       if (this.qrcodeLink) {
-        // downloadjs(this.qrcodeLink, 'qrcode.gif', 'img/gif');
+        if (localStorage.getItem('test1')) {
+          downloadjs(this.qrcodeLink, 'qrcode.gif', 'img/gif');
+          return;
+        }
+
+        if (localStorage.getItem('test2')) {
+          window.open(`${window.location.origin}/download.html`, '_parent');
+          return;
+        }
+
+        let a = document.createElement('a');
+        a.download = 'qrcode.gif';
+        a.target = "_parent";
+        a.href = this.qrcodeLink;
+
+        a.style.display = 'none';
+        document.body.appendChild(a);
+
+        setTimeout(() => {
+          a.click();
+          document.body.removeChild(a);
+        }, 300)
+
+
         if (this.qrcodeLink.includes('base64')) {
-          window.open(`${window.location.origin}/download.html`);
-          //   let a = document.createElement('a');
-          //   a.download = 'qrcode.png';
-          //   a.target = "_blank";
-          //   a.href = this.qrcodeLink;
-
-          //   a.style.display = 'none';
-          //   document.body.appendChild(a);
-
-          //   setTimeout(() => {
-          //     a.click();
-          //     document.body.removeChild(a);
-          //   }, 300)
 
           //   html2canvas(this.$refs["qrcodeRef"], {
           //     allowTaint: false,
