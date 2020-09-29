@@ -14,7 +14,7 @@
             try {
                 let item = localStorage.getItem('download-item');
                 download(item, 'qrcode.gif', 'img/gif');
-                setTimeout(() => { window.close(); window.history.back(); }, 1000);
+                // setTimeout(() => { window.history.back(); }, 1000);
             } catch (e) {
                 console.log(e)
             }
