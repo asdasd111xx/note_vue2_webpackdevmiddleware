@@ -15,9 +15,9 @@
             />
           </template>
         </div>
-        <p @click="downloadImage">
+        <span @click="downloadImage('')">
           {{ downloadText }}
-        </p>
+        </span>
 
         <div :class="$style['timer-block']">
           <div v-if="bindType === 'deposit' && paymentGatewayId === 37">
@@ -192,15 +192,15 @@ export default {
     openLink(url) {
       window.open(url);
     },
-    downloadImage() {
+    downloadImage(target) {
       //   <a :href="qrcodeLink" :download="qrcodeLink" target="_blank">
       console.log(this.qrcodeLink);
       localStorage.setItem('download-item', this.qrcodeLink);
 
       if (this.qrcodeLink) {
-        downloadjs(this.qrcodeLink, 'qrcode.gif', 'img/gif');
+        // downloadjs(this.qrcodeLink, 'qrcode.gif', 'img/gif');
         if (this.qrcodeLink.includes('base64')) {
-          let w = window.open(`${window.location.host}/download.html`);
+          window.open(`${window.location.origin}/download.html`);
           //   let a = document.createElement('a');
           //   a.download = 'qrcode.png';
           //   a.target = "_blank";
