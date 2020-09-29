@@ -20,6 +20,7 @@
             :class="[$style['feedback-item'], 'clearfix']"
             @click="getCurrentMassage(message)"
           >
+         
             <div :class="$style['feedback-icon']">
               <template v-if="typeList && typeList.length > 0">
                 <img
@@ -39,9 +40,9 @@
                   {{ message.created_at | getTime }}
                 </p>
               </div>
-              <p :class="$style['question']">
-                {{ getShortConetent(message.content) }}
-              </p>
+              <p :class="$style['question']"
+                v-html="getShortConetent(message.content)"
+              ></p> 
             </div>
           </li>
         </ul>
@@ -82,6 +83,7 @@
             v-if="currentFeedback.reply_content"
             :class="[$style['detail-service'], 'clearfix']"
           >
+          
             <img
               :class="$style['detail-icon']"
               :src="
@@ -179,6 +181,7 @@ export default {
   methods: {
     getShortConetent(content) {
       return content;
+      
     },
     getTypeList() {
       ajax({
@@ -196,10 +199,11 @@ export default {
       });
     },
     setContent(content) {
-      let urlRegex = /(https?:\/\/[^\s]+)/g;
-      return content.replace(/\n/g, '<br/>').replace(urlRegex, function (url) {
-        return '<a href="' + url + '" target="_blank">' + url + '</a>';
-      })
+      return content;
+      // let urlRegex = /(https?:\/\/[^\s]+)/g;
+      // return content.replace(/\n/g, '<br/>').replace(urlRegex, function (url) {
+      //   return '<a href="' + url + '" target="_blank">' + url + '</a>';
+      // })
     },
     getFeedbackRecord() {
       mcenter.feedbackRecord({

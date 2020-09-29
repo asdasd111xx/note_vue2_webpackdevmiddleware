@@ -1,5 +1,6 @@
 <template>
   <div :class="['clearfix']">
+    <serial-number v-if="showSerial" :handle-close="toggleSerial" />
     <!-- 一件回收 -->
     <balance-back />
     <div :class="$style['promotion-tips']" v-html="promotionTips" />
@@ -101,6 +102,13 @@
                 type="tel"
               />
             </div>
+            <div
+              :class="$style['serial-number-links']"
+              v-if="item.key === 'amount'"
+              @click="toggleSerial"
+            >
+              流水详情
+            </div>
           </template>
         </div>
       </template>
@@ -136,10 +144,12 @@ import popupVerification from '@/components/popupVerification';
 import axios from 'axios';
 import tipsCreditTrans from './tipsCreditTrans';
 import mixin from '@/mixins/mcenter/recharge/recharge';
+import serialNumber from "../../withdraw/components/serialNumber";
 export default {
   mixins: [mixin],
   data() {
     return {
+      showSerial: false,
       captcha: null,
       toggleCaptcha: false,
     };
@@ -147,7 +157,8 @@ export default {
   components: {
     balanceBack,
     popupVerification,
-    tipsCreditTrans
+    tipsCreditTrans,
+    serialNumber
   },
   computed: {
     ...mapGetters({
@@ -183,6 +194,9 @@ export default {
     ...mapActions([
       'actionSetGlobalMessage'
     ]),
+    toggleSerial() {
+      this.showSerial = !this.showSerial
+    },
     showCaptcha() {
       if (!this.formData.phone) {
         return;
@@ -259,7 +273,6 @@ export default {
 }
 
 .form-input {
-  width: 100%;
   padding: 0 13px;
 
   input {
@@ -339,5 +352,13 @@ input::placeholder {
       pointer-events: none;
     }
   }
+}
+
+.serial-number-links {
+  display: none;
+  color: #6aaaf5;
+  //   display: block;
+  position: absolute;
+  right: 17px;
 }
 </style>

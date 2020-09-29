@@ -92,8 +92,14 @@
         color: #A6A9B2;
         overflow: hidden;
         text-overflow: ellipsis;
-        white-space: nowrap;
+        white-space: nowrap;          
+    }  
+
+    .question /deep/ a{ 
+        color: #A6A9B2 ;
+        pointer-events: none !important; 
     }
+
 }
 
 .feedback-detail {
