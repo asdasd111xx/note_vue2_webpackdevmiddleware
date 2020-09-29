@@ -676,25 +676,25 @@ export default {
         // 卡片資料
         this.selectedCard = localStorage.getItem("tmp_w_selectedCard")
           ? {
-            id: JSON.parse(localStorage.getItem("tmp_w_selectedCard"))["id"],
-            name: JSON.parse(localStorage.getItem("tmp_w_selectedCard"))[
-              "name"
-            ],
-            withdrawType: JSON.parse(
-              localStorage.getItem("tmp_w_selectedCard")
-            )["withdrawType"]
-          }
+              id: JSON.parse(localStorage.getItem("tmp_w_selectedCard"))["id"],
+              name: JSON.parse(localStorage.getItem("tmp_w_selectedCard"))[
+                "name"
+              ],
+              withdrawType: JSON.parse(
+                localStorage.getItem("tmp_w_selectedCard")
+              )["withdrawType"]
+            }
           : {
-            id: defaultCard.id,
-            name:
-              defaultCard.withdrawType === "account_id"
-                ? ""
-                : defaultCard.alias.substring(
-                  0,
-                  defaultCard.alias.indexOf("-")
-                ),
-            withdrawType: defaultCard.withdrawType
-          };
+              id: defaultCard.id,
+              name:
+                defaultCard.withdrawType === "account_id"
+                  ? ""
+                  : defaultCard.alias.substring(
+                      0,
+                      defaultCard.alias.indexOf("-")
+                    ),
+              withdrawType: defaultCard.withdrawType
+            };
 
         // 金額部份
         this.withdrawValue = localStorage.getItem("tmp_w_amount");
@@ -1001,7 +1001,7 @@ export default {
         ) {
           this.errTips = `单笔提现金额最小为${withdrawMin}元，最大为${
             withdrawMax ? `${withdrawMax}元` : "无限制"
-            }`;
+          }`;
           return;
         }
 
@@ -1241,12 +1241,12 @@ export default {
         success: response => {
           if (response && response.result === "ok") {
             if (this.memInfo.config.withdraw === "迅付") {
-              this.msg = "提现成功";
-              this.withdrawValue = "";
-              this.withdrawPwd = "";
-              this.actualMoney = 0;
-              this.cryptoMoney = "--";
-              this.resetTimerStatus();
+              this.actionSetGlobalMessage({
+                msg: "提现成功",
+                cb: () => {
+                  window.location.reload();
+                }
+              });
 
               // 舊的第二次寫單才需要
               // 迅付寫單
@@ -1307,12 +1307,10 @@ export default {
                 this.actionSetIsLoading(false);
 
                 if (res.result === "ok") {
-                  this.msg = "提现成功";
-                  this.withdrawValue = "";
-                  this.withdrawPwd = "";
-                  this.actualMoney = 0;
-                  this.cryptoMoney = "--";
-                  this.resetTimerStatus();
+                  this.actionSetGlobalMessage({
+                    msg: "提现成功"
+                  });
+
                   this.thirdUrl = res.ret.uri;
                 }
               });
