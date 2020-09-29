@@ -61,10 +61,6 @@ export default {
       type: Boolean,
       default: false
     },
-    userLevelObj: {
-      type: Object,
-      default: {}
-    },
     withdrawUserData: {
       type: Object,
       default: {}
@@ -74,7 +70,6 @@ export default {
     return {
       bank_id: "",
       isShowPopQrcode: false,
-      nowOpenWallet: []
     };
   },
   computed: {
@@ -95,12 +90,12 @@ export default {
         {
           key: "bankCard",
           title: this.themeTPL === "porn1" ? "添加银行卡" : "添加 提现银行卡",
-          isShow: this.showAddBankCard
+          isShow: this.moreMethodStatus.bankCard
         },
         {
           key: "wallet",
           title: this.themeTPL === "porn1" ? "添加数字货币" : "添加 电子钱包",
-          isShow: this.showAddWallet
+          isShow: this.moreMethodStatus.wallet
         },
         {
           key: "CGPay",
@@ -121,90 +116,6 @@ export default {
             })
         }
       ].filter(item => item.isShow);
-    },
-    showAddBankCard() {
-      if (
-        this.userLevelObj.bank &&
-        this.withdrawUserData &&
-        this.withdrawUserData.account &&
-        this.withdrawUserData.account.length < 3
-      ) {
-        this.$emit("update:moreMethodStatus", {
-          objKey: "bankCard",
-          data: true
-        });
-        return true;
-      } else {
-        this.$emit("update:moreMethodStatus", {
-          objKey: "bankCard",
-          data: false
-        });
-        return false;
-      }
-    },
-    showAddWallet() {
-      // 尚未打開電子錢包開關
-      if (!this.userLevelObj.virtual_bank) {
-        this.$emit("update:moreMethodStatus", {
-          objKey: "wallet",
-          data: false
-        });
-        return false;
-      }
-
-      if (this.themeTPL === "porn1") {
-        let nowBindWalletCount = 0;
-        let idArr = [
-          ...new Set(
-            this.withdrawUserData.wallet.map(item => {
-              return item.payment_gateway_id;
-            })
-          )
-        ];
-
-        if (idArr) {
-          this.nowOpenWallet.forEach(item => {
-            if (idArr.includes(item.id)) {
-              nowBindWalletCount += 1;
-            }
-          });
-
-          // 當使用者已綁定目前所有開放的電子錢包時
-          if (nowBindWalletCount >= this.nowOpenWallet.length) {
-            this.$emit("update:moreMethodStatus", {
-              objKey: "wallet",
-              data: false
-            });
-            return false;
-          }
-        }
-
-        this.$emit("update:moreMethodStatus", {
-          objKey: "wallet",
-          data: true
-        });
-        return true;
-      }
-
-      if (this.themeTPL === "ey1") {
-        // 已開啟電子錢包開關 & 未開啟限綁一組開關
-        let noSingleLimit =
-          !this.userLevelObj.virtual_bank_single &&
-          this.withdrawUserData.wallet &&
-          this.withdrawUserData.wallet.length < 15;
-
-        // 已開啟電子錢包開關 & 已開啟限綁一組開關
-        let singleLimit =
-          this.userLevelObj.virtual_bank_single &&
-          this.withdrawUserData.wallet &&
-          this.withdrawUserData.wallet.length < this.nowOpenWallet.length;
-
-        if (noSingleLimit || singleLimit) {
-          return true;
-        }
-
-        return false;
-      }
     },
     showPopQrcode: {
       get() {
@@ -230,9 +141,6 @@ export default {
         }
       }
     }
-  },
-  created() {
-    this.getNowOpenWallet();
   },
   methods: {
     ...mapActions(["actionSetGlobalMessage"]),
@@ -261,21 +169,6 @@ export default {
           break;
       }
       this.close();
-    },
-    getNowOpenWallet() {
-      // Get 錢包類型
-      axios({
-        method: "get",
-        url: "/api/payment/v1/c/virtual/bank/list"
-      }).then(response => {
-        const { ret, result } = response.data;
-
-        if (!response || result !== "ok") {
-          return;
-        }
-
-        this.nowOpenWallet = ret;
-      });
     }
   }
 };

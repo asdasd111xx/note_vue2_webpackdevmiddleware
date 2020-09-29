@@ -36,6 +36,7 @@ export default {
             thirdUrl: '',
             showAccount: false, // 帳戶資料檢查
             userLevelObj: {}, // 存放 Card type 開關 & 限綁一組開關
+            nowOpenWallet: []
         };
     },
     computed: {
@@ -227,6 +228,7 @@ export default {
         this.actionSetIsLoading(true);
         this.getUserLevel();
         this.getUserStat();
+        this.getNowOpenWallet();
 
         // 取得取款初始資料
         ajax({
@@ -383,7 +385,7 @@ export default {
                 this.userLevelObj = ret;
             });
         },
-        /**
+       /**
        * 回傳使用者出入款統計資料
        * @method getUserStat
        */
@@ -396,6 +398,25 @@ export default {
                     this.userWithdrawCount = res.data.ret.withdraw_count;
                 }
             })
+        },
+        /**
+        * 回傳目前開放的電子錢包
+        * @method getNowOpenWallet
+        */
+        getNowOpenWallet() {
+            // Get 錢包類型
+            axios({
+                method: "get",
+                url: "/api/payment/v1/c/virtual/bank/list"
+            }).then(response => {
+                const { ret, result } = response.data;
+
+                if (!response || result !== "ok") {
+                  return;
+                }
+
+                this.nowOpenWallet = ret;
+            });
         }
     }
 };
