@@ -78,15 +78,22 @@ export default {
     noticeData() {
       if (this.noticeData && this.noticeData.length > 0) {
         // this.data = this.noticeData.pop();
-        this.data = this.noticeData[this.noticeData.length - 1];
-
-        // 目前只接通知
-        if (this.data.event === ("notice")) {
-          this.show();
+        let temp = this.noticeData[this.noticeData.length - 1]
+        if (temp.extend && temp.extend === 'verification_code') {
+          return;
         }
 
-        if (this.data.event === ("maintain_notice")) {
-          this.show();
+        const event = temp.event;
+
+        switch (event) {
+          case 'notice':
+          case 'maintain_notice':
+          case 'verification_code':
+            this.data = temp;
+            this.show();
+            return;
+          default:
+            return;
         }
       }
 
@@ -155,11 +162,21 @@ export default {
       return Vue.moment(string).format("llll");
     },
     getText(key) {
-      if (this.data.event === ("maintain_notice")) {
-        let string = `网站系统公告\n网站即将进行系统维护，如有不便之处，敬请见谅 !`
-        return string;
+      const event = this.data.event;
+      let string = '';
+
+      switch (event) {
+        case 'maintain_notice':
+          string = '网站系统公告\n网站即将进行系统维护，如有不便之处，敬请见谅 !';
+          return string;
+
+        case 'verification_code':
+          string = `驗證碼:${this.data.code}，效期10分鐘，僅能夠使用一次，感謝支持!`;
+          return string;
+
+        default:
+          return this.lang[key] ? this.lang[key] : "您有 1 封新的站内信，请前往查看"
       }
-      return this.lang[key] ? this.lang[key] : "您有 1 封新的站内信，请前往查看"
     },
     deleMsg(id) {
       clearTimeout(this.closeTimer);
