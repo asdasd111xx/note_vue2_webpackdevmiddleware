@@ -11,8 +11,13 @@
     <script>
         // import downloadjs from 'downloadjs'
         function load() {
-            let item = localStorage.getItem('download-item');
-            download(item, 'qrcode.gif', 'img/gif');
+            try {
+                let item = localStorage.getItem('download-item');
+                download(item, 'qrcode.gif', 'img/gif');
+                setTimeout(() => { window.close(); window.history.back(); }, 1000);
+            } catch (e) {
+                console.log(e)
+            }
         }
     </script>
     <script src="https://cdnjs.cloudflare.com/ajax/libs/downloadjs/1.4.8/download.min.js" onload="load()"></script>
