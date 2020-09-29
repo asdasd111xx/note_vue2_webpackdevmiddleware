@@ -85,6 +85,7 @@ import axios from "axios";
 import html2canvas from "html2canvas";
 import { mapGetters, mapActions } from "vuex";
 import downloadjs from 'downloadjs';
+import { saveAs } from 'file-saver';
 
 export default {
   props: {
@@ -208,19 +209,25 @@ export default {
           return;
         }
 
-        let a = document.createElement('a');
-        a.download = 'qrcode.gif';
-        a.target = "_parent";
-        a.href = this.qrcodeLink;
+        if (localStorage.getItem('test3')) {
+          let a = document.createElement('a');
+          a.download = 'qrcode.gif';
+          a.target = "_parent";
+          a.href = this.qrcodeLink;
 
-        a.style.display = 'none';
-        document.body.appendChild(a);
+          a.style.display = 'none';
+          document.body.appendChild(a);
 
-        setTimeout(() => {
-          a.click();
-          document.body.removeChild(a);
-        }, 300)
+          setTimeout(() => {
+            a.click();
+            document.body.removeChild(a);
+          }, 300)
 
+          return;
+        }
+
+        saveAs(this.qrcodeLink, "qrcode.gif");
+        return;
 
         if (this.qrcodeLink.includes('base64')) {
 
