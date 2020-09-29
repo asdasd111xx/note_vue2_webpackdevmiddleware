@@ -230,7 +230,7 @@
       <!-- 銀行卡超過3張 + 所有數字貨幣的錢包都有添加 => 則隱藏按鈕 -->
       <!-- 狀態由 withdrawMoreMethod 組件回傳 -->
       <div
-        v-if="moreMethodStatusObj.bankCard || moreMethodStatusObj.wallet"
+        v-if="moreMethodStatus.bankCard || moreMethodStatus.wallet"
         :class="[$style['add-bank-card']]"
       >
         <img :src="$getCdnPath(`/static/image/${themeTPL}/mcenter/add.png`)" />
@@ -314,7 +314,10 @@
 
       <!-- 更多提现方式 -->
       <div
-        v-if="allWithdrawAccount.length > 0"
+        v-if="
+          allWithdrawAccount.length > 0 &&
+            (moreMethodStatus.bankCard || moreMethodStatus.wallet)
+        "
         :class="[$style['add-bank-card']]"
       >
         <img
@@ -559,10 +562,9 @@
     <!-- 更多提现方式彈窗 -->
     <withdraw-more-method
       :show="showMoreMethod"
-      :user-level-obj="userLevelObj"
       :withdraw-user-data="withdrawUserData"
       :check-account-data="checkAccountData"
-      :more-method-status.sync="resultMoreMethodStatus"
+      :more-method-status="moreMethodStatus"
       @close="
         () => {
           showMoreMethod = false;
@@ -615,10 +617,6 @@ export default {
       isShowCheck: false,
       isShowMore: true,
 
-      moreMethodStatusObj: {
-        bankCard: true,
-        wallet: true
-      },
       selectAccountValue: "",
       selectedCard: {
         id: "",
@@ -894,13 +892,86 @@ export default {
     forceStatus() {
       return this.withdrawUserData.force_status;
     },
-    // 由子組件中，回傳銀行卡 & 電子錢包(數字貨幣)的顯示狀態
-    resultMoreMethodStatus: {
-      get() {
-        return this.moreMethodStatusObj;
-      },
-      set(value) {
-        this.moreMethodStatusObj[value.objKey] = value.data;
+    moreMethodStatus() {
+      let obj = {};
+      // 直到 Check wallet 的部份，再 return 整個 obj
+
+      // Bank
+      if (
+        this.userLevelObj.bank &&
+        this.withdrawUserData &&
+        this.withdrawUserData.account &&
+        this.withdrawUserData.account.length < 3
+      ) {
+        obj.bankCard = true;
+      } else {
+        obj.bankCard = false;
+      }
+
+      // Wallet
+      // 尚未打開電子錢包開關
+      if (!this.userLevelObj.virtual_bank) {
+        obj.wallet = false;
+        return obj;
+      }
+
+      // Yabo
+      if (this.themeTPL === "porn1") {
+        let nowBindWalletCount = 0;
+
+        // 增加判空，否則報 map 錯誤
+        if (
+          this.withdrawData.user_virtual_bank &&
+          this.withdrawData.user_virtual_bank.ret &&
+          this.withdrawData.user_virtual_bank.ret.length > 0
+        ) {
+          // 找目前 user 有綁定過的 wallet
+          let idArr = [
+            ...new Set(
+              this.withdrawData.user_virtual_bank.ret.map(item => {
+                return item.payment_gateway_id && item.virtual;
+              })
+            )
+          ];
+
+          if (idArr) {
+            this.nowOpenWallet.forEach(item => {
+              nowBindWalletCount += idArr.includes(item.id) ? 1 : 0;
+            });
+
+            // 當使用者已綁定的錢包 >= 目前所有開放的電子錢包時
+            if (nowBindWalletCount >= this.nowOpenWallet.length) {
+              obj.wallet = false;
+              return obj;
+            }
+          }
+        }
+
+        obj.wallet = true;
+        return obj;
+      }
+
+      // 億元
+      if (this.themeTPL === "ey1") {
+        // 已開啟電子錢包開關 & 未開啟限綁一組開關
+        let noSingleLimit =
+          !this.userLevelObj.virtual_bank_single &&
+          this.withdrawUserData.wallet &&
+          this.withdrawUserData.wallet.length < 15;
+
+        // 已開啟電子錢包開關 & 已開啟限綁一組開關
+        let singleLimit =
+          this.userLevelObj.virtual_bank_single &&
+          this.withdrawUserData.wallet &&
+          this.withdrawUserData.wallet.length < this.nowOpenWallet.length;
+
+        if (noSingleLimit || singleLimit) {
+          obj.wallet = true;
+          return obj;
+        }
+
+        obj.wallet = false;
+        return obj;
       }
     }
   },
