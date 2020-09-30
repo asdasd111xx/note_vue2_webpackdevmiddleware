@@ -476,7 +476,7 @@ export default {
                 case 'LF':
                 case 'BALE':
                 case 'STB':
-                case 'DSC':
+                // case 'DSC':
                 case 'SF':
                     // 正式站 先不用獨立開啟
                     if (!this.loginStatus) {
@@ -488,11 +488,11 @@ export default {
                 // case 'LF':
                 // case 'BALE':
                 // case 'STB':
-                // case 'DSC':
-                // case 'SF':
-                // case 'PPV':
-                // case 'APB':
-                // case 'JPB':
+                case 'DSC':
+                    // case 'SF':
+                    // case 'PPV':
+                    // case 'APB':
+                    // case 'JPB':
                     if (!this.loginStatus) {
                         this.$router.push('/mobile/login');
                         return;
