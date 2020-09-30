@@ -4,21 +4,25 @@
       <div :class="$style['title']">奖励规则</div>
       <div :class="$style['table-wrap']">
         <div :class="$style['table-header']">
-          <div :class="$style['header-item']">{{titleList[0]}}</div>
-          <div :class="$style['header-item']" v-for="(item, index) in rechargeBonusConfig" :key="index"> 
-            <div v-if="index=='monthly'">
-              {{titleList[1]}}
+          <div :class="$style['header-item']">{{ titleList[0] }}</div>
+          <div
+            :class="$style['header-item']"
+            v-for="(item, index) in rechargeBonusConfig"
+            :key="index"
+          >
+            <div v-if="index == 'monthly'">
+              {{ titleList[1] }}
             </div>
-            <div v-if="index=='weekly'">
-              {{titleList[2]}}
+            <div v-if="index == 'weekly'">
+              {{ titleList[2] }}
             </div>
-            <div v-if="index=='first'">
-              {{titleList[3]}}
+            <div v-if="index == 'first'">
+              {{ titleList[3] }}
             </div>
           </div>
-        
-        <!-- <div :class="$style['table-header']">
-          <div
+
+          <!-- <div :class="$style['table-header']"> -->
+          <!-- <div
             v-for="(item, index) in titleList"
             :key="`titleList-${index}`"
             :class="$style['header-item']"
@@ -28,52 +32,8 @@
         </div>
 
         <div :class="$style['table-body']">
-        <div v-if='rechargeConfig.first_bonus_enable==true'>
-          <div :class="$style['content']" v-for="(item, index) in rechargeBonusConfig" :key="index"> 
-            <span :class="$style['item']" v-for="(vip, index_vip) in item" :key="index_vip">
-              <div v-if="index=='first'">
-                {{vip.vip_name}}
-              </div>
-            </span>
-          </div> 
-        </div>
-        <div v-if='rechargeConfig.first_bonus_enable==false'>
-          <div :class="$style['promotion-tips']" v-for="(item, index) in rechargeBonusConfig" :key="index"> 
-            <span v-for="(vip, index_vip) in item" :key="index_vip">
-              <div v-if="index=='monthly'">
-                {{vip.vip_name}}
-              </div>
-              <div v-else>
-                {{vip.vip_name}}
-              </div>
-            </span>
-          </div> 
-        </div>
-        </div>
-
-    <div :class="$style['table-body']">
-    <div :class="$style['content']" v-for="(item, index) in rechargeBonusConfig" :key="index"> 
-        <span v-for="(vip, index_vip) in item" :key="index_vip">
-          <template v-if="index=='first'">
-              <div v-if="rechargeConfig.first_bonus_enable==true">
-              {{vip.bonus}}元/位
-              </div>
-          </template>
-          <template v-if="index=='monthly'">
-              <div v-if="rechargeConfig.monthly_bonus_enable==true">{{vip.bonus}}元/位</div>
-          </template>
-          <template v-if="index=='weekly'">
-              <div v-if="rechargeConfig.weekly_bonus_enable==true">
-                {{vip.bonus}}元/位 </div>
-          </template>       
-          </span>
-      </div>
-    </div>
-      
-
-        <div :class="$style['table-body']">
           <div
-            v-for="(cells, index) in list"
+            v-for="(cells, index) in vipRuleData"
             :key="`list-${index}`"
             :class="$style['content']"
           >
@@ -82,28 +42,26 @@
               :key="`cells-${num}`"
               :class="$style['item']"
             >
-              {{item}}
+              {{ item }}
             </div>
           </div>
         </div>
-
-      </div> 
+      </div>
     </div>
   </div>
-  
 </template>
 
 <script>
 /* global $ */
 import { mapGetters, mapActions } from "vuex";
 import mobileContainer from "../../../../common/mobileContainer";
-import mixin from '@/mixins/mcenter/recharge/recharge';
-import axios from 'axios';
+import mixin from "@/mixins/mcenter/recharge/recharge";
+import axios from "axios";
 
 export default {
   mixins: [mixin],
   components: {
-    mobileContainer,
+    mobileContainer
   },
   data() {
     return {
@@ -111,8 +69,7 @@ export default {
         "VIP等级",
         "每月首转赠送彩金",
         "每周首转赠送彩金",
-        "终身首转赠送彩金",
-        
+        "终身首转赠送彩金"
       ],
       list: [
         ["VIP0", "9元/位", "9元/位", "9元/位"],
@@ -127,7 +84,6 @@ export default {
         ["VIP9", "899元/位", "899元/位", "899元/位"],
         ["VIP10", "999元/位", "999元/位", "999元/位"]
       ],
-      
     };
   },
   computed: {
@@ -139,12 +95,37 @@ export default {
         this[`$style_${this.siteConfig.MOBILE_WEB_TPL}`] || this.$style_porn1;
       return style;
     },
+    vipRuleData() {
+      // 確保目前開放的欄位 first / monthly / weekly
+      let keys = Object.keys(this.rechargeBonusConfig);
+      // 取 Key 值的欄位設 render 的數量
+      let vipNums = this.rechargeBonusConfig[keys[0]].length;
 
+      let data = this.rechargeBonusConfig;
+      let arr = [];
+
+      for (let i = 0; i < vipNums; i++) {
+        let tempArr = [data[keys[0]][i].vip_name];
+
+        for (let j = 0; j < keys.length; j++) {
+          tempArr.push(data[[keys[j]]][i].bonus + "元/位");
+        }
+
+        arr.push(tempArr);
+      }
+
+      return arr;
+    }
   },
-  methods: {
-  }
+  mounted() {
+    console.log(this.vipRuleData);
+  },
+  methods: {}
 };
 </script>
 
-<style lang="scss" src="@/css/page/vipDetail/porn1.vipRewardRules.scss" module="$style_porn1"></style>
-
+<style
+  lang="scss"
+  src="@/css/page/vipDetail/porn1.vipRewardRules.scss"
+  module="$style_porn1"
+></style>

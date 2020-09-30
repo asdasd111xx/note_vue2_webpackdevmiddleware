@@ -1,20 +1,23 @@
 @import "~@/css/variable.scss";
 
-@mixin grid-style {
-  display: grid;
-  grid-template-columns: 68px repeat(3, 1fr);
-  min-height: 43px;
-  text-align: center;
+@mixin flex-style {
+  display: inline-flex;
+  width: 100%;
 }
 
-
-
-@mixin grid-item-style {
+@mixin flex-item-style {
   position: relative;
-  height: 100%;
+  width: 100%;
+  min-height: 43px;
   display: flex;
-  justify-content: center;
   align-items: center;
+  justify-content: center;
+  text-align: center;
+  padding: 0 12px;
+
+  &:first-of-type {
+    max-width: 80px;
+  }
 }
 
 .table-container {
@@ -48,16 +51,13 @@
 }
 
 .table-header {
-  @include grid-style();
   background: #e2e5ed;
+  @include flex-style();
 
   .header-item {
-    @include grid-item-style();
-    width: 50px;
-    margin: 0 auto;
+    @include flex-item-style();
 
     &:first-of-type {
-      width: 100%;
       background: #d3c3b4;
     }
   }
@@ -68,7 +68,7 @@
   height: auto;
 
   .content {
-    @include grid-style();
+    @include flex-style();
     color: #a0a7c2;
 
     // content的偶數欄
@@ -78,7 +78,7 @@
 
     // 每個item
     .item {
-      @include grid-item-style();
+      @include flex-item-style();
     }
 
     // 每一個content 且 第一個 item
@@ -97,52 +97,3 @@
     }
   }
 }
-
-.table-desc {
-  width: 100%;
-  padding: 16px 0;
-  font-size: 14px;
-  text-align: center;
-  color: #5c91d8;
-}
-
-
-.table-vip {
-  width: 100%;
-  height: auto;
-
-  .content {
-    @include grid-style();
-    color: #a0a7c2;
-
-    // content的偶數欄
-    &:nth-child(even) {
-      background: #656d80;
-    }
-
-    // 每個item
-    .item {
-      @include grid-item-style();
-    }
-
-    // 每一個content 且 第一個 item
-    & .item:first-of-type {
-      color: $main_white_color1;
-    }
-
-    // 每一個奇數的content 且 第一個 item
-    &:nth-child(odd) .item:first-of-type {
-      background: #656d80;
-    }
-
-    // 每一個偶數的content 且 第一個 item
-    &:nth-child(even) .item:first-of-type {
-      background: #555b6e;
-    }
-  }
-}
-
-
-
-
-
