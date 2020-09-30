@@ -130,6 +130,8 @@ export default {
     ]),
     handleClick() {
       let content = this.data.content;
+      localStorage.setItem('click-notification', 1);
+
       switch (content) {
         case 'C_WS_FEEDBACK_REPLY':
           this.$router.push('/mobile/mcenter/feedback/feedbackList');

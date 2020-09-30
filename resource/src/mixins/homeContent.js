@@ -470,13 +470,13 @@ export default {
                 // 向日葵 -> SF
                 // 屌絲漫畫->DSC
                 case 'PPV':
-                case 'APB':
-                case 'JPB':
+                // case 'APB':
+                // case 'JPB':
                 case 'SWAG':
                 case 'LF':
                 case 'BALE':
                 case 'STB':
-                case 'DSC':
+                // case 'DSC':
                 case 'SF':
                     // 正式站 先不用獨立開啟
                     if (!this.loginStatus) {
@@ -488,35 +488,38 @@ export default {
                 // case 'LF':
                 // case 'BALE':
                 // case 'STB':
-                // case 'DSC':
+                case 'DSC':
                 // case 'SF':
-                //     if (!this.loginStatus) {
-                //         this.$router.push('/mobile/login');
-                //         return;
-                //     }
-                //     // 調整iframe內嵌
-                //     let newWindow = window.open('');
-                //     yaboRequest({
-                //         method: 'get',
-                //         url: `${this.siteConfig.YABO_API_DOMAIN}/thirdparty/url`,
-                //         headers: {
-                //             'x-domain': this.memInfo.user.domain
-                //         },
-                //         params: {
-                //             type: game.type,
-                //             userid: this.memInfo.user.id
-                //         },
-                //     }).then(res => {
-                //         if (res.data) {
-                //             newWindow.location.href = res.data;
-                //         } else {
-                //             newWindow.close();
-                //         }
-                //     }).catch(error => {
-                //         newWindow.close();
-                //     })
+                // case 'PPV':
+                case 'APB':
+                case 'JPB':
+                    if (!this.loginStatus) {
+                        this.$router.push('/mobile/login');
+                        return;
+                    }
+                    // 調整iframe內嵌
+                    let newWindow = window.open('');
+                    yaboRequest({
+                        method: 'get',
+                        url: `${this.siteConfig.YABO_API_DOMAIN}/thirdparty/url`,
+                        headers: {
+                            'x-domain': this.memInfo.user.domain
+                        },
+                        params: {
+                            type: game.type,
+                            userid: this.memInfo.user.id
+                        },
+                    }).then(res => {
+                        if (res.data) {
+                            newWindow.location.href = res.data;
+                        } else {
+                            newWindow.close();
+                        }
+                    }).catch(error => {
+                        newWindow.close();
+                    })
 
-                //     return;
+                    return;
                 case 'YV':
                     this.$router.push({
                         name: 'videoList',
