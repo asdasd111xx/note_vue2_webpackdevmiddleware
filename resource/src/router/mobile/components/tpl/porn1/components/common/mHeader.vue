@@ -28,7 +28,7 @@
         "
       />
     </div>
-
+  
     <div v-if="headerConfig.title" :class="[$style.wrap, 'clearfix']">
       <div :class="[[$style.title], $style[source]]">
         {{ headerConfig.title }}

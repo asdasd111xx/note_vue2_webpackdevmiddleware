@@ -13,7 +13,7 @@ import bbosRequest from "@/api/bbosRequest";
 import { getCookie } from '@/lib/cookie';
 
 export default {
-    data() {
+    data() { 
         return {
             username: '',
             depositData: [],
@@ -114,7 +114,7 @@ export default {
 
             // 尚未輸入金額
             if (!this.moneyValue) {
-                return '0.00';
+                return '--';
             }
 
             if ((this.depositInterval.minMoney && this.depositInterval.minMoney > this.moneyValue) || (this.depositInterval.maxMoney && this.depositInterval.maxMoney < this.moneyValue)) {

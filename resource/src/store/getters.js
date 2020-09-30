@@ -200,6 +200,7 @@ export default {
     getHasBank: (state) => state.hasBank,
     getVideoBounsPageStatus: (state) => state.videoBounsPageStatus,
     getMemInfoV3: (state) => state.memInfoV3,
+    getRechargeBonusConfig: (state) => state.rechargeBonusConfig, //取得廳首次額度轉讓優惠設定
     // ＝＝＝＝＝＝＝＝＝＝＝＝＝＝＝＝＝＝
     //   　電子錢包綁定相關
     // ＝＝＝＝＝＝＝＝＝＝＝＝＝＝＝＝＝＝
