@@ -1,51 +1,49 @@
 <template>
-    <mobile-container 
-    :header-config="headerConfig" 
-    :has-footer="false"
-    >
+  <mobile-container :header-config="headerConfig" :has-footer="false">
     <div slot="content" class="content-wrap">
-    <vipRewardRules />  
+      <vipRewardRules />
     </div>
-    </mobile-container>
+  </mobile-container>
 </template>
 
 <script>
-import { mapGetters} from 'vuex';
+import { mapGetters } from 'vuex';
 import { getCookie } from "@/lib/cookie";
 import mobileContainer from '../../../common/mobileContainer';
 import vipRewardRules from './components/vipRewardRules'
 export default {
-    components: {
-        mobileContainer, 
-        vipRewardRules,
-    },
-    data() {
-        return {};
-    },
-    computed: {
+  components: {
+    mobileContainer,
+    vipRewardRules,
+  },
+  computed: {
     ...mapGetters({
-        loginStatus: 'getLoginStatus'
+      loginStatus: 'getLoginStatus'
     }),
+    isApp() {
+      let isApp = !!(
+        (this.$route.query && this.$route.query.app) ||
+        (this.$route.query && this.$route.query.APP)
+      );
+      return isApp;
+    },
     headerConfig() {
+      if (!this.isApp) {
         return {
-            title: this.$text('S_rewardRules_TEXT', '额度转让 奖励规则'),
-            prev: true,
-            onClick: () => {
+          prev: true,
+          onClick: () => {
             this.$router.back();
-            },
+          },
+          title: this.$text('S_rewardRules_TEXT', '额度转让 奖励规则'),
         };
+      }
     },
     created() {
-      if (getCookie("cid")) {
-        return;
-      }
-
-      if (!this.loginStatus) {
-        this.$router.push("/mobile/login");
+      if (!getCookie("cid")) {
+        this.$router.back();
       }
     }
-
-    },
+  },
 
 }
 </script>
