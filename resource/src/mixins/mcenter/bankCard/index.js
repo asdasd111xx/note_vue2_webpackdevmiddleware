@@ -79,6 +79,12 @@ export default {
             }
         }
     },
+    created() {
+        if (localStorage.getItem('click-notification') &&
+            localStorage.getItem('add-bank-form')) {
+            this.setPageStatus(0, 'addBankCard', false)
+        }
+    },
     methods: {
         changePage(value) {
             this.currentPage = value;

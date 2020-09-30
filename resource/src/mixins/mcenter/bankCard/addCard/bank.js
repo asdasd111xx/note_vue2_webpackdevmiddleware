@@ -104,6 +104,27 @@ export default {
             delete this.formData['city'];
             delete this.formData['province'];
         }
+
+        // 推播返回 補齊資料
+        if (localStorage.getItem('click-notification') &&
+            localStorage.getItem('add-bank-form')) {
+
+            const data = JSON.parse(localStorage.getItem('add-bank-form'));
+            console.log(data)
+
+            this.NextStepStatus = false;
+            this.$emit("update:addBankCardStep", "two");
+            this.$nextTick(() => {
+                this.formData = { ...data };
+                localStorage.removeItem('add-bank-form');
+                localStorage.removeItem('click-notification');
+            })
+        }
+    },
+    beforeDestroy() {
+        if (localStorage.getItem('click-notification')) {
+            localStorage.setItem('add-bank-form', JSON.stringify(this.formData))
+        }
     },
     methods: {
         ...mapActions(['actionSetUserdata', 'actionVerificationFormData', 'actionVerificationFormData']),
