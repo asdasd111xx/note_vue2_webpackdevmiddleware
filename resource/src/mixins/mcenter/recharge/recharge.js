@@ -33,7 +33,7 @@ export default {
             isVerifyForm: false,
             isVerifyPhone: false,
             isShowLoading: true,
-            times: 0,
+            ttl: 0,
 
             //轉讓額度設定
             maxRechargeBalance: 0,
@@ -235,6 +235,18 @@ export default {
                 })
             })
         },
+        getPhoneTTL() {
+            return axios({
+                method: 'get',
+                url: '/api/v1/c/player/phone/ttl',
+            }).then(res => {
+                if (res && res.data && res.data.result === "ok") {
+                    this.ttl = res.data.ret;
+                }
+            }).catch(error => {
+                this.tipMsg = `${error.response.data.msg}`;
+            })
+        },
         // 獲取驗證碼
         getKeyring() {
             if (!this.formData.phone && this.isSendKeyring) {
@@ -252,20 +264,21 @@ export default {
                 }
             }).then(res => {
                 if (res && res.data && res.data.result === "ok") {
-                    this.times = 60;
-                    this.timer = setInterval(() => {
-                        if (this.times === 0) {
-                            this.isSendKeyring = false;
-                            clearInterval(this.timer);
-                            this.timer = null;
-                            if (this.tipMsg.indexOf('已发送')) {
-                                this.tipMsg = ''
+                    this.getPhoneTTL().then(() => {
+                        this.timer = setInterval(() => {
+                            if (this.ttl === 0) {
+                                this.isSendKeyring = false;
+                                clearInterval(this.timer);
+                                this.timer = null;
+                                if (this.tipMsg.indexOf('已发送')) {
+                                    this.tipMsg = ''
+                                }
+                                return;
                             }
-                            return;
-                        }
-                        this.times -= 1;
-                    }, 1000);
-                    this.tipMsg = this.$text("S_SEND_CHECK_CODE_VALID_TIME").replace("%s", '五');
+                            this.ttl -= 1;
+                        }, 1000);
+                        this.tipMsg = this.$text("S_SEND_CHECK_CODE_VALID_TIME").replace("%s", '五');
+                    })
                 } else {
                     setTimeout(() => {
                         this.isSendKeyring = false;
@@ -273,7 +286,7 @@ export default {
                     this.errorMessage.phone = `${res.data.msg}`;
                 }
             }).catch(error => {
-                this.times = '';
+                this.ttl = '';
                 this.errorMessage.phone = `${error.response.data.msg}`;
                 setTimeout(() => {
                     this.isSendKeyring = false;
