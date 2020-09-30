@@ -545,7 +545,8 @@ export const actionMemInit = ({ state, dispatch, commit }) => {
         dispatch('actionSetSiteConfig', configInfo);
         // dispatch('actionSetYaboConfig');
         dispatch('actionSetRechargeConfig');
-
+        dispatch('actionSetRechargeBonusConfig');
+        
         if (state.loginStatus) {
             const params = {
                 logo: state.webInfo.logo ? `${state.webInfo.cdn_domain}${state.webInfo.logo}` : '',
@@ -1201,6 +1202,22 @@ export const actionSetRechargeConfig = ({ commit }, data) => {
         }
     })
 };
+
+export const actionSetRechargeBonusConfig = ({ commit }, data) => {
+    const hasLogin = Vue.cookie.get('cid');
+    if (!hasLogin) {
+        return;
+    }
+    axios({
+        method: 'get',
+        url: '/api/v1/c/recharge/bonus/config'
+    }).then(res => {
+        if (res && res.data && res.data.result === "ok") {
+            commit(types.SET_RECHARGEBONUSCONFIG, res.data.ret);
+        }
+    })
+};
+
 
 export const actionSetCGPayInfo = ({ commit }) => {
     return axios({

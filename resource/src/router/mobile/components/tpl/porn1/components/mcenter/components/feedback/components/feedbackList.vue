@@ -20,6 +20,7 @@
             :class="[$style['feedback-item'], 'clearfix']"
             @click="getCurrentMassage(message)"
           >
+
             <div :class="$style['feedback-icon']">
               <template v-if="typeList && typeList.length > 0">
                 <img
@@ -83,6 +84,7 @@
             v-if="currentFeedback.reply_content"
             :class="[$style['detail-service'], 'clearfix']"
           >
+
             <img
               :class="$style['detail-icon']"
               :src="

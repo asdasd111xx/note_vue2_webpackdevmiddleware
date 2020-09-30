@@ -104,25 +104,19 @@ export default {
     },
   },
   created() {
-    
     this.isLoading = true;
-
+  },
+  mounted(){
     axios.get('/api/v1/c/gift-card').then(response=>this.info=response.data);
-    if(this.info.ret.length>0){
-      this.mainNoData=false;
+    if(this.info!==null&&this.info.ret.length>0){
+      mainNoData=false;
     }
-    
 
   },
   methods :{
-    
-    getInfo(value){
-      if(value==="length"){
-        return info.ret.length
-      }
-    },
-    
-    
+
+
+
     /**
      * 捲動加載
      * @param {object} $state - 套件提供的方法

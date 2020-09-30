@@ -505,6 +505,10 @@ export default {
     [types.SET_RECHARGECONFIG](state, data) {
         state.rechargeConfig = data
     },
+     // 首次額度轉讓優惠設定
+     [types.SET_RECHARGEBONUSCONFIG](state, data) {
+        state.rechargeBonusConfig = data
+    },
     // 是否有銀行卡
     [types.SET_HASBANK](state, data) {
         state.hasBank = data

@@ -463,6 +463,7 @@ export default {
     yaboConfig: {},
     globalMessage: '',
     rechargeConfig: {},
+    rechargeBonusConfig:{},
     hasBank: false,
     videoBounsPageStatus: false,
 

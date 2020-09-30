@@ -259,6 +259,13 @@ export default {
             path: 'setting',
             name: 'mcenter-setting',
             component
+        },
+        {
+            //额度转让 奖励规则
+            path:'rewardRules',
+            name: 'mcenter-rewardRules',
+            component
+
         }
     ]
 };
