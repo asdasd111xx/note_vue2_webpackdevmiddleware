@@ -53,7 +53,9 @@ export default {
             memInfo: "getMemInfo",
             pwdResetInfo: 'getPwdResetInfo',
             membalance: "getMemBalance",
-            rechargeConfig: "getRechargeConfig"
+            rechargeConfig: "getRechargeConfig",
+            rechargeBonusConfig:"getRechargeBonusConfig"
+
         }),
         inputInfo() {
             return [
@@ -69,7 +71,9 @@ export default {
         this.updateBalance = null;
     },
     created() {
-        this.setPromotionTips();
+        // this.setPromotionTips();
+
+        console.log(this.rechargeBonusConfig)
 
         this.updateBalance = setInterval(() => {
             this.actionSetUserBalance();
@@ -78,7 +82,7 @@ export default {
     watch: {
         membalance() {
             this.getRechargeBalance();
-        },
+        }
     },
     methods: {
         ...mapActions([
@@ -89,22 +93,26 @@ export default {
             'actionVerificationFormData',
             'actionGetMemInfoV3',
             'actionGetRechargeStatus',
+            'actionSetRechargeBonusConfig'
         ]),
-        setPromotionTips() {
-            let result = ''
-            if (+this.rechargeConfig.first_bonus) {
-                result += `<div>喜讯：首次额度转让给旗下会员加赠代理彩金${this.rechargeConfig.first_bonus}元/位<div>`;
-            }
+        // setPromotionTips() {
+        //     let result = ''
+        //     if (+this.rechargeConfig.first_bonus_enable==true) {
+                
+        //         result += `<div>喜讯：首次额度转让给旗下会员加赠代理彩金${this.rechargeBonusConfig.first.bonus}元/位 <a title="奖励规则">奖励规则</a><div>`;
+        //     }
+        //     if (+this.rechargeConfig.monthly_bonus_enable==true) {
+        //         result += `<div>喜讯：每月首次额度转让给旗下会员赠代理彩金${this.rechargeConfig.monthly_bonus}元/位 <a title="奖励规则">奖励规则</a><div>`;
+        //     }
 
-            if (+this.rechargeConfig.monthly_bonus) {
-                result += `<div>喜讯：每月首次额度转让给旗下会员赠代理彩金${this.rechargeConfig.monthly_bonus}元/位<div>`;
-            }
-
-            if (+this.rechargeConfig.weekly_bonus) {
-                result += `<div>喜讯：每周首次额度转让给旗下会员赠代理彩金${this.rechargeConfig.weekly_bonus}元/位<div>`;
-            }
-
-            this.promotionTips = result;
+        //     if (+this.rechargeConfig.weekly_bonus_enable==true) {
+        //         result += `<div>喜讯：每周首次额度转让给旗下会员赠代理彩金${this.rechargeConfig.weekly_bonus}元/位 <a title="奖励规则">奖励规则</a><div>`;
+        //     }
+        //     this.promotionTips = result;
+        // },
+ 
+        onGoToRewardRules() {
+            return this.$router.push('/mobile/mcenter/rewardRules');
         },
         verification(item) {
             let errorMessage = '';

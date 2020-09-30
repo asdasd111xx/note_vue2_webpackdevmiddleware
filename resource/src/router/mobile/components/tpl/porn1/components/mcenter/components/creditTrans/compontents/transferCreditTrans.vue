@@ -1,9 +1,35 @@
 <template>
+
   <div :class="['clearfix']">
     <serial-number v-if="showSerial" :handle-close="toggleSerial" />
     <!-- 一件回收 -->
-    <balance-back />
-    <div :class="$style['promotion-tips']" v-html="promotionTips" />
+    <balance-back />  
+    <div :class="$style['promotion-tips']" v-for="(item, index) in rechargeBonusConfig" :key="index"> 
+      <span v-for="(vip, index_vip) in item" :key="index_vip">
+        <template v-if="index=='first'">
+          <template v-if="index_vip==(item.length)-1">
+            <div v-if="rechargeConfig.first_bonus_enable==true">
+            喜讯：首次额度转让旗下会员赠彩金{{vip.bonus}}元/位 <a title="奖励规则" @click="onGoToRewardRules()">奖励规则</a>
+            </div>
+          </template>
+        </template>
+        <template v-if="index=='monthly'">
+          <template v-if="index_vip==(item.length)-1">
+            <div v-if="rechargeConfig.monthly_bonus_enable==true">
+              喜讯：每月首次额度转让旗下会员赠{{vip.bonus}}元/位 <a title="奖励规则" @click="onGoToRewardRules()">奖励规则</a></div>
+          </template>
+        </template>
+        <template v-if="index=='weekly'">
+          <template v-if="index_vip==(item.length)-1">
+            <div v-if="rechargeConfig.weekly_bonus_enable==true">
+              喜讯：每周首次额度转让旗下会员赠{{vip.bonus}}元/位 <a title="奖励规则" @click="onGoToRewardRules()">奖励规则</a></div>
+          </template>
+        </template>       
+        </span>
+    </div>
+   
+   
+    
     <div :class="$style['form']">
       <!-- 錯誤訊息 -->
       <div v-show="tipMsg" :class="$style['top-tips']">
@@ -125,6 +151,7 @@
         <div>
           立即转让
         </div>
+        
       </div>
     </div>
 
@@ -135,6 +162,7 @@
       :captcha.sync="captchaData"
     />
   </div>
+
 </template>
 
 <script>
@@ -208,6 +236,8 @@ export default {
         }
       });
     },
+    
+
   }
 };
 </script>
