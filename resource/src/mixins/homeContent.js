@@ -469,7 +469,7 @@ export default {
                 // 草莓 -> STB
                 // 向日葵 -> SF
                 // 屌絲漫畫->DSC
-                // case 'PPV':
+                case 'PPV':
                 // case 'APB':
                 // case 'JPB':
                 case 'SWAG':
@@ -489,7 +489,7 @@ export default {
                 // case 'STB':
                 case 'DSC': // 屌絲有問題 改回外開
                 // case 'SF':
-                case 'PPV':
+                // case 'PPV':
                 case 'APB':
                 case 'JPB':
                     if (!this.loginStatus) {
