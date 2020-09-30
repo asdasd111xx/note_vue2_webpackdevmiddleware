@@ -470,8 +470,8 @@ export default {
                 // 向日葵 -> SF
                 // 屌絲漫畫->DSC
                 case 'PPV':
-                // case 'APB':
-                // case 'JPB':
+                case 'APB':
+                case 'JPB':
                 case 'SWAG':
                 case 'LF':
                 case 'BALE':
@@ -490,8 +490,8 @@ export default {
                 case 'DSC': // 屌絲有問題 改回外開
                 // case 'SF':
                 // case 'PPV':
-                case 'APB':
-                case 'JPB':
+                // case 'APB':
+                // case 'JPB':
                     if (!this.loginStatus) {
                         this.$router.push('/mobile/login');
                         return;
