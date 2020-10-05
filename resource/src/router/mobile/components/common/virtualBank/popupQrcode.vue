@@ -84,7 +84,6 @@
 import axios from "axios";
 import html2canvas from "html2canvas";
 import { mapGetters, mapActions } from "vuex";
-import downloadjs from 'downloadjs';
 import { saveAs } from 'file-saver';
 
 export default {
@@ -199,17 +198,7 @@ export default {
       localStorage.setItem('download-item', this.qrcodeLink);
 
       if (this.qrcodeLink) {
-        if (localStorage.getItem('test1')) {
-          downloadjs(this.qrcodeLink, 'qrcode.gif', 'img/gif');
-          return;
-        }
-
         if (localStorage.getItem('test2')) {
-          window.open(`${window.location.origin}/download.html`, '_parent');
-          return;
-        }
-
-        if (localStorage.getItem('test3')) {
           let a = document.createElement('a');
           a.download = 'qrcode.gif';
           a.target = "_parent";
@@ -226,7 +215,39 @@ export default {
           return;
         }
 
-        saveAs(this.qrcodeLink, "qrcode.gif");
+        function dataURItoBlob(dataURI) {
+          // convert base64 to raw binary data held in a string
+          // doesn't handle URLEncoded DataURIs - see SO answer #6850276 for code that does this
+          var byteString = atob(dataURI.split(',')[1]);
+
+          // separate out the mime component
+          var mimeString = dataURI.split(',')[0].split(':')[1].split(';')[0]
+
+          // write the bytes of the string to an ArrayBuffer
+          var ab = new ArrayBuffer(byteString.length);
+
+          // create a view into the buffer
+          var ia = new Uint8Array(ab);
+
+          // set the bytes of the buffer to the correct values
+          for (var i = 0; i < byteString.length; i++) {
+            ia[i] = byteString.charCodeAt(i);
+          }
+
+          // write the ArrayBuffer to a blob, and you're done
+          var blob = new Blob([ab], { type: mimeString });
+
+          return blob;
+        }
+
+        let blob = dataURItoBlob(this.qrcodeLink);
+        console.log('blob:', blob)
+        let type = 'png';
+        if (blob.type && blob.type.split('/')) {
+          type = blob.type.split('/')[1];
+        }
+
+        saveAs(blob, `qrcode.${type}`);
         return;
 
         if (this.qrcodeLink.includes('base64')) {
