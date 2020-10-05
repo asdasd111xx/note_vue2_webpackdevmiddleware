@@ -191,7 +191,7 @@ export default {
     },
     headerConfig() {
       let _funcBtnActive = true;
-      let checkActiveArray = [this.newValue];
+      let checkActiveArray = [this.newValue, (!this.tipMsg || this.tipMsg.includes('验证码已发送'))];
       //  提現前驗證不需要舊手機欄位
       if (this.checkCode.isShow || this.isfromWithdraw) {
         checkActiveArray.push(!!(this.codeValue));
@@ -260,28 +260,6 @@ export default {
     captchaData(val) {
       this.handleSend();
     },
-    oldValue() {
-      if (this.oldValue.length >= 11) {
-        this.tipMsg = '';
-        if (!this.hasVerified) {
-          this.isVerifyPhone = true;
-        }
-      } else {
-        this.tipMsg = '手机格式不符合要求';
-        if (!this.hasVerified) {
-          this.isVerifyPhone = false;
-        }
-      }
-    },
-    newValue() {
-      if (this.newValue.length >= 11) {
-        this.tipMsg = '';
-        this.isVerifyPhone = true;
-      } else {
-        this.tipMsg = '手机格式不符合要求'
-        this.isVerifyPhone = false;
-      }
-    }
   },
   mounted() {
     this.countdownSec = "";
@@ -328,8 +306,13 @@ export default {
       'actionVerificationFormData'
     ]),
     verification(value, target) {
+      if (!this.tipMsg.includes('已发送')) {
+        this.tipMsg = '';
+      }
+
       if (target === 'newValue' || target === 'oldValue') {
         this.actionVerificationFormData({ target: 'phone', value: value }).then((val => {
+
           if (target === "newValue") {
             this.newValue = val;
           }
@@ -337,7 +320,31 @@ export default {
           if (target === "oldValue") {
             this.oldValue = val;
           }
+
+          if (value === '') {
+            this.isVerifyPhone = false;
+          }
         }));
+
+        // 億元 不客端判斷手機號碼位數
+        if (this.siteConfig.MOBILE_WEB_TPL === 'ey1' || value.length >= 11) {
+          this.tipMsg = '';
+
+          if (this.isfromWithdraw) {
+            this.isVerifyPhone = true;
+            return;
+          }
+
+          // 廳主端設置手機 未驗證
+          if (!this.hasVerified) {
+            this.isVerifyPhone = true;
+          }
+        } else {
+          this.tipMsg = '手机格式不符合要求';
+          if (!this.hasVerified) {
+            this.isVerifyPhone = false;
+          }
+        }
       }
 
       if (target === 'code') {
@@ -356,7 +363,7 @@ export default {
           clearInterval(this.timer);
           this.timer = null;
           if (this.tipMsg.indexOf('已发送')) {
-            this.tipMsg = ''
+            this.tipMsg = '';
           }
           return;
         }

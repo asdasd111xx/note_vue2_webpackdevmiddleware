@@ -80,7 +80,7 @@ export default {
     this.getAvatarSrc();
     if (this.loginStatus) {
       const today = new Date().getTime();
-      const created_at = moment(this.memInfo.user.created_at).format('x');
+      const created_at = moment(this.memInfo.user.created_at).local().format('x');
       const diff = +today - +created_at;
       this.day = Math.floor(diff / 1000 / 60 / 60 / 24) + 1;
     }
