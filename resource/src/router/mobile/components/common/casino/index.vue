@@ -11,8 +11,16 @@
           :change-game-label="changeGameLabel"
         />
       </template>
+      <template v-if="slotKey === 'jackpot'">
+        <div :class="$style['jackpot-wrap']">
+          <jackpot :vendor="vendor" />
+        </div>
+      </template>
       <template v-if="slotKey === 'list'">
-        <div :key="`slot-${slotKey}`" class="game-item-wrap clearfix">
+        <div
+          :key="`slot-${slotKey}`"
+          :class="[[$style['game-item-wrap'], $style[jackpotType]], 'clearfix']"
+        >
           <template>
             <template v-for="(gameInfo, index) in gameData">
               <game-item
@@ -61,15 +69,15 @@
 </template>
 
 <script>
-import { mapGetters, mapActions } from 'vuex';
-import InfiniteLoading from 'vue-infinite-loading';
-import ajax from '@/lib/ajax';
 import { gameType, gameList } from '@/config/api';
+import { mapGetters, mapActions } from 'vuex';
+import ajax from '@/lib/ajax';
+import common from '@/api/common';
 import gameItem from '../gameItem';
 import gameLabel from '../gameLabel';
 import gameSearch from '../gameSearch';
-import common from '@/api/common';
-
+import InfiniteLoading from 'vue-infinite-loading';
+import jackpot from './jackpot';
 /**
  * 共用元件 - 手機網頁版電子遊戲頁共用框 (邏輯共用)
  * @param {Array} [slotSort=['search', 'label', 'list']] - slot 的區塊順序調整
@@ -87,11 +95,12 @@ export default {
     gameLabel,
     gameItem,
     InfiniteLoading,
+    jackpot
   },
   props: {
     slotSort: {
       type: Array,
-      default: () => (['search', 'label', 'list'])
+      default: () => (['search', 'label', 'jackpot', 'list'])
     },
     searchTheme: {
       type: String,
@@ -161,6 +170,15 @@ export default {
       }
 
       return this.favoriteGame.filter((element) => element.kind === this.paramsData.kind);
+    },
+    jackpotType() {
+      switch (this.vendor) {
+        // 單一彩金+名單
+        case 'bbin':
+          return 'multiTotal';
+        default:
+          return;
+      }
     }
   },
   watch: {
@@ -418,9 +436,22 @@ export default {
 </script>
 
 <style lang="scss" module>
+@import "~@/css/variable.scss";
+
 .game-item-wrap {
-  background: #f8f8f7;
   min-height: calc(100vh - 88px);
+
+  &.multiTotal {
+    margin-top: 145px;
+  }
+
+  &.single {
+    margin-top: 75px;
+  }
+
+  &.multiBonus {
+    margin-top: 115px;
+  }
 }
 
 .empty-wrap {
@@ -436,5 +467,17 @@ export default {
   height: 62px;
   background: url("/static/image/_new/common/search_none.png") 0 0 / contain
     no-repeat;
+}
+
+.jackpot-wrap {
+  left: 0;
+  max-width: $mobile_max_width;
+  padding-top: 9px;
+  padding: 0;
+  position: absolute;
+  background: #ededed;
+  top: 80px;
+  width: 100%;
+  z-index: 5;
 }
 </style>
