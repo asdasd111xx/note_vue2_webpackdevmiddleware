@@ -82,6 +82,9 @@ export default ({
     })
         .catch((error) => {
             console.log(error);
+            fail(error.response);
+            // if (error && error.response && error.response.status === 429) {
+            // }
             return error;
         });
 };

@@ -824,6 +824,12 @@ export default {
         params: {
           ...params,
           host: window.location.host,
+        },
+        fail: (error) => {
+          if (error && error.status === 429) {
+            this.errMsg = '操作太频繁，请稍候在试';
+            return
+          }
         }
       }).then((res) => {
         if (this.$refs.puzzleVer) this.$refs.puzzleVer.ret = null;
