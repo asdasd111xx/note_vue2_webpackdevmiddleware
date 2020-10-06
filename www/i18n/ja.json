@@ -994,6 +994,7 @@
     "S_SWITCH_NAME": "アカウント／ニックネーム切替",
     "S_SERIAL_DETIAL": "流水详情",
     "S_SERIAL_CHANGE": "流水要求",
+    "S_SERIAL_CHECK": "流水检查",
     "S_SELECT_PAY_MODE": "支払い方法を選択してください",
     "S_SELECT_BANKS": "请选择银行",
     "S_SELECT_PAY_PASS": "请选择支付通道",

@@ -8,7 +8,7 @@
         />
       </div>
       <span :class="$style['title']">
-        {{ $text("S_SERIAL_CHANGE", "流水检查") }}</span
+        {{ $text("S_SERIAL_CHECK", "流水检查") }}</span
       >
     </div>
     <div :class="[$style['serial-number-wrap']]">
@@ -43,10 +43,16 @@
         <div :class="$style['serial-basic-cell']">
           <div :class="$style['serial-basic-title']">
             {{ $text("S_DEDUCTION_MONEY", "扣除金额") }}
-            行政费用:({{ `${serialNumberData.administrative_rate}%` }})
+            (行政费用:{{ `${serialNumberData.administrative_rate}%` }})
           </div>
           <div :class="$style['serial-basic-value']">
-            {{ getDeductionNumber(serialNumberData.total.deduction) }}
+            {{
+              serialNumberData.total.deduction > 0
+                ? `-${getDeductionNumber(
+                    serialNumberData.total.deduction
+                  )}`
+                : `0.00`
+            }}
           </div>
         </div>
 
@@ -55,7 +61,13 @@
             {{ $text("S_FEE", "手续费") }}
           </div>
           <div :class="$style['serial-basic-value']">
-            {{ getDeductionNumber(serialNumberData.total.fee) }}
+            {{
+              serialNumberData.total.fee > 0
+                ? `-${getDeductionNumber(
+                    serialNumberData.total.fee
+                  )}`
+                : `0.00`
+            }}
           </div>
         </div>
 
@@ -64,7 +76,13 @@
             扣除总计
           </div>
           <div :class="$style['serial-basic-value']">
-            {{ getDeductionNumber(serialNumberData.total.total_deduction) }}
+            {{
+              serialNumberData.total.total_deduction > 0
+                ? `-${getDeductionNumber(
+                    serialNumberData.total.total_deduction
+                  )}`
+                : `0.00`
+            }}
           </div>
         </div>
       </div>
@@ -111,7 +129,11 @@
                   {{ $text("S_DEDUCTION_MONEY", "扣除金额") }}
                 </span>
                 <span :class="$style['money']">
-                  {{ getDeductionNumber(serialInfo.deduction) }}
+                  {{
+                    serialInfo.deduction > 0
+                      ? `-${getDeductionNumber(serialInfo.deduction)}`
+                      : `0.00`
+                  }}
                 </span>
               </div>
             </div>
@@ -135,9 +157,9 @@
 </template>
 
 <script>
-import mixin from '@/mixins/mcenter/withdraw/serialNumber';
-import serialDetail from './serialDetail';
-import { mapGetters, mapActions } from 'vuex';
+import mixin from "@/mixins/mcenter/withdraw/serialNumber";
+import serialDetail from "./serialDetail";
+import { mapGetters, mapActions } from "vuex";
 
 export default {
   mixins: [mixin],
@@ -146,17 +168,17 @@ export default {
   },
   data() {
     return {
-      sliderClass: 'slider',
+      sliderClass: "slider",
       serialNumberList: [],
       selectedSerialDetail: {},
       isShow: true,
-      showDetail: false,
-    }
+      showDetail: false
+    };
   },
   props: {
     handleClose: {
       type: Function,
-      default: () => { }
+      default: () => {}
     }
   },
   created() {
@@ -164,7 +186,7 @@ export default {
   },
   computed: {
     ...mapGetters({
-      siteConfig: "getSiteConfig",
+      siteConfig: "getSiteConfig"
     }),
     theme() {
       return this.siteConfig.MOBILE_WEB_TPL;
@@ -179,19 +201,17 @@ export default {
           if (item.confirm_at.split(" ") && item.confirm_at.split(" ")[0]) {
             let day = item.confirm_at.split(" ")[0];
             if (dateArray.includes(day)) {
-              result.find(i => i._confirmDate == day).list.push({ ...item })
+              result.find(i => i._confirmDate == day).list.push({ ...item });
             } else {
               dateArray.push(day);
-              result.push(
-                {
-                  _confirmDate: day,
-                  list: [{ ...item }]
-                }
-              )
+              result.push({
+                _confirmDate: day,
+                list: [{ ...item }]
+              });
             }
           }
-        })
-        this.serialNumberList = result
+        });
+        this.serialNumberList = result;
       }
     }
   },
@@ -200,16 +220,15 @@ export default {
       this.$nextTick(() => {
         setTimeout(() => {
           this.handleClose();
-        }, 280)
-
+        }, 280);
       });
-      this.sliderClass = 'slider-close slider'
+      this.sliderClass = "slider-close slider";
     },
     handleClickSerial(data) {
       this.selectedSerialDetail = data;
       this.showDetail = true;
     }
-  },
+  }
 };
 </script>
 

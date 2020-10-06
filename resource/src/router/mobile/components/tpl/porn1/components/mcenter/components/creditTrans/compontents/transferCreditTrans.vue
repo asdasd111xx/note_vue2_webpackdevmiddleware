@@ -301,12 +301,12 @@ export default {
 }
 
 .form-title {
-    height: 20px;
-    width: 120px;
+  height: 20px;
+  width: 100px;
 }
 
 .form-input {
-    padding: 0 13px;
+  padding: 0 5px;
 
     input {
         width: 100%;

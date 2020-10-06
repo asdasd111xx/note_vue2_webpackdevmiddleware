@@ -47,7 +47,7 @@
 
 .serial-number-wrap {
     background-color: #f8f8f8;
-    overflow-y: auto;
+    // overflow-y: auto;
     margin-top: 43px;
 }
 
@@ -60,10 +60,9 @@
 
 .serial-time {
     width: 100%;
-    text-align: left;
+    text-align: center;
     font-size: 13px;
     color: #000000;
-    padding-left: 14px;
     line-height: 31px;
     height: 30px;
 }
