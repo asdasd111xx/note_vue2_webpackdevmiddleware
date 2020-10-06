@@ -1,13 +1,11 @@
 // see http://vuejs-templates.github.io/webpack for documentation.
-const path = require("path");
+const path = require('path');
 
-const outputDirName = process.env.CDN_HOST ?
-    process.env.CDN_HOST.split("://")[1] :
-    "www";
+const outputDirName = process.env.CDN_HOST ? process.env.CDN_HOST.split('://')[1] : 'www';
 
 // 鸭博娱乐
 // 鴨脖
-const domain = "https://yb01.66boxing.com/";
+const domain = 'https://yb01.66boxing.com/';
 // Demo
 // const domain = 'https://yb0t.66relish.com/';
 // Prod
@@ -16,6 +14,7 @@ const domain = "https://yb01.66boxing.com/";
 
 // Beta
 // const domain = 'https://ybbe1.qghco.com/';
+
 
 // 亿元
 // const domain = 'https://eyt.66boxing.com/';
@@ -32,26 +31,27 @@ const domain = "https://yb01.66boxing.com/";
 // Beta
 // const domain = 'https://ey01.66boxing-beta.com/';
 
+
 module.exports = {
     build: {
-        env: require("./prod.env"),
+        env: require('./prod.env'),
         index: path.resolve(__dirname, `../../${outputDirName}/index.html`),
-        assetsRootBase: path.resolve(__dirname, "../../www"),
+        assetsRootBase: path.resolve(__dirname, '../../www'),
         assetsRoot: path.resolve(__dirname, `../../${outputDirName}`),
-        assetsSubDirectory: "static/js",
+        assetsSubDirectory: 'static/js',
         assetsPublicPath: `${process.env.CDN_HOST}/`,
         productionSourceMap: false,
         productionGzip: false,
-        productionGzipExtensions: ["js", "css"],
+        productionGzipExtensions: ['js', 'css'],
         bundleAnalyzerReport: process.env.npm_config_report
     },
     dev: {
-        env: require("./dev.env"),
+        env: require('./dev.env'),
         port: 8787,
-        transportMode: "ws",
+        transportMode: 'ws',
         autoOpenBrowser: true,
-        assetsSubDirectory: "static",
-        assetsPublicPath: "/",
+        assetsSubDirectory: 'static',
+        assetsPublicPath: '/',
         proxyTable: {
             // 可於自己開發時改換但不要蓋紀錄
             // '/ubb': {
@@ -74,7 +74,7 @@ module.exports = {
             //     changeOrigin: true,
             //     secure: false
             // },
-            "/api": {
+            '/api': {
                 target: domain,
                 changeOrigin: true,
                 ws: true,
@@ -84,40 +84,40 @@ module.exports = {
                 //     console.log('req.hesders.cookie :', req.headers.cookie);
                 // }
             },
-            "/tpl": {
+            '/tpl': {
                 //  開發測試用
                 // target: 'http://pineapple.vir888.net',
                 target: domain,
                 changeOrigin: true,
                 secure: false
             },
-            "/cdn": {
+            '/cdn': {
                 //  開發測試用
                 // target: 'http://pineapple.vir888.net',
                 target: domain,
                 changeOrigin: true,
                 secure: false
             },
-            "/payment": {
+            '/payment': {
                 target: domain,
                 changeOrigin: true,
                 secure: false
             },
-            "/conf": {
+            '/conf': {
                 target: domain,
                 changeOrigin: true,
                 secure: false
             },
-            "/qybtv": {
+            '/qybtv': {
                 target: domain,
                 changeOrigin: true,
                 secure: false
             },
-            "/exsport": {
+            '/exsport': {
                 target: domain,
                 changeOrigin: true,
                 secure: false
-            }
+            },
         },
         cssSourceMap: false
     }
