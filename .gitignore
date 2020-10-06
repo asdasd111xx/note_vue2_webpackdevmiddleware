@@ -10,3 +10,4 @@ www/static/js/
 webpack_cache
 .vscode
 yarn-error.log
+yarn.lock
