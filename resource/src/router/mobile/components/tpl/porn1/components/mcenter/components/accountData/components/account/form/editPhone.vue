@@ -340,7 +340,7 @@ export default {
             this.isVerifyPhone = true;
           }
         } else {
-          this.tipMsg = '手机格式不符合要求';
+          //   this.tipMsg = '手机格式不符合要求';
           if (!this.hasVerified) {
             this.isVerifyPhone = false;
           }
