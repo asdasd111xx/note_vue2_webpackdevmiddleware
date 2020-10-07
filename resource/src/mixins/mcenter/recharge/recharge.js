@@ -83,6 +83,30 @@ export default {
                     maxlength: 6
                 }
             ];
+        },
+        bonusList() {
+            return [
+                {
+                    key: "first",
+                    text: `喜讯：首次额度转让旗下会员赠彩金${this.rechargeConfig.first_bonus}元/位`,
+                    isShow: this.rechargeConfig.first_bonus_enable
+                },
+                {
+                    key: "monthly",
+                    text: `喜讯：每月首次额度转让旗下会员赠${this.rechargeConfig.monthly_bonus}元/位`,
+                    isShow: this.rechargeConfig.monthly_bonus_enable
+                },
+                {
+                    key: "weekly",
+                    text: `喜讯：每周首次额度转让旗下会员赠${this.rechargeConfig.weekly_bonus}元/位`,
+                    isShow: this.rechargeConfig.weekly_bonus_enable
+                }
+            ].filter(item => item.isShow)
+        },
+        hasBonusRule() {
+            return this.rechargeConfig.first_bonus_enable ||
+                this.rechargeConfig.monthly_bonus_enable ||
+                this.rechargeConfig.weekly_bonus_enable
         }
     },
     beforeDestroy() {

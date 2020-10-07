@@ -3,41 +3,17 @@
         <serial-number v-if="showSerial" :handle-close="toggleSerial" />
         <!-- 一件回收 -->
         <balance-back />
-        <div
-            v-if="rechargeConfig.first_bonus_enable"
-            :class="$style['promotion-tips']"
-        >
-            <div>
-                喜讯：首次额度转让旗下会员赠彩金{{
-                    rechargeConfig.first_bonus
-                }}元/位
-                <a title="奖励规则" @click="onGoToRewardRules()">奖励规则</a>
+        <!-- 待需上線再把註解拿掉 -->
+        <!-- <template v-if="hasBonusRule">
+            <div :class="$style['promotion-tips']" v-for="item in bonusList">
+                <div>
+                    {{ item.text }}
+                    <a title="奖励规则" @click="onGoToRewardRules()"
+                        >奖励规则</a
+                    >
+                </div>
             </div>
-        </div>
-
-        <div
-            v-if="rechargeConfig.monthly_bonus_enable"
-            :class="$style['promotion-tips']"
-        >
-            <div>
-                喜讯：每月首次额度转让旗下会员赠{{
-                    rechargeConfig.monthly_bonus
-                }}元/位
-                <a title="奖励规则" @click="onGoToRewardRules()">奖励规则</a>
-            </div>
-        </div>
-
-        <div
-            v-if="rechargeConfig.weekly_bonus_enable"
-            :class="$style['promotion-tips']"
-        >
-            <div>
-                喜讯：每周首次额度转让旗下会员赠{{
-                    rechargeConfig.weekly_bonus
-                }}元/位
-                <a title="奖励规则" @click="onGoToRewardRules()">奖励规则</a>
-            </div>
-        </div>
+        </template> -->
 
         <div :class="$style['form']">
             <!-- 錯誤訊息 -->
@@ -137,13 +113,13 @@
                                 type="tel"
                             />
                         </div>
-                        <div
+                        <!-- <div
                             :class="$style['serial-number-links']"
                             v-if="item.key === 'amount'"
                             @click="toggleSerial"
                         >
                             流水详情
-                        </div>
+                        </div> -->
                     </template>
                 </div>
             </template>
@@ -157,9 +133,7 @@
                 ]"
                 @click="sendRecharge"
             >
-                <div>
-                    立即转让
-                </div>
+                <div>立即转让</div>
             </div>
         </div>
 
@@ -301,12 +275,12 @@ export default {
 }
 
 .form-title {
-  height: 20px;
-  width: 100px;
+    height: 20px;
+    width: 100px;
 }
 
 .form-input {
-  padding: 0 5px;
+    padding: 0 5px;
 
     input {
         width: 100%;
