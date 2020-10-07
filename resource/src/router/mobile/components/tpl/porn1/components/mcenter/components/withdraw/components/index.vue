@@ -7,14 +7,23 @@
       >
         <div :class="[$style['balance-item-wrap'], 'clearfix']">
           <div
-            :class="$style['balance-item']"
+            :class="[
+              $style['balance-item'],
+              {
+                [$style['is-last-item']]: !isShowMore,
+              },
+            ]"
             @click="$router.push('/mobile/mcenter/bonus')"
           >
-            <span :class="$style['balance-item-vendor']">红利彩金</span>
-            <span :class="$style['balance-item-money']">{{
-              bonus.balance
-            }}</span>
+            <span :class="$style['balance-item-vendor']">
+              {{ $text("S_BONUS", "红利彩金") }}
+            </span>
+
+            <span :class="$style['balance-item-money']">
+              {{ bonus.balance ? bonus.balance : "" }}
+            </span>
           </div>
+
           <template v-if="!isShowMore">
             <div
               v-for="(item, key, index) in balanceTran.firstThirdBalanceInfo"
@@ -532,7 +541,7 @@
 import { mapGetters, mapActions } from "vuex";
 import axios from "axios";
 import ajax from "@/lib/ajax";
-import balanceTran from "../../balanceTrans/components";
+import balanceTran from "@/components/mcenter/components/balanceTran";
 import blockListTips from "../../../../common/blockListTips";
 import EST from "@/lib/EST";
 import mixin from "@/mixins/mcenter/withdraw";
@@ -617,25 +626,25 @@ export default {
         // 卡片資料
         this.selectedCard = localStorage.getItem("tmp_w_selectedCard")
           ? {
-              id: JSON.parse(localStorage.getItem("tmp_w_selectedCard"))["id"],
-              name: JSON.parse(localStorage.getItem("tmp_w_selectedCard"))[
-                "name"
-              ],
-              withdrawType: JSON.parse(
-                localStorage.getItem("tmp_w_selectedCard")
-              )["withdrawType"],
-            }
+            id: JSON.parse(localStorage.getItem("tmp_w_selectedCard"))["id"],
+            name: JSON.parse(localStorage.getItem("tmp_w_selectedCard"))[
+              "name"
+            ],
+            withdrawType: JSON.parse(
+              localStorage.getItem("tmp_w_selectedCard")
+            )["withdrawType"],
+          }
           : {
-              id: defaultCard.id,
-              name:
-                defaultCard.withdrawType === "account_id"
-                  ? ""
-                  : defaultCard.alias.substring(
-                      0,
-                      defaultCard.alias.indexOf("-")
-                    ),
-              withdrawType: defaultCard.withdrawType,
-            };
+            id: defaultCard.id,
+            name:
+              defaultCard.withdrawType === "account_id"
+                ? ""
+                : defaultCard.alias.substring(
+                  0,
+                  defaultCard.alias.indexOf("-")
+                ),
+            withdrawType: defaultCard.withdrawType,
+          };
 
         // 金額部份
         this.withdrawValue = localStorage.getItem("tmp_w_amount");
@@ -988,9 +997,8 @@ export default {
           value < withdrawMin ||
           (withdrawMax > 0 && value > withdrawMax)
         ) {
-          this.errTips = `单笔提现金额最小为${withdrawMin}元，最大为${
-            withdrawMax ? `${withdrawMax}元` : "无限制"
-          }`;
+          this.errTips = `单笔提现金额最小为${withdrawMin}元，最大为${withdrawMax ? `${withdrawMax}元` : "无限制"
+            }`;
           return;
         }
 

@@ -11,7 +11,7 @@ export default {
             name: 'mcenter-home',
             component
         },
-        { // 紅利彩金
+        { // 红利彩金
             path: 'bonus',
             name: 'mcenter-bonus',
             component
@@ -262,7 +262,7 @@ export default {
         },
         {
             //额度转让 奖励规则
-            path:'rewardRules',
+            path: 'rewardRules',
             name: 'mcenter-rewardRules',
             component
 

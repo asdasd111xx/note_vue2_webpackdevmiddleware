@@ -43,13 +43,24 @@
 
     <div :class="[$style['balance-item-wrap'], 'clearfix']">
       <div
-        :class="$style['balance-item']"
+        :class="[
+          $style['balance-item'],
+          {
+            [$style['is-last-item']]: !isShowMore,
+          },
+        ]"
         v-if="bonus"
         @click="$router.push('/mobile/mcenter/bonus')"
       >
-        <span :class="$style['balance-item-vendor']">红利彩金</span>
-        <span :class="$style['balance-item-money']">{{ bonus.balance }}</span>
+        <span :class="$style['balance-item-vendor']">
+          {{ $text("S_BONUS", "红利彩金") }}
+        </span>
+
+        <span :class="$style['balance-item-money']">
+          {{ bonus.balance ? bonus.balance : "" }}
+        </span>
       </div>
+
       <template v-if="!isShowMore">
         <div
           v-for="(item, key, index) in firstThirdBalanceInfo"

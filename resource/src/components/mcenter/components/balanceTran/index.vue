@@ -51,9 +51,9 @@
               <icon name="sync" width="12" />
             </span>
             <div
-              :class="
-                `main-btn btn-back-account ${balanceBackLock ? 'disable' : ''}`
-              "
+              :class="`main-btn btn-back-account ${
+                balanceBackLock ? 'disable' : ''
+              }`"
               @click="balanceBack()"
             >
               {{ balanceBackLock ? "" : $t("S_ONE_CLICK_TO_ACCOUNT") }}
@@ -107,7 +107,7 @@
                 :class="[
                   'balance-info',
                   { right: index % 2 === 1 },
-                  'clearfix'
+                  'clearfix',
                 ]"
               >
                 <span class="balance-info-text">
@@ -137,8 +137,8 @@
             <p
               v-if="
                 recentlyData.vendor &&
-                  recentlyData.vendor != '--' &&
-                  isAutotransfer
+                recentlyData.vendor != '--' &&
+                isAutotransfer
               "
               class="balance-recently-opened-notice"
             >
@@ -248,7 +248,7 @@ export default {
     },
     firstThirdBalanceInfo() {
       const data = {};
-      Object.keys(this.membalance.vendor).slice(0, 4).forEach((key) => {
+      Object.keys(this.membalance.vendor).slice(0, 3).forEach((key) => {
         if (key === 'default') {
           return;
         }
