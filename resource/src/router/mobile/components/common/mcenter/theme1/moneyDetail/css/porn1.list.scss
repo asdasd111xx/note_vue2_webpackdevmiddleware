@@ -19,7 +19,7 @@
     height: 30px;
     margin: 18px 0;
 
-    >img {
+    > img {
         display: block;
         width: 100%;
     }
@@ -63,12 +63,15 @@
     float: right;
     line-height: 15px;
     margin: 25px 0;
-    padding-right: 22px;
-    background: url("/static/image/_new/mcenter/moneyDetail/icon_arrow.png") 100% 50% no-repeat;
+    padding-right: 0;
+    background: url("/static/image/_new/mcenter/moneyDetail/icon_arrow.png")
+        100% 50% no-repeat;
     background-size: 15px 15px;
     color: #414655;
     font-weight: 700;
     font-size: 14px;
+    display: flex;
+    align-items: center;
 }
 
 .no-data-wrap {
@@ -76,7 +79,7 @@
     height: 292px;
     margin: 20% auto 0;
 
-    >img {
+    > img {
         display: block;
         width: 100%;
     }
@@ -101,4 +104,8 @@
         font-size: 14px;
         text-align: center;
     }
+}
+.right-arrow {
+    width: 15px;
+    height: 15px;
 }
