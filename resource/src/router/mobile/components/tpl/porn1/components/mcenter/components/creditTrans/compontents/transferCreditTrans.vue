@@ -3,8 +3,7 @@
         <serial-number v-if="showSerial" :handle-close="toggleSerial" />
         <!-- 一件回收 -->
         <balance-back />
-        <!-- 待需上線再把註解拿掉 -->
-        <!-- <template v-if="hasBonusRule">
+        <template v-if="hasBonusRule">
             <div :class="$style['promotion-tips']" v-for="item in bonusList">
                 <div>
                     {{ item.text }}
@@ -13,7 +12,7 @@
                     >
                 </div>
             </div>
-        </template> -->
+        </template>
 
         <div :class="$style['form']">
             <!-- 錯誤訊息 -->
@@ -113,13 +112,13 @@
                                 type="tel"
                             />
                         </div>
-                        <!-- <div
+                        <div
                             :class="$style['serial-number-links']"
                             v-if="item.key === 'amount'"
                             @click="toggleSerial"
                         >
                             流水详情
-                        </div> -->
+                        </div>
                     </template>
                 </div>
             </template>
