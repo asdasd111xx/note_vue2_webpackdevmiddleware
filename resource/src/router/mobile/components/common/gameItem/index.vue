@@ -26,12 +26,15 @@
       <!-- 行動裝置點擊圖片開啟遊戲 -->
       <div :class="[getClass(['game-box']), 'clearfix']">
         <img v-lazy="getImg" />
-        <!-- 遊戲彩金 -->
-        <div v-if="showJackpot && getAmount" :class="jackpotClass">
-          <span>{{ getAmount }}</span>
-        </div>
       </div>
       <div :class="getClass(['mask'])" />
+    </div>
+    <!-- 遊戲彩金 -->
+    <div
+      v-if="showJackpot && getAmount"
+      :class="getClass(['game-jackpot', 'jackpot-img'])"
+    >
+      <span>{{ getAmount }}</span>
     </div>
     <!-- 遊戲標題 -->
     <div
@@ -105,6 +108,9 @@ export default {
     redirectCard: {
       type: Function,
       required: true
+    },
+    jackpotData: {
+      type: Object,
     }
   },
   computed: {
@@ -113,7 +119,6 @@ export default {
       cdnDomain: 'getCdnDomain',
       favoriteGame: 'getFavoriteGame',
       loginStatus: 'getLoginStatus',
-      jackpot: 'getJackpot',
       curLang: 'getCurLang',
       siteConfig: 'getSiteConfig'
     }),
@@ -208,11 +213,11 @@ export default {
      * @returns {string} 彩金金額
      */
     getAmount() {
-      if (!this.jackpot[this.gameInfo.vendor] || !this.jackpot[this.gameInfo.vendor].jpMinor) {
+      if (!this.jackpotData) {
         return '';
       }
 
-      const data = this.jackpot[this.gameInfo.vendor].jpMinor.find((info) => info.code === this.gameInfo.code);
+      const data = this.jackpotData.jpMinor.find((info) => info.code === this.gameInfo.code);
 
       if (!data) {
         return '';
@@ -275,12 +280,6 @@ export default {
 
       return this.$i18n.t(name);
     },
-    jackpotClass() {
-      const classList = ['game-jackpot', 'jackpot-img'];
-      const jackpotImgList = ['pt', 'hb', 'lg_casino'];
-
-      return this.getClass(classList, { 'jackpot-img': jackpotImgList.includes(this.gameInfo.vendor) });
-    }
   },
   methods: {
     ...mapActions([

@@ -13,7 +13,7 @@
       </template>
       <template v-if="slotKey === 'jackpot'">
         <div :class="$style['jackpot-wrap']">
-          <jackpot :vendor="vendor" />
+          <jackpot :vendor="vendor" @setJackpotData="setJackpotData" />
         </div>
       </template>
       <template v-if="slotKey === 'list'">
@@ -32,6 +32,7 @@
                 :show-favor="gameShowFavor"
                 :show-button="gameShowButton"
                 :redirect-card="redirectBankCard"
+                :jackpotData="jackpotData"
               />
             </template>
             <!-- 捲動加載 -->
@@ -205,8 +206,11 @@ export default {
   },
   methods: {
     ...mapActions([
-      'actionSetFavoriteGame'
+      'actionSetFavoriteGame',
     ]),
+    setJackpotData(data) {
+      this.jackpotData = data;
+    },
     redirectBankCard() {
       return `casino-${this.vendor}-${this.paramsData.label}`;
     },
@@ -442,7 +446,7 @@ export default {
   min-height: calc(100vh - 88px);
 
   &.multiTotal {
-    margin-top: 145px;
+    margin-top: 151px;
   }
 
   &.single {
@@ -470,14 +474,19 @@ export default {
 }
 
 .jackpot-wrap {
-  left: 0;
   max-width: $mobile_max_width;
   padding-top: 9px;
   padding: 0;
   position: absolute;
   background: #ededed;
-  top: 80px;
+  top: 87px;
   width: 100%;
   z-index: 5;
+}
+
+@media (orientation: landscape) {
+  .jackpot-wrap {
+    max-width: $mobile_max_landscape_width !important;
+  }
 }
 </style>

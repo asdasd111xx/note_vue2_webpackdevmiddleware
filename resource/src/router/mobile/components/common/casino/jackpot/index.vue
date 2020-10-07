@@ -14,26 +14,36 @@
             Jackpot
           </div>
           <div :class="$style['total-bonus-amount']">
-            ¥15,349,879.56
+            <animatedNumber
+              :value="animatedNumber.value"
+              :formatValue="formatToPrice"
+              :duration="animatedNumber.duration"
+            />
           </div>
         </div>
       </div>
-      <div :class="$style['multi-bonus-wrap']" v-if="currentUsers">
+      <div :class="$style['multi-bonus-wrap-bg']" />
+      <transition name="fade">
         <div
-          v-for="(item, key) in currentUsers.slice(0, 3)"
-          :class="$style['multi-bonus-cell']"
+          :class="[$style['multi-bonus-wrap']]"
+          v-if="currentUsers && currentUsers.length > 0"
         >
-          <div>
-            {{ `no.${key}` }}
-          </div>
-          <div>
-            {{ item.username }}
-          </div>
-          <div>
-            {{ item.amount }}
+          <div
+            v-for="(item, key) in currentUsers"
+            :class="$style['multi-bonus-cell']"
+          >
+            <div>
+              {{ `no.${item.no}` }}
+            </div>
+            <div>
+              {{ item.username }}
+            </div>
+            <div>
+              {{ item.amount }}
+            </div>
           </div>
         </div>
-      </div>
+      </transition>
     </div>
 
     <template v-else-if="jackpotType === 2"> </template>
@@ -42,69 +52,142 @@
 </template>
 
 <script>
-import { mapGetters, mapActions } from 'vuex';
-import axios from 'axios';
-
+import { mapGetters, mapActions } from "vuex";
+import axios from "axios";
+import animatedNumber from "animated-number-vue";
 export default {
+  components: {
+    animatedNumber
+  },
   props: {
     vendor: {
       type: String,
       required: true
-    },
+    }
   },
   data() {
     return {
+      timer: null,
+      usersTimer: null,
       jackpotData: null,
-      jackpotType: 1, //
-      currentUsers: null
+      // 1. 單一彩金+名單
+      // 2.
+      // 3.
+      jackpotType: 1,
+
+      currentUsers: null,
+      currentUsersIndex: 0,
+
+      animatedNumber: { value: 0 }
     };
+  },
+  beforeDestroy() {
+    clearInterval(this.timer);
+    clearInterval(this.usersTimer);
+    this.timer = null;
+    this.usersTimer = null;
   },
   created() {
     this.getJackpotList();
+
+    this.timer = setInterval(() => {
+      this.getJackpotList();
+    }, 600000);
   },
   watch: {
     jackpotData() {
-      console.log(this.jackpotData)
-      this.initJackpot();
-      this.currentUsers = this.jackpotData.jpUserList;
+      // console.log(this.jackpotData);
+      // this.initJackpot();
     }
   },
   computed: {
     ...mapGetters({
-      siteConfig: 'getSiteConfig',
-      memInfo: 'getMemInfo',
-      loginStatus: 'getLoginStatus',
+      siteConfig: "getSiteConfig",
+      memInfo: "getMemInfo",
+      loginStatus: "getLoginStatus"
     }),
     totalBonusImage() {
-      return '/static/image/casino/jackpot/ic_grand.png';
+      return "/static/image/casino/jackpot/ic_grand.png";
     }
   },
   methods: {
-    ...mapActions([
-      'actionNoticeData'
-    ]),
+    ...mapActions(["actionNoticeData"]),
     getJackpotList() {
       return axios({
-        method: 'get',
-        url: '/api/v1/c/vendor/jackpot_list',
+        method: "get",
+        url: "/api/v1/c/vendor/jackpot_list",
         params: { vendor: this.vendor }
-      }).then(res => {
-        console.log(res);
-        if (res && res.data && res.data.result === 'ok') {
-          this.jackpotData = res.data.ret;
-        }
-      }).catch((error) => { })
+      })
+        .then(res => {
+          console.log(res);
+          if (res && res.data && res.data.result === "ok") {
+            this.jackpotData = res.data.ret;
+            this.$emit('setJackpotData', this.jackpotData);
+            console.log(this.jackpotData)
+            switch (this.vendor) {
+              // 單一彩金+名單
+              case "bbin":
+                this.jackpotType = 1;
+                break;
+              default:
+                return;
+            }
+
+            this.initJackpot();
+          }
+        })
+        .catch(error => { });
+    },
+    setCurrentUsers() {
+      const interval = () => {
+        let tmpIndex = this.currentUsersIndex === 0 ? 0 : this.currentUsersIndex + 1;
+        let array = [];
+        this.currentUsers = [];
+
+        this.$nextTick(() => {
+          array.push({ ...this.jackpotData.jpUserList[tmpIndex], no: tmpIndex + 1 });
+          let i = 1;
+          while (i < 3) {
+            if (tmpIndex + i > this.jackpotData.jpUserList.length) {
+              tmpIndex = 0;
+            } else {
+              tmpIndex += 1;
+            }
+            array.push({ ...this.jackpotData.jpUserList[tmpIndex], no: tmpIndex + 1 });
+            i += 1;
+          }
+
+          this.currentUsers = array;
+          this.currentUsersIndex = tmpIndex;
+        })
+      }
+
+      interval();
+      this.usersTimer = setInterval(() => {
+        interval();
+      }, 3000);
     },
     initJackpot() {
-      switch (this.vendor) {
+      switch (this.jackpotType) {
         // 單一彩金+名單
-        case 'bbin':
-          this.jackpotType = 1;
+        case 1:
+          this.setCurrentUsers();
+
+          this.animatedNumber.value = +this.jackpotData.jpGrand - 2;
+          this.animatedNumber.duration = 0;
+
+          this.$nextTick(() => {
+            this.animatedNumber.value = +this.jackpotData.jpGrand;
+            this.animatedNumber.duration = 60000;
+          })
           return;
         default:
           return;
       }
     },
+    formatToPrice(value) {
+      return `¥${value.toFixed(2)}`;
+    }
   }
 };
 </script>
@@ -119,11 +202,13 @@ export default {
 
 .multiTotal-container {
   position: relative;
+  background: #f5f5f5;
 }
 
 .total-bonus {
   background: #ffffff;
   border-radius: 17px;
+  z-index: 20;
 }
 
 .total-image {
@@ -138,9 +223,26 @@ export default {
 }
 
 .total-bonus-content {
+  z-index: 2;
   display: inline-block;
   position: relative;
   width: calc(100% - 40px);
+
+  > div:first-child {
+    font-size: 16px;
+    font-family: Arial, Arial-Bold;
+    font-weight: 700;
+    text-align: left;
+    color: #504f4a;
+  }
+
+  > div:nth-child(2) {
+    font-size: 12px;
+    font-family: Arial, Arial-Regular;
+    font-weight: 400;
+    text-align: left;
+    color: #a8a8a8;
+  }
 }
 
 .total-bonus-amount {
@@ -149,10 +251,76 @@ export default {
   top: 0;
   height: 100%;
   line-height: 39px;
+
+  > span {
+    font-size: 16px;
+    font-family: Arial, Arial-Regular;
+    font-weight: 400;
+    text-align: right;
+    color: #aa7e28;
+  }
+}
+
+.multi-bonus-wrap-bg {
+  padding-top: 6px;
+  background: #f5f5f5;
+  opacity: 1;
+  position: absolute;
+  width: 100%;
+  top: 39px;
+  height: 60px;
 }
 
 .multi-bonus-wrap {
   padding-top: 6px;
+  background: #f5f5f5;
+  opacity: 1;
+  position: absolute;
+  width: 100%;
+  top: 39px;
+  animation: fade-out-up 3s linear;
+}
+
+@keyframes fade-out-up {
+  0% {
+    opacity: 1;
+  }
+
+  80% {
+    opacity: 0.8;
+    top: 39px;
+  }
+
+  92% {
+    opacity: 0;
+    top: 29px;
+  }
+
+  100% {
+    opacity: 0;
+    top: 29px;
+  }
+}
+
+@-webkit-keyframes fade-out-up {
+  0% {
+    opacity: 1;
+  }
+
+  80% {
+    opacity: 0.8;
+    top: 39px;
+  }
+
+  92% {
+    opacity: 0;
+    top: 29px;
+  }
+
+  100% {
+    opacity: 0;
+    top: 29px;
+  }
 }
 
 .multi-bonus-cell {
