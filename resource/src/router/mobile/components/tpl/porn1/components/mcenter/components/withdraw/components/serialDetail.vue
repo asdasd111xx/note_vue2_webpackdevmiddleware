@@ -8,7 +8,7 @@
         />
       </div>
       <span :class="$style['title']">
-        {{ $text("S_SERIAL_CHECK", "流水检查") }}</span
+        {{ $text("S_SERIAL_DETIAL", "流水详情") }}</span
       >
     </div>
     <div :class="[$style['serial-number-wrap']]">
@@ -70,44 +70,55 @@
 </template>
 
 <script>
-import mixin from '@/mixins/mcenter/withdraw/serialNumber';
-import { mapGetters, mapActions } from 'vuex';
+import mixin from "@/mixins/mcenter/withdraw/serialNumber";
+import { mapGetters, mapActions } from "vuex";
 
 export default {
   mixins: [mixin],
   data() {
     return {
-      sliderClass: 'slider',
+      sliderClass: "slider",
       serialNumberList: [],
       isShow: true
-    }
+    };
   },
   props: {
     handleClose: {
       type: Function,
       default: () => { }
     },
-    data: {
-
-    }
+    data: {}
   },
   created() {
-    console.log(this.data)
+    console.log(this.data);
   },
   computed: {
     ...mapGetters({
-      siteConfig: "getSiteConfig",
+      siteConfig: "getSiteConfig"
     }),
     theme() {
       return this.siteConfig.MOBILE_WEB_TPL;
     },
     detailList() {
-      return [{ title: this.$text('S_CREATED_TIME', '建立时间'), value: this.data.confirm_at },
-      { title: this.$text('S_REMARK', '备注'), value: this.data.memo },
-      { title: this.$text('S_TYPE', '类别'), value: this.data.opcode },
-      { title: '充值金额', value: this.data.amount },
-      { title: this.$text('S_OFFER_MONEY', '优惠金额'), value: this.data.offer },
-      ]
+      return [
+        {
+          title: this.$text("S_CREATED_TIME", "建立时间"),
+          value: this.data.confirm_at
+        },
+        {
+          title: this.$text("S_REMARK", "备注"),
+          value: this.data.memo
+        },
+        {
+          title: this.$text("S_TYPE", "类别"),
+          value: this.data.opcode
+        },
+        { title: "充值金额", value: this.data.amount },
+        {
+          title: this.$text("S_OFFER_MONEY", "优惠金额"),
+          value: this.data.offer
+        }
+      ];
     },
     auditList() {
       // 2020/09/15
@@ -120,32 +131,36 @@ export default {
       // 優惠稽核扣除金額 offer
       // 優惠稽核流水要求 offer_audit_amount
       // 完成/未完成 offer_checked
-      return [[
-        {
-          title: this.$text('S_SERIAL_AUDIT', '充值稽核倍数'),
-          rateValue: this.data.audit_rate,
-          value: this.data.administrative_checked
-        },
-        {
-          title: this.$text('S_SERIAL_NUMBER', '流水要求'),
-          rateValue: this.data.audit_amount,
-          value: this.getDeductionNumber(this.data.administrative_amount),
-          deduction: this.$text('S_DEDUCTION_MONEY', '扣除金额')
-        },
-      ],
-      [
-        {
-          title: this.$text('S_SERIAL_STATUS02', '优惠稽核倍数'),
-          rateValue: this.data.offer_audit_rate,
-          value: this.data.offer_checked
-        },
-        {
-          title: this.$text('S_SERIAL_NUMBER', '流水要求'),
-          rateValue: this.data.offer_audit_amount,
-          value: this.getDeductionNumber(this.data.offer),
-          deduction: this.$text('S_DEDUCTION_MONEY', '扣除金额')
-        },
-      ]]
+      return [
+        [
+          {
+            title: this.$text("S_SERIAL_AUDIT", "充值稽核倍数"),
+            rateValue: this.data.audit_rate,
+            value: this.data.administrative_checked
+          },
+          {
+            title: this.$text("S_SERIAL_NUMBER", "流水要求"),
+            rateValue: this.data.audit_amount,
+            value: this.getDeductionNumber(
+              this.data.administrative_amount
+            ),
+            deduction: this.$text("S_DEDUCTION_MONEY", "扣除金额")
+          }
+        ],
+        [
+          {
+            title: this.$text("S_SERIAL_STATUS02", "优惠稽核倍数"),
+            rateValue: this.data.offer_audit_rate,
+            value: this.data.offer_checked
+          },
+          {
+            title: this.$text("S_SERIAL_NUMBER", "流水要求"),
+            rateValue: this.data.offer_audit_amount,
+            value: this.getDeductionNumber(this.data.offer),
+            deduction: this.$text("S_DEDUCTION_MONEY", "扣除金额")
+          }
+        ]
+      ];
     }
   },
   methods: {
@@ -153,12 +168,11 @@ export default {
       this.$nextTick(() => {
         setTimeout(() => {
           this.handleClose();
-        }, 280)
-
+        }, 280);
       });
-      this.sliderClass = 'slider-close slider'
+      this.sliderClass = "slider-close slider";
     }
-  },
+  }
 };
 </script>
 
