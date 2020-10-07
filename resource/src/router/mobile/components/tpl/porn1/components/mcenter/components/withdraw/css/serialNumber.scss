@@ -1,270 +1,263 @@
 @import "~@/css/variable.scss";
 
 .serial-header {
-    z-index: 3;
+  z-index: 3;
+  width: 100%;
+  height: 43px;
+  padding: 0 17px;
+  background: #fefffe;
+  text-align: center;
+  position: relative;
+
+  .title {
     width: 100%;
-    height: 43px;
-    padding: 0 17px;
-    background: #fefffe;
     text-align: center;
-    position: relative;
+    font-size: 17px;
+    font-weight: 700;
+    line-height: 43px;
+  }
+
+  &.ey1 {
+    background: linear-gradient(#fe2a2a, #b60303);
 
     .title {
-        width: 100%;
-        text-align: center;
-        font-size: 17px;
-        font-weight: 700;
-        line-height: 43px;
+      color: white;
     }
+  }
 
-    &.ey1 {
-        background: linear-gradient(#fe2a2a, #b60303);
-
-        .title {
-            color: white
-        }
-
-    }
-
-    &.porn1 {
-        background: #fefffe;
-    }
+  &.porn1 {
+    background: #fefffe;
+  }
 }
 
 .btn-prev {
-    position: absolute;
+  position: absolute;
+  width: 20px;
+  height: 100%;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+
+  > img {
     width: 20px;
+    height: 20px;
+  }
+}
+
+.serial-number-wrap {
+  background-color: #f8f8f8;
+  // overflow-y: auto;
+  margin-top: 43px;
+}
+
+.basic-info-wrap {
+  margin-top: 1px;
+  background-color: #fefffe;
+  color: #a6a9b2;
+  padding: 11px 14px;
+}
+
+.serial-time {
+  width: 100%;
+  text-align: center;
+  font-size: 13px;
+  color: #000000;
+  line-height: 31px;
+  height: 30px;
+}
+
+.serial-basic-hr {
+  background-color: #f8f8f7;
+  width: 100%;
+  padding: 0 14px;
+  height: 2px;
+}
+
+.serial-basic-cell {
+  margin: 3px 0;
+  height: 21px;
+  line-height: 21px;
+  width: 100%;
+
+  .serial-basic-title {
+    display: inline-block;
+  }
+
+  .serial-basic-value {
+    color: #414655;
+    float: right;
+  }
+}
+
+// 單號
+.serial-number-wrap {
+  margin-top: 5px;
+}
+
+.serial-number-block {
+  margin: 2px 0;
+
+  > .serial-number-title {
+    color: #414655;
+    font-size: 17px;
+    margin: 6px 0;
+    padding: 0 14px;
+  }
+}
+
+.serial-number-cell {
+  height: 60px;
+  padding: 2.5px 0 2.5px 17px;
+  margin-bottom: 1.5px;
+  position: relative;
+  background: #fefffe;
+
+  > div:nth-child(1) {
+    float: left;
     height: 100%;
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+
+    > div {
+      line-height: 25px;
+    }
+  }
+
+  > div:nth-child(2) {
+    float: right;
+    height: 100%;
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    width: 40%;
+
+    > div {
+      line-height: 25px;
+    }
+
+    span {
+      font-size: 13px;
+      max-width: 45%;
+    }
+  }
+
+  > div:nth-child(3) {
+    position: absolute;
+    width: 14px;
+    height: 100%;
+    right: 10px;
     display: flex;
     align-items: center;
     justify-content: center;
 
-    >img {
-        width: 20px;
-        height: 20px;
+    > img {
+      width: 100%;
     }
-}
+  }
 
-.serial-number-wrap {
-    background-color: #f8f8f8;
-    // overflow-y: auto;
-    margin-top: 43px;
-}
-
-.basic-info-wrap {
-    margin-top: 1px;
-    background-color: #fefffe;
-    color: #A6A9B2;
-    padding: 11px 14px;
-}
-
-.serial-time {
-    width: 100%;
-    text-align: center;
+  .time {
+    color: #a6a9b2;
     font-size: 13px;
-    color: #000000;
-    line-height: 31px;
-    height: 30px;
-}
+  }
 
-.serial-basic-hr {
-    background-color: #F8F8F7;
-    width: 100%;
-    padding: 0 14px;
-    height: 2px;
-}
+  .title {
+    font-size: 16px;
+    color: #414655;
+  }
 
-.serial-basic-cell {
-    margin: 3px 0;
-    height: 21px;
-    line-height: 21px;
-    width: 100%;
-
-    .serial-basic-title {
-        display: inline-block;
-    }
-
-    .serial-basic-value {
-        color: #414655;
-        float: right;
-    }
-}
-
-
-// 單號
-.serial-number-wrap {
-    margin-top: 5px;
-}
-
-.serial-number-block {
-    margin: 2px 0;
-
-    >.serial-number-title {
-        color: #414655;
-        font-size: 17px;
-        margin: 6px 0;
-        padding: 0 14px;
-    }
-}
-
-.serial-number-cell {
-    height: 60px;
-    padding: 2.5px 0 2.5px 17px;
-    margin-bottom: 1.5px;
-    position: relative;
-    background: #fefffe;
-
-    >div:nth-child(1) {
-        float: left;
-        height: 100%;
-        display: flex;
-        flex-direction: column;
-        justify-content: center;
-
-        >div {
-            line-height: 25px;
-
-        }
-    }
-
-    >div:nth-child(2) {
-        float: right;
-        height: 100%;
-        display: flex;
-        flex-direction: column;
-        justify-content: center;
-        width: 40%;
-
-        >div {
-            line-height: 25px;
-        }
-
-        span {
-            font-size: 13px;
-            max-width: 45%;
-        }
-    }
-
-    >div:nth-child(3) {
-        position: absolute;
-        width: 14px;
-        height: 100%;
-        right: 10px;
-        display: flex;
-        align-items: center;
-        justify-content: center;
-
-        >img {
-            width: 100%;
-        }
-    }
-
-    .time {
-        color: #A6A9B2;
-        font-size: 13px;
-    }
-
-    .title {
-        font-size: 16px;
-        color: #414655;
-    }
-
-    .money {
-        font-size: 14px;
-        color: #414655;
-        overflow: hidden;
-        text-overflow: ellipsis;
-        white-space: nowrap;
-    }
+  .money {
+    font-size: 14px;
+    color: #414655;
+    overflow: hidden;
+    text-overflow: ellipsis;
+    white-space: nowrap;
+  }
 }
 
 .detail-wrap {
-    background-color: #fefffe;
-    color: #A6A9B2;
-    padding: 11px 17px;
-    font-size: 14px;
-    margin-top: 11px;
+  background-color: #fefffe;
+  color: #a6a9b2;
+  padding: 11px 17px;
+  font-size: 14px;
+  margin-top: 11px;
 
-    &:last-of-type {
-        margin-top: 1px;
+  &:last-of-type {
+    margin-top: 1px;
+  }
+
+  > div {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    line-height: 21px;
+    margin: 3px 0;
+
+    > span:last-child {
+      max-width: calc(100% - 100px);
+      text-align: right;
+      word-break: keep-all;
     }
-
-    >div {
-        height: 21px;
-        line-height: 21px;
-        margin: 3px 0;
-
-        >span:first-child {
-            float: left;
-        }
-
-        >span:last-child {
-            float: right;
-        }
-    }
+  }
 }
 
 .audit-wrap {
-    margin-top: 1px;
+  margin-top: 1px;
 }
 
 .audit-cell {
-    >span:last-child {
-        color: #6AAAF5;
-    }
+  > span:last-child {
+    color: #6aaaf5;
+  }
 }
 
 .tips {
-    width: 100%;
-    text-align: center;
-    font-size: 14px;
-    margin-top: 40px;
+  width: 100%;
+  text-align: center;
+  font-size: 14px;
+  margin-top: 40px;
 
-    >span {
-        color: #6AAAF5;
-    }
+  > span {
+    color: #6aaaf5;
+  }
 }
 
 @media screen and (min-width: $phone) {
-    .detail-wrap {
+  .detail-wrap {
+    font-size: 15px;
+  }
+
+  .tips {
+    font-size: 15px;
+  }
+
+  .serial-header {
+    .title {
+      font-size: 18px;
+    }
+
+    .serial-time {
+      font-size: 13px;
+    }
+
+    .serial-number-block {
+      > .serial-number-title {
+        font-size: 18px;
+      }
+    }
+
+    .serial-number-cell {
+      .time {
+        font-size: 13px;
+      }
+
+      .title {
+        font-size: 17px;
+      }
+
+      .money {
         font-size: 15px;
+      }
     }
-
-    .tips {
-        font-size: 15px;
-    }
-
-    .serial-header {
-        .title {
-            font-size: 18px;
-        }
-
-        .serial-time {
-            font-size: 13px;
-
-        }
-
-        .serial-number-block {
-
-            >.serial-number-title {
-                font-size: 18px;
-            }
-        }
-
-        .serial-number-cell {
-            .time {
-
-                font-size: 13px;
-            }
-
-            .title {
-                font-size: 17px;
-
-            }
-
-            .money {
-                font-size: 15px;
-            }
-        }
-    }
+  }
 }

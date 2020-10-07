@@ -23,9 +23,19 @@
               <span :class="$style.title">{{ currentCategory.text }}</span>
               <span :class="$style.tips">{{ opcodeList[item.opcode] }}</span>
             </div>
-            <div :class="$style.time">{{ item.created_at | timeFormat }}</div>
+            <div :class="$style.time">
+              {{ item.created_at | timeFormat }}
+            </div>
           </div>
-          <div :class="$style.amount">{{ item.amount }}</div>
+          <div :class="$style.amount">
+            {{ item.amount }}
+            <img
+              :class="$style['right-arrow']"
+              :src="
+                $getCdnPath(`/static/image/${themeTPL}/common/arrow_next.png`)
+              "
+            />
+          </div>
         </div>
       </div>
     </div>
@@ -44,12 +54,14 @@
 </template>
 
 <script>
-import Vue from 'vue';
-import { mapGetters } from 'vuex';
+import Vue from "vue";
+import { mapGetters } from "vuex";
 export default {
   filters: {
     timeFormat(date) {
-      return Vue.moment(date).utcOffset(-4).format('HH:mm:ss');
+      return Vue.moment(date)
+        .utcOffset(-4)
+        .format("HH:mm:ss");
     }
   },
   computed: {
@@ -60,9 +72,11 @@ export default {
       return this.siteConfig.MOBILE_WEB_TPL;
     },
     $style() {
-      const style = this[`$style_${this.siteConfig.MOBILE_WEB_TPL}`] || this.$style_porn1;
+      const style =
+        this[`$style_${this.siteConfig.MOBILE_WEB_TPL}`] ||
+        this.$style_porn1;
       return style;
-    },
+    }
   },
   props: {
     currentCategory: {
@@ -82,14 +96,16 @@ export default {
       default: null
     },
     pageType: {
-      default: ''
+      default: ""
     }
   },
   methods: {
     onClick(info) {
-      this.$emit('update:detailInfo', info);
-      if (this.pageType !== 'ingroup_transfer') {
-        this.$router.push('/mobile/mcenter/moneyDetail/detail?id=' + info.id);
+      this.$emit("update:detailInfo", info);
+      if (this.pageType !== "ingroup_transfer") {
+        this.$router.push(
+          "/mobile/mcenter/moneyDetail/detail?id=" + info.id
+        );
       }
     }
   }

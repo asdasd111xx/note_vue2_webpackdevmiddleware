@@ -1,148 +1,146 @@
 <template>
-    <div :class="['clearfix']">
-        <serial-number v-if="showSerial" :handle-close="toggleSerial" />
-        <!-- 一件回收 -->
-        <balance-back />
-        <template v-if="hasBonusRule">
-            <div :class="$style['promotion-tips']" v-for="item in bonusList">
-                <div>
-                    {{ item.text }}
-                    <a title="奖励规则" @click="onGoToRewardRules()"
-                        >奖励规则</a
-                    >
-                </div>
-            </div>
-        </template>
+  <div :class="['clearfix']">
+    <serial-number v-if="showSerial" :handle-close="toggleSerial" />
+    <!-- 一件回收 -->
+    <balance-back />
+    <template v-if="hasBonusRule">
+      <div :class="$style['promotion-tips']" v-for="item in bonusList">
+        <div>
+          {{ item.text }}
+          <a title="奖励规则" @click="onGoToRewardRules()">奖励规则</a>
+        </div>
+      </div>
+    </template>
 
-        <div :class="$style['form']">
-            <!-- 錯誤訊息 -->
-            <div v-show="tipMsg" :class="$style['top-tips']">
-                <div>
-                    {{ tipMsg }}
-                </div>
-            </div>
+    <div :class="$style['form']">
+      <!-- 錯誤訊息 -->
+      <div v-show="tipMsg" :class="$style['top-tips']">
+        <div>
+          {{ tipMsg }}
+        </div>
+      </div>
 
-            <template v-for="item in inputInfo">
-                <!-- 各欄位錯誤訊息 -->
-                <div
-                    v-if="errorMessage[item.key] && item.key !== 'keyring'"
-                    :class="[$style['form-tips']]"
-                >
-                    <div>
-                        {{ errorMessage[item.key] }}
-                    </div>
-                </div>
-
-                <div
-                    :key="item.key"
-                    :class="[
-                        $style['form-content'],
-                        { [$style['keyring-content']]: item.key === 'keyring' }
-                    ]"
-                >
-                    <template v-if="item.key === 'target_username'">
-                        <div :class="$style['form-title']">
-                            {{ item.title }}
-                        </div>
-                        <div :class="$style['form-input']">
-                            <input
-                                v-model="formData[item.key]"
-                                @input="verification(item)"
-                                :placeholder="item.placeholder"
-                                type="text"
-                            />
-                        </div>
-                    </template>
-                    <template v-else-if="item.key === 'keyring'">
-                        <div :class="[$style['keyring-title']]">
-                            {{ item.title }}
-                            &nbsp; &nbsp;
-                            <span
-                                v-if="errorMessage['keyring']"
-                                :class="[$style['keyring-tips']]"
-                            >
-                                {{ errorMessage["keyring"] }}
-                            </span>
-                        </div>
-                        <div :class="[$style['keyring-input']]">
-                            <input
-                                v-model="formData.keyring"
-                                :placeholder="item.placeholder"
-                                @blur="verification(inputInfo[3])"
-                                @input="verification(inputInfo[3])"
-                                :maxlength="item.maxlength"
-                                type="tel"
-                            />
-                            <div
-                                :class="[
-                                    $style['send-keyring'],
-                                    {
-                                        [$style.disabled]:
-                                            isSendKeyring ||
-                                            !isVerifyPhone ||
-                                            !formData.target_username ||
-                                            !formData.amount
-                                    }
-                                ]"
-                                @click="showCaptcha"
-                            >
-                                {{ ttl ? `${ttl}s` : "获取验证码" }}
-                            </div>
-                        </div>
-                    </template>
-                    <template v-else>
-                        <div :class="$style['form-title']">
-                            {{ item.title }}
-                        </div>
-                        <div :class="$style['form-input']">
-                            <input
-                                v-if="item.key === 'amount'"
-                                v-model="formData[item.key]"
-                                @blur="verification(item)"
-                                @input="verification(item)"
-                                :placeholder="item.placeholder"
-                                type="text"
-                                inputmode="decimal"
-                            />
-                            <input
-                                v-else-if="item.key === 'phone'"
-                                v-model="formData[item.key]"
-                                @input="verification(item)"
-                                :placeholder="item.placeholder"
-                                type="tel"
-                            />
-                        </div>
-                        <div
-                            :class="$style['serial-number-links']"
-                            v-if="item.key === 'amount'"
-                            @click="toggleSerial"
-                        >
-                            流水详情
-                        </div>
-                    </template>
-                </div>
-            </template>
-
-            <div
-                :class="[
-                    $style['submit-wrap'],
-                    {
-                        [$style.disabled]: !isVerifyForm || isSendRecharge
-                    }
-                ]"
-                @click="sendRecharge"
-            >
-                <div>立即转让</div>
-            </div>
+      <template v-for="item in inputInfo">
+        <!-- 各欄位錯誤訊息 -->
+        <div
+          v-if="errorMessage[item.key] && item.key !== 'keyring'"
+          :class="[$style['form-tips']]"
+        >
+          <div>
+            {{ errorMessage[item.key] }}
+          </div>
         </div>
 
-        <tips-credit-trans />
-        <popup-verification
-            v-if="isShowCaptcha"
-            :is-show-captcha.sync="isShowCaptcha"
-            :captcha.sync="captchaData"
-        />
+        <div
+          :key="item.key"
+          :class="[
+            $style['form-content'],
+            { [$style['keyring-content']]: item.key === 'keyring' },
+          ]"
+        >
+          <template v-if="item.key === 'target_username'">
+            <div :class="$style['form-title']">
+              {{ item.title }}
+            </div>
+            <div :class="$style['form-input']">
+              <input
+                v-model="formData[item.key]"
+                @input="verification(item)"
+                :placeholder="item.placeholder"
+                type="text"
+              />
+            </div>
+          </template>
+          <template v-else-if="item.key === 'keyring'">
+            <div :class="[$style['keyring-title']]">
+              {{ item.title }}
+              &nbsp; &nbsp;
+              <span
+                v-if="errorMessage['keyring']"
+                :class="[$style['keyring-tips']]"
+              >
+                {{ errorMessage["keyring"] }}
+              </span>
+            </div>
+            <div :class="[$style['keyring-input']]">
+              <input
+                v-model="formData.keyring"
+                :placeholder="item.placeholder"
+                @blur="verification(inputInfo[3])"
+                @input="verification(inputInfo[3])"
+                :maxlength="item.maxlength"
+                type="tel"
+              />
+              <div
+                :class="[
+                  $style['send-keyring'],
+                  {
+                    [$style.disabled]:
+                      isSendKeyring ||
+                      !isVerifyPhone ||
+                      errorMessage.target_username ||
+                      errorMessage.amount,
+                  },
+                ]"
+                @click="showCaptcha"
+              >
+                {{ ttl ? `${ttl}s` : "获取验证码" }}
+              </div>
+            </div>
+          </template>
+          <template v-else>
+            <div :class="$style['form-title']">
+              {{ item.title }}
+            </div>
+            <div :class="$style['form-input']">
+              <input
+                v-if="item.key === 'amount'"
+                v-model="formData[item.key]"
+                @blur="verification(item)"
+                @input="verification(item)"
+                :placeholder="item.placeholder"
+                type="text"
+                inputmode="decimal"
+              />
+              <input
+                v-else-if="item.key === 'phone'"
+                v-model="formData[item.key]"
+                @input="verification(item)"
+                :placeholder="item.placeholder"
+                type="tel"
+              />
+            </div>
+            <div
+              :class="$style['serial-number-links']"
+              v-if="item.key === 'amount'"
+              @click="toggleSerial"
+            >
+              流水详情
+            </div>
+          </template>
+        </div>
+      </template>
+
+      <div
+        :class="[
+          $style['submit-wrap'],
+          {
+            [$style.disabled]: !isVerifyForm || isSendRecharge,
+          },
+        ]"
+        @click="sendRecharge"
+      >
+        <div>立即转让</div>
+      </div>
     </div>
+
+    <tips-credit-trans />
+    <popup-verification
+      v-if="isShowCaptcha"
+      :is-show-captcha.sync="isShowCaptcha"
+      :captcha.sync="captchaData"
+    />
+  </div>
 </template>
 
 <script>
@@ -154,67 +152,67 @@ import tipsCreditTrans from "./tipsCreditTrans";
 import mixin from "@/mixins/mcenter/recharge/recharge";
 import serialNumber from "../../withdraw/components/serialNumber";
 export default {
-    mixins: [mixin],
-    data() {
-        return {
-            showSerial: false,
-            captcha: null,
-            toggleCaptcha: false
-        };
+  mixins: [mixin],
+  data() {
+    return {
+      showSerial: false,
+      captcha: null,
+      toggleCaptcha: false
+    };
+  },
+  components: {
+    balanceBack,
+    popupVerification,
+    tipsCreditTrans,
+    serialNumber
+  },
+  computed: {
+    ...mapGetters({
+      memInfo: "getMemInfo"
+    }),
+    isShowCaptcha: {
+      get() {
+        return this.toggleCaptcha;
+      },
+      set(value) {
+        return (this.toggleCaptcha = value);
+      }
     },
-    components: {
-        balanceBack,
-        popupVerification,
-        tipsCreditTrans,
-        serialNumber
-    },
-    computed: {
-        ...mapGetters({
-            memInfo: "getMemInfo"
-        }),
-        isShowCaptcha: {
-            get() {
-                return this.toggleCaptcha;
-            },
-            set(value) {
-                return (this.toggleCaptcha = value);
-            }
-        },
-        captchaData: {
-            get() {
-                return this.captcha;
-            },
-            set(value) {
-                return (this.captcha = value);
-            }
-        }
-    },
-    created() {
-        this.getRechargeBalance();
-        this.actionSetRechargeConfig();
-    },
-    watch: {
-        captchaData(val) {
-            this.getKeyring();
-        }
-    },
-    methods: {
-        ...mapActions(["actionSetGlobalMessage"]),
-        toggleSerial() {
-            this.showSerial = !this.showSerial;
-        },
-        showCaptcha() {
-            if (!this.formData.phone) {
-                return;
-            }
-
-            this.rechargeCheck().then(res => {
-                if (res === true) {
-                    this.toggleCaptcha = true;
-                }
-            });
-        }
+    captchaData: {
+      get() {
+        return this.captcha;
+      },
+      set(value) {
+        return (this.captcha = value);
+      }
     }
+  },
+  created() {
+    this.getRechargeBalance();
+    this.actionSetRechargeConfig();
+  },
+  watch: {
+    captchaData(val) {
+      this.getKeyring();
+    }
+  },
+  methods: {
+    ...mapActions(["actionSetGlobalMessage"]),
+    toggleSerial() {
+      this.showSerial = !this.showSerial;
+    },
+    showCaptcha() {
+      if (!this.formData.phone) {
+        return;
+      }
+
+      this.rechargeCheck().then(res => {
+        if (res === true) {
+          this.toggleCaptcha = true;
+        }
+      });
+    }
+  }
 };
 </script>
 
@@ -222,147 +220,147 @@ export default {
 @import "../css/index.module.scss";
 
 .form {
-    background-color: #eeeeee;
-    font-size: 14px;
+  background-color: #eeeeee;
+  font-size: 14px;
 }
 
 .form-content {
-    display: flex;
-    align-items: center;
-    height: 50px;
-    padding: 0 13px;
-    color: #222222;
-    background-color: #fefffe;
-    margin-top: 1px;
-    font-family: Microsoft JhengHei, Microsoft JhengHei-Regular;
-    font-weight: 400;
-    line-height: 20px;
-    position: relative;
+  display: flex;
+  align-items: center;
+  height: 50px;
+  padding: 0 13px;
+  color: #222222;
+  background-color: #fefffe;
+  margin-top: 1px;
+  font-family: Microsoft JhengHei, Microsoft JhengHei-Regular;
+  font-weight: 400;
+  line-height: 20px;
+  position: relative;
 }
 
 .keyring-tips {
-    color: $main_error_color1;
+  color: $main_error_color1;
 }
 
 .form-tips {
-    padding: 0 13px;
-    background-color: #fefffe;
-    margin-top: 1px;
-    font-family: Microsoft JhengHei, Microsoft JhengHei-Regular;
-    font-weight: 400;
-    line-height: 20px;
-    position: relative;
-    color: $main_error_color1;
-    display: block;
-    word-break: break-all;
-    //   height: 30px;
-    //   line-height: 30px;
-    padding-top: 5px;
+  padding: 0 13px;
+  background-color: #fefffe;
+  margin-top: 1px;
+  font-family: Microsoft JhengHei, Microsoft JhengHei-Regular;
+  font-weight: 400;
+  line-height: 20px;
+  position: relative;
+  color: $main_error_color1;
+  display: block;
+  word-break: break-all;
+  //   height: 30px;
+  //   line-height: 30px;
+  padding-top: 5px;
 }
 
 .form-tips {
-    + .form-content {
-        margin-top: unset;
-    }
+  + .form-content {
+    margin-top: unset;
+  }
 }
 
 .keyring-content {
-    height: auto;
-    display: block;
-    padding-top: 17px;
-    padding-bottom: 8px;
+  height: auto;
+  display: block;
+  padding-top: 17px;
+  padding-bottom: 8px;
 }
 
 .form-title {
-    height: 20px;
-    width: 100px;
+  height: 20px;
+  width: 100px;
 }
 
 .form-input {
-    padding: 0 5px;
+  padding: 0 5px;
 
-    input {
-        width: 100%;
-    }
+  input {
+    width: 100%;
+  }
 }
 
 .keyring-title {
-    margin-bottom: 11px;
-    height: 20px;
-    width: 100%;
+  margin-bottom: 11px;
+  height: 20px;
+  width: 100%;
 }
 
 .keyring-input {
-    height: 35px;
-    width: 100%;
-    position: relative;
-    line-height: 35px;
-    input {
-        width: 60%;
-    }
+  height: 35px;
+  width: 100%;
+  position: relative;
+  line-height: 35px;
+  input {
+    width: 60%;
+  }
 }
 
 .send-keyring {
-    -moz-tap-highlight-color: rgba(0, 0, 0, 0);
-    -webkit-tap-highlight-color: rgba(0, 0, 0, 0);
-    background-color: #d1b79c;
-    border-radius: 3px;
-    color: white;
-    font-weight: 400;
-    height: 30px;
-    line-height: 30px;
-    position: absolute;
-    right: 0;
-    text-align: center;
-    top: 0;
-    width: 100px;
+  -moz-tap-highlight-color: rgba(0, 0, 0, 0);
+  -webkit-tap-highlight-color: rgba(0, 0, 0, 0);
+  background-color: #d1b79c;
+  border-radius: 3px;
+  color: white;
+  font-weight: 400;
+  height: 30px;
+  line-height: 30px;
+  position: absolute;
+  right: 0;
+  text-align: center;
+  top: 0;
+  width: 100px;
 
-    &.disabled {
-        color: white;
-        background-color: #e9dacc;
-        pointer-events: none;
-    }
+  &.disabled {
+    color: white;
+    background-color: #e9dacc;
+    pointer-events: none;
+  }
 }
 
 input::placeholder {
-    color: #aaaaaa;
+  color: #aaaaaa;
 }
 
 .submit-wrap {
-    height: 43px;
-    margin: 15px auto;
-    padding: 0 14px;
-    max-width: $mobile_max_width;
+  height: 43px;
+  margin: 15px auto;
+  padding: 0 14px;
+  max-width: $mobile_max_width;
 
+  > div {
+    border-radius: 3px;
+    background: -webkit-linear-gradient(to right, #f9ddbd, #bd9d7d);
+    background: -o-linear-gradient(to right, #f9ddbd, #bd9d7d);
+    background: -moz-linear-gradient(to right, #f9ddbd, #bd9d7d);
+    background: linear-gradient(to right, #f9ddbd, #bd9d7d);
+    line-height: 43px;
+    font-family: Microsoft JhengHei, Microsoft JhengHei-Bold;
+    font-weight: 700;
+    text-align: center;
+    color: #f3ede7;
+    width: 100%;
+    height: 100%;
+  }
+
+  &.disabled {
     > div {
-        border-radius: 3px;
-        background: -webkit-linear-gradient(to right, #f9ddbd, #bd9d7d);
-        background: -o-linear-gradient(to right, #f9ddbd, #bd9d7d);
-        background: -moz-linear-gradient(to right, #f9ddbd, #bd9d7d);
-        background: linear-gradient(to right, #f9ddbd, #bd9d7d);
-        line-height: 43px;
-        font-family: Microsoft JhengHei, Microsoft JhengHei-Bold;
-        font-weight: 700;
-        text-align: center;
-        color: #f3ede7;
-        width: 100%;
-        height: 100%;
+      background: -webkit-linear-gradient(to right, #eee5db, #e9dacb);
+      background: -o-linear-gradient(to right, #eee5db, #e9dacb);
+      background: -moz-linear-gradient(to right, #eee5db, #e9dacb);
+      background: linear-gradient(to right, #eee5db, #e9dacb);
+      pointer-events: none;
     }
-
-    &.disabled {
-        > div {
-            background: -webkit-linear-gradient(to right, #eee5db, #e9dacb);
-            background: -o-linear-gradient(to right, #eee5db, #e9dacb);
-            background: -moz-linear-gradient(to right, #eee5db, #e9dacb);
-            background: linear-gradient(to right, #eee5db, #e9dacb);
-            pointer-events: none;
-        }
-    }
+  }
 }
 
 .serial-number-links {
-    color: #6aaaf5;
-    position: absolute;
-    right: 17px;
+  color: #6aaaf5;
+  position: absolute;
+  right: 17px;
 }
 </style>

@@ -3,7 +3,6 @@ import { mapActions, mapGetters } from "vuex";
 import EST from "@/lib/EST";
 import Vue from "vue";
 import axios from "axios";
-import { getCookie } from "@/lib/cookie";
 
 export default {
     props: {},
@@ -338,9 +337,7 @@ export default {
                                 }
                                 this.ttl -= 1;
                             }, 1000);
-                            this.tipMsg = this.$text(
-                                "S_SEND_CHECK_CODE_VALID_TIME"
-                            ).replace("%s", "五");
+                            this.actionSetGlobalMessage({ msg: "验证码已发送" });
                         });
                     } else {
                         setTimeout(() => {

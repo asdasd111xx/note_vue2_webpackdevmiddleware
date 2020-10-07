@@ -1,104 +1,109 @@
 .detail-date {
-    height: 35px;
-    line-height: 35px;
-    padding: 0 14px;
-    color: #414655;
-    font-weight: 700;
-    font-size: 17px;
+  height: 35px;
+  line-height: 35px;
+  padding: 0 14px;
+  color: #414655;
+  font-weight: 700;
+  font-size: 17px;
 }
 
 .detail-wrap {
-    height: 66px;
-    padding-left: 14px;
-    background-color: #fefffe;
+  height: 66px;
+  padding-left: 14px;
+  background-color: #fefffe;
 }
 
 .detail-icon {
-    float: left;
-    width: 30px;
-    height: 30px;
-    margin: 18px 0;
+  float: left;
+  width: 30px;
+  height: 30px;
+  margin: 18px 0;
 
-    >img {
-        display: block;
-        width: 100%;
-    }
+  > img {
+    display: block;
+    width: 100%;
+  }
 }
 
 .detail-info {
-    float: right;
-    width: calc(100% - 30px - 10px);
-    height: 66px;
-    padding-right: 8px;
-    border-bottom: 1px solid #eee;
+  float: right;
+  width: calc(100% - 30px - 10px);
+  height: 66px;
+  padding-right: 8px;
+  border-bottom: 1px solid #eee;
 }
 
 .wrap {
-    float: left;
-    margin: 15px 0 8px;
+  float: left;
+  margin: 15px 0 8px;
 }
 
 .title {
-    line-height: 21px;
-    color: #414655;
-    font-weight: 700;
-    font-size: 16px;
+  line-height: 21px;
+  color: #414655;
+  font-weight: 700;
+  font-size: 16px;
 }
 
 .tips {
-    line-height: 15px;
-    margin-left: 4px;
-    color: #a6a9b2;
-    font-size: 12px;
+  line-height: 15px;
+  margin-left: 4px;
+  color: #a6a9b2;
+  font-size: 12px;
 }
 
 .time {
-    line-height: 14px;
-    margin-top: 6px;
-    color: #a6a9b2;
-    font-size: 12px;
+  line-height: 14px;
+  margin-top: 6px;
+  color: #a6a9b2;
+  font-size: 12px;
 }
 
 .amount {
-    float: right;
-    line-height: 15px;
-    margin: 25px 0;
-    padding-right: 22px;
-    background: url("/static/image/_new/mcenter/moneyDetail/icon_arrow.png") 100% 50% no-repeat;
-    background-size: 15px 15px;
-    color: #414655;
-    font-weight: 700;
-    font-size: 14px;
+  float: right;
+  line-height: 20px;
+  margin: 25px 0;
+  color: #414655;
+  font-weight: 700;
+  font-size: 14px;
+  display: flex;
+  align-items: center;
 }
 
 .no-data-wrap {
-    width: 180px;
-    height: 292px;
-    margin: 20% auto 0;
+  width: 180px;
+  height: 292px;
+  margin: 20% auto 0;
 
-    >img {
-        display: block;
-        width: 100%;
-    }
+  > img {
+    display: block;
+    width: 100%;
+  }
 
-    .tips {
-        line-height: 22px;
-        margin: 16px 0 29px;
-        color: #a6a9b2;
-        font-size: 16px;
-        text-align: center;
-    }
+  .tips {
+    line-height: 22px;
+    margin: 16px 0 29px;
+    color: #a6a9b2;
+    font-size: 16px;
+    text-align: center;
+  }
 
-    .btn-deposit {
-        width: 140px;
-        height: 45px;
-        line-height: 45px;
-        margin: 0 auto;
-        border-radius: 3px;
-        background: linear-gradient(to left, #bd9d7d, #f9ddbd);
-        color: #fff;
-        font-weight: 700;
-        font-size: 14px;
-        text-align: center;
-    }
+  .btn-deposit {
+    width: 140px;
+    height: 45px;
+    line-height: 45px;
+    margin: 0 auto;
+    border-radius: 3px;
+    background: linear-gradient(to left, #bd9d7d, #f9ddbd);
+    color: #fff;
+    font-weight: 700;
+    font-size: 14px;
+    text-align: center;
+  }
+}
+
+.right-arrow {
+  width: 15px;
+  height: 15px;
+  margin-left: 7px;
 }
