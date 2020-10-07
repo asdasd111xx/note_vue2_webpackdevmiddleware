@@ -8,7 +8,7 @@
         />
       </div>
       <span :class="$style['title']">
-        {{ $text("S_SERIAL_DETIAL", "流水详情") }}</span
+        {{ $text("S_SERIAL_CHECK", "流水检查") }}</span
       >
     </div>
     <div :class="[$style['serial-number-wrap']]">
@@ -129,7 +129,7 @@ export default {
         {
           title: this.$text('S_SERIAL_NUMBER', '流水要求'),
           rateValue: this.data.audit_amount,
-          value: this.getFixed(this.data.administrative_amount),
+          value: this.getDeductionNumber(this.data.administrative_amount),
           deduction: this.$text('S_DEDUCTION_MONEY', '扣除金额')
         },
       ],
@@ -142,7 +142,7 @@ export default {
         {
           title: this.$text('S_SERIAL_NUMBER', '流水要求'),
           rateValue: this.data.offer_audit_amount,
-          value: this.getFixed(this.data.offer),
+          value: this.getDeductionNumber(this.data.offer),
           deduction: this.$text('S_DEDUCTION_MONEY', '扣除金额')
         },
       ]]

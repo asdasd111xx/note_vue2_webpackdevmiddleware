@@ -59,9 +59,6 @@ export default {
         getNowTime() {
           return EST(new Date());
         },
-        getFixed(number) {
-            return Number(number).toFixed(2);
-        },
         // 轉換扣除金額
         getDeductionNumber(number) {
             return Number(number).toFixed(2);
