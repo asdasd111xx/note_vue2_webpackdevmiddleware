@@ -319,7 +319,6 @@ export default {
         return;
       }
 
-      this.isShowLoading = true;
       let isMobileView;
 
       try {
@@ -356,6 +355,9 @@ export default {
 
         return;
       }
+
+      this.isShowLoading = true;
+
       const openGameSuccessFunc = (res) => {
         this.isShowLoading = false;
       };

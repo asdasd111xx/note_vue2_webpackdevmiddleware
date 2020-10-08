@@ -29,7 +29,7 @@
 </template>
 
 <script>
-import { mapGetters, mapActions } from 'vuex';
+import { mapGetters } from 'vuex';
 import axios from 'axios';
 import querystring from 'querystring';
 import videoPlayer from './components/videoPlayer';
@@ -49,7 +49,6 @@ export default {
   },
   data() {
     return {
-      timer: null,
       source: this.$route.query.source,
       videoInfo: null
     };
@@ -82,10 +81,6 @@ export default {
     }
   },
   methods: {
-
-    ...mapActions([
-      'actionSetUserBalance'
-    ]),
 
     handleLeavePage(cb) {
       if (this.$refs['player']) {
@@ -136,14 +131,6 @@ export default {
       }).then((res) => {
       })
     }
-
-    // 30秒更新一次餘額
-    this.timer = window.setInterval(() => {
-      console.log("actionSetUserBalance");
-      this.actionSetUserBalance();
-    }, 30000);
-
-
     // axios({
     //   method: 'post',
     //   url: `https://daydayyouhui.com/api/v1/video/videoinfo`,
@@ -163,10 +150,6 @@ export default {
 
     //   this.videoInfo = { ...response.data.result };
     // });
-  },
-  beforeDestroy() {
-    clearInterval(this.timer);
-    this.timer = null;
   },
 };
 </script>

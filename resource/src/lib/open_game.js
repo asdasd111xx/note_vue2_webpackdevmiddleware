@@ -66,6 +66,7 @@ export default (params, success = () => { }, fail = () => { }) => {
             let query = '';
 
             if (result !== 'ok') {
+                fail({ data: { msg: 'open game fail' } });
                 return;
             }
 
