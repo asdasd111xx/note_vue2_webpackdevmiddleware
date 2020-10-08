@@ -11,8 +11,19 @@
           :change-game-label="changeGameLabel"
         />
       </template>
+      <template v-if="slotKey === 'jackpot'">
+        <div
+          :class="$style['jackpot-wrap']"
+          :style="{ display: jackpotData ? 'block' : 'none' }"
+        >
+          <jackpot :vendor="vendor" @setJackpotData="setJackpotData" />
+        </div>
+      </template>
       <template v-if="slotKey === 'list'">
-        <div :key="`slot-${slotKey}`" class="game-item-wrap clearfix">
+        <div
+          :key="`slot-${slotKey}`"
+          :class="[[$style['game-item-wrap'], $style[jackpotType]], 'clearfix']"
+        >
           <template>
             <template v-for="(gameInfo, index) in gameData">
               <game-item
@@ -24,6 +35,7 @@
                 :show-favor="gameShowFavor"
                 :show-button="gameShowButton"
                 :redirect-card="redirectBankCard"
+                :jackpotData="jackpotData"
               />
             </template>
             <!-- 捲動加載 -->
@@ -61,15 +73,15 @@
 </template>
 
 <script>
-import { mapGetters, mapActions } from 'vuex';
-import InfiniteLoading from 'vue-infinite-loading';
-import ajax from '@/lib/ajax';
 import { gameType, gameList } from '@/config/api';
+import { mapGetters, mapActions } from 'vuex';
+import ajax from '@/lib/ajax';
+import common from '@/api/common';
 import gameItem from '../gameItem';
 import gameLabel from '../gameLabel';
 import gameSearch from '../gameSearch';
-import common from '@/api/common';
-
+import InfiniteLoading from 'vue-infinite-loading';
+import jackpot from './jackpot';
 /**
  * 共用元件 - 手機網頁版電子遊戲頁共用框 (邏輯共用)
  * @param {Array} [slotSort=['search', 'label', 'list']] - slot 的區塊順序調整
@@ -87,11 +99,12 @@ export default {
     gameLabel,
     gameItem,
     InfiniteLoading,
+    jackpot
   },
   props: {
     slotSort: {
       type: Array,
-      default: () => (['search', 'label', 'list'])
+      default: () => (['search', 'label', 'jackpot', 'list'])
     },
     searchTheme: {
       type: String,
@@ -144,6 +157,8 @@ export default {
       isGameDataReceive: false,
       gameData: [],
       activityData: [],
+
+      jackpotData: null
     };
   },
   computed: {
@@ -161,6 +176,33 @@ export default {
       }
 
       return this.favoriteGame.filter((element) => element.kind === this.paramsData.kind);
+    },
+    jackpotType() {
+      if (!this.jackpotData) {
+        return '';
+      }
+
+      switch (this.vendor) {
+        // 單一總彩金+名單
+        case 'bbin':
+          return 'multiTotal';
+
+        // 單一總彩金
+        case "jdb":
+        case "wm":
+        case "ps":
+        case "gti":
+          return 'single';
+
+        // 單一遊戲彩金
+        case "pt":
+        case "gns":
+        case "isb":
+        case "hb":
+          return 'multiBonus';
+        default:
+          return;
+      }
     }
   },
   watch: {
@@ -187,8 +229,11 @@ export default {
   },
   methods: {
     ...mapActions([
-      'actionSetFavoriteGame'
+      'actionSetFavoriteGame',
     ]),
+    setJackpotData(data) {
+      this.jackpotData = data;
+    },
     redirectBankCard() {
       return `casino-${this.vendor}-${this.paramsData.label}`;
     },
@@ -418,9 +463,23 @@ export default {
 </script>
 
 <style lang="scss" module>
+@import "~@/css/variable.scss";
+
 .game-item-wrap {
-  background: #f8f8f7;
   min-height: calc(100vh - 88px);
+  margin-top: 44px;
+
+  &.multiTotal {
+    margin-top: 151px;
+  }
+
+  &.single {
+    margin-top: 75px;
+  }
+
+  &.multiBonus {
+    margin-top: 151px;
+  }
 }
 
 .empty-wrap {
@@ -436,5 +495,22 @@ export default {
   height: 62px;
   background: url("/static/image/_new/common/search_none.png") 0 0 / contain
     no-repeat;
+}
+
+.jackpot-wrap {
+  max-width: $mobile_max_width;
+  padding-top: 9px;
+  padding: 0;
+  position: absolute;
+  background: #ededed;
+  top: 87px;
+  width: 100%;
+  z-index: 5;
+}
+
+@media (orientation: landscape) {
+  .jackpot-wrap {
+    max-width: $mobile_max_landscape_width !important;
+  }
 }
 </style>

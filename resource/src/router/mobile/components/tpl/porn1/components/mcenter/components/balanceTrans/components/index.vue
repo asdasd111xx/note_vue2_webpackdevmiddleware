@@ -20,9 +20,7 @@
 
       <!-- <div :class="siteConfig.MOBILE_WEB_TPL==='ey1'? 'ui fitted toggle checkbox field-checkbox ey':'ui fitted toggle checkbox field-checkbox'">-->
       <div
-        :class="
-          `ui fitted toggle checkbox field-checkbox ${siteConfig.MOBILE_WEB_TPL}`
-        "
+        :class="`ui fitted toggle checkbox field-checkbox ${siteConfig.MOBILE_WEB_TPL}`"
       >
         <input
           :checked="isAutotransfer"
@@ -44,6 +42,25 @@
     </div>
 
     <div :class="[$style['balance-item-wrap'], 'clearfix']">
+      <div
+        :class="[
+          $style['balance-item'],
+          {
+            [$style['is-last-item']]: !isShowMore,
+          },
+        ]"
+        v-if="bonus"
+        @click="$router.push('/mobile/mcenter/bonus')"
+      >
+        <span :class="$style['balance-item-vendor']">
+          {{ $text("S_BONUS", "红利彩金") }}
+        </span>
+
+        <span :class="$style['balance-item-money']">
+          {{ bonus.balance ? bonus.balance : "" }}
+        </span>
+      </div>
+
       <template v-if="!isShowMore">
         <div
           v-for="(item, key, index) in firstThirdBalanceInfo"
@@ -53,8 +70,8 @@
             {
               [$style['is-last-item']]:
                 Object.keys(firstThirdBalanceInfo).length - index <=
-                (Object.keys(firstThirdBalanceInfo).length % 4 || 4)
-            }
+                (Object.keys(firstThirdBalanceInfo).length % 3 || 3),
+            },
           ]"
         >
           <span :class="$style['balance-item-vendor']">{{ item.text }}</span>
@@ -105,8 +122,8 @@
             {
               [$style['is-last-item']]:
                 Object.keys(balanceInfo).length - index <=
-                (Object.keys(balanceInfo).length % 4 || 4)
-            }
+                (Object.keys(balanceInfo).length % 4 || 4),
+            },
           ]"
         >
           <span :class="$style['balance-item-vendor']">{{ item.text }}</span>
@@ -207,7 +224,7 @@
           <div
             :class="[
               $style['balance-select-wrap'],
-              $style['select-right-wrap']
+              $style['select-right-wrap'],
             ]"
           >
             <div :class="$style['select-title']">
@@ -282,8 +299,8 @@
         :class="[
           $style['transfer-btn'],
           {
-            [$style['is-disable']]: btnLock || !transferMoney
-          }
+            [$style['is-disable']]: btnLock || !transferMoney,
+          },
         ]"
         @click="
           () => {
@@ -303,7 +320,7 @@
       <div slot="msg">
         <div
           v-html="msg"
-          style="background-color: transparent ; margin: 0 ; padding: 0"
+          style="background-color: transparent; margin: 0; padding: 0"
         ></div>
       </div>
     </message>
@@ -311,13 +328,14 @@
 </template>
 
 <script>
-import { getCookie } from '@/lib/cookie';
+import { getCookie } from "@/lib/cookie";
 import { mapGetters, mapActions } from "vuex";
-import { ModelSelect } from 'vue-search-select';
-import ajax from '@/lib/ajax';
-import mcenter from '@/api/mcenter';
+import { ModelSelect } from "vue-search-select";
+import ajax from "@/lib/ajax";
+import mcenter from "@/api/mcenter";
 import message from "@/router/mobile/components/common/message";
-import yaboRequest from '@/api/yaboRequest';
+import yaboRequest from "@/api/yaboRequest";
+import axios from "axios";
 
 export default {
   components: {
@@ -330,13 +348,13 @@ export default {
       timer: null,
       lockSec: 0,
 
-      tranOut: '',
-      tranIn: '',
+      tranOut: "",
+      tranIn: "",
 
       transferMoney: null,
       balanceList: {},
       total: 0,
-      isAutotransfer: '',
+      isAutotransfer: "",
       isReceiveAuto: false,
       AutotransferLock: false,
       recentlyData: {},
@@ -348,19 +366,20 @@ export default {
       transInText: "请选择帐户",
       transOutText: "请选择帐户",
       transInList: [],
-      transOutList: []
+      transOutList: [],
+      bonus: {},
     };
   },
   watch: {
     transferMoney(val) {
-      localStorage.setItem('tranfer-money', val);
-    }
+      localStorage.setItem("tranfer-money", val);
+    },
   },
   computed: {
     ...mapGetters({
-      memInfo: 'getMemInfo',
-      membalance: 'getMemBalance',
-      siteConfig: 'getSiteConfig'
+      memInfo: "getMemInfo",
+      membalance: "getMemBalance",
+      siteConfig: "getSiteConfig",
     }),
     $style() {
       const style =
@@ -371,7 +390,7 @@ export default {
       const data = {};
 
       Object.keys(this.membalance.vendor).forEach((key) => {
-        if (key === 'default') {
+        if (key === "default") {
           return;
         }
 
@@ -382,23 +401,26 @@ export default {
     },
     firstThirdBalanceInfo() {
       const data = {};
-      Object.keys(this.membalance.vendor).slice(0, 4).forEach((key) => {
-        if (key === 'default') {
-          return;
-        }
+      Object.keys(this.membalance.vendor)
+        .slice(0, 3)
+        .forEach((key) => {
+          if (key === "default") {
+            return;
+          }
 
-        data[key] = this.membalance.vendor[key];
-      });
+          data[key] = this.membalance.vendor[key];
+        });
 
       return data;
     },
     tipText() {
-      return this.$text('S_AUTO_SWITCH', {
-        text: '切换为【自动转换】模式重新开启游戏平台，系统会自动将主帐户余额转入正在进行中的游戏 (包含新入款成功)。',
+      return this.$text("S_AUTO_SWITCH", {
+        text:
+          "切换为【自动转换】模式重新开启游戏平台，系统会自动将主帐户余额转入正在进行中的游戏 (包含新入款成功)。",
         replace: [
-          { target: '%s', value: '<br/>' },
-          { target: '%s', value: '<br/>' }
-        ]
+          { target: "%s", value: "<br/>" },
+          { target: "%s", value: "<br/>" },
+        ],
       });
     },
   },
@@ -412,7 +434,12 @@ export default {
       //     this.backAccount();
       //   }
     });
-
+    //紅利帳戶api
+    axios.get("/api/v1/c/gift-card").then((response) => {
+      if (response.data.result === "ok") {
+        this.bonus = response.data.total;
+      }
+    });
     // this.getRecentlyOpened()
     const params = [this.getBalanceAll()];
     Promise.all(params).then(() => {
@@ -423,64 +450,67 @@ export default {
   },
   mounted() {
     //   保留輸入資料
-    if (localStorage.getItem('form-withdraw-account')) {
-      this.transferMoney = localStorage.getItem('tranfer-money') || '';
-      if (localStorage.getItem('tranfer-tranIn')) {
-        this.setTranIn(JSON.parse(localStorage.getItem('tranfer-tranIn')));
+    if (localStorage.getItem("form-withdraw-account")) {
+      this.transferMoney = localStorage.getItem("tranfer-money") || "";
+      if (localStorage.getItem("tranfer-tranIn")) {
+        this.setTranIn(JSON.parse(localStorage.getItem("tranfer-tranIn")));
       }
 
-      if (localStorage.getItem('tranfer-tranOut')) {
-        this.setTranOut(JSON.parse(localStorage.getItem('tranfer-tranOut')));
+      if (localStorage.getItem("tranfer-tranOut")) {
+        this.setTranOut(JSON.parse(localStorage.getItem("tranfer-tranOut")));
       }
 
-      localStorage.removeItem('form-withdraw-account');
-      localStorage.removeItem('tranfer-money');
-      localStorage.removeItem('tranfer-tranIn');
-      localStorage.removeItem('tranfer-tranOut');
+      localStorage.removeItem("form-withdraw-account");
+      localStorage.removeItem("tranfer-money");
+      localStorage.removeItem("tranfer-tranIn");
+      localStorage.removeItem("tranfer-tranOut");
     }
-
   },
   methods: {
     ...mapActions([
-      'actionSetUserBalance',
-      'actionSetUserdata',
-      'actionSetGlobalMessage'
+      "actionSetUserBalance",
+      "actionSetUserdata",
+      "actionSetGlobalMessage",
     ]),
     verification() {
-      this.transferMoney = this.transferMoney.replace(' ', '')
+      this.transferMoney = this.transferMoney
+        .replace(" ", "")
         .trim()
-        .replace(/[^0-9]/g, '');
+        .replace(/[^0-9]/g, "");
     },
     setTranOut(vendor) {
       this.tranOut = vendor.value;
       this.transOutText = vendor.text;
       this.closeSelect();
       this.setTranInList();
-      localStorage.setItem('tranfer-tranOut', JSON.stringify(vendor));
+      localStorage.setItem("tranfer-tranOut", JSON.stringify(vendor));
     },
     setTranIn(vendor) {
       this.tranIn = vendor.value;
       this.transInText = vendor.text;
       this.closeSelect();
       this.setTranOutList();
-      localStorage.setItem('tranfer-tranIn', JSON.stringify(vendor));
+      localStorage.setItem("tranfer-tranIn", JSON.stringify(vendor));
     },
     setTranInList() {
-      const list = [{ value: '', text: this.$t('S_SELECT_ACCOUNT') }];
+      const list = [{ value: "", text: this.$t("S_SELECT_ACCOUNT") }];
       // 維護時不可轉入
       Object.keys(this.membalance.vendor).forEach((index) => {
         if (index === this.tranOut) {
           return;
         }
         if (!this.membalance.vendor[index].maintain) {
-          const text = index === 'default' ? '中心钱包' : this.membalance.vendor[index].text;
+          const text =
+            index === "default"
+              ? "中心钱包"
+              : this.membalance.vendor[index].text;
           list.push({ value: index, text });
         }
       });
       this.transInList = list;
     },
     setTranOutList() {
-      const list = [{ value: '', text: this.$t('S_SELECT_ACCOUNT') }];
+      const list = [{ value: "", text: this.$t("S_SELECT_ACCOUNT") }];
       // 轉出列表只塞有額度的平台（額度需>=1，只有小數位不允許轉）
       // 維護時不可轉出
       Object.keys(this.membalance.vendor).forEach((index) => {
@@ -488,18 +518,22 @@ export default {
           return;
         }
 
-        if (this.membalance.vendor[index].amount !== '--'
-          && +this.membalance.vendor[index].amount >= 1
-          && !this.membalance.vendor[index].maintain
+        if (
+          this.membalance.vendor[index].amount !== "--" &&
+          +this.membalance.vendor[index].amount >= 1 &&
+          !this.membalance.vendor[index].maintain
         ) {
-          const text = index === 'default' ? '中心钱包' : this.membalance.vendor[index].text;
+          const text =
+            index === "default"
+              ? "中心钱包"
+              : this.membalance.vendor[index].text;
           list.push({ value: index, text });
         }
       });
       this.transOutList = list;
     },
     getBalanceAll(status) {
-      if (status === 'lockStatus' && this.balanceLock) {
+      if (status === "lockStatus" && this.balanceLock) {
         return;
       }
 
@@ -558,7 +592,7 @@ export default {
       this.AutotransferLock = true;
       mcenter.balanceTranAutoEnable({
         success: () => {
-          this.actionSetGlobalMessage({ msg: '回收成功' });
+          this.actionSetGlobalMessage({ msg: "回收成功" });
           this.isAutotransfer = true;
           this.backAccount({}, true);
           this.actionSetUserdata(true);
@@ -567,7 +601,7 @@ export default {
         },
         fail: () => {
           this.AutotransferLock = false;
-        }
+        },
       });
 
       this.getRecentlyOpened();
@@ -579,7 +613,7 @@ export default {
       this.AutotransferLock = true;
       mcenter.balanceTranAutoClose({
         success: () => {
-          this.actionSetGlobalMessage({ msg: '切换成功' });
+          this.actionSetGlobalMessage({ msg: "切换成功" });
           this.isAutotransfer = false;
           this.actionSetUserdata(true);
 
@@ -587,11 +621,11 @@ export default {
         },
         fail: () => {
           this.AutotransferLock = false;
-        }
+        },
       });
     },
     getBalanceAll(status) {
-      if (status === 'lockStatus' && this.balanceLock) {
+      if (status === "lockStatus" && this.balanceLock) {
         return;
       }
 
@@ -612,20 +646,19 @@ export default {
       mcenter.balanceTranBack({
         success: () => {
           this.lockSec = 0;
-          this.actionSetUserBalance()
-            .then(() => {
-              if (!fromAuto) {
-                this.actionSetGlobalMessage({ msg: '回收成功' });
-              }
-              this.tranOut = '';
-              if (afterSetUserBalance) {
-                afterSetUserBalance();
-              }
-            });
+          this.actionSetUserBalance().then(() => {
+            if (!fromAuto) {
+              this.actionSetGlobalMessage({ msg: "回收成功" });
+            }
+            this.tranOut = "";
+            if (afterSetUserBalance) {
+              afterSetUserBalance();
+            }
+          });
         },
         fail: (res) => {
-          this.actionSetGlobalMessage({ msg: res.data.msg || '系统错误' });
-        }
+          this.actionSetGlobalMessage({ msg: res.data.msg || "系统错误" });
+        },
       });
     },
     sendBalanceTran() {
@@ -642,53 +675,59 @@ export default {
       const money = this.transferMoney;
 
       if (+source === 0 || +target === 0) {
-        this.actionSetGlobalMessage({ msg: this.$t('S_SELECT_ACCOUNT') });
+        this.actionSetGlobalMessage({ msg: this.$t("S_SELECT_ACCOUNT") });
         this.btnLock = false;
         return;
       }
-      if (money === '') {
-        this.actionSetGlobalMessage({ msg: this.$t('S_AMOUNT_NULL_VALUE') });
+      if (money === "") {
+        this.actionSetGlobalMessage({ msg: this.$t("S_AMOUNT_NULL_VALUE") });
         this.btnLock = false;
         return;
       }
       if (!re.test(money)) {
-        this.actionSetGlobalMessage({ msg: this.$t('S_DAW_ONLY_INT') });
+        this.actionSetGlobalMessage({ msg: this.$t("S_DAW_ONLY_INT") });
         this.btnLock = false;
         return;
       }
 
-      mcenter.balanceTran({
-        params: {
-          amount: money
-        },
-        success: () => {
-          this.actionSetGlobalMessage({ msg: '转帐成功' });
-          localStorage.removeItem('tranfer-money');
-          localStorage.removeItem('tranfer-tranIn');
-          localStorage.removeItem('tranfer-tranOut');
+      mcenter.balanceTran(
+        {
+          params: {
+            amount: money,
+          },
+          success: () => {
+            this.actionSetGlobalMessage({ msg: "转帐成功" });
+            localStorage.removeItem("tranfer-money");
+            localStorage.removeItem("tranfer-tranIn");
+            localStorage.removeItem("tranfer-tranOut");
 
-          this.lockSec = 0;
-          this.actionSetUserBalance();
-          this.transferMoney = '';
+            this.lockSec = 0;
+            this.actionSetUserBalance();
+            this.transferMoney = "";
 
-          this.btnLock = false;
+            this.btnLock = false;
+          },
+          fail: (res) => {
+            this.btnLock = false;
+            this.actionSetGlobalMessage({
+              code: res.data.code,
+              origin: "balanceTrans",
+              msg: res.data.msg,
+            });
+          },
         },
-        fail: (res) => {
-          this.btnLock = false;
-          this.actionSetGlobalMessage({
-            code: res.data.code, origin: "balanceTrans", msg: res.data.msg
-          });
-        }
-      }, source, target);
+        source,
+        target
+      );
     },
     getRecentlyOpened() {
       mcenter.lastVendor({
         success: (response) => {
           this.recentlyData = response.ret;
-        }
+        },
       });
     },
-  }
+  },
 };
 </script>
 

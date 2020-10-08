@@ -4,7 +4,10 @@
     :update-search-status="updateSearchStatus"
   >
     <div slot="content" class="content-wrap">
-      <casino-wrap :is-show-search.sync="isShowSearch" />
+      <casino-wrap
+        :is-show-search.sync="isShowSearch"
+        :game-show-jackpot="true"
+      />
     </div>
   </mobile-container>
 </template>

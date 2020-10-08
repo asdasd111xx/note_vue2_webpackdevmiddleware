@@ -1155,10 +1155,23 @@ amdefine@>=0.0.4:
   resolved "https://registry.yarnpkg.com/amdefine/-/amdefine-1.0.1.tgz#4a5282ac164729e93619bcfd3ad151f817ce91f5"
   integrity sha1-SlKCrBZHKek2Gbz9OtFR+BfOkfU=
 
+animated-number-vue@^1.0.0:
+  version "1.0.0"
+  resolved "https://registry.yarnpkg.com/animated-number-vue/-/animated-number-vue-1.0.0.tgz#447ce78fc10c7f2c77df0ca454a1bc18052ebfc8"
+  integrity sha512-dlwtF3g9bls5IGH+2Xxtey+kZLQZcLKu/lBp3FZVrnq0FRoIGNGs1AcFegBgLuW6aEdLx8PxaHB++hxuEfT+Tg==
+  dependencies:
+    animejs "^2.2.0"
+    vue "^2.5.13"
+
 animejs@3.2.0:
   version "3.2.0"
   resolved "https://registry.yarnpkg.com/animejs/-/animejs-3.2.0.tgz#2daea7365983249022cc454fa726acdb4a84345d"
   integrity sha512-zhtGl5cS0G2f5DfciMO8uwWpnx06nfFnHlXYYXHBazHep1Lyd6kEtBQP+9hpYKE0dBZjIigHp9VpMO95ZfXQJQ==
+
+animejs@^2.2.0:
+  version "2.2.0"
+  resolved "https://registry.yarnpkg.com/animejs/-/animejs-2.2.0.tgz#35eefdfc535b81949c9cb06f0b3e60c02e6fdc80"
+  integrity sha1-Ne79/FNbgZScnLBvCz5gwC5v3IA=
 
 ansi-colors@^3.0.0:
   version "3.2.4"
@@ -9156,6 +9169,11 @@ vue@2.4.1:
   version "2.4.1"
   resolved "https://registry.yarnpkg.com/vue/-/vue-2.4.1.tgz#76e0b8eee614613532216b7bfe784e0b5695b160"
   integrity sha512-V/3mbqPeXJf+AEdm2Qdrho8ADjN2/Th+q7abrDqQrGaERgtlGPLe8SRLDzJ2eNEV4Gh+L8T/vfbxb2sLUfwYbA==
+
+vue@^2.5.13:
+  version "2.6.12"
+  resolved "https://registry.yarnpkg.com/vue/-/vue-2.6.12.tgz#f5ebd4fa6bd2869403e29a896aed4904456c9123"
+  integrity sha512-uhmLFETqPPNyuLLbsKz6ioJ4q7AZHzD8ZVFNATNyICSZouqP2Sz0rotWQC8UNBF6VGSCs5abnKJoStA6JbCbfg==
 
 vuebar@0.0.18:
   version "0.0.18"

@@ -81,6 +81,7 @@ export default {
     }
   },
   methods: {
+
     handleLeavePage(cb) {
       if (this.$refs['player']) {
         this.$refs['player'].handleLeavePage(cb);
@@ -130,8 +131,6 @@ export default {
       }).then((res) => {
       })
     }
-
-
     // axios({
     //   method: 'post',
     //   url: `https://daydayyouhui.com/api/v1/video/videoinfo`,
