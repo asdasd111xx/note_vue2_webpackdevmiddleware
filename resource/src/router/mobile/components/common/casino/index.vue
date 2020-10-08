@@ -183,12 +183,23 @@ export default {
       }
 
       switch (this.vendor) {
-        // 單一彩金+名單
+        // 單一總彩金+名單
         case 'bbin':
           return 'multiTotal';
-        // 單一彩金
-        case 'jdb':
+
+        // 單一總彩金
+        case "jdb":
+        case "wm":
+        case "ps":
+        case "gti":
           return 'single';
+
+        // 單一遊戲彩金
+        case "pt":
+        case "gns":
+        case "isb":
+        case "hb":
+          return 'multiBonus';
         default:
           return;
       }
@@ -467,7 +478,7 @@ export default {
   }
 
   &.multiBonus {
-    margin-top: 115px;
+    margin-top: 151px;
   }
 }
 
