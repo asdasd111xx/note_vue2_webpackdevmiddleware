@@ -88,7 +88,7 @@
                 ]"
                 @click="showCaptcha"
               >
-                {{ ttl ? `${ttl}s` : "获取验证码" }}
+                {{ ttl > 0 ? `${ttl}s` : "获取验证码" }}
               </div>
             </div>
           </template>
