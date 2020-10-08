@@ -35,7 +35,9 @@
                 :maxlength="pwdResetInfo[item].maxlength"
                 :minlength="pwdResetInfo[item].minlength"
                 @input="
-                  pwdResetInfo[item].value = $event.target.value
+                  pwdResetInfo[
+                    item
+                  ].value = $event.target.value
                     .toLowerCase()
                     .replace(' ', '')
                     .trim()
@@ -51,7 +53,9 @@
                 :placeholder="pwdResetInfo[item].placeholder"
                 maxlength="12"
                 @input="
-                  pwdResetInfo[item].value = $event.target.value
+                  pwdResetInfo[
+                    item
+                  ].value = $event.target.value
                     .toLowerCase()
                     .replace(' ', '')
                     .trim()
@@ -329,7 +333,7 @@ export default {
           success: () => {
             this.actionSetGlobalMessage({ msg: this.$t('S_EDIT_SUCCESS') });
             if (this.isResetPW) {
-              window.close
+              window.close()
             } else {
               setTimeout(() => {
                 this.$router.push('/mobile/mcenter/setting');
