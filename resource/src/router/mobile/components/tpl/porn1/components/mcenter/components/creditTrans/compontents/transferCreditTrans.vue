@@ -3,6 +3,8 @@
     <serial-number v-if="showSerial" :handle-close="toggleSerial" />
     <!-- 一件回收 -->
     <balance-back />
+
+    <!-- 喜訊 -->
     <template v-if="hasBonusRule">
       <div :class="$style['promotion-tips']" v-for="item in bonusList">
         <div>
@@ -78,7 +80,9 @@
                     [$style.disabled]:
                       isSendKeyring ||
                       !isVerifyPhone ||
+                      !formData.target_username ||
                       errorMessage.target_username ||
+                      !formData.amount ||
                       errorMessage.amount,
                   },
                 ]"
