@@ -18,8 +18,8 @@
           $style['swiper-item'],
           {
             [$style['is-current']]:
-              listItem.payment_group_id === curModeGroup.payment_group_id
-          }
+              listItem.payment_group_id === curModeGroup.payment_group_id,
+          },
         ]"
       >
         <span @click="modeChange(listItem, index)">{{
@@ -47,8 +47,8 @@
                   {
                     [$style['is-current']]:
                       curPayInfo.payment_method_id === info.payment_method_id &&
-                      curPayInfo.bank_id === info.bank_id
-                  }
+                      curPayInfo.bank_id === info.bank_id,
+                  },
                 ]"
                 @click="changePayMode(info, index)"
               >
@@ -72,7 +72,12 @@
                 </div>
 
                 <div :class="$style['pay-sub-title']">
-                  <template v-if="[5, 6].includes(info.payment_type_id)">
+                  <template
+                    v-if="
+                      [5, 6].includes(info.payment_type_id) ||
+                      isSelectBindWallet()
+                    "
+                  >
                     返利1%无上限
                   </template>
                 </div>
@@ -80,7 +85,7 @@
                 <img
                   v-if="
                     curPayInfo.payment_method_id === info.payment_method_id &&
-                      curPayInfo.bank_id === info.bank_id
+                    curPayInfo.bank_id === info.bank_id
                   "
                   :class="$style['pay-active']"
                   src="/static/image/_new/common/select_active.png"
@@ -95,7 +100,7 @@
                   @click="handleCreditTrans"
                 >
                   <div :class="$style['pay-sub-title']">代收代付</div>
-                  <div :class="$style['pay-main-title']" style="color:black">
+                  <div :class="$style['pay-main-title']" style="color: black">
                     {{
                       `${
                         Number(rechargeConfig.recharger_offer_percent) !== 0
@@ -104,7 +109,7 @@
                       }`
                     }}
                   </div>
-                  <div :class="$style['pay-main-title']" style="color:black">
+                  <div :class="$style['pay-main-title']" style="color: black">
                     代理分红
                   </div>
                 </div>
@@ -117,12 +122,12 @@
           <div
             v-if="
               (curPayInfo.banks && curPayInfo.banks.length > 0) ||
-                (yourBankData.length > 0 && curPayInfo.payment_type_id === 5)
+              (yourBankData.length > 0 && curPayInfo.payment_type_id === 5)
             "
             :class="[
               $style['feature-wrap'],
               $style['select-card-wrap'],
-              'clearfix'
+              'clearfix',
             ]"
             @click="changeType('chagneBank'), (isShowPop = true)"
           >
@@ -193,7 +198,7 @@
                 :class="[
                   $style['speed-field-name'],
                   { [$style.error]: depositNameInput.isError },
-                  'clearfix'
+                  'clearfix',
                 ]"
               >
                 <div :class="$style['field-title']">
@@ -218,7 +223,9 @@
               <div
                 :class="[
                   $style['deposit-name-messgae'],
-                  { [$style['hide']]: !nameCheckFail && speedField.depositName }
+                  {
+                    [$style['hide']]: !nameCheckFail && speedField.depositName,
+                  },
                 ]"
               >
                 为即时到账，请务必输入正确的汇款人姓名
@@ -240,7 +247,7 @@
                   :key="data.id"
                   :class="[
                     $style['pay-mode-pass'],
-                    { [$style['current-data']]: data.id === curPassRoad.id }
+                    { [$style['current-data']]: data.id === curPassRoad.id },
                   ]"
                   @click="changePassRoad(data)"
                 >
@@ -259,8 +266,8 @@
             <div
               v-if="
                 themeTPL === 'porn1' &&
-                  isSelectBindWallet() &&
-                  !this.curPassRoad.is_bind_wallet
+                isSelectBindWallet() &&
+                !this.curPassRoad.is_bind_wallet
               "
               :class="[$style['feature-wrap'], 'clearfix']"
             >
@@ -292,15 +299,13 @@
             <div
               v-if="
                 themeTPL === 'ey1' &&
-                  isSelectBindWallet() &&
-                  !this.curPassRoad.is_bind_wallet
+                isSelectBindWallet() &&
+                !this.curPassRoad.is_bind_wallet
               "
               :class="[$style['feature-wrap'], 'clearfix']"
             >
               <!-- 億元: 尚未綁定會彈窗 -->
-              <span :class="$style['bank-card-title']">
-                验证方式
-              </span>
+              <span :class="$style['bank-card-title']"> 验证方式 </span>
 
               <div :class="$style['no-bind-wallet']">
                 尚未绑定CGPay钱包
@@ -313,8 +318,8 @@
             <div
               v-if="
                 themeTPL === 'porn1' &&
-                  isSelectBindWallet(16) &&
-                  curPassRoad.is_bind_wallet
+                isSelectBindWallet(16) &&
+                curPassRoad.is_bind_wallet
               "
               :class="[$style['feature-wrap'], 'clearfix']"
             >
@@ -343,12 +348,12 @@
             <div
               v-if="
                 (isSelectBindWallet() && curPassRoad.is_bind_wallet) ||
-                  !isSelectBindWallet()
+                !isSelectBindWallet()
               "
               :class="[
                 $style['feature-wrap'],
                 $style['select-money'],
-                'clearfix'
+                'clearfix',
               ]"
             >
               <!-- 億元：顯示 CGPay 餘額 -->
@@ -356,8 +361,8 @@
               <template
                 v-if="
                   themeTPL === 'ey1' &&
-                    isSelectBindWallet(16) &&
-                    curPassRoad.is_bind_wallet
+                  isSelectBindWallet(16) &&
+                  curPassRoad.is_bind_wallet
                 "
               >
                 <div :class="$style['CGPay-money']">
@@ -385,7 +390,7 @@
                 v-if="isDepositAi"
                 :class="[
                   $style['bank-card-title'],
-                  { [$style['is-error']]: isErrorMoney }
+                  { [$style['is-error']]: isErrorMoney },
                 ]"
               >
                 提交订单时，系统自动调配最佳充值金额
@@ -401,7 +406,7 @@
                   :key="`pay-money-${index}`"
                   :class="[
                     $style['pay-money-item'],
-                    { [$style['is-current']]: moneyValue === item }
+                    { [$style['is-current']]: moneyValue === item },
                   ]"
                   @click="
                     () => {
@@ -428,8 +433,8 @@
                 <div
                   v-if="
                     curPassRoad &&
-                      curPassRoad.is_custom_amount &&
-                      curPassRoad.amounts.length > 0
+                    curPassRoad.is_custom_amount &&
+                    curPassRoad.amounts.length > 0
                   "
                   :class="[$style['speed-money-wrap'], 'clearfix']"
                 >
@@ -437,7 +442,7 @@
                     :class="[
                       $style['pay-money-item'],
                       $style['custom-item'],
-                      { [$style['is-current']]: isSelectedCustomMoney }
+                      { [$style['is-current']]: isSelectedCustomMoney },
                     ]"
                     @click="
                       () => {
@@ -452,9 +457,7 @@
                       }
                     "
                   >
-                    <span>
-                      其他金额
-                    </span>
+                    <span> 其他金额 </span>
                     <br />
                     <span>
                       {{
@@ -491,8 +494,8 @@
               <div
                 v-if="
                   !isDepositAi &&
-                    (Object.keys(curPassRoad).length === 0 ||
-                      curPassRoad.is_custom_amount)
+                  (Object.keys(curPassRoad).length === 0 ||
+                    curPassRoad.is_custom_amount)
                 "
                 :class="[
                   $style['feature-deposit-wrap'],
@@ -500,8 +503,8 @@
                     [$style['hidden']]:
                       curPassRoad.is_custom_amount &&
                       moneyValue &&
-                      isDisableDepositInput
-                  }
+                      isDisableDepositInput,
+                  },
                 ]"
               >
                 <div class="money-input-wrap">
@@ -510,20 +513,18 @@
                     :class="[
                       $style['deposit-input'],
                       {
-                        [$style.disable]: isDisableDepositInput
-                      }
+                        [$style.disable]: isDisableDepositInput,
+                      },
                     ]"
-                    :placeholder="
-                      `单笔充值金额：${getSingleLimit(
-                        this.depositInterval.minMoney,
-                        this.depositInterval.maxMoney
-                      )}
-                      `
-                    "
+                    :placeholder="`单笔充值金额：${getSingleLimit(
+                      this.depositInterval.minMoney,
+                      this.depositInterval.maxMoney
+                    )}
+                      `"
                     type="text"
                     inputmode="decimal"
                     @blur="
-                      $event => {
+                      ($event) => {
                         verification('money', $event.target.value);
                         if (
                           isSelectBindWallet(402) &&
@@ -572,8 +573,8 @@
                     :class="[
                       $style['conversion-btn'],
                       {
-                        [$style['disable']]: isClickCoversionBtn
-                      }
+                        [$style['disable']]: isClickCoversionBtn,
+                      },
                     ]"
                     @click="convertCryptoMoney"
                   >
@@ -598,8 +599,9 @@
                   :class="[
                     $style['pay-auth-method'],
                     {
-                      [$style['current-data']]: walletData['CGPay'].method === 0
-                    }
+                      [$style['current-data']]:
+                        walletData['CGPay'].method === 0,
+                    },
                   ]"
                   @click="walletData['CGPay'].method = 0"
                 >
@@ -615,8 +617,9 @@
                   :class="[
                     $style['pay-auth-method'],
                     {
-                      [$style['current-data']]: walletData['CGPay'].method === 1
-                    }
+                      [$style['current-data']]:
+                        walletData['CGPay'].method === 1,
+                    },
                   ]"
                   @click="walletData['CGPay'].method = 1"
                 >
@@ -652,13 +655,13 @@
                   :class="[
                     $style['speed-field'],
                     { [$style.error]: info.isError },
-                    'clearfix'
+                    'clearfix',
                   ]"
                 >
                   <img
                     v-if="
                       info.objKey === 'depositMethod' ||
-                        info.objKey === 'depositTime'
+                      info.objKey === 'depositTime'
                     "
                     :class="$style['speed-field-icon']"
                     src="/static/image/_new/common/arrow_next.png"
@@ -672,15 +675,15 @@
                           {
                             [$style[
                               'depositMethod-no-data'
-                            ]]: !speedField.depositMethod
-                          }
+                            ]]: !speedField.depositMethod,
+                          },
                         ]"
                         @click="isShowMethodsPop = true"
                       >
                         {{
                           speedField.depositMethod
                             ? info.selectData.find(
-                                item =>
+                                (item) =>
                                   speedField.depositMethod === item.selectId
                               ).mainTitle
                             : info.selectTitle
@@ -770,7 +773,7 @@
                     <div
                       :class="[
                         $style['basic-info-text'],
-                        $style['basic-info-title']
+                        $style['basic-info-title'],
                       ]"
                     >
                       {{ info.title }}
@@ -780,7 +783,7 @@
                       v-if="info.qrcode && info.qrcode.length > 0"
                       :class="[
                         $style['basic-info-text'],
-                        $style['qrcode-wrap']
+                        $style['qrcode-wrap'],
                       ]"
                     >
                       <template
@@ -814,7 +817,7 @@
                       v-else-if="info.htmlShow"
                       :class="[
                         $style['basic-info-text'],
-                        $style[`info-${info.objKey}`]
+                        $style[`info-${info.objKey}`],
                       ]"
                       v-html="info.value"
                     />
@@ -848,7 +851,7 @@
           <div
             v-if="
               (isSelectBindWallet() && curPassRoad.is_bind_wallet) ||
-                !isSelectBindWallet()
+              !isSelectBindWallet()
             "
             :class="$style['money-info-wrap']"
           >
@@ -883,9 +886,7 @@
                   • {{ feeText }}
                 </li>
 
-                <li>
-                  • 实际存入依审核结果为准
-                </li>
+                <li>• 实际存入依审核结果为准</li>
               </ul>
               <div
                 :class="$style['message-close']"
@@ -906,8 +907,8 @@
                   !isBlockChecked ||
                   nameCheckFail ||
                   (isSelectBindWallet() && !this.curPassRoad.is_bind_wallet) ||
-                  (isSelectBindWallet(402) && !isClickCoversionBtn)
-              }
+                  (isSelectBindWallet(402) && !isClickCoversionBtn),
+              },
             ]"
             :title="$text('S_ENTER_PAY', '立即充值')"
             @click="clickSubmit"
@@ -1779,7 +1780,7 @@ export default {
             target: "name",
             value: value
           }).then(val => {
-            this.checkSuccess = val ? true : false ;
+            this.checkSuccess = val ? true : false;
 
             this.speedField.depositName = val;
             this.$emit("update:speedField", { val, target });
