@@ -12,7 +12,10 @@
         />
       </template>
       <template v-if="slotKey === 'jackpot'">
-        <div :class="$style['jackpot-wrap']">
+        <div
+          :class="$style['jackpot-wrap']"
+          :style="{ display: jackpotData ? 'block' : 'none' }"
+        >
           <jackpot :vendor="vendor" @setJackpotData="setJackpotData" />
         </div>
       </template>
@@ -154,6 +157,8 @@ export default {
       isGameDataReceive: false,
       gameData: [],
       activityData: [],
+
+      jackpotData: null
     };
   },
   computed: {
@@ -173,10 +178,17 @@ export default {
       return this.favoriteGame.filter((element) => element.kind === this.paramsData.kind);
     },
     jackpotType() {
+      if (!this.jackpotData) {
+        return '';
+      }
+
       switch (this.vendor) {
         // 單一彩金+名單
         case 'bbin':
           return 'multiTotal';
+        // 單一彩金
+        case 'jdb':
+          return 'single';
         default:
           return;
       }
@@ -444,6 +456,7 @@ export default {
 
 .game-item-wrap {
   min-height: calc(100vh - 88px);
+  margin-top: 44px;
 
   &.multiTotal {
     margin-top: 151px;

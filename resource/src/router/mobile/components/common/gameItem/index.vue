@@ -34,6 +34,9 @@
       v-if="showJackpot && getAmount"
       :class="getClass(['game-jackpot', 'jackpot-img'])"
     >
+      <div :class="getClass(['game-jackpot-img'])">
+        <img :src="getJackpotImg" />
+      </div>
       <span>{{ getAmount }}</span>
     </div>
     <!-- 遊戲標題 -->
@@ -207,13 +210,33 @@ export default {
     getActivityImg() {
       return `/static/image/casino/theme/brilliant/lang/${this.curLang}/${this.gameInfo.status !== 2 ? 'upcoming_ribbon' : 'activity_ribbon'}.png`;
     },
+    getJackpotImg() {
+      let src = '/static/image/casino/jackpot/';
+      switch (this.gameInfo.vendor) {
+        // 單一彩金+名單
+        case 'bbin':
+        case "gns":
+        case "isb":
+        case "ag":
+        case "sg":
+        case "fg":
+        case "mg":
+          return src + 'ic_minor.png';
+        case 'pt':
+        case "hb":
+        case "wm":
+          return src + 'ic_jackpot.png';
+        default:
+          return;
+      }
+    },
     /**
      * 個別遊戲彩金金額
      * @method getAmount
      * @returns {string} 彩金金額
      */
     getAmount() {
-      if (!this.jackpotData) {
+      if (!this.jackpotData || !this.jackpotData.jpMinor) {
         return '';
       }
 
