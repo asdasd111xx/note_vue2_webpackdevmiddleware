@@ -198,7 +198,6 @@
     </div>
   </mobile-container>
 </template>
-
 <script>
 import { mapGetters } from 'vuex';
 import loginForm from '@/mixins/loginForm';
