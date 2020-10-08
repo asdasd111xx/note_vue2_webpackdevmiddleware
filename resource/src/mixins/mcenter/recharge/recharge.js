@@ -84,21 +84,31 @@ export default {
             ];
         },
         bonusList() {
+            let lastIndex = 0;
+            let data = this.rechargeBonusConfig;
+
+            if (this.hasBonusRule) {
+                // 確保目前開放的欄位 first / monthly / weekly
+                let keys = Object.keys(data);
+                // 取 Key 值的欄位設 render 的數量
+                lastIndex = data[keys[0]].length - 1;
+            }
+
             return [
                 {
                     key: "first",
-                    text: `喜讯：首次额度转让旗下会员赠彩金${this.rechargeConfig.first_bonus}元/位`,
-                    isShow: this.rechargeConfig.first_bonus_enable
+                    text: `喜讯：首次额度转让旗下会员赠彩金${data.first ? data.first[lastIndex].bonus : null}元/位`,
+                    isShow: this.rechargeConfig.first_bonus_enable,
                 },
                 {
                     key: "monthly",
-                    text: `喜讯：每月首次额度转让旗下会员赠${this.rechargeConfig.monthly_bonus}元/位`,
-                    isShow: this.rechargeConfig.monthly_bonus_enable
+                    text: `喜讯：每月首次额度转让旗下会员赠${data.monthly ? data.monthly[lastIndex].bonus : null}元/位`,
+                    isShow: this.rechargeConfig.monthly_bonus_enable,
                 },
                 {
                     key: "weekly",
-                    text: `喜讯：每周首次额度转让旗下会员赠${this.rechargeConfig.weekly_bonus}元/位`,
-                    isShow: this.rechargeConfig.weekly_bonus_enable
+                    text: `喜讯：每周首次额度转让旗下会员赠${data.weekly ? data.weekly[lastIndex].bonus : null}元/位`,
+                    isShow: this.rechargeConfig.weekly_bonus_enable,
                 }
             ].filter(item => item.isShow)
         },
