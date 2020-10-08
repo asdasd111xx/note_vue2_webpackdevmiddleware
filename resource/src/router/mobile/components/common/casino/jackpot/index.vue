@@ -1,14 +1,22 @@
 <template>
-  <div v-show="jackpotData" :class="$style['jackpot-container']">
+  <div v-show="jackpotData && showGrand" :class="$style['jackpot-container']">
     <!-- 單一彩金+名單 -->
-    <div v-if="jackpotType === 1" :class="$style['multiTotal-container']">
+    <div
+      v-if="jackpotType === 1"
+      :class="[
+        $style['multiTotal-container'],
+        {
+          [$style['single']]: vendor !== 'bbin'
+        }
+      ]"
+    >
       <div :class="$style['total-bonus']">
         <div :class="$style['total-image']">
           <img :src="totalBonusImage" />
         </div>
         <div :class="$style['total-bonus-content']">
           <div>
-            Grand
+            {{ totalBonusTitle }}
           </div>
           <div>
             Jackpot
@@ -22,7 +30,10 @@
           </div>
         </div>
       </div>
-      <div :class="$style['multi-bonus-wrap-bg']" />
+      <div
+        :class="$style['multi-bonus-wrap-bg']"
+        v-if="currentUsers && currentUsers.length > 0"
+      />
       <transition name="fade">
         <div
           :class="[$style['multi-bonus-wrap']]"
@@ -73,7 +84,11 @@ export default {
       // 1. 單一彩金+名單
       // 2.
       // 3.
-      jackpotType: 1,
+      showGrand: false,
+      jackpotType: 0,
+
+      totalBonusImage: "",
+      totalBonusTitle: "",
 
       currentUsers: null,
       currentUsersIndex: 0,
@@ -106,9 +121,6 @@ export default {
       memInfo: "getMemInfo",
       loginStatus: "getLoginStatus"
     }),
-    totalBonusImage() {
-      return "/static/image/casino/jackpot/ic_grand.png";
-    }
   },
   methods: {
     ...mapActions(["actionNoticeData"]),
@@ -124,21 +136,16 @@ export default {
             this.jackpotData = res.data.ret;
             this.$emit('setJackpotData', this.jackpotData);
             console.log(this.jackpotData)
-            switch (this.vendor) {
-              // 單一彩金+名單
-              case "bbin":
-                this.jackpotType = 1;
-                break;
-              default:
-                return;
-            }
-
             this.initJackpot();
           }
         })
         .catch(error => { });
     },
     setCurrentUsers() {
+      if (!this.jackpotData.jpUserList) {
+        return;
+      }
+
       const interval = () => {
         let tmpIndex = this.currentUsersIndex === 0 ? 0 : this.currentUsersIndex + 1;
         let array = [];
@@ -168,6 +175,36 @@ export default {
       }, 3000);
     },
     initJackpot() {
+      if (!this.jackpotData.jpGrand) {
+        return;
+      }
+
+      switch (this.vendor) {
+        // 單一彩金+名單
+        case "bbin":
+          this.jackpotType = 1;
+          this.totalBonusTitle = "Grand";
+          this.totalBonusImage = "/static/image/casino/jackpot/ic_grand.png";
+          this.showGrand = true;
+
+          break;
+
+        // 單一彩金
+        case "jdb":
+        case "wm":
+        case "ps":
+        case "gti":
+          this.jackpotType = 1;
+          this.totalBonusTitle = this.vendor.toUpperCase();
+          this.totalBonusImage = `/static/image/casino/jackpot/ic_${this.vendor}.png`;
+          this.showGrand = true;
+
+          break;
+
+        default:
+          break;
+      }
+
       switch (this.jackpotType) {
         // 單一彩金+名單
         case 1:
@@ -196,13 +233,17 @@ export default {
 @import "@/css/variable.scss";
 
 .jackpot-container {
-  height: 115px;
   padding: 6px 9px;
 }
 
 .multiTotal-container {
+  height: 115px;
   position: relative;
   background: #f5f5f5;
+
+  &.single {
+    height: auto;
+  }
 }
 
 .total-bonus {
@@ -219,6 +260,8 @@ export default {
   > img {
     height: 33px;
     width: 33px;
+    position: absolute;
+    top: 3px;
   }
 }
 
