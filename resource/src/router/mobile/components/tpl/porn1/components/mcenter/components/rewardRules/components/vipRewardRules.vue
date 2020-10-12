@@ -44,7 +44,7 @@
             >
               <!-- index = 0 為 VIP 等級欄位 -->
               <template v-if="index === 0">
-                {{ item === "VIP 0" ? `一般會員(${item})` : item }}
+                {{ item === "VIP 0" ? `一般会员(${item})` : item }}
               </template>
 
               <template v-else>
