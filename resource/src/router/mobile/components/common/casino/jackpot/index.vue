@@ -1,6 +1,6 @@
 <template>
-  <div v-show="jackpotData && showGrand" :class="$style['jackpot-container']">
-    <!-- 單一彩金+名單 -->
+  <div v-show="jackpotData && showJackpot" :class="$style['jackpot-container']">
+    <!-- 1. 單一總彩金/名單 -->
     <div
       v-if="jackpotType === 1"
       :class="[
@@ -57,6 +57,7 @@
       </transition>
     </div>
 
+    <!-- 2. 單一遊戲彩金 -->
     <div
       v-else-if="jackpotType === 2"
       :class="[
@@ -69,20 +70,53 @@
       <div
         v-for="(item, key) in currentBonus"
         :class="$style['single-bonus-cell']"
+        :style="
+          currentBonus && currentBonus.length <= 1 ? { animation: 'none' } : ''
+        "
       >
         <div :class="$style['single-bonus-image']">
           <img :src="item.imgSrc" />
         </div>
         <div :class="$style['single-bonus-content']">
-          <div>{{ item.name }}</div>
+          <div>
+            {{ item.name }}
+          </div>
+
           <div :class="$style['single-bonus-amount']">
             <span> ¥&nbsp;{{ item.amount }} </span>
           </div>
         </div>
       </div>
     </div>
-    <template v-else-if="jackpotType === 2"> </template>
-    <template v-else-if="jackpotType === 3"> </template>
+
+    <!-- 3. 多層彩金 -->
+    <div
+      v-else-if="jackpotType === 3"
+      :class="[$style['multiBonus-container']]"
+    >
+      <div :class="$style['single-bonus-cell']" style="animation:none">
+        <div :class="$style['single-bonus-image']">
+          <img :src="'/static/image/casino/jackpot/ic_grand.png'" />
+        </div>
+        <div :class="$style['single-bonus-content']">
+          <div :class="$style['weight']">Grand</div>
+          <div :class="$style['single-bonus-amount']">
+            <span> ¥&nbsp;{{ jackpotData.jpGrand || 0 }} </span>
+          </div>
+        </div>
+      </div>
+      <div :class="$style['single-bonus-cell']" style="animation:none">
+        <div :class="$style['single-bonus-image']">
+          <img :src="'/static/image/casino/jackpot/ic_major.png'" />
+        </div>
+        <div :class="$style['single-bonus-content']">
+          <div :class="$style['weight']">Major</div>
+          <div :class="$style['single-bonus-amount']">
+            <span> ¥&nbsp;{{ jackpotData.jpMajor || 0 }} </span>
+          </div>
+        </div>
+      </div>
+    </div>
   </div>
 </template>
 
@@ -105,11 +139,12 @@ export default {
       timer: null,
       usersTimer: null,
       jackpotData: null,
-      // 1. 單一彩金+名單
-      // 2.
-      // 3.
-      showGrand: false,
+
+      // 1. 單一總彩金/名單
+      // 2. 單一遊戲彩金
+      // 3. 多層彩金
       jackpotType: 0,
+      showJackpot: false,
 
       totalBonusImage: '',
       totalBonusTitle: '',
@@ -166,34 +201,46 @@ export default {
       }
 
       const interval = () => {
-        let tmpIndex = this.currentBonusIndex === 0 ? 0 : this.currentBonusIndex + 1;
+        let tmpIndex = this.currentBonusIndex;
         let array = [];
         this.currentBonus = [];
-
         this.$nextTick(() => {
-          let i = 1;
-          while (i < 3) {
-            if (tmpIndex + i > this.jackpotData.jpMinor.length) {
-              tmpIndex = 0;
-            } else {
-              tmpIndex += 1;
-            }
 
-            // 3 casino, 6 mahjong,card
-            let imgSrc = `https://b1.xf0371.com/cdn/image/${this.$route.name}/${this.vendor}/Game_${this.jackpotData.jpMinor[tmpIndex].code}.png`;
-            array.push({ ...this.jackpotData.jpMinor[tmpIndex], imgSrc: imgSrc });
-            i += 1;
+          // 3 casino, 6 mahjong,card
+          let imgSrc = `https://b1.xf0371.com/cdn/image/${this.$route.name}/${this.vendor}/Game_${this.jackpotData.jpMinor[tmpIndex].code}.png`;
+          array.push({ ...this.jackpotData.jpMinor[tmpIndex], imgSrc: imgSrc });
+
+          if (tmpIndex + 1 >= this.jackpotData.jpMinor.length) {
+            tmpIndex = 0;
+          } else {
+            tmpIndex += 1;
           }
 
+          imgSrc = `https://b1.xf0371.com/cdn/image/${this.$route.name}/${this.vendor}/Game_${this.jackpotData.jpMinor[tmpIndex].code}.png`;
+          array.push({ ...this.jackpotData.jpMinor[tmpIndex], imgSrc: imgSrc });
+
           this.currentBonus = array;
+
+          if (tmpIndex + 1 >= this.jackpotData.jpMinor.length) {
+            tmpIndex = 0;
+          } else {
+            tmpIndex += 1;
+          }
+
           this.currentBonusIndex = tmpIndex;
         })
       }
 
-      interval();
-      this.usersTimer = setInterval(() => {
+      if (this.jackpotData.jpMinor.length > 1) {
         interval();
-      }, 3000);
+        this.usersTimer = setInterval(() => {
+          interval();
+        }, 3000);
+      } else {
+        let imgSrc = `https://b1.xf0371.com/cdn/image/${this.$route.name}/${this.vendor}/Game_${this.jackpotData.jpMinor[0].code}.png`;
+        this.currentBonus = [];
+        this.currentBonus.push({ ...this.jackpotData.jpMinor[0], imgSrc: imgSrc });
+      }
     },
     setCurrentUsers() {
       if (!this.jackpotData.jpUserList) {
@@ -201,15 +248,16 @@ export default {
       }
 
       const interval = () => {
-        let tmpIndex = this.currentUsersIndex === 0 ? 0 : this.currentUsersIndex + 1;
+        let tmpIndex = this.currentUsersIndex;
         let array = [];
         this.currentUsers = [];
 
         this.$nextTick(() => {
           array.push({ ...this.jackpotData.jpUserList[tmpIndex], no: tmpIndex + 1 });
+
           let i = 1;
-          while (i < 3) {
-            if (tmpIndex + i > this.jackpotData.jpUserList.length) {
+          while (i <= 2) {
+            if (tmpIndex + i >= this.jackpotData.jpUserList.length) {
               tmpIndex = 0;
             } else {
               tmpIndex += 1;
@@ -219,30 +267,36 @@ export default {
           }
 
           this.currentUsers = array;
+
+          if (tmpIndex + i >= this.jackpotData.jpUserList.length) {
+            tmpIndex = 0;
+          } else {
+            tmpIndex += 1;
+          }
+
           this.currentUsersIndex = tmpIndex;
         })
       }
 
-      interval();
-      this.usersTimer = setInterval(() => {
+      if (this.jackpotData.jpUserList.length > 1) {
         interval();
-      }, 3000);
+        this.usersTimer = setInterval(() => {
+          interval();
+        }, 3000);
+      } else {
+        this.currentUsers = [];
+        this.currentUsers.push({ ...this.jackpotData.jpUserList[0], no: 1 });
+      }
     },
     initJackpot() {
+      this.showJackpot = true;
+
       switch (this.vendor) {
         // 單一總彩金+名單
         case "bbin":
           this.jackpotType = 1;
           this.totalBonusTitle = "Grand";
-          this.totalBonusImage = "/static/image/casino/jackpot/ic_grand.png";
-          this.showGrand = true;
-
-          break;
-
-        case "lg_casino":
-          this.jackpotType = 1;
-          this.totalBonusTitle = "Grand";
-
+          this.totalBonusImage = "/static/image/casino/jackpot/gamejp.png";
           break;
 
         // 單一總彩金
@@ -253,8 +307,6 @@ export default {
           this.jackpotType = 1;
           this.totalBonusTitle = this.vendor.toUpperCase();
           this.totalBonusImage = `/static/image/casino/jackpot/ic_${this.vendor}.png`;
-          this.showGrand = true;
-
           break;
 
         // 單一遊戲彩金
@@ -266,9 +318,13 @@ export default {
         case "sw":
         case "fg":
         case "mg":
+        case "mg2":
           this.jackpotType = 2;
-          this.showGrand = true;
+          break;
 
+        // 多層彩金
+        case "lg_casino":
+          this.jackpotType = 3;
           break;
 
         default:
@@ -276,7 +332,8 @@ export default {
       }
 
       switch (this.jackpotType) {
-        // 單一彩金+名單
+        // 單一總彩金+名單
+        // 單一總彩金
         case 1:
           this.setCurrentUsers();
 
@@ -299,9 +356,15 @@ export default {
           })
           return;
 
+        // 單一遊戲彩金
         case 2:
           this.setSingleBonuns();
           return;
+
+        // 多層彩金
+        case 3:
+          return;
+
         default:
           return;
       }
@@ -324,6 +387,7 @@ export default {
   height: 105px;
   position: relative;
   background: #f5f5f5;
+  border-radius: 17px;
 
   &.single {
     height: auto;
@@ -331,20 +395,18 @@ export default {
 }
 
 .multiBonus-container {
-  height: 90px;
+  // height: 90px;
+  height: auto;
   position: relative;
   background: #f5f5f5;
-
-  &.multi {
-    height: auto;
-  }
+  border-radius: 17px;
 }
 
 .total-bonus,
 .single-bonus-cell {
   background: #ffffff;
   border-radius: 17px;
-  z-index: 20;
+  z-index: 3;
 }
 
 .single-bonus-cell {
@@ -420,6 +482,16 @@ export default {
     font-weight: 400;
     text-align: left;
     color: #504f4a;
+    width: 55%;
+    overflow: hidden;
+    text-overflow: ellipsis;
+    white-space: nowrap;
+    padding-right: 5px;
+    border-right: #eeeeee 1px solid;
+    &.weight {
+      font-size: 15px;
+      font-weight: 700;
+    }
   }
 
   .single-bonus-amount {

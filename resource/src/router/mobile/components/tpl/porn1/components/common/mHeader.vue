@@ -28,7 +28,7 @@
         "
       />
     </div>
-  
+
     <div v-if="headerConfig.title" :class="[$style.wrap, 'clearfix']">
       <div :class="[[$style.title], $style[source]]">
         {{ headerConfig.title }}
@@ -290,7 +290,7 @@ export default {
   max-width: $mobile_max_width;
   position: fixed;
   top: 0;
-  z-index: 3;
+  z-index: 10;
   width: 100%;
   height: 43px;
   padding: 0 17px;
@@ -330,12 +330,12 @@ export default {
 }
 
 .agent {
-    background: url('/static/image/porn1/agent/common/herder_bg.png');
-    border-bottom: 1px solid #000;
+  background: url("/static/image/porn1/agent/common/herder_bg.png");
+  border-bottom: 1px solid #000;
 
-    .title {
-        color: #FFF;
-    }
+  .title {
+    color: #fff;
+  }
 }
 
 .logo-wrap {

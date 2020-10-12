@@ -11,19 +11,18 @@
           :change-game-label="changeGameLabel"
         />
       </template>
-      <template v-if="slotKey === 'jackpot'">
-        <div
-          :class="$style['jackpot-wrap']"
-          :style="{ display: jackpotData ? 'block' : 'none' }"
-        >
-          <jackpot :vendor="vendor" @setJackpotData="setJackpotData" />
-        </div>
-      </template>
+
       <template v-if="slotKey === 'list'">
         <div
           :key="`slot-${slotKey}`"
           :class="[[$style['game-item-wrap'], $style[jackpotType]], 'clearfix']"
         >
+          <div
+            :class="$style['jackpot-wrap']"
+            :style="{ display: jackpotData ? 'block' : 'none' }"
+          >
+            <jackpot :vendor="vendor" @setJackpotData="setJackpotData" />
+          </div>
           <template>
             <template v-for="(gameInfo, index) in gameData">
               <game-item
@@ -182,27 +181,33 @@ export default {
         return '';
       }
 
-      switch (this.vendor) {
-        // 單一總彩金+名單
-        case 'bbin':
-          return 'multiTotal';
+      // switch (this.vendor) {
+      //   // 單一總彩金+名單
+      //   case 'bbin':
+      //     return 'multiTotal';
 
-        // 單一總彩金
-        case "jdb":
-        case "wm":
-        case "ps":
-        case "gti":
-          return 'single';
+      //   // 單一總彩金
+      //   case "jdb":
+      //   case "wm":
+      //   case "ps":
+      //   case "gti":
+      //     return 'single';
 
-        // 單一遊戲彩金
-        case "pt":
-        case "gns":
-        case "isb":
-        case "hb":
-          return 'multiBonus';
-        default:
-          return;
-      }
+      //   // 單一遊戲彩金
+      //   case "pt":
+      //   case "gns":
+      //   case "isb":
+      //   case "hb":
+      //   case "ag":
+      //   case "sw":
+      //   case "fg":
+      //   case "mg":
+      //   case "mg2":
+      //   case "lg_casino":
+      //     return 'multiBonus';
+      //   default:
+      //     return;
+      // }
     }
   },
   watch: {
@@ -466,20 +471,19 @@ export default {
 @import "~@/css/variable.scss";
 
 .game-item-wrap {
-  min-height: calc(100vh - 88px);
-  margin-top: 44px;
+  margin-top: 40px;
 
-  &.multiTotal {
-    margin-top: 151px;
-  }
+  // &.multiTotal {
+  //   margin-top: 151px;
+  // }
 
-  &.single {
-    margin-top: 75px;
-  }
+  // &.single {
+  //   margin-top: 75px;
+  // }
 
-  &.multiBonus {
-    margin-top: 151px;
-  }
+  // &.multiBonus {
+  //   margin-top: 151px;
+  // }
 }
 
 .empty-wrap {
@@ -501,9 +505,7 @@ export default {
   max-width: $mobile_max_width;
   padding-top: 9px;
   padding: 0;
-  position: absolute;
   background: #ededed;
-  top: 87px;
   width: 100%;
   z-index: 5;
 }

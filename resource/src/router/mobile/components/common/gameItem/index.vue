@@ -221,6 +221,8 @@ export default {
         case "sg":
         case "fg":
         case "mg":
+        case "mg2":
+        case "lg_casino":
           return src + 'ic_minor.png';
         case 'pt':
         case "hb":
