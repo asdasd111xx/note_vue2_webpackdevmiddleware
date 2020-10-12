@@ -1,6 +1,9 @@
+import store from '@/store';
 
 // 鸭博娱乐色站 api domain
-export const PORN_DOMAIN = 'https://foxyjizz.com/api/v1';
+export const PORN_DOMAIN = store && store.state && store.state.pornDoamin ?
+    `${store.state.pornDoamin}/api/v1` :
+    'https://foxyjizz.com/api/v1';
 // export const PORN_DOMAIN = 'http://192.168.136.135/api/v1';
 // export const PORN_DOMAIN = 'https://allforyouedu.com/api/v1';
 
