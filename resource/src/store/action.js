@@ -1175,7 +1175,7 @@ export const actionSetYaboConfig = ({ state, dispatch, commit }, next) => {
     configInfo = siteConfigTest[`site_${state.webInfo.alias}`] || siteConfigTest.preset;
   }
 
-  yaboRequest({
+  return yaboRequest({
     method: 'get',
     url: configInfo.YABO_API_DOMAIN + '/system/switch',
   }).then((res) => {
@@ -1565,7 +1565,8 @@ export const actionSetSystemDomain = ({ commit, state }, data) => {
   } else {
     configInfo = siteConfigTest[`site_${state.webInfo.alias}`] || siteConfigTest.preset;
   }
-  yaboRequest({
+
+  return yaboRequest({
     method: 'get',
     url: configInfo.YABO_API_DOMAIN + '/system/domain',
   }).then((res) => {
