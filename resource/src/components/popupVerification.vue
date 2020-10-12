@@ -35,8 +35,8 @@
         :class="[
           $style['close'],
           {
-            [$style['is-captcha-image']]: captchaType === 1
-          }
+            [$style['is-captcha-image']]: captchaType === 1,
+          },
         ]"
         @click="$emit('update:isShowCaptcha', false)"
       >

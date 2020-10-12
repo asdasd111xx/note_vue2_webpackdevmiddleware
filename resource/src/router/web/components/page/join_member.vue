@@ -30,7 +30,7 @@
             :class="[
               $style['field-title'],
               $style[`field-${field.key}`],
-              'clearfix'
+              'clearfix',
             ]"
             @click="
               () => {

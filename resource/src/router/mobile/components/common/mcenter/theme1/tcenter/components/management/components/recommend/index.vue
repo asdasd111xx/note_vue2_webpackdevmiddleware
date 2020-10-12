@@ -34,6 +34,7 @@
           }}</span>
         </div>
       </div>
+      <!-- v-if="memInfo.config.infinity_register" -->
       <div
         v-if="memInfo.config.infinity_register"
         :class="$style['button-create']"
@@ -56,7 +57,7 @@
             :class="[
               $style[key],
               $style.placeholder,
-              { [$style.error]: allText[key].error }
+              { [$style.error]: allText[key].error },
             ]"
           >
             <template v-if="!allValue[key]">
@@ -69,8 +70,8 @@
                 {
                   [$style.active]: allValue[key],
                   [$style.error]: allText[key].error,
-                  [$style['show-placeholder']]: !allValue[key]
-                }
+                  [$style['show-placeholder']]: !allValue[key],
+                },
               ]"
               :maxlength="allText[key].maxLength"
               v-model="allValue[key]"
@@ -85,8 +86,8 @@
                 {
                   [$style.active]: allValue[key],
                   [$style.error]: allText[key].error,
-                  [$style['show-placeholder']]: !allValue[key]
-                }
+                  [$style['show-placeholder']]: !allValue[key],
+                },
               ]"
               :data-key="key"
               :maxlength="allText[key].maxLength"
@@ -100,7 +101,7 @@
               v-if="['password', 'confirm_password'].includes(key)"
               :class="[
                 $style['btn-show-password'],
-                { [$style.active]: allText[key].type === 'text' }
+                { [$style.active]: allText[key].type === 'text' },
               ]"
               @click="onShowPassword()"
             />
@@ -113,9 +114,51 @@
             {{ $text(texts[key].error) }}
           </div>
         </div>
-        <button @click="onSubmit">{{ $text("S_ADD") }}</button>
+        <!-- 驗證碼 -->
+        <div v-if="memInfo.config.default_captcha_type === 1">
+          <div :class="$style['input-title']" style="font-size: 12px">
+            验证码
+          </div>
+          <div
+            :class="[
+              $style['captcha-unit'],
+              $style['captcha-unit-captcha'],
+              $style['clearfix'],
+            ]"
+          >
+            <input
+              ref="captcha"
+              v-model="allValue['captcha']"
+              placeholder="请填写验证码"
+              :class="$style['captcha-input']"
+              maxlength="4"
+              @input="captchaVerification($event.target.value)"
+              @keydown.13="onSubmit"
+            />
+            <div class="input-icon"></div>
+            <img
+              :class="$style['captchaImg']"
+              v-if="captchaImg"
+              :src="captchaImg"
+              height="25"
+            />
+            <div :class="$style['captchaText-refresh']" @click="getCaptcha">
+              <img
+                :src="'/static/image/porn1/common/ic_verification_reform.png'"
+              />
+            </div>
+          </div>
+        </div>
+        <popup-verification
+          v-if="isShowCaptcha"
+          :is-show-captcha.sync="isShowCaptcha"
+          :captcha.sync="captchaData"
+        />
+        {{ allValue }}
+        <button @click="showCaptchaPopup">{{ $text("S_ADD") }}</button>
       </div>
     </transition>
+    <!-- 訊息 -->
     <message v-if="msg" @close="msg = ''">
       <div slot="msg">
         {{ msg }}
@@ -136,11 +179,20 @@ import friendsRecommend from '@/mixins/mcenter/management/friendsRecommend';
 import promoteFunction from '@/mixins/mcenter/management/promoteFunction';
 import message from '@/router/mobile/components/common/message';
 import { mapGetters, mapActions } from 'vuex';
+import puzzleVerification from '@/components/puzzleVerification';
+import slideVerification from '@/components/slideVerification';
+import popupVerification from '@/components/popupVerification';
+import bbosRequest from "@/api/bbosRequest";
+import * as apis from '@/config/api';
+import { getCookie, setCookie } from '@/lib/cookie';
 
 export default {
   components: {
     popup: () => import(/* webpackChunkName: 'popup' */'../popup/index'),
-    message
+    message,
+    slideVerification,
+    puzzleVerification,
+    popupVerification
   },
   mixins: [friendsRecommend, promoteFunction],
   data() {
@@ -165,19 +217,104 @@ export default {
           placeholder: 'S_REGISTER_TIPS',
           error: 'S_NO_SYMBOL_DIGIT_CHEN'
         },
-      }
+      },
+      puzzleData: null,
+      isGetCaptcha: false, // 重新取得驗證碼
+      captchaImg: '',
+      toggleCaptcha: false,
     };
   },
   computed: {
     ...mapGetters({
       memInfo: 'getMemInfo',
       siteConfig: 'getSiteConfig',
+      isBackEnd: 'getIsBackEnd',
     }),
+    puzzleObj: {
+      get() {
+        return this.puzzleData;
+      },
+      set(value) {
+        this.puzzleData = value;
+      }
+    },
     $style() {
       const style = this[`$style_${this.siteConfig.MOBILE_WEB_TPL}`] || this.$style_porn1;
       return style;
     },
-  }
+    isShowCaptcha: {
+      get() {
+        return this.toggleCaptcha
+      },
+      set(value) {
+        return this.toggleCaptcha = value
+      }
+    },
+    captchaData: {
+      get() {
+        return this.allValue['captcha']
+      },
+      set(value) {
+        return this.allValue['captcha'] = value
+      }
+    },
+
+  },
+  created() {
+    this.getCaptcha();
+  },
+  methods: {
+    getCaptcha() {
+      if (this.isBackEnd || this.isGetCaptcha) {
+        return;
+      }
+
+      this.isGetCaptcha = true;
+      setTimeout(() => {
+        this.isGetCaptcha = false;
+      }, 800);
+
+      bbosRequest({
+        method: 'post',
+        url: this.siteConfig.BBOS_DOMIAN + '/Captcha',
+        reqHeaders: {
+          'Vendor': this.memInfo.user.domain
+        },
+        params: {
+          "lang": "zh-cn",
+          "format": "png",
+        },
+      }).then((res) => {
+        if (res.data && res.data.data) {
+          this.captchaImg = res.data.data;
+          this.aid = res.data.cookie.aid;
+          setCookie('aid', res.data.cookie.aid);
+        }
+      });
+    },
+    captchaVerification(val) {
+      this.allValue['captcha'] = val.replace(/[\W\_]/g, '');
+    },
+    showCaptchaPopup() {
+      // 無認證直接呼叫
+      if (this.memInfo.config.default_captcha_type === 0) {
+        this.handleSend();
+        return;
+      }
+      // 四碼驗證
+      if (this.memInfo.config.default_captcha_type === 1) {
+        this.onSubmit();
+        return;
+      }
+
+
+      // 彈驗證窗並利用Watch captchaData來呼叫 getKeyring()
+      this.toggleCaptcha = true;
+    },
+    handleSend() {
+      this.onSubmit();
+    },
+  },
 };
 </script>
 
