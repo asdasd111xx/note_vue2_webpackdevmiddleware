@@ -647,13 +647,13 @@ export default {
           };
 
         // 金額部份
-        this.withdrawValue = localStorage.getItem("tmp_w_amount");
+        this.withdrawValue = localStorage.getItem("tmp_w_amount") || this.withdrawValue;
         this.actualMoney =
           JSON.parse(localStorage.getItem("tmp_w_actualAmount")) ||
           this.actualMoney;
 
         // 提現密碼
-        this.withdrawPwd = localStorage.getItem("tmp_w_withdrawPwd");
+        this.withdrawPwd = localStorage.getItem("tmp_w_withdrawPwd") || this.withdrawPwd;
 
         setTimeout(() => {
           this.removeCurrentValue();
