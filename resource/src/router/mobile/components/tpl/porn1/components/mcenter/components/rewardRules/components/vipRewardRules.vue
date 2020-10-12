@@ -11,14 +11,10 @@
             :key="index"
           >
             <div v-if="index == 'monthly'">
-              {{ titleList[1] }}
+              {{ titleList[1] }}<br />赠送彩金
             </div>
-            <div v-if="index == 'weekly'">
-              {{ titleList[2] }}
-            </div>
-            <div v-if="index == 'first'">
-              {{ titleList[3] }}
-            </div>
+            <div v-if="index == 'weekly'">{{ titleList[2] }}<br />赠送彩金</div>
+            <div v-if="index == 'first'">{{ titleList[3] }}<br />赠送彩金</div>
           </div>
 
           <!-- <div :class="$style['table-header']"> -->
@@ -74,9 +70,9 @@ export default {
     return {
       titleList: [
         "特权VIP",
-        "每月首转赠送彩金",
-        "每周首转赠送彩金",
-        "首次转让赠送彩金"
+        "每月首转",
+        "每周首转",
+        "首次转让"
       ],
       //  假資料測試
       //   list: [
