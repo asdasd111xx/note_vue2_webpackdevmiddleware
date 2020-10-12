@@ -78,16 +78,20 @@ input {
 }
 
 .promotion-tips {
+    display: flex;
+    justify-content: space-between;
+    align-items: baseline;
     padding: 0px 14px;
     color: #be9e7f;
     font-size: 12px;
 }
 
 .promotion-tips div {
+    width: 83%;
     margin: 2px 0;
+    word-break: break-all;
 }
 
 .promotion-tips a {
     color: #6aaaf5;
-    float: right;
 }

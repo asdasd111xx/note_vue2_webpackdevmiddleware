@@ -27,7 +27,9 @@
           <div>
             <span v-if="countdownSec">{{ countdownSec }}</span>
             {{
-              themeTPL === "porn1" ? "秒后关闭视窗" : "秒后连结失效，并关闭视窗"
+              themeTPL === "porn1" || bindType === "deposit"
+                ? "秒后关闭视窗"
+                : "秒后连结失效，并关闭视窗"
             }}
           </div>
         </div>

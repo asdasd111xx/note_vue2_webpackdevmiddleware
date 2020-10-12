@@ -9,8 +9,8 @@
       <div :class="$style['promotion-tips']" v-for="item in bonusList">
         <div>
           {{ item.text }}
-          <a title="奖励规则" @click="onGoToRewardRules()">奖励规则</a>
         </div>
+        <a title="奖励规则" @click="onGoToRewardRules()">奖励规则</a>
       </div>
     </template>
 
