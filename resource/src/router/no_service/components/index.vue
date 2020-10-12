@@ -1,5 +1,5 @@
 <template>
-  <div v-if="imgSite && imgSite === 'porn1'" :class="[$style['content']]">
+  <div v-if="imgSite" :class="[$style['content']]">
     <div :class="$style['logo-header']">
       <img :src="$getCdnPath(`/static/image/${imgSite}/common/logo_b.png`)" />
     </div>
