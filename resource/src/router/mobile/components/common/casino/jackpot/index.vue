@@ -50,7 +50,7 @@
               {{ item.username }}
             </div>
             <div>
-              {{ formatMoney(item.amount) }}
+              {{ formatMoney(item.amount, false) }}
             </div>
           </div>
         </div>
@@ -375,11 +375,11 @@ export default {
           return;
       }
     },
-    formatMoney(value) {
+    formatMoney(value, symbol = true) {
       if (!value || value === 0) {
         return 0.00;
       }
-      return `¥${(Math.round(value * 100) / 100).toFixed(2).replace(/\B(?=(\d{3})+(?!\d))/g, ',')}`;
+      return `${symbol ? '¥' : ''}${(Math.round(value * 100) / 100).toFixed(2).replace(/\B(?=(\d{3})+(?!\d))/g, ',')}`;
     },
   }
 };
