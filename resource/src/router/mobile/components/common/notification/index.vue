@@ -173,7 +173,7 @@ export default {
           return string;
 
         case 'verification_code':
-          string = `驗證碼:${this.data.code}，效期10分鐘，僅能夠使用一次，感謝支持!`;
+          string = `验证码:${this.data.code}，效期10分钟，仅能够使用一次，感谢支持!`;
           return string;
 
         default:
