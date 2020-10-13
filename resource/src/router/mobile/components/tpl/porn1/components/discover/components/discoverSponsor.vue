@@ -21,10 +21,10 @@ export default {
           key: 'sponsor_yabolive',
         },
         {
-          key: 'sponsor_sigualive',
+          key: 'sponsor_hglive',
         },
         {
-          key: 'sponsor_hglive',
+          key: 'sponsor_sigualive',
         },
         {
           key: 'sponsor_aglive',
