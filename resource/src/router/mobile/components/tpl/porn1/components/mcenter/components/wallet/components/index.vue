@@ -5,9 +5,7 @@
 
       <div :class="$style['money-block']">
         <span :class="$style['money']">{{ memInfo.balance.total }}</span>
-        <div :class="$style['goDeposit']" @click="handleDeposit">
-          去充值
-        </div>
+        <div :class="$style['goDeposit']" @click="handleDeposit">去充值</div>
       </div>
 
       <div :class="$style['icon-block']">
@@ -15,7 +13,7 @@
           v-for="(item, index) in walletIcons"
           v-if="
             item.show ||
-              (item.key === 'recharge' && siteConfig.MOBILE_WEB_TPL !== 'ey1')
+            (item.key === 'recharge' && siteConfig.MOBILE_WEB_TPL !== 'ey1')
           "
           :key="'icon-' + index"
           :class="$style['icon-cell']"
@@ -61,7 +59,7 @@
             <div
               :class="[
                 $style['recycle-btn'],
-                balanceTran.balanceBackLock ? $style.disable : ''
+                balanceTran.balanceBackLock ? $style.disable : '',
               ]"
             >
               {{ $text("S_ONE_CLICK_TO_ACCOUNT") }}
@@ -70,15 +68,27 @@
 
           <div :class="[$style['balance-item-wrap'], 'clearfix']">
             <div
+              :class="$style['balance-item']"
+              @click="$router.push('/mobile/mcenter/bonus')"
+            >
+              <span :class="$style['balance-item-vendor']">
+                {{ $text("S_BONUS", "红利彩金") }}
+              </span>
+
+              <span :class="$style['balance-item-money']">
+                {{ bonus.balance }}
+              </span>
+            </div>
+            <div
               v-for="(item, key, index) in balanceTran.balanceInfo"
               :key="`balance-item-${key}`"
               :class="[
                 $style['balance-item'],
                 {
                   [$style['is-last-item']]:
-                    Object.keys(balanceTran.balanceInfo).length - index <=
-                    (Object.keys(balanceTran.balanceInfo).length % 4 || 4)
-                }
+                    Object.keys(balanceTran.balanceInfo).length - 1 - index <=
+                    (Object.keys(balanceTran.balanceInfo).length % 4 || 4),
+                },
               ]"
             >
               <span :class="$style['balance-item-vendor']">{{
@@ -161,16 +171,14 @@
       </template>
 
       <template v-else>
-        <div :class="$style['no-data']">
-          还没有任何投注记录
-        </div>
+        <div :class="$style['no-data']">还没有任何投注记录</div>
       </template>
     </div>
 
     <message v-if="msg" @close="msg = ''">
       <div slot="msg">
         <div
-          style="background-color: transparent ; margin: 0 ; padding: 0"
+          style="background-color: transparent; margin: 0; padding: 0"
           v-html="msg"
         />
       </div>
@@ -300,7 +308,8 @@ export default {
             this.$router.push('/mobile/mcenter/bankCard');
           }
         }
-      ]
+      ],
+      bonus: {},
     };
   },
   computed: {
@@ -328,6 +337,12 @@ export default {
       .add(-30, 'days')
       .format('YYYY-MM-DD');
     this.endTime = Vue.moment(this.estToday).format('YYYY-MM-DD');
+    //紅利帳戶api
+    axios.get("/api/v1/c/gift-card").then((response) => {
+      if (response.data.result === "ok") {
+        this.bonus = response.data.total;
+      }
+    });
   },
   mounted() {
     this.getRecordList();
