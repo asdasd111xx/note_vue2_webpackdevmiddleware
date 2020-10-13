@@ -230,7 +230,7 @@ export default {
 
 .container {
   width: 100%;
-  height: 70px;
+  // height: 70px;
   color: white;
   border-radius: 10px;
   background-color: rgba(0, 0, 0, 0.6);
@@ -268,12 +268,12 @@ export default {
 }
 
 .notification-content {
-  height: 35px;
+  min-height: 35px;
   line-height: 35px;
   width: 100%;
-  white-space: nowrap;
-  overflow: hidden;
-  text-overflow: ellipsis;
+  // white-space: nowrap;
+  // overflow: hidden;
+  // text-overflow: ellipsis;
   padding: 0 10px;
 }
 
