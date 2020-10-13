@@ -52,7 +52,8 @@ export default {
   },
   computed: {
     ...mapGetters({
-      agentLink: "getAgentLink"
+      agentLink: "getAgentLink",
+      promotionLink: 'getPromotionLink'
     }),
     headerConfig() {
       return {
@@ -73,6 +74,10 @@ export default {
      * @returns {String} 推廣連結
      */
     getAgentLink() {
+      if (this.promotionLink) {
+        return this.promotionLink;
+      }
+
       if (!this.agentLink.domain || !this.agentLink.agentCode) {
         return "";
       }

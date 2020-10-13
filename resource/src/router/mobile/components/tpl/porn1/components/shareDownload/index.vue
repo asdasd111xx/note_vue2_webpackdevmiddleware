@@ -39,9 +39,14 @@ export default {
       loginStatus: "getLoginStatus",
       siteConfig: "getSiteConfig",
       memInfo: "getMemInfo",
-      agentLink: "getAgentLink"
+      agentLink: "getAgentLink",
+      promotionLink: 'getPromotionLink'
     }),
     getAgentLink() {
+      if (this.promotionLink) {
+        return this.promotionLink;
+      }
+
       if (!this.agentLink.domain || !this.agentLink.agentCode) {
         return "";
       }

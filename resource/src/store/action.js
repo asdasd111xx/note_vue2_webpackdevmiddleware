@@ -1156,9 +1156,11 @@ export const actionSetAgentLink = ({ state, commit }, data) => {
       if (res.errorCode !== '00' || res.status !== '000') {
         return
       }
+      commit(types.SET_PROMOTION_LINK, res.data.url);
       return resolve(res.data.code)
     })
   })
+
 
   Promise.all([domain, agentCode]).then(([domain, agentCode]) => {
     commit(types.SET_AGENTLINK, { domain, agentCode });

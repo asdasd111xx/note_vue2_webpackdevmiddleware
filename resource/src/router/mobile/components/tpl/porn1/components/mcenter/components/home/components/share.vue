@@ -55,7 +55,8 @@ export default {
       loginStatus: "getLoginStatus",
       siteConfig: "getSiteConfig",
       agentLink: "getAgentLink",
-      memInfo: "getMemInfo"
+      memInfo: "getMemInfo",
+      promotionLink: 'getPromotionLink'
     }),
     isException() {
       return window.location.hostname === "yaboxxxapp02.com" || this.isPwa;
@@ -64,6 +65,10 @@ export default {
       return "点击截屏保存";
     },
     getAgentLink() {
+      if (this.promotionLink) {
+        return this.promotionLink;
+      }
+
       if (!this.agentLink.domain || !this.agentLink.agentCode) {
         return "";
       }

@@ -1,4 +1,5 @@
-import { mapGetters, mapActions } from 'vuex';
+import { mapActions, mapGetters } from 'vuex';
+
 import isMobile from '@/lib/is_mobile';
 
 export default {
@@ -12,7 +13,8 @@ export default {
   computed: {
     ...mapGetters({
       memInfo: 'getMemInfo',
-      agentLink: "getAgentLink"
+      agentLink: "getAgentLink",
+      promotionLink: 'getPromotionLink'
     }),
     /**
      * 推廣連結
@@ -20,6 +22,10 @@ export default {
      * @returns {String} 推廣連結
      */
     getAgentLink() {
+      if (this.promotionLink) {
+        return this.promotionLink;
+      }
+
       if (!this.agentLink.domain || !this.agentLink.agentCode) {
         return "";
       }
@@ -48,8 +54,8 @@ export default {
           break;
 
         case 'LINK':
-        //   value = this.agentLink.domain;
-          value = this.getAgentLink;
+          //   value = this.agentLink.domain;
+          value = this.promotionLink;
           type = key
           break;
       }

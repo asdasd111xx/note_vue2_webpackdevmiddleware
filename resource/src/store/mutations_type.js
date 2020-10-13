@@ -156,3 +156,5 @@ export const SET_PORNDOMAIN = 'SET_PORNDOMAIN';
 //   　電子錢包綁定相關
 // ＝＝＝＝＝＝＝＝＝＝＝＝＝＝＝＝＝＝
 export const SET_CGPAYINFO = "SET_CGPAYINFO";
+
+export const SET_PROMOTION_LINK = "SET_PROMOTION_LINK";
