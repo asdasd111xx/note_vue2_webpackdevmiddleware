@@ -75,7 +75,8 @@
                   <template
                     v-if="
                       [5, 6].includes(info.payment_type_id) ||
-                      (themeTPL === 'porn1' && isSelectBindWallet())
+                      (themeTPL === 'porn1' &&
+                        [16, 22, 402].includes(info.payment_method_id))
                     "
                   >
                     返利1%无上限
