@@ -4,7 +4,7 @@
       <div :class="$style['title']">奖励规则</div>
       <div :class="$style['table-wrap']">
         <div :class="$style['table-header']">
-          <div :class="$style['header-item']">{{ titleList[0] }}</div>
+          <div :class="$style['header-item']">{{ vipTitleName }}</div>
           <div
             :class="$style['header-item']"
             v-for="(item, index) in rechargeBonusConfig"
@@ -60,14 +60,21 @@ import { mapGetters, mapActions } from "vuex";
 import mobileContainer from "../../../../common/mobileContainer";
 import mixin from "@/mixins/mcenter/recharge/recharge";
 import axios from "axios";
+import yaboRequest from '@/api/yaboRequest';
+import { getCookie } from "@/lib/cookie";
 
 export default {
   mixins: [mixin],
   components: {
     mobileContainer
   },
+  created() {
+    this.getUserDetail();
+  },
   data() {
     return {
+      userVipInfo: null,
+      vipTitleName: "",
       titleList: [
         "特权VIP",
         "每月首转",
@@ -125,6 +132,18 @@ export default {
   methods: {
     commaFormat(value) {
       return value.toString().replace(/\B(?=(\d{3})+(?!\d))/g, ',');
+    },
+    getUserDetail() {
+      yaboRequest({
+        method: "get",
+        url: `${
+          this.siteConfig.YABO_API_DOMAIN
+          }/player/vipinfo/${getCookie("cid")}`,
+        headers: { "x-domain": this.memInfo.user.domain }
+      }).then(res => {
+        this.userVipInfo = res.data;
+        this.vipTitleName = res.data[0].config_name
+      });
     },
   }
 };
