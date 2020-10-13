@@ -31,7 +31,7 @@
     </div>
     <!-- 遊戲彩金 -->
     <div
-      v-if="showJackpot && getAmount"
+      v-if="showJackpot && getAmount && getJackpotImg"
       :class="getClass(['game-jackpot', 'jackpot-img'])"
     >
       <div :class="getClass(['game-jackpot-img'])">
@@ -224,12 +224,13 @@ export default {
         case "mg":
         case "mg2":
         case "lg_casino":
-        default:
           return src + 'ic_minor.png';
         case 'pt':
         case "hb":
         case "wm":
           return src + 'ic_jackpot.png';
+        default:
+          return;
       }
     },
     /**
