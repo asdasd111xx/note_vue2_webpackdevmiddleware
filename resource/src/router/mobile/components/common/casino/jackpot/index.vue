@@ -24,7 +24,7 @@
           <div :class="$style['total-bonus-amount']">
             <animatedNumber
               :value="animatedNumber.value"
-              :formatValue="formatToPrice"
+              :formatValue="formatMoney"
               :duration="animatedNumber.duration"
             />
           </div>
@@ -50,7 +50,7 @@
               {{ item.username }}
             </div>
             <div>
-              {{ item.amount }}
+              {{ formatMoney(item.amount) }}
             </div>
           </div>
         </div>
@@ -66,6 +66,11 @@
           [$style['single']]: vendor !== 'bbin'
         }
       ]"
+      :style="
+        currentBonus && currentBonus.length <= 1
+          ? { animation: 'none', height: '80px' }
+          : ''
+      "
     >
       <div
         v-for="(item, key) in currentBonus"
@@ -83,7 +88,7 @@
           </div>
 
           <div :class="$style['single-bonus-amount']">
-            <span> ¥&nbsp;{{ item.amount }} </span>
+            <span> {{ formatMoney(item.amount) }}</span>
           </div>
         </div>
       </div>
@@ -101,7 +106,7 @@
         <div :class="$style['single-bonus-content']">
           <div :class="$style['weight']">Grand</div>
           <div :class="$style['single-bonus-amount']">
-            <span> ¥&nbsp;{{ jackpotData.jpGrand || 0 }} </span>
+            <span> {{ formatMoney(jackpotData.jpGrand) }} </span>
           </div>
         </div>
       </div>
@@ -112,7 +117,7 @@
         <div :class="$style['single-bonus-content']">
           <div :class="$style['weight']">Major</div>
           <div :class="$style['single-bonus-amount']">
-            <span> ¥&nbsp;{{ jackpotData.jpMajor || 0 }} </span>
+            <span> {{ formatMoney(jackpotData.jpMajor) }} </span>
           </div>
         </div>
       </div>
@@ -315,6 +320,7 @@ export default {
         case "isb":
         case "hb":
         case "ag":
+        case "ag_casino":
         case "sw":
         case "fg":
         case "mg":
@@ -343,7 +349,7 @@ export default {
 
           if (this.animatedNumber.value !== 0 && this.animatedNumber.value < +this.jackpotData.jpGrand) {
             this.animatedNumber.value = +this.jackpotData.jpGrand;
-            this.animatedNumber.duration = 300000;
+            this.animatedNumber.duration = 150000;
             return;
           }
 
@@ -352,7 +358,7 @@ export default {
 
           this.$nextTick(() => {
             this.animatedNumber.value = +this.jackpotData.jpGrand;
-            this.animatedNumber.duration = 300000;
+            this.animatedNumber.duration = 150000;
           })
           return;
 
@@ -369,9 +375,12 @@ export default {
           return;
       }
     },
-    formatToPrice(value) {
-      return `¥${value.toFixed(2)}`;
-    }
+    formatMoney(value) {
+      if (!value || value === 0) {
+        return 0.00;
+      }
+      return `¥${(Math.round(value * 100) / 100).toFixed(2).replace(/\B(?=(\d{3})+(?!\d))/g, ',')}`;
+    },
   }
 };
 </script>
@@ -633,6 +642,9 @@ export default {
 
   > div {
     display: inline-block;
+    overflow: hidden;
+    text-overflow: ellipsis;
+    white-space: nowrap;
   }
 
   > div:first-child {
@@ -645,6 +657,9 @@ export default {
 
   > div:nth-child(3) {
     text-align: left;
+    position: absolute;
+    right: 7px;
+    max-width: 25%;
   }
 }
 

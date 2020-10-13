@@ -102,8 +102,7 @@
   background-size: 100%;
 
   &.is-favorite {
-    background: url("/static/image/_new/common/favorite_active.png") 50% 0
-      no-repeat;
+    background: url("/static/image/_new/common/favorite_active.png") 50% 0 no-repeat;
     background-size: 100%;
   }
 }
@@ -121,6 +120,14 @@
   color: #463214;
   font-weight: 400;
   bottom: 0;
+
+  >span {
+    overflow: hidden;
+    text-overflow: ellipsis;
+    white-space: nowrap;
+    display: block;
+    padding-left: 20px;
+  }
 }
 
 .game-jackpot-img {
@@ -132,7 +139,7 @@
   justify-content: center;
   align-items: center;
 
-  > img {
+  >img {
     width: 9px;
     height: 9px;
   }

@@ -218,18 +218,18 @@ export default {
         case "gns":
         case "isb":
         case "ag":
+        case "ag_casino":
         case "sg":
         case "fg":
         case "mg":
         case "mg2":
         case "lg_casino":
+        default:
           return src + 'ic_minor.png';
         case 'pt':
         case "hb":
         case "wm":
           return src + 'ic_jackpot.png';
-        default:
-          return;
       }
     },
     /**
