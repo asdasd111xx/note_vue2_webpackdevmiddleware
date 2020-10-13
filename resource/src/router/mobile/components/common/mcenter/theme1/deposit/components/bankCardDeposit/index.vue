@@ -295,7 +295,7 @@
             </div>
 
             <!-- 億元 -->
-            <!-- 尚未綁定 CGPay(16) -->
+            <!-- 尚未綁定 CGPay(16) || 購寶(22)  -->
             <div
               v-if="
                 themeTPL === 'ey1' &&
@@ -305,12 +305,32 @@
               :class="[$style['feature-wrap'], 'clearfix']"
             >
               <!-- 億元: 尚未綁定會彈窗 -->
-              <span :class="$style['bank-card-title']"> 验证方式 </span>
+              <!-- CGPay -->
+              <template v-if="isSelectBindWallet(16)">
+                <span :class="$style['bank-card-title']"> 验证方式 </span>
 
-              <div :class="$style['no-bind-wallet']">
-                尚未绑定CGPay钱包
-                <span @click="isShowCGPayBind = true">立即绑定</span>
-              </div>
+                <div :class="$style['no-bind-wallet']">
+                  尚未绑定CGPay钱包
+                  <span @click="isShowCGPayBind = true">立即绑定</span>
+                </div>
+              </template>
+
+              <template v-if="isSelectBindWallet(22)">
+                <span :class="$style['bank-card-title']"> 充值金额 </span>
+
+                <div :class="$style['no-bind-wallet']">
+                  充值前请先绑定钱包
+                  <span
+                    @click="
+                      () => {
+                        qrcodeObj.bank_id = 37;
+                        qrcodeObj.isShow = true;
+                      }
+                    "
+                    >立即绑定</span
+                  >
+                </div>
+              </template>
             </div>
 
             <!-- Yabo：顯示 CGPay 餘額 -->
@@ -1587,17 +1607,6 @@ export default {
 
       this.isShowEntryBlockStatus = false;
 
-      // 億元: 點選到購寶錢包 且 如購寶未綁定，跳出 Qrcode 綁定
-      if (
-        this.themeTPL === "ey1" &&
-        !this.curPassRoad.is_bind_wallet &&
-        this.curPayInfo.payment_method_id === 22
-      ) {
-        this.qrcodeObj.bank_id = 37;
-        this.qrcodeObj.isShow = true;
-        return;
-      }
-
       this.submitList().then(response => {
         // 重置阻擋狀態
         this.checkEntryBlockStatus();
@@ -1812,7 +1821,10 @@ export default {
 
         case "ey1":
           // 檢查 CGPay
-          return this.curPayInfo.payment_method_id === 16;
+          return (
+            this.curPayInfo.payment_method_id === 16 ||
+            this.curPayInfo.payment_method_id === 22
+          );
           break;
       }
     }

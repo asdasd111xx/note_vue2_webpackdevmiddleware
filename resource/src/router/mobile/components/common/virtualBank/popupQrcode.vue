@@ -20,10 +20,6 @@
         </span>
 
         <div :class="$style['timer-block']">
-          <div v-if="bindType === 'deposit' && paymentGatewayId === 37">
-            入款前请先绑定钱包
-          </div>
-
           <div>
             <span v-if="countdownSec">{{ countdownSec }}</span>
             {{
@@ -76,7 +72,9 @@
 
       <div :class="$style['button-block']">
         <span @click="$emit('update:isShowPop', false)">关闭</span>
-        <span @click="downloadImage">{{ downloadText }}</span>
+        <span @click="downloadImage">
+          {{ downloadText }}
+        </span>
       </div>
     </div>
   </div>
