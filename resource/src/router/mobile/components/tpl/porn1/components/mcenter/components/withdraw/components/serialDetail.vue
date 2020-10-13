@@ -53,9 +53,11 @@
             >{{
               item.deduction
                 ? item.deduction + ":" + item.value
+                : item.rateValue === "-"
+                ? "-"
                 : item.value
                 ? $text("S_COMPLETE", "完成")
-                : "-"
+                : $text("S_NOT_FINISH", "未完成")
             }}
           </span>
         </div>
