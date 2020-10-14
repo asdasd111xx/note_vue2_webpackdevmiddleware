@@ -67,18 +67,21 @@
           </div>
 
           <div :class="[$style['balance-item-wrap'], 'clearfix']">
-            <div
-              :class="$style['balance-item']"
-              @click="$router.push('/mobile/mcenter/bonus')"
-            >
-              <span :class="$style['balance-item-vendor']">
-                {{ $text("S_BONUS", "红利彩金") }}
-              </span>
+            <template v-if="siteConfig.MOBILE_WEB_TPL === 'porn1'">
+              <div
+                :class="$style['balance-item']"
+                @click="$router.push('/mobile/mcenter/bonus')"
+              >
+                <span :class="$style['balance-item-vendor']">
+                  {{ $text("S_BONUS", "红利彩金") }}
+                </span>
 
-              <span :class="$style['balance-item-money']">
-                {{ bonus.balance }}
-              </span>
-            </div>
+                <span :class="$style['balance-item-money']">
+                  {{ bonus.balance }}
+                </span>
+              </div>
+            </template>
+
             <div
               v-for="(item, key, index) in balanceTran.balanceInfo"
               :key="`balance-item-${key}`"

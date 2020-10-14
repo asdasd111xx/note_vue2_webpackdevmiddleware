@@ -248,7 +248,9 @@ export default {
     },
     firstThirdBalanceInfo() {
       const data = {};
-      Object.keys(this.membalance.vendor).slice(0, 3).forEach((key) => {
+      let nums = this.siteConfig.MOBILE_WEB_TPL === 'porn1' ? 3 : 4;
+
+      Object.keys(this.membalance.vendor).slice(0, nums).forEach((key) => {
         if (key === 'default') {
           return;
         }

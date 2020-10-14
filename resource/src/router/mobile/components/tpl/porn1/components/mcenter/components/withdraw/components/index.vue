@@ -6,23 +6,25 @@
         scope="{ balanceTran, enableAutotransfer, closeAutotransfer, setTranOut, setTranIn, setMoney, balanceTransfer, balanceBack, getDefaultTran }"
       >
         <div :class="[$style['balance-item-wrap'], 'clearfix']">
-          <div
-            :class="[
-              $style['balance-item'],
-              {
-                [$style['is-last-item']]: !isShowMore,
-              },
-            ]"
-            @click="$router.push('/mobile/mcenter/bonus')"
-          >
-            <span :class="$style['balance-item-vendor']">
-              {{ $text("S_BONUS", "红利彩金") }}
-            </span>
+          <template v-if="themeTPL === 'porn1'">
+            <div
+              :class="[
+                $style['balance-item'],
+                {
+                  [$style['is-last-item']]: !isShowMore,
+                },
+              ]"
+              @click="$router.push('/mobile/mcenter/bonus')"
+            >
+              <span :class="$style['balance-item-vendor']">
+                {{ $text("S_BONUS", "红利彩金") }}
+              </span>
 
-            <span :class="$style['balance-item-money']">
-              {{ bonus.balance ? bonus.balance : "" }}
-            </span>
-          </div>
+              <span :class="$style['balance-item-money']">
+                {{ bonus.balance ? bonus.balance : "" }}
+              </span>
+            </div>
+          </template>
 
           <template v-if="!isShowMore">
             <div
