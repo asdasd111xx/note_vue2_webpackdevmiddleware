@@ -42,24 +42,26 @@
     </div>
 
     <div :class="[$style['balance-item-wrap'], 'clearfix']">
-      <div
-        :class="[
-          $style['balance-item'],
-          {
-            [$style['is-last-item']]: !isShowMore,
-          },
-        ]"
-        v-if="bonus"
-        @click="$router.push('/mobile/mcenter/bonus')"
-      >
-        <span :class="$style['balance-item-vendor']">
-          {{ $text("S_BONUS", "红利彩金") }}
-        </span>
+      <template v-if="siteConfig.MOBILE_WEB_TPL === 'porn1'">
+        <div
+          :class="[
+            $style['balance-item'],
+            {
+              [$style['is-last-item']]: !isShowMore,
+            },
+          ]"
+          v-if="bonus"
+          @click="$router.push('/mobile/mcenter/bonus')"
+        >
+          <span :class="$style['balance-item-vendor']">
+            {{ $text("S_BONUS", "红利彩金") }}
+          </span>
 
-        <span :class="$style['balance-item-money']">
-          {{ bonus.balance ? bonus.balance : "" }}
-        </span>
-      </div>
+          <span :class="$style['balance-item-money']">
+            {{ bonus.balance ? bonus.balance : "" }}
+          </span>
+        </div>
+      </template>
 
       <template v-if="!isShowMore">
         <div
@@ -401,8 +403,10 @@ export default {
     },
     firstThirdBalanceInfo() {
       const data = {};
+      let nums = this.siteConfig.MOBILE_WEB_TPL === 'porn1' ? 3 : 4;
+
       Object.keys(this.membalance.vendor)
-        .slice(0, 3)
+        .slice(0, nums)
         .forEach((key) => {
           if (key === "default") {
             return;
