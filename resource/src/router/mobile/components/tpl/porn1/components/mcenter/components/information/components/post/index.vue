@@ -290,6 +290,9 @@ export default {
   margin-top: 3px;
   color: #a6a9b2;
   font-size: 12px;
+  overflow: hidden;
+  text-overflow: ellipsis;
+  white-space: nowrap;
 }
 
 .time {
