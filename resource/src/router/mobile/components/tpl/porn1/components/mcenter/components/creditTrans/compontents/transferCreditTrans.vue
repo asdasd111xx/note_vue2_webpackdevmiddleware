@@ -100,6 +100,7 @@
               <input
                 v-if="item.key === 'amount'"
                 v-model="formData[item.key]"
+                :class="{ [$style.amount]: item.key === 'amount' }"
                 @blur="verification(item)"
                 @input="verification(item)"
                 :placeholder="item.placeholder"
@@ -285,6 +286,10 @@ export default {
 
   input {
     width: 100%;
+
+    &.amount {
+      width: 80%;
+    }
   }
 }
 

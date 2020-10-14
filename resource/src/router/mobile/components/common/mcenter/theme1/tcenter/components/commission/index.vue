@@ -1,6 +1,6 @@
 <template>
   <div>
-    <div v-if="page !== 'detail'" :class="$style['top-link']">
+    <div v-if="page !== 'detail' && isReceive" :class="$style['top-link']">
       <span
         :class="[$style.link, { [$style.active]: page === 'record' }]"
         @click="onClick('record')"
@@ -104,6 +104,7 @@ export default {
   },
   data() {
     return {
+      isReceive: true,
       isShowRebate: true,
       hasSearch: this.$route.params.page === "record",
       commissionInfo: {}
@@ -195,6 +196,8 @@ export default {
       this.hasSearch = false;
     },
     getRebateSwitch() {
+      this.isReceive = false;
+
       // 因開關在此 api 的回傳，所以在入口點先呼叫此 api
       bbosRequest({
         method: "get",
@@ -204,6 +207,8 @@ export default {
         },
         params: { lang: "zh-cn" }
       }).then(response => {
+        this.isReceive = true;
+
         if (response.status === "000") {
           this.isShowRebate = response.data.show_real_time;
           return;
