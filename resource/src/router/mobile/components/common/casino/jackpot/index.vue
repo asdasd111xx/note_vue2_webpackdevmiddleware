@@ -415,7 +415,7 @@ export default {
 .single-bonus-cell {
   background: #ffffff;
   border-radius: 17px;
-  z-index: 3;
+  z-index: 2;
 }
 
 .single-bonus-cell {
