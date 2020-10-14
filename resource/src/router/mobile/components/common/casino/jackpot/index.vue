@@ -319,6 +319,7 @@ export default {
         case "gns":
         case "isb":
         case "hb":
+        case "sg":
         case "ag":
         case "ag_casino":
         case "sw":
