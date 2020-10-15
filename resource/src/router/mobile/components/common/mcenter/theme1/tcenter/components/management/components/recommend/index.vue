@@ -38,6 +38,7 @@
         v-if="memInfo.config.infinity_register"
         :class="$style['button-create']"
         @click="isShow = !isShow"
+        style="display: none"
       >
         <span :class="[$style['icon-arrow'], { [$style.active]: isShow }]" />
         <span>新增一级好友</span>
@@ -56,7 +57,7 @@
             :class="[
               $style[key],
               $style.placeholder,
-              { [$style.error]: allText[key].error }
+              { [$style.error]: allText[key].error },
             ]"
           >
             <template v-if="!allValue[key]">
@@ -69,8 +70,8 @@
                 {
                   [$style.active]: allValue[key],
                   [$style.error]: allText[key].error,
-                  [$style['show-placeholder']]: !allValue[key]
-                }
+                  [$style['show-placeholder']]: !allValue[key],
+                },
               ]"
               :maxlength="allText[key].maxLength"
               v-model="allValue[key]"
@@ -85,8 +86,8 @@
                 {
                   [$style.active]: allValue[key],
                   [$style.error]: allText[key].error,
-                  [$style['show-placeholder']]: !allValue[key]
-                }
+                  [$style['show-placeholder']]: !allValue[key],
+                },
               ]"
               :data-key="key"
               :maxlength="allText[key].maxLength"
@@ -100,7 +101,7 @@
               v-if="['password', 'confirm_password'].includes(key)"
               :class="[
                 $style['btn-show-password'],
-                { [$style.active]: allText[key].type === 'text' }
+                { [$style.active]: allText[key].type === 'text' },
               ]"
               @click="onShowPassword()"
             />
