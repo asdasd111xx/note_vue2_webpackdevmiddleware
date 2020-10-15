@@ -648,12 +648,14 @@ export const actionSetUserdata = ({ state, dispatch, commit }, forceUpdate = fal
         case '500015':
         case '69':
         case '67':
+        case '100003':
         default:
           configInfo = siteConfigOfficial[`site_67`];
           break;
         case '500023':
         case '41':
         case '74':
+        case '100004':
           configInfo = siteConfigOfficial[`site_41`];
           break;
       }

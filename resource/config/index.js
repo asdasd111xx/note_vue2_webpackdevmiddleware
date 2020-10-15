@@ -16,6 +16,7 @@ const domain = "https://yb01.66boxing.com/";
 
 // Beta
 // const domain = 'https://ybbe1.qghco.com/';
+// const domain = 'https://yb0t.66apples.com';
 
 // 亿元
 // const domain = 'https://eyt.66boxing.com/';
@@ -31,6 +32,7 @@ const domain = "https://yb01.66boxing.com/";
 
 // Beta
 // const domain = 'https://ey01.66boxing-beta.com/';
+// const domain = 'https://eyd.66apples.com/';
 
 module.exports = {
     build: {
