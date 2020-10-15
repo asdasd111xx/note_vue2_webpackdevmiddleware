@@ -5,7 +5,7 @@
       <span>有效投注：{{ total.valid_bet }}</span>
       <span
         >派彩：<span
-          v-if="siteconfig.MBILE_WEB_TPL === 'ey1'"
+          v-if="themetpl() === 'ey1'"
           :class="{ [$style['is-negative']]: total.payoff < 0 }"
           >{{ +total.payoff }}</span
         >
@@ -68,7 +68,12 @@ export default {
       type: Number,
       default: null
     }
-  }
+  },
+  methods: {
+    themetpl() {
+      return this.siteconfig.MOBILE_WEB_TPL;
+    }
+  },
 };
 </script>
 
