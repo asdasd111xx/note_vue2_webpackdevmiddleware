@@ -1,108 +1,109 @@
 @import "@/css/variable.scss";
 
 .record-wrap {
-  position: relative;
-  padding: 0 14px;
-  width: 100%;
+    position: relative;
+    padding: 0 14px;
+    width: 100%;
 }
 .total-block {
-  display: flex;
-  justify-content: space-between;
-  color: $main_text_color3;
-  font-size: 12px;
-  height: 40px;
-  line-height: 40px;
-  border-bottom: 1px solid #eee;
+    display: flex;
+    justify-content: space-between;
+    color: $main_text_color3;
+    font-size: 12px;
+    height: 40px;
+    line-height: 40px;
+    border-bottom: 1px solid #eee;
 
-  span {
-    &:nth-child(2) {
-      flex: 2;
-      text-align: center;
+    span {
+        &:nth-child(2) {
+            flex: 2;
+            text-align: center;
+        }
     }
-  }
 }
 
 .list-block {
-  position: relative;
-  margin-top: 10px;
+    position: relative;
+    margin-top: 10px;
 
-  .date {
-    background: $main_background_white1;
-    font-size: 16px;
-    font-weight: 700;
-    padding: 7.5px 0;
-  }
+    .date {
+        background: $main_background_white1;
+        font-size: 16px;
+        font-weight: 700;
+        padding: 7.5px 0;
+    }
 }
 .card {
-  background: $main_white_color1;
-  color: $main_text_color3;
-  border-radius: 8px;
-  margin-bottom: 9px;
+    background: $main_white_color1;
+    color: $main_text_color3;
+    border-radius: 8px;
+    margin-bottom: 9px;
 
-  div {
-    display: flex;
-    justify-content: space-between;
-    font-size: 14px;
-    padding: 9px 9px 0 12px;
+    div {
+        display: flex;
+        justify-content: space-between;
+        font-size: 14px;
+        padding: 9px 9px 0 12px;
 
-    &:last-of-type {
-      padding-bottom: 9px;
+        &:last-of-type {
+            padding-bottom: 9px;
+        }
+
+        &.bet {
+            margin-left: 7px;
+        }
     }
 
-    &.bet {
-      margin-left: 7px;
+    .card-title {
+        padding: 6px 9px 6px 12px;
+
+        line-height: 21px;
+        border-bottom: 1px solid #eee;
+
+        .header {
+            font-size: 16px;
+            font-weight: 700;
+        }
+
+        .payout {
+            &.is-negative {
+                color: $main_error_color1;
+            }
+
+            &::before {
+                content: "派彩：";
+                position: relative;
+                color: $main_text_color3;
+            }
+        }
     }
-  }
 
-  .card-title {
-    padding: 6px 9px 6px 12px;
+    .game-name {
+        font-size: 16px;
+        line-height: 21px;
+        font-weight: 700;
 
-    line-height: 21px;
-    border-bottom: 1px solid #eee;
-
-    .header {
-      font-size: 16px;
-      font-weight: 700;
+        &::before {
+            content: "";
+            position: relative;
+            display: inline-block;
+            width: 3px;
+            height: 14px;
+            top: 1px;
+            margin-right: 5px;
+            background: linear-gradient(#d2bba4, #f1e5db);
+        }
     }
-
-    .payout {
-      &.is-negative {
-        color: $main_error_color1;
-      }
-
-      &::before {
-        content: "派彩：";
-        position: relative;
-        color: $main_text_color3;
-      }
-    }
-  }
-
-  .game-name {
-    font-size: 16px;
-    line-height: 21px;
-    font-weight: 700;
-
-    &::before {
-      content: "";
-      position: relative;
-      display: inline-block;
-      width: 3px;
-      height: 14px;
-      top: 1px;
-      margin-right: 5px;
-      background: linear-gradient(#d2bba4, #f1e5db);
-    }
-  }
 }
 
 // .is-number {
 //     text-align: right;
 // }
 
-.is-negative {
-  color: #ff5454;
-}
+// .is-negative {
+//     composes: is-number;
+//     color: #FF5454;
+// }
 
 // .is-text {
 //     text-align: left;
