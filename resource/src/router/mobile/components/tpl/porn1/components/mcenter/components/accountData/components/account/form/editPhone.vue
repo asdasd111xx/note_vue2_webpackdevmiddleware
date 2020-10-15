@@ -422,8 +422,13 @@ export default {
         }).catch(error => {
           this.toggleCaptcha = false;
           this.countdownSec = '';
-          this.tipMsg = `${error.response.data.msg}`;
+          this.tipMsg = `${error.response.data ? error.response.data.msg : ''}`;
           this.isSendSMS = false;
+
+          if (error.response && error.response.status === 429) {
+            this.tipMsg = "操作太频繁，请稍候在试";
+            return;
+          }
         })
       } else {
         let params = {
@@ -460,8 +465,13 @@ export default {
         }).catch(error => {
           this.toggleCaptcha = false;
           this.countdownSec = '';
-          this.tipMsg = `${error.response.data.msg}`;
+          this.tipMsg = `${error.response.data ? error.response.data.msg : ''}`;
           this.isSendSMS = false;
+
+          if (error.response && error.response.status === 429) {
+            this.tipMsg = "操作太频繁，请稍候在试";
+            return;
+          }
         })
       }
     },

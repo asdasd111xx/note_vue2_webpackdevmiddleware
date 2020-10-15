@@ -445,8 +445,13 @@ export default {
         })
       }).catch(error => {
         this.countdownSec = '';
-        this.tipMsg = `${error.response.data.msg}`;
+        this.tipMsg = `${error.response.data ? error.response.data.msg : ''}`;
         this.isSendKeyring = false;
+
+        if (error.response && error.response.status === 429) {
+          this.tipMsg = "操作太频繁，请稍候在试";
+          return;
+        }
       })
     },
     sendFormData() {

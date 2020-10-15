@@ -310,7 +310,7 @@ export default {
                             }
                         }).catch(error => {
                             if (error.response && error.response.status === 429) {
-                                this.errorMsg = "今日发送次数已达上限";
+                                this.errorMsg = "操作太频繁，请稍候在试";
                                 return;
                             }
 
