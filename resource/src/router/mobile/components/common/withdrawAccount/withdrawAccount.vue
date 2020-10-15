@@ -80,7 +80,7 @@
             <template v-if="themeTPL === 'ey1'">
               <select v-model="phoneHead" :class="$style['phone-selected']">
                 <option v-for="option in phoneHeadOption" v-bind:value="option">
-                  {{ "+" + option }}
+                  {{ option }}
                 </option>
               </select>
             </template>
@@ -153,6 +153,8 @@
 import axios from 'axios';
 import { mapGetters, mapActions } from 'vuex';
 import mixin from '@/mixins/mcenter/withdraw';
+import ajax from '@/lib/ajax';
+import { API_MCENTER_USER_CONFIG } from '@/config/api';
 
 export default {
   props: {
@@ -168,10 +170,8 @@ export default {
   data() {
     return {
       // 國碼
-      phoneHead: '86',
-      phoneHeadOption: [
-        '86', '852', '853'
-      ],
+      phoneHead: '+86',
+      phoneHeadOption: [],
       sliderClass: 'slider',
       tipMsg: '',
       isVerifyPhone: false,
@@ -250,6 +250,17 @@ export default {
         }
       }
       this.isLoading = false;
+    });
+
+    // 國碼
+    ajax({
+      method: 'get',
+      url: API_MCENTER_USER_CONFIG,
+      errorAlert: false
+    }).then((response) => {
+      if (response && response.result === 'ok') {
+        this.phoneHeadOption = response.ret.config.phone.country_codes
+      }
     });
   },
   computed: {
@@ -433,7 +444,7 @@ export default {
         method: 'post',
         url: '/api/v1/c/player/verify/user_bank/sms',
         data: {
-          phone: `${this.phoneHead}-${this.formData.phone.value}`,
+          phone: `${this.phoneHead.replace("+", "")}-${this.formData.phone.value}`,
           captcha_text: this.captchaData ? this.captchaData : ''
         }
       }).then(res => {
@@ -474,7 +485,7 @@ export default {
       Object.keys(this.formData).forEach(i => {
         if (this.formData[i].show) {
           if (i === "phone") {
-            param[i] = this.phoneHead + '-' + this.formData['phone'].value;
+            param[i] = this.phoneHead.replace("+", "") + '-' + this.formData['phone'].value;
           }
           else if (i === "withdraw_password") {
             param[i] = this.formData.withdraw_password.value.join('')

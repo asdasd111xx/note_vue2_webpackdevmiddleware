@@ -133,9 +133,7 @@ export default {
     return {
       // 國碼
       phoneHead: '+86',
-      phoneHeadOption: [
-        '+86', '+852', '+853'
-      ],
+      phoneHeadOption: [],
       oldValue: '',
       newValue: '',
       codeValue: '',
@@ -287,9 +285,9 @@ export default {
       if (response && response.result === 'ok') {
         this.info.verification = response.ret.config[this.info.key].code;
         this.hasVerified = response.ret.user.phone;
+        this.phoneHeadOption = response.ret.config.phone.country_codes
       }
     });
-
   },
   beforeDestroy() {
     this.countdownSec = "";

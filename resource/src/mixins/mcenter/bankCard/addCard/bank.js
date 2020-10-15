@@ -2,15 +2,14 @@ import { mapActions, mapGetters } from "vuex";
 
 import ajax from "@/lib/ajax";
 import axios from "axios";
+import { API_MCENTER_USER_CONFIG } from '@/config/api';
 
 export default {
     data() {
         return {
             // 國碼
-            phoneHead: '86',
-            phoneHeadOption: [
-                '86', '852', '853'
-            ],
+            phoneHead: '+86',
+            phoneHeadOption: [],
             bankList: [],
             currentBank: "",
             isShowPopBankList: false,
@@ -125,6 +124,17 @@ export default {
                 localStorage.removeItem('click-notification');
             })
         }
+
+        // 國碼
+        ajax({
+            method: 'get',
+            url: API_MCENTER_USER_CONFIG,
+            errorAlert: false
+        }).then((response) => {
+            if (response && response.result === 'ok') {
+                this.phoneHeadOption = response.ret.config.phone.country_codes
+            }
+        });
     },
     beforeDestroy() {
         if (localStorage.getItem('click-notification')) {
@@ -156,7 +166,7 @@ export default {
 
             const params = {
                 ...this.formData,
-                phone: `${this.phoneHead}-${this.formData.phone}`
+                phone: `${this.phoneHead.replace("+", "")}-${this.formData.phone}`
             };
 
             ajax({
@@ -289,7 +299,7 @@ export default {
                 method: "post",
                 url: "/api/v1/c/player/verify/user_bank/sms",
                 data: {
-                    phone: `${this.phoneHead}-${this.formData.phone}`,
+                    phone: `${this.phoneHead.replace("+", "")}-${this.formData.phone}`,
                     ...captchaParams
                 }
             })
