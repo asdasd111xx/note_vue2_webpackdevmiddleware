@@ -18,7 +18,9 @@
         </div>
         <div :class="[$style['arrow-btn']]">
           <img
-            :src="$getCdnPath(`/static/image/_new/mcenter/ic_arrow_next.png`)"
+            :src="
+              $getCdnPath(`/static/image/porn1/mcenter/help/ic_arrow_next.png`)
+            "
           />
         </div>
       </div>
@@ -34,7 +36,7 @@
             <img
               :src="
                 $getCdnPath(
-                  `/static/image/_new/mcenter/deposit/icon_${categorys[category_currentIndex].icon}.png`
+                  `/static/image/porn1/mcenter/help/deposit/icon_${categorys[category_currentIndex].icon}.png`
                 )
               "
             />
@@ -43,7 +45,11 @@
           <span> {{ categorys[category_currentIndex].name }} </span>
           <div :class="$style['btn-next']">
             <img
-              :src="$getCdnPath(`/static/image/_new/common/arrow_next.png`)"
+              :src="
+                $getCdnPath(
+                  `/static/image/porn1/mcenter/help/ic_arrow_next.png`
+                )
+              "
             />
           </div>
         </div>
@@ -94,7 +100,7 @@
           <img
             :src="
               $getCdnPath(
-                `/static/image/_new/mcenter/deposit/step/${item.img}.png`
+                `/static/image/porn1/mcenter/help/deposit/step/${item.img}.png`
               )
             "
           />
@@ -121,7 +127,7 @@
           <img
             :src="
               $getCdnPath(
-                `/static/image/_new/mcenter/deposit/step/${item.img}.png`
+                `/static/image/porn1/mcenter/help/deposit/step/${item.img}.png`
               )
             "
           />
@@ -147,7 +153,7 @@
             <img
               :src="
                 $getCdnPath(
-                  `/static/image/_new/mcenter/deposit/icon_${item.icon}.png`
+                  `/static/image/porn1/mcenter/help/deposit/icon_${item.icon}.png`
                 )
               "
             />
@@ -165,7 +171,9 @@
 
     <div :class="$style['gotop']" @click="toTop">
       <img
-        :src="$getCdnPath(`/static/image/_new/mcenter/deposit/btn_gotop.png`)"
+        :src="
+          $getCdnPath(`/static/image/porn1/mcenter/help/deposit/btn_gotop.png`)
+        "
       />
     </div>
   </div>
