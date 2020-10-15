@@ -5,7 +5,7 @@
       <span>有效投注：{{ total.valid_bet ? total.valid_bet : "0.00" }}</span>
       <span
         >派彩：<span
-          v-if="siteconfig.MOBILE_WEB_TPL === 'ey1'"
+          v-if="themetpl() === 'ey1'"
           :class="{ [$style['is-negative']]: total.payoff < 0 }"
           >{{ +total.payoff ? +total.payoff : "0.00" }}</span
         >
@@ -85,6 +85,11 @@ export default {
     },
     hasSearch: {
       type: Boolean
+    }
+  },
+  methods: {
+    themetpl() {
+      return this.siteconfig.MOBILE_WEB_TPL;
     }
   },
   filters: {
