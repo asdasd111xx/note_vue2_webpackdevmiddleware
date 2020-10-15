@@ -4,7 +4,7 @@
       <div
         :class="[
           $style['menu-select-game'],
-          { [$style.active]: selectMenu === 'game' }
+          { [$style.active]: selectMenu === 'game' },
         ]"
         @click="selectMenu = selectMenu === 'game' ? '' : 'game'"
       >
@@ -14,7 +14,7 @@
         :class="[
           $style['menu-select-time'],
           { [$style.custom]: isCustomTime },
-          { [$style.active]: selectMenu === 'time' }
+          { [$style.active]: selectMenu === 'time' },
         ]"
         @click="selectMenu = selectMenu === 'time' ? '' : 'time'"
       >
@@ -30,7 +30,7 @@
         :class="[
           $style['dropdown-wrap'],
           'clearfix',
-          { [$style['game']]: selectMenu === 'game' }
+          { [$style['game']]: selectMenu === 'game' },
         ]"
       >
         <li
@@ -38,7 +38,8 @@
           :key="`${game.value}-${index}`"
           :class="{
             [$style.active]:
-              selectType.vendor === game.vendor && selectType.kind === game.kind
+              selectType.vendor === game.vendor &&
+              selectType.kind === game.kind,
           }"
           @click="getGameRecord(game)"
         >
@@ -51,7 +52,7 @@
         :class="[
           $style['dropdown-wrap'],
           $style['dropdown-wrap-time'],
-          'clearfix'
+          'clearfix',
         ]"
       >
         <p :class="$style['time-remind']">
@@ -65,7 +66,7 @@
         <ul
           :class="[
             { [$style['default-active']]: !isShowDatePicker },
-            'clearfix'
+            'clearfix',
           ]"
         >
           <li
@@ -153,7 +154,8 @@
             {{ $text("S_WIN_LOSE", "输赢") }} :
             <span
               :class="{
-                [$style['is-win']]: parseFloat(mainTotal.payoff) > 0
+                [$style['is-win']]: parseFloat(mainTotal.payoff) > 0,
+                [$style['is-lose']]: parseFloat(mainTotal.payoff) < 0,
               }"
               >{{ getNoRoundText(mainTotal.payoff) }}</span
             >
@@ -181,7 +183,12 @@
                   </li>
                   <li :class="$style['single-money']">
                     {{ $text("S_WIN_LOSE", "输赢") }} :
-                    <span :class="{ [$style['is-win']]: item.payoff > 0 }">
+                    <span
+                      :class="{
+                        [$style['is-win']]: item.payoff > 0,
+                        [$style['is-lose']]: item.payoff < 0,
+                      }"
+                    >
                       {{ getNoRoundText(item.payoff) }}
                     </span>
                   </li>
@@ -213,7 +220,9 @@
                       {{ "输/赢" }} :
                       <span
                         :class="{
-                          [$style['is-win']]: parseFloat(gameDetail.payoff) > 0
+                          [$style['is-win']]: parseFloat(gameDetail.payoff) > 0,
+                          [$style['is-lose']]:
+                            parseFloat(gameDetail.payoff) < 0,
                         }"
                         >{{ getNoRoundText(gameDetail.payoff) }}</span
                       >
