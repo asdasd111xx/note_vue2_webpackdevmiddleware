@@ -56,7 +56,9 @@ export default {
                 username: '',
                 password: '',
                 confirm_password: '',
-                name: ''
+                name: '',
+                //驗證碼
+                captcha: ''
             },
             msg: ''
         };
