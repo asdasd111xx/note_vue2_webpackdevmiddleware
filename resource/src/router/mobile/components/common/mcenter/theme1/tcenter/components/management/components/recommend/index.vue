@@ -158,7 +158,7 @@
           :captcha.sync="captchaData"
           style="display: none"
         />
-        <button @click="showCaptchaPopup">{{ $text("S_ADD") }}</button>
+        <button @click="onSubmit">{{ $text("S_ADD") }}</button>
       </div>
     </transition>
     <!-- 訊息 -->
