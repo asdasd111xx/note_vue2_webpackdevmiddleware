@@ -6,6 +6,11 @@ import axios from "axios";
 export default {
     data() {
         return {
+            // 國碼
+            phoneHead: '86',
+            phoneHeadOption: [
+                '86', '852', '853'
+            ],
             bankList: [],
             currentBank: "",
             isShowPopBankList: false,
@@ -151,7 +156,7 @@ export default {
 
             const params = {
                 ...this.formData,
-                phone: `86-${this.formData.phone}`
+                phone: `${this.phoneHead}-${this.formData.phone}`
             };
 
             ajax({
@@ -284,7 +289,7 @@ export default {
                 method: "post",
                 url: "/api/v1/c/player/verify/user_bank/sms",
                 data: {
-                    phone: `86-${this.formData.phone}`,
+                    phone: `${this.phoneHead}-${this.formData.phone}`,
                     ...captchaParams
                 }
             })

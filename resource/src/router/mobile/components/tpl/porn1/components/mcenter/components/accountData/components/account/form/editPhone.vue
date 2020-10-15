@@ -37,6 +37,13 @@
             {{ newPhone.label }}
           </div>
           <div :class="$style['input-wrap']">
+            <template v-if="themeTPL === 'ey1'">
+              <select v-model="phoneHead" :class="$style['phone-selected']">
+                <option v-for="option in phoneHeadOption" v-bind:value="option">
+                  {{ option }}
+                </option>
+              </select>
+            </template>
             <input
               v-model="newValue"
               :placeholder="
@@ -124,9 +131,11 @@ export default {
   },
   data() {
     return {
-      // 國碼固定
-      oldCode: '+86',
-      newCode: '+86',
+      // 國碼
+      phoneHead: '+86',
+      phoneHeadOption: [
+        '+86', '+852', '+853'
+      ],
       oldValue: '',
       newValue: '',
       codeValue: '',
@@ -160,6 +169,9 @@ export default {
     $style() {
       const style = this[`$style_${this.siteConfig.MOBILE_WEB_TPL}`] || this.$style_porn1;
       return style;
+    },
+    themeTPL() {
+      return this.siteConfig.MOBILE_WEB_TPL;
     },
     isShowCaptcha: {
       get() {
@@ -278,21 +290,6 @@ export default {
       }
     });
 
-    // 手機區碼
-    // ajax({
-    //   method: 'get',
-    //   url: '/api/v1/c/player/country_codes',
-    //   success: ({ result, ret }) => {
-    //     if (result !== 'ok') {
-    //       return;
-    //     }
-
-    //     this.options = ret;
-
-    //     // this.$emit('update:newCode', ret[0]);
-    //     // this.$emit('update:oldCode', ret[0]);
-    //   }
-    // });
   },
   beforeDestroy() {
     this.countdownSec = "";
@@ -405,7 +402,7 @@ export default {
           method: 'post',
           url: '/api/v1/c/player/withdraw/verify/sms',
           data: {
-            phone: `${this.newCode.replace('+', '')}-${this.newValue}`,
+            phone: `${this.phoneHead.replace('+', '')}-${this.newValue}`,
             ...captchaParams,
           }
         }).then(res => {
@@ -433,11 +430,11 @@ export default {
       } else {
         let params = {
           old_phone: this.memInfo.phone.phone && !this.hasVerified ?
-            `${this.newCode.replace('+', '')}-${this.newValue}` :
+            `${this.phoneHead.replace('+', '')}-${this.newValue}` :
             this.oldPhone.isShow ?
-              `${this.newCode.replace('+', '')}-${this.oldValue}` :
+              `${this.phoneHead.replace('+', '')}-${this.oldValue}` :
               '',
-          phone: `${this.newCode.replace('+', '')}-${this.newValue}`,
+          phone: `${this.phoneHead.replace('+', '')}-${this.newValue}`,
           ...captchaParams
         };
 
@@ -500,8 +497,8 @@ export default {
         if (this.info.verification) {
           return mcenter.accountPhoneCheck({
             params: {
-              old_phone: this.memInfo.phone.phone ? `${this.newCode.replace('+', '')}-${this.oldValue}` : '',
-              phone: `${this.newCode.replace('+', '')}-${this.newValue}`,
+              old_phone: this.memInfo.phone.phone ? `${this.phoneHead.replace('+', '')}-${this.oldValue}` : '',
+              phone: `${this.phoneHead.replace('+', '')}-${this.newValue}`,
               keyring: this.codeValue
             },
             success: (res) => {
@@ -520,7 +517,7 @@ export default {
         // 不驗證直接設定手機
         return mcenter.accountPhoneEdit({
           params: {
-            phone: `${this.newCode.replace('+', '')}-${this.newValue}`
+            phone: `${this.phoneHead.replace('+', '')}-${this.newValue}`
           },
           success: () => {
             setTimeout(() => {

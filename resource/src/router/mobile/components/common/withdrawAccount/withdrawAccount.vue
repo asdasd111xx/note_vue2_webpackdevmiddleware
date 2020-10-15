@@ -77,6 +77,13 @@
             {{ formData["phone"].title }}
           </div>
           <div :class="$style['form-input']">
+            <template v-if="themeTPL === 'ey1'">
+              <select v-model="phoneHead" :class="$style['phone-selected']">
+                <option v-for="option in phoneHeadOption" v-bind:value="option">
+                  {{ "+" + option }}
+                </option>
+              </select>
+            </template>
             <input
               v-model="formData['phone'].value"
               @input="verification('phone')"
@@ -160,6 +167,11 @@ export default {
   },
   data() {
     return {
+      // 國碼
+      phoneHead: '86',
+      phoneHeadOption: [
+        '86', '852', '853'
+      ],
       sliderClass: 'slider',
       tipMsg: '',
       isVerifyPhone: false,
@@ -421,7 +433,7 @@ export default {
         method: 'post',
         url: '/api/v1/c/player/verify/user_bank/sms',
         data: {
-          phone: `86-${this.formData.phone.value}`,
+          phone: `${this.phoneHead}-${this.formData.phone.value}`,
           captcha_text: this.captchaData ? this.captchaData : ''
         }
       }).then(res => {
@@ -462,7 +474,7 @@ export default {
       Object.keys(this.formData).forEach(i => {
         if (this.formData[i].show) {
           if (i === "phone") {
-            param[i] = '86-' + this.formData['phone'].value;
+            param[i] = this.phoneHead + '-' + this.formData['phone'].value;
           }
           else if (i === "withdraw_password") {
             param[i] = this.formData.withdraw_password.value.join('')
