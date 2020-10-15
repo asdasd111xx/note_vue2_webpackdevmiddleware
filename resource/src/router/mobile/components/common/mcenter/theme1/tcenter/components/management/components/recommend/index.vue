@@ -115,7 +115,10 @@
           </div>
         </div>
         <!-- 驗證碼 -->
-        <div v-if="memInfo.config.default_captcha_type === 1">
+        <div
+          v-if="memInfo.config.default_captcha_type === 1"
+          style="display: none"
+        >
           <div :class="$style['input-title']" style="font-size: 12px">
             验证码
           </div>
@@ -153,8 +156,8 @@
           v-if="isShowCaptcha"
           :is-show-captcha.sync="isShowCaptcha"
           :captcha.sync="captchaData"
+          style="display: none"
         />
-        {{ allValue }}
         <button @click="showCaptchaPopup">{{ $text("S_ADD") }}</button>
       </div>
     </transition>
