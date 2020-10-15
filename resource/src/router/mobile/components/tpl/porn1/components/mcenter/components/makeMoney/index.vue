@@ -67,6 +67,7 @@ export default {
       setCookie("cid", "");
       setCookie("y_token", "");
       this.actionSetAgentLink({ reqHeaders: { cid: this.$route.query.cid } });
+      setCookie("cid", query.cid);
     } else {
       this.actionSetAgentLink();
     }
