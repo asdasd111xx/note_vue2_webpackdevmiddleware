@@ -24,7 +24,7 @@
     </div>
     <iframe
       :ref="'iframe'"
-      :class="[$style['iframe']]"
+      :class="[$style['iframe'], $style[$route.params.page]]"
       :src="src"
       @load="onLoadiframe"
       allow="fullscreen"
@@ -114,7 +114,7 @@ export default {
         this.src = 'https://feature-yabo.app.swag.live/';
         break;
       default:
-        this.$router.back();
+        this.src = localStorage.getItem('iframe-third-url');
         break;
     }
   },
@@ -129,7 +129,11 @@ export default {
         return '/mobile/gift';
       }
 
-      return '/mobile/';
+      if (this.$route.params.page.toUpperCase() === 'PROMOTION') {
+        return '/mobile/promotion';
+      }
+
+      return '/mobile';
     },
     iframeHeight() {
       let result = [];
@@ -151,7 +155,7 @@ export default {
         hasHeader: query.hasHeader === undefined ? false : query.hasHeader === 'true',
         hasFooter: query.hasFooter === undefined ? true : query.hasFooter === 'true',
         prev: query.prev === undefined ? true : query.prev,
-        title: query.title || '',
+        title: query.title || localStorage.getItem('iframe-third-url-title') || '',
         onClick: () => {
           this.$router.push(this.originUrl);
         }
@@ -160,6 +164,8 @@ export default {
   },
   beforeDestroy() {
     window.removeEventListener("message", this.onListener);
+    localStorage.removeItem('iframe-third-url-title');
+    localStorage.removeItem('iframe-third-url');
   },
   methods: {
     ...mapActions([
@@ -176,24 +182,27 @@ export default {
         'http://47.240.78.53',
         'http://47.240.57.135',
         'http://47.240.117.62'
-        ];
+      ];
 
       if (whiteList.includes(event.origin) && event.data) {
         let data = event.data;
-        console.log(data)
+        if (!data.event) {
+          return;
+        }
+        console.log(data.event);
         switch (data.event) {
           case 'EVENT_THIRDPARTY_CLOSE':
           case 'close':
             this.$router.push(this.originUrl);
             return;
           default:
-            console.log(data);
+
             return;
         }
       }
     },
     onLoadiframe(event) {
-      console.log('onLoadiframe:', event)
+      // console.log('onLoadiframe:', event)
       this.$nextTick(() => {
         setTimeout(() => {
           this.isLoading = false;
@@ -213,9 +222,6 @@ export default {
         console.log('onbeforeunload Catch:', e)
       }
     },
-    linkTo(item) {
-
-    }
   },
 };
 </script>
@@ -309,5 +315,10 @@ export default {
   min-width: 0;
   padding: 0;
   width: 100%;
+
+  &.promotion {
+    height: calc(100% + 50px);
+    margin-top: -50px;
+  }
 }
 </style>

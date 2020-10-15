@@ -91,57 +91,63 @@ export default {
         this.tabList[0].name = "全部"
       });
     },
-    onClick({ link }) {
-      let newWindow = '';
-      // 辨別裝置是否為ios寰宇瀏覽器
-      const isUBMobile = navigator.userAgent.match(/UBiOS/) !== null && navigator.userAgent.match(/iPhone/) !== null;
-      // 暫時用來判斷馬甲包
-      const webview = window.location.hostname === 'yaboxxxapp02.com';
+    onClick(target) {
+      console.log(target)
+      localStorage.setItem('iframe-third-url', target.link);
+      localStorage.setItem('iframe-third-url-title', target.name);
 
-      // 請勿移除 window.open 裡的空格
-      // 修正在 IOS Safari window.open之後，點上一頁之後會轉圈的問題
-      // 此解決方法是點上一頁之後會直接關閉window.open的頁面
-      if (!isUBMobile && !webview) {
-        newWindow = window.open(' ');
-      }
-      ajax({
-        method: 'get',
-        url: '/api/v1/c/link/customize',
-        params: { code: 'promotion', client_uri: link },
-        errorAlert: isUBMobile || webview,
-        success: ({
-          result, ret, msg, code
-        }) => {
-          if (result !== 'ok') {
-            if (!isUBMobile && !webview) {
-              newWindow.close();
-            }
-            const errorCode = code || '';
-            alert(`${msg} ${errorCode}`);
-            return;
-          }
+      this.$router.push(`/mobile/iframe/promotion?hasFooter=false&hasHeader=true`);
 
-          if (webview) {
-            window.location.href = ret.uri;
-            return;
-          }
+      //   let newWindow = '';
+      //   // 辨別裝置是否為ios寰宇瀏覽器
+      //   const isUBMobile = navigator.userAgent.match(/UBiOS/) !== null && navigator.userAgent.match(/iPhone/) !== null;
+      //   // 暫時用來判斷馬甲包
+      //   const webview = window.location.hostname === 'yaboxxxapp02.com';
 
-          if (!isUBMobile) {
-            newWindow.location.href = ret.uri;
-            return;
-          }
+      //   // 請勿移除 window.open 裡的空格
+      //   // 修正在 IOS Safari window.open之後，點上一頁之後會轉圈的問題
+      //   // 此解決方法是點上一頁之後會直接關閉window.open的頁面
+      //   if (!isUBMobile && !webview) {
+      //     newWindow = window.open(' ');
+      //   }
+      //   ajax({
+      //     method: 'get',
+      //     url: '/api/v1/c/link/customize',
+      //     params: { code: 'promotion', client_uri: link },
+      //     errorAlert: isUBMobile || webview,
+      //     success: ({
+      //       result, ret, msg, code
+      //     }) => {
+      //       if (result !== 'ok') {
+      //         if (!isUBMobile && !webview) {
+      //           newWindow.close();
+      //         }
+      //         const errorCode = code || '';
+      //         alert(`${msg} ${errorCode}`);
+      //         return;
+      //       }
 
-          window.open(ret.uri);
-          window.document.title = '最新优惠';
-          //   window.document.title = name;
-        },
-        fail: (error) => {
-          if (!isUBMobile || !webview) {
-            newWindow.alert(`${error.data.msg} ${error.data.code ? `(${error.data.code})` : ''}`);
-            newWindow.close();
-          }
-        }
-      });
+      //       if (webview) {
+      //         window.location.href = ret.uri;
+      //         return;
+      //       }
+
+      //       if (!isUBMobile) {
+      //         newWindow.location.href = ret.uri;
+      //         return;
+      //       }
+
+      //       window.open(ret.uri);
+      //       window.document.title = '最新优惠';
+      //       //   window.document.title = name;
+      //     },
+      //     fail: (error) => {
+      //       if (!isUBMobile || !webview) {
+      //         newWindow.alert(`${error.data.msg} ${error.data.code ? `(${error.data.code})` : ''}`);
+      //         newWindow.close();
+      //       }
+      //     }
+      //   });
     }
   }
 };
