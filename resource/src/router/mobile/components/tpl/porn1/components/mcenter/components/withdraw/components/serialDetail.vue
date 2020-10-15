@@ -137,12 +137,12 @@ export default {
         [
           {
             title: this.$text("S_SERIAL_AUDIT", "充值稽核倍数"),
-            rateValue: this.data.audit_rate,
+            rateValue: this.data.audit_rate > 0 ? this.data.audit_rate : '-',
             value: this.data.administrative_checked
           },
           {
             title: this.$text("S_SERIAL_NUMBER", "流水要求"),
-            rateValue: this.data.audit_amount,
+            rateValue: this.data.audit_amount > 0 ? this.data.audit_amount : '-',
             value: this.getDeductionNumber(
               this.data.administrative_amount
             ),
