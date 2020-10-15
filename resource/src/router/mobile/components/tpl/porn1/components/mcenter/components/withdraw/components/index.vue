@@ -186,8 +186,6 @@
           ]"
           @click="handleSelectCard(item)"
         >
-          <img v-lazy="getBankImage(item.swift_code)" />
-          <span>{{ parseCardName(item.alias, item.withdrawType) }}</span>
           <div
             :class="[
               $style['check-box'],
@@ -197,6 +195,25 @@
               }
             ]"
           />
+          <!-- <img v-lazy="getBankImage(item.swift_code)" /> -->
+          <span>{{ parseCardName(item.alias, item.withdrawType) }}</span>
+
+          <!-- CGPay USDT -->
+          <template v-if="item.bank_id === 2009">
+            <img
+              :class="$style['transfergo-img']"
+              :src="
+                $getCdnPath(
+                  `/static/image/${themeTPL}/mcenter/balanceTrans/ic_transfergo.png`
+                )
+              "
+              alt="ic_transfergo"
+            />
+
+            <div :class="$style['currency-text']" @click="setWithdrawCurrency">
+              {{ withdrawCurrency.name }}
+            </div>
+          </template>
         </div>
       </div>
 
@@ -206,16 +223,11 @@
       <div
         v-if="moreMethodStatus.bankCard || moreMethodStatus.wallet"
         :class="[$style['add-bank-card']]"
+        @click="setPopupStatus(true, 'moreMethod')"
       >
         <img :src="$getCdnPath(`/static/image/${themeTPL}/mcenter/add.png`)" />
         &nbsp;
-        <span
-          @click="
-            () => {
-              showMoreMethod = true;
-            }
-          "
-        >
+        <span>
           {{ "更多提现方式" }}
         </span>
       </div>
@@ -247,14 +259,30 @@
           ]"
           @click="handleSelectCard(item)"
         >
-          <img v-lazy="getBankImage(item.swift_code)" />
-          <span>{{ item.alias }} </span>
           <div
             :class="[
               $style['check-box'],
               { [$style['checked']]: item.id === selectedCard.id }
             ]"
           />
+          <span>{{ item.alias }} </span>
+
+          <!-- CGPay USDT -->
+          <template v-if="item.bank_id === 2009">
+            <img
+              :class="$style['transfergo-img']"
+              :src="
+                $getCdnPath(
+                  `/static/image/${themeTPL}/mcenter/balanceTrans/ic_transfergo.png`
+                )
+              "
+              alt="ic_transfergo"
+            />
+
+            <div :class="$style['currency-text']" @click="setWithdrawCurrency">
+              {{ withdrawCurrency.name }}
+            </div>
+          </template>
         </div>
       </div>
 
@@ -262,12 +290,13 @@
       <div
         v-if="allWithdrawAccount.length === 0 && userLevelObj.bank"
         :class="[$style['add-bank-card']]"
+        @click="checkAccountData('bankCard')"
       >
         <img
           :src="$getCdnPath(`/static/image/${themeTPL}/mcenter/add_2.png`)"
         />
         &nbsp;
-        <span @click="checkAccountData('bankCard')">
+        <span>
           {{ $text("S_ADD_BANKCARD", "添加银行卡") }}
         </span>
       </div>
@@ -276,12 +305,13 @@
       <div
         v-if="allWithdrawAccount.length === 0 && userLevelObj.virtual_bank"
         :class="[$style['add-bank-card']]"
+        @click="checkAccountData('wallet')"
       >
         <img
           :src="$getCdnPath(`/static/image/${themeTPL}/mcenter/add_2.png`)"
         />
         &nbsp;
-        <span @click="checkAccountData('wallet')">
+        <span>
           {{ $text("S_ADD_VIRTUAL_BANKCARD", "添加电子钱包") }}
         </span>
       </div>
@@ -293,18 +323,13 @@
             (moreMethodStatus.bankCard || moreMethodStatus.wallet)
         "
         :class="[$style['add-bank-card']]"
+        @click="setPopupStatus(true, 'moreMethod')"
       >
         <img
           :src="$getCdnPath(`/static/image/${themeTPL}/mcenter/add_2.png`)"
         />
         &nbsp;
-        <span
-          @click="
-            () => {
-              showMoreMethod = true;
-            }
-          "
-        >
+        <span>
           {{ "更多提现方式" }}
         </span>
       </div>
@@ -505,23 +530,6 @@
       </div>
     </template>
 
-    <!-- 被列為黑名單提示彈窗 -->
-    <template v-if="isShowBlockTips">
-      <block-list-tips type="withdraw" @close="closeTips" />
-    </template>
-
-    <!-- 提款前提示彈窗 -->
-    <widthdraw-tips
-      :show="isShowCheck"
-      :actual-money="+actualMoney"
-      :crypto-money="+cryptoMoney"
-      :withdraw-value="+withdrawValue"
-      :type="widthdrawTipsType"
-      :selected-card="selectedCard"
-      @close="closeTips"
-      @submit="handleSubmit"
-      @save="saveCurrentValue(true)"
-    />
     <!-- 流水檢查 -->
     <serial-number v-if="isSerial" :handle-close="toggleSerial" />
 
@@ -536,18 +544,37 @@
       "
     />
 
-    <!-- 更多提现方式彈窗 -->
-    <withdraw-more-method
-      :show="showMoreMethod"
-      :withdraw-user-data="withdrawUserData"
-      :check-account-data="checkAccountData"
-      :more-method-status="moreMethodStatus"
-      @close="
-        () => {
-          showMoreMethod = false;
-        }
-      "
-    />
+    <!-- 彈窗 -->
+    <template v-if="showPopStatus.isShow">
+      <!-- 被列為黑名單提示 -->
+      <template v-if="showPopStatus.type === 'blockTips'">
+        <block-list-tips type="withdraw" @close="closeTips" />
+      </template>
+
+      <!-- 提款前提示-->
+      <template v-if="showPopStatus.type === 'check'">
+        <widthdraw-tips
+          :actual-money="+actualMoney"
+          :crypto-money="+cryptoMoney"
+          :withdraw-value="+withdrawValue"
+          :type="widthdrawTipsType"
+          :selected-card="selectedCard"
+          @close="closeTips"
+          @submit="handleSubmit"
+          @save="saveCurrentValue(true)"
+        />
+      </template>
+
+      <!-- 更多提现方式 -->
+      <template v-if="showPopStatus.type === 'moreMethod'">
+        <withdraw-more-method
+          :withdraw-user-data="withdrawUserData"
+          :check-account-data="checkAccountData"
+          :more-method-status="moreMethodStatus"
+          @close="closeTips"
+        />
+      </template>
+    </template>
 
     <page-loading :is-show="isLoading" />
   </div>
@@ -590,9 +617,13 @@ export default {
       isLoading: true,
       isSendSubmit: false,
       isSerial: false,
-      isShowBlockTips: false,
-      isShowCheck: false,
       isShowMore: true,
+
+      // 彈窗顯示狀態統整
+      showPopStatus: {
+        isShow: false,
+        type: ''
+      },
 
       selectAccountValue: "",
       selectedCard: {
@@ -600,7 +631,6 @@ export default {
         name: "",
         withdrawType: "",
       },
-      showMoreMethod: false,
       widthdrawTipsType: "tips",
 
       // 記錄使用者目前出款總次數
@@ -611,6 +641,7 @@ export default {
       timer: null,
       countdownSec: 0,
       isClickCoversionBtn: false,
+
       //紅利帳戶
       bonus: {},
     };
@@ -689,23 +720,22 @@ export default {
     },
   },
   created() {
-    //紅利帳戶api
-    axios.get("/api/v1/c/gift-card").then((response) => {
-      if (response.data.result === "ok") {
-        this.bonus = response.data.total;
-      }
-    });
-
     // 刷新 Player Api
     this.actionSetUserdata(true);
+
+    this.getUserLevel();
+    this.getUserStat();
+    this.getNowOpenWallet();
+    this.getBounsAccount();
 
     this.depositBeforeWithdraw = this.memInfo.config.deposit_before_withdraw;
     this.firstDeposit = this.memInfo.user.first_deposit;
     if (this.depositBeforeWithdraw && !this.firstDeposit) {
       this.widthdrawTipsType = "deposit";
-      this.isShowCheck = true;
+      this.setPopupStatus(true, 'check')
       return;
     }
+
     // 綁定銀行卡內無常用帳號
     common.bankCardCheck({
       success: ({ result, ret }) => {
@@ -1034,8 +1064,11 @@ export default {
       this.isShowMore = !this.isShowMore;
     },
     handleSelectCard(item) {
+      console.log(item);
       this.selectedCard.id = item.id;
       this.selectedCard.withdrawType = item.withdrawType;
+
+      // Todo：選到 CGPay 時，預設時帶入的資料
 
       switch (item.withdrawType) {
         case "account_id":
@@ -1071,7 +1104,7 @@ export default {
     },
     checkSubmit() {
       if (this.memInfo.blacklist.includes(1)) {
-        this.isShowBlockTips = true;
+        this.setPopupStatus(true, 'blockTips')
         return;
       }
 
@@ -1126,7 +1159,7 @@ export default {
         case "porn1":
           if (Number(this.actualMoney) !== Number(this.withdrawValue)) {
             this.widthdrawTipsType = "tips";
-            this.isShowCheck = true;
+            this.setPopupStatus(true, 'check')
           } else {
             this.handleSubmit();
           }
@@ -1135,17 +1168,25 @@ export default {
         // 一律顯示溫馨
         case "ey1":
           this.widthdrawTipsType = "tips";
-          this.isShowCheck = true;
+          this.setPopupStatus(true, 'check')
           break;
       }
     },
     closeTips() {
-      if (this.isShowCheck) {
-        this.widthdrawTipsType = "";
-        this.isShowCheck = false;
-      } else if (this.isShowBlockTips) {
-        this.isShowBlockTips = false;
-        this.$router.back();
+      this.setPopupStatus(false, '')
+
+      switch (this.showPopStatus.type) {
+        case 'check':
+          this.widthdrawTipsType = "";
+
+          break;
+
+        case 'blockTips':
+          this.$router.back();
+          break;
+
+        case 'moreMethod':
+          break;
       }
     },
     saveCurrentValue(fromRule) {
@@ -1238,6 +1279,7 @@ export default {
           [`ext[api_uri]`]: "/api/trade/v2/c/withdraw/entry",
           [`ext[method][${this.selectedCard.withdrawType}]`]: this.selectedCard
             .id,
+          // [`ext[method][method_id]`]:
           password: +this.withdrawPwd,
         };
       }
@@ -1427,6 +1469,25 @@ export default {
       // }
       return result;
     },
+    getBounsAccount() {
+      // 紅利帳戶
+      axios.get("/api/v1/c/gift-card").then((response) => {
+        if (response.data.result === "ok") {
+          this.bonus = response.data.total;
+        }
+      });
+    },
+    setWithdrawCurrency(item) {
+      console.log('enter');
+      this.withdrawCurrency.id = item.method_id
+      this.withdrawCurrency.name = item.currency_name
+    },
+    setPopupStatus(isShow, type) {
+      this.showPopStatus = {
+        isShow,
+        type
+      }
+    }
   },
   destroyed() {
     this.resetTimerStatus();

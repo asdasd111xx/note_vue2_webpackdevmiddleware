@@ -1,13 +1,13 @@
 <template>
   <!-- 提款前提示彈窗 -->
   <transition name="fade">
-    <div v-if="show" :class="$style['check-wrap']">
+    <div :class="$style['check-wrap']">
       <div
         :class="[
           $style['check-container'],
           {
-            [$style['deposit']]: type === 'deposit'
-          }
+            [$style['deposit']]: type === 'deposit',
+          },
         ]"
       >
         <div :class="$style['check-header']">
@@ -29,9 +29,7 @@
             <div :class="$style['hr']" />
             <div v-if="serialNumberData && serialNumberData.total">
               <div :class="$style['check-cell']">
-                <span :class="$style['sub-title']">
-                  流水要求
-                </span>
+                <span :class="$style['sub-title']"> 流水要求 </span>
                 <span :class="$style['money']">
                   {{ getDeductionNumber(serialNumberData.total.audit_amount) }}
                 </span>
@@ -48,9 +46,7 @@
               </div>
 
               <div :class="[$style['check-cell'], $style['check-total']]">
-                <span :class="$style['sub-title']">
-                  提现金额
-                </span>
+                <span :class="$style['sub-title']"> 提现金额 </span>
                 <span :class="$style['money']">
                   {{ getDeductionNumber(withdrawValue) }}
                 </span>
@@ -76,9 +72,7 @@
               </div>
 
               <div :class="[$style['check-cell'], $style['check-total']]">
-                <span :class="$style['sub-title']">
-                  扣除总计
-                </span>
+                <span :class="$style['sub-title']"> 扣除总计 </span>
                 <span :class="$style['money']">
                   -{{
                     getDeductionNumber(serialNumberData.total.total_deduction)
@@ -87,9 +81,7 @@
               </div>
 
               <div :class="[$style['check-cell'], $style['check-actual']]">
-                <span :class="$style['sub-title']">
-                  实际提现金额
-                </span>
+                <span :class="$style['sub-title']"> 实际提现金额 </span>
                 <span :class="$style['money']">
                   {{ getDeductionNumber(actualMoney) }}
                 </span>
@@ -99,9 +91,7 @@
                 v-if="selectedCard.withdrawType === 'crypto_id'"
                 :class="[$style['check-cell'], $style['check-crypto']]"
               >
-                <span :class="$style['sub-title']">
-                  USDT到帐
-                </span>
+                <span :class="$style['sub-title']"> USDT到帐 </span>
                 <span :class="$style['crypto-money']">
                   {{ cryptoMoney }}
                 </span>
@@ -117,9 +107,7 @@
           <div :class="$style['check-btn']" @click="handleCheckRule">
             查看规则
           </div>
-          <div :class="$style['check-btn']" @click="handleBack">
-            继续游戏
-          </div>
+          <div :class="$style['check-btn']" @click="handleBack">继续游戏</div>
           <div
             v-if="type === 'tips'"
             :class="[$style['check-btn'], $style['submit']]"
@@ -178,7 +166,9 @@ export default {
       default: {}
     }
   },
-  mounted() {},
+  mounted() {
+    this.getSerialNumberData();
+  },
   computed: {
     ...mapGetters({
       siteConfig: "getSiteConfig"
@@ -209,13 +199,13 @@ export default {
       }
     }
   },
-  watch: {
-    show(val) {
-      if (val) {
-        this.getSerialNumberData();
-      }
-    }
-  }
+  // watch: {
+  //   show(val) {
+  //     if (val) {
+  //       this.getSerialNumberData();
+  //     }
+  //   }
+  // }
 };
 </script>
 
