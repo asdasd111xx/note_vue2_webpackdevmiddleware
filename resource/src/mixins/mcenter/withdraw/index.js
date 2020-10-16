@@ -23,8 +23,9 @@ export default {
       withdrawValue: '',
       withdrawPwd: '',
       withdrawCurrency: {
-        name: 'GCP',
-        id: ''
+        // 預設為 CGP
+        name: 'CGP',
+        method_id: 15
       },
 
       isAlertTip: false,

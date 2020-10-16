@@ -210,7 +210,10 @@
               alt="ic_transfergo"
             />
 
-            <div :class="$style['currency-text']" @click="setWithdrawCurrency">
+            <div
+              :class="$style['currency-text']"
+              @click="setPopupStatus(true, 'currency')"
+            >
               {{ withdrawCurrency.name }}
             </div>
           </template>
@@ -279,7 +282,10 @@
               alt="ic_transfergo"
             />
 
-            <div :class="$style['currency-text']" @click="setWithdrawCurrency">
+            <div
+              :class="$style['currency-text']"
+              @click="setPopupStatus(true, 'currency')"
+            >
               {{ withdrawCurrency.name }}
             </div>
           </template>
@@ -574,6 +580,18 @@
           @close="closeTips"
         />
       </template>
+
+      <!-- Currency 列表 -->
+      <template v-if="showPopStatus.type === 'currency'">
+        <withdraw-currency
+          :type="'withdraw-currency'"
+          :title="'CGPay提现币别'"
+          :render-list="currencyList"
+          :current-obj="withdrawCurrency"
+          :item-func="setWithdrawCurrency"
+          @close="closeTips"
+        />
+      </template>
     </template>
 
     <page-loading :is-show="isLoading" />
@@ -589,6 +607,7 @@ import blockListTips from "../../../../common/blockListTips";
 import EST from "@/lib/EST";
 import mixin from "@/mixins/mcenter/withdraw";
 import serialNumber from "./serialNumber";
+import withdrawCurrency from "@/router/mobile/components/common/pickerView/pickerView";
 import widthdrawTips from "./widthdrawTips";
 import withdrawAccount from "@/router/mobile/components/common/withdrawAccount/withdrawAccount";
 import withdrawMoreMethod from "./withdrawMoreMethod";
@@ -627,6 +646,7 @@ export default {
 
       selectAccountValue: "",
       selectedCard: {
+        bank_id: "",
         id: "",
         name: "",
         withdrawType: "",
@@ -655,6 +675,7 @@ export default {
     serialNumber,
     widthdrawTips,
     blockListTips,
+    withdrawCurrency,
     withdrawMoreMethod,
     withdrawAccount,
   },
@@ -673,6 +694,7 @@ export default {
         // 卡片資料
         this.selectedCard = localStorage.getItem("tmp_w_selectedCard")
           ? {
+            bank_id: JSON.parse(localStorage.getItem("tmp_w_selectedCard"))["bank_id"],
             id: JSON.parse(localStorage.getItem("tmp_w_selectedCard"))["id"],
             name: JSON.parse(localStorage.getItem("tmp_w_selectedCard"))[
               "name"
@@ -682,6 +704,7 @@ export default {
             )["withdrawType"],
           }
           : {
+            bank_id: defaultCard.bank_id,
             id: defaultCard.id,
             name:
               defaultCard.withdrawType === "account_id"
@@ -701,6 +724,10 @@ export default {
 
         // 提現密碼
         this.withdrawPwd = localStorage.getItem("tmp_w_withdrawPwd") || this.withdrawPwd;
+
+        // Todo
+        // CGPay Currency
+
 
         setTimeout(() => {
           this.removeCurrentValue();
@@ -758,6 +785,14 @@ export default {
       memInfo: "getMemInfo",
       webInfo: "getWebInfo",
     }),
+    themeTPL() {
+      return this.siteConfig.MOBILE_WEB_TPL;
+    },
+    $style() {
+      return (
+        this[`$style_${this.siteConfig.MOBILE_WEB_TPL}`] || this.$style_porn1
+      );
+    },
     valuePlaceholder() {
       if (
         this.withdrawData &&
@@ -783,14 +818,6 @@ export default {
       } else {
         return "";
       }
-    },
-    themeTPL() {
-      return this.siteConfig.MOBILE_WEB_TPL;
-    },
-    $style() {
-      return (
-        this[`$style_${this.siteConfig.MOBILE_WEB_TPL}`] || this.$style_porn1
-      );
     },
     lockSubmit() {
       if (
@@ -1065,10 +1092,10 @@ export default {
     },
     handleSelectCard(item) {
       console.log(item);
+
       this.selectedCard.id = item.id;
       this.selectedCard.withdrawType = item.withdrawType;
-
-      // Todo：選到 CGPay 時，預設時帶入的資料
+      this.selectedCard.bank_id = item.bank_id;
 
       switch (item.withdrawType) {
         case "account_id":
@@ -1279,10 +1306,12 @@ export default {
           [`ext[api_uri]`]: "/api/trade/v2/c/withdraw/entry",
           [`ext[method][${this.selectedCard.withdrawType}]`]: this.selectedCard
             .id,
-          // [`ext[method][method_id]`]:
+          [`ext[method][method_id]`]: this.selectedCard.bank_id === 2009 ? this.withdrawCurrency.method_id : '',
           password: +this.withdrawPwd,
         };
       }
+
+      console.log(_params);
 
       return ajax({
         method: "post",
@@ -1478,8 +1507,7 @@ export default {
       });
     },
     setWithdrawCurrency(item) {
-      console.log('enter');
-      this.withdrawCurrency.id = item.method_id
+      this.withdrawCurrency.method_id = item.method_id
       this.withdrawCurrency.name = item.currency_name
     },
     setPopupStatus(isShow, type) {
