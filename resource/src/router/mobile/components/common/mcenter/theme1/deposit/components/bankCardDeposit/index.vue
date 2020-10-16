@@ -907,7 +907,7 @@
                   • {{ feeText }}
                 </li>
 
-                <li>• 实际存入依审核结果为准</li>
+                <!-- <li>• 实际存入依审核结果为准</li> -->
               </ul>
               <div
                 :class="$style['message-close']"
@@ -1090,14 +1090,14 @@ export default {
     blockListTips,
     bindWalletPopup,
     popupQrcode,
-    confirmOneBtn
+    confirmOneBtn,
   },
   mixins: [mixin],
   props: {
     headerSetting: {
       type: Object,
-      default: () => { }
-    }
+      default: () => {},
+    },
   },
   data() {
     return {
@@ -1105,7 +1105,7 @@ export default {
       isSelectShow: false,
       paySelectType: "",
       categoryOptions: {
-        slidesPerView: "auto"
+        slidesPerView: "auto",
       },
       initHeaderSetting: {},
       isSelectValue: "",
@@ -1122,14 +1122,14 @@ export default {
       qrcodeObj: {
         isShow: false,
         bank_id: null,
-        bind_type: "deposit"
+        bind_type: "deposit",
       },
       confirmPopupObj: {
         isShow: false,
         msg: "",
         btnText: "",
-        cb: () => { }
-      }
+        cb: () => {},
+      },
     };
   },
   watch: {
@@ -1182,11 +1182,11 @@ export default {
             cb: () => {
               // this.qrcodeObj.isShow = false;
               window.location.reload();
-            }
+            },
           });
         }
       }
-    }
+    },
   },
   computed: {
     ...mapGetters({
@@ -1194,7 +1194,7 @@ export default {
       memInfo: "getMemInfo",
       rechargeConfig: "getRechargeConfig",
       CGPayInfo: "getCGPayInfo",
-      noticeData: "getNoticeData"
+      noticeData: "getNoticeData",
     }),
     $style() {
       const style =
@@ -1211,26 +1211,26 @@ export default {
           curInfo: {
             ...this.curPayInfo,
             selectId: this.curPayInfo.payment_method_id,
-            objKey: "payMethod"
+            objKey: "payMethod",
           },
-          allData: this.curModeGroup.payment_group_content.map(info => ({
+          allData: this.curModeGroup.payment_group_content.map((info) => ({
             ...info,
             selectId: info.payment_method_id,
             mainTitle: info.bank_name || info.payment_method_name,
-            subTitle: info.payment_type_name
-          }))
+            subTitle: info.payment_type_name,
+          })),
         },
         payPass: {
           selectTitle: this.$text("S_SELECT_PAY_PASS", "请选择支付通道"),
           curInfo: {
             ...this.curPassRoad,
             selectId: this.curPassRoad.id,
-            objKey: "payPass"
+            objKey: "payPass",
           },
-          allData: this.passRoad.map(info => ({
+          allData: this.passRoad.map((info) => ({
             ...info,
-            selectId: info.id
-          }))
+            selectId: info.id,
+          })),
         },
         chagneBank: {
           selectTitle: this.$text("S_CHANGE_BANK", "请选择支付银行"),
@@ -1240,14 +1240,14 @@ export default {
               this.allBanks.length > 0
                 ? this.bankSelectValue.value || this.allBanks[0].value
                 : "",
-            objKey: "chagneBank"
+            objKey: "chagneBank",
           },
-          allData: this.allBanks.map(info => ({
+          allData: this.allBanks.map((info) => ({
             ...info,
             selectId: info.value,
-            mainTitle: info.label
-          }))
-        }
+            mainTitle: info.label,
+          })),
+        },
       };
     },
     nowSelectData: {
@@ -1270,7 +1270,7 @@ export default {
         if (this.paySelectType === "payPass") {
           this.changePassRoad(value);
         }
-      }
+      },
     },
     /**
      * 金額是否輸入錯誤
@@ -1294,7 +1294,7 @@ export default {
         this.moneyValue = "";
         this.isErrorMoney = false;
         this.isSelectShow = false;
-      }
+      },
     },
     allInputData() {
       return [
@@ -1307,30 +1307,30 @@ export default {
           selectData: [
             {
               mainTitle: this.$text("S_ONLINE_BANK", "网银"),
-              selectId: "1"
+              selectId: "1",
             },
             {
               mainTitle: "ATM",
-              selectId: "2"
+              selectId: "2",
             },
             {
               mainTitle: this.$text("S_BANK_COUNTER", "银行柜台"),
-              selectId: "4"
+              selectId: "4",
             },
             {
               mainTitle: this.$text("S_MOBILE_TRANSFER", "手机银行转帐"),
-              selectId: "8"
+              selectId: "8",
             },
             {
               mainTitle: this.$text("S_ZALO_PAY", "其他"),
-              selectId: "16"
-            }
+              selectId: "16",
+            },
           ],
           showCondition: this.curPayInfo.field.find(
-            e => e.name === "method" && e.required
+            (e) => e.name === "method" && e.required
           ),
           //   showCondition: this.curPayInfo.field.find((e) => e.name === 'method'),
-          isError: false
+          isError: false,
         },
         {
           objKey: "bankBranch",
@@ -1346,10 +1346,10 @@ export default {
           isError:
             this.showError &&
             this.curPayInfo.field.find(
-              item => item.name === "method" && item.required
+              (item) => item.name === "method" && item.required
             ) &&
             !this.speedField.bankBranch &&
-            ["2", "4"].includes(this.speedField.depositMethod)
+            ["2", "4"].includes(this.speedField.depositMethod),
         },
         {
           objKey: "depositAccount",
@@ -1357,15 +1357,15 @@ export default {
           value: this.speedField.depositAccount,
           placeholderText: "请输入充值帐号",
           showCondition: this.curPayInfo.field.find(
-            e => e.name === "pay_account" && e.required
+            (e) => e.name === "pay_account" && e.required
           ),
           //   showCondition: this.curPayInfo.field.find((e) => e.name === 'pay_account'),
           isError:
             this.showError &&
             this.curPayInfo.field.find(
-              item => item.name === "pay_account" && item.required
+              (item) => item.name === "pay_account" && item.required
             ) &&
-            !this.speedField.depositAccount
+            !this.speedField.depositAccount,
         },
         {
           objKey: "depositTime",
@@ -1373,7 +1373,7 @@ export default {
           value: this.speedField.depositTime,
           placeholderText: "请选择充值时间",
           showCondition: this.curPayInfo.field.find(
-            e => e.name === "deposit_at" && e.required
+            (e) => e.name === "deposit_at" && e.required
           ),
           // showCondition: this.curPayInfo.field.find(e => {
           //   const isShow = e.name === "deposit_at";
@@ -1391,9 +1391,9 @@ export default {
           isError:
             this.showError &&
             this.curPayInfo.field.find(
-              item => item.name === "deposit_at" && item.required
+              (item) => item.name === "deposit_at" && item.required
             ) &&
-            !this.speedField.depositTime
+            !this.speedField.depositTime,
         },
         {
           objKey: "serialNumber",
@@ -1404,7 +1404,7 @@ export default {
             "请输入流水号"
           ),
           showCondition: this.curPayInfo.field.find(
-            e => e.name === "sn" && e.required
+            (e) => e.name === "sn" && e.required
           ),
           // showCondition:
           //   this.curPayInfo &&
@@ -1425,10 +1425,10 @@ export default {
           isError:
             this.showError &&
             this.curPayInfo.field.find(
-              item => item.name === "sn" && item.required
+              (item) => item.name === "sn" && item.required
             ) &&
-            !this.speedField.serialNumber
-        }
+            !this.speedField.serialNumber,
+        },
       ];
     },
     depositNameInput() {
@@ -1439,14 +1439,14 @@ export default {
         value: this.speedField.depositName,
         placeholderText: "请输入充值人姓名",
         showCondition: this.curPayInfo.field.find(
-          e => e.name === "pay_username" && e.required
+          (e) => e.name === "pay_username" && e.required
         ),
         isError:
           this.showError &&
           this.curPayInfo.field.find(
-            item => item.name === "pay_username" && item.required
+            (item) => item.name === "pay_username" && item.required
           ) &&
-          !this.speedField.depositName
+          !this.speedField.depositName,
       };
     },
     statusText() {
@@ -1474,8 +1474,8 @@ export default {
       },
       set(value) {
         this.qrcodeObj.isShow = value;
-      }
-    }
+      },
+    },
   },
   created() {
     this.initHeaderSetting = this.headerSetting;
@@ -1498,7 +1498,7 @@ export default {
       "actionSetRechargeConfig",
       "actionSetCGPayInfo",
       "actionVerificationFormData",
-      "actionSetGlobalMessage"
+      "actionSetGlobalMessage",
     ]),
 
     handleCreditTrans() {
@@ -1587,7 +1587,7 @@ export default {
             msg: this.entryBlockStatusData.custom_point,
             cb: () => {
               window.open(this.entryBlockStatusData.external_url);
-            }
+            },
           });
           break;
 
@@ -1608,7 +1608,7 @@ export default {
 
       this.isShowEntryBlockStatus = false;
 
-      this.submitList().then(response => {
+      this.submitList().then((response) => {
         // 重置阻擋狀態
         this.checkEntryBlockStatus();
         this.entryBlockStatusData = null;
@@ -1619,7 +1619,7 @@ export default {
         if (response) {
           if (response.status === "NameFail") {
             this.actionSetGlobalMessage({
-              msg: "请输入正确名称"
+              msg: "请输入正确名称",
             });
             this.nameCheckFail = true;
           }
@@ -1634,9 +1634,9 @@ export default {
                 onClick: () => {
                   this.actionSetUserBalance();
                   this.nowSubmitStatus = "stepOne";
-                }
+                },
               },
-              submitStatus: this.submitStatus
+              submitStatus: this.submitStatus,
             });
 
             // 點選加密貨幣的匯率試算，在需將時間設為0
@@ -1668,13 +1668,13 @@ export default {
         ),
         loading: this.$getCdnPath(
           "/static/image/_new/default/bank_default_2.png"
-        )
+        ),
       };
     },
     curPay(curPayInfo) {
       if (
         Object.keys(curPayInfo).length &&
-        curPayInfo.field.find(item => item.required) &&
+        curPayInfo.field.find((item) => item.required) &&
         [5, 6].includes(curPayInfo.payment_type_id)
       ) {
         return true;
@@ -1684,7 +1684,7 @@ export default {
     changeSelectValue(val) {
       this.isShowPop = false;
       const index = this.paySelectData[this.paySelectType].allData
-        .map(item => item.value)
+        .map((item) => item.value)
         .indexOf(val);
       this.nowSelectData = this.paySelectData[this.paySelectType].allData[
         index
@@ -1698,12 +1698,12 @@ export default {
         url:
           this.siteConfig.BBOS_DOMIAN + "/Ext/V2/CreateEntryBlock/User/Check",
         reqHeaders: {
-          vendor: this.memInfo.user.domain
+          vendor: this.memInfo.user.domain,
         },
         params: {
-          lang: "zh-cn"
-        }
-      }).then(res => {
+          lang: "zh-cn",
+        },
+      }).then((res) => {
         this.isBlockChecked = true;
         if (res.status === "000" && res.data && res.data.ret) {
           this.entryBlockStatusData = res.data.ret;
@@ -1711,7 +1711,7 @@ export default {
           // 存款功能無法使用
           if (res.code !== "TM020074") {
             this.actionSetGlobalMessage({
-              msg: res.msg
+              msg: res.msg,
             });
           }
         }
@@ -1726,7 +1726,7 @@ export default {
         newWindow = window.open("", "", "_blank", true);
       }
 
-      const newWindowHref = uri => {
+      const newWindowHref = (uri) => {
         try {
           newWindow.location.href = uri;
         } catch (e) {
@@ -1764,8 +1764,8 @@ export default {
       if (target === "CGPPwd") {
         this.actionVerificationFormData({
           target: "code",
-          value: value
-        }).then(val => {
+          value: value,
+        }).then((val) => {
           this.walletData["CGPay"].password = val;
         });
       }
@@ -1773,8 +1773,8 @@ export default {
       if (target === "money") {
         this.actionVerificationFormData({
           target: "money",
-          value: value
-        }).then(val => {
+          value: value,
+        }).then((val) => {
           this.moneyValue = val;
           this.isErrorMoney = false;
 
@@ -1788,14 +1788,13 @@ export default {
         if (target === "depositName") {
           this.actionVerificationFormData({
             target: "name",
-            value: value
-          }).then(val => {
+            value: value,
+          }).then((val) => {
             this.checkSuccess = val ? true : false;
 
             this.speedField.depositName = val;
             this.$emit("update:speedField", { val, target });
           });
-
         } else {
           this.$emit("update:speedField", { value, target });
         }
@@ -1828,8 +1827,8 @@ export default {
           );
           break;
       }
-    }
-  }
+    },
+  },
 };
 </script>
 
