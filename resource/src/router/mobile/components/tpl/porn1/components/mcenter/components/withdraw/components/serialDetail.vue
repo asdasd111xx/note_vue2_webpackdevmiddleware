@@ -53,6 +53,8 @@
             >{{
               item.deduction
                 ? item.deduction + ":" + item.value
+                : item.rateValue === "-"
+                ? "-"
                 : item.value
                 ? $text("S_COMPLETE", "完成")
                 : $text("S_NOT_FINISH", "未完成")
@@ -135,12 +137,12 @@ export default {
         [
           {
             title: this.$text("S_SERIAL_AUDIT", "充值稽核倍数"),
-            rateValue: this.data.audit_rate,
+            rateValue: this.data.audit_rate > 0 ? this.data.audit_rate : '-',
             value: this.data.administrative_checked
           },
           {
             title: this.$text("S_SERIAL_NUMBER", "流水要求"),
-            rateValue: this.data.audit_amount,
+            rateValue: this.data.audit_amount > 0 ? this.data.audit_amount : '-',
             value: this.getDeductionNumber(
               this.data.administrative_amount
             ),
@@ -150,12 +152,12 @@ export default {
         [
           {
             title: this.$text("S_SERIAL_STATUS02", "优惠稽核倍数"),
-            rateValue: this.data.offer_audit_rate,
+            rateValue: this.data.offer_audit_rate > 0 ? this.data.offer_audit_rate : '-',
             value: this.data.offer_checked
           },
           {
             title: this.$text("S_SERIAL_NUMBER", "流水要求"),
-            rateValue: this.data.offer_audit_amount,
+            rateValue: this.data.offer_audit_amount > 0 ? this.data.offer_audit_amount : '-',
             value: this.getDeductionNumber(this.data.offer),
             deduction: this.$text("S_DEDUCTION_MONEY", "扣除金额")
           }

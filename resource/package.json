@@ -16,6 +16,7 @@
     "dependencies": {
         "@chenfengyuan/vue-qrcode": "1.0.0",
         "aes-js": "^3.1.2",
+        "animated-number-vue": "^1.0.0",
         "animejs": "3.2.0",
         "axios": "0.15.3",
         "axios-cache-adapter": "^2.5.0",

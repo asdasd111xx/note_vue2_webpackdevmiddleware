@@ -321,19 +321,19 @@
               !rebateInitData.accumulative
                 ? $t("S_VALID_BETTING_AMOUNT")
                 : $t("S_VALID_BETTING_AMOUNT_NEW")
-            }}
+            }}。
           </div>
           <div>
             (2){{
               !rebateInitData.accumulative
                 ? $t("S_FUNCTION_ET")
                 : $t("S_FUNCTION_ET_NEW")
-            }}
+            }}。
           </div>
-          <div>(3){{ $t("S_CALCULATION_SERVICE") }}</div>
-          <div>(4){{ $t("S_ACTUAL_COLLECTION") }}</div>
-          <div>(5){{ messageText }}</div>
-          <div>(6){{ $t("S_CONSIDERATION_DATA") }}</div>
+          <div>(3){{ $t("S_CALCULATION_SERVICE") }}。</div>
+          <div>(4){{ $t("S_ACTUAL_COLLECTION") }}。</div>
+          <div>(5){{ messageText }}。</div>
+          <div>(6){{ $t("S_CONSIDERATION_DATA") }}。</div>
           <div v-show="maintainsList">
             {{ $t("S_CURRENT_PLATFORM") }}：
             <span :class="$style['maintains-list']">{{ maintainsList }}</span>

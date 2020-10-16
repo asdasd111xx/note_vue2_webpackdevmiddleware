@@ -40,8 +40,13 @@ export default {
       siteConfig: "getSiteConfig",
       agentLink: "getAgentLink",
       memInfo: 'getMemInfo',
+      promotionLink: 'getPromotionLink'
     }),
     getAgentLink() {
+      if (this.promotionLink) {
+        return this.promotionLink;
+      }
+
       if (!this.agentLink.domain || !this.agentLink.agentCode) {
         return "";
       }

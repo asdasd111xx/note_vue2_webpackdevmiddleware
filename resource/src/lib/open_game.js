@@ -66,6 +66,7 @@ export default (params, success = () => { }, fail = () => { }) => {
             let query = '';
 
             if (result !== 'ok') {
+                fail({ data: { msg: 'open game fail' } });
                 return;
             }
 
@@ -107,7 +108,7 @@ export default (params, success = () => { }, fail = () => { }) => {
                     newWindow.close();
                     console.log(e);
                     console.log('另开视窗失败 请关闭阻挡弹出式视窗');
-                    window.open(link, '', '_blank', true);
+                    // window.open(link, '', '_blank', true);
                 }
                 success();
                 setTimeout(() => {

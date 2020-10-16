@@ -4,21 +4,17 @@
       <div :class="$style['title']">奖励规则</div>
       <div :class="$style['table-wrap']">
         <div :class="$style['table-header']">
-          <div :class="$style['header-item']">{{ titleList[0] }}</div>
+          <div :class="$style['header-item']">{{ vipTitleName }}</div>
           <div
             :class="$style['header-item']"
             v-for="(item, index) in rechargeBonusConfig"
             :key="index"
           >
             <div v-if="index == 'monthly'">
-              {{ titleList[1] }}
+              {{ titleList[1] }}<br />赠送彩金
             </div>
-            <div v-if="index == 'weekly'">
-              {{ titleList[2] }}
-            </div>
-            <div v-if="index == 'first'">
-              {{ titleList[3] }}
-            </div>
+            <div v-if="index == 'weekly'">{{ titleList[2] }}<br />赠送彩金</div>
+            <div v-if="index == 'first'">{{ titleList[3] }}<br />赠送彩金</div>
           </div>
 
           <!-- <div :class="$style['table-header']"> -->
@@ -38,11 +34,18 @@
             :class="$style['content']"
           >
             <div
-              v-for="(item, num) in cells"
-              :key="`cells-${num}`"
+              v-for="(item, index) in cells"
+              :key="`cells-${index}`"
               :class="$style['item']"
             >
-              {{ item }}
+              <!-- index = 0 為 VIP 等級欄位 -->
+              <template v-if="index === 0">
+                {{ item === "VIP 0" ? `一般会员(${item})` : item }}
+              </template>
+
+              <template v-else>
+                {{ commaFormat(item) }}
+              </template>
             </div>
           </div>
         </div>
@@ -57,33 +60,41 @@ import { mapGetters, mapActions } from "vuex";
 import mobileContainer from "../../../../common/mobileContainer";
 import mixin from "@/mixins/mcenter/recharge/recharge";
 import axios from "axios";
+import yaboRequest from '@/api/yaboRequest';
+import { getCookie } from "@/lib/cookie";
 
 export default {
   mixins: [mixin],
   components: {
     mobileContainer
   },
+  created() {
+    this.getUserDetail();
+  },
   data() {
     return {
+      userVipInfo: null,
+      vipTitleName: "",
       titleList: [
-        "VIP等级",
-        "每月首转赠送彩金",
-        "每周首转赠送彩金",
-        "终身首转赠送彩金"
+        "特权VIP",
+        "每月首转",
+        "每周首转",
+        "首次转让"
       ],
-      list: [
-        ["VIP0", "9元/位", "9元/位", "9元/位"],
-        ["VIP1", "99元/位", "99元/位", "99元/位"],
-        ["VIP2", "199元/位", "199元/位", "199元/位"],
-        ["VIP3", "299元/位", "299元/位", "299元/位"],
-        ["VIP4", "399元/位", "399元/位", "399元/位"],
-        ["VIP5", "499元/位", "499元/位", "499元/位"],
-        ["VIP6", "599元/位", "599元/位", "599元/位"],
-        ["VIP7", "699元/位", "699元/位", "699元/位"],
-        ["VIP8", "799元/位", "799元/位", "799元/位"],
-        ["VIP9", "899元/位", "899元/位", "899元/位"],
-        ["VIP10", "999元/位", "999元/位", "999元/位"]
-      ],
+      //  假資料測試
+      //   list: [
+      //     ["VIP0", "9元/位", "9元/位", "9元/位"],
+      //     ["VIP1", "99元/位", "99元/位", "99元/位"],
+      //     ["VIP2", "199元/位", "199元/位", "199元/位"],
+      //     ["VIP3", "299元/位", "299元/位", "299元/位"],
+      //     ["VIP4", "399元/位", "399元/位", "399元/位"],
+      //     ["VIP5", "499元/位", "499元/位", "499元/位"],
+      //     ["VIP6", "599元/位", "599元/位", "599元/位"],
+      //     ["VIP7", "699元/位", "699元/位", "699元/位"],
+      //     ["VIP8", "799元/位", "799元/位", "799元/位"],
+      //     ["VIP9", "899元/位", "899元/位", "899元/位"],
+      //     ["VIP10", "999元/位", "999元/位", "999元/位"]
+      //   ],
     };
   },
   computed: {
@@ -96,12 +107,13 @@ export default {
       return style;
     },
     vipRuleData() {
-      // 確保目前開放的欄位 first / monthly / weekly
-      let keys = Object.keys(this.rechargeBonusConfig);
-      // 取 Key 值的欄位設 render 的數量
-      let vipNums = this.rechargeBonusConfig[keys[0]].length;
-
       let data = this.rechargeBonusConfig;
+
+      // 確保目前開放的欄位 first / monthly / weekly
+      let keys = Object.keys(data);
+      // 取 Key 值的欄位設 render 的數量
+      let vipNums = data[keys[0]].length;
+
       let arr = [];
 
       for (let i = 0; i < vipNums; i++) {
@@ -115,12 +127,25 @@ export default {
       }
 
       return arr;
-    }
+    },
   },
-  mounted() {
-    console.log(this.vipRuleData);
-  },
-  methods: {}
+  methods: {
+    commaFormat(value) {
+      return value.toString().replace(/\B(?=(\d{3})+(?!\d))/g, ',');
+    },
+    getUserDetail() {
+      yaboRequest({
+        method: "get",
+        url: `${
+          this.siteConfig.YABO_API_DOMAIN
+          }/player/vipinfo/${getCookie("cid")}`,
+        headers: { "x-domain": this.memInfo.user.domain }
+      }).then(res => {
+        this.userVipInfo = res.data;
+        this.vipTitleName = res.data[0].config_name
+      });
+    },
+  }
 };
 </script>
 

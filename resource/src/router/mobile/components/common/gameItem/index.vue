@@ -26,12 +26,18 @@
       <!-- 行動裝置點擊圖片開啟遊戲 -->
       <div :class="[getClass(['game-box']), 'clearfix']">
         <img v-lazy="getImg" />
-        <!-- 遊戲彩金 -->
-        <div v-if="showJackpot && getAmount" :class="jackpotClass">
-          <span>{{ getAmount }}</span>
-        </div>
       </div>
       <div :class="getClass(['mask'])" />
+    </div>
+    <!-- 遊戲彩金 -->
+    <div
+      v-if="showJackpot && getAmount && getJackpotImg"
+      :class="getClass(['game-jackpot', 'jackpot-img'])"
+    >
+      <div :class="getClass(['game-jackpot-img'])">
+        <img :src="getJackpotImg" />
+      </div>
+      <span>{{ getAmount }}</span>
     </div>
     <!-- 遊戲標題 -->
     <div
@@ -105,6 +111,9 @@ export default {
     redirectCard: {
       type: Function,
       required: true
+    },
+    jackpotData: {
+      type: Object,
     }
   },
   computed: {
@@ -113,7 +122,6 @@ export default {
       cdnDomain: 'getCdnDomain',
       favoriteGame: 'getFavoriteGame',
       loginStatus: 'getLoginStatus',
-      jackpot: 'getJackpot',
       curLang: 'getCurLang',
       siteConfig: 'getSiteConfig'
     }),
@@ -202,17 +210,40 @@ export default {
     getActivityImg() {
       return `/static/image/casino/theme/brilliant/lang/${this.curLang}/${this.gameInfo.status !== 2 ? 'upcoming_ribbon' : 'activity_ribbon'}.png`;
     },
+    getJackpotImg() {
+      let src = '/static/image/casino/jackpot/';
+      switch (this.gameInfo.vendor) {
+        // 單一彩金+名單
+        case 'bbin':
+        case "gns":
+        case "isb":
+        case "ag":
+        case "ag_casino":
+        case "sg":
+        case "fg":
+        case "mg":
+        case "mg2":
+        case "lg_casino":
+          return src + 'ic_minor.png';
+        case 'pt':
+        case "hb":
+        case "wm":
+          return src + 'ic_jackpot.png';
+        default:
+          return;
+      }
+    },
     /**
      * 個別遊戲彩金金額
      * @method getAmount
      * @returns {string} 彩金金額
      */
     getAmount() {
-      if (!this.jackpot[this.gameInfo.vendor] || !this.jackpot[this.gameInfo.vendor].jpMinor) {
+      if (!this.jackpotData || !this.jackpotData.jpMinor) {
         return '';
       }
 
-      const data = this.jackpot[this.gameInfo.vendor].jpMinor.find((info) => info.code === this.gameInfo.code);
+      const data = this.jackpotData.jpMinor.find((info) => info.code === this.gameInfo.code);
 
       if (!data) {
         return '';
@@ -275,12 +306,6 @@ export default {
 
       return this.$i18n.t(name);
     },
-    jackpotClass() {
-      const classList = ['game-jackpot', 'jackpot-img'];
-      const jackpotImgList = ['pt', 'hb', 'lg_casino'];
-
-      return this.getClass(classList, { 'jackpot-img': jackpotImgList.includes(this.gameInfo.vendor) });
-    }
   },
   methods: {
     ...mapActions([
@@ -320,7 +345,6 @@ export default {
         return;
       }
 
-      this.isShowLoading = true;
       let isMobileView;
 
       try {
@@ -357,6 +381,9 @@ export default {
 
         return;
       }
+
+      this.isShowLoading = true;
+
       const openGameSuccessFunc = (res) => {
         this.isShowLoading = false;
       };

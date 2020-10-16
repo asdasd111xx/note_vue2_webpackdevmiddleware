@@ -28,7 +28,7 @@
         "
       />
     </div>
-  
+
     <div v-if="headerConfig.title" :class="[$style.wrap, 'clearfix']">
       <div :class="[[$style.title], $style[source]]">
         {{ headerConfig.title }}
@@ -330,12 +330,12 @@ export default {
 }
 
 .agent {
-    background: url('/static/image/porn1/agent/common/herder_bg.png');
-    border-bottom: 1px solid #000;
+  background: url("/static/image/porn1/agent/common/herder_bg.png");
+  border-bottom: 1px solid #000;
 
-    .title {
-        color: #FFF;
-    }
+  .title {
+    color: #fff;
+  }
 }
 
 .logo-wrap {

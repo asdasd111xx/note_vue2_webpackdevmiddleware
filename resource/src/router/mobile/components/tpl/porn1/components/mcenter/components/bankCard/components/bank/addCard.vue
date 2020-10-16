@@ -122,12 +122,20 @@
         <div :class="$style['info-item']">
           <p :class="$style['input-title']">手机号码</p>
           <div :class="$style['input-wrap']">
+            <template v-if="themeTPL === 'ey1'">
+              <select v-model="phoneHead" :class="$style['phone-selected']">
+                <option v-for="option in phoneHeadOption" v-bind:value="option">
+                  {{ "+" + option }}
+                </option>
+              </select>
+            </template>
             <input
               v-model="formData.phone"
               type="text"
               :placeholder="
                 themeTPL === 'porn1' ? '11位手机号码' : '请输入手机号码'
               "
+              :class="$style['phone-input']"
               maxlength="36"
               @input="
                 formData.phone = $event.target.value

@@ -92,36 +92,41 @@ export default {
         this.tabList[0].name = "全部"
       });
     },
-    onClick({ link, name }) {
-      let newWindow = '';
-      // 辨別裝置是否為ios寰宇瀏覽器
-      const isUBMobile = navigator.userAgent.match(/UBiOS/) !== null && navigator.userAgent.match(/iPhone/) !== null;
-      newWindow = window.open('');
+    onClick(target) {
+      localStorage.setItem('iframe-third-url', target.link);
+      localStorage.setItem('iframe-third-url-title', target.name);
 
-      ajax({
-        method: 'get',
-        url: '/api/v1/c/link/customize',
-        params: { code: 'promotion', client_uri: link },
-        errorAlert: false,
-        success: ({
-          result, ret, msg, code
-        }) => {
-          if (result !== 'ok') {
-            newWindow.close();
-            const errorCode = code || '';
-            alert(`${msg} ${errorCode}`);
-            return;
-          }
+      this.$router.push(`/mobile/iframe/promotion?hasFooter=false&hasHeader=true`);
 
-          newWindow.location.href = ret.uri;
-          newWindow.document.title = '最新优惠';
-          //   window.document.title = name;
-        },
-        fail: (error) => {
-          newWindow.alert(`${error.data.msg} ${error.data.code ? `(${error.data.code})` : ''}`);
-          newWindow.close();
-        }
-      });
+      // let newWindow = '';
+      // // 辨別裝置是否為ios寰宇瀏覽器
+      // const isUBMobile = navigator.userAgent.match(/UBiOS/) !== null && navigator.userAgent.match(/iPhone/) !== null;
+      // newWindow = window.open('');
+
+      // ajax({
+      //   method: 'get',
+      //   url: '/api/v1/c/link/customize',
+      //   params: { code: 'promotion', client_uri: link },
+      //   errorAlert: false,
+      //   success: ({
+      //     result, ret, msg, code
+      //   }) => {
+      //     if (result !== 'ok') {
+      //       newWindow.close();
+      //       const errorCode = code || '';
+      //       alert(`${msg} ${errorCode}`);
+      //       return;
+      //     }
+
+      //     newWindow.location.href = ret.uri;
+      //     newWindow.document.title = '最新优惠';
+      //     //   window.document.title = name;
+      //   },
+      //   fail: (error) => {
+      //     newWindow.alert(`${error.data.msg} ${error.data.code ? `(${error.data.code})` : ''}`);
+      //     newWindow.close();
+      //   }
+      // });
     }
   }
 };

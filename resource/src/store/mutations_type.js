@@ -149,8 +149,12 @@ export const SET_RECHARGECONFIG = 'SET_RECHARGECONFIG';
 export const SET_HASBANK = 'SET_HASBANK';
 export const SET_VIDEO_BOUNS_PAGE_STATUS = 'SET_VIDEO_BOUNS_PAGE_STATUS';
 export const SET_RECHARGEBONUSCONFIG = 'SET_RECHARGEBONUSCONFIG';
+export const SET_SYSTEMDOMAIN = 'SET_SYSTEMDOMAIN';
+export const SET_PORNDOMAIN = 'SET_PORNDOMAIN';
 
 // ＝＝＝＝＝＝＝＝＝＝＝＝＝＝＝＝＝＝
 //   　電子錢包綁定相關
 // ＝＝＝＝＝＝＝＝＝＝＝＝＝＝＝＝＝＝
 export const SET_CGPAYINFO = "SET_CGPAYINFO";
+
+export const SET_PROMOTION_LINK = "SET_PROMOTION_LINK";

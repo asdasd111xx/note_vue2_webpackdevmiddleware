@@ -3,8 +3,15 @@
 .btn-send {
     background-color: #FDCCCC;
     width: 110px;
+
     &.active {
         color: #ffffff;
         background-color: #E42A30;
     }
+}
+
+.phone-selected {
+    border: 0px;
+    background-color: #ffffff;
+    margin-right: 10px;
 }

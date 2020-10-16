@@ -73,6 +73,11 @@
         }
     }
 
+    .phone-input {
+        width: 75%;
+        display: inline-block;
+    }
+
     .withdraw-pwd-input {
         background: #ffffff;
         border: 2px solid #cecece;
@@ -157,8 +162,15 @@
     height: 20px;
     top: 12px;
     right: 14px;
+
     img {
         width: 100%;
         height: 100%;
     }
+}
+
+.phone-selected {
+    border: 0px;
+    background-color: #ffffff;
+    margin-right: 10px;
 }

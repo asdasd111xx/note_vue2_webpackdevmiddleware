@@ -480,10 +480,16 @@ export default {
           this.errMsg = '已發送手機認證碼';
         }
 
-      }).catch(res => {
-        if (res.response && res.response.data && res.response.data.msg) {
-          this.errMsg = `${res.response.data.msg}`;
-          this.isSendKeyring = false;
+      }).catch(error => {
+        this.isSendKeyring = false;
+
+        if (error.response && error.response.status === 429) {
+          this.errorMsg = "今日发送次数已达上限";
+          return;
+        }
+
+        if (error.response && error.response.data && error.response.data.msg) {
+          this.errMsg = `${error.response.data.msg}`;
         }
       })
 
@@ -508,6 +514,12 @@ export default {
         },
         fail: (res) => {
           this.msg.keyring = '';
+
+          if (res && res.status === 429) {
+            this.errorMsg = "操作太频繁，请稍候在试";
+            return;
+          }
+
           if (res && res.data && res.data.msg) {
             this.errMsg = `${res.data.msg}`;
           }
@@ -543,6 +555,11 @@ export default {
           }
         },
         fail: (res) => {
+          if (res && res.status === 429) {
+            this.errorMsg = "操作太频繁，请稍候在试";
+            return;
+          }
+
           if (res && res.data && res.data.msg) {
             this.errMsg = `${res.data.msg}`;
           }

@@ -84,21 +84,36 @@ export default {
             ];
         },
         bonusList() {
+            let data = this.rechargeBonusConfig;
+            let bonusArrays = {}
+
+            // 確保目前開放的欄位 first / monthly / weekly
+            if (this.hasBonusRule) {
+                let keys = Object.keys(data);
+
+                // 根據目前有開放的欄位放入
+                for (let i = 0; i < keys.length; i++) {
+                    bonusArrays[keys[i]] = data[keys[i]].map(item => {
+                        return item.bonus;
+                    })
+                }
+            }
+
             return [
                 {
                     key: "first",
-                    text: `喜讯：首次额度转让旗下会员赠彩金${this.rechargeConfig.first_bonus}元/位`,
-                    isShow: this.rechargeConfig.first_bonus_enable
+                    text: `喜讯：首次额度转让旗下会员赠彩金${bonusArrays.first ? Math.max(...bonusArrays.first) : null}元/位`,
+                    isShow: this.rechargeConfig.first_bonus_enable,
                 },
                 {
                     key: "monthly",
-                    text: `喜讯：每月首次额度转让旗下会员赠${this.rechargeConfig.monthly_bonus}元/位`,
-                    isShow: this.rechargeConfig.monthly_bonus_enable
+                    text: `喜讯：每月首次额度转让旗下会员赠${bonusArrays.monthly ? Math.max(...bonusArrays.monthly) : null}元/位`,
+                    isShow: this.rechargeConfig.monthly_bonus_enable,
                 },
                 {
                     key: "weekly",
-                    text: `喜讯：每周首次额度转让旗下会员赠${this.rechargeConfig.weekly_bonus}元/位`,
-                    isShow: this.rechargeConfig.weekly_bonus_enable
+                    text: `喜讯：每周首次额度转让旗下会员赠${bonusArrays.weekly ? Math.max(...bonusArrays.weekly) : null}元/位`,
+                    isShow: this.rechargeConfig.weekly_bonus_enable,
                 }
             ].filter(item => item.isShow)
         },

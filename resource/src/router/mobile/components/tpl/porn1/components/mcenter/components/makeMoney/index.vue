@@ -67,6 +67,7 @@ export default {
       setCookie("cid", "");
       setCookie("y_token", "");
       this.actionSetAgentLink({ reqHeaders: { cid: this.$route.query.cid } });
+      setCookie("cid", query.cid);
     } else {
       this.actionSetAgentLink();
     }
@@ -133,7 +134,8 @@ export default {
   computed: {
     ...mapGetters({
       siteConfig: "getSiteConfig",
-      agentLink: "getAgentLink"
+      agentLink: "getAgentLink",
+      promotionLink: 'getPromotionLink'
     }),
     headerConfig() {
       return {
@@ -154,6 +156,10 @@ export default {
      * @returns {String} 推廣連結
      */
     getAgentLink() {
+      if (this.promotionLink) {
+        return this.promotionLink;
+      }
+
       if (!this.agentLink.domain || !this.agentLink.agentCode) {
         return "";
       }

@@ -48,9 +48,7 @@
           <div :class="$style['serial-basic-value']">
             {{
               serialNumberData.total.deduction > 0
-                ? `-${getDeductionNumber(
-                    serialNumberData.total.deduction
-                  )}`
+                ? `-${getDeductionNumber(serialNumberData.total.deduction)}`
                 : `0.00`
             }}
           </div>
@@ -63,9 +61,7 @@
           <div :class="$style['serial-basic-value']">
             {{
               serialNumberData.total.fee > 0
-                ? `-${getDeductionNumber(
-                    serialNumberData.total.fee
-                  )}`
+                ? `-${getDeductionNumber(serialNumberData.total.fee)}`
                 : `0.00`
             }}
           </div>
@@ -121,7 +117,11 @@
                   {{ $text("S_SERIAL_CHANGE", "流水要求") }}
                 </span>
                 <span :class="$style['money']">
-                  {{ serialInfo.total_audit_amount }}
+                  {{
+                    serialInfo.total_audit_amount > 0
+                      ? serialInfo.total_audit_amount
+                      : "-"
+                  }}
                 </span>
               </div>
               <div>
@@ -178,7 +178,7 @@ export default {
   props: {
     handleClose: {
       type: Function,
-      default: () => {}
+      default: () => { }
     }
   },
   created() {

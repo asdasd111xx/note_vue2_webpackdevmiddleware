@@ -35,7 +35,9 @@
                 :maxlength="pwdResetInfo[item].maxlength"
                 :minlength="pwdResetInfo[item].minlength"
                 @input="
-                  pwdResetInfo[item].value = $event.target.value
+                  pwdResetInfo[
+                    item
+                  ].value = $event.target.value
                     .toLowerCase()
                     .replace(' ', '')
                     .trim()
@@ -51,7 +53,9 @@
                 :placeholder="pwdResetInfo[item].placeholder"
                 maxlength="12"
                 @input="
-                  pwdResetInfo[item].value = $event.target.value
+                  pwdResetInfo[
+                    item
+                  ].value = $event.target.value
                     .toLowerCase()
                     .replace(' ', '')
                     .trim()
@@ -186,9 +190,6 @@ export default {
       }
     };
   },
-  created() {
-    if (!this.loginStatus) this.$router.push('/mobile/home');
-  },
   computed: {
     ...mapGetters({
       webInfo: 'getWebInfo',
@@ -198,7 +199,7 @@ export default {
     }),
     headerConfig() {
       return {
-        prev: !this.memInfo.user.password_reset,
+        prev: this.isResetPW ? false : !this.memInfo.user.password_reset,
         onClick: () => {
           this.$router.back();
         },
@@ -218,7 +219,7 @@ export default {
       );
     },
     hasFooter() {
-      return !this.memInfo.user.password_reset;
+      return this.isResetPW ? false : !this.memInfo.user.password_reset;
     }
   },
   methods: {
@@ -331,9 +332,13 @@ export default {
           params: pwdInfo,
           success: () => {
             this.actionSetGlobalMessage({ msg: this.$t('S_EDIT_SUCCESS') });
-            setTimeout(() => {
-              this.$router.push('/mobile/mcenter/setting');
-            }, 2000);
+            if (this.isResetPW) {
+              window.close()
+            } else {
+              setTimeout(() => {
+                this.$router.push('/mobile/mcenter/setting');
+              }, 2000);
+            }
           },
           fail: res => {
             this.errMsg = `${res.data.msg}`;
