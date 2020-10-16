@@ -92,7 +92,6 @@ export default {
       });
     },
     onClick(target) {
-      console.log(target)
       localStorage.setItem('iframe-third-url', target.link);
       localStorage.setItem('iframe-third-url-title', target.name);
 
