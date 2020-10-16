@@ -88,7 +88,7 @@ export default {
                 this.errorMsg = "";
                 this.isVerifyPhone = true;
             } else {
-                this.errorMsg = "手机格式不符合要求";
+                // this.errorMsg = "手机格式不符合要求";
                 this.isVerifyPhone = false;
             }
         }
