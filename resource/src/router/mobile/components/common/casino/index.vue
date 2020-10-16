@@ -163,7 +163,8 @@ export default {
   computed: {
     ...mapGetters({
       loginStatus: 'getLoginStatus',
-      favoriteGame: 'getFavoriteGame'
+      favoriteGame: 'getFavoriteGame',
+      siteconfig: 'getSiteConfig'
     }),
     vendor() {
       return (this.$route.params.vendor === 'all') ? '' : (this.$route.params.vendor || '');
@@ -275,7 +276,10 @@ export default {
       }).then((response) => {
         this.labelData = defaultData.concat(response.ret);
 
-        if (this.loginStatus) {
+        if (this.loginStatus && this.siteconfig.MOBILE_WEB_TPL === "porn1") {
+          this.labelData.splice(3, 0, { label: 'favorite', name: this.$t('S_FAVORITE') });
+        }
+        else if (this.loginStatus) {
           this.labelData.splice(1, 0, { label: 'favorite', name: this.$t('S_FAVORITE') });
         }
         this.isLabelReceive = true;
