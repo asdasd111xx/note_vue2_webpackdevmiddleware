@@ -137,12 +137,7 @@
               "
               :class="$style['phone-input']"
               maxlength="36"
-              @input="
-                formData.phone = $event.target.value
-                  .replace(' ', '')
-                  .trim()
-                  .replace(/[^0-9]/g, '')
-              "
+              @input="verification('phone')"
             />
           </div>
         </div>
@@ -293,6 +288,16 @@ export default {
     }
   },
   methods: {
+    ...mapActions([
+      'actionVerificationFormData'
+    ]),
+    verification(key) {
+      if (key === "phone") {
+        this.actionVerificationFormData({ target: 'phone', value: this.formData.phone }).then((res => {
+          this.formData.phone = res;
+        }));
+      }
+    },
     clearMsg() {
       const { query } = this.$route;
       if (!this.msg.includes("绑定成功")) {

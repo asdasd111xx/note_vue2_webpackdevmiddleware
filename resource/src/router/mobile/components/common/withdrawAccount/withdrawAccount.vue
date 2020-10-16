@@ -377,7 +377,7 @@ export default {
         this.isVerifyPhone = target.value.length >= 11;
 
         if (!this.isVerifyPhone) {
-          errorMsg = '手机格式不符合要求';
+          // errorMsg = '手机格式不符合要求';
         }
         this.actionVerificationFormData({ target: 'phone', value: target.value }).then((res => {
           target.value = res;
