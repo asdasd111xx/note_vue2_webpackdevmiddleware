@@ -21,9 +21,18 @@
             {{ getTime(data.id) }}
           </div>
         </div>
-
         <div :class="$style['notification-content']">
-          {{ getText(data.content) }}
+          <div
+            v-if="data.event === 'maintain_notice'"
+            :class="$style['maintain-icon']"
+          >
+            <img
+              :src="
+                `/static/image/${siteConfig.MOBILE_WEB_TPL}/common/icon_maintain.png`
+              "
+            />
+          </div>
+          <div v-html="getText(data.content)"></div>
         </div>
       </div>
     </div>
@@ -69,7 +78,11 @@ export default {
     // setInterval(() => {
     //   this.show();
     //   this.data = {
-    //     content: "123",
+    //     content: "maintain_notice",
+    //     event: "maintain_notice",
+    //     message: {
+    //       countdown: 978,
+    //     },
     //     id: new Date()
     //   }
     // }, 2500)
@@ -169,7 +182,7 @@ export default {
 
       switch (event) {
         case 'maintain_notice':
-          string = '网站系统公告\n网站即将进行系统维护，如有不便之处，敬请见谅 !';
+          string = `即将进行系统维护 <br /> 于<span>${this.data.message.countdown}</span>分钟后开始`;
           return string;
 
         case 'verification_code':
@@ -268,13 +281,28 @@ export default {
 }
 
 .notification-content {
+  display: flex;
   min-height: 35px;
-  line-height: 35px;
-  width: 100%;
-  // white-space: nowrap;
-  // overflow: hidden;
-  // text-overflow: ellipsis;
+  line-height: 25px;
+  width: 80%;
   padding: 0 10px;
+  align-items: center;
+
+  .maintain-icon {
+    width: 30px;
+    height: 100%;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    margin-right: 10px;
+    img {
+      width: 100%;
+      height: 100%;
+    }
+  }
+  span {
+    color: #ff4c4c;
+  }
 }
 
 // .dialog /deep/ div {
