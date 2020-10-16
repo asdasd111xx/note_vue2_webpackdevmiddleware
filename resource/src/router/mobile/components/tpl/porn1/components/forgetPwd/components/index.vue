@@ -516,7 +516,7 @@ export default {
           this.msg.keyring = '';
 
           if (res && res.status === 429) {
-            this.errorMsg = "今日发送次数已达上限";
+            this.errorMsg = "操作太频繁，请稍候在试";
             return;
           }
 
@@ -555,6 +555,11 @@ export default {
           }
         },
         fail: (res) => {
+          if (res && res.status === 429) {
+            this.errorMsg = "操作太频繁，请稍候在试";
+            return;
+          }
+
           if (res && res.data && res.data.msg) {
             this.errMsg = `${res.data.msg}`;
           }
