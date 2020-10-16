@@ -11,8 +11,8 @@
               :class="[
                 $style['balance-item'],
                 {
-                  [$style['is-last-item']]: !isShowMore,
-                },
+                  [$style['is-last-item']]: !isShowMore
+                }
               ]"
               @click="$router.push('/mobile/mcenter/bonus')"
             >
@@ -37,8 +37,8 @@
                     Object.keys(balanceTran.firstThirdBalanceInfo).length -
                       index <=
                     (Object.keys(balanceTran.firstThirdBalanceInfo).length %
-                      3 || 3),
-                },
+                      3 || 3)
+                }
               ]"
             >
               <span :class="$style['balance-item-vendor']">{{
@@ -91,8 +91,8 @@
                 {
                   [$style['is-last-item']]:
                     Object.keys(balanceTran.balanceInfo).length - index <=
-                    (Object.keys(balanceTran.balanceInfo).length % 4 || 4),
-                },
+                    (Object.keys(balanceTran.balanceInfo).length % 4 || 4)
+                }
               ]"
             >
               <span :class="$style['balance-item-vendor']">{{
@@ -153,10 +153,11 @@
           <span
             v-if="
               forceStatus === 1 &&
-              userWithdrawCount === 0 &&
-              isFirstWithdraw &&
-              withdrawUserData.wallet.length + withdrawUserData.crypto.length >
-                0
+                userWithdrawCount === 0 &&
+                isFirstWithdraw &&
+                withdrawUserData.wallet.length +
+                  withdrawUserData.crypto.length >
+                  0
             "
             :class="$style['withdraw-status-tip']"
           >
@@ -180,8 +181,8 @@
           :class="[
             $style['bank-card-cell'],
             {
-              [$style['disable']]: !item.allow,
-            },
+              [$style['disable']]: !item.allow
+            }
           ]"
           @click="handleSelectCard(item)"
         >
@@ -192,8 +193,8 @@
               $style['check-box'],
               { [$style['checked']]: item.id === selectedCard.id },
               {
-                [$style['disable']]: !item.allow,
-              },
+                [$style['disable']]: !item.allow
+              }
             ]"
           />
         </div>
@@ -241,8 +242,8 @@
           :class="[
             $style['bank-card-cell'],
             {
-              [$style['disable']]: forceStatus === 2 && !item.allow,
-            },
+              [$style['disable']]: forceStatus === 2 && !item.allow
+            }
           ]"
           @click="handleSelectCard(item)"
         >
@@ -251,7 +252,7 @@
           <div
             :class="[
               $style['check-box'],
-              { [$style['checked']]: item.id === selectedCard.id },
+              { [$style['checked']]: item.id === selectedCard.id }
             ]"
           />
         </div>
@@ -289,7 +290,7 @@
       <div
         v-if="
           allWithdrawAccount.length > 0 &&
-          (moreMethodStatus.bankCard || moreMethodStatus.wallet)
+            (moreMethodStatus.bankCard || moreMethodStatus.wallet)
         "
         :class="[$style['add-bank-card']]"
       >
@@ -326,7 +327,7 @@
           inputmode="decimal"
           @input="verification('withdrawValue', $event.target.value)"
           @blur="
-            ($event) => {
+            $event => {
               verification('withdrawValue', $event.target.value);
               if (
                 selectedCard.withdrawType === 'crypto_id' &&
@@ -392,11 +393,11 @@
           :class="[
             $style['conversion-btn'],
             {
-              [$style['disable']]: isClickCoversionBtn,
+              [$style['disable']]: isClickCoversionBtn
             },
             {
-              [$style['unInput']]: !withdrawValue || +actualMoney <= 0,
-            },
+              [$style['unInput']]: !withdrawValue || +actualMoney <= 0
+            }
           ]"
           @click="convertCryptoMoney"
         >
@@ -412,13 +413,26 @@
         v-if="allWithdrawAccount && allWithdrawAccount.length !== 0"
         :class="[$style['actual-money']]"
       >
-        <span :class="$style['money-currency']">到帐金额</span>
-        <span :class="$style['money-currency']">¥</span>
-        <span :class="$style['money-currency']">
+        <span
+          :class="[$style['money-currency'], { trueMoney: actualMoney <= 0 }]"
+          >到帐金额</span
+        >
+        <span
+          :class="[$style['money-currency'], { trueMoney: actualMoney <= 0 }]"
+          >¥</span
+        >
+        <span
+          :class="[$style['money-currency'], { trueMoney: actualMoney <= 0 }]"
+        >
           {{ actualMoney.toFixed(2) }}
         </span>
 
-        <span :class="[$style['serial']]" @click="toggleSerial"> 详情 </span>
+        <span
+          :class="[$style['serial'], { trueMoney: actualMoney <= 0 }]"
+          @click="toggleSerial"
+        >
+          详情
+        </span>
       </div>
     </template>
 
@@ -1422,3 +1436,8 @@ export default {
 
 <style lang="scss" src="../css/index.module.scss" module="$style_porn1"></style>
 <style lang="scss" src="../css/ey1.module.scss" module="$style_ey1"></style>
+<style>
+.trueMoney {
+  color: #db6372;
+}
+</style>
