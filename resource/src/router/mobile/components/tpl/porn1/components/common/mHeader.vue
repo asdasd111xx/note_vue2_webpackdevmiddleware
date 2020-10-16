@@ -196,7 +196,7 @@ export default {
     },
     updateSearchStatus: {
       type: Function,
-      default: () => { }
+      default: () => {}
     },
     hasUnreadMessage: {
       type: Boolean,
@@ -207,7 +207,7 @@ export default {
     return {
       currentMenu: "",
       msg: "",
-      source: this.$route.query.source,
+      source: this.$route.query.source
     };
   },
   computed: {
@@ -220,7 +220,7 @@ export default {
 
       return {
         [style.header]: true,
-        [style.agent]: this.path[1] === 'agcenter',
+        [style.agent]: this.path[1] === "agcenter",
         [style["is-home"]]: this.$route.name === "home",
         [style[this.source]]: this.source ? this.source : "",
         [style["search-page"]]: this.headerConfig.isSmallPigSearch
@@ -231,13 +231,11 @@ export default {
       };
     },
     path() {
-      return this.$route.path.split('/').filter((path) => path);
+      return this.$route.path.split("/").filter(path => path);
     }
   },
   methods: {
-    ...mapActions([
-      'actionSetGlobalMessage'
-    ]),
+    ...mapActions(["actionSetGlobalMessage"]),
     // 自訂幫助中心事件
     handleHelpLinkTo() {
       if (this.headerConfig.hasHelp && this.headerConfig.hasHelp.func) {
@@ -245,10 +243,10 @@ export default {
       }
 
       // 充值不開放
-      if (this.headerConfig.hasHelp.type === "deposit") {
-        this.actionSetGlobalMessage({ type: "incoming" });
-        return;
-      }
+      // if (this.headerConfig.hasHelp.type === "deposit") {
+      //   this.actionSetGlobalMessage({ type: "incoming" });
+      //   return;
+      // }
 
       this.$router.push(this.headerConfig.hasHelp.url);
     },
@@ -258,7 +256,7 @@ export default {
     },
     handleClickAsk() {
       if (this.loginStatus) {
-        this.$router.push({ name: 'mcenter-information' });
+        this.$router.push({ name: "mcenter-information" });
       } else {
         this.$router.push("/mobile/login");
       }
