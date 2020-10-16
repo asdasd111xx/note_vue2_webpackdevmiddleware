@@ -1,6 +1,14 @@
 <template>
   <mobile-container :header-config="headerConfig">
     <div slot="content" :class="$style['promotion-wrap']">
+      <div
+        v-if="loginStatus"
+        :class="$style['promotion-gift']"
+        @click="onClick({ info: 'gift' })"
+      >
+        <img src="/static/image/ey1/promotion/ic-gift.png" />
+        <div v-show="hasGift" :class="$style['red-dot']" />
+      </div>
       <div :class="$style['type-wrap']">
         <swiper :options="{ slidesPerView: 'auto' }">
           <swiper-slide
@@ -42,9 +50,10 @@
   </mobile-container>
 </template>
 <script>
+import { API_PROMOTION_LIST } from '@/config/api';
+import { mapGetters, mapActions } from 'vuex';
 import { Swiper, SwiperSlide } from 'vue-awesome-swiper';
 import ajax from '@/lib/ajax';
-import { API_PROMOTION_LIST } from '@/config/api';
 import mobileContainer from '../common/mobileContainer';
 
 export default {
@@ -57,13 +66,17 @@ export default {
     return {
       tabId: 0,
       tabList: [],
-      promotionList: []
+      promotionList: [],
+      hasGift: true
     };
   },
   created() {
     this.getPromotionList(this.tabId);
   },
   computed: {
+    ...mapGetters({
+      loginStatus: 'getLoginStatus',
+    }),
     headerConfig() {
       return {
         title: this.$text('S_PROMOTIONS', '优惠活动')
@@ -93,6 +106,12 @@ export default {
       });
     },
     onClick(target) {
+
+      if (target.info === 'gift') {
+        // link
+        return;
+      }
+
       localStorage.setItem('iframe-third-url', target.link);
       localStorage.setItem('iframe-third-url-title', target.name);
 
@@ -232,14 +251,31 @@ $fixed_spacing_height: 43px;
   }
 }
 
-.promotion-bg {
-  position: absolute;
-  top: 60px;
-  right: 0;
-  bottom: 0;
-  left: 0;
-  border-radius: 10px;
-  background-color: #5e5450;
+.promotion-gift {
+  position: fixed;
+  top: 0;
+  z-index: 10;
+  right: 14px;
+  width: 24px;
+  height: 43px;
+  display: flex;
+  align-items: center;
+
+  > img {
+    width: 24px;
+    height: 24px;
+  }
+
+  > .red-dot {
+    position: absolute;
+    right: -4px;
+    background: red;
+    border-radius: 50%;
+    width: 9px;
+    height: 9px;
+    top: 7px;
+    border: 1px solid #ffffff;
+  }
 }
 
 @media screen and (min-width: $phone) {
