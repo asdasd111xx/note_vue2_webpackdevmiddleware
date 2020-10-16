@@ -113,20 +113,10 @@ export default {
       };
     },
   },
-  created() {},
+  created() { },
   methods: {
     ...mapActions(["actionSetGlobalMessage"]),
     handleClick(item) {
-<<<<<<< HEAD
-      // 充值不開放
-=======
-      //充值不開放
->>>>>>> 052b353b4e2767995f47092da45719c123c23bb6
-      // if (item.key === "deposit") {
-      //   this.actionSetGlobalMessage({ type: "incoming" });
-      //   return;
-      // }
-
       this.$router.push(`/mobile/mcenter/help/${item.key}`);
     },
   },
