@@ -79,8 +79,9 @@ export default {
     },
     itemText() {
       switch (this.type) {
+        // 目前針對 提現：CGPay-USDT
         case 'withdraw-currency':
-          return 'currency_name';
+          return 'currency_alias';
           break;
 
         default:

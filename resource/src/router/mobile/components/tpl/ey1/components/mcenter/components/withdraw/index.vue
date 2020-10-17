@@ -49,6 +49,7 @@ export default {
     // 暫存目前選擇的銀行卡及金額
     saveCurrentValue(fromRule) {
       localStorage.setItem("tmp_w_selectedCard", JSON.stringify(this.$refs.withdraw.selectedCard));
+      localStorage.setItem("tmp_w_withdrawCurrency", JSON.stringify(this.$refs.withdraw.withdrawCurrency));
       localStorage.setItem("tmp_w_amount", this.$refs.withdraw.withdrawValue);
       localStorage.setItem("tmp_w_actualAmount", JSON.stringify(this.$refs.withdraw.actualMoney));
       localStorage.setItem("tmp_w_withdrawPwd", this.$refs.withdraw.withdrawPwd);

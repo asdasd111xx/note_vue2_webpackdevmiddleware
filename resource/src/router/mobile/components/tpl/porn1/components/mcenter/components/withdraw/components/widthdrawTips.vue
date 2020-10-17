@@ -88,7 +88,7 @@
               </div>
 
               <div
-                v-if="selectedCard.withdrawType === 'crypto_id'"
+                v-if="hasCrypto"
                 :class="[$style['check-cell'], $style['check-crypto']]"
               >
                 <span :class="$style['sub-title']"> USDT到帐 </span>
@@ -158,12 +158,9 @@ export default {
       type: Number,
       default: 0
     },
-    closeFunc: {
-      type: Function
-    },
-    selectedCard: {
-      type: Object,
-      default: {}
+    hasCrypto: {
+      type: Boolean,
+      default: false
     }
   },
   mounted() {

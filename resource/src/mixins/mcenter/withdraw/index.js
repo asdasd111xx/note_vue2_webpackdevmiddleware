@@ -25,6 +25,7 @@ export default {
       withdrawCurrency: {
         // 預設為 CGP
         name: 'CGP',
+        alias: 'CGP',
         method_id: 15
       },
 
@@ -211,11 +212,20 @@ export default {
      * @return Array
      */
     currencyList() {
+      let target = []
       let list = []
       if (this.allWithdrawAccount && this.allWithdrawAccount.length > 0) {
-        list = this.allWithdrawAccount.find(item => {
+        target = this.allWithdrawAccount.find(item => {
           return item.bank_id === 2009;
         })['currency']
+
+        // 新增 alias : 選單顯示用
+        list = target.map(item => {
+          return {
+            ...item,
+            'currency_alias': item.method_id === 28 ? 'USDT' : item.currency_name
+          }
+        })
       }
 
       return list;
