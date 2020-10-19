@@ -12,8 +12,8 @@
               :class="[
                 $style['balance-item'],
                 {
-                  [$style['is-last-item']]: !isShowMore
-                }
+                  [$style['is-last-item']]: !isShowMore,
+                },
               ]"
               @click="$router.push('/mobile/mcenter/bonus')"
             >
@@ -38,8 +38,8 @@
                     Object.keys(balanceTran.firstThirdBalanceInfo).length -
                       index <=
                     (Object.keys(balanceTran.firstThirdBalanceInfo).length %
-                      3 || 3)
-                }
+                      3 || 3),
+                },
               ]"
             >
               <span :class="$style['balance-item-vendor']">{{
@@ -92,8 +92,8 @@
                 {
                   [$style['is-last-item']]:
                     Object.keys(balanceTran.balanceInfo).length - index <=
-                    (Object.keys(balanceTran.balanceInfo).length % 4 || 4)
-                }
+                    (Object.keys(balanceTran.balanceInfo).length % 4 || 4),
+                },
               ]"
             >
               <span :class="$style['balance-item-vendor']">{{
@@ -154,11 +154,10 @@
           <span
             v-if="
               forceStatus === 1 &&
-                userWithdrawCount === 0 &&
-                isFirstWithdraw &&
-                withdrawUserData.wallet.length +
-                  withdrawUserData.crypto.length >
-                  0
+              userWithdrawCount === 0 &&
+              isFirstWithdraw &&
+              withdrawUserData.wallet.length + withdrawUserData.crypto.length >
+                0
             "
             :class="$style['withdraw-status-tip']"
           >
@@ -182,8 +181,8 @@
           :class="[
             $style['bank-card-cell'],
             {
-              [$style['disable']]: !item.allow
-            }
+              [$style['disable']]: !item.allow,
+            },
           ]"
           @click="handleSelectCard(item)"
         >
@@ -192,12 +191,14 @@
               $style['check-box'],
               { [$style['checked']]: item.id === selectedCard.id },
               {
-                [$style['disable']]: !item.allow
-              }
+                [$style['disable']]: !item.allow,
+              },
             ]"
           />
           <!-- <img v-lazy="getBankImage(item.swift_code)" /> -->
-          <span>{{ parseCardName(item.alias, item.withdrawType) }}</span>
+          <span :class="[{ [$style['hasOption']]: item.bank_id === 2009 }]">
+            {{ parseCardName(item.alias, item.withdrawType) }}
+          </span>
 
           <!-- CGPay USDT -->
           <template v-if="item.bank_id === 2009">
@@ -258,18 +259,20 @@
           :class="[
             $style['bank-card-cell'],
             {
-              [$style['disable']]: forceStatus === 2 && !item.allow
-            }
+              [$style['disable']]: forceStatus === 2 && !item.allow,
+            },
           ]"
           @click="handleSelectCard(item)"
         >
           <div
             :class="[
               $style['check-box'],
-              { [$style['checked']]: item.id === selectedCard.id }
+              { [$style['checked']]: item.id === selectedCard.id },
             ]"
           />
-          <span>{{ item.alias }} </span>
+          <span :class="[{ [$style['hasOption']]: item.bank_id === 2009 }]">
+            {{ item.alias }}
+          </span>
 
           <!-- CGPay USDT -->
           <template v-if="item.bank_id === 2009">
@@ -327,7 +330,7 @@
       <div
         v-if="
           allWithdrawAccount.length > 0 &&
-            (moreMethodStatus.bankCard || moreMethodStatus.wallet)
+          (moreMethodStatus.bankCard || moreMethodStatus.wallet)
         "
         :class="[$style['add-bank-card']]"
         @click="setPopupStatus(true, 'moreMethod')"
@@ -359,7 +362,7 @@
           inputmode="decimal"
           @input="verification('withdrawValue', $event.target.value)"
           @blur="
-            $event => {
+            ($event) => {
               verification('withdrawValue', $event.target.value);
               if (isSelectedUSDT && isClickCoversionBtn && withdrawValue) {
                 convertCryptoMoney();
@@ -377,85 +380,33 @@
     </template>
 
     <!-- 到帳金額＋詳請 -->
-    <!-- Yabo -->
-    <template v-if="themeTPL === 'porn1'">
-      <!-- 到帳金額 -->
-      <div
-        v-if="allWithdrawAccount && allWithdrawAccount.length !== 0"
-        :class="[$style['actual-money']]"
-      >
-        <span :class="$style['money-currency']">
-          {{
-            `${
-              selectedCard.name && !isSelectedUSDT
-                ? `${selectedCard.name}到帐`
-                : "实际提现金额"
-            }`
-          }}
-        </span>
-        <span :class="$style['money-currency']">¥</span>
-        <span :class="$style['money-currency']">
-          {{ actualMoney.toFixed(2) }}
-        </span>
 
-        <span :class="[$style['serial']]" @click="toggleSerial"> 详情 </span>
-      </div>
+    <!-- 到帳金額 -->
+    <div
+      v-if="allWithdrawAccount && allWithdrawAccount.length !== 0"
+      :class="[
+        $style['actual-money'],
+        {
+          [$style['trueMoney']]: actualMoney <= 0,
+        },
+      ]"
+    >
+      <span :class="$style['money-currency']">
+        {{
+          `${
+            selectedCard.name && !isSelectedUSDT
+              ? `${selectedCard.name}到帐`
+              : "实际提现金额"
+          }`
+        }}
+      </span>
+      <span :class="$style['money-currency']">¥</span>
+      <span :class="$style['money-currency']">
+        {{ actualMoney.toFixed(2) }}
+      </span>
 
-      <!-- <div v-if="isSelectedUSDT" :class="$style['crypto-block']">
-        <span :class="$style['money-currency']">¥</span>
-        <span :class="$style['money-currency']">
-          {{ selectedCard.name }}到帐
-        </span>
-        <span :class="$style['money-currency']">
-          {{ cryptoMoney }}
-        </span>
-
-        <div
-          :class="[
-            $style['conversion-btn'],
-            {
-              [$style['disable']]: isClickCoversionBtn
-            },
-            {
-              [$style['unInput']]: !withdrawValue || +actualMoney <= 0
-            }
-          ]"
-          @click="convertCryptoMoney"
-        >
-          {{ countdownSec > 0 ? `${formatCountdownSec()}` : `汇率试算` }}
-        </div>
-      </div> -->
-    </template>
-
-    <!-- 億元 -->
-    <template v-if="themeTPL === 'ey1'">
-      <!-- 到帳金額 -->
-      <div
-        v-if="allWithdrawAccount && allWithdrawAccount.length !== 0"
-        :class="[$style['actual-money']]"
-      >
-        <span
-          :class="[$style['money-currency'], { trueMoney: actualMoney <= 0 }]"
-          >到帐金额</span
-        >
-        <span
-          :class="[$style['money-currency'], { trueMoney: actualMoney <= 0 }]"
-          >¥</span
-        >
-        <span
-          :class="[$style['money-currency'], { trueMoney: actualMoney <= 0 }]"
-        >
-          {{ actualMoney.toFixed(2) }}
-        </span>
-
-        <span
-          :class="[$style['serial'], { trueMoney: actualMoney <= 0 }]"
-          @click="toggleSerial"
-        >
-          详情
-        </span>
-      </div>
-    </template>
+      <span :class="[$style['serial']]" @click="toggleSerial"> 详情 </span>
+    </div>
 
     <!-- 匯率試算 -->
     <div v-if="isSelectedUSDT" :class="$style['crypto-block']">
@@ -761,6 +712,12 @@ export default {
         this.isLoading = false;
       }
     },
+    'selectedCard.bank_id'(value) {
+      // When the option = CGPay
+      if (value === 2009) {
+        this.selectedCard.name = 'CGPay到帐'
+      }
+    }
   },
   created() {
     // 刷新 Player Api
@@ -1126,17 +1083,16 @@ export default {
           break;
 
         default:
-          // Choose CGPay Option
-          if (this.selectedCard.bank_id === 2009) {
-            this.selectedCard.name = this.withdrawCurrency.name
-            break;
-          }
-
           this.selectedCard.name = item.alias.substring(
             0,
             item.alias.indexOf("-")
           );
           break;
+      }
+
+      // 選擇 USDT 的選項 且 按下匯率試算的按鈕
+      if (this.isSelectedUSDT && this.isClickCoversionBtn) {
+        this.convertCryptoMoney()
       }
     },
     // 最高提現
@@ -1317,7 +1273,7 @@ export default {
       // 不需要取款密碼,並且可選銀行卡
       let _params = {
         amount: this.withdrawValue,
-        withdraw_password: this.withdrawPwd ? +this.withdrawPwd : '',
+        withdraw_password: this.withdrawPwd ? this.withdrawPwd : '',
         forward: true,
         confirm: true,
         max_id: this.withdrawData.audit.total.max_id,
@@ -1337,8 +1293,8 @@ export default {
           [`ext[api_uri]`]: "/api/trade/v2/c/withdraw/entry",
           [`ext[method][${this.selectedCard.withdrawType}]`]: this.selectedCard
             .id,
-          [`ext[method_id]`]: this.selectedCard.bank_id === 2009 ? this.withdrawCurrency.method_id : '',
-          password: this.withdrawPwd ? +this.withdrawPwd : '',
+          [`ext[method][method_id]`]: this.selectedCard.bank_id === 2009 ? this.withdrawCurrency.method_id : '',
+          password: this.withdrawPwd ? this.withdrawPwd : '',
         };
       }
 
@@ -1347,10 +1303,7 @@ export default {
       return ajax({
         method: "post",
         // url: API_WITHDRAW_WRITE, 舊的本站寫單
-        url:
-          this.memInfo.config.withdraw === "迅付"
-            ? API_WITHDRAW_WRITE_2
-            : API_WITHDRAW_WRITE,
+        url: API_WITHDRAW_WRITE_2,
         errorAlert: false,
         params: _params,
         success: (response) => {
@@ -1457,12 +1410,24 @@ export default {
     },
     // 取得存/取款加密貨幣試算金額
     convertCryptoMoney() {
+
+      let _params = {
+        type: 2,
+        amount: this.actualMoney,
+      }
+
+      if (this.selectedCard.bank_id === 2009 && this.withdrawCurrency.method_id === 28) {
+        _params = {
+          ..._params,
+          method_id: this.withdrawCurrency.method_id
+        }
+      }
+
       return axios({
         method: "get",
         url: API_CRYPTO_MONEY,
         params: {
-          type: 2,
-          amount: this.actualMoney,
+          ..._params
         },
       }).then((response) => {
         const { result, ret } = response.data;
@@ -1542,9 +1507,11 @@ export default {
       this.withdrawCurrency.name = item.currency_name
       this.withdrawCurrency.alias = item.currency_alias
 
-      // 預設 handleSelectCard() 觸發更新 selectedCard.name
-      // Choose CGPay Option update selectedCard.name
-      this.selectedCard.name = this.withdrawCurrency.name
+      // 已在 handleSelectCard() 觸發 convertCryptoMoney()
+      // this.showPopStatus.isShow = false --> 避免重覆觸發
+      if (!this.showPopStatus.isShow && this.isSelectedUSDT && this.isClickCoversionBtn) {
+        this.convertCryptoMoney()
+      }
     },
     setPopupStatus(isShow, type) {
       this.showPopStatus = {
@@ -1561,8 +1528,3 @@ export default {
 
 <style lang="scss" src="../css/index.module.scss" module="$style_porn1"></style>
 <style lang="scss" src="../css/ey1.module.scss" module="$style_ey1"></style>
-<style>
-.trueMoney {
-  color: #db6372;
-}
-</style>

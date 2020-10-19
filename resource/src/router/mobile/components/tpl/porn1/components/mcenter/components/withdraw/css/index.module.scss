@@ -95,13 +95,17 @@
 
   > span {
     padding: 0 0 0 10px;
-    width: 70%;
+    width: 80%;
     overflow: hidden;
     text-overflow: ellipsis;
 
     &.withdraw-status-tip {
       color: #e42a30;
       width: fit-content;
+    }
+
+    &.hasOption {
+      width: 70%;
     }
   }
 
@@ -115,8 +119,6 @@
     &.checked {
       background: url("/static/image/porn1/mcenter/ic_check.png") 0 0 no-repeat;
       background-size: 100%;
-      width: 18px;
-      height: 18px;
     }
 
     &.disable {
@@ -196,6 +198,10 @@
     float: right;
     padding-right: 10px;
   }
+}
+
+.trueMoney {
+  color: #db6372;
 }
 
 .crypto-block {

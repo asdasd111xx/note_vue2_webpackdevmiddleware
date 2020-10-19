@@ -1236,11 +1236,14 @@ export const actionSetRechargeBonusConfig = ({ commit }, data) => {
 };
 
 
-export const actionSetCGPayInfo = ({ commit }) => {
+export const actionSetCGPayInfo = ({ commit }, data) => {
   return axios({
     method: "get",
     url:
-      "/api/v1/c/ext/inpay?api_uri=/api/trade/v2/c/withdraw/user/cgp_info"
+      "/api/v1/c/ext/inpay?api_uri=/api/trade/v2/c/withdraw/user/cgp_info",
+    params: {
+      payment_method_id: 16 // 目前只有 CGPay = 16 需用到，先寫死
+    }
   }).then(response => {
     const { ret, result } = response.data;
 
