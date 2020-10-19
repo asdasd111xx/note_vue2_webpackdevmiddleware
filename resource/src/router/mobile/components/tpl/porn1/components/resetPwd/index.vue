@@ -35,7 +35,9 @@
                 :maxlength="pwdResetInfo[item].maxlength"
                 :minlength="pwdResetInfo[item].minlength"
                 @input="
-                  pwdResetInfo[item].value = $event.target.value
+                  pwdResetInfo[
+                    item
+                  ].value = $event.target.value
                     .toLowerCase()
                     .replace(' ', '')
                     .trim()
@@ -51,7 +53,9 @@
                 :placeholder="pwdResetInfo[item].placeholder"
                 maxlength="12"
                 @input="
-                  pwdResetInfo[item].value = $event.target.value
+                  pwdResetInfo[
+                    item
+                  ].value = $event.target.value
                     .toLowerCase()
                     .replace(' ', '')
                     .trim()
@@ -251,7 +255,7 @@ export default {
         this.pwdResetInfo["confNewPwd"].value !==
         this.pwdResetInfo["newPwd"].value
       ) {
-        this.errMsg = "确认密码预设要跟密码一致";
+        this.errMsg = "新密码与确认密码栏位不一致";
       }
 
       if (!value) {
