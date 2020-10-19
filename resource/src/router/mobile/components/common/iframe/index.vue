@@ -67,6 +67,11 @@ export default {
     }
 
     const params = this.$route.params;
+    if (!params.page) {
+      this.src = localStorage.getItem('iframe-third-url');
+      return;
+    }
+
     switch (params.page.toUpperCase()) {
       case 'LF':
       case 'APB':
@@ -113,6 +118,9 @@ export default {
       case 'SWAG':
         this.src = 'https://feature-yabo.app.swag.live/';
         break;
+      case 'GAME':
+        this.src = localStorage.getItem('iframe-third-url');
+        break;
       default:
         this.src = localStorage.getItem('iframe-third-url');
         break;
@@ -125,6 +133,10 @@ export default {
       memInfo: 'getMemInfo',
     }),
     originUrl() {
+      if (this.$route.params.page) {
+        return '/mobile';
+      }
+
       if (this.$route.params.page.toUpperCase() === 'THIRD') {
         return '/mobile/gift';
       }

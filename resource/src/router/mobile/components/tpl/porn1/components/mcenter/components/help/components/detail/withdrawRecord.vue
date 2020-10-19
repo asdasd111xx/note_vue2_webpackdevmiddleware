@@ -135,6 +135,12 @@ export default {
   components: {
     editWithdrawField
   },
+  props: {
+    isApp: {
+      type: Boolean,
+      default: false
+    }
+  },
   data() {
     return {
       total: 0,

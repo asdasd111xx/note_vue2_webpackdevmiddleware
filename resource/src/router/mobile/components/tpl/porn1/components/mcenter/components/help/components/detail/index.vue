@@ -7,11 +7,11 @@
   >
     <div slot="content">
       <template v-if="type == 'withdraw'">
-        <withdraw-record />
+        <withdraw-record :is-app="isApp" />
       </template>
 
       <template v-if="type == 'deposit'">
-        <deposit-record />
+        <deposit-record :is-app="isApp" />
       </template>
     </div>
   </mobile-container>
