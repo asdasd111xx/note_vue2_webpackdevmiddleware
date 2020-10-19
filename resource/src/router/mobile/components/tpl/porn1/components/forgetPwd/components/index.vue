@@ -6,7 +6,7 @@
           <div
             :class="[
               $style['method-item'],
-              { [$style.active]: currentMethod === 'phone-step-1' }
+              { [$style.active]: currentMethod === 'phone-step-1' },
             ]"
             @click="
               changeMethod(currentMethod === 'phone-step-1'),
@@ -18,7 +18,7 @@
           <div
             :class="[
               $style['method-item'],
-              { [$style.active]: currentMethod === 'email' }
+              { [$style.active]: currentMethod === 'email' },
             ]"
             @click="
               changeMethod(currentMethod === 'email'),
@@ -30,12 +30,12 @@
           <div
             :class="[
               $style['active-slider'],
-              { [$style.active]: currentMethod === 'phone-step-1' }
+              { [$style.active]: currentMethod === 'phone-step-1' },
             ]"
             :style="{
               left: `calc(calc(24.5% - 22.5px + 49% * ${
                 currentMethod === 'email' ? 1 : 0
-              }))`
+              }))`,
             }"
           />
         </div>
@@ -77,9 +77,7 @@
           </div>
           <div>
             <div v-if="currentMethod === 'email'" class="clearfix">
-              <div :class="$style['form-title']">
-                电子邮箱
-              </div>
+              <div :class="$style['form-title']">电子邮箱</div>
               <input
                 v-model="email"
                 :placeholder="$t('S_PLEASE_ENTER_EMAIL')"
@@ -96,9 +94,7 @@
             <!-- eslint-enable vue/no-v-html -->
           </div>
           <div v-if="currentMethod === 'phone-step-1'" class="clearfix">
-            <div :class="$style['form-title']">
-              获取验证码
-            </div>
+            <div :class="$style['form-title']">获取验证码</div>
             <input
               v-model="keyring"
               :placeholder="$t('S_ENABLE_KEYRING')"
@@ -114,7 +110,7 @@
             <div
               :class="[
                 $style['send-keyring'],
-                { [$style['active']]: username && !timer }
+                { [$style['active']]: username && !timer },
               ]"
               @click="showCaptchaPopup"
             >
@@ -210,7 +206,7 @@
         @click="sendEmail($route.params.type)"
         :class="[
           $style['forget-submit'],
-          { [$style['active']]: username && email }
+          { [$style['active']]: username && email },
         ]"
       >
         <div>{{ $t("S_SUBMIT") }}</div>
@@ -220,8 +216,8 @@
         :class="[
           $style['forget-submit'],
           {
-            [$style['active']]: checkSubmit
-          }
+            [$style['active']]: checkSubmit,
+          },
         ]"
         @click="send($route.params.type)"
       >
@@ -369,7 +365,7 @@ export default {
       if (
         this.password !== this.confirm_password
       ) {
-        errMsg = '确认密码预设要跟密码一致';
+        errMsg = '新密码与确认密码栏位不一致';
         this.msg.confirm_password = errMsg;
         return;
       } else {
