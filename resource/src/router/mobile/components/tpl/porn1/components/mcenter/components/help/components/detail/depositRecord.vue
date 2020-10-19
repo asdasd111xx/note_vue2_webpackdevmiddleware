@@ -99,6 +99,7 @@
       <img :src="$getCdnPath(`/static/image/${theme}/mcenter/no_data.png`)" />
       <div :class="$style['tips']">暂时没有新的充值记录</div>
       <div
+        v-if="!isApp"
         :class="[
           $style['btn-deposit'],
           {
@@ -125,6 +126,12 @@ export default {
   mixins: [mixin],
   components: {
     editDepositField
+  },
+  props: {
+    isApp: {
+      type: Boolean,
+      default: false
+    }
   },
   data() {
     return {
