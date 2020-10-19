@@ -132,6 +132,33 @@ export default {
       case 'GAME':
         this.src = localStorage.getItem('iframe-third-url');
         break;
+      case 'PROMOTION':
+
+        if (this.$route.query.gift) {
+          let url = '';
+          switch (this.webInfo.alias) {
+            case '500023':
+              url = 'https://688lg410.666uxm.com/collect';
+              break;
+            case '41':
+              url = 'https://eyd.666uxm.com/collect';
+              break;
+            case '74':
+              url = 'https://eyt.iplay.bet/collect';
+              break;
+          }
+
+          this.getCustomizeLink({
+            code: 'promotion',
+            client_uri: url
+          });
+
+        } else {
+          this.src = localStorage.getItem('iframe-third-url');
+        }
+
+        break;
+
       default:
         this.src = localStorage.getItem('iframe-third-url');
         break;
@@ -142,6 +169,7 @@ export default {
       loginStatus: 'getLoginStatus',
       siteConfig: 'getSiteConfig',
       memInfo: 'getMemInfo',
+      webInfo: 'getWebInfo',
     }),
     originUrl() {
       if (this.$route.params.page) {
@@ -194,6 +222,23 @@ export default {
     ...mapActions([
       'actionSetGlobalMessage'
     ]),
+    getCustomizeLink(params) {
+      axios({
+        method: 'get',
+        url: '/api/v1/c/link/customize',
+        params: params
+      }).then(res => {
+        this.isLoading = false;
+        if (res && res.data && res.data.ret && res.data.ret.uri) {
+          this.src = res.data.ret.uri;
+        }
+      }).catch(error => {
+        this.isLoading = false;
+        if (error && error.data && error.date.msg) {
+          this.actionSetGlobalMessage({ msg: error.data.msg });
+        }
+      })
+    },
     onListener(event) {
       //  需要監聽的白名單
       let whiteList = [window.location.origin,
