@@ -277,7 +277,8 @@ export default {
         this.labelData = defaultData.concat(response.ret);
 
         if (this.loginStatus) {
-          this.labelData.splice(3, 0, { label: 'favorite', name: this.$t('S_FAVORITE') });
+          let favData = { label: 'favorite', name: this.$t('S_FAVORITE') };
+          this.labelData = this.labelData.concat(favData);
         }
 
         this.isLabelReceive = true;
