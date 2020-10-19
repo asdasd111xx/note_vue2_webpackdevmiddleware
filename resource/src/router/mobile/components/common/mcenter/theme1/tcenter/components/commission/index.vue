@@ -49,6 +49,7 @@
     <commission-overview v-if="page === 'summary'" />
 
     <commission-list
+      v-if="!hasSearch"
       v-show="page === 'record'"
       :set-tab-state="setTabState"
       :set-header-title="setHeaderTitle"

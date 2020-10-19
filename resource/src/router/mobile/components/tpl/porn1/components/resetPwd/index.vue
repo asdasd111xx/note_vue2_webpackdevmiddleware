@@ -105,83 +105,83 @@
 </template>
 
 <script>
-import { mapGetters, mapActions } from 'vuex';
-import resetPwd from '@/mixins/resetPwd';
-import mobileContainer from '../common/mobileContainer';
-import mcenter from '@/api/mcenter';
-import agcenter from '@/api/agcenter';
-import member from '@/api/member';
-import agent from '@/api/agent';
+import { mapGetters, mapActions } from "vuex";
+import resetPwd from "@/mixins/resetPwd";
+import mobileContainer from "../common/mobileContainer";
+import mcenter from "@/api/mcenter";
+import agcenter from "@/api/agcenter";
+import member from "@/api/member";
+import agent from "@/api/agent";
 
 export default {
   components: {
-    mobileContainer,
+    mobileContainer
   },
   // 原公用驗證
   //   mixins: [resetPwd],
   data() {
     return {
-      errMsg: '',
-      msg: '',
+      errMsg: "",
+      msg: "",
       pwdResetInfo: {
         userName: {
-          key: 'userName',
-          text: 'S_USER_NAME',
-          type: 'text',
-          value: '',
+          key: "userName",
+          text: "S_USER_NAME",
+          type: "text",
+          value: "",
           regExp: /^[a-z][a-z0-9]{3,19}$/,
-          errorMsg: 'S_USERNAME_ERROR',
-          placeholder: '请输入用户名',
+          errorMsg: "S_USERNAME_ERROR",
+          placeholder: "请输入用户名",
           eyeShow: false,
           display: false
         },
         email: {
-          key: 'email',
-          text: 'S_E_MAIL',
-          type: 'text',
-          value: '',
+          key: "email",
+          text: "S_E_MAIL",
+          type: "text",
+          value: "",
           regExp: /^[A-Za-z0-9.\-_]+@[A-Za-z0-9.-]+\.[A-Za-z]+$/,
-          errorMsg: 'S_JM_EMAIL_FORMAT_UNAVAILABLE',
-          placeholder: '请输入电子邮箱',
+          errorMsg: "S_JM_EMAIL_FORMAT_UNAVAILABLE",
+          placeholder: "请输入电子邮箱",
           maxlength: 100,
           minlength: 12,
           eyeShow: false,
           display: false
         },
         pwd: {
-          key: 'pwd',
-          text: 'S_ORIGIN_PASSWORD',
-          type: 'password',
-          value: '',
+          key: "pwd",
+          text: "S_ORIGIN_PASSWORD",
+          type: "password",
+          value: "",
           regExp: /^[a-z0-9._\-!@#$&*+=|]{6,12}$/,
-          errorMsg: 'S_PASSWORD_ERROR',
-          placeholder: '请输入原密码',
+          errorMsg: "S_PASSWORD_ERROR",
+          placeholder: "请输入原密码",
           maxlength: 12,
           minlength: 6,
           eyeShow: false,
           display: false
         },
         newPwd: {
-          key: 'newPwd',
-          text: 'S_NEW_PWD',
-          type: 'password',
-          value: '',
+          key: "newPwd",
+          text: "S_NEW_PWD",
+          type: "password",
+          value: "",
           regExp: /^[a-z0-9._\-!@#$&*+=|]{6,12}$/,
-          errorMsg: 'S_PASSWORD_ERROR',
-          placeholder: '请设置新密码(6-12位字母或数字)',
+          errorMsg: "S_PASSWORD_ERROR",
+          placeholder: "请设置新密码(6-12位字母或数字)",
           maxlength: 12,
           minlength: 6,
           eyeShow: false,
           display: false
         },
         confNewPwd: {
-          key: 'confNewPwd',
-          text: 'S_CHK_PWD',
-          type: 'password',
-          value: '',
+          key: "confNewPwd",
+          text: "S_CHK_PWD",
+          type: "password",
+          value: "",
           regExp: /^[a-z0-9._\-!@#$&*+=|]{6,12}$/,
-          errorMsg: 'S_PASSWORD_ERROR',
-          placeholder: '请再次输入密码',
+          errorMsg: "S_PASSWORD_ERROR",
+          placeholder: "请再次输入密码",
           maxlength: 12,
           minlength: 6,
           eyeShow: false,
@@ -192,10 +192,10 @@ export default {
   },
   computed: {
     ...mapGetters({
-      webInfo: 'getWebInfo',
-      siteConfig: 'getSiteConfig',
-      memInfo: 'getMemInfo',
-      loginStatus: 'getLoginStatus'
+      webInfo: "getWebInfo",
+      siteConfig: "getSiteConfig",
+      memInfo: "getMemInfo",
+      loginStatus: "getLoginStatus"
     }),
     headerConfig() {
       return {
@@ -204,18 +204,20 @@ export default {
           this.$router.back();
         },
         title: this.isResetPW
-          ? this.$text('S_PASSWORD_RESET', '重设密码')
-          : this.$text('S_CHANGE_PASSWD', '修改密码')
+          ? this.$text("S_PASSWORD_RESET", "重设密码")
+          : this.$text("S_CHANGE_PASSWD", "修改密码")
       };
     },
     isResetPW() {
-      return this.$route.query.page === 'pwdreset';
+      return this.$route.query.page === "pwdreset";
     },
     submitActive() {
       return Object.keys(this.pwdResetInfo).every(
         key =>
           !this.pwdResetInfo[key].display ||
-          (this.pwdResetInfo[key].display && this.pwdResetInfo[key].value && !this.errMsg)
+          (this.pwdResetInfo[key].display &&
+            this.pwdResetInfo[key].value &&
+            !this.errMsg)
       );
     },
     hasFooter() {
@@ -223,19 +225,17 @@ export default {
     }
   },
   methods: {
-    ...mapActions([
-      'actionSetGlobalMessage'
-    ]),
+    ...mapActions(["actionSetGlobalMessage"]),
     toggleEye(key) {
       const target = this.pwdResetInfo[key];
       if (target.eyeShow) {
-        document.getElementById('newPwd').type = 'password';
-        document.getElementById('confNewPwd').type = 'password';
-        document.getElementById('pwd').type = 'password';
+        document.getElementById("newPwd").type = "password";
+        document.getElementById("confNewPwd").type = "password";
+        document.getElementById("pwd").type = "password";
       } else {
-        document.getElementById('newPwd').type = 'text';
-        document.getElementById('confNewPwd').type = 'text';
-        document.getElementById('pwd').type = 'text';
+        document.getElementById("newPwd").type = "text";
+        document.getElementById("confNewPwd").type = "text";
+        document.getElementById("pwd").type = "text";
       }
 
       this.pwdResetInfo[key].eyeShow = !this.pwdResetInfo[key].eyeShow;
@@ -248,18 +248,18 @@ export default {
       if (!re.test(value)) {
         this.errMsg = msg;
       } else {
-        this.errMsg = '';
+        this.errMsg = "";
       }
 
       if (
-        this.pwdResetInfo['confNewPwd'].value !==
-        this.pwdResetInfo['newPwd'].value
+        this.pwdResetInfo["confNewPwd"].value !==
+        this.pwdResetInfo["newPwd"].value
       ) {
-        this.errMsg = '确认密码预设要跟密码一致';
+        this.errMsg = "新密码与确认密码栏位不一致";
       }
 
       if (!value) {
-        this.errMsg = '该栏位不得为空';
+        this.errMsg = "该栏位不得为空";
       }
     },
     pwdModifySubmit() {
@@ -270,13 +270,13 @@ export default {
         new_password: this.pwdResetInfo.newPwd.value,
         confirm_password: this.pwdResetInfo.confNewPwd.value
       };
-      if (this.$route.query.type === 'agent') {
+      if (this.$route.query.type === "agent") {
         agcenter.accountPassword({
           params: pwdInfo,
           success: () => {
-            this.actionSetGlobalMessage({ msg: this.$t('S_EDIT_SUCCESS') });
+            this.actionSetGlobalMessage({ msg: this.$t("S_EDIT_SUCCESS") });
             setTimeout(() => {
-              this.$router.push('/mobile/mcenter/setting');
+              this.$router.push("/mobile/mcenter/setting");
             }, 2000);
           },
           fail: res => {
@@ -287,15 +287,15 @@ export default {
         mcenter.accountPassword({
           params: pwdInfo,
           success: () => {
-            this.actionSetGlobalMessage({ msg: this.$t('S_EDIT_SUCCESS') });
+            this.actionSetGlobalMessage({ msg: this.$t("S_EDIT_SUCCESS") });
             setTimeout(() => {
               if (this.memInfo.user.password_reset) {
                 this.actionSetUserdata(true).then(() => {
-                  this.$router.push('/mobile');
+                  this.$router.push("/mobile");
                 });
                 return;
               }
-              this.$router.push('/mobile/mcenter/setting');
+              this.$router.push("/mobile/mcenter/setting");
             }, 2000);
           },
           fail: res => {
@@ -314,13 +314,13 @@ export default {
         confirm_password: this.pwdResetInfo.confNewPwd.value,
         keyring: this.$route.query.kr
       };
-      if (this.$route.query.type === 'agent') {
+      if (this.$route.query.type === "agent") {
         agent.pwdReset({
           params: pwdInfo,
           success: () => {
-            this.actionSetGlobalMessage({ msg: this.$t('S_EDIT_SUCCESS') });
+            this.actionSetGlobalMessage({ msg: this.$t("S_EDIT_SUCCESS") });
             setTimeout(() => {
-              this.$router.push('/mobile/mcenter/setting');
+              this.$router.push("/mobile/mcenter/setting");
             }, 2000);
           },
           fail: res => {
@@ -331,12 +331,12 @@ export default {
         member.pwdReset({
           params: pwdInfo,
           success: () => {
-            this.actionSetGlobalMessage({ msg: this.$t('S_EDIT_SUCCESS') });
+            this.actionSetGlobalMessage({ msg: this.$t("S_EDIT_SUCCESS") });
             if (this.isResetPW) {
-              window.close()
+              window.close();
             } else {
               setTimeout(() => {
-                this.$router.push('/mobile/mcenter/setting');
+                this.$router.push("/mobile/mcenter/setting");
               }, 2000);
             }
           },
@@ -346,13 +346,13 @@ export default {
         });
       }
     },
-    ...mapActions(['actionChangePage', 'actionSetUserdata']),
+    ...mapActions(["actionChangePage", "actionSetUserdata"]),
     filterField() {
-      let displayColumn = ['newPwd', 'confNewPwd'];
+      let displayColumn = ["newPwd", "confNewPwd"];
       if (this.isResetPW) {
-        displayColumn = ['userName', 'email', ...displayColumn];
+        displayColumn = ["userName", "email", ...displayColumn];
       } else {
-        displayColumn = ['pwd', ...displayColumn];
+        displayColumn = ["pwd", ...displayColumn];
       }
       Object.keys(this.pwdResetInfo).forEach(key => {
         this.pwdResetInfo[key].display = displayColumn.includes(key);

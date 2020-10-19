@@ -166,6 +166,17 @@
   }
 }
 
+@media screen and (max-width: 374px) {
+  .dropdown-wrap {
+    padding: 12px 6px;
+
+    li {
+      width: calc(25% - 2px);
+      margin-right: 2px;
+    }
+  }
+}
+
 .dropdown-wrap-time {
   padding: 15px 0 0;
 }

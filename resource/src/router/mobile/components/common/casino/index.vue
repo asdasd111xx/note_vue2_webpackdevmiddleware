@@ -163,7 +163,8 @@ export default {
   computed: {
     ...mapGetters({
       loginStatus: 'getLoginStatus',
-      favoriteGame: 'getFavoriteGame'
+      favoriteGame: 'getFavoriteGame',
+      siteconfig: 'getSiteConfig'
     }),
     vendor() {
       return (this.$route.params.vendor === 'all') ? '' : (this.$route.params.vendor || '');
@@ -276,8 +277,9 @@ export default {
         this.labelData = defaultData.concat(response.ret);
 
         if (this.loginStatus) {
-          this.labelData.splice(1, 0, { label: 'favorite', name: this.$t('S_FAVORITE') });
+          this.labelData.splice(3, 0, { label: 'favorite', name: this.$t('S_FAVORITE') });
         }
+
         this.isLabelReceive = true;
 
         if (!defaultData.concat(response.ret).some((item) => item.label === this.paramsData.label)) {
