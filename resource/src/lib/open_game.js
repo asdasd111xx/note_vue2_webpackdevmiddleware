@@ -108,11 +108,9 @@ export default (params, success = () => { }, fail = () => { }) => {
             if (vendor === "evo") {
               localStorage.setItem('iframe-third-url', link);
               localStorage.setItem('iframe-third-url-title', 'EVO视讯');
-              window.location.href = `/mobile/iframe/game?vendor=${settings.vendor}&kind=${settings.kind}&hasFooter=false&hasHeader=true`;
-              return;
+            } else {
+              newWindow.location = link;
             }
-
-            newWindow.location = link;
 
             console.log('openWindow:', newWindow);
           }
@@ -123,9 +121,15 @@ export default (params, success = () => { }, fail = () => { }) => {
           // window.open(link, '', '_blank', true);
         }
         success();
+
+        if (vendor === "evo") {
+          window.location.href = `/mobile/iframe/game?vendor=${settings.vendor}&kind=${settings.kind}&hasFooter=false&hasHeader=true`;
+          return;
+        }
+
         setTimeout(() => {
           localStorage.removeItem('is-open-game');
-        }, 1500)
+        }, 1500);
       }, 200)
     },
     fail: (res) => {
@@ -135,6 +139,7 @@ export default (params, success = () => { }, fail = () => { }) => {
       fail(res);
 
       setTimeout(() => {
+        localStorage.removeItem('iframe-third-url');
         localStorage.removeItem("is-open-game");
       }, 1500)
     }
