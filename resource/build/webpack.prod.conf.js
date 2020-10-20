@@ -14,6 +14,8 @@ let env = process.env.NODE_ENV === 'testing'
     ? require('../config/test.env')
     : config.build.env;
 
+
+console.log('[debug]process.env.CDN_HOST:', process.env.CDN_HOST);
 let webpackConfig = merge(baseWebpackConfig, {
     mode: 'production',
     // 出錯後強制退出編譯，避免部署流程發布錯誤的程式
@@ -46,8 +48,8 @@ let webpackConfig = merge(baseWebpackConfig, {
         // see https://github.com/ampedandwired/html-webpack-plugin
         new HtmlWebpackPlugin({
             filename: process.env.NODE_ENV === 'testing'
-            ? 'index.html'
-            : config.build.index,
+                ? 'index.html'
+                : config.build.index,
             template: 'index.html',
             inject: true,
             minify: {
@@ -89,9 +91,9 @@ if (config.build.productionGzip) {
             asset: '[path].gz[query]',
             algorithm: 'gzip',
             test: new RegExp(
-            `\\.(${
-            config.build.productionGzipExtensions.join('|')
-            })$`
+                `\\.(${
+                config.build.productionGzipExtensions.join('|')
+                })$`
             ),
             threshold: 10240,
             minRatio: 0.8
