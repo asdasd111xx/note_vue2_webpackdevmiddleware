@@ -71,7 +71,7 @@
                   }}
                 </div>
 
-                <div :class="$style['pay-sub-title']">
+                <!-- <div :class="$style['pay-sub-title']">
                   <template
                     v-if="
                       [5, 6].includes(info.payment_type_id) ||
@@ -81,7 +81,7 @@
                   >
                     返利1%无上限
                   </template>
-                </div>
+                </div> -->
 
                 <img
                   v-if="
