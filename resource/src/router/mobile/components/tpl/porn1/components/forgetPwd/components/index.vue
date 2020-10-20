@@ -365,7 +365,7 @@ export default {
       if (
         this.password !== this.confirm_password
       ) {
-        errMsg = '新密码与确认密码栏位不一致';
+        errMsg = '确认密码预设要跟密码一致';
         this.msg.confirm_password = errMsg;
         return;
       } else {

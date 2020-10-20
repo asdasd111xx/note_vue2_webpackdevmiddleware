@@ -1,0 +1,71 @@
+@import "~@/css/variable.scss";
+
+.wrap {
+  background-color: rgba(0, 0, 0, 0.8);
+  color: $main_text_color3;
+  height: 100%;
+  margin: 0;
+  overflow: hidden;
+  position: fixed;
+  top: 0;
+  width: 100%;
+  z-index: 10;
+  max-width: 420px;
+}
+
+.container {
+  background-color: #f8f8f7;
+  border-radius: 20px 20px 0px 0px;
+  bottom: 0;
+  height: 312px;
+  overflow: hidden;
+  position: absolute;
+  width: 100%;
+}
+
+.header {
+  background-color: #ffffff;
+  color: $main_text_color3;
+  font-size: 17px;
+  height: 75px;
+  line-height: 75px;
+
+  .prev {
+    left: 14px;
+    position: absolute;
+    text-align: center;
+    width: 40px;
+    color: #be9e7f;
+  }
+
+  .title {
+    width: 100%;
+    text-align: center;
+  }
+}
+
+.content {
+  background-color: #f8f8f7;
+  margin-top: 10px;
+
+  .cell {
+    position: relative;
+    background-color: #ffffff;
+    color: #be9e7f;
+    height: 50px;
+    line-height: 50px;
+    font-size: 14px;
+    padding-left: 23px;
+    margin-bottom: 1px;
+  }
+
+  .select-icon {
+    position: absolute;
+    right: 18px;
+    top: 50%;
+    width: 15px;
+    height: 15px;
+    color: #be9e7f;
+    transform: translateY(-50%);
+  }
+}

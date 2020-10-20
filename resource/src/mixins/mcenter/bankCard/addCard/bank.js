@@ -88,7 +88,7 @@ export default {
       this.getKeyring();
     },
     "formData.phone"() {
-      if (this.formData.phone.length >= 11) {
+      if (this.siteConfig.MOBILE_WEB_TPL === "ey1" || this.formData.phone.length >= 11) {
         this.errorMsg = "";
         this.isVerifyPhone = true;
       } else {

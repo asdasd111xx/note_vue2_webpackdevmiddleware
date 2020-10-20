@@ -1,7 +1,7 @@
 <template>
   <!-- 提款前提示彈窗 -->
   <transition name="fade">
-    <div v-if="show" :class="$style['more-method-wrap']">
+    <div :class="$style['more-method-wrap']">
       <div :class="$style['more-method-container']">
         <div :class="$style['more-method-header']">
           <div @click="close" :class="$style['prev']">
@@ -51,15 +51,11 @@ export default {
   props: {
     moreMethodStatus: {
       type: Object,
-      default: () => {}
+      default: () => { }
     },
     checkAccountData: {
       type: Function,
-      default: () => {}
-    },
-    show: {
-      type: Boolean,
-      default: false
+      default: () => { }
     },
     withdrawUserData: {
       type: Object,
