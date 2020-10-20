@@ -2,10 +2,10 @@ import { getCookie, setCookie } from '@/lib/cookie';
 import { mapActions, mapGetters } from 'vuex';
 
 import axios from 'axios';
+import goLangApiRequest from '@/api/goLangApiRequest';
 import mcenter from '@/api/mcenter';
 import openGame from '@/lib/open_game';
 import yaboRequest from '@/api/yaboRequest';
-import goLangApiRequest from '@/api/goLangApiRequest';
 
 export default {
     data() {
@@ -57,6 +57,7 @@ export default {
             rechargeConfig: 'getRechargeConfig',
             hasBank: 'getHasBank',
             membalance: 'getMemBalance',
+            yaboConfig: 'getYaboConfig'
         }),
         isAdult() {
             if (localStorage.getItem('content_rating')) {
@@ -171,7 +172,8 @@ export default {
         ...mapActions([
             'actionSetGlobalMessage',
             'actionGetRechargeStatus',
-            'actionGetMemInfoV3'
+            'actionGetMemInfoV3',
+            'actionSetYaboConfig'
         ]),
         getImg(info) {
             return {
@@ -506,36 +508,59 @@ export default {
                 case 'STB':
                 case 'DSC':
                 case 'SF':
-                    // 正式站 先不用獨立開啟
-                    if (!this.loginStatus) {
-                        this.$router.push('/mobile/login');
-                        return;
-                    }
-                    this.$router.push(`/mobile/iframe/${game.type}?&title=${game.name}&hasFooter=false&hasHeader=true`);
+
+                    this.actionSetYaboConfig().then(() => {
+                        console.log(this.yaboConfig)
+                        let noLoginVideoSwitch;
+
+                        if (this.yaboConfig) {
+                            noLoginVideoSwitch = this.yaboConfig.find(i => i.name === "NoLoginVideoSwitch").value;
+                        }
+
+                        // 未登入開關 開啟時未登入可進入
+                        if (noLoginVideoSwitch === 'true') {
+                            this.$router.push(`/mobile/iframe/${game.type}?&title=${game.name}&hasFooter=false&hasHeader=true`);
+                            return;
+                        }
+
+                        // 未登入開關 未開啟時需登入可進入
+                        if (!this.loginStatus) {
+                            this.$router.push('/mobile/login');
+                            return;
+                        } else {
+                            this.$router.push(`/mobile/iframe/${game.type}?&title=${game.name}&hasFooter=false&hasHeader=true`);
+                        }
+                    });
+
                     return;
-                    // case 'LF':
-                    // case 'BALE':
-                    // case 'STB':
-                    // case 'DSC':
-                    // case 'SF':
-                    // case 'PPV':
-                    // case 'APB':
-                    // case 'JPB':
-                    if (!this.loginStatus) {
-                        this.$router.push('/mobile/login');
-                        return;
-                    }
-                    // 調整iframe內嵌
-                    let newWindow = window.open('');
-                    // yaboRequest({
+
+                    // // 第三方開啟有問題時 可調整iframe內嵌
+                    // let newWindow = window.open('');
+                    // // yaboRequest({
+                    // //     method: 'get',
+                    // //     url: `${this.siteConfig.YABO_API_DOMAIN}/thirdparty/url`,
+                    // //     headers: {
+                    // //         'x-domain': this.memInfo.user.domain
+                    // //     },
+                    // //     params: {
+                    // //         type: game.type,
+                    // //         userid: this.memInfo.user.id
+                    // //     },
+                    // // }).then(res => {
+                    // //     if (res.data) {
+                    // //         newWindow.location.href = res.data;
+                    // //     } else {
+                    // //         newWindow.close();
+                    // //     }
+                    // // }).catch(error => {
+                    // //     newWindow.close();
+                    // // })
+
+                    // goLangApiRequest({
                     //     method: 'get',
-                    //     url: `${this.siteConfig.YABO_API_DOMAIN}/thirdparty/url`,
+                    //     url: `${this.siteConfig.YABO_GOLANG_API_DOMAIN}/ThirdParty/${game.type}/${this.memInfo.user.id}`,
                     //     headers: {
                     //         'x-domain': this.memInfo.user.domain
-                    //     },
-                    //     params: {
-                    //         type: game.type,
-                    //         userid: this.memInfo.user.id
                     //     },
                     // }).then(res => {
                     //     if (res.data) {
@@ -546,24 +571,6 @@ export default {
                     // }).catch(error => {
                     //     newWindow.close();
                     // })
-
-                    goLangApiRequest({
-                        method: 'get',
-                        url: `${this.siteConfig.YABO_GOLANG_API_DOMAIN}/ThirdParty/${game.type}/${this.memInfo.user.id}`,
-                        headers: {
-                            'x-domain': this.memInfo.user.domain
-                        },
-                    }).then(res => {
-                        console.log("api ThirdParty test");
-                        if (res.data) {
-                            newWindow.location.href = res.data;
-                        } else {
-                            newWindow.close();
-                        }
-                    }).catch(error => {
-                        newWindow.close();
-                    })
-
                     return;
                 case 'YV':
                     this.$router.push({
