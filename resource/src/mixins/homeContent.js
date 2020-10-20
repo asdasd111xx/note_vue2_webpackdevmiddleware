@@ -510,7 +510,6 @@ export default {
                 case 'SF':
 
                     this.actionSetYaboConfig().then(() => {
-                        console.log(this.yaboConfig)
                         let noLoginVideoSwitch;
 
                         if (this.yaboConfig) {
