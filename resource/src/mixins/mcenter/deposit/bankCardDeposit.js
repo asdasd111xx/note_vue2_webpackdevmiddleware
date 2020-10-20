@@ -1089,7 +1089,8 @@ export default {
                 url: API_CRYPTO_MONEY,
                 params: {
                     type: 1,
-                    amount: this.moneyValue
+                    amount: this.moneyValue,
+                    method_id: this.curPayInfo.payment_method_id
                 }
             }).then(response => {
                 const { result, ret } = response.data;

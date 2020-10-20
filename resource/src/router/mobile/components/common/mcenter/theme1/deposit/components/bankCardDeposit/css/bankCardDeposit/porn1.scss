@@ -1,1048 +1,1052 @@
 @import "~@/css/variable.scss";
 
 .swiper-wrap {
-    margin-bottom: 10px;
-    background-color: #fff;
+  margin-bottom: 10px;
+  background-color: #fff;
 }
 
 .swiper-item {
-    width: 25%;
-    height: 38px;
-    line-height: 38px;
-    text-align: center;
-    color: #a6a9b2;
+  width: 25%;
+  height: 38px;
+  line-height: 38px;
+  text-align: center;
+  color: #a6a9b2;
+
+  span {
+    display: inline-block;
+    height: 35px;
+    line-height: 35px;
+    border-bottom: 2px solid transparent;
+  }
+
+  &.is-current {
+    color: #5e626d;
 
     span {
-        display: inline-block;
-        height: 35px;
-        line-height: 35px;
-        border-bottom: 2px solid transparent;
+      border-bottom: 2px solid #be9e7f;
     }
-
-    &.is-current {
-        color: #5e626d;
-
-        span {
-            border-bottom: 2px solid #be9e7f;
-        }
-    }
+  }
 }
 
 .bank-card-wrap {
-    position: relative;
-    background: #f8f8f7;
+  position: relative;
+  background: #f8f8f7;
 }
 
 .feature-wrap {
-    padding: 10px;
-    margin-bottom: 5px;
-    background-color: #fff;
+  padding: 10px;
+  margin-bottom: 5px;
+  background-color: #fff;
 }
 
 .feature-title {
-    height: 16px;
-    line-height: 16px;
-    margin-bottom: 4px;
-    padding: 0 5px;
-    color: #222;
-    font-size: 12px;
+  height: 16px;
+  line-height: 16px;
+  margin-bottom: 4px;
+  padding: 0 5px;
+  color: #222;
+  font-size: 12px;
 }
 
 .bank-card-title {
-    float: left;
-    width: 100%;
-    margin-bottom: 8px;
-    font-size: 14px;
-    color: #222;
+  float: left;
+  width: 100%;
+  margin-bottom: 8px;
+  font-size: 14px;
+  color: #222;
 
-    &.no-margin {
-        margin-bottom: 0;
-    }
+  &.no-margin {
+    margin-bottom: 0;
+  }
 }
 
 .select-bank-title {
-    float: left;
-    font-size: 14px;
-    color: #222;
+  float: left;
+  font-size: 14px;
+  color: #222;
 }
 
 .select-active {
-    position: absolute;
-    right: 18px;
-    top: 50%;
-    width: 15px;
-    height: 15px;
-    color: #be9e7f;
-    transform: translateY(-50%);
+  position: absolute;
+  right: 18px;
+  top: 50%;
+  width: 15px;
+  height: 15px;
+  color: #be9e7f;
+  transform: translateY(-50%);
 }
 
 .pay-mode-item-wrap {
-    margin-top: 5px;
+  margin-top: 5px;
 
-    &.credit-trans {
-        margin-top: unset;
-    }
+  &.credit-trans {
+    margin-top: unset;
+  }
 }
 
 .pay-mode-item {
-    position: relative;
-    float: left;
-    width: 23%;
-    margin: 0 1% 5px;
-    padding: 7px 1px 1px;
-    border: 1px solid #eee;
-    border-radius: 3px;
-    color: #aaa;
-    cursor: pointer;
-    position: relative;
-    height: 62px;
+  position: relative;
+  float: left;
+  width: 23%;
+  margin: 0 1% 5px;
+  padding: 7px 1px 1px;
+  border: 1px solid #eee;
+  border-radius: 3px;
+  color: #aaa;
+  cursor: pointer;
+  position: relative;
+  height: 62px;
 
-    .pay-active {
-        display: block;
-        width: 7px;
-        height: 5px;
-        position: absolute;
-        right: 1px;
-        bottom: 2px;
-    }
-
-    &.is-current {
-        border: 1px solid #d1b79c;
-        color: #d1b79c;
-        background: linear-gradient(-45deg, #d1b79c 10px, hsla(0, 0%, 100%, 0) 0);
-    }
-
-    .pay-mode-tag {
-        display: block;
-        position: absolute;
-        top: 0;
-        right: 0;
-        width: 26px;
-        height: 25px;
-    }
-
-    .pay-mode-img {
-        display: block;
-        width: 24px;
-        height: 24px;
-        margin: 0 auto;
-    }
-
-    .pay-main-title {
-        overflow: hidden;
-        height: 16px;
-        line-height: 16px;
-        font-size: 12px;
-        text-align: center;
-        text-overflow: ellipsis;
-        white-space: nowrap;
-    }
-
-    .pay-sub-title {
-        overflow: hidden;
-        height: 12px;
-        line-height: 12px;
-        color: #db6372;
-        font-size: 10px;
-        text-align: center;
-        text-overflow: ellipsis;
-        white-space: nowrap;
-    }
-}
-
-.credit-trans {
-    .pay-main-title {
-        color: black;
-    }
-}
-
-.pay-mode-pass {
-    display: inline-block;
-    width: 18.5%;
-    height: 40px;
-    line-height: 40px;
-    font-size: 12px;
-    margin-right: 6px;
-    color: #000;
-    border: 1px solid #eee;
-    border-radius: 3px;
-    text-align: center;
-    cursor: pointer;
-    position: relative;
-
-    &:nth-child(5n) {
-        margin-right: 0;
-    }
-
-    .pay-active {
-        display: block;
-        width: 7px;
-        height: 5px;
-        position: absolute;
-        right: 1px;
-        bottom: 3px;
-    }
-}
-
-.no-bind-wallet {
-    display: inline-block;
-    color: #979797;
-    margin-left: 10px;
-
-    >span {
-        color: #6aaaf5;
-        border-bottom: 1px solid #6aaaf5;
-    }
-}
-
-.pay-money-item {
-    float: left;
-    min-width: 23%;
-    height: 45px;
-    line-height: 45px;
-    margin: 2px 8px 2px 0;
-    padding: 0 3px;
-    text-align: center;
-    font-size: 13px;
-    color: #222;
-    border-radius: 3px;
-    border: 1px solid #eee;
-    position: relative;
-
-    .pay-active {
-        display: block;
-        width: 7px;
-        height: 5px;
-        position: absolute;
-        right: 1px;
-        bottom: 3px;
-    }
-
-    &:nth-child(4n) {
-        margin-right: 0;
-    }
-
-    &.is-current {
-        background-color: #fff;
-        color: #d1b79c;
-        border: 1px solid #d1b79c;
-        background: linear-gradient(-45deg, #d1b79c 12px, hsla(0, 0%, 100%, 0) 0);
-    }
-}
-
-.custom-item {
-    line-height: 22.5px;
-}
-
-.pay-button {
+  .pay-active {
     display: block;
+    width: 7px;
+    height: 5px;
+    position: absolute;
+    right: 1px;
+    bottom: 2px;
+  }
+
+  &.is-current {
+    border: 1px solid #d1b79c;
+    color: #d1b79c;
+    background: linear-gradient(-45deg, #d1b79c 10px, hsla(0, 0%, 100%, 0) 0);
+  }
+
+  .pay-mode-tag {
+    display: block;
+    position: absolute;
+    top: 0;
+    right: 0;
+    width: 26px;
+    height: 25px;
+  }
+
+  .pay-mode-img {
+    display: block;
+    width: 24px;
+    height: 24px;
+    margin: 0 auto;
+  }
+
+  .pay-main-title {
     overflow: hidden;
-    width: calc(100% - 20px);
-    height: 45px;
-    line-height: 45px;
-    margin: 30px auto 15px;
+    height: 16px;
+    line-height: 16px;
+    font-size: 12px;
     text-align: center;
     text-overflow: ellipsis;
     white-space: nowrap;
-    border-radius: 3px;
-    // cursor: pointer;
-    color: #fff;
-    background: #bd9d7d;
-    background-image: -webkit-linear-gradient(right, #bd9d7d, #f9ddbd);
-    background-image: linear-gradient(right, #bd9d7d, #f9ddbd);
+  }
 
-    &.disabled {
-        opacity: 0.5;
-        pointer-events: none;
-    }
+  .pay-sub-title {
+    overflow: hidden;
+    height: 12px;
+    line-height: 12px;
+    color: #db6372;
+    font-size: 10px;
+    text-align: center;
+    text-overflow: ellipsis;
+    white-space: nowrap;
+  }
+}
+
+.credit-trans {
+  .pay-main-title {
+    color: black;
+  }
+}
+
+.pay-mode-pass {
+  display: inline-block;
+  width: 18.5%;
+  height: 40px;
+  line-height: 40px;
+  font-size: 12px;
+  margin-right: 6px;
+  color: #000;
+  border: 1px solid #eee;
+  border-radius: 3px;
+  text-align: center;
+  cursor: pointer;
+  position: relative;
+
+  &:nth-child(5n) {
+    margin-right: 0;
+  }
+
+  .pay-active {
+    display: block;
+    width: 7px;
+    height: 5px;
+    position: absolute;
+    right: 1px;
+    bottom: 3px;
+  }
+}
+
+.no-bind-wallet {
+  display: inline-block;
+  color: #979797;
+  margin-left: 10px;
+
+  > span {
+    color: #6aaaf5;
+    border-bottom: 1px solid #6aaaf5;
+  }
+}
+
+.pay-money-item {
+  float: left;
+  min-width: 23%;
+  height: 45px;
+  line-height: 45px;
+  margin: 2px 8px 2px 0;
+  padding: 0 3px;
+  text-align: center;
+  font-size: 13px;
+  color: #222;
+  border-radius: 3px;
+  border: 1px solid #eee;
+  position: relative;
+
+  .pay-active {
+    display: block;
+    width: 7px;
+    height: 5px;
+    position: absolute;
+    right: 1px;
+    bottom: 3px;
+  }
+
+  &:nth-child(4n) {
+    margin-right: 0;
+  }
+
+  &.is-current {
+    background-color: #fff;
+    color: #d1b79c;
+    border: 1px solid #d1b79c;
+    background: linear-gradient(-45deg, #d1b79c 12px, hsla(0, 0%, 100%, 0) 0);
+  }
+}
+
+.custom-item {
+  line-height: 22.5px;
+}
+
+.pay-button {
+  display: block;
+  overflow: hidden;
+  width: calc(100% - 20px);
+  height: 45px;
+  line-height: 45px;
+  margin: 30px auto 15px;
+  text-align: center;
+  text-overflow: ellipsis;
+  white-space: nowrap;
+  border-radius: 3px;
+  // cursor: pointer;
+  color: #fff;
+  background: #bd9d7d;
+  background-image: -webkit-linear-gradient(right, #bd9d7d, #f9ddbd);
+  background-image: linear-gradient(right, #bd9d7d, #f9ddbd);
+
+  &.disabled {
+    opacity: 0.5;
+    pointer-events: none;
+  }
 }
 
 .deposit-input {
-    display: inline-block;
-    vertical-align: middle;
-    width: 100%;
-    height: 52px;
-    line-height: 52px;
-    padding-left: 15px;
-    font-size: 14px;
-    outline: none;
-    border: none;
-    color: #222;
-    background: #fff;
+  display: inline-block;
+  vertical-align: middle;
+  width: 100%;
+  height: 52px;
+  line-height: 52px;
+  padding-left: 15px;
+  font-size: 14px;
+  outline: none;
+  border: none;
+  color: #222;
+  background: #fff;
 
-    &.disable {
-        pointer-events: none;
-    }
+  &.disable {
+    pointer-events: none;
+  }
 
-    // Chrome/Opera/Safari
-    &::-webkit-input-placeholder {
-        color: #cbced8;
-    }
+  // Chrome/Opera/Safari
+  &::-webkit-input-placeholder {
+    color: #cbced8;
+  }
 
-    // Firefox 19+
-    &::-moz-placeholder {
-        color: #cbced8;
-    }
+  // Firefox 19+
+  &::-moz-placeholder {
+    color: #cbced8;
+  }
 
-    // IE 10+
-    &:-ms-input-placeholder {
-        color: #cbced8;
-    }
+  // IE 10+
+  &:-ms-input-placeholder {
+    color: #cbced8;
+  }
 
-    // Firefox 18-
-    &:-moz-placeholder {
-        color: #cbced8;
-    }
+  // Firefox 18-
+  &:-moz-placeholder {
+    color: #cbced8;
+  }
 }
 
 .deposit-input-icon {
-    position: absolute;
-    left: 0;
-    top: 50%;
-    transform: translateY(-50%);
-    font-size: 14px;
-    font-weight: 700;
-    color: #414655;
+  position: absolute;
+  left: 0;
+  top: 50%;
+  transform: translateY(-50%);
+  font-size: 14px;
+  font-weight: 700;
+  color: #414655;
 }
 
 .money-input-tip {
-    float: left;
-    width: 100%;
-    // padding: 10px 0;
-    font-size: 13px;
-    color: #db6372;
+  float: left;
+  width: 100%;
+  // padding: 10px 0;
+  font-size: 13px;
+  color: #db6372;
 }
 
 .crypto-block {
-    float: left;
+  float: left;
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  width: 100%;
+  height: 52px;
+  color: $main_text_color2;
+
+  .content {
     display: flex;
-    justify-content: space-between;
     align-items: center;
-    width: 100%;
-    height: 52px;
-    color: $main_text_color2;
+    margin-right: 10px;
+  }
 
-    .content {
-        display: flex;
-        align-items: center;
-        margin-right: 10px;
+  .money {
+    max-width: 100px;
+    word-break: break-all;
+    margin-right: 5px;
+  }
+
+  .conversion-btn {
+    display: inline-block;
+    margin-left: 10px;
+    border: 1px solid #be9e7f;
+    color: #be9e7f;
+    width: 80px;
+    height: 21px;
+    line-height: 21px;
+    border-radius: 15px;
+    text-align: center;
+
+    &.disable {
+      pointer-events: none;
     }
 
-    .money {
-        max-width: 100px;
-        word-break: break-all;
-        margin-right: 5px;
+    &.unInput {
+      border: 1px solid #e9dacb;
+      color: #e9dacb;
     }
-
-    .conversion-btn {
-        display: inline-block;
-        margin-left: 10px;
-        border: 1px solid #e9dacb;
-        color: #e9dacb;
-        width: 80px;
-        height: 21px;
-        line-height: 21px;
-        border-radius: 15px;
-        text-align: center;
-
-        &.disable {
-            pointer-events: none;
-        }
-    }
+  }
 }
 
 .is-error {
-    color: #db6372;
+  color: #db6372;
 }
 
 .service-remind {
-    padding: 40px 0;
-    text-align: center;
-    font-size: 14px;
-    color: #a6a9b2;
+  padding: 40px 0;
+  text-align: center;
+  font-size: 14px;
+  color: #a6a9b2;
 }
 
 .service-btn {
-    margin-left: 5px;
-    color: #6aaaf5;
+  margin-left: 5px;
+  color: #6aaaf5;
 }
 
 // ===============================================
 
 .deposit-list-wrap {
-    padding: 10px 20px;
-    text-align: center;
+  padding: 10px 20px;
+  text-align: center;
 }
 
 .mode-item {
-    overflow: hidden;
-    float: left;
-    width: 48%;
-    height: 42px;
-    line-height: 42px;
-    margin-bottom: 8px;
-    padding: 0 16px;
-    text-align: center;
-    white-space: nowrap;
-    text-overflow: ellipsis;
-    cursor: pointer;
-    border-radius: 3px;
-    color: #fff;
-    background-color: #00347d;
+  overflow: hidden;
+  float: left;
+  width: 48%;
+  height: 42px;
+  line-height: 42px;
+  margin-bottom: 8px;
+  padding: 0 16px;
+  text-align: center;
+  white-space: nowrap;
+  text-overflow: ellipsis;
+  cursor: pointer;
+  border-radius: 3px;
+  color: #fff;
+  background-color: #00347d;
 
-    &:active {
-        background-color: #004aae;
-    }
+  &:active {
+    background-color: #004aae;
+  }
 
-    &:nth-child(2n + 1) {
-        margin: 0 8px 0 2px;
-    }
+  &:nth-child(2n + 1) {
+    margin: 0 8px 0 2px;
+  }
 }
 
 .loading-wrap {
-    position: absolute;
-    width: 100%;
-    height: 100%;
-    padding: 258px 0;
-    top: 0;
-    left: 0;
-    z-index: 100;
-    text-align: center;
-    background: rgba(0, 0, 0, 0.4);
+  position: absolute;
+  width: 100%;
+  height: 100%;
+  padding: 258px 0;
+  top: 0;
+  left: 0;
+  z-index: 100;
+  text-align: center;
+  background: rgba(0, 0, 0, 0.4);
 }
 
 .loading-item {
-    display: inline-block;
-    vertical-align: top;
+  display: inline-block;
+  vertical-align: top;
 }
 
 .select-style {
-    border: none;
-    width: 100%;
-    background: none;
+  border: none;
+  width: 100%;
+  background: none;
 }
 
 .select-card-wrap {
-    font-size: 14px;
-    line-height: 19px;
+  font-size: 14px;
+  line-height: 19px;
 }
 
 .select-bank-item {
-    float: left;
-    height: 23px;
-    margin-left: 50px;
-    font-size: 14px;
+  float: left;
+  height: 23px;
+  margin-left: 50px;
+  font-size: 14px;
 }
 
 .select-bank-icon {
-    float: right;
-    width: 15px;
-    height: 15px;
-    margin-top: 2px;
+  float: right;
+  width: 15px;
+  height: 15px;
+  margin-top: 2px;
 }
 
 .pop-wrap {
-    position: fixed;
-    top: 0;
-    right: 0;
-    left: 0;
-    bottom: 0;
-    z-index: 99;
+  position: fixed;
+  top: 0;
+  right: 0;
+  left: 0;
+  bottom: 0;
+  z-index: 99;
 }
 
 .pop-mask {
-    width: 100%;
-    height: 100%;
-    background: #000;
-    opacity: 0.5;
+  width: 100%;
+  height: 100%;
+  background: #000;
+  opacity: 0.5;
 }
 
 .pop-menu {
-    width: 100%;
-    height: 90%;
-    position: absolute;
-    bottom: 0;
-    left: 0;
-    background: #f8f8f7;
-    border-radius: 20px 20px 0 0;
+  width: 100%;
+  height: 90%;
+  position: absolute;
+  bottom: 0;
+  left: 0;
+  background: #f8f8f7;
+  border-radius: 20px 20px 0 0;
 }
 
 .pop-title {
-    height: 73px;
-    line-height: 73px;
-    margin-bottom: 9px;
-    position: relative;
-    font-size: 17px;
-    color: #414655;
-    background: #fefffe;
-    text-align: center;
-    border-radius: 20px 20px 0 0;
-    box-shadow: 0 2px 4px 0 rgba(0, 0, 0, 0.05);
+  height: 73px;
+  line-height: 73px;
+  margin-bottom: 9px;
+  position: relative;
+  font-size: 17px;
+  color: #414655;
+  background: #fefffe;
+  text-align: center;
+  border-radius: 20px 20px 0 0;
+  box-shadow: 0 2px 4px 0 rgba(0, 0, 0, 0.05);
 
-    span {
-        padding: 0 14px;
-        position: absolute;
-        left: 0;
-        color: #be9e7f;
-    }
+  span {
+    padding: 0 14px;
+    position: absolute;
+    left: 0;
+    color: #be9e7f;
+  }
 }
 
 .pop-list {
-    height: calc(100% - 82px);
-    padding-left: 18px;
-    margin: 0;
-    list-style: none;
-    background: #fefffe;
-    overflow-y: scroll;
+  height: calc(100% - 82px);
+  padding-left: 18px;
+  margin: 0;
+  list-style: none;
+  background: #fefffe;
+  overflow-y: scroll;
 
-    li {
-        height: 50px;
-        line-height: 50px;
-        font-size: 14px;
-        color: #414655;
-        border-bottom: 1px solid #eee;
-        position: relative;
-    }
+  li {
+    height: 50px;
+    line-height: 50px;
+    font-size: 14px;
+    color: #414655;
+    border-bottom: 1px solid #eee;
+    position: relative;
+  }
 
-    img {
-        width: 24px;
-        height: 24px;
-        margin-right: 9px;
-        position: relative;
-        top: 50%;
-        transform: translateY(-50%);
-        vertical-align: top;
-    }
+  img {
+    width: 24px;
+    height: 24px;
+    margin-right: 9px;
+    position: relative;
+    top: 50%;
+    transform: translateY(-50%);
+    vertical-align: top;
+  }
 }
 
 .bank-feature-wrap {
-    float: left;
-    width: 100%;
+  float: left;
+  width: 100%;
 }
 
 .feature-deposit-wrap {
-    float: left;
-    width: 100%;
-    margin-bottom: 5px;
-    position: relative;
-    border-bottom: 1px solid transparent;
+  float: left;
+  width: 100%;
+  margin-bottom: 5px;
+  position: relative;
+  border-bottom: 1px solid transparent;
 
-    &.is-error-line {
-        border-bottom: 1px solid #eee;
-    }
+  &.is-error-line {
+    border-bottom: 1px solid #eee;
+  }
 
-    &.hidden {
-        display: none;
-    }
+  &.hidden {
+    display: none;
+  }
 }
 
 .speed-money-wrap {
-    margin-bottom: 5px;
+  margin-bottom: 5px;
 }
 
 .select-money {
-    padding-bottom: 0;
+  padding-bottom: 0;
 }
 
 .CGPay-money {
-    float: left;
-    font-weight: 700;
-    font-size: 17px;
-    line-height: 23px;
+  float: left;
+  font-weight: 700;
+  font-size: 17px;
+  line-height: 23px;
 
-    span {
-        font-weight: 400;
-        font-size: 16px;
-    }
+  span {
+    font-weight: 400;
+    font-size: 16px;
+  }
 }
 
 .CGPay-update-img {
-    width: 24px;
-    height: 24px;
-    vertical-align: middle;
+  width: 24px;
+  height: 24px;
+  vertical-align: middle;
 }
 
 .pay-auth-method {
-    display: inline-block;
-    min-width: 25%;
-    height: 40px;
-    line-height: 40px;
-    font-size: 12px;
-    margin-right: 6px;
-    color: #000;
-    border: 1px solid #eee;
-    border-radius: 3px;
-    text-align: center;
-    cursor: pointer;
-    position: relative;
+  display: inline-block;
+  min-width: 25%;
+  height: 40px;
+  line-height: 40px;
+  font-size: 12px;
+  margin-right: 6px;
+  color: #000;
+  border: 1px solid #eee;
+  border-radius: 3px;
+  text-align: center;
+  cursor: pointer;
+  position: relative;
 
-    .pay-active {
-        display: block;
-        width: 7px;
-        height: 5px;
-        position: absolute;
-        right: 1px;
-        bottom: 3px;
-    }
+  .pay-active {
+    display: block;
+    width: 7px;
+    height: 5px;
+    position: absolute;
+    right: 1px;
+    bottom: 3px;
+  }
 }
 
 .wallet-password {
-    width: 100%;
-    height: 52px;
-    font-size: 14px;
-    outline: none;
+  width: 100%;
+  height: 52px;
+  font-size: 14px;
+  outline: none;
+  border: none;
+  color: #222;
+  background: #fff;
+  border-bottom: 1px solid #eee;
+
+  // Chrome/Opera/Safari
+  &::-webkit-input-placeholder {
+    color: #cbced8;
+  }
+
+  // Firefox 19+
+  &::-moz-placeholder {
+    color: #cbced8;
+  }
+
+  // IE 10+
+  &:-ms-input-placeholder {
+    color: #cbced8;
+  }
+
+  // Firefox 18-
+  &:-moz-placeholder {
+    color: #cbced8;
+  }
+}
+
+.feature-tip-wrap {
+  padding: 0 21px;
+}
+
+.money-info-wrap {
+  padding: 0 10px;
+  margin-top: 30px;
+}
+
+.feature-tip-title {
+  font-size: 14px;
+  color: #cbced8;
+
+  &.success {
+    color: #d1b79c;
+  }
+}
+
+.current-data {
+  background-color: #fff;
+  color: #d1b79c;
+  border: 1px solid #d1b79c;
+  background: linear-gradient(-45deg, #d1b79c 12px, hsla(0, 0%, 100%, 0) 0);
+}
+
+.pop-message-mark {
+  position: fixed;
+  left: 0;
+  right: 0;
+  top: 0;
+  bottom: 0;
+  z-index: 99;
+  background: rgba(0, 0, 0, 0.5);
+}
+
+.message-container {
+  width: 260px;
+  position: fixed;
+  top: 50%;
+  left: 50%;
+  z-index: 100;
+  background: #fefffe;
+  border-radius: 8px;
+  transform: translate(-50%, -50%);
+}
+
+.message-content {
+  padding: 14px 10px;
+  margin: 0;
+  border-bottom: 1px solid #f8f8f7;
+  list-style: none;
+
+  li {
+    line-height: 15px;
+    font-size: 12px;
+    color: #a6a9b2;
+  }
+}
+
+.message-close {
+  padding: 10px 0;
+  text-align: center;
+  font-size: 18px;
+  font-weight: 700;
+  color: #d1b79c;
+}
+
+.money-tip-wrap {
+  margin-top: 7px;
+  color: #0091d2;
+}
+
+.tip-list {
+  font-size: 12px;
+}
+
+.depositName-wrap {
+  padding: 0 10px;
+  margin-bottom: 5px;
+  background: #fff;
+}
+
+.deposit-name-messgae {
+  padding: 5px 0;
+  font-size: 12px;
+  color: #db6372;
+
+  &.hide {
+    display: none;
+  }
+}
+
+.speed-field-name {
+  padding: 10px 0;
+  font-size: 14px;
+  border-bottom: 1px solid #eee;
+  position: relative;
+}
+
+.speed-input-wrap {
+  margin-top: 5px;
+  padding: 0 10px;
+  background: #fff;
+}
+
+.speed-field {
+  padding: 15px 0;
+  font-size: 14px;
+  border-bottom: 1px solid #eee;
+  position: relative;
+}
+
+.speed-field-icon {
+  display: block;
+  width: 15px;
+  height: 15px;
+  position: absolute;
+  right: 0;
+  top: 50%;
+  transform: translateY(-50%);
+}
+
+.field-title {
+  float: left;
+  width: 35%;
+  color: #222;
+}
+
+.field-info {
+  float: left;
+  width: 65%;
+
+  input {
+    padding: 0;
     border: none;
-    color: #222;
-    background: #fff;
-    border-bottom: 1px solid #eee;
+    outline: 0;
 
     // Chrome/Opera/Safari
     &::-webkit-input-placeholder {
-        color: #cbced8;
+      color: #aaa;
     }
 
     // Firefox 19+
     &::-moz-placeholder {
-        color: #cbced8;
+      color: #aaa;
     }
 
     // IE 10+
     &:-ms-input-placeholder {
-        color: #cbced8;
+      color: #aaa;
     }
 
     // Firefox 18-
     &:-moz-placeholder {
-        color: #cbced8;
+      color: #aaa;
     }
-}
-
-.feature-tip-wrap {
-    padding: 0 21px;
-}
-
-.money-info-wrap {
-    padding: 0 10px;
-    margin-top: 30px;
-}
-
-.feature-tip-title {
-    font-size: 14px;
-    color: #cbced8;
-
-    &.success {
-        color: #d1b79c;
-    }
-}
-
-.current-data {
-    background-color: #fff;
-    color: #d1b79c;
-    border: 1px solid #d1b79c;
-    background: linear-gradient(-45deg, #d1b79c 12px, hsla(0, 0%, 100%, 0) 0);
-}
-
-.pop-message-mark {
-    position: fixed;
-    left: 0;
-    right: 0;
-    top: 0;
-    bottom: 0;
-    z-index: 99;
-    background: rgba(0, 0, 0, 0.5);
-}
-
-.message-container {
-    width: 260px;
-    position: fixed;
-    top: 50%;
-    left: 50%;
-    z-index: 100;
-    background: #fefffe;
-    border-radius: 8px;
-    transform: translate(-50%, -50%);
-}
-
-.message-content {
-    padding: 14px 10px;
-    margin: 0;
-    border-bottom: 1px solid #f8f8f7;
-    list-style: none;
-
-    li {
-        line-height: 15px;
-        font-size: 12px;
-        color: #a6a9b2;
-    }
-}
-
-.message-close {
-    padding: 10px 0;
-    text-align: center;
-    font-size: 18px;
-    font-weight: 700;
-    color: #d1b79c;
-}
-
-.money-tip-wrap {
-    margin-top: 7px;
-    color: #0091d2;
-}
-
-.tip-list {
-    font-size: 12px;
-}
-
-.depositName-wrap {
-    padding: 0 10px;
-    margin-bottom: 5px;
-    background: #fff;
-}
-
-.deposit-name-messgae {
-    padding: 5px 0;
-    font-size: 12px;
-    color: #db6372;
-
-    &.hide {
-        display: none;
-    }
-}
-
-.speed-field-name {
-    padding: 10px 0;
-    font-size: 14px;
-    border-bottom: 1px solid #eee;
-    position: relative;
-}
-
-.speed-input-wrap {
-    margin-top: 5px;
-    padding: 0 10px;
-    background: #fff;
-}
-
-.speed-field {
-    padding: 15px 0;
-    font-size: 14px;
-    border-bottom: 1px solid #eee;
-    position: relative;
-}
-
-.speed-field-icon {
-    display: block;
-    width: 15px;
-    height: 15px;
-    position: absolute;
-    right: 0;
-    top: 50%;
-    transform: translateY(-50%);
-}
-
-.field-title {
-    float: left;
-    width: 35%;
-    color: #222;
-}
-
-.field-info {
-    float: left;
-    width: 65%;
-
-    input {
-        padding: 0;
-        border: none;
-        outline: 0;
-
-        // Chrome/Opera/Safari
-        &::-webkit-input-placeholder {
-            color: #aaa;
-        }
-
-        // Firefox 19+
-        &::-moz-placeholder {
-            color: #aaa;
-        }
-
-        // IE 10+
-        &:-ms-input-placeholder {
-            color: #aaa;
-        }
-
-        // Firefox 18-
-        &:-moz-placeholder {
-            color: #aaa;
-        }
-    }
+  }
 }
 
 .speed-deposit-input-error-messgae {
-    color: #aaa;
+  color: #aaa;
 }
 
 .depositMethod-no-data {
-    color: #aaa;
+  color: #aaa;
 }
 
 // 日期套件
 :global {
-    .mx-datepicker {
-        width: 100%;
-    }
+  .mx-datepicker {
+    width: 100%;
+  }
 
-    .mx-input {
-        height: 19px;
-        line-height: 19px;
-        padding: 0;
-        box-shadow: none;
-        border: none;
-        background: transparent;
+  .mx-input {
+    height: 19px;
+    line-height: 19px;
+    padding: 0;
+    box-shadow: none;
+    border: none;
+    background: transparent;
 
-        &::-webkit-input-placeholder {
-            color: #a6a9b2;
-        }
+    &::-webkit-input-placeholder {
+      color: #a6a9b2;
     }
+  }
 
-    .mx-icon-calendar {
-        right: 0;
-        display: none;
-    }
+  .mx-icon-calendar {
+    right: 0;
+    display: none;
+  }
 
-    .mx-icon-clear {
-        right: 0;
-    }
+  .mx-icon-clear {
+    right: 0;
+  }
 }
 
 .speed-input-title {
-    display: block;
-    height: 26px;
-    line-height: 26px;
-    text-align: center;
-    font-size: 12px;
-    border-width: 1px 0;
-    border-style: solid;
-    border-color: #bebcbc;
-    color: #262626;
-    background-color: #fff;
+  display: block;
+  height: 26px;
+  line-height: 26px;
+  text-align: center;
+  font-size: 12px;
+  border-width: 1px 0;
+  border-style: solid;
+  border-color: #bebcbc;
+  color: #262626;
+  background-color: #fff;
 }
 
 .info-wrap {
-    margin-top: 9px;
+  margin-top: 9px;
 }
 
 .deposit-info-title {
-    height: 31px;
-    line-height: 31px;
-    text-align: center;
-    font-size: 12px;
-    border-top: 1px solid #bebcbc;
-    color: rgba(0, 0, 0, 0.87);
-    background: #fff;
+  height: 31px;
+  line-height: 31px;
+  text-align: center;
+  font-size: 12px;
+  border-top: 1px solid #bebcbc;
+  color: rgba(0, 0, 0, 0.87);
+  background: #fff;
 }
 
 .deposit-submit-info {
-    width: 100%;
-    border-width: 1px 0;
-    border-style: solid;
-    border-color: #bebcbc;
-    border-collapse: collapse;
-    background-color: #fff;
+  width: 100%;
+  border-width: 1px 0;
+  border-style: solid;
+  border-color: #bebcbc;
+  border-collapse: collapse;
+  background-color: #fff;
 }
 
 .submit-info-wrap {
-    border-top: 1px solid #bebcbc;
-    padding: 7px 0;
+  border-top: 1px solid #bebcbc;
+  padding: 7px 0;
 }
 
 .basic-info-text {
-    position: relative;
-    display: inline-block;
-    vertical-align: middle;
-    width: 68%;
-    padding-right: 42px;
-    text-align: right;
+  position: relative;
+  display: inline-block;
+  vertical-align: middle;
+  width: 68%;
+  padding-right: 42px;
+  text-align: right;
+  color: #000;
+  background: #fff;
+
+  &.basic-info-title {
+    width: 30%;
+    padding: 0 0 0 17px;
+    text-align: left;
     color: #000;
-    background: #fff;
+  }
 
-    &.basic-info-title {
-        width: 30%;
-        padding: 0 0 0 17px;
-        text-align: left;
-        color: #000;
-    }
+  &.info-memo {
+    padding: 0 12px 0 20px;
+    text-align: left;
+  }
 
-    &.info-memo {
-        padding: 0 12px 0 20px;
-        text-align: left;
-    }
-
-    .application-table & {
-        padding-right: 16px;
-    }
+  .application-table & {
+    padding-right: 16px;
+  }
 }
 
 .qrcode-wrap {
-    padding-right: 22px;
+  padding-right: 22px;
 }
 
 .qrcode-item {
-    display: inline-block;
+  display: inline-block;
 }
 
 .qrcode-td {
-    padding-right: 16px;
+  padding-right: 16px;
 }
 
 .icon-wrap {
+  position: absolute;
+  width: 20px;
+  height: 20px;
+  top: 50%;
+  right: 12px;
+  margin-top: -10px;
+  text-align: center;
+  cursor: pointer;
+  background: #000000;
+  color: #fff;
+  border-radius: 50%;
+
+  div {
+    position: relative;
+    width: 100%;
+    height: 100%;
+  }
+
+  svg {
     position: absolute;
-    width: 20px;
-    height: 20px;
     top: 50%;
-    right: 12px;
-    margin-top: -10px;
-    text-align: center;
-    cursor: pointer;
-    background: #000000;
-    color: #fff;
-    border-radius: 50%;
-
-    div {
-        position: relative;
-        width: 100%;
-        height: 100%;
-    }
-
-    svg {
-        position: absolute;
-        top: 50%;
-        left: 50%;
-        transform: translate(-50%, -50%);
-    }
+    left: 50%;
+    transform: translate(-50%, -50%);
+  }
 }
 
 .info-border {
-    margin: 7px 0;
-    border-bottom: 1px solid #bebcbc;
+  margin: 7px 0;
+  border-bottom: 1px solid #bebcbc;
 }
 
 .qrcode-item {
-    text-align: right;
+  text-align: right;
 
-    &:last-child {
-        margin-right: 0;
-    }
+  &:last-child {
+    margin-right: 0;
+  }
 }
 
 .qrcode-title {
-    color: #000;
+  color: #000;
 }
 
 .qrcode-img {
-    width: 100px;
-    height: 100px;
+  width: 100px;
+  height: 100px;
 }
 
 .warm-tip-title {
-    line-height: 27px;
-    margin-bottom: 0;
-    font-size: 14px;
-    color: #a6a9b2;
-    text-align: center;
-    position: relative;
+  line-height: 27px;
+  margin-bottom: 0;
+  font-size: 14px;
+  color: #a6a9b2;
+  text-align: center;
+  position: relative;
 
-    &:before,
-    &:after {
-        content: "";
-        display: block;
-        width: calc(50% - 50px);
-        height: 1px;
-        background: #ddd;
-        position: absolute;
-        top: 50%;
-        transform: translate(0, -50%);
-    }
+  &:before,
+  &:after {
+    content: "";
+    display: block;
+    width: calc(50% - 50px);
+    height: 1px;
+    background: #ddd;
+    position: absolute;
+    top: 50%;
+    transform: translate(0, -50%);
+  }
 
-    &:before {
-        left: 0;
-    }
+  &:before {
+    left: 0;
+  }
 
-    &:after {
-        right: 0;
-    }
+  &:after {
+    right: 0;
+  }
 }
 
 .warm-tip {
-    font-size: 12px;
-    color: #a6a9b2;
+  font-size: 12px;
+  color: #a6a9b2;
 }
 
 .entry-message-container {
-    width: 85%;
-    min-height: 150px;
-    position: fixed;
-    top: 50%;
-    left: 50%;
-    z-index: 100;
-    background: #fefffe;
-    border-radius: 8px;
-    transform: translate(-50%, -50%);
+  width: 85%;
+  min-height: 150px;
+  position: fixed;
+  top: 50%;
+  left: 50%;
+  z-index: 100;
+  background: #fefffe;
+  border-radius: 8px;
+  transform: translate(-50%, -50%);
 }
 
 .entry-message-content {
-    padding: 14px 10px;
-    margin: 0;
-    border-bottom: 1px solid #f8f8f7;
-    list-style: none;
+  padding: 14px 10px;
+  margin: 0;
+  border-bottom: 1px solid #f8f8f7;
+  list-style: none;
 
-    p {
-        font-size: 16px;
-        text-align: center;
-        font-weight: 700;
-    }
+  p {
+    font-size: 16px;
+    text-align: center;
+    font-weight: 700;
+  }
 
-    >div {
-        line-height: 22px;
-    }
+  > div {
+    line-height: 22px;
+  }
 }
 
 .entry-message-confirm {
-    display: flex;
-    justify-content: center;
-    text-align: center;
-    font-weight: 700;
-    color: #d1b79c;
-    margin: 0;
-    padding: 0;
-    height: 40px;
-    line-height: 40px;
-    list-style-type: none;
+  display: flex;
+  justify-content: center;
+  text-align: center;
+  font-weight: 700;
+  color: #d1b79c;
+  margin: 0;
+  padding: 0;
+  height: 40px;
+  line-height: 40px;
+  list-style-type: none;
 
-    li {
-        flex: 1;
-        border-right: 1px solid #f8f8f7;
-    }
+  li {
+    flex: 1;
+    border-right: 1px solid #f8f8f7;
+  }
 }
 
 .top-promotion {
-    background: #f8f8f7;
-    color: #be9e7f;
-    font-family: Microsoft JhengHei, Microsoft JhengHei-Regular;
-    font-size: 12px;
-    font-weight: 400;
-    height: 34px;
-    line-height: 34px;
-    padding-left: 17px;
-    text-align: left;
+  background: #f8f8f7;
+  color: #be9e7f;
+  font-family: Microsoft JhengHei, Microsoft JhengHei-Regular;
+  font-size: 12px;
+  font-weight: 400;
+  height: 34px;
+  line-height: 34px;
+  padding-left: 17px;
+  text-align: left;
 }
 
-
 .cgpay-promotion {
-    background: #FFFFFF;
-    color: #D1B79C;
-    font-family: Microsoft JhengHei, Microsoft JhengHei-Regular;
-    font-size: 12px;
-    font-weight: 400;
-    height: 34px;
-    line-height: 34px;
-    text-align: left;
+  background: #ffffff;
+  color: #d1b79c;
+  font-family: Microsoft JhengHei, Microsoft JhengHei-Regular;
+  font-size: 12px;
+  font-weight: 400;
+  height: 34px;
+  line-height: 34px;
+  text-align: left;
 }

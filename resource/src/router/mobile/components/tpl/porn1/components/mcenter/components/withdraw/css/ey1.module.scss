@@ -6,8 +6,6 @@
 
 .bank-card-cell {
   > .check-box {
-    border: #cbced8 solid 1px;
-
     &.checked {
       background: url("/static/image/ey1/mcenter/ic_check.png") 0 0 no-repeat;
       background-size: 100%;
@@ -54,6 +52,18 @@
   &.disabled {
     div {
       background: #fdcccc;
+    }
+  }
+}
+
+.crypto-block {
+  .conversion-btn {
+    border: 1px solid #e42a30;
+    color: #e42a30;
+
+    &.unInput {
+      border: 1px solid #fdcccc;
+      color: #fdcccc;
     }
   }
 }
