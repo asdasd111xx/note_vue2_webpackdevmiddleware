@@ -4,7 +4,7 @@
       <div
         v-if="loginStatus"
         :class="$style['promotion-gift']"
-        @click="onClick({ info: 'gift' })"
+        @click="onGiftClick"
       >
         <img src="/static/image/ey1/promotion/ic-gift.png" />
         <div v-show="hasGift" :class="$style['red-dot']" />
@@ -55,6 +55,7 @@ import { mapGetters, mapActions } from 'vuex';
 import { Swiper, SwiperSlide } from 'vue-awesome-swiper';
 import ajax from '@/lib/ajax';
 import mobileContainer from '../common/mobileContainer';
+import axios from 'axios';
 
 export default {
   components: {
@@ -76,6 +77,7 @@ export default {
   computed: {
     ...mapGetters({
       loginStatus: 'getLoginStatus',
+      webInfo: 'getWebInfo',
     }),
     headerConfig() {
       return {
@@ -84,6 +86,9 @@ export default {
     }
   },
   methods: {
+    ...mapActions([
+      'actionSetGlobalMessage'
+    ]),
     handleClickTab(tab, index) {
       this.getPromotionList(tab.id);
     },
@@ -105,41 +110,46 @@ export default {
         this.tabList[0].name = "全部"
       });
     },
+    onGiftClick() {
+      let newWindow = '';
+      newWindow = window.open('');
+
+      let url = '';
+      switch (this.webInfo.alias) {
+        case '500023':
+          url = 'https://688lg410.666uxm.com/collect';
+          break;
+        case '41':
+          url = 'https://eyd.666uxm.com/collect';
+          break;
+        case '74':
+          url = 'https://eyt.iplay.bet/collect';
+          break;
+      }
+
+      axios({
+        method: 'get',
+        url: '/api/v1/c/link/customize',
+        params: {          code: 'promotion',
+          client_uri: url        }
+      }).then(res => {
+        if (res && res.data && res.data.ret && res.data.ret.uri) {
+          newWindow.location.href = res.data.ret.uri;
+        } else {
+          newWindow.close();
+        }
+      }).catch(error => {
+        newWindow.close();
+        if (error && error.data && error.date.msg) {
+          this.actionSetGlobalMessage({ msg: error.data.msg });
+        }
+      })
+    },
     onClick(target) {
       localStorage.setItem('iframe-third-url', target.info === 'gift' ? '' : target.link);
       localStorage.setItem('iframe-third-url-title', target.info === 'gift' ? '' : target.name);
 
       this.$router.push(`/mobile/iframe/promotion?hasFooter=false&hasHeader=true${target.info === 'gift' ? '&gift=1' : ''}`);
-
-      // let newWindow = '';
-      // // 辨別裝置是否為ios寰宇瀏覽器
-      // const isUBMobile = navigator.userAgent.match(/UBiOS/) !== null && navigator.userAgent.match(/iPhone/) !== null;
-      // newWindow = window.open('');
-
-      // ajax({
-      //   method: 'get',
-      //   url: '/api/v1/c/link/customize',
-      //   params: { code: 'promotion', client_uri: link },
-      //   errorAlert: false,
-      //   success: ({
-      //     result, ret, msg, code
-      //   }) => {
-      //     if (result !== 'ok') {
-      //       newWindow.close();
-      //       const errorCode = code || '';
-      //       alert(`${msg} ${errorCode}`);
-      //       return;
-      //     }
-
-      //     newWindow.location.href = ret.uri;
-      //     newWindow.document.title = '最新优惠';
-      //     //   window.document.title = name;
-      //   },
-      //   fail: (error) => {
-      //     newWindow.alert(`${error.data.msg} ${error.data.code ? `(${error.data.code})` : ''}`);
-      //     newWindow.close();
-      //   }
-      // });
     }
   }
 };
