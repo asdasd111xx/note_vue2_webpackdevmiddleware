@@ -83,6 +83,17 @@
                   </template>
                 </div> -->
 
+                <div :class="$style['pay-sub-title']">
+                  <template
+                    v-if="
+                      themeTPL === 'ey1' &&
+                      [5, 6].includes(info.payment_type_id)
+                    "
+                  >
+                    返利1%无上限
+                  </template>
+                </div>
+
                 <img
                   v-if="
                     curPayInfo.payment_method_id === info.payment_method_id &&
