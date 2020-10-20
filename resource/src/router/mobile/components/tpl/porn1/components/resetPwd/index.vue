@@ -255,7 +255,7 @@ export default {
         this.pwdResetInfo["confNewPwd"].value !==
         this.pwdResetInfo["newPwd"].value
       ) {
-        this.errMsg = "新密码与确认密码栏位不一致";
+        this.errMsg = "确认密码预设要跟密码一致";
       }
 
       if (!value) {
