@@ -40,6 +40,7 @@
 import { mapGetters, mapActions } from 'vuex';
 import axios from 'axios';
 import yaboRequest from '@/api/yaboRequest';
+import goLangApiRequest from '@/api/goLangApiRequest';
 
 export default {
   data() {
@@ -81,15 +82,25 @@ export default {
       case 'DSC':
       case 'PPV':
       case 'SF':
-        yaboRequest({
+        // yaboRequest({
+        //   method: 'get',
+        //   url: `${this.siteConfig.YABO_API_DOMAIN}/thirdparty/url`,
+        //   headers: {
+        //     'x-domain': this.memInfo.user.domain
+        //   },
+        //   params: {
+        //     type: params.page.toUpperCase(),
+        //     userid: this.memInfo.user.id
+        //   },
+        // }).then(res => {
+        //   this.src = res.data;
+        // })
+
+        goLangApiRequest({
           method: 'get',
-          url: `${this.siteConfig.YABO_API_DOMAIN}/thirdparty/url`,
+          url: `${this.siteConfig.YABO_GOLANG_API_DOMAIN}/ThirdParty/${params.page.toUpperCase()}/${this.memInfo.user.id}`,
           headers: {
             'x-domain': this.memInfo.user.domain
-          },
-          params: {
-            type: params.page.toUpperCase(),
-            userid: this.memInfo.user.id
           },
         }).then(res => {
           this.src = res.data;

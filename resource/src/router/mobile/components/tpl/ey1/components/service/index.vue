@@ -132,6 +132,7 @@ import { mapGetters, mapActions } from "vuex";
 import mobileContainer from "../common/mobileContainer";
 import mobileLinkOpen from "@/lib/mobile_link_open";
 import yaboRequest from '@/api/yaboRequest';
+import goLangApiRequest from '@/api/goLangApiRequest';
 import axios from 'axios';
 
 export default {
@@ -159,13 +160,26 @@ export default {
       this.getAvatarSrc();
     })
 
-    yaboRequest({
+    // yaboRequest({
+    //   method: "get",
+    //   url: `${this.siteConfig.YABO_API_DOMAIN}/system/downloadlink`,
+    //   headers: {
+    //     'x-domain': this.memInfo.user.domain
+    //   }
+    // }).then(res => {
+    //   if (res && res.data) {
+    //     this.linkArray = res.data;
+    //   }
+    // });
+
+    goLangApiRequest({
       method: "get",
-      url: `${this.siteConfig.YABO_API_DOMAIN}/system/downloadlink`,
+      url: `${this.siteConfig.YABO_GOLANG_API_DOMAIN}/System/downloadlink`,
       headers: {
         'x-domain': this.memInfo.user.domain
       }
     }).then(res => {
+      console.log("api test");
       if (res && res.data) {
         this.linkArray = res.data;
       }
