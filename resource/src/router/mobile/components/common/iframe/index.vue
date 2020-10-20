@@ -320,7 +320,7 @@ export default {
   background: white;
   color: #ffffff;
   text-align: center;
-  border-bottom: 1px solid #eee;
+  // border-bottom: 1px solid #eee;
 
   &.ey1 {
     background: linear-gradient(#fe2a2a, #b60303);
