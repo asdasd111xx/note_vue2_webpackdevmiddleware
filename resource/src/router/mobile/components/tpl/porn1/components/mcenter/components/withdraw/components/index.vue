@@ -694,7 +694,7 @@ export default {
 
         // Todo
         // CGPay Currency
-
+        this.withdrawCurrency = JSON.parse(localStorage.getItem("tmp_w_withdrawCurrency")) || this.withdrawCurrency;
 
         setTimeout(() => {
           this.removeCurrentValue();
@@ -715,7 +715,7 @@ export default {
     'selectedCard.bank_id'(value) {
       // When the option = CGPay
       if (value === 2009) {
-        this.selectedCard.name = 'CGPay到帐'
+        this.selectedCard.name = 'CGPay'
       }
     }
   },
