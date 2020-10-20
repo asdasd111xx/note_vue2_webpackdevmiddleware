@@ -30,7 +30,7 @@
             :class="[
               $style['field-title'],
               $style[`field-${field.key}`],
-              'clearfix'
+              'clearfix',
             ]"
             @click="
               () => {
@@ -599,6 +599,8 @@ export default {
       this.joinSubmit();
     },
     toggleEye() {
+      this.verification("password");
+      this.verification("confirm_password");
       if (this.isShowPwd) {
         document.getElementById("pwd").type = 'password';
         document.getElementById("confirm_password").type = 'password';
