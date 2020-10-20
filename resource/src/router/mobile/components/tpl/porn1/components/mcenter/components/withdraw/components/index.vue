@@ -387,7 +387,8 @@
       :class="[
         $style['actual-money'],
         {
-          [$style['trueMoney']]: actualMoney <= 0,
+          [$style['trueMoney']]:
+            themeTPL === 'ey1' && withdrawValue && actualMoney <= 0,
         },
       ]"
     >
