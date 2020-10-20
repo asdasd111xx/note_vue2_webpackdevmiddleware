@@ -35,6 +35,7 @@
 <script>
 import { mapGetters, mapActions } from "vuex";
 import yaboRequest from "@/api/yaboRequest";
+import goLangApiRequest from '@/api/goLangApiRequest';
 
 export default {
   components: {},
@@ -82,13 +83,26 @@ export default {
       this.actionSetAgentLink();
     } else {
       // 未登入：落地頁
-      yaboRequest({
+      // yaboRequest({
+      //   method: "get",
+      //   url: `${this.siteConfig.YABO_API_DOMAIN}/system/downloadlink`,
+      //   headers: {
+      //     AuthToken: "YaboAPIforDev0nly"
+      //   }
+      // }).then(res => {
+      //   if (res && res.data && res.data) {
+      //     this.landingLink = res.data[0].value || res.data[1].value;
+      //   }
+      // });
+
+      goLangApiRequest({
         method: "get",
-        url: `${this.siteConfig.YABO_API_DOMAIN}/system/downloadlink`,
+        url: `${this.siteConfig.YABO_GOLANG_API_DOMAIN}/System/downloadlink`,
         headers: {
           AuthToken: "YaboAPIforDev0nly"
         }
       }).then(res => {
+        console.log("api test");
         if (res && res.data && res.data) {
           this.landingLink = res.data[0].value || res.data[1].value;
         }

@@ -179,7 +179,6 @@ export default {
         [style["search-page"]]: this.headerConfig.isSmallPigSearch
           ? true
           : false,
-        [style["no-border-bottom"]]: this.headerConfig.noBottomBorder,
         clearfix: true
       };
     },
@@ -247,7 +246,6 @@ export default {
   background: linear-gradient(#fe2a2a, #b60303);
   color: #ffffff;
   text-align: center;
-  border-bottom: 1px solid #eee;
 
   &::before {
     content: "";

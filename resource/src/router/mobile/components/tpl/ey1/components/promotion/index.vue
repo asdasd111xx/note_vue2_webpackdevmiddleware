@@ -106,16 +106,10 @@ export default {
       });
     },
     onClick(target) {
+      localStorage.setItem('iframe-third-url', target.info === 'gift' ? '' : target.link);
+      localStorage.setItem('iframe-third-url-title', target.info === 'gift' ? '' : target.name);
 
-      if (target.info === 'gift') {
-        // link
-        return;
-      }
-
-      localStorage.setItem('iframe-third-url', target.link);
-      localStorage.setItem('iframe-third-url-title', target.name);
-
-      this.$router.push(`/mobile/iframe/promotion?hasFooter=false&hasHeader=true`);
+      this.$router.push(`/mobile/iframe/promotion?hasFooter=false&hasHeader=true${target.info === 'gift' ? '&gift=1' : ''}`);
 
       // let newWindow = '';
       // // 辨別裝置是否為ios寰宇瀏覽器

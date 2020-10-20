@@ -29,6 +29,7 @@
 
 <script>
 import yaboRequest from "@/api/yaboRequest";
+import goLangApiRequest from '@/api/goLangApiRequest';
 import { mapGetters, mapActions } from "vuex";
 
 export default {
@@ -49,11 +50,21 @@ export default {
     }),
   },
   created() {
-    yaboRequest({
+    // yaboRequest({
+    //   method: "get",
+    //   url: `${this.siteConfig.YABO_API_DOMAIN}/system/contactus`,
+    //   headers: { "x-domain": this.memInfo.user.domain },
+    // }).then((res) => {
+    //   if (res && res.data && res.data.length > 0) {
+    //     this.list = res.data;
+    //   }
+    // });
+    goLangApiRequest({
       method: "get",
-      url: `${this.siteConfig.YABO_API_DOMAIN}/system/contactus`,
+      url: `${this.siteConfig.YABO_GOLANG_API_DOMAIN}/System/contactus`,
       headers: { "x-domain": this.memInfo.user.domain },
     }).then((res) => {
+      console.log("api test");
       if (res && res.data && res.data.length > 0) {
         this.list = res.data;
       }
@@ -108,7 +119,7 @@ export default {
       justify-content: center;
       margin: 10px 20px 10px 0;
       padding-right: 20px;
-      border-right: #F8F8F7 solid 1px;
+      border-right: #f8f8f7 solid 1px;
       img {
         width: 28px;
       }

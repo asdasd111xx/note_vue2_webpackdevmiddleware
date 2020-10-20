@@ -26,6 +26,7 @@ import member from '@/api/member';
 import openGame from '@/lib/open_game';
 import router from '../router';
 import yaboRequest from '@/api/yaboRequest';
+import goLangApiRequest from '@/api/goLangApiRequest';
 
 let memstatus = true;
 let agentstatus = true;
@@ -1179,10 +1180,21 @@ export const actionSetYaboConfig = ({ state, dispatch, commit }, next) => {
     configInfo = siteConfigTest[`site_${state.webInfo.alias}`] || siteConfigTest.preset;
   }
 
-  return yaboRequest({
+  // return yaboRequest({
+  //   method: 'get',
+  //   url: configInfo.YABO_API_DOMAIN + '/system/switch',
+  // }).then((res) => {
+  //   console.log("api switch test");
+  //   if (res && res.data) {
+  //     commit(types.SET_YABOCONFIG, res.data);
+  //   }
+  // });
+
+  return goLangApiRequest({
     method: 'get',
-    url: configInfo.YABO_API_DOMAIN + '/system/switch',
+    url: configInfo.YABO_GOLANG_API_DOMAIN + '/System/switch',
   }).then((res) => {
+    console.log("api switch test");
     if (res && res.data) {
       commit(types.SET_YABOCONFIG, res.data);
     }
@@ -1570,10 +1582,27 @@ export const actionSetSystemDomain = ({ commit, state }, data) => {
     configInfo = siteConfigTest[`site_${state.webInfo.alias}`] || siteConfigTest.preset;
   }
 
-  return yaboRequest({
+  // return yaboRequest({
+  //   method: 'get',
+  //   url: configInfo.YABO_API_DOMAIN + '/system/domain',
+  // }).then((res) => {
+  //   console.log("api domain test");
+  //   if (res && res.data) {
+  //     commit(types.SET_SYSTEMDOMAIN, res.data);
+  //     let domainList = res.data.filter(i => i.name === "XXX-DOMAIN-URL" && i.type === "du");
+
+  //     // 暫時先取第一組
+  //     if (domainList && domainList.length > 0) {
+  //       commit(types.SET_PORNDOMAIN, domainList[0].value);
+  //     }
+  //   }
+  // });
+
+  return goLangApiRequest({
     method: 'get',
-    url: configInfo.YABO_API_DOMAIN + '/system/domain',
+    url: configInfo.YABO_GOLANG_API_DOMAIN + '/System/domain',
   }).then((res) => {
+    console.log("api domain test");
     if (res && res.data) {
       commit(types.SET_SYSTEMDOMAIN, res.data);
       let domainList = res.data.filter(i => i.name === "XXX-DOMAIN-URL" && i.type === "du");

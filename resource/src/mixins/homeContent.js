@@ -5,6 +5,7 @@ import axios from 'axios';
 import mcenter from '@/api/mcenter';
 import openGame from '@/lib/open_game';
 import yaboRequest from '@/api/yaboRequest';
+import goLangApiRequest from '@/api/goLangApiRequest';
 
 export default {
     data() {
@@ -200,13 +201,40 @@ export default {
         },
         // 取得所有遊戲
         getAllGame(setLocal) {
-            return yaboRequest({
+            //     return yaboRequest({
+            //         method: 'get',
+            //         url: `${this.siteConfig.YABO_API_DOMAIN}/game/list`,
+            //         headers: {
+            //             'x-domain': this.memInfo.user.domain
+            //         }
+            //     }).then(response => {
+            //         console.log("getAllGame~~~~!!");
+            //         if (!response.data) {
+            //             return;
+            //         }
+
+            //         this.isReceive = true;
+
+            //         try {
+            //             localStorage.setItem('game-list', JSON.stringify(response.data));
+            //             localStorage.setItem('game-list-timestamp', Date.now());
+            //         } catch (e) {
+            //             console.log(e);
+            //         }
+
+            //         if (!setLocal) {
+            //             this.allGame = [...response.data];
+            //         }
+            //     });
+
+            return goLangApiRequest({
                 method: 'get',
-                url: `${this.siteConfig.YABO_API_DOMAIN}/game/list`,
+                url: `${this.siteConfig.YABO_GOLANG_API_DOMAIN}/Game/list`,
                 headers: {
                     'x-domain': this.memInfo.user.domain
                 }
             }).then(response => {
+                console.log("api test");
                 if (!response.data) {
                     return;
                 }
@@ -499,17 +527,34 @@ export default {
                     }
                     // 調整iframe內嵌
                     let newWindow = window.open('');
-                    yaboRequest({
+                    // yaboRequest({
+                    //     method: 'get',
+                    //     url: `${this.siteConfig.YABO_API_DOMAIN}/thirdparty/url`,
+                    //     headers: {
+                    //         'x-domain': this.memInfo.user.domain
+                    //     },
+                    //     params: {
+                    //         type: game.type,
+                    //         userid: this.memInfo.user.id
+                    //     },
+                    // }).then(res => {
+                    //     if (res.data) {
+                    //         newWindow.location.href = res.data;
+                    //     } else {
+                    //         newWindow.close();
+                    //     }
+                    // }).catch(error => {
+                    //     newWindow.close();
+                    // })
+
+                    goLangApiRequest({
                         method: 'get',
-                        url: `${this.siteConfig.YABO_API_DOMAIN}/thirdparty/url`,
+                        url: `${this.siteConfig.YABO_GOLANG_API_DOMAIN}/ThirdParty/${game.type}/${this.memInfo.user.id}`,
                         headers: {
                             'x-domain': this.memInfo.user.domain
                         },
-                        params: {
-                            type: game.type,
-                            userid: this.memInfo.user.id
-                        },
                     }).then(res => {
+                        console.log("api ThirdParty test");
                         if (res.data) {
                             newWindow.location.href = res.data;
                         } else {
