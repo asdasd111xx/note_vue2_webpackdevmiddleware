@@ -176,14 +176,17 @@ export default {
 
 .dialog {
   position: fixed;
-  width: 100%;
   left: 0;
   top: 0;
-  height: 100%;
+  // width: 100%;
+  // height: 100%;
   display: flex;
   justify-content: center;
   align-items: center;
   z-index: 500;
+  transform: translate(-50%, -50%);
+  top: 50%;
+  left: 50%;
 }
 
 .dialog /deep/ div {
