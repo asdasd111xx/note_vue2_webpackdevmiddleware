@@ -95,10 +95,14 @@ export default {
         // }).then(res => {
         //   this.src = res.data;
         // })
+        let userId = 'guest';
+        if (this.memInfo && this.memInfo.user && this.memInfo.user.id && this.memInfo.user.id !== 0) {
+          userId = this.memInfo.user.id;
+        }
 
         goLangApiRequest({
           method: 'get',
-          url: `${this.siteConfig.YABO_GOLANG_API_DOMAIN}/ThirdParty/${params.page.toUpperCase()}/${this.memInfo.user.id}`,
+          url: `${this.siteConfig.YABO_GOLANG_API_DOMAIN}/ThirdParty/${params.page.toUpperCase()}/${userId}`,
           headers: {
             'x-domain': this.memInfo.user.domain
           },
