@@ -336,7 +336,12 @@ export default {
             })
 
           } else {
-            this.errorMsg = res.data.msg;
+            if (res.data && res.data.msg) {
+              this.errorMsg = res.data.msg;
+            } else {
+              console.log(res.data)
+              this.errorMsg = res.data;
+            }
           }
         })
         .catch(error => {
@@ -346,7 +351,13 @@ export default {
           }
 
           this.lockStatus = false;
-          this.errorMsg = error.response.data.msg;
+
+          console.log(error.response)
+          if (error.response.data && error.response.data.msg) {
+            this.tipMsg = error.response.data.msg;
+          } else {
+            this.tipMsg = error.response.data;
+          }
         });
     }
   }
