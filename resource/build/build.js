@@ -5,6 +5,7 @@ process.env.NODE_ENV = 'production'
 console.log("[debug]process.argv:", process.argv)
 process.env.CDN_HOST = process.argv[2] || ''
 console.log("[debug]process.env.CDN_HOST:", process.env.CDN_HOST)
+
 var ora = require('ora')
 var rm = require('rimraf')
 var path = require('path')
