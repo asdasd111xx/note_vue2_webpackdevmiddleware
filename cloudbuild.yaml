@@ -34,6 +34,15 @@ steps:
   waitFor:
   - A
 
+ - name: gcr.io/cloud-builders/yarn:node-8.12.0
+    dir: ./resource
+    args:
+    - run
+    - build
+    - $_CDN_HOST3
+    waitFor:
+    - A
+  
 - name: gcr.io/cloud-builders/docker
   args:
   - build
