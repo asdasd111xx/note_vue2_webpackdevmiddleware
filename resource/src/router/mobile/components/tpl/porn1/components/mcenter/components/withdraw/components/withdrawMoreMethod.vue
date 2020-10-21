@@ -1,41 +1,46 @@
 <template>
-  <!-- 提款前提示彈窗 -->
   <transition name="fade">
-    <div :class="$style['more-method-wrap']">
-      <div :class="$style['more-method-container']">
-        <div :class="$style['more-method-header']">
-          <div @click="close" :class="$style['prev']">
-            {{ $text("S_CANCEL", "取消") }}
-          </div>
+    <div>
+      <!-- 提款前提示彈窗 -->
+      <template v-if="!showPopStatus.isShow">
+        <div :class="$style['more-method-wrap']">
+          <div :class="$style['more-method-container']">
+            <div :class="$style['more-method-header']">
+              <div @click="closePopup" :class="$style['prev']">
+                {{ $text("S_CANCEL", "取消") }}
+              </div>
 
-          <div :class="$style['title']">
-            {{ "更多提现方式" }}
-          </div>
-        </div>
-
-        <div :class="$style['more-method-content']">
-          <div
-            v-for="item in methodList"
-            :class="$style['cell']"
-            @click="addMethod(item)"
-          >
-            <div v-if="themeTPL === 'porn1'" :class="$style['add-block']">
-              <img
-                :src="$getCdnPath(`/static/image/porn1/mcenter/add.png`)"
-                alt="add"
-              />
+              <div :class="$style['title']">
+                {{ "更多提现方式" }}
+              </div>
             </div>
-            {{ item.title }}
+
+            <div :class="$style['more-method-content']">
+              <div
+                v-for="item in methodList"
+                :class="$style['cell']"
+                @click="addMethod(item)"
+              >
+                <div v-if="themeTPL === 'porn1'" :class="$style['add-block']">
+                  <img
+                    :src="$getCdnPath(`/static/image/porn1/mcenter/add.png`)"
+                    alt="add"
+                  />
+                </div>
+                {{ item.title }}
+              </div>
+            </div>
           </div>
         </div>
-      </div>
-    </div>
+      </template>
 
-    <popup-qrcode
-      v-if="isShowPopQrcode"
-      :isShowPop.sync="isShowPopQrcode"
-      :paymentGatewayId="bank_id"
-    />
+      <!-- Qrcode 彈窗 -->
+      <template v-else>
+        <template v-if="showPopStatus.type === 'qrcode'">
+          <popup-qrcode :paymentGatewayId="bank_id" @close="closePopup" />
+        </template>
+      </template>
+    </div>
   </transition>
 </template>
 
@@ -65,7 +70,12 @@ export default {
   data() {
     return {
       bank_id: "",
-      isShowPopQrcode: false,
+
+      // 彈窗顯示狀態統整
+      showPopStatus: {
+        isShow: false,
+        type: ''
+      },
     };
   },
   computed: {
@@ -112,14 +122,6 @@ export default {
             })
         }
       ].filter(item => item.isShow);
-    },
-    showPopQrcode: {
-      get() {
-        return this.isShowPopQrcode;
-      },
-      set(value) {
-        this.isShowPopQrcode = value;
-      }
     }
   },
   watch: {
@@ -140,8 +142,14 @@ export default {
   },
   methods: {
     ...mapActions(["actionSetGlobalMessage"]),
-    close() {
+    closePopup() {
       this.$emit("close");
+    },
+    setPopupStatus(isShow, type) {
+      this.showPopStatus = {
+        isShow,
+        type
+      }
     },
     addMethod(item) {
       switch (item.key) {
@@ -160,11 +168,10 @@ export default {
           break;
 
         case "goBao":
-          this.isShowPopQrcode = true;
+          this.setPopupStatus(true, 'qrcode')
           this.bank_id = 37;
           break;
       }
-      this.close();
     }
   }
 };

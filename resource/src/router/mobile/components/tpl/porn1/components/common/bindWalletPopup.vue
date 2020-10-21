@@ -1,6 +1,6 @@
 <template>
   <div>
-    <template v-if="!qrcodeObj.isShow">
+    <template v-if="!showPopStatus.isShow">
       <div :class="$style['popup']">
         <div :class="$style['mask']" />
         <div :class="$style['block']">
@@ -63,7 +63,7 @@
           </div>
 
           <div :class="$style['close']">
-            <span @click="closeTips">取消</span>
+            <span @click="closePopup">取消</span>
             <span @click="submitByToken">送出</span>
           </div>
         </div>
@@ -73,10 +73,9 @@
     <template v-else>
       <!-- Qrcode Popup -->
       <popup-qrcode
-        v-if="qrcodeObj.isShow"
-        :isShowPop.sync="qrcodeObj.isShow"
         :paymentGatewayId="qrcodeObj.bank_id"
         :bindType="qrcodeObj.bind_type"
+        @close="closePopup"
       />
     </template>
   </div>
@@ -113,28 +112,24 @@ export default {
           placeholder: "必填"
         }
       },
-      qrcodeObj: {
+
+      // 彈窗顯示狀態統整
+      showPopStatus: {
         isShow: false,
+        type: ''
+      },
+
+      qrcodeObj: {
         bank_id: null,
         bind_type: "deposit"
-      }
+      },
     };
   },
-  computed: {
-    showPopQrcode: {
-      get() {
-        return this.qrcodeObj.isShow;
-      },
-      set(value) {
-        this.qrcodeObj.isShow = value;
-      }
-    }
-  },
   watch: {
-    "qrcodeObj.isShow"(value) {
+    "showPopStatus.isShow"(value) {
       // 切換到 Qrcode 頁面，連同整個 popup 關掉
       if (!value) {
-        this.closeTips();
+        this.closePopup();
       }
     }
   },
@@ -146,6 +141,11 @@ export default {
         this.qrcodeObj.bank_id = 21;
         break;
 
+      // case "USDT":
+      //   this.title = "绑定 USDT(ERC20)";
+      //   this.formData["walletAddress"].title = "钱包位址";
+      //   break;
+
       default:
         break;
     }
@@ -155,7 +155,7 @@ export default {
     tipMethod(index) {
       switch (index) {
         case 0:
-          this.qrcodeObj.isShow = true;
+          this.showPopStatus.isShow = true;
           break;
 
         case 1:
@@ -171,7 +171,7 @@ export default {
           break;
       }
     },
-    closeTips() {
+    closePopup() {
       this.$emit("close");
     },
     submitByToken() {
