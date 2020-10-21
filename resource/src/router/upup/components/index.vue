@@ -33,6 +33,8 @@
       如需帮助，请
       <span @click="linkToService">&nbsp;联系客服</span>
     </div>
+
+    <div style="display:none" id="version">{{ version }}</div>
   </div>
 </template>
 
