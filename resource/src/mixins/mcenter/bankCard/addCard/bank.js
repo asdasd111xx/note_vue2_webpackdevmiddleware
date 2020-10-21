@@ -313,11 +313,6 @@ export default {
                                 this.errorMsg = "今日发送次数已达上限";
                                 return;
                             }
-
-                            if (error.response.data.msg) {
-                                this.errorMsg = `${error.response.data.msg}`;
-                                return;
-                            }
                         })
 
                     } else {
@@ -331,7 +326,13 @@ export default {
                     }
 
                     this.lockStatus = false;
-                    this.errorMsg = error.response.data.msg;
+
+                    console.log(error.response.data)
+                    if (error.response.data && error.response.data.msg) {
+                        this.errorMsg = `${error.response.data.msg}`;
+                    } else {
+                        this.errorMsg = `${error.response.data}`;
+                    }
                 });
         }
     }

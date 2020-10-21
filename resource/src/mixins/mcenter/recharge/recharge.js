@@ -362,8 +362,20 @@ export default {
                     }
                 })
                 .catch(error => {
+
+                    if (error.response && error.response.status === 429) {
+                        this.errorMessage.phone = "操作太频繁，请稍候在试";
+                        return;
+                    }
+
                     this.ttl = "";
-                    this.errorMessage.phone = `${error.response.data.msg}`;
+
+                    if (error.response.data && error.response.data.msg) {
+                        this.errorMessage.phone = `${error.response.data.msg}`;
+                    } else {
+                        this.errorMessage.phone = `${error.response.data}`;
+                    }
+
                     setTimeout(() => {
                         this.isSendKeyring = false;
                     }, 1500);

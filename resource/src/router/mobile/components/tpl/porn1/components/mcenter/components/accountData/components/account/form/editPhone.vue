@@ -415,15 +415,33 @@ export default {
               this.isSendSMS = false;
             })
           } else {
-            this.tipMsg = res.data.msg;
+
+            if (res.data && res.data.msg) {
+              this.tipMsg = res.data.msg;
+            } else {
+              console.log(res.data)
+              this.tipMsg = res.data;
+            }
+
           }
           this.isSendSMS = false;
           this.toggleCaptcha = false;
         }).catch(error => {
           this.toggleCaptcha = false;
           this.countdownSec = '';
-          this.tipMsg = `${error.response.data.msg}`;
           this.isSendSMS = false;
+          console.log(error.response)
+
+          if (error.response.data && error.response.data.msg) {
+            this.tipMsg = error.response.data.msg;
+          } else {
+            this.tipMsg = error.response.data;
+          }
+
+          if (error.response && error.response.status === 429) {
+            this.tipMsg = "操作太频繁，请稍候在试";
+            return;
+          }
         })
       } else {
         let params = {
@@ -436,12 +454,6 @@ export default {
           ...captchaParams
         };
 
-        // if (!this.hasVerified) {
-        //   params['phone'] = this.memInfo.phone.phone ? `${this.newCode.replace('+', '')}-${this.oldValue}` : '';
-        // } else {
-        //   params['phone'] = `${this.newCode.replace('+', '')}-${this.newCode}`;
-        // }
-
         axios({
           method: 'post',
           url: '/api/v1/c/player/verify/phone',
@@ -453,15 +465,32 @@ export default {
               this.isSendSMS = false;
             })
           } else {
-            this.tipMsg = res.data.msg;
+
+            if (res.data && res.data.msg) {
+              this.tipMsg = res.data.msg;
+            } else {
+              console.log(res.data)
+              this.tipMsg = res.data;
+            }
+
           }
           this.isSendSMS = false;
           this.toggleCaptcha = false;
         }).catch(error => {
           this.toggleCaptcha = false;
           this.countdownSec = '';
-          this.tipMsg = `${error.response.data.msg}`;
           this.isSendSMS = false;
+
+          if (error.response.data && error.response.data.msg) {
+            this.tipMsg = error.response.data.msg;
+          } else {
+            this.tipMsg = error.response.data;
+          }
+
+          if (error.response && error.response.status === 429) {
+            this.tipMsg = "操作太频繁，请稍候在试";
+            return;
+          }
         })
       }
     },
