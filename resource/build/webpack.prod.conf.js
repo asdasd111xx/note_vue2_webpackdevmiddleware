@@ -46,8 +46,8 @@ let webpackConfig = merge(baseWebpackConfig, {
         // see https://github.com/ampedandwired/html-webpack-plugin
         new HtmlWebpackPlugin({
             filename: process.env.NODE_ENV === 'testing'
-            ? 'index.html'
-            : config.build.index,
+                ? 'index.html'
+                : config.build.index,
             template: 'index.html',
             inject: true,
             minify: {
@@ -89,9 +89,9 @@ if (config.build.productionGzip) {
             asset: '[path].gz[query]',
             algorithm: 'gzip',
             test: new RegExp(
-            `\\.(${
-            config.build.productionGzipExtensions.join('|')
-            })$`
+                `\\.(${
+                config.build.productionGzipExtensions.join('|')
+                })$`
             ),
             threshold: 10240,
             minRatio: 0.8
@@ -107,5 +107,8 @@ if (config.build.bundleAnalyzerReport) {
     }
     webpackConfig.plugins.push(new BundleAnalyzerPlugin(param));
 }
-
+console.log("[debug]webpack debug ===> ");
+console.log("[debug]process.argv:", process.argv);
+console.log("[debug]process.env.CDN_HOST:", process.env.CDN_HOST);
+console.log("[debug]process.env.NODE_ENV:", process.env.NODE_ENV);
 module.exports = webpackConfig;
