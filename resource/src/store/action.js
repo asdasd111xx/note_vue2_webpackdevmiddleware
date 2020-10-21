@@ -27,7 +27,6 @@ import member from '@/api/member';
 import openGame from '@/lib/open_game';
 import router from '../router';
 import yaboRequest from '@/api/yaboRequest';
-import goLangApiRequest from '@/api/goLangApiRequest';
 
 let memstatus = true;
 let agentstatus = true;

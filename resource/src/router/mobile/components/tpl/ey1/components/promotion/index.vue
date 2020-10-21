@@ -7,7 +7,7 @@
         @click="onGiftClick"
       >
         <img src="/static/image/ey1/promotion/ic-gift.png" />
-        <div v-show="hasGift" :class="$style['red-dot']" />
+        <div v-show="hasNewGift" :class="$style['red-dot']" />
       </div>
       <div :class="$style['type-wrap']">
         <swiper :options="{ slidesPerView: 'auto' }">
@@ -56,6 +56,7 @@ import { Swiper, SwiperSlide } from 'vue-awesome-swiper';
 import ajax from '@/lib/ajax';
 import mobileContainer from '../common/mobileContainer';
 import axios from 'axios';
+import bbosRequest from "@/api/bbosRequest";
 
 export default {
   components: {
@@ -68,16 +69,33 @@ export default {
       tabId: 0,
       tabList: [],
       promotionList: [],
-      hasGift: true
+      hasNewGift: false,
     };
   },
   created() {
     this.getPromotionList(this.tabId);
   },
+  mounted() {
+    bbosRequest({
+      method: "get",
+      url: this.siteConfig.BBOS_DOMIAN + "/Ext/Promotion/User/Collect/Count",
+      reqHeaders: {
+        Vendor: this.memInfo.user.domain
+      },
+      params: {
+        // tabId: "",
+      }
+    }).then(res => {
+      if (res && res.data) {
+        this.hasNewGift = res.data.count > 0;
+      }
+    });
+  },
   computed: {
     ...mapGetters({
       loginStatus: 'getLoginStatus',
-      webInfo: 'getWebInfo',
+      memInfo: "getMemInfo",
+      siteConfig: "getSiteConfig",
     }),
     headerConfig() {
       return {
@@ -115,7 +133,7 @@ export default {
       newWindow = window.open('');
 
       let url = '';
-      switch (this.webInfo.alias) {
+      switch (this.memInfo.user.domain) {
         case '500023':
           url = 'https://688lg410.666uxm.com/collect';
           break;

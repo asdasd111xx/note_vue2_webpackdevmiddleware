@@ -109,5 +109,8 @@ if (config.build.bundleAnalyzerReport) {
     }
     webpackConfig.plugins.push(new BundleAnalyzerPlugin(param));
 }
-
+console.log("[debug]webpack debug ===> ");
+console.log("[debug]process.argv:", process.argv);
+console.log("[debug]process.env.CDN_HOST:", process.env.CDN_HOST);
+console.log("[debug]process.env.NODE_ENV:", process.env.NODE_ENV);
 module.exports = webpackConfig;
