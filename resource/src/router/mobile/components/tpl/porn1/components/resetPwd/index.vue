@@ -227,6 +227,7 @@ export default {
   methods: {
     ...mapActions(["actionSetGlobalMessage"]),
     toggleEye(key) {
+      this.verification(key, this.pwdResetInfo[key].value);
       const target = this.pwdResetInfo[key];
       if (target.eyeShow) {
         document.getElementById("newPwd").type = "password";

@@ -16,6 +16,7 @@ import common from '@/api/common';
 import { errorAlarm } from '@/lib/error_console';
 import game from '@/api/game';
 import getLang from '@/lib/getLang';
+import goLangApiRequest from '@/api/goLangApiRequest';
 import i18n from '@/config/i18n';
 import links from '@/config/links';
 import mcenter from '@/api/mcenter';
@@ -1395,7 +1396,7 @@ export const actionGetRechargeStatus = ({ state, dispatch, commit }, data) => {
         dispatch('actionSetGlobalMessage',
           {
             code: result.code,
-            origin: 'home',
+            origin: data ? data : 'home',
             type: result.type,
             msg: result.msg
           });
