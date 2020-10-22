@@ -247,7 +247,7 @@
         :class="$style['bank-card-wrap']"
       >
         <div :class="$style['bank-card-cell']">
-          {{ $text("S_BANKCARD", "银行卡") }}
+          {{ $text("S_WITHDRAW_ACCOUNT02", "提现帐号") }}
           <span v-if="forceStatus === 2" :class="$style['withdraw-status-tip']">
             （请使用 CGPay 出款）
           </span>
