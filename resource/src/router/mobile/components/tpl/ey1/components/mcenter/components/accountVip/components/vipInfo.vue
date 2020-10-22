@@ -48,7 +48,7 @@
             <div>
               <div>
                 <span v-if="currentLevelData.withdraw_fee.withdraw_limit === ''"
-                  >--</span
+                  >无限制</span
                 >
                 <span v-else>
                   {{ currentLevelData.withdraw_fee.withdraw_limit }}
@@ -93,7 +93,7 @@
           </div>
         </div>
 
-        <div :class="$style['cell']">
+        <!-- <div :class="$style['cell']">
           <div :class="$style['cell-icon']">
             <img
               :src="
@@ -108,7 +108,7 @@
             <div>{{ currentLevelData.birth_amount }}</div>
             <div>生日礼金</div>
           </div>
-        </div>
+        </div> -->
 
         <div :class="$style['cell']">
           <div :class="$style['cell-icon']">
