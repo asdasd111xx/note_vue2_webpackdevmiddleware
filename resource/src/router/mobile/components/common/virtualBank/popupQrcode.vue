@@ -1,5 +1,5 @@
 <template>
-  <div v-if="isShowPop" :class="$style['pop-wrap']">
+  <div :class="$style['pop-wrap']">
     <div :class="$style['pop-mask']" />
     <div v-if="qrcodeLink" :class="$style['pop-block']">
       <div :class="$style['content']">
@@ -71,7 +71,7 @@
       </div>
 
       <div :class="$style['button-block']">
-        <span @click="$emit('update:isShowPop', false)">关闭</span>
+        <span @click="closePopup">关闭</span>
         <span @click="downloadImage">
           {{ downloadText }}
         </span>
@@ -88,10 +88,6 @@ import { saveAs } from 'file-saver';
 
 export default {
   props: {
-    isShowPop: {
-      type: Boolean,
-      require: true
-    },
     paymentGatewayId: {
       type: Number,
       require: true
@@ -144,6 +140,9 @@ export default {
   },
   methods: {
     ...mapActions(["actionSetGlobalMessage"]),
+    closePopup() {
+      this.$emit("close");
+    },
     getQrcode() {
       // walletGatewayId = 3 -> CGPay
       // walletGatewayId = 2 -> 購寶
@@ -169,10 +168,11 @@ export default {
           this.actionSetGlobalMessage({ msg: res.data.msg });
 
           setTimeout(() => {
-            this.$emit("update:isShowPop", false);
+            this.closePopup();
           }, 3000);
           return;
         }
+
         this.countdownSec = ret.expire_at;
         this.qrcodeLink = ret.url;
 
@@ -181,7 +181,7 @@ export default {
             if (this.countdownSec === 0) {
               clearInterval(this.timer);
               this.timer = null;
-              this.$emit("update:isShowPop", false);
+              this.closePopup();
               return;
             }
             this.countdownSec -= 1;
