@@ -312,9 +312,7 @@
 
                 <div :class="$style['no-bind-wallet']">
                   尚未绑定CGPay钱包
-                  <span @click="setPopupStatus(true, 'bindWallet')">
-                    立即绑定
-                  </span>
+                  <span @click="handleBindWallet"> 立即绑定 </span>
                 </div>
               </template>
 
@@ -323,17 +321,7 @@
 
                 <div :class="$style['no-bind-wallet']">
                   充值前请先绑定钱包
-                  <!-- Todo: Click event 需辨別是購寶 or USDT -->
-                  <span
-                    @click="
-                      () => {
-                        qrcodeObj.bank_id = 37;
-                        setPopupStatus(true, 'qrcode');
-                      }
-                    "
-                  >
-                    立即绑定
-                  </span>
+                  <span @click="handleBindWallet"> 立即绑定 </span>
                 </div>
               </template>
             </div>
@@ -1020,57 +1008,9 @@
       </div>
     </div>
 
-    <!--
-    <div v-if="isShowEntryBlockStatus">
-      <div :class="$style['pop-message-mark']" />
-      <div :class="$style['entry-message-container']">
-        <div :class="$style['entry-message-content']">
-          <p>{{ $text("S_TIPS", "温馨提示") }}</p>
-          <div>
-            {{ statusText }}
-          </div>
-        </div>
-        <ul
-          :class="$style['entry-message-confirm']"
-          @click="isShowEntryBlockStatus = false"
-        >
-          <li @click="submitInfo">确定</li>
-          <li
-            v-if="entryBlockStatusData.status === 2"
-            @click="goToValetDeposit"
-          >
-            代客充值
-          </li>
-        </ul>
-      </div>
-    </div>
-
-
-    <template v-if="isShowBlockTips">
-      <block-list-tips type="deposit" @close="closeTips" />
-    </template>
-
-
-    <popup-qrcode
-      v-if="qrcodeObj.isShow"
-      :isShowPop.sync="qrcodeObj.isShow"
-      :paymentGatewayId="qrcodeObj.bank_id"
-      :bindType="qrcodeObj.bind_type"
-    />
-
-
-    <template v-if="isShowCGPayBind">
-      <bind-wallet-popup :walletType="'CGP'" @close="isShowCGPayBind = false" />
-    </template>
-
-
-    <template v-if="confirmPopupObj.isShow">
-      <confirm-one-btn :data="confirmPopupObj" @close="confirmPopupObj.cb" />
-    </template> -->
-
     <!-- 彈窗 -->
     <template v-if="showPopStatus.isShow">
-      <!-- 使用者存款封鎖狀態 k -->
+      <!-- 使用者存款封鎖狀態 -->
       <template v-if="showPopStatus.type === 'blockStatus'">
         <div>
           <div :class="$style['pop-message-mark']" />
@@ -1094,12 +1034,12 @@
         </div>
       </template>
 
-      <!-- 被列為黑名單提示 k -->
+      <!-- 被列為黑名單提示 -->
       <template v-if="showPopStatus.type === 'blockTips'">
         <block-list-tips type="deposit" @close="closePopup" />
       </template>
 
-      <!-- 綁定錢包 Qrocde k-->
+      <!-- 綁定錢包 Qrocde -->
       <template v-if="showPopStatus.type === 'qrcode'">
         <popup-qrcode
           :paymentGatewayId="qrcodeObj.bank_id"
@@ -1108,12 +1048,12 @@
         />
       </template>
 
-      <!-- 綁定電子錢包 k-->
+      <!-- 綁定電子錢包 -->
       <template v-if="showPopStatus.type === 'bindWallet'">
-        <bind-wallet-popup :walletType="'CGP'" @close="closePopup" />
+        <bind-wallet-popup :walletType="bindWalletType" @close="closePopup" />
       </template>
 
-      <!-- 支付成功 || 刷新匯率 k -->
+      <!-- 支付成功 || 刷新匯率 -->
       <template v-if="showPopStatus.type === 'funcTips'">
         <confirm-one-btn :data="confirmPopupObj" @close="confirmPopupObj.cb" />
       </template>
@@ -1168,15 +1108,17 @@ export default {
       initHeaderSetting: {},
       isSelectValue: "",
       tagTrans: { 2: "general", 3: "recommend", 4: "speed" },
-      showRealStatus: false,
-      isShowMethodsPop: false,
+
       nameCheckFail: false,
 
       entryBlockStatusData: null,
-      isShowEntryBlockStatus: false,
       isBlockChecked: false,
 
-      isShowCGPayBind: false,
+      bindWalletType: 'CGPay',
+
+      // 彈窗參數(待之後整理)
+      showRealStatus: false,
+      isShowMethodsPop: false,
 
       // 彈窗顯示狀態統整
       showPopStatus: {
@@ -1189,6 +1131,7 @@ export default {
         bank_id: null,
         bind_type: "deposit",
       },
+
       confirmPopupObj: {
         msg: "",
         btnText: "",
@@ -1584,29 +1527,51 @@ export default {
       this.$router.push("/mobile/mcenter/creditTrans?tab=0");
     },
     handleBindWallet() {
-      switch (this.curPayInfo.payment_method_id) {
-        // CGPay
-        case 16, 25:
-          this.$router.push(
-            "/mobile/mcenter/bankcard?redirect=deposit&type=wallet&wallet=CGPay"
-          );
-          break;
+      if (this.themeTPL === 'porn1') {
+        switch (this.curPayInfo.payment_method_id) {
+          // CGPay
+          case 16, 25:
+            this.$router.push(
+              "/mobile/mcenter/bankcard?redirect=deposit&type=wallet&wallet=CGPay"
+            );
+            break;
 
-        // 購寶
-        case 22:
-          this.$router.push(
-            "/mobile/mcenter/bankcard?redirect=deposit&type=wallet&wallet=goBao"
-          );
+          // 購寶
+          case 22:
+            this.$router.push(
+              "/mobile/mcenter/bankcard?redirect=deposit&type=wallet&wallet=goBao"
+            );
 
-          break;
+            break;
 
-        // usdt
-        case 402:
-          this.$router.push(
-            "/mobile/mcenter/bankcard?redirect=deposit&type=wallet&wallet=usdt"
-          );
+          // usdt
+          case 402:
+            this.$router.push(
+              "/mobile/mcenter/bankcard?redirect=deposit&type=wallet&wallet=usdt"
+            );
 
-          break;
+            break;
+        }
+        return;
+      }
+
+      if (this.themeTPL === 'ey1') {
+        switch (this.curPayInfo.payment_method_id) {
+          case 22:
+            this.qrcodeObj.bank_id = 37;
+            this.setPopupStatus(true, 'qrcode');
+            break;
+
+          default:
+            if (this.curPayInfo.payment_method_id === 402) {
+              this.bindWalletType = 'USDT'
+            } else {
+              this.bindWalletType = 'CGPay'
+            }
+            this.setPopupStatus(true, 'bindWallet');
+            break;
+        }
+        return;
       }
     },
     modeChange(listItem, index) {
@@ -1671,7 +1636,6 @@ export default {
           break;
 
         default:
-          // this.isShowEntryBlockStatus = true;
           this.setPopupStatus(true, 'blockStatus')
           break;
       }
@@ -1801,7 +1765,6 @@ export default {
     // 代客充值
     goToValetDeposit() {
       this.closePopup()
-      // this.isShowEntryBlockStatus = false;
 
       let newWindow = "";
       if (this.isPWA) {
@@ -1836,10 +1799,6 @@ export default {
       }
 
       return;
-    },
-    closeTips() {
-      // this.isShowBlockTips = false;
-      // this.$router.back();
     },
     // 08/27 後續關於 Input 事件的輸入驗證將統一到這裡
     verification(target, value, isSpeedField) {

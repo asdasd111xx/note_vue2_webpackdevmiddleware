@@ -8,9 +8,7 @@
         内完成转帐款
       </template>
 
-      <template v-else>
-        已经超过有效时间，请重新申请
-      </template>
+      <template v-else> 已经超过有效时间，请重新申请 </template>
     </div>
     <!-- 收款帳號 -->
     <div
@@ -28,7 +26,7 @@
             :class="[
               $style['submit-info-wrap'],
               { [$style['is-memo']]: info.objKey === 'memo' },
-              { [$style['is-even']]: index % 2 !== 0 }
+              { [$style['is-even']]: index % 2 !== 0 },
             ]"
           >
             <!-- Title -->
@@ -38,7 +36,7 @@
               {{ info.title }}
             </div>
 
-             <!-- Qrcode -->
+            <!-- Qrcode -->
             <div
               v-if="info.qrcode && info.qrcode.length > 0"
               :class="[$style['basic-info-text'], $style['qrcode-wrap']]"
@@ -72,7 +70,7 @@
               v-else-if="info.htmlShow"
               :class="[
                 $style['basic-info-text'],
-                $style[`info-${info.objKey}`]
+                $style[`info-${info.objKey}`],
               ]"
               v-html="info.value"
             />
@@ -83,8 +81,8 @@
               :class="[
                 $style['basic-info-text'],
                 {
-                  [$style['highlight']]: info.isHighlightValue
-                }
+                  [$style['highlight']]: info.isHighlightValue,
+                },
               ]"
             >
               {{ info.value }}
@@ -106,9 +104,10 @@
         </template>
       </div>
     </div>
+
     <!-- 存款信息 -->
     <div :class="[$style['info-wrap'], 'clearfix']">
-      <div :class="$style['deposit-info-title']">
+      <div v-if="!orderData.is_crypto" :class="$style['deposit-info-title']">
         {{ $text("S_APPLICATION_INFORMATION", "您的申请资料") }}
       </div>
       <div
@@ -125,7 +124,7 @@
           <div
             :class="[
               $style['basic-info-text'],
-              { [$style['info-important']]: info.isBorderBottom }
+              { [$style['info-important']]: info.isBorderBottom },
             ]"
           >
             {{ info.value }}
@@ -154,8 +153,8 @@
         $style['submit-btn'],
         {
           [$style['disabled']]:
-            isSubmitDisabled || (countdownSec < 1 && isShowTimer)
-        }
+            isSubmitDisabled || (countdownSec < 1 && isShowTimer),
+        },
       ]"
       :title="
         orderData.methodType !== 'remit'
@@ -187,7 +186,7 @@
     <message v-if="msg" @close="msg = ''">
       <div slot="msg">
         <div
-          style="background-color: transparent ; margin: 0 ; padding: 0"
+          style="background-color: transparent; margin: 0; padding: 0"
           v-html="msg"
         />
       </div>
@@ -216,7 +215,7 @@ export default {
   props: {
     orderData: {
       type: Object,
-      default: () => {}
+      default: () => { }
     },
     isShow: {
       type: Boolean,

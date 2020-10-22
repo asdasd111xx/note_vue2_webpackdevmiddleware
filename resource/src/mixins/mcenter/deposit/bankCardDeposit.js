@@ -38,7 +38,6 @@ export default {
         serialNumber: ''
       },
       isShowPop: false,
-      // isShowBlockTips: false,
       checkSuccess: false,
       yourBankData: [],
       webviewOpenUrl: '',
@@ -386,7 +385,6 @@ export default {
               this.$router.push('/mobile/mcenter/bankCard?redirect=deposit')
             }, 2000)
           } else if (res.code === 'TM020067') {
-            // this.isShowBlockTips = true;
             this.setPopupStatus(true, 'blockTips')
           } else {
             this.actionSetGlobalMessage({
@@ -443,7 +441,6 @@ export default {
               this.$router.push('/mobile/mcenter/bankCard?redirect=deposit')
             }, 2000)
           } else if (res.data.code === 'TM020067') {
-            // this.isShowBlockTips = true;
             this.setPopupStatus(true, 'blockTips')
           } else {
             this.actionSetGlobalMessage({
@@ -1113,10 +1110,9 @@ export default {
                 this.setPopupStatus(true, 'funcTips')
 
                 this.confirmPopupObj = {
-                  msg: '汇率已失效',
+                  msg: this.themeTPL === 'porn1' ? '汇率已失效' : '汇率已失效，请再次确认汇率',
                   btnText: '刷新汇率',
                   cb: () => {
-                    // this.confirmPopupObj.isShow = false;
                     this.closePopup();
                     this.convertCryptoMoney();
                   }
