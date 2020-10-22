@@ -267,8 +267,11 @@ export default {
           case 'close':
             this.$router.push(this.originUrl);
             return;
-          default:
 
+          case 'EVENT_LOGIN':
+            this.$router.push('/mobile/login');
+            return;
+          default:
             return;
         }
       }
@@ -302,10 +305,10 @@ export default {
 @import "~@/css/variable.scss";
 
 .iframe-wrap {
-  height: calc(100vh);
+  height: 100vh;
   width: 100%;
   background-color: #fff;
-  overflow: hidden;
+  // overflow: hidden;
 
   &.has-header {
     margin-top: 43px;

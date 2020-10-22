@@ -22,7 +22,7 @@
               class="news-item"
             >
               <h4 class="news-title">{{ item.time | dateFormat }}</h4>
-              <p class="news-text">{{ item.content }}</p>
+              <p class="news-text" v-html="item.content" />
             </div>
           </div>
         </div>
@@ -141,6 +141,7 @@ export default {
     height: 12px;
   }
 }
+
 .news-content {
   display: block;
   cursor: pointer;
@@ -149,6 +150,9 @@ export default {
   color: #9ca3bf;
   font-size: 12px;
   overflow: hidden;
+  > * {
+    pointer-events: none;
+  }
 }
 
 .news-content-text {

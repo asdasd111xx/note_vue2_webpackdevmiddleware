@@ -143,6 +143,9 @@ export default {
             setCookie('aid', '');
             this.$router.push('/mobile/login');
             break;
+          // 維護
+          case "M00002":
+            location.reload()
           case "C50104":
           case "C50106":
             localStorage.setItem('form-withdraw-account', true);
