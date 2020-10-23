@@ -66,7 +66,7 @@
           :key="`tab-${item.key}`"
           :class="[
             $style['tab-item'],
-            { [$style['is-current']]: currentTab === index },
+            { [$style['is-current']]: currentTab === index }
           ]"
           @click="setCurrentTab(index)"
         >
@@ -75,7 +75,7 @@
         <div
           :class="$style['active-slider']"
           :style="{
-            left: `calc(25% + 50% * ${currentTab})`,
+            left: `calc(25% + 50% * ${currentTab})`
           }"
         />
       </div>
@@ -142,7 +142,7 @@
           <span @click="category_isShowPop = false">{{
             $text("S_CANCEL", "取消")
           }}</span>
-          选择游戏类别
+          选择充值教程
         </div>
         <ul :class="$style['pop-list']">
           <li
