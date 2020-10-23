@@ -268,7 +268,7 @@ export default {
             this.$router.push(this.originUrl);
             return;
 
-          case 'EVENT_LOGIN':
+          case 'EVENT_THIRDPARTY_LOGIN':
             this.$router.push('/mobile/login');
             return;
           default:

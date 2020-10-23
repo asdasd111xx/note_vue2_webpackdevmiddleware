@@ -92,7 +92,7 @@ export default ({
     })
         .catch((error) => {
             console.log("[PORN request error]")
-            console.log(error);
+            console.log(error.response);
             return error;
         });
 };
