@@ -115,7 +115,6 @@ export default {
   },
   methods: {
     getUserDetail() {
-      console.log("new vip")
       // yaboRequest({
       //   method: "get",
       //   url: `${
@@ -138,7 +137,6 @@ export default {
           "cid": getCookie("cid")
         }
       }).then(res => {
-        console.log("new vip" + res)
         this.userVipInfo = res.data;
 
         // 起始預設 config_id 為分類中的第一筆
@@ -172,7 +170,6 @@ export default {
           "cid": getCookie("cid")
         }
       }).then(res => {
-        console.log("new vip level" + res.data)
         this.vipLevelList = res.data;
       });
     },
