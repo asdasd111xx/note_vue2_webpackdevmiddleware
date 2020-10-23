@@ -1044,10 +1044,8 @@
           @click="isShowEntryBlockStatus = false"
         >
           <li @click="submitInfo">确定</li>
-          <li
-            v-if="entryBlockStatusData.status === 2"
-            @click="goToValetDeposit"
-          >
+          <!-- has_csr: 是否啟用代客充值 -->
+          <li v-if="entryBlockStatusData.has_csr" @click="goToValetDeposit">
             代客充值
           </li>
         </ul>
@@ -1612,8 +1610,8 @@ export default {
      * @method submitInfo
      */
     submitInfo() {
-      // 因 status = 3，會暫停充值功能
-      if (this.entryBlockStatusData.status === 3) {
+      // block -> 是否封鎖
+      if (this.entryBlockStatusData.block) {
         return;
       }
 
