@@ -1075,7 +1075,6 @@
 <script>
 import { mapGetters, mapActions } from "vuex";
 import { Swiper, SwiperSlide } from "vue-awesome-swiper";
-import { getCookie } from '@/lib/cookie';
 import blockListTips from "../../../../../../tpl/porn1/components/common/blockListTips";
 import bindWalletPopup from "@/router/mobile/components/tpl/porn1/components/common/bindWalletPopup";
 import bbosRequest from "@/api/bbosRequest";
@@ -1733,10 +1732,9 @@ export default {
     // 代客充值
     goToValetDeposit() {
       this.isShowEntryBlockStatus = false;
-      let isPWA = getCookie('platform') === "G" || window.location.host === "yaboxxxapp01.com";
 
       let newWindow = "";
-      if (isPWA) {
+      if (this.isPWA) {
         newWindow = window.open("", "", "_blank", true);
       }
 
@@ -1758,7 +1756,7 @@ export default {
         if (this.isWebView) {
           window.location.href = this.entryBlockStatusData.external_url;
           return;
-        } else if (isPWA) {
+        } else if (this.isPWA) {
           newWindowHref(this.entryBlockStatusData.external_url);
           return;
         }
