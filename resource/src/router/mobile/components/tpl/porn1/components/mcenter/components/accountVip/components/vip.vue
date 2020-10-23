@@ -5,7 +5,11 @@
       <div :class="$style['header-block']">
         <div :class="$style['btn-back']" @click="$router.back()">
           <img
-            :src="$getCdnPath(`/static/image/${siteConfig.MOBILE_WEB_TPL}/common/btn_back_b.png`)"
+            :src="
+              $getCdnPath(
+                `/static/image/${siteConfig.MOBILE_WEB_TPL}/common/btn_back_b.png`
+              )
+            "
             alt="btn_back"
           />
         </div>
@@ -65,6 +69,7 @@ import vipLevelCard from "./vipLevelCard";
 import vipInfo from "./vipInfo";
 import mcenter from "@/api/mcenter";
 import yaboRequest from '@/api/yaboRequest';
+import goLangApiRequest from '@/api/goLangApiRequest';
 
 export default {
   components: {
@@ -110,13 +115,30 @@ export default {
   },
   methods: {
     getUserDetail() {
-      yaboRequest({
+      console.log("new vip")
+      // yaboRequest({
+      //   method: "get",
+      //   url: `${
+      //     this.siteConfig.YABO_API_DOMAIN
+      //     }/player/vipinfo/${getCookie("cid")}`,
+      //   headers: { "x-domain": this.memInfo.user.domain }
+      // }).then(res => {
+      //   this.userVipInfo = res.data;
+
+      //   // 起始預設 config_id 為分類中的第一筆
+      //   this.currentConfigID = this.userVipInfo[0].config_id;
+      // });
+      goLangApiRequest({
         method: "get",
         url: `${
-          this.siteConfig.YABO_API_DOMAIN
-          }/player/vipinfo/${getCookie("cid")}`,
-        headers: { "x-domain": this.memInfo.user.domain }
+          this.siteConfig.YABO_GOLANG_API_DOMAIN
+          }/Player/vipinfo`,
+        headers: {
+          "x-domain": this.memInfo.user.domain,
+          "cid": getCookie("cid")
+        }
       }).then(res => {
+        console.log("new vip" + res)
         this.userVipInfo = res.data;
 
         // 起始預設 config_id 為分類中的第一筆
@@ -129,15 +151,28 @@ export default {
       }
 
       // 依vip分類回傳所有等級清單(不分⾴)
-      yaboRequest({
+      // yaboRequest({
+      //   method: "get",
+      //   url: `${
+      //     this.siteConfig.YABO_API_DOMAIN
+      //     }/player/viplevel/${getCookie("cid")}?configId=${
+      //     this.currentConfigID
+      //     }`,
+      //   headers: { "x-domain": this.memInfo.user.domain }
+      // }).then(res => {
+      //   this.vipLevelList = res.data;
+      // });
+      goLangApiRequest({
         method: "get",
         url: `${
-          this.siteConfig.YABO_API_DOMAIN
-          }/player/viplevel/${getCookie("cid")}?configId=${
-          this.currentConfigID
-          }`,
-        headers: { "x-domain": this.memInfo.user.domain }
+          this.siteConfig.YABO_GOLANG_API_DOMAIN
+          }/Player/viplevel/${this.currentConfigID}`,
+        headers: {
+          "x-domain": this.memInfo.user.domain,
+          "cid": getCookie("cid")
+        }
       }).then(res => {
+        console.log("new vip level" + res.data)
         this.vipLevelList = res.data;
       });
     },
