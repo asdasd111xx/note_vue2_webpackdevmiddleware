@@ -720,12 +720,24 @@ export default {
         getUserViplevel() {
             let cid = getCookie("cid");
             if (!cid && this.loginStatus) { return; }
-            yaboRequest({
+            // yaboRequest({
+            //     method: "get",
+            //     url: `${
+            //         this.siteConfig.YABO_API_DOMAIN
+            //         }/player/vipinfo/${cid}`,
+            //     headers: { "x-domain": this.memInfo.user.domain }
+            // }).then(res => {
+            //     this.userViplevel = res.data ? res.data[0] && res.data[0].now_level_seq : 0;
+            // });
+            goLangApiRequest({
                 method: "get",
                 url: `${
-                    this.siteConfig.YABO_API_DOMAIN
-                    }/player/vipinfo/${cid}`,
-                headers: { "x-domain": this.memInfo.user.domain }
+                    this.siteConfig.YABO_GOLANG_API_DOMAIN
+                    }/Player/vipinfo`,
+                headers: {
+                    "x-domain": this.memInfo.user.domain,
+                    "cid": cid
+                }
             }).then(res => {
                 this.userViplevel = res.data ? res.data[0] && res.data[0].now_level_seq : 0;
             });

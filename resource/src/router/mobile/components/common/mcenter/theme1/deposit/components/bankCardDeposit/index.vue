@@ -1075,6 +1075,7 @@
 <script>
 import { mapGetters, mapActions } from "vuex";
 import { Swiper, SwiperSlide } from "vue-awesome-swiper";
+import { getCookie } from '@/lib/cookie';
 import blockListTips from "../../../../../../tpl/porn1/components/common/blockListTips";
 import bindWalletPopup from "@/router/mobile/components/tpl/porn1/components/common/bindWalletPopup";
 import bbosRequest from "@/api/bbosRequest";
@@ -1639,11 +1640,46 @@ export default {
 
         case 4:
           this.actionSetGlobalMessage({
-            msg: this.entryBlockStatusData.custom_point,
-            cb: () => {
-              window.open(this.entryBlockStatusData.external_url);
-            },
+            msg: this.entryBlockStatusData.custom_point
           });
+
+          setTimeout(() => {
+            window.open(this.entryBlockStatusData.external_url);
+            return;
+          }, 700)
+
+          // let isPWA =
+          //   getCookie('platform') === "G" ||
+          //   window.location.host === "yaboxxxapp01.com";
+          // let newWindow = '';
+
+          // if (isPWA) {
+          //   newWindow = window.open("");
+          // }
+
+          // // setTimeout(() => {
+          // //   if (isPWA) {
+          // //     newWindow.location = this.entryBlockStatusData.external_url
+          // //     return;
+          // //   }
+
+          // //   window.open(this.entryBlockStatusData.external_url);
+          // //   return;
+          // // }, 200)
+
+          // const newWindowHref = (uri) => {
+          //   setTimeout(() => {
+          //     newWindow.location.href = uri;
+          //   }, 500)
+          // }
+
+          // if (isPWA) {
+          //   newWindowHref(this.entryBlockStatusData.external_url);
+          //   return;
+          // }
+
+          // window.open(this.entryBlockStatusData.external_url);
+          // return;
           break;
 
         default:
@@ -1776,9 +1812,10 @@ export default {
     // 代客充值
     goToValetDeposit() {
       this.closePopup()
+      let isPWA = getCookie('platform') === "G" || window.location.host === "yaboxxxapp01.com";
 
       let newWindow = "";
-      if (this.isPWA) {
+      if (isPWA) {
         newWindow = window.open("", "", "_blank", true);
       }
 
@@ -1800,7 +1837,7 @@ export default {
         if (this.isWebView) {
           window.location.href = this.entryBlockStatusData.external_url;
           return;
-        } else if (this.isPWA) {
+        } else if (isPWA) {
           newWindowHref(this.entryBlockStatusData.external_url);
           return;
         }
