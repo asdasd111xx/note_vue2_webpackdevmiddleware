@@ -207,7 +207,7 @@ export default {
         case 'submit_data':
           return this.$text('S_SUBMIT_DEPOSIT', '提交资料');
         case 'cancel':
-          return this.$text('S_CANCEL_TEXT', '拒绝');
+          return this.$text('S_CANCEL', '取消');
         case 'complete':
           return this.$text('S_CR_SUCCESS', '成功');
         default:
