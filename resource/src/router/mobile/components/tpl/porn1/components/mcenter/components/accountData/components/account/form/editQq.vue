@@ -16,7 +16,7 @@
             :value="value"
             :placeholder="$text('S_QQ')"
             :class="$style.input"
-            :maxlength="30"
+            :maxlength="20"
             type="text"
             @input="onInput"
           />
