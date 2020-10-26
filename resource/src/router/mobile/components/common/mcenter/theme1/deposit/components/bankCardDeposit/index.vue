@@ -66,9 +66,15 @@
                 <img v-lazy="getImg(info)" :class="$style['pay-mode-img']" />
 
                 <div :class="$style['pay-main-title']">
-                  {{
-                    info.short_name ? info.short_name : info.payment_type_name
-                  }}
+                  <template v-if="info.payment_method_id !== 25">
+                    {{
+                      info.short_name ? info.short_name : info.payment_type_name
+                    }}
+                  </template>
+
+                  <template v-else>
+                    {{ info.payment_method_name }}
+                  </template>
                 </div>
 
                 <!-- <div :class="$style['pay-sub-title']">
@@ -921,7 +927,7 @@
                   • {{ feeText }}
                 </li>
 
-                <!-- <li>• 实际存入依审核结果为准</li> -->
+                <li>• 实际存入依审核结果为准</li>
               </ul>
               <div
                 :class="$style['message-close']"
