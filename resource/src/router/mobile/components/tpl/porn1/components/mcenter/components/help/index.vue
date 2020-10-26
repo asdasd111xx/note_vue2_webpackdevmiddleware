@@ -7,11 +7,11 @@
     <div slot="content" :class="$style['help-wrap']">
       <div
         v-for="listInfo in list"
+        v-if="listInfo.needLogin ? loginStatus : true"
         :key="`list-${listInfo.name}`"
         :class="$style.list"
         @click="handleClick(listInfo)"
       >
-        <!-- v-if="listInfo.needLogin ? loginStatus : true" -->
         <div :class="$style['list-icon']">
           <img
             :src="
@@ -113,7 +113,7 @@ export default {
       };
     }
   },
-  created() {},
+  created() { },
   methods: {
     ...mapActions(["actionSetGlobalMessage"]),
     handleClick(item) {
