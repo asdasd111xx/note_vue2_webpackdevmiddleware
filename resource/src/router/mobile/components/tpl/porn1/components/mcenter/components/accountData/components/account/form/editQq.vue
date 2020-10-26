@@ -78,6 +78,7 @@ export default {
       'actionSetＭcenterBindMessage'
     ]),
     onInput(e) {
+      e.target.value = e.target.value.replace(/[a-zA-z~!@#$%^&*()_+/|?\\]/, '');
       this.tipMsg = '';
       this.value = e.target.value;
       if (this.value === '') {
