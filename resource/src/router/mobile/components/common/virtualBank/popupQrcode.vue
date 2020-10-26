@@ -172,8 +172,7 @@ export default {
           }, 3000);
           return;
         }
-
-        this.countdownSec = ret.expire_at;
+        this.countdownSec = ret.expire_at
         this.qrcodeLink = ret.url;
 
         if (this.countdownSec) {

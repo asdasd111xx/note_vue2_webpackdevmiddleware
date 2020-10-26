@@ -16,7 +16,7 @@
             :value="value"
             :placeholder="$text('S_QQ')"
             :class="$style.input"
-            :maxlength="30"
+            :maxlength="20"
             type="text"
             @input="onInput"
           />
@@ -78,6 +78,7 @@ export default {
       'actionSetＭcenterBindMessage'
     ]),
     onInput(e) {
+      e.target.value = e.target.value.replace(/[^0-9]/, '');
       this.tipMsg = '';
       this.value = e.target.value;
       if (this.value === '') {

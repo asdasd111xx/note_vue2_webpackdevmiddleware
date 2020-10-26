@@ -65,7 +65,6 @@
                 tabindex="2"
                 @input="
                   password = $event.target.value
-                    .toLowerCase()
                     .replace(' ', '')
                     .trim()
                     .replace(/[\W]/g, '')
@@ -152,11 +151,9 @@
             <div class="login-deposit-username clearfix">
               <div class="icon-wrap" @click="rememberPwd = !rememberPwd">
                 <img
-                  :src="
-                    `/static/image/_new/common/icon_${
-                      rememberPwd ? '' : 'no'
-                    }remember.png`
-                  "
+                  :src="`/static/image/_new/common/icon_${
+                    rememberPwd ? '' : 'no'
+                  }remember.png`"
                 />
               </div>
               <span class="deposit-text">{{

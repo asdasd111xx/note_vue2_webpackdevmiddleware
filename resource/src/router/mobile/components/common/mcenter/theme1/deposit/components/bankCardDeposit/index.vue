@@ -1034,10 +1034,7 @@
             </div>
             <ul :class="$style['entry-message-confirm']">
               <li @click="submitInfo">确定</li>
-              <li
-                v-if="entryBlockStatusData.status === 2"
-                @click="goToValetDeposit"
-              >
+              <li v-if="entryBlockStatusData.has_csr" @click="goToValetDeposit">
                 代客充值
               </li>
             </ul>
@@ -1640,7 +1637,7 @@ export default {
 
         case 4:
           this.actionSetGlobalMessage({
-            msg: this.entryBlockStatusData.custom_point
+            msg: this.entryBlockStatusData.custom_point,
           });
 
           setTimeout(() => {
@@ -1648,38 +1645,6 @@ export default {
             return;
           }, 700)
 
-          // let isPWA =
-          //   getCookie('platform') === "G" ||
-          //   window.location.host === "yaboxxxapp01.com";
-          // let newWindow = '';
-
-          // if (isPWA) {
-          //   newWindow = window.open("");
-          // }
-
-          // // setTimeout(() => {
-          // //   if (isPWA) {
-          // //     newWindow.location = this.entryBlockStatusData.external_url
-          // //     return;
-          // //   }
-
-          // //   window.open(this.entryBlockStatusData.external_url);
-          // //   return;
-          // // }, 200)
-
-          // const newWindowHref = (uri) => {
-          //   setTimeout(() => {
-          //     newWindow.location.href = uri;
-          //   }, 500)
-          // }
-
-          // if (isPWA) {
-          //   newWindowHref(this.entryBlockStatusData.external_url);
-          //   return;
-          // }
-
-          // window.open(this.entryBlockStatusData.external_url);
-          // return;
           break;
 
         default:
@@ -1692,8 +1657,8 @@ export default {
      * @method submitInfo
      */
     submitInfo() {
-      // 因 status = 3，會暫停充值功能
-      if (this.entryBlockStatusData.status === 3) {
+      // block -> 是否封鎖
+      if (this.entryBlockStatusData.block) {
         this.closePopup();
         return;
       }
