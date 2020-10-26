@@ -502,7 +502,6 @@ export default {
                 case 'PPV':
                 case 'APB':
                 case 'JPB':
-                case 'SWAG':
                 case 'LF':
                 case 'BALE':
                 case 'STB':
@@ -571,6 +570,16 @@ export default {
                     //     newWindow.close();
                     // })
                     return;
+
+                case 'SWAG':
+                    if (!this.loginStatus) {
+                        this.$router.push('/mobile/login');
+                        return;
+                    } else {
+                        this.$router.push(`/mobile/iframe/${game.type}?&title=${game.name}&hasFooter=false&hasHeader=true`);
+                        return;
+                    }
+
                 case 'YV':
                     this.$router.push({
                         name: 'videoList',
@@ -731,8 +740,7 @@ export default {
             // });
             goLangApiRequest({
                 method: "get",
-                url: `${
-                    this.siteConfig.YABO_GOLANG_API_DOMAIN
+                url: `${this.siteConfig.YABO_GOLANG_API_DOMAIN
                     }/Player/vipinfo`,
                 headers: {
                     "x-domain": this.memInfo.user.domain,
