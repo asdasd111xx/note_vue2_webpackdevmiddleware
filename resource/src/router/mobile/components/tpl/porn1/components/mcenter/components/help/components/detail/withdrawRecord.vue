@@ -34,43 +34,42 @@
           <div :class="[$style['title']]">
             {{ $text("S_STATUS", "状态") }}
           </div>
-          <div
-            v-if="item.status !== 'processing' && item.memo"
-            :class="$style['processing-icon']"
-            @click="showDetailPop(item)"
-          >
-            <img :src="`/static/image/${theme}/mcenter/ic_remark.png`" />
-          </div>
-          <div
-            v-if="!item.locked"
-            :class="[$style['value'], $style['edit']]"
-            :style="
-              item.status !== 'processing' && item.memo ? { right: '24px' } : {}
-            "
-            @click="openEdit(item)"
-          >
-            {{ $text("S_SUBMIT_WITHDRAW", "重新提交") }}
-          </div>
-          <div
-            v-else
-            @click="
-              () => {
-                item.status !== 'processing' && item.memo
-                  ? showDetailPop(item)
-                  : '';
-              }
-            "
-            :class="[
-              $style['value'],
-              { [$style['processing']]: item.status === 'processing' },
-            ]"
-            :style="
-              item.status !== 'processing' && item.memo ? { right: '24px' } : {}
-            "
-          >
-            {{ getStatus(item.status) }}
+
+          <div :class="$style['value']">
+            <div
+              v-if="!item.locked"
+              :class="$style['edit']"
+              @click="openEdit(item)"
+            >
+              {{ $text("S_SUBMIT_WITHDRAW", "重新提交") }}
+            </div>
+
+            <div
+              v-else
+              @click="
+                () => {
+                  item.status !== 'processing' && item.memo
+                    ? showDetailPop(item)
+                    : '';
+                }
+              "
+              :class="[
+                { [$style['processing']]: item.status === 'processing' },
+              ]"
+            >
+              {{ getStatus(item.status) }}
+            </div>
+
+            <div
+              v-if="item.status !== 'processing' && item.memo"
+              :class="$style['processing-icon']"
+              @click="showDetailPop(item)"
+            >
+              <img :src="`/static/image/${theme}/mcenter/ic_remark.png`" />
+            </div>
           </div>
         </div>
+
         <div :class="$style['item-status-border']" />
         <template v-for="(col, index) in columns">
           <div

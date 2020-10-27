@@ -693,7 +693,6 @@ export default {
         // 提現密碼
         this.withdrawPwd = localStorage.getItem("tmp_w_withdrawPwd") || this.withdrawPwd;
 
-        // Todo
         // CGPay Currency
         this.withdrawCurrency = JSON.parse(localStorage.getItem("tmp_w_withdrawCurrency")) || this.withdrawCurrency;
 

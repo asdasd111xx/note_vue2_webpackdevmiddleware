@@ -66,15 +66,13 @@
                 <img v-lazy="getImg(info)" :class="$style['pay-mode-img']" />
 
                 <div :class="$style['pay-main-title']">
-                  <template v-if="info.payment_method_id !== 25">
-                    {{
-                      info.short_name ? info.short_name : info.payment_type_name
-                    }}
-                  </template>
-
-                  <template v-else>
-                    {{ info.payment_method_name }}
-                  </template>
+                  {{
+                    info.short_name
+                      ? info.short_name
+                      : info.bank_name
+                      ? info.bank_name
+                      : info.payment_method_name
+                  }}
                 </div>
 
                 <!-- <div :class="$style['pay-sub-title']">
@@ -1169,6 +1167,7 @@ export default {
       }
     },
     curPayInfo(value) {
+      console.log(value);
       if (this.curPayInfo.payment_method_name === "代客充值") {
         this.checkSuccess = true;
       }
@@ -1663,6 +1662,10 @@ export default {
 
             // 點選加密貨幣的匯率試算，在需將時間設為0
             this.countdownSec = 0;
+          }
+          if (response.status === 'third') {
+            // this.resetStatus();
+            // this.resetTimerStatus();
           }
         }
       });
