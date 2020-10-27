@@ -151,7 +151,7 @@ export default {
           if (res && res.data && res.data.ret && res.data.ret.uri) {
             // newWindow.location.href = res.data.ret.uri + '&v=m';
             localStorage.setItem('iframe-third-url', res.data.ret.uri + '&v=m');
-            localStorage.setItem('iframe-third-url-title', '优惠自领');
+            localStorage.setItem('iframe-third-url-title', '领取优惠');
             this.$router.push(`/mobile/iframe/promotion?hasFooter=false&hasHeader=true`);
           }
         }).catch(error => {
