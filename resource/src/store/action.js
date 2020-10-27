@@ -1589,7 +1589,6 @@ export const actionSetSystemDomain = ({ commit, state }, data) => {
   //   method: 'get',
   //   url: configInfo.YABO_API_DOMAIN + '/system/domain',
   // }).then((res) => {
-  //   console.log("api domain test");
   //   if (res && res.data) {
   //     commit(types.SET_SYSTEMDOMAIN, res.data);
   //     let domainList = res.data.filter(i => i.name === "XXX-DOMAIN-URL" && i.type === "du");
@@ -1605,7 +1604,6 @@ export const actionSetSystemDomain = ({ commit, state }, data) => {
     method: 'get',
     url: configInfo.YABO_GOLANG_API_DOMAIN + '/System/domain',
   }).then((res) => {
-    console.log("api domain test");
     if (res && res.data) {
       commit(types.SET_SYSTEMDOMAIN, res.data);
       let domainList = res.data.filter(i => i.name === "XXX-DOMAIN-URL" && i.type === "du");

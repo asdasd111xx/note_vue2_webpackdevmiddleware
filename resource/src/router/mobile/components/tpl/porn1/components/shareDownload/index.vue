@@ -80,7 +80,6 @@ export default {
           "x-domain": this.memInfo.user.domain
         }
       }).then(res => {
-        console.log("api test");
         if (res && res.data) {
           this.landingLink = res.data[0].value || res.data[1].value;
         }
