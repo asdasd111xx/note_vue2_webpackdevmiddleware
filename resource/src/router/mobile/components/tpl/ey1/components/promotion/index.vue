@@ -57,6 +57,7 @@ import ajax from '@/lib/ajax';
 import mobileContainer from '../common/mobileContainer';
 import axios from 'axios';
 import bbosRequest from "@/api/bbosRequest";
+import goLangApiRequest from '@/api/goLangApiRequest';
 
 export default {
   components: {
@@ -129,39 +130,49 @@ export default {
       });
     },
     onGiftClick() {
-      let newWindow = '';
-      newWindow = window.open('');
+      // let newWindow = '';
+      // newWindow = window.open('');
 
       let url = '';
-      switch (this.memInfo.user.domain) {
-        case '74':
-          url = 'https://688lg410.666uxm.com/collect';
-          break;
-        case '41':
-          url = 'https://eyd.666uxm.com/collect';
-          break;
-        case '500023':
-          url = 'https://eyt.iplay.bet/collect';
-          break;
-      }
-
-      axios({
-        method: 'get',
-        url: '/api/v1/c/link/customize',
-        params: {          code: 'promotion',
-          client_uri: url        }
+      goLangApiRequest({
+        method: "get",
+        url: `${this.siteConfig.YABO_GOLANG_API_DOMAIN
+          }/System/scUrl`,
       }).then(res => {
-        if (res && res.data && res.data.ret && res.data.ret.uri) {
-          newWindow.location.href = res.data.ret.uri;
-        } else {
-          newWindow.close();
-        }
-      }).catch(error => {
-        newWindow.close();
-        if (error && error.data && error.date.msg) {
-          this.actionSetGlobalMessage({ msg: error.data.msg });
-        }
-      })
+        url = res.data;
+        axios({
+          method: 'get',
+          url: '/api/v1/c/link/customize',
+          params: {
+            code: 'promotion',
+            client_uri: url
+          }
+        }).then(res => {
+          if (res && res.data && res.data.ret && res.data.ret.uri) {
+            // newWindow.location.href = res.data.ret.uri + '&v=m';
+            localStorage.setItem('iframe-third-url', res.data.ret.uri + '&v=m');
+            localStorage.setItem('iframe-third-url-title', '领取优惠');
+            this.$router.push(`/mobile/iframe/promotion?hasFooter=false&hasHeader=true`);
+          }
+        }).catch(error => {
+          // newWindow.close();
+          if (error && error.data && error.date.msg) {
+            this.actionSetGlobalMessage({ msg: error.data.msg });
+          }
+        })
+      });
+
+      // switch (this.memInfo.user.domain) {
+      //   case '74':
+      //     url = 'https://688lg410.666uxm.com/collect';
+      //     break;
+      //   case '41':
+      //     url = 'https://eyd.666uxm.com/collect';
+      //     break;
+      //   case '500023':
+      //     url = 'https://eyt.iplay.bet/collect';
+      //     break;
+      // }
     },
     onClick(target) {
       localStorage.setItem('iframe-third-url', target.info === 'gift' ? '' : target.link);
