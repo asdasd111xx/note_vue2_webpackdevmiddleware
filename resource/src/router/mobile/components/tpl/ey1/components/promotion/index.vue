@@ -152,7 +152,7 @@ export default {
             // newWindow.location.href = res.data.ret.uri + '&v=m';
             localStorage.setItem('iframe-third-url', res.data.ret.uri + '&v=m');
             localStorage.setItem('iframe-third-url-title', '领取优惠');
-            this.$router.push(`/mobile/iframe/promotion?hasFooter=false&hasHeader=true`);
+            this.$router.push(`/mobile/iframe/promotionGift?hasFooter=false&hasHeader=true`);
           }
         }).catch(error => {
           // newWindow.close();

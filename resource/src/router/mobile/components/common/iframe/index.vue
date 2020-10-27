@@ -137,30 +137,8 @@ export default {
         this.src = localStorage.getItem('iframe-third-url');
         break;
       case 'PROMOTION':
-
-        if (this.$route.query.gift) {
-          let url = '';
-          switch (this.webInfo.alias) {
-            case '500023':
-              url = 'https://688lg410.666uxm.com/collect';
-              break;
-            case '41':
-              url = 'https://eyd.666uxm.com/collect';
-              break;
-            case '74':
-              url = 'https://eyt.iplay.bet/collect';
-              break;
-          }
-
-          this.getCustomizeLink({
-            code: 'promotion',
-            client_uri: url
-          });
-
-        } else {
-          this.src = localStorage.getItem('iframe-third-url');
-        }
-
+        // 優小秘
+        this.src = localStorage.getItem('iframe-third-url');
         break;
 
       default:

@@ -223,7 +223,7 @@ export default {
         list = target.map(item => {
           return {
             ...item,
-            'currency_alias': item.method_id === 28 ? 'USDT' : item.currency_name
+            'currency_alias': item.currency_name
           }
         })
       }
