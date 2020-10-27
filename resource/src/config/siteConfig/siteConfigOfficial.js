@@ -65,7 +65,6 @@ export const site_100003 = {
   YABO_API_DOMAIN: 'https://ybbe2.qghco.com/api',
   YABO_GOLANG_API_DOMAIN: 'https://ybbe2.qghco.com/api-v2/cxbb',
   // BBOS_DOMIAN: 'https://api.bbin-staging.com/elibomApi/WebService',
-  BBOS_DOMIAN: 'https://bbos.bbin-asia.com/elibomApi/WebService'
 };
 
 /**
@@ -114,6 +113,5 @@ export const site_100004 = {
   YABO_API_DOMAIN: 'https://eybe2.77num.com/api',
   YABO_GOLANG_API_DOMAIN: 'https://eybe2.77num.com/api-v2/cxbb',
   // BBOS_DOMIAN: 'https://api.bbin-staging.com/elibomApi/WebService',
-  BBOS_DOMIAN: 'https://bbos.bbin-asia.com/elibomApi/WebService'
 };
 /* eslint-enable camelcase */
