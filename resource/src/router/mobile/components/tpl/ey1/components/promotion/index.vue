@@ -130,8 +130,8 @@ export default {
       });
     },
     onGiftClick() {
-      let newWindow = '';
-      newWindow = window.open('');
+      // let newWindow = '';
+      // newWindow = window.open('');
 
       let url = '';
       goLangApiRequest({
@@ -149,13 +149,13 @@ export default {
           }
         }).then(res => {
           if (res && res.data && res.data.ret && res.data.ret.uri) {
-            newWindow.location.href = res.data.ret.uri + '&v=m';
-            console.log(res.data.ret.uri + '&v=m')
-          } else {
-            newWindow.close();
+            // newWindow.location.href = res.data.ret.uri + '&v=m';
+            localStorage.setItem('iframe-third-url', res.data.ret.uri + '&v=m');
+            localStorage.setItem('iframe-third-url-title', '优惠自领');
+            this.$router.push(`/mobile/iframe/promotion?hasFooter=false&hasHeader=true`);
           }
         }).catch(error => {
-          newWindow.close();
+          // newWindow.close();
           if (error && error.data && error.date.msg) {
             this.actionSetGlobalMessage({ msg: error.data.msg });
           }
