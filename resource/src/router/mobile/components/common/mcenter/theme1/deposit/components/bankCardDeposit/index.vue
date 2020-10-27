@@ -1167,7 +1167,6 @@ export default {
       }
     },
     curPayInfo(value) {
-      console.log(value);
       if (this.curPayInfo.payment_method_name === "代客充值") {
         this.checkSuccess = true;
       }
@@ -1665,7 +1664,8 @@ export default {
           }
           if (response.status === 'third') {
             // this.resetStatus();
-            // this.resetTimerStatus();
+            this.cryptoMoney = '--';
+            this.resetTimerStatus();
           }
         }
       });
