@@ -27,7 +27,7 @@
               v-else
               @click="
                 () => {
-                  item.status !== (item.status !== 'processing' && item.memo) ||
+                  (item.status !== 'processing' && item.memo) ||
                   item.method_id === 25 ||
                   item.method_id === 402
                     ? showDetailPop(item)
