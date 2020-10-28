@@ -109,7 +109,7 @@
             </div>
 
             <div :class="$style['content-cell']">
-              <span>2.收藏亿元永久网址，浏览器打开，随时畅玩：</span>
+              <span>2.收藏亿元永久网址，浏览器打开，随时畅玩： </span>
               <div :class="$style['content-link']">
                 <div
                   :class="$style['link']"
