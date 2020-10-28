@@ -6,6 +6,7 @@ const outputDirName = process.env.CDN_HOST
   : "www";
 
 // 鸭博娱乐
+// 鴨脖
 const domain = "https://yb01.66boxing.com/";
 // Demo
 // const domain = 'https://yb0t.66relish.com/';
