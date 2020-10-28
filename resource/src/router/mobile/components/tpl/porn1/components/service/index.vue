@@ -18,8 +18,6 @@
         >
           {{ this.$text("S_FEEDBACK", "意见反馈") }}
         </div>
-          {{ this.$text("S_FEEDBACK", "意见反馈") }}
-        </div>
       </div>
       <div :class="$style['bg']" />
       <div :class="$style['avatar-info-wrap']">
