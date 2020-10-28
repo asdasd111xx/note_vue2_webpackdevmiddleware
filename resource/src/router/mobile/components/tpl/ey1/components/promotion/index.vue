@@ -152,9 +152,9 @@ export default {
         }).then(res => {
           if (res && res.data && res.data.ret && res.data.ret.uri) {
             // newWindow.location.href = res.data.ret.uri + '&v=m';
-            localStorage.setItem('iframe-third-url', res.data.ret.uri + '&v=m');
+            localStorage.setItem('iframe-third-url', res.data.ret.uri);
             localStorage.setItem('iframe-third-url-title', '领取优惠');
-            this.$router.push(`/mobile/iframe/promotionGift?hasFooter=false&hasHeader=true`);
+            this.$router.push(`/mobile/iframe/promotion?hasFooter=false&hasHeader=true`);
           }
         }).catch(error => {
           // newWindow.close();
@@ -191,9 +191,9 @@ export default {
       }).then(res => {
         if (res && res.data && res.data.ret && res.data.ret.uri) {
           // newWindow.location.href = res.data.ret.uri + '&v=m';
-          localStorage.setItem('iframe-third-url', res.data.ret.uri + '&v=m');
+          localStorage.setItem('iframe-third-url', res.data.ret.uri);
           localStorage.setItem('iframe-third-url-title', target.name);
-          this.$router.push(`/mobile/iframe/promotionGift?hasFooter=false&hasHeader=true`);
+          this.$router.push(`/mobile/iframe/promotion?hasFooter=false&hasHeader=true`);
         }
       }).catch(error => {
         // newWindow.close();
