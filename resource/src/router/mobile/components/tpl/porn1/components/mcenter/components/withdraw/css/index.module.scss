@@ -195,14 +195,14 @@
   min-height: 36px;
   line-height: 36px;
 
+  &.error {
+    color: #ff7171;
+  }
+
   .serial {
     float: right;
     padding-right: 10px;
   }
-}
-
-.trueMoney {
-  color: #ff7171;
 }
 
 .crypto-block {
