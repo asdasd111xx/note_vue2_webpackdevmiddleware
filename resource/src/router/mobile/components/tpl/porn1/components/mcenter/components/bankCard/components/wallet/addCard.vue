@@ -227,7 +227,7 @@
       <!-- 錢包綁定 Qrcode -->
       <template v-if="showPopStatus.type === 'qrcode'">
         <popup-qrcode
-          :paymentGatewayId="selectTarget.walletId"
+          :virtualBankId="selectTarget.walletId"
           @close="closePopup"
         />
       </template>
@@ -518,7 +518,7 @@ export default {
           let idArr = [
             ...new Set(
               this.userBindWalletList.map(item => {
-                return item.payment_gateway_id;
+                return item.virtual_bank_id;
               })
             )
           ];
@@ -536,13 +536,13 @@ export default {
             ...new Set(
               this.userBindWalletList.filter(item => {
                 return (
-                  item.payment_gateway_id === 21 ||
-                  item.payment_gateway_id === 37
+                  item.virtual_bank_id === 21 ||
+                  item.virtual_bank_id === 37
                 );
               })
             )
           ].map(item => {
-            return item.payment_gateway_id;
+            return item.virtual_bank_id;
           });
 
           if (idArr) {
@@ -568,7 +568,7 @@ export default {
         url: "/api/v1/c/player/user_virtual_bank",
         data: {
           address: this.formData["walletAddress"].value,
-          payment_gateway_id: this.selectTarget.walletId
+          virtual_bank_id: this.selectTarget.walletId
         }
       })
         .then(response => {

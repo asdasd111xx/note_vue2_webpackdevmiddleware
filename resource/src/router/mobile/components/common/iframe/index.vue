@@ -138,7 +138,13 @@ export default {
         break;
       case 'PROMOTION':
         // 優小秘
-        this.src = localStorage.getItem('iframe-third-url');
+        let url = localStorage.getItem('iframe-third-url');
+        if (url && url.indexOf('?') > 0) {
+          url = `${url}&v=m`;
+        } else {
+          url = `${url}?v=m`;
+        }
+        this.src = url
         break;
 
       default:

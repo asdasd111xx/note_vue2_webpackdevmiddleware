@@ -31,7 +31,7 @@
         </div>
 
         <div :class="$style['tips']">
-          <template v-if="paymentGatewayId === 21">
+          <template v-if="virtualBankId === 21">
             <div>● 请使用CGPay内扫描器扫描二维码</div>
             <div>● 成功绑定钱包后，此视窗自动关闭</div>
             <div>
@@ -55,7 +55,7 @@
             </div>
           </template>
 
-          <template v-if="paymentGatewayId === 37">
+          <template v-if="virtualBankId === 37">
             <div>● 请使用扫描器扫描二维码</div>
             <div>● 成功绑定钱包后，此视窗自动关闭</div>
             <div>
@@ -88,7 +88,7 @@ import { saveAs } from 'file-saver';
 
 export default {
   props: {
-    paymentGatewayId: {
+    virtualBankId: {
       type: Number,
       require: true
     },
@@ -119,9 +119,9 @@ export default {
       return style;
     },
     title() {
-      if (this.paymentGatewayId === 37) {
+      if (this.virtualBankId === 37) {
         return "绑定购宝钱包";
-      } else if (this.paymentGatewayId === 21) {
+      } else if (this.virtualBankId === 21) {
         return this.themeTPL === "porn1" ? "绑定CGPay" : "扫描绑定";
       }
     }
@@ -149,9 +149,9 @@ export default {
       let id = null;
       let queryType = this.$route.query.redirect === "deposit" ? "deposit" : "";
 
-      if (this.paymentGatewayId === 37) {
+      if (this.virtualBankId === 37) {
         id = 2;
-      } else if (this.paymentGatewayId === 21) {
+      } else if (this.virtualBankId === 21) {
         id = 3;
       }
 
@@ -172,7 +172,8 @@ export default {
           }, 3000);
           return;
         }
-        this.countdownSec = ret.expire_at
+
+        this.countdownSec = ret.expire_at;
         this.qrcodeLink = ret.url;
 
         if (this.countdownSec) {

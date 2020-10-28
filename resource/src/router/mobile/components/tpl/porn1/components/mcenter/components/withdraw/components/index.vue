@@ -943,7 +943,7 @@ export default {
               this.withdrawData.user_virtual_bank.ret.map((item) => {
                 // 本廳是否支援此電子錢包 & 是否為常用帳戶
                 return item.virtual && item.common
-                  ? item.payment_gateway_id
+                  ? item.virtual_bank_id
                   : null;
               })
             ),
