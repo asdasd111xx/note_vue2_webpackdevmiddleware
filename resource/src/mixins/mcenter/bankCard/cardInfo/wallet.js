@@ -86,7 +86,7 @@ export default {
       let count =
         this.wallet_card
           .filter(item => {
-            return info.payment_gateway_id === item.payment_gateway_id;
+            return info.virtual_bank_id === item.virtual_bank_id;
           }).length
 
       if (count > 1) {
@@ -102,14 +102,14 @@ export default {
       }
     },
     moveCard() {
-      const { address, payment_gateway_id } = this.wallet_cardDetail;
+      const { address, virtual_bank_id } = this.wallet_cardDetail;
 
       axios({
         method: "put",
         url: "/api/v1/c/player/user_virtual_bank",
         data: {
           old_address: address,
-          payment_gateway_id: String(payment_gateway_id),
+          virtual_bank_id: String(virtual_bank_id),
           common: false
         }
       }).then(response => {

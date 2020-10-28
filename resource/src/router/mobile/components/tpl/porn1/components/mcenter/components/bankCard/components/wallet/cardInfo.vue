@@ -97,9 +97,7 @@
     <template v-if="showDetail && wallet_cardDetail">
       <div v-if="wallet_cardDetail.auditing" :class="$style['audit-block']">
         <div>删除审核中</div>
-        <span>
-          审核通过后，系统会自动刪除钱包
-        </span>
+        <span> 审核通过后，系统会自动刪除钱包 </span>
       </div>
 
       <card-item
@@ -132,7 +130,7 @@
             v-if="memInfo.config.delete_bank_card"
             :class="[
               $style['edit-option-item'],
-              { [$style['confirm']]: themeTPL === 'porn1' }
+              { [$style['confirm']]: themeTPL === 'porn1' },
             ]"
             @click="isShowPop = true"
           >
@@ -196,7 +194,7 @@ export default {
     },
     setPageStatus: {
       type: Function,
-      default: () => {}
+      default: () => { }
     },
     showDetail: {
       type: Boolean,
@@ -226,7 +224,7 @@ export default {
       let idArr = [
         ...new Set(
           this.wallet_card.map(item => {
-            return item.payment_gateway_id;
+            return item.virtual_bank_id;
           })
         )
       ];

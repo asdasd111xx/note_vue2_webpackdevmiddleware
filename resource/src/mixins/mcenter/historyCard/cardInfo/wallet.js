@@ -56,14 +56,14 @@ export default {
       }
     },
     moveCard() {
-      const { address, payment_gateway_id } = this.wallet_cardDetail;
+      const { address, virtual_bank_id } = this.wallet_cardDetail;
 
       axios({
         method: "put",
         url: "/api/v1/c/player/user_virtual_bank",
         data: {
           old_address: address,
-          payment_gateway_id: String(payment_gateway_id),
+          virtual_bank_id: String(virtual_bank_id),
           common: true
         }
       }).then(response => {

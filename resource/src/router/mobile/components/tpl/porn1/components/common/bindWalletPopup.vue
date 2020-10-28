@@ -106,7 +106,7 @@
     <template v-else>
       <!-- Qrcode Popup -->
       <popup-qrcode
-        :paymentGatewayId="qrcodeObj.bank_id"
+        :virtualBankId="qrcodeObj.bank_id"
         :bindType="qrcodeObj.bind_type"
         @close="closePopup"
       />
@@ -242,7 +242,7 @@ export default {
         url: "/api/v1/c/player/user_virtual_bank",
         data: {
           address: this.formData["walletAddress"].value,
-          payment_gateway_id: 39 // 目前只有 USDT , 先寫死為 39
+          virtual_bank_id: 39 // 目前只有 USDT , 先寫死為 39
         }
       })
         .then(response => {

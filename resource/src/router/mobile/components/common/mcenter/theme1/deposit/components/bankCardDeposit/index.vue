@@ -1055,7 +1055,7 @@
       <!-- 綁定錢包 Qrocde -->
       <template v-if="showPopStatus.type === 'qrcode'">
         <popup-qrcode
-          :paymentGatewayId="qrcodeObj.bank_id"
+          :virtualBankId="qrcodeObj.bank_id"
           :bindType="qrcodeObj.bind_type"
           @close="closePopup"
         />

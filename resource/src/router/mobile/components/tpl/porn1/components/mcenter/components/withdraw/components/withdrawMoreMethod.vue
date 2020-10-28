@@ -37,7 +37,7 @@
       <!-- Qrcode 彈窗 -->
       <template v-else>
         <template v-if="showPopStatus.type === 'qrcode'">
-          <popup-qrcode :paymentGatewayId="bank_id" @close="closePopup" />
+          <popup-qrcode :virtualBankId="bank_id" @close="closePopup" />
         </template>
       </template>
     </div>
