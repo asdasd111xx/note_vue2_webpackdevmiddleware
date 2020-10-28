@@ -6,7 +6,18 @@
           <img :src="$getCdnPath(`/static/image/ey1/common/btn_back.png`)" />
         </div>
         <div :class="$style.title">我的客服</div>
-        <div :class="$style.feedback">
+        <div
+          :class="$style.feedback"
+          @click="
+            $router.push(
+              loginStatus
+                ? '/mobile/mcenter/feedback/sendFeedback'
+                : '/mobile/login'
+            )
+          "
+        >
+          {{ this.$text("S_FEEDBACK", "意见反馈") }}
+        </div>
           {{ this.$text("S_FEEDBACK", "意见反馈") }}
         </div>
       </div>
