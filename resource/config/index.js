@@ -1,13 +1,13 @@
 // see http://vuejs-templates.github.io/webpack for documentation.
 const path = require("path");
 
-const outputDirName = process.env.CDN_HOST ?
-  process.env.CDN_HOST.split("://")[1] :
-  "www";
+const outputDirName = process.env.CDN_HOST
+  ? process.env.CDN_HOST.split("://")[1]
+  : "www";
 
 // 鸭博娱乐
 // 鴨脖
-// const domain = "https://yb01.66boxing.com/";
+const domain = "https://yb01.66boxing.com/";
 // Demo
 // const domain = 'https://yb0t.66relish.com/';
 // Prod
@@ -19,7 +19,7 @@ const outputDirName = process.env.CDN_HOST ?
 // const domain = 'https://yb0t.66apples.com';
 
 // 亿元
-const domain = 'https://eyt.66boxing.com/';
+//const domain = 'https://eyt.66boxing.com/';
 // Demo
 // const domain = 'https://eyd.688lg.com/';
 // const domain = 'https://ey01.66poo.com/';

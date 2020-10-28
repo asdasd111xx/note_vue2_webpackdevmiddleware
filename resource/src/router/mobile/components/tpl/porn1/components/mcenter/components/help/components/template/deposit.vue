@@ -258,6 +258,7 @@ export default {
           list: [
             { key: 0, img: "bank7_step1" },
             { key: 1, img: "bank7_step2" },
+            { key: 2, img: "bank7_step3" },
           ],
         },
       ],
