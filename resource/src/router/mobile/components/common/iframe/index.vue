@@ -370,8 +370,8 @@ export default {
   width: 100%;
 
   &.promotion {
-    height: calc(100% + 50px);
-    margin-top: -50px;
+    // height: calc(100% + 50px);
+    // margin-top: -50px;
   }
 }
 </style>

@@ -77,20 +77,22 @@ export default {
     this.getPromotionList(this.tabId);
   },
   mounted() {
-    bbosRequest({
-      method: "get",
-      url: this.siteConfig.BBOS_DOMIAN + "/Ext/Promotion/User/Collect/Count",
-      reqHeaders: {
-        Vendor: this.memInfo.user.domain
-      },
-      params: {
-        // tabId: "",
-      }
-    }).then(res => {
-      if (res && res.data) {
-        this.hasNewGift = res.data.count > 0;
-      }
-    });
+    if (this.loginStatus) {
+      bbosRequest({
+        method: "get",
+        url: this.siteConfig.BBOS_DOMIAN + "/Ext/Promotion/User/Collect/Count",
+        reqHeaders: {
+          Vendor: this.memInfo.user.domain
+        },
+        params: {
+          // tabId: "",
+        }
+      }).then(res => {
+        if (res && res.data) {
+          this.hasNewGift = res.data.count > 0;
+        }
+      });
+    }
   },
   computed: {
     ...mapGetters({
@@ -175,10 +177,30 @@ export default {
       // }
     },
     onClick(target) {
-      localStorage.setItem('iframe-third-url', target.info === 'gift' ? '' : target.link);
-      localStorage.setItem('iframe-third-url-title', target.info === 'gift' ? '' : target.name);
+      if (!target.link) {
+        return;
+      }
 
-      this.$router.push(`/mobile/iframe/promotion?hasFooter=false&hasHeader=true${target.info === 'gift' ? '&gift=1' : ''}`);
+      axios({
+        method: 'get',
+        url: '/api/v1/c/link/customize',
+        params: {
+          code: 'promotion',
+          client_uri: target.link
+        }
+      }).then(res => {
+        if (res && res.data && res.data.ret && res.data.ret.uri) {
+          // newWindow.location.href = res.data.ret.uri + '&v=m';
+          localStorage.setItem('iframe-third-url', res.data.ret.uri + '&v=m');
+          localStorage.setItem('iframe-third-url-title', target.name);
+          this.$router.push(`/mobile/iframe/promotionGift?hasFooter=false&hasHeader=true`);
+        }
+      }).catch(error => {
+        // newWindow.close();
+        if (error && error.data && error.date.msg) {
+          this.actionSetGlobalMessage({ msg: error.data.msg });
+        }
+      })
     }
   }
 };
