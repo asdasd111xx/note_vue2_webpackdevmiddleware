@@ -105,16 +105,16 @@
     }
 
     &.hasOption {
-      width: 70%;
+      width: 60%;
     }
   }
 
   > .check-box {
-    width: 18px;
-    height: 18px;
+    width: 16px;
+    height: 16px;
     border-radius: 50%;
     border: #cbced8 solid 1px;
-    right: 18px;
+    right: 16px;
 
     &.checked {
       background: url("/static/image/porn1/mcenter/ic_check.png") 0 0 no-repeat;
