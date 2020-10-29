@@ -662,17 +662,16 @@ export const actionSetUserdata = ({ state, dispatch, commit }, forceUpdate = fal
       }
 
       let cdnRoot = '';
-      console.log("[debug]header:", headers)
 
       // 設置cdn圖片路徑
       if (headers['x-cdn-ey'] &&
         configInfo.MOBILE_WEB_TPL === "ey1") {
-        cdnRoot = headers['x-cdn-ey'].split(',')[0]
+        cdnRoot = `https://${headers['x-cdn-ey'].split(',')[0]}`;
       }
 
       if (headers['x-cdn-yb'] &&
         configInfo.MOBILE_WEB_TPL === "porn1") {
-        cdnRoot = headers['x-cdn-yb'].split(',')[0]
+        cdnRoot = `https://${headers['x-cdn-yb'].split(',')[0]}`;
       }
 
       commit(types.SETCDNROOT, cdnRoot);
