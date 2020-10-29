@@ -28,7 +28,10 @@
           </div>
         </div>
       </div>
-      <div :class="$style['content-wrap']" v-html="currentPost.content" />
+      <div
+        :class="$style['content-wrap']"
+        v-html="setContent(currentPost.content)"
+      />
     </div>
     <div v-else :class="$style['post-list']">
       <div
@@ -89,6 +92,14 @@ export default {
       }
       return this.postData.find((post) => post.id === this.$route.query.pid);
     }
+  },
+  methods: {
+    setContent(content) {
+      let urlRegex = /(https?:\/\/[^\s]+)/g;
+      return content.replace(/\n/g, '<br/>').replace(urlRegex, function (url) {
+        return '<a href="' + url + '" target="_blank">' + url + '</a>';
+      })
+    },
   },
   created() {
     ajax({
