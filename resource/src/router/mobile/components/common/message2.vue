@@ -145,16 +145,13 @@ export default {
             break;
           // 維護
           case "M00002":
-            location.reload()
+            window.location.reload();
+            break;
           case "C50104":
           case "C50106":
+          case "C590029":
             localStorage.setItem('form-withdraw-account', true);
-            if (this.siteConfig.MOBILE_WEB_TPL === "porn1") {
-              this.$router.push(`/mobile/mcenter/accountData?reqAccount=${redirect ? redirect : 'home'}`);
-            } else {
-              // 億元
-              this.$router.push(`/mobile/withdrawAccount?redirect=${redirect ? redirect : 'home'}`);
-            }
+            this.$router.push(`/mobile/withdrawAccount?redirect=${redirect ? redirect : 'home'}`);
             break;
           default:
             break;

@@ -125,7 +125,7 @@ export default (params, success = () => { }, fail = () => { }) => {
             console.log('openWindow:', newWindow);
           }
         } catch (e) {
-          newWindow.close();
+          newWindow ? newWindow.close() : '';
           console.log(e);
           console.log('另开视窗失败 请关闭阻挡弹出式视窗');
           // window.open(link, '', '_blank', true);
@@ -145,7 +145,7 @@ export default (params, success = () => { }, fail = () => { }) => {
       }, 200)
     },
     fail: (res) => {
-      newWindow.close();
+      newWindow ? newWindow.close() : '';
       console.log('launch 失敗');
       console.log(res);
       fail(res);
@@ -153,7 +153,7 @@ export default (params, success = () => { }, fail = () => { }) => {
       setTimeout(() => {
         localStorage.removeItem('iframe-third-url');
         localStorage.removeItem("is-open-game");
-      }, 1500)
+      }, 3000)
     }
   }, vendor);
 };

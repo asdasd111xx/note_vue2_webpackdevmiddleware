@@ -256,26 +256,13 @@ export default {
 
                 Object.keys(res.data.ret).forEach(i => {
                   if (i !== "bank" && !res.data.ret[i]) {
-                    if (this.siteConfig.MOBILE_WEB_TPL === 'ey1') {
-                      this.actionSetGlobalMessage({
-                        msg: '请先设定提现资料', cb: () => {
-                          {
-                            this.$router.push('/mobile/withdrawAccount?redirect=wallet');
-                          }
+                    this.actionSetGlobalMessage({
+                      msg: '请先设定提现资料', cb: () => {
+                        {
+                          this.$router.push('/mobile/withdrawAccount?redirect=wallet');
                         }
-                      })
-                    }
-
-                    if (this.siteConfig.MOBILE_WEB_TPL === 'porn1') {
-                      this.actionSetGlobalMessage({
-                        msg: '请先设定提现资料', cb: () => {
-                          {
-                            this.$router.push(`/mobile/mcenter/accountData?reqAccount=wallet`);
-                          }
-                        }
-                      })
-                    }
-
+                      }
+                    })
                     check = false;
                     return;
                   }

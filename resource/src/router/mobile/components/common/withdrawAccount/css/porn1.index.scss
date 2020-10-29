@@ -1,152 +1,177 @@
 @import "~@/css/variable.scss";
 
 .wiithdraw-account-header {
-    background: linear-gradient(#fe2a2a, #b60303);
-    color: #ffffff;
-    height: 43px;
-    max-width: $mobile_max_width;
-    padding: 0 17px;
-    position: fixed;
-    text-align: center;
-    top: 0;
-    width: 100%;
-    z-index: 3;
+  background: #fefffe;
+  color: #000000;
+  height: 43px;
+  max-width: $mobile_max_width;
+  padding: 0 17px;
+  position: fixed;
+  text-align: center;
+  top: 0;
+  width: 100%;
+  z-index: 3;
+  border-bottom: 1px solid #eee;
 
-    .title {
-        width: 100%;
-        text-align: center;
-        font-size: 17px;
-        font-weight: 700;
-        line-height: 43px;
-    }
+  .title {
+    width: 100%;
+    text-align: center;
+    font-size: 17px;
+    font-weight: 700;
+    line-height: 43px;
+  }
 }
 
 .btn-prev {
-    position: absolute;
-    width: 20px;
-    height: 100%;
-    display: flex;
-    align-items: center;
-    justify-content: center;
+  position: absolute;
+  width: 20px;
+  height: 100%;
+  display: flex;
+  align-items: center;
+  justify-content: center;
 
-    >img {
-        width: 20px;
-        height: 20px;
-    }
+  >img {
+    width: 20px;
+    height: 20px;
+  }
 }
 
 .container {
-    background: #fefffe;
+  background: #fefffe;
 }
 
 .wiithdraw-account-wrap {
-    padding-top: 44px;
+  padding-top: 44px;
 }
 
 .err-msg {
-    color: #db6372;
-    line-height: 25px;
+  color: #db6372;
+  line-height: 25px;
 
-    &.api-msg {
-        padding-left: 14px;
-        min-height: 25px;
-    }
+  &.api-msg {
+    padding-left: 14px;
+    min-height: 25px;
+  }
 }
 
 .cell {
+  color: #414655;
+  padding: 4px 14px;
+  border-bottom: #f8f8f7 2px solid;
+
+  input,
+  .withdraw-pwd-input {
+    border: none;
     color: #414655;
-    padding: 0 14px;
-    border-bottom: #f8f8f7 2px solid;
+    display: block;
+    height: 36px;
+    outline: none;
+    padding: 0;
+    width: 100%;
 
-    input,
-    .withdraw-pwd-input {
-        border: none;
-        color: #414655;
-        display: block;
-        height: 36px;
-        outline: none;
-        padding: 0;
-        width: 65%;
-
-        &::-webkit-input-placeholder {
-            color: #cbced8;
-        }
+    &::-webkit-input-placeholder {
+      color: #cbced8;
     }
+  }
 
-    .withdraw-pwd-input {
-        background: #ffffff;
-        border: 2px solid #cecece;
-        display: inline-block;
-        height: 36px;
-        text-align: center;
-        width: 40px;
-    }
+  .phone-input {
+    width: 75%;
+    display: inline-block;
+  }
 
-    .withdraw-pwd-input:not(:first-of-type) {
-        margin-left: 7.5px;
-    }
+  .withdraw-pwd-input {
+    background: #ffffff;
+    border: 2px solid #cecece;
+    display: inline-block;
+    height: 36px;
+    text-align: center;
+    width: 40px;
+  }
+
+  .withdraw-pwd-input:not(:first-of-type) {
+    margin-left: 7.5px;
+  }
 }
 
 .form-title {
-    height: 36px;
-    line-height: 36px;
+  height: 36px;
+  line-height: 36px;
 }
 
 .form-input {
-    width: 100%;
-    height: 36px;
-    position: relative;
+  width: 100%;
+  height: 36px;
+  position: relative;
 }
 
 .withdraw-password-tips {
-    margin-top: 5px;
-    color: #a6a9b2;
-    font-size: 12px;
-    height: 24px;
-    line-height: 24px;
+  margin-top: 5px;
+  color: #a6a9b2;
+  font-size: 12px;
+  height: 24px;
+  line-height: 24px;
 }
 
 .btn-send {
-    margin: 3px 0;
-    background-color: #fdcccc;
-    border-radius: 3px;
-    color: white;
-    line-height: 30px;
-    pointer-events: none;
-    position: absolute;
-    right: 14px;
-    text-align: center;
-    top: 0;
-    width: 100px;
+  margin: 3px 0;
+  background-color: #E9DACC;
+  border-radius: 3px;
+  color: white;
+  line-height: 30px;
+  pointer-events: none;
+  position: absolute;
+  right: 14px;
+  text-align: center;
+  top: 0;
+  width: 100px;
 
-    &.active {
-        pointer-events: auto;
-        color: #ffffff;
-        background-color: #e42a30;
-    }
+  &.active {
+    pointer-events: auto;
+    color: #ffffff;
+    background-color: #D1B79C;
+  }
 }
 
 .btn-submit {
-    height: 45px;
-    line-height: 45px;
-    color: white;
-    pointer-events: none;
-    position: absolute;
-    text-align: center;
-    border-radius: 3px;
-    margin: 0 14px;
-    margin-top: 20px;
-    position: relative;
+  height: 45px;
+  line-height: 45px;
+  color: white;
+  pointer-events: none;
+  position: absolute;
+  text-align: center;
+  border-radius: 3px;
+  margin: 0 14px;
+  margin-top: 20px;
+  position: relative;
 
+  >div {
+    background-color: #E9DACC;
+  }
+
+  &.active {
     >div {
-        background-color: #fdcccc;
+      pointer-events: auto;
+      color: #ffffff;
+      background-color: #D1B79C;
     }
+  }
+}
 
-    &.active {
-        >div {
-            pointer-events: auto;
-            color: #ffffff;
-            background-color: #e42a30;
-        }
-    }
+.btn-icon {
+  position: absolute;
+  width: 20px;
+  height: 20px;
+  top: 12px;
+  right: 14px;
+
+  img {
+    width: 100%;
+    height: 100%;
+  }
+}
+
+.phone-selected {
+  border: 0px;
+  background-color: #ffffff;
+  margin-right: 10px;
 }
