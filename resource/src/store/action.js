@@ -661,16 +661,20 @@ export const actionSetUserdata = ({ state, dispatch, commit }, forceUpdate = fal
           break;
       }
 
+      let cdnRoot = '';
+
       // 設置cdn圖片路徑
       if (headers['x-cdn-ey'] &&
         configInfo.MOBILE_WEB_TPL === "ey1") {
-        commit(types.SETCDNROOT, `https://${headers['x-cdn-ey']}`);
+        cdnRoot = Array.isArray(headers['x-cdn-ey']) ? headers['x-cdn-ey'][0] : headers['x-cdn-ey'];
       }
 
       if (headers['x-cdn-yb'] &&
         configInfo.MOBILE_WEB_TPL === "porn1") {
-        commit(types.SETCDNROOT, `https://${headers['x-cdn-yb']}`);
+        cdnRoot = Array.isArray(headers['x-cdn-yb']) ? headers['x-cdn-yb'][0] : headers['x-cdn-yb'];
       }
+
+      commit(types.SETCDNROOT, cdnRoot);
     },
     fail: (response) => {
       // 連線逾時
