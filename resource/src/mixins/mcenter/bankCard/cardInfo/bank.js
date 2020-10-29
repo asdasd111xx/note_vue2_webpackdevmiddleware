@@ -115,7 +115,7 @@ export default {
         this.isRevice = true;
         this.isShowPop = false;
         this.$emit('update:editStatus', false);
-        this.actionSetGlobalMessage({ msg: error.response.data.msg })
+        this.actionSetGlobalMessage({ msg: error.response.data.msg });
       })
     }
   },
