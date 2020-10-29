@@ -99,7 +99,6 @@ export default {
           AuthToken: "YaboAPIforDev0nly"
         }
       }).then(res => {
-        console.log("api test");
         if (res && res.data && res.data) {
           this.landingLink = res.data[0].value || res.data[1].value;
         }

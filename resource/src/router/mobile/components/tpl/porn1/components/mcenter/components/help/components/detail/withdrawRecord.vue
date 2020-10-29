@@ -3,8 +3,8 @@
     :class="[
       $style['detail-wrap'],
       {
-        [$style['ey1']]: theme === 'ey1'
-      }
+        [$style['ey1']]: theme === 'ey1',
+      },
     ]"
   >
     <!-- 狀態暫時移除 -->
@@ -34,43 +34,42 @@
           <div :class="[$style['title']]">
             {{ $text("S_STATUS", "状态") }}
           </div>
-          <div
-            v-if="item.status !== 'processing' && item.memo"
-            :class="$style['processing-icon']"
-            @click="showDetailPop(item)"
-          >
-            <img src="/static/image/porn1/mcenter/ic_remark.png" />
-          </div>
-          <div
-            v-if="!item.locked"
-            :class="[$style['value'], $style['edit']]"
-            :style="
-              item.status !== 'processing' && item.memo ? { right: '24px' } : {}
-            "
-            @click="openEdit(item)"
-          >
-            {{ $text("S_SUBMIT_WITHDRAW", "重新提交") }}
-          </div>
-          <div
-            v-else
-            @click="
-              () => {
-                item.status !== 'processing' && item.memo
-                  ? showDetailPop(item)
-                  : '';
-              }
-            "
-            :class="[
-              $style['value'],
-              { [$style['processing']]: item.status === 'processing' }
-            ]"
-            :style="
-              item.status !== 'processing' && item.memo ? { right: '24px' } : {}
-            "
-          >
-            {{ getStatus(item.status) }}
+
+          <div :class="$style['value']">
+            <div
+              v-if="!item.locked"
+              :class="$style['edit']"
+              @click="openEdit(item)"
+            >
+              {{ $text("S_SUBMIT_WITHDRAW", "重新提交") }}
+            </div>
+
+            <div
+              v-else
+              @click="
+                () => {
+                  item.status !== 'processing' && item.memo
+                    ? showDetailPop(item)
+                    : '';
+                }
+              "
+              :class="[
+                { [$style['processing']]: item.status === 'processing' },
+              ]"
+            >
+              {{ getStatus(item.status) }}
+            </div>
+
+            <div
+              v-if="item.status !== 'processing' && item.memo"
+              :class="$style['processing-icon']"
+              @click="showDetailPop(item)"
+            >
+              <img :src="`/static/image/${theme}/mcenter/ic_remark.png`" />
+            </div>
           </div>
         </div>
+
         <div :class="$style['item-status-border']" />
         <template v-for="(col, index) in columns">
           <div
@@ -102,9 +101,7 @@
         <div :class="$style['tips-cell']">
           入帳數量:&nbsp;{{ detailRate && detailRate.real_amount }}
         </div> -->
-        <div :class="[$style['close']]" @click="detailRate = null">
-          关闭
-        </div>
+        <div :class="[$style['close']]" @click="detailRate = null">关闭</div>
       </div>
     </div>
     <edit-withdraw-field
@@ -179,10 +176,10 @@ export default {
     theme() {
       return this.siteConfig.MOBILE_WEB_TPL;
     },
-    isApp() {
-      let isApp = !!((this.$route.query && this.$route.query.app) || (this.$route.query && this.$route.query.APP))
-      return isApp
-    },
+    // isApp() {
+    //   let isApp = !!((this.$route.query && this.$route.query.app) || (this.$route.query && this.$route.query.APP))
+    //   return isApp
+    // },
   },
   methods: {
     ...mapActions([

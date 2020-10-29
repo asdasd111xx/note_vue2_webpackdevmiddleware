@@ -39,7 +39,7 @@
 
               <div :class="$style['card-info']">
                 <div :class="$style['card-name']">
-                  {{ item.payment_gateway_name }}
+                  {{ item.virtual_bank_name }}
                 </div>
 
                 <div :class="$style['card-number']">
@@ -88,7 +88,7 @@
 
           <div :class="$style['card-info']">
             <div :class="$style['card-name']">
-              {{ wallet_cardDetail.payment_gateway_name }}
+              {{ wallet_cardDetail.virtual_bank_name }}
             </div>
 
             <div :class="$style['card-number']">
@@ -163,7 +163,7 @@ export default {
     },
     setPageStatus: {
       type: Function,
-      default: () => {}
+      default: () => { }
     },
     showDetail: {
       type: Boolean,

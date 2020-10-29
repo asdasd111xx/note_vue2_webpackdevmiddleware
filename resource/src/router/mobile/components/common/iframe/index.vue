@@ -137,30 +137,14 @@ export default {
         this.src = localStorage.getItem('iframe-third-url');
         break;
       case 'PROMOTION':
-
-        if (this.$route.query.gift) {
-          let url = '';
-          switch (this.webInfo.alias) {
-            case '500023':
-              url = 'https://688lg410.666uxm.com/collect';
-              break;
-            case '41':
-              url = 'https://eyd.666uxm.com/collect';
-              break;
-            case '74':
-              url = 'https://eyt.iplay.bet/collect';
-              break;
-          }
-
-          this.getCustomizeLink({
-            code: 'promotion',
-            client_uri: url
-          });
-
+        // 優小秘
+        let url = localStorage.getItem('iframe-third-url');
+        if (url && url.indexOf('?') > 0) {
+          url = `${url}&v=m`;
         } else {
-          this.src = localStorage.getItem('iframe-third-url');
+          url = `${url}?v=m`;
         }
-
+        this.src = url
         break;
 
       default:
@@ -268,7 +252,7 @@ export default {
             this.$router.push(this.originUrl);
             return;
 
-          case 'EVENT_LOGIN':
+          case 'EVENT_THIRDPARTY_LOGIN':
             this.$router.push('/mobile/login');
             return;
           default:
@@ -392,8 +376,8 @@ export default {
   width: 100%;
 
   &.promotion {
-    height: calc(100% + 50px);
-    margin-top: -50px;
+    // height: calc(100% + 50px);
+    // margin-top: -50px;
   }
 }
 </style>

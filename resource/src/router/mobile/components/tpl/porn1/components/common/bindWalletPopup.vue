@@ -1,8 +1,17 @@
 <template>
   <div>
-    <template v-if="!qrcodeObj.isShow">
+    <template v-if="!showPopStatus.isShow">
       <div :class="$style['popup']">
-        <div :class="$style['mask']" />
+        <div
+          :class="$style['mask']"
+          @click="
+            () => {
+              if (walletType === 'USDT') {
+                closePopup();
+              }
+            }
+          "
+        />
         <div :class="$style['block']">
           <div :class="$style['content']">
             <div :class="$style['title']">{{ title }}</div>
@@ -19,15 +28,15 @@
               </div>
 
               <div :class="$style['input-wrap']">
-                <input
+                <textarea
                   v-model="formData['walletAddress'].value"
-                  type="text"
                   :placeholder="formData['walletAddress'].placeholder"
                 />
               </div>
             </div>
 
-            <template v-if="walletType === 'CGP'">
+            <!-- CGPay -->
+            <template v-if="walletType === 'CGPay'">
               <div :class="$style['info-item']">
                 <div :class="$style['input-title']">
                   {{ formData["CGPPwd"].title }}
@@ -60,11 +69,35 @@
                 </p>
               </div>
             </template>
+
+            <!-- USDT -->
+            <template v-if="walletType === 'USDT'">
+              <div :class="$style['info-item']">
+                <div :class="$style['input-title']">建立您的加密货币账号</div>
+
+                <div :class="$style['icon-block']">
+                  <div
+                    v-for="item in usdtTipsList"
+                    :class="$style['item']"
+                    @click="item.onClick"
+                  >
+                    <img :src="item.iconSrc" :alt="item.alias" />
+                    <span>{{ item.name }}</span>
+                  </div>
+                </div>
+              </div>
+            </template>
           </div>
 
           <div :class="$style['close']">
-            <span @click="closeTips">取消</span>
-            <span @click="submitByToken">送出</span>
+            <template v-if="walletType === 'USDT'">
+              <span @click="submitByNormal">送出</span>
+            </template>
+
+            <template v-if="walletType === 'CGPay'">
+              <span @click="closePopup">取消</span>
+              <span @click="submitByToken">送出</span>
+            </template>
           </div>
         </div>
       </div>
@@ -73,10 +106,9 @@
     <template v-else>
       <!-- Qrcode Popup -->
       <popup-qrcode
-        v-if="qrcodeObj.isShow"
-        :isShowPop.sync="qrcodeObj.isShow"
-        :paymentGatewayId="qrcodeObj.bank_id"
+        :virtualBankId="qrcodeObj.bank_id"
         :bindType="qrcodeObj.bind_type"
+        @close="closePopup"
       />
     </template>
   </div>
@@ -113,37 +145,60 @@ export default {
           placeholder: "必填"
         }
       },
-      qrcodeObj: {
+      usdtTipsList: [
+        {
+          name: "火币",
+          iconSrc: this.$getCdnPath(
+            `/static/image/porn1/mcenter/deposit/ic_huobi.png`
+          ),
+          onClick: () => {
+            window.open(
+              "https://www.huobi.com/zh-cn/register/?invite_code=hw7j5"
+            );
+          }
+        },
+        {
+          name: "币安",
+          iconSrc: this.$getCdnPath(
+            `/static/image/porn1/mcenter/deposit/ic_binance.png`
+          ),
+          onClick: () => {
+            window.open("https://accounts.binance.com/cn/register");
+          }
+        }
+      ],
+
+      // 彈窗顯示狀態統整
+      showPopStatus: {
         isShow: false,
+        type: ''
+      },
+
+      qrcodeObj: {
         bank_id: null,
         bind_type: "deposit"
-      }
+      },
     };
   },
-  computed: {
-    showPopQrcode: {
-      get() {
-        return this.qrcodeObj.isShow;
-      },
-      set(value) {
-        this.qrcodeObj.isShow = value;
-      }
-    }
-  },
   watch: {
-    "qrcodeObj.isShow"(value) {
+    "showPopStatus.isShow"(value) {
       // 切換到 Qrcode 頁面，連同整個 popup 關掉
       if (!value) {
-        this.closeTips();
+        this.closePopup();
       }
     }
   },
   created() {
     switch (this.walletType) {
-      case "CGP":
+      case "CGPay":
         this.title = "绑定CGP";
         this.formData["walletAddress"].title = "CGP邮箱/手机号";
         this.qrcodeObj.bank_id = 21;
+        break;
+
+      case "USDT":
+        this.title = "绑定 USDT(ERC20)";
+        this.formData["walletAddress"].title = "钱包位址";
         break;
 
       default:
@@ -155,7 +210,7 @@ export default {
     tipMethod(index) {
       switch (index) {
         case 0:
-          this.qrcodeObj.isShow = true;
+          this.showPopStatus.isShow = true;
           break;
 
         case 1:
@@ -171,15 +226,55 @@ export default {
           break;
       }
     },
-    closeTips() {
+    closePopup() {
       this.$emit("close");
+    },
+    submitByNormal() {
+      // if (this.lockStatus) {
+      //   return;
+      // }
+
+      // this.lockStatus = true;
+      this.errorMsg = "";
+
+      axios({
+        method: "post",
+        url: "/api/v1/c/player/user_virtual_bank",
+        data: {
+          address: this.formData["walletAddress"].value,
+          virtual_bank_id: 39 // 目前只有 USDT , 先寫死為 39
+        }
+      })
+        .then(response => {
+          const { result, msg } = response.data;
+          // this.lockStatus = false;
+
+          if (result !== "ok" || result === "error") {
+            this.errorMsg = `${msg}`;
+            return;
+          }
+
+          this.actionSetGlobalMessage({
+            msg: "绑定成功",
+            cb: () => {
+              window.location.reload();
+            }
+          });
+        })
+        .catch(res => {
+          if (res.response && res.response.data && res.response.data.msg) {
+            this.errorMsg = `${res.response.data.msg}`;
+            // this.lockStatus = false;
+            return;
+          }
+        });
     },
     submitByToken() {
       // if (this.lockStatus) {
       //   return;
       // }
 
-      this.lockStatus = true;
+      // this.lockStatus = true;
       this.errorMsg = "";
 
       axios({
@@ -194,7 +289,7 @@ export default {
         }
       })
         .then(response => {
-          const { result, msg, code } = response.data;
+          const { result, msg } = response.data;
           // this.lockStatus = false;
 
           if (result !== "ok" || result === "error") {
@@ -274,7 +369,7 @@ export default {
 }
 
 .content {
-  min-height: 320px;
+  min-height: 240px;
   padding: 0 20px;
   color: $main_text_color3;
 
@@ -309,13 +404,34 @@ export default {
   .input-wrap {
     height: 40px;
 
-    > input {
+    > input,
+    > textarea {
       height: 40px;
       width: 100%;
       border-radius: 5px;
       border: 1px solid #eee;
-      padding: 0 10px;
+      padding: 10px;
       outline: none;
+      resize: none;
+    }
+  }
+
+  .icon-block {
+    display: flex;
+    justify-content: space-between;
+
+    .item {
+      width: 49%;
+      height: 43px;
+      display: inline-flex;
+      align-items: center;
+      border: 1px solid #eee;
+    }
+
+    img {
+      width: 27px;
+      height: 32px;
+      margin: 0 5px;
     }
   }
 }

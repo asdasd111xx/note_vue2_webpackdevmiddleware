@@ -1,5 +1,5 @@
 <template>
-  <div v-if="isShowPop" :class="$style['pop-wrap']">
+  <div :class="$style['pop-wrap']">
     <div :class="$style['pop-mask']" />
     <div :class="$style['pop-block']">
       <div :class="$style['content']">
@@ -22,7 +22,7 @@
       </div>
 
       <div :class="$style['button-block']">
-        <span @click="$emit('update:isShowPop', false)">知道了</span>
+        <span @click="$emit('close')">知道了</span>
       </div>
     </div>
   </div>
@@ -30,12 +30,6 @@
 
 <script>
 export default {
-  props: {
-    isShowPop: {
-      type: Boolean,
-      require: true
-    }
-  },
   data() {
     return {
       list: [
