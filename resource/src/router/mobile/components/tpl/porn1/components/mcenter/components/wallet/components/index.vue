@@ -10,11 +10,8 @@
 
       <div :class="$style['icon-block']">
         <div
+          v-if="item.show || (item.key === 'recharge' && themeTPL !== 'ey1')"
           v-for="(item, index) in walletIcons"
-          v-if="
-            item.show ||
-              (item.key === 'recharge' && siteConfig.MOBILE_WEB_TPL !== 'ey1')
-          "
           :key="'icon-' + index"
           :class="$style['icon-cell']"
           @click="item.onClick"
@@ -59,7 +56,7 @@
             <div
               :class="[
                 $style['recycle-btn'],
-                balanceTran.balanceBackLock ? $style.disable : ''
+                balanceTran.balanceBackLock ? $style.disable : '',
               ]"
             >
               {{ $text("S_ONE_CLICK_TO_ACCOUNT") }}
@@ -67,7 +64,7 @@
           </div>
 
           <div :class="[$style['balance-item-wrap'], 'clearfix']">
-            <template v-if="siteConfig.MOBILE_WEB_TPL === 'porn1'">
+            <template v-if="themeTPL === 'porn1'">
               <div
                 :class="$style['balance-item']"
                 @click="$router.push('/mobile/mcenter/bonus')"
@@ -90,8 +87,8 @@
                 {
                   [$style['is-last-item']]:
                     Object.keys(balanceTran.balanceInfo).length - 1 - index <=
-                    (Object.keys(balanceTran.balanceInfo).length % 4 || 4)
-                }
+                    (Object.keys(balanceTran.balanceInfo).length % 4 || 4),
+                },
               ]"
             >
               <span :class="$style['balance-item-vendor']">{{
@@ -121,24 +118,52 @@
       </template>
     </balance-tran>
 
+    <template v-if="themeTPL === 'porn1'">
+      <div :class="$style['swag-wrap']">
+        <div :class="$style['title']">SWAG钱包</div>
+        <div :class="$style['icon-block']">
+          <div :class="$style['icon-cell']">
+            <div :class="$style['balance']">
+              {{ "需顯示金额" }}
+            </div>
+            {{ $t("S_DIAMOND_BALANCE") }}
+          </div>
+
+          <div
+            v-for="(item, index) in swagIcons"
+            :key="'icon-' + index"
+            :class="$style['icon-cell']"
+            @click="item.onClick"
+          >
+            <div :class="$style['image']">
+              <img :src="$getCdnPath(item.imgSrc)" alt="icon" />
+            </div>
+            {{ item.text }}
+          </div>
+        </div>
+      </div>
+    </template>
+
     <div :class="$style['invite-wrap']" @click="onClickInvite">
-      <template v-if="siteConfig.MOBILE_WEB_TPL === 'porn1'">
+      <template v-if="themeTPL === 'porn1'">
         <div :class="$style['content']">
           <div>邀请好友获得现金奖励</div>
           <div>邀请人首存即可获得</div>
         </div>
       </template>
-      <template v-else="siteConfig.MOBILE_WEB_TPL === 'ey1'">
+
+      <template v-if="themeTPL === 'ey1'">
         <div :class="$style['content']">
           <div>日薪月薪不如推荐加薪</div>
           <div>分享入金稳拿奖金</div>
         </div>
       </template>
+
       <div :class="$style['image']">
         <img
           :src="
             $getCdnPath(
-              `/static/image/${siteConfig.MOBILE_WEB_TPL}/mcenter/wallet/img_wallter.png`
+              `/static/image/${themeTPL}/mcenter/wallet/img_wallter.png`
             )
           "
           alt="wallter"
@@ -218,12 +243,63 @@ export default {
       mainListData: [],
       mainNoData: false,
       isCheckWithdraw: false,
-      walletIcons: [
+      bonus: {},
+    };
+  },
+  computed: {
+    ...mapGetters({
+      loginStatus: 'getLoginStatus',
+      memInfo: 'getMemInfo',
+      gameData: 'getGameData',
+      siteConfig: 'getSiteConfig',
+      hasBank: 'getHasBank',
+      rechargeConfig: 'getRechargeConfig',
+    }),
+    $style() {
+      const style = this[`$style_${this.siteConfig.MOBILE_WEB_TPL}`] || this.$style_porn1;
+      return style;
+    },
+    themeTPL() {
+      return this.siteConfig.MOBILE_WEB_TPL
+    },
+    swagIcons() {
+      return [
+        {
+          key: 'buyDiamond',
+          show: true,
+          text: this.$text('S_BUY_DIAMOND', '购买钻石'),
+          imgSrc: `/static/image/${this.themeTPL}/mcenter/wallet/ic_wallter_swag_buydiamond.png`,
+          onClick: () => {
+            this.$router.push('/mobile/mcenter/swag');
+          }
+        },
+        {
+          key: 'howToBuy',
+          show: true,
+          text: this.$text('S_TO_BUY', '如何购买'),
+          imgSrc: `/static/image/${this.themeTPL}/mcenter/wallet/ic_wallter_swag_howtobuy.png`,
+          onClick: () => {
+            console.log('导页帮助中心-SWAG钻石购买说明');
+          }
+        },
+        {
+          key: 'instrustions',
+          show: true,
+          text: this.$text('S_INSTRUSTIONS', '使用方法'),
+          imgSrc: `/static/image/${this.themeTPL}/mcenter/wallet/ic_wallter_swag_instrustions.png`,
+          onClick: () => {
+            console.log('导页帮助中心-SWAG钻石使用方法，预设展开「SWAG 钻石是什么？」');
+          }
+        },
+      ].filter(item => item.show)
+    },
+    walletIcons() {
+      return [
         {
           key: 'transfer',
           show: true,
           text: this.$text('S_TRANSFER', '转帐'),
-          imgSrc: '/static/image/_new/mcenter/wallet/ic_wallter_tranfer.png',
+          imgSrc: `/static/image/${this.themeTPL}/mcenter/wallet/ic_wallter_tranfer.png`,
           onClick: () => {
             this.$router.push('/mobile/mcenter/balanceTrans');
           }
@@ -232,9 +308,9 @@ export default {
           key: 'withdraw',
           show: true,
           text: this.$text('S_WITHDRAWAL_TEXT', '提现'),
-          imgSrc: '/static/image/_new/mcenter/wallet/ic_wallter_withdraw.png',
+          imgSrc: `/static/image/${this.themeTPL}/mcenter/wallet/ic_wallter_withdraw.png`,
           onClick: () => {
-            if (this.siteConfig.MOBILE_WEB_TPL !== 'ey1') {
+            if (this.themeTPL !== 'ey1') {
               this.$router.push('/mobile/mcenter/withdraw');
               return;
             }
@@ -252,7 +328,7 @@ export default {
 
                 Object.keys(res.data.ret).forEach(i => {
                   if (i !== "bank" && !res.data.ret[i]) {
-                    if (this.siteConfig.MOBILE_WEB_TPL === 'ey1') {
+                    if (this.themeTPL === 'ey1') {
                       this.actionSetGlobalMessage({
                         msg: '请先设定提现资料', cb: () => {
                           {
@@ -262,7 +338,7 @@ export default {
                       })
                     }
 
-                    if (this.siteConfig.MOBILE_WEB_TPL === 'porn1') {
+                    if (this.themeTPL === 'porn1') {
                       this.actionSetGlobalMessage({
                         msg: '请先设定提现资料', cb: () => {
                           {
@@ -295,7 +371,7 @@ export default {
           key: 'recharge',
           show: false,
           text: this.$text("S_CREDIT_TRANSFER", "额度转让"),
-          imgSrc: '/static/image/_new/mcenter/wallet/ic_wallet_trans.png',
+          imgSrc: `/static/image/${this.themeTPL}/mcenter/wallet/ic_wallet_trans.png`,
           onClick: () => {
             this.actionGetMemInfoV3().then(() => {
               this.actionGetRechargeStatus('wallet');
@@ -306,28 +382,13 @@ export default {
           key: 'card',
           show: true,
           text: this.$text('S_MARANGE_CARD', '卡片管理'),
-          imgSrc: '/static/image/_new/mcenter/wallet/ic_wallter_manage.png',
+          imgSrc: `/static/image/${this.themeTPL}/mcenter/wallet/ic_wallter_manage.png`,
           onClick: () => {
             this.$router.push('/mobile/mcenter/bankCard');
           }
         }
-      ],
-      bonus: {},
-    };
-  },
-  computed: {
-    ...mapGetters({
-      loginStatus: 'getLoginStatus',
-      memInfo: 'getMemInfo',
-      gameData: 'getGameData',
-      siteConfig: 'getSiteConfig',
-      hasBank: 'getHasBank',
-      rechargeConfig: 'getRechargeConfig',
-    }),
-    $style() {
-      const style = this[`$style_${this.siteConfig.MOBILE_WEB_TPL}`] || this.$style_porn1;
-      return style;
-    },
+      ]
+    }
   },
   created() {
     if (!this.loginStatus) {
