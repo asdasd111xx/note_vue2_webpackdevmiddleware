@@ -14,6 +14,13 @@
             {{ oldPhone.label }}
           </div>
           <div :class="$style['input-wrap']">
+            <template v-if="themeTPL === 'ey1'">
+              <select v-model="phoneHead" :class="$style['phone-selected']">
+                <option v-for="option in phoneHeadOption" v-bind:value="option">
+                  {{ option }}
+                </option>
+              </select>
+            </template>
             <input
               v-model="oldValue"
               :placeholder="oldPhone.label"

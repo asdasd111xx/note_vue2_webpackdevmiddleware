@@ -75,7 +75,7 @@ export default {
   border-radius: 3px;
 
   &.disable {
-    // pointer-events: none;
+    pointer-events: none;
   }
 
   .icon {

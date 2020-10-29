@@ -117,7 +117,7 @@
             <div
               :class="[
                 $style['btn-send'],
-                { [$style.active]: isVerifyPhone && !timer && !isSendKeyring }
+                { [$style.active]: isVerifyPhone && !timer && !isSendKeyring },
               ]"
               @click="showCaptchaPopup"
             >
@@ -130,13 +130,11 @@
         <div
           :class="[
             $style['btn-submit'],
-            { [$style.active]: !isSendForm && checkFormData && isVerifyPhone }
+            { [$style.active]: !isSendForm && checkFormData && isVerifyPhone },
           ]"
           @click="sendFormData"
         >
-          <div>
-            确认
-          </div>
+          <div>确认</div>
         </div>
       </div>
       <page-loading :is-show="isLoading" />
@@ -374,10 +372,12 @@ export default {
       }
 
       if (key === "phone") {
-        this.isVerifyPhone = target.value.length >= 11;
-
-        if (!this.isVerifyPhone) {
-          // errorMsg = '手机格式不符合要求';
+        // this.isVerifyPhone = target.value.length >= 11;
+        // 億元 不客端判斷手機號碼位數
+        if (this.siteConfig.MOBILE_WEB_TPL === 'ey1' || value.length >= 11) {
+          this.isVerifyPhone = true
+        } else {
+          this.isVerifyPhone = false;
         }
         this.actionVerificationFormData({ target: 'phone', value: target.value }).then((res => {
           target.value = res;

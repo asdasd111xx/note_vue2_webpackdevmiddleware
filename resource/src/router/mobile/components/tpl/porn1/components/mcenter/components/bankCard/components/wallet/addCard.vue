@@ -18,8 +18,8 @@
               :class="[
                 $style['wallet-item'],
                 {
-                  [$style['is-current']]: item.id === selectTarget.walletId
-                }
+                  [$style['is-current']]: item.id === selectTarget.walletId,
+                },
               ]"
               v-for="item in selectTarget.fixed ? filterWalletList : walletList"
               :key="item.id"
@@ -46,9 +46,9 @@
           <div
             :class="[
               $style['select-bank'],
-              { [$style['disable']]: selectTarget.fixed }
+              { [$style['disable']]: selectTarget.fixed },
             ]"
-            @click="isShowPopBankList = true"
+            @click="setPopupStatus(true, 'bank-list')"
           >
             <span
               :class="{ [$style['select-active']]: selectTarget.walletName }"
@@ -77,7 +77,7 @@
         <div
           :class="[
             $style['input-wrap'],
-            { [$style['disable']]: isGoBaoWallet }
+            { [$style['disable']]: isGoBaoWallet },
           ]"
         >
           <input
@@ -92,10 +92,10 @@
         <div
           v-if="
             (themeTPL !== 'porn1' && selectTarget.walletId === 21) ||
-              isGoBaoWallet
+            isGoBaoWallet
           "
           :class="$style['qrcode']"
-          @click="isShowPopQrcode = true"
+          @click="setPopupStatus(true, 'qrcode')"
         >
           <img
             :src="
@@ -166,8 +166,8 @@
             $style['submit'],
             { [$style['disabled']]: lockStatus },
             {
-              [$style['hidden']]: isGoBaoWallet
-            }
+              [$style['hidden']]: isGoBaoWallet,
+            },
           ]"
           @click="submitByNormal"
         >
@@ -187,46 +187,51 @@
       >
     </p>
 
-    <!-- 錢包類型選單 -->
-    <template v-if="themeTPL === 'ey1'">
-      <div v-if="isShowPopBankList" :class="$style['pop-wrap']">
-        <div :class="$style['pop-mask']" @click="isShowPopBankList = false" />
-        <div :class="[$style['pop-menu'], $style['custom1']]">
-          <div :class="$style['pop-title']">
-            <span @click="isShowPopBankList = false">
-              {{ $text("S_CANCEL", "取消") }}
-            </span>
-            请选择钱包类型
+    <template v-if="showPopStatus.isShow">
+      <!-- 銀行列表選單 -->
+      <template v-if="themeTPL === 'ey1' && showPopStatus.type === 'bank-list'">
+        <div :class="$style['pop-wrap']">
+          <div :class="$style['pop-mask']" @click="closePopup" />
+          <div :class="[$style['pop-menu'], $style['custom1']]">
+            <div :class="$style['pop-title']">
+              <span @click="closePopup">
+                {{ $text("S_CANCEL", "取消") }}
+              </span>
+              请选择钱包类型
+            </div>
+
+            <ul :class="$style['pop-list']">
+              <li
+                v-for="item in walletList"
+                :key="item.id"
+                @click="setBank(item)"
+              >
+                <img v-lazy="getBankImage(item.swift_code)" />
+                {{ item.name }}
+                <icon
+                  v-if="item.id === selectTarget.walletId"
+                  :class="$style['select-icon']"
+                  name="check"
+                />
+              </li>
+            </ul>
           </div>
-          <ul :class="$style['pop-list']">
-            <li
-              v-for="item in walletList"
-              :key="item.id"
-              @click="setBank(item)"
-            >
-              <img v-lazy="getBankImage(item.swift_code)" />
-              {{ item.name }}
-              <icon
-                v-if="item.id === selectTarget.walletId"
-                :class="$style['select-icon']"
-                name="check"
-              />
-            </li>
-          </ul>
         </div>
-      </div>
-    </template>
+      </template>
 
-    <!-- USDT Tip 彈窗 -->
-    <template v-if="themeTPL === 'porn1'">
-      <popup-tip v-if="isShowPopTip" :isShowPop.sync="isShowPopTip" />
-    </template>
+      <!-- USDT Tip 彈窗 -->
+      <template v-if="themeTPL === 'porn1' && showPopStatus.type === 'tip'">
+        <popup-tip @close="closePopup" />
+      </template>
 
-    <popup-qrcode
-      v-if="isShowPopQrcode"
-      :isShowPop.sync="isShowPopQrcode"
-      :paymentGatewayId="selectTarget.walletId"
-    />
+      <!-- 錢包綁定 Qrcode -->
+      <template v-if="showPopStatus.type === 'qrcode'">
+        <popup-qrcode
+          :virtualBankId="selectTarget.walletId"
+          @close="closePopup"
+        />
+      </template>
+    </template>
   </div>
 </template>
 
@@ -266,10 +271,13 @@ export default {
       filterWalletList: [],
       userBindWalletList: [],
 
-      isShowPopBankList: false,
-      isShowPopTip: false,
-      isShowPopQrcode: false,
       isGoBaoWallet: false,
+
+      // 彈窗顯示狀態統整
+      showPopStatus: {
+        isShow: false,
+        type: ''
+      },
 
       // 欄位資料
       formData: {
@@ -304,22 +312,6 @@ export default {
     },
     themeTPL() {
       return this.siteConfig.MOBILE_WEB_TPL;
-    },
-    showPopQrcode: {
-      get() {
-        return this.isShowPopQrcode;
-      },
-      set(value) {
-        this.isShowPopQrcode = value;
-      }
-    },
-    showPopTip: {
-      get() {
-        return this.isShowPopTip;
-      },
-      set(value) {
-        this.isShowPopTip = value;
-      }
     }
   },
   watch: {
@@ -526,7 +518,7 @@ export default {
           let idArr = [
             ...new Set(
               this.userBindWalletList.map(item => {
-                return item.payment_gateway_id;
+                return item.virtual_bank_id;
               })
             )
           ];
@@ -544,13 +536,13 @@ export default {
             ...new Set(
               this.userBindWalletList.filter(item => {
                 return (
-                  item.payment_gateway_id === 21 ||
-                  item.payment_gateway_id === 37
+                  item.virtual_bank_id === 21 ||
+                  item.virtual_bank_id === 37
                 );
               })
             )
           ].map(item => {
-            return item.payment_gateway_id;
+            return item.virtual_bank_id;
           });
 
           if (idArr) {
@@ -576,7 +568,7 @@ export default {
         url: "/api/v1/c/player/user_virtual_bank",
         data: {
           address: this.formData["walletAddress"].value,
-          payment_gateway_id: this.selectTarget.walletId
+          virtual_bank_id: this.selectTarget.walletId
         }
       })
         .then(response => {
@@ -643,7 +635,7 @@ export default {
         });
     },
     setBank(bank) {
-      this.isShowPopBankList = false;
+      this.closePopup();
       this.selectTarget.walletName = bank.name;
       this.selectTarget.walletId = bank.id;
       this.selectTarget.swiftCode = bank.swift_code;
@@ -757,14 +749,23 @@ export default {
             dataObj: {
               text: "点我查看交易所",
               cb: () => {
-                this.isShowPopTip = true;
+                this.setPopupStatus(true, 'tip')
               }
             }
           }
         ];
         return;
       }
-    }
+    },
+    setPopupStatus(isShow, type) {
+      this.showPopStatus = {
+        isShow,
+        type
+      }
+    },
+    closePopup() {
+      this.setPopupStatus(false, '')
+    },
   }
 };
 </script>

@@ -9,8 +9,8 @@
           :class="[
             'confirm-btn-wrap',
             {
-              ey1: themeTPL === 'ey1'
-            }
+              ey1: themeTPL === 'ey1',
+            },
           ]"
         >
           <div @click="handleClick">
@@ -99,7 +99,7 @@ export default {
 }
 
 .confirm-title {
-  padding: 30px;
+  padding: 30px 10px;
   display: block;
   width: 100%;
   word-break: break-all;

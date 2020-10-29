@@ -182,7 +182,7 @@ export default {
 
       switch (event) {
         case 'maintain_notice':
-          string = `即将进行系统维护 <br /> 于<span>${this.data.message.countdown}</span>分钟后开始`;
+          string = `即将进行系统维护 <br /> 于<span>${this.data.countdown}</span>分钟后开始`;
           return string;
 
         case 'verification_code':

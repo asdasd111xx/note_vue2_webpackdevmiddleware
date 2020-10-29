@@ -142,7 +142,7 @@
           <span @click="category_isShowPop = false">{{
             $text("S_CANCEL", "取消")
           }}</span>
-          选择游戏类别
+          选择充值教程
         </div>
         <ul :class="$style['pop-list']">
           <li
@@ -169,7 +169,7 @@
       </div>
     </div>
 
-    <div :class="$style['gotop']" @click="toTop">
+    <div :class="$style['gotop']" @click="toTop" v-if="showgo">
       <img
         :src="
           $getCdnPath(`/static/image/porn1/mcenter/help/deposit/btn_gotop.png`)
@@ -188,6 +188,7 @@ export default {
   components: {},
   data() {
     return {
+      showgo: false,
       hasCid: false,
       category_currentIndex: 0,
       category_isShowPop: false,
@@ -257,6 +258,7 @@ export default {
           list: [
             { key: 0, img: "bank7_step1" },
             { key: 1, img: "bank7_step2" },
+            { key: 2, img: "bank7_step3" },
           ],
         },
       ],
@@ -266,6 +268,15 @@ export default {
   mounted() {
     this.hasCid = getCookie("cid") || false;
     document.title = this.$text("S_HELP_CENTER", "帮助中心");
+
+    let vm = this;
+    $("#mobile-wrap").scroll(function () {
+      if ($(this).scrollTop() > 1) {
+        vm.showgo = true;
+      } else {
+        vm.showgo = false;
+      }
+    });
   },
   methods: {
     setType(index) {
@@ -274,7 +285,11 @@ export default {
       this.category_isShowPop = false;
     },
     toTop() {
-      $("#mobile-wrap").animate({ scrollTop: 0 }, 1000);
+      if ($("#mobile-wrap").scrollTop() < 30) {
+        $("#mobile-wrap").animate({ scrollTop: 0 }, 200);
+      } else {
+        $("#mobile-wrap").animate({ scrollTop: 0 }, 1000);
+      }
     },
 
     setCurrentTab(index) {

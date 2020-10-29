@@ -212,7 +212,7 @@ export default {
         this.$nextTick(() => {
 
           // 3 casino, 6 mahjong,card
-          let imgSrc = `https://b1.xf0371.com/cdn/image/${this.$route.name}/${this.vendor}/Game_${this.jackpotData.jpMinor[tmpIndex].code}.png`;
+          let imgSrc = `https://bbos.bbin-asia.com/cdn/image/${this.$route.name}/${this.vendor}/Game_${this.jackpotData.jpMinor[tmpIndex].code}.png`;
           array.push({ ...this.jackpotData.jpMinor[tmpIndex], imgSrc: imgSrc });
 
           if (tmpIndex + 1 >= this.jackpotData.jpMinor.length) {
@@ -221,7 +221,7 @@ export default {
             tmpIndex += 1;
           }
 
-          imgSrc = `https://b1.xf0371.com/cdn/image/${this.$route.name}/${this.vendor}/Game_${this.jackpotData.jpMinor[tmpIndex].code}.png`;
+          imgSrc = `https://bbos.bbin-asia.com/cdn/image/${this.$route.name}/${this.vendor}/Game_${this.jackpotData.jpMinor[tmpIndex].code}.png`;
           array.push({ ...this.jackpotData.jpMinor[tmpIndex], imgSrc: imgSrc });
 
           this.currentBonus = array;
@@ -242,7 +242,7 @@ export default {
           interval();
         }, 3000);
       } else {
-        let imgSrc = `https://b1.xf0371.com/cdn/image/${this.$route.name}/${this.vendor}/Game_${this.jackpotData.jpMinor[0].code}.png`;
+        let imgSrc = `https://bbos.bbin-asia.com/cdn/image/${this.$route.name}/${this.vendor}/Game_${this.jackpotData.jpMinor[0].code}.png`;
         this.currentBonus = [];
         this.currentBonus.push({ ...this.jackpotData.jpMinor[0], imgSrc: imgSrc });
       }

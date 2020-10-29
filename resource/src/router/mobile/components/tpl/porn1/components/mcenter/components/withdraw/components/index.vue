@@ -247,7 +247,7 @@
         :class="$style['bank-card-wrap']"
       >
         <div :class="$style['bank-card-cell']">
-          {{ $text("S_BANKCARD", "银行卡") }}
+          {{ $text("S_WITHDRAW_ACCOUNT02", "提现帐号") }}
           <span v-if="forceStatus === 2" :class="$style['withdraw-status-tip']">
             （请使用 CGPay 出款）
           </span>
@@ -387,7 +387,7 @@
       :class="[
         $style['actual-money'],
         {
-          [$style['trueMoney']]:
+          [$style['error']]:
             themeTPL === 'ey1' && withdrawValue && actualMoney <= 0,
         },
       ]"
@@ -522,7 +522,7 @@
     <template v-if="showPopStatus.isShow">
       <!-- 被列為黑名單提示 -->
       <template v-if="showPopStatus.type === 'blockTips'">
-        <block-list-tips type="withdraw" @close="closeTips" />
+        <block-list-tips type="withdraw" @close="closePopup" />
       </template>
 
       <!-- 提款前提示-->
@@ -533,7 +533,7 @@
           :withdraw-value="+withdrawValue"
           :type="widthdrawTipsType"
           :has-crypto="isSelectedUSDT"
-          @close="closeTips"
+          @close="closePopup"
           @submit="handleSubmit"
           @save="saveCurrentValue(true)"
         />
@@ -545,7 +545,7 @@
           :withdraw-user-data="withdrawUserData"
           :check-account-data="checkAccountData"
           :more-method-status="moreMethodStatus"
-          @close="closeTips"
+          @close="closePopup"
         />
       </template>
 
@@ -557,7 +557,7 @@
           :render-list="currencyList"
           :current-obj="withdrawCurrency"
           :item-func="setWithdrawCurrency"
-          @close="closeTips"
+          @close="closePopup"
         />
       </template>
     </template>
@@ -693,7 +693,6 @@ export default {
         // 提現密碼
         this.withdrawPwd = localStorage.getItem("tmp_w_withdrawPwd") || this.withdrawPwd;
 
-        // Todo
         // CGPay Currency
         this.withdrawCurrency = JSON.parse(localStorage.getItem("tmp_w_withdrawCurrency")) || this.withdrawCurrency;
 
@@ -944,7 +943,7 @@ export default {
               this.withdrawData.user_virtual_bank.ret.map((item) => {
                 // 本廳是否支援此電子錢包 & 是否為常用帳戶
                 return item.virtual && item.common
-                  ? item.payment_gateway_id
+                  ? item.virtual_bank_id
                   : null;
               })
             ),
@@ -1185,7 +1184,7 @@ export default {
           break;
       }
     },
-    closeTips() {
+    closePopup() {
       this.setPopupStatus(false, '')
 
       switch (this.showPopStatus.type) {
@@ -1236,7 +1235,7 @@ export default {
       }
     },
     handleSubmit() {
-      this.closeTips();
+      this.closePopup();
       if (
         this.memInfo.config.withdraw_player_verify &&
         !localStorage.getItem("tmp_w_1")

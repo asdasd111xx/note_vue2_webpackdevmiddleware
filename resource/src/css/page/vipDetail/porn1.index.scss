@@ -2,7 +2,7 @@
 
 @mixin grid-style {
   display: grid;
-  grid-template-columns: 68px repeat(6, 1fr);
+  grid-template-columns: 68px repeat(5, 1fr);
   min-height: 43px;
   text-align: center;
 }

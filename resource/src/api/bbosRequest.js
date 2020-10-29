@@ -81,7 +81,8 @@ export default ({
         }
     })
         .catch((error) => {
-            console.log(error);
+            console.log("[BBOS request error]")
+            console.log(error.response);
             fail(error.response);
             // if (error && error.response && error.response.status === 429) {
             // }

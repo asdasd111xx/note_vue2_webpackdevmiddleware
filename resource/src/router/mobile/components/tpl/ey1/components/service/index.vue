@@ -179,7 +179,6 @@ export default {
         'x-domain': this.memInfo.user.domain
       }
     }).then(res => {
-      console.log("api test");
       if (res && res.data) {
         this.linkArray = res.data;
       }
