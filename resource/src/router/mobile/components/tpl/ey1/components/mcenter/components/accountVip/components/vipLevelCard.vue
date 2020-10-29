@@ -84,8 +84,8 @@
                 流水要求
               </div>
               <div>
-                保级推广{{ item.downgrade_members }}位 <br />
-                有效会员(充值{{ item.downgrade_deposit | roundTwoPoints }})
+                {{ userVipInfo.downgrade_valid_bet }} <br />
+                保级投注
               </div>
             </div>
           </div>

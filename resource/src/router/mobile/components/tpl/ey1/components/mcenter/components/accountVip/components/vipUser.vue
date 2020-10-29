@@ -87,13 +87,11 @@
         }})
       </div>
       <div :class="$style['desc-text']">
-        ●保级推广(位)：
+        ●保级投注(元)：
         <span :class="$style['money']">{{
-          userVipInfo.downgrade_members
+          userVipInfo.amount_info.valid_bet
         }}</span>
-        (有效会员充值{{ userVipInfo.downgrade_valid_bet }} , 保级{{
-          userVipInfo.downgrade_day
-        }}天)
+        ({{ downgradeData }} , 保级{{ userVipInfo.downgrade_day }}天)
       </div>
     </div>
   </div>
@@ -113,7 +111,8 @@ export default {
     return {
       avatarSrc: "",
       levelIcon: "00",
-      setVipTextDisplay: "inline"
+      setVipTextDisplay: "inline",
+      downgradeData: ""
     };
   },
   computed: {
@@ -135,6 +134,7 @@ export default {
     this.avatarSrc = `/static/image/${this.siteConfig.MOBILE_WEB_TPL}/mcenter/avatar_nologin.png`;
     this.actionSetUserdata(true).then(() => {
       this.getAvatarSrc();
+      this.getDowngradeData();
     });
 
     this.$nextTick(() => {
@@ -174,6 +174,13 @@ export default {
         this.avatarSrc = this.$getCdnPath(
           `/static/image/${this.siteConfig.MOBILE_WEB_TPL}/mcenter/default/avatar_${imgSrcIndex}.png`
         );
+      }
+    },
+    getDowngradeData() {
+      if (this.userVipInfo.amount_info.valid_bet == this.userVipInfo.downgrade_valid_bet) {
+        this.downgradeData = '已达条件'
+      } else {
+        this.downgradeData = `${this.userVipInfo.amount_info.valid_bet}/${this.userVipInfo.downgrade_valid_bet}`
       }
     }
   }
