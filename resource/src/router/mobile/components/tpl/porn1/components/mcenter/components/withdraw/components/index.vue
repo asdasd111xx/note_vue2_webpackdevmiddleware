@@ -7,25 +7,30 @@
       >
         <div :class="[$style['balance-item-wrap'], 'clearfix']">
           <!-- 紅利彩金 -->
-          <template v-if="themeTPL === 'porn1'">
-            <div
-              :class="[
-                $style['balance-item'],
-                {
-                  [$style['is-last-item']]: !isShowMore,
-                },
-              ]"
-              @click="$router.push('/mobile/mcenter/bonus')"
-            >
-              <span :class="$style['balance-item-vendor']">
-                {{ $text("S_BONUS", "红利彩金") }}
-              </span>
 
-              <span :class="$style['balance-item-money']">
-                {{ bonus.balance ? bonus.balance : "" }}
-              </span>
-            </div>
-          </template>
+          <div
+            :class="[
+              $style['balance-item'],
+              {
+                [$style['is-last-item']]: !isShowMore,
+              },
+            ]"
+            @click="$router.push('/mobile/mcenter/bonus')"
+          >
+            <span :class="$style['balance-item-vendor']">
+              <template v-if="themeTPL === 'porn1'">
+                {{ $text("S_BONUS", "红利彩金") }}
+              </template>
+
+              <template v-if="themeTPL === 'ey1'">
+                {{ $text("S_BONUS_ACCOUNT", "红利帐户") }}
+              </template>
+            </span>
+
+            <span :class="$style['balance-item-money']">
+              {{ bonus.balance ? bonus.balance : "" }}
+            </span>
+          </div>
 
           <template v-if="!isShowMore">
             <div

@@ -13,7 +13,7 @@
           v-for="(item, index) in walletIcons"
           v-if="
             item.show ||
-              (item.key === 'recharge' && siteConfig.MOBILE_WEB_TPL !== 'ey1')
+            (item.key === 'recharge' && siteConfig.MOBILE_WEB_TPL !== 'ey1')
           "
           :key="'icon-' + index"
           :class="$style['icon-cell']"
@@ -59,7 +59,7 @@
             <div
               :class="[
                 $style['recycle-btn'],
-                balanceTran.balanceBackLock ? $style.disable : ''
+                balanceTran.balanceBackLock ? $style.disable : '',
               ]"
             >
               {{ $text("S_ONE_CLICK_TO_ACCOUNT") }}
@@ -67,20 +67,24 @@
           </div>
 
           <div :class="[$style['balance-item-wrap'], 'clearfix']">
-            <template v-if="siteConfig.MOBILE_WEB_TPL === 'porn1'">
-              <div
-                :class="$style['balance-item']"
-                @click="$router.push('/mobile/mcenter/bonus')"
-              >
-                <span :class="$style['balance-item-vendor']">
+            <div
+              :class="$style['balance-item']"
+              @click="$router.push('/mobile/mcenter/bonus')"
+            >
+              <span :class="$style['balance-item-vendor']">
+                <template v-if="themeTPL === 'porn1'">
                   {{ $text("S_BONUS", "红利彩金") }}
-                </span>
+                </template>
 
-                <span :class="$style['balance-item-money']">
-                  {{ bonus.balance }}
-                </span>
-              </div>
-            </template>
+                <template v-if="themeTPL === 'ey1'">
+                  {{ $text("S_BONUS_ACCOUNT", "红利帐户") }}
+                </template>
+              </span>
+
+              <span :class="$style['balance-item-money']">
+                {{ bonus.balance }}
+              </span>
+            </div>
 
             <div
               v-for="(item, key, index) in balanceTran.balanceInfo"
@@ -90,8 +94,8 @@
                 {
                   [$style['is-last-item']]:
                     Object.keys(balanceTran.balanceInfo).length - 1 - index <=
-                    (Object.keys(balanceTran.balanceInfo).length % 4 || 4)
-                }
+                    (Object.keys(balanceTran.balanceInfo).length % 4 || 4),
+                },
               ]"
             >
               <span :class="$style['balance-item-vendor']">{{
@@ -328,6 +332,9 @@ export default {
       const style = this[`$style_${this.siteConfig.MOBILE_WEB_TPL}`] || this.$style_porn1;
       return style;
     },
+    themeTPL() {
+      return this.siteConfig.MOBILE_WEB_TPL;
+    }
   },
   created() {
     if (!this.loginStatus) {
