@@ -117,7 +117,7 @@
             <div
               :class="[
                 $style['btn-send'],
-                { [$style.active]: isVerifyPhone && !timer && !isSendKeyring },
+                { [$style.active]: isVerifyPhone && !timer && !isSendKeyring }
               ]"
               @click="showCaptchaPopup"
             >
@@ -130,7 +130,7 @@
         <div
           :class="[
             $style['btn-submit'],
-            { [$style.active]: !isSendForm && checkFormData && isVerifyPhone },
+            { [$style.active]: !isSendForm && checkFormData && isVerifyPhone }
           ]"
           @click="sendFormData"
         >
@@ -374,7 +374,7 @@ export default {
       if (key === "phone") {
         // this.isVerifyPhone = target.value.length >= 11;
         // 億元 不客端判斷手機號碼位數
-        if (this.siteConfig.MOBILE_WEB_TPL === 'ey1' || value.length >= 11) {
+        if (this.siteConfig.MOBILE_WEB_TPL === 'ey1' || target.value.length >= 11) {
           this.isVerifyPhone = true
         } else {
           this.isVerifyPhone = false;

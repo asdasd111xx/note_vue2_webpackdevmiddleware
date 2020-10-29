@@ -12,8 +12,8 @@
             :class="[
               $style['balance-item'],
               {
-                [$style['is-last-item']]: !isShowMore,
-              },
+                [$style['is-last-item']]: !isShowMore
+              }
             ]"
             @click="$router.push('/mobile/mcenter/bonus')"
           >
@@ -43,8 +43,8 @@
                     Object.keys(balanceTran.firstThirdBalanceInfo).length -
                       index <=
                     (Object.keys(balanceTran.firstThirdBalanceInfo).length %
-                      3 || 3),
-                },
+                      3 || 3)
+                }
               ]"
             >
               <span :class="$style['balance-item-vendor']">{{
@@ -97,8 +97,8 @@
                 {
                   [$style['is-last-item']]:
                     Object.keys(balanceTran.balanceInfo).length - index <=
-                    (Object.keys(balanceTran.balanceInfo).length % 4 || 4),
-                },
+                    (Object.keys(balanceTran.balanceInfo).length % 4 || 4)
+                }
               ]"
             >
               <span :class="$style['balance-item-vendor']">{{
@@ -159,10 +159,11 @@
           <span
             v-if="
               forceStatus === 1 &&
-              userWithdrawCount === 0 &&
-              isFirstWithdraw &&
-              withdrawUserData.wallet.length + withdrawUserData.crypto.length >
-                0
+                userWithdrawCount === 0 &&
+                isFirstWithdraw &&
+                withdrawUserData.wallet.length +
+                  withdrawUserData.crypto.length >
+                  0
             "
             :class="$style['withdraw-status-tip']"
           >
@@ -186,8 +187,8 @@
           :class="[
             $style['bank-card-cell'],
             {
-              [$style['disable']]: !item.allow,
-            },
+              [$style['disable']]: !item.allow
+            }
           ]"
           @click="handleSelectCard(item)"
         >
@@ -196,8 +197,8 @@
               $style['check-box'],
               { [$style['checked']]: item.id === selectedCard.id },
               {
-                [$style['disable']]: !item.allow,
-              },
+                [$style['disable']]: !item.allow
+              }
             ]"
           />
           <!-- <img v-lazy="getBankImage(item.swift_code)" /> -->
@@ -264,15 +265,15 @@
           :class="[
             $style['bank-card-cell'],
             {
-              [$style['disable']]: forceStatus === 2 && !item.allow,
-            },
+              [$style['disable']]: forceStatus === 2 && !item.allow
+            }
           ]"
           @click="handleSelectCard(item)"
         >
           <div
             :class="[
               $style['check-box'],
-              { [$style['checked']]: item.id === selectedCard.id },
+              { [$style['checked']]: item.id === selectedCard.id }
             ]"
           />
           <span :class="[{ [$style['hasOption']]: item.bank_id === 2009 }]">
@@ -335,7 +336,7 @@
       <div
         v-if="
           allWithdrawAccount.length > 0 &&
-          (moreMethodStatus.bankCard || moreMethodStatus.wallet)
+            (moreMethodStatus.bankCard || moreMethodStatus.wallet)
         "
         :class="[$style['add-bank-card']]"
         @click="setPopupStatus(true, 'moreMethod')"
@@ -367,7 +368,7 @@
           inputmode="decimal"
           @input="verification('withdrawValue', $event.target.value)"
           @blur="
-            ($event) => {
+            $event => {
               verification('withdrawValue', $event.target.value);
               if (isSelectedUSDT && isClickCoversionBtn && withdrawValue) {
                 convertCryptoMoney();
@@ -393,8 +394,8 @@
         $style['actual-money'],
         {
           [$style['error']]:
-            themeTPL === 'ey1' && withdrawValue && actualMoney <= 0,
-        },
+            themeTPL === 'ey1' && withdrawValue && actualMoney <= 0
+        }
       ]"
     >
       <span :class="$style['money-currency']">
@@ -428,11 +429,11 @@
         :class="[
           $style['conversion-btn'],
           {
-            [$style['disable']]: isClickCoversionBtn,
+            [$style['disable']]: isClickCoversionBtn
           },
           {
-            [$style['unInput']]: !withdrawValue || +actualMoney <= 0,
-          },
+            [$style['unInput']]: !withdrawValue || +actualMoney <= 0
+          }
         ]"
         @click="convertCryptoMoney"
       >
@@ -1400,7 +1401,7 @@ export default {
         },
         fail: (error) => {
           if (error && error.data && error.data.msg) {
-            this.actionSetGlobalMessage({ msg: error.data.msg });
+            this.actionSetGlobalMessage({ msg: error.data.msg, code: error.data.code, origin: 'withdraw' });
             this.errTips = error.data.msg;
           }
 

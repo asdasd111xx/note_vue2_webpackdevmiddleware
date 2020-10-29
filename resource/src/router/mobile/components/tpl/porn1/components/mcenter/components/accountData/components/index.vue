@@ -42,10 +42,6 @@ export default {
       this.$router.push('/mobile/mcenter');
       return;
     }
-
-    if (this.$route.query.reqAccount) {
-      this.actionSetGlobalMessage({ msg: '请填写 真实姓名 与 手机号码' })
-    }
   },
   computed: {
     ...mapGetters({

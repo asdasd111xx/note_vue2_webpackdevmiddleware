@@ -160,19 +160,15 @@ export default {
       webInfo: 'getWebInfo',
     }),
     originUrl() {
-      if (this.$route.params.page) {
-        return '/mobile';
+      let origin = this.$route.params.page.toUpperCase();
+      switch (origin) {
+        case 'THIRD':
+          return '/mobile/gift';
+        case 'PROMOTION':
+          return '/mobile/promotion';
+        default:
+          return '/mobile';
       }
-
-      if (this.$route.params.page.toUpperCase() === 'THIRD') {
-        return '/mobile/gift';
-      }
-
-      if (this.$route.params.page.toUpperCase() === 'PROMOTION') {
-        return '/mobile/promotion';
-      }
-
-      return '/mobile';
     },
     iframeHeight() {
       let result = [];
@@ -228,19 +224,18 @@ export default {
       })
     },
     onListener(event) {
-      //  需要監聽的白名單
-      let whiteList = [window.location.origin,
-        'https://play.qybtv.xyz',
-        'https://play.pybtv.xyz',
-        'https://play.qybpb.xyz',
-        'https://play.pybpb.xyz',
-        'https://dglzsm.com',
-        'http://47.240.78.53',
-        'http://47.240.57.135',
-        'http://47.240.117.62'
-      ];
-
-      if (whiteList.includes(event.origin) && event.data) {
+      // //  需要監聽的白名單
+      // let whiteList = [window.location.origin,
+      //   'https://play.qybtv.xyz',
+      //   'https://play.pybtv.xyz',
+      //   'https://play.qybpb.xyz',
+      //   'https://play.pybpb.xyz',
+      //   'https://dglzsm.com',
+      //   'http://47.240.78.53',
+      //   'http://47.240.57.135',
+      //   'http://47.240.117.62'
+      // ];
+      if (event.data) {
         let data = event.data;
         if (!data.event) {
           return;
