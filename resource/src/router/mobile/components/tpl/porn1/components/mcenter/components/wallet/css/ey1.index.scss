@@ -10,11 +10,9 @@ $main_color: #e42a30;
   }
 }
 
-.wager-wrap {
-  .title {
-    &::before {
-      background: linear-gradient(#fe2a2a, #b60303);
-    }
+.title {
+  &::before {
+    background: linear-gradient(#fe2a2a, #b60303);
   }
 }
 
