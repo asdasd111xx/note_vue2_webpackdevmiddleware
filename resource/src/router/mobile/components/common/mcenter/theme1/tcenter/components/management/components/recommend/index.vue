@@ -156,8 +156,9 @@
           v-if="isShowCaptcha"
           :is-show-captcha.sync="isShowCaptcha"
           :captcha.sync="captchaData"
+          style="display: none"
         />
-        <button @click="showCaptchaPopup">{{ $text("S_ADD") }}</button>
+        <button @click="onSubmit">{{ $text("S_ADD") }}</button>
       </div>
     </transition>
     <!-- 訊息 -->
