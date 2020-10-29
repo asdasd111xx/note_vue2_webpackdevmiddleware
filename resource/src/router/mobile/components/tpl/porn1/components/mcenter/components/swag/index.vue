@@ -7,7 +7,8 @@
           :key="`tab-${item.key}`"
           :class="[
             $style['tab-item'],
-            { [$style['is-current']]: currentTab === index }
+            { [$style['is-current']]: currentTab === index },
+            { [$style['SWAG']]: index === 2 }
           ]"
           @click="setCurrentTab(index)"
         >

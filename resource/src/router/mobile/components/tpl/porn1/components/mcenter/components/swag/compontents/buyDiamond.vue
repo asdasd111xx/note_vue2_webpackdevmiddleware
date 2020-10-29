@@ -1,11 +1,15 @@
 <template>
-  <div :class="['clearfix']"></div>
+  <div :class="['clearfix']">
+    <tipsDiamond />
+  </div>
 </template>
 
 <script>
 import { mapGetters, mapActions } from "vuex";
 import axios from "axios";
 import mixin from "@/mixins/mcenter/diamond/diamond";
+import tipsDiamond from './tipsDiamond';
+
 export default {
   mixins: [mixin],
   data() {
@@ -13,6 +17,7 @@ export default {
     };
   },
   components: {
+    tipsDiamond
   },
   computed: {
     ...mapGetters({
