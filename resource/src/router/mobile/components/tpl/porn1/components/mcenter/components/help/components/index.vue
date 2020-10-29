@@ -26,6 +26,7 @@ export default {
     withdraw: () => import(/* webpackChunkName: 'withdraw' */ './template/withdraw'),
     tips: () => import(/* webpackChunkName: 'tips' */ './template/tips'),
     privacy: () => import(/* webpackChunkName: 'privacy' */ './template/privacy'),
+    diamond: () => import(/* webpackChunkName: 'diamond' */ './template/diamond'),
   },
   data() {
     return {
@@ -33,6 +34,7 @@ export default {
       title: '',
       templates: [
         { key: 'contact', title: '联系我们' },
+        { key: 'diamond', title: '购买钻石' },
         { key: 'deposit', title: '充值教程' },
         { key: 'gameintro', title: '游戏介绍' },
         { key: 'support', title: '技术支持' },
