@@ -115,7 +115,10 @@
           </div>
         </div>
       </div>
-      <div :class="$style['content-wrap']" v-html="currentMessage.content" />
+      <div
+        :class="$style['content-wrap']"
+        v-html="setContent(currentMessage.content)"
+      />
     </div>
     <div
       v-if="showFunctionButton"
@@ -240,6 +243,12 @@ export default {
       'actionSetUserdata',
       'actionSetGlobalMessage'
     ]),
+    setContent(content) {
+      let urlRegex = /(https?:\/\/[^\s]+)/g;
+      return content.replace(/\n/g, '<br/>').replace(urlRegex, function (url) {
+        return '<a href="' + url + '" target="_blank">' + url + '</a>';
+      })
+    },
     getMessgae() {
       this.actionSetMcenterMsgCount();
       mcenter.message({
