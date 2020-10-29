@@ -117,7 +117,7 @@
             <div
               :class="[
                 $style['btn-send'],
-                { [$style.active]: isVerifyPhone && !timer && !isSendKeyring }
+                { [$style.active]: isVerifyPhone && !timer && !isSendKeyring },
               ]"
               @click="showCaptchaPopup"
             >
@@ -130,13 +130,11 @@
         <div
           :class="[
             $style['btn-submit'],
-            { [$style.active]: !isSendForm && checkFormData && isVerifyPhone }
+            { [$style.active]: !isSendForm && checkFormData && isVerifyPhone },
           ]"
           @click="sendFormData"
         >
-          <div>
-            确认
-          </div>
+          <div>确认</div>
         </div>
       </div>
       <page-loading :is-show="isLoading" />

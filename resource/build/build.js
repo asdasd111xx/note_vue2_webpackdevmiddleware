@@ -2,6 +2,7 @@ require('./check-versions')()
 
 process.env.NODE_ENV = 'production'
 // 跑建置腳本時 第一個接在build.js後的值為cdn_host ex: node build.js https://xxx.cdn.com
+
 process.env.CDN_HOST = process.argv[2] || ''
 console.log("[debug]process.argv:", process.argv);
 console.log("[debug]process.env.CDN_HOST:", process.env.CDN_HOST);

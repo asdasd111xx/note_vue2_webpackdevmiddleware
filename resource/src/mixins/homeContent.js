@@ -236,7 +236,6 @@ export default {
                     'x-domain': this.memInfo.user.domain
                 }
             }).then(response => {
-                console.log("api test");
                 if (!response.data) {
                     return;
                 }
@@ -502,7 +501,6 @@ export default {
                 case 'PPV':
                 case 'APB':
                 case 'JPB':
-                case 'SWAG':
                 case 'LF':
                 case 'BALE':
                 case 'STB':
@@ -533,44 +531,54 @@ export default {
 
                     return;
 
-                    // // 第三方開啟有問題時 可調整iframe內嵌
-                    // let newWindow = window.open('');
-                    // // yaboRequest({
-                    // //     method: 'get',
-                    // //     url: `${this.siteConfig.YABO_API_DOMAIN}/thirdparty/url`,
-                    // //     headers: {
-                    // //         'x-domain': this.memInfo.user.domain
-                    // //     },
-                    // //     params: {
-                    // //         type: game.type,
-                    // //         userid: this.memInfo.user.id
-                    // //     },
-                    // // }).then(res => {
-                    // //     if (res.data) {
-                    // //         newWindow.location.href = res.data;
-                    // //     } else {
-                    // //         newWindow.close();
-                    // //     }
-                    // // }).catch(error => {
-                    // //     newWindow.close();
-                    // // })
+                // // 第三方開啟有問題時 可調整iframe內嵌
+                // let newWindow = window.open('');
+                // // yaboRequest({
+                // //     method: 'get',
+                // //     url: `${this.siteConfig.YABO_API_DOMAIN}/thirdparty/url`,
+                // //     headers: {
+                // //         'x-domain': this.memInfo.user.domain
+                // //     },
+                // //     params: {
+                // //         type: game.type,
+                // //         userid: this.memInfo.user.id
+                // //     },
+                // // }).then(res => {
+                // //     if (res.data) {
+                // //         newWindow.location.href = res.data;
+                // //     } else {
+                // //         newWindow.close();
+                // //     }
+                // // }).catch(error => {
+                // //     newWindow.close();
+                // // })
 
-                    // goLangApiRequest({
-                    //     method: 'get',
-                    //     url: `${this.siteConfig.YABO_GOLANG_API_DOMAIN}/ThirdParty/${game.type}/${this.memInfo.user.id}`,
-                    //     headers: {
-                    //         'x-domain': this.memInfo.user.domain
-                    //     },
-                    // }).then(res => {
-                    //     if (res.data) {
-                    //         newWindow.location.href = res.data;
-                    //     } else {
-                    //         newWindow.close();
-                    //     }
-                    // }).catch(error => {
-                    //     newWindow.close();
-                    // })
-                    return;
+                // goLangApiRequest({
+                //     method: 'get',
+                //     url: `${this.siteConfig.YABO_GOLANG_API_DOMAIN}/ThirdParty/${game.type}/${this.memInfo.user.id}`,
+                //     headers: {
+                //         'x-domain': this.memInfo.user.domain
+                //     },
+                // }).then(res => {
+                //     if (res.data) {
+                //         newWindow.location.href = res.data;
+                //     } else {
+                //         newWindow.close();
+                //     }
+                // }).catch(error => {
+                //     newWindow.close();
+                // })
+                // return;
+
+                case 'SWAG':
+                    if (!this.loginStatus) {
+                        this.$router.push('/mobile/login');
+                        return;
+                    } else {
+                        this.$router.push(`/mobile/iframe/${game.type}?&title=${game.name}&hasFooter=false&hasHeader=true`);
+                        return;
+                    }
+
                 case 'YV':
                     this.$router.push({
                         name: 'videoList',
@@ -720,12 +728,23 @@ export default {
         getUserViplevel() {
             let cid = getCookie("cid");
             if (!cid && this.loginStatus) { return; }
-            yaboRequest({
+            // yaboRequest({
+            //     method: "get",
+            //     url: `${
+            //         this.siteConfig.YABO_API_DOMAIN
+            //         }/player/vipinfo/${cid}`,
+            //     headers: { "x-domain": this.memInfo.user.domain }
+            // }).then(res => {
+            //     this.userViplevel = res.data ? res.data[0] && res.data[0].now_level_seq : 0;
+            // });
+            goLangApiRequest({
                 method: "get",
-                url: `${
-                    this.siteConfig.YABO_API_DOMAIN
-                    }/player/vipinfo/${cid}`,
-                headers: { "x-domain": this.memInfo.user.domain }
+                url: `${this.siteConfig.YABO_GOLANG_API_DOMAIN
+                    }/Player/vipinfo`,
+                headers: {
+                    "x-domain": this.memInfo.user.domain,
+                    "cid": cid
+                }
             }).then(res => {
                 this.userViplevel = res.data ? res.data[0] && res.data[0].now_level_seq : 0;
             });

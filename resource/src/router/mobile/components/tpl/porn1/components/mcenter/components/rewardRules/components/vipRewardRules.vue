@@ -61,6 +61,7 @@ import mobileContainer from "../../../../common/mobileContainer";
 import mixin from "@/mixins/mcenter/recharge/recharge";
 import axios from "axios";
 import yaboRequest from '@/api/yaboRequest';
+import goLangApiRequest from '@/api/goLangApiRequest';
 import { getCookie } from "@/lib/cookie";
 
 export default {
@@ -134,12 +135,24 @@ export default {
       return value.toString().replace(/\B(?=(\d{3})+(?!\d))/g, ',');
     },
     getUserDetail() {
-      yaboRequest({
+      // yaboRequest({
+      //   method: "get",
+      //   url: `${
+      //     this.siteConfig.YABO_API_DOMAIN
+      //     }/player/vipinfo/${getCookie("cid")}`,
+      //   headers: { "x-domain": this.memInfo.user.domain }
+      // }).then(res => {
+      //   this.userVipInfo = res.data;
+      //   this.vipTitleName = res.data[0].config_name
+      // });
+      goLangApiRequest({
         method: "get",
         url: `${
-          this.siteConfig.YABO_API_DOMAIN
-          }/player/vipinfo/${getCookie("cid")}`,
-        headers: { "x-domain": this.memInfo.user.domain }
+          this.siteConfig.YABO_GOLANG_API_DOMAIN
+          }/Player/vipinfo`,
+        headers: {
+          "x-domain": this.memInfo.user.domain,
+          "cid": getCookie("cid")        }
       }).then(res => {
         this.userVipInfo = res.data;
         this.vipTitleName = res.data[0].config_name

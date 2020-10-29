@@ -50,14 +50,17 @@ export default (params, success = () => { }, fail = () => { }) => {
   let newWindow = '';
   let isWebview = getCookie("platform") === "H";
 
-  // if (vendor === "evo") {
-  // }
-
-  if (!isWebview && vendor !== 'evo') {
-    newWindow = window.open('', '', '_blank', true);
-    setTimeout(() => {
-      newWindow.location = "/game/loading/true";
-    }, 200)
+  switch (vendor) {
+    case 'evo':
+    case 'allwin':
+      break;
+    default:
+      if (!isWebview) {
+        newWindow = window.open('', '', '_blank', true);
+        setTimeout(() => {
+          newWindow.location = "/game/loading/true";
+        }, 200)
+      }
   }
 
   return game.gameLink({
@@ -77,11 +80,14 @@ export default (params, success = () => { }, fail = () => { }) => {
         localStorage.setItem("open-game-link", ret + query);
         return;
       }
+
+      /* 補各自遊戲參數 */
       // 80桌參數
       if (vendor === "lg_live" && String(kind) === "2" && gameType && gameType === "R") {
         query += '&customize=yabo&tableType=3310';
       }
 
+      // ISB參數
       if (vendor && vendor.toUpperCase() === 'ISB') {
         query += '&allowFullScreen=false';
       }
@@ -108,6 +114,10 @@ export default (params, success = () => { }, fail = () => { }) => {
             if (vendor === "evo") {
               localStorage.setItem('iframe-third-url', link);
               localStorage.setItem('iframe-third-url-title', 'EVO视讯');
+            }
+            else if (vendor === "allwin") {
+              localStorage.setItem('iframe-third-url', link);
+              localStorage.setItem('iframe-third-url-title', '500万彩票');
             } else {
               newWindow.location = link;
             }
@@ -122,9 +132,11 @@ export default (params, success = () => { }, fail = () => { }) => {
         }
         success();
 
-        if (vendor === "evo") {
-          window.location.href = `/mobile/iframe/game?vendor=${settings.vendor}&kind=${settings.kind}&hasFooter=false&hasHeader=true`;
-          return;
+        switch (vendor) {
+          case 'evo':
+          case 'allwin':
+            window.location.href = `/mobile/iframe/game?vendor=${settings.vendor}&kind=${settings.kind}&hasFooter=false&hasHeader=true`;
+            return;
         }
 
         setTimeout(() => {

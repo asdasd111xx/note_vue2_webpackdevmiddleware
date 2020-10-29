@@ -3,8 +3,8 @@
     :class="[
       $style['detail-wrap'],
       {
-        [$style['ey1']]: theme === 'ey1'
-      }
+        [$style['ey1']]: theme === 'ey1',
+      },
     ]"
   >
     <div v-if="data" :class="$style['detail-content-wrap']">
@@ -13,43 +13,50 @@
           <div :class="[$style['title']]">
             {{ $text("S_STATUS", "状态") }}
           </div>
-          <div
-            v-if="item.status !== 'processing' && item.memo"
-            :class="$style['processing-icon']"
-            @click="showDetailPop(item)"
-          >
-            <img src="/static/image/porn1/mcenter/ic_remark.png" />
-          </div>
-          <div
-            v-if="item.status === 'submit_data'"
-            :class="[$style['value'], $style['edit']]"
-            @click="openEdit(item)"
-            :style="
-              item.status !== 'processing' && item.memo ? { right: '24px' } : {}
-            "
-          >
-            {{ $text("S_SUBMIT_WITHDRAW", "重新提交") }}
-          </div>
-          <div
-            v-else
-            @click="
-              () => {
-                item.status !== 'processing' && item.memo
-                  ? showDetailPop(item)
-                  : '';
-              }
-            "
-            :class="[
-              $style['value'],
-              { [$style['processing']]: item.status === 'processing' }
-            ]"
-            :style="
-              item.status !== 'processing' && item.memo ? { right: '24px' } : {}
-            "
-          >
-            {{ getStatus(item.status) }}
+
+          <div :class="$style['value']">
+            <div
+              v-if="item.status === 'submit_data'"
+              :class="$style['edit']"
+              @click="openEdit(item)"
+            >
+              {{ $text("S_SUBMIT_WITHDRAW", "重新提交") }}
+            </div>
+
+            <div
+              v-else
+              @click="
+                () => {
+                  item.status === 'processing' ||
+                  item.status === 'complete' ||
+                  item.method_id === 25 ||
+                  item.method_id === 402
+                    ? showDetailPop(item)
+                    : '';
+                }
+              "
+              :class="[
+                { [$style['processing']]: item.status === 'processing' },
+              ]"
+            >
+              {{ getStatus(item.status) }}
+            </div>
+
+            <div
+              v-if="
+                item.status === 'processing' ||
+                item.status === 'complete' ||
+                item.method_id === 25 ||
+                item.method_id === 402
+              "
+              :class="$style['processing-icon']"
+              @click="showDetailPop(item)"
+            >
+              <img :src="`/static/image/${theme}/mcenter/ic_remark.png`" />
+            </div>
           </div>
         </div>
+
         <div :class="$style['item-status-border']" />
         <template v-for="(col, index) in columns">
           <div
@@ -78,9 +85,7 @@
           入帳數量:&nbsp;{{ detailRate && detailRate.crypto_num }}
         </div>
         <div :class="$style['tips-content']" v-html="detailRate.memo" />
-        <div :class="[$style['close']]" @click="detailRate = null">
-          关闭
-        </div>
+        <div :class="[$style['close']]" @click="detailRate = null">关闭</div>
       </div>
     </div>
 
@@ -103,8 +108,8 @@
         :class="[
           $style['btn-deposit'],
           {
-            [$style['ey1']]: theme === 'ey1'
-          }
+            [$style['ey1']]: theme === 'ey1',
+          },
         ]"
         @click="$router.push('/mobile/mcenter/deposit')"
       >
@@ -204,7 +209,7 @@ export default {
         case 'submit_data':
           return this.$text('S_SUBMIT_DEPOSIT', '提交资料');
         case 'cancel':
-          return this.$text('S_CANCEL_TEXT', '拒绝');
+          return this.$text('S_CANCEL', '取消');
         case 'complete':
           return this.$text('S_CR_SUCCESS', '成功');
         default:

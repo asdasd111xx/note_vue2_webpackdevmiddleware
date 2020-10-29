@@ -646,6 +646,12 @@ export const actionSetUserdata = ({ state, dispatch, commit }, forceUpdate = fal
       let domain = data.ret.user.domain.toString();
       let configInfo;
       switch (domain) {
+        case '500023':
+        case '41':
+        case '74':
+        case '100004':
+          configInfo = siteConfigOfficial[`site_41`];
+          break;
         case '500015':
         case '69':
         case '67':
@@ -653,23 +659,22 @@ export const actionSetUserdata = ({ state, dispatch, commit }, forceUpdate = fal
         default:
           configInfo = siteConfigOfficial[`site_67`];
           break;
-        case '500023':
-        case '41':
-        case '74':
-        case '100004':
-          configInfo = siteConfigOfficial[`site_41`];
-          break;
       }
+
+      let cdnRoot = '';
+
       // 設置cdn圖片路徑
       if (headers['x-cdn-ey'] &&
         configInfo.MOBILE_WEB_TPL === "ey1") {
-        commit(types.SETCDNROOT, `https://${headers['x-cdn-ey']}`);
+        cdnRoot = Array.isArray(headers['x-cdn-ey']) ? headers['x-cdn-ey'][0] : headers['x-cdn-ey'];
       }
 
       if (headers['x-cdn-yb'] &&
         configInfo.MOBILE_WEB_TPL === "porn1") {
-        commit(types.SETCDNROOT, `https://${headers['x-cdn-yb']}`);
+        cdnRoot = Array.isArray(headers['x-cdn-yb']) ? headers['x-cdn-yb'][0] : headers['x-cdn-yb'];
       }
+
+      commit(types.SETCDNROOT, cdnRoot);
     },
     fail: (response) => {
       // 連線逾時
@@ -1589,7 +1594,6 @@ export const actionSetSystemDomain = ({ commit, state }, data) => {
   //   method: 'get',
   //   url: configInfo.YABO_API_DOMAIN + '/system/domain',
   // }).then((res) => {
-  //   console.log("api domain test");
   //   if (res && res.data) {
   //     commit(types.SET_SYSTEMDOMAIN, res.data);
   //     let domainList = res.data.filter(i => i.name === "XXX-DOMAIN-URL" && i.type === "du");
@@ -1605,7 +1609,6 @@ export const actionSetSystemDomain = ({ commit, state }, data) => {
     method: 'get',
     url: configInfo.YABO_GOLANG_API_DOMAIN + '/System/domain',
   }).then((res) => {
-    console.log("api domain test");
     if (res && res.data) {
       commit(types.SET_SYSTEMDOMAIN, res.data);
       let domainList = res.data.filter(i => i.name === "XXX-DOMAIN-URL" && i.type === "du");
