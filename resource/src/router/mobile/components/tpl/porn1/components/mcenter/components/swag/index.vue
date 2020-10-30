@@ -81,6 +81,8 @@ export default {
   created() {
     if (this.$route.query && this.$route.query.tab) {
       this.setCurrentTab(Number(this.$route.query.tab));
+    } else {
+      this.$router.replace(`/mobile/mcenter/swag?tab=0`);
     }
   },
   methods: {
@@ -97,17 +99,16 @@ export default {
         case 0:
           this.currentTemplate = "buy-diamond";
           this.currentTab = index;
-          this.$router.push({ query: { 'tab': index } });
+          this.$router.replace(`/mobile/mcenter/swag?tab=${index}`);
 
           break;
         case 1:
           this.currentTemplate = "recoard-diamond";
           this.currentTab = index;
-          this.$router.push({ query: { 'tab': index } });
+          this.$router.replace(`/mobile/mcenter/swag?tab=${index}`);
 
           break;
         case 2:
-          // this.$router.push({ query: { 'tab': index } });
           // 鴨博色播
           this.$router.push(`/mobile/iframe/SWAG?&title=鴨博色播&hasFooter=false&hasHeader=true`);
           break;
