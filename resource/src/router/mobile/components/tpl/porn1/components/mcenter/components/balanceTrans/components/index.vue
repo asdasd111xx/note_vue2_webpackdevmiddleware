@@ -1,48 +1,50 @@
 <template>
   <div :class="['clearfix']">
-    <div v-if="isReceiveAuto" :class="[$style['balance-wrap'], 'clearfix']">
-      <div :class="$style['balance-total-icon']">
-        <img
-          :src="
-            $getCdnPath('/static/image/_new/mcenter/wallet/ic_autotransfer.png')
-          "
-        />
-      </div>
+    <!-- 億元：自動免轉 -->
+    <template v-if="themeTPL === 'ey1'">
+      <div v-if="isReceiveAuto" :class="[$style['balance-wrap'], 'clearfix']">
+        <div :class="$style['balance-total-icon']">
+          <img
+            :src="
+              $getCdnPath(
+                `/static/image/${themeTPL}/mcenter/wallet/ic_autotransfer.png`
+              )
+            "
+          />
+        </div>
 
-      <div :class="$style['balance-tip-wrap']">
-        {{ $text("S_AUTO_FREE_TRANSFER", "自动免转") }}
-        <span :class="$style['balance-auto-tip']"
-          >({{
-            $text("S_AUTOSWTICH_HINT_GAME", "开启后余额自动转入游戏场馆")
-          }})</span
-        >
-      </div>
+        <div :class="$style['balance-tip-wrap']">
+          {{ $text("S_AUTO_FREE_TRANSFER", "自动免转") }}
+          <span :class="$style['balance-auto-tip']"
+            >({{
+              $text("S_AUTOSWTICH_HINT_GAME", "开启后余额自动转入游戏场馆")
+            }})</span
+          >
+        </div>
 
-      <!-- <div :class="siteConfig.MOBILE_WEB_TPL==='ey1'? 'ui fitted toggle checkbox field-checkbox ey':'ui fitted toggle checkbox field-checkbox'">-->
-      <div
-        :class="`ui fitted toggle checkbox field-checkbox ${siteConfig.MOBILE_WEB_TPL}`"
-      >
-        <input
-          :checked="isAutotransfer"
-          type="checkbox"
-          @click="
-            () => {
-              if (isReceiveAuto) {
-                if (isAutotransfer) {
-                  closeAutotransfer();
-                } else {
-                  enableAutotransfer();
+        <div :class="`ui fitted toggle checkbox field-checkbox ${themeTPL}`">
+          <input
+            :checked="isAutotransfer"
+            type="checkbox"
+            @click="
+              () => {
+                if (isReceiveAuto) {
+                  if (isAutotransfer) {
+                    closeAutotransfer();
+                  } else {
+                    enableAutotransfer();
+                  }
                 }
               }
-            }
-          "
-        />
-        <label />
+            "
+          />
+          <label />
+        </div>
       </div>
-    </div>
+    </template>
 
     <div :class="[$style['balance-item-wrap'], 'clearfix']">
-      <template v-if="siteConfig.MOBILE_WEB_TPL === 'porn1'">
+      <template v-if="themeTPL === 'porn1'">
         <div
           :class="[
             $style['balance-item'],
@@ -86,7 +88,7 @@
             <img
               :src="
                 $getCdnPath(
-                  '/static/image/_new/mcenter/balanceTrans/icon_transfer_tips_info.png'
+                  `/static/image/${themeTPL}/mcenter/balanceTrans/icon_transfer_tips_info.png`
                 )
               "
               :class="$style['balance-wrench']"
@@ -106,7 +108,7 @@
             <img
               :src="
                 $getCdnPath(
-                  `/static/image/_new/mcenter/balanceTrans/ic_expand.png`
+                  `/static/image/${themeTPL}/mcenter/balanceTrans/ic_expand.png`
                 )
               "
               alt="expend"
@@ -138,7 +140,7 @@
             <img
               :src="
                 $getCdnPath(
-                  '/static/image/_new/mcenter/balanceTrans/icon_transfer_tips_info.png'
+                  `/static/image/${themeTPL}/mcenter/balanceTrans/icon_transfer_tips_info.png`
                 )
               "
               :class="$style['balance-wrench']"
@@ -158,7 +160,7 @@
             <img
               :src="
                 $getCdnPath(
-                  `/static/image/_new/mcenter/balanceTrans/ic_collapse.png`
+                  `/static/image/${themeTPL}/mcenter/balanceTrans/ic_collapse.png`
                 )
               "
               alt="collapse"
@@ -168,12 +170,47 @@
       </template>
     </div>
 
+    <!-- 鴨博：自動免轉 -->
+    <template v-if="themeTPL === 'porn1'">
+      <div v-if="isReceiveAuto" :class="[$style['balance-wrap'], 'clearfix']">
+        <div :class="$style['balance-tip-wrap']">
+          {{ $text("S_AUTO_FREE_TRANSFER", "自动免转") }}
+          <span :class="$style['balance-auto-tip']"
+            >({{
+              $text("S_AUTOSWTICH_HINT_GAME", "开启后余额自动转入游戏场馆")
+            }})</span
+          >
+        </div>
+
+        <div :class="`ui fitted toggle checkbox field-checkbox ${themeTPL}`">
+          <input
+            :checked="isAutotransfer"
+            type="checkbox"
+            @click="
+              () => {
+                if (isReceiveAuto) {
+                  if (isAutotransfer) {
+                    closeAutotransfer();
+                  } else {
+                    enableAutotransfer();
+                  }
+                }
+              }
+            "
+          />
+          <label />
+        </div>
+      </div>
+    </template>
+
     <!-- 手動轉換功能 -->
     <template v-if="!isAutotransfer">
       <div :class="[$style['balance-manual-wrap'], 'clearfix']">
-        <span :class="$style['wallet-title']">{{
-          $text("S_CHANGE_WALLET", "选择转帐钱包")
-        }}</span>
+        <template v-if="themeTPL === 'ey1'">
+          <span :class="$style['wallet-title']">
+            {{ $text("S_CHANGE_WALLET", "选择转帐钱包") }}
+          </span>
+        </template>
 
         <div :class="[$style['balance-transfer-wrap'], 'clearfix']">
           <div :class="$style['balance-select-wrap']">
@@ -212,7 +249,7 @@
                       v-if="transOutText === vendor.text"
                       :src="
                         $getCdnPath(
-                          `/static/image/${siteConfig.MOBILE_WEB_TPL}/mcenter/balanceTrans/ic_transfer_sel.png`
+                          `/static/image/${themeTPL}/mcenter/balanceTrans/ic_transfer_sel.png`
                         )
                       "
                       alt="sel"
@@ -261,7 +298,7 @@
                       v-if="transInText === vendor.text"
                       :src="
                         $getCdnPath(
-                          `/static/image/${siteConfig.MOBILE_WEB_TPL}/mcenter/balanceTrans/ic_transfer_sel.png`
+                          `/static/image/${themeTPL}/mcenter/balanceTrans/ic_transfer_sel.png`
                         )
                       "
                       alt="sel"
@@ -275,9 +312,12 @@
       </div>
 
       <div :class="[$style['balance-manual-wrap'], 'clearfix']">
-        <span :class="$style['wallet-title']">{{
-          $text("S_TRANSFER_MONEY", "转帐金额")
-        }}</span>
+        <template v-if="themeTPL === 'ey1'">
+          <span :class="$style['wallet-title']">
+            {{ $text("S_TRANSFER_MONEY", "转帐金额") }}
+          </span>
+        </template>
+
         <div :class="[$style['balance-input-wrap'], 'clearfix']">
           <span :class="$style['transfer-money']">
             <span>¥</span>
@@ -388,6 +428,9 @@ export default {
         this[`$style_${this.siteConfig.MOBILE_WEB_TPL}`] || this.$style_porn1;
       return style;
     },
+    themeTPL() {
+      return this.siteConfig.MOBILE_WEB_TPL
+    },
     balanceInfo() {
       const data = {};
 
@@ -403,7 +446,7 @@ export default {
     },
     firstThirdBalanceInfo() {
       const data = {};
-      let nums = this.siteConfig.MOBILE_WEB_TPL === 'porn1' ? 3 : 4;
+      let nums = this.themeTPL === 'porn1' ? 3 : 4;
 
       Object.keys(this.membalance.vendor)
         .slice(0, nums)

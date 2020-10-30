@@ -28,7 +28,7 @@
           <div
             :class="[
               $style['recycle-btn'],
-              balanceTran.balanceBackLock ? $style.disable : ''
+              balanceTran.balanceBackLock ? $style.disable : '',
             ]"
             @click="balanceBack()"
           >
@@ -79,7 +79,6 @@ export default {
 .balance-wrap {
   position: relative;
   display: flex;
-  justify-content: center;
   align-items: center;
   text-align: center;
   margin-top: 3%;
@@ -94,7 +93,7 @@ export default {
   }
 
   .balance-total-item {
-    flex: 1;
+    min-width: 120px;
     font-size: 12px;
     font-weight: 700;
     color: $main_text_color3;
@@ -143,6 +142,7 @@ export default {
   }
 
   .credit-trans-link {
+    flex: 1;
     font-size: 16px;
     color: #be9e7f;
   }
