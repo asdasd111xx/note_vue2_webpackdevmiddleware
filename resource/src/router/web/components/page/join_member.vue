@@ -662,7 +662,7 @@ export default {
       const data = this.joinMemInfo[key];
 
       if (data.isRequired && this.allValue[key] === '') {
-        this.allTip[key] = '该栏位不得为空';
+        this.allTip[key] = '请输入6-12码英文、数字';
         return;
       }
 
