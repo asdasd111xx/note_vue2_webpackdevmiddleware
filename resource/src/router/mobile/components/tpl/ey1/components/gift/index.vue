@@ -27,9 +27,7 @@
           >
             <img src="/static/image/ey1/common/btn_next.png" />
           </div>
-          <div v-else :class="$style['incoming']">
-            即将开业 敬请期待
-          </div>
+          <div v-else :class="$style['incoming']">即将开业 敬请期待</div>
         </div>
       </div>
     </div>
@@ -37,9 +35,9 @@
 </template>
 
 <script>
-import mobileContainer from '../common/mobileContainer';
-import { mapGetters, mapActions } from 'vuex';
-import axios from 'axios';
+import mobileContainer from "../common/mobileContainer";
+import { mapGetters, mapActions } from "vuex";
+import axios from "axios";
 
 export default {
   data() {
@@ -59,118 +57,183 @@ export default {
         // },
         {
           title: "娱乐",
-          icon: '/static/image/ey1/gift/icon_gift_video.png',
+          icon: "/static/image/ey1/gift/icon_gift_video.png",
           items: [
-            { name: "日本有码", login: true, url: "https://tinyurl.com/y9lyf3he" },
-            { name: "中文有码", login: true, url: "https://tinyurl.com/yb9wuhqj" },
-            { name: "日本无码", login: true, url: "https://tinyurl.com/ybtpfyxv" },
-            { name: "免费偷看", login: true, url: "https://tinyurl.com/y8aoghzj" }
-          ]
+            {
+              name: "日本有码",
+              login: true,
+              url: "https://tinyurl.com/y9lyf3he",
+            },
+            {
+              name: "中文有码",
+              login: true,
+              url: "https://tinyurl.com/yb9wuhqj",
+            },
+            {
+              name: "日本无码",
+              login: true,
+              url: "https://tinyurl.com/ybtpfyxv",
+            },
+            {
+              name: "免费偷看",
+              login: true,
+              url: "https://tinyurl.com/y8aoghzj",
+            },
+          ],
         },
         {
           title: "服务",
-          icon: '/static/image/ey1/gift/icon_gift_service.png',
+          icon: "/static/image/ey1/gift/icon_gift_service.png",
           items: [
             {
               title: "服务",
               name: "天推",
-              icon: '/static/image/ey1/gift/icon_gift_service.png',
+              icon: "/static/image/ey1/gift/icon_gift_service.png",
               items: [
                 {
                   title: "天推",
-                  icon: '/static/image/ey1/gift/icon_gift_service.png',
+                  icon: "/static/image/ey1/gift/icon_gift_service.png",
                   items: [
-                    { name: "天气广告", url: "" },
-                    { name: "体育广告", url: "" },
-                    { name: "贴吧广告", url: "" },
-                  ]
+                    { name: "wifi技术", params: "wifi" },
+                    { name: "第一足球", params: "football" },
+                    { name: "蜂鸟论坛", params: "bird" },
+                  ],
                 },
-              ]
+              ],
             },
             {
               title: "服务",
               name: "通讯软体",
-              icon: '/static/image/ey1/gift/icon_gift_service.png',
+              icon: "/static/image/ey1/gift/icon_gift_service.png",
               items: [
                 {
                   title: "通讯软体",
-                  icon: '/static/image/ey1/gift/icon_gift_service.png',
+                  icon: "/static/image/ey1/gift/icon_gift_service.png",
                   items: [
-                    { name: "微信推广", params: 'wechat' },
-                    { name: "QQ推广", url: "" },
-                    { name: "苹果推", url: "" },
-                  ]
+                    { name: "微信推广", params: "wechat" },
+                    { name: "飞机炸群", params: "plane" },
+                    { name: "苹果推信", params: "apple" },
+                  ],
                 },
-              ]
+              ],
             },
             {
               title: "服务",
               name: "新媒体",
-              icon: '/static/image/ey1/gift/icon_gift_service.png',
+              icon: "/static/image/ey1/gift/icon_gift_service.png",
               items: [
                 {
                   title: "新媒体",
-                  icon: '/static/image/ey1/gift/icon_gift_service.png',
-                  items: [
-                    { name: "YY推广", url: "" },
-                    { name: "抖音推广", url: "" },
-                    { name: "斗鱼推广", url: "" },
-                  ]
+                  icon: "/static/image/ey1/gift/icon_gift_service.png",
+                  items: [{ name: "网红口拨", params: "dial" }],
                 },
-              ]
+              ],
             },
             {
               title: "服务",
               name: "资源引流",
-              icon: '/static/image/ey1/gift/icon_gift_service.png',
+              icon: "/static/image/ey1/gift/icon_gift_service.png",
               items: [
                 {
                   title: "资源引流",
-                  icon: '/static/image/ey1/gift/icon_gift_service.png',
+                  icon: "/static/image/ey1/gift/icon_gift_service.png",
                   items: [
-                    { name: "名单购买", url: "" },
-                    { name: "短信投放", url: "" },
-                    { name: "EDM投放", url: "" },
-                  ]
+                    { name: "名单购买", params: "listPurchase" },
+                    { name: "短信卡发", params: "smsCard" },
+                    { name: "邮件群发", params: "mail" },
+                  ],
                 },
-              ]
+              ],
             },
-          ]
-        }
-      ]
-    }
+          ],
+        },
+      ],
+    };
   },
   components: {
     mobileContainer,
-    pageLoading: () => import(/* webpackChunkName: 'pageLoading' */ '@/router/mobile/components/common/pageLoading'),
+    pageLoading: () =>
+      import(
+        /* webpackChunkName: 'pageLoading' */ "@/router/mobile/components/common/pageLoading"
+      ),
   },
   mounted() {
-    if (this.$route.query.q === '通讯软体') {
+    if (this.$route.query.q === "通讯软体") {
       //  to do
-      //   let cur = this.giftMenuList.find(i => i.items.find(y => y.name === this.$route.query.q));
+      // let cur = this.giftMenuList.find((i) =>
+      //   i.items.find((y) => y.name === this.$route.query.q)
+      // );
+
       this.linkTo({
         title: "服务",
         name: "通讯软体",
-        icon: '/static/image/ey1/gift/icon_gift_service.png',
+        icon: "/static/image/ey1/gift/icon_gift_service.png",
         items: [
           {
             title: "通讯软体",
-            icon: '/static/image/ey1/gift/icon_gift_service.png',
+            icon: "/static/image/ey1/gift/icon_gift_service.png",
             items: [
-              { name: "微信推广", params: 'wechat' },
-              { name: "QQ推广", url: "" },
-              { name: "苹果推", url: "" },
-            ]
+              { name: "微信推广", params: "wechat" },
+              { name: "飞机炸群", params: "plane" },
+              { name: "苹果推信", params: "apple" },
+            ],
           },
-        ]
-      })
+        ],
+      });
+    } else if (this.$route.query.q === "新媒体") {
+      this.linkTo({
+        title: "服务",
+        name: "新媒体",
+        icon: "/static/image/ey1/gift/icon_gift_service.png",
+        items: [
+          {
+            title: "新媒体",
+            icon: "/static/image/ey1/gift/icon_gift_service.png",
+            items: [{ name: "网红口拨", params: "dial" }],
+          },
+        ],
+      });
+    } else if (this.$route.query.q === "资源引流") {
+      this.linkTo({
+        title: "服务",
+        name: "资源引流",
+        icon: "/static/image/ey1/gift/icon_gift_service.png",
+        items: [
+          {
+            title: "资源引流",
+            icon: "/static/image/ey1/gift/icon_gift_service.png",
+            items: [
+              { name: "名单购买", params: "listPurchase" },
+              { name: "短信卡发", params: "smsCard" },
+              { name: "邮件群发", params: "mail" },
+            ],
+          },
+        ],
+      });
+    } else if (this.$route.query.q === "天推") {
+      this.linkTo({
+        title: "服务",
+        name: "天推",
+        icon: "/static/image/ey1/gift/icon_gift_service.png",
+        items: [
+          {
+            title: "天推",
+            icon: "/static/image/ey1/gift/icon_gift_service.png",
+            items: [
+              { name: "wifi技术", params: "wifi" },
+              { name: "第一足球", params: "football" },
+              { name: "蜂鸟论坛", params: "bird" },
+            ],
+          },
+        ],
+      });
     } else {
       this.currentMenu = this.giftMenuList;
     }
   },
   computed: {
     ...mapGetters({
-      loginStatus: 'getLoginStatus',
+      loginStatus: "getLoginStatus",
     }),
     headerConfig() {
       return {
@@ -180,35 +243,33 @@ export default {
           if (this.$route.query.q) {
             this.currentMenu = this.giftMenuList;
             this.isMounted = true;
-            this.$router.push('/mobile/gift');
+            this.$router.push("/mobile/gift");
             return;
           }
           this.$router.back();
-        }
+        },
       };
     },
   },
   watch: {
-    openLink() {
-
-    }
+    openLink() {},
   },
   methods: {
-    ...mapActions([
-      'actionSetGlobalMessage'
-    ]),
+    ...mapActions(["actionSetGlobalMessage"]),
     getThridUrl(target) {
       this.isLoading = true;
-      localStorage.setItem('iframe-third-url', target.thirdUrl);
-      this.$router.push(`/mobile/iframe/third?hasFooter=false&hasHeader=true&title=${target.name}`);
+      localStorage.setItem("iframe-third-url", target.thirdUrl);
+      this.$router.push(
+        `/mobile/iframe/third?hasFooter=false&hasHeader=true&title=${target.name}`
+      );
     },
     linkTo(item) {
       if (item.login && !this.loginStatus) {
-        this.$router.push('/mobile/login');
+        this.$router.push("/mobile/login");
         return;
       }
       if (item.items && item.items.length > 0) {
-        this.$router.push({ query: { q: item.name } })
+        this.$router.push({ query: { q: item.name } });
         this.currentMenu = item.items;
         this.isMounted = false;
         return;
@@ -216,14 +277,12 @@ export default {
 
       if (item.url) {
         window.open(item.url);
-      }
-      else if (item.params) {
+      } else if (item.params) {
         this.$router.push(`/mobile/gift/detail/${item.params}`);
-      }
-      else if (item.thirdUrl) {
+      } else if (item.thirdUrl) {
         this.getThridUrl(item);
       }
-    }
+    },
   },
 };
 </script>
