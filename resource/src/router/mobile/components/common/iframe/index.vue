@@ -223,7 +223,8 @@ export default {
         }
       })
     },
-    onListener(event) {
+    onListener(e) {
+      console.log(e)
       // //  需要監聽的白名單
       // let whiteList = [window.location.origin,
       //   'https://play.qybtv.xyz',
@@ -235,12 +236,14 @@ export default {
       //   'http://47.240.57.135',
       //   'http://47.240.117.62'
       // ];
-      if (event.data) {
-        let data = event.data;
+      if (e.data) {
+        let data = e.data;
+        console.log(data);
+
         if (!data.event) {
           return;
         }
-        console.log(data.event);
+
         switch (data.event) {
           case 'EVENT_THIRDPARTY_CLOSE':
           case 'close':
@@ -264,14 +267,14 @@ export default {
       })
       try {
         window.addEventListener('message', this.onListener);
-        const self = this;
-        this.$refs.iframe.contentWindow.onbeforeunload = (e) => {
-          console.log(e)
-          //   // 取消預設關閉 取代成回上一頁
-          //   e.preventDefault();
-          //   e.stopPropagation();
-          //   self.$router.back();
-        }
+        // const self = this;
+        // this.$refs.iframe.contentWindow.onbeforeunload = (e) => {
+        //   console.log(e)
+        //   //   // 取消預設關閉 取代成回上一頁
+        //   //   e.preventDefault();
+        //   //   e.stopPropagation();
+        //   //   self.$router.back();
+        // }
       } catch (e) {
         console.log('onbeforeunload Catch:', e)
       }
