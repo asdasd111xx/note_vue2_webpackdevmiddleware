@@ -13,7 +13,7 @@
           v-for="(item, index) in walletIcons"
           v-if="
             item.show ||
-            (item.key === 'recharge' && siteConfig.MOBILE_WEB_TPL !== 'ey1')
+              (item.key === 'recharge' && siteConfig.MOBILE_WEB_TPL !== 'ey1')
           "
           :key="'icon-' + index"
           :class="$style['icon-cell']"
@@ -59,7 +59,7 @@
             <div
               :class="[
                 $style['recycle-btn'],
-                balanceTran.balanceBackLock ? $style.disable : '',
+                balanceTran.balanceBackLock ? $style.disable : ''
               ]"
             >
               {{ $text("S_ONE_CLICK_TO_ACCOUNT") }}
@@ -94,8 +94,8 @@
                 {
                   [$style['is-last-item']]:
                     Object.keys(balanceTran.balanceInfo).length - 1 - index <=
-                    (Object.keys(balanceTran.balanceInfo).length % 4 || 4),
-                },
+                    (Object.keys(balanceTran.balanceInfo).length % 4 || 4)
+                }
               ]"
             >
               <span :class="$style['balance-item-vendor']">{{
@@ -238,11 +238,6 @@ export default {
           text: this.$text('S_WITHDRAWAL_TEXT', '提现'),
           imgSrc: '/static/image/_new/mcenter/wallet/ic_wallter_withdraw.png',
           onClick: () => {
-            if (this.siteConfig.MOBILE_WEB_TPL !== 'ey1') {
-              this.$router.push('/mobile/mcenter/withdraw');
-              return;
-            }
-
             if (this.isCheckWithdraw) { return; }
             this.isCheckWithdraw = true;
             axios({
