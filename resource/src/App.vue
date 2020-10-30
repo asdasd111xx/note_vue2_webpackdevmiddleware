@@ -46,6 +46,7 @@ export default {
       this.memInfoLoad = this.memInfo && this.memInfo.user;
       if (this.memInfoLoad && this.siteConfigLoad) {
         if (!this.yToken) this.getYABOAPIToken();
+        this.getWsV2RSA();
         this.connectYaboWS();
       }
     },
@@ -53,6 +54,7 @@ export default {
       this.siteConfigLoad = this.siteConfig && this.siteConfig.ACTIVES_BOUNS_WEBSOCKET;
       if (this.memInfoLoad && this.siteConfigLoad) {
         if (!this.yToken) this.getYABOAPIToken();
+        this.getWsV2RSA();
         this.connectYaboWS();
       }
     }
@@ -232,6 +234,72 @@ export default {
           return;
         }
       });
+    },
+    getWsV2RSA() {
+      yaboRequest({
+        method: 'get',
+        url: this.siteConfig.YABO_API_DOMAIN.replace('/api', '') + '/wsn/getKey',
+      }).then((res) => {
+        this.connectYaboWSV2(res);
+      });
+    },
+    connectYaboWSV2(RSA) {
+      if (this.isConnectingV2) return;
+
+      try {
+        this.isConnectingV2 = true;
+        let cid = getCookie('cid') || '';
+        if (!cid) return;
+        let uri = this.siteConfig.ACTIVES_BOUNS_WEBSOCKET + `?akey=${RSA}cid=${cid}&domain=${this.memInfo.user.domain}&userid=${this.memInfo.user.id}`;
+        window.YABO_SOCKET = new WebSocket(uri);
+        window.YABO_SOCKET.onmessage = (e) => {
+          let data = JSON.parse(e.data);
+          window.YABO_SOCKET_ID = data.SocketId;
+
+          if (this.isDebug) {
+            console.log("[WSV2]: onMessage:", JSON.parse(e.data));
+          }
+          clearInterval(this.reconnectTimerV2);
+          this.reconnectTimerV2 = null;
+        };
+        window.YABO_SOCKET.onerror = (e) => {
+          console.log("[WSV2]: onError:", e)
+          this.reconnectYaboWSV2();
+        };
+        window.YABO_SOCKET.onclose = (e) => {
+          if (this.isDebug) {
+            console.log("[WSV2]: onClose:", e)
+          }
+          this.reconnectYaboWSV2();
+        };
+        window.YABO_SOCKET.onopen = (e) => {
+          if (this.isDebug) {
+            console.log("[WSV2]: onOpen: Success")
+          }
+
+          clearInterval(this.reconnectTimerV2);
+          this.reconnectTimerV2 = null;
+        };
+      } catch (e) {
+        this.isConnectingV2 = false;
+        console.log("[WSV2]: connectYaboWS Error:", e);
+      }
+    },
+    reconnectYaboWSV2() {
+
+      if (this.reconnectTimerV2) return;
+      this.reconnectTimerV2 = setInterval(() => {
+
+        // 是否要啟用重新連接
+        if (window.YABO_SOCKET_RECONNECT_ACTIVE) {
+          this.isConnecting = false;
+          this.connectYaboWSV2();
+
+          if (this.isDebug) {
+            console.log("[WSV2]: Reconnecting");
+          }
+        }
+      }, 3000)
     },
     /* GA流量統計 */
     setGoogleAnalytics() {
