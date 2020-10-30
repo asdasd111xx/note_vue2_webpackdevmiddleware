@@ -56,7 +56,7 @@
             <div
               :class="[
                 $style['recycle-btn'],
-                balanceTran.balanceBackLock ? $style.disable : '',
+                balanceTran.balanceBackLock ? $style.disable : ''
               ]"
             >
               {{ $text("S_ONE_CLICK_TO_ACCOUNT") }}
@@ -87,8 +87,8 @@
                 {
                   [$style['is-last-item']]:
                     Object.keys(balanceTran.balanceInfo).length - 1 - index <=
-                    (Object.keys(balanceTran.balanceInfo).length % 4 || 4),
-                },
+                    (Object.keys(balanceTran.balanceInfo).length % 4 || 4)
+                }
               ]"
             >
               <span :class="$style['balance-item-vendor']">{{
@@ -279,7 +279,7 @@ export default {
           text: this.$text('S_TO_BUY', '如何购买'),
           imgSrc: `/static/image/${this.themeTPL}/mcenter/wallet/ic_wallter_swag_howtobuy.png`,
           onClick: () => {
-            console.log('导页帮助中心-SWAG钻石购买说明');
+            this.$router.push('/mobile/mcenter/help/detail?type=buymethod');
           }
         },
         {
@@ -288,7 +288,7 @@ export default {
           text: this.$text('S_INSTRUSTIONS', '使用方法'),
           imgSrc: `/static/image/${this.themeTPL}/mcenter/wallet/ic_wallter_swag_instrustions.png`,
           onClick: () => {
-            console.log('导页帮助中心-SWAG钻石使用方法，预设展开「SWAG 钻石是什么？」');
+            this.$router.push('/mobile/mcenter/help/detail?type=usage&key=2');
           }
         },
       ].filter(item => item.show)

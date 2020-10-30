@@ -56,7 +56,6 @@ export default {
   },
   watch: {
     membalance() {
-      this.getRechargeBalance();
     }
   },
   methods: {
