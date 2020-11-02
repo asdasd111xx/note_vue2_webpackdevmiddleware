@@ -6,34 +6,15 @@
       </div>
 
       <div :class="[$style['live-tab-wrap'], 'clearfix']">
-        <div
-          :class="[
-            $style['live-tab'],
-            { [$style['is-current']]: currentTab === 'cutiesLive' }
-          ]"
-          @click="handleClickType('cutiesLive')"
-        >
+        <div :class="[$style['live-tab']]" @click="handleClickType('pornlive')">
           <div :class="$style['img-icon-wrap']">
             <img
-              v-if="currentTab === 'cutiesLive'"
-              :src="
-                $getCdnPath('/static/image/_new/live/icon_live_beauty_h.png')
-              "
-            />
-            <img
-              v-else
-              :src="
-                $getCdnPath('/static/image/_new/live/icon_live_beauty_n.png')
-              "
+              :src="$getCdnPath('/static/image/_new/live/icon_live_swag_n.png')"
             />
           </div>
-          <span
-            :class="[
-              $style['live-tab-text'],
-              { [$style['active']]: currentTab === 'cutiesLive' }
-            ]"
-            >{{ $text("S_BEAUTY_LIVE", "美女直播") }}</span
-          >
+          <span :class="[$style['live-tab-text']]">{{
+            $text("S_YABO_PORN", "鸭博色播")
+          }}</span>
         </div>
         <div
           :class="[
@@ -217,7 +198,18 @@ export default {
       //   this.iframeHeight = this.$refs['js-set-height'].contentWindow.window.document.body.scrollHeight + 100;
     },
     handleClickType(type) {
-      this.currentTab = type
+      if (type === 'pornlive') {
+        if (this.loginStatus) {
+          localStorage.setItem('iframe-third-url-title', '鸭博色播');
+          this.$router.push(`/mobile/iframe/SWAG?&hasFooter=false&hasHeader=true`);
+          return;
+        } else {
+          this.$router.push('/mobile/login');
+          return;
+        }
+
+      }
+      this.currentTab = type;
     }
   }
 };

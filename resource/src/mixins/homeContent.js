@@ -514,6 +514,8 @@ export default {
                             noLoginVideoSwitch = this.yaboConfig.find(i => i.name === "NoLoginVideoSwitch").value;
                         }
 
+                        localStorage.setItem('iframe-third-url-title', game.name);
+
                         // 未登入開關 開啟時未登入可進入
                         if (noLoginVideoSwitch === 'true') {
                             this.$router.push(`/mobile/iframe/${game.type}?&title=${game.name}&hasFooter=false&hasHeader=true`);
