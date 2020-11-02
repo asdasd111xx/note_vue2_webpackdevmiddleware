@@ -662,7 +662,7 @@ export default {
       const data = this.joinMemInfo[key];
 
       if (data.isRequired && this.allValue[key] === '') {
-        this.allTip[key] = '请输入6-12码英文、数字';
+        this.allTip[key] = '请输入6-12位字母或数字';
         return;
       }
 
