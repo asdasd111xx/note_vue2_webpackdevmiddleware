@@ -92,6 +92,11 @@ export default (params, success = () => { }, fail = () => { }) => {
         query += '&allowFullScreen=false';
       }
 
+      //Xbb lg_casino lg_yb_casino ispwa=true
+      if (vendor && vendor.toUpperCase().includes('LG')) {
+        query += '&ispwa=true';
+      }
+
       localStorage.setItem("open-game-link", ret.url + query);
 
       // 開啟遊戲時強制關閉下方最愛遊戲框
