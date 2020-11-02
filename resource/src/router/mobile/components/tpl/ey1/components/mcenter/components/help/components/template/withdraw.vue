@@ -48,8 +48,8 @@
                 {
                   [$style['red']]:
                     (stringIndex === 5 && index === 0) ||
-                    (stringIndex === 12 && index === 1)
-                }
+                    (stringIndex === 12 && index === 1),
+                },
               ]"
               :key="`content-${stringIndex}`"
               v-html="string"
@@ -57,9 +57,7 @@
           </div>
 
           <div v-if="index == 0 && item.isOpen" :class="$style['tips']">
-            <div :class="$style['tips-title']">
-              ※ 取款注意事项 ※
-            </div>
+            <div :class="$style['tips-title']">※ 取款注意事项 ※</div>
             <div>
               ❶亲切提醒您～联系资料变更时，请您立即联系24小时<a
                 @click="linkTo('service')"
@@ -77,10 +75,8 @@
             </div>
             <div>
               ♠ 亿元相关优惠，欢迎参阅『
-              <a @click="linkTo('promotion')">
-                优惠活动
-              </a>
-              ，』♠
+              <a @click="linkTo('promotion')"> 优惠活动 </a>
+              』♠
             </div>
           </div>
 
@@ -99,8 +95,8 @@
 </template>
 
 <script>
-import info from '../../json/withdraw.json';
-import mixin from '@/mixins/mcenter/help/help';
+import info from "../../json/withdraw.json";
+import mixin from "@/mixins/mcenter/help/help";
 
 export default {
   mixins: [mixin],
