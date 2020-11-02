@@ -1052,6 +1052,7 @@ export default {
           this.errTips = "提现金额必需为整数";
           return;
         }
+
         // 實際金額
         let _actualMoney =
           value - +this.withdrawData.audit.total.total_deduction;
@@ -1084,6 +1085,14 @@ export default {
         ) {
           this.errTips = `单笔提现金额最小为${withdrawMin}元，最大为${withdrawMax ? `${withdrawMax}元` : "无限制"
             }`;
+          return;
+        }
+
+        // 4.可提現餘額是否超過中心錢包餘額
+        const balance = Number(this.withdrawData.cash.available_balance);
+
+        if (this.withdrawValue > Math.floor(balance)) {
+          this.errTips = `提现金额不可大於中心钱包馀额`;
           return;
         }
 
