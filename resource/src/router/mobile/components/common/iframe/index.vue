@@ -82,6 +82,7 @@ export default {
       case 'DSC':
       case 'PPV':
       case 'SF':
+      case 'SWAG':
         // yaboRequest({
         //   method: 'get',
         //   url: `${this.siteConfig.YABO_API_DOMAIN}/thirdparty/url`,
@@ -109,6 +110,8 @@ export default {
         }).then(res => {
           this.src = res.data;
         })
+        // SWAG
+        // this.src = 'https://feature-yabo.app.swag.live/';
         break;
       case 'THIRD':
         axios({
@@ -129,9 +132,6 @@ export default {
             this.actionSetGlobalMessage({ msg: error.data.msg });
           }
         })
-        break;
-      case 'SWAG':
-        this.src = 'https://feature-yabo.app.swag.live/';
         break;
       case 'GAME':
         this.src = localStorage.getItem('iframe-third-url');
