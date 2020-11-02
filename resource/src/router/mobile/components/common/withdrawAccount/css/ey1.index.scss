@@ -4,6 +4,10 @@
 .wiithdraw-account-header {
   background: linear-gradient(#fe2a2a, #b60303);
   border-bottom: none;
+
+  .title {
+    color: #ffffff;
+  }
 }
 
 .btn-send {
@@ -16,12 +20,12 @@
 }
 
 .btn-submit {
-  >div {
+  > div {
     background-color: #fdcccc;
   }
 
   &.active {
-    >div {
+    > div {
       pointer-events: auto;
       color: #ffffff;
       background-color: #e42a30;

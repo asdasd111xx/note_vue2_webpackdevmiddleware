@@ -260,7 +260,7 @@ export default {
       }
 
       if (!value) {
-        this.errMsg = "请输入6-12码英文、数字";
+        this.errMsg = "请输入6-12位字母或数字";
       }
     },
     pwdModifySubmit() {
