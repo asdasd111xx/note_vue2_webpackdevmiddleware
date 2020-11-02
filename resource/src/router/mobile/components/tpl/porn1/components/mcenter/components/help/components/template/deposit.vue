@@ -66,7 +66,7 @@
           :key="`tab-${item.key}`"
           :class="[
             $style['tab-item'],
-            { [$style['is-current']]: currentTab === index }
+            { [$style['is-current']]: currentTab === index },
           ]"
           @click="setCurrentTab(index)"
         >
@@ -75,7 +75,7 @@
         <div
           :class="$style['active-slider']"
           :style="{
-            left: tabSlider
+            left: tabSlider,
           }"
         />
       </div>
@@ -88,11 +88,7 @@
       :key="`q-${index}`"
     >
       <div :class="$style['cell2-step-title']">
-        <span
-          >步骤 {{ index + 1 }}/{{
-            categorys[category_currentIndex].list.length
-          }}</span
-        >
+        <span>步骤 {{ index + 1 }}/{{ tabList.length }}</span>
       </div>
 
       <div :class="$style['cell2-step']">
@@ -239,13 +235,10 @@ export default {
             { key: 0, img: "tutorial_deposit_cgpay_01" },
             { key: 1, img: "tutorial_deposit_cgpay_02" },
             { key: 2, img: "tutorial_deposit_cgpay_03" },
+            { key: 3, img: "tutorial_deposit_cgpay_04" },
           ],
-          list2: [
-            { key: 0, img: "tutorial_deposit_cgpay_securitycode_01" },
-          ],
-          list3: [
-            { key: 0, img: "tutorial_deposit_cgpay_qrcode_01" },
-          ],
+          list2: [{ key: 0, img: "tutorial_deposit_cgpay_securitycode_01" }],
+          list3: [{ key: 0, img: "tutorial_deposit_cgpay_qrcode_01" }],
         },
         {
           name: "购宝钱包",
@@ -323,14 +316,14 @@ export default {
     tabList() {
       switch (this.currentTab) {
         case 0:
-          return this.categorys[this.category_currentIndex].list
+          return this.categorys[this.category_currentIndex].list;
         case 1:
-          return this.categorys[this.category_currentIndex].list2
+          return this.categorys[this.category_currentIndex].list2;
         case 2:
-          return this.categorys[this.category_currentIndex].list3
+          return this.categorys[this.category_currentIndex].list3;
         default:
-          return this.categorys[this.category_currentIndex].list
-      };
+          return this.categorys[this.category_currentIndex].list;
+      }
     },
     tabItem() {
       switch (this.category_currentIndex) {
@@ -357,7 +350,7 @@ export default {
             },
             {
               key: "scan-code",
-              text: "截屏扫码",
+              text: "扫码支付",
             },
           ];
         case 8:
@@ -401,7 +394,7 @@ export default {
           return `calc(16.5% + 33% * ${this.currentTab})`;
         default:
           return `calc(25% + 50% * ${this.currentTab})`;
-      };
+      }
     },
     isApp() {
       let isApp = !!(
