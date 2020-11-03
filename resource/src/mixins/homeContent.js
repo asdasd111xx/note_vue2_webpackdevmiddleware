@@ -403,11 +403,6 @@ export default {
                 this.$router.push('/mobile/mcenter/tcenter/management/member');
             }
             else if (path === "withdraw") {
-                if (this.siteConfig.MOBILE_WEB_TPL !== 'ey1') {
-                    this.$router.push('/mobile/mcenter/withdraw');
-                    return;
-                }
-
                 if (this.isCheckWithdraw) { return; }
                 this.isCheckWithdraw = true;
                 axios({
@@ -420,26 +415,13 @@ export default {
 
                         Object.keys(res.data.ret).forEach(i => {
                             if (i !== "bank" && !res.data.ret[i]) {
-                                if (this.siteConfig.MOBILE_WEB_TPL === 'ey1') {
-                                    this.actionSetGlobalMessage({
-                                        msg: '请先设定提现资料', cb: () => {
-                                            {
-                                                this.$router.push('/mobile/withdrawAccount');
-                                            }
+                                this.actionSetGlobalMessage({
+                                    msg: '请先设定提现资料', cb: () => {
+                                        {
+                                            this.$router.push('/mobile/withdrawAccount');
                                         }
-                                    })
-                                }
-
-                                if (this.siteConfig.MOBILE_WEB_TPL === 'porn1') {
-                                    this.actionSetGlobalMessage({
-                                        msg: '请先设定提现资料', cb: () => {
-                                            {
-                                                this.$router.push(`/mobile/mcenter/accountData?reqAccount=home`);
-                                            }
-                                        }
-                                    })
-                                }
-
+                                    }
+                                })
                                 check = false;
                                 return;
                             }

@@ -20,6 +20,14 @@
             placeholder="请输入持卡人姓名，仅支持中文、“·”"
             @input="checkData($event.target.value, 'account_name')"
           />
+          <div :class="$style['clear-input']" v-if="formData.account_name">
+            <img
+              :src="
+                $getCdnPath(`/static/image/${themeTPL}/common/ic_clear.png`)
+              "
+              @click="formData.account_name = ''"
+            />
+          </div>
         </div>
       </div>
       <p v-if="!memInfo.user.name" :class="$style['username-remind']">
@@ -53,6 +61,14 @@
                 maxlength="36"
                 @input="checkData($event.target.value, 'province')"
               />
+              <div :class="$style['clear-input']" v-if="formData.province">
+                <img
+                  :src="
+                    $getCdnPath(`/static/image/${themeTPL}/common/ic_clear.png`)
+                  "
+                  @click="formData.province = ''"
+                />
+              </div>
             </div>
           </div>
 
@@ -66,6 +82,14 @@
                 maxlength="36"
                 @input="checkData($event.target.value, 'city')"
               />
+              <div :class="$style['clear-input']" v-if="formData.city">
+                <img
+                  :src="
+                    $getCdnPath(`/static/image/${themeTPL}/common/ic_clear.png`)
+                  "
+                  @click="formData.city = ''"
+                />
+              </div>
             </div>
           </div>
         </template>

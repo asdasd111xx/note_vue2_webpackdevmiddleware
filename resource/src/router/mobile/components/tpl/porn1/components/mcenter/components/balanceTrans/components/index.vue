@@ -44,26 +44,30 @@
     </template>
 
     <div :class="[$style['balance-item-wrap'], 'clearfix']">
-      <template v-if="themeTPL === 'porn1'">
-        <div
-          :class="[
-            $style['balance-item'],
-            {
-              [$style['is-last-item']]: !isShowMore,
-            },
-          ]"
-          v-if="bonus"
-          @click="$router.push('/mobile/mcenter/bonus')"
-        >
-          <span :class="$style['balance-item-vendor']">
+      <div
+        v-if="bonus"
+        :class="[
+          $style['balance-item'],
+          {
+            [$style['is-last-item']]: !isShowMore
+          }
+        ]"
+        @click="$router.push('/mobile/mcenter/bonus')"
+      >
+        <span :class="$style['balance-item-vendor']">
+          <template v-if="themeTPL === 'porn1'">
             {{ $text("S_BONUS", "红利彩金") }}
-          </span>
+          </template>
 
-          <span :class="$style['balance-item-money']">
-            {{ bonus.balance ? bonus.balance : "" }}
-          </span>
-        </div>
-      </template>
+          <template v-if="themeTPL === 'ey1'">
+            {{ $text("S_BONUS_ACCOUNT", "红利帐户") }}
+          </template>
+        </span>
+
+        <span :class="$style['balance-item-money']">
+          {{ bonus.balance ? bonus.balance : "" }}
+        </span>
+      </div>
 
       <template v-if="!isShowMore">
         <div
@@ -74,8 +78,8 @@
             {
               [$style['is-last-item']]:
                 Object.keys(firstThirdBalanceInfo).length - index <=
-                (Object.keys(firstThirdBalanceInfo).length % 3 || 3),
-            },
+                (Object.keys(firstThirdBalanceInfo).length % 3 || 3)
+            }
           ]"
         >
           <span :class="$style['balance-item-vendor']">{{ item.text }}</span>
@@ -126,8 +130,8 @@
             {
               [$style['is-last-item']]:
                 Object.keys(balanceInfo).length - index <=
-                (Object.keys(balanceInfo).length % 4 || 4),
-            },
+                (Object.keys(balanceInfo).length % 4 || 4)
+            }
           ]"
         >
           <span :class="$style['balance-item-vendor']">{{ item.text }}</span>
@@ -263,7 +267,7 @@
           <div
             :class="[
               $style['balance-select-wrap'],
-              $style['select-right-wrap'],
+              $style['select-right-wrap']
             ]"
           >
             <div :class="$style['select-title']">
@@ -341,8 +345,8 @@
         :class="[
           $style['transfer-btn'],
           {
-            [$style['is-disable']]: btnLock || !transferMoney,
-          },
+            [$style['is-disable']]: btnLock || !transferMoney
+          }
         ]"
         @click="
           () => {
@@ -429,7 +433,7 @@ export default {
       return style;
     },
     themeTPL() {
-      return this.siteConfig.MOBILE_WEB_TPL
+      return this.siteConfig.MOBILE_WEB_TPL;
     },
     balanceInfo() {
       const data = {};
@@ -446,7 +450,7 @@ export default {
     },
     firstThirdBalanceInfo() {
       const data = {};
-      let nums = this.themeTPL === 'porn1' ? 3 : 4;
+      let nums = 3;
 
       Object.keys(this.membalance.vendor)
         .slice(0, nums)

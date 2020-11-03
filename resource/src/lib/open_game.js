@@ -92,6 +92,11 @@ export default (params, success = () => { }, fail = () => { }) => {
         query += '&allowFullScreen=false';
       }
 
+      //Xbb lg_casino lg_yb_casino 外開參數
+      if (vendor && vendor.toUpperCase().includes('LG')) {
+        query += '&pageOption=1';
+      }
+
       localStorage.setItem("open-game-link", ret.url + query);
 
       // 開啟遊戲時強制關閉下方最愛遊戲框
@@ -125,7 +130,7 @@ export default (params, success = () => { }, fail = () => { }) => {
             console.log('openWindow:', newWindow);
           }
         } catch (e) {
-          newWindow.close();
+          newWindow ? newWindow.close() : '';
           console.log(e);
           console.log('另开视窗失败 请关闭阻挡弹出式视窗');
           // window.open(link, '', '_blank', true);
@@ -145,7 +150,7 @@ export default (params, success = () => { }, fail = () => { }) => {
       }, 200)
     },
     fail: (res) => {
-      newWindow.close();
+      newWindow ? newWindow.close() : '';
       console.log('launch 失敗');
       console.log(res);
       fail(res);
@@ -153,7 +158,7 @@ export default (params, success = () => { }, fail = () => { }) => {
       setTimeout(() => {
         localStorage.removeItem('iframe-third-url');
         localStorage.removeItem("is-open-game");
-      }, 1500)
+      }, 3000)
     }
   }, vendor);
 };

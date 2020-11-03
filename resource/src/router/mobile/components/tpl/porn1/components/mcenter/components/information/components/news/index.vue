@@ -23,10 +23,13 @@
         </div>
         <div :class="$style.wrap">
           <div :class="$style.date">{{ currentNews.time | dateFormat }}</div>
-          <div :class="$style.time">{{ currentNews.time | timeFormat }}</div>
+          <div :class="$style.time">{{ currentNews.time | dateFormat }}</div>
         </div>
       </div>
-      <div :class="$style['content-wrap']" v-html="currentNews.content" />
+      <div
+        :class="$style['content-wrap']"
+        v-html="setContent(currentNews.content)"
+      />
     </div>
     <div v-else :class="$style['news-list']">
       <div
@@ -80,7 +83,15 @@ export default {
       }
       return this.newsData.find((news) => news.id === this.$route.query.pid);
     }
-  }
+  },
+  methods: {
+    setContent(content) {
+      let urlRegex = /(https?:\/\/[^\s]+)/g;
+      return content.replace(/\n/g, '<br/>').replace(urlRegex, function (url) {
+        return '<a href="' + url + '" target="_blank">' + url + '</a>';
+      })
+    },
+  },
 };
 </script>
 

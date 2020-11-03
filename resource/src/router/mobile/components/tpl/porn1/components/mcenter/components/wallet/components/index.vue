@@ -64,20 +64,24 @@
           </div>
 
           <div :class="[$style['balance-item-wrap'], 'clearfix']">
-            <template v-if="themeTPL === 'porn1'">
-              <div
-                :class="$style['balance-item']"
-                @click="$router.push('/mobile/mcenter/bonus')"
-              >
-                <span :class="$style['balance-item-vendor']">
+            <div
+              :class="$style['balance-item']"
+              @click="$router.push('/mobile/mcenter/bonus')"
+            >
+              <span :class="$style['balance-item-vendor']">
+                <template v-if="themeTPL === 'porn1'">
                   {{ $text("S_BONUS", "红利彩金") }}
-                </span>
+                </template>
 
-                <span :class="$style['balance-item-money']">
-                  {{ bonus.balance }}
-                </span>
-              </div>
-            </template>
+                <template v-if="themeTPL === 'ey1'">
+                  {{ $text("S_BONUS_ACCOUNT", "红利帐户") }}
+                </template>
+              </span>
+
+              <span :class="$style['balance-item-money']">
+                {{ bonus.balance }}
+              </span>
+            </div>
 
             <div
               v-for="(item, key, index) in balanceTran.balanceInfo"
@@ -310,11 +314,6 @@ export default {
           text: this.$text('S_WITHDRAWAL_TEXT', '提现'),
           imgSrc: `/static/image/${this.themeTPL}/mcenter/wallet/ic_wallter_withdraw.png`,
           onClick: () => {
-            if (this.themeTPL !== 'ey1') {
-              this.$router.push('/mobile/mcenter/withdraw');
-              return;
-            }
-
             if (this.isCheckWithdraw) { return; }
             this.isCheckWithdraw = true;
             axios({
@@ -328,26 +327,13 @@ export default {
 
                 Object.keys(res.data.ret).forEach(i => {
                   if (i !== "bank" && !res.data.ret[i]) {
-                    if (this.themeTPL === 'ey1') {
-                      this.actionSetGlobalMessage({
-                        msg: '请先设定提现资料', cb: () => {
-                          {
-                            this.$router.push('/mobile/withdrawAccount?redirect=wallet');
-                          }
+                    this.actionSetGlobalMessage({
+                      msg: '请先设定提现资料', cb: () => {
+                        {
+                          this.$router.push('/mobile/withdrawAccount?redirect=wallet');
                         }
-                      })
-                    }
-
-                    if (this.themeTPL === 'porn1') {
-                      this.actionSetGlobalMessage({
-                        msg: '请先设定提现资料', cb: () => {
-                          {
-                            this.$router.push(`/mobile/mcenter/accountData?reqAccount=wallet`);
-                          }
-                        }
-                      })
-                    }
-
+                      }
+                    })
                     check = false;
                     return;
                   }

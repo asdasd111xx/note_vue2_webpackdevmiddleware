@@ -66,6 +66,7 @@
               v-for="(item, index) in item.content"
               :class="$style['text-block']"
               v-html="item"
+              @click="linkTo('service')"
             />
           </template>
         </div>
@@ -109,28 +110,47 @@
 </template>
 
 <script>
-import info from '../../json/faq.json';
-import mixin from '@/mixins/mcenter/help/help';
+import info from "../../json/faq.json";
+import mixin from "@/mixins/mcenter/help/help";
 
 export default {
   mixins: [mixin],
   data() {
     return {
       limitTable: [
-        { limit: "0.01元", platform: "MG电子、PT电子、HB电子、开元棋牌、PG电子、FG电子、SW电子、KA电子" },
+        {
+          limit: "0.01元",
+          platform:
+            "MG电子、PT电子、HB电子、开元棋牌、PG电子、FG电子、SW电子、KA电子",
+        },
         { limit: "0.02元", platform: "AG电子、SG电子" },
         { limit: "0.05元", platform: "易游电子" },
-        { limit: "0.1元", platform: "BB电子、JDB电子、PP电子、大满贯电子、AW电子、ACE电子、MT电子、WM电子、PS电子、TP电子、乐游棋牌" },
+        {
+          limit: "0.1元",
+          platform:
+            "BB电子、JDB电子、PP电子、大满贯电子、AW电子、ACE电子、MT电子、WM电子、PS电子、TP电子、乐游棋牌",
+        },
         { limit: "0.16元", platform: "CQ9电子" },
         { limit: "0.2元", platform: "GNS电子" },
         { limit: "0.5元", platform: "ISB电子、BNG电子、Gti电子" },
-        { limit: "1元", platform: "BB彩票、XBB电子、易游棋牌、XBB彩票、XBB棋牌、JDB棋牌、FG棋牌、VR彩票" },
+        {
+          limit: "1元",
+          platform:
+            "BB彩票、XBB电子、易游棋牌、XBB彩票、XBB棋牌、JDB棋牌、FG棋牌、VR彩票",
+        },
         { limit: "2元", platform: "皇冠体育、XBB棋牌" },
         { limit: "5元", platform: "IM体育" },
-        { limit: "10元", platform: "BB视讯、GD视讯、BB体育、沙巴体育、EVO视讯、MG视讯、eBET视讯、性感百家乐、XBB视讯-轮盘/骰宝" },
-        { limit: "20元", platform: "AG视讯、AB视讯、BG视讯、XBB视讯-百家乐/龙虎斗" },
-      ]
-    }
+        {
+          limit: "10元",
+          platform:
+            "BB视讯、GD视讯、BB体育、沙巴体育、EVO视讯、MG视讯、eBET视讯、性感百家乐、XBB视讯-轮盘/骰宝",
+        },
+        {
+          limit: "20元",
+          platform: "AG视讯、AB视讯、BG视讯、XBB视讯-百家乐/龙虎斗",
+        },
+      ],
+    };
   },
   created() {
     this.isCategoryMode = true;

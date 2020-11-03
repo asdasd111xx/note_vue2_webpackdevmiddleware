@@ -45,6 +45,7 @@ import { Swiper, SwiperSlide } from 'vue-awesome-swiper';
 import ajax from '@/lib/ajax';
 import { API_PROMOTION_LIST } from '@/config/api';
 import mobileContainer from '../common/mobileContainer';
+import axios from 'axios';
 
 export default {
   components: {
@@ -92,10 +93,24 @@ export default {
       });
     },
     onClick(target) {
-      localStorage.setItem('iframe-third-url', target.link);
-      localStorage.setItem('iframe-third-url-title', target.name);
-
-      this.$router.push(`/mobile/iframe/promotion?hasFooter=false&hasHeader=true`);
+      axios({
+        method: 'get',
+        url: '/api/v1/c/link/customize',
+        params: {
+          code: 'promotion',
+          client_uri: target.link
+        }
+      }).then(res => {
+        if (res && res.data && res.data.ret && res.data.ret.uri) {
+          localStorage.setItem('iframe-third-url', res.data.ret.uri);
+          localStorage.setItem('iframe-third-url-title', target.name);
+          this.$router.push(`/mobile/iframe/promotion?hasFooter=false&hasHeader=true`);
+        }
+      }).catch(error => {
+        if (error && error.data && error.date.msg) {
+          this.actionSetGlobalMessage({ msg: error.data.msg });
+        }
+      })
 
       //   let newWindow = '';
       //   // 辨別裝置是否為ios寰宇瀏覽器

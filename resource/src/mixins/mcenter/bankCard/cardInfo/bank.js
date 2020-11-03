@@ -58,6 +58,8 @@ export default {
       }
     },
     onDelete() {
+      this.isRevice = false;
+
       axios({
         method: "put",
         url: `/api/v1/c/player/user_bank/${this.bank_cardDetail.id}/delete/apply`,
@@ -66,13 +68,14 @@ export default {
         }
       }).then(response => {
         const { result, msg } = response.data;
-        if (!response || result !== 'ok') {
-          this.actionSetGlobalMessage({ msg: msg ? msg : '不开放删除'});
-          return;
-        }
-
+        this.isRevice = true;
         this.isShowPop = false;
         this.$emit('update:editStatus', false);
+
+        if (!response || result !== 'ok') {
+          this.actionSetGlobalMessage({ msg: msg });
+          return;
+        }
 
         this.getUserBankList().then(() => {
           // 更新 bank_cardDetail
@@ -108,6 +111,11 @@ export default {
             return;
           }
         })
+      }).catch(error => {
+        this.isRevice = true;
+        this.isShowPop = false;
+        this.$emit('update:editStatus', false);
+        this.actionSetGlobalMessage({ msg: error.response.data.msg });
       })
     }
   },

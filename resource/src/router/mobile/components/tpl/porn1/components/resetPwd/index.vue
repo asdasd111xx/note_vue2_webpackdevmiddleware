@@ -260,7 +260,7 @@ export default {
       }
 
       if (!value) {
-        this.errMsg = "该栏位不得为空";
+        this.errMsg = "请输入6-12位字母或数字";
       }
     },
     pwdModifySubmit() {
