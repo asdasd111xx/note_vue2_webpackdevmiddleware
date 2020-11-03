@@ -10,6 +10,7 @@ export const preset = {
     YABO_API_DOMAIN: 'https://yaboapi.bbin-asia.com/api',
     YABO_GOLANG_API_DOMAIN: 'https://yaboapi.bbin-asia.com/api-v2/cxbb',
     ACTIVES_BOUNS_WEBSOCKET: 'wss://yaboapi.bbin-asia.com/ws/promosocket',
+    ACTIVES_BOUNS_WEBSOCKETV2: 'wss://yaboapi.bbin-asia.com/wsn/promosocket?',
 };
 
 /* ---------- ↓ 測試站 ---------- */
