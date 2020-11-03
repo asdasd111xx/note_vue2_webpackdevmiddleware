@@ -92,9 +92,9 @@ export default (params, success = () => { }, fail = () => { }) => {
         query += '&allowFullScreen=false';
       }
 
-      //Xbb lg_casino lg_yb_casino ispwa=true
+      //Xbb lg_casino lg_yb_casino 外開參數
       if (vendor && vendor.toUpperCase().includes('LG')) {
-        query += '&ispwa=true';
+        query += '&pageOption=1';
       }
 
       localStorage.setItem("open-game-link", ret.url + query);
