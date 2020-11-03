@@ -13,6 +13,12 @@
       <template v-if="type == 'deposit'">
         <deposit-record :is-app="isApp" />
       </template>
+      <template v-if="type == 'buymethod'">
+        <buymethod :is-app="isApp" />
+      </template>
+      <template v-if="type == 'usage'">
+        <usage :is-app="isApp" />
+      </template>
     </div>
   </mobile-container>
 </template>
@@ -25,22 +31,26 @@ import depositRecord from "./depositRecord";
 import member from "@/api/member";
 import mobileContainer from "../../../../../common/mobileContainer";
 import withdrawRecord from "./withdrawRecord";
+import buymethod from "./buymethod";
+import usage from "./usage";
 
 export default {
   components: {
     mobileContainer,
     depositRecord,
-    withdrawRecord
+    withdrawRecord,
+    buymethod,
+    usage
   },
   data() {
     return {
-      type: "withdraw" | "deposit"
+      type: "withdraw" | "deposit" | "buymethod" | "usage"
     };
   },
   created() {
     let query = this.$route.query;
     if (
-      ["withdraw", "deposit", "gameintro", "support"].includes(query.type)
+      ["withdraw", "deposit", "gameintro", "support", "buymethod", "usage"].includes(query.type)
     ) {
       this.type = query.type;
     } else {
@@ -59,6 +69,14 @@ export default {
 
         case "deposit":
           return this.$text("S_RECENTLY_DEPOSIT", "8日内充值记录");
+          break;
+
+        case "buymethod":
+          return "SWAG 钻石购买说明";
+          break;
+
+        case "usage":
+          return "SWAG 钻石使用方法";
           break;
 
         default:

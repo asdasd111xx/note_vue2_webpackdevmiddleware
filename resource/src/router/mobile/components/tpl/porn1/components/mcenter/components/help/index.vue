@@ -55,6 +55,13 @@ export default {
           needLogin: true
         },
         {
+          name: "购买钻石",
+          img: "diamond",
+          key: "diamond",
+          info: "秒充值直接看",
+          needLogin: false
+        },
+        {
           name: "提现教程",
           img: "withdraw",
           key: "withdraw",
