@@ -84,8 +84,10 @@
         <div :class="$style['tips-cell']">
           入帐数量：&nbsp;{{ detailRate && detailRate.crypto_num }}
         </div>
-        <div :class="$style['tips-content']" v-html="detailRate.memo" />
-        <!-- <div :class="$style['tips-cell']"><span>备注：</span> test</div> -->
+        <div v-if="detailRate.memo" :class="$style['tips-cell']">
+          <span>备注：</span>
+          <div :class="$style['tips-content']" v-html="detailRate.memo" />
+        </div>
 
         <div :class="[$style['close']]" @click="detailRate = null">关闭</div>
       </div>

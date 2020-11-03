@@ -853,9 +853,9 @@ export default {
         const allowWithdrawCount = Number(
           this.withdrawData.payment_charge.ret.allow_withdraw_count
         );
-        const allowWithdrawLimit = Number(
-          this.withdrawData.payment_charge.ret.allow_withdraw_limit
-        );
+        // const allowWithdrawLimit = Number(
+        //   this.withdrawData.payment_charge.ret.allow_withdraw_limit
+        // );
 
         // 非無限次數且有剩額度
         if (
@@ -866,13 +866,13 @@ export default {
           return true;
         }
 
-        if (
-          ret.withdraw_limit &&
-          Number(ret.withdraw_limit) > 0 &&
-          allowWithdrawLimit <= 0
-        ) {
-          return true;
-        }
+        // if (
+        //   ret.withdraw_limit &&
+        //   Number(ret.withdraw_limit) > 0 &&
+        //   allowWithdrawLimit <= 0
+        // ) {
+        //   return true;
+        // }
       }
       return false;
     },
@@ -1181,9 +1181,9 @@ export default {
           const allowWithdrawCount = Number(
             this.withdrawData.payment_charge.ret.allow_withdraw_count
           );
-          const allowWithdrawLimit = Number(
-            this.withdrawData.payment_charge.ret.allow_withdraw_limit
-          );
+          // const allowWithdrawLimit = Number(
+          //   this.withdrawData.payment_charge.ret.allow_withdraw_limit
+          // );
 
           // 非無限次數且有剩額度
           if (
@@ -1194,13 +1194,13 @@ export default {
             return true;
           }
 
-          if (
-            ret.withdraw_limit &&
-            Number(ret.withdraw_limit) > 0 &&
-            allowWithdrawLimit <= 0
-          ) {
-            return true;
-          }
+          // if (
+          //   ret.withdraw_limit &&
+          //   Number(ret.withdraw_limit) > 0 &&
+          //   allowWithdrawLimit <= 0
+          // ) {
+          //   return true;
+          // }
         }
         return false;
       };
