@@ -12,6 +12,8 @@ import openGame from '@/lib/open_game';
 import { getCookie, setCookie } from '@/lib/cookie';
 import io from 'socket.io-client';
 import yaboRequest from '@/api/yaboRequest';
+import CryptoJS from 'crypto-js';
+import JsEncrypt from 'jsencrypt';
 
 export default {
   data() {
@@ -22,6 +24,26 @@ export default {
       memInfoLoad: false,
       reconnectTimer: null, // 重新連線WS timer,
       yToken: '',
+      AESKey: '',
+      IVKey: '',
+      RSAPublicKey: `
+MIGfMA0GCSqGSIb3DQEBAQUAA4GNADCBiQKBgQCr7yDK97AYJ3+MxRgs9KnaZkOA
+e+bcMxka3kXtpvZyxRX98HB1U50ZIV6TKcNKY0uXz8o3IBOqs+MFN+yzEt0hPS7r
+TGyyVIy9SCm9mVuRHkOcR9OyRJU0i+mWtOtisVU8DUYvO8q0jeCX4e20ptk7gx60
+Z5fBrZ6/GzeXWjWoKwIDAQAB`,//RSA 公鑰
+      RSAPrivateKey: `MIICXAIBAAKBgQCr7yDK97AYJ3+MxRgs9KnaZkOAe+bcMxka3kXtpvZyxRX98HB1
+U50ZIV6TKcNKY0uXz8o3IBOqs+MFN+yzEt0hPS7rTGyyVIy9SCm9mVuRHkOcR9Oy
+RJU0i+mWtOtisVU8DUYvO8q0jeCX4e20ptk7gx60Z5fBrZ6/GzeXWjWoKwIDAQAB
+AoGAMKLtiNz2MG8D8uNSSm1Pmxtwnujtzn6Z7HLSHz8q2h6McRBSD65+czxwT3rx
+5poeKSy7jEqDpbdLUg+W4rVEXgrcqZgD1M+v9FNuh4lWxD4IUbI/P5gi85KWnO8a
+GcBg2HJurfO0z5Ph/xlnkEB7ZTpdijOd1JUaQ0HHvZQH7GkCQQDdgO0yo/gXYpEI
+Z+Bn4qwf/SYfRiu2flUC1wtK4PsqdYvAZAJis+35zp6GNlINc8PHVkC2HC8RnbNm
+/YSfbwIvAkEAxrXtIl4EG8PA2m5LRzsJhSaxAN4IXZXnV/5gavOYKxtGlzbRP9fN
+0YLYyrAc2ccLT4ojnUQrWUE8zqgjOGomxQJBAI6H1pnebtbFYyPwi7LtZerTn4NC
+SQCOPC+upqKRMK16o+mxsONIeppjPRiJvbTQSCttsgg9DICeZIGiIoPhD5sCQCz/
+m8Cxm6qR7MVKPr/VrbU6atDwduKChM4Xa8wsd6QjXBv4LPCRNSmhwOg9c3sZqQUN
+Gj2N52ch79w4lSk8WKUCQFP/uuQnBfKnkaX7mdtraBr+hub20yWZ1W3oGqeugCAF
+B3SMST7n4gDgAkzqE5Uxhc9QIddVmCmVdpqfcEZLCwk=`,//RSA 私鑰
     };
   },
   computed: {
@@ -243,14 +265,20 @@ export default {
         this.connectYaboWSV2(res);
       });
     },
-    connectYaboWSV2(RSA) {
+    connectYaboWSV2(ServerRSAKey) {
       if (this.isConnectingV2) return;
 
       try {
         this.isConnectingV2 = true;
         let cid = getCookie('cid') || '';
         if (!cid) return;
-        let uri = this.siteConfig.ACTIVES_BOUNS_WEBSOCKET + `?akey=${RSA}cid=${cid}&domain=${this.memInfo.user.domain}&userid=${this.memInfo.user.id}`;
+        let uri = this.siteConfig.ACTIVES_BOUNS_WEBSOCKETV2 + `
+        ?cid=${cid}
+        &domain=${this.AESencrypt(this.memInfo.user.domain)}
+        &userid=${this.AESencrypt(this.memInfo.user.id)}
+        &pkey=${this.AESencrypt(this.RSAPublicKey)}
+        &akey=${this.RSAencrypt(this.AESKey, ServerRSAKey)}`;
+        // console.log(`[WSV2]${uri}`);
         window.YABO_SOCKET = new WebSocket(uri);
         window.YABO_SOCKET.onmessage = (e) => {
           let data = JSON.parse(e.data);
@@ -300,6 +328,66 @@ export default {
           }
         }
       }, 3000)
+    },
+    /**
+ * AES加密 ：字符串 key iv  返回base64
+ */
+    AESencrypt(word) {
+      if (this.AESKey === '') {
+        this.AESKey = this.AESRandomWord(16);
+        this.IVKey = this.AESKey;
+      }
+      // console.log(`[WSV2]AESencrypt AES ${word}: ${this.AESKey}`);
+      let key = CryptoJS.enc.Utf8.parse(this.AESKey);
+      // btoa(this.AESKey);//base 64 encode
+      let srcs = CryptoJS.enc.Utf8.parse(word);
+      let encrypted = CryptoJS.AES.encrypt(srcs, key, { iv: CryptoJS.enc.Utf8.parse(this.IVKey), mode: CryptoJS.mode.CBC, padding: CryptoJS.pad.Pkcs7 });
+      // let hexStr = encrypted.ciphertext.toString().toUpperCase();
+      // console.log(`[WSV2]AESencrypt  ${word} Utf8: ${encrypted}`);
+      return encrypted
+    },
+    /**
+* RSA加密 
+*/
+    //加密方法
+    RSAencrypt(pas, publicKey) {
+      // console.log(`[WSV2]AESencrypt RSA: ${pas}`);
+      // pas = 'I15TMSLO0KXUWTHO';
+      let base64Pas = btoa(pas);
+      // publicKey = this.RSAPublicKey;
+      // console.log(`[WSV2]AESencrypt RSA: ${base64Pas}`);
+      //实例化jsEncrypt对象
+      let jse = new JSEncrypt();
+      //设置公钥
+      jse.setPublicKey(publicKey);
+      // console.log('加密：'+jse.encrypt(pas))
+      let RSAdecode = jse.encrypt(base64Pas);
+      // console.log(`[WSV2]AESencrypt RSA加密: ${RSAdecode}`);
+      // this.RSAdecrypt(jse.encrypt(pas));
+      return RSAdecode;
+    },
+
+    //解密方法
+    RSAdecrypt(pas) {
+      let jse = new JSEncrypt();
+      // 私钥
+      jse.setPrivateKey(this.RSAPrivateKey);
+      // console.log('[WSV2]AESencrypt RSA解密：' + jse.decrypt(pas))
+      return jse.decrypt(pas);
+    },
+
+    /**
+* 取隨機32碼AES key
+*/
+    AESRandomWord(count) {
+      var str = "",
+        range = count,
+        arr = ['0', '1', '2', '3', '4', '5', '6', '7', '8', '9', 'A', 'B', 'C', 'D', 'E', 'F', 'G', 'H', 'I', 'J', 'K', 'L', 'M', 'N', 'O', 'P', 'Q', 'R', 'S', 'T', 'U', 'V', 'W', 'X', 'Y', 'Z'];
+      // 隨機產生
+      for (var i = 0; i < range; i++) {
+        str += arr[Math.round(Math.random() * (arr.length - 1))];
+      }
+      return str;
     },
     /* GA流量統計 */
     setGoogleAnalytics() {

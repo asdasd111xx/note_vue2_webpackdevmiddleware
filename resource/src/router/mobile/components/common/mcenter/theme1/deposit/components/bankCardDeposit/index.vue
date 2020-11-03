@@ -603,10 +603,8 @@
                     :class="[
                       $style['conversion-btn'],
                       {
-                        [$style['disable']]: isClickCoversionBtn
-                      },
-                      {
-                        [$style['unInput']]: !moneyValue || !checkSuccess
+                        [$style['disable']]:
+                          isClickCoversionBtn || !moneyValue || !checkSuccess
                       }
                     ]"
                     @click="convertCryptoMoney"
