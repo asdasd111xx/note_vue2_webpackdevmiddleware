@@ -19,9 +19,7 @@
         :class="$style['user-vip-desc']"
         @click="$router.push('/mobile/mcenter/accountVIP/detail')"
       >
-        <div :class="$style['vip-text']">
-          VIP详情
-        </div>
+        <div :class="$style['vip-text']">VIP详情</div>
         <div :class="$style['vip-level']">
           <img
             :src="
@@ -38,7 +36,7 @@
     <!-- 進度條 -->
     <div :class="$style['run-block']">
       <div :class="[$style['run-level'], $style['current']]">
-        <p>VIP{{ userVipInfo.now_level_seq }}</p>
+        <p>{{ userVipInfo.now_level_alias }}</p>
       </div>
       <div :class="$style['run-bar']">
         <div :class="$style['run-ok-bar']" :style="{ width: runPercent }">
@@ -48,11 +46,9 @@
                 `/static/image/${siteConfig.MOBILE_WEB_TPL}/mcenter/vip/vip_run.png`
               )
             "
-            :style="
-              `right: ${
-                userVipInfo.percent > 77 ? userVipInfo.percent - 100 : -23
-              }px`
-            "
+            :style="`right: ${
+              userVipInfo.percent > 77 ? userVipInfo.percent - 100 : -23
+            }px`"
             alt="run"
           />
           <span ::style="`right: ${userVipInfo.percent > 90 ? -10 : -15 }px`"
@@ -62,7 +58,7 @@
       </div>
 
       <div :class="[$style['run-level'], $style['next']]">
-        <p>VIP{{ userVipInfo.next_level_seq }}</p>
+        <p>{{ userVipInfo.next_level_alias }}</p>
       </div>
     </div>
 
