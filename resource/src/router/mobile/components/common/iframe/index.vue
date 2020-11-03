@@ -234,7 +234,10 @@ export default {
       //   'https://dglzsm.com',
       //   'http://47.240.78.53',
       //   'http://47.240.57.135',
-      //   'http://47.240.117.62'
+      //   'http://47.240.117.62',
+      //   'http://eyt.iplay.bet',
+      //   'http://eyd.666uxm.com',
+      //   'https://688lg410.666uxm.com/'
       // ];
       if (e.data) {
         let data = e.data;
