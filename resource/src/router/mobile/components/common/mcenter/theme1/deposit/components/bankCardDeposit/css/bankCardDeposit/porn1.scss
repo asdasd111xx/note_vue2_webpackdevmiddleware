@@ -347,12 +347,14 @@
 
     &.disable {
       pointer-events: none;
-    }
-
-    &.unInput {
       border: 1px solid #e9dacb;
       color: #e9dacb;
     }
+
+    // &.unInput {
+    //   border: 1px solid #e9dacb;
+    //   color: #e9dacb;
+    // }
   }
 }
 

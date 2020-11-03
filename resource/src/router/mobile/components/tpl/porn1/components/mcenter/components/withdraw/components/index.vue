@@ -428,7 +428,7 @@
 
     <!-- 匯率試算 -->
     <div v-if="isSelectedUSDT" :class="$style['crypto-block']">
-      <span :class="$style['money-currency']">¥</span>
+      <!-- <span :class="$style['money-currency']">¥</span> -->
       <span :class="$style['money-currency']">
         {{ selectedCard.name }}到帐
       </span>
@@ -440,10 +440,8 @@
         :class="[
           $style['conversion-btn'],
           {
-            [$style['disable']]: isClickCoversionBtn,
-          },
-          {
-            [$style['unInput']]: !withdrawValue || +actualMoney <= 0,
+            [$style['disable']]:
+              isClickCoversionBtn || !withdrawValue || +actualMoney <= 0,
           },
         ]"
         @click="convertCryptoMoney"
