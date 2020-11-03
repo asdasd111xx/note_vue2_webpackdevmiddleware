@@ -187,8 +187,7 @@
 
 .custom-date {
   padding: 16px 0;
-  background: url("/static/image/_new/common/arrow_next.png") no-repeat right 0
-    center;
+  background: url("/static/image/_new/common/arrow_next.png") no-repeat right 0 center;
   background-size: 15px 15px;
   border-bottom: 1px solid #eee;
 
@@ -274,7 +273,7 @@
 }
 
 .record-count-time {
-  float: left;
+  // float: left;
   line-height: 20px;
   font-size: 17px;
   color: #414655;
@@ -367,7 +366,7 @@
   padding-left: 8px;
   color: #414655;
 
-  > div {
+  >div {
     flex: 1;
   }
 

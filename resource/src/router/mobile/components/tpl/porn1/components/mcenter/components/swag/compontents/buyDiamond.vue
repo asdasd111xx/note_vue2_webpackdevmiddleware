@@ -1,5 +1,48 @@
 <template>
   <div :class="['clearfix']">
+    <div :class="['swag-banner-wrap']">
+      <swiper v-if="options" :options="options">
+        <swiper-slide v-for="(info, key) in swagBanner" :key="key">
+          <div :class="$style['swag-banner-cell']">
+            <img :src="$getCdnPath(info.src)" :data-info="key" />
+          </div>
+        </swiper-slide>
+        <div slot="pagination" class="swiper-pagination" />
+      </swiper>
+    </div>
+
+    <div :class="$style['swag-balance-wrap']">
+      <div :class="$style['swag-balance-item']">
+        <img
+          :src="
+            $getCdnPath(
+              '/static/image/porn1/mcenter/balanceTrans/ic_wallet_center.png'
+            )
+          "
+        />
+        <div>{{ $text("S_MCENTER_WALLET", "中心钱包") }}</div>
+        <div :class="$style['money']">
+          {{ membalance.total }}
+        </div>
+      </div>
+
+      <div :class="$style['swag-balance-item']">
+        <img
+          :src="
+            $getCdnPath(
+              '/static/image/porn1/mcenter/balanceTrans/ic_wallet_center.png'
+            )
+          "
+        />
+        <div>{{ $text("S_DIAMOND_SWAG", "SWAG钻石") }}</div>
+        <div :class="$style['money']">
+          {{ membalance.total }}
+        </div>
+      </div>
+
+      <div :class="$style['swag-balance-item']"></div>
+    </div>
+
     <tipsDiamond />
   </div>
 </template>
@@ -9,20 +52,42 @@ import { mapGetters, mapActions } from "vuex";
 import axios from "axios";
 import mixin from "@/mixins/mcenter/diamond/diamond";
 import tipsDiamond from './tipsDiamond';
+import { Swiper, SwiperSlide } from 'vue-awesome-swiper';
 
 export default {
   mixins: [mixin],
+  components: {
+    Swiper,
+    SwiperSlide,
+    tipsDiamond
+  },
   data() {
     return {
+      // banner
+      swagBanner: [{ src: '/static/image/porn1/mcenter/swag/banner_swag.png' },
+      { src: '/static/image/porn1/mcenter/swag/banner_swag.png' }]
     };
-  },
-  components: {
-    tipsDiamond
   },
   computed: {
     ...mapGetters({
       memInfo: "getMemInfo"
     }),
+    options() {
+      const hasData = this.swagBanner.length > 1;
+      const options = {
+        loop: hasData,
+        autoplay: { delay: 5000, disableOnInteraction: false },
+        pagination: hasData ? { el: '.swiper-pagination', clickable: true } : { el: null }
+      };
+
+      return {
+        ...options,
+        on: {
+          click(element) {
+          }
+        }
+      };
+    },
   },
   created() {
     // this.getRechargeBalance();
@@ -38,152 +103,51 @@ export default {
 <style lang="scss" module>
 @import "../css/index.module.scss";
 
-.form {
-  background-color: #eeeeee;
-  font-size: 14px;
+.swag-banner-wrap {
+  height: 120px;
 }
 
-.form-content {
-  display: flex;
-  align-items: center;
-  height: 50px;
-  padding: 0 13px;
-  color: #222222;
-  background-color: #fefffe;
-  margin-top: 1px;
-  font-family: Microsoft JhengHei, Microsoft JhengHei-Regular;
-  font-weight: 400;
-  line-height: 20px;
-  position: relative;
-}
+.swag-banner-cell {
+  height: 120px;
 
-.keyring-tips {
-  color: $main_error_color1;
-}
-
-.form-tips {
-  padding: 0 13px;
-  background-color: #fefffe;
-  margin-top: 1px;
-  font-family: Microsoft JhengHei, Microsoft JhengHei-Regular;
-  font-weight: 400;
-  line-height: 20px;
-  position: relative;
-  color: $main_error_color1;
-  display: block;
-  word-break: break-all;
-  //   height: 30px;
-  //   line-height: 30px;
-  padding-top: 5px;
-}
-
-.form-tips {
-  + .form-content {
-    margin-top: unset;
+  > img {
+    height: 100%;
+    widows: 100%;
   }
 }
 
-.keyring-content {
-  height: auto;
-  display: block;
-  padding-top: 17px;
-  padding-bottom: 8px;
+.swag-balance-wrap {
 }
 
-.form-title {
-  height: 20px;
-  width: 100px;
-}
-
-.form-input {
-  padding: 0 5px;
-
-  input {
-    width: 100%;
-
-    &.amount {
-      width: 80%;
-    }
-  }
-}
-
-.keyring-title {
-  margin-bottom: 11px;
-  height: 20px;
-  width: 100%;
-}
-
-.keyring-input {
-  height: 35px;
-  width: 100%;
-  position: relative;
-  line-height: 35px;
-  input {
-    width: 60%;
-  }
-}
-
-.send-keyring {
-  -moz-tap-highlight-color: rgba(0, 0, 0, 0);
-  -webkit-tap-highlight-color: rgba(0, 0, 0, 0);
-  background-color: #d1b79c;
-  border-radius: 3px;
-  color: white;
-  font-weight: 400;
-  height: 30px;
-  line-height: 30px;
-  position: absolute;
-  right: 0;
+.swag-balance-item {
+  flex: 1;
+  font-size: 12px;
+  font-weight: 700;
+  color: #414655;
+  width: 30%;
   text-align: center;
-  top: 0;
-  width: 100px;
-
-  &.disabled {
-    color: white;
-    background-color: #e9dacc;
-    pointer-events: none;
-  }
-}
-
-input::placeholder {
-  color: #aaaaaa;
-}
-
-.submit-wrap {
-  height: 43px;
-  margin: 15px auto;
-  padding: 0 14px;
-  max-width: $mobile_max_width;
+  display: inline-block;
+  padding: 0px 4px;
+  padding-top: 12px;
 
   > div {
-    border-radius: 3px;
-    background: -webkit-linear-gradient(to right, #f9ddbd, #bd9d7d);
-    background: -o-linear-gradient(to right, #f9ddbd, #bd9d7d);
-    background: -moz-linear-gradient(to right, #f9ddbd, #bd9d7d);
-    background: linear-gradient(to right, #f9ddbd, #bd9d7d);
-    line-height: 43px;
+    display: inline-block;
+    padding-top: 3px;
+  }
+
+  img {
+    width: 13px;
+    height: 13px;
+    vertical-align: text-bottom;
+    display: inline-block;
+  }
+
+  .money {
+    font-size: 16px;
     font-family: Microsoft JhengHei, Microsoft JhengHei-Bold;
     font-weight: 700;
     text-align: center;
-    color: #f3ede7;
-    width: 100%;
-    height: 100%;
+    color: #be9e7f;
   }
-
-  &.disabled {
-    > div {
-      background: -webkit-linear-gradient(to right, #eee5db, #e9dacb);
-      background: -o-linear-gradient(to right, #eee5db, #e9dacb);
-      background: -moz-linear-gradient(to right, #eee5db, #e9dacb);
-      background: linear-gradient(to right, #eee5db, #e9dacb);
-      pointer-events: none;
-    }
-  }
-}
-
-.serial-number-links {
-  color: #6aaaf5;
-  position: absolute;
-  right: 17px;
 }
 </style>
