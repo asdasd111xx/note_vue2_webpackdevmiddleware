@@ -10,7 +10,7 @@
         <div ref="name" :class="$style['name']">
           <span>{{ memInfo.user.username }}</span>
           <span :style="`display: ${setVipTextDisplay}`">
-            VIP{{ userVipInfo.now_level_seq }}
+            {{ userVipInfo.now_level_alias }}
           </span>
         </div>
       </div>
@@ -46,9 +46,11 @@
                 `/static/image/${siteConfig.MOBILE_WEB_TPL}/mcenter/vip/vip_run.png`
               )
             "
-            :style="`right: ${
-              userVipInfo.percent > 77 ? userVipInfo.percent - 100 : -23
-            }px`"
+            :style="
+              `right: ${
+                userVipInfo.percent > 77 ? userVipInfo.percent - 100 : -23
+              }px`
+            "
             alt="run"
           />
           <span ::style="`right: ${userVipInfo.percent > 90 ? -10 : -15 }px`"

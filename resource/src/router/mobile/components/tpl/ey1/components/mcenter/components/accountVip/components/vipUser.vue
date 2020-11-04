@@ -10,7 +10,7 @@
         <div ref="name" :class="$style['name']">
           <span>{{ memInfo.user.username }}</span>
           <span :style="`display: ${setVipTextDisplay}`">
-            VIP{{ userVipInfo.now_level_seq }}
+            {{ userVipInfo.now_level_alias }}
           </span>
         </div>
       </div>
@@ -38,7 +38,7 @@
     <!-- 進度條 -->
     <div :class="$style['run-block']">
       <div :class="[$style['run-level'], $style['current']]">
-        <p>VIP{{ userVipInfo.now_level_seq }}</p>
+        <p>{{ userVipInfo.now_level_alias }}</p>
       </div>
       <div :class="$style['run-bar']">
         <div :class="$style['run-ok-bar']" :style="{ width: runPercent }">
@@ -62,7 +62,7 @@
       </div>
 
       <div :class="[$style['run-level'], $style['next']]">
-        <p>VIP{{ userVipInfo.next_level_seq }}</p>
+        <p>{{ userVipInfo.next_level_alias }}</p>
       </div>
     </div>
 
