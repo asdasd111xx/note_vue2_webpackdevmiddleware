@@ -4,7 +4,15 @@
       <swiper v-if="options" :options="options">
         <swiper-slide v-for="(info, key) in swagBanner" :key="key">
           <div :class="$style['swag-banner-cell']">
-            <img :src="$getCdnPath(info.src)" :data-info="key" />
+            <img
+              :src="$getCdnPath(info.src)"
+              :data-info="key"
+              @click="
+                $router.push(
+                  `/mobile/iframe/SWAG?&title=鴨博色播&hasFooter=false&hasHeader=true`
+                )
+              "
+            />
           </div>
         </swiper-slide>
         <div slot="pagination" class="swiper-pagination" />
@@ -22,7 +30,7 @@
         />
         <div>{{ $text("S_MCENTER_WALLET", "中心钱包") }}</div>
         <div :class="$style['money']">
-          {{ membalance.total }}
+          {{ membalance.total || "0.00" }}
         </div>
       </div>
 
@@ -34,7 +42,7 @@
         />
         <div>{{ $text("S_DIAMOND_SWAG", "SWAG钻石") }}</div>
         <div :class="$style['money']">
-          {{ swagData.balance }}
+          {{ swagDiamondBalance || "0.00" }}
         </div>
       </div>
 
@@ -55,35 +63,61 @@
       <div :class="$style['title']">
         兑换钻石数量
       </div>
-
       <div :class="$style['price-wrap']">
         <div
-          v-for="(item, key) in swagData.priceList"
+          v-for="(item, key) in rateList"
           :class="[
             $style['price-cell'],
-            { [$style['selected']]: key === currentSeleted.key }
+            { [$style['selected']]: item.amount === currentSelRate.amount }
           ]"
-          @click="selectPrice(item)"
+          @click="!item.loading ? selectedRate(item) : {}"
         >
-          <div :class="$style['price']">{{ `¥ ${item.price}` }}</div>
-          <div :class="$style['num']">
-            <img
-              :src="
-                $getCdnPath(
-                  `/static/image/porn1/mcenter/swag/ic_swag_${
-                    key === currentSeleted.key ? 'h' : 'n'
-                  }.png`
-                )
-              "
-            />
-            <div>
-              {{ `${item.num}` }}
+          <template v-if="!item.loading">
+            <div :class="$style['price']">{{ `¥ ${item.amount}` }}</div>
+            <div :class="$style['num']">
+              <img
+                :src="
+                  $getCdnPath(
+                    `/static/image/porn1/mcenter/swag/ic_swag_${
+                      key === currentSelRate.key ? 'h' : 'n'
+                    }.png`
+                  )
+                "
+              />
+              <div>
+                {{ `${item.diamond}` }}
+              </div>
             </div>
-          </div>
+          </template>
+          <template v-else>
+            <div :class="$style['loading']" />
+            <div :class="$style['loading']" />
+          </template>
         </div>
       </div>
     </div>
 
+    <div
+      v-if="currentSelRate && currentSelRate.amount"
+      :class="$style['seleted-tip']"
+    >
+      {{
+        `消费 ¥ ${currentSelRate.amount} 兑换${currentSelRate.diamond}颗SWAG钻石`
+      }}
+    </div>
+
+    <div :class="[$style['submit-wrap']]">
+      <div
+        :class="[
+          $style['submit-btn'],
+          {
+            [$style['disabled']]: lockedSubmit
+          }
+        ]"
+      >
+        立即兑换
+      </div>
+    </div>
     <tipsDiamond />
   </div>
 </template>
@@ -101,25 +135,6 @@ export default {
     Swiper,
     SwiperSlide,
     tipsDiamond
-  },
-  data() {
-    return {
-      // banner
-      swagBanner: [{ src: '/static/image/porn1/mcenter/swag/banner_swag.png' },
-      { src: '/static/image/porn1/mcenter/swag/banner_swag.png' }],
-
-      balanceBackLock: false,
-      currentSeleted: {
-        key: 0
-      },
-      swagData: {
-        balance: 0,
-        priceList: [{ key: 0, price: '188', num: '100' },
-        { key: 1, price: '1880', num: '100' },
-        { key: 2, price: '1', num: '1' },
-        { key: 3, price: '18', num: '10' }]
-      }
-    };
   },
   computed: {
     ...mapGetters({
@@ -143,15 +158,16 @@ export default {
     },
   },
   created() {
-    // this.getRechargeBalance();
-    // this.actionSetRechargeConfig();
-  },
-  watch: {
+    // 測試資料
+    setTimeout(() => {
+      this.rateList = [{ key: 0, amount: '188', diamond: '100' },
+      { key: 1, amount: '1880', diamond: '100' },
+      { key: 2, amount: '1', diamond: '1' },
+      { key: 3, amount: '18', diamond: '10' }];
+      this.selectedRate(this.rateList[0]);
+    }, 1000)
   },
   methods: {
-    selectPrice(item) {
-      this.currentSeleted.key = item.key;
-    }
   }
 };
 </script>
@@ -253,7 +269,7 @@ export default {
   border-radius: 3px;
   width: calc(25% - 6px);
 
-  &:not(:first-child) {
+  &:not(:nth-child(4n + 1)) {
     margin-left: 6px;
   }
 
@@ -285,6 +301,39 @@ export default {
       width: 12px;
       height: 12px;
       vertical-align: bottom;
+    }
+  }
+
+  .loading {
+    margin: 6px 11px;
+    background: #eeeeee;
+    height: calc(50% - 9px);
+  }
+}
+
+.seleted-tip {
+  font-size: 14px;
+  font-family: Microsoft JhengHei, Microsoft JhengHei-Regular;
+  font-weight: 400;
+  text-align: left;
+  color: #d1b79c;
+  padding: 12px 17px;
+}
+
+.submit-wrap {
+  padding: 0 17px;
+  .submit-btn {
+    text-align: center;
+    height: 45px;
+    line-height: 45px;
+    font-size: 14px;
+    color: #ffffff;
+    background: linear-gradient(to right, #f9ddbd, #bd9d7d);
+    border-radius: 3px;
+
+    &.disabled {
+      background: linear-gradient(to right, #e9dacb, #eee5db);
+      border-radius: 10px;
     }
   }
 }
