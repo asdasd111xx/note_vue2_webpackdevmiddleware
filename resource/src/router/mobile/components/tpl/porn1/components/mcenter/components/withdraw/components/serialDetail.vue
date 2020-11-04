@@ -12,9 +12,9 @@
       >
     </div>
     <div :class="[$style['serial-number-wrap']]">
-      <div :class="$style['serial-time']">
+      <!-- <div :class="$style['serial-time']">
         {{ $text("S_CHECK_TIME", "检查时间") }}：{{ getNowTime() }}
-      </div>
+      </div> -->
 
       <div :class="[$style['basic-info-wrap'], 'clearfix']" v-if="data">
         <div :class="$style['serial-basic-cell']">

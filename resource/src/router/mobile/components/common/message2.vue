@@ -47,7 +47,7 @@ export default {
             this.msg = "请先绑定电子钱包"
             break;
           case "balanceTrans":
-            this.msg = "请先完成提现信息"
+            this.msg = "请先设定提现资料"
             break;
           case "login":
             this.msg = "请先登入"

@@ -12,7 +12,14 @@
         </div>
         <div :class="$style['alert-body-wrap']">
           <div :class="$style['success-icon-wrap']">
-            <icon :class="$style['success-icon']" name="regular/check-circle" />
+            <!-- <icon :class="$style['success-icon']" name="regular/check-circle" /> -->
+            <img
+              :class="$style['success-icon']"
+              :src="
+                $getCdnPath(`/static/image/${themeTPL}/mcenter/ic_check.png`)
+              "
+              alt="check"
+            />
             <span :class="$style['success-title']">{{
               $text("S_ENTER_SUCCESS", "提交成功")
             }}</span>
@@ -52,6 +59,9 @@ export default {
       const style = this[`$style_${this.siteConfig.MOBILE_WEB_TPL}`] || this.$style_porn1;
       return style;
     },
+    themeTPL() {
+      return this.siteConfig.MOBILE_WEB_TPL;
+    }
   }
 };
 </script>
