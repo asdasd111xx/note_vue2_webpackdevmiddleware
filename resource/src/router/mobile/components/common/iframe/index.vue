@@ -256,6 +256,11 @@ export default {
           case 'EVENT_THIRDPARTY_LOGIN':
             this.$router.push('/mobile/login');
             return;
+
+          case 'EVENT_THIRDPARTY_CURRENCY_NOT_ENOUGH':
+            this.$router.push('/mobile/mcenter/swag?tab=0');
+            return;
+
           default:
             return;
         }
