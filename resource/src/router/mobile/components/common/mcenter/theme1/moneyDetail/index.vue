@@ -1,6 +1,6 @@
 <template>
   <div :class="$style['money-detail-wrap']">
-    <template v-if="pageType !== 'ingroup_transfer'">
+    <template v-if="pageType !== 'ingroup_transfer' && pageType !== 'swag'">
       <div
         v-if="$route.params.page !== 'detail' || !detailInfo"
         :class="[$style['top-link'], 'clearfix']"
@@ -111,7 +111,8 @@
       v-if="
         $route.params.page === 'detail' &&
           detailInfo &&
-          pageType !== 'ingroup_transfer'
+          pageType !== 'ingroup_transfer' &&
+          pageType !== 'swag'
       "
       :current-category="currentCategory"
       :opcode-list="opcodeList"
@@ -127,7 +128,9 @@
     />
     <!-- 捲動加載 -->
     <infinite-loading
-      v-if="showInfinite && pageType !== 'ingroup_transfer'"
+      v-if="
+        showInfinite && pageType !== 'ingroup_transfer' && pageType !== 'swag'
+      "
       ref="infiniteLoading"
       @infinite="infiniteHandler"
     >
@@ -169,7 +172,7 @@ export default {
   },
   watch: {
     detailInfo(val) {
-      if (this.pageType === 'ingroup_transfer') {
+      if (this.pageType === 'ingroup_transfer' || this.pageType !== 'swag') {
         this.$emit("showDetail", val);
       }
     }
@@ -261,6 +264,11 @@ export default {
     if (this.pageType === 'ingroup_transfer') {
       this.setDefaultCreditTrans();
     }
+
+    // 共用SWAG紀錄
+    if (this.pageType === 'swag') {
+      this.setDefaultSWAG();
+    }
   },
   methods: {
     ...mapActions([
@@ -269,14 +277,14 @@ export default {
     getData(cacheParams = null) {
       this.isLoading = true;
       let params = {}
-      console.log('getData', cacheParams)
+
       if (cacheParams) {
         params = cacheParams;
       } else {
-        params = { 
+        params = {
           start_at: Vue.moment(this.startTime).format('YYYY-MM-DD 00:00:00-04:00'),
           end_at: Vue.moment(this.endTime).format('YYYY-MM-DD 23:59:59-04:00'),
-          category: this.type,
+          category: this.pageType === 'swag' ? 'outer' : this.type,
           order: this.sort,
           first_result: this.firstResult,
           max_results: this.maxResults
@@ -285,6 +293,10 @@ export default {
 
       if (this.type.find(i => i === "ingroup_transfer")) {
         params['opcode'] = ['8007', '1049', '5020', '5018', '5019', '5017', '5016'];
+      }
+
+      if (this.type.find(i => i === "outer") && this.pageType === 'swag') {
+        params['opcode'] = ['9001'];
       }
 
       localStorage.setItem('money-detail-params', JSON.stringify(params));
@@ -332,6 +344,12 @@ export default {
       this.endTime = new Date(Vue.moment(this.estToday));
       this.setCategory({ key: 'ingroup_transfer', text: '转让' });
     },
+    setDefaultSWAG() {
+      this.type = ["outer"];
+      this.startTime = new Date(Vue.moment(this.estToday).add(-29, 'days'));
+      this.endTime = new Date(Vue.moment(this.estToday));
+      this.setCategory({ key: 'vendor', text: '转帐' });
+    },
     setCategory(value) {
       this.currentCategory = value;
       this.type = value.key === 'bonus' ? ['activity', 'rebate'] : [value.key];
@@ -343,7 +361,7 @@ export default {
 
       this.changeCondition('');
       this.changeDatePicker('');
-      if (!localStorage.getItem('money-detail-params-service') || this.pageType === "ingroup_transfer") {
+      if (!localStorage.getItem('money-detail-params-service') || this.pageType === "ingroup_transfer" || this.pageType === "swag") {
         this.getData();
       }
     },
@@ -399,12 +417,12 @@ export default {
       this.changeCondition('');
       this.changeDatePicker('');
     },
-    onConfirm() { 
-      if ((this.startTime > this.endTime) && (this.startTime.toDateString() !== this.endTime.toDateString()) ) {
+    onConfirm() {
+      if ((this.startTime > this.endTime) && (this.startTime.toDateString() !== this.endTime.toDateString())) {
         this.actionSetGlobalMessage({ msg: '开始日期不能大于结束日期' });
         return;
       }
- 
+
       this.currentDate = { key: 'custom', text: '自定义' };
       this.detailList = null;
       this.firstResult = 0;
@@ -422,7 +440,7 @@ export default {
      */
     infiniteHandler($state) {
       // 防止在切換類別的時候馬上觸發捲動加載，造成有遊戲重複出現的情況
-      if (this.isReceive && this.pageType === "ingroup_transfer") {
+      if (this.isReceive && (this.pageType === "ingroup_transfer" || this.pageType === "swag")) {
         return;
       }
 

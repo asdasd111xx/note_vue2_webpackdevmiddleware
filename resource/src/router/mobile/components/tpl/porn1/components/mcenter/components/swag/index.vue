@@ -99,13 +99,13 @@ export default {
         case 0:
           this.currentTemplate = "buy-diamond";
           this.currentTab = index;
-          this.$router.replace(`/mobile/mcenter/swag?tab=${index}`);
+          // this.$router.replace(`/mobile/mcenter/swag?tab=${index}`);
 
           break;
         case 1:
           this.currentTemplate = "recoard-diamond";
           this.currentTab = index;
-          this.$router.replace(`/mobile/mcenter/swag?tab=${index}`);
+          // this.$router.replace(`/mobile/mcenter/swag?tab=${index}`);
 
           break;
         case 2:
