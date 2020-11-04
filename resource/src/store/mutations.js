@@ -529,4 +529,10 @@ export default {
   [types.SET_PROMOTION_LINK](state, data) {
     state.promotionLink = data
   },
+  [types.SET_SWAG_CONFIG](state, data) {
+    state.swagConfig = data
+  },
+  [types.SET_SWAG_BALANCE](state, data) {
+    state.swagBalance = data
+  },
 };

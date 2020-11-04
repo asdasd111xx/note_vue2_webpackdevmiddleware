@@ -1,6 +1,6 @@
 <template>
   <div :class="[$style['recoard-credit-trans'], ['clearfix']]">
-    <money-detail :pageType="'ingroup_transfer'" @showDetail="showDetail" />
+    <money-detail :pageType="'swag'" @showDetail="showDetail" />
     <recoard-detail-slider
       v-if="detailInfo"
       :detail-info="detailInfo"

@@ -7,11 +7,37 @@ import axios from "axios";
 export default {
   props: {},
   data() {
+    return {
+      rateList: [
+        { loading: true },
+        { loading: true },
+        { loading: true },
+        { loading: true },
+        { loading: true },
+        { loading: true },
+        { loading: true }
+      ],
+      currentSelRate: {
+        amount: NaN,
+        // diamond: '0'
+      },
+      balanceBackLock: false,
+      swagDiamondBalance: '0.00',
+      lockedSubmit: true,
+
+      // banner
+      swagBanner: [
+        { src: '/static/image/porn1/mcenter/swag/banner_swag.png' },
+        { src: '/static/image/porn1/mcenter/swag/banner_swag.png' }],
+    }
   },
   computed: {
     ...mapGetters({
+      loginStatus: 'getLoginStatus',
       memInfo: "getMemInfo",
       membalance: "getMemBalance",
+      swagBalance: "getSwagBalance",
+      swagConfig: "getSwagConfig"
     }),
     inputInfo() {
       return [
@@ -21,26 +47,6 @@ export default {
           error: "",
           placeholder: "请输入下线帐号"
         },
-        {
-          key: "amount",
-          title: "转让金额",
-          error: "",
-          placeholder: `请输入转让金额`
-        },
-        {
-          key: "phone",
-          title: "手机号码",
-          error: "",
-          placeholder: "请输入手机号码",
-          maxlength: 11
-        },
-        {
-          key: "keyring",
-          title: "获取验证码",
-          error: "",
-          placeholder: "请输入验证码",
-          maxlength: 6
-        }
       ];
     },
   },
@@ -49,14 +55,30 @@ export default {
     this.updateBalance = null;
   },
   created() {
+    this.actionSetUserBalance();
+    this.actionSetSwagBalance();
+    this.actionSetSwagConfig().then(() => {
 
-    this.updateBalance = setInterval(() => {
-      this.actionSetUserBalance();
-    }, 30000);
+      // 可購買的鑽石/金額列表
+      // this.rateList = this.swagConfig.rates;
+      // this.selectedRate(this.rateList[0]);
+
+      // 維護時間
+      // this.swagConfig.maintain_end_at
+      // this.swagConfig.maintain_start_at
+    });
+
+    if (this.loginStatus) {
+      this.updateBalance = setInterval(() => {
+        this.actionSetUserBalance();
+        this.actionSetSwagBalance();
+      }, 40000);
+    }
   },
   watch: {
-    membalance() {
-    }
+    swagBalance(val) {
+      this.swagDiamondBalance = val.balance;
+    },
   },
   methods: {
     ...mapActions([
@@ -64,7 +86,13 @@ export default {
       "actionSetUserdata",
       "actionSetGlobalMessage",
       "actionVerificationFormData",
+      'actionSetSwagConfig',
+      'actionSetSwagBalance'
     ]),
+    selectedRate(item) {
+      this.currentSelRate = item;
+      this.lockedSubmit = false;
+    },
     verification(item) {
       let errorMessage = "";
       if (item.key === "phone") {
@@ -81,42 +109,6 @@ export default {
         } else {
           errorMessage = "";
           this.isVerifyPhone = true;
-        }
-      }
-
-      if (item.key === "amount") {
-        const limit = Number(this.rechargeConfig.recharge_limit) || 0;
-        const amount = Number(this.formData.amount);
-
-        this.formData.amount = this.formData.amount
-          .replace(/[^0-9]/g, "")
-          .substring(0, 16);
-
-        if (!amount || amount === 0) {
-          errorMessage = "请输入转让金额";
-        } else if (limit && amount < limit) {
-          errorMessage = "转帐金额低于最低限额";
-        } else if (amount > this.maxRechargeBalance) {
-          // errorMessage = "馀额不足";
-        } else {
-          errorMessage = "";
-        }
-      }
-
-      if (item.key == "target_username") {
-        const data = this.pwdResetInfo["username"];
-        const re = new RegExp(data.regExp);
-        const msg = this.$t(data.errorMsg);
-
-        this.actionVerificationFormData({
-          target: "username",
-          value: this.formData.target_username
-        }).then(val => {
-          this.formData.target_username = val;
-        });
-
-        if (!re.test(this.formData.target_username)) {
-          errorMessage = msg;
         }
       }
 
@@ -140,35 +132,6 @@ export default {
       this.isVerifyForm = noError && hasValue;
     },
     submit() {
-    },
-    getDiamondeRecoard() {
-      return axios({
-        method: "get",
-        url: "/api/v1/c/cash/entry",
-        params: {
-          start_at: Vue.moment(this.startTime).format(
-            "YYYY-MM-DD 00:00:00-04:00"
-          ),
-          end_at: Vue.moment(this.endTime).format(
-            "YYYY-MM-DD 23:59:59-04:00"
-          ),
-          category: "ingroup_transfer", // 缺鑽石參數
-          firstResult: 0 // 每頁起始筆數
-          // maxResults: 20, // 每頁顯示幾筆
-        }
-      })
-        .then(res => {
-          if (res && res.data && res.data.result === "ok") {
-            this.rechargeRecoard = res.data.ret;
-          } else {
-            this.actionSetGlobalMessage({ msg: res.data.msg });
-          }
-        })
-        .catch(error => {
-          this.actionSetGlobalMessage({
-            msg: error.response.data.msg
-          });
-        });
     },
     showDetail(item) {
       this.detailRecoard = item;

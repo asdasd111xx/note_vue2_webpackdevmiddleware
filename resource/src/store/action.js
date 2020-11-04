@@ -1644,3 +1644,62 @@ export const actionSetAgentUserConfig = ({ commit }) => ajax({
     }
   }
 });
+
+// SWAG設定
+export const actionSetSwagConfig = ({ commit, state }, data) => {
+  const hasLogin = Vue.cookie.get('cid');
+  if (!hasLogin) {
+    return;
+  }
+  let configInfo;
+  if (state.webInfo.is_production) {
+    configInfo = siteConfigOfficial[`site_${state.webInfo.alias}`] || siteConfigOfficial.preset;
+  } else {
+    configInfo = siteConfigTest[`site_${state.webInfo.alias}`] || siteConfigTest.preset;
+  }
+
+  return bbosRequest({
+    method: "get",
+    url: configInfo.BBOS_DOMIAN + '/Ext/Swag/Domain/Config',
+    reqHeaders: {
+      'Vendor': state.memInfo.user.domain,
+    },
+    params: {
+      "lang": "zh-cn"
+    },
+  }).then((res) => {
+    if (res.errorCode !== '00' || res.status !== '000') {
+      return
+    }
+    commit(types.SET_SWAG_CONFIG, res.data);
+  })
+};
+
+export const actionSetSwagBalance = ({ commit, state }, data) => {
+  const hasLogin = Vue.cookie.get('cid');
+  if (!hasLogin) {
+    return;
+  }
+  let configInfo;
+  if (state.webInfo.is_production) {
+    configInfo = siteConfigOfficial[`site_${state.webInfo.alias}`] || siteConfigOfficial.preset;
+  } else {
+    configInfo = siteConfigTest[`site_${state.webInfo.alias}`] || siteConfigTest.preset;
+  }
+
+  return bbosRequest({
+    method: "get",
+    url: configInfo.BBOS_DOMIAN + '/Ext/Swag/Vendor/Quota',
+    reqHeaders: {
+      'Vendor': state.memInfo.user.domain,
+    },
+    params: {
+      "lang": "zh-cn"
+    },
+  }).then((res) => {
+    if (res.errorCode !== '00' || res.status !== '000') {
+      return
+    }
+    commit(types.SET_SWAG_BALANCE, res.data);
+  })
+};
