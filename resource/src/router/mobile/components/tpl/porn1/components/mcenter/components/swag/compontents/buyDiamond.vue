@@ -42,18 +42,12 @@
         />
         <div>{{ $text("S_DIAMOND_SWAG", "SWAG钻石") }}</div>
         <div :class="$style['money']">
-          {{ swagDiamondBalance || "0.00" }}
+          {{ swagDiamondBalance }}
         </div>
       </div>
 
       <div :class="$style['swag-balance-item']">
-        <div
-          :class="[
-            $style['recycle-btn'],
-            balanceBackLock ? $style.disable : ''
-          ]"
-          @click.self="balanceBack()"
-        >
+        <div :class="[$style['recycle-btn']]" @click="balanceBack()">
           {{ $text("S_ONE_CLICK_TO_ACCOUNT", "一键回收") }}
         </div>
       </div>
@@ -114,6 +108,7 @@
             [$style['disabled']]: lockedSubmit
           }
         ]"
+        @click="submit"
       >
         立即兑换
       </div>

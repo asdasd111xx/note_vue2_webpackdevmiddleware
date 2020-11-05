@@ -222,7 +222,8 @@ export default {
         { key: 'bonus', text: '红利' },
         { key: 'manual', text: '人工' },
         { key: 'wage', text: '返利' },
-        { key: 'ingroup_transfer', text: '转让' }
+        { key: 'ingroup_transfer', text: '转让' },
+        { key: 'outer', text: 'SWAG' }
       ];
     },
     dateOptions() {
@@ -247,6 +248,7 @@ export default {
 
     if (this.siteConfig.MOBILE_WEB_TPL !== 'porn1') {
       this.categoryOpt = this.categoryOptions.filter(i => i.key !== "ingroup_transfer");
+      this.categoryOpt = this.categoryOptions.filter(i => i.key !== "outer");
     } else {
       this.categoryOpt = this.categoryOptions;
     }
@@ -295,6 +297,7 @@ export default {
         params['opcode'] = ['8007', '1049', '5020', '5018', '5019', '5017', '5016'];
       }
 
+      console.log(this.type)
       if (this.type.find(i => i === "outer") && this.pageType === 'swag') {
         params['opcode'] = ['9001'];
       }
@@ -348,7 +351,7 @@ export default {
       this.type = ["outer"];
       this.startTime = new Date(Vue.moment(this.estToday).add(-29, 'days'));
       this.endTime = new Date(Vue.moment(this.estToday));
-      this.setCategory({ key: 'vendor', text: '转帐' });
+      this.setCategory({ key: 'outer', text: 'SWAG' });
     },
     setCategory(value) {
       this.currentCategory = value;

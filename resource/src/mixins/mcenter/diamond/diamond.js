@@ -3,6 +3,7 @@ import { mapActions, mapGetters } from "vuex";
 import EST from "@/lib/EST";
 import Vue from "vue";
 import axios from "axios";
+import bbosRequest from "@/api/bbosRequest";
 
 export default {
   props: {},
@@ -24,6 +25,7 @@ export default {
       balanceBackLock: false,
       swagDiamondBalance: '0.00',
       lockedSubmit: true,
+      isSendSubmit: false,
 
       // banner
       swagBanner: [
@@ -37,7 +39,8 @@ export default {
       memInfo: "getMemInfo",
       membalance: "getMemBalance",
       swagBalance: "getSwagBalance",
-      swagConfig: "getSwagConfig"
+      swagConfig: "getSwagConfig",
+      siteConfig: "getSiteConfig"
     }),
     inputInfo() {
       return [
@@ -77,7 +80,7 @@ export default {
   },
   watch: {
     swagBalance(val) {
-      this.swagDiamondBalance = val.balance;
+      this.swagDiamondBalance = +val.balance === 0 ? '0.00' : val.balance;
     },
   },
   methods: {
@@ -89,6 +92,38 @@ export default {
       'actionSetSwagConfig',
       'actionSetSwagBalance'
     ]),
+    balanceBack() {
+      if (!this.balanceBackLock) {
+        this.balanceBackLock = true;
+
+        axios({
+          method: "put",
+          url: "/api/v1/c/vendor/recycle/balance",
+        })
+          .then(res => {
+            if (res && res.data && res.data.result === 'ok') {
+              this.actionSetGlobalMessage({
+                msg: '回收成功',
+              });
+
+              setTimeout(() => {
+                this.balanceBackLock = false;
+              }, 1500)
+            }
+          })
+          .catch(res => {
+            if (res.response && res.response.data && res.response.data.msg) {
+              this.actionSetGlobalMessage({
+                msg: res.response.data.msg,
+              });
+
+              setTimeout(() => {
+                this.balanceBackLock = false;
+              }, 1500)
+            }
+          });
+      }
+    },
     selectedRate(item) {
       this.currentSelRate = item;
       this.lockedSubmit = false;
@@ -132,6 +167,31 @@ export default {
       this.isVerifyForm = noError && hasValue;
     },
     submit() {
+      if (!this.isSendSubmit && this.currentSelRate && !this.lockedSubmit) {
+        this.isSendSubmit = true;
+        bbosRequest({
+          method: "put",
+          url: this.siteConfig.BBOS_DOMIAN + '/Ext/Swag/Vendor/Transfer',
+          reqHeaders: {
+            'Vendor': this.memInfo.user.domain,
+          },
+          params: {
+            "lang": "zh-cn",
+            amount: this.currentSelRate.amount,
+            diamond: this.currentSelRate.diamond,
+          },
+        }).then((res) => {
+          console.log(res)
+
+          this.actionSetGlobalMessage({
+            msg: res.msg,
+          });
+
+          setTimeout(() => {
+            this.isSendSubmit = false;
+          }, 1500)
+        })
+      }
     },
     showDetail(item) {
       this.detailRecoard = item;
