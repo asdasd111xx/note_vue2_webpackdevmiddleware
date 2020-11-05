@@ -22,6 +22,7 @@ export default {
             slideDirection: '',
             wrapHeight: 0,
             allGame: [],
+            maintainList: [],
             selectedIndex: 0,
             currentLevel: 0,
             showPromotion: false,
@@ -47,6 +48,17 @@ export default {
             this.$nextTick(() => {
                 this.onResize();
             })
+        },
+        noticeData() {
+            if (this.noticeData && this.noticeData.length > 0) {
+                // this.data = this.noticeData.pop();
+                let temp = this.noticeData[this.noticeData.length - 1]
+                if (temp.extend && temp.extend === 'verification_code') {
+                    return;
+                } else if (temp.event === "vendor_maintain_notice") {
+                    this.getMaintainList();
+                }
+            }
         }
     },
     computed: {
@@ -57,7 +69,8 @@ export default {
             rechargeConfig: 'getRechargeConfig',
             hasBank: 'getHasBank',
             membalance: 'getMemBalance',
-            yaboConfig: 'getYaboConfig'
+            yaboConfig: 'getYaboConfig',
+            noticeData: 'getNoticeData',
         }),
         isAdult() {
             if (localStorage.getItem('content_rating')) {
@@ -91,6 +104,22 @@ export default {
             };
         },
         allGameList() {
+            if (this.maintainList.length > 0) {
+                // console.log("存入維護狀態");
+                this.allGame.find(data => {
+                    data.vendors.find(game => {
+                        this.maintainList.find(maintainData => {
+                            if (maintainData.vendor === game.vendor && maintainData.kind === game.kind) {
+                                game.isMaintain = true;
+                                game.start_at = maintainData.start_at;
+                                game.end_at = maintainData.end_at;
+                                // console.log(game);
+                            }
+                        })
+                    })
+                })
+            }
+
             const gameList = this.allGame
                 .map(game => game)
                 .filter(item => {
@@ -110,6 +139,7 @@ export default {
     created() {
         localStorage.removeItem('is-open-game');
         this.showPromotion = this.loginStatus ? this.memInfo.user.show_promotion : true;
+        this.getMaintainList();
     },
     mounted() {
         $(window).on('resize', this.onResize);
@@ -732,6 +762,24 @@ export default {
             }).then(res => {
                 this.userViplevel = res.data ? res.data[0] && res.data[0].now_level_seq : 0;
             });
+        },
+
+        getMaintainList() {
+            if (this.loginStatus) {
+                //取維護狀態
+                axios({
+                    method: 'get',
+                    url: '/api/v1/c/vendor/maintains',
+                }).then((res) => {
+                    if (res.data.result == "ok") {
+                        // console.log("取維護狀態");
+                        // console.log(res.data);
+                        this.maintainList = res.data.ret;
+                    }
+                }).catch(res => {
+                    // console.log("取維護狀態XXXX");
+                });
+            }
         }
     },
 };

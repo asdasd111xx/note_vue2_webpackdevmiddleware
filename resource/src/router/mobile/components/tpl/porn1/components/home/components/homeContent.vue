@@ -121,6 +121,47 @@
             <template v-else>
               <img v-lazy="getImg(game)" :alt="game.name" />
             </template>
+            <div v-if="game.isMaintain"
+            :class="[$style['maintain-mask']]">
+              <div
+                :class="[
+                  {
+                    [$style['maintain-mask-1']]: game.imageType === 1
+                  },
+                  { [$style['maintain-mask-2']]: game.imageType === 0 }
+                ]"
+              >
+                <div
+                  v-if="game.name.length >= 5 && game.imageType === 0"
+                  :class="[$style['maintain-text-2']]"
+                >
+                  {{ `${game.name}` }}
+                  </br>
+                  维护中
+                </div>
+                <div v-else :class="[$style['maintain-text-1']]">
+                  {{ `${game.name} 维护中` }}
+                </div>
+                <div :class="[$style['container']]">
+                  <div :class="[$style['us-time']]">
+                    {{ `-美东时间-` }}
+                  </div>
+                  <div :class="[$style['container-maintain']]">
+                    <div :class="[$style['container-maintain-time']]">
+                      {{ `2020-07-23 10:00:00` }}
+                    </div>
+                    <img
+                      :src="
+                        $getCdnPath(`/static/image/casino/ic_transfergo.png`)
+                      "
+                    />
+                    <div :class="[$style['container-maintain-time']]">
+                      {{ `2020-07-23 12:00:00` }}
+                    </div>
+                  </div>
+                </div>
+              </div>
+            </div>
           </div>
         </template>
         <div ref="wrap-buffer" :class="$style['wrap-buffer']" />
@@ -326,6 +367,101 @@ export default {
     background-position: center;
     background-size: auto;
     margin: 0 1%;
+  }
+
+  > div.maintain-mask {
+    width: 100%;
+    height: 100%;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    text-overflow: unset;
+    white-space: unset;
+    background: rgba(255, 255, 255, 0);
+
+    > div.maintain-mask-1 {
+      color: #ffffff;
+      border-radius: 3pt;
+      background-color: #9ca3bf;
+      width: 60%;
+      > div.maintain-text-1 {
+        word-break: break-all;
+        margin-top: 15px;
+        margin-bottom: 15px;
+        position: relative;
+        text-align: center;
+        color: #ffffff;
+      }
+
+      > div.container {
+        border-top: 1px #ffffff solid;
+        text-align: center;
+
+        > div.us-time {
+          font-size: 10px !important;
+        }
+        > div.container-maintain {
+          padding-left: 5px;
+          padding-right: 5px;
+          display: flex;
+          flex-direction: row;
+          justify-content: center;
+          align-items: center;
+          text-align: center;
+
+          > div.container-maintain-time {
+            line-height: 12px;
+            font-size: 8px !important;
+          }
+        }
+      }
+    }
+
+    > div.maintain-mask-2 {
+      color: #ffffff;
+      border-radius: 3pt;
+      background-color: #9ca3bf;
+      width: 80%;
+      > div.maintain-text-1 {
+        word-wrap: break-word;
+        margin-top: 15px;
+        margin-bottom: 15px;
+        position: relative;
+        text-align: center;
+        color: #ffffff;
+      }
+
+      > div.maintain-text-2 {
+        word-wrap: break-word;
+        margin-top: 5px;
+        margin-bottom: 5px;
+        position: relative;
+        text-align: center;
+        color: #ffffff;
+      }
+
+      > div.container {
+        text-align: center;
+        border-top: 1px #ffffff solid;
+
+        > div.us-time {
+          font-size: 10px !important;
+        }
+
+        > div.container-maintain {
+          display: flex;
+          flex-direction: row;
+          justify-content: center;
+          align-items: center;
+          text-align: center;
+
+          > div.container-maintain-time {
+            line-height: 12px;
+            font-size: 8px !important;
+          }
+        }
+      }
+    }
   }
 }
 

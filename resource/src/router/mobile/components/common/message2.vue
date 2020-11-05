@@ -118,6 +118,7 @@ export default {
             break;
           // 銀行卡
           case "C50099":
+          case "C150099":
           case "C50102":
           case "C650003":
           case "bindcard":
