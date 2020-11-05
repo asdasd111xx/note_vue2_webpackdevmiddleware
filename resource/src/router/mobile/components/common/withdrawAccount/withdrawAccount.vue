@@ -450,22 +450,32 @@ export default {
       }).then(res => {
         if (this.timer) return;
 
-        this.getPhoneTTL().then(() => {
-          this.countdownSec = this.ttl;
-          this.timer = setInterval(() => {
-            if (this.countdownSec === 0) {
-              clearInterval(this.timer);
-              this.timer = null;
-              if (this.tipMsg.indexOf('已发送')) {
-                this.tipMsg = ''
+        if (res && res.data && res.data.result === "ok") {
+
+          this.getPhoneTTL().then(() => {
+            this.countdownSec = this.ttl;
+            this.timer = setInterval(() => {
+              if (this.countdownSec === 0) {
+                clearInterval(this.timer);
+                this.timer = null;
+                if (this.tipMsg.indexOf('已发送')) {
+                  this.tipMsg = ''
+                }
+                return;
               }
-              return;
-            }
-            this.countdownSec -= 1;
-          }, 1000);
-          this.tipMsg = this.$text("S_SEND_CHECK_CODE_VALID_TIME").replace("%s", '五');
-          this.isSendKeyring = false;
-        })
+              this.countdownSec -= 1;
+            }, 1000);
+            this.tipMsg = this.$text("S_SEND_CHECK_CODE_VALID_TIME").replace("%s", '五');
+          })
+        } else {
+          if (res.data && res.data.msg) {
+            this.tipMsg = res.data.msg;
+          } else {
+            this.tipMsg = res.data;
+          }
+        }
+
+        this.isSendKeyring = false;
       }).catch(error => {
         this.countdownSec = '';
         this.tipMsg = `${error.response.data ? error.response.data.msg : ''}`;

@@ -115,7 +115,9 @@
                   :class="[$style['pay-mode-item']]"
                   @click="handleCreditTrans"
                 >
-                  <div :class="$style['pay-sub-title']">代收代付</div>
+                  <div :class="[$style['pay-sub-title'], $style['custom']]">
+                    代收代付
+                  </div>
                   <div :class="$style['pay-main-title']" style="color: black">
                     {{
                       `${
@@ -903,7 +905,11 @@
             <div :class="$style['message-container']">
               <ul :class="$style['message-content']">
                 <li>• 实际到账： ¥{{ realSaveMoney }}</li>
-                <template v-if="curPayInfo.offer_enable">
+                <template
+                  v-if="
+                    curPayInfo.offer_enable && +curPayInfo.offer_percent > 0
+                  "
+                >
                   <li :class="$style['tip-list']" v-html="promitionText" />
                 </template>
                 <li
@@ -1682,6 +1688,7 @@ export default {
             });
             this.nameCheckFail = true;
           }
+
           if (response.status === "local") {
             this.checkSuccess = false;
             this.submitStatus = "stepTwo";
@@ -1701,6 +1708,7 @@ export default {
             // 點選加密貨幣的匯率試算，在需將時間設為0
             this.countdownSec = 0;
           }
+
           if (response.status === 'third') {
             // this.resetStatus();
             this.cryptoMoney = '--';
@@ -1838,6 +1846,7 @@ export default {
         }).then((val) => {
           this.moneyValue = val;
           this.isErrorMoney = false;
+          this.cryptoMoney = val ? this.cryptoMoney : '--';
 
           this.verificationMoney(this.moneyValue);
           this.checkOrderData();

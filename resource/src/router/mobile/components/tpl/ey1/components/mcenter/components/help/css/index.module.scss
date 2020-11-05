@@ -87,7 +87,7 @@
   pointer-events: none;
 
   > a {
-    color: #4183c4;
+    color: #6aaaf5;
     pointer-events: auto;
     margin: 0 5px 0 5px;
   }
@@ -240,7 +240,8 @@
   font-weight: 400;
   // color: #a6a9b2;
 
-  > a {
+  > a,
+  span {
     color: #6aaaf5;
   }
 

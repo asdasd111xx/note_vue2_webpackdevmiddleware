@@ -445,24 +445,31 @@ export default {
         }
       })
         .then(res => {
-          console.log(res.data);
-
           this.isShow = false;
           this.actionSetIsLoading(false);
 
           if (res.status !== "000" || res.errorCode !== "00") {
-            if (res.code === "C150099") {
+            if (res.code === "TM020067") {
+              this.setPopupStatus(true, "blockTips");
+            } else {
               this.actionSetGlobalMessage({
                 msg: res.msg,
                 code: res.code
               });
-            } else if (res.code === "TM020067") {
-              this.setPopupStatus(true, "blockTips");
-            } else {
-              this.actionSetGlobalMessage({
-                msg: res.msg
-              });
             }
+            // if (res.code === "C150099") {
+            //   this.actionSetGlobalMessage({
+            //     msg: res.msg,
+            //     code: res.code
+            //   });
+            // } else if (res.code === "TM020067") {
+            //   this.setPopupStatus(true, "blockTips");
+            // } else {
+            //   this.actionSetGlobalMessage({
+            //     msg: res.msg,
+            //     code: res.code
+            //   });
+            // }
             return;
           }
 
@@ -520,18 +527,28 @@ export default {
             errors.response.data.msg &&
             errors.response.data.code
           ) {
-            if (res.data.code === "C150099") {
+            if (res.data.code === "TM020067") {
+              this.setPopupStatus(true, "blockTips");
+            } else {
               this.actionSetGlobalMessage({
                 msg: res.data.msg,
                 code: res.data.code
               });
-            } else if (res.data.code === "TM020067") {
-              this.setPopupStatus(true, "blockTips");
-            } else {
-              this.actionSetGlobalMessage({
-                msg: res.data.msg
-              });
             }
+            // if (res.data.code === "C150099") {
+            //   this.actionSetGlobalMessage({
+            //     msg: res.data.msg,
+            //     code: res.data.code
+            //   });
+            // } else if (res.data.code === "TM020067") {
+            //   this.setPopupStatus(true, "blockTips");
+            // } else {
+            //   this.actionSetGlobalMessage({
+            //     msg: res.data.msg,
+            //     code: res.data.code
+            //   });
+            // }
+            return;
           }
         });
     },
@@ -617,16 +634,21 @@ export default {
         },
         fail: res => {
           if (res && res.data && res.data.msg && res.data.code) {
-            if (res.data.code === "C150099") {
-              this.actionSetGlobalMessage({
-                msg: res.data.msg,
-                code: res.data.code
-              });
-            } else {
-              this.actionSetGlobalMessage({
-                msg: res.data.msg
-              });
-            }
+            // if (res.data.code === "C150099") {
+            //   this.actionSetGlobalMessage({
+            //     msg: res.data.msg,
+            //     code: res.data.code
+            //   });
+            // } else {
+            //   this.actionSetGlobalMessage({
+            //     msg: res.data.msg,
+            //     code: res.data.code
+            //   });
+            // }
+            this.actionSetGlobalMessage({
+              msg: res.data.msg,
+              code: res.data.code
+            });
           }
         }
       }).then(response => {
@@ -976,16 +998,21 @@ export default {
         params: paramsData,
         fail: res => {
           if (res && res.data && res.data.msg && res.data.code) {
-            if (res.data.code === "C150099") {
-              this.actionSetGlobalMessage({
-                msg: res.data.msg,
-                code: res.data.code
-              });
-            } else {
-              this.actionSetGlobalMessage({
-                msg: res.data.msg
-              });
-            }
+            // if (res.data.code === "C150099") {
+            //   this.actionSetGlobalMessage({
+            //     msg: res.data.msg,
+            //     code: res.data.code
+            //   });
+            // } else {
+            //   this.actionSetGlobalMessage({
+            //     msg: res.data.msg,
+            //     code: res.data.code
+            //   });
+            // }
+            this.actionSetGlobalMessage({
+              msg: res.data.msg,
+              code: res.data.code
+            });
           }
         }
       }).then(response => {

@@ -7,6 +7,7 @@ import { basic, getVersion } from './basic';
 export const preset = {
   ...basic,
   BBOS_DOMIAN: 'https://bbos.canarycherrytart.com/elibomApi/WebService',
+  BBOS_DOMIAN_CDN: 'https://bbos.dormousepie.com/cdn',
   YABO_API_DOMAIN: 'https://yaboapi.canarycherrytart.com/api',
   YABO_GOLANG_API_DOMAIN: 'https://yaboapi.canarycherrytart.com/api-v2/cxbb',
   ACTIVES_BOUNS_WEBSOCKET: window.location.host === 'ybbe1.qghco.com' ?

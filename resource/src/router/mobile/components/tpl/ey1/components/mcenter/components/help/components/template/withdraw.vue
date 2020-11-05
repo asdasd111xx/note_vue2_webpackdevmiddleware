@@ -59,10 +59,10 @@
           <div v-if="index == 0 && item.isOpen" :class="$style['tips']">
             <div :class="$style['tips-title']">※ 取款注意事项 ※</div>
             <div>
-              ❶亲切提醒您～联系资料变更时，请您立即联系24小时<a
+              ❶亲切提醒您～联系资料变更时，请您立即联系24小时<span
                 @click="linkTo('service')"
               >
-                在线客服 </a
+                在线客服 </span
               >人员，即时更新您的联络方式；
               如有任何问题，方便億元客服人员第一时间与您联系。
             </div>
@@ -70,12 +70,12 @@
           <div v-else-if="index == 1 && item.isOpen" :class="$style['tips']">
             <div>
               如有任何问题，请洽24小时
-              <a @click="linkTo('service')"> 在线客服 </a>，
+              <span @click="linkTo('service')"> 在线客服 </span>，
               将有专人亲切的为您服务。
             </div>
             <div>
               ♠ 亿元相关优惠，欢迎参阅『
-              <a @click="linkTo('promotion')"> 优惠活动 </a>
+              <span @click="linkTo('promotion')"> 优惠活动 </span>
               』♠
             </div>
           </div>

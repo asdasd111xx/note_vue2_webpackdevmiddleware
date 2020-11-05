@@ -346,7 +346,7 @@ export default {
     font-size: 12px;
     text-overflow: ellipsis;
     white-space: nowrap;
-    opacity: 0.8;
+    opacity: 0.9;
   }
 }
 

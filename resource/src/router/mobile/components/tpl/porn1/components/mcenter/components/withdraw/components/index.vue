@@ -512,11 +512,11 @@
       </div>
 
       <div :class="$style['tips']">
-        {{
-          allWithdrawAccount && allWithdrawAccount.length !== 0
-            ? "为了方便您快速提现，请先将所有场馆钱包金额回收至中心钱包"
-            : "请先绑定一张银行卡，用于收款"
-        }}
+        <div v-if="allWithdrawAccount && allWithdrawAccount.length !== 0">
+          为了方便您快速提现，请先将所有场馆钱包金额回收至中心钱包<br />
+          可提现金额会扣除未兑现红利总计
+        </div>
+        <div v-else>请先绑定一张银行卡，用于收款</div>
       </div>
     </template>
 
@@ -1055,20 +1055,13 @@ export default {
         // 實際金額
         let _actualMoney =
           value - +this.withdrawData.audit.total.total_deduction;
-        // 2.判斷是否 > 0
-        // 有流水的情況
-        if (_actualMoney !== value) {
-          this.actualMoney = _actualMoney;
-          if (_actualMoney <= 0) {
-            this.errTips = "实际提现金额须大于0，请重新输入";
-            this.actualMoney = 0;
-            return;
-          }
-        } else {
-          // 無流水時
-          this.actualMoney = _actualMoney;
-          this.errTips =
-            _actualMoney <= 0 ? "实际提现金额须大于0，请重新输入" : "";
+        this.actualMoney = _actualMoney;
+
+        // 實際提現金額 < 0
+        if (_actualMoney <= 0) {
+          this.errTips = "实际提现金额须大于0，请重新输入";
+          // 實際提現金額 => 有流水時為 0
+          this.actualMoney = _actualMoney !== value ? 0 : this.actualMoney
           return;
         }
 
@@ -1319,10 +1312,11 @@ export default {
     },
     handleSubmit() {
       this.closePopup();
-
+      // 會員綁定銀行卡前需手機驗證 与 投注/轉帳前需綁定銀行卡
       this.withdrawCheck().then(res => {
         if (res === 'ok') {
           if (
+            // 會員首次出款僅限銀行卡
             this.memInfo.config.withdraw_player_verify &&
             !localStorage.getItem("tmp_w_1")
           ) {

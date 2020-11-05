@@ -147,6 +147,12 @@
     text-align: center;
     text-overflow: ellipsis;
     white-space: nowrap;
+
+    &.custom {
+      height: auto;
+      line-height: normal;
+      font-size: 16px;
+    }
   }
 }
 
@@ -981,6 +987,10 @@
 .warm-tip {
   font-size: 12px;
   color: #a6a9b2;
+
+  p {
+    margin: 0;
+  }
 }
 
 .entry-message-container {

@@ -111,11 +111,13 @@ export default {
           case "recharge_deposit":
             this.$router.push(`/mobile/mcenter/deposit?redirect=${redirect ? redirect : 'home'}`);
             break;
+
           // 只需提现一次 开通转让功能
           case "C650023":
           case "recharge_withdraw":
             this.$router.push(`/mobile/mcenter/withdraw`);
             break;
+
           // 銀行卡
           case "C50099":
           case "C150099":
@@ -124,6 +126,7 @@ export default {
           case "bindcard":
             this.$router.push(`/mobile/mcenter/bankCard?redirect=${redirect ? redirect : 'home'}&type=bankCard`);
             break;
+
           // 電子錢包
           case "C50103":
           case "C50105":
@@ -135,25 +138,32 @@ export default {
               this.$router.push(`/mobile/withdrawAccount?redirect=${redirect ? redirect : 'home'}`);
             }
             break;
+
           // 重新登入
           case "M00001":
           // 停權
           case "C600001":
+          case "TM020058":
+          case "TM020059":
+          case "TM020060":
             setCookie('cid', '');
             setCookie('y_token', '');
             setCookie('aid', '');
             this.$router.push('/mobile/login');
             break;
+
           // 維護
           case "M00002":
             window.location.reload();
             break;
+
           case "C50104":
           case "C50106":
           case "C590029":
             localStorage.setItem('form-withdraw-account', true);
             this.$router.push(`/mobile/withdrawAccount?redirect=${redirect ? redirect : 'home'}`);
             break;
+
           default:
             break;
         }
