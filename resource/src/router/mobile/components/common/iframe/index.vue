@@ -246,10 +246,9 @@ export default {
         if (!data.event) {
           return;
         }
-
+        console.log('[EVENT]:', data.event);
         switch (data.event) {
           case 'EVENT_THIRDPARTY_CLOSE':
-          case 'close':
             this.$router.push(this.originUrl);
             return;
 
