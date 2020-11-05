@@ -12,8 +12,8 @@
             :class="[
               $style['balance-item'],
               {
-                [$style['is-last-item']]: !isShowMore,
-              },
+                [$style['is-last-item']]: !isShowMore
+              }
             ]"
             @click="$router.push('/mobile/mcenter/bonus')"
           >
@@ -43,8 +43,8 @@
                     Object.keys(balanceTran.firstThirdBalanceInfo).length -
                       index <=
                     (Object.keys(balanceTran.firstThirdBalanceInfo).length %
-                      3 || 3),
-                },
+                      3 || 3)
+                }
               ]"
             >
               <span :class="$style['balance-item-vendor']">{{
@@ -97,8 +97,8 @@
                 {
                   [$style['is-last-item']]:
                     Object.keys(balanceTran.balanceInfo).length - index <=
-                    (Object.keys(balanceTran.balanceInfo).length % 4 || 4),
-                },
+                    (Object.keys(balanceTran.balanceInfo).length % 4 || 4)
+                }
               ]"
             >
               <span :class="$style['balance-item-vendor']">{{
@@ -159,10 +159,11 @@
           <span
             v-if="
               forceStatus === 1 &&
-              userWithdrawCount === 0 &&
-              isFirstWithdraw &&
-              withdrawUserData.wallet.length + withdrawUserData.crypto.length >
-                0
+                userWithdrawCount === 0 &&
+                isFirstWithdraw &&
+                withdrawUserData.wallet.length +
+                  withdrawUserData.crypto.length >
+                  0
             "
             :class="$style['withdraw-status-tip']"
           >
@@ -186,8 +187,8 @@
           :class="[
             $style['bank-card-cell'],
             {
-              [$style['disable']]: !item.allow,
-            },
+              [$style['disable']]: !item.allow
+            }
           ]"
           @click="handleSelectCard(item)"
         >
@@ -196,8 +197,8 @@
               $style['check-box'],
               { [$style['checked']]: item.id === selectedCard.id },
               {
-                [$style['disable']]: !item.allow,
-              },
+                [$style['disable']]: !item.allow
+              }
             ]"
           />
           <!-- <img v-lazy="getBankImage(item.swift_code)" /> -->
@@ -271,15 +272,15 @@
           :class="[
             $style['bank-card-cell'],
             {
-              [$style['disable']]: forceStatus === 2 && !item.allow,
-            },
+              [$style['disable']]: forceStatus === 2 && !item.allow
+            }
           ]"
           @click="handleSelectCard(item)"
         >
           <div
             :class="[
               $style['check-box'],
-              { [$style['checked']]: item.id === selectedCard.id },
+              { [$style['checked']]: item.id === selectedCard.id }
             ]"
           />
           <span :class="[{ [$style['hasOption']]: item.bank_id === 2009 }]">
@@ -349,7 +350,7 @@
       <div
         v-if="
           allWithdrawAccount.length > 0 &&
-          (moreMethodStatus.bankCard || moreMethodStatus.wallet)
+            (moreMethodStatus.bankCard || moreMethodStatus.wallet)
         "
         :class="[$style['add-bank-card']]"
         @click="setPopupStatus(true, 'moreMethod')"
@@ -382,7 +383,7 @@
         inputmode="decimal"
         @input="verification('withdrawValue', $event.target.value)"
         @blur="
-          ($event) => {
+          $event => {
             verification('withdrawValue', $event.target.value);
             if (isSelectedUSDT && isClickCoversionBtn && withdrawValue) {
               convertCryptoMoney();
@@ -405,8 +406,8 @@
         $style['actual-money'],
         {
           [$style['error']]:
-            themeTPL === 'ey1' && withdrawValue && actualMoney <= 0,
-        },
+            themeTPL === 'ey1' && withdrawValue && actualMoney <= 0
+        }
       ]"
     >
       <span :class="$style['money-currency']">
@@ -441,8 +442,8 @@
           $style['conversion-btn'],
           {
             [$style['disable']]:
-              isClickCoversionBtn || !withdrawValue || +actualMoney <= 0,
-          },
+              isClickCoversionBtn || !withdrawValue || +actualMoney <= 0
+          }
         ]"
         @click="convertCryptoMoney"
       >
@@ -1278,33 +1279,76 @@ export default {
         localStorage.removeItem("tmp_w_1");
       }
     },
+    withdrawCheck() {
+      return axios({
+        method: 'get',
+        url: '/api/v2/c/withdraw/check',
+      }).then((res) => {
+        this.isCheckWithdraw = false;
+
+        if (res.data.result === "ok") {
+          let check = true;
+
+          Object.keys(res.data.ret).forEach(i => {
+            if (i !== "bank" && !res.data.ret[i]) {
+              this.actionSetGlobalMessage({
+                msg: '请先设定提现资料', cb: () => {
+                  {
+                    this.$router.push('/mobile/withdrawAccount?redirect=wallet');
+                  }
+                }
+              })
+              check = false;
+              return;
+            }
+          })
+
+          if (check) {
+            return 'ok'
+          }
+        } else {
+          this.actionSetGlobalMessage({ msg: res.data.msg, code: res.data.msg.code });
+          return;
+        }
+      }).catch(res => {
+        if (res.response.data) {
+          this.actionSetGlobalMessage({ msg: res.response.data.msg, code: res.data.msg.code, cb: () => { } });
+        }
+        return;
+      });
+    },
     handleSubmit() {
       this.closePopup();
-      if (
-        this.memInfo.config.withdraw_player_verify &&
-        !localStorage.getItem("tmp_w_1")
-      ) {
-        this.saveCurrentValue();
-        this.$router.push(
-          "/mobile/mcenter/accountData/phone?redirect=withdraw"
-        );
-        return;
-      }
 
-      this.isSendSubmit = true;
-      this.submitWithdraw({
-        user_bank_id: this.selectedCard.id,
-        keyring: localStorage.getItem("tmp_w_1"), // 手機驗證成功後回傳
-      }).then((response) => {
-        setTimeout(() => {
-          this.$nextTick(() => {
-            this.isSendSubmit = false;
-            this.getWithdrawAccount();
+      this.withdrawCheck().then(res => {
+        if (res === 'ok') {
+          if (
+            this.memInfo.config.withdraw_player_verify &&
+            !localStorage.getItem("tmp_w_1")
+          ) {
+            this.saveCurrentValue();
+            this.$router.push(
+              "/mobile/mcenter/accountData/phone?redirect=withdraw"
+            );
+            return;
+          }
+
+          this.isSendSubmit = true;
+          this.submitWithdraw({
+            user_bank_id: this.selectedCard.id,
+            keyring: localStorage.getItem("tmp_w_1"), // 手機驗證成功後回傳
+          }).then((response) => {
+            setTimeout(() => {
+              this.$nextTick(() => {
+                this.isSendSubmit = false;
+                this.getWithdrawAccount();
+              });
+            }, 200);
           });
-        }, 200);
-      });
 
-      this.removeCurrentValue(true);
+          this.removeCurrentValue(true);
+        }
+      })
     },
     /**
      * 送出取款資訊
