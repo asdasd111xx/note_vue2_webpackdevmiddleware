@@ -47,12 +47,12 @@
           <div :class="$style['cell-text']">
             <div>
               <div>
-                <span v-if="currentLevelData.withdraw_fee.withdraw_limit === ''"
-                  >无限制</span
-                >
                 <span
-                  v-else-if="currentLevelData.withdraw_fee.withdraw_limit <= 0"
-                  >--</span
+                  v-if="
+                    currentLevelData.withdraw_fee.withdraw_limit === '' ||
+                      currentLevelData.withdraw_fee.withdraw_limit <= 0
+                  "
+                  >无限制</span
                 >
                 <span v-else>
                   {{ currentLevelData.withdraw_fee.withdraw_limit }}
