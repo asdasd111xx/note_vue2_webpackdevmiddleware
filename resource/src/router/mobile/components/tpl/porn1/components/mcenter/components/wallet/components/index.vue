@@ -127,8 +127,8 @@
         <div :class="$style['title']">SWAG钱包</div>
         <div :class="$style['icon-block']">
           <div :class="$style['icon-cell']">
-            <div :class="$style['balance']">
-              {{ "需顯示金额" }}
+            <div :class="$style['balance']" @click="handleSwagBalance">
+              {{ swagDiamondBalance }}
             </div>
             {{ $t("S_DIAMOND_BALANCE") }}
           </div>
@@ -248,6 +248,7 @@ export default {
       mainNoData: false,
       isCheckWithdraw: false,
       bonus: {},
+      swagDiamondBalance: '0.00',
     };
   },
   computed: {
@@ -397,6 +398,11 @@ export default {
   mounted() {
     this.getRecordList();
   },
+  watch: {
+    swagBalance(val) {
+      this.swagDiamondBalance = +val.balance === 0 ? '0.00' : val.balance;
+    },
+  },
   methods: {
     ...mapActions([
       'actionSetGlobalMessage',
@@ -404,6 +410,12 @@ export default {
       'actionGetMemInfoV3',
       'actionSetUserBalance'
     ]),
+    handleSwagBalance() {
+      // to do 維護資訊
+      if (false) {
+        this.actionSetGlobalMessage({ msg: '鸭博色播 维护中' })
+      }
+    },
     handleDeposit() {
       this.$router.push(`/mobile/mcenter/deposit`);
       //   0706 統一RD5判斷銀行卡

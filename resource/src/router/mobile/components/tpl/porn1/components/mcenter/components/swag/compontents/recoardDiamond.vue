@@ -30,12 +30,6 @@ export default {
       memInfo: "getMemInfo"
     }),
   },
-  created() {
-    // const promise = [this.getRechargeRecoard()]
-    // Promise.all(promise).then(() => {
-    //   this.isShowLoading = false;
-    // });
-  },
   methods: {
     showDetail(info) {
       this.detailInfo = info;
