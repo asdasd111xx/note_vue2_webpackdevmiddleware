@@ -188,7 +188,7 @@ export default {
           break;
       }
 
-      let resultUrl = `https://bbos.bbin-asia.com/cdn/image/${type}/${this.gameInfo.vendor}/Game_${this.gameInfo.code}.png`;
+      let resultUrl = `${this.siteConfig.BBOS_DOMIAN_CDN}/image/${type}/${this.gameInfo.vendor}/Game_${this.gameInfo.code}.png`;
 
       if (!this.gameInfo.code && this.gameInfo.status > 1) {
         resultUrl = this.$getCdnPath('/static/image/casino/event_icon.png');
