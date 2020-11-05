@@ -315,6 +315,11 @@ export default {
           text: this.$text('S_WITHDRAWAL_TEXT', '提现'),
           imgSrc: `/static/image/${this.themeTPL}/mcenter/wallet/ic_wallter_withdraw.png`,
           onClick: () => {
+            if (this.themeTPL === "porn1") {
+              this.$router.push('/mobile/mcenter/withdraw');
+              return;
+            }
+
             if (this.isCheckWithdraw) { return; }
             this.isCheckWithdraw = true;
             axios({

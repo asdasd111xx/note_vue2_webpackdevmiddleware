@@ -242,16 +242,22 @@ export default {
       if (e.data) {
         let data = e.data;
         console.log(data);
+        console.log('[EVENT]:', data.event);
 
         if (!data.event) {
           return;
         }
-        console.log('[EVENT]:', data.event);
         switch (data.event) {
           case 'EVENT_THIRDPARTY_CLOSE':
             this.$router.push(this.originUrl);
             return;
 
+          // 避免迴圈重複本站
+          case 'SELF_INTO':
+            if (this.$route.params.page.toUpperCase() === 'PROMOTION') {
+              this.$router.replace('/mobile/login');
+              return;
+            }
           case 'EVENT_THIRDPARTY_LOGIN':
             this.$router.push('/mobile/login');
             return;
