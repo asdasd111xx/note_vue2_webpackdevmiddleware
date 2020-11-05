@@ -1055,20 +1055,13 @@ export default {
         // 實際金額
         let _actualMoney =
           value - +this.withdrawData.audit.total.total_deduction;
-        // 2.判斷是否 > 0
-        // 有流水的情況
-        if (_actualMoney !== value) {
-          this.actualMoney = _actualMoney;
-          if (_actualMoney <= 0) {
-            this.errTips = "实际提现金额须大于0，请重新输入";
-            this.actualMoney = 0;
-            return;
-          }
-        } else {
-          // 無流水時
-          this.actualMoney = _actualMoney;
-          this.errTips =
-            _actualMoney <= 0 ? "实际提现金额须大于0，请重新输入" : "";
+        this.actualMoney = _actualMoney;
+
+        // 實際提現金額 < 0
+        if (_actualMoney <= 0) {
+          this.errTips = "实际提现金额须大于0，请重新输入";
+          // 實際提現金額 => 有流水時為 0
+          this.actualMoney = _actualMoney !== value ? 0 : this.actualMoney
           return;
         }
 
