@@ -84,7 +84,7 @@
                 流水要求
               </div>
               <div>
-                {{ userVipInfo.downgrade_valid_bet }} <br />
+                {{ item.downgrade_valid_bet }} <br />
                 保级投注
               </div>
             </div>
