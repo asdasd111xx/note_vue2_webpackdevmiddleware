@@ -1319,10 +1319,11 @@ export default {
     },
     handleSubmit() {
       this.closePopup();
-
+      // 會員綁定銀行卡前需手機驗證 与 投注/轉帳前需綁定銀行卡
       this.withdrawCheck().then(res => {
         if (res === 'ok') {
           if (
+            // 會員首次出款僅限銀行卡
             this.memInfo.config.withdraw_player_verify &&
             !localStorage.getItem("tmp_w_1")
           ) {
