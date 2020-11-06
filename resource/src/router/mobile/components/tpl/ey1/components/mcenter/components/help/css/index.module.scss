@@ -51,7 +51,7 @@
     width: 95%;
   }
 
-  &.support-cell > title {
+  &.support-cell>title {
     height: 20px;
     line-height: 20px;
     display: contents;
@@ -86,10 +86,14 @@
   width: 100%;
   pointer-events: none;
 
-  > a {
+  a {
     color: #6aaaf5;
     pointer-events: auto;
     margin: 0 5px 0 5px;
+  }
+
+  a:visited {
+    color: #6aaaf5;
   }
 
   span {
@@ -100,12 +104,12 @@
   &.full-block {
     display: block;
 
-    > .cell-title {
+    >.cell-title {
       font-size: 15px;
       font-weight: 500;
     }
 
-    > .cell-content {
+    >.cell-content {
       font-size: 12px;
     }
   }
@@ -129,7 +133,7 @@
   transition: transform 0.31s;
   width: 16px;
 
-  > img {
+  >img {
     bottom: 0;
     height: 16px;
     margin: auto;
@@ -210,11 +214,11 @@
   height: 34px;
   line-height: 34px;
 
-  > .title {
+  >.title {
     display: inline-block;
   }
 
-  > .value {
+  >.value {
     float: right;
     color: #222222;
     white-space: nowrap;
@@ -240,12 +244,12 @@
   font-weight: 400;
   // color: #a6a9b2;
 
-  > a,
+  a,
   span {
     color: #6aaaf5;
   }
 
-  > .tips-title {
+  >.tips-title {
     color: #ff1010;
     margin-bottom: 5px;
   }
@@ -330,7 +334,7 @@
   float: right;
   height: 100%;
 
-  > img {
+  >img {
     width: 100%;
     height: 100%;
   }
