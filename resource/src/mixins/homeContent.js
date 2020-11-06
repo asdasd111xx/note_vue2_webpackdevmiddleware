@@ -505,6 +505,11 @@ export default {
                 return;
             }
 
+            let userId = 'guest';
+            if (this.memInfo && this.memInfo.user && this.memInfo.user.id && this.memInfo.user.id !== 0) {
+                userId = this.memInfo.user.id;
+            }
+
             // 福利 全部
             switch (game.type) {
                 // 鴨脖影視(人人影視) -> PPV
@@ -531,9 +536,30 @@ export default {
                             noLoginVideoSwitch = this.yaboConfig.find(i => i.name === "NoLoginVideoSwitch").value;
                         }
 
+                        const getThridUrl = () => goLangApiRequest({
+                            method: 'get',
+                            url: `${this.siteConfig.YABO_GOLANG_API_DOMAIN}/ThirdParty/${game.type}/${userId}`,
+                            headers: {
+                                'x-domain': this.memInfo.user.domain
+                            }
+                        }).then(res => {
+                            if (res && res.status !== '000') {
+                                if (res.msg) {
+                                    this.actionSetGlobalMessage({ msg: res.msg });
+                                }
+                                return;
+                            }
+                            else {
+                                localStorage.setItem('iframe-third-url', res.data);
+                                localStorage.setItem('iframe-third-url-title', game.name);
+                                this.$router.push(`/mobile/iframe/${game.type}?&hasFooter=false&hasHeader=true`);
+                                return;
+                            }
+                        })
+
                         // 未登入開關 開啟時未登入可進入
                         if (noLoginVideoSwitch === 'true') {
-                            this.$router.push(`/mobile/iframe/${game.type}?&title=${game.name}&hasFooter=false&hasHeader=true`);
+                            getThridUrl();
                             return;
                         }
 
@@ -542,7 +568,7 @@ export default {
                             this.$router.push('/mobile/login');
                             return;
                         } else {
-                            this.$router.push(`/mobile/iframe/${game.type}?&title=${game.name}&hasFooter=false&hasHeader=true`);
+                            getThridUrl();
                         }
                     });
 
@@ -592,7 +618,28 @@ export default {
                         this.$router.push('/mobile/login');
                         return;
                     } else {
-                        this.$router.push(`/mobile/iframe/${game.type}?&title=${game.name}&hasFooter=false&hasHeader=true`);
+
+                        goLangApiRequest({
+                            method: 'get',
+                            url: `${this.siteConfig.YABO_GOLANG_API_DOMAIN}/ThirdParty/SWAG/${userId}`,
+                            headers: {
+                                'x-domain': this.memInfo.user.domain
+                            }
+                        }).then(res => {
+                            if (res && res.status !== '000') {
+                                if (res.msg) {
+                                    this.actionSetGlobalMessage({ msg: res.msg });
+                                }
+                                return;
+                            }
+                            else {
+                                localStorage.setItem('iframe-third-url', res.data);
+                                localStorage.setItem('iframe-third-url-title', game.name);
+                                this.$router.push(`/mobile/iframe/${game.type}?&hasFooter=false&hasHeader=true`);
+                                return;
+                            }
+                        })
+
                         return;
                     }
 
