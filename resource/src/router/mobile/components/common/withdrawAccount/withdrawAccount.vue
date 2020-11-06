@@ -148,11 +148,11 @@
 </template>
 
 <script>
-import axios from 'axios';
-import { mapGetters, mapActions } from 'vuex';
-import mixin from '@/mixins/mcenter/withdraw';
-import ajax from '@/lib/ajax';
-import { API_MCENTER_USER_CONFIG } from '@/config/api';
+import axios from "axios";
+import { mapGetters, mapActions } from "vuex";
+import mixin from "@/mixins/mcenter/withdraw";
+import ajax from "@/lib/ajax";
+import { API_MCENTER_USER_CONFIG } from "@/config/api";
 
 export default {
   props: {
@@ -162,16 +162,22 @@ export default {
   },
   mixins: [mixin],
   components: {
-    popupVerification: () => import(/* webpackChunkName: 'popupVerification' */ '@/components/popupVerification'),
-    pageLoading: () => import(/* webpackChunkName: 'pageLoading' */ '@/router/mobile/components/common/pageLoading'),
+    popupVerification: () =>
+      import(
+        /* webpackChunkName: 'popupVerification' */ "@/components/popupVerification"
+      ),
+    pageLoading: () =>
+      import(
+        /* webpackChunkName: 'pageLoading' */ "@/router/mobile/components/common/pageLoading"
+      )
   },
   data() {
     return {
       // 國碼
-      phoneHead: '+86',
+      phoneHead: "+86",
       phoneHeadOption: [],
-      sliderClass: 'slider',
-      tipMsg: '',
+      sliderClass: "slider",
+      tipMsg: "",
       isVerifyPhone: false,
       isSendKeyring: false,
       isSendForm: false,
@@ -185,35 +191,35 @@ export default {
       ttl: 60,
       formData: {
         name: {
-          title: '持卡人姓名',
+          title: "持卡人姓名",
           show: false,
-          value: '',
-          msg: '',
-          placeholder: '请输入持卡人姓名'
+          value: "",
+          msg: "",
+          placeholder: "请输入持卡人姓名"
         },
         withdraw_password: {
-          title: '提现密码',
+          title: "提现密码",
           show: false,
-          value: ['', '', '', ''],
-          msg: '',
-          placeholder: '--'
+          value: ["", "", "", ""],
+          msg: "",
+          placeholder: "--"
         },
         phone: {
-          title: '手机号码',
+          title: "手机号码",
           show: false,
-          value: '',
-          msg: '',
-          placeholder: '请输入手机号码'
+          value: "",
+          msg: "",
+          placeholder: "请输入手机号码"
         },
         keyring: {
-          title: '手机验证码',
+          title: "手机验证码",
           show: false,
-          value: '',
-          msg: '',
-          placeholder: '请输入手机验证码'
+          value: "",
+          msg: "",
+          placeholder: "请输入手机验证码"
         }
       }
-    }
+    };
   },
   created() {
     // axios({
@@ -224,25 +230,29 @@ export default {
     // });
 
     this.isLoading = true;
-    this.getAccountDataStatus().then((data) => {
-      this.checkBankSwitch = data.ret.bank
+    this.getAccountDataStatus().then(data => {
+      this.checkBankSwitch = data.ret.bank;
 
       Object.keys(data.ret).forEach(i => {
         if (this.formData[i]) {
           if (i === "phone") {
-            this.formData['keyring'].show = !data.ret[i];
+            this.formData["keyring"].show = !data.ret[i];
             // 無手機欄位時候不需要驗證
             this.isVerifyPhone = data.ret[i];
           }
 
           this.formData[i].show = !data.ret[i];
         }
-      })
-      if (!this.formData.name.show &&
+      });
+      if (
+        !this.formData.name.show &&
         !this.formData.phone.show &&
-        !this.formData.withdraw_password.show) {
+        !this.formData.withdraw_password.show
+      ) {
         if (!this.checkBankSwitch) {
-          this.$router.replace(`/mobile/mcenter/bankCard?redirect=${this.redirect}&type=wallet`)
+          this.$router.replace(
+            `/mobile/mcenter/bankCard?redirect=${this.redirect}&type=wallet`
+          );
         } else {
           this.$router.back();
         }
@@ -252,22 +262,23 @@ export default {
 
     // 國碼
     ajax({
-      method: 'get',
+      method: "get",
       url: API_MCENTER_USER_CONFIG,
       errorAlert: false
-    }).then((response) => {
-      if (response && response.result === 'ok') {
-        this.phoneHeadOption = response.ret.config.phone.country_codes
+    }).then(response => {
+      if (response && response.result === "ok") {
+        this.phoneHeadOption = response.ret.config.phone.country_codes;
       }
     });
   },
   computed: {
     ...mapGetters({
-      siteConfig: 'getSiteConfig',
-      memInfo: 'getMemInfo',
+      siteConfig: "getSiteConfig",
+      memInfo: "getMemInfo"
     }),
     $style() {
-      const style = this[`$style_${this.siteConfig.MOBILE_WEB_TPL}`] || this.$style_porn1;
+      const style =
+        this[`$style_${this.siteConfig.MOBILE_WEB_TPL}`] || this.$style_porn1;
       return style;
     },
     themeTPL() {
@@ -278,18 +289,18 @@ export default {
     },
     isShowCaptcha: {
       get() {
-        return this.toggleCaptcha
+        return this.toggleCaptcha;
       },
       set(value) {
-        return this.toggleCaptcha = value
+        return (this.toggleCaptcha = value);
       }
     },
     captchaData: {
       get() {
-        return this.captcha
+        return this.captcha;
       },
       set(value) {
-        return this.captcha = value
+        return (this.captcha = value);
       }
     },
     redirect() {
@@ -299,26 +310,23 @@ export default {
   },
   watch: {
     captchaData(val) {
-      this.sendKeyring()
-    },
+      this.sendKeyring();
+    }
   },
   methods: {
-    ...mapActions([
-      'actionSetGlobalMessage',
-      'actionVerificationFormData'
-    ]),
+    ...mapActions(["actionSetGlobalMessage", "actionVerificationFormData"]),
     onClose() {
       if (this.isSlider) {
         this.$nextTick(() => {
           setTimeout(() => {
-            this.$emit('close');
-          }, 280)
+            this.$emit("close");
+          }, 280);
         });
-        this.sliderClass = 'slider-close slider'
+        this.sliderClass = "slider-close slider";
       } else {
         if (this.redirect) {
           switch (this.redirect) {
-            case 'home':
+            case "home":
               this.$router.push(`/mobile/`);
               return;
             case "deposit":
@@ -339,67 +347,87 @@ export default {
     },
     verification(key, index) {
       let target = this.formData[key];
-      let errorMsg = '';
+      let errorMsg = "";
       if (key === "name") {
         const re = /[^\u3000\u3400-\u4DBF\u4E00-\u9FFF.．·]/g;
-        target.value = target.value.replace(re, '');
+        target.value = target.value.replace(re, "");
 
-        if (!target.value) {
-          errorMsg = "请勿输入、数字空白及特殊符号"
-        }
+        // if (!target.value) {
+        //   errorMsg = "请勿输入、数字空白及特殊符号"
+        // }
       }
 
       if (key === "withdraw_password") {
         let correct_value = target.value[index]
-          .replace(' ', '')
+          .replace(" ", "")
           .trim()
-          .replace(/[^\d+]$/g, '');
+          .replace(/[^\d+]$/g, "");
 
         if (target.value[index].length > 1) {
           target.value[index] = target.value[index].substring(0, 1);
         }
 
-        if (target.value[index] === correct_value && correct_value !== '') {
+        if (target.value[index] === correct_value && correct_value !== "") {
           if (index < 3) {
-            document.querySelector(`input[data-key="${key}_${index + 1}"]`).focus();
+            document
+              .querySelector(`input[data-key="${key}_${index + 1}"]`)
+              .focus();
           }
-        } else if (target.value[index] === correct_value && correct_value === '') {
+        } else if (
+          target.value[index] === correct_value &&
+          correct_value === ""
+        ) {
           if (index > 0) {
-            document.querySelector(`input[data-key="${key}_${index - 1}"]`).focus();
+            document
+              .querySelector(`input[data-key="${key}_${index - 1}"]`)
+              .focus();
           }
         }
-        target.value[index] = correct_value
+        target.value[index] = correct_value;
       }
 
       if (key === "phone") {
         // this.isVerifyPhone = target.value.length >= 11;
         // 億元 不客端判斷手機號碼位數
-        if (this.siteConfig.MOBILE_WEB_TPL === 'ey1' || target.value.length >= 11) {
-          this.isVerifyPhone = true
+        if (
+          this.siteConfig.MOBILE_WEB_TPL === "ey1" ||
+          target.value.length >= 11
+        ) {
+          this.isVerifyPhone = true;
         } else {
           this.isVerifyPhone = false;
         }
-        this.actionVerificationFormData({ target: 'phone', value: target.value }).then((res => {
+        this.actionVerificationFormData({
+          target: "phone",
+          value: target.value
+        }).then(res => {
           target.value = res;
-        }));
+        });
       }
 
       if (key === "keyring") {
-        this.actionVerificationFormData({ target: 'code', value: target.value }).then((res => {
+        this.actionVerificationFormData({
+          target: "code",
+          value: target.value
+        }).then(res => {
           target.value = res;
-        }));
+        });
       }
 
       let check = true;
-      if (this.formData['name'].show && !this.formData['name'].value ||
-        (this.formData['phone'].show && !this.formData['phone'].value) ||
-        (this.formData['keyring'].show && !this.formData['keyring'].value && this.showKeyring)) {
+      if (
+        (this.formData["name"].show && !this.formData["name"].value) ||
+        (this.formData["phone"].show && !this.formData["phone"].value) ||
+        (this.formData["keyring"].show &&
+          !this.formData["keyring"].value &&
+          this.showKeyring)
+      ) {
         check = false;
       }
 
-      if (this.formData['withdraw_password'].show) {
+      if (this.formData["withdraw_password"].show) {
         for (let i = 0; i < 4; i++) {
-          if (!this.formData['withdraw_password'].value[i]) {
+          if (!this.formData["withdraw_password"].value[i]) {
             check = false;
             break;
           }
@@ -410,7 +438,7 @@ export default {
       target.msg = errorMsg;
     },
     showCaptchaPopup() {
-      if (this.formData.phone.value === '') {
+      if (this.formData.phone.value === "") {
         return;
       }
 
@@ -426,112 +454,125 @@ export default {
     // 回傳會員手機驗證簡訊剩餘秒數可以重送
     getPhoneTTL() {
       return axios({
-        method: 'get',
-        url: '/api/v1/c/player/phone/ttl',
-      }).then(res => {
-        if (res && res.data && res.data.result === "ok") {
-          this.ttl = res.data.ret;
-        }
-      }).catch(error => {
-        this.tipMsg = `${error.response.data.msg}`;
+        method: "get",
+        url: "/api/v1/c/player/phone/ttl"
       })
+        .then(res => {
+          if (res && res.data && res.data.result === "ok") {
+            this.ttl = res.data.ret;
+          }
+        })
+        .catch(error => {
+          this.tipMsg = `${error.response.data.msg}`;
+        });
     },
     sendKeyring() {
       this.isSendKeyring = true;
-      this.tipMsg = '';
+      this.tipMsg = "";
 
       axios({
-        method: 'post',
-        url: '/api/v1/c/player/verify/user_bank/sms',
+        method: "post",
+        url: "/api/v1/c/player/verify/user_bank/sms",
         data: {
-          phone: `${this.phoneHead.replace("+", "")}-${this.formData.phone.value}`,
-          captcha_text: this.captchaData ? this.captchaData : ''
-        }
-      }).then(res => {
-        if (this.timer) return;
-
-        if (res && res.data && res.data.result === "ok") {
-
-          this.getPhoneTTL().then(() => {
-            this.countdownSec = this.ttl;
-            this.timer = setInterval(() => {
-              if (this.countdownSec === 0) {
-                clearInterval(this.timer);
-                this.timer = null;
-                if (this.tipMsg.indexOf('已发送')) {
-                  this.tipMsg = ''
-                }
-                return;
-              }
-              this.countdownSec -= 1;
-            }, 1000);
-            this.tipMsg = this.$text("S_SEND_CHECK_CODE_VALID_TIME").replace("%s", '五');
-          })
-        } else {
-          if (res.data && res.data.msg) {
-            this.tipMsg = res.data.msg;
-          } else {
-            this.tipMsg = res.data;
-          }
-        }
-
-        this.isSendKeyring = false;
-      }).catch(error => {
-        this.countdownSec = '';
-        this.tipMsg = `${error.response.data ? error.response.data.msg : ''}`;
-        this.isSendKeyring = false;
-
-        if (error.response && error.response.status === 429) {
-          this.tipMsg = "操作太频繁，请稍候在试";
-          return;
+          phone: `${this.phoneHead.replace("+", "")}-${
+            this.formData.phone.value
+          }`,
+          captcha_text: this.captchaData ? this.captchaData : ""
         }
       })
+        .then(res => {
+          if (this.timer) return;
+
+          if (res && res.data && res.data.result === "ok") {
+            this.getPhoneTTL().then(() => {
+              this.countdownSec = this.ttl;
+              this.timer = setInterval(() => {
+                if (this.countdownSec === 0) {
+                  clearInterval(this.timer);
+                  this.timer = null;
+                  if (this.tipMsg.indexOf("已发送")) {
+                    this.tipMsg = "";
+                  }
+                  return;
+                }
+                this.countdownSec -= 1;
+              }, 1000);
+              this.tipMsg = this.$text("S_SEND_CHECK_CODE_VALID_TIME").replace(
+                "%s",
+                "五"
+              );
+            });
+          } else {
+            if (res.data && res.data.msg) {
+              this.tipMsg = res.data.msg;
+            } else {
+              this.tipMsg = res.data;
+            }
+          }
+
+          this.isSendKeyring = false;
+        })
+        .catch(error => {
+          this.countdownSec = "";
+          this.tipMsg = `${error.response.data ? error.response.data.msg : ""}`;
+          this.isSendKeyring = false;
+
+          if (error.response && error.response.status === 429) {
+            this.tipMsg = "操作太频繁，请稍候在试";
+            return;
+          }
+        });
     },
     sendFormData() {
       this.isSendForm = true;
-      this.tipMsg = '';
+      this.tipMsg = "";
       let param = {};
 
       Object.keys(this.formData).forEach(i => {
         if (this.formData[i].show) {
           if (i === "phone") {
-            param[i] = this.phoneHead.replace("+", "") + '-' + this.formData['phone'].value;
-          }
-          else if (i === "withdraw_password") {
-            param[i] = this.formData.withdraw_password.value.join('')
-          }
-          else {
+            param[i] =
+              this.phoneHead.replace("+", "") +
+              "-" +
+              this.formData["phone"].value;
+          } else if (i === "withdraw_password") {
+            param[i] = this.formData.withdraw_password.value.join("");
+          } else {
             param[i] = this.formData[i].value;
           }
         }
-      })
+      });
 
       axios({
-        method: 'put',
-        url: '/api/v1/c/player/info',
+        method: "put",
+        url: "/api/v1/c/player/info",
         data: param
-      }).then(res => {
-        this.isSendForm = false;
-        if (res && res.data && res.data.result !== "ok") {
-          this.tipMsg = res.data.msg;
-          Object.keys(res.data.errors).forEach((item) => {
-            this.formData[item].msg = res.data.errors[item];
-          });
-        } else {
-          this.actionSetUserdata(true).then(() => {
-            this.onClose();
-
-            if (!this.checkBankSwitch) {
-              this.$router.push(`/mobile/mcenter/bankCard?redirect=${this.redirect}&type=wallet`)
-            }
-          });
-        }
-      }).catch(error => {
-        this.tipMsg = `${error.response.data.msg}`;
-        this.isSendForm = false;
       })
+        .then(res => {
+          this.isSendForm = false;
+          if (res && res.data && res.data.result !== "ok") {
+            this.tipMsg = res.data.msg;
+            Object.keys(res.data.errors).forEach(item => {
+              this.formData[item].msg = res.data.errors[item];
+            });
+          } else {
+            this.actionSetUserdata(true).then(() => {
+              this.onClose();
+
+              if (!this.checkBankSwitch) {
+                this.$router.push(
+                  `/mobile/mcenter/bankCard?redirect=${this.redirect}&type=wallet`
+                );
+              }
+            });
+          }
+        })
+        .catch(error => {
+          this.tipMsg = `${error.response.data.msg}`;
+          this.isSendForm = false;
+        });
     }
-  },
+  }
 };
 </script>
 

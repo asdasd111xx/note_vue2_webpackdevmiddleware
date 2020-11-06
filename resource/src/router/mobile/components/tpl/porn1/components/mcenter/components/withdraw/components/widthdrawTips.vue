@@ -6,8 +6,8 @@
         :class="[
           $style['check-container'],
           {
-            [$style['deposit']]: type === 'deposit',
-          },
+            [$style['deposit']]: type === 'deposit'
+          }
         ]"
       >
         <div :class="$style['check-header']">
@@ -182,6 +182,12 @@ export default {
     },
     handleCheckRule() {
       this.$emit("save");
+
+      // 109/11/05
+      // 與企劃確認，跳轉至幫助中心後，提現金額的金額不需保留
+      localStorage.removeItem("tmp_w_amount");
+      localStorage.removeItem("tmp_w_actualAmount");
+
       if (this.type === "tips") {
         this.$router.push("/mobile/mcenter/help/withdraw?&key=6");
       } else if (this.type === "deposit") {
@@ -196,7 +202,7 @@ export default {
       // }
       this.$router.back();
     }
-  },
+  }
   // watch: {
   //   show(val) {
   //     if (val) {
