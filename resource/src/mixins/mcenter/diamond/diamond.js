@@ -30,7 +30,6 @@ export default {
 
       // banner
       swagBanner: [
-        { src: '/static/image/porn1/mcenter/swag/banner_swag.png' },
         { src: '/static/image/porn1/mcenter/swag/banner_swag.png' }],
     }
   },

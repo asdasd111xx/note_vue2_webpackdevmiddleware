@@ -23,7 +23,7 @@
       </div>
 
       <div :class="[$style['credit-trans-container']]">
-        <component :is="currentTemplate" />
+        <component :is="currentTemplate" @linkToSwag="linkToSwag" />
       </div>
     </div>
   </mobile-container>
@@ -35,6 +35,7 @@ import mobileContainer from "../../../common/mobileContainer";
 import buyDiamond from './compontents/buyDiamond';
 import recoardDiamond from './compontents/recoardDiamond';
 import axios from 'axios';
+import goLangApiRequest from '@/api/goLangApiRequest';
 
 export default {
   components: {
@@ -59,6 +60,8 @@ export default {
   computed: {
     ...mapGetters({
       memInfo: "getMemInfo",
+      loginStatus: 'getLoginStatus',
+      siteConfig: 'getSiteConfig'
     }),
     tabItem() {
       return [
@@ -92,6 +95,37 @@ export default {
       'actionSetGlobalMessage',
       "actionGetRechargeStatus",
     ]),
+    linkToSwag() {
+      if (!this.loginStatus) {
+        this.$router.push('/mobile/login');
+      } else {
+        let userId = 'guest';
+        if (this.memInfo && this.memInfo.user && this.memInfo.user.id && this.memInfo.user.id !== 0) {
+          userId = this.memInfo.user.id;
+        }
+
+        goLangApiRequest({
+          method: 'get',
+          url: `${this.siteConfig.YABO_GOLANG_API_DOMAIN}/ThirdParty/SWAG/${userId}`,
+          headers: {
+            'x-domain': this.memInfo.user.domain
+          }
+        }).then(res => {
+          if (res && res.status !== '000') {
+            if (res.msg) {
+              this.actionSetGlobalMessage({ msg: res.msg });
+            }
+            return;
+          }
+          else {
+            localStorage.setItem('iframe-third-url', res.data);
+            localStorage.setItem('iframe-third-url-title', '鸭博色播');
+            this.$router.push(`/mobile/iframe/SWAG?&hasFooter=false&hasHeader=true`);
+            return;
+          }
+        })
+      }
+    },
     setCurrentTab(index) {
 
       switch (index) {
@@ -110,7 +144,8 @@ export default {
           break;
         case 2:
           // 鴨博色播
-          this.$router.push(`/mobile/iframe/SWAG?&title=鴨博色播&hasFooter=false&hasHeader=true`);
+          this.linkToSwag();
+
           break;
       }
     },
