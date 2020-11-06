@@ -8,9 +8,8 @@
           )
         "
       />
-      <span> SWAG钱包 </span>
-
-      <div v-if="true" :class="$style['maintain-block']">
+      <span> SWAG钱包</span>
+      <div v-if="false" :class="$style['maintain-block']">
         {{ $t("S_MAINTAIN") }}
         <img
           :src="
@@ -20,10 +19,9 @@
           "
         />
       </div>
-
       <!-- 沒有維護時，顯示金額 -->
       <div v-else :class="$style['balance']">
-        {{ "1194397.30" }}
+        {{ swagDiamondBalance }}
       </div>
     </div>
 
@@ -31,11 +29,17 @@
       {{ this.$text("S_BUY_DIAMOND", "购买钻石") }}
     </div>
 
-    <div :class="$style['item']" @click="$router.push('/mobile/mcenter/swag')">
+    <div
+      :class="$style['item']"
+      @click="$router.push('/mobile/mcenter/help/detail?type=buymethod')"
+    >
       {{ this.$text("S_TO_BUY", "如何购买") }}
     </div>
 
-    <div :class="$style['item']" @click="$router.push('/mobile/mcenter/swag')">
+    <div
+      :class="$style['item']"
+      @click="$router.push('/mobile/mcenter/help/detail?type=usage&key=2')"
+    >
       {{ this.$text("S_INSTRUSTIONS", "使用方法") }}
     </div>
   </div>
@@ -54,17 +58,24 @@ export default {
       hasBank: 'getHasBank'
     }),
   },
+  data() {
+    return {
+      swagDiamondBalance: "0"
+    }
+  },
+  watch: {
+    swagBalance(val) {
+      this.swagDiamondBalance = +val.balance === 0 ? '0' : val.balance;
+    },
+  },
   methods: {
     ...mapActions([
       'actionSetGlobalMessage',
       'actionGetRechargeStatus',
-      'actionGetMemInfoV3'
+      'actionGetMemInfoV3',
+      'actionSetSwagBalance'
     ]),
-    handleCreditTrans() {
-      this.actionGetMemInfoV3().then(() => {
-        this.actionGetRechargeStatus('');
-      })
-    }
+
   },
 };
 </script>
