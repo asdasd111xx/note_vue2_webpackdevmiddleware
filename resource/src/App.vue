@@ -288,8 +288,8 @@ export default {
         &pkey=${this.AESencrypt(this.RSAPublicKey)}
         &akey=${this.RSAencrypt(this.AESKey, this.ServerRSAKey)}`;
         }
-        console.log(`[WSV2] cid:${cid}`);
-        console.log(`[WSV2]${uri}`);
+        // console.log(`[WSV2] cid:${cid}`);
+        // console.log(`[WSV2]${uri}`);
         window.YABO_SOCKETV2 = new WebSocket(uri);
         window.YABO_SOCKETV2_SEND_EVENT = this.sendYaboWSV2
         window.YABO_SOCKETV2.onmessage = (e) => {
@@ -473,8 +473,8 @@ export default {
             let publicKey = this.RSA2text(keydata2);
             this.RSAPrivateKey = privateKey;
             this.RSAPublicKey = publicKey;
-            console.log(`privateKey is :${privateKey}`);
-            console.log(`publicKey is :${publicKey}`);
+            // console.log(`privateKey is :${privateKey}`);
+            // console.log(`publicKey is :${publicKey}`);
           }).catch(err => {
             console.error(err);
           });
