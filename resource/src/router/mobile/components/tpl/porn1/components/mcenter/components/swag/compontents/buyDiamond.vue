@@ -154,13 +154,6 @@ export default {
   },
   created() {
     // 測試資料
-    setTimeout(() => {
-      this.rateList = [{ key: 0, amount: '188', diamond: '100' },
-      { key: 1, amount: '1880', diamond: '100' },
-      { key: 2, amount: '1', diamond: '1' },
-      { key: 3, amount: '18', diamond: '10' }];
-      this.selectedRate(this.rateList[0]);
-    }, 1000)
   },
   methods: {
   }

@@ -16,6 +16,7 @@ export default {
         { loading: true },
         { loading: true },
         { loading: true },
+        { loading: true },
         { loading: true }
       ],
       currentSelRate: {
@@ -63,8 +64,8 @@ export default {
     this.actionSetSwagConfig().then(() => {
 
       // 可購買的鑽石/金額列表
-      // this.rateList = this.swagConfig.rates;
-      // this.selectedRate(this.rateList[0]);
+      this.rateList = this.swagConfig.rates;
+      this.selectedRate(this.rateList[0]);
 
       // 維護時間
       // this.swagConfig.maintain_end_at
