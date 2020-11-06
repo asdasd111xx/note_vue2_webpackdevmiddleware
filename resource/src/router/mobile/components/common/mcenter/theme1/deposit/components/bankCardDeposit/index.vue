@@ -18,8 +18,8 @@
           $style['swiper-item'],
           {
             [$style['is-current']]:
-              listItem.payment_group_id === curModeGroup.payment_group_id,
-          },
+              listItem.payment_group_id === curModeGroup.payment_group_id
+          }
         ]"
       >
         <span @click="modeChange(listItem, index)">{{
@@ -47,8 +47,8 @@
                   {
                     [$style['is-current']]:
                       curPayInfo.payment_method_id === info.payment_method_id &&
-                      curPayInfo.bank_id === info.bank_id,
-                  },
+                      curPayInfo.bank_id === info.bank_id
+                  }
                 ]"
                 @click="changePayMode(info, index)"
               >
@@ -91,7 +91,7 @@
                   <template
                     v-if="
                       themeTPL === 'ey1' &&
-                      [5, 6].includes(info.payment_type_id)
+                        [5, 6].includes(info.payment_type_id)
                     "
                   >
                     返利1%无上限
@@ -101,7 +101,7 @@
                 <img
                   v-if="
                     curPayInfo.payment_method_id === info.payment_method_id &&
-                    curPayInfo.bank_id === info.bank_id
+                      curPayInfo.bank_id === info.bank_id
                   "
                   :class="$style['pay-active']"
                   src="/static/image/_new/common/select_active.png"
@@ -140,12 +140,12 @@
           <div
             v-if="
               (curPayInfo.banks && curPayInfo.banks.length > 0) ||
-              (yourBankData.length > 0 && curPayInfo.payment_type_id === 5)
+                (yourBankData.length > 0 && curPayInfo.payment_type_id === 5)
             "
             :class="[
               $style['feature-wrap'],
               $style['select-card-wrap'],
-              'clearfix',
+              'clearfix'
             ]"
             @click="changeType('chagneBank'), (isShowPop = true)"
           >
@@ -216,7 +216,7 @@
                 :class="[
                   $style['speed-field-name'],
                   { [$style.error]: depositNameInput.isError },
-                  'clearfix',
+                  'clearfix'
                 ]"
               >
                 <div :class="$style['field-title']">
@@ -242,8 +242,8 @@
                 :class="[
                   $style['deposit-name-messgae'],
                   {
-                    [$style['hide']]: !nameCheckFail && speedField.depositName,
-                  },
+                    [$style['hide']]: !nameCheckFail && speedField.depositName
+                  }
                 ]"
               >
                 为即时到账，请务必输入正确的汇款人姓名
@@ -265,7 +265,7 @@
                   :key="data.id"
                   :class="[
                     $style['pay-mode-pass'],
-                    { [$style['current-data']]: data.id === curPassRoad.id },
+                    { [$style['current-data']]: data.id === curPassRoad.id }
                   ]"
                   @click="changePassRoad(data)"
                 >
@@ -284,8 +284,8 @@
             <div
               v-if="
                 themeTPL === 'porn1' &&
-                isSelectBindWallet() &&
-                !this.curPassRoad.is_bind_wallet
+                  isSelectBindWallet() &&
+                  !this.curPassRoad.is_bind_wallet
               "
               :class="[$style['feature-wrap'], 'clearfix']"
             >
@@ -317,8 +317,8 @@
             <div
               v-if="
                 themeTPL === 'ey1' &&
-                isSelectBindWallet() &&
-                !this.curPassRoad.is_bind_wallet
+                  isSelectBindWallet() &&
+                  !this.curPassRoad.is_bind_wallet
               "
               :class="[$style['feature-wrap'], 'clearfix']"
             >
@@ -348,8 +348,8 @@
             <div
               v-if="
                 themeTPL === 'porn1' &&
-                isSelectBindWallet(16) &&
-                curPassRoad.is_bind_wallet
+                  isSelectBindWallet(16) &&
+                  curPassRoad.is_bind_wallet
               "
               :class="[$style['feature-wrap'], 'clearfix']"
             >
@@ -378,12 +378,12 @@
             <div
               v-if="
                 (isSelectBindWallet() && curPassRoad.is_bind_wallet) ||
-                !isSelectBindWallet()
+                  !isSelectBindWallet()
               "
               :class="[
                 $style['feature-wrap'],
                 $style['select-money'],
-                'clearfix',
+                'clearfix'
               ]"
             >
               <!-- 億元：顯示 CGPay 餘額 -->
@@ -391,8 +391,8 @@
               <template
                 v-if="
                   themeTPL === 'ey1' &&
-                  isSelectBindWallet(16) &&
-                  curPassRoad.is_bind_wallet
+                    isSelectBindWallet(16) &&
+                    curPassRoad.is_bind_wallet
                 "
               >
                 <div :class="$style['CGPay-money']">
@@ -420,7 +420,7 @@
                 v-if="isDepositAi"
                 :class="[
                   $style['bank-card-title'],
-                  { [$style['is-error']]: isErrorMoney },
+                  { [$style['is-error']]: isErrorMoney }
                 ]"
               >
                 提交订单时，系统自动调配最佳充值金额
@@ -436,7 +436,7 @@
                   :key="`pay-money-${index}`"
                   :class="[
                     $style['pay-money-item'],
-                    { [$style['is-current']]: moneyValue === item },
+                    { [$style['is-current']]: moneyValue === item }
                   ]"
                   @click="
                     () => {
@@ -463,8 +463,8 @@
                 <div
                   v-if="
                     curPassRoad &&
-                    curPassRoad.is_custom_amount &&
-                    curPassRoad.amounts.length > 0
+                      curPassRoad.is_custom_amount &&
+                      curPassRoad.amounts.length > 0
                   "
                   :class="[$style['speed-money-wrap'], 'clearfix']"
                 >
@@ -472,7 +472,7 @@
                     :class="[
                       $style['pay-money-item'],
                       $style['custom-item'],
-                      { [$style['is-current']]: isSelectedCustomMoney },
+                      { [$style['is-current']]: isSelectedCustomMoney }
                     ]"
                     @click="
                       () => {
@@ -524,8 +524,8 @@
               <div
                 v-if="
                   !isDepositAi &&
-                  (Object.keys(curPassRoad).length === 0 ||
-                    curPassRoad.is_custom_amount)
+                    (Object.keys(curPassRoad).length === 0 ||
+                      curPassRoad.is_custom_amount)
                 "
                 :class="[
                   $style['feature-deposit-wrap'],
@@ -533,8 +533,8 @@
                     [$style['hidden']]:
                       curPassRoad.is_custom_amount &&
                       moneyValue &&
-                      isDisableDepositInput,
-                  },
+                      isDisableDepositInput
+                  }
                 ]"
               >
                 <div class="money-input-wrap">
@@ -543,18 +543,20 @@
                     :class="[
                       $style['deposit-input'],
                       {
-                        [$style.disable]: isDisableDepositInput,
-                      },
+                        [$style.disable]: isDisableDepositInput
+                      }
                     ]"
-                    :placeholder="`单笔充值金额：${getSingleLimit(
-                      this.depositInterval.minMoney,
-                      this.depositInterval.maxMoney
-                    )}
-                      `"
+                    :placeholder="
+                      `单笔充值金额：${getSingleLimit(
+                        this.depositInterval.minMoney,
+                        this.depositInterval.maxMoney
+                      )}
+                      `
+                    "
                     type="text"
                     inputmode="decimal"
                     @blur="
-                      ($event) => {
+                      $event => {
                         verification('money', $event.target.value);
                         if (
                           isSelectBindWallet(25, 402) &&
@@ -603,8 +605,8 @@
                     :class="[
                       $style['conversion-btn'],
                       {
-                        [$style['disable']]: isClickCoversionBtn || !moneyValue,
-                      },
+                        [$style['disable']]: isClickCoversionBtn || !moneyValue
+                      }
                     ]"
                     @click="convertCryptoMoney"
                   >
@@ -629,9 +631,8 @@
                   :class="[
                     $style['pay-auth-method'],
                     {
-                      [$style['current-data']]:
-                        walletData['CGPay'].method === 0,
-                    },
+                      [$style['current-data']]: walletData['CGPay'].method === 0
+                    }
                   ]"
                   @click="walletData['CGPay'].method = 0"
                 >
@@ -647,9 +648,8 @@
                   :class="[
                     $style['pay-auth-method'],
                     {
-                      [$style['current-data']]:
-                        walletData['CGPay'].method === 1,
-                    },
+                      [$style['current-data']]: walletData['CGPay'].method === 1
+                    }
                   ]"
                   @click="walletData['CGPay'].method = 1"
                 >
@@ -685,13 +685,13 @@
                   :class="[
                     $style['speed-field'],
                     { [$style.error]: info.isError },
-                    'clearfix',
+                    'clearfix'
                   ]"
                 >
                   <img
                     v-if="
                       info.objKey === 'depositMethod' ||
-                      info.objKey === 'depositTime'
+                        info.objKey === 'depositTime'
                     "
                     :class="$style['speed-field-icon']"
                     src="/static/image/_new/common/arrow_next.png"
@@ -705,15 +705,15 @@
                           {
                             [$style[
                               'depositMethod-no-data'
-                            ]]: !speedField.depositMethod,
-                          },
+                            ]]: !speedField.depositMethod
+                          }
                         ]"
                         @click="isShowMethodsPop = true"
                       >
                         {{
                           speedField.depositMethod
                             ? info.selectData.find(
-                                (item) =>
+                                item =>
                                   speedField.depositMethod === item.selectId
                               ).mainTitle
                             : info.selectTitle
@@ -803,7 +803,7 @@
                     <div
                       :class="[
                         $style['basic-info-text'],
-                        $style['basic-info-title'],
+                        $style['basic-info-title']
                       ]"
                     >
                       {{ info.title }}
@@ -813,7 +813,7 @@
                       v-if="info.qrcode && info.qrcode.length > 0"
                       :class="[
                         $style['basic-info-text'],
-                        $style['qrcode-wrap'],
+                        $style['qrcode-wrap']
                       ]"
                     >
                       <template
@@ -847,7 +847,7 @@
                       v-else-if="info.htmlShow"
                       :class="[
                         $style['basic-info-text'],
-                        $style[`info-${info.objKey}`],
+                        $style[`info-${info.objKey}`]
                       ]"
                       v-html="info.value"
                     />
@@ -881,7 +881,7 @@
           <div
             v-if="
               (isSelectBindWallet() && curPassRoad.is_bind_wallet) ||
-              !isSelectBindWallet()
+                !isSelectBindWallet()
             "
             :class="$style['money-info-wrap']"
           >
@@ -941,8 +941,8 @@
                   !isBlockChecked ||
                   nameCheckFail ||
                   (isSelectBindWallet() && !this.curPassRoad.is_bind_wallet) ||
-                  (isSelectBindWallet(25, 402) && !isClickCoversionBtn),
-              },
+                  (isSelectBindWallet(25, 402) && !isClickCoversionBtn)
+              }
             ]"
             :title="$text('S_ENTER_PAY', '立即充值')"
             @click="clickSubmit"
@@ -1080,7 +1080,7 @@
 <script>
 import { mapGetters, mapActions } from "vuex";
 import { Swiper, SwiperSlide } from "vue-awesome-swiper";
-import { getCookie } from '@/lib/cookie';
+import { getCookie } from "@/lib/cookie";
 import blockListTips from "../../../../../../tpl/porn1/components/common/blockListTips";
 import bindWalletPopup from "@/router/mobile/components/tpl/porn1/components/common/bindWalletPopup";
 import bbosRequest from "@/api/bbosRequest";
@@ -1105,14 +1105,14 @@ export default {
     blockListTips,
     bindWalletPopup,
     popupQrcode,
-    confirmOneBtn,
+    confirmOneBtn
   },
   mixins: [mixin],
   props: {
     headerSetting: {
       type: Object,
-      default: () => { },
-    },
+      default: () => {}
+    }
   },
   data() {
     return {
@@ -1120,7 +1120,7 @@ export default {
       isSelectShow: false,
       paySelectType: "",
       categoryOptions: {
-        slidesPerView: "auto",
+        slidesPerView: "auto"
       },
       initHeaderSetting: {},
       isSelectValue: "",
@@ -1131,7 +1131,7 @@ export default {
       entryBlockStatusData: null,
       isBlockChecked: false,
 
-      bindWalletType: 'CGPay',
+      bindWalletType: "CGPay",
 
       // 彈窗參數(待之後整理)
       showRealStatus: false,
@@ -1140,20 +1140,20 @@ export default {
       // 彈窗顯示狀態統整
       showPopStatus: {
         isShow: false,
-        type: ''
+        type: ""
       },
 
       qrcodeObj: {
         isShow: false,
         bank_id: null,
-        bind_type: "deposit",
+        bind_type: "deposit"
       },
 
       confirmPopupObj: {
         msg: "",
         btnText: "",
-        cb: () => { },
-      },
+        cb: () => {}
+      }
     };
   },
   watch: {
@@ -1207,11 +1207,11 @@ export default {
               // this.qrcodeObj.isShow = false;
               // this.closePopup();
               window.location.reload();
-            },
+            }
           });
         }
       }
-    },
+    }
   },
   computed: {
     ...mapGetters({
@@ -1219,7 +1219,7 @@ export default {
       memInfo: "getMemInfo",
       rechargeConfig: "getRechargeConfig",
       CGPayInfo: "getCGPayInfo",
-      noticeData: "getNoticeData",
+      noticeData: "getNoticeData"
     }),
     $style() {
       const style =
@@ -1236,26 +1236,26 @@ export default {
           curInfo: {
             ...this.curPayInfo,
             selectId: this.curPayInfo.payment_method_id,
-            objKey: "payMethod",
+            objKey: "payMethod"
           },
-          allData: this.curModeGroup.payment_group_content.map((info) => ({
+          allData: this.curModeGroup.payment_group_content.map(info => ({
             ...info,
             selectId: info.payment_method_id,
             mainTitle: info.bank_name || info.payment_method_name,
-            subTitle: info.payment_type_name,
-          })),
+            subTitle: info.payment_type_name
+          }))
         },
         payPass: {
           selectTitle: this.$text("S_SELECT_PAY_PASS", "请选择支付通道"),
           curInfo: {
             ...this.curPassRoad,
             selectId: this.curPassRoad.id,
-            objKey: "payPass",
+            objKey: "payPass"
           },
-          allData: this.passRoad.map((info) => ({
+          allData: this.passRoad.map(info => ({
             ...info,
-            selectId: info.id,
-          })),
+            selectId: info.id
+          }))
         },
         chagneBank: {
           selectTitle: this.$text("S_CHANGE_BANK", "请选择支付银行"),
@@ -1265,14 +1265,14 @@ export default {
               this.allBanks.length > 0
                 ? this.bankSelectValue.value || this.allBanks[0].value
                 : "",
-            objKey: "chagneBank",
+            objKey: "chagneBank"
           },
-          allData: this.allBanks.map((info) => ({
+          allData: this.allBanks.map(info => ({
             ...info,
             selectId: info.value,
-            mainTitle: info.label,
-          })),
-        },
+            mainTitle: info.label
+          }))
+        }
       };
     },
     nowSelectData: {
@@ -1295,7 +1295,7 @@ export default {
         if (this.paySelectType === "payPass") {
           this.changePassRoad(value);
         }
-      },
+      }
     },
     /**
      * 金額是否輸入錯誤
@@ -1319,7 +1319,7 @@ export default {
         this.moneyValue = "";
         this.isErrorMoney = false;
         this.isSelectShow = false;
-      },
+      }
     },
     allInputData() {
       return [
@@ -1332,30 +1332,30 @@ export default {
           selectData: [
             {
               mainTitle: this.$text("S_ONLINE_BANK", "网银"),
-              selectId: "1",
+              selectId: "1"
             },
             {
               mainTitle: "ATM",
-              selectId: "2",
+              selectId: "2"
             },
             {
               mainTitle: this.$text("S_BANK_COUNTER", "银行柜台"),
-              selectId: "4",
+              selectId: "4"
             },
             {
               mainTitle: this.$text("S_MOBILE_TRANSFER", "手机银行转帐"),
-              selectId: "8",
+              selectId: "8"
             },
             {
               mainTitle: this.$text("S_ZALO_PAY", "其他"),
-              selectId: "16",
-            },
+              selectId: "16"
+            }
           ],
           showCondition: this.curPayInfo.field.find(
-            (e) => e.name === "method" && e.required
+            e => e.name === "method" && e.required
           ),
           //   showCondition: this.curPayInfo.field.find((e) => e.name === 'method'),
-          isError: false,
+          isError: false
         },
         {
           objKey: "bankBranch",
@@ -1371,10 +1371,10 @@ export default {
           isError:
             this.showError &&
             this.curPayInfo.field.find(
-              (item) => item.name === "method" && item.required
+              item => item.name === "method" && item.required
             ) &&
             !this.speedField.bankBranch &&
-            ["2", "4"].includes(this.speedField.depositMethod),
+            ["2", "4"].includes(this.speedField.depositMethod)
         },
         {
           objKey: "depositAccount",
@@ -1382,15 +1382,15 @@ export default {
           value: this.speedField.depositAccount,
           placeholderText: "请输入充值帐号",
           showCondition: this.curPayInfo.field.find(
-            (e) => e.name === "pay_account" && e.required
+            e => e.name === "pay_account" && e.required
           ),
           //   showCondition: this.curPayInfo.field.find((e) => e.name === 'pay_account'),
           isError:
             this.showError &&
             this.curPayInfo.field.find(
-              (item) => item.name === "pay_account" && item.required
+              item => item.name === "pay_account" && item.required
             ) &&
-            !this.speedField.depositAccount,
+            !this.speedField.depositAccount
         },
         {
           objKey: "depositTime",
@@ -1398,7 +1398,7 @@ export default {
           value: this.speedField.depositTime,
           placeholderText: "请选择充值时间",
           showCondition: this.curPayInfo.field.find(
-            (e) => e.name === "deposit_at" && e.required
+            e => e.name === "deposit_at" && e.required
           ),
           // showCondition: this.curPayInfo.field.find(e => {
           //   const isShow = e.name === "deposit_at";
@@ -1416,9 +1416,9 @@ export default {
           isError:
             this.showError &&
             this.curPayInfo.field.find(
-              (item) => item.name === "deposit_at" && item.required
+              item => item.name === "deposit_at" && item.required
             ) &&
-            !this.speedField.depositTime,
+            !this.speedField.depositTime
         },
         {
           objKey: "serialNumber",
@@ -1429,7 +1429,7 @@ export default {
             "请输入流水号"
           ),
           showCondition: this.curPayInfo.field.find(
-            (e) => e.name === "sn" && e.required
+            e => e.name === "sn" && e.required
           ),
           // showCondition:
           //   this.curPayInfo &&
@@ -1450,10 +1450,10 @@ export default {
           isError:
             this.showError &&
             this.curPayInfo.field.find(
-              (item) => item.name === "sn" && item.required
+              item => item.name === "sn" && item.required
             ) &&
-            !this.speedField.serialNumber,
-        },
+            !this.speedField.serialNumber
+        }
       ];
     },
     depositNameInput() {
@@ -1464,14 +1464,14 @@ export default {
         value: this.speedField.depositName,
         placeholderText: "请输入充值人姓名",
         showCondition: this.curPayInfo.field.find(
-          (e) => e.name === "pay_username" && e.required
+          e => e.name === "pay_username" && e.required
         ),
         isError:
           this.showError &&
           this.curPayInfo.field.find(
-            (item) => item.name === "pay_username" && item.required
+            item => item.name === "pay_username" && item.required
           ) &&
-          !this.speedField.depositName,
+          !this.speedField.depositName
       };
     },
     statusText() {
@@ -1515,28 +1515,28 @@ export default {
       "actionSetRechargeConfig",
       "actionSetCGPayInfo",
       "actionVerificationFormData",
-      "actionSetGlobalMessage",
+      "actionSetGlobalMessage"
     ]),
     setPopupStatus(isShow, type) {
       this.showPopStatus = {
         isShow,
         type
-      }
+      };
     },
     closePopup() {
-      this.setPopupStatus(false, '')
+      this.setPopupStatus(false, "");
 
       switch (this.showPopStatus.type) {
-        case 'blockStatus':
+        case "blockStatus":
           break;
-        case 'blockTips':
+        case "blockTips":
           this.$router.back();
           break;
-        case 'qrcode':
+        case "qrcode":
           break;
-        case 'bindWallet':
+        case "bindWallet":
           break;
-        case 'funcTips':
+        case "funcTips":
           break;
       }
     },
@@ -1544,10 +1544,10 @@ export default {
       this.$router.push("/mobile/mcenter/creditTrans?tab=0");
     },
     handleBindWallet() {
-      if (this.themeTPL === 'porn1') {
+      if (this.themeTPL === "porn1") {
         switch (this.curPayInfo.payment_method_id) {
           // CGPay
-          case 16, 25:
+          case (16, 25):
             this.$router.push(
               "/mobile/mcenter/bankcard?redirect=deposit&type=wallet&wallet=CGPay"
             );
@@ -1572,26 +1572,30 @@ export default {
         return;
       }
 
-      if (this.themeTPL === 'ey1') {
+      if (this.themeTPL === "ey1") {
         switch (this.curPayInfo.payment_method_id) {
           case 22:
             this.qrcodeObj.bank_id = 37;
-            this.setPopupStatus(true, 'qrcode');
+            this.setPopupStatus(true, "qrcode");
             break;
 
           default:
             if (this.curPayInfo.payment_method_id === 402) {
-              this.bindWalletType = 'USDT'
+              this.bindWalletType = "USDT";
             } else {
-              this.bindWalletType = 'CGPay'
+              this.bindWalletType = "CGPay";
             }
-            this.setPopupStatus(true, 'bindWallet');
+            this.setPopupStatus(true, "bindWallet");
             break;
         }
         return;
       }
     },
     modeChange(listItem, index) {
+      if (this.submitStatus === "stepTwo") {
+        this.submitStatus = "stepOne";
+      }
+
       this.checkEntryBlockStatus();
       this.changeMode(listItem);
 
@@ -1645,18 +1649,18 @@ export default {
 
         case 4:
           this.actionSetGlobalMessage({
-            msg: this.entryBlockStatusData.custom_point,
+            msg: this.entryBlockStatusData.custom_point
           });
 
           setTimeout(() => {
             window.open(this.entryBlockStatusData.external_url);
             return;
-          }, 700)
+          }, 700);
 
           break;
 
         default:
-          this.setPopupStatus(true, 'blockStatus')
+          this.setPopupStatus(true, "blockStatus");
           break;
       }
     },
@@ -1673,7 +1677,7 @@ export default {
 
       this.closePopup();
 
-      this.submitList().then((response) => {
+      this.submitList().then(response => {
         // 重置阻擋狀態
         this.checkEntryBlockStatus();
         this.entryBlockStatusData = null;
@@ -1684,7 +1688,7 @@ export default {
         if (response) {
           if (response.status === "NameFail") {
             this.actionSetGlobalMessage({
-              msg: "请输入正确名称",
+              msg: "请输入正确名称"
             });
             this.nameCheckFail = true;
           }
@@ -1699,19 +1703,19 @@ export default {
                 icon: this.initHeaderSetting.leftBtns.icon,
                 onClick: () => {
                   this.actionSetUserBalance();
-                  this.nowSubmitStatus = "stepOne";
-                },
+                  this.submitStatus = "stepOne";
+                }
               },
-              submitStatus: this.submitStatus,
+              submitStatus: this.submitStatus
             });
 
             // 點選加密貨幣的匯率試算，在需將時間設為0
             this.countdownSec = 0;
           }
 
-          if (response.status === 'third') {
+          if (response.status === "third") {
             // this.resetStatus();
-            this.cryptoMoney = '--';
+            this.cryptoMoney = "--";
             this.resetTimerStatus();
           }
         }
@@ -1740,13 +1744,13 @@ export default {
         ),
         loading: this.$getCdnPath(
           "/static/image/_new/default/bank_default_2.png"
-        ),
+        )
       };
     },
     curPay(curPayInfo) {
       if (
         Object.keys(curPayInfo).length &&
-        curPayInfo.field.find((item) => item.required) &&
+        curPayInfo.field.find(item => item.required) &&
         [5, 6].includes(curPayInfo.payment_type_id)
       ) {
         return true;
@@ -1756,7 +1760,7 @@ export default {
     changeSelectValue(val) {
       this.isShowPop = false;
       const index = this.paySelectData[this.paySelectType].allData
-        .map((item) => item.value)
+        .map(item => item.value)
         .indexOf(val);
       this.nowSelectData = this.paySelectData[this.paySelectType].allData[
         index
@@ -1770,12 +1774,12 @@ export default {
         url:
           this.siteConfig.BBOS_DOMIAN + "/Ext/V2/CreateEntryBlock/User/Check",
         reqHeaders: {
-          vendor: this.memInfo.user.domain,
+          vendor: this.memInfo.user.domain
         },
         params: {
-          lang: "zh-cn",
-        },
-      }).then((res) => {
+          lang: "zh-cn"
+        }
+      }).then(res => {
         this.isBlockChecked = true;
         if (res.status === "000" && res.data && res.data.ret) {
           this.entryBlockStatusData = res.data.ret;
@@ -1783,7 +1787,7 @@ export default {
           // 存款功能無法使用
           if (res.code !== "TM020074") {
             this.actionSetGlobalMessage({
-              msg: res.msg,
+              msg: res.msg
             });
           }
         }
@@ -1791,15 +1795,17 @@ export default {
     },
     // 代客充值
     goToValetDeposit() {
-      this.closePopup()
-      let isPWA = getCookie('platform') === "G" || window.location.host === "yaboxxxapp01.com";
+      this.closePopup();
+      let isPWA =
+        getCookie("platform") === "G" ||
+        window.location.host === "yaboxxxapp01.com";
 
       let newWindow = "";
       if (isPWA) {
         newWindow = window.open("", "", "_blank", true);
       }
 
-      const newWindowHref = (uri) => {
+      const newWindowHref = uri => {
         try {
           newWindow.location.href = uri;
         } catch (e) {
@@ -1833,8 +1839,8 @@ export default {
       if (target === "CGPPwd") {
         this.actionVerificationFormData({
           target: "code",
-          value: value,
-        }).then((val) => {
+          value: value
+        }).then(val => {
           this.walletData["CGPay"].password = val;
         });
       }
@@ -1842,11 +1848,11 @@ export default {
       if (target === "money") {
         this.actionVerificationFormData({
           target: "money",
-          value: value,
-        }).then((val) => {
+          value: value
+        }).then(val => {
           this.moneyValue = val;
           this.isErrorMoney = false;
-          this.cryptoMoney = val ? this.cryptoMoney : '--';
+          this.cryptoMoney = val ? this.cryptoMoney : "--";
 
           this.verificationMoney(this.moneyValue);
           this.checkOrderData();
@@ -1858,8 +1864,8 @@ export default {
         if (target === "depositName") {
           this.actionVerificationFormData({
             target: "name",
-            value: value,
-          }).then((val) => {
+            value: value
+          }).then(val => {
             this.checkSuccess = val ? true : false;
 
             this.speedField.depositName = val;
@@ -1884,8 +1890,8 @@ export default {
         this.curPayInfo.payment_method_id === 22 ||
         this.curPayInfo.payment_method_id === 402
       );
-    },
-  },
+    }
+  }
 };
 </script>
 
