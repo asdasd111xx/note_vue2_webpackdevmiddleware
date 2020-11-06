@@ -136,7 +136,7 @@ export default {
       if (this.vipLevelList.length <= 0 || !this.userVipInfo) {
         return;
       }
-      if (this.userVipInfo.amount_info.valid_bet === this.vipLevelList[this.userVipInfo.now_level_seq].downgrade_valid_bet) {
+      if (this.userVipInfo.amount_info.valid_bet >= this.vipLevelList[this.userVipInfo.now_level_seq].downgrade_valid_bet) {
         return '已达条件';
       } else {
         return `${this.userVipInfo.amount_info.valid_bet}/${this.vipLevelList[this.userVipInfo.now_level_seq].downgrade_valid_bet}`;
