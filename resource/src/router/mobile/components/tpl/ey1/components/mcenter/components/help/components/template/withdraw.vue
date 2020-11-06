@@ -48,8 +48,8 @@
                 {
                   [$style['red']]:
                     (stringIndex === 5 && index === 0) ||
-                    (stringIndex === 12 && index === 1),
-                },
+                    (stringIndex === 12 && index === 1)
+                }
               ]"
               :key="`content-${stringIndex}`"
               v-html="string"
@@ -59,10 +59,8 @@
           <div v-if="index == 0 && item.isOpen" :class="$style['tips']">
             <div :class="$style['tips-title']">※ 取款注意事项 ※</div>
             <div>
-              ❶亲切提醒您～联系资料变更时，请您立即联系24小时<span
-                @click="linkTo('service')"
-              >
-                在线客服 </span
+              ❶亲切提醒您～联系资料变更时，请您立即联系24小时
+              <span @click="linkTo('service')"> 在线客服 </span
               >人员，即时更新您的联络方式；
               如有任何问题，方便億元客服人员第一时间与您联系。
             </div>

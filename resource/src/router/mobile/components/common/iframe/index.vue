@@ -106,9 +106,16 @@ export default {
           url: `${this.siteConfig.YABO_GOLANG_API_DOMAIN}/ThirdParty/${params.page.toUpperCase()}/${userId}`,
           headers: {
             'x-domain': this.memInfo.user.domain
-          },
+          }
         }).then(res => {
-          this.src = res.data;
+          if (res && res.status !== '000') {
+            if (res.msg) {
+              this.actionSetGlobalMessage({ msg: res.msg });
+            }
+          }
+          else {
+            this.src = res.data;
+          }
         })
         // SWAG
         // this.src = 'https://feature-yabo.app.swag.live/';

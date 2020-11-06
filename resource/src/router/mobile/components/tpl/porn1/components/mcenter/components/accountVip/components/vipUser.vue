@@ -84,7 +84,7 @@
           userVipInfo.next_level_valid_bet
         }})
       </div>
-      <div :class="$style['desc-text']">
+      <!-- <div :class="$style['desc-text']">
         ●保级推广(位)：
         <span :class="$style['money']">{{
           userVipInfo.downgrade_members
@@ -92,7 +92,7 @@
         (有效会员充值{{ userVipInfo.downgrade_valid_bet }} , 保级{{
           userVipInfo.downgrade_day
         }}天)
-      </div>
+      </div> -->
     </div>
   </div>
 </template>
