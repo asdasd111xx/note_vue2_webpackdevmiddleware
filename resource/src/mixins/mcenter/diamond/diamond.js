@@ -24,13 +24,12 @@ export default {
         // diamond: '0'
       },
       balanceBackLock: false,
-      swagDiamondBalance: '0.00',
+      swagDiamondBalance: '0',
       lockedSubmit: true,
       isSendSubmit: false,
 
       // banner
       swagBanner: [
-        { src: '/static/image/porn1/mcenter/swag/banner_swag.png' },
         { src: '/static/image/porn1/mcenter/swag/banner_swag.png' }],
     }
   },
@@ -81,7 +80,7 @@ export default {
   },
   watch: {
     swagBalance(val) {
-      this.swagDiamondBalance = +val.balance === 0 ? '0.00' : val.balance;
+      this.swagDiamondBalance = +val.balance === 0 ? '0' : val.balance;
     },
   },
   methods: {

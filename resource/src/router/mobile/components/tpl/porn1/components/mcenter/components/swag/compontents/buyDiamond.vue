@@ -7,11 +7,7 @@
             <img
               :src="$getCdnPath(info.src)"
               :data-info="key"
-              @click="
-                $router.push(
-                  `/mobile/iframe/SWAG?&title=鴨博色播&hasFooter=false&hasHeader=true`
-                )
-              "
+              @click="$emit('linkToSwag')"
             />
           </div>
         </swiper-slide>
