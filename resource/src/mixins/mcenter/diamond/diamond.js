@@ -24,7 +24,7 @@ export default {
         // diamond: '0'
       },
       balanceBackLock: false,
-      swagDiamondBalance: '0.00',
+      swagDiamondBalance: '0',
       lockedSubmit: true,
       isSendSubmit: false,
 

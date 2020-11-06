@@ -248,7 +248,7 @@ export default {
       mainNoData: false,
       isCheckWithdraw: false,
       bonus: {},
-      swagDiamondBalance: '0.00',
+      swagDiamondBalance: '0',
     };
   },
   computed: {
@@ -400,7 +400,7 @@ export default {
   },
   watch: {
     swagBalance(val) {
-      this.swagDiamondBalance = +val.balance === 0 ? '0.00' : val.balance;
+      this.swagDiamondBalance = +val.balance === 0 ? '0' : val.balance;
     },
   },
   methods: {
