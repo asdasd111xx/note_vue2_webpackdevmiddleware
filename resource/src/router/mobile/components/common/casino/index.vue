@@ -232,6 +232,16 @@ export default {
   },
   created() {
     this.getGameLabelList();
+    const listner = function () {
+      let isHiddenWindow = document.hidden;
+      window.location.reload(true);
+    }
+    document.addEventListener('visibilitychange', listner);
+    document.addEventListener('pageshow', listner);
+  },
+  beforeDestroy() {
+    document.removeEventListener('visibilitychange', () => { }, false);
+    document.removeEventListener('pageshow', () => { }, false);
   },
   methods: {
     ...mapActions([
