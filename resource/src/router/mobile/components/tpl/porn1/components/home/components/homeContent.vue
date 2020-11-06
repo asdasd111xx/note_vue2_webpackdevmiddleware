@@ -148,7 +148,7 @@
                   </div>
                   <div :class="[$style['container-maintain']]">
                     <div :class="[$style['container-maintain-time']]">
-                      {{ `2020-07-23 10:00:00` }}
+                      {{ `${game.start_at}` }}
                     </div>
                     <img
                       :src="
@@ -156,7 +156,7 @@
                       "
                     />
                     <div :class="[$style['container-maintain-time']]">
-                      {{ `2020-07-23 12:00:00` }}
+                      {{ `${game.end_at}` }}
                     </div>
                   </div>
                 </div>
