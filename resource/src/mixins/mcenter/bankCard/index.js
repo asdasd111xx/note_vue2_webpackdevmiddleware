@@ -4,14 +4,14 @@ export default {
       isReceive: false,
 
       // Page 相關參數
-      currentTab: 0,
-      currentPage: "bankCardInfo",
-      isShowTab: true,
+      currentTab: null,
+      currentPage: null,
+      isShowTab: null,
 
       editDetailStatus: false,
       isAuditStatus: false,
       showDetailStatus: false,
-      step: "one",
+      step: "one"
     };
   },
   computed: {
@@ -33,12 +33,11 @@ export default {
           case "videoPlay":
           case "wallet":
           case "recharge":
-
-            if (type && type === 'bankCard') {
+            if (type && type === "bankCard") {
               this.setPageStatus(0, "addBankCard", false);
             }
 
-            if (type && type === 'wallet') {
+            if (type && type === "wallet") {
               this.setPageStatus(1, "addWalletCard", false);
             }
 
@@ -81,9 +80,11 @@ export default {
     }
   },
   created() {
-    if (localStorage.getItem('click-notification') &&
-      localStorage.getItem('add-bank-form')) {
-      this.setPageStatus(0, 'addBankCard', false)
+    if (
+      localStorage.getItem("click-notification") &&
+      localStorage.getItem("add-bank-form")
+    ) {
+      this.setPageStatus(0, "addBankCard", false);
     }
   },
   methods: {
@@ -91,7 +92,7 @@ export default {
       this.currentPage = value;
     },
     changeToHistory() {
-      this.$router.push('/mobile/mcenter/historyCard');
+      this.$router.push("/mobile/mcenter/historyCard");
     }
   }
 };
