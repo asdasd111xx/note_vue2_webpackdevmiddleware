@@ -1317,7 +1317,7 @@ export default {
           } else {
             this.actionSetGlobalMessage({
               msg: res.data.msg,
-              code: res.data.msg.code
+              code: res.data.code
             });
             return;
           }
@@ -1326,8 +1326,7 @@ export default {
           if (res.response.data) {
             this.actionSetGlobalMessage({
               msg: res.response.data.msg,
-              code: res.data.msg.code,
-              cb: () => {}
+              code: res.response.data.code
             });
           }
           return;
