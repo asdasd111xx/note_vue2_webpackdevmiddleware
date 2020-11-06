@@ -1039,18 +1039,19 @@ export default {
 
     verification(target, value) {
       if (target === "withdrawValue") {
-        value = +value;
+        value = value.replace(/[^0-9]/g, "");
+        this.withdrawValue = value;
 
         // 針對加密貨幣
         if (this.isSelectedUSDT && !value) {
           this.cryptoMoney = "--";
         }
 
-        // 1.判斷是否為整數
-        if (!Number.isInteger(value)) {
-          this.errTips = "提现金额必需为整数";
-          return;
-        }
+        // // 1.判斷是否為整數
+        // if (!Number.isInteger(value)) {
+        //   this.errTips = "提现金额必需为整数";
+        //   return;
+        // }
 
         // 實際金額
         let _actualMoney =
