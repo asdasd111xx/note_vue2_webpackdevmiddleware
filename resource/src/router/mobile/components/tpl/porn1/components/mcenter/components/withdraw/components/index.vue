@@ -1212,26 +1212,32 @@ export default {
           }
           return false;
         };
+
         if (islock()) {
           return;
         }
 
-        switch (this.themeTPL) {
-          case "porn1":
-            if (Number(this.actualMoney) !== Number(this.withdrawValue)) {
-              this.widthdrawTipsType = "tips";
-              this.setPopupStatus(true, "check");
-            } else {
-              this.handleSubmit();
-            }
-            break;
+        // 會員綁定銀行卡前需手機驗證 与 投注/轉帳前需綁定銀行卡
+        this.withdrawCheck().then(res => {
+          if (res === "ok") {
+            switch (this.themeTPL) {
+              case "porn1":
+                if (Number(this.actualMoney) !== Number(this.withdrawValue)) {
+                  this.widthdrawTipsType = "tips";
+                  this.setPopupStatus(true, "check");
+                } else {
+                  this.handleSubmit();
+                }
+                break;
 
-          // 一律顯示溫馨
-          case "ey1":
-            this.widthdrawTipsType = "tips";
-            this.setPopupStatus(true, "check");
-            break;
-        }
+              // 一律顯示溫馨
+              case "ey1":
+                this.widthdrawTipsType = "tips";
+                this.setPopupStatus(true, "check");
+                break;
+            }
+          }
+        });
       });
     },
     closePopup() {
@@ -1338,37 +1344,33 @@ export default {
     },
     handleSubmit() {
       this.closePopup();
-      // 會員綁定銀行卡前需手機驗證 与 投注/轉帳前需綁定銀行卡
-      this.withdrawCheck().then(res => {
-        if (res === "ok") {
-          if (
-            // 會員首次出款僅限銀行卡
-            this.memInfo.config.withdraw_player_verify &&
-            !localStorage.getItem("tmp_w_1")
-          ) {
-            this.saveCurrentValue();
-            this.$router.push(
-              "/mobile/mcenter/accountData/phone?redirect=withdraw"
-            );
-            return;
-          }
 
-          this.isSendSubmit = true;
-          this.submitWithdraw({
-            user_bank_id: this.selectedCard.id,
-            keyring: localStorage.getItem("tmp_w_1") // 手機驗證成功後回傳
-          }).then(response => {
-            setTimeout(() => {
-              this.$nextTick(() => {
-                this.isSendSubmit = false;
-                this.getWithdrawAccount();
-              });
-            }, 200);
+      if (
+        // 會員首次出款僅限銀行卡
+        this.memInfo.config.withdraw_player_verify &&
+        !localStorage.getItem("tmp_w_1")
+      ) {
+        this.saveCurrentValue();
+        this.$router.push(
+          "/mobile/mcenter/accountData/phone?redirect=withdraw"
+        );
+        return;
+      }
+
+      this.isSendSubmit = true;
+      this.submitWithdraw({
+        user_bank_id: this.selectedCard.id,
+        keyring: localStorage.getItem("tmp_w_1") // 手機驗證成功後回傳
+      }).then(response => {
+        setTimeout(() => {
+          this.$nextTick(() => {
+            this.isSendSubmit = false;
+            this.getWithdrawAccount();
           });
-
-          this.removeCurrentValue(true);
-        }
+        }, 200);
       });
+
+      this.removeCurrentValue(true);
     },
     /**
      * 送出取款資訊
