@@ -72,7 +72,7 @@ steps:
     args:
       - set
       - image
-      # - --namespace=cxbb-frontend
+      - --namespace=$_NAME_SPACE
       - deploy/$_CLUSTER_DEPLOY
       - $_CLUSTER_CONTAINER=gcr.io/$PROJECT_ID/$REPO_NAME-$_DEPLOY_TYPE:z-$REVISION_ID
 
