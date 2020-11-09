@@ -85,6 +85,10 @@ export default {
       }
     }
   },
+  beforeDestroy() {
+    document.removeEventListener('visibilitychange', () => { }, false);
+    document.removeEventListener('pageshow', () => { }, false);
+  },
   created() {
     if (this.$cookie.get('IS_BB_APP') !== null && this.$cookie.get('IS_BB_APP') === 'Y') {
       appEvent.jsToAppMessage('HOME_PAGE');
@@ -109,6 +113,16 @@ export default {
     };
 
     this.setAnalyticsCode();
+
+    const self = this;
+    const listner = function () {
+      const paths = ['card', 'casino'];
+      if (!document.hidden && paths.includes(self.$route.name)) {
+        console.log('[visibilitychange]:false Reload')
+        window.location.reload(true);
+      }
+    }
+    document.addEventListener('visibilitychange', listner);
   },
   methods: {
     ...mapActions([
@@ -406,7 +420,7 @@ export default {
       return responseData;
     },
     /**
-* RSA加密 
+* RSA加密
 */
     //加密方法
     RSAencrypt(pas, publicKey) {
