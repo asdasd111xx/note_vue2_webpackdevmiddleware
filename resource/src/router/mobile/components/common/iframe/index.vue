@@ -258,6 +258,7 @@ export default {
             return;
 
           case 'EVENT_THIRDPARTY_CURRENCY_NOT_ENOUGH':
+          case 'EVENT_THIRDPARTY_DEPOSIT':
             this.$router.push('/mobile/mcenter/swag?tab=0');
             return;
 
