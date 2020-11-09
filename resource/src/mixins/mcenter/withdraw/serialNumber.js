@@ -74,11 +74,11 @@ export default {
       })
         .then(res => {
           if (res.data.result === "ok") {
-            this.serialNumberData = res.data.data;
+            this.serialNumberData = res.data;
           }
         })
-        .catch(err => {
-          let { data } = err.response;
+        .catch(error => {
+          let { data } = error.response;
           this.actionSetGlobalMessage({
             msg: data.msg,
             code: data.code
