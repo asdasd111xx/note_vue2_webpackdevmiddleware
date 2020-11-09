@@ -4,15 +4,30 @@
       $style['iframe-wrap'],
       {
         [$style['has-header']]: headerConfig.hasHeader
-      }
+      },
+      { [$style['fullScreen']]: isFullScreen }
     ]"
     :style="{ height: `calc(100vh - ${iframeHeight}px)` }"
   >
     <div
       v-if="headerConfig.hasHeader"
       id="header"
-      :class="[$style['header'], $style[themeTPL]]"
+      :class="[
+        $style['header'],
+        $style[themeTPL],
+        { [$style['fullScreen']]: isFullScreen }
+      ]"
     >
+      <div
+        v-show="isFullScreen"
+        :class="$style['close-fullscreen']"
+        @click="toggleFullScreen"
+      >
+        <img
+          :src="$getCdnPath(`/static/image/${themeTPL}/common/arrow_next.png`)"
+        />
+      </div>
+
       <div :class="$style['btn-prev']" @click="headerConfig.onClick">
         <img
           :src="$getCdnPath(`/static/image/${themeTPL}/common/btn_back.png`)"
@@ -20,6 +35,11 @@
       </div>
       <div v-if="headerConfig.title" :class="[$style.title, $style[themeTPL]]">
         {{ headerConfig.title }}
+      </div>
+
+      <div v-if="headerConfig.hasFunc" :class="[$style.func, $style[themeTPL]]">
+        <div @click="toggleFullScreen">全屏</div>
+        <div @click="reload">刷新</div>
       </div>
     </div>
     <iframe
@@ -46,7 +66,13 @@ export default {
   data() {
     return {
       isLoading: true,
+      isFullScreen: false,
       src: '',
+    }
+  },
+  watch: {
+    src() {
+
     }
   },
   components: {
@@ -190,6 +216,7 @@ export default {
         hasFooter: query.hasFooter === undefined ? true : query.hasFooter === 'true',
         prev: query.prev === undefined ? true : query.prev,
         title: query.title || localStorage.getItem('iframe-third-url-title') || '',
+        hasFunc: query.func === undefined ? true : query.func === 'true',
         onClick: () => {
           this.$router.push(this.originUrl);
         }
@@ -205,6 +232,26 @@ export default {
     ...mapActions([
       'actionSetGlobalMessage'
     ]),
+    reload() {
+      if (this.isLoading) {
+        return;
+      }
+
+      // reload 進入網址
+      // const tmpSrc = this.src;
+      // this.isLoading = true;
+      // this.src = '';
+      // setTimeout(() => {
+      //   this.src = tmpSrc;
+      //   this.isLoading = false;
+      // }, 310)
+
+      // reload 當前網址
+      document.getElementById('iframe').contentWindow.location.reload();
+    },
+    toggleFullScreen() {
+      this.isFullScreen = !this.isFullScreen;
+    },
     getCustomizeLink(params) {
       axios({
         method: 'get',
@@ -303,10 +350,35 @@ export default {
   height: 100vh;
   width: 100%;
   background-color: #fff;
+  transition: margin 0.31s, height 0.31s;
+
   // overflow: hidden;
+
+  &.fullScreen {
+    margin-top: unset !important;
+    height: 100vh !important;
+  }
 
   &.has-header {
     margin-top: 43px;
+  }
+}
+
+@keyframes slide-up {
+  0% {
+    top: 0;
+  }
+  100% {
+    top: -43px;
+  }
+}
+
+@keyframes slide-down {
+  0% {
+    top: -43px;
+  }
+  100% {
+    top: 0;
   }
 }
 
@@ -322,7 +394,14 @@ export default {
   background: white;
   color: #ffffff;
   text-align: center;
+  animation: slide-down 0.31s forwards;
+
   // border-bottom: 1px solid #eee;
+
+  &.fullScreen {
+    animation: slide-up 0.31s forwards;
+    top: -43px;
+  }
 
   &.ey1 {
     background: linear-gradient(#fe2a2a, #b60303);
@@ -357,12 +436,16 @@ export default {
 }
 
 .title {
-  height: 43px;
-  line-height: 43px;
   color: black;
   font-size: 17px;
   font-weight: 500;
+  height: 43px;
+  line-height: 43px;
   margin: 0 auto;
+  overflow: hidden;
+  text-overflow: ellipsis;
+  white-space: nowrap;
+  width: 60%;
 
   &.ey1 {
     color: white;
@@ -373,6 +456,48 @@ export default {
   }
 }
 
+.close-fullscreen {
+  position: fixed;
+  top: 0;
+  margin: 0 auto;
+  transform: rotate(90deg);
+  height: 14px;
+  margin: 0 auto;
+  left: calc(50% - 7px);
+  background: rgba(0, 0, 0, 0.5);
+  border-radius: 0 5px 5px 0;
+  opacity: 1;
+
+  > img {
+    height: 14px;
+  }
+}
+
+.func {
+  position: absolute;
+  right: 12px;
+  top: 0;
+  font-size: 14px;
+  height: 100%;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+
+  > div {
+    width: 50%;
+    padding: 0 3px;
+    height: 43px;
+    line-height: 43px;
+  }
+
+  &.ey1 {
+    color: white;
+  }
+
+  &.porn1 {
+    color: black;
+  }
+}
 .iframe {
   //   overflow: auto !important;
   //   -webkit-overflow-scrolling: touch !important;
