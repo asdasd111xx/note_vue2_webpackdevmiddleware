@@ -23,15 +23,13 @@ export default {
     return {
       list: [
         {
-          name: "SWAG钻石购买说明",
+          name: "SWAG 钻石购买说明",
           key: "buymethod",
         },
         {
-          name: "SWAG钻石使用方法",
+          name: "SWAG 钻石使用方法",
           key: "usage",
         },
-
-
       ]
     };
   },
@@ -57,7 +55,6 @@ export default {
   methods: {
     ...mapActions(["actionSetGlobalMessage"]),
     handleClick(item) {
-
       this.$router.push(`/mobile/mcenter/help/detail?type=${item.key}${this.isApp ? "&app=true" : ""}`);
     }
   }
@@ -72,7 +69,7 @@ export default {
   position: relative;
 
   .list {
-    height: 60px;
+    height: 50px;
     padding: 0 14px;
     display: flex;
     align-items: center;

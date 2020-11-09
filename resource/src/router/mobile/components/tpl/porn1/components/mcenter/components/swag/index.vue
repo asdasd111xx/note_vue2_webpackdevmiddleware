@@ -54,7 +54,8 @@ export default {
         },
       },
       currentTab: 0, //buy recoard
-      currentTemplate: "buy-diamond"
+      currentTemplate: "buy-diamond",
+      isLoading: false
     };
   },
   computed: {
@@ -99,6 +100,11 @@ export default {
       if (!this.loginStatus) {
         this.$router.push('/mobile/login');
       } else {
+        if (this.isLoading) {
+          return;
+        }
+        this.isLoading = true;
+
         let userId = 'guest';
         if (this.memInfo && this.memInfo.user && this.memInfo.user.id && this.memInfo.user.id !== 0) {
           userId = this.memInfo.user.id;
@@ -123,6 +129,8 @@ export default {
             this.$router.push(`/mobile/iframe/SWAG?&hasFooter=false&hasHeader=true`);
             return;
           }
+
+          this.isLoading = false;
         })
       }
     },
