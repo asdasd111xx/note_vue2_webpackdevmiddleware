@@ -1161,74 +1161,78 @@ export default {
       }
     },
     checkSubmit() {
-      if (this.memInfo.blacklist.includes(1)) {
-        this.setPopupStatus(true, "blockTips");
-        return;
-      }
-
-      const islock = () => {
-        if (
-          this.errTips ||
-          !this.withdrawValue ||
-          this.isSendSubmit ||
-          !this.selectedCard.id
-        ) {
-          return true;
+      // 每一次按下立即提現的時候，重新刷新 Player Api
+      this.actionSetUserdata(true).then(() => {
+        // 檢查有無黑名單
+        if (this.memInfo.blacklist.includes(1)) {
+          this.setPopupStatus(true, "blockTips");
+          return;
         }
 
-        if (
-          this.withdrawData &&
-          this.withdrawData.payment_charge &&
-          this.withdrawData.payment_charge.ret
-        ) {
-          const ret = this.withdrawData.payment_charge.ret;
-
-          const allowWithdrawCount = Number(
-            this.withdrawData.payment_charge.ret.allow_withdraw_count
-          );
-          // const allowWithdrawLimit = Number(
-          //   this.withdrawData.payment_charge.ret.allow_withdraw_limit
-          // );
-
-          // 非無限次數且有剩額度
+        const islock = () => {
           if (
-            ret.withdraw_count &&
-            Number(ret.withdraw_count) > 0 &&
-            allowWithdrawCount <= 0
+            this.errTips ||
+            !this.withdrawValue ||
+            this.isSendSubmit ||
+            !this.selectedCard.id
           ) {
             return true;
           }
 
-          // if (
-          //   ret.withdraw_limit &&
-          //   Number(ret.withdraw_limit) > 0 &&
-          //   allowWithdrawLimit <= 0
-          // ) {
-          //   return true;
-          // }
-        }
-        return false;
-      };
-      if (islock()) {
-        return;
-      }
+          if (
+            this.withdrawData &&
+            this.withdrawData.payment_charge &&
+            this.withdrawData.payment_charge.ret
+          ) {
+            const ret = this.withdrawData.payment_charge.ret;
 
-      switch (this.themeTPL) {
-        case "porn1":
-          if (Number(this.actualMoney) !== Number(this.withdrawValue)) {
+            const allowWithdrawCount = Number(
+              this.withdrawData.payment_charge.ret.allow_withdraw_count
+            );
+            // const allowWithdrawLimit = Number(
+            //   this.withdrawData.payment_charge.ret.allow_withdraw_limit
+            // );
+
+            // 非無限次數且有剩額度
+            if (
+              ret.withdraw_count &&
+              Number(ret.withdraw_count) > 0 &&
+              allowWithdrawCount <= 0
+            ) {
+              return true;
+            }
+
+            // if (
+            //   ret.withdraw_limit &&
+            //   Number(ret.withdraw_limit) > 0 &&
+            //   allowWithdrawLimit <= 0
+            // ) {
+            //   return true;
+            // }
+          }
+          return false;
+        };
+        if (islock()) {
+          return;
+        }
+
+        switch (this.themeTPL) {
+          case "porn1":
+            if (Number(this.actualMoney) !== Number(this.withdrawValue)) {
+              this.widthdrawTipsType = "tips";
+              this.setPopupStatus(true, "check");
+            } else {
+              this.handleSubmit();
+            }
+            break;
+
+          // 一律顯示溫馨
+          case "ey1":
             this.widthdrawTipsType = "tips";
             this.setPopupStatus(true, "check");
-          } else {
-            this.handleSubmit();
-          }
-          break;
-
-        // 一律顯示溫馨
-        case "ey1":
-          this.widthdrawTipsType = "tips";
-          this.setPopupStatus(true, "check");
-          break;
-      }
+            break;
+        }
+      });
     },
     closePopup() {
       this.setPopupStatus(false, "");
