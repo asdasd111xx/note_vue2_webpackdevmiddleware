@@ -1,22 +1,81 @@
 <template>
   <div slot="content">
-    <div
-      v-for="(item, index) in categorys.list"
-      :id="`q-${index}`"
-      :class="$style['cell2']"
-      :key="`q-${index}`"
-    >
+    <div :class="$style['cell2']">
       <div :class="$style['title']">
-        <span v-html="item.text"> </span>
+        <div>
+          进入购买钻石页面后，选择您想要的钻石兑换数量，点击立即兑换即可成功购买钻石！
+        </div>
       </div>
 
       <div :class="$style['cell2-step']">
         <img
           :src="
             $getCdnPath(
-              `/static/image/porn1/mcenter/help/swag/tutorial_deposit_swag_0${
-                index + 1
-              }.png`
+              `/static/image/porn1/mcenter/help/swag/tutorial_deposit_swag_01.png`
+            )
+          "
+        />
+      </div>
+    </div>
+
+    <div :class="$style['cell2']">
+      <div :class="$style['title']">
+        <strong>购买SWAG钻石，您需要使用鸭博娱乐点数进行兑换</strong>
+        <div style="margin-top:10px">
+          您可以从以下三个地方进入购买页面查看并兑换
+        </div>
+        <div style="margin-top:10px">
+          1.SWAG
+        </div>
+        <div style="margin-top:10px">
+          路径：点击右上角钻石
+        </div>
+      </div>
+
+      <div :class="$style['cell2-step']">
+        <img
+          :src="
+            $getCdnPath(
+              `/static/image/porn1/mcenter/help/swag/tutorial_deposit_swag_02.png`
+            )
+          "
+        />
+      </div>
+    </div>
+
+    <div :class="$style['cell2']">
+      <div :class="$style['title']">
+        <div>
+          2.转帐页
+        </div>
+        <div>
+          路径：首页→转帐 OR 我的钱包→转帐
+        </div>
+      </div>
+
+      <div :class="$style['cell2-step']">
+        <img
+          :src="
+            $getCdnPath(
+              `/static/image/porn1/mcenter/help/swag/tutorial_deposit_swag_03.png`
+            )
+          "
+        />
+      </div>
+    </div>
+
+    <div :class="$style['cell2']">
+      <div :class="$style['title']">
+        <div>
+          3.我的钱包
+        </div>
+      </div>
+
+      <div :class="$style['cell2-step']">
+        <img
+          :src="
+            $getCdnPath(
+              `/static/image/porn1/mcenter/help/swag/tutorial_deposit_swag_04.png`
             )
           "
         />
@@ -44,16 +103,6 @@ export default {
     return {
       showgo: false,
       category_isShowPop: false,
-
-      categorys:
-      {
-        list: [
-          { text: "进入购买钻石页面后，选择您想要的钻石兑换数量，点击立即兑换即可成功购买钻石！" },
-          { text: "购买SWAG钻石，您需要使用鸭博娱乐点数进行兑换您可以从以下三个地方进入购买页面查看并兑换<br>1.SWAG<br>路径：点击右上角钻石" },
-          { text: "2.转帐页<br>路径：首页→转帐 OR 我的钱包→转帐" },
-          { text: "3.我的钱包" },
-        ],
-      },
     };
   },
 
