@@ -194,12 +194,11 @@ export default {
       }
     },
     handleBack() {
-      // if (this.type === "tips") {
-      //   this.$router.push("/mobile/mcenter/wallet");
-      // } else if (this.type === "deposit") {
-      //   this.$router.back();
-      // }
-      this.$router.back();
+      if (this.type === "tips") {
+        this.$router.push("/mobile/mcenter/wallet");
+      } else if (this.type === "deposit") {
+        this.$router.back();
+      }
     }
   }
   // watch: {

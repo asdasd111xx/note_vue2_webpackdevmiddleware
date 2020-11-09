@@ -1161,74 +1161,84 @@ export default {
       }
     },
     checkSubmit() {
-      if (this.memInfo.blacklist.includes(1)) {
-        this.setPopupStatus(true, "blockTips");
-        return;
-      }
-
-      const islock = () => {
-        if (
-          this.errTips ||
-          !this.withdrawValue ||
-          this.isSendSubmit ||
-          !this.selectedCard.id
-        ) {
-          return true;
+      // 每一次按下立即提現的時候，重新刷新 Player Api
+      this.actionSetUserdata(true).then(() => {
+        // 檢查有無黑名單
+        if (this.memInfo.blacklist.includes(1)) {
+          this.setPopupStatus(true, "blockTips");
+          return;
         }
 
-        if (
-          this.withdrawData &&
-          this.withdrawData.payment_charge &&
-          this.withdrawData.payment_charge.ret
-        ) {
-          const ret = this.withdrawData.payment_charge.ret;
-
-          const allowWithdrawCount = Number(
-            this.withdrawData.payment_charge.ret.allow_withdraw_count
-          );
-          // const allowWithdrawLimit = Number(
-          //   this.withdrawData.payment_charge.ret.allow_withdraw_limit
-          // );
-
-          // 非無限次數且有剩額度
+        const islock = () => {
           if (
-            ret.withdraw_count &&
-            Number(ret.withdraw_count) > 0 &&
-            allowWithdrawCount <= 0
+            this.errTips ||
+            !this.withdrawValue ||
+            this.isSendSubmit ||
+            !this.selectedCard.id
           ) {
             return true;
           }
 
-          // if (
-          //   ret.withdraw_limit &&
-          //   Number(ret.withdraw_limit) > 0 &&
-          //   allowWithdrawLimit <= 0
-          // ) {
-          //   return true;
-          // }
-        }
-        return false;
-      };
-      if (islock()) {
-        return;
-      }
+          if (
+            this.withdrawData &&
+            this.withdrawData.payment_charge &&
+            this.withdrawData.payment_charge.ret
+          ) {
+            const ret = this.withdrawData.payment_charge.ret;
 
-      switch (this.themeTPL) {
-        case "porn1":
-          if (Number(this.actualMoney) !== Number(this.withdrawValue)) {
-            this.widthdrawTipsType = "tips";
-            this.setPopupStatus(true, "check");
-          } else {
-            this.handleSubmit();
+            const allowWithdrawCount = Number(
+              this.withdrawData.payment_charge.ret.allow_withdraw_count
+            );
+            // const allowWithdrawLimit = Number(
+            //   this.withdrawData.payment_charge.ret.allow_withdraw_limit
+            // );
+
+            // 非無限次數且有剩額度
+            if (
+              ret.withdraw_count &&
+              Number(ret.withdraw_count) > 0 &&
+              allowWithdrawCount <= 0
+            ) {
+              return true;
+            }
+
+            // if (
+            //   ret.withdraw_limit &&
+            //   Number(ret.withdraw_limit) > 0 &&
+            //   allowWithdrawLimit <= 0
+            // ) {
+            //   return true;
+            // }
           }
-          break;
+          return false;
+        };
 
-        // 一律顯示溫馨
-        case "ey1":
-          this.widthdrawTipsType = "tips";
-          this.setPopupStatus(true, "check");
-          break;
-      }
+        if (islock()) {
+          return;
+        }
+
+        // 會員綁定銀行卡前需手機驗證 与 投注/轉帳前需綁定銀行卡
+        this.withdrawCheck().then(res => {
+          if (res === "ok") {
+            switch (this.themeTPL) {
+              case "porn1":
+                if (Number(this.actualMoney) !== Number(this.withdrawValue)) {
+                  this.widthdrawTipsType = "tips";
+                  this.setPopupStatus(true, "check");
+                } else {
+                  this.handleSubmit();
+                }
+                break;
+
+              // 一律顯示溫馨
+              case "ey1":
+                this.widthdrawTipsType = "tips";
+                this.setPopupStatus(true, "check");
+                break;
+            }
+          }
+        });
+      });
     },
     closePopup() {
       this.setPopupStatus(false, "");
@@ -1334,37 +1344,33 @@ export default {
     },
     handleSubmit() {
       this.closePopup();
-      // 會員綁定銀行卡前需手機驗證 与 投注/轉帳前需綁定銀行卡
-      this.withdrawCheck().then(res => {
-        if (res === "ok") {
-          if (
-            // 會員首次出款僅限銀行卡
-            this.memInfo.config.withdraw_player_verify &&
-            !localStorage.getItem("tmp_w_1")
-          ) {
-            this.saveCurrentValue();
-            this.$router.push(
-              "/mobile/mcenter/accountData/phone?redirect=withdraw"
-            );
-            return;
-          }
 
-          this.isSendSubmit = true;
-          this.submitWithdraw({
-            user_bank_id: this.selectedCard.id,
-            keyring: localStorage.getItem("tmp_w_1") // 手機驗證成功後回傳
-          }).then(response => {
-            setTimeout(() => {
-              this.$nextTick(() => {
-                this.isSendSubmit = false;
-                this.getWithdrawAccount();
-              });
-            }, 200);
+      if (
+        // 會員首次出款僅限銀行卡
+        this.memInfo.config.withdraw_player_verify &&
+        !localStorage.getItem("tmp_w_1")
+      ) {
+        this.saveCurrentValue();
+        this.$router.push(
+          "/mobile/mcenter/accountData/phone?redirect=withdraw"
+        );
+        return;
+      }
+
+      this.isSendSubmit = true;
+      this.submitWithdraw({
+        user_bank_id: this.selectedCard.id,
+        keyring: localStorage.getItem("tmp_w_1") // 手機驗證成功後回傳
+      }).then(response => {
+        setTimeout(() => {
+          this.$nextTick(() => {
+            this.isSendSubmit = false;
+            this.getWithdrawAccount();
           });
-
-          this.removeCurrentValue(true);
-        }
+        }, 200);
       });
+
+      this.removeCurrentValue(true);
     },
     /**
      * 送出取款資訊
