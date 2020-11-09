@@ -1,6 +1,6 @@
 import { API_WITHDRAW_ASSIST } from "@/config/api";
 import EST from "@/lib/EST";
-import ajax from "@/lib/ajax";
+import axios from "axios";
 
 export default {
   data() {
@@ -67,18 +67,24 @@ export default {
 
     // 取得流水
     getSerialNumberData(swift_code = "") {
-      ajax({
+      axios({
         method: "get",
         url: API_WITHDRAW_ASSIST,
-        errorAlert: false,
         params: {
           swift_code: swift_code
         }
-      }).then(response => {
-        if (response.result === "ok") {
-          this.serialNumberData = response;
-        }
-      });
+      })
+        .then(response => {
+          if (response.data.result !== "ok") {
+            return;
+          }
+          this.serialNumberData = response.data;
+        })
+        .catch(error => {
+          if (error.response && error.response.data) {
+            this.actionSetGlobalMessage({ msg: error.response.data.msg });
+          }
+        });
     },
     /**
      * 取得流水值

@@ -75,19 +75,23 @@ export default {
         ...this.withdrawUserData.wallet.map(info => ({
           ...info,
           withdrawType: "wallet_id"
+        })),
+        ...this.withdrawUserData.crypto.map(info => ({
+          ...info,
+          withdrawType: "crypto_id"
         }))
       ];
 
       // 因億元尚未有開加密貨幣的欄位
-      if (this.withdrawUserData.crypto) {
-        resulAccount = [
-          ...resulAccount,
-          ...this.withdrawUserData.crypto.map(info => ({
-            ...info,
-            withdrawType: "crypto_id"
-          }))
-        ];
-      }
+      // if (this.withdrawUserData.crypto) {
+      //   resulAccount = [
+      //     ...resulAccount,
+      //     ...this.withdrawUserData.crypto.map(info => ({
+      //       ...info,
+      //       withdrawType: "crypto_id"
+      //     }))
+      //   ];
+      // }
 
       if (this.withdrawUserData.isSupportCGPay && !isMobile()) {
         return resulAccount.concat({
@@ -309,7 +313,10 @@ export default {
     // }
   },
   created() {
-    this.actionSetIsLoading(true);
+    // this.actionSetIsLoading(true);
+    this.updateAmount().then(() => {
+      this.getWithdrawAccount();
+    });
 
     // 取得取款初始資料
     // ajax({
@@ -334,7 +341,6 @@ export default {
     //     this.getWithdrawAccount();
     //   }
     // });
-    this.updateAmount();
   },
   methods: {
     ...mapActions([
@@ -447,7 +453,7 @@ export default {
 
       this.isAjaxUse = true;
 
-      ajax({
+      return ajax({
         method: "get",
         url: API_WITHDRAW_INFO,
         errorAlert: false,
@@ -469,9 +475,9 @@ export default {
         }
       }).then(response => {
         this.withdrawData = response;
-        if (this.memInfo.config.withdraw === "迅付") {
-          this.getWithdrawAccount();
-        }
+        // if (this.memInfo.config.withdraw === "迅付") {
+        //   this.getWithdrawAccount();
+        // }
         this.isAjaxUse = false;
       });
     },

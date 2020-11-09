@@ -60,10 +60,8 @@
           </div>
           <div :class="$style['serial-basic-value']">
             {{
-              serialNumberData.fee_config[0].amount > 0
-                ? `-${getDeductionNumber(
-                    serialNumberData.fee_config[0].amount
-                  )}`
+              serialNumberData.total.fee > 0
+                ? `-${getDeductionNumber(serialNumberData.total.fee)}`
                 : `0.00`
             }}
           </div>
@@ -106,7 +104,7 @@
               <div :class="$style['time']">
                 {{
                   serialInfo.confirm_at.split(" ") &&
-                  serialInfo.confirm_at.split(" ")[1]
+                    serialInfo.confirm_at.split(" ")[1]
                 }}
               </div>
             </div>
@@ -164,7 +162,7 @@ import { mapGetters, mapActions } from "vuex";
 export default {
   mixins: [mixin],
   components: {
-    serialDetail,
+    serialDetail
   },
   data() {
     return {
@@ -172,28 +170,29 @@ export default {
       serialNumberList: [],
       selectedSerialDetail: {},
       isShow: true,
-      showDetail: false,
+      showDetail: false
     };
   },
   props: {
     handleClose: {
       type: Function,
-      default: () => {},
+      default: () => {}
     },
-    scode: {
+    swiftCode: {
       type: String,
-    },
+      default: ""
+    }
   },
   created() {
-    this.getSerialNumberData(this.scode);
+    this.getSerialNumberData(this.swiftCode);
   },
   computed: {
     ...mapGetters({
-      siteConfig: "getSiteConfig",
+      siteConfig: "getSiteConfig"
     }),
     theme() {
       return this.siteConfig.MOBILE_WEB_TPL;
-    },
+    }
   },
   watch: {
     serialNumberData() {
@@ -204,12 +203,12 @@ export default {
           if (item.confirm_at.split(" ") && item.confirm_at.split(" ")[0]) {
             let day = item.confirm_at.split(" ")[0];
             if (dateArray.includes(day)) {
-              result.find((i) => i._confirmDate == day).list.push({ ...item });
+              result.find(i => i._confirmDate == day).list.push({ ...item });
             } else {
               dateArray.push(day);
               result.push({
                 _confirmDate: day,
-                list: [{ ...item }],
+                list: [{ ...item }]
               });
             }
           }
@@ -217,7 +216,7 @@ export default {
 
         this.serialNumberList = result;
       }
-    },
+    }
   },
   methods: {
     onClose() {
@@ -231,8 +230,8 @@ export default {
     handleClickSerial(data) {
       this.selectedSerialDetail = data;
       this.showDetail = true;
-    },
-  },
+    }
+  }
 };
 </script>
 

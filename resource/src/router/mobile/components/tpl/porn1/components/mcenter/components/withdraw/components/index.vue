@@ -12,8 +12,8 @@
             :class="[
               $style['balance-item'],
               {
-                [$style['is-last-item']]: !isShowMore,
-              },
+                [$style['is-last-item']]: !isShowMore
+              }
             ]"
             @click="$router.push('/mobile/mcenter/bonus')"
           >
@@ -43,8 +43,8 @@
                     Object.keys(balanceTran.firstThirdBalanceInfo).length -
                       index <=
                     (Object.keys(balanceTran.firstThirdBalanceInfo).length %
-                      3 || 3),
-                },
+                      3 || 3)
+                }
               ]"
             >
               <span :class="$style['balance-item-vendor']">{{
@@ -97,8 +97,8 @@
                 {
                   [$style['is-last-item']]:
                     Object.keys(balanceTran.balanceInfo).length - index <=
-                    (Object.keys(balanceTran.balanceInfo).length % 4 || 4),
-                },
+                    (Object.keys(balanceTran.balanceInfo).length % 4 || 4)
+                }
               ]"
             >
               <span :class="$style['balance-item-vendor']">{{
@@ -159,10 +159,11 @@
           <span
             v-if="
               forceStatus === 1 &&
-              userWithdrawCount === 0 &&
-              isFirstWithdraw &&
-              withdrawUserData.wallet.length + withdrawUserData.crypto.length >
-                0
+                userWithdrawCount === 0 &&
+                isFirstWithdraw &&
+                withdrawUserData.wallet.length +
+                  withdrawUserData.crypto.length >
+                  0
             "
             :class="$style['withdraw-status-tip']"
           >
@@ -186,8 +187,8 @@
           :class="[
             $style['bank-card-cell'],
             {
-              [$style['disable']]: !item.allow,
-            },
+              [$style['disable']]: !item.allow
+            }
           ]"
           @click="handleSelectCard(item)"
         >
@@ -196,8 +197,8 @@
               $style['check-box'],
               { [$style['checked']]: item.id === selectedCard.id },
               {
-                [$style['disable']]: !item.allow,
-              },
+                [$style['disable']]: !item.allow
+              }
             ]"
           />
           <!-- <img v-lazy="getBankImage(item.swift_code)" /> -->
@@ -271,15 +272,15 @@
           :class="[
             $style['bank-card-cell'],
             {
-              [$style['disable']]: forceStatus === 2 && !item.allow,
-            },
+              [$style['disable']]: forceStatus === 2 && !item.allow
+            }
           ]"
           @click="handleSelectCard(item)"
         >
           <div
             :class="[
               $style['check-box'],
-              { [$style['checked']]: item.id === selectedCard.id },
+              { [$style['checked']]: item.id === selectedCard.id }
             ]"
           />
           <span :class="[{ [$style['hasOption']]: item.bank_id === 2009 }]">
@@ -349,7 +350,7 @@
       <div
         v-if="
           allWithdrawAccount.length > 0 &&
-          (moreMethodStatus.bankCard || moreMethodStatus.wallet)
+            (moreMethodStatus.bankCard || moreMethodStatus.wallet)
         "
         :class="[$style['add-bank-card']]"
         @click="setPopupStatus(true, 'moreMethod')"
@@ -382,7 +383,7 @@
         inputmode="decimal"
         @input="verification('withdrawValue', $event.target.value)"
         @blur="
-          ($event) => {
+          $event => {
             verification('withdrawValue', $event.target.value);
             if (isSelectedUSDT && isClickCoversionBtn && withdrawValue) {
               convertCryptoMoney();
@@ -405,8 +406,8 @@
         $style['actual-money'],
         {
           [$style['error']]:
-            themeTPL === 'ey1' && withdrawValue && actualMoney <= 0,
-        },
+            themeTPL === 'ey1' && withdrawValue && actualMoney <= 0
+        }
       ]"
     >
       <span :class="$style['money-currency']">
@@ -440,11 +441,11 @@
         :class="[
           $style['conversion-btn'],
           {
-            [$style['disable']]: isClickCoversionBtn,
+            [$style['disable']]: isClickCoversionBtn
           },
           {
-            [$style['unInput']]: !withdrawValue || +actualMoney <= 0,
-          },
+            [$style['unInput']]: !withdrawValue || +actualMoney <= 0
+          }
         ]"
         @click="convertCryptoMoney"
       >
@@ -525,7 +526,7 @@
     <serial-number
       v-if="isSerial"
       :handle-close="toggleSerial"
-      :scode="this.scode"
+      :swiftCode="selectedCard.swift_code"
     />
 
     <!-- 帐户资料 -->
@@ -614,8 +615,7 @@ import {
   API_WITHDRAW,
   API_WITHDRAW_CGPAY_BINDING,
   API_WITHDRAW_INFO,
-  API_WITHDRAW_WRITE_2,
-  API_WITHDRAW_ASSIST,
+  API_WITHDRAW_WRITE_2
 } from "@/config/api";
 import common from "@/api/common";
 
@@ -632,7 +632,7 @@ export default {
     blockListTips,
     withdrawCurrency,
     withdrawMoreMethod,
-    withdrawAccount,
+    withdrawAccount
   },
   mixins: [mixin],
   data() {
@@ -646,12 +646,12 @@ export default {
       isSendSubmit: false,
       isSerial: false,
       isShowMore: true,
-      swiftCode: "",
-      scode: "",
+      // swiftCode: "",
+      // scode: "",
       // 彈窗顯示狀態統整
       showPopStatus: {
         isShow: false,
-        type: "",
+        type: ""
       },
 
       selectAccountValue: "",
@@ -659,7 +659,7 @@ export default {
         bank_id: "",
         id: "",
         name: "",
-        withdrawType: "",
+        withdrawType: ""
       },
       widthdrawTipsType: "tips",
 
@@ -678,8 +678,8 @@ export default {
       confirmPopupObj: {
         msg: "",
         btnText: "",
-        cb: () => {},
-      },
+        cb: () => {}
+      }
     };
   },
   watch: {
@@ -690,8 +690,8 @@ export default {
         this.allWithdrawAccount &&
         this.allWithdrawAccount.length > 0
       ) {
-        const defaultCard = this.allWithdrawAccount.find((item) => {
-          this.scode = item.swift_code;
+        const defaultCard = this.allWithdrawAccount.find(item => {
+          // this.scode = item.swift_code;
           return item.allow;
         });
 
@@ -708,6 +708,9 @@ export default {
               withdrawType: JSON.parse(
                 localStorage.getItem("tmp_w_selectedCard")
               )["withdrawType"],
+              swift_code: JSON.parse(
+                localStorage.getItem("tmp_w_selectedCard")
+              )["swift_code"]
             }
           : {
               bank_id: defaultCard.bank_id,
@@ -720,7 +723,10 @@ export default {
                       defaultCard.alias.indexOf("-")
                     ),
               withdrawType: defaultCard.withdrawType,
+              swift_code: defaultCard.swift_code
             };
+
+        this.updateAmount(this.selectedCard.swift_code);
 
         // 金額部份
         this.withdrawValue =
@@ -759,7 +765,7 @@ export default {
       if (value === 2009) {
         this.selectedCard.name = "CGPay";
       }
-    },
+    }
   },
   created() {
     // 刷新 Player Api
@@ -784,7 +790,7 @@ export default {
           return;
         }
         this.hasBankCard = ret;
-      },
+      }
     });
   },
   mounted() {
@@ -797,7 +803,7 @@ export default {
       memCurrency: "getMemCurrency",
       siteConfig: "getSiteConfig",
       memInfo: "getMemInfo",
-      webInfo: "getWebInfo",
+      webInfo: "getWebInfo"
     }),
     themeTPL() {
       return this.siteConfig.MOBILE_WEB_TPL;
@@ -819,15 +825,15 @@ export default {
               target: "%s",
               value: this.validateMoney(
                 this.withdrawData.payment_charge.ret.withdraw_min
-              ),
+              )
             },
             {
               target: "%s",
               value: this.validateMoney(
                 this.withdrawData.payment_charge.ret.withdraw_max
-              ),
-            },
-          ],
+              )
+            }
+          ]
         });
       } else {
         return "";
@@ -980,17 +986,17 @@ export default {
           // 找目前 user 有綁定過的 wallet
           let idArr = [
             ...new Set(
-              this.withdrawData.user_virtual_bank.ret.map((item) => {
+              this.withdrawData.user_virtual_bank.ret.map(item => {
                 // 本廳是否支援此電子錢包 & 是否為常用帳戶
                 return item.virtual && item.common
                   ? item.virtual_bank_id
                   : null;
               })
-            ),
+            )
           ];
 
           if (idArr) {
-            this.nowOpenWallet.forEach((item) => {
+            this.nowOpenWallet.forEach(item => {
               nowBindWalletCount += idArr.includes(item.id) ? 1 : 0;
             });
 
@@ -1005,7 +1011,7 @@ export default {
         obj.wallet = true;
         return obj;
       }
-    },
+    }
   },
   methods: {
     linkToRecharge() {
@@ -1019,7 +1025,7 @@ export default {
         ),
         loading: this.$getCdnPath(
           `/static/image/${this.themeTPL}/default/bank_default_2.png`
-        ),
+        )
       };
     },
     onClickMaintain(value) {
@@ -1113,8 +1119,8 @@ export default {
       if (target === "withdrawPwd") {
         this.actionVerificationFormData({
           target: "withdrawPwd",
-          value: value,
-        }).then((val) => {
+          value: value
+        }).then(val => {
           this.withdrawPwd = val;
         });
       }
@@ -1123,12 +1129,13 @@ export default {
       this.isShowMore = !this.isShowMore;
     },
     handleSelectCard(item) {
-      this.scode = item.swift_code;
+      // this.scode = item.swift_code;
       this.updateAmount(item.swift_code);
       this.selectedCard = {
         id: item.id,
         withdrawType: item.withdrawType,
         bank_id: item.bank_id,
+        swift_code: item.swift_code
       };
 
       switch (item.withdrawType) {
@@ -1309,8 +1316,8 @@ export default {
       this.isSendSubmit = true;
       this.submitWithdraw({
         user_bank_id: this.selectedCard.id,
-        keyring: localStorage.getItem("tmp_w_1"), // 手機驗證成功後回傳
-      }).then((response) => {
+        keyring: localStorage.getItem("tmp_w_1") // 手機驗證成功後回傳
+      }).then(response => {
         setTimeout(() => {
           this.$nextTick(() => {
             this.isSendSubmit = false;
@@ -1339,7 +1346,7 @@ export default {
         audit_amount: this.withdrawData.audit.total.audit_amount,
         offer_deduction: this.withdrawData.audit.total.offer_deduction,
         administrative_amount: this.withdrawData.audit.total
-          .administrative_amount,
+          .administrative_amount
       };
 
       if (params) {
@@ -1356,7 +1363,7 @@ export default {
             this.selectedCard.bank_id === 2009
               ? this.withdrawCurrency.method_id
               : "",
-          password: this.withdrawPwd ? this.withdrawPwd : "",
+          password: this.withdrawPwd ? this.withdrawPwd : ""
         };
       }
 
@@ -1368,14 +1375,14 @@ export default {
         url: API_WITHDRAW_WRITE_2,
         errorAlert: false,
         params: _params,
-        success: (response) => {
+        success: response => {
           if (response && response.result === "ok") {
             if (this.memInfo.config.withdraw === "迅付") {
               this.actionSetGlobalMessage({
                 msg: "提现成功",
                 cb: () => {
                   window.location.reload();
-                },
+                }
               });
 
               // 舊的第二次寫單才需要
@@ -1427,20 +1434,20 @@ export default {
                   favicon: this.webInfo.fav_icon
                     ? `${this.webInfo.cdn_domain}${this.webInfo.fav_icon}`
                     : "",
-                  check: true,
+                  check: true
                 },
-                fail: (res) => {
+                fail: res => {
                   this.actionSetGlobalMessage({
-                    msg: "提现已取消，请重新提交申请",
+                    msg: "提现已取消，请重新提交申请"
                   });
-                },
-              }).then((res) => {
+                }
+              }).then(res => {
                 this.isLoading = false;
                 this.actionSetIsLoading(false);
 
                 if (res.result === "ok") {
                   this.actionSetGlobalMessage({
-                    msg: "提现成功",
+                    msg: "提现成功"
                   });
 
                   this.thirdUrl = res.ret.uri;
@@ -1455,12 +1462,12 @@ export default {
           this.actionSetIsLoading(false);
           return;
         },
-        fail: (error) => {
+        fail: error => {
           if (error && error.data && error.data.msg) {
             this.actionSetGlobalMessage({
               msg: error.data.msg,
               code: error.data.code,
-              origin: "withdraw",
+              origin: "withdraw"
             });
             this.errTips = error.data.msg;
           }
@@ -1471,14 +1478,14 @@ export default {
 
           this.isLoading = false;
           this.actionSetIsLoading(false);
-        },
+        }
       });
     },
     // 取得存/取款加密貨幣試算金額
     convertCryptoMoney() {
       let _params = {
         type: 2,
-        amount: this.actualMoney,
+        amount: this.actualMoney
       };
 
       if (
@@ -1487,7 +1494,7 @@ export default {
       ) {
         _params = {
           ..._params,
-          method_id: this.withdrawCurrency.method_id,
+          method_id: this.withdrawCurrency.method_id
         };
       }
 
@@ -1495,9 +1502,9 @@ export default {
         method: "get",
         url: API_CRYPTO_MONEY,
         params: {
-          ..._params,
-        },
-      }).then((response) => {
+          ..._params
+        }
+      }).then(response => {
         const { result, ret } = response.data;
         if (!response || result !== "ok") return;
 
@@ -1521,7 +1528,7 @@ export default {
                 cb: () => {
                   this.convertCryptoMoney();
                   this.closePopup();
-                },
+                }
               };
 
               this.resetTimerStatus();
@@ -1580,7 +1587,7 @@ export default {
     },
     getBounsAccount() {
       // 紅利帳戶
-      axios.get("/api/v1/c/gift-card").then((response) => {
+      axios.get("/api/v1/c/gift-card").then(response => {
         if (response.data.result === "ok") {
           this.bonus = response.data.total;
         }
@@ -1603,13 +1610,13 @@ export default {
     setPopupStatus(isShow, type) {
       this.showPopStatus = {
         isShow,
-        type,
+        type
       };
-    },
+    }
   },
   destroyed() {
     this.resetTimerStatus();
-  },
+  }
 };
 </script>
 
