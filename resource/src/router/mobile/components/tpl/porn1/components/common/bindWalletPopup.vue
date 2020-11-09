@@ -31,6 +31,7 @@
                 <textarea
                   v-model="formData['walletAddress'].value"
                   :placeholder="formData['walletAddress'].placeholder"
+                  maxlength="42"
                   @input="verification('walletAddress')"
                   @blur="verification('walletAddress')"
                 />
@@ -97,8 +98,8 @@
                 :class="[
                   $style['submit'],
                   {
-                    [$style['disable']]: !formData['walletAddress'].value,
-                  },
+                    [$style['disable']]: !formData['walletAddress'].value
+                  }
                 ]"
                 @click="submitByNormal"
                 >送出</span
@@ -182,13 +183,13 @@ export default {
       // 彈窗顯示狀態統整
       showPopStatus: {
         isShow: false,
-        type: ''
+        type: ""
       },
 
       qrcodeObj: {
         bank_id: null,
         bind_type: "deposit"
-      },
+      }
     };
   },
   watch: {
@@ -326,14 +327,14 @@ export default {
     verification(key, index) {
       let target = this.formData[key];
       // let lock = false;
-      if (key === "walletAddress" && this.walletType === 'USDT') {
-        this.actionVerificationFormData({
-          target: 'USDT-address',
-          value: target.value
-        }).then(val => {
-          this.formData['walletAddress'].value = val;
-        })
-      }
+      // if (key === "walletAddress" && this.walletType === "USDT") {
+      //   this.actionVerificationFormData({
+      //     target: "USDT-address",
+      //     value: target.value
+      //   }).then(val => {
+      //     this.formData["walletAddress"].value = val;
+      //   });
+      // }
 
       if (key === "CGPPwd") {
         target.value = target.value

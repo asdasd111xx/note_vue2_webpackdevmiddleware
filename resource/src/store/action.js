@@ -1698,9 +1698,9 @@ export const actionVerificationFormData = (
       val = val.replace(/[^0-9]/g, "").substring(0, 4);
       break;
 
-    case "USDT-address":
-      val = val.substring(0, 42);
-      break;
+    // case "USDT-address":
+    //   val = val.substring(0, 42);
+    //   break;
   }
 
   return val;
