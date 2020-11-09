@@ -7,12 +7,12 @@ import {
   API_WITHDRAW_CGPAY_BINDING,
   API_WITHDRAW_INFO,
   API_WITHDRAW_WRITE
-} from '@/config/api';
-import { mapActions, mapGetters } from 'vuex';
+} from "@/config/api";
+import { mapActions, mapGetters } from "vuex";
 
-import ajax from '@/lib/ajax';
-import axios from 'axios';
-import isMobile from '@/lib/is_mobile';
+import ajax from "@/lib/ajax";
+import axios from "axios";
+import isMobile from "@/lib/is_mobile";
 
 export default {
   data() {
@@ -20,27 +20,27 @@ export default {
       withdrawAccount: {},
       withdrawData: {},
       withdrawUserData: {},
-      withdrawValue: '',
-      withdrawPwd: '',
+      withdrawValue: "",
+      withdrawPwd: "",
       withdrawCurrency: {
         // 預設為 CGP
-        name: 'CGP',
-        alias: 'CGP',
+        name: "CGP",
+        alias: "CGP",
         method_id: 15
       },
 
       isAlertTip: false,
       isAjaxUse: false,
       alertData: {
-        title: this.$text('S_WITHDRAW_APPLY', '取款申请'),
-        closeBtnText: this.$text('S_ENTER01', '我知道了'),
-        type: 'successTip',
-        tipTitle: this.$text('S_ENTER_SUCCESS', '提交成功'),
-        tipImgSrc: ''
+        title: this.$text("S_WITHDRAW_APPLY", "取款申请"),
+        closeBtnText: this.$text("S_ENTER01", "我知道了"),
+        type: "successTip",
+        tipTitle: this.$text("S_ENTER_SUCCESS", "提交成功"),
+        tipImgSrc: ""
       },
       isLoading: false,
       // cgpayBindingAccount: {},
-      thirdUrl: '',
+      thirdUrl: "",
       showAccount: false, // 帳戶資料檢查
       userLevelObj: {}, // 存放 Card type 開關 & 限綁一組開關
       nowOpenWallet: []
@@ -48,10 +48,10 @@ export default {
   },
   computed: {
     ...mapGetters({
-      mobileCheck: 'getMobileCheck',
-      memInfo: 'getMemInfo',
-      noticeData: 'getNoticeData',
-      webInfo: 'getWebInfo',
+      mobileCheck: "getMobileCheck",
+      memInfo: "getMemInfo",
+      noticeData: "getNoticeData",
+      webInfo: "getWebInfo"
     }),
     /**
      * 使用者所有取款帳戶
@@ -59,26 +59,41 @@ export default {
      * @return Array
      */
     allWithdrawAccount() {
-      if (!this.withdrawUserData.account && !this.withdrawUserData.wallet && !this.withdrawUserData.crypto) {
+      if (
+        !this.withdrawUserData.account &&
+        !this.withdrawUserData.wallet &&
+        !this.withdrawUserData.crypto
+      ) {
         return [];
       }
 
       let resulAccount = [
-        ...this.withdrawUserData.account.map((info) => ({ ...info, withdrawType: 'account_id' })),
-        ...this.withdrawUserData.wallet.map((info) => ({ ...info, withdrawType: 'wallet_id' })),
-
+        ...this.withdrawUserData.account.map(info => ({
+          ...info,
+          withdrawType: "account_id"
+        })),
+        ...this.withdrawUserData.wallet.map(info => ({
+          ...info,
+          withdrawType: "wallet_id"
+        }))
       ];
 
       // 因億元尚未有開加密貨幣的欄位
       if (this.withdrawUserData.crypto) {
         resulAccount = [
           ...resulAccount,
-          ...this.withdrawUserData.crypto.map((info) => ({ ...info, withdrawType: 'crypto_id' }))
-        ]
+          ...this.withdrawUserData.crypto.map(info => ({
+            ...info,
+            withdrawType: "crypto_id"
+          }))
+        ];
       }
 
       if (this.withdrawUserData.isSupportCGPay && !isMobile()) {
-        return resulAccount.concat({ id: 'cgpay', alias: this.$text('S_ADD_CGPAY', '新增CGPay') });
+        return resulAccount.concat({
+          id: "cgpay",
+          alias: this.$text("S_ADD_CGPAY", "新增CGPay")
+        });
       }
 
       return resulAccount;
@@ -89,11 +104,16 @@ export default {
      * @return number or string
      */
     realWithdrawMoney() {
-      if (!this.withdrawValue && !this.withdrawData.audit.total.exceed_free_count) {
-        return '--';
+      if (
+        !this.withdrawValue &&
+        !this.withdrawData.audit.total.exceed_free_count
+      ) {
+        return "--";
       }
 
-      return (+this.withdrawValue) - (+this.withdrawData.audit.total.total_deduction);
+      return (
+        +this.withdrawValue - +this.withdrawData.audit.total.total_deduction
+      );
     },
     /**
      * 取款金額提示文字
@@ -101,23 +121,45 @@ export default {
      * @return number or string
      */
     withdrawMoneyTip() {
-      if (+this.withdrawData.payment_charge.ret.withdraw_min > 0 && +this.withdrawData.payment_charge.ret.withdraw_max === 0) {
+      if (
+        +this.withdrawData.payment_charge.ret.withdraw_min > 0 &&
+        +this.withdrawData.payment_charge.ret.withdraw_max === 0
+      ) {
         return {
-          type: 'min',
-          text: `${this.$text('S_MINIMUM_MONEY', { replace: [{ target: '%s', value: this.withdrawData.payment_charge.ret.withdraw_min }] })}`
+          type: "min",
+          text: `${this.$text("S_MINIMUM_MONEY", {
+            replace: [
+              {
+                target: "%s",
+                value: this.withdrawData.payment_charge.ret.withdraw_min
+              }
+            ]
+          })}`
         };
       }
 
-      if (+this.withdrawData.payment_charge.ret.withdraw_min === 0 && +this.withdrawData.payment_charge.ret.withdraw_max > 0) {
+      if (
+        +this.withdrawData.payment_charge.ret.withdraw_min === 0 &&
+        +this.withdrawData.payment_charge.ret.withdraw_max > 0
+      ) {
         return {
-          type: 'max',
-          text: `${this.$text('S_MAX_MONEY', { replace: [{ target: '%s', value: this.withdrawData.payment_charge.ret.withdraw_max }] })}`
+          type: "max",
+          text: `${this.$text("S_MAX_MONEY", {
+            replace: [
+              {
+                target: "%s",
+                value: this.withdrawData.payment_charge.ret.withdraw_max
+              }
+            ]
+          })}`
         };
       }
 
       return {
-        type: 'mixing',
-        text: `${this.$text('S_SINGLE_LIMIT', '單筆限額')} ${this.withdrawData.payment_charge.ret.withdraw_min} ~ ${this.withdrawData.payment_charge.ret.withdraw_max}`
+        type: "mixing",
+        text: `${this.$text("S_SINGLE_LIMIT", "單筆限額")} ${
+          this.withdrawData.payment_charge.ret.withdraw_min
+        } ~ ${this.withdrawData.payment_charge.ret.withdraw_max}`
       };
     },
     /**
@@ -139,10 +181,14 @@ export default {
      */
     serialTip() {
       if (this.withdrawData.audit.total.deduction > 0) {
-        return this.$text('S_SERIAL_NUMBER_TIP01', { replace: [{ target: '%s', value: this.withdrawData.audit.total.deduction }] });
+        return this.$text("S_SERIAL_NUMBER_TIP01", {
+          replace: [
+            { target: "%s", value: this.withdrawData.audit.total.deduction }
+          ]
+        });
       }
 
-      return this.$text('S_SERIAL_CHANGE', '流水检查');
+      return this.$text("S_SERIAL_CHANGE", "流水检查");
     },
     /**
      * CGPay優惠文字
@@ -150,13 +196,20 @@ export default {
      * @return string
      */
     cgpayPromotionText() {
-      let resultPromotion = Math.round(this.withdrawValue * (this.resultWithdrawAccount.offer_percent / 100));
+      let resultPromotion = Math.round(
+        this.withdrawValue * (this.resultWithdrawAccount.offer_percent / 100)
+      );
 
-      if (+this.resultWithdrawAccount.offer_limit > 0 && resultPromotion > +this.resultWithdrawAccount.offer_limit) {
+      if (
+        +this.resultWithdrawAccount.offer_limit > 0 &&
+        resultPromotion > +this.resultWithdrawAccount.offer_limit
+      ) {
         resultPromotion = +this.resultWithdrawAccount.offer_limit;
       }
 
-      return this.$text('S_WITHDRAW_TIP03', { replace: [{ target: '%s', value: resultPromotion }] });
+      return this.$text("S_WITHDRAW_TIP03", {
+        replace: [{ target: "%s", value: resultPromotion }]
+      });
     },
     /**
      * 設定當前取款銀行
@@ -168,24 +221,27 @@ export default {
         return this.withdrawAccount;
       },
       set(value) {
-        if (value.id === 'cgpay') {
+        if (value.id === "cgpay") {
           this.isLoading = true;
           this.actionSetIsLoading(true);
 
           ajax({
-            method: 'get',
+            method: "get",
             url: `${API_WITHDRAW_CGPAY_BINDING}?wallet_gateway_id=1`,
             errorAlert: false
-          }).then((response) => {
-            if (response.result === 'ok') {
+          }).then(response => {
+            if (response.result === "ok") {
               this.isLoading = false;
               this.actionSetIsLoading(false);
 
               this.alertData = {
-                title: this.$text('S_SCANNING_BINDING', '扫描绑定'),
-                closeBtnText: this.$text('S_CLOSE', '关闭'),
-                type: 'cgpay',
-                tipTitle: this.$text('S_CGPAY_TIP04', '30秒后连结无效，并关闭视窗'),
+                title: this.$text("S_SCANNING_BINDING", "扫描绑定"),
+                closeBtnText: this.$text("S_CLOSE", "关闭"),
+                type: "cgpay",
+                tipTitle: this.$text(
+                  "S_CGPAY_TIP04",
+                  "30秒后连结无效，并关闭视窗"
+                ),
                 tipImgSrc: response.ret.url
               };
 
@@ -196,11 +252,11 @@ export default {
         }
 
         this.alertData = {
-          title: this.$text('S_WITHDRAW_APPLY', '取款申请'),
-          closeBtnText: this.$text('S_ENTER01', '我知道了'),
-          type: 'successTip',
-          tipTitle: this.$text('S_ENTER_SUCCESS', '提交成功'),
-          tipImgSrc: ''
+          title: this.$text("S_WITHDRAW_APPLY", "取款申请"),
+          closeBtnText: this.$text("S_ENTER01", "我知道了"),
+          type: "successTip",
+          tipTitle: this.$text("S_ENTER_SUCCESS", "提交成功"),
+          tipImgSrc: ""
         };
 
         this.withdrawAccount = value;
@@ -212,20 +268,20 @@ export default {
      * @return Array
      */
     currencyList() {
-      let target = []
-      let list = []
+      let target = [];
+      let list = [];
       if (this.allWithdrawAccount && this.allWithdrawAccount.length > 0) {
         target = this.allWithdrawAccount.find(item => {
           return item.bank_id === 2009;
-        })['currency']
+        })["currency"];
 
         // 新增 alias : 選單顯示用
         list = target.map(item => {
           return {
             ...item,
-            'currency_alias': item.currency_name
-          }
-        })
+            currency_alias: item.currency_name
+          };
+        });
       }
 
       return list;
@@ -234,19 +290,16 @@ export default {
   watch: {
     // noticeData() {
     //     let resultNotice = {};
-
     //     if (this.noticeData.filter((info) => info.event === 'trade_bind_wallet').length > 0) {
     //         this.noticeData.forEach((element) => {
     //             if (Object.keys(resultNotice).length === 0) {
     //                 resultNotice = element;
     //                 return;
     //             }
-
     //             if (new Date(element.id).getTime() > new Date(resultNotice.id).getTime()) {
     //                 resultNotice = element;
     //             }
     //         });
-
     //         if (Object.keys(resultNotice).length > 0 && resultNotice.result === 'ok') {
     //             this.cgpayBindingAccount = resultNotice;
     //             this.getWithdrawAccount();
@@ -259,38 +312,39 @@ export default {
     this.actionSetIsLoading(true);
 
     // 取得取款初始資料
-    ajax({
-      method: 'get',
-      url: API_WITHDRAW_INFO,
-      errorAlert: false,
-      fail: (res) => {
-        this.actionSetIsLoading(false);
-        if (res.data && res.data.msg) {
-          this.actionSetGlobalMessage({
-            msg: res.data.msg, cb: () => {
-              if (res.data.code == "C600001") {
-                this.$router.back();
-              }
-            }
-          })
-        }
-      }
-    }).then((res) => {
-      this.withdrawData = res;
-      if (this.memInfo.config.withdraw === '迅付') {
-        this.getWithdrawAccount();
-      }
-    });
+    // ajax({
+    //   method: 'get',
+    //   url: API_WITHDRAW_INFO,
+    //   errorAlert: false,
+    //   fail: (res) => {
+    //     this.actionSetIsLoading(false);
+    //     if (res.data && res.data.msg) {
+    //       this.actionSetGlobalMessage({
+    //         msg: res.data.msg, cb: () => {
+    //           if (res.data.code == "C600001") {
+    //             this.$router.back();
+    //           }
+    //         }
+    //       })
+    //     }
+    //   }
+    // }).then((res) => {
+    //   this.withdrawData = res;
+    //   if (this.memInfo.config.withdraw === '迅付') {
+    //     this.getWithdrawAccount();
+    //   }
+    // });
+    this.updateAmount();
   },
   methods: {
     ...mapActions([
-      'actionSetIsLoading',
-      'actionSetUserdata',
-      'actionSetGlobalMessage',
+      "actionSetIsLoading",
+      "actionSetUserdata",
+      "actionSetGlobalMessage",
       "actionVerificationFormData"
     ]),
     checkAccountData(target) {
-      this.getAccountDataStatus().then((data) => {
+      this.getAccountDataStatus().then(data => {
         let check = true;
         Object.keys(data.ret).every(i => {
           if (!data.ret[i] && i !== "bank") {
@@ -298,30 +352,36 @@ export default {
             check = false;
             return;
           }
-        })
+        });
 
         if (check && target === "bankCard") {
-          this.$router.push('/mobile/mcenter/bankcard?redirect=withdraw&type=bankCard')
+          this.$router.push(
+            "/mobile/mcenter/bankcard?redirect=withdraw&type=bankCard"
+          );
         }
 
         if (check && target === "wallet") {
-          this.$router.push('/mobile/mcenter/bankcard?redirect=withdraw&type=wallet')
+          this.$router.push(
+            "/mobile/mcenter/bankcard?redirect=withdraw&type=wallet"
+          );
         }
-      })
+      });
     },
     getAccountDataStatus() {
       return axios({
-        method: 'get',
-        url: '/api/v2/c/withdraw/check',
-      }).then((res) => {
-        if (res.data.result === "ok") {
-          return res.data;
-        } else {
-          this.actionSetGlobalMessage({ msg: res.data.msg })
-        }
-      }).catch(res => {
-        this.actionSetGlobalMessage({ msg: res.response.data.msg })
-      });
+        method: "get",
+        url: "/api/v2/c/withdraw/check"
+      })
+        .then(res => {
+          if (res.data.result === "ok") {
+            return res.data;
+          } else {
+            this.actionSetGlobalMessage({ msg: res.data.msg });
+          }
+        })
+        .catch(res => {
+          this.actionSetGlobalMessage({ msg: res.response.data.msg });
+        });
     },
     /**
      * 取得取款帳戶
@@ -332,14 +392,14 @@ export default {
       this.actionSetIsLoading(true);
 
       ajax({
-        method: 'get',
+        method: "get",
         url: API_MCENTER_WITHDRAW,
         errorAlert: false
-      }).then((response) => {
+      }).then(response => {
         this.isLoading = false;
         this.actionSetIsLoading(false);
 
-        if (response.result === 'ok') {
+        if (response.result === "ok") {
           this.withdrawUserData = response.ret;
 
           // if (Object.keys(this.cgpayBindingAccount).length > 0) {
@@ -349,7 +409,7 @@ export default {
 
           [this.withdrawAccount] = this.allWithdrawAccount;
         } else {
-          this.actionSetGlobalMessage({ msg: response && response.msg })
+          this.actionSetGlobalMessage({ msg: response && response.msg });
         }
       });
     },
@@ -371,8 +431,8 @@ export default {
      * @method resetValue
      */
     resetValue() {
-      this.withdrawValue = '';
-      this.withdrawPwd = '';
+      this.withdrawValue = "";
+      this.withdrawPwd = "";
       this.withdrawAccount = {};
       // this.cgpayBindingAccount = {};
     },
@@ -380,7 +440,7 @@ export default {
      * 更新帳戶金額
      * @method updateAmount
      */
-    updateAmount() {
+    updateAmount(swift_code = "") {
       if (this.isAjaxUse) {
         return;
       }
@@ -388,11 +448,30 @@ export default {
       this.isAjaxUse = true;
 
       ajax({
-        method: 'get',
+        method: "get",
         url: API_WITHDRAW_INFO,
-        errorAlert: false
-      }).then((response) => {
+        errorAlert: false,
+        params: {
+          swift_code: swift_code
+        },
+        fail: res => {
+          this.actionSetIsLoading(false);
+          if (res.data && res.data.msg) {
+            this.actionSetGlobalMessage({
+              msg: res.data.msg,
+              cb: () => {
+                if (res.data.code == "C600001") {
+                  this.$router.back();
+                }
+              }
+            });
+          }
+        }
+      }).then(response => {
         this.withdrawData = response;
+        if (this.memInfo.config.withdraw === "迅付") {
+          this.getWithdrawAccount();
+        }
         this.isAjaxUse = false;
       });
     },
@@ -414,23 +493,23 @@ export default {
       });
     },
     /**
-    * 回傳使用者出入款統計資料
-    * @method getUserStat
-    */
+     * 回傳使用者出入款統計資料
+     * @method getUserStat
+     */
     getUserStat() {
       axios({
-        method: 'get',
-        url: '/api/v1/c/user-stat/deposit-withdraw',
+        method: "get",
+        url: "/api/v1/c/user-stat/deposit-withdraw"
       }).then(res => {
         if (res && res.data) {
           this.userWithdrawCount = res.data.ret.withdraw_count;
         }
-      })
+      });
     },
     /**
-    * 回傳目前開放的電子錢包
-    * @method getNowOpenWallet
-    */
+     * 回傳目前開放的電子錢包
+     * @method getNowOpenWallet
+     */
     getNowOpenWallet() {
       // Get 錢包類型
       axios({
