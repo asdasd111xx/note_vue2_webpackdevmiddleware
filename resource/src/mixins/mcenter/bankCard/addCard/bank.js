@@ -354,9 +354,9 @@ export default {
 
           console.log(error.response)
           if (error.response.data && error.response.data.msg) {
-            this.tipMsg = error.response.data.msg;
+            this.errorMsg = error.response.data.msg;
           } else {
-            this.tipMsg = error.response.data;
+            this.errorMsg = error.response.data;
           }
         });
     }
