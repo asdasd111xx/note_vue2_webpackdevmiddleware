@@ -886,7 +886,7 @@
             :class="$style['money-info-wrap']"
           >
             <span
-              v-if="realSaveMoney > 0"
+              v-if="moneyValue"
               :class="[$style['feature-tip-title'], $style.success]"
               @click="showRealStatus = true"
             >
