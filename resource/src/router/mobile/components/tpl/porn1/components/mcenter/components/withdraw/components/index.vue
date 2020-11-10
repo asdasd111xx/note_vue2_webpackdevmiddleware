@@ -1498,13 +1498,21 @@ export default {
           return;
         },
         fail: error => {
+          console.log(error);
           if (error && error.data && error.data.msg) {
             this.actionSetGlobalMessage({
               msg: error.data.msg,
               code: error.data.code,
               origin: "withdraw"
             });
-            this.errTips = error.data.msg;
+
+            // 109/11/10
+            // 出現 系統忙碌中，出款單已取消，請重新提交，為了不要有 errTips 而讓立即提現的按鈕反灰
+            if (error.data.code === "C590021") {
+              return;
+            } else {
+              this.errTips = error.data.msg;
+            }
           }
 
           if (error && error.data && error.data.code === "M500001") {

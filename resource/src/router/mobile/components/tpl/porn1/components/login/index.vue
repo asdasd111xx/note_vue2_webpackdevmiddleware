@@ -151,9 +151,11 @@
             <div class="login-deposit-username clearfix">
               <div class="icon-wrap" @click="rememberPwd = !rememberPwd">
                 <img
-                  :src="`/static/image/_new/common/icon_${
-                    rememberPwd ? '' : 'no'
-                  }remember.png`"
+                  :src="
+                    `/static/image/_new/common/icon_${
+                      rememberPwd ? '' : 'no'
+                    }remember.png`
+                  "
                 />
               </div>
               <span class="deposit-text">{{
@@ -196,19 +198,22 @@
   </mobile-container>
 </template>
 <script>
-import { mapGetters } from 'vuex';
-import loginForm from '@/mixins/loginForm';
-import slideVerification from '@/components/slideVerification';
-import puzzleVerification from '@/components/puzzleVerification';
-import mobileContainer from '../common/mobileContainer';
-import { getCookie, setCookie } from '@/lib/cookie';
+import { mapGetters } from "vuex";
+import loginForm from "@/mixins/loginForm";
+import slideVerification from "@/components/slideVerification";
+import puzzleVerification from "@/components/puzzleVerification";
+import mobileContainer from "../common/mobileContainer";
+import { getCookie, setCookie } from "@/lib/cookie";
 
 /**
  * 登入共用元件
  */
 export default {
   components: {
-    securityCheck: () => import(/* webpackChunkName: 'securityCheck' */'@/router/web/components/common/securityCheck'),
+    securityCheck: () =>
+      import(
+        /* webpackChunkName: 'securityCheck' */ "@/router/web/components/common/securityCheck"
+      ),
     slideVerification,
     puzzleVerification,
     mobileContainer
@@ -217,13 +222,13 @@ export default {
   props: {
     redirect: {
       type: String,
-      default: '/mobile'
+      default: "/mobile"
     }
   },
   data() {
     return {
       puzzleData: null,
-      script: null,
+      script: null
     };
   },
   watch: {
@@ -233,11 +238,11 @@ export default {
   },
   computed: {
     ...mapGetters({
-      webInfo: 'getWebInfo',
-      cdnDomain: 'getCdnDomain',
-      siteConfig: 'getSiteConfig',
-      memInfo: 'getMemInfo',
-      onlineService: 'getOnlineService'
+      webInfo: "getWebInfo",
+      cdnDomain: "getCdnDomain",
+      siteConfig: "getSiteConfig",
+      memInfo: "getMemInfo",
+      onlineService: "getOnlineService"
     }),
     puzzleObj: {
       get() {
@@ -250,9 +255,14 @@ export default {
     headerConfig() {
       return {
         prev: true,
-        onClick: () => { this.$router.back(); },
+        onClick: () => {
+          // this.$router.back();
+
+          // 109/11/10 企劃:登入統一回首頁
+          this.$router.push("/mobile");
+        },
         hasClose: true,
-        title: this.$text("S_LOGON", "登录"),
+        title: this.$text("S_LOGON", "登录")
       };
     },
     hasCaptchaText() {
@@ -272,22 +282,25 @@ export default {
   },
   beforeCreate() {
     if (this.$route.query.logout) {
-      setCookie('cid', '');
-      setCookie('y_token', '');
-      setCookie('aid', '');
-      window.location.replace('/mobile/login');
+      setCookie("cid", "");
+      setCookie("y_token", "");
+      setCookie("aid", "");
+      window.location.replace("/mobile/login");
     }
   },
   created() {
     if (!document.querySelector('script[data-name="esabgnixob"]')) {
-      this.script = document.createElement('script');
-      this.script.setAttribute('type', 'text/javascript');
-      this.script.setAttribute('data-name', 'esabgnixob');
+      this.script = document.createElement("script");
+      this.script.setAttribute("type", "text/javascript");
+      this.script.setAttribute("data-name", "esabgnixob");
 
       if (window.location.host.includes("localhost")) {
-        this.script.setAttribute('src', 'https://yb01.66boxing.com/mobile/esabgnixob.js');
+        this.script.setAttribute(
+          "src",
+          "https://yb01.66boxing.com/mobile/esabgnixob.js"
+        );
       } else {
-        this.script.setAttribute('src', 'esabgnixob.js');
+        this.script.setAttribute("src", "esabgnixob.js");
       }
 
       document.head.appendChild(this.script);
@@ -296,13 +309,12 @@ export default {
   methods: {
     slideLogin(loginInfo) {
       this.loginCheck({ captcha: loginInfo.data }, loginInfo.slideFuc);
-    },
+    }
   }
 };
 </script>
 
-<style src="./css/index.scss" lang="scss"  scoped>
-</style>
+<style src="./css/index.scss" lang="scss" scoped></style>
 
 <style lang="scss" module="$styleSecurityCheck">
 @import "~@/css/variable.scss";
