@@ -886,17 +886,19 @@
             :class="$style['money-info-wrap']"
           >
             <span
-              v-if="moneyValue"
+              v-if="curPayInfo.payment_method_name === '代客充值'"
+              :class="$style['feature-tip-title']"
+            >
+              实际到账： {{ realSaveMoney }}
+            </span>
+
+            <!-- 109/11/10 實際到帳常註顯示 -->
+            <span
+              v-else
               :class="[$style['feature-tip-title'], $style.success]"
               @click="showRealStatus = true"
             >
               实际到账： {{ realSaveMoney }} (详情)
-            </span>
-            <span
-              v-else-if="curPayInfo.payment_method_name !== '代客充值'"
-              :class="$style['feature-tip-title']"
-            >
-              实际到账： {{ realSaveMoney }}
             </span>
           </div>
 
@@ -904,7 +906,7 @@
             <div :class="$style['pop-message-mark']" />
             <div :class="$style['message-container']">
               <ul :class="$style['message-content']">
-                <li>• 实际到账： ¥{{ realSaveMoney }}</li>
+                <li>• 实际到账： {{ realSaveMoney }}</li>
                 <template
                   v-if="
                     curPayInfo.offer_enable && +curPayInfo.offer_percent > 0
