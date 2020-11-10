@@ -1136,7 +1136,8 @@ export default {
 
         if (response && response.result !== "ok") {
           this.actionSetGlobalMessage({
-            msg: response.msg
+            msg: response.msg,
+            code: response.code
           });
         }
 
@@ -1149,6 +1150,10 @@ export default {
           response.code === "TM020059" ||
           response.code === "TM020060"
         ) {
+          this.actionSetGlobalMessage({
+            msg: response.msg,
+            code: response.code
+          });
           window.location.reload();
           return { status: "error" };
         }

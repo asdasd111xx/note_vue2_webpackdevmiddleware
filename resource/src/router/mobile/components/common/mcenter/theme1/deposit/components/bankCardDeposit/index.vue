@@ -1775,6 +1775,11 @@ export default {
             this.actionSetGlobalMessage({
               msg: res.msg
             });
+          } else {
+            this.actionSetGlobalMessage({
+              msg: res.msg,
+              code: res.code
+            });
           }
         }
       });
