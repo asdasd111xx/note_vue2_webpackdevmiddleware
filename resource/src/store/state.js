@@ -463,7 +463,7 @@ export default {
     yaboConfig: {},
     globalMessage: '',
     rechargeConfig: {},
-    rechargeBonusConfig:{},
+    rechargeBonusConfig: {},
     hasBank: false,
     videoBounsPageStatus: false,
     systemDomain: {},
@@ -472,5 +472,6 @@ export default {
     //   　電子錢包綁定相關
     // ＝＝＝＝＝＝＝＝＝＝＝＝＝＝＝＝＝＝
     CGPayInfo: {},
-    promotionLink:''
+    promotionLink: '',
+    webDomain: {}
 };
