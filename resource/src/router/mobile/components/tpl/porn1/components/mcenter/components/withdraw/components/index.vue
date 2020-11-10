@@ -544,7 +544,7 @@
       <template v-if="showPopStatus.type === 'check'">
         <widthdraw-tips
           :actual-money="+actualMoney"
-          :crypto-money="+cryptoMoney"
+          :crypto-money="cryptoMoney"
           :withdraw-value="+withdrawValue"
           :type="widthdrawTipsType"
           :has-crypto="isSelectedUSDT"
