@@ -13,7 +13,7 @@
           <div
             :class="[
               $style['menu-title'],
-              { [$style.active]: currentTemplate === item.key }
+              { [$style.active]: currentTemplate === item.key },
             ]"
           >
             {{ item.text }}
@@ -29,7 +29,7 @@
         <div
           :class="$style['active-slider']"
           :style="{
-            left: `calc(16.5% + 33% * ${currentTab})`
+            left: `calc(16.5% + 33% * ${currentTab})`,
           }"
         />
       </div>
@@ -40,94 +40,97 @@
 </template>
 
 <script>
-import { mapGetters, mapActions } from 'vuex';
-import news from './news/index';
-import post from './post/index';
-import message from './message/index';
+import { mapGetters, mapActions } from "vuex";
+import news from "./news/index";
+import post from "./post/index";
+import message from "./message/index";
 
 export default {
   components: {
     news,
     post,
-    message
+    message,
   },
   data() {
     return {
       msgCount: 0,
       currentTab: 0, // 'message', 'news', 'post'
-      currentTemplate: 'message'
-    }
+      currentTemplate: "message",
+    };
   },
   created() {
-    this.actionSetMcenterMsgCount();
-    if (['message', 'news', 'post'].includes(this.$route.params.page)) {
+    // this.actionSetMcenterMsgCount();
+    if (["message", "news", "post"].includes(this.$route.params.page)) {
       this.currentTemplate = this.$route.params.page;
-      this.currentTab = ['message', 'news', 'post'].indexOf(this.$route.params.page);
+      this.currentTab = ["message", "news", "post"].indexOf(
+        this.$route.params.page
+      );
     }
   },
   methods: {
     ...mapActions([
-      'actionSetMcenterMsgCount'
+      // 'actionSetMcenterMsgCount'
     ]),
     setCurrentTab(index) {
       this.currentTab = index;
       switch (index) {
         case 0:
-          this.$emit('update:currentTemplate', 'message');
-          this.currentTemplate = 'message'
+          this.$emit("update:currentTemplate", "message");
+          this.currentTemplate = "message";
           break;
 
         case 1:
-          this.$emit('update:currentTemplate', 'news');
-          this.currentTemplate = 'news'
+          this.$emit("update:currentTemplate", "news");
+          this.currentTemplate = "news";
           break;
 
         case 2:
-          this.$emit('update:currentTemplate', 'post');
-          this.currentTemplate = 'post'
+          this.$emit("update:currentTemplate", "post");
+          this.currentTemplate = "post";
           break;
       }
-      this.$emit('getCurrentTemplate', this.currentTemplate);
-    }
+      this.$emit("getCurrentTemplate", this.currentTemplate);
+    },
   },
   computed: {
     ...mapGetters({
-      memInfo: 'getMemInfo',
-      siteConfig: 'getSiteConfig'
+      memInfo: "getMemInfo",
+      siteConfig: "getSiteConfig",
     }),
     $style() {
-      const style = this[`$style_${this.siteConfig.MOBILE_WEB_TPL}`] || this.$style_porn1;
+      const style =
+        this[`$style_${this.siteConfig.MOBILE_WEB_TPL}`] || this.$style_porn1;
       return style;
     },
     headerConfig() {
-      const trans = { message: '通知', news: '活动', post: '公告' };
+      const trans = { message: "通知", news: "活动", post: "公告" };
 
       return {
         prev: true,
-        title: this.$route.query.pid ? trans[this.currentTemplate] : '消息中心',
+        title: this.$route.query.pid ? trans[this.currentTemplate] : "消息中心",
         onClick: () => {
           this.$router.back();
-        }
+        },
       };
     },
     tabItem() {
       return [
         {
-          key: 'message',
-          text: '通知',
-          hasMsgCount: true
+          key: "message",
+          text: "通知",
+          hasMsgCount: true,
         },
         {
-          key: 'news',
-          text: '活动'
+          key: "news",
+          text: "活动",
         },
         {
-          key: 'post',
-          text: '公告'
-        }
-      ]
-    }
-  }
+          key: "post",
+          text: "公告",
+        },
+      ];
+    },
+  },
 };
 </script>
 
