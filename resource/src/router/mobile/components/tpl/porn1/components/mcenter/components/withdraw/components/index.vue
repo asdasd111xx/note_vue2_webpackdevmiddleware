@@ -513,7 +513,8 @@
 
       <div :class="$style['tips']">
         <div v-if="allWithdrawAccount && allWithdrawAccount.length !== 0">
-          为了方便您快速提现，请先将所有场馆钱包金额回收至中心钱包
+          为了方便您快速提现，请先将所有场馆钱包金额回收至中心钱包<br />
+          可提现金额会扣除未兑现红利总计
         </div>
         <div v-else>请先绑定一张银行卡，用于收款</div>
       </div>
@@ -1155,7 +1156,7 @@ export default {
       this.withdrawValue = Math.floor(Number(result));
       this.verification("withdrawValue", Math.floor(Number(result)));
 
-      if (this.isSelectedUSDT && this.isClickCoversionBtn) {
+      if (this.isSelectedUSDT && this.withdrawValue) {
         this.convertCryptoMoney();
       }
     },
