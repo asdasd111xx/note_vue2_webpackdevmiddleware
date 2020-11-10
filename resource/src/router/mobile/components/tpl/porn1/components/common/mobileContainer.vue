@@ -5,8 +5,8 @@
       $style.container,
       {
         [$style['has-header']]: hasHeader && !isApp,
-        [$style['has-footer']]: hasFooter
-      }
+        [$style['has-footer']]: hasFooter,
+      },
     ]"
   >
     <m-header
@@ -33,67 +33,70 @@
 </template>
 
 <script>
-import { mapGetters } from 'vuex';
-import axios from 'axios'
-import { getCookie } from '@/lib/cookie';
+import { mapGetters } from "vuex";
+import axios from "axios";
+import { getCookie } from "@/lib/cookie";
 
 export default {
   components: {
-    mHeader: () => import(/* webpackChunkName: 'mHeader' */ './mHeader'),
-    mFooter: () => import(/* webpackChunkName: 'mFooter' */ './mFooter'),
-    agentNote: () => import(/* webpackChunkName: 'note' */'@/router/agent/components/common/note')
+    mHeader: () => import(/* webpackChunkName: 'mHeader' */ "./mHeader"),
+    mFooter: () => import(/* webpackChunkName: 'mFooter' */ "./mFooter"),
+    agentNote: () =>
+      import(
+        /* webpackChunkName: 'note' */ "@/router/agent/components/common/note"
+      ),
   },
   data() {
     return {
-      hasUnreadMessage: false
-    }
+      hasUnreadMessage: false,
+    };
   },
   props: {
     headerConfig: {
       type: Object,
-      default: null
+      default: null,
     },
     hasFooter: {
       type: Boolean,
-      default: true
+      default: true,
     },
     updateSearchStatus: {
       type: Function,
-      default: () => { }
+      default: () => {},
     },
     isApp: {
       type: Boolean,
-      default: false
-    }
+      default: false,
+    },
   },
   mounted() {
-    if (this.loginStatus && getCookie('cid')) {
+    if (this.loginStatus && getCookie("cid")) {
       axios({
-        method: 'get',
-        url: '/api/v1/c/player/messages',
+        method: "get",
+        url: "/api/v1/c/player/messages",
       }).then((res) => {
         const ret = res.data.ret;
-        ret.forEach(i => {
+        ret.forEach((i) => {
           if (i.read === false) {
             this.hasUnreadMessage = true;
           }
-        })
+        });
       });
     }
   },
   computed: {
     ...mapGetters({
-      popType: 'getPopType',
-      popData: 'getPopData',
-      loginStatus: "getLoginStatus"
+      popType: "getPopType",
+      popData: "getPopData",
+      loginStatus: "getLoginStatus",
     }),
     hasHeader() {
       return this.headerConfig;
     },
     path() {
-      return this.$route.path.split('/').filter((path) => path);
-    }
-  }
+      return this.$route.path.split("/").filter((path) => path);
+    },
+  },
 };
 </script>
 

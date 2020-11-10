@@ -41,7 +41,8 @@ export default {
                 { name: 'balanceTrans', text: '转帐', path: 'balanceTrans' },
                 { name: 'makemoney', text: '推广', path: 'makemoney' },
                 { name: 'vip', text: 'VIP', path: 'accountVip' },
-            ]
+            ],
+            timer: null
         };
     },
     watch: {
@@ -54,10 +55,14 @@ export default {
             if (this.noticeData && this.noticeData.length > 0) {
                 // this.data = this.noticeData.pop();
                 let temp = this.noticeData[this.noticeData.length - 1]
-                if (temp.extend && temp.extend === 'verification_code') {
-                    return;
-                } else if (temp.event === "vendor_maintain_notice") {
-                    this.getMaintainList();
+                if (temp.event === "vendor_maintain_notice") {
+                    this.timer = setInterval(() => {
+                        this.getMaintainList();
+                        clearInterval(this.timer);
+                        this.timer = null;
+                        return;
+                    }, 70000);
+
                 }
             }
         }
