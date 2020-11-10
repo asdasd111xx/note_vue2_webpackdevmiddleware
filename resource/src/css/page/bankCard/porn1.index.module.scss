@@ -28,7 +28,9 @@
 }
 
 @media (orientation: landscape) {
-  .header {
+
+  .header,
+  .tab-wrap {
     max-width: 768px !important;
   }
 }
@@ -42,7 +44,7 @@
   height: 20px;
   margin: auto;
 
-  > img {
+  >img {
     display: block;
     width: 100%;
   }
@@ -71,7 +73,7 @@
   height: 20px;
   margin: auto;
 
-  > img {
+  >img {
     width: 100%;
   }
 }
