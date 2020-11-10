@@ -185,12 +185,15 @@ export default {
         break;
     }
 
-    this.getVideoTag();
-    this.getVideoSort();
-    this.getVideoRecommand();
-    this.getVideoList();
+    this.initData();
   },
   methods: {
+    initData() {
+      this.getVideoTag();
+      this.getVideoSort();
+      this.getVideoRecommand();
+      this.getVideoList();
+    },
     handleVideo(tag, video) {
       window.location.replace(`${window.location.pathname}${window.location.search}#${tag}`);
       this.openVideo('videoPlay', {
@@ -327,19 +330,6 @@ export default {
     },
     // 取得所有影片(熱門推薦除外)
     getVideoList() {
-      //   try {
-      //     let videolistStorage = localStorage.getItem(
-      //       `${this.source}-video-list`
-      //     );
-      //     if (videolistStorage) {
-      //       this.videoList = JSON.parse(
-      //         localStorage.getItem(`${this.source}-video-list`)
-      //       );
-      //     }
-      //   } catch (e) {
-      //     console.log(e);
-      //   }
-
       return pornRequest({
         method: "post",
         url: `/video/videolist`,
@@ -349,21 +339,11 @@ export default {
         }
       }).then(response => {
         if (response.status !== 200) {
+          setTimeout(() => {
+            this.initData();
+          }, 3000)
           return;
         }
-
-        // try {
-        //   localStorage.setItem(
-        //     `${this.source}-video-list`,
-        //     JSON.stringify(response.result)
-        //   );
-        //   localStorage.setItem(
-        //     `${this.source}-video-list-timestamp`,
-        //     Date.now()
-        //   );
-        // } catch (e) {
-        //   console.log(e);
-        // }
 
         this.videoList = [...response.result];
 
