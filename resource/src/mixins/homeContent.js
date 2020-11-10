@@ -1,6 +1,7 @@
 import { getCookie, setCookie } from '@/lib/cookie';
 import { mapActions, mapGetters } from 'vuex';
 
+import Vue from 'vue';
 import axios from 'axios';
 import goLangApiRequest from '@/api/goLangApiRequest';
 import mcenter from '@/api/mcenter';
@@ -111,8 +112,8 @@ export default {
                         this.maintainList.find(maintainData => {
                             if (maintainData.vendor === game.vendor && maintainData.kind === game.kind) {
                                 game.isMaintain = true;
-                                game.start_at = maintainData.start_at;
-                                game.end_at = maintainData.end_at;
+                                game.start_at = Vue.moment(maintainData.start_at).utcOffset(-4).format('YYYY-MM-DD HH:mm:ss');//maintainData.start_at;
+                                game.end_at = Vue.moment(maintainData.end_at).utcOffset(-4).format('YYYY-MM-DD HH:mm:ss');//maintainData.end_at;
                                 // console.log(game);
                             }
                         })
