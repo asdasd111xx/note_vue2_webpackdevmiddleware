@@ -317,6 +317,7 @@ export default {
               this.$router.replace('/mobile/login');
               return;
             }
+            return;
           case 'EVENT_THIRDPARTY_LOGIN':
             this.$router.push('/mobile/login');
             return;
