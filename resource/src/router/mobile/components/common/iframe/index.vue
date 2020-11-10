@@ -191,8 +191,10 @@ export default {
           return '/mobile/gift';
         case 'PROMOTION':
           return '/mobile/promotion';
+        case 'SWAG':
         default:
-          return '/mobile';
+          this.$router.back();
+          return;
       }
     },
     iframeHeight() {
