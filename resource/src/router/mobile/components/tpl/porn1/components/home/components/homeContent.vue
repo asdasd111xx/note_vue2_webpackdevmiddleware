@@ -140,7 +140,7 @@
                   维护中
                 </div>
                 <div v-else :class="[$style['maintain-text-1']]">
-                  {{ `${game.name} 维护中` }}
+                  {{ `${game.name === "亚博直播真人视讯80桌" ? "鸭博直播真人视讯80桌":game.name} 维护中` }}
                 </div>
                 <div :class="[$style['container']]">
                   <div :class="[$style['us-time']]">
@@ -394,7 +394,7 @@ export default {
       }
 
       > div.container {
-        border-top: 1px #ffffff solid;
+        border-top: 1px rgba(255, 255, 255, 0.3) solid;
         text-align: center;
 
         > div.us-time {
@@ -442,7 +442,7 @@ export default {
 
       > div.container {
         text-align: center;
-        border-top: 1px #ffffff solid;
+        border-top: 1px rgba(255, 255, 255, 0.3) solid;
 
         > div.us-time {
           font-size: 10px !important;

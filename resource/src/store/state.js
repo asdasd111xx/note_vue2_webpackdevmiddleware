@@ -474,5 +474,6 @@ export default {
   CGPayInfo: {},
   promotionLink: '',
   swagConfig: {},
-  swagBalance: {}
+  swagBalance: {},
+  webDomain: {}
 };

@@ -535,4 +535,7 @@ export default {
   [types.SET_SWAG_BALANCE](state, data) {
     state.swagBalance = data
   },
+  [types.SET_WEB_DOMAIN](state, data) {
+    state.webDomain = data
+  },
 };

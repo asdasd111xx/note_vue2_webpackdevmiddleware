@@ -528,19 +528,25 @@ export const actionMemInit = ({ state, dispatch, commit }) => {
     // 暫時移除
     // dispatch('actionSetAppDownloadInfo');
 
-    await dispatch('actionSetUserdata');
-    await dispatch('actionSetWebInfo', state.memInfo.user.domain);
-    await dispatch('actionGetMemInfoV3');
-    const defaultLang = ['47', '70', '71'].includes(state.memInfo.user.domain) && state.webInfo.is_production ? 'vi' : 'zh-cn';
+    await dispatch("actionSetUserdata");
+    await dispatch("actionSetWebInfo", state.memInfo.user.domain);
+    await dispatch("actionGetMemInfoV3");
+    const defaultLang =
+      ["47", "70", "71"].includes(state.memInfo.user.domain) &&
+        state.webInfo.is_production
+        ? "vi"
+        : "zh-cn";
     await getLang(state.webInfo.language, defaultLang);
+    await dispatch("actionSetWebDomain");
 
     // 設定網站設定檔資訊 (start)
     let configInfo;
 
-    if (state.webInfo.is_production) {
-      configInfo = siteConfigOfficial[`site_${state.webInfo.alias}`] || siteConfigOfficial.preset;
-    } else {
-      configInfo = siteConfigTest[`site_${state.webInfo.alias}`] || siteConfigTest.preset;
+    if (state.webDomain) {
+      configInfo =
+        siteConfigOfficial[`site_${state.webDomain.domain}`] ||
+        siteConfigTest[`site_${state.webInfo.alias}`] ||
+        siteConfigOfficial.preset;
     }
 
     dispatch('actionSetSiteConfig', configInfo);
@@ -815,48 +821,70 @@ export const actionAgentInit = ({ state, dispatch, commit }, next) => {
   // 設定系統環境為代理客端
   commit(types.SETENV, 'agent');
   // 依序執行
-  axios.all([(async () => {
-    dispatch('actionSetSystemTime');
-    await dispatch('actionSetAgentdata');
-    if (!state.agentIsLogin) return;
-    await dispatch('actionSetWebInfo', state.agentInfo.user.domain);
+  axios
+    .all([
+      (async () => {
+        dispatch("actionSetSystemTime");
+        await dispatch("actionSetAgentdata");
+        if (!state.agentIsLogin) return;
+        await dispatch("actionSetWebInfo", state.agentInfo.user.domain);
 
-    const defaultLang = ['47', '70', '71'].includes(state.agentInfo.user.domain) && state.webInfo.is_production ? 'vi' : 'zh-cn';
-    await getLang(state.webInfo.language, defaultLang);
-    await dispatch('actionSetAgentPost');
+        const defaultLang =
+          ["47", "70", "71"].includes(state.agentInfo.user.domain) &&
+            state.webInfo.is_production
+            ? "vi"
+            : "zh-cn";
+        await getLang(state.webInfo.language, defaultLang);
+        await dispatch("actionSetAgentPost");
 
-    // 設定網站設定檔資訊 (start)
-    let configInfo;
-    if (state.webInfo.is_production) {
-      configInfo = siteConfigOfficial[`site_${state.webInfo.alias}`] || siteConfigOfficial.preset;
-    } else {
-      configInfo = siteConfigTest[`site_${state.webInfo.alias}`] || siteConfigTest.preset;
-    }
+        // 設定網站設定檔資訊 (start)
+        let configInfo;
+        if (state.webInfo.is_production) {
+          configInfo =
+            siteConfigOfficial[`site_${state.webInfo.alias}`] ||
+            siteConfigOfficial.preset;
+        } else {
+          configInfo =
+            siteConfigTest[`site_${state.webInfo.alias}`] ||
+            siteConfigTest.preset;
+        }
 
-    dispatch('actionSetSiteConfig', configInfo);
-    // 設定網站設定檔資訊 (end)
+        const defaultLang = ['47', '70', '71'].includes(state.agentInfo.user.domain) && state.webInfo.is_production ? 'vi' : 'zh-cn';
+        await getLang(state.webInfo.language, defaultLang);
+        await dispatch('actionSetAgentPost');
 
-    await agcenter.mobileCheck({
-      success: (response) => {
-        commit(types.SETMOBILECHECK, {
-          status: response.result === 'ok'
+        // 設定網站設定檔資訊 (start)
+        let configInfo;
+        if (state.webInfo.is_production) {
+          configInfo = siteConfigOfficial[`site_${state.webInfo.alias}`] || siteConfigOfficial.preset;
+        } else {
+          configInfo = siteConfigTest[`site_${state.webInfo.alias}`] || siteConfigTest.preset;
+        }
+
+        dispatch('actionSetSiteConfig', configInfo);
+        // 設定網站設定檔資訊 (end)
+
+        await agcenter.mobileCheck({
+          success: (response) => {
+            commit(types.SETMOBILECHECK, {
+              status: response.result === 'ok'
+            });
+          }
         });
-      }
-    });
-    await agent.userLevels({
-      success: (response) => {
-        commit(types.SET_AGENT_USER_LEVELS, response.ret);
-      }
-    });
-    dispatch('actionSetAgentUserConfig');
-    dispatch('actionSetGameData');
-    dispatch('actionSetAgentNews');
-  })()]).then(() => {
-    if (!next) {
-      return;
-    }
-    next();
-  });
+        await agent.userLevels({
+          success: (response) => {
+            commit(types.SET_AGENT_USER_LEVELS, response.ret);
+          }
+        });
+        dispatch('actionSetAgentUserConfig');
+        dispatch('actionSetGameData');
+        dispatch('actionSetAgentNews');
+      })()]).then(() => {
+        if (!next) {
+          return;
+        }
+        next();
+      });
 };
 // 代理端-設定代理資訊
 export const actionSetAgentdata = ({ state, commit }, forceUpdate = false) => {
@@ -1482,7 +1510,25 @@ export const actionGetMemInfoV3 = ({ state, dispatch, commit }) => {
       });
     }
   })
-}
+    .then(res => {
+      if (res && res.data && res.data.result === "ok") {
+        commit(types.SETMEMINFOV3, res.data.ret);
+      }
+    })
+    .catch(error => {
+      if (
+        error.response.data.code === "M00001" ||
+        error.response.data.code === "C600001"
+      ) {
+        dispatch("actionSetGlobalMessage", {
+          msg: error.response.data.msg,
+          cb: () => {
+            member.logout().then(() => { });
+          }
+        });
+      }
+    });
+};
 // 輸入欄位共用驗證
 export const actionVerificationFormData = ({ state, dispatch, commit }, data) => {
   let configInfo;
@@ -1706,3 +1752,23 @@ export const actionSetSwagBalance = ({ commit, state }, data) => {
     commit(types.SET_SWAG_BALANCE, res.data);
   })
 };
+
+export const actionSetWebDomain = ({ commit }) =>
+  axios({
+    method: 'get',
+    url: '/conf/domain',
+  }).then(res => {
+    let result = {
+      domain: '',
+      site: 'porn1'
+    }
+    console.log('[conf/domain]:', res.data);
+    const site = res && res.data && String(res.data.site) || '';
+    const domain = res && res.data && String(res.data.domain) || '';
+    result['site'] = site;
+    result['domain'] = domain;
+    commit(types.SET_WEB_DOMAIN, result);
+  }).catch((res) => {
+    console.log('[conf/domain]:', res);
+    commit(types.SET_WEB_DOMAIN, { site: 'porn1', domain: '67' });
+  });

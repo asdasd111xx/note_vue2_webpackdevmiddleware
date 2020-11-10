@@ -211,6 +211,8 @@ export default {
     },
     headerConfig() {
       const query = this.$route.query;
+      this.isFullScreen = query.func === undefined ? true : query.func === 'true';
+
       return {
         hasHeader: query.hasHeader === undefined ? false : query.hasHeader === 'true',
         hasFooter: query.hasFooter === undefined ? true : query.hasFooter === 'true',
@@ -412,6 +414,13 @@ export default {
   }
 }
 
+@media (orientation: landscape) {
+  .header,
+  .iframe {
+    max-width: $mobile_max_landscape_width !important;
+  }
+}
+
 .btn-prev {
   position: absolute;
   top: 0;
@@ -461,12 +470,15 @@ export default {
   top: 0;
   margin: 0 auto;
   transform: rotate(90deg);
-  height: 14px;
+  height: 18px;
   margin: 0 auto;
-  left: calc(50% - 7px);
+  left: calc(50% - 9px);
   background: rgba(0, 0, 0, 0.5);
   border-radius: 0 5px 5px 0;
   opacity: 1;
+  display: flex;
+  align-items: center;
+  justify-content: center;
 
   > img {
     height: 14px;

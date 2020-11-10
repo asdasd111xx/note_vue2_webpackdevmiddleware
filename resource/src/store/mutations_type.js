@@ -58,6 +58,7 @@ export const SET_USER_LEVELS = 'SET_USER_LEVELS';
 export const SET_MCENTER_USER_CONFIG = 'SET_MCENTER_USER_CONFIG';
 // 會員端-會員資料 v3
 export const SETMEMINFOV3 = 'SETMEMINFOV3';
+export const SET_WEB_DOMAIN = 'SET_WEB_DOMAIN';
 // ＝＝＝＝＝＝＝＝＝＝＝＝＝＝＝＝＝＝
 //     AGENT 代理相關
 // ＝＝＝＝＝＝＝＝＝＝＝＝＝＝＝＝＝＝
@@ -85,7 +86,6 @@ export const SETMCENTERBANKREBATE = 'SETMCENTERBANKREBATE';
 export const SETMCENTERREBATE = 'SETMCENTERREBATE';
 // 會員中心-存款
 export const SET_MCENTER_DEPOSIT = 'SET_MCENTER_DEPOSIT';
-
 // ＝＝＝＝＝＝＝＝＝＝＝＝＝＝＝＝＝＝
 //     AGCENTER 代理中心
 // ＝＝＝＝＝＝＝＝＝＝＝＝＝＝＝＝＝＝
