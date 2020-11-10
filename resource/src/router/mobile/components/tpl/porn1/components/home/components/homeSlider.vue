@@ -4,14 +4,11 @@
       <div :class="$style['phone-image-wrap']">
         <img
           :class="$style['phone-image']"
-          :src="$getCdnPath(info.image[curLang])"
-          :data-info="key"
-        />
-      </div>
-      <div>
-        <img
-          :class="$style['pad-image']"
-          :src="$getCdnPath(info.padImg[curLang])"
+          :src="
+            info.image && info.image[curLang]
+              ? $getCdnPath(info.image[curLang])
+              : '/static/image/_new/default/bg_banner_d.png'
+          "
           :data-info="key"
         />
       </div>
@@ -101,7 +98,7 @@ export default {
     generateDefaultImg() {
       return {
         linkType: 'nolink', linkTo: '', linkItem: '',
-        image: { 'zh-cn': '/static/image/ey1/default/bg_banner_d.png' }
+        image: { 'zh-cn': '/static/image/_new/default/bg_banner_d.png' }
       };
     },
     /**
