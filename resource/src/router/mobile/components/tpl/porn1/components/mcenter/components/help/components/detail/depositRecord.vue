@@ -79,12 +79,16 @@
 
       <div :class="$style['tips-block']">
         <div :class="$style['tips-cell']">
-          實際匯率:&nbsp;{{ detailRate && detailRate.crypto_rate }}
+          实际汇率：&nbsp;{{ detailRate && detailRate.crypto_rate }}
         </div>
         <div :class="$style['tips-cell']">
-          入帳數量:&nbsp;{{ detailRate && detailRate.crypto_num }}
+          入帐数量：&nbsp;{{ detailRate && detailRate.crypto_num }}
         </div>
-        <div :class="$style['tips-content']" v-html="detailRate.memo" />
+        <div v-if="detailRate.memo" :class="$style['tips-cell']">
+          <span>备注：</span>
+          <div :class="$style['tips-content']" v-html="detailRate.memo" />
+        </div>
+
         <div :class="[$style['close']]" @click="detailRate = null">关闭</div>
       </div>
     </div>
@@ -103,18 +107,6 @@
     <div v-if="!data.length" :class="$style['no-data-wrap']">
       <img :src="$getCdnPath(`/static/image/${theme}/mcenter/no_data.png`)" />
       <div :class="$style['tips']">暂时没有新的充值记录</div>
-      <div
-        v-if="!isApp"
-        :class="[
-          $style['btn-deposit'],
-          {
-            [$style['ey1']]: theme === 'ey1',
-          },
-        ]"
-        @click="$router.push('/mobile/mcenter/deposit')"
-      >
-        立即充值
-      </div>
     </div>
   </div>
 </template>

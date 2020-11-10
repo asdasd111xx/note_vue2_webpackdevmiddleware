@@ -193,18 +193,17 @@
   </div>
 </template>
 
-
 <script>
-import { mapGetters, mapActions } from 'vuex';
-import { getCookie } from '@/lib/cookie';
-import ajax from '@/lib/ajax';
-import axios from 'axios'
-import balanceTran from '@/components/mcenter/components/balanceTran';
-import EST from '@/lib/EST';
+import { mapGetters, mapActions } from "vuex";
+import { getCookie } from "@/lib/cookie";
+import ajax from "@/lib/ajax";
+import axios from "axios";
+import balanceTran from "@/components/mcenter/components/balanceTran";
+import EST from "@/lib/EST";
 import message from "@/router/mobile/components/common/message";
-import Vue from 'vue';
-import withdrawAccount from '@/router/mobile/components/common/withdrawAccount/withdrawAccount';
-import yaboRequest from '@/api/yaboRequest';
+import Vue from "vue";
+import withdrawAccount from "@/router/mobile/components/common/withdrawAccount/withdrawAccount";
+import yaboRequest from "@/api/yaboRequest";
 
 export default {
   components: {
@@ -213,105 +212,124 @@ export default {
   },
   data() {
     return {
-      msg: '',
-      estToday: EST(new Date(), '', true),
-      limitDate: '',
-      startTime: '',
-      endTime: '',
+      msg: "",
+      estToday: EST(new Date(), "", true),
+      limitDate: "",
+      startTime: "",
+      endTime: "",
       isShowTrans: false,
       mainListData: [],
       mainNoData: false,
       isCheckWithdraw: false,
       walletIcons: [
         {
-          key: 'transfer',
+          key: "transfer",
           show: true,
-          text: this.$text('S_TRANSFER', '转帐'),
-          imgSrc: '/static/image/_new/mcenter/wallet/ic_wallter_tranfer.png',
+          text: this.$text("S_TRANSFER", "转帐"),
+          imgSrc: "/static/image/_new/mcenter/wallet/ic_wallter_tranfer.png",
           onClick: () => {
-            this.$router.push('/mobile/mcenter/balanceTrans');
+            this.$router.push("/mobile/mcenter/balanceTrans");
           }
         },
         {
-          key: 'withdraw',
+          key: "withdraw",
           show: true,
-          text: this.$text('S_WITHDRAWAL_TEXT', '提现'),
-          imgSrc: '/static/image/_new/mcenter/wallet/ic_wallter_withdraw.png',
+          text: this.$text("S_WITHDRAWAL_TEXT", "提现"),
+          imgSrc: "/static/image/_new/mcenter/wallet/ic_wallter_withdraw.png",
           onClick: () => {
-            if (this.isCheckWithdraw) { return; }
+            if (this.themeTPL === "porn1") {
+              this.$router.push("/mobile/mcenter/withdraw");
+              return;
+            }
+
+            if (this.isCheckWithdraw) {
+              return;
+            }
             this.isCheckWithdraw = true;
             axios({
-              method: 'get',
-              url: '/api/v2/c/withdraw/check',
-            }).then((res) => {
-              this.isCheckWithdraw = false;
+              method: "get",
+              url: "/api/v2/c/withdraw/check"
+            })
+              .then(res => {
+                this.isCheckWithdraw = false;
 
-              if (res.data.result === "ok") {
-                let check = true;
+                if (res.data.result === "ok") {
+                  let check = true;
 
-                Object.keys(res.data.ret).forEach(i => {
-                  if (i !== "bank" && !res.data.ret[i]) {
-                    this.actionSetGlobalMessage({
-                      msg: '请先设定提现资料', cb: () => {
-                        {
-                          this.$router.push('/mobile/withdrawAccount?redirect=wallet');
+                  Object.keys(res.data.ret).forEach(i => {
+                    if (i !== "bank" && !res.data.ret[i]) {
+                      this.actionSetGlobalMessage({
+                        msg: "请先设定提现资料",
+                        cb: () => {
+                          {
+                            this.$router.push(
+                              "/mobile/withdrawAccount?redirect=wallet"
+                            );
+                          }
                         }
-                      }
-                    })
-                    check = false;
-                    return;
-                  }
-                })
+                      });
+                      check = false;
+                      return;
+                    }
+                  });
 
-                if (check) {
-                  this.$router.push('/mobile/mcenter/withdraw');
+                  if (check) {
+                    this.$router.push("/mobile/mcenter/withdraw");
+                  }
+                } else {
+                  this.actionSetGlobalMessage({
+                    msg: res.data.msg,
+                    code: res.data.code
+                  });
                 }
-              } else {
-                this.actionSetGlobalMessage({ msg: res.data.msg, code: res.data.msg.code });
-              }
-            }).catch(res => {
-              if (res.response.data) {
-                this.actionSetGlobalMessage({ msg: res.response.data.msg, code: res.data.msg.code, cb: () => { } });
-              }
-              this.isCheckWithdraw = false;
+              })
+              .catch(res => {
+                if (res.response.data) {
+                  this.actionSetGlobalMessage({
+                    msg: res.response.data.msg,
+                    code: res.response.data.code
+                  });
+                }
+                this.isCheckWithdraw = false;
+              });
+          }
+        },
+        {
+          key: "recharge",
+          show: false,
+          text: this.$text("S_CREDIT_TRANSFER", "额度转让"),
+          imgSrc: "/static/image/_new/mcenter/wallet/ic_wallet_trans.png",
+          onClick: () => {
+            this.actionGetMemInfoV3().then(() => {
+              this.actionGetRechargeStatus("wallet");
             });
           }
         },
         {
-          key: 'recharge',
-          show: false,
-          text: this.$text("S_CREDIT_TRANSFER", "额度转让"),
-          imgSrc: '/static/image/_new/mcenter/wallet/ic_wallet_trans.png',
-          onClick: () => {
-            this.actionGetMemInfoV3().then(() => {
-              this.actionGetRechargeStatus('wallet');
-            })
-          }
-        },
-        {
-          key: 'card',
+          key: "card",
           show: true,
-          text: this.$text('S_MARANGE_CARD', '卡片管理'),
-          imgSrc: '/static/image/_new/mcenter/wallet/ic_wallter_manage.png',
+          text: this.$text("S_MARANGE_CARD", "卡片管理"),
+          imgSrc: "/static/image/_new/mcenter/wallet/ic_wallter_manage.png",
           onClick: () => {
-            this.$router.push('/mobile/mcenter/bankCard');
+            this.$router.push("/mobile/mcenter/bankCard");
           }
         }
       ],
-      bonus: {},
+      bonus: {}
     };
   },
   computed: {
     ...mapGetters({
-      loginStatus: 'getLoginStatus',
-      memInfo: 'getMemInfo',
-      gameData: 'getGameData',
-      siteConfig: 'getSiteConfig',
-      hasBank: 'getHasBank',
-      rechargeConfig: 'getRechargeConfig',
+      loginStatus: "getLoginStatus",
+      memInfo: "getMemInfo",
+      gameData: "getGameData",
+      siteConfig: "getSiteConfig",
+      hasBank: "getHasBank",
+      rechargeConfig: "getRechargeConfig"
     }),
     $style() {
-      const style = this[`$style_${this.siteConfig.MOBILE_WEB_TPL}`] || this.$style_porn1;
+      const style =
+        this[`$style_${this.siteConfig.MOBILE_WEB_TPL}`] || this.$style_porn1;
       return style;
     },
     themeTPL() {
@@ -320,17 +338,17 @@ export default {
   },
   created() {
     if (!this.loginStatus) {
-      this.$router.push('/mobile/login');
+      this.$router.push("/mobile/login");
     }
 
     this.actionSetUserBalance();
 
     this.startTime = Vue.moment(this.estToday)
-      .add(-30, 'days')
-      .format('YYYY-MM-DD');
-    this.endTime = Vue.moment(this.estToday).format('YYYY-MM-DD');
+      .add(-30, "days")
+      .format("YYYY-MM-DD");
+    this.endTime = Vue.moment(this.estToday).format("YYYY-MM-DD");
     //紅利帳戶api
-    axios.get("/api/v1/c/gift-card").then((response) => {
+    axios.get("/api/v1/c/gift-card").then(response => {
       if (response.data.result === "ok") {
         this.bonus = response.data.total;
       }
@@ -341,10 +359,10 @@ export default {
   },
   methods: {
     ...mapActions([
-      'actionSetGlobalMessage',
-      'actionGetRechargeStatus',
-      'actionGetMemInfoV3',
-      'actionSetUserBalance'
+      "actionSetGlobalMessage",
+      "actionGetRechargeStatus",
+      "actionGetMemInfoV3",
+      "actionSetUserBalance"
     ]),
     handleDeposit() {
       this.$router.push(`/mobile/mcenter/deposit`);
@@ -373,7 +391,7 @@ export default {
       this.$router.push(path);
     },
     onClickInvite() {
-      this.$router.push('/mobile/mcenter/makeMoney');
+      this.$router.push("/mobile/mcenter/makeMoney");
     },
     toggleTrans() {
       this.isShowTrans = !this.isShowTrans;
@@ -381,17 +399,17 @@ export default {
     getRecordList() {
       const params = {
         start_at: Vue.moment(this.startTime).format(
-          'YYYY-MM-DD 00:00:00-04:00'
+          "YYYY-MM-DD 00:00:00-04:00"
         ),
-        end_at: Vue.moment(this.endTime).format('YYYY-MM-DD 23:59:59-04:00')
+        end_at: Vue.moment(this.endTime).format("YYYY-MM-DD 23:59:59-04:00")
       };
 
       // 各遊戲注單統計資料(依投注日期)
       ajax({
-        method: 'get',
-        url: '/api/v1/c/stats/wager-report/by-day-game',
+        method: "get",
+        url: "/api/v1/c/stats/wager-report/by-day-game",
         params,
-        success: (response) => {
+        success: response => {
           if (response.ret.length === 0) {
             this.mainListData = [];
             this.mainNoData = true;
@@ -418,16 +436,26 @@ export default {
         `;
     },
     getVendorName(vendor, kind) {
-      if (!this.memInfo.vendors.find((item) => item.vendor === vendor && item.kind === kind)) {
-        return this.$t(Object.keys(this.gameData).map((key) => {
-          if (this.gameData[key].vendor === vendor) {
-            return this.gameData[key].text;
-          }
+      if (
+        !this.memInfo.vendors.find(
+          item => item.vendor === vendor && item.kind === kind
+        )
+      ) {
+        return this.$t(
+          Object.keys(this.gameData)
+            .map(key => {
+              if (this.gameData[key].vendor === vendor) {
+                return this.gameData[key].text;
+              }
 
-          return '';
-        }).join(''));
+              return "";
+            })
+            .join("")
+        );
       }
-      return this.memInfo.vendors.find((item) => item.vendor === vendor && item.kind === kind).alias;
+      return this.memInfo.vendors.find(
+        item => item.vendor === vendor && item.kind === kind
+      ).alias;
     }
   }
 };

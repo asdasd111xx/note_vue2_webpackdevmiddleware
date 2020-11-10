@@ -209,10 +209,10 @@ export default {
         let tmpIndex = this.currentBonusIndex;
         let array = [];
         this.currentBonus = [];
-        this.$nextTick(() => {
+        setTimeout(() => {
 
           // 3 casino, 6 mahjong,card
-          let imgSrc = `https://bbos.bbin-asia.com/cdn/image/${this.$route.name}/${this.vendor}/Game_${this.jackpotData.jpMinor[tmpIndex].code}.png`;
+          let imgSrc = `${this.siteConfig.BBOS_DOMIAN_CDN}/image/${this.$route.name}/${this.vendor}/Game_${this.jackpotData.jpMinor[tmpIndex].code}.png`;
           array.push({ ...this.jackpotData.jpMinor[tmpIndex], imgSrc: imgSrc });
 
           if (tmpIndex + 1 >= this.jackpotData.jpMinor.length) {
@@ -221,7 +221,7 @@ export default {
             tmpIndex += 1;
           }
 
-          imgSrc = `https://bbos.bbin-asia.com/cdn/image/${this.$route.name}/${this.vendor}/Game_${this.jackpotData.jpMinor[tmpIndex].code}.png`;
+          imgSrc = `${this.siteConfig.BBOS_DOMIAN_CDN}/image/${this.$route.name}/${this.vendor}/Game_${this.jackpotData.jpMinor[tmpIndex].code}.png`;
           array.push({ ...this.jackpotData.jpMinor[tmpIndex], imgSrc: imgSrc });
 
           this.currentBonus = array;
@@ -233,7 +233,7 @@ export default {
           }
 
           this.currentBonusIndex = tmpIndex;
-        })
+        }, 300)
       }
 
       if (this.jackpotData.jpMinor.length > 1) {
@@ -242,7 +242,7 @@ export default {
           interval();
         }, 3000);
       } else {
-        let imgSrc = `https://bbos.bbin-asia.com/cdn/image/${this.$route.name}/${this.vendor}/Game_${this.jackpotData.jpMinor[0].code}.png`;
+        let imgSrc = `${this.siteConfig.BBOS_DOMIAN_CDN}/image/${this.$route.name}/${this.vendor}/Game_${this.jackpotData.jpMinor[0].code}.png`;
         this.currentBonus = [];
         this.currentBonus.push({ ...this.jackpotData.jpMinor[0], imgSrc: imgSrc });
       }
@@ -257,7 +257,7 @@ export default {
         let array = [];
         this.currentUsers = [];
 
-        this.$nextTick(() => {
+        setTimeout(() => {
           array.push({ ...this.jackpotData.jpUserList[tmpIndex], no: tmpIndex + 1 });
 
           let i = 1;
@@ -280,7 +280,8 @@ export default {
           }
 
           this.currentUsersIndex = tmpIndex;
-        })
+        }, 300)
+
       }
 
       if (this.jackpotData.jpUserList.length > 1) {
@@ -357,10 +358,10 @@ export default {
           this.animatedNumber.value = +this.jackpotData.jpGrand - 2;
           this.animatedNumber.duration = 0;
 
-          this.$nextTick(() => {
+          setTimeout(() => {
             this.animatedNumber.value = +this.jackpotData.jpGrand;
             this.animatedNumber.duration = 150000;
-          })
+          }, 300)
           return;
 
         // 單一遊戲彩金

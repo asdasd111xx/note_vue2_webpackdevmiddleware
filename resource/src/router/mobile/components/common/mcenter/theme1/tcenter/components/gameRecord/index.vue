@@ -32,7 +32,7 @@
             :key="info.key"
             :class="[
               $style['search-tab'],
-              { [$style.active]: currentCondition === info.key }
+              { [$style.active]: currentCondition === info.key },
             ]"
             @click="changeSearchCondition(info.key)"
           >
@@ -90,13 +90,13 @@
             <div
               :class="[
                 $style['btn-search'],
-                { [$style['disable']]: !checkDate }
+                { [$style['disable']]: !checkDate },
               ]"
               @click="
                 () => {
                   if (!checkDate) {
                     return;
-                  } else {
+                  } else if (inqStart !== inqEnd) {
                     onSearch();
                   }
                 }
@@ -171,53 +171,50 @@ export default {
     InfiniteLoading,
     gameRecord,
     table1st,
-    table2nd
+    table2nd,
   },
   props: {
     setTabState: {
       type: Function,
-      required: true
+      required: true,
     },
     setHeaderTitle: {
       type: Function,
-      required: true
-    }
+      required: true,
+    },
   },
   data() {
     const now = EST(new Date(), "", true);
 
     return {
-      fromDate: Vue.moment(now)
-        .add(-29, "days")
-        .format("YYYY-MM-DD"),
+      fromDate: Vue.moment(now).add(-29, "days").format("YYYY-MM-DD"),
       endDate: Vue.moment(now).format("YYYY-MM-DD"),
       inqGame: "",
       inqStart: Vue.moment(now).format("YYYY-MM-DD"),
       inqEnd: Vue.moment(now).format("YYYY-MM-DD"),
-      checkDate: true
+      checkDate: true,
     };
   },
   computed: {
     ...mapGetters({
       memInfo: "getMemInfo",
-      siteConfig: 'getSiteConfig',
+      siteConfig: "getSiteConfig",
     }),
     $style() {
-      const style = this[`$style_${this.siteConfig.MOBILE_WEB_TPL}`] || this.$style_porn1;
+      const style =
+        this[`$style_${this.siteConfig.MOBILE_WEB_TPL}`] || this.$style_porn1;
       return style;
     },
   },
   methods: {
-    ...mapActions([
-      'actionSetGlobalMessage'
-    ]),
+    ...mapActions(["actionSetGlobalMessage"]),
     limitDate(key, val) {
-      let _value = Vue.moment(val).format('YYYY/MM/DD');
-      let _today = Vue.moment(new Date()).add(-29, 'days').format('YYYY/MM/DD');
+      let _value = Vue.moment(val).format("YYYY/MM/DD");
+      let _today = Vue.moment(new Date()).add(-29, "days").format("YYYY/MM/DD");
 
       if (_value < _today) {
         this.checkDate = false;
-        this.actionSetGlobalMessage({ msg: '查询纪录不能超过30天' });
+        this.actionSetGlobalMessage({ msg: "查询纪录不能超过30天" });
       } else {
         this.checkDate = true;
       }
@@ -228,10 +225,10 @@ export default {
       if (value) {
         return Vue.moment(value).format("YYYY/MM/DD");
       } else {
-        return '';
+        return "";
       }
-    }
-  }
+    },
+  },
 };
 </script>
 

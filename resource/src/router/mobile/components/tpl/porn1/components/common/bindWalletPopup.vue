@@ -31,6 +31,9 @@
                 <textarea
                   v-model="formData['walletAddress'].value"
                   :placeholder="formData['walletAddress'].placeholder"
+                  maxlength="42"
+                  @input="verification('walletAddress')"
+                  @blur="verification('walletAddress')"
                 />
               </div>
             </div>
@@ -89,14 +92,23 @@
             </template>
           </div>
 
-          <div :class="$style['close']">
+          <div :class="$style['button-block']">
             <template v-if="walletType === 'USDT'">
-              <span @click="submitByNormal">送出</span>
+              <span
+                :class="[
+                  $style['submit'],
+                  {
+                    [$style['disable']]: !formData['walletAddress'].value
+                  }
+                ]"
+                @click="submitByNormal"
+                >送出</span
+              >
             </template>
 
             <template v-if="walletType === 'CGPay'">
               <span @click="closePopup">取消</span>
-              <span @click="submitByToken">送出</span>
+              <span :class="$style['submit']" @click="submitByToken">送出</span>
             </template>
           </div>
         </div>
@@ -171,13 +183,13 @@ export default {
       // 彈窗顯示狀態統整
       showPopStatus: {
         isShow: false,
-        type: ''
+        type: ""
       },
 
       qrcodeObj: {
         bank_id: null,
         bind_type: "deposit"
-      },
+      }
     };
   },
   watch: {
@@ -206,7 +218,7 @@ export default {
     }
   },
   methods: {
-    ...mapActions(["actionSetGlobalMessage"]),
+    ...mapActions(["actionSetGlobalMessage", "actionVerificationFormData"]),
     tipMethod(index) {
       switch (index) {
         case 0:
@@ -315,9 +327,15 @@ export default {
     verification(key, index) {
       let target = this.formData[key];
       // let lock = false;
-      // if (key === "walletAddress") {
-      //   target.value = target.value.replace(" ", "").trim();
+      // if (key === "walletAddress" && this.walletType === "USDT") {
+      //   this.actionVerificationFormData({
+      //     target: "USDT-address",
+      //     value: target.value
+      //   }).then(val => {
+      //     this.formData["walletAddress"].value = val;
+      //   });
       // }
+
       if (key === "CGPPwd") {
         target.value = target.value
           .replace(" ", "")
@@ -450,7 +468,7 @@ export default {
   }
 }
 
-.close {
+.button-block {
   display: flex;
   text-align: center;
   padding: 15px 0;
@@ -461,8 +479,12 @@ export default {
   span {
     flex: 1;
 
-    &:last-child {
+    &.submit {
       color: #e42a30;
+    }
+
+    &.disable {
+      pointer-events: none;
     }
   }
 }

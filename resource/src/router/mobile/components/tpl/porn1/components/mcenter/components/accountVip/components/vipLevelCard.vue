@@ -83,10 +83,10 @@
                 <br />
                 流水要求
               </div>
-              <div>
+              <!-- <div>
                 保级推广{{ item.downgrade_members }}位 <br />
                 有效会员(充值{{ item.downgrade_deposit | roundTwoPoints }})
-              </div>
+              </div> -->
             </div>
           </div>
         </swiper-slide>

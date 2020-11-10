@@ -113,10 +113,11 @@
 
     <div v-if="!data.length" :class="$style['no-data-wrap']">
       <img :src="$getCdnPath(`/static/image/${theme}/mcenter/no_data.png`)" />
-      <div v-if="curStatus === 0" :class="$style['tips']">
+      <div :class="$style['tips']">
+        <!-- <template v-if="curStatus === 0"> 暂时没有新的提现记录 </template>
+        <template v-else>还没有任何记录</template> -->
         暂时没有新的提现记录
       </div>
-      <div v-else :class="$style['tips']">还没有任何记录</div>
     </div>
   </div>
 </template>

@@ -1,6 +1,7 @@
 import { getCookie, setCookie } from '@/lib/cookie';
 import { mapActions, mapGetters } from 'vuex';
 
+import Vue from 'vue';
 import axios from 'axios';
 import goLangApiRequest from '@/api/goLangApiRequest';
 import mcenter from '@/api/mcenter';
@@ -22,6 +23,7 @@ export default {
             slideDirection: '',
             wrapHeight: 0,
             allGame: [],
+            maintainList: [],
             selectedIndex: 0,
             currentLevel: 0,
             showPromotion: false,
@@ -47,6 +49,17 @@ export default {
             this.$nextTick(() => {
                 this.onResize();
             })
+        },
+        noticeData() {
+            if (this.noticeData && this.noticeData.length > 0) {
+                // this.data = this.noticeData.pop();
+                let temp = this.noticeData[this.noticeData.length - 1]
+                if (temp.extend && temp.extend === 'verification_code') {
+                    return;
+                } else if (temp.event === "vendor_maintain_notice") {
+                    this.getMaintainList();
+                }
+            }
         }
     },
     computed: {
@@ -57,7 +70,8 @@ export default {
             rechargeConfig: 'getRechargeConfig',
             hasBank: 'getHasBank',
             membalance: 'getMemBalance',
-            yaboConfig: 'getYaboConfig'
+            yaboConfig: 'getYaboConfig',
+            noticeData: 'getNoticeData',
         }),
         isAdult() {
             if (localStorage.getItem('content_rating')) {
@@ -91,6 +105,22 @@ export default {
             };
         },
         allGameList() {
+            if (this.maintainList.length > 0) {
+                // console.log("存入維護狀態");
+                this.allGame.find(data => {
+                    data.vendors.find(game => {
+                        this.maintainList.find(maintainData => {
+                            if (maintainData.vendor === game.vendor && maintainData.kind === game.kind) {
+                                game.isMaintain = true;
+                                game.start_at = Vue.moment(maintainData.start_at).utcOffset(-4).format('YYYY-MM-DD HH:mm:ss');//maintainData.start_at;
+                                game.end_at = Vue.moment(maintainData.end_at).utcOffset(-4).format('YYYY-MM-DD HH:mm:ss');//maintainData.end_at;
+                                // console.log(game);
+                            }
+                        })
+                    })
+                })
+            }
+
             const gameList = this.allGame
                 .map(game => game)
                 .filter(item => {
@@ -110,6 +140,7 @@ export default {
     created() {
         localStorage.removeItem('is-open-game');
         this.showPromotion = this.loginStatus ? this.memInfo.user.show_promotion : true;
+        this.getMaintainList();
     },
     mounted() {
         $(window).on('resize', this.onResize);
@@ -403,6 +434,11 @@ export default {
                 this.$router.push('/mobile/mcenter/tcenter/management/member');
             }
             else if (path === "withdraw") {
+                if (this.siteConfig.MOBILE_WEB_TPL === "porn1") {
+                    this.$router.push('/mobile/mcenter/withdraw');
+                    return;
+                }
+
                 if (this.isCheckWithdraw) { return; }
                 this.isCheckWithdraw = true;
                 axios({
@@ -470,6 +506,11 @@ export default {
                 return;
             }
 
+            let userId = 'guest';
+            if (this.memInfo && this.memInfo.user && this.memInfo.user.id && this.memInfo.user.id !== 0) {
+                userId = this.memInfo.user.id;
+            }
+
             // 福利 全部
             switch (game.type) {
                 // 鴨脖影視(人人影視) -> PPV
@@ -496,9 +537,30 @@ export default {
                             noLoginVideoSwitch = this.yaboConfig.find(i => i.name === "NoLoginVideoSwitch").value;
                         }
 
+                        const getThridUrl = () => goLangApiRequest({
+                            method: 'get',
+                            url: `${this.siteConfig.YABO_GOLANG_API_DOMAIN}/ThirdParty/${game.type}/${userId}`,
+                            headers: {
+                                'x-domain': this.memInfo.user.domain
+                            }
+                        }).then(res => {
+                            if (res && res.status !== '000') {
+                                if (res.msg) {
+                                    this.actionSetGlobalMessage({ msg: res.msg });
+                                }
+                                return;
+                            }
+                            else {
+                                localStorage.setItem('iframe-third-url', res.data);
+                                localStorage.setItem('iframe-third-url-title', game.name);
+                                this.$router.push(`/mobile/iframe/${game.type}?&hasFooter=false&hasHeader=true`);
+                                return;
+                            }
+                        })
+
                         // 未登入開關 開啟時未登入可進入
                         if (noLoginVideoSwitch === 'true') {
-                            this.$router.push(`/mobile/iframe/${game.type}?&title=${game.name}&hasFooter=false&hasHeader=true`);
+                            getThridUrl();
                             return;
                         }
 
@@ -507,7 +569,7 @@ export default {
                             this.$router.push('/mobile/login');
                             return;
                         } else {
-                            this.$router.push(`/mobile/iframe/${game.type}?&title=${game.name}&hasFooter=false&hasHeader=true`);
+                            getThridUrl();
                         }
                     });
 
@@ -557,7 +619,28 @@ export default {
                         this.$router.push('/mobile/login');
                         return;
                     } else {
-                        this.$router.push(`/mobile/iframe/${game.type}?&title=${game.name}&hasFooter=false&hasHeader=true`);
+
+                        goLangApiRequest({
+                            method: 'get',
+                            url: `${this.siteConfig.YABO_GOLANG_API_DOMAIN}/ThirdParty/SWAG/${userId}`,
+                            headers: {
+                                'x-domain': this.memInfo.user.domain
+                            }
+                        }).then(res => {
+                            if (res && res.status !== '000') {
+                                if (res.msg) {
+                                    this.actionSetGlobalMessage({ msg: res.msg });
+                                }
+                                return;
+                            }
+                            else {
+                                localStorage.setItem('iframe-third-url', res.data);
+                                localStorage.setItem('iframe-third-url-title', game.name);
+                                this.$router.push(`/mobile/iframe/${game.type}?&hasFooter=false&hasHeader=true&fullscreen=true`);
+                                return;
+                            }
+                        })
+
                         return;
                     }
 
@@ -730,6 +813,24 @@ export default {
             }).then(res => {
                 this.userViplevel = res.data ? res.data[0] && res.data[0].now_level_seq : 0;
             });
+        },
+
+        getMaintainList() {
+            if (this.loginStatus) {
+                //取維護狀態
+                axios({
+                    method: 'get',
+                    url: '/api/v1/c/vendor/maintains',
+                }).then((res) => {
+                    if (res.data.result == "ok") {
+                        // console.log("取維護狀態");
+                        // console.log(res.data);
+                        this.maintainList = res.data.ret;
+                    }
+                }).catch(res => {
+                    // console.log("取維護狀態XXXX");
+                });
+            }
         }
     },
 };

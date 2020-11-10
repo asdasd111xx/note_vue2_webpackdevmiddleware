@@ -163,18 +163,6 @@ export default {
           }
         })
       });
-
-      // switch (this.memInfo.user.domain) {
-      //   case '74':
-      //     url = 'https://688lg410.666uxm.com/collect';
-      //     break;
-      //   case '41':
-      //     url = 'https://eyd.666uxm.com/collect';
-      //     break;
-      //   case '500023':
-      //     url = 'https://eyt.iplay.bet/collect';
-      //     break;
-      // }
     },
     onClick(target) {
       if (!target.link) {

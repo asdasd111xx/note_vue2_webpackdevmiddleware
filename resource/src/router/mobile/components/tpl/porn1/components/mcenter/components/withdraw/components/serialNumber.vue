@@ -178,7 +178,7 @@ export default {
   props: {
     handleClose: {
       type: Function,
-      default: () => { }
+      default: () => {}
     }
   },
   created() {

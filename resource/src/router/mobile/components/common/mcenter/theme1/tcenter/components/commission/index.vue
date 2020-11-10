@@ -90,34 +90,35 @@ export default {
     commissionRebates: () =>
       import(
         /* webpackChunkName: 'commissionRebates' */ "./components/commissionRebates/index"
-      )
+      ),
   },
   mixins: [commission],
   props: {
     setTabState: {
       type: Function,
-      required: true
+      required: true,
     },
     setHeaderTitle: {
       type: Function,
-      required: true
-    }
+      required: true,
+    },
   },
   data() {
     return {
       isReceive: true,
       isShowRebate: true,
       hasSearch: this.$route.params.page === "record",
-      commissionInfo: {}
+      commissionInfo: {},
     };
   },
   computed: {
     ...mapGetters({
       memInfo: "getMemInfo",
-      siteConfig: "getSiteConfig"
+      siteConfig: "getSiteConfig",
     }),
     $style() {
-      const style = this[`$style_${this.siteConfig.MOBILE_WEB_TPL}`] || this.$style_porn1;
+      const style =
+        this[`$style_${this.siteConfig.MOBILE_WEB_TPL}`] || this.$style_porn1;
       return style;
     },
     start: {
@@ -126,7 +127,7 @@ export default {
       },
       set(date) {
         this.startTime = date;
-      }
+      },
     },
     end: {
       get() {
@@ -134,7 +135,7 @@ export default {
       },
       set(date) {
         this.endTime = date;
-      }
+      },
     },
     getCommissionInfo: {
       get() {
@@ -142,11 +143,11 @@ export default {
       },
       set(data) {
         this.commissionInfo = data;
-      }
+      },
     },
     page() {
       return this.$route.params.page;
-    }
+    },
   },
   watch: {
     startTime() {
@@ -160,7 +161,7 @@ export default {
         this.setTabState(true);
         this.setHeaderTitle(this.$text("S_TEAM_CENTER", "我的推广"));
       }
-    }
+    },
   },
   filters: {
     dateFormat(value) {
@@ -169,7 +170,7 @@ export default {
       } else {
         return "";
       }
-    }
+    },
   },
   created() {
     this.getRebateSwitch();
@@ -193,8 +194,10 @@ export default {
       this.$router.push(`/mobile/mcenter/tcenter/commission/${page}`);
     },
     onInquire() {
-      this.onSearch();
-      this.hasSearch = false;
+      if (this.startTime !== this.endTime) {
+        this.onSearch();
+        this.hasSearch = false;
+      }
     },
     getRebateSwitch() {
       this.isReceive = false;
@@ -204,10 +207,10 @@ export default {
         method: "get",
         url: this.siteConfig.BBOS_DOMIAN + "/Wage/SelfDispatchInfo",
         reqHeaders: {
-          Vendor: this.memInfo.user.domain
+          Vendor: this.memInfo.user.domain,
         },
-        params: { lang: "zh-cn" }
-      }).then(response => {
+        params: { lang: "zh-cn" },
+      }).then((response) => {
         this.isReceive = true;
 
         if (response.status === "000") {
@@ -215,8 +218,8 @@ export default {
           return;
         }
       });
-    }
-  }
+    },
+  },
 };
 </script>
 

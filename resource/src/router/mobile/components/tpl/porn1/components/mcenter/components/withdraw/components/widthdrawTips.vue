@@ -6,8 +6,8 @@
         :class="[
           $style['check-container'],
           {
-            [$style['deposit']]: type === 'deposit',
-          },
+            [$style['deposit']]: type === 'deposit'
+          }
         ]"
       >
         <div :class="$style['check-header']">
@@ -55,7 +55,6 @@
               <div :class="$style['check-cell']">
                 <span :class="$style['sub-title']">
                   {{ $text("S_DEDUCTION_MONEY", "扣除金额") }}
-                  (行政费用:{{ `${serialNumberData.administrative_rate}%` }})
                 </span>
                 <span :class="$style['money']">
                   -{{ getDeductionNumber(serialNumberData.total.deduction) }}
@@ -151,8 +150,8 @@ export default {
       default: 0
     },
     cryptoMoney: {
-      type: Number,
-      default: 0
+      type: String,
+      default: "0.00"
     },
     withdrawValue: {
       type: Number,
@@ -182,6 +181,12 @@ export default {
     },
     handleCheckRule() {
       this.$emit("save");
+
+      // 109/11/05
+      // 與企劃確認，跳轉至幫助中心後，提現金額的金額不需保留
+      localStorage.removeItem("tmp_w_amount");
+      localStorage.removeItem("tmp_w_actualAmount");
+
       if (this.type === "tips") {
         this.$router.push("/mobile/mcenter/help/withdraw?&key=6");
       } else if (this.type === "deposit") {
@@ -189,14 +194,22 @@ export default {
       }
     },
     handleBack() {
-      // if (this.type === "tips") {
-      //   this.$router.push("/mobile/mcenter/wallet");
-      // } else if (this.type === "deposit") {
-      //   this.$router.back();
-      // }
-      this.$router.back();
+      // 109/11/10 因 App 端只有鴨博有做返前一頁的動作，仍尚未同步億元
+      switch (this.siteConfig.MOBILE_WEB_TPL) {
+        case "porn1":
+          if (this.type === "tips") {
+            this.$router.push("/mobile/mcenter/wallet");
+          } else if (this.type === "deposit") {
+            this.$router.back();
+          }
+          break;
+
+        case "ey1":
+          this.closeTips();
+          break;
+      }
     }
-  },
+  }
   // watch: {
   //   show(val) {
   //     if (val) {

@@ -34,6 +34,7 @@
       <!-- user info -->
       <template v-if="userVipInfo">
         <vip-user
+          :vipLevelList="vipLevelList"
           :userVipInfo="
             userVipInfo.find(item => item.config_id === this.currentConfigID)
           "

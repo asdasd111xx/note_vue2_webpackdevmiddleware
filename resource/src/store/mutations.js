@@ -529,4 +529,7 @@ export default {
   [types.SET_PROMOTION_LINK](state, data) {
     state.promotionLink = data
   },
+  [types.SET_WEB_DOMAIN](state, data) {
+    state.webDomain = data
+  },
 };

@@ -1726,5 +1726,14 @@
   "S_NEED_TRANSFER_IN_COUNT": "需转入数量",
   "S_NO_BONUS": "暂时没有新的红利彩金",
   "S_BONUS": "红利彩金",
-  "S_NO_BONUS_ACCOUNT": "暂时没有新的红利账户"
+  "S_NO_BONUS_ACCOUNT": "暂时没有新的红利帐户",
+  "S_BUY_DIAMOND": "购买钻石",
+  "S_DIAMOND_DISCOUNT": "钻石优惠",
+  "S_DIAMOND_RECOARD": "钻石记录",
+  "S_TO_BUY": "如何购买",
+  "S_INSTRUSTIONS": "使用方法",
+  "S_DIAMOND_BALANCE": "钻石余额",
+  "S_INTO_SWAG": "进入SWAG",
+  "S_YABO_PORN": "鸭博色播",
+  "S_DIAMOND_SWAG": "SWAG钻石"
 }

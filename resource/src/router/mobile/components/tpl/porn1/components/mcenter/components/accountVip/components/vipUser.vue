@@ -10,7 +10,7 @@
         <div ref="name" :class="$style['name']">
           <span>{{ memInfo.user.username }}</span>
           <span :style="`display: ${setVipTextDisplay}`">
-            VIP{{ userVipInfo.now_level_seq }}
+            {{ userVipInfo.now_level_alias }}
           </span>
         </div>
       </div>
@@ -19,9 +19,7 @@
         :class="$style['user-vip-desc']"
         @click="$router.push('/mobile/mcenter/accountVIP/detail')"
       >
-        <div :class="$style['vip-text']">
-          VIP详情
-        </div>
+        <div :class="$style['vip-text']">VIP详情</div>
         <div :class="$style['vip-level']">
           <img
             :src="
@@ -38,7 +36,7 @@
     <!-- 進度條 -->
     <div :class="$style['run-block']">
       <div :class="[$style['run-level'], $style['current']]">
-        <p>VIP{{ userVipInfo.now_level_seq }}</p>
+        <p>{{ userVipInfo.now_level_alias }}</p>
       </div>
       <div :class="$style['run-bar']">
         <div :class="$style['run-ok-bar']" :style="{ width: runPercent }">
@@ -61,8 +59,11 @@
         </div>
       </div>
 
-      <div :class="[$style['run-level'], $style['next']]">
-        <p>VIP{{ userVipInfo.next_level_seq }}</p>
+      <div
+        v-if="userVipInfo.now_level_seq < vipLevelList.length"
+        :class="[$style['run-level'], $style['next']]"
+      >
+        <p>{{ userVipInfo.next_level_alias }}</p>
       </div>
     </div>
 
@@ -74,7 +75,7 @@
           userVipInfo.amount_info.deposit_total
         }}</span>
         ({{ userVipInfo.amount_info.deposit_total }}/{{
-          userVipInfo.next_level_deposit_total
+          nextLevelDepositTotalData
         }})
       </div>
       <div :class="$style['desc-text']">
@@ -82,11 +83,9 @@
         <span :class="$style['money']">{{
           userVipInfo.amount_info.valid_bet
         }}</span>
-        ({{ userVipInfo.amount_info.valid_bet }}/{{
-          userVipInfo.next_level_valid_bet
-        }})
+        ({{ userVipInfo.amount_info.valid_bet }}/{{ nextLevelValidBetData }})
       </div>
-      <div :class="$style['desc-text']">
+      <!-- <div :class="$style['desc-text']">
         ●保级推广(位)：
         <span :class="$style['money']">{{
           userVipInfo.downgrade_members
@@ -94,7 +93,7 @@
         (有效会员充值{{ userVipInfo.downgrade_valid_bet }} , 保级{{
           userVipInfo.downgrade_day
         }}天)
-      </div>
+      </div> -->
     </div>
   </div>
 </template>
@@ -104,10 +103,14 @@ import { mapGetters, mapActions } from "vuex";
 import axios from "axios";
 export default {
   props: {
+    vipLevelList: {
+      type: Array | null,
+      required: true
+    },
     userVipInfo: {
       type: Object | null,
       required: true
-    }
+    },
   },
   data() {
     return {
@@ -129,6 +132,27 @@ export default {
     },
     runPercent() {
       return this.userVipInfo.percent + "%";
+    },
+
+    nextLevelDepositTotalData() {
+      if (this.vipLevelList.length <= 0 || !this.userVipInfo) {
+        return;
+      }
+      if (this.userVipInfo.now_level_seq < this.vipLevelList.length) {
+        return this.userVipInfo.next_level_deposit_total;
+      } else {
+        return this.vipLevelList[this.userVipInfo.now_level_seq - 1].deposit_total;
+      }
+    },
+    nextLevelValidBetData() {
+      if (this.vipLevelList.length <= 0 || !this.userVipInfo) {
+        return;
+      }
+      if (this.userVipInfo.now_level_seq < this.vipLevelList.length) {
+        return this.userVipInfo.next_level_valid_bet;
+      } else {
+        return this.vipLevelList[this.userVipInfo.now_level_seq - 1].valid_bet_limit;
+      }
     }
   },
   mounted() {

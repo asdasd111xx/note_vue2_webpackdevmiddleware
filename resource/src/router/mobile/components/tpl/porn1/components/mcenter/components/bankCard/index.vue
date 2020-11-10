@@ -260,8 +260,9 @@ export default {
         }
       }
 
-      // 預設頁面
-      this.setPageStatus(this.currentTab, this.currentPage, this.isShowTab);
+      // 預設頁面(預設為銀行卡頁面)
+      // this.setPageStatus(this.currentTab, this.currentPage, this.isShowTab);
+      this.setPageStatus(0, "bankCardInfo", true);
     });
   },
   methods: {

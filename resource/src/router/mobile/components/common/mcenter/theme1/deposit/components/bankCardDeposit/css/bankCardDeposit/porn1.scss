@@ -147,6 +147,12 @@
     text-align: center;
     text-overflow: ellipsis;
     white-space: nowrap;
+
+    &.custom {
+      height: auto;
+      line-height: normal;
+      font-size: 16px;
+    }
   }
 }
 
@@ -347,12 +353,14 @@
 
     &.disable {
       pointer-events: none;
-    }
-
-    &.unInput {
       border: 1px solid #e9dacb;
       color: #e9dacb;
     }
+
+    // &.unInput {
+    //   border: 1px solid #e9dacb;
+    //   color: #e9dacb;
+    // }
   }
 }
 
@@ -979,6 +987,10 @@
 .warm-tip {
   font-size: 12px;
   color: #a6a9b2;
+
+  p {
+    margin: 0;
+  }
 }
 
 .entry-message-container {

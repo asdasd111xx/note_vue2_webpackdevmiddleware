@@ -12,8 +12,8 @@
             :class="[
               $style['balance-item'],
               {
-                [$style['is-last-item']]: !isShowMore,
-              },
+                [$style['is-last-item']]: !isShowMore
+              }
             ]"
             @click="$router.push('/mobile/mcenter/bonus')"
           >
@@ -43,8 +43,8 @@
                     Object.keys(balanceTran.firstThirdBalanceInfo).length -
                       index <=
                     (Object.keys(balanceTran.firstThirdBalanceInfo).length %
-                      3 || 3),
-                },
+                      3 || 3)
+                }
               ]"
             >
               <span :class="$style['balance-item-vendor']">{{
@@ -97,8 +97,8 @@
                 {
                   [$style['is-last-item']]:
                     Object.keys(balanceTran.balanceInfo).length - index <=
-                    (Object.keys(balanceTran.balanceInfo).length % 4 || 4),
-                },
+                    (Object.keys(balanceTran.balanceInfo).length % 4 || 4)
+                }
               ]"
             >
               <span :class="$style['balance-item-vendor']">{{
@@ -159,10 +159,11 @@
           <span
             v-if="
               forceStatus === 1 &&
-              userWithdrawCount === 0 &&
-              isFirstWithdraw &&
-              withdrawUserData.wallet.length + withdrawUserData.crypto.length >
-                0
+                userWithdrawCount === 0 &&
+                isFirstWithdraw &&
+                withdrawUserData.wallet.length +
+                  withdrawUserData.crypto.length >
+                  0
             "
             :class="$style['withdraw-status-tip']"
           >
@@ -186,8 +187,8 @@
           :class="[
             $style['bank-card-cell'],
             {
-              [$style['disable']]: !item.allow,
-            },
+              [$style['disable']]: !item.allow
+            }
           ]"
           @click="handleSelectCard(item)"
         >
@@ -196,8 +197,8 @@
               $style['check-box'],
               { [$style['checked']]: item.id === selectedCard.id },
               {
-                [$style['disable']]: !item.allow,
-              },
+                [$style['disable']]: !item.allow
+              }
             ]"
           />
           <!-- <img v-lazy="getBankImage(item.swift_code)" /> -->
@@ -271,15 +272,15 @@
           :class="[
             $style['bank-card-cell'],
             {
-              [$style['disable']]: forceStatus === 2 && !item.allow,
-            },
+              [$style['disable']]: forceStatus === 2 && !item.allow
+            }
           ]"
           @click="handleSelectCard(item)"
         >
           <div
             :class="[
               $style['check-box'],
-              { [$style['checked']]: item.id === selectedCard.id },
+              { [$style['checked']]: item.id === selectedCard.id }
             ]"
           />
           <span :class="[{ [$style['hasOption']]: item.bank_id === 2009 }]">
@@ -349,7 +350,7 @@
       <div
         v-if="
           allWithdrawAccount.length > 0 &&
-          (moreMethodStatus.bankCard || moreMethodStatus.wallet)
+            (moreMethodStatus.bankCard || moreMethodStatus.wallet)
         "
         :class="[$style['add-bank-card']]"
         @click="setPopupStatus(true, 'moreMethod')"
@@ -382,7 +383,7 @@
         inputmode="decimal"
         @input="verification('withdrawValue', $event.target.value)"
         @blur="
-          ($event) => {
+          $event => {
             verification('withdrawValue', $event.target.value);
             if (isSelectedUSDT && isClickCoversionBtn && withdrawValue) {
               convertCryptoMoney();
@@ -405,8 +406,8 @@
         $style['actual-money'],
         {
           [$style['error']]:
-            themeTPL === 'ey1' && withdrawValue && actualMoney <= 0,
-        },
+            themeTPL === 'ey1' && withdrawValue && actualMoney <= 0
+        }
       ]"
     >
       <span :class="$style['money-currency']">
@@ -428,7 +429,7 @@
 
     <!-- 匯率試算 -->
     <div v-if="isSelectedUSDT" :class="$style['crypto-block']">
-      <span :class="$style['money-currency']">¥</span>
+      <!-- <span :class="$style['money-currency']">¥</span> -->
       <span :class="$style['money-currency']">
         {{ selectedCard.name }}到帐
       </span>
@@ -440,11 +441,9 @@
         :class="[
           $style['conversion-btn'],
           {
-            [$style['disable']]: isClickCoversionBtn,
-          },
-          {
-            [$style['unInput']]: !withdrawValue || +actualMoney <= 0,
-          },
+            [$style['disable']]:
+              isClickCoversionBtn || !withdrawValue || +actualMoney <= 0
+          }
         ]"
         @click="convertCryptoMoney"
       >
@@ -513,11 +512,10 @@
       </div>
 
       <div :class="$style['tips']">
-        {{
-          allWithdrawAccount && allWithdrawAccount.length !== 0
-            ? "为了方便您快速提现，请先将所有场馆钱包金额回收至中心钱包"
-            : "请先绑定一张银行卡，用于收款"
-        }}
+        <div v-if="allWithdrawAccount && allWithdrawAccount.length !== 0">
+          为了方便您快速提现，请先将所有场馆钱包金额回收至中心钱包
+        </div>
+        <div v-else>请先绑定一张银行卡，用于收款</div>
       </div>
     </template>
 
@@ -546,7 +544,7 @@
       <template v-if="showPopStatus.type === 'check'">
         <widthdraw-tips
           :actual-money="+actualMoney"
-          :crypto-money="+cryptoMoney"
+          :crypto-money="cryptoMoney"
           :withdraw-value="+withdrawValue"
           :type="widthdrawTipsType"
           :has-crypto="isSelectedUSDT"
@@ -610,7 +608,7 @@ import {
   API_WITHDRAW,
   API_WITHDRAW_CGPAY_BINDING,
   API_WITHDRAW_INFO,
-  API_WITHDRAW_WRITE_2,
+  API_WITHDRAW_WRITE_2
 } from "@/config/api";
 import common from "@/api/common";
 
@@ -627,7 +625,7 @@ export default {
     blockListTips,
     withdrawCurrency,
     withdrawMoreMethod,
-    withdrawAccount,
+    withdrawAccount
   },
   mixins: [mixin],
   data() {
@@ -646,7 +644,7 @@ export default {
       // 彈窗顯示狀態統整
       showPopStatus: {
         isShow: false,
-        type: ''
+        type: ""
       },
 
       selectAccountValue: "",
@@ -654,7 +652,7 @@ export default {
         bank_id: "",
         id: "",
         name: "",
-        withdrawType: "",
+        withdrawType: ""
       },
       widthdrawTipsType: "tips",
 
@@ -673,8 +671,8 @@ export default {
       confirmPopupObj: {
         msg: "",
         btnText: "",
-        cb: () => { },
-      },
+        cb: () => {}
+      }
     };
   },
   watch: {
@@ -685,46 +683,52 @@ export default {
         this.allWithdrawAccount &&
         this.allWithdrawAccount.length > 0
       ) {
-        const defaultCard = this.allWithdrawAccount.find((item) => {
+        const defaultCard = this.allWithdrawAccount.find(item => {
           return item.allow;
         });
 
         // 卡片資料
         this.selectedCard = localStorage.getItem("tmp_w_selectedCard")
           ? {
-            bank_id: JSON.parse(localStorage.getItem("tmp_w_selectedCard"))["bank_id"],
-            id: JSON.parse(localStorage.getItem("tmp_w_selectedCard"))["id"],
-            name: JSON.parse(localStorage.getItem("tmp_w_selectedCard"))[
-              "name"
-            ],
-            withdrawType: JSON.parse(
-              localStorage.getItem("tmp_w_selectedCard")
-            )["withdrawType"],
-          }
+              bank_id: JSON.parse(localStorage.getItem("tmp_w_selectedCard"))[
+                "bank_id"
+              ],
+              id: JSON.parse(localStorage.getItem("tmp_w_selectedCard"))["id"],
+              name: JSON.parse(localStorage.getItem("tmp_w_selectedCard"))[
+                "name"
+              ],
+              withdrawType: JSON.parse(
+                localStorage.getItem("tmp_w_selectedCard")
+              )["withdrawType"]
+            }
           : {
-            bank_id: defaultCard.bank_id,
-            id: defaultCard.id,
-            name:
-              defaultCard.withdrawType === "account_id"
-                ? ""
-                : defaultCard.alias.substring(
-                  0,
-                  defaultCard.alias.indexOf("-")
-                ),
-            withdrawType: defaultCard.withdrawType
-          };
+              bank_id: defaultCard.bank_id,
+              id: defaultCard.id,
+              name:
+                defaultCard.withdrawType === "account_id"
+                  ? ""
+                  : defaultCard.alias.substring(
+                      0,
+                      defaultCard.alias.indexOf("-")
+                    ),
+              withdrawType: defaultCard.withdrawType
+            };
 
         // 金額部份
-        this.withdrawValue = localStorage.getItem("tmp_w_amount") || this.withdrawValue;
+        this.withdrawValue =
+          localStorage.getItem("tmp_w_amount") || this.withdrawValue;
         this.actualMoney =
           JSON.parse(localStorage.getItem("tmp_w_actualAmount")) ||
           this.actualMoney;
 
         // 提現密碼
-        this.withdrawPwd = localStorage.getItem("tmp_w_withdrawPwd") || this.withdrawPwd;
+        this.withdrawPwd =
+          localStorage.getItem("tmp_w_withdrawPwd") || this.withdrawPwd;
 
         // CGPay Currency
-        this.withdrawCurrency = JSON.parse(localStorage.getItem("tmp_w_withdrawCurrency")) || this.withdrawCurrency;
+        this.withdrawCurrency =
+          JSON.parse(localStorage.getItem("tmp_w_withdrawCurrency")) ||
+          this.withdrawCurrency;
 
         setTimeout(() => {
           this.removeCurrentValue();
@@ -742,10 +746,10 @@ export default {
         this.isLoading = false;
       }
     },
-    'selectedCard.bank_id'(value) {
+    "selectedCard.bank_id"(value) {
       // When the option = CGPay
       if (value === 2009) {
-        this.selectedCard.name = 'CGPay'
+        this.selectedCard.name = "CGPay";
       }
     }
   },
@@ -762,7 +766,7 @@ export default {
     this.firstDeposit = this.memInfo.user.first_deposit;
     if (this.depositBeforeWithdraw && !this.firstDeposit) {
       this.widthdrawTipsType = "deposit";
-      this.setPopupStatus(true, 'check')
+      this.setPopupStatus(true, "check");
       return;
     }
 
@@ -773,7 +777,7 @@ export default {
           return;
         }
         this.hasBankCard = ret;
-      },
+      }
     });
   },
   mounted() {
@@ -786,7 +790,7 @@ export default {
       memCurrency: "getMemCurrency",
       siteConfig: "getSiteConfig",
       memInfo: "getMemInfo",
-      webInfo: "getWebInfo",
+      webInfo: "getWebInfo"
     }),
     themeTPL() {
       return this.siteConfig.MOBILE_WEB_TPL;
@@ -808,15 +812,15 @@ export default {
               target: "%s",
               value: this.validateMoney(
                 this.withdrawData.payment_charge.ret.withdraw_min
-              ),
+              )
             },
             {
               target: "%s",
               value: this.validateMoney(
                 this.withdrawData.payment_charge.ret.withdraw_max
-              ),
-            },
-          ],
+              )
+            }
+          ]
         });
       } else {
         return "";
@@ -838,10 +842,7 @@ export default {
       }
 
       // 在有出現加密貨幣選項中，尚未點擊過試算按鈕
-      if (
-        this.isSelectedUSDT &&
-        !this.isClickCoversionBtn
-      ) {
+      if (this.isSelectedUSDT && !this.isClickCoversionBtn) {
         return true;
       }
 
@@ -855,9 +856,9 @@ export default {
         const allowWithdrawCount = Number(
           this.withdrawData.payment_charge.ret.allow_withdraw_count
         );
-        const allowWithdrawLimit = Number(
-          this.withdrawData.payment_charge.ret.allow_withdraw_limit
-        );
+        // const allowWithdrawLimit = Number(
+        //   this.withdrawData.payment_charge.ret.allow_withdraw_limit
+        // );
 
         // 非無限次數且有剩額度
         if (
@@ -868,13 +869,13 @@ export default {
           return true;
         }
 
-        if (
-          ret.withdraw_limit &&
-          Number(ret.withdraw_limit) > 0 &&
-          allowWithdrawLimit <= 0
-        ) {
-          return true;
-        }
+        // if (
+        //   ret.withdraw_limit &&
+        //   Number(ret.withdraw_limit) > 0 &&
+        //   allowWithdrawLimit <= 0
+        // ) {
+        //   return true;
+        // }
       }
       return false;
     },
@@ -908,12 +909,14 @@ export default {
     },
     isSelectedUSDT() {
       // 選擇 加密貨幣USDT 的選項
-      let withdrawType = this.selectedCard.withdrawType === 'crypto_id'
+      let withdrawType = this.selectedCard.withdrawType === "crypto_id";
 
       // CGPay-USDT
-      let cgpayCurrencyUSDT = this.selectedCard.bank_id === 2009 && this.withdrawCurrency.method_id === 28
+      let cgpayCurrencyUSDT =
+        this.selectedCard.bank_id === 2009 &&
+        this.withdrawCurrency.method_id === 28;
 
-      return withdrawType || cgpayCurrencyUSDT
+      return withdrawType || cgpayCurrencyUSDT;
     },
     // 強制出款狀態
     forceStatus() {
@@ -970,17 +973,17 @@ export default {
           // 找目前 user 有綁定過的 wallet
           let idArr = [
             ...new Set(
-              this.withdrawData.user_virtual_bank.ret.map((item) => {
+              this.withdrawData.user_virtual_bank.ret.map(item => {
                 // 本廳是否支援此電子錢包 & 是否為常用帳戶
                 return item.virtual && item.common
                   ? item.virtual_bank_id
                   : null;
               })
-            ),
+            )
           ];
 
           if (idArr) {
-            this.nowOpenWallet.forEach((item) => {
+            this.nowOpenWallet.forEach(item => {
               nowBindWalletCount += idArr.includes(item.id) ? 1 : 0;
             });
 
@@ -995,7 +998,7 @@ export default {
         obj.wallet = true;
         return obj;
       }
-    },
+    }
   },
   methods: {
     linkToRecharge() {
@@ -1009,7 +1012,7 @@ export default {
         ),
         loading: this.$getCdnPath(
           `/static/image/${this.themeTPL}/default/bank_default_2.png`
-        ),
+        )
       };
     },
     onClickMaintain(value) {
@@ -1040,36 +1043,30 @@ export default {
 
     verification(target, value) {
       if (target === "withdrawValue") {
-        value = +value;
+        value = String(value).replace(/[^0-9]/g, "");
+        this.withdrawValue = value;
 
         // 針對加密貨幣
         if (this.isSelectedUSDT && !value) {
           this.cryptoMoney = "--";
         }
 
-        // 1.判斷是否為整數
-        if (!Number.isInteger(value)) {
-          this.errTips = "提现金额必需为整数";
-          return;
-        }
+        // // 1.判斷是否為整數
+        // if (!Number.isInteger(value)) {
+        //   this.errTips = "提现金额必需为整数";
+        //   return;
+        // }
 
         // 實際金額
         let _actualMoney =
           value - +this.withdrawData.audit.total.total_deduction;
-        // 2.判斷是否 > 0
-        // 有流水的情況
-        if (_actualMoney !== value) {
-          this.actualMoney = _actualMoney;
-          if (_actualMoney <= 0) {
-            this.errTips = "实际提现金额须大于0，请重新输入";
-            this.actualMoney = 0;
-            return;
-          }
-        } else {
-          // 無流水時
-          this.actualMoney = _actualMoney;
-          this.errTips =
-            _actualMoney <= 0 ? "实际提现金额须大于0，请重新输入" : "";
+        this.actualMoney = _actualMoney;
+
+        // 實際提現金額 < 0
+        if (_actualMoney <= 0) {
+          this.errTips = "实际提现金额须大于0，请重新输入";
+          // 實際提現金額 => 有流水時為 0
+          this.actualMoney = _actualMoney !== value ? 0 : this.actualMoney;
           return;
         }
 
@@ -1083,8 +1080,9 @@ export default {
           value < withdrawMin ||
           (withdrawMax > 0 && value > withdrawMax)
         ) {
-          this.errTips = `单笔提现金额最小为${withdrawMin}元，最大为${withdrawMax ? `${withdrawMax}元` : "无限制"
-            }`;
+          this.errTips = `单笔提现金额最小为${withdrawMin}元，最大为${
+            withdrawMax ? `${withdrawMax}元` : "无限制"
+          }`;
           return;
         }
 
@@ -1102,8 +1100,8 @@ export default {
       if (target === "withdrawPwd") {
         this.actionVerificationFormData({
           target: "withdrawPwd",
-          value: value,
-        }).then((val) => {
+          value: value
+        }).then(val => {
           this.withdrawPwd = val;
         });
       }
@@ -1116,7 +1114,7 @@ export default {
         id: item.id,
         withdrawType: item.withdrawType,
         bank_id: item.bank_id
-      }
+      };
 
       switch (item.withdrawType) {
         case "account_id":
@@ -1156,94 +1154,108 @@ export default {
         Number(withdraw_max) >= Number(balance) ? balance : withdraw_max;
       this.withdrawValue = Math.floor(Number(result));
       this.verification("withdrawValue", Math.floor(Number(result)));
+
+      if (this.isSelectedUSDT && this.isClickCoversionBtn) {
+        this.convertCryptoMoney();
+      }
     },
     checkSubmit() {
-      if (this.memInfo.blacklist.includes(1)) {
-        this.setPopupStatus(true, 'blockTips')
-        return;
-      }
-
-      const islock = () => {
-        if (
-          this.errTips ||
-          !this.withdrawValue ||
-          this.isSendSubmit ||
-          !this.selectedCard.id
-        ) {
-          return true;
+      // 每一次按下立即提現的時候，重新刷新 Player Api
+      this.actionSetUserdata(true).then(() => {
+        // 檢查有無黑名單
+        if (this.memInfo.blacklist.includes(1)) {
+          this.setPopupStatus(true, "blockTips");
+          return;
         }
 
-        if (
-          this.withdrawData &&
-          this.withdrawData.payment_charge &&
-          this.withdrawData.payment_charge.ret
-        ) {
-          const ret = this.withdrawData.payment_charge.ret;
-
-          const allowWithdrawCount = Number(
-            this.withdrawData.payment_charge.ret.allow_withdraw_count
-          );
-          const allowWithdrawLimit = Number(
-            this.withdrawData.payment_charge.ret.allow_withdraw_limit
-          );
-
-          // 非無限次數且有剩額度
+        const islock = () => {
           if (
-            ret.withdraw_count &&
-            Number(ret.withdraw_count) > 0 &&
-            allowWithdrawCount <= 0
+            this.errTips ||
+            !this.withdrawValue ||
+            this.isSendSubmit ||
+            !this.selectedCard.id
           ) {
             return true;
           }
 
           if (
-            ret.withdraw_limit &&
-            Number(ret.withdraw_limit) > 0 &&
-            allowWithdrawLimit <= 0
+            this.withdrawData &&
+            this.withdrawData.payment_charge &&
+            this.withdrawData.payment_charge.ret
           ) {
-            return true;
+            const ret = this.withdrawData.payment_charge.ret;
+
+            const allowWithdrawCount = Number(
+              this.withdrawData.payment_charge.ret.allow_withdraw_count
+            );
+            // const allowWithdrawLimit = Number(
+            //   this.withdrawData.payment_charge.ret.allow_withdraw_limit
+            // );
+
+            // 非無限次數且有剩額度
+            if (
+              ret.withdraw_count &&
+              Number(ret.withdraw_count) > 0 &&
+              allowWithdrawCount <= 0
+            ) {
+              return true;
+            }
+
+            // if (
+            //   ret.withdraw_limit &&
+            //   Number(ret.withdraw_limit) > 0 &&
+            //   allowWithdrawLimit <= 0
+            // ) {
+            //   return true;
+            // }
           }
+          return false;
+        };
+
+        if (islock()) {
+          return;
         }
-        return false;
-      };
-      if (islock()) {
-        return;
-      }
 
-      switch (this.themeTPL) {
-        case "porn1":
-          if (Number(this.actualMoney) !== Number(this.withdrawValue)) {
-            this.widthdrawTipsType = "tips";
-            this.setPopupStatus(true, 'check')
-          } else {
-            this.handleSubmit();
+        // 會員綁定銀行卡前需手機驗證 与 投注/轉帳前需綁定銀行卡
+        this.withdrawCheck().then(res => {
+          if (res === "ok") {
+            switch (this.themeTPL) {
+              case "porn1":
+                if (Number(this.actualMoney) !== Number(this.withdrawValue)) {
+                  this.widthdrawTipsType = "tips";
+                  this.setPopupStatus(true, "check");
+                } else {
+                  this.handleSubmit();
+                }
+                break;
+
+              // 一律顯示溫馨
+              case "ey1":
+                this.widthdrawTipsType = "tips";
+                this.setPopupStatus(true, "check");
+                break;
+            }
           }
-          break;
-
-        // 一律顯示溫馨
-        case "ey1":
-          this.widthdrawTipsType = "tips";
-          this.setPopupStatus(true, 'check')
-          break;
-      }
+        });
+      });
     },
     closePopup() {
-      this.setPopupStatus(false, '')
+      this.setPopupStatus(false, "");
 
       switch (this.showPopStatus.type) {
-        case 'check':
+        case "check":
           this.widthdrawTipsType = "";
 
           break;
 
-        case 'blockTips':
+        case "blockTips":
           this.$router.back();
           break;
 
-        case 'moreMethod':
+        case "moreMethod":
           break;
 
-        case 'funcTips':
+        case "funcTips":
           break;
       }
     },
@@ -1280,9 +1292,60 @@ export default {
         localStorage.removeItem("tmp_w_1");
       }
     },
+    withdrawCheck() {
+      return axios({
+        method: "get",
+        url: "/api/v2/c/withdraw/check"
+      })
+        .then(res => {
+          this.isCheckWithdraw = false;
+
+          if (res.data.result === "ok") {
+            let check = true;
+
+            Object.keys(res.data.ret).forEach(i => {
+              if (i !== "bank" && !res.data.ret[i]) {
+                this.actionSetGlobalMessage({
+                  msg: "请先设定提现资料",
+                  cb: () => {
+                    {
+                      this.$router.push(
+                        "/mobile/withdrawAccount?redirect=wallet"
+                      );
+                    }
+                  }
+                });
+                check = false;
+                return;
+              }
+            });
+
+            if (check) {
+              return "ok";
+            }
+          } else {
+            this.actionSetGlobalMessage({
+              msg: res.data.msg,
+              code: res.data.code
+            });
+            return;
+          }
+        })
+        .catch(res => {
+          if (res.response.data) {
+            this.actionSetGlobalMessage({
+              msg: res.response.data.msg,
+              code: res.response.data.code
+            });
+          }
+          return;
+        });
+    },
     handleSubmit() {
       this.closePopup();
+
       if (
+        // 會員首次出款僅限銀行卡
         this.memInfo.config.withdraw_player_verify &&
         !localStorage.getItem("tmp_w_1")
       ) {
@@ -1296,8 +1359,8 @@ export default {
       this.isSendSubmit = true;
       this.submitWithdraw({
         user_bank_id: this.selectedCard.id,
-        keyring: localStorage.getItem("tmp_w_1"), // 手機驗證成功後回傳
-      }).then((response) => {
+        keyring: localStorage.getItem("tmp_w_1") // 手機驗證成功後回傳
+      }).then(response => {
         setTimeout(() => {
           this.$nextTick(() => {
             this.isSendSubmit = false;
@@ -1319,14 +1382,14 @@ export default {
       // 不需要取款密碼,並且可選銀行卡
       let _params = {
         amount: this.withdrawValue,
-        withdraw_password: this.withdrawPwd ? this.withdrawPwd : '',
+        withdraw_password: this.withdrawPwd ? this.withdrawPwd : "",
         forward: true,
         confirm: true,
         max_id: this.withdrawData.audit.total.max_id,
         audit_amount: this.withdrawData.audit.total.audit_amount,
         offer_deduction: this.withdrawData.audit.total.offer_deduction,
         administrative_amount: this.withdrawData.audit.total
-          .administrative_amount,
+          .administrative_amount
       };
 
       if (params) {
@@ -1339,8 +1402,11 @@ export default {
           [`ext[api_uri]`]: "/api/trade/v2/c/withdraw/entry",
           [`ext[method][${this.selectedCard.withdrawType}]`]: this.selectedCard
             .id,
-          [`ext[method][method_id]`]: this.selectedCard.bank_id === 2009 ? this.withdrawCurrency.method_id : '',
-          password: this.withdrawPwd ? this.withdrawPwd : '',
+          [`ext[method][method_id]`]:
+            this.selectedCard.bank_id === 2009
+              ? this.withdrawCurrency.method_id
+              : "",
+          password: this.withdrawPwd ? this.withdrawPwd : ""
         };
       }
 
@@ -1352,14 +1418,14 @@ export default {
         url: API_WITHDRAW_WRITE_2,
         errorAlert: false,
         params: _params,
-        success: (response) => {
+        success: response => {
           if (response && response.result === "ok") {
             if (this.memInfo.config.withdraw === "迅付") {
               this.actionSetGlobalMessage({
                 msg: "提现成功",
                 cb: () => {
                   window.location.reload();
-                },
+                }
               });
 
               // 舊的第二次寫單才需要
@@ -1411,20 +1477,20 @@ export default {
                   favicon: this.webInfo.fav_icon
                     ? `${this.webInfo.cdn_domain}${this.webInfo.fav_icon}`
                     : "",
-                  check: true,
+                  check: true
                 },
-                fail: (res) => {
+                fail: res => {
                   this.actionSetGlobalMessage({
-                    msg: "提现已取消，请重新提交申请",
+                    msg: "提现已取消，请重新提交申请"
                   });
-                },
-              }).then((res) => {
+                }
+              }).then(res => {
                 this.isLoading = false;
                 this.actionSetIsLoading(false);
 
                 if (res.result === "ok") {
                   this.actionSetGlobalMessage({
-                    msg: "提现成功",
+                    msg: "提现成功"
                   });
 
                   this.thirdUrl = res.ret.uri;
@@ -1439,9 +1505,13 @@ export default {
           this.actionSetIsLoading(false);
           return;
         },
-        fail: (error) => {
+        fail: error => {
           if (error && error.data && error.data.msg) {
-            this.actionSetGlobalMessage({ msg: error.data.msg, code: error.data.code, origin: 'withdraw' });
+            this.actionSetGlobalMessage({
+              msg: error.data.msg,
+              code: error.data.code,
+              origin: "withdraw"
+            });
             this.errTips = error.data.msg;
           }
 
@@ -1451,22 +1521,24 @@ export default {
 
           this.isLoading = false;
           this.actionSetIsLoading(false);
-        },
+        }
       });
     },
     // 取得存/取款加密貨幣試算金額
     convertCryptoMoney() {
-
       let _params = {
         type: 2,
-        amount: this.actualMoney,
-      }
+        amount: this.actualMoney
+      };
 
-      if (this.selectedCard.bank_id === 2009 && this.withdrawCurrency.method_id === 28) {
+      if (
+        this.selectedCard.bank_id === 2009 &&
+        this.withdrawCurrency.method_id === 28
+      ) {
         _params = {
           ..._params,
           method_id: this.withdrawCurrency.method_id
-        }
+        };
       }
 
       return axios({
@@ -1474,8 +1546,8 @@ export default {
         url: API_CRYPTO_MONEY,
         params: {
           ..._params
-        },
-      }).then((response) => {
+        }
+      }).then(response => {
         const { result, ret } = response.data;
         if (!response || result !== "ok") return;
 
@@ -1488,16 +1560,19 @@ export default {
           this.timer = setInterval(() => {
             if (this.countdownSec === 0) {
               // 將「confirmOneBtn」彈窗打開
-              this.setPopupStatus(true, 'funcTips')
+              this.setPopupStatus(true, "funcTips");
 
               this.confirmPopupObj = {
-                msg: this.themeTPL === 'porn1' ? '汇率已失效' : '汇率已失效，请再次确认汇率',
-                btnText: '刷新汇率',
+                msg:
+                  this.themeTPL === "porn1"
+                    ? "汇率已失效"
+                    : "汇率已失效，请再次确认汇率",
+                btnText: "刷新汇率",
                 cb: () => {
                   this.convertCryptoMoney();
                   this.closePopup();
                 }
-              }
+              };
 
               this.resetTimerStatus();
               this.cryptoMoney = "--";
@@ -1555,16 +1630,16 @@ export default {
     },
     getBounsAccount() {
       // 紅利帳戶
-      axios.get("/api/v1/c/gift-card").then((response) => {
+      axios.get("/api/v1/c/gift-card").then(response => {
         if (response.data.result === "ok") {
           this.bonus = response.data.total;
         }
       });
     },
     setWithdrawCurrency(item) {
-      this.withdrawCurrency.method_id = item.method_id
-      this.withdrawCurrency.name = item.currency_name
-      this.withdrawCurrency.alias = item.currency_alias
+      this.withdrawCurrency.method_id = item.method_id;
+      this.withdrawCurrency.name = item.currency_name;
+      this.withdrawCurrency.alias = item.currency_alias;
 
       // 選項停留在 USDT 時，不執行重新刷新匯率動作
       if (this.isSelectedUSDT && this.isClickCoversionBtn) {
@@ -1579,12 +1654,12 @@ export default {
       this.showPopStatus = {
         isShow,
         type
-      }
+      };
     }
   },
   destroyed() {
     this.resetTimerStatus();
-  },
+  }
 };
 </script>
 
