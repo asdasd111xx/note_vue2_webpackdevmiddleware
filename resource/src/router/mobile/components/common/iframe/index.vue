@@ -186,14 +186,22 @@ export default {
     }),
     originUrl() {
       let origin = this.$route.params.page.toUpperCase();
+      let from = localStorage.getItem('iframe-third-origin');
+
+      if (from) {
+        localStorage.removeItem('iframe-third-origin');
+        return `/mobile/${from}`;
+      }
+
       switch (origin) {
         case 'THIRD':
           return '/mobile/gift';
         case 'PROMOTION':
           return '/mobile/promotion';
         case 'SWAG':
+          return '/mobile';
         default:
-          this.$router.back();
+          return '/mobile';
           return;
       }
     },
@@ -213,7 +221,7 @@ export default {
     },
     headerConfig() {
       const query = this.$route.query;
-      this.isFullScreen = query.func === undefined ? true : query.func === 'true';
+      this.isFullScreen = query.fullscreen === undefined ? false : query.fullscreen === 'true';
 
       return {
         hasHeader: query.hasHeader === undefined ? false : query.hasHeader === 'true',
@@ -274,7 +282,6 @@ export default {
       })
     },
     onListener(e) {
-      console.log(e)
       // //  需要監聽的白名單
       // let whiteList = [window.location.origin,
       //   'https://play.qybtv.xyz',
@@ -291,12 +298,14 @@ export default {
       // ];
       if (e.data) {
         let data = e.data;
-        console.log(data);
-        console.log('[EVENT]:', data.event);
+        // console.log(data);
 
         if (!data.event) {
           return;
         }
+
+        console.log('[EVENT]:', data.event);
+
         switch (data.event) {
           case 'EVENT_THIRDPARTY_CLOSE':
             this.$router.push(this.originUrl);
