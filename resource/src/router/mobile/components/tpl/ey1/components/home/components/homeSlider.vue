@@ -41,6 +41,10 @@ export default {
     }),
     slider() {
       // 若無資料則使用預設圖片
+      if (!this.mobileInfo || this.mobileInfo.mSlider) {
+        return;
+      }
+
       if (!this.mobileInfo.mSlider || this.mobileInfo.mSlider.data.length === 0) {
         const imageData = this.generateDefaultImg();
         return [imageData];
@@ -99,20 +103,9 @@ export default {
      * @method generateDefaultImg
      */
     generateDefaultImg() {
-      const imageData = Object.keys(this.lang).reduce((init, key) => ({
-        ...init,
-        image: {
-          ...init.image,
-          [key]: `/static/image/ey1/default/bg_banner_d.png`
-        },
-        padImg: {
-          ...init.padImg,
-          [key]: `/static/image/ey1/default/bg_banner_d.png`
-        }
-      }), {});
-
       return {
-        linkType: 'nolink', linkTo: '', linkItem: '', ...imageData
+        linkType: 'nolink', linkTo: '', linkItem: '',
+        image: { 'zh-cn': '/static/image/ey1/default/bg_banner_d.png' }
       };
     },
     /**
