@@ -150,8 +150,8 @@ export default {
       default: 0
     },
     cryptoMoney: {
-      type: Number,
-      default: 0
+      type: String,
+      default: "0.00"
     },
     withdrawValue: {
       type: Number,

@@ -59,7 +59,10 @@
         </div>
       </div>
 
-      <div :class="[$style['run-level'], $style['next']]">
+      <div
+        v-if="userVipInfo.now_level_seq < vipLevelList.length"
+        :class="[$style['run-level'], $style['next']]"
+      >
         <p>{{ userVipInfo.next_level_alias }}</p>
       </div>
     </div>
@@ -72,7 +75,7 @@
           userVipInfo.amount_info.deposit_total
         }}</span>
         ({{ userVipInfo.amount_info.deposit_total }}/{{
-          userVipInfo.next_level_deposit_total
+          nextLevelDepositTotalData
         }})
       </div>
       <div :class="$style['desc-text']">
@@ -80,9 +83,7 @@
         <span :class="$style['money']">{{
           userVipInfo.amount_info.valid_bet
         }}</span>
-        ({{ userVipInfo.amount_info.valid_bet }}/{{
-          userVipInfo.next_level_valid_bet
-        }})
+        ({{ userVipInfo.amount_info.valid_bet }}/{{ nextLevelValidBetData }})
       </div>
       <!-- <div :class="$style['desc-text']">
         ●保级推广(位)：
@@ -102,10 +103,14 @@ import { mapGetters, mapActions } from "vuex";
 import axios from "axios";
 export default {
   props: {
+    vipLevelList: {
+      type: Array | null,
+      required: true
+    },
     userVipInfo: {
       type: Object | null,
       required: true
-    }
+    },
   },
   data() {
     return {
@@ -127,6 +132,27 @@ export default {
     },
     runPercent() {
       return this.userVipInfo.percent + "%";
+    },
+
+    nextLevelDepositTotalData() {
+      if (this.vipLevelList.length <= 0 || !this.userVipInfo) {
+        return;
+      }
+      if (this.userVipInfo.now_level_seq < this.vipLevelList.length) {
+        return this.userVipInfo.next_level_deposit_total;
+      } else {
+        return this.vipLevelList[this.userVipInfo.now_level_seq - 1].deposit_total;
+      }
+    },
+    nextLevelValidBetData() {
+      if (this.vipLevelList.length <= 0 || !this.userVipInfo) {
+        return;
+      }
+      if (this.userVipInfo.now_level_seq < this.vipLevelList.length) {
+        return this.userVipInfo.next_level_valid_bet;
+      } else {
+        return this.vipLevelList[this.userVipInfo.now_level_seq - 1].valid_bet_limit;
+      }
     }
   },
   mounted() {
