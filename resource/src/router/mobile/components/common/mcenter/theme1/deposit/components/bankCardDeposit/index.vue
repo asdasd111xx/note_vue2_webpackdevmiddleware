@@ -1773,10 +1773,6 @@ export default {
           // 存款功能無法使用
           if (res.code !== "TM020074") {
             this.actionSetGlobalMessage({
-              msg: res.msg
-            });
-          } else {
-            this.actionSetGlobalMessage({
               msg: res.msg,
               code: res.code
             });
