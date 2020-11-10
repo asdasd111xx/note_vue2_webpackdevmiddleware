@@ -849,18 +849,6 @@ export const actionAgentInit = ({ state, dispatch, commit }, next) => {
             siteConfigTest.preset;
         }
 
-        const defaultLang = ['47', '70', '71'].includes(state.agentInfo.user.domain) && state.webInfo.is_production ? 'vi' : 'zh-cn';
-        await getLang(state.webInfo.language, defaultLang);
-        await dispatch('actionSetAgentPost');
-
-        // 設定網站設定檔資訊 (start)
-        let configInfo;
-        if (state.webInfo.is_production) {
-          configInfo = siteConfigOfficial[`site_${state.webInfo.alias}`] || siteConfigOfficial.preset;
-        } else {
-          configInfo = siteConfigTest[`site_${state.webInfo.alias}`] || siteConfigTest.preset;
-        }
-
         dispatch('actionSetSiteConfig', configInfo);
         // 設定網站設定檔資訊 (end)
 
