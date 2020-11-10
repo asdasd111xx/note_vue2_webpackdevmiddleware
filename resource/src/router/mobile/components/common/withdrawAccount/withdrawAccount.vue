@@ -476,7 +476,7 @@ export default {
         data: {
           phone: `${this.phoneHead.replace("+", "")}-${
             this.formData.phone.value
-          }`,
+            }`,
           captcha_text: this.captchaData ? this.captchaData : ""
         }
       })
@@ -556,13 +556,15 @@ export default {
               this.formData[item].msg = res.data.errors[item];
             });
           } else {
-            this.actionSetUserdata(true).then(() => {
-              this.onClose();
-
-              if (!this.checkBankSwitch) {
-                this.$router.push(
-                  `/mobile/mcenter/bankCard?redirect=${this.redirect}&type=wallet`
-                );
+            this.actionSetGlobalMessage({
+              msg: '设定成功',
+              cb: () => {
+                this.onClose();
+                if (!this.checkBankSwitch) {
+                  this.$router.push(
+                    `/mobile/mcenter/bankCard?redirect=${this.redirect}&type=wallet`
+                  );
+                }
               }
             });
           }
