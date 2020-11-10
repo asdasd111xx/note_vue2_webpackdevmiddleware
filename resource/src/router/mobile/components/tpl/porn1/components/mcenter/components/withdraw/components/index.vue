@@ -150,7 +150,7 @@
     <template v-if="themeTPL === 'porn1'">
       <!-- 銀行卡 -->
       <div
-        v-if="allWithdrawAccount && allWithdrawAccount.length !== 0"
+        v-if="allWithdrawAccount && allWithdrawAccount.length > 0"
         :class="$style['bank-card-wrap']"
       >
         <div :class="$style['bank-card-cell']">
@@ -256,7 +256,7 @@
     <template v-if="themeTPL === 'ey1'">
       <!-- 提現帳號 -->
       <div
-        v-if="allWithdrawAccount && allWithdrawAccount.length !== 0"
+        v-if="allWithdrawAccount && allWithdrawAccount.length > 0"
         :class="$style['bank-card-wrap']"
       >
         <div :class="$style['bank-card-cell']">
@@ -349,7 +349,8 @@
       <!-- 更多提现方式 -->
       <div
         v-if="
-          allWithdrawAccount.length > 0 &&
+          allWithdrawAccount &&
+            allWithdrawAccount.length > 0 &&
             (moreMethodStatus.bankCard || moreMethodStatus.wallet)
         "
         :class="[$style['add-bank-card']]"
@@ -365,159 +366,158 @@
       </div>
     </template>
 
-    <!-- 額度提示訊息 -->
-    <template v-if="allWithdrawAccount.length > 0">
+    <!-- 需有卡片時才出現 -->
+    <template v-if="allWithdrawAccount && allWithdrawAccount.length > 0">
+      <!-- 額度提示訊息 -->
       <div :class="$style['tips']">
         {{ getWithdrawTips }}
       </div>
-    </template>
 
-    <!-- 提現輸入 -->
-    <!-- hasBankCard 似乎要再調整判斷 -->
-    <div v-if="hasBankCard" :class="[$style['withdraw-input']]">
-      <span :class="$style['money-currency']">¥</span>
-      <input
-        v-model="withdrawValue"
-        autocomplete="off"
-        type="text"
-        inputmode="decimal"
-        @input="verification('withdrawValue', $event.target.value)"
-        @blur="
-          $event => {
-            verification('withdrawValue', $event.target.value);
-            if (isSelectedUSDT && isClickCoversionBtn && withdrawValue) {
-              convertCryptoMoney();
+      <!-- 提現輸入 -->
+      <!-- hasBankCard 似乎要再調整判斷 -->
+      <!-- <div v-if="hasBankCard" :class="[$style['withdraw-input']]"> -->
+      <div :class="[$style['withdraw-input']]">
+        <span :class="$style['money-currency']">¥</span>
+        <input
+          v-model="withdrawValue"
+          autocomplete="off"
+          type="text"
+          inputmode="decimal"
+          @input="verification('withdrawValue', $event.target.value)"
+          @blur="
+            $event => {
+              verification('withdrawValue', $event.target.value);
+              if (isSelectedUSDT && isClickCoversionBtn && withdrawValue) {
+                convertCryptoMoney();
+              }
             }
-          }
-        "
-        :placeholder="valuePlaceholder"
-      />
-      <span :class="[$style['withdraw-max']]">
-        <span @click="handleMaxWithdraw">
-          {{ $text("S_WITHRAW_MAX2", "最高提现") }}
+          "
+          :placeholder="valuePlaceholder"
+        />
+        <span :class="[$style['withdraw-max']]">
+          <span @click="handleMaxWithdraw">
+            {{ $text("S_WITHRAW_MAX2", "最高提现") }}
+          </span>
         </span>
-      </span>
-    </div>
+      </div>
 
-    <!-- 到帳金額 -->
-    <div
-      v-if="allWithdrawAccount && allWithdrawAccount.length !== 0"
-      :class="[
-        $style['actual-money'],
-        {
-          [$style['error']]:
-            themeTPL === 'ey1' && withdrawValue && actualMoney <= 0
-        }
-      ]"
-    >
-      <span :class="$style['money-currency']">
-        {{
-          `${
-            selectedCard.name && !isSelectedUSDT
-              ? `${selectedCard.name}到帐`
-              : "实际提现金额"
-          }`
-        }}
-      </span>
-      <span :class="$style['money-currency']">¥</span>
-      <span :class="$style['money-currency']">
-        {{ actualMoney.toFixed(2) }}
-      </span>
-
-      <span :class="[$style['serial']]" @click="toggleSerial"> 详情 </span>
-    </div>
-
-    <!-- 匯率試算 -->
-    <div v-if="isSelectedUSDT" :class="$style['crypto-block']">
-      <!-- <span :class="$style['money-currency']">¥</span> -->
-      <span :class="$style['money-currency']">
-        {{ selectedCard.name }}到帐
-      </span>
-      <span :class="$style['money-currency']">
-        {{ cryptoMoney }}
-      </span>
-
+      <!-- 到帳金額 -->
       <div
         :class="[
-          $style['conversion-btn'],
+          $style['actual-money'],
           {
-            [$style['disable']]:
-              isClickCoversionBtn || !withdrawValue || +actualMoney <= 0
+            [$style['error']]:
+              themeTPL === 'ey1' && withdrawValue && actualMoney <= 0
           }
         ]"
-        @click="convertCryptoMoney"
       >
-        {{ countdownSec > 0 ? `${formatCountdownSec()}` : `汇率试算` }}
+        <span :class="$style['money-currency']">
+          {{
+            `${
+              selectedCard.name && !isSelectedUSDT
+                ? `${selectedCard.name}到帐`
+                : "实际提现金额"
+            }`
+          }}
+        </span>
+        <span :class="$style['money-currency']">¥</span>
+        <span :class="$style['money-currency']">
+          {{ actualMoney.toFixed(2) }}
+        </span>
+
+        <span :class="[$style['serial']]" @click="toggleSerial"> 详情 </span>
       </div>
-    </div>
 
-    <!-- 錯誤訊息 -->
-    <div v-if="errTips" :class="[$style['withdraw-error-tips']]">
-      <span>{{ errTips }}</span>
-    </div>
-
-    <!-- Botton＋Tips -->
-    <!-- Yabo -->
-    <template v-if="themeTPL === 'porn1'">
-      <div
-        :class="[$style['btn-wrap']]"
-        v-if="allWithdrawAccount && allWithdrawAccount.length !== 0"
-      >
-        <div :class="[$style['submit-btn']]">
-          <div @click="linkToRecharge">额度转让&nbsp;返佣70%</div>
-        </div>
+      <!-- 匯率試算 -->
+      <div v-if="isSelectedUSDT" :class="$style['crypto-block']">
+        <!-- <span :class="$style['money-currency']">¥</span> -->
+        <span :class="$style['money-currency']">
+          {{ selectedCard.name }}到帐
+        </span>
+        <span :class="$style['money-currency']">
+          {{ cryptoMoney }}
+        </span>
 
         <div
-          :class="[$style['submit-btn'], { [$style['disabled']]: lockSubmit }]"
+          :class="[
+            $style['conversion-btn'],
+            {
+              [$style['disable']]:
+                isClickCoversionBtn || !withdrawValue || +actualMoney <= 0
+            }
+          ]"
+          @click="convertCryptoMoney"
         >
-          <div @click="checkSubmit">立即提现</div>
+          {{ countdownSec > 0 ? `${formatCountdownSec()}` : `汇率试算` }}
         </div>
       </div>
 
-      <div :class="$style['tips']">
-        <div v-if="allWithdrawAccount && allWithdrawAccount.length !== 0">
+      <!-- 錯誤訊息 -->
+      <div v-if="errTips" :class="[$style['withdraw-error-tips']]">
+        <span>{{ errTips }}</span>
+      </div>
+
+      <!-- Botton -->
+      <!-- Yabo -->
+      <template v-if="themeTPL === 'porn1'">
+        <div :class="[$style['btn-wrap']]">
+          <div :class="[$style['submit-btn']]">
+            <div @click="linkToRecharge">额度转让&nbsp;返佣70%</div>
+          </div>
+
+          <div
+            :class="[
+              $style['submit-btn'],
+              { [$style['disabled']]: lockSubmit }
+            ]"
+          >
+            <div @click="checkSubmit">立即提现</div>
+          </div>
+        </div>
+      </template>
+
+      <!-- 取款密碼＋Botton -->
+      <!-- 億元 -->
+      <template v-if="themeTPL === 'ey1'">
+        <div :class="[$style['withdraw-pwd-input']]">
+          <input
+            v-model="withdrawPwd"
+            autocomplete="off"
+            placeholder="请输入提现密码(限定4码数字)"
+            type="tel"
+            maxlength="4"
+            @input="verification('withdrawPwd', $event.target.value)"
+          />
+        </div>
+
+        <div :class="[$style['btn-wrap']]">
+          <div
+            :class="[
+              $style['submit-btn'],
+              { [$style['disabled']]: lockSubmit }
+            ]"
+          >
+            <div @click="checkSubmit">立即提现</div>
+          </div>
+        </div>
+      </template>
+    </template>
+
+    <!-- Tips -->
+    <div :class="$style['tips']">
+      <div v-if="allWithdrawAccount && allWithdrawAccount.length > 0">
+        <template v-if="themeTPL === 'porn1'">
           为了方便您快速提现，请先将所有场馆钱包金额回收至中心钱包<br />
           可提现金额会扣除未兑现红利总计
-        </div>
-        <div v-else>请先绑定一张银行卡，用于收款</div>
-      </div>
-    </template>
+        </template>
 
-    <!-- 取款密碼＋Botton＋Tips -->
-    <!-- 億元 -->
-    <template v-if="themeTPL === 'ey1'">
-      <div
-        v-if="allWithdrawAccount && allWithdrawAccount.length !== 0"
-        :class="[$style['withdraw-pwd-input']]"
-      >
-        <input
-          v-model="withdrawPwd"
-          autocomplete="off"
-          placeholder="请输入提现密码(限定4码数字)"
-          type="tel"
-          maxlength="4"
-          @input="verification('withdrawPwd', $event.target.value)"
-        />
-      </div>
-
-      <div
-        :class="[$style['btn-wrap']]"
-        v-if="allWithdrawAccount && allWithdrawAccount.length !== 0"
-      >
-        <div
-          :class="[$style['submit-btn'], { [$style['disabled']]: lockSubmit }]"
-        >
-          <div @click="checkSubmit">立即提现</div>
-        </div>
-      </div>
-
-      <div :class="$style['tips']">
-        <div v-if="allWithdrawAccount && allWithdrawAccount.length !== 0">
+        <template v-if="themeTPL === 'ey1'">
           为了方便您快速提现，请先将所有场馆钱包金额回收至中心钱包
-        </div>
-        <div v-else>请先绑定一张银行卡，用于收款</div>
+        </template>
       </div>
-    </template>
+
+      <div v-else>请先绑定一张银行卡，用于收款</div>
+    </div>
 
     <!-- 流水檢查 -->
     <serial-number v-if="isSerial" :handle-close="toggleSerial" />
@@ -634,7 +634,7 @@ export default {
       depositBeforeWithdraw: false,
       errTips: "",
       firstDeposit: false,
-      hasBankCard: false,
+      // hasBankCard: false,
 
       isLoading: true,
       isSendSubmit: false,
@@ -771,14 +771,14 @@ export default {
     }
 
     // 綁定銀行卡內無常用帳號
-    common.bankCardCheck({
-      success: ({ result, ret }) => {
-        if (result !== "ok") {
-          return;
-        }
-        this.hasBankCard = ret;
-      }
-    });
+    // common.bankCardCheck({
+    //   success: ({ result, ret }) => {
+    //     if (result !== "ok") {
+    //       return;
+    //     }
+    //     this.hasBankCard = ret;
+    //   }
+    // });
   },
   mounted() {
     // if (this.memInfo.auto_transfer.enable) {
