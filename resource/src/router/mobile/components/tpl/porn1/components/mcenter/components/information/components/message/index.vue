@@ -248,17 +248,15 @@ export default {
     ]),
     setContent(content) {
       let urlRegex = /(https?:\/\/[^\s]+)/g;
-      return content.replace(/\n/g, '<br/>').replace(urlRegex, function (url) {
-        return '<a href="' + url + '" target="_blank">' + url + '</a>';
-      })
+      return content.replace(/\n/g, "<br/>").replace(urlRegex, function (url) {
+        return '<a href="' + url + '" target="_blank">' + url + "</a>";
+      });
     },
     getMessgae() {
       this.actionSetMcenterMsgCount();
       mcenter.message({
         success: (response) => {
-          this.messageData = response.ret.sort(
-            (a, b) => Vue.moment(b.created_at) - Vue.moment(a.created_at)
-          );
+          this.messageData = response.ret;
           this.hasReceive = true;
         },
       });
