@@ -1240,24 +1240,16 @@ export default {
       });
     },
     closePopup() {
-      this.setPopupStatus(false, "");
-
       switch (this.showPopStatus.type) {
         case "check":
           this.widthdrawTipsType = "";
-
           break;
 
-        case "blockTips":
-          this.$router.back();
-          break;
-
-        case "moreMethod":
-          break;
-
-        case "funcTips":
+        default:
           break;
       }
+
+      this.setPopupStatus(false, "");
     },
     saveCurrentValue(fromRule) {
       localStorage.setItem(
