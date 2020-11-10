@@ -70,27 +70,29 @@
     <div :class="$style['user-desc-block']">
       <div :class="$style['desc-text']">
         ●累计充值(元)：
-        <span :class="$style['money']">{{
-          userVipInfo.amount_info.deposit_total
-        }}</span>
+        <span :class="$style['money']">
+          {{ userVipInfo.amount_info.deposit_total }}
+        </span>
         ({{ userVipInfo.amount_info.deposit_total }}/{{
-          userVipInfo.next_level_deposit_total
+          nextLevelData && nextLevelData.deposit_total
         }})
       </div>
+
       <div :class="$style['desc-text']">
         ●当前流水(元)：
-        <span :class="$style['money']">{{
-          userVipInfo.amount_info.valid_bet
-        }}</span>
+        <span :class="$style['money']">
+          {{ userVipInfo.amount_info.valid_bet }}
+        </span>
         ({{ userVipInfo.amount_info.valid_bet }}/{{
-          userVipInfo.next_level_valid_bet
+          nextLevelData && nextLevelData.valid_bet
         }})
       </div>
+
       <div :class="$style['desc-text']">
         ●保级投注(元)：
-        <span :class="$style['money']">{{
-          userVipInfo.amount_info.valid_bet
-        }}</span>
+        <span :class="$style['money']">
+          {{ userVipInfo.amount_info.valid_bet }}
+        </span>
         ({{ downgradeData }} , 保级{{ userVipInfo.downgrade_day }}天)
       </div>
     </div>
@@ -109,13 +111,13 @@ export default {
     vipLevelList: {
       type: Array | null,
       required: true
-    },
+    }
   },
   data() {
     return {
       avatarSrc: "",
       levelIcon: "00",
-      setVipTextDisplay: "inline",
+      setVipTextDisplay: "inline"
     };
   },
   computed: {
@@ -132,14 +134,49 @@ export default {
     runPercent() {
       return this.userVipInfo.percent + "%";
     },
+    nextLevelData() {
+      let data = {};
+      if (this.vipLevelList.length <= 0 || !this.userVipInfo) {
+        return;
+      }
+
+      // 尚未到最高等級
+      if (
+        this.userVipInfo.now_level_seq <
+        this.vipLevelList[this.vipLevelList.length - 1].seq
+      ) {
+        console.log("尚未到最高等級");
+        data = {
+          deposit_total: this.userVipInfo.next_level_deposit_total,
+          valid_bet: this.userVipInfo.next_level_valid_bet
+        };
+        return data;
+      } else {
+        // 已到最高等級
+        console.log("已到最高等級");
+        data = {
+          deposit_total: this.vipLevelList[this.vipLevelList.length - 1]
+            .deposit_total,
+          valid_bet: this.vipLevelList[this.vipLevelList.length - 1]
+            .valid_bet_limit
+        };
+        return data;
+      }
+    },
     downgradeData() {
       if (this.vipLevelList.length <= 0 || !this.userVipInfo) {
         return;
       }
-      if (this.userVipInfo.amount_info.valid_bet >= this.vipLevelList[this.userVipInfo.now_level_seq].downgrade_valid_bet) {
-        return '已达条件';
+
+      if (
+        this.userVipInfo.amount_info.valid_bet >=
+        this.vipLevelList[this.userVipInfo.now_level_seq].downgrade_valid_bet
+      ) {
+        return "已达条件";
       } else {
-        return `${this.userVipInfo.amount_info.valid_bet}/${this.vipLevelList[this.userVipInfo.now_level_seq].downgrade_valid_bet}`;
+        return `${this.userVipInfo.amount_info.valid_bet}/${
+          this.vipLevelList[this.userVipInfo.now_level_seq].downgrade_valid_bet
+        }`;
       }
     }
   },
