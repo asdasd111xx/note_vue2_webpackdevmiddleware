@@ -7,8 +7,8 @@
 </template>
 
 <script>
-import { mapGetters, mapActions } from 'vuex';
-import { setCookie } from '@/lib/cookie';
+import { mapGetters, mapActions } from "vuex";
+import { setCookie } from "@/lib/cookie";
 
 export default {
   props: {
@@ -24,7 +24,7 @@ export default {
   data() {
     return {
       isShow: false,
-      msg: '',
+      msg: "",
       timer: null
     };
   },
@@ -38,19 +38,19 @@ export default {
         const type = this.msgObj.type;
         switch (type) {
           case "incoming":
-            this.msg = "正在上线 敬请期待"
+            this.msg = "正在上线 敬请期待";
             break;
           case "bindcard":
-            this.msg = "请先绑定提现银行卡"
+            this.msg = "请先绑定提现银行卡";
             break;
           case "bindVirtualBank":
-            this.msg = "请先绑定电子钱包"
+            this.msg = "请先绑定电子钱包";
             break;
           case "balanceTrans":
-            this.msg = "请先设定提现资料"
+            this.msg = "请先设定提现资料";
             break;
           case "login":
-            this.msg = "请先登入"
+            this.msg = "请先登入";
             break;
 
           default:
@@ -70,25 +70,30 @@ export default {
   },
   computed: {
     ...mapGetters({
-      globalMessage: 'getGlobalMessage',
-      siteConfig: 'getSiteConfig',
-    }),
+      globalMessage: "getGlobalMessage",
+      siteConfig: "getSiteConfig"
+    })
   },
   beforeDestroy() {
     clearTimeout(this.timer);
     this.actionSetGlobalMessage(null);
-    this.$emit('close');
+    this.$emit("close");
   },
   methods: {
-    ...mapActions([
-      'actionSetGlobalMessage'
-    ]),
+    ...mapActions(["actionSetGlobalMessage"]),
     clearMsg() {
       if (this.globalMessage) {
         const msgObj = this.globalMessage;
 
         if (process.env.NODE_ENV === "development") {
-          console.log("msg:", msgObj.msg, " origin:", msgObj.origin, " code:", msgObj.code)
+          console.log(
+            "msg:",
+            msgObj.msg,
+            " origin:",
+            msgObj.origin,
+            " code:",
+            msgObj.code
+          );
         }
 
         const code = msgObj.code;
@@ -104,12 +109,14 @@ export default {
 
         switch (code) {
           // 充值
-          case "C50101":  // 轉帳需首充 暫時
+          case "C50101": // 轉帳需首充 暫時
           case "C50100":
           case "C650018":
           // 只需充值一次 开通转让功能
           case "recharge_deposit":
-            this.$router.push(`/mobile/mcenter/deposit?redirect=${redirect ? redirect : 'home'}`);
+            this.$router.push(
+              `/mobile/mcenter/deposit?redirect=${redirect ? redirect : "home"}`
+            );
             break;
 
           // 只需提现一次 开通转让功能
@@ -124,7 +131,11 @@ export default {
           case "C50102":
           case "C650003":
           case "bindcard":
-            this.$router.push(`/mobile/mcenter/bankCard?redirect=${redirect ? redirect : 'home'}&type=bankCard`);
+            this.$router.push(
+              `/mobile/mcenter/bankCard?redirect=${
+                redirect ? redirect : "home"
+              }&type=bankCard`
+            );
             break;
 
           // 電子錢包
@@ -132,10 +143,18 @@ export default {
           case "C50105":
           case "bindVirtualBank":
             if (this.siteConfig.MOBILE_WEB_TPL === "porn1") {
-              this.$router.push(`/mobile/mcenter/bankCard?redirect=${redirect ? redirect : 'home'}&type=bankCard`)
+              this.$router.push(
+                `/mobile/mcenter/bankCard?redirect=${
+                  redirect ? redirect : "home"
+                }&type=bankCard`
+              );
             } else {
               // 億元
-              this.$router.push(`/mobile/withdrawAccount?redirect=${redirect ? redirect : 'home'}`);
+              this.$router.push(
+                `/mobile/withdrawAccount?redirect=${
+                  redirect ? redirect : "home"
+                }`
+              );
             }
             break;
 
@@ -146,10 +165,12 @@ export default {
           case "TM020058":
           case "TM020059":
           case "TM020060":
-            setCookie('cid', '');
-            setCookie('y_token', '');
-            setCookie('aid', '');
-            this.$router.push('/mobile/login');
+          // cid 失效
+          case "C150100":
+            setCookie("cid", "");
+            setCookie("y_token", "");
+            setCookie("aid", "");
+            this.$router.push("/mobile/login");
             break;
 
           // 維護
@@ -160,18 +181,20 @@ export default {
           case "C50104":
           case "C50106":
           case "C590029":
-            localStorage.setItem('form-withdraw-account', true);
-            this.$router.push(`/mobile/withdrawAccount?redirect=${redirect ? redirect : 'home'}`);
+            localStorage.setItem("form-withdraw-account", true);
+            this.$router.push(
+              `/mobile/withdrawAccount?redirect=${redirect ? redirect : "home"}`
+            );
             break;
 
           default:
             break;
         }
 
-        this.$emit('close');
+        this.$emit("close");
       }
     }
-  },
+  }
 };
 </script>
 
