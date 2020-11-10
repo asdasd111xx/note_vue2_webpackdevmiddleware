@@ -1525,20 +1525,6 @@ export default {
     },
     closePopup() {
       this.setPopupStatus(false, "");
-
-      switch (this.showPopStatus.type) {
-        case "blockStatus":
-          break;
-        case "blockTips":
-          this.$router.back();
-          break;
-        case "qrcode":
-          break;
-        case "bindWallet":
-          break;
-        case "funcTips":
-          break;
-      }
     },
     handleCreditTrans() {
       this.$router.push("/mobile/mcenter/creditTrans?tab=0");

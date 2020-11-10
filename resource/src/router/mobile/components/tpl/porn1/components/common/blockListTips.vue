@@ -47,6 +47,7 @@ export default {
     ...mapActions(["actionSetGlobalMessage"]),
     closeTips() {
       this.$emit("close");
+      this.$router.push("/mobile/mcenter/wallet");
     }
   }
 };
