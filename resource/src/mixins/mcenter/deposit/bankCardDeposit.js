@@ -1283,43 +1283,50 @@ export default {
           amount: this.moneyValue,
           method_id: this.curPayInfo.payment_method_id
         }
-      }).then(response => {
-        const { result, ret } = response.data;
-        if (!response || result !== "ok") return;
+      })
+        .then(response => {
+          const { result, ret } = response.data;
+          if (!response || result !== "ok") return;
 
-        this.cryptoMoney = ret.crypto_amount;
-        this.isClickCoversionBtn = true;
-        this.countdownSec = this.countdownSec ? this.countdownSec : ret.ttl;
+          this.cryptoMoney = ret.crypto_amount;
+          this.isClickCoversionBtn = true;
+          this.countdownSec = this.countdownSec ? this.countdownSec : ret.ttl;
 
-        // 僅限按下按鈕觸發，@input & @blur 皆不會觸發
-        if (this.countdownSec && !this.timer) {
-          this.timer = setInterval(() => {
-            if (this.countdownSec === 0) {
-              if (this.submitStatus !== "stepTwo") {
-                // 需重新判斷
-                // 將「confirmOneBtn」彈窗打開
-                this.setPopupStatus(true, "funcTips");
+          // 僅限按下按鈕觸發，@input & @blur 皆不會觸發
+          if (this.countdownSec && !this.timer) {
+            this.timer = setInterval(() => {
+              if (this.countdownSec === 0) {
+                if (this.submitStatus !== "stepTwo") {
+                  // 需重新判斷
+                  // 將「confirmOneBtn」彈窗打開
+                  this.setPopupStatus(true, "funcTips");
 
-                this.confirmPopupObj = {
-                  msg:
-                    this.themeTPL === "porn1"
-                      ? "汇率已失效"
-                      : "汇率已失效，请再次确认汇率",
-                  btnText: "刷新汇率",
-                  cb: () => {
-                    this.closePopup();
-                    this.convertCryptoMoney();
-                  }
-                };
+                  this.confirmPopupObj = {
+                    msg:
+                      this.themeTPL === "porn1"
+                        ? "汇率已失效"
+                        : "汇率已失效，请再次确认汇率",
+                    btnText: "刷新汇率",
+                    cb: () => {
+                      this.closePopup();
+                      this.convertCryptoMoney();
+                    }
+                  };
+                }
+
+                this.resetTimerStatus();
+                return;
               }
-
-              this.resetTimerStatus();
-              return;
-            }
-            this.countdownSec -= 1;
-          }, 1000);
-        }
-      });
+              this.countdownSec -= 1;
+            }, 1000);
+          }
+        })
+        .catch(error => {
+          this.actionSetGlobalMessage({
+            msg: error.response.data.msg,
+            code: error.response.data.code
+          });
+        });
     },
     formatCountdownSec() {
       let minutes = Math.floor(this.countdownSec / 60);

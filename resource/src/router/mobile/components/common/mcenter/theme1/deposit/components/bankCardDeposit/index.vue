@@ -890,7 +890,7 @@
               :class="[$style['feature-tip-title'], $style.success]"
               @click="showRealStatus = true"
             >
-              实际到账： ¥{{ realSaveMoney }} (详情)
+              实际到账： {{ realSaveMoney }} (详情)
             </span>
             <span
               v-else-if="curPayInfo.payment_method_name !== '代客充值'"
