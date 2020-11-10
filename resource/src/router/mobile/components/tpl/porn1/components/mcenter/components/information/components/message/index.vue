@@ -65,7 +65,7 @@
         :class="[
           $style.message,
           { [$style['edit-mode']]: isEditing },
-          'clearfix',
+          'clearfix'
         ]"
         @click="onClick(message)"
       >
@@ -73,7 +73,7 @@
           v-if="isEditing"
           :class="[
             $style['icon-edit'],
-            { [$style.active]: selectMessage.includes(message.id) },
+            { [$style.active]: selectMessage.includes(message.id) }
           ]"
         />
         <div :class="$style['icon-message']">
@@ -188,8 +188,8 @@ export default {
   props: {
     headerConfig: {
       type: Object | null,
-      default: null,
-    },
+      default: null
+    }
   },
   filters: {
     dateFormat(date) {
@@ -197,7 +197,7 @@ export default {
     },
     shortDateFormat(date) {
       return Vue.moment(date).format("YYYY-MM-DD");
-    },
+    }
   },
   data() {
     return {
@@ -207,13 +207,13 @@ export default {
       isDelete: false,
       showFunctionButton: false,
       messageData: [],
-      selectMessage: [],
+      selectMessage: []
     };
   },
   computed: {
     ...mapGetters({
       memInfo: "getMemInfo",
-      siteConfig: "getSiteConfig",
+      siteConfig: "getSiteConfig"
     }),
     $style() {
       const style =
@@ -225,7 +225,7 @@ export default {
         return null;
       }
       return this.messageData.find(
-        (message) => message.id === this.$route.query.pid
+        message => message.id === this.$route.query.pid
       );
     },
     isSelectAll() {
@@ -233,9 +233,9 @@ export default {
     },
     hasAllRead() {
       return this.selectMessage.every(
-        (id) => find(this.messageData, (message) => message.id === id).read
+        id => find(this.messageData, message => message.id === id).read
       );
-    },
+    }
   },
   created() {
     this.getMessgae();
@@ -244,21 +244,21 @@ export default {
     ...mapActions([
       "actionSetMcenterMsgCount",
       "actionSetUserdata",
-      "actionSetGlobalMessage",
+      "actionSetGlobalMessage"
     ]),
     setContent(content) {
       let urlRegex = /(https?:\/\/[^\s]+)/g;
-      return content.replace(/\n/g, "<br/>").replace(urlRegex, function (url) {
+      return content.replace(/\n/g, "<br/>").replace(urlRegex, function(url) {
         return '<a href="' + url + '" target="_blank">' + url + "</a>";
       });
     },
     getMessgae() {
       this.actionSetMcenterMsgCount();
       mcenter.message({
-        success: (response) => {
+        success: response => {
           this.messageData = response.ret;
           this.hasReceive = true;
-        },
+        }
       });
     },
     getContent({ id, read }, isSetRead) {
@@ -272,13 +272,13 @@ export default {
               return;
             }
             if (!isSetRead) this.actionSetMcenterMsgCount();
-            this.messageData = this.messageData.map((message) => {
+            this.messageData = this.messageData.map(message => {
               if (message.id === id) {
                 return { ...message, read: true };
               }
               return message;
             });
-          },
+          }
         },
         id
       );
@@ -315,7 +315,7 @@ export default {
       if (this.isEditing) {
         if (this.selectMessage.includes(info.id)) {
           this.selectMessage = [
-            ...this.selectMessage.filter((id) => id !== info.id),
+            ...this.selectMessage.filter(id => id !== info.id)
           ];
           return;
         }
@@ -326,7 +326,7 @@ export default {
       this.$router.push({ query: { pid: info.id } });
     },
     onSelectAll() {
-      this.selectMessage = [...this.messageData.map((message) => message.id)];
+      this.selectMessage = [...this.messageData.map(message => message.id)];
     },
     onRead() {
       if (this.hasAllRead) {
@@ -334,7 +334,7 @@ export default {
       }
       this.isLoading = true;
       this.selectMessage.forEach((id, index) => {
-        this.getContent(find(this.messageData, (message) => message.id === id));
+        this.getContent(find(this.messageData, message => message.id === id));
         if (index < this.selectMessage.length - 1) {
           return;
         }
@@ -352,14 +352,14 @@ export default {
       axios({
         method: "delete",
         url: API_MCENTER_MESSAGES_CONTENT,
-        data: { message_ids: this.selectMessage.map((id) => +id) },
-      }).then((res) => {
+        data: { message_ids: this.selectMessage.map(id => +id) }
+      }).then(res => {
         this.isLoading = false;
 
         if (res.data.result !== "ok") {
           this.actionSetGlobalMessage({
             msg: res.data.msg,
-            code: res.data.code,
+            code: res.data.code
           });
           return;
         }
@@ -369,11 +369,14 @@ export default {
         this.onShowFunction(false);
         this.isEditing = false;
       });
-    },
-  },
+    }
+  }
 };
 </script>
 
-
-<style lang="scss" src="../../css/porn1.message.scss" module="$style_porn1"></style>
+<style
+  lang="scss"
+  src="../../css/porn1.message.scss"
+  module="$style_porn1"
+></style>
 <style lang="scss" src="../../css/ey1.message.scss" module="$style_ey1"></style>
