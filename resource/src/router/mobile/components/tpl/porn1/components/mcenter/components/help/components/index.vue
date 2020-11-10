@@ -30,8 +30,8 @@ export default {
   },
   data() {
     return {
-      currentTemplate: '',
-      title: '',
+      currentTemplate: "",
+      title: "",
       templates: [
         { key: 'contact', title: '联系我们' },
         { key: 'diamond', title: '购买钻石' },
@@ -47,8 +47,8 @@ export default {
   created() {
     let template = this.templates.find(i => i.key === this.$route.params.key);
     if (!template) {
-      window.location.replace('/mobile/mcenter/helpCenter');
-      this.$router.push('/mobile/mcenter/helpCenter');
+      window.location.replace("/mobile/mcenter/helpCenter");
+      this.$router.push("/mobile/mcenter/helpCenter");
       return;
     } else {
       this.title = template.title;
@@ -71,12 +71,15 @@ export default {
         return {
           prev: true,
           onClick: () => {
-            this.$router.back();
+            // this.$router.back();
+
+            // 109/11/10 FB:454458
+            this.$router.push("/mobile/mcenter/wallet");
           },
           title: this.title
         };
     }
-  },
+  }
 };
 </script>
 <style lang="scss" module>

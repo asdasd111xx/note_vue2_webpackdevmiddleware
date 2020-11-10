@@ -41,10 +41,6 @@ export default {
     }),
     slider() {
       // 若無資料則使用預設圖片
-      if (!this.mobileInfo || this.mobileInfo.mSlider) {
-        return;
-      }
-
       if (!this.mobileInfo.mSlider || this.mobileInfo.mSlider.data.length === 0) {
         const imageData = this.generateDefaultImg();
         return [imageData];
