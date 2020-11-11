@@ -113,6 +113,9 @@ export default {
             if (this.maintainList.length > 0) {
                 // console.log("存入維護狀態");
                 this.allGame.find(data => {
+                    if (!data.vendors) {
+                        return;
+                    }
                     data.vendors.find(game => {
                         this.maintainList.find(maintainData => {
                             if (maintainData.vendor === game.vendor && maintainData.kind === game.kind) {
