@@ -1526,6 +1526,15 @@ export default {
       };
     },
     closePopup() {
+      switch (this.showPopStatus.type) {
+        case "blockTips":
+          this.$router.push("/mobile/mcenter/wallet");
+          break;
+
+        default:
+          break;
+      }
+
       this.setPopupStatus(false, "");
     },
     handleCreditTrans() {
