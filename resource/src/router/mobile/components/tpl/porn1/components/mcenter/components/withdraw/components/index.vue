@@ -1245,6 +1245,10 @@ export default {
           this.widthdrawTipsType = "";
           break;
 
+        case "blockTips":
+          this.$router.push("/mobile/mcenter/wallet");
+          break;
+
         default:
           break;
       }

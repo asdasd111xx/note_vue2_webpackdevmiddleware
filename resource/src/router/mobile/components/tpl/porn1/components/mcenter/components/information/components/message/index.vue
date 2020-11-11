@@ -65,7 +65,7 @@
         :class="[
           $style.message,
           { [$style['edit-mode']]: isEditing },
-          'clearfix',
+          'clearfix'
         ]"
         @click="onClick(message)"
       >
@@ -73,7 +73,7 @@
           v-if="isEditing"
           :class="[
             $style['icon-edit'],
-            { [$style.active]: selectMessage.includes(message.id) },
+            { [$style.active]: selectMessage.includes(message.id) }
           ]"
         />
         <div :class="$style['icon-message']">
@@ -247,6 +247,9 @@ export default {
       "actionSetGlobalMessage",
     ]),
     setContent(content) {
+      if (!content) {
+        return;
+      }
       let urlRegex = /(https?:\/\/[^\s]+)/g;
       return content.replace(/\n/g, "<br/>").replace(urlRegex, function (url) {
         return '<a href="' + url + '" target="_blank">' + url + "</a>";
