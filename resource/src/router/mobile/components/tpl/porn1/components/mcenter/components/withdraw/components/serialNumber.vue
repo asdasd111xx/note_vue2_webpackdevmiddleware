@@ -68,9 +68,7 @@
         </div>
 
         <div :class="$style['serial-basic-cell']">
-          <div :class="$style['serial-basic-title']">
-            扣除总计
-          </div>
+          <div :class="$style['serial-basic-title']">扣除总计</div>
           <div :class="$style['serial-basic-value']">
             {{
               serialNumberData.total.total_deduction > 0
@@ -179,10 +177,14 @@ export default {
     handleClose: {
       type: Function,
       default: () => {}
+    },
+    swiftCode: {
+      type: String,
+      default: ""
     }
   },
   created() {
-    this.getSerialNumberData();
+    this.getSerialNumberData(this.swiftCode);
   },
   computed: {
     ...mapGetters({
@@ -211,6 +213,7 @@ export default {
             }
           }
         });
+
         this.serialNumberList = result;
       }
     }

@@ -520,7 +520,11 @@
     </div>
 
     <!-- 流水檢查 -->
-    <serial-number v-if="isSerial" :handle-close="toggleSerial" />
+    <serial-number
+      v-if="isSerial"
+      :handle-close="toggleSerial"
+      :swiftCode="selectedCard.swift_code"
+    />
 
     <!-- 帐户资料 -->
     <withdrawAccount
@@ -640,7 +644,8 @@ export default {
       isSendSubmit: false,
       isSerial: false,
       isShowMore: true,
-
+      // swiftCode: "",
+      // scode: "",
       // 彈窗顯示狀態統整
       showPopStatus: {
         isShow: false,
@@ -699,7 +704,10 @@ export default {
               ],
               withdrawType: JSON.parse(
                 localStorage.getItem("tmp_w_selectedCard")
-              )["withdrawType"]
+              )["withdrawType"],
+              swift_code: JSON.parse(
+                localStorage.getItem("tmp_w_selectedCard")
+              )["swift_code"]
             }
           : {
               bank_id: defaultCard.bank_id,
@@ -711,8 +719,11 @@ export default {
                       0,
                       defaultCard.alias.indexOf("-")
                     ),
-              withdrawType: defaultCard.withdrawType
+              withdrawType: defaultCard.withdrawType,
+              swift_code: defaultCard.swift_code
             };
+
+        this.updateAmount(this.selectedCard.swift_code);
 
         // 金額部份
         this.withdrawValue =
@@ -756,7 +767,6 @@ export default {
   created() {
     // 刷新 Player Api
     this.actionSetUserdata(true);
-
     this.getUserLevel();
     this.getUserStat();
     this.getNowOpenWallet();
@@ -1110,10 +1120,13 @@ export default {
       this.isShowMore = !this.isShowMore;
     },
     handleSelectCard(item) {
+      // this.scode = item.swift_code;
+      this.updateAmount(item.swift_code);
       this.selectedCard = {
         id: item.id,
         withdrawType: item.withdrawType,
-        bank_id: item.bank_id
+        bank_id: item.bank_id,
+        swift_code: item.swift_code
       };
 
       switch (item.withdrawType) {
@@ -1502,7 +1515,6 @@ export default {
           return;
         },
         fail: error => {
-          console.log(error);
           if (error && error.data && error.data.msg) {
             this.actionSetGlobalMessage({
               msg: error.data.msg,
