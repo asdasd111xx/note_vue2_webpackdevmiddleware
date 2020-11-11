@@ -12,7 +12,8 @@ export const preset = {
   YABO_GOLANG_API_DOMAIN: 'https://yaboapi.canarycherrytart.com/api-v2/cxbb',
   ACTIVES_BOUNS_WEBSOCKET: window.location.host === 'ybbe1.qghco.com' ?
     'wss://ybbe2.qghco.com/ws/promosocket' :
-    'wss://yaboapi.canarycherrytart.com/ws/promosocket'
+    'wss://yaboapi.canarycherrytart.com/ws/promosocket',
+  ACTIVES_BOUNS_WEBSOCKETV2: 'wss://yaboapi.iguanagingercake.com/wsn/promosocket?',
 };
 
 /* ---------- ↓ 正式站 ---------- */
@@ -37,6 +38,7 @@ export const site_67 = {
   MOBILE_WEB_TPL: 'porn1', // 手機網頁版模版
   VERSION: getVersion('porn1'),
   SITE_NAME: '鸭博娱乐',
+  ACTIVES_BOUNS_WEBSOCKETV2: 'wss://yaboapi.iguanagingercake.com/wsn/promosocket?',
 };
 
 /**
@@ -53,6 +55,7 @@ export const site_69 = {
   YABO_GOLANG_API_DOMAIN: window.location.host === 'ybbe1.qghco.com' ?
     'https://ybbe2.qghco.com/api-v2/cxbb' :
     'https://yaboapi.canarycherrytart.com/api-v2/cxbb',
+  ACTIVES_BOUNS_WEBSOCKETV2: 'wss://yaboapi.iguanagingercake.com/wsn/promosocket?',
 };
 
 /**
@@ -66,6 +69,7 @@ export const site_100003 = {
   YABO_API_DOMAIN: 'https://ybbe2.qghco.com/api',
   YABO_GOLANG_API_DOMAIN: 'https://ybbe2.qghco.com/api-v2/cxbb',
   // BBOS_DOMIAN: 'https://api.bbin-staging.com/elibomApi/WebService',
+  ACTIVES_BOUNS_WEBSOCKETV2: 'wss://ybbe2.qghco.com/wsn-beta/promosocket?',
 };
 
 /**
@@ -78,6 +82,7 @@ export const site_41 = {
   SITE_NAME: '亿元',
   YABO_API_DOMAIN: 'https://cxbb.chessrunroll.com/api',
   YABO_GOLANG_API_DOMAIN: 'https://cxbb.chessrunroll.com/api-v2/cxbb',
+  ACTIVES_BOUNS_WEBSOCKETV2: 'wss://cxbb.chesspink.com/wsn/promosocket?',
 };
 
 /**
@@ -100,6 +105,7 @@ export const site_74 = {
   SITE_NAME: '亿元',
   YABO_API_DOMAIN: 'https://cxbb.mangochess.com/api',
   YABO_GOLANG_API_DOMAIN: 'https://cxbb.mangochess.com/api-v2/cxbb',
+  ACTIVES_BOUNS_WEBSOCKETV2: 'wss://cxbb.chesspink.com/wsn/promosocket?',
 };
 
 
@@ -114,5 +120,6 @@ export const site_100004 = {
   YABO_API_DOMAIN: 'https://eybe2.77num.com/api',
   YABO_GOLANG_API_DOMAIN: 'https://eybe2.77num.com/api-v2/cxbb',
   // BBOS_DOMIAN: 'https://api.bbin-staging.com/elibomApi/WebService',
+  ACTIVES_BOUNS_WEBSOCKETV2: 'wss://eybe2.77num.com/wsn/promosocket?',
 };
 /* eslint-enable camelcase */
