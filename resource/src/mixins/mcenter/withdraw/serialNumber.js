@@ -67,15 +67,19 @@ export default {
       // return Number(_n) > 0 ? `-${_n}` : _n;
     },
     // 取得流水
-    getSerialNumberData() {
+    getSerialNumberData(swift_code = "") {
       axios({
         method: "get",
-        url: API_WITHDRAW_ASSIST
+        url: API_WITHDRAW_ASSIST,
+        params: {
+          swift_code: swift_code
+        }
       })
-        .then(res => {
-          if (res.data.result === "ok") {
-            this.serialNumberData = res.data;
+        .then(response => {
+          if (response.data.result !== "ok") {
+            return;
           }
+          this.serialNumberData = response.data;
         })
         .catch(error => {
           let { data } = error.response;
