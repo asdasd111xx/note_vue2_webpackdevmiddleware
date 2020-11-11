@@ -47,9 +47,9 @@ export default {
     },
     watch: {
         isReceive() {
-            this.$nextTick(() => {
+            setTimeout(() => {
                 this.onResize();
-            })
+            }, 300)
         },
         noticeData() {
             if (this.noticeData && this.noticeData.length > 0) {
@@ -296,7 +296,7 @@ export default {
         onResize() {
             // 計算外框高度
             this.wrapHeight =
-                window.innerHeight - this.$refs['home-wrap'].offsetTop - 60;
+                document.body.offsetHeight - this.$refs['home-wrap'].offsetTop - 60;
         },
         onTypeTouchStart(e) {
             if (this.isSliding) {
