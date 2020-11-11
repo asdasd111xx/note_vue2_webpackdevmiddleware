@@ -1544,7 +1544,8 @@ export default {
       if (this.themeTPL === "porn1") {
         switch (this.curPayInfo.payment_method_id) {
           // CGPay
-          case (16, 25):
+          case 16:
+          case 25:
             this.$router.push(
               "/mobile/mcenter/bankcard?redirect=deposit&type=wallet&wallet=CGPay"
             );
