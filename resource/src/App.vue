@@ -310,7 +310,7 @@ export default {
         window.YABO_SOCKETV2.onmessage = (e) => {
           let data = JSON.parse(e.data);
           let jsonData = JSON.parse(e.data);
-          window.YABO_SOCKET_ID = this.AESDecrypt(jsonData.Res, this.RSAdecrypt(jsonData.Key)).SocketId;
+          window.YABO_SOCKETV2_ID = this.AESDecrypt(jsonData.Res, this.RSAdecrypt(jsonData.Key)).SocketId;
 
           if (this.isDebug) {
             console.log("[WSV2]: onMessage:", jsonData);
