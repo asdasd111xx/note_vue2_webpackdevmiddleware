@@ -93,7 +93,7 @@ export default (params, success = () => { }, fail = () => { }) => {
       }
 
       //Xbb lg_casino lg_yb_casino 外開參數
-      if (vendor && vendor.toUpperCase().includes('LG')) {
+      if (vendor && ['LG_CASINO', 'LG_YB_CASINO'].includes(vendor.toUpperCase())) {
         query += '&pageOption=1';
       }
 
