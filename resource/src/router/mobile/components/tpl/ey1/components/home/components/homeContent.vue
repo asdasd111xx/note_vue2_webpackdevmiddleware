@@ -390,7 +390,7 @@ export default {
   overflow-y: auto;
   touch-action: default; // 誤刪，否則在touchmove事件會有cancelable錯誤
   -webkit-overflow-scrolling: touch; // 誤刪，維持touchmove滾動順暢
-  min-height: 284px;
+  min-height: 260px;
 }
 
 .wrap {
