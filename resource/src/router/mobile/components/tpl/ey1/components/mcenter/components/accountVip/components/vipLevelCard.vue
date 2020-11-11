@@ -188,7 +188,13 @@ export default {
     initSwiper() {
       const swiperLevel = this.$refs.swiperLevel.$swiper;
       const swiperCard = this.$refs.swiperCard.$swiper;
-      this.selectedIndex = this.userVipInfo.now_level_seq;
+
+      if (this.userVipInfo.now_level_seq >= 2) {
+        this.selectedIndex = this.userVipInfo.now_level_seq;
+      } else {
+        this.selectedIndex = 0;
+      }
+
       swiperLevel.slideTo(this.selectedIndex, 0, false);
       swiperCard.slideTo(this.selectedIndex, 0, false);
       this.$emit(
