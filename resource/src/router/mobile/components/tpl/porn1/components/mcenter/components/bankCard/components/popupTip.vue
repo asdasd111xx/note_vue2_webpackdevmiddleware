@@ -40,9 +40,7 @@ export default {
             `/static/image/porn1/mcenter/deposit/ic_huobi.png`
           ),
           onClick: () => {
-            window.open(
-              "https://www.huobi.com/zh-cn/register/?invite_code=hw7j5"
-            );
+            window.open("https://www.huobi.com/zh-cn/register");
           }
         },
         {
