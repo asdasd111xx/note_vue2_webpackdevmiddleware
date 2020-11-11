@@ -81,7 +81,7 @@ export default {
       return "true"
     },
     isDebug() {
-      return process.env.NODE_ENV === 'development' || (this.$route.query & this.$route.query.testmode)
+      return process.env.NODE_ENV === 'development' || (this.$route.query && this.$route.query.testmode)
     },
   },
   mounted() {
