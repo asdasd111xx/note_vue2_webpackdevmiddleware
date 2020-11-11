@@ -47,8 +47,12 @@
           <div :class="$style['cell-text']">
             <div>
               <div>
-                <span v-if="currentLevelData.withdraw_fee.withdraw_limit === ''"
-                  >--</span
+                <span
+                  v-if="
+                    currentLevelData.withdraw_fee.withdraw_limit === '' ||
+                      currentLevelData.withdraw_fee.withdraw_limit <= 0
+                  "
+                  >无限制</span
                 >
                 <span v-else>
                   {{ currentLevelData.withdraw_fee.withdraw_limit }}
@@ -93,7 +97,7 @@
           </div>
         </div>
 
-        <div :class="$style['cell']">
+        <!-- <div :class="$style['cell']">
           <div :class="$style['cell-icon']">
             <img
               :src="
@@ -108,7 +112,7 @@
             <div>{{ currentLevelData.birth_amount }}</div>
             <div>生日礼金</div>
           </div>
-        </div>
+        </div> -->
 
         <div :class="$style['cell']">
           <div :class="$style['cell-icon']">
@@ -122,7 +126,13 @@
             />
           </div>
           <div :class="$style['cell-text']">
-            <div>{{ currentLevelData.monthly_gift }}</div>
+            <div>
+              {{
+                currentLevelData.monthly_gift == ""
+                  ? "--"
+                  : currentLevelData.monthly_gift
+              }}
+            </div>
             <div>每月红包(月初自动派发)</div>
           </div>
         </div>

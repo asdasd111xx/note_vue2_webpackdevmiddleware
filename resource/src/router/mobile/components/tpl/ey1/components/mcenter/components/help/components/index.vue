@@ -19,27 +19,32 @@ import mobileContainer from "../../../../common/mobileContainer";
 export default {
   components: {
     mobileContainer,
-    contact: () => import(/* webpackChunkName: 'contact' */ './template/contact'),
-    deposit: () => import(/* webpackChunkName: 'deposit' */ './template/deposit'),
-    faq: () => import(/* webpackChunkName: 'faq' */ './template/faq'),
-    gameintro: () => import(/* webpackChunkName: 'gameintro' */ './template/gameintro'),
-    rules: () => import(/* webpackChunkName: 'rules' */ './template/rules'),
-    support: () => import(/* webpackChunkName: 'support' */ './template/support'),
-    withdraw: () => import(/* webpackChunkName: 'withdraw' */ './template/withdraw'),
+    contact: () =>
+      import(/* webpackChunkName: 'contact' */ "./template/contact"),
+    deposit: () =>
+      import(/* webpackChunkName: 'deposit' */ "./template/deposit"),
+    faq: () => import(/* webpackChunkName: 'faq' */ "./template/faq"),
+    gameintro: () =>
+      import(/* webpackChunkName: 'gameintro' */ "./template/gameintro"),
+    rules: () => import(/* webpackChunkName: 'rules' */ "./template/rules"),
+    support: () =>
+      import(/* webpackChunkName: 'support' */ "./template/support"),
+    withdraw: () =>
+      import(/* webpackChunkName: 'withdraw' */ "./template/withdraw")
   },
   data() {
     return {
-      currentTemplate: '',
-      title: '',
+      currentTemplate: "",
+      title: "",
       templates: [
-        { key: 'contact', title: '联系我们' },
-        { key: 'deposit', title: '充值教程' },
-        { key: 'faq', title: '常見問題' },
-        { key: 'gameintro', title: '游戏介绍' },
-        { key: 'support', title: '技术支持' },
-        { key: 'withdraw', title: '提现教程' },
-        { key: 'deposit', title: '常見問題' },
-        { key: 'rules', title: '会员协议规章' }
+        { key: "contact", title: "联系我们" },
+        { key: "deposit", title: "充值教程" },
+        { key: "faq", title: "常見問題" },
+        { key: "gameintro", title: "游戏介绍" },
+        { key: "support", title: "技术支持" },
+        { key: "withdraw", title: "提现教程" },
+        { key: "deposit", title: "常見問題" },
+        { key: "rules", title: "会员协议规章" }
       ]
     };
   },
@@ -69,12 +74,15 @@ export default {
         return {
           prev: true,
           onClick: () => {
-            this.$router.back();
+            // this.$router.back();
+
+            // 109/11/10 FB:454458
+            this.$router.push("/mobile/mcenter");
           },
           title: this.title
         };
     }
-  },
+  }
 };
 </script>
 <style lang="scss" module>

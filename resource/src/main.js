@@ -45,6 +45,10 @@ import store from './store';
 import text from './lib/text';
 import vStyle from './lib/vStyle';
 
+if (window && window.parent) {
+    window.parent.postMessage({ event: "SELF_INTO", data: { msg: 'iframe loaded.' } }, "*");
+}
+
 /* plugins css - start */
 /* eslint-disable */
 

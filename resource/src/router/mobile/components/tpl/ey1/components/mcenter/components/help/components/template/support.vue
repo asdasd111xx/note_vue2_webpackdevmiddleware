@@ -26,11 +26,12 @@
                 {
                   [$style['red']]:
                     (stringIndex === 5 && index === 0) ||
-                    (stringIndex === 12 && index === 1)
-                }
+                    (stringIndex === 12 && index === 1),
+                },
               ]"
               :key="`content-${stringIndex}`"
               v-html="string"
+              @click="linkTo('service')"
             />
           </div>
 
@@ -49,8 +50,8 @@
 </template>
 
 <script>
-import info from '../../json/support.json';
-import mixin from '@/mixins/mcenter/help/help';
+import info from "../../json/support.json";
+import mixin from "@/mixins/mcenter/help/help";
 
 export default {
   mixins: [mixin],

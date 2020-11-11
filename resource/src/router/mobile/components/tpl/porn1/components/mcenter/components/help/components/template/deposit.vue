@@ -57,7 +57,7 @@
     </div>
 
     <div
-      v-if="category_currentIndex == 5"
+      v-if="category_currentIndex == 5 || category_currentIndex > 6"
       :class="[$style['content-wrap'], 'clearfix']"
     >
       <div :class="[$style['tab-wrap']]">
@@ -75,63 +75,30 @@
         <div
           :class="$style['active-slider']"
           :style="{
-            left: `calc(25% + 50% * ${currentTab})`,
+            left: tabSlider,
           }"
         />
       </div>
     </div>
 
-    <div v-if="currentTab == 0">
-      <div
-        v-for="(item, index) in categorys[category_currentIndex].list"
-        :id="`q-${index}`"
-        :class="$style['cell2']"
-        :key="`q-${index}`"
-      >
-        <div :class="$style['cell2-step-title']">
-          <span
-            >步骤 {{ index + 1 }}/{{
-              categorys[category_currentIndex].list.length
-            }}</span
-          >
-        </div>
-
-        <div :class="$style['cell2-step']">
-          <img
-            :src="
-              $getCdnPath(
-                `/static/image/porn1/mcenter/help/deposit/step/${item.img}.png`
-              )
-            "
-          />
-        </div>
+    <div
+      v-for="(item, index) in tabList"
+      :id="`q-${index}`"
+      :class="$style['cell2']"
+      :key="`q-${index}`"
+    >
+      <div :class="$style['cell2-step-title']">
+        <span>步骤 {{ index + 1 }}/{{ tabList.length }}</span>
       </div>
-    </div>
 
-    <div v-if="currentTab == 1">
-      <div
-        v-for="(item, index) in categorys[category_currentIndex].list2"
-        :id="`q-${index}`"
-        :class="$style['cell2']"
-        :key="`q-${index}`"
-      >
-        <div :class="$style['cell2-step-title']">
-          <span
-            >步骤 {{ index + 1 }}/{{
-              categorys[category_currentIndex].list2.length
-            }}</span
-          >
-        </div>
-
-        <div :class="$style['cell2-step']">
-          <img
-            :src="
-              $getCdnPath(
-                `/static/image/porn1/mcenter/help/deposit/step/${item.img}.png`
-              )
-            "
-          />
-        </div>
+      <div :class="$style['cell2-step']">
+        <img
+          :src="
+            $getCdnPath(
+              `/static/image/porn1/mcenter/help/deposit/step/${item.img}.png`
+            )
+          "
+        />
       </div>
     </div>
 
@@ -261,6 +228,43 @@ export default {
             { key: 2, img: "bank7_step3" },
           ],
         },
+        {
+          name: "CGPay",
+          icon: "bank8",
+          list: [
+            { key: 0, img: "tutorial_deposit_cgpay_01" },
+            { key: 1, img: "tutorial_deposit_cgpay_02" },
+            { key: 2, img: "tutorial_deposit_cgpay_03" },
+            { key: 3, img: "tutorial_deposit_cgpay_04" },
+          ],
+          list2: [{ key: 0, img: "tutorial_deposit_cgpay_securitycode_01" }],
+          list3: [{ key: 0, img: "tutorial_deposit_cgpay_qrcode_01" }],
+        },
+        {
+          name: "购宝钱包",
+          icon: "bank9",
+          list: [
+            { key: 0, img: "tutorial_deposit_gawa_01" },
+            { key: 1, img: "tutorial_deposit_gawa_02" },
+            { key: 2, img: "tutorial_deposit_gawa_03" },
+          ],
+          list2: [
+            { key: 0, img: "tutorial_deposit_gawa_qrcode_01" },
+            { key: 1, img: "tutorial_deposit_gawa_qrcode_02" },
+          ],
+        },
+        {
+          name: "极速-USDT",
+          icon: "bank10",
+          list: [
+            { key: 0, img: "tutorial_deposit_usdt_01" },
+            { key: 1, img: "tutorial_deposit_usdt_02" },
+          ],
+          list2: [
+            { key: 0, img: "tutorial_deposit_usdt_qrcode_01" },
+            { key: 1, img: "tutorial_deposit_usdt_qrcode_02" },
+          ],
+        },
       ],
     };
   },
@@ -309,17 +313,88 @@ export default {
     ...mapGetters({
       loginStatus: "getLoginStatus",
     }),
+    tabList() {
+      switch (this.currentTab) {
+        case 0:
+          return this.categorys[this.category_currentIndex].list;
+        case 1:
+          return this.categorys[this.category_currentIndex].list2;
+        case 2:
+          return this.categorys[this.category_currentIndex].list3;
+        default:
+          return this.categorys[this.category_currentIndex].list;
+      }
+    },
     tabItem() {
-      return [
-        {
-          key: "transfer-card",
-          text: this.$text("TRANSFER_CARD", "支付宝转卡"),
-        },
-        {
-          key: "scan-code",
-          text: this.$text("SCAN_CODE", "截屏扫码"),
-        },
-      ];
+      switch (this.category_currentIndex) {
+        case 5:
+          return [
+            {
+              key: "transfer-card",
+              text: this.$text("TRANSFER_CARD", "支付宝转卡"),
+            },
+            {
+              key: "scan-code",
+              text: this.$text("SCAN_CODE", "截屏扫码"),
+            },
+          ];
+        case 7:
+          return [
+            {
+              key: "transfer-card",
+              text: "如何绑定CGPay",
+            },
+            {
+              key: "safe-card",
+              text: "安全防护码",
+            },
+            {
+              key: "scan-code",
+              text: "扫码支付",
+            },
+          ];
+        case 8:
+          return [
+            {
+              key: "transfer-card",
+              text: "如何绑定购宝",
+            },
+            {
+              key: "scan-code",
+              text: "扫码支付",
+            },
+          ];
+        case 9:
+          return [
+            {
+              key: "transfer-card",
+              text: "如何绑定USDT",
+            },
+            {
+              key: "scan-code",
+              text: "扫码支付",
+            },
+          ];
+        default:
+          return [
+            {
+              key: "transfer-card",
+              text: this.$text("TRANSFER_CARD", "支付宝转卡"),
+            },
+            {
+              key: "scan-code",
+              text: this.$text("SCAN_CODE", "截屏扫码"),
+            },
+          ];
+      }
+    },
+    tabSlider() {
+      switch (this.category_currentIndex) {
+        case 7:
+          return `calc(16.5% + 33% * ${this.currentTab})`;
+        default:
+          return `calc(25% + 50% * ${this.currentTab})`;
+      }
     },
     isApp() {
       let isApp = !!(

@@ -11,6 +11,7 @@ export const preset = {
   YABO_API_DOMAIN: 'https://yaboapi.bbin-asia.com/api',
   YABO_GOLANG_API_DOMAIN: 'https://yaboapi.bbin-asia.com/api-v2/cxbb',
   ACTIVES_BOUNS_WEBSOCKET: 'wss://yaboapi.bbin-asia.com/ws/promosocket',
+  ACTIVES_BOUNS_WEBSOCKETV2: 'wss://yaboapi.bbin-asia.com/wsn/promosocket?',
 };
 
 /* ---------- ↓ 測試站 ---------- */
@@ -36,5 +37,6 @@ export const site_500023 = {
   SITE_NAME: '亿元',
   YABO_API_DOMAIN: 'https://cxbb.bbin-asia.com/api',
   YABO_GOLANG_API_DOMAIN: 'https://cxbb.bbin-asia.com/api-v2/cxbb',
+  ACTIVES_BOUNS_WEBSOCKETV2: 'wss://cxbb.bbin-asia.com/wsn/promosocket?',
 };
 /* eslint-enable camelcase */

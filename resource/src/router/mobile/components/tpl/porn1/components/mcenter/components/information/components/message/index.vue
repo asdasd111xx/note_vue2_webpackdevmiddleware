@@ -65,7 +65,7 @@
         :class="[
           $style.message,
           { [$style['edit-mode']]: isEditing },
-          'clearfix'
+          'clearfix',
         ]"
         @click="onClick(message)"
       >
@@ -73,7 +73,7 @@
           v-if="isEditing"
           :class="[
             $style['icon-edit'],
-            { [$style.active]: selectMessage.includes(message.id) }
+            { [$style.active]: selectMessage.includes(message.id) },
           ]"
         />
         <div :class="$style['icon-message']">
@@ -167,9 +167,7 @@
           <div :class="$style['delete-cancel']" @click="isDelete = false">
             取消
           </div>
-          <div :class="[$style['delete-confirm']]" @click="onDelete">
-            确定
-          </div>
+          <div :class="[$style['delete-confirm']]" @click="onDelete">确定</div>
         </div>
       </div>
     </div>
@@ -177,29 +175,29 @@
 </template>
 
 <script>
-import Vue from 'vue';
-import { mapGetters, mapActions } from 'vuex';
-import axios from 'axios';
-import find from 'lodash/find';
-import mcenter from '@/api/mcenter';
-import { API_MCENTER_MESSAGES_CONTENT } from '@/config/api';
-import { getCookie, setCookie } from '@/lib/cookie';
-import EST from '@/lib/EST';
+import Vue from "vue";
+import { mapGetters, mapActions } from "vuex";
+import axios from "axios";
+import find from "lodash/find";
+import mcenter from "@/api/mcenter";
+import { API_MCENTER_MESSAGES_CONTENT } from "@/config/api";
+import { getCookie, setCookie } from "@/lib/cookie";
+import EST from "@/lib/EST";
 
 export default {
   props: {
     headerConfig: {
       type: Object | null,
-      default: null
-    }
+      default: null,
+    },
   },
   filters: {
     dateFormat(date) {
-      return EST(Vue.moment(date).format('YYYY-MM-DD HH:mm:ss'));
+      return EST(Vue.moment(date).format("YYYY-MM-DD HH:mm:ss"));
     },
     shortDateFormat(date) {
-      return Vue.moment(date).format('YYYY-MM-DD');
-    }
+      return Vue.moment(date).format("YYYY-MM-DD");
+    },
   },
   data() {
     return {
@@ -209,73 +207,81 @@ export default {
       isDelete: false,
       showFunctionButton: false,
       messageData: [],
-      selectMessage: []
+      selectMessage: [],
     };
   },
   computed: {
     ...mapGetters({
-      memInfo: 'getMemInfo',
-      siteConfig: 'getSiteConfig'
+      memInfo: "getMemInfo",
+      siteConfig: "getSiteConfig",
     }),
     $style() {
-      const style = this[`$style_${this.siteConfig.MOBILE_WEB_TPL}`] || this.$style_porn1;
+      const style =
+        this[`$style_${this.siteConfig.MOBILE_WEB_TPL}`] || this.$style_porn1;
       return style;
     },
     currentMessage() {
       if (!this.$route.query.pid) {
         return null;
       }
-      return this.messageData.find((message) => message.id === this.$route.query.pid);
+      return this.messageData.find(
+        (message) => message.id === this.$route.query.pid
+      );
     },
     isSelectAll() {
       return this.selectMessage.length === this.messageData.length;
     },
     hasAllRead() {
-      return this.selectMessage.every((id) => find(this.messageData, (message) => message.id === id).read);
-    }
+      return this.selectMessage.every(
+        (id) => find(this.messageData, (message) => message.id === id).read
+      );
+    },
   },
   created() {
     this.getMessgae();
   },
   methods: {
     ...mapActions([
-      'actionSetMcenterMsgCount',
-      'actionSetUserdata',
-      'actionSetGlobalMessage'
+      "actionSetMcenterMsgCount",
+      "actionSetUserdata",
+      "actionSetGlobalMessage",
     ]),
     setContent(content) {
       let urlRegex = /(https?:\/\/[^\s]+)/g;
-      return content.replace(/\n/g, '<br/>').replace(urlRegex, function (url) {
-        return '<a href="' + url + '" target="_blank">' + url + '</a>';
-      })
+      return content.replace(/\n/g, "<br/>").replace(urlRegex, function (url) {
+        return '<a href="' + url + '" target="_blank">' + url + "</a>";
+      });
     },
     getMessgae() {
-      this.actionSetMcenterMsgCount();
+      // this.actionSetMcenterMsgCount();
       mcenter.message({
         success: (response) => {
-          this.messageData = response.ret.sort((a, b) => Vue.moment(b.created_at) - Vue.moment(a.created_at));
+          this.messageData = response.ret;
           this.hasReceive = true;
-        }
+        },
       });
     },
     getContent({ id, read }, isSetRead) {
       if (read) {
         return;
       }
-      return mcenter.messageContent({
-        success: ({ result }) => {
-          if (result !== 'ok') {
-            return;
-          }
-          if (!isSetRead) this.actionSetMcenterMsgCount();
-          this.messageData = this.messageData.map((message) => {
-            if (message.id === id) {
-              return { ...message, read: true };
+      return mcenter.messageContent(
+        {
+          success: ({ result }) => {
+            if (result !== "ok") {
+              return;
             }
-            return message;
-          });
-        }
-      }, id);
+            // if (!isSetRead) this.actionSetMcenterMsgCount();
+            this.messageData = this.messageData.map((message) => {
+              if (message.id === id) {
+                return { ...message, read: true };
+              }
+              return message;
+            });
+          },
+        },
+        id
+      );
     },
     onShowFunction(value) {
       this.showFunctionButton = value;
@@ -295,8 +301,8 @@ export default {
               this.isLoading = false;
               this.$nextTick(() => {
                 window.location.reload(true);
-              })
-            }, 1000)
+              });
+            }, 1000);
           });
         }
 
@@ -308,7 +314,9 @@ export default {
     onClick(info) {
       if (this.isEditing) {
         if (this.selectMessage.includes(info.id)) {
-          this.selectMessage = [...this.selectMessage.filter((id) => id !== info.id)];
+          this.selectMessage = [
+            ...this.selectMessage.filter((id) => id !== info.id),
+          ];
           return;
         }
         this.selectMessage = [...this.selectMessage, info.id];
@@ -342,28 +350,33 @@ export default {
       this.isLoading = true;
 
       axios({
-        method: 'delete',
+        method: "delete",
         url: API_MCENTER_MESSAGES_CONTENT,
-        data: { message_ids: this.selectMessage.map((id) => +id) }
+        data: { message_ids: this.selectMessage.map((id) => +id) },
       }).then((res) => {
         this.isLoading = false;
 
-        if (res.data.result !== 'ok') {
-          this.actionSetGlobalMessage({ msg: res.data.msg, code: res.data.code })
+        if (res.data.result !== "ok") {
+          this.actionSetGlobalMessage({
+            msg: res.data.msg,
+            code: res.data.code,
+          });
           return;
         }
 
-        this.actionSetGlobalMessage({ msg: '消息删除成功' })
+        this.actionSetGlobalMessage({ msg: "消息删除成功" });
         this.getMessgae();
         this.onShowFunction(false);
         this.isEditing = false;
       });
-    }
-
-  }
+    },
+  },
 };
 </script>
 
-
-<style lang="scss" src="../../css/porn1.message.scss" module="$style_porn1"></style>
+<style
+  lang="scss"
+  src="../../css/porn1.message.scss"
+  module="$style_porn1"
+></style>
 <style lang="scss" src="../../css/ey1.message.scss" module="$style_ey1"></style>

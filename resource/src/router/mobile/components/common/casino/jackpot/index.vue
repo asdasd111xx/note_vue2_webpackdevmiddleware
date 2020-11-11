@@ -209,7 +209,7 @@ export default {
         let tmpIndex = this.currentBonusIndex;
         let array = [];
         this.currentBonus = [];
-        this.$nextTick(() => {
+        setTimeout(() => {
 
           // 3 casino, 6 mahjong,card
           let imgSrc = `${this.siteConfig.BBOS_DOMIAN_CDN}/image/${this.$route.name}/${this.vendor}/Game_${this.jackpotData.jpMinor[tmpIndex].code}.png`;
@@ -233,7 +233,7 @@ export default {
           }
 
           this.currentBonusIndex = tmpIndex;
-        })
+        }, 300)
       }
 
       if (this.jackpotData.jpMinor.length > 1) {
@@ -257,7 +257,7 @@ export default {
         let array = [];
         this.currentUsers = [];
 
-        this.$nextTick(() => {
+        setTimeout(() => {
           array.push({ ...this.jackpotData.jpUserList[tmpIndex], no: tmpIndex + 1 });
 
           let i = 1;
@@ -280,7 +280,8 @@ export default {
           }
 
           this.currentUsersIndex = tmpIndex;
-        })
+        }, 300)
+
       }
 
       if (this.jackpotData.jpUserList.length > 1) {
@@ -357,10 +358,10 @@ export default {
           this.animatedNumber.value = +this.jackpotData.jpGrand - 2;
           this.animatedNumber.duration = 0;
 
-          this.$nextTick(() => {
+          setTimeout(() => {
             this.animatedNumber.value = +this.jackpotData.jpGrand;
             this.animatedNumber.duration = 150000;
-          })
+          }, 300)
           return;
 
         // 單一遊戲彩金

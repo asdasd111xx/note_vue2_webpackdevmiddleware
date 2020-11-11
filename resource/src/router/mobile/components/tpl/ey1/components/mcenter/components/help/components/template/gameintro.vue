@@ -39,6 +39,7 @@
             v-for="(item, index) in item.content"
             :class="$style['text-block']"
             v-html="item"
+            @click="linkTo('service')"
           />
         </div>
 
@@ -82,8 +83,8 @@
 </template>
 
 <script>
-import info from '../../json/gameintro.json';
-import mixin from '@/mixins/mcenter/help/help';
+import info from "../../json/gameintro.json";
+import mixin from "@/mixins/mcenter/help/help";
 
 export default {
   mixins: [mixin],

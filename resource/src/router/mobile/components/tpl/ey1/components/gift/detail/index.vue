@@ -1,10 +1,11 @@
 <template>
   <mobile-container :class="$style.container" :header-config="headerConfig">
     <div slot="content" :class="$style['content-wrap']">
-      <div v-if="this.type === 'wechat'" @click="wechatClick">
+      <!-- <div v-if="this.type === 'wechat'" @click="wechatClick"> -->
+      <div @click="wechatClick">
         <img
           :class="$style['wechat-image']"
-          src="/static/image/ey1/gift/wechat_promote.png"
+          :src="$getCdnPath(`/static/image/ey1/gift/${this.img}.jpg`)"
         />
       </div>
     </div>
@@ -12,17 +13,70 @@
 </template>
 
 <script>
-import mobileContainer from '../../common/mobileContainer';
-import { mapGetters, mapActions } from 'vuex';
-import jwt from 'jwt-simple';
+import mobileContainer from "../../common/mobileContainer";
+import { mapGetters, mapActions } from "vuex";
+import jwt from "jwt-simple";
 
 export default {
   data() {
     return {
-      type: '',
-      title: '',
-      url: 'https://ey.italking.asia/guest.php?gid=EY'
-    }
+      type: "",
+      title: "",
+      img: "",
+      url: "https://ey.italking.asia/guest.php?gid=EY",
+      MenuList: [
+        {
+          type: "wifi",
+          title: "wifi技术",
+          src: "wifi_technology",
+        },
+        {
+          type: "football",
+          title: "第一足球",
+          src: "first_football",
+        },
+        {
+          type: "bird",
+          title: "蜂鸟论坛",
+          src: "bird_forum",
+        },
+        {
+          type: "wechat",
+          title: "微信推广",
+          src: "wechat_promote",
+        },
+        {
+          type: "plane",
+          title: "飞机炸群",
+          src: "plane_bombing",
+        },
+        {
+          type: "apple",
+          title: "苹果推信",
+          src: "apple_twitter",
+        },
+        {
+          type: "dial",
+          title: "网红口拨",
+          src: "internet_celebrity_dial",
+        },
+        {
+          type: "listPurchase",
+          title: "名单购买",
+          src: "list_purchase",
+        },
+        {
+          type: "smsCard",
+          title: "短信卡发",
+          src: "sms_card_sending",
+        },
+        {
+          type: "mail",
+          title: "邮件群发",
+          src: "mass_mailing",
+        },
+      ],
+    };
   },
   components: {
     mobileContainer,
@@ -30,47 +84,50 @@ export default {
   mounted() {
     if (this.loginStatus && this.onlineService) {
       const memberData = {
-        name: this.memInfo.user.name || '',
-        mobile: this.memInfo.user.phone || '',
-        account: this.memInfo.user.username
+        name: this.memInfo.user.name || "",
+        mobile: this.memInfo.user.phone || "",
+        account: this.memInfo.user.username,
       };
-      const rsaData = jwt.encode(memberData, 'T9AuSgQfh2');
+      const rsaData = jwt.encode(memberData, "T9AuSgQfh2");
       this.url = `${this.onlineService.url}&jwtToken=${rsaData}`;
     }
   },
   computed: {
     ...mapGetters({
-      loginStatus: 'getLoginStatus',
-      onlineService: 'getOnlineService',
-      memInfo: 'getMemInfo'
-
+      loginStatus: "getLoginStatus",
+      onlineService: "getOnlineService",
+      memInfo: "getMemInfo",
     }),
     headerConfig() {
-      if (this.$route.params.key === "wechat") {
-        this.type = 'wechat';
-        this.title = '微信推广'
-      }
-
+      const index = this.MenuList.findIndex(
+        (MenuList) => MenuList.type === this.$route.params.key
+      );
+      this.type = this.MenuList[index].type;
+      this.title = this.MenuList[index].title;
+      this.img = this.MenuList[index].src;
+      // if (this.$route.params.key === "wifi") {
+      //   this.type = "wifi";
+      //   this.title = "wifi技术";
+      // }
       return {
         prev: true,
         title: this.title,
-        customLinkTitle: '点我报价',
+        customLinkTitle: "点我报价",
         customLinkAction: () => {
           window.open(this.url);
         },
         onClick: () => {
-          this.$router.back('/mobile/gift?q=通讯软体');
-        }
+          // this.$router.back("/mobile/gift?q=通讯软体");
+          this.$router.back(`/mobile/gift?q=${this.title}`);
+        },
       };
     },
   },
   methods: {
-    ...mapActions([
-      'actionSetGlobalMessage'
-    ]),
+    ...mapActions(["actionSetGlobalMessage"]),
     wechatClick() {
       window.open(this.url);
-    }
+    },
   },
 };
 </script>

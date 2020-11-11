@@ -6,16 +6,17 @@
 }
 
 .swiper-item {
-  width: 25%;
+  width: 28%;
   height: 38px;
   line-height: 38px;
   text-align: center;
   color: #a6a9b2;
+  white-space: nowrap;
 
   span {
     display: inline-block;
-    height: 35px;
-    line-height: 35px;
+    height: 34px;
+    line-height: 34px;
     border-bottom: 2px solid transparent;
   }
 
@@ -147,6 +148,12 @@
     text-align: center;
     text-overflow: ellipsis;
     white-space: nowrap;
+
+    &.custom {
+      height: auto;
+      line-height: normal;
+      font-size: 16px;
+    }
   }
 }
 
@@ -347,12 +354,14 @@
 
     &.disable {
       pointer-events: none;
-    }
-
-    &.unInput {
       border: 1px solid #e9dacb;
       color: #e9dacb;
     }
+
+    // &.unInput {
+    //   border: 1px solid #e9dacb;
+    //   color: #e9dacb;
+    // }
   }
 }
 
@@ -979,6 +988,10 @@
 .warm-tip {
   font-size: 12px;
   color: #a6a9b2;
+
+  p {
+    margin: 0;
+  }
 }
 
 .entry-message-container {

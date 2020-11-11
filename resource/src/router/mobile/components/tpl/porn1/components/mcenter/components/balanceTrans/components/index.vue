@@ -42,26 +42,30 @@
     </div>
 
     <div :class="[$style['balance-item-wrap'], 'clearfix']">
-      <template v-if="siteConfig.MOBILE_WEB_TPL === 'porn1'">
-        <div
-          :class="[
-            $style['balance-item'],
-            {
-              [$style['is-last-item']]: !isShowMore,
-            },
-          ]"
-          v-if="bonus"
-          @click="$router.push('/mobile/mcenter/bonus')"
-        >
-          <span :class="$style['balance-item-vendor']">
+      <div
+        v-if="bonus"
+        :class="[
+          $style['balance-item'],
+          {
+            [$style['is-last-item']]: !isShowMore,
+          },
+        ]"
+        @click="$router.push('/mobile/mcenter/bonus')"
+      >
+        <span :class="$style['balance-item-vendor']">
+          <template v-if="themeTPL === 'porn1'">
             {{ $text("S_BONUS", "红利彩金") }}
-          </span>
+          </template>
 
-          <span :class="$style['balance-item-money']">
-            {{ bonus.balance ? bonus.balance : "" }}
-          </span>
-        </div>
-      </template>
+          <template v-if="themeTPL === 'ey1'">
+            {{ $text("S_BONUS_ACCOUNT", "红利帐户") }}
+          </template>
+        </span>
+
+        <span :class="$style['balance-item-money']">
+          {{ bonus.balance ? bonus.balance : "" }}
+        </span>
+      </div>
 
       <template v-if="!isShowMore">
         <div
@@ -388,6 +392,9 @@ export default {
         this[`$style_${this.siteConfig.MOBILE_WEB_TPL}`] || this.$style_porn1;
       return style;
     },
+    themeTPL() {
+      return this.siteConfig.MOBILE_WEB_TPL;
+    },
     balanceInfo() {
       const data = {};
 
@@ -403,7 +410,7 @@ export default {
     },
     firstThirdBalanceInfo() {
       const data = {};
-      let nums = this.siteConfig.MOBILE_WEB_TPL === 'porn1' ? 3 : 4;
+      let nums = 3;
 
       Object.keys(this.membalance.vendor)
         .slice(0, nums)

@@ -4,17 +4,14 @@
       <div :class="$style['phone-image-wrap']">
         <img
           :class="$style['phone-image']"
-          :src="$getCdnPath(info.image[curLang])"
+          :src="
+            info.image && info.image[curLang]
+              ? $getCdnPath(info.image[curLang])
+              : '/static/image/ey1/default/bg_banner_d.png'
+          "
           :data-info="key"
         />
       </div>
-      <!-- <div>
-        <img
-          :class="$style['pad-image']"
-          :src="$getCdnPath(info.padImg[curLang])"
-          :data-info="key"
-        />
-      </div> -->
     </swiper-slide>
     <div slot="pagination" class="swiper-pagination" />
   </swiper>
@@ -99,20 +96,9 @@ export default {
      * @method generateDefaultImg
      */
     generateDefaultImg() {
-      const imageData = Object.keys(this.lang).reduce((init, key) => ({
-        ...init,
-        image: {
-          ...init.image,
-          [key]: `/static/image/ey1/default/bg_banner_d.png`
-        },
-        padImg: {
-          ...init.padImg,
-          [key]: `/static/image/ey1/default/bg_banner_d.png`
-        }
-      }), {});
-
       return {
-        linkType: 'nolink', linkTo: '', linkItem: '', ...imageData
+        linkType: 'nolink', linkTo: '', linkItem: '',
+        image: { 'zh-cn': '/static/image/ey1/default/bg_banner_d.png' }
       };
     },
     /**

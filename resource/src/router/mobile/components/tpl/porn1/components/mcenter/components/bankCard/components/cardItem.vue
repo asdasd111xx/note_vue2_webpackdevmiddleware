@@ -2,13 +2,13 @@
   <div
     :class="[
       {
-        [$style['bankcard-item']]: type === 'bankCard' || themeTPL === 'porn1'
+        [$style['bankcard-item']]: type === 'bankCard' || themeTPL === 'porn1',
       },
       {
         [$style['virtual-bankcard-item']]:
-          themeTPL === 'ey1' && type === 'wallet'
+          themeTPL === 'ey1' && type === 'wallet',
       },
-      $style[`colorIndex-${colorRepeatIndex}`]
+      $style[`colorIndex-${colorRepeatIndex}`],
     ]"
     @click="handleItem"
   >
@@ -45,7 +45,7 @@
 
         <div :class="$style['card-info']">
           <div :class="$style['card-name']">
-            {{ data.payment_gateway_name }}
+            {{ data.virtual_bank_name }}
           </div>
 
           <template v-if="themeTPL === 'ey1'">

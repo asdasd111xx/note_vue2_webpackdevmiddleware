@@ -4,15 +4,30 @@
       $style['iframe-wrap'],
       {
         [$style['has-header']]: headerConfig.hasHeader
-      }
+      },
+      { [$style['fullScreen']]: isFullScreen }
     ]"
     :style="{ height: `calc(100vh - ${iframeHeight}px)` }"
   >
     <div
       v-if="headerConfig.hasHeader"
       id="header"
-      :class="[$style['header'], $style[themeTPL]]"
+      :class="[
+        $style['header'],
+        $style[themeTPL],
+        { [$style['fullScreen']]: isFullScreen }
+      ]"
     >
+      <div
+        v-show="isFullScreen"
+        :class="$style['close-fullscreen']"
+        @click="toggleFullScreen"
+      >
+        <img
+          :src="$getCdnPath(`/static/image/${themeTPL}/common/arrow_next.png`)"
+        />
+      </div>
+
       <div :class="$style['btn-prev']" @click="headerConfig.onClick">
         <img
           :src="$getCdnPath(`/static/image/${themeTPL}/common/btn_back.png`)"
@@ -20,6 +35,11 @@
       </div>
       <div v-if="headerConfig.title" :class="[$style.title, $style[themeTPL]]">
         {{ headerConfig.title }}
+      </div>
+
+      <div v-if="headerConfig.hasFunc" :class="[$style.func, $style[themeTPL]]">
+        <div @click="toggleFullScreen">全屏</div>
+        <div @click="reload">刷新</div>
       </div>
     </div>
     <iframe
@@ -46,7 +66,13 @@ export default {
   data() {
     return {
       isLoading: true,
+      isFullScreen: false,
       src: '',
+    }
+  },
+  watch: {
+    src() {
+
     }
   },
   components: {
@@ -82,19 +108,12 @@ export default {
       case 'DSC':
       case 'PPV':
       case 'SF':
-        // yaboRequest({
-        //   method: 'get',
-        //   url: `${this.siteConfig.YABO_API_DOMAIN}/thirdparty/url`,
-        //   headers: {
-        //     'x-domain': this.memInfo.user.domain
-        //   },
-        //   params: {
-        //     type: params.page.toUpperCase(),
-        //     userid: this.memInfo.user.id
-        //   },
-        // }).then(res => {
-        //   this.src = res.data;
-        // })
+      case 'SWAG':
+        if (localStorage.getItem('iframe-third-url')) {
+          this.src = localStorage.getItem('iframe-third-url');
+          return;
+        }
+
         let userId = 'guest';
         if (this.memInfo && this.memInfo.user && this.memInfo.user.id && this.memInfo.user.id !== 0) {
           userId = this.memInfo.user.id;
@@ -105,10 +124,19 @@ export default {
           url: `${this.siteConfig.YABO_GOLANG_API_DOMAIN}/ThirdParty/${params.page.toUpperCase()}/${userId}`,
           headers: {
             'x-domain': this.memInfo.user.domain
-          },
+          }
         }).then(res => {
-          this.src = res.data;
+          if (res && res.status !== '000') {
+            if (res.msg) {
+              this.actionSetGlobalMessage({ msg: res.msg });
+            }
+          }
+          else {
+            this.src = res.data;
+          }
         })
+        // SWAG
+        // this.src = 'https://feature-yabo.app.swag.live/';
         break;
       case 'THIRD':
         axios({
@@ -129,9 +157,6 @@ export default {
             this.actionSetGlobalMessage({ msg: error.data.msg });
           }
         })
-        break;
-      case 'SWAG':
-        this.src = 'https://feature-yabo.app.swag.live/';
         break;
       case 'GAME':
         this.src = localStorage.getItem('iframe-third-url');
@@ -161,13 +186,23 @@ export default {
     }),
     originUrl() {
       let origin = this.$route.params.page.toUpperCase();
+      let from = localStorage.getItem('iframe-third-origin');
+
+      if (from) {
+        localStorage.removeItem('iframe-third-origin');
+        return `/mobile/${from}`;
+      }
+
       switch (origin) {
         case 'THIRD':
           return '/mobile/gift';
         case 'PROMOTION':
           return '/mobile/promotion';
+        case 'SWAG':
+          return '/mobile';
         default:
           return '/mobile';
+          return;
       }
     },
     iframeHeight() {
@@ -186,11 +221,14 @@ export default {
     },
     headerConfig() {
       const query = this.$route.query;
+      this.isFullScreen = query.fullscreen === undefined ? false : query.fullscreen === 'true';
+
       return {
         hasHeader: query.hasHeader === undefined ? false : query.hasHeader === 'true',
         hasFooter: query.hasFooter === undefined ? true : query.hasFooter === 'true',
         prev: query.prev === undefined ? true : query.prev,
         title: query.title || localStorage.getItem('iframe-third-url-title') || '',
+        hasFunc: query.func === undefined ? true : query.func === 'true',
         onClick: () => {
           this.$router.push(this.originUrl);
         }
@@ -206,6 +244,26 @@ export default {
     ...mapActions([
       'actionSetGlobalMessage'
     ]),
+    reload() {
+      if (this.isLoading) {
+        return;
+      }
+
+      // reload 進入網址
+      // const tmpSrc = this.src;
+      // this.isLoading = true;
+      // this.src = '';
+      // setTimeout(() => {
+      //   this.src = tmpSrc;
+      //   this.isLoading = false;
+      // }, 310)
+
+      // reload 當前網址
+      document.getElementById('iframe').contentWindow.location.reload();
+    },
+    toggleFullScreen() {
+      this.isFullScreen = !this.isFullScreen;
+    },
     getCustomizeLink(params) {
       axios({
         method: 'get',
@@ -223,7 +281,7 @@ export default {
         }
       })
     },
-    onListener(event) {
+    onListener(e) {
       // //  需要監聽的白名單
       // let whiteList = [window.location.origin,
       //   'https://play.qybtv.xyz',
@@ -233,23 +291,42 @@ export default {
       //   'https://dglzsm.com',
       //   'http://47.240.78.53',
       //   'http://47.240.57.135',
-      //   'http://47.240.117.62'
+      //   'http://47.240.117.62',
+      //   'http://eyt.iplay.bet',
+      //   'http://eyd.666uxm.com',
+      //   'https://688lg410.666uxm.com/'
       // ];
-      if (event.data) {
-        let data = event.data;
+      if (e.data) {
+        let data = e.data;
+        // console.log(data);
+
         if (!data.event) {
           return;
         }
-        console.log(data.event);
+
+        console.log('[EVENT]:', data.event);
+
         switch (data.event) {
           case 'EVENT_THIRDPARTY_CLOSE':
-          case 'close':
             this.$router.push(this.originUrl);
             return;
 
+          // 避免迴圈重複本站
+          case 'SELF_INTO':
+            if (this.$route.params.page.toUpperCase() === 'PROMOTION') {
+              this.$router.replace('/mobile/login');
+              return;
+            }
+            return;
           case 'EVENT_THIRDPARTY_LOGIN':
             this.$router.push('/mobile/login');
             return;
+
+          case 'EVENT_THIRDPARTY_CURRENCY_NOT_ENOUGH':
+          case 'EVENT_THIRDPARTY_DEPOSIT':
+            this.$router.push('/mobile/mcenter/swag?tab=0');
+            return;
+
           default:
             return;
         }
@@ -264,14 +341,14 @@ export default {
       })
       try {
         window.addEventListener('message', this.onListener);
-        const self = this;
-        this.$refs.iframe.contentWindow.onbeforeunload = (e) => {
-          console.log(e)
-          //   // 取消預設關閉 取代成回上一頁
-          //   e.preventDefault();
-          //   e.stopPropagation();
-          //   self.$router.back();
-        }
+        // const self = this;
+        // this.$refs.iframe.contentWindow.onbeforeunload = (e) => {
+        //   console.log(e)
+        //   //   // 取消預設關閉 取代成回上一頁
+        //   //   e.preventDefault();
+        //   //   e.stopPropagation();
+        //   //   self.$router.back();
+        // }
       } catch (e) {
         console.log('onbeforeunload Catch:', e)
       }
@@ -287,10 +364,35 @@ export default {
   height: 100vh;
   width: 100%;
   background-color: #fff;
+  transition: margin 0.31s, height 0.31s;
+
   // overflow: hidden;
+
+  &.fullScreen {
+    margin-top: unset !important;
+    height: 100vh !important;
+  }
 
   &.has-header {
     margin-top: 43px;
+  }
+}
+
+@keyframes slide-up {
+  0% {
+    top: 0;
+  }
+  100% {
+    top: -43px;
+  }
+}
+
+@keyframes slide-down {
+  0% {
+    top: -43px;
+  }
+  100% {
+    top: 0;
   }
 }
 
@@ -306,7 +408,14 @@ export default {
   background: white;
   color: #ffffff;
   text-align: center;
+  animation: slide-down 0.31s forwards;
+
   // border-bottom: 1px solid #eee;
+
+  &.fullScreen {
+    animation: slide-up 0.31s forwards;
+    top: -43px;
+  }
 
   &.ey1 {
     background: linear-gradient(#fe2a2a, #b60303);
@@ -314,6 +423,13 @@ export default {
 
   &.porn1 {
     background: white;
+  }
+}
+
+@media (orientation: landscape) {
+  .header,
+  .iframe {
+    max-width: $mobile_max_landscape_width !important;
   }
 }
 
@@ -341,12 +457,16 @@ export default {
 }
 
 .title {
-  height: 43px;
-  line-height: 43px;
   color: black;
   font-size: 17px;
   font-weight: 500;
+  height: 43px;
+  line-height: 43px;
   margin: 0 auto;
+  overflow: hidden;
+  text-overflow: ellipsis;
+  white-space: nowrap;
+  width: 60%;
 
   &.ey1 {
     color: white;
@@ -357,6 +477,51 @@ export default {
   }
 }
 
+.close-fullscreen {
+  position: fixed;
+  top: 0;
+  margin: 0 auto;
+  transform: rotate(90deg);
+  height: 18px;
+  margin: 0 auto;
+  left: calc(50% - 9px);
+  background: rgba(0, 0, 0, 0.5);
+  border-radius: 0 5px 5px 0;
+  opacity: 1;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+
+  > img {
+    height: 14px;
+  }
+}
+
+.func {
+  position: absolute;
+  right: 12px;
+  top: 0;
+  font-size: 14px;
+  height: 100%;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+
+  > div {
+    width: 50%;
+    padding: 0 3px;
+    height: 43px;
+    line-height: 43px;
+  }
+
+  &.ey1 {
+    color: white;
+  }
+
+  &.porn1 {
+    color: black;
+  }
+}
 .iframe {
   //   overflow: auto !important;
   //   -webkit-overflow-scrolling: touch !important;

@@ -39,13 +39,17 @@
           <div
             :class="[$style['content'], { [$style['active']]: item.isOpen }]"
           >
-            <div :class="$style['text-block']" v-html="item.content" />
+            <div
+              :class="$style['text-block']"
+              v-html="item.content"
+              @click="linkTo('service')"
+            />
           </div>
 
           <div v-if="index == 1 && item.isOpen" :class="$style['tips']">
             <div>
               如有任何问题，请洽24小时
-              <a @click="linkTo('service')">在线客服</a>
+              <span @click="linkTo('service')">在线客服</span>
               ，将有专人亲切的为您服务。
             </div>
           </div>
@@ -65,8 +69,8 @@
 </template>
 
 <script>
-import info from '../../json/deposit.json';
-import mixin from '@/mixins/mcenter/help/help';
+import info from "../../json/deposit.json";
+import mixin from "@/mixins/mcenter/help/help";
 
 export default {
   mixins: [mixin],
