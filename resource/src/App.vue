@@ -117,8 +117,9 @@ export default {
     const self = this;
     const listner = function () {
       const paths = ['card', 'casino'];
-      if (!document.hidden && paths.includes(self.$route.name)) {
-        console.log('[visibilitychange]:false Reload')
+      if (!document.hidden && paths.includes(self.$route.name) && window.GAME_RELOAD) {
+        console.log('[visibilitychange]:false Reload');
+        window.GAME_RELOAD = undefined;
         window.location.reload(true);
       }
     }

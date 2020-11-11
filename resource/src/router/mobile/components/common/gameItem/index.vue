@@ -386,10 +386,12 @@ export default {
 
       const openGameSuccessFunc = (res) => {
         this.isShowLoading = false;
+        window.GAME_RELOAD = true;
       };
 
       const openGameFailFunc = (res) => {
         this.isShowLoading = false;
+        window.GAME_RELOAD = undefined;
 
         if (res && res.data) {
           let data = res.data;
