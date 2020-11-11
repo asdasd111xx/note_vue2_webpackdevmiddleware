@@ -256,10 +256,8 @@ export default {
       return {
         prev: true,
         onClick: () => {
-          // this.$router.back();
-
-          // 109/11/10 企劃:登入統一回首頁
-          this.$router.push("/mobile");
+          // 目前與億元的返回流程不同
+          this.$router.back();
         },
         hasClose: true,
         title: this.$text("S_LOGON", "登录")
