@@ -65,24 +65,24 @@
 </template>
 
 <script>
-import Vue from 'vue';
-import { API_GET_POST } from '@/config/api';
-import ajax from '@/lib/ajax';
-import EST from '@/lib/EST';
+import Vue from "vue";
+import { API_GET_POST } from "@/config/api";
+import ajax from "@/lib/ajax";
+import EST from "@/lib/EST";
 
 export default {
   filters: {
     dateFormat(date) {
-      return EST(Vue.moment(date).format('YYYY-MM-DD HH:mm:ss'));
+      return EST(Vue.moment(date).format("YYYY-MM-DD HH:mm:ss"));
     },
     shortDateFormat(date) {
-      return Vue.moment(date).format('YYYY-MM-DD');
-    }
+      return Vue.moment(EST(date)).format("YYYY-MM-DD");
+    },
   },
   data() {
     return {
       hasReceive: false,
-      postData: []
+      postData: [],
     };
   },
   computed: {
@@ -91,7 +91,7 @@ export default {
         return null;
       }
       return this.postData.find((post) => post.id === this.$route.query.pid);
-    }
+    },
   },
   methods: {
     setContent(content) {
@@ -99,36 +99,36 @@ export default {
         return;
       }
       let urlRegex = /(https?:\/\/[^\s]+)/g;
-      return content.replace(/\n/g, '<br/>').replace(urlRegex, function (url) {
-        return '<a href="' + url + '" target="_blank">' + url + '</a>';
-      })
+      return content.replace(/\n/g, "<br/>").replace(urlRegex, function (url) {
+        return '<a href="' + url + '" target="_blank">' + url + "</a>";
+      });
     },
   },
   created() {
     ajax({
-      method: 'get',
+      method: "get",
       url: API_GET_POST,
       success: ({ result, ret }) => {
-        if (result !== 'ok') {
+        if (result !== "ok") {
           return;
         }
 
         const categoryList = {
-          0: '',
-          1: '最新',
-          2: '重要',
-          3: '活动',
-          4: '维护'
+          0: "",
+          1: "最新",
+          2: "重要",
+          3: "活动",
+          4: "维护",
         };
 
         this.postData = ret.map((item) => ({
           ...item,
-          categoryText: categoryList[item.category]
+          categoryText: categoryList[item.category],
         }));
         this.hasReceive = true;
-      }
+      },
     });
-  }
+  },
 };
 </script>
 
