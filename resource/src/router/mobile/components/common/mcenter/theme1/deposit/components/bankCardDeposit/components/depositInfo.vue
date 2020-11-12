@@ -310,7 +310,6 @@ export default {
       });
     },
     switchQrcodePopup(enable, value, text) {
-      console.log(enable, value, text);
       this.qrcodeValue = value;
       this.isShowQrcode = enable;
       this.qrcodeTitle = text;
