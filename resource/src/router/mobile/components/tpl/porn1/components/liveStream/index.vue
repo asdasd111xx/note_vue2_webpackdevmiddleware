@@ -122,7 +122,7 @@ export default {
   data() {
     return {
       streamList: [],
-      currentTab: 'cutiesLive',
+      currentTab: 'ballLive',
       iframeHeight: 500,
       src: '',
       isShowLoading: false
@@ -136,7 +136,7 @@ export default {
     }),
   },
   created() {
-    this.currentTab = this.$route.query.type ? this.$route.query.type : 'cutiesLive';
+    this.currentTab = this.$route.query.type ? this.$route.query.type : 'ballLive';
 
     pornRequest({
       method: 'get',
@@ -223,7 +223,7 @@ export default {
             }
             else {
               localStorage.setItem('iframe-third-url', res.data);
-              localStorage.setItem('iframe-third-origin', 'liveStream');
+              localStorage.setItem('iframe-third-origin', 'liveStream?type=ballLive');
               this.$router.push(`/mobile/iframe/SWAG?&hasFooter=false&hasHeader=true&fullscreen=true`);
               return;
             }
