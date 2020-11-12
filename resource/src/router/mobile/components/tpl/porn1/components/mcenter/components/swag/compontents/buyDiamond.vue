@@ -69,7 +69,7 @@
                 :src="
                   $getCdnPath(
                     `/static/image/porn1/mcenter/swag/ic_swag_${
-                      key === currentSelRate.key ? 'h' : 'n'
+                      item.amount === currentSelRate.amount ? 'h' : 'n'
                     }.png`
                   )
                 "

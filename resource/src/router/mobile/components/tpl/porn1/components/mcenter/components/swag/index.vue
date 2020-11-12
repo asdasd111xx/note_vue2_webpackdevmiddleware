@@ -125,7 +125,6 @@ export default {
           }
           else {
             localStorage.setItem('iframe-third-url', res.data);
-            localStorage.setItem('iframe-third-url-title', 'SWAG');
             localStorage.setItem('iframe-third-origin', 'mcenter/swag?tab=0');
             this.$router.push(`/mobile/iframe/SWAG?&hasFooter=false&hasHeader=true`);
             return;

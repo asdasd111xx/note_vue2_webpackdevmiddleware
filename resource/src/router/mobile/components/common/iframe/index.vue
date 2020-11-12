@@ -232,6 +232,10 @@ export default {
         prev: query.prev === undefined ? true : query.prev,
         title: query.title || localStorage.getItem('iframe-third-url-title') || '',
         hasFunc: query.func === undefined ? true : query.func === 'true',
+        title: query.title ||
+          localStorage.getItem('iframe-third-url-title') ||
+          this.$route.params.page.toUpperCase() ||
+          '',
         onClick: () => {
           this.$router.push(this.originUrl);
         }
