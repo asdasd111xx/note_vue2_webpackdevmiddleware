@@ -161,10 +161,14 @@ export default {
     hasCrypto: {
       type: Boolean,
       default: false
+    },
+    swiftCode: {
+      type: String,
+      default: ""
     }
   },
   mounted() {
-    this.getSerialNumberData();
+    this.getSerialNumberData(this.swiftCode);
   },
   computed: {
     ...mapGetters({

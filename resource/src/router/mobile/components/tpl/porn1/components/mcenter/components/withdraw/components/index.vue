@@ -517,7 +517,7 @@
     <serial-number
       v-if="isSerial"
       :handle-close="toggleSerial"
-      :swiftCode="selectedCard.swift_code"
+      :swift-code="selectedCard.swift_code"
     />
 
     <!-- 帐户资料 -->
@@ -546,6 +546,7 @@
           :withdraw-value="+withdrawValue"
           :type="widthdrawTipsType"
           :has-crypto="isSelectedUSDT"
+          :swift-code="selectedCard.swift_code"
           @close="closePopup"
           @submit="handleSubmit"
           @save="saveCurrentValue(true)"
@@ -631,6 +632,7 @@ export default {
       actualMoney: 0,
       depositBeforeWithdraw: false,
       errTips: "",
+      errCode: "",
       firstDeposit: false,
       // hasBankCard: false,
 
@@ -638,8 +640,6 @@ export default {
       isSendSubmit: false,
       isSerial: false,
       isShowMore: true,
-      // swiftCode: "",
-      // scode: "",
       // 彈窗顯示狀態統整
       showPopStatus: {
         isShow: false,
@@ -651,7 +651,8 @@ export default {
         bank_id: "",
         id: "",
         name: "",
-        withdrawType: ""
+        withdrawType: "",
+        swift_code: ""
       },
       widthdrawTipsType: "tips",
 
@@ -831,12 +832,12 @@ export default {
       }
     },
     lockSubmit() {
-      if (
-        this.errTips ||
-        !this.withdrawValue ||
-        this.isSendSubmit ||
-        !this.selectedCard.id
-      ) {
+      if (!this.withdrawValue || this.isSendSubmit || !this.selectedCard.id) {
+        return true;
+      }
+
+      // C590021 = 系統忙碌中，出款單已取消，請重新提交
+      if (this.errTips && this.errCode !== "C590021") {
         return true;
       }
 
@@ -1099,6 +1100,7 @@ export default {
         }
 
         this.errTips = "";
+        this.errCode = "";
       }
 
       if (target === "withdrawPwd") {
@@ -1114,7 +1116,6 @@ export default {
       this.isShowMore = !this.isShowMore;
     },
     handleSelectCard(item) {
-      // this.scode = item.swift_code;
       this.updateAmount(item.swift_code);
       this.selectedCard = {
         id: item.id,
@@ -1177,11 +1178,14 @@ export default {
 
         const islock = () => {
           if (
-            this.errTips ||
             !this.withdrawValue ||
             this.isSendSubmit ||
             !this.selectedCard.id
           ) {
+            return true;
+          }
+
+          if (this.errTips && this.errCode !== "C590021") {
             return true;
           }
 
@@ -1516,13 +1520,8 @@ export default {
               origin: "withdraw"
             });
 
-            // 109/11/10
-            // 出現 系統忙碌中，出款單已取消，請重新提交，為了不要有 errTips 而讓立即提現的按鈕反灰
-            if (error.data.code === "C590021") {
-              return;
-            } else {
-              this.errTips = error.data.msg;
-            }
+            this.errTips = error.data.msg;
+            this.errCode = error.data.code;
           }
 
           if (error && error.data && error.data.code === "M500001") {
