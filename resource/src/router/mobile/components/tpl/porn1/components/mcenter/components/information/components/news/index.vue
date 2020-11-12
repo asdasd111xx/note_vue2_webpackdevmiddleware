@@ -57,32 +57,32 @@
 </template>
 
 <script>
-import Vue from 'vue';
-import { mapGetters } from 'vuex';
-import EST from '@/lib/EST';
+import Vue from "vue";
+import { mapGetters } from "vuex";
+import EST from "@/lib/EST";
 
 export default {
   filters: {
     dateFormat2(date) {
-      return Vue.moment(EST(date)).format('YYYY-MM-DD');
+      return Vue.moment(EST(date)).format("YYYY-MM-DD");
     },
     dateFormat(date) {
-      return EST(Vue.moment(date).format('YYYY-MM-DD HH:mm:ss'));
+      return EST(Vue.moment(date).format("YYYY-MM-DD HH:mm:ss"));
     },
     timeFormat(date) {
-      return Vue.moment(date).format('YYYY-MM-DD HH:mm:ss');
-    }
+      return EST(Vue.moment(date).format("YYYY-MM-DD HH:mm:ss"));
+    },
   },
   computed: {
     ...mapGetters({
-      newsData: 'getNews'
+      newsData: "getNews",
     }),
     currentNews() {
       if (!this.$route.query.pid) {
         return null;
       }
       return this.newsData.find((news) => news.id === this.$route.query.pid);
-    }
+    },
   },
   methods: {
     setContent(content) {
@@ -90,9 +90,9 @@ export default {
         return;
       }
       let urlRegex = /(https?:\/\/[^\s]+)/g;
-      return content.replace(/\n/g, '<br/>').replace(urlRegex, function (url) {
-        return '<a href="' + url + '" target="_blank">' + url + '</a>';
-      })
+      return content.replace(/\n/g, "<br/>").replace(urlRegex, function (url) {
+        return '<a href="' + url + '" target="_blank">' + url + "</a>";
+      });
     },
   },
 };

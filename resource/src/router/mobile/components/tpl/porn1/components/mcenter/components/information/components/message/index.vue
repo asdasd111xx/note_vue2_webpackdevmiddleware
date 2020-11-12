@@ -197,7 +197,7 @@ export default {
       return EST(Vue.moment(date).format("YYYY-MM-DD HH:mm:ss"));
     },
     shortDateFormat(date) {
-      return Vue.moment(date).format("YYYY-MM-DD");
+      return Vue.moment(EST(date)).format("YYYY-MM-DD");
     },
   },
   data() {
