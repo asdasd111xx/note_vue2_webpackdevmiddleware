@@ -70,8 +70,10 @@ export default {
       this.memInfoLoad = this.memInfo && this.memInfo.user;
       if (this.memInfoLoad && this.siteConfigLoad) {
         if (!this.yToken) this.getYABOAPIToken();
-        this.getRsaKeys();
-        this.getWsV2RSA();
+        const params = [this.getRsaKeys()];
+        Promise.all(params).then(() => {
+          this.getWsV2RSA();
+        });
         this.connectYaboWS();
       }
     },
@@ -79,8 +81,10 @@ export default {
       this.siteConfigLoad = this.siteConfig && this.siteConfig.ACTIVES_BOUNS_WEBSOCKET;
       if (this.memInfoLoad && this.siteConfigLoad) {
         if (!this.yToken) this.getYABOAPIToken();
-        this.getRsaKeys();
-        this.getWsV2RSA();
+        const params = [this.getRsaKeys()];
+        Promise.all(params).then(() => {
+          this.getWsV2RSA();
+        });
         this.connectYaboWS();
       }
     }
@@ -277,7 +281,7 @@ export default {
       });
     },
     getWsV2RSA() {
-      yaboRequest({
+      return yaboRequest({
         method: 'get',
         url: this.siteConfig.YABO_API_DOMAIN.replace('/api', '') + '/wsn/getKey',
       }).then((res) => {
@@ -466,7 +470,7 @@ export default {
 
     //获取密钥对
     getRsaKeys(func) {
-      window.crypto.subtle.generateKey(
+      return window.crypto.subtle.generateKey(
         {
           name: "RSA-OAEP",
           modulusLength: 1024, //can be 1024, 2048, or 4096
