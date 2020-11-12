@@ -29,12 +29,16 @@ export default {
       default: ""
     }
   },
+  created() {
+    console.log(this.value, this.title);
+  },
   computed: {
     ...mapGetters({
-      siteConfig: 'getSiteConfig',
+      siteConfig: "getSiteConfig"
     }),
     $style() {
-      const style = this[`$style_${this.siteConfig.MOBILE_WEB_TPL}`] || this.$style_porn1;
+      const style =
+        this[`$style_${this.siteConfig.MOBILE_WEB_TPL}`] || this.$style_porn1;
       return style;
     }
   }
