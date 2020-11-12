@@ -101,9 +101,11 @@ export const getEncryptImage = (info) => {
             var decryptedBytes = aesCbc.decrypt(dataUrl);
             var decryptedText = aesjs.utils.utf8.fromBytes(decryptedBytes);
 
-            var base64String = bytesToBase64(decryptedBytes);
-            var type = getImageType(base64String)
-
+            // var base64String = bytesToBase64(decryptedBytes);
+            var base64String = btoa(
+                decryptedBytes.reduce((data, byte) => data + String.fromCharCode(byte), '')
+            );
+            var type = getImageType(base64String);
             // 放回image src
             if (!document.querySelector(`img[img-id="${info.id}"]`)) {
                 return info.image;
