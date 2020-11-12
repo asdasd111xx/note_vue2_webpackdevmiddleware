@@ -26,7 +26,7 @@
             :class="[
               $style['submit-info-wrap'],
               { [$style['is-memo']]: info.objKey === 'memo' },
-              { [$style['is-even']]: index % 2 !== 0 },
+              { [$style['is-even']]: index % 2 !== 0 }
             ]"
           >
             <!-- Title -->
@@ -70,7 +70,7 @@
               v-else-if="info.htmlShow"
               :class="[
                 $style['basic-info-text'],
-                $style[`info-${info.objKey}`],
+                $style[`info-${info.objKey}`]
               ]"
               v-html="info.value"
             />
@@ -81,8 +81,8 @@
               :class="[
                 $style['basic-info-text'],
                 {
-                  [$style['highlight']]: info.isHighlightValue,
-                },
+                  [$style['highlight']]: info.isHighlightValue
+                }
               ]"
             >
               {{ info.value }}
@@ -124,7 +124,7 @@
           <div
             :class="[
               $style['basic-info-text'],
-              { [$style['info-important']]: info.isBorderBottom },
+              { [$style['info-important']]: info.isBorderBottom }
             ]"
           >
             {{ info.value }}
@@ -153,8 +153,8 @@
         $style['submit-btn'],
         {
           [$style['disabled']]:
-            isSubmitDisabled || (countdownSec < 1 && isShowTimer),
-        },
+            isSubmitDisabled || (countdownSec < 1 && isShowTimer)
+        }
       ]"
       :title="
         orderData.methodType !== 'remit'
@@ -215,7 +215,7 @@ export default {
   props: {
     orderData: {
       type: Object,
-      default: () => { }
+      default: () => {}
     },
     isShow: {
       type: Boolean,
@@ -310,6 +310,7 @@ export default {
       });
     },
     switchQrcodePopup(enable, value, text) {
+      console.log(enable, value, text);
       this.qrcodeValue = value;
       this.isShowQrcode = enable;
       this.qrcodeTitle = text;
