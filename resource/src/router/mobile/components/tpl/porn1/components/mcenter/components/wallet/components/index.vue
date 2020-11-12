@@ -228,7 +228,34 @@ export default {
           text: this.$text("S_TRANSFER", "转帐"),
           imgSrc: "/static/image/_new/mcenter/wallet/ic_wallter_tranfer.png",
           onClick: () => {
-            this.$router.push("/mobile/mcenter/balanceTrans");
+            if (this.themeTPL === "porn1") {
+              this.$router.push("/mobile/mcenter/balanceTrans");
+              return;
+            }
+
+            if (this.themeTPL === "ey1") {
+
+              axios({
+                method: 'get',
+                url: '/api/v2/c/domain-config',
+              }).then(res => {
+                let withdraw_info_before_bet = false;
+                if (res && res.data && res.data.ret) {
+                  withdraw_info_before_bet = res.data.ret.withdraw_info_before_bet;
+                }
+
+                if (withdraw_info_before_bet) {
+                  this.checkWithdrawData('balanceTrans');
+                  return;
+                }
+
+                this.$router.push("/mobile/mcenter/balanceTrans");
+              }).catch((res) => {
+                this.actionSetGlobalMessage({
+                  msg: res.data.msg, code: res.data.code, origin: 'wallet'
+                });
+              })
+            }
           }
         },
         {
@@ -242,56 +269,10 @@ export default {
               return;
             }
 
-            if (this.isCheckWithdraw) {
+            if (this.themeTPL === "ey1") {
+              this.checkWithdrawData('withdraw');
               return;
             }
-            this.isCheckWithdraw = true;
-            axios({
-              method: "get",
-              url: "/api/v2/c/withdraw/check"
-            })
-              .then(res => {
-                this.isCheckWithdraw = false;
-
-                if (res.data.result === "ok") {
-                  let check = true;
-
-                  Object.keys(res.data.ret).forEach(i => {
-                    if (i !== "bank" && !res.data.ret[i]) {
-                      this.actionSetGlobalMessage({
-                        msg: "请先设定提现资料",
-                        cb: () => {
-                          {
-                            this.$router.push(
-                              "/mobile/withdrawAccount?redirect=wallet"
-                            );
-                          }
-                        }
-                      });
-                      check = false;
-                      return;
-                    }
-                  });
-
-                  if (check) {
-                    this.$router.push("/mobile/mcenter/withdraw");
-                  }
-                } else {
-                  this.actionSetGlobalMessage({
-                    msg: res.data.msg,
-                    code: res.data.code
-                  });
-                }
-              })
-              .catch(res => {
-                if (res.response.data) {
-                  this.actionSetGlobalMessage({
-                    msg: res.response.data.msg,
-                    code: res.response.data.code
-                  });
-                }
-                this.isCheckWithdraw = false;
-              });
           }
         },
         {
@@ -364,6 +345,61 @@ export default {
       "actionGetMemInfoV3",
       "actionSetUserBalance"
     ]),
+    checkWithdrawData(target) {
+      if (this.isCheckWithdraw) {
+        return;
+      }
+      this.isCheckWithdraw = true;
+      // 提現資料補齊跳轉檢查
+      axios({
+        method: "get",
+        url: "/api/v2/c/withdraw/check"
+      })
+        .then(res => {
+          this.isCheckWithdraw = false;
+
+          if (res.data.result === "ok") {
+            let check = true;
+
+            Object.keys(res.data.ret).forEach(i => {
+              if (i !== "bank" && !res.data.ret[i]) {
+
+                this.actionSetGlobalMessage({
+                  msg: target === 'withdraw' ? "请先设定提现资料" : "请先完成提现信息",
+                  cb: () => {
+                    {
+                      this.$router.push(
+                        "/mobile/withdrawAccount?redirect=wallet"
+                      );
+                    }
+                  }
+                });
+                check = false;
+                return;
+              }
+            });
+
+            if (check) {
+              this.$router.push(`/mobile/mcenter/${target}`);
+            }
+          } else {
+            this.actionSetGlobalMessage({
+              msg: res.data.msg,
+              code: res.data.code
+            });
+          }
+        })
+        .catch(res => {
+          this.isCheckWithdraw = false;
+
+          if (res.response.data) {
+            this.actionSetGlobalMessage({
+              msg: res.response.data.msg,
+              code: res.response.data.code
+            });
+          }
+        });
+    },
     handleDeposit() {
       this.$router.push(`/mobile/mcenter/deposit`);
       //   0706 統一RD5判斷銀行卡

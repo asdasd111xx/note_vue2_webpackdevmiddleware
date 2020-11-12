@@ -415,77 +415,116 @@ export default {
                 return;
             }
 
-            if (path === 'deposit') {
-                this.$router.push(`/mobile/mcenter/deposit`);
-                //   0706 統一RD5判斷銀行卡
-                // yaboRequest({
-                //   method: 'get',
-                //   url: `${
-                //     this.siteConfig.YABO_API_DOMAIN
-                //     }/AccountBank/GetBankBindingStatus/${getCookie('cid')}`,
-                //   headers: {
-                //     'x-domain': this.memInfo.user.domain
-                //   }
-                // }).then(res => {
-                //   if (res.data) {
-                //     this.$router.push(`/mobile/mcenter/deposit`);
-                //   } else {
-                //     this.actionSetGlobalMessage({ type: 'bindcard', code: 'C50099' });
-                //   }
-                // });
-            } else if (path === 'creditTrans') {
-                this.actionGetMemInfoV3().then(() => {
-                    this.actionGetRechargeStatus('home');
-                })
-                return;
-            } else if (path === "makemoney") {
-                this.$router.push('/mobile/mcenter/tcenter/management/member');
-            }
-            else if (path === "withdraw") {
-                if (this.siteConfig.MOBILE_WEB_TPL === "porn1") {
-                    this.$router.push('/mobile/mcenter/withdraw');
+            switch (path) {
+                case 'deposit':
+                    this.$router.push(`/mobile/mcenter/deposit`);
+                    //   0706 統一RD5判斷銀行卡
+                    // yaboRequest({
+                    //   method: 'get',
+                    //   url: `${
+                    //     this.siteConfig.YABO_API_DOMAIN
+                    //     }/AccountBank/GetBankBindingStatus/${getCookie('cid')}`,
+                    //   headers: {
+                    //     'x-domain': this.memInfo.user.domain
+                    //   }
+                    // }).then(res => {
+                    //   if (res.data) {
+                    //     this.$router.push(`/mobile/mcenter/deposit`);
+                    //   } else {
+                    //     this.actionSetGlobalMessage({ type: 'bindcard', code: 'C50099' });
+                    //   }
+                    // });
                     return;
-                }
 
-                if (this.isCheckWithdraw) { return; }
-                this.isCheckWithdraw = true;
-                axios({
-                    method: 'get',
-                    url: '/api/v2/c/withdraw/check',
-                }).then((res) => {
-                    this.isCheckWithdraw = false;
-                    if (res.data.result === "ok") {
-                        let check = true;
+                case 'creditTrans':
+                    this.actionGetMemInfoV3().then(() => {
+                        this.actionGetRechargeStatus('home');
+                    })
+                    return;
 
-                        Object.keys(res.data.ret).forEach(i => {
-                            if (i !== "bank" && !res.data.ret[i]) {
-                                this.actionSetGlobalMessage({
-                                    msg: '请先设定提现资料', cb: () => {
-                                        {
-                                            this.$router.push('/mobile/withdrawAccount');
-                                        }
-                                    }
-                                })
-                                check = false;
-                                return;
-                            }
-                        })
+                case 'makemoney':
+                    this.$router.push('/mobile/mcenter/tcenter/management/member');
+                    return;
 
-                        if (check) {
-                            this.$router.push('/mobile/mcenter/withdraw');
+                case 'balanceTrans':
+                    if (this.siteConfig.MOBILE_WEB_TPL === "porn1") {
+                        this.$router.push(`/mobile/mcenter/balanceTrans`);
+                        return;
+                    }
+
+                    axios({
+                        method: 'get',
+                        url: '/api/v2/c/domain-config',
+                    }).then(res => {
+                        let withdraw_info_before_bet = false;
+                        if (res && res.data && res.data.ret) {
+                            withdraw_info_before_bet = res.data.ret.withdraw_info_before_bet;
                         }
-                    } else {
-                        this.actionSetGlobalMessage({ msg: res.data.msg, code: res.data.msg.code });
+
+                        if (withdraw_info_before_bet) {
+                            this.checkWithdrawData(path);
+                            return;
+                        }
+
+                        this.$router.push("/mobile/mcenter/balanceTrans");
+                    }).catch((res) => {
+                        this.actionSetGlobalMessage({
+                            msg: res.data.msg, code: res.data.code, origin: 'wallet'
+                        });
+                    })
+                    return;
+
+                case 'withdraw':
+                    if (this.siteConfig.MOBILE_WEB_TPL === "porn1") {
+                        this.$router.push(`/mobile/mcenter/withdraw`);
+                        return;
                     }
-                }).catch(res => {
-                    if (res.response.data) {
-                        this.actionSetGlobalMessage({ msg: res.response.data.msg });
-                    }
-                    this.isCheckWithdraw = false;
-                });
-            } else {
-                this.$router.push(`/mobile/mcenter/${path}`);
+                    this.checkWithdrawData(path);
+                    return;
+
+                default:
+                    this.$router.push(`/mobile/mcenter/${path}`);
+                    return;
             }
+        },
+        checkWithdrawData(target) {
+            if (this.isCheckWithdraw) { return; }
+            this.isCheckWithdraw = true;
+
+            axios({
+                method: 'get',
+                url: '/api/v2/c/withdraw/check',
+            }).then((res) => {
+                this.isCheckWithdraw = false;
+                if (res.data.result === "ok") {
+                    let check = true;
+
+                    Object.keys(res.data.ret).forEach(i => {
+                        if (i !== "bank" && !res.data.ret[i]) {
+                            this.actionSetGlobalMessage({
+                                msg: '请先设定提现资料', cb: () => {
+                                    {
+                                        this.$router.push('/mobile/withdrawAccount');
+                                    }
+                                }
+                            })
+                            check = false;
+                            return;
+                        }
+                    })
+
+                    if (check) {
+                        this.$router.push(`/mobile/mcenter/${target}`);
+                    }
+                } else {
+                    this.actionSetGlobalMessage({ msg: res.data.msg, code: res.data.msg.code });
+                }
+            }).catch(res => {
+                if (res.response.data) {
+                    this.actionSetGlobalMessage({ msg: res.response.data.msg });
+                }
+                this.isCheckWithdraw = false;
+            });
         },
         // 開啟遊戲
         onOpenGame(game) {
