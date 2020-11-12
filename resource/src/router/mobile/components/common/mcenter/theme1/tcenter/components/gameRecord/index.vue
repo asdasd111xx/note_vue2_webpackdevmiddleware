@@ -67,6 +67,7 @@
               :class="$style.date"
               :min="fromDate"
               :max="inqEnd"
+              :id="`start`"
               type="date"
               @input="limitDate('start', $event.target.value)"
             />
@@ -81,6 +82,7 @@
               :class="$style.date"
               :min="inqStart"
               :max="endDate"
+              :id="`end`"
               type="date"
               @input="limitDate('end', $event.target.value)"
             />
@@ -96,7 +98,7 @@
                 () => {
                   if (!checkDate) {
                     return;
-                  } else if (inqStart !== inqEnd) {
+                  } else {
                     onSearch();
                   }
                 }
@@ -215,9 +217,15 @@ export default {
       if (_value < _today) {
         this.checkDate = false;
         this.actionSetGlobalMessage({ msg: "查询纪录不能超过30天" });
-      } else {
+      } else if (this.inqStart > this.inqEnd) {
+        this.checkDate = false;
+      } else if (this.inqEnd > this.endDate) {
+        this.checkDate = false;
+      }
+      else {
         this.checkDate = true;
       }
+
     },
   },
   filters: {
