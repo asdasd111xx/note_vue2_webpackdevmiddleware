@@ -221,7 +221,10 @@ export default {
     },
     headerConfig() {
       const query = this.$route.query;
-      this.isFullScreen = query.fullscreen === undefined ? false : query.fullscreen === 'true';
+      const title = this.$route.params.page;
+      this.isFullScreen = title.toUpperCase() === "SWAG" ?
+        true :
+        query.fullscreen === undefined ? false : query.fullscreen === 'true';
 
       return {
         hasHeader: query.hasHeader === undefined ? false : query.hasHeader === 'true',
