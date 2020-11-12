@@ -559,7 +559,7 @@ export default {
                         this.$router.push('/mobile/login');
                         return;
                     } else {
-                        this.$router.push(`/mobile/iframe/${game.type}?&title=${game.name}&hasFooter=false&hasHeader=true`);
+                        this.$router.push(`/mobile/iframe/${game.type}&hasFooter=false&hasHeader=true`);
                         return;
                     }
 

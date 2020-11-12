@@ -200,7 +200,7 @@ export default {
     handleClickType(type) {
       if (type === 'pornlive') {
         if (this.loginStatus) {
-          localStorage.setItem('iframe-third-url-title', '鸭博色播');
+          localStorage.setItem('iframe-third-origin', 'mcenter/swag?tab=0');
           this.$router.push(`/mobile/iframe/SWAG?&hasFooter=false&hasHeader=true`);
           return;
         } else {

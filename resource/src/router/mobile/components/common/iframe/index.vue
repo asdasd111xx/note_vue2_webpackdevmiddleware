@@ -186,11 +186,15 @@ export default {
     },
     headerConfig() {
       const query = this.$route.query;
+      const title = this.$route.params.page;
       return {
         hasHeader: query.hasHeader === undefined ? false : query.hasHeader === 'true',
         hasFooter: query.hasFooter === undefined ? true : query.hasFooter === 'true',
         prev: query.prev === undefined ? true : query.prev,
-        title: query.title || localStorage.getItem('iframe-third-url-title') || '',
+        title: query.title ||
+          localStorage.getItem('iframe-third-url-title') ||
+          this.$route.params.page.toUpperCase() ||
+          '',
         onClick: () => {
           this.$router.push(this.originUrl);
         }
