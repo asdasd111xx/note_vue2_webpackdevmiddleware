@@ -29,18 +29,15 @@ export default {
       default: ""
     }
   },
-  created() {
-    console.log(this.value, this.title);
-  },
   computed: {
     ...mapGetters({
       siteConfig: "getSiteConfig"
-    }),
-    $style() {
-      const style =
-        this[`$style_${this.siteConfig.MOBILE_WEB_TPL}`] || this.$style_porn1;
-      return style;
-    }
+    })
+    // $style() {
+    //   const style =
+    //     this[`$style_${this.siteConfig.MOBILE_WEB_TPL}`] || this.$style_porn1;
+    //   return style;
+    // }
   }
 };
 </script>
