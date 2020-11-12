@@ -20,14 +20,15 @@ export default {
             firstFriends: [],
             subInfoIndex: -1, // 要顯示詳細資料的索引值(for mobile)
             firstResult: 0,
-            maxResults: 10 ,
+            maxResults: 10,
             pageNow: 1,
-            pageAll: 1 ,
+            pageAll: 1,
             sort: '',
             order: {
                 created_at: false,
                 last_online: false
-            }
+            },
+            showinfo: [-5],
         };
     },
     filters: {
@@ -76,7 +77,7 @@ export default {
                             return;
                         }
 
-                        this.firstFriends = ret.reduce((init , info) => {
+                        this.firstFriends = ret.reduce((init, info) => {
                             return [...init, info]
                         }, this.firstFriends)
 
@@ -160,6 +161,19 @@ export default {
 
                 $state.loaded();
             });
+        },
+        pushing(value) {
+            if (this.isShow(value)) {
+                let index = this.showinfo.indexOf(value);
+                if (index > -1) {
+                    this.showinfo.splice(index, 1);
+                }
+            } else {
+                this.showinfo.push(value);
+            }
+        },
+        isShow(value) {
+            return this.showinfo.find(element => element === value) + 1;
         }
     }
 };

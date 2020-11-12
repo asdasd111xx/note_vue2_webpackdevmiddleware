@@ -1,12 +1,12 @@
 /* eslint-disable no-param-reassign */
 
 // import navFilterPage from '@/lib/nav_filter_page';
-import * as types from './mutations_type';
+import * as types from "./mutations_type";
 
-import EST from '@/lib/EST';
-import Vue from 'vue';
-import i18n from '@/config/i18n';
-import jwt from 'jwt-simple';
+import EST from "@/lib/EST";
+import Vue from "vue";
+import i18n from "@/config/i18n";
+import jwt from "jwt-simple";
 
 export default {
   // Webview介接(客端、廳主端)
@@ -21,13 +21,13 @@ export default {
   [types.SETWEBINFO](state, webInfo) {
     const temp = webInfo;
 
-    if (state.env === 'mem') {
+    if (state.env === "mem") {
       /* 取 page 組 pageData資料 (提出sub資料) */
       const tempPage = {};
-      temp.page.forEach((value) => {
+      temp.page.forEach(value => {
         tempPage[value.pid] = value;
         if (value.sub_page && value.sub_page.length > 0) {
-          value.sub_page.forEach((subValue) => {
+          value.sub_page.forEach(subValue => {
             tempPage[subValue.pid] = subValue;
           });
         }
@@ -39,16 +39,16 @@ export default {
         const tempObj = {};
 
         // 新舊版共存特例, 舊版後台格式處理
-        if (typeof (temp.footer) === 'string') {
-          const tempStr = temp.footer.replace(/\n/g, '<br>');
-          Object.keys(temp.language).forEach((key) => {
+        if (typeof temp.footer === "string") {
+          const tempStr = temp.footer.replace(/\n/g, "<br>");
+          Object.keys(temp.language).forEach(key => {
             tempObj[key] = tempStr;
           });
         }
 
-        if (typeof (temp.footer) === 'object') {
-          Object.keys(temp.footer).forEach((key) => {
-            tempObj[key] = temp.footer[key].replace(/\n/g, '<br>');
+        if (typeof temp.footer === "object") {
+          Object.keys(temp.footer).forEach(key => {
+            tempObj[key] = temp.footer[key].replace(/\n/g, "<br>");
           });
         }
 
@@ -57,8 +57,12 @@ export default {
     }
 
     // 套版用
-    if (process.env.NODE_ENV === 'development' && (Vue.cookie.get('TEST_TEMPLATE') !== null && Vue.cookie.get('TEST_TEMPLATE') !== '')) {
-      const templateInfo = Vue.cookie.get('TEST_TEMPLATE').split(',');
+    if (
+      process.env.NODE_ENV === "development" &&
+      Vue.cookie.get("TEST_TEMPLATE") !== null &&
+      Vue.cookie.get("TEST_TEMPLATE") !== ""
+    ) {
+      const templateInfo = Vue.cookie.get("TEST_TEMPLATE").split(",");
       [temp.model, temp.style_color] = templateInfo;
     }
 
@@ -66,17 +70,24 @@ export default {
     const regExp = /^.*italking\.asia|^.*italking\.org/;
 
     if (regExp.test(temp.on_service_url) && state.loginStatus) {
+      const tokenExpiresTime = 60 * 60 * 24 * 60; // 60天秒數
+
       const memberData = {
-        name: state.memInfo.user.name || '',
-        mobile: state.memInfo.user.phone || '',
-        account: state.memInfo.user.username
+        name: state.memInfo.user.name || "",
+        mobile: state.memInfo.user.phone || "",
+        account: state.memInfo.user.username,
+        exp: Date.now() + tokenExpiresTime
       };
-      const rsaData = jwt.encode(memberData, 'T9AuSgQfh2');
+      const rsaData = jwt.encode(memberData, "T9AuSgQfh2");
       temp.on_service_url = `${temp.on_service_url}&jwtToken=${rsaData}`;
     }
 
     const language = Object.keys(temp.language).reduce((pre, key) => {
-      if (['47', '70', '71'].includes(temp.alias) && key === 'zh-cn' && webInfo.is_production) {
+      if (
+        ["47", "70", "71"].includes(temp.alias) &&
+        key === "zh-cn" &&
+        webInfo.is_production
+      ) {
         return { ...pre };
       }
 
@@ -91,7 +102,11 @@ export default {
       ...temp,
       language,
       special_case: {
-        field: [...(webInfo.special_case.floatPic ? webInfo.special_case.floatPic[0].data : [])]
+        field: [
+          ...(webInfo.special_case.floatPic
+            ? webInfo.special_case.floatPic[0].data
+            : [])
+        ]
       }
     };
   },
@@ -108,19 +123,21 @@ export default {
     const temp = state.gameData;
     const apiData = {};
 
-    gameData.forEach((value) => {
+    gameData.forEach(value => {
       apiData[`${value.vendor}_${value.kind}`] = value;
     });
 
-    Object.keys(temp).forEach((index) => {
+    Object.keys(temp).forEach(index => {
       if (apiData[`${temp[index].vendor}_${temp[index].kind}`]) {
-        temp[index].switch = 'Y';
-        temp[index].alias = apiData[`${temp[index].vendor}_${temp[index].kind}`].alias;
-        temp[index].category = apiData[`${temp[index].vendor}_${temp[index].kind}`].category;
+        temp[index].switch = "Y";
+        temp[index].alias =
+          apiData[`${temp[index].vendor}_${temp[index].kind}`].alias;
+        temp[index].category =
+          apiData[`${temp[index].vendor}_${temp[index].kind}`].category;
       } else {
-        temp[index].switch = 'N';
+        temp[index].switch = "N";
         temp[index].alias = temp[index].text;
-        temp[index].category = '';
+        temp[index].category = "";
       }
     });
     state.gameData = temp;
@@ -156,7 +173,7 @@ export default {
   // 會員、代理共用-設定彈出視窗
   [types.SETPOP](state, { type, data }) {
     state.pop = {
-      type: state.pop.type === type ? '' : type,
+      type: state.pop.type === type ? "" : type,
       data
     };
   },
@@ -198,8 +215,12 @@ export default {
     if (data.maintain && data.maintain.length) {
       for (let i = 0; i < data.maintain.length; i += 1) {
         maintainList[data.maintain[i].vendor] = {
-          start_at: Vue.moment(data.maintain[i].start_at).format('YYYY-MM-DD HH:mm:ss'),
-          end_at: Vue.moment(data.maintain[i].end_at).format('YYYY-MM-DD HH:mm:ss'),
+          start_at: Vue.moment(data.maintain[i].start_at).format(
+            "YYYY-MM-DD HH:mm:ss"
+          ),
+          end_at: Vue.moment(data.maintain[i].end_at).format(
+            "YYYY-MM-DD HH:mm:ss"
+          ),
           etc_start_at: EST(data.maintain[i].start_at),
           etc_end_at: EST(data.maintain[i].end_at)
         };
@@ -209,9 +230,11 @@ export default {
     for (let i = 0; i < data.ret.length; i += 1) {
       let key = data.ret[i].vendor;
       let text = data.ret[i].alias;
-      if (data.ret[i].vendor === '--') {
-        key = 'default';
-        text = ['67', '69', '500011'].includes(state.webInfo.alias) ? i18n.t('S_MCENTER_WALLET') : i18n.t('S_MAIN_BALANCE');
+      if (data.ret[i].vendor === "--") {
+        key = "default";
+        text = ["67", "69", "500011"].includes(state.webInfo.alias)
+          ? i18n.t("S_MCENTER_WALLET")
+          : i18n.t("S_MAIN_BALANCE");
       }
 
       temp[key] = {
@@ -236,7 +259,7 @@ export default {
   [types.SETNEWS](state, obj) {
     const apiData = [];
 
-    Object.keys(obj).forEach((index) => {
+    Object.keys(obj).forEach(index => {
       apiData[index] = {
         // time: EST(obj[index].created_at, 'YYYY-MM-DD HH:mm:ss'),
         time: obj[index].created_at,
@@ -266,7 +289,7 @@ export default {
       isLogin = 1;
     }
 
-    Object.keys(ret).forEach((index) => {
+    Object.keys(ret).forEach(index => {
       if (ret[index].popup === isLogin || ret[index].popup === 3) {
         const resultData = ret[index];
         list.push(resultData);
@@ -312,9 +335,9 @@ export default {
   [types.SETAGENTNEWS](state, obj) {
     const apiData = [];
 
-    Object.keys(obj).forEach((index) => {
+    Object.keys(obj).forEach(index => {
       apiData[index] = {
-        time: EST(obj[index].created_at, 'YYYY-MM-DD'),
+        time: EST(obj[index].created_at, "YYYY-MM-DD"),
         content: obj[index].content
       };
     });
@@ -328,7 +351,7 @@ export default {
       last_modified_at: EST(config.last_modified_at)
     };
 
-    Object.keys(ret).forEach((index) => {
+    Object.keys(ret).forEach(index => {
       list[index] = ret[index];
     });
 
@@ -409,26 +432,24 @@ export default {
         ...state.webInfo.pageData,
         [data.nowpage]: {
           ...state.webInfo.pageData[data.nowpage],
-          data: [...state.webInfo.pageData[data.nowpage].data.map((info) => {
-            if (info.i === data.case_id) {
-              return {
-                ...info,
-                case: {
-                  ...info.case,
-                  content: [
-                    ...data.content
-                  ],
-                  data: [
-                    ...data.field
-                  ],
-                  setting: {
-                    ...data.setting
+          data: [
+            ...state.webInfo.pageData[data.nowpage].data.map(info => {
+              if (info.i === data.case_id) {
+                return {
+                  ...info,
+                  case: {
+                    ...info.case,
+                    content: [...data.content],
+                    data: [...data.field],
+                    setting: {
+                      ...data.setting
+                    }
                   }
-                }
-              };
-            }
-            return { ...info };
-          })]
+                };
+              }
+              return { ...info };
+            })
+          ]
         }
       }
     };
@@ -478,7 +499,7 @@ export default {
   },
   // VIP
   [types.SET_VIP](state, data) {
-    state.vip = data.find((item) => item.complex);
+    state.vip = data.find(item => item.complex);
     state.allVip = data;
   },
   // isLoading
@@ -495,39 +516,39 @@ export default {
   },
   // 鴨脖配置
   [types.SET_YABOCONFIG](state, data) {
-    state.yaboConfig = data
+    state.yaboConfig = data;
   },
   // 鴨脖全站訊息
   [types.SET_GLOBALMESSAGE](state, data) {
-    state.globalMessage = data
+    state.globalMessage = data;
   },
   // 額度轉讓配置
   [types.SET_RECHARGECONFIG](state, data) {
-    state.rechargeConfig = data
+    state.rechargeConfig = data;
   },
   // 首次額度轉讓優惠設定
   [types.SET_RECHARGEBONUSCONFIG](state, data) {
-    state.rechargeBonusConfig = data
+    state.rechargeBonusConfig = data;
   },
   // 是否有銀行卡
   [types.SET_HASBANK](state, data) {
-    state.hasBank = data
+    state.hasBank = data;
   },
   [types.SET_VIDEO_BOUNS_PAGE_STATUS](state, data) {
-    state.videoBounsPageStatus = data
+    state.videoBounsPageStatus = data;
   },
   [types.SET_SYSTEMDOMAIN](state, data) {
-    state.systemDomain = data
+    state.systemDomain = data;
   },
   [types.SET_PORNDOMAIN](state, data) {
-    state.pornDoamin = data
+    state.pornDoamin = data;
   },
   // 是否有綁定CGPay
   [types.SET_CGPAYINFO](state, data) {
-    state.CGPayInfo = data
+    state.CGPayInfo = data;
   },
   [types.SET_PROMOTION_LINK](state, data) {
-    state.promotionLink = data
+    state.promotionLink = data;
   },
   [types.SET_SWAG_CONFIG](state, data) {
     state.swagConfig = data
@@ -536,6 +557,6 @@ export default {
     state.swagBalance = data
   },
   [types.SET_WEB_DOMAIN](state, data) {
-    state.webDomain = data
-  },
+    state.webDomain = data;
+  }
 };

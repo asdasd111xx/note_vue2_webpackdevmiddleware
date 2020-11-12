@@ -17,6 +17,7 @@
         @click="$router.back()"
       >
         <img
+          @click="getMessgae()"
           :src="
             $getCdnPath(
               `/static/image/${siteConfig.MOBILE_WEB_TPL}/common/btn_back.png`
@@ -65,7 +66,7 @@
         :class="[
           $style.message,
           { [$style['edit-mode']]: isEditing },
-          'clearfix'
+          'clearfix',
         ]"
         @click="onClick(message)"
       >
@@ -73,7 +74,7 @@
           v-if="isEditing"
           :class="[
             $style['icon-edit'],
-            { [$style.active]: selectMessage.includes(message.id) }
+            { [$style.active]: selectMessage.includes(message.id) },
           ]"
         />
         <div :class="$style['icon-message']">
@@ -196,7 +197,7 @@ export default {
       return EST(Vue.moment(date).format("YYYY-MM-DD HH:mm:ss"));
     },
     shortDateFormat(date) {
-      return Vue.moment(date).format("YYYY-MM-DD");
+      return Vue.moment(EST(date)).format("YYYY-MM-DD");
     },
   },
   data() {

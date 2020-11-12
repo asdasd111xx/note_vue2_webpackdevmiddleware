@@ -190,7 +190,7 @@ export default {
       const swiperCard = this.$refs.swiperCard.$swiper;
 
       if (this.userVipInfo.now_level_seq >= 2) {
-        this.selectedIndex = this.userVipInfo.now_level_seq;
+        this.selectedIndex = this.userVipInfo.now_level_seq - 1;
       } else {
         this.selectedIndex = 0;
       }

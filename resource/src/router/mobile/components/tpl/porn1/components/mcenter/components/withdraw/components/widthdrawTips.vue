@@ -161,10 +161,14 @@ export default {
     hasCrypto: {
       type: Boolean,
       default: false
+    },
+    swiftCode: {
+      type: String,
+      default: ""
     }
   },
   mounted() {
-    this.getSerialNumberData();
+    this.getSerialNumberData(this.swiftCode);
   },
   computed: {
     ...mapGetters({
@@ -195,27 +199,13 @@ export default {
       }
     },
     handleBack() {
-      if (this.type === "tips") {
-        // this.$router.push("/mobile/mcenter/wallet");
-        this.closeTips();
-      } else if (this.type === "deposit") {
-        this.$router.back();
-      }
-
-      // // 109/11/10 因 App 端只有鴨博有做返前一頁的動作，仍尚未同步億元
-      // switch (this.siteConfig.MOBILE_WEB_TPL) {
-      //   case "porn1":
-      //     if (this.type === "tips") {
-      //       this.$router.push("/mobile/mcenter/wallet");
-      //     } else if (this.type === "deposit") {
-      //       this.$router.back();
-      //     }
-      //     break;
-
-      //   case "ey1":
-      //     this.closeTips();
-      //     break;
+      // if (this.type === "tips") {
+      //   // this.$router.push("/mobile/mcenter/wallet");
+      //   this.closeTips();
+      // } else if (this.type === "deposit") {
+      //   this.$router.back();
       // }
+      this.$router.back();
     }
   }
   // watch: {
