@@ -22,7 +22,7 @@
           />
         </div>
         <div :class="$style.wrap">
-          <div :class="$style.date">{{ currentNews.time | dateFormat }}</div>
+          <div :class="$style.date">{{ currentNews.time | dateFormat2 }}</div>
           <div :class="$style.time">{{ currentNews.time | dateFormat }}</div>
         </div>
       </div>
