@@ -75,10 +75,10 @@ export default {
         return {
           prev: true,
           onClick: () => {
-            // this.$router.back();
+            this.$router.back();
 
             // 109/11/10 FB:454458
-            this.$router.push("/mobile/mcenter");
+            // this.$router.push("/mobile/mcenter");
           },
           title: this.title
         };
