@@ -133,7 +133,7 @@ export default {
           case "bindcard":
             this.$router.push(
               `/mobile/mcenter/bankCard?redirect=${
-                redirect ? redirect : "home"
+              redirect ? redirect : "home"
               }&type=bankCard`
             );
             break;
@@ -145,14 +145,14 @@ export default {
             if (this.siteConfig.MOBILE_WEB_TPL === "porn1") {
               this.$router.push(
                 `/mobile/mcenter/bankCard?redirect=${
-                  redirect ? redirect : "home"
+                redirect ? redirect : "home"
                 }&type=bankCard`
               );
             } else {
               // 億元
               this.$router.push(
                 `/mobile/withdrawAccount?redirect=${
-                  redirect ? redirect : "home"
+                redirect ? redirect : "home"
                 }`
               );
             }
@@ -178,9 +178,12 @@ export default {
             window.location.reload();
             break;
 
+          // 提現資料補齊
           case "C50104":
           case "C50106":
           case "C590029":
+          case "C50107":
+          case "C50108":
             localStorage.setItem("form-withdraw-account", true);
             this.$router.push(
               `/mobile/withdrawAccount?redirect=${redirect ? redirect : "home"}`
