@@ -112,6 +112,7 @@ import axios from 'axios';
 import mobileContainer from '../common/mobileContainer';
 import openGame from '@/lib/open_game';
 import pornRequest from '@/api/pornRequest';
+import goLangApiRequest from '@/api/goLangApiRequest';
 
 export default {
   components: {
@@ -130,7 +131,8 @@ export default {
   computed: {
     ...mapGetters({
       loginStatus: 'getLoginStatus',
-      memInfo: 'getMemInfo'
+      memInfo: 'getMemInfo',
+      siteConfig: 'getSiteConfig',
     }),
   },
   created() {
@@ -200,8 +202,32 @@ export default {
     handleClickType(type) {
       if (type === 'pornlive') {
         if (this.loginStatus) {
-          localStorage.setItem('iframe-third-origin', 'mcenter/swag?tab=0');
-          this.$router.push(`/mobile/iframe/SWAG?&hasFooter=false&hasHeader=true`);
+
+          let userId = 'guest';
+          if (this.memInfo && this.memInfo.user && this.memInfo.user.id && this.memInfo.user.id !== 0) {
+            userId = this.memInfo.user.id;
+          }
+
+          goLangApiRequest({
+            method: 'get',
+            url: `${this.siteConfig.YABO_GOLANG_API_DOMAIN}/ThirdParty/SWAG/${userId}`,
+            headers: {
+              'x-domain': this.memInfo.user.domain
+            }
+          }).then(res => {
+            if (res && res.status !== '000') {
+              if (res.msg) {
+                this.actionSetGlobalMessage({ msg: res.msg });
+              }
+              return;
+            }
+            else {
+              localStorage.setItem('iframe-third-url', res.data);
+              localStorage.setItem('iframe-third-origin', 'liveStream');
+              this.$router.push(`/mobile/iframe/SWAG?&hasFooter=false&hasHeader=true&fullscreen=true`);
+              return;
+            }
+          })
           return;
         } else {
           this.$router.push('/mobile/login');
