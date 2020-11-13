@@ -175,14 +175,4 @@ export default {
   display: none;
   width: 100%;
 }
-
-@media screen and (min-width: 640px) {
-  .phone-image {
-    display: none;
-  }
-
-  .pad-image {
-    display: block;
-  }
-}
 </style>
