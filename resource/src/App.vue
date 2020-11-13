@@ -56,7 +56,7 @@ export default {
       videoBounsPageStatus: 'getVideoBounsPageStatus',
     }),
     isDebug() {
-      return process.env.NODE_ENV === 'development' || (this.$route.query & this.$route.query._db)
+      return process.env.NODE_ENV === 'development' || (this.$route.query && this.$route.query.testmode)
     }
   },
   watch: {

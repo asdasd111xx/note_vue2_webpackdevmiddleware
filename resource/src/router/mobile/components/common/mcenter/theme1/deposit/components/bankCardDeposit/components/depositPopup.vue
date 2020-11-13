@@ -4,13 +4,16 @@
     @click.self="$emit('close', false, '')"
   >
     <div :class="$style.wrap">
-      <div :class="$style.title">{{ title }}</div>
+      <!-- 109/11/12 -->
+      <!-- Toby: 上下文字皆不顯示 -->
+
+      <!-- <div :class="$style.title">{{ title }}</div> -->
       <div :class="$style.qrcode">
         <img :src="value" />
       </div>
-      <div :class="$style.tips">
+      <!-- <div :class="$style.tips">
         {{ $text("S_PRESS_DOWNLOAD", "长按下载图片") }}
-      </div>
+      </div> -->
     </div>
   </div>
 </template>
@@ -76,13 +79,15 @@ export default {
 }
 
 .qrcode {
-  width: 132px;
-  height: 132px;
-  margin: 0 auto;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  width: 100%;
+  height: 100%;
 
   > img {
-    display: block;
-    width: 100%;
+    width: 75%;
+    height: 75%;
   }
 }
 

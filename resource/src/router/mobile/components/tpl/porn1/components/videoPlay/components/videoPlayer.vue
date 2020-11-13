@@ -1,5 +1,8 @@
 <template>
-  <div :class="$style['video-player-wrap']">
+  <div
+    :class="$style['video-player-wrap']"
+    :style="!isInit ? { 'pointer-events': 'none' } : {}"
+  >
     <video
       id="video-play"
       ref="video-player"
@@ -68,6 +71,7 @@ export default {
       keepPlay: false, // wait 任務未達成繼續觀看不發送play
       isUnloginMode: false,
       breakwaitCallback: () => { },
+      isInit: false
     };
   },
   computed: {
@@ -128,7 +132,7 @@ export default {
       this.connectWS();
 
       this.player.on("playing", () => {
-        if (this.player.seeking()) return;
+        if (this.player.seeking() || !this.isInit) return;
         this.isPlaying = true;
         if (window.YABO_SOCKET && !this.keepPlay) {
           this.onSend("PLAY");
@@ -494,6 +498,7 @@ export default {
 
       setTimeout(() => {
         this.connectWS();
+        this.isInit = true;
       }, 400)
     });
 
