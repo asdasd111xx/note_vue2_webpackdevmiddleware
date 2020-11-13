@@ -19,6 +19,18 @@
       <div :class="$style['swag-balance-item']">
         <img
           :src="
+            $getCdnPath('/static/image/porn1/mcenter/swag/ic_wallet_swag.png')
+          "
+        />
+        <div>{{ $text("S_DIAMOND_SWAG", "SWAG钻石") }}</div>
+        <div :class="$style['money']">
+          {{ swagDiamondBalance }}
+        </div>
+      </div>
+
+      <div :class="$style['swag-balance-item']">
+        <img
+          :src="
             $getCdnPath(
               '/static/image/porn1/mcenter/balanceTrans/ic_wallet_center.png'
             )
@@ -26,19 +38,7 @@
         />
         <div>{{ $text("S_MCENTER_WALLET", "中心钱包") }}</div>
         <div :class="$style['money']">
-          {{ membalance.total || "0.00" }}
-        </div>
-      </div>
-
-      <div :class="$style['swag-balance-item']">
-        <img
-          :src="
-            $getCdnPath('/static/image/porn1/mcenter/swag/ic_wallet_swag.png')
-          "
-        />
-        <div>{{ $text("S_DIAMOND_SWAG", "SWAG钻石") }}</div>
-        <div :class="$style['money']">
-          {{ swagDiamondBalance }}
+          {{ membalance.total || "0" }}
         </div>
       </div>
 
