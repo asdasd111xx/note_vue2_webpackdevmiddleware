@@ -576,7 +576,8 @@ export default {
                 case 'STB':
                 case 'DSC':
                 case 'SF':
-
+                case 'LQ':
+                case 'DZ':
                     this.actionSetYaboConfig().then(() => {
                         let noLoginVideoSwitch;
 
