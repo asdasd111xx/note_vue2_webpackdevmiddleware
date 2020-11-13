@@ -27,7 +27,7 @@
         <div style="margin-top:10px">
           1.SWAG
         </div>
-        <div style="margin-top:10px">
+        <div>
           路径：点击右上角钻石
         </div>
       </div>
