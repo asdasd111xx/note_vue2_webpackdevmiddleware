@@ -248,7 +248,8 @@ export default {
         !this.formData.phone.show &&
         !this.formData.withdraw_password.show
       ) {
-        if (!this.checkBankSwitch) {
+        // 鴨博無電子錢包
+        if (!this.checkBankSwitch && this.themeTPL !== 'porn1') {
           this.$router.replace(
             `/mobile/mcenter/bankCard?redirect=${this.redirect}&type=wallet`
           );
