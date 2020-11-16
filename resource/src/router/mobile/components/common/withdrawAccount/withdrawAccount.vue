@@ -222,13 +222,6 @@ export default {
     };
   },
   created() {
-    // axios({
-    //   method: 'get',
-    //   url: '/api/v2/c/withdraw/check',
-    // }).then((res) => {
-
-    // });
-
     this.isLoading = true;
     this.getAccountDataStatus().then(data => {
       this.checkBankSwitch = data.ret.bank;
@@ -241,6 +234,12 @@ export default {
             this.isVerifyPhone = data.ret[i];
           }
 
+          // 鴨博無提現密碼
+          if (this.themeTPL === 'porn1' && i == "withdraw_password") {
+            this.formData['withdraw_password'].show = false;
+            return;
+          }
+
           this.formData[i].show = !data.ret[i];
         }
       });
@@ -249,7 +248,8 @@ export default {
         !this.formData.phone.show &&
         !this.formData.withdraw_password.show
       ) {
-        if (!this.checkBankSwitch) {
+        // 鴨博無電子錢包
+        if (!this.checkBankSwitch && this.themeTPL !== 'porn1') {
           this.$router.replace(
             `/mobile/mcenter/bankCard?redirect=${this.redirect}&type=wallet`
           );
