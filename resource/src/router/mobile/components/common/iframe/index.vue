@@ -61,6 +61,7 @@ import { mapGetters, mapActions } from 'vuex';
 import axios from 'axios';
 import yaboRequest from '@/api/yaboRequest';
 import goLangApiRequest from '@/api/goLangApiRequest';
+import openGame from '@/lib/open_game';
 
 export default {
   data() {
@@ -308,8 +309,13 @@ export default {
         }
 
         console.log('[EVENT]:', data.event);
+        console.log('[DATA]:', data.data);
 
         switch (data.event) {
+          case 'EVENT_THIRDPARTY_SWITCH_GAME':
+            this.linkToGame(data.data);
+            return;
+
           case 'EVENT_THIRDPARTY_CLOSE':
             this.$router.push(this.originUrl);
             return;
@@ -333,6 +339,54 @@ export default {
           default:
             return;
         }
+      }
+    },
+    linkToGame(data) {
+      this.isLoading = true;
+
+      if (!data) {
+        return;
+      }
+
+      let target = data.split('-');
+
+      switch (target[0]) {
+        case 'lobby':
+          let type = 'casino';
+          switch (target[2]) {
+            case '5':
+              type = 'card';
+              break;
+            case '3':
+            default:
+              type = 'card';
+              break;
+          }
+          this.$router.push(`/mobile/${type}/${target[1]}`);
+          break;
+
+        case 'game':
+
+          const openGameSuccessFunc = (res) => {
+            this.isLoading = false;
+          };
+
+          const openGameFailFunc = (res) => {
+            this.isLoading = false;
+
+            if (res && res.data) {
+              let data = res.data;
+              this.actionSetGlobalMessage({ msg: data.msg, code: data.code, origin: 'home' })
+            }
+          };
+          const vendor = target[1] || '';
+          const kind = target[2] || '';
+          const code = target[3] || '';
+          openGame({ kind: kind, vendor: vendor, code: code }, openGameSuccessFunc, openGameFailFunc);
+          break;
+
+        default:
+          return;
       }
     },
     onLoadiframe(event) {
