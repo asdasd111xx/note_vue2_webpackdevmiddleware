@@ -511,7 +511,7 @@ export default {
               }, 1000);
               this.tipMsg = this.$text("S_SEND_CHECK_CODE_VALID_TIME").replace(
                 "%s",
-                "五"
+                "5"
               );
             });
           } else {
