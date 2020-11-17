@@ -9,7 +9,7 @@
         <div :class="$style['btn-prev']">
           <img
             :src="$getCdnPath(`/static/image/${themeTPL}/common/btn_back.png`)"
-            @click="onClose"
+            @click="onClose(true)"
           />
         </div>
         <span :class="$style['title']"> {{ "帐户资料" }}</span>
@@ -315,7 +315,7 @@ export default {
   },
   methods: {
     ...mapActions(["actionSetGlobalMessage", "actionVerificationFormData"]),
-    onClose() {
+    onClose(isBack) {
       if (this.isSlider) {
         this.$nextTick(() => {
           setTimeout(() => {
@@ -324,6 +324,12 @@ export default {
         });
         this.sliderClass = "slider-close slider";
       } else {
+
+        if (isBack) {
+          this.$router.back();
+          return;
+        }
+
         const _redirect = this.redirect;
         axios({
           method: 'get',
