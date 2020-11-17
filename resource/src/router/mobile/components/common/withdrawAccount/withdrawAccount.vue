@@ -324,14 +324,35 @@ export default {
         });
         this.sliderClass = "slider-close slider";
       } else {
-        // 鴨博無電子錢包
-        // if (!this.checkBankSwitch && this.themeTPL !== 'porn1') {
-        //   this.$router.push(
-        //     `/mobile/mcenter/bankCard?redirect=${this.redirect}&type=wallet`
-        //   );
-        // } else {
-        //   this.$router.back();
-        // }
+
+        axios({
+          method: 'get',
+          url: '/api/v2/c/domain-config',
+        }).then(res => {
+          let withdraw_info_before_bet = false;
+          if (res && res.data && res.data.ret) {
+            withdraw_info_before_bet = res.data.ret.withdraw_info_before_bet;
+          }
+
+          if (!withdraw_info_before_bet) {
+            if (!this.checkBankSwitch) {
+              this.$router.push(
+                `/mobile/mcenter/bankCard?redirect=${this.redirect}&type=wallet`
+              );
+              return;
+            } else {
+              this.$router.back();
+              return;
+            }
+          }
+
+          this.$router.back();
+          return;
+        }).catch((res) => {
+          this.actionSetGlobalMessage({
+            msg: res.data.msg, code: res.data.code, origin: 'home'
+          });
+        })
 
         // 提現資料上一頁應回到原本位置 避免迴圈
         this.$router.back();
