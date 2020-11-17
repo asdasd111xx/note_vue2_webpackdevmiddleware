@@ -305,7 +305,7 @@ export default {
     },
     redirect() {
       let redirect = this.$route.query.redirect || 'home';
-      return this.$route.query.redirect;
+      return redirect;
     }
   },
   watch: {
@@ -324,7 +324,7 @@ export default {
         });
         this.sliderClass = "slider-close slider";
       } else {
-
+        const _redirect = this.redirect;
         axios({
           method: 'get',
           url: '/api/v2/c/domain-config',
@@ -337,7 +337,7 @@ export default {
           if (!withdraw_info_before_bet) {
             if (!this.checkBankSwitch) {
               this.$router.push(
-                `/mobile/mcenter/bankCard?redirect=${this.redirect}&type=wallet`
+                `/mobile/mcenter/bankCard?redirect=${_redirect}&type=wallet`
               );
               return;
             } else {
