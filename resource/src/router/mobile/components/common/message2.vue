@@ -184,6 +184,7 @@ export default {
           case "C590029":
           case "C50107":
           case "C50108":
+            // 请先设定提现资料
             localStorage.setItem("form-withdraw-account", true);
             this.$router.push(
               `/mobile/withdrawAccount?redirect=${redirect ? redirect : "home"}`
