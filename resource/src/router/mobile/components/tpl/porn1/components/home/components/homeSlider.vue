@@ -10,6 +10,7 @@
               : '/static/image/_new/default/bg_banner_d.png'
           "
           :data-info="key"
+          :data-link="info.linkTo"
         />
       </div>
     </swiper-slide>
