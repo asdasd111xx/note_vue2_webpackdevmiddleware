@@ -365,7 +365,7 @@ export default {
               if (i !== "bank" && !res.data.ret[i]) {
 
                 this.actionSetGlobalMessage({
-                  msg: '请先设定提现资料',
+                  msg: target === 'withdraw' ? '请先完成提现信息' : '请先设定提现资料',
                   cb: () => {
                     {
                       this.$router.push(

@@ -502,7 +502,8 @@ export default {
                     Object.keys(res.data.ret).forEach(i => {
                         if (i !== "bank" && !res.data.ret[i]) {
                             this.actionSetGlobalMessage({
-                                msg: '请先设定提现资料', cb: () => {
+                                msg: target === 'withdraw' ? '请先完成提现信息' : '请先设定提现资料'
+                                , cb: () => {
                                     {
                                         this.$router.push('/mobile/withdrawAccount');
                                     }
