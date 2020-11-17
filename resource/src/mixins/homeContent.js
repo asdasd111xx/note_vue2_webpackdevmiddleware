@@ -469,7 +469,7 @@ export default {
                         this.$router.push("/mobile/mcenter/balanceTrans");
                     }).catch((res) => {
                         this.actionSetGlobalMessage({
-                            msg: res.data.msg, code: res.data.code, origin: 'wallet'
+                            msg: res.data.msg, code: res.data.code, origin: 'home'
                         });
                     })
                     return;

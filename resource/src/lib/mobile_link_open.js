@@ -1,6 +1,7 @@
 import * as moment from 'moment-timezone';
 
 import Vue from 'vue';
+import axios from 'axios';
 import i18n from '@/config/i18n';
 import links from '@/config/links';
 import mcenterPageAuthControl from '@/lib/mcenterPageAuthControl';
@@ -17,7 +18,25 @@ export default ({ linkType = 'nolink', linkTo = '', linkItem = '' }) => {
     let newWindow = '';
     // 外部連結
     if (linkType === 'external') {
-        newWindow = window.open(linkTo, '_blank');
+
+        axios({
+            method: 'get',
+            url: '/api/v1/c/link/customize',
+            params: {
+                code: 'promotion',
+                client_uri: linkTo
+            }
+        }).then(res => {
+            if (res && res.data && res.data.ret && res.data.ret.uri) {
+                newWindow = window.open(res.data.ret.uri + '&v=m', '_blank');
+            }
+        }).catch(error => {
+            // newWindow.close();
+            if (error && error.data && error.date.msg) {
+                this.actionSetGlobalMessage({ msg: error.data.msg });
+            }
+        })
+
         return;
     }
 
@@ -63,6 +82,7 @@ export default ({ linkType = 'nolink', linkTo = '', linkItem = '' }) => {
 
         // 優小祕
         if (linkTo === 'promotion' && linkItem) {
+            console.log(linkItem)
             newWindow = window.open(`/popcontrol/promo/${JSON.stringify({ linkItem })}`, '_blank');
             return;
         }

@@ -304,7 +304,7 @@ export default {
       }
     },
     redirect() {
-      let redirect = this.$route.query.redirect;
+      let redirect = this.$route.query.redirect || 'home';
       return this.$route.query.redirect;
     }
   },
@@ -324,7 +324,17 @@ export default {
         });
         this.sliderClass = "slider-close slider";
       } else {
+        // 鴨博無電子錢包
+        // if (!this.checkBankSwitch && this.themeTPL !== 'porn1') {
+        //   this.$router.push(
+        //     `/mobile/mcenter/bankCard?redirect=${this.redirect}&type=wallet`
+        //   );
+        // } else {
+        //   this.$router.back();
+        // }
+
         if (this.redirect) {
+
           switch (this.redirect) {
             case "home":
               this.$router.push(`/mobile/`);
@@ -560,11 +570,6 @@ export default {
               msg: '设定成功',
               cb: () => {
                 this.onClose();
-                if (!this.checkBankSwitch) {
-                  this.$router.push(
-                    `/mobile/mcenter/bankCard?redirect=${this.redirect}&type=wallet`
-                  );
-                }
               }
             });
           }
