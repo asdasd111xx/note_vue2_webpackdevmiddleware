@@ -333,25 +333,27 @@ export default {
         //   this.$router.back();
         // }
 
-        if (this.redirect) {
-
-          switch (this.redirect) {
-            case "home":
-              this.$router.push(`/mobile/`);
-              return;
-            case "deposit":
-            case "withdraw":
-            case "balanceTrans":
-            case "wallet":
-              this.$router.push(`/mobile/mcenter/${this.redirect}`);
-              return;
-            default:
-              this.$router.back();
-              return;
-          }
-        }
-
+        // 提現資料上一頁應回到原本位置 避免迴圈
         this.$router.back();
+        // if (this.redirect) {
+
+        //   switch (this.redirect) {
+        //     case "home":
+        //       this.$router.push(`/mobile/`);
+        //       return;
+        //     case "deposit":
+        //     case "withdraw":
+        //     case "balanceTrans":
+        //     case "wallet":
+        //       this.$router.push(`/mobile/mcenter/${this.redirect}`);
+        //       return;
+        //     default:
+        //       this.$router.back();
+        //       return;
+        //   }
+        // }
+
+        // this.$router.back();
         return;
       }
     },
