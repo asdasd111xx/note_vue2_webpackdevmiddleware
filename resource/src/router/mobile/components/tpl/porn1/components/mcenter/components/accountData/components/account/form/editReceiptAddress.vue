@@ -34,7 +34,13 @@
           />
         </div>
       </div>
-      <div :class="$style['add-btn-address']" @click="goToAddAddress()">
+      <div
+        :class="[
+          $style['add-btn-address'],
+          { [$style['disabled']]: dataEnough }
+        ]"
+        @click="goToAddAddress()"
+      >
         新增收货地址
       </div>
       <div :class="$style['add-detail']">最多可新增5组地址</div>
@@ -76,10 +82,16 @@ export default {
       onDefault: false,
       defaultIdx: 0,
       nextDefaultIdx: 0,
+      dataEnough: false,
     };
   },
   created() {
     this.getAddressAllData();
+  },
+  watch: {
+    addressData() {
+      this.dataEnough = this.addressData.length >= 5
+    }
   },
   mounted() {
 
@@ -104,11 +116,10 @@ export default {
         method: 'get',
         url: '/api/v1/c/player/address',
       }).then(res => {
-        console.log(123);
         if (res && res.data && res.data.result === "ok") {
           this.addressData = res.data.ret
 
-          defaultIdx = this.addressData.findIndex((data) => data.is_default)
+          this.defaultIdx = this.addressData.findIndex((data) => data.is_default)
         }
       }).catch(error => {
 

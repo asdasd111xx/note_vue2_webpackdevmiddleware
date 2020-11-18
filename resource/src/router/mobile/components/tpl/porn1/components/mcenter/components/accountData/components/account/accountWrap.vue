@@ -162,8 +162,6 @@ export default {
           text: 'S_RECEIPT_ADDRESS',
           key: 'receiptAddress',
           isShow: true,
-          status: 'yet',
-          value: '',
           btnShow: true,
           field: {}
         }
@@ -227,10 +225,9 @@ export default {
           Object.keys(this.verification).forEach((key) => {
             this.verification[key] = response.ret.user[key];
           });
-
           Object.keys(this.dataList).forEach((item) => {
             if (this.dataList[item].title === 'receiptAddress') {
-              this.dataList[item].isShow = true;//response.ret.config.address.display;
+              this.dataList[item].isShow = response.ret.config.address.display;
             }
           });
           this.mcenterUserField = response.ret;

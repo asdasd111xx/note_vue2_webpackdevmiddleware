@@ -83,7 +83,11 @@
             <input
               :checked="addressInfo.is_default"
               type="checkbox"
-              @click="() => {}"
+              @click="
+                () => {
+                  setDefault();
+                }
+              "
             />
             <label />
           </div>
@@ -185,6 +189,7 @@ export default {
     if (this.$route.query && this.$route.query.id) {//編輯
       this.headerTitle = "编辑收货地址";
       this.addressInfo = this.$route.query
+      this.addressInfo.is_default = this.addressInfo.is_default === "true";
       this.phoneHead = "+" + this.addressInfo.phone.split("-")[0];
       this.addressInfo.phone = this.addressInfo.phone.split("-")[1];
       this.isAdd = false;
@@ -226,6 +231,10 @@ export default {
       }
     },
 
+    setDefault() {
+      this.addressInfo.is_default = !this.addressInfo.is_default
+    },
+
     checkData() {
       if (this.addressInfo.name != "" && this.addressInfo.phone != "" && this.addressInfo.address != "") {
         this.dataNotEnough = true;
@@ -235,32 +244,57 @@ export default {
     },
 
     addAddress() {
-      if (this.addressInfo.name === "" && this.addressInfo.phone === "" && this.addressInfo.address === "") {
-        // 新增一筆收貨地址
-        ajax({
-          method: 'post',
-          url: `/api/v1/c/player/address`,
-          params: {
-            name: this.addressInfo.name,
-            phone: `${phoneHead.replace(/\+/ig, '')}-${this.addressInfo.phone}`,
-            address: this.addressInfo.address,
-          },
-          errorAlert: false,
-          success: (response) => {
-            this.$router.back();
-          },
-          fail: (response) => {
-            alert(response.data.msg);
-          }
-        });
+      if (this.addressInfo.name != "" && this.addressInfo.phone != "" && this.addressInfo.address != "") {
+        if (this.isAdd) {
+          // 新增一筆收貨地址
+          ajax({
+            method: 'post',
+            url: `/api/v1/c/player/address`,
+            params: {
+              name: this.addressInfo.name,
+              phone: `${this.phoneHead.replace(/\+/ig, '')}-${this.addressInfo.phone}`,
+              address: this.addressInfo.address,
+              is_default: this.addressInfo.is_default,
+            },
+            errorAlert: false,
+            success: (response) => {
+              this.$router.back();
+            },
+            fail: (response) => {
+              alert(response.data.msg);
+            }
+          });
+        } else {
+          // 編輯一筆收貨地址
+          ajax({
+            method: 'put',
+            url: `/api/v1/c/player/address/${this.addressInfo.id}`,
+            params: {
+              id: this.addressInfo.id,
+              is_default: this.addressInfo.is_default,
+              name: this.addressInfo.name,
+              phone: `${this.phoneHead.replace(/\+/ig, '')}-${this.addressInfo.phone}`,
+              address: this.addressInfo.address
+            },
+            errorAlert: false,
+            success: (response) => {
+              this.$router.back();
+            },
+            fail: (response) => {
+              alert(response.data.msg);
+            }
+          });
+        }
+
+
       }
     },
 
-    deleteAddress(id) {
+    deleteAddress() {
       // 刪除一筆收貨地址
       ajax({
         method: 'delete',
-        url: `/api/v1/c/player/address/${idx}`,
+        url: `/api/v1/c/player/address/${this.addressInfo.id}`,
         errorAlert: false
       }).then((response) => {
         if (response && response.result === 'ok') {
