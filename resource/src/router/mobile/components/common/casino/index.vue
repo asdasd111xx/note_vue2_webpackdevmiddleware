@@ -340,6 +340,11 @@ export default {
      * @param {string} value - 設定的分類
      */
     changeGameLabel(value) {
+      this.$router.replace({
+        query: {
+          label: value
+        }
+      });
       this.paramsData = {
         ...this.paramsData,
         label: value,
