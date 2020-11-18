@@ -790,15 +790,15 @@
             </div>
 
             <div v-if="receiptInfo" :class="[$style['info-wrap'], 'clearfix']">
-              <div :class="$style['deposit-info-title']">
+              <!-- <div :class="$style['deposit-info-title']">
                 {{ $text("S_WITHDRAW_ACCOUNT", "收款帐号") }}
-              </div>
+              </div> -->
 
-              <div :class="$style['deposit-submit-info']">
+              <div :class="[$style['deposit-submit-info']]">
                 <template v-for="(info, index) in receiptInfo">
                   <div
                     :key="`receipt-info-${index}`"
-                    :class="$style['submit-info-wrap']"
+                    :class="[$style['submit-info-wrap']]"
                   >
                     <div
                       :class="[
@@ -855,22 +855,24 @@
                     <!-- eslint-enable vue/no-v-html -->
                     <div v-else :class="$style['basic-info-text']">
                       {{ info.value }}
-                      <div
-                        v-if="info.copyShow"
-                        :class="$style['icon-wrap']"
-                        @click="copyInfo(info.value)"
-                      >
-                        <div>
-                          <icon name="regular/copy" width="12" height="12" />
-                        </div>
-                      </div>
+                    </div>
+
+                    <!-- icon -->
+                    <div
+                      v-if="info.copyShow"
+                      :class="$style['icon-wrap']"
+                      @click="copyInfo(info.value)"
+                    >
+                      <img
+                        :src="`/static/image/${themeTPL}/mcenter/ic_copy.png`"
+                      />
                     </div>
                   </div>
 
-                  <div
+                  <!-- <div
                     :key="`border-line-${index}`"
                     :class="{ [$style['info-border']]: info.isBorderBottom }"
-                  />
+                  /> -->
                 </template>
               </div>
             </div>
