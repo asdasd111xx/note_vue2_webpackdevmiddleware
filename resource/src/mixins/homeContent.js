@@ -295,8 +295,16 @@ export default {
         },
         onResize() {
             // 計算外框高度
-            this.wrapHeight =
-                document.body.offsetHeight - this.$refs['home-wrap'].offsetTop - 60;
+            let extraHeight = 60;
+            if (this.siteConfig.MOBILE_WEB_TPL === "porn1") {
+                extraHeight = 60;
+            }
+
+            if (this.siteConfig.MOBILE_WEB_TPL === "ey1") {
+                extraHeight = 85;
+            }
+
+            this.wrapHeight = document.body.offsetHeight - this.$refs['home-wrap'].offsetTop - extraHeight;
         },
         onTypeTouchStart(e) {
             if (this.isSliding) {
