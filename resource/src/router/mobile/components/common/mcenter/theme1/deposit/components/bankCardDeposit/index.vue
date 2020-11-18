@@ -364,12 +364,12 @@
                     )
                   "
                   alt="update"
-                  @click="actionSetCGPayInfo"
+                  @click="getPayPass"
                 />
               </span>
 
               <div :class="$style['CGPay-money']">
-                CGP <span>{{ CGPayInfo.balance }}</span>
+                CGP <span>{{ curPassRoad.balance }}</span>
               </div>
             </div>
 
@@ -396,12 +396,9 @@
                 "
               >
                 <div :class="$style['CGPay-money']">
-                  <div>CGPay余额：{{ CGPayInfo.balance }}</div>
+                  <div>CGPay余额：{{ curPassRoad.balance }}</div>
 
-                  <div
-                    :class="$style['money-update']"
-                    @click="actionSetCGPayInfo"
-                  >
+                  <div :class="$style['money-update']" @click="getPayPass">
                     <img
                       :src="
                         $getCdnPath(
@@ -1222,7 +1219,6 @@ export default {
       siteConfig: "getSiteConfig",
       memInfo: "getMemInfo",
       rechargeConfig: "getRechargeConfig",
-      CGPayInfo: "getCGPayInfo",
       noticeData: "getNoticeData"
     }),
     $style() {
@@ -1506,10 +1502,6 @@ export default {
     this.checkEntryBlockStatus();
     this.actionSetRechargeConfig();
   },
-  mounted() {
-    // Get CGPay 錢包狀態
-    this.actionSetCGPayInfo();
-  },
   destroyed() {
     this.resetTimerStatus();
   },
@@ -1517,7 +1509,6 @@ export default {
     ...mapActions([
       "actionSetUserBalance",
       "actionSetRechargeConfig",
-      "actionSetCGPayInfo",
       "actionVerificationFormData",
       "actionSetGlobalMessage"
     ]),
@@ -1681,9 +1672,6 @@ export default {
         // 重置阻擋狀態
         this.checkEntryBlockStatus();
         this.entryBlockStatusData = null;
-
-        // 刷新CGPay錢包狀態
-        this.actionSetCGPayInfo();
 
         if (response) {
           if (response.status === "NameFail") {

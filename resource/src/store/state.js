@@ -468,10 +468,6 @@ export default {
     videoBounsPageStatus: false,
     systemDomain: {},
     pornDoamin: "https://jizzapp.app",
-    // ＝＝＝＝＝＝＝＝＝＝＝＝＝＝＝＝＝＝
-    //   　電子錢包綁定相關
-    // ＝＝＝＝＝＝＝＝＝＝＝＝＝＝＝＝＝＝
-    CGPayInfo: {},
     promotionLink: '',
     webDomain: {}
 };

@@ -203,10 +203,5 @@ export default {
   getRechargeBonusConfig: (state) => state.rechargeBonusConfig, //取得廳首次額度轉讓優惠設定
   getSystemDomain: (state) => state.systemDomain,
   getPornDomain: (state) => state.pornDoamin,
-  // ＝＝＝＝＝＝＝＝＝＝＝＝＝＝＝＝＝＝
-  //   　電子錢包綁定相關
-  // ＝＝＝＝＝＝＝＝＝＝＝＝＝＝＝＝＝＝
-  getCGPayInfo: (state) => state.CGPayInfo,
-
   getPromotionLink: (state) => state.promotionLink
 };

@@ -543,10 +543,6 @@ export default {
   [types.SET_PORNDOMAIN](state, data) {
     state.pornDoamin = data;
   },
-  // 是否有綁定CGPay
-  [types.SET_CGPAYINFO](state, data) {
-    state.CGPayInfo = data;
-  },
   [types.SET_PROMOTION_LINK](state, data) {
     state.promotionLink = data;
   },
