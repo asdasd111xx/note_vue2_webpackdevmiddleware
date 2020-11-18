@@ -160,7 +160,11 @@ export default {
         {
           title: 'receiptAddress',
           text: 'S_RECEIPT_ADDRESS',
+          key: 'receiptAddress',
           isShow: true,
+          status: 'yet',
+          value: '',
+          btnShow: true,
           field: {}
         }
       ]
@@ -174,6 +178,7 @@ export default {
     }),
     // 過濾特例的資料
     filteredDataList() {
+      console.log("123");
       return this.dataList
         .filter((data) => data.isShow)
         .map((item) => ({
@@ -225,7 +230,7 @@ export default {
 
           Object.keys(this.dataList).forEach((item) => {
             if (this.dataList[item].title === 'receiptAddress') {
-              this.dataList[item].isShow = response.ret.config.address.display;
+              this.dataList[item].isShow = true;//response.ret.config.address.display;
             }
           });
           this.mcenterUserField = response.ret;

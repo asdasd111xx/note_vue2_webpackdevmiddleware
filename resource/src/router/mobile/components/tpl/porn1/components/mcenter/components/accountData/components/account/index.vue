@@ -107,6 +107,39 @@
               </div>
             </template>
           </div>
+          <div
+            v-if="item.title === 'receiptAddress'"
+            :key="index"
+            :class="[$style['account-data-field'], 'clearfix']"
+            @click="handleClick(item)"
+          >
+            <span :class="$style['field-title']">{{
+              $text("S_RECEIPT_ADDRESS", "收货地址")
+            }}</span>
+            <div :class="$style['field-value']">
+              <template>
+                <span
+                  :class="[
+                    $style['field-text'],
+                    { [$style.yet]: item.status === 'yet' }
+                  ]"
+                  >{{ item.value === "" ? "未设定" : item.value }}
+                </span>
+              </template>
+
+              <div v-if="item.btnShow" :class="$style['feature-btn']">
+                <div :class="$style['btn-next']">
+                  <img
+                    :src="
+                      $getCdnPath(
+                        `/static/image/_new/mcenter/ic_arrow_next.png`
+                      )
+                    "
+                  />
+                </div>
+              </div>
+            </div>
+          </div>
         </template>
       </template>
     </account-wrap>
@@ -174,6 +207,11 @@ export default {
       }
 
       if (['alias', 'name', 'phone', 'email', 'qq', 'weixin', 'line', 'withdrawPwd'].includes(field.key)) {
+        this.$router.push({
+          path: `/mobile/mcenter/accountData/${field.key}`
+        });
+        return;
+      } else if (field.key === "receiptAddress") {
         this.$router.push({
           path: `/mobile/mcenter/accountData/${field.key}`
         });
