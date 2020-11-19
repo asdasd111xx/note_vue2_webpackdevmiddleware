@@ -1,7 +1,5 @@
 import { mapActions, mapGetters } from "vuex";
 
-import EST from "@/lib/EST";
-import Vue from "vue";
 import axios from "axios";
 import bbosRequest from "@/api/bbosRequest";
 
@@ -31,6 +29,8 @@ export default {
       // banner
       swagBanner: [
         { src: '/static/image/porn1/mcenter/swag/banner_swag.png' }],
+
+      isLoading: false
     }
   },
   computed: {
@@ -42,16 +42,6 @@ export default {
       swagConfig: "getSwagConfig",
       siteConfig: "getSiteConfig"
     }),
-    inputInfo() {
-      return [
-        {
-          key: "target_username",
-          title: "转入帐号",
-          error: "",
-          placeholder: "请输入下线帐号"
-        },
-      ];
-    },
   },
   beforeDestroy() {
     clearInterval(this.updateBalance);
@@ -63,24 +53,36 @@ export default {
     this.actionSetSwagConfig().then(() => {
 
       // 可購買的鑽石/金額列表
-      this.rateList = this.swagConfig.rates;
-      this.selectedRate(this.rateList[0]);
+      if (this.swagConfig.rates) {
+        this.rateList = this.swagConfig.rates;
+
+        let tmp_d_currentSelRate = JSON.parse(localStorage.getItem("tmp_d_currentSelRate"));
+        if (tmp_d_currentSelRate && this.rateList.find(i => i.amount === tmp_d_currentSelRate.amount &&
+          i.diamond === tmp_d_currentSelRate.diamond)) {
+          this.selectedRate(tmp_d_currentSelRate);
+        }
+        else {
+          this.selectedRate(this.rateList[0]);
+        }
+      }
 
       // 維護時間
       // this.swagConfig.maintain_end_at
       // this.swagConfig.maintain_start_at
+
+      // 驗證手機成功回來
+      if (localStorage.getItem("tmp_d_1")) {
+        this.submit();
+      }
     });
 
     if (this.loginStatus) {
-      this.updateBalance = setInterval(() => {
-        this.actionSetUserBalance();
-        this.actionSetSwagBalance();
-      }, 40000);
+      this.updateBalance();
     }
   },
   watch: {
     swagBalance(val) {
-      this.swagDiamondBalance = +val.balance === 0 ? '0' : val.balance;
+      this.swagDiamondBalance = val.balance;
     },
   },
   methods: {
@@ -92,6 +94,14 @@ export default {
       'actionSetSwagConfig',
       'actionSetSwagBalance'
     ]),
+    updateBalance() {
+      if (this.loginStatus) {
+        this.updateBalance = setInterval(() => {
+          this.actionSetUserBalance();
+          this.actionSetSwagBalance();
+        }, 40000);
+      }
+    },
     balanceBack() {
       if (!this.balanceBackLock) {
         this.balanceBackLock = true;
@@ -167,37 +177,93 @@ export default {
       this.isVerifyForm = noError && hasValue;
     },
     submit() {
-      if (!this.isSendSubmit && this.currentSelRate && !this.lockedSubmit) {
-        this.isSendSubmit = true;
-        bbosRequest({
-          method: "put",
-          url: this.siteConfig.BBOS_DOMIAN + '/Ext/Swag/Vendor/Transfer',
-          reqHeaders: {
-            'Vendor': this.memInfo.user.domain,
-          },
-          params: {
-            "lang": "zh-cn",
-            amount: this.currentSelRate.amount,
-            diamond: this.currentSelRate.diamond,
-          },
-        }).then((res) => {
-          console.log(res)
-
-          this.actionSetGlobalMessage({
-            msg: res.msg,
-          });
-
-          setTimeout(() => {
-            this.isSendSubmit = false;
-          }, 1500)
-        })
+      if (this.isLoading) {
+        return;
       }
+      this.isLoading = true;
+
+      this.actionSetSwagConfig().then(() => {
+
+        if (this.swagConfig &&
+          this.swagConfig.phone_verify &&
+          +this.swagConfig.phone_verify === 1 &&
+          !localStorage.getItem("tmp_d_1")) {
+          this.saveCurrentValue();
+          this.$router.push(
+            "/mobile/mcenter/accountData/phone?redirect=swag"
+          );
+          return;
+        }
+
+        // 暫存選擇欄位 簡訊驗證
+        let tmp_currentSelRate = {};
+        let params = {
+          "lang": "zh-cn",
+          amount: this.currentSelRate.amount,
+          diamond: this.currentSelRate.diamond,
+          keyring: localStorage.getItem("tmp_d_1"), // 手機驗證成功後回傳
+        }
+
+        if (localStorage.getItem('tmp_d_currentSelRate')) {
+          tmp_currentSelRate = JSON.parse(localStorage.getItem('tmp_d_currentSelRate'));
+          params['amount'] = tmp_currentSelRate.amount;
+          params['diamond'] = tmp_currentSelRate.diamond;
+        } else {
+          params['amount'] = this.currentSelRate.amount;
+          params['diamond'] = this.currentSelRate.diamond;
+        }
+
+        if (!this.isSendSubmit && params['amount'] && !this.lockedSubmit) {
+          this.isSendSubmit = true;
+
+          bbosRequest({
+            method: "put",
+            url: this.siteConfig.BBOS_DOMIAN + '/Ext/Swag/Vendor/Transfer',
+            reqHeaders: {
+              'Vendor': this.memInfo.user.domain,
+            },
+            params: params,
+          }).then((res) => {
+            this.isLoading = false;
+
+            if (res && res.status === '000') {
+
+              this.actionSetGlobalMessage({
+                msg: '兑换成功',
+                code: res.code,
+                origin: 'mcenter/swag'
+              });
+            } else {
+              this.actionSetGlobalMessage({
+                msg: res.msg,
+                code: res.code,
+                origin: 'mcenter/swag'
+              });
+            }
+
+            this.actionSetUserBalance();
+            this.actionSetSwagBalance();
+
+            setTimeout(() => {
+              this.isSendSubmit = false;
+            }, 1500)
+          })
+
+          localStorage.removeItem("tmp_d_1");
+          localStorage.removeItem("tmp_d_currentSelRate");
+        }
+      });
     },
     showDetail(item) {
       this.detailRecoard = item;
     },
     closeDetail() {
       this.detailRecoard = null;
+    },
+    saveCurrentValue() {
+      localStorage.setItem(
+        "tmp_d_currentSelRate",
+        JSON.stringify(this.currentSelRate));
     },
   }
 };

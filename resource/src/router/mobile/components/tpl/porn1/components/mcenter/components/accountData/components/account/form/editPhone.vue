@@ -70,7 +70,7 @@
         </div>
       </template>
 
-      <template v-if="checkCode.isShow || isfromWithdraw">
+      <template v-if="checkCode.isShow || isfromWithdraw || isfromSWAG">
         <div :class="$style.block">
           <div :class="$style.title">
             手机验证码
@@ -194,6 +194,9 @@ export default {
         return this.captcha = value
       }
     },
+    isfromSWAG() {
+      return this.$route.query.redirect.toUpperCase() === 'SWAG';
+    },
     isfromWithdraw() {
       const { query } = this.$route;
       let redirect = query.redirect;
@@ -210,11 +213,11 @@ export default {
       let _funcBtnActive = true;
       let checkActiveArray = [this.newValue, (!this.tipMsg || this.tipMsg.includes('验证码已发送'))];
       //  提現前驗證不需要舊手機欄位
-      if (this.checkCode.isShow || this.isfromWithdraw) {
+      if (this.checkCode.isShow || this.isfromWithdraw || this.isfromSWAG) {
         checkActiveArray.push(!!(this.codeValue));
       }
 
-      if (this.memInfo.phone.phone && this.oldPhone.isShow && !this.isfromWithdraw) {
+      if (this.memInfo.phone.phone && this.oldPhone.isShow && !this.isfromWithdraw && !this.isfromSWAG) {
         checkActiveArray.push(!!(this.oldValue));
       }
 
@@ -268,7 +271,7 @@ export default {
     sendBtn() {
       return {
         label: this.$text('S_GET_VERIFICATION_CODE', '获取验证码'),
-        isShow: this.info.verification || this.isfromWithdraw,
+        isShow: this.info.verification || this.isfromWithdraw || this.isfromSWAG,
         countdownSec: this.countdownSec
       };
     }
@@ -332,7 +335,7 @@ export default {
         if (this.siteConfig.MOBILE_WEB_TPL === 'ey1' || value.length >= 11) {
           this.tipMsg = '';
 
-          if (this.isfromWithdraw) {
+          if (this.isfromWithdraw || this.isfromSWAG) {
             this.isVerifyPhone = true;
             return;
           }
@@ -402,14 +405,28 @@ export default {
       let captchaParams = {};
       captchaParams['captcha_text'] = this.captchaData || "";
 
-      if (this.isfromWithdraw) {
+      let params = {
+        phone: `${this.phoneHead.replace('+', '')}-${this.newValue}`,
+        ...captchaParams,
+      }
+
+      let smsUrl = '';
+      if (this.isfromSWAG) {
+        smsUrl = '/api/v1/c/player/outer/sms';
+        params['vendor'] = 'swag'
+      }
+      else if (this.isfromWithdraw) {
+        smsUrl = '/api/v1/c/player/withdraw/verify/sms';
+      }
+      else {
+        smsUrl = '/api/v1/c/player/verify/phone';
+      }
+
+      if (this.isfromWithdraw || this.isfromSWAG) {
         axios({
           method: 'post',
-          url: '/api/v1/c/player/withdraw/verify/sms',
-          data: {
-            phone: `${this.phoneHead.replace('+', '')}-${this.newValue}`,
-            ...captchaParams,
-          }
+          url: smsUrl,
+          data: params
         }).then(res => {
           if (res && res.data && res.data.result === "ok") {
             this.getPhoneTTL().then(() => {
@@ -458,7 +475,8 @@ export default {
 
         axios({
           method: 'post',
-          url: '/api/v1/c/player/verify/phone',
+          url: smsUrl,
+          // /api/v1/c/player/verify/phone
           data: params
         }).then(res => {
           if (res && res.data && res.data.result === "ok") {
@@ -497,22 +515,39 @@ export default {
       }
     },
     handleSubmit() {
-      // 提款手機驗證
-      if (this.isfromWithdraw) {
+      // 提款,SWAG手機驗證
+      let smsUrl = '';
+      let params = {
+        keyring: this.codeValue
+      }
+
+      if (this.isfromSWAG) {
+        smsUrl = '/api/v1/c/outer/sms/verify';
+        params['phone'] = `${this.phoneHead.replace('+', '')}-${this.newValue}`;
+      }
+      else if (this.isfromWithdraw) {
+        smsUrl = '/api/v1/c/player/withdraw/sms/verify';
+      }
+
+      if (this.isfromWithdraw || this.isfromSWAG) {
         ajax({
           method: 'put',
-          url: '/api/v1/c/player/withdraw/sms/verify',
+          url: smsUrl,
           errorAlert: false,
-          params: {
-            keyring: this.codeValue
-          },
+          params: params,
           fail: (res) => {
             this.tipMsg = `${res.data.msg}`;
           },
           success: (res) => {
             if (res && res.result === 'ok') {
-              localStorage.setItem('tmp_w_1', res.ret);
-              this.$router.push('/mobile/mcenter/withdraw');
+              if (this.isfromSWAG) {
+                localStorage.setItem('tmp_d_1', res.ret);
+                this.$router.push('/mobile/mcenter/swag');
+              }
+              else if (this.isfromWithdraw) {
+                localStorage.setItem('tmp_w_1', res.ret);
+                this.$router.push('/mobile/mcenter/withdraw');
+              }
             }
           }
         })
