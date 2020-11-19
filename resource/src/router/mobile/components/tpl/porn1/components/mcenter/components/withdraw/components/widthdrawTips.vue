@@ -6,8 +6,8 @@
         :class="[
           $style['check-container'],
           {
-            [$style['deposit']]: type === 'deposit'
-          }
+            [$style['deposit']]: type === 'deposit',
+          },
         ]"
       >
         <div :class="$style['check-header']">
@@ -77,6 +77,16 @@
                     getDeductionNumber(serialNumberData.total.total_deduction)
                   }}
                 </span>
+              </div>
+
+              <div
+                v-if="bonusOffer !== '--'"
+                :class="[$style['check-cell'], $style['check-crypto']]"
+              >
+                <span :class="$style['sub-title']"
+                  >{{ withdrawName }}出款额外赠送</span
+                >
+                <span :class="$style['money']">123</span>
               </div>
 
               <div :class="[$style['check-cell'], $style['check-actual']]">
@@ -163,6 +173,14 @@ export default {
       default: false
     },
     swiftCode: {
+      type: String,
+      default: ""
+    },
+    bonusOffer: {
+      type: String,
+      default: ""
+    },
+    withdrawName: {
       type: String,
       default: ""
     }

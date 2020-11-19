@@ -7,13 +7,12 @@
       >
         <div :class="[$style['balance-item-wrap'], 'clearfix']">
           <!-- 紅利彩金 -->
-
           <div
             :class="[
               $style['balance-item'],
               {
-                [$style['is-last-item']]: !isShowMore
-              }
+                [$style['is-last-item']]: !isShowMore,
+              },
             ]"
             @click="$router.push('/mobile/mcenter/bonus')"
           >
@@ -43,8 +42,8 @@
                     Object.keys(balanceTran.firstThirdBalanceInfo).length -
                       index <=
                     (Object.keys(balanceTran.firstThirdBalanceInfo).length %
-                      3 || 3)
-                }
+                      3 || 3),
+                },
               ]"
             >
               <span :class="$style['balance-item-vendor']">{{
@@ -97,8 +96,8 @@
                 {
                   [$style['is-last-item']]:
                     Object.keys(balanceTran.balanceInfo).length - index <=
-                    (Object.keys(balanceTran.balanceInfo).length % 4 || 4)
-                }
+                    (Object.keys(balanceTran.balanceInfo).length % 4 || 4),
+                },
               ]"
             >
               <span :class="$style['balance-item-vendor']">{{
@@ -159,11 +158,10 @@
           <span
             v-if="
               forceStatus === 1 &&
-                userWithdrawCount === 0 &&
-                isFirstWithdraw &&
-                withdrawUserData.wallet.length +
-                  withdrawUserData.crypto.length >
-                  0
+              userWithdrawCount === 0 &&
+              isFirstWithdraw &&
+              withdrawUserData.wallet.length + withdrawUserData.crypto.length >
+                0
             "
             :class="$style['withdraw-status-tip']"
           >
@@ -187,8 +185,8 @@
           :class="[
             $style['bank-card-cell'],
             {
-              [$style['disable']]: !item.allow
-            }
+              [$style['disable']]: !item.allow,
+            },
           ]"
           @click="handleSelectCard(item)"
         >
@@ -197,8 +195,8 @@
               $style['check-box'],
               { [$style['checked']]: item.id === selectedCard.id },
               {
-                [$style['disable']]: !item.allow
-              }
+                [$style['disable']]: !item.allow,
+              },
             ]"
           />
           <!-- <img v-lazy="getBankImage(item.swift_code)" /> -->
@@ -272,15 +270,15 @@
           :class="[
             $style['bank-card-cell'],
             {
-              [$style['disable']]: forceStatus === 2 && !item.allow
-            }
+              [$style['disable']]: forceStatus === 2 && !item.allow,
+            },
           ]"
           @click="handleSelectCard(item)"
         >
           <div
             :class="[
               $style['check-box'],
-              { [$style['checked']]: item.id === selectedCard.id }
+              { [$style['checked']]: item.id === selectedCard.id },
             ]"
           />
           <span :class="[{ [$style['hasOption']]: item.bank_id === 2009 }]">
@@ -350,8 +348,8 @@
       <div
         v-if="
           allWithdrawAccount &&
-            allWithdrawAccount.length > 0 &&
-            (moreMethodStatus.bankCard || moreMethodStatus.wallet)
+          allWithdrawAccount.length > 0 &&
+          (moreMethodStatus.bankCard || moreMethodStatus.wallet)
         "
         :class="[$style['add-bank-card']]"
         @click="setPopupStatus(true, 'moreMethod')"
@@ -385,7 +383,7 @@
           inputmode="decimal"
           @input="verification('withdrawValue', $event.target.value)"
           @blur="
-            $event => {
+            ($event) => {
               verification('withdrawValue', $event.target.value);
               if (isSelectedUSDT && isClickCoversionBtn && withdrawValue) {
                 convertCryptoMoney();
@@ -400,15 +398,30 @@
           </span>
         </span>
       </div>
-
+      <!-- 優惠提示 -->
+      <div
+        v-if="
+          (isSelectedUSDT ||
+            selectedCard.bank_id == 2009 ||
+            selectedCard.bank_id == 2016) &&
+          selectedCard.offer_percent > 0
+        "
+        :class="[$style['offer']]"
+      >
+        <span
+          >使用{{ selectedCard.name }}出款，额外赠送{{
+            offer()
+          }}元(CNY)优惠</span
+        >
+      </div>
       <!-- 到帳金額 -->
       <div
         :class="[
           $style['actual-money'],
           {
             [$style['error']]:
-              themeTPL === 'ey1' && withdrawValue && actualMoney <= 0
-          }
+              themeTPL === 'ey1' && withdrawValue && actualMoney <= 0,
+          },
         ]"
       >
         <span :class="$style['money-currency']">
@@ -422,7 +435,7 @@
         </span>
         <span :class="$style['money-currency']">¥</span>
         <span :class="$style['money-currency']">
-          {{ actualMoney.toFixed(2) }}
+          {{ checkActual() }}
         </span>
 
         <span :class="[$style['serial']]" @click="toggleSerial"> 详情 </span>
@@ -443,8 +456,8 @@
             $style['conversion-btn'],
             {
               [$style['disable']]:
-                isClickCoversionBtn || !withdrawValue || +actualMoney <= 0
-            }
+                isClickCoversionBtn || !withdrawValue || +actualMoney <= 0,
+            },
           ]"
           @click="convertCryptoMoney"
         >
@@ -468,7 +481,7 @@
           <div
             :class="[
               $style['submit-btn'],
-              { [$style['disabled']]: lockSubmit }
+              { [$style['disabled']]: lockSubmit },
             ]"
           >
             <div @click="checkSubmit">立即提现</div>
@@ -494,7 +507,7 @@
           <div
             :class="[
               $style['submit-btn'],
-              { [$style['disabled']]: lockSubmit }
+              { [$style['disabled']]: lockSubmit },
             ]"
           >
             <div @click="checkSubmit">立即提现</div>
@@ -541,12 +554,14 @@
       <!-- 提款前提示-->
       <template v-if="showPopStatus.type === 'check'">
         <widthdraw-tips
-          :actual-money="+actualMoney"
+          :actual-money="Number(checkActual())"
           :crypto-money="cryptoMoney"
           :withdraw-value="+withdrawValue"
           :type="widthdrawTipsType"
           :has-crypto="isSelectedUSDT"
           :swift-code="selectedCard.swift_code"
+          :bonus-offer="String(offer())"
+          :withdraw-name="selectedCard.name"
           @close="closePopup"
           @submit="handleSubmit"
           @save="saveCurrentValue(true)"
@@ -652,7 +667,9 @@ export default {
         id: "",
         name: "",
         withdrawType: "",
-        swift_code: ""
+        swift_code: "",
+        offer_percent: "",
+        offer_limit: "",
       },
       widthdrawTipsType: "tips",
 
@@ -671,7 +688,7 @@ export default {
       confirmPopupObj: {
         msg: "",
         btnText: "",
-        cb: () => {}
+        cb: () => { }
       }
     };
   },
@@ -690,33 +707,41 @@ export default {
         // 卡片資料
         this.selectedCard = localStorage.getItem("tmp_w_selectedCard")
           ? {
-              bank_id: JSON.parse(localStorage.getItem("tmp_w_selectedCard"))[
-                "bank_id"
-              ],
-              id: JSON.parse(localStorage.getItem("tmp_w_selectedCard"))["id"],
-              name: JSON.parse(localStorage.getItem("tmp_w_selectedCard"))[
-                "name"
-              ],
-              withdrawType: JSON.parse(
-                localStorage.getItem("tmp_w_selectedCard")
-              )["withdrawType"],
-              swift_code: JSON.parse(
-                localStorage.getItem("tmp_w_selectedCard")
-              )["swift_code"]
-            }
+            bank_id: JSON.parse(localStorage.getItem("tmp_w_selectedCard"))[
+              "bank_id"
+            ],
+            id: JSON.parse(localStorage.getItem("tmp_w_selectedCard"))["id"],
+            name: JSON.parse(localStorage.getItem("tmp_w_selectedCard"))[
+              "name"
+            ],
+            withdrawType: JSON.parse(
+              localStorage.getItem("tmp_w_selectedCard")
+            )["withdrawType"],
+            swift_code: JSON.parse(
+              localStorage.getItem("tmp_w_selectedCard")
+            )["swift_code"],
+             offer_percent: JSON.parse(
+              localStorage.getItem("tmp_w_selectedCard")
+            )["offer_percent"],
+            offer_limit: JSON.parse(
+              localStorage.getItem("tmp_w_selectedCard")
+            )["offer_limit"],
+          }
           : {
-              bank_id: defaultCard.bank_id,
-              id: defaultCard.id,
-              name:
-                defaultCard.withdrawType === "account_id"
-                  ? ""
-                  : defaultCard.alias.substring(
-                      0,
-                      defaultCard.alias.indexOf("-")
-                    ),
-              withdrawType: defaultCard.withdrawType,
-              swift_code: defaultCard.swift_code
-            };
+            bank_id: defaultCard.bank_id,
+            id: defaultCard.id,
+            name:
+              defaultCard.withdrawType === "account_id"
+                ? ""
+                : defaultCard.alias.substring(
+                  0,
+                  defaultCard.alias.indexOf("-")
+                ),
+            withdrawType: defaultCard.withdrawType,
+            swift_code: defaultCard.swift_code,
+            offer_percent: defaultCard.offer_percent,
+            offer_limit: defaultCard.offer_limit
+          };
 
         this.updateAmount(this.selectedCard.swift_code);
 
@@ -1085,9 +1110,8 @@ export default {
           value < withdrawMin ||
           (withdrawMax > 0 && value > withdrawMax)
         ) {
-          this.errTips = `单笔提现金额最小为${withdrawMin}元，最大为${
-            withdrawMax ? `${withdrawMax}元` : "无限制"
-          }`;
+          this.errTips = `单笔提现金额最小为${withdrawMin}元，最大为${withdrawMax ? `${withdrawMax}元` : "无限制"
+            }`;
           return;
         }
 
@@ -1121,7 +1145,9 @@ export default {
         id: item.id,
         withdrawType: item.withdrawType,
         bank_id: item.bank_id,
-        swift_code: item.swift_code
+        swift_code: item.swift_code,
+        offer_percent: item.offer_percent,
+        offer_limit: item.offer_limit,
       };
 
       switch (item.withdrawType) {
@@ -1664,6 +1690,37 @@ export default {
         isShow,
         type
       };
+    },
+    offer() {
+      let bonusoffer = Math.round(this.selectedCard.offer_percent * this.withdrawValue / 100);
+      if (this.selectedCard.offer_percent == 0 || this.withdrawValue == 0) {
+        return "--";
+      }
+      else if (bonusoffer >= this.selectedCard.offer_limit) {
+        if (this.themeTPL === "ey1" && this.errTips) {
+          return "--";
+        }
+        else {
+          return this.selectedCard.offer_limit;
+        }
+      }
+      else {
+        return bonusoffer;
+      }
+    },
+    checkActual() {
+      if (this.offer() !== "--") {
+        return Number(Number(this.actualMoney) + Number(this.offer())).toFixed(2);
+      } else {
+        return this.actualMoney.toFixed(2);
+      }
+    },
+    checkOffer() {
+      if (this.offer() !== "--") {
+        return this.offer();
+      } else {
+        return 0;
+      }
     }
   },
   destroyed() {
