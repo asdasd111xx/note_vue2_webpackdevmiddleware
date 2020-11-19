@@ -295,8 +295,16 @@ export default {
         },
         onResize() {
             // 計算外框高度
-            this.wrapHeight =
-                document.body.offsetHeight - this.$refs['home-wrap'].offsetTop - 60;
+            let extraHeight = 60;
+            if (this.siteConfig.MOBILE_WEB_TPL === "porn1") {
+                extraHeight = 60;
+            }
+
+            if (this.siteConfig.MOBILE_WEB_TPL === "ey1") {
+                extraHeight = 85;
+            }
+
+            this.wrapHeight = document.body.offsetHeight - this.$refs['home-wrap'].offsetTop - extraHeight;
         },
         onTypeTouchStart(e) {
             if (this.isSliding) {
@@ -469,7 +477,7 @@ export default {
                         this.$router.push("/mobile/mcenter/balanceTrans");
                     }).catch((res) => {
                         this.actionSetGlobalMessage({
-                            msg: res.data.msg, code: res.data.code, origin: 'wallet'
+                            msg: res.data.msg, code: res.data.code, origin: 'home'
                         });
                     })
                     return;
@@ -502,7 +510,8 @@ export default {
                     Object.keys(res.data.ret).forEach(i => {
                         if (i !== "bank" && !res.data.ret[i]) {
                             this.actionSetGlobalMessage({
-                                msg: '请先设定提现资料', cb: () => {
+                                msg: target === 'withdraw' ? '请先完成提现信息' : '请先设定提现资料'
+                                , cb: () => {
                                     {
                                         this.$router.push('/mobile/withdrawAccount');
                                     }
@@ -576,7 +585,8 @@ export default {
                 case 'STB':
                 case 'DSC':
                 case 'SF':
-
+                case 'LQ':
+                case 'DZ':
                     this.actionSetYaboConfig().then(() => {
                         let noLoginVideoSwitch;
 

@@ -9,7 +9,7 @@
         <div :class="$style['btn-prev']">
           <img
             :src="$getCdnPath(`/static/image/${themeTPL}/common/btn_back.png`)"
-            @click="onClose"
+            @click="onClose(true)"
           />
         </div>
         <span :class="$style['title']"> {{ "帐户资料" }}</span>
@@ -222,13 +222,6 @@ export default {
     };
   },
   created() {
-    // axios({
-    //   method: 'get',
-    //   url: '/api/v2/c/withdraw/check',
-    // }).then((res) => {
-
-    // });
-
     this.isLoading = true;
     this.getAccountDataStatus().then(data => {
       this.checkBankSwitch = data.ret.bank;
@@ -241,6 +234,12 @@ export default {
             this.isVerifyPhone = data.ret[i];
           }
 
+          // 鴨博無提現密碼
+          if (this.themeTPL === 'porn1' && i == "withdraw_password") {
+            this.formData['withdraw_password'].show = false;
+            return;
+          }
+
           this.formData[i].show = !data.ret[i];
         }
       });
@@ -249,7 +248,8 @@ export default {
         !this.formData.phone.show &&
         !this.formData.withdraw_password.show
       ) {
-        if (!this.checkBankSwitch) {
+        // 鴨博無電子錢包
+        if (!this.checkBankSwitch && this.themeTPL !== 'porn1') {
           this.$router.replace(
             `/mobile/mcenter/bankCard?redirect=${this.redirect}&type=wallet`
           );
@@ -304,8 +304,8 @@ export default {
       }
     },
     redirect() {
-      let redirect = this.$route.query.redirect;
-      return this.$route.query.redirect;
+      let redirect = this.$route.query.redirect || 'home';
+      return redirect;
     }
   },
   watch: {
@@ -315,7 +315,7 @@ export default {
   },
   methods: {
     ...mapActions(["actionSetGlobalMessage", "actionVerificationFormData"]),
-    onClose() {
+    onClose(isBack) {
       if (this.isSlider) {
         this.$nextTick(() => {
           setTimeout(() => {
@@ -324,24 +324,63 @@ export default {
         });
         this.sliderClass = "slider-close slider";
       } else {
-        if (this.redirect) {
-          switch (this.redirect) {
-            case "home":
-              this.$router.push(`/mobile/`);
-              return;
-            case "deposit":
-            case "withdraw":
-            case "balanceTrans":
-            case "wallet":
-              this.$router.push(`/mobile/mcenter/${this.redirect}`);
-              return;
-            default:
-              this.$router.back();
-              return;
-          }
+
+        if (isBack) {
+          this.$router.back();
+          return;
         }
 
+        const _redirect = this.redirect;
+        axios({
+          method: 'get',
+          url: '/api/v2/c/domain-config',
+        }).then(res => {
+          let withdraw_info_before_bet = false;
+          if (res && res.data && res.data.ret) {
+            withdraw_info_before_bet = res.data.ret.withdraw_info_before_bet;
+          }
+
+          if (!withdraw_info_before_bet) {
+            if (!this.checkBankSwitch) {
+              this.$router.push(
+                `/mobile/mcenter/bankCard?redirect=${_redirect}&type=wallet`
+              );
+              return;
+            } else {
+              this.$router.back();
+              return;
+            }
+          }
+
+          this.$router.back();
+          return;
+        }).catch((res) => {
+          this.actionSetGlobalMessage({
+            msg: res.data.msg, code: res.data.code, origin: 'home'
+          });
+        })
+
+        // 提現資料上一頁應回到原本位置 避免迴圈
         this.$router.back();
+        // if (this.redirect) {
+
+        //   switch (this.redirect) {
+        //     case "home":
+        //       this.$router.push(`/mobile/`);
+        //       return;
+        //     case "deposit":
+        //     case "withdraw":
+        //     case "balanceTrans":
+        //     case "wallet":
+        //       this.$router.push(`/mobile/mcenter/${this.redirect}`);
+        //       return;
+        //     default:
+        //       this.$router.back();
+        //       return;
+        //   }
+        // }
+
+        // this.$router.back();
         return;
       }
     },
@@ -499,7 +538,7 @@ export default {
               }, 1000);
               this.tipMsg = this.$text("S_SEND_CHECK_CODE_VALID_TIME").replace(
                 "%s",
-                "五"
+                "5"
               );
             });
           } else {
@@ -560,11 +599,6 @@ export default {
               msg: '设定成功',
               cb: () => {
                 this.onClose();
-                if (!this.checkBankSwitch) {
-                  this.$router.push(
-                    `/mobile/mcenter/bankCard?redirect=${this.redirect}&type=wallet`
-                  );
-                }
               }
             });
           }

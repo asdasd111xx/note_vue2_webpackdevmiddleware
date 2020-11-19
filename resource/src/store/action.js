@@ -1291,13 +1291,12 @@ export const actionSetAgentLink = ({ state, commit }, data) => {
 // 鴨脖配置
 export const actionSetYaboConfig = ({ state, dispatch, commit }, next) => {
   let configInfo = {};
-  if (state.webInfo.is_production) {
+
+  if (state.webDomain) {
     configInfo =
-      siteConfigOfficial[`site_${state.webInfo.alias}`] ||
+      siteConfigOfficial[`site_${state.webDomain.domain}`] ||
+      siteConfigTest[`site_${state.webInfo.alias}`] ||
       siteConfigOfficial.preset;
-  } else {
-    configInfo =
-      siteConfigTest[`site_${state.webInfo.alias}`] || siteConfigTest.preset;
   }
 
   // return yaboRequest({

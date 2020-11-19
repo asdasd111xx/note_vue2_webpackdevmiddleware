@@ -10,6 +10,7 @@
               : '/static/image/_new/default/bg_banner_d.png'
           "
           :data-info="key"
+          :data-link="info.linkTo"
         />
       </div>
     </swiper-slide>
@@ -174,15 +175,5 @@ export default {
   border-radius: 7px;
   display: none;
   width: 100%;
-}
-
-@media screen and (min-width: 640px) {
-  .phone-image {
-    display: none;
-  }
-
-  .pad-image {
-    display: block;
-  }
 }
 </style>

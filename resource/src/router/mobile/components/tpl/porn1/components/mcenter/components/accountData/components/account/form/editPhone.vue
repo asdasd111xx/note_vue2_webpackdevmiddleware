@@ -358,7 +358,7 @@ export default {
     locker() {
       if (this.timer) return;
       this.countdownSec = this.ttl;
-      this.tipMsg = this.$text("S_SEND_CHECK_CODE_VALID_TIME").replace("%s", '五');
+      this.tipMsg = this.$text("S_SEND_CHECK_CODE_VALID_TIME").replace("%s", '5');
 
       this.timer = setInterval(() => {
         if (this.countdownSec === 0) {
