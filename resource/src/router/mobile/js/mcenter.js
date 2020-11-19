@@ -65,6 +65,16 @@ export default {
                     path: 'alias',
                     name: 'mcenter-accountData-alias',
                     component
+                },
+                {
+                    path: 'receiptAddress',
+                    name: 'mcenter-accountData-receiptAddress',
+                    component
+                },
+                {
+                    path: 'addAddress',
+                    name: 'mcenter-accountData-addAddress',
+                    component
                 }
             ]
         },

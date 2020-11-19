@@ -55,6 +55,8 @@ export default {
     accountDataWeixinEy1: () => import(/* webpackChunkName: 'accountDataWeixinEy1' */'../../tpl/porn1/components/mcenter/components/accountData/components/account/form/editWeixin'),
     accountDataBirthdayEy1: () => import(/* webpackChunkName: 'accountDataBirthdayEy1' */'../../tpl/porn1/components/mcenter/components/accountData/components/account/form/editBirthday'),
     accountDataWithdrawpwdEy1: () => import(/* webpackChunkName: 'accountDataWithdrawpwdEy1' */'../../tpl/porn1/components/mcenter/components/accountData/components/account/form/editWithdrawPwd'),
+    accountDataReceiptAddressEy1: () => import(/* webpackChunkName: 'accountDataReceiptAddressEy1' */'../../tpl/porn1/components/mcenter/components/accountData/components/account/form/editReceiptAddress'),
+    accountDataAddAddressEy1: () => import(/* webpackChunkName: 'accountDataAddAddressEy1' */'../../tpl/porn1/components/mcenter/components/accountData/components/account/form/addReceiptAddress'),
     walletEy1: () => import(/* webpackChunkName: 'walletEy1' */'../../tpl/ey1/components/mcenter/components/wallet'),
     makeMoneyEy1: () => import(/* webpackChunkName: 'makeMoneyEy1' */'../../tpl/ey1/components/mcenter/components/makeMoney'),
     bonusEy1: () => import(/* webpackChunkName: 'bonusEy1' */ '../../tpl/ey1/components/mcenter/components/bonus'),
