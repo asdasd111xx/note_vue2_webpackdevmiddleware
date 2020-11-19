@@ -364,7 +364,7 @@ export default {
                 .catch(error => {
 
                     if (error.response && error.response.status === 429) {
-                        this.errorMessage.phone = "操作太频繁，请稍候在试";
+                        this.errorMessage.phone = "操作太频繁，请稍候再试";
                         return;
                     }
 

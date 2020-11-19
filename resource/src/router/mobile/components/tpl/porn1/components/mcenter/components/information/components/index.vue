@@ -97,6 +97,9 @@ export default {
       memInfo: "getMemInfo",
       siteConfig: "getSiteConfig",
     }),
+    themeTPL() {
+      return this.siteConfig.MOBILE_WEB_TPL;
+    },
     $style() {
       const style =
         this[`$style_${this.siteConfig.MOBILE_WEB_TPL}`] || this.$style_porn1;
@@ -104,7 +107,9 @@ export default {
     },
     headerConfig() {
       const trans = { message: "通知", news: "活动", post: "公告" };
-
+      if (this.themeTPL === "ey1") {
+        trans.news == "消息";
+      }
       return {
         prev: true,
         title: this.$route.query.pid ? trans[this.currentTemplate] : "消息中心",
@@ -114,21 +119,40 @@ export default {
       };
     },
     tabItem() {
-      return [
-        {
-          key: "message",
-          text: "通知",
-          hasMsgCount: true,
-        },
-        {
-          key: "news",
-          text: "活动",
-        },
-        {
-          key: "post",
-          text: "公告",
-        },
-      ];
+      if (this.themeTPL === "ey1") {
+        return [
+          {
+            key: "message",
+            text: "通知",
+            hasMsgCount: true,
+          },
+          {
+            key: "news",
+            text: "消息",
+          },
+          {
+            key: "post",
+            text: "公告",
+          },
+        ];
+      }
+      else {
+        return [
+          {
+            key: "message",
+            text: "通知",
+            hasMsgCount: true,
+          },
+          {
+            key: "news",
+            text: "活动",
+          },
+          {
+            key: "post",
+            text: "公告",
+          },
+        ];
+      }
     },
   },
 };

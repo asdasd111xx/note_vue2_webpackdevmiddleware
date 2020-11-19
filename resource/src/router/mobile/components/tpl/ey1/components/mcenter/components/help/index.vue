@@ -22,9 +22,9 @@
           />
         </div>
 
-        <div v-if="listInfo.info" :class="$style['list-info']">
+        <!-- <div v-if="listInfo.info" :class="$style['list-info']">
           {{ listInfo.info }}
-        </div>
+        </div> -->
 
         <span> {{ listInfo.name }} </span>
         <div :class="$style['btn-next']">

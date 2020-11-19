@@ -410,7 +410,6 @@
     > span:last-child {
       float: right;
     }
-
     .money::after {
       content: "CNY";
       color: #cbced8;
@@ -555,4 +554,11 @@
       font-size: 15px;
     }
   }
+}
+.offer {
+  height: 30px;
+  background-color: $main_white_color1;
+  color: #be9e7f;
+  padding: 5px 14px;
+  width: 100%;
 }

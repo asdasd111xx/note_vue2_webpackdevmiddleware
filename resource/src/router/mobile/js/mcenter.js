@@ -65,7 +65,12 @@ export default {
           path: 'alias',
           name: 'mcenter-accountData-alias',
           component
-        }
+        },
+        {
+          path: 'receiptAddress',
+          name: 'mcenter-accountData-receiptAddress',
+          component
+        },
       ]
     },
     // { // 裝置管理

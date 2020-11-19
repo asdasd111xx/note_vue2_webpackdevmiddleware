@@ -70,10 +70,13 @@ export default {
       this.memInfoLoad = this.memInfo && this.memInfo.user;
       if (this.memInfoLoad && this.siteConfigLoad) {
         if (!this.yToken) this.getYABOAPIToken();
-        const params = [this.getRsaKeys()];
-        Promise.all(params).then(() => {
-          this.getWsV2RSA();
-        });
+        if (this.RSAPublicKey === "" || this.RSAPrivateKey === "") {
+          const params = [this.getRsaKeys()];
+          Promise.all(params).then(() => {
+            this.getWsV2RSA();
+          });
+        }
+
         this.connectYaboWS();
       }
     },
@@ -81,10 +84,13 @@ export default {
       this.siteConfigLoad = this.siteConfig && this.siteConfig.ACTIVES_BOUNS_WEBSOCKET;
       if (this.memInfoLoad && this.siteConfigLoad) {
         if (!this.yToken) this.getYABOAPIToken();
-        const params = [this.getRsaKeys()];
-        Promise.all(params).then(() => {
-          this.getWsV2RSA();
-        });
+        if (this.RSAPublicKey === "" || this.RSAPrivateKey === "") {
+          const params = [this.getRsaKeys()];
+          Promise.all(params).then(() => {
+            this.getWsV2RSA();
+          });
+        }
+
         this.connectYaboWS();
       }
     }

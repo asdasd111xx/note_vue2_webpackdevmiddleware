@@ -240,6 +240,11 @@ export default {
      * @param {string} value - 設定的分類
      */
     changeGameLabel(value) {
+      this.$router.replace({
+        query: {
+          label: value
+        }
+      });
       this.paramsData = {
         ...this.paramsData,
         label: value,
@@ -281,13 +286,19 @@ export default {
         return;
       }
 
+      let _params = { ...this.paramsData };
+      // 進到搜索頁面，Label = '' 為搜索全部
+      if (this.isShowSearch) {
+        _params = { ..._params, label: "" };
+      }
+
       new Promise((resolve) => {
         ajax({
           method: 'get',
           url: gameList,
           errorAlert: false,
           params: {
-            ...this.paramsData,
+            ..._params,
             vendor: this.vendor
           }
         }).then((response) => {

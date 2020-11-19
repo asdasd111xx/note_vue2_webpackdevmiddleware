@@ -1,6 +1,14 @@
 <template>
   <mobile-container :header-config="headerConfig">
     <div slot="content" :class="$style['promotion-wrap']">
+      <div
+        v-if="loginStatus"
+        :class="$style['promotion-gift']"
+        @click="onGiftClick"
+      >
+        手动自领
+        <div v-show="hasNewGift" :class="$style['red-dot']" />
+      </div>
       <div :class="$style['type-wrap']">
         <swiper :options="{ slidesPerView: 'auto' }">
           <swiper-slide
@@ -42,11 +50,13 @@
 </template>
 <script>
 import { Swiper, SwiperSlide } from 'vue-awesome-swiper';
+import { mapGetters, mapActions } from 'vuex';
 import ajax from '@/lib/ajax';
 import { API_PROMOTION_LIST } from '@/config/api';
 import mobileContainer from '../common/mobileContainer';
 import axios from 'axios';
-
+import bbosRequest from "@/api/bbosRequest";
+import goLangApiRequest from '@/api/goLangApiRequest';
 export default {
   components: {
     mobileContainer,
@@ -57,13 +67,37 @@ export default {
     return {
       tabId: 0,
       tabList: [],
-      promotionList: []
+      promotionList: [],
+      hasNewGift: false,
     };
   },
   created() {
     this.getPromotionList(this.tabId);
   },
+  mounted() {
+    if (this.loginStatus) {
+      bbosRequest({
+        method: "get",
+        url: this.siteConfig.BBOS_DOMIAN + "/Ext/Promotion/User/Collect/Count",
+        reqHeaders: {
+          Vendor: this.memInfo.user.domain
+        },
+        params: {
+          // tabId: "",
+        }
+      }).then(res => {
+        if (res && res.data) {
+          this.hasNewGift = res.data.count > 0;
+        }
+      });
+    }
+  },
   computed: {
+    ...mapGetters({
+      loginStatus: 'getLoginStatus',
+      memInfo: "getMemInfo",
+      siteConfig: "getSiteConfig",
+    }),
     headerConfig() {
       return {
         title: this.$text('S_PROMOTIONS', '优惠活动')
@@ -90,6 +124,34 @@ export default {
 
         // 原為全部優惠
         this.tabList[0].name = "全部"
+      });
+    },
+    onGiftClick() {
+      let url = '';
+      goLangApiRequest({
+        method: "get",
+        url: `${this.siteConfig.YABO_GOLANG_API_DOMAIN
+          }/System/scUrl`,
+      }).then(res => {
+        url = res.data;
+        axios({
+          method: 'get',
+          url: '/api/v1/c/link/customize',
+          params: {
+            code: 'promotion',
+            client_uri: url
+          }
+        }).then(res => {
+          if (res && res.data && res.data.ret && res.data.ret.uri) {
+            localStorage.setItem('iframe-third-url', res.data.ret.uri);
+            localStorage.setItem('iframe-third-url-title', '领取优惠');
+            this.$router.push(`/mobile/iframe/promotion?hasFooter=false&hasHeader=true`);
+          }
+        }).catch(error => {
+          if (error && error.data && error.date.msg) {
+            this.actionSetGlobalMessage({ msg: error.data.msg });
+          }
+        })
       });
     },
     onClick(target) {
@@ -294,6 +356,32 @@ $fixed_spacing_height: 43px;
 
   .time {
     font-size: 15px;
+  }
+}
+
+.promotion-gift {
+  position: fixed;
+  top: 11px;
+  z-index: 10;
+  right: 14px;
+  border-radius: 3px;
+  width: 70px;
+  height: 20px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  color: #ffffff;
+  background: linear-gradient(#bd9d7d, #f9ddbd);
+
+  > .red-dot {
+    position: absolute;
+    right: -4px;
+    background: red;
+    border-radius: 50%;
+    width: 9px;
+    height: 9px;
+    top: 0;
+    border: 1px solid #ffffff;
   }
 }
 </style>
