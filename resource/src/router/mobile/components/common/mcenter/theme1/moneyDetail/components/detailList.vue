@@ -12,7 +12,11 @@
           <img
             :src="
               $getCdnPath(
-                `/static/image/${themeTPL}/mcenter/moneyDetail/icon_${currentCategory.key}.png`
+                `/static/image/${themeTPL}/mcenter/moneyDetail/icon_${
+                  currentCategory.key === 'outer'
+                    ? 'vendor'
+                    : currentCategory.key
+                }.png`
               )
             "
           />
