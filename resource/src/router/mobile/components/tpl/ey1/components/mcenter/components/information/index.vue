@@ -27,8 +27,8 @@ export default {
   created() {
   },
   methods: {
-    getCurrentTemplate(value){
-      this.currentTemplate=value
+    getCurrentTemplate(value) {
+      this.currentTemplate = value
     }
   },
   computed: {
@@ -36,7 +36,7 @@ export default {
       memInfo: 'getMemInfo'
     }),
     headerConfig() {
-      const trans = { message: '通知', news: '活动', post: '公告' };
+      const trans = { message: '通知', news: '消息', post: '公告' };
       return {
         prev: true,
         title: this.$route.query.pid ? trans[this.currentTemplate] : '消息中心',
