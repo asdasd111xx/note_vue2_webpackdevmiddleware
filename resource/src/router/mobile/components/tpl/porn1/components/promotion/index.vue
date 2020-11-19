@@ -1,14 +1,6 @@
 <template>
   <mobile-container :header-config="headerConfig">
     <div slot="content" :class="$style['promotion-wrap']">
-      <div
-        v-if="loginStatus"
-        :class="$style['promotion-gift']"
-        @click="onGiftClick"
-      >
-        <img src="/static/image/ey1/promotion/ic-gift.png" />
-        <div v-show="hasNewGift" :class="$style['red-dot']" />
-      </div>
       <div :class="$style['type-wrap']">
         <swiper :options="{ slidesPerView: 'auto' }">
           <swiper-slide
@@ -50,13 +42,11 @@
 </template>
 <script>
 import { Swiper, SwiperSlide } from 'vue-awesome-swiper';
-import { mapGetters, mapActions } from 'vuex';
 import ajax from '@/lib/ajax';
 import { API_PROMOTION_LIST } from '@/config/api';
 import mobileContainer from '../common/mobileContainer';
 import axios from 'axios';
-import bbosRequest from "@/api/bbosRequest";
-import goLangApiRequest from '@/api/goLangApiRequest';
+
 export default {
   components: {
     mobileContainer,
@@ -73,30 +63,7 @@ export default {
   created() {
     this.getPromotionList(this.tabId);
   },
-  mounted() {
-    if (this.loginStatus) {
-      bbosRequest({
-        method: "get",
-        url: this.siteConfig.BBOS_DOMIAN + "/Ext/Promotion/User/Collect/Count",
-        reqHeaders: {
-          Vendor: this.memInfo.user.domain
-        },
-        params: {
-          // tabId: "",
-        }
-      }).then(res => {
-        if (res && res.data) {
-          this.hasNewGift = res.data.count > 0;
-        }
-      });
-    }
-  },
   computed: {
-    ...mapGetters({
-      loginStatus: 'getLoginStatus',
-      memInfo: "getMemInfo",
-      siteConfig: "getSiteConfig",
-    }),
     headerConfig() {
       return {
         title: this.$text('S_PROMOTIONS', '优惠活动')
