@@ -258,6 +258,7 @@ export default {
       siteConfig: 'getSiteConfig',
       hasBank: 'getHasBank',
       rechargeConfig: 'getRechargeConfig',
+      swagBalance: "getSwagBalance",
     }),
     $style() {
       const style = this[`$style_${this.siteConfig.MOBILE_WEB_TPL}`] || this.$style_porn1;
@@ -381,6 +382,7 @@ export default {
     }
 
     this.actionSetUserBalance();
+    this.actionSetSwagBalance();
 
     this.startTime = Vue.moment(this.estToday)
       .add(-30, "days")
@@ -398,15 +400,16 @@ export default {
   },
   watch: {
     swagBalance(val) {
-      this.swagDiamondBalance = +val.balance === 0 ? '0' : val.balance;
+      this.swagDiamondBalance = val.balance;
     },
   },
   methods: {
     ...mapActions([
-      "actionSetGlobalMessage",
-      "actionGetRechargeStatus",
-      "actionGetMemInfoV3",
-      "actionSetUserBalance"
+      'actionSetGlobalMessage',
+      'actionGetRechargeStatus',
+      'actionGetMemInfoV3',
+      'actionSetUserBalance',
+      'actionSetSwagBalance'
     ]),
     handleSwagBalance() {
       // to do 維護資訊

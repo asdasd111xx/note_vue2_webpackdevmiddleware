@@ -554,7 +554,10 @@ export default {
     state.swagConfig = data
   },
   [types.SET_SWAG_BALANCE](state, data) {
-    state.swagBalance = data
+    state.swagBalance = {
+      ...data,
+      balance: +data.balance === 0 ? '0' : Number(data.balance).toFixed(0)
+    }
   },
   [types.SET_WEB_DOMAIN](state, data) {
     state.webDomain = data;

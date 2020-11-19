@@ -65,7 +65,7 @@ export default {
   },
   watch: {
     swagBalance(val) {
-      this.swagDiamondBalance = +val.balance === 0 ? '0' : val.balance;
+      this.swagDiamondBalance = val.balance;
     },
   },
   methods: {

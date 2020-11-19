@@ -110,6 +110,7 @@
       </div>
     </div>
     <tipsDiamond />
+    <page-loading :is-show="isLoading" />
   </div>
 </template>
 
@@ -123,6 +124,10 @@ import { Swiper, SwiperSlide } from 'vue-awesome-swiper';
 export default {
   mixins: [mixin],
   components: {
+    pageLoading: () =>
+      import(
+        /* webpackChunkName: 'pageLoading' */ "@/router/mobile/components/common/pageLoading"
+      ),
     Swiper,
     SwiperSlide,
     tipsDiamond
