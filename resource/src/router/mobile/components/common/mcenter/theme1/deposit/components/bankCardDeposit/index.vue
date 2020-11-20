@@ -253,9 +253,7 @@
             <!-- 支付通道 -->
             <!-- 加密貨幣會隱藏 -->
             <div
-              v-if="
-                !isDepositAi && passRoad.length > 0 && !isSelectBindWallet(402)
-              "
+              v-if="passRoad.length > 0 && !isSelectBindWallet(402)"
               :class="[$style['feature-wrap'], 'clearfix']"
             >
               <span :class="$style['bank-card-title']">支付通道</span>
@@ -413,7 +411,7 @@
 
               <div :class="$style['bank-card-title']">充值金额</div>
 
-              <div
+              <!-- <div
                 v-if="isDepositAi"
                 :class="[
                   $style['bank-card-title'],
@@ -421,11 +419,11 @@
                 ]"
               >
                 提交订单时，系统自动调配最佳充值金额
-              </div>
+              </div> -->
 
               <!-- 選擇金額區塊 -->
               <div
-                v-if="isDepositAi || curPassRoad.is_recommend_amount"
+                v-if="curPassRoad.is_recommend_amount"
                 :class="[$style['speed-money-wrap'], 'clearfix']"
               >
                 <div
@@ -489,8 +487,8 @@
                     <span>
                       ({{
                         getSingleLimit(
-                          curPassRoad.per_trade_min,
-                          curPassRoad.per_trade_max
+                          depositInterval.minMoney,
+                          depositInterval.maxMoney
                         )
                       }})
                     </span>
@@ -520,9 +518,8 @@
               <!-- 金額輸入欄 -->
               <div
                 v-if="
-                  !isDepositAi &&
-                    (Object.keys(curPassRoad).length === 0 ||
-                      curPassRoad.is_custom_amount)
+                  Object.keys(curPassRoad).length === 0 ||
+                    curPassRoad.is_custom_amount
                 "
                 :class="[
                   $style['feature-deposit-wrap'],
@@ -544,11 +541,11 @@
                       }
                     ]"
                     :placeholder="
-                      `单笔充值金额：${getSingleLimit(
-                        this.depositInterval.minMoney,
-                        this.depositInterval.maxMoney
-                      )}
-                      `
+                      getSingleLimit(
+                        depositInterval.minMoney,
+                        depositInterval.maxMoney,
+                        'placeholder'
+                      )
                     "
                     type="text"
                     inputmode="decimal"
@@ -571,15 +568,13 @@
               </div>
 
               <!-- 金額錯誤訊息 -->
-              <div
-                v-if="!isDepositAi && isErrorMoney"
-                :class="$style['money-input-tip']"
-              >
+              <div v-if="isErrorMoney" :class="$style['money-input-tip']">
                 {{
-                  `单笔充值金额：${getSingleLimit(
-                    this.depositInterval.minMoney,
-                    this.depositInterval.maxMoney
-                  )}`
+                  getSingleLimit(
+                    depositInterval.minMoney,
+                    depositInterval.maxMoney,
+                    "placeholder"
+                  )
                 }}
               </div>
 
