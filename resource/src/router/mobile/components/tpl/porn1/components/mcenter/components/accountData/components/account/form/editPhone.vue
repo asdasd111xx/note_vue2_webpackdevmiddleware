@@ -195,7 +195,7 @@ export default {
       }
     },
     isfromSWAG() {
-      return this.$route.query.redirect.toUpperCase() === 'SWAG';
+      return this.$route.query.redirect ? this.$route.query.redirect.toUpperCase() === 'SWAG' : false;
     },
     isfromWithdraw() {
       const { query } = this.$route;
