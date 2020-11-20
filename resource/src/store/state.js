@@ -469,5 +469,6 @@ export default {
     systemDomain: {},
     pornDoamin: "https://jizzapp.app",
     promotionLink: '',
-    webDomain: {}
+    webDomain: {},
+    BBosDomain: {},
 };

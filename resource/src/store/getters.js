@@ -203,5 +203,6 @@ export default {
   getRechargeBonusConfig: (state) => state.rechargeBonusConfig, //取得廳首次額度轉讓優惠設定
   getSystemDomain: (state) => state.systemDomain,
   getPornDomain: (state) => state.pornDoamin,
-  getPromotionLink: (state) => state.promotionLink
+  getPromotionLink: (state) => state.promotionLink,
+  getBBOSDomain: (state) => state.BBosDomain,
 };

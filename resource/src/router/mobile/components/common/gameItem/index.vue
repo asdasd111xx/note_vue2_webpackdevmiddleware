@@ -123,7 +123,8 @@ export default {
       favoriteGame: 'getFavoriteGame',
       loginStatus: 'getLoginStatus',
       curLang: 'getCurLang',
-      siteConfig: 'getSiteConfig'
+      siteConfig: 'getSiteConfig',
+      BBOSDomain: 'getBBOSDomain'
     }),
     /**
      * 平台名稱顯示特例
@@ -187,8 +188,7 @@ export default {
           type = "card";
           break;
       }
-
-      let resultUrl = `${this.siteConfig.BBOS_DOMIAN_CDN}/image/${type}/${this.gameInfo.vendor}/Game_${this.gameInfo.code}.png`;
+      let resultUrl = `${this.BBOSDomain}/cdn/image/${type}/${this.gameInfo.vendor}/Game_${this.gameInfo.code}.png`;
 
       if (!this.gameInfo.code && this.gameInfo.status > 1) {
         resultUrl = this.$getCdnPath('/static/image/casino/event_icon.png');
