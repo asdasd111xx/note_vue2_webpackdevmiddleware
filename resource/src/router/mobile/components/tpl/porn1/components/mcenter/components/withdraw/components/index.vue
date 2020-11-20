@@ -1464,7 +1464,7 @@ export default {
               this.actionSetGlobalMessage({
                 msg: "提现成功",
                 cb: () => {
-                  // window.location.reload();
+                  window.location.reload();
                 }
               });
 
