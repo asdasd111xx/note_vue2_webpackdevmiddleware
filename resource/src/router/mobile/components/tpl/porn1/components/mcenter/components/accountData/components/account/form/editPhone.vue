@@ -458,7 +458,7 @@ export default {
           }
 
           if (error.response && error.response.status === 429) {
-            this.tipMsg = "操作太频繁，请稍候在试";
+            this.tipMsg = "操作太频繁，请稍候再试";
             return;
           }
         })
@@ -508,7 +508,7 @@ export default {
           }
 
           if (error.response && error.response.status === 429) {
-            this.tipMsg = "操作太频繁，请稍候在试";
+            this.tipMsg = "操作太频繁，请稍候再试";
             return;
           }
         })
