@@ -13,7 +13,7 @@
             :src="
               $getCdnPath(
                 `/static/image/${themeTPL}/mcenter/moneyDetail/icon_${
-                  currentCategory.key === 'outer'
+                  currentCategory.key == 'outer'
                     ? 'vendor'
                     : currentCategory.key
                 }.png`
@@ -106,7 +106,7 @@ export default {
   methods: {
     onClick(info) {
       this.$emit("update:detailInfo", info);
-      if (this.pageType !== "ingroup_transfer") {
+      if (this.pageType !== "ingroup_transfer" && this.pageType !== "swag") {
         this.$router.push(
           "/mobile/mcenter/moneyDetail/detail?id=" + info.id
         );

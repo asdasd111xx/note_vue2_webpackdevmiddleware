@@ -9,19 +9,18 @@
         "
       />
       <span> SWAG钱包</span>
-      <div v-if="false" :class="$style['maintain-block']">
-        {{ $t("S_MAINTAIN") }}
-        <img
-          :src="
-            $getCdnPath(
-              `/static/image/porn1/mcenter/balanceTrans/icon_transfer_tips_info.png`
-            )
-          "
-        />
-      </div>
-      <!-- 沒有維護時，顯示金額 -->
-      <div v-else :class="$style['balance']">
-        {{ swagDiamondBalance }}
+      <div :class="$style['swag-block']">
+        <template v-if="isMaintainSwag">
+          <span :class="$style['maintain-tip-text']">维护中</span>
+          <img
+            v-if="isMaintainSwag && swagConfig && swagConfig.enable !== 0"
+            :class="$style['maintain-tip-img']"
+            :src="$getCdnPath('/static/image/porn1/mcenter/swag/ic_tips.png')"
+          />
+        </template>
+        <template v-else>
+          {{ swagDiamondBalance }}
+        </template>
       </div>
     </div>
 
@@ -48,8 +47,10 @@
 <script>
 import { mapGetters, mapActions } from "vuex";
 import balanceTran from '@/components/mcenter/components/balanceTran';
+import mixin from "@/mixins/mcenter/swag/swag";
 
 export default {
+  mixins: [mixin],
   components: {
     balanceTran,
   },
@@ -121,22 +122,28 @@ export default {
     vertical-align: text-bottom;
   }
 
-  // 維護中
-  .maintain-block {
-    color: $main_error_color1;
-    font-weight: 400;
-
-    img {
-      margin-left: 1px;
-      width: 12px;
-      height: 12px;
-    }
+  .swag-block {
+    font-size: 16px;
+    font-family: Microsoft JhengHei, Microsoft JhengHei-Bold;
+    font-weight: 700;
+    text-align: center;
+    color: #be9e7f;
+    display: flex;
+    justify-content: center;
+    align-items: center;
   }
 
-  // 餘額
-  .balance {
-    font-size: 16px;
-    color: #be9e7f;
+  .maintain-tip-text {
+    font-size: 12px;
+    font-family: Microsoft JhengHei, Microsoft JhengHei-Regular;
+    font-weight: 400;
+    text-align: center;
+    color: #db6372;
+  }
+
+  .maintain-tip-img {
+    width: 12px;
+    height: 12px;
   }
 }
 </style>

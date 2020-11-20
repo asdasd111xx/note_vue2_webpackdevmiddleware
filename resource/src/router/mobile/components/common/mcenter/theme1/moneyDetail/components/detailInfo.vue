@@ -103,6 +103,15 @@ export default {
   methods: {
     linkToService() {
       localStorage.setItem('money-detail-params-service', true);
+      //  明細後聯繫客服上一頁
+      if (this.$route.name === 'mcenter-swag') {
+        this.$router.replace('/mobile/mcenter/swag?tab=1')
+      }
+
+      if (this.$route.name === 'mcenter-creditTrans') {
+        this.$router.replace('/mobile/mcenter/creditTrans?tab=2')
+      }
+
       this.$router.push('/mobile/service');
     },
     oncopy() {

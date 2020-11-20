@@ -54,34 +54,33 @@ export default {
 
       if (this.swagConfig && this.swagConfig.enable === 0) {
         this.isMaintainSwag = true;
-        this.actionSetGlobalMessage({
-          msg: `美东时间：<br />${this.swagConfig.maintain_start_at}<div style="text-align:center">｜</div>${this.swagConfig.maintain_end_at}}<br /><br />
-          北京时间：<br />${this.swagConfig.maintain_start_at}<div style="text-align:center">｜</div>${this.swagConfig.maintain_end_at}<br />`,
-          style: 'maintain'
-        })
-      }
-
-      // 可購買的鑽石/金額列表
-      if (this.swagConfig.rates) {
-        this.rateList = this.swagConfig.rates;
-
-        let tmp_d_currentSelRate = JSON.parse(localStorage.getItem("tmp_d_currentSelRate"));
-        if (tmp_d_currentSelRate && this.rateList.find(i => i.amount === tmp_d_currentSelRate.amount &&
-          i.diamond === tmp_d_currentSelRate.diamond)) {
-          this.selectedRate(tmp_d_currentSelRate);
-        }
-        else {
-          this.selectedRate(this.rateList[0]);
+        if (this.$route.name === 'mcenter-swag') {
+          this.actionSetGlobalMessage({
+            msg: `鸭博色播 维护中`,
+            style: 'maintain'
+          })
         }
       }
 
-      // 維護時間
-      // this.swagConfig.maintain_end_at
-      // this.swagConfig.maintain_start_at
+      if (this.$route.name === 'mcenter-swag') {
+        // 可購買的鑽石/金額列表
+        if (this.swagConfig.rates) {
+          this.rateList = this.swagConfig.rates;
 
-      // 驗證手機成功回來
-      if (localStorage.getItem("tmp_d_1")) {
-        this.submit();
+          let tmp_d_currentSelRate = JSON.parse(localStorage.getItem("tmp_d_currentSelRate"));
+          if (tmp_d_currentSelRate && this.rateList.find(i => i.amount === tmp_d_currentSelRate.amount &&
+            i.diamond === tmp_d_currentSelRate.diamond)) {
+            this.selectedRate(tmp_d_currentSelRate);
+          }
+          else {
+            // this.selectedRate(this.rateList[0]);
+          }
+        }
+
+        // 驗證手機成功回來
+        if (this.$route.name === 'mcenter-swag' && localStorage.getItem("tmp_d_1")) {
+          this.submit();
+        }
       }
     });
 
@@ -105,11 +104,20 @@ export default {
     ]),
     handleSwagBalance() {
       if (this.isMaintainSwag) {
-        this.actionSetGlobalMessage({
-          msg: `美东时间：<br />${this.swagConfig.maintain_start_at}<div style="text-align:center">｜</div>${this.swagConfig.maintain_end_at}}<br /><br />
+
+        if (this.swagConfig.enable === 0) {
+          this.actionSetGlobalMessage({
+            msg: `鸭博色播 维护中`,
+            style: 'maintain'
+          })
+        } else {
+          this.actionSetGlobalMessage({
+            msg:
+              `美东时间：<br />${this.swagConfig.maintain_start_at}<div style="text-align:center">｜</div>${this.swagConfig.maintain_end_at}}<br /><br />
           北京时间：<br />${this.swagConfig.maintain_start_at}<div style="text-align:center">｜</div>${this.swagConfig.maintain_end_at}<br />`,
-          style: 'maintain'
-        })
+            style: 'maintain'
+          })
+        }
       }
     },
     updateBalance() {
@@ -154,7 +162,9 @@ export default {
     },
     selectedRate(item) {
       this.currentSelRate = item;
-      this.lockedSubmit = false;
+      if (this.swagConfig.enable !== 0) {
+        this.lockedSubmit = false;
+      }
     },
     verification(item) {
       let errorMessage = "";

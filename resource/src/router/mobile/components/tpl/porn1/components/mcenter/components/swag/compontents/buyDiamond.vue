@@ -27,6 +27,7 @@
           <template v-if="isMaintainSwag">
             <span :class="$style['maintain-tip-text']">维护中</span>
             <img
+              v-if="isMaintainSwag && swagConfig && swagConfig.enable !== 0"
               :class="$style['maintain-tip-img']"
               :src="$getCdnPath('/static/image/porn1/mcenter/swag/ic_tips.png')"
             />
@@ -182,7 +183,7 @@ export default {
 
   > img {
     height: 100%;
-    widows: 100%;
+    width: 100%;
   }
 }
 
