@@ -172,7 +172,7 @@ export default {
   },
   watch: {
     detailInfo(val) {
-      if (this.pageType === 'ingroup_transfer' || this.pageType !== 'swag') {
+      if (this.pageType === 'ingroup_transfer' || this.pageType === 'swag') {
         this.$emit("showDetail", val);
       }
     }
@@ -403,7 +403,7 @@ export default {
 
       this.changeCondition('');
       this.changeDatePicker('');
-      if (!localStorage.getItem('money-detail-params-service') || this.pageType === "ingroup_transfer") {
+      if (!localStorage.getItem('money-detail-params-service') || this.pageType === "ingroup_transfer" || this.pageType === "swag") {
         this.getData();
       }
     },

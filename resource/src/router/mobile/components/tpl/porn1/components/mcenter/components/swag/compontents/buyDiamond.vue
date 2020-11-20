@@ -27,6 +27,7 @@
           <template v-if="isMaintainSwag">
             <span :class="$style['maintain-tip-text']">维护中</span>
             <img
+              v-if="isMaintainSwag && swagConfig && swagConfig.enable !== 0"
               :class="$style['maintain-tip-img']"
               :src="$getCdnPath('/static/image/porn1/mcenter/swag/ic_tips.png')"
             />
@@ -120,6 +121,7 @@
     </div>
     <tipsDiamond />
     <page-loading :is-show="isLoading" />
+    <swag-tips v-if="showTips" />
   </div>
 </template>
 
@@ -129,6 +131,7 @@ import axios from "axios";
 import mixin from "@/mixins/mcenter/swag/swag";
 import tipsDiamond from './tipsDiamond';
 import { Swiper, SwiperSlide } from 'vue-awesome-swiper';
+import swagTips from './swagTips';
 
 export default {
   mixins: [mixin],
@@ -139,7 +142,8 @@ export default {
       ),
     Swiper,
     SwiperSlide,
-    tipsDiamond
+    tipsDiamond,
+    swagTips
   },
   computed: {
     ...mapGetters({
@@ -182,7 +186,7 @@ export default {
 
   > img {
     height: 100%;
-    widows: 100%;
+    width: 100%;
   }
 }
 

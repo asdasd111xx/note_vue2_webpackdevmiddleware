@@ -131,6 +131,7 @@
               <template v-if="isMaintainSwag">
                 <span :class="$style['maintain-tip-text']">维护中</span>
                 <img
+                  v-if="isMaintainSwag && swagConfig && swagConfig.enable !== 0"
                   :class="$style['maintain-tip-img']"
                   :src="
                     $getCdnPath('/static/image/porn1/mcenter/swag/ic_tips.png')
@@ -237,15 +238,17 @@ import axios from "axios";
 import balanceTran from "@/components/mcenter/components/balanceTran";
 import EST from "@/lib/EST";
 import message from "@/router/mobile/components/common/message";
-import Vue from "vue";
-import withdrawAccount from "@/router/mobile/components/common/withdrawAccount/withdrawAccount";
-import yaboRequest from "@/api/yaboRequest";
+import Vue from 'vue';
+import withdrawAccount from '@/router/mobile/components/common/withdrawAccount/withdrawAccount';
+import yaboRequest from '@/api/yaboRequest';
+import mixin from "@/mixins/mcenter/swag/swag";
 
 export default {
   components: {
     balanceTran,
     message
   },
+  mixins: [mixin],
   data() {
     return {
       msg: "",
@@ -394,15 +397,6 @@ export default {
       this.$router.push("/mobile/login");
     }
 
-    this.actionSetUserBalance();
-    this.actionSetSwagBalance();
-    this.actionSetSwagConfig().then(() => {
-      if (this.swagConfig.enable === 0) {
-        this.isMaintainSwag = true;
-        return;
-      }
-    });
-
     this.startTime = Vue.moment(this.estToday)
       .add(-30, "days")
       .format("YYYY-MM-DD");
@@ -428,18 +422,7 @@ export default {
       'actionGetRechargeStatus',
       'actionGetMemInfoV3',
       'actionSetUserBalance',
-      'actionSetSwagBalance',
-      'actionSetSwagConfig'
     ]),
-    handleSwagBalance() {
-      if (this.isMaintainSwag) {
-        this.actionSetGlobalMessage({
-          msg: `美东时间：<br />${this.swagConfig.maintain_start_at}<div style="text-align:center">｜</div>${this.swagConfig.maintain_end_at}}<br /><br />
-          北京时间：<br />${this.swagConfig.maintain_start_at}<div style="text-align:center">｜</div>${this.swagConfig.maintain_end_at}<br />`,
-          style: 'maintain'
-        })
-      }
-    },
     checkWithdrawData(target) {
       if (this.isCheckWithdraw) {
         return;
@@ -551,20 +534,6 @@ export default {
           this.mainNoData = false;
         }
       });
-    },
-    onClickMaintain(value) {
-      this.msg = `美东时间：
-          <br>
-          <span>${value.etc_start_at}</span>
-          <p style="margin: 0 ; padding: 0 ; text-align: center">|</p>
-          <span>${value.etc_end_at}</span>
-          <p></p>
-          北京时间：
-          <br>
-          <span>${value.start_at}</span>
-          <p style="margin: 0 ; padding: 0 ; text-align: center">|</p>
-          <span>${value.end_at}</span>
-        `;
     },
     getVendorName(vendor, kind) {
       if (

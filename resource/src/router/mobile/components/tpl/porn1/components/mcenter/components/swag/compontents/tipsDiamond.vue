@@ -11,16 +11,19 @@
       <div :class="$style['hr']"><div /></div>
     </div>
     <div :class="$style['content']">
-      <div>●&nbsp;购买钻石金额不算有效投注额！</div>
-      <div>●&nbsp;注意：安卓版手机暂时只开通直播，长视频稍后开通！</div>
+      <template v-if="swagConfig && swagConfig.remind">
+        <div v-html="swagConfig.remind" />
+      </template>
     </div>
   </div>
 </template>
 
 <script>
 import { mapGetters, mapActions } from "vuex";
+import mixin from "@/mixins/mcenter/swag/swag";
 
 export default {
+  mixins: [mixin],
   data() {
     return {
     }

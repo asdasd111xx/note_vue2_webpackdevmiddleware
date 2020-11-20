@@ -36,8 +36,10 @@ import buyDiamond from './compontents/buyDiamond';
 import recoardDiamond from './compontents/recoardDiamond';
 import axios from 'axios';
 import goLangApiRequest from '@/api/goLangApiRequest';
+import mixin from "@/mixins/mcenter/swag/swag";
 
 export default {
+  mixins: [mixin],
   components: {
     mobileContainer,
     buyDiamond,
@@ -152,7 +154,11 @@ export default {
           break;
         case 2:
           // 鴨博色播
-          this.linkToSwag();
+          if (this.isMaintainSwag) {
+            this.handleSwagBalance();
+          } else {
+            this.linkToSwag();
+          }
 
           break;
       }
