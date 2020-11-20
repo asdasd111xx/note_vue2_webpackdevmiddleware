@@ -1165,6 +1165,10 @@ export default {
           break;
       }
 
+      // if (this.withdrawValue) {
+      //   this.verification("withdrawValue", this.withdrawValue);
+      // }
+
       // 已按下匯率試算的按鈕且做切換時
       if (this.isClickCoversionBtn) {
         this.resetTimerStatus();
@@ -1441,7 +1445,8 @@ export default {
             this.selectedCard.bank_id === 2009
               ? this.withdrawCurrency.method_id
               : "",
-          password: this.withdrawPwd ? this.withdrawPwd : ""
+          password: this.withdrawPwd ? this.withdrawPwd : "",
+          swift_code: this.selectedCard.swift_code
         };
       }
 
@@ -1459,7 +1464,7 @@ export default {
               this.actionSetGlobalMessage({
                 msg: "提现成功",
                 cb: () => {
-                  window.location.reload();
+                  // window.location.reload();
                 }
               });
 
@@ -1710,7 +1715,7 @@ export default {
       }
     },
     checkActual() {
-      if (this.withdrawValue) {
+      if (this.actualMoney) {
         this.verification("withdrawValue", this.withdrawValue);
       }
 
@@ -1720,13 +1725,6 @@ export default {
         );
       } else {
         return this.actualMoney.toFixed(2);
-      }
-    },
-    checkOffer() {
-      if (this.offer() !== "--") {
-        return this.offer();
-      } else {
-        return 0;
       }
     }
   },
