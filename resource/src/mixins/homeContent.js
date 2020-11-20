@@ -90,7 +90,7 @@ export default {
         let typeList = this.allGame
           .map(game => ({
             category: game.category,
-            sequence: game.sequence,
+            id: game.id,
             icon: game.iconName,
             name: game.name
           }))
@@ -98,7 +98,6 @@ export default {
             return this.isAdult ? type : type.icon !== 'Welfare';
           });
 
-        // 業主說左側選單前後要各複製一份...
         return [...typeList, ...typeList, ...typeList];
       }
     },
@@ -383,9 +382,22 @@ export default {
       }
     },
     // 切換當前分類
-    onChangeSelectIndex(index, isSetEnd = false) {
+    onChangeSelectIndex(index, isSetEnd = false, type) {
       if (index === this.selectedIndex) {
         return;
+      }
+
+      let offsetTop = 0;
+
+      if (type === 'anchor') {
+        let anchor = document.querySelectorAll(`div[data-id="${index}"]`);
+        if (anchor && anchor[1]) {
+          offsetTop = anchor[1].offsetTop;
+        }
+        this.selectedIndex = this.typeList.findIndex(i => +i.id === +index);
+      } else {
+        offsetTop = index * 63;
+        this.selectedIndex = index;
       }
 
       this.isSliding = true;
@@ -394,17 +406,16 @@ export default {
       this.typeStartTouchY = 0;
       this.startTouchY = 0;
       this.slideDirection = '';
-      this.selectedIndex = index;
       this.stopScroll = true;
 
-      $(this.$refs['type-wrap']).animate({ scrollTop: index * 63 }, 300);
+      $(this.$refs['type-wrap']).animate({ scrollTop: offsetTop }, 300);
       $(this.$refs['game-wrap']).animate({ scrollTop: 0 }, 0);
 
       this.$nextTick(() => {
         this.isSliding = false;
       });
 
-      localStorage.setItem('type', this.typeList[index].icon);
+      localStorage.setItem('type', this.typeList[this.selectedIndex].icon);
 
       setTimeout(() => {
         this.stopScroll = false;
@@ -538,314 +549,228 @@ export default {
     // 開啟遊戲
     onOpenGame(game) {
       if (localStorage.getItem('is-open-game')) {
-        return
-      }
-
-      // Game Type
-      // L => 遊戲大廳
-      // G => 遊戲
-      // BL => 美女直播
-      // SL => 體育直播
-      // D => 代理
-      // T => 敬请期待
-      // YV => 鴨脖視頻
-      // PV => 小豬視頻
-      // BB => 男男視頻
-      // GG => 女女視頻
-      if (game.type === 'D') {
-        this.$router.push('/mobile/mcenter/makeMoney')
         return;
       }
 
-      if (game.type === 'T') {
-        this.actionSetGlobalMessage({ type: 'incoming' });
-        return;
-      }
-
-      let userId = 'guest';
-      if (this.memInfo && this.memInfo.user && this.memInfo.user.id && this.memInfo.user.id !== 0) {
-        userId = this.memInfo.user.id;
-      }
-
-      // 福利 全部
       switch (game.type) {
-        // 鴨脖影視(人人影視) -> PPV
-        // 美國花花公子 -> APB
-        // 日本花花公子 -> JPB
-        // 絲瓜-> LF
-        // 芭樂 -> BALE
-        // 草莓 -> STB
-        // 向日葵 -> SF
-        // 屌絲漫畫->DSC
-        case 'PPV':
-        case 'APB':
-        case 'JPB':
-        case 'LF':
-        case 'BALE':
-        case 'STB':
-        case 'DSC':
-        case 'SF':
-        case 'LQ':
-        case 'DZ':
-          this.actionSetYaboConfig().then(() => {
-            let noLoginVideoSwitch;
+        case 'thirdparty':
 
-            if (this.yaboConfig) {
-              noLoginVideoSwitch = this.yaboConfig.find(i => i.name === "NoLoginVideoSwitch").value;
-            }
+          let userId = 'guest';
+          if (this.memInfo &&
+            this.memInfo.user &&
+            this.memInfo.user.id &&
+            this.memInfo.user.id !== 0) {
+            userId = this.memInfo.user.id;
+          }
 
-            const getThridUrl = () => goLangApiRequest({
-              method: 'get',
-              url: `${this.siteConfig.YABO_GOLANG_API_DOMAIN}/ThirdParty/${game.type}/${userId}`,
-              headers: {
-                'x-domain': this.memInfo.user.domain
+          switch (game.vendor) {
+            case 'SWAG':
+              if (!this.loginStatus) {
+                this.$router.push('/mobile/login');
+                return;
+              } else {
+                localStorage.setItem("is-open-game", true);
+
+                goLangApiRequest({
+                  method: 'get',
+                  url: `${this.siteConfig.YABO_GOLANG_API_DOMAIN}/ThirdParty/SWAG/${userId}`,
+                  headers: {
+                    'x-domain': this.memInfo.user.domain
+                  }
+                }).then(res => {
+                  localStorage.removeItem("is-open-game");
+
+                  if (res && res.status !== '000') {
+                    if (res.msg) {
+                      this.actionSetGlobalMessage({ msg: res.msg });
+                    }
+                    return;
+                  }
+                  else {
+                    localStorage.setItem('iframe-third-url', res.data);
+                    localStorage.setItem('iframe-third-url-title', game.name);
+                    localStorage.setItem('iframe-third-origin', 'home');
+                    this.$router.push(`/mobile/iframe/${game.type}?&hasFooter=false&hasHeader=true&fullscreen=true`);
+                    return;
+                  }
+                })
+
+                return;
               }
-            }).then(res => {
-              if (res && res.status !== '000') {
-                if (res.msg) {
-                  this.actionSetGlobalMessage({ msg: res.msg });
+
+            // 鴨脖影視(人人影視) → PPV
+            // 美國花花公子 → APB
+            // 日本花花公子 → JPB
+            // 絲瓜→ LF
+            // 芭樂 → BALE
+            // 草莓 → STB
+            // 向日葵 → SF
+            // 屌絲漫畫 → DSC
+            // SWAG小說 → LQ
+            // 絲瓜小說 → DZ
+            default:
+              localStorage.setItem("is-open-game", true);
+
+              this.actionSetYaboConfig().then(() => {
+
+                let noLoginVideoSwitch;
+
+                if (this.yaboConfig) {
+                  noLoginVideoSwitch = this.yaboConfig.find(i => i.name === "NoLoginVideoSwitch").value;
                 }
-                return;
-              }
-              else {
-                localStorage.setItem('iframe-third-url', res.data);
-                localStorage.setItem('iframe-third-url-title', game.name);
-                this.$router.push(`/mobile/iframe/${game.type}?&hasFooter=false&hasHeader=true`);
-                return;
-              }
-            })
 
-            // 未登入開關 開啟時未登入可進入
-            if (noLoginVideoSwitch === 'true') {
-              getThridUrl();
+                // // 第三方開啟有問題時 可調整iframe內嵌
+                // let newWindow = window.open('');
+                // goLangApiRequest({
+                //     method: 'get',
+                //     url: `${this.siteConfig.YABO_GOLANG_API_DOMAIN}/ThirdParty/${game.vendor}/${this.memInfo.user.id}`,
+                //     headers: {
+                //         'x-domain': this.memInfo.user.domain
+                //     },
+                // }).then(res => {
+                //     if (res.data) {
+                //         newWindow.location.href = res.data;
+                //     } else {
+                //         newWindow.close();
+                //     }
+                // }).catch(error => {
+                //     newWindow.close();
+                // })
+                // return;
+
+                const getThridUrl = () => goLangApiRequest({
+                  method: 'get',
+                  url: `${this.siteConfig.YABO_GOLANG_API_DOMAIN}/ThirdParty/${game.type}/${userId}`,
+                  headers: {
+                    'x-domain': this.memInfo.user.domain
+                  }
+                }).then(res => {
+                  localStorage.removeItem("is-open-game");
+
+                  if (res && res.status !== '000') {
+                    if (res.msg) {
+                      this.actionSetGlobalMessage({ msg: res.msg });
+                    }
+                    return;
+                  }
+                  else {
+                    localStorage.setItem('iframe-third-url', res.data);
+                    localStorage.setItem('iframe-third-url-title', game.name);
+                    this.$router.push(`/mobile/iframe/${game.type}?&hasFooter=false&hasHeader=true`);
+                    return;
+                  }
+                })
+
+                // 未登入開關 開啟時未登入可進入
+                if (noLoginVideoSwitch === 'true') {
+                  getThridUrl();
+                  return;
+                }
+
+                // 未登入開關 未開啟時需登入可進入
+                if (!this.loginStatus) {
+                  this.$router.push('/mobile/login');
+                  return;
+                } else {
+                  getThridUrl();
+                }
+              });
+          }
+
+        case 'link_to':
+
+          switch (game.vendor) {
+            case 'agent':
+              this.$router.push('/mobile/mcenter/makeMoney')
               return;
-            }
 
-            // 未登入開關 未開啟時需登入可進入
-            if (!this.loginStatus) {
-              this.$router.push('/mobile/login');
+            case 'YV':
+              this.$router.push({
+                name: 'videoList',
+                query: { source: 'yabo' }
+              });
               return;
-            } else {
-              getThridUrl();
-            }
-          });
 
+            case 'PV':
+              this.$router.push({
+                name: 'videoList',
+                query: { source: 'smallPig' }
+              });
+              return;
+
+            case 'BB':
+              this.$router.push({
+                name: 'videoList',
+                query: { source: 'gay' }
+              });
+              return;
+
+            case 'GG':
+              this.$router.push({
+                name: 'videoList',
+                query: { source: 'les' }
+              });
+              return;
+
+            case 'BL':
+              this.$router.push('/mobile/liveStream?type=cutiesLive');
+              return;
+
+            case 'SL':
+              this.$router.push('/mobile/liveStream?type=ballLive');
+              return;
+          }
+
+        case 'anchor':
+          this.onChangeSelectIndex(game.vendor, false, 'anchor');
           return;
 
-        // // 第三方開啟有問題時 可調整iframe內嵌
-        // let newWindow = window.open('');
-        // // yaboRequest({
-        // //     method: 'get',
-        // //     url: `${this.siteConfig.YABO_API_DOMAIN}/thirdparty/url`,
-        // //     headers: {
-        // //         'x-domain': this.memInfo.user.domain
-        // //     },
-        // //     params: {
-        // //         type: game.type,
-        // //         userid: this.memInfo.user.id
-        // //     },
-        // // }).then(res => {
-        // //     if (res.data) {
-        // //         newWindow.location.href = res.data;
-        // //     } else {
-        // //         newWindow.close();
-        // //     }
-        // // }).catch(error => {
-        // //     newWindow.close();
-        // // })
+        case 'T':
+          this.actionSetGlobalMessage({ type: 'upgrade' });
+          return;
 
-        // goLangApiRequest({
-        //     method: 'get',
-        //     url: `${this.siteConfig.YABO_GOLANG_API_DOMAIN}/ThirdParty/${game.type}/${this.memInfo.user.id}`,
-        //     headers: {
-        //         'x-domain': this.memInfo.user.domain
-        //     },
-        // }).then(res => {
-        //     if (res.data) {
-        //         newWindow.location.href = res.data;
-        //     } else {
-        //         newWindow.close();
-        //     }
-        // }).catch(error => {
-        //     newWindow.close();
-        // })
-        // return;
+        case 'U':
+          this.actionSetGlobalMessage({ type: 'incoming' });
+          return;
 
-        case 'SWAG':
+        // 大廳
+        case 'game_lobby':
           if (!this.loginStatus) {
             this.$router.push('/mobile/login');
             return;
-          } else {
+          }
 
-            goLangApiRequest({
-              method: 'get',
-              url: `${this.siteConfig.YABO_GOLANG_API_DOMAIN}/ThirdParty/SWAG/${userId}`,
-              headers: {
-                'x-domain': this.memInfo.user.domain
-              }
-            }).then(res => {
-              if (res && res.status !== '000') {
-                if (res.msg) {
-                  this.actionSetGlobalMessage({ msg: res.msg });
-                }
-                return;
-              }
-              else {
-                localStorage.setItem('iframe-third-url', res.data);
-                localStorage.setItem('iframe-third-url-title', game.name);
-                localStorage.setItem('iframe-third-origin', 'home');
-                this.$router.push(`/mobile/iframe/${game.type}?&hasFooter=false&hasHeader=true&fullscreen=true`);
-                return;
-              }
-            })
-
+          if ([3, 5, 6].includes(game.kind)) {
+            const trans = { 3: 'casino', 5: 'card', 6: 'mahjong' };
+            this.$router.push(`/mobile/${trans[game.kind]}/${game.vendor}`);
             return;
           }
 
-        case 'YV':
-          this.$router.push({
-            name: 'videoList',
-            query: { source: 'yabo' }
-          });
-          return;
-
-        case 'PV':
-          this.$router.push({
-            name: 'videoList',
-            query: { source: 'smallPig' }
-          });
-          return;
-
-        case 'BB':
-          this.$router.push({
-            name: 'videoList',
-            query: { source: 'gay' }
-          });
-          return;
-
-        case 'GG':
-          this.$router.push({
-            name: 'videoList',
-            query: { source: 'les' }
-          });
-          return;
-
-        case 'SLG':
-        case 'BG':
-        case 'LTG':
-        case 'VG':
-        case 'SPG':
-          this.onChangeSelectIndex(+game.targetSequence + 9);
-          return;
-
+        // 開啟遊戲
+        case 'game':
         default:
-          break;
-      }
-
-      if (!this.loginStatus) {
-        this.$router.push('/mobile/login');
-        return;
-      }
-
-      // 大廳
-      if (game.type === 'L' && [3, 5, 6].includes(game.kind)) {
-        const trans = { 3: 'casino', 5: 'card', 6: 'mahjong' };
-        this.$router.push(`/mobile/${trans[game.kind]}/${game.vendor}`);
-        return;
-      }
-
-      // 直播
-      if (['BL', 'SL'].includes(game.type)) {
-        switch (game.type) {
-          case 'BL':
-            this.$router.push('/mobile/liveStream?type=cutiesLive');
-            break;
-          case 'SL':
-            this.$router.push('/mobile/liveStream?type=ballLive');
-            break;
-          default:
-            break;
-        }
-        return;
-      }
-
-
-      //   if (game.type === 'R') {
-      //     let urlParams =
-      //       game.vendor === 'lg_live' ? '&customize=yabo&tableType=3310' : '';
-      //     let newWindow = '';
-      //     // 辨別裝置是否為ios寰宇瀏覽器
-      //     const isUBMobile =
-      //       navigator.userAgent.match(/UBiOS/) !== null &&
-      //       navigator.userAgent.match(/iPhone/) !== null;
-      //     // 暫時用來判斷馬甲包
-      //     const webview = window.location.hostname === 'yaboxxxapp02.com';
-
-      //     // ios寰宇瀏覽器目前另開頁面需要與電腦版開啟方式相同
-      //     if (!isUBMobile && !webview) {
-      //       newWindow = window.open('', '_blank');
-      //     }
-      //     ajax({
-      //       method: 'get',
-      //       url: `${API_GET_VENDOR}/${game.vendor}/game/launch`,
-      //       errorAlert: false,
-      //       params: { kind: game.kind },
-      //       success: ({ result, ret }) => {
-      //         if (result !== 'ok') {
-      //           if (!isUBMobile && !webview) {
-      //             newWindow.close();
-      //           }
-      //           return;
-      //         }
-
-      //         if (webview) {
-      //           window.location.href = ret.url + urlParams;
-      //           return;
-      //         }
-      //         if (!isUBMobile) {
-      //           newWindow.location.href = ret.url + urlParams;
-      //           return;
-      //         }
-
-      //         window.open(ret.url + urlParams);
-      //       },
-      //       fail: error => {
-      //         if (!isUBMobile || !webview) {
-      //           newWindow.alert(
-      //             `${error.data.msg} ${
-      //             error.data.code ? `(${error.data.code})` : ''
-      //             }`
-      //           );
-      //         }
-      //         newWindow.close();
-      //         window.location.reload();d
-      //       }
-      //     });
-      //     return;
-      //   }
-
-      this.isShowLoading = true;
-
-      const openGameSuccessFunc = (res) => {
-        this.isShowLoading = false;
-      };
-
-      const openGameFailFunc = (res) => {
-        this.isShowLoading = false;
-
-        if (res && res.data) {
-          let msg = res.data.msg;
-          if (res.data.code !== "C50099" && res.data.code !== "C50100") {
-            msg = `${res.data.msg}`
+          if (!this.loginStatus) {
+            this.$router.push('/mobile/login');
+            return;
           }
-          let data = res.data;
-          this.actionSetGlobalMessage({ msg: msg, code: data.code, origin: 'home' })
-        }
-      };
-      if (game.type === "R") {
-        openGame({ kind: game.kind, vendor: game.vendor, code: game.code, gameType: game.type }, openGameSuccessFunc, openGameFailFunc);
-      } else {
-        openGame({ kind: game.kind, vendor: game.vendor, code: game.code }, openGameSuccessFunc, openGameFailFunc);
+
+          this.isShowLoading = true;
+
+          const openGameSuccessFunc = (res) => {
+            this.isShowLoading = false;
+          };
+
+          const openGameFailFunc = (res) => {
+            this.isShowLoading = false;
+
+            if (res && res.data) {
+              let data = res.data;
+              this.actionSetGlobalMessage({ msg: data.msg, code: data.code, origin: 'home' })
+            }
+          };
+
+          openGame({ kind: game.kind, vendor: game.vendor, code: game.code, gameType: game.type }, openGameSuccessFunc, openGameFailFunc);
+          return;
       }
     },
     getUserViplevel() {

@@ -15,6 +15,7 @@
       <div
         v-for="(type, index) in typeList"
         :key="`type-${index}`"
+        :data-id="`${type.id}`"
         :class="[
           $style['type-swiper'],
           { [$style.active]: typeList[selectedIndex].icon === type.icon }

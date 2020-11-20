@@ -83,7 +83,7 @@ export default (params, success = () => { }, fail = () => { }) => {
 
       /* 補各自遊戲參數 */
       // 80桌參數
-      if (vendor === "lg_live" && String(kind) === "2" && gameType && gameType === "R") {
+      if (vendor === "lg_live" && String(kind) === "2" && gameType && gameType === "sdk") {
         query += '&customize=yabo&tableType=3310';
       }
 
