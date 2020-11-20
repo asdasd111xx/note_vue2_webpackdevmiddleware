@@ -676,7 +676,7 @@ export default {
                 }
               });
           }
-
+          return;
         case 'link_to':
 
           switch (game.vendor) {
@@ -745,7 +745,7 @@ export default {
             this.$router.push(`/mobile/${trans[game.kind]}/${game.vendor}`);
             return;
           }
-
+          return;
         // 開啟遊戲
         case 'game':
         default:
