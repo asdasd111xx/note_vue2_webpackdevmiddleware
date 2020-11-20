@@ -189,7 +189,7 @@ export default {
   left: 50%;
 }
 
-.dialog /deep/ div {
+.dialog /deep/ div:first-child {
   background-color: rgba($color: #161616, $alpha: 0.8);
   border-radius: 10px;
   margin-left: auto;
