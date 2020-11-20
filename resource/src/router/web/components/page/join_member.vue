@@ -885,7 +885,7 @@ export default {
 
         this.allValue.captcha_text = '';
 
-        if (res.status === 429) {
+        if (res.response && res.response.status === 429) {
           this.errMsg = '操作太频繁，请稍候再试';
           return
         }
