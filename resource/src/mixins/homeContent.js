@@ -640,7 +640,7 @@ export default {
 
                 const getThridUrl = () => goLangApiRequest({
                   method: 'get',
-                  url: `${this.siteConfig.YABO_GOLANG_API_DOMAIN}/ThirdParty/${game.type}/${userId}`,
+                  url: `${this.siteConfig.YABO_GOLANG_API_DOMAIN}/ThirdParty/${game.vendor}/${userId}`,
                   headers: {
                     'x-domain': this.memInfo.user.domain
                   }
