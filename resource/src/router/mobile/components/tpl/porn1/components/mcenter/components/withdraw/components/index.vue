@@ -245,7 +245,7 @@
         <img :src="$getCdnPath(`/static/image/${themeTPL}/mcenter/add.png`)" />
         &nbsp;
         <span>
-          {{ "更多提现方式" }}
+          {{ "添加提现方式" }}
         </span>
       </div>
     </template>
