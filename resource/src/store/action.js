@@ -551,9 +551,10 @@ export const actionMemInit = ({ state, dispatch, commit }) => {
 
     dispatch('actionSetSiteConfig', configInfo);
     // dispatch('actionSetYaboConfig');
-    dispatch('actionSetRechargeConfig');
-    dispatch('actionSetRechargeBonusConfig');
-    dispatch('actionSetSystemDomain');
+    dispatch("actionSetRechargeConfig");
+    dispatch("actionSetRechargeBonusConfig");
+    dispatch("actionSetSystemDomain");
+    dispatch("actionSetBBOSDomain");
 
     if (state.loginStatus) {
       const params = {
@@ -1617,6 +1618,32 @@ export const actionVerificationFormData = ({ state, dispatch, commit }, data) =>
   }
 
   return val;
+};
+
+export const actionSetBBOSDomain = ({ commit, state }, data) => {
+  let configInfo;
+
+  if (state.webDomain) {
+    configInfo =
+      siteConfigOfficial[`site_${state.webDomain.domain}`] ||
+      siteConfigTest[`site_${state.webInfo.alias}`] ||
+      siteConfigOfficial.preset;
+  }
+
+  return bbosRequest({
+    method: "get",
+    url: configInfo.BBOS_DOMIAN + "/Domain/List",
+    reqHeaders: {
+      Vendor: state.memInfo.user.domain
+    },
+    params: {
+      lang: "zh-tw"
+    }
+  }).then(res => {
+    if (res && res.data) {
+      commit(types.SET_BBOSDOMAIN, res.data[0]);
+    }
+  });
 };
 
 export const actionSetSystemDomain = ({ commit, state }, data) => {

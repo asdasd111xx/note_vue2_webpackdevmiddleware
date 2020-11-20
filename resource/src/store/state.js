@@ -475,5 +475,6 @@ export default {
   promotionLink: '',
   swagConfig: {},
   swagBalance: {},
-  webDomain: {}
+  webDomain: {},
+  BBosDomain: {},
 };

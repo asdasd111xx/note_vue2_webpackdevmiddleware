@@ -209,5 +209,6 @@ export default {
   //   　電子錢包綁定相關
   // ＝＝＝＝＝＝＝＝＝＝＝＝＝＝＝＝＝＝
   getCGPayInfo: (state) => state.CGPayInfo,
-  getPromotionLink: (state) => state.promotionLink
+  getPromotionLink: (state) => state.promotionLink,
+  getBBOSDomain: (state) => state.BBosDomain,
 };

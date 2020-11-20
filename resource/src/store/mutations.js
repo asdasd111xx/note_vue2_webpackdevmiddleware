@@ -557,5 +557,8 @@ export default {
   },
   [types.SET_WEB_DOMAIN](state, data) {
     state.webDomain = data;
-  }
+  },
+  [types.SET_BBOSDOMAIN](state, data) {
+    state.BBosDomain = data;
+  },
 };
