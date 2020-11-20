@@ -93,12 +93,10 @@
   right: 0;
   width: 15px;
   height: 15px;
-  background: url("/static/image/_new/mcenter/wallet/ic_wallter_details_expand.png")
-    center center / 100% 100%;
+  background: url("/static/image/_new/mcenter/wallet/ic_wallter_details_expand.png") center center / 100% 100%;
 
   &.collapse {
-    background: url("/static/image/_new/mcenter/wallet/ic_wallter_details_collapse.png")
-      center center / 100% 100%;
+    background: url("/static/image/_new/mcenter/wallet/ic_wallter_details_collapse.png") center center / 100% 100%;
   }
 }
 
@@ -117,6 +115,9 @@
   .balance-item-money {
     font-size: 16px;
     color: #be9e7f;
+    display: flex;
+    justify-content: center;
+    align-items: center;
   }
 }
 
@@ -204,6 +205,7 @@
     color: $main_text_color3;
     border-bottom: 1px solid #dad6d6;
     margin: 0px;
+
     &:not(:nth-child(4n + 1)):before {
       content: "";
       position: absolute;
@@ -332,8 +334,7 @@
       height: 15px;
       right: 0;
       top: 1;
-      background: url("/static/image/_new/common/arrow_next.png") center center /
-        100% 100%;
+      background: url("/static/image/_new/common/arrow_next.png") center center / 100% 100%;
     }
   }
 }
@@ -412,4 +413,17 @@
     margin: 35px 0;
     color: $main_text_color2;
   }
+}
+
+.maintain-tip-text {
+  font-size: 12px;
+  font-family: Microsoft JhengHei, Microsoft JhengHei-Regular;
+  font-weight: 400;
+  text-align: center;
+  color: #db6372;
+}
+
+.maintain-tip-img {
+  width: 12px;
+  height: 12px;
 }

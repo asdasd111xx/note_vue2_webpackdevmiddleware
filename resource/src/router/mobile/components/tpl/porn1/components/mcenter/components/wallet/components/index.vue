@@ -128,7 +128,18 @@
         <div :class="$style['icon-block']">
           <div :class="$style['icon-cell']">
             <div :class="$style['balance']" @click="handleSwagBalance">
-              {{ swagDiamondBalance }}
+              <template v-if="isMaintainSwag">
+                <span :class="$style['maintain-tip-text']">维护中</span>
+                <img
+                  :class="$style['maintain-tip-img']"
+                  :src="
+                    $getCdnPath('/static/image/porn1/mcenter/swag/ic_tips.png')
+                  "
+                />
+              </template>
+              <template v-else>
+                {{ swagDiamondBalance }}
+              </template>
             </div>
             {{ $t("S_DIAMOND_BALANCE") }}
           </div>
@@ -248,6 +259,7 @@ export default {
       isCheckWithdraw: false,
       bonus: {},
       swagDiamondBalance: '0',
+      isMaintainSwag: false,
     };
   },
   computed: {
@@ -258,6 +270,7 @@ export default {
       siteConfig: 'getSiteConfig',
       hasBank: 'getHasBank',
       rechargeConfig: 'getRechargeConfig',
+      swagConfig: "getSwagConfig",
       swagBalance: "getSwagBalance",
     }),
     $style() {
@@ -383,6 +396,12 @@ export default {
 
     this.actionSetUserBalance();
     this.actionSetSwagBalance();
+    this.actionSetSwagConfig().then(() => {
+      if (this.swagConfig.enable === 0) {
+        this.isMaintainSwag = true;
+        return;
+      }
+    });
 
     this.startTime = Vue.moment(this.estToday)
       .add(-30, "days")
@@ -409,12 +428,16 @@ export default {
       'actionGetRechargeStatus',
       'actionGetMemInfoV3',
       'actionSetUserBalance',
-      'actionSetSwagBalance'
+      'actionSetSwagBalance',
+      'actionSetSwagConfig'
     ]),
     handleSwagBalance() {
-      // to do 維護資訊
-      if (false) {
-        this.actionSetGlobalMessage({ msg: '鸭博色播 维护中' })
+      if (this.isMaintainSwag) {
+        this.actionSetGlobalMessage({
+          msg: `美东时间：<br />${this.swagConfig.maintain_start_at}<div style="text-align:center">｜</div>${this.swagConfig.maintain_end_at}}<br /><br />
+          北京时间：<br />${this.swagConfig.maintain_start_at}<div style="text-align:center">｜</div>${this.swagConfig.maintain_end_at}<br />`,
+          style: 'maintain'
+        })
       }
     },
     checkWithdrawData(target) {

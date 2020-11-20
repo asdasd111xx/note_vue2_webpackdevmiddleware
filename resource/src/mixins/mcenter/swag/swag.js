@@ -25,7 +25,7 @@ export default {
       swagDiamondBalance: '0',
       lockedSubmit: true,
       isSendSubmit: false,
-
+      isMaintainSwag: false,
       // banner
       swagBanner: [
         { src: '/static/image/porn1/mcenter/swag/banner_swag.png' }],
@@ -51,6 +51,15 @@ export default {
     this.actionSetUserBalance();
     this.actionSetSwagBalance();
     this.actionSetSwagConfig().then(() => {
+
+      if (this.swagConfig && this.swagConfig.enable === 0) {
+        this.isMaintainSwag = true;
+        this.actionSetGlobalMessage({
+          msg: `美东时间：<br />${this.swagConfig.maintain_start_at}<div style="text-align:center">｜</div>${this.swagConfig.maintain_end_at}}<br /><br />
+          北京时间：<br />${this.swagConfig.maintain_start_at}<div style="text-align:center">｜</div>${this.swagConfig.maintain_end_at}<br />`,
+          style: 'maintain'
+        })
+      }
 
       // 可購買的鑽石/金額列表
       if (this.swagConfig.rates) {
@@ -94,6 +103,15 @@ export default {
       'actionSetSwagConfig',
       'actionSetSwagBalance'
     ]),
+    handleSwagBalance() {
+      if (this.isMaintainSwag) {
+        this.actionSetGlobalMessage({
+          msg: `美东时间：<br />${this.swagConfig.maintain_start_at}<div style="text-align:center">｜</div>${this.swagConfig.maintain_end_at}}<br /><br />
+          北京时间：<br />${this.swagConfig.maintain_start_at}<div style="text-align:center">｜</div>${this.swagConfig.maintain_end_at}<br />`,
+          style: 'maintain'
+        })
+      }
+    },
     updateBalance() {
       if (this.loginStatus) {
         this.updateBalance = setInterval(() => {

@@ -23,8 +23,17 @@
           "
         />
         <div>{{ $text("S_DIAMOND_SWAG", "SWAG钻石") }}</div>
-        <div :class="$style['money']">
-          {{ swagDiamondBalance }}
+        <div :class="$style['money']" @click="handleSwagBalance">
+          <template v-if="isMaintainSwag">
+            <span :class="$style['maintain-tip-text']">维护中</span>
+            <img
+              :class="$style['maintain-tip-img']"
+              :src="$getCdnPath('/static/image/porn1/mcenter/swag/ic_tips.png')"
+            />
+          </template>
+          <template v-else>
+            {{ swagDiamondBalance }}
+          </template>
         </div>
       </div>
 
@@ -117,7 +126,7 @@
 <script>
 import { mapGetters, mapActions } from "vuex";
 import axios from "axios";
-import mixin from "@/mixins/mcenter/diamond/diamond";
+import mixin from "@/mixins/mcenter/swag/swag";
 import tipsDiamond from './tipsDiamond';
 import { Swiper, SwiperSlide } from 'vue-awesome-swiper';
 
@@ -211,7 +220,9 @@ export default {
     font-weight: 700;
     text-align: center;
     color: #be9e7f;
-    display: block;
+    display: flex;
+    justify-content: center;
+    align-items: center;
   }
 
   .recycle-btn {
@@ -325,5 +336,18 @@ export default {
       border-radius: 10px;
     }
   }
+}
+
+.maintain-tip-text {
+  font-size: 12px;
+  font-family: Microsoft JhengHei, Microsoft JhengHei-Regular;
+  font-weight: 400;
+  text-align: center;
+  color: #db6372;
+}
+
+.maintain-tip-img {
+  width: 12px;
+  height: 12px;
 }
 </style>
