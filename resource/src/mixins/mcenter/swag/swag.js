@@ -26,6 +26,7 @@ export default {
       lockedSubmit: true,
       isSendSubmit: false,
       isMaintainSwag: false,
+      showTips: false,
       // banner
       swagBanner: [
         { src: '/static/image/porn1/mcenter/swag/banner_swag.png' }],
@@ -104,7 +105,6 @@ export default {
     ]),
     handleSwagBalance() {
       if (this.isMaintainSwag) {
-
         if (this.swagConfig.enable === 0) {
           this.actionSetGlobalMessage({
             msg: `鸭博色播 维护中`,
@@ -205,13 +205,20 @@ export default {
       this.isVerifyForm = noError && hasValue;
     },
     submit() {
-      if (this.isLoading) {
+      if (this.isLoading || this.isMaintainSwag || this.lockedSubmit) {
         return;
       }
       this.isLoading = true;
 
       this.actionSetSwagConfig().then(() => {
 
+        // 充值開關
+        if (this.swagConfig && this.swagConfig.recharge_verify === 1) {
+          this.showTips = true;
+          return;
+        }
+
+        // 手機驗證開關
         if (this.swagConfig &&
           this.swagConfig.phone_verify &&
           +this.swagConfig.phone_verify === 1 &&

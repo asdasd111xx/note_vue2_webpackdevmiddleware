@@ -121,6 +121,7 @@
     </div>
     <tipsDiamond />
     <page-loading :is-show="isLoading" />
+    <swag-tips v-if="showTips" />
   </div>
 </template>
 
@@ -130,6 +131,7 @@ import axios from "axios";
 import mixin from "@/mixins/mcenter/swag/swag";
 import tipsDiamond from './tipsDiamond';
 import { Swiper, SwiperSlide } from 'vue-awesome-swiper';
+import swagTips from './swagTips';
 
 export default {
   mixins: [mixin],
@@ -140,7 +142,8 @@ export default {
       ),
     Swiper,
     SwiperSlide,
-    tipsDiamond
+    tipsDiamond,
+    swagTips
   },
   computed: {
     ...mapGetters({
