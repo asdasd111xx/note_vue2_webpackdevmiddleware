@@ -83,7 +83,7 @@ export default (params, success = () => { }, fail = () => { }) => {
 
       /* 補各自遊戲參數 */
       // 80桌參數
-      if (vendor === "lg_live" && String(kind) === "2" && gameType && gameType === "R") {
+      if (vendor === "lg_live" && String(kind) === "2" && gameType && gameType === "sdk") {
         query += '&customize=yabo&tableType=3310';
       }
 
@@ -92,10 +92,11 @@ export default (params, success = () => { }, fail = () => { }) => {
         query += '&allowFullScreen=false';
       }
 
-      //Xbb lg_casino lg_yb_casino 外開參數
-      if (vendor && ['LG_CASINO', 'LG_YB_CASINO'].includes(vendor.toUpperCase())) {
-        query += '&pageOption=1';
-      }
+      // Xbb lg_casino lg_yb_casino 外開參數
+      // 由API提供
+      // if (vendor && ['LG_CASINO', 'LG_YB_CASINO'].includes(vendor.toUpperCase())) {
+      //   query += '&pageOption=1';
+      // }
 
       localStorage.setItem("open-game-link", ret.url + query);
 

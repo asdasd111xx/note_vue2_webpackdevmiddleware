@@ -37,6 +37,9 @@ export default {
       if (this.msgObj.type) {
         const type = this.msgObj.type;
         switch (type) {
+          case "upgrade":
+            this.msg = "升级中";
+            break;
           case "incoming":
             this.msg = "正在上线 敬请期待";
             break;

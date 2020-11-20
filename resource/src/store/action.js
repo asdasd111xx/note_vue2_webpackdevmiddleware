@@ -1258,7 +1258,6 @@ export const actionSetRechargeBonusConfig = ({ commit }, data) => {
   })
 };
 
-
 export const actionSetCGPayInfo = ({ commit }, data) => {
   return axios({
     method: "get",
@@ -1745,20 +1744,22 @@ export const actionSetSwagBalance = ({ commit, state }, data) => {
 
 export const actionSetWebDomain = ({ commit }) =>
   axios({
-    method: 'get',
-    url: '/conf/domain',
-  }).then(res => {
-    let result = {
-      domain: '',
-      site: 'porn1'
-    }
-    console.log('[conf/domain]:', res.data);
-    const site = res && res.data && String(res.data.site) || '';
-    const domain = res && res.data && String(res.data.domain) || '';
-    result['site'] = site;
-    result['domain'] = domain;
-    commit(types.SET_WEB_DOMAIN, result);
-  }).catch((res) => {
-    console.log('[conf/domain]:', res);
-    commit(types.SET_WEB_DOMAIN, { site: 'porn1', domain: '67' });
-  });
+    method: "get",
+    url: "/conf/domain"
+  })
+    .then(res => {
+      let result = {
+        domain: "",
+        site: "porn1"
+      };
+      console.log("[conf/domain]:", res.data);
+      const site = (res && res.data && String(res.data.site)) || "";
+      const domain = (res && res.data && String(res.data.domain)) || "";
+      result["site"] = site;
+      result["domain"] = domain;
+      commit(types.SET_WEB_DOMAIN, result);
+    })
+    .catch(res => {
+      console.log("[conf/domain]:", res);
+      commit(types.SET_WEB_DOMAIN, { site: "porn1", domain: "67" });
+    });
