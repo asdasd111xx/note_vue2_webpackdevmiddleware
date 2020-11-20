@@ -121,7 +121,7 @@
               $text("S_RECEIPT_ADDRESS", "收货地址")
             }}</span>
             <div :class="$style['field-value']">
-              <template v-if="addressInfo.id === {}">
+              <template v-if="addressInfo.id === ''">
                 <span :class="[$style['field-text'], $style.yet]">未设定 </span>
               </template>
 
@@ -261,8 +261,9 @@ export default {
         url: '/api/v1/c/player/address',
       }).then(res => {
         if (res && res.data && res.data.result === "ok") {
-          this.addressInfo = res.data.ret.find((data) => data.is_default);
-
+          if (res.data.ret.length > 0) {
+            this.addressInfo = res.data.ret.find((data) => data.is_default);
+          }
         }
       }).catch(error => {
 
