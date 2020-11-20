@@ -6,7 +6,7 @@
           <div
             :class="[
               $style['method-item'],
-              { [$style.active]: currentMethod === 'phone-step-1' },
+              { [$style.active]: currentMethod === 'phone-step-1' }
             ]"
             @click="
               changeMethod(currentMethod === 'phone-step-1'),
@@ -18,7 +18,7 @@
           <div
             :class="[
               $style['method-item'],
-              { [$style.active]: currentMethod === 'email' },
+              { [$style.active]: currentMethod === 'email' }
             ]"
             @click="
               changeMethod(currentMethod === 'email'),
@@ -30,12 +30,12 @@
           <div
             :class="[
               $style['active-slider'],
-              { [$style.active]: currentMethod === 'phone-step-1' },
+              { [$style.active]: currentMethod === 'phone-step-1' }
             ]"
             :style="{
               left: `calc(calc(24.5% - 22.5px + 49% * ${
                 currentMethod === 'email' ? 1 : 0
-              }))`,
+              }))`
             }"
           />
         </div>
@@ -110,7 +110,7 @@
             <div
               :class="[
                 $style['send-keyring'],
-                { [$style['active']]: username && !timer },
+                { [$style['active']]: username && !timer }
               ]"
               @click="showCaptchaPopup"
             >
@@ -206,7 +206,7 @@
         @click="sendEmail($route.params.type)"
         :class="[
           $style['forget-submit'],
-          { [$style['active']]: username && email },
+          { [$style['active']]: username && email }
         ]"
       >
         <div>{{ $t("S_SUBMIT") }}</div>
@@ -216,8 +216,8 @@
         :class="[
           $style['forget-submit'],
           {
-            [$style['active']]: checkSubmit,
-          },
+            [$style['active']]: checkSubmit
+          }
         ]"
         @click="send($route.params.type)"
       >
@@ -512,7 +512,7 @@ export default {
           this.msg.keyring = '';
 
           if (res && res.status === 429) {
-            this.errorMsg = "操作太频繁，请稍候在试";
+            this.errorMsg = "操作太频繁，请稍候再试";
             return;
           }
 
@@ -552,7 +552,7 @@ export default {
         },
         fail: (res) => {
           if (res && res.status === 429) {
-            this.errorMsg = "操作太频繁，请稍候在试";
+            this.errorMsg = "操作太频繁，请稍候再试";
             return;
           }
 

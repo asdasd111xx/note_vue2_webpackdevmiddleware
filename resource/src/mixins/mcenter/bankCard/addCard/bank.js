@@ -325,7 +325,7 @@ export default {
               }
             }).catch(error => {
               if (error.response && error.response.status === 429) {
-                this.errorMsg = "操作太频繁，请稍候在试";
+                this.errorMsg = "操作太频繁，请稍候再试";
                 return;
               }
 
@@ -346,7 +346,7 @@ export default {
         })
         .catch(error => {
           if (error.response && error.response.status === 429) {
-            this.errorMsg = "操作太频繁，请稍候在试";
+            this.errorMsg = "操作太频繁，请稍候再试";
             return;
           }
 

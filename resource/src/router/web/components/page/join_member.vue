@@ -30,7 +30,7 @@
             :class="[
               $style['field-title'],
               $style[`field-${field.key}`],
-              'clearfix',
+              'clearfix'
             ]"
             @click="
               () => {
@@ -829,7 +829,7 @@ export default {
         },
         fail: (error) => {
           if (error && error.status === 429) {
-            this.errMsg = '操作太频繁，请稍候在试';
+            this.errMsg = '操作太频繁，请稍候再试';
             return
           }
         }
@@ -886,7 +886,7 @@ export default {
         this.allValue.captcha_text = '';
 
         if (res.status === 429) {
-          this.errMsg = '操作太频繁，请稍候在试';
+          this.errMsg = '操作太频繁，请稍候再试';
           return
         }
 
