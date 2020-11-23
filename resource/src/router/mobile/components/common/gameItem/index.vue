@@ -6,7 +6,7 @@
           !gameInfo.code && gameInfo.status ? 'game-item-activity' : 'game-item'
         }`,
         `game-type-${gameInfo.kind}`,
-        `${!gameInfo.url && !gameInfo.code ? 'no-activity' : 'show'}`
+        `${!gameInfo.url && !gameInfo.code ? 'no-activity' : 'show'}`,
       ])
     "
     @click="onEnter"
@@ -51,7 +51,7 @@
         v-if="showFavor && loginStatus"
         :class="
           getClass(['icon-star', 'is-favorite'], {
-            'is-favorite': isFavorite
+            'is-favorite': isFavorite,
           })
         "
       />
@@ -65,66 +65,73 @@
 </template>
 
 <script>
-import { mapActions, mapGetters } from 'vuex';
-import game from '@/api/game';
-import openGame from '@/lib/open_game';
-import isMobile from '@/lib/is_mobile';
+import { mapActions, mapGetters } from "vuex";
+import game from "@/api/game";
+import openGame from "@/lib/open_game";
+import isMobile from "@/lib/is_mobile";
 
 export default {
   components: {
-    pageLoading: () => import(/* webpackChunkName: 'pageLoading' */ '@/router/mobile/components/common/pageLoading'),
+    pageLoading: () =>
+      import(
+        /* webpackChunkName: 'pageLoading' */ "@/router/mobile/components/common/pageLoading"
+      ),
   },
   data() {
     return {
       isShowLoading: false,
-      isFavorite: false // 客端顯示是否最愛
+      isFavorite: false, // 客端顯示是否最愛
     };
   },
+
   mounted() {
-    this.isFavorite = !!this.favoriteGame.find(i => i.vendor === this.gameInfo.vendor && i.code === this.gameInfo.code);
+    this.isFavorite = !!this.favoriteGame.find(
+      (i) => i.vendor === this.gameInfo.vendor && i.code === this.gameInfo.code
+    );
   },
   props: {
     theme: {
       type: String,
-      default: "porn1"
+      default: "porn1",
     },
     gameInfo: {
       type: Object,
-      required: true
+      required: true,
     },
     showVendor: {
       type: Boolean,
-      default: true
+      default: true,
     },
     showJackpot: {
       type: Boolean,
-      default: true
+      default: true,
     },
     showFavor: {
       type: Boolean,
-      default: true
+      default: true,
     },
     showButton: {
       type: Boolean,
-      default: true
+      default: true,
     },
     redirectCard: {
       type: Function,
-      required: true
+      required: true,
     },
     jackpotData: {
       type: Object,
-    }
+    },
   },
+
   computed: {
     ...mapGetters({
-      isBackEnd: 'getIsBackEnd',
-      cdnDomain: 'getCdnDomain',
-      favoriteGame: 'getFavoriteGame',
-      loginStatus: 'getLoginStatus',
-      curLang: 'getCurLang',
-      siteConfig: 'getSiteConfig',
-      BBOSDomain: 'getBBOSDomain'
+      isBackEnd: "getIsBackEnd",
+      cdnDomain: "getCdnDomain",
+      favoriteGame: "getFavoriteGame",
+      loginStatus: "getLoginStatus",
+      curLang: "getCurLang",
+      siteConfig: "getSiteConfig",
+      BBOSDomain: "getBBOSDomain",
     }),
     /**
      * 平台名稱顯示特例
@@ -145,13 +152,13 @@ export default {
       if (!this.gameInfo.code) {
         switch (this.gameInfo.status) {
           case 2:
-            gameName = this.$text('S_ACTIVITY_PREVIEW', '活动预告');
+            gameName = this.$text("S_ACTIVITY_PREVIEW", "活动预告");
             break;
           case 3:
-            gameName = this.$text('S_ACTIVITY_PERIOD', '活动中');
+            gameName = this.$text("S_ACTIVITY_PERIOD", "活动中");
             break;
           case 4:
-            gameName = this.$text('S_ACTIVITY_FINISH', '结果查询');
+            gameName = this.$text("S_ACTIVITY_FINISH", "结果查询");
             break;
           default:
             break;
@@ -163,12 +170,12 @@ export default {
      * 取得圖片路徑
      * @method getImg
      * @returns {object} 圖片路徑
-    */
+     */
     getImg() {
       const imgConverter = {
-        3: 'casino',
-        5: 'card',
-        6: 'mahjong'
+        3: "casino",
+        5: "card",
+        6: "mahjong",
       };
       // cdn 機制
       // let resultUrl = this.$getCdnPath(`${this.cdnDomain}/image/${imgConverter[this.gameInfo.kind]}/${this.gameInfo.vendor}/Game_${this.gameInfo.code}.png`);
@@ -191,15 +198,21 @@ export default {
       let resultUrl = `${this.BBOSDomain}/cdn/image/${type}/${this.gameInfo.vendor}/Game_${this.gameInfo.code}.png`;
 
       if (!this.gameInfo.code && this.gameInfo.status > 1) {
-        resultUrl = this.$getCdnPath('/static/image/casino/event_icon.png');
+        resultUrl = this.$getCdnPath("/static/image/casino/event_icon.png");
       }
 
-      const ey1_default_img = '/static/image/ey1/default/bg_gamecard_d.png'
+      const ey1_default_img = "/static/image/ey1/default/bg_gamecard_d.png";
 
       return {
         src: `${resultUrl}?v=${Date.now().toString()}`,
-        error: this.theme === "ey1" ? ey1_default_img : this.$getCdnPath('/static/image/game_loading_s.gif'),
-        loading: this.theme === "ey1" ? ey1_default_img : this.$getCdnPath('/static/image/game_loading_s.gif')
+        error:
+          this.theme === "ey1"
+            ? ey1_default_img
+            : this.$getCdnPath("/static/image/game_loading_s.gif"),
+        loading:
+          this.theme === "ey1"
+            ? ey1_default_img
+            : this.$getCdnPath("/static/image/game_loading_s.gif"),
       };
     },
     /**
@@ -208,13 +221,15 @@ export default {
      * @returns {string} 圖片路徑
      */
     getActivityImg() {
-      return `/static/image/casino/theme/brilliant/lang/${this.curLang}/${this.gameInfo.status !== 2 ? 'upcoming_ribbon' : 'activity_ribbon'}.png`;
+      return `/static/image/casino/theme/brilliant/lang/${this.curLang}/${
+        this.gameInfo.status !== 2 ? "upcoming_ribbon" : "activity_ribbon"
+      }.png`;
     },
     getJackpotImg() {
-      let src = '/static/image/casino/jackpot/';
+      let src = "/static/image/casino/jackpot/";
       switch (this.gameInfo.vendor) {
         // 單一彩金+名單
-        case 'bbin':
+        case "bbin":
         case "gns":
         case "isb":
         case "ag":
@@ -224,11 +239,11 @@ export default {
         case "mg":
         case "mg2":
         case "lg_casino":
-          return src + 'ic_minor.png';
-        case 'pt':
+          return src + "ic_minor.png";
+        case "pt":
         case "hb":
         case "wm":
-          return src + 'ic_jackpot.png';
+          return src + "ic_jackpot.png";
         default:
           return;
       }
@@ -240,18 +255,22 @@ export default {
      */
     getAmount() {
       if (!this.jackpotData || !this.jackpotData.jpMinor) {
-        return '';
+        return "";
       }
 
-      const data = this.jackpotData.jpMinor.find((info) => info.code === this.gameInfo.code);
+      const data = this.jackpotData.jpMinor.find(
+        (info) => info.code === this.gameInfo.code
+      );
 
       if (!data) {
-        return '';
+        return "";
       }
 
       // toFixed => 取到小數點第二位
       // replace => 新增千分位逗點符號
-      return (Math.round(data.amount * 100) / 100).toFixed(2).replace(/\B(?=(\d{3})+(?!\d))/g, ',');
+      return (Math.round(data.amount * 100) / 100)
+        .toFixed(2)
+        .replace(/\B(?=(\d{3})+(?!\d))/g, ",");
     },
     /**
      * 重組最愛列表 List
@@ -287,13 +306,13 @@ export default {
      * 取得遊戲按鈕文字
      * @method getBtnName
      * @returns {string} 遊戲按鈕文字
-    */
+     */
     getBtnName() {
-      let name = 'S_PLAY_NOW';
-      const trialKey = isMobile() ? 'mobile_trial' : 'trial';
+      let name = "S_PLAY_NOW";
+      const trialKey = isMobile() ? "mobile_trial" : "trial";
 
       if (!this.gameInfo.code) {
-        return this.$i18n.t('S_ACTIVITY_DETAIL');
+        return this.$i18n.t("S_ACTIVITY_DETAIL");
       }
 
       if (this.loginStatus) {
@@ -301,24 +320,21 @@ export default {
       }
 
       if (this.gameInfo[trialKey]) {
-        name = 'S_FREE_GAME';
+        name = "S_FREE_GAME";
       }
 
       return this.$i18n.t(name);
     },
   },
   methods: {
-    ...mapActions([
-      'actionSetFavoriteGame',
-      'actionSetGlobalMessage'
-    ]),
+    ...mapActions(["actionSetFavoriteGame", "actionSetGlobalMessage"]),
     /**
      * 取得Class名稱
      * @method getClass
      * @param {array} className - 要取得的Class名稱
      * @param {object} classInfo - 判斷是否要取得此Class
      * @returns {object} Class Object
-    */
+     */
     getClass(className, classInfo) {
       const style = this[`$style_${this.theme}`] || this.$style_porn1;
       const classObj = {};
@@ -336,10 +352,10 @@ export default {
     /**
      * 點擊立即遊戲
      * @method onEnter
-    */
+     */
     onEnter() {
-      if (localStorage.getItem('is-open-game')) {
-        return
+      if (localStorage.getItem("is-open-game")) {
+        return;
       }
       if (this.isBackEnd) {
         return;
@@ -353,30 +369,31 @@ export default {
         isMobileView = false;
       }
 
-      const {
-        vendor, kind, code, url
-      } = this.gameInfo;
+      const { vendor, kind, code, url } = this.gameInfo;
 
       // 活動
-      if (Object.keys(this.gameInfo).includes('url')) {
+      if (Object.keys(this.gameInfo).includes("url")) {
         if (!url) {
           return;
         }
 
         if (!this.loginStatus) {
-          alert(this.$i18n.t('S_LOGIN_TIPS'));
+          alert(this.$i18n.t("S_LOGIN_TIPS"));
           return;
         }
 
-        window.open(url, 'game');
+        window.open(url, "game");
         return;
       }
 
-      if (!this.loginStatus && !(isMobile() ? this.gameInfo.mobile_trial : this.gameInfo.trial)) {
+      if (
+        !this.loginStatus &&
+        !(isMobile() ? this.gameInfo.mobile_trial : this.gameInfo.trial)
+      ) {
         if (isMobileView) {
-          this.$router.push('/mobile/login');
+          this.$router.push("/mobile/login");
         } else {
-          alert(this.$i18n.t('S_LOGIN_TIPS'));
+          alert(this.$i18n.t("S_LOGIN_TIPS"));
         }
 
         return;
@@ -395,7 +412,11 @@ export default {
 
         if (res && res.data) {
           let data = res.data;
-          this.actionSetGlobalMessage({ msg: data.msg, code: data.code, origin: this.redirectCard() });
+          this.actionSetGlobalMessage({
+            msg: data.msg,
+            code: data.code,
+            origin: this.redirectCard(),
+          });
         }
       };
       openGame({ vendor, kind, code }, openGameSuccessFunc, openGameFailFunc);
@@ -405,30 +426,30 @@ export default {
      * @method toggleFavorite
      */
     toggleFavorite() {
-
       if (this.isBackEnd || this.isSetFavorite) {
         return;
       }
       this.isSetFavorite = true;
-      const actionType = this.checkFavorite ? 'deleteFavoriteGame' : 'setFavoriteGame';
+      const actionType = this.checkFavorite
+        ? "deleteFavoriteGame"
+        : "setFavoriteGame";
       const { vendor, kind, code } = this.gameInfo;
-
       game[actionType]({
         params: {
           vendor,
           kind,
-          code
-        }
+          code,
+        },
       }).then(() => {
         this.isFavorite = !this.isFavorite;
         this.actionSetFavoriteGame().then(() => {
           setTimeout(() => {
             this.isSetFavorite = false;
-          }, 300)
+          }, 300);
         });
       });
-    }
-  }
+    },
+  },
 };
 </script>
 
