@@ -77,7 +77,7 @@
                     <span
                       :class="[
                         $style['field-text'],
-                        { [$style.yet]: field.status === 'yet' }
+                        { [$style.yet]: field.status === 'yet' },
                       ]"
                       >{{
                         //提現密碼*呈現
@@ -113,7 +113,7 @@
             :class="[
               $style['account-data-field'],
               $style['address-border'],
-              'clearfix'
+              'clearfix',
             ]"
             @click="handleClick(item)"
           >
@@ -122,7 +122,9 @@
             }}</span>
             <div :class="$style['field-value']">
               <template v-if="addressInfo.id === ''">
-                <span :class="[$style['field-text'], $style.yet]">未设定 </span>
+                <span :class="[$style['field-text'], $style.yet]"
+                  >尚未设定
+                </span>
               </template>
 
               <template v-else>
@@ -130,9 +132,7 @@
                   <div :class="$style['line-up']">
                     <div :class="$style['text']">{{ addressInfo.name }}</div>
                     <div :class="$style['text']">{{ addressInfo.phone }}</div>
-                    <div :class="$style['default-icon']">
-                      默认
-                    </div>
+                    <div :class="$style['default-icon']">默认</div>
                   </div>
                   <div :class="$style['line-down']">
                     {{ addressInfo.address }}
