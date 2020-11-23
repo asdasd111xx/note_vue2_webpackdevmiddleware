@@ -22,9 +22,9 @@
           />
         </div>
 
-        <!-- <div v-if="listInfo.info" :class="$style['list-info']">
+        <div v-if="listInfo.info" :class="$style['list-info']">
           {{ listInfo.info }}
-        </div> -->
+        </div>
 
         <span> {{ listInfo.name }} </span>
         <div :class="$style['btn-next']">
@@ -58,7 +58,7 @@ export default {
           name: '提现教程',
           key: 'withdraw',
           img: 'withdraw',
-          info: '极速提现仅需30秒',
+          info: '',
           needLogin: false
         },
         {

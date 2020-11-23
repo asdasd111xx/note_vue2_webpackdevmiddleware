@@ -6,8 +6,8 @@
         :class="[
           $style['check-container'],
           {
-            [$style['deposit']]: type === 'deposit'
-          }
+            [$style['deposit']]: type === 'deposit',
+          },
         ]"
       >
         <div :class="$style['check-header']">
@@ -86,7 +86,7 @@
                 <span :class="$style['sub-title']"
                   >{{ withdrawName }}出款额外赠送</span
                 >
-                <span :class="$style['money']">{{ bonusOffer }}</span>
+                <span :class="$style['money1']">{{ bonusOffer }}</span>
               </div>
 
               <div :class="[$style['check-cell'], $style['check-actual']]">

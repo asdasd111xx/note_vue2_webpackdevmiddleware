@@ -238,7 +238,12 @@ export default {
           this.$route.params.page.toUpperCase() ||
           '',
         onClick: () => {
-          this.$router.push(this.originUrl);
+          if (window.parent) {
+            window.parent.history.back();
+          } else {
+            this.$router.push(this.originUrl);
+          }
+          return;
         }
       };
     },
@@ -321,7 +326,12 @@ export default {
             return;
 
           case 'EVENT_THIRDPARTY_CLOSE':
-            this.$router.push(this.originUrl);
+            if (window.parent) {
+              window.parent.history.back();
+            } else {
+              this.$router.push(this.originUrl);
+            }
+            return;
             return;
 
           // 避免迴圈重複本站

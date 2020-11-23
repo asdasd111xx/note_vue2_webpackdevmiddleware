@@ -6,7 +6,7 @@
           <div
             :class="[
               $style['method-item'],
-              { [$style.active]: currentMethod === 'phone-step-1' }
+              { [$style.active]: currentMethod === 'phone-step-1' },
             ]"
             @click="
               changeMethod(currentMethod === 'phone-step-1'),
@@ -18,7 +18,7 @@
           <div
             :class="[
               $style['method-item'],
-              { [$style.active]: currentMethod === 'email' }
+              { [$style.active]: currentMethod === 'email' },
             ]"
             @click="
               changeMethod(currentMethod === 'email'),
@@ -30,12 +30,12 @@
           <div
             :class="[
               $style['active-slider'],
-              { [$style.active]: currentMethod === 'phone-step-1' }
+              { [$style.active]: currentMethod === 'phone-step-1' },
             ]"
             :style="{
               left: `calc(calc(24.5% - 22.5px + 49% * ${
                 currentMethod === 'email' ? 1 : 0
-              }))`
+              }))`,
             }"
           />
         </div>
@@ -110,7 +110,7 @@
             <div
               :class="[
                 $style['send-keyring'],
-                { [$style['active']]: username && !timer }
+                { [$style['active']]: username && !timer },
               ]"
               @click="showCaptchaPopup"
             >
@@ -206,7 +206,7 @@
         @click="sendEmail($route.params.type)"
         :class="[
           $style['forget-submit'],
-          { [$style['active']]: username && email }
+          { [$style['active']]: username && email },
         ]"
       >
         <div>{{ $t("S_SUBMIT") }}</div>
@@ -216,8 +216,8 @@
         :class="[
           $style['forget-submit'],
           {
-            [$style['active']]: checkSubmit
-          }
+            [$style['active']]: checkSubmit,
+          },
         ]"
         @click="send($route.params.type)"
       >
@@ -459,28 +459,32 @@ export default {
           captcha_text: this.captchaData ? this.captchaData : ''
         }
       }).then(res => {
-        this.errMsg = "";
-        this.countdownSec = 60;
-        this.timer = setInterval(() => {
-          if (this.countdownSec === 0) {
-            clearInterval(this.timer)
-            this.timer = null;
-            return;
+        if (res.data.result === "ok") {
+          this.errMsg = "";
+          this.countdownSec = 60;
+          this.timer = setInterval(() => {
+            if (this.countdownSec === 0) {
+              clearInterval(this.timer)
+              this.timer = null;
+              return;
+            }
+            this.countdownSec -= 1;
+          }, 1000)
+
+          if (res.data.code) {
+            this.errMsg = `${res.data.msg}`;
+          } else {
+            this.errMsg = '已發送手機認證碼';
           }
-          this.countdownSec -= 1;
-        }, 1000)
-
-        if (res.data.code) {
-          this.errMsg = `${res.data.msg}`;
         } else {
-          this.errMsg = '已發送手機認證碼';
+          this.errMsg = res.data.msg;
         }
-
       }).catch(error => {
         this.isSendKeyring = false;
 
         if (error.response && error.response.status === 429) {
           this.errorMsg = "今日发送次数已达上限";
+          this.countdownSec = 0;
           return;
         }
 
