@@ -108,7 +108,7 @@
               { [$style['is-full']]: [1, 2, 3].includes(game.imageType) },
               { [$style['is-third']]: [4].includes(game.imageType) }
             ]"
-            @click.stop="onOpenGame(game)"
+            @click.stop="isMaintainSwag && game.vendor === 'SWAG' ? {} : onOpenGame(game)"
           >
             <template v-if="game.imageType === 4">
               <div :class="[$style['third-iamge-wrap']]">
@@ -122,12 +122,12 @@
             <template v-else>
               <img v-lazy="getImg(game)" :alt="game.name" />
             </template>
-            <div v-if="game.isMaintain"
+            <div v-if="game.isMaintain || isMaintainSwag && game.vendor === 'SWAG'"
             :class="[$style['maintain-mask']]">
               <div
                 :class="[
                   {
-                    [$style['maintain-mask-1']]: game.imageType === 1
+                    [$style['maintain-mask-1']]: game.imageType === 1 || game.vendor === 'SWAG'
                   },
                   { [$style['maintain-mask-2']]: game.imageType === 0 }
                 ]"
@@ -149,7 +149,7 @@
                   </div>
                   <div :class="[$style['container-maintain']]">
                     <div :class="[$style['container-maintain-time']]">
-                      {{ `${game.start_at}` }}
+                      {{ `${game.vendor === 'SWAG' ? swagConfig.maintain_start_at: game.start_at}` }}
                     </div>
                     <img
                       :src="
@@ -157,7 +157,7 @@
                       "
                     />
                     <div :class="[$style['container-maintain-time']]">
-                      {{ `${game.end_at}` }}
+                      {{ `${game.vendor === 'SWAG' ? swagConfig.maintain_end_at: game.end_at}` }}
                     </div>
                   </div>
                 </div>
