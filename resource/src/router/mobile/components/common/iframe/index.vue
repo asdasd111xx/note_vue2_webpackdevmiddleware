@@ -234,7 +234,12 @@ export default {
         title: query.title || localStorage.getItem('iframe-third-url-title') || '',
         hasFunc: query.func === undefined ? true : query.func === 'true',
         onClick: () => {
-          this.$router.push(this.originUrl);
+          if (window.parent) {
+            window.parent.history.back();
+          } else {
+            this.$router.push(this.originUrl);
+          }
+          return;
         }
       };
     },
@@ -317,7 +322,12 @@ export default {
             return;
 
           case 'EVENT_THIRDPARTY_CLOSE':
-            this.$router.push(this.originUrl);
+            if (window.parent) {
+              window.parent.history.back();
+            } else {
+              this.$router.push(this.originUrl);
+            }
+            return;
             return;
 
           // 避免迴圈重複本站
