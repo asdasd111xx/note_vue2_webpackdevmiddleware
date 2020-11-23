@@ -6,6 +6,7 @@
         v-for="(data, index) in addressData"
         :key="index"
         :class="$style['add-content']"
+        @click="goToEditAddress(index)"
       >
         <div :class="$style['is-default']" @click="checkDefault(index)">
           <div

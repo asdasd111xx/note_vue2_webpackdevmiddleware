@@ -73,12 +73,18 @@
         </div>
       </div>
       <div :class="$style['add-wrap']">
-        <div :class="[$style['address-input-wrap'], $style['checked-margin']]">
+        <div
+          :class="[
+            $style['address-input-wrap'],
+            $style['checked-margin'],
+            $style['disable-check']
+          ]"
+        >
           设为默认地址
           <div
-            :class="
+            :class="[
               `ui fitted toggle checkbox field-checkbox ${siteConfig.MOBILE_WEB_TPL}`
-            "
+            ]"
           >
             <input
               :checked="newAddressInfo.is_default"
