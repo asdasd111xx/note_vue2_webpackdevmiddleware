@@ -12,10 +12,12 @@
                 {{ getDate(item.startAt) }} <br />
                 {{ getTime(item.startAt) }}
               </div>
-              <img
-                class="to-img"
-                :src="$getCdnPath('/static/image/casino/ic_transfergo.png')"
-              />
+              <div class="to-img">
+                <img
+                  :src="$getCdnPath('/static/image/casino/ic_transfergo.png')"
+                />
+              </div>
+
               <div class="times">
                 {{ getDate(item.endAt) }} <br />
                 {{ getTime(item.endAt) }}
@@ -25,7 +27,6 @@
         </div>
       </div>
     </template>
-    <template v-if="type === 2"> </template>
   </transition>
 </template>
 
@@ -68,10 +69,10 @@ export default {
   created() {
     this.isShow = true;
     this.timer = setTimeout(() => {
-      this.isShow = false;
-      setTimeout(() => {
-        this.clearMsg();
-      }, 300);
+      // this.isShow = false;
+      // setTimeout(() => {
+      //   this.clearMsg();
+      // }, 300);
     }, 2000);
   },
   computed: {

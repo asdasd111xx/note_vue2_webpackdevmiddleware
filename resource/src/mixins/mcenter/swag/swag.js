@@ -91,11 +91,10 @@ export default {
         const maintain_start_at = moment(this.swagConfig.maintain_start_at);
         const maintain_end_at = moment(this.swagConfig.maintain_end_at);
         const now = moment(this.estToday);
-
         // 現在時間 相差 維護時間
         const isMaintain = now.isBefore(maintain_end_at) && now.isAfter(maintain_start_at);
 
-        if (this.swagConfig.enable !== 0 && isMaintain) {
+        if (isMaintain) {
           this.isMaintainSwag = true;
         }
 
@@ -159,7 +158,7 @@ export default {
       this.maintainInfo = null;
     },
     updateBalance() {
-      if (this.loginStatus) {
+      if (this.loginStatus && this.$route.name !== "home") {
         this.actionSetUserBalance();
         this.actionSetSwagBalance();
 
