@@ -4,6 +4,7 @@
       <div :class="[$style['tab-wrap']]">
         <div
           v-for="(item, index) in tabItem"
+          :ref="item.key"
           :key="`tab-${item.key}`"
           :class="[
             $style['tab-item'],
@@ -25,6 +26,11 @@
       <div :class="[$style['credit-trans-container']]">
         <component :is="currentTemplate" @linkToSwag="linkToSwag" />
       </div>
+      <maintain-block
+        v-if="maintainInfo"
+        :content="maintainInfo"
+        @close="handleCloseMaintainInfo"
+      />
     </div>
   </mobile-container>
 </template>
@@ -37,6 +43,7 @@ import recoardDiamond from './compontents/recoardDiamond';
 import axios from 'axios';
 import goLangApiRequest from '@/api/goLangApiRequest';
 import mixin from "@/mixins/mcenter/swag/swag";
+import maintainBlock from "@/router/mobile/components/common/maintainBlock";
 
 export default {
   mixins: [mixin],
@@ -44,6 +51,7 @@ export default {
     mobileContainer,
     buyDiamond,
     recoardDiamond,
+    maintainBlock
   },
   data() {
     return {
@@ -105,35 +113,45 @@ export default {
         if (this.isLoading) {
           return;
         }
-        this.isLoading = true;
 
-        let userId = 'guest';
-        if (this.memInfo && this.memInfo.user && this.memInfo.user.id && this.memInfo.user.id !== 0) {
-          userId = this.memInfo.user.id;
-        }
-
-        goLangApiRequest({
-          method: 'get',
-          url: `${this.siteConfig.YABO_GOLANG_API_DOMAIN}/ThirdParty/SWAG/${userId}`,
-          headers: {
-            'x-domain': this.memInfo.user.domain
-          }
-        }).then(res => {
-          if (res && res.status !== '000') {
-            if (res.msg) {
-              this.actionSetGlobalMessage({ msg: res.msg });
-            }
-            return;
+        const params = [this.initSwagConfig()];
+        Promise.all(params).then(() => {
+          if (this.isMaintainSwag) {
+            this.handleSwagBalance();
+            this.isLoading = false;
           }
           else {
-            localStorage.setItem('iframe-third-url', res.data);
-            localStorage.setItem('iframe-third-origin', 'mcenter/swag?tab=0');
-            this.$router.push(`/mobile/iframe/SWAG?&hasFooter=false&hasHeader=true`);
-            return;
-          }
+            this.isLoading = true;
 
-          this.isLoading = false;
-        })
+            let userId = 'guest';
+            if (this.memInfo && this.memInfo.user && this.memInfo.user.id && this.memInfo.user.id !== 0) {
+              userId = this.memInfo.user.id;
+            }
+
+            goLangApiRequest({
+              method: 'get',
+              url: `${this.siteConfig.YABO_GOLANG_API_DOMAIN}/ThirdParty/SWAG/${userId}`,
+              headers: {
+                'x-domain': this.memInfo.user.domain
+              }
+            }).then(res => {
+              if (res && res.status !== '000') {
+                if (res.msg) {
+                  this.actionSetGlobalMessage({ msg: res.msg });
+                }
+                return;
+              }
+              else {
+                localStorage.setItem('iframe-third-url', res.data);
+                localStorage.setItem('iframe-third-origin', 'mcenter/swag?tab=0');
+                this.$router.push(`/mobile/iframe/SWAG?&hasFooter=false&hasHeader=true`);
+                return;
+              }
+
+              this.isLoading = false;
+            })
+          }
+        });
       }
     },
     setCurrentTab(index) {
