@@ -12,7 +12,10 @@
                 {{ getDate(item.startAt) }} <br />
                 {{ getTime(item.startAt) }}
               </div>
-              <img class="to-img" :src="$getCdnPath('/static/img')" />
+              <img
+                class="to-img"
+                :src="$getCdnPath('/static/image/casino/ic_transfergo.png')"
+              />
               <div class="times">
                 {{ getDate(item.endAt) }} <br />
                 {{ getTime(item.endAt) }}
