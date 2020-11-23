@@ -66,8 +66,6 @@ export default {
     ]),
     initConfig() {
       if (this.loginStatus) {
-        this.actionSetUserBalance();
-        this.actionSetSwagBalance();
         this.updateBalance();
       }
 
@@ -124,6 +122,9 @@ export default {
     },
     updateBalance() {
       if (this.loginStatus) {
+        this.actionSetUserBalance();
+        this.actionSetSwagBalance();
+
         this.updateBalance = setInterval(() => {
           this.actionSetUserBalance();
           this.actionSetSwagBalance();
@@ -217,6 +218,7 @@ export default {
         // 充值開關
         if (this.swagConfig && this.swagConfig.recharge_verify === 1) {
           this.showTips = true;
+          this.isLoading = false;
           return;
         }
 

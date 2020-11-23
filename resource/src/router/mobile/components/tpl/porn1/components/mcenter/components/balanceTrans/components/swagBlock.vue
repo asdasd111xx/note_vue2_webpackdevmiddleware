@@ -69,6 +69,9 @@ export default {
       this.swagDiamondBalance = val.balance;
     },
   },
+  created() {
+    this.updateBalance();
+  },
   methods: {
     ...mapActions([
       'actionSetGlobalMessage',
@@ -76,7 +79,6 @@ export default {
       'actionGetMemInfoV3',
       'actionSetSwagBalance'
     ]),
-
   },
 };
 </script>
