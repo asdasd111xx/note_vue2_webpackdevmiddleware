@@ -13,16 +13,16 @@
         <div :class="$style['address-input-wrap']">
           <input
             ref="input"
-            v-model="addressInfo.name"
+            v-model="newAddressInfo.name"
             :placeholder="$text('S_PLEASE_ENTER_RECEIVER', '请输入收货人姓名')"
             :class="$style.input"
             :maxlength="20"
             type="text"
           />
-          <div :class="$style['clear-input']" v-if="addressInfo.name">
+          <div :class="$style['clear-input']" v-if="newAddressInfo.name">
             <img
               :src="$getCdnPath(`/static/image/_new/common/ic_clear.png`)"
-              @click="addressInfo.name = ''"
+              @click="newAddressInfo.name = ''"
             />
           </div>
         </div>
@@ -36,7 +36,7 @@
             </option>
           </select>
           <input
-            v-model="addressInfo.phone"
+            v-model="newAddressInfo.phone"
             :placeholder="
               $text('S_PLEASE_ENTER_MOBILE_NUMBER', '请输入手机号码')
             "
@@ -44,10 +44,10 @@
             @input="verification($event.target.value, 'phone')"
             type="tel"
           />
-          <div :class="$style['clear-input']" v-if="addressInfo.phone">
+          <div :class="$style['clear-input']" v-if="newAddressInfo.phone">
             <img
               :src="$getCdnPath(`/static/image/_new/common/ic_clear.png`)"
-              @click="addressInfo.phone = ''"
+              @click="newAddressInfo.phone = ''"
             />
           </div>
         </div>
@@ -57,17 +57,17 @@
         <div :class="$style['address-input-wrap']">
           <input
             ref="input"
-            v-model="addressInfo.address"
+            v-model="newAddressInfo.address"
             :placeholder="
               $text('S_PLEASE_ENTER_RECEIPT_ADDRESS', '请输入收货地址')
             "
             :class="$style.input"
             type="text"
           />
-          <div :class="$style['clear-input']" v-if="addressInfo.address">
+          <div :class="$style['clear-input']" v-if="newAddressInfo.address">
             <img
               :src="$getCdnPath(`/static/image/_new/common/ic_clear.png`)"
-              @click="addressInfo.address = ''"
+              @click="newAddressInfo.address = ''"
             />
           </div>
         </div>
@@ -81,11 +81,11 @@
             "
           >
             <input
-              :checked="addressInfo.is_default"
+              :checked="newAddressInfo.is_default"
               type="checkbox"
               @click="
                 () => {
-                  setDefault();
+                  checkDefault();
                 }
               "
             />
@@ -102,11 +102,7 @@
           删除地址
         </div>
         <div
-          :class="[
-            $style['address-save'],
-            { [$style['disabled']]: !dataNotEnough },
-            { [$style['isonly']]: isAdd }
-          ]"
+          :class="[$style['address-save'], { [$style['isonly']]: isAdd }]"
           @click="addAddress()"
         >
           保存
@@ -115,13 +111,45 @@
     </div>
     <div v-if="onDelete" :class="$style['delete-tips']">
       <div :class="$style['tips-wrap']">
-        <div :class="$style['tips-title']">确定要删除该地址吗?</div>
+        <div v-if="newAddressInfo.is_default" :class="$style['tips-title']">
+          此為默認地址,<br />確定要刪除?
+        </div>
+        <div v-else :class="$style['tips-title']">确定要删除该地址吗?</div>
         <div :class="[$style['tips-button'], 'clearfix']">
           <div :class="$style['delete-cancel']" @click="closeDelete()">
             取消
           </div>
           <div :class="[$style['delete-confirm']]" @click="deleteAddress()">
             刪除
+          </div>
+        </div>
+      </div>
+    </div>
+    <div v-if="onChangeDefault" :class="$style['delete-tips']">
+      <div :class="$style['tips-wrap']">
+        <div v-if="newAddressInfo.is_default" :class="$style['tips-title']">
+          是否取消默認?
+        </div>
+        <div v-else :class="$style['tips-title']">將此地址設為默認?</div>
+        <div :class="[$style['tips-button'], 'clearfix']">
+          <div :class="$style['delete-cancel']" @click="closeDefault()">
+            取消
+          </div>
+          <div :class="[$style['delete-confirm']]" @click="setDefault()">
+            好
+          </div>
+        </div>
+      </div>
+    </div>
+    <div v-if="onBack" :class="$style['delete-tips']">
+      <div :class="$style['tips-wrap']">
+        <div :class="$style['tips-title']">是否保存本次編輯結果?</div>
+        <div :class="[$style['tips-button'], 'clearfix']">
+          <div :class="$style['delete-cancel']" @click="backView()">
+            不保存
+          </div>
+          <div :class="[$style['delete-confirm']]" @click="addAddress()">
+            保存
           </div>
         </div>
       </div>
@@ -134,6 +162,7 @@ import { API_MCENTER_USER_CONFIG } from '@/config/api';
 import { mapGetters, mapActions } from 'vuex';
 import accountHeader from '../../accountHeader';
 import ajax from '@/lib/ajax';
+import axios from 'axios';
 import mcenter from '@/api/mcenter';
 
 export default {
@@ -154,21 +183,31 @@ export default {
         phone: "",
         address: ""
       },
-      dataNotEnough: false,
+      newAddressInfo: {
+        id: "",
+        is_default: false,
+        name: "",
+        phone: "",
+        address: ""
+      },
+      // dataNotEnough: false,
       isAdd: true,
       onDelete: false,
+      onChangeDefault: false,
+      onBack: false,
+      isFirstAdd: false
     };
   },
   watch: {
-    'addressInfo.name'() {
-      this.checkData();
-    },
-    'addressInfo.phone'() {
-      this.checkData();
-    },
-    'addressInfo.address'() {
-      this.checkData();
-    }
+    // 'newAddressInfo.name'() {
+    //   this.checkData();
+    // },
+    // 'newAddressInfo.phone'() {
+    //   this.checkData();
+    // },
+    // 'newAddressInfo.address'() {
+    //   this.checkData();
+    // }
   },
   mounted() {
 
@@ -180,18 +219,42 @@ export default {
     headerConfig() {
       return {
         prev: true,
-        onClick: () => { this.$router.back(); },
+        onClick: () => {
+          if (this.addressInfo.name != this.newAddressInfo.name
+            || this.addressInfo.phone != this.newAddressInfo.phone
+            || this.addressInfo.address != this.newAddressInfo.address) {
+            this.onBack = true;
+          } else {
+            this.$router.back();
+          }
+        },
         title: this.headerTitle,
       };
     }
   },
   created() {
+    axios({
+      method: 'get',
+      url: '/api/v1/c/player/address',
+    }).then(res => {
+      if (res && res.data && res.data.result === "ok") {
+        this.isFirstAdd = res.data.ret.length === 0
+        if (this.isFirstAdd) {
+          this.newAddressInfo.is_default = true;
+          this.addressInfo.is_default = true;
+        }
+      }
+    }).catch(error => {
+
+    })
+
     if (this.$route.query && this.$route.query.id) {//編輯
       this.headerTitle = "编辑收货地址";
       this.addressInfo = this.$route.query
       this.addressInfo.is_default = this.addressInfo.is_default === "true";
       this.phoneHead = "+" + this.addressInfo.phone.split("-")[0];
       this.addressInfo.phone = this.addressInfo.phone.split("-")[1];
+      this.newAddressInfo = this.addressInfo;
       this.isAdd = false;
     } else {//新增
       this.headerTitle = "添加收货地址";
@@ -215,7 +278,7 @@ export default {
 
       if (target === 'phone') {
         this.actionVerificationFormData({ target: 'phone', value: value }).then((val => {
-          this.addressInfo.phone = val;
+          this.newAddressInfo.phone = val;
         }));
 
         // 億元 不客端判斷手機號碼位數
@@ -223,70 +286,89 @@ export default {
           this.tipMsg = '';
         }
       }
+    },
 
-      if (target === 'code') {
-        this.actionVerificationFormData({ target: 'code', value: value }).then((val => {
-          this.codeValue = val;
-        }));
+    checkDefault() {
+      if (this.isFirstAdd) {
+        this.actionSetGlobalMessage({ msg: '首笔地址不可关闭' });
+      } else {
+        this.onChangeDefault = true;
       }
+    },
+
+    closeDefault() {
+      this.onChangeDefault = false;
     },
 
     setDefault() {
-      this.addressInfo.is_default = !this.addressInfo.is_default
-    },
-
-    checkData() {
-      if (this.addressInfo.name != "" && this.addressInfo.phone != "" && this.addressInfo.address != "") {
-        this.dataNotEnough = true;
-      } else {
-        this.dataNotEnough = false;
+      this.newAddressInfo.is_default = !this.newAddressInfo.is_default
+      this.onChangeDefault = false;
+      if (this.addressInfo.is_default && !this.newAddressInfo.is_default) {
+        this.actionSetGlobalMessage({ msg: '保存成功后, 请重新设定默认地址' });
       }
     },
 
+    // checkData() {
+    //   if (this.newAddressInfo.name != "" && this.newAddressInfo.phone != "" && this.newAddressInfo.address != "") {
+    //     this.dataNotEnough = true;
+    //   } else {
+    //     this.dataNotEnough = false;
+    //   }
+    // },
+
     addAddress() {
-      if (this.addressInfo.name != "" && this.addressInfo.phone != "" && this.addressInfo.address != "") {
+      this.onBack = false;
+      if (this.newAddressInfo.name === "") {
+        this.tipMsg = '请输入收货人姓名';
+      } else if (this.newAddressInfo.phone === "") {
+        this.tipMsg = '请输入手机号码';
+      } else if (this.newAddressInfo.address === "") {
+        this.tipMsg = '请输入收货地址';
+      } else {
+        this.tipMsg = '';
+
         if (this.isAdd) {
           // 新增一筆收貨地址
           ajax({
             method: 'post',
             url: `/api/v1/c/player/address`,
             params: {
-              name: this.addressInfo.name,
-              phone: `${this.phoneHead.replace(/\+/ig, '')}-${this.addressInfo.phone}`,
-              address: this.addressInfo.address,
-              is_default: this.addressInfo.is_default,
+              name: this.newAddressInfo.name,
+              phone: `${this.phoneHead.replace(/\+/ig, '')}-${this.newAddressInfo.phone}`,
+              address: this.newAddressInfo.address,
+              is_default: this.newAddressInfo.is_default,
             },
             errorAlert: false,
             success: (response) => {
+              localStorage.setItem('set-address-success', true);
               this.$router.back();
             },
             fail: (response) => {
-              alert(response.data.msg);
+              this.tipMsg = response.data.msg;
             }
           });
         } else {
           // 編輯一筆收貨地址
           ajax({
             method: 'put',
-            url: `/api/v1/c/player/address/${this.addressInfo.id}`,
+            url: `/api/v1/c/player/address/${this.newAddressInfo.id}`,
             params: {
-              id: this.addressInfo.id,
-              is_default: this.addressInfo.is_default,
-              name: this.addressInfo.name,
-              phone: `${this.phoneHead.replace(/\+/ig, '')}-${this.addressInfo.phone}`,
-              address: this.addressInfo.address
+              id: this.newAddressInfo.id,
+              is_default: this.newAddressInfo.is_default,
+              name: this.newAddressInfo.name,
+              phone: `${this.phoneHead.replace(/\+/ig, '')}-${this.newAddressInfo.phone}`,
+              address: this.newAddressInfo.address
             },
             errorAlert: false,
             success: (response) => {
+              localStorage.setItem('set-address-success', true);
               this.$router.back();
             },
             fail: (response) => {
-              alert(response.data.msg);
+              this.tipMsg = response.data.msg;
             }
           });
         }
-
-
       }
     },
 
@@ -294,11 +376,26 @@ export default {
       // 刪除一筆收貨地址
       ajax({
         method: 'delete',
-        url: `/api/v1/c/player/address/${this.addressInfo.id}`,
+        url: `/api/v1/c/player/address/${this.newAddressInfo.id}`,
         errorAlert: false
       }).then((response) => {
+        this.onDelete = false;
         if (response && response.result === 'ok') {
-          this.$router.back();
+          if (this.newAddressInfo.is_default) {
+            this.actionSetGlobalMessage({
+              msg: '删除成功,请重新设定默认地址',
+              cb: () => {
+                this.$router.back();
+              }
+            });
+          } else {
+            this.actionSetGlobalMessage({
+              msg: '删除成功',
+              cb: () => {
+                this.$router.back();
+              }
+            });
+          }
         }
       });
     },
@@ -312,7 +409,12 @@ export default {
       this.onDelete = false;
     },
 
-  }
+    backView() {
+      this.onBack = false;
+      this.$router.back();
+    }
+
+  },
 };
 </script>
 
