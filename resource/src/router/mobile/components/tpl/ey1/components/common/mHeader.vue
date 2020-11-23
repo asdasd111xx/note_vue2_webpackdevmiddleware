@@ -131,7 +131,7 @@
             headerConfig.hasHelp.type === 'withdraw'
           "
         >
-          记录/教程
+          纪录/教程
         </span>
         <div :class="$style['btn-icon']">
           <img :src="$getCdnPath('/static/image/ey1/common/btn_help.png')" />
