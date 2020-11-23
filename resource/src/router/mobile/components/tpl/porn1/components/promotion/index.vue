@@ -148,7 +148,7 @@ export default {
           if (res && res.data && res.data.ret && res.data.ret.uri) {
             localStorage.setItem('iframe-third-url', res.data.ret.uri);
             localStorage.setItem('iframe-third-url-title', '领取优惠');
-            this.$router.push(`/mobile/iframe/promotion?hasFooter=false&hasHeader=true`);
+            this.$router.push(`/mobile/iframe/promotion?hasFooter=false&hasHeader=true&fullscreen=true`);
           }
         }).catch(error => {
           if (error && error.data && error.date.msg) {

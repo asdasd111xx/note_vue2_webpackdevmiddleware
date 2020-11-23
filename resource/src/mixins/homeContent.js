@@ -44,7 +44,7 @@ export default {
         { name: 'makemoney', text: '推广', path: 'makemoney' },
         { name: 'vip', text: 'VIP', path: 'accountVip' },
       ],
-      timer: null
+      timer: null,
     };
   },
   watch: {
