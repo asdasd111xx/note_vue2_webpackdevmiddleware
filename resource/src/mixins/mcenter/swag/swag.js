@@ -49,47 +49,6 @@ export default {
     this.updateBalance = null;
   },
   created() {
-    if (this.loginStatus) {
-      this.actionSetUserBalance();
-      this.actionSetSwagBalance();
-    }
-    this.actionSetSwagConfig().then(() => {
-
-      if (this.swagConfig && this.swagConfig.enable === 0) {
-        this.isMaintainSwag = true;
-        if (this.$route.name === 'mcenter-swag') {
-          this.actionSetGlobalMessage({
-            msg: `鸭博色播 维护中`,
-            style: 'maintain'
-          })
-        }
-      }
-
-      if (this.$route.name === 'mcenter-swag') {
-        // 可購買的鑽石/金額列表
-        if (this.swagConfig.rates) {
-          this.rateList = this.swagConfig.rates;
-
-          let tmp_d_currentSelRate = JSON.parse(localStorage.getItem("tmp_d_currentSelRate"));
-          if (tmp_d_currentSelRate && this.rateList.find(i => i.amount === tmp_d_currentSelRate.amount &&
-            i.diamond === tmp_d_currentSelRate.diamond)) {
-            this.selectedRate(tmp_d_currentSelRate);
-          }
-          else {
-            // this.selectedRate(this.rateList[0]);
-          }
-        }
-
-        // 驗證手機成功回來
-        if (this.$route.name === 'mcenter-swag' && localStorage.getItem("tmp_d_1")) {
-          this.submit();
-        }
-      }
-    });
-
-    if (this.loginStatus) {
-      this.updateBalance();
-    }
   },
   watch: {
     swagBalance(val) {
@@ -105,6 +64,47 @@ export default {
       'actionSetSwagConfig',
       'actionSetSwagBalance'
     ]),
+    initConfig() {
+      if (this.loginStatus) {
+        this.actionSetUserBalance();
+        this.actionSetSwagBalance();
+        this.updateBalance();
+      }
+
+      this.actionSetSwagConfig().then(() => {
+
+        if (this.swagConfig && this.swagConfig.enable === 0) {
+          this.isMaintainSwag = true;
+          if (this.$route.name === 'mcenter-swag') {
+            this.actionSetGlobalMessage({
+              msg: `鸭博色播 维护中`,
+              style: 'maintain'
+            })
+          }
+        }
+
+        if (this.$route.name === 'mcenter-swag') {
+          // 可購買的鑽石/金額列表
+          if (this.swagConfig.rates) {
+            this.rateList = this.swagConfig.rates;
+
+            let tmp_d_currentSelRate = JSON.parse(localStorage.getItem("tmp_d_currentSelRate"));
+            if (tmp_d_currentSelRate && this.rateList.find(i => i.amount === tmp_d_currentSelRate.amount &&
+              i.diamond === tmp_d_currentSelRate.diamond)) {
+              this.selectedRate(tmp_d_currentSelRate);
+            }
+            else {
+              // this.selectedRate(this.rateList[0]);
+            }
+          }
+
+          // 驗證手機成功回來
+          if (this.$route.name === 'mcenter-swag' && localStorage.getItem("tmp_d_1")) {
+            this.submit();
+          }
+        }
+      });
+    },
     handleSwagBalance() {
       if (this.isMaintainSwag) {
         if (this.swagConfig.enable === 0) {

@@ -48,7 +48,12 @@
         />
         <div>{{ $text("S_MCENTER_WALLET", "中心钱包") }}</div>
         <div :class="$style['money']">
-          {{ membalance.total || "0" }}
+          {{
+            (membalance &&
+              membalance.vendor.default &&
+              membalance.vendor.default.balance) ||
+              "0.00"
+          }}
         </div>
       </div>
 
@@ -167,7 +172,7 @@ export default {
     },
   },
   created() {
-    // 測試資料
+    this.initConfig();
   },
   methods: {
   }
