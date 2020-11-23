@@ -1231,13 +1231,11 @@ export const actionSetＭcenterBindMessage = ({ commit }, data) => {
 // 設定推廣連結
 export const actionSetAgentLink = ({ state, commit }, data) => {
   let configInfo = {};
-  if (state.webInfo.is_production) {
+  if (state.webDomain) {
     configInfo =
-      siteConfigOfficial[`site_${state.webInfo.alias}`] ||
+      siteConfigOfficial[`site_${state.webDomain.domain}`] ||
+      siteConfigTest[`site_${state.webInfo.alias}`] ||
       siteConfigOfficial.preset;
-  } else {
-    configInfo =
-      siteConfigTest[`site_${state.webInfo.alias}`] || siteConfigTest.preset;
   }
 
   let reqHeaders = {};
@@ -1599,13 +1597,11 @@ export const actionVerificationFormData = (
 ) => {
   let configInfo;
 
-  if (state.webInfo.is_production) {
+  if (state.webDomain) {
     configInfo =
-      siteConfigOfficial[`site_${state.webInfo.alias}`] ||
+      siteConfigOfficial[`site_${state.webDomain.domain}`] ||
+      siteConfigTest[`site_${state.webInfo.alias}`] ||
       siteConfigOfficial.preset;
-  } else {
-    configInfo =
-      siteConfigTest[`site_${state.webInfo.alias}`] || siteConfigTest.preset;
   }
 
   let site = configInfo.MOBILE_WEB_TPL;
@@ -1716,13 +1712,11 @@ export const actionSetBBOSDomain = ({ commit, state }, data) => {
 export const actionSetSystemDomain = ({ commit, state }, data) => {
   let configInfo;
 
-  if (state.webInfo.is_production) {
+  if (state.webDomain) {
     configInfo =
-      siteConfigOfficial[`site_${state.webInfo.alias}`] ||
+      siteConfigOfficial[`site_${state.webDomain.domain}`] ||
+      siteConfigTest[`site_${state.webInfo.alias}`] ||
       siteConfigOfficial.preset;
-  } else {
-    configInfo =
-      siteConfigTest[`site_${state.webInfo.alias}`] || siteConfigTest.preset;
   }
 
   // return yaboRequest({
