@@ -24,7 +24,7 @@
               默认
             </div>
           </div>
-          <div>{{ data.address }}</div>
+          <div :class="$style['text-address']">{{ data.address }}</div>
         </div>
         <div :class="$style['adj-content']">
           <img
