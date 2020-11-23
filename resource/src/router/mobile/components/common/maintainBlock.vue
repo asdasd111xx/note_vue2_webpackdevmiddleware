@@ -69,10 +69,10 @@ export default {
   created() {
     this.isShow = true;
     this.timer = setTimeout(() => {
-      // this.isShow = false;
-      // setTimeout(() => {
-      //   this.clearMsg();
-      // }, 300);
+      this.isShow = false;
+      setTimeout(() => {
+        this.clearMsg();
+      }, 300);
     }, 2000);
   },
   computed: {
