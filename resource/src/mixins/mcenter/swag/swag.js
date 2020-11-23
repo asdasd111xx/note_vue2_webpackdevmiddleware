@@ -49,8 +49,10 @@ export default {
     this.updateBalance = null;
   },
   created() {
-    this.actionSetUserBalance();
-    this.actionSetSwagBalance();
+    if (this.loginStatus) {
+      this.actionSetUserBalance();
+      this.actionSetSwagBalance();
+    }
     this.actionSetSwagConfig().then(() => {
 
       if (this.swagConfig && this.swagConfig.enable === 0) {
