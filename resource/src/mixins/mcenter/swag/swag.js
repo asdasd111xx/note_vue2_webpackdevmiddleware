@@ -1,7 +1,9 @@
 import { mapActions, mapGetters } from "vuex";
 
+import EST from '@/lib/EST';
 import axios from "axios";
 import bbosRequest from "@/api/bbosRequest";
+import moment from 'moment';
 
 export default {
   props: {},
@@ -27,6 +29,9 @@ export default {
       isSendSubmit: false,
       isMaintainSwag: false,
       showTips: false,
+      estToday: EST(new Date(), '', true),
+      maintainInfo: null,
+
       // banner
       swagBanner: [
         { src: '/static/image/porn1/mcenter/swag/banner_swag.png' }],
@@ -49,47 +54,6 @@ export default {
     this.updateBalance = null;
   },
   created() {
-    if (this.loginStatus) {
-      this.actionSetUserBalance();
-      this.actionSetSwagBalance();
-    }
-    this.actionSetSwagConfig().then(() => {
-
-      if (this.swagConfig && this.swagConfig.enable === 0) {
-        this.isMaintainSwag = true;
-        if (this.$route.name === 'mcenter-swag') {
-          this.actionSetGlobalMessage({
-            msg: `鸭博色播 维护中`,
-            style: 'maintain'
-          })
-        }
-      }
-
-      if (this.$route.name === 'mcenter-swag') {
-        // 可購買的鑽石/金額列表
-        if (this.swagConfig.rates) {
-          this.rateList = this.swagConfig.rates;
-
-          let tmp_d_currentSelRate = JSON.parse(localStorage.getItem("tmp_d_currentSelRate"));
-          if (tmp_d_currentSelRate && this.rateList.find(i => i.amount === tmp_d_currentSelRate.amount &&
-            i.diamond === tmp_d_currentSelRate.diamond)) {
-            this.selectedRate(tmp_d_currentSelRate);
-          }
-          else {
-            // this.selectedRate(this.rateList[0]);
-          }
-        }
-
-        // 驗證手機成功回來
-        if (this.$route.name === 'mcenter-swag' && localStorage.getItem("tmp_d_1")) {
-          this.submit();
-        }
-      }
-    });
-
-    if (this.loginStatus) {
-      this.updateBalance();
-    }
   },
   watch: {
     swagBalance(val) {
@@ -105,6 +69,60 @@ export default {
       'actionSetSwagConfig',
       'actionSetSwagBalance'
     ]),
+    initSwagConfig() {
+      if (this.loginStatus) {
+        this.updateBalance();
+      }
+
+      return this.actionSetSwagConfig().then(() => {
+        // 永久維護
+        if (this.swagConfig && this.swagConfig.enable === 0) {
+          this.isMaintainSwag = true;
+          if (this.$route.name === 'mcenter-swag') {
+            this.actionSetGlobalMessage({
+              msg: `鸭博色播 维护中`,
+              style: 'maintain'
+            })
+          }
+        }
+
+        /* 客製維護區間 */
+        // 區段維護
+        const maintain_start_at = moment(this.swagConfig.maintain_start_at);
+        const maintain_end_at = moment(this.swagConfig.maintain_end_at);
+        const now = moment(this.estToday);
+
+        // 現在時間 相差 維護時間
+        const isMaintain = now.isBefore(maintain_end_at) && now.isAfter(maintain_start_at);
+
+        if (this.swagConfig.enable !== 0 && isMaintain) {
+          this.isMaintainSwag = true;
+        }
+
+        /* 客製維護區間 */
+
+        if (this.$route.name === 'mcenter-swag') {
+          // 可購買的鑽石/金額列表
+          if (this.swagConfig.rates) {
+            this.rateList = this.swagConfig.rates;
+
+            let tmp_d_currentSelRate = JSON.parse(localStorage.getItem("tmp_d_currentSelRate"));
+            if (tmp_d_currentSelRate && this.rateList.find(i => i.amount === tmp_d_currentSelRate.amount &&
+              i.diamond === tmp_d_currentSelRate.diamond)) {
+              this.selectedRate(tmp_d_currentSelRate);
+            }
+            else {
+              // this.selectedRate(this.rateList[0]);
+            }
+          }
+
+          // 驗證手機成功回來
+          if (this.$route.name === 'mcenter-swag' && localStorage.getItem("tmp_d_1")) {
+            this.submit();
+          }
+        }
+      });
+    },
     handleSwagBalance() {
       if (this.isMaintainSwag) {
         if (this.swagConfig.enable === 0) {
@@ -113,17 +131,38 @@ export default {
             style: 'maintain'
           })
         } else {
-          this.actionSetGlobalMessage({
-            msg:
-              `美东时间：<br />${this.swagConfig.maintain_start_at}<div style="text-align:center">｜</div>${this.swagConfig.maintain_end_at}}<br /><br />
-          北京时间：<br />${this.swagConfig.maintain_start_at}<div style="text-align:center">｜</div>${this.swagConfig.maintain_end_at}<br />`,
-            style: 'maintain'
-          })
+          if (this.maintainInfo) {
+            return;
+          }
+
+          const start = moment(this.swagConfig.maintain_start_at).utcOffset(12)
+            .format('YYYY-MM-DD HH:mm:ss');
+          const end = moment(this.swagConfig.maintain_end_at).utcOffset(12)
+            .format('YYYY-MM-DD HH:mm:ss');
+
+          this.maintainInfo = [
+            {
+              title: '-美东时间-',
+              startAt: this.swagConfig.maintain_start_at,
+              endAt: this.swagConfig.maintain_end_at
+            },
+            {
+              title: '-北京时间-',
+              startAt: start,
+              endAt: end
+            }
+          ]
         }
       }
     },
+    handleCloseMaintainInfo() {
+      this.maintainInfo = null;
+    },
     updateBalance() {
       if (this.loginStatus) {
+        this.actionSetUserBalance();
+        this.actionSetSwagBalance();
+
         this.updateBalance = setInterval(() => {
           this.actionSetUserBalance();
           this.actionSetSwagBalance();
@@ -206,6 +245,25 @@ export default {
 
       this.isVerifyForm = noError && hasValue;
     },
+    submitCheck() {
+      if (this.isLoading || this.isMaintainSwag || this.lockedSubmit) {
+        return;
+      }
+      // 送出前檢查欄位
+      bbosRequest({
+        method: "put",
+        url: this.siteConfig.BBOS_DOMIAN + '',
+        reqHeaders: {
+          'Vendor': this.memInfo.user.domain,
+        },
+        params: params,
+      }).then((res) => {
+        this.isLoading = false;
+
+        if (res && res.status === '000') {
+        }
+      })
+    },
     submit() {
       if (this.isLoading || this.isMaintainSwag || this.lockedSubmit) {
         return;
@@ -217,6 +275,7 @@ export default {
         // 充值開關
         if (this.swagConfig && this.swagConfig.recharge_verify === 1) {
           this.showTips = true;
+          this.isLoading = false;
           return;
         }
 

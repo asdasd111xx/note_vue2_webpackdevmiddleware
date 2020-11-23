@@ -9,7 +9,7 @@
         "
       />
       <span> SWAG钱包</span>
-      <div :class="$style['swag-block']">
+      <div :class="$style['swag-block']" @click="handleSwagBalance">
         <template v-if="isMaintainSwag">
           <span :class="$style['maintain-tip-text']">维护中</span>
           <img
@@ -41,6 +41,11 @@
     >
       {{ this.$text("S_INSTRUSTIONS", "使用方法") }}
     </div>
+    <maintain-block
+      v-if="maintainInfo"
+      :content="maintainInfo"
+      @close="handleCloseMaintainInfo"
+    />
   </div>
 </template>
 
@@ -48,11 +53,13 @@
 import { mapGetters, mapActions } from "vuex";
 import balanceTran from '@/components/mcenter/components/balanceTran';
 import mixin from "@/mixins/mcenter/swag/swag";
+import maintainBlock from "@/router/mobile/components/common/maintainBlock";
 
 export default {
   mixins: [mixin],
   components: {
     balanceTran,
+    maintainBlock
   },
   computed: {
     ...mapGetters({
@@ -69,6 +76,9 @@ export default {
       this.swagDiamondBalance = val.balance;
     },
   },
+  created() {
+    this.initSwagConfig();
+  },
   methods: {
     ...mapActions([
       'actionSetGlobalMessage',
@@ -76,7 +86,6 @@ export default {
       'actionGetMemInfoV3',
       'actionSetSwagBalance'
     ]),
-
   },
 };
 </script>

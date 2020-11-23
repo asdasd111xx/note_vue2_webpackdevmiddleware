@@ -12,7 +12,7 @@
     </div>
     <div :class="$style['content']">
       <template v-if="swagConfig && swagConfig.remind">
-        <div v-html="swagConfig.remind" />
+        <div v-html="swagConfig.remind.replace(/\n/g, '<br/>')" />
       </template>
     </div>
   </div>

@@ -48,7 +48,12 @@
         />
         <div>{{ $text("S_MCENTER_WALLET", "中心钱包") }}</div>
         <div :class="$style['money']">
-          {{ membalance.total || "0" }}
+          {{
+            (membalance &&
+              membalance.vendor.default &&
+              membalance.vendor.default.balance) ||
+              "0.00"
+          }}
         </div>
       </div>
 
@@ -122,6 +127,11 @@
     <tipsDiamond />
     <page-loading :is-show="isLoading" />
     <swag-tips v-if="showTips" />
+    <maintain-block
+      v-if="maintainInfo"
+      :content="maintainInfo"
+      @close="handleCloseMaintainInfo"
+    />
   </div>
 </template>
 
@@ -132,6 +142,7 @@ import mixin from "@/mixins/mcenter/swag/swag";
 import tipsDiamond from './tipsDiamond';
 import { Swiper, SwiperSlide } from 'vue-awesome-swiper';
 import swagTips from './swagTips';
+import maintainBlock from "@/router/mobile/components/common/maintainBlock";
 
 export default {
   mixins: [mixin],
@@ -143,7 +154,8 @@ export default {
     Swiper,
     SwiperSlide,
     tipsDiamond,
-    swagTips
+    swagTips,
+    maintainBlock
   },
   computed: {
     ...mapGetters({
@@ -167,7 +179,7 @@ export default {
     },
   },
   created() {
-    // 測試資料
+    this.initSwagConfig();
   },
   methods: {
   }

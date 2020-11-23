@@ -227,6 +227,12 @@
         />
       </div>
     </message>
+
+    <maintain-block
+      v-if="maintainInfo"
+      :content="maintainInfo"
+      @close="handleCloseMaintainInfo"
+    />
   </div>
 </template>
 
@@ -242,11 +248,13 @@ import Vue from 'vue';
 import withdrawAccount from '@/router/mobile/components/common/withdrawAccount/withdrawAccount';
 import yaboRequest from '@/api/yaboRequest';
 import mixin from "@/mixins/mcenter/swag/swag";
+import maintainBlock from "@/router/mobile/components/common/maintainBlock";
 
 export default {
   components: {
     balanceTran,
-    message
+    message,
+    maintainBlock
   },
   mixins: [mixin],
   data() {
@@ -262,7 +270,6 @@ export default {
       isCheckWithdraw: false,
       bonus: {},
       swagDiamondBalance: '0',
-      isMaintainSwag: false,
     };
   },
   computed: {
@@ -397,6 +404,7 @@ export default {
       this.$router.push("/mobile/login");
     }
 
+    this.initSwagConfig();
     this.startTime = Vue.moment(this.estToday)
       .add(-30, "days")
       .format("YYYY-MM-DD");
