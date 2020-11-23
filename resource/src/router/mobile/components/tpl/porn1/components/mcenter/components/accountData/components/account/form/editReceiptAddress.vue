@@ -24,7 +24,7 @@
               默认
             </div>
           </div>
-          <div>{{ data.address }}</div>
+          <div :class="$style['text-address']">{{ data.address }}</div>
         </div>
         <div :class="$style['adj-content']">
           <img
@@ -94,7 +94,10 @@ export default {
     }
   },
   mounted() {
-
+    if (localStorage.getItem('set-address-success')) {
+      this.actionSetGlobalMessage({ msg: '设定成功' });
+      localStorage.removeItem('set-address-success');
+    }
   },
   computed: {
     ...mapGetters({
@@ -109,7 +112,7 @@ export default {
     },
   },
   methods: {
-    ...mapActions([]),
+    ...mapActions(['actionSetGlobalMessage']),
 
     getAddressAllData() {
       axios({
@@ -120,6 +123,10 @@ export default {
           this.addressData = res.data.ret
 
           this.defaultIdx = this.addressData.findIndex((data) => data.is_default)
+          // console.log(this.defaultIdx)
+          if (this.defaultIdx < 0) {
+            this.setDefault(0)
+          }
         }
       }).catch(error => {
 

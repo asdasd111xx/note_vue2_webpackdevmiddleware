@@ -393,13 +393,15 @@ input {
   justify-content: center;
   align-items: center;
   flex-direction: row;
-  margin-top: 20pt;
+  padding-top: 10pt;
+  padding-bottom: 10pt;
+  border-bottom: 1px solid #F8F8F7;
 
   .is-default {
     width: 10%;
 
     .icon-default {
-      position: absolute;
+      position: unset;
       width: 18px;
       height: 18px;
       border: 1px solid #cbced8;
@@ -443,6 +445,10 @@ input {
         justify-content: center;
         align-items: center;
       }
+    }
+
+    .text-address {
+      word-wrap: break-word;
     }
   }
 
