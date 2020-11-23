@@ -31,6 +31,7 @@ export default {
       showTips: false,
       estToday: EST(new Date(), '', true),
       maintainInfo: null,
+      updateBalanceTimer: null,
 
       // banner
       swagBanner: [
@@ -50,8 +51,8 @@ export default {
     }),
   },
   beforeDestroy() {
-    clearInterval(this.updateBalance);
-    this.updateBalance = null;
+    clearInterval(this.updateBalanceTimer);
+    this.updateBalanceTimer = null;
   },
   created() {
   },
@@ -88,9 +89,10 @@ export default {
 
         /* 客製維護區間 */
         // 區段維護
-        const maintain_start_at = moment(this.swagConfig.maintain_start_at);
-        const maintain_end_at = moment(this.swagConfig.maintain_end_at);
+        const maintain_start_at = moment(this.swagConfig.maintain_start_at).add(-12, 'hours');
+        const maintain_end_at = moment(this.swagConfig.maintain_end_at).add(-12, 'hours');
         const now = moment(this.estToday);
+
         // 現在時間 相差 維護時間
         const isMaintain = now.isBefore(maintain_end_at) && now.isAfter(maintain_start_at);
 
@@ -134,21 +136,21 @@ export default {
             return;
           }
 
-          const start = moment(this.swagConfig.maintain_start_at).utcOffset(12)
+          const start = moment(this.swagConfig.maintain_start_at).utcOffset(-12)
             .format('YYYY-MM-DD HH:mm:ss');
-          const end = moment(this.swagConfig.maintain_end_at).utcOffset(12)
+          const end = moment(this.swagConfig.maintain_end_at).utcOffset(-12)
             .format('YYYY-MM-DD HH:mm:ss');
 
           this.maintainInfo = [
             {
               title: '-美东时间-',
-              startAt: this.swagConfig.maintain_start_at,
-              endAt: this.swagConfig.maintain_end_at
+              startAt: start,
+              endAt: end
             },
             {
               title: '-北京时间-',
-              startAt: start,
-              endAt: end
+              startAt: this.swagConfig.maintain_start_at,
+              endAt: this.swagConfig.maintain_end_at
             }
           ]
         }
@@ -162,7 +164,7 @@ export default {
         this.actionSetUserBalance();
         this.actionSetSwagBalance();
 
-        this.updateBalance = setInterval(() => {
+        this.updateBalanceTimer = setInterval(() => {
           this.actionSetUserBalance();
           this.actionSetSwagBalance();
         }, 40000);
