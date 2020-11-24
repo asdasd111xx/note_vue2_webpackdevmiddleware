@@ -400,15 +400,7 @@
         </span>
       </div>
       <!-- 優惠提示 -->
-      <div
-        v-if="
-          (isSelectedUSDT ||
-            selectedCard.bank_id == 2009 ||
-            selectedCard.bank_id == 2016) &&
-            selectedCard.offer_percent > 0
-        "
-        :class="[$style['offer']]"
-      >
+      <div v-if="hasOffer" :class="[$style['offer']]">
         <span>
           使用{{ selectedCard.name }}出款，额外赠送{{ offer() }}元(CNY)优惠
         </span>
@@ -561,6 +553,7 @@
           :swift-code="selectedCard.swift_code"
           :bonus-offer="offer()"
           :withdraw-name="selectedCard.name"
+          :has-offer="hasOffer"
           @close="closePopup"
           @submit="handleSubmit"
           @save="saveCurrentValue(true)"
@@ -1027,6 +1020,14 @@ export default {
         obj.wallet = true;
         return obj;
       }
+    },
+    hasOffer() {
+      return (
+        (this.isSelectedUSDT ||
+          this.selectedCard.bank_id == 2009 ||
+          this.selectedCard.bank_id == 2016) &&
+        this.selectedCard.offer_percent > 0
+      );
     }
   },
   methods: {
@@ -1704,9 +1705,9 @@ export default {
       if (
         this.selectedCard.offer_percent === "0" ||
         this.withdrawValue === 0 ||
-        bonusOffer === 0
+        bonusOffer <= 0
       ) {
-        return "--";
+        return 0;
       } else if (bonusOffer >= this.selectedCard.offer_limit) {
         return this.selectedCard.offer_limit;
       } else {

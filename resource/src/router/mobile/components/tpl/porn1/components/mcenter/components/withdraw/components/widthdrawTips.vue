@@ -80,14 +80,18 @@
               </div>
 
               <div
-                v-if="bonusOffer !== '--'"
+                v-if="hasOffer"
                 :class="[$style['check-cell'], $style['custom-color']]"
               >
                 <span :class="$style['sub-title']">
                   {{ withdrawName }}出款额外赠送
                 </span>
                 <span :class="$style['money']">
-                  {{ getDeductionNumber(bonusOffer) }}
+                  {{
+                    +bonusOffer && +bonusOffer > 0
+                      ? getDeductionNumber(bonusOffer)
+                      : "0.00"
+                  }}
                 </span>
               </div>
 
@@ -159,8 +163,8 @@ export default {
       default: false
     },
     actualMoney: {
-      type: Number,
-      default: 0
+      type: Number | String,
+      default: "0.00"
     },
     cryptoMoney: {
       type: String,
@@ -179,12 +183,16 @@ export default {
       default: ""
     },
     bonusOffer: {
-      type: String | Number, // "--" or Number
-      default: ""
+      type: String | Number, // "0.00" or Number
+      default: "0.00"
     },
     withdrawName: {
       type: String,
       default: ""
+    },
+    hasOffer: {
+      type: Boolean,
+      default: false
     }
   },
   mounted() {
