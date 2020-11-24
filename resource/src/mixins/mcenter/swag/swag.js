@@ -70,8 +70,8 @@ export default {
       'actionSetSwagConfig',
       'actionSetSwagBalance'
     ]),
-    initSwagConfig() {
-      if (this.loginStatus) {
+    initSwagConfig(onlyCheckMaintain = false) {
+      if (this.loginStatus && !onlyCheckMaintain) {
         this.updateBalance();
       }
 
@@ -100,8 +100,11 @@ export default {
           this.isMaintainSwag = true;
         }
 
-        /* 客製維護區間 */
+        if (onlyCheckMaintain) {
+          return;
+        }
 
+        /* 客製維護區間 */
         if (this.$route.name === 'mcenter-swag') {
           // 可購買的鑽石/金額列表
           if (this.swagConfig.rates) {
@@ -188,6 +191,9 @@ export default {
                 this.balanceBackLock = false;
               }, 1500)
             }
+
+            this.actionSetUserBalance();
+            this.actionSetSwagBalance();
           })
           .catch(res => {
             if (res.response && res.response.data && res.response.data.msg) {

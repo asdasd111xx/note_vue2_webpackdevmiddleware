@@ -102,6 +102,11 @@
         </div>
       </div>
       <page-loading :is-show="isShowLoading" />
+      <maintain-block
+        v-if="maintainInfo"
+        :content="maintainInfo"
+        @close="handleCloseMaintainInfo"
+      />
     </div>
   </mobile-container>
 </template>
@@ -113,11 +118,15 @@ import mobileContainer from '../common/mobileContainer';
 import openGame from '@/lib/open_game';
 import pornRequest from '@/api/pornRequest';
 import goLangApiRequest from '@/api/goLangApiRequest';
+import mixin from "@/mixins/mcenter/swag/swag";
+import maintainBlock from "@/router/mobile/components/common/maintainBlock";
 
 export default {
+  mixins: [mixin],
   components: {
     pageLoading: () => import(/* webpackChunkName: 'pageLoading' */ '@/router/mobile/components/common/pageLoading'),
-    mobileContainer
+    mobileContainer,
+    maintainBlock
   },
   data() {
     return {
@@ -136,6 +145,7 @@ export default {
     }),
   },
   created() {
+    this.initSwagConfig(true);
     this.currentTab = this.$route.query.type ? this.$route.query.type : 'ballLive';
 
     pornRequest({
@@ -202,40 +212,43 @@ export default {
     handleClickType(type) {
       if (type === 'pornlive') {
         if (this.loginStatus) {
-
-          let userId = 'guest';
-          if (this.memInfo && this.memInfo.user && this.memInfo.user.id && this.memInfo.user.id !== 0) {
-            userId = this.memInfo.user.id;
-          }
-
-          goLangApiRequest({
-            method: 'get',
-            url: `${this.siteConfig.YABO_GOLANG_API_DOMAIN}/ThirdParty/SWAG/${userId}`,
-            headers: {
-              'x-domain': this.memInfo.user.domain
+          if (this.isMaintainSwag) {
+            this.handleSwagBalance();
+            return;
+          } else {
+            let userId = 'guest';
+            if (this.memInfo && this.memInfo.user && this.memInfo.user.id && this.memInfo.user.id !== 0) {
+              userId = this.memInfo.user.id;
             }
-          }).then(res => {
-            if (res && res.status !== '000') {
-              if (res.msg) {
-                this.actionSetGlobalMessage({ msg: res.msg });
+
+            goLangApiRequest({
+              method: 'get',
+              url: `${this.siteConfig.YABO_GOLANG_API_DOMAIN}/ThirdParty/SWAG/${userId}`,
+              headers: {
+                'x-domain': this.memInfo.user.domain
               }
-              return;
-            }
-            else {
-              localStorage.setItem('iframe-third-url', res.data);
-              localStorage.setItem('iframe-third-origin', 'liveStream?type=ballLive');
-              this.$router.push(`/mobile/iframe/SWAG?&hasFooter=false&hasHeader=true&fullscreen=true`);
-              return;
-            }
-          })
-          return;
+            }).then(res => {
+              if (res && res.status !== '000') {
+                if (res.msg) {
+                  this.actionSetGlobalMessage({ msg: res.msg });
+                }
+                return;
+              }
+              else {
+                localStorage.setItem('iframe-third-url', res.data);
+                localStorage.setItem('iframe-third-origin', 'liveStream?type=ballLive');
+                this.$router.push(`/mobile/iframe/SWAG?&hasFooter=false&hasHeader=true&fullscreen=true`);
+                return;
+              }
+            })
+          }
         } else {
           this.$router.push('/mobile/login');
           return;
         }
-
+      } else {
+        this.currentTab = type;
       }
-      this.currentTab = type;
     }
   }
 };
