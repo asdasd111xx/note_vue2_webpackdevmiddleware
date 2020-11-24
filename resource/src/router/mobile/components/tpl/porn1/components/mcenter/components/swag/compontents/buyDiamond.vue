@@ -51,7 +51,7 @@
           {{
             (membalance &&
               membalance.vendor.default &&
-              membalance.vendor.default.balance) ||
+              membalance.vendor.default.amount) ||
               "0.00"
           }}
         </div>
