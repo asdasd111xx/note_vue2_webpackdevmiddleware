@@ -74,7 +74,6 @@ export default {
       if (this.loginStatus && !onlyCheckMaintain) {
         this.updateBalance();
       }
-
       return this.actionSetSwagConfig().then(() => {
         // 永久維護
         if (this.swagConfig && this.swagConfig.enable === 0) {
@@ -139,9 +138,9 @@ export default {
             return;
           }
 
-          const start = moment(this.swagConfig.maintain_start_at).utcOffset(-12)
+          const start = moment(this.swagConfig.maintain_start_at).add(-12, 'hours')
             .format('YYYY-MM-DD HH:mm:ss');
-          const end = moment(this.swagConfig.maintain_end_at).utcOffset(-12)
+          const end = moment(this.swagConfig.maintain_end_at).add(-12, 'hours')
             .format('YYYY-MM-DD HH:mm:ss');
 
           this.maintainInfo = [
