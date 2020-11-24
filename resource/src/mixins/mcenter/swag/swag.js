@@ -275,84 +275,108 @@ export default {
         return;
       }
       this.isLoading = true;
-
       this.actionSetSwagConfig().then(() => {
 
         // 充值開關
         if (this.swagConfig && this.swagConfig.recharge_verify === 1) {
-          this.showTips = true;
-          this.isLoading = false;
-          return;
-        }
-
-        // 手機驗證開關
-        if (this.swagConfig &&
-          this.swagConfig.phone_verify &&
-          +this.swagConfig.phone_verify === 1 &&
-          !localStorage.getItem("tmp_d_1")) {
-          this.saveCurrentValue();
-          this.$router.push(
-            "/mobile/mcenter/accountData/phone?redirect=swag"
-          );
-          return;
-        }
-
-        // 暫存選擇欄位 簡訊驗證
-        let tmp_currentSelRate = {};
-        let params = {
-          "lang": "zh-cn",
-          amount: this.currentSelRate.amount,
-          diamond: this.currentSelRate.diamond,
-          keyring: localStorage.getItem("tmp_d_1"), // 手機驗證成功後回傳
-        }
-
-        if (localStorage.getItem('tmp_d_currentSelRate')) {
-          tmp_currentSelRate = JSON.parse(localStorage.getItem('tmp_d_currentSelRate'));
-          params['amount'] = tmp_currentSelRate.amount;
-          params['diamond'] = tmp_currentSelRate.diamond;
-        } else {
-          params['amount'] = this.currentSelRate.amount;
-          params['diamond'] = this.currentSelRate.diamond;
-        }
-
-        if (!this.isSendSubmit && params['amount'] && !this.lockedSubmit) {
-          this.isSendSubmit = true;
-
-          bbosRequest({
-            method: "put",
-            url: this.siteConfig.BBOS_DOMIAN + '/Ext/Swag/Vendor/Transfer',
-            reqHeaders: {
-              'Vendor': this.memInfo.user.domain,
-            },
-            params: params,
-          }).then((res) => {
-            this.isLoading = false;
-
-            if (res && res.status === '000') {
-
+          const checkDeposit = (callback) => {
+            return axios({
+              method: 'get',
+              url: '/api/v1/c/user-stat/deposit-withdraw',
+            }).then(res => {
+              if (res && res.data) {
+                const depositCount = Number(res.data.ret.deposit_count);
+                if (depositCount <= 0) {
+                  this.showTips = true;
+                  this.isLoading = false;
+                  callback(false);
+                  return;
+                } else {
+                  callback(true);
+                  return;
+                }
+              }
+            }).catch(error => {
               this.actionSetGlobalMessage({
-                msg: '兑换成功',
-                code: res.code,
-                origin: 'mcenter/swag'
+                msg: error.response.msg,
               });
-            } else {
-              this.actionSetGlobalMessage({
-                msg: res.msg,
-                code: res.code,
-                origin: 'mcenter/swag'
-              });
+            })
+          }
+
+          checkDeposit((result) => {
+            if (result) {
+              // 手機驗證開關
+              if (this.swagConfig &&
+                this.swagConfig.phone_verify &&
+                +this.swagConfig.phone_verify === 1 &&
+                !localStorage.getItem("tmp_d_1")) {
+                this.saveCurrentValue();
+                this.$router.push(
+                  "/mobile/mcenter/accountData/phone?redirect=swag"
+                );
+                return;
+              }
+
+              // 暫存選擇欄位 簡訊驗證
+              let tmp_currentSelRate = {};
+              let params = {
+                "lang": "zh-cn",
+                amount: this.currentSelRate.amount,
+                diamond: this.currentSelRate.diamond,
+                keyring: localStorage.getItem("tmp_d_1"), // 手機驗證成功後回傳
+              }
+
+              if (localStorage.getItem('tmp_d_currentSelRate')) {
+                tmp_currentSelRate = JSON.parse(localStorage.getItem('tmp_d_currentSelRate'));
+                params['amount'] = tmp_currentSelRate.amount;
+                params['diamond'] = tmp_currentSelRate.diamond;
+              } else {
+                params['amount'] = this.currentSelRate.amount;
+                params['diamond'] = this.currentSelRate.diamond;
+              }
+
+              if (!this.isSendSubmit && params['amount'] && !this.lockedSubmit) {
+                this.isSendSubmit = true;
+
+                bbosRequest({
+                  method: "put",
+                  url: this.siteConfig.BBOS_DOMIAN + '/Ext/Swag/Vendor/Transfer',
+                  reqHeaders: {
+                    'Vendor': this.memInfo.user.domain,
+                  },
+                  params: params,
+                }).then((res) => {
+                  this.isLoading = false;
+
+                  if (res && res.status === '000') {
+
+                    this.actionSetGlobalMessage({
+                      msg: '兑换成功',
+                      code: res.code,
+                      origin: 'mcenter/swag'
+                    });
+                  } else {
+                    this.actionSetGlobalMessage({
+                      msg: res.msg,
+                      code: res.code,
+                      origin: 'mcenter/swag'
+                    });
+                  }
+
+                  this.actionSetUserBalance();
+                  this.actionSetSwagBalance();
+
+                  setTimeout(() => {
+                    this.isSendSubmit = false;
+                  }, 1500)
+                })
+
+                localStorage.removeItem("tmp_d_1");
+                localStorage.removeItem("tmp_d_currentSelRate");
+              }
             }
 
-            this.actionSetUserBalance();
-            this.actionSetSwagBalance();
-
-            setTimeout(() => {
-              this.isSendSubmit = false;
-            }, 1500)
           })
-
-          localStorage.removeItem("tmp_d_1");
-          localStorage.removeItem("tmp_d_currentSelRate");
         }
       });
     },
