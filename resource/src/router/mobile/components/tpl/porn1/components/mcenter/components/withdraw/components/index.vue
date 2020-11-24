@@ -409,11 +409,9 @@
         "
         :class="[$style['offer']]"
       >
-        <span
-          >使用{{ selectedCard.name }}出款，额外赠送{{
-            offer()
-          }}元(CNY)优惠</span
-        >
+        <span>
+          使用{{ selectedCard.name }}出款，额外赠送{{ offer() }}元(CNY)优惠
+        </span>
       </div>
       <!-- 到帳金額 -->
       <div
@@ -436,7 +434,7 @@
         </span>
         <span :class="$style['money-currency']">¥</span>
         <span :class="$style['money-currency']">
-          {{ checkActual() }}
+          {{ actualMoneyPlusOffer() }}
         </span>
 
         <span :class="[$style['serial']]" @click="toggleSerial"> 详情 </span>
@@ -555,7 +553,7 @@
       <!-- 提款前提示-->
       <template v-if="showPopStatus.type === 'check'">
         <widthdraw-tips
-          :actual-money="Number(checkActual())"
+          :actual-money="actualMoneyPlusOffer()"
           :crypto-money="cryptoMoney"
           :withdraw-value="+withdrawValue"
           :type="widthdrawTipsType"
@@ -1570,7 +1568,7 @@ export default {
     convertCryptoMoney() {
       let _params = {
         type: 2,
-        amount: this.actualMoney
+        amount: this.actualMoneyPlusOffer()
       };
 
       if (
@@ -1699,30 +1697,29 @@ export default {
       };
     },
     offer() {
-      let bonusoffer = Math.round(
+      let bonusOffer = Math.round(
         (this.selectedCard.offer_percent * this.withdrawValue) / 100
       );
+
       if (
-        this.selectedCard.offer_percent == 0 ||
-        this.withdrawValue == 0 ||
-        bonusoffer == 0
+        this.selectedCard.offer_percent === "0" ||
+        this.withdrawValue === 0 ||
+        bonusOffer === 0
       ) {
         return "--";
-      } else if (bonusoffer >= this.selectedCard.offer_limit) {
+      } else if (bonusOffer >= this.selectedCard.offer_limit) {
         return this.selectedCard.offer_limit;
       } else {
-        return bonusoffer;
+        return bonusOffer;
       }
     },
-    checkActual() {
+    actualMoneyPlusOffer() {
       if (this.actualMoney) {
         this.verification("withdrawValue", this.withdrawValue);
       }
 
-      if (this.offer() !== "--") {
-        return Number(Number(this.actualMoney) + Number(this.offer())).toFixed(
-          2
-        );
+      if (+this.offer()) {
+        return Number(+this.actualMoney + +this.offer()).toFixed(2);
       } else {
         return this.actualMoney.toFixed(2);
       }

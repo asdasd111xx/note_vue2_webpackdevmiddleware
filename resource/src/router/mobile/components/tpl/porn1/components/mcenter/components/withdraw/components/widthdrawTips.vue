@@ -87,7 +87,7 @@
                   {{ withdrawName }}出款额外赠送
                 </span>
                 <span :class="$style['money']">
-                  {{ bonusOffer }}
+                  {{ getDeductionNumber(bonusOffer) }}
                 </span>
               </div>
 
@@ -179,7 +179,7 @@ export default {
       default: ""
     },
     bonusOffer: {
-      type: String | Number,
+      type: String | Number, // "--" or Number
       default: ""
     },
     withdrawName: {
