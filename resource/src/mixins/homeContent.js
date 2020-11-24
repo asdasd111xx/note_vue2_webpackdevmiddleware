@@ -590,9 +590,8 @@ export default {
                   }
                   else {
                     localStorage.setItem('iframe-third-url', res.data);
-                    localStorage.setItem('iframe-third-url-title', game.name);
                     localStorage.setItem('iframe-third-origin', 'home');
-                    this.$router.push(`/mobile/iframe/${game.type}?&hasFooter=false&hasHeader=true&fullscreen=true`);
+                    this.$router.push(`/mobile/iframe/SWAG?&hasFooter=false&hasHeader=true`);
                     return;
                   }
                 })

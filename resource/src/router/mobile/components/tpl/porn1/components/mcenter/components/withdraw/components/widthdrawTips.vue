@@ -6,8 +6,8 @@
         :class="[
           $style['check-container'],
           {
-            [$style['deposit']]: type === 'deposit',
-          },
+            [$style['deposit']]: type === 'deposit'
+          }
         ]"
       >
         <div :class="$style['check-header']">
@@ -81,12 +81,14 @@
 
               <div
                 v-if="bonusOffer !== '--'"
-                :class="[$style['check-cell'], $style['check-crypto']]"
+                :class="[$style['check-cell'], $style['custom-color']]"
               >
-                <span :class="$style['sub-title']"
-                  >{{ withdrawName }}出款额外赠送</span
-                >
-                <span :class="$style['money1']">{{ bonusOffer }}</span>
+                <span :class="$style['sub-title']">
+                  {{ withdrawName }}出款额外赠送
+                </span>
+                <span :class="$style['money']">
+                  {{ getDeductionNumber(bonusOffer) }}
+                </span>
               </div>
 
               <div :class="[$style['check-cell'], $style['check-actual']]">
@@ -98,7 +100,7 @@
 
               <div
                 v-if="hasCrypto"
-                :class="[$style['check-cell'], $style['check-crypto']]"
+                :class="[$style['check-cell'], $style['custom-color']]"
               >
                 <span :class="$style['sub-title']"> USDT到帐 </span>
                 <span :class="$style['crypto-money']">
@@ -177,7 +179,7 @@ export default {
       default: ""
     },
     bonusOffer: {
-      type: String,
+      type: String | Number, // "--" or Number
       default: ""
     },
     withdrawName: {

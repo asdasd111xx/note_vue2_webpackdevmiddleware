@@ -167,7 +167,7 @@ export default {
 
     goToEditAddress(idx) {
       this.$router.push({
-        path: `/mobile/mcenter/accountData/addAddress?id=${this.addressData[idx].id}&is_default=${this.addressData[idx].is_default}&name=${this.addressData[idx].name}&phone=${this.addressData[idx].phone}&address=${this.addressData[idx].address}`
+        path: `/mobile/mcenter/accountData/addAddress?index=${idx}`
       });
     },
     goToAddAddress() {
