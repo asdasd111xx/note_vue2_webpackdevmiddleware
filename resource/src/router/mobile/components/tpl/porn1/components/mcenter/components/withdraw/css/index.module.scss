@@ -422,10 +422,11 @@
       font-weight: 400;
     }
 
+    // For Crypto
     .crypto-money::after {
       content: "USDT";
       color: #e9dacc;
-      padding-left: 10px;
+      padding-left: 1px;
       font-weight: 400;
     }
   }

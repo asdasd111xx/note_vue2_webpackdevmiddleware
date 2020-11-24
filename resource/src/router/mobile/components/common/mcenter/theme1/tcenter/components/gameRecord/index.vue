@@ -50,7 +50,7 @@
             </div>
             <select v-model="inqGame" :class="$style.select">
               <option
-                v-for="info in gameList"
+                v-for="info in allvendor"
                 :key="`list-${info.value}`"
                 :value="info.value"
               >
@@ -167,6 +167,8 @@ import EST from "@/lib/EST";
 import gameRecord from "@/components/common/mcenter/gameRecord";
 import table1st from "./table1st";
 import table2nd from "./table2nd";
+import bbosRequest from "@/api/bbosRequest";
+import axios from "axios";
 
 export default {
   components: {
@@ -195,6 +197,7 @@ export default {
       inqStart: Vue.moment(now).format("YYYY-MM-DD"),
       inqEnd: Vue.moment(now).format("YYYY-MM-DD"),
       checkDate: true,
+      allvendor: [{ text: "全部", value: "" }]
     };
   },
   computed: {
@@ -207,6 +210,9 @@ export default {
         this[`$style_${this.siteConfig.MOBILE_WEB_TPL}`] || this.$style_porn1;
       return style;
     },
+  },
+  created() {
+    this.gameVendor();
   },
   methods: {
     ...mapActions(["actionSetGlobalMessage"]),
@@ -230,6 +236,35 @@ export default {
       }
 
     },
+    gameVendor() {
+      // bbosRequest({
+      //   method: "get",
+      //   url: this.siteConfig.BBOS_DOMIAN +
+      //     "/Vender/List",
+      //   reqHeaders: {
+      //     Vendor: this.memInfo.user.domain
+      //   },
+      //   params: {
+      //     lang: "zh-cn"
+      //   }
+      // }).then(res => {
+      //   this.allvendor = res.data;
+      // })
+
+      axios({
+        method: 'get',
+        url: '/api/v1/c/vendors'
+      }).then((res) => {
+        var bbin = { text: "BBIN", value: "bbin" };
+        for (var i = 0; i < res.data.ret.length; i++) {
+          if (res.data.ret[i].vendor === "bbin") {
+            this.allvendor.push(bbin);
+          }
+          let obj = { text: `${res.data.ret[i].alias}`, value: `${res.data.ret[i].vendor}` };
+          this.allvendor.push(obj);
+        };
+      })
+    }
   },
   filters: {
     dateFormat(value) {
