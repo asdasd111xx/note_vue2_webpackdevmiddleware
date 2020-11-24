@@ -7,6 +7,10 @@
   background-color: $main_background_white1;
 }
 
+.balance-tran-container {
+  height: 100%;
+}
+
 // 中心錢包
 .balance-wrap-wrap {
   background-color: $main_white_color1;
@@ -403,23 +407,18 @@
       font-weight: 700;
     }
 
-    &.check-crypto {
+    &.custom-color {
       color: #be9e7f;
     }
 
     > span:last-child {
       float: right;
     }
+
     .money::after {
       content: "CNY";
       color: #cbced8;
       padding-left: 10px;
-      font-weight: 400;
-    }
-    .money1::after {
-      content: "CNY";
-      color: #cbced8;
-      padding-left: 14px;
       font-weight: 400;
     }
 
