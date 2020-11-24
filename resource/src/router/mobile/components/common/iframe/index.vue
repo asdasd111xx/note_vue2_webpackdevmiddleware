@@ -238,11 +238,7 @@ export default {
           this.$route.params.page.toUpperCase() ||
           '',
         onClick: () => {
-          if (window.parent) {
-            window.parent.history.back();
-          } else {
-            this.$router.push(this.originUrl);
-          }
+          this.$router.push(this.originUrl);
           return;
         }
       };
@@ -326,11 +322,7 @@ export default {
             return;
 
           case 'EVENT_THIRDPARTY_CLOSE':
-            if (window.parent) {
-              window.parent.history.back();
-            } else {
-              this.$router.push(this.originUrl);
-            }
+            this.$router.push(this.originUrl);
             return;
             return;
 
