@@ -6,8 +6,8 @@
         :class="[
           $style['check-container'],
           {
-            [$style['deposit']]: type === 'deposit',
-          },
+            [$style['deposit']]: type === 'deposit'
+          }
         ]"
       >
         <div :class="$style['check-header']">
@@ -177,7 +177,7 @@ export default {
       default: ""
     },
     bonusOffer: {
-      type: String,
+      type: String | Number,
       default: ""
     },
     withdrawName: {
