@@ -112,7 +112,7 @@ export default {
     created() {
         localStorage.removeItem('is-open-game');
         this.showPromotion = this.loginStatus ? this.memInfo.user.show_promotion : true;
-        this.initSwagConfig();
+        this.initSwagConfig(true);
     },
     mounted() {
         $(window).on('resize', this.onResize);

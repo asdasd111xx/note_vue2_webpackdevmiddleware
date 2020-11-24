@@ -93,7 +93,7 @@ export default {
       return moment(date).format("YYYY-MM-DD");
     },
     getTime(date) {
-      return moment(date).format("hh:mm:ss");
+      return moment(date).format("HH:mm:ss");
     },
     clearMsg() {
       this.$emit('close');
