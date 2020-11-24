@@ -182,6 +182,7 @@ export default {
       // 國碼
       phoneHead: '+86',
       phoneHeadOption: [],
+      allAddressData: [],
       addressInfo: {
         id: "",
         is_default: false,
@@ -239,6 +240,7 @@ export default {
     }
   },
   created() {
+    //取得所有地址資料
     axios({
       method: 'get',
       url: '/api/v1/c/player/address',
@@ -248,24 +250,29 @@ export default {
         if (this.isFirstAdd) {
           this.newAddressInfo.is_default = true;
           this.addressInfo.is_default = true;
+        } else {
+          this.allAddressData = res.data.ret
+          if (this.$route.query && this.$route.query.index) {//編輯
+            this.headerTitle = "编辑收货地址";
+            this.addressInfo = this.allAddressData[this.$route.query.index];
+            // this.addressInfo.is_default = this.addressInfo.is_default === "true";
+            this.phoneHead = "+" + this.addressInfo.phone.split("-")[0];
+            this.addressInfo.phone = this.addressInfo.phone.split("-")[1];
+            this.newAddressInfo = this.addressInfo;
+            this.isAdd = false;
+            if (this.allAddressData.length < 2 && this.$route.query.index === "0") {
+              this.isFirstAdd = true;
+            }
+          } else {//新增
+            this.headerTitle = "添加收货地址";
+            this.isAdd = true;
+          }
         }
+
       }
     }).catch(error => {
 
     })
-
-    if (this.$route.query && this.$route.query.id) {//編輯
-      this.headerTitle = "编辑收货地址";
-      this.addressInfo = this.$route.query
-      this.addressInfo.is_default = this.addressInfo.is_default === "true";
-      this.phoneHead = "+" + this.addressInfo.phone.split("-")[0];
-      this.addressInfo.phone = this.addressInfo.phone.split("-")[1];
-      this.newAddressInfo = this.addressInfo;
-      this.isAdd = false;
-    } else {//新增
-      this.headerTitle = "添加收货地址";
-      this.isAdd = true;
-    }
 
     ajax({
       method: 'get',
@@ -354,7 +361,33 @@ export default {
             }
           });
         } else {
-          // 編輯一筆收貨地址
+          //原為默認地址, 保存時,為"關閉默認"時, 需將第1筆地址(不含此筆)設為"默認" (例如:本筆為第一筆地址時, 需將第二筆設為默認)
+          if (this.$route.query.index === "0"
+            && this.addAddress.is_default
+            && !this.newAddressInfo.is_default
+            && this.allAddressData.length >= 2) {
+            //第二筆設為默認
+            ajax({
+              method: 'put',
+              url: `/api/v1/c/player/address/${this.newAddressInfo.id}`,
+              params: {
+                id: this.allAddressData[1].id,
+                is_default: true,
+                name: this.allAddressData[1].name,
+                phone: `${this.allAddressData[1].phone}`,
+                address: this.allAddressData[1].address
+              },
+              errorAlert: false,
+              success: (response) => {
+
+              },
+              fail: (response) => {
+
+              }
+            });
+          }
+
+          // 編輯收貨地址
           ajax({
             method: 'put',
             url: `/api/v1/c/player/address/${this.newAddressInfo.id}`,

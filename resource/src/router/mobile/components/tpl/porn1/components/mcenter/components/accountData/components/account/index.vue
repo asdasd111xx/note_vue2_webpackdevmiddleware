@@ -77,7 +77,7 @@
                     <span
                       :class="[
                         $style['field-text'],
-                        { [$style.yet]: field.status === 'yet' },
+                        { [$style.yet]: field.status === 'yet' }
                       ]"
                       >{{
                         //提現密碼*呈現
@@ -113,7 +113,7 @@
             :class="[
               $style['account-data-field'],
               $style['address-border'],
-              'clearfix',
+              'clearfix'
             ]"
             @click="handleClick(item)"
           >
@@ -239,9 +239,16 @@ export default {
         });
         return;
       } else if (field.key === "receiptAddress") {
-        this.$router.push({
-          path: `/mobile/mcenter/accountData/${field.key}`
-        });
+        if (this.addressInfo.id === '') {
+          this.$router.push({
+            path: `/mobile/mcenter/accountData/addAddress`
+          });
+        } else {
+          this.$router.push({
+            path: `/mobile/mcenter/accountData/${field.key}`
+          });
+        }
+
         return;
       }
       this.currentEdit = field.key;
