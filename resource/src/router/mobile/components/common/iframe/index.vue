@@ -234,7 +234,7 @@ export default {
         title: query.title || localStorage.getItem('iframe-third-url-title') || '',
         hasFunc: query.func === undefined ? true : query.func === 'true',
         onClick: () => {
-          this.$router.push(this.originUrl);
+          this.$router.replace(this.originUrl);
           return;
         }
       };
@@ -318,8 +318,7 @@ export default {
             return;
 
           case 'EVENT_THIRDPARTY_CLOSE':
-            this.$router.push(this.originUrl);
-            return;
+            this.$router.replace(this.originUrl);
             return;
 
           // 避免迴圈重複本站
