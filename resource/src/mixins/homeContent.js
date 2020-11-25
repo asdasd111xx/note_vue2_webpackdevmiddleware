@@ -771,7 +771,7 @@ export default {
             }
           };
 
-          openGame({ kind: game.kind, vendor: game.vendor, code: game.code, gameType: game.type }, openGameSuccessFunc, openGameFailFunc);
+          openGame({ kind: game.kind, vendor: game.vendor, code: game.code, gameType: game.type, gameName: game.name }, openGameSuccessFunc, openGameFailFunc);
           return;
       }
     },
