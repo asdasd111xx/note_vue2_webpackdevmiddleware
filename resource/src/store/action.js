@@ -1715,10 +1715,6 @@ export const actionSetAgentUserConfig = ({ commit }) => ajax({
 
 // SWAG設定
 export const actionSetSwagConfig = ({ commit, state }, data) => {
-  const hasLogin = Vue.cookie.get('cid');
-  if (!hasLogin) {
-    return;
-  }
   let configInfo;
   if (state.webInfo.is_production) {
     configInfo = siteConfigOfficial[`site_${state.webInfo.alias}`] || siteConfigOfficial.preset;
