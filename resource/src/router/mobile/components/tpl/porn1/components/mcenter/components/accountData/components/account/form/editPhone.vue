@@ -452,6 +452,11 @@ export default {
           console.log(error.response)
 
           if (error.response.data && error.response.data.msg) {
+            // SWAG需求特利暫時調整
+            if (this.isfromSWAG && error.response.data.code == 'C20190') {
+              this.tipMsg = '尚未绑定电话，请先至会员资料设定';
+              return;
+            }
             this.tipMsg = error.response.data.msg;
           } else {
             this.tipMsg = error.response.data;

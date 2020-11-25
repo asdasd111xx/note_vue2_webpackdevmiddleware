@@ -80,7 +80,7 @@ export default {
           this.isMaintainSwag = true;
           if (this.$route.name === 'mcenter-swag') {
             this.actionSetGlobalMessage({
-              msg: `鸭博色播 维护中`,
+              msg: `SWAG 维护中`,
               style: 'maintain'
             })
           }

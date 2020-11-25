@@ -64,18 +64,22 @@ export default {
     title() {
       switch (this.type.toLocaleLowerCase()) {
         case "withdraw":
+          document.title = this.$text("S_RECENTLY_WITHDRAW", "近10笔提现记录");
           return this.$text("S_RECENTLY_WITHDRAW", "近10笔提现记录");
           break;
 
         case "deposit":
+          document.title = this.$text("S_RECENTLY_DEPOSIT", "8日内充值记录");
           return this.$text("S_RECENTLY_DEPOSIT", "8日内充值记录");
           break;
 
         case "buymethod":
+          document.title = 'SWAG 钻石购买说明';
           return "SWAG 钻石购买说明";
           break;
 
         case "usage":
+          document.title = 'SWAG 钻石使用方法';
           return "SWAG 钻石使用方法";
           break;
 
