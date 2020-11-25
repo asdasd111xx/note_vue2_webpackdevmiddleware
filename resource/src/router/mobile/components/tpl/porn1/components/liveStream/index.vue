@@ -12,9 +12,7 @@
               :src="$getCdnPath('/static/image/_new/live/icon_live_swag_n.png')"
             />
           </div>
-          <span :class="[$style['live-tab-text']]">{{
-            $text("S_YABO_PORN", "鸭博色播")
-          }}</span>
+          <span :class="[$style['live-tab-text']]">{{ "SWAG" }}</span>
         </div>
         <div
           :class="[
