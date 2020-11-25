@@ -25,6 +25,7 @@ export default (params, success = () => { }, fail = () => { }) => {
     code: '',
     width,
     height: 768,
+    gameName: '',
     ...params
   };
 
@@ -36,7 +37,7 @@ export default (params, success = () => { }, fail = () => { }) => {
     return;
   }
 
-  const { vendor, kind, code, gameType } = params;
+  const { vendor, kind, code, gameType, gameName } = params;
   const temp = { kind };
 
   if (code) {
@@ -123,7 +124,7 @@ export default (params, success = () => { }, fail = () => { }) => {
             }
             else if (vendor === "allwin") {
               localStorage.setItem('iframe-third-url', link);
-              localStorage.setItem('iframe-third-url-title', '500万彩票');
+              localStorage.setItem('iframe-third-url-title', (gameName) ? gameName : "500万彩票");
             } else {
               newWindow.location = link;
             }
