@@ -22,7 +22,7 @@
             $getCdnPath('/static/image/porn1/mcenter/swag/ic_wallet_swag.png')
           "
         />
-        <div>{{ $text("S_DIAMOND_SWAG", "SWAG钻石") }}</div>
+        <div>{{ "SWAG钱包" }}</div>
         <div :class="$style['money']" @click="handleSwagBalance">
           <template v-if="isMaintainSwag">
             <span :class="$style['maintain-tip-text']">维护中</span>

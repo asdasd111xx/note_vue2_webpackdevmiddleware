@@ -26,7 +26,6 @@ export default {
       balanceBackLock: false,
       swagDiamondBalance: '0',
       lockedSubmit: true,
-      isSendSubmit: false,
       isMaintainSwag: false,
       showTips: false,
       estToday: EST(new Date(), '', true),
@@ -271,13 +270,16 @@ export default {
       })
     },
     submit() {
-      if (this.isLoading || this.isMaintainSwag || this.lockedSubmit) {
+      if (this.isLoading || this.isMaintainSwag || this.lockedSubmit || this.showTips) {
         return;
       }
       this.isLoading = true;
+
       this.actionSetSwagConfig().then(() => {
 
-        const checkDeposit = (check) => {
+        const checkDeposit = () => {
+          this.isLoading = true;
+
           return axios({
             method: 'get',
             url: '/api/v1/c/user-stat/deposit-withdraw',
@@ -298,6 +300,8 @@ export default {
         }
 
         const submitTransfer = () => {
+          this.isLoading = true;
+
           // 手機驗證開關
           if (this.swagConfig &&
             this.swagConfig.phone_verify &&
@@ -328,8 +332,7 @@ export default {
             params['diamond'] = this.currentSelRate.diamond;
           }
 
-          if (!this.isSendSubmit && params['amount'] && !this.lockedSubmit) {
-            this.isSendSubmit = true;
+          if (params['amount']) {
 
             // axios({
             //   method: "put",
@@ -351,7 +354,6 @@ export default {
               },
               params: params,
             }).then((res) => {
-              this.isLoading = false;
 
               if (res && res.status === '000') {
 
@@ -374,7 +376,7 @@ export default {
               this.actionSetSwagBalance();
 
               setTimeout(() => {
-                this.isSendSubmit = false;
+                this.isLoading = false;
               }, 1500)
             })
 
