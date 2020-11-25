@@ -331,6 +331,18 @@ export default {
           if (!this.isSendSubmit && params['amount'] && !this.lockedSubmit) {
             this.isSendSubmit = true;
 
+            // axios({
+            //   method: "put",
+            //   url: "/api/v1/c/ext/swag?api_url=/api/outer/v1/c/swag/transfer",
+            //   params: params,
+            // })
+            //   .then(res => {
+            //     console.log(res)
+            //   })
+            //   .catch(error => {
+            //     console.log(error)
+            //   });
+
             bbosRequest({
               method: "put",
               url: this.siteConfig.BBOS_DOMIAN + '/Ext/Swag/Vendor/Transfer',
@@ -354,6 +366,8 @@ export default {
                   code: res.code,
                   origin: 'mcenter/swag'
                 });
+
+                this.initSwagConfig();
               }
 
               this.actionSetUserBalance();
