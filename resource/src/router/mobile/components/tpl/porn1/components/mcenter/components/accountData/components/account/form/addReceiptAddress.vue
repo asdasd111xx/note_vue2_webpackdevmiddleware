@@ -17,6 +17,7 @@
             :placeholder="$text('S_PLEASE_ENTER_RECEIVER', '请输入收货人姓名')"
             :class="$style.input"
             :maxlength="20"
+            @input="verification($event.target.value, 'name')"
             type="text"
           />
           <div :class="$style['clear-input']" v-if="newAddressInfo.name">
@@ -62,6 +63,7 @@
               $text('S_PLEASE_ENTER_RECEIPT_ADDRESS', '请输入收货地址')
             "
             :class="$style.input"
+            @input="verification($event.target.value, 'address')"
             type="text"
           />
           <div :class="$style['clear-input']" v-if="newAddressInfo.address">
@@ -288,7 +290,7 @@ export default {
     ...mapActions(['actionSetUserdata', 'actionSetGlobalMessage', 'actionVerificationFormData']),
 
     verification(value, target) {
-
+      this.tipMsg = '';
       if (target === 'phone') {
         this.actionVerificationFormData({ target: 'phone', value: value }).then((val => {
           this.newAddressInfo.phone = val;
@@ -298,6 +300,10 @@ export default {
         if (this.siteConfig.MOBILE_WEB_TPL === 'ey1' || value.length >= 11) {
           this.tipMsg = '';
         }
+      } else if (target === 'name') {
+        this.actionVerificationFormData({ target: 'name', value: value }).then((val => {
+          this.newAddressInfo.name = val
+        }));
       }
     },
 
