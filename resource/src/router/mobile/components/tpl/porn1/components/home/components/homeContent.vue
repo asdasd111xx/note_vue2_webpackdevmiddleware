@@ -143,7 +143,9 @@
                 <div v-else :class="[$style['maintain-text-1']]">
                   {{ `${game.name === "亚博直播真人视讯80桌" ? "鸭博直播真人视讯80桌":game.name} 维护中` }}
                 </div>
-                <div :class="[$style['container']]">
+                <div v-if="game.isMaintain ||
+                          (isMaintainSwag && game.vendor === 'SWAG' && swagConfig && swagConfig.enable !== 0)"
+                          :class="[$style['container']]">
                   <div :class="[$style['us-time']]">
                     {{ `-美东时间-` }}
                   </div>
