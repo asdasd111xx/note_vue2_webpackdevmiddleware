@@ -66,7 +66,8 @@ export default {
 .content-wrap {
   background-color: $main_background_white1;
   color: #414655;
-  min-height: 100vh;
+  // min-height: 100vh;
+  height: 100vh;
   overflow-y: scroll;
 }
 </style>
