@@ -61,32 +61,6 @@ export default {
     ...mapGetters({
       loginStatus: "getLoginStatus"
     }),
-    title() {
-      switch (this.type.toLocaleLowerCase()) {
-        case "withdraw":
-          document.title = this.$text("S_RECENTLY_WITHDRAW", "近10笔提现记录");
-          return this.$text("S_RECENTLY_WITHDRAW", "近10笔提现记录");
-          break;
-
-        case "deposit":
-          document.title = this.$text("S_RECENTLY_DEPOSIT", "8日内充值记录");
-          return this.$text("S_RECENTLY_DEPOSIT", "8日内充值记录");
-          break;
-
-        case "buymethod":
-          document.title = 'SWAG 钻石购买说明';
-          return "SWAG 钻石购买说明";
-          break;
-
-        case "usage":
-          document.title = 'SWAG 钻石使用方法';
-          return "SWAG 钻石使用方法";
-          break;
-
-        default:
-          break;
-      }
-    },
     isApp() {
       let isApp = !!(
         (this.$route.query && this.$route.query.app) ||
@@ -94,14 +68,41 @@ export default {
       );
       return isApp;
     },
+    beforeDestroy() {
+      document.title = '';
+    },
     headerConfig() {
+      let title = '';
+
+      switch (this.type) {
+        case "withdraw":
+          title = this.$text("S_RECENTLY_WITHDRAW", "近10笔提现记录");
+          break;
+
+        case "deposit":
+          title = this.$text("S_RECENTLY_DEPOSIT", "8日内充值记录");
+          break;
+
+        case "buymethod":
+          title = 'SWAG 钻石购买说明';
+          break;
+
+        case "usage":
+          title = 'SWAG 钻石使用方法';
+          break;
+
+        default:
+          break;
+      }
+      document.title = title;
+
       if (!this.isApp) {
         return {
           prev: true,
           onClick: () => {
             this.$router.back();
           },
-          title: this.title
+          title: title
         };
       }
     }
