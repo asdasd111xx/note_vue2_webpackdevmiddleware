@@ -1,13 +1,6 @@
 @import "~@/css/variable.scss";
 @import "../../../../../components/mcenter/components/balanceTrans/css/porn1.module.scss";
 
-.content-wrap {
-  min-height: 100vh;
-  color: #414655;
-  background-color: $main_background_white1;
-  overflow-y: scroll;
-}
-
 // 中心錢包
 .balance-wrap-wrap {
   background-color: $main_white_color1;
