@@ -5,7 +5,7 @@
       <template
         scope="{ balanceTran, enableAutotransfer, closeAutotransfer, setTranOut, setTranIn, setMoney, balanceTransfer, balanceBack, getDefaultTran }"
       >
-        <div :class="[$style['balance-item-wrap'], 'clearfix']">
+        <div :class="['clearfix']">
           <!-- 紅利彩金 -->
           <div
             :class="[
