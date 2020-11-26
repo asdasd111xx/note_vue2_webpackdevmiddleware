@@ -22,7 +22,7 @@
             $getCdnPath('/static/image/porn1/mcenter/swag/ic_wallet_swag.png')
           "
         />
-        <div>{{ $text("S_DIAMOND_SWAG", "SWAG钻石") }}</div>
+        <div>{{ "SWAG钱包" }}</div>
         <div :class="$style['money']" @click="handleSwagBalance">
           <template v-if="isMaintainSwag">
             <span :class="$style['maintain-tip-text']">维护中</span>
@@ -93,6 +93,11 @@
                 {{ `${item.diamond}` }}
               </div>
             </div>
+            <img
+              v-if="item.amount === currentSelRate.amount"
+              :class="$style['amount-active']"
+              src="/static/image/_new/common/select_active.png"
+            />
           </template>
           <template v-else>
             <div :class="$style['loading']" />
@@ -119,7 +124,7 @@
             [$style['disabled']]: lockedSubmit
           }
         ]"
-        @click="submit"
+        @click="submitCheck"
       >
         立即兑换
       </div>
@@ -291,6 +296,7 @@ export default {
 
   &.selected {
     border: 1px solid #d1b79c;
+    background: linear-gradient(-45deg, #d1b79c 10px, rgba(255, 255, 255, 0) 0);
 
     .price {
       color: #d1b79c;
@@ -298,6 +304,15 @@ export default {
 
     .num {
       color: #36e6d2;
+    }
+
+    .amount-active {
+      display: block;
+      width: 7px;
+      height: 5px;
+      position: absolute;
+      right: 1px;
+      bottom: 3px;
     }
   }
 
