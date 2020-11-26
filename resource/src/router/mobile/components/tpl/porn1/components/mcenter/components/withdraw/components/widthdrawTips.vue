@@ -55,6 +55,9 @@
               <div :class="$style['check-cell']">
                 <span :class="$style['sub-title']">
                   {{ $text("S_DEDUCTION_MONEY", "扣除金额") }}
+                  <template v-if="themeTPL === 'ey1'">
+                    (行政费用:{{ `${serialNumberData.administrative_rate}%` }})
+                  </template>
                 </span>
                 <span :class="$style['money']">
                   -{{ getDeductionNumber(serialNumberData.total.deduction) }}
@@ -206,6 +209,9 @@ export default {
       return (
         this[`$style_${this.siteConfig.MOBILE_WEB_TPL}`] || this.$style_porn1
       );
+    },
+    themeTPL() {
+      return this.siteConfig.MOBILE_WEB_TPL;
     }
   },
   methods: {
