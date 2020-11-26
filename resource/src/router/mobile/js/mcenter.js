@@ -71,6 +71,11 @@ export default {
           name: 'mcenter-accountData-receiptAddress',
           component
         },
+        {
+          path: 'addAddress',
+          name: 'mcenter-accountData-addAddress',
+          component
+        }
       ]
     },
     // { // 裝置管理
