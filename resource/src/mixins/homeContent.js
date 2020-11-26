@@ -726,11 +726,11 @@ export default {
           this.onChangeSelectIndex(game.vendor, false, 'anchor');
           return;
 
-        case 'T':
+        case 'U':
           this.actionSetGlobalMessage({ type: 'upgrade' });
           return;
 
-        case 'U':
+        case 'T':
           this.actionSetGlobalMessage({ type: 'incoming' });
           return;
 
