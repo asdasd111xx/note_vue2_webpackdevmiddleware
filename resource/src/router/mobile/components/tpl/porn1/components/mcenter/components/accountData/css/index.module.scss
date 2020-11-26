@@ -362,6 +362,18 @@ input {
   }
 }
 
+.clear-input-address {
+  position: absolute;
+  right: 14px;
+  height: 100%;
+  width: 12px;
+
+  >img {
+    height: 12px;
+    width: 12px;
+  }
+}
+
 .success-dialog-masker {
   display: flex;
   align-items: center;

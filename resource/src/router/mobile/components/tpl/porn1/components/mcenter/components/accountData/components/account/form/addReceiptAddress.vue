@@ -20,7 +20,10 @@
             @input="verification($event.target.value, 'name')"
             type="text"
           />
-          <div :class="$style['clear-input']" v-if="newAddressInfo.name">
+          <div
+            :class="$style['clear-input-address']"
+            v-if="newAddressInfo.name"
+          >
             <img
               :src="$getCdnPath(`/static/image/_new/common/ic_clear.png`)"
               @click="newAddressInfo.name = ''"
@@ -45,7 +48,10 @@
             @input="verification($event.target.value, 'phone')"
             type="tel"
           />
-          <div :class="$style['clear-input']" v-if="newAddressInfo.phone">
+          <div
+            :class="$style['clear-input-address']"
+            v-if="newAddressInfo.phone"
+          >
             <img
               :src="$getCdnPath(`/static/image/_new/common/ic_clear.png`)"
               @click="newAddressInfo.phone = ''"
@@ -66,7 +72,10 @@
             @input="verification($event.target.value, 'address')"
             type="text"
           />
-          <div :class="$style['clear-input']" v-if="newAddressInfo.address">
+          <div
+            :class="$style['clear-input-address']"
+            v-if="newAddressInfo.address"
+          >
             <img
               :src="$getCdnPath(`/static/image/_new/common/ic_clear.png`)"
               @click="newAddressInfo.address = ''"
