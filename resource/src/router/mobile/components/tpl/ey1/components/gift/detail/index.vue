@@ -16,6 +16,11 @@
 import mobileContainer from "../../common/mobileContainer";
 import { mapGetters, mapActions } from "vuex";
 import jwt from "jwt-simple";
+import axios from "axios";
+import goLangApiRequest from "@/api/goLangApiRequest";
+import { getCookie, setCookie } from "@/lib/cookie";
+import mcenter from "@/api/mcenter";
+import yaboRequest from "@/api/yaboRequest";
 
 export default {
   data() {
@@ -23,63 +28,66 @@ export default {
       type: "",
       title: "",
       img: "",
-      url: "https://ey.italking.asia/guest.php?gid=EY",
+      url: "",
       MenuList: [
         {
           type: "wifi",
           title: "wifi技术",
-          src: "wifi_technology"
+          src: "wifi_technology",
         },
         {
           type: "football",
           title: "第一足球",
-          src: "first_football"
+          src: "first_football",
         },
         {
           type: "bird",
           title: "蜂鸟论坛",
-          src: "bird_forum"
+          src: "bird_forum",
         },
         {
           type: "wechat",
           title: "微信推广",
-          src: "wechat_promote"
+          src: "wechat_promote",
         },
         {
           type: "plane",
           title: "飞机炸群",
-          src: "plane_bombing"
+          src: "plane_bombing",
         },
         {
           type: "apple",
           title: "苹果推信",
-          src: "apple_twitter"
+          src: "apple_twitter",
         },
         {
           type: "dial",
           title: "网红口拨",
-          src: "internet_celebrity_dial"
+          src: "internet_celebrity_dial",
         },
         {
           type: "listPurchase",
           title: "名单购买",
-          src: "list_purchase"
+          src: "list_purchase",
         },
         {
           type: "smsCard",
           title: "短信卡发",
-          src: "sms_card_sending"
+          src: "sms_card_sending",
         },
         {
           type: "mail",
           title: "邮件群发",
-          src: "mass_mailing"
-        }
-      ]
+          src: "mass_mailing",
+        },
+      ],
     };
   },
   components: {
-    mobileContainer
+    mobileContainer,
+  },
+  created() {
+    this.getContactusUrl();
   },
   mounted() {
     if (this.loginStatus && this.onlineService) {
@@ -89,7 +97,7 @@ export default {
         name: this.memInfo.user.name || "",
         mobile: this.memInfo.user.phone || "",
         account: this.memInfo.user.username,
-        exp: Date.now() + tokenExpiresTime
+        exp: Date.now() + tokenExpiresTime,
       };
       const rsaData = jwt.encode(memberData, "T9AuSgQfh2");
       this.url = `${this.onlineService.url}&jwtToken=${rsaData}`;
@@ -97,13 +105,14 @@ export default {
   },
   computed: {
     ...mapGetters({
+      siteConfig: "getSiteConfig",
       loginStatus: "getLoginStatus",
       onlineService: "getOnlineService",
-      memInfo: "getMemInfo"
+      memInfo: "getMemInfo",
     }),
     headerConfig() {
       const index = this.MenuList.findIndex(
-        MenuList => MenuList.type === this.$route.params.key
+        (MenuList) => MenuList.type === this.$route.params.key
       );
       this.type = this.MenuList[index].type;
       this.title = this.MenuList[index].title;
@@ -122,16 +131,37 @@ export default {
         onClick: () => {
           // this.$router.back("/mobile/gift?q=通讯软体");
           this.$router.back(`/mobile/gift?q=${this.title}`);
-        }
+        },
       };
-    }
+    },
   },
   methods: {
     ...mapActions(["actionSetGlobalMessage"]),
     wechatClick() {
       window.open(this.url);
-    }
-  }
+    },
+    getContactusUrl() {
+      let cid = getCookie("cid");
+      if (!cid && this.loginStatus) {
+        return;
+      }
+      axios({
+        method: "get",
+        url: `${this.siteConfig.YABO_GOLANG_API_DOMAIN}/System/contactus`,
+        headers: {
+          "x-domain": this.memInfo.user.domain,
+          cid: cid,
+        },
+      })
+        .then((res) => {
+          this.url = res.data.data[2].itemData[1].value;
+          return this.url;
+        })
+        .catch((res) => {
+          console.log("error" + res);
+        });
+    },
+  },
 };
 </script>
 
