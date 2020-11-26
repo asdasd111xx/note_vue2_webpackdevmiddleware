@@ -43,7 +43,7 @@
 
       <div v-if="headerConfig.hasFunc" :class="[$style.func, $style[themeTPL]]">
         <div @click="toggleFullScreen">全屏</div>
-        <div @click="reload">刷新</div>
+        <!-- <div @click="reload">刷新</div> -->
       </div>
     </div>
     <iframe
