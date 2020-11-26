@@ -28,10 +28,14 @@
         />
       </div>
 
-      <div :class="$style['btn-prev']" @click="headerConfig.onClick">
+      <div
+        :class="[$style['btn-prev'], $style[themeTPL]]"
+        @click="headerConfig.onClick"
+      >
         <img
           :src="$getCdnPath(`/static/image/${themeTPL}/common/btn_back.png`)"
         />
+        <div>返回</div>
       </div>
       <div v-if="headerConfig.title" :class="[$style.title, $style[themeTPL]]">
         {{ headerConfig.title }}
@@ -504,10 +508,27 @@ export default {
   height: 20px;
   margin: auto;
   z-index: 2;
+  color: black;
+
+  &.ey1 {
+    color: white;
+  }
+
+  &.porn1 {
+    color: black;
+  }
 
   > img {
     display: block;
     width: 100%;
+  }
+
+  > div {
+    display: block;
+    position: absolute;
+    top: 0;
+    width: 40px;
+    left: 20px;
   }
 }
 
