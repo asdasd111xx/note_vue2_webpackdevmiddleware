@@ -124,7 +124,7 @@
             [$style['disabled']]: lockedSubmit
           }
         ]"
-        @click="submit"
+        @click="submitCheck"
       >
         立即兑换
       </div>

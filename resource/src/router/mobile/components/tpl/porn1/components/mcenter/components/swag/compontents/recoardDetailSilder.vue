@@ -12,7 +12,7 @@
     <detailInfo
       v-if="opcodeList"
       :detail-info="detailInfo"
-      :current-category="{ text: '转让' }"
+      :current-category="{ text: 'SWAG' }"
       :opcode-list="opcodeList"
     />
     <page-loading :is-show="!opcodeList" />

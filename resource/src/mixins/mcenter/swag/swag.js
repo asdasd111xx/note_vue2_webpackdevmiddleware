@@ -85,7 +85,6 @@ export default {
           }
         }
 
-        /* 客製維護區間 */
         // 區段維護
         const maintain_start_at = moment(this.swagConfig.maintain_start_at).add(-12, 'hours');
         const maintain_end_at = moment(this.swagConfig.maintain_end_at).add(-12, 'hours');
@@ -102,7 +101,7 @@ export default {
           return;
         }
 
-        /* 客製維護區間 */
+
         if (this.$route.name === 'mcenter-swag') {
           // 可購買的鑽石/金額列表
           if (this.swagConfig.rates) {
@@ -114,14 +113,20 @@ export default {
               this.selectedRate(tmp_d_currentSelRate);
             }
             else {
-              // this.selectedRate(this.rateList[0]);
+              this.selectedRate(this.rateList[0]);
             }
           }
 
-          // 驗證手機成功回來
-          if (this.$route.name === 'mcenter-swag' && localStorage.getItem("tmp_d_1")) {
-            this.submit();
+          if (this.swagConfig.recharge_verify === 1) {
+            this.depositCheck();
+            return;
           }
+
+          // 驗證手機成功回來
+          if (localStorage.getItem("tmp_d_1")) {
+            this.submitCheck();
+          }
+
         }
       });
     },
@@ -250,54 +255,115 @@ export default {
 
       this.isVerifyForm = noError && hasValue;
     },
+    depositCheck() {
+      this.isLoading = true;
+
+      return axios({
+        method: 'get',
+        url: '/api/v1/c/user-stat/deposit-withdraw',
+      }).then(res => {
+        this.isLoading = false;
+
+        if (res && res.data) {
+          const depositCount = Number(res.data.ret.deposit_count);
+          if (depositCount <= 0) {
+            this.showTips = true;
+            return (false);
+          } else {
+            return (true);
+          }
+        }
+      }).catch(error => {
+        this.actionSetGlobalMessage({
+          msg: error.response.msg,
+        });
+      })
+    },
     submitCheck() {
       if (this.isLoading || this.isMaintainSwag || this.lockedSubmit) {
         return;
       }
+
+      this.isLoading = true;
+
+      // 暫存選擇欄位 簡訊驗證
+      let tmp_currentSelRate = {};
+      let params = {
+        amount: this.currentSelRate.amount,
+        diamond: this.currentSelRate.diamond,
+        keyring: localStorage.getItem("tmp_d_1"), // 手機驗證成功後回傳
+      }
+
+      if (localStorage.getItem('tmp_d_currentSelRate')) {
+        tmp_currentSelRate = JSON.parse(localStorage.getItem('tmp_d_currentSelRate'));
+        params['amount'] = tmp_currentSelRate.amount;
+        params['diamond'] = tmp_currentSelRate.diamond;
+      } else {
+        params['amount'] = this.currentSelRate.amount;
+        params['diamond'] = this.currentSelRate.diamond;
+      }
+
+      // axios({
+      //   method: "get",
+      //   url: "/api/outer/v1/c/ext/swag/transfer/check",
+      //   params: { ...params, vendor: 'swag' },
+      // })
+      //   .then(res => {
+      //     console.log(res)
+      //   })
+      //   .catch(error => {
+      //     console.log(error)
+      //   });
+
       // 送出前檢查欄位
-      bbosRequest({
-        method: "put",
-        url: this.siteConfig.BBOS_DOMIAN + '',
+      return bbosRequest({
+        method: "get",
+        url: this.siteConfig.BBOS_DOMIAN + '/Ext/Swag/Vendor/Transfer/Check',
         reqHeaders: {
           'Vendor': this.memInfo.user.domain,
         },
-        params: params,
+        params: { ...params, vendor: 'swag' },
       }).then((res) => {
-        this.isLoading = false;
+        console.log(res.data)
 
         if (res && res.status === '000') {
+          let ret = res.data;
+          if (ret && ret.verify_data && ret.verify_balance && ret.verify_rates) {
+            this.submit(params);
+          } else {
+            let msg = '';
+            let cb = () => { };
+            if (!ret.verify_data) {
+              msg = '资料异常，请刷新画面或重新选择';
+              cb = () => {
+                window.location.reload();
+              }
+            } else if (!ret.verify_balance) {
+              msg = '余额不足，请检查红利帐户或执行一键归户';
+            } else if (!ret.verify_balance) {
+              msg = '钻石汇率变动';
+              this.initSwagConfig();
+            }
+
+            this.actionSetGlobalMessage({
+              msg: msg,
+              cb: cb
+            })
+
+            setTimeout(() => {
+              this.isLoading = false;
+            }, 1500)
+          }
         }
       })
     },
-    submit() {
-      if (this.isLoading || this.isMaintainSwag || this.lockedSubmit || this.showTips) {
+    submit(params) {
+      if (this.isMaintainSwag || this.lockedSubmit || this.showTips) {
         return;
       }
       this.isLoading = true;
 
       this.actionSetSwagConfig().then(() => {
-
-        const checkDeposit = () => {
-          this.isLoading = true;
-
-          return axios({
-            method: 'get',
-            url: '/api/v1/c/user-stat/deposit-withdraw',
-          }).then(res => {
-            if (res && res.data) {
-              const depositCount = Number(res.data.ret.deposit_count);
-              if (depositCount <= 0) {
-                return (false);
-              } else {
-                return (true);
-              }
-            }
-          }).catch(error => {
-            this.actionSetGlobalMessage({
-              msg: error.response.msg,
-            });
-          })
-        }
 
         const submitTransfer = () => {
           this.isLoading = true;
@@ -314,85 +380,61 @@ export default {
             return;
           }
 
-          // 暫存選擇欄位 簡訊驗證
-          let tmp_currentSelRate = {};
-          let params = {
-            "lang": "zh-cn",
-            amount: this.currentSelRate.amount,
-            diamond: this.currentSelRate.diamond,
-            keyring: localStorage.getItem("tmp_d_1"), // 手機驗證成功後回傳
-          }
+          // axios({
+          //   method: "put",
+          //   url: "/api/v1/c/ext/swag?api_url=/api/outer/v1/c/swag/transfer",
+          //   params: params,
+          // })
+          //   .then(res => {
+          //     console.log(res)
+          //   })
+          //   .catch(error => {
+          //     console.log(error)
+          //   });
 
-          if (localStorage.getItem('tmp_d_currentSelRate')) {
-            tmp_currentSelRate = JSON.parse(localStorage.getItem('tmp_d_currentSelRate'));
-            params['amount'] = tmp_currentSelRate.amount;
-            params['diamond'] = tmp_currentSelRate.diamond;
-          } else {
-            params['amount'] = this.currentSelRate.amount;
-            params['diamond'] = this.currentSelRate.diamond;
-          }
+          bbosRequest({
+            method: "put",
+            url: this.siteConfig.BBOS_DOMIAN + '/Ext/Swag/Vendor/Transfer',
+            reqHeaders: {
+              'Vendor': this.memInfo.user.domain,
+            },
+            params: params,
+          }).then((res) => {
 
-          if (params['amount']) {
+            if (res && res.status === '000') {
 
-            // axios({
-            //   method: "put",
-            //   url: "/api/v1/c/ext/swag?api_url=/api/outer/v1/c/swag/transfer",
-            //   params: params,
-            // })
-            //   .then(res => {
-            //     console.log(res)
-            //   })
-            //   .catch(error => {
-            //     console.log(error)
-            //   });
+              this.actionSetGlobalMessage({
+                msg: '兑换成功',
+                code: res.code,
+                origin: 'mcenter/swag'
+              });
+            } else {
+              this.actionSetGlobalMessage({
+                msg: res.msg,
+                code: res.code,
+                origin: 'mcenter/swag'
+              });
 
-            bbosRequest({
-              method: "put",
-              url: this.siteConfig.BBOS_DOMIAN + '/Ext/Swag/Vendor/Transfer',
-              reqHeaders: {
-                'Vendor': this.memInfo.user.domain,
-              },
-              params: params,
-            }).then((res) => {
+              this.initSwagConfig();
+            }
 
-              if (res && res.status === '000') {
+            this.actionSetUserBalance();
+            this.actionSetSwagBalance();
 
-                this.actionSetGlobalMessage({
-                  msg: '兑换成功',
-                  code: res.code,
-                  origin: 'mcenter/swag'
-                });
-              } else {
-                this.actionSetGlobalMessage({
-                  msg: res.msg,
-                  code: res.code,
-                  origin: 'mcenter/swag'
-                });
+            setTimeout(() => {
+              this.isLoading = false;
+            }, 1500)
+          })
 
-                this.initSwagConfig();
-              }
-
-              this.actionSetUserBalance();
-              this.actionSetSwagBalance();
-
-              setTimeout(() => {
-                this.isLoading = false;
-              }, 1500)
-            })
-
-            localStorage.removeItem("tmp_d_1");
-            localStorage.removeItem("tmp_d_currentSelRate");
-          }
+          localStorage.removeItem("tmp_d_1");
+          localStorage.removeItem("tmp_d_currentSelRate");
         }
 
         // 充值開關
         if (this.swagConfig.recharge_verify === 1) {
-          checkDeposit().then((check) => {
+          this.depositCheck().then((check) => {
             if (check) {
               submitTransfer();
-            } else {
-              this.showTips = true;
-              this.isLoading = false;
             }
           });
         } else {

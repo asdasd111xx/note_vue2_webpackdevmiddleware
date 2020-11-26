@@ -545,9 +545,11 @@ export default {
           },
           success: (res) => {
             if (res && res.result === 'ok') {
+              // 完成後回到上一頁
               if (this.isfromSWAG) {
                 localStorage.setItem('tmp_d_1', res.ret);
-                this.$router.push('/mobile/mcenter/swag');
+                this.$router.back();
+                // this.$router.push('/mobile/mcenter/swag');
               }
               else if (this.isfromWithdraw) {
                 localStorage.setItem('tmp_w_1', res.ret);
