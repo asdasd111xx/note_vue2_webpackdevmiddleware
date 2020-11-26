@@ -327,9 +327,10 @@ export default {
       switch (value) {
         case 21:
           if (this.themeTPL === "porn1") {
-            text = "请输入CGP邮箱/手机号";
+            // text = "请输入CGPay邮箱/手机号或扫扫二维码";
+            text = "请输入CGP邮箱/手机号或扫扫二维码"
           } else {
-            text = "请输入CGP邮箱/手机号或扫扫二维码";
+            text = "请输入CGP邮箱/手机号或扫扫二维码"
           }
 
           this.getWalletTipInfo();
