@@ -62,7 +62,7 @@
               ❶亲切提醒您～联系资料变更时，请您立即联系24小时
               <span @click="linkTo('service')"> 在线客服 </span
               >人员，即时更新您的联络方式；
-              如有任何问题，方便億元客服人员第一时间与您联系。
+              如有任何问题，方便亿元客服人员第一时间与您联系。
             </div>
           </div>
           <div v-else-if="index == 1 && item.isOpen" :class="$style['tips']">
