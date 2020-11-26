@@ -336,7 +336,7 @@ export default {
             if (!ret.verify_data) {
               msg = '资料异常，请刷新画面或重新选择';
               cb = () => {
-                window.location.reload();
+                // window.location.reload();
               }
             } else if (!ret.verify_balance) {
               msg = '余额不足，请检查红利帐户或执行一键归户';
