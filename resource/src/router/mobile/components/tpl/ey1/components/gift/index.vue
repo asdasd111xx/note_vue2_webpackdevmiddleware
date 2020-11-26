@@ -158,75 +158,37 @@ export default {
       ),
   },
   mounted() {
-    if (this.$route.query.q === "通讯软体") {
-      //  to do
-      // let cur = this.giftMenuList.find((i) =>
-      //   i.items.find((y) => y.name === this.$route.query.q)
-      // );
+    // if (this.$route.query.q === "通讯软体") {
+    //  to do
+    // let cur = this.giftMenuList.find((i) =>
+    //   i.items.find((y) => y.name === this.$route.query.q)
+    // );
 
-      this.linkTo({
-        title: "服务",
-        name: "通讯软体",
-        icon: "/static/image/ey1/gift/icon_gift_service.png",
-        items: [
-          {
-            title: "通讯软体",
-            icon: "/static/image/ey1/gift/icon_gift_service.png",
-            items: [
-              { name: "微信推广", params: "wechat" },
-              { name: "飞机炸群", params: "plane" },
-              { name: "苹果推信", params: "apple" },
-            ],
-          },
-        ],
-      });
-    } else if (this.$route.query.q === "新媒体") {
-      this.linkTo({
-        title: "服务",
-        name: "新媒体",
-        icon: "/static/image/ey1/gift/icon_gift_service.png",
-        items: [
-          {
-            title: "新媒体",
-            icon: "/static/image/ey1/gift/icon_gift_service.png",
-            items: [{ name: "网红口拨", params: "dial" }],
-          },
-        ],
-      });
-    } else if (this.$route.query.q === "资源引流") {
-      this.linkTo({
-        title: "服务",
-        name: "资源引流",
-        icon: "/static/image/ey1/gift/icon_gift_service.png",
-        items: [
-          {
-            title: "资源引流",
-            icon: "/static/image/ey1/gift/icon_gift_service.png",
-            items: [
-              { name: "名单购买", params: "listPurchase" },
-              { name: "短信卡发", params: "smsCard" },
-              { name: "邮件群发", params: "mail" },
-            ],
-          },
-        ],
-      });
-    } else if (this.$route.query.q === "天推") {
-      this.linkTo({
-        title: "服务",
-        name: "天推",
-        icon: "/static/image/ey1/gift/icon_gift_service.png",
-        items: [
-          {
-            title: "天推",
-            icon: "/static/image/ey1/gift/icon_gift_service.png",
-            items: [
-              { name: "wifi技术", params: "wifi" },
-              { name: "第一足球", params: "football" },
-              { name: "蜂鸟论坛", params: "bird" },
-            ],
-          },
-        ],
-      });
+    //   this.linkTo({
+    //     title: "服务",
+    //     name: "通讯软体",
+    //     icon: "/static/image/ey1/gift/icon_gift_service.png",
+    //     items: [
+    //       {
+    //         title: "通讯软体",
+    //         icon: "/static/image/ey1/gift/icon_gift_service.png",
+    //         items: [
+    //           { name: "微信推广", params: "wechat" },
+    //           { name: "飞机炸群", params: "plane" },
+    //           { name: "苹果推信", params: "apple" },
+    //         ],
+    //       },
+    //     ],
+    //   });
+    //}
+    if (this.$route.query.q) {
+      this.giftMenuList.find((x) =>
+        x.items.find((y) => {
+          if (y.name === this.$route.query.q) {
+            this.linkTo(y);
+          }
+        })
+      );
     } else {
       this.currentMenu = this.giftMenuList;
     }
