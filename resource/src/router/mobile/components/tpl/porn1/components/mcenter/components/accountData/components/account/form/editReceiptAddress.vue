@@ -6,7 +6,6 @@
         v-for="(data, index) in addressData"
         :key="index"
         :class="$style['add-content']"
-        @click="goToEditAddress(index)"
       >
         <div :class="$style['is-default']" @click="checkDefault(index)">
           <div
@@ -17,7 +16,7 @@
           />
         </div>
 
-        <div :class="$style['address-detail']">
+        <div :class="$style['address-detail']" @click="goToEditAddress(index)">
           <div :class="$style['line-up']">
             <div :class="$style['text']">{{ data.name }}</div>
             <div :class="$style['text']">{{ data.phone }}</div>

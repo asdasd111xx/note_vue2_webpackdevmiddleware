@@ -109,6 +109,15 @@
             <label />
           </div>
         </div>
+        <div
+          v-if="isFirstAdd"
+          :class="$style['checkbox-mask']"
+          @click.stop="
+            () => {
+              checkDefault();
+            }
+          "
+        ></div>
       </div>
       <div :class="$style['address-submit']">
         <div
@@ -129,7 +138,7 @@
     <div v-if="onDelete" :class="$style['delete-tips']">
       <div :class="$style['tips-wrap']">
         <div v-if="newAddressInfo.is_default" :class="$style['tips-title']">
-          此為默認地址,<br />確定要刪除?
+          此为默认地址,<br />确定要删除?
         </div>
         <div v-else :class="$style['tips-title']">确定要删除该地址吗?</div>
         <div :class="[$style['tips-button'], 'clearfix']">
@@ -145,9 +154,9 @@
     <div v-if="onChangeDefault" :class="$style['delete-tips']">
       <div :class="$style['tips-wrap']">
         <div v-if="newAddressInfo.is_default" :class="$style['tips-title']">
-          是否取消默認?
+          是否取消默认?
         </div>
-        <div v-else :class="$style['tips-title']">將此地址設為默認?</div>
+        <div v-else :class="$style['tips-title']">将此地址设为默认?</div>
         <div :class="[$style['tips-button'], 'clearfix']">
           <div :class="$style['delete-cancel']" @click="closeDefault()">
             取消
@@ -160,7 +169,7 @@
     </div>
     <div v-if="onBack" :class="$style['delete-tips']">
       <div :class="$style['tips-wrap']">
-        <div :class="$style['tips-title']">是否保存本次編輯結果?</div>
+        <div :class="$style['tips-title']">是否保存本次编辑结果?</div>
         <div :class="[$style['tips-button'], 'clearfix']">
           <div :class="$style['delete-cancel']" @click="backView()">
             不保存
@@ -319,6 +328,7 @@ export default {
     checkDefault() {
       if (this.isFirstAdd) {
         this.actionSetGlobalMessage({ msg: '首笔地址不可关闭' });
+        this.newAddressInfo.is_default = true;
       } else {
         this.onChangeDefault = true;
       }
