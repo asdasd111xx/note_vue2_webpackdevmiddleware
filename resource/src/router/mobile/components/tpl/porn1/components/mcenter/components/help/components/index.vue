@@ -71,7 +71,12 @@ export default {
         return {
           prev: true,
           onClick: () => {
-            this.$router.back();
+            if (localStorage.getItem('help-center-back')) {
+              this.$router.replace(`/mobile/${localStorage.getItem('help-center-back')}`);
+              localStorage.removeItem('help-center-back');
+            } else {
+              this.$router.back();
+            }
           },
           title: this.title
         };
