@@ -86,7 +86,7 @@ export default {
     };
   },
   created() {
-    this.getAddressAllData();
+    this.getAddressAllData(false);
   },
   watch: {
     addressData() {
@@ -114,7 +114,7 @@ export default {
   methods: {
     ...mapActions(['actionSetGlobalMessage']),
 
-    getAddressAllData() {
+    getAddressAllData(needCheck) {
       axios({
         method: 'get',
         url: '/api/v1/c/player/address',
@@ -126,6 +126,11 @@ export default {
           // console.log(this.defaultIdx)
           if (this.defaultIdx < 0) {
             this.setDefault(0)
+          }
+          if (needCheck) {
+            if (this.defaultIdx != this.nextDefaultIdx) {
+              this.getAddressAllData(true);
+            }
           }
         }
       }).catch(error => {
@@ -155,7 +160,7 @@ export default {
         },
         errorAlert: false,
         success: (response) => {
-          this.getAddressAllData();
+          this.getAddressAllData(true);
           this.closeDefault();
         },
         fail: (response) => {
