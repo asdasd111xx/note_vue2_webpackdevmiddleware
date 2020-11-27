@@ -70,10 +70,10 @@
     </template>
     <select-box
       v-if="isSelectShow"
-      :select-data="allInputData[1].selectData"
+      :select-data="allInputData[0].selectData"
       :now-select-cur.sync="nowSelectData"
       :close-fuc="isShowSelect"
-      :title="allInputData[1].selectTitle"
+      :title="allInputData[0].selectTitle"
     />
   </div>
 </template>
@@ -132,23 +132,6 @@ export default {
     allInputData() {
       return [
         {
-          objKey: "depositName",
-          title: "充值人姓名",
-          value: this.speedField.depositName,
-          placeholderText: "请输入充值人姓名",
-          showCondition: this.showByRequiredFields
-            ? this.requiredFields.find(
-                e => e.name === "pay_username" && e.required
-              )
-            : true,
-          isError:
-            this.showError &&
-            this.requiredFields.find(
-              item => item.name === "pay_username" && item.required
-            ) &&
-            !this.speedField.depositName
-        },
-        {
           objKey: "depositMethod",
           title: "充值方式",
           curMethodId: this.speedField.depositMethod,
@@ -203,6 +186,26 @@ export default {
             ["2", "4"].includes(this.speedField.depositMethod)
         },
         {
+          objKey: "depositTime",
+          title: "充值时间(北京)",
+          value: this.speedField.depositTime,
+          placeholderText: "请选择充值时间",
+          // showCondition: this.showByRequiredFields
+          //   ? this.requiredFields.find(
+          //       e => e.name === "deposit_at" && e.required
+          //     )
+          //   : true,
+          showCondition: this.showByRequiredFields
+            ? this.requiredFields.find(e => e.name === "deposit_at")
+            : true,
+          isError:
+            this.showError &&
+            this.requiredFields.find(
+              item => item.name === "deposit_at" && item.required
+            ) &&
+            !this.speedField.depositTime
+        },
+        {
           objKey: "depositAccount",
           title: "充值帐号",
           value: this.speedField.depositAccount,
@@ -222,25 +225,23 @@ export default {
             ) &&
             !this.speedField.depositAccount
         },
+
         {
-          objKey: "depositTime",
-          title: "充值时间(北京)",
-          value: this.speedField.depositTime,
-          placeholderText: "请选择充值时间",
-          // showCondition: this.showByRequiredFields
-          //   ? this.requiredFields.find(
-          //       e => e.name === "deposit_at" && e.required
-          //     )
-          //   : true,
+          objKey: "depositName",
+          title: "充值人姓名",
+          value: this.speedField.depositName,
+          placeholderText: "请输入充值人姓名",
           showCondition: this.showByRequiredFields
-            ? this.requiredFields.find(e => e.name === "deposit_at")
+            ? this.requiredFields.find(
+                e => e.name === "pay_username" && e.required
+              )
             : true,
           isError:
             this.showError &&
             this.requiredFields.find(
-              item => item.name === "deposit_at" && item.required
+              item => item.name === "pay_username" && item.required
             ) &&
-            !this.speedField.depositTime
+            !this.speedField.depositName
         },
         {
           objKey: "serialNumber",
@@ -269,10 +270,10 @@ export default {
     nowSelectData: {
       get() {
         return {
-          ...this.allInputData[1].selectData.filter(
+          ...this.allInputData[0].selectData.filter(
             info => info.selectId === this.speedField.depositMethod
           )[0],
-          objKey: this.allInputData[1].objKey
+          objKey: this.allInputData[0].objKey
         };
       },
       set(value) {
