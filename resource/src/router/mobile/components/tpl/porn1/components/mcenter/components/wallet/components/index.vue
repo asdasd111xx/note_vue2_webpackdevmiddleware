@@ -417,6 +417,12 @@ export default {
         this.bonus = response.data.total;
       }
     });
+
+    // 清除交易紀錄搜尋快取
+    localStorage.removeItem('money-detail-params');
+    localStorage.removeItem('money-detail-params-service');
+    localStorage.removeItem('money-detail-params-category');
+    localStorage.removeItem('money-detail-params-date');
   },
   mounted() {
     this.getRecordList();
