@@ -239,15 +239,20 @@ export default {
         });
         return;
       } else if (field.key === "receiptAddress") {
-        if (this.addressInfo.id === '') {
-          this.$router.push({
-            path: `/mobile/mcenter/accountData/addAddress`
-          });
-        } else {
-          this.$router.push({
-            path: `/mobile/mcenter/accountData/${field.key}`
-          });
-        }
+        // if (this.addressInfo.id === '') {
+        //   this.$router.push({
+        //     path: `/mobile/mcenter/accountData/addAddress`
+        //   });
+        // } else {
+        //   localStorage.setItem('set-address-data-empty', this.addressInfo.id === '');
+        //   this.$router.push({
+        //     path: `/mobile/mcenter/accountData/${field.key}`
+        //   });
+        // }
+        localStorage.setItem('set-address-data-empty', this.addressInfo.id === '');
+        this.$router.push({
+          path: `/mobile/mcenter/accountData/${field.key}`
+        });
 
         return;
       }
@@ -270,6 +275,13 @@ export default {
         if (res && res.data && res.data.result === "ok") {
           if (res.data.ret.length > 0) {
             this.addressInfo = res.data.ret.find((data) => data.is_default);
+            if (localStorage.getItem('set-address-default')) {
+              if (this.addressInfo.is_default != res.data.ret[parseInt(localStorage.getItem('set-address-default'))].is_default) {
+                this.getAddress();
+              } else {
+                localStorage.removeItem('set-address-default');
+              }
+            }
           }
         }
       }).catch(error => {

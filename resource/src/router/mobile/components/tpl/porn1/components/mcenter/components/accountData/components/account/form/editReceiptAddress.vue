@@ -86,7 +86,12 @@ export default {
     };
   },
   created() {
-    this.getAddressAllData(false);
+    if (localStorage.getItem('set-address-data-empty') === "true") {
+      localStorage.removeItem('set-address-data-empty');
+      this.goToAddAddress();
+    } else {
+      this.getAddressAllData(false);
+    }
   },
   watch: {
     addressData() {
@@ -106,7 +111,10 @@ export default {
     headerConfig() {
       return {
         prev: true,
-        onClick: () => { this.$router.back(); },
+        onClick: () => {
+          localStorage.setItem('set-address-default', this.defaultIdx);
+          this.$router.back();
+        },
         title: '收货地址管理',
       };
     },
