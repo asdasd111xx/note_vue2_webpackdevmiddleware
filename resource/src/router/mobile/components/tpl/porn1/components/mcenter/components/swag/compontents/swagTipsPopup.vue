@@ -66,9 +66,11 @@ export default {
 
       switch (target) {
         case 'buymethod':
+          localStorage.setItem('help-center-back', 'mcenter/');
           this.$router.push('/mobile/mcenter/help/detail?type=buymethod');
           return;
         case 'usage':
+          localStorage.setItem('help-center-back', 'mcenter/');
           this.$router.push('/mobile/mcenter/help/detail?type=usage&key=2');
           return;
         case 'deposit':

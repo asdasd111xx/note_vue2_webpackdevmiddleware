@@ -131,7 +131,7 @@
     </div>
     <tipsDiamond />
     <page-loading :is-show="isLoading" />
-    <swag-tips v-if="showTips" />
+    <swag-tips-popup v-if="true" />
     <maintain-block
       v-if="maintainInfo"
       :content="maintainInfo"
@@ -146,7 +146,7 @@ import axios from "axios";
 import mixin from "@/mixins/mcenter/swag/swag";
 import tipsDiamond from './tipsDiamond';
 import { Swiper, SwiperSlide } from 'vue-awesome-swiper';
-import swagTips from './swagTips';
+import swagTipsPopup from './swagTipsPopup';
 import maintainBlock from "@/router/mobile/components/common/maintainBlock";
 
 export default {
@@ -159,7 +159,7 @@ export default {
     Swiper,
     SwiperSlide,
     tipsDiamond,
-    swagTips,
+    swagTipsPopup,
     maintainBlock
   },
   computed: {
