@@ -12,7 +12,7 @@
           :key="`tab-${item.key}`"
           :class="[
             $style['tab-item'],
-            { [$style['is-current']]: currentTab === index },
+            { [$style['is-current']]: currentTab === index }
           ]"
           @click="setCurrentTab(index)"
         >
@@ -21,7 +21,7 @@
         <div
           :class="$style['active-slider']"
           :style="{
-            left: `calc(16.5% + 33% * ${currentTab})`,
+            left: `calc(16.5% + 33% * ${currentTab})`
           }"
         />
       </div>
@@ -113,7 +113,7 @@ export default {
         case 0:
           this.currentTemplate = "promotion-credit-trans";
           this.currentTab = index;
-          this.$router.push({ query: { 'tab': index } });
+          // this.$router.push({ query: { 'tab': index } });
           break;
 
         case 1:
@@ -124,7 +124,7 @@ export default {
               if (res === "ok") {
                 self.currentTemplate = "transfer-credit-trans";
                 self.currentTab = index;
-                this.$router.push({ query: { 'tab': index } });
+                // this.$router.push({ query: { 'tab': index } });
               }
             });
           })
@@ -133,7 +133,7 @@ export default {
         case 2:
           this.currentTemplate = "recoard-credit-trans";
           this.currentTab = index;
-          this.$router.push({ query: { 'tab': index } });
+          // this.$router.push({ query: { 'tab': index } });
           break;
       }
     },
