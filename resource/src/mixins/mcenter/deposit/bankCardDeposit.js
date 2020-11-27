@@ -377,28 +377,44 @@ export default {
             title: this.$text("S_WITHDRAW_BANK", "收款银行"),
             value: this.curPassRoad.bank_name,
             isFontBold: false,
-            copyShow: true
+            copyShow: true,
+            isShow: true
           },
           {
             objKey: "withdrawBranch",
             title: this.$text("S_WITHDRAW_BRANCH", "收款支行"),
             value: this.curPassRoad.bank_branch,
             isFontBold: false,
-            copyShow: true
+            copyShow: true,
+            isShow: true
           },
           {
-            objKey: "a",
+            objKey: "withdrawAccount",
             title: this.$text("S_WITHDRAW_ACCOUNT", "收款帐号"),
             value: this.curPassRoad.bank_account,
             isFontBold: true,
-            copyShow: true
+            copyShow: true,
+            isShow: true
           },
           {
             objKey: "withdrawName",
             title: this.$text("S_WITHDRAW_NAME", "收款人姓名"),
             value: this.curPassRoad.bank_account_name,
             isFontBold: false,
-            copyShow: true
+            copyShow: true,
+            isShow: true
+          },
+          {
+            objKey: "withdrawDeliver",
+            title: this.$text("S_DELIVER_INFO", "收款资讯"),
+            isFontBold: true,
+            copyShow: false,
+            qrcode: [
+              {
+                title: this.curPassRoad.bank_account_qrcode_name,
+                value: this.curPassRoad.bank_account_qrcode
+              }
+            ]
           },
           {
             objKey: "memo",
@@ -406,9 +422,16 @@ export default {
             value: this.curPassRoad.reminder.replace(/\n/gi, "<br/>"),
             isFontBold: false,
             copyShow: false,
-            htmlShow: true
+            htmlShow: true,
+            isShow: true
           }
-        ];
+        ].filter(item => {
+          if ("qrcode" in item) {
+            return item.qrcode[0].title && item.qrcode[0].value ? true : false;
+          } else {
+            return item.isShow;
+          }
+        });
       }
 
       return false;

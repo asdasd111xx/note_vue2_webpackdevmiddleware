@@ -244,7 +244,7 @@ export default {
         },
         {
           objKey: "yourMoney",
-          title: this.$text("S_DEPOSIT_MONEY", "存款金额"),
+          title: this.$text("S_DEPOSIT_MONEY", "充值金额"),
           value: this.orderData.amount,
           isFontBold: true
         }
