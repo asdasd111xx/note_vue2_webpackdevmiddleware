@@ -67,7 +67,7 @@ export default {
                 if (temp.event === "c_outer_maintain") {
                     this.swagMaintainTimer = setTimeout(() => {
                         this.initSwagConfig();
-                        clearTimeout(this.timer);
+                        clearTimeout(this.swagMaintainTimer);
                         this.swagMaintainTimer = null;
                         return;
                     }, 70000);
