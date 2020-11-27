@@ -121,7 +121,7 @@
         :class="[
           $style['submit-btn'],
           {
-            [$style['disabled']]: lockedSubmit
+            [$style['disabled']]: lockedSubmit && !isMaintainSwag
           }
         ]"
         @click="submitCheck"
@@ -131,7 +131,7 @@
     </div>
     <tipsDiamond />
     <page-loading :is-show="isLoading" />
-    <swag-tips-popup v-if="true" />
+    <swag-tips-popup v-if="showTips" />
     <maintain-block
       v-if="maintainInfo"
       :content="maintainInfo"
