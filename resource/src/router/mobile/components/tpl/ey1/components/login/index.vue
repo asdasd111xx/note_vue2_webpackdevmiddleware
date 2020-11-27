@@ -299,7 +299,7 @@ export default {
       this.script.setAttribute('data-name', 'esabgnixob');
 
       if (window.location.host.includes("localhost")) {
-        this.script.setAttribute('src', 'https://yb01.66boxing.com/mobile/esabgnixob.js');
+        this.script.setAttribute('src', 'https://eyt.66boxing.com/mobile/esabgnixob.js');
       } else {
         this.script.setAttribute('src', 'esabgnixob.js');
       }
