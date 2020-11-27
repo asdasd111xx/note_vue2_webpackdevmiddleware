@@ -247,8 +247,6 @@ export default {
       return {
         prev: true,
         onClick: () => {
-          console.log(this.addressInfo.phone)
-          console.log(this.newAddressInfo.phone)
           if (this.addressInfo.name != this.newAddressInfo.name
             || this.addressInfo.phone != this.newAddressInfo.phone
             || this.addressInfo.address != this.newAddressInfo.address) {
@@ -469,7 +467,7 @@ export default {
         },
         errorAlert: false,
         success: (response) => {
-          console.log(`第${idx}筆設為默認`)
+          // console.log(`第${idx}筆設為默認`)
         },
         fail: (response) => {
 
