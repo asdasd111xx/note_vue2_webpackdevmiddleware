@@ -247,6 +247,8 @@ export default {
       return {
         prev: true,
         onClick: () => {
+          console.log(this.addressInfo.phone)
+          console.log(this.newAddressInfo.phone)
           if (this.addressInfo.name != this.newAddressInfo.name
             || this.addressInfo.phone != this.newAddressInfo.phone
             || this.addressInfo.address != this.newAddressInfo.address) {
@@ -278,7 +280,7 @@ export default {
             // this.addressInfo.is_default = this.addressInfo.is_default === "true";
             this.phoneHead = "+" + this.addressInfo.phone.split("-")[0];
             this.addressInfo.phone = this.addressInfo.phone.split("-")[1];
-            this.newAddressInfo = this.addressInfo;
+            this.newAddressInfo = Object.assign({}, this.addressInfo);
             this.isAdd = false;
             if (this.allAddressData.length < 2 && this.$route.query.index === "0") {
               this.isFirstAdd = true;
@@ -392,26 +394,8 @@ export default {
             && !this.newAddressInfo.is_default
             && this.allAddressData.length >= 2) {
             //第二筆設為默認
-            ajax({
-              method: 'put',
-              url: `/api/v1/c/player/address/${this.newAddressInfo.id}`,
-              params: {
-                id: this.allAddressData[1].id,
-                is_default: true,
-                name: this.allAddressData[1].name,
-                phone: `${this.allAddressData[1].phone}`,
-                address: this.allAddressData[1].address
-              },
-              errorAlert: false,
-              success: (response) => {
-
-              },
-              fail: (response) => {
-
-              }
-            });
+            this.setDefaultAPI(1);
           }
-
           // 編輯收貨地址
           ajax({
             method: 'put',
@@ -437,6 +421,13 @@ export default {
     },
 
     deleteAddress() {
+      if (this.newAddressInfo.is_default) {
+        if (this.$route.query.index === "0" && this.allAddressData.length >= 2) {
+          this.setDefaultAPI(1);
+        } else {
+          this.setDefaultAPI(0);
+        }
+      }
       // 刪除一筆收貨地址
       ajax({
         method: 'delete',
@@ -460,6 +451,28 @@ export default {
               }
             });
           }
+        }
+      });
+    },
+
+    setDefaultAPI(idx) {
+      //第idx筆設為默認
+      ajax({
+        method: 'put',
+        url: `/api/v1/c/player/address/${this.allAddressData[idx].id}`,
+        params: {
+          id: this.allAddressData[idx].id,
+          is_default: true,
+          name: this.allAddressData[idx].name,
+          phone: `${this.allAddressData[idx].phone}`,
+          address: this.allAddressData[idx].address
+        },
+        errorAlert: false,
+        success: (response) => {
+          console.log(`第${idx}筆設為默認`)
+        },
+        fail: (response) => {
+
         }
       });
     },

@@ -12,12 +12,13 @@
 }
 
 .alert-wrap {
-  position: relative;
+  position: fixed;
   width: 264px;
-  height: 345px;
-  margin: 0 auto;
-  top: 160px;
-  left: 0;
+  /* height: 345px; */
+  // margin: 0 auto;
+  top: 50%;
+  left: 50%;
+  transform: translate(-50%, -50%);
   border-radius: 7px;
 }
 

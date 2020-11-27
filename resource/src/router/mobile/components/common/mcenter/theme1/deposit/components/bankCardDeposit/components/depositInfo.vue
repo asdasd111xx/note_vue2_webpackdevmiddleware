@@ -107,9 +107,10 @@
 
     <!-- 存款信息 -->
     <div :class="[$style['info-wrap'], 'clearfix']">
-      <div v-if="!orderData.is_crypto" :class="$style['deposit-info-title']">
+      <!-- <div v-if="!orderData.is_crypto" :class="$style['deposit-info-title']">
         {{ $text("S_APPLICATION_INFORMATION", "您的申请资料") }}
-      </div>
+      </div> -->
+
       <div
         :class="[$style['deposit-submit-info'], $style['application-table']]"
       >
@@ -131,6 +132,7 @@
           </div>
         </div>
       </div>
+
       <speed-pay-field
         v-if="orderData.methodType === 'remit'"
         :speed-field.sync="resultSpeedField"

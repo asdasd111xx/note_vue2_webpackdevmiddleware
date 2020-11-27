@@ -124,10 +124,15 @@ export default {
 
           this.defaultIdx = this.addressData.findIndex((data) => data.is_default)
           // console.log(this.defaultIdx)
-          if (this.defaultIdx < 0) {
-            this.setDefault(0)
-          }
+          // if (this.defaultIdx < 0) {
+          //   this.nextDefaultIdx = 0;
+          //   this.setDefault(0)
+          // }
+          // console.log(needCheck);
           if (needCheck) {
+            console.log(`this.defaultIdx  is ${this.defaultIdx} `)
+            console.log(`this.nextDefaultIdx is ${this.nextDefaultIdx} `)
+            console.log(`this.defaultIdx != this.nextDefaultIdx is ${this.defaultIdx != this.nextDefaultIdx}`)
             if (this.defaultIdx != this.nextDefaultIdx) {
               this.getAddressAllData(true);
             }

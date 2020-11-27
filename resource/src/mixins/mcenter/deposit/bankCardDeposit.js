@@ -378,7 +378,6 @@ export default {
             value: this.curPassRoad.bank_name,
             isFontBold: false,
             copyShow: true,
-            isShow: true
           },
           {
             objKey: "withdrawBranch",
@@ -386,7 +385,6 @@ export default {
             value: this.curPassRoad.bank_branch,
             isFontBold: false,
             copyShow: true,
-            isShow: true
           },
           {
             objKey: "withdrawAccount",
@@ -394,7 +392,6 @@ export default {
             value: this.curPassRoad.bank_account,
             isFontBold: true,
             copyShow: true,
-            isShow: true
           },
           {
             objKey: "withdrawName",
@@ -402,7 +399,6 @@ export default {
             value: this.curPassRoad.bank_account_name,
             isFontBold: false,
             copyShow: true,
-            isShow: true
           },
           {
             objKey: "withdrawDeliver",
@@ -423,13 +419,12 @@ export default {
             isFontBold: false,
             copyShow: false,
             htmlShow: true,
-            isShow: true
           }
         ].filter(item => {
           if ("qrcode" in item) {
             return item.qrcode[0].title && item.qrcode[0].value ? true : false;
           } else {
-            return item.isShow;
+            return true
           }
         });
       }
