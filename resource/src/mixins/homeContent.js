@@ -45,6 +45,7 @@ export default {
         { name: 'vip', text: 'VIP', path: 'accountVip' },
       ],
       timer: null,
+      swagMaintainTimer: null
     };
   },
   watch: {
@@ -65,6 +66,15 @@ export default {
             return;
           }, 70000);
 
+        }
+
+        if (temp.event === "c_outer_maintain") {
+          this.swagMaintainTimer = setTimeout(() => {
+            this.initSwagConfig();
+            clearTimeout(this.swagMaintainTimer);
+            this.swagMaintainTimer = null;
+            return;
+          }, 70000);
         }
       }
     }
