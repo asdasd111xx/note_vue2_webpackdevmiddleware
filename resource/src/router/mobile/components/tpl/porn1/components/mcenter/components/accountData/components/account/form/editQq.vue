@@ -13,7 +13,7 @@
         <div :class="$style['input-wrap']">
           <input
             ref="input"
-            :value="value"
+            v-model="value"
             :placeholder="$text('S_QQ')"
             :class="$style.input"
             :maxlength="20"
@@ -78,7 +78,10 @@ export default {
       'actionSetＭcenterBindMessage'
     ]),
     onInput(e) {
-      e.target.value = e.target.value.replace(/[^0-9]/, '');
+      e.target.value = e.target.value
+        .replace(/[^0-9]/g, "")
+        .substring(0, 20);
+
       this.tipMsg = '';
       this.value = e.target.value;
       if (this.value === '') {
@@ -88,7 +91,6 @@ export default {
       if (!/^[0-9]+$/.test(this.value)) {
         this.tipMsg = this.$text('S_JM_AGENT_INPUT_NUMBER', '仅允许输入数字');
       }
-
     },
     handleSubmit() {
       if (this.tipMsg) {
