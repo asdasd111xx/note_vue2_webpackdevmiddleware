@@ -6,7 +6,6 @@
         v-for="(data, index) in addressData"
         :key="index"
         :class="$style['add-content']"
-        @click="goToEditAddress(index)"
       >
         <div :class="$style['is-default']" @click="checkDefault(index)">
           <div
@@ -17,7 +16,7 @@
           />
         </div>
 
-        <div :class="$style['address-detail']">
+        <div :class="$style['address-detail']" @click="goToEditAddress(index)">
           <div :class="$style['line-up']">
             <div :class="$style['text']">{{ data.name }}</div>
             <div :class="$style['text']">{{ data.phone }}</div>
@@ -87,7 +86,7 @@ export default {
     };
   },
   created() {
-    this.getAddressAllData();
+    this.getAddressAllData(false);
   },
   watch: {
     addressData() {
@@ -115,7 +114,7 @@ export default {
   methods: {
     ...mapActions(['actionSetGlobalMessage']),
 
-    getAddressAllData() {
+    getAddressAllData(needCheck) {
       axios({
         method: 'get',
         url: '/api/v1/c/player/address',
@@ -127,6 +126,11 @@ export default {
           // console.log(this.defaultIdx)
           if (this.defaultIdx < 0) {
             this.setDefault(0)
+          }
+          if (needCheck) {
+            if (this.defaultIdx != this.nextDefaultIdx) {
+              this.getAddressAllData(true);
+            }
           }
         }
       }).catch(error => {
@@ -156,7 +160,7 @@ export default {
         },
         errorAlert: false,
         success: (response) => {
-          this.getAddressAllData();
+          this.getAddressAllData(true);
           this.closeDefault();
         },
         fail: (response) => {
