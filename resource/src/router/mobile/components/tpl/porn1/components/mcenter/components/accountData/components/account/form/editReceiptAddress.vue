@@ -130,9 +130,6 @@ export default {
           // }
           // console.log(needCheck);
           if (needCheck) {
-            console.log(`this.defaultIdx  is ${this.defaultIdx} `)
-            console.log(`this.nextDefaultIdx is ${this.nextDefaultIdx} `)
-            console.log(`this.defaultIdx != this.nextDefaultIdx is ${this.defaultIdx != this.nextDefaultIdx}`)
             if (this.defaultIdx != this.nextDefaultIdx) {
               this.getAddressAllData(true);
             }

@@ -591,7 +591,7 @@ export default {
   align-items: center;
 
   > div {
-    width: 50%;
+    // width: 50%;
     padding: 0 3px;
     height: 43px;
     line-height: 43px;

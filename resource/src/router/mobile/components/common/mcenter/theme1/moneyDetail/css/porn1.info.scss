@@ -11,7 +11,7 @@
   color: #414655;
   text-align: center;
 
-  > span {
+  >span {
     display: inline-block;
     vertical-align: top;
   }
@@ -48,6 +48,7 @@
   font-size: 14px;
   width: 80%;
   text-align: right;
+
   .copyImg {
     display: inline-block;
     width: 12px;
@@ -60,6 +61,7 @@
     }
   }
 }
+
 .text2 {
   float: right;
   color: #414655;
@@ -68,12 +70,13 @@
   text-align: right;
   word-wrap: break-word;
 }
+
 .tips {
-  color: #a6a9b2;
+  color: #414655;
   font-size: 14px;
   text-align: center;
 
-  > span {
+  >span {
     color: #6aaaf5;
   }
 }

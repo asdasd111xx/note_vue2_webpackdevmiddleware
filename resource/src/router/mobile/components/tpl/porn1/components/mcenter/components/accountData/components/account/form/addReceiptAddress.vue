@@ -247,8 +247,6 @@ export default {
       return {
         prev: true,
         onClick: () => {
-          console.log(this.addressInfo.phone)
-          console.log(this.newAddressInfo.phone)
           if (this.addressInfo.name != this.newAddressInfo.name
             || this.addressInfo.phone != this.newAddressInfo.phone
             || this.addressInfo.address != this.newAddressInfo.address) {
@@ -262,40 +260,6 @@ export default {
     }
   },
   created() {
-    //取得所有地址資料
-    axios({
-      method: 'get',
-      url: '/api/v1/c/player/address',
-    }).then(res => {
-      if (res && res.data && res.data.result === "ok") {
-        this.isFirstAdd = res.data.ret.length === 0
-        if (this.isFirstAdd) {
-          this.newAddressInfo.is_default = true;
-          this.addressInfo.is_default = true;
-        } else {
-          this.allAddressData = res.data.ret
-          if (this.$route.query && this.$route.query.index) {//編輯
-            this.headerTitle = "编辑收货地址";
-            this.addressInfo = this.allAddressData[this.$route.query.index];
-            // this.addressInfo.is_default = this.addressInfo.is_default === "true";
-            this.phoneHead = "+" + this.addressInfo.phone.split("-")[0];
-            this.addressInfo.phone = this.addressInfo.phone.split("-")[1];
-            this.newAddressInfo = Object.assign({}, this.addressInfo);
-            this.isAdd = false;
-            if (this.allAddressData.length < 2 && this.$route.query.index === "0") {
-              this.isFirstAdd = true;
-            }
-          } else {//新增
-            this.headerTitle = "添加收货地址";
-            this.isAdd = true;
-          }
-        }
-
-      }
-    }).catch(error => {
-
-    })
-
     ajax({
       method: 'get',
       url: API_MCENTER_USER_CONFIG,
@@ -303,6 +267,7 @@ export default {
     }).then((response) => {
       if (response && response.result === 'ok') {
         this.phoneHeadOption = response.ret.config.phone.country_codes
+        this.getAllAddress();
       }
     });
   },
@@ -325,6 +290,45 @@ export default {
           this.newAddressInfo.name = val
         }));
       }
+    },
+
+    getAllAddress() {
+      //取得所有地址資料
+      axios({
+        method: 'get',
+        url: '/api/v1/c/player/address',
+      }).then(res => {
+        if (res && res.data && res.data.result === "ok") {
+          this.isFirstAdd = res.data.ret.length === 0
+          if (this.isFirstAdd) {
+            this.newAddressInfo.is_default = true;
+            this.addressInfo.is_default = true;
+            this.headerTitle = "添加收货地址";
+            this.isAdd = true;
+          } else {
+            this.allAddressData = res.data.ret
+            if (this.$route.query && this.$route.query.index) {//編輯
+              this.headerTitle = "编辑收货地址";
+              this.addressInfo = this.allAddressData[this.$route.query.index];
+              // this.addressInfo.is_default = this.addressInfo.is_default === "true";
+              console.log(this.addressInfo.phone.split("-"))
+              this.phoneHead = "+" + this.addressInfo.phone.split("-")[0];
+              this.addressInfo.phone = this.addressInfo.phone.split("-")[1];
+              this.newAddressInfo = Object.assign({}, this.addressInfo);
+              this.isAdd = false;
+              if (this.allAddressData.length < 2 && this.$route.query.index === "0") {
+                this.isFirstAdd = true;
+              }
+            } else {//新增
+              this.headerTitle = "添加收货地址";
+              this.isAdd = true;
+            }
+          }
+
+        }
+      }).catch(error => {
+
+      })
     },
 
     checkDefault() {
@@ -469,7 +473,7 @@ export default {
         },
         errorAlert: false,
         success: (response) => {
-          console.log(`第${idx}筆設為默認`)
+          // console.log(`第${idx}筆設為默認`)
         },
         fail: (response) => {
 
