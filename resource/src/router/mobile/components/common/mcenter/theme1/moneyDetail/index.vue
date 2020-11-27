@@ -241,7 +241,7 @@ export default {
       let detailparams = localStorage.getItem('money-detail-params');
 
       if (!this.detailInfo && !detailparams) {
-        this.$router.push('/mobile/mcenter/moneyDetail');
+        this.$router.replace('/mobile/mcenter/moneyDetail');
         return;
       }
     }
@@ -297,7 +297,6 @@ export default {
         params['opcode'] = ['8007', '1049', '5020', '5018', '5019', '5017', '5016'];
       }
 
-      console.log(this.type)
       if (this.type.find(i => i === "outer") && this.pageType === 'swag') {
         params['opcode'] = ['9001'];
       }
@@ -331,8 +330,14 @@ export default {
 
           this.pageAll = Math.ceil(+pagination.total / this.maxResults);
 
-          if (cacheParams) {
-            this.detailInfo = ret.find(i => i.id === this.$route.query.id);
+          // 從聯繫客服返回預設開啟交易詳請
+          if (localStorage.getItem('money-detail-params-service')) {
+            let id = this.$route.query.id || localStorage.getItem('money-detail-id');
+            this.detailInfo = ret.find(i => i.id === id);
+            setTimeout(() => {
+              localStorage.removeItem('money-detail-params-service');
+              localStorage.removeItem('money-detail-id');
+            }, 500)
           }
         },
         fail: (res) => {
@@ -364,7 +369,9 @@ export default {
 
       this.changeCondition('');
       this.changeDatePicker('');
-      if (!localStorage.getItem('money-detail-params-service') || this.pageType === "ingroup_transfer" || this.pageType === "swag") {
+      if (!localStorage.getItem('money-detail-params-service') ||
+        this.pageType === "ingroup_transfer" ||
+        this.pageType === "swag") {
         this.getData();
       }
     },
@@ -403,7 +410,9 @@ export default {
 
       this.changeCondition('');
       this.changeDatePicker('');
-      if (!localStorage.getItem('money-detail-params-service') || this.pageType === "ingroup_transfer" || this.pageType === "swag") {
+      if (!localStorage.getItem('money-detail-params-service') ||
+        this.pageType === "ingroup_transfer" ||
+        this.pageType === "swag") {
         this.getData();
       }
     },
@@ -449,23 +458,16 @@ export default {
 
       this.isReceive = true;
 
-      let isFromService = localStorage.getItem('money-detail-params-service');
-
       let _params = null;
-      if (isFromService) {
+      if (localStorage.getItem('money-detail-params-service') &&
+        localStorage.getItem('money-detail-params-category') &&
+        localStorage.getItem('money-detail-params-date')) {
         _params = JSON.parse(localStorage.getItem('money-detail-params')) || null;
         this.setCategory(JSON.parse(localStorage.getItem('money-detail-params-category')));
         this.setDate(JSON.parse(localStorage.getItem('money-detail-params-date')));
       }
 
       this.getData(_params).then(({ result }) => {
-        setTimeout(() => {
-          localStorage.removeItem('money-detail-params');
-          localStorage.removeItem('money-detail-params-service');
-          localStorage.removeItem('money-detail-params-category');
-          localStorage.removeItem('money-detail-params-date');
-        }, 1000)
-
         this.isReceive = false;
 
         if (result !== 'ok') {
