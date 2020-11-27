@@ -49,6 +49,30 @@ export default {
             this.$nextTick(() => {
                 this.onResize();
             })
+        },
+        noticeData() {
+            if (this.noticeData && this.noticeData.length > 0) {
+                // this.data = this.noticeData.pop();
+                let temp = this.noticeData[this.noticeData.length - 1]
+                if (temp.event === "vendor_maintain_notice") {
+                    this.timer = setInterval(() => {
+                        this.getMaintainList();
+                        clearInterval(this.timer);
+                        this.timer = null;
+                        return;
+                    }, 70000);
+
+                }
+
+                if (temp.event === "c_outer_maintain") {
+                    this.swagMaintainTimer = setTimeout(() => {
+                        this.initSwagConfig();
+                        clearTimeout(this.timer);
+                        this.swagMaintainTimer = null;
+                        return;
+                    }, 70000);
+                }
+            }
         }
     },
     computed: {
