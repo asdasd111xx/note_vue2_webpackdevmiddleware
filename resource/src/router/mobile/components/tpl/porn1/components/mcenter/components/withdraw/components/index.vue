@@ -1710,16 +1710,22 @@ export default {
         (this.selectedCard.offer_percent * this.withdrawValue) / 100
       );
 
-      if (
-        this.selectedCard.offer_percent === "0" ||
-        this.withdrawValue === 0 ||
-        bonusOffer <= 0
-      ) {
-        return 0;
-      } else if (bonusOffer >= this.selectedCard.offer_limit) {
-        return this.selectedCard.offer_limit;
-      } else {
-        return bonusOffer;
+      switch (true) {
+        case !+this.withdrawValue:
+          return "--";
+          break;
+
+        case this.selectedCard.offer_percent === "0" || bonusOffer <= 0:
+          return 0;
+          break;
+
+        case bonusOffer >= this.selectedCard.offer_limit:
+          return this.selectedCard.offer_limit;
+          break;
+
+        default:
+          return bonusOffer;
+          break;
       }
     },
     actualMoneyPlusOffer() {
