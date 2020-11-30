@@ -26,6 +26,7 @@
           </div>
 
           <div
+            id="one-recycle-btn"
             :class="[
               $style['recycle-btn'],
               balanceTran.balanceBackLock ? $style.disable : '',
