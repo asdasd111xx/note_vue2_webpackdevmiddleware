@@ -4,6 +4,7 @@ import EST from '@/lib/EST';
 import axios from "axios";
 import bbosRequest from "@/api/bbosRequest";
 import moment from 'moment';
+import { set } from 'vue';
 
 export default {
   props: {},
@@ -36,7 +37,8 @@ export default {
       swagBanner: [
         { src: '/static/image/porn1/mcenter/swag/banner_swag.png' }],
 
-      isLoading: false
+      isLoading: false,
+      isCheckingInit: false
     }
   },
   computed: {
@@ -70,10 +72,20 @@ export default {
       'actionSetSwagBalance'
     ]),
     initSwagConfig(onlyCheckMaintain = false) {
+      if (this.isCheckingInit) {
+        return;
+      }
+
       if (this.loginStatus && !onlyCheckMaintain) {
         this.updateBalance();
       }
+
+      this.isCheckingInit = true;
       return this.actionSetSwagConfig().then(() => {
+        setTimeout(() => {
+          this.isCheckingInit = false;
+        }, 1000)
+
         // 永久維護
         if (this.swagConfig && this.swagConfig.enable === 0) {
           this.isMaintainSwag = true;
@@ -100,7 +112,6 @@ export default {
         if (onlyCheckMaintain) {
           return;
         }
-
 
         if (this.$route.name === 'mcenter-swag') {
           // 可購買的鑽石/金額列表
@@ -131,36 +142,38 @@ export default {
       });
     },
     handleSwagBalance() {
-      if (this.isMaintainSwag) {
-        if (this.swagConfig.enable === 0) {
-          this.actionSetGlobalMessage({
-            msg: `鸭博色播 维护中`,
-            style: 'maintain'
-          })
-        } else {
-          if (this.maintainInfo) {
-            return;
-          }
-
-          const start = moment(this.swagConfig.maintain_start_at).add(-12, 'hours')
-            .format('YYYY-MM-DD HH:mm:ss');
-          const end = moment(this.swagConfig.maintain_end_at).add(-12, 'hours')
-            .format('YYYY-MM-DD HH:mm:ss');
-
-          this.maintainInfo = [
-            {
-              title: '-美东时间-',
-              startAt: start,
-              endAt: end
-            },
-            {
-              title: '-北京时间-',
-              startAt: this.swagConfig.maintain_start_at,
-              endAt: this.swagConfig.maintain_end_at
+      this.initSwagConfig(true).then(() => {
+        if (this.isMaintainSwag) {
+          if (this.swagConfig.enable === 0) {
+            this.actionSetGlobalMessage({
+              msg: `SWAG 维护中`,
+              style: 'maintain'
+            })
+          } else {
+            if (this.maintainInfo) {
+              return;
             }
-          ]
+
+            const start = moment(this.swagConfig.maintain_start_at).add(-12, 'hours')
+              .format('YYYY-MM-DD HH:mm:ss');
+            const end = moment(this.swagConfig.maintain_end_at).add(-12, 'hours')
+              .format('YYYY-MM-DD HH:mm:ss');
+
+            this.maintainInfo = [
+              {
+                title: '-美东时间-',
+                startAt: start,
+                endAt: end
+              },
+              {
+                title: '-北京时间-',
+                startAt: this.swagConfig.maintain_start_at,
+                endAt: this.swagConfig.maintain_end_at
+              }
+            ]
+          }
         }
-      }
+      })
     },
     handleCloseMaintainInfo() {
       this.maintainInfo = null;
