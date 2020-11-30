@@ -312,6 +312,7 @@ export default {
       }
 
       this.isLoading = true;
+      this.handleSwagBalance();
 
       // 暫存選擇欄位 簡訊驗證
       let tmp_currentSelRate = {};
@@ -351,8 +352,6 @@ export default {
         },
         params: { ...params, vendor: 'swag' },
       }).then((res) => {
-        console.log(res.data)
-
         if (res && res.status === '000') {
           let ret = res.data;
           if (ret && ret.verify_data && ret.verify_balance && ret.verify_rates) {
@@ -377,11 +376,11 @@ export default {
               cb: cb
             })
 
-            setTimeout(() => {
-              this.isLoading = false;
-            }, 1500)
           }
         }
+        setTimeout(() => {
+          this.isLoading = false;
+        }, 1500)
       })
     },
     submit(params) {

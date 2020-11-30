@@ -121,7 +121,7 @@
         :class="[
           $style['submit-btn'],
           {
-            [$style['disabled']]: lockedSubmit || !isMaintainSwag
+            [$style['disabled']]: lockedSubmit || isMaintainSwag
           }
         ]"
         @click="submitCheck"
