@@ -50,6 +50,14 @@ export default {
       swagConfig: "getSwagConfig",
       siteConfig: "getSiteConfig"
     }),
+    swagESTMaintainStartAt() {
+      return moment(this.swagConfig.maintain_start_at).add(-12, 'hours')
+        .format('YYYY-MM-DD HH:mm:ss')
+    },
+    swagESTMaintainEndAt() {
+      return moment(this.swagConfig.maintain_end_at).add(-12, 'hours')
+        .format('YYYY-MM-DD HH:mm:ss')
+    },
   },
   beforeDestroy() {
     clearInterval(this.updateBalanceTimer);
