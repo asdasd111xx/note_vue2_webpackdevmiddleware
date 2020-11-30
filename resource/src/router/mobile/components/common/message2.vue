@@ -230,7 +230,7 @@ export default {
   left: 50%;
 }
 
-.dialog /deep/ div:first-child {
+.dialog > div:first-child {
   background-color: rgba($color: #161616, $alpha: 0.8);
   border-radius: 10px;
   margin-left: auto;
@@ -238,5 +238,6 @@ export default {
   //   min-width: 200px;
   padding: 15px;
   color: white;
+  text-align: center;
 }
 </style>

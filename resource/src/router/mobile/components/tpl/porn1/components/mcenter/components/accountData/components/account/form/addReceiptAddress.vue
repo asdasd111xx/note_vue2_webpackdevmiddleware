@@ -394,11 +394,17 @@ export default {
         } else {
           //原為默認地址, 保存時,為"關閉默認"時, 需將第1筆地址(不含此筆)設為"默認" (例如:本筆為第一筆地址時, 需將第二筆設為默認)
           if (this.$route.query.index === "0"
-            && this.addAddress.is_default
+            && this.addressInfo.is_default
             && !this.newAddressInfo.is_default
             && this.allAddressData.length >= 2) {
             //第二筆設為默認
             this.setDefaultAPI(1);
+          } else if (this.$route.query.index != "0"
+            && this.addressInfo.is_default
+            && !this.newAddressInfo.is_default
+            && this.allAddressData.length >= 2) {
+            //第一筆設為默認
+            this.setDefaultAPI(0);
           }
           // 編輯收貨地址
           ajax({
@@ -442,7 +448,7 @@ export default {
         if (response && response.result === 'ok') {
           if (this.newAddressInfo.is_default) {
             this.actionSetGlobalMessage({
-              msg: '删除成功,请重新设定默认地址',
+              msg: '删除成功,<div style="text-align:center">请重新设定默认地址</div>',
               cb: () => {
                 this.$router.back();
               }
@@ -473,7 +479,7 @@ export default {
         },
         errorAlert: false,
         success: (response) => {
-          // console.log(`第${idx}筆設為默認`)
+          console.log(`第${idx}筆設為默認`)
         },
         fail: (response) => {
 
