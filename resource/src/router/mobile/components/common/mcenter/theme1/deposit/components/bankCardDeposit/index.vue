@@ -1850,7 +1850,7 @@ export default {
             target: "name",
             value: value
           }).then(val => {
-            this.checkSuccess = val ? true : false;
+            // this.checkSuccess = val ? true : false;
 
             this.speedField.depositName = val;
             this.$emit("update:speedField", { val, target });
