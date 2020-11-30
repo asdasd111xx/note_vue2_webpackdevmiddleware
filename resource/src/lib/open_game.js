@@ -11,6 +11,10 @@ import store from '@/store';
 // openGame({ kind: game.kind, vendor: game.vendor, code: game.code, gameType: game.type });
 export default (params, success = () => { }, fail = () => { }) => {
   localStorage.setItem("is-open-game", true);
+  setTimeout(() => {
+    localStorage.removeItem("is-open-game");
+  }, 2000)
+
   console.log(params)
   let width = 1024;
 
@@ -31,9 +35,6 @@ export default (params, success = () => { }, fail = () => { }) => {
 
   if (!settings.vendor || !settings.kind) {
     fail({ data: { msg: 'vendor 遗失' } });
-    setTimeout(() => {
-      localStorage.removeItem("is-open-game");
-    }, 1500)
     return;
   }
 
@@ -67,6 +68,7 @@ export default (params, success = () => { }, fail = () => { }) => {
   return game.gameLink({
     params: temp,
     errorAlert: false,
+    redirect: false,
     success: (response) => {
       console.log(response);
       const { result, ret } = response;
@@ -145,10 +147,6 @@ export default (params, success = () => { }, fail = () => { }) => {
             window.location.href = `/mobile/iframe/game?vendor=${settings.vendor}&kind=${settings.kind}&hasFooter=false&hasHeader=true`;
             return;
         }
-
-        setTimeout(() => {
-          localStorage.removeItem('is-open-game');
-        }, 1500);
       }, 200)
     },
     fail: (res) => {

@@ -1,4 +1,5 @@
 import * as apiUrl from '../config/api';
+
 import ajax from '../lib/ajax';
 
 export default {
@@ -26,6 +27,7 @@ export default {
         return ajax({
             method: 'get',
             url: `${apiUrl.API_GET_VENDOR}/${vendor}/game/launch`,
+            redirect: false,
             ...args
         });
     },
