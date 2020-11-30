@@ -54,7 +54,7 @@ export default {
       return moment(this.swagConfig.maintain_start_at).add(-12, 'hours')
         .format('YYYY-MM-DD HH:mm:ss')
     },
-    swagESTMaintainEndtAt() {
+    swagESTMaintainEndAt() {
       return moment(this.swagConfig.maintain_end_at).add(-12, 'hours')
         .format('YYYY-MM-DD HH:mm:ss')
     },
