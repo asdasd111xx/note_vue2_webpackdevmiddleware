@@ -312,7 +312,6 @@ export default {
       }
 
       this.isLoading = true;
-      this.handleSwagBalance();
 
       // 暫存選擇欄位 簡訊驗證
       let tmp_currentSelRate = {};
@@ -377,7 +376,10 @@ export default {
             })
 
           }
+        } else {
+          this.handleSwagBalance();
         }
+
         setTimeout(() => {
           this.isLoading = false;
         }, 1500)
