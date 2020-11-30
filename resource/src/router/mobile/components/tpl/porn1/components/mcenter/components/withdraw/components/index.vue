@@ -803,6 +803,14 @@ export default {
     // });
   },
   mounted() {
+    // 按下一鍵歸戶後，需再更新 withdraw/info 這支 API
+    // 避免「可提現餘額是否超過中心錢包餘額」重複出現(到時重構再更改)
+    document.querySelector("#one-recycle-btn").addEventListener("click", () => {
+      setTimeout(() => {
+        this.updateAmount(this.selectedCard.swift_code);
+      }, 4000);
+    });
+
     // if (this.memInfo.auto_transfer.enable) {
     //   this.balanceBack();
     // }
