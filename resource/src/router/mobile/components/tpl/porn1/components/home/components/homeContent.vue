@@ -122,7 +122,8 @@
             <template v-else>
               <img v-lazy="getImg(game)" :alt="game.name" />
             </template>
-            <div v-if="game.isMaintain || isMaintainSwag && game.vendor === 'SWAG'"
+            <div v-if="game.isMaintain ||
+            (isMaintainSwag && game.vendor === 'SWAG')"
             :class="[$style['maintain-mask']]">
               <div
                 :class="[
