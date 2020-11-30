@@ -73,7 +73,9 @@ export default {
     ]),
     initSwagConfig(onlyCheckMaintain = false) {
       if (this.isCheckingInit) {
-        return;
+        return new Promise((resolve, reject) => {
+          resolve(false);
+        });
       }
 
       if (this.loginStatus && !onlyCheckMaintain) {
@@ -110,7 +112,7 @@ export default {
         }
 
         if (onlyCheckMaintain) {
-          return;
+          return true;
         }
 
         if (this.$route.name === 'mcenter-swag') {
@@ -142,7 +144,11 @@ export default {
       });
     },
     handleSwagBalance() {
-      this.initSwagConfig(true).then(() => {
+      this.initSwagConfig(true).then((result) => {
+        if (!result) {
+          return;
+        }
+
         if (this.isMaintainSwag) {
           if (this.swagConfig.enable === 0) {
             this.actionSetGlobalMessage({
