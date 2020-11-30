@@ -152,7 +152,7 @@
                   </div>
                   <div :class="[$style['container-maintain']]">
                     <div :class="[$style['container-maintain-time']]">
-                      {{ `${game.vendor === 'SWAG' ? swagConfig.maintain_start_at: game.start_at}` }}
+                      {{ `${game.vendor === 'SWAG' ? swagESTMaintainStartAt: game.start_at}` }}
                     </div>
                     <img
                       :src="
@@ -160,7 +160,7 @@
                       "
                     />
                     <div :class="[$style['container-maintain-time']]">
-                      {{ `${game.vendor === 'SWAG' ? swagConfig.maintain_end_at: game.end_at}` }}
+                      {{ `${game.vendor === 'SWAG' ? swagESTMaintainEndAt: game.end_at}` }}
                     </div>
                   </div>
                 </div>
