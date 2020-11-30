@@ -4,7 +4,16 @@ import axios from 'axios';
 import querystring from 'querystring';
 
 export default ({
-    method = '', url = '', params = {}, success = () => { }, fail = () => { }, headers = () => { }, timeout = 30000, errorAlert = true, cache = false
+    method = '',
+    url = '',
+    params = {},
+    success = () => { },
+    fail = () => { },
+    headers = () => { },
+    timeout = 30000,
+    errorAlert = true,
+    cache = false,
+    redirect = true
 }) => {
     const obj = {
         method,
@@ -69,7 +78,9 @@ export default ({
                     return;
                 }
                 // 維護中導向
-                if (errorResponse.code === "M00002" && !window.location.href.includes('upup')) {
+                if (errorResponse.code === "M00002" &&
+                    !window.location.href.includes('upup') &&
+                    redirect) {
                     window.location.href = '/upup';
                     return;
                 }
