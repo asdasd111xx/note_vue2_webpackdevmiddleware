@@ -64,13 +64,13 @@ export default {
 
                 }
 
-                if (temp.event === "c_outer_maintain") {
+                if (temp.event === "outer_maintain") {
                     this.swagMaintainTimer = setTimeout(() => {
-                        this.initSwagConfig();
+                        this.initSwagConfig(true);
                         clearTimeout(this.swagMaintainTimer);
                         this.swagMaintainTimer = null;
                         return;
-                    }, 70000);
+                    }, 1000);
                 }
             }
         }
