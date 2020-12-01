@@ -6,7 +6,7 @@ export default ({
     method = 'get',
     moudle = '',
     params = {},
-    timeout = 10000,
+    timeout = 15000,
     reqHeaders = {},
     url = "",
     fail = () => { },
