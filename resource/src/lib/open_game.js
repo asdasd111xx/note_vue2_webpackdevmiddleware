@@ -11,6 +11,10 @@ import store from '@/store';
 // openGame({ kind: game.kind, vendor: game.vendor, code: game.code, gameType: game.type });
 export default (params, success = () => { }, fail = () => { }) => {
   localStorage.setItem("is-open-game", true);
+  setTimeout(() => {
+    localStorage.removeItem("is-open-game");
+  }, 2000)
+
   console.log(params)
   let width = 1024;
 
@@ -25,18 +29,16 @@ export default (params, success = () => { }, fail = () => { }) => {
     code: '',
     width,
     height: 768,
+    gameName: '',
     ...params
   };
 
   if (!settings.vendor || !settings.kind) {
     fail({ data: { msg: 'vendor 遗失' } });
-    setTimeout(() => {
-      localStorage.removeItem("is-open-game");
-    }, 1500)
     return;
   }
 
-  const { vendor, kind, code, gameType } = params;
+  const { vendor, kind, code, gameType, gameName } = params;
   const temp = { kind };
 
   if (code) {
@@ -66,6 +68,7 @@ export default (params, success = () => { }, fail = () => { }) => {
   return game.gameLink({
     params: temp,
     errorAlert: false,
+    redirect: false,
     success: (response) => {
       console.log(response);
       const { result, ret } = response;
@@ -83,7 +86,7 @@ export default (params, success = () => { }, fail = () => { }) => {
 
       /* 補各自遊戲參數 */
       // 80桌參數
-      if (vendor === "lg_live" && String(kind) === "2" && gameType && gameType === "R") {
+      if (vendor === "lg_live" && String(kind) === "2" && gameType && gameType === "sdk") {
         query += '&customize=yabo&tableType=3310';
       }
 
@@ -92,10 +95,11 @@ export default (params, success = () => { }, fail = () => { }) => {
         query += '&allowFullScreen=false';
       }
 
-      //Xbb lg_casino lg_yb_casino 外開參數
-      if (vendor && ['LG_CASINO', 'LG_YB_CASINO'].includes(vendor.toUpperCase())) {
-        query += '&pageOption=1';
-      }
+      // Xbb lg_casino lg_yb_casino 外開參數
+      // 由API提供
+      // if (vendor && ['LG_CASINO', 'LG_YB_CASINO'].includes(vendor.toUpperCase())) {
+      //   query += '&pageOption=1';
+      // }
 
       localStorage.setItem("open-game-link", ret.url + query);
 
@@ -122,7 +126,7 @@ export default (params, success = () => { }, fail = () => { }) => {
             }
             else if (vendor === "allwin") {
               localStorage.setItem('iframe-third-url', link);
-              localStorage.setItem('iframe-third-url-title', '500万彩票');
+              localStorage.setItem('iframe-third-url-title', (gameName) ? gameName : "500万彩票");
             } else {
               newWindow.location = link;
             }
@@ -143,10 +147,6 @@ export default (params, success = () => { }, fail = () => { }) => {
             window.location.href = `/mobile/iframe/game?vendor=${settings.vendor}&kind=${settings.kind}&hasFooter=false&hasHeader=true`;
             return;
         }
-
-        setTimeout(() => {
-          localStorage.removeItem('is-open-game');
-        }, 1500);
       }, 200)
     },
     fail: (res) => {

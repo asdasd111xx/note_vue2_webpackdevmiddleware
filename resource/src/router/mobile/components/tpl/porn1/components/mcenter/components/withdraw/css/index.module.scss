@@ -1,12 +1,6 @@
 @import "~@/css/variable.scss";
 @import "../../../../../components/mcenter/components/balanceTrans/css/porn1.module.scss";
 
-.content-wrap {
-  min-height: calc(100vh);
-  color: #414655;
-  background-color: $main_background_white1;
-}
-
 // 中心錢包
 .balance-wrap-wrap {
   background-color: $main_white_color1;
@@ -403,7 +397,7 @@
       font-weight: 700;
     }
 
-    &.check-crypto {
+    &.custom-color {
       color: #be9e7f;
     }
 
@@ -418,10 +412,11 @@
       font-weight: 400;
     }
 
+    // For Crypto
     .crypto-money::after {
       content: "USDT";
       color: #e9dacc;
-      padding-left: 10px;
+      padding-left: 1px;
       font-weight: 400;
     }
   }
@@ -555,4 +550,11 @@
       font-size: 15px;
     }
   }
+}
+.offer {
+  height: 30px;
+  background-color: $main_white_color1;
+  color: #be9e7f;
+  padding: 5px 14px;
+  width: 100%;
 }

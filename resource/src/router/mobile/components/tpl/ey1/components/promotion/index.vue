@@ -142,6 +142,9 @@ export default {
           }/System/scUrl`,
       }).then(res => {
         url = res.data;
+        if (!url) {
+          return;
+        }
         axios({
           method: 'get',
           url: '/api/v1/c/link/customize',

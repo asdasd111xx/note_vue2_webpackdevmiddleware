@@ -213,6 +213,18 @@ export default {
           copyShow: true
         },
         {
+          objKey: "withdrawDeliver",
+          title: this.$text("S_DELIVER_INFO", "收款资讯"),
+          isFontBold: true,
+          copyShow: false,
+          qrcode: [
+            {
+              title: this.orderData.orderInfo.bank_account_qrcode_name,
+              value: this.orderData.orderInfo.bank_account_qrcode
+            }
+          ]
+        },
+        {
           objKey: "memo",
           title: this.$text("S_DEPOSIT_TIP05", "提醒事项"),
           value: this.orderData.reminder.replace(/\n/gi, "<br/>"),
@@ -220,7 +232,13 @@ export default {
           copyShow: false,
           htmlShow: true
         }
-      ];
+      ].filter(item => {
+        if ("qrcode" in item) {
+          return item.qrcode[0].title && item.qrcode[0].value ? true : false;
+        } else {
+          return true;
+        }
+      });
     },
     yourDepositData() {
       // 加密貨幣不顯示
@@ -244,7 +262,7 @@ export default {
         },
         {
           objKey: "yourMoney",
-          title: this.$text("S_DEPOSIT_MONEY", "存款金额"),
+          title: this.$text("S_DEPOSIT_MONEY", "充值金额"),
           value: this.orderData.amount,
           isFontBold: true
         }

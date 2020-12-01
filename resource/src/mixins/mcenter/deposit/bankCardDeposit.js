@@ -19,12 +19,12 @@ export default {
       depositData: [],
       orderData: {},
       passRoad: [],
-      isDepositAi: false,
+      // isDepositAi: false,
       curPaymentGroupIndex: 0,
       getPassRoadOrAi: {},
       curModeGroup: {},
       curPayInfo: {},
-      curPassRoad: {},
+      curPassRoad: {}, // 存放當前 channel 的資料
       moneyValue: "",
       isShow: true,
       isErrorMoney: false,
@@ -194,7 +194,7 @@ export default {
       set(value) {
         this.selectedBank = value;
 
-        if (!this.isDepositAi && this.curModeGroup.channel_display) {
+        if (this.curModeGroup.channel_display) {
           this.getPayPass();
         }
       }
@@ -307,10 +307,8 @@ export default {
      * @return string
      */
     depositInterval() {
-      const minMoney =
-        +this.curPassRoad.per_trade_min || +this.curPayInfo.per_trade_min;
-      const maxMoney =
-        +this.curPassRoad.per_trade_max || +this.curPayInfo.per_trade_max;
+      const minMoney = +this.curPassRoad.per_trade_min;
+      const maxMoney = +this.curPassRoad.per_trade_max;
 
       return {
         minMoney,
@@ -323,94 +321,113 @@ export default {
      * @return string
      */
     receiptInfo() {
-      // 109/09/23 同 Android，它們寫死永遠不顯示
+      if (this.curPassRoad.safe_account === false) {
+        // 支付轉帳
+        if (
+          this.curPayInfo.payment_method_id !== 3 &&
+          this.curPayInfo.payment_method_id !== 6 &&
+          (this.curPassRoad.qrcode || this.curPassRoad.photo)
+        ) {
+          return [
+            {
+              objKey: "withdrawAccount",
+              title: this.$text("S_WITHDRAW_ACCOUNT", "收款帐号"),
+              value: this.curPassRoad.bank_account,
+              isFontBold: false,
+              copyShow: true
+            },
+            {
+              objKey: "withdrawNickname",
+              title: this.$text("S_WITHDRAW_NICKNAME", "收款昵称"),
+              value: this.curPassRoad.bank_account_name,
+              isFontBold: false,
+              copyShow: false
+            },
+            {
+              objKey: "withdrawDeliver",
+              title: this.$text("S_DELIVER_INFO", "收款资讯"),
+              isFontBold: true,
+              copyShow: false,
+              qrcode: [
+                {
+                  title: this.curPassRoad.photo_name,
+                  value: this.curPassRoad.photo
+                },
+                {
+                  title: this.curPassRoad.qrcode_name,
+                  value: this.curPassRoad.qrcode
+                }
+              ]
+            },
+            {
+              objKey: "memo",
+              title: this.$text("S_DEPOSIT_TIP05", "提醒事项"),
+              value: this.curPassRoad.reminder.replace(/\n/gi, "<br/>"),
+              isFontBold: false,
+              copyShow: false,
+              htmlShow: true
+            }
+          ];
+        }
 
-      // if (this.curPassRoad.safe_account === false) {
-      //     if ((this.curPayInfo.payment_method_id !== 3 &&
-      //          this.curPayInfo.payment_method_id !== 6) &&
-      //         (this.curPassRoad.qrcode || this.curPassRoad.photo))
-      //     {
-      //         return [
-      //             {
-      //                 objKey: 'withdrawAccount',
-      //                 title: this.$text('S_WITHDRAW_ACCOUNT', '收款帐号'),
-      //                 value: this.curPassRoad.bank_account,
-      //                 isFontBold: false,
-      //                 copyShow: true
-      //             },
-      //             {
-      //                 objKey: 'withdrawNickname',
-      //                 title: this.$text('S_WITHDRAW_NICKNAME', '收款昵称'),
-      //                 value: this.curPassRoad.bank_account_name,
-      //                 isFontBold: false,
-      //                 copyShow: false
-      //             },
-      //             {
-      //                 objKey: 'withdrawDeliver',
-      //                 title: this.$text('S_DELIVER_INFO', '收款资讯'),
-      //                 isFontBold: true,
-      //                 copyShow: false,
-      //                 qrcode: [
-      //                     {
-      //                         title: this.curPassRoad.photo_name,
-      //                         value: this.curPassRoad.photo
-      //                     },
-      //                     {
-      //                         title: this.curPassRoad.qrcode_name,
-      //                         value: this.curPassRoad.qrcode
-      //                     }
-      //                 ]
-      //             },
-      //             {
-      //                 objKey: 'memo',
-      //                 title: this.$text('S_DEPOSIT_TIP05', '提醒事项'),
-      //                 value: this.curPassRoad.reminder.replace(/\n/ig, '<br/>'),
-      //                 isFontBold: false,
-      //                 copyShow: false,
-      //                 htmlShow: true
-      //             }
-      //         ];
-      //     }
-
-      //     return [
-      //         {
-      //             objKey: 'withdrawBank',
-      //             title: this.$text('S_WITHDRAW_BANK', '收款银行'),
-      //             value: this.curPassRoad.bank_name,
-      //             isFontBold: false,
-      //             copyShow: true
-      //         },
-      //         {
-      //             objKey: 'withdrawBranch',
-      //             title: this.$text('S_WITHDRAW_BRANCH', '收款支行'),
-      //             value: this.curPassRoad.bank_branch,
-      //             isFontBold: false,
-      //             copyShow: true
-      //         },
-      //         {
-      //             objKey: 'a',
-      //             title: this.$text('S_WITHDRAW_ACCOUNT', '收款帐号'),
-      //             value: this.curPassRoad.bank_account,
-      //             isFontBold: true,
-      //             copyShow: true
-      //         },
-      //         {
-      //             objKey: 'withdrawName',
-      //             title: this.$text('S_WITHDRAW_NAME', '收款人姓名'),
-      //             value: this.curPassRoad.bank_account_name,
-      //             isFontBold: false,
-      //             copyShow: true
-      //         },
-      //         {
-      //             objKey: 'memo',
-      //             title: this.$text('S_DEPOSIT_TIP05', '提醒事项'),
-      //             value: this.curPassRoad.reminder.replace(/\n/ig, '<br/>'),
-      //             isFontBold: false,
-      //             copyShow: false,
-      //             htmlShow: true
-      //         }
-      //     ];
-      // }
+        // 銀行匯款
+        return [
+          {
+            objKey: "withdrawBank",
+            title: this.$text("S_WITHDRAW_BANK", "收款银行"),
+            value: this.curPassRoad.bank_name,
+            isFontBold: false,
+            copyShow: true
+          },
+          {
+            objKey: "withdrawBranch",
+            title: this.$text("S_WITHDRAW_BRANCH", "收款支行"),
+            value: this.curPassRoad.bank_branch,
+            isFontBold: false,
+            copyShow: true
+          },
+          {
+            objKey: "withdrawAccount",
+            title: this.$text("S_WITHDRAW_ACCOUNT", "收款帐号"),
+            value: this.curPassRoad.bank_account,
+            isFontBold: true,
+            copyShow: true
+          },
+          {
+            objKey: "withdrawName",
+            title: this.$text("S_WITHDRAW_NAME", "收款人姓名"),
+            value: this.curPassRoad.bank_account_name,
+            isFontBold: false,
+            copyShow: true
+          },
+          {
+            objKey: "withdrawDeliver",
+            title: this.$text("S_DELIVER_INFO", "收款资讯"),
+            isFontBold: true,
+            copyShow: false,
+            qrcode: [
+              {
+                title: this.curPassRoad.bank_account_qrcode_name,
+                value: this.curPassRoad.bank_account_qrcode
+              }
+            ]
+          },
+          {
+            objKey: "memo",
+            title: this.$text("S_DEPOSIT_TIP05", "提醒事项"),
+            value: this.curPassRoad.reminder.replace(/\n/gi, "<br/>"),
+            isFontBold: false,
+            copyShow: false,
+            htmlShow: true
+          }
+        ].filter(item => {
+          if ("qrcode" in item) {
+            return item.qrcode[0].title && item.qrcode[0].value ? true : false;
+          } else {
+            return true;
+          }
+        });
+      }
 
       return false;
     }
@@ -493,24 +510,28 @@ export default {
               ? filterData.payment_group_content[0]
               : {};
             this.depositData = res.data.payment_group;
-            this.isDepositAi = res.data.deposit_ai;
+            // this.isDepositAi = res.data.deposit_ai;
 
             if (res.data.your_bank) {
               this.yourBankData = res.data.your_bank;
             }
 
-            if (this.isDepositAi) {
-              this.PassRoadOrAi();
-            }
+            // if (this.isDepositAi) {
+            //   this.PassRoadOrAi();
+            // }
+
             if (this.mixingDeposit !== "onlyFastPay") {
+              // this.isShow = false 防非同步造成的問題
+              this.isShow = false;
               this.getPayThird();
             }
 
             if (
-              !this.isDepositAi &&
               this.curModeGroup.channel_display &&
               (this.curPayInfo.bank_id || this.selectedBank.value)
             ) {
+              // this.isShow = false 防非同步造成的問題
+              this.isShow = false;
               this.getPayPass();
               return { result: res.data };
             }
@@ -560,11 +581,11 @@ export default {
     PassRoadOrAi() {
       let getDataInfo = this.curPassRoad ? this.curPassRoad : {};
 
-      if (this.isDepositAi) {
-        getDataInfo = this.curModeGroup
-          ? this.curModeGroup.payment_group_content[this.curPaymentGroupIndex]
-          : {};
-      }
+      // if (this.isDepositAi) {
+      //   getDataInfo = this.curModeGroup
+      //     ? this.curModeGroup.payment_group_content[this.curPaymentGroupIndex]
+      //     : {};
+      // }
       this.getPassRoadOrAi = {
         fee_percent: getDataInfo.fee_percent,
         fee_amount: getDataInfo.fee_amount,
@@ -682,7 +703,7 @@ export default {
       this.resetTimerStatus();
       this.curModeGroup = mode;
 
-      if (this.isDepositAi && this.curModeGroup.payment_group_content) {
+      if (this.curModeGroup.payment_group_content) {
         this.changePayMode(this.curModeGroup.payment_group_content[0], 0);
       }
 
@@ -699,7 +720,6 @@ export default {
           this.curPayInfo.bank_id === 0);
 
       if (
-        !this.isDepositAi &&
         this.curModeGroup.channel_display &&
         (this.curPayInfo.bank_id || this.selectedBank.value || isOtherBank)
       ) {
@@ -738,13 +758,12 @@ export default {
         (this.curPayInfo.payment_method_id === 6 &&
           this.curPayInfo.bank_id === 0);
 
-      if (this.isDepositAi) {
-        this.curPaymentGroupIndex = index;
-        this.PassRoadOrAi();
-      }
+      // if (this.isDepositAi) {
+      //   this.curPaymentGroupIndex = index;
+      //   this.PassRoadOrAi();
+      // }
 
       if (
-        !this.isDepositAi &&
         this.curModeGroup.channel_display &&
         ((!this.curPayInfo.bank_id && isOtherBank) ||
           this.curPayInfo.bank_id ||
@@ -796,8 +815,8 @@ export default {
     verificationMoney(money) {
       if (this.depositInterval.maxMoney) {
         this.isErrorMoney =
-          Number(money) > Number(this.depositInterval.maxMoney) ||
-          Number(money) < Number(this.depositInterval.minMoney);
+          Number(money) > this.depositInterval.maxMoney ||
+          Number(money) < this.depositInterval.minMoney;
         return;
       }
 
@@ -961,7 +980,7 @@ export default {
         amount: this.moneyValue
       };
 
-      if (!this.isDepositAi && this.curPassRoad.id) {
+      if (this.curPassRoad.id) {
         paramsData = {
           ...paramsData,
           channel_id: this.curPassRoad.id
@@ -1218,6 +1237,7 @@ export default {
             )
           }
         };
+
         const missingRequiredField = this.curPayInfo.field.find(item => {
           const check = checkItemMap[item.name];
 
@@ -1232,8 +1252,10 @@ export default {
           if (check && item.required && !this.speedField[check.key]) {
             return true;
           }
+
           return false;
         });
+
         if (missingRequiredField) {
           this.checkSuccess = false;
           return;
@@ -1260,23 +1282,33 @@ export default {
         this.bankSelectValue = target;
       }
     },
-    getSingleLimit(minMoney, maxMoney) {
-      // 最大金額不為0的時候，顯示最小值~最大值
-      if (Number(maxMoney) !== 0) {
-        return `¥${minMoney} ~ ¥${maxMoney}`;
+    getSingleLimit(minMoney, maxMoney, type = null) {
+      let str = type === "placeholder" ? "单笔充值金额：" : "";
+
+      if (isNaN(minMoney) || isNaN(maxMoney)) {
+        return str;
       }
 
-      // 最小金額不為0的時候，顯示最低金額~无限制
-      if (Number(minMoney) !== 0 && Number(maxMoney) === 0) {
-        return `¥${minMoney} ~ 无限制`;
+      // -----金額顯示判斷邏輯-----
+
+      switch (true) {
+        // 最大金額不為0的時候，顯示最小值~最大值
+        case Number(maxMoney) !== 0:
+          str += `¥${minMoney} ~ ¥${maxMoney}`;
+          break;
+
+        // 最小金額不為0的時候，顯示最低金額~无限制
+        case Number(minMoney) !== 0 && Number(maxMoney) === 0:
+          str += `¥${minMoney} ~ 无限制`;
+          break;
+
+        // 最大金額 & 最低金額 都為0的時候，顯示無限制
+        case Number(minMoney) === 0 && Number(maxMoney) === 0:
+          str += `无限制`;
+          break;
       }
 
-      // 最大金額 & 最低金額 都為0的時候，顯示無限制
-      if (Number(minMoney) === 0 && Number(maxMoney) === 0) {
-        return `无限制`;
-      }
-
-      return "";
+      return str;
     },
     // 取得存/取款加密貨幣試算金額
     convertCryptoMoney() {

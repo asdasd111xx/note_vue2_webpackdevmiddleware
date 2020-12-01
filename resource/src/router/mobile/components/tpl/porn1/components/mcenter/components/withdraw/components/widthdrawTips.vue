@@ -55,6 +55,9 @@
               <div :class="$style['check-cell']">
                 <span :class="$style['sub-title']">
                   {{ $text("S_DEDUCTION_MONEY", "扣除金额") }}
+                  <template v-if="themeTPL === 'ey1'">
+                    (行政费用:{{ `${serialNumberData.administrative_rate}%` }})
+                  </template>
                 </span>
                 <span :class="$style['money']">
                   -{{ getDeductionNumber(serialNumberData.total.deduction) }}
@@ -79,6 +82,22 @@
                 </span>
               </div>
 
+              <div
+                v-if="hasOffer"
+                :class="[$style['check-cell'], $style['custom-color']]"
+              >
+                <span :class="$style['sub-title']">
+                  {{ withdrawName }}出款额外赠送
+                </span>
+                <span :class="$style['money']">
+                  {{
+                    +bonusOffer && +bonusOffer > 0
+                      ? getDeductionNumber(bonusOffer)
+                      : "0.00"
+                  }}
+                </span>
+              </div>
+
               <div :class="[$style['check-cell'], $style['check-actual']]">
                 <span :class="$style['sub-title']"> 实际提现金额 </span>
                 <span :class="$style['money']">
@@ -88,7 +107,7 @@
 
               <div
                 v-if="hasCrypto"
-                :class="[$style['check-cell'], $style['check-crypto']]"
+                :class="[$style['check-cell'], $style['custom-color']]"
               >
                 <span :class="$style['sub-title']"> USDT到帐 </span>
                 <span :class="$style['crypto-money']">
@@ -147,8 +166,8 @@ export default {
       default: false
     },
     actualMoney: {
-      type: Number,
-      default: 0
+      type: Number | String,
+      default: "0.00"
     },
     cryptoMoney: {
       type: String,
@@ -165,6 +184,18 @@ export default {
     swiftCode: {
       type: String,
       default: ""
+    },
+    bonusOffer: {
+      type: String | Number, // "0.00" or Number
+      default: "0.00"
+    },
+    withdrawName: {
+      type: String,
+      default: ""
+    },
+    hasOffer: {
+      type: Boolean,
+      default: false
     }
   },
   mounted() {
@@ -178,6 +209,9 @@ export default {
       return (
         this[`$style_${this.siteConfig.MOBILE_WEB_TPL}`] || this.$style_porn1
       );
+    },
+    themeTPL() {
+      return this.siteConfig.MOBILE_WEB_TPL;
     }
   },
   methods: {

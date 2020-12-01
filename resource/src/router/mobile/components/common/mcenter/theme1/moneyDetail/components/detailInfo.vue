@@ -35,7 +35,7 @@
       </div>
       <div :class="[$style.detail, 'clearfix']">
         <div :class="$style.title">备注</div>
-        <div :class="$style.text">
+        <div :class="$style.text2">
           {{ detailInfo.memo ? detailInfo.memo : "--" }}
         </div>
       </div>
@@ -56,9 +56,9 @@
 </template>
 
 <script>
-import Vue from 'vue';
+import Vue from "vue";
 import message from "@/router/mobile/components/common/message";
-import { mapGetters } from 'vuex';
+import { mapGetters } from "vuex";
 
 export default {
   components: {
@@ -66,12 +66,14 @@ export default {
   },
   data() {
     return {
-      msg: ''
-    }
+      msg: ""
+    };
   },
   filters: {
     dateFormat(date) {
-      return Vue.moment(date).utcOffset(-4).format('YYYY-MM-DD HH:mm:ss');
+      return Vue.moment(date)
+        .utcOffset(-4)
+        .format("YYYY-MM-DD HH:mm:ss");
     }
   },
   computed: {
@@ -82,9 +84,10 @@ export default {
       return this.siteConfig.MOBILE_WEB_TPL;
     },
     $style() {
-      const style = this[`$style_${this.siteConfig.MOBILE_WEB_TPL}`] || this.$style_porn1;
+      const style =
+        this[`$style_${this.siteConfig.MOBILE_WEB_TPL}`] || this.$style_porn1;
       return style;
-    },
+    }
   },
   props: {
     currentCategory: {
@@ -102,16 +105,16 @@ export default {
   },
   methods: {
     linkToService() {
-      localStorage.setItem('money-detail-params-service', true);
-      this.$router.push('/mobile/service');
+      localStorage.setItem("money-detail-params-service", true);
+      this.$router.push("/mobile/service");
     },
     oncopy() {
       this.$copyText(this.detailInfo.ref_id);
-      this.msg = '已复制到剪贴板'
+      this.msg = "已复制到剪贴板";
     }
   },
   beforeDestroy() {
-    this.$emit('update:detailInfo', null);
+    this.$emit("update:detailInfo", null);
   }
 };
 </script>

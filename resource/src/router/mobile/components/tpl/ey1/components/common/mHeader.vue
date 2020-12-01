@@ -104,8 +104,9 @@
         :class="[
           $style['header-custom-wrap'],
           {
-            [$style[headerConfig.customLinkStyle]]: headerConfig.customLinkStyle
-          }
+            [$style[headerConfig.customLinkStyle]]:
+              headerConfig.customLinkStyle,
+          },
         ]"
       >
         <div
@@ -124,8 +125,13 @@
     <!-- 幫助中心連結 -->
     <template v-if="headerConfig.hasHelp">
       <div :class="[$style['btn-help']]" @click="handleHelpLinkTo">
-        <span v-if="headerConfig.hasHelp.type === 'deposit'">
-          教程
+        <span
+          v-if="
+            headerConfig.hasHelp.type === 'deposit' ||
+            headerConfig.hasHelp.type === 'withdraw'
+          "
+        >
+          记录/教程
         </span>
         <div :class="$style['btn-icon']">
           <img :src="$getCdnPath('/static/image/ey1/common/btn_help.png')" />

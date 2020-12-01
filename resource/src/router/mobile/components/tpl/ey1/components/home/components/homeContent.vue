@@ -76,7 +76,7 @@
     >
       <div
         v-for="(type, index) in typeList"
-        :data-seq="`${type.sequence}`"
+        :data-id="`${type.id}`"
         :key="`type-${index}`"
         :class="[
           $style['type-swiper'],

@@ -459,28 +459,32 @@ export default {
           captcha_text: this.captchaData ? this.captchaData : ''
         }
       }).then(res => {
-        this.errMsg = "";
-        this.countdownSec = 60;
-        this.timer = setInterval(() => {
-          if (this.countdownSec === 0) {
-            clearInterval(this.timer)
-            this.timer = null;
-            return;
+        if (res.data.result === "ok") {
+          this.errMsg = "";
+          this.countdownSec = 60;
+          this.timer = setInterval(() => {
+            if (this.countdownSec === 0) {
+              clearInterval(this.timer)
+              this.timer = null;
+              return;
+            }
+            this.countdownSec -= 1;
+          }, 1000)
+
+          if (res.data.code) {
+            this.errMsg = `${res.data.msg}`;
+          } else {
+            this.errMsg = '已發送手機認證碼';
           }
-          this.countdownSec -= 1;
-        }, 1000)
-
-        if (res.data.code) {
-          this.errMsg = `${res.data.msg}`;
         } else {
-          this.errMsg = '已發送手機認證碼';
+          this.errMsg = res.data.msg;
         }
-
       }).catch(error => {
         this.isSendKeyring = false;
 
         if (error.response && error.response.status === 429) {
           this.errorMsg = "今日发送次数已达上限";
+          this.countdownSec = 0;
           return;
         }
 
@@ -512,7 +516,7 @@ export default {
           this.msg.keyring = '';
 
           if (res && res.status === 429) {
-            this.errorMsg = "操作太频繁，请稍候在试";
+            this.errorMsg = "操作太频繁，请稍候再试";
             return;
           }
 
@@ -552,7 +556,7 @@ export default {
         },
         fail: (res) => {
           if (res && res.status === 429) {
-            this.errorMsg = "操作太频繁，请稍候在试";
+            this.errorMsg = "操作太频繁，请稍候再试";
             return;
           }
 

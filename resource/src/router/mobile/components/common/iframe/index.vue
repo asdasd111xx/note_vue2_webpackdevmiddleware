@@ -28,10 +28,14 @@
         />
       </div>
 
-      <div :class="$style['btn-prev']" @click="headerConfig.onClick">
+      <div
+        :class="[$style['btn-prev'], $style[themeTPL]]"
+        @click="headerConfig.onClick"
+      >
         <img
           :src="$getCdnPath(`/static/image/${themeTPL}/common/btn_back.png`)"
         />
+        <div>返回</div>
       </div>
       <div v-if="headerConfig.title" :class="[$style.title, $style[themeTPL]]">
         {{ headerConfig.title }}
@@ -39,7 +43,7 @@
 
       <div v-if="headerConfig.hasFunc" :class="[$style.func, $style[themeTPL]]">
         <div @click="toggleFullScreen">全屏</div>
-        <div @click="reload">刷新</div>
+        <!-- <div @click="reload">刷新</div> -->
       </div>
     </div>
     <iframe
@@ -234,7 +238,8 @@ export default {
         title: query.title || localStorage.getItem('iframe-third-url-title') || '',
         hasFunc: query.func === undefined ? true : query.func === 'true',
         onClick: () => {
-          this.$router.push(this.originUrl);
+          this.$router.replace(this.originUrl);
+          return;
         }
       };
     },
@@ -317,7 +322,7 @@ export default {
             return;
 
           case 'EVENT_THIRDPARTY_CLOSE':
-            this.$router.push(this.originUrl);
+            this.$router.replace(this.originUrl);
             return;
 
           // 避免迴圈重複本站
@@ -499,10 +504,27 @@ export default {
   height: 20px;
   margin: auto;
   z-index: 2;
+  color: black;
+
+  &.ey1 {
+    color: white;
+  }
+
+  &.porn1 {
+    color: black;
+  }
 
   > img {
     display: block;
     width: 100%;
+  }
+
+  > div {
+    display: block;
+    position: absolute;
+    top: 0;
+    width: 40px;
+    left: 20px;
   }
 }
 
@@ -565,7 +587,7 @@ export default {
   align-items: center;
 
   > div {
-    width: 50%;
+    // width: 50%;
     padding: 0 3px;
     height: 43px;
     line-height: 43px;

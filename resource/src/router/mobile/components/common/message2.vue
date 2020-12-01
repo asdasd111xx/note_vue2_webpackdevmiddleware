@@ -37,6 +37,9 @@ export default {
       if (this.msgObj.type) {
         const type = this.msgObj.type;
         switch (type) {
+          case "upgrade":
+            this.msg = "升级中";
+            break;
           case "incoming":
             this.msg = "正在上线 敬请期待";
             break;
@@ -227,7 +230,7 @@ export default {
   left: 50%;
 }
 
-.dialog /deep/ div {
+.dialog > div:first-child {
   background-color: rgba($color: #161616, $alpha: 0.8);
   border-radius: 10px;
   margin-left: auto;
@@ -235,5 +238,6 @@ export default {
   //   min-width: 200px;
   padding: 15px;
   color: white;
+  text-align: center;
 }
 </style>

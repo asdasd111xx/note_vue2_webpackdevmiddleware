@@ -153,7 +153,7 @@
               v-if="curPayInfo.payment_type_id === 5"
               :class="$style['select-bank-title']"
             >
-              {{ $text("S_YOUR_BANK", "您的银行") }}
+              {{ $text("S_USE_BANK", "使用银行") }}
             </span>
 
             <span v-else :class="$style['select-bank-title']"
@@ -253,9 +253,7 @@
             <!-- 支付通道 -->
             <!-- 加密貨幣會隱藏 -->
             <div
-              v-if="
-                !isDepositAi && passRoad.length > 0 && !isSelectBindWallet(402)
-              "
+              v-if="passRoad.length > 0 && !isSelectBindWallet(402)"
               :class="[$style['feature-wrap'], 'clearfix']"
             >
               <span :class="$style['bank-card-title']">支付通道</span>
@@ -364,12 +362,12 @@
                     )
                   "
                   alt="update"
-                  @click="actionSetCGPayInfo"
+                  @click="getPayPass"
                 />
               </span>
 
               <div :class="$style['CGPay-money']">
-                CGP <span>{{ CGPayInfo.balance }}</span>
+                CGP <span>{{ curPassRoad.balance }}</span>
               </div>
             </div>
 
@@ -396,12 +394,9 @@
                 "
               >
                 <div :class="$style['CGPay-money']">
-                  <div>CGPay余额：{{ CGPayInfo.balance }}</div>
+                  <div>CGPay余额：{{ curPassRoad.balance }}</div>
 
-                  <div
-                    :class="$style['money-update']"
-                    @click="actionSetCGPayInfo"
-                  >
+                  <div :class="$style['money-update']" @click="getPayPass">
                     <img
                       :src="
                         $getCdnPath(
@@ -416,7 +411,7 @@
 
               <div :class="$style['bank-card-title']">充值金额</div>
 
-              <div
+              <!-- <div
                 v-if="isDepositAi"
                 :class="[
                   $style['bank-card-title'],
@@ -424,11 +419,11 @@
                 ]"
               >
                 提交订单时，系统自动调配最佳充值金额
-              </div>
+              </div> -->
 
               <!-- 選擇金額區塊 -->
               <div
-                v-if="isDepositAi || curPassRoad.is_recommend_amount"
+                v-if="curPassRoad.is_recommend_amount"
                 :class="[$style['speed-money-wrap'], 'clearfix']"
               >
                 <div
@@ -492,8 +487,8 @@
                     <span>
                       ({{
                         getSingleLimit(
-                          curPassRoad.per_trade_min,
-                          curPassRoad.per_trade_max
+                          depositInterval.minMoney,
+                          depositInterval.maxMoney
                         )
                       }})
                     </span>
@@ -523,9 +518,8 @@
               <!-- 金額輸入欄 -->
               <div
                 v-if="
-                  !isDepositAi &&
-                    (Object.keys(curPassRoad).length === 0 ||
-                      curPassRoad.is_custom_amount)
+                  Object.keys(curPassRoad).length === 0 ||
+                    curPassRoad.is_custom_amount
                 "
                 :class="[
                   $style['feature-deposit-wrap'],
@@ -547,11 +541,11 @@
                       }
                     ]"
                     :placeholder="
-                      `单笔充值金额：${getSingleLimit(
-                        this.depositInterval.minMoney,
-                        this.depositInterval.maxMoney
-                      )}
-                      `
+                      getSingleLimit(
+                        depositInterval.minMoney,
+                        depositInterval.maxMoney,
+                        'placeholder'
+                      )
                     "
                     type="text"
                     inputmode="decimal"
@@ -574,15 +568,13 @@
               </div>
 
               <!-- 金額錯誤訊息 -->
-              <div
-                v-if="!isDepositAi && isErrorMoney"
-                :class="$style['money-input-tip']"
-              >
+              <div v-if="isErrorMoney" :class="$style['money-input-tip']">
                 {{
-                  `单笔充值金额：${getSingleLimit(
-                    this.depositInterval.minMoney,
-                    this.depositInterval.maxMoney
-                  )}`
+                  getSingleLimit(
+                    depositInterval.minMoney,
+                    depositInterval.maxMoney,
+                    "placeholder"
+                  )
                 }}
               </div>
 
@@ -790,15 +782,15 @@
             </div>
 
             <div v-if="receiptInfo" :class="[$style['info-wrap'], 'clearfix']">
-              <div :class="$style['deposit-info-title']">
+              <!-- <div :class="$style['deposit-info-title']">
                 {{ $text("S_WITHDRAW_ACCOUNT", "收款帐号") }}
-              </div>
+              </div> -->
 
-              <div :class="$style['deposit-submit-info']">
+              <div :class="[$style['deposit-submit-info']]">
                 <template v-for="(info, index) in receiptInfo">
                   <div
                     :key="`receipt-info-${index}`"
-                    :class="$style['submit-info-wrap']"
+                    :class="[$style['submit-info-wrap']]"
                   >
                     <div
                       :class="[
@@ -855,22 +847,24 @@
                     <!-- eslint-enable vue/no-v-html -->
                     <div v-else :class="$style['basic-info-text']">
                       {{ info.value }}
-                      <div
-                        v-if="info.copyShow"
-                        :class="$style['icon-wrap']"
-                        @click="copyInfo(info.value)"
-                      >
-                        <div>
-                          <icon name="regular/copy" width="12" height="12" />
-                        </div>
-                      </div>
+                    </div>
+
+                    <!-- icon -->
+                    <div
+                      v-if="info.copyShow"
+                      :class="$style['icon-wrap']"
+                      @click="copyInfo(info.value)"
+                    >
+                      <img
+                        :src="`/static/image/${themeTPL}/mcenter/ic_copy.png`"
+                      />
                     </div>
                   </div>
 
-                  <div
+                  <!-- <div
                     :key="`border-line-${index}`"
                     :class="{ [$style['info-border']]: info.isBorderBottom }"
-                  />
+                  /> -->
                 </template>
               </div>
             </div>
@@ -1220,7 +1214,6 @@ export default {
       siteConfig: "getSiteConfig",
       memInfo: "getMemInfo",
       rechargeConfig: "getRechargeConfig",
-      CGPayInfo: "getCGPayInfo",
       noticeData: "getNoticeData"
     }),
     $style() {
@@ -1504,10 +1497,6 @@ export default {
     this.checkEntryBlockStatus();
     this.actionSetRechargeConfig();
   },
-  mounted() {
-    // Get CGPay 錢包狀態
-    this.actionSetCGPayInfo();
-  },
   destroyed() {
     this.resetTimerStatus();
   },
@@ -1515,7 +1504,6 @@ export default {
     ...mapActions([
       "actionSetUserBalance",
       "actionSetRechargeConfig",
-      "actionSetCGPayInfo",
       "actionVerificationFormData",
       "actionSetGlobalMessage"
     ]),
@@ -1679,9 +1667,6 @@ export default {
         // 重置阻擋狀態
         this.checkEntryBlockStatus();
         this.entryBlockStatusData = null;
-
-        // 刷新CGPay錢包狀態
-        this.actionSetCGPayInfo();
 
         if (response) {
           if (response.status === "NameFail") {
@@ -1865,7 +1850,7 @@ export default {
             target: "name",
             value: value
           }).then(val => {
-            this.checkSuccess = val ? true : false;
+            // this.checkSuccess = val ? true : false;
 
             this.speedField.depositName = val;
             this.$emit("update:speedField", { val, target });

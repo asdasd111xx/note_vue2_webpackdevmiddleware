@@ -15,6 +15,7 @@
       <div
         v-for="(type, index) in typeList"
         :key="`type-${index}`"
+        :data-id="`${type.id}`"
         :class="[
           $style['type-swiper'],
           { [$style.active]: typeList[selectedIndex].icon === type.icon }
@@ -107,7 +108,7 @@
               { [$style['is-full']]: [1, 2, 3].includes(game.imageType) },
               { [$style['is-third']]: [4].includes(game.imageType) }
             ]"
-            @click.stop="onOpenGame(game)"
+            @click.stop="isMaintainSwag && game.vendor === 'SWAG' ? {} : onOpenGame(game)"
           >
             <template v-if="game.imageType === 4">
               <div :class="[$style['third-iamge-wrap']]">
@@ -121,12 +122,13 @@
             <template v-else>
               <img v-lazy="getImg(game)" :alt="game.name" />
             </template>
-            <div v-if="game.isMaintain"
+            <div v-if="game.isMaintain ||
+            (isMaintainSwag && game.vendor === 'SWAG')"
             :class="[$style['maintain-mask']]">
               <div
                 :class="[
                   {
-                    [$style['maintain-mask-1']]: game.imageType === 1
+                    [$style['maintain-mask-1']]: game.imageType === 1 || game.vendor === 'SWAG'
                   },
                   { [$style['maintain-mask-2']]: game.imageType === 0 }
                 ]"
@@ -142,13 +144,15 @@
                 <div v-else :class="[$style['maintain-text-1']]">
                   {{ `${game.name === "亚博直播真人视讯80桌" ? "鸭博直播真人视讯80桌":game.name} 维护中` }}
                 </div>
-                <div :class="[$style['container']]">
+                <div v-if="game.isMaintain ||
+                          (isMaintainSwag && game.vendor === 'SWAG' && swagConfig && swagConfig.enable !== 0)"
+                          :class="[$style['container']]">
                   <div :class="[$style['us-time']]">
                     {{ `-美东时间-` }}
                   </div>
                   <div :class="[$style['container-maintain']]">
                     <div :class="[$style['container-maintain-time']]">
-                      {{ `${game.start_at}` }}
+                      {{ `${game.vendor === 'SWAG' ? swagESTMaintainStartAt: game.start_at}` }}
                     </div>
                     <img
                       :src="
@@ -156,7 +160,7 @@
                       "
                     />
                     <div :class="[$style['container-maintain-time']]">
-                      {{ `${game.end_at}` }}
+                      {{ `${game.vendor === 'SWAG' ? swagESTMaintainEndAt: game.end_at}` }}
                     </div>
                   </div>
                 </div>

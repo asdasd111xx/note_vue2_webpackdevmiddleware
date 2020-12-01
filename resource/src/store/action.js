@@ -532,7 +532,7 @@ export const actionSetCasinoLoadingStatus = ({ commit }, status) => {
 //     會員、代理 共用
 // ＝＝＝＝＝＝＝＝＝＝＝＝＝＝＝＝＝＝
 // 會員、代理共用-設定系統時間
-export const actionSetSystemTime = ({ commit }, func = () => { }) => {
+export const actionSetSystemTime = ({ commit }, func = () => {}) => {
   common.systemTime({
     success: response => {
       if (response.result === "ok") {
@@ -585,7 +585,7 @@ export const actionMemInit = ({ state, dispatch, commit }) => {
     await dispatch("actionGetMemInfoV3");
     const defaultLang =
       ["47", "70", "71"].includes(state.memInfo.user.domain) &&
-        state.webInfo.is_production
+      state.webInfo.is_production
         ? "vi"
         : "zh-cn";
     await getLang(state.webInfo.language, defaultLang);
@@ -606,6 +606,7 @@ export const actionMemInit = ({ state, dispatch, commit }) => {
     dispatch("actionSetRechargeConfig");
     dispatch("actionSetRechargeBonusConfig");
     dispatch("actionSetSystemDomain");
+    dispatch("actionSetBBOSDomain");
 
     if (state.loginStatus) {
       const params = {
@@ -902,7 +903,7 @@ export const actionAgentInit = ({ state, dispatch, commit }, next) => {
 
         const defaultLang =
           ["47", "70", "71"].includes(state.agentInfo.user.domain) &&
-            state.webInfo.is_production
+          state.webInfo.is_production
             ? "vi"
             : "zh-cn";
         await getLang(state.webInfo.language, defaultLang);
@@ -1230,7 +1231,6 @@ export const actionSetＭcenterBindMessage = ({ commit }, data) => {
 // 設定推廣連結
 export const actionSetAgentLink = ({ state, commit }, data) => {
   let configInfo = {};
-
   if (state.webDomain) {
     configInfo =
       siteConfigOfficial[`site_${state.webDomain.domain}`] ||
@@ -1350,24 +1350,6 @@ export const actionSetRechargeBonusConfig = ({ commit }, data) => {
     if (res && res.data && res.data.result === "ok") {
       commit(types.SET_RECHARGEBONUSCONFIG, res.data.ret);
     }
-  });
-};
-
-export const actionSetCGPayInfo = ({ commit }, data) => {
-  return axios({
-    method: "get",
-    url: "/api/v1/c/ext/inpay?api_uri=/api/trade/v2/c/withdraw/user/cgp_info",
-    params: {
-      payment_method_id: 16 // 目前只有 CGPay = 16 需用到，先寫死
-    }
-  }).then(response => {
-    const { ret, result } = response.data;
-
-    if (!response || result !== "ok") {
-      return;
-    }
-
-    commit(types.SET_CGPAYINFO, ret);
   });
 };
 
@@ -1602,7 +1584,7 @@ export const actionGetMemInfoV3 = ({ state, dispatch, commit }) => {
         dispatch("actionSetGlobalMessage", {
           msg: error.response.data.msg,
           cb: () => {
-            member.logout().then(() => { });
+            member.logout().then(() => {});
           }
         });
       }
@@ -1693,6 +1675,9 @@ export const actionVerificationFormData = (
       val = val.replace(/[^0-9]/g, "").substring(0, 4);
       break;
 
+    case "address":
+      val = val.substring(0, 100);
+      break;
     // case "USDT-address":
     //   val = val.substring(0, 42);
     //   break;
@@ -1701,8 +1686,34 @@ export const actionVerificationFormData = (
   return val;
 };
 
+export const actionSetBBOSDomain = ({ commit, state }, data) => {
+  let configInfo;
+
+  if (state.webDomain) {
+    configInfo =
+      siteConfigOfficial[`site_${state.webDomain.domain}`] ||
+      siteConfigTest[`site_${state.webInfo.alias}`] ||
+      siteConfigOfficial.preset;
+  }
+
+  return bbosRequest({
+    method: "get",
+    url: configInfo.BBOS_DOMIAN + "/Domain/List",
+    reqHeaders: {
+      Vendor: state.memInfo.user.domain
+    },
+    params: {
+      lang: "zh-tw"
+    }
+  }).then(res => {
+    if (res && res.data) {
+      commit(types.SET_BBOSDOMAIN, res.data[0]);
+    }
+  });
+};
+
 export const actionSetSystemDomain = ({ commit, state }, data) => {
-  let configInfo = {};
+  let configInfo;
 
   if (state.webDomain) {
     configInfo =
@@ -1772,20 +1783,22 @@ export const actionSetAgentUserConfig = ({ commit }) =>
 
 export const actionSetWebDomain = ({ commit }) =>
   axios({
-    method: 'get',
-    url: '/conf/domain',
-  }).then(res => {
-    let result = {
-      domain: '',
-      site: 'porn1'
-    }
-    console.log('[conf/domain]:', res.data);
-    const site = res && res.data && String(res.data.site) || '';
-    const domain = res && res.data && String(res.data.domain) || '';
-    result['site'] = site;
-    result['domain'] = domain;
-    commit(types.SET_WEB_DOMAIN, result);
-  }).catch((res) => {
-    console.log('[conf/domain]:', res);
-    commit(types.SET_WEB_DOMAIN, { site: 'porn1', domain: '67' });
-  });
+    method: "get",
+    url: "/conf/domain"
+  })
+    .then(res => {
+      let result = {
+        domain: "",
+        site: "porn1"
+      };
+      console.log("[conf/domain]:", res.data);
+      const site = (res && res.data && String(res.data.site)) || "";
+      const domain = (res && res.data && String(res.data.domain)) || "";
+      result["site"] = site;
+      result["domain"] = domain;
+      commit(types.SET_WEB_DOMAIN, result);
+    })
+    .catch(res => {
+      console.log("[conf/domain]:", res);
+      commit(types.SET_WEB_DOMAIN, { site: "porn1", domain: "67" });
+    });

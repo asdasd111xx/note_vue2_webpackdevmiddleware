@@ -107,6 +107,52 @@
               </div>
             </template>
           </div>
+          <div
+            v-if="item.title === 'receiptAddress' && themeTPL === 'ey1'"
+            :key="index"
+            :class="[
+              $style['account-data-field'],
+              $style['address-border'],
+              'clearfix'
+            ]"
+            @click="handleClick(item)"
+          >
+            <span :class="$style['field-title']">{{
+              $text("S_RECEIPT_ADDRESS", "收货地址")
+            }}</span>
+            <div :class="$style['field-value']">
+              <template v-if="addressInfo.id === ''">
+                <span :class="[$style['field-text'], $style.yet]"
+                  >尚未设定
+                </span>
+              </template>
+
+              <template v-else>
+                <div :class="$style['address-detail']">
+                  <div :class="$style['line-up']">
+                    <div :class="$style['text']">{{ addressInfo.name }}</div>
+                    <div :class="$style['text']">{{ addressInfo.phone }}</div>
+                    <div :class="$style['default-icon']">默认</div>
+                  </div>
+                  <div :class="$style['line-down']">
+                    {{ addressInfo.address }}
+                  </div>
+                </div>
+              </template>
+
+              <div v-if="item.btnShow" :class="$style['feature-btn']">
+                <div :class="$style['btn-next']">
+                  <img
+                    :src="
+                      $getCdnPath(
+                        `/static/image/_new/mcenter/ic_arrow_next.png`
+                      )
+                    "
+                  />
+                </div>
+              </div>
+            </div>
+          </div>
         </template>
       </template>
     </account-wrap>
@@ -115,6 +161,7 @@
 
 <script>
 import { mapGetters, mapActions } from 'vuex';
+import axios from 'axios';
 
 export default {
   components: {
@@ -137,13 +184,26 @@ export default {
       currentTab: 0,
       currentEdit: '',
       showSuccess: false,
+      addressInfo: {
+        id: "",
+        is_default: false,
+        name: "",
+        phone: "",
+        address: ""
+      },
     };
+  },
+  created() {
+    this.getAddress();
   },
   computed: {
     ...mapGetters({
       siteConfig: 'getSiteConfig',
       memInfo: 'getMemInfo',
     }),
+    themeTPL() {
+      return this.siteConfig.MOBILE_WEB_TPL;
+    }
   },
   mounted() {
     if (localStorage.getItem('set-account-success')) {
@@ -178,6 +238,23 @@ export default {
           path: `/mobile/mcenter/accountData/${field.key}`
         });
         return;
+      } else if (field.key === "receiptAddress") {
+        // if (this.addressInfo.id === '') {
+        //   this.$router.push({
+        //     path: `/mobile/mcenter/accountData/addAddress`
+        //   });
+        // } else {
+        //   localStorage.setItem('set-address-data-empty', this.addressInfo.id === '');
+        //   this.$router.push({
+        //     path: `/mobile/mcenter/accountData/${field.key}`
+        //   });
+        // }
+        localStorage.setItem('set-address-data-empty', this.addressInfo.id === '');
+        this.$router.push({
+          path: `/mobile/mcenter/accountData/${field.key}`
+        });
+
+        return;
       }
       this.currentEdit = field.key;
     },
@@ -189,8 +266,29 @@ export default {
       setTimeout(() => {
         this.showSuccess = false;
       }, 3000)
+    },
+    getAddress() {
+      axios({
+        method: 'get',
+        url: '/api/v1/c/player/address',
+      }).then(res => {
+        if (res && res.data && res.data.result === "ok") {
+          if (res.data.ret.length > 0) {
+            this.addressInfo = res.data.ret.find((data) => data.is_default);
+            if (localStorage.getItem('set-address-default')) {
+              if (this.addressInfo.is_default != res.data.ret[parseInt(localStorage.getItem('set-address-default'))].is_default) {
+                this.getAddress();
+              } else {
+                localStorage.removeItem('set-address-default');
+              }
+            }
+          }
+        }
+      }).catch(error => {
+
+      })
     }
   }
-};
+}
 </script>
 <style lang="scss" src="../../css/index.module.scss" module></style>
