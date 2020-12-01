@@ -97,9 +97,11 @@ export default {
           this.isCheckingInit = false;
         }, 1000)
 
+        let checkNoMaintain = true;
         // 永久維護
         if (this.swagConfig && this.swagConfig.enable === 0) {
           this.isMaintainSwag = true;
+          checkNoMaintain = false;
           if (this.$route.name === 'mcenter-swag') {
             this.actionSetGlobalMessage({
               msg: `SWAG 维护中`,
@@ -118,7 +120,10 @@ export default {
 
         if (isMaintain) {
           this.isMaintainSwag = true;
+          checkNoMaintain = false;
         }
+
+        this.isMaintainSwag = !checkNoMaintain;
 
         if (onlyCheckMaintain) {
           return true;
