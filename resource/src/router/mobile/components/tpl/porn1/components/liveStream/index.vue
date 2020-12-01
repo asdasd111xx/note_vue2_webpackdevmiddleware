@@ -143,7 +143,6 @@ export default {
     }),
   },
   created() {
-    this.initSwagConfig(true);
     this.currentTab = this.$route.query.type ? this.$route.query.type : 'ballLive';
 
     pornRequest({
@@ -210,36 +209,7 @@ export default {
     handleClickType(type) {
       if (type === 'pornlive') {
         if (this.loginStatus) {
-          if (this.isMaintainSwag) {
-            this.handleSwagBalance();
-            return;
-          } else {
-            let userId = 'guest';
-            if (this.memInfo && this.memInfo.user && this.memInfo.user.id && this.memInfo.user.id !== 0) {
-              userId = this.memInfo.user.id;
-            }
-
-            goLangApiRequest({
-              method: 'get',
-              url: `${this.siteConfig.YABO_GOLANG_API_DOMAIN}/ThirdParty/SWAG/${userId}`,
-              headers: {
-                'x-domain': this.memInfo.user.domain
-              }
-            }).then(res => {
-              if (res && res.status !== '000') {
-                if (res.msg) {
-                  this.actionSetGlobalMessage({ msg: res.msg });
-                }
-                return;
-              }
-              else {
-                localStorage.setItem('iframe-third-url', res.data);
-                localStorage.setItem('iframe-third-origin', 'liveStream?type=ballLive');
-                this.$router.push(`/mobile/iframe/SWAG?&hasFooter=false&hasHeader=true&fullscreen=true`);
-                return;
-              }
-            })
-          }
+          this.checkSWAGMaintain({ linkTo: true, origin: 'liveStream?type=ballLive' });
         } else {
           this.$router.push('/mobile/login');
           return;

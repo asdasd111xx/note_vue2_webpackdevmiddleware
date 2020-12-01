@@ -3,8 +3,8 @@ import { mapActions, mapGetters } from "vuex";
 import EST from '@/lib/EST';
 import axios from "axios";
 import bbosRequest from "@/api/bbosRequest";
+import goLangApiRequest from '@/api/goLangApiRequest';
 import moment from 'moment';
-import { set } from 'vue';
 
 export default {
   props: {},
@@ -48,7 +48,8 @@ export default {
       membalance: "getMemBalance",
       swagBalance: "getSwagBalance",
       swagConfig: "getSwagConfig",
-      siteConfig: "getSiteConfig"
+      siteConfig: "getSiteConfig",
+      noticeData: 'getNoticeData',
     }),
     swagESTMaintainStartAt() {
       return moment(this.swagConfig.maintain_start_at).add(-12, 'hours')
@@ -69,6 +70,16 @@ export default {
     swagBalance(val) {
       this.swagDiamondBalance = val.balance;
     },
+    noticeData() {
+      if (this.noticeData && this.noticeData.length > 0) {
+        let temp = this.noticeData[this.noticeData.length - 1];
+        if (temp.event === "outer_maintain") {
+          setTimeout(() => {
+            this.initSWAGConfig(true);
+          }, 1000);
+        }
+      }
+    }
   },
   methods: {
     ...mapActions([
@@ -79,13 +90,12 @@ export default {
       'actionSetSwagConfig',
       'actionSetSwagBalance'
     ]),
-    initSwagConfig(onlyCheckMaintain = false) {
+    initSWAGConfig(onlyCheckMaintain = false) {
       if (this.isCheckingInit) {
         return new Promise((resolve, reject) => {
           resolve(false);
         });
       }
-      this.isMaintainSwag = false;
 
       if (this.loginStatus && !onlyCheckMaintain) {
         this.updateBalance();
@@ -157,8 +167,12 @@ export default {
         }
       });
     },
-    handleSwagBalance() {
-      this.initSwagConfig(true).then((result) => {
+    // 是否前往SWAG,來源位置
+    checkSWAGMaintain(params) {
+      let linkTo = params.linkTo || false,
+        origin = params.origin || 'home';
+
+      this.initSWAGConfig(true).then((result) => {
         if (!result) {
           return;
         }
@@ -192,6 +206,8 @@ export default {
               }
             ]
           }
+        } else if (linkTo) {
+          this.linkToSWAG(origin);
         }
       })
     },
@@ -373,7 +389,7 @@ export default {
               msg = '余额不足，请检查红利帐户或执行一键归户';
             } else if (!ret.verify_balance) {
               msg = '钻石汇率变动';
-              this.initSwagConfig();
+              this.initSWAGConfig();
             }
 
             this.actionSetGlobalMessage({
@@ -381,14 +397,17 @@ export default {
               cb: cb
             })
 
+            setTimeout(() => {
+              this.isLoading = false;
+            }, 1500)
           }
         } else {
-          this.handleSwagBalance();
-        }
+          this.checkSWAGMaintain();
 
-        setTimeout(() => {
-          this.isLoading = false;
-        }, 1500)
+          setTimeout(() => {
+            this.isLoading = false;
+          }, 1500)
+        }
       })
     },
     submit(params) {
@@ -449,7 +468,7 @@ export default {
                 origin: 'mcenter/swag'
               });
 
-              this.initSwagConfig();
+              this.initSWAGConfig();
             }
 
             this.actionSetUserBalance();
@@ -487,5 +506,42 @@ export default {
         "tmp_d_currentSelRate",
         JSON.stringify(this.currentSelRate));
     },
+    handleSWAGBalance() {
+      if (this.isMaintainSwag) {
+        this.checkSWAGMaintain({});
+      }
+    },
+    linkToSWAG(origin = 'mobile') {
+      if (!this.loginStatus) {
+        this.$router.push('/mobile/login');
+        return;
+      }
+
+      let userId = 'guest';
+      if (this.memInfo && this.memInfo.user && this.memInfo.user.id && this.memInfo.user.id !== 0) {
+        userId = this.memInfo.user.id;
+      }
+
+      goLangApiRequest({
+        method: 'get',
+        url: `${this.siteConfig.YABO_GOLANG_API_DOMAIN}/ThirdParty/SWAG/${userId}`,
+        headers: {
+          'x-domain': this.memInfo.user.domain
+        }
+      }).then(res => {
+        if (res && res.status !== '000') {
+          if (res.msg) {
+            this.actionSetGlobalMessage({ msg: res.msg });
+          }
+          return;
+        }
+        else {
+          localStorage.setItem('iframe-third-url', res.data);
+          localStorage.setItem('iframe-third-origin', origin);
+          this.$router.push(`/mobile/iframe/SWAG?&hasFooter=false&hasHeader=true&fullscreen=true`);
+          return;
+        }
+      })
+    }
   }
 };

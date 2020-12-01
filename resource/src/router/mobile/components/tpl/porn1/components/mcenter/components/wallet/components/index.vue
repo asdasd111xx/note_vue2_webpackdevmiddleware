@@ -127,7 +127,7 @@
         <div :class="$style['title']">SWAG钱包</div>
         <div :class="$style['icon-block']">
           <div :class="$style['icon-cell']">
-            <div :class="$style['balance']" @click="handleSwagBalance">
+            <div :class="$style['balance']" @click="handleSWAGBalance">
               <template v-if="isMaintainSwag">
                 <span :class="$style['maintain-tip-text']">维护中</span>
                 <img
@@ -404,7 +404,7 @@ export default {
       this.$router.push("/mobile/login");
     }
 
-    this.initSwagConfig();
+    this.initSWAGConfig();
     this.startTime = Vue.moment(this.estToday)
       .add(-30, "days")
       .format("YYYY-MM-DD");
