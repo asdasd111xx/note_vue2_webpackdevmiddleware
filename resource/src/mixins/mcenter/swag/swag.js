@@ -85,6 +85,7 @@ export default {
           resolve(false);
         });
       }
+      this.isMaintainSwag = false;
 
       if (this.loginStatus && !onlyCheckMaintain) {
         this.updateBalance();
