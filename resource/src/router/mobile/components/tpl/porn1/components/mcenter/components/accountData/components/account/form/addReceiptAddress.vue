@@ -14,9 +14,11 @@
           <input
             ref="input"
             v-model="newAddressInfo.name"
-            :placeholder="$text('S_PLEASE_ENTER_RECEIVER', '请输入收货人姓名')"
+            :placeholder="
+              $text('S_PLEASE_ENTER_RECEIVER', '请输入收货人姓名,限100字')
+            "
             :class="$style.input"
-            :maxlength="20"
+            :maxlength="100"
             @input="verification($event.target.value, 'name')"
             type="text"
           />
@@ -69,6 +71,7 @@
               $text('S_PLEASE_ENTER_RECEIPT_ADDRESS', '请输入收货地址,限100字')
             "
             :class="$style.input"
+            :maxlength="100"
             @input="verification($event.target.value, 'address')"
             type="text"
           />
@@ -293,10 +296,11 @@ export default {
         if (this.siteConfig.MOBILE_WEB_TPL === 'ey1' || value.length >= 11) {
           this.tipMsg = '';
         }
+      } else if (target === 'name') {
+        if (this.newAddressInfo.name.length === 100) {
+          this.actionSetGlobalMessage({ msg: '收货人姓名已达100字' });
+        }
       } else if (target === 'address') {
-        this.actionVerificationFormData({ target: 'address', value: value }).then((val => {
-          this.newAddressInfo.address = val
-        }));
         if (this.newAddressInfo.address.length === 100) {
           this.actionSetGlobalMessage({ msg: '地址已达上限100字' });
         }
