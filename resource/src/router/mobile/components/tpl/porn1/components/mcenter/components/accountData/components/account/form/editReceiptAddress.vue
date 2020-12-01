@@ -19,11 +19,12 @@
         <div :class="$style['address-detail']" @click="goToEditAddress(index)">
           <div :class="$style['line-up']">
             <div :class="$style['text']">{{ data.name }}</div>
-            <div :class="$style['text']">{{ data.phone }}</div>
             <div v-if="data.is_default" :class="$style['default-icon']">
               默认
             </div>
           </div>
+
+          <div :class="$style['text']">{{ data.phone }}</div>
           <div :class="$style['text-address']">{{ data.address }}</div>
         </div>
         <div :class="$style['adj-content']">

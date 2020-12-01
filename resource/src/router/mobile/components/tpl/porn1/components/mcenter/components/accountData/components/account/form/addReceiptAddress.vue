@@ -232,9 +232,9 @@ export default {
     // 'newAddressInfo.phone'() {
     //   this.checkData();
     // },
-    // 'newAddressInfo.address'() {
-    //   this.checkData();
-    // }
+    'newAddressInfo.address'() {
+      this.checkData();
+    }
   },
   mounted() {
 
@@ -252,7 +252,15 @@ export default {
             || this.addressInfo.address != this.newAddressInfo.address) {
             this.onBack = true;
           } else {
-            this.$router.back();
+            if (this.isAdd && this.allAddressData.length === 0) {
+              this.$router.push({
+                path: `/mobile/mcenter/accountData`
+              });
+            } else {
+              this.$router.push({
+                path: `/mobile/mcenter/accountData/receiptAddress`
+              });
+            }
           }
         },
         title: this.headerTitle,
@@ -288,6 +296,10 @@ export default {
       } else if (target === 'name') {
         this.actionVerificationFormData({ target: 'name', value: value }).then((val => {
           this.newAddressInfo.name = val
+        }));
+      } else if (target === 'address') {
+        this.actionVerificationFormData({ target: 'address', value: value }).then((val => {
+          this.newAddressInfo.address = val
         }));
       }
     },
@@ -348,17 +360,15 @@ export default {
       this.newAddressInfo.is_default = !this.newAddressInfo.is_default
       this.onChangeDefault = false;
       if (this.addressInfo.is_default && !this.newAddressInfo.is_default) {
-        this.actionSetGlobalMessage({ msg: '保存成功后, 请重新设定默认地址' });
+        this.actionSetGlobalMessage({ msg: '保存成功后,<div style="text-align:center">请重新设定默认地址</div>' });
       }
     },
 
-    // checkData() {
-    //   if (this.newAddressInfo.name != "" && this.newAddressInfo.phone != "" && this.newAddressInfo.address != "") {
-    //     this.dataNotEnough = true;
-    //   } else {
-    //     this.dataNotEnough = false;
-    //   }
-    // },
+    checkData() {
+      if (this.newAddressInfo.address.length >= 100) {
+        this.tipMsg = '地址已达上限100字';
+      }
+    },
 
     addAddress() {
       this.onBack = false;
