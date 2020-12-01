@@ -66,7 +66,7 @@
             ref="input"
             v-model="newAddressInfo.address"
             :placeholder="
-              $text('S_PLEASE_ENTER_RECEIPT_ADDRESS', '请输入收货地址')
+              $text('S_PLEASE_ENTER_RECEIPT_ADDRESS', '请输入收货地址,限100字')
             "
             :class="$style.input"
             @input="verification($event.target.value, 'address')"
@@ -232,9 +232,9 @@ export default {
     // 'newAddressInfo.phone'() {
     //   this.checkData();
     // },
-    'newAddressInfo.address'() {
-      this.checkData();
-    }
+    // 'newAddressInfo.address'() {
+    //   this.checkData();
+    // }
   },
   mounted() {
 
@@ -293,14 +293,13 @@ export default {
         if (this.siteConfig.MOBILE_WEB_TPL === 'ey1' || value.length >= 11) {
           this.tipMsg = '';
         }
-      } else if (target === 'name') {
-        this.actionVerificationFormData({ target: 'name', value: value }).then((val => {
-          this.newAddressInfo.name = val
-        }));
       } else if (target === 'address') {
         this.actionVerificationFormData({ target: 'address', value: value }).then((val => {
           this.newAddressInfo.address = val
         }));
+        if (this.newAddressInfo.address.length === 100) {
+          this.actionSetGlobalMessage({ msg: '地址已达上限100字' });
+        }
       }
     },
 
@@ -323,7 +322,6 @@ export default {
               this.headerTitle = "编辑收货地址";
               this.addressInfo = this.allAddressData[this.$route.query.index];
               // this.addressInfo.is_default = this.addressInfo.is_default === "true";
-              console.log(this.addressInfo.phone.split("-"))
               this.phoneHead = "+" + this.addressInfo.phone.split("-")[0];
               this.addressInfo.phone = this.addressInfo.phone.split("-")[1];
               this.newAddressInfo = Object.assign({}, this.addressInfo);
@@ -364,11 +362,11 @@ export default {
       }
     },
 
-    checkData() {
-      if (this.newAddressInfo.address.length >= 100) {
-        this.tipMsg = '地址已达上限100字';
-      }
-    },
+    // checkData() {
+    //   if (this.newAddressInfo.address.length >= 100) {
+    //     this.tipMsg = '地址已达上限100字';
+    //   }
+    // },
 
     addAddress() {
       this.onBack = false;
