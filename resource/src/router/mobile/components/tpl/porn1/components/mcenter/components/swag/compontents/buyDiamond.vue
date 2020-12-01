@@ -7,7 +7,7 @@
             <img
               :src="$getCdnPath(info.src)"
               :data-info="key"
-              @click="$emit('linkToSwag')"
+              @click="$emit('handleLinkToSWAG')"
             />
           </div>
         </swiper-slide>
@@ -23,7 +23,7 @@
           "
         />
         <div>{{ "SWAG钱包" }}</div>
-        <div :class="$style['money']" @click="handleSwagBalance">
+        <div :class="$style['money']" @click="handleSWAGBalance">
           <template v-if="isMaintainSwag">
             <span :class="$style['maintain-tip-text']">维护中</span>
             <img
@@ -184,7 +184,7 @@ export default {
     },
   },
   created() {
-    this.initSwagConfig();
+    this.initSWAGConfig();
   },
   methods: {
   }

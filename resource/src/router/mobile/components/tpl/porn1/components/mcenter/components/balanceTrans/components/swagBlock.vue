@@ -9,7 +9,7 @@
         "
       />
       <span> SWAG钱包</span>
-      <div :class="$style['swag-block']" @click="handleSwagBalance">
+      <div :class="$style['swag-block']" @click="handleSWAGBalance">
         <template v-if="isMaintainSwag">
           <span :class="$style['maintain-tip-text']">维护中</span>
           <img
@@ -77,7 +77,7 @@ export default {
     },
   },
   created() {
-    this.initSwagConfig();
+    this.initSWAGConfig();
   },
   methods: {
     ...mapActions([

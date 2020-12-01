@@ -66,7 +66,7 @@ export default {
 
                 if (temp.event === "outer_maintain") {
                     this.swagMaintainTimer = setTimeout(() => {
-                        this.initSwagConfig(true);
+                        this.initSWAGConfig(true);
                         clearTimeout(this.swagMaintainTimer);
                         this.swagMaintainTimer = null;
                         return;
@@ -136,7 +136,7 @@ export default {
     created() {
         localStorage.removeItem('is-open-game');
         this.showPromotion = this.loginStatus ? this.memInfo.user.show_promotion : true;
-        this.initSwagConfig(true);
+        this.initSWAGConfig(true);
     },
     mounted() {
         $(window).on('resize', this.onResize);

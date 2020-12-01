@@ -24,7 +24,7 @@
       </div>
 
       <div :class="[$style['credit-trans-container']]">
-        <component :is="currentTemplate" @linkToSwag="linkToSwag" />
+        <component :is="currentTemplate" @handleLinkToSWAG="handleLinkToSWAG" />
       </div>
       <maintain-block
         v-if="maintainInfo"
@@ -106,52 +106,12 @@ export default {
       'actionSetGlobalMessage',
       "actionGetRechargeStatus",
     ]),
-    linkToSwag() {
-      if (!this.loginStatus) {
-        this.$router.push('/mobile/login');
+    handleLinkToSWAG() {
+      if (this.loginStatus) {
+        this.checkSWAGMaintain({ linkTo: true, origin: 'mcenter/swag?tab=0' });
       } else {
-        if (this.isLoading) {
-          return;
-        }
-
-        const params = [this.initSwagConfig()];
-        Promise.all(params).then(() => {
-          if (this.isMaintainSwag) {
-            this.handleSwagBalance();
-            this.isLoading = false;
-          }
-          else {
-            this.isLoading = true;
-
-            let userId = 'guest';
-            if (this.memInfo && this.memInfo.user && this.memInfo.user.id && this.memInfo.user.id !== 0) {
-              userId = this.memInfo.user.id;
-            }
-
-            goLangApiRequest({
-              method: 'get',
-              url: `${this.siteConfig.YABO_GOLANG_API_DOMAIN}/ThirdParty/SWAG/${userId}`,
-              headers: {
-                'x-domain': this.memInfo.user.domain
-              }
-            }).then(res => {
-              if (res && res.status !== '000') {
-                if (res.msg) {
-                  this.actionSetGlobalMessage({ msg: res.msg });
-                }
-                return;
-              }
-              else {
-                localStorage.setItem('iframe-third-url', res.data);
-                localStorage.setItem('iframe-third-origin', 'mcenter/swag?tab=0');
-                this.$router.push(`/mobile/iframe/SWAG?&hasFooter=false&hasHeader=true`);
-                return;
-              }
-
-              this.isLoading = false;
-            })
-          }
-        });
+        this.$router.push('/mobile/login');
+        return;
       }
     },
     setCurrentTab(index) {
@@ -162,22 +122,17 @@ export default {
           this.currentTemplate = "buy-diamond";
           this.currentTab = index;
           // this.$router.replace(`/mobile/mcenter/swag?tab=${index}`);
-
           break;
+
         case 1:
           this.currentTemplate = "recoard-diamond";
           this.currentTab = index;
           // this.$router.replace(`/mobile/mcenter/swag?tab=${index}`);
-
           break;
+
         case 2:
           // 鴨博色播
-          if (this.isMaintainSwag) {
-            this.handleSwagBalance();
-          } else {
-            this.linkToSwag();
-          }
-
+          this.handleLinkToSWAG();
           break;
       }
     },
