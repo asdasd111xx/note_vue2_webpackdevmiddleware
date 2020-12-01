@@ -446,6 +446,8 @@ input {
       align-items: center;
 
       .text {
+        width: 80%;
+        word-wrap: break-word;
         margin-right: 5pt;
       }
 
