@@ -181,7 +181,7 @@
   "SS_LOGIN_PW": "登入密码",
   "S_PERSONAL_DATA": "个人资料",
   "S_PLEASE_SELECT_TYPE": "请选择类别",
-  "S_PLEASE_ENTER_RECEIPT_ADDRESS": "请输入收货地址",
+  "S_PLEASE_ENTER_RECEIPT_ADDRESS": "请输入收货地址,限100字",
   "S_PLEASE_ENTER_RECEIVER": "请输入收货人姓名",
   "S_PLEASE_ENTER_MOBILE_NUMBER": "请输入手机号码",
   "S_RECEIPT_ADDRESS": "收货地址",
