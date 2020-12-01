@@ -47,6 +47,7 @@
               $text('S_PLEASE_ENTER_MOBILE_NUMBER', '请输入手机号码')
             "
             :class="$style.input"
+            :maxlength="15"
             @input="verification($event.target.value, 'phone')"
             type="tel"
           />
