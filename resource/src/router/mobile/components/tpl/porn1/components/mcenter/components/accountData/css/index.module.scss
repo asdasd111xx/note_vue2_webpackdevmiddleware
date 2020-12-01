@@ -40,7 +40,8 @@
         align-items: center;
 
         .text {
-          width: 40%;
+          width: auto;
+          max-width: 40%;
           margin-right: 5pt;
           overflow: hidden;
           text-overflow: ellipsis;
