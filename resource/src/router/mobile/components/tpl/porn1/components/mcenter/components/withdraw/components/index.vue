@@ -1733,7 +1733,8 @@ export default {
         this.verification("withdrawValue", this.withdrawValue);
       }
 
-      if (+this.offer()) {
+      // 有取款優惠金額 && 實際提現金額 > 0
+      if (+this.offer() && this.actualMoney > 0) {
         return Number(+this.actualMoney + +this.offer()).toFixed(2);
       } else {
         return this.actualMoney.toFixed(2);
