@@ -59,7 +59,6 @@ export default {
     };
   },
   created() {
-    this.actionSetMcenterMsgCount();
     if (["message", "news", "post"].includes(this.$route.params.page)) {
       this.currentTemplate = this.$route.params.page;
       this.currentTab = ["message", "news", "post"].indexOf(
