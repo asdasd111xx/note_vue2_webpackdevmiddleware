@@ -40,7 +40,11 @@
         align-items: center;
 
         .text {
+          width: 40%;
           margin-right: 5pt;
+          overflow: hidden;
+          text-overflow: ellipsis;
+          white-space: nowrap;
         }
 
         .default-icon {
@@ -457,6 +461,11 @@ input {
         justify-content: center;
         align-items: center;
       }
+    }
+
+    .text-phone {
+      margin-top: 5pt;
+      margin-right: 5pt;
     }
 
     .text-address {

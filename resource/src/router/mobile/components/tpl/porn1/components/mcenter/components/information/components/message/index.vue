@@ -257,7 +257,7 @@ export default {
       });
     },
     getMessgae() {
-      // this.actionSetMcenterMsgCount();
+      this.actionSetMcenterMsgCount();
       mcenter.message({
         success: (response) => {
           this.messageData = response.ret;

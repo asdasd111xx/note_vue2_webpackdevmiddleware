@@ -153,7 +153,7 @@
               v-if="curPayInfo.payment_type_id === 5"
               :class="$style['select-bank-title']"
             >
-              {{ $text("S_YOUR_BANK", "您的银行") }}
+              {{ $text("S_USE_BANK", "使用银行") }}
             </span>
 
             <span v-else :class="$style['select-bank-title']"

@@ -19,11 +19,12 @@
         <div :class="$style['address-detail']" @click="goToEditAddress(index)">
           <div :class="$style['line-up']">
             <div :class="$style['text']">{{ data.name }}</div>
-            <div :class="$style['text']">{{ data.phone }}</div>
             <div v-if="data.is_default" :class="$style['default-icon']">
               默认
             </div>
           </div>
+
+          <div :class="$style['text-phone']">{{ data.phone }}</div>
           <div :class="$style['text-address']">{{ data.address }}</div>
         </div>
         <div :class="$style['adj-content']">
@@ -113,7 +114,9 @@ export default {
         prev: true,
         onClick: () => {
           localStorage.setItem('set-address-default', this.defaultIdx);
-          this.$router.back();
+          this.$router.push({
+            path: `/mobile/mcenter/accountData`
+          });
         },
         title: '收货地址管理',
       };
