@@ -387,9 +387,11 @@ export default {
               }
             } else if (!ret.verify_balance) {
               msg = '余额不足，请检查红利帐户或执行一键归户';
-            } else if (!ret.verify_balance) {
+            } else if (!ret.verify_rates) {
               msg = '钻石汇率变动';
-              this.initSWAGConfig();
+              cb = () => {
+                this.initSWAGConfig();
+              }
             }
 
             this.actionSetGlobalMessage({
