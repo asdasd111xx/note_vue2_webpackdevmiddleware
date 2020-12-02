@@ -428,12 +428,18 @@ export default {
         return;
       }
 
+      let _params = { ...this.paramsData };
+      // 進到搜索頁面，Label = '' 為搜索全部
+      if (this.isShowSearch) {
+        _params = { ..._params, label: "" };
+      }
+
       const gameApiInfo = {
         url: gameList,
         params: {
-          ...this.paramsData,
-          vendor: this.vendor,
-        },
+          ..._params,
+          vendor: this.vendor
+        }
       };
 
       // 活動先註解不開放，後續開放只要搜 activity_open
