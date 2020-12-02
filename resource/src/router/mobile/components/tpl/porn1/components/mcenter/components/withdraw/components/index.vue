@@ -1719,7 +1719,8 @@ export default {
           return 0;
           break;
 
-        case bonusOffer >= this.selectedCard.offer_limit:
+        case bonusOffer >= this.selectedCard.offer_limit &&
+          this.selectedCard.offer_limit !== "0":
           return this.selectedCard.offer_limit;
           break;
 
