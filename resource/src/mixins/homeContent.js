@@ -566,11 +566,6 @@ export default {
           }
 
           switch (game.vendor) {
-            // swag 沒上，先暫時放
-            case 'BL':
-              this.$router.push('/mobile/liveStream?type=cutiesLive');
-              return;
-
             case 'SWAG':
               if (!this.loginStatus) {
                 this.$router.push('/mobile/login');
