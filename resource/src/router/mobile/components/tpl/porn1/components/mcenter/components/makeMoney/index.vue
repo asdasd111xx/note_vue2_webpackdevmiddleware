@@ -11,9 +11,8 @@
           :src="`/static/image/_new/mcenter/makeMoney/pic_promotion_banner.png`"
         />
       </div>
-      <div :class="$style['img-wrap']">
+      <div @click="copyCode" :class="$style['img-wrap']">
         <img
-          @click="copyCode"
           :class="$style['img-wrap']"
           :src="`/static/image/_new/mcenter/makeMoney/img001.png`"
         />
@@ -118,7 +117,9 @@ export default {
                 domain: domain
               }
             })
-              .then(res => { console.log(res) })
+              .then(res => {
+                console.log(res);
+              })
               .catch(e => {
                 console.log(e);
               });
@@ -135,7 +136,7 @@ export default {
     ...mapGetters({
       siteConfig: "getSiteConfig",
       agentLink: "getAgentLink",
-      promotionLink: 'getPromotionLink'
+      promotionLink: "getPromotionLink"
     }),
     headerConfig() {
       return {
