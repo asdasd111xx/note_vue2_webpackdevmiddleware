@@ -129,7 +129,7 @@ export default {
 }
 
 .dialog > div:first-child {
-  background-color: rgba($color: #5e626d, $alpha: 0.9);
+  background-color: rgba($color: #5e626d, $alpha: 0.75);
   border-radius: 10px;
   margin-left: auto;
   margin-right: auto;
