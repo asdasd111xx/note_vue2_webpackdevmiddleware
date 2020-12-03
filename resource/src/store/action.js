@@ -1,32 +1,37 @@
-import * as axios from 'axios';
-import * as moment from 'moment-timezone';
-import * as siteConfigOfficial from '@/config/siteConfig/siteConfigOfficial';
-import * as siteConfigTest from '@/config/siteConfig/siteConfigTest';
-import * as types from './mutations_type';
+import * as axios from "axios";
+import * as moment from "moment-timezone";
+import * as siteConfigOfficial from "@/config/siteConfig/siteConfigOfficial";
+import * as siteConfigTest from "@/config/siteConfig/siteConfigTest";
+import * as types from "./mutations_type";
 
-import { API_AGENT_USER_CONFIG, API_GETAPPINFO, API_MCENTER_USER_CONFIG, API_QRCODE } from '@/config/api';
+import {
+  API_AGENT_USER_CONFIG,
+  API_GETAPPINFO,
+  API_MCENTER_USER_CONFIG,
+  API_QRCODE
+} from "@/config/api";
 
-import EST from '@/lib/EST';
-import Vue from 'vue';
-import agcenter from '@/api/agcenter';
-import agent from '@/api/agent';
-import ajax from '@/lib/ajax';
-import bbosRequest from '@/api/bbosRequest';
-import common from '@/api/common';
-import { errorAlarm } from '@/lib/error_console';
-import game from '@/api/game';
-import getLang from '@/lib/getLang';
-import goLangApiRequest from '@/api/goLangApiRequest';
-import i18n from '@/config/i18n';
-import links from '@/config/links';
-import mcenter from '@/api/mcenter';
+import EST from "@/lib/EST";
+import Vue from "vue";
+import agcenter from "@/api/agcenter";
+import agent from "@/api/agent";
+import ajax from "@/lib/ajax";
+import bbosRequest from "@/api/bbosRequest";
+import common from "@/api/common";
+import { errorAlarm } from "@/lib/error_console";
+import game from "@/api/game";
+import getLang from "@/lib/getLang";
+import goLangApiRequest from "@/api/goLangApiRequest";
+import i18n from "@/config/i18n";
+import links from "@/config/links";
+import mcenter from "@/api/mcenter";
 // eslint-disable-next-line import/no-cycle
-import mcenterPageAuthControl from '@/lib/mcenterPageAuthControl';
-import member from '@/api/member';
+import mcenterPageAuthControl from "@/lib/mcenterPageAuthControl";
+import member from "@/api/member";
 // eslint-disable-next-line import/no-cycle
-import openGame from '@/lib/open_game';
-import router from '../router';
-import yaboRequest from '@/api/yaboRequest';
+import openGame from "@/lib/open_game";
+import router from "../router";
+import yaboRequest from "@/api/yaboRequest";
 
 let memstatus = true;
 let agentstatus = true;
@@ -38,46 +43,55 @@ export const actionSetWebview = ({ commit }) => {
 
 // 設定後台資料
 export const actionSetWebInfo = ({ state, commit, dispatch }, domain) => {
-  let platform = 'G';
+  let platform = "G";
   const urlParams = new URLSearchParams(window.location.search);
-  if (urlParams && urlParams.get('platform')) {
-    platform = urlParams.get('platform');
+  if (urlParams && urlParams.get("platform")) {
+    platform = urlParams.get("platform");
   }
-  Vue.cookie.set('platform', platform);
+  Vue.cookie.set("platform", platform);
 
   // cache 10分鐘
   const timestamp = Math.floor(Date.parse(new Date()) / 600000);
   // 模式：一般/預覽
-  const mode = state.preview ? 'view' : 'comm';
-  const status = Vue.cookie.get('newsite') ? 'New' : '';
+  const mode = state.preview ? "view" : "comm";
+  const status = Vue.cookie.get("newsite") ? "New" : "";
 
   return common.backstageSetting({
     url: `/tpl/${domain}/${mode}${status}.json`,
     params: {
       v: timestamp
     },
-    success: (response) => {
+    success: response => {
       // 超過預覽時間，強制導回一般模式
-      if (response.view_time && Vue.moment() - Vue.moment(response.view_time) > 600000) {
-        alert('错误讯息 : 此预览已超过10分钟有效期!');
-        window.location.href = '/';
+      if (
+        response.view_time &&
+        Vue.moment() - Vue.moment(response.view_time) > 600000
+      ) {
+        alert("错误讯息 : 此预览已超过10分钟有效期!");
+        window.location.href = "/";
         return;
       }
 
       commit(types.SETWEBINFO, response);
-      if (Vue.cookie.get('page') === 'joinAgent' && state.loginStatus) {
-        if (response.pageData[response.page[0].pid].page_type !== 'custom') {
-          dispatch('actionChangePage', { page: response.pageData[response.page[0].pid].page_type, type: 'custom' });
+      if (Vue.cookie.get("page") === "joinAgent" && state.loginStatus) {
+        if (response.pageData[response.page[0].pid].page_type !== "custom") {
+          dispatch("actionChangePage", {
+            page: response.pageData[response.page[0].pid].page_type,
+            type: "custom"
+          });
           return;
         }
-        dispatch('actionChangePage', { page: response.pageData[response.page[0].pid].pid, type: 'custom' });
+        dispatch("actionChangePage", {
+          page: response.pageData[response.page[0].pid].pid,
+          type: "custom"
+        });
       }
     },
     fail: () => {
       // 無預覽檔案，強制導回一般模式
       if (state.preview) {
-        alert('错误讯息 : 无版面编辑资料，请先进入编辑页后再进行预览！');
-        window.location.href = '/';
+        alert("错误讯息 : 无版面编辑资料，请先进入编辑页后再进行预览！");
+        window.location.href = "/";
       }
     }
   });
@@ -90,48 +104,54 @@ export const actionSetPreview = ({ commit }, status) => {
 
 // 設定當前語系
 export const actionSetLang = (_, lang) => {
-  Vue.cookie.set('lang', lang);
-  if (window.location.pathname.split('/')[1] === 'mobile') {
-    window.location.href = '/mobile';
+  Vue.cookie.set("lang", lang);
+  if (window.location.pathname.split("/")[1] === "mobile") {
+    window.location.href = "/mobile";
     return;
   }
   window.location.reload();
 };
 
 // 設定遊戲資料
-export const actionSetGameData = ({ commit }) => game.gameSwitch({
-  success: (response) => {
-    commit(types.SETGAMEDATA, response.ret);
-  }
-});
+export const actionSetGameData = ({ commit }) =>
+  game.gameSwitch({
+    success: response => {
+      commit(types.SETGAMEDATA, response.ret);
+    }
+  });
 
 // ＝＝＝＝＝＝＝＝＝＝＝＝＝＝＝＝＝＝
 //     客端 page
 // ＝＝＝＝＝＝＝＝＝＝＝＝＝＝＝＝＝＝
 // 客端-設定當前頁
-export const actionChangePage = ({ state, commit, dispatch }, {
-  page, type, config = {}, subPage
-} = {}) => {
+export const actionChangePage = (
+  { state, commit, dispatch },
+  { page, type, config = {}, subPage } = {}
+) => {
   // 自訂頁面不存在
-  if (type === 'custom' && !state.webInfo.pageData[page]) {
-    errorAlarm('PAGE DOES NOT EXIST', [`PAGE ID:${page}`]);
+  if (type === "custom" && !state.webInfo.pageData[page]) {
+    errorAlarm("PAGE DOES NOT EXIST", [`PAGE ID:${page}`]);
     return;
   }
 
-  if (type === 'nolink') return;
+  if (type === "nolink") return;
 
-  if (type === 'external') {
+  if (type === "external") {
     if (config.height && config.width) {
-      window.open(page, '_blank', `height=${config.height},width=${config.width}`);
+      window.open(
+        page,
+        "_blank",
+        `height=${config.height},width=${config.width}`
+      );
       return;
     }
 
-    window.open(page, '_blank');
+    window.open(page, "_blank");
     return;
   }
 
-  if (type === 'static') {
-    if (page === 'logOut') {
+  if (type === "static") {
+    if (page === "logOut") {
       if (!state.loginStatus) {
         return;
       }
@@ -144,55 +164,59 @@ export const actionChangePage = ({ state, commit, dispatch }, {
       return;
     }
 
-    if (page === 'forgetPW') {
+    if (page === "forgetPW") {
       if (state.loginStatus) {
         return;
       }
 
-      dispatch('actionSetPop', { type: 'memPwdForget' });
+      dispatch("actionSetPop", { type: "memPwdForget" });
       return;
     }
 
-    if (page === 'join') {
+    if (page === "join") {
       if (state.loginStatus) {
         return;
       }
 
-      dispatch('actionChangePage', ({ page: 'join', type: '' }));
+      dispatch("actionChangePage", { page: "join", type: "" });
       return;
     }
 
     const festivalControl = (name, stime, etime, key) => {
       // 判斷是否登入 (此活動頁需登入後才可開啟)
       if (!state.loginStatus) {
-        alert(i18n.t('S_LOGIN_TIPS'));
+        alert(i18n.t("S_LOGIN_TIPS"));
         return;
       }
 
-      const now = moment(state.systemTime).tz('Asia/Shanghai');
-      const start = moment(stime).tz('Asia/Shanghai');
-      const end = moment(etime).tz('Asia/Shanghai');
+      const now = moment(state.systemTime).tz("Asia/Shanghai");
+      const start = moment(stime).tz("Asia/Shanghai");
+      const end = moment(etime).tz("Asia/Shanghai");
 
       // 活動已結束
       if (now.isAfter(end)) {
-        alert(i18n.t('S_PROMOTION_END'));
+        alert(i18n.t("S_PROMOTION_END"));
         return;
       }
       // 活動進行中
       if (now.isBetween(start, end)) {
-        window.open(`/popcontrol/festival/${key.vendor}/${key.id}`, '_blank');
+        window.open(`/popcontrol/festival/${key.vendor}/${key.id}`, "_blank");
       }
     };
 
-    if (page === 'service') {
-      window.open(state.webInfo.on_service_url, '', `width=${state.webInfo.on_service_w}, height=${state.webInfo.on_service_h}`);
+    if (page === "service") {
+      window.open(
+        state.webInfo.on_service_url,
+        "",
+        `width=${state.webInfo.on_service_w}, height=${state.webInfo.on_service_h}`
+      );
       // 在線客服流量分析事件
       window.dataLayer.push({
         dep: 2,
-        event: 'ga_click',
-        eventCategory: 'online_service',
-        eventAction: 'online_service_contact',
-        eventLabel: 'online_service_contact'
+        event: "ga_click",
+        eventCategory: "online_service",
+        eventAction: "online_service_contact",
+        eventLabel: "online_service_contact"
       });
       return;
     }
@@ -200,9 +224,9 @@ export const actionChangePage = ({ state, commit, dispatch }, {
     // 活動頁面
     if (/^festival*/g.test(page)) {
       // 活動連結判斷
-      const festival = links.static.filter((casino) => casino.stime);
+      const festival = links.static.filter(casino => casino.stime);
 
-      festival.some((key) => {
+      festival.some(key => {
         if (page === key.value) {
           festivalControl(page, key.stime, key.etime, key);
           return true;
@@ -212,18 +236,18 @@ export const actionChangePage = ({ state, commit, dispatch }, {
       return;
     }
 
-    if (page === 'mobileBet') {
-      window.open('/mobileBet', 'mobileBet');
+    if (page === "mobileBet") {
+      window.open("/mobileBet", "mobileBet");
       return;
     }
 
-    if (page === 'domain') {
-      window.open('/domain', '_blank');
+    if (page === "domain") {
+      window.open("/domain", "_blank");
       return;
     }
   }
 
-  if (type === 'games') {
+  if (type === "games") {
     const info = state.gameData[page];
 
     // page type = 電子 並且無設定小遊戲code, 則導轉大廳
@@ -231,10 +255,10 @@ export const actionChangePage = ({ state, commit, dispatch }, {
       if (state.casinoLoadingStatus) {
         return;
       }
-      commit(types.CHANGEPAGE, 'casino');
+      commit(types.CHANGEPAGE, "casino");
       commit(types.SETCASINOVENDOR, info.vendor);
-      dispatch('actionSetUserdata');
-      commit(types.SETPOP, { type: '', data: '' });
+      dispatch("actionSetUserdata");
+      commit(types.SETPOP, { type: "", data: "" });
       window.scrollTo(0, 0);
       router.push({ path: `/page/casino/${info.vendor}` });
       return;
@@ -242,11 +266,11 @@ export const actionChangePage = ({ state, commit, dispatch }, {
 
     // page type = 棋牌 並且無設定小遊戲code, 則導轉大廳
     if (info.kind === 5 && !(config && config.linkItem)) {
-      commit(types.CHANGEPAGE, 'card');
-      dispatch('actionSetUserdata');
+      commit(types.CHANGEPAGE, "card");
+      dispatch("actionSetUserdata");
       commit(types.SETPOP, {
-        type: '',
-        data: ''
+        type: "",
+        data: ""
       });
       window.scrollTo(0, 0);
       router.push({ path: `/page/card/${info.vendor}` });
@@ -255,11 +279,11 @@ export const actionChangePage = ({ state, commit, dispatch }, {
 
     // page type = 麻將 並且無設定小遊戲code, 則導轉大廳
     if (info.kind === 6 && !(config && config.linkItem)) {
-      commit(types.CHANGEPAGE, 'mahjong');
-      dispatch('actionSetUserdata');
+      commit(types.CHANGEPAGE, "mahjong");
+      dispatch("actionSetUserdata");
       commit(types.SETPOP, {
-        type: '',
-        data: ''
+        type: "",
+        data: ""
       });
       window.scrollTo(0, 0);
       router.push({ path: `/page/mahjong/${info.vendor}` });
@@ -267,7 +291,7 @@ export const actionChangePage = ({ state, commit, dispatch }, {
     }
 
     if (!state.loginStatus) {
-      alert(i18n.t('S_LOGIN_TIPS'));
+      alert(i18n.t("S_LOGIN_TIPS"));
       return;
     }
 
@@ -275,30 +299,33 @@ export const actionChangePage = ({ state, commit, dispatch }, {
     openGame({
       vendor: info.vendor,
       kind: info.kind,
-      code: config.linkItem || ''
+      code: config.linkItem || ""
     });
     return;
   }
 
-  if (page === 'promotion') {
-    if (config.linkItem && config.linkItem !== '') {
-      window.open(`/popcontrol/promo/${JSON.stringify({ linkItem: config.linkItem })}`, '_blank');
+  if (page === "promotion") {
+    if (config.linkItem && config.linkItem !== "") {
+      window.open(
+        `/popcontrol/promo/${JSON.stringify({ linkItem: config.linkItem })}`,
+        "_blank"
+      );
       return;
     }
   }
 
-  if (page === 'joinAgent') {
+  if (page === "joinAgent") {
     if (!state.memInfo.config.agent_login) {
       return;
     }
 
     let checkPage = page;
-    if (type !== 'static') {
+    if (type !== "static") {
       let agentPageId;
       let dataLength;
 
       // 取得 custom 代理頁的 pid, 及判斷頁面是否有元件
-      Object.keys(state.webInfo.pageData).forEach((pageId) => {
+      Object.keys(state.webInfo.pageData).forEach(pageId => {
         if (state.webInfo.pageData[pageId].page_key === page) {
           agentPageId = pageId;
           dataLength = state.webInfo.pageData[pageId].case.length;
@@ -310,30 +337,33 @@ export const actionChangePage = ({ state, commit, dispatch }, {
         checkPage = agentPageId;
       }
     }
-    if (checkPage === 'joinAgent' && state.loginStatus) {
-      if (window.confirm(i18n.t('S_LOGOUT_AGENT_CONFIRM'))) {
+    if (checkPage === "joinAgent" && state.loginStatus) {
+      if (window.confirm(i18n.t("S_LOGOUT_AGENT_CONFIRM"))) {
         member.logout({
           success: () => {
             commit(types.CHANGEPAGE, page);
-            dispatch('actionSetUserdata', true);
-            commit(types.SETPOP, { type: '', data: '' });
+            dispatch("actionSetUserdata", true);
+            commit(types.SETPOP, { type: "", data: "" });
             window.scrollTo(0, 0);
-            router.push({ path: '/page/joinAgent' });
+            router.push({ path: "/page/joinAgent" });
           }
         });
       }
       return;
     }
     commit(types.CHANGEPAGE, checkPage);
-    dispatch('actionSetUserdata');
-    commit(types.SETPOP, { type: '', data: '' });
+    dispatch("actionSetUserdata");
+    commit(types.SETPOP, { type: "", data: "" });
     window.scrollTo(0, 0);
-    router.push({ path: '/page/joinAgent' });
+    router.push({ path: "/page/joinAgent" });
     return;
   }
 
   // 首頁、優惠頁彈跳公告
-  if (String(page) === String(state.webInfo.page[0].pid) || page === 'promotion') {
+  if (
+    String(page) === String(state.webInfo.page[0].pid) ||
+    page === "promotion"
+  ) {
     // 會員首次登入強制修改密碼，不顯示彈跳公告
     if (state.loginStatus && state.memInfo.user.password_reset) {
       return;
@@ -344,42 +374,49 @@ export const actionChangePage = ({ state, commit, dispatch }, {
       return;
     }
 
-    const postType = String(page) === String(state.webInfo.page[0].pid) ? '1' : '2';
-    const pagePath = page === 'promotion' ? `/page/${page}` : '/';
-    dispatch('actionSetPost', postType).then(() => {
-      dispatch('actionSetPop', {
-        type: 'post',
+    const postType =
+      String(page) === String(state.webInfo.page[0].pid) ? "1" : "2";
+    const pagePath = page === "promotion" ? `/page/${page}` : "/";
+    dispatch("actionSetPost", postType).then(() => {
+      dispatch("actionSetPop", {
+        type: "post",
         data: state.post.list
       });
     });
 
     commit(types.CHANGEPAGE, page);
     router.push({ path: pagePath });
-    dispatch('actionSetUserdata');
+    dispatch("actionSetUserdata");
     window.scrollTo(0, 0);
     return;
   }
 
-  if (type === 'static' && (page === 'deposit' || page === 'withdraw' || page === 'bankRebate')) {
+  if (
+    type === "static" &&
+    (page === "deposit" || page === "withdraw" || page === "bankRebate")
+  ) {
     // 登入前
-    if (!state.loginStatus && (page === 'withdraw' || page === 'bankRebate')) {
-      alert(i18n.t('S_LOGIN_TIPS'));
+    if (!state.loginStatus && (page === "withdraw" || page === "bankRebate")) {
+      alert(i18n.t("S_LOGIN_TIPS"));
       return;
     }
 
     // 登入後 - 取款
-    if (page === 'withdraw') {
-      mcenterPageAuthControl(page).then((response) => {
+    if (page === "withdraw") {
+      mcenterPageAuthControl(page).then(response => {
         if (response && response.status) {
-          router.push({ path: '/page/mcenter/withdraw' });
+          router.push({ path: "/page/mcenter/withdraw" });
         }
       });
       return;
     }
 
     // 登入後 - 返水
-    if (page === 'bankRebate') {
-      dispatch('actionEnterMCenterThirdPartyLink', { type: 'links', page }).then((pageName) => {
+    if (page === "bankRebate") {
+      dispatch("actionEnterMCenterThirdPartyLink", {
+        type: "links",
+        page
+      }).then(pageName => {
         if (pageName) {
           router.push({ path: `/page/mcenter/${pageName}` });
         }
@@ -392,71 +429,83 @@ export const actionChangePage = ({ state, commit, dispatch }, {
   }
 
   // 若連結為電子大廳頁
-  if (page === 'casino') {
+  if (page === "casino") {
     // 若無一款遊戲開放
-    if (!Object.keys(state.gameData).some((key) => state.gameData[key].kind === 3 && state.gameData[key].switch === 'Y')) {
+    if (
+      !Object.keys(state.gameData).some(
+        key =>
+          state.gameData[key].kind === 3 && state.gameData[key].switch === "Y"
+      )
+    ) {
       return;
     }
 
     commit(types.CHANGEPAGE, page);
-    commit(types.SETCASINOVENDOR, subPage || '');
-    router.push({ path: `/page/${page}/${subPage || ''}` });
+    commit(types.SETCASINOVENDOR, subPage || "");
+    router.push({ path: `/page/${page}/${subPage || ""}` });
     return;
   }
 
   // 若連結為代理登入
-  if (type === 'static' && page === 'agLogin') {
+  if (type === "static" && page === "agLogin") {
     if (!state.memInfo.config.agent_login) {
       return;
     }
 
-    dispatch('actionSetPop', { type: page });
+    dispatch("actionSetPop", { type: page });
     window.scrollTo(0, 0);
     return;
   }
 
-  if (page === 'mcenter') {
-    router.push({ path: `/page/mcenter/${subPage || 'accountData'}` });
+  if (page === "mcenter") {
+    router.push({ path: `/page/mcenter/${subPage || "accountData"}` });
     commit(types.CHANGEPAGE, page);
-    dispatch('actionSetUserdata');
-    commit(types.SETPOP, { type: '', data: '' });
+    dispatch("actionSetUserdata");
+    commit(types.SETPOP, { type: "", data: "" });
     window.scrollTo(0, 0);
     return;
   }
 
-  if (type === 'webview') {
+  if (type === "webview") {
     commit(types.CHANGEPAGE, page);
   }
 
-  if (page === 'service') {
-    window.open(state.webInfo.on_service_url, '', `width=${state.webInfo.on_service_w}, height=${state.webInfo.on_service_h}`);
+  if (page === "service") {
+    window.open(
+      state.webInfo.on_service_url,
+      "",
+      `width=${state.webInfo.on_service_w}, height=${state.webInfo.on_service_h}`
+    );
     // 在線客服流量分析事件
     window.dataLayer.push({
       dep: 2,
-      event: 'ga_click',
-      eventCategory: 'online_service',
-      eventAction: 'online_service_contact',
-      eventLabel: 'online_service_contact'
+      event: "ga_click",
+      eventCategory: "online_service",
+      eventAction: "online_service_contact",
+      eventLabel: "online_service_contact"
     });
     return;
   }
 
-  if (page === 'pwdreset') {
+  if (page === "pwdreset") {
     commit(types.CHANGEPAGE, page);
-    dispatch('actionSetUserdata');
-    commit(types.SETPOP, { type: '', data: '' });
+    dispatch("actionSetUserdata");
+    commit(types.SETPOP, { type: "", data: "" });
     window.scrollTo(0, 0);
 
-    if (['500000', '48', '50'].includes(state.memInfo.user.domain)) { // 威尼斯電腦版重置密碼導頁
+    if (["500000", "48", "50"].includes(state.memInfo.user.domain)) {
+      // 威尼斯電腦版重置密碼導頁
       const link = {
-        500000: '37762',
-        48: '12340',
-        58: '12339'
+        500000: "37762",
+        48: "12340",
+        58: "12339"
       };
 
       const pageId = link[state.memInfo.user.domain];
       commit(types.CHANGEPAGE, pageId);
-      router.push({ path: `/page/${pageId}?kr=${config.kr}&type=${config.type}` });
+      router.push({
+        path: `/page/${pageId}?kr=${config.kr}&type=${config.type}`
+      });
       return;
     }
     router.push({ path: `/page/${page}?kr=${config.kr}&type=${config.type}` });
@@ -465,8 +514,8 @@ export const actionChangePage = ({ state, commit, dispatch }, {
 
   // page_type 為 custom (internal) 或 static
   commit(types.CHANGEPAGE, page);
-  dispatch('actionSetUserdata');
-  commit(types.SETPOP, { type: '', data: '' });
+  dispatch("actionSetUserdata");
+  commit(types.SETPOP, { type: "", data: "" });
   window.scrollTo(0, 0);
   router.push({ path: `/page/${page}` });
 };
@@ -485,8 +534,8 @@ export const actionSetCasinoLoadingStatus = ({ commit }, status) => {
 // 會員、代理共用-設定系統時間
 export const actionSetSystemTime = ({ commit }, func = () => { }) => {
   common.systemTime({
-    success: (response) => {
-      if (response.result === 'ok') {
+    success: response => {
+      if (response.result === "ok") {
         commit(types.SETSYSTEMTIME, response.ret);
         func();
       }
@@ -494,13 +543,16 @@ export const actionSetSystemTime = ({ commit }, func = () => { }) => {
   });
 };
 // 會員、代理共用-設定彈出視窗
-export const actionSetPop = ({ state, commit, dispatch }, { type = '', data = '' } = {}) => {
+export const actionSetPop = (
+  { state, commit, dispatch },
+  { type = "", data = "" } = {}
+) => {
   // 會員登入的狀態下, 點擊代理登入, 強制登出會員
-  if (type === 'agLogin' && state.loginStatus) {
-    if (window.confirm(i18n.t('S_LOGOUT_AGENT_CONFIRM'))) {
+  if (type === "agLogin" && state.loginStatus) {
+    if (window.confirm(i18n.t("S_LOGOUT_AGENT_CONFIRM"))) {
       member.logout({
         success: () => {
-          dispatch('actionSetUserdata', true);
+          dispatch("actionSetUserdata", true);
           commit(types.SETPOP, { type, data });
         }
       });
@@ -520,11 +572,11 @@ export const actionNewsPopControl = ({ commit }, data) => {
 // 會員端初始
 export const actionMemInit = ({ state, dispatch, commit }) => {
   // 設定系統環境為客端
-  commit(types.SETENV, 'mem');
+  commit(types.SETENV, "mem");
 
   return (async () => {
-    dispatch('actionSetSystemTime');
-    dispatch('actionSetNews');
+    dispatch("actionSetSystemTime");
+    dispatch("actionSetNews");
     // 暫時移除
     // dispatch('actionSetAppDownloadInfo');
 
@@ -549,7 +601,7 @@ export const actionMemInit = ({ state, dispatch, commit }) => {
         siteConfigOfficial.preset;
     }
 
-    dispatch('actionSetSiteConfig', configInfo);
+    dispatch("actionSetSiteConfig", configInfo);
     // dispatch('actionSetYaboConfig');
     dispatch("actionSetRechargeConfig");
     dispatch("actionSetRechargeBonusConfig");
@@ -558,20 +610,26 @@ export const actionMemInit = ({ state, dispatch, commit }) => {
 
     if (state.loginStatus) {
       const params = {
-        logo: state.webInfo.logo ? `${state.webInfo.cdn_domain}${state.webInfo.logo}` : '',
-        mlogo: state.webInfo.m_logo ? `${state.webInfo.cdn_domain}${state.webInfo.m_logo}` : '',
+        logo: state.webInfo.logo
+          ? `${state.webInfo.cdn_domain}${state.webInfo.logo}`
+          : "",
+        mlogo: state.webInfo.m_logo
+          ? `${state.webInfo.cdn_domain}${state.webInfo.m_logo}`
+          : "",
         title: encodeURI(state.memInfo.config.domain_name[state.curLang]),
-        favicon: state.webInfo.fav_icon ? `${state.webInfo.cdn_domain}${state.webInfo.fav_icon}` : ''
+        favicon: state.webInfo.fav_icon
+          ? `${state.webInfo.cdn_domain}${state.webInfo.fav_icon}`
+          : ""
       };
 
       // dispatch('actionSetVip');
-      dispatch('actionSetPost');
-      dispatch('actionSetUserBalance');
-      dispatch('actionSetUserConfig');
+      dispatch("actionSetPost");
+      dispatch("actionSetUserBalance");
+      dispatch("actionSetUserConfig");
       // 取得會員我的返水
       mcenter.rebate({
-        success: (response) => {
-          if (response.result === 'ok') {
+        success: response => {
+          if (response.result === "ok") {
             commit(types.SETMCENTERREBATE, {
               embed: response.ret.embed,
               url: response.ret.uri
@@ -579,33 +637,36 @@ export const actionMemInit = ({ state, dispatch, commit }) => {
             return;
           }
 
-          console.log('API ERROR', response.msg);
+          console.log("API ERROR", response.msg);
         }
       });
       // 取得會員取款-手機驗證通過或者不需要驗證
       mcenter.mobileCheck({
-        success: (response) => {
+        success: response => {
           commit(types.SETMOBILECHECK, {
-            status: response.result === 'ok'
+            status: response.result === "ok"
           });
         }
       });
       // 取得會員存款連結
       await mcenter.deposit(params, {
-        success: (response) => {
-          if (response.result === 'ok') {
-            dispatch('actionSetMcenterDeposit', response.ret);
+        success: response => {
+          if (response.result === "ok") {
+            dispatch("actionSetMcenterDeposit", response.ret);
             return;
           }
 
-          console.log('API ERROR', response.msg);
+          console.log("API ERROR", response.msg);
         }
       });
     }
   })();
 };
 // 會員端-設定會員資訊
-export const actionSetUserdata = ({ state, dispatch, commit }, forceUpdate = false) => {
+export const actionSetUserdata = (
+  { state, dispatch, commit },
+  forceUpdate = false
+) => {
   // 強制更新, memstatus 變更為 true
   memstatus = forceUpdate || memstatus;
 
@@ -617,33 +678,38 @@ export const actionSetUserdata = ({ state, dispatch, commit }, forceUpdate = fal
     memstatus = true;
   }, 1000);
 
-  const hasLogin = Vue.cookie.get('cid');
+  const hasLogin = Vue.cookie.get("cid");
   if (hasLogin) {
     axios({
-      method: 'get',
-      url: '/api/v1/c/player/user_bank/list'
-    }).then(res => {
-      if (res && res.data && res.data.result === "ok") {
-        commit(types.SET_HASBANK, res.data.ret.length > 0);
-      }
-    }).catch((error) => {
-      if (error.response && error.response.data.code === "M00001") {
-        dispatch('actionSetGlobalMessage', {
-          msg: error.response.data.msg, code: error.response.data.code
-        });
-      }
+      method: "get",
+      url: "/api/v1/c/player/user_bank/list"
     })
+      .then(res => {
+        if (res && res.data && res.data.result === "ok") {
+          commit(types.SET_HASBANK, res.data.ret.length > 0);
+        }
+      })
+      .catch(error => {
+        if (error.response && error.response.data.code === "M00001") {
+          dispatch("actionSetGlobalMessage", {
+            msg: error.response.data.msg,
+            code: error.response.data.code
+          });
+        }
+      });
   }
 
   return member.data({
     timeout: 10000,
-    success: (response) => {
+    success: response => {
       const temp = { ...response.ret };
-      temp.user.last_login = temp.user.last_login ? EST(temp.user.last_login) : '--';
+      temp.user.last_login = temp.user.last_login
+        ? EST(temp.user.last_login)
+        : "--";
       commit(types.SETMEMINFO, temp);
       // 設定遊戲開關
       commit(types.SETGAMEDATA, temp.vendors);
-      if (temp.user.id === 0 && temp.user.username === 'unknown') {
+      if (temp.user.id === 0 && temp.user.username === "unknown") {
         commit(types.ISLOGIN, false);
         return;
       }
@@ -653,53 +719,50 @@ export const actionSetUserdata = ({ state, dispatch, commit }, forceUpdate = fal
       let domain = data.ret.user.domain.toString();
       let configInfo;
       switch (domain) {
-        case '500023':
-        case '41':
-        case '74':
-        case '100004':
+        case "500023":
+        case "41":
+        case "74":
+        case "100004":
           configInfo = siteConfigOfficial[`site_41`];
           break;
-        case '500015':
-        case '69':
-        case '67':
-        case '100003':
+        case "500015":
+        case "69":
+        case "67":
+        case "100003":
         default:
           configInfo = siteConfigOfficial[`site_67`];
           break;
       }
 
-      let cdnRoot = '';
+      let cdnRoot = "";
 
       // 設置cdn圖片路徑
-      if (headers['x-cdn-ey'] &&
-        configInfo.MOBILE_WEB_TPL === "ey1") {
-        cdnRoot = `https://${headers['x-cdn-ey'].split(',')[0]}`;
+      if (headers["x-cdn-ey"] && configInfo.MOBILE_WEB_TPL === "ey1") {
+        cdnRoot = `https://${headers["x-cdn-ey"].split(",")[0]}`;
       }
 
-      if (headers['x-cdn-yb'] &&
-        configInfo.MOBILE_WEB_TPL === "porn1") {
-        cdnRoot = `https://${headers['x-cdn-yb'].split(',')[0]}`;
+      if (headers["x-cdn-yb"] && configInfo.MOBILE_WEB_TPL === "porn1") {
+        cdnRoot = `https://${headers["x-cdn-yb"].split(",")[0]}`;
       }
 
       commit(types.SETCDNROOT, cdnRoot);
     },
-    fail: (response) => {
+    fail: response => {
       // 連線逾時
-      if (typeof response === 'string') {
-        window.location.href = '/timeout';
+      if (typeof response === "string") {
+        window.location.href = "/timeout";
         return;
       }
       const code = response.status;
       const statusLink = {
-        401: '/no_service', // 非服務區
-        404: '/404', // 請求頁面不存在
-        500: '/500', // 內部伺服器錯誤
-        502: '/upup', // 維護
-        503: '/upup' // 維護
+        401: "/no_service", // 非服務區
+        404: "/404", // 請求頁面不存在
+        500: "/500", // 內部伺服器錯誤
+        502: "/upup", // 維護
+        503: "/upup" // 維護
       };
 
-
-      Object.keys(statusLink).forEach((key) => {
+      Object.keys(statusLink).forEach(key => {
         // 獨立頁面不需判斷狀態
         if (window.location.pathname.includes("/mobile/webview")) {
           return;
@@ -718,10 +781,10 @@ export const actionIsLogin = ({ commit }, isLogin) => {
   if (isLogin) {
     window.dataLayer.push({
       dep: 2,
-      event: 'ga_click',
-      eventCategory: 'user_login',
-      eventAction: 'user_login',
-      eventLabel: 'user_login'
+      event: "ga_click",
+      eventCategory: "user_login",
+      eventAction: "user_login",
+      eventLabel: "user_login"
     });
   }
 
@@ -730,84 +793,92 @@ export const actionIsLogin = ({ commit }, isLogin) => {
 // 會員端-設定會員餘額
 export const actionSetUserBalance = ({ commit, dispatch }) => {
   axios({
-    method: 'get',
-    url: '/api/v1/c/vendor/all/balance'
-  }).then(res => {
-    if (res && res.data && res.data.result === "ok") {
-      commit(types.SETUSERBALANCE, res.data);
-    }
-  }).catch((error) => {
-    const data = error && error.response && error.response.data;
-    if (data && data.code === "M00001") {
-      dispatch('actionSetGlobalMessage', {
-        msg: data.msg, cb: () => {
-          member.logout().then(() => {
-            window.location.href = "/mobile/login?logout=true";
-          });
-        }
-      });
-    } else {
-      dispatch('actionSetGlobalMessage', {
-        msg: data.msg, code: data.code
-      });
-    }
+    method: "get",
+    url: "/api/v1/c/vendor/all/balance"
   })
+    .then(res => {
+      if (res && res.data && res.data.result === "ok") {
+        commit(types.SETUSERBALANCE, res.data);
+      }
+    })
+    .catch(error => {
+      const data = error && error.response && error.response.data;
+      if (data && data.code === "M00001") {
+        dispatch("actionSetGlobalMessage", {
+          msg: data.msg,
+          cb: () => {
+            member.logout().then(() => {
+              window.location.href = "/mobile/login?logout=true";
+            });
+          }
+        });
+      } else {
+        dispatch("actionSetGlobalMessage", {
+          msg: data.msg,
+          code: data.code
+        });
+      }
+    });
 };
 // 會員端-設定APP下載資訊
 export const actionSetAppDownloadInfo = ({ commit }) => {
   ajax({
-    method: 'get',
+    method: "get",
     url: API_GETAPPINFO,
     errorAlert: false
-  }).then((response) => {
-    if (response && response.result === 'ok') {
+  }).then(response => {
+    if (response && response.result === "ok") {
       commit(types.SET_APP_DOWNLOAD_INFO, response.ret);
     }
   });
 };
 // 會員端-設定APP QR Code
-export const actionSetAppQrcode = ({ commit }) => ajax({
-  method: 'post',
-  url: API_QRCODE,
-  errorAlert: false,
-  params: { path: 'mobileBet' },
-  success: (response) => {
-    if (response.result !== 'ok') {
-      return;
-    }
+export const actionSetAppQrcode = ({ commit }) =>
+  ajax({
+    method: "post",
+    url: API_QRCODE,
+    errorAlert: false,
+    params: { path: "mobileBet" },
+    success: response => {
+      if (response.result !== "ok") {
+        return;
+      }
 
-    commit(types.SET_APP_QRCODE, response.ret);
-  }
-});
+      commit(types.SET_APP_QRCODE, response.ret);
+    }
+  });
 
 // 會員端-設定跑馬燈
-export const actionSetNews = ({ commit }) => member.news({
-  success: (response) => {
-    commit(types.SETNEWS, response.ret);
-  }
-});
+export const actionSetNews = ({ commit }) =>
+  member.news({
+    success: response => {
+      commit(types.SETNEWS, response.ret);
+    }
+  });
 // 會員端-設定公告
-export const actionSetPost = ({ commit }, postType = 1) => member.post({
-  params: {
-    page: postType // page參數: 1(預設)：首頁+首頁＆優惠頁，2：優惠頁+首頁＆優惠頁
-  },
-  success: (response) => {
-    commit(types.SETPOST, response);
-  }
-});
+export const actionSetPost = ({ commit }, postType = 1) =>
+  member.post({
+    params: {
+      page: postType // page參數: 1(預設)：首頁+首頁＆優惠頁，2：優惠頁+首頁＆優惠頁
+    },
+    success: response => {
+      commit(types.SETPOST, response);
+    }
+  });
 
 // 會員端-加入最愛的遊戲列表
-export const actionSetFavoriteGame = ({ commit }) => game.favoriteGame({
-  params: {
-    max_results: 1000
-  },
-  success: (response) => {
-    commit(types.SETFAVORITEGAME, response.ret);
-  },
-  fail: () => {
-    commit(types.SETFAVORITEGAME, []);
-  }
-});
+export const actionSetFavoriteGame = ({ commit }) =>
+  game.favoriteGame({
+    params: {
+      max_results: 1000
+    },
+    success: response => {
+      commit(types.SETFAVORITEGAME, response.ret);
+    },
+    fail: () => {
+      commit(types.SETFAVORITEGAME, []);
+    }
+  });
 
 // 會員端-設定下方遊戲框顯示狀態
 export const actionSetCollectionStatus = ({ commit }, status) => {
@@ -820,7 +891,7 @@ export const actionSetCollectionStatus = ({ commit }, status) => {
 // 代理端初始
 export const actionAgentInit = ({ state, dispatch, commit }, next) => {
   // 設定系統環境為代理客端
-  commit(types.SETENV, 'agent');
+  commit(types.SETENV, "agent");
   // 依序執行
   axios
     .all([
@@ -850,30 +921,32 @@ export const actionAgentInit = ({ state, dispatch, commit }, next) => {
             siteConfigTest.preset;
         }
 
-        dispatch('actionSetSiteConfig', configInfo);
+        dispatch("actionSetSiteConfig", configInfo);
         // 設定網站設定檔資訊 (end)
 
         await agcenter.mobileCheck({
-          success: (response) => {
+          success: response => {
             commit(types.SETMOBILECHECK, {
-              status: response.result === 'ok'
+              status: response.result === "ok"
             });
           }
         });
         await agent.userLevels({
-          success: (response) => {
+          success: response => {
             commit(types.SET_AGENT_USER_LEVELS, response.ret);
           }
         });
-        dispatch('actionSetAgentUserConfig');
-        dispatch('actionSetGameData');
-        dispatch('actionSetAgentNews');
-      })()]).then(() => {
-        if (!next) {
-          return;
-        }
-        next();
-      });
+        dispatch("actionSetAgentUserConfig");
+        dispatch("actionSetGameData");
+        dispatch("actionSetAgentNews");
+      })()
+    ])
+    .then(() => {
+      if (!next) {
+        return;
+      }
+      next();
+    });
 };
 // 代理端-設定代理資訊
 export const actionSetAgentdata = ({ state, commit }, forceUpdate = false) => {
@@ -888,25 +961,27 @@ export const actionSetAgentdata = ({ state, commit }, forceUpdate = false) => {
   }, 3000);
 
   return agent.data({
-    success: (response) => {
+    success: response => {
       const temp = { ...response.ret };
 
       // 當環境為客端，且代理為登入狀態即登出代理
-      if (state.env === 'mem') {
+      if (state.env === "mem") {
         agent.logout({
           success: () => {
-            this.$router.push({ path: '/agent/accountData' });
+            this.$router.push({ path: "/agent/accountData" });
           }
         });
       }
 
-      temp.user.last_login = temp.user.last_login ? EST(temp.user.last_login) : '--';
+      temp.user.last_login = temp.user.last_login
+        ? EST(temp.user.last_login)
+        : "--";
       commit(types.SETAGENTMEMINFO, temp);
       commit(types.SETAGENTLOGIN, true);
     },
     fail: () => {
-      if (window.location.pathname === '/agent') {
-        window.location.href = '/';
+      if (window.location.pathname === "/agent") {
+        window.location.href = "/";
       }
     }
   });
@@ -916,30 +991,35 @@ export const actionSetAgentLogin = ({ commit }, isLogin) => {
   commit(types.SETAGENTLOGIN, isLogin);
 };
 // 代理端-設定跑馬燈
-export const actionSetAgentNews = ({ commit }) => agent.news({
-  success: (response) => {
-    commit(types.SETAGENTNEWS, response.ret);
-  }
-});
+export const actionSetAgentNews = ({ commit }) =>
+  agent.news({
+    success: response => {
+      commit(types.SETAGENTNEWS, response.ret);
+    }
+  });
 // 代理端-設定公告
-export const actionSetAgentPost = ({ commit }) => agent.post({
-  success: (response) => {
-    commit(types.SETAGENTPOST, response);
-  }
-});
+export const actionSetAgentPost = ({ commit }) =>
+  agent.post({
+    success: response => {
+      commit(types.SETAGENTPOST, response);
+    }
+  });
 
 // 會員返水頁
-export const actionEnterMCenterThirdPartyLink = ({ state, commit }, { type, page }) => {
+export const actionEnterMCenterThirdPartyLink = (
+  { state, commit },
+  { type, page }
+) => {
   // 嵌入本站 (iframe)
   if (state.mcenterRebateEmbed) {
-    if (type === 'links') {
-      commit(types.CHANGEPAGE, 'mcenter');
+    if (type === "links") {
+      commit(types.CHANGEPAGE, "mcenter");
     }
 
     return page;
   }
 
-  window.open(state.mcenterRebate, '_blank');
+  window.open(state.mcenterRebate, "_blank");
   return null;
 };
 
@@ -952,8 +1032,8 @@ export const actionSetMcenterMsgCount = ({ state, commit }) => {
 
   let num = 0;
   mcenter.message({
-    success: (response) => {
-      Object.keys(response.ret).forEach((index) => {
+    success: response => {
+      Object.keys(response.ret).forEach(index => {
         if (!response.ret[index].read) {
           num += 1;
         }
@@ -963,7 +1043,10 @@ export const actionSetMcenterMsgCount = ({ state, commit }) => {
   });
 };
 // 會員中心-設定我的返水-當前頁籤 (返水歷史/實時返水)
-export const actionSetMcenterBankRebate = ({ commit }, { type = '', interval = '' } = {}) => {
+export const actionSetMcenterBankRebate = (
+  { commit },
+  { type = "", interval = "" } = {}
+) => {
   commit(types.SETMCENTERBANKREBATE, { type, interval });
 };
 
@@ -979,8 +1062,8 @@ export const actionSetAgcenterMsgCount = ({ state, commit }) => {
   if (!state.agentIsLogin) return;
   let num = 0;
   agcenter.message({
-    success: (response) => {
-      Object.keys(response.ret).forEach((index) => {
+    success: response => {
+      Object.keys(response.ret).forEach(index => {
         if (!response.ret[index].read) {
           num += 1;
         }
@@ -992,20 +1075,20 @@ export const actionSetAgcenterMsgCount = ({ state, commit }) => {
 // 代理中心-設定代理會員連動帳號, 塞入agentInfo
 export const actionSetAgcenterMemUsername = ({ commit }) => {
   agcenter.accountMemUsername({
-    success: (response) => {
+    success: response => {
       commit(types.SETAGCENTERMEMUSERNAME, response.ret.username);
     }
   });
 };
 // 代理中心-設定代理連結(推廣網址)、合營連結, 塞入agentInfo
 export const actionSetAgcenterLinks = ({ state, commit }) => {
-  const getHostName = new Promise((resolve) => {
+  const getHostName = new Promise(resolve => {
     if (state.isWebview) {
       return ajax({
-        method: 'get',
-        url: '/api/v1/c/hostnames',
+        method: "get",
+        url: "/api/v1/c/hostnames",
         errorAlert: false
-      }).then((res) => {
+      }).then(res => {
         resolve(`https://${res.ret[0]}`);
       });
     }
@@ -1013,42 +1096,51 @@ export const actionSetAgcenterLinks = ({ state, commit }) => {
     return resolve(window.location.origin);
   });
 
-  Promise.all([getHostName, agcenter.accountLinks()]).then(([hostNameRes, accountLinkRes]) => {
-    commit(types.SETAGCENTERLINKS, {
-      intrLink: accountLinkRes.ret.code ? `${hostNameRes}/a/${accountLinkRes.ret.code}` : '',
-      outLink: accountLinkRes.ret.url || ''
-    });
-  });
+  Promise.all([getHostName, agcenter.accountLinks()]).then(
+    ([hostNameRes, accountLinkRes]) => {
+      commit(types.SETAGCENTERLINKS, {
+        intrLink: accountLinkRes.ret.code
+          ? `${hostNameRes}/a/${accountLinkRes.ret.code}`
+          : "",
+        outLink: accountLinkRes.ret.url || ""
+      });
+    }
+  );
 };
 // 代理中心-設定取款選定期數
 export const actionSetAgcenterWdPeriod = ({ commit }, obj) => {
   commit(types.SETAGCENTERWDPERIOD, obj);
 };
 
-
-export const actionContactUs = (_, postData) => new Promise((resolve) => member.contact(postData).then((res) => {
-  resolve(res);
-}).catch((err) => {
-  resolve(err.response);
-}));
+export const actionContactUs = (_, postData) =>
+  new Promise(resolve =>
+    member
+      .contact(postData)
+      .then(res => {
+        resolve(res);
+      })
+      .catch(err => {
+        resolve(err.response);
+      })
+  );
 
 // ＝＝＝＝＝＝＝＝＝＝＝＝＝＝＝＝＝＝
 //     手機資料
 // ＝＝＝＝＝＝＝＝＝＝＝＝＝＝＝＝＝＝
 export const actionGetMobileInfo = ({ commit }, tpl) => {
-  const status = Vue.cookie.get('newsite') ? 'New' : '';
-  let manifest = document.createElement('link');
-  manifest.rel = 'manifest';
+  const status = Vue.cookie.get("newsite") ? "New" : "";
+  let manifest = document.createElement("link");
+  manifest.rel = "manifest";
   manifest.href = `/static/tpl/analytics/${tpl}/manifest.json`;
-  document.querySelector('head').append(manifest);
+  document.querySelector("head").append(manifest);
 
   return ajax({
     url: `/tpl/${tpl}/mobile${status}.json`,
-    method: 'get',
-    success: (response) => {
+    method: "get",
+    success: response => {
       const { result, data } = response;
 
-      if (result === 'ok') {
+      if (result === "ok") {
         commit(types.SETMOBILEINFO, data);
       }
     }
@@ -1063,13 +1155,16 @@ export const actionSetJackpot = ({ commit }, postData) => {
   commit(types.SETJACKPOT, postData);
 };
 // 抓取電子彩金資料
-export const actionGetJackpot = ({ state, commit, dispatch }, { casinoType, count = 0 }) => {
+export const actionGetJackpot = (
+  { state, commit, dispatch },
+  { casinoType, count = 0 }
+) => {
   ajax({
-    method: 'get',
+    method: "get",
     url: `/api/v1/c/vendor/jackpot_list?vendor=${casinoType}`,
     errorAlert: false,
-    success: (response) => {
-      if (response.result === 'ok') {
+    success: response => {
+      if (response.result === "ok") {
         commit(types.SETJACKPOT, {
           ...state.jackpot,
           [casinoType]: {
@@ -1085,7 +1180,7 @@ export const actionGetJackpot = ({ state, commit, dispatch }, { casinoType, coun
           return;
         }
 
-        dispatch('actionGetJackpot', {
+        dispatch("actionGetJackpot", {
           casinoType,
           count: count + 1
         });
@@ -1106,7 +1201,7 @@ export const actionNoticeData = ({ commit }, data) => {
 
 export const actionSetVip = ({ commit }) => {
   mcenter.accountVIP({
-    success: (response) => {
+    success: response => {
       commit(types.SET_VIP, response.ret);
     }
   });
@@ -1115,9 +1210,9 @@ export const actionSetVip = ({ commit }) => {
 // 這裡使用髒髒的方法 取得會員取款-手機驗證通過或者不需要驗證
 export const actionSetWithdrawCheck = ({ commit }) => {
   mcenter.mobileCheck({
-    success: (response) => {
+    success: response => {
       commit(types.SETMOBILECHECK, {
-        status: response.result === 'ok'
+        status: response.result === "ok"
       });
     }
   });
@@ -1145,53 +1240,51 @@ export const actionSetAgentLink = ({ state, commit }, data) => {
 
   let reqHeaders = {};
   if (data && data.reqHeaders) {
-    reqHeaders['cid'] = data.reqHeaders.cid;
+    reqHeaders["cid"] = data.reqHeaders.cid;
   }
 
-  let domain = new Promise((resolve) => {
+  let domain = new Promise(resolve => {
     bbosRequest({
       method: "get",
-      url: configInfo.BBOS_DOMIAN + '/Domain/Hostnames',
+      url: configInfo.BBOS_DOMIAN + "/Domain/Hostnames",
       reqHeaders: {
-        'Vendor': state.memInfo.user.domain,
+        Vendor: state.memInfo.user.domain,
         ...reqHeaders
       },
       params: {
-        "lang": "zh-cn"
-      },
-    }).then((res) => {
-      if (res.errorCode !== '00' || res.status !== '000') {
-        return
+        lang: "zh-cn"
       }
-      return resolve(res.data[0])
-    })
-  })
+    }).then(res => {
+      if (res.errorCode !== "00" || res.status !== "000") {
+        return;
+      }
+      return resolve(res.data[0]);
+    });
+  });
 
-  let agentCode = new Promise((resolve) => {
+  let agentCode = new Promise(resolve => {
     bbosRequest({
       method: "get",
-      url: configInfo.BBOS_DOMIAN + '/Player/Promotion',
+      url: configInfo.BBOS_DOMIAN + "/Player/Promotion",
       reqHeaders: {
-        'Vendor': state.memInfo.user.domain,
+        Vendor: state.memInfo.user.domain,
         ...reqHeaders
       },
       params: {
-        "lang": "zh-cn"
-      },
-    }).then((res) => {
-      if (res.errorCode !== '00' || res.status !== '000') {
-        return
+        lang: "zh-cn"
+      }
+    }).then(res => {
+      if (res.errorCode !== "00" || res.status !== "000") {
+        return;
       }
       commit(types.SET_PROMOTION_LINK, res.data.url);
-      return resolve(res.data.code)
-    })
-  })
-
+      return resolve(res.data.code);
+    });
+  });
 
   Promise.all([domain, agentCode]).then(([domain, agentCode]) => {
     commit(types.SET_AGENTLINK, { domain, agentCode });
   });
-
 };
 
 // 鴨脖配置
@@ -1216,9 +1309,9 @@ export const actionSetYaboConfig = ({ state, dispatch, commit }, next) => {
   // });
 
   return goLangApiRequest({
-    method: 'get',
-    url: configInfo.YABO_GOLANG_API_DOMAIN + '/System/switch',
-  }).then((res) => {
+    method: "get",
+    url: configInfo.YABO_GOLANG_API_DOMAIN + "/System/switch"
+  }).then(res => {
     console.log("api switch test");
     if (res && res.data) {
       commit(types.SET_YABOCONFIG, res.data);
@@ -1231,53 +1324,34 @@ export const actionSetGlobalMessage = ({ commit }, data) => {
 };
 
 export const actionSetRechargeConfig = ({ commit }, data) => {
-  const hasLogin = Vue.cookie.get('cid');
+  const hasLogin = Vue.cookie.get("cid");
   if (!hasLogin) {
     return;
   }
   axios({
-    method: 'get',
-    url: '/api/v1/c/recharge/config'
+    method: "get",
+    url: "/api/v1/c/recharge/config"
   }).then(res => {
     if (res && res.data && res.data.result === "ok") {
       commit(types.SET_RECHARGECONFIG, res.data.ret);
     }
-  })
+  });
 };
 
 export const actionSetRechargeBonusConfig = ({ commit }, data) => {
-  const hasLogin = Vue.cookie.get('cid');
+  const hasLogin = Vue.cookie.get("cid");
   if (!hasLogin) {
     return;
   }
   axios({
-    method: 'get',
-    url: '/api/v1/c/recharge/bonus/config'
+    method: "get",
+    url: "/api/v1/c/recharge/bonus/config"
   }).then(res => {
     if (res && res.data && res.data.result === "ok") {
       commit(types.SET_RECHARGEBONUSCONFIG, res.data.ret);
     }
-  })
-};
-
-export const actionSetCGPayInfo = ({ commit }, data) => {
-  return axios({
-    method: "get",
-    url:
-      "/api/v1/c/ext/inpay?api_uri=/api/trade/v2/c/withdraw/user/cgp_info",
-    params: {
-      payment_method_id: 16 // 目前只有 CGPay = 16 需用到，先寫死
-    }
-  }).then(response => {
-    const { ret, result } = response.data;
-
-    if (!response || result !== "ok") {
-      return;
-    }
-
-    commit(types.SET_CGPAYINFO, ret);
   });
-}
+};
 
 export const actionSetVideoBounsPageStatus = ({ commit }, data) => {
   commit(types.SET_VIDEO_BOUNS_PAGE_STATUS, data);
@@ -1290,17 +1364,20 @@ export const actionGetRechargeStatus = ({ state, dispatch, commit }, data) => {
   window.CHECKRECHARGETSTATUS = true;
   setTimeout(() => {
     window.CHECKRECHARGETSTATUS = undefined;
-  }, 1200)
+  }, 1200);
 
   const info = state.memInfoV3.user;
   if (!!info.bankrupt) {
-    dispatch('actionSetGlobalMessage', { msg: '您的钱包已停权，请联系线上客服！' });
+    dispatch("actionSetGlobalMessage", {
+      msg: "您的钱包已停权，请联系线上客服！"
+    });
     return;
   }
 
   if (!!info.locked || !!info.tied) {
-    dispatch('actionSetGlobalMessage', {
-      msg: '请先登入', cb: () => {
+    dispatch("actionSetGlobalMessage", {
+      msg: "请先登入",
+      cb: () => {
         member.logout().then(() => {
           window.location.href = "/mobile/login?logout=true";
         });
@@ -1311,152 +1388,157 @@ export const actionGetRechargeStatus = ({ state, dispatch, commit }, data) => {
   }
 
   return axios({
-    method: 'get',
-    url: '/api/v1/c/recharge/config'
-  }).then((res) => {
-    const config = res.data.ret;
+    method: "get",
+    url: "/api/v1/c/recharge/config"
+  })
+    .then(res => {
+      const config = res.data.ret;
 
-    let bank_required = config.bank_required;
-    let enable = config.enable;
-    let enabled_by_deposit = config.enabled_by_deposit;
-    let enabled_by_withdraw = config.enabled_by_withdraw;
+      let bank_required = config.bank_required;
+      let enable = config.enable;
+      let enabled_by_deposit = config.enabled_by_deposit;
+      let enabled_by_withdraw = config.enabled_by_withdraw;
 
-    if (!enable) {
-      dispatch('actionSetGlobalMessage', { msg: '额度转让升级中' });
-      return;
-    }
+      if (!enable) {
+        dispatch("actionSetGlobalMessage", { msg: "额度转让升级中" });
+        return;
+      }
 
-    const params = [];
-    let bank_required_result = {};
-    let deposit_result = {};
-    let withdraw_result = {};
+      const params = [];
+      let bank_required_result = {};
+      let deposit_result = {};
+      let withdraw_result = {};
 
-    if (bank_required) {
-      const user_bank =
-        axios({
-          method: 'get',
-          url: '/api/v1/c/player/user_bank/list'
-        }).then(res => {
-          if (res && res.data && res.data.result === "ok" && res.data.ret.length > 0) {
-            bank_required_result = {
-              status: 'ok',
+      if (bank_required) {
+        const user_bank = axios({
+          method: "get",
+          url: "/api/v1/c/player/user_bank/list"
+        })
+          .then(res => {
+            if (
+              res &&
+              res.data &&
+              res.data.result === "ok" &&
+              res.data.ret.length > 0
+            ) {
+              bank_required_result = {
+                status: "ok"
+              };
+            } else {
+              bank_required_result = {
+                status: "bindcard",
+                code: "C50099",
+                type: "bindcard"
+              };
             }
-          } else {
+          })
+          .catch(error => {
             bank_required_result = {
-              status: 'bindcard',
-              code: 'C50099',
+              status: "bindcard",
+              code: "C50099",
               type: "bindcard"
-            }
-          }
-        }).catch(error => {
-          bank_required_result = {
-            status: 'bindcard',
-            code: 'C50099',
-            type: "bindcard"
-          }
+            };
+          });
+
+        params.push(user_bank);
+      }
+
+      if (enabled_by_deposit || enabled_by_withdraw) {
+        const userStat = axios({
+          method: "get",
+          url: "/api/v1/c/user-stat/deposit-withdraw"
         })
+          .then(res => {
+            if (res && res.data && Number(res.data.ret.deposit_count) > 0) {
+              deposit_result = {
+                status: "ok"
+              };
+            } else {
+              deposit_result = {
+                code: "recharge_deposit",
+                msg: "只需充值一次 开通转让功能"
+              };
+            }
 
-      params.push(user_bank);
-    }
-
-    if (enabled_by_deposit || enabled_by_withdraw) {
-      const userStat =
-        axios({
-          method: 'get',
-          url: '/api/v1/c/user-stat/deposit-withdraw',
-        }).then(res => {
-          if (res && res.data && Number(res.data.ret.deposit_count) > 0) {
+            if (res && res.data && Number(res.data.ret.withdraw_count) > 0) {
+              withdraw_result = {
+                status: "ok"
+              };
+            } else {
+              withdraw_result = {
+                code: "recharge_withdraw",
+                msg: "只需提现一次 开通转让功能"
+              };
+            }
+          })
+          .catch(error => {
             deposit_result = {
-              status: 'ok',
-            }
-          } else {
-            deposit_result = {
-              code: 'recharge_deposit',
-              msg: '只需充值一次 开通转让功能'
-            }
-          }
+              code: "recharge_deposit",
+              msg: "只需充值一次 开通转让功能"
+            };
 
-          if (res && res.data && Number(res.data.ret.withdraw_count) > 0) {
             withdraw_result = {
-              status: 'ok',
-            }
-          } else {
-            withdraw_result = {
-              code: 'recharge_withdraw',
-              msg: '只需提现一次 开通转让功能'
-            }
-          }
-        }).catch(error => {
-          deposit_result = {
-            code: 'recharge_deposit',
-            msg: '只需充值一次 开通转让功能'
-          }
+              code: "recharge_withdraw",
+              msg: "只需提现一次 开通转让功能"
+            };
+          });
 
-          withdraw_result = {
-            code: 'recharge_withdraw',
-            msg: '只需提现一次 开通转让功能'
-          }
-        })
-
-      params.push(userStat);
-    }
-
-    return Promise.all(params).then(() => {
-      let result = null;
-      if (bank_required && bank_required_result.status !== "ok") {
-        result = bank_required_result;
+        params.push(userStat);
       }
 
-      else if (enabled_by_deposit && deposit_result.status !== "ok") {
-        result = deposit_result;
-      }
+      return Promise.all(params).then(() => {
+        let result = null;
+        if (bank_required && bank_required_result.status !== "ok") {
+          result = bank_required_result;
+        } else if (enabled_by_deposit && deposit_result.status !== "ok") {
+          result = deposit_result;
+        } else if (enabled_by_withdraw && withdraw_result.status !== "ok") {
+          result = withdraw_result;
+        }
 
-      else if (enabled_by_withdraw && withdraw_result.status !== "ok") {
-        result = withdraw_result;
-      }
-
-      if (result) {
-        dispatch('actionSetGlobalMessage',
-          {
+        if (result) {
+          dispatch("actionSetGlobalMessage", {
             code: result.code,
-            origin: data ? data : 'home',
+            origin: data ? data : "home",
             type: result.type,
             msg: result.msg
           });
-        return result;
-      }
+          return result;
+        }
 
-      // 不用檢查銀行卡及充值
-      if (!bank_required && !enabled_by_deposit) {
+        // 不用檢查銀行卡及充值
+        if (!bank_required && !enabled_by_deposit) {
+          if (data !== "recharge") {
+            window.location.href = "/mobile/mcenter/creditTrans";
+          }
+          return "ok";
+        }
+
         if (data !== "recharge") {
-          window.location.href = '/mobile/mcenter/creditTrans';
+          window.location.href = "/mobile/mcenter/creditTrans";
         }
         return "ok";
-      }
-
-      if (data !== "recharge") {
-        window.location.href = '/mobile/mcenter/creditTrans';
-      }
-      return "ok";
-    });
-  }).catch(error => {
-    if (error.response.data.code === 'M00001') {
-      dispatch('actionSetGlobalMessage', {
-        msg: '请先登入', cb: () => {
-          member.logout().then(() => {
-            window.location.href = "/mobile/login?logout=true";
-          });
-        }
       });
+    })
+    .catch(error => {
+      if (error.response.data.code === "M00001") {
+        dispatch("actionSetGlobalMessage", {
+          msg: "请先登入",
+          cb: () => {
+            member.logout().then(() => {
+              window.location.href = "/mobile/login?logout=true";
+            });
+          }
+        });
+      } else {
+        dispatch("actionSetGlobalMessage", {
+          msg: error.response.data.msg,
+          code: error.response.data.code
+        });
+      }
 
-    }
-
-    else {
-      dispatch('actionSetGlobalMessage', { msg: error.response.data.msg, code: error.response.data.code })
-    }
-
-    return "error";
-  });
+      return "error";
+    });
 };
 
 export const actionSetUserLevels = ({ commit }) => {
@@ -1472,10 +1554,10 @@ export const actionSetUserLevels = ({ commit }) => {
 
     commit(types.SET_USER_LEVELS, ret);
   });
-}
+};
 
 export const actionGetMemInfoV3 = ({ state, dispatch, commit }) => {
-  const hasLogin = Vue.cookie.get('cid');
+  const hasLogin = Vue.cookie.get("cid");
   if (!hasLogin || window.CHECKV3PLAYERSTATUS) {
     return;
   }
@@ -1483,23 +1565,11 @@ export const actionGetMemInfoV3 = ({ state, dispatch, commit }) => {
 
   setTimeout(() => {
     window.CHECKV3PLAYERSTATUS = undefined;
-  }, 1200)
+  }, 1200);
 
   return axios({
-    method: 'get',
-    url: '/api/v3/c/player'
-  }).then(res => {
-    if (res && res.data && res.data.result === "ok") {
-      commit(types.SETMEMINFOV3, res.data.ret);
-    }
-  }).catch((error) => {
-    if (error.response.data.code === "M00001" || error.response.data.code === "C600001") {
-      dispatch('actionSetGlobalMessage', {
-        msg: error.response.data.msg, cb: () => {
-          member.logout().then(() => { });
-        }
-      });
-    }
+    method: "get",
+    url: "/api/v3/c/player"
   })
     .then(res => {
       if (res && res.data && res.data.result === "ok") {
@@ -1521,7 +1591,10 @@ export const actionGetMemInfoV3 = ({ state, dispatch, commit }) => {
     });
 };
 // 輸入欄位共用驗證
-export const actionVerificationFormData = ({ state, dispatch, commit }, data) => {
+export const actionVerificationFormData = (
+  { state, dispatch, commit },
+  data
+) => {
   let configInfo;
 
   if (state.webDomain) {
@@ -1532,31 +1605,30 @@ export const actionVerificationFormData = ({ state, dispatch, commit }, data) =>
   }
 
   let site = configInfo.MOBILE_WEB_TPL;
-  let regex = '';
-  let val = data.value.replace(' ', '')
-    .trim();
+  let regex = "";
+  let val = data.value.replace(" ", "").trim();
 
   switch (data.target) {
-    case 'username':
+    case "username":
       val = val
-        .replace(/[\W]/g, '')
+        .replace(/[\W]/g, "")
         .substring(0, 20)
         .toLowerCase();
       break;
 
-    case 'phone':
+    case "phone":
       let maxLength = 11;
       switch (site) {
-        case 'ey1':
+        case "ey1":
           maxLength = 0;
           break;
-        case 'porn1':
+        case "porn1":
         default:
           maxLength = 11;
           break;
       }
 
-      val = val.replace(/[^0-9]/g, '');
+      val = val.replace(/[^0-9]/g, "");
 
       if (maxLength) {
         val = val.substring(0, maxLength);
@@ -1564,55 +1636,43 @@ export const actionVerificationFormData = ({ state, dispatch, commit }, data) =>
 
       break;
 
-    case 'password':
-    case 'confirm_password':
-      val = val
-        .replace(/[\W]/g, '')
-        .substring(0, 50);
+    case "password":
+    case "confirm_password":
+      val = val.replace(/[\W]/g, "").substring(0, 50);
       break;
 
-    case 'name':
+    case "name":
       regex = /[^\u3000\u3400-\u4DBF\u4E00-\u9FFF.．·]/g;
       //   const regex = /^[^A-Za-z0-9\uFF10-\uFF19\uFF41-\uFF5A\uFF21-\uFF3A，:;！@#$%^&*?<>()+=`|[\]{}\\"/\s~\-_']*$/;
 
-      val = val
-        .replace(regex, '')
-        .substring(0, 20);
+      val = val.replace(regex, "").substring(0, 20);
       break;
 
-    case 'alias':
+    case "alias":
       regex = /[，:;！@#$%^&*?<>()+=`|[\]{}\\"/.~\-_']*/g;
-      val = val
-        .replace(regex, '')
-        .substring(0, 20);
+      val = val.replace(regex, "").substring(0, 20);
       break;
 
-    case 'graphicVerification':
+    case "graphicVerification":
       regex = /[^0-9a-zA-Z]/g;
 
-      val = val
-        .replace(regex, '')
-        .substring(0, 4);
+      val = val.replace(regex, "").substring(0, 4);
       break;
 
-    case 'bankCard':
-      val = val.replace(/[^0-9]/g, '')
-        .substring(0, 36);
+    case "bankCard":
+      val = val.replace(/[^0-9]/g, "").substring(0, 36);
       break;
 
-    case 'code':
-      val = val.replace(/[^0-9]/g, '')
-        .substring(0, 6);
+    case "code":
+      val = val.replace(/[^0-9]/g, "").substring(0, 6);
       break;
 
-    case 'money':
-      val = val.replace(/[^0-9.]/g, '')
-        .substring(0, 13);
+    case "money":
+      val = val.replace(/[^0-9.]/g, "").substring(0, 13);
       break;
 
-    case 'withdrawPwd':
-      val = val.replace(/[^0-9]/g, '')
-        .substring(0, 4);
+    case "withdrawPwd":
+      val = val.replace(/[^0-9]/g, "").substring(0, 4);
       break;
 
     case "address":
@@ -1678,12 +1738,14 @@ export const actionSetSystemDomain = ({ commit, state }, data) => {
   // });
 
   return goLangApiRequest({
-    method: 'get',
-    url: configInfo.YABO_GOLANG_API_DOMAIN + '/System/domain',
-  }).then((res) => {
+    method: "get",
+    url: configInfo.YABO_GOLANG_API_DOMAIN + "/System/domain"
+  }).then(res => {
     if (res && res.data) {
       commit(types.SET_SYSTEMDOMAIN, res.data);
-      let domainList = res.data.filter(i => i.name === "XXX-DOMAIN-URL" && i.type === "du");
+      let domainList = res.data.filter(
+        i => i.name === "XXX-DOMAIN-URL" && i.type === "du"
+      );
 
       // 暫時先取第一組
       if (domainList && domainList.length > 0) {
@@ -1694,83 +1756,30 @@ export const actionSetSystemDomain = ({ commit, state }, data) => {
 };
 
 // 會員端-帳戶資料欄位開關
-export const actionSetUserConfig = ({ commit }) => ajax({
-  method: 'get',
-  url: API_MCENTER_USER_CONFIG,
-  errorAlert: false,
-  success: (response) => {
-    if (response && response.result === 'ok') {
-      commit(types.SET_MCENTER_USER_CONFIG, response.ret);
+export const actionSetUserConfig = ({ commit }) =>
+  ajax({
+    method: "get",
+    url: API_MCENTER_USER_CONFIG,
+    errorAlert: false,
+    success: response => {
+      if (response && response.result === "ok") {
+        commit(types.SET_MCENTER_USER_CONFIG, response.ret);
+      }
     }
-  }
-});
+  });
 
 // 代理端-帳戶資料欄位開關
-export const actionSetAgentUserConfig = ({ commit }) => ajax({
-  method: 'get',
-  url: API_AGENT_USER_CONFIG,
-  errorAlert: false,
-  success: (response) => {
-    if (response && response.result === 'ok') {
-      commit(types.SET_AGENT_USER_CONFIG, response.ret);
-    }
-  }
-});
-
-// SWAG設定
-export const actionSetSwagConfig = ({ commit, state }, data) => {
-  let configInfo;
-  if (state.webInfo.is_production) {
-    configInfo = siteConfigOfficial[`site_${state.webInfo.alias}`] || siteConfigOfficial.preset;
-  } else {
-    configInfo = siteConfigTest[`site_${state.webInfo.alias}`] || siteConfigTest.preset;
-  }
-
-  return bbosRequest({
+export const actionSetAgentUserConfig = ({ commit }) =>
+  ajax({
     method: "get",
-    url: configInfo.BBOS_DOMIAN + '/Ext/Swag/Domain/Config',
-    reqHeaders: {
-      'Vendor': state.memInfo.user.domain,
-    },
-    params: {
-      "lang": "zh-cn"
-    },
-  }).then((res) => {
-    if (res.errorCode !== '00' || res.status !== '000') {
-      return
+    url: API_AGENT_USER_CONFIG,
+    errorAlert: false,
+    success: response => {
+      if (response && response.result === "ok") {
+        commit(types.SET_AGENT_USER_CONFIG, response.ret);
+      }
     }
-    commit(types.SET_SWAG_CONFIG, res.data);
-  })
-};
-
-export const actionSetSwagBalance = ({ commit, state }, data) => {
-  const hasLogin = Vue.cookie.get('cid');
-  if (!hasLogin) {
-    return;
-  }
-  let configInfo;
-  if (state.webInfo.is_production) {
-    configInfo = siteConfigOfficial[`site_${state.webInfo.alias}`] || siteConfigOfficial.preset;
-  } else {
-    configInfo = siteConfigTest[`site_${state.webInfo.alias}`] || siteConfigTest.preset;
-  }
-
-  return bbosRequest({
-    method: "get",
-    url: configInfo.BBOS_DOMIAN + '/Ext/Swag/Vendor/Quota',
-    reqHeaders: {
-      'Vendor': state.memInfo.user.domain,
-    },
-    params: {
-      "lang": "zh-cn"
-    },
-  }).then((res) => {
-    if (res.errorCode !== '00' || res.status !== '000') {
-      return
-    }
-    commit(types.SET_SWAG_BALANCE, res.data);
-  })
-};
+  });
 
 export const actionSetWebDomain = ({ commit }) =>
   axios({
