@@ -360,6 +360,11 @@ export default {
         first_result: 0,
       };
 
+      this.$router.replace({
+        query: {
+          label: value
+        }
+      });
       // 活動先註解不開放，後續開放只要搜 activity_open
       // if (!this.paramsData.label || this.paramsData.label === 'activity') {
       //     ajax({
