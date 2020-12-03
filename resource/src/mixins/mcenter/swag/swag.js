@@ -171,8 +171,8 @@ export default {
     },
     // 是否前往SWAG,來源位置
     checkSWAGMaintain(params) {
-      let linkTo = params.linkTo || false,
-        origin = params.origin || 'home';
+      let linkTo = params && params.linkTo || false,
+        origin = params && params.origin || 'home';
 
       this.initSWAGConfig(true).then((result) => {
         if (!result) {

@@ -60,7 +60,17 @@ export default {
         title: this.$text("S_BUY_DIAMOND", "购买钻石"),
         prev: true,
         onClick: () => {
-          this.$router.back();
+          if (this.$route.query && this.$route.query.prev) {
+            let prev = this.$route.query.prev;
+            switch (prev) {
+              case 'back':
+              default:
+                this.$router.back();
+                return;
+            }
+          } else {
+            this.$router.push('/mobile/mcenter/wallet');
+          }
         },
       },
       currentTab: 0, //buy recoard
