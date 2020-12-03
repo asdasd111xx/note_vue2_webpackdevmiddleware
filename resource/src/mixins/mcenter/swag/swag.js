@@ -132,6 +132,10 @@ export default {
         // 現在時間 相差 維護時間
         else if (now.isBefore(maintain_end_at) && now.isAfter(maintain_start_at)) {
           this.isMaintainSwag = true;
+          this.actionSetGlobalMessage({
+            msg: `SWAG 维护中`,
+            style: 'maintain'
+          })
         }
         else {
           this.isMaintainSwag = false;
