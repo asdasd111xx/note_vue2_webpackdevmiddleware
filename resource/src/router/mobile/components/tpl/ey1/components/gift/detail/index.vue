@@ -28,7 +28,7 @@ export default {
       type: "",
       title: "",
       img: "",
-      url: "",
+      url: "https://ey.italking.asia:5569/guest.php?gid=eyag",
       MenuList: [
         {
           type: "wifi",
@@ -86,13 +86,9 @@ export default {
   components: {
     mobileContainer,
   },
-  created() {
-    this.getContactusUrl();
-  },
   mounted() {
     if (this.loginStatus && this.onlineService) {
       const tokenExpiresTime = 60 * 60 * 24 * 60; // 60天秒數
-
       const memberData = {
         name: this.memInfo.user.name || "",
         mobile: this.memInfo.user.phone || "",
@@ -100,7 +96,7 @@ export default {
         exp: Date.now() + tokenExpiresTime,
       };
       const rsaData = jwt.encode(memberData, "T9AuSgQfh2");
-      this.url = `${this.onlineService.url}&jwtToken=${rsaData}`;
+      //this.url = `${this.onlineService.url}&jwtToken=${rsaData}`;
     }
   },
   computed: {
