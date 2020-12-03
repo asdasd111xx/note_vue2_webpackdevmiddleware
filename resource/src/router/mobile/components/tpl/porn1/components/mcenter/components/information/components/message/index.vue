@@ -66,7 +66,7 @@
         :class="[
           $style.message,
           { [$style['edit-mode']]: isEditing },
-          'clearfix',
+          'clearfix'
         ]"
         @click="onClick(message)"
       >
@@ -74,7 +74,7 @@
           v-if="isEditing"
           :class="[
             $style['icon-edit'],
-            { [$style.active]: selectMessage.includes(message.id) },
+            { [$style.active]: selectMessage.includes(message.id) }
           ]"
         />
         <div :class="$style['icon-message']">

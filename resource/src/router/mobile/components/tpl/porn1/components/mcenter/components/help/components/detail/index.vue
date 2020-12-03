@@ -13,6 +13,12 @@
       <template v-if="type == 'deposit'">
         <deposit-record :is-app="isApp" />
       </template>
+      <template v-if="type == 'buymethod'">
+        <buymethod :is-app="isApp" />
+      </template>
+      <template v-if="type == 'usage'">
+        <usage :is-app="isApp" />
+      </template>
     </div>
   </mobile-container>
 </template>
@@ -25,22 +31,26 @@ import depositRecord from "./depositRecord";
 import member from "@/api/member";
 import mobileContainer from "../../../../../common/mobileContainer";
 import withdrawRecord from "./withdrawRecord";
+import buymethod from "./buymethod";
+import usage from "./usage";
 
 export default {
   components: {
     mobileContainer,
     depositRecord,
-    withdrawRecord
+    withdrawRecord,
+    buymethod,
+    usage
   },
   data() {
     return {
-      type: "withdraw" | "deposit"
+      type: "withdraw" | "deposit" | "buymethod" | "usage"
     };
   },
   created() {
     let query = this.$route.query;
     if (
-      ["withdraw", "deposit", "gameintro", "support"].includes(query.type)
+      ["withdraw", "deposit", "gameintro", "support", "buymethod", "usage"].includes(query.type)
     ) {
       this.type = query.type;
     } else {
@@ -51,20 +61,6 @@ export default {
     ...mapGetters({
       loginStatus: "getLoginStatus"
     }),
-    title() {
-      switch (this.type.toLocaleLowerCase()) {
-        case "withdraw":
-          return this.$text("S_RECENTLY_WITHDRAW", "近10笔提现记录");
-          break;
-
-        case "deposit":
-          return this.$text("S_RECENTLY_DEPOSIT", "8日内充值记录");
-          break;
-
-        default:
-          break;
-      }
-    },
     isApp() {
       let isApp = !!(
         (this.$route.query && this.$route.query.app) ||
@@ -72,14 +68,46 @@ export default {
       );
       return isApp;
     },
+    beforeDestroy() {
+      document.title = '';
+    },
     headerConfig() {
+      let title = '';
+
+      switch (this.type) {
+        case "withdraw":
+          title = this.$text("S_RECENTLY_WITHDRAW", "近10笔提现记录");
+          break;
+
+        case "deposit":
+          title = this.$text("S_RECENTLY_DEPOSIT", "8日内充值记录");
+          break;
+
+        case "buymethod":
+          title = 'SWAG 钻石购买说明';
+          break;
+
+        case "usage":
+          title = 'SWAG 钻石使用方法';
+          break;
+
+        default:
+          break;
+      }
+      document.title = title;
+
       if (!this.isApp) {
         return {
           prev: true,
           onClick: () => {
-            this.$router.back();
+            if (localStorage.getItem('help-center-back')) {
+              this.$router.replace(`/mobile/${localStorage.getItem('help-center-back')}`);
+              localStorage.removeItem('help-center-back');
+            } else {
+              this.$router.back();
+            }
           },
-          title: this.title
+          title: title
         };
       }
     }

@@ -19,32 +19,28 @@ import mobileContainer from "../../../../common/mobileContainer";
 export default {
   components: {
     mobileContainer,
-    contact: () =>
-      import(/* webpackChunkName: 'contact' */ "./template/contact"),
-    deposit: () =>
-      import(/* webpackChunkName: 'deposit' */ "./template/deposit"),
-    gameintro: () =>
-      import(/* webpackChunkName: 'gameintro' */ "./template/gameintro"),
-    support: () =>
-      import(/* webpackChunkName: 'support' */ "./template/support"),
-    withdraw: () =>
-      import(/* webpackChunkName: 'withdraw' */ "./template/withdraw"),
-    tips: () => import(/* webpackChunkName: 'tips' */ "./template/tips"),
-    privacy: () =>
-      import(/* webpackChunkName: 'privacy' */ "./template/privacy")
+    contact: () => import(/* webpackChunkName: 'contact' */ './template/contact'),
+    deposit: () => import(/* webpackChunkName: 'deposit' */ './template/deposit'),
+    gameintro: () => import(/* webpackChunkName: 'gameintro' */ './template/gameintro'),
+    support: () => import(/* webpackChunkName: 'support' */ './template/support'),
+    withdraw: () => import(/* webpackChunkName: 'withdraw' */ './template/withdraw'),
+    tips: () => import(/* webpackChunkName: 'tips' */ './template/tips'),
+    privacy: () => import(/* webpackChunkName: 'privacy' */ './template/privacy'),
+    diamond: () => import(/* webpackChunkName: 'diamond' */ './template/diamond'),
   },
   data() {
     return {
       currentTemplate: "",
       title: "",
       templates: [
-        { key: "contact", title: "联系我们" },
-        { key: "deposit", title: "充值教程" },
-        { key: "gameintro", title: "游戏介绍" },
-        { key: "support", title: "技术支持" },
-        { key: "withdraw", title: "提现教程" },
-        { key: "tips", title: "用户须知" },
-        { key: "privacy", title: "隐私政策" }
+        { key: 'contact', title: '联系我们' },
+        { key: 'diamond', title: '购买钻石' },
+        { key: 'deposit', title: '充值教程' },
+        { key: 'gameintro', title: '游戏介绍' },
+        { key: 'support', title: '技术支持' },
+        { key: 'withdraw', title: '提现教程' },
+        { key: 'tips', title: '用户须知' },
+        { key: 'privacy', title: '隐私政策' },
       ]
     };
   },
@@ -75,10 +71,12 @@ export default {
         return {
           prev: true,
           onClick: () => {
-            this.$router.back();
-
-            // 109/11/10 FB:454458
-            // this.$router.push("/mobile/mcenter");
+            if (localStorage.getItem('help-center-back')) {
+              this.$router.replace(`/mobile/${localStorage.getItem('help-center-back')}`);
+              localStorage.removeItem('help-center-back');
+            } else {
+              this.$router.back();
+            }
           },
           title: this.title
         };

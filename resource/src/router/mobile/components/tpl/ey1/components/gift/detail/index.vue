@@ -16,11 +16,6 @@
 import mobileContainer from "../../common/mobileContainer";
 import { mapGetters, mapActions } from "vuex";
 import jwt from "jwt-simple";
-import axios from "axios";
-import goLangApiRequest from "@/api/goLangApiRequest";
-import { getCookie, setCookie } from "@/lib/cookie";
-import mcenter from "@/api/mcenter";
-import yaboRequest from "@/api/yaboRequest";
 
 export default {
   data() {

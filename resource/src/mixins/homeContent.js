@@ -6,9 +6,11 @@ import axios from 'axios';
 import goLangApiRequest from '@/api/goLangApiRequest';
 import mcenter from '@/api/mcenter';
 import openGame from '@/lib/open_game';
+import swag from "@/mixins/mcenter/swag/swag";
 import yaboRequest from '@/api/yaboRequest';
 
 export default {
+  mixins: [swag],
   data() {
     return {
       stopScroll: false,
@@ -65,6 +67,15 @@ export default {
             return;
           }, 70000);
 
+        }
+
+        if (temp.event === "outer_maintain") {
+          this.swagMaintainTimer = setTimeout(() => {
+            this.initSWAGConfig(true);
+            clearTimeout(this.swagMaintainTimer);
+            this.swagMaintainTimer = null;
+            return;
+          }, 1000);
         }
       }
     }
@@ -150,6 +161,9 @@ export default {
     localStorage.removeItem('is-open-game');
     this.showPromotion = this.loginStatus ? this.memInfo.user.show_promotion : true;
     this.getMaintainList();
+    if (this.siteConfig.MOBILE_WEB_TPL === "porn1") {
+      this.initSWAGConfig(true);
+    }
   },
   mounted() {
     $(window).on('resize', this.onResize);

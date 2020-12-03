@@ -104,6 +104,14 @@ export default {
       });
     },
   },
+  methods: {
+    setContent(content) {
+      let urlRegex = /(https?:\/\/[^\s]+)/g;
+      return content.replace(/\n/g, '<br/>').replace(urlRegex, function (url) {
+        return '<a href="' + url + '" target="_blank">' + url + '</a>';
+      })
+    },
+  },
   created() {
     ajax({
       method: "get",

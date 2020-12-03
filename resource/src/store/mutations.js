@@ -552,4 +552,13 @@ export default {
   [types.SET_BBOSDOMAIN](state, data) {
     state.BBosDomain = data;
   },
+  [types.SET_SWAG_CONFIG](state, data) {
+    state.swagConfig = data
+  },
+  [types.SET_SWAG_BALANCE](state, data) {
+    state.swagBalance = {
+      ...data,
+      balance: +data.balance === 0 ? '0' : Number(data.balance).toFixed(0)
+    }
+  },
 };
