@@ -423,31 +423,7 @@ export default {
           text: 'S_FEEDBACK'
         }
       ]
-    },
-    {
-      key: 'mobile',
-      text: 'S_MOBILE',
-      item: [
-        {
-          key: 'downloadApp',
-          text: 'S_DOWNLOAD_APP'
-        }
-      ]
-    }
-  ],
-  // 代理中心-取款選定期數
-  agcenterWdPeriod: '',
-  // ＝＝＝＝＝＝＝＝＝＝＝＝＝＝＝＝＝＝
-  //     手機資料
-  // ＝＝＝＝＝＝＝＝＝＝＝＝＝＝＝＝＝＝
-  mobileInfo: {},
-  // ＝＝＝＝＝＝＝＝＝＝＝＝＝＝＝＝＝＝
-  //     APP下載資料
-  // ＝＝＝＝＝＝＝＝＝＝＝＝＝＝＝＝＝＝
-  appInfo: {
-    qrcode: {},
-    downloadInfo: {}
-  },
+    }],
   // ＝＝＝＝＝＝＝＝＝＝＝＝＝＝＝＝＝＝
   //     推播訊息資料
   // ＝＝＝＝＝＝＝＝＝＝＝＝＝＝＝＝＝＝
@@ -468,13 +444,9 @@ export default {
   videoBounsPageStatus: false,
   systemDomain: {},
   pornDoamin: "https://jizzapp.app",
-  // ＝＝＝＝＝＝＝＝＝＝＝＝＝＝＝＝＝＝
-  //   　電子錢包綁定相關
-  // ＝＝＝＝＝＝＝＝＝＝＝＝＝＝＝＝＝＝
-  CGPayInfo: {},
   promotionLink: '',
-  swagConfig: {},
-  swagBalance: {},
   webDomain: {},
   BBosDomain: {},
+  swagConfig: {},
+  swagBalance: {}
 };

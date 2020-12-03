@@ -153,11 +153,5 @@ export const SET_SYSTEMDOMAIN = 'SET_SYSTEMDOMAIN';
 export const SET_PORNDOMAIN = 'SET_PORNDOMAIN';
 export const SET_SWAG_CONFIG = 'SET_SWAG_CONFIG';
 export const SET_SWAG_BALANCE = 'SET_SWAG_BALANCE';
-
-// ＝＝＝＝＝＝＝＝＝＝＝＝＝＝＝＝＝＝
-//   　電子錢包綁定相關
-// ＝＝＝＝＝＝＝＝＝＝＝＝＝＝＝＝＝＝
-export const SET_CGPAYINFO = "SET_CGPAYINFO";
-
 export const SET_PROMOTION_LINK = "SET_PROMOTION_LINK";
 export const SET_BBOSDOMAIN = 'SET_BBOSDOMAIN';

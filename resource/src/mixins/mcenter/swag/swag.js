@@ -1,10 +1,10 @@
 import { mapActions, mapGetters } from "vuex";
+import moment, { relativeTimeThreshold } from 'moment';
 
 import EST from '@/lib/EST';
 import axios from "axios";
 import bbosRequest from "@/api/bbosRequest";
 import goLangApiRequest from '@/api/goLangApiRequest';
-import moment from 'moment';
 
 export default {
   props: {},
@@ -32,7 +32,7 @@ export default {
       estToday: EST(new Date(), '', true),
       maintainInfo: null,
       updateBalanceTimer: null,
-
+      swagMaintainTimer: null,
       // banner
       swagBanner: [
         { src: '/static/image/porn1/mcenter/swag/banner_swag.png' }],
@@ -63,6 +63,8 @@ export default {
   beforeDestroy() {
     clearInterval(this.updateBalanceTimer);
     this.updateBalanceTimer = null;
+    clearTimeout(this.swagMaintainTimer);
+    this.swagMaintainTimer = null;
   },
   created() {
   },
@@ -73,10 +75,15 @@ export default {
     noticeData() {
       if (this.noticeData && this.noticeData.length > 0) {
         let temp = this.noticeData[this.noticeData.length - 1];
-        if (temp.event === "outer_maintain") {
+        if (temp.event === "outer_maintain" && temp.vendor === 'swag') {
           setTimeout(() => {
             this.initSWAGConfig(true);
           }, 1000);
+
+          let sec = temp.start_at ? 70000 : 1000;
+          this.swagMaintainTimer = setTimeout(() => {
+            this.initSWAGConfig(true);
+          }, sec);
         }
       }
     }
@@ -107,11 +114,14 @@ export default {
           this.isCheckingInit = false;
         }, 1000)
 
-        let checkNoMaintain = true;
+        // 區段維護
+        const maintain_start_at = moment(this.swagConfig.maintain_start_at).add(-12, 'hours');
+        const maintain_end_at = moment(this.swagConfig.maintain_end_at).add(-12, 'hours');
+        const now = moment(this.estToday);
+
         // 永久維護
         if (this.swagConfig && this.swagConfig.enable === 0) {
           this.isMaintainSwag = true;
-          checkNoMaintain = false;
           if (this.$route.name === 'mcenter-swag') {
             this.actionSetGlobalMessage({
               msg: `SWAG 维护中`,
@@ -119,21 +129,13 @@ export default {
             })
           }
         }
-
-        // 區段維護
-        const maintain_start_at = moment(this.swagConfig.maintain_start_at).add(-12, 'hours');
-        const maintain_end_at = moment(this.swagConfig.maintain_end_at).add(-12, 'hours');
-        const now = moment(this.estToday);
-
         // 現在時間 相差 維護時間
-        const isMaintain = now.isBefore(maintain_end_at) && now.isAfter(maintain_start_at);
-
-        if (isMaintain) {
+        else if (now.isBefore(maintain_end_at) && now.isAfter(maintain_start_at)) {
           this.isMaintainSwag = true;
-          checkNoMaintain = false;
         }
-
-        this.isMaintainSwag = !checkNoMaintain;
+        else {
+          this.isMaintainSwag = false;
+        }
 
         if (onlyCheckMaintain) {
           return true;
@@ -169,8 +171,8 @@ export default {
     },
     // 是否前往SWAG,來源位置
     checkSWAGMaintain(params) {
-      let linkTo = params.linkTo || false,
-        origin = params.origin || 'home';
+      let linkTo = params && params.linkTo || false,
+        origin = params && params.origin || 'home';
 
       this.initSWAGConfig(true).then((result) => {
         if (!result) {
@@ -217,11 +219,15 @@ export default {
     updateBalance() {
       if (this.loginStatus && this.$route.name !== "home") {
         this.actionSetUserBalance();
-        this.actionSetSwagBalance();
+        if (!this.isMaintainSwag) {
+          this.actionSetSwagBalance();
+        }
 
         this.updateBalanceTimer = setInterval(() => {
-          this.actionSetUserBalance();
-          this.actionSetSwagBalance();
+          if (!this.isMaintainSwag) {
+            this.actionSetUserBalance();
+            this.actionSetSwagBalance();
+          }
         }, 40000);
       }
     },

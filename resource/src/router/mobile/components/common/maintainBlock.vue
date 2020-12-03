@@ -3,6 +3,7 @@
     <template v-if="type === 1">
       <div v-show="isShow && content && content.length > 0" class="dialog">
         <div class="wrap">
+          <div class="maintain-title">SWAG 维护中</div>
           <div v-for="item in content" class="cell">
             <div class="time-title">
               {{ item.title }}
@@ -73,7 +74,7 @@ export default {
       setTimeout(() => {
         this.clearMsg();
       }, 300);
-    }, 2000);
+    }, 3000);
   },
   computed: {
     ...mapGetters({
@@ -143,6 +144,14 @@ export default {
   font-weight: 700;
   text-align: center;
   color: #ffffff;
+}
+
+.maintain-title {
+  height: 45px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  text-align: center;
 }
 
 .time-title {

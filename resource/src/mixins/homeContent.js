@@ -160,7 +160,9 @@ export default {
     localStorage.removeItem('is-open-game');
     this.showPromotion = this.loginStatus ? this.memInfo.user.show_promotion : true;
     this.getMaintainList();
-    this.initSWAGConfig(true);
+    if (this.siteConfig.MOBILE_WEB_TPL === "porn1") {
+      this.initSWAGConfig(true);
+    }
   },
   mounted() {
     $(window).on('resize', this.onResize);

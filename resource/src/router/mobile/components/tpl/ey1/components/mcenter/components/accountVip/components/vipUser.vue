@@ -215,6 +215,13 @@ export default {
           `/static/image/${this.siteConfig.MOBILE_WEB_TPL}/mcenter/default/avatar_${imgSrcIndex}.png`
         );
       }
+    },
+    getDowngradeData() {
+      if (this.userVipInfo.amount_info.valid_bet == this.userVipInfo.downgrade_valid_bet) {
+        this.downgradeData = '已达条件'
+      } else {
+        this.downgradeData = `${this.userVipInfo.amount_info.valid_bet}/${this.userVipInfo.downgrade_valid_bet}`
+      }
     }
   }
 };

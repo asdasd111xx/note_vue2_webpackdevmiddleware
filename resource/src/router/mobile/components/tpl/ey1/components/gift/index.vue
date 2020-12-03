@@ -214,7 +214,7 @@ export default {
     },
   },
   watch: {
-    openLink() {},
+    openLink() { },
   },
   methods: {
     ...mapActions(["actionSetGlobalMessage"]),

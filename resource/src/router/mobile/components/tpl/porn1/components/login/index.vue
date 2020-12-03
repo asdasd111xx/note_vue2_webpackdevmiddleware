@@ -257,7 +257,17 @@ export default {
         prev: true,
         onClick: () => {
           // 目前與億元的返回流程不同
-          this.$router.back();
+          if (this.$route.query && this.$route.query.prev) {
+            let prev = this.$route.query.prev;
+            switch (prev) {
+              case 'back':
+              default:
+                this.$router.push(`/mobile/${prev}`);
+                return;
+            }
+          } else {
+            this.$router.back();
+          }
         },
         hasClose: true,
         title: this.$text("S_LOGON", "登录")

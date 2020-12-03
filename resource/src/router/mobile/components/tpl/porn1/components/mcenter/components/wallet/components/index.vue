@@ -404,7 +404,10 @@ export default {
       this.$router.push("/mobile/login");
     }
 
-    this.initSWAGConfig();
+    if (this.themeTPL === 'porn1') {
+      this.initSWAGConfig();
+    }
+
     this.startTime = Vue.moment(this.estToday)
       .add(-30, "days")
       .format("YYYY-MM-DD");
