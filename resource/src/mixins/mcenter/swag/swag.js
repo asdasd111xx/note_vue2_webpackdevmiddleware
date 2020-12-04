@@ -163,15 +163,17 @@ export default {
           }
 
           if (this.swagConfig.recharge_verify === 1) {
-            this.depositCheck();
-            return;
+            this.depositCheck().then((result) => {
+              if (localStorage.getItem("tmp_d_1")) {
+                this.submitCheck();
+              }
+            });
+          } else {
+            // 驗證手機成功回來
+            if (localStorage.getItem("tmp_d_1")) {
+              this.submitCheck();
+            }
           }
-
-          // 驗證手機成功回來
-          if (localStorage.getItem("tmp_d_1")) {
-            this.submitCheck();
-          }
-
         }
       });
     },
@@ -277,44 +279,6 @@ export default {
       if (this.swagConfig.enable !== 0) {
         this.lockedSubmit = false;
       }
-    },
-    verification(item) {
-      let errorMessage = "";
-      if (item.key === "phone") {
-        this.actionVerificationFormData({
-          target: "phone",
-          value: this.formData.phone
-        }).then(val => {
-          this.formData.phone = val;
-        });
-
-        if (this.formData.phone.length < 11) {
-          errorMessage = "手机格式不符合要求";
-          this.isVerifyPhone = false;
-        } else {
-          errorMessage = "";
-          this.isVerifyPhone = true;
-        }
-      }
-
-      this.errorMessage[item.key] = errorMessage;
-
-      // 檢查無錯誤訊息
-      let noError = true;
-      this.inputInfo.forEach(item => {
-        if (this.errorMessage[item.key]) {
-          noError = false;
-        }
-      });
-
-      let hasValue = true;
-      this.inputInfo.forEach(item => {
-        if (!this.formData[item.key]) {
-          hasValue = false;
-        }
-      });
-
-      this.isVerifyForm = noError && hasValue;
     },
     depositCheck() {
       this.isLoading = true;
