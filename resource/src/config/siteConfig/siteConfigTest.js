@@ -40,13 +40,3 @@ export const site_500023 = {
   ACTIVES_BOUNS_WEBSOCKETV2: 'wss://cxbb.bbin-asia.com/wsn/promosocket?',
 };
 /* eslint-enable camelcase */
-
-/**
- * 丝瓜娱乐 測試站
- */
-export const site_500035 = {
-  ...preset,
-  MOBILE_WEB_TPL: 'sg1',
-  VERSION: getVersion('sg1'),
-  SITE_NAME: '鸭博娱乐'
-};

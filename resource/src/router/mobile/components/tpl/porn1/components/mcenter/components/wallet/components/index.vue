@@ -367,7 +367,7 @@ export default {
           key: "withdraw",
           show: true,
           text: this.$text("S_WITHDRAWAL_TEXT", "提现"),
-          imgSrc: `/static/image/${this.themeTPL}/mcenter/wallet/ic_wallter_withdraw.png`,
+          imgSrc: "/static/image/_new/mcenter/wallet/ic_wallter_withdraw.png",
           onClick: () => {
             if (this.themeTPL.includes("porn1", "sg1")) {
               this.$router.push("/mobile/mcenter/withdraw");
