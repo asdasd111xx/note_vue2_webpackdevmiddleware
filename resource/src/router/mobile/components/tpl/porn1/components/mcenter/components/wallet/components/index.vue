@@ -69,11 +69,11 @@
               @click="$router.push('/mobile/mcenter/bonus')"
             >
               <span :class="$style['balance-item-vendor']">
-                <template v-if="themeTPL === 'porn1'">
+                <template v-if="themeTPL.includes('porn1', 'sg1')">
                   {{ $text("S_BONUS", "红利彩金") }}
                 </template>
 
-                <template v-if="themeTPL === 'ey1'">
+                <template v-if="themeTPL.includes('ey1')">
                   {{ $text("S_BONUS_ACCOUNT", "红利帐户") }}
                 </template>
               </span>
@@ -122,7 +122,7 @@
       </template>
     </balance-tran>
 
-    <template v-if="themeTPL === 'porn1'">
+    <template v-if="themeTPL.includes('porn1', 'sg1')">
       <div :class="$style['swag-wrap']">
         <div :class="$style['title']">SWAG钱包</div>
         <div :class="$style['icon-block']">
@@ -161,14 +161,14 @@
     </template>
 
     <div :class="$style['invite-wrap']" @click="onClickInvite">
-      <template v-if="themeTPL === 'porn1'">
+      <template v-if="themeTPL.includes('porn1', 'sg1')">
         <div :class="$style['content']">
           <div>邀请好友获得现金奖励</div>
           <div>邀请人首存即可获得</div>
         </div>
       </template>
 
-      <template v-if="themeTPL === 'ey1'">
+      <template v-if="themeTPL.includes('ey1')">
         <div :class="$style['content']">
           <div>日薪月薪不如推荐加薪</div>
           <div>分享入金稳拿奖金</div>
@@ -244,9 +244,8 @@ import axios from "axios";
 import balanceTran from "@/components/mcenter/components/balanceTran";
 import EST from "@/lib/EST";
 import message from "@/router/mobile/components/common/message";
-import Vue from 'vue';
-import withdrawAccount from '@/router/mobile/components/common/withdrawAccount/withdrawAccount';
-import yaboRequest from '@/api/yaboRequest';
+import Vue from "vue";
+import yaboRequest from "@/api/yaboRequest";
 import mixin from "@/mixins/mcenter/swag/swag";
 import maintainBlock from "@/router/mobile/components/common/maintainBlock";
 
@@ -269,93 +268,98 @@ export default {
       mainNoData: false,
       isCheckWithdraw: false,
       bonus: {},
-      swagDiamondBalance: '0',
+      swagDiamondBalance: "0"
     };
   },
   computed: {
     ...mapGetters({
-      loginStatus: 'getLoginStatus',
-      memInfo: 'getMemInfo',
-      gameData: 'getGameData',
-      siteConfig: 'getSiteConfig',
-      hasBank: 'getHasBank',
-      rechargeConfig: 'getRechargeConfig',
+      loginStatus: "getLoginStatus",
+      memInfo: "getMemInfo",
+      gameData: "getGameData",
+      siteConfig: "getSiteConfig",
+      hasBank: "getHasBank",
+      rechargeConfig: "getRechargeConfig",
       swagConfig: "getSwagConfig",
-      swagBalance: "getSwagBalance",
+      swagBalance: "getSwagBalance"
     }),
     $style() {
-      const style = this[`$style_${this.siteConfig.MOBILE_WEB_TPL}`] || this.$style_porn1;
+      const style =
+        this[`$style_${this.siteConfig.MOBILE_WEB_TPL}`] || this.$style_porn1;
       return style;
     },
     themeTPL() {
-      return this.siteConfig.MOBILE_WEB_TPL
+      return this.siteConfig.MOBILE_WEB_TPL;
     },
     swagIcons() {
       return [
         {
-          key: 'buyDiamond',
+          key: "buyDiamond",
           show: true,
-          text: this.$text('S_BUY_DIAMOND', '购买钻石'),
+          text: this.$text("S_BUY_DIAMOND", "购买钻石"),
           imgSrc: `/static/image/${this.themeTPL}/mcenter/wallet/ic_wallter_swag_buydiamond.png`,
           onClick: () => {
-            this.$router.push('/mobile/mcenter/swag');
+            this.$router.push("/mobile/mcenter/swag");
           }
         },
         {
-          key: 'howToBuy',
+          key: "howToBuy",
           show: true,
-          text: this.$text('S_TO_BUY', '如何购买'),
+          text: this.$text("S_TO_BUY", "如何购买"),
           imgSrc: `/static/image/${this.themeTPL}/mcenter/wallet/ic_wallter_swag_howtobuy.png`,
           onClick: () => {
-            this.$router.push('/mobile/mcenter/help/detail?type=buymethod');
+            this.$router.push("/mobile/mcenter/help/detail?type=buymethod");
           }
         },
         {
-          key: 'instrustions',
+          key: "instrustions",
           show: true,
-          text: this.$text('S_INSTRUSTIONS', '使用方法'),
+          text: this.$text("S_INSTRUSTIONS", "使用方法"),
           imgSrc: `/static/image/${this.themeTPL}/mcenter/wallet/ic_wallter_swag_instrustions.png`,
           onClick: () => {
-            this.$router.push('/mobile/mcenter/help/detail?type=usage&key=2');
+            this.$router.push("/mobile/mcenter/help/detail?type=usage&key=2");
           }
-        },
-      ].filter(item => item.show)
+        }
+      ].filter(item => item.show);
     },
     walletIcons() {
       return [
         {
           key: "transfer",
           show: true,
-          text: this.$text('S_TRANSFER', '转帐'),
+          text: this.$text("S_TRANSFER", "转帐"),
           imgSrc: `/static/image/${this.themeTPL}/mcenter/wallet/ic_wallter_tranfer.png`,
           onClick: () => {
-            if (this.themeTPL === "porn1") {
+            if (this.themeTPL.includes("porn1", "sg1")) {
               this.$router.push("/mobile/mcenter/balanceTrans");
               return;
             }
 
-            if (this.themeTPL === "ey1") {
-
+            if (this.themeTPL.includes("ey1")) {
               axios({
-                method: 'get',
-                url: '/api/v2/c/domain-config',
-              }).then(res => {
-                let withdraw_info_before_bet = false;
-                if (res && res.data && res.data.ret) {
-                  withdraw_info_before_bet = res.data.ret.withdraw_info_before_bet;
-                }
-
-                if (withdraw_info_before_bet) {
-                  this.checkWithdrawData('balanceTrans');
-                  return;
-                }
-
-                this.$router.push("/mobile/mcenter/balanceTrans");
-              }).catch((res) => {
-                this.actionSetGlobalMessage({
-                  msg: res.data.msg, code: res.data.code, origin: 'wallet'
-                });
+                method: "get",
+                url: "/api/v2/c/domain-config"
               })
+                .then(res => {
+                  let withdraw_info_before_bet = false;
+                  if (res && res.data && res.data.ret) {
+                    withdraw_info_before_bet =
+                      res.data.ret.withdraw_info_before_bet;
+                  }
+
+                  if (withdraw_info_before_bet) {
+                    this.checkWithdrawData("balanceTrans");
+                    return;
+                  }
+
+                  this.$router.push("/mobile/mcenter/balanceTrans");
+                })
+                .catch(res => {
+                  this.actionSetGlobalMessage({
+                    msg: res.data.msg,
+                    code: res.data.code,
+                    origin: "wallet"
+                  });
+                });
             }
           }
         },
@@ -365,13 +369,13 @@ export default {
           text: this.$text("S_WITHDRAWAL_TEXT", "提现"),
           imgSrc: "/static/image/_new/mcenter/wallet/ic_wallter_withdraw.png",
           onClick: () => {
-            if (this.themeTPL === "porn1") {
+            if (this.themeTPL.includes("porn1", "sg1")) {
               this.$router.push("/mobile/mcenter/withdraw");
               return;
             }
 
-            if (this.themeTPL === "ey1") {
-              this.checkWithdrawData('withdraw');
+            if (this.themeTPL.includes("ey1")) {
+              this.checkWithdrawData("withdraw");
               return;
             }
           }
@@ -390,13 +394,13 @@ export default {
         {
           key: "card",
           show: true,
-          text: this.$text('S_MARANGE_CARD', '卡片管理'),
+          text: this.$text("S_MARANGE_CARD", "卡片管理"),
           imgSrc: `/static/image/${this.themeTPL}/mcenter/wallet/ic_wallter_manage.png`,
           onClick: () => {
             this.$router.push("/mobile/mcenter/bankCard");
           }
         }
-      ]
+      ];
     }
   },
   created() {
@@ -404,7 +408,7 @@ export default {
       this.$router.push("/mobile/login");
     }
 
-    if (this.themeTPL === 'porn1') {
+    if (this.themeTPL.includes('porn1', 'sg1')) {
       this.initSWAGConfig();
     }
 
@@ -420,10 +424,10 @@ export default {
     });
 
     // 清除交易紀錄搜尋快取
-    localStorage.removeItem('money-detail-params');
-    localStorage.removeItem('money-detail-params-service');
-    localStorage.removeItem('money-detail-params-category');
-    localStorage.removeItem('money-detail-params-date');
+    localStorage.removeItem("money-detail-params");
+    localStorage.removeItem("money-detail-params-service");
+    localStorage.removeItem("money-detail-params-category");
+    localStorage.removeItem("money-detail-params-date");
   },
   mounted() {
     this.getRecordList();
@@ -431,14 +435,14 @@ export default {
   watch: {
     swagBalance(val) {
       this.swagDiamondBalance = val.balance;
-    },
+    }
   },
   methods: {
     ...mapActions([
-      'actionSetGlobalMessage',
-      'actionGetRechargeStatus',
-      'actionGetMemInfoV3',
-      'actionSetUserBalance',
+      "actionSetGlobalMessage",
+      "actionGetRechargeStatus",
+      "actionGetMemInfoV3",
+      "actionSetUserBalance"
     ]),
     checkWithdrawData(target) {
       if (this.isCheckWithdraw) {
@@ -458,9 +462,11 @@ export default {
 
             Object.keys(res.data.ret).forEach(i => {
               if (i !== "bank" && !res.data.ret[i]) {
-
                 this.actionSetGlobalMessage({
-                  msg: target === 'withdraw' ? '请先完成提现信息' : '请先设定提现资料',
+                  msg:
+                    target === "withdraw"
+                      ? "请先完成提现信息"
+                      : "请先设定提现资料",
                   cb: () => {
                     {
                       this.$router.push(
@@ -580,3 +586,4 @@ export default {
 
 <style lang="scss" src="../css/porn1.index.scss" module="$style_porn1"></style>
 <style lang="scss" src="../css/ey1.index.scss" module="$style_ey1"></style>
+<style lang="scss" src="../css/sg1.index.scss" module="$style_sg1"></style>
