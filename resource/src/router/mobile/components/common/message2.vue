@@ -99,7 +99,7 @@ export default {
           );
         }
 
-        const code = msgObj.code;
+        const code = String(msgObj.code);
         const callback = msgObj.cb;
         const redirect = msgObj.origin;
 
@@ -170,6 +170,7 @@ export default {
           case "TM020060":
           // cid 失效
           case "C150100":
+          case "77700036":
             setCookie("cid", "");
             setCookie("y_token", "");
             setCookie("aid", "");

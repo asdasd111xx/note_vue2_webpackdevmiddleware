@@ -266,7 +266,7 @@ export default {
                 return;
             }
           } else {
-            this.$router.back();
+            this.$router.push(`/mobile/home`);
           }
         },
         hasClose: true,
