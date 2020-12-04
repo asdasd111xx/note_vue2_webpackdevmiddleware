@@ -33,6 +33,13 @@ const domain = "https://yb01.66boxing.com/";
 // const domain = 'https://ey01.66boxing-beta.com/';
 // const domain = 'https://eyd.66apples.com/';
 
+// 丝瓜娱乐
+// const domain = 'https://sgtt.66relish.com/';
+// Demo
+// const domain = 'https://sgt.66relish.com/';
+// Prod
+// const domain = 'https://sg.66relish.com/';
+
 module.exports = {
   build: {
     env: require("./prod.env"),

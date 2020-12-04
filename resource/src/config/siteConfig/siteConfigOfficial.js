@@ -123,3 +123,31 @@ export const site_100004 = {
   ACTIVES_BOUNS_WEBSOCKETV2: 'wss://eybe2.77num.com/wsn/promosocket?',
 };
 /* eslint-enable camelcase */
+
+/**
+ * 丝瓜娱乐 正式站
+ */
+export const site_80 = {
+  ...preset,
+  MOBILE_WEB_TPL: 'sg1', // 手機網頁版模版
+  VERSION: getVersion('sg1'),
+  SITE_NAME: '丝瓜娱乐',
+  ACTIVES_BOUNS_WEBSOCKETV2: 'wss://yaboapi.iguanagingercake.com/wsn/promosocket?',
+};
+
+/**
+ * 丝瓜娱乐 正式站Demo環境
+ */
+export const site_81 = {
+  ...preset,
+  MOBILE_WEB_TPL: 'sg1',
+  VERSION: getVersion('sg1'),
+  SITE_NAME: '丝瓜娱乐',
+  YABO_API_DOMAIN: window.location.host === 'ybbe1.qghco.com' ?
+    'https://ybbe2.qghco.com/api' :
+    'https://yaboapi.canarycherrytart.com/api-demo',
+  YABO_GOLANG_API_DOMAIN: window.location.host === 'ybbe1.qghco.com' ?
+    'https://ybbe2.qghco.com/api-v2/cxbb' :
+    'https://yaboapi.canarycherrytart.com/api-v2/cxbb',
+  ACTIVES_BOUNS_WEBSOCKETV2: 'wss://yaboapi.iguanagingercake.com/wsn/promosocket?',
+};
