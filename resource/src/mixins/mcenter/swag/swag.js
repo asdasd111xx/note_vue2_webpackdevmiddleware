@@ -276,6 +276,7 @@ export default {
     },
     selectedRate(item) {
       this.currentSelRate = item;
+      this.saveCurrentValue();
       if (this.swagConfig.enable !== 0) {
         this.lockedSubmit = false;
       }
