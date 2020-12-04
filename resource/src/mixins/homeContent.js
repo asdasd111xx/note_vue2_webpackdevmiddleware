@@ -588,7 +588,8 @@ export default {
                   localStorage.removeItem("is-open-game");
 
                   if (res && res.status !== '000') {
-                    if (res.msg) {
+                    // 維護非即時更新狀態
+                    if (res.msg && res.code !== '77700029') {
                       this.actionSetGlobalMessage({ msg: res.msg });
                     }
                     return;
