@@ -29,10 +29,10 @@ export default {
       lockedSubmit: true,
       isMaintainSwag: false,
       showTips: false,
-      estToday: EST(new Date(), '', true),
       maintainInfo: null,
       updateBalanceTimer: null,
       swagMaintainTimer: null,
+      watchNoticeDate: false,
       // banner
       swagBanner: [
         { src: '/static/image/porn1/mcenter/swag/banner_swag.png' }],
@@ -73,17 +73,19 @@ export default {
       this.swagDiamondBalance = val.balance;
     },
     noticeData() {
-      if (this.noticeData && this.noticeData.length > 0) {
+      if (this.watchNoticeDate && this.noticeData && this.noticeData.length > 0) {
         let temp = this.noticeData[this.noticeData.length - 1];
         if (temp.event === "outer_maintain" && temp.vendor === 'swag') {
           setTimeout(() => {
             this.initSWAGConfig(true);
-          }, 1000);
+          }, 1500);
 
-          let sec = temp.start_at ? 70000 : 1000;
-          this.swagMaintainTimer = setTimeout(() => {
-            this.initSWAGConfig(true);
-          }, sec);
+          if (temp.turn === 'off' || temp.start_at) {
+            this.swagMaintainTimer = null;
+            this.swagMaintainTimer = setTimeout(() => {
+              this.initSWAGConfig(true);
+            }, 70000);
+          }
         }
       }
     }
@@ -97,7 +99,7 @@ export default {
       'actionSetSwagConfig',
       'actionSetSwagBalance'
     ]),
-    initSWAGConfig(onlyCheckMaintain = false) {
+    initSWAGConfig(onlyCheckMaintain = false, fromClick = false) {
       if (this.isCheckingInit) {
         return new Promise((resolve, reject) => {
           resolve(false);
@@ -117,12 +119,12 @@ export default {
         // 區段維護
         const maintain_start_at = moment(this.swagConfig.maintain_start_at).add(-12, 'hours');
         const maintain_end_at = moment(this.swagConfig.maintain_end_at).add(-12, 'hours');
-        const now = moment(this.estToday);
+        const now = moment(EST(new Date(), '', true));
 
         // 永久維護
         if (this.swagConfig && this.swagConfig.enable === 0) {
           this.isMaintainSwag = true;
-          if (this.$route.name === 'mcenter-swag') {
+          if (this.$route.name === 'mcenter-swag' && !fromClick) {
             this.actionSetGlobalMessage({
               msg: `SWAG 维护中`,
               style: 'maintain'
@@ -132,7 +134,7 @@ export default {
         // 現在時間 相差 維護時間
         else if (now.isBefore(maintain_end_at) && now.isAfter(maintain_start_at)) {
           this.isMaintainSwag = true;
-          if (this.$route.name === 'mcenter-swag') {
+          if (this.$route.name === 'mcenter-swag' && !fromClick) {
             this.actionSetGlobalMessage({
               msg: `SWAG 维护中`,
               style: 'maintain'
@@ -182,7 +184,7 @@ export default {
       let linkTo = params && params.linkTo || false,
         origin = params && params.origin || 'home';
 
-      this.initSWAGConfig(true).then((result) => {
+      this.initSWAGConfig(true, true).then((result) => {
         if (!result) {
           return;
         }
@@ -231,12 +233,14 @@ export default {
           this.actionSetSwagBalance();
         }
 
-        this.updateBalanceTimer = setInterval(() => {
-          if (!this.isMaintainSwag) {
-            this.actionSetUserBalance();
-            this.actionSetSwagBalance();
-          }
-        }, 40000);
+        if (!this.updateBalanceTimer) {
+          this.updateBalanceTimer = setInterval(() => {
+            if (!this.isMaintainSwag) {
+              this.actionSetUserBalance();
+              this.actionSetSwagBalance();
+            }
+          }, 40000);
+        }
       }
     },
     balanceBack() {
@@ -282,6 +286,12 @@ export default {
       }
     },
     depositCheck() {
+      if (!this.loginStatus) {
+        this.actionSetGlobalMessage({
+          msg: '请重新登入'
+        });
+      }
+
       this.isLoading = true;
 
       return axios({
@@ -289,7 +299,6 @@ export default {
         url: '/api/v1/c/user-stat/deposit-withdraw',
       }).then(res => {
         this.isLoading = false;
-
         if (res && res.data) {
           const depositCount = Number(res.data.ret.deposit_count);
           if (depositCount <= 0) {
@@ -300,8 +309,10 @@ export default {
           }
         }
       }).catch(error => {
+        const response = error.response;
         this.actionSetGlobalMessage({
-          msg: error.response.msg,
+          msg: response.data.msg,
+          code: response.data.code,
         });
       })
     },
@@ -381,8 +392,16 @@ export default {
             }, 1500)
           }
         } else {
-          this.checkSWAGMaintain();
+          if (res && res.code === 77700036) {
+            this.actionSetGlobalMessage({
+              msg: '请重新登入',
+              code: res.code,
+              origin: 'mcenter/swag'
+            });
+            return;
+          }
 
+          this.checkSWAGMaintain();
           setTimeout(() => {
             this.isLoading = false;
           }, 1500)
@@ -441,6 +460,15 @@ export default {
                 origin: 'mcenter/swag'
               });
             } else {
+              if (res && res.code === 77700036) {
+                this.actionSetGlobalMessage({
+                  msg: '请重新登入',
+                  code: res.code,
+                  origin: 'mcenter/swag'
+                });
+                return;
+              }
+
               this.actionSetGlobalMessage({
                 msg: res.msg,
                 code: res.code,

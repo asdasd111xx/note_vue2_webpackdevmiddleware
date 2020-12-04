@@ -185,6 +185,7 @@ export default {
   },
   created() {
     this.initSWAGConfig();
+    this.watchNoticeDate = true;
   },
   methods: {
   }
