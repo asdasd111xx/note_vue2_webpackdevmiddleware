@@ -18,7 +18,7 @@ export default {
     list() {
       return [
         {
-          key: 'sponsor_yabolive',
+          key: 'sponsor_swaglive',
         },
         {
           key: 'sponsor_sigualive',

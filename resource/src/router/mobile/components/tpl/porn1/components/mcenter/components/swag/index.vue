@@ -60,6 +60,8 @@ export default {
         title: this.$text("S_BUY_DIAMOND", "购买钻石"),
         prev: true,
         onClick: () => {
+          localStorage.removeItem("tmp_d_1");
+          localStorage.removeItem("tmp_d_currentSelRate");
           if (this.$route.query && this.$route.query.prev) {
             let prev = this.$route.query.prev;
             switch (prev) {
