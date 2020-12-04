@@ -122,7 +122,7 @@ export default {
         // 永久維護
         if (this.swagConfig && this.swagConfig.enable === 0) {
           this.isMaintainSwag = true;
-          if (this.$route.name === 'mcenter-swag' && !onlyCheckMaintain) {
+          if (this.$route.name === 'mcenter-swag') {
             this.actionSetGlobalMessage({
               msg: `SWAG 维护中`,
               style: 'maintain'
@@ -132,7 +132,7 @@ export default {
         // 現在時間 相差 維護時間
         else if (now.isBefore(maintain_end_at) && now.isAfter(maintain_start_at)) {
           this.isMaintainSwag = true;
-          if (this.$route.name === 'mcenter-swag' && !onlyCheckMaintain) {
+          if (this.$route.name === 'mcenter-swag') {
             this.actionSetGlobalMessage({
               msg: `SWAG 维护中`,
               style: 'maintain'
