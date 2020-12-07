@@ -289,9 +289,6 @@ export default {
       return goLangApiRequest({
         method: 'get',
         url: `${this.siteConfig.YABO_GOLANG_API_DOMAIN}/Game/list`,
-        headers: {
-          'x-domain': this.memInfo.user.domain
-        }
       }).then(response => {
         if (!response.data) {
           return;
@@ -637,9 +634,6 @@ export default {
                 const getThridUrl = () => goLangApiRequest({
                   method: 'get',
                   url: `${this.siteConfig.YABO_GOLANG_API_DOMAIN}/ThirdParty/${game.vendor}/${userId}`,
-                  headers: {
-                    'x-domain': this.memInfo.user.domain
-                  }
                 }).then(res => {
                   localStorage.removeItem("is-open-game");
 
@@ -786,7 +780,6 @@ export default {
         url: `${this.siteConfig.YABO_GOLANG_API_DOMAIN
           }/Player/vipinfo`,
         headers: {
-          "x-domain": this.memInfo.user.domain,
           "cid": cid
         }
       }).then(res => {

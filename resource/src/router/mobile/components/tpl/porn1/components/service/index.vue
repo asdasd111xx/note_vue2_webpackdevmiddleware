@@ -206,9 +206,6 @@ export default {
     goLangApiRequest({
       method: "get",
       url: `${this.siteConfig.YABO_GOLANG_API_DOMAIN}/System/downloadlink`,
-      headers: {
-        'x-domain': this.memInfo.user.domain
-      }
     }).then(res => {
       if (res && res.data) {
         this.linkArray = res.data;

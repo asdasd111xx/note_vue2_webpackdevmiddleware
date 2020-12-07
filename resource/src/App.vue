@@ -271,8 +271,6 @@ export default {
       }, 3000);
     },
     getYABOAPIToken() {
-      setCookie('y-x-domain', this.memInfo.user.domain)
-      setCookie('y-username', this.memInfo.user.username)
       let cid = getCookie('cid') || '';
       if (!cid) return;
       yaboRequest({

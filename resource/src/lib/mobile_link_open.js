@@ -11,7 +11,6 @@ import router from '@/router';
 import store from '@/store';
 
 export default (target) => {
-  console.log(target);
   const { linkType, linkTo, linkItem } = target
 
   let linkTitle = '';
