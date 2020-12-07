@@ -376,14 +376,16 @@ export default {
       }, 1000);
     },
     showCaptchaPopup() {
-      // 無認證直接呼叫
-      if (this.memInfo.config.default_captcha_type === 0) {
-        this.handleSend();
-        return;
-      }
+      this.actionSetUserdata(true).then(() => {
+        // 無認證直接呼叫
+        if (this.memInfo.config.default_captcha_type === 0) {
+          this.handleSend();
+          return;
+        }
 
-      // 彈驗證窗並利用Watch captchaData來呼叫 getKeyring()
-      this.toggleCaptcha = true;
+        // 彈驗證窗並利用Watch captchaData來呼叫 getKeyring()
+        this.toggleCaptcha = true;
+      })
     },
     // 回傳會員手機驗證簡訊剩餘秒數可以重送
     getPhoneTTL() {

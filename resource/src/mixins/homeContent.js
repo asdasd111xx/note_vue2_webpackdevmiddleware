@@ -65,7 +65,19 @@ export default {
             this.timer = null;
             return;
           }, 70000);
+        }
 
+        if (temp.event === "outer_maintain" && temp.vendor === 'swag') {
+          setTimeout(() => {
+            this.initSWAGConfig(true);
+          }, 1500);
+
+          if (temp.turn === 'off' || temp.start_at) {
+            this.swagMaintainTimer = null;
+            this.swagMaintainTimer = setTimeout(() => {
+              this.initSWAGConfig(true);
+            }, 70000);
+          }
         }
 
         if (temp.event === "outer_maintain") {
@@ -585,31 +597,8 @@ export default {
                 return;
               } else {
                 localStorage.setItem("is-open-game", true);
-
-                goLangApiRequest({
-                  method: 'get',
-                  url: `${this.siteConfig.YABO_GOLANG_API_DOMAIN}/ThirdParty/SWAG/${userId}`,
-                  headers: {
-                    'x-domain': this.memInfo.user.domain
-                  }
-                }).then(res => {
-                  localStorage.removeItem("is-open-game");
-
-                  if (res && res.status !== '000') {
-                    // 維護非即時更新狀態
-                    if (res.msg && res.code !== '77700029') {
-                      this.actionSetGlobalMessage({ msg: res.msg });
-                    }
-                    return;
-                  }
-                  else {
-                    localStorage.setItem('iframe-third-url', res.data);
-                    localStorage.setItem('iframe-third-origin', 'home');
-                    this.$router.push(`/mobile/iframe/SWAG?&hasFooter=false&hasHeader=true`);
-                    return;
-                  }
-                })
-
+                // SWAG入口統一
+                this.checkSWAGMaintain({ linkTo: true, origin: 'home' });
                 return;
               }
 
