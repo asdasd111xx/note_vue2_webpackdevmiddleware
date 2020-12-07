@@ -322,11 +322,11 @@ export default {
           let jsonData = JSON.parse(e.data);
           window.YABO_SOCKETV2_ID = this.AESDecrypt(jsonData.Res, this.RSAdecrypt(jsonData.Key)).SocketId;
 
-          if (this.isDebug) {
-            console.log("[WSV2]: onMessage:", jsonData);
-            // console.log("[WSV2]: onMessage: server AES key", this.RSAdecrypt(jsonData.Key));
-            console.log("[WSV2]: onMessage: server res", this.AESDecrypt(jsonData.Res, this.RSAdecrypt(jsonData.Key)));
-          }
+          // if (this.isDebug) {
+          //   console.log("[WSV2]: onMessage:", jsonData);
+          //   // console.log("[WSV2]: onMessage: server AES key", this.RSAdecrypt(jsonData.Key));
+          //   console.log("[WSV2]: onMessage: server res", this.AESDecrypt(jsonData.Res, this.RSAdecrypt(jsonData.Key)));
+          // }
 
           clearInterval(this.reconnectTimerV2);
           this.reconnectTimerV2 = null;
