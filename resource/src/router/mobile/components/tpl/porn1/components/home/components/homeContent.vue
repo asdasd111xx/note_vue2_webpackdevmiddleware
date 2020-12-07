@@ -394,13 +394,18 @@ export default {
       width: 60%;
 
       &.swag {
-        max-width: 245px;
+        max-width: 180px;
+        min-height: 55%;
+        display: flex;
+        justify-content: center;
+        align-items: center;
+        position: absolute;
+        flex-direction: column;
       }
 
       > div.maintain-text-1 {
         word-break: break-all;
-        margin-top: 15px;
-        margin-bottom: 15px;
+        margin: 6% 0;
         position: relative;
         text-align: center;
         color: #ffffff;
@@ -428,7 +433,7 @@ export default {
 
             &.swag {
               line-height: 11px;
-              font-size: 8px !important;
+              font-size: 9px !important;
             }
           }
         }

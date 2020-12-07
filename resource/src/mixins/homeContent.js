@@ -66,7 +66,19 @@ export default {
             this.timer = null;
             return;
           }, 70000);
+        }
 
+        if (temp.event === "outer_maintain" && temp.vendor === 'swag') {
+          setTimeout(() => {
+            this.initSWAGConfig(true);
+          }, 1500);
+
+          if (temp.turn === 'off' || temp.start_at) {
+            this.swagMaintainTimer = null;
+            this.swagMaintainTimer = setTimeout(() => {
+              this.initSWAGConfig(true);
+            }, 70000);
+          }
         }
       }
     }
