@@ -333,7 +333,7 @@ export default {
 
           // 避免迴圈重複本站
           case 'SELF_INTO':
-            if (this.$route.params.page.toUpperCase() === 'PROMOTION') {
+            if (this.$route.params.page.toUpperCase() === 'PROMOTION' && !this.src.includes('popcontrol')) {
               this.$router.replace('/mobile/login');
               return;
             }
