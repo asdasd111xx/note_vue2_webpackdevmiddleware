@@ -59,6 +59,18 @@ export default {
       return moment(this.swagConfig.maintain_end_at).add(-12, 'hours')
         .format('YYYY-MM-DD HH:mm:ss')
     },
+    resetRateList() {
+      return [
+        { loading: true },
+        { loading: true },
+        { loading: true },
+        { loading: true },
+        { loading: true },
+        { loading: true },
+        { loading: true },
+        { loading: true }
+      ]
+    }
   },
   beforeDestroy() {
     clearInterval(this.updateBalanceTimer);
@@ -111,6 +123,10 @@ export default {
       }
 
       this.isCheckingInit = true;
+
+      if (this.$route.name === 'mcenter-swag' && !onlyCheckMaintain) {
+        this.rateList = this.resetRateList;
+      }
       return this.actionSetSwagConfig().then(() => {
         setTimeout(() => {
           this.isCheckingInit = false;
