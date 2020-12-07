@@ -277,14 +277,17 @@ export default {
       };
     },
     showCaptchaPopup() {
-      // 無認證直接呼叫
-      if (this.memInfo.config.default_captcha_type === 0) {
-        this.getKeyring();
-        return;
-      }
+      // 按下驗證碼再更新一次驗證碼類型
+      this.actionSetUserdata(true).then(() => {
+        // 無認證直接呼叫
+        if (this.memInfo.config.default_captcha_type === 0) {
+          this.getKeyring();
+          return;
+        }
 
-      // 彈驗證窗並利用Watch captchaData來呼叫 getKeyring()
-      this.toggleCaptcha = true;
+        // 彈驗證窗並利用Watch captchaData來呼叫 getKeyring()
+        this.toggleCaptcha = true;
+      })
     },
     getKeyring() {
       if (this.lockStatus || this.smsTimer) {

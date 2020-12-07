@@ -37,7 +37,7 @@
           :key="item.key"
           :class="[
             $style['form-content'],
-            { [$style['keyring-content']]: item.key === 'keyring' },
+            { [$style['keyring-content']]: item.key === 'keyring' }
           ]"
         >
           <template v-if="item.key === 'target_username'">
@@ -83,8 +83,8 @@
                       !formData.target_username ||
                       errorMessage.target_username ||
                       !formData.amount ||
-                      errorMessage.amount,
-                  },
+                      errorMessage.amount
+                  }
                 ]"
                 @click="showCaptcha"
               >
@@ -130,8 +130,8 @@
         :class="[
           $style['submit-wrap'],
           {
-            [$style.disabled]: !isVerifyForm || isSendRecharge,
-          },
+            [$style.disabled]: !isVerifyForm || isSendRecharge
+          }
         ]"
         @click="sendRecharge"
       >
@@ -202,7 +202,7 @@ export default {
     }
   },
   methods: {
-    ...mapActions(["actionSetGlobalMessage"]),
+    ...mapActions(["actionSetGlobalMessage", "actionSetUserdata"]),
     toggleSerial() {
       this.showSerial = !this.showSerial;
     },
@@ -211,8 +211,10 @@ export default {
         return;
       }
 
-      this.rechargeCheck().then(res => {
-        if (res === true) {
+      const params = [this.rechargeCheck(), this.actionSetUserdata(true)];
+
+      Promise.all(params).then(res => {
+        if (res[0] === true) {
           this.toggleCaptcha = true;
         }
       });
