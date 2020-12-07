@@ -71,10 +71,10 @@ export default {
       hasNewGift: false,
     };
   },
-  created() {
-    this.getPromotionList(this.tabId);
-  },
   mounted() {
+    this.tabId = this.$route.query && this.$route.query.tab || 0;
+    this.getPromotionList(this.tabId);
+
     if (this.loginStatus) {
       bbosRequest({
         method: "get",
@@ -105,11 +105,11 @@ export default {
     }
   },
   methods: {
-    handleClickTab(tab, index) {
-      this.getPromotionList(tab.id);
-    },
     getPromotionList(id) {
-      this.tabId = id;
+      this.tabId = +id;
+      // this.$nextTick(() => {
+      //   this.$router.replace({ query: { tab: id } });
+      // })
       ajax({
         method: 'get',
         url: API_PROMOTION_LIST,
@@ -169,6 +169,7 @@ export default {
         if (res && res.data && res.data.ret && res.data.ret.uri) {
           localStorage.setItem('iframe-third-url', res.data.ret.uri);
           localStorage.setItem('iframe-third-url-title', target.name);
+          localStorage.setItem('iframe-third-origin', `promotion?tab=${this.tabId}`);
           this.$router.push(`/mobile/iframe/promotion?hasFooter=false&hasHeader=true`);
         }
       }).catch(error => {
