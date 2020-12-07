@@ -49,10 +49,7 @@ export const site_69 = {
   MOBILE_WEB_TPL: "porn1",
   VERSION: getVersion("porn1"),
   SITE_NAME: "鸭博娱乐",
-  YABO_API_DOMAIN:
-    window.location.host === "ybbe1.qghco.com"
-      ? "https://ybbe2.qghco.com/api"
-      : "https://yaboapi.canarycherrytart.com/api-demo",
+  YABO_API_DOMAIN: "https://yaboapi.canarycherrytart.com/api-demo",
   YABO_GOLANG_API_DOMAIN: "https://yaboapi.canarycherrytart.com/api-v2/cxbb",
   ACTIVES_BOUNS_WEBSOCKETV2:
     "wss://yaboapi.iguanagingercake.com/wsn/promosocket?"
@@ -144,10 +141,7 @@ export const site_81 = {
   MOBILE_WEB_TPL: "sg1",
   VERSION: getVersion("sg1"),
   SITE_NAME: "丝瓜娱乐",
-  YABO_API_DOMAIN:
-    window.location.host === "ybbe1.qghco.com"
-      ? "https://ybbe2.qghco.com/api"
-      : "https://yaboapi.canarycherrytart.com/api-demo",
+  YABO_API_DOMAIN: "https://yaboapi.canarycherrytart.com/api-demo",
   YABO_GOLANG_API_DOMAIN: "https://yaboapi.canarycherrytart.com/api-v2/cxbb",
   ACTIVES_BOUNS_WEBSOCKETV2:
     "wss://yaboapi.iguanagingercake.com/wsn/promosocket?"
