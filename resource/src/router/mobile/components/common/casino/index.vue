@@ -26,6 +26,7 @@
           <template>
             <template v-for="(gameInfo, index) in gameData">
               <game-item
+                v-if="gameInfo.is_mobile"
                 :key="`game-${gameInfo.vendor}-${index}`"
                 :theme="gameTheme"
                 :game-info="gameInfo"
