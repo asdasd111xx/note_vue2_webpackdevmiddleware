@@ -39,7 +39,10 @@
 
       <div v-if="!sitePostList" class="clearfix">
         <div :class="$style['modal-button']" @click="closePop()">知道了</div>
-        <div :class="$style['modal-button']" @click="closePop(true)">
+        <div
+          :class="[$style['modal-button'], $style[themeTPL]]"
+          @click="closePop(true)"
+        >
           查看详情
         </div>
       </div>
@@ -69,8 +72,12 @@ export default {
   },
   computed: {
     ...mapGetters({
-      post: 'getPost'
-    })
+      post: 'getPost',
+      siteConfig: 'getSiteConfig',
+    }),
+    themeTPL() {
+      return this.siteConfig.MOBILE_WEB_TPL;
+    },
   },
   methods: {
     closePop(showDetail) {
@@ -141,11 +148,13 @@ export default {
   width: 16px;
   height: 16px;
   margin-right: 4px;
-  background: url("/static/image/_new/common/special_uncheck.png") 0 0 / contain
+  opacity: 0.5;
+  background: url("/static/image/_new/common/icon_noremember.png") 0 0 / contain
     no-repeat;
 
   &.active {
-    background-image: url("/static/image/_new/common/special_check.png");
+    background-image: url("/static/image/_new/common/icon_notips_active.png");
+    opacity: 0.5;
   }
 }
 
@@ -188,6 +197,14 @@ export default {
   }
 
   &:last-child {
+    color: #d2b79c;
+  }
+
+  &.ey1:last-child {
+    color: #e42a30;
+  }
+
+  &.porn1:last-child {
     color: #d2b79c;
   }
 }

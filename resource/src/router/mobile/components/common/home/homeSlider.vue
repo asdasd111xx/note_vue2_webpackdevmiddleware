@@ -7,7 +7,7 @@
           :src="
             info.image && info.image[curLang]
               ? $getCdnPath(info.image[curLang])
-              : '/static/image/_new/default/bg_banner_d.png'
+              : `/static/image/${themeTPL}/default/bg_banner_d.png`
           "
           :data-info="key"
           :data-link="info.linkTo"
@@ -35,15 +35,23 @@ export default {
       lang: 'getLang',
       mobileInfo: 'getMobileInfo',
       loginStatus: 'getLoginStatus',
-      memInfo: 'getMemInfo'
+      memInfo: 'getMemInfo',
+      siteConfig: 'getSiteConfig',
     }),
+    themeTPL() {
+      return this.siteConfig.MOBILE_WEB_TPL;
+    },
     slider() {
       // 若無資料則使用預設圖片
-      if (!this.mobileInfo.mSlider || this.mobileInfo.mSlider.data.length === 0) {
+      if (!this.mobileInfo.mSlider ||
+        !this.mobileInfo.mSlider.data ||
+        this.mobileInfo.mSlider.data.length === 0) {
         const imageData = this.generateDefaultImg();
         return [imageData];
       }
+
       const list = [];
+
       this.mobileInfo.mSlider.data.forEach((data) => {
         const imageData = Object.keys(this.lang).reduce((init, key) => ({
           ...init,
@@ -84,7 +92,11 @@ export default {
         ...options,
         on: {
           click(element) {
-            mobileLinkOpen(originSlider[element.target.dataset.info]);
+            let info = originSlider[element.target.dataset.info];
+            mobileLinkOpen({
+              ...info,
+              site: this.themeTPL
+            });
           }
         }
       };
@@ -99,7 +111,7 @@ export default {
     generateDefaultImg() {
       return {
         linkType: 'nolink', linkTo: '', linkItem: '',
-        image: { 'zh-cn': '/static/image/_new/default/bg_banner_d.png' }
+        image: { 'zh-cn': `/static/image/${this.themeTPL}/default/bg_banner_d.png` }
       };
     },
     /**

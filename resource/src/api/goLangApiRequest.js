@@ -1,5 +1,6 @@
 import axios from 'axios';
 import { getCookie } from '@/lib/cookie';
+import store from '@/store';
 
 export default ({
     method = 'get',
@@ -26,7 +27,7 @@ export default ({
     let _headers = {
         ...headers,
         'cid': getCookie('cid') || '',
-        'x-domain': getCookie('y-x-domain') || '',
+        'x-domain': store.state.webDomain.domain,
         // 'username': getCookie('y-username'),
     };
 
