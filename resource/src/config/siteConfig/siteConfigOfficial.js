@@ -10,10 +10,7 @@ export const preset = {
   BBOS_DOMIAN_CDN: "https://bbos.dormousepie.com/cdn",
   YABO_API_DOMAIN: "https://yaboapi.canarycherrytart.com/api",
   YABO_GOLANG_API_DOMAIN: "https://yaboapi.canarycherrytart.com/api-v2/cxbb",
-  ACTIVES_BOUNS_WEBSOCKET:
-    window.location.host === "ybbe1.qghco.com"
-      ? "wss://ybbe2.qghco.com/ws/promosocket"
-      : "wss://yaboapi.canarycherrytart.com/ws/promosocket",
+  ACTIVES_BOUNS_WEBSOCKET: "wss://yaboapi.canarycherrytart.com/ws/promosocket",
   ACTIVES_BOUNS_WEBSOCKETV2:
     "wss://yaboapi.iguanagingercake.com/wsn/promosocket?"
 };
@@ -56,10 +53,7 @@ export const site_69 = {
     window.location.host === "ybbe1.qghco.com"
       ? "https://ybbe2.qghco.com/api"
       : "https://yaboapi.canarycherrytart.com/api-demo",
-  YABO_GOLANG_API_DOMAIN:
-    window.location.host === "ybbe1.qghco.com"
-      ? "https://ybbe2.qghco.com/api-v2/cxbb"
-      : "https://yaboapi.canarycherrytart.com/api-v2/cxbb",
+  YABO_GOLANG_API_DOMAIN: "https://yaboapi.canarycherrytart.com/api-v2/cxbb",
   ACTIVES_BOUNS_WEBSOCKETV2:
     "wss://yaboapi.iguanagingercake.com/wsn/promosocket?"
 };
@@ -75,6 +69,7 @@ export const site_100003 = {
   YABO_API_DOMAIN: "https://ybbe2.qghco.com/api",
   YABO_GOLANG_API_DOMAIN: "https://ybbe2.qghco.com/api-v2/cxbb",
   // BBOS_DOMIAN: 'https://api.bbin-staging.com/elibomApi/WebService',
+  ACTIVES_BOUNS_WEBSOCKET: "wss://ybbe2.qghco.com/ws/promosocket",
   ACTIVES_BOUNS_WEBSOCKETV2: "wss://ybbe2.qghco.com/wsn/promosocket?"
 };
 
@@ -153,10 +148,7 @@ export const site_81 = {
     window.location.host === "ybbe1.qghco.com"
       ? "https://ybbe2.qghco.com/api"
       : "https://yaboapi.canarycherrytart.com/api-demo",
-  YABO_GOLANG_API_DOMAIN:
-    window.location.host === "ybbe1.qghco.com"
-      ? "https://ybbe2.qghco.com/api-v2/cxbb"
-      : "https://yaboapi.canarycherrytart.com/api-v2/cxbb",
+  YABO_GOLANG_API_DOMAIN: "https://yaboapi.canarycherrytart.com/api-v2/cxbb",
   ACTIVES_BOUNS_WEBSOCKETV2:
     "wss://yaboapi.iguanagingercake.com/wsn/promosocket?"
 };
