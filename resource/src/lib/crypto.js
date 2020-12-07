@@ -68,10 +68,10 @@ export const getEncryptImage = info => {
       if (!document.querySelector(`img[img-id="${info.id}"]`)) {
         return info.image;
       }
-
-      document.querySelectorAll(
-        `img[img-id="${info.id}"]`
-      ).src = `data:${type};base64,${base64String}`;
+      let imageNodeList = document.querySelectorAll(`img[img-id="${info.id}"]`);
+      imageNodeList.forEach(element => {
+        element.src = `data:${type};base64,${base64String}`;
+      });
     });
 
     reader.readAsArrayBuffer(response.data);
