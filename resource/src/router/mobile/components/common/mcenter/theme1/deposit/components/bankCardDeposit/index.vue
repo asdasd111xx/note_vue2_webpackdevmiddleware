@@ -1,7 +1,7 @@
 <template>
   <div :class="[$style['mode-wrap']]">
     <div
-      v-if="themeTPL === 'porn1' && topPromotionMessage"
+      v-if="['porn1', 'sg1'].includes(themeTPL) && topPromotionMessage"
       :class="$style['top-promotion']"
     >
       {{ topPromotionMessage }}
@@ -90,7 +90,7 @@
                 <div :class="$style['pay-sub-title']">
                   <template
                     v-if="
-                      themeTPL === 'ey1' &&
+                      ['ey1'].includes(themeTPL) &&
                         [5, 6].includes(info.payment_type_id)
                     "
                   >
@@ -110,7 +110,7 @@
 
               <!-- Yabo  -->
               <!-- 客製額度轉帳入口 -->
-              <template v-if="themeTPL === 'porn1'">
+              <template v-if="['porn1', 'sg1'].includes(themeTPL)">
                 <div
                   :class="[$style['pay-mode-item']]"
                   @click="handleCreditTrans"
@@ -281,7 +281,7 @@
             <!-- 尚未綁定 CGPay(16) || CGPay-USDT(25) || 購寶(22) || USDT(402) -->
             <div
               v-if="
-                themeTPL === 'porn1' &&
+                ['porn1', 'sg1'].includes(themeTPL) &&
                   isSelectBindWallet() &&
                   !this.curPassRoad.is_bind_wallet
               "
@@ -314,7 +314,7 @@
             <!-- 尚未綁定 CGPay(16) || CGPay-USDT(25) || 購寶(22) || USDT(402) -->
             <div
               v-if="
-                themeTPL === 'ey1' &&
+                ['ey1'].includes(themeTPL) &&
                   isSelectBindWallet() &&
                   !this.curPassRoad.is_bind_wallet
               "
@@ -345,7 +345,7 @@
             <!-- IF 選擇 CGPay 且 已綁定 -->
             <div
               v-if="
-                themeTPL === 'porn1' &&
+                ['porn1', 'sg1'].includes(themeTPL) &&
                   isSelectBindWallet(16) &&
                   curPassRoad.is_bind_wallet
               "
@@ -388,7 +388,7 @@
               <!-- If 選擇 CGPay 且 已綁定 -->
               <template
                 v-if="
-                  themeTPL === 'ey1' &&
+                  ['ey1'].includes(themeTPL) &&
                     isSelectBindWallet(16) &&
                     curPassRoad.is_bind_wallet
                 "
@@ -1529,7 +1529,7 @@ export default {
       this.$router.push("/mobile/mcenter/creditTrans?tab=0");
     },
     handleBindWallet() {
-      if (this.themeTPL === "porn1") {
+      if (['porn1', 'sg1'].includes(this.themeTPL)) {
         switch (this.curPayInfo.payment_method_id) {
           // CGPay
           case 16:
@@ -1558,7 +1558,7 @@ export default {
         return;
       }
 
-      if (this.themeTPL === "ey1") {
+      if (['ey1'].includes(this.themeTPL)) {
         switch (this.curPayInfo.payment_method_id) {
           case 22:
             this.qrcodeObj.bank_id = 37;
@@ -1888,4 +1888,9 @@ export default {
   lang="scss"
   src="./css/bankCardDeposit/ey1.scss"
   module="$style_ey1"
+></style>
+<style
+  lang="scss"
+  src="./css/bankCardDeposit/sg1.scss"
+  module="$style_sg1"
 ></style>

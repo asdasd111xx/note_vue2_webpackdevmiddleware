@@ -117,6 +117,22 @@ export default {
     bonusSg1: () =>
       import(
         /* webpackChunkName: 'bonusSg1' */ "../../tpl/sg1/components/mcenter/components/bonus"
+      ),
+    balanceTransSg1: () =>
+      import(
+        /* webpackChunkName: 'balanceTransSg1' */ "../../tpl/sg1/components/mcenter/components/balanceTrans"
+      ),
+    bankCardSg1: () =>
+      import(
+        /* webpackChunkName: 'bankCardSg1' */ "../../tpl/sg1/components/mcenter/components/bankCard"
+      ),
+    withdrawSg1: () =>
+      import(
+        /* webpackChunkName: 'withdrawSg1' */ "../../tpl/sg1/components/mcenter/components/withdraw"
+      ),
+    depositSg1: () =>
+      import(
+        /* webpackChunkName: 'depositSg1' */ "../../tpl/sg1/components/mcenter/components/deposit"
       )
   }
 };

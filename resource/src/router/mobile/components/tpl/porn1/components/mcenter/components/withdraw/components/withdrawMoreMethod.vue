@@ -21,7 +21,10 @@
                 :class="$style['cell']"
                 @click="addMethod(item)"
               >
-                <div v-if="themeTPL === 'porn1'" :class="$style['add-block']">
+                <div
+                  v-if="['porn1', 'sg1'].includes(themeTPL)"
+                  :class="$style['add-block']"
+                >
                   <img
                     :src="$getCdnPath(`/static/image/porn1/mcenter/add.png`)"
                     alt="add"
@@ -56,11 +59,11 @@ export default {
   props: {
     moreMethodStatus: {
       type: Object,
-      default: () => { }
+      default: () => {}
     },
     checkAccountData: {
       type: Function,
-      default: () => { }
+      default: () => {}
     },
     withdrawUserData: {
       type: Object,
@@ -74,8 +77,8 @@ export default {
       // 彈窗顯示狀態統整
       showPopStatus: {
         isShow: false,
-        type: ''
-      },
+        type: ""
+      }
     };
   },
   computed: {
@@ -95,19 +98,23 @@ export default {
       return [
         {
           key: "bankCard",
-          title: this.themeTPL === "porn1" ? "添加银行卡" : "添加 提现银行卡",
+          title: ["porn1", "sg1"].includes(this.themeTPL)
+            ? "添加银行卡"
+            : "添加 提现银行卡",
           isShow: this.moreMethodStatus.bankCard
         },
         {
           key: "wallet",
-          title: this.themeTPL === "porn1" ? "添加数字货币" : "添加 电子钱包",
+          title: ["ey1"].includes(this.themeTPL)
+            ? "添加数字货币"
+            : "添加 电子钱包",
           isShow: this.moreMethodStatus.wallet
         },
         {
           key: "CGPay",
           title: "新增 CGPay",
           isShow:
-            this.themeTPL === "ey1" &&
+            ["ey1"].includes(this.themeTPL) &&
             this.withdrawUserData.support_binding.find(item => {
               return item.wallet_gateway_id === 3;
             })
@@ -116,7 +123,7 @@ export default {
           key: "goBao",
           title: "新增 购宝钱包",
           isShow:
-            this.themeTPL === "ey1" &&
+            ["ey1"].includes(this.themeTPL) &&
             this.withdrawUserData.support_binding.find(item => {
               return item.wallet_gateway_id === 2;
             })
@@ -149,7 +156,7 @@ export default {
       this.showPopStatus = {
         isShow,
         type
-      }
+      };
     },
     addMethod(item) {
       switch (item.key) {
@@ -168,7 +175,7 @@ export default {
           break;
 
         case "goBao":
-          this.setPopupStatus(true, 'qrcode')
+          this.setPopupStatus(true, "qrcode");
           this.bank_id = 37;
           break;
       }
@@ -186,4 +193,9 @@ export default {
   lang="scss"
   src="../css/withdrawMoreMethod/ey1.index.module.scss"
   module="$style_ey1"
+></style>
+<style
+  lang="scss"
+  src="../css/withdrawMoreMethod/sg1.index.module.scss"
+  module="$style_sg1"
 ></style>

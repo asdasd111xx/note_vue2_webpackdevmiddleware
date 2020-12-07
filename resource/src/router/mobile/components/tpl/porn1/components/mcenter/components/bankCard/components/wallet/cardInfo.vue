@@ -9,7 +9,7 @@
         >
           <span :class="$style['title']">
             {{
-              themeTPL === "porn1"
+              ["porn1", "sg1"].includes(themeTPL)
                 ? $text("S_MY_DIGITAL_CURRENCY_WALLET", "我的数字货币钱包")
                 : $text("S_MY_VIRTUAL_BANKCARD", "我的电子钱包")
             }}
@@ -62,7 +62,7 @@
             <img :src="`/static/image/${themeTPL}/mcenter/add_2.png`" />
             <span>
               {{
-                themeTPL === "porn1"
+                ["porn1", "sg1"].includes(themeTPL)
                   ? $text("S_ADD_DIGITAL_CURRENCY", "添加数字货币")
                   : $text("S_ADD_VIRTUAL_BANKCARD", "添加电子钱包")
               }}
@@ -71,11 +71,11 @@
         </div>
 
         <p :class="$style['remind']">
-          <template v-if="themeTPL === 'porn1'">
+          <template v-if="['porn1', 'sg1'].includes(themeTPL)">
             {{ $t("S_DIGITAL_CURRENCY_LIMIT").replace("%s", 1) }}
           </template>
 
-          <template v-if="themeTPL === 'ey1'">
+          <template v-if="['ey1'].includes(themeTPL)">
             <span v-if="userLevelObj.virtual_bank_single">
               {{
                 $t("S_VIRTUAL_BANKCARD_TYPE_LIMIT").replace(
@@ -111,7 +111,9 @@
         <div :class="$style['edit-mask']" />
         <div :class="$style['edit-button']">
           <template
-            v-if="themeTPL === 'ey1' && !userLevelObj.virtual_bank_single"
+            v-if="
+              ['ey1'].includes(themeTPL) && !userLevelObj.virtual_bank_single
+            "
           >
             <div
               v-if="userLevelObj.virtual_bank_single && hasSameTypeCard"
@@ -130,11 +132,13 @@
             v-if="memInfo.config.delete_bank_card"
             :class="[
               $style['edit-option-item'],
-              { [$style['confirm']]: themeTPL === 'porn1' },
+              { [$style['confirm']]: ['porn1', 'sg1'].includes(themeTPL) }
             ]"
             @click="isShowPop = true"
           >
-            {{ themeTPL === "porn1" ? "解除绑定" : "删除电子钱包" }}
+            {{
+              ["porn1", "sg1"].includes(themeTPL) ? "解除绑定" : "删除电子钱包"
+            }}
           </div>
 
           <div
@@ -157,7 +161,7 @@
 
           <span>
             {{
-              themeTPL === "porn1"
+              ['porn1', 'sg1'].includes(themeTPL)
                 ? "确定解除绑定该钱包？"
                 : "确定删除该张卡片吗？"
             }}
@@ -194,7 +198,7 @@ export default {
     },
     setPageStatus: {
       type: Function,
-      default: () => { }
+      default: () => {}
     },
     showDetail: {
       type: Boolean,
@@ -244,6 +248,7 @@ export default {
     isShowAddCardButton() {
       switch (this.themeTPL) {
         case "porn1":
+        case "sg1":
           return !this.isBindNowOpenAllWallets;
           break;
 
@@ -279,9 +284,13 @@ export default {
   src="@/css/page/bankCard/porn1.cardInfo.module.scss"
   module="$style_porn1"
 ></style>
-
 <style
   lang="scss"
   src="@/css/page/bankCard/ey1.cardInfo.module.scss"
   module="$style_ey1"
+></style>
+<style
+  lang="scss"
+  src="@/css/page/bankCard/sg1.cardInfo.module.scss"
+  module="$style_sg1"
 ></style>

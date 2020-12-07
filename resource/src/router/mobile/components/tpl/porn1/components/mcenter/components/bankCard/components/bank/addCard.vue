@@ -50,7 +50,9 @@
           </div>
         </div>
 
-        <template v-if="themeTPL === 'ey1' && !memInfo.config.player_user_bank">
+        <template
+          v-if="['ey1'].includes(themeTPL) && !memInfo.config.player_user_bank"
+        >
           <div :class="$style['info-item']">
             <p :class="$style['input-title']">省/直辖市</p>
             <div :class="$style['input-wrap']">
@@ -146,7 +148,7 @@
         <div :class="$style['info-item']">
           <p :class="$style['input-title']">手机号码</p>
           <div :class="$style['input-wrap']">
-            <template v-if="themeTPL === 'ey1'">
+            <template v-if="['ey1'].includes(themeTPL)">
               <select v-model="phoneHead" :class="$style['phone-selected']">
                 <option v-for="option in phoneHeadOption" v-bind:value="option">
                   {{ option }}
@@ -157,7 +159,9 @@
               v-model="formData.phone"
               type="text"
               :placeholder="
-                themeTPL === 'porn1' ? '11位手机号码' : '请输入手机号码'
+                ['porn1', 'sg1'].includes(themeTPL)
+                  ? '11位手机号码'
+                  : '请输入手机号码'
               "
               :class="$style['phone-input']"
               maxlength="36"
@@ -274,7 +278,7 @@ export default {
   props: {
     setPageStatus: {
       type: Function,
-      default: () => { }
+      default: () => {}
     },
     addBankCardStep: {
       type: String,
@@ -312,14 +316,15 @@ export default {
     }
   },
   methods: {
-    ...mapActions([
-      'actionVerificationFormData'
-    ]),
+    ...mapActions(["actionVerificationFormData"]),
     verification(key) {
       if (key === "phone") {
-        this.actionVerificationFormData({ target: 'phone', value: this.formData.phone }).then((res => {
+        this.actionVerificationFormData({
+          target: "phone",
+          value: this.formData.phone
+        }).then(res => {
           this.formData.phone = res;
-        }));
+        });
       }
     },
     clearMsg() {
@@ -381,9 +386,13 @@ export default {
   src="@/css/page/bankCard/porn1.addCard.module.scss"
   module="$style_porn1"
 ></style>
-
 <style
   lang="scss"
   src="@/css/page/bankCard/ey1.addCard.module.scss"
   module="$style_ey1"
+></style>
+<style
+  lang="scss"
+  src="@/css/page/bankCard/sg1.addCard.module.scss"
+  module="$style_sg1"
 ></style>

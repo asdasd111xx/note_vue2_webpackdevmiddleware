@@ -179,9 +179,13 @@ export default {
   src="@/css/page/bankCard/porn1.cardInfo.module.scss"
   module="$style_porn1"
 ></style>
-
 <style
   lang="scss"
   src="@/css/page/bankCard/ey1.cardInfo.module.scss"
   module="$style_ey1"
+></style>
+<style
+  lang="scss"
+  src="@/css/page/bankCard/sg1.cardInfo.module.scss"
+  module="$style_sg1"
 ></style>

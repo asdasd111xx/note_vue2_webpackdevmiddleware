@@ -2,14 +2,14 @@
   <div :class="[$style['wrap']]">
     <div :class="$style['header']">
       <div :class="$style['btn-prev']" @click="backPre">
-        <template v-if="themeTPL === 'porn1'">
+        <template v-if="['porn1', 'sg1'].includes(themeTPL)">
           <img
             :src="$getCdnPath('/static/image/porn1/common/btn_back.png')"
             alt="more"
           />
         </template>
 
-        <template v-if="themeTPL === 'ey1'">
+        <template v-if="['ey1'].includes(themeTPL)">
           <img
             :src="$getCdnPath('/static/image/ey1/common/btn_back_w.png')"
             alt="more"
@@ -27,14 +27,14 @@
         :class="$style['header-icon']"
         @click="editDetailStatus = true"
       >
-        <template v-if="themeTPL === 'porn1'">
+        <template v-if="['porn1', 'sg1'].includes(themeTPL)">
           <img
             :src="$getCdnPath('/static/image/porn1/common/btn_more.png')"
             alt="more"
           />
         </template>
 
-        <template v-if="themeTPL === 'ey1'">
+        <template v-if="['ey1'].includes(themeTPL)">
           <img
             :src="$getCdnPath('/static/image/ey1/common/btn_more_w.png')"
             alt="more"
@@ -43,7 +43,7 @@
       </div>
 
       <!-- 歷史錢包按鈕 -->
-      <template v-if="this.themeTPL === 'ey1'">
+      <template v-if="['ey1'].includes(themeTPL)">
         <div
           v-if="
             (currentPage === 'bankCardInfo' ||
@@ -143,7 +143,7 @@ export default {
         },
         {
           key: "wallet",
-          text: this.themeTPL === "porn1" ? "数字货币" : "电子钱包"
+          text: ["porn1", "sg1"].includes(this.themeTPL) ? "数字货币" : "电子钱包"
         }
       ];
     },
@@ -166,6 +166,7 @@ export default {
       if (this.hasRedirect && this.$route.query.type === "wallet") {
         switch (this.themeTPL) {
           case "porn1":
+          case "sg1":
             return this.$text("S_ADD_DIGITAL_CURRENCY", "添加数字货币");
             break;
 
@@ -188,6 +189,7 @@ export default {
         case "walletCardInfo":
           switch (this.themeTPL) {
             case "porn1":
+            case "sg1":
               return this.showDetail
                 ? this.$text("S_DIGITAL_CURRENCY", "数字货币")
                 : this.$text("S_CARD_MANAGEMENT", "卡片管理");
@@ -211,6 +213,7 @@ export default {
         case "addWalletCard":
           switch (this.themeTPL) {
             case "porn1":
+            case "sg1":
               return this.$text("S_ADD_DIGITAL_CURRENCY", "添加数字货币");
               break;
 
@@ -363,9 +366,13 @@ export default {
   src="@/css/page/bankCard/porn1.index.module.scss"
   module="$style_porn1"
 ></style>
-
 <style
   lang="scss"
   src="@/css/page/bankCard/ey1.index.module.scss"
   module="$style_ey1"
+></style>
+<style
+  lang="scss"
+  src="@/css/page/bankCard/sg1.index.module.scss"
+  module="$style_sg1"
 ></style>
