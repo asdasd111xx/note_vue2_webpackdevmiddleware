@@ -13,11 +13,7 @@ import mobileContainer from '../common/mobileContainer';
 export default {
   components: {
     mobileContainer,
-    noPorn: () => import('./components/noPorn'),
     discoverHome: () => import('./components/discoverHome'),
-    discoverTag: () => import('./components/discoverTag'),
-    discoverArtist: () => import('./components/discoverArtist'),
-    discoverRank: () => import('./components/discoverRank'),
     discoverSponsor: () => import('./components/discoverSponsor')
   },
   computed: {
@@ -34,39 +30,39 @@ export default {
     headerConfig() {
       const name = this.$route.params.page || 'home';
       const trans = {
-        home: this.$text('S_DISCOVER', '发现'),
-        sponsor: '联盟伙伴',
-        rank: this.$text('S_RANK', '排行'),
-        artist: this.$text('S_ARTIST', '女优'),
-        tag: this.$text('S_TAG', '标签')
+        // home: this.$text('S_DISCOVER', '发现'),
+        // sponsor: '联盟伙伴',
+        // rank: this.$text('S_RANK', '排行'),
+        // artist: this.$text('S_ARTIST', '女优'),
+        // tag: this.$text('S_TAG', '标签')
       };
 
       return {
         prev: true,
         isBackgroundGradient: true,
         hasSearchBtn: name === 'home' && this.isAdult,
-        title: trans[name],
+        title: '联盟伙伴',
         onClick: () => {
-          localStorage.removeItem('discover-tag');
           this.$router.back();
         }
       };
     },
     template() {
-      if (this.isAdult) {
-        return this.$route.params.page ? `discover-${this.$route.params.page}` : 'discover-home';
-      } else {
-        let page = this.$route.params.page || "";
-        switch (page) {
-          case "tag":
-          case "artist":
-          case "rank":
-          case "":
-            return 'discover-home';
-          default:
-            return `discover-${page}`;
-        }
-      }
+      return 'discover-sponsor';
+      // if (this.isAdult) {
+      //   return this.$route.params.page ? `discover-${this.$route.params.page}` : 'discover-sponsor';
+      // } else {
+      //   let page = this.$route.params.page || "";
+      // switch (page) {
+      //   case "tag":
+      //   case "artist":
+      //   case "rank":
+      //   case "":
+      //     return 'discover-home';
+      //   default:
+      //     return `discover-${page}`;
+      // }
+      // }
     }
   }
 };

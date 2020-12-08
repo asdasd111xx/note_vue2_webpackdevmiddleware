@@ -68,8 +68,8 @@ export default {
     getImg(image) {
       return {
         src: image,
-        error: this.$getCdnPath(`/static/image/_new/default/bg_avatar_d.png`),
-        loading: this.$getCdnPath(`/static/image/_new/default/bg_avatar_d.png`)
+        error: this.$getCdnPath(`/static/image/porn1/default/bg_avatar_d.png`),
+        loading: this.$getCdnPath(`/static/image/porn1/default/bg_avatar_d.png`)
       }
     },
   },
