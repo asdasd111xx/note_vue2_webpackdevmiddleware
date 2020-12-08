@@ -1802,8 +1802,10 @@ export const actionSetWebDomain = ({ commit }) =>
         site: "porn1"
       };
 
-      console.log("[conf/domain]:", res.data);
-      console.log(version)
+      console.log("[conf/domain]:", {
+        ...res.data,
+        version: version.find(i => i.site === res.data.site).version
+      });
       const site = (res && res.data && String(res.data.site)) || "";
       const domain = (res && res.data && String(res.data.domain)) || "";
       result["site"] = site;
