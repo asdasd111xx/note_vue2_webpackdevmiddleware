@@ -1,6 +1,7 @@
 <template>
   <mobile-container :header-config="headerConfig" :class="$style.container">
     <div slot="content" class="content-wrap">
+      <div :class="$style['top-bg']" />
       <home-slider />
       <home-new />
       <home-content />

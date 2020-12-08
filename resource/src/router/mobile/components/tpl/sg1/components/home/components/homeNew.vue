@@ -1,7 +1,7 @@
 <template>
   <div class="news-wrap">
     <div class="news-icon">
-      <img :src="$getCdnPath('/static/image/_new/common/icon_news.png')" />
+      <img :src="$getCdnPath('/static/image/sg1/home/icon_news.png')" />
     </div>
     <div ref="container" class="news-content" @click="togglePopup">
       <div
