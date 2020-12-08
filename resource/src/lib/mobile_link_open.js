@@ -16,13 +16,12 @@ export default (target) => {
   let linkTitle = '';
   switch (store.state.webDomain.site) {
     case 'porn1':
-      linkTitle = '鸭博娱乐';
-      break;
     case 'ey1':
-      linkTitle = '亿元娱乐';
-      break;
     case 'sg1':
-      linkTitle = '丝瓜娱乐';
+      // linkTitle = '鸭博娱乐';
+      // linkTitle = '亿元娱乐';
+      // linkTitle = '丝瓜娱乐';
+      linkTitle = '优惠活动';
       break;
     default:
       break;
