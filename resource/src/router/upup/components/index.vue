@@ -86,6 +86,9 @@ export default {
   },
   created() {
     $(document).prop('title', this.$t('S_UNDER_MAINTENANCE'));
+    localStorage.removeItem('game-list');
+    localStorage.removeItem('iframe-third-origin');
+    localStorage.removeItem('is-open-game');
   },
   methods: {
     setData(data) {
