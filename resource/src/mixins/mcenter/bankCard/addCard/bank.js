@@ -74,6 +74,24 @@ export default {
       //     return "*";
       //   })
       //   .join("");
+    },
+    checkPhoneVerification() {
+      // player_user_bank_phone (會員綁定銀行卡前需手機驗證，0否，1每次，2首次)
+      // phone.corfirm (已認證，0未認證/1已認證/2人工驗證)
+
+      let result = null;
+      let verifyNum = this.memInfo.config.player_user_bank_phone;
+      let confirmNum = this.memInfo.phone.confirm;
+
+      if (verifyNum === 0 || (verifyNum === 2 && confirmNum !== 0)) {
+        result = false;
+      }
+
+      if (verifyNum === 1 || (verifyNum === 2 && confirmNum === 0)) {
+        result = true;
+      }
+
+      return result;
     }
   },
   watch: {
@@ -148,15 +166,9 @@ export default {
     }
   },
   methods: {
-    ...mapActions([
-      "actionSetUserdata",
-      "actionVerificationFormData",
-    ]),
+    ...mapActions(["actionSetUserdata", "actionVerificationFormData"]),
     sendData() {
-      if (
-        this.addBankCardStep === "one" &&
-        this.memInfo.config.player_user_bank_mobile
-      ) {
+      if (this.addBankCardStep === "one" && this.checkPhoneVerification) {
         this.NextStepStatus = false;
         this.$emit("update:addBankCardStep", "two");
         return;
@@ -314,7 +326,7 @@ export default {
 
         // 彈驗證窗並利用Watch captchaData來呼叫 getKeyring()
         this.toggleCaptcha = true;
-      })
+      });
     },
     getKeyring() {
       if (this.lockStatus || this.smsTimer) {

@@ -209,7 +209,7 @@
           @click="sendData"
         >
           {{
-            addBankCardStep === "one" && memInfo.config.player_user_bank_mobile
+            addBankCardStep === "one" && checkPhoneVerification
               ? "下一步"
               : "提交"
           }}
