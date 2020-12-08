@@ -25,8 +25,6 @@
 import Vue from 'vue';
 import { mapGetters, mapActions } from 'vuex';
 import { API_CDN } from '@/config/api';
-import bodyBg from '@/config/body_bg';
-import jackpotDefault from '@/config/jackpotDefault';
 import apiBalanceAutoBack from '@/lib/balance_auto_back';
 import store from '@/store';
 import links from '@/config/links';
@@ -284,9 +282,6 @@ export default {
       this.actionChangePage({ page: pid, type: 'webview' });
     }
 
-    if (this.isBackEnd) {
-      this.actionSetJackpot(jackpotDefault);
-    }
   },
   mounted() {
     const $body = $('.body');
@@ -303,11 +298,6 @@ export default {
     ]),
     backgroundStyleHandler(styleData) {
       const style = {};
-
-      if (this.nowpage === 'mcenter' && bodyBg[this.webInfo.model] && bodyBg[this.webInfo.model][this.webInfo.style_color]) {
-        style.background = bodyBg[this.webInfo.model][this.webInfo.style_color];
-        return style;
-      }
 
       // 背景圖片
       if (styleData.bg_img) {

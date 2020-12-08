@@ -82,7 +82,6 @@ export default {
       this.$router.push(path);
     },
     isActive(key) {
-      console.log(key, this.$route.name)
       if (this.$route.name === "discover" && key === 'sponsor') {
         return (true);
       }
