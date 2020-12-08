@@ -47,8 +47,13 @@ export default (target) => {
       if (res && res.data && res.data.ret && res.data.ret.uri) {
         localStorage.setItem('iframe-third-url', res.data.ret.uri + '&v=m');
         localStorage.setItem('iframe-third-url-title', linkTitle);
-        this.$router.push(`/mobile/iframe/promotion?hasFooter=false&hasHeader=true`);
-        // newWindow = window.open(res.data.ret.uri + '&v=m', '_blank');
+        localStorage.setItem('iframe-third-origin', `home`);
+
+        if (store.state.webDomain.site !== 'ey1') {
+          window.location.href = `/mobile/iframe/promotion?hasFooter=false&hasHeader=true`;
+        } else {
+          newWindow = window.open(res.data.ret.uri + '&v=m', '_blank');
+        }
       }
     }).catch(error => {
       // newWindow.close();
@@ -104,8 +109,14 @@ export default (target) => {
     if (linkTo === 'promotion' && linkItem) {
       localStorage.setItem('iframe-third-url', `/popcontrol/promo/${JSON.stringify({ linkItem })}`);
       localStorage.setItem('iframe-third-url-title', linkTitle);
-      window.location.href = `/mobile/iframe/promotion?hasFooter=false&hasHeader=true`;
-      // newWindow = window.open(`/popcontrol/promo/${JSON.stringify({ linkItem })}`, '_blank');
+      localStorage.setItem('iframe-third-origin', `home`);
+
+      if (store.state.webDomain.site !== 'ey1') {
+        window.location.href = `/mobile/iframe/promotion?hasFooter=false&hasHeader=true`;
+      } else {
+        newWindow = window.open(`/popcontrol/promo/${JSON.stringify({ linkItem })}`, '_blank');
+      }
+
       return;
     }
 
