@@ -1,0 +1,40 @@
+{
+  "name": "丝瓜娱乐Demo",
+  "short_name": "丝瓜娱乐Demo",
+  "start_url": "/mobile/launch",
+  "display": "standalone",
+  "background_color": "#fff",
+  "description": "丝瓜娱乐Demo",
+  "icons": [
+    {
+      "src": "../pwa/sg1/48.png",
+      "sizes": "48x48",
+      "type": "image/png"
+    },
+    {
+      "src": "../pwa/sg1/72.png",
+      "sizes": "72x72",
+      "type": "image/png"
+    },
+    {
+      "src": "../pwa/sg1/96.png",
+      "sizes": "96x96",
+      "type": "image/png"
+    },
+    {
+      "src": "../pwa/sg1/144.png",
+      "sizes": "144x144",
+      "type": "image/png"
+    },
+    {
+      "src": "../pwa/sg1/168.png",
+      "sizes": "168x168",
+      "type": "image/png"
+    },
+    {
+      "src": "../pwa/sg1/192.png",
+      "sizes": "192x192",
+      "type": "image/png"
+    }
+  ]
+}
