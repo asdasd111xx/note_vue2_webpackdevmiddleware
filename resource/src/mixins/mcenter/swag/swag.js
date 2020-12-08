@@ -548,9 +548,6 @@ export default {
       goLangApiRequest({
         method: 'get',
         url: `${this.siteConfig.YABO_GOLANG_API_DOMAIN}/ThirdParty/SWAG/${userId}`,
-        headers: {
-          'x-domain': this.memInfo.user.domain
-        }
       }).then(res => {
         if (res && res.status !== '000') {
           // 維護非即時更新狀態

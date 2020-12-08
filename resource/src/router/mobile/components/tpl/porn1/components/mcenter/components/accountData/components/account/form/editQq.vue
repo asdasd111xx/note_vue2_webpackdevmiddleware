@@ -14,6 +14,7 @@
           <input
             ref="input"
             v-model="value"
+            :value="value"
             :placeholder="$text('S_QQ')"
             :class="$style.input"
             :maxlength="20"
@@ -84,13 +85,13 @@ export default {
 
       this.tipMsg = '';
       this.value = e.target.value;
-      if (this.value === '') {
-        this.tipMsg = this.$text('S_CR_NUT_NULL');
-      }
+      // if (this.value === '') {
+      //   this.tipMsg = this.$text('S_CR_NUT_NULL');
+      // }
 
-      if (!/^[0-9]+$/.test(this.value)) {
-        this.tipMsg = this.$text('S_JM_AGENT_INPUT_NUMBER', '仅允许输入数字');
-      }
+      // if (!/^[0-9]+$/.test(this.value)) {
+      //   this.tipMsg = this.$text('S_JM_AGENT_INPUT_NUMBER', '仅允许输入数字');
+      // }
     },
     handleSubmit() {
       if (this.tipMsg) {

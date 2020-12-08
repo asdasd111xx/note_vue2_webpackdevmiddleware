@@ -62,7 +62,6 @@ export default {
     goLangApiRequest({
       method: "get",
       url: `${this.siteConfig.YABO_GOLANG_API_DOMAIN}/System/contactus`,
-      headers: { "x-domain": this.memInfo.user.domain },
     }).then((res) => {
       if (res && res.data && res.data.length > 0) {
         this.list = res.data;

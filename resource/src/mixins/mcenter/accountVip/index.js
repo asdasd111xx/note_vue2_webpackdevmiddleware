@@ -1,7 +1,7 @@
-import { mapGetters } from "vuex";
 import { getCookie } from "@/lib/cookie";
-import yaboRequest from "@/api/yaboRequest";
 import goLangApiRequest from '@/api/goLangApiRequest';
+import { mapGetters } from "vuex";
+import yaboRequest from "@/api/yaboRequest";
 
 export default {
   data() {
@@ -46,7 +46,6 @@ export default {
         method: "get",
         url: `${this.siteConfig.YABO_GOLANG_API_DOMAIN}/Player/vipinfo`,
         headers: {
-          "x-domain": this.memInfo.user.domain,
           "cid": getCookie("cid")
         }
       }).then(res => {
@@ -76,7 +75,6 @@ export default {
         method: "get",
         url: `${this.siteConfig.YABO_GOLANG_API_DOMAIN}/Player/viplevel/${this.currentConfigID}`,
         headers: {
-          "x-domain": this.memInfo.user.domain,
           "cid": getCookie("cid")
         }
       }).then(res => {

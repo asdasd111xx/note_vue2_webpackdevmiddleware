@@ -176,7 +176,6 @@ export default {
     }),
     // 過濾特例的資料
     filteredDataList() {
-      console.log("123");
       return this.dataList
         .filter((data) => data.isShow)
         .map((item) => ({

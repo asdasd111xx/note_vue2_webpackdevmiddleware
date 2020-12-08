@@ -134,7 +134,6 @@ export default {
           this.siteConfig.YABO_GOLANG_API_DOMAIN
           }/Player/vipinfo`,
         headers: {
-          "x-domain": this.memInfo.user.domain,
           "cid": getCookie("cid")
         }
       }).then(res => {
@@ -167,7 +166,6 @@ export default {
           this.siteConfig.YABO_GOLANG_API_DOMAIN
           }/Player/viplevel/${this.currentConfigID}`,
         headers: {
-          "x-domain": this.memInfo.user.domain,
           "cid": getCookie("cid")
         }
       }).then(res => {

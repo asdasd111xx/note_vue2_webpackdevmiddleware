@@ -305,9 +305,6 @@ export default {
       yaboRequest({
         method: 'put',
         url: `${this.siteConfig.YABO_API_DOMAIN}/Account/UnlockTagId?`,
-        headers: {
-          'x-domain': this.memInfo.user.domain,
-        },
         params: {
           cid: cid,
           userid: this.memInfo.user.id,

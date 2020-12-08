@@ -179,10 +179,9 @@ export default {
   mounted() {
     $(window).on('resize', this.onResize);
 
-    // const params = this.isAdult ? [this.getVideoTag(), this.getVideoSort(), this.getVideoRecommand(), this.getVideoList(), this.getAllGame()] : [this.getAllGame()];
-
     // 首頁選單列表預設拿local
     const cache = this.getAllGameFromCache();
+
     const setDefaultSelected = () => {
       this.$nextTick(() => {
         this.isReceive = true;
@@ -255,8 +254,8 @@ export default {
     getAllGameFromCache() {
       let result = false;
       try {
-        let videolistStorage = localStorage.getItem('game-list');
-        if (videolistStorage) {
+        let gameList = localStorage.getItem('game-list');
+        if (gameList) {
           this.allGame = JSON.parse(localStorage.getItem('game-list'));
           result = true;
         }
@@ -267,39 +266,10 @@ export default {
       return result;
     },
     // 取得所有遊戲
-    getAllGame(setLocal) {
-      //     return yaboRequest({
-      //         method: 'get',
-      //         url: `${this.siteConfig.YABO_API_DOMAIN}/game/list`,
-      //         headers: {
-      //             'x-domain': this.memInfo.user.domain
-      //         }
-      //     }).then(response => {
-      //         console.log("getAllGame~~~~!!");
-      //         if (!response.data) {
-      //             return;
-      //         }
-
-      //         this.isReceive = true;
-
-      //         try {
-      //             localStorage.setItem('game-list', JSON.stringify(response.data));
-      //             localStorage.setItem('game-list-timestamp', Date.now());
-      //         } catch (e) {
-      //             console.log(e);
-      //         }
-
-      //         if (!setLocal) {
-      //             this.allGame = [...response.data];
-      //         }
-      //     });
-
+    getAllGame() {
       return goLangApiRequest({
         method: 'get',
         url: `${this.siteConfig.YABO_GOLANG_API_DOMAIN}/Game/list`,
-        headers: {
-          'x-domain': this.memInfo.user.domain
-        }
       }).then(response => {
         if (!response.data) {
           return;
@@ -309,14 +279,11 @@ export default {
 
         try {
           localStorage.setItem('game-list', JSON.stringify(response.data));
-          localStorage.setItem('game-list-timestamp', Date.now());
         } catch (e) {
           console.log(e);
         }
 
-        if (!setLocal) {
-          this.allGame = [...response.data];
-        }
+        this.allGame = [...response.data];
       });
     },
     onResize() {
@@ -597,6 +564,9 @@ export default {
                 return;
               } else {
                 localStorage.setItem("is-open-game", true);
+                setTimeout(() => {
+                  localStorage.removeItem("is-open-game");
+                }, 2000)
                 // SWAG入口統一
                 this.checkSWAGMaintain({ linkTo: true, origin: 'home' });
                 return;
@@ -645,9 +615,6 @@ export default {
                 const getThridUrl = () => goLangApiRequest({
                   method: 'get',
                   url: `${this.siteConfig.YABO_GOLANG_API_DOMAIN}/ThirdParty/${game.vendor}/${userId}`,
-                  headers: {
-                    'x-domain': this.memInfo.user.domain
-                  }
                 }).then(res => {
                   localStorage.removeItem("is-open-game");
 
@@ -794,7 +761,6 @@ export default {
         url: `${this.siteConfig.YABO_GOLANG_API_DOMAIN
           }/Player/vipinfo`,
         headers: {
-          "x-domain": this.memInfo.user.domain,
           "cid": cid
         }
       }).then(res => {

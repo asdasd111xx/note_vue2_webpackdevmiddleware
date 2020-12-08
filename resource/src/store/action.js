@@ -31,6 +31,7 @@ import member from "@/api/member";
 // eslint-disable-next-line import/no-cycle
 import openGame from "@/lib/open_game";
 import router from "../router";
+import version from '@/config/version.json';
 import yaboRequest from "@/api/yaboRequest";
 
 let memstatus = true;
@@ -1800,7 +1801,9 @@ export const actionSetWebDomain = ({ commit }) =>
         domain: "",
         site: "porn1"
       };
+
       console.log("[conf/domain]:", res.data);
+      console.log(version)
       const site = (res && res.data && String(res.data.site)) || "";
       const domain = (res && res.data && String(res.data.domain)) || "";
       result["site"] = site;
@@ -1813,7 +1816,7 @@ export const actionSetWebDomain = ({ commit }) =>
     });
 
 // SWAG設定
-export const actionSetSwagConfig = ({ commit, state }, data) => {
+export const actionSetSwagConfig = ({ commit, state, dispatch }, data) => {
   let configInfo;
   if (state.webInfo.is_production) {
     configInfo =
@@ -1835,6 +1838,10 @@ export const actionSetSwagConfig = ({ commit, state }, data) => {
     }
   }).then(res => {
     if (res.errorCode !== "00" || res.status !== "000") {
+      dispatch("actionSetGlobalMessage", {
+        msg: res.msg,
+        code: res.code
+      });
       return;
     }
     commit(types.SET_SWAG_CONFIG, res.data);
