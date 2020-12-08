@@ -83,10 +83,20 @@
                 <br />
                 流水要求
               </div>
-              <!-- <div>
+
+              <!-- <template v-if="['porn1', 'sg1'].includes(themeTPL)">
+                <div>
                 保级推广{{ item.downgrade_members }}位 <br />
                 有效会员(充值{{ item.downgrade_deposit | roundTwoPoints }})
-              </div> -->
+              </div>
+              </template> -->
+
+              <template v-if="['ey1'].includes(themeTPL)">
+                <div>
+                  {{ item.downgrade_valid_bet }} <br />
+                  保级投注
+                </div>
+              </template>
             </div>
           </div>
         </swiper-slide>
@@ -143,6 +153,9 @@ export default {
       const style =
         this[`$style_${this.siteConfig.MOBILE_WEB_TPL}`] || this.$style_porn1;
       return style;
+    },
+    themeTPL() {
+      return this.siteConfig.MOBILE_WEB_TPL;
     },
     vipLevelOption() {
       return {
