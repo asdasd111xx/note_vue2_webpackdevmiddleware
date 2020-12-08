@@ -53,6 +53,10 @@ export default {
       const list = [];
 
       this.mobileInfo.mSlider.data.forEach((data) => {
+        if (!Object.keys(this.lang)) {
+          return;
+        }
+
         const imageData = Object.keys(this.lang).reduce((init, key) => ({
           ...init,
           image: { ...init.image, [key]: `${this.cdnDomain}${data.image[key]}` },
