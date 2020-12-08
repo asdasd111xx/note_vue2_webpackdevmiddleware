@@ -229,17 +229,32 @@ export default {
     },
     headerConfig() {
       const query = this.$route.query;
-      const title = this.$route.params.page;
-      this.isFullScreen = title.toUpperCase() === "SWAG" ?
+      const origin = this.$route.params.page.toUpperCase();
+
+      this.isFullScreen = origin === "SWAG" ?
         true :
         query.fullscreen === undefined ? false : query.fullscreen === 'true';
 
-      return {
+      let baseConfig = {
         hasHeader: query.hasHeader === undefined ? false : query.hasHeader === 'true',
         hasFooter: query.hasFooter === undefined ? true : query.hasFooter === 'true',
         prev: query.prev === undefined ? true : query.prev,
         title: query.title || localStorage.getItem('iframe-third-url-title') || '',
         hasFunc: query.func === undefined ? true : query.func === 'true',
+      }
+
+      // SWAG 固定
+      switch (origin) {
+        case 'SWAG':
+          baseConfig.hasHeader = true;
+          baseConfig.hasFooter = false;
+          baseConfig.title = "SWAG";
+          this.isFullScreen = true;
+          break
+      }
+
+      return {
+        ...baseConfig,
         onClick: () => {
           this.$router.replace(this.originUrl);
           return;

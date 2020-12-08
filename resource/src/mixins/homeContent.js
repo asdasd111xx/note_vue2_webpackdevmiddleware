@@ -556,6 +556,9 @@ export default {
                 return;
               } else {
                 localStorage.setItem("is-open-game", true);
+                setTimeout(() => {
+                  localStorage.removeItem("is-open-game");
+                }, 2000)
                 // SWAG入口統一
                 this.checkSWAGMaintain({ linkTo: true, origin: 'home' });
                 return;

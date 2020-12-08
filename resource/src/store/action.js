@@ -1816,7 +1816,7 @@ export const actionSetWebDomain = ({ commit }) =>
     });
 
 // SWAG設定
-export const actionSetSwagConfig = ({ commit, state }, data) => {
+export const actionSetSwagConfig = ({ commit, state, dispatch }, data) => {
   let configInfo;
   if (state.webInfo.is_production) {
     configInfo =
@@ -1838,6 +1838,10 @@ export const actionSetSwagConfig = ({ commit, state }, data) => {
     }
   }).then(res => {
     if (res.errorCode !== "00" || res.status !== "000") {
+      dispatch("actionSetGlobalMessage", {
+        msg: res.msg,
+        code: res.code
+      });
       return;
     }
     commit(types.SET_SWAG_CONFIG, res.data);
