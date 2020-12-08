@@ -28,7 +28,6 @@ import VueClipboard from 'vue-clipboard2';
 import VueCookie from 'vue-cookie';
 import VueCropper from 'vue-cropper';
 import VueLazyload from 'vue-lazyload';
-import VueNativeSock from 'vue-native-websocket'
 import VueQrcode from '@chenfengyuan/vue-qrcode';
 import VueRx from 'vue-rx';
 // swal
