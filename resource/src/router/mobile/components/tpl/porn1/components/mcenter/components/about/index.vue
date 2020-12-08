@@ -36,9 +36,9 @@
         <div :class="$style['content']">
           <div :class="$style['cell']">
             <img
-              :src="$getCdnPath(`/static/image/_new/about/logo_yabolive.png`)"
+              :src="$getCdnPath(`/static/image/_new/about/logo_swag.png`)"
             />
-            <div>鸭博娱乐</div>
+            <div>SWAG色播</div>
           </div>
           <div :class="$style['cell']">
             <img

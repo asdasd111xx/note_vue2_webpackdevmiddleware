@@ -15,6 +15,7 @@
         <div :key="`slot-${slotKey}`" class="game-item-wrap clearfix">
           <template v-for="(gameInfo, index) in gameData">
             <game-item
+              v-if="gameInfo.is_mobile"
               :key="`game-${gameInfo.vendor}-${index}`"
               :game-info="gameInfo"
               :theme="gameTheme"

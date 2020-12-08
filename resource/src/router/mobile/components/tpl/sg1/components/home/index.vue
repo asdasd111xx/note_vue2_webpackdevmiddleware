@@ -1,0 +1,146 @@
+<template>
+  <mobile-container :header-config="headerConfig" :class="$style.container">
+    <div slot="content" class="content-wrap">
+      <home-slider />
+      <home-new />
+      <home-content />
+      <popup v-if="isShowPop" @close="closePop" :sitePostList="sitePostList" />
+    </div>
+  </mobile-container>
+</template>
+
+<script>
+import { getCookie, setCookie } from '@/lib/cookie';
+import { mapGetters, mapActions } from 'vuex';
+import axios from 'axios';
+import homeContent from './components/homeContent';
+import homeNew from './components/homeNew';
+import homeSlider from './components/homeSlider';
+import mcenter from '@/api/mcenter';
+import mobileContainer from '../common/mobileContainer';
+import popup from './components/popup';
+
+export default {
+  components: {
+    mobileContainer,
+    homeSlider,
+    homeNew,
+    homeContent,
+    popup
+  },
+  data() {
+    return {
+      updateBalance: null,
+      isShowPop: false,
+      sitePostList: null,
+    };
+  },
+  computed: {
+    ...mapGetters({
+      loginStatus: 'getLoginStatus',
+      post: 'getPost'
+    }),
+    headerConfig() {
+      return {
+        hasLogo: true,
+        hasMemInfo: true,
+        hasSearchBtn: false,
+        onClick: () => {
+          this.onClick();
+        }
+      };
+    }
+  },
+  created() {
+    if (localStorage.getItem('new_user')) {
+      localStorage.setItem('content_rating', "1");
+      localStorage.removeItem('new_user');
+      mcenter.accountDataSet({
+        params: {
+          content_rating: 1
+        },
+        success: () => {
+          this.actionSetUserdata(true);
+          window.location.reload(true);
+        }
+      });
+    }
+
+    // 先顯示彈跳公告關閉後再顯示一般公告
+    // 顯示過公告 localStorage.getItem('is-show-popup-announcement')
+    // 不在提示 localStorage.getItem('do-not-show-home-post')
+    if (this.loginStatus && !localStorage.getItem('do-not-show-home-post')) {
+      axios({
+        method: 'get',
+        url: '/api/v1/c/player/popup-announcement',
+      }).then((res) => {
+        if (res.data) {
+          if (res.data.ret && res.data.ret.length > 0) {
+            // 顯示彈跳公告
+            this.sitePostList = res.data.ret;
+            this.isShowPop = true;
+          } else {
+            // 顯示一般公吿
+            this.closePop(true);
+          }
+        }
+      }).catch(res => { });
+    }
+  },
+  watch: {
+    isShowPop(val) {
+      if (val) {
+        document.querySelector('body').style = 'overflow: hidden';
+      } else {
+        document.querySelector('body').style = '';
+      }
+    }
+  },
+  mounted() {
+    this.updateBalance = setInterval(() => {
+      let cid = getCookie("cid");
+
+      if (!cid) {
+        clearInterval(this.updateBalance);
+        this.updateBalance = null;
+      } else {
+        this.actionSetUserBalance();
+      }
+    }, 30000)
+  },
+  beforeDestroy() {
+    clearInterval(this.updateBalance);
+    this.updateBalance = null;
+  },
+  methods: {
+    ...mapActions([
+      'actionSetPost',
+      'actionSetUserBalance',
+      'actionSetUserdata'
+    ]),
+    onClick() {
+      this.$router.push('/mobile');
+    },
+    closePop(isFromSitePost) {
+      this.isShowPop = false;
+      this.sitePostList = null;
+
+      if (!localStorage.getItem('do-not-show-home-post')) {
+        setTimeout(() => {
+          this.$nextTick(() => {
+            if (isFromSitePost && this.post && this.post.list.length > 0) {
+              this.isShowPop = true;
+            }
+          })
+        }, 250)
+      }
+    }
+  }
+};
+</script>
+
+<style lang="scss" module>
+div.container {
+  background-color: #fff;
+}
+</style>

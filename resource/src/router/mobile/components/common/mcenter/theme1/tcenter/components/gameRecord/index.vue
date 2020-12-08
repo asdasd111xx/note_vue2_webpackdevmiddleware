@@ -32,7 +32,7 @@
             :key="info.key"
             :class="[
               $style['search-tab'],
-              { [$style.active]: currentCondition === info.key },
+              { [$style.active]: currentCondition === info.key }
             ]"
             @click="changeSearchCondition(info.key)"
           >
@@ -92,13 +92,13 @@
             <div
               :class="[
                 $style['btn-search'],
-                { [$style['disable']]: !checkDate },
+                { [$style['disable']]: !checkDate }
               ]"
               @click="
                 () => {
                   if (!checkDate) {
                     return;
-                  } else {
+                  } else if (inqStart !== inqEnd) {
                     onSearch();
                   }
                 }

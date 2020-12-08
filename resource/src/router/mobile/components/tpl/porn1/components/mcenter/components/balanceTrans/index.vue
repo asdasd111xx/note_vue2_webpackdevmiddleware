@@ -2,6 +2,12 @@
   <mobile-container :header-config="headerConfig" :has-footer="false">
     <div slot="content" :class="$style['content-wrap']">
       <balanceBack :has-link="true" />
+
+      <!-- 僅限鴨博有 Swag -->
+      <template v-if="themeTPL === 'porn1'">
+        <swagBlock />
+      </template>
+
       <balanceTrans :is-show-block-tips.sync="isShowBlockTips" />
       <blockListTips
         v-if="isShowBlockTips"
@@ -17,6 +23,7 @@ import { mapGetters, mapActions } from "vuex";
 import balanceBack from "../../../mcenter/components/common/balanceBack";
 import balanceTrans from "./components/index";
 import blockListTips from "../../../common/blockListTips";
+import swagBlock from "./components/swagBlock";
 import mobileContainer from "../../../common/mobileContainer";
 
 export default {
@@ -24,7 +31,8 @@ export default {
     mobileContainer,
     blockListTips,
     balanceTrans,
-    balanceBack
+    balanceBack,
+    swagBlock
   },
   data() {
     return {
@@ -36,6 +44,9 @@ export default {
       memInfo: 'getMemInfo',
       siteConfig: 'getSiteConfig'
     }),
+    themeTPL() {
+      return this.siteConfig.MOBILE_WEB_TPL
+    },
     headerConfig() {
       return {
         title: this.$text("S_transfer", "转帐"),

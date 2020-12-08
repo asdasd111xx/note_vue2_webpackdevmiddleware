@@ -6,34 +6,13 @@
       </div>
 
       <div :class="[$style['live-tab-wrap'], 'clearfix']">
-        <div
-          :class="[
-            $style['live-tab'],
-            { [$style['is-current']]: currentTab === 'cutiesLive' }
-          ]"
-          @click="handleClickType('cutiesLive')"
-        >
+        <div :class="[$style['live-tab']]" @click="handleClickType('pornlive')">
           <div :class="$style['img-icon-wrap']">
             <img
-              v-if="currentTab === 'cutiesLive'"
-              :src="
-                $getCdnPath('/static/image/_new/live/icon_live_beauty_h.png')
-              "
-            />
-            <img
-              v-else
-              :src="
-                $getCdnPath('/static/image/_new/live/icon_live_beauty_n.png')
-              "
+              :src="$getCdnPath('/static/image/_new/live/icon_live_swag_n.png')"
             />
           </div>
-          <span
-            :class="[
-              $style['live-tab-text'],
-              { [$style['active']]: currentTab === 'cutiesLive' }
-            ]"
-            >{{ $text("S_BEAUTY_LIVE", "美女直播") }}</span
-          >
+          <span :class="[$style['live-tab-text']]">{{ "SWAG" }}</span>
         </div>
         <div
           :class="[
@@ -121,6 +100,11 @@
         </div>
       </div>
       <page-loading :is-show="isShowLoading" />
+      <maintain-block
+        v-if="maintainInfo"
+        :content="maintainInfo"
+        @close="handleCloseMaintainInfo"
+      />
     </div>
   </mobile-container>
 </template>
@@ -131,16 +115,21 @@ import axios from 'axios';
 import mobileContainer from '../common/mobileContainer';
 import openGame from '@/lib/open_game';
 import pornRequest from '@/api/pornRequest';
+import goLangApiRequest from '@/api/goLangApiRequest';
+import mixin from "@/mixins/mcenter/swag/swag";
+import maintainBlock from "@/router/mobile/components/common/maintainBlock";
 
 export default {
+  mixins: [mixin],
   components: {
     pageLoading: () => import(/* webpackChunkName: 'pageLoading' */ '@/router/mobile/components/common/pageLoading'),
-    mobileContainer
+    mobileContainer,
+    maintainBlock
   },
   data() {
     return {
       streamList: [],
-      currentTab: 'cutiesLive',
+      currentTab: 'ballLive',
       iframeHeight: 500,
       src: '',
       isShowLoading: false
@@ -149,11 +138,12 @@ export default {
   computed: {
     ...mapGetters({
       loginStatus: 'getLoginStatus',
-      memInfo: 'getMemInfo'
+      memInfo: 'getMemInfo',
+      siteConfig: 'getSiteConfig',
     }),
   },
   created() {
-    this.currentTab = this.$route.query.type ? this.$route.query.type : 'cutiesLive';
+    this.currentTab = this.$route.query.type ? this.$route.query.type : 'ballLive';
 
     pornRequest({
       method: 'get',
@@ -217,7 +207,16 @@ export default {
       //   this.iframeHeight = this.$refs['js-set-height'].contentWindow.window.document.body.scrollHeight + 100;
     },
     handleClickType(type) {
-      this.currentTab = type
+      if (type === 'pornlive') {
+        if (this.loginStatus) {
+          this.checkSWAGMaintain({ linkTo: true, origin: 'liveStream?type=ballLive' });
+        } else {
+          this.$router.push('/mobile/login');
+          return;
+        }
+      } else {
+        this.currentTab = type;
+      }
     }
   }
 };

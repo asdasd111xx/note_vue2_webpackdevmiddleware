@@ -26,6 +26,7 @@
           <template>
             <template v-for="(gameInfo, index) in gameData">
               <game-item
+                v-if="gameInfo.is_mobile"
                 :key="`game-${gameInfo.vendor}-${index}`"
                 :theme="gameTheme"
                 :game-info="gameInfo"
@@ -360,6 +361,11 @@ export default {
         first_result: 0,
       };
 
+      this.$router.replace({
+        query: {
+          label: value
+        }
+      });
       // 活動先註解不開放，後續開放只要搜 activity_open
       // if (!this.paramsData.label || this.paramsData.label === 'activity') {
       //     ajax({
@@ -428,12 +434,18 @@ export default {
         return;
       }
 
+      let _params = { ...this.paramsData };
+      // 進到搜索頁面，Label = '' 為搜索全部
+      if (this.isShowSearch) {
+        _params = { ..._params, label: "" };
+      }
+
       const gameApiInfo = {
         url: gameList,
         params: {
-          ...this.paramsData,
-          vendor: this.vendor,
-        },
+          ..._params,
+          vendor: this.vendor
+        }
       };
 
       // 活動先註解不開放，後續開放只要搜 activity_open

@@ -1,9 +1,15 @@
 <template>
   <div class="news-wrap">
     <div class="news-icon">
-      <img :src="$getCdnPath('/static/image/ey1/common/icon_news.png')" />
+      <img
+        :src="$getCdnPath(`/static/image/${themeTPL}/common/icon_news.png`)"
+      />
     </div>
-    <div ref="container" class="news-content" @click="togglePopup">
+    <div
+      ref="container"
+      :class="['news-content', `${themeTPL}`]"
+      @click="togglePopup"
+    >
       <div
         ref="news"
         class="news-content-text"
@@ -78,8 +84,12 @@ export default {
       isBackEnd: 'getIsBackEnd',
       newsPopControl: 'getNewsPopControl',
       memNewsData: 'getNews',
-      agentNewsData: 'getAgentNews'
+      agentNewsData: 'getAgentNews',
+      siteConfig: 'getSiteConfig',
     }),
+    themeTPL() {
+      return this.siteConfig.MOBILE_WEB_TPL;
+    },
     newsData() {
       return (this.dataSource === 'mem') ? this.memNewsData : this.agentNewsData;
     },
@@ -103,12 +113,10 @@ export default {
     ]),
     // 開啟最新消息方式
     togglePopup() {
-      /*
       this.paused = !this.paused;
       if (!this.paused) {
         this.startMove();
       }
-      */
       document.querySelector('body').style = !this.newsPopControl.status ? 'overflow: hidden' : '';
       this.actionNewsPopControl({ type: this.dataSource, status: !this.newsPopControl.status });
     },
@@ -127,8 +135,6 @@ export default {
 </script>
 
 <style lang="scss" scoped>
-@import "~@/css/variable.scss";
-
 .news-wrap {
   display: flex;
   align-content: center;
@@ -151,9 +157,17 @@ export default {
   cursor: pointer;
   line-height: 12px;
   margin-left: 6px;
-  color: $ey_text_color1;
+  color: #9ca3bf;
   font-size: 12px;
   overflow: hidden;
+
+  &.porn1 {
+    color: #9ca3bf;
+  }
+
+  &.ey1 {
+    color: #ff7171;
+  }
 
   > * {
     pointer-events: none;

@@ -235,8 +235,8 @@ export default {
           }
 
           // 鴨博無提現密碼
-          if (this.themeTPL === 'porn1' && i == "withdraw_password") {
-            this.formData['withdraw_password'].show = false;
+          if (this.themeTPL === "porn1" && i == "withdraw_password") {
+            this.formData["withdraw_password"].show = false;
             return;
           }
 
@@ -249,7 +249,7 @@ export default {
         !this.formData.withdraw_password.show
       ) {
         // 鴨博無電子錢包
-        if (!this.checkBankSwitch && this.themeTPL !== 'porn1') {
+        if (!this.checkBankSwitch && this.themeTPL !== "porn1") {
           this.$router.replace(
             `/mobile/mcenter/bankCard?redirect=${this.redirect}&type=wallet`
           );
@@ -304,7 +304,7 @@ export default {
       }
     },
     redirect() {
-      let redirect = this.$route.query.redirect || 'home';
+      let redirect = this.$route.query.redirect || "home";
       return redirect;
     }
   },
@@ -314,7 +314,11 @@ export default {
     }
   },
   methods: {
-    ...mapActions(["actionSetGlobalMessage", "actionVerificationFormData"]),
+    ...mapActions([
+      "actionSetUserdata",
+      "actionSetGlobalMessage",
+      "actionVerificationFormData"
+    ]),
     onClose(isBack) {
       if (this.isSlider) {
         this.$nextTick(() => {
@@ -324,7 +328,6 @@ export default {
         });
         this.sliderClass = "slider-close slider";
       } else {
-
         if (isBack) {
           this.$router.back();
           return;
@@ -332,33 +335,37 @@ export default {
 
         const _redirect = this.redirect;
         axios({
-          method: 'get',
-          url: '/api/v2/c/domain-config',
-        }).then(res => {
-          let withdraw_info_before_bet = false;
-          if (res && res.data && res.data.ret) {
-            withdraw_info_before_bet = res.data.ret.withdraw_info_before_bet;
-          }
-
-          if (!withdraw_info_before_bet) {
-            if (!this.checkBankSwitch) {
-              this.$router.push(
-                `/mobile/mcenter/bankCard?redirect=${_redirect}&type=wallet`
-              );
-              return;
-            } else {
-              this.$router.back();
-              return;
-            }
-          }
-
-          this.$router.back();
-          return;
-        }).catch((res) => {
-          this.actionSetGlobalMessage({
-            msg: res.data.msg, code: res.data.code, origin: 'home'
-          });
+          method: "get",
+          url: "/api/v2/c/domain-config"
         })
+          .then(res => {
+            let withdraw_info_before_bet = false;
+            if (res && res.data && res.data.ret) {
+              withdraw_info_before_bet = res.data.ret.withdraw_info_before_bet;
+            }
+
+            if (!withdraw_info_before_bet) {
+              if (!this.checkBankSwitch) {
+                this.$router.push(
+                  `/mobile/mcenter/bankCard?redirect=${_redirect}&type=wallet`
+                );
+                return;
+              } else {
+                this.$router.back();
+                return;
+              }
+            }
+
+            this.$router.back();
+            return;
+          })
+          .catch(res => {
+            this.actionSetGlobalMessage({
+              msg: res.data.msg,
+              code: res.data.code,
+              origin: "home"
+            });
+          });
 
         // 提現資料上一頁應回到原本位置 避免迴圈
         this.$router.back();
@@ -481,14 +488,16 @@ export default {
         return;
       }
 
-      // 無認證直接呼叫
-      if (this.memInfo.config.default_captcha_type === 0) {
-        this.sendKeyring();
-        return;
-      }
+      this.actionSetUserdata(true).then(() => {
+        // 無認證直接呼叫
+        if (this.memInfo.config.default_captcha_type === 0) {
+          this.sendKeyring();
+          return;
+        }
 
-      // 彈驗證窗並利用Watch captchaData來呼叫 getKeyring()
-      this.toggleCaptcha = true;
+        // 彈驗證窗並利用Watch captchaData來呼叫 getKeyring()
+        this.toggleCaptcha = true;
+      });
     },
     // 回傳會員手機驗證簡訊剩餘秒數可以重送
     getPhoneTTL() {
@@ -515,7 +524,7 @@ export default {
         data: {
           phone: `${this.phoneHead.replace("+", "")}-${
             this.formData.phone.value
-            }`,
+          }`,
           captcha_text: this.captchaData ? this.captchaData : ""
         }
       })
@@ -596,7 +605,7 @@ export default {
             });
           } else {
             this.actionSetGlobalMessage({
-              msg: '设定成功',
+              msg: "设定成功",
               cb: () => {
                 this.onClose();
               }

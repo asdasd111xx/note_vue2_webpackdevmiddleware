@@ -205,4 +205,6 @@ export default {
   getPornDomain: (state) => state.pornDoamin,
   getPromotionLink: (state) => state.promotionLink,
   getBBOSDomain: (state) => state.BBosDomain,
+  getSwagConfig: (state) => state.swagConfig,
+  getSwagBalance: (state) => state.swagBalance,
 };

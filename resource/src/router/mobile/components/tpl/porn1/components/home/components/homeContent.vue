@@ -124,13 +124,15 @@
             </template>
             <div v-if="game.isMaintain ||
             (isMaintainSwag && game.vendor === 'SWAG')"
-            :class="[$style['maintain-mask']]">
+            :class="[$style['maintain-mask'],
+           ]">
               <div
                 :class="[
                   {
                     [$style['maintain-mask-1']]: game.imageType === 1 || game.vendor === 'SWAG'
                   },
-                  { [$style['maintain-mask-2']]: game.imageType === 0 }
+                  { [$style['maintain-mask-2']]: game.imageType === 0 },
+                   {[$style['swag']]: game.vendor==='SWAG'}
                 ]"
               >
                 <div
@@ -151,7 +153,8 @@
                     {{ `-美东时间-` }}
                   </div>
                   <div :class="[$style['container-maintain']]">
-                    <div :class="[$style['container-maintain-time']]">
+                    <div :class="[$style['container-maintain-time'],
+                    { [$style['swag']]: game.vendor === 'SWAG' }]">
                       {{ `${game.vendor === 'SWAG' ? swagESTMaintainStartAt: game.start_at}` }}
                     </div>
                     <img
@@ -159,7 +162,8 @@
                         $getCdnPath(`/static/image/casino/ic_transfergo.png`)
                       "
                     />
-                    <div :class="[$style['container-maintain-time']]">
+                       <div :class="[$style['container-maintain-time'],
+                    { [$style['swag']]: game.vendor === 'SWAG' }]">
                       {{ `${game.vendor === 'SWAG' ? swagESTMaintainEndAt: game.end_at}` }}
                     </div>
                   </div>
@@ -388,10 +392,20 @@ export default {
       border-radius: 3pt;
       background-color: #9ca3bf;
       width: 60%;
+
+      &.swag {
+        max-width: 180px;
+        min-height: 55%;
+        display: flex;
+        justify-content: center;
+        align-items: center;
+        position: absolute;
+        flex-direction: column;
+      }
+
       > div.maintain-text-1 {
         word-break: break-all;
-        margin-top: 15px;
-        margin-bottom: 15px;
+        margin: 6% 0;
         position: relative;
         text-align: center;
         color: #ffffff;
@@ -416,6 +430,11 @@ export default {
           > div.container-maintain-time {
             line-height: 12px;
             font-size: 8px !important;
+
+            &.swag {
+              line-height: 11px;
+              font-size: 9px !important;
+            }
           }
         }
       }

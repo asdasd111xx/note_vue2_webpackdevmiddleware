@@ -130,7 +130,6 @@ export default {
         method: "get",
         url: `${this.siteConfig.YABO_GOLANG_API_DOMAIN}/Player/vipinfo`,
         headers: {
-          "x-domain": this.memInfo.user.domain,
           "cid": cid
         }
       }).then(res => {

@@ -16,11 +16,6 @@
 import mobileContainer from "../../common/mobileContainer";
 import { mapGetters, mapActions } from "vuex";
 import jwt from "jwt-simple";
-import axios from "axios";
-import goLangApiRequest from "@/api/goLangApiRequest";
-import { getCookie, setCookie } from "@/lib/cookie";
-import mcenter from "@/api/mcenter";
-import yaboRequest from "@/api/yaboRequest";
 
 export default {
   data() {
@@ -28,7 +23,7 @@ export default {
       type: "",
       title: "",
       img: "",
-      url: "",
+      url: "https://ey.italking.asia:5569/guest.php?gid=eyag",
       MenuList: [
         {
           type: "wifi",
@@ -86,13 +81,9 @@ export default {
   components: {
     mobileContainer,
   },
-  created() {
-    this.getContactusUrl();
-  },
   mounted() {
     if (this.loginStatus && this.onlineService) {
       const tokenExpiresTime = 60 * 60 * 24 * 60; // 60天秒數
-
       const memberData = {
         name: this.memInfo.user.name || "",
         mobile: this.memInfo.user.phone || "",
@@ -100,7 +91,7 @@ export default {
         exp: Date.now() + tokenExpiresTime,
       };
       const rsaData = jwt.encode(memberData, "T9AuSgQfh2");
-      this.url = `${this.onlineService.url}&jwtToken=${rsaData}`;
+      //this.url = `${this.onlineService.url}&jwtToken=${rsaData}`;
     }
   },
   computed: {
@@ -149,7 +140,6 @@ export default {
         method: "get",
         url: `${this.siteConfig.YABO_GOLANG_API_DOMAIN}/System/contactus`,
         headers: {
-          "x-domain": this.memInfo.user.domain,
           cid: cid,
         },
       })

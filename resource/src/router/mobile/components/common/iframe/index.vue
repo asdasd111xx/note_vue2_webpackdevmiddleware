@@ -127,13 +127,16 @@ export default {
         goLangApiRequest({
           method: 'get',
           url: `${this.siteConfig.YABO_GOLANG_API_DOMAIN}/ThirdParty/${params.page.toUpperCase()}/${userId}`,
-          headers: {
-            'x-domain': this.memInfo.user.domain
-          }
         }).then(res => {
           if (res && res.status !== '000') {
-            if (res.msg) {
+            // 維護非即時更新狀態
+            if (res.msg && res.code !== '77700029') {
               this.actionSetGlobalMessage({ msg: res.msg });
+            }
+
+            if (res.code === '77700029') {
+              this.$router.back();
+              return;
             }
           }
           else {
@@ -226,17 +229,32 @@ export default {
     },
     headerConfig() {
       const query = this.$route.query;
-      const title = this.$route.params.page;
-      this.isFullScreen = title.toUpperCase() === "SWAG" ?
+      const origin = this.$route.params.page.toUpperCase();
+
+      this.isFullScreen = origin === "SWAG" ?
         true :
         query.fullscreen === undefined ? false : query.fullscreen === 'true';
 
-      return {
+      let baseConfig = {
         hasHeader: query.hasHeader === undefined ? false : query.hasHeader === 'true',
         hasFooter: query.hasFooter === undefined ? true : query.hasFooter === 'true',
         prev: query.prev === undefined ? true : query.prev,
         title: query.title || localStorage.getItem('iframe-third-url-title') || '',
         hasFunc: query.func === undefined ? true : query.func === 'true',
+      }
+
+      // SWAG 固定
+      switch (origin) {
+        case 'SWAG':
+          baseConfig.hasHeader = true;
+          baseConfig.hasFooter = false;
+          baseConfig.title = "SWAG";
+          this.isFullScreen = true;
+          break
+      }
+
+      return {
+        ...baseConfig,
         onClick: () => {
           this.$router.replace(this.originUrl);
           return;
@@ -327,18 +345,18 @@ export default {
 
           // 避免迴圈重複本站
           case 'SELF_INTO':
-            if (this.$route.params.page.toUpperCase() === 'PROMOTION') {
+            if (this.$route.params.page.toUpperCase() === 'PROMOTION' && !this.src.includes('popcontrol')) {
               this.$router.replace('/mobile/login');
               return;
             }
             return;
           case 'EVENT_THIRDPARTY_LOGIN':
-            this.$router.push('/mobile/login');
+            this.$router.replace('/mobile/login?prev=home');
             return;
 
           case 'EVENT_THIRDPARTY_CURRENCY_NOT_ENOUGH':
           case 'EVENT_THIRDPARTY_DEPOSIT':
-            this.$router.push('/mobile/mcenter/swag?tab=0');
+            this.$router.push('/mobile/mcenter/swag?tab=0&prev=back');
             return;
 
           default:

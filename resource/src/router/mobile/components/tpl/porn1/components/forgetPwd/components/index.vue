@@ -235,7 +235,7 @@
 </template>
 <script>
 import axios from 'axios';
-import { mapGetters } from 'vuex';
+import { mapActions, mapGetters } from 'vuex';
 import member from '@/api/member';
 import joinMemInfo from '@/config/joinMemInfo';
 import mobileContainer from '../../common/mobileContainer'
@@ -332,6 +332,7 @@ export default {
     this.$emit("update:currentMethod", this.currentMethod);
   },
   methods: {
+    ...mapActions(['actionSetUserdata']),
     toggleEye(key) {
       let target = key === "pwd" ? this.isShowPwd : this.isShowConfPwd
       if (target) {
@@ -429,14 +430,16 @@ export default {
       }
     },
     showCaptchaPopup() {
-      // 無認證直接呼叫
-      if (this.memInfo.config.default_captcha_type === 0) {
-        this.getKeyring()
-        return
-      }
+      this.actionSetUserdata(true).then(() => {
+        // 無認證直接呼叫
+        if (this.memInfo.config.default_captcha_type === 0) {
+          this.getKeyring();
+          return;
+        }
 
-      // 彈驗證窗並利用Watch captchaData來呼叫 getKeyring()
-      this.toggleCaptcha = true
+        // 彈驗證窗並利用Watch captchaData來呼叫 getKeyring()
+        this.toggleCaptcha = true;
+      })
     },
     // 忘記密碼發送簡訊(驗證碼)
     getKeyring(type) {

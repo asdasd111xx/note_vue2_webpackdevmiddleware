@@ -102,6 +102,8 @@ export default {
           case 'notice':
           case 'maintain_notice':
           case 'verification_code':
+            // 外接平台維護通知
+            // case 'outer_maintain':
             this.data = temp;
             this.show();
             return;

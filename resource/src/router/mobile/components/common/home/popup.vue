@@ -18,9 +18,7 @@
             :class="[$style['checkbox-circle'], { [$style.active]: isTick }]"
             @click="isTick = !isTick"
           />
-          <span :class="$style['checkbox-text']" @click="isTick = !isTick"
-            >不再提示</span
-          >
+          <span :class="$style['checkbox-text']">不再提示</span>
         </div>
       </div>
 
@@ -41,7 +39,10 @@
 
       <div v-if="!sitePostList" class="clearfix">
         <div :class="$style['modal-button']" @click="closePop()">知道了</div>
-        <div :class="$style['modal-button']" @click="closePop(true)">
+        <div
+          :class="[$style['modal-button'], $style[themeTPL]]"
+          @click="closePop(true)"
+        >
           查看详情
         </div>
       </div>
@@ -71,8 +72,12 @@ export default {
   },
   computed: {
     ...mapGetters({
-      post: 'getPost'
-    })
+      post: 'getPost',
+      siteConfig: 'getSiteConfig',
+    }),
+    themeTPL() {
+      return this.siteConfig.MOBILE_WEB_TPL;
+    },
   },
   methods: {
     closePop(showDetail) {
@@ -192,7 +197,15 @@ export default {
   }
 
   &:last-child {
+    color: #d2b79c;
+  }
+
+  &.ey1:last-child {
     color: #e42a30;
+  }
+
+  &.porn1:last-child {
+    color: #d2b79c;
   }
 }
 

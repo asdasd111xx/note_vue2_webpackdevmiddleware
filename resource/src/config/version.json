@@ -1,10 +1,14 @@
 [
   {
     "site": "porn1",
-    "version": "2.0.108"
+    "version": "2.0.111"
   },
   {
     "site": "ey1",
-    "version": "1.0.78"
+    "version": "1.0.81"
+  },
+  {
+    "site": "sg1",
+    "version": "1.0.0"
   }
 ]

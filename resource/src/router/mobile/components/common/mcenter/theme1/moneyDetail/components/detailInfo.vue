@@ -105,8 +105,20 @@ export default {
   },
   methods: {
     linkToService() {
-      localStorage.setItem("money-detail-params-service", true);
-      this.$router.push("/mobile/service");
+      localStorage.setItem('money-detail-params-service', true);
+      let currentUrl = window.location.pathname + window.location.search;
+
+      //  明細後聯繫客服上一頁
+      if (this.$route.name === 'mcenter-swag' && currentUrl !== '/mobile/mcenter/swag?tab=1') {
+        this.$router.replace('/mobile/mcenter/swag?tab=1');
+      }
+
+      if (this.$route.name === 'mcenter-creditTrans' && currentUrl !== '/mobile/mcenter/creditTrans?tab=2'
+      ) {
+        this.$router.replace('/mobile/mcenter/creditTrans?tab=2');
+      }
+
+      this.$router.push('/mobile/service');
     },
     oncopy() {
       this.$copyText(this.detailInfo.ref_id);

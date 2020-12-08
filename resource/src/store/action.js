@@ -31,6 +31,7 @@ import member from "@/api/member";
 // eslint-disable-next-line import/no-cycle
 import openGame from "@/lib/open_game";
 import router from "../router";
+import version from '@/config/version.json';
 import yaboRequest from "@/api/yaboRequest";
 
 let memstatus = true;
@@ -532,7 +533,7 @@ export const actionSetCasinoLoadingStatus = ({ commit }, status) => {
 //     會員、代理 共用
 // ＝＝＝＝＝＝＝＝＝＝＝＝＝＝＝＝＝＝
 // 會員、代理共用-設定系統時間
-export const actionSetSystemTime = ({ commit }, func = () => {}) => {
+export const actionSetSystemTime = ({ commit }, func = () => { }) => {
   common.systemTime({
     success: response => {
       if (response.result === "ok") {
@@ -585,7 +586,7 @@ export const actionMemInit = ({ state, dispatch, commit }) => {
     await dispatch("actionGetMemInfoV3");
     const defaultLang =
       ["47", "70", "71"].includes(state.memInfo.user.domain) &&
-      state.webInfo.is_production
+        state.webInfo.is_production
         ? "vi"
         : "zh-cn";
     await getLang(state.webInfo.language, defaultLang);
@@ -725,6 +726,11 @@ export const actionSetUserdata = (
         case "100004":
           configInfo = siteConfigOfficial[`site_41`];
           break;
+        case "500035":
+        case "80":
+        case "81":
+          configInfo = siteConfigOfficial[`site_80`];
+          break;
         case "500015":
         case "69":
         case "67":
@@ -743,6 +749,10 @@ export const actionSetUserdata = (
 
       if (headers["x-cdn-yb"] && configInfo.MOBILE_WEB_TPL === "porn1") {
         cdnRoot = `https://${headers["x-cdn-yb"].split(",")[0]}`;
+      }
+
+      if (headers["x-cdn-sg"] && configInfo.MOBILE_WEB_TPL === "sg1") {
+        cdnRoot = `https://${headers["x-cdn-sg"].split(",")[0]}`;
       }
 
       commit(types.SETCDNROOT, cdnRoot);
@@ -903,7 +913,7 @@ export const actionAgentInit = ({ state, dispatch, commit }, next) => {
 
         const defaultLang =
           ["47", "70", "71"].includes(state.agentInfo.user.domain) &&
-          state.webInfo.is_production
+            state.webInfo.is_production
             ? "vi"
             : "zh-cn";
         await getLang(state.webInfo.language, defaultLang);
@@ -1584,7 +1594,7 @@ export const actionGetMemInfoV3 = ({ state, dispatch, commit }) => {
         dispatch("actionSetGlobalMessage", {
           msg: error.response.data.msg,
           cb: () => {
-            member.logout().then(() => {});
+            member.logout().then(() => { });
           }
         });
       }
@@ -1791,7 +1801,11 @@ export const actionSetWebDomain = ({ commit }) =>
         domain: "",
         site: "porn1"
       };
-      console.log("[conf/domain]:", res.data);
+
+      console.log("[conf/domain]:", {
+        ...res.data,
+        version: version.find(i => i.site === res.data.site).version
+      });
       const site = (res && res.data && String(res.data.site)) || "";
       const domain = (res && res.data && String(res.data.domain)) || "";
       result["site"] = site;
@@ -1802,3 +1816,68 @@ export const actionSetWebDomain = ({ commit }) =>
       console.log("[conf/domain]:", res);
       commit(types.SET_WEB_DOMAIN, { site: "porn1", domain: "67" });
     });
+
+// SWAG設定
+export const actionSetSwagConfig = ({ commit, state, dispatch }, data) => {
+  let configInfo;
+  if (state.webInfo.is_production) {
+    configInfo =
+      siteConfigOfficial[`site_${state.webInfo.alias}`] ||
+      siteConfigOfficial.preset;
+  } else {
+    configInfo =
+      siteConfigTest[`site_${state.webInfo.alias}`] || siteConfigTest.preset;
+  }
+
+  return bbosRequest({
+    method: "get",
+    url: configInfo.BBOS_DOMIAN + "/Ext/Swag/Domain/Config",
+    reqHeaders: {
+      Vendor: state.memInfo.user.domain
+    },
+    params: {
+      lang: "zh-cn"
+    }
+  }).then(res => {
+    if (res.errorCode !== "00" || res.status !== "000") {
+      // dispatch("actionSetGlobalMessage", {
+      //   msg: res.msg,
+      //   code: res.code
+      // });
+      return;
+    }
+    commit(types.SET_SWAG_CONFIG, res.data);
+  });
+};
+
+export const actionSetSwagBalance = ({ commit, state }, data) => {
+  const hasLogin = Vue.cookie.get("cid");
+  if (!hasLogin) {
+    return;
+  }
+  let configInfo;
+  if (state.webInfo.is_production) {
+    configInfo =
+      siteConfigOfficial[`site_${state.webInfo.alias}`] ||
+      siteConfigOfficial.preset;
+  } else {
+    configInfo =
+      siteConfigTest[`site_${state.webInfo.alias}`] || siteConfigTest.preset;
+  }
+
+  return bbosRequest({
+    method: "get",
+    url: configInfo.BBOS_DOMIAN + "/Ext/Swag/Vendor/Quota",
+    reqHeaders: {
+      Vendor: state.memInfo.user.domain
+    },
+    params: {
+      lang: "zh-cn"
+    }
+  }).then(res => {
+    if (res.errorCode !== "00" || res.status !== "000") {
+      return;
+    }
+    commit(types.SET_SWAG_BALANCE, res.data);
+  });
+};
