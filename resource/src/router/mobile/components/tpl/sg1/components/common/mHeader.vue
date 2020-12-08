@@ -358,7 +358,7 @@ export default {
 
 .logo-wrap {
   float: left;
-  width: 99px;
+  width: 115px;
   height: 100%;
   display: flex;
   align-items: center;

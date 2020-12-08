@@ -1,8 +1,8 @@
 export default {
   normal: {
+    iframeSg1: () => import(/* webpackChunkName: 'iframeSg1' */'../../tpl/sg1/components/iframe'),
     homeSg1: () =>
       import(/* webpackChunkName: 'homeSg1' */ "../../tpl/sg1/components/home"),
-
     loginSg1: () =>
       import(
         /* webpackChunkName: 'loginSg1' */ "../../tpl/sg1/components/login"
@@ -133,6 +133,7 @@ export default {
     depositSg1: () =>
       import(
         /* webpackChunkName: 'depositSg1' */ "../../tpl/sg1/components/mcenter/components/deposit"
-      )
+      ),
+    feedbackSg1: () => import(/* webpackChunkName: 'feedbackSg1' */'../../tpl/sg1/components/mcenter/components/feedback'),
   }
 };
