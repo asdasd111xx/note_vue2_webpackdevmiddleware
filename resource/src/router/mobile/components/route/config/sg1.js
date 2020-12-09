@@ -1,6 +1,8 @@
 export default {
   normal: {
     iframeSg1: () => import(/* webpackChunkName: 'iframeSg1' */'../../tpl/sg1/components/iframe'),
+    casinoSg1: () => import(/* webpackChunkName: 'casinoSg1' */'../../tpl/sg1/components/casino'),
+    cardSg1: () => import(/* webpackChunkName: 'cardSg1' */'../../tpl/sg1/components/card'),
     homeSg1: () =>
       import(/* webpackChunkName: 'homeSg1' */ "../../tpl/sg1/components/home"),
     loginSg1: () =>
