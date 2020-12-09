@@ -10,7 +10,7 @@
             <img
               :src="
                 $getCdnPath(
-                  `/static/image/${siteConfig.MOBILE_WEB_TPL}/mcenter/vip/pic_vip_1.png`
+                  `/static/image/common/vip/pic_vip_1.png`
                 )
               "
               alt="icon"
@@ -38,7 +38,7 @@
             <img
               :src="
                 $getCdnPath(
-                  `/static/image/${siteConfig.MOBILE_WEB_TPL}/mcenter/vip/pic_vip_2.png`
+                  `/static/image/common/vip/pic_vip_2.png`
                 )
               "
               alt="icon"
@@ -68,7 +68,7 @@
             <img
               :src="
                 $getCdnPath(
-                  `/static/image/${siteConfig.MOBILE_WEB_TPL}/mcenter/vip/pic_vip_3.png`
+                  `/static/image/common/vip/pic_vip_3.png`
                 )
               "
               alt="icon"
@@ -85,7 +85,7 @@
             <img
               :src="
                 $getCdnPath(
-                  `/static/image/${siteConfig.MOBILE_WEB_TPL}/mcenter/vip/pic_vip_4.png`
+                  `/static/image/common/vip/pic_vip_4.png`
                 )
               "
               alt="icon"
@@ -118,7 +118,7 @@
             <img
               :src="
                 $getCdnPath(
-                  `/static/image/${siteConfig.MOBILE_WEB_TPL}/mcenter/vip/pic_vip_5.png`
+                  `/static/image/common/vip/pic_vip_5.png`
                 )
               "
               alt="icon"
@@ -135,7 +135,7 @@
             <img
               :src="
                 $getCdnPath(
-                  `/static/image/${siteConfig.MOBILE_WEB_TPL}/mcenter/vip/pic_vip_4.png`
+                  `/static/image/common/vip/pic_vip_4.png`
                 )
               "
               alt="icon"
@@ -199,4 +199,9 @@ export default {
   lang="scss"
   src="@/css/page/vip/ey1.vipInfo.scss"
   module="$style_ey1"
+></style>
+<style
+  lang="scss"
+  src="@/css/page/vip/sg1.vipInfo.scss"
+  module="$style_sg1"
 ></style>

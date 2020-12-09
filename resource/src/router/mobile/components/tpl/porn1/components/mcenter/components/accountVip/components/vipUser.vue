@@ -24,7 +24,7 @@
           <img
             :src="
               $getCdnPath(
-                `/static/image/${siteConfig.MOBILE_WEB_TPL}/mcenter/vip/ic_vip${userVipInfo.now_level_seq}.png`
+                `/static/image/common/vip/ic_vip${userVipInfo.now_level_seq}.png`
               )
             "
             alt="vip"
@@ -196,7 +196,7 @@ export default {
     }
   },
   mounted() {
-    this.avatarSrc = `/static/image/${this.siteConfig.MOBILE_WEB_TPL}/mcenter/avatar_nologin.png`;
+    this.avatarSrc = `/static/image/common/default/avatar_nologin.png`;
     this.actionSetUserdata(true).then(() => {
       this.getAvatarSrc();
 
@@ -267,4 +267,9 @@ export default {
   lang="scss"
   src="@/css/page/vip/ey1.vipUser.scss"
   module="$style_ey1"
+></style>
+<style
+  lang="scss"
+  src="@/css/page/vip/sg1.vipUser.scss"
+  module="$style_sg1"
 ></style>

@@ -41,7 +41,7 @@
             <img
               :src="
                 $getCdnPath(
-                  `/static/image/${siteConfig.MOBILE_WEB_TPL}/mcenter/vip/vipcard_bg.png`
+                  `/static/image/common/vip/vipcard_bg.png`
                 )
               "
               alt="vipcard_bg"
@@ -56,7 +56,7 @@
               :class="$style['card-level-image']"
               :src="
                 $getCdnPath(
-                  `/static/image/${siteConfig.MOBILE_WEB_TPL}/mcenter/vip/ic_vip${item.seq}.png`
+                  `/static/image/common/vip/ic_vip${item.seq}.png`
                 )
               "
               alt="vipLevel_bg"
@@ -67,7 +67,7 @@
               :class="$style['card-level-image']"
               :src="
                 $getCdnPath(
-                  `/static/image/${siteConfig.MOBILE_WEB_TPL}/mcenter/vip/ic_s_vip${item.seq}.png`
+                  `/static/image/common/vip/ic_s_vip${item.seq}.png`
                 )
               "
               alt="vipLevel_bg"
@@ -238,4 +238,9 @@ export default {
   lang="scss"
   src="@/css/page/vip/ey1.vipLevelCard.scss"
   module="$style_ey1"
+></style>
+<style
+  lang="scss"
+  src="@/css/page/vip/sg1.vipLevelCard.scss"
+  module="$style_sg1"
 ></style>
