@@ -192,7 +192,9 @@
         </div>
       </template>
       <div v-else :class="$style['no-data-wrap']">
-      <img :src="$getCdnPath(`/static/image/${themeTPL}/mcenter/no_data.png`)" />
+        <img
+          :src="$getCdnPath(`/static/image/${themeTPL}/mcenter/no_data.png`)"
+        />
         <div :class="$style.tips">还没有任何记录</div>
         <div
           :class="$style['btn-money']"
@@ -214,12 +216,12 @@
 </template>
 
 <script>
-import Vue from 'vue';
-import InfiniteLoading from 'vue-infinite-loading';
-import EST from '@/lib/EST';
-import ajax from '@/lib/ajax';
-import datePicker from '@/router/mobile/components/common/datePicker';
-import { mapGetters, mapActions } from 'vuex';
+import Vue from "vue";
+import InfiniteLoading from "vue-infinite-loading";
+import EST from "@/lib/EST";
+import ajax from "@/lib/ajax";
+import datePicker from "@/router/mobile/components/common/datePicker";
+import { mapGetters, mapActions } from "vuex";
 
 export default {
   components: {
@@ -241,64 +243,64 @@ export default {
       hasFooter: false,
       options: [
         {
-          name: '全部',
-          key: 'all',
+          name: "全部",
+          key: "all",
           status: 0
         },
         {
-          name: '已派发',
-          key: 'dispatch',
+          name: "已派发",
+          key: "dispatch",
           status: 1
         },
         {
-          name: '已撤销',
-          key: 'revoked',
+          name: "已撤销",
+          key: "revoked",
           status: 2
         },
         {
-          name: '资格不符',
-          key: 'allow',
+          name: "资格不符",
+          key: "allow",
           status: 3
         }
       ],
-      selectMenu: '',
-      selectType: { name: '全部', key: 'all', status: 0 },
+      selectMenu: "",
+      selectType: { name: "全部", key: "all", status: 0 },
       isCustomTime: false,
-      currentSelectTime: this.$t('S_TODDAY'),
-      selectTime: this.$t('S_TODDAY'),
-      estToday: EST(new Date(), '', true),
-      limitDate: '',
-      startTime: '',
-      endTime: '',
+      currentSelectTime: this.$t("S_TODDAY"),
+      selectTime: this.$t("S_TODDAY"),
+      estToday: EST(new Date(), "", true),
+      limitDate: "",
+      startTime: "",
+      endTime: "",
       mainListData: [],
       mainTotal: {},
       mainNoData: true,
-      currentCustomDate: '',
+      currentCustomDate: "",
       isShowDatePicker: false,
       allTotalData: [
         {
-          text: this.$text('S_TODDAY', '今日'),
-          name: 'today',
+          text: this.$text("S_TODDAY", "今日"),
+          name: "today",
           value: 0
         },
         {
-          text: this.$text('S_YESTERDAY', '昨日'),
-          name: 'yesterday',
+          text: this.$text("S_YESTERDAY", "昨日"),
+          name: "yesterday",
           value: 1
         },
         {
-          text: this.$text('S_SEVEN_DAY', '近7日'),
-          name: 'week',
+          text: this.$text("S_SEVEN_DAY", "近7日"),
+          name: "week",
           value: 7
         },
         {
-          text: this.$text('S_THIRTY_DAY', '近30日'),
-          name: 'month',
+          text: this.$text("S_THIRTY_DAY", "近30日"),
+          name: "month",
           value: 29
         },
         {
-          text: this.$text('S_CUSTOM_DATE', '自定义'),
-          name: 'custom',
+          text: this.$text("S_CUSTOM_DATE", "自定义"),
+          name: "custom",
           value: 29
         }
       ],
@@ -312,13 +314,14 @@ export default {
   },
   computed: {
     ...mapGetters({
-      siteConfig: 'getSiteConfig',
+      siteConfig: "getSiteConfig"
     }),
     themeTPL() {
       return this.siteConfig.MOBILE_WEB_TPL;
     },
     $style() {
-      const style = this[`$style_${this.siteConfig.MOBILE_WEB_TPL}`] || this.$style_porn1;
+      const style =
+        this[`$style_${this.siteConfig.MOBILE_WEB_TPL}`] || this.$style_porn1;
       return style;
     },
     setStartTime: {
@@ -326,7 +329,7 @@ export default {
         return new Date(this.startTime);
       },
       set(value) {
-        this.startTime = Vue.moment(value).format('YYYY-MM-DD');
+        this.startTime = Vue.moment(value).format("YYYY-MM-DD");
       }
     },
     setEndTime: {
@@ -334,42 +337,50 @@ export default {
         return new Date(this.endTime);
       },
       set(value) {
-        this.endTime = Vue.moment(value).format('YYYY-MM-DD');
+        this.endTime = Vue.moment(value).format("YYYY-MM-DD");
       }
     },
     showData() {
       if (this.mainData.length === 0) {
         return false;
       }
-      return this.mainData.some((item) => this.controlData.some((data) => item.day === data.day));
+      return this.mainData.some(item =>
+        this.controlData.some(data => item.day === data.day)
+      );
     }
   },
   watch: {
     selectMenu() {
-      document.querySelector('#mobile-wrap').style = this.selectMenu ? 'overflow: hidden' : '';
+      document.querySelector("#mobile-wrap").style = this.selectMenu
+        ? "overflow: hidden"
+        : "";
     }
   },
   created() {
-    this.startTime = Vue.moment(this.estToday).format('YYYY-MM-DD');
-    this.endTime = Vue.moment(this.estToday).format('YYYY-MM-DD');
-    this.limitDate = new Date(Vue.moment(this.estToday).add(-29, 'days').format('YYYY-MM-DD'));
+    this.startTime = Vue.moment(this.estToday).format("YYYY-MM-DD");
+    this.endTime = Vue.moment(this.estToday).format("YYYY-MM-DD");
+    this.limitDate = new Date(
+      Vue.moment(this.estToday)
+        .add(-29, "days")
+        .format("YYYY-MM-DD")
+    );
     this.isLoading = true;
     this.getGiftList();
   },
   methods: {
     getStatus(info) {
       if (!info.allow) {
-        return '资格不符';
+        return "资格不符";
       }
 
       if (info.revoked) {
-        return '已撤销';
+        return "已撤销";
       }
 
-      return '已派发';
+      return "已派发";
     },
     getLabel(data) {
-      this.selectMenu = '';
+      this.selectMenu = "";
       this.selectType = data;
       this.showPage = 0;
       this.mainTotal = {};
@@ -381,14 +392,18 @@ export default {
     getTimeRecord(data) {
       this.currentSelectTime = data.text;
 
-      this.startTime = Vue.moment(this.estToday).add(-data.value, 'days').format('YYYY-MM-DD');
-      this.endTime = Vue.moment(this.estToday).format('YYYY-MM-DD');
+      this.startTime = Vue.moment(this.estToday)
+        .add(-data.value, "days")
+        .format("YYYY-MM-DD");
+      this.endTime = Vue.moment(this.estToday).format("YYYY-MM-DD");
 
-      if (data.name === 'yesterday') {
-        this.endTime = Vue.moment(this.estToday).add(-data.value, 'days').format('YYYY-MM-DD');
+      if (data.name === "yesterday") {
+        this.endTime = Vue.moment(this.estToday)
+          .add(-data.value, "days")
+          .format("YYYY-MM-DD");
       }
 
-      if (data.name === 'custom') {
+      if (data.name === "custom") {
         this.isShowDatePicker = true;
         return;
       }
@@ -396,7 +411,7 @@ export default {
       this.selectTime = data.text;
       this.isShowDatePicker = false;
       this.isCustomTime = false;
-      this.selectMenu = '';
+      this.selectMenu = "";
       this.showPage = 0;
       this.pagination = {};
       this.mainTotal = {};
@@ -406,8 +421,12 @@ export default {
     },
     getGiftList() {
       const params = {
-        dispatch_start_at: Vue.moment(this.startTime).format('YYYY-MM-DD 00:00:00-04:00'),
-        dispatch_end_at: Vue.moment(this.endTime).format('YYYY-MM-DD 23:59:59-04:00'),
+        dispatch_start_at: Vue.moment(this.startTime).format(
+          "YYYY-MM-DD 00:00:00-04:00"
+        ),
+        dispatch_end_at: Vue.moment(this.endTime).format(
+          "YYYY-MM-DD 23:59:59-04:00"
+        ),
         max_results: this.maxResults,
         first_result: this.maxResults * this.showPage
       };
@@ -416,14 +435,14 @@ export default {
         params.status = this.selectType.status;
       }
 
-      this.startTime = Vue.moment(this.startTime).format('YYYY-MM-DD');
-      this.endTime = Vue.moment(this.endTime).format('YYYY-MM-DD');
+      this.startTime = Vue.moment(this.startTime).format("YYYY-MM-DD");
+      this.endTime = Vue.moment(this.endTime).format("YYYY-MM-DD");
 
       return ajax({
-        method: 'get',
-        url: '/api/v1/c/festival/entry/list',
+        method: "get",
+        url: "/api/v1/c/festival/entry/list",
         params,
-        success: (response) => {
+        success: response => {
           this.isLoading = false;
           if (response.ret.length === 0) {
             return;
@@ -446,24 +465,24 @@ export default {
       });
     },
     cancelCustomTime() {
-      if (this.allTotalData.some((item) => item.text === this.selectTime)) {
+      if (this.allTotalData.some(item => item.text === this.selectTime)) {
         this.currentSelectTime = this.selectTime;
         this.isShowDatePicker = false;
       }
 
-      this.selectMenu = '';
+      this.selectMenu = "";
     },
     setCustomTime() {
       if (this.setStartTime > this.setEndTime) {
         return;
       }
 
-      this.startTime = Vue.moment(this.setStartTime).format('YYYY-MM-DD');
-      this.endTime = Vue.moment(this.setEndTime).format('YYYY-MM-DD');
+      this.startTime = Vue.moment(this.setStartTime).format("YYYY-MM-DD");
+      this.endTime = Vue.moment(this.setEndTime).format("YYYY-MM-DD");
       this.selectTime = `${this.startTime} ${this.endTime}`;
       this.isCustomTime = true;
-      this.currentCustomDate = '';
-      this.selectMenu = '';
+      this.currentCustomDate = "";
+      this.selectMenu = "";
       this.updateGame();
     },
     /**
@@ -479,11 +498,14 @@ export default {
       this.isReceive = true;
       this.getGiftList().then(({ result }) => {
         this.isReceive = false;
-        if (result !== 'ok') {
+        if (result !== "ok") {
           return;
         }
 
-        if (!this.pagination.total || this.mainListData.length === +this.pagination.total) {
+        if (
+          !this.pagination.total ||
+          this.mainListData.length === +this.pagination.total
+        ) {
           $state.complete();
           return;
         }
@@ -499,3 +521,4 @@ export default {
 
 <style lang="scss" src="./css/porn1.module.scss" module="$style_porn1"></style>
 <style lang="scss" src="./css/ey1.module.scss" module="$style_ey1"></style>
+<style lang="scss" src="./css/sg1.module.scss" module="$style_sg1"></style>

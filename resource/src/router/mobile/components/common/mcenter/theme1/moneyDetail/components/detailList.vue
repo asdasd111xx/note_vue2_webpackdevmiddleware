@@ -63,12 +63,14 @@ import { mapGetters } from "vuex";
 export default {
   filters: {
     timeFormat(date) {
-      return Vue.moment(date).utcOffset(-4).format("HH:mm:ss");
-    },
+      return Vue.moment(date)
+        .utcOffset(-4)
+        .format("HH:mm:ss");
+    }
   },
   computed: {
     ...mapGetters({
-      siteConfig: "getSiteConfig",
+      siteConfig: "getSiteConfig"
     }),
     themeTPL() {
       return this.siteConfig.MOBILE_WEB_TPL;
@@ -77,28 +79,28 @@ export default {
       const style =
         this[`$style_${this.siteConfig.MOBILE_WEB_TPL}`] || this.$style_porn1;
       return style;
-    },
+    }
   },
   props: {
     currentCategory: {
       type: Object,
-      required: true,
+      required: true
     },
     opcodeList: {
       type: Object,
-      required: true,
+      required: true
     },
     detailList: {
       type: Object,
-      default: null,
+      default: null
     },
     detailInfo: {
       type: Object,
-      default: null,
+      default: null
     },
     pageType: {
-      default: "",
-    },
+      default: ""
+    }
   },
   methods: {
     onClick(info) {
@@ -108,8 +110,8 @@ export default {
       if (this.pageType !== "ingroup_transfer" && this.pageType !== "swag") {
         this.$router.push("/mobile/mcenter/moneyDetail/detail?id=" + info.id);
       }
-    },
-  },
+    }
+  }
 };
 </script>
 

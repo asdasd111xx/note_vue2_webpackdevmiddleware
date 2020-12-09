@@ -14,7 +14,7 @@
         <div
           :class="[
             $style['link-wrap'],
-            { [$style['has-date']]: currentDate.key === 'custom' },
+            { [$style['has-date']]: currentDate.key === 'custom' }
           ]"
           @click="changeCondition('date')"
         >
@@ -35,7 +35,7 @@
             :key="option.key"
             :class="[
               $style.select,
-              { [$style.active]: currentCategory.key === option.key },
+              { [$style.active]: currentCategory.key === option.key }
             ]"
             @click="setCategory(option)"
           >
@@ -53,7 +53,7 @@
             :key="option.key"
             :class="[
               $style['select-time'],
-              { [$style.active]: currentDate.key === option.key },
+              { [$style.active]: currentDate.key === option.key }
             ]"
             @click="setDate(option)"
           >
@@ -110,9 +110,9 @@
     <detail-info
       v-if="
         $route.params.page === 'detail' &&
-        detailInfo &&
-        pageType !== 'ingroup_transfer' &&
-        pageType !== 'swag'
+          detailInfo &&
+          pageType !== 'ingroup_transfer' &&
+          pageType !== 'swag'
       "
       :current-category="currentCategory"
       :opcode-list="opcodeList"
@@ -154,8 +154,8 @@ export default {
   props: {
     //  額度轉讓共用
     pageType: {
-      default: "",
-    },
+      default: ""
+    }
   },
   components: {
     InfiniteLoading,
@@ -168,19 +168,19 @@ export default {
     pageLoading: () =>
       import(
         /* webpackChunkName: 'pageLoading' */ "@/router/mobile/components/common/pageLoading"
-      ),
+      )
   },
   filters: {
     dateFormat(date) {
       return Vue.moment(date).format("YYYY-MM-DD");
-    },
+    }
   },
   watch: {
     detailInfo(val) {
       if (this.pageType === "ingroup_transfer" || this.pageType === "swag") {
         this.$emit("showDetail", val);
       }
-    },
+    }
   },
   data() {
     const estToday = EST(new Date(), "", true);
@@ -197,7 +197,7 @@ export default {
       showDatePicker: false,
       currentCategory: {
         key: "deposit",
-        text: this.$text("S_DEPOSIT", "充值"),
+        text: this.$text("S_DEPOSIT", "充值")
       },
       currentDate: { key: "today", text: this.$text("S_TODDAY", "今日") },
       currentDatePicker: "",
@@ -211,12 +211,12 @@ export default {
       pageNow: 1, // 當前頁
       pageAll: 1, // 總頁數
       isLoading: true,
-      categoryOpt: [],
+      categoryOpt: []
     };
   },
   computed: {
     ...mapGetters({
-      siteConfig: "getSiteConfig",
+      siteConfig: "getSiteConfig"
     }),
     $style() {
       const style =
@@ -232,7 +232,7 @@ export default {
         { key: "manual", text: "人工" },
         { key: "wage", text: "返利" },
         { key: "ingroup_transfer", text: "转让" },
-        { key: "outer", text: "SWAG" },
+        { key: "outer", text: "SWAG" }
       ];
     },
     dateOptions() {
@@ -241,9 +241,9 @@ export default {
         { key: "yesterday", text: "昨日" },
         { key: "week", text: "近7日" },
         { key: "thirty", text: "近30日" },
-        { key: "custom", text: "自定义" },
+        { key: "custom", text: "自定义" }
       ];
-    },
+    }
   },
   created() {
     if (this.$route.params.page === "detail") {
@@ -255,11 +255,14 @@ export default {
       }
     }
 
-    if (this.siteConfig.MOBILE_WEB_TPL !== "porn1") {
+    if (
+      this.siteConfig.MOBILE_WEB_TPL !== "porn1" &&
+      this.siteConfig.MOBILE_WEB_TPL !== "sg1"
+    ) {
       this.categoryOpt = this.categoryOptions.filter(
-        (i) => i.key !== "ingroup_transfer"
+        i => i.key !== "ingroup_transfer"
       );
-      this.categoryOpt = this.categoryOptions.filter((i) => i.key !== "outer");
+      this.categoryOpt = this.categoryOptions.filter(i => i.key !== "outer");
     } else {
       this.categoryOpt = this.categoryOptions;
     }
@@ -270,7 +273,7 @@ export default {
           return;
         }
         this.opcodeList = ret;
-      },
+      }
     });
 
     // 共用額度轉移紀錄
@@ -300,11 +303,11 @@ export default {
           category: this.pageType === "swag" ? "outer" : this.type,
           order: this.sort,
           first_result: this.firstResult,
-          max_results: this.maxResults,
+          max_results: this.maxResults
         };
       }
 
-      if (this.type.find((i) => i === "ingroup_transfer")) {
+      if (this.type.find(i => i === "ingroup_transfer")) {
         params["opcode"] = [
           "8007",
           "1049",
@@ -312,11 +315,11 @@ export default {
           "5018",
           "5019",
           "5017",
-          "5016",
+          "5016"
         ];
       }
 
-      if (this.type.find((i) => i === "outer") && this.pageType === "swag") {
+      if (this.type.find(i => i === "outer") && this.pageType === "swag") {
         params["opcode"] = ["9001"];
       }
 
@@ -362,17 +365,17 @@ export default {
           if (localStorage.getItem("money-detail-params-service")) {
             let id =
               this.$route.query.id || localStorage.getItem("money-detail-id");
-            this.detailInfo = ret.find((i) => i.id === id);
+            this.detailInfo = ret.find(i => i.id === id);
             setTimeout(() => {
               localStorage.removeItem("money-detail-params-service");
               localStorage.removeItem("money-detail-id");
             }, 500);
           }
         },
-        fail: (res) => {
+        fail: res => {
           this.isLoading = false;
           this.actionSetGlobalMessage({ msg: `${res.data.msg}` });
-        },
+        }
       });
     },
     setDefaultCreditTrans() {
@@ -530,8 +533,8 @@ export default {
 
         $state.loaded();
       });
-    },
-  },
+    }
+  }
 };
 </script>
 
