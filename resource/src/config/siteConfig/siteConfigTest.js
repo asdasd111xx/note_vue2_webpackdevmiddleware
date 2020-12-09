@@ -21,7 +21,7 @@ export const preset = {
  */
 export const site_500015 = {
   ...preset,
-  MOBILE_WEB_TPL: "porn1",
+  MOBILE_WEB_TPL: "sg1",
   VERSION: getVersion("porn1"),
   SITE_NAME: "鸭博娱乐"
 };

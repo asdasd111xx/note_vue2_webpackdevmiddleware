@@ -57,7 +57,7 @@
             :class="[
               $style[key],
               $style.placeholder,
-              { [$style.error]: allText[key].error }
+              { [$style.error]: allText[key].error },
             ]"
           >
             <template v-if="!allValue[key]">
@@ -70,8 +70,8 @@
                 {
                   [$style.active]: allValue[key],
                   [$style.error]: allText[key].error,
-                  [$style['show-placeholder']]: !allValue[key]
-                }
+                  [$style['show-placeholder']]: !allValue[key],
+                },
               ]"
               :maxlength="allText[key].maxLength"
               v-model="allValue[key]"
@@ -86,8 +86,8 @@
                 {
                   [$style.active]: allValue[key],
                   [$style.error]: allText[key].error,
-                  [$style['show-placeholder']]: !allValue[key]
-                }
+                  [$style['show-placeholder']]: !allValue[key],
+                },
               ]"
               :data-key="key"
               :maxlength="allText[key].maxLength"
@@ -101,7 +101,7 @@
               v-if="['password', 'confirm_password'].includes(key)"
               :class="[
                 $style['btn-show-password'],
-                { [$style.active]: allText[key].type === 'text' }
+                { [$style.active]: allText[key].type === 'text' },
               ]"
               @click="onShowPassword()"
             />
@@ -126,7 +126,7 @@
             :class="[
               $style['captcha-unit'],
               $style['captcha-unit-captcha'],
-              $style['clearfix']
+              $style['clearfix'],
             ]"
           >
             <input
@@ -178,60 +178,60 @@
 </template>
 
 <script>
-import friendsRecommend from '@/mixins/mcenter/management/friendsRecommend';
-import promoteFunction from '@/mixins/mcenter/management/promoteFunction';
-import message from '@/router/mobile/components/common/message';
-import { mapGetters, mapActions } from 'vuex';
-import puzzleVerification from '@/components/puzzleVerification';
-import slideVerification from '@/components/slideVerification';
-import popupVerification from '@/components/popupVerification';
+import friendsRecommend from "@/mixins/mcenter/management/friendsRecommend";
+import promoteFunction from "@/mixins/mcenter/management/promoteFunction";
+import message from "@/router/mobile/components/common/message";
+import { mapGetters, mapActions } from "vuex";
+import puzzleVerification from "@/components/puzzleVerification";
+import slideVerification from "@/components/slideVerification";
+import popupVerification from "@/components/popupVerification";
 import bbosRequest from "@/api/bbosRequest";
-import * as apis from '@/config/api';
-import { getCookie, setCookie } from '@/lib/cookie';
+import * as apis from "@/config/api";
+import { getCookie, setCookie } from "@/lib/cookie";
 
 export default {
   components: {
-    popup: () => import(/* webpackChunkName: 'popup' */'../popup/index'),
+    popup: () => import(/* webpackChunkName: 'popup' */ "../popup/index"),
     message,
     slideVerification,
     puzzleVerification,
-    popupVerification
+    popupVerification,
   },
   mixins: [friendsRecommend, promoteFunction],
   data() {
     return {
       texts: {
         username: {
-          placeholder: 'S_USERNAME_ERROR',
-          error: 'S_USERNAME_ERROR'
+          placeholder: "S_USERNAME_ERROR",
+          error: "S_USERNAME_ERROR",
         },
         // 密碼
         password: {
-          placeholder: 'S_PASSWORD_ERROR',
-          error: 'S_PASSWORD_ERROR'
+          placeholder: "S_PASSWORD_ERROR",
+          error: "S_PASSWORD_ERROR",
         },
         // 確認密碼
         confirm_password: {
-          placeholder: 'S_PWD_CONFIRM',
-          error: 'S_JM_PASSWD_CONFIRM_ERROR'
+          placeholder: "S_PWD_CONFIRM",
+          error: "S_JM_PASSWD_CONFIRM_ERROR",
         },
         // 會員姓名
         name: {
-          placeholder: 'S_REGISTER_TIPS',
-          error: 'S_NO_SYMBOL_DIGIT_CHEN'
+          placeholder: "S_REGISTER_TIPS",
+          error: "S_NO_SYMBOL_DIGIT_CHEN",
         },
       },
       puzzleData: null,
       isGetCaptcha: false, // 重新取得驗證碼
-      captchaImg: '',
+      captchaImg: "",
       toggleCaptcha: false,
     };
   },
   computed: {
     ...mapGetters({
-      memInfo: 'getMemInfo',
-      siteConfig: 'getSiteConfig',
-      isBackEnd: 'getIsBackEnd',
+      memInfo: "getMemInfo",
+      siteConfig: "getSiteConfig",
+      isBackEnd: "getIsBackEnd",
     }),
     puzzleObj: {
       get() {
@@ -239,29 +239,29 @@ export default {
       },
       set(value) {
         this.puzzleData = value;
-      }
+      },
     },
     $style() {
-      const style = this[`$style_${this.siteConfig.MOBILE_WEB_TPL}`] || this.$style_porn1;
+      const style =
+        this[`$style_${this.siteConfig.MOBILE_WEB_TPL}`] || this.$style_porn1;
       return style;
     },
     isShowCaptcha: {
       get() {
-        return this.toggleCaptcha
+        return this.toggleCaptcha;
       },
       set(value) {
-        return this.toggleCaptcha = value
-      }
+        return (this.toggleCaptcha = value);
+      },
     },
     captchaData: {
       get() {
-        return this.allValue['captcha']
+        return this.allValue["captcha"];
       },
       set(value) {
-        return this.allValue['captcha'] = value
-      }
+        return (this.allValue["captcha"] = value);
+      },
     },
-
   },
   created() {
     this.getCaptcha();
@@ -278,25 +278,25 @@ export default {
       }, 800);
 
       bbosRequest({
-        method: 'post',
-        url: this.siteConfig.BBOS_DOMIAN + '/Captcha',
+        method: "post",
+        url: this.siteConfig.BBOS_DOMIAN + "/Captcha",
         reqHeaders: {
-          'Vendor': this.memInfo.user.domain
+          Vendor: this.memInfo.user.domain,
         },
         params: {
-          "lang": "zh-cn",
-          "format": "png",
+          lang: "zh-cn",
+          format: "png",
         },
       }).then((res) => {
         if (res.data && res.data.data) {
           this.captchaImg = res.data.data;
           this.aid = res.data.cookie.aid;
-          setCookie('aid', res.data.cookie.aid);
+          setCookie("aid", res.data.cookie.aid);
         }
       });
     },
     captchaVerification(val) {
-      this.allValue['captcha'] = val.replace(/[\W\_]/g, '');
+      this.allValue["captcha"] = val.replace(/[\W\_]/g, "");
     },
     showCaptchaPopup() {
       // 無認證直接呼叫
@@ -310,7 +310,6 @@ export default {
         return;
       }
 
-
       // 彈驗證窗並利用Watch captchaData來呼叫 getKeyring()
       this.toggleCaptcha = true;
     },
@@ -323,3 +322,4 @@ export default {
 
 <style lang="scss" src="./css/porn1.module.scss" module="$style_porn1"></style>
 <style lang="scss" src="./css/ey1.module.scss" module="$style_ey1"></style>
+<style lang="scss" src="./css/sg1.module.scss" module="$style_sg1"></style>

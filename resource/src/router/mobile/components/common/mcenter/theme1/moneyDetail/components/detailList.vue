@@ -63,61 +63,56 @@ import { mapGetters } from "vuex";
 export default {
   filters: {
     timeFormat(date) {
-      return Vue.moment(date)
-        .utcOffset(-4)
-        .format("HH:mm:ss");
-    }
+      return Vue.moment(date).utcOffset(-4).format("HH:mm:ss");
+    },
   },
   computed: {
     ...mapGetters({
-      siteConfig: "getSiteConfig"
+      siteConfig: "getSiteConfig",
     }),
     themeTPL() {
       return this.siteConfig.MOBILE_WEB_TPL;
     },
     $style() {
       const style =
-        this[`$style_${this.siteConfig.MOBILE_WEB_TPL}`] ||
-        this.$style_porn1;
+        this[`$style_${this.siteConfig.MOBILE_WEB_TPL}`] || this.$style_porn1;
       return style;
-    }
+    },
   },
   props: {
     currentCategory: {
       type: Object,
-      required: true
+      required: true,
     },
     opcodeList: {
       type: Object,
-      required: true
+      required: true,
     },
     detailList: {
       type: Object,
-      default: null
+      default: null,
     },
     detailInfo: {
       type: Object,
-      default: null
+      default: null,
     },
     pageType: {
-      default: ""
-    }
+      default: "",
+    },
   },
   methods: {
     onClick(info) {
       this.$emit("update:detailInfo", info);
-      localStorage.setItem('money-detail-id', info.id);
+      localStorage.setItem("money-detail-id", info.id);
 
-      if (this.pageType !== "ingroup_transfer" &&
-        this.pageType !== "swag") {
-        this.$router.push(
-          "/mobile/mcenter/moneyDetail/detail?id=" + info.id
-        );
+      if (this.pageType !== "ingroup_transfer" && this.pageType !== "swag") {
+        this.$router.push("/mobile/mcenter/moneyDetail/detail?id=" + info.id);
       }
-    }
-  }
+    },
+  },
 };
 </script>
 
 <style lang="scss" src="../css/porn1.list.scss" module="$style_porn1"></style>
 <style lang="scss" src="../css/ey1.list.scss" module="$style_ey1"></style>
+<style lang="scss" src="../css/sg1.list.scss" module="$style_sg1"></style>

@@ -1,0 +1,27 @@
+@import "./porn1.module.scss";
+$main_color: linear-gradient(to left, #fe593c, #e61938);
+
+.date-wrap {
+  > div {
+    &.active {
+      &::after {
+        background: $main_color;
+      }
+    }
+  }
+}
+
+.member-total {
+  background-color: #eeeeee;
+  color: #e61938;
+}
+
+.btn-check {
+  border-radius: 5px;
+  background: $main_color;
+  color: white;
+}
+
+.member-text {
+  color: #e61938;
+}
