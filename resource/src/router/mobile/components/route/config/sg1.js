@@ -137,5 +137,6 @@ export default {
         /* webpackChunkName: 'depositSg1' */ "../../tpl/sg1/components/mcenter/components/deposit"
       ),
     feedbackSg1: () => import(/* webpackChunkName: 'feedbackSg1' */'../../tpl/sg1/components/mcenter/components/feedback'),
+    swagSg1: () => import(/* webpackChunkName: 'swagSg1' */'../../tpl/sg1/components/mcenter/components/swag')
   }
 };

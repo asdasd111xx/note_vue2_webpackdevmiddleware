@@ -31,6 +31,16 @@ export default {
       default: null
     },
   },
+  computed: {
+    ...mapGetters({
+      siteConfig: "getSiteConfig"
+    }),
+    $style() {
+      const style =
+        this[`$style_${this.siteConfig.MOBILE_WEB_TPL}`] || this.$style_porn1;
+      return style;
+    },
+  },
   components: {
     pageLoading: () => import(/* webpackChunkName: 'pageLoading' */ '@/router/mobile/components/common/pageLoading'),
     detailInfo,
@@ -51,6 +61,7 @@ export default {
       opcodeList: null
     }
   },
+
   methods: {
     onClose() {
       this.$nextTick(() => {
@@ -64,39 +75,6 @@ export default {
   },
 };
 </script>
-<style lang="scss"  module>
-@import "../css/index.module.scss";
 
-.detail-header {
-  z-index: 3;
-  width: 100%;
-  height: 43px;
-  padding: 0 17px;
-  background: #fefffe;
-  text-align: center;
-  position: relative;
-
-  .title {
-    font-size: 16px;
-    font-family: Source Han Sans CN, Source Han Sans CN-Medium;
-    font-weight: 500;
-    text-align: center;
-    color: #000000;
-    line-height: 43px;
-  }
-}
-
-.btn-prev {
-  position: absolute;
-  width: 20px;
-  height: 100%;
-  display: flex;
-  align-items: center;
-  justify-content: center;
-
-  > img {
-    width: 20px;
-    height: 20px;
-  }
-}
-</style>
+<style lang="scss" src="../css/porn1.module.scss" module="$style_porn1"></style>
+<style lang="scss" src="../css/sg1.module.scss" module="$style_sg1"></style>

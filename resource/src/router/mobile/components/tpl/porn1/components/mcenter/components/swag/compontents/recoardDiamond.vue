@@ -27,8 +27,13 @@ export default {
   },
   computed: {
     ...mapGetters({
-      memInfo: "getMemInfo"
+      siteConfig: "getSiteConfig"
     }),
+    $style() {
+      const style =
+        this[`$style_${this.siteConfig.MOBILE_WEB_TPL}`] || this.$style_porn1;
+      return style;
+    },
   },
   methods: {
     showDetail(info) {
@@ -37,13 +42,5 @@ export default {
   }
 };
 </script>
-
-<style lang="scss" module>
-@import "../css/index.module.scss";
-.recoard-credit-trans {
-  overflow-x: hidden;
-  overflow-y: auto;
-  position: relative;
-  width: 100%;
-}
-</style>
+<style lang="scss" src="../css/porn1.module.scss" module="$style_porn1"></style>
+<style lang="scss" src="../css/sg1.module.scss" module="$style_sg1"></style>
