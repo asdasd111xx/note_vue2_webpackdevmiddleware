@@ -42,7 +42,7 @@
         <img
           :src="
             $getCdnPath(
-              '/static/image/porn1/mcenter/balanceTrans/ic_wallet_center.png'
+              '/static/image/common/mcenter/balanceTrans/ic_wallet_center.png'
             )
           "
         />
