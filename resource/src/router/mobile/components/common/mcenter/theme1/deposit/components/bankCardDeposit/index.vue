@@ -1107,7 +1107,7 @@ export default {
   props: {
     headerSetting: {
       type: Object,
-      default: () => {}
+      default: () => { }
     }
   },
   data() {
@@ -1148,7 +1148,7 @@ export default {
       confirmPopupObj: {
         msg: "",
         btnText: "",
-        cb: () => {}
+        cb: () => { }
       }
     };
   },
@@ -1723,10 +1723,10 @@ export default {
       return {
         src: `https://images.dormousepie.com/icon/bankIconBySwiftCode/${imgId}.png`,
         error: this.$getCdnPath(
-          "/static/image/_new/default/bank_default_2.png"
+          "/static/image/common/default/bank_card_default.png"
         ),
         loading: this.$getCdnPath(
-          "/static/image/_new/default/bank_default_2.png"
+          "/static/image/common/default/bank_card_default.png"
         )
       };
     },

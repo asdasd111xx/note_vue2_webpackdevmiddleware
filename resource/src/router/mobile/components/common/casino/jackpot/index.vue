@@ -101,7 +101,7 @@
     >
       <div :class="$style['single-bonus-cell']" style="animation:none">
         <div :class="$style['single-bonus-image']">
-          <img :src="'/static/image/casino/jackpot/ic_grand.png'" />
+          <img :src="'/static/image/common/casino/jackpot/ic_grand.png'" />
         </div>
         <div :class="$style['single-bonus-content']">
           <div :class="$style['weight']">Grand</div>
@@ -112,7 +112,7 @@
       </div>
       <div :class="$style['single-bonus-cell']" style="animation:none">
         <div :class="$style['single-bonus-image']">
-          <img :src="'/static/image/casino/jackpot/ic_major.png'" />
+          <img :src="'/static/image/common/casino/jackpot/ic_major.png'" />
         </div>
         <div :class="$style['single-bonus-content']">
           <div :class="$style['weight']">Major</div>
@@ -302,7 +302,7 @@ export default {
         case "bbin":
           this.jackpotType = 1;
           this.totalBonusTitle = "Grand";
-          this.totalBonusImage = "/static/image/casino/jackpot/gamejp.png";
+          this.totalBonusImage = "/static/image/common/casino/jackpot/gamejp.png";
           break;
 
         // 單一總彩金
@@ -312,7 +312,7 @@ export default {
         case "gti":
           this.jackpotType = 1;
           this.totalBonusTitle = this.vendor.toUpperCase();
-          this.totalBonusImage = `/static/image/casino/jackpot/ic_${this.vendor}.png`;
+          this.totalBonusImage = `/static/image/common/casino/jackpot/ic_${this.vendor}.png`;
           break;
 
         // 單一遊戲彩金

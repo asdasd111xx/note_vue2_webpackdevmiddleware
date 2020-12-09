@@ -1,0 +1,11 @@
+@import "./porn1.vipInfo.scss";
+
+.title {
+  &::before {
+    background: linear-gradient(#fe2a2a, #b60303);
+  }
+}
+
+.vip-detail {
+  color: #E42A30;
+}

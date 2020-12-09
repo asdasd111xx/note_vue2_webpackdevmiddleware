@@ -10,7 +10,7 @@
             <img
               :src="
                 $getCdnPath(
-                  `/static/image/${siteConfig.MOBILE_WEB_TPL}/mcenter/vip/pic_vip_1.png`
+                  `/static/image/common/vip/pic_vip_1.png`
                 )
               "
               alt="icon"
@@ -38,7 +38,7 @@
             <img
               :src="
                 $getCdnPath(
-                  `/static/image/${siteConfig.MOBILE_WEB_TPL}/mcenter/vip/pic_vip_2.png`
+                  `/static/image/common/vip/pic_vip_2.png`
                 )
               "
               alt="icon"
@@ -68,7 +68,7 @@
             <img
               :src="
                 $getCdnPath(
-                  `/static/image/${siteConfig.MOBILE_WEB_TPL}/mcenter/vip/pic_vip_3.png`
+                  `/static/image/common/vip/pic_vip_3.png`
                 )
               "
               alt="icon"
@@ -85,7 +85,57 @@
             <img
               :src="
                 $getCdnPath(
-                  `/static/image/${siteConfig.MOBILE_WEB_TPL}/mcenter/vip/pic_vip_4.png`
+                  `/static/image/common/vip/pic_vip_4.png`
+                )
+              "
+              alt="icon"
+            />
+          </div>
+          <div :class="$style['cell-text']">
+            <template v-if="['porn1', 'sg1'].includes(themeTPL)">
+              <div>
+                {{
+                  currentLevelData.monthly_gift == ""
+                    ? "--"
+                    : currentLevelData.monthly_gift
+                }}
+              </div>
+              <div>每月红包(月初自动派发)</div>
+            </template>
+
+            <template v-if="['ey1'].includes(themeTPL)">
+              <div>{{ currentLevelData.weekly_gift }}</div>
+              <div>每周红包(周一自动派发)</div>
+            </template>
+          </div>
+        </div>
+
+        <div
+          v-if="['porn1', 'sg1'].includes(themeTPL)"
+          :class="$style['cell']"
+        >
+          <div :class="$style['cell-icon']">
+            <img
+              :src="
+                $getCdnPath(
+                  `/static/image/common/vip/pic_vip_5.png`
+                )
+              "
+              alt="icon"
+            />
+          </div>
+          <div :class="$style['cell-text']">
+            <div>{{ currentLevelData.birth_amount }}</div>
+            <div>生日礼金</div>
+          </div>
+        </div>
+
+        <div v-if="['ey1'].includes(themeTPL)" :class="$style['cell']">
+          <div :class="$style['cell-icon']">
+            <img
+              :src="
+                $getCdnPath(
+                  `/static/image/common/vip/pic_vip_4.png`
                 )
               "
               alt="icon"
@@ -100,23 +150,6 @@
               }}
             </div>
             <div>每月红包(月初自动派发)</div>
-          </div>
-        </div>
-
-        <div :class="$style['cell']">
-          <div :class="$style['cell-icon']">
-            <img
-              :src="
-                $getCdnPath(
-                  `/static/image/${siteConfig.MOBILE_WEB_TPL}/mcenter/vip/pic_vip_5.png`
-                )
-              "
-              alt="icon"
-            />
-          </div>
-          <div :class="$style['cell-text']">
-            <div>{{ currentLevelData.birth_amount }}</div>
-            <div>生日礼金</div>
           </div>
         </div>
       </div>
@@ -149,6 +182,9 @@ export default {
       const style =
         this[`$style_${this.siteConfig.MOBILE_WEB_TPL}`] || this.$style_porn1;
       return style;
+    },
+    themeTPL() {
+      return this.siteConfig.MOBILE_WEB_TPL;
     }
   }
 };
@@ -163,4 +199,9 @@ export default {
   lang="scss"
   src="@/css/page/vip/ey1.vipInfo.scss"
   module="$style_ey1"
+></style>
+<style
+  lang="scss"
+  src="@/css/page/vip/sg1.vipInfo.scss"
+  module="$style_sg1"
 ></style>

@@ -1,10 +1,10 @@
 import { mapActions, mapGetters } from "vuex";
-import moment, { relativeTimeThreshold } from 'moment';
 
 import EST from '@/lib/EST';
 import axios from "axios";
 import bbosRequest from "@/api/bbosRequest";
 import goLangApiRequest from '@/api/goLangApiRequest';
+import moment from 'moment';
 
 export default {
   props: {},

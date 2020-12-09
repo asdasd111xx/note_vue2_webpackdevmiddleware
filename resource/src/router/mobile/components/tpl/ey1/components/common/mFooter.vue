@@ -103,7 +103,7 @@ export default {
   float: left;
   width: 20%;
   height: 45px;
-  color: $ey_text_color1;
+  color: #ff7171;
   position: relative;
 
   &.active {

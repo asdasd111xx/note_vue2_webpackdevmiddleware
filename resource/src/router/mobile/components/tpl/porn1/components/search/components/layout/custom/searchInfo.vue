@@ -74,7 +74,7 @@ export default {
       searchList: [],
       current: 0,
       total: 0,
-      img: this.$getCdnPath(`/static/image/_new/default/bg_video03_1_d@3x.png`)
+      img: this.$getCdnPath(`/static/image/porn1/default/bg_video03_1_d@3x.png`)
     };
   },
   watch: {
@@ -89,8 +89,8 @@ export default {
     getImg(image) {
       return {
         src: image,
-        error: this.$getCdnPath(`/static/image/_new/default/bg_video03_1_d@3x.png`),
-        loading: this.$getCdnPath(`/static/image/_new/default/bg_video03_1_d@3x.png`)
+        error: this.$getCdnPath(`/static/image/porn1/default/bg_video03_1_d@3x.png`),
+        loading: this.$getCdnPath(`/static/image/porn1/default/bg_video03_1_d@3x.png`)
       };
     },
     getSearchList(page) {

@@ -1,0 +1,55 @@
+@import './porn1.module.scss';
+
+.swag-balance-item {
+  .recycle-btn {
+    color: #E61938;
+  }
+
+  .money {
+    color: #E61938;
+  }
+}
+
+.price-cell {
+
+  &.selected {
+    border: 1px solid #E61938;
+    background: linear-gradient(-45deg, #E61938 10px, rgba(255, 255, 255, 0) 0);
+  }
+}
+
+.submit-wrap {
+
+  .submit-btn {
+    background: linear-gradient(#fe593c, #e61938) !important;
+
+    &.disabled {
+      background: linear-gradient(#fe593c, #e61938) !important;
+      opacity: 0.5;
+    }
+  }
+}
+
+.check-container {
+  background-color: #ffffff;
+
+  .check-header {
+    background: #222222;
+    color: white;
+  }
+
+  .check-button-wrap {
+    color: white;
+
+    .check-btn {
+      &.submit {
+        color: white;
+        background: linear-gradient(#fe593c, #e61938);
+      }
+    }
+  }
+}
+
+.link {
+  color: #E61938;
+}

@@ -680,7 +680,7 @@ export default {
       confirmPopupObj: {
         msg: "",
         btnText: "",
-        cb: () => {}
+        cb: () => { }
       }
     };
   },
@@ -699,41 +699,41 @@ export default {
         // 卡片資料
         this.selectedCard = localStorage.getItem("tmp_w_selectedCard")
           ? {
-              bank_id: JSON.parse(localStorage.getItem("tmp_w_selectedCard"))[
-                "bank_id"
-              ],
-              id: JSON.parse(localStorage.getItem("tmp_w_selectedCard"))["id"],
-              name: JSON.parse(localStorage.getItem("tmp_w_selectedCard"))[
-                "name"
-              ],
-              withdrawType: JSON.parse(
-                localStorage.getItem("tmp_w_selectedCard")
-              )["withdrawType"],
-              swift_code: JSON.parse(
-                localStorage.getItem("tmp_w_selectedCard")
-              )["swift_code"],
-              offer_percent: JSON.parse(
-                localStorage.getItem("tmp_w_selectedCard")
-              )["offer_percent"],
-              offer_limit: JSON.parse(
-                localStorage.getItem("tmp_w_selectedCard")
-              )["offer_limit"]
-            }
+            bank_id: JSON.parse(localStorage.getItem("tmp_w_selectedCard"))[
+              "bank_id"
+            ],
+            id: JSON.parse(localStorage.getItem("tmp_w_selectedCard"))["id"],
+            name: JSON.parse(localStorage.getItem("tmp_w_selectedCard"))[
+              "name"
+            ],
+            withdrawType: JSON.parse(
+              localStorage.getItem("tmp_w_selectedCard")
+            )["withdrawType"],
+            swift_code: JSON.parse(
+              localStorage.getItem("tmp_w_selectedCard")
+            )["swift_code"],
+            offer_percent: JSON.parse(
+              localStorage.getItem("tmp_w_selectedCard")
+            )["offer_percent"],
+            offer_limit: JSON.parse(
+              localStorage.getItem("tmp_w_selectedCard")
+            )["offer_limit"]
+          }
           : {
-              bank_id: defaultCard.bank_id,
-              id: defaultCard.id,
-              name:
-                defaultCard.withdrawType === "account_id"
-                  ? ""
-                  : defaultCard.alias.substring(
-                      0,
-                      defaultCard.alias.indexOf("-")
-                    ),
-              withdrawType: defaultCard.withdrawType,
-              swift_code: defaultCard.swift_code,
-              offer_percent: defaultCard.offer_percent,
-              offer_limit: defaultCard.offer_limit
-            };
+            bank_id: defaultCard.bank_id,
+            id: defaultCard.id,
+            name:
+              defaultCard.withdrawType === "account_id"
+                ? ""
+                : defaultCard.alias.substring(
+                  0,
+                  defaultCard.alias.indexOf("-")
+                ),
+            withdrawType: defaultCard.withdrawType,
+            swift_code: defaultCard.swift_code,
+            offer_percent: defaultCard.offer_percent,
+            offer_limit: defaultCard.offer_limit
+          };
 
         this.updateAmount(this.selectedCard.swift_code);
 
@@ -1050,10 +1050,10 @@ export default {
       return {
         src: `https://images.dormousepie.com/icon/bankIconBySwiftCode/${swiftCode}.png`,
         error: this.$getCdnPath(
-          `/static/image/${this.themeTPL}/default/bank_default_2.png`
+          `/static/image/common/default/bank_card_default.png`
         ),
         loading: this.$getCdnPath(
-          `/static/image/${this.themeTPL}/default/bank_default_2.png`
+          `/static/image/common/default/bank_card_default.png`
         )
       };
     },
@@ -1124,7 +1124,7 @@ export default {
         ) {
           this.errTips = `单笔提现金额最小为${withdrawMin}元，最大为${
             withdrawMax ? `${withdrawMax}元` : "无限制"
-          }`;
+            }`;
           return;
         }
 

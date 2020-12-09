@@ -70,7 +70,7 @@ export default {
           path: "/mobile/discover/sponsor"
         },
         {
-          key: "my",
+          key: "mcenter-home",
           name: this.$text("S_INFORMATION", "我的"),
           path: "/mobile/mcenter/home"
         }
@@ -79,19 +79,11 @@ export default {
   },
   methods: {
     onClick({ key, path }) {
-      if (key === "discover") {
-        localStorage.removeItem("discover-tag");
-      }
-
       this.$router.push(path);
     },
     isActive(key) {
-      if (key === "discover") {
-        return (
-          [key, "artist", "videoPlay", "tag"].indexOf(
-            this.$route.name
-          ) >= 0
-        );
+      if (this.$route.name === "discover" && key === 'sponsor') {
+        return (true);
       }
       return key === this.$route.name;
     }

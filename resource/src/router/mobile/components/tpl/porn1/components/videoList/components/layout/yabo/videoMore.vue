@@ -109,7 +109,7 @@ export default {
   computed: {
     defaultImg() {
       const isYabo = this.source === 'yabo';
-      return this.$getCdnPath(`/static/image/_new/default/${isYabo ? 'bg_video03_d' : 'bg_video03_1_d@3x'}.png`)
+      return this.$getCdnPath(`/static/image/porn1/default/${isYabo ? 'bg_video03_d' : 'bg_video03_1_d@3x'}.png`)
     },
   },
   methods: {

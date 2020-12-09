@@ -57,6 +57,11 @@ export default {
     ...mapGetters({
       siteConfig: "getSiteConfig"
     }),
+    $style() {
+      const style =
+        this[`$style_${this.siteConfig.MOBILE_WEB_TPL}`] || this.$style_porn1;
+      return style;
+    },
   },
   methods: {
     closeTips() {
@@ -82,100 +87,6 @@ export default {
   },
 };
 </script>
-
-<style lang="scss"  module>
-@import "../css/index.module.scss";
-
-.check-wrap {
-  position: fixed;
-  top: 0;
-  left: 0;
-  width: 100%;
-  height: 100%;
-  background: rgba(0, 0, 0, 0.4);
-  z-index: 10;
-  display: flex;
-  justify-content: center;
-  align-items: center;
-}
-
-.check-container {
-  width: 320px;
-  min-height: 190px;
-  z-index: 3;
-  background-color: #ffffff;
-  border-radius: 4px;
-  position: relative;
-
-  .check-header {
-    width: 100%;
-    height: 50px;
-    background: #be9e7f;
-    border-radius: 3px 3px 0 0;
-    color: white;
-    position: relative;
-    line-height: 50px;
-
-    .title {
-      width: 100%;
-      font-size: 17px;
-      font-weight: 400;
-      text-align: center;
-    }
-
-    .btn-close {
-      width: 23px;
-      height: 100%;
-      position: absolute;
-      right: 10px;
-      top: 0;
-      display: flex;
-      align-items: center;
-      justify-content: center;
-
-      img {
-        height: 23px;
-        width: 100%;
-      }
-    }
-  }
-
-  .check-content {
-    background-color: #ffffff;
-    font-size: 15px;
-
-    .title {
-      font-size: 16px;
-      font-weight: 700;
-      color: #414655;
-      text-align: center;
-      min-height: 67px;
-      line-height: 67px;
-    }
-  }
-
-  .check-button-wrap {
-    padding: 10px 11px;
-    color: #be9e7f;
-    text-align: center;
-    bottom: 12px;
-    width: 100%;
-
-    .check-btn {
-      width: 90px;
-      height: 45px;
-      line-height: 45px;
-      background: #faf5f0;
-      border-radius: 3px;
-      margin: 0 3px;
-      display: inline-block;
-
-      &.submit {
-        color: white;
-        background: linear-gradient(to left, #bd9d7d, #f9ddbd);
-      }
-    }
-  }
-}
-</style>
+<style lang="scss" src="../css/porn1.module.scss" module="$style_porn1"></style>
+<style lang="scss" src="../css/sg1.module.scss" module="$style_sg1"></style>
 

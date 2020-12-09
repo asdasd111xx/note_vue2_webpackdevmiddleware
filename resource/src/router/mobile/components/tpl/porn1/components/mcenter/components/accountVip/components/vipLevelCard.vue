@@ -41,7 +41,7 @@
             <img
               :src="
                 $getCdnPath(
-                  `/static/image/${siteConfig.MOBILE_WEB_TPL}/mcenter/vip/vipcard_bg.png`
+                  `/static/image/common/vip/vipcard_bg.png`
                 )
               "
               alt="vipcard_bg"
@@ -56,7 +56,7 @@
               :class="$style['card-level-image']"
               :src="
                 $getCdnPath(
-                  `/static/image/${siteConfig.MOBILE_WEB_TPL}/mcenter/vip/ic_vip${item.seq}.png`
+                  `/static/image/common/vip/ic_vip${item.seq}.png`
                 )
               "
               alt="vipLevel_bg"
@@ -67,7 +67,7 @@
               :class="$style['card-level-image']"
               :src="
                 $getCdnPath(
-                  `/static/image/${siteConfig.MOBILE_WEB_TPL}/mcenter/vip/ic_s_vip${item.seq}.png`
+                  `/static/image/common/vip/ic_s_vip${item.seq}.png`
                 )
               "
               alt="vipLevel_bg"
@@ -83,10 +83,20 @@
                 <br />
                 流水要求
               </div>
-              <!-- <div>
+
+              <!-- <template v-if="['porn1', 'sg1'].includes(themeTPL)">
+                <div>
                 保级推广{{ item.downgrade_members }}位 <br />
                 有效会员(充值{{ item.downgrade_deposit | roundTwoPoints }})
-              </div> -->
+              </div>
+              </template> -->
+
+              <template v-if="['ey1'].includes(themeTPL)">
+                <div>
+                  {{ item.downgrade_valid_bet }} <br />
+                  保级投注
+                </div>
+              </template>
             </div>
           </div>
         </swiper-slide>
@@ -143,6 +153,9 @@ export default {
       const style =
         this[`$style_${this.siteConfig.MOBILE_WEB_TPL}`] || this.$style_porn1;
       return style;
+    },
+    themeTPL() {
+      return this.siteConfig.MOBILE_WEB_TPL;
     },
     vipLevelOption() {
       return {
@@ -225,4 +238,9 @@ export default {
   lang="scss"
   src="@/css/page/vip/ey1.vipLevelCard.scss"
   module="$style_ey1"
+></style>
+<style
+  lang="scss"
+  src="@/css/page/vip/sg1.vipLevelCard.scss"
+  module="$style_sg1"
 ></style>

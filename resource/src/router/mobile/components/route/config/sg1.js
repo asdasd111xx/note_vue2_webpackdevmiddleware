@@ -4,6 +4,12 @@ export default {
       import(
         /* webpackChunkName: 'iframeSg1' */ "../../tpl/sg1/components/iframe"
       ),
+    casinoSg1: () =>
+      import(
+        /* webpackChunkName: 'casinoSg1' */ "../../tpl/sg1/components/casino"
+      ),
+    cardSg1: () =>
+      import(/* webpackChunkName: 'cardSg1' */ "../../tpl/sg1/components/card"),
     homeSg1: () =>
       import(/* webpackChunkName: 'homeSg1' */ "../../tpl/sg1/components/home"),
     loginSg1: () =>
@@ -41,6 +47,14 @@ export default {
       )
   },
   mcenter: {
+    accountVipSg1: () =>
+      import(
+        /* webpackChunkName: 'accountVipSg1' */ "../../tpl/sg1/components/mcenter/components/accountVip"
+      ),
+    accountVipDetailSg1: () =>
+      import(
+        /* webpackChunkName: 'accountVipDetailSg1' */ "../../tpl/sg1/components/mcenter/components/vipDetail"
+      ),
     homeSg1: () =>
       import(
         /* webpackChunkName: 'homeSg1' */ "../../tpl/sg1/components/mcenter/components/home"
@@ -148,6 +162,13 @@ export default {
     feedbackSg1: () =>
       import(
         /* webpackChunkName: 'feedbackSg1' */ "../../tpl/sg1/components/mcenter/components/feedback"
+<<<<<<< HEAD
+=======
+      ),
+    swagSg1: () =>
+      import(
+        /* webpackChunkName: 'swagSg1' */ "../../tpl/sg1/components/mcenter/components/swag"
+>>>>>>> b9659eaadeba8f96cd273d2531d8e1a226921a98
       )
   }
 };

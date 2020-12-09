@@ -138,7 +138,7 @@ export default {
   computed: {
     defaultImg() {
       const isYabo = this.source === 'yabo';
-      return this.$getCdnPath(`/static/image/_new/default/${isYabo ? 'bg_video03_d' : 'bg_video03_1_d@3x'}.png`)
+      return this.$getCdnPath(`/static/image/porn1/default/${isYabo ? 'bg_video03_d' : 'bg_video03_1_d@3x'}.png`)
     },
     allVideoList() {
       const videoRecommand =
@@ -215,8 +215,8 @@ export default {
       const isYabo = this.source === 'yabo';
       return {
         src: img,
-        error: this.$getCdnPath(`/static/image/_new/default/${isYabo ? 'bg_video03_d' : 'bg_video03_1_d@3x'}.png`),
-        loading: this.$getCdnPath(`/static/image/_new/default/${isYabo ? 'bg_video03_d' : 'bg_video03_1_d@3x'}.png`),
+        error: this.$getCdnPath(`/static/image/porn1/default/${isYabo ? 'bg_video03_d' : 'bg_video03_1_d@3x'}.png`),
+        loading: this.$getCdnPath(`/static/image/porn1/default/${isYabo ? 'bg_video03_d' : 'bg_video03_1_d@3x'}.png`),
       };
     },
     getVideoTag() {

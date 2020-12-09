@@ -118,10 +118,10 @@ export default {
       return {
         src: `https://images.dormousepie.com/icon/bankIconBySwiftCode/${swiftCode}.png`,
         error: this.$getCdnPath(
-          `/static/image/${this.themeTPL}/default/bank_default_2.png`
+          `/static/image/common/default/bank_card_default.png`
         ),
         loading: this.$getCdnPath(
-          `/static/image/${this.themeTPL}/default/bank_default_2.png`
+          `/static/image/common/default/bank_card_default.png`
         )
       };
     },

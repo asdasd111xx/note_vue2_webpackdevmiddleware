@@ -161,7 +161,7 @@
 
           <span>
             {{
-              ['porn1', 'sg1'].includes(themeTPL)
+              ["porn1", "sg1"].includes(themeTPL)
                 ? "确定解除绑定该钱包？"
                 : "确定删除该张卡片吗？"
             }}
@@ -198,7 +198,7 @@ export default {
     },
     setPageStatus: {
       type: Function,
-      default: () => {}
+      default: () => { }
     },
     showDetail: {
       type: Boolean,
@@ -268,10 +268,10 @@ export default {
       return {
         src: `https://images.dormousepie.com/icon/bankIconBySwiftCode/${swiftCode}.png`,
         error: this.$getCdnPath(
-          `/static/image/${this.themeTPL}/default/bank_default_2.png`
+          `/static/image/common/default/bank_card_default.png`
         ),
         loading: this.$getCdnPath(
-          `/static/image/${this.themeTPL}/default/bank_default_2.png`
+          `/static/image/common/default/bank_card_default.png`
         )
       };
     }

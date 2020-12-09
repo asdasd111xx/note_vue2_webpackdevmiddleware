@@ -1605,7 +1605,7 @@ export const actionVerificationFormData = (
   { state, dispatch, commit },
   data
 ) => {
-  let configInfo;
+  let configInfo = {};
 
   if (state.webDomain) {
     configInfo =

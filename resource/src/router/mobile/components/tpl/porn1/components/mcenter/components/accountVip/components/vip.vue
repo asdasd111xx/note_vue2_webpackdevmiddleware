@@ -7,7 +7,7 @@
           <img
             :src="
               $getCdnPath(
-                `/static/image/${siteConfig.MOBILE_WEB_TPL}/common/btn_back_b.png`
+                `/static/image/common/icon/btn_back_b.png`
               )
             "
             alt="btn_back"
@@ -186,3 +186,4 @@ export default {
 
 <style lang="scss" src="@/css/page/vip/porn1.vip.scss" module="$style_porn1"></style>
 <style lang="scss" src="@/css/page/vip/ey1.vip.scss" module="$style_ey1"></style>
+<style lang="scss" src="@/css/page/vip/sg1.vip.scss" module="$style_sg1"></style>

@@ -81,14 +81,7 @@
 
     <template v-if="headerConfig.hasSearchBtn">
       <div :class="$style['btn-search-wrap']" @click="goSearch">
-        <div v-if="source === 'smallPig'" :class="$style['sp-search']" />
-
-        <div
-          v-else-if="source === 'gay' || source === 'les'"
-          :class="$style['gay-search']"
-        />
-
-        <div v-else :class="$style['normal-search']" />
+        <div :class="$style['normal-search']" />
       </div>
     </template>
 
@@ -301,21 +294,6 @@ export default {
     border-bottom: unset;
   }
 
-  // 小豬視頻的search Header 為黑色底
-  &.search-page {
-    background: #414141;
-  }
-
-  &.gay {
-    background: #4a8cb8;
-    border-bottom: none;
-  }
-
-  &.les {
-    background: #d64545;
-    border-bottom: none;
-  }
-
   &::before {
     content: "";
     display: inline-block;
@@ -382,7 +360,7 @@ export default {
     line-height: 20px;
     margin: 0 1.5px;
     padding: 0 3px;
-    color: black;
+    color: #f9e8b4;
     font-size: 17px;
     vertical-align: middle;
   }
@@ -490,12 +468,6 @@ export default {
   width: calc(100% - 10% - 24px);
   margin: 6px 0 0 24px;
 
-  &.smallPig,
-  &.gay,
-  &.les {
-    border-radius: 18px;
-  }
-
   > input {
     width: 100%;
     height: 35px;
@@ -507,34 +479,6 @@ export default {
     color: $main_text_color2;
     font-size: 14px;
     outline: none;
-
-    &.smallPig,
-    &.gay,
-    &.les {
-      border-radius: 18px;
-    }
-
-    &.smallPig {
-      background-color: #333;
-    }
-
-    &.gay {
-      color: #fff;
-      background-color: #3a79a1;
-
-      &::placeholder {
-        color: #fff;
-      }
-    }
-
-    &.les {
-      color: #fff;
-      background-color: #b73939;
-
-      &::placeholder {
-        color: #fff;
-      }
-    }
 
     &::placeholder {
       color: $main_text_color2;
@@ -573,25 +517,6 @@ export default {
   color: white;
   margin: 0 auto;
   text-align: center;
-
-  &.smallPig,
-  &.gay,
-  &.les {
-    width: 85px;
-    border-radius: 0 18px 18px 0;
-  }
-
-  &.smallPig {
-    background: #1e1e1e;
-  }
-
-  &.gay {
-    background: #3e81ac;
-  }
-
-  &.les {
-    background: #c54242;
-  }
 
   > img {
     width: 21px;
@@ -700,20 +625,6 @@ export default {
   .title {
     font-size: 18px;
   }
-}
-
-.sp-search {
-  background: url("/static/image/_new/common/icon_search_gray.png");
-  width: 20px;
-  height: 20px;
-  background-size: contain;
-}
-
-.gay-search {
-  background: url("/static/image/_new/common/icon_search_white.png");
-  width: 20px;
-  height: 20px;
-  background-size: contain;
 }
 
 .normal-search {
