@@ -14,7 +14,7 @@
         <div :class="$style['list-icon']">
           <img
             :src="
-              $getCdnPath(`/static/image/_new/mcenter/ic_${listInfo.image}.png`)
+              $getCdnPath(`/static/image/sg1/mcenter/ic_${listInfo.image}.png`)
             "
           />
         </div>
@@ -25,7 +25,7 @@
         </div>
         <div :class="$style['btn-next']">
           <img
-            :src="$getCdnPath(`/static/image/_new/mcenter/ic_arrow_next.png`)"
+            :src="$getCdnPath(`/static/image/sg1/mcenter/ic_arrow_next.png`)"
           />
         </div>
       </div>
@@ -33,13 +33,13 @@
 
     <div :class="$style.list" @click="showShare">
       <div :class="$style['list-icon']">
-        <img :src="$getCdnPath(`/static/image/_new/mcenter/ic_share.png`)" />
+        <img :src="$getCdnPath(`/static/image/sg1/mcenter/ic_share.png`)" />
       </div>
       <span>{{ $text("S_SHARE_APP", "分享APP") }}</span>
 
       <div :class="$style['btn-next']">
         <img
-          :src="$getCdnPath(`/static/image/_new/mcenter/ic_arrow_next.png`)"
+          :src="$getCdnPath(`/static/image/sg1/mcenter/ic_arrow_next.png`)"
         />
       </div>
     </div>
@@ -49,7 +49,7 @@
       :class="[$style['list'], $style['list-part']]"
     >
       <div :class="$style['list-icon']">
-        <img :src="$getCdnPath(`/static/image/_new/mcenter/ic_18+.png`)" />
+        <img :src="$getCdnPath(`/static/image/sg1/mcenter/ic_18+.png`)" />
       </div>
       <span>{{ $text("S_PORN_SWITCH", "色站开关") }}</span>
       <label
@@ -442,13 +442,14 @@ export default {
 .switch {
   position: relative;
   display: block;
-  width: 48px;
-  height: 24px;
+  width: 60px;
+  height: 28px;
   border-radius: 12px;
   background-color: #ccc;
   transition: all 0.4s;
 
   > span {
+    margin: 2px;
     width: 24px;
     height: 24px;
     border-radius: 50%;
@@ -460,9 +461,10 @@ export default {
   }
 
   &.active {
-    background-color: #7d87a3;
+    background-color: #e61938;
 
     > span {
+      margin: 2px;
       display: block;
       left: 18px;
       position: absolute;

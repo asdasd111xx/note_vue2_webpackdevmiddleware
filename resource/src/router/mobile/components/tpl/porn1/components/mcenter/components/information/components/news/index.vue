@@ -16,7 +16,7 @@
           <img
             :src="
               $getCdnPath(
-                '/static/image/porn1/mcenter/information/icon_information.png'
+                `/static/image/${siteConfig.MOBILE_WEB_TPL}/mcenter/information/btn_more.png`
               )
             "
           />
@@ -42,7 +42,7 @@
           <img
             :src="
               $getCdnPath(
-                '/static/image/porn1/mcenter/information/icon_information.png'
+                `/static/image/${siteConfig.MOBILE_WEB_TPL}/mcenter/information/btn_more.png`
               )
             "
           />
@@ -76,6 +76,7 @@ export default {
   computed: {
     ...mapGetters({
       newsData: "getNews",
+      siteConfig: "getSiteConfig",
     }),
     currentNews() {
       if (!this.$route.query.pid) {

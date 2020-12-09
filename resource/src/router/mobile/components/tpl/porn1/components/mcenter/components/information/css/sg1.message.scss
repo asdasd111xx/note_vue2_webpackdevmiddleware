@@ -1,0 +1,26 @@
+@import "./porn1.message.scss";
+
+.btn-close {}
+
+.icon-edit {
+
+  &.active {
+    background: url("/static/image/sg1/mcenter/ic_check.png") 0 0 no-repeat;
+    background-size: 18px 18px;
+  }
+}
+
+.delete-confirm {
+  color: #E61938;
+}
+
+
+.tips-text {
+  height: 18px;
+  line-height: 18px;
+  margin-bottom: 15px;
+  padding: 0 20px;
+  color: #CCCCCC;
+  font-size: 12px;
+  text-align: center;
+}

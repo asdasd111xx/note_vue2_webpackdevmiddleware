@@ -23,10 +23,12 @@
             <div :class="$style['feedback-icon']">
               <template v-if="typeList && typeList.length > 0">
                 <img
-                  :src="`/static/image/${theme}/mcenter/feedback/question_${
-                    typeList.find((i) => i.id === String(message.type_id))
-                      .imageId
-                  }.png`"
+                  :src="
+                    `/static/image/${theme}/mcenter/feedback/question_${
+                      typeList.find(i => i.id === String(message.type_id))
+                        .imageId
+                    }.png`
+                  "
                 />
               </template>
             </div>
@@ -52,10 +54,12 @@
           <div :class="[$style['detail-title'], 'clearfix']">
             <template v-if="typeList && typeList.length > 0">
               <img
-                :src="`/static/image/${theme}/mcenter/feedback/question_${
-                  typeList.find((i) => i.id === String(currentFeedback.type_id))
-                    .imageId
-                }.png`"
+                :src="
+                  `/static/image/${theme}/mcenter/feedback/question_${
+                    typeList.find(i => i.id === String(currentFeedback.type_id))
+                      .imageId
+                  }.png`
+                "
               />
             </template>
             <h3>{{ currentFeedback.title }}</h3>
@@ -85,7 +89,9 @@
           >
             <img
               :class="$style['detail-icon']"
-              :src="`/static/image/${theme}/mcenter/feedback/ic_feedback_answer.png`"
+              :src="
+                `/static/image/${theme}/mcenter/feedback/ic_feedback_answer.png`
+              "
             />
             <div :class="$style['question-info']">
               <div :class="$style['question-name']">
@@ -259,3 +265,4 @@ export default {
 
 <style lang="scss" src="./css/feedbackList.module.scss" module="$style_porn1"></style>
 <style lang="scss" src="./css/ey1.feedbackList.scss" module="$style_ey1"></style>
+<style lang="scss" src="./css/sg1.feedbackList.scss" module="$style_sg1"></style>

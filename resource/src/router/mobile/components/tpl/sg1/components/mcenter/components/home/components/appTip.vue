@@ -73,7 +73,7 @@ export default {
   -o-transition: opacity 0.25s linear;
   transition: opacity 0.25s linear;
   opacity: 1;
-  background-color: #ececf2;
+  background-color: #a6a9b2;
   padding: 0 18px;
   font-size: 12px;
   display: flex;
@@ -82,7 +82,7 @@ export default {
   position: relative;
 
   > span:first-child {
-    color: $main_text_color2;
+    color: #ffffff;
   }
 
   img {
@@ -100,13 +100,13 @@ export default {
 
 .go-btn {
   height: 23px;
-  border: 1pt solid #be9e7f;
+  border: 1pt solid #ffffff;
   border-radius: 12px;
   text-align: center;
   display: flex;
   align-items: center;
   padding: 0 10px;
-  color: #be9e7f;
+  color: #ffffff;
   margin-right: 10px;
 }
 </style>

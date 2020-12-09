@@ -211,9 +211,9 @@ export default {
   font-weight: bold;
   width: 40px;
   border-radius: 4px;
-  background: -webkit-linear-gradient(left, #eeddd0, #d5b69c);
-  background: -o-linear-gradient(right, #eeddd0, #d5b69c);
-  background: -moz-linear-gradient(right, #eeddd0, #d5b69c);
-  background: linear-gradient(to right, #eeddd0, #d5b69c);
+  background: -webkit-linear-gradient(left, #febdb2, #ff8093);
+  background: -o-linear-gradient(right, #febdb2, #ff8093);
+  background: -moz-linear-gradient(right, #febdb2, #ff8093);
+  background: linear-gradient(to right, #febdb2, #ff8093);
 }
 </style>

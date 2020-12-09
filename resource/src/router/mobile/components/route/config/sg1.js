@@ -1,6 +1,9 @@
 export default {
   normal: {
-    iframeSg1: () => import(/* webpackChunkName: 'iframeSg1' */'../../tpl/sg1/components/iframe'),
+    iframeSg1: () =>
+      import(
+        /* webpackChunkName: 'iframeSg1' */ "../../tpl/sg1/components/iframe"
+      ),
     homeSg1: () =>
       import(/* webpackChunkName: 'homeSg1' */ "../../tpl/sg1/components/home"),
     loginSg1: () =>
@@ -22,6 +25,14 @@ export default {
     serviceSg1: () =>
       import(
         /* webpackChunkName: 'serviceSg1' */ "../../tpl/sg1/components/service"
+      ),
+    resetPwdSg1: () =>
+      import(
+        /* webpackChunkName: 'resetPwdSg1' */ "../../tpl/sg1/components/resetPwd"
+      ),
+    forgetPwdSg1: () =>
+      import(
+        /* webpackChunkName: 'forgetPwdSg1' */ "../../tpl/sg1/components/forgetPwd"
       ),
 
     launchSg1: () =>
@@ -134,6 +145,9 @@ export default {
       import(
         /* webpackChunkName: 'depositSg1' */ "../../tpl/sg1/components/mcenter/components/deposit"
       ),
-    feedbackSg1: () => import(/* webpackChunkName: 'feedbackSg1' */'../../tpl/sg1/components/mcenter/components/feedback'),
+    feedbackSg1: () =>
+      import(
+        /* webpackChunkName: 'feedbackSg1' */ "../../tpl/sg1/components/mcenter/components/feedback"
+      )
   }
 };
