@@ -321,9 +321,7 @@
         :class="[$style['add-bank-card']]"
         @click="checkAccountData('bankCard')"
       >
-        <img
-          :src="$getCdnPath(`/static/image/${themeTPL}/mcenter/add_2.png`)"
-        />
+        <img :src="$getCdnPath(`/static/image/common/mcenter/add_2.png`)" />
         &nbsp;
         <span>
           {{ $text("S_ADD_BANKCARD", "添加银行卡") }}
@@ -336,9 +334,7 @@
         :class="[$style['add-bank-card']]"
         @click="checkAccountData('wallet')"
       >
-        <img
-          :src="$getCdnPath(`/static/image/${themeTPL}/mcenter/add_2.png`)"
-        />
+        <img :src="$getCdnPath(`/static/image/common/mcenter/add_2.png`)" />
         &nbsp;
         <span>
           {{ $text("S_ADD_VIRTUAL_BANKCARD", "添加电子钱包") }}
@@ -355,9 +351,7 @@
         :class="[$style['add-bank-card']]"
         @click="setPopupStatus(true, 'moreMethod')"
       >
-        <img
-          :src="$getCdnPath(`/static/image/${themeTPL}/mcenter/add_2.png`)"
-        />
+        <img :src="$getCdnPath(`/static/image/common/mcenter/add_2.png`)" />
         &nbsp;
         <span>
           {{ "更多提现方式" }}
