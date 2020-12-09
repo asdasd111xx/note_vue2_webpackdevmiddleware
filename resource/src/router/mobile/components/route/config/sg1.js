@@ -162,13 +162,10 @@ export default {
     feedbackSg1: () =>
       import(
         /* webpackChunkName: 'feedbackSg1' */ "../../tpl/sg1/components/mcenter/components/feedback"
-<<<<<<< HEAD
-=======
       ),
     swagSg1: () =>
       import(
         /* webpackChunkName: 'swagSg1' */ "../../tpl/sg1/components/mcenter/components/swag"
->>>>>>> b9659eaadeba8f96cd273d2531d8e1a226921a98
       )
   }
 };
