@@ -26,7 +26,7 @@
           v-if="typeList[selectedIndex].icon === type.icon"
           :src="
             $getCdnPath(
-              `/static/image/_new/platform/icon/icon_${type.icon}_h.png`
+              `/static/image/sg1/home/icon_${type.icon}_h.png`
             )
           "
         />
@@ -34,7 +34,7 @@
           v-else
           :src="
             $getCdnPath(
-              `/static/image/_new/platform/icon/icon_${type.icon}_n.png`
+              `/static/image/sg1/home/icon_${type.icon}_n.png`
             )
           "
         />
@@ -64,7 +64,7 @@
               <img
                 :src="
                   $getCdnPath(
-                    `/static/image/_new/level/icon_level_${vipLevel}.png`
+                    `/static/image/sg1/home/icon_level_${vipLevel}.png`
                   )
                 "
               />
@@ -74,7 +74,7 @@
               <img
                 :src="
                   $getCdnPath(
-                    `/static/image/_new/wallet/icon_wallet_${info.name}.png`
+                    `/static/image/sg1/home/icon_wallet_${info.name}.png`
                   )
                 "
               />
@@ -219,7 +219,7 @@ export default {
   position: relative;
   width: 63px;
   height: 63px;
-  background-image: url("/static/image/_new/platform/icon/icon_bg_n.png");
+  background-image: url("/static/image/sg1/home/btn_menu_n.png");
   background-position: 0 0;
   background-size: 63px 63px;
   background-repeat: no-repeat;
@@ -236,7 +236,7 @@ export default {
   }
 
   &.active {
-    background-image: url("/static/image/_new/platform/icon/icon_bg_h.png");
+    background-image: url("/static/image/sg1/home/btn_menu_h.png");
   }
 }
 
@@ -304,7 +304,7 @@ export default {
   > div {
     height: 16px;
     line-height: 16px;
-    color: #ad9982;
+    color: #ffad0a;
     font-size: 12px;
     text-align: center;
   }

@@ -68,3 +68,4 @@ export default {
 
 <style lang="scss" src="../css/depositAlert/porn1.scss" module="$style_porn1"></style>
 <style lang="scss" src="../css/depositAlert/ey1.scss" module="$style_ey1"></style>
+<style lang="scss" src="../css/depositAlert/sg1.scss" module="$style_sg1"></style>

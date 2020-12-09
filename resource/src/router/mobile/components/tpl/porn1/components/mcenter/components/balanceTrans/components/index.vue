@@ -1,7 +1,7 @@
 <template>
   <div :class="['clearfix']">
     <!-- 億元：自動免轉 -->
-    <template v-if="themeTPL === 'ey1'">
+    <template v-if="['ey1'].includes(themeTPL)">
       <div v-if="isReceiveAuto" :class="[$style['balance-wrap'], 'clearfix']">
         <div :class="$style['balance-total-icon']">
           <img
@@ -55,11 +55,11 @@
         @click="$router.push('/mobile/mcenter/bonus')"
       >
         <span :class="$style['balance-item-vendor']">
-          <template v-if="themeTPL === 'porn1'">
+          <template v-if="['porn1', 'sg1'].includes(themeTPL)">
             {{ $text("S_BONUS", "红利彩金") }}
           </template>
 
-          <template v-if="themeTPL === 'ey1'">
+          <template v-if="['ey1'].includes(themeTPL)">
             {{ $text("S_BONUS_ACCOUNT", "红利帐户") }}
           </template>
         </span>
@@ -175,7 +175,7 @@
     </div>
 
     <!-- 鴨博：自動免轉 -->
-    <template v-if="themeTPL === 'porn1'">
+    <template v-if="['porn1', 'sg1'].includes(themeTPL)">
       <div v-if="isReceiveAuto" :class="[$style['balance-wrap'], 'clearfix']">
         <div :class="$style['balance-tip-wrap']">
           {{ $text("S_AUTO_FREE_TRANSFER", "自动免转") }}
@@ -210,7 +210,7 @@
     <!-- 手動轉換功能 -->
     <template v-if="!isAutotransfer">
       <div :class="[$style['balance-manual-wrap'], 'clearfix']">
-        <template v-if="themeTPL === 'ey1'">
+        <template v-if="['ey1'].includes(themeTPL)">
           <span :class="$style['wallet-title']">
             {{ $text("S_CHANGE_WALLET", "选择转帐钱包") }}
           </span>
@@ -316,7 +316,7 @@
       </div>
 
       <div :class="[$style['balance-manual-wrap'], 'clearfix']">
-        <template v-if="themeTPL === 'ey1'">
+        <template v-if="['ey1'].includes(themeTPL)">
           <span :class="$style['wallet-title']">
             {{ $text("S_TRANSFER_MONEY", "转帐金额") }}
           </span>

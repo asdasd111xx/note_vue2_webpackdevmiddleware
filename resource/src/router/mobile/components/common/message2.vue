@@ -75,7 +75,10 @@ export default {
     ...mapGetters({
       globalMessage: "getGlobalMessage",
       siteConfig: "getSiteConfig"
-    })
+    }),
+    themeTPL() {
+      return this.siteConfig.MOBILE_WEB_TPL;
+    }
   },
   beforeDestroy() {
     clearTimeout(this.timer);
@@ -136,7 +139,7 @@ export default {
           case "bindcard":
             this.$router.push(
               `/mobile/mcenter/bankCard?redirect=${
-              redirect ? redirect : "home"
+                redirect ? redirect : "home"
               }&type=bankCard`
             );
             break;
@@ -145,17 +148,17 @@ export default {
           case "C50103":
           case "C50105":
           case "bindVirtualBank":
-            if (this.siteConfig.MOBILE_WEB_TPL === "porn1") {
+            if (["porn1", "sg1"].includes(this.themeTPL)) {
               this.$router.push(
                 `/mobile/mcenter/bankCard?redirect=${
-                redirect ? redirect : "home"
+                  redirect ? redirect : "home"
                 }&type=bankCard`
               );
             } else {
               // 億元
               this.$router.push(
                 `/mobile/withdrawAccount?redirect=${
-                redirect ? redirect : "home"
+                  redirect ? redirect : "home"
                 }`
               );
             }

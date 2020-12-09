@@ -85,15 +85,28 @@
         }}</span>
         ({{ userVipInfo.amount_info.valid_bet }}/{{ nextLevelValidBetData }})
       </div>
-      <!-- <div :class="$style['desc-text']">
-        ●保级推广(位)：
-        <span :class="$style['money']">{{
-          userVipInfo.downgrade_members
-        }}</span>
-        (有效会员充值{{ userVipInfo.downgrade_valid_bet }} , 保级{{
-          userVipInfo.downgrade_day
-        }}天)
-      </div> -->
+
+      <!-- <template v-if="['porn1', 'sg1'].includes(themeTPL)">
+        <div :class="$style['desc-text']">
+          ●保级推广(位)：
+          <span :class="$style['money']">{{
+            userVipInfo.downgrade_members
+          }}</span>
+          (有效会员充值{{ userVipInfo.downgrade_valid_bet }} , 保级{{
+            userVipInfo.downgrade_day
+          }}天)
+        </div>
+      </template> -->
+
+      <template v-if="['ey1'].includes(themeTPL)">
+        <div :class="$style['desc-text']">
+          ●保级投注(元)：
+          <span :class="$style['money']">{{
+            userVipInfo.amount_info.valid_bet
+          }}</span>
+          ({{ downgradeData }} , 保级{{ userVipInfo.downgrade_day }}天)
+        </div>
+      </template>
     </div>
   </div>
 </template>
@@ -110,7 +123,7 @@ export default {
     userVipInfo: {
       type: Object | null,
       required: true
-    },
+    }
   },
   data() {
     return {
@@ -130,10 +143,35 @@ export default {
         this[`$style_${this.siteConfig.MOBILE_WEB_TPL}`] || this.$style_porn1;
       return style;
     },
+    themeTPL() {
+      return this.siteConfig.MOBILE_WEB_TPL;
+    },
     runPercent() {
       return this.userVipInfo.percent + "%";
     },
-
+    downgradeData() {
+      if (this.vipLevelList.length <= 0 || !this.userVipInfo) {
+        return;
+      }
+      if (this.userVipInfo.now_level_seq < this.vipLevelList.length) {
+        if (
+          Number(this.userVipInfo.amount_info.valid_bet) >=
+          Number(
+            this.vipLevelList[this.userVipInfo.now_level_seq]
+              .downgrade_valid_bet
+          )
+        ) {
+          return "已达条件";
+        } else {
+          return `${this.userVipInfo.amount_info.valid_bet}/${
+            this.vipLevelList[this.userVipInfo.now_level_seq]
+              .downgrade_valid_bet
+          }`;
+        }
+      } else {
+        return "已达条件";
+      }
+    },
     nextLevelDepositTotalData() {
       if (this.vipLevelList.length <= 0 || !this.userVipInfo) {
         return;
@@ -141,7 +179,8 @@ export default {
       if (this.userVipInfo.now_level_seq < this.vipLevelList.length) {
         return this.userVipInfo.next_level_deposit_total;
       } else {
-        return this.vipLevelList[this.userVipInfo.now_level_seq - 1].deposit_total;
+        return this.vipLevelList[this.userVipInfo.now_level_seq - 1]
+          .deposit_total;
       }
     },
     nextLevelValidBetData() {
@@ -151,7 +190,8 @@ export default {
       if (this.userVipInfo.now_level_seq < this.vipLevelList.length) {
         return this.userVipInfo.next_level_valid_bet;
       } else {
-        return this.vipLevelList[this.userVipInfo.now_level_seq - 1].valid_bet_limit;
+        return this.vipLevelList[this.userVipInfo.now_level_seq - 1]
+          .valid_bet_limit;
       }
     }
   },
@@ -159,6 +199,10 @@ export default {
     this.avatarSrc = `/static/image/${this.siteConfig.MOBILE_WEB_TPL}/mcenter/avatar_nologin.png`;
     this.actionSetUserdata(true).then(() => {
       this.getAvatarSrc();
+
+      if (this.themeTPL === "ey1") {
+        // this.getDowngradeData();
+      }
     });
 
     this.$nextTick(() => {
@@ -198,6 +242,16 @@ export default {
         this.avatarSrc = this.$getCdnPath(
           `/static/image/${this.siteConfig.MOBILE_WEB_TPL}/mcenter/default/avatar_${imgSrcIndex}.png`
         );
+      }
+    },
+    getDowngradeData() {
+      if (
+        this.userVipInfo.amount_info.valid_bet ==
+        this.userVipInfo.downgrade_valid_bet
+      ) {
+        this.downgradeData = "已达条件";
+      } else {
+        this.downgradeData = `${this.userVipInfo.amount_info.valid_bet}/${this.userVipInfo.downgrade_valid_bet}`;
       }
     }
   }

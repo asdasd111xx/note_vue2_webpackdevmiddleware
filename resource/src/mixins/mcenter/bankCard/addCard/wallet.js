@@ -129,10 +129,10 @@
 //       return {
 //         src: `https://images.dormousepie.com/icon/bankIconBySwiftCode/${swiftCode}.png`,
 //         error: this.$getCdnPath(
-//           "/static/image/_new/default/bank_default_2.png"
+//           "/static/common/porn1/default/bank_card_default.png"
 //         ),
 //         loading: this.$getCdnPath(
-//           "/static/image/_new/default/bank_default_2.png"
+//           "/static/common/porn1/default/bank_card_default.png"
 //         )
 //       };
 //     }

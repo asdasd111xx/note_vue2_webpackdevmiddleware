@@ -10,7 +10,10 @@
 
       <div :class="$style['icon-block']">
         <div
-          v-if="item.show || (item.key === 'recharge' && themeTPL !== 'ey1')"
+          v-if="
+            item.show ||
+              (item.key === 'recharge' && ['porn1', 'sg1'].includes(themeTPL))
+          "
           v-for="(item, index) in walletIcons"
           :key="'icon-' + index"
           :class="$style['icon-cell']"
@@ -69,11 +72,11 @@
               @click="$router.push('/mobile/mcenter/bonus')"
             >
               <span :class="$style['balance-item-vendor']">
-                <template v-if="themeTPL.includes('porn1', 'sg1')">
+                <template v-if="['porn1', 'sg1'].includes(themeTPL)">
                   {{ $text("S_BONUS", "红利彩金") }}
                 </template>
 
-                <template v-if="themeTPL.includes('ey1')">
+                <template v-if="['ey1'].includes(themeTPL)">
                   {{ $text("S_BONUS_ACCOUNT", "红利帐户") }}
                 </template>
               </span>
@@ -122,7 +125,7 @@
       </template>
     </balance-tran>
 
-    <template v-if="themeTPL.includes('porn1', 'sg1')">
+    <template v-if="['porn1', 'sg1'].includes(themeTPL)">
       <div :class="$style['swag-wrap']">
         <div :class="$style['title']">SWAG钱包</div>
         <div :class="$style['icon-block']">
@@ -161,14 +164,14 @@
     </template>
 
     <div :class="$style['invite-wrap']" @click="onClickInvite">
-      <template v-if="themeTPL.includes('porn1', 'sg1')">
+      <template v-if="['porn1', 'sg1'].includes(themeTPL)">
         <div :class="$style['content']">
           <div>邀请好友获得现金奖励</div>
           <div>邀请人首存即可获得</div>
         </div>
       </template>
 
-      <template v-if="themeTPL.includes('ey1')">
+      <template v-if="['ey1'].includes(themeTPL)">
         <div :class="$style['content']">
           <div>日薪月薪不如推荐加薪</div>
           <div>分享入金稳拿奖金</div>
@@ -329,54 +332,57 @@ export default {
           text: this.$text("S_TRANSFER", "转帐"),
           imgSrc: `/static/image/${this.themeTPL}/mcenter/wallet/ic_wallter_tranfer.png`,
           onClick: () => {
-            if (this.themeTPL.includes("porn1", "sg1")) {
-              this.$router.push("/mobile/mcenter/balanceTrans");
-              return;
-            }
+            switch (this.themeTPL) {
+              case "porn1":
+              case "sg1":
+                this.$router.push("/mobile/mcenter/balanceTrans");
+                break;
 
-            if (this.themeTPL.includes("ey1")) {
-              axios({
-                method: "get",
-                url: "/api/v2/c/domain-config"
-              })
-                .then(res => {
-                  let withdraw_info_before_bet = false;
-                  if (res && res.data && res.data.ret) {
-                    withdraw_info_before_bet =
-                      res.data.ret.withdraw_info_before_bet;
-                  }
-
-                  if (withdraw_info_before_bet) {
-                    this.checkWithdrawData("balanceTrans");
-                    return;
-                  }
-
-                  this.$router.push("/mobile/mcenter/balanceTrans");
+              case "ey1":
+                axios({
+                  method: "get",
+                  url: "/api/v2/c/domain-config"
                 })
-                .catch(res => {
-                  this.actionSetGlobalMessage({
-                    msg: res.data.msg,
-                    code: res.data.code,
-                    origin: "wallet"
+                  .then(res => {
+                    let withdraw_info_before_bet = false;
+                    if (res && res.data && res.data.ret) {
+                      withdraw_info_before_bet =
+                        res.data.ret.withdraw_info_before_bet;
+                    }
+
+                    if (withdraw_info_before_bet) {
+                      this.checkWithdrawData("balanceTrans");
+                      return;
+                    }
+
+                    this.$router.push("/mobile/mcenter/balanceTrans");
+                  })
+                  .catch(res => {
+                    this.actionSetGlobalMessage({
+                      msg: res.data.msg,
+                      code: res.data.code,
+                      origin: "wallet"
+                    });
                   });
-                });
+                break;
             }
           }
         },
         {
           key: "withdraw",
           show: true,
-          text: this.$text('S_WITHDRAWAL_TEXT', '提现'),
+          text: this.$text("S_WITHDRAWAL_TEXT", "提现"),
           imgSrc: `/static/image/${this.themeTPL}/mcenter/wallet/ic_wallter_withdraw.png`,
           onClick: () => {
-            if (this.themeTPL.includes("porn1", "sg1")) {
-              this.$router.push("/mobile/mcenter/withdraw");
-              return;
-            }
+            switch (this.themeTPL) {
+              case "porn1":
+              case "sg1":
+                this.$router.push("/mobile/mcenter/withdraw");
+                break;
 
-            if (this.themeTPL.includes("ey1")) {
-              this.checkWithdrawData("withdraw");
-              return;
+              case "ey1":
+                this.checkWithdrawData("withdraw");
+                break;
             }
           }
         },
@@ -408,7 +414,7 @@ export default {
       this.$router.push("/mobile/login");
     }
 
-    if (this.themeTPL.includes('porn1', 'sg1')) {
+    if (["porn1", "sg1"].includes(this.themeTPL)) {
       this.initSWAGConfig();
     }
 

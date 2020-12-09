@@ -55,7 +55,7 @@
               <div :class="$style['check-cell']">
                 <span :class="$style['sub-title']">
                   {{ $text("S_DEDUCTION_MONEY", "扣除金额") }}
-                  <template v-if="themeTPL === 'ey1'">
+                  <template v-if="['ey1'].includes(themeTPL)">
                     (行政费用:{{ `${serialNumberData.administrative_rate}%` }})
                   </template>
                 </span>

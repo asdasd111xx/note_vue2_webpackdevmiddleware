@@ -2,13 +2,14 @@
   <div
     :class="[
       {
-        [$style['bankcard-item']]: type === 'bankCard' || themeTPL === 'porn1',
+        [$style['bankcard-item']]:
+          type === 'bankCard' || ['porn1', 'sg1'].includes(themeTPL)
       },
       {
         [$style['virtual-bankcard-item']]:
-          themeTPL === 'ey1' && type === 'wallet',
+          ['ey1'].includes(themeTPL) && type === 'wallet'
       },
-      $style[`colorIndex-${colorRepeatIndex}`],
+      $style[`colorIndex-${colorRepeatIndex}`]
     ]"
     @click="handleItem"
   >
@@ -48,7 +49,7 @@
             {{ data.virtual_bank_name }}
           </div>
 
-          <template v-if="themeTPL === 'ey1'">
+          <template v-if="['ey1'].includes(themeTPL)">
             <div :class="$style['card-number']">
               {{ data.address.slice(0, 4) }} **** ****
               <span>{{ data.address.slice(-4) }}</span>
@@ -57,7 +58,7 @@
         </div>
       </div>
 
-      <template v-if="themeTPL === 'porn1'">
+      <template v-if="['porn1', 'sg1'].includes(themeTPL)">
         <div :class="$style['card-number']">
           {{ data.address.slice(0, 4) }} **** ****
           <span>{{ data.address.slice(-4) }}</span>
@@ -117,10 +118,10 @@ export default {
       return {
         src: `https://images.dormousepie.com/icon/bankIconBySwiftCode/${swiftCode}.png`,
         error: this.$getCdnPath(
-          `/static/image/${this.themeTPL}/default/bank_default_2.png`
+          `/static/image/common/default/bank_card_default.png`
         ),
         loading: this.$getCdnPath(
-          `/static/image/${this.themeTPL}/default/bank_default_2.png`
+          `/static/image/common/default/bank_card_default.png`
         )
       };
     },
@@ -139,9 +140,13 @@ export default {
   src="@/css/page/bankCard/porn1.cardInfo.module.scss"
   module="$style_porn1"
 ></style>
-
 <style
   lang="scss"
   src="@/css/page/bankCard/ey1.cardInfo.module.scss"
   module="$style_ey1"
+></style>
+<style
+  lang="scss"
+  src="@/css/page/bankCard/sg1.cardInfo.module.scss"
+  module="$style_sg1"
 ></style>

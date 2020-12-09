@@ -1,11 +1,12 @@
 <template>
   <div :class="mainClass" id="header">
+    <div v-if="headerConfig.hasLogo" :class="$style['top-bg']" />
     <div
       v-if="headerConfig.hasLogo"
       :class="[$style['logo-wrap']]"
       @click="headerConfig.onClick"
     >
-      <img :src="$getCdnPath('/static/image/_new/common/logo.png')" />
+      <img :src="$getCdnPath('/static/image/sg1/common/logo.png')" />
     </div>
 
     <div
@@ -103,7 +104,7 @@
         </span>
         <div>
           <img
-            :src="$getCdnPath('/static/image/_new/common/icon_ask.png')"
+            :src="$getCdnPath('/static/image/sg1/common/icon_ask.png')"
             @click="handleClickAsk"
           />
           <div v-show="hasUnreadMessage" :class="$style['red-dot']" />
@@ -196,7 +197,7 @@ export default {
     },
     updateSearchStatus: {
       type: Function,
-      default: () => {}
+      default: () => { }
     },
     hasUnreadMessage: {
       type: Boolean,
@@ -288,7 +289,7 @@ export default {
   max-width: $mobile_max_width;
   position: fixed;
   top: 0;
-  z-index: 3;
+  z-index: 0;
   width: 100%;
   height: 43px;
   padding: 0 17px;
@@ -327,6 +328,25 @@ export default {
   }
 }
 
+.top-bg {
+  background: url("/static/image/sg1/common/pic_top.png");
+  -moz-background-size: 100% 100%;
+  background-size: 100% 100%;
+  height: 120px;
+  width: 100%;
+  max-width: $mobile_max_width;
+  top: 0;
+  left: 0;
+  z-index: -1;
+  position: absolute;
+}
+
+@media (orientation: landscape) {
+  .top-bg {
+    max-width: $mobile_max_landscape_width !important;
+  }
+}
+
 .agent {
   background: url("/static/image/porn1/agent/common/herder_bg.png");
   border-bottom: 1px solid #000;
@@ -338,7 +358,7 @@ export default {
 
 .logo-wrap {
   float: left;
-  width: 99px;
+  width: 115px;
   height: 100%;
   display: flex;
   align-items: center;
@@ -632,7 +652,7 @@ export default {
   display: flex;
   align-items: center;
   float: right;
-  color: #5e626d;
+  color: #f9e8b4;
   > span {
     display: inline-block;
     font-size: 18px;

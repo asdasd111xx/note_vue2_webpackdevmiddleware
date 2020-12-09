@@ -92,18 +92,28 @@
             />
           </div>
           <div :class="$style['cell-text']">
-            <div>
-              {{
-                currentLevelData.monthly_gift == ""
-                  ? "--"
-                  : currentLevelData.monthly_gift
-              }}
-            </div>
-            <div>每月红包(月初自动派发)</div>
+            <template v-if="['porn1', 'sg1'].includes(themeTPL)">
+              <div>
+                {{
+                  currentLevelData.monthly_gift == ""
+                    ? "--"
+                    : currentLevelData.monthly_gift
+                }}
+              </div>
+              <div>每月红包(月初自动派发)</div>
+            </template>
+
+            <template v-if="['ey1'].includes(themeTPL)">
+              <div>{{ currentLevelData.weekly_gift }}</div>
+              <div>每周红包(周一自动派发)</div>
+            </template>
           </div>
         </div>
 
-        <div :class="$style['cell']">
+        <div
+          v-if="['porn1', 'sg1'].includes(themeTPL)"
+          :class="$style['cell']"
+        >
           <div :class="$style['cell-icon']">
             <img
               :src="
@@ -117,6 +127,29 @@
           <div :class="$style['cell-text']">
             <div>{{ currentLevelData.birth_amount }}</div>
             <div>生日礼金</div>
+          </div>
+        </div>
+
+        <div v-if="['ey1'].includes(themeTPL)" :class="$style['cell']">
+          <div :class="$style['cell-icon']">
+            <img
+              :src="
+                $getCdnPath(
+                  `/static/image/${siteConfig.MOBILE_WEB_TPL}/mcenter/vip/pic_vip_4.png`
+                )
+              "
+              alt="icon"
+            />
+          </div>
+          <div :class="$style['cell-text']">
+            <div>
+              {{
+                currentLevelData.monthly_gift == ""
+                  ? "--"
+                  : currentLevelData.monthly_gift
+              }}
+            </div>
+            <div>每月红包(月初自动派发)</div>
           </div>
         </div>
       </div>
@@ -149,6 +182,9 @@ export default {
       const style =
         this[`$style_${this.siteConfig.MOBILE_WEB_TPL}`] || this.$style_porn1;
       return style;
+    },
+    themeTPL() {
+      return this.siteConfig.MOBILE_WEB_TPL;
     }
   }
 };

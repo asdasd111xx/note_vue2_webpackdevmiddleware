@@ -17,11 +17,11 @@
             @click="$router.push('/mobile/mcenter/bonus')"
           >
             <span :class="$style['balance-item-vendor']">
-              <template v-if="themeTPL === 'porn1'">
+              <template v-if="['porn1', 'sg1'].includes(themeTPL)">
                 {{ $text("S_BONUS", "红利彩金") }}
               </template>
 
-              <template v-if="themeTPL === 'ey1'">
+              <template v-if="['ey1'].includes(themeTPL)">
                 {{ $text("S_BONUS_ACCOUNT", "红利帐户") }}
               </template>
             </span>
@@ -146,7 +146,7 @@
 
     <!-- 因底下商業邏輯皆不同，獨立 template 出來 -->
     <!-- Yabo : 銀行卡列表 + 更多提現方式按鈕 -->
-    <template v-if="themeTPL === 'porn1'">
+    <template v-if="['porn1', 'sg1'].includes(themeTPL)">
       <!-- 銀行卡 -->
       <div
         v-if="allWithdrawAccount && allWithdrawAccount.length > 0"
@@ -252,7 +252,7 @@
 
     <!-- 因按鈕顯示邏輯不同，所以獨立成兩份 -->
     <!-- 億元 : 銀行卡列表 + 更多提現方式按鈕 -->
-    <template v-if="themeTPL === 'ey1'">
+    <template v-if="['ey1'].includes(themeTPL)">
       <!-- 提現帳號 -->
       <div
         v-if="allWithdrawAccount && allWithdrawAccount.length > 0"
@@ -411,7 +411,7 @@
           $style['actual-money'],
           {
             [$style['error']]:
-              themeTPL === 'ey1' && withdrawValue && actualMoney <= 0
+              ['ey1'].includes(themeTPL) && withdrawValue && actualMoney <= 0
           }
         ]"
       >
@@ -463,7 +463,7 @@
 
       <!-- Botton -->
       <!-- Yabo -->
-      <template v-if="themeTPL === 'porn1'">
+      <template v-if="['porn1', 'sg1'].includes(themeTPL)">
         <div :class="[$style['btn-wrap']]">
           <div :class="[$style['submit-btn']]">
             <div @click="linkToRecharge">额度转让&nbsp;返佣70%</div>
@@ -482,7 +482,7 @@
 
       <!-- 取款密碼＋Botton -->
       <!-- 億元 -->
-      <template v-if="themeTPL === 'ey1'">
+      <template v-if="['ey1'].includes(themeTPL)">
         <div :class="[$style['withdraw-pwd-input']]">
           <input
             v-model="withdrawPwd"
@@ -680,7 +680,7 @@ export default {
       confirmPopupObj: {
         msg: "",
         btnText: "",
-        cb: () => {}
+        cb: () => { }
       }
     };
   },
@@ -699,41 +699,41 @@ export default {
         // 卡片資料
         this.selectedCard = localStorage.getItem("tmp_w_selectedCard")
           ? {
-              bank_id: JSON.parse(localStorage.getItem("tmp_w_selectedCard"))[
-                "bank_id"
-              ],
-              id: JSON.parse(localStorage.getItem("tmp_w_selectedCard"))["id"],
-              name: JSON.parse(localStorage.getItem("tmp_w_selectedCard"))[
-                "name"
-              ],
-              withdrawType: JSON.parse(
-                localStorage.getItem("tmp_w_selectedCard")
-              )["withdrawType"],
-              swift_code: JSON.parse(
-                localStorage.getItem("tmp_w_selectedCard")
-              )["swift_code"],
-              offer_percent: JSON.parse(
-                localStorage.getItem("tmp_w_selectedCard")
-              )["offer_percent"],
-              offer_limit: JSON.parse(
-                localStorage.getItem("tmp_w_selectedCard")
-              )["offer_limit"]
-            }
+            bank_id: JSON.parse(localStorage.getItem("tmp_w_selectedCard"))[
+              "bank_id"
+            ],
+            id: JSON.parse(localStorage.getItem("tmp_w_selectedCard"))["id"],
+            name: JSON.parse(localStorage.getItem("tmp_w_selectedCard"))[
+              "name"
+            ],
+            withdrawType: JSON.parse(
+              localStorage.getItem("tmp_w_selectedCard")
+            )["withdrawType"],
+            swift_code: JSON.parse(
+              localStorage.getItem("tmp_w_selectedCard")
+            )["swift_code"],
+            offer_percent: JSON.parse(
+              localStorage.getItem("tmp_w_selectedCard")
+            )["offer_percent"],
+            offer_limit: JSON.parse(
+              localStorage.getItem("tmp_w_selectedCard")
+            )["offer_limit"]
+          }
           : {
-              bank_id: defaultCard.bank_id,
-              id: defaultCard.id,
-              name:
-                defaultCard.withdrawType === "account_id"
-                  ? ""
-                  : defaultCard.alias.substring(
-                      0,
-                      defaultCard.alias.indexOf("-")
-                    ),
-              withdrawType: defaultCard.withdrawType,
-              swift_code: defaultCard.swift_code,
-              offer_percent: defaultCard.offer_percent,
-              offer_limit: defaultCard.offer_limit
-            };
+            bank_id: defaultCard.bank_id,
+            id: defaultCard.id,
+            name:
+              defaultCard.withdrawType === "account_id"
+                ? ""
+                : defaultCard.alias.substring(
+                  0,
+                  defaultCard.alias.indexOf("-")
+                ),
+            withdrawType: defaultCard.withdrawType,
+            swift_code: defaultCard.swift_code,
+            offer_percent: defaultCard.offer_percent,
+            offer_limit: defaultCard.offer_limit
+          };
 
         this.updateAmount(this.selectedCard.swift_code);
 
@@ -867,7 +867,7 @@ export default {
       }
 
       // 億元：當提現密碼尚未輸入值
-      if (this.themeTPL === "ey1" && !this.withdrawPwd) {
+      if (["ey1"].includes(this.themeTPL) && !this.withdrawPwd) {
         return true;
       }
 
@@ -977,7 +977,10 @@ export default {
       }
 
       // 億元 && 未開啟限綁一組開關
-      if (this.themeTPL === "ey1" && !this.userLevelObj.virtual_bank_single) {
+      if (
+        ["ey1"].includes(this.themeTPL) &&
+        !this.userLevelObj.virtual_bank_single
+      ) {
         // 已開啟電子錢包開關 & 未開啟限綁一組開關
         let noSingleLimit =
           this.withdrawUserData.wallet &&
@@ -989,8 +992,9 @@ export default {
 
       // Yabo or 億元 && 開啟限綁一組開關
       if (
-        this.themeTPL === "porn1" ||
-        (this.themeTPL === "ey1" && this.userLevelObj.virtual_bank_single)
+        ["porn1", "sg1"].includes(this.themeTPL) ||
+        (["ey1"].includes(this.themeTPL) &&
+          this.userLevelObj.virtual_bank_single)
       ) {
         let nowBindWalletCount = 0;
 
@@ -1046,10 +1050,10 @@ export default {
       return {
         src: `https://images.dormousepie.com/icon/bankIconBySwiftCode/${swiftCode}.png`,
         error: this.$getCdnPath(
-          `/static/image/${this.themeTPL}/default/bank_default_2.png`
+          `/static/image/common/default/bank_card_default.png`
         ),
         loading: this.$getCdnPath(
-          `/static/image/${this.themeTPL}/default/bank_default_2.png`
+          `/static/image/common/default/bank_card_default.png`
         )
       };
     },
@@ -1120,7 +1124,7 @@ export default {
         ) {
           this.errTips = `单笔提现金额最小为${withdrawMin}元，最大为${
             withdrawMax ? `${withdrawMax}元` : "无限制"
-          }`;
+            }`;
           return;
         }
 
@@ -1271,6 +1275,7 @@ export default {
           if (res === "ok") {
             switch (this.themeTPL) {
               case "porn1":
+              case "sg1":
                 if (Number(this.actualMoney) !== Number(this.withdrawValue)) {
                   this.widthdrawTipsType = "tips";
                   this.setPopupStatus(true, "check");
@@ -1612,10 +1617,9 @@ export default {
               this.setPopupStatus(true, "funcTips");
 
               this.confirmPopupObj = {
-                msg:
-                  this.themeTPL === "porn1"
-                    ? "汇率已失效"
-                    : "汇率已失效，请再次确认汇率",
+                msg: ['porn1', 'sg1'].includes(this.themeTPL)
+                  ? "汇率已失效"
+                  : "汇率已失效，请再次确认汇率",
                 btnText: "刷新汇率",
                 cb: () => {
                   this.convertCryptoMoney();
@@ -1750,3 +1754,4 @@ export default {
 
 <style lang="scss" src="../css/index.module.scss" module="$style_porn1"></style>
 <style lang="scss" src="../css/ey1.module.scss" module="$style_ey1"></style>
+<style lang="scss" src="../css/sg1.module.scss" module="$style_sg1"></style>

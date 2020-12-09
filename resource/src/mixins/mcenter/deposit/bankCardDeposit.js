@@ -1340,7 +1340,7 @@ export default {
 
                   this.confirmPopupObj = {
                     msg:
-                      this.themeTPL === "porn1"
+                      ['porn1', 'sg1'].includes(this.themeTPL)
                         ? "汇率已失效"
                         : "汇率已失效，请再次确认汇率",
                     btnText: "刷新汇率",

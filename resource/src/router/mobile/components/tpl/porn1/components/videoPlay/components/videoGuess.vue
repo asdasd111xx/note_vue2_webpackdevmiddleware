@@ -59,7 +59,7 @@ export default {
     return {
       source: this.$route.query.source,
       videoList: [],
-      img: this.$getCdnPath(`/static/image/_new/default/bg_video03_d.png`)
+      img: this.$getCdnPath(`/static/image/porn1/default/bg_video03_d.png`)
     };
   },
   computed: {

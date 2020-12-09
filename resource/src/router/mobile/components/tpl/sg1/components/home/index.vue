@@ -1,6 +1,7 @@
 <template>
   <mobile-container :header-config="headerConfig" :class="$style.container">
     <div slot="content" class="content-wrap">
+      <div :class="$style['top-bg']" />
       <home-slider />
       <home-new />
       <home-content />
@@ -14,11 +15,11 @@ import { getCookie, setCookie } from '@/lib/cookie';
 import { mapGetters, mapActions } from 'vuex';
 import axios from 'axios';
 import homeContent from './components/homeContent';
-import homeNew from './components/homeNew';
-import homeSlider from './components/homeSlider';
+import homeNew from '@/router/mobile/components/common/home/homeNew';
+import homeSlider from '@/router/mobile/components/common/home/homeSlider';
 import mcenter from '@/api/mcenter';
 import mobileContainer from '../common/mobileContainer';
-import popup from './components/popup';
+import popup from '@/router/mobile/components/common/home/popup';
 
 export default {
   components: {

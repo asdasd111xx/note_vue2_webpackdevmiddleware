@@ -7,7 +7,7 @@
 
       <!-- Select Wallet Type -->
       <!-- Yabo -->
-      <template v-if="themeTPL === 'porn1'">
+      <template v-if="['porn1', 'sg1'].includes(themeTPL)">
         <div :class="$style['wallet-block']">
           <p :class="$style['wallet-text']">
             {{ $text("S_WALLET_TYPE", "钱包类型") }}
@@ -18,8 +18,8 @@
               :class="[
                 $style['wallet-item'],
                 {
-                  [$style['is-current']]: item.id === selectTarget.walletId,
-                },
+                  [$style['is-current']]: item.id === selectTarget.walletId
+                }
               ]"
               v-for="item in selectTarget.fixed ? filterWalletList : walletList"
               :key="item.id"
@@ -38,7 +38,7 @@
       </template>
 
       <!-- 億元 -->
-      <template v-if="themeTPL === 'ey1'">
+      <template v-if="['ey1'].includes(themeTPL)">
         <div :class="$style['info-item']">
           <p :class="$style['input-title']">
             {{ $text("S_WALLET_TYPE", "钱包类型") }}
@@ -46,7 +46,7 @@
           <div
             :class="[
               $style['select-bank'],
-              { [$style['disable']]: selectTarget.fixed },
+              { [$style['disable']]: selectTarget.fixed }
             ]"
             @click="setPopupStatus(true, 'bank-list')"
           >
@@ -77,7 +77,7 @@
         <div
           :class="[
             $style['input-wrap'],
-            { [$style['disable']]: isGoBaoWallet },
+            { [$style['disable']]: isGoBaoWallet }
           ]"
         >
           <input
@@ -91,8 +91,8 @@
 
         <div
           v-if="
-            (themeTPL !== 'porn1' && selectTarget.walletId === 21) ||
-            isGoBaoWallet
+            (['ey1'].includes(themeTPL) && selectTarget.walletId === 21) ||
+              isGoBaoWallet
           "
           :class="$style['qrcode']"
           @click="setPopupStatus(true, 'qrcode')"
@@ -127,7 +127,9 @@
       <!-- Confirm Button -->
       <div :class="$style['info-confirm']">
         <!-- Yabo : 上方 Tip 顯示 -->
-        <template v-if="themeTPL === 'porn1' && selectTarget.walletName">
+        <template
+          v-if="['porn1', 'sg1'].includes(themeTPL) && selectTarget.walletName"
+        >
           <li
             v-for="(item, index) in walletTipInfo"
             :key="`${item.key}-${index}`"
@@ -143,7 +145,7 @@
         </template>
 
         <!-- 億元：確認鈕上方text -->
-        <template v-if="themeTPL === 'ey1' && selectTarget.walletName">
+        <template v-if="['ey1'].includes(themeTPL) && selectTarget.walletName">
           <p v-if="!isGoBaoWallet">
             请认真校对钱包地址，地址错误资金将无法到帐
           </p>
@@ -166,8 +168,8 @@
             $style['submit'],
             { [$style['disabled']]: lockStatus },
             {
-              [$style['hidden']]: isGoBaoWallet,
-            },
+              [$style['hidden']]: isGoBaoWallet
+            }
           ]"
           @click="submitByNormal"
         >
@@ -177,7 +179,7 @@
     </div>
 
     <p
-      v-if="themeTPL === 'porn1' || selectTarget.walletName"
+      v-if="['porn1', 'sg1'].includes(themeTPL) || selectTarget.walletName"
       :class="$style['service-remind']"
     >
       如需帮助，请<span
@@ -189,7 +191,9 @@
 
     <template v-if="showPopStatus.isShow">
       <!-- 銀行列表選單 -->
-      <template v-if="themeTPL === 'ey1' && showPopStatus.type === 'bank-list'">
+      <template
+        v-if="['ey1'].includes(themeTPL) && showPopStatus.type === 'bank-list'"
+      >
         <div :class="$style['pop-wrap']">
           <div :class="$style['pop-mask']" @click="closePopup" />
           <div :class="[$style['pop-menu'], $style['custom1']]">
@@ -220,7 +224,11 @@
       </template>
 
       <!-- USDT Tip 彈窗 -->
-      <template v-if="themeTPL === 'porn1' && showPopStatus.type === 'tip'">
+      <template
+        v-if="
+          ['porn1', 'sg1'].includes(themeTPL) && showPopStatus.type === 'tip'
+        "
+      >
         <popup-tip @close="closePopup" />
       </template>
 
@@ -276,7 +284,7 @@ export default {
       // 彈窗顯示狀態統整
       showPopStatus: {
         isShow: false,
-        type: ''
+        type: ""
       },
 
       // 欄位資料
@@ -326,11 +334,11 @@ export default {
 
       switch (value) {
         case 21:
-          if (this.themeTPL === "porn1") {
+          if (["porn1", "sg1"].includes(this.themeTPL)) {
             // text = "请输入CGPay邮箱/手机号或扫扫二维码";
-            text = "请输入CGP邮箱/手机号或扫扫二维码"
+            text = "请输入CGP邮箱/手机号或扫扫二维码";
           } else {
-            text = "请输入CGP邮箱/手机号或扫扫二维码"
+            text = "请输入CGP邮箱/手机号或扫扫二维码";
           }
 
           this.getWalletTipInfo();
@@ -385,7 +393,10 @@ export default {
     },
     walletList() {
       // Yabo
-      if (this.themeTPL === "porn1" && this.$route.query.wallet) {
+      if (
+        ["porn1", "sg1"].includes(this.themeTPL) &&
+        this.$route.query.wallet
+      ) {
         switch (this.$route.query.wallet) {
           case "CGPay":
             this.filterWalletList = this.walletList.filter(item => {
@@ -414,7 +425,7 @@ export default {
 
       // 億元
       // 從首頁 or 提現頁進來，且只選擇 CGPay
-      if (this.themeTPL === "ey1" && this.$route.query.wallet) {
+      if (["ey1"].includes(this.themeTPL) && this.$route.query.wallet) {
         switch (this.$route.query.wallet) {
           case "CGPay":
             let item = this.walletList.find(item => {
@@ -513,8 +524,9 @@ export default {
         // 億元：如果已綁定過相同類型錢包時，錢包類型就不出現選項。因此 CGPay 與 購寶 只能綁定一組的條件已符合
         // Yabo 目前與 億元　等同條件判斷
         if (
-          this.themeTPL === "porn1" ||
-          (this.themeTPL === "ey1" && this.userLevelObj.virtual_bank_single)
+          ["porn1", "sg1"].includes(this.themeTPL) ||
+          (["ey1"].includes(this.themeTPL) &&
+            this.userLevelObj.virtual_bank_single)
         ) {
           let idArr = [
             ...new Set(
@@ -537,8 +549,7 @@ export default {
             ...new Set(
               this.userBindWalletList.filter(item => {
                 return (
-                  item.virtual_bank_id === 21 ||
-                  item.virtual_bank_id === 37
+                  item.virtual_bank_id === 21 || item.virtual_bank_id === 37
                 );
               })
             )
@@ -693,15 +704,15 @@ export default {
       return {
         src: `https://images.dormousepie.com/icon/bankIconBySwiftCode/${swiftCode}.png`,
         error: this.$getCdnPath(
-          `/static/image/${this.themeTPL}/default/bank_default_2.png`
+          `/static/image/common/default/bank_card_default.png`
         ),
         loading: this.$getCdnPath(
-          `/static/image/${this.themeTPL}/default/bank_default_2.png`
+          `/static/image/common/default/bank_card_default.png`
         )
       };
     },
     getWalletTipInfo() {
-      if (this.themeTPL === "ey1") return;
+      if (["ey1"].includes(this.themeTPL)) return;
 
       if (this.selectTarget.walletId === 21) {
         this.walletTipInfo = [
@@ -750,7 +761,7 @@ export default {
             dataObj: {
               text: "点我查看交易所",
               cb: () => {
-                this.setPopupStatus(true, 'tip')
+                this.setPopupStatus(true, "tip");
               }
             }
           }
@@ -762,11 +773,11 @@ export default {
       this.showPopStatus = {
         isShow,
         type
-      }
+      };
     },
     closePopup() {
-      this.setPopupStatus(false, '')
-    },
+      this.setPopupStatus(false, "");
+    }
   }
 };
 </script>
@@ -776,9 +787,13 @@ export default {
   src="@/css/page/bankCard/porn1.addCard.module.scss"
   module="$style_porn1"
 ></style>
-
 <style
   lang="scss"
   src="@/css/page/bankCard/ey1.addCard.module.scss"
   module="$style_ey1"
+></style>
+<style
+  lang="scss"
+  src="@/css/page/bankCard/sg1.addCard.module.scss"
+  module="$style_sg1"
 ></style>

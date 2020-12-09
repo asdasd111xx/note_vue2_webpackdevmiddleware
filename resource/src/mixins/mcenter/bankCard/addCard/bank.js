@@ -1,6 +1,6 @@
 import { mapActions, mapGetters } from "vuex";
 
-import { API_MCENTER_USER_CONFIG } from '@/config/api';
+import { API_MCENTER_USER_CONFIG } from "@/config/api";
 import ajax from "@/lib/ajax";
 import axios from "axios";
 
@@ -8,7 +8,7 @@ export default {
   data() {
     return {
       // 國碼
-      phoneHead: '+86',
+      phoneHead: "+86",
       phoneHeadOption: [],
       bankList: [],
       currentBank: "",
@@ -17,8 +17,8 @@ export default {
       formData: {
         account_name: "",
         bank_id: "",
-        province: '',
-        city: '',
+        province: "",
+        city: "",
         branch: "",
         account: "",
         phone: "",
@@ -32,13 +32,16 @@ export default {
       smsTimer: null,
       toggleCaptcha: false,
       captcha: null
-    }
+    };
   },
   computed: {
     ...mapGetters({
       memInfo: "getMemInfo",
       siteConfig: "getSiteConfig"
     }),
+    themeTPL() {
+      return this.siteConfig.MOBILE_WEB_TPL;
+    },
     isShowCaptcha: {
       get() {
         return this.toggleCaptcha;
@@ -71,6 +74,24 @@ export default {
       //     return "*";
       //   })
       //   .join("");
+    },
+    checkPhoneVerification() {
+      // player_user_bank_phone (會員綁定銀行卡前需手機驗證，0否，1每次，2首次)
+      // phone.corfirm (已認證，0未認證/1已認證/2人工驗證)
+
+      let result = null;
+      let verifyNum = this.memInfo.config.player_user_bank_phone;
+      let confirmNum = this.memInfo.phone.confirm;
+
+      if (verifyNum === 0 || (verifyNum === 2 && confirmNum !== 0)) {
+        result = false;
+      }
+
+      if (verifyNum === 1 || (verifyNum === 2 && confirmNum === 0)) {
+        result = true;
+      }
+
+      return result;
     }
   },
   watch: {
@@ -88,7 +109,7 @@ export default {
       this.getKeyring();
     },
     "formData.phone"() {
-      if (this.siteConfig.MOBILE_WEB_TPL === "ey1" || this.formData.phone.length >= 11) {
+      if (["ey1"].includes(this.themeTPL) || this.formData.phone.length >= 11) {
         this.errorMsg = "";
         this.isVerifyPhone = true;
       } else {
@@ -100,54 +121,54 @@ export default {
   created() {
     // 已經有真實姓名時不送該欄位
     if (this.memInfo.user.name) {
-      delete this.formData['account_name'];
+      delete this.formData["account_name"];
     }
 
-    if (this.siteConfig.MOBILE_WEB_TPL !== 'ey1' ||
-      (this.memInfo.config.player_user_bank && this.siteConfig.MOBILE_WEB_TPL === 'ey1')) {
-      delete this.formData['city'];
-      delete this.formData['province'];
+    if (
+      ["porn1", "sg1"].includes(this.themeTPL) ||
+      (this.memInfo.config.player_user_bank && ["ey1"].includes(this.themeTPL))
+    ) {
+      delete this.formData["city"];
+      delete this.formData["province"];
     }
 
     // 推播返回 補齊資料
-    if (localStorage.getItem('click-notification') &&
-      localStorage.getItem('add-bank-form')) {
-
-      const data = JSON.parse(localStorage.getItem('add-bank-form'));
-      console.log(data)
+    if (
+      localStorage.getItem("click-notification") &&
+      localStorage.getItem("add-bank-form")
+    ) {
+      const data = JSON.parse(localStorage.getItem("add-bank-form"));
+      console.log(data);
 
       this.NextStepStatus = false;
       this.$emit("update:addBankCardStep", "two");
       this.$nextTick(() => {
         this.formData = { ...data };
-        localStorage.removeItem('add-bank-form');
-        localStorage.removeItem('click-notification');
-      })
+        localStorage.removeItem("add-bank-form");
+        localStorage.removeItem("click-notification");
+      });
     }
 
     // 國碼
     ajax({
-      method: 'get',
+      method: "get",
       url: API_MCENTER_USER_CONFIG,
       errorAlert: false
-    }).then((response) => {
-      if (response && response.result === 'ok') {
-        this.phoneHeadOption = response.ret.config.phone.country_codes
+    }).then(response => {
+      if (response && response.result === "ok") {
+        this.phoneHeadOption = response.ret.config.phone.country_codes;
       }
     });
   },
   beforeDestroy() {
-    if (localStorage.getItem('click-notification')) {
-      localStorage.setItem('add-bank-form', JSON.stringify(this.formData))
+    if (localStorage.getItem("click-notification")) {
+      localStorage.setItem("add-bank-form", JSON.stringify(this.formData));
     }
   },
   methods: {
-    ...mapActions(['actionSetUserdata', 'actionVerificationFormData', 'actionVerificationFormData']),
+    ...mapActions(["actionSetUserdata", "actionVerificationFormData"]),
     sendData() {
-      if (
-        this.addBankCardStep === "one" &&
-        this.memInfo.config.player_user_bank_mobile
-      ) {
+      if (this.addBankCardStep === "one" && this.checkPhoneVerification) {
         this.NextStepStatus = false;
         this.$emit("update:addBankCardStep", "two");
         return;
@@ -161,7 +182,7 @@ export default {
 
       // 已經有真實姓名時不送該欄位
       if (this.memInfo.user.name) {
-        delete this.formData['account_name'];
+        delete this.formData["account_name"];
       }
 
       const params = {
@@ -200,16 +221,20 @@ export default {
       this.checkData();
     },
     checkData(value, key) {
-      if (key === "account_name" && this.memInfo.user.name === '') {
-        this.actionVerificationFormData({ target: 'name', value: value }).then((val => {
-          this.formData.account_name = val;
-        }));
+      if (key === "account_name" && this.memInfo.user.name === "") {
+        this.actionVerificationFormData({ target: "name", value: value }).then(
+          val => {
+            this.formData.account_name = val;
+          }
+        );
       }
 
       if (key === "province" || key === "city") {
-        this.actionVerificationFormData({ target: 'name', value: value }).then((val => {
-          this.formData[key] = val;
-        }));
+        this.actionVerificationFormData({ target: "name", value: value }).then(
+          val => {
+            this.formData[key] = val;
+          }
+        );
       }
 
       if (key === "branch") {
@@ -218,15 +243,20 @@ export default {
       }
 
       if (key === "account") {
-        this.actionVerificationFormData({ target: 'bankCard', value: value }).then((val => {
+        this.actionVerificationFormData({
+          target: "bankCard",
+          value: value
+        }).then(val => {
           this.formData.account = val;
-        }));
+        });
       }
 
       if (key === "keyring") {
-        this.actionVerificationFormData({ target: 'code', value: value }).then((val => {
-          this.formData.keyring = val;
-        }));
+        this.actionVerificationFormData({ target: "code", value: value }).then(
+          val => {
+            this.formData.keyring = val;
+          }
+        );
       }
 
       this.NextStepStatus = Object.keys(this.formData).every(key => {
@@ -235,19 +265,28 @@ export default {
             return this.formData[key].length > 15;
           }
 
-          if (this.siteConfig.MOBILE_WEB_TPL === 'ey1') {
-            if ((!this.memInfo.config.player_user_bank && key === 'city') &&
-              (!this.memInfo.config.player_user_bank && key === 'province')) {
+          if (["ey1"].includes(this.themeTPL)) {
+            if (
+              !this.memInfo.config.player_user_bank &&
+              key === "city" &&
+              !this.memInfo.config.player_user_bank &&
+              key === "province"
+            ) {
               return this.formData[key];
             }
           }
 
           // 需要填入時才檢查
-          if (key === "account_name" && this.memInfo.user.name === '') {
-            return this.formData['account_name'];
+          if (key === "account_name" && this.memInfo.user.name === "") {
+            return this.formData["account_name"];
           }
 
-          if (key !== "phone" && key !== "keyring" && key !== 'city' && key !== 'province') {
+          if (
+            key !== "phone" &&
+            key !== "keyring" &&
+            key !== "city" &&
+            key !== "province"
+          ) {
             return this.formData[key];
           }
 
@@ -269,10 +308,10 @@ export default {
       return {
         src: `https://images.dormousepie.com/icon/bankIconBySwiftCode/${swiftCode}.png`,
         error: this.$getCdnPath(
-          "/static/image/_new/default/bank_default_2.png"
+          "/static/image/common/default/bank_card_default.png"
         ),
         loading: this.$getCdnPath(
-          "/static/image/_new/default/bank_default_2.png"
+          "/static/image/common/default/bank_card_default.png"
         )
       };
     },
@@ -287,7 +326,7 @@ export default {
 
         // 彈驗證窗並利用Watch captchaData來呼叫 getKeyring()
         this.toggleCaptcha = true;
-      })
+      });
     },
     getKeyring() {
       if (this.lockStatus || this.smsTimer) {
@@ -296,7 +335,7 @@ export default {
       this.lockStatus = true;
 
       let captchaParams = {};
-      captchaParams['captcha_text'] = this.captchaData || "";
+      captchaParams["captcha_text"] = this.captchaData || "";
 
       axios({
         method: "post",
@@ -310,39 +349,42 @@ export default {
           this.lockStatus = false;
           if (res && res.data && res.data.result === "ok") {
             axios({
-              method: 'get',
-              url: '/api/v1/c/player/phone/ttl',
-            }).then(res => {
-              if (res && res.data && res.data.result === "ok") {
-                this.time = res.data.ret;
-                this.errorMsg = this.$text("S_SEND_CHECK_CODE_VALID_TIME").replace("%s", 5);
-
-                this.smsTimer = setInterval(() => {
-                  if (this.time <= 0) {
-                    clearInterval(this.smsTimer);
-                    this.smsTimer = null;
-                    return;
-                  }
-                  this.time -= 1;
-                }, 1000);
-              }
-            }).catch(error => {
-              if (error.response && error.response.status === 429) {
-                this.errorMsg = "操作太频繁，请稍候再试";
-                return;
-              }
-
-              if (error.response.data.msg) {
-                this.errorMsg = `${error.response.data.msg}`;
-                return;
-              }
+              method: "get",
+              url: "/api/v1/c/player/phone/ttl"
             })
+              .then(res => {
+                if (res && res.data && res.data.result === "ok") {
+                  this.time = res.data.ret;
+                  this.errorMsg = this.$text(
+                    "S_SEND_CHECK_CODE_VALID_TIME"
+                  ).replace("%s", 5);
 
+                  this.smsTimer = setInterval(() => {
+                    if (this.time <= 0) {
+                      clearInterval(this.smsTimer);
+                      this.smsTimer = null;
+                      return;
+                    }
+                    this.time -= 1;
+                  }, 1000);
+                }
+              })
+              .catch(error => {
+                if (error.response && error.response.status === 429) {
+                  this.errorMsg = "操作太频繁，请稍候再试";
+                  return;
+                }
+
+                if (error.response.data.msg) {
+                  this.errorMsg = `${error.response.data.msg}`;
+                  return;
+                }
+              });
           } else {
             if (res.data && res.data.msg) {
               this.errorMsg = res.data.msg;
             } else {
-              console.log(res.data)
+              console.log(res.data);
               this.errorMsg = res.data;
             }
           }
@@ -355,7 +397,7 @@ export default {
 
           this.lockStatus = false;
 
-          console.log(error.response)
+          console.log(error.response);
           if (error.response.data && error.response.data.msg) {
             this.errorMsg = error.response.data.msg;
           } else {
@@ -364,4 +406,4 @@ export default {
         });
     }
   }
-}
+};

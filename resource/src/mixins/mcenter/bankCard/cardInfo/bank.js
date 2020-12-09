@@ -10,8 +10,8 @@ export default {
       isShowPop: false,
 
       // 控制詳細頁卡片顏色
-      colorRepeatIndex: null,
-    }
+      colorRepeatIndex: null
+    };
   },
   computed: {
     ...mapGetters({
@@ -28,7 +28,7 @@ export default {
     }
   },
   methods: {
-    ...mapActions(['actionSetGlobalMessage']),
+    ...mapActions(["actionSetGlobalMessage"]),
     getUserBankList() {
       this.isRevice = false;
 
@@ -43,17 +43,17 @@ export default {
         }
 
         this.bank_card = ret.filter((item, index) => index < 3);
-      })
+      });
     },
     onClickDetail(info, index) {
-      this.colorRepeatIndex = index
+      this.colorRepeatIndex = index;
 
       this.bank_cardDetail = info;
-      this.$emit('update:isAudit', false)
+      this.$emit("update:isAudit", false);
       this.$emit("update:showDetail", true);
 
       if (info.auditing) {
-        this.$emit('update:isAudit', true);
+        this.$emit("update:isAudit", true);
         return;
       }
     },
@@ -66,57 +66,63 @@ export default {
         data: {
           userBankId: this.bank_cardDetail.id
         }
-      }).then(response => {
-        const { result, msg } = response.data;
-        this.isRevice = true;
-        this.isShowPop = false;
-        this.$emit('update:editStatus', false);
+      })
+        .then(response => {
+          const { result, msg } = response.data;
+          this.isRevice = true;
+          this.isShowPop = false;
+          this.$emit("update:editStatus", false);
 
-        if (!response || result !== 'ok') {
-          this.actionSetGlobalMessage({ msg: msg });
-          return;
-        }
-
-        this.getUserBankList().then(() => {
-          // 更新 bank_cardDetail
-          let temp = this.bank_card.find(item => {
-            return item.id === this.bank_cardDetail.id;
-          })
-          this.bank_cardDetail = temp;
-        }).then(() => {
-          if (this.memInfo.config.manual_delete_bank_card) {
-            switch (this.themeTPL) {
-              case 'porn1':
-                this.actionSetGlobalMessage({ msg: '银行卡删除审核中' });
-                break;
-
-              case 'ey1':
-                this.actionSetGlobalMessage({ msg: '删除审核中' });
-                break;
-            }
-            this.$emit('update:isAudit', true);
-            return;
-          } else {
-            switch (this.themeTPL) {
-              case 'porn1':
-                this.actionSetGlobalMessage({ msg: '银行卡刪除成功' });
-                break;
-
-              case 'ey1':
-                this.actionSetGlobalMessage({ msg: '刪除成功' });
-                break;
-            }
-            this.$emit("update:showDetail", false);
-            this.setPageStatus(0, "bankCardInfo", true);
+          if (!response || result !== "ok") {
+            this.actionSetGlobalMessage({ msg: msg });
             return;
           }
+
+          this.getUserBankList()
+            .then(() => {
+              // 更新 bank_cardDetail
+              let temp = this.bank_card.find(item => {
+                return item.id === this.bank_cardDetail.id;
+              });
+              this.bank_cardDetail = temp;
+            })
+            .then(() => {
+              if (this.memInfo.config.manual_delete_bank_card) {
+                switch (this.themeTPL) {
+                  case "porn1":
+                  case "sg1":
+                    this.actionSetGlobalMessage({ msg: "银行卡删除审核中" });
+                    break;
+
+                  case "ey1":
+                    this.actionSetGlobalMessage({ msg: "删除审核中" });
+                    break;
+                }
+                this.$emit("update:isAudit", true);
+                return;
+              } else {
+                switch (this.themeTPL) {
+                  case "porn1":
+                  case "sg1":
+                    this.actionSetGlobalMessage({ msg: "银行卡刪除成功" });
+                    break;
+
+                  case "ey1":
+                    this.actionSetGlobalMessage({ msg: "刪除成功" });
+                    break;
+                }
+                this.$emit("update:showDetail", false);
+                this.setPageStatus(0, "bankCardInfo", true);
+                return;
+              }
+            });
         })
-      }).catch(error => {
-        this.isRevice = true;
-        this.isShowPop = false;
-        this.$emit('update:editStatus', false);
-        this.actionSetGlobalMessage({ msg: error.response.data.msg });
-      })
+        .catch(error => {
+          this.isRevice = true;
+          this.isShowPop = false;
+          this.$emit("update:editStatus", false);
+          this.actionSetGlobalMessage({ msg: error.response.data.msg });
+        });
     }
-  },
-}
+  }
+};

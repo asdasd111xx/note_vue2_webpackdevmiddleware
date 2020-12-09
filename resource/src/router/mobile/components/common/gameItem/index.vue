@@ -6,7 +6,7 @@
           !gameInfo.code && gameInfo.status ? 'game-item-activity' : 'game-item'
         }`,
         `game-type-${gameInfo.kind}`,
-        `${!gameInfo.url && !gameInfo.code ? 'no-activity' : 'show'}`,
+        `${!gameInfo.url && !gameInfo.code ? 'no-activity' : 'show'}`
       ])
     "
     @click="onEnter"
@@ -51,7 +51,7 @@
         v-if="showFavor && loginStatus"
         :class="
           getClass(['icon-star', 'is-favorite'], {
-            'is-favorite': isFavorite,
+            'is-favorite': isFavorite
           })
         "
       />
@@ -223,10 +223,10 @@ export default {
     getActivityImg() {
       return `/static/image/casino/theme/brilliant/lang/${this.curLang}/${
         this.gameInfo.status !== 2 ? "upcoming_ribbon" : "activity_ribbon"
-      }.png`;
+        }.png`;
     },
     getJackpotImg() {
-      let src = "/static/image/casino/jackpot/";
+      let src = "/static/image/common/casino/jackpot/";
       switch (this.gameInfo.vendor) {
         // 單一彩金+名單
         case "bbin":

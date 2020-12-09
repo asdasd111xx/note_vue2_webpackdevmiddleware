@@ -1,0 +1,188 @@
+@import '~@/css/variable.scss';
+
+.container {
+  background-color: #FFF;
+}
+
+.title {
+  color: $main_title_color1;
+  font-size: 16px;
+}
+
+.login-wrap {
+  background-image: url("/static/image/sg1/common/bg.png");
+  background-repeat: no-repeat;
+  background-size: cover;
+  font-size: 14px;
+  margin: 0 auto;
+  min-height: 100vh;
+  position: relative;
+}
+
+.login-logo {
+  width: 150px;
+  margin: 80px auto 31px;
+
+  img {
+    width: 100%;
+    height: 100%;
+  }
+}
+
+.login-name {
+  font-size: 21px;
+  text-align: center;
+  font-weight: bolder;
+}
+
+.login-form-wrap {
+  height: 360px;
+  margin: 0 34px;
+  padding: 0 9%;
+
+  .login-unit {
+    display: block;
+    height: 40px;
+    margin-bottom: 11px;
+    position: relative;
+
+    input {
+      display: block;
+      width: 100%;
+      height: 100%;
+      padding: 0 38px;
+      border: 1px solid rgba(128, 128, 128, 0.26);
+      border-radius: 3px;
+      color: #000;
+
+      &::placeholder {
+        color: rgba(128, 128, 128, 0.26);
+      }
+    }
+
+    .input-icon {
+      display: inline-block;
+      position: absolute;
+      top: calc(50% - 9px);
+      left: 0;
+      width: 30px;
+      height: 20px;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      border-right: 1px solid rgba(128, 128, 128, 0.26);
+
+      >img {
+        width: 18px;
+        height: 18px;
+      }
+    }
+  }
+
+  .login-unit-captcha {
+    position: relative;
+    margin-bottom: 19px;
+    display: flex;
+    align-items: center;
+
+    .captchaImg {
+      position: absolute;
+      top: 9px;
+      right: 30px;
+      width: 62px;
+      height: 21px;
+      background-color: #000;
+    }
+
+    .captchaText-refresh {
+      width: 20px;
+      position: absolute;
+      right: 0;
+      top: calc(50% - 10px);
+      margin: 0px 5px;
+
+      >img {
+        width: 20px;
+        height: 20px;
+      }
+    }
+  }
+
+  .login-deposit-username {
+    margin: 20px 0 40px;
+
+    img {
+      display: block;
+      width: 20px;
+      height: 20px;
+    }
+
+    .icon-wrap {
+      float: left;
+    }
+
+    .deposit-text {
+      float: left;
+      position: relative;
+      margin-left: 6px;
+      color: $main_text_color4;
+    }
+
+    .login-unit-link {
+      float: right;
+      position: relative;
+      color: #5E626D;
+    }
+  }
+
+  .login-button {
+    height: 50px;
+    color: white;
+    text-align: center;
+    line-height: 50px;
+    background: linear-gradient(to left, #FE593C 0%, #E61938 100%);
+    border-radius: 3px;
+    font-size: 13px;
+    font-weight: 700;
+  }
+}
+
+.login-link-wrap {
+  text-align: center;
+
+  .link-button {
+    display: inline-block;
+    text-align: center;
+    margin: 0 10px;
+
+    &.link-submit {
+      color: $main_text_color6;
+    }
+
+    a {
+      color: $main_text_color4;
+    }
+  }
+}
+
+@media screen and (min-width: $phone) {
+  .login-wrap {
+    font-size: 15px;
+  }
+}
+
+@media screen and (min-width: $pad) {
+  .title {
+    font-size: 18px;
+  }
+
+  .login-wrap {
+    font-size: 16px;
+  }
+
+  .login-form-wrap {
+    .login-button {
+      font-size: 18px;
+    }
+  }
+}
