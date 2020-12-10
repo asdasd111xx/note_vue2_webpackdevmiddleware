@@ -597,6 +597,7 @@ export const actionMemInit = ({ state, dispatch, commit }) => {
 
     if (state.webDomain) {
       configInfo =
+        siteConfigTest[`site_${state.webDomain.domain}`] ||
         siteConfigOfficial[`site_${state.webDomain.domain}`] ||
         siteConfigTest[`site_${state.webInfo.alias}`] ||
         siteConfigOfficial.preset;
@@ -1243,6 +1244,7 @@ export const actionSetAgentLink = ({ state, commit }, data) => {
   let configInfo = {};
   if (state.webDomain) {
     configInfo =
+      siteConfigTest[`site_${state.webDomain.domain}`] ||
       siteConfigOfficial[`site_${state.webDomain.domain}`] ||
       siteConfigTest[`site_${state.webInfo.alias}`] ||
       siteConfigOfficial.preset;
@@ -1303,11 +1305,11 @@ export const actionSetYaboConfig = ({ state, dispatch, commit }, next) => {
 
   if (state.webDomain) {
     configInfo =
+      siteConfigTest[`site_${state.webDomain.domain}`] ||
       siteConfigOfficial[`site_${state.webDomain.domain}`] ||
       siteConfigTest[`site_${state.webInfo.alias}`] ||
       siteConfigOfficial.preset;
   }
-
   // return yaboRequest({
   //   method: 'get',
   //   url: configInfo.YABO_API_DOMAIN + '/system/switch',
@@ -1609,6 +1611,7 @@ export const actionVerificationFormData = (
 
   if (state.webDomain) {
     configInfo =
+      siteConfigTest[`site_${state.webDomain.domain}`] ||
       siteConfigOfficial[`site_${state.webDomain.domain}`] ||
       siteConfigTest[`site_${state.webInfo.alias}`] ||
       siteConfigOfficial.preset;
@@ -1701,6 +1704,7 @@ export const actionSetBBOSDomain = ({ commit, state }, data) => {
 
   if (state.webDomain) {
     configInfo =
+      siteConfigTest[`site_${state.webDomain.domain}`] ||
       siteConfigOfficial[`site_${state.webDomain.domain}`] ||
       siteConfigTest[`site_${state.webInfo.alias}`] ||
       siteConfigOfficial.preset;
@@ -1727,6 +1731,7 @@ export const actionSetSystemDomain = ({ commit, state }, data) => {
 
   if (state.webDomain) {
     configInfo =
+      siteConfigTest[`site_${state.webDomain.domain}`] ||
       siteConfigOfficial[`site_${state.webDomain.domain}`] ||
       siteConfigTest[`site_${state.webInfo.alias}`] ||
       siteConfigOfficial.preset;
