@@ -4,7 +4,7 @@
       <div
         :class="[
           $style['menu-select-game'],
-          { [$style.active]: selectMenu === 'game' },
+          { [$style.active]: selectMenu === 'game' }
         ]"
         @click="selectMenu = selectMenu === 'game' ? '' : 'game'"
       >
@@ -14,7 +14,7 @@
         :class="[
           $style['menu-select-time'],
           { [$style.custom]: isCustomTime },
-          { [$style.active]: selectMenu === 'time' },
+          { [$style.active]: selectMenu === 'time' }
         ]"
         @click="selectMenu = selectMenu === 'time' ? '' : 'time'"
       >
@@ -30,7 +30,7 @@
         :class="[
           $style['dropdown-wrap'],
           'clearfix',
-          { [$style['game']]: selectMenu === 'game' },
+          { [$style['game']]: selectMenu === 'game' }
         ]"
       >
         <li
@@ -38,8 +38,7 @@
           :key="`${game.value}-${index}`"
           :class="{
             [$style.active]:
-              selectType.vendor === game.vendor &&
-              selectType.kind === game.kind,
+              selectType.vendor === game.vendor && selectType.kind === game.kind
           }"
           @click="getGameRecord(game)"
         >
@@ -52,7 +51,7 @@
         :class="[
           $style['dropdown-wrap'],
           $style['dropdown-wrap-time'],
-          'clearfix',
+          'clearfix'
         ]"
       >
         <p :class="$style['time-remind']">
@@ -66,7 +65,7 @@
         <ul
           :class="[
             { [$style['default-active']]: !isShowDatePicker },
-            'clearfix',
+            'clearfix'
           ]"
         >
           <li
@@ -155,7 +154,7 @@
             <span
               :class="{
                 [$style['is-win']]: parseFloat(mainTotal.payoff) > 0,
-                [$style['is-lose']]: parseFloat(mainTotal.payoff) < 0,
+                [$style['is-lose']]: parseFloat(mainTotal.payoff) < 0
               }"
               >{{ getNoRoundText(mainTotal.payoff) }}</span
             >
@@ -186,7 +185,7 @@
                     <span
                       :class="{
                         [$style['is-win']]: item.payoff > 0,
-                        [$style['is-lose']]: item.payoff < 0,
+                        [$style['is-lose']]: item.payoff < 0
                       }"
                     >
                       {{ getNoRoundText(item.payoff) }}
@@ -221,8 +220,7 @@
                       <span
                         :class="{
                           [$style['is-win']]: parseFloat(gameDetail.payoff) > 0,
-                          [$style['is-lose']]:
-                            parseFloat(gameDetail.payoff) < 0,
+                          [$style['is-lose']]: parseFloat(gameDetail.payoff) < 0
                         }"
                         >{{ getNoRoundText(gameDetail.payoff) }}</span
                       >
@@ -236,7 +234,11 @@
       </div>
       <div v-if="mainNoData" :class="$style['no-data']">
         <img
-          :src="$getCdnPath(`/static/image/${themeTPL}/mcenter/no_data.png`)"
+          :src="
+            $getCdnPath(
+              `/static/image/${themeTPL}/mcenter/img_default_no_data.png`
+            )
+          "
         />
         <p>{{ $text("S_NO_BETRECORD", "还没有任何投注记录") }}</p>
       </div>
@@ -263,7 +265,7 @@ import datePicker from "@/router/mobile/components/common/datePicker";
 export default {
   components: {
     datePicker,
-    InfiniteLoading,
+    InfiniteLoading
   },
   data() {
     return {
@@ -287,42 +289,42 @@ export default {
         {
           text: this.$text("S_TODDAY", "今日"),
           name: "today",
-          value: 0,
+          value: 0
         },
         {
           text: this.$text("S_YESTERDAY", "昨日"),
           name: "yesterday",
-          value: 1,
+          value: 1
         },
         {
           text: this.$text("S_SEVEN_DAY", "近7日"),
           name: "week",
-          value: 7,
+          value: 7
         },
         {
           text: this.$text("S_THIRTY_DAY", "近30日"),
           name: "month",
-          value: 29,
+          value: 29
         },
         {
           text: this.$text("S_CUSTOM_DATE", "自定义"),
           name: "custom",
-          value: 29,
-        },
+          value: 29
+        }
       ],
       pagination: {},
       isLoading: false,
       isReceive: false,
       showInfinite: false,
       maxResults: 10, // 一頁顯示幾筆
-      showPage: 0, // 顯示幾頁
+      showPage: 0 // 顯示幾頁
     };
   },
   computed: {
     ...mapGetters({
       memInfo: "getMemInfo",
       gameData: "getGameData",
-      siteConfig: "getSiteConfig",
+      siteConfig: "getSiteConfig"
     }),
     themeTPL() {
       return this.siteConfig.MOBILE_WEB_TPL;
@@ -338,7 +340,7 @@ export default {
       },
       set(value) {
         this.startTime = Vue.moment(value).format("YYYY-MM-DD");
-      },
+      }
     },
     setEndTime: {
       get() {
@@ -346,31 +348,33 @@ export default {
       },
       set(value) {
         this.endTime = Vue.moment(value).format("YYYY-MM-DD");
-      },
+      }
     },
     controlData() {
       return this.mainTime
-        .map((item) => ({
+        .map(item => ({
           ...item,
-          list: this.mainListData.filter((game) => game.day === item.day),
+          list: this.mainListData.filter(game => game.day === item.day)
         }))
-        .filter((data) => data.list.length > 0);
+        .filter(data => data.list.length > 0);
     },
     showData() {
       if (this.mainData.length === 0) {
         return false;
       }
-      return this.mainData.some((item) =>
-        this.controlData.some((data) => item.day === data.day)
+      return this.mainData.some(item =>
+        this.controlData.some(data => item.day === data.day)
       );
-    },
+    }
   },
   created() {
     this.options = [...this.options, ...this.memInfo.vendors];
     this.startTime = Vue.moment(this.estToday).format("YYYY-MM-DD");
     this.endTime = Vue.moment(this.estToday).format("YYYY-MM-DD");
     this.limitDate = new Date(
-      Vue.moment(this.estToday).add(-29, "days").format("YYYY-MM-DD")
+      Vue.moment(this.estToday)
+        .add(-29, "days")
+        .format("YYYY-MM-DD")
     );
     this.isLoading = true;
     this.getTotalTime();
@@ -423,7 +427,7 @@ export default {
         start_at: Vue.moment(this.startTime).format(
           "YYYY-MM-DD 00:00:00-04:00"
         ),
-        end_at: Vue.moment(this.endTime).format("YYYY-MM-DD 23:59:59-04:00"),
+        end_at: Vue.moment(this.endTime).format("YYYY-MM-DD 23:59:59-04:00")
       };
 
       if (this.selectType.kind) {
@@ -436,17 +440,17 @@ export default {
         method: "get",
         url: "/api/v1/c/stats/wager-report/by-day",
         params,
-        success: (response) => {
-          this.mainTime = response.ret.map((item) => ({
+        success: response => {
+          this.mainTime = response.ret.map(item => ({
             bet: item.bet,
             count: item.count,
             day: item.day,
             payoff: item.payoff,
             valid_bet: item.valid_bet,
-            list: [],
+            list: []
           }));
           this.updateGame();
-        },
+        }
       });
     },
     getGameDetail() {
@@ -456,7 +460,7 @@ export default {
         ),
         end_at: Vue.moment(this.endTime).format("YYYY-MM-DD 23:59:59-04:00"),
         max_results: this.maxResults,
-        first_result: this.maxResults * this.showPage,
+        first_result: this.maxResults * this.showPage
       };
 
       if (this.selectType.kind) {
@@ -472,7 +476,7 @@ export default {
         method: "get",
         url: "/api/v1/c/stats/wager-report/by-day-game",
         params,
-        success: (response) => {
+        success: response => {
           if (response.ret.length === 0) {
             return;
           }
@@ -481,7 +485,7 @@ export default {
           this.mainTotal = response.total;
           this.pagination = response.pagination;
           this.mainNoData = false;
-        },
+        }
       });
     },
     updateGame() {
@@ -494,7 +498,7 @@ export default {
       });
     },
     cancelCustomTime() {
-      if (this.allTotalData.some((item) => item.text === this.selectTime)) {
+      if (this.allTotalData.some(item => item.text === this.selectTime)) {
         this.currentSelectTime = this.selectTime;
         this.isShowDatePicker = false;
       }
@@ -515,17 +519,19 @@ export default {
       this.getTotalTime();
     },
     getMonthDay(date) {
-      return `${Vue.moment(date).format("MM-DD").replace("-", "月")}日`;
+      return `${Vue.moment(date)
+        .format("MM-DD")
+        .replace("-", "月")}日`;
     },
     getVendorName(vendor, kind) {
       if (
         !this.memInfo.vendors.find(
-          (item) => item.vendor === vendor && item.kind === kind
+          item => item.vendor === vendor && item.kind === kind
         )
       ) {
         return this.$t(
           Object.keys(this.gameData)
-            .map((key) => {
+            .map(key => {
               if (this.gameData[key].vendor === vendor) {
                 return this.gameData[key].text;
               }
@@ -536,11 +542,11 @@ export default {
         );
       }
       return this.memInfo.vendors.find(
-        (item) => item.vendor === vendor && item.kind === kind
+        item => item.vendor === vendor && item.kind === kind
       ).alias;
     },
     getCount(date) {
-      return this.mainListData.filter((item) => item.day === date).length;
+      return this.mainListData.filter(item => item.day === date).length;
     },
     getNoRoundText(value) {
       let val = String(value);
@@ -577,8 +583,8 @@ export default {
 
         $state.loaded();
       });
-    },
-  },
+    }
+  }
 };
 </script>
 

@@ -1,0 +1,18 @@
+@import "./porn1.popup.scss";
+
+.title {
+  background-color: #222;
+}
+
+.button-wrap {
+  .button-item {
+    &.close {
+      color: #ffffff;
+      background: #a2a2a2;
+    }
+
+    &.confirm {
+      background: linear-gradient(to left, #fe593c, #e61938);
+    }
+  }
+}
