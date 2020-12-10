@@ -145,7 +145,7 @@ export default {
         }
 
         this.videoList = [...response.result.data];
-        this.current = response.result.current_page;
+        this.current += 1;
         this.total = response.result.last_page;
 
         setTimeout(() => {
@@ -174,7 +174,9 @@ export default {
         }
 
         this.videoList = [...this.videoList, ...response.result.data];
-        this.current = response.result.current_page;
+        this.current += 1;
+
+
         this.total = response.result.last_page;
         this.isReceive = false;
 

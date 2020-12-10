@@ -125,7 +125,8 @@ export default {
       videoSort: [],
       videoRecommand: [],
       videoList: [],
-      videoType: { id: 0, title: "" }
+      videoType: { id: 0, title: "" },
+      resetTimer: null
     };
   },
   computed: {
@@ -299,8 +300,10 @@ export default {
         }
       }).then(response => {
         if (response.status !== 200) {
-          setTimeout(() => {
+          this.resetTimer = setTimeout(() => {
             this.initData();
+            clearTimeout(this.resetTimer);
+            this.resetTimer = null;
           }, 3000)
           return;
         }
@@ -327,6 +330,10 @@ export default {
     openVideo(name, routerParam) {
       this.$router.push({ name, ...routerParam });
     }
+  },
+  beforeDestroy() {
+    clearTimeout(this.resetTimer);
+    this.resetTimer = null;
   },
 };
 </script>

@@ -132,7 +132,8 @@ export default {
       videoSort: [],
       videoRecommand: [],
       videoList: [],
-      videoType: { id: 0, title: "" }
+      videoType: { id: 0, title: "" },
+      resetTimer: null
     };
   },
   computed: {
@@ -186,6 +187,10 @@ export default {
     }
 
     this.initData();
+  },
+  beforeDestroy() {
+    clearTimeout(this.resetTimer);
+    this.resetTimer = null;
   },
   methods: {
     initData() {
@@ -339,8 +344,10 @@ export default {
         }
       }).then(response => {
         if (response.status !== 200) {
-          setTimeout(() => {
+          this.resetTimer = setTimeout(() => {
             this.initData();
+            clearTimeout(this.resetTimer);
+            this.resetTimer = null;
           }, 3000)
           return;
         }

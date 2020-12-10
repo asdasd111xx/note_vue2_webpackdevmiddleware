@@ -122,7 +122,7 @@ export default {
         }
 
         this.searchList = [...response.result.data];
-        this.current = response.result.current_page;
+        this.current += 1;
         this.total = response.result.last_page;
 
         setTimeout(() => {
@@ -151,7 +151,7 @@ export default {
         }
 
         this.searchList = [...this.searchList, ...response.result.data];
-        this.current = response.result.current_page;
+        this.current += 1;
         this.total = response.result.last_page;
         this.isReceive = false;
 
