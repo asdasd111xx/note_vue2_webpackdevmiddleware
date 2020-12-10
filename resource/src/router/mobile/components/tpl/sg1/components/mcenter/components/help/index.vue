@@ -16,7 +16,7 @@
           <img
             :src="
               $getCdnPath(
-                `/static/image/ey1/mcenter/help/ic_help_${listInfo.img}.png`
+                `/static/image/sg1/mcenter/help/ic_help_${listInfo.img}.png`
               )
             "
           />

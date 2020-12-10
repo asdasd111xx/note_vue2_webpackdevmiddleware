@@ -90,31 +90,31 @@ export default {
     commissionRebates: () =>
       import(
         /* webpackChunkName: 'commissionRebates' */ "./components/commissionRebates/index"
-      ),
+      )
   },
   mixins: [commission],
   props: {
     setTabState: {
       type: Function,
-      required: true,
+      required: true
     },
     setHeaderTitle: {
       type: Function,
-      required: true,
-    },
+      required: true
+    }
   },
   data() {
     return {
       isReceive: true,
       isShowRebate: true,
       hasSearch: this.$route.params.page === "record",
-      commissionInfo: {},
+      commissionInfo: {}
     };
   },
   computed: {
     ...mapGetters({
       memInfo: "getMemInfo",
-      siteConfig: "getSiteConfig",
+      siteConfig: "getSiteConfig"
     }),
     $style() {
       const style =
@@ -127,7 +127,7 @@ export default {
       },
       set(date) {
         this.startTime = date;
-      },
+      }
     },
     end: {
       get() {
@@ -135,7 +135,7 @@ export default {
       },
       set(date) {
         this.endTime = date;
-      },
+      }
     },
     getCommissionInfo: {
       get() {
@@ -143,11 +143,11 @@ export default {
       },
       set(data) {
         this.commissionInfo = data;
-      },
+      }
     },
     page() {
       return this.$route.params.page;
-    },
+    }
   },
   watch: {
     startTime() {
@@ -161,7 +161,7 @@ export default {
         this.setTabState(true);
         this.setHeaderTitle(this.$text("S_TEAM_CENTER", "我的推广"));
       }
-    },
+    }
   },
   filters: {
     dateFormat(value) {
@@ -170,7 +170,7 @@ export default {
       } else {
         return "";
       }
-    },
+    }
   },
   created() {
     this.getRebateSwitch();
@@ -207,10 +207,10 @@ export default {
         method: "get",
         url: this.siteConfig.BBOS_DOMIAN + "/Wage/SelfDispatchInfo",
         reqHeaders: {
-          Vendor: this.memInfo.user.domain,
+          Vendor: this.memInfo.user.domain
         },
-        params: { lang: "zh-cn" },
-      }).then((response) => {
+        params: { lang: "zh-cn" }
+      }).then(response => {
         this.isReceive = true;
 
         if (response.status === "000") {
@@ -218,10 +218,11 @@ export default {
           return;
         }
       });
-    },
-  },
+    }
+  }
 };
 </script>
 
 <style lang="scss" src="./css/porn1.module.scss" module="$style_porn1"></style>
 <style lang="scss" src="./css/ey1.module.scss" module="$style_ey1"></style>
+<style lang="scss" src="./css/sg1.module.scss" module="$style_sg1"></style>

@@ -1,0 +1,24 @@
+@import "./index.module.scss";
+
+.btn-send {
+  background: -webkit-linear-gradient(right, #fed3cb, #ffc5ce);
+  background: -o-linear-gradient(left, #fed3cb, #ffc5ce);
+  background: -moz-linear-gradient(left, #fed3cb, #ffc5ce);
+  background: linear-gradient(to left, #fed3cb, #ffc5ce);
+  width: 110px;
+
+  &.active {
+    color: #ffffff;
+
+    background: -webkit-linear-gradient(right, #fe593c, #e61938);
+    background: -o-linear-gradient(left, #fe593c, #e61938);
+    background: -moz-linear-gradient(left, #fe593c, #e61938);
+    background: linear-gradient(to left, #fe593c, #e61938);
+  }
+}
+
+.phone-selected {
+  border: 0px;
+  background-color: #ffffff;
+  margin-right: 10px;
+}

@@ -1,0 +1,12 @@
+@import './feedbackList.module.scss';
+
+.no-feedback {
+
+  button {
+
+    background: -webkit-linear-gradient(right, #fe593c, #e61938);
+    background: -o-linear-gradient(left, #fe593c, #e61938);
+    background: -moz-linear-gradient(left, #fe593c, #e61938);
+    background: linear-gradient(to left, #fe593c, #e61938);
+  }
+}

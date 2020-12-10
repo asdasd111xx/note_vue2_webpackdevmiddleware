@@ -1,10 +1,10 @@
 import { mapActions, mapGetters } from "vuex";
-import moment, { relativeTimeThreshold } from 'moment';
 
 import EST from '@/lib/EST';
 import axios from "axios";
 import bbosRequest from "@/api/bbosRequest";
 import goLangApiRequest from '@/api/goLangApiRequest';
+import moment from 'moment';
 
 export default {
   props: {},
@@ -552,7 +552,7 @@ export default {
         if (res && res.status !== '000') {
           // 維護非即時更新狀態
           if (res.msg && res.code !== '77700029') {
-            this.actionSetGlobalMessage({ msg: res.msg });
+            this.actionSetGlobalMessage({ msg: res.msg, code: res.code });
           }
           return;
         }

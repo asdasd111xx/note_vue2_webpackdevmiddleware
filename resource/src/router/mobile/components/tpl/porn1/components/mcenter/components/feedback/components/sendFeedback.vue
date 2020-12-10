@@ -237,3 +237,4 @@ export default {
 
 <style lang="scss" src="./css/sendFeedback.module.scss" module="$style_porn1"></style>
 <style lang="scss" src="./css/ey1.sendFeedback.scss" module="$style_ey1"></style>
+<style lang="scss" src="./css/sg1.sendFeedback.scss" module="$style_sg1"></style>

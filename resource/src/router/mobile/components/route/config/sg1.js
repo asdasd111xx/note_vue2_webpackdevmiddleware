@@ -1,6 +1,17 @@
 export default {
   normal: {
-    iframeSg1: () => import(/* webpackChunkName: 'iframeSg1' */'../../tpl/sg1/components/iframe'),
+    iframeSg1: () =>
+      import(
+        /* webpackChunkName: 'iframeSg1' */ "../../tpl/sg1/components/iframe"
+      ),
+
+    casinoSg1: () =>
+      import(
+        /* webpackChunkName: 'casinoSg1' */ "../../tpl/sg1/components/casino"
+      ),
+    cardSg1: () =>
+      import(/* webpackChunkName: 'cardSg1' */ "../../tpl/sg1/components/card"),
+
     homeSg1: () =>
       import(/* webpackChunkName: 'homeSg1' */ "../../tpl/sg1/components/home"),
     loginSg1: () =>
@@ -23,6 +34,14 @@ export default {
       import(
         /* webpackChunkName: 'serviceSg1' */ "../../tpl/sg1/components/service"
       ),
+    resetPwdSg1: () =>
+      import(
+        /* webpackChunkName: 'resetPwdSg1' */ "../../tpl/sg1/components/resetPwd"
+      ),
+    forgetPwdSg1: () =>
+      import(
+        /* webpackChunkName: 'forgetPwdSg1' */ "../../tpl/sg1/components/forgetPwd"
+      ),
 
     launchSg1: () =>
       import(
@@ -30,6 +49,14 @@ export default {
       )
   },
   mcenter: {
+    accountVipSg1: () =>
+      import(
+        /* webpackChunkName: 'accountVipSg1' */ "../../tpl/sg1/components/mcenter/components/accountVip"
+      ),
+    accountVipDetailSg1: () =>
+      import(
+        /* webpackChunkName: 'accountVipDetailSg1' */ "../../tpl/sg1/components/mcenter/components/vipDetail"
+      ),
     homeSg1: () =>
       import(
         /* webpackChunkName: 'homeSg1' */ "../../tpl/sg1/components/mcenter/components/home"
@@ -134,6 +161,43 @@ export default {
       import(
         /* webpackChunkName: 'depositSg1' */ "../../tpl/sg1/components/mcenter/components/deposit"
       ),
-    feedbackSg1: () => import(/* webpackChunkName: 'feedbackSg1' */'../../tpl/sg1/components/mcenter/components/feedback'),
+    feedbackSg1: () =>
+      import(
+        /* webpackChunkName: 'feedbackSg1' */ "../../tpl/sg1/components/mcenter/components/feedback"
+      ),
+
+    swagSg1: () =>
+      import(
+        /* webpackChunkName: 'swagSg1' */ "../../tpl/sg1/components/mcenter/components/swag"
+      ),
+
+    betRecordSg1: () =>
+      import(
+        /* webpackChunkName: 'betRecordSg1' */ "../../tpl/sg1/components/mcenter/components/betRecord"
+      ),
+    bankRebateSg1: () =>
+      import(
+        /* webpackChunkName: 'bankRebateSg1' */ "../../tpl/sg1/components/mcenter/components/bankRebate"
+      ),
+    moneyDetailSg1: () =>
+      import(
+        /* webpackChunkName: 'moneyDetailSg1' */ "../../tpl/sg1/components/mcenter/components/moneyDetail"
+      ),
+    tcenterCommissionSg1: () =>
+      import(
+        /* webpackChunkName: 'tcenterCommissionSg1' */ "../../tpl/sg1/components/mcenter/components/tcenter/components/commission"
+      ),
+    tcenterGameRecordSg1: () =>
+      import(
+        /* webpackChunkName: 'tcenterGameRecordSg1' */ "../../tpl/sg1/components/mcenter/components/tcenter/components/gameRecord"
+      ),
+    tcenterManagementSg1: () =>
+      import(
+        /* webpackChunkName: 'tcenterManagementSg1' */ "../../tpl/sg1/components/mcenter/components/tcenter/components/management"
+      ),
+    tcenterRecommendGiftSg1: () =>
+      import(
+        /* webpackChunkName: 'tcenteRecommendGiftSg1' */ "../../tpl/sg1/components/mcenter/components/tcenter/components/recommendGift"
+      )
   }
 };

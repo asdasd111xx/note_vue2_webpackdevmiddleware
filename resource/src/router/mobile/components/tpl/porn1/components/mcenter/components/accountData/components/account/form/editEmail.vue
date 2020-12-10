@@ -209,18 +209,16 @@ export default {
   methods: {
     ...mapActions([
       'actionSetUserdata',
-      'actionVerificationFormData'
+      'actionVerificationFormData',
+      "actionSetGlobalMessage",
     ]),
     locker() {
       this.countdownSec = this.ttl;
-
+      this.actionSetGlobalMessage({ msg: this.$text("S_SEND_CHECK_CODE_VALID_TIME").replace("%s", '5') });
       this.timer = setInterval(() => {
         if (this.countdownSec === 0) {
           clearInterval(this.timer);
           this.timer = null;
-          if (this.tipMsg.indexOf('已发送')) {
-            this.tipMsg = ''
-          }
           return;
         }
         this.countdownSec -= 1;
@@ -334,4 +332,5 @@ export default {
 
 <style lang="scss" src="../../../css/index.module.scss" module="$style_porn1"></style>
 <style lang="scss" src="../../../css/ey1.module.scss" module="$style_ey1"></style>
+<style lang="scss" src="../../../css/sg1.module.scss" module="$style_sg1"></style>
 

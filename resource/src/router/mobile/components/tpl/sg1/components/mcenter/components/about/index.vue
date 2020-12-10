@@ -6,7 +6,7 @@
   >
     <div slot="content" :class="$style['content-wrap']">
       <div :class="$style['yabo']">
-        <img :src="$getCdnPath(`/static/image/porn1/common/appicon.png`)" />
+        <img :src="$getCdnPath(`/static/image/sg1/common/appicon.png`)" />
       </div>
       <div :class="$style['version']">版本号 {{ version }}</div>
       <div :class="$style['officel']">
@@ -35,9 +35,7 @@
         <div>联盟伙伴</div>
         <div :class="$style['content']">
           <div :class="$style['cell']">
-            <img
-              :src="$getCdnPath(`/static/image/_new/about/logo_swag.png`)"
-            />
+            <img :src="$getCdnPath(`/static/image/_new/about/logo_swag.png`)" />
             <div>SWAG色播</div>
           </div>
           <div :class="$style['cell']">

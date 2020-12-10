@@ -1,0 +1,48 @@
+@import './porn1.avater.scss';
+
+.dialog-wrap {
+  .avatar-cell {
+
+    img {
+      &.active {
+        border: 2px solid transparent;
+        border-color: #E42A30;
+      }
+    }
+
+    .check {
+      background: url("/static/image/sg1/mcenter/ic_check.png") 0 0 no-repeat;
+      background-size: 100%;
+    }
+  }
+}
+
+.avater-editer-header {
+  color: #ffffff;
+
+  .title {
+    color: #000000;
+  }
+}
+
+.choose-btn {
+  background: -webkit-linear-gradient(right, #fe593c, #e61938);
+  background: -o-linear-gradient(left, #fe593c, #e61938);
+  background: -moz-linear-gradient(left, #fe593c, #e61938);
+  background: linear-gradient(to left, #fe593c, #e61938);
+  color: #ffffff;
+}
+
+.cancel-btn {
+  background: #CCCCCC;
+  color: #ffffff;
+}
+
+.submit-btn {
+
+  background: -webkit-linear-gradient(right, #fe593c, #e61938);
+  background: -o-linear-gradient(left, #fe593c, #e61938);
+  background: -moz-linear-gradient(left, #fe593c, #e61938);
+  background: linear-gradient(to left, #fe593c, #e61938);
+  color: #ffffff;
+}

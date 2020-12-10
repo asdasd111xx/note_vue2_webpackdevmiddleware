@@ -13,7 +13,7 @@
           <div
             :class="[
               $style['menu-title'],
-              { [$style.active]: currentTemplate === item.key },
+              { [$style.active]: currentTemplate === item.key }
             ]"
           >
             {{ item.text }}
@@ -29,7 +29,7 @@
         <div
           :class="$style['active-slider']"
           :style="{
-            left: `calc(16.5% + 33% * ${currentTab})`,
+            left: `calc(16.5% + 33% * ${currentTab})`
           }"
         />
       </div>
@@ -158,3 +158,4 @@ export default {
 
 <style lang="scss" src="../css/porn1.index.scss" module="$style_porn1"></style>
 <style lang="scss" src="../css/ey1.index.scss" module="$style_ey1"></style>
+<style lang="scss" src="../css/sg1.index.scss" module="$style_sg1"></style>

@@ -7,7 +7,7 @@
             <img
               :src="
                 $getCdnPath(
-                  '/static/image/_new/mcenter/balanceTrans/ic_wallet_center.png'
+                  '/static/image/common/mcenter/balanceTrans/ic_wallet_center.png'
                 )
               "
             />
@@ -29,7 +29,7 @@
             id="one-recycle-btn"
             :class="[
               $style['recycle-btn'],
-              balanceTran.balanceBackLock ? $style.disable : '',
+              balanceTran.balanceBackLock ? $style.disable : ''
             ]"
             @click="balanceBack()"
           >

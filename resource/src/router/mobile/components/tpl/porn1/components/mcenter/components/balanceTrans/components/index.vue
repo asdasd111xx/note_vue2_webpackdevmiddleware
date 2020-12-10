@@ -7,7 +7,7 @@
           <img
             :src="
               $getCdnPath(
-                `/static/image/${themeTPL}/mcenter/wallet/ic_autotransfer.png`
+                `/static/image/common/mcenter/wallet/ic_autotransfer.png`
               )
             "
           />

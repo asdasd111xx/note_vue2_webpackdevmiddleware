@@ -46,7 +46,7 @@
               <img
                 :src="
                   $getCdnPath(
-                    '/static/image/_new/mcenter/balanceTrans/ic_wallet_center.png'
+                    '/static/image/common/mcenter/balanceTrans/ic_wallet_center.png'
                   )
                 "
               />
@@ -110,7 +110,7 @@
                 <img
                   :src="
                     $getCdnPath(
-                      '/static/image/_new/mcenter/balanceTrans/icon_transfer_tips_info.png'
+                      '/static/image/common/mcenter/balanceTrans/icon_transfer_tips_info.png'
                     )
                   "
                   :class="$style['balance-wrench']"
@@ -299,7 +299,7 @@ export default {
           key: "buyDiamond",
           show: true,
           text: this.$text("S_BUY_DIAMOND", "购买钻石"),
-          imgSrc: `/static/image/${this.themeTPL}/mcenter/wallet/ic_wallter_swag_buydiamond.png`,
+          imgSrc: `/static/image/common/mcenter/wallet/ic_wallter_swag_buydiamond.png`,
           onClick: () => {
             this.$router.push("/mobile/mcenter/swag");
           }
@@ -308,7 +308,7 @@ export default {
           key: "howToBuy",
           show: true,
           text: this.$text("S_TO_BUY", "如何购买"),
-          imgSrc: `/static/image/${this.themeTPL}/mcenter/wallet/ic_wallter_swag_howtobuy.png`,
+          imgSrc: `/static/image/common/mcenter/wallet/ic_wallter_swag_howtobuy.png`,
           onClick: () => {
             this.$router.push("/mobile/mcenter/help/detail?type=buymethod");
           }
@@ -317,7 +317,7 @@ export default {
           key: "instrustions",
           show: true,
           text: this.$text("S_INSTRUSTIONS", "使用方法"),
-          imgSrc: `/static/image/${this.themeTPL}/mcenter/wallet/ic_wallter_swag_instrustions.png`,
+          imgSrc: `/static/image/common/mcenter/wallet/ic_wallter_swag_instrustions.png`,
           onClick: () => {
             this.$router.push("/mobile/mcenter/help/detail?type=usage&key=2");
           }
@@ -330,41 +330,41 @@ export default {
           key: "transfer",
           show: true,
           text: this.$text("S_TRANSFER", "转帐"),
-          imgSrc: `/static/image/${this.themeTPL}/mcenter/wallet/ic_wallter_tranfer.png`,
+          imgSrc: `/static/image/common/mcenter/wallet/ic_wallter_tranfer.png`,
           onClick: () => {
             switch (this.themeTPL) {
               case "porn1":
               case "sg1":
+              case "ey1":
                 this.$router.push("/mobile/mcenter/balanceTrans");
                 break;
 
-              case "ey1":
-                axios({
-                  method: "get",
-                  url: "/api/v2/c/domain-config"
-                })
-                  .then(res => {
-                    let withdraw_info_before_bet = false;
-                    if (res && res.data && res.data.ret) {
-                      withdraw_info_before_bet =
-                        res.data.ret.withdraw_info_before_bet;
-                    }
+              // axios({
+              //   method: "get",
+              //   url: "/api/v2/c/domain-config"
+              // })
+              //   .then(res => {
+              //     let withdraw_info_before_bet = false;
+              //     if (res && res.data && res.data.ret) {
+              //       withdraw_info_before_bet =
+              //         res.data.ret.withdraw_info_before_bet;
+              //     }
 
-                    if (withdraw_info_before_bet) {
-                      this.checkWithdrawData("balanceTrans");
-                      return;
-                    }
+              //     if (withdraw_info_before_bet) {
+              //       this.checkWithdrawData("balanceTrans");
+              //       return;
+              //     }
 
-                    this.$router.push("/mobile/mcenter/balanceTrans");
-                  })
-                  .catch(res => {
-                    this.actionSetGlobalMessage({
-                      msg: res.data.msg,
-                      code: res.data.code,
-                      origin: "wallet"
-                    });
-                  });
-                break;
+              //     this.$router.push("/mobile/mcenter/balanceTrans");
+              //   })
+              //   .catch(res => {
+              //     this.actionSetGlobalMessage({
+              //       msg: res.data.msg,
+              //       code: res.data.code,
+              //       origin: "wallet"
+              //     });
+              //   });
+              // break;
             }
           }
         },
@@ -372,7 +372,7 @@ export default {
           key: "withdraw",
           show: true,
           text: this.$text("S_WITHDRAWAL_TEXT", "提现"),
-          imgSrc: `/static/image/${this.themeTPL}/mcenter/wallet/ic_wallter_withdraw.png`,
+          imgSrc: `/static/image/common/mcenter/wallet/ic_wallter_withdraw.png`,
           onClick: () => {
             switch (this.themeTPL) {
               case "porn1":
@@ -390,7 +390,7 @@ export default {
           key: "recharge",
           show: false,
           text: this.$text("S_CREDIT_TRANSFER", "额度转让"),
-          imgSrc: `/static/image/${this.themeTPL}/mcenter/wallet/ic_wallet_trans.png`,
+          imgSrc: `/static/image/common/mcenter/wallet/ic_wallet_trans.png`,
           onClick: () => {
             this.actionGetMemInfoV3().then(() => {
               this.actionGetRechargeStatus("wallet");
@@ -401,7 +401,7 @@ export default {
           key: "card",
           show: true,
           text: this.$text("S_MARANGE_CARD", "卡片管理"),
-          imgSrc: `/static/image/${this.themeTPL}/mcenter/wallet/ic_wallter_manage.png`,
+          imgSrc: `/static/image/common/mcenter/wallet/ic_wallter_manage.png`,
           onClick: () => {
             this.$router.push("/mobile/mcenter/bankCard");
           }

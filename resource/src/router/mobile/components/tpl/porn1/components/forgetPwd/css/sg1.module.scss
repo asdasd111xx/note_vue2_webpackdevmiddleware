@@ -1,0 +1,48 @@
+@import "./porn1.module.scss";
+
+.active-slider {
+  background-color: #E61938;
+}
+
+.method-item {
+
+  &.active {
+    color: #222222;
+  }
+}
+
+.forget-submit {
+
+  >div {
+
+    background: -webkit-linear-gradient(right, #fed3cb, #ffc5ce);
+    background: -o-linear-gradient(left, #fed3cb, #ffc5ce);
+    background: -moz-linear-gradient(left, #fed3cb, #ffc5ce);
+    background: linear-gradient(to left, #fed3cb, #ffc5ce);
+  }
+
+  &.active {
+    >div {
+      background: -webkit-linear-gradient(right, #fe593c, #e61938);
+      background: -o-linear-gradient(left, #fe593c, #e61938);
+      background: -moz-linear-gradient(left, #fe593c, #e61938);
+      background: linear-gradient(to left, #fe593c, #e61938);
+      color: #ffffff;
+    }
+  }
+}
+
+.send-keyring {
+
+  background: -webkit-linear-gradient(right, #fed3cb, #ffc5ce);
+  background: -o-linear-gradient(left, #fed3cb, #ffc5ce);
+  background: -moz-linear-gradient(left, #fed3cb, #ffc5ce);
+  background: linear-gradient(to left, #fed3cb, #ffc5ce);
+
+  &.active {
+    background: -webkit-linear-gradient(right, #fe593c, #e61938);
+    background: -o-linear-gradient(left, #fe593c, #e61938);
+    background: -moz-linear-gradient(left, #fe593c, #e61938);
+    background: linear-gradient(to left, #fe593c, #e61938);
+  }
+}

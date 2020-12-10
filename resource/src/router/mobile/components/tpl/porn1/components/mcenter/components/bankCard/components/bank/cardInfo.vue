@@ -53,7 +53,7 @@
             :class="$style['add-btn']"
             @click="setPageStatus(0, 'addBankCard', false)"
           >
-            <img :src="`/static/image/${themeTPL}/mcenter/add_2.png`" />
+            <img :src="`/static/image/common/mcenter/add_2.png`" />
             <span>{{ $text("S_ADD_BANKCARD", "添加银行卡") }}</span>
           </div>
         </div>

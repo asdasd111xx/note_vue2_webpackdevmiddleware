@@ -321,9 +321,7 @@
         :class="[$style['add-bank-card']]"
         @click="checkAccountData('bankCard')"
       >
-        <img
-          :src="$getCdnPath(`/static/image/${themeTPL}/mcenter/add_2.png`)"
-        />
+        <img :src="$getCdnPath(`/static/image/common/mcenter/add_2.png`)" />
         &nbsp;
         <span>
           {{ $text("S_ADD_BANKCARD", "添加银行卡") }}
@@ -336,9 +334,7 @@
         :class="[$style['add-bank-card']]"
         @click="checkAccountData('wallet')"
       >
-        <img
-          :src="$getCdnPath(`/static/image/${themeTPL}/mcenter/add_2.png`)"
-        />
+        <img :src="$getCdnPath(`/static/image/common/mcenter/add_2.png`)" />
         &nbsp;
         <span>
           {{ $text("S_ADD_VIRTUAL_BANKCARD", "添加电子钱包") }}
@@ -355,9 +351,7 @@
         :class="[$style['add-bank-card']]"
         @click="setPopupStatus(true, 'moreMethod')"
       >
-        <img
-          :src="$getCdnPath(`/static/image/${themeTPL}/mcenter/add_2.png`)"
-        />
+        <img :src="$getCdnPath(`/static/image/common/mcenter/add_2.png`)" />
         &nbsp;
         <span>
           {{ "更多提现方式" }}
@@ -1132,7 +1126,7 @@ export default {
         const balance = Number(this.withdrawData.cash.available_balance);
 
         if (this.withdrawValue > Math.floor(balance)) {
-          this.errTips = `提现金额不可大於中心钱包余额`;
+          this.errTips = `提现金额不可大于最高提现金额`;
           return;
         }
 

@@ -211,7 +211,7 @@ export default {
     },
     headerConfig() {
       let _funcBtnActive = true;
-      let checkActiveArray = [this.newValue, (!this.tipMsg || this.tipMsg.includes('验证码已发送'))];
+      let checkActiveArray = [this.newValue, !this.tipMsg];
       //  提現前驗證不需要舊手機欄位
       if (this.checkCode.isShow || this.isfromWithdraw || this.isfromSWAG) {
         checkActiveArray.push(!!(this.codeValue));
@@ -308,12 +308,11 @@ export default {
     ...mapActions([
       'actionSetUserdata',
       'actionSetWithdrawCheck',
-      'actionVerificationFormData'
+      'actionVerificationFormData',
+      "actionSetGlobalMessage",
     ]),
     verification(value, target) {
-      if (!this.tipMsg.includes('已发送')) {
-        this.tipMsg = '';
-      }
+      this.tipMsg = '';
 
       if (target === 'newValue' || target === 'oldValue') {
         this.actionVerificationFormData({ target: 'phone', value: value }).then((val => {
@@ -361,15 +360,11 @@ export default {
     locker() {
       if (this.timer) return;
       this.countdownSec = this.ttl;
-      this.tipMsg = this.$text("S_SEND_CHECK_CODE_VALID_TIME").replace("%s", '5');
-
+      this.actionSetGlobalMessage({ msg: this.$text("S_SEND_CHECK_CODE_VALID_TIME").replace("%s", '5') });
       this.timer = setInterval(() => {
         if (this.countdownSec === 0) {
           clearInterval(this.timer);
           this.timer = null;
-          if (this.tipMsg.indexOf('已发送')) {
-            this.tipMsg = '';
-          }
           return;
         }
         this.countdownSec -= 1;
@@ -605,4 +600,5 @@ export default {
 
 <style lang="scss" src="../../../css/index.module.scss" module="$style_porn1"></style>
 <style lang="scss" src="../../../css/ey1.module.scss" module="$style_ey1"></style>
+<style lang="scss" src="../../../css/sg1.module.scss" module="$style_sg1"></style>
 

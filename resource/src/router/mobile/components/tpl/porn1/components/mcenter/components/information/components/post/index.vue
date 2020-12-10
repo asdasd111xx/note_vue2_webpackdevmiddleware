@@ -16,7 +16,7 @@
           <img
             :src="
               $getCdnPath(
-                '/static/image/porn1/mcenter/information/icon_information.png'
+                `/static/image/${siteConfig.MOBILE_WEB_TPL}/mcenter/information/btn_more.png`
               )
             "
           />
@@ -44,7 +44,7 @@
           <img
             :src="
               $getCdnPath(
-                '/static/image/porn1/mcenter/information/icon_information.png'
+                `/static/image/${siteConfig.MOBILE_WEB_TPL}/mcenter/information/btn_more.png`
               )
             "
           />
@@ -66,6 +66,7 @@
 
 <script>
 import Vue from "vue";
+import { mapGetters } from "vuex";
 import { API_GET_POST } from "@/config/api";
 import ajax from "@/lib/ajax";
 import EST from "@/lib/EST";
@@ -86,6 +87,9 @@ export default {
     };
   },
   computed: {
+    ...mapGetters({
+      siteConfig: "getSiteConfig",
+    }),
     currentPost() {
       if (!this.$route.query.pid) {
         return null;

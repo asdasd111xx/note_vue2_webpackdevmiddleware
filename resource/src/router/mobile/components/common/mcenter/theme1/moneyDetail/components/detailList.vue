@@ -77,8 +77,7 @@ export default {
     },
     $style() {
       const style =
-        this[`$style_${this.siteConfig.MOBILE_WEB_TPL}`] ||
-        this.$style_porn1;
+        this[`$style_${this.siteConfig.MOBILE_WEB_TPL}`] || this.$style_porn1;
       return style;
     }
   },
@@ -106,13 +105,10 @@ export default {
   methods: {
     onClick(info) {
       this.$emit("update:detailInfo", info);
-      localStorage.setItem('money-detail-id', info.id);
+      localStorage.setItem("money-detail-id", info.id);
 
-      if (this.pageType !== "ingroup_transfer" &&
-        this.pageType !== "swag") {
-        this.$router.push(
-          "/mobile/mcenter/moneyDetail/detail?id=" + info.id
-        );
+      if (this.pageType !== "ingroup_transfer" && this.pageType !== "swag") {
+        this.$router.push("/mobile/mcenter/moneyDetail/detail?id=" + info.id);
       }
     }
   }
@@ -121,3 +117,4 @@ export default {
 
 <style lang="scss" src="../css/porn1.list.scss" module="$style_porn1"></style>
 <style lang="scss" src="../css/ey1.list.scss" module="$style_ey1"></style>
+<style lang="scss" src="../css/sg1.list.scss" module="$style_sg1"></style>

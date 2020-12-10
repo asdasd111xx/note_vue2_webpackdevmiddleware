@@ -523,8 +523,7 @@ export default {
         url: "/api/v1/c/player/verify/user_bank/sms",
         data: {
           phone: `${this.phoneHead.replace("+", "")}-${
-            this.formData.phone.value
-          }`,
+            this.formData.phone.value}`,
           captcha_text: this.captchaData ? this.captchaData : ""
         }
       })
@@ -532,23 +531,17 @@ export default {
           if (this.timer) return;
 
           if (res && res.data && res.data.result === "ok") {
+            this.actionSetGlobalMessage({ msg: this.$text("S_SEND_CHECK_CODE_VALID_TIME").replace("%s", '5') });
             this.getPhoneTTL().then(() => {
               this.countdownSec = this.ttl;
               this.timer = setInterval(() => {
                 if (this.countdownSec === 0) {
                   clearInterval(this.timer);
                   this.timer = null;
-                  if (this.tipMsg.indexOf("已发送")) {
-                    this.tipMsg = "";
-                  }
                   return;
                 }
                 this.countdownSec -= 1;
               }, 1000);
-              this.tipMsg = this.$text("S_SEND_CHECK_CODE_VALID_TIME").replace(
-                "%s",
-                "5"
-              );
             });
           } else {
             if (res.data && res.data.msg) {

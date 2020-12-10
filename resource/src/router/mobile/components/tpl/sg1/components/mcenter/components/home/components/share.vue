@@ -4,7 +4,7 @@
       <div :class="$style['img']">
         <img
           :src="
-            $getCdnPath(`/static/image/_new/mcenter/share/shareapp_save.png`)
+            $getCdnPath(`/static/image/sg1/mcenter/share/shareapp_save.png`)
           "
           alt="shareApp"
         />
@@ -20,7 +20,7 @@
 
       <div :class="$style['text']" @click="downloadImage">
         <img
-          :src="$getCdnPath(`/static/image/_new/mcenter/share/btn_tick.png`)"
+          :src="$getCdnPath(`/static/image/sg1/mcenter/share/btn_tick.png`)"
         />
         {{ btnTickText }}
       </div>

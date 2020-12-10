@@ -102,7 +102,7 @@
   .content:nth-child(#{$i + 1}) .item:first-of-type::before {
     content: "";
     position: absolute;
-    background-image: url("/static/image/porn1/mcenter/vip/detail/ic_vip#{$i}.png");
+    background-image: url("/static/image/common/vip/detail/ic_vip#{$i}.png");
     background-size: contain;
     width: 25px;
     height: 25px;

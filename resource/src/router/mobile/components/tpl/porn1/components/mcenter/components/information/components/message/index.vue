@@ -81,7 +81,7 @@
           <img
             :src="
               $getCdnPath(
-                '/static/image/porn1/mcenter/information/icon_information.png'
+                `/static/image/${siteConfig.MOBILE_WEB_TPL}/mcenter/information/icon_information.png`
               )
             "
           />
@@ -104,7 +104,7 @@
           <img
             :src="
               $getCdnPath(
-                '/static/image/porn1/mcenter/information/icon_information.png'
+                `/static/image/${siteConfig.MOBILE_WEB_TPL}/mcenter/information/icon_information.png`
               )
             "
           />
@@ -162,7 +162,7 @@
     </div>
     <div v-if="isDelete" :class="$style['delete-tips']">
       <div :class="$style['tips-wrap']">
-        <div :class="$style['tips-title']">温馨提醒</div>
+        <div :class="$style['tips-title']">温馨提示</div>
         <div :class="$style['tips-text']">删除后将无法恢复，确定要删除吗？</div>
         <div :class="[$style['tips-button'], 'clearfix']">
           <div :class="$style['delete-cancel']" @click="isDelete = false">
@@ -384,3 +384,4 @@ export default {
   module="$style_porn1"
 ></style>
 <style lang="scss" src="../../css/ey1.message.scss" module="$style_ey1"></style>
+<style lang="scss" src="../../css/sg1.message.scss" module="$style_sg1"></style>
