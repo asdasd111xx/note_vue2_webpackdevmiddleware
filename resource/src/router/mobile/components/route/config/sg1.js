@@ -4,12 +4,14 @@ export default {
       import(
         /* webpackChunkName: 'iframeSg1' */ "../../tpl/sg1/components/iframe"
       ),
+
     casinoSg1: () =>
       import(
         /* webpackChunkName: 'casinoSg1' */ "../../tpl/sg1/components/casino"
       ),
     cardSg1: () =>
       import(/* webpackChunkName: 'cardSg1' */ "../../tpl/sg1/components/card"),
+
     homeSg1: () =>
       import(/* webpackChunkName: 'homeSg1' */ "../../tpl/sg1/components/home"),
     loginSg1: () =>
@@ -163,9 +165,39 @@ export default {
       import(
         /* webpackChunkName: 'feedbackSg1' */ "../../tpl/sg1/components/mcenter/components/feedback"
       ),
+
     swagSg1: () =>
       import(
         /* webpackChunkName: 'swagSg1' */ "../../tpl/sg1/components/mcenter/components/swag"
+      ),
+
+    betRecordSg1: () =>
+      import(
+        /* webpackChunkName: 'betRecordSg1' */ "../../tpl/sg1/components/mcenter/components/betRecord"
+      ),
+    bankRebateSg1: () =>
+      import(
+        /* webpackChunkName: 'bankRebateSg1' */ "../../tpl/sg1/components/mcenter/components/bankRebate"
+      ),
+    moneyDetailSg1: () =>
+      import(
+        /* webpackChunkName: 'moneyDetailSg1' */ "../../tpl/sg1/components/mcenter/components/moneyDetail"
+      ),
+    tcenterCommissionSg1: () =>
+      import(
+        /* webpackChunkName: 'tcenterCommissionSg1' */ "../../tpl/sg1/components/mcenter/components/tcenter/components/commission"
+      ),
+    tcenterGameRecordSg1: () =>
+      import(
+        /* webpackChunkName: 'tcenterGameRecordSg1' */ "../../tpl/sg1/components/mcenter/components/tcenter/components/gameRecord"
+      ),
+    tcenterManagementSg1: () =>
+      import(
+        /* webpackChunkName: 'tcenterManagementSg1' */ "../../tpl/sg1/components/mcenter/components/tcenter/components/management"
+      ),
+    tcenterRecommendGiftSg1: () =>
+      import(
+        /* webpackChunkName: 'tcenteRecommendGiftSg1' */ "../../tpl/sg1/components/mcenter/components/tcenter/components/recommendGift"
       )
   }
 };

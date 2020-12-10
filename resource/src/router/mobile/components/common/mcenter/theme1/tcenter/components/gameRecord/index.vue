@@ -175,23 +175,25 @@ export default {
     InfiniteLoading,
     gameRecord,
     table1st,
-    table2nd,
+    table2nd
   },
   props: {
     setTabState: {
       type: Function,
-      required: true,
+      required: true
     },
     setHeaderTitle: {
       type: Function,
-      required: true,
-    },
+      required: true
+    }
   },
   data() {
     const now = EST(new Date(), "", true);
 
     return {
-      fromDate: Vue.moment(now).add(-29, "days").format("YYYY-MM-DD"),
+      fromDate: Vue.moment(now)
+        .add(-29, "days")
+        .format("YYYY-MM-DD"),
       endDate: Vue.moment(now).format("YYYY-MM-DD"),
       inqGame: "",
       inqStart: Vue.moment(now).format("YYYY-MM-DD"),
@@ -203,13 +205,13 @@ export default {
   computed: {
     ...mapGetters({
       memInfo: "getMemInfo",
-      siteConfig: "getSiteConfig",
+      siteConfig: "getSiteConfig"
     }),
     $style() {
       const style =
         this[`$style_${this.siteConfig.MOBILE_WEB_TPL}`] || this.$style_porn1;
       return style;
-    },
+    }
   },
   created() {
     this.gameVendor();
@@ -218,7 +220,9 @@ export default {
     ...mapActions(["actionSetGlobalMessage"]),
     limitDate(key, val) {
       let _value = Vue.moment(val).format("YYYY/MM/DD");
-      let _today = Vue.moment(new Date()).add(-29, "days").format("YYYY/MM/DD");
+      let _today = Vue.moment(new Date())
+        .add(-29, "days")
+        .format("YYYY/MM/DD");
 
       if (_value < _today) {
         this.checkDate = false;
@@ -230,11 +234,9 @@ export default {
       } else if (this.inqEnd > this.endDate) {
         this.checkDate = false;
         this.inqEnd = this.endDate;
-      }
-      else {
+      } else {
         this.checkDate = true;
       }
-
     },
     gameVendor() {
       // bbosRequest({
@@ -252,18 +254,21 @@ export default {
       // })
 
       axios({
-        method: 'get',
-        url: '/api/v1/c/vendors'
-      }).then((res) => {
+        method: "get",
+        url: "/api/v1/c/vendors"
+      }).then(res => {
         var bbin = { text: "BBIN", value: "bbin" };
         for (var i = 0; i < res.data.ret.length; i++) {
           if (res.data.ret[i].vendor === "bbin") {
             this.allvendor.push(bbin);
           }
-          let obj = { text: `${res.data.ret[i].alias}`, value: `${res.data.ret[i].vendor}` };
+          let obj = {
+            text: `${res.data.ret[i].alias}`,
+            value: `${res.data.ret[i].vendor}`
+          };
           this.allvendor.push(obj);
-        };
-      })
+        }
+      });
     }
   },
   filters: {
@@ -273,10 +278,11 @@ export default {
       } else {
         return "";
       }
-    },
-  },
+    }
+  }
 };
 </script>
 
 <style lang="scss" src="./css/porn1.module.scss" module="$style_porn1"></style>
 <style lang="scss" src="./css/ey1.module.scss" module="$style_ey1"></style>
+<style lang="scss" src="./css/sg1.module.scss" module="$style_sg1"></style>

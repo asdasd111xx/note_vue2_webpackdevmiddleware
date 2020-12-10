@@ -1,0 +1,171 @@
+.money-detail-wrap {
+  padding-top: 1px;
+}
+
+.top-link {
+  display: block;
+  padding: 8px 9px;
+  background-color: #fff;
+}
+
+.link-wrap {
+  float: left;
+  min-width: 100px;
+  height: 34px;
+  margin: 0 5px;
+  border-radius: 17px;
+  background-color: #f7f8fb;
+  font-size: 14px;
+  text-align: center;
+
+  > div {
+    display: inline-block;
+    color: #414655;
+    vertical-align: middle;
+  }
+
+  > span {
+    display: inline-block;
+    margin-left: 5px;
+    border: 4px solid transparent;
+    border-top-color: #414655;
+    vertical-align: middle;
+    transform: translateY(2px);
+
+    &.arrow-top {
+      border-top-color: transparent;
+      border-bottom-color: #414655;
+      transform: translateY(-3px);
+    }
+  }
+
+  &::before {
+    content: "";
+    display: inline-block;
+    height: 100%;
+    vertical-align: middle;
+  }
+
+  &.has-date {
+    line-height: 17px;
+    font-size: 12px;
+  }
+}
+
+.record-select {
+  position: absolute;
+  top: 93px;
+  left: 0;
+  width: 100%;
+  height: 100vh;
+  border-top: 1px solid #eee;
+  background-color: rgba(0, 0, 0, 0.5);
+}
+
+.select-wrap {
+  padding: 12px 11px;
+  background-color: #fefffe;
+}
+
+.select-tip {
+  padding: 5px 0 10px;
+  color: #a6a9b2;
+}
+
+.select,
+.select-time {
+  float: left;
+  width: 18%;
+  height: 35px;
+  line-height: 33px;
+  margin: 3px 1%;
+  border: 1px solid #eeeeee;
+  border-radius: 5px;
+  background-color: #fff;
+  color: #cccccc;
+  font-size: 12px;
+  text-align: center;
+
+  &.active {
+    line-height: 35px;
+    border: none;
+    border-radius: 3px;
+    background: linear-gradient(to left, #fe593c, #e61938);
+    color: #fff;
+  }
+}
+
+.select-time {
+  width: 23%;
+}
+
+.date-wrap {
+  background-color: #fff;
+}
+
+.picker-wrap {
+  position: relative;
+  line-height: 48px;
+  padding: 0 13px;
+  border-bottom: 1px solid #eee;
+  color: #414655;
+  font-size: 13px;
+}
+
+.date-text {
+  float: left;
+  font-size: 14px;
+  font-weight: 700;
+  color: #414655;
+}
+
+.select-date {
+  float: right;
+  margin-right: 17px;
+}
+
+.icon-arrow {
+  position: absolute;
+  top: 16px;
+  right: 13px;
+  width: 10px;
+  height: 16px;
+  color: #d1d0d6;
+
+  > svg {
+    display: block;
+  }
+}
+
+.button {
+  float: left;
+  width: 50%;
+  height: 43px;
+  line-height: 43px;
+  font-size: 15px;
+  text-align: center;
+}
+
+.cancel {
+  composes: button;
+  background: #cccccc;
+  color: #ffffff;
+}
+
+.confirm {
+  composes: button;
+  background: linear-gradient(90deg, #e61938, #fe593c);
+  color: #ffffff;
+}
+
+.date-tip {
+  position: absolute;
+  min-width: 200px;
+  left: 50%;
+  transform: translateX(-50%);
+  text-align: center;
+  border-radius: 5px;
+  padding: 5px 10px;
+  margin-top: 2%;
+  background: #dbdbdb;
+}

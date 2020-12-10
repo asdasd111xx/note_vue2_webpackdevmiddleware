@@ -6,7 +6,7 @@
         :key="`tab-${item.key}`"
         :class="[
           $style['tab-item'],
-          { [$style['is-current']]: tabCurrent === index }
+          { [$style['is-current']]: tabCurrent === index },
         ]"
         :style="{ width: `${100 / tabItem.length}%` }"
         @click="setTabCurrent(index)"
@@ -42,13 +42,13 @@ export default {
     recommendGift: () =>
       import(
         /* webpackChunkName: 'mcenter_pron1_recommendGift' */ "./components/recommendGift"
-      )
+      ),
   },
   props: {
     func: {
       type: String,
-      required: true
-    }
+      required: true,
+    },
   },
   data() {
     return {
@@ -75,17 +75,18 @@ export default {
           }
 
           this.$router.push("/mobile/mcenter");
-        }
-      }
+        },
+      },
     };
   },
   computed: {
     ...mapGetters({
       memInfo: "getMemInfo",
-      siteConfig: "getSiteConfig"
+      siteConfig: "getSiteConfig",
     }),
     $style() {
-      const style = this[`$style_${this.siteConfig.MOBILE_WEB_TPL}`] || this.$style_porn1;
+      const style =
+        this[`$style_${this.siteConfig.MOBILE_WEB_TPL}`] || this.$style_porn1;
       return style;
     },
     tabItem() {
@@ -93,30 +94,30 @@ export default {
         {
           key: "management",
           text: this.$text("S_TEAM_MANAGEMENT", "团队管理"),
-          show: true
+          show: true,
         },
         {
           key: "gameRecord",
           text: this.$text("S_GAME_RECORD", "游戏记录"),
-          show: true
+          show: true,
         },
         {
           key: "commission",
           text: this.$text("S_MY_COMMISSION", "我的返利"),
-          show: true
+          show: true,
         },
         {
           key: "recommendGift",
           text: this.$text("S_RECOMMEND_GIFT", "推荐礼金"),
-          show: true
-        }
-      ].filter(item => item.show);
+          show: true,
+        },
+      ].filter((item) => item.show);
     },
     tabCurrent() {
-      return this.tabItem.findIndex(item =>
+      return this.tabItem.findIndex((item) =>
         this.$route.path.includes(item.key)
       );
-    }
+    },
   },
   methods: {
     ...mapActions(["actionChangePage"]),
@@ -149,10 +150,11 @@ export default {
     },
     setHeaderTitle(value) {
       this.$set(this.headerConfig, "title", value);
-    }
-  }
+    },
+  },
 };
 </script>
 
 <style lang="scss" src="./css/porn1.module.scss" module="$style_porn1"></style>
 <style lang="scss" src="./css/ey1.module.scss" module="$style_ey1"></style>
+<style lang="scss" src="./css/sg1.module.scss" module="$style_sg1"></style>

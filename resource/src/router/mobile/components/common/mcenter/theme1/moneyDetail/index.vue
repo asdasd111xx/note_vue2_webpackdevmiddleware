@@ -143,43 +143,48 @@
 </template>
 
 <script>
-import Vue from 'vue';
-import { mapGetters, mapActions } from 'vuex';
-import InfiniteLoading from 'vue-infinite-loading';
-import common from '@/api/common';
-import mcenter from '@/api/mcenter';
-import EST from '@/lib/EST';
+import Vue from "vue";
+import { mapGetters, mapActions } from "vuex";
+import InfiniteLoading from "vue-infinite-loading";
+import common from "@/api/common";
+import mcenter from "@/api/mcenter";
+import EST from "@/lib/EST";
 
 export default {
   props: {
     //  額度轉讓共用
     pageType: {
-      default: ''
+      default: ""
     }
   },
   components: {
     InfiniteLoading,
-    detailList: () => import(/* webpackChunkName: 'detailList' */ './components/detailList'),
-    detailInfo: () => import(/* webpackChunkName: 'detailInfo' */ './components/detailInfo'),
-    datePicker: () => import(/* webpackChunkName: 'datePicker' */ '../../../datePicker/index'),
-    pageLoading: () => import(/* webpackChunkName: 'pageLoading' */ '@/router/mobile/components/common/pageLoading'),
-
+    detailList: () =>
+      import(/* webpackChunkName: 'detailList' */ "./components/detailList"),
+    detailInfo: () =>
+      import(/* webpackChunkName: 'detailInfo' */ "./components/detailInfo"),
+    datePicker: () =>
+      import(/* webpackChunkName: 'datePicker' */ "../../../datePicker/index"),
+    pageLoading: () =>
+      import(
+        /* webpackChunkName: 'pageLoading' */ "@/router/mobile/components/common/pageLoading"
+      )
   },
   filters: {
     dateFormat(date) {
-      return Vue.moment(date).format('YYYY-MM-DD');
+      return Vue.moment(date).format("YYYY-MM-DD");
     }
   },
   watch: {
     detailInfo(val) {
-      if (this.pageType === 'ingroup_transfer' || this.pageType === 'swag') {
+      if (this.pageType === "ingroup_transfer" || this.pageType === "swag") {
         this.$emit("showDetail", val);
       }
     }
   },
   data() {
-    const estToday = EST(new Date(), '', true);
-    const limitTime = new Date(Vue.moment(estToday).add(-29, 'days'));
+    const estToday = EST(new Date(), "", true);
+    const limitTime = new Date(Vue.moment(estToday).add(-29, "days"));
 
     return {
       estToday,
@@ -188,16 +193,19 @@ export default {
       limitTime,
       isReceive: false,
       showInfinite: true,
-      showCondition: '',
+      showCondition: "",
       showDatePicker: false,
-      currentCategory: { key: 'deposit', text: this.$text('S_DEPOSIT', '充值') },
-      currentDate: { key: 'today', text: this.$text('S_TODDAY', '今日') },
-      currentDatePicker: '',
+      currentCategory: {
+        key: "deposit",
+        text: this.$text("S_DEPOSIT", "充值")
+      },
+      currentDate: { key: "today", text: this.$text("S_TODDAY", "今日") },
+      currentDatePicker: "",
       opcodeList: {},
       detailList: null,
       detailInfo: null,
-      type: ['deposit'], // 交易類型 預設開啟存款
-      sort: 'desc', // 排序方式
+      type: ["deposit"], // 交易類型 預設開啟存款
+      sort: "desc", // 排序方式
       firstResult: 0, // 每頁起始筆數
       maxResults: 20, // 每頁顯示幾筆
       pageNow: 1, // 當前頁
@@ -211,43 +219,49 @@ export default {
       siteConfig: "getSiteConfig"
     }),
     $style() {
-      const style = this[`$style_${this.siteConfig.MOBILE_WEB_TPL}`] || this.$style_porn1;
+      const style =
+        this[`$style_${this.siteConfig.MOBILE_WEB_TPL}`] || this.$style_porn1;
       return style;
     },
     categoryOptions() {
       return [
-        { key: 'deposit', text: '充值' },
-        { key: 'vendor', text: '转帐' },
-        { key: 'withdraw', text: '提现' },
-        { key: 'bonus', text: '红利' },
-        { key: 'manual', text: '人工' },
-        { key: 'wage', text: '返利' },
-        { key: 'ingroup_transfer', text: '转让' },
-        { key: 'outer', text: 'SWAG' }
+        { key: "deposit", text: "充值" },
+        { key: "vendor", text: "转帐" },
+        { key: "withdraw", text: "提现" },
+        { key: "bonus", text: "红利" },
+        { key: "manual", text: "人工" },
+        { key: "wage", text: "返利" },
+        { key: "ingroup_transfer", text: "转让" },
+        { key: "outer", text: "SWAG" }
       ];
     },
     dateOptions() {
       return [
-        { key: 'today', text: '今日' },
-        { key: 'yesterday', text: '昨日' },
-        { key: 'week', text: '近7日' },
-        { key: 'thirty', text: '近30日' },
-        { key: 'custom', text: '自定义' }
+        { key: "today", text: "今日" },
+        { key: "yesterday", text: "昨日" },
+        { key: "week", text: "近7日" },
+        { key: "thirty", text: "近30日" },
+        { key: "custom", text: "自定义" }
       ];
     }
   },
   created() {
-    if (this.$route.params.page === 'detail') {
-      let detailparams = localStorage.getItem('money-detail-params');
+    if (this.$route.params.page === "detail") {
+      let detailparams = localStorage.getItem("money-detail-params");
 
       if (!this.detailInfo && !detailparams) {
-        this.$router.replace('/mobile/mcenter/moneyDetail');
+        this.$router.replace("/mobile/mcenter/moneyDetail");
         return;
       }
     }
 
-    if (this.siteConfig.MOBILE_WEB_TPL !== 'porn1') {
-      this.categoryOpt = this.categoryOptions.filter(i => i.key !== "ingroup_transfer");
+    if (
+      this.siteConfig.MOBILE_WEB_TPL !== "porn1" &&
+      this.siteConfig.MOBILE_WEB_TPL !== "sg1"
+    ) {
+      this.categoryOpt = this.categoryOptions.filter(
+        i => i.key !== "ingroup_transfer"
+      );
       this.categoryOpt = this.categoryOptions.filter(i => i.key !== "outer");
     } else {
       this.categoryOpt = this.categoryOptions;
@@ -255,7 +269,7 @@ export default {
 
     common.opcode({
       success: ({ result, ret }) => {
-        if (result !== 'ok') {
+        if (result !== "ok") {
           return;
         }
         this.opcodeList = ret;
@@ -263,84 +277,102 @@ export default {
     });
 
     // 共用額度轉移紀錄
-    if (this.pageType === 'ingroup_transfer') {
+    if (this.pageType === "ingroup_transfer") {
       this.setDefaultCreditTrans();
     }
 
     // 共用SWAG紀錄
-    if (this.pageType === 'swag') {
+    if (this.pageType === "swag") {
       this.setDefaultSWAG();
     }
   },
   methods: {
-    ...mapActions([
-      'actionSetGlobalMessage'
-    ]),
+    ...mapActions(["actionSetGlobalMessage"]),
     getData(cacheParams = null) {
       this.isLoading = true;
-      let params = {}
+      let params = {};
 
       if (cacheParams) {
         params = cacheParams;
       } else {
         params = {
-          start_at: Vue.moment(this.startTime).format('YYYY-MM-DD 00:00:00-04:00'),
-          end_at: Vue.moment(this.endTime).format('YYYY-MM-DD 23:59:59-04:00'),
-          category: this.pageType === 'swag' ? 'outer' : this.type,
+          start_at: Vue.moment(this.startTime).format(
+            "YYYY-MM-DD 00:00:00-04:00"
+          ),
+          end_at: Vue.moment(this.endTime).format("YYYY-MM-DD 23:59:59-04:00"),
+          category: this.pageType === "swag" ? "outer" : this.type,
           order: this.sort,
           first_result: this.firstResult,
           max_results: this.maxResults
-        }
+        };
       }
 
       if (this.type.find(i => i === "ingroup_transfer")) {
-        params['opcode'] = ['8007', '1049', '5020', '5018', '5019', '5017', '5016'];
+        params["opcode"] = [
+          "8007",
+          "1049",
+          "5020",
+          "5018",
+          "5019",
+          "5017",
+          "5016"
+        ];
       }
 
-      if (this.type.find(i => i === "outer") && this.pageType === 'swag') {
-        params['opcode'] = ['9001'];
+      if (this.type.find(i => i === "outer") && this.pageType === "swag") {
+        params["opcode"] = ["9001"];
       }
 
-      localStorage.setItem('money-detail-params', JSON.stringify(params));
-      localStorage.setItem('money-detail-params-category', JSON.stringify(this.currentCategory));
-      localStorage.setItem('money-detail-params-date', JSON.stringify(this.currentDate));
+      localStorage.setItem("money-detail-params", JSON.stringify(params));
+      localStorage.setItem(
+        "money-detail-params-category",
+        JSON.stringify(this.currentCategory)
+      );
+      localStorage.setItem(
+        "money-detail-params-date",
+        JSON.stringify(this.currentDate)
+      );
 
       return mcenter.moneyDetail({
         params: params,
         success: ({ result, pagination, ret }) => {
           this.isLoading = false;
 
-          if (result !== 'ok' || ret.length === 0) {
+          if (result !== "ok" || ret.length === 0) {
             return;
           }
 
-          this.detailList = ret.reduce((init, info) => {
-            const date = EST(info.created_at, 'YYYY-MM-DD');
+          this.detailList = ret.reduce(
+            (init, info) => {
+              const date = EST(info.created_at, "YYYY-MM-DD");
 
-            if (!init[date]) {
-              return { ...init, [date]: [info] };
-            }
+              if (!init[date]) {
+                return { ...init, [date]: [info] };
+              }
 
-            return { ...init, [date]: [...init[date], info] };
-          }, { ...this.detailList });
+              return { ...init, [date]: [...init[date], info] };
+            },
+            { ...this.detailList }
+          );
 
-          if (pagination.total === '0') {
+          if (pagination.total === "0") {
             return;
           }
 
           this.pageAll = Math.ceil(+pagination.total / this.maxResults);
 
           // 從聯繫客服返回預設開啟交易詳請
-          if (localStorage.getItem('money-detail-params-service')) {
-            let id = this.$route.query.id || localStorage.getItem('money-detail-id');
+          if (localStorage.getItem("money-detail-params-service")) {
+            let id =
+              this.$route.query.id || localStorage.getItem("money-detail-id");
             this.detailInfo = ret.find(i => i.id === id);
             setTimeout(() => {
-              localStorage.removeItem('money-detail-params-service');
-              localStorage.removeItem('money-detail-id');
-            }, 500)
+              localStorage.removeItem("money-detail-params-service");
+              localStorage.removeItem("money-detail-id");
+            }, 500);
           }
         },
-        fail: (res) => {
+        fail: res => {
           this.isLoading = false;
           this.actionSetGlobalMessage({ msg: `${res.data.msg}` });
         }
@@ -348,47 +380,49 @@ export default {
     },
     setDefaultCreditTrans() {
       this.type = ["ingroup_transfer"];
-      this.startTime = new Date(Vue.moment(this.estToday).add(-29, 'days'));
+      this.startTime = new Date(Vue.moment(this.estToday).add(-29, "days"));
       this.endTime = new Date(Vue.moment(this.estToday));
-      this.setCategory({ key: 'ingroup_transfer', text: '转让' });
+      this.setCategory({ key: "ingroup_transfer", text: "转让" });
     },
     setDefaultSWAG() {
       this.type = ["outer"];
-      this.startTime = new Date(Vue.moment(this.estToday).add(-29, 'days'));
+      this.startTime = new Date(Vue.moment(this.estToday).add(-29, "days"));
       this.endTime = new Date(Vue.moment(this.estToday));
-      this.setCategory({ key: 'outer', text: 'SWAG' });
+      this.setCategory({ key: "outer", text: "SWAG" });
     },
     setCategory(value) {
       this.currentCategory = value;
-      this.type = value.key === 'bonus' ? ['activity', 'rebate'] : [value.key];
+      this.type = value.key === "bonus" ? ["activity", "rebate"] : [value.key];
 
       this.detailList = null;
       this.firstResult = 0;
       this.pageNow = 1;
       this.pageAll = 1;
 
-      this.changeCondition('');
-      this.changeDatePicker('');
-      if (!localStorage.getItem('money-detail-params-service') ||
+      this.changeCondition("");
+      this.changeDatePicker("");
+      if (
+        !localStorage.getItem("money-detail-params-service") ||
         this.pageType === "ingroup_transfer" ||
-        this.pageType === "swag") {
+        this.pageType === "swag"
+      ) {
         this.getData();
       }
     },
     setDate(value) {
       switch (value.key) {
-        case 'thirty':
-        case 'custom':
-          this.startTime = new Date(Vue.moment(this.estToday).add(-29, 'days'));
+        case "thirty":
+        case "custom":
+          this.startTime = new Date(Vue.moment(this.estToday).add(-29, "days"));
           this.endTime = new Date(Vue.moment(this.estToday));
           break;
-        case 'week':
-          this.startTime = new Date(Vue.moment(this.estToday).add(-6, 'days'));
+        case "week":
+          this.startTime = new Date(Vue.moment(this.estToday).add(-6, "days"));
           this.endTime = new Date(Vue.moment(this.estToday));
           break;
-        case 'yesterday':
-          this.startTime = new Date(Vue.moment(this.estToday).add(-1, 'days'));
-          this.endTime = new Date(Vue.moment(this.estToday).add(-1, 'days'));
+        case "yesterday":
+          this.startTime = new Date(Vue.moment(this.estToday).add(-1, "days"));
+          this.endTime = new Date(Vue.moment(this.estToday).add(-1, "days"));
           break;
         default:
           this.startTime = new Date(Vue.moment(this.estToday));
@@ -396,10 +430,10 @@ export default {
           break;
       }
 
-      this.showDatePicker = value.key === 'custom';
+      this.showDatePicker = value.key === "custom";
 
       this.currentDate = value;
-      if (value.key === 'custom') {
+      if (value.key === "custom") {
         return;
       }
 
@@ -408,41 +442,46 @@ export default {
       this.pageNow = 1;
       this.pageAll = 1;
 
-      this.changeCondition('');
-      this.changeDatePicker('');
-      if (!localStorage.getItem('money-detail-params-service') ||
+      this.changeCondition("");
+      this.changeDatePicker("");
+      if (
+        !localStorage.getItem("money-detail-params-service") ||
         this.pageType === "ingroup_transfer" ||
-        this.pageType === "swag") {
+        this.pageType === "swag"
+      ) {
         this.getData();
       }
     },
     changeCondition(value) {
-      this.showDatePicker = this.currentDate.key === 'custom';
-      this.showCondition = this.showCondition === value ? '' : value;
+      this.showDatePicker = this.currentDate.key === "custom";
+      this.showCondition = this.showCondition === value ? "" : value;
 
-      this.changeDatePicker('');
+      this.changeDatePicker("");
     },
     changeDatePicker(value) {
-      this.currentDatePicker = this.currentDatePicker === value ? '' : value;
+      this.currentDatePicker = this.currentDatePicker === value ? "" : value;
     },
     onCancel() {
-      this.changeCondition('');
-      this.changeDatePicker('');
+      this.changeCondition("");
+      this.changeDatePicker("");
     },
     onConfirm() {
-      if ((this.startTime > this.endTime) && (this.startTime.toDateString() !== this.endTime.toDateString())) {
-        this.actionSetGlobalMessage({ msg: '开始日期不能大于结束日期' });
+      if (
+        this.startTime > this.endTime &&
+        this.startTime.toDateString() !== this.endTime.toDateString()
+      ) {
+        this.actionSetGlobalMessage({ msg: "开始日期不能大于结束日期" });
         return;
       }
 
-      this.currentDate = { key: 'custom', text: '自定义' };
+      this.currentDate = { key: "custom", text: "自定义" };
       this.detailList = null;
       this.firstResult = 0;
       this.pageNow = 1;
       this.pageAll = 1;
 
-      this.changeCondition('');
-      this.changeDatePicker('');
+      this.changeCondition("");
+      this.changeDatePicker("");
       this.getData();
     },
     /**
@@ -452,25 +491,35 @@ export default {
      */
     infiniteHandler($state) {
       // 防止在切換類別的時候馬上觸發捲動加載，造成有遊戲重複出現的情況
-      if (this.isReceive && (this.pageType === "ingroup_transfer" || this.pageType === "swag")) {
+      if (
+        this.isReceive &&
+        (this.pageType === "ingroup_transfer" || this.pageType === "swag")
+      ) {
         return;
       }
 
       this.isReceive = true;
 
       let _params = null;
-      if (localStorage.getItem('money-detail-params-service') &&
-        localStorage.getItem('money-detail-params-category') &&
-        localStorage.getItem('money-detail-params-date')) {
-        _params = JSON.parse(localStorage.getItem('money-detail-params')) || null;
-        this.setCategory(JSON.parse(localStorage.getItem('money-detail-params-category')));
-        this.setDate(JSON.parse(localStorage.getItem('money-detail-params-date')));
+      if (
+        localStorage.getItem("money-detail-params-service") &&
+        localStorage.getItem("money-detail-params-category") &&
+        localStorage.getItem("money-detail-params-date")
+      ) {
+        _params =
+          JSON.parse(localStorage.getItem("money-detail-params")) || null;
+        this.setCategory(
+          JSON.parse(localStorage.getItem("money-detail-params-category"))
+        );
+        this.setDate(
+          JSON.parse(localStorage.getItem("money-detail-params-date"))
+        );
       }
 
       this.getData(_params).then(({ result }) => {
         this.isReceive = false;
 
-        if (result !== 'ok') {
+        if (result !== "ok") {
           return;
         }
 
@@ -491,3 +540,4 @@ export default {
 
 <style lang="scss" src="./css/porn1.index.scss" module="$style_porn1"></style>
 <style lang="scss" src="./css/ey1.index.scss" module="$style_ey1"></style>
+<style lang="scss" src="./css/sg1.index.scss" module="$style_sg1"></style>

@@ -59,7 +59,7 @@
             :class="$style['add-btn']"
             @click="setPageStatus(1, 'addWalletCard', false)"
           >
-            <img :src="`/static/image/${themeTPL}/mcenter/add_2.png`" />
+            <img :src="`/static/image/common/mcenter/add_2.png`" />
             <span>
               {{
                 ["porn1", "sg1"].includes(themeTPL)

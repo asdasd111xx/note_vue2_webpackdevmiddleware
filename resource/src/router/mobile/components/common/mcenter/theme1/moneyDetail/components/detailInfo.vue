@@ -47,7 +47,7 @@
     <message v-if="msg" @close="msg = ''">
       <div slot="msg">
         <div
-          style="background-color: transparent ; margin: 0 ; padding: 0"
+          style="background-color: transparent; margin: 0; padding: 0"
           v-html="msg"
         />
       </div>
@@ -62,23 +62,21 @@ import { mapGetters } from "vuex";
 
 export default {
   components: {
-    message
+    message,
   },
   data() {
     return {
-      msg: ""
+      msg: "",
     };
   },
   filters: {
     dateFormat(date) {
-      return Vue.moment(date)
-        .utcOffset(-4)
-        .format("YYYY-MM-DD HH:mm:ss");
-    }
+      return Vue.moment(date).utcOffset(-4).format("YYYY-MM-DD HH:mm:ss");
+    },
   },
   computed: {
     ...mapGetters({
-      siteConfig: "getSiteConfig"
+      siteConfig: "getSiteConfig",
     }),
     themeTPL() {
       return this.siteConfig.MOBILE_WEB_TPL;
@@ -87,49 +85,55 @@ export default {
       const style =
         this[`$style_${this.siteConfig.MOBILE_WEB_TPL}`] || this.$style_porn1;
       return style;
-    }
+    },
   },
   props: {
     currentCategory: {
       type: Object,
-      required: true
+      required: true,
     },
     opcodeList: {
       type: Object,
-      required: true
+      required: true,
     },
     detailInfo: {
       type: Object,
-      default: null
-    }
+      default: null,
+    },
   },
   methods: {
     linkToService() {
-      localStorage.setItem('money-detail-params-service', true);
+      localStorage.setItem("money-detail-params-service", true);
       let currentUrl = window.location.pathname + window.location.search;
 
       //  明細後聯繫客服上一頁
-      if (this.$route.name === 'mcenter-swag' && currentUrl !== '/mobile/mcenter/swag?tab=1') {
-        this.$router.replace('/mobile/mcenter/swag?tab=1');
-      }
-
-      if (this.$route.name === 'mcenter-creditTrans' && currentUrl !== '/mobile/mcenter/creditTrans?tab=2'
+      if (
+        this.$route.name === "mcenter-swag" &&
+        currentUrl !== "/mobile/mcenter/swag?tab=1"
       ) {
-        this.$router.replace('/mobile/mcenter/creditTrans?tab=2');
+        this.$router.replace("/mobile/mcenter/swag?tab=1");
       }
 
-      this.$router.push('/mobile/service');
+      if (
+        this.$route.name === "mcenter-creditTrans" &&
+        currentUrl !== "/mobile/mcenter/creditTrans?tab=2"
+      ) {
+        this.$router.replace("/mobile/mcenter/creditTrans?tab=2");
+      }
+
+      this.$router.push("/mobile/service");
     },
     oncopy() {
       this.$copyText(this.detailInfo.ref_id);
       this.msg = "已复制到剪贴板";
-    }
+    },
   },
   beforeDestroy() {
     this.$emit("update:detailInfo", null);
-  }
+  },
 };
 </script>
 
 <style lang="scss" src="../css/porn1.info.scss" module="$style_porn1"></style>
 <style lang="scss" src="../css/ey1.info.scss" module="$style_ey1"></style>
+<style lang="scss" src="../css/sg1.info.scss" module="$style_sg1"></style>

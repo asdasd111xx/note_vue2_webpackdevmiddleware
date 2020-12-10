@@ -1,0 +1,34 @@
+@import "./porn1.module.scss";
+
+.dropdown-wrap {
+  li {
+    color: #cccccc;
+    border: 1px solid #eee;
+
+    &.active {
+      line-height: 35px;
+      border: none;
+      border-radius: 3px;
+      background: linear-gradient(to left, #fe593c, #e61938);
+      color: #fff;
+    }
+  }
+}
+
+.time-cancel {
+  background: #cccccc;
+  color: #ffffff;
+}
+
+.time-confirm {
+  background: linear-gradient(90deg, #e61938, #fe593c);
+  color: #ffffff;
+}
+
+.no-data-wrap {
+  .btn-money {
+    border-radius: 5px;
+    background: linear-gradient(to left, #fe593c, #e61938);
+    color: #fff;
+  }
+}

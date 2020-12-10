@@ -36,33 +36,43 @@
 </template>
 
 <script>
-import management from '@/mixins/mcenter/management/index';
-import { mapGetters, mapActions } from 'vuex';
+import management from "@/mixins/mcenter/management/index";
+import { mapGetters, mapActions } from "vuex";
 
 export default {
   components: {
-    memberInfo: () => import(/* webpackChunkName: 'memberInfo' */'./components/memberInfo/index'),
-    firstFriends: () => import(/* webpackChunkName: 'firstFriends' */'./components/firstFriends/index'),
-    recommend: () => import(/* webpackChunkName: 'recommend' */'./components/recommend/index')
+    memberInfo: () =>
+      import(
+        /* webpackChunkName: 'memberInfo' */ "./components/memberInfo/index"
+      ),
+    firstFriends: () =>
+      import(
+        /* webpackChunkName: 'firstFriends' */ "./components/firstFriends/index"
+      ),
+    recommend: () =>
+      import(
+        /* webpackChunkName: 'recommend' */ "./components/recommend/index"
+      ),
   },
   mixins: [management],
   props: {
     setTabState: {
       type: Function,
-      required: true
+      required: true,
     },
     setHeaderTitle: {
       type: Function,
-      required: true
-    }
+      required: true,
+    },
   },
   computed: {
     ...mapGetters({
-      memInfo: 'getMemInfo',
-      siteConfig: 'getSiteConfig',
+      memInfo: "getMemInfo",
+      siteConfig: "getSiteConfig",
     }),
     $style() {
-      const style = this[`$style_${this.siteConfig.MOBILE_WEB_TPL}`] || this.$style_porn1;
+      const style =
+        this[`$style_${this.siteConfig.MOBILE_WEB_TPL}`] || this.$style_porn1;
       return style;
     },
   },
@@ -71,10 +81,14 @@ export default {
       return;
     }
 
-    this.$router.push({ name: 'mcenter-tcenter-management', params: { page: 'member' } });
-  }
+    this.$router.push({
+      name: "mcenter-tcenter-management",
+      params: { page: "member" },
+    });
+  },
 };
 </script>
 
 <style lang="scss" src="./css/porn1.module.scss" module="$style_porn1"></style>
 <style lang="scss" src="./css/ey1.module.scss" module="$style_ey1"></style>
+<style lang="scss" src="./css/sg1.module.scss" module="$style_sg1"></style>

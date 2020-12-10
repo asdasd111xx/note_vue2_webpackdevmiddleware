@@ -166,7 +166,10 @@ export default {
     }
   },
   methods: {
-    ...mapActions(["actionSetUserdata", "actionVerificationFormData"]),
+    ...mapActions(["actionSetUserdata",
+      "actionVerificationFormData",
+      "actionSetGlobalMessage",
+    ]),
     sendData() {
       if (this.addBankCardStep === "one" && this.checkPhoneVerification) {
         this.NextStepStatus = false;
@@ -347,6 +350,7 @@ export default {
       })
         .then(res => {
           this.lockStatus = false;
+          this.actionSetGlobalMessage({ msg: this.$text("S_SEND_CHECK_CODE_VALID_TIME").replace("%s", '5') });
           if (res && res.data && res.data.result === "ok") {
             axios({
               method: "get",
@@ -355,10 +359,6 @@ export default {
               .then(res => {
                 if (res && res.data && res.data.result === "ok") {
                   this.time = res.data.ret;
-                  this.errorMsg = this.$text(
-                    "S_SEND_CHECK_CODE_VALID_TIME"
-                  ).replace("%s", 5);
-
                   this.smsTimer = setInterval(() => {
                     if (this.time <= 0) {
                       clearInterval(this.smsTimer);

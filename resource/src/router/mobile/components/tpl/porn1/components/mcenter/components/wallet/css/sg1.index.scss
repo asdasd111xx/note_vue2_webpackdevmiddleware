@@ -1,35 +1,41 @@
 @import "./porn1.index.scss";
-// $main_color: #e42a30;
 
-// .wallet-info-wrap {
-//   .money-block {
-//     .goDeposit {
-//       background: #e74151;
-//       color: #fefffe;
-//     }
-//   }
-// }
+.invite-wrap {
+  .content {
+    color: #E61938;
+  }
+}
 
-// .title {
-//   &::before {
-//     background: linear-gradient(#fe2a2a, #b60303);
-//   }
-// }
+.wallet-info-wrap {
 
-// .balance-total-item {
-//   .balance-item-money {
-//     color: $main_color;
-//   }
-// }
+  .goDeposit {
+    color: #FEFFFE !important;
+    background: linear-gradient(#fe593c, #e61938) !important;
+    box-shadow: 0pt 3px 7px 0pt rgba(255, 0, 0, 0.3) !important;
+  }
+}
 
-// .balance-wrap {
-//   .balance-total-item {
-//     .balance-item-money {
-//       color: $main_color;
-//     }
-//   }
+.title {
+  &::before {
+    background: linear-gradient(#fe593c, #e61938);
+  }
+}
 
-//   .recycle-btn {
-//     color: $main_color;
-//   }
-// }
+
+.balance-total-item {
+  .balance-item-money {
+    color: #E61938;
+  }
+}
+
+.balance-wrap {
+  .balance-total-item {
+    .balance-item-money {
+      color: #E61938;
+    }
+  }
+
+  .recycle-btn {
+    color: #E61938;
+  }
+}
