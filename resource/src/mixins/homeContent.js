@@ -7,7 +7,6 @@ import goLangApiRequest from '@/api/goLangApiRequest';
 import mcenter from '@/api/mcenter';
 import openGame from '@/lib/open_game';
 import swag from "@/mixins/mcenter/swag/swag";
-import yaboRequest from '@/api/yaboRequest';
 
 export default {
   mixins: [swag],
