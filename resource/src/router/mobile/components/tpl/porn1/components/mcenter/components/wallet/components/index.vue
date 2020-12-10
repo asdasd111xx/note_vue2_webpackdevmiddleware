@@ -335,36 +335,36 @@ export default {
             switch (this.themeTPL) {
               case "porn1":
               case "sg1":
+              case "ey1":
                 this.$router.push("/mobile/mcenter/balanceTrans");
                 break;
 
-              case "ey1":
-                axios({
-                  method: "get",
-                  url: "/api/v2/c/domain-config"
-                })
-                  .then(res => {
-                    let withdraw_info_before_bet = false;
-                    if (res && res.data && res.data.ret) {
-                      withdraw_info_before_bet =
-                        res.data.ret.withdraw_info_before_bet;
-                    }
+              // axios({
+              //   method: "get",
+              //   url: "/api/v2/c/domain-config"
+              // })
+              //   .then(res => {
+              //     let withdraw_info_before_bet = false;
+              //     if (res && res.data && res.data.ret) {
+              //       withdraw_info_before_bet =
+              //         res.data.ret.withdraw_info_before_bet;
+              //     }
 
-                    if (withdraw_info_before_bet) {
-                      this.checkWithdrawData("balanceTrans");
-                      return;
-                    }
+              //     if (withdraw_info_before_bet) {
+              //       this.checkWithdrawData("balanceTrans");
+              //       return;
+              //     }
 
-                    this.$router.push("/mobile/mcenter/balanceTrans");
-                  })
-                  .catch(res => {
-                    this.actionSetGlobalMessage({
-                      msg: res.data.msg,
-                      code: res.data.code,
-                      origin: "wallet"
-                    });
-                  });
-                break;
+              //     this.$router.push("/mobile/mcenter/balanceTrans");
+              //   })
+              //   .catch(res => {
+              //     this.actionSetGlobalMessage({
+              //       msg: res.data.msg,
+              //       code: res.data.code,
+              //       origin: "wallet"
+              //     });
+              //   });
+              // break;
             }
           }
         },

@@ -451,32 +451,34 @@ export default {
           return;
 
         case 'balanceTrans':
-          if (this.siteConfig.MOBILE_WEB_TPL === "porn1") {
-            this.$router.push(`/mobile/mcenter/balanceTrans`);
-            return;
-          }
-
-          axios({
-            method: 'get',
-            url: '/api/v2/c/domain-config',
-          }).then(res => {
-            let withdraw_info_before_bet = false;
-            if (res && res.data && res.data.ret) {
-              withdraw_info_before_bet = res.data.ret.withdraw_info_before_bet;
-            }
-
-            if (withdraw_info_before_bet) {
-              this.checkWithdrawData(path);
-              return;
-            }
-
-            this.$router.push("/mobile/mcenter/balanceTrans");
-          }).catch((res) => {
-            this.actionSetGlobalMessage({
-              msg: res.data.msg, code: res.data.code, origin: 'home'
-            });
-          })
+          this.$router.push(`/mobile/mcenter/balanceTrans`);
           return;
+        // if (this.siteConfig.MOBILE_WEB_TPL === "porn1") {
+        //   this.$router.push(`/mobile/mcenter/balanceTrans`);
+        //   return;
+        // }
+
+        // axios({
+        //   method: 'get',
+        //   url: '/api/v2/c/domain-config',
+        // }).then(res => {
+        //   let withdraw_info_before_bet = false;
+        //   if (res && res.data && res.data.ret) {
+        //     withdraw_info_before_bet = res.data.ret.withdraw_info_before_bet;
+        //   }
+
+        //   if (withdraw_info_before_bet) {
+        //     this.checkWithdrawData(path);
+        //     return;
+        //   }
+
+        //   this.$router.push("/mobile/mcenter/balanceTrans");
+        // }).catch((res) => {
+        //   this.actionSetGlobalMessage({
+        //     msg: res.data.msg, code: res.data.code, origin: 'home'
+        //   });
+        // })
+        // return;
 
         case 'withdraw':
           if (this.siteConfig.MOBILE_WEB_TPL === "porn1") {
