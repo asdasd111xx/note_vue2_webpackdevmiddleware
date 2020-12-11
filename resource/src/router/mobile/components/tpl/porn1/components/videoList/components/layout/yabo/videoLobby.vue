@@ -1,22 +1,20 @@
 <template>
   <div :class="$style['video-lobby-container']">
-    <div :class="[$style['tag-box'], $style[source]]">
-      <swiper
-        ref="tag-swiper"
-        :options="{ slidesPerView: 'auto', slideClass: $style['tag-tab'] }"
-      >
-        <swiper-slide v-for="(info, index) in videoTag" :key="info.id">
-          <div
-            :class="[
-              $style['tag-wrap'],
-              $style[source],
-              { [$style.active]: info.id === +videoType.id }
-            ]"
-            @click="onChangeVideoType(index)"
-          >
-            <span>{{ info.title }}</span>
-            <div :class="$style['line']" />
-          </div>
+    <div :class="[$style['tag-wrap'], $style[source]]">
+      <swiper ref="tag-swiper" :options="options">
+        <swiper-slide
+          v-for="(info, index) in videoTag"
+          :key="info.id"
+          :class="[
+            $style['tag-item'],
+            $style[source],
+            { [$style.active]: info.id === +videoType.id }
+          ]"
+        >
+          <span @click="onChangeVideoType(index)">
+            {{ info.title }}
+          </span>
+          <div :class="$style['line']" />
         </swiper-slide>
       </swiper>
 
@@ -103,7 +101,7 @@ import axios from "axios";
 import find from "lodash/find";
 import { Swiper, SwiperSlide } from "vue-awesome-swiper";
 import pornRequest from "@/api/pornRequest";
-import { getEncryptImage } from '@/lib/crypto';
+import { getEncryptImage } from "@/lib/crypto";
 
 export default {
   components: {
@@ -137,9 +135,25 @@ export default {
     };
   },
   computed: {
+    options() {
+      return {
+        slidesPerView: "auto",
+        slideToClickedSlide: true,
+        centeredSlides: true,
+        centeredSlidesBounds: true,
+        spaceBetween: 25,
+        slidesOffsetBefore: 20,
+        slidesOffsetAfter: 20,
+        freeMode: true
+      };
+    },
     defaultImg() {
-      const isYabo = this.source === 'yabo';
-      return this.$getCdnPath(`/static/image/porn1/default/${isYabo ? 'bg_video03_d' : 'bg_video03_1_d@3x'}.png`)
+      const isYabo = this.source === "yabo";
+      return this.$getCdnPath(
+        `/static/image/porn1/default/${
+          isYabo ? "bg_video03_d" : "bg_video03_1_d@3x"
+        }.png`
+      );
     },
     allVideoList() {
       const videoRecommand =
@@ -159,11 +173,11 @@ export default {
 
       setTimeout(() => {
         videoList.forEach(item => {
-          item.list.forEach((i) => {
+          item.list.forEach(i => {
             getEncryptImage(i);
-          })
-        })
-      }, 300)
+          });
+        });
+      }, 300);
 
       return videoList;
     }
@@ -200,28 +214,40 @@ export default {
       this.getVideoList();
     },
     handleVideo(tag, video) {
-      window.location.replace(`${window.location.pathname}${window.location.search}#${tag}`);
-      this.openVideo('videoPlay', {
+      window.location.replace(
+        `${window.location.pathname}${window.location.search}#${tag}`
+      );
+      this.openVideo("videoPlay", {
         params: { id: video.id },
         query: { source: this.$route.query.source }
-      })
+      });
     },
     handleMore(tag, videoData) {
-      window.location.replace(`${window.location.pathname}${window.location.search}#${tag}`);
-      this.openVideo('videoList', {
+      window.location.replace(
+        `${window.location.pathname}${window.location.search}#${tag}`
+      );
+      this.openVideo("videoList", {
         query: {
           source: this.$route.query.source,
           tagId: +this.videoType.id || 0,
           sortId: +videoData.id || 0
         }
-      })
+      });
     },
     getImg(img) {
-      const isYabo = this.source === 'yabo';
+      const isYabo = this.source === "yabo";
       return {
         src: img,
-        error: this.$getCdnPath(`/static/image/porn1/default/${isYabo ? 'bg_video03_d' : 'bg_video03_1_d@3x'}.png`),
-        loading: this.$getCdnPath(`/static/image/porn1/default/${isYabo ? 'bg_video03_d' : 'bg_video03_1_d@3x'}.png`),
+        error: this.$getCdnPath(
+          `/static/image/porn1/default/${
+            isYabo ? "bg_video03_d" : "bg_video03_1_d@3x"
+          }.png`
+        ),
+        loading: this.$getCdnPath(
+          `/static/image/porn1/default/${
+            isYabo ? "bg_video03_d" : "bg_video03_1_d@3x"
+          }.png`
+        )
       };
     },
     getVideoTag() {
@@ -348,23 +374,24 @@ export default {
             this.initData();
             clearTimeout(this.resetTimer);
             this.resetTimer = null;
-          }, 3000)
+          }, 3000);
           return;
         }
 
         this.videoList = [...response.result];
 
         this.$nextTick(() => {
-
           if (window.location.hash) {
-            const hash = Number(window.location.hash.replace('#', '')) || 0;
-            const wrap = document.getElementById('video-list-wrap');
-            const cell = document.getElementsByClassName(this.$style['video-cell']);
+            const hash = Number(window.location.hash.replace("#", "")) || 0;
+            const wrap = document.getElementById("video-list-wrap");
+            const cell = document.getElementsByClassName(
+              this.$style["video-cell"]
+            );
             if (wrap && cell && cell[0]) {
               wrap.scrollTop = cell[0].offsetHeight * hash;
             }
           }
-        })
+        });
       });
     },
     openVideo(name, routerParam) {
@@ -386,7 +413,7 @@ export default {
   padding-bottom: 20px;
 }
 
-.tag-box {
+.tag-wrap {
   width: 100%;
   max-width: $mobile_max_width;
   padding-right: 40px;
@@ -408,22 +435,14 @@ export default {
 }
 
 @media (orientation: landscape) {
-  .tag-box {
+  .tag-wrap {
     max-width: $mobile_max_landscape_width !important;
   }
 }
 
-.tag-tab {
-  display: inline-block;
-  margin: 0 15px;
-}
-
-.tag-wrap {
-  position: relative;
+.tag-item {
+  width: auto;
   line-height: 44px;
-  font-size: 14px;
-  text-align: center;
-  white-space: nowrap;
 
   &.yabo {
     color: #bcbdc1;

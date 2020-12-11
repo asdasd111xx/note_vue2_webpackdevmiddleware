@@ -1138,12 +1138,17 @@ export const actionContactUs = (_, postData) =>
 // ＝＝＝＝＝＝＝＝＝＝＝＝＝＝＝＝＝＝
 //     手機資料
 // ＝＝＝＝＝＝＝＝＝＝＝＝＝＝＝＝＝＝
-export const actionGetMobileInfo = ({ commit }, tpl) => {
+export const actionGetMobileInfo = ({ commit, state }) => {
+  let tpl = state.webDomain.domain;
   const status = Vue.cookie.get("newsite") ? "New" : "";
   let manifest = document.createElement("link");
   manifest.rel = "manifest";
   manifest.href = `/static/tpl/analytics/${tpl}/manifest.json`;
-  document.querySelector("head").append(manifest);
+  manifest.setAttribute('data-name', 'manifest');
+
+  if (!document.querySelector('script[data-name="manifest"]')) {
+    document.querySelector("head").append(manifest);
+  }
 
   return ajax({
     url: `/tpl/${tpl}/mobile${status}.json`,
@@ -1152,6 +1157,7 @@ export const actionGetMobileInfo = ({ commit }, tpl) => {
       const { result, data } = response;
 
       if (result === "ok") {
+        localStorage.setItem('mobile-slider', JSON.stringify(data));
         commit(types.SETMOBILEINFO, data);
       }
     }

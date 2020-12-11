@@ -1,13 +1,13 @@
 <template>
   <div :class="$style['label-wrap-bg']">
     <div :class="$style['label-block']">
-      <Swiper
+      <swiper
         v-if="isLabelReceive && labelData.length !== 0"
         ref="typeSwiper"
-        :options="{ slidesPerView: 'auto' }"
+        :options="options"
         class="clearfix"
       >
-        <Swiper-slide
+        <swiper-slide
           v-for="info in labelData"
           :key="`nav-${info.label}`"
           :class="$style['nav-item']"
@@ -19,8 +19,8 @@
           >
             {{ info.name }}
           </button>
-        </Swiper-slide>
-      </Swiper>
+        </swiper-slide>
+      </swiper>
       <span
         v-else-if="!isLabelReceive && labelData.length === 0"
         :class="[
@@ -38,7 +38,7 @@
 </template>
 
 <script>
-import { Swiper, SwiperSlide } from 'vue-awesome-swiper';
+import { Swiper, SwiperSlide } from "vue-awesome-swiper";
 
 /**
  * 共用元件 - 手機網頁版 遊戲大廳使用分類選單
@@ -78,6 +78,17 @@ export default {
   computed: {
     $style() {
       return this[`$style_${this.theme}`] || this.$style_porn1;
+    },
+    options() {
+      return {
+        slidesPerView: "auto",
+        slideToClickedSlide: true,
+        centeredSlides: true,
+        centeredSlidesBounds: true,
+        spaceBetween: 10,
+        slidesOffsetBefore: 15,
+        slidesOffsetAfter: 15
+      };
     }
   }
 };
@@ -85,4 +96,3 @@ export default {
 
 <style lang="scss" src="./css/ey1.module.scss" module="$style_ey1"></style>
 <style lang="scss" src="./css/porn1.module.scss" module="$style_porn1"></style>
-

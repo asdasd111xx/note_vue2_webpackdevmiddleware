@@ -1,11 +1,11 @@
-import { getCookie, setCookie } from '@/lib/cookie';
-import { mapActions, mapGetters } from 'vuex';
+import { getCookie, setCookie } from "@/lib/cookie";
+import { mapActions, mapGetters } from "vuex";
 
-import Vue from 'vue';
-import axios from 'axios';
-import goLangApiRequest from '@/api/goLangApiRequest';
-import mcenter from '@/api/mcenter';
-import openGame from '@/lib/open_game';
+import Vue from "vue";
+import axios from "axios";
+import goLangApiRequest from "@/api/goLangApiRequest";
+import mcenter from "@/api/mcenter";
+import openGame from "@/lib/open_game";
 import swag from "@/mixins/mcenter/swag/swag";
 
 export default {
@@ -21,7 +21,7 @@ export default {
       isBottom: false,
       typeStartTouchY: 0,
       startTouchY: 0,
-      slideDirection: '',
+      slideDirection: "",
       wrapHeight: 0,
       allGame: [],
       maintainList: [],
@@ -31,17 +31,17 @@ export default {
       isShowLoading: false,
       isCheckWithdraw: false,
       mcenterList: [
-        { name: 'deposit', text: '充值', path: 'deposit' },
-        { name: 'balanceTrans', text: '转帐', path: 'balanceTrans' },
-        { name: 'withdraw', text: '提现', path: 'withdraw' },
-        { name: 'creditTrans', text: '转让', path: 'creditTrans' },
-        { name: 'grade', text: '等级', path: 'accountVip' }
+        { name: "deposit", text: "充值", path: "deposit" },
+        { name: "balanceTrans", text: "转帐", path: "balanceTrans" },
+        { name: "withdraw", text: "提现", path: "withdraw" },
+        { name: "creditTrans", text: "转让", path: "creditTrans" },
+        { name: "grade", text: "等级", path: "accountVip" }
       ],
       mcenterEy1List: [
-        { name: 'deposit', text: '充值', path: 'deposit' },
-        { name: 'balanceTrans', text: '转帐', path: 'balanceTrans' },
-        { name: 'makemoney', text: '推广', path: 'makemoney' },
-        { name: 'vip', text: 'VIP', path: 'accountVip' },
+        { name: "deposit", text: "充值", path: "deposit" },
+        { name: "balanceTrans", text: "转帐", path: "balanceTrans" },
+        { name: "makemoney", text: "推广", path: "makemoney" },
+        { name: "vip", text: "VIP", path: "accountVip" }
       ],
       timer: null,
       swagMaintainTimer: null
@@ -51,27 +51,27 @@ export default {
     isReceive() {
       setTimeout(() => {
         this.onResize();
-      }, 300)
+      }, 300);
     },
     noticeData() {
       if (this.noticeData && this.noticeData.length > 0) {
         // this.data = this.noticeData.pop();
-        let temp = this.noticeData[this.noticeData.length - 1]
+        let temp = this.noticeData[this.noticeData.length - 1];
         if (temp.event === "vendor_maintain_notice") {
-          this.timer = setInterval(() => {
-            this.getMaintainList();
-            clearInterval(this.timer);
-            this.timer = null;
-            return;
-          }, 70000);
+          // this.timer = setInterval(() => {
+          this.getMaintainList();
+          // clearInterval(this.timer);
+          // this.timer = null;
+          // return;
+          // }, 70000);
         }
 
-        if (temp.event === "outer_maintain" && temp.vendor === 'swag') {
+        if (temp.event === "outer_maintain" && temp.vendor === "swag") {
           setTimeout(() => {
             this.initSWAGConfig(true);
           }, 1500);
 
-          if (temp.turn === 'off' || temp.start_at) {
+          if (temp.turn === "off" || temp.start_at) {
             this.swagMaintainTimer = null;
             this.swagMaintainTimer = setTimeout(() => {
               this.initSWAGConfig(true);
@@ -92,20 +92,22 @@ export default {
   },
   computed: {
     ...mapGetters({
-      siteConfig: 'getSiteConfig',
-      loginStatus: 'getLoginStatus',
-      memInfo: 'getMemInfo',
-      rechargeConfig: 'getRechargeConfig',
-      hasBank: 'getHasBank',
-      membalance: 'getMemBalance',
-      yaboConfig: 'getYaboConfig',
-      noticeData: 'getNoticeData',
+      siteConfig: "getSiteConfig",
+      loginStatus: "getLoginStatus",
+      memInfo: "getMemInfo",
+      rechargeConfig: "getRechargeConfig",
+      hasBank: "getHasBank",
+      membalance: "getMemBalance",
+      yaboConfig: "getYaboConfig",
+      noticeData: "getNoticeData"
     }),
     isAdult() {
-      if (localStorage.getItem('content_rating')) {
-        return localStorage.getItem('content_rating') === "1" ? true : false;
+      if (localStorage.getItem("content_rating")) {
+        return localStorage.getItem("content_rating") === "1" ? true : false;
       } else {
-        return this.memInfo.config.content_rating && this.memInfo.user.content_rating;
+        return (
+          this.memInfo.config.content_rating && this.memInfo.user.content_rating
+        );
       }
     },
     typeList() {
@@ -118,7 +120,7 @@ export default {
             name: game.name
           }))
           .filter(type => {
-            return this.isAdult ? type : type.icon !== 'welfare';
+            return this.isAdult ? type : type.icon !== "welfare";
           });
 
         return [...typeList, ...typeList, ...typeList];
@@ -140,21 +142,28 @@ export default {
           }
           data.vendors.find(game => {
             this.maintainList.find(maintainData => {
-              if (maintainData.vendor === game.vendor && maintainData.kind === game.kind) {
+              if (
+                maintainData.vendor === game.vendor &&
+                maintainData.kind === game.kind
+              ) {
                 game.isMaintain = true;
-                game.start_at = Vue.moment(maintainData.start_at).utcOffset(-4).format('YYYY-MM-DD HH:mm:ss');//maintainData.start_at;
-                game.end_at = Vue.moment(maintainData.end_at).utcOffset(-4).format('YYYY-MM-DD HH:mm:ss');//maintainData.end_at;
+                game.start_at = Vue.moment(maintainData.start_at)
+                  .utcOffset(-4)
+                  .format("YYYY-MM-DD HH:mm:ss"); //maintainData.start_at;
+                game.end_at = Vue.moment(maintainData.end_at)
+                  .utcOffset(-4)
+                  .format("YYYY-MM-DD HH:mm:ss"); //maintainData.end_at;
                 // console.log(game);
               }
-            })
-          })
-        })
+            });
+          });
+        });
       }
 
       const gameList = this.allGame
         .map(game => game)
         .filter(item => {
-          return this.isAdult ? item : item.iconName !== 'Welfare';
+          return this.isAdult ? item : item.iconName !== "Welfare";
         });
       return gameList;
     },
@@ -164,19 +173,21 @@ export default {
       return { ...this.allGameList[index] };
     },
     vipLevel() {
-      return this.currentLevel <= 10 ? this.currentLevel : 'max';
+      return this.currentLevel <= 10 ? this.currentLevel : "max";
     }
   },
   created() {
-    localStorage.removeItem('is-open-game');
-    this.showPromotion = this.loginStatus ? this.memInfo.user.show_promotion : true;
+    localStorage.removeItem("is-open-game");
+    this.showPromotion = this.loginStatus
+      ? this.memInfo.user.show_promotion
+      : true;
     this.getMaintainList();
     if (this.siteConfig.MOBILE_WEB_TPL === "porn1") {
       this.initSWAGConfig(true);
     }
   },
   mounted() {
-    $(window).on('resize', this.onResize);
+    $(window).on("resize", this.onResize);
 
     // 首頁選單列表預設拿local
     const cache = this.getAllGameFromCache();
@@ -185,14 +196,15 @@ export default {
       this.$nextTick(() => {
         this.isReceive = true;
         setTimeout(() => {
-          $(window).trigger('resize');
-          let defaultType = this.siteConfig.MOBILE_WEB_TPL === "porn1" ? 'Welfare' : 'All'
-          if (localStorage.getItem('type')) {
-            defaultType = localStorage.getItem('type')
+          $(window).trigger("resize");
+          let defaultType =
+            this.siteConfig.MOBILE_WEB_TPL === "porn1" ? "Welfare" : "All";
+          if (localStorage.getItem("type")) {
+            defaultType = localStorage.getItem("type");
           }
 
-          let defaultIndex = this.typeList.findIndex((type) => {
-            return type.icon.toLowerCase() === defaultType.toLowerCase()
+          let defaultIndex = this.typeList.findIndex(type => {
+            return type.icon.toLowerCase() === defaultType.toLowerCase();
           });
 
           defaultIndex = defaultIndex >= 0 ? defaultIndex : 0;
@@ -211,7 +223,7 @@ export default {
       });
     } else {
       setDefaultSelected();
-      this.getAllGame(true)
+      this.getAllGame(true);
     }
 
     if (!this.loginStatus) {
@@ -220,7 +232,7 @@ export default {
 
     mcenter.vipUserDetail({
       success: ({ result, ret }) => {
-        if (result !== 'ok') {
+        if (result !== "ok") {
           return;
         }
 
@@ -229,14 +241,14 @@ export default {
     });
   },
   beforeDestroy() {
-    $(window).off('resize', this.onResize);
+    $(window).off("resize", this.onResize);
   },
   methods: {
     ...mapActions([
-      'actionSetGlobalMessage',
-      'actionGetRechargeStatus',
-      'actionGetMemInfoV3',
-      'actionSetYaboConfig'
+      "actionSetGlobalMessage",
+      "actionGetRechargeStatus",
+      "actionGetMemInfoV3",
+      "actionSetYaboConfig"
     ]),
     getImg(info) {
       return {
@@ -253,9 +265,9 @@ export default {
     getAllGameFromCache() {
       let result = false;
       try {
-        let gameList = localStorage.getItem('game-list');
+        let gameList = localStorage.getItem("game-list");
         if (gameList) {
-          this.allGame = JSON.parse(localStorage.getItem('game-list'));
+          this.allGame = JSON.parse(localStorage.getItem("game-list"));
           result = true;
         }
       } catch (e) {
@@ -267,8 +279,8 @@ export default {
     // 取得所有遊戲
     getAllGame() {
       return goLangApiRequest({
-        method: 'get',
-        url: `${this.siteConfig.YABO_GOLANG_API_DOMAIN}/Game/list`,
+        method: "get",
+        url: `${this.siteConfig.YABO_GOLANG_API_DOMAIN}/Game/list`
       }).then(response => {
         if (!response.data) {
           return;
@@ -277,7 +289,7 @@ export default {
         this.isReceive = true;
 
         try {
-          localStorage.setItem('game-list', JSON.stringify(response.data));
+          localStorage.setItem("game-list", JSON.stringify(response.data));
         } catch (e) {
           console.log(e);
         }
@@ -296,7 +308,10 @@ export default {
         extraHeight = 85;
       }
 
-      this.wrapHeight = document.body.offsetHeight - this.$refs['home-wrap'].offsetTop - extraHeight;
+      this.wrapHeight =
+        document.body.offsetHeight -
+        this.$refs["home-wrap"].offsetTop -
+        extraHeight;
     },
     onTypeTouchStart(e) {
       if (this.isSliding) {
@@ -311,7 +326,7 @@ export default {
         return;
       }
 
-      const ele = this.$refs['type-wrap'];
+      const ele = this.$refs["type-wrap"];
       const isGoBottom = this.typeStartTouchY > e.touches[0].clientY;
 
       if (
@@ -330,19 +345,19 @@ export default {
       this.startTouchY = e.touches[0].clientY;
     },
     onTouchMove(e) {
-      let wrap = this.$refs['game-wrap'];
+      let wrap = this.$refs["game-wrap"];
       if (this.isSliding) {
         return;
       }
 
       // 判斷滑動方向
       this.slideDirection =
-        this.startTouchY > e.touches[0].clientY ? 'down' : 'up';
+        this.startTouchY > e.touches[0].clientY ? "down" : "up";
       // 判斷是否置頂
-      this.isTop = this.slideDirection === 'up' && wrap.scrollTop <= 10;
+      this.isTop = this.slideDirection === "up" && wrap.scrollTop <= 10;
       // 判斷是否置底
       this.isBottom =
-        this.slideDirection === 'down' &&
+        this.slideDirection === "down" &&
         wrap.scrollHeight - 10 <= wrap.scrollTop + wrap.clientHeight;
       if (this.isTop || this.isBottom) {
         e.preventDefault();
@@ -353,7 +368,7 @@ export default {
         return;
       }
 
-      if (this.slideDirection === '') {
+      if (this.slideDirection === "") {
         return;
       }
 
@@ -382,7 +397,7 @@ export default {
 
       let offsetTop = 0;
 
-      if (type === 'anchor') {
+      if (type === "anchor") {
         let anchor = document.querySelectorAll(`div[data-id="${index}"]`);
         if (anchor && anchor[1]) {
           offsetTop = anchor[1].offsetTop;
@@ -398,37 +413,37 @@ export default {
       this.isBottom = false;
       this.typeStartTouchY = 0;
       this.startTouchY = 0;
-      this.slideDirection = '';
+      this.slideDirection = "";
       this.stopScroll = true;
 
-      $(this.$refs['type-wrap']).animate({ scrollTop: offsetTop }, 300);
-      $(this.$refs['game-wrap']).animate({ scrollTop: 0 }, 0);
+      $(this.$refs["type-wrap"]).animate({ scrollTop: offsetTop }, 300);
+      $(this.$refs["game-wrap"]).animate({ scrollTop: 0 }, 0);
 
       this.$nextTick(() => {
         this.isSliding = false;
       });
 
-      localStorage.setItem('type', this.typeList[this.selectedIndex].icon);
+      localStorage.setItem("type", this.typeList[this.selectedIndex].icon);
 
       setTimeout(() => {
         this.stopScroll = false;
         if (isSetEnd) {
-          this.$refs['game-wrap'].scrollTop =
-            this.$refs['game-wrap'].scrollHeight -
-            this.$refs['game-wrap'].clientHeight -
-            this.$refs['wrap-buffer'].offsetHeight;
+          this.$refs["game-wrap"].scrollTop =
+            this.$refs["game-wrap"].scrollHeight -
+            this.$refs["game-wrap"].clientHeight -
+            this.$refs["wrap-buffer"].offsetHeight;
         }
       }, 100);
     },
     // 前往會員中心
     onGoToMcenter(path) {
       if (!this.loginStatus) {
-        this.$router.push('/mobile/login');
+        this.$router.push("/mobile/login");
         return;
       }
 
       switch (path) {
-        case 'deposit':
+        case "deposit":
           this.$router.push(`/mobile/mcenter/deposit`);
           //   0706 統一RD5判斷銀行卡
           // yaboRequest({
@@ -448,17 +463,17 @@ export default {
           // });
           return;
 
-        case 'creditTrans':
+        case "creditTrans":
           this.actionGetMemInfoV3().then(() => {
-            this.actionGetRechargeStatus('home');
-          })
+            this.actionGetRechargeStatus("home");
+          });
           return;
 
-        case 'makemoney':
-          this.$router.push('/mobile/mcenter/tcenter/management/member');
+        case "makemoney":
+          this.$router.push("/mobile/mcenter/tcenter/management/member");
           return;
 
-        case 'balanceTrans':
+        case "balanceTrans":
           this.$router.push(`/mobile/mcenter/balanceTrans`);
           return;
         // if (this.siteConfig.MOBILE_WEB_TPL === "porn1") {
@@ -488,7 +503,7 @@ export default {
         // })
         // return;
 
-        case 'withdraw':
+        case "withdraw":
           if (this.siteConfig.MOBILE_WEB_TPL === "porn1") {
             this.$router.push(`/mobile/mcenter/withdraw`);
             return;
@@ -502,74 +517,85 @@ export default {
       }
     },
     checkWithdrawData(target) {
-      if (this.isCheckWithdraw) { return; }
+      if (this.isCheckWithdraw) {
+        return;
+      }
       this.isCheckWithdraw = true;
 
       axios({
-        method: 'get',
-        url: '/api/v2/c/withdraw/check',
-      }).then((res) => {
-        this.isCheckWithdraw = false;
-        if (res.data.result === "ok") {
-          let check = true;
+        method: "get",
+        url: "/api/v2/c/withdraw/check"
+      })
+        .then(res => {
+          this.isCheckWithdraw = false;
+          if (res.data.result === "ok") {
+            let check = true;
 
-          Object.keys(res.data.ret).forEach(i => {
-            if (i !== "bank" && !res.data.ret[i]) {
-              this.actionSetGlobalMessage({
-                msg: target === 'withdraw' ? '请先完成提现信息' : '请先设定提现资料'
-                , cb: () => {
-                  {
-                    this.$router.push('/mobile/withdrawAccount');
+            Object.keys(res.data.ret).forEach(i => {
+              if (i !== "bank" && !res.data.ret[i]) {
+                this.actionSetGlobalMessage({
+                  msg:
+                    target === "withdraw"
+                      ? "请先完成提现信息"
+                      : "请先设定提现资料",
+                  cb: () => {
+                    {
+                      this.$router.push("/mobile/withdrawAccount");
+                    }
                   }
-                }
-              })
-              check = false;
-              return;
-            }
-          })
+                });
+                check = false;
+                return;
+              }
+            });
 
-          if (check) {
-            this.$router.push(`/mobile/mcenter/${target}`);
+            if (check) {
+              this.$router.push(`/mobile/mcenter/${target}`);
+            }
+          } else {
+            this.actionSetGlobalMessage({
+              msg: res.data.msg,
+              code: res.data.msg.code
+            });
           }
-        } else {
-          this.actionSetGlobalMessage({ msg: res.data.msg, code: res.data.msg.code });
-        }
-      }).catch(res => {
-        if (res.response.data) {
-          this.actionSetGlobalMessage({ msg: res.response.data.msg });
-        }
-        this.isCheckWithdraw = false;
-      });
+        })
+        .catch(res => {
+          if (res.response.data) {
+            this.actionSetGlobalMessage({ msg: res.response.data.msg });
+          }
+          this.isCheckWithdraw = false;
+        });
     },
     // 開啟遊戲
     onOpenGame(game) {
-      if (localStorage.getItem('is-open-game')) {
+      if (localStorage.getItem("is-open-game")) {
         return;
       }
 
       switch (game.type) {
-        case 'thirdparty':
-
-          let userId = 'guest';
-          if (this.memInfo &&
+        case "thirdparty":
+          let userId = "guest";
+          if (
+            this.memInfo &&
             this.memInfo.user &&
             this.memInfo.user.id &&
-            this.memInfo.user.id !== 0) {
+            this.memInfo.user.id !== 0
+          ) {
             userId = this.memInfo.user.id;
           }
 
           switch (game.vendor) {
-            case 'SWAG':
+            case "SWAG":
               if (!this.loginStatus) {
-                this.$router.push('/mobile/login');
+                this.$router.push("/mobile/login");
                 return;
               } else {
                 localStorage.setItem("is-open-game", true);
                 setTimeout(() => {
                   localStorage.removeItem("is-open-game");
-                }, 2000)
+                }, 2000);
                 // SWAG入口統一
-                this.checkSWAGMaintain({ linkTo: true, origin: 'home' });
+                this.checkSWAGMaintain({ linkTo: true, origin: "home" });
                 return;
               }
 
@@ -587,11 +613,12 @@ export default {
               localStorage.setItem("is-open-game", true);
 
               this.actionSetYaboConfig().then(() => {
-
                 let noLoginVideoSwitch;
 
                 if (this.yaboConfig) {
-                  noLoginVideoSwitch = this.yaboConfig.find(i => i.name === "NoLoginVideoSwitch").value;
+                  noLoginVideoSwitch = this.yaboConfig.find(
+                    i => i.name === "NoLoginVideoSwitch"
+                  ).value;
                 }
 
                 // // 第三方開啟有問題時 可調整iframe內嵌
@@ -613,35 +640,37 @@ export default {
                 // })
                 // return;
 
-                const getThridUrl = () => goLangApiRequest({
-                  method: 'get',
-                  url: `${this.siteConfig.YABO_GOLANG_API_DOMAIN}/ThirdParty/${game.vendor}/${userId}`,
-                }).then(res => {
-                  localStorage.removeItem("is-open-game");
+                const getThridUrl = () =>
+                  goLangApiRequest({
+                    method: "get",
+                    url: `${this.siteConfig.YABO_GOLANG_API_DOMAIN}/ThirdParty/${game.vendor}/${userId}`
+                  }).then(res => {
+                    localStorage.removeItem("is-open-game");
 
-                  if (res && res.status !== '000') {
-                    if (res.msg) {
-                      this.actionSetGlobalMessage({ msg: res.msg });
+                    if (res && res.status !== "000") {
+                      if (res.msg) {
+                        this.actionSetGlobalMessage({ msg: res.msg });
+                      }
+                      return;
+                    } else {
+                      localStorage.setItem("iframe-third-url", res.data);
+                      localStorage.setItem("iframe-third-url-title", game.name);
+                      this.$router.push(
+                        `/mobile/iframe/${game.type}?&hasFooter=false&hasHeader=true`
+                      );
+                      return;
                     }
-                    return;
-                  }
-                  else {
-                    localStorage.setItem('iframe-third-url', res.data);
-                    localStorage.setItem('iframe-third-url-title', game.name);
-                    this.$router.push(`/mobile/iframe/${game.type}?&hasFooter=false&hasHeader=true`);
-                    return;
-                  }
-                })
+                  });
 
                 // 未登入開關 開啟時未登入可進入
-                if (noLoginVideoSwitch === 'true') {
+                if (noLoginVideoSwitch === "true") {
                   getThridUrl();
                   return;
                 }
 
                 // 未登入開關 未開啟時需登入可進入
                 if (!this.loginStatus) {
-                  this.$router.push('/mobile/login');
+                  this.$router.push("/mobile/login");
                   return;
                 } else {
                   getThridUrl();
@@ -649,105 +678,120 @@ export default {
               });
           }
           return;
-        case 'link_to':
-
+        case "link_to":
           switch (game.vendor) {
-            case 'agent':
-              this.$router.push('/mobile/mcenter/makeMoney')
+            case "agent":
+              this.$router.push("/mobile/mcenter/makeMoney");
               return;
 
-            case 'YV':
+            case "YV":
               this.$router.push({
-                name: 'videoList',
-                query: { source: 'yabo' }
+                name: "videoList",
+                query: { source: "yabo" }
               });
               return;
 
-            case 'PV':
+            case "PV":
               this.$router.push({
-                name: 'videoList',
-                query: { source: 'smallPig' }
+                name: "videoList",
+                query: { source: "smallPig" }
               });
               return;
 
-            case 'BB':
+            case "BB":
               this.$router.push({
-                name: 'videoList',
-                query: { source: 'gay' }
+                name: "videoList",
+                query: { source: "gay" }
               });
               return;
 
-            case 'GG':
+            case "GG":
               this.$router.push({
-                name: 'videoList',
-                query: { source: 'les' }
+                name: "videoList",
+                query: { source: "les" }
               });
               return;
 
-            case 'BL':
-              this.$router.push('/mobile/liveStream?type=cutiesLive');
+            case "BL":
+              this.$router.push("/mobile/liveStream?type=cutiesLive");
               return;
 
-            case 'SL':
-              this.$router.push('/mobile/liveStream?type=ballLive');
+            case "SL":
+              this.$router.push("/mobile/liveStream?type=ballLive");
               return;
           }
 
-        case 'anchor':
-          this.onChangeSelectIndex(game.vendor, false, 'anchor');
+        case "anchor":
+          this.onChangeSelectIndex(game.vendor, false, "anchor");
           return;
 
-        case 'U':
-          this.actionSetGlobalMessage({ type: 'upgrade' });
+        case "U":
+          this.actionSetGlobalMessage({ type: "upgrade" });
           return;
 
-        case 'T':
-          this.actionSetGlobalMessage({ type: 'incoming' });
+        case "T":
+          this.actionSetGlobalMessage({ type: "incoming" });
           return;
 
         // 大廳
-        case 'game_lobby':
+        case "game_lobby":
           if (!this.loginStatus) {
-            this.$router.push('/mobile/login');
+            this.$router.push("/mobile/login");
             return;
           }
 
           if ([3, 5, 6].includes(game.kind)) {
-            const trans = { 3: 'casino', 5: 'card', 6: 'mahjong' };
+            const trans = { 3: "casino", 5: "card", 6: "mahjong" };
             this.$router.push(`/mobile/${trans[game.kind]}/${game.vendor}`);
             return;
           }
           return;
         // 開啟遊戲
-        case 'game':
+        case "game":
         default:
           if (!this.loginStatus) {
-            this.$router.push('/mobile/login');
+            this.$router.push("/mobile/login");
             return;
           }
 
           this.isShowLoading = true;
 
-          const openGameSuccessFunc = (res) => {
+          const openGameSuccessFunc = res => {
             this.isShowLoading = false;
           };
 
-          const openGameFailFunc = (res) => {
+          const openGameFailFunc = res => {
             this.isShowLoading = false;
 
             if (res && res.data) {
               let data = res.data;
-              this.actionSetGlobalMessage({ msg: data.msg, code: data.code, origin: 'home' })
+              this.actionSetGlobalMessage({
+                msg: data.msg,
+                code: data.code,
+                origin: "home"
+              });
             }
           };
 
-          openGame({ kind: game.kind, vendor: game.vendor, code: game.code, gameType: game.type, gameName: game.name }, openGameSuccessFunc, openGameFailFunc);
+          openGame(
+            {
+              kind: game.kind,
+              vendor: game.vendor,
+              code: game.code,
+              gameType: game.type,
+              gameName: game.name
+            },
+            openGameSuccessFunc,
+            openGameFailFunc
+          );
           return;
       }
     },
     getUserViplevel() {
       let cid = getCookie("cid");
-      if (!cid && this.loginStatus) { return; }
+      if (!cid && this.loginStatus) {
+        return;
+      }
       // yaboRequest({
       //     method: "get",
       //     url: `${
@@ -759,13 +803,14 @@ export default {
       // });
       goLangApiRequest({
         method: "get",
-        url: `${this.siteConfig.YABO_GOLANG_API_DOMAIN
-          }/Player/vipinfo`,
+        url: `${this.siteConfig.YABO_GOLANG_API_DOMAIN}/Player/vipinfo`,
         headers: {
-          "cid": cid
+          cid: cid
         }
       }).then(res => {
-        this.userViplevel = res.data ? res.data[0] && res.data[0].now_level_seq : 0;
+        this.userViplevel = res.data
+          ? res.data[0] && res.data[0].now_level_seq
+          : 0;
       });
     },
 
@@ -773,18 +818,20 @@ export default {
       if (this.loginStatus) {
         //取維護狀態
         axios({
-          method: 'get',
-          url: '/api/v1/c/vendor/maintains',
-        }).then((res) => {
-          if (res.data.result == "ok") {
-            // console.log("取維護狀態");
-            // console.log(res.data);
-            this.maintainList = res.data.ret;
-          }
-        }).catch(res => {
-          // console.log("取維護狀態XXXX");
-        });
+          method: "get",
+          url: "/api/v1/c/vendor/maintains"
+        })
+          .then(res => {
+            if (res.data.result == "ok") {
+              // console.log("取維護狀態");
+              // console.log(res.data);
+              this.maintainList = res.data.ret;
+            }
+          })
+          .catch(res => {
+            // console.log("取維護狀態XXXX");
+          });
       }
     }
-  },
+  }
 };

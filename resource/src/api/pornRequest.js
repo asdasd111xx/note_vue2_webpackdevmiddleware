@@ -16,17 +16,12 @@ export default ({
     // smallPig = false,
     fail = () => { },
 }) => {
-    const pornHeader = {
-        "Bundleid": 'chungyo.foxyporn.prod.enterprise.web',
-        "Version": 1,
-    }
 
     const obj = {
         method,
         url: PORN_DOMAIN + url,
         timeout,
         headers: {
-            ...pornHeader,
             ...reqHeaders,
         },
         params: {

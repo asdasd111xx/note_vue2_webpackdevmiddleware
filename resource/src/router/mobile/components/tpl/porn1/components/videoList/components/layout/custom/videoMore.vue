@@ -1,14 +1,13 @@
 <template>
   <div :class="$style['video-more-container']">
-    <div :class="$style['box']">
-      <swiper :options="{ slidesPerView: 'auto', slideClass: $style['tab'] }">
-        <swiper-slide v-for="info in videoTabs" :key="info.id">
-          <div
-            :class="[$style['wrap'], { [$style.active]: info.id === +sortId }]"
-            @click="setSortId(info.id)"
-          >
-            <div>{{ info.title }}</div>
-          </div>
+    <div :class="$style['wrap']">
+      <swiper ref="swiper" :options="options">
+        <swiper-slide
+          v-for="info in videoTabs"
+          :key="info.id"
+          :class="[$style['item'], { [$style.active]: info.id === +sortId }]"
+        >
+          <div @click="setSortId(info.id)">{{ info.title }}</div>
         </swiper-slide>
       </swiper>
     </div>
@@ -52,7 +51,7 @@ import InfiniteLoading from "vue-infinite-loading";
 import axios from "axios";
 import { Swiper, SwiperSlide } from "vue-awesome-swiper";
 import pornRequest from "@/api/pornRequest";
-import { getEncryptImage } from '@/lib/crypto';
+import { getEncryptImage } from "@/lib/crypto";
 
 export default {
   components: {
@@ -60,12 +59,7 @@ export default {
     SwiperSlide,
     InfiniteLoading
   },
-  computed: {
-    defaultImg() {
-      const isYabo = this.source === 'yabo';
-      return this.$getCdnPath(`/static/image/porn1/default/${isYabo ? 'bg_video03_d' : 'bg_video03_1_d@3x'}.png`)
-    },
-  },
+
   props: {
     setHeaderTitle: {
       type: Function,
@@ -90,26 +84,57 @@ export default {
       total: 0,
       videoTabs: [],
       sortId: +this.$route.query.sortId,
-      tagId: +this.$route.query.tagId,
+      tagId: +this.$route.query.tagId
     };
+  },
+  computed: {
+    options() {
+      return {
+        slidesPerView: "auto",
+        slideToClickedSlide: true,
+        centeredSlides: true,
+        centeredSlidesBounds: true,
+        spaceBetween: 25,
+        slidesOffsetBefore: 20,
+        slidesOffsetAfter: 20,
+        freeMode: true
+      };
+    },
+    defaultImg() {
+      const isYabo = this.source === "yabo";
+      return this.$getCdnPath(
+        `/static/image/porn1/default/${
+          isYabo ? "bg_video03_d" : "bg_video03_1_d@3x"
+        }.png`
+      );
+    }
   },
   created() {
     this.setHeaderTitle(this.$text("S_FULL_HD_MOVIE", "全部高清影片"));
     this.setHasSearchBtn(true);
-    this.getVideoTab();
-    this.setVideoList();
   },
   mounted() {
+    const swiper = this.$refs.swiper.$swiper;
     this.divHeight = document.body.offsetHeight - 137;
+
+    this.getVideoTab().then(() => {
+      // 讓 Swiper 的 index 在初始進來時，能將 Label 置中
+      let initIndex = this.videoTabs.findIndex(item => {
+        return item.id === this.sortId;
+      });
+
+      swiper.slideTo(initIndex, 500, false);
+    });
+    this.setVideoList();
   },
   methods: {
     getVideoTab() {
-      pornRequest({
+      return pornRequest({
         method: "get",
         url: `/video/sort`,
         smallPig: true,
         params: {
-          tagId: !this.tagId ? '' : this.tagId,
+          tagId: !this.tagId ? "" : this.tagId,
           siteId: this.siteId
         },
         timeout: 30000
@@ -125,15 +150,27 @@ export default {
       this.sortId = value;
     },
     defaultImg() {
-      const isYabo = this.source === 'yabo';
-      return this.$getCdnPath(`/static/image/porn1/default/${isYabo ? 'bg_video03_d' : 'bg_video03_1_d@3x'}.png`)
+      const isYabo = this.source === "yabo";
+      return this.$getCdnPath(
+        `/static/image/porn1/default/${
+          isYabo ? "bg_video03_d" : "bg_video03_1_d@3x"
+        }.png`
+      );
     },
     getImg(img) {
-      const isYabo = this.source === 'yabo';
+      const isYabo = this.source === "yabo";
       return {
         src: img,
-        error: this.$getCdnPath(`/static/image/porn1/default/${isYabo ? 'bg_video03_d' : 'bg_video03_1_d@3x'}.png`),
-        loading: this.$getCdnPath(`/static/image/porn1/default/${isYabo ? 'bg_video03_d' : 'bg_video03_1_d@3x'}.png`),
+        error: this.$getCdnPath(
+          `/static/image/porn1/default/${
+            isYabo ? "bg_video03_d" : "bg_video03_1_d@3x"
+          }.png`
+        ),
+        loading: this.$getCdnPath(
+          `/static/image/porn1/default/${
+            isYabo ? "bg_video03_d" : "bg_video03_1_d@3x"
+          }.png`
+        )
       };
     },
     getVideoList(page) {
@@ -167,7 +204,6 @@ export default {
         this.videoList = [...response.result.data];
         this.current += 1;
 
-
         this.total = response.result.last_page;
 
         if (response.result.current_page >= response.result.last_page) {
@@ -192,7 +228,6 @@ export default {
         this.videoList = [...this.videoList, ...response.result.data];
         this.current += 1;
 
-
         this.total = response.result.last_page;
         this.isReceive = false;
 
@@ -214,9 +249,9 @@ export default {
         setTimeout(() => {
           this.videoList.forEach(item => {
             getEncryptImage(item);
-          })
-        }, 100)
-      })
+          });
+        }, 100);
+      });
     }
   }
 };
@@ -229,7 +264,7 @@ export default {
   padding-bottom: 20px;
 }
 
-.box {
+.wrap {
   background: $main_white_color1;
   max-width: $mobile_max_width;
   width: 100%;
@@ -240,7 +275,7 @@ export default {
 }
 
 @media (orientation: landscape) {
-  .box {
+  .wrap {
     max-width: $mobile_max_landscape_width !important;
   }
 }
@@ -249,28 +284,21 @@ export default {
   margin: 0 10px;
 }
 
-.wrap {
-  position: relative;
-  line-height: 44px;
+.item {
+  width: auto;
+  min-width: 70px;
   color: #bcbdc1;
-  font-size: 14px;
   text-align: center;
-  white-space: nowrap;
+  padding: 10px 0;
 
   > div {
-    display: inline-block;
-    line-height: 27px;
-    min-width: 70px;
+    padding: 2.5px 5px;
   }
 
-  &.active {
-    color: $main_text_color4;
-
-    > div {
-      background: #333;
-      color: #fff;
-      border-radius: 14px;
-    }
+  &.active > div {
+    background: #333;
+    color: #fff;
+    border-radius: 15px;
   }
 }
 
