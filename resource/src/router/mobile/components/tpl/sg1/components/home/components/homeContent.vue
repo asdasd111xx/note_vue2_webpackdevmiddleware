@@ -64,7 +64,7 @@
               <img
                 :src="
                   $getCdnPath(
-                    `/static/image/sg1/home/icon_level_${vipLevel}.png`
+                    `/static/image/sg1/home/icon_level.png`
                   )
                 "
               />

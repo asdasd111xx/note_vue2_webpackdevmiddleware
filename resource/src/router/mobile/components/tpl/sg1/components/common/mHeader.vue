@@ -16,13 +16,13 @@
     >
       <img
         v-if="source === 'gay' || source === 'les'"
-        :src="$getCdnPath(`/static/image/_new/common/btn_back_w.png`)"
+        :src="$getCdnPath(`/static/image/sg1/common/btn_back_w.png`)"
       />
       <img
         v-else
         :src="
           $getCdnPath(
-            `/static/image/_new/common/btn_${
+            `/static/image/sg1/common/btn_${
               headerConfig.hasClose ? 'close' : 'back'
             }.png`
           )
@@ -111,7 +111,7 @@
           $text("S_REGISTER", "注册")
         }}</span>
         <img
-          :src="$getCdnPath('/static/image/_new/common/icon_ask.png')"
+          :src="$getCdnPath('/static/image/sg1/common/icon_ask.png')"
           @click="handleClickAsk"
         />
       </div>
@@ -168,7 +168,7 @@
           教程
         </span>
         <div :class="$style['btn-icon']">
-          <img :src="$getCdnPath('/static/image/_new/common/btn_help.png')" />
+          <img :src="$getCdnPath('/static/image/sg1/common/btn_help.png')" />
         </div>
       </div>
     </template>
@@ -628,7 +628,7 @@ export default {
 }
 
 .normal-search {
-  background: url("/static/image/_new/common/icon_search_n.png");
+  background: url("/static/image/sg1/common/icon_search_n.png");
   width: 20px;
   height: 20px;
   background-size: contain;

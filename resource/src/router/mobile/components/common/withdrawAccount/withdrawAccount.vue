@@ -361,14 +361,14 @@ export default {
           })
           .catch(res => {
             this.actionSetGlobalMessage({
-              msg: res.data.msg,
-              code: res.data.code,
+              msg: res.response.data.msg,
+              code: res.response.data.code,
               origin: "home"
             });
           });
 
         // 提現資料上一頁應回到原本位置 避免迴圈
-        this.$router.back();
+        // this.$router.back();
         // if (this.redirect) {
 
         //   switch (this.redirect) {

@@ -98,7 +98,7 @@
                 () => {
                   if (!checkDate) {
                     return;
-                  } else if (inqStart !== inqEnd) {
+                  } else {
                     onSearch();
                   }
                 }
