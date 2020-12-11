@@ -1,16 +1,22 @@
 <template>
-  <swiper v-if="options" :options="options">
+  <swiper :options="options">
     <swiper-slide v-for="(info, key) in slider" :key="key">
       <div :class="$style['phone-image-wrap']">
         <img
-          :class="$style['phone-image']"
+          @click="
+            mobileLinkOpen({
+              ...info,
+              site: themeTPL
+            })
+          "
           :src="
             info.image && info.image[curLang]
               ? $getCdnPath(info.image[curLang])
               : `/static/image/${themeTPL}/default/bg_banner_d.png`
           "
-          :data-info="key"
+          :class="$style['phone-image']"
           :data-link="info.linkTo"
+          :alt="info.image"
         />
       </div>
     </swiper-slide>
@@ -19,14 +25,26 @@
 </template>
 
 <script>
-import { mapGetters } from 'vuex';
+import { mapGetters, mapActions } from 'vuex';
 import { Swiper, SwiperSlide } from 'vue-awesome-swiper';
 import mobileLinkOpen from '@/lib/mobile_link_open';
 
 export default {
+  data() {
+    return {
+      slider: [],
+    }
+  },
   components: {
     Swiper,
     SwiperSlide
+  },
+  beforeDestroy() {
+    clearInterval(this.getSliderTimer);
+    this.getSliderTimer = null;
+  },
+  mounted() {
+    this.initSlider();
   },
   computed: {
     ...mapGetters({
@@ -41,19 +59,42 @@ export default {
     themeTPL() {
       return this.siteConfig.MOBILE_WEB_TPL;
     },
-    slider() {
+    options() {
+      return {
+        loop: true,
+        autoplay: { delay: 5000, disableOnInteraction: false },
+        pagination: { el: '.swiper-pagination', clickable: true }
+      };
+    }
+  },
+  methods: {
+    ...mapActions([
+      'actionGetMobileInfo'
+    ]),
+    mobileLinkOpen,
+    getImg(src) {
+      return {
+        src: this.$getCdnPath(src),
+        error: this.$getCdnPath(`/static/image/${this.themeTPL}/default/bg_banner_d.png`),
+        loading: this.$getCdnPath(`/static/image/${this.themeTPL}/default/bg_banner_d.png`)
+      };
+    },
+    initSlider() {
+      this.actionGetMobileInfo();
+      let mobileSlider = JSON.parse(localStorage.getItem('mobile-slider')) || this.mobileInfo;
+
       // 若無資料則使用預設圖片
-      if (!this.mobileInfo ||
-        !this.mobileInfo.mSlider ||
-        !this.mobileInfo.mSlider.data ||
-        this.mobileInfo.mSlider.data.length === 0) {
+      if (!mobileSlider ||
+        !mobileSlider.mSlider ||
+        !mobileSlider.mSlider.data ||
+        mobileSlider.mSlider.data.length === 0) {
         const imageData = this.generateDefaultImg();
-        return [imageData];
+        this.slider = [imageData];
+        return;
       }
 
-      const list = [];
-
-      this.mobileInfo.mSlider.data.forEach((data) => {
+      let list = [];
+      mobileSlider.mSlider.data.forEach((data) => {
         if (!Object.keys(this.lang)) {
           return;
         }
@@ -82,33 +123,8 @@ export default {
         const imageData = this.generateDefaultImg();
         list.push(imageData);
       }
-      return list;
+      this.slider = list;
     },
-    options() {
-      const hasData = this.slider.length > 1;
-      const originSlider = this.slider;
-      const options = {
-        loop: hasData,
-        autoplay: { delay: 5000, disableOnInteraction: false },
-        pagination: hasData ? { el: '.swiper-pagination', clickable: true } : { el: null }
-      };
-
-      return {
-        ...options,
-        on: {
-          click(element) {
-            let info = originSlider[element.target.dataset.info];
-            mobileLinkOpen({
-              ...info,
-              site: this.themeTPL
-            });
-          }
-        }
-      };
-    }
-  },
-  methods: {
-    mobileLinkOpen,
     /**
      * 生成預設圖片物件
      * @method generateDefaultImg

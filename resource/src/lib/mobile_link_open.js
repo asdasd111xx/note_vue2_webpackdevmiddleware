@@ -44,7 +44,7 @@ export default (target) => {
       }
     }).then(res => {
       if (res && res.data && res.data.ret && res.data.ret.uri) {
-        localStorage.setItem('iframe-third-url', res.data.ret.uri + '&v=m');
+        localStorage.setItem('iframe-third-url', res.data.ret.uri);
         localStorage.setItem('iframe-third-url-title', linkTitle);
         localStorage.setItem('iframe-third-origin', `home`);
 
