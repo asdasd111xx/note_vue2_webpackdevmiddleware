@@ -57,7 +57,7 @@
             :class="[
               $style[key],
               $style.placeholder,
-              { [$style.error]: allText[key].error },
+              { [$style.error]: allText[key].error }
             ]"
           >
             <template v-if="!allValue[key]">
@@ -70,8 +70,8 @@
                 {
                   [$style.active]: allValue[key],
                   [$style.error]: allText[key].error,
-                  [$style['show-placeholder']]: !allValue[key],
-                },
+                  [$style['show-placeholder']]: !allValue[key]
+                }
               ]"
               :maxlength="allText[key].maxLength"
               v-model="allValue[key]"
@@ -86,8 +86,8 @@
                 {
                   [$style.active]: allValue[key],
                   [$style.error]: allText[key].error,
-                  [$style['show-placeholder']]: !allValue[key],
-                },
+                  [$style['show-placeholder']]: !allValue[key]
+                }
               ]"
               :data-key="key"
               :maxlength="allText[key].maxLength"
@@ -101,7 +101,7 @@
               v-if="['password', 'confirm_password'].includes(key)"
               :class="[
                 $style['btn-show-password'],
-                { [$style.active]: allText[key].type === 'text' },
+                { [$style.active]: isShowEyes }
               ]"
               @click="onShowPassword()"
             />
@@ -126,7 +126,7 @@
             :class="[
               $style['captcha-unit'],
               $style['captcha-unit-captcha'],
-              $style['clearfix'],
+              $style['clearfix']
             ]"
           >
             <input
