@@ -106,11 +106,11 @@ export default {
           .map(game => ({
             category: game.category,
             id: game.id,
-            icon: game.iconName,
+            icon: game.iconName.toLowerCase(),
             name: game.name
           }))
           .filter(type => {
-            return this.isAdult ? type : type.icon !== 'Welfare';
+            return this.isAdult ? type : type.icon !== 'welfare';
           });
 
         return [...typeList, ...typeList, ...typeList];

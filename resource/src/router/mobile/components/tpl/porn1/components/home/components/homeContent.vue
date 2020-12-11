@@ -26,7 +26,7 @@
           v-if="typeList[selectedIndex].icon === type.icon"
           :src="
             $getCdnPath(
-              `/static/image/_new/platform/icon/icon_${type.icon}_h.png`
+              `/static/image/porn1/platform/icon/icon_${type.icon}_h.png`
             )
           "
         />
@@ -34,7 +34,7 @@
           v-else
           :src="
             $getCdnPath(
-              `/static/image/_new/platform/icon/icon_${type.icon}_n.png`
+              `/static/image/porn1/platform/icon/icon_${type.icon}_n.png`
             )
           "
         />
@@ -219,7 +219,7 @@ export default {
   position: relative;
   width: 63px;
   height: 63px;
-  background-image: url("/static/image/_new/platform/icon/icon_bg_n.png");
+  background-image: url("/static/image/porn1/platform/icon/icon_bg_n.png");
   background-position: 0 0;
   background-size: 63px 63px;
   background-repeat: no-repeat;
@@ -236,7 +236,7 @@ export default {
   }
 
   &.active {
-    background-image: url("/static/image/_new/platform/icon/icon_bg_h.png");
+    background-image: url("/static/image/porn1/platform/icon/icon_bg_h.png");
   }
 }
 
