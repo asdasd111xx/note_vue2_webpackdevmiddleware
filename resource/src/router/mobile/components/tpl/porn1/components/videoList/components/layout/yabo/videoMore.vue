@@ -1,19 +1,18 @@
 <template>
   <div :class="$style['video-more-container']">
-    <div :class="[$style['box'], $style[source]]">
-      <swiper :options="{ slidesPerView: 'auto', slideClass: $style['tab'] }">
-        <swiper-slide v-for="info in videoTabs" :key="info.id">
-          <div
-            :class="[
-              $style['wrap'],
-              $style[source],
-              { [$style.active]: info.id === +sortId }
-            ]"
-            @click="setSortId(info.id)"
-          >
-            <span>{{ info.title }}</span>
-            <div :class="$style['line']" />
-          </div>
+    <div :class="[$style['wrap'], $style[source]]">
+      <swiper ref="swiper" :options="options">
+        <swiper-slide
+          v-for="info in videoTabs"
+          :key="info.id"
+          :class="[
+            $style['item'],
+            $style[source],
+            { [$style.active]: info.id === +sortId }
+          ]"
+        >
+          <span @click="setSortId(info.id)">{{ info.title }}</span>
+          <div :class="$style['line']" />
         </swiper-slide>
       </swiper>
       <div
@@ -65,7 +64,7 @@ import InfiniteLoading from "vue-infinite-loading";
 import axios from "axios";
 import { Swiper, SwiperSlide } from "vue-awesome-swiper";
 import pornRequest from "@/api/pornRequest";
-import { getEncryptImage } from '@/lib/crypto';
+import { getEncryptImage } from "@/lib/crypto";
 
 export default {
   components: {
@@ -103,22 +102,50 @@ export default {
   },
   created() {
     this.setHeaderTitle(this.$text("S_FULL_HD_MOVIE", "全部高清影片"));
-    this.getVideoTab();
+  },
+  mounted() {
+    const swiper = this.$refs.swiper.$swiper;
+
+    this.getVideoTab().then(() => {
+      // 讓 Swiper 的 index 在初始進來時，能將 Label 置中
+      let initIndex = this.videoTabs.findIndex(item => {
+        return item.id === this.sortId;
+      });
+
+      swiper.slideTo(initIndex, 500, false);
+    });
+
     this.setVideoList();
   },
   computed: {
-    defaultImg() {
-      const isYabo = this.source === 'yabo';
-      return this.$getCdnPath(`/static/image/porn1/default/${isYabo ? 'bg_video03_d' : 'bg_video03_1_d@3x'}.png`)
+    options() {
+      return {
+        slidesPerView: "auto",
+        slideToClickedSlide: true,
+        centeredSlides: true,
+        centeredSlidesBounds: true,
+        spaceBetween: 25,
+        slidesOffsetBefore: 20,
+        slidesOffsetAfter: 20,
+        freeMode: true
+      };
     },
+    defaultImg() {
+      const isYabo = this.source === "yabo";
+      return this.$getCdnPath(
+        `/static/image/porn1/default/${
+          isYabo ? "bg_video03_d" : "bg_video03_1_d@3x"
+        }.png`
+      );
+    }
   },
   methods: {
     getVideoTab() {
-      pornRequest({
+      return pornRequest({
         method: "get",
         url: `/video/sort`,
         params: {
-          tagId: !this.tagId ? '' : this.tagId,
+          tagId: !this.tagId ? "" : this.tagId,
           siteId: this.siteId
         },
         timeout: 30000
@@ -162,7 +189,6 @@ export default {
 
         this.videoList = [...response.result.data];
         this.current += 1;
-
 
         this.total = response.result.last_page;
 
@@ -208,9 +234,9 @@ export default {
         setTimeout(() => {
           this.videoList.forEach(item => {
             getEncryptImage(item);
-          })
-        }, 100)
-      })
+          });
+        }, 100);
+      });
     }
   }
 };
@@ -219,9 +245,9 @@ export default {
 <style lang="scss" module>
 @import "~@/css/variable.scss";
 
-.box {
-  max-width: $mobile_max_width;
+.wrap {
   width: 100%;
+  max-width: $mobile_max_width;
   padding-right: 40px;
   position: fixed;
   top: 43px;
@@ -241,22 +267,14 @@ export default {
 }
 
 @media (orientation: landscape) {
-  .box {
+  .wrap {
     max-width: $mobile_max_landscape_width !important;
   }
 }
 
-.tab {
-  display: inline-block;
-  margin: 0 15px;
-}
-
-.wrap {
-  position: relative;
+.item {
+  width: auto;
   line-height: 44px;
-  font-size: 14px;
-  text-align: center;
-  white-space: nowrap;
 
   &.yabo {
     color: #bcbdc1;
