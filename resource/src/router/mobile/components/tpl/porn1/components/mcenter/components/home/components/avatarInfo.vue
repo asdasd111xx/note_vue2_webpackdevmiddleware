@@ -49,67 +49,72 @@
 </template>
 
 <script>
-import { mapGetters, mapActions } from 'vuex';
-import moment from 'moment';
-import mcenterPageAuthControl from '@/lib/mcenterPageAuthControl';
-import mcenter from '@/api/mcenter';
-import member from '@/api/member';
-import { getCookie, setCookie } from '@/lib/cookie';
-import yaboRequest from '@/api/yaboRequest';
-import goLangApiRequest from '@/api/goLangApiRequest';
-import axios from 'axios';
+import { mapGetters, mapActions } from "vuex";
+import moment from "moment";
+import mcenterPageAuthControl from "@/lib/mcenterPageAuthControl";
+import mcenter from "@/api/mcenter";
+import member from "@/api/member";
+import { getCookie, setCookie } from "@/lib/cookie";
+import yaboRequest from "@/api/yaboRequest";
+import goLangApiRequest from "@/api/goLangApiRequest";
+import axios from "axios";
 
 export default {
-  components: {
-  },
+  components: {},
   data() {
     return {
       isShow: false,
       msg: "",
       viplevel: "",
-      avatarSrc: `/static/image/_new/mcenter/avatar_nologin.png`,
+      avatarSrc: `/static/image/_new/mcenter/avatar_nologin.png`
     };
   },
   computed: {
     ...mapGetters({
-      loginStatus: 'getLoginStatus',
-      memInfo: 'getMemInfo',
-      memCurrency: 'getMemCurrency',
-      memBalance: 'getMemBalance',
-      siteConfig: "getSiteConfig",
-    }),
+      loginStatus: "getLoginStatus",
+      memInfo: "getMemInfo",
+      memCurrency: "getMemCurrency",
+      memBalance: "getMemBalance",
+      siteConfig: "getSiteConfig"
+    })
   },
   mounted() {
     this.getUserViplevel();
     this.getAvatarSrc();
   },
   methods: {
-    ...mapActions([
-      'actionSetUserdata'
-    ]),
+    ...mapActions(["actionSetUserdata"]),
     getAvatarSrc() {
       if (!this.loginStatus) return;
 
       const imgSrcIndex = this.memInfo.user.image;
       if (this.memInfo.user && this.memInfo.user.custom) {
         axios({
-          method: 'get',
-          url: this.memInfo.user.custom_image,
-        }).then(res => {
-          if (res && res.data && res.data.result === "ok") {
-            this.avatarSrc = res.data.ret;
-          }
-        }).catch(error => {
-          this.actionSetGlobalMessage({ msg: error.data.msg });
-          this.avatarSrc = this.$getCdnPath(`/static/image/_new/mcenter/default/avatar_${imgSrcIndex}.png`);
+          method: "get",
+          url: this.memInfo.user.custom_image
         })
+          .then(res => {
+            if (res && res.data && res.data.result === "ok") {
+              this.avatarSrc = res.data.ret;
+            }
+          })
+          .catch(error => {
+            this.actionSetGlobalMessage({ msg: error.data.msg });
+            this.avatarSrc = this.$getCdnPath(
+              `/static/image/_new/mcenter/default/avatar_${imgSrcIndex}.png`
+            );
+          });
       } else {
-        this.avatarSrc = this.$getCdnPath(`/static/image/_new/mcenter/default/avatar_${imgSrcIndex}.png`);
+        this.avatarSrc = this.$getCdnPath(
+          `/static/image/_new/mcenter/default/avatar_${imgSrcIndex}.png`
+        );
       }
     },
     getUserViplevel() {
       let cid = getCookie("cid");
-      if (!cid) { return }
+      if (!cid) {
+        return;
+      }
       // yaboRequest({
       //   method: "get",
       //   url: `${
@@ -121,16 +126,14 @@ export default {
       // });
       goLangApiRequest({
         method: "get",
-        url: `${
-          this.siteConfig.YABO_GOLANG_API_DOMAIN
-          }/Player/vipinfo`,
+        url: `${this.siteConfig.YABO_GOLANG_API_DOMAIN}/cxbb/Player/vipinfo`,
         headers: {
-          "cid": cid
+          cid: cid
         }
       }).then(res => {
         this.viplevel = res.data ? res.data[0] && res.data[0].now_level_seq : 0;
       });
-    },
+    }
   }
 };
 </script>

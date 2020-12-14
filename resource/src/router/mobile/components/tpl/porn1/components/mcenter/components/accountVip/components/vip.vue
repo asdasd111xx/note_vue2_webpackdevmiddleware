@@ -5,11 +5,7 @@
       <div :class="$style['header-block']">
         <div :class="$style['btn-back']" @click="$router.back()">
           <img
-            :src="
-              $getCdnPath(
-                `/static/image/common/icon/btn_back_b.png`
-              )
-            "
+            :src="$getCdnPath(`/static/image/common/icon/btn_back_b.png`)"
             alt="btn_back"
           />
         </div>
@@ -69,8 +65,8 @@ import vipUser from "./vipUser";
 import vipLevelCard from "./vipLevelCard";
 import vipInfo from "./vipInfo";
 import mcenter from "@/api/mcenter";
-import yaboRequest from '@/api/yaboRequest';
-import goLangApiRequest from '@/api/goLangApiRequest';
+import yaboRequest from "@/api/yaboRequest";
+import goLangApiRequest from "@/api/goLangApiRequest";
 
 export default {
   components: {
@@ -95,7 +91,8 @@ export default {
       loginStatus: "getLoginStatus"
     }),
     $style() {
-      const style = this[`$style_${this.siteConfig.MOBILE_WEB_TPL}`] || this.$style_porn1;
+      const style =
+        this[`$style_${this.siteConfig.MOBILE_WEB_TPL}`] || this.$style_porn1;
       return style;
     },
     setCurrentLevel: {
@@ -130,11 +127,9 @@ export default {
       // });
       goLangApiRequest({
         method: "get",
-        url: `${
-          this.siteConfig.YABO_GOLANG_API_DOMAIN
-          }/Player/vipinfo`,
+        url: `${this.siteConfig.YABO_GOLANG_API_DOMAIN}/cxbb/Player/vipinfo`,
         headers: {
-          "cid": getCookie("cid")
+          cid: getCookie("cid")
         }
       }).then(res => {
         this.userVipInfo = res.data;
@@ -162,11 +157,9 @@ export default {
       // });
       goLangApiRequest({
         method: "get",
-        url: `${
-          this.siteConfig.YABO_GOLANG_API_DOMAIN
-          }/Player/viplevel/${this.currentConfigID}`,
+        url: `${this.siteConfig.YABO_GOLANG_API_DOMAIN}/cxbb/Player/viplevel/${this.currentConfigID}`,
         headers: {
-          "cid": getCookie("cid")
+          cid: getCookie("cid")
         }
       }).then(res => {
         this.vipLevelList = res.data;
@@ -184,6 +177,18 @@ export default {
 };
 </script>
 
-<style lang="scss" src="@/css/page/vip/porn1.vip.scss" module="$style_porn1"></style>
-<style lang="scss" src="@/css/page/vip/ey1.vip.scss" module="$style_ey1"></style>
-<style lang="scss" src="@/css/page/vip/sg1.vip.scss" module="$style_sg1"></style>
+<style
+  lang="scss"
+  src="@/css/page/vip/porn1.vip.scss"
+  module="$style_porn1"
+></style>
+<style
+  lang="scss"
+  src="@/css/page/vip/ey1.vip.scss"
+  module="$style_ey1"
+></style>
+<style
+  lang="scss"
+  src="@/css/page/vip/sg1.vip.scss"
+  module="$style_sg1"
+></style>

@@ -61,30 +61,31 @@
 </template>
 
 <script>
-import { mapGetters, mapActions } from 'vuex';
-import axios from 'axios';
-import yaboRequest from '@/api/yaboRequest';
-import goLangApiRequest from '@/api/goLangApiRequest';
-import openGame from '@/lib/open_game';
+import { mapGetters, mapActions } from "vuex";
+import axios from "axios";
+import yaboRequest from "@/api/yaboRequest";
+import goLangApiRequest from "@/api/goLangApiRequest";
+import openGame from "@/lib/open_game";
 
 export default {
   data() {
     return {
       isLoading: true,
       isFullScreen: false,
-      src: '',
-    }
+      src: ""
+    };
   },
   watch: {
-    src() {
-
-    }
+    src() {}
   },
   components: {
-    pageLoading: () => import(/* webpackChunkName: 'pageLoading' */ '@/router/mobile/components/common/pageLoading'),
+    pageLoading: () =>
+      import(
+        /* webpackChunkName: 'pageLoading' */ "@/router/mobile/components/common/pageLoading"
+      )
   },
   beforeDestroy() {
-    let container = document.getElementById('mobile-container');
+    let container = document.getElementById("mobile-container");
     if (container && container.style) {
       container.style = "";
     }
@@ -93,123 +94,131 @@ export default {
     // localStorage.setItem('open-game-link', 'https://star.xbb-slot-test.com:8888/starfruit/slot/1000030?lang=zh-cn&sid=8eedfbc72ec4e46dc8e83fcafee5c7afe292dcc40546150ce9dffdd54116ff14')
   },
   mounted() {
-    let container = document.getElementById('mobile-container');
+    let container = document.getElementById("mobile-container");
     if (container && container.style) {
       container.style = "min-height:unset";
     }
 
     const params = this.$route.params;
     if (!params.page) {
-      this.src = localStorage.getItem('iframe-third-url');
+      this.src = localStorage.getItem("iframe-third-url");
       return;
     }
 
     switch (params.page.toUpperCase()) {
-      case 'LF':
-      case 'APB':
-      case 'BALE':
-      case 'STB':
-      case 'JPB':
-      case 'DSC':
-      case 'PPV':
-      case 'SF':
-      case 'SWAG':
-        if (localStorage.getItem('iframe-third-url')) {
-          this.src = localStorage.getItem('iframe-third-url');
+      case "LF":
+      case "APB":
+      case "BALE":
+      case "STB":
+      case "JPB":
+      case "DSC":
+      case "PPV":
+      case "SF":
+      case "SWAG":
+        if (localStorage.getItem("iframe-third-url")) {
+          this.src = localStorage.getItem("iframe-third-url");
           return;
         }
 
-        let userId = 'guest';
-        if (this.memInfo && this.memInfo.user && this.memInfo.user.id && this.memInfo.user.id !== 0) {
+        let userId = "guest";
+        if (
+          this.memInfo &&
+          this.memInfo.user &&
+          this.memInfo.user.id &&
+          this.memInfo.user.id !== 0
+        ) {
           userId = this.memInfo.user.id;
         }
 
         goLangApiRequest({
-          method: 'get',
-          url: `${this.siteConfig.YABO_GOLANG_API_DOMAIN}/ThirdParty/${params.page.toUpperCase()}/${userId}`,
+          method: "get",
+          url: `${
+            this.siteConfig.YABO_GOLANG_API_DOMAIN
+          }/cxbb/ThirdParty/${params.page.toUpperCase()}/${userId}`
         }).then(res => {
-          if (res && res.status !== '000') {
+          if (res && res.status !== "000") {
             // 維護非即時更新狀態
-            if (res.msg && res.code !== '77700029') {
+            if (res.msg && res.code !== "77700029") {
               this.actionSetGlobalMessage({ msg: res.msg, code: res.code });
             }
 
-            if (res.code === '77700029') {
+            if (res.code === "77700029") {
               this.$router.back();
               return;
             }
-          }
-          else {
+          } else {
             this.src = res.data;
           }
-        })
+        });
         // SWAG
         // this.src = 'https://feature-yabo.app.swag.live/';
         break;
-      case 'THIRD':
+      case "THIRD":
         axios({
-          method: 'get',
-          url: '/api/v1/c/link/customize',
+          method: "get",
+          url: "/api/v1/c/link/customize",
           params: {
-            code: 'fengniao',
-            client_uri: localStorage.getItem('iframe-third-url') || ''
-          }
-        }).then(res => {
-          this.isLoading = false;
-          if (res && res.data && res.data.ret && res.data.ret.uri) {
-            this.src = res.data.ret.uri;
-          }
-        }).catch(error => {
-          this.isLoading = false;
-          if (error && error.data && error.date.msg) {
-            this.actionSetGlobalMessage({ msg: error.data.msg });
+            code: "fengniao",
+            client_uri: localStorage.getItem("iframe-third-url") || ""
           }
         })
+          .then(res => {
+            this.isLoading = false;
+            if (res && res.data && res.data.ret && res.data.ret.uri) {
+              this.src = res.data.ret.uri;
+            }
+          })
+          .catch(error => {
+            this.isLoading = false;
+            if (error && error.data && error.date.msg) {
+              this.actionSetGlobalMessage({ msg: error.data.msg });
+            }
+          });
         break;
-      case 'GAME':
-        this.src = localStorage.getItem('iframe-third-url');
+      case "GAME":
+        this.src = localStorage.getItem("iframe-third-url");
         break;
-      case 'PROMOTION':
+      case "PROMOTION":
         // 優小秘
-        let url = localStorage.getItem('iframe-third-url');
-        if (url && url.indexOf('?') > 0) {
+        let url = localStorage.getItem("iframe-third-url");
+        if (url && url.indexOf("?") > 0) {
           url = `${url}&v=m`;
         } else {
           url = `${url}?v=m`;
         }
-        this.src = url
+        this.src = url;
         break;
 
       default:
-        this.src = localStorage.getItem('iframe-third-url');
+        this.src = localStorage.getItem("iframe-third-url");
         break;
     }
   },
   computed: {
     ...mapGetters({
-      loginStatus: 'getLoginStatus',
-      siteConfig: 'getSiteConfig',
-      memInfo: 'getMemInfo',
-      webInfo: 'getWebInfo',
+      loginStatus: "getLoginStatus",
+      siteConfig: "getSiteConfig",
+      memInfo: "getMemInfo",
+      webInfo: "getWebInfo"
     }),
     originUrl() {
       let origin = this.$route.params.page.toUpperCase();
-      let from = localStorage.getItem('iframe-third-origin');
+      let from = localStorage.getItem("iframe-third-origin");
 
       if (from) {
-        localStorage.removeItem('iframe-third-origin');
+        localStorage.removeItem("iframe-third-origin");
         return `/mobile/${from}`;
       }
 
       switch (origin) {
-        case 'THIRD':
-          return '/mobile/gift';
-        case 'PROMOTION':
-          return '/mobile/promotion';
-        case 'SWAG':
-          return '/mobile';
+        case "THIRD":
+          return "/mobile/gift";
+        case "PROMOTION":
+          return "/mobile/promotion";
+        case "SWAG":
+          return "/mobile";
         default:
-          return '/mobile';
+          return "/mobile";
           return;
       }
     },
@@ -231,26 +240,32 @@ export default {
       const query = this.$route.query;
       const origin = this.$route.params.page.toUpperCase();
 
-      this.isFullScreen = origin === "SWAG" ?
-        true :
-        query.fullscreen === undefined ? false : query.fullscreen === 'true';
+      this.isFullScreen =
+        origin === "SWAG"
+          ? true
+          : query.fullscreen === undefined
+          ? false
+          : query.fullscreen === "true";
 
       let baseConfig = {
-        hasHeader: query.hasHeader === undefined ? false : query.hasHeader === 'true',
-        hasFooter: query.hasFooter === undefined ? true : query.hasFooter === 'true',
+        hasHeader:
+          query.hasHeader === undefined ? false : query.hasHeader === "true",
+        hasFooter:
+          query.hasFooter === undefined ? true : query.hasFooter === "true",
         prev: query.prev === undefined ? true : query.prev,
-        title: query.title || localStorage.getItem('iframe-third-url-title') || '',
-        hasFunc: query.func === undefined ? true : query.func === 'true',
-      }
+        title:
+          query.title || localStorage.getItem("iframe-third-url-title") || "",
+        hasFunc: query.func === undefined ? true : query.func === "true"
+      };
 
       // SWAG 固定
       switch (origin) {
-        case 'SWAG':
+        case "SWAG":
           baseConfig.hasHeader = true;
           baseConfig.hasFooter = false;
           baseConfig.title = "SWAG";
           this.isFullScreen = true;
-          break
+          break;
       }
 
       return {
@@ -260,17 +275,15 @@ export default {
           return;
         }
       };
-    },
+    }
   },
   beforeDestroy() {
     window.removeEventListener("message", this.onListener);
-    localStorage.removeItem('iframe-third-url-title');
-    localStorage.removeItem('iframe-third-url');
+    localStorage.removeItem("iframe-third-url-title");
+    localStorage.removeItem("iframe-third-url");
   },
   methods: {
-    ...mapActions([
-      'actionSetGlobalMessage'
-    ]),
+    ...mapActions(["actionSetGlobalMessage"]),
     reload() {
       if (this.isLoading) {
         return;
@@ -286,27 +299,29 @@ export default {
       // }, 310)
 
       // reload 當前網址
-      document.getElementById('iframe').contentWindow.location.reload();
+      document.getElementById("iframe").contentWindow.location.reload();
     },
     toggleFullScreen() {
       this.isFullScreen = !this.isFullScreen;
     },
     getCustomizeLink(params) {
       axios({
-        method: 'get',
-        url: '/api/v1/c/link/customize',
+        method: "get",
+        url: "/api/v1/c/link/customize",
         params: params
-      }).then(res => {
-        this.isLoading = false;
-        if (res && res.data && res.data.ret && res.data.ret.uri) {
-          this.src = res.data.ret.uri;
-        }
-      }).catch(error => {
-        this.isLoading = false;
-        if (error && error.data && error.date.msg) {
-          this.actionSetGlobalMessage({ msg: error.data.msg });
-        }
       })
+        .then(res => {
+          this.isLoading = false;
+          if (res && res.data && res.data.ret && res.data.ret.uri) {
+            this.src = res.data.ret.uri;
+          }
+        })
+        .catch(error => {
+          this.isLoading = false;
+          if (error && error.data && error.date.msg) {
+            this.actionSetGlobalMessage({ msg: error.data.msg });
+          }
+        });
     },
     onListener(e) {
       // //  需要監聽的白名單
@@ -331,32 +346,35 @@ export default {
           return;
         }
 
-        console.log('[EVENT]:', data.event);
-        console.log('[DATA]:', data.data);
+        console.log("[EVENT]:", data.event);
+        console.log("[DATA]:", data.data);
 
         switch (data.event) {
-          case 'EVENT_THIRDPARTY_SWITCH_GAME':
+          case "EVENT_THIRDPARTY_SWITCH_GAME":
             this.linkToGame(data.data);
             return;
 
-          case 'EVENT_THIRDPARTY_CLOSE':
+          case "EVENT_THIRDPARTY_CLOSE":
             this.$router.replace(this.originUrl);
             return;
 
           // 避免迴圈重複本站
-          case 'SELF_INTO':
-            if (this.$route.params.page.toUpperCase() === 'PROMOTION' && !this.src.includes('popcontrol')) {
-              this.$router.replace('/mobile/login');
+          case "SELF_INTO":
+            if (
+              this.$route.params.page.toUpperCase() === "PROMOTION" &&
+              !this.src.includes("popcontrol")
+            ) {
+              this.$router.replace("/mobile/login");
               return;
             }
             return;
-          case 'EVENT_THIRDPARTY_LOGIN':
-            this.$router.replace('/mobile/login?prev=home');
+          case "EVENT_THIRDPARTY_LOGIN":
+            this.$router.replace("/mobile/login?prev=home");
             return;
 
-          case 'EVENT_THIRDPARTY_CURRENCY_NOT_ENOUGH':
-          case 'EVENT_THIRDPARTY_DEPOSIT':
-            this.$router.push('/mobile/mcenter/swag?tab=0&prev=back');
+          case "EVENT_THIRDPARTY_CURRENCY_NOT_ENOUGH":
+          case "EVENT_THIRDPARTY_DEPOSIT":
+            this.$router.push("/mobile/mcenter/swag?tab=0&prev=back");
             return;
 
           default:
@@ -371,41 +389,48 @@ export default {
         return;
       }
 
-      let target = data.split('-');
+      let target = data.split("-");
 
       switch (target[0]) {
-        case 'lobby':
-          let type = 'casino';
+        case "lobby":
+          let type = "casino";
           switch (target[2]) {
-            case '5':
-              type = 'card';
+            case "5":
+              type = "card";
               break;
-            case '3':
+            case "3":
             default:
-              type = 'card';
+              type = "card";
               break;
           }
           this.$router.push(`/mobile/${type}/${target[1]}`);
           break;
 
-        case 'game':
-
-          const openGameSuccessFunc = (res) => {
+        case "game":
+          const openGameSuccessFunc = res => {
             this.isLoading = false;
           };
 
-          const openGameFailFunc = (res) => {
+          const openGameFailFunc = res => {
             this.isLoading = false;
 
             if (res && res.data) {
               let data = res.data;
-              this.actionSetGlobalMessage({ msg: data.msg, code: data.code, origin: 'home' })
+              this.actionSetGlobalMessage({
+                msg: data.msg,
+                code: data.code,
+                origin: "home"
+              });
             }
           };
-          const vendor = target[1] || '';
-          const kind = target[2] || '';
-          const code = target[3] || '';
-          openGame({ kind: kind, vendor: vendor, code: code }, openGameSuccessFunc, openGameFailFunc);
+          const vendor = target[1] || "";
+          const kind = target[2] || "";
+          const code = target[3] || "";
+          openGame(
+            { kind: kind, vendor: vendor, code: code },
+            openGameSuccessFunc,
+            openGameFailFunc
+          );
           break;
 
         default:
@@ -417,10 +442,10 @@ export default {
       this.$nextTick(() => {
         setTimeout(() => {
           this.isLoading = false;
-        }, 310)
-      })
+        }, 310);
+      });
       try {
-        window.addEventListener('message', this.onListener);
+        window.addEventListener("message", this.onListener);
         // const self = this;
         // this.$refs.iframe.contentWindow.onbeforeunload = (e) => {
         //   console.log(e)
@@ -430,10 +455,10 @@ export default {
         //   //   self.$router.back();
         // }
       } catch (e) {
-        console.log('onbeforeunload Catch:', e)
+        console.log("onbeforeunload Catch:", e);
       }
-    },
-  },
+    }
+  }
 };
 </script>
 

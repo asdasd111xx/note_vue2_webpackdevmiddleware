@@ -28,24 +28,26 @@
 </template>
 
 <script>
-import yaboRequest from '@/api/yaboRequest';
-import goLangApiRequest from '@/api/goLangApiRequest';
-import { mapGetters, mapActions } from 'vuex';
+import yaboRequest from "@/api/yaboRequest";
+import goLangApiRequest from "@/api/goLangApiRequest";
+import { mapGetters, mapActions } from "vuex";
 
 export default {
   data() {
     return {
-      msg: '',
+      msg: "",
       list: null,
-      defaultImgSrc: this.$getCdnPath('/static/image/_new/mcenter/help/email.png')
+      defaultImgSrc: this.$getCdnPath(
+        "/static/image/_new/mcenter/help/email.png"
+      )
     };
   },
   computed: {
     ...mapGetters({
-      memInfo: 'getMemInfo',
-      loginStatus: 'getLoginStatus',
-      siteConfig: 'getSiteConfig'
-    }),
+      memInfo: "getMemInfo",
+      loginStatus: "getLoginStatus",
+      siteConfig: "getSiteConfig"
+    })
   },
   created() {
     // yaboRequest({
@@ -58,23 +60,21 @@ export default {
     //   }
     // });
     goLangApiRequest({
-      method: 'get',
-      url: `${this.siteConfig.YABO_GOLANG_API_DOMAIN}/System/contactus`,
-      headers: { 'x-domain': this.memInfo.user.domain, }
-    }).then((res) => {
+      method: "get",
+      url: `${this.siteConfig.YABO_GOLANG_API_DOMAIN}/cxbb/System/contactus`,
+      headers: { "x-domain": this.memInfo.user.domain }
+    }).then(res => {
       if (res && res.data && res.data.length > 0) {
         this.list = res.data;
       }
     });
   },
   methods: {
-    ...mapActions([
-      'actionSetGlobalMessage'
-    ]),
+    ...mapActions(["actionSetGlobalMessage"]),
     copy(value) {
       this.$copyText(value);
       this.actionSetGlobalMessage({ msg: "复制成功" });
-    },
+    }
   }
 };
 </script>

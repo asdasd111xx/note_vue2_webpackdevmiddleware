@@ -33,7 +33,7 @@
 <script>
 import { mapGetters, mapActions } from "vuex";
 import yaboRequest from "@/api/yaboRequest";
-import goLangApiRequest from '@/api/goLangApiRequest';
+import goLangApiRequest from "@/api/goLangApiRequest";
 
 export default {
   props: {
@@ -44,7 +44,7 @@ export default {
   },
   data() {
     return {
-      landingLink: "",
+      landingLink: ""
     };
   },
   computed: {
@@ -54,7 +54,7 @@ export default {
       siteConfig: "getSiteConfig",
       agentLink: "getAgentLink",
       memInfo: "getMemInfo",
-      promotionLink: 'getPromotionLink'
+      promotionLink: "getPromotionLink"
     }),
     isException() {
       return window.location.hostname === "yaboxxxapp02.com" || this.isPwa;
@@ -94,7 +94,7 @@ export default {
 
       goLangApiRequest({
         method: "get",
-        url: `${this.siteConfig.YABO_GOLANG_API_DOMAIN}/System/downloadlink`,
+        url: `${this.siteConfig.YABO_GOLANG_API_DOMAIN}/cxbb/System/downloadlink`,
         headers: {
           AuthToken: "YaboAPIforDev0nly"
         }

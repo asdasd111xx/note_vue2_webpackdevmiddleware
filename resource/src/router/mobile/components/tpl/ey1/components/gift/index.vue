@@ -19,15 +19,22 @@
           <div>
             {{ item.name }}
           </div>
-          <div
+          <!-- <div
             v-if="
               item && (item.url || item.thirdUrl || item.items || item.params)
+            "
+        
+            :class="$style['icon-next']"
+          > -->
+          <div
+            v-if="
+              item && (item.url || item.showUrl || item.items || item.params)
             "
             :class="$style['icon-next']"
           >
             <img src="/static/image/ey1/common/btn_next.png" />
           </div>
-          <div v-else :class="$style['incoming']">即将开业 敬请期待</div>
+          <!-- <div v-else :class="$style['incoming']">即将开业 敬请期待</div> -->
         </div>
       </div>
     </div>
@@ -38,6 +45,8 @@
 import mobileContainer from "../common/mobileContainer";
 import { mapGetters, mapActions } from "vuex";
 import axios from "axios";
+import goLangApiRequest from "@/api/goLangApiRequest";
+import { getCookie } from "@/lib/cookie";
 
 export default {
   data() {
@@ -45,16 +54,35 @@ export default {
       isLoading: false,
       currentMenu: [],
       isMounted: true,
+
       giftMenuList: [
-        // {
-        //   title: "福利",
-        //   icon: '/static/image/ey1/gift/icon_gift_bonus.png',
-        //   items: [
-        //     { name: "每日签到", login: true, thirdUrl: "https://fengniao131.com/member.php?mod=logging&action=login&mobile=2" },
-        //     { name: "好运转盘", login: true, thirdUrl: "https://fengniao131.com/plugin.php?id=lezhi99_lottery" },
-        //     { name: "积分商城", login: true, thirdUrl: "https://fengniao131.com/keke_integralmall-index.html" }
-        //   ]
-        // },
+        {
+          title: "福利",
+          icon: "/static/image/ey1/gift/icon_gift_bonus.png",
+          items: [
+            {
+              name: "每日签到",
+              login: true,
+              thirdUrl: "",
+              showUrl: true
+              // "https://fengniao131.com/member.php?mod=logging&action=login&mobile=2"
+            },
+            {
+              name: "好运转盘",
+              login: true,
+              thirdUrl: "",
+              showUrl: true
+              // "https://fengniao131.com/plugin.php?id=lezhi99_lottery"
+            },
+            {
+              name: "积分商城",
+              login: true,
+              thirdUrl: "",
+              showUrl: true
+              // "https://fengniao131.com/keke_integralmall-index.html"
+            }
+          ]
+        },
         {
           title: "娱乐",
           icon: "/static/image/ey1/gift/icon_gift_video.png",
@@ -62,24 +90,24 @@ export default {
             {
               name: "日本有码",
               login: true,
-              url: "https://tinyurl.com/y9lyf3he",
+              url: "https://tinyurl.com/y9lyf3he"
             },
             {
               name: "中文有码",
               login: true,
-              url: "https://tinyurl.com/yb9wuhqj",
+              url: "https://tinyurl.com/yb9wuhqj"
             },
             {
               name: "日本无码",
               login: true,
-              url: "https://tinyurl.com/ybtpfyxv",
+              url: "https://tinyurl.com/ybtpfyxv"
             },
             {
               name: "免费偷看",
               login: true,
-              url: "https://tinyurl.com/y8aoghzj",
-            },
-          ],
+              url: "https://tinyurl.com/y8aoghzj"
+            }
+          ]
         },
         {
           title: "服务",
@@ -96,10 +124,10 @@ export default {
                   items: [
                     { name: "wifi技术", params: "wifi" },
                     { name: "第一足球", params: "football" },
-                    { name: "蜂鸟论坛", params: "bird" },
-                  ],
-                },
-              ],
+                    { name: "蜂鸟论坛", params: "bird" }
+                  ]
+                }
+              ]
             },
             {
               title: "服务",
@@ -112,10 +140,10 @@ export default {
                   items: [
                     { name: "微信推广", params: "wechat" },
                     { name: "飞机炸群", params: "plane" },
-                    { name: "苹果推信", params: "apple" },
-                  ],
-                },
-              ],
+                    { name: "苹果推信", params: "apple" }
+                  ]
+                }
+              ]
             },
             {
               title: "服务",
@@ -125,9 +153,9 @@ export default {
                 {
                   title: "新媒体",
                   icon: "/static/image/ey1/gift/icon_gift_service.png",
-                  items: [{ name: "网红口拨", params: "dial" }],
-                },
-              ],
+                  items: [{ name: "网红口拨", params: "dial" }]
+                }
+              ]
             },
             {
               title: "服务",
@@ -140,14 +168,14 @@ export default {
                   items: [
                     { name: "名单购买", params: "listPurchase" },
                     { name: "短信卡发", params: "smsCard" },
-                    { name: "邮件群发", params: "mail" },
-                  ],
-                },
-              ],
-            },
-          ],
-        },
-      ],
+                    { name: "邮件群发", params: "mail" }
+                  ]
+                }
+              ]
+            }
+          ]
+        }
+      ]
     };
   },
   components: {
@@ -155,7 +183,7 @@ export default {
     pageLoading: () =>
       import(
         /* webpackChunkName: 'pageLoading' */ "@/router/mobile/components/common/pageLoading"
-      ),
+      )
   },
   mounted() {
     // if (this.$route.query.q === "通讯软体") {
@@ -182,8 +210,8 @@ export default {
     //   });
     //}
     if (this.$route.query.q) {
-      this.giftMenuList.find((x) =>
-        x.items.find((y) => {
+      this.giftMenuList.find(x =>
+        x.items.find(y => {
           if (y.name === this.$route.query.q) {
             this.linkTo(y);
           }
@@ -196,6 +224,7 @@ export default {
   computed: {
     ...mapGetters({
       loginStatus: "getLoginStatus",
+      siteConfig: "getSiteConfig"
     }),
     headerConfig() {
       return {
@@ -209,18 +238,19 @@ export default {
             return;
           }
           this.$router.back();
-        },
+        }
       };
-    },
+    }
   },
   watch: {
-    openLink() { },
+    openLink() {}
   },
   methods: {
     ...mapActions(["actionSetGlobalMessage"]),
-    getThridUrl(target) {
+
+    getThridUrl(target, Url) {
       this.isLoading = true;
-      localStorage.setItem("iframe-third-url", target.thirdUrl);
+      localStorage.setItem("iframe-third-url", Url);
       this.$router.push(
         `/mobile/iframe/third?hasFooter=false&hasHeader=true&title=${target.name}`
       );
@@ -241,11 +271,23 @@ export default {
         window.open(item.url);
       } else if (item.params) {
         this.$router.push(`/mobile/gift/detail/${item.params}`);
-      } else if (item.thirdUrl) {
-        this.getThridUrl(item);
+      } else if (item.showUrl) {
+        this.getFuliUrl(item);
       }
     },
-  },
+    getFuliUrl(target) {
+      goLangApiRequest({
+        method: "get",
+        url: `${this.siteConfig.YABO_GOLANG_API_DOMAIN}/xbb/Link/External/Url?lang=zh-cn&urlName=${target.name}&needToken=true&externalCode=fengniao`
+      })
+        .then(res => {
+          this.getThridUrl(target, res.data.uri);
+        })
+        .catch(res => {
+          console.log("error" + error);
+        });
+    }
+  }
 };
 </script>
 

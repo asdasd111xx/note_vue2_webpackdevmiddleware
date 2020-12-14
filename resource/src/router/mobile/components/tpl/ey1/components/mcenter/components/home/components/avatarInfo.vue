@@ -45,17 +45,17 @@
 </template>
 
 <script>
-import { mapGetters, mapActions } from 'vuex';
-import moment from 'moment';
-import mcenterPageAuthControl from '@/lib/mcenterPageAuthControl';
-import mcenter from '@/api/mcenter';
-import member from '@/api/member';
-import { getCookie, setCookie } from '@/lib/cookie';
-import yaboRequest from '@/api/yaboRequest';
-import goLangApiRequest from '@/api/goLangApiRequest';
-import axios from 'axios';
+import { mapGetters, mapActions } from "vuex";
+import moment from "moment";
+import mcenterPageAuthControl from "@/lib/mcenterPageAuthControl";
+import mcenter from "@/api/mcenter";
+import member from "@/api/member";
+import { getCookie, setCookie } from "@/lib/cookie";
+import yaboRequest from "@/api/yaboRequest";
+import goLangApiRequest from "@/api/goLangApiRequest";
+import axios from "axios";
 import Vue from "vue";
-import EST from '@/lib/EST';
+import EST from "@/lib/EST";
 
 export default {
   data() {
@@ -81,7 +81,9 @@ export default {
     this.getAvatarSrc();
     if (this.loginStatus) {
       const today = new Date().getTime();
-      const created_at = moment(this.memInfo.user.created_at).local().format('x');
+      const created_at = moment(this.memInfo.user.created_at)
+        .local()
+        .format("x");
       const diff = +today - +created_at;
       this.day = Math.floor(diff / 1000 / 60 / 60 / 24) + 1;
     }
@@ -128,9 +130,9 @@ export default {
       // });
       goLangApiRequest({
         method: "get",
-        url: `${this.siteConfig.YABO_GOLANG_API_DOMAIN}/Player/vipinfo`,
+        url: `${this.siteConfig.YABO_GOLANG_API_DOMAIN}/cxbb/Player/vipinfo`,
         headers: {
-          "cid": cid
+          cid: cid
         }
       }).then(res => {
         this.viplevel = res.data ? res.data[0] && res.data[0].now_level_seq : 0;

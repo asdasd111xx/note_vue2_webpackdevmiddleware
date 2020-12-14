@@ -112,7 +112,7 @@ export default {
             name: game.name
           }))
           .filter(type => {
-            return this.isAdult ? type : type.icon !== "welfare";
+            return this.isAdult ? type : type.icon !== "Welfare";
           });
 
         return [...typeList, ...typeList, ...typeList];
@@ -272,7 +272,7 @@ export default {
     getAllGame() {
       return goLangApiRequest({
         method: "get",
-        url: `${this.siteConfig.YABO_GOLANG_API_DOMAIN}/Game/list`
+        url: `${this.siteConfig.YABO_GOLANG_API_DOMAIN}/cxbb/Game/list`
       }).then(response => {
         if (!response.data) {
           return;
@@ -466,7 +466,37 @@ export default {
           return;
 
         case "balanceTrans":
-          this.$router.push(`/mobile/mcenter/balanceTrans`);
+          if (this.siteConfig.MOBILE_WEB_TPL === "porn1") {
+            this.$router.push(`/mobile/mcenter/balanceTrans`);
+            return;
+          }
+
+          axios({
+            method: "get",
+            url: "/api/v2/c/domain-config"
+          })
+            .then(res => {
+              let withdraw_info_before_bet = false;
+              if (res && res.data && res.data.ret) {
+                withdraw_info_before_bet =
+                  res.data.ret.withdraw_info_before_bet;
+              }
+
+              if (withdraw_info_before_bet) {
+                this.checkWithdrawData(path);
+                return;
+              }
+
+              this.$router.push("/mobile/mcenter/balanceTrans");
+            })
+            .catch(res => {
+              this.actionSetGlobalMessage({
+                msg: res.data.msg,
+                code: res.data.code,
+                origin: "home"
+              });
+            });
+
           return;
         // if (this.siteConfig.MOBILE_WEB_TPL === "porn1") {
         //   this.$router.push(`/mobile/mcenter/balanceTrans`);
@@ -617,7 +647,7 @@ export default {
                 // let newWindow = window.open('');
                 // goLangApiRequest({
                 //     method: 'get',
-                //     url: `${this.siteConfig.YABO_GOLANG_API_DOMAIN}/ThirdParty/${game.vendor}/${this.memInfo.user.id}`,
+                //     url: `${this.siteConfig.YABO_GOLANG_API_DOMAIN}/cxbb/ThirdParty/${game.vendor}/${this.memInfo.user.id}`,
                 //     headers: {
                 //         'x-domain': this.memInfo.user.domain
                 //     },
@@ -635,7 +665,7 @@ export default {
                 const getThridUrl = () =>
                   goLangApiRequest({
                     method: "get",
-                    url: `${this.siteConfig.YABO_GOLANG_API_DOMAIN}/ThirdParty/${game.vendor}/${userId}`
+                    url: `${this.siteConfig.YABO_GOLANG_API_DOMAIN}/cxbb/ThirdParty/${game.vendor}/${userId}`
                   }).then(res => {
                     localStorage.removeItem("is-open-game");
 
@@ -795,7 +825,7 @@ export default {
       // });
       goLangApiRequest({
         method: "get",
-        url: `${this.siteConfig.YABO_GOLANG_API_DOMAIN}/Player/vipinfo`,
+        url: `${this.siteConfig.YABO_GOLANG_API_DOMAIN}/cxbb/Player/vipinfo`,
         headers: {
           cid: cid
         }

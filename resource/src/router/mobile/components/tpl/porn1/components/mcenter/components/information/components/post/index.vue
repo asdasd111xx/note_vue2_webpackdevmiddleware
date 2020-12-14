@@ -78,24 +78,24 @@ export default {
     },
     shortDateFormat(date) {
       return Vue.moment(EST(date)).format("YYYY-MM-DD");
-    },
+    }
   },
   data() {
     return {
       hasReceive: false,
-      postData: [],
+      postData: []
     };
   },
   computed: {
     ...mapGetters({
-      siteConfig: "getSiteConfig",
+      siteConfig: "getSiteConfig"
     }),
     currentPost() {
       if (!this.$route.query.pid) {
         return null;
       }
-      return this.postData.find((post) => post.id === this.$route.query.pid);
-    },
+      return this.postData.find(post => post.id === this.$route.query.pid);
+    }
   },
   methods: {
     setContent(content) {
@@ -103,23 +103,23 @@ export default {
         return;
       }
       let urlRegex = /(https?:\/\/[^\s]+)/g;
-      return content.replace(/\n/g, "<br/>").replace(urlRegex, function (url) {
+      return content.replace(/\n/g, "<br/>").replace(urlRegex, function(url) {
         return '<a href="' + url + '" target="_blank">' + url + "</a>";
       });
-    },
+    }
   },
   methods: {
     setContent(content) {
       let urlRegex = /(https?:\/\/[^\s]+)/g;
-      return content.replace(/\n/g, '<br/>').replace(urlRegex, function (url) {
-        return '<a href="' + url + '" target="_blank">' + url + '</a>';
-      })
-    },
+      return content.replace(/\n/g, "<br/>").replace(urlRegex, function(url) {
+        return '<a href="' + url + '" target="_blank">' + url + "</a>";
+      });
+    }
   },
   created() {
     ajax({
       method: "get",
-      url: API_GET_POST,
+      url: getSiteConfig,
       success: ({ result, ret }) => {
         if (result !== "ok") {
           return;
@@ -130,17 +130,17 @@ export default {
           1: "最新",
           2: "重要",
           3: "活动",
-          4: "维护",
+          4: "维护"
         };
 
-        this.postData = ret.map((item) => ({
+        this.postData = ret.map(item => ({
           ...item,
-          categoryText: categoryList[item.category],
+          categoryText: categoryList[item.category]
         }));
         this.hasReceive = true;
-      },
+      }
     });
-  },
+  }
 };
 </script>
 
