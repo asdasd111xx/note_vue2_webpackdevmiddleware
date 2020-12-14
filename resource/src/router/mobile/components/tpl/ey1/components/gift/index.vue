@@ -19,13 +19,6 @@
           <div>
             {{ item.name }}
           </div>
-          <!-- <div
-            v-if="
-              item && (item.url || item.thirdUrl || item.items || item.params)
-            "
-        
-            :class="$style['icon-next']"
-          > -->
           <div
             v-if="
               item && (item.url || item.showUrl || item.items || item.params)
@@ -34,7 +27,7 @@
           >
             <img src="/static/image/ey1/common/btn_next.png" />
           </div>
-          <!-- <div v-else :class="$style['incoming']">即将开业 敬请期待</div> -->
+          <div v-else :class="$style['incoming']">即将开业 敬请期待</div>
         </div>
       </div>
     </div>
@@ -61,6 +54,7 @@ export default {
           icon: "/static/image/ey1/gift/icon_gift_bonus.png",
           items: [
             {
+              alias: "daily_signin",
               name: "每日签到",
               login: true,
               thirdUrl: "",
@@ -68,6 +62,7 @@ export default {
               // "https://fengniao131.com/member.php?mod=logging&action=login&mobile=2"
             },
             {
+              alias: "lucky_turntable",
               name: "好运转盘",
               login: true,
               thirdUrl: "",
@@ -75,6 +70,7 @@ export default {
               // "https://fengniao131.com/plugin.php?id=lezhi99_lottery"
             },
             {
+              alias: "score_mall",
               name: "积分商城",
               login: true,
               thirdUrl: "",
@@ -278,7 +274,7 @@ export default {
     getFuliUrl(target) {
       goLangApiRequest({
         method: "get",
-        url: `${this.siteConfig.YABO_GOLANG_API_DOMAIN}/xbb/Link/External/Url?lang=zh-cn&urlName=${target.name}&needToken=true&externalCode=fengniao`
+        url: `${this.siteConfig.YABO_GOLANG_API_DOMAIN}/xbb/Link/External/Url?lang=zh-cn&urlName=${target.alias}&needToken=true&externalCode=fengniao`
       })
         .then(res => {
           this.getThridUrl(target, res.data.uri);
