@@ -50,7 +50,7 @@
       <div>
         <div>
           <img
-            :src="$getCdnPath(`/static/image/_new/webview/ic_service01.png`)"
+            :src="$getCdnPath(`/static/image/common/webview/ic_service01.png`)"
           />
           &nbsp;
           <span>在线客服1</span>
@@ -70,7 +70,7 @@
       <div>
         <div>
           <img
-            :src="$getCdnPath(`/static/image/_new/webview/ic_service02.png`)"
+            :src="$getCdnPath(`/static/image/common/webview/ic_service02.png`)"
           />
           &nbsp;
           <span>在线客服2</span>

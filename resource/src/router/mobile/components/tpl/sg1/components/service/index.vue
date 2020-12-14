@@ -3,7 +3,7 @@
     <div slot="content" :class="$style['content-wrap']">
       <div :class="$style['service-header']">
         <div v-if="hasPrev" :class="$style['btn-prev']" @click="handleBack()">
-          <img :src="$getCdnPath(`/static/image/ey1/common/btn_back.png`)" />
+          <img :src="$getCdnPath(`/static/image/sg1/common/btn_back.png`)" />
         </div>
         <div :class="$style.title">我的客服</div>
         <div
@@ -37,7 +37,9 @@
         <div>
           <div>
             <img
-              :src="$getCdnPath(`/static/image/_new/service/ic_service01.png`)"
+              :src="
+                $getCdnPath(`/static/image/common/service/ic_service01.png`)
+              "
             />
             &nbsp;
             <span>在线客服1</span>
@@ -48,9 +50,7 @@
 
         <div :class="$style['btn-next']">
           <img
-            :src="
-              $getCdnPath(`/static/image/_new/webview/ic_service_arrow.png`)
-            "
+            :src="$getCdnPath(`/static/image/sg1/webview/ic_service_arrow.png`)"
           />
         </div>
       </div>
@@ -59,7 +59,9 @@
         <div>
           <div>
             <img
-              :src="$getCdnPath(`/static/image/_new/service/ic_service02.png`)"
+              :src="
+                $getCdnPath(`/static/image/common/service/ic_service02.png`)
+              "
             />
             &nbsp;
             <span>在线客服2</span>
@@ -70,9 +72,7 @@
 
         <div :class="$style['btn-next']">
           <img
-            :src="
-              $getCdnPath(`/static/image/_new/webview/ic_service_arrow.png`)
-            "
+            :src="$getCdnPath(`/static/image/sg1/webview/ic_service_arrow.png`)"
           />
         </div>
       </div>
@@ -83,9 +83,7 @@
         :style="hasPrev ? { bottom: '15px' } : {}"
       >
         <div :class="$style['tip-img']">
-          <img
-            :src="$getCdnPath(`/static/image/_new/service/appicon_yabo.png`)"
-          />
+          <img :src="$getCdnPath(`/static/image/sg1/common/appicon.png`)" />
         </div>
 
         <div :class="$style['tip-text']">永久网址</div>
@@ -98,7 +96,7 @@
             <img
               :src="
                 $getCdnPath(
-                  '/static/image/_new/service/popup/popup_ic_close.png'
+                  '/static/image/sg1/service/popup/popup_ic_close.png'
                 )
               "
               alt="close"
@@ -111,9 +109,7 @@
             <div :class="$style['title-img']">
               <img
                 :src="
-                  $getCdnPath(
-                    '/static/image/_new/service/popup/popup_img01.png'
-                  )
+                  $getCdnPath('/static/image/sg1/service/popup/popup_img01.png')
                 "
                 alt="img01"
               />
@@ -130,7 +126,7 @@
                 <img
                   :src="
                     $getCdnPath(
-                      '/static/image/_new/service/popup/popup_img02.png'
+                      '/static/image/sg1/service/popup/popup_img02.png'
                     )
                   "
                   alt="img02"
@@ -175,7 +171,7 @@ export default {
       divHeight: 0,
       isShowPop: false,
       linkArray: [],
-      avatarSrc: `/static/image/_new/mcenter/avatar_nologin.png`
+      avatarSrc: `/static/image/sg1/mcenter/avatar_nologin.png`
     };
   },
   created() {
@@ -260,12 +256,12 @@ export default {
           .catch(error => {
             this.actionSetGlobalMessage({ msg: error.data.msg });
             this.avatarSrc = this.$getCdnPath(
-              `/static/image/_new/mcenter/default/avatar_${imgSrcIndex}.png`
+              `/static/image/common/mcenter/default/avatar_${imgSrcIndex}.png`
             );
           });
       } else {
         this.avatarSrc = this.$getCdnPath(
-          `/static/image/_new/mcenter/default/avatar_${imgSrcIndex}.png`
+          `/static/image/common/mcenter/default/avatar_${imgSrcIndex}.png`
         );
       }
     }
@@ -278,7 +274,7 @@ export default {
 
 div.container {
   background-color: #fff;
-  background-image: url("/static/image/_new/service/header_bg.png");
+  background-image: url("/static/image/sg1/service/header_bg.png");
   background-repeat: no-repeat;
   background-size: 100% auto;
   background-position: 0 -70px;
@@ -359,7 +355,7 @@ div.container {
     display: flex;
     flex-direction: column;
     padding: 14px;
-    background-image: url("/static/image/_new/service/service_card.png");
+    background-image: url("/static/image/sg1/service/service_card.png");
     background-size: auto 100%;
     background-position: top 0 right 0;
     height: 100%;
@@ -447,7 +443,7 @@ div.container {
   margin: 0 auto;
   font-size: 12px;
   color: #fff;
-  background: #be9e7f;
+  background: #fb4e74;
   border-radius: 12px;
   box-shadow: 0pt 2px 5px 0pt rgba(0, 0, 0, 0.16);
 }
@@ -555,7 +551,7 @@ div.container {
         top: 50%;
         left: 20px;
         transform: translateY(-50%);
-        background: url("/static/image/_new/service/popup/popup_ic_search.png")
+        background: url("/static/image/sg1/service/popup/popup_ic_search.png")
           no-repeat;
         width: 12px;
         height: 12px;

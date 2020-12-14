@@ -107,12 +107,12 @@ export default {
           .catch(error => {
             this.actionSetGlobalMessage({ msg: error.data.msg });
             this.avatarSrc = this.$getCdnPath(
-              `/static/image/_new/mcenter/default/avatar_${imgSrcIndex}.png`
+              `/static/image/common/mcenter/default/avatar_${imgSrcIndex}.png`
             );
           });
       } else {
         this.avatarSrc = this.$getCdnPath(
-          `/static/image/_new/mcenter/default/avatar_${imgSrcIndex}.png`
+          `/static/image/common/mcenter/default/avatar_${imgSrcIndex}.png`
         );
       }
     },
