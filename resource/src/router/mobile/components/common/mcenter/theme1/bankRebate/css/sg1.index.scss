@@ -15,7 +15,7 @@
     width: 50%;
     height: 43px;
     line-height: 43px;
-    color: #cccccc;
+    color: #a2a2a2;
     text-align: center;
     text-overflow: ellipsis;
     white-space: nowrap;
@@ -28,7 +28,7 @@
 
     &.active {
       color: #5e626d;
-      border-bottom: 2px solid #e61938;
+      border-bottom: 2px solid #fb4e74;
     }
 
     &.self {
@@ -58,27 +58,27 @@
 
     .total-item-title {
       line-height: 12px;
-      color: #222;
+      color: #333333;
     }
 
     .total-item-money {
       line-height: 16px;
       margin: 14px 0 9px;
       font-size: 16px;
-      color: #222;
+      color: #333333;
 
       &.week {
         color: #e61938;
       }
 
       &.is-current {
-        color: #222;
+        color: #bf8646;
       }
     }
 
     .total-item-date {
       line-height: 15px;
-      color: #222;
+      color: #333333;
     }
   }
 }
@@ -110,11 +110,11 @@
         padding: 2px 17px;
 
         .content-left {
-          color: #cccccc;
+          color: #a2a2a2;
         }
 
         .content-right {
-          color: #222;
+          color: #333333;
         }
       }
     }
@@ -170,7 +170,7 @@
 
       p {
         font-size: 14px;
-        color: #cccccc;
+        color: #a2a2a2;
       }
     }
   }
@@ -281,7 +281,7 @@
 
 .rebate-manual-tip {
   padding: 7px 20px;
-  color: #aaa;
+  color: #aaaaaa;
 
   > div {
     line-height: 24px;
