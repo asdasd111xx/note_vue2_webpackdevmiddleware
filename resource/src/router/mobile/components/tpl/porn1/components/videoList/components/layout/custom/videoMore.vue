@@ -96,7 +96,6 @@ export default {
         centeredSlidesBounds: true,
         spaceBetween: 15,
         slidesOffsetBefore: 20,
-        slidesOffsetAfter: 20,
         freeMode: true
       };
     },
@@ -268,7 +267,6 @@ export default {
   background: $main_white_color1;
   max-width: $mobile_max_width;
   width: 100%;
-  padding-right: 40px;
   position: fixed;
   top: 43px;
   z-index: 2;
