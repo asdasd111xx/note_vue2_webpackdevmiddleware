@@ -94,7 +94,7 @@ export default {
         slideToClickedSlide: true,
         centeredSlides: true,
         centeredSlidesBounds: true,
-        spaceBetween: 25,
+        spaceBetween: 15,
         slidesOffsetBefore: 20,
         slidesOffsetAfter: 20,
         freeMode: true
