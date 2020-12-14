@@ -1,5 +1,9 @@
 <template>
-  <mobile-container :header-config="headerConfig" :has-footer="false">
+  <mobile-container
+    :header-config="headerConfig"
+    :has-footer="false"
+    :class="$style.container"
+  >
     <div slot="content" class="content-wrap">
       <recharge />
     </div>
@@ -30,4 +34,6 @@ export default {
 </script>
 
 <style lang="scss" module>
+.container {
+}
 </style>

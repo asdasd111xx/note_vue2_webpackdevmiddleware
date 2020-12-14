@@ -20,7 +20,12 @@ export default {
   computed: {
     ...mapGetters({
       siteConfig: "getSiteConfig"
-    })
+    }),
+    $style() {
+      const style =
+        this[`$style_${this.siteConfig.MOBILE_WEB_TPL}`] || this.$style_porn1;
+      return style;
+    },
   },
   mounted() {
     // yaboRequest({
@@ -34,10 +39,10 @@ export default {
       method: "get",
       url: this.siteConfig.YABO_GOLANG_API_DOMAIN + "/cxbb/System/quotaad"
     }).then(res => {
-      console.log("api quotaad test");
       this.imgList = res.data;
     });
   }
 };
 </script>
-<style lang="scss" src="../css/index.module.scss" module></style>
+<style lang="scss" src="../css/porn1.module.scss" module="$style_porn1"></style>
+<style lang="scss" src="../css/sg1.module.scss" module="$style_sg1"></style>

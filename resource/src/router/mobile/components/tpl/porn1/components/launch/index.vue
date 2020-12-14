@@ -31,6 +31,7 @@ export default {
     localStorage.removeItem('is-open-game');
     localStorage.removeItem('do-not-show-home-post');
     localStorage.removeItem('is-show-popup-announcement');
+    localStorage.removeItem('mobile-slider');
   },
   mounted() {
     this.timer = setInterval(() => {

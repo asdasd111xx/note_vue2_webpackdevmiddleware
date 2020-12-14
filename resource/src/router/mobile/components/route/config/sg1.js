@@ -198,6 +198,7 @@ export default {
     tcenterRecommendGiftSg1: () =>
       import(
         /* webpackChunkName: 'tcenteRecommendGiftSg1' */ "../../tpl/sg1/components/mcenter/components/tcenter/components/recommendGift"
-      )
+      ),
+    creditTransSg1: () => import(/* webpackChunkName: 'creditTransSg1' */'../../tpl/sg1/components/mcenter/components/creditTrans'),
   }
 };

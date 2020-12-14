@@ -42,6 +42,7 @@ export default {
   beforeDestroy() {
     clearInterval(this.getSliderTimer);
     this.getSliderTimer = null;
+    localStorage.removeItem('mobile-slider');
   },
   mounted() {
     this.initSlider();
@@ -94,6 +95,7 @@ export default {
       }
 
       let list = [];
+      console.log(mobileSlider)
       mobileSlider.mSlider.data.forEach((data) => {
         if (!Object.keys(this.lang)) {
           return;

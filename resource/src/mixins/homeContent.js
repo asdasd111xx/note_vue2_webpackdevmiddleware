@@ -120,7 +120,7 @@ export default {
             name: game.name
           }))
           .filter(type => {
-            return this.isAdult ? type : type.icon !== "Welfare";
+            return this.isAdult ? type : type.icon !== "welfare";
           });
 
         return [...typeList, ...typeList, ...typeList];
