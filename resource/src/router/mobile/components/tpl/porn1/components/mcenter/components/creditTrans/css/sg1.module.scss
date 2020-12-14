@@ -1,0 +1,32 @@
+@import './porn1.module.scss';
+
+.active-slider {
+  background: #FB4E74;
+}
+
+
+.send-keyring {
+  color: white;
+  background: linear-gradient(#fe593c, #e61938);
+
+  &.disabled {
+    color: white;
+    background: linear-gradient(#fed3cb, #ffc5ce);
+    pointer-events: none;
+  }
+}
+
+.submit-wrap {
+
+  >div {
+    border-radius: 3px;
+    background: linear-gradient(#fe593c, #e61938);
+  }
+
+  &.disabled {
+    >div {
+      background: linear-gradient(#fed3cb, #ffc5ce);
+      color: #FFFFFF;
+    }
+  }
+}

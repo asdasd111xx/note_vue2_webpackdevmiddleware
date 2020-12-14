@@ -51,8 +51,14 @@ export default {
             pwdResetInfo: "getPwdResetInfo",
             membalance: "getMemBalance",
             rechargeConfig: "getRechargeConfig",
-            rechargeBonusConfig: "getRechargeBonusConfig"
+            rechargeBonusConfig: "getRechargeBonusConfig",
+            siteConfig: "getSiteConfig"
         }),
+        $style() {
+            const style =
+                this[`$style_${this.siteConfig.MOBILE_WEB_TPL}`] || this.$style_porn1;
+            return style;
+        },
         inputInfo() {
             return [
                 {

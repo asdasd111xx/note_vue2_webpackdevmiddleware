@@ -43,13 +43,4 @@ export default {
   }
 };
 </script>
-
-<style lang="scss" module>
-@import "../css/index.module.scss";
-.recoard-credit-trans {
-  overflow-x: hidden;
-  overflow-y: auto;
-  position: relative;
-  width: 100%;
-}
-</style>
+<style lang="scss" src="../css/porn1.module.scss" module></style>

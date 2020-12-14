@@ -81,7 +81,7 @@ export default {
 };
 </script>
 <style lang="scss"  module>
-@import "../css/index.module.scss";
+@import "../css/porn1.module.scss";
 
 .tips {
   margin-top: 35px;
