@@ -1,0 +1,21 @@
+@import "./index.vipRewardRules.scss";
+
+.table-header {
+  background: #ede2e2;
+
+  .header-item {
+
+    &:first-of-type {
+      background: #D3C3B4;
+    }
+  }
+}
+
+
+.title {
+
+  &::before {
+    content: "";
+    background: linear-gradient(#fe593c, #e61938);
+  }
+}
