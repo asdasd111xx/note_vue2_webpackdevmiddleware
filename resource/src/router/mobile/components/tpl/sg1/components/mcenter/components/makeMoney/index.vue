@@ -8,13 +8,13 @@
       <div :class="$style['img-wrap']">
         <img
           :class="$style['img-wrap']"
-          :src="`/static/image/_new/mcenter/makeMoney/pic_promotion_banner.png`"
+          :src="`/static/image/sg1/mcenter/makeMoney/pic_promotion_banner.png`"
         />
       </div>
       <div @click="copyCode" :class="$style['img-wrap']">
         <img
           :class="$style['img-wrap']"
-          :src="`/static/image/_new/mcenter/makeMoney/img001.png`"
+          :src="`/static/image/sg1/mcenter/makeMoney/img001.png`"
         />
         <span>{{ agentLink.agentCode }}</span>
         <div :class="$style['copy-btn']">
@@ -24,19 +24,19 @@
       <div :class="$style['img-wrap']">
         <img
           :class="$style['img-wrap']"
-          :src="`/static/image/_new/mcenter/makeMoney/img002.png`"
+          :src="`/static/image/sg1/mcenter/makeMoney/img002.png`"
         />
       </div>
       <div :class="$style['img-wrap']">
         <img
           :class="$style['img-wrap']"
-          :src="`/static/image/_new/mcenter/makeMoney/btn_promote.png`"
+          :src="`/static/image/sg1/mcenter/makeMoney/btn_promote.png`"
         />
       </div>
       <div :class="$style['img-wrap']">
         <img
           :class="$style['img-wrap']"
-          :src="`/static/image/_new/mcenter/makeMoney/img003.png`"
+          :src="`/static/image/sg1/mcenter/makeMoney/img003.png`"
         />
       </div>
     </div>
@@ -208,16 +208,17 @@ export default {
   }
 
   .copy-btn {
-    padding: 3px 10px;
+    padding: 2px 10px;
     position: absolute;
     bottom: calc(4vw - 3px);
-    right: 5%;
+    right: 4%;
     font-weight: 700;
     color: #fff;
-    background: #bd9d7d;
-    background-image: -webkit-linear-gradient(top, #bd9d7d, #f9ddbd);
-    background-image: linear-gradient(top, #bd9d7d, #f9ddbd);
+    background: #fa4e3a;
+    background-image: -webkit-linear-gradient(left, #e61c38, #fc573c);
+    background-image: linear-gradient(left, #e61c38, #fc573c);
     border-radius: 20px;
+    border: 3px #fce4d0 solid;
   }
 }
 </style>
