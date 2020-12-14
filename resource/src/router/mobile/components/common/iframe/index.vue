@@ -170,7 +170,7 @@ export default {
           })
           .catch(error => {
             this.isLoading = false;
-            if (error && error.data && error.date.msg) {
+            if (error && error.data && error.data.msg) {
               this.actionSetGlobalMessage({ msg: error.data.msg });
             }
           });
@@ -318,7 +318,7 @@ export default {
         })
         .catch(error => {
           this.isLoading = false;
-          if (error && error.data && error.date.msg) {
+          if (error && error.data && error.data.msg) {
             this.actionSetGlobalMessage({ msg: error.data.msg });
           }
         });

@@ -56,7 +56,7 @@ export default (target) => {
       }
     }).catch(error => {
       // newWindow.close();
-      if (error && error.data && error.date.msg) {
+      if (error && error.data && error.data.msg) {
         this.actionSetGlobalMessage({ msg: error.data.msg });
       }
     })
