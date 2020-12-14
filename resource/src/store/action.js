@@ -1138,7 +1138,8 @@ export const actionContactUs = (_, postData) =>
 //     手機資料
 // ＝＝＝＝＝＝＝＝＝＝＝＝＝＝＝＝＝＝
 export const actionGetMobileInfo = ({ commit }, tpl) => {
-  const status = Vue.cookie.get("newsite") ? "New" : "";
+  // const status = Vue.cookie.get("newsite") ? "New" : "";
+  const status = "";
   let manifest = document.createElement("link");
   manifest.rel = "manifest";
   manifest.href = `/static/tpl/analytics/${tpl}/manifest.json`;
