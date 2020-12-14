@@ -43,7 +43,8 @@ export default {
     },
     slider() {
       // 若無資料則使用預設圖片
-      if (!this.mobileInfo.mSlider ||
+      if (!this.mobileInfo ||
+        !this.mobileInfo.mSlider ||
         !this.mobileInfo.mSlider.data ||
         this.mobileInfo.mSlider.data.length === 0) {
         const imageData = this.generateDefaultImg();

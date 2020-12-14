@@ -20,7 +20,7 @@ export default {
 
     (async () => {
       await store.dispatch('actionMemInit');
-      store.dispatch('actionGetMobileInfo', store.state.memInfo.user.domain);
+      //  store.dispatch('actionGetMobileInfo', store.state.memInfo.user.domain);
       next();
     })();
   },
