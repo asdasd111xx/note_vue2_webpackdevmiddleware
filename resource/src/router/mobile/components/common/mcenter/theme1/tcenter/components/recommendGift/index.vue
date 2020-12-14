@@ -200,7 +200,7 @@
           :class="$style['btn-money']"
           @click="$router.push('/mobile/mcenter/makeMoney')"
         >
-          一键快赚
+          推广赚钱
         </div>
       </div>
     </template>

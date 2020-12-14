@@ -16,7 +16,7 @@
           <img
             :src="
               $getCdnPath(
-                `/static/image/${siteConfig.MOBILE_WEB_TPL}/mcenter/information/btn_more.png`
+                `/static/image/${siteConfig.MOBILE_WEB_TPL}/mcenter/information/icon_information.png`
               )
             "
           />
@@ -42,7 +42,7 @@
           <img
             :src="
               $getCdnPath(
-                `/static/image/${siteConfig.MOBILE_WEB_TPL}/mcenter/information/btn_more.png`
+                `/static/image/${siteConfig.MOBILE_WEB_TPL}/mcenter/information/icon_information.png`
               )
             "
           />
