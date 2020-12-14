@@ -29,7 +29,7 @@
 
 <script>
 import yaboRequest from "@/api/yaboRequest";
-import goLangApiRequest from '@/api/goLangApiRequest';
+import goLangApiRequest from "@/api/goLangApiRequest";
 import { mapGetters, mapActions } from "vuex";
 
 export default {
@@ -39,15 +39,15 @@ export default {
       list: null,
       defaultImgSrc: this.$getCdnPath(
         "/static/image/_new/mcenter/help/email.png"
-      ),
+      )
     };
   },
   computed: {
     ...mapGetters({
       memInfo: "getMemInfo",
       loginStatus: "getLoginStatus",
-      siteConfig: "getSiteConfig",
-    }),
+      siteConfig: "getSiteConfig"
+    })
   },
   created() {
     // yaboRequest({
@@ -61,8 +61,8 @@ export default {
     // });
     goLangApiRequest({
       method: "get",
-      url: `${this.siteConfig.YABO_GOLANG_API_DOMAIN}/System/contactus`,
-    }).then((res) => {
+      url: `${this.siteConfig.YABO_GOLANG_API_DOMAIN}/cxbb/System/contactus`
+    }).then(res => {
       if (res && res.data && res.data.length > 0) {
         this.list = res.data;
       }
@@ -73,8 +73,8 @@ export default {
     copy(value) {
       this.$copyText(value);
       this.actionSetGlobalMessage({ msg: "复制成功" });
-    },
-  },
+    }
+  }
 };
 </script>
 

@@ -60,8 +60,8 @@ import { mapGetters, mapActions } from "vuex";
 import mobileContainer from "../../../../common/mobileContainer";
 import mixin from "@/mixins/mcenter/recharge/recharge";
 import axios from "axios";
-import yaboRequest from '@/api/yaboRequest';
-import goLangApiRequest from '@/api/goLangApiRequest';
+import yaboRequest from "@/api/yaboRequest";
+import goLangApiRequest from "@/api/goLangApiRequest";
 import { getCookie } from "@/lib/cookie";
 
 export default {
@@ -76,12 +76,7 @@ export default {
     return {
       userVipInfo: null,
       vipTitleName: "",
-      titleList: [
-        "特权VIP",
-        "每月首转",
-        "每周首转",
-        "首次转让"
-      ],
+      titleList: ["特权VIP", "每月首转", "每周首转", "首次转让"]
       //  假資料測試
       //   list: [
       //     ["VIP0", "9元/位", "9元/位", "9元/位"],
@@ -128,11 +123,11 @@ export default {
       }
 
       return arr;
-    },
+    }
   },
   methods: {
     commaFormat(value) {
-      return value.toString().replace(/\B(?=(\d{3})+(?!\d))/g, ',');
+      return value.toString().replace(/\B(?=(\d{3})+(?!\d))/g, ",");
     },
     getUserDetail() {
       // yaboRequest({
@@ -147,16 +142,15 @@ export default {
       // });
       goLangApiRequest({
         method: "get",
-        url: `${
-          this.siteConfig.YABO_GOLANG_API_DOMAIN
-          }/Player/vipinfo`,
+        url: `${this.siteConfig.YABO_GOLANG_API_DOMAIN}/cxbb/Player/vipinfo`,
         headers: {
-          "cid": getCookie("cid")        }
+          cid: getCookie("cid")
+        }
       }).then(res => {
         this.userVipInfo = res.data;
-        this.vipTitleName = res.data[0].config_name
+        this.vipTitleName = res.data[0].config_name;
       });
-    },
+    }
   }
 };
 </script>

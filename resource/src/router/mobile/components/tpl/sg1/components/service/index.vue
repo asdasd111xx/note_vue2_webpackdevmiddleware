@@ -159,13 +159,13 @@
 import { mapGetters, mapActions } from "vuex";
 import mobileContainer from "../common/mobileContainer";
 import mobileLinkOpen from "@/lib/mobile_link_open";
-import yaboRequest from '@/api/yaboRequest';
-import goLangApiRequest from '@/api/goLangApiRequest';
-import axios from 'axios';
+import yaboRequest from "@/api/yaboRequest";
+import goLangApiRequest from "@/api/goLangApiRequest";
+import axios from "axios";
 
 export default {
   components: {
-    mobileContainer,
+    mobileContainer
   },
   data() {
     return {
@@ -175,7 +175,7 @@ export default {
       divHeight: 0,
       isShowPop: false,
       linkArray: [],
-      avatarSrc: `/static/image/_new/mcenter/avatar_nologin.png`,
+      avatarSrc: `/static/image/_new/mcenter/avatar_nologin.png`
     };
   },
   created() {
@@ -187,7 +187,7 @@ export default {
   mounted() {
     this.actionSetUserdata(true).then(() => {
       this.getAvatarSrc();
-    })
+    });
 
     this.divHeight = document.body.offsetHeight - 60;
 
@@ -205,7 +205,7 @@ export default {
 
     goLangApiRequest({
       method: "get",
-      url: `${this.siteConfig.YABO_GOLANG_API_DOMAIN}/System/downloadlink`,
+      url: `${this.siteConfig.YABO_GOLANG_API_DOMAIN}/cxbb/System/downloadlink`
     }).then(res => {
       if (res && res.data) {
         this.linkArray = res.data;
@@ -228,9 +228,7 @@ export default {
     }
   },
   methods: {
-    ...mapActions([
-      'actionSetUserdata'
-    ]),
+    ...mapActions(["actionSetUserdata"]),
     handleBack() {
       const redirect = this.$route.query.redirect;
       switch (redirect) {
@@ -251,20 +249,26 @@ export default {
       const imgSrcIndex = this.memInfo.user.image;
       if (this.memInfo.user && this.memInfo.user.custom) {
         axios({
-          method: 'get',
-          url: this.memInfo.user.custom_image,
-        }).then(res => {
-          if (res && res.data && res.data.result === "ok") {
-            this.avatarSrc = res.data.ret;
-          }
-        }).catch(error => {
-          this.actionSetGlobalMessage({ msg: error.data.msg });
-          this.avatarSrc = this.$getCdnPath(`/static/image/_new/mcenter/default/avatar_${imgSrcIndex}.png`);
+          method: "get",
+          url: this.memInfo.user.custom_image
         })
+          .then(res => {
+            if (res && res.data && res.data.result === "ok") {
+              this.avatarSrc = res.data.ret;
+            }
+          })
+          .catch(error => {
+            this.actionSetGlobalMessage({ msg: error.data.msg });
+            this.avatarSrc = this.$getCdnPath(
+              `/static/image/_new/mcenter/default/avatar_${imgSrcIndex}.png`
+            );
+          });
       } else {
-        this.avatarSrc = this.$getCdnPath(`/static/image/_new/mcenter/default/avatar_${imgSrcIndex}.png`);
+        this.avatarSrc = this.$getCdnPath(
+          `/static/image/_new/mcenter/default/avatar_${imgSrcIndex}.png`
+        );
       }
-    },
+    }
   }
 };
 </script>

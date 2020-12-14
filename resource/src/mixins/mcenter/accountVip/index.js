@@ -1,5 +1,5 @@
 import { getCookie } from "@/lib/cookie";
-import goLangApiRequest from '@/api/goLangApiRequest';
+import goLangApiRequest from "@/api/goLangApiRequest";
 import { mapGetters } from "vuex";
 import yaboRequest from "@/api/yaboRequest";
 
@@ -10,7 +10,7 @@ export default {
       userVipInfo: null,
       vipLevelList: [],
       currentLevelData: {}
-    }
+    };
   },
   computed: {
     ...mapGetters({
@@ -44,9 +44,9 @@ export default {
       // });
       goLangApiRequest({
         method: "get",
-        url: `${this.siteConfig.YABO_GOLANG_API_DOMAIN}/Player/vipinfo`,
+        url: `${this.siteConfig.YABO_GOLANG_API_DOMAIN}/cxbb/Player/vipinfo`,
         headers: {
-          "cid": getCookie("cid")
+          cid: getCookie("cid")
         }
       }).then(res => {
         this.userVipInfo = res.data;
@@ -73,9 +73,9 @@ export default {
 
       goLangApiRequest({
         method: "get",
-        url: `${this.siteConfig.YABO_GOLANG_API_DOMAIN}/Player/viplevel/${this.currentConfigID}`,
+        url: `${this.siteConfig.YABO_GOLANG_API_DOMAIN}/cxbb/Player/viplevel/${this.currentConfigID}`,
         headers: {
-          "cid": getCookie("cid")
+          cid: getCookie("cid")
         }
       }).then(res => {
         this.vipLevelList = res.data;
@@ -90,4 +90,4 @@ export default {
       this.getVipLevel();
     }
   }
-}
+};

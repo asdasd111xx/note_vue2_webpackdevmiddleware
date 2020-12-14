@@ -50,14 +50,14 @@
   </mobile-container>
 </template>
 <script>
-import { API_PROMOTION_LIST } from '@/config/api';
-import { mapGetters, mapActions } from 'vuex';
-import { Swiper, SwiperSlide } from 'vue-awesome-swiper';
-import ajax from '@/lib/ajax';
-import mobileContainer from '../common/mobileContainer';
-import axios from 'axios';
+import { API_PROMOTION_LIST } from "@/config/api";
+import { mapGetters, mapActions } from "vuex";
+import { Swiper, SwiperSlide } from "vue-awesome-swiper";
+import ajax from "@/lib/ajax";
+import mobileContainer from "../common/mobileContainer";
+import axios from "axios";
 import bbosRequest from "@/api/bbosRequest";
-import goLangApiRequest from '@/api/goLangApiRequest';
+import goLangApiRequest from "@/api/goLangApiRequest";
 
 export default {
   components: {
@@ -70,11 +70,11 @@ export default {
       tabId: 0,
       tabList: [],
       promotionList: [],
-      hasNewGift: false,
+      hasNewGift: false
     };
   },
   mounted() {
-    this.tabId = this.$route.query && this.$route.query.tab || 0;
+    this.tabId = (this.$route.query && this.$route.query.tab) || 0;
     this.getPromotionList(this.tabId);
 
     if (this.loginStatus) {
@@ -96,20 +96,18 @@ export default {
   },
   computed: {
     ...mapGetters({
-      loginStatus: 'getLoginStatus',
+      loginStatus: "getLoginStatus",
       memInfo: "getMemInfo",
-      siteConfig: "getSiteConfig",
+      siteConfig: "getSiteConfig"
     }),
     headerConfig() {
       return {
-        title: this.$text('S_PROMOTIONS', '优惠活动')
+        title: this.$text("S_PROMOTIONS", "优惠活动")
       };
     }
   },
   methods: {
-    ...mapActions([
-      'actionSetGlobalMessage'
-    ]),
+    ...mapActions(["actionSetGlobalMessage"]),
     handleClickTab(tab, index) {
       this.getPromotionList(tab.id);
     },
@@ -119,55 +117,58 @@ export default {
       //   this.$router.replace({ query: { tab: id } });
       // })
       ajax({
-        method: 'get',
+        method: "get",
         url: API_PROMOTION_LIST,
-        params: { api_uri: '/api/promotion/list', tab_id: id },
+        params: { api_uri: "/api/promotion/list", tab_id: id },
         errorAlert: false
-      }).then((response) => {
+      }).then(response => {
         this.promotionList = response.ret;
         if (this.tabList.length) {
           return;
         }
-        this.tabList = response.tab_list
+        this.tabList = response.tab_list;
 
         // 原為全部優惠
-        this.tabList[0].name = "全部"
+        this.tabList[0].name = "全部";
       });
     },
     onGiftClick() {
       // let newWindow = '';
       // newWindow = window.open('');
 
-      let url = '';
+      let url = "";
       goLangApiRequest({
         method: "get",
-        url: `${this.siteConfig.YABO_GOLANG_API_DOMAIN
-          }/System/scUrl`,
+        url: `${this.siteConfig.YABO_GOLANG_API_DOMAIN}/cxbb/System/scUrl`
       }).then(res => {
         url = res.data;
         if (!url) {
           return;
         }
         axios({
-          method: 'get',
-          url: '/api/v1/c/link/customize',
+          method: "get",
+          url: "/api/v1/c/link/customize",
           params: {
-            code: 'promotion',
+            code: "promotion",
             client_uri: url
           }
-        }).then(res => {
-          if (res && res.data && res.data.ret && res.data.ret.uri) {
-            // newWindow.location.href = res.data.ret.uri + '&v=m';
-            localStorage.setItem('iframe-third-url', res.data.ret.uri);
-            localStorage.setItem('iframe-third-url-title', '领取优惠');
-            this.$router.push(`/mobile/iframe/promotion?hasFooter=false&hasHeader=true`);
-          }
-        }).catch(error => {
-          // newWindow.close();
-          if (error && error.data && error.date.msg) {
-            this.actionSetGlobalMessage({ msg: error.data.msg });
-          }
         })
+          .then(res => {
+            if (res && res.data && res.data.ret && res.data.ret.uri) {
+              // newWindow.location.href = res.data.ret.uri + '&v=m';
+              localStorage.setItem("iframe-third-url", res.data.ret.uri);
+              localStorage.setItem("iframe-third-url-title", "领取优惠");
+              this.$router.push(
+                `/mobile/iframe/promotion?hasFooter=false&hasHeader=true`
+              );
+            }
+          })
+          .catch(error => {
+            // newWindow.close();
+            if (error && error.data && error.date.msg) {
+              this.actionSetGlobalMessage({ msg: error.data.msg });
+            }
+          });
       });
     },
     onClick(target) {
@@ -176,26 +177,33 @@ export default {
       }
 
       axios({
-        method: 'get',
-        url: '/api/v1/c/link/customize',
+        method: "get",
+        url: "/api/v1/c/link/customize",
         params: {
-          code: 'promotion',
+          code: "promotion",
           client_uri: target.link
         }
-      }).then(res => {
-        if (res && res.data && res.data.ret && res.data.ret.uri) {
-          // newWindow.location.href = res.data.ret.uri + '&v=m';
-          localStorage.setItem('iframe-third-url', res.data.ret.uri);
-          localStorage.setItem('iframe-third-url-title', target.name);
-          localStorage.setItem('iframe-third-origin', `promotion?tab=${this.tabId}`);
-          this.$router.push(`/mobile/iframe/promotion?hasFooter=false&hasHeader=true`);
-        }
-      }).catch(error => {
-        // newWindow.close();
-        if (error && error.data && error.date.msg) {
-          this.actionSetGlobalMessage({ msg: error.data.msg });
-        }
       })
+        .then(res => {
+          if (res && res.data && res.data.ret && res.data.ret.uri) {
+            // newWindow.location.href = res.data.ret.uri + '&v=m';
+            localStorage.setItem("iframe-third-url", res.data.ret.uri);
+            localStorage.setItem("iframe-third-url-title", target.name);
+            localStorage.setItem(
+              "iframe-third-origin",
+              `promotion?tab=${this.tabId}`
+            );
+            this.$router.push(
+              `/mobile/iframe/promotion?hasFooter=false&hasHeader=true`
+            );
+          }
+        })
+        .catch(error => {
+          // newWindow.close();
+          if (error && error.data && error.date.msg) {
+            this.actionSetGlobalMessage({ msg: error.data.msg });
+          }
+        });
     }
   }
 };

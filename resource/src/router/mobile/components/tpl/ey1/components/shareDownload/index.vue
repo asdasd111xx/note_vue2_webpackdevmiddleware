@@ -25,9 +25,8 @@
 
 <script>
 import { mapGetters, mapActions } from "vuex";
-import yaboRequest from '@/api/yaboRequest';
-import goLangApiRequest from '@/api/goLangApiRequest';
-
+import yaboRequest from "@/api/yaboRequest";
+import goLangApiRequest from "@/api/goLangApiRequest";
 
 export default {
   data() {
@@ -40,8 +39,8 @@ export default {
       loginStatus: "getLoginStatus",
       siteConfig: "getSiteConfig",
       agentLink: "getAgentLink",
-      memInfo: 'getMemInfo',
-      promotionLink: 'getPromotionLink'
+      memInfo: "getMemInfo",
+      promotionLink: "getPromotionLink"
     }),
     getAgentLink() {
       if (this.promotionLink) {
@@ -76,11 +75,10 @@ export default {
 
       goLangApiRequest({
         method: "get",
-        url: `${this.siteConfig.YABO_GOLANG_API_DOMAIN}/System/downloadlink`,
+        url: `${this.siteConfig.YABO_GOLANG_API_DOMAIN}/cxbb/System/downloadlink`
       }).then(res => {
         if (res && res.data) {
-          this.landingLink =
-            res.data[0].value || res.data[1].value;
+          this.landingLink = res.data[0].value || res.data[1].value;
         }
       });
     }

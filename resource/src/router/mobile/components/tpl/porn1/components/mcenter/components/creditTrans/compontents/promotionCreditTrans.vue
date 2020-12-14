@@ -8,8 +8,8 @@
 
 <script>
 import { mapGetters, mapActions } from "vuex";
-import yaboRequest from '@/api/yaboRequest';
-import goLangApiRequest from '@/api/goLangApiRequest';
+import yaboRequest from "@/api/yaboRequest";
+import goLangApiRequest from "@/api/goLangApiRequest";
 
 export default {
   data() {
@@ -20,7 +20,7 @@ export default {
   computed: {
     ...mapGetters({
       siteConfig: "getSiteConfig"
-    }),
+    })
   },
   mounted() {
     // yaboRequest({
@@ -31,13 +31,13 @@ export default {
     // });
 
     goLangApiRequest({
-      method: 'get',
-      url: this.siteConfig.YABO_GOLANG_API_DOMAIN + '/System/quotaad',
-    }).then((res) => {
+      method: "get",
+      url: this.siteConfig.YABO_GOLANG_API_DOMAIN + "/cxbb/System/quotaad"
+    }).then(res => {
       console.log("api quotaad test");
       this.imgList = res.data;
     });
-  },
+  }
 };
 </script>
 <style lang="scss" src="../css/index.module.scss" module></style>
