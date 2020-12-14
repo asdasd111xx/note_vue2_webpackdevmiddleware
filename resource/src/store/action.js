@@ -533,7 +533,7 @@ export const actionSetCasinoLoadingStatus = ({ commit }, status) => {
 //     會員、代理 共用
 // ＝＝＝＝＝＝＝＝＝＝＝＝＝＝＝＝＝＝
 // 會員、代理共用-設定系統時間
-export const actionSetSystemTime = ({ commit }, func = () => {}) => {
+export const actionSetSystemTime = ({ commit }, func = () => { }) => {
   common.systemTime({
     success: response => {
       if (response.result === "ok") {
@@ -586,7 +586,7 @@ export const actionMemInit = ({ state, dispatch, commit }) => {
     await dispatch("actionGetMemInfoV3");
     const defaultLang =
       ["47", "70", "71"].includes(state.memInfo.user.domain) &&
-      state.webInfo.is_production
+        state.webInfo.is_production
         ? "vi"
         : "zh-cn";
     await getLang(state.webInfo.language, defaultLang);
@@ -914,7 +914,7 @@ export const actionAgentInit = ({ state, dispatch, commit }, next) => {
 
         const defaultLang =
           ["47", "70", "71"].includes(state.agentInfo.user.domain) &&
-          state.webInfo.is_production
+            state.webInfo.is_production
             ? "vi"
             : "zh-cn";
         await getLang(state.webInfo.language, defaultLang);
@@ -1138,9 +1138,9 @@ export const actionContactUs = (_, postData) =>
 // ＝＝＝＝＝＝＝＝＝＝＝＝＝＝＝＝＝＝
 //     手機資料
 // ＝＝＝＝＝＝＝＝＝＝＝＝＝＝＝＝＝＝
-export const actionGetMobileInfo = ({ commit, state }) => {
-  let tpl = state.webDomain.domain;
-  const status = Vue.cookie.get("newsite") ? "New" : "";
+export const actionGetMobileInfo = ({ commit }, tpl) => {
+  // const status = Vue.cookie.get("newsite") ? "New" : "";
+  const status = "";
   let manifest = document.createElement("link");
   manifest.rel = "manifest";
   manifest.href = `/static/tpl/analytics/${tpl}/manifest.json`;
@@ -1602,7 +1602,7 @@ export const actionGetMemInfoV3 = ({ state, dispatch, commit }) => {
         dispatch("actionSetGlobalMessage", {
           msg: error.response.data.msg,
           cb: () => {
-            member.logout().then(() => {});
+            member.logout().then(() => { });
           }
         });
       }
