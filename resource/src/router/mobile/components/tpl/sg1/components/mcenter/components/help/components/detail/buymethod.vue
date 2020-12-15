@@ -11,7 +11,7 @@
         <img
           :src="
             $getCdnPath(
-              `/static/image/porn1/mcenter/help/swag/tutorial_deposit_swag_01.png`
+              `/static/image/sg1/mcenter/help/swag/tutorial_deposit_swag_01.png`
             )
           "
         />
@@ -36,7 +36,7 @@
         <img
           :src="
             $getCdnPath(
-              `/static/image/porn1/mcenter/help/swag/tutorial_deposit_swag_02.png`
+              `/static/image/sg1/mcenter/help/swag/tutorial_deposit_swag_02.png`
             )
           "
         />
@@ -57,7 +57,7 @@
         <img
           :src="
             $getCdnPath(
-              `/static/image/porn1/mcenter/help/swag/tutorial_deposit_swag_03.png`
+              `/static/image/sg1/mcenter/help/swag/tutorial_deposit_swag_03.png`
             )
           "
         />
@@ -75,7 +75,7 @@
         <img
           :src="
             $getCdnPath(
-              `/static/image/porn1/mcenter/help/swag/tutorial_deposit_swag_04.png`
+              `/static/image/sg1/mcenter/help/swag/tutorial_deposit_swag_04.png`
             )
           "
         />
