@@ -120,7 +120,7 @@ export default {
             name: game.name
           }))
           .filter(type => {
-            return this.isAdult ? type : type.icon !== "welfare";
+            return this.isAdult ? type : type.icon.toLowerCase() !== "welfare";
           });
 
         return [...typeList, ...typeList, ...typeList];
@@ -159,11 +159,10 @@ export default {
           });
         });
       }
-
       const gameList = this.allGame
         .map(game => game)
         .filter(item => {
-          return this.isAdult ? item : item.iconName !== "Welfare";
+          return this.isAdult ? item : item.iconName.toLowerCase() !== "welfare";
         });
       return gameList;
     },
@@ -198,9 +197,9 @@ export default {
         setTimeout(() => {
           $(window).trigger("resize");
           let defaultType =
-            this.siteConfig.MOBILE_WEB_TPL === "porn1" ? "Welfare" : "All";
-          if (localStorage.getItem("type")) {
-            defaultType = localStorage.getItem("type");
+            this.siteConfig.MOBILE_WEB_TPL === "porn1" ? "welfare" : "all";
+          if (localStorage.getItem("home-menu-type")) {
+            defaultType = localStorage.getItem("home-menu-type");
           }
 
           let defaultIndex = this.typeList.findIndex(type => {
@@ -423,7 +422,7 @@ export default {
         this.isSliding = false;
       });
 
-      localStorage.setItem("type", this.typeList[this.selectedIndex].icon);
+      localStorage.setItem("home-menu-type", this.typeList[this.selectedIndex].icon);
 
       setTimeout(() => {
         this.stopScroll = false;
