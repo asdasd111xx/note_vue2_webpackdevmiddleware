@@ -75,9 +75,6 @@ export default {
       src: ""
     };
   },
-  watch: {
-    src() {}
-  },
   components: {
     pageLoading: () =>
       import(
@@ -134,7 +131,7 @@ export default {
           method: "get",
           url: `${
             this.siteConfig.YABO_GOLANG_API_DOMAIN
-          }/cxbb/ThirdParty/${params.page.toUpperCase()}/${userId}`
+            }/cxbb/ThirdParty/${params.page.toUpperCase()}/${userId}`
         }).then(res => {
           if (res && res.status !== "000") {
             // 維護非即時更新狀態
@@ -244,8 +241,8 @@ export default {
         origin === "SWAG"
           ? true
           : query.fullscreen === undefined
-          ? false
-          : query.fullscreen === "true";
+            ? false
+            : query.fullscreen === "true";
 
       let baseConfig = {
         hasHeader:
@@ -407,31 +404,44 @@ export default {
           break;
 
         case "game":
-          const openGameSuccessFunc = res => {
-            this.isLoading = false;
-          };
-
-          const openGameFailFunc = res => {
-            this.isLoading = false;
-
-            if (res && res.data) {
-              let data = res.data;
-              this.actionSetGlobalMessage({
-                msg: data.msg,
-                code: data.code,
-                origin: "home"
-              });
-            }
-          };
           const vendor = target[1] || "";
           const kind = target[2] || "";
           const code = target[3] || "";
-          openGame(
-            { kind: kind, vendor: vendor, code: code },
-            openGameSuccessFunc,
-            openGameFailFunc
-          );
-          break;
+
+          switch (vendor) {
+            // 熱門棋牌
+            case "lg_yb_card":
+            // 熱門電子
+            case "lg_yb_casino":
+              this.$router.push(`/mobile/gamelobby/${vendor}/${kind}/${code}`);
+              return;
+
+            default:
+
+              const openGameSuccessFunc = res => {
+                this.isLoading = false;
+              };
+
+              const openGameFailFunc = res => {
+                this.isLoading = false;
+
+                if (res && res.data) {
+                  let data = res.data;
+                  this.actionSetGlobalMessage({
+                    msg: data.msg,
+                    code: data.code,
+                    origin: "home"
+                  });
+                }
+              };
+
+              openGame(
+                { kind: kind, vendor: vendor, code: code },
+                openGameSuccessFunc,
+                openGameFailFunc
+              );
+              break;
+          }
 
         default:
           return;

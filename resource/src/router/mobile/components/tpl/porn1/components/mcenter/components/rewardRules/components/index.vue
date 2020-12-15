@@ -3,7 +3,7 @@
     <div :class="$style['table-container']">
       <div :class="$style['title']">奖励规则</div>
       <div :class="$style['table-wrap']">
-        <div :class="[$style['table-header'], $style[themeTPL]]">
+        <div :class="[$style['table-header']]">
           <div :class="$style['header-item']">{{ vipTitleName }}</div>
           <div
             :class="$style['header-item']"
@@ -71,24 +71,8 @@ export default {
   },
   created() {
     this.getUserDetail();
-  },
-  data() {
-    return {
-      userVipInfo: null,
-      vipTitleName: "",
-      titleList: ["特权VIP", "每月首转", "每周首转", "首次转让"]
-    };
-  },
-  computed: {
-    ...mapGetters({
-      siteConfig: "getSiteConfig"
-    }),
-    $style() {
-      const style =
-        this[`$style_${this.siteConfig.MOBILE_WEB_TPL}`] || this.$style_porn1;
-      return style;
-    },
-    vipRuleData() {
+    this.actionSetRechargeBonusConfig().then(() => {
+
       let data = this.rechargeBonusConfig;
 
       // 確保目前開放的欄位 first / monthly / weekly
@@ -108,10 +92,31 @@ export default {
         arr.push(tempArr);
       }
 
-      return arr;
-    }
+      this.vipRuleData = arr;
+    });
+  },
+  data() {
+    return {
+      userVipInfo: null,
+      vipTitleName: "",
+      titleList: ["特权VIP", "每月首转", "每周首转", "首次转让"],
+      vipRuleData: null
+    };
+  },
+  computed: {
+    ...mapGetters({
+      siteConfig: "getSiteConfig"
+    }),
+    $style() {
+      const style =
+        this[`$style_${this.siteConfig.MOBILE_WEB_TPL}`] || this.$style_porn1;
+      return style;
+    },
   },
   methods: {
+    ...mapActions([
+      "actionSetRechargeBonusConfig"
+    ]),
     commaFormat(value) {
       return value.toString().replace(/\B(?=(\d{3})+(?!\d))/g, ",");
     },

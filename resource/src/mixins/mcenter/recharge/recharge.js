@@ -42,7 +42,8 @@ export default {
             endTime,
 
             promotionTips: "",
-            updateBalance: null
+            updateBalance: null,
+            bonusList: null
         };
     },
     computed: {
@@ -89,8 +90,31 @@ export default {
                 }
             ];
         },
-        bonusList() {
+        hasBonusRule() {
+            return this.rechargeConfig.first_bonus_enable ||
+                this.rechargeConfig.monthly_bonus_enable ||
+                this.rechargeConfig.weekly_bonus_enable
+        }
+    },
+    beforeDestroy() {
+        clearInterval(this.updateBalance);
+        this.updateBalance = null;
+    },
+    created() {
+        // this.setPromotionTips();
+        this.actionSetRechargeBonusConfig();
+        this.updateBalance = setInterval(() => {
+            this.actionSetUserBalance();
+        }, 30000);
+    },
+    watch: {
+        membalance() {
+            this.getRechargeBalance();
+        },
+        rechargeBonusConfig() {
             let data = this.rechargeBonusConfig;
+            if (!data) return;
+
             let bonusArrays = {}
 
             // 確保目前開放的欄位 first / monthly / weekly
@@ -105,7 +129,7 @@ export default {
                 }
             }
 
-            return [
+            this.bonusList = [
                 {
                     key: "first",
                     text: `喜讯：首次额度转让旗下会员赠彩金${bonusArrays.first ? Math.max(...bonusArrays.first) : null}元/位`,
@@ -122,27 +146,6 @@ export default {
                     isShow: this.rechargeConfig.weekly_bonus_enable,
                 }
             ].filter(item => item.isShow)
-        },
-        hasBonusRule() {
-            return this.rechargeConfig.first_bonus_enable ||
-                this.rechargeConfig.monthly_bonus_enable ||
-                this.rechargeConfig.weekly_bonus_enable
-        }
-    },
-    beforeDestroy() {
-        clearInterval(this.updateBalance);
-        this.updateBalance = null;
-    },
-    created() {
-        // this.setPromotionTips();
-
-        this.updateBalance = setInterval(() => {
-            this.actionSetUserBalance();
-        }, 30000);
-    },
-    watch: {
-        membalance() {
-            this.getRechargeBalance();
         }
     },
     methods: {
