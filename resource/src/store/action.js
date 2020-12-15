@@ -571,7 +571,7 @@ export const actionNewsPopControl = ({ commit }, data) => {
 //     MEM 會員相關
 // ＝＝＝＝＝＝＝＝＝＝＝＝＝＝＝＝＝＝
 // 會員端初始
-export const actionMemInit = ({ state, dispatch, commit }) => {
+export const actionMemInit = ({ state, dispatch, commit, store }) => {
   // 設定系統環境為客端
   commit(types.SETENV, "mem");
 
@@ -581,16 +581,18 @@ export const actionMemInit = ({ state, dispatch, commit }) => {
     // 暫時移除
     // dispatch('actionSetAppDownloadInfo');
 
+    await dispatch("actionSetWebDomain");
     await dispatch("actionSetUserdata");
-    await dispatch("actionSetWebInfo", state.memInfo.user.domain);
+    await dispatch("actionSetWebInfo", state.webDomain.domain);
     await dispatch("actionGetMemInfoV3");
+    await dispatch('actionGetMobileInfo');
+
     const defaultLang =
       ["47", "70", "71"].includes(state.memInfo.user.domain) &&
         state.webInfo.is_production
         ? "vi"
         : "zh-cn";
     await getLang(state.webInfo.language, defaultLang);
-    await dispatch("actionSetWebDomain");
 
     // 設定網站設定檔資訊 (start)
     let configInfo;
@@ -1138,12 +1140,12 @@ export const actionContactUs = (_, postData) =>
 // ＝＝＝＝＝＝＝＝＝＝＝＝＝＝＝＝＝＝
 //     手機資料
 // ＝＝＝＝＝＝＝＝＝＝＝＝＝＝＝＝＝＝
-export const actionGetMobileInfo = ({ commit }, tpl) => {
+export const actionGetMobileInfo = ({ commit, state }, tpl) => {
   // const status = Vue.cookie.get("newsite") ? "New" : "";
   const status = "";
   let manifest = document.createElement("link");
   manifest.rel = "manifest";
-  manifest.href = `/static/tpl/analytics/${tpl}/manifest.json`;
+  manifest.href = `/static/tpl/analytics/${state.webDomain.domain}/manifest.json`;
   manifest.setAttribute('data-name', 'manifest');
 
   if (!document.querySelector('script[data-name="manifest"]')) {
@@ -1151,7 +1153,7 @@ export const actionGetMobileInfo = ({ commit }, tpl) => {
   }
 
   return ajax({
-    url: `/tpl/${tpl}/mobile${status}.json`,
+    url: `/tpl/${state.webDomain.domain}/mobile${status}.json`,
     method: "get",
     success: response => {
       const { result, data } = response;
