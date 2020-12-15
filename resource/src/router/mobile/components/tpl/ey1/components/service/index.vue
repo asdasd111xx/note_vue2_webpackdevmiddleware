@@ -147,7 +147,7 @@ export default {
       imgIndex: 0,
       isShowPop: false,
       linkArray: [],
-      avatarSrc: `/static/image/_new/mcenter/avatar_nologin.png`,
+      avatarSrc: `/static/image/common/mcenter/avatar_nologin.png`,
       hasPrev: true
     };
   },

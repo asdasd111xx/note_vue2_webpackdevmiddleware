@@ -16,13 +16,13 @@
 </template>
 
 <script>
-import { mapGetters, mapActions } from 'vuex';
-import account from './account/index';
-import mcenter from '@/api/mcenter';
-import member from '@/api/member';
-import serviceTips from './serviceTips';
-import axios from 'axios';
-import avatarDialog from './avatarDialog'
+import { mapGetters, mapActions } from "vuex";
+import account from "./account/index";
+import mcenter from "@/api/mcenter";
+import member from "@/api/member";
+import serviceTips from "./serviceTips";
+import axios from "axios";
+import avatarDialog from "./avatarDialog";
 
 export default {
   components: {
@@ -32,50 +32,53 @@ export default {
   },
   data() {
     return {
-      avatarSrc: `/static/image/_new/mcenter/avatar_nologin.png`,
+      avatarSrc: `/static/image/common/mcenter/avatar_nologin.png`,
       isShowAvatarDialog: false,
-      isPageLoading: false,
+      isPageLoading: false
     };
   },
   created() {
     if (!this.loginStatus) {
-      this.$router.push('/mobile/mcenter');
+      this.$router.push("/mobile/mcenter");
       return;
     }
   },
   computed: {
     ...mapGetters({
-      loginStatus: 'getLoginStatus',
-      memInfo: 'getMemInfo',
-      memCurrency: 'getMemCurrency',
-    }),
+      loginStatus: "getLoginStatus",
+      memInfo: "getMemInfo",
+      memCurrency: "getMemCurrency"
+    })
   },
   mounted() {
     this.getAvatarSrc();
   },
   methods: {
-    ...mapActions([
-      'actionSetUserdata',
-      'actionSetGlobalMessage'
-    ]),
+    ...mapActions(["actionSetUserdata", "actionSetGlobalMessage"]),
     getAvatarSrc() {
       if (!this.loginStatus) return;
 
       const imgSrcIndex = this.memInfo.user.image;
       if (this.memInfo.user && this.memInfo.user.custom) {
         axios({
-          method: 'get',
-          url: this.memInfo.user.custom_image,
-        }).then(res => {
-          if (res && res.data && res.data.result === "ok") {
-            this.avatarSrc = res.data.ret;
-          }
-        }).catch(error => {
-          this.actionSetGlobalMessage({ msg: error.data.msg });
-          this.avatarSrc = this.$getCdnPath(`/static/image/common/mcenter/default/avatar_${imgSrcIndex}.png`);
+          method: "get",
+          url: this.memInfo.user.custom_image
         })
+          .then(res => {
+            if (res && res.data && res.data.result === "ok") {
+              this.avatarSrc = res.data.ret;
+            }
+          })
+          .catch(error => {
+            this.actionSetGlobalMessage({ msg: error.data.msg });
+            this.avatarSrc = this.$getCdnPath(
+              `/static/image/common/mcenter/default/avatar_${imgSrcIndex}.png`
+            );
+          });
       } else {
-        this.avatarSrc = this.$getCdnPath(`/static/image/common/mcenter/default/avatar_${imgSrcIndex}.png`);
+        this.avatarSrc = this.$getCdnPath(
+          `/static/image/common/mcenter/default/avatar_${imgSrcIndex}.png`
+        );
       }
     },
     showAvatarDialog() {
@@ -88,7 +91,7 @@ export default {
         this.getAvatarSrc();
       });
     }
-  },
+  }
 };
 </script>
 

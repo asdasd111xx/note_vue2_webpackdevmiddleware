@@ -135,7 +135,7 @@ export default {
       }
 
       return EST(time);
-    },
+    }
   },
   data() {
     return {
@@ -145,14 +145,14 @@ export default {
       repliedList: [],
       isReceive: false,
       typeList: null,
-      avatarSrc: `/static/image/_new/mcenter/avatar_nologin.png`,
+      avatarSrc: `/static/image/common/mcenter/avatar_nologin.png`
     };
   },
   computed: {
     ...mapGetters({
       memInfo: "getMemInfo",
       siteConfig: "getSiteConfig",
-      loginStatus: "getLoginStatus",
+      loginStatus: "getLoginStatus"
     }),
     $style() {
       const style =
@@ -164,14 +164,14 @@ export default {
     },
     siteName() {
       return this.siteConfig.SITE_NAME;
-    },
+    }
   },
   created() {
     const params = [
       this.getFeedbackRecord(),
       this.getRepliedList(),
       this.getAvatarSrc(),
-      this.getTypeList(),
+      this.getTypeList()
     ];
 
     Promise.all(params).then(() => {
@@ -191,13 +191,13 @@ export default {
       ajax({
         method: "get",
         url: "/api/v1/c/feedback_type/list",
-        errorAlert: false,
-      }).then((res) => {
+        errorAlert: false
+      }).then(res => {
         this.typeList = res.ret.map((item, index) => {
           return {
             id: item.id,
             content: item.content,
-            imageId: index + 1 < 8 ? index + 1 : 8,
+            imageId: index + 1 < 8 ? index + 1 : 8
           };
         });
       });
@@ -211,22 +211,22 @@ export default {
     },
     getFeedbackRecord() {
       mcenter.feedbackRecord({
-        success: (response) => {
+        success: response => {
           this.feedbackList = response.ret;
-        },
+        }
       });
     },
     getCurrentMassage(content) {
       this.currentFeedback =
-        this.repliedList.find((item) => item.id === content.id) || content;
+        this.repliedList.find(item => item.id === content.id) || content;
       this.$router.push(`/mobile/mcenter/feedback/feedbackList/${content.id}`);
     },
     getRepliedList() {
       ajax({
         method: "get",
         url: API_FEEDBACK_REPLIED_LIST,
-        errorAlert: false,
-      }).then((response) => {
+        errorAlert: false
+      }).then(response => {
         if (response.result !== "ok") {
           return;
         }
@@ -240,29 +240,41 @@ export default {
       if (this.memInfo.user && this.memInfo.user.custom) {
         axios({
           method: "get",
-          url: this.memInfo.user.custom_image,
+          url: this.memInfo.user.custom_image
         })
-          .then((res) => {
+          .then(res => {
             if (res && res.data && res.data.result === "ok") {
               this.avatarSrc = res.data.ret;
             }
           })
-          .catch((error) => {
+          .catch(error => {
             this.actionSetGlobalMessage({ msg: error.data.msg });
             this.avatarSrc = this.$getCdnPath(
-              `/static/image/${this.theme}/mcenter/default/avatar_${imgSrcIndex}.png`
+              `/static/image/common/mcenter/default/avatar_${imgSrcIndex}.png`
             );
           });
       } else {
         this.avatarSrc = this.$getCdnPath(
-          `/static/image/${this.theme}/mcenter/default/avatar_${imgSrcIndex}.png`
+          `/static/image/common/mcenter/default/avatar_${imgSrcIndex}.png`
         );
       }
-    },
-  },
+    }
+  }
 };
 </script>
 
-<style lang="scss" src="./css/feedbackList.module.scss" module="$style_porn1"></style>
-<style lang="scss" src="./css/ey1.feedbackList.scss" module="$style_ey1"></style>
-<style lang="scss" src="./css/sg1.feedbackList.scss" module="$style_sg1"></style>
+<style
+  lang="scss"
+  src="./css/feedbackList.module.scss"
+  module="$style_porn1"
+></style>
+<style
+  lang="scss"
+  src="./css/ey1.feedbackList.scss"
+  module="$style_ey1"
+></style>
+<style
+  lang="scss"
+  src="./css/sg1.feedbackList.scss"
+  module="$style_sg1"
+></style>

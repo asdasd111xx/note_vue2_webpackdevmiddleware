@@ -63,7 +63,7 @@ export default {
       isShow: false,
       msg: "",
       viplevel: "",
-      avatarSrc: `/static/image/_new/mcenter/avatar_nologin.png`,
+      avatarSrc: `/static/image/common/mcenter/avatar_nologin.png`,
       day: ""
     };
   },
