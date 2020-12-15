@@ -1,4 +1,5 @@
-import { mapGetters, mapActions } from "vuex";
+import { mapActions, mapGetters } from "vuex";
+
 import axios from 'axios';
 
 export default {
@@ -40,10 +41,10 @@ export default {
           }
         }).catch(error => {
           this.actionSetGlobalMessage({ msg: error.data.msg });
-          this.avatarSrc = this.$getCdnPath(`/static/image/_new/mcenter/default/avatar_${imgSrcIndex}.png`);
+          this.avatarSrc = this.$getCdnPath(`/static/image/common/mcenter/default/avatar_${imgSrcIndex}.png`);
         })
       } else {
-        this.avatarSrc = this.$getCdnPath(`/static/image/_new/mcenter/default/avatar_${imgSrcIndex}.png`);
+        this.avatarSrc = this.$getCdnPath(`/static/image/common/mcenter/default/avatar_${imgSrcIndex}.png`);
       }
     },
   },

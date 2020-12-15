@@ -38,7 +38,9 @@
         <div>
           <div>
             <img
-              :src="$getCdnPath(`/static/image/_new/service/ic_service01.png`)"
+              :src="
+                $getCdnPath(`/static/image/common/service/ic_service01.png`)
+              "
             />
             &nbsp;
             <span>在线客服</span>
@@ -229,12 +231,12 @@ export default {
           .catch(error => {
             this.actionSetGlobalMessage({ msg: error.data.msg });
             this.avatarSrc = this.$getCdnPath(
-              `/static/image/_new/mcenter/default/avatar_${imgSrcIndex}.png`
+              `/static/image/common/mcenter/default/avatar_${imgSrcIndex}.png`
             );
           });
       } else {
         this.avatarSrc = this.$getCdnPath(
-          `/static/image/_new/mcenter/default/avatar_${imgSrcIndex}.png`
+          `/static/image/common/mcenter/default/avatar_${imgSrcIndex}.png`
         );
       }
     }

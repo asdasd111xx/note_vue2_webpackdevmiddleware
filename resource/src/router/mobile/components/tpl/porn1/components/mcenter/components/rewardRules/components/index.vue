@@ -3,7 +3,7 @@
     <div :class="$style['table-container']">
       <div :class="$style['title']">奖励规则</div>
       <div :class="$style['table-wrap']">
-        <div :class="$style['table-header']">
+        <div :class="[$style['table-header'], $style[themeTPL]]">
           <div :class="$style['header-item']">{{ vipTitleName }}</div>
           <div
             :class="$style['header-item']"
@@ -77,20 +77,6 @@ export default {
       userVipInfo: null,
       vipTitleName: "",
       titleList: ["特权VIP", "每月首转", "每周首转", "首次转让"]
-      //  假資料測試
-      //   list: [
-      //     ["VIP0", "9元/位", "9元/位", "9元/位"],
-      //     ["VIP1", "99元/位", "99元/位", "99元/位"],
-      //     ["VIP2", "199元/位", "199元/位", "199元/位"],
-      //     ["VIP3", "299元/位", "299元/位", "299元/位"],
-      //     ["VIP4", "399元/位", "399元/位", "399元/位"],
-      //     ["VIP5", "499元/位", "499元/位", "499元/位"],
-      //     ["VIP6", "599元/位", "599元/位", "599元/位"],
-      //     ["VIP7", "699元/位", "699元/位", "699元/位"],
-      //     ["VIP8", "799元/位", "799元/位", "799元/位"],
-      //     ["VIP9", "899元/位", "899元/位", "899元/位"],
-      //     ["VIP10", "999元/位", "999元/位", "999元/位"]
-      //   ],
     };
   },
   computed: {
@@ -130,16 +116,6 @@ export default {
       return value.toString().replace(/\B(?=(\d{3})+(?!\d))/g, ",");
     },
     getUserDetail() {
-      // yaboRequest({
-      //   method: "get",
-      //   url: `${
-      //     this.siteConfig.YABO_API_DOMAIN
-      //     }/player/vipinfo/${getCookie("cid")}`,
-      //   headers: { "x-domain": this.memInfo.user.domain }
-      // }).then(res => {
-      //   this.userVipInfo = res.data;
-      //   this.vipTitleName = res.data[0].config_name
-      // });
       goLangApiRequest({
         method: "get",
         url: `${this.siteConfig.YABO_GOLANG_API_DOMAIN}/cxbb/Player/vipinfo`,
@@ -155,8 +131,6 @@ export default {
 };
 </script>
 
-<style
-  lang="scss"
-  src="@/css/page/vipDetail/porn1.vipRewardRules.scss"
-  module="$style_porn1"
-></style>
+<style lang="scss" src="@/css/page/vipDetail/index.vipRewardRules.scss" module="$style_porn1"></style>
+<style lang="scss" src="@/css/page/vipDetail/sg1.vipRewardRules.scss" module="$style_sg1"></style>
+

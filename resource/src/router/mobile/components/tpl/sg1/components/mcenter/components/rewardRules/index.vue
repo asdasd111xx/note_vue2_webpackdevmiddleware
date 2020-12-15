@@ -10,7 +10,8 @@
 import { mapGetters } from 'vuex';
 import { getCookie } from "@/lib/cookie";
 import mobileContainer from '../../../common/mobileContainer';
-import rewardRules from './components'
+import rewardRules from '@/router/mobile/components/tpl/porn1/components/mcenter/components/rewardRules/components/';
+
 export default {
   components: {
     mobileContainer,
