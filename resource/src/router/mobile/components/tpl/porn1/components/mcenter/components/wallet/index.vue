@@ -11,35 +11,29 @@
 </template>
 
 <script>
-import { mapGetters, mapActions } from 'vuex';
-import mobileContainer from '../../../common/mobileContainer';
-import wallet from './components/index';
+import { mapGetters, mapActions } from "vuex";
+import mobileContainer from "../../../common/mobileContainer";
+import wallet from "./components/index";
 
 export default {
   components: {
     mobileContainer,
     wallet
   },
-  data() {
-    return {
-    }
-  },
-  methods: {
-  },
   computed: {
     ...mapGetters({
-      memInfo: 'getMemInfo'
+      memInfo: "getMemInfo"
     }),
     headerConfig() {
       return {
         prev: true,
         onClick: () => {
-          this.$router.push('/mobile/mcenter');
+          this.$router.push("/mobile/mcenter");
         },
-        title: this.$text('S_WALLET2', '钱包'),
+        title: this.$text("S_WALLET2", "钱包"),
         customLinkTitle: this.$text("S_TRANSACTION_RECORD", "交易记录"),
         customLinkAction: () => {
-          this.$router.push('/mobile/mcenter/moneyDetail')
+          this.$router.push("/mobile/mcenter/moneyDetail");
         }
       };
     }

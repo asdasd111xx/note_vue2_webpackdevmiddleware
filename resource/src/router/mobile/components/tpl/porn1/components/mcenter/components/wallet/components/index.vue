@@ -10,19 +10,24 @@
 
       <div :class="$style['icon-block']">
         <div
-          v-if="
-            item.show ||
-              (item.key === 'recharge' && ['porn1', 'sg1'].includes(themeTPL))
-          "
           v-for="(item, index) in walletIcons"
           :key="'icon-' + index"
           :class="$style['icon-cell']"
           @click="item.onClick"
         >
-          <div :class="$style['image']">
-            <img :src="$getCdnPath(item.imgSrc)" alt="icon" />
-          </div>
-          {{ item.text }}
+          <template
+            v-if="
+              item.show ||
+                (item.key === 'recharge' && ['porn1', 'sg1'].includes(themeTPL))
+            "
+          >
+            <div :class="$style['image']">
+              <img :src="$getCdnPath(item.imgSrc)" alt="icon" />
+            </div>
+            <span>
+              {{ item.text }}
+            </span>
+          </template>
         </div>
       </div>
 
