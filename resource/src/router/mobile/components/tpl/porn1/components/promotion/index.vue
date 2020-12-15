@@ -1,13 +1,13 @@
 <template>
   <mobile-container :header-config="headerConfig">
     <div slot="content" :class="$style['promotion-wrap']">
-      <div
-        v-if="loginStatus"
-        :class="$style['promotion-gift']"
-        @click="onGiftClick"
-      >
-        自领优惠
-        <div v-show="hasNewGift" :class="$style['red-dot']" />
+      <div v-if="loginStatus" :class="$style['promotion-gift-wrap']">
+        <div :class="$style['promotion-gift']" @click="onGiftClick">
+          <span>
+            自领优惠
+          </span>
+          <div v-show="hasNewGift" :class="$style['red-dot']" />
+        </div>
       </div>
       <div :class="$style['type-wrap']">
         <swiper :options="{ slidesPerView: 'auto' }">
@@ -263,8 +263,18 @@ $fixed_spacing_height: 43px;
   z-index: 1;
 }
 
+.promotion-gift-wrap {
+  width: 100%;
+  max-width: $mobile_max_width;
+  height: 43px;
+  position: fixed;
+  top: 0;
+  z-index: 10;
+}
+
 @media (orientation: landscape) {
-  .type-wrap {
+  .type-wrap,
+  .promotion-gift-wrap {
     max-width: $mobile_max_landscape_width !important;
   }
 }
@@ -374,7 +384,7 @@ $fixed_spacing_height: 43px;
 }
 
 .promotion-gift {
-  position: fixed;
+  position: absolute;
   top: 11px;
   z-index: 10;
   right: 14px;
