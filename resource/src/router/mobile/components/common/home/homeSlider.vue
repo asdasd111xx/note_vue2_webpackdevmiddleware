@@ -61,9 +61,10 @@ export default {
       return this.siteConfig.MOBILE_WEB_TPL;
     },
     options() {
+      let hasLoop = this.slider && this.slider.length > 1;
       return {
-        loop: true,
-        autoplay: { delay: 5000, disableOnInteraction: false },
+        loop: hasLoop,
+        autoplay: hasLoop ? { delay: 5000, disableOnInteraction: false } : {},
         pagination: { el: '.swiper-pagination', clickable: true }
       };
     }
