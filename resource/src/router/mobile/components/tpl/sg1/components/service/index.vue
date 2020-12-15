@@ -1,9 +1,10 @@
 <template>
-  <mobile-container :class="$style.container" :has-footer="!hasPrev">
+  <mobile-container :has-footer="!hasPrev">
     <div slot="content" :class="$style['content-wrap']">
+      <div :class="$style['top-bg']" />
       <div :class="$style['service-header']">
         <div v-if="hasPrev" :class="$style['btn-prev']" @click="handleBack()">
-          <img :src="$getCdnPath(`/static/image/sg1/common/btn_back.png`)" />
+          <img :src="$getCdnPath(`/static/image/sg1/common/btn_back_w.png`)" />
         </div>
         <div :class="$style.title">我的客服</div>
         <div
@@ -19,7 +20,6 @@
           {{ this.$text("S_FEEDBACK", "意见反馈") }}
         </div>
       </div>
-      <div :class="$style['bg']" />
       <div :class="$style['avatar-info-wrap']">
         <div :class="$style['avatar-wrap']">
           <img :src="avatarSrc" />
@@ -271,16 +271,6 @@ export default {
 
 <style lang="scss" module>
 @import "~@/css/variable.scss";
-
-div.container {
-  background-color: #fff;
-  background-image: url("/static/image/sg1/service/header_bg.png");
-  background-repeat: no-repeat;
-  background-size: 100% auto;
-  background-position: 0 -70px;
-  background-repeat: no-repeat;
-}
-
 .avatar-info-wrap {
   height: 90px;
   display: flex;
@@ -423,24 +413,25 @@ div.container {
 .tip-block {
   position: absolute;
   right: 20px;
-  bottom: 65px;
+  bottom: 80px;
 }
 
 .tip-img {
-  width: 65px;
-  height: 65px;
+  display: flex;
+  justify-content: center;
+  align-items: center;
 
   img {
-    width: 100%;
-    height: 100%;
+    width: 50px;
+    height: 50px;
   }
 }
 
 .tip-text {
+  margin-top: 6px;
   width: fit-content;
   text-align: center;
   padding: 0 5px;
-  margin: 0 auto;
   font-size: 12px;
   color: #fff;
   background: #fb4e74;
@@ -574,6 +565,25 @@ div.container {
   > img {
     display: block;
     width: 100%;
+  }
+}
+
+.top-bg {
+  background: url("/static/image/sg1/service/bg_service.png");
+  -moz-background-size: 100% 100%;
+  background-size: 100% 100%;
+  height: 120px;
+  width: 100%;
+  max-width: $mobile_max_width;
+  top: 0;
+  left: 0;
+  position: absolute;
+  z-index: -1;
+}
+
+@media (orientation: landscape) {
+  .top-bg {
+    max-width: $mobile_max_landscape_width !important;
   }
 }
 </style>
