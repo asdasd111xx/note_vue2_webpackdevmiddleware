@@ -22,13 +22,17 @@
           type="tel"
         />
         <img
-          :class="$style['captchaImg']"
           v-if="captchaImg"
+          :class="$style['captchaImg']"
           :src="captchaImg"
           height="25"
         />
         <div :class="$style['captchaText-refresh']" @click="getCaptchaImage">
-          <img :src="'/static/image/porn1/common/ic_verification_reform.png'" />
+          <img
+            :src="
+              $getCdnPath('/static/image/common/ic_verification_reform.png')
+            "
+          />
         </div>
       </div>
       <div
@@ -50,12 +54,12 @@
 </template>
 
 <script>
-import { getCookie, setCookie } from '@/lib/cookie';
+import { getCookie, setCookie } from "@/lib/cookie";
 import { mapGetters, mapActions } from "vuex";
 import bbosRequest from "@/api/bbosRequest";
 import puzzleVerification from "@/components/puzzleVerification";
 import slideVerification from "@/components/slideVerification";
-import axios from 'axios';
+import axios from "axios";
 
 export default {
   components: {
@@ -74,15 +78,15 @@ export default {
   data() {
     return {
       info: null,
-      captchaText: '', // 圖形驗證
+      captchaText: "", // 圖形驗證
       isGetCaptchaImg: false,
-      captchaImg: ''
+      captchaImg: ""
     };
   },
   computed: {
     ...mapGetters({
-      siteConfig: 'getSiteConfig',
-      memInfo: 'getMemInfo'
+      siteConfig: "getSiteConfig",
+      memInfo: "getMemInfo"
     }),
     captchaType() {
       return this.memInfo.config.default_captcha_type;
@@ -112,9 +116,7 @@ export default {
     }
   },
   methods: {
-    ...mapActions([
-      'actionVerificationFormData'
-    ]),
+    ...mapActions(["actionVerificationFormData"]),
     getCaptchaImage() {
       if (this.isGetCaptchaImg) {
         return;
@@ -122,9 +124,9 @@ export default {
 
       this.isGetCaptchaImg = true;
       axios({
-        method: 'post',
-        url: '/api/v1/captcha',
-      }).then((res) => {
+        method: "post",
+        url: "/api/v1/captcha"
+      }).then(res => {
         setTimeout(() => {
           this.isGetCaptchaImg = false;
         }, 800);
@@ -138,7 +140,7 @@ export default {
       this.$emit("update:captcha", dataInfo.data);
 
       if (dataInfo.data) {
-        this.$emit('update:isShowCaptcha', false)
+        this.$emit("update:isShowCaptcha", false);
       }
     },
     showPuzzleCaptcha() {
@@ -160,9 +162,12 @@ export default {
     },
     verification(value, key) {
       if (key === "captchaText") {
-        this.actionVerificationFormData({ target: 'graphicVerification', value: value }).then((val => {
+        this.actionVerificationFormData({
+          target: "graphicVerification",
+          value: value
+        }).then(val => {
           this.captchaText = val;
-        }));
+        });
       }
     },
     submit() {

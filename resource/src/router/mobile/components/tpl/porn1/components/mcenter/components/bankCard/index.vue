@@ -2,19 +2,22 @@
   <div :class="[$style['wrap']]">
     <div :class="$style['header']">
       <div :class="$style['btn-prev']" @click="backPre">
-        <template v-if="['porn1', 'sg1'].includes(themeTPL)">
-          <img
-            :src="$getCdnPath('/static/image/porn1/common/btn_back.png')"
-            alt="more"
-          />
-        </template>
-
-        <template v-if="['ey1'].includes(themeTPL)">
-          <img
-            :src="$getCdnPath('/static/image/ey1/common/btn_back_w.png')"
-            alt="more"
-          />
-        </template>
+        <img
+          :src="
+            $getCdnPath(
+              `/static/image/common/icon/btn_back_${
+                themeTPL === 'porn1'
+                  ? 'g'
+                  : themeTPL === 'ey1'
+                  ? 'w'
+                  : themeTPL === 'sg1'
+                  ? 'b'
+                  : null
+              }.png`
+            )
+          "
+          alt="back"
+        />
       </div>
 
       <div :class="[$style['content'], 'clearfix']">
@@ -27,19 +30,14 @@
         :class="$style['header-icon']"
         @click="editDetailStatus = true"
       >
-        <template v-if="['porn1', 'sg1'].includes(themeTPL)">
-          <img
-            :src="$getCdnPath('/static/image/porn1/common/btn_more.png')"
-            alt="more"
-          />
-        </template>
-
-        <template v-if="['ey1'].includes(themeTPL)">
-          <img
-            :src="$getCdnPath('/static/image/ey1/common/btn_more_w.png')"
-            alt="more"
-          />
-        </template>
+        <img
+          :src="
+            $getCdnPath(
+              `/static/image/${siteConfig.MOBILE_WEB_TPL}/common/btn_more.png`
+            )
+          "
+          alt="more"
+        />
       </div>
 
       <!-- 歷史錢包按鈕 -->
@@ -58,7 +56,7 @@
             :src="
               $getCdnPath('/static/image/ey1/mcenter/bankCard/ic_history.png')
             "
-            alt="more"
+            alt="history"
           />
         </div>
       </template>
@@ -143,7 +141,9 @@ export default {
         },
         {
           key: "wallet",
-          text: ["porn1", "sg1"].includes(this.themeTPL) ? "数字货币" : "电子钱包"
+          text: ["porn1", "sg1"].includes(this.themeTPL)
+            ? "数字货币"
+            : "电子钱包"
         }
       ];
     },

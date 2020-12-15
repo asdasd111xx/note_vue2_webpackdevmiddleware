@@ -27,7 +27,7 @@
             v-if="newAddressInfo.name"
           >
             <img
-              :src="$getCdnPath(`/static/image/_new/common/ic_clear.png`)"
+              :src="$getCdnPath(`/static/image/common/ic_clear.png`)"
               @click="newAddressInfo.name = ''"
             />
           </div>
@@ -56,7 +56,7 @@
             v-if="newAddressInfo.phone"
           >
             <img
-              :src="$getCdnPath(`/static/image/_new/common/ic_clear.png`)"
+              :src="$getCdnPath(`/static/image/common/ic_clear.png`)"
               @click="newAddressInfo.phone = ''"
             />
           </div>
@@ -81,7 +81,7 @@
             v-if="newAddressInfo.address"
           >
             <img
-              :src="$getCdnPath(`/static/image/_new/common/ic_clear.png`)"
+              :src="$getCdnPath(`/static/image/common/ic_clear.png`)"
               @click="newAddressInfo.address = ''"
             />
           </div>

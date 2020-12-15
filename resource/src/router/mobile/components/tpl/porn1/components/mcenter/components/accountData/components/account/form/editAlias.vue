@@ -22,7 +22,7 @@
           />
           <div :class="$style['clear-input']" v-if="value">
             <img
-              :src="$getCdnPath(`/static/image/_new/common/ic_clear.png`)"
+              :src="$getCdnPath(`/static/image/common/ic_clear.png`)"
               @click="value = ''"
             />
           </div>

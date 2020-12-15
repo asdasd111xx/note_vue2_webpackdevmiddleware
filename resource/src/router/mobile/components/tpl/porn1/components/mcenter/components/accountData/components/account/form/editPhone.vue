@@ -30,7 +30,7 @@
             />
             <div :class="$style['clear-input']" v-if="oldValue">
               <img
-                :src="$getCdnPath(`/static/image/_new/common/ic_clear.png`)"
+                :src="$getCdnPath(`/static/image/common/ic_clear.png`)"
                 @click="oldValue = ''"
               />
             </div>
@@ -62,7 +62,7 @@
             />
             <div :class="$style['clear-input']" v-if="newValue">
               <img
-                :src="$getCdnPath(`/static/image/_new/common/ic_clear.png`)"
+                :src="$getCdnPath(`/static/image/common/ic_clear.png`)"
                 @click="newValue = ''"
               />
             </div>
@@ -86,7 +86,7 @@
             />
             <div :class="$style['clear-input']" v-if="codeValue">
               <img
-                :src="$getCdnPath(`/static/image/_new/common/ic_clear.png`)"
+                :src="$getCdnPath(`/static/image/common/ic_clear.png`)"
                 @click="codeValue = ''"
               />
             </div>

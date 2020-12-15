@@ -96,7 +96,7 @@
             <img
               v-if="item.amount === currentSelRate.amount"
               :class="$style['amount-active']"
-              src="/static/image/_new/common/select_active.png"
+              :src="$getCdnPath(`/static/image/common/select_active.png`)"
             />
           </template>
           <template v-else>
@@ -144,9 +144,9 @@
 import { mapGetters, mapActions } from "vuex";
 import axios from "axios";
 import mixin from "@/mixins/mcenter/swag/swag";
-import tipsDiamond from './tipsDiamond';
-import { Swiper, SwiperSlide } from 'vue-awesome-swiper';
-import swagTipsPopup from './swagTipsPopup';
+import tipsDiamond from "./tipsDiamond";
+import { Swiper, SwiperSlide } from "vue-awesome-swiper";
+import swagTipsPopup from "./swagTipsPopup";
 import maintainBlock from "@/router/mobile/components/common/maintainBlock";
 
 export default {
@@ -177,24 +177,24 @@ export default {
       const options = {
         loop: hasData,
         autoplay: { delay: 5000, disableOnInteraction: false },
-        pagination: hasData ? { el: '.swiper-pagination', clickable: true } : { el: null }
+        pagination: hasData
+          ? { el: ".swiper-pagination", clickable: true }
+          : { el: null }
       };
 
       return {
         ...options,
         on: {
-          click(element) {
-          }
+          click(element) {}
         }
       };
-    },
+    }
   },
   created() {
     this.initSWAGConfig();
     this.watchNoticeDate = true;
   },
-  methods: {
-  }
+  methods: {}
 };
 </script>
 

@@ -24,7 +24,7 @@
         </div>
         <div :class="$style['btn-next']">
           <img
-            :src="$getCdnPath(`/static/image/ey1/common/ic_arrow_next.png`)"
+            :src="$getCdnPath(`/static/image/common/arrow_next.png`)"
           />
         </div>
       </div>
@@ -37,7 +37,7 @@
       <span>{{ $text("S_SHARE_APP", "分享APP") }}</span>
 
       <div :class="$style['btn-next']">
-        <img :src="$getCdnPath(`/static/image/ey1/common/ic_arrow_next.png`)" />
+        <img :src="$getCdnPath(`/static/image/common/arrow_next.png`)" />
       </div>
     </div>
 

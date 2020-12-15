@@ -12,7 +12,7 @@
         </div>
         <div :class="[$style['arrow-btn']]">
           <img
-            :src="$getCdnPath(`/static/image/_new/mcenter/ic_arrow_next.png`)"
+            :src="$getCdnPath(`/static/image/common/arrow_next.png`)"
           />
         </div>
       </div>
@@ -47,7 +47,7 @@
           :class="[$style['arrow-btn'], { [$style['active']]: item.isOpen }]"
         >
           <img
-            :src="$getCdnPath(`/static/image/_new/mcenter/ic_arrow_next.png`)"
+            :src="$getCdnPath(`/static/image/common/arrow_next.png`)"
           />
         </div>
       </div>

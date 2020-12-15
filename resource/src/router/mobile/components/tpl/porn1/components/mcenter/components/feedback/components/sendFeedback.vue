@@ -22,7 +22,7 @@
       </span>
       <img
         :class="$style['arrow-icon']"
-        :src="`/static/image/${theme}/common/arrow_next.png`"
+        :src="$getCdnPath(`/static/image/common/arrow_next.png`)"
       />
     </div>
     <div :class="$style['question-description']">
