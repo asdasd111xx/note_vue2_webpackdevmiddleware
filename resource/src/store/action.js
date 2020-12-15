@@ -577,7 +577,6 @@ export const actionMemInit = ({ state, dispatch, commit, store }) => {
 
   return (async () => {
     dispatch("actionSetSystemTime");
-    dispatch("actionSetNews");
     // 暫時移除
     // dispatch('actionSetAppDownloadInfo');
 
@@ -606,9 +605,8 @@ export const actionMemInit = ({ state, dispatch, commit, store }) => {
     }
 
     dispatch("actionSetSiteConfig", configInfo);
-    // dispatch('actionSetYaboConfig');
+    dispatch("actionSetNews");
     dispatch("actionSetRechargeConfig");
-    dispatch("actionSetRechargeBonusConfig");
     dispatch("actionSetSystemDomain");
     dispatch("actionSetBBOSDomain");
 
@@ -1140,7 +1138,7 @@ export const actionContactUs = (_, postData) =>
 // ＝＝＝＝＝＝＝＝＝＝＝＝＝＝＝＝＝＝
 //     手機資料
 // ＝＝＝＝＝＝＝＝＝＝＝＝＝＝＝＝＝＝
-export const actionGetMobileInfo = ({ commit, state }, tpl) => {
+export const actionGetMobileInfo = ({ commit, state }, datatpl) => {
   // const status = Vue.cookie.get("newsite") ? "New" : "";
   const status = "";
   let manifest = document.createElement("link");
@@ -1363,7 +1361,7 @@ export const actionSetRechargeBonusConfig = ({ commit }, data) => {
   if (!hasLogin) {
     return;
   }
-  axios({
+  return axios({
     method: "get",
     url: "/api/v1/c/recharge/bonus/config"
   }).then(res => {

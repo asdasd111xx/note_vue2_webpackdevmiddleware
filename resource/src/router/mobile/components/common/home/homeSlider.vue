@@ -95,7 +95,6 @@ export default {
       }
 
       let list = [];
-      console.log(mobileSlider)
       mobileSlider.mSlider.data.forEach((data) => {
         if (!Object.keys(this.lang)) {
           return;
