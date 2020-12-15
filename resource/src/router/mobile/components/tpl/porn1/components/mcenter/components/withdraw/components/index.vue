@@ -674,7 +674,7 @@ export default {
       confirmPopupObj: {
         msg: "",
         btnText: "",
-        cb: () => { }
+        cb: () => {}
       }
     };
   },
@@ -693,41 +693,41 @@ export default {
         // 卡片資料
         this.selectedCard = localStorage.getItem("tmp_w_selectedCard")
           ? {
-            bank_id: JSON.parse(localStorage.getItem("tmp_w_selectedCard"))[
-              "bank_id"
-            ],
-            id: JSON.parse(localStorage.getItem("tmp_w_selectedCard"))["id"],
-            name: JSON.parse(localStorage.getItem("tmp_w_selectedCard"))[
-              "name"
-            ],
-            withdrawType: JSON.parse(
-              localStorage.getItem("tmp_w_selectedCard")
-            )["withdrawType"],
-            swift_code: JSON.parse(
-              localStorage.getItem("tmp_w_selectedCard")
-            )["swift_code"],
-            offer_percent: JSON.parse(
-              localStorage.getItem("tmp_w_selectedCard")
-            )["offer_percent"],
-            offer_limit: JSON.parse(
-              localStorage.getItem("tmp_w_selectedCard")
-            )["offer_limit"]
-          }
+              bank_id: JSON.parse(localStorage.getItem("tmp_w_selectedCard"))[
+                "bank_id"
+              ],
+              id: JSON.parse(localStorage.getItem("tmp_w_selectedCard"))["id"],
+              name: JSON.parse(localStorage.getItem("tmp_w_selectedCard"))[
+                "name"
+              ],
+              withdrawType: JSON.parse(
+                localStorage.getItem("tmp_w_selectedCard")
+              )["withdrawType"],
+              swift_code: JSON.parse(
+                localStorage.getItem("tmp_w_selectedCard")
+              )["swift_code"],
+              offer_percent: JSON.parse(
+                localStorage.getItem("tmp_w_selectedCard")
+              )["offer_percent"],
+              offer_limit: JSON.parse(
+                localStorage.getItem("tmp_w_selectedCard")
+              )["offer_limit"]
+            }
           : {
-            bank_id: defaultCard.bank_id,
-            id: defaultCard.id,
-            name:
-              defaultCard.withdrawType === "account_id"
-                ? ""
-                : defaultCard.alias.substring(
-                  0,
-                  defaultCard.alias.indexOf("-")
-                ),
-            withdrawType: defaultCard.withdrawType,
-            swift_code: defaultCard.swift_code,
-            offer_percent: defaultCard.offer_percent,
-            offer_limit: defaultCard.offer_limit
-          };
+              bank_id: defaultCard.bank_id,
+              id: defaultCard.id,
+              name:
+                defaultCard.withdrawType === "account_id"
+                  ? ""
+                  : defaultCard.alias.substring(
+                      0,
+                      defaultCard.alias.indexOf("-")
+                    ),
+              withdrawType: defaultCard.withdrawType,
+              swift_code: defaultCard.swift_code,
+              offer_percent: defaultCard.offer_percent,
+              offer_limit: defaultCard.offer_limit
+            };
 
         this.updateAmount(this.selectedCard.swift_code);
 
@@ -1118,7 +1118,7 @@ export default {
         ) {
           this.errTips = `单笔提现金额最小为${withdrawMin}元，最大为${
             withdrawMax ? `${withdrawMax}元` : "无限制"
-            }`;
+          }`;
           return;
         }
 
@@ -1126,7 +1126,10 @@ export default {
         const balance = Number(this.withdrawData.cash.available_balance);
 
         if (this.withdrawValue > Math.floor(balance)) {
-          this.errTips = `提现金额不可大于最高提现金额`;
+          this.errTips =
+            this.themeTPL === "porn1"
+              ? "提现金额不可大於中心钱包余额"
+              : "提现金额不可大于最高提现金额";
           return;
         }
 
@@ -1611,7 +1614,7 @@ export default {
               this.setPopupStatus(true, "funcTips");
 
               this.confirmPopupObj = {
-                msg: ['porn1', 'sg1'].includes(this.themeTPL)
+                msg: ["porn1", "sg1"].includes(this.themeTPL)
                   ? "汇率已失效"
                   : "汇率已失效，请再次确认汇率",
                 btnText: "刷新汇率",
