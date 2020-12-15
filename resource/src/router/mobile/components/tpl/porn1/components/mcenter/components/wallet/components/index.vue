@@ -11,23 +11,18 @@
       <div :class="$style['icon-block']">
         <div
           v-for="(item, index) in walletIcons"
+          v-show="item.show ||
+                (item.key === 'recharge' && ['porn1', 'sg1'].includes(themeTPL))"
           :key="'icon-' + index"
           :class="$style['icon-cell']"
           @click="item.onClick"
         >
-          <template
-            v-if="
-              item.show ||
-                (item.key === 'recharge' && ['porn1', 'sg1'].includes(themeTPL))
-            "
-          >
             <div :class="$style['image']">
               <img :src="$getCdnPath(item.imgSrc)" alt="icon" />
             </div>
             <span>
               {{ item.text }}
             </span>
-          </template>
         </div>
       </div>
 
