@@ -171,7 +171,7 @@ export default {
       divHeight: 0,
       isShowPop: false,
       linkArray: [],
-      avatarSrc: `/static/image/sg1/mcenter/avatar_nologin.png`
+      avatarSrc: `/static/image/common/default/avatar_nologin.png`
     };
   },
   created() {

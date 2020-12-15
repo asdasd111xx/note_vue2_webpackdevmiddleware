@@ -11,7 +11,7 @@ export default {
   },
   data() {
     return {
-      avatarSrc: `/static/image/common/mcenter/avatar_nologin.png`
+      avatarSrc: `/static/image/common/default/avatar_nologin.png`
     };
   },
   computed: {

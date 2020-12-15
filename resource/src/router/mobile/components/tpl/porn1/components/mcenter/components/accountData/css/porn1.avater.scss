@@ -2,205 +2,205 @@
 
 // avatar dialog
 .dialog {
-    position: fixed;
-    width: 100%;
-    left: 0;
-    top: 0;
-    height: 100%;
-    display: flex;
-    justify-content: center;
-    align-items: center;
-    z-index: 100;
-    background-color: rgba($color: #161616, $alpha: 0.4);
+  position: fixed;
+  width: 100%;
+  left: 0;
+  top: 0;
+  height: 100%;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  z-index: 100;
+  background-color: rgba($color: #161616, $alpha: 0.4);
 }
 
 .dialog-wrap {
-    background-color: $main_background_white1;
-    border-radius: 20px 20px 0 0;
+  background-color: $main_background_white1;
+  border-radius: 20px 20px 0 0;
+  bottom: 0;
+  max-width: $mobile_max_width;
+  min-height: 375px;
+  padding-top: 14px;
+  position: fixed;
+  width: 100%;
+  z-index: 100;
+
+  .dialog-func {
+    text-align: center;
+    color: $main_text_color4;
+    font-size: 17px;
+    position: absolute;
     bottom: 0;
-    max-width: $mobile_max_width;
-    min-height: 375px;
-    padding-top: 14px;
-    position: fixed;
+    left: 0;
     width: 100%;
-    z-index: 100;
 
-    .dialog-func {
-        text-align: center;
-        color: $main_text_color4;
-        font-size: 17px;
-        position: absolute;
-        bottom: 0;
-        left: 0;
-        width: 100%;
-
-        >div:first {
-            padding-top: 1px;
-        }
-
-        >div {
-            background-color: $main_white_color1;
-            width: 100%;
-            height: 50px;
-            line-height: 50px;
-        }
-
-        >div:last-child {
-            margin-top: 20px;
-            color: black;
-        }
+    >div:first {
+      padding-top: 1px;
     }
 
-    .avatar-cell {
-        width: 65px;
-        position: relative;
-        margin: 0 auto;
-
-        img {
-            border-radius: 50%;
-            width: 98%;
-
-            &.active {
-                border: 2px solid transparent;
-                border-color: #d2b79c;
-            }
-        }
-
-        .check {
-            position: absolute;
-            bottom: 10%;
-            right: -10px;
-            background: url("/static/image/_new/mcenter/ic_check.png") 0 0 no-repeat;
-            background-size: 100%;
-            width: 18px;
-            height: 18px;
-            -webkit-transform: translate(-50%, 0);
-            transform: translate(-50%, 0);
-        }
+    >div {
+      background-color: $main_white_color1;
+      width: 100%;
+      height: 50px;
+      line-height: 50px;
     }
 
-    .avatar-wrap {
-        position: relative;
-        display: inline-block;
-        width: 25%;
-        margin-top: 14px;
-        text-align: center;
+    >div:last-child {
+      margin-top: 20px;
+      color: black;
     }
+  }
+
+  .avatar-cell {
+    width: 65px;
+    position: relative;
+    margin: 0 auto;
+
+    img {
+      border-radius: 50%;
+      width: 98%;
+
+      &.active {
+        border: 2px solid transparent;
+        border-color: #d2b79c;
+      }
+    }
+
+    .check {
+      position: absolute;
+      bottom: 10%;
+      right: -10px;
+      background: url("/static/image/_new/mcenter/ic_check.png") 0 0 no-repeat;
+      background-size: 100%;
+      width: 18px;
+      height: 18px;
+      -webkit-transform: translate(-50%, 0);
+      transform: translate(-50%, 0);
+    }
+  }
+
+  .avatar-wrap {
+    position: relative;
+    display: inline-block;
+    width: 25%;
+    margin-top: 14px;
+    text-align: center;
+  }
 }
 
 @media (orientation: landscape) {
-    .dialog-wrap {
-        max-width: $mobile_max_landscape_width !important;
-    }
+  .dialog-wrap {
+    max-width: $mobile_max_landscape_width !important;
+  }
 }
 
 .img-input {
-    display: none;
-    border: unset;
-    outline: unset;
+  display: none;
+  border: unset;
+  outline: unset;
 }
 
 // editer
 
 .container {
-    background-color: #ffffff;
+  background-color: #ffffff;
 }
 
 .avater-editer-header {
-    z-index: 3;
-    width: 100%;
-    height: 43px;
-    padding: 0 17px;
-    background: #ffffff;
-    text-align: center;
-    position: relative;
+  z-index: 3;
+  width: 100%;
+  height: 43px;
+  padding: 0 17px;
+  background: #ffffff;
+  text-align: center;
+  position: relative;
 
-    .title {
-        width: 100%;
-        text-align: center;
-        font-size: 17px;
-        line-height: 43px;
-        font-weight: 700;
-    }
+  .title {
+    width: 100%;
+    text-align: center;
+    font-size: 17px;
+    line-height: 43px;
+    font-weight: 700;
+  }
 }
 
 .btn-prev {
-    position: absolute;
-    width: 20px;
-    height: 100%;
-    display: flex;
-    align-items: center;
-    justify-content: center;
+  position: absolute;
+  width: 20px;
+  height: 100%;
+  display: flex;
+  align-items: center;
+  justify-content: center;
 
-    >img {
-        width: 20px;
-        height: 20px;
-    }
+  >img {
+    width: 20px;
+    height: 20px;
+  }
 }
 
 .cropper {
-    height: 294px;
-    margin: 5px auto;
+  height: 294px;
+  margin: 5px auto;
+  max-width: 100%;
+  width: 375px;
+  background-image: url("/static/image/common/default/avatar_nologin.png");
+  background-position: center;
+  background-repeat: no-repeat;
+  background-size: 250px 250px;
+  border: dashed #cacaca 1px;
+  position: relative;
+  text-align: center;
+
+  &.active {
+    background-image: unset;
+  }
+
+  img {
     max-width: 100%;
-    width: 375px;
-    background-image: url("/static/image/common/mcenter/avatar_nologin.png");
-    background-position: center;
-    background-repeat: no-repeat;
-    background-size: 250px 250px;
-    border: dashed #cacaca 1px;
-    position: relative;
-    text-align: center;
-
-    &.active {
-        background-image: unset;
-    }
-
-    img {
-        max-width: 100%;
-        max-height: 100%;
-    }
+    max-height: 100%;
+  }
 }
 
 .avater-editer-func {
-    margin-top: 50px;
-    padding: 0 10px;
+  margin-top: 50px;
+  padding: 0 10px;
 }
 
 .choose-btn {
-    background: linear-gradient(to left, #bd9d7d, #f9ddbd);
-    border-radius: 3px;
-    color: #ffffff;
-    font-size: 14px;
-    font-weight: 400;
-    height: 45px;
-    line-height: 45px;
-    margin: 10px 0;
-    text-align: center;
+  background: linear-gradient(to left, #bd9d7d, #f9ddbd);
+  border-radius: 3px;
+  color: #ffffff;
+  font-size: 14px;
+  font-weight: 400;
+  height: 45px;
+  line-height: 45px;
+  margin: 10px 0;
+  text-align: center;
 }
 
 .func-btn {
-    margin: 15px 0;
+  margin: 15px 0;
 
-    >div {
-        width: 48%;
-        display: inline-block;
-        font-weight: 400;
-        height: 45px;
-        line-height: 45px;
-        text-align: center;
-        font-size: 14px;
-        border-radius: 3px;
-    }
+  >div {
+    width: 48%;
+    display: inline-block;
+    font-weight: 400;
+    height: 45px;
+    line-height: 45px;
+    text-align: center;
+    font-size: 14px;
+    border-radius: 3px;
+  }
 }
 
 .cancel-btn {
-    background: #faf5f0;
-    color: #be9e7f;
-    float: left;
+  background: #faf5f0;
+  color: #be9e7f;
+  float: left;
 }
 
 .submit-btn {
-    background: linear-gradient(to left, #bd9d7d, #f9ddbd);
-    color: #ffffff;
-    float: right;
+  background: linear-gradient(to left, #bd9d7d, #f9ddbd);
+  color: #ffffff;
+  float: right;
 }

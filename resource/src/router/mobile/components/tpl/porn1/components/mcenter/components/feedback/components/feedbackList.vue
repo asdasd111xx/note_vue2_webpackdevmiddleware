@@ -145,7 +145,7 @@ export default {
       repliedList: [],
       isReceive: false,
       typeList: null,
-      avatarSrc: `/static/image/common/mcenter/avatar_nologin.png`
+      avatarSrc: `/static/image/common/default/avatar_nologin.png`
     };
   },
   computed: {
