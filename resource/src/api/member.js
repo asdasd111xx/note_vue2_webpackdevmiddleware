@@ -54,14 +54,13 @@ export default {
     // 會員登出
     logout(args) {
         return axios({
-            method: 'get',
+            method: 'put',
             url: apiUrl.API_LOGOUT,
         }).then(res => {
-            let t=res;
             if (res && res.data && res.data.result === "ok") {
                 setCookie('cid', '');
                 setCookie('aid', '');
-                localStorage.removeItem('type');
+                localStorage.removeItem('home-menu-type');
                 localStorage.removeItem('content_rating');
                 localStorage.removeItem('is-open-game');
                 localStorage.removeItem('do-not-show-home-post');
@@ -73,17 +72,17 @@ export default {
                 window.location.href = '/mobile/login?logout=true';
             }
 
-            
+
         }).catch((error) => {
-            
-                setCookie('cid', '');
-                setCookie('aid', '');
-                localStorage.removeItem('type');
-                localStorage.removeItem('content_rating');
-                localStorage.removeItem('is-open-game');
-                localStorage.removeItem('do-not-show-home-post');
-                localStorage.removeItem('is-show-popup-announcement');
-                if (error.response.data.code === "M00001") {
+
+            setCookie('cid', '');
+            setCookie('aid', '');
+            localStorage.removeItem('home-menu-type');
+            localStorage.removeItem('content_rating');
+            localStorage.removeItem('is-open-game');
+            localStorage.removeItem('do-not-show-home-post');
+            localStorage.removeItem('is-show-popup-announcement');
+            if (error.response.data.code === "M00001") {
                 // GA流量統計
                 window.dataLayer.push({
                     ga_uid: undefined

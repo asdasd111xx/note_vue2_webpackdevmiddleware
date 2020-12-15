@@ -358,6 +358,12 @@ export default {
         },
         success: () => {
           localStorage.setItem('content_rating', (+!this.pornSwitchState));
+          if (+!this.pornSwitchState) {
+            localStorage.setItem('home-menu-type', 'welfare');
+          } else {
+            localStorage.setItem('home-menu-type', '');
+          }
+
           this.memInfo.user.content_rating = +!this.pornSwitchState;
           this.pornSwitchState = !this.pornSwitchState;
           this.isReceive = false;
