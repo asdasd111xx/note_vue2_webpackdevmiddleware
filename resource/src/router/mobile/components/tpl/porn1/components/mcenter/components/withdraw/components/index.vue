@@ -1126,10 +1126,9 @@ export default {
         const balance = Number(this.withdrawData.cash.available_balance);
 
         if (this.withdrawValue > Math.floor(balance)) {
-          this.errTips =
-            this.themeTPL === "porn1"
-              ? "提现金额不可大於中心钱包余额"
-              : "提现金额不可大于最高提现金额";
+          this.errTips = ["porn1", "sg1"].includes(this.themeTPL)
+            ? "提现金额不可大於中心钱包余额"
+            : "提现金额不可大于最高提现金额";
           return;
         }
 
