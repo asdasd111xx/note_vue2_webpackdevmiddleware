@@ -26,7 +26,7 @@
           <template>
             <template v-for="(gameInfo, index) in gameData">
               <game-item
-                v-if="gameInfo.is_mobile"
+                v-if="gameInfo.is_mobile || isFavorite"
                 :key="`game-${gameInfo.vendor}-${index}`"
                 :theme="gameTheme"
                 :game-info="gameInfo"
@@ -99,45 +99,45 @@ export default {
     gameLabel,
     gameItem,
     InfiniteLoading,
-    jackpot,
+    jackpot
   },
   props: {
     slotSort: {
       type: Array,
-      default: () => ["search", "label", "jackpot", "list"],
+      default: () => ["search", "label", "jackpot", "list"]
     },
     searchTheme: {
       type: String,
-      default: "1",
+      default: "1"
     },
     labelTheme: {
       type: String,
-      default: "porn1",
+      default: "porn1"
     },
     gameTheme: {
       type: String,
-      default: "porn1",
+      default: "porn1"
     },
     gameShowVendor: {
       type: Boolean,
-      default: true,
+      default: true
     },
     gameShowJackpot: {
       type: Boolean,
-      default: false,
+      default: false
     },
     gameShowFavor: {
       type: Boolean,
-      default: true,
+      default: true
     },
     gameShowButton: {
       type: Boolean,
-      default: true,
+      default: true
     },
     isShowSearch: {
       type: Boolean,
-      default: false,
-    },
+      default: false
+    }
   },
   data() {
     return {
@@ -152,7 +152,7 @@ export default {
         enable: true,
         first_result: 0,
         max_results: 36,
-        name: "",
+        name: ""
       },
       searchText: "",
       isLabelReceive: false,
@@ -161,14 +161,14 @@ export default {
       gameData: [],
       activityData: [],
 
-      jackpotData: null,
+      jackpotData: null
     };
   },
   computed: {
     ...mapGetters({
       loginStatus: "getLoginStatus",
       favoriteGame: "getFavoriteGame",
-      siteconfig: "getSiteConfig",
+      siteconfig: "getSiteConfig"
     }),
     vendor() {
       return this.$route.params.vendor === "all"
@@ -178,16 +178,12 @@ export default {
     // 依平台篩選出最愛的遊戲列表
     favoriteData() {
       if (this.vendor) {
-        this.favoriteGame.filter((element) => {
-          if (element.vendor === this.vendor) {
-            return (this.isFavorite = true);
-          }
+        this.favoriteGame.filter(element => {
+          return element.vendor === this.vendor;
         });
       }
-      return this.favoriteGame.filter((element) => {
-        if (element.kind === this.paramsData.kind) {
-          return (this.isFavorite = true);
-        }
+      return this.favoriteGame.filter(element => {
+        return element.kind === this.paramsData.kind;
       });
     },
     jackpotType() {
@@ -222,7 +218,7 @@ export default {
       //   default:
       //     return;
       // }
-    },
+    }
   },
   watch: {
     vendor() {
@@ -240,12 +236,12 @@ export default {
         return;
       }
       this.setSearchText("");
-    },
+    }
   },
   created() {
     this.getGameLabelList();
     if (this.loginStatus) {
-      this.actionSetFavoriteGame();
+      this.actionSetFavoriteGame(this.vendor);
     }
   },
   methods: {
@@ -264,7 +260,7 @@ export default {
       const defaultData = [
         {
           label: "",
-          name: this.$t("S_ALL"),
+          name: this.$t("S_ALL")
         },
         // 活動先註解不開放，後續開放只要搜 activity_open
         // {
@@ -274,19 +270,19 @@ export default {
 
         {
           label: "new",
-          name: this.$t("S_NEW_GAMES"),
+          name: this.$t("S_NEW_GAMES")
         },
         {
           label: "hot",
-          name: this.$t("S_HOT"),
-        },
+          name: this.$t("S_HOT")
+        }
       ];
 
       // 抓取遊戲導覽清單
       ajax({
         method: "get",
-        url: `${gameType}?kind=${this.paramsData.kind}&vendor=${this.vendor}`,
-      }).then((response) => {
+        url: `${gameType}?kind=${this.paramsData.kind}&vendor=${this.vendor}`
+      }).then(response => {
         this.labelData = defaultData.concat(response.ret);
 
         if (this.loginStatus) {
@@ -298,7 +294,7 @@ export default {
         if (
           !defaultData
             .concat(response.ret)
-            .some((item) => item.label === this.paramsData.label)
+            .some(item => item.label === this.paramsData.label)
         ) {
           this.paramsData.label = "";
         }
@@ -358,7 +354,7 @@ export default {
       this.paramsData = {
         ...this.paramsData,
         label: value,
-        first_result: 0,
+        first_result: 0
       };
 
       this.$router.replace({
@@ -366,6 +362,7 @@ export default {
           label: value
         }
       });
+      this.isFavorite = value === "favorite";
       // 活動先註解不開放，後續開放只要搜 activity_open
       // if (!this.paramsData.label || this.paramsData.label === 'activity') {
       //     ajax({
@@ -410,6 +407,7 @@ export default {
       ) {
         this.gameData = [...this.activityData.events];
       }
+
       setTimeout(() => {
         this.showInfinite = true;
       }, 300);
@@ -461,13 +459,13 @@ export default {
       //     };
       // }
 
-      new Promise((resolve) => {
+      new Promise(resolve => {
         ajax({
           method: "get",
           url: gameApiInfo.url,
           errorAlert: false,
-          params: gameApiInfo.params,
-        }).then((response) => {
+          params: gameApiInfo.params
+        }).then(response => {
           if (response && response.result === "ok") {
             resolve(response);
             return;
@@ -478,7 +476,7 @@ export default {
             this.infiniteHandler($state, index + 1);
           }, 3000);
         });
-      }).then((response) => {
+      }).then(response => {
         if (
           !this.paramsData.name &&
           response.ret.games &&
@@ -502,8 +500,8 @@ export default {
     },
     updateSearchStatus() {
       this.$emit("update:isShowSearch");
-    },
-  },
+    }
+  }
 };
 </script>
 

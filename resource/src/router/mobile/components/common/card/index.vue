@@ -15,7 +15,7 @@
         <div :key="`slot-${slotKey}`" class="game-item-wrap clearfix">
           <template v-for="(gameInfo, index) in gameData">
             <game-item
-              v-if="gameInfo.is_mobile"
+              v-if="gameInfo.is_mobile || isFavorite"
               :key="`game-${gameInfo.vendor}-${index}`"
               :game-info="gameInfo"
               :theme="gameTheme"
@@ -61,13 +61,13 @@
 </template>
 
 <script>
-import { mapGetters, mapActions } from 'vuex';
-import InfiniteLoading from 'vue-infinite-loading';
-import ajax from '@/lib/ajax';
-import { gameType, gameList } from '@/config/api';
-import gameLabel from '../gameLabel';
-import gameItem from '../gameItem';
-import gameSearch from '../gameSearch';
+import { mapGetters, mapActions } from "vuex";
+import InfiniteLoading from "vue-infinite-loading";
+import ajax from "@/lib/ajax";
+import { gameType, gameList } from "@/config/api";
+import gameLabel from "../gameLabel";
+import gameItem from "../gameItem";
+import gameSearch from "../gameSearch";
 
 /**
  * 共用元件 - 手機網頁版電子遊戲頁共用框 (邏輯共用)
@@ -82,20 +82,20 @@ export default {
     gameSearch,
     gameLabel,
     gameItem,
-    InfiniteLoading,
+    InfiniteLoading
   },
   props: {
     slotSort: {
       type: Array,
-      default: () => (['search', 'label', 'list'])
+      default: () => ["search", "label", "list"]
     },
     labelTheme: {
       type: String,
-      default: 'porn1'
+      default: "porn1"
     },
     gameTheme: {
       type: String,
-      default: 'porn1'
+      default: "porn1"
     },
     gameShowVendor: {
       type: Boolean,
@@ -116,43 +116,50 @@ export default {
     isShowSearch: {
       type: Boolean,
       default: false
-    },
+    }
   },
   data() {
     return {
       isReceive: false,
       showInfinite: true,
+      isFavorite: false,
       paramsData: {
         kind: 5,
-        label: 'hot', // 棋牌遊戲分類預設“棋牌遊戲”
+        label: "hot", // 棋牌遊戲分類預設“棋牌遊戲”
         enable: true,
         first_result: 0,
         max_results: 36,
-        name: ''
+        name: ""
       },
-      searchText: '',
+      searchText: "",
       isLabelReceive: false,
       labelData: [],
       isGameDataReceive: false,
-      gameData: [],
+      gameData: []
     };
   },
   computed: {
     ...mapGetters({
-      loginStatus: 'getLoginStatus',
-      favoriteGame: 'getFavoriteGame',
-      siteconfig: 'getSiteConfig'
+      loginStatus: "getLoginStatus",
+      favoriteGame: "getFavoriteGame",
+      siteconfig: "getSiteConfig"
     }),
     vendor() {
-      return (this.$route.params.vendor === 'all') ? '' : (this.$route.params.vendor || '');
+      return this.$route.params.vendor === "all"
+        ? ""
+        : this.$route.params.vendor || "";
     },
     // 依平台篩選出最愛的遊戲列表
     favoriteData() {
       if (this.vendor) {
-        return this.favoriteGame.filter((element) => element.vendor === this.vendor);
+        return this.favoriteGame.filter(
+          element => element.vendor === this.vendor
+        );
       }
 
-      return this.favoriteGame.filter((element) => element.kind === this.paramsData.kind);
+      return this.favoriteGame.filter(
+        element => element.kind === this.paramsData.kind
+      );
     }
   },
   watch: {
@@ -168,19 +175,17 @@ export default {
         return;
       }
 
-      this.setSearchText('');
+      this.setSearchText("");
     }
   },
   created() {
     this.getGameLabelList();
     if (this.loginStatus) {
-      this.actionSetFavoriteGame();
+      this.actionSetFavoriteGame(this.vendor);
     }
   },
   methods: {
-    ...mapActions([
-      'actionSetFavoriteGame'
-    ]),
+    ...mapActions(["actionSetFavoriteGame"]),
     redirectBankCard() {
       return `card-${this.vendor}-${this.paramsData.label}`;
     },
@@ -191,27 +196,27 @@ export default {
       // 電子分類預設資料
       const defaultData = [
         {
-          label: '',
-          name: this.$t('S_ALL')
+          label: "",
+          name: this.$t("S_ALL")
         },
         {
-          label: 'new',
-          name: this.$t('S_NEW_GAMES')
+          label: "new",
+          name: this.$t("S_NEW_GAMES")
         },
         {
-          label: 'hot',
-          name: this.$t('S_HOT')
+          label: "hot",
+          name: this.$t("S_HOT")
         }
       ];
 
       // 抓取遊戲導覽清單
       ajax({
-        method: 'get',
+        method: "get",
         url: `${gameType}?kind=${this.paramsData.kind}&vendor=${this.vendor}`
-      }).then((response) => {
+      }).then(response => {
         this.labelData = defaultData.concat(response.ret);
         if (this.loginStatus) {
-          let favData = { label: 'favorite', name: this.$t('S_FAVORITE') };
+          let favData = { label: "favorite", name: this.$t("S_FAVORITE") };
           this.labelData = this.labelData.concat(favData);
         }
         // this.paramsData.label = 27; // 棋牌遊戲分類預設“棋牌遊戲”
@@ -251,6 +256,7 @@ export default {
         label: value,
         first_result: 0
       };
+      this.isFavorite = value === "favorite";
       this.updateGameData();
     },
     /**
@@ -261,8 +267,10 @@ export default {
       this.isGameDataReceive = false;
       this.gameData = [];
 
-      if (this.paramsData.label === 'favorite') {
-        this.gameData = this.favoriteData;
+      if (this.paramsData.label === "favorite") {
+        setTimeout(() => {
+          this.gameData = this.favoriteData;
+        }, 300);
         return;
       }
 
@@ -293,17 +301,17 @@ export default {
         _params = { ..._params, label: "" };
       }
 
-      new Promise((resolve) => {
+      new Promise(resolve => {
         ajax({
-          method: 'get',
+          method: "get",
           url: gameList,
           errorAlert: false,
           params: {
             ..._params,
             vendor: this.vendor
           }
-        }).then((response) => {
-          if (response && response.result === 'ok') {
+        }).then(response => {
+          if (response && response.result === "ok") {
             resolve(response);
             return;
           }
@@ -313,7 +321,7 @@ export default {
             this.infiniteHandler($state, index + 1);
           }, 3000);
         });
-      }).then((response) => {
+      }).then(response => {
         this.gameData.push(...response.ret);
         this.paramsData.first_result = this.gameData.length;
         this.isReceive = false;
@@ -327,7 +335,7 @@ export default {
       });
     },
     updateSearchStatus() {
-      this.$emit('update:isShowSearch');
+      this.$emit("update:isShowSearch");
     }
   }
 };
