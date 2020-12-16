@@ -1,5 +1,5 @@
 <template>
-  <swiper :options="options">
+  <swiper :options="opts" :key="updateKey">
     <swiper-slide v-for="(info, key) in slider" :key="key">
       <div :class="$style['phone-image-wrap']">
         <img
@@ -9,14 +9,9 @@
               site: themeTPL
             })
           "
-          :src="
-            info.image && info.image[curLang]
-              ? $getCdnPath(info.image[curLang])
-              : `/static/image/${themeTPL}/default/bg_banner_d.png`
-          "
+          :src="info.image"
           :class="$style['phone-image']"
           :data-link="info.linkTo"
-          :alt="info.image"
         />
       </div>
     </swiper-slide>
@@ -25,15 +20,17 @@
 </template>
 
 <script>
-import { mapGetters, mapActions } from 'vuex';
-import { Swiper, SwiperSlide } from 'vue-awesome-swiper';
-import mobileLinkOpen from '@/lib/mobile_link_open';
+import { mapGetters, mapActions } from "vuex";
+import { Swiper, SwiperSlide } from "vue-awesome-swiper";
+import mobileLinkOpen from "@/lib/mobile_link_open";
 
 export default {
   data() {
     return {
       slider: [],
-    }
+      updateKey: 0,
+      opts: {}
+    };
   },
   components: {
     Swiper,
@@ -42,90 +39,92 @@ export default {
   beforeDestroy() {
     clearInterval(this.getSliderTimer);
     this.getSliderTimer = null;
-    localStorage.removeItem('mobile-slider');
+    localStorage.removeItem("mobile-slider");
   },
   mounted() {
     this.initSlider();
   },
   computed: {
     ...mapGetters({
-      cdnDomain: 'getCdnDomain',
-      curLang: 'getCurLang',
-      lang: 'getLang',
-      mobileInfo: 'getMobileInfo',
-      loginStatus: 'getLoginStatus',
-      memInfo: 'getMemInfo',
-      siteConfig: 'getSiteConfig',
+      cdnDomain: "getCdnDomain",
+      curLang: "getCurLang",
+      lang: "getLang",
+      mobileInfo: "getMobileInfo",
+      loginStatus: "getLoginStatus",
+      memInfo: "getMemInfo",
+      siteConfig: "getSiteConfig"
     }),
     themeTPL() {
       return this.siteConfig.MOBILE_WEB_TPL;
-    },
-    options() {
-      let hasLoop = this.slider && this.slider.length > 1;
-      return {
-        loop: hasLoop,
-        autoplay: hasLoop ? { delay: 5000, disableOnInteraction: false } : {},
-        pagination: { el: '.swiper-pagination', clickable: true }
-      };
     }
   },
   methods: {
-    ...mapActions([
-      'actionGetMobileInfo'
-    ]),
+    ...mapActions(["actionGetMobileInfo"]),
     mobileLinkOpen,
     getImg(src) {
       return {
         src: this.$getCdnPath(src),
-        error: this.$getCdnPath(`/static/image/${this.themeTPL}/default/bg_banner_d.png`),
-        loading: this.$getCdnPath(`/static/image/${this.themeTPL}/default/bg_banner_d.png`)
+        error: this.$getCdnPath(
+          `/static/image/${this.themeTPL}/default/bg_banner_d.png`
+        ),
+        loading: this.$getCdnPath(
+          `/static/image/${this.themeTPL}/default/bg_banner_d.png`
+        )
       };
     },
     initSlider() {
       this.actionGetMobileInfo();
-      let mobileSlider = JSON.parse(localStorage.getItem('mobile-slider')) || this.mobileInfo;
+      const defaultImage = this.generateDefaultImg();
+      let info = this.mobileInfo;
 
       // 若無資料則使用預設圖片
-      if (!mobileSlider ||
-        !mobileSlider.mSlider ||
-        !mobileSlider.mSlider.data ||
-        mobileSlider.mSlider.data.length === 0) {
-        const imageData = this.generateDefaultImg();
+      if (
+        !info ||
+        !info.mSlider ||
+        !info.mSlider.data ||
+        info.mSlider.data.length === 0
+      ) {
         this.slider = [imageData];
         return;
       }
 
       let list = [];
-      mobileSlider.mSlider.data.forEach((data) => {
+
+      info.mSlider.data.map(item => {
         if (!Object.keys(this.lang)) {
           return;
         }
 
-        const imageData = Object.keys(this.lang).reduce((init, key) => ({
-          ...init,
-          image: { ...init.image, [key]: `${this.cdnDomain}${data.image[key]}` },
-          padImg: { ...init.padImg, [key]: `${this.cdnDomain}${data.padImg[key]}` },
-          linkItem: data.linkItem,
-          linkTo: data.linkTo,
-          linkType: data.linkType
-        }), {});
-
         // 舊版輪播無限制設定
-        if (!data.condition) {
-          list.push(imageData);
+        if (!item.condition) {
+          list.push(defaultImage);
+          return;
         }
 
-        if (data.condition) {
-          const isShow = this.show(this.getDefaultCondition(data.condition));
-          if (isShow) list.push(imageData);
+        if (item.condition) {
+          const isShow = this.show(this.getDefaultCondition(item.condition));
+          if (isShow) {
+            list.push({
+              ...item,
+              image: `${this.cdnDomain}${item.image[this.curLang]}`
+            });
+          }
         }
       });
+
       // 若限制條件都不符合使用預設圖片
       if (list.length === 0) {
-        const imageData = this.generateDefaultImg();
-        list.push(imageData);
+        list.push(defaultImage);
       }
+
       this.slider = list;
+      let hasLoop = list && list.length > 1;
+      this.opts = {
+        loop: hasLoop,
+        autoplay: hasLoop ? { delay: 5000, disableOnInteraction: false } : {},
+        pagination: { el: ".swiper-pagination", clickable: true }
+      };
+      this.updateKey = 1;
     },
     /**
      * 生成預設圖片物件
@@ -133,8 +132,12 @@ export default {
      */
     generateDefaultImg() {
       return {
-        linkType: 'nolink', linkTo: '', linkItem: '',
-        image: { 'zh-cn': `/static/image/${this.themeTPL}/default/bg_banner_d.png` }
+        linkType: "nolink",
+        linkTo: "",
+        linkItem: "",
+        image: {
+          "zh-cn": `/static/image/${this.themeTPL}/default/bg_banner_d.png`
+        }
       };
     },
     /**
@@ -171,8 +174,8 @@ export default {
       const keys = Object.keys(data);
       let condition = {};
 
-      keys.forEach((key) => {
-        if (data[key] !== '') {
+      keys.forEach(key => {
+        if (data[key] !== "") {
           condition = JSON.parse(data[key]);
         }
       });
