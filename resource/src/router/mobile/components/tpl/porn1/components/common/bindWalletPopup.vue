@@ -161,7 +161,7 @@ export default {
         {
           name: "火币",
           iconSrc: this.$getCdnPath(
-            `/static/image/porn1/mcenter/deposit/ic_huobi.png`
+            `/static/image/common/mcenter/deposit/ic_huobi.png`
           ),
           onClick: () => {
             window.open("https://www.huobi.pr/");
@@ -170,7 +170,7 @@ export default {
         {
           name: "币安",
           iconSrc: this.$getCdnPath(
-            `/static/image/porn1/mcenter/deposit/ic_binance.png`
+            `/static/image/common/mcenter/deposit/ic_binance.png`
           ),
           onClick: () => {
             window.open("https://www.binancezh.pro/");
