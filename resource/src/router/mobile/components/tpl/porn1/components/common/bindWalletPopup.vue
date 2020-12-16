@@ -164,7 +164,7 @@ export default {
             `/static/image/porn1/mcenter/deposit/ic_huobi.png`
           ),
           onClick: () => {
-            window.open("https://www.huobi.com/zh-cn/register");
+            window.open("https://www.huobi.pr/");
           }
         },
         {
@@ -173,7 +173,7 @@ export default {
             `/static/image/porn1/mcenter/deposit/ic_binance.png`
           ),
           onClick: () => {
-            window.open("https://accounts.binance.com/cn/register");
+            window.open("https://www.binancezh.pro/");
           }
         }
       ],
