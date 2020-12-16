@@ -533,7 +533,7 @@ export const actionSetCasinoLoadingStatus = ({ commit }, status) => {
 //     會員、代理 共用
 // ＝＝＝＝＝＝＝＝＝＝＝＝＝＝＝＝＝＝
 // 會員、代理共用-設定系統時間
-export const actionSetSystemTime = ({ commit }, func = () => { }) => {
+export const actionSetSystemTime = ({ commit }, func = () => {}) => {
   common.systemTime({
     success: response => {
       if (response.result === "ok") {
@@ -584,11 +584,11 @@ export const actionMemInit = ({ state, dispatch, commit, store }) => {
     await dispatch("actionSetUserdata");
     await dispatch("actionSetWebInfo", state.webDomain.domain);
     await dispatch("actionGetMemInfoV3");
-    await dispatch('actionGetMobileInfo');
+    await dispatch("actionGetMobileInfo");
 
     const defaultLang =
       ["47", "70", "71"].includes(state.memInfo.user.domain) &&
-        state.webInfo.is_production
+      state.webInfo.is_production
         ? "vi"
         : "zh-cn";
     await getLang(state.webInfo.language, defaultLang);
@@ -878,10 +878,11 @@ export const actionSetPost = ({ commit }, postType = 1) =>
   });
 
 // 會員端-加入最愛的遊戲列表
-export const actionSetFavoriteGame = ({ commit }) =>
+export const actionSetFavoriteGame = ({ commit }, vendor = "") =>
   game.favoriteGame({
     params: {
-      max_results: 1000
+      max_results: 1000,
+      vendor
     },
     success: response => {
       commit(types.SETFAVORITEGAME, response.ret);
@@ -914,7 +915,7 @@ export const actionAgentInit = ({ state, dispatch, commit }, next) => {
 
         const defaultLang =
           ["47", "70", "71"].includes(state.agentInfo.user.domain) &&
-            state.webInfo.is_production
+          state.webInfo.is_production
             ? "vi"
             : "zh-cn";
         await getLang(state.webInfo.language, defaultLang);
@@ -1144,7 +1145,7 @@ export const actionGetMobileInfo = ({ commit, state }, datatpl) => {
   let manifest = document.createElement("link");
   manifest.rel = "manifest";
   manifest.href = `/static/tpl/analytics/${state.webDomain.domain}/manifest.json`;
-  manifest.setAttribute('data-name', 'manifest');
+  manifest.setAttribute("data-name", "manifest");
 
   if (!document.querySelector('script[data-name="manifest"]')) {
     document.querySelector("head").append(manifest);
@@ -1157,7 +1158,7 @@ export const actionGetMobileInfo = ({ commit, state }, datatpl) => {
       const { result, data } = response;
 
       if (result === "ok") {
-        localStorage.setItem('mobile-slider', JSON.stringify(data));
+        localStorage.setItem("mobile-slider", JSON.stringify(data));
         commit(types.SETMOBILEINFO, data);
       }
     }
@@ -1602,7 +1603,7 @@ export const actionGetMemInfoV3 = ({ state, dispatch, commit }) => {
         dispatch("actionSetGlobalMessage", {
           msg: error.response.data.msg,
           cb: () => {
-            member.logout().then(() => { });
+            member.logout().then(() => {});
           }
         });
       }
