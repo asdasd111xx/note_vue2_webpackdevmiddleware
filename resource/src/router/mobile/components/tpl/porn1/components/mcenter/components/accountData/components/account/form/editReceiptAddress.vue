@@ -30,7 +30,7 @@
         <div :class="$style['adj-content']">
           <img
             :class="[$style['icon-next']]"
-            :src="$getCdnPath(`/static/image/_new/mcenter/ic_arrow_next.png`)"
+            :src="$getCdnPath(`/static/image/common/arrow_next.png`)"
             @click="goToEditAddress(index)"
           />
         </div>

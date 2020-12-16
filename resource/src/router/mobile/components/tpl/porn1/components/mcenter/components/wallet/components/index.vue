@@ -11,18 +11,20 @@
       <div :class="$style['icon-block']">
         <div
           v-for="(item, index) in walletIcons"
-          v-show="item.show ||
-                (item.key === 'recharge' && ['porn1', 'sg1'].includes(themeTPL))"
+          v-show="
+            item.show ||
+              (item.key === 'recharge' && ['porn1', 'sg1'].includes(themeTPL))
+          "
           :key="'icon-' + index"
           :class="$style['icon-cell']"
           @click="item.onClick"
         >
-            <div :class="$style['image']">
-              <img :src="$getCdnPath(item.imgSrc)" alt="icon" />
-            </div>
-            <span>
-              {{ item.text }}
-            </span>
+          <div :class="$style['image']">
+            <img :src="$getCdnPath(item.imgSrc)" alt="icon" />
+          </div>
+          <span>
+            {{ item.text }}
+          </span>
         </div>
       </div>
 
@@ -108,11 +110,7 @@
               >
                 {{ $t("S_MAINTAIN") }}
                 <img
-                  :src="
-                    $getCdnPath(
-                      '/static/image/common/mcenter/balanceTrans/icon_transfer_tips_info.png'
-                    )
-                  "
+                  :src="$getCdnPath('/static/image/common/mcenter/ic_tips.png')"
                   :class="$style['balance-wrench']"
                 />
               </span>
@@ -136,9 +134,7 @@
                 <img
                   v-if="isMaintainSwag && swagConfig && swagConfig.enable !== 0"
                   :class="$style['maintain-tip-img']"
-                  :src="
-                    $getCdnPath('/static/image/porn1/mcenter/swag/ic_tips.png')
-                  "
+                  :src="$getCdnPath('/static/image/common/mcenter/ic_tips.png')"
                 />
               </template>
               <template v-else>

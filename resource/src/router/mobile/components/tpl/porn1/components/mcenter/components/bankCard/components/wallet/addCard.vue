@@ -30,7 +30,7 @@
               <img
                 v-if="item.id === selectTarget.walletId"
                 :class="$style['select-wallet-img']"
-                src="/static/image/porn1/common/select_active.png"
+                :src="$getCdnPath(`/static/image/common/select_active.png`)"
               />
             </li>
           </ul>
@@ -62,7 +62,7 @@
             <img
               v-if="!selectTarget.fixed"
               :class="$style['arrow-icon']"
-              src="/static/image/ey1/common/arrow_next.png"
+              :src="$getCdnPath(`/static/image/common/arrow_next.png`)"
             />
           </div>
         </div>
@@ -259,7 +259,7 @@ export default {
   props: {
     setPageStatus: {
       type: Function,
-      default: () => { }
+      default: () => {}
     },
     userLevelObj: {
       type: Object,

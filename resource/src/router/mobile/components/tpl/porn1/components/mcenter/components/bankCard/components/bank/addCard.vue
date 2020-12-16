@@ -22,9 +22,7 @@
           />
           <div :class="$style['clear-input']" v-if="formData.account_name">
             <img
-              :src="
-                $getCdnPath(`/static/image/${themeTPL}/common/ic_clear.png`)
-              "
+              :src="$getCdnPath(`/static/image/common/ic_clear.png`)"
               @click="formData.account_name = ''"
             />
           </div>
@@ -45,7 +43,7 @@
             </span>
             <img
               :class="$style['arrow-icon']"
-              :src="`/static/image/${themeTPL}/common/arrow_next.png`"
+              :src="`/static/image/common/arrow_next.png`"
             />
           </div>
         </div>
@@ -65,9 +63,7 @@
               />
               <div :class="$style['clear-input']" v-if="formData.province">
                 <img
-                  :src="
-                    $getCdnPath(`/static/image/${themeTPL}/common/ic_clear.png`)
-                  "
+                  :src="$getCdnPath(`/static/image/common/ic_clear.png`)"
                   @click="formData.province = ''"
                 />
               </div>
@@ -86,9 +82,7 @@
               />
               <div :class="$style['clear-input']" v-if="formData.city">
                 <img
-                  :src="
-                    $getCdnPath(`/static/image/${themeTPL}/common/ic_clear.png`)
-                  "
+                  :src="$getCdnPath(`/static/image/common/ic_clear.png`)"
                   @click="formData.city = ''"
                 />
               </div>
@@ -108,9 +102,7 @@
             />
             <div :class="$style['clear-input']" v-if="formData.branch">
               <img
-                :src="
-                  $getCdnPath(`/static/image/${themeTPL}/common/ic_clear.png`)
-                "
+                :src="$getCdnPath(`/static/image/common/ic_clear.png`)"
                 @click="formData.branch = ''"
               />
             </div>
@@ -130,9 +122,7 @@
             />
             <div :class="$style['clear-input']" v-if="formData.account">
               <img
-                :src="
-                  $getCdnPath(`/static/image/${themeTPL}/common/ic_clear.png`)
-                "
+                :src="$getCdnPath(`/static/image/common/ic_clear.png`)"
                 @click="formData.account = ''"
               />
             </div>

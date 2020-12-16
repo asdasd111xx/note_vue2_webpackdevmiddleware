@@ -51,7 +51,7 @@
           <img
             :src="
               $getCdnPath(
-                `/static/image/${siteConfig.MOBILE_WEB_TPL}/mcenter/information/btn_more.png`
+                `/static/image/${siteConfig.MOBILE_WEB_TPL}/common/btn_more.png`
               )
             "
             @click="onShowFunction(true)"

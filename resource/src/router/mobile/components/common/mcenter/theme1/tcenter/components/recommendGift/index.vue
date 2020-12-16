@@ -200,7 +200,7 @@
           :class="$style['btn-money']"
           @click="$router.push('/mobile/mcenter/makeMoney')"
         >
-          推广赚钱
+          {{ giftTitle }}
         </div>
       </div>
     </template>
@@ -347,6 +347,11 @@ export default {
       return this.mainData.some(item =>
         this.controlData.some(data => item.day === data.day)
       );
+    },
+    giftTitle() {
+      let title =
+        this.siteConfig.MOBILE_WEB_TPL === "ey1" ? "一键快赚" : "推广赚钱";
+      return title;
     }
   },
   watch: {

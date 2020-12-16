@@ -140,7 +140,7 @@
               />
               <div :class="$style['clear']" v-if="allValue[field.key]">
                 <img
-                  :src="$getCdnPath(`/static/image/_new/common/ic_clear.png`)"
+                  :src="$getCdnPath(`/static/image/common/ic_clear.png`)"
                   @click="allValue[field.key] = ''"
                 />
               </div>

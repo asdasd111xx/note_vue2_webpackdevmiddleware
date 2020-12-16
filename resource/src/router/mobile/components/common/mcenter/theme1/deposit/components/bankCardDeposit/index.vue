@@ -104,7 +104,7 @@
                       curPayInfo.bank_id === info.bank_id
                   "
                   :class="$style['pay-active']"
-                  src="/static/image/_new/common/select_active.png"
+                  :src="$getCdnPath(`/static/image/common/select_active.png`)"
                 />
               </div>
 
@@ -170,7 +170,7 @@
 
             <img
               :class="$style['select-bank-icon']"
-              src="/static/image/_new/common/arrow_next.png"
+              :src="$getCdnPath(`/static/image/common/arrow_next.png`)"
             />
 
             <div v-if="isShowPop" :class="$style['pop-wrap']">
@@ -271,7 +271,7 @@
                   <img
                     v-if="data.id === curPassRoad.id"
                     :class="$style['pay-active']"
-                    src="/static/image/_new/common/select_active.png"
+                    :src="$getCdnPath(`/static/image/common/select_active.png`)"
                   />
                 </div>
               </div>
@@ -450,7 +450,7 @@
                   <img
                     v-if="moneyValue === item"
                     :class="$style['pay-active']"
-                    src="/static/image/_new/common/select_active.png"
+                    :src="$getCdnPath(`/static/image/common/select_active.png`)"
                   />
                 </div>
 
@@ -495,7 +495,9 @@
                     <img
                       v-if="isSelectedCustomMoney"
                       :class="$style['pay-active']"
-                      src="/static/image/_new/common/select_active.png"
+                      :src="
+                        $getCdnPath(`/static/image/common/select_active.png`)
+                      "
                     />
                   </div>
                 </div>
@@ -632,7 +634,7 @@
                   <img
                     v-if="walletData['CGPay'].method === 0"
                     :class="$style['pay-active']"
-                    src="/static/image/_new/common/select_active.png"
+                    :src="$getCdnPath(`/static/image/common/select_active.png`)"
                   />
                 </div>
 
@@ -649,7 +651,7 @@
                   <img
                     v-if="walletData['CGPay'].method === 1"
                     :class="$style['pay-active']"
-                    src="/static/image/_new/common/select_active.png"
+                    :src="$getCdnPath(`/static/image/common/select_active.png`)"
                   />
                 </div>
 
@@ -686,7 +688,7 @@
                         info.objKey === 'depositTime'
                     "
                     :class="$style['speed-field-icon']"
-                    src="/static/image/_new/common/arrow_next.png"
+                    :src="$getCdnPath(`/static/image/common/arrow_next.png`)"
                   />
                   <div :class="$style['field-title']">{{ info.title }}</div>
                   <div :class="$style['field-info']">
@@ -1107,7 +1109,7 @@ export default {
   props: {
     headerSetting: {
       type: Object,
-      default: () => { }
+      default: () => {}
     }
   },
   data() {
@@ -1148,7 +1150,7 @@ export default {
       confirmPopupObj: {
         msg: "",
         btnText: "",
-        cb: () => { }
+        cb: () => {}
       }
     };
   },
@@ -1529,7 +1531,7 @@ export default {
       this.$router.push("/mobile/mcenter/creditTrans?tab=0");
     },
     handleBindWallet() {
-      if (['porn1', 'sg1'].includes(this.themeTPL)) {
+      if (["porn1", "sg1"].includes(this.themeTPL)) {
         switch (this.curPayInfo.payment_method_id) {
           // CGPay
           case 16:
@@ -1558,7 +1560,7 @@ export default {
         return;
       }
 
-      if (['ey1'].includes(this.themeTPL)) {
+      if (["ey1"].includes(this.themeTPL)) {
         switch (this.curPayInfo.payment_method_id) {
           case 22:
             this.qrcodeObj.bank_id = 37;

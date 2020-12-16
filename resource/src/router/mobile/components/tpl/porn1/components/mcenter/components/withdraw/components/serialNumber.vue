@@ -139,7 +139,7 @@
             <div :class="$style['serial-next']">
               <img
                 :class="$style['arrow-icon']"
-                src="/static/image/_new/common/arrow_next.png"
+                :src="$getCdnPath(`/static/image/common/arrow_next.png`)"
               />
             </div>
           </div>

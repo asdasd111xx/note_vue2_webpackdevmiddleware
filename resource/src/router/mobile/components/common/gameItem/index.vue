@@ -75,52 +75,52 @@ export default {
     pageLoading: () =>
       import(
         /* webpackChunkName: 'pageLoading' */ "@/router/mobile/components/common/pageLoading"
-      ),
+      )
   },
   data() {
     return {
       isShowLoading: false,
-      isFavorite: false, // 客端顯示是否最愛
+      isFavorite: false // 客端顯示是否最愛
     };
   },
 
   mounted() {
     this.isFavorite = !!this.favoriteGame.find(
-      (i) => i.vendor === this.gameInfo.vendor && i.code === this.gameInfo.code
+      i => i.vendor === this.gameInfo.vendor && i.code === this.gameInfo.code
     );
   },
   props: {
     theme: {
       type: String,
-      default: "porn1",
+      default: "porn1"
     },
     gameInfo: {
       type: Object,
-      required: true,
+      required: true
     },
     showVendor: {
       type: Boolean,
-      default: true,
+      default: true
     },
     showJackpot: {
       type: Boolean,
-      default: true,
+      default: true
     },
     showFavor: {
       type: Boolean,
-      default: true,
+      default: true
     },
     showButton: {
       type: Boolean,
-      default: true,
+      default: true
     },
     redirectCard: {
       type: Function,
-      required: true,
+      required: true
     },
     jackpotData: {
-      type: Object,
-    },
+      type: Object
+    }
   },
 
   computed: {
@@ -131,7 +131,7 @@ export default {
       loginStatus: "getLoginStatus",
       curLang: "getCurLang",
       siteConfig: "getSiteConfig",
-      BBOSDomain: "getBBOSDomain",
+      BBOSDomain: "getBBOSDomain"
     }),
     /**
      * 平台名稱顯示特例
@@ -175,7 +175,7 @@ export default {
       const imgConverter = {
         3: "casino",
         5: "card",
-        6: "mahjong",
+        6: "mahjong"
       };
       // cdn 機制
       // let resultUrl = this.$getCdnPath(`${this.cdnDomain}/image/${imgConverter[this.gameInfo.kind]}/${this.gameInfo.vendor}/Game_${this.gameInfo.code}.png`);
@@ -212,7 +212,7 @@ export default {
         loading:
           this.theme === "ey1"
             ? ey1_default_img
-            : this.$getCdnPath("/static/image/game_loading_s.gif"),
+            : this.$getCdnPath("/static/image/game_loading_s.gif")
       };
     },
     /**
@@ -223,7 +223,7 @@ export default {
     getActivityImg() {
       return `/static/image/casino/theme/brilliant/lang/${this.curLang}/${
         this.gameInfo.status !== 2 ? "upcoming_ribbon" : "activity_ribbon"
-        }.png`;
+      }.png`;
     },
     getJackpotImg() {
       let src = "/static/image/common/casino/jackpot/";
@@ -259,7 +259,7 @@ export default {
       }
 
       const data = this.jackpotData.jpMinor.find(
-        (info) => info.code === this.gameInfo.code
+        info => info.code === this.gameInfo.code
       );
 
       if (!data) {
@@ -280,7 +280,7 @@ export default {
     favoriteList() {
       const result = {};
 
-      this.favoriteGame.forEach((info) => {
+      this.favoriteGame.forEach(info => {
         if (!result[info.vendor]) {
           result[info.vendor] = {};
         }
@@ -324,7 +324,7 @@ export default {
       }
 
       return this.$i18n.t(name);
-    },
+    }
   },
   methods: {
     ...mapActions(["actionSetFavoriteGame", "actionSetGlobalMessage"]),
@@ -339,7 +339,7 @@ export default {
       const style = this[`$style_${this.theme}`] || this.$style_porn1;
       const classObj = {};
 
-      className.forEach((name) => {
+      className.forEach(name => {
         if (!style[name]) {
           return;
         }
@@ -401,12 +401,12 @@ export default {
 
       this.isShowLoading = true;
 
-      const openGameSuccessFunc = (res) => {
+      const openGameSuccessFunc = res => {
         this.isShowLoading = false;
         window.GAME_RELOAD = true;
       };
 
-      const openGameFailFunc = (res) => {
+      const openGameFailFunc = res => {
         this.isShowLoading = false;
         window.GAME_RELOAD = undefined;
 
@@ -415,7 +415,7 @@ export default {
           this.actionSetGlobalMessage({
             msg: data.msg,
             code: data.code,
-            origin: this.redirectCard(),
+            origin: this.redirectCard()
           });
         }
       };
@@ -438,21 +438,20 @@ export default {
         params: {
           vendor,
           kind,
-          code,
-        },
+          code
+        }
       }).then(() => {
         this.isFavorite = !this.isFavorite;
-        this.actionSetFavoriteGame().then(() => {
+        this.actionSetFavoriteGame(vendor).then(() => {
           setTimeout(() => {
             this.isSetFavorite = false;
           }, 300);
         });
       });
-    },
-  },
+    }
+  }
 };
 </script>
-
 
 <style lang="scss" src="./css/porn1.module.scss" module="$style_porn1"></style>
 <style lang="scss" src="./css/ey1.module.scss" module="$style_ey1"></style>

@@ -18,9 +18,7 @@
         </div>
         <div :class="[$style['arrow-btn']]">
           <img
-            :src="
-              $getCdnPath(`/static/image/porn1/mcenter/help/ic_arrow_next.png`)
-            "
+            :src="$getCdnPath(`/static/image/common/arrow_next.png`)"
           />
         </div>
       </div>
@@ -45,11 +43,7 @@
           <span> {{ categorys[category_currentIndex].name }} </span>
           <div :class="$style['btn-next']">
             <img
-              :src="
-                $getCdnPath(
-                  `/static/image/porn1/mcenter/help/ic_arrow_next.png`
-                )
-              "
+              :src="$getCdnPath(`/static/image/common/arrow_next.png`)"
             />
           </div>
         </div>

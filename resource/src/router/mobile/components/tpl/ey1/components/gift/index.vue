@@ -46,10 +46,77 @@ export default {
     return {
       isLoading: false,
       currentMenu: [],
-      isMounted: true,
+      isMounted: true
+    };
+  },
+  components: {
+    mobileContainer,
+    pageLoading: () =>
+      import(
+        /* webpackChunkName: 'pageLoading' */ "@/router/mobile/components/common/pageLoading"
+      )
+  },
+  mounted() {
+    // if (this.$route.query.q === "通讯软体") {
+    //  to do
+    // let cur = this.giftMenuList.find((i) =>
+    //   i.items.find((y) => y.name === this.$route.query.q)
+    // );
 
-      giftMenuList: [
+    //   this.linkTo({
+    //     title: "服务",
+    //     name: "通讯软体",
+    //     icon: "/static/image/ey1/gift/icon_gift_service.png",
+    //     items: [
+    //       {
+    //         title: "通讯软体",
+    //         icon: "/static/image/ey1/gift/icon_gift_service.png",
+    //         items: [
+    //           { name: "微信推广", params: "wechat" },
+    //           { name: "飞机炸群", params: "plane" },
+    //           { name: "苹果推信", params: "apple" },
+    //         ],
+    //       },
+    //     ],
+    //   });
+    //}
+    if (this.$route.query.q) {
+      this.giftMenuList.find(x =>
+        x.items.find(y => {
+          if (y.name === this.$route.query.q) {
+            this.linkTo(y);
+          }
+        })
+      );
+    } else {
+      this.currentMenu = this.giftMenuList;
+    }
+  },
+  computed: {
+    ...mapGetters({
+      loginStatus: "getLoginStatus",
+      siteConfig: "getSiteConfig",
+      memInfo: "getMemInfo"
+    }),
+    headerConfig() {
+      return {
+        prev: !!this.$route.query.q,
+        title: this.$route.query.q ? this.$route.query.q : "礼包",
+        onClick: () => {
+          if (this.$route.query.q) {
+            this.currentMenu = this.giftMenuList;
+            this.isMounted = true;
+            this.$router.push("/mobile/gift");
+            return;
+          }
+          this.$router.back();
+        }
+      };
+    },
+    giftMenuList() {
+      return [
         {
+          isShow: !["41"].includes(this.memInfo.user.domain),
           title: "福利",
           icon: "/static/image/ey1/gift/icon_gift_bonus.png",
           items: [
@@ -80,6 +147,7 @@ export default {
           ]
         },
         {
+          isShow: true,
           title: "娱乐",
           icon: "/static/image/ey1/gift/icon_gift_video.png",
           items: [
@@ -106,6 +174,7 @@ export default {
           ]
         },
         {
+          isShow: true,
           title: "服务",
           icon: "/static/image/ey1/gift/icon_gift_service.png",
           items: [
@@ -171,71 +240,7 @@ export default {
             }
           ]
         }
-      ]
-    };
-  },
-  components: {
-    mobileContainer,
-    pageLoading: () =>
-      import(
-        /* webpackChunkName: 'pageLoading' */ "@/router/mobile/components/common/pageLoading"
-      )
-  },
-  mounted() {
-    // if (this.$route.query.q === "通讯软体") {
-    //  to do
-    // let cur = this.giftMenuList.find((i) =>
-    //   i.items.find((y) => y.name === this.$route.query.q)
-    // );
-
-    //   this.linkTo({
-    //     title: "服务",
-    //     name: "通讯软体",
-    //     icon: "/static/image/ey1/gift/icon_gift_service.png",
-    //     items: [
-    //       {
-    //         title: "通讯软体",
-    //         icon: "/static/image/ey1/gift/icon_gift_service.png",
-    //         items: [
-    //           { name: "微信推广", params: "wechat" },
-    //           { name: "飞机炸群", params: "plane" },
-    //           { name: "苹果推信", params: "apple" },
-    //         ],
-    //       },
-    //     ],
-    //   });
-    //}
-    if (this.$route.query.q) {
-      this.giftMenuList.find(x =>
-        x.items.find(y => {
-          if (y.name === this.$route.query.q) {
-            this.linkTo(y);
-          }
-        })
-      );
-    } else {
-      this.currentMenu = this.giftMenuList;
-    }
-  },
-  computed: {
-    ...mapGetters({
-      loginStatus: "getLoginStatus",
-      siteConfig: "getSiteConfig"
-    }),
-    headerConfig() {
-      return {
-        prev: !!this.$route.query.q,
-        title: this.$route.query.q ? this.$route.query.q : "礼包",
-        onClick: () => {
-          if (this.$route.query.q) {
-            this.currentMenu = this.giftMenuList;
-            this.isMounted = true;
-            this.$router.push("/mobile/gift");
-            return;
-          }
-          this.$router.back();
-        }
-      };
+      ].filter(item => item.isShow);
     }
   },
   watch: {
