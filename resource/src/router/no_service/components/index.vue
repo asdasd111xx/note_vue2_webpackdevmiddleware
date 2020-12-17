@@ -62,13 +62,13 @@
 </template>
 
 <script>
-import Vue from 'vue';
-import member from '@/api/member';
-import getLang from '@/lib/getLang';
-import { getCookie } from '@/lib/cookie';
-import message from '@/router/mobile/components/common/message';
-import store from '@/store';
-import mixin from '@/mixins/status';
+import Vue from "vue";
+import member from "@/api/member";
+import getLang from "@/lib/getLang";
+import { getCookie } from "@/lib/cookie";
+import message from "@/router/mobile/components/common/message";
+import store from "@/store";
+import mixin from "@/mixins/status";
 
 export default {
   mixins: [mixin],
@@ -77,49 +77,55 @@ export default {
   },
   data() {
     return {
-      ip: '',
-      code: '',
+      ip: "",
+      code: "",
       status: false,
-      msg: '',
-      username: '',
+      msg: "",
+      username: ""
     };
   },
   beforeRouteEnter(to, from, next) {
-    getLang({ [Vue.cookie.get('lang') || 'zh-cn']: '' }).then(() => {
+    getLang({ [Vue.cookie.get("lang") || "zh-cn"]: "" }).then(() => {
       next();
     });
   },
   created() {
     member.data({
       success: () => {
-        if (this.$route.params.mode && this.$route.params.mode === 'test') {
+        if (this.$route.params.mode && this.$route.params.mode === "test") {
           this.status = true;
         } else {
-          if (this.$route.params.mode && this.$route.params.mode === 'test') {
+          if (this.$route.params.mode && this.$route.params.mode === "test") {
             return;
           }
-          this.$router.push({ path: '/' });
+          this.$router.push({ path: "/" });
         }
       },
-      fail: (response) => {
+      fail: response => {
         this.ip = response.data.ip;
         this.code = response.data.code;
         this.status = true;
       }
     });
+    console.log("[version]");
+    this.version.forEach(element => {
+      console.log(element.site, element.version);
+    });
   },
   methods: {
     mailTo(target) {
-      const isWebView = getCookie('platform') === "H" || window.location.host === "yaboxxxapp02.com";
+      const isWebView =
+        getCookie("platform") === "H" ||
+        window.location.host === "yaboxxxapp02.com";
       const url = `mailto:${target}`;
       if (isWebView) {
         this.$copyText(mail);
-        this.msg = '复制成功';
+        this.msg = "复制成功";
       } else {
         window.open(url);
       }
     }
-  },
+  }
 };
 </script>
 
