@@ -387,7 +387,9 @@ export default {
       window.scrollTo(0, 0);
     },
     rebateCaculate() {
-      if (this.btnLock) {
+      if (this.siteConfig.MOBILE_WEB_TPL === "sg1" && !this.btnLock) {
+        this.isShowTip = false;
+      } else if (this.btnLock) {
         return;
       }
 
