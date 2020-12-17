@@ -47,7 +47,9 @@
         :class="$style['no-data']"
       >
         <div :class="$style['no-bankcard']">
-          <img src="/static/image/ey1/mcenter/bankCard/no_bankcard.png" />
+          <img
+            :src="$getCdnPath(`/static/image/common/default/no_bankcard.png`)"
+          />
         </div>
       </div>
     </template>
@@ -136,11 +138,11 @@ export default {
   props: {
     changePage: {
       type: Function,
-      default: () => { }
+      default: () => {}
     },
     showTab: {
       type: Function,
-      default: () => { }
+      default: () => {}
     },
     showDetail: {
       type: Boolean,
@@ -158,7 +160,9 @@ export default {
     getBankImage(swiftCode) {
       return {
         src: `https://images.dormousepie.com/icon/bankIconBySwiftCode/${swiftCode}.png`,
-        error: this.$getCdnPath("/static/image/common/default/bank_card_default.png"),
+        error: this.$getCdnPath(
+          "/static/image/common/default/bank_card_default.png"
+        ),
         loading: this.$getCdnPath(
           "/static/image/common/default/bank_card_default.png"
         )
