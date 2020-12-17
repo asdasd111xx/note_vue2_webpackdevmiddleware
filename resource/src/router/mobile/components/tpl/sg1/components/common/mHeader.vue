@@ -1,6 +1,5 @@
 <template>
   <div :class="mainClass" id="header">
-    <div v-if="headerConfig.hasLogo" :class="$style['top-bg']" />
     <div
       v-if="headerConfig.hasLogo"
       :class="[$style['logo-wrap']]"
@@ -190,7 +189,7 @@ export default {
     },
     updateSearchStatus: {
       type: Function,
-      default: () => { }
+      default: () => {}
     },
     hasUnreadMessage: {
       type: Boolean,
@@ -282,7 +281,7 @@ export default {
   max-width: $mobile_max_width;
   position: fixed;
   top: 0;
-  z-index: 0;
+  z-index: 3;
   width: 100%;
   height: 43px;
   padding: 0 17px;
@@ -302,21 +301,9 @@ export default {
   }
 
   &.is-home {
+    background: none;
     border-bottom: none;
   }
-}
-
-.top-bg {
-  background: url("/static/image/sg1/common/pic_top.png");
-  -moz-background-size: 100% 100%;
-  background-size: 100% 100%;
-  height: 120px;
-  width: 100%;
-  max-width: $mobile_max_width;
-  top: 0;
-  left: 0;
-  z-index: -1;
-  position: absolute;
 }
 
 @media (orientation: landscape) {

@@ -23,9 +23,7 @@
         :class="$style['close-fullscreen']"
         @click="toggleFullScreen"
       >
-        <img
-          :src="$getCdnPath(`/static/image/common/arrow_next.png`)"
-        />
+        <img :src="$getCdnPath(`/static/image/common/arrow_next.png`)" />
       </div>
 
       <div
@@ -131,7 +129,7 @@ export default {
           method: "get",
           url: `${
             this.siteConfig.YABO_GOLANG_API_DOMAIN
-            }/cxbb/ThirdParty/${params.page.toUpperCase()}/${userId}`
+          }/cxbb/ThirdParty/${params.page.toUpperCase()}/${userId}`
         }).then(res => {
           if (res && res.status !== "000") {
             // 維護非即時更新狀態
@@ -241,8 +239,8 @@ export default {
         origin === "SWAG"
           ? true
           : query.fullscreen === undefined
-            ? false
-            : query.fullscreen === "true";
+          ? false
+          : query.fullscreen === "true";
 
       let baseConfig = {
         hasHeader:
@@ -417,7 +415,6 @@ export default {
               return;
 
             default:
-
               const openGameSuccessFunc = res => {
                 this.isLoading = false;
               };
@@ -538,6 +535,10 @@ export default {
 
   &.porn1 {
     background: white;
+  }
+
+  &.sg1 {
+    color: black;
   }
 }
 
