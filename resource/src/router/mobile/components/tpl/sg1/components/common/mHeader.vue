@@ -16,14 +16,14 @@
     >
       <img
         v-if="source === 'gay' || source === 'les'"
-        :src="$getCdnPath(`/static/image/sg1/common/btn_back_w.png`)"
+        :src="$getCdnPath(`/static/image/common/btn_back_w.png`)"
       />
       <img
         v-else
         :src="
           $getCdnPath(
-            `/static/image/sg1/common/btn_${
-              headerConfig.hasClose ? 'close' : 'back'
+            `/static/image/common/btn_${
+              headerConfig.hasClose ? 'close_b' : 'back_b'
             }.png`
           )
         "
@@ -190,7 +190,7 @@ export default {
     },
     updateSearchStatus: {
       type: Function,
-      default: () => { }
+      default: () => {}
     },
     hasUnreadMessage: {
       type: Boolean,
@@ -282,7 +282,7 @@ export default {
   max-width: $mobile_max_width;
   position: fixed;
   top: 0;
-  z-index: 0;
+  z-index: 3;
   width: 100%;
   height: 43px;
   padding: 0 17px;

@@ -3,7 +3,19 @@
     <div :class="[$style['serial-header'], [$style[theme]]]">
       <div :class="$style['btn-prev']">
         <img
-          :src="$getCdnPath(`/static/image/${theme}/common/btn_back.png`)"
+          :src="
+            $getCdnPath(
+              `/static/image/common/icon/btn_back_${
+                themeTPL === 'porn1'
+                  ? 'g'
+                  : themeTPL === 'ey1'
+                  ? 'w'
+                  : themeTPL === 'sg1'
+                  ? 'b'
+                  : null
+              }.png`
+            )
+          "
           @click="onClose()"
         />
       </div>
@@ -190,7 +202,7 @@ export default {
     ...mapGetters({
       siteConfig: "getSiteConfig"
     }),
-    theme() {
+    themeTPL() {
       return this.siteConfig.MOBILE_WEB_TPL;
     }
   },
