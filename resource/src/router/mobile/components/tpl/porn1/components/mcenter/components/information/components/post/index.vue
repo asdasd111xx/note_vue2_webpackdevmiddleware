@@ -119,7 +119,7 @@ export default {
   created() {
     ajax({
       method: "get",
-      url: getSiteConfig,
+      url: API_GET_POST,
       success: ({ result, ret }) => {
         if (result !== "ok") {
           return;
