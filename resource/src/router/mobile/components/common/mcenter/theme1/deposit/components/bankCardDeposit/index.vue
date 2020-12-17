@@ -56,7 +56,7 @@
                   v-if="tagTrans[info.tag]"
                   :src="
                     $getCdnPath(
-                      `/static/image/_new/mcenter/deposit/icon_${
+                      `/static/image/common/mcenter/deposit/icon_${
                         tagTrans[info.tag]
                       }.png`
                     )
@@ -356,11 +356,7 @@
 
                 <img
                   :class="$style['CGPay-update-img']"
-                  :src="
-                    $getCdnPath(
-                      `/static/image/${siteConfig.MOBILE_WEB_TPL}/common/btn_update.png`
-                    )
-                  "
+                  :src="$getCdnPath(`/static/image/common/btn_update.png`)"
                   alt="update"
                   @click="getPayPass"
                 />
@@ -398,11 +394,7 @@
 
                   <div :class="$style['money-update']" @click="getPayPass">
                     <img
-                      :src="
-                        $getCdnPath(
-                          `/static/image/${siteConfig.MOBILE_WEB_TPL}/common/btn_update.png`
-                        )
-                      "
+                      :src="$getCdnPath(`/static/image/common/btn_update.png`)"
                       alt="update"
                     />
                   </div>
@@ -735,7 +727,11 @@
                               "
                             >
                               <img
-                                :src="`/static/image/_new/mcenter/default.png`"
+                                :src="
+                                  $getCdnPath(
+                                    `/static/image/common/default/bank_card_default.png`
+                                  )
+                                "
                               />
                               {{ item.mainTitle }}
                               <icon
@@ -858,7 +854,7 @@
                       @click="copyInfo(info.value)"
                     >
                       <img
-                        :src="`/static/image/${themeTPL}/mcenter/ic_copy.png`"
+                        :src="$getCdnPath(`/static/image/common/ic_copy.png`)"
                       />
                     </div>
                   </div>

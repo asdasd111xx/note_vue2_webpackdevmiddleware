@@ -23,7 +23,7 @@
           <div>
             <span v-if="countdownSec">{{ countdownSec }}</span>
             {{
-              themeTPL === "porn1" || bindType === "deposit"
+              ["porn1", "sg1"].includes(themeTPL) || bindType === "deposit"
                 ? "秒后关闭视窗"
                 : "秒后连结失效，并关闭视窗"
             }}
@@ -40,12 +40,12 @@
                 :class="$style['url']"
                 @click="
                   () => {
-                    if (themeTPL === 'porn1') {
+                    if (["porn1", "sg1"].includes(themeTPL)) {
                       openLink(
                         'https://cgpayintroduction.azurewebsites.net/index.aspx'
                       );
                     }
-                    if (themeTPL === 'ey1') {
+                    if (["ey1"].includes(themeTPL)) {
                       openLink('http://oinbox.io');
                     }
                   }
@@ -84,7 +84,7 @@
 import axios from "axios";
 import html2canvas from "html2canvas";
 import { mapGetters, mapActions } from "vuex";
-import { saveAs } from 'file-saver';
+import { saveAs } from "file-saver";
 
 export default {
   props: {
@@ -122,7 +122,7 @@ export default {
       if (this.virtualBankId === 37) {
         return "绑定购宝钱包";
       } else if (this.virtualBankId === 21) {
-        return this.themeTPL === "porn1" ? "绑定CGPay" : "扫描绑定";
+        return ["porn1", "sg1"].includes(this.themeTPL) ? "绑定CGPay" : "扫描绑定";
       }
     }
   },
@@ -131,10 +131,10 @@ export default {
   },
   watch: {
     qrcodeLink(val) {
-      if (val.includes('base64')) {
-        this.downloadText = '长按下载图片';
+      if (val.includes("base64")) {
+        this.downloadText = "长按下载图片";
       } else {
-        this.downloadText = '点击截屏保存';
+        this.downloadText = "点击截屏保存";
       }
     }
   },
@@ -195,22 +195,22 @@ export default {
     downloadImage(target) {
       //   <a :href="qrcodeLink" :download="qrcodeLink" target="_blank">
       console.log(this.qrcodeLink);
-      localStorage.setItem('download-item', this.qrcodeLink);
+      localStorage.setItem("download-item", this.qrcodeLink);
 
       if (this.qrcodeLink) {
-        if (localStorage.getItem('test2')) {
-          let a = document.createElement('a');
-          a.download = 'qrcode.gif';
+        if (localStorage.getItem("test2")) {
+          let a = document.createElement("a");
+          a.download = "qrcode.gif";
           a.target = "_parent";
           a.href = this.qrcodeLink;
 
-          a.style.display = 'none';
+          a.style.display = "none";
           document.body.appendChild(a);
 
           setTimeout(() => {
             a.click();
             document.body.removeChild(a);
-          }, 300)
+          }, 300);
 
           return;
         }
@@ -218,10 +218,13 @@ export default {
         function dataURItoBlob(dataURI) {
           // convert base64 to raw binary data held in a string
           // doesn't handle URLEncoded DataURIs - see SO answer #6850276 for code that does this
-          var byteString = atob(dataURI.split(',')[1]);
+          var byteString = atob(dataURI.split(",")[1]);
 
           // separate out the mime component
-          var mimeString = dataURI.split(',')[0].split(':')[1].split(';')[0]
+          var mimeString = dataURI
+            .split(",")[0]
+            .split(":")[1]
+            .split(";")[0];
 
           // write the bytes of the string to an ArrayBuffer
           var ab = new ArrayBuffer(byteString.length);
@@ -241,17 +244,16 @@ export default {
         }
 
         let blob = dataURItoBlob(this.qrcodeLink);
-        console.log('blob:', blob)
-        let type = 'png';
-        if (blob.type && blob.type.split('/')) {
-          type = blob.type.split('/')[1];
+        console.log("blob:", blob);
+        let type = "png";
+        if (blob.type && blob.type.split("/")) {
+          type = blob.type.split("/")[1];
         }
 
         saveAs(blob, `qrcode.${type}`);
         return;
 
-        if (this.qrcodeLink.includes('base64')) {
-
+        if (this.qrcodeLink.includes("base64")) {
           //   html2canvas(this.$refs["qrcodeRef"], {
           //     allowTaint: false,
           //     useCORS: true
@@ -284,4 +286,10 @@ export default {
   lang="scss"
   src="./css/ey1.popupQrcode.module.scss"
   module="$style_ey1"
+></style>
+
+<style
+  lang="scss"
+  src="./css/sg1.popupQrcode.module.scss"
+  module="$style_sg1"
 ></style>
