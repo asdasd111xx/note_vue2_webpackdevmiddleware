@@ -105,7 +105,7 @@ export default {
         },
         {
           key: "wallet",
-          title: ["ey1"].includes(this.themeTPL)
+          title: ["porn1", "sg1"].includes(this.themeTPL)
             ? "添加数字货币"
             : "添加 电子钱包",
           isShow: this.moreMethodStatus.wallet
