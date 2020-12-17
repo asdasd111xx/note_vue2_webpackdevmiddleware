@@ -76,7 +76,7 @@
             <!-- USDT -->
             <template v-if="walletType === 'USDT'">
               <div :class="$style['info-item']">
-                <div :class="$style['input-title']">建立您的加密货币账号</div>
+                <div :class="$style['input-title']">建立您的加密货币帐号</div>
 
                 <div :class="$style['icon-block']">
                   <div
