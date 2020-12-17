@@ -108,7 +108,7 @@
             <img
               :src="
                 $getCdnPath(
-                  `/static/image/${themeTPL}/mcenter/balanceTrans/ic_expand.png`
+                  `/static/image/common/mcenter/balanceTrans/ic_expand.png`
                 )
               "
               alt="expend"
@@ -156,7 +156,7 @@
             <img
               :src="
                 $getCdnPath(
-                  `/static/image/${themeTPL}/mcenter/balanceTrans/ic_collapse.png`
+                  `/static/image/common/mcenter/balanceTrans/ic_collapse.png`
                 )
               "
               alt="collapse"

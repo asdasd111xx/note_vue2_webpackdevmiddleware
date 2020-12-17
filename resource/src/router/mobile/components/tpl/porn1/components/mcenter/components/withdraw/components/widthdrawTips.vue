@@ -18,7 +18,17 @@
             @click="closeTips"
           >
             <img
-              :src="$getCdnPath('/static/image/_new/common/btn_close_w.png')"
+              :src="
+                $getCdnPath(
+                  `/static/image/common/btn_close_${
+                    themeTPL === 'porn1'
+                      ? 'g'
+                      : ['ey1', 'sg1'].includes(themeTPL)
+                      ? 'w'
+                      : null
+                  }.png`
+                )
+              "
               alt="close"
             />
           </div>
@@ -254,3 +264,4 @@ export default {
 
 <style lang="scss" src="../css/index.module.scss" module="$style_porn1"></style>
 <style lang="scss" src="../css/ey1.module.scss" module="$style_ey1"></style>
+<style lang="scss" src="../css/sg1.module.scss" module="$style_sg1"></style>

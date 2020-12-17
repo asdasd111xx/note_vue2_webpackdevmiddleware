@@ -36,87 +36,86 @@
 </template>
 
 <script>
-import member from '@/api/member';
-import mobileContainer from '../../../common/mobileContainer';
-import { mapGetters, mapActions } from 'vuex';
+import member from "@/api/member";
+import mobileContainer from "../../../common/mobileContainer";
+import { mapGetters, mapActions } from "vuex";
 
 export default {
   components: {
-    mobileContainer,
+    mobileContainer
   },
   data() {
     return {
       list: [
         {
-          name: '充值教程',
-          key: 'deposit',
-          img: 'deposit',
-          info: '充值极速到账',
+          name: "充值教程",
+          key: "deposit",
+          img: "deposit",
+          info: "充值极速到帐",
           needLogin: true
         },
         {
-          name: '提现教程',
-          key: 'withdraw',
-          img: 'withdraw',
-          info: '',
+          name: "提现教程",
+          key: "withdraw",
+          img: "withdraw",
+          info: "",
           needLogin: false
         },
         {
-          name: this.$text('S_GAME_INTR', '游戏介绍'),
-          key: 'gameintro',
-          img: 'gameintro',
-          info: '主流体育彩票玩法',
+          name: this.$text("S_GAME_INTR", "游戏介绍"),
+          key: "gameintro",
+          img: "gameintro",
+          info: "主流体育彩票玩法",
           needLogin: false
         },
         {
-          name: this.$text('S_TECH_SUP', '技术支持'),
-          key: 'support',
-          img: 'support',
-          info: '提供全面技术支持',
+          name: this.$text("S_TECH_SUP", "技术支持"),
+          key: "support",
+          img: "support",
+          info: "提供全面技术支持",
           needLogin: false
         },
         {
-          name: '常见问题',
-          key: 'faq',
-          img: 'faq',
-          info: '',
+          name: "常见问题",
+          key: "faq",
+          img: "faq",
+          info: "",
           needLogin: false
         },
         {
-          name: '会员协议规章',
-          key: 'rules',
-          img: 'rules',
-          info: '',
+          name: "会员协议规章",
+          key: "rules",
+          img: "rules",
+          info: "",
           needLogin: false
         },
         {
-          name: this.$text('S_CONTACT_US', '联系我们'),
-          key: 'contact',
-          img: 'contact',
-          info: '为您提供全天候服务',
+          name: this.$text("S_CONTACT_US", "联系我们"),
+          key: "contact",
+          img: "contact",
+          info: "为您提供全天候服务",
           needLogin: false
-        },
-      ],
+        }
+      ]
     };
   },
   computed: {
     ...mapGetters({
-      loginStatus: 'getLoginStatus'
+      loginStatus: "getLoginStatus"
     }),
     headerConfig() {
       return {
         prev: true,
-        onClick: () => { this.$router.back(); },
-        title: this.$text('S_HELP_CENTER', '帮助中心'),
+        onClick: () => {
+          this.$router.back();
+        },
+        title: this.$text("S_HELP_CENTER", "帮助中心")
       };
-    },
+    }
   },
-  created() {
-  },
+  created() {},
   methods: {
-    ...mapActions([
-      'actionSetGlobalMessage'
-    ]),
+    ...mapActions(["actionSetGlobalMessage"]),
     handleClick(item) {
       // 充值不開放
       //   if (item.key === "deposit") {
@@ -125,7 +124,7 @@ export default {
       //   }
 
       this.$router.push(`/mobile/mcenter/help/${item.key}`);
-    },
+    }
   }
 };
 </script>

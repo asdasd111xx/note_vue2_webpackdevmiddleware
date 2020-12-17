@@ -15,14 +15,14 @@
     >
       <img
         v-if="source === 'gay' || source === 'les'"
-        :src="$getCdnPath(`/static/image/sg1/common/btn_back_w.png`)"
+        :src="$getCdnPath(`/static/image/common/btn_back_w.png`)"
       />
       <img
         v-else
         :src="
           $getCdnPath(
-            `/static/image/sg1/common/btn_${
-              headerConfig.hasClose ? 'close' : 'back'
+            `/static/image/common/btn_${
+              headerConfig.hasClose ? 'close_b' : 'back_b'
             }.png`
           )
         "

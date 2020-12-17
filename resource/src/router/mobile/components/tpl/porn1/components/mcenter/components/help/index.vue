@@ -51,7 +51,7 @@ export default {
           name: "充值教程",
           img: "deposit",
           key: "deposit",
-          info: "充值极速到账",
+          info: "充值极速到帐",
           needLogin: true
         },
         {
