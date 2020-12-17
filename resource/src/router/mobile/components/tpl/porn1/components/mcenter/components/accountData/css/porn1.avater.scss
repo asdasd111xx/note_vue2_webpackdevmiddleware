@@ -27,7 +27,7 @@
 
   .dialog-func {
     text-align: center;
-    color: $main_text_color4;
+    color: #5E626D;
     font-size: 17px;
     position: absolute;
     bottom: 0;
@@ -39,6 +39,7 @@
     }
 
     >div {
+      color: #5E626D;
       background-color: $main_white_color1;
       width: 100%;
       height: 50px;
