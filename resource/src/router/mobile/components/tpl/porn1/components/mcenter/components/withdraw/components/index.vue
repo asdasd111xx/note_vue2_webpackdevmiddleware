@@ -635,8 +635,8 @@ export default {
       isShowMore: true,
       // 彈窗顯示狀態統整
       showPopStatus: {
-        isShow: true,
-        type: "check"
+        isShow: false,
+        type: ""
       },
 
       selectAccountValue: "",
