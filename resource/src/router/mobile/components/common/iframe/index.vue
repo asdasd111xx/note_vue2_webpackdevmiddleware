@@ -31,7 +31,19 @@
         @click="headerConfig.onClick"
       >
         <img
-          :src="$getCdnPath(`/static/image/${themeTPL}/common/btn_back.png`)"
+          :src="
+            $getCdnPath(
+              `/static/image/common/btn_back_${
+                themeTPL === 'porn1'
+                  ? 'grey'
+                  : themeTPL === 'ey1'
+                  ? 'white'
+                  : themeTPL === 'sg1'
+                  ? 'black'
+                  : null
+              }.png`
+            )
+          "
         />
         <div>返回</div>
       </div>

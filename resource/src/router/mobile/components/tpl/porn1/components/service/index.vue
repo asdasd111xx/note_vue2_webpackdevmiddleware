@@ -3,7 +3,7 @@
     <div slot="content" :class="$style['content-wrap']">
       <div :class="$style['service-header']">
         <div v-if="hasPrev" :class="$style['btn-prev']" @click="handleBack()">
-          <img :src="$getCdnPath(`/static/image/ey1/common/btn_back.png`)" />
+          <img :src="$getCdnPath(`/static/image/common/btn_back_white.png`)" />
         </div>
         <div :class="$style.title">我的客服</div>
         <div

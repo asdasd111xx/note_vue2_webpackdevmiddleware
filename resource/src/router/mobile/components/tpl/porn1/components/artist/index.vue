@@ -3,7 +3,7 @@
     <div slot="content" class="content-wrap">
       <div :class="$style['header']">
         <div :class="$style['btn-prev']" @click="$router.back()">
-          <img :src="$getCdnPath('/static/image/_new/common/btn_back.png')" />
+          <img :src="$getCdnPath(`/static/image/common/btn_back_grey.png`)" />
         </div>
         <div :class="$style.title">{{ title }}</div>
       </div>
@@ -25,13 +25,13 @@
 </template>
 
 <script>
-import { mapGetters } from 'vuex';
-import axios from 'axios';
-import querystring from 'querystring';
-import artistInfo from './components/artistInfo';
-import artistVideo from './components/artistVideo';
-import mobileContainer from '../common/mobileContainer';
-import pornRequest from '@/api/pornRequest';
+import { mapGetters } from "vuex";
+import axios from "axios";
+import querystring from "querystring";
+import artistInfo from "./components/artistInfo";
+import artistVideo from "./components/artistVideo";
+import mobileContainer from "../common/mobileContainer";
+import pornRequest from "@/api/pornRequest";
 
 export default {
   components: {
@@ -52,20 +52,23 @@ export default {
   },
   computed: {
     ...mapGetters({
-      memInfo: 'getMemInfo'
+      memInfo: "getMemInfo"
     })
   },
   created() {
-    if (!this.memInfo.config.content_rating || !this.memInfo.user.content_rating) {
-      this.$router.push('/mobile');
+    if (
+      !this.memInfo.config.content_rating ||
+      !this.memInfo.user.content_rating
+    ) {
+      this.$router.push("/mobile");
       return;
     }
 
     pornRequest({
-      method: 'post',
+      method: "post",
       url: `/video/artistvideo`,
-      data: { artistId: this.$route.params.id },
-    }).then((response) => {
+      data: { artistId: this.$route.params.id }
+    }).then(response => {
       if (response.status !== 200) {
         return;
       }

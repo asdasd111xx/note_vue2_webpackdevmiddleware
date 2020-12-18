@@ -15,7 +15,7 @@
     >
       <img
         v-if="source === 'gay' || source === 'les'"
-        :src="$getCdnPath(`/static/image/common/btn_back_w.png`)"
+        :src="$getCdnPath(`/static/image/common/btn_back_white.png`)"
       />
       <img
         v-else

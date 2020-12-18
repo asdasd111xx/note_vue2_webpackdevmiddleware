@@ -3,7 +3,7 @@
     <div :class="$style['header']">
       <div :class="$style['btn-prev']" @click="backPre">
         <img
-          :src="$getCdnPath(`/static/image/common/btn_back_w.png`)"
+          :src="$getCdnPath(`/static/image/common/btn_back_white.png`)"
           alt="back"
         />
       </div>

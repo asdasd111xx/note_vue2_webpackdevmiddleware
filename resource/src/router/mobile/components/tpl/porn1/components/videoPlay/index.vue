@@ -6,7 +6,7 @@
     <div slot="content" class="content-wrap">
       <div :class="$style['header']" id="header">
         <div :class="$style['btn-prev']" @click="$router.back()">
-          <img :src="$getCdnPath('/static/image/_new/common/btn_back_w.png')" />
+          <img :src="$getCdnPath(`/static/image/common/btn_back_white.png`)" />
         </div>
       </div>
       <template v-if="videoInfo">
@@ -29,15 +29,15 @@
 </template>
 
 <script>
-import { mapGetters } from 'vuex';
-import axios from 'axios';
-import querystring from 'querystring';
-import videoPlayer from './components/videoPlayer';
-import videoInfo from './components/videoInfo';
-import videoGuess from './components/videoGuess';
-import videoTag from './components/videoTag';
-import mobileContainer from '../common/mobileContainer';
-import pornRequest from '@/api/pornRequest';
+import { mapGetters } from "vuex";
+import axios from "axios";
+import querystring from "querystring";
+import videoPlayer from "./components/videoPlayer";
+import videoInfo from "./components/videoInfo";
+import videoGuess from "./components/videoGuess";
+import videoTag from "./components/videoTag";
+import mobileContainer from "../common/mobileContainer";
+import pornRequest from "@/api/pornRequest";
 
 export default {
   components: {
@@ -55,23 +55,23 @@ export default {
   },
   computed: {
     ...mapGetters({
-      memInfo: 'getMemInfo'
+      memInfo: "getMemInfo"
     }),
     siteId() {
       switch (this.source) {
-        case 'yabo':
+        case "yabo":
           return 1;
           break;
 
-        case 'smallPig':
+        case "smallPig":
           return 2;
-          break
+          break;
 
-        case 'gay':
+        case "gay":
           return 3;
           break;
 
-        case 'les':
+        case "les":
           return 4;
           break;
 
@@ -81,27 +81,26 @@ export default {
     }
   },
   methods: {
-
     handleLeavePage(cb) {
-      if (this.$refs['player']) {
-        this.$refs['player'].handleLeavePage(cb);
+      if (this.$refs["player"]) {
+        this.$refs["player"].handleLeavePage(cb);
       }
     }
   },
   mounted() {
     const obj = {
-      method: 'post',
+      method: "post",
       url: `/video/videoinfo`,
-      data: { videoId: this.$route.params.id, siteId: this.siteId },
+      data: { videoId: this.$route.params.id, siteId: this.siteId }
 
       //   reqHeaders: {
       //     // 本機開發時會遇到 CORS 的問題，把Bundleid及Version註解，並打開下面註解即可
       //      'Content-Type': 'application/x-www-form-urlencoded',
       //      origin: 'http://127.0.0.1'
       //   }
-    }
+    };
     // if (this.$route.query.source === 'smallPig') { obj['smallPig'] = true }
-    pornRequest(obj).then((res) => {
+    pornRequest(obj).then(res => {
       if (res.status !== 200) {
         return;
       }
@@ -109,27 +108,29 @@ export default {
     });
   },
   created() {
-    if (localStorage.getItem('content_rating')) {
-      if (localStorage.getItem('content_rating') !== "1") {
-        this.$router.push('/mobile');
+    if (localStorage.getItem("content_rating")) {
+      if (localStorage.getItem("content_rating") !== "1") {
+        this.$router.push("/mobile");
       }
-    } else if (!this.memInfo.config.content_rating || !this.memInfo.user.content_rating) {
-      this.$router.push('/mobile');
+    } else if (
+      !this.memInfo.config.content_rating ||
+      !this.memInfo.user.content_rating
+    ) {
+      this.$router.push("/mobile");
     }
 
-    if (this.$route.query.source === 'smallPig') {
+    if (this.$route.query.source === "smallPig") {
       //   axios.defaults.withCredentials = true;
       axios({
-        method: 'post',
-        url: 'https://api.pv123.app/v1/device/verify',
+        method: "post",
+        url: "https://api.pv123.app/v1/device/verify",
         data: {
-          type: 'ios',
-          token: '111123333',
-          info: 'brrrr'
+          type: "ios",
+          token: "111123333",
+          info: "brrrr"
         },
-        withCredentials: true,
-      }).then((res) => {
-      })
+        withCredentials: true
+      }).then(res => {});
     }
     // axios({
     //   method: 'post',
@@ -150,7 +151,7 @@ export default {
 
     //   this.videoInfo = { ...response.data.result };
     // });
-  },
+  }
 };
 </script>
 

@@ -4,7 +4,7 @@
       <div :class="$style['top-bg']" />
       <div :class="$style['service-header']">
         <div v-if="hasPrev" :class="$style['btn-prev']" @click="handleBack()">
-          <img :src="$getCdnPath(`/static/image/sg1/common/btn_back_w.png`)" />
+          <img :src="$getCdnPath(`/static/image/common/btn_back_white.png`)" />
         </div>
         <div :class="$style.title">我的客服</div>
         <div

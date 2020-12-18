@@ -20,7 +20,15 @@
           @click="getMessgae()"
           :src="
             $getCdnPath(
-              `/static/image/${siteConfig.MOBILE_WEB_TPL}/common/btn_back.png`
+              `/static/image/common/btn_back_${
+                themeTPL === 'porn1'
+                  ? 'grey'
+                  : themeTPL === 'ey1'
+                  ? 'white'
+                  : themeTPL === 'sg1'
+                  ? 'black'
+                  : null
+              }.png`
             )
           "
         />
