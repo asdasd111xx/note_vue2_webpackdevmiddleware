@@ -525,6 +525,8 @@ export default {
   left: 0;
   z-index: 2;
   background-color: #fff;
+  max-height: calc(100vh - 150px);
+  overflow-y: scroll;
 
   > div {
     float: left;
