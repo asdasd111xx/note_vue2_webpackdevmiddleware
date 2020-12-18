@@ -66,11 +66,7 @@
     </div>
     <div :class="$style['back-top']" @click="backToTop">
       <img
-        :src="
-          $getCdnPath(
-            `/static/image/common/vip/detail/ic_top.png`
-          )
-        "
+        :src="$getCdnPath(`/static/image/common/vip/detail/ic_top.png`)"
         alt="top"
       />
       <p>回到顶部</p>
@@ -125,7 +121,6 @@ export default {
 
       switch (this.themeTPL) {
         case "porn1":
-        case "sg1":
           data.titleList = [
             "VIP等级",
             "体育电竞",
@@ -167,19 +162,19 @@ export default {
               number: "❸",
               title: "晋级礼金",
               content:
-                "晋级礼金在会员达到该会员等级后系统自动派发，每个级别的晋级礼金，每位会员仅能领取1次。(晋级礼金12倍流水即可提现)"
+                "晋级礼金在会员达到该会员等级后系统自动派发，每个级别的晋级礼金，每位会员仅能领取1次。"
             },
             {
               number: "❹",
               title: "生日礼金",
               content:
-                "将会在生日的隔月5日前，系统自动派发。每年仅可领取一次。(生日彩金12倍流水即可提现)"
+                "将会在生日的隔月5日前，系统自动派发。每年仅可领取一次。(生日彩金1倍流水即可提现)"
             },
             {
               number: "❺",
               title: "每月红包",
               content:
-                "会员在上个月有过至少1次的成功充值，即可在每月5号获得上个月相应等级的每月红包彩金。(每月红包12倍流水即可提现)"
+                "会员在上个月有过至少1次的成功充值，即可在每月5号获得上个月相应等级的每月红包彩金。"
             },
             {
               number: "❻",
@@ -292,6 +287,46 @@ export default {
             {
               number: "❾",
               title: `${this.siteConfig.SITE_NAME}保有本活动执行、修正、解释及终止等权力。`,
+              content: ""
+            }
+          ];
+          break;
+
+        case "sg1":
+          data.ruleList = [
+            {
+              number: "❶",
+              title: "晋级标准",
+              content:
+                "会员的累计充值以及累计流水达到相应级别的要求。即可在次日04点晋级相应的VIP等级。"
+            },
+            {
+              number: "❷",
+              title: "晋级顺序",
+              content:
+                "VIP等级达到相应的要求可每天晋级一级，但VIP等级不可越级晋级。"
+            },
+            {
+              number: "❸",
+              title: "晋级礼金",
+              content:
+                "晋级礼金在会员达到该会员等级后系统自动派发，每个级别的晋级礼金，每位会员仅能领取1次。(晋级礼金12倍流水即可提现)"
+            },
+            {
+              number: "❹",
+              title: "生日礼金",
+              content:
+                "将会在生日的隔月5日前，系统自动派发。每年仅可领取一次。(生日彩金12倍流水即可提现)"
+            },
+            {
+              number: "❺",
+              title: "每月红包",
+              content:
+                "会员在上个月有过至少1次的成功充值，即可在每月5号获得上个月相应等级的每月红包彩金。(每月红包12倍流水即可提现)"
+            },
+            {
+              number: "❻",
+              title: `${this.siteConfig.SITE_NAME}保留对活动的修改，停止及最终解释权。`,
               content: ""
             }
           ];
