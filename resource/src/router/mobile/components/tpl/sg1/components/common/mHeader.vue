@@ -22,7 +22,7 @@
         :src="
           $getCdnPath(
             `/static/image/common/btn_${
-              headerConfig.hasClose ? 'close_b' : 'back_b'
+              headerConfig.hasClose ? 'close_black' : 'back_black'
             }.png`
           )
         "
