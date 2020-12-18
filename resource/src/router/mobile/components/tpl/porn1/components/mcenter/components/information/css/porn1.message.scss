@@ -265,6 +265,11 @@
   float: right;
   color: #db6372;
   font-size: 16px;
+
+  &.disable {
+    pointer-events: none;
+    opacity: 0.5;
+  }
 }
 
 .loading {
