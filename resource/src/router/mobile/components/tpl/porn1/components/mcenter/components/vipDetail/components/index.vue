@@ -2,7 +2,7 @@
   <div>
     <div :class="$style['table-container']">
       <!-- Content-Title -->
-      <template v-if="['porn1', 'sg1'].includes(this.themeTPL)">
+      <template v-if="['porn1'].includes(this.themeTPL)">
         <div :class="$style['title']">返水比例</div>
       </template>
 
@@ -14,39 +14,42 @@
         </div>
       </template>
 
-      <div :class="$style['table-wrap']">
-        <div :class="$style['table-header']">
-          <div
-            v-for="(item, index) in detailData.titleList"
-            :key="`titleList-${index}`"
-            :class="$style['header-item']"
-          >
-            {{ item }}
-          </div>
-        </div>
-
-        <div :class="$style['table-body']">
-          <div
-            v-for="(cells, index) in detailData.vipList"
-            :key="`list-${index}`"
-            :class="$style['content']"
-          >
+      <!-- 絲瓜不顯示返水比例表格 -->
+      <template v-if="['porn1', 'ey1'].includes(this.themeTPL)">
+        <div :class="$style['table-wrap']">
+          <div :class="$style['table-header']">
             <div
-              v-for="(item, num) in cells"
-              :key="`cells-${num}`"
-              :class="$style['item']"
+              v-for="(item, index) in detailData.titleList"
+              :key="`titleList-${index}`"
+              :class="$style['header-item']"
             >
               {{ item }}
             </div>
           </div>
-        </div>
 
-        <template v-if="['porn1', 'sg1'].includes(this.themeTPL)">
-          <div :class="$style['table-desc']">
-            ※当日返水将会在次日北京时间16：00-16：30派发
+          <div :class="$style['table-body']">
+            <div
+              v-for="(cells, index) in detailData.vipList"
+              :key="`list-${index}`"
+              :class="$style['content']"
+            >
+              <div
+                v-for="(item, num) in cells"
+                :key="`cells-${num}`"
+                :class="$style['item']"
+              >
+                {{ item }}
+              </div>
+            </div>
           </div>
-        </template>
-      </div>
+
+          <template v-if="['porn1', 'sg1'].includes(this.themeTPL)">
+            <div :class="$style['table-desc']">
+              ※当日返水将会在次日北京时间16：00-16：30派发
+            </div>
+          </template>
+        </div>
+      </template>
 
       <!-- Content-Rule -->
       <div :class="$style['desc-wrap']">
@@ -66,7 +69,13 @@
     </div>
     <div :class="$style['back-top']" @click="backToTop">
       <img
-        :src="$getCdnPath(`/static/image/common/vip/detail/ic_top.png`)"
+        :src="
+          $getCdnPath(
+            `/static/image/common/vip/detail/ic_top_${
+              themeTPL === 'sg1' ? 'g' : 'blue'
+            }.png`
+          )
+        "
         alt="top"
       />
       <p>回到顶部</p>
