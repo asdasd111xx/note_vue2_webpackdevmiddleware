@@ -1,0 +1,59 @@
+@import "./porn1.index.scss";
+
+.time-cancel {
+  background: #a2a2a2;
+  color: #ffffff;
+}
+
+.time-confirm {
+  color: #ffffff;
+  background: #fe593c;
+  background-image: -webkit-linear-gradient(right, #fe593c, #e61938);
+  background-image: linear-gradient(right, #fe593c, #e61938);
+}
+
+.dropdown-wrap {
+  li {
+    &.active {
+      color: #fff;
+      color: #fff;
+      background: #e61938;
+      background-image: -webkit-linear-gradient(right, #fe593c, #e61938);
+      background-image: linear-gradient(right, #fe593c, #e61938);
+      border: none;
+    }
+  }
+}
+
+.game-name {
+  &:before {
+    display: block;
+    width: 3px;
+    height: 14px;
+    position: absolute;
+    left: 0;
+    top: 50%;
+    transform: translateY(-50%);
+    background-image: -webkit-linear-gradient(#fe593c, #e61938);
+    background-image: linear-gradient(#fe593c, #e61938);
+    content: "";
+  }
+}
+
+.menu-wrap-left {
+  .small {
+    color: #333333;
+  }
+  .big {
+    color: #333333;
+  }
+}
+
+.menu-wrap-right {
+  .small {
+    color: #333333;
+  }
+  .big {
+    color: #333333;
+  }
+}
