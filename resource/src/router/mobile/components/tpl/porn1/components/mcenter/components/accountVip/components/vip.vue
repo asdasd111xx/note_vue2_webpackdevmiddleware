@@ -5,7 +5,7 @@
       <div :class="$style['header-block']">
         <div :class="$style['btn-back']" @click="$router.back()">
           <img
-            :src="$getCdnPath(`/static/image/common/icon/btn_back_b.png`)"
+            :src="$getCdnPath(`/static/image/common/btn_back_b.png`)"
             alt="btn_back"
           />
         </div>

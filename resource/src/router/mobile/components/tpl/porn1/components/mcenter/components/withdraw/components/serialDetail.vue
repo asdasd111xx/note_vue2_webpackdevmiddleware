@@ -5,7 +5,7 @@
         <img
           :src="
             $getCdnPath(
-              `/static/image/common/icon/btn_back_${
+              `/static/image/common/btn_back_${
                 themeTPL === 'porn1'
                   ? 'g'
                   : themeTPL === 'ey1'
