@@ -65,11 +65,12 @@
   padding: 5px 0;
 
   .detail {
-    padding: 0 34px;
+    padding: 0 1px;
   }
 
   .text {
     float: left;
+    margin-left: 33px;
     color: #555;
     font-size: 12px;
 
@@ -80,6 +81,7 @@
 
   .amount {
     float: right;
+    margin-right: 43px;
     color: #555;
     font-size: 12px;
 

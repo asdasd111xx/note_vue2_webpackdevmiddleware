@@ -43,15 +43,14 @@
 <script>
 import Vue from "vue";
 import { format } from "date-fns";
-import { mapGetters, mapActions } from 'vuex';
+import { mapGetters, mapActions } from "vuex";
 
 export default {
-  components: {
-  },
+  components: {},
   props: {
     dataSource: {
       type: String,
-      default: 'mem'
+      default: "mem"
     },
     speed: {
       type: Number,
@@ -59,7 +58,7 @@ export default {
     },
     direction: {
       type: String,
-      default: 'left'
+      default: "left"
     },
     viewFullContent: {
       type: Boolean,
@@ -67,12 +66,12 @@ export default {
     },
     updateNews: {
       type: Function,
-      default: () => { }
+      default: () => {}
     }
   },
   data() {
     return {
-      commonClass: ['news-content-wrap', 'clearfix'],
+      commonClass: ["news-content-wrap", "clearfix"],
       containerWidth: 0,
       totalWidth: 0,
       currentLeft: 0,
@@ -81,44 +80,53 @@ export default {
   },
   computed: {
     ...mapGetters({
-      isBackEnd: 'getIsBackEnd',
-      newsPopControl: 'getNewsPopControl',
-      memNewsData: 'getNews',
-      agentNewsData: 'getAgentNews',
-      siteConfig: 'getSiteConfig',
+      isBackEnd: "getIsBackEnd",
+      newsPopControl: "getNewsPopControl",
+      memNewsData: "getNews",
+      agentNewsData: "getAgentNews",
+      siteConfig: "getSiteConfig"
     }),
     themeTPL() {
       return this.siteConfig.MOBILE_WEB_TPL;
     },
     newsData() {
-      return (this.dataSource === 'mem') ? this.memNewsData : this.agentNewsData;
+      return this.dataSource === "mem" ? this.memNewsData : this.agentNewsData;
     },
     newsText() {
-      return this.newsData.map((item) => `${item.content} &nbsp;&nbsp;&nbsp;&nbsp;`).join('');
+      return this.newsData
+        .map(item => `${item.content} &nbsp;&nbsp;&nbsp;&nbsp; `)
+        .join("");
     }
   },
   filters: {
     dateFormat(value) {
-      return Vue.moment(value).format('YYYY-MM-DD')
+      return Vue.moment(value).format("YYYY-MM-DD");
     }
   },
   mounted() {
     this.currentLeft = this.$refs.container.offsetWidth;
-    this.totalWidth = this.$refs.news.offsetWidth;
+    this.totalWidth =
+      this.$refs.news.offsetWidth > this.currentLeft
+        ? this.$refs.news.offsetWidth
+        : 1.5 * this.currentLeft;
+    console.log(this.currentLeft, this.totalWidth);
     this.startMove();
   },
   methods: {
-    ...mapActions([
-      'actionNewsPopControl'
-    ]),
+    ...mapActions(["actionNewsPopControl"]),
     // 開啟最新消息方式
     togglePopup() {
       this.paused = !this.paused;
       if (!this.paused) {
         this.startMove();
       }
-      document.querySelector('body').style = !this.newsPopControl.status ? 'overflow: hidden' : '';
-      this.actionNewsPopControl({ type: this.dataSource, status: !this.newsPopControl.status });
+      document.querySelector("body").style = !this.newsPopControl.status
+        ? "overflow: hidden"
+        : "";
+      this.actionNewsPopControl({
+        type: this.dataSource,
+        status: !this.newsPopControl.status
+      });
     },
     startMove() {
       if (this.paused || !this.$refs.container) return;
@@ -160,6 +168,7 @@ export default {
   color: #9ca3bf;
   font-size: 12px;
   overflow: hidden;
+  min-width: calc(100vw - 51px);
 
   &.porn1 {
     color: #9ca3bf;

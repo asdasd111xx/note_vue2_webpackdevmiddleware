@@ -5,7 +5,7 @@
       <div :class="$style['pop-block']">
         <div v-if="!computeState" :class="$style['close-img']" @click="close">
           <img
-            :src="$getCdnPath('/static/image/_new/common/btn_close_w.png')"
+            :src="$getCdnPath('/static/image/common/btn_close_white.png')"
             alt="close"
           />
         </div>

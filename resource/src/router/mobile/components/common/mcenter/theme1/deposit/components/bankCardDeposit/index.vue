@@ -56,7 +56,7 @@
                   v-if="tagTrans[info.tag]"
                   :src="
                     $getCdnPath(
-                      `/static/image/_new/mcenter/deposit/icon_${
+                      `/static/image/common/mcenter/deposit/icon_${
                         tagTrans[info.tag]
                       }.png`
                     )
@@ -246,7 +246,7 @@
                   }
                 ]"
               >
-                为即时到账，请务必输入正确的汇款人姓名
+                为即时到帐，请务必输入正确的汇款人姓名
               </div>
             </div>
 
@@ -356,11 +356,7 @@
 
                 <img
                   :class="$style['CGPay-update-img']"
-                  :src="
-                    $getCdnPath(
-                      `/static/image/${siteConfig.MOBILE_WEB_TPL}/common/btn_update.png`
-                    )
-                  "
+                  :src="$getCdnPath(`/static/image/common/btn_update.png`)"
                   alt="update"
                   @click="getPayPass"
                 />
@@ -398,11 +394,7 @@
 
                   <div :class="$style['money-update']" @click="getPayPass">
                     <img
-                      :src="
-                        $getCdnPath(
-                          `/static/image/${siteConfig.MOBILE_WEB_TPL}/common/btn_update.png`
-                        )
-                      "
+                      :src="$getCdnPath(`/static/image/common/btn_update.png`)"
                       alt="update"
                     />
                   </div>
@@ -735,7 +727,11 @@
                               "
                             >
                               <img
-                                :src="`/static/image/_new/mcenter/default.png`"
+                                :src="
+                                  $getCdnPath(
+                                    `/static/image/common/default/bank_card_default.png`
+                                  )
+                                "
                               />
                               {{ item.mainTitle }}
                               <icon
@@ -858,7 +854,7 @@
                       @click="copyInfo(info.value)"
                     >
                       <img
-                        :src="`/static/image/${themeTPL}/mcenter/ic_copy.png`"
+                        :src="$getCdnPath(`/static/image/common/ic_copy.png`)"
                       />
                     </div>
                   </div>
@@ -885,7 +881,7 @@
               v-if="curPayInfo.payment_method_name === '代客充值'"
               :class="$style['feature-tip-title']"
             >
-              实际到账： ¥{{ realSaveMoney }}
+              实际到帐： ¥{{ realSaveMoney }}
             </span>
 
             <!-- 109/11/10 實際到帳常註顯示 -->
@@ -894,7 +890,7 @@
               :class="[$style['feature-tip-title'], $style.success]"
               @click="showRealStatus = true"
             >
-              实际到账： ¥{{ realSaveMoney }} (详情)
+              实际到帐： ¥{{ realSaveMoney }} (详情)
             </span>
           </div>
 
@@ -902,7 +898,7 @@
             <div :class="$style['pop-message-mark']" />
             <div :class="$style['message-container']">
               <ul :class="$style['message-content']">
-                <li>• 实际到账： {{ realSaveMoney }}</li>
+                <li>• 实际到帐： {{ realSaveMoney }}</li>
                 <template
                   v-if="
                     curPayInfo.offer_enable && +curPayInfo.offer_percent > 0
@@ -1079,7 +1075,7 @@
 import { mapGetters, mapActions } from "vuex";
 import { Swiper, SwiperSlide } from "vue-awesome-swiper";
 import { getCookie } from "@/lib/cookie";
-import blockListTips from "../../../../../../tpl/porn1/components/common/blockListTips";
+import blockListTips from "@/router/mobile/components/tpl/porn1/components/common/blockListTips";
 import bindWalletPopup from "@/router/mobile/components/tpl/porn1/components/common/bindWalletPopup";
 import bbosRequest from "@/api/bbosRequest";
 import DatePicker from "vue2-datepicker";

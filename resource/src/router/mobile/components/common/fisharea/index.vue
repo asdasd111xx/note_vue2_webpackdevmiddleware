@@ -37,6 +37,7 @@
             >
               <template v-for="(gameInfo, index) in gameData">
                 <game-item
+                  v-if="gameInfo.is_mobile || isFavorite"
                   :key="`game-${gameInfo.vendor}-${index}`"
                   :theme="gameTheme"
                   :game-info="gameInfo"
@@ -70,13 +71,13 @@
 </template>
 
 <script>
-import { mapGetters, mapActions } from 'vuex';
-import InfiniteLoading from 'vue-infinite-loading';
-import ajax from '@/lib/ajax';
-import { gameList } from '@/config/api';
-import gameItem from '../gameItem';
-import gameSearch from '../gameSearch';
-import gameEmpty from '../gameEmpty';
+import { mapGetters, mapActions } from "vuex";
+import InfiniteLoading from "vue-infinite-loading";
+import ajax from "@/lib/ajax";
+import { gameList } from "@/config/api";
+import gameItem from "../gameItem";
+import gameSearch from "../gameSearch";
+import gameEmpty from "../gameEmpty";
 
 /**
  * 共用元件 - 手機網頁版電子遊戲頁共用框 (邏輯共用)
@@ -98,15 +99,15 @@ export default {
   props: {
     slotSort: {
       type: Array,
-      default: () => (['search', 'list'])
+      default: () => ["search", "list"]
     },
     searchTheme: {
       type: String,
-      default: '1'
+      default: "1"
     },
     gameTheme: {
       type: String,
-      default: ''
+      default: ""
     },
     gameShowVendor: {
       type: Boolean,
@@ -135,21 +136,23 @@ export default {
         enable: true,
         first_result: 0,
         max_results: 36,
-        name: ''
+        name: ""
       },
-      searchText: '',
+      searchText: "",
       gameData: [],
       isGameDataReceive: false
     };
   },
   computed: {
     ...mapGetters({
-      loginStatus: 'getLoginStatus',
-      favoriteGame: 'getFavoriteGame'
+      loginStatus: "getLoginStatus",
+      favoriteGame: "getFavoriteGame"
     }),
     // 依平台篩選出最愛的遊戲列表
     favoriteData() {
-      return this.favoriteGame.filter((element) => element.kind === this.paramsData.kind);
+      return this.favoriteGame.filter(
+        element => element.kind === this.paramsData.kind
+      );
     }
   },
   created() {
@@ -158,9 +161,7 @@ export default {
     }
   },
   methods: {
-    ...mapActions([
-      'actionSetFavoriteGame'
-    ]),
+    ...mapActions(["actionSetFavoriteGame"]),
     /**
      * 設定搜尋文字
      * @param {string} value - 搜尋的文字
@@ -178,7 +179,7 @@ export default {
       this.isGameDataReceive = false;
       this.gameData = [];
 
-      if (this.paramsData.label === 'favorite') {
+      if (this.paramsData.label === "favorite") {
         this.gameData = this.favoriteData;
         return;
       }
@@ -204,16 +205,16 @@ export default {
         return;
       }
 
-      new Promise((resolve) => {
+      new Promise(resolve => {
         ajax({
-          method: 'get',
+          method: "get",
           url: gameList,
           errorAlert: false,
           params: {
             ...this.paramsData
           }
-        }).then((response) => {
-          if (response && response.result === 'ok') {
+        }).then(response => {
+          if (response && response.result === "ok") {
             resolve(response);
             return;
           }
@@ -223,7 +224,7 @@ export default {
             this.infiniteHandler($state, index + 1);
           }, 3000);
         });
-      }).then((response) => {
+      }).then(response => {
         this.gameData.push(...response.ret);
         this.paramsData.first_result = this.gameData.length;
         this.isReceive = false;
@@ -239,7 +240,6 @@ export default {
   }
 };
 </script>
-
 
 <style lang="scss" module>
 .empty-wrap {

@@ -2,7 +2,7 @@
   <div>
     <div :class="$style['back']" @click="$router.push('/mobile/mcenter/home')">
       <img
-        :src="$getCdnPath(`/static/image/_new/common/btn_back.png`)"
+        :src="$getCdnPath(`/static/image/common/btn_back_grey.png`)"
         alt="back"
       />
     </div>

@@ -2,7 +2,7 @@
   <mobile-container :has-footer="false">
     <div slot="content" :class="$style['live-stream-wrap']">
       <div :class="$style['btn-prev']" @click="$router.push('/mobile')">
-        <img :src="$getCdnPath('/static/image/_new/common/btn_back.png')" />
+        <img :src="$getCdnPath(`/static/image/common/btn_back_grey.png`)" />
       </div>
 
       <div :class="[$style['live-tab-wrap'], 'clearfix']">
@@ -109,70 +109,82 @@
   </mobile-container>
 </template>
 <script>
-import { mapGetters, mapActions } from 'vuex';
-import ajax from '@/lib/ajax';
-import axios from 'axios';
-import mobileContainer from '../common/mobileContainer';
-import openGame from '@/lib/open_game';
-import pornRequest from '@/api/pornRequest';
-import goLangApiRequest from '@/api/goLangApiRequest';
+import { mapGetters, mapActions } from "vuex";
+import ajax from "@/lib/ajax";
+import axios from "axios";
+import mobileContainer from "../common/mobileContainer";
+import openGame from "@/lib/open_game";
+import pornRequest from "@/api/pornRequest";
+import goLangApiRequest from "@/api/goLangApiRequest";
 import mixin from "@/mixins/mcenter/swag/swag";
 import maintainBlock from "@/router/mobile/components/common/maintainBlock";
 
 export default {
   mixins: [mixin],
   components: {
-    pageLoading: () => import(/* webpackChunkName: 'pageLoading' */ '@/router/mobile/components/common/pageLoading'),
+    pageLoading: () =>
+      import(
+        /* webpackChunkName: 'pageLoading' */ "@/router/mobile/components/common/pageLoading"
+      ),
     mobileContainer,
     maintainBlock
   },
   data() {
     return {
       streamList: [],
-      currentTab: 'ballLive',
+      currentTab: "ballLive",
       iframeHeight: 500,
-      src: '',
+      src: "",
       isShowLoading: false
     };
   },
   computed: {
     ...mapGetters({
-      loginStatus: 'getLoginStatus',
-      memInfo: 'getMemInfo',
-      siteConfig: 'getSiteConfig',
-    }),
+      loginStatus: "getLoginStatus",
+      memInfo: "getMemInfo",
+      siteConfig: "getSiteConfig"
+    })
   },
   created() {
-    this.currentTab = this.$route.query.type ? this.$route.query.type : 'ballLive';
+    this.currentTab = this.$route.query.type
+      ? this.$route.query.type
+      : "ballLive";
 
     pornRequest({
-      method: 'get',
-      url: `/video/livelist`,
-    }).then((response) => {
+      method: "get",
+      url: `/video/livelist`
+    }).then(response => {
       this.streamList = response.result;
     });
 
     // 給體育遊戲觸發事件的function
-    window.sportEvent = (type) => {
-      if (type === 'GO_IM_SPORT') {
+    window.sportEvent = type => {
+      if (type === "GO_IM_SPORT") {
         if (!this.loginStatus) {
-          this.actionSetGlobalMessage({ msg: 'login', code: 'M00001', origin: 'liveStream' })
+          this.actionSetGlobalMessage({
+            msg: "login",
+            code: "M00001",
+            origin: "liveStream"
+          });
           return;
         } else {
-
-          const openGameSuccessFunc = (res) => {
+          const openGameSuccessFunc = res => {
             this.isShowLoading = false;
           };
 
-          const openGameFailFunc = (res) => {
+          const openGameFailFunc = res => {
             this.isShowLoading = false;
 
             if (res && res.data) {
               let data = res.data;
-              this.actionSetGlobalMessage({ msg: data.msg, code: data.code })
+              this.actionSetGlobalMessage({ msg: data.msg, code: data.code });
             }
           };
-          openGame({ vendor: 'boe', kind: 1 }, openGameSuccessFunc, openGameFailFunc);
+          openGame(
+            { vendor: "boe", kind: 1 },
+            openGameSuccessFunc,
+            openGameFailFunc
+          );
         }
       }
     };
@@ -183,22 +195,24 @@ export default {
     this.src = `/exsport/live/?hall=${this.memInfo.user.domain}`;
   },
   methods: {
-    ...mapActions([
-      'actionSetGlobalMessage'
-    ]),
+    ...mapActions(["actionSetGlobalMessage"]),
     openLiveStream() {
       if (!this.loginStatus) {
-        this.$router.push('/mobile/login');
+        this.$router.push("/mobile/login");
         return;
       }
 
       if (this.memInfo.balance.total < 100) {
         // this.actionSetGlobalMessage({ msg: this.$text('S_LIVE_BALANCE_NOT_LESS', '直播余额不低%s元').replace('%s', 100) })
-        this.actionSetGlobalMessage({ msg: this.$text('S_COMING_SOON2', '正在上线 敬请期待') })
+        this.actionSetGlobalMessage({
+          msg: this.$text("S_COMING_SOON2", "正在上线 敬请期待")
+        });
         return;
       }
       //   this.actionSetGlobalMessage({ msg: this.$text('S_BEAUTY_STAY_TUNED', '我们将在下个月帮您开通美眉直播，敬请期待！先去体验一下其它游戏吧！') })
-      this.actionSetGlobalMessage({ msg: this.$text('S_COMING_SOON2', '正在上线 敬请期待') })
+      this.actionSetGlobalMessage({
+        msg: this.$text("S_COMING_SOON2", "正在上线 敬请期待")
+      });
     },
     getIframeHeight() {
       this.$nextTick(() => {
@@ -207,11 +221,14 @@ export default {
       //   this.iframeHeight = this.$refs['js-set-height'].contentWindow.window.document.body.scrollHeight + 100;
     },
     handleClickType(type) {
-      if (type === 'pornlive') {
+      if (type === "pornlive") {
         if (this.loginStatus) {
-          this.checkSWAGMaintain({ linkTo: true, origin: 'liveStream?type=ballLive' });
+          this.checkSWAGMaintain({
+            linkTo: true,
+            origin: "liveStream?type=ballLive"
+          });
         } else {
-          this.$router.push('/mobile/login');
+          this.$router.push("/mobile/login");
           return;
         }
       } else {

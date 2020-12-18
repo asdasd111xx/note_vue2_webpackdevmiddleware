@@ -74,7 +74,7 @@
                 <img
                   :src="
                     $getCdnPath(
-                      `/static/image/_new/mcenter/balanceTrans/ic_expand.png`
+                      `/static/image/common/mcenter/balanceTrans/ic_expand.png`
                     )
                   "
                   alt="expend"
@@ -124,7 +124,7 @@
                 <img
                   :src="
                     $getCdnPath(
-                      `/static/image/_new/mcenter/balanceTrans/ic_collapse.png`
+                      `/static/image/common/mcenter/balanceTrans/ic_collapse.png`
                     )
                   "
                   alt="collapse"
@@ -203,7 +203,7 @@
               :class="$style['transfergo-img']"
               :src="
                 $getCdnPath(
-                  `/static/image/${themeTPL}/mcenter/balanceTrans/ic_transfergo.png`
+                  `/static/image/common/mcenter/balanceTrans/ic_transfergo.png`
                 )
               "
               alt="ic_transfergo"
@@ -284,7 +284,7 @@
               :class="$style['transfergo-img']"
               :src="
                 $getCdnPath(
-                  `/static/image/${themeTPL}/mcenter/balanceTrans/ic_transfergo.png`
+                  `/static/image/common/mcenter/balanceTrans/ic_transfergo.png`
                 )
               "
               alt="ic_transfergo"

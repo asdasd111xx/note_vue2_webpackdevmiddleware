@@ -14,9 +14,9 @@
 
 <script>
 import { mapGetters, mapActions } from "vuex";
-import balanceBack from "../../../mcenter/components/common/balanceBack";
-import balanceTrans from '@/router/mobile/components/tpl/porn1/components/mcenter/components/balanceTrans/components/index';
-import blockListTips from "../../../common/blockListTips";
+import balanceBack from "@/router/mobile/components/tpl/porn1/components/mcenter/components/common/balanceBack";
+import balanceTrans from "@/router/mobile/components/tpl/porn1/components/mcenter/components/balanceTrans/components/index";
+import blockListTips from "@/router/mobile/components/tpl/porn1/components/common/blockListTips";
 import mobileContainer from "../../../common/mobileContainer";
 
 export default {
@@ -29,12 +29,12 @@ export default {
   data() {
     return {
       isShowBlockTips: false
-    }
+    };
   },
   computed: {
     ...mapGetters({
-      memInfo: 'getMemInfo',
-      siteConfig: 'getSiteConfig'
+      memInfo: "getMemInfo",
+      siteConfig: "getSiteConfig"
     }),
     headerConfig() {
       return {
@@ -44,10 +44,10 @@ export default {
           this.$router.back();
         },
         hasHelp: {
-          url: '/mobile/mcenter/helpCenter'
-        },
+          url: "/mobile/mcenter/helpCenter"
+        }
       };
-    },
+    }
   },
   methods: {
     closeTips() {

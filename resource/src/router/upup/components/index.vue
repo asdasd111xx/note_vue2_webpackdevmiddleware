@@ -40,63 +40,85 @@
 
 <script>
 /* global $ */
-import Vue from 'vue';
-import store from '@/store';
-import member from '@/api/member';
-import getLang from '@/lib/getLang';
-import mixin from '@/mixins/status';
+import Vue from "vue";
+import store from "@/store";
+import member from "@/api/member";
+import getLang from "@/lib/getLang";
+import mixin from "@/mixins/status";
 
 export default {
   mixins: [mixin],
   data() {
     return {
-      start: '',
-      end: '',
-      username: '',
+      start: "",
+      end: "",
+      username: ""
     };
   },
   beforeRouteEnter(to, from, next) {
-    getLang({ [Vue.cookie.get('lang') || 'zh-cn']: '' }).then(() => {
+    getLang({ [Vue.cookie.get("lang") || "zh-cn"]: "" }).then(() => {
       member.data({
-        success: (response) => {
-          if (response && response.ret && response.ret.user && response.ret.username) {
-            this.username = response.ret.username
+        success: response => {
+          if (
+            response &&
+            response.ret &&
+            response.ret.user &&
+            response.ret.username
+          ) {
+            this.username = response.ret.username;
           }
           // 測試模式
-          if (to.params.mode && to.params.mode === 'test') {
-            store.dispatch('actionSetWebInfo', response.ret.user.domain).then(() => {
-              next();
-            });
+          if (to.params.mode && to.params.mode === "test") {
+            store
+              .dispatch("actionSetWebInfo", response.ret.user.domain)
+              .then(() => {
+                next();
+              });
           } else {
-            next({ path: '/' });
+            next({ path: "/" });
           }
         },
-        fail: (response) => {
-          store.dispatch('actionSetWebInfo', response.data.extra ? response.data.extra.domain : '').then(() => {
-            next((vm) => vm.setData(response.data.extra));
-          });
+        fail: response => {
+          store
+            .dispatch(
+              "actionSetWebInfo",
+              response.data.extra ? response.data.extra.domain : ""
+            )
+            .then(() => {
+              next(vm => vm.setData(response.data.extra));
+            });
         }
       });
     });
   },
   computed: {
     localGMT() {
-      return `GMT${Vue.moment(new Date()).format('Z')}`;
+      return `GMT${Vue.moment(new Date()).format("Z")}`;
     }
   },
   created() {
-    $(document).prop('title', this.$t('S_UNDER_MAINTENANCE'));
-    localStorage.removeItem('game-list');
-    localStorage.removeItem('iframe-third-origin');
-    localStorage.removeItem('is-open-game');
+    $(document).prop("title", this.$t("S_UNDER_MAINTENANCE"));
+    localStorage.removeItem("game-list");
+    localStorage.removeItem("iframe-third-origin");
+    localStorage.removeItem("is-open-game");
+    console.log("[version]");
+    this.version.forEach(element => {
+      console.log(element.site, element.version);
+    });
   },
   methods: {
     setData(data) {
       if (!data || !data.end_at) return;
 
       // 將時間統一轉為UTC，再進行本地時區計算
-      this.start = Vue.moment(data.start_at).utc().subtract((new Date().getTimezoneOffset() / 60), 'hours').format('YYYY-MM-DD HH:mm:ss');
-      this.end = Vue.moment(data.end_at).utc().subtract((new Date().getTimezoneOffset() / 60), 'hours').format('YYYY-MM-DD HH:mm:ss');
+      this.start = Vue.moment(data.start_at)
+        .utc()
+        .subtract(new Date().getTimezoneOffset() / 60, "hours")
+        .format("YYYY-MM-DD HH:mm:ss");
+      this.end = Vue.moment(data.end_at)
+        .utc()
+        .subtract(new Date().getTimezoneOffset() / 60, "hours")
+        .format("YYYY-MM-DD HH:mm:ss");
     }
   }
 };

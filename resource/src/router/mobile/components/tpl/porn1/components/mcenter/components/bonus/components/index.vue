@@ -62,7 +62,7 @@
           "
         />
         <p>
-          <template v-if="themeTPL === 'porn1'">
+          <template v-if="['porn1', 'sg1'].includes(themeTPL)">
             {{ $text("S_NO_BONUS", "暂时没有新的红利彩金") }}
           </template>
 
@@ -113,8 +113,7 @@ export default {
     },
     $style() {
       const style =
-        this[`$style_${this.siteConfig.MOBILE_WEB_TPL}`] ||
-        this.$style_porn1;
+        this[`$style_${this.siteConfig.MOBILE_WEB_TPL}`] || this.$style_porn1;
       return style;
     }
   },
@@ -167,3 +166,4 @@ export default {
 
 <style lang="scss" src="../css/porn1.index.scss" module="$style_porn1"></style>
 <style lang="scss" src="../css/ey1.index.scss" module="$style_ey1"></style>
+<style lang="scss" src="../css/sg1.index.scss" module="$style_sg1"></style>

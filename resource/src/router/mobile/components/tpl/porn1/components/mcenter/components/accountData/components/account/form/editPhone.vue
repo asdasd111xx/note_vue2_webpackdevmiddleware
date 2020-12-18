@@ -16,7 +16,11 @@
           <div :class="$style['input-wrap']">
             <template v-if="themeTPL === 'ey1'">
               <select v-model="phoneHead" :class="$style['phone-selected']">
-                <option v-for="option in phoneHeadOption" v-bind:value="option">
+                <option
+                  v-for="option in phoneHeadOption"
+                  :key="option.option"
+                  v-bind:value="option"
+                >
                   {{ option }}
                 </option>
               </select>
@@ -46,7 +50,11 @@
           <div :class="$style['input-wrap']">
             <template v-if="themeTPL === 'ey1'">
               <select v-model="phoneHead" :class="$style['phone-selected']">
-                <option v-for="option in phoneHeadOption" v-bind:value="option">
+                <option
+                  v-for="option in phoneHeadOption"
+                  :key="option.option"
+                  v-bind:value="option"
+                >
                   {{ option }}
                 </option>
               </select>
@@ -119,16 +127,16 @@
   </div>
 </template>
 <script>
-import axios from 'axios';
-import { mapGetters, mapActions } from 'vuex';
-import { API_MCENTER_USER_CONFIG } from '@/config/api';
-import ajax from '@/lib/ajax';
-import member from '@/api/member';
-import serviceTips from '../../serviceTips';
-import mcenter from '@/api/mcenter';
-import popupVerification from '@/components/popupVerification';
-import accountHeader from '../../accountHeader';
-import { getCookie, setCookie } from '@/lib/cookie';
+import { API_MCENTER_USER_CONFIG } from "@/config/api";
+import { getCookie, setCookie } from "@/lib/cookie";
+import { mapGetters, mapActions } from "vuex";
+import accountHeader from "../../accountHeader";
+import ajax from "@/lib/ajax";
+import axios from "axios";
+import mcenter from "@/api/mcenter";
+import member from "@/api/member";
+import popupVerification from "@/components/popupVerification";
+import serviceTips from "../../serviceTips";
 
 export default {
   components: {
@@ -139,12 +147,12 @@ export default {
   data() {
     return {
       // 國碼
-      phoneHead: '+86',
+      phoneHead: "+86",
       phoneHeadOption: [],
-      oldValue: '',
-      newValue: '',
-      codeValue: '',
-      tipMsg: '',
+      oldValue: "",
+      newValue: "",
+      codeValue: "",
+      tipMsg: "",
       countdownSec: 0,
       options: {},
       isLock: false,
@@ -154,10 +162,10 @@ export default {
       isVerifyPhone: false,
       hasVerified: false, // 手機號碼是否已經驗證
       info: {
-        key: 'phone',
-        text: 'S_TEL',
-        status: '',
-        value: '',
+        key: "phone",
+        text: "S_TEL",
+        status: "",
+        value: "",
         verification: false,
         isShow: true
       },
@@ -167,12 +175,13 @@ export default {
   },
   computed: {
     ...mapGetters({
-      memInfo: 'getMemInfo',
-      webInfo: 'getWebInfo',
-      siteConfig: "getSiteConfig",
+      memInfo: "getMemInfo",
+      webInfo: "getWebInfo",
+      siteConfig: "getSiteConfig"
     }),
     $style() {
-      const style = this[`$style_${this.siteConfig.MOBILE_WEB_TPL}`] || this.$style_porn1;
+      const style =
+        this[`$style_${this.siteConfig.MOBILE_WEB_TPL}`] || this.$style_porn1;
       return style;
     },
     themeTPL() {
@@ -180,22 +189,24 @@ export default {
     },
     isShowCaptcha: {
       get() {
-        return this.toggleCaptcha
+        return this.toggleCaptcha;
       },
       set(value) {
-        return this.toggleCaptcha = value
+        return (this.toggleCaptcha = value);
       }
     },
     captchaData: {
       get() {
-        return this.captcha
+        return this.captcha;
       },
       set(value) {
-        return this.captcha = value
+        return (this.captcha = value);
       }
     },
     isfromSWAG() {
-      return this.$route.query.redirect ? this.$route.query.redirect.toUpperCase() === 'SWAG' : false;
+      return this.$route.query.redirect
+        ? this.$route.query.redirect.toUpperCase() === "SWAG"
+        : false;
     },
     isfromWithdraw() {
       const { query } = this.$route;
@@ -214,42 +225,47 @@ export default {
       let checkActiveArray = [this.newValue, !this.tipMsg];
       //  提現前驗證不需要舊手機欄位
       if (this.checkCode.isShow || this.isfromWithdraw || this.isfromSWAG) {
-        checkActiveArray.push(!!(this.codeValue));
+        checkActiveArray.push(!!this.codeValue);
       }
 
-      if (this.memInfo.phone.phone && this.oldPhone.isShow && !this.isfromWithdraw && !this.isfromSWAG) {
-        checkActiveArray.push(!!(this.oldValue));
+      if (
+        this.memInfo.phone.phone &&
+        this.oldPhone.isShow &&
+        !this.isfromWithdraw &&
+        !this.isfromSWAG
+      ) {
+        checkActiveArray.push(!!this.oldValue);
       }
 
-      checkActiveArray.forEach((status) => {
+      checkActiveArray.forEach(status => {
         if (!status) _funcBtnActive = false;
-      })
+      });
 
       return {
         prev: true,
         onClick: () => {
           this.$router.back();
         },
-        title: this.$text('S_TEL', '手机号码'),
+        title: this.$text("S_TEL", "手机号码"),
         onClickFunc: () => {
           this.handleSubmit();
         },
-        funcBtn: this.$text('S_COMPLETE', '完成'),
+        funcBtn: this.$text("S_COMPLETE", "完成"),
         funcBtnActive: _funcBtnActive
       };
     },
     countryCodes() {
       return {
-        label: this.$text('S_COUNTRY_CODE', '国码'),
+        label: this.$text("S_COUNTRY_CODE", "国码"),
         isShow: true,
         options: this.options
       };
     },
     oldPhone() {
       return {
-        label: this.$text('S_ORIGINAL_PHONE'),
+        label: this.$text("S_ORIGINAL_PHONE"),
         // 目前億元/鴨博皆不可修改手機號碼
-        isShow: false,
+        isShow: false
         // isShow: this.isfromWithdraw ? false : this.memInfo.phone.phone && this.hasVerified
       };
     },
@@ -258,20 +274,21 @@ export default {
         // label: this.memInfo.phone.phone && !this.isfromWithdraw
         //   ? this.$text('S_NEW_PHONE')
         //   : this.$text('S_TEL'),
-        label: this.$text('S_TEL', '手机号码'),
+        label: this.$text("S_TEL", "手机号码"),
         isShow: true
       };
     },
     checkCode() {
       return {
-        label: this.$text('S_CHECK_CODE'),
+        label: this.$text("S_CHECK_CODE"),
         isShow: this.info.verification
       };
     },
     sendBtn() {
       return {
-        label: this.$text('S_GET_VERIFICATION_CODE', '获取验证码'),
-        isShow: this.info.verification || this.isfromWithdraw || this.isfromSWAG,
+        label: this.$text("S_GET_VERIFICATION_CODE", "获取验证码"),
+        isShow:
+          this.info.verification || this.isfromWithdraw || this.isfromSWAG,
         countdownSec: this.countdownSec
       };
     }
@@ -279,7 +296,7 @@ export default {
   watch: {
     captchaData(val) {
       this.handleSend();
-    },
+    }
   },
   mounted() {
     this.countdownSec = "";
@@ -288,14 +305,14 @@ export default {
   },
   created() {
     ajax({
-      method: 'get',
+      method: "get",
       url: API_MCENTER_USER_CONFIG,
       errorAlert: false
-    }).then((response) => {
-      if (response && response.result === 'ok') {
+    }).then(response => {
+      if (response && response.result === "ok") {
         this.info.verification = response.ret.config[this.info.key].code;
         this.hasVerified = response.ret.user.phone;
-        this.phoneHeadOption = response.ret.config.phone.country_codes
+        this.phoneHeadOption = response.ret.config.phone.country_codes;
       }
     });
   },
@@ -306,33 +323,34 @@ export default {
   },
   methods: {
     ...mapActions([
-      'actionSetUserdata',
-      'actionSetWithdrawCheck',
-      'actionVerificationFormData',
-      "actionSetGlobalMessage",
+      "actionSetUserdata",
+      "actionSetWithdrawCheck",
+      "actionVerificationFormData",
+      "actionSetGlobalMessage"
     ]),
     verification(value, target) {
-      this.tipMsg = '';
+      this.tipMsg = "";
 
-      if (target === 'newValue' || target === 'oldValue') {
-        this.actionVerificationFormData({ target: 'phone', value: value }).then((val => {
+      if (target === "newValue" || target === "oldValue") {
+        this.actionVerificationFormData({ target: "phone", value: value }).then(
+          val => {
+            if (target === "newValue") {
+              this.newValue = val;
+            }
 
-          if (target === "newValue") {
-            this.newValue = val;
+            if (target === "oldValue") {
+              this.oldValue = val;
+            }
+
+            if (value === "") {
+              this.isVerifyPhone = false;
+            }
           }
-
-          if (target === "oldValue") {
-            this.oldValue = val;
-          }
-
-          if (value === '') {
-            this.isVerifyPhone = false;
-          }
-        }));
+        );
 
         // 億元 不客端判斷手機號碼位數
-        if (this.siteConfig.MOBILE_WEB_TPL === 'ey1' || value.length >= 11) {
-          this.tipMsg = '';
+        if (this.siteConfig.MOBILE_WEB_TPL === "ey1" || value.length >= 11) {
+          this.tipMsg = "";
 
           if (this.isfromWithdraw || this.isfromSWAG) {
             this.isVerifyPhone = true;
@@ -351,16 +369,20 @@ export default {
         }
       }
 
-      if (target === 'code') {
-        this.actionVerificationFormData({ target: 'code', value: value }).then((val => {
-          this.codeValue = val;
-        }));
+      if (target === "code") {
+        this.actionVerificationFormData({ target: "code", value: value }).then(
+          val => {
+            this.codeValue = val;
+          }
+        );
       }
     },
     locker() {
       if (this.timer) return;
       this.countdownSec = this.ttl;
-      this.actionSetGlobalMessage({ msg: this.$text("S_SEND_CHECK_CODE_VALID_TIME").replace("%s", '5') });
+      this.actionSetGlobalMessage({
+        msg: this.$text("S_SEND_CHECK_CODE_VALID_TIME").replace("%s", "5")
+      });
       this.timer = setInterval(() => {
         if (this.countdownSec === 0) {
           clearInterval(this.timer);
@@ -380,198 +402,199 @@ export default {
 
         // 彈驗證窗並利用Watch captchaData來呼叫 getKeyring()
         this.toggleCaptcha = true;
-      })
+      });
     },
     // 回傳會員手機驗證簡訊剩餘秒數可以重送
     getPhoneTTL() {
       return axios({
-        method: 'get',
-        url: '/api/v1/c/player/phone/ttl',
-      }).then(res => {
-        if (res && res.data && res.data.result === "ok") {
-          this.ttl = res.data.ret;
-        }
-      }).catch(error => {
-        this.tipMsg = `${error.response.data.msg}`;
+        method: "get",
+        url: "/api/v1/c/player/phone/ttl"
       })
+        .then(res => {
+          if (res && res.data && res.data.result === "ok") {
+            this.ttl = res.data.ret;
+          }
+        })
+        .catch(error => {
+          this.tipMsg = `${error.response.data.msg}`;
+        });
     },
     handleSend() {
       if (this.timer || this.isSendSMS) return;
 
       this.isSendSMS = true;
       let captchaParams = {};
-      captchaParams['captcha_text'] = this.captchaData || "";
+      captchaParams["captcha_text"] = this.captchaData || "";
 
       let params = {
-        phone: `${this.phoneHead.replace('+', '')}-${this.newValue}`,
-        ...captchaParams,
-      }
+        phone: `${this.phoneHead.replace("+", "")}-${this.newValue}`,
+        ...captchaParams
+      };
 
-      let smsUrl = '';
+      let smsUrl = "";
       if (this.isfromSWAG) {
-        smsUrl = '/api/v1/c/player/outer/sms';
-        params['vendor'] = 'swag'
-      }
-      else if (this.isfromWithdraw) {
-        smsUrl = '/api/v1/c/player/withdraw/verify/sms';
-      }
-      else {
-        smsUrl = '/api/v1/c/player/verify/phone';
+        smsUrl = "/api/v1/c/player/outer/sms";
+        params["vendor"] = "swag";
+      } else if (this.isfromWithdraw) {
+        smsUrl = "/api/v1/c/player/withdraw/verify/sms";
+      } else {
+        smsUrl = "/api/v1/c/player/verify/phone";
       }
 
       if (this.isfromWithdraw || this.isfromSWAG) {
         axios({
-          method: 'post',
+          method: "post",
           url: smsUrl,
           data: params
-        }).then(res => {
-          if (res && res.data && res.data.result === "ok") {
-            this.getPhoneTTL().then(() => {
-              this.locker();
-              this.isSendSMS = false;
-            })
-          } else {
-
-            if (res.data && res.data.msg) {
-              this.tipMsg = res.data.msg;
+        })
+          .then(res => {
+            if (res && res.data && res.data.result === "ok") {
+              this.getPhoneTTL().then(() => {
+                this.locker();
+                this.isSendSMS = false;
+              });
             } else {
-              console.log(res.data)
-              this.tipMsg = res.data;
+              if (res.data && res.data.msg) {
+                this.tipMsg = res.data.msg;
+              } else {
+                console.log(res.data);
+                this.tipMsg = res.data;
+              }
+            }
+            this.isSendSMS = false;
+            this.toggleCaptcha = false;
+          })
+          .catch(error => {
+            this.toggleCaptcha = false;
+            this.countdownSec = "";
+            this.isSendSMS = false;
+            console.log(error.response);
+
+            if (error.response.data && error.response.data.msg) {
+              // SWAG需求特利暫時調整
+              if (this.isfromSWAG && error.response.data.code == "C20190") {
+                this.tipMsg = "尚未绑定电话，请先至会员资料设定";
+                return;
+              }
+              this.tipMsg = error.response.data.msg;
+            } else {
+              this.tipMsg = error.response.data;
             }
 
-          }
-          this.isSendSMS = false;
-          this.toggleCaptcha = false;
-        }).catch(error => {
-          this.toggleCaptcha = false;
-          this.countdownSec = '';
-          this.isSendSMS = false;
-          console.log(error.response)
-
-          if (error.response.data && error.response.data.msg) {
-            // SWAG需求特利暫時調整
-            if (this.isfromSWAG && error.response.data.code == 'C20190') {
-              this.tipMsg = '尚未绑定电话，请先至会员资料设定';
+            if (error.response && error.response.status === 429) {
+              this.tipMsg = "操作太频繁，请稍候再试";
               return;
             }
-            this.tipMsg = error.response.data.msg;
-          } else {
-            this.tipMsg = error.response.data;
-          }
-
-          if (error.response && error.response.status === 429) {
-            this.tipMsg = "操作太频繁，请稍候再试";
-            return;
-          }
-        })
+          });
       } else {
         let params = {
-          old_phone: this.memInfo.phone.phone && !this.hasVerified ?
-            `${this.phoneHead.replace('+', '')}-${this.newValue}` :
-            this.oldPhone.isShow ?
-              `${this.phoneHead.replace('+', '')}-${this.oldValue}` :
-              '',
-          phone: `${this.phoneHead.replace('+', '')}-${this.newValue}`,
+          old_phone:
+            this.memInfo.phone.phone && !this.hasVerified
+              ? `${this.phoneHead.replace("+", "")}-${this.newValue}`
+              : this.oldPhone.isShow
+              ? `${this.phoneHead.replace("+", "")}-${this.oldValue}`
+              : "",
+          phone: `${this.phoneHead.replace("+", "")}-${this.newValue}`,
           ...captchaParams
         };
 
         axios({
-          method: 'post',
+          method: "post",
           url: smsUrl,
           // /api/v1/c/player/verify/phone
           data: params
-        }).then(res => {
-          if (res && res.data && res.data.result === "ok") {
-            this.getPhoneTTL().then(() => {
-              this.locker();
-              this.isSendSMS = false;
-            })
-          } else {
-
-            if (res.data && res.data.msg) {
-              this.tipMsg = res.data.msg;
+        })
+          .then(res => {
+            if (res && res.data && res.data.result === "ok") {
+              this.getPhoneTTL().then(() => {
+                this.locker();
+                this.isSendSMS = false;
+              });
             } else {
-              console.log(res.data)
-              this.tipMsg = res.data;
+              if (res.data && res.data.msg) {
+                this.tipMsg = res.data.msg;
+              } else {
+                console.log(res.data);
+                this.tipMsg = res.data;
+              }
+            }
+            this.isSendSMS = false;
+            this.toggleCaptcha = false;
+          })
+          .catch(error => {
+            this.toggleCaptcha = false;
+            this.countdownSec = "";
+            this.isSendSMS = false;
+
+            if (error.response.data && error.response.data.msg) {
+              this.tipMsg = error.response.data.msg;
+            } else {
+              this.tipMsg = error.response.data;
             }
 
-          }
-          this.isSendSMS = false;
-          this.toggleCaptcha = false;
-        }).catch(error => {
-          this.toggleCaptcha = false;
-          this.countdownSec = '';
-          this.isSendSMS = false;
-
-          if (error.response.data && error.response.data.msg) {
-            this.tipMsg = error.response.data.msg;
-          } else {
-            this.tipMsg = error.response.data;
-          }
-
-          if (error.response && error.response.status === 429) {
-            this.tipMsg = "操作太频繁，请稍候再试";
-            return;
-          }
-        })
+            if (error.response && error.response.status === 429) {
+              this.tipMsg = "操作太频繁，请稍候再试";
+              return;
+            }
+          });
       }
     },
     handleSubmit() {
       // 提款,SWAG手機驗證
-      let smsUrl = '';
+      let smsUrl = "";
       let params = {
         keyring: this.codeValue
-      }
+      };
 
       if (this.isfromSWAG) {
-        smsUrl = '/api/v1/c/outer/sms/verify';
-        params['phone'] = `${this.phoneHead.replace('+', '')}-${this.newValue}`;
-      }
-      else if (this.isfromWithdraw) {
-        smsUrl = '/api/v1/c/player/withdraw/sms/verify';
+        smsUrl = "/api/v1/c/outer/sms/verify";
+        params["phone"] = `${this.phoneHead.replace("+", "")}-${this.newValue}`;
+      } else if (this.isfromWithdraw) {
+        smsUrl = "/api/v1/c/player/withdraw/sms/verify";
       }
 
       if (this.isfromWithdraw || this.isfromSWAG) {
         ajax({
-          method: 'put',
+          method: "put",
           url: smsUrl,
           errorAlert: false,
           params: params,
-          fail: (res) => {
+          fail: res => {
             this.tipMsg = `${res.data.msg}`;
           },
-          success: (res) => {
-            if (res && res.result === 'ok') {
+          success: res => {
+            if (res && res.result === "ok") {
               // 完成後回到上一頁
               if (this.isfromSWAG) {
-                localStorage.setItem('tmp_d_1', res.ret);
+                localStorage.setItem("tmp_d_1", res.ret);
                 this.$router.back();
                 // this.$router.push('/mobile/mcenter/swag');
-              }
-              else if (this.isfromWithdraw) {
-                localStorage.setItem('tmp_w_1', res.ret);
-                this.$router.push('/mobile/mcenter/withdraw');
+              } else if (this.isfromWithdraw) {
+                localStorage.setItem("tmp_w_1", res.ret);
+                this.$router.push("/mobile/mcenter/withdraw");
               }
             }
           }
-        })
+        });
       } else {
         // 驗證手機
         if (this.info.verification) {
           return mcenter.accountPhoneCheck({
             params: {
-              old_phone: this.memInfo.phone.phone ? `${this.phoneHead.replace('+', '')}-${this.oldValue}` : '',
-              phone: `${this.phoneHead.replace('+', '')}-${this.newValue}`,
+              old_phone: this.memInfo.phone.phone
+                ? `${this.phoneHead.replace("+", "")}-${this.oldValue}`
+                : "",
+              phone: `${this.phoneHead.replace("+", "")}-${this.newValue}`,
               keyring: this.codeValue
             },
-            success: (res) => {
+            success: res => {
               this.actionSetWithdrawCheck();
               setTimeout(() => {
-                localStorage.setItem('set-account-success', true);
-                this.$router.push('/mobile/mcenter/accountData?success=true');
-              }, 200)
+                localStorage.setItem("set-account-success", true);
+                this.$router.push("/mobile/mcenter/accountData?success=true");
+              }, 200);
             },
-            fail: (res) => {
+            fail: res => {
               this.tipMsg = `${res.data.msg}`;
             }
           });
@@ -580,25 +603,36 @@ export default {
         // 不驗證直接設定手機
         return mcenter.accountPhoneEdit({
           params: {
-            phone: `${this.phoneHead.replace('+', '')}-${this.newValue}`
+            phone: `${this.phoneHead.replace("+", "")}-${this.newValue}`
           },
           success: () => {
             setTimeout(() => {
-              localStorage.setItem('set-account-success', true);
-              this.$router.push('/mobile/mcenter/accountData');
-            }, 200)
+              localStorage.setItem("set-account-success", true);
+              this.$router.push("/mobile/mcenter/accountData");
+            }, 200);
           },
-          fail: (res) => {
+          fail: res => {
             this.tipMsg = `${res.data.msg}`;
           }
         });
       }
-    },
+    }
   }
 };
 </script>
 
-<style lang="scss" src="../../../css/index.module.scss" module="$style_porn1"></style>
-<style lang="scss" src="../../../css/ey1.module.scss" module="$style_ey1"></style>
-<style lang="scss" src="../../../css/sg1.module.scss" module="$style_sg1"></style>
-
+<style
+  lang="scss"
+  src="../../../css/index.module.scss"
+  module="$style_porn1"
+></style>
+<style
+  lang="scss"
+  src="../../../css/ey1.module.scss"
+  module="$style_ey1"
+></style>
+<style
+  lang="scss"
+  src="../../../css/sg1.module.scss"
+  module="$style_sg1"
+></style>

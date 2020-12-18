@@ -20,8 +20,10 @@
         @click="isSingle = !isSingle"
       />
     </div>
-
-    <div :class="[$style['video-list-wrap'], 'clearfix']">
+    <div
+      :ref="'video-list-wrap'"
+      :class="[$style['video-list-wrap'], 'clearfix']"
+    >
       <div
         v-for="info in videoList"
         :key="info.id"
@@ -159,6 +161,8 @@ export default {
     },
     setSortId(value) {
       this.sortId = value;
+      this.current = 0;
+      this.$refs["video-list-wrap"].scrollTop = 0;
     },
     getVideoList(page) {
       return pornRequest({

@@ -57,7 +57,7 @@ export default {
     },
     itemFunc: {
       type: Function,
-      default: () => { }
+      default: () => {}
     }
   },
   data() {
@@ -80,8 +80,8 @@ export default {
     itemText() {
       switch (this.type) {
         // 目前針對 提現：CGPay-USDT
-        case 'withdraw-currency':
-          return 'currency_alias';
+        case "withdraw-currency":
+          return "currency_alias";
           break;
 
         default:
@@ -101,13 +101,6 @@ export default {
 };
 </script>
 
-<style
-  lang="scss"
-  src="./css/porn1.index.scss"
-  module="$style_porn1"
-></style>
-<style
-  lang="scss"
-  src="./css/ey1.index.scss"
-  module="$style_ey1"
-></style>
+<style lang="scss" src="./css/porn1.index.scss" module="$style_porn1"></style>
+<style lang="scss" src="./css/ey1.index.scss" module="$style_ey1"></style>
+<style lang="scss" src="./css/sg1.index.scss" module="$style_sg1"></style>

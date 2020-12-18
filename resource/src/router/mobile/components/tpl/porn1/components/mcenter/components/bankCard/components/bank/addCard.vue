@@ -29,7 +29,7 @@
         </div>
       </div>
       <p v-if="!memInfo.user.name" :class="$style['username-remind']">
-        为了您的资金能够迅速到账，请确保填写的姓名与银行卡的开户姓名一致
+        为了您的资金能够迅速到帐，请确保填写的姓名与银行卡的开户姓名一致
       </p>
     </template>
 
@@ -186,7 +186,7 @@
       <div :class="$style['info-confirm']">
         <div :class="$style['confirm-remind']">
           <p v-if="addBankCardStep === 'one'">
-            请认真校对银行卡号，卡号错误资金将无法到账
+            请认真校对银行卡号，卡号错误资金将无法到帐
           </p>
           <p v-else>
             1. 为确保您的资金安全，添加银行卡需进行简单的数据核实 <br />

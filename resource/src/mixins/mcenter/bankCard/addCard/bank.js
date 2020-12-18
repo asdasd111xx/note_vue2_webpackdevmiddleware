@@ -81,13 +81,14 @@ export default {
 
       let result = null;
       let verifyNum = this.memInfo.config.player_user_bank_phone;
-      let confirmNum = this.memInfo.phone.confirm;
+      let isPhoneVerify =
+        this.memInfo.phone.phone && this.memInfo.phone.confirm !== 0;
 
-      if (verifyNum === 0 || (verifyNum === 2 && confirmNum !== 0)) {
+      if (verifyNum === 0 || (verifyNum === 2 && isPhoneVerify)) {
         result = false;
       }
 
-      if (verifyNum === 1 || (verifyNum === 2 && confirmNum === 0)) {
+      if (verifyNum === 1 || (verifyNum === 2 && !isPhoneVerify)) {
         result = true;
       }
 
@@ -166,9 +167,10 @@ export default {
     }
   },
   methods: {
-    ...mapActions(["actionSetUserdata",
+    ...mapActions([
+      "actionSetUserdata",
       "actionVerificationFormData",
-      "actionSetGlobalMessage",
+      "actionSetGlobalMessage"
     ]),
     sendData() {
       if (this.addBankCardStep === "one" && this.checkPhoneVerification) {
@@ -350,7 +352,9 @@ export default {
       })
         .then(res => {
           this.lockStatus = false;
-          this.actionSetGlobalMessage({ msg: this.$text("S_SEND_CHECK_CODE_VALID_TIME").replace("%s", '5') });
+          this.actionSetGlobalMessage({
+            msg: this.$text("S_SEND_CHECK_CODE_VALID_TIME").replace("%s", "5")
+          });
           if (res && res.data && res.data.result === "ok") {
             axios({
               method: "get",

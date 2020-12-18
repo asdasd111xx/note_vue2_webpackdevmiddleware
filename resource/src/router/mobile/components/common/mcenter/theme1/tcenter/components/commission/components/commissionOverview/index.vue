@@ -177,7 +177,13 @@
               v-if="summaryContent[index].amount"
               :class="[$style['detail-wrap'], 'clearfix']"
             >
-              <div :class="$style.text">{{ summaryContent[index].text }}</div>
+              <div :class="$style.text">
+                {{
+                  summaryContent[index].text === ""
+                    ? "投注返利"
+                    : summaryContent[index].text
+                }}
+              </div>
               <div :class="$style.amount">
                 {{ summaryContent[index].amount }}
               </div>

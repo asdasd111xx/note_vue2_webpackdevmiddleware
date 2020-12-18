@@ -13,6 +13,7 @@
     </div>
 
     <div
+      :ref="'video-list-wrap'"
       :class="[$style['video-list-wrap'], 'clearfix']"
       :style="{ height: divHeight + 'px' }"
     >
@@ -147,6 +148,8 @@ export default {
     },
     setSortId(value) {
       this.sortId = value;
+      this.current = 0;
+      this.$refs["video-list-wrap"].scrollTop = 0;
     },
     defaultImg() {
       const isYabo = this.source === "yabo";

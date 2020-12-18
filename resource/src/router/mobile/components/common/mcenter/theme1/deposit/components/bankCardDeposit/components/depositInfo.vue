@@ -94,7 +94,7 @@
               :class="$style['icon-wrap']"
               @click="handleCopy(info.value)"
             >
-              <img :src="`/static/image/${themeTPL}/mcenter/ic_copy.png`" />
+              <img :src="$getCdnPath(`/static/image/common/ic_copy.png`)" />
             </div>
           </div>
           <div

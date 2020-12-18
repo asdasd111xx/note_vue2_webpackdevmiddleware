@@ -1,0 +1,108 @@
+.drag-verify-wrap {
+  min-height: 40px;
+  line-height: 40px;
+}
+
+#js-nc-check-bar {
+  &.drag-verify-wrap {
+    :global {
+      .nc_wrapper {
+        min-height: inherit;
+        height: initial;
+      }
+
+      .nc_scale {
+        min-height: inherit;
+        height: initial;
+        border-radius: 5px;
+
+        .nc_bg {
+          width: 0px;
+          border-top-left-radius: 5px;
+          border-bottom-left-radius: 5px;
+          background: linear-gradient(to right, #f9ddbd, #bd9d7d);
+        }
+
+        .nc_iconfont {
+          border-radius: 5px;
+          color: #000;
+        }
+
+        .btn_ok {
+          color: #bd9d7d;
+        }
+      }
+
+      .nc_iconfont {
+        min-height: inherit;
+        line-height: inherit;
+      }
+
+      .scale_text {
+        min-height: inherit;
+        height: initial;
+        line-height: inherit;
+      }
+
+      // 錯誤訊息
+      .errloading {
+        width: 100%;
+        min-height: inherit;
+        height: initial;
+        padding: 9px 5px;
+        background-color: #f3dcdb;
+      }
+    }
+  }
+}
+
+// 廳主端樣式預設
+.nc_wrapper {
+  width: auto;
+  height: inherit;
+}
+
+.nc_scale {
+  position: relative;
+  width: auto;
+  height: inherit;
+  margin: 0;
+  padding: 0;
+  background: #e8e8e8;
+}
+
+.nc_iconfont {
+  position: absolute;
+  z-index: 2;
+  width: 40px;
+  min-height: inherit;
+  height: initial;
+  line-height: inherit;
+  left: 0;
+  text-align: center;
+  font-size: 16px;
+  font-family: "nc_iconfont";
+  -webkit-font-smoothing: antialiased;
+  -moz-osx-font-smoothing: grayscale;
+  border: 1px solid #ccc;
+  cursor: move;
+  background: #fff;
+}
+
+.unable-wrap {
+  width: 100%;
+  line-height: 40px;
+  height: 40px;
+  top: 0;
+  position: absolute;
+  font-size: 12px;
+  text-align: center;
+  background: -webkit-gradient(linear,
+      left top,
+      right top,
+      color-stop(0, #4d4d4d),
+      color-stop(0.4, #4d4d4d),
+      color-stop(0.5, #fff),
+      color-stop(0.6, #4d4d4d),
+      color-stop(1, #4d4d4d));
+}

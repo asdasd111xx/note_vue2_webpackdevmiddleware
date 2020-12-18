@@ -1,6 +1,5 @@
 <template>
   <div :class="mainClass" id="header">
-    <div v-if="headerConfig.hasLogo" :class="$style['top-bg']" />
     <div
       v-if="headerConfig.hasLogo"
       :class="[$style['logo-wrap']]"
@@ -16,14 +15,14 @@
     >
       <img
         v-if="source === 'gay' || source === 'les'"
-        :src="$getCdnPath(`/static/image/sg1/common/btn_back_w.png`)"
+        :src="$getCdnPath(`/static/image/common/btn_back_white.png`)"
       />
       <img
         v-else
         :src="
           $getCdnPath(
-            `/static/image/sg1/common/btn_${
-              headerConfig.hasClose ? 'close' : 'back'
+            `/static/image/common/btn_${
+              headerConfig.hasClose ? 'close_black' : 'back_black'
             }.png`
           )
         "
@@ -190,7 +189,7 @@ export default {
     },
     updateSearchStatus: {
       type: Function,
-      default: () => { }
+      default: () => {}
     },
     hasUnreadMessage: {
       type: Boolean,
@@ -282,7 +281,7 @@ export default {
   max-width: $mobile_max_width;
   position: fixed;
   top: 0;
-  z-index: 0;
+  z-index: 3;
   width: 100%;
   height: 43px;
   padding: 0 17px;
@@ -302,26 +301,8 @@ export default {
   }
 
   &.is-home {
+    background: none;
     border-bottom: none;
-  }
-}
-
-.top-bg {
-  background: url("/static/image/sg1/common/pic_top.png");
-  -moz-background-size: 100% 100%;
-  background-size: 100% 100%;
-  height: 120px;
-  width: 100%;
-  max-width: $mobile_max_width;
-  top: 0;
-  left: 0;
-  z-index: -1;
-  position: absolute;
-}
-
-@media (orientation: landscape) {
-  .top-bg {
-    max-width: $mobile_max_landscape_width !important;
   }
 }
 

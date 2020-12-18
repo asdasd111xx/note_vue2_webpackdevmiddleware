@@ -9,6 +9,9 @@
           :class="{ [$style['is-negative']]: total.payoff < 0 }"
           >{{ +total.payoff ? +total.payoff : "0.00" }}</span
         >
+        <span v-if="themetpl() === 'sg1'">{{
+          total.payoff ? total.payoff : "0.00"
+        }}</span>
         <span v-else>{{ +total.payoff ? +total.payoff : "0.00" }}</span></span
       >
     </div>
@@ -31,9 +34,18 @@
         <div :class="$style['card-title']">
           <span :class="$style['header']">{{ info.username }}</span>
           <span
+            v-if="themetpl() === 'sg1'"
             :class="[
               $style['payout'],
-              { [$style['is-negative']]: info.payoff < 0 },
+              { [$style['is-negative']]: info.payoff < 0 }
+            ]"
+            >{{ info.payoff }}</span
+          >
+          <span
+            v-else
+            :class="[
+              $style['payout'],
+              { [$style['is-negative']]: info.payoff < 0 }
             ]"
             >{{ +info.payoff }}</span
           >
@@ -59,7 +71,7 @@ import { mapGetters } from "vuex";
 export default {
   computed: {
     ...mapGetters({
-      siteconfig: "getSiteConfig",
+      siteconfig: "getSiteConfig"
     })
   },
   props: {

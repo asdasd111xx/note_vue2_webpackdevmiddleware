@@ -108,7 +108,7 @@
             <img
               :src="
                 $getCdnPath(
-                  `/static/image/${themeTPL}/mcenter/balanceTrans/ic_expand.png`
+                  `/static/image/common/mcenter/balanceTrans/ic_expand.png`
                 )
               "
               alt="expend"
@@ -156,7 +156,7 @@
             <img
               :src="
                 $getCdnPath(
-                  `/static/image/${themeTPL}/mcenter/balanceTrans/ic_collapse.png`
+                  `/static/image/common/mcenter/balanceTrans/ic_collapse.png`
                 )
               "
               alt="collapse"
@@ -776,3 +776,4 @@ export default {
 
 <style lang="scss" src="../css/porn1.module.scss" module="$style_porn1"></style>
 <style lang="scss" src="../css/ey1.module.scss" module="$style_ey1"></style>
+<style lang="scss" src="../css/sg1.module.scss" module="$style_sg1"></style>

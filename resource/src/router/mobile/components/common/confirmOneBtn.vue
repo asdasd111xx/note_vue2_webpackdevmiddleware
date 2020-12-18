@@ -9,8 +9,8 @@
           :class="[
             'confirm-btn-wrap',
             {
-              ey1: themeTPL === 'ey1',
-            },
+              ey1: themeTPL === 'ey1'
+            }
           ]"
         >
           <div @click="handleClick">
@@ -112,6 +112,10 @@ export default {
 
   &.ey1 {
     color: #e42a30;
+  }
+
+  &.sg1 {
+    color: #bf8646;
   }
 }
 </style>

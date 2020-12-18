@@ -477,10 +477,11 @@ export default {
         url: "/api/v1/c/stats/wager-report/by-day-game",
         params,
         success: response => {
+          this.isLoading = false;
           if (response.ret.length === 0) {
             return;
           }
-
+          this.mainListData = [];
           this.mainListData.push(...response.ret);
           this.mainTotal = response.total;
           this.pagination = response.pagination;

@@ -1,4 +1,4 @@
-<template >
+<template>
   <div
     v-if="isShow && isIos && platform !== 'H'"
     :class="$style['app-tips']"
@@ -8,7 +8,7 @@
     <div>
       <span :class="$style['go-btn']" @click="handleClick">立即收藏</span>
       <img
-        :src="$getCdnPath('/static/image/_new/common/btn_close.png')"
+        :src="$getCdnPath('/static/image/common/btn_close_grey.png')"
         @click="handleClose"
       />
     </div>
@@ -16,35 +16,31 @@
 </template>
 
 <script>
-import { mapGetters, mapActions } from 'vuex';
-import moment from 'moment';
-import mcenterPageAuthControl from '@/lib/mcenterPageAuthControl';
-import mcenter from '@/api/mcenter';
-import member from '@/api/member';
-import { getCookie, setCookie } from '@/lib/cookie';
+import { mapGetters, mapActions } from "vuex";
+import moment from "moment";
+import mcenterPageAuthControl from "@/lib/mcenterPageAuthControl";
+import mcenter from "@/api/mcenter";
+import member from "@/api/member";
+import { getCookie, setCookie } from "@/lib/cookie";
 
 export default {
   data() {
     return {
       isIos: !!navigator.userAgent.match(/\(i[^;]+;( U;)? CPU.+Mac OS X/),
-      platform: '',
+      platform: "",
       isShow: true,
       opacity: 1
     };
   },
   computed: {
-    ...mapGetters({
-
-    }),
+    ...mapGetters({})
   },
   created() {
-    let platform = getCookie('platform');
+    let platform = getCookie("platform");
     this.platform = platform;
   },
   methods: {
-    ...mapActions([
-      'actionSetUserdata'
-    ]),
+    ...mapActions(["actionSetUserdata"]),
     handleClose() {
       this.opacity = 0;
 
@@ -55,7 +51,7 @@ export default {
     },
     handleClick() {
       this.show = false;
-      window.open('/mobile/install', "_blank")
+      window.open("/mobile/install", "_blank");
     }
   }
 };
