@@ -336,7 +336,7 @@ export default {
         case 21:
           if (["porn1", "sg1"].includes(this.themeTPL)) {
             // text = "请输入CGPay邮箱/手机号或扫扫二维码";
-            text = "请输入CGP邮箱/手机号或扫扫二维码";
+            text = "请输入CGP邮箱/手机号";
           } else {
             text = "请输入CGP邮箱/手机号或扫扫二维码";
           }
