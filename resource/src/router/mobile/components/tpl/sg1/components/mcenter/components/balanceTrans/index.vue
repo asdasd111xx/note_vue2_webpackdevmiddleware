@@ -15,9 +15,9 @@
 
 <script>
 import { mapGetters, mapActions } from "vuex";
-import balanceBack from "../../../mcenter/components/common/balanceBack";
+import balanceBack from "@/router/mobile/components/tpl/porn1/components/mcenter/components/common/balanceBack";
 import balanceTrans from "@/router/mobile/components/tpl/porn1/components/mcenter/components/balanceTrans/components/index";
-import blockListTips from "../../../common/blockListTips";
+import blockListTips from "@/router/mobile/components/tpl/porn1/components/common/blockListTips";
 import swagBlock from "@/router/mobile/components/tpl/porn1/components/mcenter/components/balanceTrans/components/swagBlock";
 import mobileContainer from "../../../common/mobileContainer";
 

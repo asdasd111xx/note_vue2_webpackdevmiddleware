@@ -43,109 +43,47 @@
 
 <script>
 import { mapGetters, mapActions } from "vuex";
-import balanceTran from '@/components/mcenter/components/balanceTran';
+import balanceTran from "@/components/mcenter/components/balanceTran";
 
 export default {
   props: {
     hasLink: {
       type: Boolean,
       default: false
-    },
+    }
   },
   components: {
-    balanceTran,
+    balanceTran
   },
   computed: {
     ...mapGetters({
-      hasBank: 'getHasBank'
+      hasBank: "getHasBank",
+      siteConfig: "getSiteConfig"
     }),
+    $style() {
+      const style =
+        this[`$style_${this.siteConfig.MOBILE_WEB_TPL}`] || this.$style_porn1;
+      return style;
+    },
+    themeTPL() {
+      return this.siteConfig.MOBILE_WEB_TPL;
+    }
   },
   methods: {
     ...mapActions([
-      'actionSetGlobalMessage',
-      'actionGetRechargeStatus',
-      'actionGetMemInfoV3'
+      "actionSetGlobalMessage",
+      "actionGetRechargeStatus",
+      "actionGetMemInfoV3"
     ]),
     handleCreditTrans() {
       this.actionGetMemInfoV3().then(() => {
-        this.actionGetRechargeStatus('');
-      })
+        this.actionGetRechargeStatus("");
+      });
     }
-  },
+  }
 };
 </script>
-<style lang="scss" module>
-@import "~@/css/variable.scss";
 
-.balance-wrap {
-  position: relative;
-  display: flex;
-  align-items: center;
-  text-align: center;
-  margin-top: 3%;
-  height: 65px;
-  border-radius: 4px;
-  background: #fefefe;
-  border-bottom: 1px solid #eeeeee;
-
-  // 自動免轉區塊
-  &:nth-child(2) {
-    height: 48px;
-  }
-
-  .balance-total-item {
-    flex: 1;
-    font-size: 12px;
-    font-weight: 700;
-    color: $main_text_color3;
-
-    img {
-      width: 13px;
-      height: 13px;
-      vertical-align: text-bottom;
-    }
-
-    .balance-item-money {
-      font-size: 16px;
-      color: #be9e7f;
-    }
-  }
-
-  .recycle-btn {
-    position: relative;
-    flex: 1;
-    font-size: 16px;
-    color: #be9e7f;
-    font-weight: 700;
-
-    &::before {
-      content: "";
-      position: absolute;
-      width: 1px;
-      height: 20px;
-      background: #eee;
-      left: 0;
-      top: 0;
-    }
-
-    &.disable {
-      //   opacity: 0.5;
-    }
-  }
-
-  .balance-total-icon {
-    width: 30px;
-    height: 30px;
-
-    img {
-      max-width: 100%;
-    }
-  }
-
-  .credit-trans-link {
-    flex: 1;
-    font-size: 16px;
-    color: #be9e7f;
-  }
-}
-</style>
+<style lang="scss" src="./css/porn1.index.scss" module="$style_porn1"></style>
+<style lang="scss" src="./css/ey1.index.scss" module="$style_ey1"></style>
+<style lang="scss" src="./css/sg1.index.scss" module="$style_sg1"></style>

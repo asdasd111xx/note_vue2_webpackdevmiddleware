@@ -37,15 +37,15 @@ export default {
   data() {
     return {
       isShowBlockTips: false
-    }
+    };
   },
   computed: {
     ...mapGetters({
-      memInfo: 'getMemInfo',
-      siteConfig: 'getSiteConfig'
+      memInfo: "getMemInfo",
+      siteConfig: "getSiteConfig"
     }),
     themeTPL() {
-      return this.siteConfig.MOBILE_WEB_TPL
+      return this.siteConfig.MOBILE_WEB_TPL;
     },
     headerConfig() {
       return {
@@ -55,10 +55,10 @@ export default {
           this.$router.back();
         },
         hasHelp: {
-          url: '/mobile/mcenter/helpCenter'
-        },
+          url: "/mobile/mcenter/helpCenter"
+        }
       };
-    },
+    }
   },
   methods: {
     closeTips() {
