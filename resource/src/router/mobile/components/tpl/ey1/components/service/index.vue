@@ -246,14 +246,15 @@ export default {
 
 <style lang="scss" module>
 @import "~@/css/variable.scss";
-
 div.container {
+  position: relative;
   background-color: #fff;
   background-image: url("/static/image/ey1/service/bg_service.png");
   background-repeat: no-repeat;
   background-size: 100% auto;
   background-position: 0 -40px;
   background-repeat: no-repeat;
+  height: 100vh;
 }
 
 @media (orientation: landscape) {

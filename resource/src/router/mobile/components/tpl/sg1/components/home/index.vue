@@ -155,7 +155,6 @@ div.container {
   width: 100%;
   max-width: $mobile_max_width;
   top: 0;
-  left: 0;
   z-index: 0;
   position: absolute;
 }

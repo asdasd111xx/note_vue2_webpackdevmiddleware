@@ -287,6 +287,8 @@ div.container {
   background-size: 100% auto;
   background-position: 0 -70px;
   background-repeat: no-repeat;
+  position: relative;
+  height: 100vh;
 }
 
 .avatar-info-wrap {

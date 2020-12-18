@@ -1,5 +1,5 @@
 <template>
-  <mobile-container :has-footer="!hasPrev">
+  <mobile-container :has-footer="!hasPrev" :class="$style['container']">
     <div slot="content" :class="$style['content-wrap']">
       <div :class="$style['top-bg']" />
       <div :class="$style['service-header']">
@@ -271,6 +271,11 @@ export default {
 
 <style lang="scss" module>
 @import "~@/css/variable.scss";
+.container {
+  position: relative;
+  height: 100vh;
+}
+
 .avatar-info-wrap {
   height: 90px;
   display: flex;
@@ -576,7 +581,6 @@ export default {
   width: 100%;
   max-width: $mobile_max_width;
   top: 0;
-  left: 0;
   position: absolute;
   z-index: -1;
 }

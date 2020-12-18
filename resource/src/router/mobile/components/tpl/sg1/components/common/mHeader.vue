@@ -306,12 +306,6 @@ export default {
   }
 }
 
-@media (orientation: landscape) {
-  .top-bg {
-    max-width: $mobile_max_landscape_width !important;
-  }
-}
-
 .agent {
   background: url("/static/image/porn1/agent/common/herder_bg.png");
   border-bottom: 1px solid #000;
