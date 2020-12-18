@@ -61,7 +61,7 @@
   "WEIXIN_REGULAR_TEXT": "请输入5位以上(格式支援邮箱、手机、QQ、微信)",
   "S_JM_MSG_COMPLETE": "请填写完整",
   "FORGET_PWD_MSG": "若未设置邮箱，请联系线上客服",
-  "FORGET_PWD_SEND": "确认信已发送，请至信箱查看。",
+  "FORGET_PWD_SEND": "重设密码信件已发送",
   "JOIN_MAIL_TIP": "可使用邮箱找回密码等问题处理回覆",
   "S_LOGIN_TIPS": "请先登入",
   "AGENT_CENTER": "代理中心",

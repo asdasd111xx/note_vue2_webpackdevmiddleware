@@ -234,12 +234,12 @@
   </div>
 </template>
 <script>
-import axios from 'axios';
-import { mapActions, mapGetters } from 'vuex';
-import member from '@/api/member';
-import joinMemInfo from '@/config/joinMemInfo';
-import mobileContainer from '../../common/mobileContainer'
-import popupVerification from '@/components/popupVerification';
+import axios from "axios";
+import { mapActions, mapGetters } from "vuex";
+import member from "@/api/member";
+import joinMemInfo from "@/config/joinMemInfo";
+import mobileContainer from "../../common/mobileContainer";
+import popupVerification from "@/components/popupVerification";
 
 export default {
   components: {
@@ -248,134 +248,137 @@ export default {
   },
   data() {
     return {
-      currentMethod: 'phone-step-1',
-      resetKeyring: '',
-      errMsg: '',
+      currentMethod: "phone-step-1",
+      resetKeyring: "",
+      errMsg: "",
       countdownSec: 0,
       timer: null,
       isShowPwd: false,
       isShowConfPwd: false,
       msg: {
-        username: '',
-        email: '',
-        keyring: '',
-        password: '',
-        confirm_password: ''
+        username: "",
+        email: "",
+        keyring: "",
+        password: "",
+        confirm_password: ""
       },
-      username: '',
-      email: '',
-      phone: '',
-      keyring: '',
-      password: '',
-      confirm_password: '',
+      username: "",
+      email: "",
+      phone: "",
+      keyring: "",
+      password: "",
+      confirm_password: "",
       toggleCaptcha: false,
       captcha: null
     };
   },
   currentMethod() {
     this.msg = {
-      username: '',
-      email: '',
-      keyring: '',
-      password: '',
-      confirm_password: ''
+      username: "",
+      email: "",
+      keyring: "",
+      password: "",
+      confirm_password: ""
     };
   },
   computed: {
     ...mapGetters({
-      memInfo: 'getMemInfo',
-      siteConfig: 'getSiteConfig'
+      memInfo: "getMemInfo",
+      siteConfig: "getSiteConfig"
     }),
     $style() {
-      const style = this[`$style_${this.siteConfig.MOBILE_WEB_TPL}`] || this.$style_porn1;
+      const style =
+        this[`$style_${this.siteConfig.MOBILE_WEB_TPL}`] || this.$style_porn1;
       return style;
     },
     headerConfig() {
       return {
         prev: true,
-        title: this.currentMethod === 'phone-step-2' ? '重设密码' : '找回密码',
-        onClick: () => { this.$router.back(); },
+        title: this.currentMethod === "phone-step-2" ? "重设密码" : "找回密码",
+        onClick: () => {
+          this.$router.back();
+        },
         noBottomBorder: true
       };
     },
     isShowCaptcha: {
       get() {
-        return this.toggleCaptcha
+        return this.toggleCaptcha;
       },
       set(value) {
-        return this.toggleCaptcha = value
+        return (this.toggleCaptcha = value);
       }
     },
     captchaData: {
       get() {
-        return this.captcha
+        return this.captcha;
       },
       set(value) {
-        return this.captcha = value
+        return (this.captcha = value);
       }
     },
     checkSubmit() {
-      if (this.currentMethod === 'phone-step-1') {
+      if (this.currentMethod === "phone-step-1") {
         return this.username && this.keyring;
       }
-      return this.password === this.confirm_password &&
+      return (
+        this.password === this.confirm_password &&
         this.password &&
-        this.confirm_password;
-    },
+        this.confirm_password
+      );
+    }
   },
   watch: {
     captchaData() {
-      this.getKeyring()
+      this.getKeyring();
     }
   },
   mounted() {
     this.$emit("update:currentMethod", this.currentMethod);
   },
   methods: {
-    ...mapActions(['actionSetUserdata']),
+    ...mapActions(["actionSetUserdata", "actionSetGlobalMessage"]),
     toggleEye(key) {
-      let target = key === "pwd" ? this.isShowPwd : this.isShowConfPwd
+      let target = key === "pwd" ? this.isShowPwd : this.isShowConfPwd;
       if (target) {
-        document.getElementById(key).type = 'password';
+        document.getElementById(key).type = "password";
       } else {
-        document.getElementById(key).type = 'text';
+        document.getElementById(key).type = "text";
       }
 
       if (key === "pwd") {
-        this.isShowPwd = !this.isShowPwd
+        this.isShowPwd = !this.isShowPwd;
       } else {
-        this.isShowConfPwd = !this.isShowConfPwd
+        this.isShowConfPwd = !this.isShowConfPwd;
       }
     },
     changeMethod(status) {
       this.errMsg = "";
       if (status) return;
-      this.username = '';
-      this.email = '';
-      this.phone = '';
-      this.keyring = '';
-      this.password = '';
-      this.confirm_password = '';
+      this.username = "";
+      this.email = "";
+      this.phone = "";
+      this.keyring = "";
+      this.password = "";
+      this.confirm_password = "";
     },
     verification(key, value) {
       const re = /^[a-z0-9._\-!@#$&*+=|]{6,12}$/;
       const msg = this.$text("S_PASSWORD_ERROR", "请输入6-12位字母或数字");
 
-      let errMsg = '';
+      let errMsg = "";
 
-      if (
-        this.password !== this.confirm_password
-      ) {
-        errMsg = '确认密码预设要跟密码一致';
+      if (this.password !== this.confirm_password) {
+        errMsg = "确认密码预设要跟密码一致";
         this.msg.confirm_password = errMsg;
         return;
       } else {
-        this.msg.confirm_password = '';
-        this.msg.password = '';
+        this.msg.confirm_password = "";
+        this.msg.password = "";
       }
 
       if (!value) {
-        errMsg = '该栏位不得为空';
+        errMsg = "该栏位不得为空";
       }
 
       if (!re.test(value)) {
@@ -385,19 +388,21 @@ export default {
       this.msg[key] = errMsg;
     },
     sendEmail(type) {
-      const url = '/mobile/resetpwd';
+      const url = "/mobile/resetpwd";
       const data = {
         params: {
           username: this.username,
           email: this.email,
           callback: url
         },
-        success: (res) => {
-          if (res.result === 'ok') {
-            this.errMsg = (this.$text('FORGET_PWD_SEND', '确认信已发送，请至信箱查看。'));
+        success: res => {
+          if (res.result === "ok") {
+            this.actionSetGlobalMessage({
+              msg: this.$text("FORGET_PWD_SEND", "重设密码信件已发送")
+            });
           }
         },
-        fail: (res) => {
+        fail: res => {
           if (res && res.data && res.data.msg) {
             this.errMsg = `${res.data.msg}`;
           }
@@ -405,7 +410,7 @@ export default {
       };
 
       // 忘記密碼 - 代理會員
-      if (type === 'agent') {
+      if (type === "agent") {
         agent.pwdForget(data);
         return;
       }
@@ -414,17 +419,17 @@ export default {
       member.pwdForget(data);
     },
     send(type) {
-      if (this.currentMethod === 'phone-step-1') {
-        if (!this.username || !this.keyring) return
+      if (this.currentMethod === "phone-step-1") {
+        if (!this.username || !this.keyring) return;
       } else {
-        if (!this.password || !this.confirm_password) return
+        if (!this.password || !this.confirm_password) return;
       }
 
-      if (this.currentMethod === 'phone-step-1') {
+      if (this.currentMethod === "phone-step-1") {
         this.verifySms(type);
         return;
       }
-      if (this.currentMethod === 'phone-step-2') {
+      if (this.currentMethod === "phone-step-2") {
         this.resetPwd(type);
         return;
       }
@@ -439,7 +444,7 @@ export default {
 
         // 彈驗證窗並利用Watch captchaData來呼叫 getKeyring()
         this.toggleCaptcha = true;
-      })
+      });
     },
     // 忘記密碼發送簡訊(驗證碼)
     getKeyring(type) {
@@ -455,49 +460,55 @@ export default {
       // member.pwdForgetMobile(data);
 
       axios({
-        method: 'post',
-        url: '/api/v1/c/player/forget/password/sms',
+        method: "post",
+        url: "/api/v1/c/player/forget/password/sms",
         data: {
           username: this.username,
-          captcha_text: this.captchaData ? this.captchaData : ''
-        }
-      }).then(res => {
-        if (res.data.result === "ok") {
-          this.errMsg = "";
-          this.countdownSec = 60;
-          this.timer = setInterval(() => {
-            if (this.countdownSec === 0) {
-              clearInterval(this.timer)
-              this.timer = null;
-              return;
-            }
-            this.countdownSec -= 1;
-          }, 1000)
-
-          if (res.data.code) {
-            this.errMsg = `${res.data.msg}`;
-          } else {
-            this.errMsg = '已發送手機認證碼';
-          }
-        } else {
-          this.errMsg = res.data.msg;
-        }
-      }).catch(error => {
-        this.isSendKeyring = false;
-
-        if (error.response && error.response.status === 429) {
-          this.errorMsg = "今日发送次数已达上限";
-          this.countdownSec = 0;
-          return;
-        }
-
-        if (error.response && error.response.data && error.response.data.msg) {
-          this.errMsg = `${error.response.data.msg}`;
+          captcha_text: this.captchaData ? this.captchaData : ""
         }
       })
+        .then(res => {
+          if (res.data.result === "ok") {
+            this.errMsg = "";
+            this.countdownSec = 60;
+            this.timer = setInterval(() => {
+              if (this.countdownSec === 0) {
+                clearInterval(this.timer);
+                this.timer = null;
+                return;
+              }
+              this.countdownSec -= 1;
+            }, 1000);
+
+            if (res.data.code) {
+              this.errMsg = `${res.data.msg}`;
+            } else {
+              this.errMsg = "已發送手機認證碼";
+            }
+          } else {
+            this.errMsg = res.data.msg;
+          }
+        })
+        .catch(error => {
+          this.isSendKeyring = false;
+
+          if (error.response && error.response.status === 429) {
+            this.errorMsg = "今日发送次数已达上限";
+            this.countdownSec = 0;
+            return;
+          }
+
+          if (
+            error.response &&
+            error.response.data &&
+            error.response.data.msg
+          ) {
+            this.errMsg = `${error.response.data.msg}`;
+          }
+        });
 
       if (this.toggleCaptcha) {
-        this.toggleCaptcha = false
+        this.toggleCaptcha = false;
       }
     },
     // 驗證簡訊(驗證碼)
@@ -507,16 +518,16 @@ export default {
           username: this.username,
           keyring: this.keyring
         },
-        success: (response) => {
-          if (response.result === 'ok') {
+        success: response => {
+          if (response.result === "ok") {
             //   驗證成功重設密碼
             this.resetKeyring = response.ret.keyring;
-            this.currentMethod = 'phone-step-2';
-            this.errMsg = '';
+            this.currentMethod = "phone-step-2";
+            this.errMsg = "";
           }
         },
-        fail: (res) => {
-          this.msg.keyring = '';
+        fail: res => {
+          this.msg.keyring = "";
 
           if (res && res.status === 429) {
             this.errorMsg = "操作太频繁，请稍候再试";
@@ -530,7 +541,7 @@ export default {
       };
 
       // 忘記密碼驗證簡訊 - 代理會員
-      if (type === 'agent') {
+      if (type === "agent") {
         agent.pwdMobileVerify(data);
         return;
       }
@@ -540,7 +551,7 @@ export default {
     },
     resetPwd(type) {
       if (this.msg.password || this.msg.confirm_password) {
-        alert(this.$text('S_CHECK_FAIL', '验证失败'));
+        alert(this.$text("S_CHECK_FAIL", "验证失败"));
         return;
       }
 
@@ -551,13 +562,15 @@ export default {
           confirm_password: this.confirm_password,
           keyring: this.resetKeyring
         },
-        success: (response) => {
-          this.errMsg = '';
-          if (response.result === 'ok') {
-            this.$router.push(`/mobile/${type === 'agent' ? 'aglogin' : 'login'}`);
+        success: response => {
+          this.errMsg = "";
+          if (response.result === "ok") {
+            this.$router.push(
+              `/mobile/${type === "agent" ? "aglogin" : "login"}`
+            );
           }
         },
-        fail: (res) => {
+        fail: res => {
           if (res && res.status === 429) {
             this.errorMsg = "操作太频繁，请稍候再试";
             return;
@@ -570,7 +583,7 @@ export default {
       };
 
       // 忘記密碼簡訊重設密碼 - 代理會員
-      if (type === 'agent') {
+      if (type === "agent") {
         agent.pwdResetMobile(data);
         return;
       }
