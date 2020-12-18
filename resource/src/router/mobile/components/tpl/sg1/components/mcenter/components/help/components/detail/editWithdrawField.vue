@@ -6,7 +6,7 @@
           <span>{{ $text("S_SUBMIT_WITHDRAW", "提交取款资料") }} </span>
           <div :class="$style['close-btn']" @click="closeFuc">
             <img
-              :src="$getCdnPath(`/static/image/_new/common/btn_close_w.png`)"
+              :src="$getCdnPath(`/static/image/common/btn_close_white.png`)"
             />
           </div>
         </div>
@@ -71,10 +71,14 @@
 </template>
 
 <script>
-import { mapGetters } from 'vuex';
-import Multiselect from 'vue-multiselect';
-import ajax from '@/lib/ajax';
-import { API_TRADE_RELAY, API_MCENTER_WITHDRAW, API_WITHDRAW } from '@/config/api';
+import { mapGetters } from "vuex";
+import Multiselect from "vue-multiselect";
+import ajax from "@/lib/ajax";
+import {
+  API_TRADE_RELAY,
+  API_MCENTER_WITHDRAW,
+  API_WITHDRAW
+} from "@/config/api";
 
 export default {
   components: {
@@ -83,36 +87,38 @@ export default {
   props: {
     closeFuc: {
       type: Function,
-      default: () => { }
+      default: () => {}
     },
     withdrawData: {
       type: Object,
-      default: () => { }
+      default: () => {}
     },
     thirdUrl: {
       type: String,
-      default: ''
+      default: ""
     }
   },
   data() {
     return {
-      columns: [{ key: "at", title: "S_DATE" },
-      { key: "id", title: "S_ORDER_NUMBER" },
-      { key: "amount", title: "S_WITHDRAW_MONEY" },
-      { key: "deduction", title: "S_DEDUCTION_MONEY" },
-      { key: "real_amount", title: "S_REAL_WITHDRAW" }],
+      columns: [
+        { key: "at", title: "S_DATE" },
+        { key: "id", title: "S_ORDER_NUMBER" },
+        { key: "amount", title: "S_WITHDRAW_MONEY" },
+        { key: "deduction", title: "S_DEDUCTION_MONEY" },
+        { key: "real_amount", title: "S_REAL_WITHDRAW" }
+      ],
 
       withdrawUserData: [],
       withdrawAccount: {},
-      withdrawPwd: '',
-      isAjax: false,
+      withdrawPwd: "",
+      isAjax: false
     };
   },
   computed: {
     ...mapGetters({
-      webInfo: 'getWebInfo',
-      memInfo: 'getMemInfo',
-      curLang: 'getCurLang'
+      webInfo: "getWebInfo",
+      memInfo: "getMemInfo",
+      curLang: "getCurLang"
     }),
     /**
      * 使用者所有取款帳戶
@@ -125,21 +131,27 @@ export default {
       }
 
       const resulAccount = [
-        ...this.withdrawUserData.account.map((info) => ({ ...info, withdrawType: 'account_id' })),
-        ...this.withdrawUserData.wallet.map((info) => ({ ...info, withdrawType: 'wallet_id' }))
+        ...this.withdrawUserData.account.map(info => ({
+          ...info,
+          withdrawType: "account_id"
+        })),
+        ...this.withdrawUserData.wallet.map(info => ({
+          ...info,
+          withdrawType: "wallet_id"
+        }))
       ];
 
       return resulAccount;
     }
   },
   created() {
-    if (this.withdrawData.withdraw === '迅付') {
+    if (this.withdrawData.withdraw === "迅付") {
       ajax({
-        method: 'get',
+        method: "get",
         url: API_MCENTER_WITHDRAW,
         errorAlert: false
-      }).then((response) => {
-        if (response.result === 'ok') {
+      }).then(response => {
+        if (response.result === "ok") {
           this.withdrawUserData = response.ret;
           [this.withdrawAccount] = this.allWithdrawAccount;
         }
@@ -156,35 +168,42 @@ export default {
 
       // 第三方寫單
       ajax({
-        method: 'get',
+        method: "get",
         url: API_WITHDRAW,
         errorAlert: true,
         params: {
           amount: this.withdrawData.amount,
           withdraw_id: this.withdrawData.id,
-          stage: 'forward',
-          logo: this.webInfo.logo ? `${this.webInfo.cdn_domain}${this.webInfo.logo}` : '',
-          mlogo: this.webInfo.m_logo ? `${this.webInfo.cdn_domain}${this.webInfo.m_logo}` : '',
+          stage: "forward",
+          logo: this.webInfo.logo
+            ? `${this.webInfo.cdn_domain}${this.webInfo.logo}`
+            : "",
+          mlogo: this.webInfo.m_logo
+            ? `${this.webInfo.cdn_domain}${this.webInfo.m_logo}`
+            : "",
           title: encodeURI(this.memInfo.config.domain_name[this.curLang]),
-          favicon: this.webInfo.fav_icon ? `${this.webInfo.cdn_domain}${this.webInfo.fav_icon}` : '',
+          favicon: this.webInfo.fav_icon
+            ? `${this.webInfo.cdn_domain}${this.webInfo.fav_icon}`
+            : "",
           check: true
         }
-      }).then((res) => {
-        if (res.result === 'ok') {
-          if (this.withdrawData.withdraw === '迅付') {
+      }).then(res => {
+        if (res.result === "ok") {
+          if (this.withdrawData.withdraw === "迅付") {
             // 迅付寫單
             ajax({
-              method: 'post',
+              method: "post",
               url: API_TRADE_RELAY,
               errorAlert: true,
               params: {
-                api_uri: '/api/trade/v2/c/withdraw/entry',
-                [`method[${this.withdrawAccount.withdrawType}]`]: this.withdrawAccount.id,
+                api_uri: "/api/trade/v2/c/withdraw/entry",
+                [`method[${this.withdrawAccount.withdrawType}]`]: this
+                  .withdrawAccount.id,
                 password: this.withdrawPwd,
                 withdraw_id: this.withdrawData.id
               }
-            }).then((response) => {
-              if (response && response.result === 'ok') {
+            }).then(response => {
+              if (response && response.result === "ok") {
                 window.location.reload();
                 return;
               }
@@ -198,7 +217,7 @@ export default {
 
           this.isAjax = false;
           this.closeFuc(false, {});
-          this.$emit('update:thirdUrl', res.ret.uri);
+          this.$emit("update:thirdUrl", res.ret.uri);
         }
       });
     }

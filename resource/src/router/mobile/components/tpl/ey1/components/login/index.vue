@@ -294,14 +294,17 @@ export default {
   },
   created() {
     if (!document.querySelector('script[data-name="esabgnixob"]')) {
-      this.script = document.createElement('script');
-      this.script.setAttribute('type', 'text/javascript');
-      this.script.setAttribute('data-name', 'esabgnixob');
+      this.script = document.createElement("script");
+      this.script.setAttribute("type", "text/javascript");
+      this.script.setAttribute("data-name", "esabgnixob");
 
       if (window.location.host.includes("localhost")) {
-        this.script.setAttribute('src', 'https://eyt.66boxing.com/mobile/esabgnixob.js');
+        this.script.setAttribute(
+          "src",
+          "https://eyt.66boxing.com/mobile/esabgnixob.js"
+        );
       } else {
-        this.script.setAttribute('src', 'esabgnixob.js');
+        this.script.setAttribute("src", "esabgnixob.js");
       }
 
       document.head.appendChild(this.script);
@@ -402,7 +405,7 @@ export default {
   color: #fff;
   cursor: pointer;
   transition: all 0.3s ease;
-  background-image: url("/static/image/ey1/common/btn_close.png");
+  background-image: url("/static/image/common/btn_close_white.png");
   &:hover {
     transform: rotate(90deg);
   }

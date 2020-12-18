@@ -21,10 +21,10 @@
               :src="
                 $getCdnPath(
                   `/static/image/common/btn_close_${
-                    themeTPL === 'porn1'
-                      ? 'g'
+                    ['porn1'].includes(themeTPL)
+                      ? 'grey'
                       : ['ey1', 'sg1'].includes(themeTPL)
-                      ? 'w'
+                      ? 'white'
                       : null
                   }.png`
                 )

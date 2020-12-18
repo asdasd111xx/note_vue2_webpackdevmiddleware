@@ -41,7 +41,15 @@
         <img
           :src="
             $getCdnPath(
-              `/static/image/${siteConfig.MOBILE_WEB_TPL}/common/btn_close.png`
+              `/static/image/common/btn_close_${
+                themeTPL === 'porn1'
+                  ? 'grey'
+                  : themeTPL === 'ey1'
+                  ? 'white'
+                  : themeTPL === 'sg1'
+                  ? 'black'
+                  : null
+              }.png`
             )
           "
         />
