@@ -229,7 +229,12 @@
               <div :class="$style.text">
                 {{ $text("S_MEM_WITHDRAW", "会员出款") }}
               </div>
-              <div :class="$style.amount">
+              <div
+                :class="[
+                  $style.amount,
+                  { [$style.deficit]: +currentInfo.withdraw < 0 }
+                ]"
+              >
                 {{ currentInfo.withdraw }}
               </div>
             </div>
@@ -262,7 +267,6 @@
                 >联系客服</span
               >
             </div>
-
           </div>
         </div>
       </div>
