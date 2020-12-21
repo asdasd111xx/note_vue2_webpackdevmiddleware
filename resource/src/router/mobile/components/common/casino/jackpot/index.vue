@@ -34,72 +34,85 @@
         :class="$style['multi-bonus-wrap-bg']"
         v-if="currentUsers && currentUsers.length > 0"
       />
-      <transition name="fade">
-        <div
-          :class="[$style['multi-bonus-wrap']]"
-          v-if="currentUsers && currentUsers.length > 0"
+
+      <swiper
+        v-if="currentUsers && currentUsers.length > 0"
+        :options="swiperOpts"
+        :key="updateKey"
+        :class="[$style['multi-bonus-wrap']]"
+      >
+        <swiper-slide
+          v-for="(item, key) in currentUsers"
+          :key="key"
+          :class="$style['multi-bonus-cell']"
         >
-          <div
-            v-for="(item, key) in currentUsers"
-            :class="$style['multi-bonus-cell']"
-          >
-            <div>
-              {{ `no.${item.no}` }}
-            </div>
-            <div>
-              {{ item.username }}
-            </div>
-            <div>
-              {{ formatMoney(item.amount, false) }}
-            </div>
+          <div>
+            {{ `no.${key + 1}` }}
           </div>
-        </div>
-      </transition>
+          <div>
+            {{ item.username }}
+          </div>
+          <div>
+            {{ formatMoney(item.amount, false) }}
+          </div>
+        </swiper-slide>
+      </swiper>
     </div>
 
     <!-- 2. 單一遊戲彩金 -->
-    <div
-      v-else-if="jackpotType === 2"
-      :class="[
-        $style['multiBonus-container'],
-        {
-          [$style['single']]: vendor !== 'bbin'
-        }
-      ]"
-      :style="
-        currentBonus && currentBonus.length <= 1
-          ? { animation: 'none', height: '80px' }
-          : ''
-      "
-    >
-      <div
-        v-for="(item, key) in currentBonus"
-        :class="$style['single-bonus-cell']"
+    <div v-else-if="jackpotType === 2">
+      <swiper
+        v-if="currentBonus && currentBonus.length > 0"
+        :options="swiperOpts"
+        :key="updateKey"
+        :class="[
+          $style['multiBonus-container'],
+          {
+            [$style['single']]: vendor !== 'bbin'
+          }
+        ]"
         :style="
-          currentBonus && currentBonus.length <= 1 ? { animation: 'none' } : ''
+          currentBonus && currentBonus.length <= 1
+            ? { animation: 'none', height: '80px' }
+            : ''
         "
       >
-        <div :class="$style['single-bonus-image']">
-          <img :src="item.imgSrc" />
-        </div>
-        <div :class="$style['single-bonus-content']">
-          <div>
-            {{ item.name }}
+        <swiper-slide
+          v-for="(item, key) in currentBonus"
+          :key="key"
+          :class="$style['single-bonus-cell']"
+          :style="
+            currentBonus && currentBonus.length <= 1
+              ? { animation: 'none' }
+              : ''
+          "
+        >
+          <div :class="$style['single-bonus-image']">
+            <img :src="item.imgSrc" />
           </div>
+          <div :class="$style['single-bonus-content']">
+            <div>
+              {{ item.name }}
+            </div>
 
-          <div :class="$style['single-bonus-amount']">
-            <span> {{ formatMoney(item.amount) }}</span>
+            <div :class="$style['single-bonus-amount']">
+              <span> {{ formatMoney(item.amount) }}</span>
+            </div>
           </div>
-        </div>
-      </div>
+        </swiper-slide>
+      </swiper>
     </div>
 
     <!-- 3. 多層彩金 -->
     <div
       v-else-if="jackpotType === 3"
       :class="[$style['multiBonus-container']]"
+      :style="{ height: 'auto' }"
     >
-      <div :class="$style['single-bonus-cell']" style="animation:none">
+      <div
+        :class="$style['single-bonus-cell']"
+        :style="{ animation: 'none', marginTop: '2px' }"
+      >
         <div :class="$style['single-bonus-image']">
           <img :src="'/static/image/common/casino/jackpot/ic_grand.png'" />
         </div>
@@ -110,7 +123,10 @@
           </div>
         </div>
       </div>
-      <div :class="$style['single-bonus-cell']" style="animation:none">
+      <div
+        :class="$style['single-bonus-cell']"
+        :style="{ animation: 'none', marginTop: '4px' }"
+      >
         <div :class="$style['single-bonus-image']">
           <img :src="'/static/image/common/casino/jackpot/ic_major.png'" />
         </div>
@@ -129,9 +145,13 @@
 import { mapGetters, mapActions } from "vuex";
 import axios from "axios";
 import animatedNumber from "animated-number-vue";
+import { Swiper, SwiperSlide } from "vue-awesome-swiper";
+
 export default {
   components: {
-    animatedNumber
+    animatedNumber,
+    Swiper,
+    SwiperSlide
   },
   props: {
     vendor: {
@@ -151,8 +171,8 @@ export default {
       jackpotType: 0,
       showJackpot: false,
 
-      totalBonusImage: '',
-      totalBonusTitle: '',
+      totalBonusImage: "",
+      totalBonusTitle: "",
 
       currentBonus: null,
       currentBonusIndex: 0,
@@ -160,7 +180,17 @@ export default {
       currentUsers: null,
       currentUsersIndex: 0,
 
-      animatedNumber: { value: 0 }
+      animatedNumber: { value: 0 },
+      swiperOpts: {
+        loop: true,
+        touchmove: false,
+        loopFillGroupWithBlank: true,
+        direction: "vertical",
+        slidesPerView: 3,
+        slidesPerGroup: 3,
+        autoplay: { delay: 3000, disableOnInteraction: false }
+      },
+      updateKey: 0
     };
   },
   beforeDestroy() {
@@ -181,7 +211,7 @@ export default {
       siteConfig: "getSiteConfig",
       memInfo: "getMemInfo",
       loginStatus: "getLoginStatus"
-    }),
+    })
   },
   methods: {
     ...mapActions(["actionNoticeData"]),
@@ -194,57 +224,42 @@ export default {
         .then(res => {
           if (res && res.data && res.data.result === "ok") {
             this.jackpotData = res.data.ret;
-            this.$emit('setJackpotData', this.jackpotData);
+            this.$emit("setJackpotData", this.jackpotData);
             this.initJackpot();
           }
         })
-        .catch(error => { });
+        .catch(error => {});
     },
     setSingleBonuns() {
       if (!this.jackpotData.jpMinor) {
         return;
       }
 
-      const interval = () => {
-        let tmpIndex = this.currentBonusIndex;
-        let array = [];
-        this.currentBonus = [];
-        setTimeout(() => {
-
-          // 3 casino, 6 mahjong,card
-          let imgSrc = `${this.siteConfig.BBOS_DOMIAN_CDN}/image/${this.$route.name}/${this.vendor}/Game_${this.jackpotData.jpMinor[tmpIndex].code}.png`;
-          array.push({ ...this.jackpotData.jpMinor[tmpIndex], imgSrc: imgSrc });
-
-          if (tmpIndex + 1 >= this.jackpotData.jpMinor.length) {
-            tmpIndex = 0;
-          } else {
-            tmpIndex += 1;
-          }
-
-          imgSrc = `${this.siteConfig.BBOS_DOMIAN_CDN}/image/${this.$route.name}/${this.vendor}/Game_${this.jackpotData.jpMinor[tmpIndex].code}.png`;
-          array.push({ ...this.jackpotData.jpMinor[tmpIndex], imgSrc: imgSrc });
-
-          this.currentBonus = array;
-
-          if (tmpIndex + 1 >= this.jackpotData.jpMinor.length) {
-            tmpIndex = 0;
-          } else {
-            tmpIndex += 1;
-          }
-
-          this.currentBonusIndex = tmpIndex;
-        }, 300)
-      }
-
       if (this.jackpotData.jpMinor.length > 1) {
-        interval();
-        this.usersTimer = setInterval(() => {
-          interval();
-        }, 3000);
-      } else {
-        let imgSrc = `${this.siteConfig.BBOS_DOMIAN_CDN}/image/${this.$route.name}/${this.vendor}/Game_${this.jackpotData.jpMinor[0].code}.png`;
         this.currentBonus = [];
-        this.currentBonus.push({ ...this.jackpotData.jpMinor[0], imgSrc: imgSrc });
+        this.jackpotData.jpMinor.forEach(i => {
+          let imgSrc = `${this.siteConfig.BBOS_DOMIAN_CDN}/image/${this.$route.name}/${this.vendor}/Game_${i.code}.png`;
+          this.currentBonus.push({
+            ...i,
+            imgSrc: imgSrc
+          });
+        });
+        this.swiperOpts = {
+          // loopFillGroupWithBlank: true,
+          loop: true,
+          direction: "vertical",
+          slidesPerView: 2,
+          slidesPerGroup: 2,
+          autoplay: { delay: 3000, disableOnInteraction: false },
+          spaceBetween: 5
+        };
+        this.updateKey = 1;
+      } else {
+        this.currentBonus = [];
+        this.currentBonus.push({
+          ...this.jackpotData.jpMinor[0],
+          imgSrc: imgSrc
+        });
       }
     },
     setCurrentUsers() {
@@ -252,43 +267,17 @@ export default {
         return;
       }
 
-      const interval = () => {
-        let tmpIndex = this.currentUsersIndex;
-        let array = [];
-        this.currentUsers = [];
-
-        setTimeout(() => {
-          array.push({ ...this.jackpotData.jpUserList[tmpIndex], no: tmpIndex + 1 });
-
-          let i = 1;
-          while (i <= 2) {
-            if (tmpIndex + i >= this.jackpotData.jpUserList.length) {
-              tmpIndex = 0;
-            } else {
-              tmpIndex += 1;
-            }
-            array.push({ ...this.jackpotData.jpUserList[tmpIndex], no: tmpIndex + 1 });
-            i += 1;
-          }
-
-          this.currentUsers = array;
-
-          if (tmpIndex + i >= this.jackpotData.jpUserList.length) {
-            tmpIndex = 0;
-          } else {
-            tmpIndex += 1;
-          }
-
-          this.currentUsersIndex = tmpIndex;
-        }, 300)
-
-      }
-
       if (this.jackpotData.jpUserList.length > 1) {
-        interval();
-        this.usersTimer = setInterval(() => {
-          interval();
-        }, 3000);
+        this.currentUsers = this.jackpotData.jpUserList;
+        this.swiperOpts = {
+          // loopFillGroupWithBlank: true,
+          loop: true,
+          direction: "vertical",
+          slidesPerView: 3,
+          slidesPerGroup: 3,
+          autoplay: { delay: 3000, disableOnInteraction: false }
+        };
+        this.updateKey = 1;
       } else {
         this.currentUsers = [];
         this.currentUsers.push({ ...this.jackpotData.jpUserList[0], no: 1 });
@@ -302,7 +291,8 @@ export default {
         case "bbin":
           this.jackpotType = 1;
           this.totalBonusTitle = "Grand";
-          this.totalBonusImage = "/static/image/common/casino/jackpot/gamejp.png";
+          this.totalBonusImage =
+            "/static/image/common/casino/jackpot/gamejp.png";
           break;
 
         // 單一總彩金
@@ -349,7 +339,10 @@ export default {
             return;
           }
 
-          if (this.animatedNumber.value !== 0 && this.animatedNumber.value < +this.jackpotData.jpGrand) {
+          if (
+            this.animatedNumber.value !== 0 &&
+            this.animatedNumber.value < +this.jackpotData.jpGrand
+          ) {
             this.animatedNumber.value = +this.jackpotData.jpGrand;
             this.animatedNumber.duration = 150000;
             return;
@@ -361,7 +354,7 @@ export default {
           setTimeout(() => {
             this.animatedNumber.value = +this.jackpotData.jpGrand;
             this.animatedNumber.duration = 150000;
-          }, 300)
+          }, 300);
           return;
 
         // 單一遊戲彩金
@@ -379,10 +372,12 @@ export default {
     },
     formatMoney(value, symbol = true) {
       if (!value || value === 0) {
-        return 0.00;
+        return 0.0;
       }
-      return `${symbol ? '¥' : ''}${(Math.round(value * 100) / 100).toFixed(2).replace(/\B(?=(\d{3})+(?!\d))/g, ',')}`;
-    },
+      return `${symbol ? "¥" : ""}${(Math.round(value * 100) / 100)
+        .toFixed(2)
+        .replace(/\B(?=(\d{3})+(?!\d))/g, ",")}`;
+    }
   }
 };
 </script>
@@ -392,6 +387,7 @@ export default {
 
 .jackpot-container {
   padding: 6px 9px;
+  pointer-events: none;
 }
 
 .multiTotal-container {
@@ -406,8 +402,7 @@ export default {
 }
 
 .multiBonus-container {
-  // height: 90px;
-  height: auto;
+  height: 98px;
   position: relative;
   background: #f5f5f5;
   border-radius: 17px;
@@ -425,7 +420,6 @@ export default {
   animation: fade-out-up-cell 3s linear;
   display: flex;
   height: 40px;
-  margin-top: 4px;
   opacity: 1;
   position: relative;
 }
@@ -550,91 +544,7 @@ export default {
   position: absolute;
   width: 100%;
   top: 39px;
-  animation: fade-out-up 3s linear;
-}
-
-@keyframes fade-out-up {
-  0% {
-    opacity: 1;
-  }
-
-  80% {
-    opacity: 0.8;
-    top: 39px;
-  }
-
-  92% {
-    opacity: 0;
-    top: 29px;
-  }
-
-  100% {
-    opacity: 0;
-    top: 29px;
-  }
-}
-
-@-webkit-keyframes fade-out-up {
-  0% {
-    opacity: 1;
-  }
-
-  80% {
-    opacity: 0.8;
-    top: 39px;
-  }
-
-  92% {
-    opacity: 0;
-    top: 29px;
-  }
-
-  100% {
-    opacity: 0;
-    top: 29px;
-  }
-}
-
-@keyframes fade-out-up-cell {
-  0% {
-    opacity: 1;
-  }
-
-  80% {
-    opacity: 0.8;
-    top: 0;
-  }
-
-  92% {
-    opacity: 0;
-    top: -10px;
-  }
-
-  100% {
-    opacity: 0;
-    top: -10px;
-  }
-}
-
-@-webkit-keyframes fade-out-up-cell {
-  0% {
-    opacity: 1;
-  }
-
-  80% {
-    opacity: 0.8;
-    top: 0;
-  }
-
-  92% {
-    opacity: 0;
-    top: -10px;
-  }
-
-  100% {
-    opacity: 0;
-    top: -10px;
-  }
+  height: 78px;
 }
 
 .multi-bonus-cell {
@@ -663,11 +573,5 @@ export default {
     right: 7px;
     max-width: 25%;
   }
-}
-
-.single-container {
-}
-
-.multiBonus-container {
 }
 </style>
