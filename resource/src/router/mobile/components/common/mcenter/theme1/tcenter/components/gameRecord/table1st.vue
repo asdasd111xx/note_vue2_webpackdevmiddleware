@@ -9,9 +9,11 @@
           :class="{ [$style['is-negative']]: total.payoff < 0 }"
           >{{ +total.payoff ? +total.payoff : "0.00" }}</span
         >
-        <span v-if="themetpl() === 'sg1'">{{
-          total.payoff ? total.payoff : "0.00"
-        }}</span>
+        <span
+          v-if="themetpl() === 'sg1'"
+          :class="{ [$style['is-negative']]: total.payoff > 0 }"
+          >{{ total.payoff ? total.payoff : "0.00" }}</span
+        >
         <span v-else>{{ +total.payoff ? +total.payoff : "0.00" }}</span></span
       >
     </div>
@@ -37,7 +39,7 @@
             v-if="themetpl() === 'sg1'"
             :class="[
               $style['payout'],
-              { [$style['is-negative']]: info.payoff < 0 }
+              { [$style['is-negative']]: info.payoff > 0 }
             ]"
             >{{ info.payoff }}</span
           >

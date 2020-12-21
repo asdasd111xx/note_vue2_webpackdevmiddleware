@@ -148,23 +148,7 @@ export default {
             if (res && res.data && res.data.ret && res.data.ret.uri) {
               localStorage.setItem("iframe-third-url", res.data.ret.uri);
               localStorage.setItem("iframe-third-url-title", "自领优惠");
-              this.$router.push(
-                `/mobile/iframe/promotion?hasFooter=false&hasHeader=true&fullscreen=true`
-              );
-            }
-          })
-          .catch(error => {
-            if (error && error.data && error.data.msg) {
-              this.actionSetGlobalMessage({ msg: error.data.msg });
-            }
-          })
-          .then(res => {
-            if (res && res.data && res.data.ret && res.data.ret.uri) {
-              localStorage.setItem("iframe-third-url", res.data.ret.uri);
-              localStorage.setItem("iframe-third-url-title", "领取优惠");
-              this.$router.push(
-                `/mobile/iframe/promotion?hasFooter=false&hasHeader=true&fullscreen=true`
-              );
+              this.$router.push(`/mobile/iframe/promotion?fullscreen=true`);
             }
           })
           .catch(error => {
@@ -192,7 +176,7 @@ export default {
               `promotion?tab=${this.tabId}`
             );
             this.$router.push(
-              `/mobile/iframe/promotion?hasFooter=false&hasHeader=true`
+              `/mobile/iframe/promotion`
             );
           }
         })

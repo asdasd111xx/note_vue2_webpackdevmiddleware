@@ -109,7 +109,6 @@ export default {
       this.$refs.news.offsetWidth > this.currentLeft
         ? this.$refs.news.offsetWidth
         : 1.5 * this.currentLeft;
-    console.log(this.currentLeft, this.totalWidth);
     this.startMove();
   },
   methods: {

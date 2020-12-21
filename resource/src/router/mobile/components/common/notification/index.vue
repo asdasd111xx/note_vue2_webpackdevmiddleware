@@ -40,33 +40,37 @@
 </template>
 
 <script>
-import { mapGetters, mapActions } from 'vuex';
-import Vue from 'vue';
+import { mapGetters, mapActions } from "vuex";
+import Vue from "vue";
 
 export default {
   data() {
     return {
       lang: {
-        'C_WS_DEPOSIT': '您的款项已入帐，请前往查看',
-        'C_WS_WITHDRAW': '您的取款已完成，请前往查看',
-        'C_WS_REBATE': '您的返水已入帐，请前往查看',
-        'C_WS_ACTIVITY': '您有 1 笔优惠已入帐，请前往查看',
-        'C_WS_INBOX': '您有 1 封新的站内信，请前往查看',
-        'COMMON_MAINTAIN_NOTICE': '网站系统公告\n网站即将进行系统维护，如有不便之处，敬请见谅 !\n'
-          + '预计完成 :\n美东时间 %s\n北京时间 %s\n於 %s 分钟後开始',
-        'C_WS_FEEDBACK_REPLY': '您有1封新的回覆信件，请前往查看',
-        'C_WS_WAGE': '您的返利已入帐，请前往查看',
+        C_WS_DEPOSIT: "您的款项已入帐，请前往查看",
+        C_WS_WITHDRAW: "您的取款已完成，请前往查看",
+        C_WS_REBATE: "您的返水已入帐，请前往查看",
+        C_WS_ACTIVITY: "您有 1 笔优惠已入帐，请前往查看",
+        C_WS_INBOX: "您有 1 封新的站内信，请前往查看",
+        COMMON_MAINTAIN_NOTICE:
+          "网站系统公告\n网站即将进行系统维护，如有不便之处，敬请见谅 !\n" +
+          "预计完成 :\n美东时间 %s\n北京时间 %s\n於 %s 分钟後开始",
+        C_WS_FEEDBACK_REPLY: "您有1封新的回覆信件，请前往查看",
+        C_WS_WAGE: "您的返利已入帐，请前往查看"
+        // C_WS_RECYCLE_FAIL: ""
+        // C_WS_RECYCLE_ALL_FAIL: ""
+        // C_WS_RECYCLE_OK: ""
       },
       msgType: [
-        'player_deposit',
-        'player_withdraw',
-        'player_rebate',
-        'player_activity',
-        'player_inbox',
-        'all_player_inbox',
-        'player_feedback_reply',
-        'player_wage',
-        'player_wage_self'
+        "player_deposit",
+        "player_withdraw",
+        "player_rebate",
+        "player_activity",
+        "player_inbox",
+        "all_player_inbox",
+        "player_feedback_reply",
+        "player_wage",
+        "player_wage_self"
       ],
       data: {},
       isShow: false,
@@ -91,21 +95,26 @@ export default {
     noticeData() {
       if (this.noticeData && this.noticeData.length > 0) {
         // this.data = this.noticeData.pop();
-        let temp = this.noticeData[this.noticeData.length - 1]
-        if (temp.extend && temp.extend === 'verification_code') {
+        let temp = this.noticeData[this.noticeData.length - 1];
+        if (temp.extend && temp.extend === "verification_code") {
           return;
         }
 
         const event = temp.event;
 
         switch (event) {
-          case 'notice':
-          case 'maintain_notice':
-          case 'verification_code':
+          case "notice":
+          case "maintain_notice":
+          case "verification_code":
             // 外接平台維護通知
             // case 'outer_maintain':
             this.data = temp;
-            this.show();
+
+            if (this.lang[this.data.content]) {
+              this.show();
+            } else {
+              this.$emit("close");
+            }
             return;
           default:
             return;
@@ -130,37 +139,35 @@ export default {
   },
   computed: {
     ...mapGetters({
-      siteConfig: 'getSiteConfig',
-      memInfo: 'getMemInfo',
-      loginStatus: 'getLoginStatus',
-      noticeData: 'getNoticeData',
+      siteConfig: "getSiteConfig",
+      memInfo: "getMemInfo",
+      loginStatus: "getLoginStatus",
+      noticeData: "getNoticeData"
     }),
     siteName() {
       return this.siteConfig.SITE_NAME;
     }
   },
   methods: {
-    ...mapActions([
-      'actionNoticeData'
-    ]),
+    ...mapActions(["actionNoticeData"]),
     handleClick() {
       let content = this.data.content;
-      localStorage.setItem('click-notification', 1);
+      localStorage.setItem("click-notification", 1);
 
       switch (content) {
-        case 'C_WS_FEEDBACK_REPLY':
-          this.$router.push('/mobile/mcenter/feedback/feedbackList');
+        case "C_WS_FEEDBACK_REPLY":
+          this.$router.push("/mobile/mcenter/feedback/feedbackList");
           break;
-        case 'C_WS_INBOX':
+        case "C_WS_INBOX":
         default:
-          this.$router.push('/mobile/mcenter/information');
+          this.$router.push("/mobile/mcenter/information");
           break;
-        case 'C_WS_DEPOSIT':
-        case 'C_WS_WITHDRAW':
-        case 'C_WS_REBATE':
-        case 'C_WS_ACTIVITY':
-        case 'C_WS_WAGE':
-          this.$router.push('/mobile/mcenter/wallet');
+        case "C_WS_DEPOSIT":
+        case "C_WS_WITHDRAW":
+        case "C_WS_REBATE":
+        case "C_WS_ACTIVITY":
+        case "C_WS_WAGE":
+          this.$router.push("/mobile/mcenter/wallet");
           break;
       }
     },
@@ -169,7 +176,7 @@ export default {
       this.closeTimer = setTimeout(() => {
         this.isShow = false;
         setTimeout(() => {
-          this.$emit('close');
+          this.$emit("close");
           clearTimeout(this.closeTimer);
           this.closeTimer = null;
         }, 800);
@@ -180,19 +187,21 @@ export default {
     },
     getText(key) {
       const event = this.data.event;
-      let string = '';
+      let string = "";
 
       switch (event) {
-        case 'maintain_notice':
+        case "maintain_notice":
           string = `即将进行系统维护 <br /> 于<span>${this.data.countdown}</span>分钟后开始`;
           return string;
 
-        case 'verification_code':
+        case "verification_code":
           string = `验证码:${this.data.code}，效期10分钟，仅能够使用一次，感谢支持!`;
           return string;
 
         default:
-          return this.lang[key] ? this.lang[key] : "您有 1 封新的站内信，请前往查看"
+          return this.lang[key]
+            ? this.lang[key]
+            : "您有 1 封新的站内信，请前往查看";
       }
     },
     deleMsg(id) {
@@ -200,7 +209,7 @@ export default {
       this.closeTimer = null;
       this.isShow = false;
       setTimeout(() => {
-        this.$emit('close');
+        this.$emit("close");
       }, 300);
 
       //   const resultMsg = cloneDeep(this.noticeData);

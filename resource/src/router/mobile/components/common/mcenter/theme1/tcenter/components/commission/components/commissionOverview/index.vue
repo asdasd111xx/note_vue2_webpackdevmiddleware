@@ -128,7 +128,12 @@
               <div :class="$style.text">
                 {{ $text("S_MEM_WITHDRAW", "会员出款") }}
               </div>
-              <div :class="$style.amount">
+              <div
+                :class="[
+                  $style.amount,
+                  { [$style.deficit]: +summaryContent[index].withdraw < 0 }
+                ]"
+              >
                 {{ summaryContent[index].withdraw }}
               </div>
             </div>

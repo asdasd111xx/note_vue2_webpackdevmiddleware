@@ -1,10 +1,6 @@
-@import './porn1.scss';
-// $main_color: #e42a30;
+@import "./porn1.scss";
+$main_color: #e42a30;
 
-// .submit-btn {
-//     background: $main_color;
-
-//     &:active {
-//         background-color: $main_color;
-//     }
-// }
+.submit-btn {
+  background: linear-gradient(to left, #fe593c, #e61938);
+}

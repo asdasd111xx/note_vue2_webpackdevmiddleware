@@ -162,7 +162,9 @@ export default {
       const gameList = this.allGame
         .map(game => game)
         .filter(item => {
-          return this.isAdult ? item : item.iconName.toLowerCase() !== "welfare";
+          return this.isAdult
+            ? item
+            : item.iconName.toLowerCase() !== "welfare";
         });
       return gameList;
     },
@@ -222,7 +224,7 @@ export default {
       });
     } else {
       setDefaultSelected();
-      this.getAllGame(true);
+      this.getAllGame();
     }
 
     if (!this.loginStatus) {
@@ -298,19 +300,25 @@ export default {
     },
     onResize() {
       // 計算外框高度
-      let extraHeight = 60;
-      if (this.siteConfig.MOBILE_WEB_TPL === "porn1") {
-        extraHeight = 60;
-      }
+      setTimeout(() => {
+        // 跑馬燈 header footer
+        let extraHeight = 30 + 43 + 60 + 5;
+        let homeSliderHeight = document.getElementById("home-slider")
+          ? document.getElementById("home-slider").offsetHeight
+          : 0;
 
-      if (this.siteConfig.MOBILE_WEB_TPL === "ey1") {
-        extraHeight = 85;
-      }
+        // 上方功能列
+        if (this.siteConfig.MOBILE_WEB_TPL === "ey1") {
+          extraHeight += homeSliderHeight + 72;
+        } else {
+          extraHeight += homeSliderHeight + 50;
+        }
 
-      this.wrapHeight =
-        document.body.offsetHeight -
-        this.$refs["home-wrap"].offsetTop -
-        extraHeight;
+        this.wrapHeight =
+          document.body.offsetHeight - extraHeight > 0
+            ? document.body.offsetHeight - extraHeight
+            : 225;
+      }, 50);
     },
     onTypeTouchStart(e) {
       if (this.isSliding) {
@@ -422,7 +430,10 @@ export default {
         this.isSliding = false;
       });
 
-      localStorage.setItem("home-menu-type", this.typeList[this.selectedIndex].icon);
+      localStorage.setItem(
+        "home-menu-type",
+        this.typeList[this.selectedIndex].icon
+      );
 
       setTimeout(() => {
         this.stopScroll = false;
@@ -655,9 +666,7 @@ export default {
                     } else {
                       localStorage.setItem("iframe-third-url", res.data);
                       localStorage.setItem("iframe-third-url-title", game.name);
-                      this.$router.push(
-                        `/mobile/iframe/${game.type}?&hasFooter=false&hasHeader=true`
-                      );
+                      this.$router.push(`/mobile/iframe/${game.type}`);
                       return;
                     }
                   });
@@ -834,4 +843,4 @@ export default {
       }
     }
   }
-}
+};

@@ -1,5 +1,5 @@
 <template>
-  <swiper :options="opts" :key="updateKey">
+  <swiper id="home-slider" :options="opts" :key="updateKey">
     <swiper-slide v-for="(info, key) in slider" :key="key">
       <div :class="$style['phone-image-wrap']">
         <img
