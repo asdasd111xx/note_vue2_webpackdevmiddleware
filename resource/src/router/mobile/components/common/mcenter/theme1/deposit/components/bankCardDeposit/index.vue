@@ -1453,9 +1453,15 @@ export default {
       // return this.allInputData.find((item) => item.objKey === 'depositName');
       return {
         objKey: "depositName",
-        title: "充值人姓名",
+        title:
+          this.curPayInfo.payment_type_id === 6
+            ? this.$text("充值昵称")
+            : this.$text("充值人姓名"),
         value: this.speedField.depositName,
-        placeholderText: "请输入充值人姓名",
+        placeholderText:
+          this.curPayInfo.payment_type_id === 6
+            ? this.$text("S_ENTER_DEPOSIT_NICKNAME", "请输入充值昵称")
+            : this.$text("S_ENTER_DEPOSIT_NAME", "请输入充值人姓名"),
         showCondition: this.curPayInfo.field.find(
           e => e.name === "pay_username" && e.required
         ),
