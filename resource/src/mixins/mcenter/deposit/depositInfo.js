@@ -37,7 +37,7 @@ export default {
             title: this.$text("S_ORDER_NUMBER_2", "订单号"),
             value: this.orderData.id,
             isFontBold: true,
-            copyShow: false
+            copyShow: true
           },
           {
             objKey: "payInfo",
@@ -63,7 +63,7 @@ export default {
             title: this.$text("S_ORDER_NUMBER_2", "订单号"),
             value: this.orderData.id,
             isFontBold: true,
-            copyShow: false
+            copyShow: true
           },
           {
             objKey: "payInfo",
