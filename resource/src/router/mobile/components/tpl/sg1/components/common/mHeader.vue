@@ -33,27 +33,6 @@
       <div :class="[[$style.title], $style[source]]">
         {{ headerConfig.title }}
       </div>
-      <div
-        v-if="headerConfig.gameList"
-        :class="$style['btn-game-list']"
-        @click="setMenuState('gameList')"
-      >
-        <img
-          :src="
-            $getCdnPath(
-              '/static/image/mobile/tpl/porn1/header/btn_header_n.png'
-            )
-          "
-        />
-      </div>
-    </div>
-    <div
-      v-if="headerConfig.gameList"
-      v-show="currentMenu === 'gameList'"
-      ref="game-list-wrap"
-      :class="$style['game-list-wrap']"
-    >
-      <top-game-list :is-list-visible.sync="currentMenu" />
     </div>
 
     <template v-if="headerConfig.hasSearchBar">

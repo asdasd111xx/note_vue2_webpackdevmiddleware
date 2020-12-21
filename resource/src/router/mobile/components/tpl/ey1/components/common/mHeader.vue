@@ -28,28 +28,6 @@
       <div :class="[[$style.title], $style[source]]">
         {{ headerConfig.title }}
       </div>
-      <div
-        v-if="headerConfig.gameList"
-        :class="$style['btn-game-list']"
-        @click="setMenuState('gameList')"
-      >
-        <img
-          :src="
-            $getCdnPath(
-              '/static/image/mobile/tpl/porn1/header/btn_header_n.png'
-            )
-          "
-        />
-      </div>
-    </div>
-
-    <div
-      v-if="headerConfig.gameList"
-      v-show="currentMenu === 'gameList'"
-      ref="game-list-wrap"
-      :class="$style['game-list-wrap']"
-    >
-      <top-game-list :is-list-visible.sync="currentMenu" />
     </div>
 
     <template v-if="headerConfig.hasSearchBtn">
@@ -146,7 +124,6 @@ import { mapGetters, mapActions } from "vuex";
 export default {
   components: {
     // sideBalance,
-    // topGameList: () => import(/* webpackChunkName: 'topGameList' */'./topGameList')
   },
   props: {
     headerConfig: {
@@ -340,16 +317,6 @@ export default {
     display: block;
     width: 100%;
   }
-}
-
-.game-list-wrap {
-  overflow-y: auto;
-  position: fixed;
-  top: 43px;
-  right: 0;
-  bottom: 0;
-  left: 0;
-  background-color: rgba(0, 0, 0, 0.8);
 }
 
 .search-wrap {
