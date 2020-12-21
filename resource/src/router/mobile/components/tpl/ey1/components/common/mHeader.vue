@@ -16,9 +16,9 @@
       <img
         :src="
           $getCdnPath(
-            `/static/image/ey1/common/btn_${
+            `/static/image/common/btn_${
               headerConfig.hasClose ? 'close' : 'back'
-            }.png`
+            }_white.png`
           )
         "
       />
@@ -104,9 +104,8 @@
         :class="[
           $style['header-custom-wrap'],
           {
-            [$style[headerConfig.customLinkStyle]]:
-              headerConfig.customLinkStyle,
-          },
+            [$style[headerConfig.customLinkStyle]]: headerConfig.customLinkStyle
+          }
         ]"
       >
         <div
@@ -128,7 +127,7 @@
         <span
           v-if="
             headerConfig.hasHelp.type === 'deposit' ||
-            headerConfig.hasHelp.type === 'withdraw'
+              headerConfig.hasHelp.type === 'withdraw'
           "
         >
           记录/教程
@@ -156,7 +155,7 @@ export default {
     },
     updateSearchStatus: {
       type: Function,
-      default: () => { }
+      default: () => {}
     },
     hasUnreadMessage: {
       type: Boolean,
@@ -167,7 +166,7 @@ export default {
     return {
       currentMenu: "",
       msg: "",
-      source: this.$route.query.source,
+      source: this.$route.query.source
     };
   },
   computed: {
@@ -187,12 +186,10 @@ export default {
           : false,
         clearfix: true
       };
-    },
+    }
   },
   methods: {
-    ...mapActions([
-      'actionSetGlobalMessage'
-    ]),
+    ...mapActions(["actionSetGlobalMessage"]),
     // 自訂幫助中心事件
     handleHelpLinkTo() {
       if (this.headerConfig.hasHelp && this.headerConfig.hasHelp.func) {
@@ -213,7 +210,7 @@ export default {
     },
     handleClickAsk() {
       if (this.loginStatus) {
-        this.$router.push({ name: 'mcenter-information' });
+        this.$router.push({ name: "mcenter-information" });
       } else {
         this.$router.push("/mobile/login");
       }

@@ -154,7 +154,9 @@ export default {
       const gameList = this.allGame
         .map(game => game)
         .filter(item => {
-          return this.isAdult ? item : item.iconName.toLowerCase() !== "welfare";
+          return this.isAdult
+            ? item
+            : item.iconName.toLowerCase() !== "welfare";
         });
       return gameList;
     },
@@ -299,10 +301,16 @@ export default {
         extraHeight = 85;
       }
 
-      this.wrapHeight =
-        document.body.offsetHeight -
-        this.$refs["home-wrap"].offsetTop -
-        extraHeight;
+      // this.wrapHeight =
+      //   document.body.offsetHeight -
+      //   this.$refs["home-wrap"].offsetTop -
+      //   extraHeight;
+
+      console.log(
+        document.body.offsetHeight,
+        this.$refs["home-wrap"].offsetTop,
+        this.wrapHeight
+      );
     },
     onTypeTouchStart(e) {
       if (this.isSliding) {
@@ -414,7 +422,10 @@ export default {
         this.isSliding = false;
       });
 
-      localStorage.setItem("home-menu-type", this.typeList[this.selectedIndex].icon);
+      localStorage.setItem(
+        "home-menu-type",
+        this.typeList[this.selectedIndex].icon
+      );
 
       setTimeout(() => {
         this.stopScroll = false;
@@ -647,9 +658,7 @@ export default {
                     } else {
                       localStorage.setItem("iframe-third-url", res.data);
                       localStorage.setItem("iframe-third-url-title", game.name);
-                      this.$router.push(
-                        `/mobile/iframe/${game.type}?&hasFooter=false&hasHeader=true`
-                      );
+                      this.$router.push(`/mobile/iframe/${game.type}`);
                       return;
                     }
                   });
@@ -826,4 +835,4 @@ export default {
       }
     }
   }
-}
+};

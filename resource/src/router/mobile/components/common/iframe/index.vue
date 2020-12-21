@@ -248,21 +248,17 @@ export default {
       const origin = this.$route.params.page.toUpperCase();
 
       this.isFullScreen =
-        origin === "SWAG"
-          ? true
-          : query.fullscreen === undefined
-          ? false
-          : query.fullscreen === "true";
+        query.fullscreen === undefined ? false : query.fullscreen === "true";
 
       let baseConfig = {
         hasHeader:
-          query.hasHeader === undefined ? false : query.hasHeader === "true",
+          query.hasHeader === undefined ? true : query.hasHeader === "true",
         hasFooter:
-          query.hasFooter === undefined ? true : query.hasFooter === "true",
+          query.hasFooter === undefined ? false : query.hasFooter === "true",
         prev: query.prev === undefined ? true : query.prev,
+        hasFunc: query.func === undefined ? true : query.func === "true",
         title:
-          query.title || localStorage.getItem("iframe-third-url-title") || "",
-        hasFunc: query.func === undefined ? true : query.func === "true"
+          query.title || localStorage.getItem("iframe-third-url-title") || ""
       };
 
       // SWAG 固定
@@ -295,16 +291,6 @@ export default {
       if (this.isLoading) {
         return;
       }
-
-      // reload 進入網址
-      // const tmpSrc = this.src;
-      // this.isLoading = true;
-      // this.src = '';
-      // setTimeout(() => {
-      //   this.src = tmpSrc;
-      //   this.isLoading = false;
-      // }, 310)
-
       // reload 當前網址
       document.getElementById("iframe").contentWindow.location.reload();
     },
