@@ -11,14 +11,14 @@
 
 <script>
 import { mapGetters } from "vuex";
-import { getCookie, setCookie } from '@/lib/cookie';
+import { getCookie, setCookie } from "@/lib/cookie";
 
 export default {
   data() {
     return {
       timer: 0,
-      sec: 3,
-    }
+      sec: 3
+    };
   },
   computed: {
     ...mapGetters({
@@ -30,22 +30,21 @@ export default {
   },
   created() {
     //   初始化
-    localStorage.removeItem('home-menu-type');
-    localStorage.removeItem('is-open-game');
-    localStorage.removeItem('do-not-show-home-post');
-    localStorage.removeItem('is-show-popup-announcement');
-    localStorage.removeItem('mobile-slider');
+    localStorage.removeItem("home-menu-type");
+    localStorage.removeItem("is-open-game");
+    localStorage.removeItem("do-not-show-home-post");
+    localStorage.removeItem("is-show-popup-announcement");
   },
   mounted() {
     this.timer = setInterval(() => {
       if (this.sec === 0) {
         clearInterval(this.timer);
         this.timer = null;
-        this.$router.push('/mobile');
+        this.$router.push("/mobile");
         return;
       }
       this.sec -= 1;
-    }, 1000)
+    }, 1000);
   },
   beforeDestroy() {
     clearInterval(this.timer);
@@ -56,10 +55,10 @@ export default {
       clearInterval(this.timer);
       this.timer = null;
       this.$nextTick(() => {
-        this.$router.push('/mobile');
+        this.$router.push("/mobile");
       });
     }
-  },
+  }
 };
 </script>
 

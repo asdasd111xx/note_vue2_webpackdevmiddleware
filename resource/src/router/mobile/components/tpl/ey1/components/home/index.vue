@@ -15,15 +15,15 @@
 </template>
 
 <script>
-import { getCookie, setCookie } from '@/lib/cookie';
-import { mapGetters, mapActions } from 'vuex';
-import axios from 'axios';
-import homeContent from './components/homeContent';
-import homeNew from '@/router/mobile/components/common/home/homeNew';
-import homeSlider from '@/router/mobile/components/common/home/homeSlider';
-import mcenter from '@/api/mcenter';
-import mobileContainer from '../common/mobileContainer';
-import popup from '@/router/mobile/components/common/home/popup';
+import { getCookie, setCookie } from "@/lib/cookie";
+import { mapGetters, mapActions } from "vuex";
+import axios from "axios";
+import homeContent from "./components/homeContent";
+import homeNew from "@/router/mobile/components/common/home/homeNew";
+import homeSlider from "@/router/mobile/components/common/home/homeSlider";
+import mcenter from "@/api/mcenter";
+import mobileContainer from "../common/mobileContainer";
+import popup from "@/router/mobile/components/common/home/popup";
 
 export default {
   components: {
@@ -37,13 +37,13 @@ export default {
     return {
       updateBalance: null,
       isShowPop: false,
-      sitePostList: null,
+      sitePostList: null
     };
   },
   computed: {
     ...mapGetters({
-      loginStatus: 'getLoginStatus',
-      post: 'getPost'
+      loginStatus: "getLoginStatus",
+      post: "getPost"
     }),
     headerConfig() {
       return {
@@ -56,9 +56,9 @@ export default {
     }
   },
   created() {
-    if (localStorage.getItem('new_user')) {
-      localStorage.setItem('content_rating', "1");
-      localStorage.removeItem('new_user');
+    if (localStorage.getItem("new_user")) {
+      localStorage.setItem("content_rating", "1");
+      localStorage.removeItem("new_user");
       mcenter.accountDataSet({
         params: {
           content_rating: 1
@@ -73,30 +73,32 @@ export default {
     // 先顯示彈跳公告關閉後再顯示一般公告
     // 顯示過公告 localStorage.getItem('is-show-popup-announcement')
     // 不在提示 localStorage.getItem('do-not-show-home-post')
-    if (this.loginStatus && !localStorage.getItem('do-not-show-home-post')) {
+    if (this.loginStatus && !localStorage.getItem("do-not-show-home-post")) {
       axios({
-        method: 'get',
-        url: '/api/v1/c/player/popup-announcement',
-      }).then((res) => {
-        if (res.data) {
-          if (res.data.ret && res.data.ret.length > 0) {
-            // 顯示彈跳公告
-            this.sitePostList = res.data.ret;
-            this.isShowPop = true;
-          } else {
-            // 顯示一般公吿
-            this.closePop(true);
+        method: "get",
+        url: "/api/v1/c/player/popup-announcement"
+      })
+        .then(res => {
+          if (res.data) {
+            if (res.data.ret && res.data.ret.length > 0) {
+              // 顯示彈跳公告
+              this.sitePostList = res.data.ret;
+              this.isShowPop = true;
+            } else {
+              // 顯示一般公吿
+              this.closePop(true);
+            }
           }
-        }
-      }).catch(res => { });
+        })
+        .catch(res => {});
     }
   },
   watch: {
     isShowPop(val) {
       if (val) {
-        document.querySelector('body').style = 'overflow: hidden';
+        document.querySelector("body").style = "overflow: hidden";
       } else {
-        document.querySelector('body').style = '';
+        document.querySelector("body").style = "";
       }
     }
   },
@@ -110,7 +112,7 @@ export default {
       } else {
         this.actionSetUserBalance();
       }
-    }, 30000)
+    }, 30000);
   },
   beforeDestroy() {
     clearInterval(this.updateBalance);
@@ -118,31 +120,30 @@ export default {
   },
   methods: {
     ...mapActions([
-      'actionSetPost',
-      'actionSetUserBalance',
-      'actionSetUserdata'
+      "actionSetPost",
+      "actionSetUserBalance",
+      "actionSetUserdata"
     ]),
     onClick() {
-      this.$router.push('/mobile');
+      this.$router.push("/mobile");
     },
     closePop(isFromSitePost) {
       this.isShowPop = false;
       this.sitePostList = null;
 
-      if (!localStorage.getItem('do-not-show-home-post')) {
+      if (!localStorage.getItem("do-not-show-home-post")) {
         setTimeout(() => {
           this.$nextTick(() => {
-            if (isFromSitePost && this.sitePostList) {
+            if (isFromSitePost && this.post && this.post.list.length > 0) {
               this.isShowPop = true;
             }
-          })
-        }, 250)
+          });
+        }, 250);
       }
     }
   }
 };
 </script>
-
 
 <style lang="scss" module>
 @import "~@/css/variable.scss";

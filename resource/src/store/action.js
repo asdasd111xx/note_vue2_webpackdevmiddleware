@@ -1158,7 +1158,6 @@ export const actionGetMobileInfo = ({ commit, state }, datatpl) => {
       const { result, data } = response;
 
       if (result === "ok") {
-        localStorage.setItem("mobile-slider", JSON.stringify(data));
         commit(types.SETMOBILEINFO, data);
       }
     }

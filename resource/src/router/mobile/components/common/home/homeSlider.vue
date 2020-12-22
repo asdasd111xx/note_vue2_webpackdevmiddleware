@@ -39,7 +39,6 @@ export default {
   beforeDestroy() {
     clearInterval(this.getSliderTimer);
     this.getSliderTimer = null;
-    localStorage.removeItem("mobile-slider");
   },
   mounted() {
     this.initSlider();
