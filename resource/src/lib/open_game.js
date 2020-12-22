@@ -52,9 +52,20 @@ export default (params, success = () => {}, fail = () => {}) => {
   let newWindow = "";
   let isWebview = getCookie("platform") === "H";
   let isIframeSite = ["evo", "allwin", "sigua_ly"].includes(vendor);
+  let gameTitle = "";
+  let option = `width=1024, height=768, scrollbars=yes, resizable=yes,location=no, menubar=no, toolbar=no`;
+  if (vendor === "evo") {
+    gameTitle = "EVO视讯";
+  } else if (vendor === "allwin") {
+    gameTitle = "500万彩票";
+  } else if (vendor === "sigua_ly") {
+    gameTitle = "丝瓜直播";
+  }
+
+  gameTitle = gameName || gameTitle;
 
   if (!isIframeSite && !isWebview) {
-    newWindow = window.open("", "", "_blank", true);
+    newWindow = window.open("", gameTitle, option);
     setTimeout(() => {
       newWindow.location = "/game/loading/true";
     }, 200);
@@ -96,12 +107,6 @@ export default (params, success = () => {}, fail = () => {}) => {
           query += "&allowFullScreen=false";
         }
 
-        // Xbb lg_casino lg_yb_casino 外開參數
-        // 由API提供
-        // if (vendor && ['LG_CASINO', 'LG_YB_CASINO'].includes(vendor.toUpperCase())) {
-        //   query += '&pageOption=1';
-        // }
-
         localStorage.setItem("open-game-link", ret.url + query);
 
         // 開啟遊戲時強制關閉下方最愛遊戲框
@@ -121,20 +126,8 @@ export default (params, success = () => {}, fail = () => {}) => {
               window.location.href = link;
             } else {
               if (isIframeSite) {
-                let title = "";
-
-                if (vendor === "evo") {
-                  title = "EVO视讯";
-                } else if (vendor === "allwin") {
-                  title = "500万彩票";
-                } else if (vendor === "sigua_ly") {
-                  title = "丝瓜直播";
-                }
-
-                title = gameName || title;
-
                 localStorage.setItem("iframe-third-url", link);
-                localStorage.setItem("iframe-third-url-title", title);
+                localStorage.setItem("iframe-third-url-title", gameTitle);
               } else {
                 newWindow.location = link;
               }
