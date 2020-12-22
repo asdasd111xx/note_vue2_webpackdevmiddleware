@@ -183,7 +183,43 @@ export default {
           });
         break;
       case "GAME":
-        this.src = localStorage.getItem("iframe-third-url");
+        if (localStorage.getItem("iframe-third-url")) {
+          this.src = localStorage.getItem("iframe-third-url");
+          return;
+        }
+
+        const openGameSuccessFunc = res => {
+          this.isShowLoading = false;
+        };
+
+        const openGameFailFunc = res => {
+          this.isShowLoading = false;
+
+          if (res && res.data) {
+            let data = res.data;
+            this.actionSetGlobalMessage({
+              msg: data.msg,
+              code: data.code,
+              origin: "home"
+            });
+          }
+        };
+
+        openGame(
+          {
+            kind: this.$route.query.kind || "",
+            vendor: this.$route.query.vendor || "",
+            code: this.$route.query.code || "",
+            gameType: this.$route.query.gameType || "",
+            gameName:
+              this.$route.query.gameName ||
+              localStorage.getItem("iframe-third-url-title") ||
+              ""
+          },
+          openGameSuccessFunc,
+          openGameFailFunc
+        );
+
         break;
       case "PROMOTION":
         // 優小秘

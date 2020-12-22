@@ -159,6 +159,43 @@
       </div>
     </template>
 
+    <template v-if="['ey1'].includes(themeTPL)">
+      <div :class="$style['swag-wrap']">
+        <div :class="$style['title']">蜂鸟钱包</div>
+        <div :class="$style['icon-block']">
+          <div :class="$style['icon-cell']">
+            <div :class="$style['balance']">
+              <!-- <template v-if="isMaintainSwag">
+                <span :class="$style['maintain-tip-text']">维护中</span>
+                <img
+                  v-if="isMaintainSwag && swagConfig && swagConfig.enable !== 0"
+                  :class="$style['maintain-tip-img']"
+                  :src="$getCdnPath('/static/image/common/mcenter/ic_tips.png')"
+                />
+              </template>
+              <template v-else>
+                {{ swagDiamondBalance }}
+              </template> -->
+              {{ birdBalance }}
+            </div>
+            {{ $t("S_BIRD_BALANCE") }}
+          </div>
+
+          <div
+            v-for="(item, index) in birdIcons"
+            :key="'icon-' + index"
+            :class="$style['icon-cell']"
+            @click="item.onClick"
+          >
+            <div :class="$style['image']">
+              <img :src="$getCdnPath(item.imgSrc)" alt="icon" />
+            </div>
+            {{ item.text }}
+          </div>
+        </div>
+      </div>
+    </template>
+
     <div :class="$style['invite-wrap']" @click="onClickInvite">
       <template v-if="['porn1', 'sg1'].includes(themeTPL)">
         <div :class="$style['content']">
@@ -267,7 +304,8 @@ export default {
       mainNoData: false,
       isCheckWithdraw: false,
       bonus: {},
-      swagDiamondBalance: "0"
+      swagDiamondBalance: "0",
+      birdBalance: "0"
     };
   },
   computed: {
@@ -314,6 +352,37 @@ export default {
           show: true,
           text: this.$text("S_INSTRUSTIONS", "使用方法"),
           imgSrc: `/static/image/common/mcenter/wallet/ic_wallter_swag_instrustions.png`,
+          onClick: () => {
+            this.$router.push("/mobile/mcenter/help/detail?type=usage&key=2");
+          }
+        }
+      ].filter(item => item.show);
+    },
+    birdIcons() {
+      return [
+        {
+          key: "whatBird",
+          show: true,
+          text: this.$text("S_WHAT_BIRD", "什么是鸟蛋"),
+          imgSrc: `/static/image/common/mcenter/wallet/ic_wallter_bird_what.png`,
+          onClick: () => {
+            this.$router.push("/mobile/mcenter/help/bird?key=0");
+          }
+        },
+        {
+          key: "howToUse",
+          show: true,
+          text: this.$text("S_TO_USE", "如何使用"),
+          imgSrc: `/static/image/common/mcenter/wallet/ic_wallter_bird_howtouse.png`,
+          onClick: () => {
+            this.$router.push("/mobile/mcenter/help/bird?key=1");
+          }
+        },
+        {
+          key: "goBird",
+          show: true,
+          text: this.$text("S_GO_BIRD", "前往蜂鸟"),
+          imgSrc: `/static/image/common/mcenter/wallet/ic_wallter_bird_go.png`,
           onClick: () => {
             this.$router.push("/mobile/mcenter/help/detail?type=usage&key=2");
           }
