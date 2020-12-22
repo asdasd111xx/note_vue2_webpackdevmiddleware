@@ -255,7 +255,10 @@ export default {
       }
     }
 
-    if (this.siteConfig.MOBILE_WEB_TPL !== "porn1") {
+    if (
+      this.siteConfig.MOBILE_WEB_TPL !== "porn1" &&
+      this.siteConfig.MOBILE_WEB_TPL !== "sg1"
+    ) {
       this.categoryOpt = this.categoryOptions.filter(
         i => i.key !== "ingroup_transfer"
       );
