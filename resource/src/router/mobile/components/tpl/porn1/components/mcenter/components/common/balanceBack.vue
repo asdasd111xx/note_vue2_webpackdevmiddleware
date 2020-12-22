@@ -36,8 +36,9 @@
             {{ $text("S_ONE_CLICK_TO_ACCOUNT") }}
           </div>
         </div>
+
         <!-- 億元：鸟蛋余额 -->
-        <div :class="$style['bird-wrap']">
+        <div v-if="themeTPL === 'ey1'" :class="$style['bird-wrap']">
           <div :class="[$style['item'], $style['wallet']]">
             <img
               :src="
@@ -46,7 +47,7 @@
                 )
               "
             />
-            <span> 鸟蛋余额</span>
+            <span>鸟蛋余额</span>
             <div :class="$style['bird-block']">
               {{ 0 }}
             </div>
