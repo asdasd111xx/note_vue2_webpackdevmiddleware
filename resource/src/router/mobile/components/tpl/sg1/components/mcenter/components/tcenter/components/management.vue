@@ -12,7 +12,7 @@
 
 <script>
 import tcenter from "@/router/mobile/components/common/mcenter/theme1/tcenter";
-import mobileContainer from '../../../../common/mobileContainer';
+import mobileContainer from "../../../../common/mobileContainer";
 
 export default {
   components: {
@@ -30,17 +30,10 @@ export default {
         title: this.$text("S_TEAM_CENTER", "我的推广"),
         prev: true,
         onClick: () => {
-          if (
-            this.$route.params.page === "member" &&
-            this.$route.params.date
-          ) {
-            this.$router.replace("/mobile/mcenter/tcenter/management/member");
-            return;
-          }
           this.$router.back();
         }
       };
-    },
+    }
   },
   mounted() {
     this.divHeight = document.body.offsetHeight;

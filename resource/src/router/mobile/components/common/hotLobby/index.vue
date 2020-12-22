@@ -20,29 +20,23 @@
     </template>
 
     <template v-if="isShowSearch">
-      <game-search
-        :text="searchText"
-        :set-search-text="setSearchText"
-        :update-search-status="updateSearchStatus"
-        :game-list="gameData"
-        :lobby-info="lobbyInfo"
-      />
+      <game-search :update-search-status="updateSearchStatus" />
     </template>
   </div>
 </template>
 
 <script>
-import axios from "axios";
-import { gameList } from "@/config/api";
-import { mapGetters, mapActions } from "vuex";
+import { mapGetters } from "vuex";
 import gameItem from "./components/gameItem";
 import gameSearch from "./components/gameSearch";
+import mixin from "@/mixins/hotLobby";
 
 export default {
   components: {
     gameSearch,
     gameItem
   },
+  mixins: [mixin],
   props: {
     isShowSearch: {
       type: Boolean,
@@ -54,11 +48,7 @@ export default {
     }
   },
   data() {
-    return {
-      isReceive: false,
-      gameData: [],
-      searchText: ""
-    };
+    return {};
   },
   computed: {
     ...mapGetters({
@@ -66,36 +56,13 @@ export default {
       siteConfig: "getSiteConfig"
     }),
     $style() {
-      return this[`$style_${this.theme}`] || this.$style_porn1;
-    },
-    lobbyInfo() {
-      let info = {};
-      const vendor = this.$route.params.vendor;
-
-      switch (vendor) {
-        case "lg_yb_casino":
-          info = {
-            alias: "casino",
-            name: "热门电子",
-            vendor,
-            kind: "3"
-          };
-          break;
-
-        case "lg_yb_card":
-          info = {
-            alias: "card",
-            name: "热门棋牌",
-            vendor,
-            kind: "5"
-          };
-          break;
-      }
-
-      return info;
+      return (
+        this[`$style_${this.siteConfig.MOBILE_WEB_TPL}`] || this.$style_porn1
+      );
     }
   },
   created() {
+    // 回傳至父層給予熱門大廳的 Title
     this.$emit("update:lobbyName", this.lobbyInfo.name);
   },
   mounted() {
@@ -105,65 +72,7 @@ export default {
 
     this.getGameList();
   },
-  watch: {
-    isShowSearch() {
-      if (this.isShowSearch) {
-        this.gameData = [];
-        return;
-      }
-      this.setSearchText("");
-    }
-  },
   methods: {
-    ...mapActions(["actionSetGlobalMessage"]),
-    getGameList() {
-      if (this.isReceive) return;
-
-      this.isReceive = true;
-
-      let params = {
-        vendor: this.lobbyInfo.vendor,
-        kind: this.lobbyInfo.kind,
-        firstResult: 0,
-        maxResults: 36
-      };
-
-      return axios({
-        method: "get",
-        url: gameList,
-        params: {
-          ...params,
-          name: this.searchText
-        }
-      })
-        .then(res => {
-          const { result, ret } = res.data;
-          this.isReceive = false;
-          if (result !== "ok") {
-            return;
-          }
-
-          this.gameData = ret;
-        })
-        .catch(error => {
-          this.isReceive = false;
-          this.actionSetGlobalMessage(error.response.data.msg);
-        });
-    },
-    /**
-     * 設定搜尋文字
-     * @param {string} value - 搜尋的文字
-     */
-    setSearchText(value) {
-      this.searchText = value;
-
-      if (this.isShowSearch && !value) {
-        this.gameData = [];
-        return;
-      }
-
-      this.getGameList();
-    },
     updateSearchStatus() {
       this.$emit("update:isShowSearch");
     }

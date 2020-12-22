@@ -14,14 +14,14 @@
     </div>
 
     <!-- 無相關遊戲 -->
-    <div v-if="gameList.length === 0" :class="$style['empty-wrap']">
+    <div v-if="gameData.length === 0" :class="$style['empty-wrap']">
       <div :class="$style['empty-icon']" />
       <div>{{ $text("S_NO_GAME", "未查询到相关游戏") }}</div>
     </div>
 
     <!-- render game item -->
     <div v-else :class="$style['game-item-wrap']">
-      <template v-for="(item, index) in gameList">
+      <template v-for="(item, index) in gameData">
         <game-item
           :game-data="item"
           :lobby-info="lobbyInfo"
@@ -33,55 +33,60 @@
 </template>
 
 <script>
-import debounce from "lodash/debounce";
+import { mapGetters } from "vuex";
+import throttle from "lodash/throttle";
 import gameItem from "./gameItem";
+import mixin from "@/mixins/hotLobby";
 
 export default {
-  data() {
-    return {};
-  },
   components: {
     gameItem
   },
   props: {
-    text: {
-      type: String,
-      default: ""
-    },
-    setSearchText: {
-      type: Function,
-      required: true
-    },
     updateSearchStatus: {
       type: Function,
       default: () => {}
-    },
-    gameList: {
-      type: Array,
-      default: () => []
-    },
-    lobbyInfo: {
-      type: Object,
-      default: {}
     }
+  },
+  mixins: [mixin],
+  data() {
+    return {
+      searchText: ""
+    };
   },
   computed: {
+    ...mapGetters({
+      siteConfig: "getSiteConfig"
+    }),
     $style() {
-      return this[`$style_${this.theme}`] || this.$style_porn1;
-    },
-    searchText: {
-      get() {
-        return this.text;
-      },
-      set(value) {
-        debounce(() => {
-          this.setSearchText(value);
-        }, 1000)();
-      }
+      return (
+        this[`$style_${this.siteConfig.MOBILE_WEB_TPL}`] || this.$style_porn1
+      );
     }
   },
-  created() {},
-  methods: {}
+  watch: {
+    searchText(value) {
+      throttle(() => {
+        this.setSearchText(value);
+      }, 800)();
+    }
+  },
+  methods: {
+    /**
+     * 設定搜尋文字
+     * @param {string} value - 搜尋的文字
+     */
+    setSearchText(value) {
+      this.searchText = value;
+
+      if (!value) {
+        this.gameData = [];
+        return;
+      }
+
+      this.getGameList(this.searchText);
+    }
+  }
 };
 </script>
 
