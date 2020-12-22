@@ -8,9 +8,7 @@
     </div>
     <div :class="$style['pic-wrap']">
       <img
-        :src="
-          $getCdnPath(`/static/image/porn1/mcenter/share/shareapp_save.png`)
-        "
+        :src="$getCdnPath(`/static/image/sg1/mcenter/share/shareapp_save.png`)"
         alt="shareApp"
       />
 
@@ -116,7 +114,7 @@ export default {
 
   .qrcode-wrap {
     position: absolute;
-    bottom: 29.5%;
+    bottom: 7.5%;
     left: 50%;
     transform: translateX(-50%);
     width: 25%;

@@ -20,7 +20,7 @@
 
       <div :class="$style['text']" @click="downloadImage">
         <img
-          :src="$getCdnPath(`/static/image/sg1/mcenter/share/btn_tick.png`)"
+          :src="$getCdnPath(`/static/image/common/mcenter/share/btn_tick.png`)"
         />
         {{ btnTickText }}
       </div>
@@ -59,9 +59,6 @@ export default {
       memInfo: "getMemInfo",
       promotionLink: "getPromotionLink"
     }),
-    isException() {
-      return window.location.hostname === "yaboxxxapp02.com" || this.isPwa;
-    },
     btnTickText() {
       return "点击截屏保存";
     },
@@ -114,10 +111,7 @@ export default {
       this.$emit("update:isShowShare", false);
     },
     downloadImage() {
-      if (this.isException) {
-        window.open("/mobile/shareDownload", "_blank");
-        return;
-      }
+      this.$router.push("/mobile/shareDownload");
     }
   }
 };

@@ -4,7 +4,6 @@ export default {
       import(
         /* webpackChunkName: 'iframeSg1' */ "../../tpl/sg1/components/iframe"
       ),
-
     casinoSg1: () =>
       import(
         /* webpackChunkName: 'casinoSg1' */ "../../tpl/sg1/components/casino"
@@ -42,10 +41,13 @@ export default {
       import(
         /* webpackChunkName: 'forgetPwdSg1' */ "../../tpl/sg1/components/forgetPwd"
       ),
-
     launchSg1: () =>
       import(
         /* webpackChunkName: 'launchSg1' */ "../../tpl/sg1/components/launch"
+      ),
+    shareDownloadSg1: () =>
+      import(
+        /* webpackChunkName: 'shareDownloadSg1' */ "../../tpl/sg1/components/shareDownload"
       )
   },
   mcenter: {
