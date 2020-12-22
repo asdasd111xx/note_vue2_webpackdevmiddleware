@@ -30,7 +30,8 @@ export default {
     support: () =>
       import(/* webpackChunkName: 'support' */ "./template/support"),
     withdraw: () =>
-      import(/* webpackChunkName: 'withdraw' */ "./template/withdraw")
+      import(/* webpackChunkName: 'withdraw' */ "./template/withdraw"),
+    bird: () => import(/* webpackChunkName: 'bird' */ "./template/bird")
   },
   data() {
     return {
@@ -44,7 +45,8 @@ export default {
         { key: "support", title: "技术支持" },
         { key: "withdraw", title: "提现教程" },
         { key: "deposit", title: "常見問題" },
-        { key: "rules", title: "会员协议规章" }
+        { key: "rules", title: "会员协议规章" },
+        { key: "bird", title: "蜂鸟钱包" }
       ]
     };
   },

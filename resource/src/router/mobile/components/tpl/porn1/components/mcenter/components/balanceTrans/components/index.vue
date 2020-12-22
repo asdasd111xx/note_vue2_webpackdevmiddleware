@@ -1,5 +1,42 @@
 <template>
-  <div :class="['clearfix']">
+  <div v-if="['ey1'].includes(themeTPL)" :class="['clearfix']">
+    <div :class="$style['swap-wrap']">
+      <div :class="[$style['item'], $style['wallet']]">
+        <img
+          :src="
+            $getCdnPath(
+              '/static/image/common/mcenter/balanceTrans/ic_wallet_center.png'
+            )
+          "
+        />
+        <span> SWAG钱包</span>
+        <div :class="$style['swag-block']">
+          {{ 0 }}
+        </div>
+      </div>
+
+      <div
+        :class="$style['item']"
+        @click="$router.push('/mobile/mcenter/swag')"
+      >
+        {{ this.$text("S_BUY_DIAMOND", "购买钻石") }}
+      </div>
+
+      <div
+        :class="$style['item']"
+        @click="$router.push('/mobile/mcenter/help/detail?type=buymethod')"
+      >
+        {{ this.$text("S_TO_BUY", "如何购买") }}
+      </div>
+
+      <div
+        :class="$style['item']"
+        @click="$router.push('/mobile/mcenter/help/detail?type=usage&key=2')"
+      >
+        {{ this.$text("S_INSTRUSTIONS", "使用方法") }}
+      </div>
+    </div>
+
     <!-- 億元：自動免轉 -->
     <template v-if="['ey1'].includes(themeTPL)">
       <div v-if="isReceiveAuto" :class="[$style['balance-wrap'], 'clearfix']">

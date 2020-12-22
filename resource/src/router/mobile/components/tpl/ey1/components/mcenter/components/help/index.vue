@@ -62,6 +62,13 @@ export default {
           needLogin: false
         },
         {
+          name: "蜂鸟钱包",
+          key: "bird",
+          img: "bird",
+          info: "娱乐民生应有尽有",
+          needLogin: false
+        },
+        {
           name: this.$text("S_GAME_INTR", "游戏介绍"),
           key: "gameintro",
           img: "gameintro",
@@ -122,7 +129,6 @@ export default {
       //     this.actionSetGlobalMessage({ type: "incoming" });
       //     return;
       //   }
-
       this.$router.push(`/mobile/mcenter/help/${item.key}`);
     }
   }
