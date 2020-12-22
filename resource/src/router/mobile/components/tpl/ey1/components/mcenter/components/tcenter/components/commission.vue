@@ -12,7 +12,7 @@
 
 <script>
 import tcenter from "@/router/mobile/components/common/mcenter/theme1/tcenter";
-import mobileContainer from '../../../../common/mobileContainer';
+import mobileContainer from "../../../../common/mobileContainer";
 export default {
   components: {
     mobileContainer,
@@ -32,7 +32,7 @@ export default {
           this.$router.back();
         }
       };
-    },
+    }
   },
   mounted() {
     this.divHeight = document.body.offsetHeight;
