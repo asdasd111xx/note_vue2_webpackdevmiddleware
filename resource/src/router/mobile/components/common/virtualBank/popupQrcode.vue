@@ -36,20 +36,7 @@
             <div>● 成功绑定钱包后，此视窗自动关闭</div>
             <div>
               ● 没有CGPay帐号?
-              <span
-                :class="$style['url']"
-                @click="
-                  () => {
-                    if (["porn1", "sg1"].includes(themeTPL)) {
-                      openLink(
-                        'https://cgpayintroduction.azurewebsites.net/index.aspx'
-                      );
-                    }
-                    if (["ey1"].includes(themeTPL)) {
-                      openLink('http://oinbox.io');
-                    }
-                  }
-                "
+              <span :class="$style['url']" @click="goToCGPBinding()"
                 >立即申请</span
               >
             </div>
@@ -122,7 +109,9 @@ export default {
       if (this.virtualBankId === 37) {
         return "绑定购宝钱包";
       } else if (this.virtualBankId === 21) {
-        return ["porn1", "sg1"].includes(this.themeTPL) ? "绑定CGPay" : "扫描绑定";
+        return ["porn1", "sg1"].includes(this.themeTPL)
+          ? "绑定CGPay"
+          : "扫描绑定";
       }
     }
   },
@@ -266,6 +255,14 @@ export default {
           //     link.click();
           //   });
         }
+      }
+    },
+    goToCGPBinding() {
+      if (["porn1", "sg1"].includes(this.themeTPL)) {
+        this.openLink("https://cgpayintroduction.azurewebsites.net/index.aspx");
+      }
+      if (["ey1"].includes(this.themeTPL)) {
+        this.openLink("http://oinbox.io");
       }
     }
   },
