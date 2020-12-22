@@ -199,7 +199,13 @@ export default {
       import(
         /* webpackChunkName: 'tcenteRecommendGiftSg1' */ "../../tpl/sg1/components/mcenter/components/tcenter/components/recommendGift"
       ),
-    creditTransSg1: () => import(/* webpackChunkName: 'creditTransSg1' */'../../tpl/sg1/components/mcenter/components/creditTrans'),
-    rewardRulesSg1: () => import(/* webpackChunkName: 'rewardRulesSg1' */'../../tpl/sg1/components/mcenter/components/rewardRules'),
+    creditTransSg1: () =>
+      import(
+        /* webpackChunkName: 'creditTransSg1' */ "../../tpl/sg1/components/mcenter/components/creditTrans"
+      ),
+    rewardRulesSg1: () =>
+      import(
+        /* webpackChunkName: 'rewardRulesSg1' */ "../../tpl/sg1/components/mcenter/components/rewardRules"
+      )
   }
 };
