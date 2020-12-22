@@ -441,13 +441,6 @@ export default {
           const code = target[3] || "";
 
           switch (vendor) {
-            // 熱門棋牌
-            case "lg_yb_card":
-            // 熱門電子
-            case "lg_yb_casino":
-              this.$router.push(`/mobile/gamelobby/${vendor}/${kind}/${code}`);
-              return;
-
             default:
               const openGameSuccessFunc = res => {
                 this.isLoading = false;
