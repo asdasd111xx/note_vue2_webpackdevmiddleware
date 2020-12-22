@@ -1,5 +1,5 @@
 <template>
-  <div :class="['clearfix']">
+  <div>
     <money-detail :pageType="'swag'" @showDetail="showDetail" />
     <recoard-detail-slider
       v-if="detailInfo"
