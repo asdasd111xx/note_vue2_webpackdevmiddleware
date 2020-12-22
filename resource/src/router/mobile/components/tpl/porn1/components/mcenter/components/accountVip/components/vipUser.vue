@@ -61,7 +61,7 @@
 
       <div
         v-if="userVipInfo.now_level_seq < vipLevelList.length"
-        :class="[$style['run-level'], $style['next']]"
+        :class="[$style['run-level-alias'], $style['next']]"
       >
         <p>{{ userVipInfo.next_level_alias }}</p>
       </div>

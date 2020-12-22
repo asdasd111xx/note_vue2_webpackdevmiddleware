@@ -2,7 +2,7 @@
   <mobile-container :header-config="headerConfig" :has-footer="false">
     <div slot="content" :class="$style['content-wrap']">
       <!-- 額度轉讓連結 false -->
-      <balance-back :has-link="false" />
+      <balance-back :has-link="false" :back-router="backRouter" />
       <withdraw ref="withdraw" />
     </div>
   </mobile-container>
@@ -17,7 +17,9 @@ import withdraw from "@/router/mobile/components/tpl/porn1/components/mcenter/co
 
 export default {
   data() {
-    return {};
+    return {
+      backRouter: "mcenter/withdraw"
+    };
   },
   components: {
     pageLoading: () =>

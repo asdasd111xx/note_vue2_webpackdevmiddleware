@@ -384,7 +384,7 @@ export default {
           text: this.$text("S_GO_BIRD", "前往蜂鸟"),
           imgSrc: `/static/image/common/mcenter/wallet/ic_wallter_bird_go.png`,
           onClick: () => {
-            this.$router.push("/mobile/mcenter/help/detail?type=usage&key=2");
+            this.goBirdUrl();
           }
         }
       ].filter(item => item.show);
@@ -650,6 +650,13 @@ export default {
       return this.memInfo.vendors.find(
         item => item.vendor === vendor && item.kind === kind
       ).alias;
+    },
+    goBirdUrl() {
+      let url = "https://fengniao131.com/mpage-dianjin.html";
+      this.isLoading = true;
+      localStorage.setItem("iframe-third-url", url);
+      localStorage.setItem("iframe-third-origin", `mcenter/wallet`);
+      this.$router.push(`/mobile/iframe/third?fullscreen=true`);
     }
   }
 };
