@@ -255,14 +255,11 @@ export default {
       }
     }
 
-    if (
-      this.siteConfig.MOBILE_WEB_TPL !== "porn1" &&
-      this.siteConfig.MOBILE_WEB_TPL !== "sg1"
-    ) {
+    // 額度轉讓 porn1/sg1
+    if (this.siteConfig.MOBILE_WEB_TPL === "ey1") {
       this.categoryOpt = this.categoryOptions.filter(
-        i => i.key !== "ingroup_transfer"
+        i => i.key !== "ingroup_transfer" && i.key !== "outer"
       );
-      this.categoryOpt = this.categoryOptions.filter(i => i.key !== "outer");
     } else {
       this.categoryOpt = this.categoryOptions;
     }
