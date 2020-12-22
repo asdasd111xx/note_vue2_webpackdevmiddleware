@@ -246,7 +246,10 @@ export default {
       }
     },
     goSearch() {
-      if (["casino", "card", "mahjong"].includes(this.$route.name)) {
+      // 一般遊戲大廳 & 熱門遊戲大廳
+      if (
+        ["casino", "card", "mahjong", "hotLobby"].includes(this.$route.name)
+      ) {
         this.updateSearchStatus();
         return;
       }
