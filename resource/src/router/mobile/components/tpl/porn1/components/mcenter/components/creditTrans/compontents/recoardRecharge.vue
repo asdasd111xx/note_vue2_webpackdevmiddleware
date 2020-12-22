@@ -1,5 +1,12 @@
 <template>
-  <div :class="[$style['recoard-recharge'], 'clearfix']">
+  <div
+    :style="{
+      'overflow-x': 'hidden',
+      'overflow-y': 'auto',
+      position: 'relative',
+      width: '100%;'
+    }"
+  >
     <money-detail :pageType="'ingroup_transfer'" @showDetail="showDetail" />
     <recoard-detail-slider
       v-if="detailInfo"
@@ -46,11 +53,3 @@ export default {
   }
 };
 </script>
-<style lang="scss" module>
-.recoard-recharge {
-  overflow-x: hidden;
-  overflow-y: auto;
-  position: relative;
-  width: 100%;
-}
-</style>

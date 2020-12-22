@@ -1,0 +1,99 @@
+@import "~@/css/variable.scss";
+// Hot Lobby
+.game-item-wrap {
+  margin: 10px 0px;
+  display: grid;
+  grid-template-columns: repeat(2, 50%);
+  grid-row-gap: 20px;
+  text-align: left;
+}
+
+.empty-wrap {
+  padding-top: 90px;
+  color: #a6a9b2;
+  font-size: 16px;
+  text-align: center;
+}
+
+.empty-icon {
+  margin: 0 auto 20px;
+  width: 62px;
+  height: 62px;
+  background: url("/static/image/common/ic_search_none.png") 0 0 / contain
+    no-repeat;
+}
+
+// Game Item
+.game-item {
+  position: relative;
+  margin: 0 16px;
+}
+
+.game-image {
+  width: 100%;
+  height: 140px;
+
+  img {
+    width: 100%;
+    height: 100%;
+    border-radius: 8px;
+  }
+}
+
+.game-text {
+  position: absolute;
+  bottom: 0;
+  width: 100%;
+  background: #ffffff;
+  opacity: 0.9;
+  padding: 0 5px;
+  line-height: 24px;
+  border-bottom-left-radius: 7px;
+  border-bottom-right-radius: 7px;
+}
+
+// Search
+.search-wrap {
+  width: 100%;
+  min-height: 100vh;
+  position: fixed;
+  top: 0;
+  bottom: 0;
+  z-index: 99;
+  background: #f8f8f7;
+  overflow-y: scroll;
+}
+
+.search-header {
+  padding: 10px;
+  background: #fff;
+  display: flex;
+  align-items: center;
+}
+
+.search-input-img {
+  position: absolute;
+  height: 33px;
+  width: 30px;
+  background: url("/static/image/common/ic_search_gold.png");
+  background-size: 20px 20px;
+  background-position: 50%;
+  background-repeat: no-repeat;
+}
+
+.search-input {
+  width: 88%;
+  height: 33px;
+  padding-left: 42px;
+  background: #eee;
+  border: none;
+  border-radius: 5px;
+  appearance: none;
+}
+
+.search-cancel {
+  width: 12%;
+  font-weight: 700;
+  color: #5e626d;
+  text-align: center;
+}

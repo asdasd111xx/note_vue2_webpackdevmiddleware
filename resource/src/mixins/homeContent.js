@@ -728,6 +728,16 @@ export default {
             case "SL":
               this.$router.push("/mobile/liveStream?type=ballLive");
               return;
+
+            case "lg_yb_card":
+            case "lg_yb_casino":
+              if (!this.loginStatus) {
+                this.$router.push("/mobile/login");
+                return;
+              }
+
+              this.$router.push(`/mobile/hotLobby/${game.vendor}`);
+              return;
           }
 
         case "anchor":
