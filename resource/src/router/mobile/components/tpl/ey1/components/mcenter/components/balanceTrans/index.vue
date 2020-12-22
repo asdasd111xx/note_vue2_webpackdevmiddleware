@@ -1,7 +1,7 @@
 <template>
   <mobile-container :header-config="headerConfig" :has-footer="false">
     <div slot="content" :class="$style['content-wrap']">
-      <balanceBack :has-link="false" />
+      <balanceBack :has-link="false" :back-router="backRouter" />
       <balanceTrans :is-show-block-tips.sync="isShowBlockTips" />
       <blockListTips
         v-if="isShowBlockTips"
@@ -28,7 +28,8 @@ export default {
   },
   data() {
     return {
-      isShowBlockTips: false
+      isShowBlockTips: false,
+      backRouter: "mcenter/balanceTrans"
     };
   },
   computed: {
