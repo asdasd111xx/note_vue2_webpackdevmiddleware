@@ -35,7 +35,7 @@
 </template>
 
 <script>
-import debounce from "lodash/debounce";
+import throttle from "lodash/throttle";
 import gameItem from "../gameItem";
 
 /**
@@ -102,7 +102,7 @@ export default {
         return this.text;
       },
       set(value) {
-        debounce(() => {
+        throttle(() => {
           this.setSearchText(value);
         }, 800)();
       }
