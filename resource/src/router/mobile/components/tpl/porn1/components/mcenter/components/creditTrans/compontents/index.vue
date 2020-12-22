@@ -36,10 +36,10 @@ import { mapGetters, mapActions } from "vuex";
 import balanceTran from "@/components/mcenter/components/balanceTran";
 import blockListTips from "../../../../common/blockListTips";
 import mobileContainer from "../../../../common/mobileContainer";
-import transferCreditTrans from '../compontents/transferCreditTrans';
-import promotionCreditTrans from '../compontents/promotionCreditTrans';
-import recoardCreditTrans from '../compontents/recoardCreditTrans';
-import axios from 'axios';
+import transferCreditTrans from "../compontents/transferCreditTrans";
+import promotionCreditTrans from "../compontents/promotionCreditTrans";
+import recoardCreditTrans from "../compontents/recoardCreditTrans";
+import axios from "axios";
 
 export default {
   components: {
@@ -48,7 +48,7 @@ export default {
     balanceTran,
     transferCreditTrans,
     promotionCreditTrans,
-    recoardCreditTrans,
+    recoardCreditTrans
   },
   data() {
     return {
@@ -58,7 +58,7 @@ export default {
         prev: true,
         onClick: () => {
           this.$router.back();
-        },
+        }
       },
       isShowBlockTips: false,
       isShowMore: true,
@@ -72,8 +72,8 @@ export default {
     ...mapGetters({
       memInfo: "getMemInfo",
       rechargeConfig: "getRechargeConfig",
-      hasBank: 'getHasBank',
-      siteConfig: 'getSiteConfig'
+      hasBank: "getHasBank",
+      siteConfig: "getSiteConfig"
     }),
     $style() {
       const style =
@@ -84,18 +84,18 @@ export default {
       return [
         {
           key: "promotion",
-          text: this.$text("S_CREDIT_DISCOUNT", "转让优惠"),
+          text: this.$text("S_CREDIT_DISCOUNT", "转让优惠")
         },
         {
           key: "transfer",
-          text: this.$text("S_CREDIT_TRANSFER", "额度转让"),
+          text: this.$text("S_CREDIT_TRANSFER", "额度转让")
         },
         {
           key: "recoard",
-          text: this.$text("S_CREDIT_RECOARD", "转让记录"),
-        },
-      ]
-    },
+          text: this.$text("S_CREDIT_RECOARD", "转让记录")
+        }
+      ];
+    }
   },
   created() {
     if (this.$route.query && this.$route.query.tab) {
@@ -106,12 +106,11 @@ export default {
     ...mapActions([
       "actionSetUserBalance",
       "actionSetUserdata",
-      'actionSetGlobalMessage',
+      "actionSetGlobalMessage",
       "actionGetRechargeStatus",
-      'actionGetMemInfoV3'
+      "actionGetMemInfoV3"
     ]),
     setCurrentTab(index) {
-
       switch (index) {
         default:
         case 0:
@@ -124,14 +123,14 @@ export default {
           if (this.currentTemplate === "transfer-credit-trans") return;
           const self = this;
           this.actionGetMemInfoV3().then(() => {
-            this.actionGetRechargeStatus("recharge").then((res) => {
+            this.actionGetRechargeStatus("recharge").then(res => {
               if (res === "ok") {
                 self.currentTemplate = "transfer-credit-trans";
                 self.currentTab = index;
                 // this.$router.push({ query: { 'tab': index } });
               }
             });
-          })
+          });
           break;
 
         case 2:
