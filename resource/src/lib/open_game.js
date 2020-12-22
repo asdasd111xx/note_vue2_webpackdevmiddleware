@@ -51,18 +51,13 @@ export default (params, success = () => {}, fail = () => {}) => {
 
   let newWindow = "";
   let isWebview = getCookie("platform") === "H";
+  let isIframeSite = ["evo", "allwin", "sigua_ly"].includes(vendor);
 
-  switch (vendor) {
-    case "evo":
-    case "allwin":
-      break;
-    default:
-      if (!isWebview) {
-        newWindow = window.open("", "", "_blank", true);
-        setTimeout(() => {
-          newWindow.location = "/game/loading/true";
-        }, 200);
-      }
+  if (!isIframeSite && !isWebview) {
+    newWindow = window.open("", "", "_blank", true);
+    setTimeout(() => {
+      newWindow.location = "/game/loading/true";
+    }, 200);
   }
 
   return game.gameLink(
@@ -125,15 +120,21 @@ export default (params, success = () => {}, fail = () => {}) => {
             if (isWebview) {
               window.location.href = link;
             } else {
-              if (vendor === "evo") {
+              if (isIframeSite) {
+                let title = "";
+
+                if (vendor === "evo") {
+                  title = "EVO视讯";
+                } else if (vendor === "allwin") {
+                  title = "500万彩票";
+                } else if (vendor === "sigua_ly") {
+                  title = "丝瓜直播";
+                }
+
+                title = gameName || title;
+
                 localStorage.setItem("iframe-third-url", link);
-                localStorage.setItem("iframe-third-url-title", "EVO视讯");
-              } else if (vendor === "allwin") {
-                localStorage.setItem("iframe-third-url", link);
-                localStorage.setItem(
-                  "iframe-third-url-title",
-                  gameName ? gameName : "500万彩票"
-                );
+                localStorage.setItem("iframe-third-url-title", title);
               } else {
                 newWindow.location = link;
               }
@@ -148,11 +149,9 @@ export default (params, success = () => {}, fail = () => {}) => {
           }
           success();
 
-          switch (vendor) {
-            case "evo":
-            case "allwin":
-              window.location.href = `/mobile/iframe/game?vendor=${settings.vendor}&kind=${settings.kind}`;
-              return;
+          if (isIframeSite) {
+            window.location.href = `/mobile/iframe/game?vendor=${settings.vendor}&kind=${settings.kind}`;
+            return;
           }
         }, 200);
       },
