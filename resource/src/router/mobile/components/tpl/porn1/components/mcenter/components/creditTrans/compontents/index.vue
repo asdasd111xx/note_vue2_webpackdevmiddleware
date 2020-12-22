@@ -38,7 +38,7 @@ import blockListTips from "../../../../common/blockListTips";
 import mobileContainer from "../../../../common/mobileContainer";
 import transferCreditTrans from "../compontents/transferCreditTrans";
 import promotionCreditTrans from "../compontents/promotionCreditTrans";
-import recoardCreditTrans from "../compontents/recoardCreditTrans";
+import recoardRecharge from "../compontents/recoardRecharge";
 import axios from "axios";
 
 export default {
@@ -48,7 +48,7 @@ export default {
     balanceTran,
     transferCreditTrans,
     promotionCreditTrans,
-    recoardCreditTrans
+    recoardRecharge
   },
   data() {
     return {
@@ -134,7 +134,7 @@ export default {
           break;
 
         case 2:
-          this.currentTemplate = "recoard-credit-trans";
+          this.currentTemplate = "recoard-recharge";
           this.currentTab = index;
           // this.$router.push({ query: { 'tab': index } });
           break;

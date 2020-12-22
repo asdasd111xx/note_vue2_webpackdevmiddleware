@@ -1,5 +1,5 @@
 <template>
-  <div :class="[$style['recoard-credit-trans'], ['clearfix']]">
+  <div :class="[$style['recoard-recharge'], 'clearfix']">
     <money-detail :pageType="'ingroup_transfer'" @showDetail="showDetail" />
     <recoard-detail-slider
       v-if="detailInfo"
@@ -11,24 +11,27 @@
 
 <script>
 import { mapGetters, mapActions } from "vuex";
-import mixin from '@/mixins/mcenter/recharge/recharge';
-import recoardDetailSlider from './recoardDetailSilder';
+import mixin from "@/mixins/mcenter/recharge/recharge";
+import recoardDetailSlider from "./recoardDetailSilder";
 
 export default {
   mixins: [mixin],
   components: {
-    moneyDetail: () => import(/* webpackChunkName: 'recordDeposit' */'@/router/mobile/components/common/mcenter/theme1/moneyDetail'),
+    moneyDetail: () =>
+      import(
+        /* webpackChunkName: 'recordDeposit' */ "@/router/mobile/components/common/mcenter/theme1/moneyDetail"
+      ),
     recoardDetailSlider
   },
   data() {
     return {
-      detailInfo: null,
+      detailInfo: null
     };
   },
   computed: {
     ...mapGetters({
       memInfo: "getMemInfo"
-    }),
+    })
   },
   created() {
     // const promise = [this.getRechargeRecoard()]
@@ -39,8 +42,15 @@ export default {
   methods: {
     showDetail(info) {
       this.detailInfo = info;
-    },
+    }
   }
 };
 </script>
-<style lang="scss" src="../css/porn1.module.scss" module></style>
+<style lang="scss" module>
+.recoard-recharge {
+  overflow-x: hidden;
+  overflow-y: auto;
+  position: relative;
+  width: 100%;
+}
+</style>
