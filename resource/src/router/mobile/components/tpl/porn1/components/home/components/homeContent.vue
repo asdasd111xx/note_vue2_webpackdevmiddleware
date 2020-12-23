@@ -290,6 +290,8 @@ export default {
   color: #a6a9b2;
   font-size: 12px;
   text-align: center;
+  font-family: MicrosoftJhengHeiBold;
+  font-weight: 500;
 
   &.active {
     color: #fff;

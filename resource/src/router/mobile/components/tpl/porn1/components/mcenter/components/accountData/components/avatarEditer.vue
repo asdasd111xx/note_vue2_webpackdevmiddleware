@@ -2,12 +2,7 @@
   <div :class="sliderClass">
     <div :class="$style['container']">
       <div :class="$style['avater-editer-header']">
-        <div :class="$style['btn-prev']">
-          <img
-            :src="$getCdnPath(`/static/image/common/btn_back_grey.png`)"
-            @click="onClose()"
-          />
-        </div>
+        <div @click="onClose()" :class="$style['btn-prev']"><div /></div>
         <span :class="$style['title']">
           {{ $text("S_SET_AVATER", "设置头像") }}</span
         >
