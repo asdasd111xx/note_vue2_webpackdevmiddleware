@@ -171,6 +171,11 @@ export default {
       siteConfig: "getSiteConfig",
       memInfo: "getMemInfo"
     }),
+    $style() {
+      return (
+        this[`$style_${this.siteConfig.MOBILE_WEB_TPL}`] || this.$style_porn1
+      );
+    },
     isShowPopup: {
       get() {
         return this.togglePopup;
@@ -258,4 +263,5 @@ export default {
 };
 </script>
 
-<style lang="scss" src="./css/index.scss" module></style>
+<style lang="scss" src="./css/porn1.index.scss" module="$style_porn1"></style>
+<style lang="scss" src="./css/sg1.index.scss" module="$style_sg1"></style>
