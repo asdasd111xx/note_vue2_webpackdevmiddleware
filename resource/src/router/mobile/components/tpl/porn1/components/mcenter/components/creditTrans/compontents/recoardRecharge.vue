@@ -26,7 +26,7 @@ export default {
   components: {
     moneyDetail: () =>
       import(
-        /* webpackChunkName: 'recordDeposit' */ "@/router/mobile/components/common/mcenter/theme1/moneyDetail"
+        /* webpackChunkName: 'moneyDetail' */ "@/router/mobile/components/common/mcenter/theme1/moneyDetail"
       ),
     recoardDetailSlider
   },
