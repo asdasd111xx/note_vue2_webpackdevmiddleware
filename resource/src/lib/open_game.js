@@ -106,11 +106,15 @@ export default (params, success = () => {}, fail = () => {}) => {
         if (vendor && vendor.toUpperCase() === "ISB") {
           query += "&allowFullScreen=false";
         }
-
-        localStorage.setItem(
-          "open-game-link",
-          ret.url.replace("platform=web", "platform=AIO") + query
-        );
+        //XBB棋牌須額外修改platform=AIO 移除上滑全屏遮罩
+        if (vendor === "lg_card" || vendor === "lg_yb_card") {
+          localStorage.setItem(
+            "open-game-link",
+            ret.url.replace("platform=web", "platform=AIO") + query
+          );
+        } else {
+          localStorage.setItem("open-game-link", ret.url + query);
+        }
 
         // 開啟遊戲時強制關閉下方最愛遊戲框
         store.dispatch("actionSetCollectionStatus", false);
