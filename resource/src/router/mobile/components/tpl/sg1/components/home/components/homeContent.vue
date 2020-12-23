@@ -274,9 +274,11 @@ export default {
   top: 32px;
   right: 0;
   left: 0;
-  color: #a6a9b2;
+  color: #731c25;
   font-size: 12px;
   text-align: center;
+  font-family: MicrosoftJhengHeiBold;
+  font-weight: 500;
 
   &.active {
     color: #fff;

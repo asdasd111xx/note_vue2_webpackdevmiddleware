@@ -73,7 +73,7 @@ export default (params, success = () => {}, fail = () => {}) => {
 
   //XBB棋牌須額外修改platform=AIO 移除上滑全屏遮罩
   if (vendor === "lg_card" || vendor === "lg_yb_card") {
-    temp.isPWA = 1;
+    temp.is_pwa = 1;
   }
 
   return game.gameLink(

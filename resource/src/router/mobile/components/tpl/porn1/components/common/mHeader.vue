@@ -21,8 +21,14 @@
         v-else
         :src="
           $getCdnPath(
-            `/static/image/_new/common/btn_${
-              headerConfig.hasClose ? 'close' : 'back'
+            `/static/image/common/btn_${
+              headerConfig.hasClose
+                ? themeTPL === 'ey1'
+                  ? 'close_white'
+                  : 'close_black'
+                : themeTPL === 'ey1'
+                ? 'back_white'
+                : 'back_black'
             }.png`
           )
         "

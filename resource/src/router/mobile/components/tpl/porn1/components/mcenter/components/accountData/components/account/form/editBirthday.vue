@@ -31,46 +31,47 @@
 </template>
 
 <script>
-import Vue from 'vue';
-import { mapGetters, mapActions } from 'vuex';
-import { format } from 'date-fns';
-import datepickerLang from '@/lib/datepicker_lang';
-import mcenter from '@/api/mcenter';
-import { API_MCENTER_USER_CONFIG } from '@/config/api';
+import Vue from "vue";
+import { mapGetters, mapActions } from "vuex";
+import { format } from "date-fns";
+import datepickerLang from "@/lib/datepicker_lang";
+import mcenter from "@/api/mcenter";
+import { API_MCENTER_USER_CONFIG } from "@/config/api";
 export default {
-  components: {
-  },
+  components: {},
   data() {
     return {
-      value: '',
+      value: "",
       dateLang: datepickerLang(this.$i18n.locale),
-      tipMsg: '',
+      tipMsg: ""
     };
   },
   computed: {
     ...mapGetters({
-      memInfo: 'getMemInfo',
-      webInfo: 'getWebInfo',
-      systemTime: 'getSystemTime',
+      memInfo: "getMemInfo",
+      webInfo: "getWebInfo",
+      systemTime: "getSystemTime",
       siteConfig: "getSiteConfig"
     }),
     headerConfig() {
       return {
         prev: true,
-        onClick: () => { this.$router.back(); },
-        title: this.$text('S_BIRTHDAY_DATE'),
+        onClick: () => {
+          this.$router.back();
+        },
+        title: this.$text("S_BIRTHDAY_DATE"),
         onClickFunc: () => {
           this.handleSubmit();
         },
-        funcBtn: this.$text('S_COMPLETE', '完成'),
-        funcBtnActive: !!(this.value)
+        funcBtn: this.$text("S_COMPLETE", "完成"),
+        funcBtnActive: !!this.value
       };
     },
     dateFormat() {
       if (this.value) {
-        return Vue.moment(this.value).format('YYYY年MM月DD日')
+        return Vue.moment(this.value).format("YYYY年MM月DD日");
       } else {
-        return '添加日期，确保您已满18岁';
+        return "添加日期，确保您已满18岁";
       }
     }
   },
@@ -78,38 +79,35 @@ export default {
     this.$refs.input.focus();
     setTimeout(() => {
       this.$refs.input.click();
-    })
+    });
   },
   methods: {
-    ...mapActions([
-      'actionSetUserdata',
-      'actionSetGlobalMessage'
-    ]),
+    ...mapActions(["actionSetUserdata", "actionSetGlobalMessage"]),
     handleClickText() {
-      document.getElementById('birthday-input').click();
+      document.getElementById("birthday-input").click();
     },
     onInput(e) {
-      this.tipMsg = '';
+      this.tipMsg = "";
       this.value = e.target.value;
-      if (this.value === '') {
-        this.tipMsg = this.$text('S_CR_NUT_NULL');
+      if (this.value === "") {
+        this.tipMsg = this.$text("S_CR_NUT_NULL");
       }
 
       const valueDate = new Date(this.value);
-      const limit = new Date(Vue.moment(this.systemTime).add(-18, 'year'));
+      const limit = new Date(Vue.moment(this.systemTime).add(-18, "year"));
       if (valueDate > limit && this.firstInit) {
-        this.actionSetGlobalMessage({ msg: '年龄未满十八岁,无法游戏' })
-        this.value = '';
+        this.actionSetGlobalMessage({ msg: "年龄未满十八岁,无法游戏" });
+        this.value = "";
       }
 
       this.firstInit = true;
     },
     handleSubmit() {
       const valueDate = new Date(this.value);
-      const limit = new Date(Vue.moment(this.systemTime).add(-18, 'year'));
+      const limit = new Date(Vue.moment(this.systemTime).add(-18, "year"));
       if (valueDate > limit) {
-        this.actionSetGlobalMessage({ msg: '年龄未满十八岁,无法游戏' });
-        this.value = '';
+        this.actionSetGlobalMessage({ msg: "年龄未满十八岁,无法游戏" });
+        this.value = "";
         return;
       }
 
@@ -118,18 +116,17 @@ export default {
           birthday: Vue.moment(this.value).format()
         },
         success: () => {
-          this.$router.push('/mobile/mcenter/accountData?success=true');
-          this.$emit('success');
+          this.$router.push("/mobile/mcenter/accountData?success=true");
+          this.$emit("success");
         },
-        fail: (res) => {
+        fail: res => {
           if (res && res.data && res.data.msg) {
-            this.actionSetGlobalMessage({ msg: `${res.data.msg}` })
+            this.actionSetGlobalMessage({ msg: `${res.data.msg}` });
           }
         }
       });
-    },
-  },
+    }
+  }
 };
-
 </script>
 <style src="../../../css/index.module.scss" lang="scss" module />

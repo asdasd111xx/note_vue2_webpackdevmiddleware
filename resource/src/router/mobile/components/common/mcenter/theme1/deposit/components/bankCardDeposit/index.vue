@@ -578,7 +578,14 @@
                 :class="$style['crypto-block']"
               >
                 <span>转入数量</span>
-                <div :class="$style['content']">
+                <div
+                  :class="[
+                    $style['content'],
+                    {
+                      [$style['onClick']]: isClickCoversionBtn
+                    }
+                  ]"
+                >
                   <span :class="$style['money']">
                     {{ cryptoMoney }}
                   </span>

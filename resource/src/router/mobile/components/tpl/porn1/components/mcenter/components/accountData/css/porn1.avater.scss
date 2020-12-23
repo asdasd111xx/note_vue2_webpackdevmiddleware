@@ -133,9 +133,12 @@
   align-items: center;
   justify-content: center;
 
-  >img {
+  >div {
     width: 20px;
     height: 20px;
+    background-image: url('/static/image/common/btn_back_grey.png');
+    background-size: cover;
+    background-position: center;
   }
 }
 
