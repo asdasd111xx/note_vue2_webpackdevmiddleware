@@ -1,102 +1,106 @@
 .content-wrap {
-    .content-item {
-        margin-top: 10px;
-        background-color: #fff;
+  .content-item {
+    margin-top: 10px;
+    background-color: #fff;
 
-        .rebate-header {
-            padding: 4px 0;
-            text-align: center;
-            border-bottom: 1px solid #eaeaea;
-            color: #000;
-            font-size: 12px;
-        }
-
-        .rebate-body {
-            padding: 10px 0;
-
-            .detail-content {
-                padding: 2px 30px;
-
-                .content-left {
-                    color: #a6a9b2;
-                }
-
-                .content-right {
-                    float: right;
-                    color: #222;
-                }
-            }
-        }
-
-        .rebate-btn {
-            padding-bottom: 10px;
-            text-align: center;
-
-            button {
-                width: 270px;
-                height: 39px;
-                color: #fff;
-                // background: url('/static/image/mobile/mcenter/receive_button.png') 100%/100% no-repeat;
-                background: #00347d;
-                // background: linear-gradient(to left, #bd9d7d, #f9ddbd);
-
-                border: 0;
-                outline: none;
-                border-radius: 3px;
-            }
-
-            .unrebate-btn {
-                background: #aaa;
-                color: #cfcfcf;
-                // background: url('/static/image/mobile/mcenter/receive_button_n.png') 100%/100% no-repeat;
-            }
-        }
-
-        .rebate-nodata {
-            padding-top: 40px;
-            text-align: center;
-
-            img {
-                display: inline-block;
-                width: 60px;
-                height: 60px;
-                margin-bottom: 14px;
-            }
-
-            p {
-                font-size: 14px;
-                color: #a6a9b2;
-            }
-        }
+    .rebate-header {
+      padding: 4px 0;
+      text-align: center;
+      border-bottom: 1px solid #eaeaea;
+      color: #000;
+      font-size: 12px;
     }
+
+    .rebate-body {
+      padding: 10px 0;
+
+      .detail-content {
+        padding: 2px 30px;
+
+        .content-left {
+          color: #a6a9b2;
+        }
+
+        .content-right {
+          float: right;
+          color: #222;
+        }
+      }
+    }
+
+    .rebate-btn {
+      padding-bottom: 10px;
+      text-align: center;
+
+      button {
+        width: 270px;
+        height: 39px;
+        color: #fff;
+        // background: url('/static/image/mobile/mcenter/receive_button.png') 100%/100% no-repeat;
+        background: #00347d;
+        // background: linear-gradient(to left, #bd9d7d, #f9ddbd);
+
+        border: 0;
+        outline: none;
+        border-radius: 3px;
+      }
+
+      .unrebate-btn {
+        background: #aaa;
+        color: #cfcfcf;
+        // background: url('/static/image/mobile/mcenter/receive_button_n.png') 100%/100% no-repeat;
+      }
+    }
+
+    .rebate-nodata {
+      padding-top: 40px;
+      text-align: center;
+
+      img {
+        display: inline-block;
+        width: 60px;
+        height: 60px;
+        margin-bottom: 14px;
+      }
+
+      p {
+        font-size: 14px;
+        color: #a6a9b2;
+      }
+    }
+  }
 }
 
 // 實返說明
 .rebate-manual-title {
-    height: 43px;
-    line-height: 43px;
-    margin-top: 7px;
-    padding: 0 19px;
-    background: #fff;
+  height: 43px;
+  line-height: 43px;
+  margin-top: 7px;
+  padding: 0 19px;
+  background: #fff;
 }
 
 .rebate-manual-wrap {
-    background: #fff;
+  background: #fff;
 }
 
 .manual-line {
-    height: 1px;
-    margin: 0 14px;
-    background: #cfcfcf;
+  height: 1px;
+  margin: 0 14px;
+  background: #cfcfcf;
 }
 
 .rebate-manual-tip {
-    padding: 7px 19px;
-    color: #aaa;
+  padding: 7px 19px;
+  color: #aaa;
 }
 
 .title-icon,
 .manual-title {
-    display: inline-block;
-    vertical-align: middle;
+  display: inline-block;
+  vertical-align: middle;
+}
+
+.maintains-list {
+  color: #2693fc;
 }
