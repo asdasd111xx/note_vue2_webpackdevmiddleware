@@ -8,8 +8,14 @@
       <img
         :src="
           $getCdnPath(
-            `/static/image/${theme}/common/btn_${
-              headerConfig.hasClose ? 'close' : 'back'
+            `/static/image/common/btn_${
+              headerConfig.hasClose
+                ? themeTPL === 'ey1'
+                  ? 'close_white'
+                  : 'close_black'
+                : themeTPL === 'ey1'
+                ? 'back_white'
+                : 'back_black'
             }.png`
           )
         "
@@ -50,12 +56,12 @@ export default {
   props: {
     headerConfig: {
       type: Object,
-      default: 'porn1'
-    },
+      default: "porn1"
+    }
   },
   data() {
     return {
-      theme: 'porn1'
+      theme: "porn1"
     };
   },
   computed: {
@@ -63,20 +69,20 @@ export default {
       loginStatus: "getLoginStatus",
       siteConfig: "getSiteConfig"
     }),
-    $style() {
-      const style = this[`$style_${this.siteConfig.MOBILE_WEB_TPL}`] || this.$style_porn1;
-      return style;
+    themeTPL() {
+      return this.siteConfig.MOBILE_WEB_TPL;
     },
+    $style() {
+      const style =
+        this[`$style_${this.siteConfig.MOBILE_WEB_TPL}`] || this.$style_porn1;
+      return style;
+    }
   },
   created() {
     this.theme = this.siteConfig.MOBILE_WEB_TPL;
   },
   methods: {
-    ...mapActions([
-      'actionSetGlobalMessage'
-    ]),
-    onClick() {
-    }
+    ...mapActions(["actionSetGlobalMessage"])
   }
 };
 </script>

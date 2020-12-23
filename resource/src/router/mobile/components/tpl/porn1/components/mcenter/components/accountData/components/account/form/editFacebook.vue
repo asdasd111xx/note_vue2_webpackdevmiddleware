@@ -6,7 +6,7 @@
         <input
           v-model="value"
           ref="input"
-          :placeholder="$text('S_FACEBOOK')"
+          :placeholder="`请输入${$text('S_FACEBOOK')}`"
           :class="$style.input"
           type="text"
         />
@@ -22,21 +22,20 @@
     </div>
   </div>
 </template>
-
 <script>
-import { mapGetters, mapActions } from 'vuex';
-import mcenter from '@/api/mcenter';
+import { mapGetters, mapActions } from "vuex";
+import mcenter from "@/api/mcenter";
 export default {
   data() {
     return {
-      value: ''
+      value: ""
     };
   },
   mounted() {
-    this.$refs.input.focus()
+    this.$refs.input.focus();
   },
   methods: {
-    ...mapActions(['actionSetUserdata', 'actionSetGlobalMessage']),
+    ...mapActions(["actionSetUserdata", "actionSetGlobalMessage"]),
     handleSubmit() {
       if (this.tipMsg) {
         return;
@@ -47,17 +46,17 @@ export default {
           facebook: this.value
         },
         success: () => {
-          localStorage.setItem('set-account-success', true);
-          this.$emit('success');
+          localStorage.setItem("set-account-success", true);
+          this.$emit("success");
         },
-        fail: (res) => {
+        fail: res => {
           if (res && res.data && res.data.msg) {
             this.tipMsg = `${res.data.msg}`;
           }
         }
       });
-    },
+    }
   }
 };
 </script>
-<style src="../../../css/index.module.scss" lang="scss" module>
+<style src="../../../css/index.module.scss" lang="scss" module />

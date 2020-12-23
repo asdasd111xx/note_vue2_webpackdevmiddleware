@@ -188,12 +188,12 @@
 </template>
 
 <script>
-import { API_MCENTER_USER_CONFIG } from '@/config/api';
-import { mapGetters, mapActions } from 'vuex';
-import accountHeader from '../../accountHeader';
-import ajax from '@/lib/ajax';
-import axios from 'axios';
-import mcenter from '@/api/mcenter';
+import { API_MCENTER_USER_CONFIG } from "@/config/api";
+import { mapGetters, mapActions } from "vuex";
+import accountHeader from "../../accountHeader";
+import ajax from "@/lib/ajax";
+import axios from "axios";
+import mcenter from "@/api/mcenter";
 
 export default {
   components: {
@@ -204,7 +204,7 @@ export default {
       headerTitle: "",
       tipMsg: "",
       // 國碼
-      phoneHead: '+86',
+      phoneHead: "+86",
       phoneHeadOption: [],
       allAddressData: [],
       addressInfo: {
@@ -240,20 +240,20 @@ export default {
     //   this.checkData();
     // }
   },
-  mounted() {
-
-  },
+  mounted() {},
   computed: {
     ...mapGetters({
-      siteConfig: "getSiteConfig",
+      siteConfig: "getSiteConfig"
     }),
     headerConfig() {
       return {
         prev: true,
         onClick: () => {
-          if (this.addressInfo.name != this.newAddressInfo.name
-            || this.addressInfo.phone != this.newAddressInfo.phone
-            || this.addressInfo.address != this.newAddressInfo.address) {
+          if (
+            this.addressInfo.name != this.newAddressInfo.name ||
+            this.addressInfo.phone != this.newAddressInfo.phone ||
+            this.addressInfo.address != this.newAddressInfo.address
+          ) {
             this.onBack = true;
           } else {
             if (this.isAdd && this.allAddressData.length === 0) {
@@ -267,43 +267,49 @@ export default {
             }
           }
         },
-        title: this.headerTitle,
+        title: this.headerTitle
       };
     }
   },
   created() {
     ajax({
-      method: 'get',
+      method: "get",
       url: API_MCENTER_USER_CONFIG,
       errorAlert: false
-    }).then((response) => {
-      if (response && response.result === 'ok') {
-        this.phoneHeadOption = response.ret.config.phone.country_codes
+    }).then(response => {
+      if (response && response.result === "ok") {
+        this.phoneHeadOption = response.ret.config.phone.country_codes;
         this.getAllAddress();
       }
     });
   },
   methods: {
-    ...mapActions(['actionSetUserdata', 'actionSetGlobalMessage', 'actionVerificationFormData']),
+    ...mapActions([
+      "actionSetUserdata",
+      "actionSetGlobalMessage",
+      "actionVerificationFormData"
+    ]),
 
     verification(value, target) {
-      this.tipMsg = '';
-      if (target === 'phone') {
-        this.actionVerificationFormData({ target: 'phone', value: value }).then((val => {
-          this.newAddressInfo.phone = val;
-        }));
+      this.tipMsg = "";
+      if (target === "phone") {
+        this.actionVerificationFormData({ target: "phone", value: value }).then(
+          val => {
+            this.newAddressInfo.phone = val;
+          }
+        );
 
         // 億元 不客端判斷手機號碼位數
-        if (this.siteConfig.MOBILE_WEB_TPL === 'ey1' || value.length >= 11) {
-          this.tipMsg = '';
+        if (this.siteConfig.MOBILE_WEB_TPL === "ey1" || value.length >= 11) {
+          this.tipMsg = "";
         }
-      } else if (target === 'name') {
+      } else if (target === "name") {
         if (this.newAddressInfo.name.length === 100) {
-          this.actionSetGlobalMessage({ msg: '收货人姓名已达100字' });
+          this.actionSetGlobalMessage({ msg: "收货人姓名已达100字" });
         }
-      } else if (target === 'address') {
+      } else if (target === "address") {
         if (this.newAddressInfo.address.length === 100) {
-          this.actionSetGlobalMessage({ msg: '地址已达上限100字' });
+          this.actionSetGlobalMessage({ msg: "地址已达上限100字" });
         }
       }
     },
@@ -311,44 +317,48 @@ export default {
     getAllAddress() {
       //取得所有地址資料
       axios({
-        method: 'get',
-        url: '/api/v1/c/player/address',
-      }).then(res => {
-        if (res && res.data && res.data.result === "ok") {
-          this.isFirstAdd = res.data.ret.length === 0
-          if (this.isFirstAdd) {
-            this.newAddressInfo.is_default = true;
-            this.addressInfo.is_default = true;
-            this.headerTitle = "添加收货地址";
-            this.isAdd = true;
-          } else {
-            this.allAddressData = res.data.ret
-            if (this.$route.query && this.$route.query.index) {//編輯
-              this.headerTitle = "编辑收货地址";
-              this.addressInfo = this.allAddressData[this.$route.query.index];
-              // this.addressInfo.is_default = this.addressInfo.is_default === "true";
-              this.phoneHead = "+" + this.addressInfo.phone.split("-")[0];
-              this.addressInfo.phone = this.addressInfo.phone.split("-")[1];
-              this.newAddressInfo = Object.assign({}, this.addressInfo);
-              this.isAdd = false;
-              if (this.allAddressData.length < 2 && this.$route.query.index === "0") {
-                this.isFirstAdd = true;
-              }
-            } else {//新增
+        method: "get",
+        url: "/api/v1/c/player/address"
+      })
+        .then(res => {
+          if (res && res.data && res.data.result === "ok") {
+            this.isFirstAdd = res.data.ret.length === 0;
+            if (this.isFirstAdd) {
+              this.newAddressInfo.is_default = true;
+              this.addressInfo.is_default = true;
               this.headerTitle = "添加收货地址";
               this.isAdd = true;
+            } else {
+              this.allAddressData = res.data.ret;
+              if (this.$route.query && this.$route.query.index) {
+                //編輯
+                this.headerTitle = "编辑收货地址";
+                this.addressInfo = this.allAddressData[this.$route.query.index];
+                // this.addressInfo.is_default = this.addressInfo.is_default === "true";
+                this.phoneHead = "+" + this.addressInfo.phone.split("-")[0];
+                this.addressInfo.phone = this.addressInfo.phone.split("-")[1];
+                this.newAddressInfo = Object.assign({}, this.addressInfo);
+                this.isAdd = false;
+                if (
+                  this.allAddressData.length < 2 &&
+                  this.$route.query.index === "0"
+                ) {
+                  this.isFirstAdd = true;
+                }
+              } else {
+                //新增
+                this.headerTitle = "添加收货地址";
+                this.isAdd = true;
+              }
             }
           }
-
-        }
-      }).catch(error => {
-
-      })
+        })
+        .catch(error => {});
     },
 
     checkDefault() {
       if (this.isFirstAdd) {
-        this.actionSetGlobalMessage({ msg: '首笔地址不可关闭' });
+        this.actionSetGlobalMessage({ msg: "首笔地址不可关闭" });
         this.newAddressInfo.is_default = true;
       } else {
         this.onChangeDefault = true;
@@ -360,10 +370,13 @@ export default {
     },
 
     setDefault() {
-      this.newAddressInfo.is_default = !this.newAddressInfo.is_default
+      this.newAddressInfo.is_default = !this.newAddressInfo.is_default;
       this.onChangeDefault = false;
       if (this.addressInfo.is_default && !this.newAddressInfo.is_default) {
-        this.actionSetGlobalMessage({ msg: '保存成功后,<div style="text-align:center">请重新设定默认地址</div>' });
+        this.actionSetGlobalMessage({
+          msg:
+            '保存成功后,<div style="text-align:center">请重新设定默认地址</div>'
+        });
       }
     },
 
@@ -376,66 +389,74 @@ export default {
     addAddress() {
       this.onBack = false;
       if (this.newAddressInfo.name === "") {
-        this.tipMsg = '请输入收货人姓名';
+        this.tipMsg = "请输入收货人姓名";
       } else if (this.newAddressInfo.phone === "") {
-        this.tipMsg = '请输入手机号码';
+        this.tipMsg = "请输入手机号码";
       } else if (this.newAddressInfo.address === "") {
-        this.tipMsg = '请输入收货地址';
+        this.tipMsg = "请输入收货地址";
       } else {
-        this.tipMsg = '';
+        this.tipMsg = "";
 
         if (this.isAdd) {
           // 新增一筆收貨地址
           ajax({
-            method: 'post',
+            method: "post",
             url: `/api/v1/c/player/address`,
             params: {
               name: this.newAddressInfo.name,
-              phone: `${this.phoneHead.replace(/\+/ig, '')}-${this.newAddressInfo.phone}`,
+              phone: `${this.phoneHead.replace(/\+/gi, "")}-${
+                this.newAddressInfo.phone
+              }`,
               address: this.newAddressInfo.address,
-              is_default: this.newAddressInfo.is_default,
+              is_default: this.newAddressInfo.is_default
             },
             errorAlert: false,
-            success: (response) => {
-              localStorage.setItem('set-address-success', true);
+            success: response => {
+              localStorage.setItem("set-address-success", true);
               this.$router.back();
             },
-            fail: (response) => {
+            fail: response => {
               this.tipMsg = response.data.msg;
             }
           });
         } else {
           //原為默認地址, 保存時,為"關閉默認"時, 需將第1筆地址(不含此筆)設為"默認" (例如:本筆為第一筆地址時, 需將第二筆設為默認)
-          if (this.$route.query.index === "0"
-            && this.addressInfo.is_default
-            && !this.newAddressInfo.is_default
-            && this.allAddressData.length >= 2) {
+          if (
+            this.$route.query.index === "0" &&
+            this.addressInfo.is_default &&
+            !this.newAddressInfo.is_default &&
+            this.allAddressData.length >= 2
+          ) {
             //第二筆設為默認
             this.setDefaultAPI(1);
-          } else if (this.$route.query.index != "0"
-            && this.addressInfo.is_default
-            && !this.newAddressInfo.is_default
-            && this.allAddressData.length >= 2) {
+          } else if (
+            this.$route.query.index != "0" &&
+            this.addressInfo.is_default &&
+            !this.newAddressInfo.is_default &&
+            this.allAddressData.length >= 2
+          ) {
             //第一筆設為默認
             this.setDefaultAPI(0);
           }
           // 編輯收貨地址
           ajax({
-            method: 'put',
+            method: "put",
             url: `/api/v1/c/player/address/${this.newAddressInfo.id}`,
             params: {
               id: this.newAddressInfo.id,
               is_default: this.newAddressInfo.is_default,
               name: this.newAddressInfo.name,
-              phone: `${this.phoneHead.replace(/\+/ig, '')}-${this.newAddressInfo.phone}`,
+              phone: `${this.phoneHead.replace(/\+/gi, "")}-${
+                this.newAddressInfo.phone
+              }`,
               address: this.newAddressInfo.address
             },
             errorAlert: false,
-            success: (response) => {
-              localStorage.setItem('set-address-success', true);
+            success: response => {
+              localStorage.setItem("set-address-success", true);
               this.$router.back();
             },
-            fail: (response) => {
+            fail: response => {
               this.tipMsg = response.data.msg;
             }
           });
@@ -445,7 +466,10 @@ export default {
 
     deleteAddress() {
       if (this.newAddressInfo.is_default) {
-        if (this.$route.query.index === "0" && this.allAddressData.length >= 2) {
+        if (
+          this.$route.query.index === "0" &&
+          this.allAddressData.length >= 2
+        ) {
           this.setDefaultAPI(1);
         } else {
           this.setDefaultAPI(0);
@@ -453,22 +477,23 @@ export default {
       }
       // 刪除一筆收貨地址
       ajax({
-        method: 'delete',
+        method: "delete",
         url: `/api/v1/c/player/address/${this.newAddressInfo.id}`,
         errorAlert: false
-      }).then((response) => {
+      }).then(response => {
         this.onDelete = false;
-        if (response && response.result === 'ok') {
+        if (response && response.result === "ok") {
           if (this.newAddressInfo.is_default) {
             this.actionSetGlobalMessage({
-              msg: '删除成功,<div style="text-align:center">请重新设定默认地址</div>',
+              msg:
+                '删除成功,<div style="text-align:center">请重新设定默认地址</div>',
               cb: () => {
                 this.$router.back();
               }
             });
           } else {
             this.actionSetGlobalMessage({
-              msg: '删除成功',
+              msg: "删除成功",
               cb: () => {
                 this.$router.back();
               }
@@ -481,7 +506,7 @@ export default {
     setDefaultAPI(idx) {
       //第idx筆設為默認
       ajax({
-        method: 'put',
+        method: "put",
         url: `/api/v1/c/player/address/${this.allAddressData[idx].id}`,
         params: {
           id: this.allAddressData[idx].id,
@@ -491,15 +516,12 @@ export default {
           address: this.allAddressData[idx].address
         },
         errorAlert: false,
-        success: (response) => {
-          console.log(`第${idx}筆設為默認`)
+        success: response => {
+          console.log(`第${idx}筆設為默認`);
         },
-        fail: (response) => {
-
-        }
+        fail: response => {}
       });
     },
-
 
     checkDelete() {
       this.onDelete = true;
@@ -513,8 +535,7 @@ export default {
       this.onBack = false;
       this.$router.back();
     }
-
-  },
+  }
 };
 </script>
 

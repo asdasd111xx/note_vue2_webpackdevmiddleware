@@ -6,7 +6,7 @@
         <input
           ref="input"
           v-model="value"
-          :placeholder="$text('S_SKYPE')"
+          :placeholder="`请输入${$text('S_SKYPE')}`"
           :class="$style.input"
           maxlength="100"
           type="text"
@@ -25,35 +25,32 @@
 </template>
 
 <script>
-import { mapGetters, mapActions } from 'vuex';
-import mcenter from '@/api/mcenter';
+import { mapGetters, mapActions } from "vuex";
+import mcenter from "@/api/mcenter";
 
 export default {
   data() {
     return {
-      value: ''
+      value: ""
     };
   },
   mounted() {
-    this.$refs.input.focus()
+    this.$refs.input.focus();
   },
   methods: {
-    ...mapActions([
-      'actionSetUserdata',
-      'actionSetGlobalMessage'
-    ]),
+    ...mapActions(["actionSetUserdata", "actionSetGlobalMessage"]),
     handleSubmit() {
       mcenter.accountDataSet({
         params: {
           skype: this.value.substring(0, 50)
         },
         success: () => {
-          localStorage.setItem('set-account-success', true);
-          this.$emit('success');
+          localStorage.setItem("set-account-success", true);
+          this.$emit("success");
         },
-        fail: (res) => {
+        fail: res => {
           if (res && res.data && res.data.msg) {
-            this.actionSetGlobalMessage({ msg: `${res.data.msg}` })
+            this.actionSetGlobalMessage({ msg: `${res.data.msg}` });
           }
         }
       });
@@ -61,4 +58,4 @@ export default {
   }
 };
 </script>
-<style src="../../../css/index.module.scss" lang="scss" module>
+<style src="../../../css/index.module.scss" lang="scss" module />
