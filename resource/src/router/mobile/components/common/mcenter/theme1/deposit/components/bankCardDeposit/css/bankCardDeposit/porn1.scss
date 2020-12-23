@@ -333,6 +333,10 @@
     display: flex;
     align-items: center;
     margin-right: 10px;
+
+    &.onClick {
+      color: $main_text_color3;
+    }
   }
 
   .money {
