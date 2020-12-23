@@ -656,7 +656,7 @@ export default {
       this.isLoading = true;
       localStorage.setItem("iframe-third-url", url);
       localStorage.setItem("iframe-third-origin", `mcenter/wallet`);
-      this.$router.push(`/mobile/iframe/third?fullscreen=true`);
+      this.$router.push(`/mobile/iframe/third/fengniao?fullscreen=true`);
     }
   }
 };

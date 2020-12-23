@@ -223,7 +223,7 @@ export default [
     component
   },
   {
-    path: "iframe/:page?",
+    path: "iframe/:page?/:type?",
     name: "iframe",
     component
   }
