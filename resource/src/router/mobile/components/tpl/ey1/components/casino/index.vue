@@ -15,8 +15,8 @@
 </template>
 
 <script>
-import casinoWrap from '@/router/mobile/components/common/casino';
-import mobileContainer from '../common/mobileContainer';
+import casinoWrap from "@/router/mobile/components/common/casino";
+import mobileContainer from "../common/mobileContainer";
 
 export default {
   components: {
@@ -29,59 +29,19 @@ export default {
     };
   },
   computed: {
-    headerTitle() {
-      const vendor = this.$route.params.vendor || 'all';
-      let textCode = '';
-
-      switch (vendor) {
-        case 'all':
-        case 'activity':
-          textCode = 'S_ALL';
-          break;
-        case 'bbin':
-          textCode = 'S_BBCASINO';
-          break;
-        case 'gns':
-          textCode = 'S_GENESIS';
-          break;
-        case 'mw':
-          textCode = 'S_MEGA_CASINO';
-          break;
-        case 'mg2':
-          textCode = 'S_MG2_CASINO';
-          break;
-        case 'sg':
-        case 'pt':
-        case 'mg':
-        case 'isb':
-        case 'jdb':
-        case 'cq9':
-        case 'ag_casino':
-        case 'lg_casino':
-        case 'yg_casino':
-        case 'ace_casino':
-        case 'mt_casino':
-          textCode = `S_${vendor}`.toUpperCase();
-          break;
-        case 'wm':
-          return 'WM电子';
-        case 'bng2':
-          return 'BNG电子';
-        case 'ps':
-          return 'PS电子';
-        default:
-          textCode = `S_${vendor}_CASINO`.toUpperCase();
-          break;
-      }
-
-      return this.$text(textCode);
-    },
+    ...mapGetters({
+      memInfo: "getMemInfo"
+    }),
     headerConfig() {
+      let vendor = this.$route.params.vendor;
+      const target = this.memInfo.vendors.find(item => item.vendor === vendor);
       return {
         prev: true,
-        title: this.headerTitle,
+        title: target.alias || "",
         hasSearchBtn: true,
-        onClick: () => { this.$router.back(); }
+        onClick: () => {
+          this.$router.back();
+        }
       };
     },
     isShowSearch: {
@@ -99,7 +59,6 @@ export default {
     }
   }
 };
-
 </script>
 
 <style lang="scss" module>
