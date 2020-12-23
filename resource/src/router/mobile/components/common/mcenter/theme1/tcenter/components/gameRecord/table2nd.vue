@@ -4,12 +4,15 @@
       <span>笔数：{{ counts }}</span>
       <span>有效投注：{{ total.valid_bet }}</span>
       <span
-        >派彩：<span
-          v-if="themetpl() === 'ey1'"
-          :class="{ [$style['is-negative']]: total.payoff < 0 }"
+        >派彩：
+        <span
+          v-if="themetpl() === 'sg1'"
+          :class="{ [$style['is-negative']]: total.payoff > 0 }"
           >{{ +total.payoff }}</span
         >
-        <span v-else>{{ +total.payoff }}</span></span
+        <span v-else :class="{ [$style['is-negative']]: total.payoff < 0 }">{{
+          +total.payoff
+        }}</span></span
       >
     </div>
 
@@ -19,9 +22,17 @@
         <div :class="$style['card-title']">
           <span :class="$style['header']">{{ info.vendor_alias }}</span>
           <span
+            v-if="themetpl() === 'sg1'"
             :class="[
               $style['payout'],
-              { [$style['is-negative']]: info.payoff < 0 },
+              { [$style['is-negative']]: info.payoff > 0 }
+            ]"
+            >{{ +info.payoff }}</span
+          ><span
+            v-else
+            :class="[
+              $style['payout'],
+              { [$style['is-negative']]: info.payoff < 0 }
             ]"
             >{{ +info.payoff }}</span
           >
@@ -52,7 +63,7 @@ import { mapGetters } from "vuex";
 export default {
   computed: {
     ...mapGetters({
-      siteconfig: "getSiteConfig",
+      siteconfig: "getSiteConfig"
     })
   },
   props: {
@@ -73,7 +84,7 @@ export default {
     themetpl() {
       return this.siteconfig.MOBILE_WEB_TPL;
     }
-  },
+  }
 };
 </script>
 
