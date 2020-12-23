@@ -161,26 +161,51 @@ export default {
         // this.src = 'https://feature-yabo.app.swag.live/';
         break;
       case "THIRD":
-        axios({
-          method: "get",
-          url: "/api/v1/c/link/customize",
-          params: {
-            code: "fengniao",
-            client_uri: localStorage.getItem("iframe-third-url") || ""
-          }
-        })
-          .then(res => {
-            this.isLoading = false;
-            if (res && res.data && res.data.ret && res.data.ret.uri) {
-              this.src = res.data.ret.uri;
+        let type = this.$route.params.type;
+        let query = this.$route.query;
+
+        switch (type) {
+          case "fengniao":
+            if (query.alias) {
+              goLangApiRequest({
+                method: "get",
+                url: `${this.siteConfig.YABO_GOLANG_API_DOMAIN}/xbb/Link/External/Url?lang=zh-cn&urlName=${query.alias}&needToken=true&externalCode=fengniao`
+              })
+                .then(res => {
+                  this.src = res.data.uri + "&cors=embed";
+                })
+                .catch(error => {
+                  this.isLoading = false;
+                  if (error && error.data && error.data.msg) {
+                    this.actionSetGlobalMessage({ msg: error.data.msg });
+                  }
+                });
+              return;
             }
-          })
-          .catch(error => {
-            this.isLoading = false;
-            if (error && error.data && error.data.msg) {
-              this.actionSetGlobalMessage({ msg: error.data.msg });
-            }
-          });
+
+          default:
+            axios({
+              method: "get",
+              url: "/api/v1/c/link/customize",
+              params: {
+                code: "fengniao",
+                client_uri: localStorage.getItem("iframe-third-url") || ""
+              }
+            })
+              .then(res => {
+                this.isLoading = false;
+                if (res && res.data && res.data.ret && res.data.ret.uri) {
+                  this.src = res.data.ret.uri;
+                }
+              })
+              .catch(error => {
+                this.isLoading = false;
+                if (error && error.data && error.data.msg) {
+                  this.actionSetGlobalMessage({ msg: error.data.msg });
+                }
+              });
+            return;
+        }
         break;
       case "GAME":
         if (localStorage.getItem("iframe-third-url")) {

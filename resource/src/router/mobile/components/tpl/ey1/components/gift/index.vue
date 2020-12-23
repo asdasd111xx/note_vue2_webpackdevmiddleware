@@ -248,13 +248,6 @@ export default {
   },
   methods: {
     ...mapActions(["actionSetGlobalMessage"]),
-
-    getThridUrl(target, Url) {
-      this.isLoading = true;
-      localStorage.setItem("iframe-third-url", Url);
-      localStorage.setItem("iframe-third-url-title", "target.name");
-      this.$router.push(`/mobile/iframe/third?`);
-    },
     linkTo(item) {
       if (item.login && !this.loginStatus) {
         this.$router.push("/mobile/login");
@@ -276,16 +269,8 @@ export default {
       }
     },
     getFuliUrl(target) {
-      goLangApiRequest({
-        method: "get",
-        url: `${this.siteConfig.YABO_GOLANG_API_DOMAIN}/xbb/Link/External/Url?lang=zh-cn&urlName=${target.alias}&needToken=true&externalCode=fengniao`
-      })
-        .then(res => {
-          this.getThridUrl(target, res.data.uri);
-        })
-        .catch(res => {
-          console.log("error" + error);
-        });
+      localStorage.setItem("iframe-third-url-title", target.name);
+      this.$router.push(`/mobile/iframe/third/fengniao?alias=${target.alias}`);
     }
   }
 };
