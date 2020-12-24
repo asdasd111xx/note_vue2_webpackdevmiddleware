@@ -154,7 +154,9 @@ export default {
       const gameList = this.allGame
         .map(game => game)
         .filter(item => {
-          return this.isAdult ? item : item.iconName.toLowerCase() !== "welfare";
+          return this.isAdult
+            ? item
+            : item.iconName.toLowerCase() !== "welfare";
         });
       return gameList;
     },
@@ -414,7 +416,12 @@ export default {
         this.isSliding = false;
       });
 
-      localStorage.setItem("home-menu-type", this.typeList[this.selectedIndex].icon);
+      if (this.typeList[this.selectedIndex]) {
+        localStorage.setItem(
+          "home-menu-type",
+          this.typeList[this.selectedIndex].icon
+        );
+      }
 
       setTimeout(() => {
         this.stopScroll = false;
@@ -826,4 +833,4 @@ export default {
       }
     }
   }
-}
+};
