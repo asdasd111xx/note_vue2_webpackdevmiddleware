@@ -52,6 +52,14 @@ export default {
     shareDownloadSg1: () =>
       import(
         /* webpackChunkName: 'shareDownloadSg1' */ "../../tpl/sg1/components/shareDownload"
+      ),
+    videoPlaySg1: () =>
+      import(
+        /* webpackChunkName: 'videoPlaySg1' */ "../../tpl/sg1/components/videoPlay"
+      ),
+    videoListSg1: () =>
+      import(
+        /* webpackChunkName: 'videoListSg1' */ "../../tpl/sg1/components/videoList"
       )
   },
   mcenter: {

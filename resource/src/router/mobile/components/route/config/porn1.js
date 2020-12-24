@@ -72,10 +72,6 @@ export default {
       import(
         /* webpackChunkName: 'liveStreamPorn1' */ "../../tpl/porn1/components/liveStream"
       ),
-    fishareaPorn1: () =>
-      import(
-        /* webpackChunkName: 'fishareaPorn1' */ "../../tpl/porn1/components/fisharea"
-      ),
     servicePorn1: () =>
       import(
         /* webpackChunkName: 'servicePorn1' */ "../../tpl/porn1/components/service"
