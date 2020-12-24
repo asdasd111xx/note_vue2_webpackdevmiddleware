@@ -657,6 +657,20 @@ export default {
       localStorage.setItem("iframe-third-url", url);
       localStorage.setItem("iframe-third-origin", `mcenter/wallet`);
       this.$router.push(`/mobile/iframe/third/fengniao?fullscreen=true`);
+    },
+    onClickMaintain(value) {
+      this.msg = `美东时间：
+          <br>
+          <span>${value.etc_start_at}</span>
+          <p style="margin: 0 ; padding: 0 ; text-align: center">|</p>
+          <span>${value.etc_end_at}</span>
+          <p></p>
+          北京时间：
+          <br>
+          <span>${value.start_at}</span>
+          <p style="margin: 0 ; padding: 0 ; text-align: center">|</p>
+          <span>${value.end_at}</span>
+        `;
     }
   }
 };
