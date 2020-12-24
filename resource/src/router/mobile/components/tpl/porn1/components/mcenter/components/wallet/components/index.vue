@@ -284,6 +284,7 @@ import Vue from "vue";
 import yaboRequest from "@/api/yaboRequest";
 import mixin from "@/mixins/mcenter/swag/swag";
 import maintainBlock from "@/router/mobile/components/common/maintainBlock";
+import goLangApiRequest from "@/api/goLangApiRequest";
 
 export default {
   components: {
@@ -482,6 +483,9 @@ export default {
     if (["porn1", "sg1"].includes(this.themeTPL)) {
       this.initSWAGConfig();
     }
+    if (["ey1"].includes(this.themeTPL)) {
+      this.birdMoney();
+    }
 
     this.startTime = Vue.moment(this.estToday)
       .add(-30, "days")
@@ -671,6 +675,22 @@ export default {
           <p style="margin: 0 ; padding: 0 ; text-align: center">|</p>
           <span>${value.end_at}</span>
         `;
+    },
+    birdMoney() {
+      let cid = getCookie("cid");
+      goLangApiRequest({
+        method: "get",
+        url: `${this.siteConfig.YABO_GOLANG_API_DOMAIN}/xbb/Ext/Member/Info`,
+        headers: {
+          cid: cid
+        },
+        params: {
+          lang: "zh-cn",
+          account: this.memInfo.user.username
+        }
+      }).then(res => {
+        this.birdBalance = res.data ? res.data.credits1 : 0;
+      });
     }
   }
 };
