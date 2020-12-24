@@ -84,7 +84,6 @@ export default {
         info.mSlider.data.length === 0
       ) {
         this.slider = [defaultImage];
-        console.log(this.slider);
         return;
       }
 
@@ -135,7 +134,9 @@ export default {
         linkType: "nolink",
         linkTo: "",
         linkItem: "",
-        image: `/static/image/${this.themeTPL}/default/bg_banner_d.png`
+        image: this.$getCdnPath(
+          `/static/image/${this.themeTPL}/default/bg_banner_d.png`
+        )
         // image: {
         //   "zh-cn": `/static/image/${this.themeTPL}/default/bg_banner_d.png`
         // }

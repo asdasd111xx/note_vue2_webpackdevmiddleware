@@ -422,10 +422,12 @@ export default {
         this.isSliding = false;
       });
 
-      localStorage.setItem(
-        "home-menu-type",
-        this.typeList[this.selectedIndex].icon
-      );
+      if (this.typeList[this.selectedIndex]) {
+        localStorage.setItem(
+          "home-menu-type",
+          this.typeList[this.selectedIndex].icon
+        );
+      }
 
       setTimeout(() => {
         this.stopScroll = false;
