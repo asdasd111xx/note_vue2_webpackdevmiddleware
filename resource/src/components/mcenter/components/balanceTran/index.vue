@@ -337,7 +337,7 @@ export default {
       this.AutotransferLock = true;
       mcenter.balanceTranAutoEnable({
         success: () => {
-          this.actionSetGlobalMessage({ msg: "回收成功" });
+          // this.actionSetGlobalMessage({ msg: "回收成功" });
           // alert(this.$t('S_SWITCH_AUTO_TRANSFER'));
           this.isAutotransfer = true;
           this.backAccount({}, true);
@@ -408,9 +408,9 @@ export default {
         success: () => {
           this.lockSec = 0;
           this.actionSetUserBalance().then(() => {
-            if (!fromAuto) {
-              this.actionSetGlobalMessage({ msg: "回收成功" });
-            }
+            // if (!fromAuto) {
+            //   this.actionSetGlobalMessage({ msg: "回收成功" });
+            // }
             this.tranOut = "";
             if (afterSetUserBalance) {
               afterSetUserBalance();
