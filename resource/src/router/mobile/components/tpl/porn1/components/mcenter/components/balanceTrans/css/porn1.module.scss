@@ -27,9 +27,10 @@
   align-items: center;
   text-align: center;
   padding: 0 17px;
+  margin: 2% 0;
   height: 65px;
   border-radius: 4px;
-  background: rgba(255, 255, 255, 0.65);
+  background: #ffffff;
 
   // 自動免轉區塊
   &:nth-child(2) {
@@ -172,7 +173,7 @@
   padding: 10px 3% 0;
   font-size: 12px;
   border-radius: 4px;
-  background: rgba(255, 255, 255, 0.65);
+  background: #ffffff;
 }
 
 .balance-item {
@@ -245,7 +246,7 @@
 }
 
 .balance-manual-wrap {
-  background: rgba(255, 255, 255, 0.65);
+  background: #ffffff;
 }
 
 .wallet-title {
@@ -260,7 +261,7 @@
   margin: 1% 0 2%;
   border-radius: 4px;
   background: url("/static/image/common/mcenter/balanceTrans/ic_transfergo.png")
-    rgba(255, 255, 255, 0.65) 50% 50% no-repeat;
+    #fff 50% 50% no-repeat;
   background-size: 20px 15px;
 }
 
@@ -388,7 +389,7 @@
 .balance-input-wrap {
   padding: 15px 17px;
   border-radius: 4px;
-  background: rgba(255, 255, 255, 0.65);
+  background: #fff;
 }
 
 .transfer-money {

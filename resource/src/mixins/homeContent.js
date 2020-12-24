@@ -430,10 +430,12 @@ export default {
         this.isSliding = false;
       });
 
-      localStorage.setItem(
-        "home-menu-type",
-        this.typeList[this.selectedIndex].icon
-      );
+      if (this.typeList[this.selectedIndex]) {
+        localStorage.setItem(
+          "home-menu-type",
+          this.typeList[this.selectedIndex].icon
+        );
+      }
 
       setTimeout(() => {
         this.stopScroll = false;
@@ -515,7 +517,10 @@ export default {
         // return;
 
         case "withdraw":
-          if (this.siteConfig.MOBILE_WEB_TPL === "porn1") {
+          if (
+            this.siteConfig.MOBILE_WEB_TPL === "porn1" ||
+            this.siteConfig.MOBILE_WEB_TPL === "sg1"
+          ) {
             this.$router.push(`/mobile/mcenter/withdraw`);
             return;
           }

@@ -284,6 +284,7 @@ import Vue from "vue";
 import yaboRequest from "@/api/yaboRequest";
 import mixin from "@/mixins/mcenter/swag/swag";
 import maintainBlock from "@/router/mobile/components/common/maintainBlock";
+import goLangApiRequest from "@/api/goLangApiRequest";
 
 export default {
   components: {
@@ -305,7 +306,7 @@ export default {
       isCheckWithdraw: false,
       bonus: {},
       swagDiamondBalance: "0",
-      birdBalance: "0"
+      birdBalance: "--"
     };
   },
   computed: {
@@ -482,6 +483,9 @@ export default {
     if (["porn1", "sg1"].includes(this.themeTPL)) {
       this.initSWAGConfig();
     }
+    if (["ey1"].includes(this.themeTPL)) {
+      this.birdMoney();
+    }
 
     this.startTime = Vue.moment(this.estToday)
       .add(-30, "days")
@@ -657,6 +661,36 @@ export default {
       localStorage.setItem("iframe-third-url", url);
       localStorage.setItem("iframe-third-origin", `mcenter/wallet`);
       this.$router.push(`/mobile/iframe/third/fengniao?fullscreen=true`);
+    },
+    onClickMaintain(value) {
+      this.msg = `美东时间：
+          <br>
+          <span>${value.etc_start_at}</span>
+          <p style="margin: 0 ; padding: 0 ; text-align: center">|</p>
+          <span>${value.etc_end_at}</span>
+          <p></p>
+          北京时间：
+          <br>
+          <span>${value.start_at}</span>
+          <p style="margin: 0 ; padding: 0 ; text-align: center">|</p>
+          <span>${value.end_at}</span>
+        `;
+    },
+    birdMoney() {
+      let cid = getCookie("cid");
+      goLangApiRequest({
+        method: "get",
+        url: `${this.siteConfig.YABO_GOLANG_API_DOMAIN}/xbb/Ext/Member/Info`,
+        headers: {
+          cid: cid
+        },
+        params: {
+          lang: "zh-cn",
+          account: this.memInfo.user.username
+        }
+      }).then(res => {
+        this.birdBalance = res.data ? res.data.credits1 : "--";
+      });
     }
   }
 };

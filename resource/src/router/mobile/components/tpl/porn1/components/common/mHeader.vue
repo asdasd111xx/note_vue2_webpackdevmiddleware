@@ -22,13 +22,7 @@
         :src="
           $getCdnPath(
             `/static/image/common/btn_${
-              headerConfig.hasClose
-                ? themeTPL === 'ey1'
-                  ? 'close_white'
-                  : 'close_black'
-                : themeTPL === 'ey1'
-                ? 'back_white'
-                : 'back_black'
+              headerConfig.hasClose ? 'close_black' : 'back_black'
             }.png`
           )
         "

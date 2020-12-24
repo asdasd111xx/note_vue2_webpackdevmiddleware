@@ -14,14 +14,14 @@
     </div>
 
     <!-- 無相關遊戲 -->
-    <div v-if="gameData.length === 0" :class="$style['empty-wrap']">
+    <div v-if="searchList.length === 0" :class="$style['empty-wrap']">
       <div :class="$style['empty-icon']" />
       <div>{{ $text("S_NO_GAME", "未查询到相关游戏") }}</div>
     </div>
 
     <!-- render game item -->
     <div v-else :class="$style['game-item-wrap']">
-      <template v-for="(item, index) in gameData">
+      <template v-for="(item, index) in searchList">
         <game-item
           :game-data="item"
           :lobby-info="lobbyInfo"
@@ -51,7 +51,8 @@ export default {
   mixins: [mixin],
   data() {
     return {
-      searchText: ""
+      searchText: "",
+      searchList: []
     };
   },
   computed: {
@@ -63,6 +64,9 @@ export default {
         this[`$style_${this.siteConfig.MOBILE_WEB_TPL}`] || this.$style_porn1
       );
     }
+  },
+  created() {
+    this.getGameList();
   },
   watch: {
     searchText(value) {
@@ -80,11 +84,16 @@ export default {
       this.searchText = value;
 
       if (!value) {
-        this.gameData = [];
+        this.searchList = [];
         return;
       }
 
-      this.getGameList(this.searchText);
+      this.searchList = this.gameData.filter(item => {
+        return item.name.indexOf(value) !== -1;
+      });
+
+      // 如需搜尋時要重呼叫一次 API
+      // this.getGameList(this.searchText);
     }
   }
 };

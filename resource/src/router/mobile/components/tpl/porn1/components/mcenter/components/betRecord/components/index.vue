@@ -381,14 +381,8 @@ export default {
   },
   methods: {
     getGameRecord(data) {
-      this.selectMenu = "";
       this.selectType = data;
-      this.showPage = 0;
-      this.mainTotal = {};
-      this.pagination = {};
-      this.mainListData = [];
-      this.mainTime = [];
-      this.isLoading = true;
+      this.resetStatus();
       this.getTotalTime();
     },
     getTimeRecord(data) {
@@ -481,7 +475,6 @@ export default {
           if (response.ret.length === 0) {
             return;
           }
-          this.mainListData = [];
           this.mainListData.push(...response.ret);
           this.mainTotal = response.total;
           this.pagination = response.pagination;
@@ -506,6 +499,15 @@ export default {
 
       this.selectMenu = "";
     },
+    resetStatus() {
+      this.selectMenu = "";
+      this.showPage = 0;
+      this.mainTotal = {};
+      this.pagination = {};
+      this.mainListData = [];
+      this.mainTime = [];
+      this.isLoading = true;
+    },
     setCustomTime() {
       if (this.setStartTime > this.setEndTime) {
         return;
@@ -516,7 +518,8 @@ export default {
       this.selectTime = `${this.startTime} ${this.endTime}`;
       this.isCustomTime = true;
       this.currentCustomDate = "";
-      this.selectMenu = "";
+
+      this.resetStatus();
       this.getTotalTime();
     },
     getMonthDay(date) {

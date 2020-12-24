@@ -49,7 +49,7 @@
             />
             <span>鸟蛋余额</span>
             <div :class="$style['bird-block']">
-              {{ 0 }}
+              {{ birdBalance }}
             </div>
           </div>
 
@@ -78,8 +78,15 @@
 <script>
 import { mapGetters, mapActions } from "vuex";
 import balanceTran from "@/components/mcenter/components/balanceTran";
+import goLangApiRequest from "@/api/goLangApiRequest";
+import { getCookie } from "@/lib/cookie";
 
 export default {
+  data() {
+    return {
+      birdBalance: "--"
+    };
+  },
   props: {
     hasLink: {
       type: Boolean,
@@ -92,6 +99,11 @@ export default {
   },
   components: {
     balanceTran
+  },
+  created() {
+    if (["ey1"].includes(this.themeTPL)) {
+      this.birdMoney();
+    }
   },
   computed: {
     ...mapGetters({
@@ -124,6 +136,22 @@ export default {
       localStorage.setItem("iframe-third-url", url);
       localStorage.setItem("iframe-third-origin", this.backRouter);
       this.$router.push(`/mobile/iframe/third/fengniao?fullscreen=true`);
+    },
+    birdMoney() {
+      let cid = getCookie("cid");
+      goLangApiRequest({
+        method: "get",
+        url: `${this.siteConfig.YABO_GOLANG_API_DOMAIN}/xbb/Ext/Member/Info`,
+        headers: {
+          cid: cid
+        },
+        params: {
+          lang: "zh-cn",
+          account: this.memInfo.user.username
+        }
+      }).then(res => {
+        this.birdBalance = res.data ? res.data.credits1 : "--";
+      });
     }
   }
 };
