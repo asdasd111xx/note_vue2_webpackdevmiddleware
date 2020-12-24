@@ -905,7 +905,7 @@
             <div :class="$style['pop-message-mark']" />
             <div :class="$style['message-container']">
               <ul :class="$style['message-content']">
-                <li>• 实际到帐： {{ realSaveMoney }}</li>
+                <li>• 实际到帐： ¥{{ realSaveMoney }}</li>
                 <template
                   v-if="
                     curPayInfo.offer_enable && +curPayInfo.offer_percent > 0
