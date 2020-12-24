@@ -509,7 +509,10 @@ export default {
         // return;
 
         case "withdraw":
-          if (this.siteConfig.MOBILE_WEB_TPL === "porn1") {
+          if (
+            this.siteConfig.MOBILE_WEB_TPL === "porn1" ||
+            this.siteConfig.MOBILE_WEB_TPL === "sg1"
+          ) {
             this.$router.push(`/mobile/mcenter/withdraw`);
             return;
           }

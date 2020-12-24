@@ -27,7 +27,7 @@
         <span :class="$style['title']"> {{ "帐户资料" }}</span>
         <div :class="$style['btn-icon']">
           <img
-            :src="$getCdnPath('/static/image/ey1/common/btn_help.png')"
+            :src="$getCdnPath(`/static/image/${themeTPL}/common/btn_help.png`)"
             @click="$router.push('/mobile/mcenter/helpCenter')"
           />
         </div>
@@ -631,3 +631,4 @@ export default {
 
 <style lang="scss" src="./css/porn1.index.scss" module="$style_porn1"></style>
 <style lang="scss" src="./css/ey1.index.scss" module="$style_ey1"></style>
+<style lang="scss" src="./css/sg1.index.scss" module="$style_sg1"></style>

@@ -45,6 +45,10 @@ export default {
       import(
         /* webpackChunkName: 'launchSg1' */ "../../tpl/sg1/components/launch"
       ),
+    withdrawAccountSg1: () =>
+      import(
+        /* webpackChunkName: 'withdrawAccountSg1' */ "../../common/withdrawAccount/withdrawAccount"
+      ),
     shareDownloadSg1: () =>
       import(
         /* webpackChunkName: 'shareDownloadSg1' */ "../../tpl/sg1/components/shareDownload"

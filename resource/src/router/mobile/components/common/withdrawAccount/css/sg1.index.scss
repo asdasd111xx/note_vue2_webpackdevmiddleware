@@ -1,0 +1,34 @@
+@import "~@/css/variable.scss";
+@import "./porn1.index.scss";
+
+// .wiithdraw-account-header {
+//   background: linear-gradient(#fe2a2a, #b60303);
+//   border-bottom: none;
+
+//   .title {
+//     color: #ffffff;
+//   }
+// }
+
+.btn-send {
+  background: linear-gradient(to left, #fed3cb, #ffc5ce);
+
+  &.active {
+    color: #ffffff;
+    background: linear-gradient(to left, #fe593c, #e61938);
+  }
+}
+
+.btn-submit {
+  >div {
+    background: linear-gradient(to left, #fed3cb, #ffc5ce);
+  }
+
+  &.active {
+    >div {
+      pointer-events: auto;
+      color: #ffffff;
+      background: linear-gradient(to left, #fe593c, #e61938);
+    }
+  }
+}
