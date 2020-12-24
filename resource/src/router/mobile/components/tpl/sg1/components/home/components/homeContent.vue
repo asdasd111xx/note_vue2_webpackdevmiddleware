@@ -54,7 +54,11 @@
           >
             <template v-if="info.name === 'grade'">
               <img
-                :src="$getCdnPath(`/static/image/sg1/home/icon_level.png`)"
+                :src="
+                  $getCdnPath(
+                    `/static/image/sg1/home/icon_level_${vipLevel}.png`
+                  )
+                "
               />
               <div>{{ vipLevel === "max" ? vipLevel : info.text }}</div>
             </template>
