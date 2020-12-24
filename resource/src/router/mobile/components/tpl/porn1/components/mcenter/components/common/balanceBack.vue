@@ -84,7 +84,7 @@ import { getCookie } from "@/lib/cookie";
 export default {
   data() {
     return {
-      birdBalance: "0"
+      birdBalance: "--"
     };
   },
   props: {
@@ -150,7 +150,7 @@ export default {
           account: this.memInfo.user.username
         }
       }).then(res => {
-        this.birdBalance = res.data ? res.data.credits1 : 0;
+        this.birdBalance = res.data ? res.data.credits1 : "--";
       });
     }
   }

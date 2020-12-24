@@ -306,7 +306,7 @@ export default {
       isCheckWithdraw: false,
       bonus: {},
       swagDiamondBalance: "0",
-      birdBalance: "0"
+      birdBalance: "--"
     };
   },
   computed: {
@@ -689,7 +689,7 @@ export default {
           account: this.memInfo.user.username
         }
       }).then(res => {
-        this.birdBalance = res.data ? res.data.credits1 : 0;
+        this.birdBalance = res.data ? res.data.credits1 : "--";
       });
     }
   }
