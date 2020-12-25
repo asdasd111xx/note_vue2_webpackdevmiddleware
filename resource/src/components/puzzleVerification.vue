@@ -12,7 +12,7 @@
       <img
         :src="
           $getCdnPath(
-            `/static/image/_new/login/ic_verification_${
+            `/static/image/common/login/ic_verification_${
               ret === 0 ? 'success' : 'check'
             }.png`
           )
@@ -57,7 +57,7 @@ export default {
         return;
       });
 
-      captcha.show()
+      captcha.show();
     }
   }
 };
