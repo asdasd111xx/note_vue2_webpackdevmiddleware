@@ -46,7 +46,7 @@ export default {
             copyShow: false,
             qrcode: [
               {
-                title: this.$text("S_SCANNING", "扫一扫"),
+                // title: this.$text("S_SCANNING", "扫一扫"),
                 value:
                   this.orderData.orderInfo.qrcode ||
                   this.orderData.orderInfo.img
