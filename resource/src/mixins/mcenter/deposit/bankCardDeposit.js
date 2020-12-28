@@ -1339,10 +1339,9 @@ export default {
                   this.setPopupStatus(true, "funcTips");
 
                   this.confirmPopupObj = {
-                    msg:
-                      ['porn1', 'sg1'].includes(this.themeTPL)
-                        ? "汇率已失效"
-                        : "汇率已失效，请再次确认汇率",
+                    msg: ["porn1", "sg1"].includes(this.themeTPL)
+                      ? "汇率已失效"
+                      : "汇率已失效，请再次确认汇率",
                     btnText: "刷新汇率",
                     cb: () => {
                       this.closePopup();

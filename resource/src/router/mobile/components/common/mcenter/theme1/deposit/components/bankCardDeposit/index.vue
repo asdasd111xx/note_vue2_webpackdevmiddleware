@@ -894,7 +894,12 @@
             <!-- 109/11/10 實際到帳常註顯示 -->
             <span
               v-else
-              :class="[$style['feature-tip-title'], $style.success]"
+              :class="[
+                $style['feature-tip-title'],
+                {
+                  [$style['success']]: moneyValue
+                }
+              ]"
               @click="showRealStatus = true"
             >
               实际到帐： ¥{{ realSaveMoney }} (详情)
