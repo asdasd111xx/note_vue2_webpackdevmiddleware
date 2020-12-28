@@ -29,7 +29,11 @@ export default {
         title: this.$text("S_TEAM_CENTER", "我的推广"),
         prev: true,
         onClick: () => {
-          this.$router.back();
+          if (this.$route.params.date) {
+            this.$router.back();
+          } else {
+            this.$router.replace("/mobile/mcenter/home");
+          }
         }
       };
     }
