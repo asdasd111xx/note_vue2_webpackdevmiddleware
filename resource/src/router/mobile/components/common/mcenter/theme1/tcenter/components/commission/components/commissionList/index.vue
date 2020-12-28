@@ -106,6 +106,10 @@ export default {
     },
     typeText(type) {
       switch (type) {
+        case 0:
+          return "盈亏返利";
+          break;
+
         case 1:
           return "投注返利";
           break;

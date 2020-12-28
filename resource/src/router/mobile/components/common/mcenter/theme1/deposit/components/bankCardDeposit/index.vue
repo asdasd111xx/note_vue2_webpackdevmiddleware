@@ -1358,25 +1358,6 @@ export default {
           isError: false
         },
         {
-          objKey: "bankBranch",
-          title: this.$text("S_DEPOSIT_BRANCH", "银行支行"),
-          value: this.speedField.bankBranch,
-          placeholderText: this.$text(
-            "S_ENTER_DEPOSIT_BRANCH",
-            "请输入银行支行"
-          ),
-          showCondition:
-            this.speedField.depositMethod === "2" ||
-            this.speedField.depositMethod === "4",
-          isError:
-            this.showError &&
-            this.curPayInfo.field.find(
-              item => item.name === "method" && item.required
-            ) &&
-            !this.speedField.bankBranch &&
-            ["2", "4"].includes(this.speedField.depositMethod)
-        },
-        {
           objKey: "depositAccount",
           title: "充值帐号",
           value: this.speedField.depositAccount,
@@ -1419,6 +1400,25 @@ export default {
               item => item.name === "deposit_at" && item.required
             ) &&
             !this.speedField.depositTime
+        },
+        {
+          objKey: "bankBranch",
+          title: this.$text("S_DEPOSIT_BRANCH", "银行支行"),
+          value: this.speedField.bankBranch,
+          placeholderText: this.$text(
+            "S_ENTER_DEPOSIT_BRANCH",
+            "请输入银行支行"
+          ),
+          showCondition:
+            this.speedField.depositMethod === "2" ||
+            this.speedField.depositMethod === "4",
+          isError:
+            this.showError &&
+            this.curPayInfo.field.find(
+              item => item.name === "method" && item.required
+            ) &&
+            !this.speedField.bankBranch &&
+            ["2", "4"].includes(this.speedField.depositMethod)
         },
         {
           objKey: "serialNumber",

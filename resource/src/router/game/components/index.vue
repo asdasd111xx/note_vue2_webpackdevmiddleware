@@ -31,16 +31,19 @@
 </template>
 
 <script>
-import { mapGetters } from 'vuex';
-import game from '@/api/game';
-import isMobileFuc from '@/lib/is_mobile';
+import { mapGetters } from "vuex";
+import game from "@/api/game";
+import isMobileFuc from "@/lib/is_mobile";
 import message from "@/router/mobile/components/common/message";
-import { getCookie } from '@/lib/cookie';
+import { getCookie } from "@/lib/cookie";
 
 export default {
   components: {
     message,
-    eleLoading: () => import(/* webpackChunkName: 'eleLoading' */ '@/router/web/components/tpl/common/element/loading/circle'),
+    eleLoading: () =>
+      import(
+        /* webpackChunkName: 'eleLoading' */ "@/router/web/components/tpl/common/element/loading/circle"
+      )
   },
   data() {
     const isMobile = isMobileFuc();
@@ -48,15 +51,15 @@ export default {
     return {
       isLoading: true,
       isMobile,
-      vendor: '',
+      vendor: "",
       urlData: {},
-      rulesTitle: this.$i18n.t('S_RULES'),
-      msg: ''
+      rulesTitle: this.$i18n.t("S_RULES"),
+      msg: ""
     };
   },
   computed: {
     ...mapGetters({
-      curLang: 'getCurLang'
+      curLang: "getCurLang"
     })
   },
   created() {
@@ -64,7 +67,7 @@ export default {
     if (vendor === "loading" && kind === "true") {
       return;
     }
-    console.log("open-game-link", localStorage.getItem('open-game-link'));
+    console.log("open-game-link", localStorage.getItem("open-game-link"));
     const temp = { kind };
     this.vendor = vendor;
 
@@ -72,78 +75,85 @@ export default {
       temp.code = code;
     }
 
-    if (localStorage.getItem('open-game-link')) {
-      let openGameLink = localStorage.getItem('open-game-link');
+    if (localStorage.getItem("open-game-link")) {
+      let openGameLink = localStorage.getItem("open-game-link");
       localStorage.removeItem("open-game-link");
 
       this.isLoading = false;
 
-      if (!isMobileFuc() && (vendor === 'sp' || vendor === 'mg')) {
+      if (!isMobileFuc() && (vendor === "sp" || vendor === "mg")) {
         this.urlData = openGameLink;
         return;
       }
 
-      window.location.href = openGameLink;
+      location.href = openGameLink;
       return;
-    }
-    else {
-      console.log('open-game-link 遺失');
+    } else {
+      console.log("open-game-link 遺失");
       // 舊版開啟方式
-      game.gameLink({
-        params: temp,
-        errorAlert: false,
-        success: (response) => {
-          const { result, ret } = response;
-          if (result !== 'ok') {
-            return;
-          }
+      game.gameLink(
+        {
+          params: temp,
+          errorAlert: false,
+          success: response => {
+            const { result, ret } = response;
+            if (result !== "ok") {
+              return;
+            }
 
-          this.isLoading = false;
-
-          // 80桌參數
-          let query = '';
-          if (vendor === "lg_live" && String(kind) === "2" && this.$route.query && this.$route.query.q === "R") {
-            query = '&customize=yabo&tableType=3310';
-          }
-
-          if (!this.isMobile && vendor === 'sp') {
             this.isLoading = false;
 
-            this.urlData = ret + query;
-            return;
-          }
+            // 80桌參數
+            let query = "";
+            if (
+              vendor === "lg_live" &&
+              String(kind) === "2" &&
+              this.$route.query &&
+              this.$route.query.q === "R"
+            ) {
+              query = "&customize=yabo&tableType=3310";
+            }
 
-          if (!this.isMobile && vendor === 'mg') {
-            this.isLoading = false;
-            this.urlData = ret + query;
-            return;
-          }
+            if (!this.isMobile && vendor === "sp") {
+              this.isLoading = false;
 
-          window.location.href = ret.url + query;
+              this.urlData = ret + query;
+              return;
+            }
+
+            if (!this.isMobile && vendor === "mg") {
+              this.isLoading = false;
+              this.urlData = ret + query;
+              return;
+            }
+
+            window.location.href = ret.url + query;
+          },
+          fail: res => {
+            this.msg = res.data && res.data.msg ? res.data.msg : "";
+            setTimeout(() => {
+              this.$nextTick(() => {
+                window.close();
+                if (getCookie("platform") === "H") {
+                  window.history.back();
+                }
+              });
+            }, 2500);
+          }
         },
-        fail: (res) => {
-          this.msg = res.data && res.data.msg ? res.data.msg : '';
-          setTimeout(() => {
-            this.$nextTick(() => {
-              window.close();
-              if (getCookie('platform') === "H") {
-                window.history.back();
-              }
-            });
-          }, 2500)
-        }
-      }, vendor);
+        vendor
+      );
     }
   },
   methods: {
     onClick() {
       // MG => 另開投注明細, SP => 另開規則說明
-      window.open(this.urlData.url2, 'bet record', 'width=900, height=900');
+      window.open(this.urlData.url2, "bet record", "width=900, height=900");
     },
     clearMsg() {
-      this.msg = ""
+      this.msg = "";
     }
-  },
+  }
 };
 </script>
 

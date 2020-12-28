@@ -1,20 +1,25 @@
 <template>
-  <div v-if="imgSite && imgSite === 'porn1'" :class="[$style['content']]">
+  <div
+    v-if="themeTPL && (themeTPL === 'porn1' || themeTPL === 'sg1')"
+    :class="[$style['content']]"
+  >
     <div :class="$style['logo-header']">
-      <img :src="$getCdnPath(`/static/image/${imgSite}/common/logo_b.png`)" />
+      <img :src="$getCdnPath(`/static/image/${themeTPL}/common/logo_b.png`)" />
     </div>
-    <div :class="$style['title']">{{ $t("ROUTER_NO_SERVICE_TITLE") }}</div>
+    <div :class="[$style['title'], $style[themeTPL]]">
+      {{ $t("ROUTER_NO_SERVICE_TITLE") }}
+    </div>
     <div :class="$style['text']">
       IP所在区域不在我们服务范围内，造成您的困扰，很抱歉！若有任何疑惑，请与我们客户服务联络，谢谢。
     </div>
     <div :class="$style['text']">IP：{{ ip }}({{ code }})</div>
     <div :class="$style['main-img']">
-      <img :src="$getCdnPath(`/static/image/${imgSite}/status/pic_403.png`)" />
+      <img :src="$getCdnPath(`/static/image/${themeTPL}/status/pic_403.png`)" />
     </div>
     <div :class="$style['desc']">
       {{ $t("ROUTER_NO_SERVICE_TEXT1") }}
-      <a :class="$style['mail-link']" @click="mailTo('cs2@yaboxxx.net')">
-        <span>cs2@yaboxxx.net</span>
+      <a :class="$style['mail-link']" @click="mailTo()">
+        <span>{{ mailURL }}</span>
       </a>
       {{ $t("ROUTER_NO_SERVICE_TEXT2") }}
     </div>
@@ -28,11 +33,11 @@
   </div>
 
   <div
-    v-else-if="imgSite && imgSite === 'ey1'"
+    v-else-if="themeTPL && themeTPL === 'ey1'"
     :class="[$style['content'], $style['ey1']]"
   >
     <div :class="$style['logo-header']">
-      <img :src="$getCdnPath(`/static/image/${imgSite}/common/logo_b.png`)" />
+      <img :src="$getCdnPath(`/static/image/${themeTPL}/common/logo_b.png`)" />
     </div>
     <div :class="$style['title']">{{ $t("ROUTER_NO_SERVICE_TITLE") }}</div>
     <div :class="$style['text']">
@@ -40,7 +45,7 @@
     </div>
     <div :class="$style['text']">IP：{{ ip }}({{ code }})</div>
     <div :class="$style['main-img']">
-      <img :src="$getCdnPath(`/static/image/${imgSite}/status/pic_403.png`)" />
+      <img :src="$getCdnPath(`/static/image/${themeTPL}/status/pic_403.png`)" />
     </div>
     <div :class="$style['desc']">
       尊敬的用户，由于相关法规限制，您所在的地区无法使用亿元产品，如有任何疑问，请通过在线客服，或发邮件至
@@ -89,6 +94,17 @@ export default {
       next();
     });
   },
+  computed: {
+    mailURL() {
+      if (this.themeTPL === "porn1") {
+        return "cs2@yaboxxx.net";
+      }
+
+      if (this.themeTPL === "sg1") {
+        return "cs1@siguacs.net";
+      }
+    }
+  },
   created() {
     member.data({
       success: () => {
@@ -113,11 +129,9 @@ export default {
     });
   },
   methods: {
-    mailTo(target) {
-      const isWebView =
-        getCookie("platform") === "H" ||
-        window.location.host === "yaboxxxapp02.com";
-      const url = `mailto:${target}`;
+    mailTo() {
+      const isWebView = getCookie("platform") === "H";
+      const url = `mailto:${this.mailURL}`;
       if (isWebView) {
         this.$copyText(mail);
         this.msg = "复制成功";

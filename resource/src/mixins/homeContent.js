@@ -179,6 +179,7 @@ export default {
   },
   created() {
     localStorage.removeItem("is-open-game");
+    localStorage.removeItem("iframe-third-url");
     this.showPromotion = this.loginStatus
       ? this.memInfo.user.show_promotion
       : true;

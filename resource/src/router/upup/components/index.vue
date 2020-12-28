@@ -1,20 +1,20 @@
 <template>
   <div
-    v-if="imgSite"
+    v-if="themeTPL"
     :class="[
       $style['content'],
       {
-        [$style['ey1']]: imgSite === 'ey1'
+        [$style['ey1']]: themeTPL === 'ey1'
       }
     ]"
   >
     <div :class="$style['logo-header']">
-      <img :src="$getCdnPath(`/static/image/${imgSite}/common/logo_b.png`)" />
+      <img :src="$getCdnPath(`/static/image/${themeTPL}/common/logo_b.png`)" />
     </div>
     <div :class="$style['title']">{{ $t("ROUTER_UPUP_TITLE") }}</div>
     <div :class="$style['main-img']">
       <img
-        :src="$getCdnPath(`/static/image/${imgSite}/status/pic_maintain.png`)"
+        :src="$getCdnPath(`/static/image/${themeTPL}/status/pic_maintain.png`)"
       />
     </div>
     <div :class="[$style['desc'], $style['has-time']]">

@@ -19,184 +19,189 @@
           </div>
         </div>
 
-        <div
-          v-for="field in fieldsData"
-          :key="field.key"
-          :class="[$style['field-wrap'], 'clearfix']"
-        >
-          <label
-            :for="field.key"
-            :title="$t(joinMemInfo[field.key].text)"
-            :class="[
-              $style['field-title'],
-              $style[`field-${field.key}`],
-              'clearfix'
-            ]"
-            @click="
-              () => {
-                onLabelClick(field.key);
-              }
-            "
+        <form>
+          <div
+            v-for="field in fieldsData"
+            :key="field.key"
+            :class="[$style['field-wrap'], 'clearfix']"
           >
-            <span :class="$style['field-text']">{{
-              $t(joinMemInfo[field.key].text)
-            }}</span>
-          </label>
-          <div :class="[$style['field-right'], 'clearfix']">
-            <div
-              v-if="field.key === 'captcha_text'"
-              :class="$style['captchaText-wrap']"
+            <label
+              :for="field.key"
+              :title="$t(joinMemInfo[field.key].text)"
+              :class="[
+                $style['field-title'],
+                $style[`field-${field.key}`],
+                'clearfix'
+              ]"
+              @click="
+                () => {
+                  onLabelClick(field.key);
+                }
+              "
             >
-              <input
-                v-model="allValue[field.key]"
-                :class="[$style['join-input-captcha'], field.key]"
-                type="text"
-                :ref="'captcha'"
-                id="captcha"
-                name="join-captcha"
-                maxlength="4"
-                placeholder="请填写验证码"
-                @input="verification(field.key)"
-                @keydown.13="keyDownSubmit()"
-              />
-              <img
-                v-if="captchaImg"
-                :src="captchaImg"
-                :class="$style['captcha-img']"
-              />
-              <div :class="$style['captchaText-refresh']" @click="getCaptcha">
-                <img
-                  :src="'/static/image/porn1/common/ic_verification_reform.png'"
+              <span :class="$style['field-text']">{{
+                $t(joinMemInfo[field.key].text)
+              }}</span>
+            </label>
+            <div :class="[$style['field-right'], 'clearfix']">
+              <div
+                v-if="field.key === 'captcha_text'"
+                :class="$style['captchaText-wrap']"
+              >
+                <input
+                  v-model="allValue[field.key]"
+                  :class="[$style['join-input-captcha'], field.key]"
+                  type="text"
+                  :ref="'captcha'"
+                  id="captcha"
+                  name="join-captcha"
+                  maxlength="4"
+                  placeholder="请填写验证码"
+                  @input="verification(field.key)"
+                  @keydown.13="keyDownSubmit()"
                 />
-              </div>
-            </div>
-
-            <template v-else-if="field.key === 'password'">
-              <input
-                id="pwd"
-                v-model="allValue[field.key]"
-                :class="[$style['join-input'], field.key]"
-                :name="field.key"
-                :placeholder="field.content.note1"
-                type="password"
-                maxlength="12"
-                @blur="verification(field.key)"
-                @input="verification(field.key)"
-                @keydown.13="keyDownSubmit()"
-              />
-              <div :class="$style['eye']">
                 <img
-                  :src="
-                    $getCdnPath(
-                      `/static/image/_new/login/btn_eye_${
-                        isShowPwd ? 'n' : 'd'
-                      }.png`
-                    )
-                  "
-                  @click="toggleEye('confPwd')"
+                  v-if="captchaImg"
+                  :src="captchaImg"
+                  :class="$style['captcha-img']"
                 />
+                <div :class="$style['captchaText-refresh']" @click="getCaptcha">
+                  <img
+                    :src="
+                      '/static/image/porn1/common/ic_verification_reform.png'
+                    "
+                  />
+                </div>
               </div>
-            </template>
 
-            <template v-else-if="field.key === 'confirm_password'">
-              <input
-                id="confirm_password"
-                v-model="allValue[field.key]"
-                :class="[$style['join-input'], field.key]"
-                :name="field.key"
-                :placeholder="field.content.note1"
-                type="password"
-                maxlength="12"
-                @input="verification(field.key)"
-                @blur="verification(field.key)"
-                @keydown.13="keyDownSubmit()"
-              />
-              <div :class="$style['eye']">
-                <img
-                  :src="
-                    $getCdnPath(
-                      `/static/image/_new/login/btn_eye_${
-                        isShowPwd ? 'n' : 'd'
-                      }.png`
-                    )
-                  "
-                  @click="toggleEye('confPwd')"
+              <template v-else-if="field.key === 'password'">
+                <input
+                  id="pwd"
+                  v-model="allValue[field.key]"
+                  :class="[$style['join-input'], field.key]"
+                  :name="field.key"
+                  :placeholder="field.content.note1"
+                  type="password"
+                  maxlength="12"
+                  @blur="verification(field.key)"
+                  @input="verification(field.key)"
+                  @keydown.13="keyDownSubmit()"
+                  autocomplete="password"
                 />
-              </div>
-            </template>
+                <div :class="$style['eye']">
+                  <img
+                    :src="
+                      $getCdnPath(
+                        `/static/image/common/login/btn_eye_${
+                          isShowPwd ? 'n' : 'd'
+                        }.png`
+                      )
+                    "
+                    @click="toggleEye('confPwd')"
+                  />
+                </div>
+              </template>
 
-            <template v-else-if="field.key === 'username'">
-              <input
-                :ref="field.key"
-                v-model="allValue[field.key]"
-                :class="[$style['join-input'], field.key]"
-                :name="field.key"
-                :placeholder="field.content.note1"
-                type="text"
-                maxlength="20"
-                @blur="verification(field.key)"
-                @keydown.13="keyDownSubmit()"
-                @input="verification(field.key)"
-              />
-              <div :class="$style['clear']" v-if="allValue[field.key]">
-                <img
-                  :src="$getCdnPath(`/static/image/common/ic_clear.png`)"
-                  @click="allValue[field.key] = ''"
+              <template v-else-if="field.key === 'confirm_password'">
+                <input
+                  id="confirm_password"
+                  v-model="allValue[field.key]"
+                  :class="[$style['join-input'], field.key]"
+                  :name="field.key"
+                  :placeholder="field.content.note1"
+                  type="password"
+                  maxlength="12"
+                  @input="verification(field.key)"
+                  @blur="verification(field.key)"
+                  @keydown.13="keyDownSubmit()"
+                  autocomplete="password"
                 />
-              </div>
-            </template>
+                <div :class="$style['eye']">
+                  <img
+                    :src="
+                      $getCdnPath(
+                        `/static/image/common/login/btn_eye_${
+                          isShowPwd ? 'n' : 'd'
+                        }.png`
+                      )
+                    "
+                    @click="toggleEye('confPwd')"
+                  />
+                </div>
+              </template>
 
-            <template v-else-if="field.key === 'gender'">
-              <v-select
-                v-model="selectData['gender'].selected"
-                :options="selectData['gender'].options"
-                :searchable="false"
-                :class="$style['join-input-gender']"
-                @input="changSelect(field.key)"
-              />
-            </template>
+              <template v-else-if="field.key === 'username'">
+                <input
+                  :ref="field.key"
+                  v-model="allValue[field.key]"
+                  :class="[$style['join-input'], field.key]"
+                  :name="field.key"
+                  :placeholder="field.content.note1"
+                  type="text"
+                  maxlength="20"
+                  @blur="verification(field.key)"
+                  @keydown.13="keyDownSubmit()"
+                  @input="verification(field.key)"
+                />
+                <div :class="$style['clear']" v-if="allValue[field.key]">
+                  <img
+                    :src="$getCdnPath(`/static/image/common/ic_clear.png`)"
+                    @click="allValue[field.key] = ''"
+                  />
+                </div>
+              </template>
 
-            <template v-else-if="field.key === 'phone'">
-              <!-- <v-select
+              <template v-else-if="field.key === 'gender'">
+                <v-select
+                  v-model="selectData['gender'].selected"
+                  :options="selectData['gender'].options"
+                  :searchable="false"
+                  :class="$style['join-input-gender']"
+                  @input="changSelect(field.key)"
+                />
+              </template>
+
+              <template v-else-if="field.key === 'phone'">
+                <!-- <v-select
                 v-model="selectData[field.key].selected"
                 :options="selectData[field.key].options"
                 :searchable="false"
                 :class="$style['join-select-phone']"
                 @input="changSelect(field.key)"
               /> -->
-              <input
-                v-model="allValue['phone']"
-                :class="[$style['join-input'], field.key]"
-                :name="field.key"
-                :placeholder="field.content.note1"
-                type="tel"
-                @input="verification(field.key)"
-                @keydown.13="joinSubmit()"
-              />
-            </template>
+                <input
+                  v-model="allValue['phone']"
+                  :class="[$style['join-input'], field.key]"
+                  :name="field.key"
+                  :placeholder="field.content.note1"
+                  type="tel"
+                  @input="verification(field.key)"
+                  @keydown.13="joinSubmit()"
+                />
+              </template>
 
-            <template v-else-if="field.key === 'birthday'">
-              <datepicker
-                v-if="field.key === 'birthday'"
-                v-model="allValue[field.key]"
-                :language="dateLang"
-                :disabled="{ from: ageLimit }"
-                :open-date="ageLimit"
-                :clear-button="true"
-                :monday-first="true"
-                :placeholder="field.content.note1"
-                :input-class="$style['join-input-birthday']"
-                name="birthday"
-                format="yyyy/MM/dd"
-                initial-view="year"
-                @cleared="verification(field.key)"
-                @input="verification(field.key)"
-              />
-            </template>
+              <template v-else-if="field.key === 'birthday'">
+                <datepicker
+                  v-if="field.key === 'birthday'"
+                  v-model="allValue[field.key]"
+                  :language="dateLang"
+                  :disabled="{ from: ageLimit }"
+                  :open-date="ageLimit"
+                  :clear-button="true"
+                  :monday-first="true"
+                  :placeholder="field.content.note1"
+                  :input-class="$style['join-input-birthday']"
+                  name="birthday"
+                  format="yyyy/MM/dd"
+                  initial-view="year"
+                  @cleared="verification(field.key)"
+                  @input="verification(field.key)"
+                />
+              </template>
 
-            <template v-else-if="field.key === 'withdraw_password'">
-              <!-- 有問題待修正 -->
-              <!-- <div :class="$style['withdraw-password-wrap']">
+              <template v-else-if="field.key === 'withdraw_password'">
+                <!-- 有問題待修正 -->
+                <!-- <div :class="$style['withdraw-password-wrap']">
                 <input
                   v-for="(item, index) in allValue['withdraw_password'].value"
                   v-model="allValue['withdraw_password'].value[index]"
@@ -212,7 +217,7 @@
                 />
               </div> -->
 
-              <!-- <div>
+                <!-- <div>
                 <v-select
                   v-for="(num, index) in 4"
                   :key="index"
@@ -227,28 +232,30 @@
                   @input="changWithdrawPassword(field.key, num)"
                 />
               </div> -->
-            </template>
+              </template>
 
-            <input
-              v-else
-              :ref="field.key"
-              v-model="allValue[field.key]"
-              :class="[$style['join-input'], field.key]"
-              :name="field.key"
-              :placeholder="field.content.note1"
-              type="text"
-              @blur="verification(field.key)"
-              @keydown.13="keyDownSubmit()"
+              <input
+                v-else
+                :ref="field.key"
+                v-model="allValue[field.key]"
+                :class="[$style['join-input'], field.key]"
+                :name="field.key"
+                :placeholder="field.content.note1"
+                type="text"
+                @blur="verification(field.key)"
+                @keydown.13="keyDownSubmit()"
+              />
+            </div>
+            <!-- eslint-disable vue/no-v-html -->
+            <div
+              :class="
+                allTip[field.key] ? $style['join-tip-show'] : $style['join-tip']
+              "
+              v-html="allTip[field.key]"
             />
           </div>
-          <!-- eslint-disable vue/no-v-html -->
-          <div
-            :class="
-              allTip[field.key] ? $style['join-tip-show'] : $style['join-tip']
-            "
-            v-html="allTip[field.key]"
-          />
-        </div>
+        </form>
+
         <puzzle-verification
           v-if="memInfo.config.register_captcha_type === 3"
           ref="puzzleVer"

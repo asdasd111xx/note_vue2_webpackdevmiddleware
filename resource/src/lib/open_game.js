@@ -1,9 +1,9 @@
 import game from "@/api/game";
 import { getCookie } from "@/lib/cookie";
+import { getEmbedGameVendor } from "./game_option";
 import isMobileFuc from "@/lib/is_mobile";
 // eslint-disable-next-line import/no-cycle
 import store from "@/store";
-
 /**
  * 遊戲另開視窗
  * @param {object} params - 覆蓋預設設定資料
@@ -15,30 +15,19 @@ export default (params, success = () => {}, fail = () => {}) => {
     localStorage.removeItem("is-open-game");
   }, 2000);
 
-  console.log(params);
-  let width = 1024;
+  console.log("[OPEN GAME]", params);
 
+  const { vendor, kind, code, gameType, gameName } = params;
   // IM電競 在 IE 瀏覽器最小寬度要 1280
-  if (params.kind === 1 && params.vendor === "tgp") {
-    width = 1280;
-  }
+  // if (params.kind === 1 && params.vendor === "tgp") {
+  //   width = 1280;
+  // }
 
-  const settings = {
-    vendor: "",
-    kind: "",
-    code: "",
-    width,
-    height: 768,
-    gameName: "",
-    ...params
-  };
-
-  if (!settings.vendor || !settings.kind) {
+  if (!vendor || !kind) {
     fail({ data: { msg: "vendor 遗失" } });
     return;
   }
 
-  const { vendor, kind, code, gameType, gameName } = params;
   const temp = { kind };
 
   if (code) {
@@ -51,20 +40,16 @@ export default (params, success = () => {}, fail = () => {}) => {
 
   let newWindow = "";
   let isWebview = getCookie("platform") === "H";
-  let isIframeSite = ["evo", "allwin", "sigua_ly"].includes(vendor);
   let gameTitle = "";
   let option = `width=1024, height=768, scrollbars=yes, resizable=yes,location=no, menubar=no, toolbar=no`;
-  if (vendor === "evo") {
-    gameTitle = "EVO视讯";
-  } else if (vendor === "allwin") {
-    gameTitle = "500万彩票";
-  } else if (vendor === "sigua_ly") {
-    gameTitle = "丝瓜直播";
+  // 是否調整內嵌
+  let embedGame = getEmbedGameVendor(vendor);
+
+  if (embedGame) {
+    gameTitle = gameName || embedGame.alias || vendor.toUpperCase();
   }
 
-  gameTitle = gameName || gameTitle;
-
-  if (!isIframeSite && !isWebview) {
+  if (!embedGame && !isWebview) {
     newWindow = window.open("", gameTitle, option);
     setTimeout(() => {
       newWindow.location = "/game/loading/true";
@@ -126,11 +111,10 @@ export default (params, success = () => {}, fail = () => {}) => {
         // 開啟遊戲時強制關閉下方最愛遊戲框
         store.dispatch("actionSetCollectionStatus", false);
 
-        let link = `/game/${settings.vendor}/${settings.kind}`;
-        // const option = `width=${settings.width},height=${settings.height}${settings.kind === 4 ? ',scrollbars=yes, resizable=yes' : ''}`;
+        let link = `/game/${vendor}/${kind}`;
 
-        if (settings.code) {
-          link += `/${settings.code}`;
+        if (code) {
+          link += `/${code}`;
         }
 
         setTimeout(() => {
@@ -139,14 +123,12 @@ export default (params, success = () => {}, fail = () => {}) => {
             if (isWebview) {
               window.location.href = link;
             } else {
-              if (isIframeSite) {
+              if (embedGame) {
                 localStorage.setItem("iframe-third-url", link);
                 localStorage.setItem("iframe-third-url-title", gameTitle);
               } else {
                 newWindow.location = link;
               }
-
-              console.log("openWindow:", newWindow);
             }
           } catch (e) {
             newWindow ? newWindow.close() : "";
@@ -156,8 +138,8 @@ export default (params, success = () => {}, fail = () => {}) => {
           }
           success();
 
-          if (isIframeSite) {
-            window.location.href = `/mobile/iframe/game?vendor=${settings.vendor}&kind=${settings.kind}`;
+          if (embedGame) {
+            window.location.href = `/mobile/iframe/game?vendor=${vendor}&kind=${kind}&code=${code}`;
             return;
           }
         }, 200);

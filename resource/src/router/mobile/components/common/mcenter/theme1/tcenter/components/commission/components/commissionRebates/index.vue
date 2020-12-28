@@ -23,9 +23,15 @@
               结算方式
             </span>
             <div :class="$style['content-right']">
-              <template>{{
-                caculateList.type === 1 ? "投注返利" : "损益返利"
-              }}</template>
+              {{
+                caculateList.type === 0
+                  ? "盈亏返利"
+                  : caculateList.type === 1
+                  ? "投注返利"
+                  : caculateList.type === 2
+                  ? "损益返利"
+                  : null
+              }}
             </div>
           </div>
 
