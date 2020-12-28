@@ -175,9 +175,7 @@ export default {
               "iframe-third-origin",
               `promotion?tab=${this.tabId}`
             );
-            this.$router.push(
-              `/mobile/iframe/promotion`
-            );
+            this.$router.push(`/mobile/iframe/promotion`);
           }
         })
         .catch(error => {
@@ -392,8 +390,8 @@ $fixed_spacing_height: 43px;
   display: flex;
   align-items: center;
   justify-content: center;
-  color: #ffffff;
-  background: linear-gradient(to left, #fe593c 0%, #e61938 100%);
+  color: #731c25;
+  background: linear-gradient(to left, #f4b22e 0%, #f9d388 100%);
 
   > .red-dot {
     position: absolute;
