@@ -70,7 +70,7 @@
               <img
                 :src="
                   $getCdnPath(
-                    `/static/image/_new/login/btn_eye_${
+                    `/static/image/common/login/btn_eye_${
                       isShowPwd ? 'n' : 'd'
                     }.png`
                   )
@@ -229,8 +229,7 @@ export default {
     ...mapActions(["actionSetGlobalMessage"]),
     toggleEye(key) {
       this.verification(key, this.pwdResetInfo[key].value);
-      const target = this.pwdResetInfo[key];
-      if (target.eyeShow) {
+      if (this.isShowPwd) {
         document.getElementById("newPwd").type = "password";
         document.getElementById("confNewPwd").type = "password";
         document.getElementById("pwd").type = "password";
