@@ -47,14 +47,14 @@
           <div>Main Customer Support</div>
           <div>7*24小时专线服务 贴心至上</div>
         </div>
-
         <div :class="$style['btn-next']">
           <img
-            :src="$getCdnPath(`/static/image/sg1/webview/ic_service_arrow.png`)"
+            :src="
+              $getCdnPath(`/static/image/sg1/common/ic_arrow_next_white.png`)
+            "
           />
         </div>
       </div>
-
       <div :class="$style['info-card2']" @click="clickService">
         <div>
           <div>
@@ -72,7 +72,9 @@
 
         <div :class="$style['btn-next']">
           <img
-            :src="$getCdnPath(`/static/image/sg1/webview/ic_service_arrow.png`)"
+            :src="
+              $getCdnPath(`/static/image/sg1/common/ic_arrow_next_white.png`)
+            "
           />
         </div>
       </div>
@@ -351,6 +353,7 @@ export default {
     flex-direction: column;
     padding: 14px;
     background-image: url("/static/image/sg1/service/service_card.png");
+    background-image: url("/static/image/common/service/bg_service01.png");
     background-size: auto 100%;
     background-position: top 0 right 0;
     height: 100%;
@@ -382,6 +385,9 @@ export default {
   margin-top: 20px;
   background-image: -webkit-linear-gradient(16deg, #8ab3e2, #b5d0ef);
   background-image: linear-gradient(74deg, #8ab3e2, #b5d0ef);
+  > div:first-child {
+    background-image: url("/static/image/common/service/bg_service02.png");
+  }
 }
 
 .btn-next {

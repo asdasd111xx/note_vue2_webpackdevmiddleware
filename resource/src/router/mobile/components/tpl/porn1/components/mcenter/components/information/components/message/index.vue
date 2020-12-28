@@ -75,7 +75,13 @@
         </template>
       </div>
     </div>
-    <div v-if="!$route.query.pid" :class="$style['message-list']">
+    <div
+      v-if="!$route.query.pid"
+      :class="[
+        $style['message-list'],
+        { [$style['message-list-editing']]: isEditing }
+      ]"
+    >
       <div
         v-for="message in messageData"
         :key="message.id"

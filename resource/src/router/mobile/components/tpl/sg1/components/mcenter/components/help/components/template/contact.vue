@@ -94,7 +94,7 @@ export default {
   .block {
     width: 2.5px;
     height: 17px;
-    background: linear-gradient(to top, #dccab8, #d2b496);
+    background: linear-gradient(to top, #fe593c, #e61938);
     border-radius: 1px;
     margin-right: 10px;
   }
@@ -151,10 +151,7 @@ export default {
     font-size: 16px;
     line-height: 45px;
 
-    background: -webkit-linear-gradient(right, #dccab8, #d2b496);
-    background: -o-linear-gradient(left, #9c856e, #d2b496);
-    background: -moz-linear-gradient(left, #9c856e, #d2b496);
-    background: linear-gradient(to left, #9c856e, #d2b496);
+    background: linear-gradient(to left, #fe593c, #e61938);
   }
 }
 </style>
