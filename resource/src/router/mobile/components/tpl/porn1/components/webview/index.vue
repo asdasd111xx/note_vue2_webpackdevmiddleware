@@ -176,9 +176,6 @@ export default {
     yaboRequest({
       method: "get",
       url: `${this.siteConfig.YABO_API_DOMAIN}/System/config`,
-      headers: {
-        AuthToken: "YaboAPIforDev0nly"
-      },
       params: {
         type: "lcf"
       }

@@ -80,9 +80,6 @@ export default {
       // yaboRequest({
       //   method: "get",
       //   url: `${this.siteConfig.YABO_API_DOMAIN}/system/downloadlink`,
-      //   headers: {
-      //     AuthToken: "YaboAPIforDev0nly"
-      //   }
       // }).then(res => {
       //   if (res && res.data && res.data) {
       //     this.landingLink = res.data[0].value || res.data[1].value;
@@ -91,10 +88,7 @@ export default {
 
       goLangApiRequest({
         method: "get",
-        url: `${this.siteConfig.YABO_GOLANG_API_DOMAIN}/cxbb/System/downloadlink`,
-        headers: {
-          AuthToken: "YaboAPIforDev0nly"
-        }
+        url: `${this.siteConfig.YABO_GOLANG_API_DOMAIN}/cxbb/System/downloadlink`
       }).then(res => {
         if (res && res.data && res.data) {
           this.landingLink = res.data[0].value || res.data[1].value;
