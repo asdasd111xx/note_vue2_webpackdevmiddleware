@@ -24,9 +24,7 @@
           {{ listInfo.info }}
         </div>
         <div :class="$style['btn-next']">
-          <img
-            :src="$getCdnPath(`/static/image/common/arrow_next.png`)"
-          />
+          <img :src="$getCdnPath(`/static/image/common/arrow_next.png`)" />
         </div>
       </div>
     </template>
@@ -38,9 +36,7 @@
       <span>{{ $text("S_SHARE_APP", "分享APP") }}</span>
 
       <div :class="$style['btn-next']">
-        <img
-          :src="$getCdnPath(`/static/image/common/arrow_next.png`)"
-        />
+        <img :src="$getCdnPath(`/static/image/common/arrow_next.png`)" />
       </div>
     </div>
 
@@ -65,41 +61,43 @@
 </template>
 
 <script>
-import Vue from 'vue';
-import { mapGetters, mapActions } from 'vuex';
-import mcenter from '@/api/mcenter';
-import mcenterPageAuthControl from '@/lib/mcenterPageAuthControl';
-import common from '@/api/common';
-import ajax from '@/lib/ajax';
-import { API_MCENTER_DESPOSIT_AMOUNT } from '@/config/api';
-import mobileLinkOpen from '@/lib/mobile_link_open';
-import share from './share';
-import { getCookie } from '@/lib/cookie';
+import Vue from "vue";
+import { mapGetters, mapActions } from "vuex";
+import mcenter from "@/api/mcenter";
+import mcenterPageAuthControl from "@/lib/mcenterPageAuthControl";
+import common from "@/api/common";
+import ajax from "@/lib/ajax";
+import { API_MCENTER_DESPOSIT_AMOUNT } from "@/config/api";
+import mobileLinkOpen from "@/lib/mobile_link_open";
+import share from "./share";
+import { getCookie } from "@/lib/cookie";
 import yaboRequest from "@/api/yaboRequest";
 import bbosRequest from "@/api/bbosRequest";
-import axios from 'axios'
+import axios from "axios";
 export default {
   components: {
-    share,
+    share
   },
   data() {
     return {
       isReceive: false,
-      isShowPromotion: localStorage.getItem('is-show-promotion') ? localStorage.getItem('is-show-promotion') === 'true' : true,
+      isShowPromotion: localStorage.getItem("is-show-promotion")
+        ? localStorage.getItem("is-show-promotion") === "true"
+        : true,
       isShowSuper: false, // *顯示超級簽開關
       pornSwitchState: false,
-      requiredMoney: 'load',
-      superAppUrl: '', // 超級簽URL
-      superErrorMsg: '', // 超級簽錯誤訊息
-      toggleShare: false,
+      requiredMoney: "load",
+      superAppUrl: "", // 超級簽URL
+      superErrorMsg: "", // 超級簽錯誤訊息
+      toggleShare: false
     };
   },
   computed: {
     ...mapGetters({
-      memInfo: 'getMemInfo',
-      onlineService: 'getOnlineService',
-      loginStatus: 'getLoginStatus',
-      siteConfig: "getSiteConfig",
+      memInfo: "getMemInfo",
+      onlineService: "getOnlineService",
+      loginStatus: "getLoginStatus",
+      siteConfig: "getSiteConfig"
     }),
     isShowShare: {
       get() {
@@ -112,40 +110,40 @@ export default {
     list() {
       return [
         {
-          initName: '下载超级签，成为超级会员',
-          name: 'S_VIP_APP',
-          path: '',
-          pageName: 'super',
-          image: 'vip',
+          initName: "下载超级签，成为超级会员",
+          name: "S_VIP_APP",
+          path: "",
+          pageName: "super",
+          image: "vip",
           isPart: true,
           show: true
         },
         {
-          initName: '帮助中心',
-          name: 'S_HELP_CENTER',
-          path: '/mobile/mcenter/helpCenter',
-          pageName: 'help',
-          image: 'help',
-          info: '存提现、投注有疑问，看这里',
+          initName: "帮助中心",
+          name: "S_HELP_CENTER",
+          path: "/mobile/mcenter/helpCenter",
+          pageName: "help",
+          image: "help",
+          info: "存提现、投注有疑问，看这里",
           isPart: true,
           show: true
         },
         {
-          initName: '关於鸭博娱乐',
-          name: 'S_ABOUT_YABOLIVE',
-          path: '/mobile/mcenter/about',
-          pageName: 'about',
-          image: 'about',
+          initName: "关於鸭博娱乐",
+          name: "S_ABOUT_YABOLIVE",
+          path: "/mobile/mcenter/about",
+          pageName: "about",
+          image: "about",
           isPart: false,
           show: true
         },
         {
-          initName: '我的推广',
-          name: 'S_TEAM_CENTER',
-          path: '/mobile/mcenter/tcenter/management/member',
-          pageName: 'mypromotion',
-          image: 'mypromotion',
-          info: '合营计划',
+          initName: "我的推广",
+          name: "S_TEAM_CENTER",
+          path: "/mobile/mcenter/tcenter/management/member",
+          pageName: "mypromotion",
+          image: "mypromotion",
+          info: "合营计划",
           isPart: false,
           show: this.isShowPromotion
         }
@@ -184,14 +182,16 @@ export default {
         // {
         //   initName: '信息中心', name: 'S_MSG_CENTER', path: '/mobile/mcenter/information/post', pageName: 'information', image: 'info_post'
         // } // 信息中心
-      ].filter(item => item.show)
+      ].filter(item => item.show);
     }
   },
   created() {
-    if (localStorage.getItem('content_rating')) {
-      this.pornSwitchState = localStorage.getItem('content_rating') === "1" ? true : false;
+    if (localStorage.getItem("content_rating")) {
+      this.pornSwitchState =
+        localStorage.getItem("content_rating") === "1" ? true : false;
     } else {
-      this.pornSwitchState = this.memInfo.config.content_rating && this.memInfo.user.content_rating;
+      this.pornSwitchState =
+        this.memInfo.config.content_rating && this.memInfo.user.content_rating;
     }
 
     let type = "ccf";
@@ -201,24 +201,26 @@ export default {
       url: `${this.siteConfig.YABO_API_DOMAIN}/System/config`,
       params: {
         type: type
-      },
-      headers: {
-        AuthToken: "YaboAPIforDev0nly"
       }
     }).then(res => {
       if (res && res.data) {
-        this.isShowSuper = res.data.find(i => i.name === "VipDownload").value === "true";
+        this.isShowSuper =
+          res.data.find(i => i.name === "VipDownload").value === "true";
       }
     });
 
     if (this.loginStatus) {
-      this.isShowPromotion = localStorage.getItem('is-show-promotion') === "true";
+      this.isShowPromotion =
+        localStorage.getItem("is-show-promotion") === "true";
       this.actionSetUserdata(true).then(() => {
         this.isShowPromotion = this.memInfo.user.show_promotion;
-        localStorage.setItem('is-show-promotion', this.memInfo.user.show_promotion);
-      })
+        localStorage.setItem(
+          "is-show-promotion",
+          this.memInfo.user.show_promotion
+        );
+      });
     } else {
-      this.isShowPromotion = true
+      this.isShowPromotion = true;
       return;
     }
 
@@ -227,25 +229,27 @@ export default {
 
     // 會員存款狀態
     axios({
-      method: 'get',
-      url: '/api/v1/c/user-stat/deposit-withdraw',
-    }).then(res => {
-      if (res && res.data && res.data.ret.deposit_total) {
-        const depositTotal = Number(res.data.ret.deposit_total);
-        //   超級簽需求200充值
-        if (depositTotal >= requiredMoney) {
-          this.requiredMoneyStatus = 'ok';
-          return;
-        } else {
-          this.superErrorMsg = this.$text(
-            'S_VIP_ONLY_DOWNLOAD',
-            '充值超过％s即可下载'
-          ).replace('％s', requiredMoney);
-        }
-      }
-    }).catch(error => {
-      console.log(error);
+      method: "get",
+      url: "/api/v1/c/user-stat/deposit-withdraw"
     })
+      .then(res => {
+        if (res && res.data && res.data.ret.deposit_total) {
+          const depositTotal = Number(res.data.ret.deposit_total);
+          //   超級簽需求200充值
+          if (depositTotal >= requiredMoney) {
+            this.requiredMoneyStatus = "ok";
+            return;
+          } else {
+            this.superErrorMsg = this.$text(
+              "S_VIP_ONLY_DOWNLOAD",
+              "充值超过％s即可下载"
+            ).replace("％s", requiredMoney);
+          }
+        }
+      })
+      .catch(error => {
+        console.log(error);
+      });
 
     setTimeout(() => {
       bbosRequest({
@@ -255,37 +259,40 @@ export default {
           Vendor: 67
         },
         params: {
-          lang: 'zh-cn',
-          bundleID: 'chungyo.foxyporn.prod.enterprise.vip',
-          platform: 1,
+          lang: "zh-cn",
+          bundleID: "chungyo.foxyporn.prod.enterprise.vip",
+          platform: 1
         }
       }).then(res => {
         this.superAppUrl = res.data.url;
       });
-    })
-
+    });
   },
   methods: {
-    ...mapActions(['actionEnterMCenterThirdPartyLink',
-      'actionSetUserdata',
-      'actionSetGlobalMessage'
+    ...mapActions([
+      "actionEnterMCenterThirdPartyLink",
+      "actionSetUserdata",
+      "actionSetGlobalMessage"
     ]),
     mobileLinkOpen,
     onListClick(item) {
-      if (item.pageName === 'super') {
+      if (item.pageName === "super") {
         if (!this.loginStatus) {
-          this.$router.push('/mobile/login');
+          this.$router.push("/mobile/login");
           return;
         }
 
         if (this.requiredMoneyStatus === "ok") {
           // 超級籤app下載網址
-          const appUrl = this.superAppUrl || 'https://user.51cjq.xyz/pkgs/ybsp2.app';
-          let isWebView = getCookie('platform') === "H" || window.location.host === "yaboxxxapp02.com";
+          const appUrl =
+            this.superAppUrl || "https://user.51cjq.xyz/pkgs/ybsp2.app";
+          let isWebView =
+            getCookie("platform") === "H" ||
+            window.location.host === "yaboxxxapp02.com";
           if (isWebView) {
             window.location.href = appUrl;
           } else {
-            window.open(appUrl, '_blank');
+            window.open(appUrl, "_blank");
           }
         } else {
           this.actionSetGlobalMessage({ msg: this.superErrorMsg });
@@ -294,29 +301,29 @@ export default {
         return;
       }
 
-      if (item.pageName === 'service') {
+      if (item.pageName === "service") {
         if (!this.onlineService.url) {
           return;
         }
 
-        this.mobileLinkOpen({ linkType: 'static', linkTo: 'service' });
+        this.mobileLinkOpen({ linkType: "static", linkTo: "service" });
         return;
       }
 
-      if (item.pageName === 'mypromotion') {
+      if (item.pageName === "mypromotion") {
         if (!this.loginStatus) {
-          this.$router.push('/mobile/login');
+          this.$router.push("/mobile/login");
           return;
         }
       }
 
-      if (item.pageName === 'bankRebate') {
+      if (item.pageName === "bankRebate") {
         this.actionEnterMCenterThirdPartyLink({
-          type: 'member',
+          type: "member",
           page: item.pageName
-        }).then((pageName) => {
+        }).then(pageName => {
           if (pageName) {
-            mcenterPageAuthControl(pageName).then((response) => {
+            mcenterPageAuthControl(pageName).then(response => {
               if (response && response.status) {
                 this.$router.push(item.path);
               }
@@ -325,7 +332,7 @@ export default {
         });
       }
 
-      mcenterPageAuthControl(item.pageName).then((response) => {
+      mcenterPageAuthControl(item.pageName).then(response => {
         if (response && response.status) {
           this.$router.push(item.path);
         }
@@ -333,13 +340,13 @@ export default {
     },
 
     /**
- * 色站開關 狀態切換
- * @function toggleSwitch
- * @param {string} e - input argument
- */
+     * 色站開關 狀態切換
+     * @function toggleSwitch
+     * @param {string} e - input argument
+     */
     toggleSwitch() {
       if (!this.loginStatus) {
-        this.$router.push('/mobile/joinmember');
+        this.$router.push("/mobile/joinmember");
         return;
       }
       if (!this.memInfo.config.content_rating) {
@@ -357,11 +364,11 @@ export default {
           content_rating: +!this.pornSwitchState
         },
         success: () => {
-          localStorage.setItem('content_rating', (+!this.pornSwitchState));
+          localStorage.setItem("content_rating", +!this.pornSwitchState);
           if (+!this.pornSwitchState) {
-            localStorage.setItem('home-menu-type', 'welfare');
+            localStorage.setItem("home-menu-type", "welfare");
           } else {
-            localStorage.setItem('home-menu-type', '');
+            localStorage.setItem("home-menu-type", "");
           }
 
           this.memInfo.user.content_rating = +!this.pornSwitchState;
