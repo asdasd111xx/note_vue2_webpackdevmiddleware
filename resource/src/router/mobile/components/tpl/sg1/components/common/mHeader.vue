@@ -274,6 +274,21 @@ export default {
     border-bottom: unset;
   }
 
+  // 小豬視頻的search Header 為黑色底
+  &.search-page {
+    background: #414141;
+  }
+
+  &.gay {
+    background: #4a8cb8;
+    border-bottom: none;
+  }
+
+  &.les {
+    background: #d64545;
+    border-bottom: none;
+  }
+
   &::before {
     content: "";
     display: inline-block;
