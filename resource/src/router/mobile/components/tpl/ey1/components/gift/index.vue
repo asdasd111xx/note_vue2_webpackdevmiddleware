@@ -269,8 +269,28 @@ export default {
       }
     },
     getFuliUrl(target) {
-      localStorage.setItem("iframe-third-url-title", target.name);
-      this.$router.push(`/mobile/iframe/third/fengniao?alias=${target.alias}`);
+      let newWindow = "";
+      newWindow = window.open("/");
+
+      goLangApiRequest({
+        method: "get",
+        url: `${this.siteConfig.YABO_GOLANG_API_DOMAIN}/xbb/Link/External/Url?lang=zh-cn&urlName=${target.alias}&needToken=true&externalCode=fengniao`
+      })
+        .then(res => {
+          const url = res.data.uri + "&cors=embed";
+          newWindow.location = url;
+        })
+        .catch(error => {
+          newWindow.close();
+          this.isLoading = false;
+          if (error && error.data && error.data.msg) {
+            this.actionSetGlobalMessage({ msg: error.data.msg });
+          }
+        });
+      return;
+
+      // localStorage.setItem("iframe-third-url-title", target.name);
+      // this.$router.push(`/mobile/iframe/third/fengniao?alias=${target.alias}`);
     }
   }
 };
