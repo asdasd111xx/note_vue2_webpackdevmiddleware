@@ -150,6 +150,7 @@ import { format } from "date-fns";
 import bbosRequest from "@/api/bbosRequest";
 import { mapActions, mapGetters } from "vuex";
 import popup from "./components/popup";
+import EST from "@/lib/EST";
 
 export default {
   components: {
@@ -199,8 +200,7 @@ export default {
       return value.toString().replace(/\B(?=(\d{3})+(?!\d))/g, ",");
     },
     dateFormat(date) {
-      const est = format(new Date(date), "yyyy/MM/dd HH:mm:ss+20:00");
-      return format(new Date(est), "yyyy-MM-dd HH:mm:ss");
+      return EST(Vue.moment(date).format("YYYY-MM-DD HH:mm:ss"));
     }
   },
   created() {
