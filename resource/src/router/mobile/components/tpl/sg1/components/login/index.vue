@@ -1,9 +1,5 @@
 <template>
-  <mobile-container
-    :header-config="headerConfig"
-    :class="$style.container"
-    :hasFooter="false"
-  >
+  <mobile-container :header-config="headerConfig" :hasFooter="false">
     <div slot="content" class="content-wrap">
       <div class="container">
         <div class="login-wrap clearfix">
@@ -12,7 +8,7 @@
           </div>
           <div class="login-form-wrap">
             <!-- 錯誤訊息 -->
-            <div :class="$style['err-msg']">
+            <div class="err-msg">
               <div v-show="errMsg">
                 {{ errMsg }}
               </div>
@@ -44,7 +40,7 @@
                     "
                   />
                 </div>
-                <div :class="$style['clear']" v-if="username">
+                <div class="clear" v-if="username">
                   <img
                     :src="$getCdnPath(`/static/image/common/ic_clear.png`)"
                     @click="username = ''"
@@ -72,7 +68,7 @@
                   @keydown.13="keyDownSubmit()"
                   autocomplete="password"
                 />
-                <div :class="$style['eye']">
+                <div class="eye">
                   <img
                     :src="
                       $getCdnPath(
@@ -134,23 +130,6 @@
                   />
                 </div>
               </div>
-              <div class="login-bottom-wrap">
-                <!-- 滑動驗證 -->
-                <slide-verification
-                  v-if="memInfo.config.login_captcha_type === 2"
-                  :is-enable="isSlideAble"
-                  :success-fuc="slideLogin"
-                  page-status="login"
-                />
-                <!-- 登入鈕 -->
-                <div
-                  v-else
-                  class="login-button login-submit"
-                  @click="handleClickLogin"
-                >
-                  {{ $text("S_LOGIN_TITLE", "登录") }}
-                </div>
-              </div>
               <div class="login-deposit-username clearfix">
                 <div class="icon-wrap" @click="rememberPwd = !rememberPwd">
                   <img
@@ -170,6 +149,25 @@
                   @click="$router.push('/mobile/forgetpwd/member')"
                   >{{ $text("S_PASSWORD_FORGET", "忘记密码") }}?</span
                 >
+              </div>
+              <div class="login-bottom-wrap">
+                <!-- 滑動驗證 -->
+                <slide-verification
+                  v-if="memInfo.config.login_captcha_type === 2"
+                  :is-enable="isSlideAble"
+                  :success-fuc="slideLogin"
+                  page-status="login"
+                />
+                <!-- 登入鈕 -->
+                <div
+                  v-else
+                  class="login-button login-submit"
+                  @click="handleClickLogin"
+                >
+                  <div>
+                    {{ $text("S_LOGIN_TITLE", "登录") }}
+                  </div>
+                </div>
               </div>
               <div class="login-link-wrap">
                 <!-- 加入會員 -->
@@ -193,11 +191,12 @@
             :theme="$styleSecurityCheck"
             :on-login="login"
           />
-          <div :class="$style.version">
+          <div class="version">
             {{ version }}
           </div>
         </div>
       </div>
+      <page-loading :is-show="isLoading" />
     </div>
   </mobile-container>
 </template>
@@ -217,6 +216,10 @@ export default {
     securityCheck: () =>
       import(
         /* webpackChunkName: 'securityCheck' */ "@/router/web/components/common/securityCheck"
+      ),
+    pageLoading: () =>
+      import(
+        /* webpackChunkName: 'pageLoading' */ "@/router/mobile/components/common/pageLoading"
       ),
     slideVerification,
     puzzleVerification,
@@ -438,54 +441,5 @@ export default {
   background-color: rgba(0, 0, 0, 0.5);
   width: 100%;
   height: 100%;
-}
-</style>
-
-<style lang="scss" module>
-@import "~@/css/variable.scss";
-
-.version {
-  color: $main_text_color3;
-  position: absolute;
-  right: 14px;
-  bottom: 5vh;
-  font-size: 12px;
-}
-
-.err-msg {
-  padding: 2px 0;
-  color: $main_error_color1;
-  min-height: 25px;
-  line-height: 25px;
-}
-
-.eye {
-  display: flex;
-  align-items: center;
-  height: 100%;
-  width: 18px;
-  position: absolute;
-  right: 10px;
-  top: 0;
-
-  > img {
-    width: 18px;
-    height: 18px;
-  }
-}
-
-.clear {
-  display: flex;
-  align-items: center;
-  height: 100%;
-  width: 12px;
-  position: absolute;
-  right: 10px;
-  top: 0;
-
-  > img {
-    width: 12px;
-    height: 12px;
-  }
 }
 </style>

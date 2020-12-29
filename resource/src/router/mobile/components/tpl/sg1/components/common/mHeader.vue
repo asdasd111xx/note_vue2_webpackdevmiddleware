@@ -79,8 +79,7 @@
             @click="handleClickAsk"
           />
           <div v-show="hasUnreadMessage" />
-          <div v-if="themetpl() === 'sg1'" :class="$style['sg1-red-dot']" />
-          <div v-else :class="$style['red-dot']" />
+          <div :class="$style['red-dot']" />
         </div>
       </div>
       <div v-else :class="$style['login-wrap']">
@@ -250,9 +249,6 @@ export default {
       }
 
       this.$router.push({ path: "search", query: { source: this.source } });
-    },
-    themetpl() {
-      return this.siteconfig.MOBILE_WEB_TPL;
     }
   }
 };
@@ -571,7 +567,7 @@ export default {
   }
 }
 
-.sg1-red-dot {
+.red-dot {
   position: absolute;
   right: -1px;
   background: red;
@@ -579,16 +575,6 @@ export default {
   border: 1px solid #f9e8b4;
   width: 7px;
   height: 7px;
-  top: -2px;
-}
-
-.red-dot {
-  position: absolute;
-  right: -4px;
-  background: red;
-  border-radius: 50%;
-  width: 6px;
-  height: 6px;
   top: -2px;
 }
 
