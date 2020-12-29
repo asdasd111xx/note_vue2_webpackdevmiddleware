@@ -1,5 +1,10 @@
 <template>
-  <div :class="$style['content-wrap']">
+  <div
+    :style="{
+      background: '#fefffe',
+      'min-height': 'calc(100vh - 43px)'
+    }"
+  >
     <!-- 錯誤訊息 -->
     <div :class="$style['err-msg']">
       <div v-show="errMsg">
@@ -377,8 +382,6 @@ export default {
 }
 
 .content-wrap {
-  background: #fefffe;
-  min-height: 100vh;
 }
 
 .reset-content {
