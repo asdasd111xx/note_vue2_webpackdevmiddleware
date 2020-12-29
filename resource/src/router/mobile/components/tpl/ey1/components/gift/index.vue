@@ -270,7 +270,7 @@ export default {
     },
     getFuliUrl(target) {
       let newWindow = "";
-      newWindow = window.open("/");
+      newWindow = window.open();
 
       goLangApiRequest({
         method: "get",
