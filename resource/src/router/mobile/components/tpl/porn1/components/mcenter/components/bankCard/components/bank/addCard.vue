@@ -140,7 +140,11 @@
           <div :class="$style['input-wrap']">
             <template v-if="['ey1'].includes(themeTPL)">
               <select v-model="phoneHead" :class="$style['phone-selected']">
-                <option v-for="option in phoneHeadOption" v-bind:value="option">
+                <option
+                  v-for="option in phoneHeadOption"
+                  v-bind:value="option"
+                  :key="option"
+                >
                   {{ option }}
                 </option>
               </select>
@@ -330,6 +334,8 @@ export default {
       let redirect = query.redirect;
       if (!redirect) {
         this.setPageStatus(0, "bankCardInfo", true);
+        this.NextStepStatus = false;
+        this.$emit("update:addBankCardStep", "one");
         return;
       }
 
@@ -365,6 +371,8 @@ export default {
           return;
         default:
           this.setPageStatus(0, "bankCardInfo", true);
+          this.NextStepStatus = false;
+          this.$emit("update:addBankCardStep", "one");
           return;
       }
     }
