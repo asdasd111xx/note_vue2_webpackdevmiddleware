@@ -181,14 +181,14 @@ export default {
     },
     show() {
       this.isShow = true;
-      // this.closeTimer = setTimeout(() => {
-      //   this.isShow = false;
-      //   setTimeout(() => {
-      //     this.$emit("close");
-      //     clearTimeout(this.closeTimer);
-      //     this.closeTimer = null;
-      //   }, 800);
-      // }, 3000);
+      this.closeTimer = setTimeout(() => {
+        this.isShow = false;
+        setTimeout(() => {
+          this.$emit("close");
+          clearTimeout(this.closeTimer);
+          this.closeTimer = null;
+        }, 800);
+      }, 3000);
     },
     getTime(string) {
       return Vue.moment(string).format("llll");
@@ -196,7 +196,6 @@ export default {
     getText(key) {
       const event = this.data.event;
       let string = "";
-      console.log(this.data);
       switch (event) {
         case "maintain_notice":
           string = `即将进行系统维护 <br /> 于<span>${this.data.countdown}</span>分钟后开始`;
