@@ -216,11 +216,11 @@ export default {
         this.headerConfig.hasHelp.func();
       }
 
-      // 充值不開放
-      // if (this.headerConfig.hasHelp.type === "deposit") {
-      //   this.actionSetGlobalMessage({ type: "incoming" });
-      //   return;
-      // }
+      // 充值不開放(絲瓜)
+      if (this.headerConfig.hasHelp.type === "deposit") {
+        this.actionSetGlobalMessage({ type: "incoming" });
+        return;
+      }
 
       this.$router.push(this.headerConfig.hasHelp.url);
     },
@@ -272,6 +272,21 @@ export default {
 
   &.no-border-bottom {
     border-bottom: unset;
+  }
+
+  // 小豬視頻的search Header 為黑色底
+  &.search-page {
+    background: #414141;
+  }
+
+  &.gay {
+    background: #4a8cb8;
+    border-bottom: none;
+  }
+
+  &.les {
+    background: #d64545;
+    border-bottom: none;
   }
 
   &::before {

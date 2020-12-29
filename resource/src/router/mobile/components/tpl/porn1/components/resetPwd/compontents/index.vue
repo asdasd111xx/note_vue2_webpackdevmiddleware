@@ -371,14 +371,14 @@ export default {
 <style lang="scss" module>
 @import "~@/css/variable.scss";
 
-.content-wrap {
-  background: #fefffe;
-  min-height: 100vh;
-}
-
 .reset-container {
   min-height: 100%;
   background-color: $main_background_white1;
+}
+
+.content-wrap {
+  background: #fefffe;
+  min-height: 100vh;
 }
 
 .reset-content {
