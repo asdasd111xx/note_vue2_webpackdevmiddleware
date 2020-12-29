@@ -116,7 +116,7 @@ export default {
     giftMenuList() {
       return [
         {
-          isShow: !["41"].includes(this.memInfo.user.domain),
+          isShow: true,
           title: "福利",
           icon: "/static/image/ey1/gift/icon_gift_bonus.png",
           items: [
