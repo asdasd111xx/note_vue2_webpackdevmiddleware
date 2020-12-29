@@ -125,12 +125,12 @@
             </div>
           </div>
         </template>
-        <div
+        <!-- <div
           v-if="setStartTime.valueOf() > setEndTime.valueOf()"
           :class="[$style['date-tip']]"
         >
           开始日期不能大于结束日期
-        </div>
+        </div> -->
       </div>
       <div
         v-if="selectMenu !== ''"
@@ -255,13 +255,12 @@
 </template>
 
 <script>
-import { mapGetters } from "vuex";
+import { mapGetters, mapActions } from "vuex";
 import Vue from "vue";
 import InfiniteLoading from "vue-infinite-loading";
 import EST from "@/lib/EST";
 import ajax from "@/lib/ajax";
 import datePicker from "@/router/mobile/components/common/datePicker";
-
 export default {
   components: {
     datePicker,
@@ -380,6 +379,7 @@ export default {
     this.getTotalTime();
   },
   methods: {
+    ...mapActions(["actionSetGlobalMessage"]),
     getGameRecord(data) {
       this.selectType = data;
       this.resetStatus();
@@ -510,6 +510,7 @@ export default {
     },
     setCustomTime() {
       if (this.setStartTime > this.setEndTime) {
+        this.actionSetGlobalMessage({ msg: "开始日期不能大于结束日期" });
         return;
       }
 
