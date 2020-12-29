@@ -20,7 +20,7 @@ export default target => {
     case "sg1":
       // linkTitle = '鸭博娱乐';
       // linkTitle = '亿元娱乐';
-      // linkTitle = '丝瓜娱乐';
+      // linkTitle = '丝瓜直播';
       linkTitle = "优惠活动";
       break;
     default:

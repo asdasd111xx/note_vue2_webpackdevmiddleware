@@ -20,7 +20,7 @@
 
     <div :class="$style['cell2']">
       <div :class="$style['title']">
-        <strong>购买SWAG钻石，您需要使用丝瓜娱乐点数进行兑换</strong>
+        <strong>购买SWAG钻石，您需要使用丝瓜直播点数进行兑换</strong>
         <div style="margin-top:10px">
           您可以从以下三个地方进入购买页面查看并兑换
         </div>

@@ -1,5 +1,10 @@
 <template>
-  <swiper id="home-slider" :options="opts" :key="updateKey">
+  <swiper
+    id="home-slider"
+    :class="$style['home-slider']"
+    :options="opts"
+    :key="updateKey"
+  >
     <swiper-slide v-for="(info, key) in slider" :key="key">
       <div :class="$style['phone-image-wrap']">
         <img
@@ -188,6 +193,10 @@ export default {
 </script>
 
 <style lang="scss" module>
+.home-slider {
+  z-index: 4;
+}
+
 :global {
   .swiper-pagination-bullet {
     width: 5px;

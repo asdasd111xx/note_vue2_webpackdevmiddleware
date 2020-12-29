@@ -78,7 +78,8 @@
             :src="$getCdnPath('/static/image/sg1/common/icon_ask.png')"
             @click="handleClickAsk"
           />
-          <div v-show="hasUnreadMessage" :class="$style['red-dot']" />
+          <div v-show="hasUnreadMessage" />
+          <div :class="$style['red-dot']" />
         </div>
       </div>
       <div v-else :class="$style['login-wrap']">
@@ -185,7 +186,8 @@ export default {
   computed: {
     ...mapGetters({
       membalance: "getMemBalance",
-      loginStatus: "getLoginStatus"
+      loginStatus: "getLoginStatus",
+      siteconfig: "getSiteConfig"
     }),
     mainClass() {
       const style = this.$style;
@@ -567,11 +569,12 @@ export default {
 
 .red-dot {
   position: absolute;
-  right: -4px;
+  right: -1px;
   background: red;
-  border-radius: 50%;
-  width: 6px;
-  height: 6px;
+  border-radius: 60%;
+  border: 1px solid #f9e8b4;
+  width: 7px;
+  height: 7px;
   top: -2px;
 }
 

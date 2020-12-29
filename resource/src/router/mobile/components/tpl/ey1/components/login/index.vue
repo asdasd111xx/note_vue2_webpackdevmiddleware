@@ -1,18 +1,14 @@
 <template>
-  <mobile-container
-    :header-config="headerConfig"
-    :class="$style.container"
-    :hasFooter="false"
-  >
+  <mobile-container :header-config="headerConfig" :hasFooter="false">
     <div slot="content" class="content-wrap">
       <div class="container">
         <div class="login-wrap clearfix">
           <div class="login-logo">
-            <img :src="'/static/image/ey1/common/logo.png'" />
+            <img :src="'/static/image/ey1/common/logo_b.png'" />
           </div>
           <div class="login-form-wrap">
             <!-- 錯誤訊息 -->
-            <div :class="$style['err-msg']">
+            <div class="err-msg">
               <div v-show="errMsg">
                 {{ errMsg }}
               </div>
@@ -44,7 +40,7 @@
                     "
                   />
                 </div>
-                <div :class="$style['clear']" v-if="username">
+                <div class="clear" v-if="username">
                   <img
                     :src="$getCdnPath(`/static/image/common/ic_clear.png`)"
                     @click="username = ''"
@@ -72,7 +68,7 @@
                   @keydown.13="keyDownSubmit()"
                   autocomplete="password"
                 />
-                <div :class="$style['eye']">
+                <div class="eye">
                   <img
                     :src="
                       $getCdnPath(
@@ -130,9 +126,7 @@
                 />
                 <div class="captchaText-refresh" @click="getCaptcha">
                   <img
-                    :src="
-                      '/static/image/porn1/common/ic_verification_reform.png'
-                    "
+                    :src="'/static/image/common/ic_verification_reform.png'"
                   />
                 </div>
               </div>
@@ -170,7 +164,9 @@
                   class="login-button login-submit"
                   @click="handleClickLogin"
                 >
-                  {{ $text("S_LOGIN_TITLE", "登录") }}
+                  <div>
+                    {{ $text("S_LOGIN_TITLE", "登录") }}
+                  </div>
                 </div>
               </div>
               <div class="login-link-wrap">
@@ -195,11 +191,12 @@
             :theme="$styleSecurityCheck"
             :on-login="login"
           />
-          <div :class="$style.version">
+          <div class="version">
             {{ version }}
           </div>
         </div>
       </div>
+      <page-loading :is-show="isLoading" />
     </div>
   </mobile-container>
 </template>
@@ -219,6 +216,10 @@ export default {
     securityCheck: () =>
       import(
         /* webpackChunkName: 'securityCheck' */ "@/router/web/components/common/securityCheck"
+      ),
+    pageLoading: () =>
+      import(
+        /* webpackChunkName: 'pageLoading' */ "@/router/mobile/components/common/pageLoading"
       ),
     slideVerification,
     puzzleVerification,
@@ -346,10 +347,11 @@ export default {
   position: relative;
   margin: 194px auto 0;
   border-radius: 4px;
-  background: #fff;
+  background: #22fff2;
   padding-bottom: 24px;
   box-shadow: 0 2px 8px rgba(0, 0, 0, 0.33);
   max-width: 340px;
+  color: #fff;
   font-size: 14px;
 }
 
@@ -437,54 +439,5 @@ export default {
   background-color: rgba(0, 0, 0, 0.5);
   width: 100%;
   height: 100%;
-}
-</style>
-
-<style lang="scss" module>
-@import "~@/css/variable.scss";
-
-.version {
-  color: $main_text_color3;
-  position: absolute;
-  right: 14px;
-  bottom: 5vh;
-  font-size: 12px;
-}
-
-.err-msg {
-  padding: 2px 0;
-  color: #ff1010;
-  min-height: 25px;
-  line-height: 25px;
-}
-
-.eye {
-  display: flex;
-  align-items: center;
-  height: 100%;
-  width: 18px;
-  position: absolute;
-  right: 10px;
-  top: 0;
-
-  > img {
-    width: 18px;
-    height: 18px;
-  }
-}
-
-.clear {
-  display: flex;
-  align-items: center;
-  height: 100%;
-  width: 12px;
-  position: absolute;
-  right: 10px;
-  top: 0;
-
-  > img {
-    width: 12px;
-    height: 12px;
-  }
 }
 </style>

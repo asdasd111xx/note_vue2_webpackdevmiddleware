@@ -195,6 +195,8 @@ export default {
   position: relative;
   padding: 0 18px 0 13px;
   margin-top: 1px;
+  background: white;
+  z-index: 4;
 }
 
 .type-wrap {

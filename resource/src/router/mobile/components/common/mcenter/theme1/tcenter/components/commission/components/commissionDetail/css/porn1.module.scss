@@ -1,0 +1,35 @@
+@import "@/css/variable.scss";
+
+.tab-wrap {
+  position: relative;
+  display: flex;
+  background: #fff;
+  border-bottom: 2px solid #eee;
+}
+
+.tab-item {
+  flex: 1;
+  position: relative;
+  height: 42px;
+  line-height: 42px;
+  text-align: center;
+  color: $main_text_color2;
+  overflow: hidden;
+  text-overflow: ellipsis;
+  white-space: nowrap;
+
+  &.is-current {
+    color: $main_text_color4;
+  }
+}
+
+.active-slider {
+  position: absolute;
+  width: 40px;
+  height: 2px;
+  bottom: 0;
+  transform: translateX(-50%);
+  background: #be9e7f;
+  // left: calc(50% / 2 - 20px);
+  transition: left 0.31s;
+}

@@ -75,7 +75,13 @@
         </template>
       </div>
     </div>
-    <div v-if="!$route.query.pid" :class="$style['message-list']">
+    <div
+      v-if="!$route.query.pid"
+      :class="[
+        $style['message-list'],
+        { [$style['message-list-editing']]: isEditing }
+      ]"
+    >
       <div
         v-for="message in messageData"
         :key="message.id"
@@ -194,7 +200,7 @@
     </div>
     <div v-if="isDelete" :class="$style['delete-tips']">
       <div :class="$style['tips-wrap']">
-        <div :class="$style['tips-title']">温馨提示</div>
+        <div :class="$style['tips-title']">温馨提醒</div>
         <div :class="$style['tips-text']">删除后将无法恢复，确定要删除吗？</div>
         <div :class="[$style['tips-button'], 'clearfix']">
           <div :class="$style['delete-cancel']" @click="isDelete = false">

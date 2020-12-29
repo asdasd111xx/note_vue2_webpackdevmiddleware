@@ -108,7 +108,8 @@ export default {
   computed: {
     ...mapGetters({
       hasBank: "getHasBank",
-      siteConfig: "getSiteConfig"
+      siteConfig: "getSiteConfig",
+      memInfo: "getMemInfo"
     }),
     $style() {
       const style =

@@ -60,6 +60,10 @@ export default {
     videoListSg1: () =>
       import(
         /* webpackChunkName: 'videoListSg1' */ "../../tpl/sg1/components/videoList"
+      ),
+    hotLobbySg1: () =>
+      import(
+        /* webpackChunkName: 'hotLobbySg1' */ "../../tpl/sg1/components/hotLobby"
       )
   },
   mcenter: {

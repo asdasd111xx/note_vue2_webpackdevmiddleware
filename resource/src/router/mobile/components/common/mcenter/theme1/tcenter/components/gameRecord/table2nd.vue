@@ -2,16 +2,16 @@
   <div :class="$style['record-wrap']">
     <div :class="$style['total-block']">
       <span>笔数：{{ counts }}</span>
-      <span>有效投注：{{ total.valid_bet }}</span>
+      <span>有效投注：{{ toCurrency(total.valid_bet) }}</span>
       <span
         >派彩：
         <span
           v-if="themetpl() === 'sg1'"
           :class="{ [$style['is-negative']]: total.payoff > 0 }"
-          >{{ +total.payoff }}</span
+          >{{ toCurrency(+total.payoff) }}</span
         >
         <span v-else :class="{ [$style['is-negative']]: total.payoff < 0 }">{{
-          +total.payoff
+          toCurrency(+total.payoff)
         }}</span></span
       >
     </div>
@@ -27,14 +27,14 @@
               $style['payout'],
               { [$style['is-negative']]: info.payoff > 0 }
             ]"
-            >{{ +info.payoff }}</span
+            >{{ toCurrency(info.payoff) }}</span
           ><span
             v-else
             :class="[
               $style['payout'],
               { [$style['is-negative']]: info.payoff < 0 }
             ]"
-            >{{ +info.payoff }}</span
+            >{{ toCurrency(info.payoff) }}</span
           >
         </div>
         <div>
@@ -42,15 +42,15 @@
         </div>
         <div :class="$style['bet']">
           <span>单量</span>
-          <span>{{ info.count }}</span>
+          <span>{{ toCurrency(info.count) }}</span>
         </div>
         <div :class="$style['bet']">
           <span>投注金额</span>
-          <span>{{ info.bet }}</span>
+          <span>{{ toCurrency(info.bet) }}</span>
         </div>
         <div :class="$style['bet']">
           <span>有效投注</span>
-          <span>{{ info.valid_bet }}</span>
+          <span>{{ toCurrency(info.valid_bet) }}</span>
         </div>
       </div>
     </div>
@@ -83,6 +83,12 @@ export default {
   methods: {
     themetpl() {
       return this.siteconfig.MOBILE_WEB_TPL;
+    },
+
+    toCurrency(num) {
+      var parts = num.toString().split(".");
+      parts[0] = parts[0].replace(/\B(?=(\d{3})+(?!\d))/g, ",");
+      return parts.join(".");
     }
   }
 };

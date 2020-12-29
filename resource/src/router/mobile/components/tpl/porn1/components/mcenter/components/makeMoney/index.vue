@@ -11,13 +11,13 @@
           :src="`/static/image/_new/mcenter/makeMoney/pic_promotion_banner.png`"
         />
       </div>
-      <div @click="copyCode" :class="$style['img-wrap']">
+      <div :class="$style['img-wrap']">
         <img
           :class="$style['img-wrap']"
           :src="`/static/image/_new/mcenter/makeMoney/img001.png`"
         />
         <span>{{ agentLink.agentCode }}</span>
-        <div :class="$style['copy-btn']">
+        <div @click="copyCode" :class="$style['copy-btn']">
           复制
         </div>
       </div>
