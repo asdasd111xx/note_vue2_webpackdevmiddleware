@@ -277,16 +277,25 @@ export default {
       }
     },
     getFuliUrl(target) {
+      let newWindow = "";
+      newWindow = window.open();
+
       goLangApiRequest({
         method: "get",
         url: `${this.siteConfig.YABO_GOLANG_API_DOMAIN}/xbb/Link/External/Url?lang=zh-cn&urlName=${target.alias}&needToken=true&externalCode=fengniao`
       })
         .then(res => {
-          this.getThridUrl(target, res.data.uri);
+          const url = res.data.uri + "&cors=embed";
+          newWindow.location = url;
         })
-        .catch(res => {
-          console.log("error" + error);
+        .catch(error => {
+          newWindow.close();
+          this.isLoading = false;
+          if (error && error.data && error.data.msg) {
+            this.actionSetGlobalMessage({ msg: error.data.msg });
+          }
         });
+      return;
     }
   }
 };
