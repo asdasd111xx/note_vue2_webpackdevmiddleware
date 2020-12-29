@@ -49,7 +49,7 @@
               <div :class="[$style['content-img']]">
                 <img
                   :src="
-                    $getCdnPath(`/static/image/_new/mcenter/help/sample_01.png`)
+                    $getCdnPath(`/static/image/sg1/mcenter/help/withdraw.png`)
                   "
                 />
               </div>

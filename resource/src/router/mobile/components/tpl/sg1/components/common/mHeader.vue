@@ -216,11 +216,11 @@ export default {
         this.headerConfig.hasHelp.func();
       }
 
-      // 充值不開放
-      // if (this.headerConfig.hasHelp.type === "deposit") {
-      //   this.actionSetGlobalMessage({ type: "incoming" });
-      //   return;
-      // }
+      // 充值不開放(絲瓜)
+      if (this.headerConfig.hasHelp.type === "deposit") {
+        this.actionSetGlobalMessage({ type: "incoming" });
+        return;
+      }
 
       this.$router.push(this.headerConfig.hasHelp.url);
     },
