@@ -12,6 +12,7 @@
       >
         {{ item.text }}
       </div>
+
       <div
         :class="$style['active-slider']"
         :style="{ left: `calc(25% + 50% * ${currentTab})` }"
@@ -47,8 +48,14 @@ export default {
   },
   computed: {
     ...mapGetters({
-      memInfo: "getMemInfo"
+      memInfo: "getMemInfo",
+      siteConfig: "getSiteConfig"
     }),
+    $style() {
+      const style =
+        this[`$style_${this.siteConfig.MOBILE_WEB_TPL}`] || this.$style_porn1;
+      return style;
+    },
     tabItem() {
       return [
         {
@@ -86,39 +93,6 @@ export default {
 };
 </script>
 
-<style lang="scss" module>
-@import "~@/css/variable.scss";
-.tab-wrap {
-  position: relative;
-  display: flex;
-  background: #fff;
-  border-bottom: 2px solid #eee;
-}
-
-.tab-item {
-  flex: 1;
-  position: relative;
-  height: 42px;
-  line-height: 42px;
-  text-align: center;
-  color: $main_text_color2;
-  overflow: hidden;
-  text-overflow: ellipsis;
-  white-space: nowrap;
-
-  &.is-current {
-    color: $main_text_color4;
-  }
-}
-
-.active-slider {
-  position: absolute;
-  width: 40px;
-  height: 2px;
-  bottom: 0;
-  transform: translateX(-50%);
-  background: #be9e7f;
-  // left: calc(50% / 2 - 20px);
-  transition: left 0.31s;
-}
-</style>
+<style lang="scss" src="./css/porn1.module.scss" module="$style_porn1"></style>
+<style lang="scss" src="./css/ey1.module.scss" module="$style_ey1"></style>
+<style lang="scss" src="./css/sg1.module.scss" module="$style_sg1"></style>
