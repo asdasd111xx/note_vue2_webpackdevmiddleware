@@ -59,7 +59,14 @@
 
     <template v-if="headerConfig.hasSearchBtn">
       <div :class="$style['btn-search-wrap']" @click="goSearch">
-        <div :class="$style['normal-search']" />
+        <div v-if="source === 'smallPig'" :class="$style['sp-search']" />
+
+        <div
+          v-else-if="source === 'gay' || source === 'les'"
+          :class="$style['gay-search']"
+        />
+
+        <div v-else :class="$style['normal-search']" />
       </div>
     </template>
 
@@ -243,7 +250,9 @@ export default {
       }
     },
     goSearch() {
-      if (["casino", "card", "mahjong"].includes(this.$route.name)) {
+      if (
+        ["casino", "card", "mahjong", "hotLobby"].includes(this.$route.name)
+      ) {
         this.updateSearchStatus();
         return;
       }
@@ -605,8 +614,22 @@ export default {
   }
 }
 
+.sp-search {
+  background: url("/static/image/common/ic_search_grey.png");
+  width: 20px;
+  height: 20px;
+  background-size: contain;
+}
+
+.gay-search {
+  background: url("/static/image/common/ic_search_white.png");
+  width: 20px;
+  height: 20px;
+  background-size: contain;
+}
+
 .normal-search {
-  background: url("/static/image/sg1/common/icon_search_n.png");
+  background: url("/static/image/common/ic_search_grey.png");
   width: 20px;
   height: 20px;
   background-size: contain;
