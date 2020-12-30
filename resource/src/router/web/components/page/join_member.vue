@@ -276,7 +276,7 @@
           :class="[$style['join-btn'], { [$style.disabled]: !isSlideAble }]"
           @click="joinSubmit()"
         >
-          {{ $text("S_COMFIRM_AND_LOGIN", "注册") }}
+          {{ $text("S_REGISTER", "注册") }}
         </div>
       </div>
       <slot name="bottom-content" />
