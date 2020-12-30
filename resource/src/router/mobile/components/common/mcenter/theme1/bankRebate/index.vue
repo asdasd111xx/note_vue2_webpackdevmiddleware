@@ -353,6 +353,7 @@
       <template v-if="isShowReceivePopup">
         <receive-popup
           :data="receiveData"
+          :caculateData="caculateData"
           @close="closeReceivePopup"
           @confirm="getItemType('history')"
         />
