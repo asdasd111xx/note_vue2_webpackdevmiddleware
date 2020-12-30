@@ -8,7 +8,7 @@
         <span
           v-if="themetpl() === 'sg1'"
           :class="{ [$style['is-negative']]: total.payoff > 0 }"
-          >{{ toCurrency(+total.payoff) }}</span
+          >{{ toCurrency(total.payoff) }}</span
         >
         <span v-else :class="{ [$style['is-negative']]: total.payoff < 0 }">{{
           toCurrency(+total.payoff)

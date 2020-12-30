@@ -144,7 +144,7 @@
               $style['calculate-button'],
               { [$style['disable']]: btnLock && formatTime }
             ]"
-            @click="rebateCaculate()"
+            @click="rebateCaculate"
           >
             <div :class="$style['calculate-button-title']">
               {{ $text("S_TRIAL_CALCULATION", "试算") }}
@@ -176,7 +176,10 @@
         <div
           :class="[
             $style['receive-vip-btn'],
-            { [$style['is-disabled']]: !isReceiveAll }
+            {
+              [$style['is-disabled']]:
+                isReceiveAllLock || !immediateData[0].operateStatus
+            }
           ]"
           @click="receiveAll"
         >
@@ -353,6 +356,7 @@
       <template v-if="isShowReceivePopup">
         <receive-popup
           :data="receiveData"
+          :caculateData="caculateData"
           @close="closeReceivePopup"
           @confirm="getItemType('history')"
         />
