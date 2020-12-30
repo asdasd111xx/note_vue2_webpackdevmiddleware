@@ -260,6 +260,7 @@ export default {
         params: { lang: "zh-cn", type }
       }).then(response => {
         this.isShowPopup = true;
+        this.immediateData = [];
         if (response.status === "000") {
           this.amountResult = response.data.dispatched_amount;
         }

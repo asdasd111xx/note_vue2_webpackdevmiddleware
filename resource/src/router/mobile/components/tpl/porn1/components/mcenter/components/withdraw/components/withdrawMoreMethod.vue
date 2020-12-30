@@ -13,7 +13,9 @@
 
               <div :class="$style['title']">
                 {{
-                  ["porn1"].includes(themeTPL) ? "添加提现方式" : "选择转出货币"
+                  ["porn1", "sg1"].includes(themeTPL)
+                    ? "添加提现方式"
+                    : "选择转出货币"
                 }}
               </div>
             </div>
