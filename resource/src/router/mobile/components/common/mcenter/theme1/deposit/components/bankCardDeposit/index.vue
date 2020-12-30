@@ -353,12 +353,15 @@
                   :class="$style['CGPay-update-img']"
                   :src="$getCdnPath(`/static/image/common/btn_update.png`)"
                   alt="update"
-                  @click="getPayPass"
+                  @click="getCGPayBalance"
                 />
               </span>
 
               <div :class="$style['CGPay-money']">
-                CGP <span>{{ curPassRoad.balance }}</span>
+                CGP
+                <span>
+                  {{ walletData["CGPay"].balance }}
+                </span>
               </div>
             </div>
 
@@ -385,9 +388,9 @@
                 "
               >
                 <div :class="$style['CGPay-money']">
-                  <div>CGPay余额：{{ curPassRoad.balance }}</div>
+                  <div>CGPay余额：{{ walletData.CGPay.balance }}</div>
 
-                  <div :class="$style['money-update']" @click="getPayPass">
+                  <div :class="$style['money-update']" @click="getCGPayBalance">
                     <img
                       :src="$getCdnPath(`/static/image/common/btn_update.png`)"
                       alt="update"
@@ -620,6 +623,9 @@
                     $style['pay-auth-method'],
                     {
                       [$style['current-data']]: walletData['CGPay'].method === 0
+                    },
+                    {
+                      [$style['disable']]: walletData['CGPay'].balance === '--'
                     }
                   ]"
                   @click="walletData['CGPay'].method = 0"
@@ -1193,6 +1199,11 @@ export default {
           this.paySelectData["chagneBank"].allData[0].value
         );
       }
+
+      // 選到 CGPay 時，取得 CGPay balance 的 func
+      if (this.isSelectBindWallet(16)) {
+        this.getCGPayBalance();
+      }
     },
     isSelectValue(value) {
       if (value) {
@@ -1204,6 +1215,7 @@ export default {
       if (this.noticeData && this.noticeData.length > 0) {
         let data = this.noticeData[0];
 
+        // event => 掃 QRcode 綁定錢包
         if (data.event === "trade_bind_wallet" && data.result === "ok") {
           this.actionSetGlobalMessage({
             msg: "绑定成功",
@@ -1214,6 +1226,19 @@ export default {
             }
           });
         }
+      }
+    },
+    "walletData.CGPay.balance"(value) {
+      switch (value) {
+        // 尚未得到值時，選擇改為"掃碼支付"(同Android邏輯)
+        case "--":
+          this.walletData["CGPay"].method = 1;
+          break;
+
+        // 正常得到值時，選擇改為"CGP支付密碼"
+        default:
+          this.walletData["CGPay"].method = 0;
+          break;
       }
     }
   },

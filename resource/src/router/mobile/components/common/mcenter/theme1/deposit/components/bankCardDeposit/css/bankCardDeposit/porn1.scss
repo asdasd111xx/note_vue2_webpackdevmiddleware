@@ -594,6 +594,11 @@
   cursor: pointer;
   position: relative;
 
+  &.disable {
+    color: #eee;
+    pointer-events: none;
+  }
+
   .pay-active {
     display: block;
     width: 7px;
