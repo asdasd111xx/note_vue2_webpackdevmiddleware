@@ -34,6 +34,7 @@
         :class="$style['card']"
         v-for="(info, index) in list"
         @click="$emit('onInquire', info.username)"
+        :key="index"
       >
         <div :class="$style['card-title']">
           <span :class="$style['header']">{{ info.username }}</span>

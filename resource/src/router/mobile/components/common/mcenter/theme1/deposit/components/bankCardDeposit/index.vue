@@ -149,16 +149,11 @@
             ]"
             @click="changeType('chagneBank'), (isShowPop = true)"
           >
-            <span
-              v-if="curPayInfo.payment_type_id === 5"
-              :class="$style['select-bank-title']"
-            >
-              {{ $text("S_USE_BANK", "使用银行") }}
-            </span>
-
-            <span v-else :class="$style['select-bank-title']"
+            <span :class="$style['select-bank-title']"
               >{{
-                curPayInfo.payment_method_id === 2
+                curPayInfo.payment_type_id === 5
+                  ? $text("S_USE_BANK", "使用银行")
+                  : curPayInfo.payment_method_id === 2
                   ? $text("S_SELECT_POINT_CARD", "请选择点卡")
                   : $text("S_SELECT_BANKS", "请选择银行")
               }}
@@ -947,7 +942,10 @@
                   !isBlockChecked ||
                   nameCheckFail ||
                   (isSelectBindWallet() && !this.curPassRoad.is_bind_wallet) ||
-                  (isSelectBindWallet(25, 402) && !isClickCoversionBtn)
+                  (isSelectBindWallet(25, 402) && !isClickCoversionBtn) ||
+                  (isSelectBindWallet(16) &&
+                    walletData['CGPay'].method === 0 &&
+                    !walletData['CGPay'].password)
               }
             ]"
             :title="$text('S_ENTER_PAY', '立即充值')"
@@ -1512,8 +1510,12 @@ export default {
     });
     this.checkEntryBlockStatus();
     this.actionSetRechargeConfig();
+
     //預設當前時間
-    this.speedField['depositTime'] = new Date().toLocaleDateString().replaceAll("/","-")+ " " + new Date().toTimeString().slice(0,8);
+    this.speedField["depositTime"] =
+      new Date().toLocaleDateString().replaceAll("/", "-") +
+      " " +
+      new Date().toTimeString().slice(0, 8);
   },
   destroyed() {
     this.resetTimerStatus();
@@ -1551,6 +1553,7 @@ export default {
         switch (this.curPayInfo.payment_method_id) {
           // CGPay
           case 16:
+          // CGPay-USDT
           case 25:
             this.$router.push(
               "/mobile/mcenter/bankcard?redirect=deposit&type=wallet&wallet=CGPay"

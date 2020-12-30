@@ -9,11 +9,13 @@
 <script>
 import { mapGetters, mapActions } from "vuex";
 import mobileContainer from "../common/mobileContainer";
-import resetPwd from "@/router/mobile/components/tpl/porn1/components/resetPwd/compontents/";
 export default {
   components: {
     mobileContainer,
-    resetPwd
+    resetPwd: () =>
+      import(
+        /* webpackChunkName: 'resetPwd' */ "@/router/mobile/components/tpl/porn1/components/resetPwd/compontents/"
+      )
   },
   computed: {
     ...mapGetters({
@@ -41,5 +43,3 @@ export default {
   }
 };
 </script>
-
-<style lang="scss" module></style>

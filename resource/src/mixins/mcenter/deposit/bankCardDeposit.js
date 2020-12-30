@@ -430,6 +430,19 @@ export default {
       }
 
       return false;
+    },
+    isOtherBank() {
+      // 判斷是否為其他銀行
+      // 極速到帳(payment_method_id = 6)、銀行轉帳(payment_method_id = 3)皆有其他銀行選項
+      const speedAccount =
+        this.curPayInfo.payment_method_id === 6 &&
+        this.curPayInfo.bank_id === 0;
+
+      const bankTranser =
+        this.curPayInfo.payment_method_id === 3 &&
+        this.curPayInfo.bank_id === 0;
+
+      return speedAccount || bankTranser;
     }
   },
   methods: {
@@ -633,12 +646,7 @@ export default {
 
       this.isShow = true;
       this.actionSetIsLoading(true);
-      // 判斷是否為其他銀行，極速到帳(payment_method_id = 6)、銀行轉帳(payment_method_id = 3)皆有其他銀行選項
-      const isOtherBank =
-        (this.curPayInfo.payment_method_id === 3 &&
-          this.curPayInfo.bank_id === 0) ||
-        (this.curPayInfo.payment_method_id === 6 &&
-          this.curPayInfo.bank_id === 0);
+
       const nowBankId = !this.curPayInfo.bank_id
         ? this.selectedBank.value
         : this.curPayInfo.bank_id;
@@ -650,7 +658,7 @@ export default {
         errorAlert: false,
         params: {
           payment_method_id: this.curPayInfo.payment_method_id,
-          bank_id: !isOtherBank ? nowBankId : "",
+          bank_id: !this.isOtherBank ? nowBankId : "",
           username: this.username
         },
         fail: res => {
@@ -712,16 +720,10 @@ export default {
       }
 
       [this.curPayInfo] = this.curModeGroup.payment_group_content;
-      // 判斷是否為其他銀行，極速到帳(payment_method_id = 6)、銀行轉帳(payment_method_id = 3)皆有其他銀行選項
-      const isOtherBank =
-        (this.curPayInfo.payment_method_id === 3 &&
-          this.curPayInfo.bank_id === 0) ||
-        (this.curPayInfo.payment_method_id === 6 &&
-          this.curPayInfo.bank_id === 0);
 
       if (
         this.curModeGroup.channel_display &&
-        (this.curPayInfo.bank_id || this.selectedBank.value || isOtherBank)
+        (this.curPayInfo.bank_id || this.selectedBank.value || this.isOtherBank)
       ) {
         this.getPayPass();
       }
@@ -751,21 +753,9 @@ export default {
         this.checkSuccess = false;
       }
 
-      // 判斷是否為其他銀行，極速到帳(payment_method_id = 6)、銀行轉帳(payment_method_id = 3)皆有其他銀行選項
-      const isOtherBank =
-        (this.curPayInfo.payment_method_id === 3 &&
-          this.curPayInfo.bank_id === 0) ||
-        (this.curPayInfo.payment_method_id === 6 &&
-          this.curPayInfo.bank_id === 0);
-
-      // if (this.isDepositAi) {
-      //   this.curPaymentGroupIndex = index;
-      //   this.PassRoadOrAi();
-      // }
-
       if (
         this.curModeGroup.channel_display &&
-        ((!this.curPayInfo.bank_id && isOtherBank) ||
+        ((!this.curPayInfo.bank_id && this.isOtherBank) ||
           this.curPayInfo.bank_id ||
           this.selectedBank.value)
       ) {
