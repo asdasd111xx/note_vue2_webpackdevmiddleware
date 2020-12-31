@@ -45,6 +45,7 @@ export default {
       isDisableDepositInput: false,
       walletData: {
         CGPay: {
+          balance: "",
           method: 0,
           password: "",
           placeholder: "请输入CGPay支付密码"
@@ -487,19 +488,6 @@ export default {
                 code: res.code
               });
             }
-            // if (res.code === "C150099") {
-            //   this.actionSetGlobalMessage({
-            //     msg: res.msg,
-            //     code: res.code
-            //   });
-            // } else if (res.code === "TM020067") {
-            //   this.setPopupStatus(true, "blockTips");
-            // } else {
-            //   this.actionSetGlobalMessage({
-            //     msg: res.msg,
-            //     code: res.code
-            //   });
-            // }
             return;
           }
 
@@ -569,19 +557,6 @@ export default {
                 code: res.data.code
               });
             }
-            // if (res.data.code === "C150099") {
-            //   this.actionSetGlobalMessage({
-            //     msg: res.data.msg,
-            //     code: res.data.code
-            //   });
-            // } else if (res.data.code === "TM020067") {
-            //   this.setPopupStatus(true, "blockTips");
-            // } else {
-            //   this.actionSetGlobalMessage({
-            //     msg: res.data.msg,
-            //     code: res.data.code
-            //   });
-            // }
             return;
           }
         });
@@ -663,17 +638,6 @@ export default {
         },
         fail: res => {
           if (res && res.data && res.data.msg && res.data.code) {
-            // if (res.data.code === "C150099") {
-            //   this.actionSetGlobalMessage({
-            //     msg: res.data.msg,
-            //     code: res.data.code
-            //   });
-            // } else {
-            //   this.actionSetGlobalMessage({
-            //     msg: res.data.msg,
-            //     code: res.data.code
-            //   });
-            // }
             this.actionSetGlobalMessage({
               msg: res.data.msg,
               code: res.data.code
@@ -1007,17 +971,6 @@ export default {
         params: paramsData,
         fail: res => {
           if (res && res.data && res.data.msg && res.data.code) {
-            // if (res.data.code === "C150099") {
-            //   this.actionSetGlobalMessage({
-            //     msg: res.data.msg,
-            //     code: res.data.code
-            //   });
-            // } else {
-            //   this.actionSetGlobalMessage({
-            //     msg: res.data.msg,
-            //     code: res.data.code
-            //   });
-            // }
             this.actionSetGlobalMessage({
               msg: res.data.msg,
               code: res.data.code
@@ -1299,6 +1252,32 @@ export default {
       }
 
       return str;
+    },
+    // 取得 CGPay 餘額
+    getCGPayBalance() {
+      return axios({
+        method: "get",
+        url: "/api/v1/c/ext/inpay?api_uri=api/trade/v2/c/wallet/balance",
+        params: {
+          method_id: this.curPayInfo.payment_method_id
+        }
+      })
+        .then(response => {
+          const { result, ret } = response.data;
+          if (!response || result !== "ok") {
+            this.walletData["CGPay"].balance = "--";
+            return;
+          }
+
+          this.walletData["CGPay"].balance = ret.balance;
+          // this.walletData["CGPay"].balance = "--";
+        })
+        .catch(error => {
+          this.actionSetGlobalMessage({
+            msg: error.response.data.msg,
+            code: error.response.data.code
+          });
+        });
     },
     // 取得存/取款加密貨幣試算金額
     convertCryptoMoney() {
