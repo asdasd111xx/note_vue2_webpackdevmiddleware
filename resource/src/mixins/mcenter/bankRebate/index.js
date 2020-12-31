@@ -542,7 +542,7 @@ export default {
       });
     },
     receiveAll() {
-      if (!this.isReceiveAllLock) {
+      if (this.isReceiveAllLock) {
         return;
       }
 

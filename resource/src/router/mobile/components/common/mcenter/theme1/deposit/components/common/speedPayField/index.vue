@@ -238,9 +238,7 @@ export default {
               ? this.$text("S_ENTER_DEPOSIT_NICKNAME", "请输入充值昵称")
               : this.$text("S_ENTER_DEPOSIT_NAME", "请输入充值人姓名"),
           showCondition: this.showByRequiredFields
-            ? this.requiredFields.find(
-                e => e.name === "pay_username" && e.required
-              )
+            ? this.requiredFields.find(e => e.name === "pay_username")
             : true,
           isError:
             this.showError &&

@@ -117,13 +117,13 @@
               />
             </div>
             <span
-              >尊敬的鸭博娱乐会员，当iOS用户的鸭博娱乐App掉签无法打开时，可以通过以下方法继续游戏</span
+              >尊敬的丝瓜直播会员，当iOS用户的丝瓜直播App掉签无法打开时，可以通过以下方法继续游戏</span
             >
           </div>
 
           <div :class="$style['content']">
             <div :class="$style['content-cell']">
-              <span>1.通过鸭博娱乐图标上的网址，重新下载App：</span>
+              <span>1.通过丝瓜直播图标上的网址，重新下载App：</span>
               <div :class="$style['content-img']">
                 <img
                   :src="
@@ -137,7 +137,7 @@
             </div>
 
             <div :class="$style['content-cell']">
-              <span>2.收藏鸭博娱乐永久网址，浏览器打开，随时畅玩：</span>
+              <span>2.收藏丝瓜直播永久网址，浏览器打开，随时畅玩：</span>
               <div
                 :class="$style['link']"
                 v-for="(item, index) in linkArray"
@@ -207,6 +207,7 @@ export default {
     }).then(res => {
       if (res && res.data) {
         this.linkArray = res.data;
+        console.log("this.linkArray" + JSON.stringify(this.linkArray));
       }
     });
   },
@@ -499,7 +500,7 @@ export default {
       padding: 0 5px;
       font-size: 12px;
       color: #fff;
-      background: #be9e7f;
+      background: linear-gradient(to left, #fe593c, #e61938);
       border-radius: 9px 0 0 9px;
     }
   }
