@@ -32,6 +32,8 @@
 export default {
   data() {
     return {
+      huobi_url: "",
+      binance_url: "",
       list: [
         {
           alias: "Huobi Global",
@@ -40,7 +42,8 @@ export default {
             `/static/image/common/mcenter/deposit/ic_huobi.png`
           ),
           onClick: () => {
-            window.open("https://www.huobi.com/zh-cn/register");
+            // window.open("https://www.huobi.com/zh-cn/register");
+            window.open(this.huobi_url);
           }
         },
         {
@@ -50,11 +53,37 @@ export default {
             `/static/image/common/mcenter/deposit/ic_binance.png`
           ),
           onClick: () => {
-            window.open("https://accounts.binance.com/cn/register");
+            // window.open("https://accounts.binance.com/cn/register");
+            window.open(this.binance_url);
           }
         }
       ]
     };
+  },
+  created() {
+    goLangApiRequest({
+      method: "get",
+      url: `${this.siteConfig.YABO_GOLANG_API_DOMAIN}/xbb/Link/External/Url?lang=zh-cn&urlName=huobi&needToken=false`
+    }).then(res => {
+      this.huobi_url =
+        res && res.data
+          ? res.data.uri
+          : "https://ey.italking.asia:5569/guest.php?gid=eyag";
+    });
+    goLangApiRequest({
+      method: "get",
+      url: `${this.siteConfig.YABO_GOLANG_API_DOMAIN}/xbb/Link/External/Url?lang=zh-cn&urlName=binance&needToken=false`
+    }).then(res => {
+      this.binance_url =
+        res && res.data
+          ? res.data.uri
+          : "https://ey.italking.asia:5569/guest.php?gid=eyag";
+    });
+  },
+  computed: {
+    ...mapGetters({
+      siteConfig: "getSiteConfig"
+    })
   }
 };
 </script>
