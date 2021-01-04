@@ -24,7 +24,7 @@
           "
         />
         <div
-          v-if="hasUnreadMessage && info.key === 'my'"
+          v-if="hasUnreadMessage && info.key === 'mcenter-home'"
           :class="$style['red-dot']"
         />
       </div>
@@ -82,8 +82,8 @@ export default {
       this.$router.push(path);
     },
     isActive(key) {
-      if (this.$route.name === "discover" && key === 'sponsor') {
-        return (true);
+      if (this.$route.name === "discover" && key === "sponsor") {
+        return true;
       }
       return key === this.$route.name;
     }

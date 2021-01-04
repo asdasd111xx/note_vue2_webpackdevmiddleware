@@ -7,16 +7,14 @@
       <mahjong-wrap
         :slot-sort="['search', 'list']"
         :is-show-search.sync="isShowSearch"
-        :label-theme="'ey1'"
-        :game-theme="'ey1'"
       />
     </div>
   </mobile-container>
 </template>
 
 <script>
-import mahjongWrap from '@/router/mobile/components/common/mahjong';
-import mobileContainer from '../common/mobileContainer';
+import mahjongWrap from "@/router/mobile/components/common/mahjong";
+import mobileContainer from "../common/mobileContainer";
 
 export default {
   components: {
@@ -30,12 +28,12 @@ export default {
   },
   computed: {
     headerTitle() {
-      const vendor = this.$route.params.vendor || 'all';
-      let textCode = '';
+      const vendor = this.$route.params.vendor || "all";
+      let textCode = "";
 
       switch (vendor) {
-        case 'all':
-          textCode = 'S_ALL';
+        case "all":
+          textCode = "S_ALL";
           break;
         default:
           textCode = `S_${vendor}`.toUpperCase();
@@ -49,7 +47,9 @@ export default {
         prev: true,
         title: this.headerTitle,
         hasSearchBtn: true,
-        onClick: () => { this.$router.back(); }
+        onClick: () => {
+          this.$router.back();
+        }
       };
     },
     isShowSearch: {
@@ -67,7 +67,6 @@ export default {
     }
   }
 };
-
 </script>
 
 <style lang="scss" module>

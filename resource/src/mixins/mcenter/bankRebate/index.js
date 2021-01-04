@@ -542,7 +542,12 @@ export default {
       });
     },
     receiveAll() {
-      if (this.isReceiveAllLock) {
+      if (
+        this.isReceiveAllLock ||
+        this.immediateData.find(data => {
+          data.operateStatus === true;
+        }) === -1
+      ) {
         return;
       }
 
@@ -560,8 +565,8 @@ export default {
             idArray: response.ret.map(item => item.id),
             start_at: `${this.EST(this.rebateInitData.event_start_at)}`,
             end_at: `${this.EST(this.rebateInitData.event_end_at)}`,
-            rebate: this.caculateData[dataIndex].rebate,
-            total: this.caculateData[dataIndex].total
+            rebate: this.caculateData[0].rebate,
+            total: this.caculateData[0].total
           };
 
           // this.actionSetPop({ type: 'rebate', data: receiveData });
@@ -569,7 +574,9 @@ export default {
           this.bankRebateInit();
         },
         fail: error => {
-          this.popupMsg = error.data.msg;
+          if (error.data && error.data.msg) {
+            this.popupMsg = error.data.msg;
+          }
           this.rebateState = "initial";
           this.init();
         }

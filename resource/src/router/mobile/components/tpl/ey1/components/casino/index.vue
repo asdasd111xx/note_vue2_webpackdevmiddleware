@@ -6,8 +6,6 @@
     <div slot="content" class="content-wrap">
       <casino-wrap
         :is-show-search.sync="isShowSearch"
-        :label-theme="'ey1'"
-        :game-theme="'ey1'"
         :game-show-jackpot="true"
       />
     </div>
