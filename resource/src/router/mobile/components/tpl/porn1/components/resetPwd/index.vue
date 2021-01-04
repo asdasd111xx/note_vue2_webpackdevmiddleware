@@ -1,7 +1,7 @@
 <template>
   <mobile-container :header-config="headerConfig" :has-footer="hasFooter">
     <div slot="content">
-      <resetPwd />
+      <reset-pwd />
     </div>
   </mobile-container>
 </template>

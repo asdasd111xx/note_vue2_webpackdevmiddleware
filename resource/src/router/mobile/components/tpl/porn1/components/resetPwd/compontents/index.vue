@@ -105,7 +105,6 @@
 
 <script>
 import { mapGetters, mapActions } from "vuex";
-import resetPwd from "@/mixins/resetPwd";
 import mcenter from "@/api/mcenter";
 import agcenter from "@/api/agcenter";
 import member from "@/api/member";
@@ -113,8 +112,6 @@ import agent from "@/api/agent";
 
 export default {
   components: {},
-  // 原公用驗證
-  //   mixins: [resetPwd],
   data() {
     return {
       errMsg: "",
@@ -197,11 +194,6 @@ export default {
     }),
     themeTPL() {
       return this.siteConfig.MOBILE_WEB_TPL;
-    },
-    $style() {
-      const style =
-        this[`$style_${this.siteConfig.MOBILE_WEB_TPL}`] || this.$style_porn1;
-      return style;
     },
     headerConfig() {
       return {
@@ -375,13 +367,9 @@ export default {
 
 <style lang="scss" module>
 @import "~@/css/variable.scss";
-
 .reset-container {
   min-height: 100%;
   background-color: $main_background_white1;
-}
-
-.content-wrap {
 }
 
 .reset-content {
