@@ -36,6 +36,10 @@ export default {
       import(
         /* webpackChunkName: 'webviewSg1' */ "../../tpl/sg1/components/webview"
       ),
+    installSg1: () =>
+      import(
+        /* webpackChunkName: 'installSg1' */ "../../tpl/sg1/components/install"
+      ),
     resetPwdSg1: () =>
       import(
         /* webpackChunkName: 'resetPwdSg1' */ "../../tpl/sg1/components/resetPwd"
