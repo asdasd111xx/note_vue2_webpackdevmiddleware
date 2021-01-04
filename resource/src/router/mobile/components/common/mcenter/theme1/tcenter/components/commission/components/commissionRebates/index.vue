@@ -105,6 +105,10 @@
       </div>
     </div>
 
+    <div v-if="immediateData.length === 0" :class="$style['no-data']">
+      暂时没有可领取的返利
+    </div>
+
     <div :class="$style['rebate-manual-title']" @click="isShowTip = !isShowTip">
       <icon
         :class="$style['title-icon']"
