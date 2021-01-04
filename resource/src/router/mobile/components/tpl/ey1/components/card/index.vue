@@ -4,11 +4,7 @@
     :update-search-status="updateSearchStatus"
   >
     <div slot="content" class="content-wrap">
-      <card-wrap
-        :is-show-search.sync="isShowSearch"
-        :label-theme="'ey1'"
-        :game-theme="'ey1'"
-      />
+      <card-wrap :is-show-search.sync="isShowSearch" />
     </div>
   </mobile-container>
 </template>

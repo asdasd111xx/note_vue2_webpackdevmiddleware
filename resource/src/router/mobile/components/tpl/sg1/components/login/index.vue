@@ -153,7 +153,7 @@
               <div class="login-bottom-wrap">
                 <!-- 滑動驗證 -->
                 <slide-verification
-                  v-if="memInfo.config.login_captcha_type === 2"
+                  v-if="memInfo.config.login_captcha_type === 2 || slideEnald"
                   :is-enable="isSlideAble"
                   :success-fuc="slideLogin"
                   page-status="login"
