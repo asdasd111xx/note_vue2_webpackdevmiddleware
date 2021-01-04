@@ -32,6 +32,10 @@ export default {
       import(
         /* webpackChunkName: 'serviceSg1' */ "../../tpl/sg1/components/service"
       ),
+    webviewSg1: () =>
+      import(
+        /* webpackChunkName: 'webviewSg1' */ "../../tpl/sg1/components/webview"
+      ),
     resetPwdSg1: () =>
       import(
         /* webpackChunkName: 'resetPwdSg1' */ "../../tpl/sg1/components/resetPwd"
