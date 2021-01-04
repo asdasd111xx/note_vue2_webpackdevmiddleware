@@ -10,7 +10,6 @@ export default {
       ),
     cardSg1: () =>
       import(/* webpackChunkName: 'cardSg1' */ "../../tpl/sg1/components/card"),
-
     homeSg1: () =>
       import(/* webpackChunkName: 'homeSg1' */ "../../tpl/sg1/components/home"),
     loginSg1: () =>

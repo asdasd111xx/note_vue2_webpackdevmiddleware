@@ -39,6 +39,7 @@
 
 <script>
 import { Swiper, SwiperSlide } from "vue-awesome-swiper";
+import { mapGetters } from "vuex";
 
 /**
  * 共用元件 - 手機網頁版 遊戲大廳使用分類選單
@@ -76,8 +77,14 @@ export default {
     }
   },
   computed: {
+    ...mapGetters({
+      siteConfig: "getSiteConfig"
+    }),
     $style() {
-      return this[`$style_${this.theme}`] || this.$style_porn1;
+      return this[`$style_${this.themeTPL}`] || this.$style_porn1;
+    },
+    themeTPL() {
+      return this.siteConfig.MOBILE_WEB_TPL;
     },
     options() {
       return {
@@ -96,3 +103,4 @@ export default {
 
 <style lang="scss" src="./css/ey1.module.scss" module="$style_ey1"></style>
 <style lang="scss" src="./css/porn1.module.scss" module="$style_porn1"></style>
+<style lang="scss" src="./css/sg1.module.scss" module="$style_sg1"></style>

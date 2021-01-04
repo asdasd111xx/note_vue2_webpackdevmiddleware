@@ -37,7 +37,7 @@
 <script>
 import throttle from "lodash/throttle";
 import gameItem from "../gameItem";
-
+import { mapGetters } from "vuex";
 /**
  * 共用元件 - 手機網頁版 遊戲大廳使用搜尋框
  * @param {String} [text] - 搜尋文字
@@ -94,8 +94,14 @@ export default {
     }
   },
   computed: {
+    ...mapGetters({
+      siteConfig: "getSiteConfig"
+    }),
     $style() {
-      return this[`$style_${this.theme}`] || this.$style_porn1;
+      return this[`$style_${this.themeTPL}`] || this.$style_porn1;
+    },
+    themeTPL() {
+      return this.siteConfig.MOBILE_WEB_TPL;
     },
     searchText: {
       get() {
