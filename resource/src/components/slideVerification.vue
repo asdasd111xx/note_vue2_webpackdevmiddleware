@@ -43,6 +43,7 @@ export default {
   },
   data() {
     return {
+      nc: null,
       slideText: {
         verify: ["S_SLIDE_VERIFY", "向右滑动验证"],
         register: ["S_SLIDE_REGISTER", "向右滑动即注册"],
@@ -148,7 +149,7 @@ export default {
   methods: {
     creatSlide() {
       // eslint-disable-next-line new-cap
-      const nc = new noCaptcha({
+      this.nc = new noCaptcha({
         ...this.ncObject,
         callback: data => {
           this.successFuc({
@@ -159,12 +160,12 @@ export default {
               scene: this.currentSlideData.scene,
               appkey: this.currentSlideData.appkey
             },
-            slideFuc: nc
+            slideFuc: this.nc
           });
         }
       });
       const refreshIcon = "<i class='refresh-icon'></i>";
-      nc.upLang(this.langContrast[this.curLang], {
+      this.nc.upLang(this.langContrast[this.curLang], {
         _startTEXT: this.$text(...this.slideText[this.pageStatus]),
         _yesTEXT: this.$text(...this.slideText.yesText),
         _error300: `<a href=\"javascript:__nc.reset()\">${refreshIcon}${this.$text(
@@ -174,6 +175,9 @@ export default {
           ...this.slideText.errorNetwork
         )}</a>`
       });
+    },
+    ncReload() {
+      this.nc.reload();
     }
   }
 };

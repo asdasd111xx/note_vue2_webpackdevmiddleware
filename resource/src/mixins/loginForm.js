@@ -254,7 +254,9 @@ export default {
 
         if (res && res.status !== "000") {
           this.getCaptcha();
-
+          if (this.memInfo.config.login_captcha_type === 2) {
+            this.$refs.slider.ncReload();
+          }
           if (res.msg) {
             this.errMsg = res.msg;
             // msg: "验证码错误"
