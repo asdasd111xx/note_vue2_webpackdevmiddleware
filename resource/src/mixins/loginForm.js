@@ -200,7 +200,7 @@ export default {
         },
         params: {
           username: this.username,
-          password: this.password,
+          password: this.password.toLowerCase(),
           captcha: this.captcha,
           aid: this.aid || getCookie("aid") || "",
           host: window.location.host,
