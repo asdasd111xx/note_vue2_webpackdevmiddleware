@@ -55,10 +55,10 @@ export default {
   },
   methods: {
     ...mapActions(["actionSetUserdata", "actionSetGlobalMessage"]),
-    getAvatarSrc() {
+    getAvatarSrc(index) {
       if (!this.loginStatus) return;
 
-      const imgSrcIndex = this.memInfo.user.image;
+      const imgSrcIndex = index || this.memInfo.user.image;
       if (this.memInfo.user && this.memInfo.user.custom) {
         axios({
           method: "get",
@@ -84,11 +84,11 @@ export default {
     showAvatarDialog() {
       this.isShowAvatarDialog = !this.isShowAvatarDialog;
     },
-    handleCloseDialog() {
+    handleCloseDialog(tmpSelectAvatarIndex) {
       this.isShowAvatarDialog = false;
 
       this.actionSetUserdata(true).then(() => {
-        this.getAvatarSrc();
+        this.getAvatarSrc(tmpSelectAvatarIndex);
       });
     }
   }
