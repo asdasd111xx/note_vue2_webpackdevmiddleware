@@ -146,9 +146,7 @@
               height="25"
             />
             <div :class="$style['captchaText-refresh']" @click="getCaptcha">
-              <img
-                :src="'/static/image/porn1/common/ic_verification_reform.png'"
-              />
+              <img :src="'/static/image/common/ic_verification_reform.png'" />
             </div>
           </div>
         </div>
