@@ -83,7 +83,7 @@
         :class="$style['cell']"
         @click="
           loginStatus
-            ? $router.push('/mobile/mcenter/bankRebate')
+            ? $router.push('/mobile/mcenter/tcenter/commission/rebate')
             : $router.push('/mobile/login')
         "
       >
@@ -165,6 +165,32 @@ export default {
       const now = moment(new Date());
 
       this.createdTime = now.diff(startTime, "days") + 1;
+    },
+
+    goToRebate() {
+      if (this.loginStatus) {
+        this.getRebateSwitch();
+      } else {
+        this.$router.push("/mobile/login");
+      }
+    },
+
+    getRebateSwitch() {
+      // 因開關在此 api 的回傳，所以在入口點先呼叫此 api
+      bbosRequest({
+        method: "get",
+        url: this.siteConfig.BBOS_DOMIAN + "/Wage/SelfDispatchInfo",
+        reqHeaders: {
+          Vendor: this.memInfo.user.domain
+        },
+        params: { lang: "zh-cn" }
+      }).then(response => {
+        if (response.status === "000" && response.data.show_real_time) {
+          this.$router.push("/mobile/mcenter/tcenter/commission/rebate");
+        } else {
+          this.$router.push("/mobile/mcenter/tcenter/commission/summary");
+        }
+      });
     }
   }
 };
