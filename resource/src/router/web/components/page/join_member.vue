@@ -68,7 +68,7 @@
                 <div :class="$style['captchaText-refresh']" @click="getCaptcha">
                   <img
                     :src="
-                      '/static/image/porn1/common/ic_verification_reform.png'
+                      '/static/image/common/ic_verification_reform.png'
                     "
                   />
                 </div>
