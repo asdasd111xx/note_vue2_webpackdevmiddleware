@@ -265,7 +265,6 @@ export default {
 
   mounted() {
     this.hasCid = getCookie("cid") || false;
-    document.title = this.$text("S_HELP_CENTER", "帮助中心");
 
     let vm = this;
     $("#mobile-wrap").scroll(function () {
