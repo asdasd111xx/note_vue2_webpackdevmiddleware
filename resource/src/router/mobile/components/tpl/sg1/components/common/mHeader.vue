@@ -85,8 +85,9 @@
             :src="$getCdnPath('/static/image/sg1/common/icon_ask.png')"
             @click="handleClickAsk"
           />
-          <div v-show="hasUnreadMessage" />
-          <div :class="$style['red-dot']" />
+          <div v-show="hasUnreadMessage">
+            <div :class="$style['red-dot']" />
+          </div>
         </div>
       </div>
       <div v-else :class="$style['login-wrap']">
