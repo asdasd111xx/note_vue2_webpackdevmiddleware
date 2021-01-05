@@ -15,14 +15,15 @@
                 {{
                   ["porn1", "sg1"].includes(themeTPL)
                     ? "添加提现方式"
-                    : "选择转出货币"
+                    : "更多提现方式"
                 }}
               </div>
             </div>
 
             <div :class="$style['more-method-content']">
               <div
-                v-for="item in methodList"
+                v-for="(item, index) in methodList"
+                :key="index"
                 :class="$style['cell']"
                 @click="addMethod(item)"
               >
