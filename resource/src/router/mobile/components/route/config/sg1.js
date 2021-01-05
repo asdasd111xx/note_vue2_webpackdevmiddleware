@@ -71,6 +71,10 @@ export default {
     hotLobbySg1: () =>
       import(
         /* webpackChunkName: 'hotLobbySg1' */ "../../tpl/sg1/components/hotLobby"
+      ),
+    searchSg1: () =>
+      import(
+        /* webpackChunkName: 'searchSg1' */ "../../tpl/sg1/components/search"
       )
   },
   mcenter: {
