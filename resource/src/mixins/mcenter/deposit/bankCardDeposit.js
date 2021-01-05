@@ -1263,10 +1263,15 @@ export default {
         }
       })
         .then(response => {
-          const { result, ret } = response.data;
+          const { result, ret, msg, code } = response.data;
 
           if (!response || result !== "ok") {
             this.walletData["CGPay"].balance = "--";
+
+            this.actionSetGlobalMessage({
+              msg: msg,
+              code: code
+            });
             return;
           }
 
