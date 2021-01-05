@@ -1,8 +1,11 @@
 <template>
   <div :class="$style['service-tip']">
-    <template v-if="theme === 'ey1' || type !== 'phone'">
+    <!-- <template v-if="theme === 'ey1' || type !== 'phone'">
       为了你的隐私安全，信息在确认后将无法修改
-    </template>
+    </template> -->
+    <div>
+      为了你的隐私安全，信息在确认后将无法修改
+    </div>
     <br />
     如需帮助，请
     <span @click="$router.push('/mobile/service')">联系客服</span>
@@ -20,12 +23,12 @@ export default {
   },
   computed: {
     ...mapGetters({
-      siteConfig: "getSiteConfig",
+      siteConfig: "getSiteConfig"
     }),
     theme() {
       return this.siteConfig.MOBILE_WEB_TPL;
     }
-  },
+  }
 };
 </script>
-<style src="../css/index.module.scss" lang="scss" module>
+<style src="../css/index.module.scss" lang="scss" module />
