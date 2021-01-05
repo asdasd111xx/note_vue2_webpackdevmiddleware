@@ -5,7 +5,7 @@
         :class="[
           $style['top-sub-title'],
           { [$style['active']]: mcenterBankRebateType === 'history' },
-          { [$style['self']]: !rebateInitData.self_rebate },
+          { [$style['self']]: !rebateInitData.self_rebate }
         ]"
         @click="getItemType('history')"
       >
@@ -15,7 +15,7 @@
         v-if="rebateInitData.self_rebate"
         :class="[
           $style['top-sub-title'],
-          { [$style['active']]: mcenterBankRebateType === 'realtime' },
+          { [$style['active']]: mcenterBankRebateType === 'realtime' }
         ]"
         @click="getItemType('realtime')"
       >
@@ -46,7 +46,7 @@
               <div
                 :class="[
                   $style['total-item-money'],
-                  { [$style['is-current']]: item.type === currentType },
+                  { [$style['is-current']]: item.type === currentType }
                 ]"
               >
                 {{ rebateSubTotal[item.type] }}
@@ -136,15 +136,15 @@
         <div
           :class="[
             $style['real-top-btn'],
-            { [$style['disable']]: btnLock && formatTime },
+            { [$style['disable']]: btnLock && formatTime }
           ]"
         >
           <div
             :class="[
               $style['calculate-button'],
-              { [$style['disable']]: btnLock && formatTime },
+              { [$style['disable']]: btnLock && formatTime }
             ]"
-            @click="rebateCaculate()"
+            @click="rebateCaculate"
           >
             <div :class="$style['calculate-button-title']">
               {{ $text("S_TRIAL_CALCULATION", "试算") }}
@@ -176,7 +176,10 @@
         <div
           :class="[
             $style['receive-vip-btn'],
-            { [$style['is-disabled']]: !isReceiveAll },
+            {
+              [$style['is-disabled']]:
+                isReceiveAllLock || !immediateData[0].operateStatus
+            }
           ]"
           @click="receiveAll"
         >
@@ -204,7 +207,7 @@
                 <template
                   v-if="
                     !caculateList.remaining_times ||
-                    caculateList.daily_upper_limit
+                      caculateList.daily_upper_limit
                   "
                 >
                   <button :class="$style['unrebate-btn']">
@@ -219,7 +222,7 @@
                     v-if="caculateList.operateStatus"
                     id="receive-button"
                     :class="{
-                      [$style['disable']]: btnReceiveLock[listIndex],
+                      [$style['disable']]: btnReceiveLock[listIndex]
                     }"
                     href="###"
                     @click="popReceive(listIndex)"
@@ -242,10 +245,8 @@
               <div :class="$style['content-right']">
                 <ele-loading v-if="rebateState === 'loading'" />
                 <template v-else>
-                  <div>{{ caculateList.start_at }} ~</div>
-
                   <div>
-                    {{ caculateList.end_at }}
+                    {{ caculateList.start_at }}~{{ caculateList.end_at }}
                   </div>
                 </template>
               </div>
@@ -355,6 +356,7 @@
       <template v-if="isShowReceivePopup">
         <receive-popup
           :data="receiveData"
+          :caculateData="caculateData"
           @close="closeReceivePopup"
           @confirm="getItemType('history')"
         />
@@ -377,7 +379,7 @@ export default {
       ),
     Swiper,
     SwiperSlide,
-    receivePopup,
+    receivePopup
   },
   mixins: [mixin],
   data() {
@@ -386,31 +388,31 @@ export default {
         title: this.$text("S_MYREBATE", "我的返水"),
         leftBtns: {
           icon: "arrow",
-          onClick: () => this.$router.push("/mobile/mcenter"),
+          onClick: () => this.$router.push("/mobile/mcenter")
         },
-        balance: true,
+        balance: true
       },
       categoryOptions: {
-        slidesPerView: "auto",
+        slidesPerView: "auto"
       },
       rebateType: true,
       dateList: [
         {
           type: "yesterday",
-          text: this.$text("S_SENT_YESTERDAY_AMOUNT", "昨日已派金额"),
+          text: this.$text("S_SENT_YESTERDAY_AMOUNT", "昨日已派金额")
         },
         {
           type: "today",
-          text: this.$text("S_SENT_TODAY_AMOUNT", "今日已派金额"),
+          text: this.$text("S_SENT_TODAY_AMOUNT", "今日已派金额")
         },
         {
           type: "week",
-          text: this.$text("S_LATELY_WEEK", "最近一周"),
-        },
+          text: this.$text("S_LATELY_WEEK", "最近一周")
+        }
       ],
       isShowTip: true,
       isShowReceivePopup: false,
-      currentType: "yesterday",
+      currentType: "yesterday"
     };
   },
   computed: {
@@ -418,19 +420,19 @@ export default {
       mcenterBankRebateType: "getMcenterBankRebateType",
       mcenterBankRebateInterval: "getMcenterBankRebateInterval",
       siteConfig: "getSiteConfig",
-      memInfo: "getMemInfo",
+      memInfo: "getMemInfo"
     }),
     $style() {
       const style =
         this[`$style_${this.siteConfig.MOBILE_WEB_TPL}`] || this.$style_porn1;
       return style;
-    },
+    }
   },
   methods: {
     ...mapActions([
       "actionSetSystemTime",
       "actionSetPop",
-      "actionSetMcenterBankRebate",
+      "actionSetMcenterBankRebate"
     ]),
     getItemType(item) {
       // eslint-disable-next-line no-restricted-globals
@@ -441,7 +443,7 @@ export default {
       }
       this.actionSetMcenterBankRebate({
         type: item,
-        interval: this.mcenterBankRebateInterval,
+        interval: this.mcenterBankRebateInterval
       });
     },
     setMcenterBankRebate(type) {
@@ -450,8 +452,8 @@ export default {
     },
     closeReceivePopup() {
       this.isShowReceivePopup = false;
-    },
-  },
+    }
+  }
 };
 </script>
 

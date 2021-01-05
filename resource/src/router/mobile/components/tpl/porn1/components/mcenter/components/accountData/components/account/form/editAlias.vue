@@ -14,7 +14,7 @@
           <input
             ref="input"
             v-model="value"
-            :placeholder="$text('S_NICKNAME')"
+            :placeholder="`请输入${$text('S_NICKNAME')}`"
             :class="$style.input"
             @input="onInput"
             :maxlength="20"
@@ -22,7 +22,7 @@
           />
           <div :class="$style['clear-input']" v-if="value">
             <img
-              :src="$getCdnPath(`/static/image/_new/common/ic_clear.png`)"
+              :src="$getCdnPath(`/static/image/common/ic_clear.png`)"
               @click="value = ''"
             />
           </div>
@@ -33,11 +33,14 @@
 </template>
 
 <script>
-import { API_MCENTER_ENABLE_ALIAS, API_MCENTER_DISABLE_ALIAS } from '@/config/api';
-import { mapGetters, mapActions } from 'vuex';
-import accountHeader from '../../accountHeader';
-import ajax from '@/lib/ajax';
-import mcenter from '@/api/mcenter';
+import {
+  API_MCENTER_ENABLE_ALIAS,
+  API_MCENTER_DISABLE_ALIAS
+} from "@/config/api";
+import { mapGetters, mapActions } from "vuex";
+import accountHeader from "../../accountHeader";
+import ajax from "@/lib/ajax";
+import mcenter from "@/api/mcenter";
 
 export default {
   components: {
@@ -45,8 +48,8 @@ export default {
   },
   data() {
     return {
-      value: '',
-      tipMsg: '',
+      value: "",
+      tipMsg: "",
       showNickname: false
     };
   },
@@ -55,18 +58,20 @@ export default {
   },
   computed: {
     ...mapGetters({
-      memInfo: 'getMemInfo'
+      memInfo: "getMemInfo"
     }),
     headerConfig() {
       return {
         prev: true,
-        onClick: () => { this.$router.back(); },
-        title: this.$text('S_NICKNAME', '真实姓名'),
+        onClick: () => {
+          this.$router.back();
+        },
+        title: this.$text("S_NICKNAME", "真实姓名"),
         onClickFunc: () => {
           this.handleSubmit();
         },
-        funcBtn: this.$text('S_COMPLETE', '完成'),
-        funcBtnActive: !!(this.value) && !this.tipMsg
+        funcBtn: this.$text("S_COMPLETE", "完成"),
+        funcBtnActive: !!this.value && !this.tipMsg
       };
     }
   },
@@ -76,11 +81,18 @@ export default {
     this.value = this.memInfo.user.alias;
   },
   methods: {
-    ...mapActions(['actionSetUserdata', 'actionSetGlobalMessage', 'actionVerificationFormData']),
+    ...mapActions([
+      "actionSetUserdata",
+      "actionSetGlobalMessage",
+      "actionVerificationFormData"
+    ]),
     onInput(e) {
-      this.actionVerificationFormData({ target: 'alias', value: e.target.value }).then((val => {
-        this.value = val
-      }));
+      this.actionVerificationFormData({
+        target: "alias",
+        value: e.target.value
+      }).then(val => {
+        this.value = val;
+      });
     },
     handleSubmit() {
       // 驗證失敗
@@ -96,15 +108,17 @@ export default {
       });
 
       const setShowNickname = ajax({
-        method: 'put',
-        url: this.showNickname ? API_MCENTER_ENABLE_ALIAS : API_MCENTER_DISABLE_ALIAS,
+        method: "put",
+        url: this.showNickname
+          ? API_MCENTER_ENABLE_ALIAS
+          : API_MCENTER_DISABLE_ALIAS,
         errorAlert: false
       });
 
-      return Promise.all([setNickname, setShowNickname]).then((response) => {
-        if (response.every((res) => res.result === 'ok')) {
-          localStorage.setItem('set-account-success', true);
-          this.$router.push('/mobile/mcenter/accountData');
+      return Promise.all([setNickname, setShowNickname]).then(response => {
+        if (response.every(res => res.result === "ok")) {
+          localStorage.setItem("set-account-success", true);
+          this.$router.push("/mobile/mcenter/accountData");
         }
       });
     }

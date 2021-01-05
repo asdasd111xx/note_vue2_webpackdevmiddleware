@@ -18,7 +18,7 @@
 
       <div :class="$style['text']" @click="downloadImage">
         <img
-          :src="$getCdnPath(`/static/image/_new/mcenter/share/btn_tick.png`)"
+          :src="$getCdnPath(`/static/image/common/mcenter/share/btn_tick.png`)"
         />
         {{ btnTickText }}
       </div>
@@ -56,9 +56,6 @@ export default {
       memInfo: "getMemInfo",
       promotionLink: "getPromotionLink"
     }),
-    isException() {
-      return window.location.hostname === "yaboxxxapp02.com" || this.isPwa;
-    },
     btnTickText() {
       return "点击截屏保存";
     },
@@ -83,9 +80,6 @@ export default {
       // yaboRequest({
       //   method: "get",
       //   url: `${this.siteConfig.YABO_API_DOMAIN}/system/downloadlink`,
-      //   headers: {
-      //     AuthToken: "YaboAPIforDev0nly"
-      //   }
       // }).then(res => {
       //   if (res && res.data && res.data) {
       //     this.landingLink = res.data[0].value || res.data[1].value;
@@ -94,10 +88,7 @@ export default {
 
       goLangApiRequest({
         method: "get",
-        url: `${this.siteConfig.YABO_GOLANG_API_DOMAIN}/cxbb/System/downloadlink`,
-        headers: {
-          AuthToken: "YaboAPIforDev0nly"
-        }
+        url: `${this.siteConfig.YABO_GOLANG_API_DOMAIN}/cxbb/System/downloadlink`
       }).then(res => {
         if (res && res.data && res.data) {
           this.landingLink = res.data[0].value || res.data[1].value;
@@ -111,10 +102,7 @@ export default {
       this.$emit("update:isShowShare", false);
     },
     downloadImage() {
-      if (this.isException) {
-        window.open("/mobile/shareDownload", "_blank");
-        return;
-      }
+      this.$router.push("/mobile/shareDownload");
     }
   }
 };

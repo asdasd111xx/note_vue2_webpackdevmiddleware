@@ -1,6 +1,10 @@
 @import "~@/css/variable.scss";
 @import "../../../../../components/mcenter/components/balanceTrans/css/porn1.module.scss";
 
+.balance-tran-container {
+  background-color: $main_white_color1;
+}
+
 // 中心錢包
 .balance-wrap-wrap {
   background-color: $main_white_color1;

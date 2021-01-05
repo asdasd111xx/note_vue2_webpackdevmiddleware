@@ -6,7 +6,7 @@
           <div :class="$style['title']">温馨提示</div>
           <!-- <div :class="$style['btn-close']" @click="closeTips">
             <img
-              :src="$getCdnPath('/static/image/_new/common/btn_close_w.png')"
+              :src="$getCdnPath('/static/image/common/btn_close_white.png')"
               alt="close"
             />
           </div> -->
@@ -50,7 +50,7 @@ export default {
   mixins: [mixin],
   data() {
     return {
-      tipsType: 'deposit'
+      tipsType: "deposit"
     };
   },
   computed: {
@@ -61,32 +61,29 @@ export default {
       const style =
         this[`$style_${this.siteConfig.MOBILE_WEB_TPL}`] || this.$style_porn1;
       return style;
-    },
+    }
   },
   methods: {
     closeTips() {
       this.$emit("close");
     },
     handleClickBtn(target) {
-
       switch (target) {
-        case 'buymethod':
-          localStorage.setItem('help-center-back', 'mcenter/');
-          this.$router.push('/mobile/mcenter/help/detail?type=buymethod');
+        case "buymethod":
+          localStorage.setItem("help-center-back", "mcenter/");
+          this.$router.push("/mobile/mcenter/help/detail?type=buymethod");
           return;
-        case 'usage':
-          localStorage.setItem('help-center-back', 'mcenter/');
-          this.$router.push('/mobile/mcenter/help/detail?type=usage&key=2');
+        case "usage":
+          localStorage.setItem("help-center-back", "mcenter/");
+          this.$router.push("/mobile/mcenter/help/detail?type=usage&key=2");
           return;
-        case 'deposit':
-          this.$router.push('/mobile/mcenter/deposit');
+        case "deposit":
+          this.$router.push("/mobile/mcenter/deposit");
           return;
       }
-    },
-
-  },
+    }
+  }
 };
 </script>
 <style lang="scss" src="../css/porn1.module.scss" module="$style_porn1"></style>
 <style lang="scss" src="../css/sg1.module.scss" module="$style_sg1"></style>
-

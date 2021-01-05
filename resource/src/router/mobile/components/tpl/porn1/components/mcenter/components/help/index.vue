@@ -28,7 +28,7 @@
 
         <span> {{ listInfo.name }} </span>
         <div :class="$style['btn-next']">
-          <img :src="$getCdnPath(`/static/image/_new/common/arrow_next.png`)" />
+          <img :src="$getCdnPath(`/static/image/common/arrow_next.png`)" />
         </div>
       </div>
     </div>
@@ -51,7 +51,7 @@ export default {
           name: "充值教程",
           img: "deposit",
           key: "deposit",
-          info: "充值极速到账",
+          info: "充值极速到帐",
           needLogin: true
         },
         {
@@ -120,7 +120,7 @@ export default {
       };
     }
   },
-  created() { },
+  created() {},
   methods: {
     ...mapActions(["actionSetGlobalMessage"]),
     handleClick(item) {

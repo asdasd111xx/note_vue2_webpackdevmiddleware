@@ -35,9 +35,7 @@
             {{ item.amount }}
             <img
               :class="$style['right-arrow']"
-              :src="
-                $getCdnPath(`/static/image/${themeTPL}/common/arrow_next.png`)
-              "
+              :src="$getCdnPath(`/static/image/common/arrow_next.png`)"
             />
           </div>
         </div>

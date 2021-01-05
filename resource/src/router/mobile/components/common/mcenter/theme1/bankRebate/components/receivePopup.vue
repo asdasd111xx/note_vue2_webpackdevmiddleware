@@ -5,7 +5,7 @@
       <div :class="$style['pop-block']">
         <div v-if="!computeState" :class="$style['close-img']" @click="close">
           <img
-            :src="$getCdnPath('/static/image/_new/common/btn_close_w.png')"
+            :src="$getCdnPath('/static/image/common/btn_close_white.png')"
             alt="close"
           />
         </div>
@@ -26,7 +26,13 @@
 
             <div :class="$style['result-item']">
               <div>{{ $text("S_COMPUTE_WAGER_INTERVAL", "结算区间") }}</div>
-              <span>{{ data.start_at }}~{{ data.end_at }}</span>
+              <span
+                >{{
+                  caculateData ? caculateData[0].start_at : data.start_at
+                }}~{{
+                  caculateData ? caculateData[0].end_at : data.end_at
+                }}</span
+              >
             </div>
 
             <template v-if="computeState">
@@ -81,6 +87,10 @@ export default {
   props: {
     data: {
       type: Object,
+      default: {}
+    },
+    caculateData: {
+      type: Object | Array,
       default: {}
     }
   },

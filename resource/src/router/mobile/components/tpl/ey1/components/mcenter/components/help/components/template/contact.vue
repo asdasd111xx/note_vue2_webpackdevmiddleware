@@ -1,11 +1,15 @@
 <template>
   <div>
-    <div v-if="list" v-for="item in list" :class="$style['content']">
+    <div v-for="(item, key) in list" :class="$style['content']" :key="key">
       <div :class="$style['title']">
         <div :class="$style['block']" />
         {{ item.categoryName }}
       </div>
-      <div v-for="cell in item.itemData" :class="$style['cell']">
+      <div
+        v-for="(cell, key) in item.itemData"
+        :class="$style['cell']"
+        :key="key"
+      >
         <div>
           <img :src="cell.iconUrl" />
         </div>
@@ -36,10 +40,7 @@ export default {
   data() {
     return {
       msg: "",
-      list: null,
-      defaultImgSrc: this.$getCdnPath(
-        "/static/image/_new/mcenter/help/email.png"
-      )
+      list: []
     };
   },
   computed: {
@@ -50,15 +51,6 @@ export default {
     })
   },
   created() {
-    // yaboRequest({
-    //   method: "get",
-    //   url: `${this.siteConfig.YABO_API_DOMAIN}/system/contactus`,
-    //   headers: { "x-domain": this.memInfo.user.domain },
-    // }).then((res) => {
-    //   if (res && res.data && res.data.length > 0) {
-    //     this.list = res.data;
-    //   }
-    // });
     goLangApiRequest({
       method: "get",
       url: `${this.siteConfig.YABO_GOLANG_API_DOMAIN}/cxbb/System/contactus`
@@ -88,7 +80,7 @@ export default {
 .title {
   height: 40px;
   width: 100%;
-  //margin: 5px 8px;
+
   display: inline-flex;
   align-items: center;
   background: #ffffff;
@@ -109,14 +101,14 @@ export default {
     align-items: center;
     padding: 0 12px;
     height: 70px;
+
     > div:first-child {
       width: 40px;
       height: 40px;
       display: flex;
       align-items: center;
       justify-content: center;
-      margin: 10px 20px 10px 0;
-      padding-right: 20px;
+      margin: 0 20px;
       border-right: #f8f8f7 solid 1px;
       img {
         width: 28px;
@@ -124,6 +116,7 @@ export default {
     }
 
     > div:nth-child(2) {
+      margin-left: 20px;
       width: 100%;
     }
 
@@ -145,8 +138,8 @@ export default {
   margin-top: 30px;
   margin-left: 12px;
   margin-right: 12px;
-
   text-align: center;
+
   > div {
     color: white;
     height: 45px;

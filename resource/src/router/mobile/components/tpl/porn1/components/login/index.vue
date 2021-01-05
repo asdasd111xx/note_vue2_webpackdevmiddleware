@@ -1,187 +1,190 @@
 <template>
-  <mobile-container
-    :header-config="headerConfig"
-    :class="$style.container"
-    :hasFooter="false"
-  >
+  <mobile-container :header-config="headerConfig" :hasFooter="false">
     <div slot="content" class="content-wrap">
       <div class="container">
         <div class="login-wrap clearfix">
           <div class="login-logo">
-            <img :src="'/static/image/_new/common/logo.png'" />
+            <img :src="'/static/image/porn1/common/logo_b.png'" />
           </div>
           <div class="login-form-wrap">
             <!-- 錯誤訊息 -->
-            <div :class="$style['err-msg']">
+            <div class="err-msg">
               <div v-show="errMsg">
                 {{ errMsg }}
               </div>
             </div>
-
-            <!-- 帳號 -->
-            <span class="login-unit login-unit-username">
-              <input
-                ref="username"
-                v-model="username"
-                :title="$text('S_ACCOUNT', '帐号')"
-                :placeholder="$text('S_USER_NAME', '用户名')"
-                class="login-input"
-                maxlength="20"
-                tabindex="1"
-                @keydown.13="keyDownSubmit()"
-                @input="
-                  username = $event.target.value
-                    .toLowerCase()
-                    .replace(' ', '')
-                    .trim()
-                    .replace(/[\W]/g, '')
-                "
-              />
-              <div class="input-icon">
-                <img
-                  :src="
-                    $getCdnPath(`/static/image/_new/login/icon_account.png`)
+            <form>
+              <!-- 帳號 -->
+              <span class="login-unit login-unit-username">
+                <input
+                  ref="username"
+                  v-model="username"
+                  :title="$text('S_ACCOUNT', '帐号')"
+                  :placeholder="$text('S_USER_NAME', '用户名')"
+                  class="login-input"
+                  maxlength="20"
+                  tabindex="1"
+                  @keydown.13="keyDownSubmit()"
+                  @input="
+                    username = $event.target.value
+                      .toLowerCase()
+                      .replace(' ', '')
+                      .trim()
+                      .replace(/[\W]/g, '')
                   "
                 />
-              </div>
-              <div :class="$style['clear']" v-if="username">
-                <img
-                  :src="$getCdnPath(`/static/image/_new/common/ic_clear.png`)"
-                  @click="username = ''"
-                />
-              </div>
-            </span>
-            <!-- 密碼 -->
-            <span class="login-unit login-unit-password">
-              <input
-                ref="password"
-                id="pwd"
-                v-model="password"
-                :title="$text('S_PASSWORD', '密码')"
-                :placeholder="$text('S_PASSWORD', '密码')"
-                class="login-input"
-                type="password"
-                maxlength="12"
-                tabindex="2"
-                @input="
-                  password = $event.target.value
-                    .replace(' ', '')
-                    .trim()
-                    .replace(/[\W]/g, '')
-                "
-                @keydown.13="keyDownSubmit()"
-              />
-              <div :class="$style['eye']">
-                <img
-                  :src="
-                    $getCdnPath(
-                      `/static/image/_new/login/btn_eye_${
-                        isShowPwd ? 'n' : 'd'
-                      }.png`
-                    )
+                <div class="input-icon">
+                  <img
+                    :src="
+                      $getCdnPath(`/static/image/common/login/icon_account.png`)
+                    "
+                  />
+                </div>
+                <div class="clear" v-if="username">
+                  <img
+                    :src="$getCdnPath(`/static/image/common/ic_clear.png`)"
+                    @click="username = ''"
+                  />
+                </div>
+              </span>
+              <!-- 密碼 -->
+              <span class="login-unit login-unit-password">
+                <input
+                  ref="password"
+                  id="pwd"
+                  v-model="password"
+                  :title="$text('S_PASSWORD', '密码')"
+                  :placeholder="$text('S_PASSWORD', '密码')"
+                  class="login-input"
+                  type="password"
+                  maxlength="12"
+                  tabindex="2"
+                  @input="
+                    password = $event.target.value
+                      .replace(' ', '')
+                      .trim()
+                      .replace(/[\W]/g, '')
                   "
-                  @click="toggleEye('confPwd')"
+                  @keydown.13="keyDownSubmit()"
+                  autocomplete="password"
                 />
-              </div>
-              <div class="input-icon">
-                <img
-                  :src="
-                    $getCdnPath(`/static/image/_new/login/icon_password.png`)
-                  "
-                />
-              </div>
-            </span>
-            <!-- 拼圖驗證 -->
-            <puzzle-verification
-              v-if="memInfo.config.login_captcha_type === 3"
-              ref="puzzleVer"
-              :puzzle-obj.sync="puzzleObj"
-            />
-            <!-- 驗證碼 -->
-            <div
-              v-if="hasCaptchaText"
-              class="login-unit login-unit-captcha clearfix"
-            >
-              <input
-                ref="captcha"
-                v-model="captcha"
-                placeholder="请填写验证码"
-                class="login-input"
-                maxlength="4"
-                tabindex="3"
-                @input="captchaVerification($event.target.value)"
-                @keydown.13="keyDownSubmit()"
+                <div class="eye">
+                  <img
+                    :src="
+                      $getCdnPath(
+                        `/static/image/common/login/btn_eye_${
+                          isShowPwd ? 'n' : 'd'
+                        }.png`
+                      )
+                    "
+                    @click="toggleEye('confPwd')"
+                  />
+                </div>
+                <div class="input-icon">
+                  <img
+                    :src="
+                      $getCdnPath(
+                        `/static/image/common/login/icon_password.png`
+                      )
+                    "
+                  />
+                </div>
+              </span>
+              <!-- 拼圖驗證 -->
+              <puzzle-verification
+                v-if="memInfo.config.login_captcha_type === 3"
+                ref="puzzleVer"
+                :puzzle-obj.sync="puzzleObj"
               />
-              <div class="input-icon">
-                <img
-                  :src="
-                    $getCdnPath(`/static/image/_new/login/sign_captcha.png`)
-                  "
-                />
-              </div>
-              <img
-                class="captchaImg"
-                v-if="captchaImg"
-                :src="captchaImg"
-                height="25"
-              />
-              <div class="captchaText-refresh" @click="getCaptcha">
-                <img
-                  :src="'/static/image/porn1/common/ic_verification_reform.png'"
-                />
-              </div>
-            </div>
-            <div class="login-bottom-wrap">
-              <!-- 滑動驗證 -->
-              <slide-verification
-                v-if="memInfo.config.login_captcha_type === 2"
-                :is-enable="isSlideAble"
-                :success-fuc="slideLogin"
-                page-status="login"
-              />
-              <!-- 登入鈕 -->
+              <!-- 驗證碼 -->
               <div
-                v-else
-                class="login-button login-submit"
-                @click="handleClickLogin"
+                v-if="hasCaptchaText"
+                class="login-unit login-unit-captcha clearfix"
               >
-                {{ $text("S_LOGIN_TITLE", "登录") }}
-              </div>
-            </div>
-            <div class="login-deposit-username clearfix">
-              <div class="icon-wrap" @click="rememberPwd = !rememberPwd">
-                <img
-                  :src="
-                    `/static/image/_new/common/icon_${
-                      rememberPwd ? '' : 'no'
-                    }remember.png`
-                  "
+                <input
+                  ref="captcha"
+                  v-model="captcha"
+                  placeholder="请填写验证码"
+                  class="login-input"
+                  maxlength="4"
+                  tabindex="3"
+                  @input="captchaVerification($event.target.value)"
+                  @keydown.13="keyDownSubmit()"
                 />
+                <div class="input-icon">
+                  <img
+                    :src="
+                      $getCdnPath(`/static/image/common/login/sign_captcha.png`)
+                    "
+                  />
+                </div>
+                <img
+                  class="captchaImg"
+                  v-if="captchaImg"
+                  :src="captchaImg"
+                  height="25"
+                />
+                <div class="captchaText-refresh" @click="getCaptcha">
+                  <img
+                    :src="'/static/image/common/ic_verification_reform.png'"
+                  />
+                </div>
               </div>
-              <span class="deposit-text">{{
-                $text("S_SAVE_PASSWORD", "记住密码")
-              }}</span>
-              <!-- 忘記密碼 -->
-              <span
-                class="login-unit-link"
-                @click="$router.push('/mobile/forgetpwd/member')"
-                >{{ $text("S_PASSWORD_FORGET", "忘记密码") }}?</span
-              >
-            </div>
-            <div class="login-link-wrap">
-              <!-- 加入會員 -->
-              <div class="link-button link-join-mem">
-                <span @click="linktoJoin()">
-                  {{ $text("S_FREE_REGISTER", "免费注册") }}
-                </span>
+              <div class="login-deposit-username clearfix">
+                <div class="icon-wrap" @click="rememberPwd = !rememberPwd">
+                  <img
+                    :src="
+                      `/static/image/common/icon_${
+                        rememberPwd ? '' : 'no'
+                      }remember.png`
+                    "
+                  />
+                </div>
+                <span class="deposit-text">{{
+                  $text("S_SAVE_PASSWORD", "记住密码")
+                }}</span>
+                <!-- 忘記密碼 -->
+                <span
+                  class="login-unit-link"
+                  @click="$router.push('/mobile/forgetpwd/member')"
+                  >{{ $text("S_PASSWORD_FORGET", "忘记密码") }}?</span
+                >
               </div>
-              <div
-                class="link-button link-submit"
-                @click="$router.push('/mobile/service')"
-              >
-                {{ $text("S_CUSTOMER_SERVICE_ONLINE", "在线客服") }}
+              <div class="login-bottom-wrap">
+                <!-- 滑動驗證 -->
+                <slide-verification
+                  v-if="memInfo.config.login_captcha_type === 2"
+                  ref="slider"
+                  :is-enable="isSlideAble"
+                  :success-fuc="slideLogin"
+                  page-status="login"
+                />
+                <!-- 登入鈕 -->
+                <div
+                  v-else
+                  class="login-button login-submit"
+                  @click="handleClickLogin"
+                >
+                  <div>
+                    {{ $text("S_LOGIN_TITLE", "登录") }}
+                  </div>
+                </div>
               </div>
-            </div>
+              <div class="login-link-wrap">
+                <!-- 加入會員 -->
+                <div class="link-button link-join-mem">
+                  <span @click="linktoJoin()">
+                    {{ $text("S_FREE_REGISTER", "免费注册") }}
+                  </span>
+                </div>
+                <div
+                  class="link-button link-submit"
+                  @click="$router.push('/mobile/service')"
+                >
+                  {{ $text("S_CUSTOMER_SERVICE_ONLINE", "在线客服") }}
+                </div>
+              </div>
+            </form>
           </div>
           <security-check
             v-if="checkItem"
@@ -189,11 +192,12 @@
             :theme="$styleSecurityCheck"
             :on-login="login"
           />
-          <div :class="$style.version">
+          <div class="version">
             {{ version }}
           </div>
         </div>
       </div>
+      <page-loading :is-show="isLoading" />
     </div>
   </mobile-container>
 </template>
@@ -213,6 +217,10 @@ export default {
     securityCheck: () =>
       import(
         /* webpackChunkName: 'securityCheck' */ "@/router/web/components/common/securityCheck"
+      ),
+    pageLoading: () =>
+      import(
+        /* webpackChunkName: 'pageLoading' */ "@/router/mobile/components/common/pageLoading"
       ),
     slideVerification,
     puzzleVerification,
@@ -260,7 +268,7 @@ export default {
           if (this.$route.query && this.$route.query.prev) {
             let prev = this.$route.query.prev;
             switch (prev) {
-              case 'back':
+              case "back":
               default:
                 this.$router.push(`/mobile/${prev}`);
                 return;
@@ -434,54 +442,5 @@ export default {
   background-color: rgba(0, 0, 0, 0.5);
   width: 100%;
   height: 100%;
-}
-</style>
-
-<style lang="scss" module>
-@import "~@/css/variable.scss";
-
-.version {
-  color: $main_text_color3;
-  position: absolute;
-  right: 14px;
-  bottom: 5vh;
-  font-size: 12px;
-}
-
-.err-msg {
-  padding: 2px 0;
-  color: $main_error_color1;
-  min-height: 25px;
-  line-height: 25px;
-}
-
-.eye {
-  display: flex;
-  align-items: center;
-  height: 100%;
-  width: 18px;
-  position: absolute;
-  right: 10px;
-  top: 0;
-
-  > img {
-    width: 18px;
-    height: 18px;
-  }
-}
-
-.clear {
-  display: flex;
-  align-items: center;
-  height: 100%;
-  width: 12px;
-  position: absolute;
-  right: 10px;
-  top: 0;
-
-  > img {
-    width: 12px;
-    height: 12px;
-  }
 }
 </style>

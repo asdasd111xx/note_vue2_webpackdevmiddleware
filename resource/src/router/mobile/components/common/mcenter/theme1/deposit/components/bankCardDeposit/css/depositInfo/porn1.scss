@@ -221,10 +221,6 @@
   background-image: -webkit-linear-gradient(right, #bd9d7d, #f9ddbd);
   background-image: linear-gradient(right, #bd9d7d, #f9ddbd);
 
-  &:active {
-    background-color: #bd9d7d;
-  }
-
   &.disabled {
     pointer-events: none;
     opacity: 0.5;

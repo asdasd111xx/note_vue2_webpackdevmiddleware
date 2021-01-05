@@ -7,8 +7,8 @@
 </template>
 
 <script>
-import iframeContent from '@/router/mobile/components/common/iframe';
-import mobileContainer from '../common/mobileContainer';
+import iframeContent from "@/router/mobile/components/common/iframe";
+import mobileContainer from "../common/mobileContainer";
 
 export default {
   components: {
@@ -18,9 +18,9 @@ export default {
   computed: {
     hasFooter() {
       const query = this.$route.query;
-      return query.hasFooter === undefined ? true : query.hasFooter === 'true';
-    },
-  },
+      return query.hasFooter === undefined ? false : query.hasFooter === "true";
+    }
+  }
 };
 </script>
 

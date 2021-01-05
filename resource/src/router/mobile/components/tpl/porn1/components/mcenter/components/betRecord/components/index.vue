@@ -125,12 +125,12 @@
             </div>
           </div>
         </template>
-        <div
+        <!-- <div
           v-if="setStartTime.valueOf() > setEndTime.valueOf()"
           :class="[$style['date-tip']]"
         >
           开始日期不能大于结束日期
-        </div>
+        </div> -->
       </div>
       <div
         v-if="selectMenu !== ''"
@@ -255,13 +255,12 @@
 </template>
 
 <script>
-import { mapGetters } from "vuex";
+import { mapGetters, mapActions } from "vuex";
 import Vue from "vue";
 import InfiniteLoading from "vue-infinite-loading";
 import EST from "@/lib/EST";
 import ajax from "@/lib/ajax";
 import datePicker from "@/router/mobile/components/common/datePicker";
-
 export default {
   components: {
     datePicker,
@@ -380,15 +379,10 @@ export default {
     this.getTotalTime();
   },
   methods: {
+    ...mapActions(["actionSetGlobalMessage"]),
     getGameRecord(data) {
-      this.selectMenu = "";
       this.selectType = data;
-      this.showPage = 0;
-      this.mainTotal = {};
-      this.pagination = {};
-      this.mainListData = [];
-      this.mainTime = [];
-      this.isLoading = true;
+      this.resetStatus();
       this.getTotalTime();
     },
     getTimeRecord(data) {
@@ -477,10 +471,10 @@ export default {
         url: "/api/v1/c/stats/wager-report/by-day-game",
         params,
         success: response => {
+          this.isLoading = false;
           if (response.ret.length === 0) {
             return;
           }
-
           this.mainListData.push(...response.ret);
           this.mainTotal = response.total;
           this.pagination = response.pagination;
@@ -505,8 +499,18 @@ export default {
 
       this.selectMenu = "";
     },
+    resetStatus() {
+      this.selectMenu = "";
+      this.showPage = 0;
+      this.mainTotal = {};
+      this.pagination = {};
+      this.mainListData = [];
+      this.mainTime = [];
+      this.isLoading = true;
+    },
     setCustomTime() {
       if (this.setStartTime > this.setEndTime) {
+        this.actionSetGlobalMessage({ msg: "开始日期不能大于结束日期" });
         return;
       }
 
@@ -515,7 +519,8 @@ export default {
       this.selectTime = `${this.startTime} ${this.endTime}`;
       this.isCustomTime = true;
       this.currentCustomDate = "";
-      this.selectMenu = "";
+
+      this.resetStatus();
       this.getTotalTime();
     },
     getMonthDay(date) {

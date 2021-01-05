@@ -18,7 +18,7 @@
             @click="closeTips"
           >
             <img
-              :src="$getCdnPath('/static/image/_new/common/btn_close_w.png')"
+              :src="$getCdnPath(`/static/image/common/btn_close_white.png`)"
               alt="close"
             />
           </div>
@@ -127,6 +127,7 @@
             查看规则
           </div>
           <div :class="$style['check-btn']" @click="handleBack">继续游戏</div>
+
           <div
             v-if="type === 'tips'"
             :class="[$style['check-btn'], $style['submit']]"
@@ -134,8 +135,9 @@
           >
             确认提现
           </div>
+
           <div
-            v-else="type === 'deposit'"
+            v-if="type === 'deposit'"
             :class="[$style['check-btn'], $style['submit']]"
             @click="$router.push('/mobile/mcenter/deposit')"
           >
@@ -254,3 +256,4 @@ export default {
 
 <style lang="scss" src="../css/index.module.scss" module="$style_porn1"></style>
 <style lang="scss" src="../css/ey1.module.scss" module="$style_ey1"></style>
+<style lang="scss" src="../css/sg1.module.scss" module="$style_sg1"></style>

@@ -1,10 +1,10 @@
 <template>
-  <mobile-container :has-footer="!hasPrev">
+  <mobile-container :has-footer="!hasPrev" :class="$style['container']">
     <div slot="content" :class="$style['content-wrap']">
       <div :class="$style['top-bg']" />
       <div :class="$style['service-header']">
         <div v-if="hasPrev" :class="$style['btn-prev']" @click="handleBack()">
-          <img :src="$getCdnPath(`/static/image/sg1/common/btn_back_w.png`)" />
+          <img :src="$getCdnPath(`/static/image/common/btn_back_white.png`)" />
         </div>
         <div :class="$style.title">我的客服</div>
         <div
@@ -47,14 +47,14 @@
           <div>Main Customer Support</div>
           <div>7*24小时专线服务 贴心至上</div>
         </div>
-
         <div :class="$style['btn-next']">
           <img
-            :src="$getCdnPath(`/static/image/sg1/webview/ic_service_arrow.png`)"
+            :src="
+              $getCdnPath(`/static/image/sg1/common/ic_arrow_next_white.png`)
+            "
           />
         </div>
       </div>
-
       <div :class="$style['info-card2']" @click="clickService">
         <div>
           <div>
@@ -72,7 +72,9 @@
 
         <div :class="$style['btn-next']">
           <img
-            :src="$getCdnPath(`/static/image/sg1/webview/ic_service_arrow.png`)"
+            :src="
+              $getCdnPath(`/static/image/sg1/common/ic_arrow_next_white.png`)
+            "
           />
         </div>
       </div>
@@ -115,13 +117,13 @@
               />
             </div>
             <span
-              >尊敬的鸭博娱乐会员，当iOS用户的鸭博娱乐App掉签无法打开时，可以通过以下方法继续游戏</span
+              >尊敬的丝瓜直播会员，当iOS用户的丝瓜直播App掉签无法打开时，可以通过以下方法继续游戏</span
             >
           </div>
 
           <div :class="$style['content']">
             <div :class="$style['content-cell']">
-              <span>1.通过鸭博娱乐图标上的网址，重新下载App：</span>
+              <span>1.通过丝瓜直播图标上的网址，重新下载App：</span>
               <div :class="$style['content-img']">
                 <img
                   :src="
@@ -135,7 +137,7 @@
             </div>
 
             <div :class="$style['content-cell']">
-              <span>2.收藏鸭博娱乐永久网址，浏览器打开，随时畅玩：</span>
+              <span>2.收藏丝瓜直播永久网址，浏览器打开，随时畅玩：</span>
               <div
                 :class="$style['link']"
                 v-for="(item, index) in linkArray"
@@ -205,6 +207,7 @@ export default {
     }).then(res => {
       if (res && res.data) {
         this.linkArray = res.data;
+        console.log("this.linkArray" + JSON.stringify(this.linkArray));
       }
     });
   },
@@ -271,6 +274,11 @@ export default {
 
 <style lang="scss" module>
 @import "~@/css/variable.scss";
+.container {
+  position: relative;
+  height: 100vh;
+}
+
 .avatar-info-wrap {
   height: 90px;
   display: flex;
@@ -346,6 +354,7 @@ export default {
     flex-direction: column;
     padding: 14px;
     background-image: url("/static/image/sg1/service/service_card.png");
+    background-image: url("/static/image/common/service/bg_service01.png");
     background-size: auto 100%;
     background-position: top 0 right 0;
     height: 100%;
@@ -377,6 +386,9 @@ export default {
   margin-top: 20px;
   background-image: -webkit-linear-gradient(16deg, #8ab3e2, #b5d0ef);
   background-image: linear-gradient(74deg, #8ab3e2, #b5d0ef);
+  > div:first-child {
+    background-image: url("/static/image/common/service/bg_service02.png");
+  }
 }
 
 .btn-next {
@@ -488,7 +500,7 @@ export default {
       padding: 0 5px;
       font-size: 12px;
       color: #fff;
-      background: #be9e7f;
+      background: linear-gradient(to left, #fe593c, #e61938);
       border-radius: 9px 0 0 9px;
     }
   }
@@ -576,7 +588,6 @@ export default {
   width: 100%;
   max-width: $mobile_max_width;
   top: 0;
-  left: 0;
   position: absolute;
   z-index: -1;
 }

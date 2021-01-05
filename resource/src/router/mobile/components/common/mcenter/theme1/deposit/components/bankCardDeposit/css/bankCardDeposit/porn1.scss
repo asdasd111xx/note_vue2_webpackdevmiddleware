@@ -333,6 +333,10 @@
     display: flex;
     align-items: center;
     margin-right: 10px;
+
+    &.onClick {
+      color: $main_text_color3;
+    }
   }
 
   .money {
@@ -589,6 +593,11 @@
   text-align: center;
   cursor: pointer;
   position: relative;
+
+  &.disable {
+    color: #eee;
+    pointer-events: none;
+  }
 
   .pay-active {
     display: block;
@@ -884,6 +893,19 @@
 
 .qrcode-item {
   // display: inline-block;
+  &:last-child {
+    margin-right: 0;
+  }
+}
+
+.qrcode-title {
+  color: #000;
+}
+
+.qrcode-img {
+  width: 100px;
+  height: 100px;
+  margin-top: 5px;
 }
 
 .qrcode-td {
@@ -909,23 +931,6 @@
 .info-border {
   margin: 7px 0;
   border-bottom: 1px solid #bebcbc;
-}
-
-.qrcode-item {
-  // text-align: right;
-
-  &:last-child {
-    margin-right: 0;
-  }
-}
-
-.qrcode-title {
-  color: #000;
-}
-
-.qrcode-img {
-  width: 100px;
-  height: 100px;
 }
 
 .warm-tip-title {

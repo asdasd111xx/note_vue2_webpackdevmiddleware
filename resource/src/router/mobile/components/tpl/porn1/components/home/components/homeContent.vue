@@ -88,7 +88,7 @@
         ref="game-wrap"
         :class="[$style['game-list-wrap'], 'clearfix']"
         :style="{
-          height: `${wrapHeight - 50}px`,
+          height: `${wrapHeight}px`,
           'overflow-y': `${stopScroll ? 'hidden' : 'auto'}`,
           opacity: stopScroll ? 0 : 1
         }"
@@ -108,7 +108,9 @@
               { [$style['is-full']]: [1, 2, 3].includes(game.imageType) },
               { [$style['is-third']]: [4].includes(game.imageType) }
             ]"
-            @click.stop="isMaintainSwag && game.vendor === 'SWAG' ? {} : onOpenGame(game)"
+            @click.stop="
+              isMaintainSwag && game.vendor === 'SWAG' ? {} : onOpenGame(game)
+            "
           >
             <template v-if="game.imageType === 4">
               <div :class="[$style['third-iamge-wrap']]">
@@ -122,17 +124,20 @@
             <template v-else>
               <img v-lazy="getImg(game)" :alt="game.name" />
             </template>
-            <div v-if="game.isMaintain ||
-            (isMaintainSwag && game.vendor === 'SWAG')"
-            :class="[$style['maintain-mask'],
-           ]">
+            <div
+              v-if="
+                game.isMaintain || (isMaintainSwag && game.vendor === 'SWAG')
+              "
+              :class="[$style['maintain-mask']]"
+            >
               <div
                 :class="[
                   {
-                    [$style['maintain-mask-1']]: game.imageType === 1 || game.vendor === 'SWAG'
+                    [$style['maintain-mask-1']]:
+                      game.imageType === 1 || game.vendor === 'SWAG'
                   },
                   { [$style['maintain-mask-2']]: game.imageType === 0 },
-                   {[$style['swag']]: game.vendor==='SWAG'}
+                  { [$style['swag']]: game.vendor === 'SWAG' }
                 ]"
               >
                 <div
@@ -140,31 +145,64 @@
                   :class="[$style['maintain-text-2']]"
                 >
                   {{ `${game.name}` }}
-                  </br>
+                  <br />
                   维护中
                 </div>
                 <div v-else :class="[$style['maintain-text-1']]">
-                  {{ `${game.name === "亚博直播真人视讯80桌" ? "鸭博直播真人视讯80桌":game.name} 维护中` }}
+                  {{
+                    `${
+                      game.name === "亚博直播真人视讯80桌"
+                        ? "鸭博直播真人视讯80桌"
+                        : game.name
+                    } 维护中`
+                  }}
                 </div>
-                <div v-if="game.isMaintain ||
-                          (isMaintainSwag && game.vendor === 'SWAG' && swagConfig && swagConfig.enable !== 0)"
-                          :class="[$style['container']]">
+                <div
+                  v-if="
+                    game.isMaintain ||
+                      (isMaintainSwag &&
+                        game.vendor === 'SWAG' &&
+                        swagConfig &&
+                        swagConfig.enable !== 0)
+                  "
+                  :class="[$style['container']]"
+                >
                   <div :class="[$style['us-time']]">
                     {{ `-美东时间-` }}
                   </div>
                   <div :class="[$style['container-maintain']]">
-                    <div :class="[$style['container-maintain-time'],
-                    { [$style['swag']]: game.vendor === 'SWAG' }]">
-                      {{ `${game.vendor === 'SWAG' ? swagESTMaintainStartAt: game.start_at}` }}
+                    <div
+                      :class="[
+                        $style['container-maintain-time'],
+                        { [$style['swag']]: game.vendor === 'SWAG' }
+                      ]"
+                    >
+                      {{
+                        `${
+                          game.vendor === "SWAG"
+                            ? swagESTMaintainStartAt
+                            : game.start_at
+                        }`
+                      }}
                     </div>
                     <img
                       :src="
                         $getCdnPath(`/static/image/casino/ic_transfergo.png`)
                       "
                     />
-                       <div :class="[$style['container-maintain-time'],
-                    { [$style['swag']]: game.vendor === 'SWAG' }]">
-                      {{ `${game.vendor === 'SWAG' ? swagESTMaintainEndAt: game.end_at}` }}
+                    <div
+                      :class="[
+                        $style['container-maintain-time'],
+                        { [$style['swag']]: game.vendor === 'SWAG' }
+                      ]"
+                    >
+                      {{
+                        `${
+                          game.vendor === "SWAG"
+                            ? swagESTMaintainEndAt
+                            : game.end_at
+                        }`
+                      }}
                     </div>
                   </div>
                 </div>
@@ -181,18 +219,21 @@
 
 <script>
 /* global $ */
-import { mapGetters, mapActions } from 'vuex';
-import { Swiper, SwiperSlide } from 'vue-awesome-swiper';
-import mixin from '@/mixins/homeContent';
+import { mapGetters, mapActions } from "vuex";
+import { Swiper, SwiperSlide } from "vue-awesome-swiper";
+import mixin from "@/mixins/homeContent";
 
 export default {
   mixins: [mixin],
   components: {
-    pageLoading: () => import(/* webpackChunkName: 'pageLoading' */ '@/router/mobile/components/common/pageLoading'),
+    pageLoading: () =>
+      import(
+        /* webpackChunkName: 'pageLoading' */ "@/router/mobile/components/common/pageLoading"
+      ),
     Swiper,
     SwiperSlide
   },
-  mounted() { },
+  mounted() {}
 };
 </script>
 
@@ -201,9 +242,12 @@ export default {
   overflow: hidden;
   position: relative;
   padding: 0 18px 0 13px;
+  background: white;
+  z-index: 4;
 }
 
 .type-wrap {
+  height: auto;
   overflow-y: auto;
   position: absolute;
   top: 0;
@@ -248,6 +292,8 @@ export default {
   color: #a6a9b2;
   font-size: 12px;
   text-align: center;
+  font-family: MicrosoftJhengHeiBold;
+  font-weight: 500;
 
   &.active {
     color: #fff;

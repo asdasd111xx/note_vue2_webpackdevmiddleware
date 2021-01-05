@@ -20,7 +20,7 @@
 
     <div :class="$style['cell2']">
       <div :class="$style['title']">
-        <strong>购买SWAG钻石，您需要使用鸭博娱乐点数进行兑换</strong>
+        <strong>购买SWAG钻石，您需要使用丝瓜直播点数进行兑换</strong>
         <div style="margin-top:10px">
           您可以从以下三个地方进入购买页面查看并兑换
         </div>
@@ -102,14 +102,13 @@ export default {
   data() {
     return {
       showgo: false,
-      category_isShowPop: false,
+      category_isShowPop: false
     };
   },
 
   mounted() {
-
     let vm = this;
-    $("#mobile-wrap").scroll(function () {
+    $("#mobile-wrap").scroll(function() {
       if ($(this).scrollTop() > 1) {
         vm.showgo = true;
       } else {
@@ -124,11 +123,11 @@ export default {
       } else {
         $("#mobile-wrap").animate({ scrollTop: 0 }, 1000);
       }
-    },
+    }
   },
   computed: {
     ...mapGetters({
-      loginStatus: "getLoginStatus",
+      loginStatus: "getLoginStatus"
     }),
     isApp() {
       let isApp = !!(
@@ -143,10 +142,10 @@ export default {
         onClick: () => {
           this.$router.back();
         },
-        title: this.$text("S_HELP_CENTER", "帮助中心"),
+        title: this.$text("S_HELP_CENTER", "帮助中心")
       };
-    },
-  },
+    }
+  }
 };
 </script>
 <style lang="scss" module>

@@ -10,8 +10,9 @@
 </template>
 
 <script>
-import cardWrap from '@/router/mobile/components/common/card';
-import mobileContainer from '../common/mobileContainer';
+import cardWrap from "@/router/mobile/components/common/card";
+import mobileContainer from "../common/mobileContainer";
+import { mapGetters } from "vuex";
 
 export default {
   components: {
@@ -24,31 +25,19 @@ export default {
     };
   },
   computed: {
-    headerTitle() {
-      const vendor = this.$route.params.vendor || 'all';
-      let textCode = '';
-
-      switch (vendor) {
-        case 'all':
-          textCode = 'S_ALL';
-          break;
-        case 'ace':
-          return 'ACE棋牌';
-        case 'th':
-          return '天游棋牌';
-        default:
-          textCode = `S_${vendor}`.toUpperCase();
-          break;
-      }
-
-      return this.$text(textCode);
-    },
+    ...mapGetters({
+      memInfo: "getMemInfo"
+    }),
     headerConfig() {
+      let vendor = this.$route.params.vendor;
+      const target = this.memInfo.vendors.find(item => item.vendor === vendor);
       return {
         prev: true,
-        title: this.headerTitle,
+        title: target.alias || "",
         hasSearchBtn: true,
-        onClick: () => { this.$router.back(); }
+        onClick: () => {
+          this.$router.back();
+        }
       };
     },
     isShowSearch: {
@@ -66,7 +55,6 @@ export default {
     }
   }
 };
-
 </script>
 
 <style lang="scss" module>

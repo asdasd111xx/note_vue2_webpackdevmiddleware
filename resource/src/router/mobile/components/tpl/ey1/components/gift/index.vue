@@ -249,14 +249,6 @@ export default {
   },
   methods: {
     ...mapActions(["actionSetGlobalMessage"]),
-
-    getThridUrl(target, Url) {
-      this.isLoading = true;
-      localStorage.setItem("iframe-third-url", Url);
-      this.$router.push(
-        `/mobile/iframe/third?hasFooter=false&hasHeader=true&title=${target.name}`
-      );
-    },
     linkTo(item) {
       if (item.login && !this.loginStatus) {
         this.$router.push("/mobile/login");
@@ -304,6 +296,9 @@ export default {
           }
         });
       return;
+
+      // localStorage.setItem("iframe-third-url-title", target.name);
+      // this.$router.push(`/mobile/iframe/third/fengniao?alias=${target.alias}`);
     }
   }
 };

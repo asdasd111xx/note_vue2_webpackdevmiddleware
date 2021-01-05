@@ -19,6 +19,7 @@
     <div v-else :class="$style['game-item-content']">
       <template v-for="(gameInfo, index) in gameData">
         <game-item
+          v-if="gameInfo.is_mobile"
           :key="`game-${gameInfo.vendor}-${index}`"
           :theme="theme"
           :game-info="gameInfo"
@@ -34,9 +35,9 @@
 </template>
 
 <script>
-import debounce from 'lodash/debounce';
-import gameItem from '../gameItem';
-
+import throttle from "lodash/throttle";
+import gameItem from "../gameItem";
+import { mapGetters } from "vuex";
 /**
  * 共用元件 - 手機網頁版 遊戲大廳使用搜尋框
  * @param {String} [text] - 搜尋文字
@@ -45,20 +46,19 @@ import gameItem from '../gameItem';
  */
 export default {
   data() {
-    return {
-    }
+    return {};
   },
   components: {
-    gameItem,
+    gameItem
   },
   props: {
     type: {
       type: String,
-      default: 'casino'
+      default: "casino"
     },
     text: {
       type: String,
-      default: ''
+      default: ""
     },
     setSearchText: {
       type: Function,
@@ -66,7 +66,7 @@ export default {
     },
     updateSearchStatus: {
       type: Function,
-      default: () => { }
+      default: () => {}
     },
     gameData: {
       type: Array,
@@ -74,7 +74,7 @@ export default {
     },
     theme: {
       type: String,
-      default: 'porn1'
+      default: "porn1"
     },
     gameShowVendor: {
       type: Boolean,
@@ -94,28 +94,34 @@ export default {
     }
   },
   computed: {
+    ...mapGetters({
+      siteConfig: "getSiteConfig"
+    }),
     $style() {
-      return this[`$style_${this.theme}`] || this.$style_porn1;
+      return this[`$style_${this.themeTPL}`] || this.$style_porn1;
+    },
+    themeTPL() {
+      return this.siteConfig.MOBILE_WEB_TPL;
     },
     searchText: {
       get() {
         return this.text;
       },
       set(value) {
-        debounce(() => { this.setSearchText(value); }, 800)();
+        throttle(() => {
+          this.setSearchText(value);
+        }, 800)();
       }
     }
   },
-  created() {
-  },
+  created() {},
   methods: {
     redirectBankCard() {
       return `casino`;
-    },
-  },
+    }
+  }
 };
 </script>
-
 
 <style lang="scss" src="./css/ey1.module.scss" module="$style_ey1"></style>
 <style lang="scss" src="./css/porn1.module.scss" module="$style_porn1"></style>

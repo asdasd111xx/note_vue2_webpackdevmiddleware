@@ -2,13 +2,15 @@
   <div>
     <div :class="$style['back']" @click="$router.push('/mobile/mcenter/home')">
       <img
-        :src="$getCdnPath(`/static/image/_new/common/btn_back.png`)"
+        :src="$getCdnPath(`/static/image/common/btn_back_grey.png`)"
         alt="back"
       />
     </div>
     <div :class="$style['pic-wrap']">
       <img
-        :src="$getCdnPath(`/static/image/_new/mcenter/share/shareapp_save.png`)"
+        :src="
+          $getCdnPath(`/static/image/porn1/mcenter/share/shareapp_save.png`)
+        "
         alt="shareApp"
       />
 
@@ -36,7 +38,6 @@ export default {
   },
   computed: {
     ...mapGetters({
-      isPwa: "getIsPwa",
       loginStatus: "getLoginStatus",
       siteConfig: "getSiteConfig",
       memInfo: "getMemInfo",

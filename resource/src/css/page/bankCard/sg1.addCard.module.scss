@@ -1,34 +1,22 @@
 @import "./porn1.addCard.module.scss";
+.submit {
+  background: linear-gradient(#fe593c, #e61938);
 
-// .input-title {
-//     color: #414655;
-// }
+  &.disabled {
+    background: linear-gradient(#fed3cb, #ffc5ce);
+  }
+}
 
-// .info-confirm {
-//     p {
-//         color: #a6a9b2;
-//         margin-bottom: 20px;
-//         font-size: 12px;
-//     }
-// }
+.send-keyring {
+  background: linear-gradient(#fe593c, #e61938);
 
-// .submit {
-//     background: #e42a30;
-//     margin-top: 0;
+  &.disabled {
+    background: linear-gradient(#fed3cb, #ffc5ce);
+  }
+}
 
-//     &.disabled {
-//         opacity: 0.5;
-//         pointer-events: none;
-//         background: #fdcccc;
-//     }
-// }
-
-// .send-keyring {
-//     background: #e42a30;
-// }
-
-// .phone-selected {
-//     border: 0px;
-//     background-color: #ffffff;
-//     margin-right: 10px;
-// }
+.phone-selected {
+  border: 0px;
+  background-color: #ffffff;
+  margin-right: 10px;
+}

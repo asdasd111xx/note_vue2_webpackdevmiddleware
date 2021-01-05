@@ -1,6 +1,7 @@
 <template>
   <transition name="fade">
     <div>
+      <!-- 12/17 該份 vue 檔之後以 pickerView.vue 共用 by Chia-->
       <!-- 提款前提示彈窗 -->
       <template v-if="!showPopStatus.isShow">
         <div :class="$style['more-method-wrap']">
@@ -11,13 +12,18 @@
               </div>
 
               <div :class="$style['title']">
-                {{ "更多提现方式" }}
+                {{
+                  ["porn1", "sg1"].includes(themeTPL)
+                    ? "添加提现方式"
+                    : "更多提现方式"
+                }}
               </div>
             </div>
 
             <div :class="$style['more-method-content']">
               <div
-                v-for="item in methodList"
+                v-for="(item, index) in methodList"
+                :key="index"
                 :class="$style['cell']"
                 @click="addMethod(item)"
               >
@@ -26,7 +32,14 @@
                   :class="$style['add-block']"
                 >
                   <img
+                    v-if="themeTPL === 'porn1'"
                     :src="$getCdnPath(`/static/image/porn1/mcenter/add.png`)"
+                    alt="add"
+                  />
+
+                  <img
+                    v-if="themeTPL === 'sg1'"
+                    :src="$getCdnPath(`/static/image/sg1/mcenter/add.png`)"
                     alt="add"
                   />
                 </div>

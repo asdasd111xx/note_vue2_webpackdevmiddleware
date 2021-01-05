@@ -112,7 +112,7 @@
 .content-text {
   width: 45%;
   display: inline-block;
-  min-height: 410px;
+  min-height: 510px;
 }
 
 .arrow-btn {
@@ -583,4 +583,20 @@
     width: 41px;
     height: 41px;
   }
+}
+
+.table-border {
+  margin-top: 5pt;
+  border: 1px #000000 solid;
+  border-collapse: collapse;
+
+  >tr {
+    border: 1px #000000 solid;
+
+    >td {
+      border: 1px #000000 solid;
+      text-align: center;
+    }
+  }
+
 }

@@ -20,7 +20,15 @@
           @click="getMessgae()"
           :src="
             $getCdnPath(
-              `/static/image/${siteConfig.MOBILE_WEB_TPL}/common/btn_back.png`
+              `/static/image/common/btn_back_${
+                themeTPL === 'porn1'
+                  ? 'grey'
+                  : themeTPL === 'ey1'
+                  ? 'white'
+                  : themeTPL === 'sg1'
+                  ? 'black'
+                  : null
+              }.png`
             )
           "
         />
@@ -33,7 +41,15 @@
         <img
           :src="
             $getCdnPath(
-              `/static/image/${siteConfig.MOBILE_WEB_TPL}/common/btn_close.png`
+              `/static/image/common/btn_close_${
+                themeTPL === 'porn1'
+                  ? 'grey'
+                  : themeTPL === 'ey1'
+                  ? 'white'
+                  : themeTPL === 'sg1'
+                  ? 'black'
+                  : null
+              }.png`
             )
           "
         />
@@ -51,7 +67,7 @@
           <img
             :src="
               $getCdnPath(
-                `/static/image/${siteConfig.MOBILE_WEB_TPL}/mcenter/information/btn_more.png`
+                `/static/image/${siteConfig.MOBILE_WEB_TPL}/common/btn_more.png`
               )
             "
             @click="onShowFunction(true)"
@@ -59,7 +75,13 @@
         </template>
       </div>
     </div>
-    <div v-if="!$route.query.pid" :class="$style['message-list']">
+    <div
+      v-if="!$route.query.pid"
+      :class="[
+        $style['message-list'],
+        { [$style['message-list-editing']]: isEditing }
+      ]"
+    >
       <div
         v-for="message in messageData"
         :key="message.id"
@@ -150,7 +172,23 @@
       >
         标记已读
       </div>
-      <div :class="$style.delete" @click="isDelete = true">删除</div>
+      <div
+        :class="[
+          $style.delete,
+          { [$style['disable']]: !selectMessage || !selectMessage.length > 0 }
+        ]"
+        @click="
+          () => {
+            if (!selectMessage || !selectMessage.length > 0) {
+              return;
+            } else {
+              isDelete = true;
+            }
+          }
+        "
+      >
+        删除
+      </div>
     </div>
     <div v-if="isLoading" :class="$style.loading">
       <div :class="$style['loading-wrap']">
@@ -162,7 +200,7 @@
     </div>
     <div v-if="isDelete" :class="$style['delete-tips']">
       <div :class="$style['tips-wrap']">
-        <div :class="$style['tips-title']">温馨提示</div>
+        <div :class="$style['tips-title']">温馨提醒</div>
         <div :class="$style['tips-text']">删除后将无法恢复，确定要删除吗？</div>
         <div :class="[$style['tips-button'], 'clearfix']">
           <div :class="$style['delete-cancel']" @click="isDelete = false">
@@ -189,8 +227,8 @@ export default {
   props: {
     headerConfig: {
       type: Object | null,
-      default: null,
-    },
+      default: null
+    }
   },
   filters: {
     dateFormat(date) {
@@ -198,7 +236,7 @@ export default {
     },
     shortDateFormat(date) {
       return Vue.moment(EST(date)).format("YYYY-MM-DD");
-    },
+    }
   },
   data() {
     return {
@@ -208,14 +246,17 @@ export default {
       isDelete: false,
       showFunctionButton: false,
       messageData: [],
-      selectMessage: [],
+      selectMessage: []
     };
   },
   computed: {
     ...mapGetters({
       memInfo: "getMemInfo",
-      siteConfig: "getSiteConfig",
+      siteConfig: "getSiteConfig"
     }),
+    themeTPL() {
+      return this.siteConfig.MOBILE_WEB_TPL;
+    },
     $style() {
       const style =
         this[`$style_${this.siteConfig.MOBILE_WEB_TPL}`] || this.$style_porn1;
@@ -226,7 +267,7 @@ export default {
         return null;
       }
       return this.messageData.find(
-        (message) => message.id === this.$route.query.pid
+        message => message.id === this.$route.query.pid
       );
     },
     isSelectAll() {
@@ -234,9 +275,9 @@ export default {
     },
     hasAllRead() {
       return this.selectMessage.every(
-        (id) => find(this.messageData, (message) => message.id === id).read
+        id => find(this.messageData, message => message.id === id).read
       );
-    },
+    }
   },
   created() {
     this.getMessgae();
@@ -245,24 +286,24 @@ export default {
     ...mapActions([
       "actionSetMcenterMsgCount",
       "actionSetUserdata",
-      "actionSetGlobalMessage",
+      "actionSetGlobalMessage"
     ]),
     setContent(content) {
       if (!content) {
         return;
       }
       let urlRegex = /(https?:\/\/[^\s]+)/g;
-      return content.replace(/\n/g, "<br/>").replace(urlRegex, function (url) {
+      return content.replace(/\n/g, "<br/>").replace(urlRegex, function(url) {
         return '<a href="' + url + '" target="_blank">' + url + "</a>";
       });
     },
     getMessgae() {
       this.actionSetMcenterMsgCount();
       mcenter.message({
-        success: (response) => {
+        success: response => {
           this.messageData = response.ret;
           this.hasReceive = true;
-        },
+        }
       });
     },
     getContent({ id, read }, isSetRead) {
@@ -276,13 +317,13 @@ export default {
               return;
             }
             // if (!isSetRead) this.actionSetMcenterMsgCount();
-            this.messageData = this.messageData.map((message) => {
+            this.messageData = this.messageData.map(message => {
               if (message.id === id) {
                 return { ...message, read: true };
               }
               return message;
             });
-          },
+          }
         },
         id
       );
@@ -319,7 +360,7 @@ export default {
       if (this.isEditing) {
         if (this.selectMessage.includes(info.id)) {
           this.selectMessage = [
-            ...this.selectMessage.filter((id) => id !== info.id),
+            ...this.selectMessage.filter(id => id !== info.id)
           ];
           return;
         }
@@ -330,7 +371,7 @@ export default {
       this.$router.push({ query: { pid: info.id } });
     },
     onSelectAll() {
-      this.selectMessage = [...this.messageData.map((message) => message.id)];
+      this.selectMessage = [...this.messageData.map(message => message.id)];
     },
     onRead() {
       if (this.hasAllRead) {
@@ -338,7 +379,7 @@ export default {
       }
       this.isLoading = true;
       this.selectMessage.forEach((id, index) => {
-        this.getContent(find(this.messageData, (message) => message.id === id));
+        this.getContent(find(this.messageData, message => message.id === id));
         if (index < this.selectMessage.length - 1) {
           return;
         }
@@ -350,20 +391,24 @@ export default {
       this.onShowFunction(false);
     },
     onDelete() {
+      if (!this.selectMessage || !this.selectMessage.length > 0) {
+        return;
+      }
+
       this.isDelete = false;
       this.isLoading = true;
 
       axios({
         method: "delete",
         url: API_MCENTER_MESSAGES_CONTENT,
-        data: { message_ids: this.selectMessage.map((id) => +id) },
-      }).then((res) => {
+        data: { message_ids: this.selectMessage.map(id => +id) }
+      }).then(res => {
         this.isLoading = false;
 
         if (res.data.result !== "ok") {
           this.actionSetGlobalMessage({
             msg: res.data.msg,
-            code: res.data.code,
+            code: res.data.code
           });
           return;
         }
@@ -373,8 +418,8 @@ export default {
         this.onShowFunction(false);
         this.isEditing = false;
       });
-    },
-  },
+    }
+  }
 };
 </script>
 

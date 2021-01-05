@@ -56,7 +56,7 @@
                   v-if="tagTrans[info.tag]"
                   :src="
                     $getCdnPath(
-                      `/static/image/_new/mcenter/deposit/icon_${
+                      `/static/image/common/mcenter/deposit/icon_${
                         tagTrans[info.tag]
                       }.png`
                     )
@@ -104,7 +104,7 @@
                       curPayInfo.bank_id === info.bank_id
                   "
                   :class="$style['pay-active']"
-                  src="/static/image/_new/common/select_active.png"
+                  :src="$getCdnPath(`/static/image/common/select_active.png`)"
                 />
               </div>
 
@@ -149,16 +149,11 @@
             ]"
             @click="changeType('chagneBank'), (isShowPop = true)"
           >
-            <span
-              v-if="curPayInfo.payment_type_id === 5"
-              :class="$style['select-bank-title']"
-            >
-              {{ $text("S_USE_BANK", "使用银行") }}
-            </span>
-
-            <span v-else :class="$style['select-bank-title']"
+            <span :class="$style['select-bank-title']"
               >{{
-                curPayInfo.payment_method_id === 2
+                curPayInfo.payment_type_id === 5
+                  ? $text("S_USE_BANK", "使用银行")
+                  : curPayInfo.payment_method_id === 2
                   ? $text("S_SELECT_POINT_CARD", "请选择点卡")
                   : $text("S_SELECT_BANKS", "请选择银行")
               }}
@@ -170,7 +165,7 @@
 
             <img
               :class="$style['select-bank-icon']"
-              src="/static/image/_new/common/arrow_next.png"
+              :src="$getCdnPath(`/static/image/common/arrow_next.png`)"
             />
 
             <div v-if="isShowPop" :class="$style['pop-wrap']">
@@ -246,7 +241,7 @@
                   }
                 ]"
               >
-                为即时到账，请务必输入正确的汇款人姓名
+                为即时到帐，请务必输入正确的汇款人姓名
               </div>
             </div>
 
@@ -271,7 +266,7 @@
                   <img
                     v-if="data.id === curPassRoad.id"
                     :class="$style['pay-active']"
-                    src="/static/image/_new/common/select_active.png"
+                    :src="$getCdnPath(`/static/image/common/select_active.png`)"
                   />
                 </div>
               </div>
@@ -356,18 +351,17 @@
 
                 <img
                   :class="$style['CGPay-update-img']"
-                  :src="
-                    $getCdnPath(
-                      `/static/image/${siteConfig.MOBILE_WEB_TPL}/common/btn_update.png`
-                    )
-                  "
+                  :src="$getCdnPath(`/static/image/common/btn_update.png`)"
                   alt="update"
-                  @click="getPayPass"
+                  @click="getCGPayBalance"
                 />
               </span>
 
               <div :class="$style['CGPay-money']">
-                CGP <span>{{ curPassRoad.balance }}</span>
+                CGP
+                <span>
+                  {{ walletData["CGPay"].balance }}
+                </span>
               </div>
             </div>
 
@@ -394,15 +388,11 @@
                 "
               >
                 <div :class="$style['CGPay-money']">
-                  <div>CGPay余额：{{ curPassRoad.balance }}</div>
+                  <div>CGPay余额：{{ walletData.CGPay.balance }}</div>
 
-                  <div :class="$style['money-update']" @click="getPayPass">
+                  <div :class="$style['money-update']" @click="getCGPayBalance">
                     <img
-                      :src="
-                        $getCdnPath(
-                          `/static/image/${siteConfig.MOBILE_WEB_TPL}/common/btn_update.png`
-                        )
-                      "
+                      :src="$getCdnPath(`/static/image/common/btn_update.png`)"
                       alt="update"
                     />
                   </div>
@@ -450,7 +440,7 @@
                   <img
                     v-if="moneyValue === item"
                     :class="$style['pay-active']"
-                    src="/static/image/_new/common/select_active.png"
+                    :src="$getCdnPath(`/static/image/common/select_active.png`)"
                   />
                 </div>
 
@@ -495,7 +485,9 @@
                     <img
                       v-if="isSelectedCustomMoney"
                       :class="$style['pay-active']"
-                      src="/static/image/_new/common/select_active.png"
+                      :src="
+                        $getCdnPath(`/static/image/common/select_active.png`)
+                      "
                     />
                   </div>
                 </div>
@@ -584,7 +576,14 @@
                 :class="$style['crypto-block']"
               >
                 <span>转入数量</span>
-                <div :class="$style['content']">
+                <div
+                  :class="[
+                    $style['content'],
+                    {
+                      [$style['onClick']]: isClickCoversionBtn
+                    }
+                  ]"
+                >
                   <span :class="$style['money']">
                     {{ cryptoMoney }}
                   </span>
@@ -624,6 +623,9 @@
                     $style['pay-auth-method'],
                     {
                       [$style['current-data']]: walletData['CGPay'].method === 0
+                    },
+                    {
+                      [$style['disable']]: walletData['CGPay'].balance === '--'
                     }
                   ]"
                   @click="walletData['CGPay'].method = 0"
@@ -632,7 +634,7 @@
                   <img
                     v-if="walletData['CGPay'].method === 0"
                     :class="$style['pay-active']"
-                    src="/static/image/_new/common/select_active.png"
+                    :src="$getCdnPath(`/static/image/common/select_active.png`)"
                   />
                 </div>
 
@@ -649,7 +651,7 @@
                   <img
                     v-if="walletData['CGPay'].method === 1"
                     :class="$style['pay-active']"
-                    src="/static/image/_new/common/select_active.png"
+                    :src="$getCdnPath(`/static/image/common/select_active.png`)"
                   />
                 </div>
 
@@ -686,7 +688,7 @@
                         info.objKey === 'depositTime'
                     "
                     :class="$style['speed-field-icon']"
-                    src="/static/image/_new/common/arrow_next.png"
+                    :src="$getCdnPath(`/static/image/common/arrow_next.png`)"
                   />
                   <div :class="$style['field-title']">{{ info.title }}</div>
                   <div :class="$style['field-info']">
@@ -733,7 +735,11 @@
                               "
                             >
                               <img
-                                :src="`/static/image/_new/mcenter/default.png`"
+                                :src="
+                                  $getCdnPath(
+                                    `/static/image/common/default/bank_card_default.png`
+                                  )
+                                "
                               />
                               {{ item.mainTitle }}
                               <icon
@@ -751,7 +757,7 @@
 
                     <template v-else-if="info.objKey === 'depositTime'">
                       <date-picker
-                        v-model="speedField[info.objKey]"
+                        v-model="speedField['depositTime']"
                         :placeholder="info.placeholderText"
                         type="datetime"
                         format="YYYY-MM-DD HH:mm:ss"
@@ -856,7 +862,7 @@
                       @click="copyInfo(info.value)"
                     >
                       <img
-                        :src="`/static/image/${themeTPL}/mcenter/ic_copy.png`"
+                        :src="$getCdnPath(`/static/image/common/ic_copy.png`)"
                       />
                     </div>
                   </div>
@@ -883,16 +889,21 @@
               v-if="curPayInfo.payment_method_name === '代客充值'"
               :class="$style['feature-tip-title']"
             >
-              实际到账： ¥{{ realSaveMoney }}
+              实际到帐： ¥{{ realSaveMoney }}
             </span>
 
             <!-- 109/11/10 實際到帳常註顯示 -->
             <span
               v-else
-              :class="[$style['feature-tip-title'], $style.success]"
+              :class="[
+                $style['feature-tip-title'],
+                {
+                  [$style['success']]: moneyValue
+                }
+              ]"
               @click="showRealStatus = true"
             >
-              实际到账： ¥{{ realSaveMoney }} (详情)
+              实际到帐： ¥{{ realSaveMoney }} (详情)
             </span>
           </div>
 
@@ -900,7 +911,7 @@
             <div :class="$style['pop-message-mark']" />
             <div :class="$style['message-container']">
               <ul :class="$style['message-content']">
-                <li>• 实际到账： {{ realSaveMoney }}</li>
+                <li>• 实际到帐： ¥{{ realSaveMoney }}</li>
                 <template
                   v-if="
                     curPayInfo.offer_enable && +curPayInfo.offer_percent > 0
@@ -937,7 +948,10 @@
                   !isBlockChecked ||
                   nameCheckFail ||
                   (isSelectBindWallet() && !this.curPassRoad.is_bind_wallet) ||
-                  (isSelectBindWallet(25, 402) && !isClickCoversionBtn)
+                  (isSelectBindWallet(25, 402) && !isClickCoversionBtn) ||
+                  (isSelectBindWallet(16) &&
+                    walletData['CGPay'].method === 0 &&
+                    !walletData['CGPay'].password)
               }
             ]"
             :title="$text('S_ENTER_PAY', '立即充值')"
@@ -1077,7 +1091,7 @@
 import { mapGetters, mapActions } from "vuex";
 import { Swiper, SwiperSlide } from "vue-awesome-swiper";
 import { getCookie } from "@/lib/cookie";
-import blockListTips from "../../../../../../tpl/porn1/components/common/blockListTips";
+import blockListTips from "@/router/mobile/components/tpl/porn1/components/common/blockListTips";
 import bindWalletPopup from "@/router/mobile/components/tpl/porn1/components/common/bindWalletPopup";
 import bbosRequest from "@/api/bbosRequest";
 import DatePicker from "vue2-datepicker";
@@ -1107,7 +1121,7 @@ export default {
   props: {
     headerSetting: {
       type: Object,
-      default: () => { }
+      default: () => {}
     }
   },
   data() {
@@ -1148,7 +1162,7 @@ export default {
       confirmPopupObj: {
         msg: "",
         btnText: "",
-        cb: () => { }
+        cb: () => {}
       }
     };
   },
@@ -1185,6 +1199,11 @@ export default {
           this.paySelectData["chagneBank"].allData[0].value
         );
       }
+
+      // 選到 CGPay 時，取得 CGPay balance 的 func
+      if (this.isSelectBindWallet(16)) {
+        this.getCGPayBalance();
+      }
     },
     isSelectValue(value) {
       if (value) {
@@ -1196,6 +1215,7 @@ export default {
       if (this.noticeData && this.noticeData.length > 0) {
         let data = this.noticeData[0];
 
+        // event => 掃 QRcode 綁定錢包
         if (data.event === "trade_bind_wallet" && data.result === "ok") {
           this.actionSetGlobalMessage({
             msg: "绑定成功",
@@ -1206,6 +1226,19 @@ export default {
             }
           });
         }
+      }
+    },
+    "walletData.CGPay.balance"(value) {
+      switch (value) {
+        // 尚未得到值時，選擇改為"掃碼支付"(同Android邏輯)
+        case "--":
+          this.walletData["CGPay"].method = 1;
+          break;
+
+        // 正常得到值時，選擇改為"CGP支付密碼"
+        default:
+          this.walletData["CGPay"].method = 0;
+          break;
       }
     }
   },
@@ -1353,25 +1386,6 @@ export default {
           isError: false
         },
         {
-          objKey: "bankBranch",
-          title: this.$text("S_DEPOSIT_BRANCH", "银行支行"),
-          value: this.speedField.bankBranch,
-          placeholderText: this.$text(
-            "S_ENTER_DEPOSIT_BRANCH",
-            "请输入银行支行"
-          ),
-          showCondition:
-            this.speedField.depositMethod === "2" ||
-            this.speedField.depositMethod === "4",
-          isError:
-            this.showError &&
-            this.curPayInfo.field.find(
-              item => item.name === "method" && item.required
-            ) &&
-            !this.speedField.bankBranch &&
-            ["2", "4"].includes(this.speedField.depositMethod)
-        },
-        {
           objKey: "depositAccount",
           title: "充值帐号",
           value: this.speedField.depositAccount,
@@ -1416,6 +1430,25 @@ export default {
             !this.speedField.depositTime
         },
         {
+          objKey: "bankBranch",
+          title: this.$text("S_DEPOSIT_BRANCH", "银行支行"),
+          value: this.speedField.bankBranch,
+          placeholderText: this.$text(
+            "S_ENTER_DEPOSIT_BRANCH",
+            "请输入银行支行"
+          ),
+          showCondition:
+            this.speedField.depositMethod === "2" ||
+            this.speedField.depositMethod === "4",
+          isError:
+            this.showError &&
+            this.curPayInfo.field.find(
+              item => item.name === "method" && item.required
+            ) &&
+            !this.speedField.bankBranch &&
+            ["2", "4"].includes(this.speedField.depositMethod)
+        },
+        {
           objKey: "serialNumber",
           title: this.$text("S_SERIAL_NUMBER2", "流水号"),
           value: this.speedField.serialNumber,
@@ -1455,9 +1488,15 @@ export default {
       // return this.allInputData.find((item) => item.objKey === 'depositName');
       return {
         objKey: "depositName",
-        title: "充值人姓名",
+        title:
+          this.curPayInfo.payment_type_id === 6
+            ? this.$text("充值昵称")
+            : this.$text("充值人姓名"),
         value: this.speedField.depositName,
-        placeholderText: "请输入充值人姓名",
+        placeholderText:
+          this.curPayInfo.payment_type_id === 6
+            ? this.$text("S_ENTER_DEPOSIT_NICKNAME", "请输入充值昵称")
+            : this.$text("S_ENTER_DEPOSIT_NAME", "请输入充值人姓名"),
         showCondition: this.curPayInfo.field.find(
           e => e.name === "pay_username" && e.required
         ),
@@ -1496,6 +1535,12 @@ export default {
     });
     this.checkEntryBlockStatus();
     this.actionSetRechargeConfig();
+
+    //預設當前時間
+    this.speedField["depositTime"] =
+      new Date().toLocaleDateString().replaceAll("/", "-") +
+      " " +
+      new Date().toTimeString().slice(0, 8);
   },
   destroyed() {
     this.resetTimerStatus();
@@ -1529,10 +1574,11 @@ export default {
       this.$router.push("/mobile/mcenter/creditTrans?tab=0");
     },
     handleBindWallet() {
-      if (['porn1', 'sg1'].includes(this.themeTPL)) {
+      if (["porn1", "sg1"].includes(this.themeTPL)) {
         switch (this.curPayInfo.payment_method_id) {
           // CGPay
           case 16:
+          // CGPay-USDT
           case 25:
             this.$router.push(
               "/mobile/mcenter/bankcard?redirect=deposit&type=wallet&wallet=CGPay"
@@ -1558,7 +1604,7 @@ export default {
         return;
       }
 
-      if (['ey1'].includes(this.themeTPL)) {
+      if (["ey1"].includes(this.themeTPL)) {
         switch (this.curPayInfo.payment_method_id) {
           case 22:
             this.qrcodeObj.bank_id = 37;

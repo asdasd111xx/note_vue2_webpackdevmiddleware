@@ -39,7 +39,7 @@
     </div>
 
     <div :class="$style['btn-next']">
-      <img :src="$getCdnPath(`/static/image/_new/mcenter/ic_arrow_next.png`)" />
+      <img :src="$getCdnPath(`/static/image/common/arrow_next.png`)" />
     </div>
   </div>
 </template>

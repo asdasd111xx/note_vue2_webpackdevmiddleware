@@ -228,13 +228,17 @@ export default {
 
         {
           objKey: "depositName",
-          title: "充值人姓名",
+          title:
+            this.typeId === 6
+              ? this.$text("充值昵称")
+              : this.$text("充值人姓名"),
           value: this.speedField.depositName,
-          placeholderText: "请输入充值人姓名",
+          placeholderText:
+            this.typeId === 6
+              ? this.$text("S_ENTER_DEPOSIT_NICKNAME", "请输入充值昵称")
+              : this.$text("S_ENTER_DEPOSIT_NAME", "请输入充值人姓名"),
           showCondition: this.showByRequiredFields
-            ? this.requiredFields.find(
-                e => e.name === "pay_username" && e.required
-              )
+            ? this.requiredFields.find(e => e.name === "pay_username")
             : true,
           isError:
             this.showError &&

@@ -2,19 +2,10 @@
   <div :class="$style['wrap']">
     <div :class="$style['header']">
       <div :class="$style['btn-prev']" @click="backPre">
-        <template v-if="themeTPL === 'porn1'">
-          <img
-            :src="$getCdnPath('/static/image/porn1/common/btn_back.png')"
-            alt="more"
-          />
-        </template>
-
-        <template v-if="themeTPL === 'ey1'">
-          <img
-            :src="$getCdnPath('/static/image/ey1/common/btn_back_w.png')"
-            alt="more"
-          />
-        </template>
+        <img
+          :src="$getCdnPath(`/static/image/common/btn_back_white.png`)"
+          alt="back"
+        />
       </div>
 
       <div :class="[$style['content'], 'clearfix']">
@@ -26,19 +17,10 @@
         :class="$style['header-icon']"
         @click="editDetailStatus = true"
       >
-        <template v-if="themeTPL === 'porn1'">
-          <img
-            :src="$getCdnPath('/static/image/porn1/common/btn_more.png')"
-            alt="more"
-          />
-        </template>
-
-        <template v-if="themeTPL === 'ey1'">
-          <img
-            :src="$getCdnPath('/static/image/ey1/common/btn_more_w.png')"
-            alt="more"
-          />
-        </template>
+        <img
+          :src="$getCdnPath('/static/image/ey1/common/btn_more.png')"
+          alt="more"
+        />
       </div>
     </div>
 
@@ -202,12 +184,6 @@ export default {
   }
 };
 </script>
-
-<style
-  lang="scss"
-  src="@/css/page/bankCard/porn1.index.module.scss"
-  module="$style_porn1"
-></style>
 
 <style
   lang="scss"

@@ -6,7 +6,7 @@
         :key="`tab-${item.key}`"
         :class="[
           $style['tab-item'],
-          { [$style['is-current']]: tabCurrent === index },
+          { [$style['is-current']]: tabCurrent === index }
         ]"
         :style="{ width: `${100 / tabItem.length}%` }"
         @click="setTabCurrent(index)"
@@ -42,13 +42,13 @@ export default {
     recommendGift: () =>
       import(
         /* webpackChunkName: 'mcenter_pron1_recommendGift' */ "./components/recommendGift"
-      ),
+      )
   },
   props: {
     func: {
       type: String,
-      required: true,
-    },
+      required: true
+    }
   },
   data() {
     return {
@@ -75,14 +75,14 @@ export default {
           }
 
           this.$router.push("/mobile/mcenter");
-        },
-      },
+        }
+      }
     };
   },
   computed: {
     ...mapGetters({
       memInfo: "getMemInfo",
-      siteConfig: "getSiteConfig",
+      siteConfig: "getSiteConfig"
     }),
     $style() {
       const style =
@@ -94,30 +94,30 @@ export default {
         {
           key: "management",
           text: this.$text("S_TEAM_MANAGEMENT", "团队管理"),
-          show: true,
+          show: true
         },
         {
           key: "gameRecord",
           text: this.$text("S_GAME_RECORD", "游戏记录"),
-          show: true,
+          show: true
         },
         {
           key: "commission",
           text: this.$text("S_MY_COMMISSION", "我的返利"),
-          show: true,
+          show: true
         },
         {
           key: "recommendGift",
           text: this.$text("S_RECOMMEND_GIFT", "推荐礼金"),
-          show: true,
-        },
-      ].filter((item) => item.show);
+          show: true
+        }
+      ].filter(item => item.show);
     },
     tabCurrent() {
-      return this.tabItem.findIndex((item) =>
+      return this.tabItem.findIndex(item =>
         this.$route.path.includes(item.key)
       );
-    },
+    }
   },
   methods: {
     ...mapActions(["actionChangePage"]),
@@ -126,22 +126,22 @@ export default {
       switch (this.tabItem[tabKey].key) {
         // 團隊管理
         case "management":
-          this.$router.push(`/mobile/mcenter/tcenter/management/member`);
+          this.$router.replace(`/mobile/mcenter/tcenter/management/member`);
           break;
 
         // 遊戲記錄
         case "gameRecord":
-          this.$router.push("/mobile/mcenter/tcenter/gameRecord/main");
+          this.$router.replace("/mobile/mcenter/tcenter/gameRecord/main");
           break;
 
         // 我的返利
         case "commission":
-          this.$router.push("/mobile/mcenter/tcenter/commission/summary");
+          this.$router.replace("/mobile/mcenter/tcenter/commission/summary");
           break;
 
         // 推薦禮金
         case "recommendGift":
-          this.$router.push(`/mobile/mcenter/tcenter/recommendGift`);
+          this.$router.replace(`/mobile/mcenter/tcenter/recommendGift`);
           break;
       }
     },
@@ -150,8 +150,8 @@ export default {
     },
     setHeaderTitle(value) {
       this.$set(this.headerConfig, "title", value);
-    },
-  },
+    }
+  }
 };
 </script>
 

@@ -3,7 +3,7 @@
     <div :class="$style['detail-header']">
       <div :class="$style['btn-prev']">
         <img
-          :src="$getCdnPath('/static/image/_new/common/btn_back.png')"
+          :src="$getCdnPath(`/static/image/common/btn_back_grey.png`)"
           @click="onClose()"
         />
       </div>
@@ -21,15 +21,15 @@
 
 <script>
 import { mapGetters, mapActions } from "vuex";
-import detailInfo from '@/router/mobile/components/common/mcenter/theme1/moneyDetail/components/detailInfo/';
-import common from '@/api/common';
+import detailInfo from "@/router/mobile/components/common/mcenter/theme1/moneyDetail/components/detailInfo/";
+import common from "@/api/common";
 
 export default {
   props: {
     detailInfo: {
       type: Object,
       default: null
-    },
+    }
   },
   computed: {
     ...mapGetters({
@@ -39,16 +39,19 @@ export default {
       const style =
         this[`$style_${this.siteConfig.MOBILE_WEB_TPL}`] || this.$style_porn1;
       return style;
-    },
+    }
   },
   components: {
-    pageLoading: () => import(/* webpackChunkName: 'pageLoading' */ '@/router/mobile/components/common/pageLoading'),
-    detailInfo,
+    pageLoading: () =>
+      import(
+        /* webpackChunkName: 'pageLoading' */ "@/router/mobile/components/common/pageLoading"
+      ),
+    detailInfo
   },
   mounted() {
     common.opcode({
       success: ({ result, ret }) => {
-        if (result !== 'ok') {
+        if (result !== "ok") {
           return;
         }
         this.opcodeList = ret;
@@ -57,9 +60,9 @@ export default {
   },
   data() {
     return {
-      sliderClass: 'slider',
+      sliderClass: "slider",
       opcodeList: null
-    }
+    };
   },
 
   methods: {
@@ -67,12 +70,11 @@ export default {
       this.$nextTick(() => {
         setTimeout(() => {
           this.$emit("close");
-        }, 280)
-
+        }, 280);
       });
-      this.sliderClass = 'slider-close slider'
+      this.sliderClass = "slider-close slider";
     }
-  },
+  }
 };
 </script>
 

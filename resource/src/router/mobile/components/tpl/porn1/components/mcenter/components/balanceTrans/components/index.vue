@@ -1,48 +1,5 @@
 <template>
   <div :class="['clearfix']">
-    <!-- 億元：自動免轉 -->
-    <template v-if="['ey1'].includes(themeTPL)">
-      <div v-if="isReceiveAuto" :class="[$style['balance-wrap'], 'clearfix']">
-        <div :class="$style['balance-total-icon']">
-          <img
-            :src="
-              $getCdnPath(
-                `/static/image/common/mcenter/wallet/ic_autotransfer.png`
-              )
-            "
-          />
-        </div>
-
-        <div :class="$style['balance-tip-wrap']">
-          {{ $text("S_AUTO_FREE_TRANSFER", "自动免转") }}
-          <span :class="$style['balance-auto-tip']"
-            >({{
-              $text("S_AUTOSWTICH_HINT_GAME", "开启后余额自动转入游戏场馆")
-            }})</span
-          >
-        </div>
-
-        <div :class="`ui fitted toggle checkbox field-checkbox ${themeTPL}`">
-          <input
-            :checked="isAutotransfer"
-            type="checkbox"
-            @click="
-              () => {
-                if (isReceiveAuto) {
-                  if (isAutotransfer) {
-                    closeAutotransfer();
-                  } else {
-                    enableAutotransfer();
-                  }
-                }
-              }
-            "
-          />
-          <label />
-        </div>
-      </div>
-    </template>
-
     <div :class="[$style['balance-item-wrap'], 'clearfix']">
       <div
         v-if="bonus"
@@ -90,11 +47,7 @@
           >
             {{ $t("S_MAINTAIN") }}
             <img
-              :src="
-                $getCdnPath(
-                  `/static/image/${themeTPL}/mcenter/balanceTrans/icon_transfer_tips_info.png`
-                )
-              "
+              :src="$getCdnPath('/static/image/common/mcenter/ic_tips.png')"
               :class="$style['balance-wrench']"
             />
           </span>
@@ -112,7 +65,7 @@
             <img
               :src="
                 $getCdnPath(
-                  `/static/image/${themeTPL}/mcenter/balanceTrans/ic_expand.png`
+                  `/static/image/common/mcenter/balanceTrans/ic_expand.png`
                 )
               "
               alt="expend"
@@ -142,11 +95,7 @@
           >
             {{ $t("S_MAINTAIN") }}
             <img
-              :src="
-                $getCdnPath(
-                  `/static/image/${themeTPL}/mcenter/balanceTrans/icon_transfer_tips_info.png`
-                )
-              "
+              :src="$getCdnPath('/static/image/common/mcenter/ic_tips.png')"
               :class="$style['balance-wrench']"
             />
           </span>
@@ -164,7 +113,7 @@
             <img
               :src="
                 $getCdnPath(
-                  `/static/image/${themeTPL}/mcenter/balanceTrans/ic_collapse.png`
+                  `/static/image/common/mcenter/balanceTrans/ic_collapse.png`
                 )
               "
               alt="collapse"
@@ -173,7 +122,38 @@
         </div>
       </template>
     </div>
+    <!-- 億元：自動免轉 -->
+    <template v-if="['ey1'].includes(themeTPL)">
+      <div v-if="isReceiveAuto" :class="[$style['balance-wrap'], 'clearfix']">
+        <div :class="$style['balance-tip-wrap']">
+          {{ $text("S_AUTO_FREE_TRANSFER", "自动免转") }}
+          <span :class="$style['balance-auto-tip']"
+            >({{
+              $text("S_AUTOSWTICH_HINT_GAME", "开启后余额自动转入游戏场馆")
+            }})</span
+          >
+        </div>
 
+        <div :class="`ui fitted toggle checkbox field-checkbox ${themeTPL}`">
+          <input
+            :checked="isAutotransfer"
+            type="checkbox"
+            @click="
+              () => {
+                if (isReceiveAuto) {
+                  if (isAutotransfer) {
+                    closeAutotransfer();
+                  } else {
+                    enableAutotransfer();
+                  }
+                }
+              }
+            "
+          />
+          <label />
+        </div>
+      </div>
+    </template>
     <!-- 鴨博：自動免轉 -->
     <template v-if="['porn1', 'sg1'].includes(themeTPL)">
       <div v-if="isReceiveAuto" :class="[$style['balance-wrap'], 'clearfix']">
@@ -385,7 +365,7 @@ import axios from "axios";
 
 export default {
   components: {
-    message,
+    message
   },
   data() {
     return {
@@ -413,19 +393,19 @@ export default {
       transOutText: "请选择帐户",
       transInList: [],
       transOutList: [],
-      bonus: {},
+      bonus: {}
     };
   },
   watch: {
     transferMoney(val) {
       localStorage.setItem("tranfer-money", val);
-    },
+    }
   },
   computed: {
     ...mapGetters({
       memInfo: "getMemInfo",
       membalance: "getMemBalance",
-      siteConfig: "getSiteConfig",
+      siteConfig: "getSiteConfig"
     }),
     $style() {
       const style =
@@ -438,7 +418,7 @@ export default {
     balanceInfo() {
       const data = {};
 
-      Object.keys(this.membalance.vendor).forEach((key) => {
+      Object.keys(this.membalance.vendor).forEach(key => {
         if (key === "default") {
           return;
         }
@@ -454,7 +434,7 @@ export default {
 
       Object.keys(this.membalance.vendor)
         .slice(0, nums)
-        .forEach((key) => {
+        .forEach(key => {
           if (key === "default") {
             return;
           }
@@ -470,10 +450,10 @@ export default {
           "切换为【自动转换】模式重新开启游戏平台，系统会自动将主帐户余额转入正在进行中的游戏 (包含新入款成功)。",
         replace: [
           { target: "%s", value: "<br/>" },
-          { target: "%s", value: "<br/>" },
-        ],
+          { target: "%s", value: "<br/>" }
+        ]
       });
-    },
+    }
   },
   created() {
     this.actionSetUserdata(true).then(() => {
@@ -486,7 +466,7 @@ export default {
       //   }
     });
     //紅利帳戶api
-    axios.get("/api/v1/c/gift-card").then((response) => {
+    axios.get("/api/v1/c/gift-card").then(response => {
       if (response.data.result === "ok") {
         this.bonus = response.data.total;
       }
@@ -521,7 +501,7 @@ export default {
     ...mapActions([
       "actionSetUserBalance",
       "actionSetUserdata",
-      "actionSetGlobalMessage",
+      "actionSetGlobalMessage"
     ]),
     verification() {
       this.transferMoney = this.transferMoney
@@ -546,7 +526,7 @@ export default {
     setTranInList() {
       const list = [{ value: "", text: this.$t("S_SELECT_ACCOUNT") }];
       // 維護時不可轉入
-      Object.keys(this.membalance.vendor).forEach((index) => {
+      Object.keys(this.membalance.vendor).forEach(index => {
         if (index === this.tranOut) {
           return;
         }
@@ -564,7 +544,7 @@ export default {
       const list = [{ value: "", text: this.$t("S_SELECT_ACCOUNT") }];
       // 轉出列表只塞有額度的平台（額度需>=1，只有小數位不允許轉）
       // 維護時不可轉出
-      Object.keys(this.membalance.vendor).forEach((index) => {
+      Object.keys(this.membalance.vendor).forEach(index => {
         if (index === this.tranIn) {
           return;
         }
@@ -652,7 +632,7 @@ export default {
         },
         fail: () => {
           this.AutotransferLock = false;
-        },
+        }
       });
 
       this.getRecentlyOpened();
@@ -672,7 +652,7 @@ export default {
         },
         fail: () => {
           this.AutotransferLock = false;
-        },
+        }
       });
     },
     getBalanceAll(status) {
@@ -707,9 +687,9 @@ export default {
             }
           });
         },
-        fail: (res) => {
+        fail: res => {
           this.actionSetGlobalMessage({ msg: res.data.msg || "系统错误" });
-        },
+        }
       });
     },
     sendBalanceTran() {
@@ -744,7 +724,7 @@ export default {
       mcenter.balanceTran(
         {
           params: {
-            amount: money,
+            amount: money
           },
           success: () => {
             this.actionSetGlobalMessage({ msg: "转帐成功" });
@@ -758,14 +738,14 @@ export default {
 
             this.btnLock = false;
           },
-          fail: (res) => {
+          fail: res => {
             this.btnLock = false;
             this.actionSetGlobalMessage({
               code: res.data.code,
               origin: "balanceTrans",
-              msg: res.data.msg,
+              msg: res.data.msg
             });
-          },
+          }
         },
         source,
         target
@@ -773,14 +753,15 @@ export default {
     },
     getRecentlyOpened() {
       mcenter.lastVendor({
-        success: (response) => {
+        success: response => {
           this.recentlyData = response.ret;
-        },
+        }
       });
-    },
-  },
+    }
+  }
 };
 </script>
 
 <style lang="scss" src="../css/porn1.module.scss" module="$style_porn1"></style>
 <style lang="scss" src="../css/ey1.module.scss" module="$style_ey1"></style>
+<style lang="scss" src="../css/sg1.module.scss" module="$style_sg1"></style>

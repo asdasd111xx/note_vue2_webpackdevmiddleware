@@ -51,9 +51,9 @@
               <icon name="sync" width="12" />
             </span>
             <div
-              :class="`main-btn btn-back-account ${
-                balanceBackLock ? 'disable' : ''
-              }`"
+              :class="
+                `main-btn btn-back-account ${balanceBackLock ? 'disable' : ''}`
+              "
               @click="balanceBack()"
             >
               {{ balanceBackLock ? "" : $t("S_ONE_CLICK_TO_ACCOUNT") }}
@@ -107,7 +107,7 @@
                 :class="[
                   'balance-info',
                   { right: index % 2 === 1 },
-                  'clearfix',
+                  'clearfix'
                 ]"
               >
                 <span class="balance-info-text">
@@ -137,8 +137,8 @@
             <p
               v-if="
                 recentlyData.vendor &&
-                recentlyData.vendor != '--' &&
-                isAutotransfer
+                  recentlyData.vendor != '--' &&
+                  isAutotransfer
               "
               class="balance-recently-opened-notice"
             >
@@ -157,16 +157,16 @@
 </template>
 
 <script>
-import { mapGetters, mapActions } from 'vuex';
-import { ModelSelect } from 'vue-search-select';
-import mcenter from '@/api/mcenter';
-import ajax from '@/lib/ajax';
-import { getCookie } from '@/lib/cookie';
-import yaboRequest from '@/api/yaboRequest';
+import { mapGetters, mapActions } from "vuex";
+import { ModelSelect } from "vue-search-select";
+import mcenter from "@/api/mcenter";
+import ajax from "@/lib/ajax";
+import { getCookie } from "@/lib/cookie";
+import yaboRequest from "@/api/yaboRequest";
 
 export default {
   components: {
-    ModelSelect,
+    ModelSelect
   },
   data() {
     return {
@@ -175,27 +175,27 @@ export default {
       balanceBackLock: false,
       timer: null,
       lockSec: 0,
-      tranOut: '',
-      tranIn: '',
-      money: '',
+      tranOut: "",
+      tranIn: "",
+      money: "",
       balanceList: {},
       total: 0,
-      isAutotransfer: '',
+      isAutotransfer: "",
       AutotransferLock: false,
       recentlyData: {},
       tranOutList: {},
       getDefaultTran: {
-        out: '',
-        in: ''
+        out: "",
+        in: ""
       },
       showIntegerBackConfirm: false
     };
   },
   computed: {
     ...mapGetters({
-      memInfo: 'getMemInfo',
-      membalance: 'getMemBalance',
-      siteConfig: 'getSiteConfig'
+      memInfo: "getMemInfo",
+      membalance: "getMemBalance",
+      siteConfig: "getSiteConfig"
     }),
     /**
      * 組轉出列表
@@ -203,15 +203,19 @@ export default {
      * @return array
      */
     transOut() {
-      const list = [{ value: '', text: this.$t('S_SELECT_ACCOUNT') }];
+      const list = [{ value: "", text: this.$t("S_SELECT_ACCOUNT") }];
       // 轉出列表只塞有額度的平台（額度需>=1，只有小數位不允許轉）
       // 維護時不可轉出
-      Object.keys(this.membalance.vendor).forEach((index) => {
-        if (this.membalance.vendor[index].amount !== '--'
-          && +this.membalance.vendor[index].amount >= 1
-          && !this.membalance.vendor[index].maintain
+      Object.keys(this.membalance.vendor).forEach(index => {
+        if (
+          this.membalance.vendor[index].amount !== "--" &&
+          +this.membalance.vendor[index].amount >= 1 &&
+          !this.membalance.vendor[index].maintain
         ) {
-          const text = index === 'default' ? '中心钱包' : this.membalance.vendor[index].text;
+          const text =
+            index === "default"
+              ? "中心钱包"
+              : this.membalance.vendor[index].text;
           list.push({ value: index, text });
         }
       });
@@ -223,11 +227,14 @@ export default {
      * @return array
      */
     transIn() {
-      const list = [{ value: '', text: this.$t('S_SELECT_ACCOUNT') }];
+      const list = [{ value: "", text: this.$t("S_SELECT_ACCOUNT") }];
       // 維護時不可轉入
-      Object.keys(this.membalance.vendor).forEach((index) => {
+      Object.keys(this.membalance.vendor).forEach(index => {
         if (!this.membalance.vendor[index].maintain) {
-          const text = index === 'default' ? '中心钱包' : this.membalance.vendor[index].text;
+          const text =
+            index === "default"
+              ? "中心钱包"
+              : this.membalance.vendor[index].text;
           list.push({ value: index, text });
         }
       });
@@ -236,8 +243,8 @@ export default {
     balanceInfo() {
       const data = {};
 
-      Object.keys(this.membalance.vendor).forEach((key) => {
-        if (key === 'default') {
+      Object.keys(this.membalance.vendor).forEach(key => {
+        if (key === "default") {
           return;
         }
 
@@ -250,22 +257,25 @@ export default {
       const data = {};
       let nums = 3;
 
-      Object.keys(this.membalance.vendor).slice(0, nums).forEach((key) => {
-        if (key === 'default') {
-          return;
-        }
+      Object.keys(this.membalance.vendor)
+        .slice(0, nums)
+        .forEach(key => {
+          if (key === "default") {
+            return;
+          }
 
-        data[key] = this.membalance.vendor[key];
-      });
+          data[key] = this.membalance.vendor[key];
+        });
 
       return data;
     },
     tipText() {
-      return this.$text('S_AUTO_SWITCH', {
-        text: '切换为【自动转换】模式重新开启游戏平台，系统会自动将主帐户余额转入正在进行中的游戏 (包含新入款成功)。',
+      return this.$text("S_AUTO_SWITCH", {
+        text:
+          "切换为【自动转换】模式重新开启游戏平台，系统会自动将主帐户余额转入正在进行中的游戏 (包含新入款成功)。",
         replace: [
-          { target: '%s', value: '<br/>' },
-          { target: '%s', value: '<br/>' }
+          { target: "%s", value: "<br/>" },
+          { target: "%s", value: "<br/>" }
         ]
       });
     },
@@ -299,7 +309,11 @@ export default {
   },
   created() {
     this.actionSetIsLoading(true);
-    const params = [this.getBalanceAll(), this.getRecentlyOpened(), this.setDefaultTran()];
+    const params = [
+      this.getBalanceAll(),
+      this.getRecentlyOpened(),
+      this.setDefaultTran()
+    ];
     Promise.all(params).then(() => {
       this.actionSetIsLoading(false);
     });
@@ -311,10 +325,10 @@ export default {
   },
   methods: {
     ...mapActions([
-      'actionSetUserBalance',
-      'actionSetUserdata',
-      'actionSetIsLoading',
-      'actionSetGlobalMessage'
+      "actionSetUserBalance",
+      "actionSetUserdata",
+      "actionSetIsLoading",
+      "actionSetGlobalMessage"
     ]),
     enableAutotransfer() {
       if (this.isAutotransfer || this.AutotransferLock) {
@@ -323,7 +337,7 @@ export default {
       this.AutotransferLock = true;
       mcenter.balanceTranAutoEnable({
         success: () => {
-          this.actionSetGlobalMessage({ msg: '回收成功' });
+          this.actionSetGlobalMessage({ msg: "回收成功" });
           // alert(this.$t('S_SWITCH_AUTO_TRANSFER'));
           this.isAutotransfer = true;
           this.backAccount({}, true);
@@ -345,7 +359,7 @@ export default {
       this.AutotransferLock = true;
       mcenter.balanceTranAutoClose({
         success: () => {
-          this.actionSetGlobalMessage({ msg: '切换成功' });
+          this.actionSetGlobalMessage({ msg: "切换成功" });
           this.isAutotransfer = false;
           this.actionSetUserdata(true);
 
@@ -357,7 +371,7 @@ export default {
       });
     },
     getBalanceAll(status) {
-      if (status === 'lockStatus' && this.balanceLock) {
+      if (status === "lockStatus" && this.balanceLock) {
         return;
       }
 
@@ -393,26 +407,25 @@ export default {
       mcenter.balanceTranBack({
         success: () => {
           this.lockSec = 0;
-          this.actionSetUserBalance()
-            .then(() => {
-              if (!fromAuto) {
-                this.actionSetGlobalMessage({ msg: '回收成功' });
-              }
-              this.tranOut = '';
-              if (afterSetUserBalance) {
-                afterSetUserBalance();
-              }
-            });
+          this.actionSetUserBalance().then(() => {
+            if (!fromAuto) {
+              this.actionSetGlobalMessage({ msg: "回收成功" });
+            }
+            this.tranOut = "";
+            if (afterSetUserBalance) {
+              afterSetUserBalance();
+            }
+          });
 
           setTimeout(() => {
             this.balanceBackLock = false;
-          }, 2000)
+          }, 2000);
         },
-        fail: (res) => {
-          this.actionSetGlobalMessage({ msg: res.data.msg || '系统错误' });
+        fail: res => {
+          this.actionSetGlobalMessage({ msg: res.data.msg || "系统错误" });
           setTimeout(() => {
             this.balanceBackLock = false;
-          }, 2000)
+          }, 2000);
         }
       });
     },
@@ -430,58 +443,64 @@ export default {
       const { money } = this;
 
       if (+source === 0 || +target === 0) {
-        this.actionSetGlobalMessage({ msg: this.$t('S_SELECT_ACCOUNT') });
+        this.actionSetGlobalMessage({ msg: this.$t("S_SELECT_ACCOUNT") });
         this.btnLock = false;
         return;
       }
-      if (money === '') {
-        this.actionSetGlobalMessage({ msg: this.$t('S_AMOUNT_NULL_VALUE') });
+      if (money === "") {
+        this.actionSetGlobalMessage({ msg: this.$t("S_AMOUNT_NULL_VALUE") });
         this.btnLock = false;
         return;
       }
       if (!re.test(money)) {
-        this.actionSetGlobalMessage({ msg: this.$t('S_DAW_ONLY_INT') });
+        this.actionSetGlobalMessage({ msg: this.$t("S_DAW_ONLY_INT") });
         this.btnLock = false;
         return;
       }
 
-      mcenter.balanceTran({
-        params: {
-          amount: money
-        },
-        success: () => {
-          if (customSucessAlert) {
-            customSucessAlert();
+      mcenter.balanceTran(
+        {
+          params: {
+            amount: money
+          },
+          success: () => {
+            if (customSucessAlert) {
+              customSucessAlert();
+            }
+            if (!customSucessAlert) {
+              this.actionSetGlobalMessage({ msg: "转帐成功" });
+            }
+
+            this.lockSec = 0;
+            setTimeout(() => {
+              this.balanceBackLock = false;
+            }, 2000);
+            this.actionSetUserBalance();
+
+            this.tranIn = 0;
+            this.tranOut = 0;
+            this.money = "";
+            this.getDefaultTran.out = "";
+            this.getDefaultTran.in = "";
+
+            this.btnLock = false;
+          },
+          fail: res => {
+            this.btnLock = false;
+            this.actionSetGlobalMessage({
+              msg: res.data.msg,
+              code: res.data.code,
+              origin: "balanceTrans"
+            });
           }
-          if (!customSucessAlert) {
-            this.actionSetGlobalMessage({ msg: '转帐成功' });
-          }
-
-          this.lockSec = 0;
-          setTimeout(() => {
-            this.balanceBackLock = false;
-          }, 2000)
-          this.actionSetUserBalance();
-
-          this.tranIn = 0;
-          this.tranOut = 0;
-          this.money = '';
-          this.getDefaultTran.out = '';
-          this.getDefaultTran.in = '';
-
-          this.btnLock = false;
         },
-        fail: (res) => {
-          this.btnLock = false;
-          this.actionSetGlobalMessage({
-            msg: res.data.msg, code: res.data.code, origin: "balanceTrans"
-          });
-        }
-      }, source, target);
+        source,
+        target
+      );
     },
     getRecentlyOpened() {
       mcenter.lastVendor({
-        success: (response) => {
+        success: response => {
           this.recentlyData = response.ret;
         }
       });
@@ -520,7 +539,7 @@ export default {
       //     this.tranOut = this.getDefaultTran.out;
       //     this.tranIn = this.getDefaultTran.in;
       //   }
-    },
+    }
   }
 };
 </script>

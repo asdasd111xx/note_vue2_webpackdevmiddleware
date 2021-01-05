@@ -11,18 +11,20 @@
       <div :class="$style['icon-block']">
         <div
           v-for="(item, index) in walletIcons"
-          v-show="item.show ||
-                (item.key === 'recharge' && ['porn1', 'sg1'].includes(themeTPL))"
+          v-show="
+            item.show ||
+              (item.key === 'recharge' && ['porn1', 'sg1'].includes(themeTPL))
+          "
           :key="'icon-' + index"
           :class="$style['icon-cell']"
           @click="item.onClick"
         >
-            <div :class="$style['image']">
-              <img :src="$getCdnPath(item.imgSrc)" alt="icon" />
-            </div>
-            <span>
-              {{ item.text }}
-            </span>
+          <div :class="$style['image']">
+            <img :src="$getCdnPath(item.imgSrc)" alt="icon" />
+          </div>
+          <span>
+            {{ item.text }}
+          </span>
         </div>
       </div>
 
@@ -108,11 +110,7 @@
               >
                 {{ $t("S_MAINTAIN") }}
                 <img
-                  :src="
-                    $getCdnPath(
-                      '/static/image/common/mcenter/balanceTrans/icon_transfer_tips_info.png'
-                    )
-                  "
+                  :src="$getCdnPath('/static/image/common/mcenter/ic_tips.png')"
                   :class="$style['balance-wrench']"
                 />
               </span>
@@ -136,9 +134,7 @@
                 <img
                   v-if="isMaintainSwag && swagConfig && swagConfig.enable !== 0"
                   :class="$style['maintain-tip-img']"
-                  :src="
-                    $getCdnPath('/static/image/porn1/mcenter/swag/ic_tips.png')
-                  "
+                  :src="$getCdnPath('/static/image/common/mcenter/ic_tips.png')"
                 />
               </template>
               <template v-else>
@@ -150,6 +146,43 @@
 
           <div
             v-for="(item, index) in swagIcons"
+            :key="'icon-' + index"
+            :class="$style['icon-cell']"
+            @click="item.onClick"
+          >
+            <div :class="$style['image']">
+              <img :src="$getCdnPath(item.imgSrc)" alt="icon" />
+            </div>
+            {{ item.text }}
+          </div>
+        </div>
+      </div>
+    </template>
+
+    <template v-if="['ey1'].includes(themeTPL)">
+      <div :class="$style['swag-wrap']">
+        <div :class="$style['title']">蜂鸟钱包</div>
+        <div :class="$style['icon-block']">
+          <div :class="$style['icon-cell']">
+            <div :class="$style['balance']">
+              <!-- <template v-if="isMaintainSwag">
+                <span :class="$style['maintain-tip-text']">维护中</span>
+                <img
+                  v-if="isMaintainSwag && swagConfig && swagConfig.enable !== 0"
+                  :class="$style['maintain-tip-img']"
+                  :src="$getCdnPath('/static/image/common/mcenter/ic_tips.png')"
+                />
+              </template>
+              <template v-else>
+                {{ swagDiamondBalance }}
+              </template> -->
+              {{ birdBalance }}
+            </div>
+            {{ $t("S_BIRD_BALANCE") }}
+          </div>
+
+          <div
+            v-for="(item, index) in birdIcons"
             :key="'icon-' + index"
             :class="$style['icon-cell']"
             @click="item.onClick"
@@ -251,6 +284,7 @@ import Vue from "vue";
 import yaboRequest from "@/api/yaboRequest";
 import mixin from "@/mixins/mcenter/swag/swag";
 import maintainBlock from "@/router/mobile/components/common/maintainBlock";
+import goLangApiRequest from "@/api/goLangApiRequest";
 
 export default {
   components: {
@@ -271,7 +305,8 @@ export default {
       mainNoData: false,
       isCheckWithdraw: false,
       bonus: {},
-      swagDiamondBalance: "0"
+      swagDiamondBalance: "0",
+      birdBalance: "--"
     };
   },
   computed: {
@@ -320,6 +355,37 @@ export default {
           imgSrc: `/static/image/common/mcenter/wallet/ic_wallter_swag_instrustions.png`,
           onClick: () => {
             this.$router.push("/mobile/mcenter/help/detail?type=usage&key=2");
+          }
+        }
+      ].filter(item => item.show);
+    },
+    birdIcons() {
+      return [
+        {
+          key: "whatBird",
+          show: true,
+          text: this.$text("S_WHAT_BIRD", "什么是鸟蛋"),
+          imgSrc: `/static/image/common/mcenter/wallet/ic_wallter_bird_what.png`,
+          onClick: () => {
+            this.$router.push("/mobile/mcenter/help/bird?key=0");
+          }
+        },
+        {
+          key: "howToUse",
+          show: true,
+          text: this.$text("S_TO_USE", "如何使用"),
+          imgSrc: `/static/image/common/mcenter/wallet/ic_wallter_bird_howtouse.png`,
+          onClick: () => {
+            this.$router.push("/mobile/mcenter/help/bird?key=1");
+          }
+        },
+        {
+          key: "goBird",
+          show: true,
+          text: this.$text("S_GO_BIRD", "前往蜂鸟"),
+          imgSrc: `/static/image/common/mcenter/wallet/ic_wallter_bird_go.png`,
+          onClick: () => {
+            this.goBirdUrl();
           }
         }
       ].filter(item => item.show);
@@ -416,6 +482,9 @@ export default {
 
     if (["porn1", "sg1"].includes(this.themeTPL)) {
       this.initSWAGConfig();
+    }
+    if (["ey1"].includes(this.themeTPL)) {
+      this.birdMoney();
     }
 
     this.startTime = Vue.moment(this.estToday)
@@ -585,6 +654,71 @@ export default {
       return this.memInfo.vendors.find(
         item => item.vendor === vendor && item.kind === kind
       ).alias;
+    },
+    goBirdUrl() {
+      let cid = getCookie("cid");
+      let newWindow = "";
+      newWindow = window.open();
+      this.isLoading = true;
+      let target = "forum_benefits";
+      goLangApiRequest({
+        method: "get",
+        url: `${this.siteConfig.YABO_GOLANG_API_DOMAIN}/xbb/Link/External/Url?lang=zh-cn&urlName=${target}&needToken=true&externalCode=fengniao`,
+        headers: {
+          cid: cid
+        }
+      })
+        .then(res => {
+          setTimeout(() => {
+            this.isLoading = false;
+          }, 1500);
+          const url = res.data.uri + "&cors=embed";
+          newWindow.location = url;
+        })
+        .catch(error => {
+          setTimeout(() => {
+            this.isLoading = false;
+          }, 1500);
+          newWindow.close();
+
+          if (error && error.data && error.data.msg) {
+            this.actionSetGlobalMessage({ msg: error.data.msg });
+          }
+        });
+      return;
+
+      // localStorage.setItem("iframe-third-url-title", target.name);
+      // this.$router.push(`/mobile/iframe/third/fengniao?alias=${target.alias}`);
+    },
+    onClickMaintain(value) {
+      this.msg = `美东时间：
+          <br>
+          <span>${value.etc_start_at}</span>
+          <p style="margin: 0 ; padding: 0 ; text-align: center">|</p>
+          <span>${value.etc_end_at}</span>
+          <p></p>
+          北京时间：
+          <br>
+          <span>${value.start_at}</span>
+          <p style="margin: 0 ; padding: 0 ; text-align: center">|</p>
+          <span>${value.end_at}</span>
+        `;
+    },
+    birdMoney() {
+      let cid = getCookie("cid");
+      goLangApiRequest({
+        method: "get",
+        url: `${this.siteConfig.YABO_GOLANG_API_DOMAIN}/xbb/Ext/Member/Info`,
+        headers: {
+          cid: cid
+        },
+        params: {
+          lang: "zh-cn",
+          account: this.memInfo.user.username
+        }
+      }).then(res => {
+        this.birdBalance = res.data ? res.data.credits2 : "--";
+      });
     }
   }
 };

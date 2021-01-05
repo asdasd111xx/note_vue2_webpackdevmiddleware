@@ -1,85 +1,77 @@
 @import "./index.module.scss";
+$bg_linear_gradient: linear-gradient(to left, #fe593c, #e61938);
 
-// .add-bank-card {
-//   color: #414655;
-// }
+.add-bank-card {
+  color: #414655;
+}
 
-// .bank-card-cell {
-//   > .check-box {
-//     &.checked {
-//       background: url("/static/image/ey1/mcenter/ic_check.png") 0 0 no-repeat;
-//       background-size: 100%;
-//     }
-//   }
-// }
+.bank-card-cell {
+  > .check-box {
+    &.checked {
+      background: url("/static/image/ey1/mcenter/ic_check.png") 0 0 no-repeat;
+      background-size: 100%;
+    }
+  }
+}
 
-// .check-container {
-//   .check-header {
-//     background: #222222;
-//     color: #ffffff;
+.check-container {
+  .check-header {
+    background: #333333;
+    color: #ffffff;
+  }
 
-//     .title {
-//       color: #ffffff;
-//     }
-//   }
+  .check-button-wrap {
+    color: #fff;
 
-//   .check-button-wrap {
-//     color: white;
+    .check-btn {
+      background: #a2a2a2;
 
-//     .check-btn {
-//       color: white;
-//       background: #222222;
+      &.submit {
+        background: $bg_linear_gradient;
+      }
+    }
+  }
+}
 
-//       &.submit {
-//         color: white;
-//         background: #e42a30;
-//       }
-//     }
-//   }
-// }
+.withdraw-max {
+  > span {
+    background: $bg_linear_gradient;
+  }
+}
 
-// .withdraw-max {
-//   > span {
-//     background: #e42a30;
-//   }
-// }
+.submit-btn {
+  > div {
+    background: $bg_linear_gradient;
+  }
 
-// .submit-btn {
-//   > div {
-//     background: #e42a30;
-//   }
+  &.disabled {
+    div {
+      background: linear-gradient(to left, #fed3cb, #ffc5ce);
+    }
+  }
+}
 
-//   &.disabled {
-//     div {
-//       background: #fdcccc;
-//     }
-//   }
-// }
+.withdraw-input {
+  > input {
+    &::placeholder {
+      color: #a2a2a2;
+    }
+  }
+}
 
-// .crypto-block {
-//   .conversion-btn {
-//     border: 1px solid #e42a30;
-//     color: #e42a30;
+.actual-money,
+.crypto-block {
+  color: #a2a2a2;
+}
 
-//     &.disable {
-//       pointer-events: none;
-//       border: 1px solid #fdcccc;
-//       color: #fdcccc;
-//     }
+.tips {
+  color: #a2a2a2;
+}
 
-//     // &.unInput {
-//     //   border: 1px solid #fdcccc;
-//     //   color: #fdcccc;
-//     // }
-//   }
-// }
+.check-cell {
+  color: #a2a2a2;
 
-// .check-cell {
-//   &.custom-color {
-//     color: #bf8646;
-//   }
-// }
-
-// .offer {
-//   color: #bf8646;
-// }
+  .money::after {
+    color: #a2a2a2;
+  }
+}

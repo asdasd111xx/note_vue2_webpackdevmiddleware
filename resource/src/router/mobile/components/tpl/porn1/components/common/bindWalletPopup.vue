@@ -76,7 +76,7 @@
             <!-- USDT -->
             <template v-if="walletType === 'USDT'">
               <div :class="$style['info-item']">
-                <div :class="$style['input-title']">建立您的加密货币账号</div>
+                <div :class="$style['input-title']">建立您的加密货币帐号</div>
 
                 <div :class="$style['icon-block']">
                   <div
@@ -128,8 +128,9 @@
 
 <script>
 import axios from "axios";
-import { mapActions } from "vuex";
+import { mapActions, mapGetters } from "vuex";
 import popupQrcode from "@/router/mobile/components/common/virtualBank/popupQrcode";
+import goLangApiRequest from "@/api/goLangApiRequest";
 
 export default {
   components: {
@@ -157,23 +158,27 @@ export default {
           placeholder: "必填"
         }
       },
+      huobi_url: "",
+      binance_url: "",
       usdtTipsList: [
         {
           name: "火币",
           iconSrc: this.$getCdnPath(
-            `/static/image/porn1/mcenter/deposit/ic_huobi.png`
+            `/static/image/common/mcenter/deposit/ic_huobi.png`
           ),
           onClick: () => {
-            window.open("https://www.huobi.pr/");
+            // window.open("https://www.huobi.pr/");
+            window.open(this.huobi_url);
           }
         },
         {
           name: "币安",
           iconSrc: this.$getCdnPath(
-            `/static/image/porn1/mcenter/deposit/ic_binance.png`
+            `/static/image/common/mcenter/deposit/ic_binance.png`
           ),
           onClick: () => {
-            window.open("https://www.binancezh.pro/");
+            // window.open("https://www.binancezh.pro/");
+            window.open(this.binance_url);
           }
         }
       ],
@@ -214,6 +219,30 @@ export default {
       default:
         break;
     }
+
+    goLangApiRequest({
+      method: "get",
+      url: `${this.siteConfig.YABO_GOLANG_API_DOMAIN}/xbb/Link/External/Url?lang=zh-cn&urlName=huobi&needToken=false`
+    }).then(res => {
+      this.huobi_url =
+        res && res.data
+          ? res.data.uri
+          : "https://ey.italking.asia:5569/guest.php?gid=eyag";
+    });
+    goLangApiRequest({
+      method: "get",
+      url: `${this.siteConfig.YABO_GOLANG_API_DOMAIN}/xbb/Link/External/Url?lang=zh-cn&urlName=binance&needToken=false`
+    }).then(res => {
+      this.binance_url =
+        res && res.data
+          ? res.data.uri
+          : "https://ey.italking.asia:5569/guest.php?gid=eyag";
+    });
+  },
+  computed: {
+    ...mapGetters({
+      siteConfig: "getSiteConfig"
+    })
   },
   methods: {
     ...mapActions(["actionSetGlobalMessage", "actionVerificationFormData"]),

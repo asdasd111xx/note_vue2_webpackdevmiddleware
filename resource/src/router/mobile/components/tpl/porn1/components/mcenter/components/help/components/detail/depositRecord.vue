@@ -141,11 +141,11 @@ export default {
         { key: "created_at", title: "S_DATE" },
         // 单号
         { key: "order_number", title: "S_ORDER_NUMBER" },
-        // 实际到账
+        // 实际到帐
         { key: "method_name", title: "S_DEPOSIT_METHOD" },
         // 申请金额
         { key: "amount", title: "S_APPLICATION_AMOUNT" },
-        // 实际到账
+        // 实际到帐
         { key: "actual_deposit", title: "S_REAL_ENTER" },
       ],
     };

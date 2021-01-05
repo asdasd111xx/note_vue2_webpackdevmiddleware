@@ -14,7 +14,7 @@
           <input
             ref="input"
             :value="value"
-            :placeholder="$text('S_LINE')"
+            :placeholder="`请输入${$text('S_LINE')}`"
             :class="$style.input"
             :maxlength="30"
             type="text"
@@ -28,12 +28,12 @@
 </template>
 
 <script>
-import { mapGetters, mapActions } from 'vuex';
-import { API_MCENTER_USER_CONFIG } from '@/config/api';
-import member from '@/api/member';
-import mcenter from '@/api/mcenter';
-import serviceTips from '../../serviceTips';
-import accountHeader from '../../accountHeader';
+import { mapGetters, mapActions } from "vuex";
+import { API_MCENTER_USER_CONFIG } from "@/config/api";
+import member from "@/api/member";
+import mcenter from "@/api/mcenter";
+import serviceTips from "../../serviceTips";
+import accountHeader from "../../accountHeader";
 
 export default {
   components: {
@@ -42,37 +42,36 @@ export default {
   },
   data() {
     return {
-      value: '',
-      tipMsg: '',
+      value: "",
+      tipMsg: ""
     };
   },
   mounted() {
-    this.$refs.input.focus()
+    this.$refs.input.focus();
   },
   computed: {
     ...mapGetters({
-      memInfo: 'getMemInfo',
+      memInfo: "getMemInfo"
     }),
     headerConfig() {
       return {
         prev: true,
-        onClick: () => { this.$router.back(); },
-        title: this.$text('S_LINE'),
+        onClick: () => {
+          this.$router.back();
+        },
+        title: this.$text("S_LINE"),
         onClickFunc: () => {
           this.handleSubmit();
         },
-        funcBtn: this.$text('S_COMPLETE', '完成'),
-        funcBtnActive: !!(this.value) && !this.tipMsg
+        funcBtn: this.$text("S_COMPLETE", "完成"),
+        funcBtnActive: !!this.value && !this.tipMsg
       };
     }
   },
   methods: {
-    ...mapActions([
-      'actionSetUserdata',
-      'actionSetＭcenterBindMessage'
-    ]),
+    ...mapActions(["actionSetUserdata", "actionSetＭcenterBindMessage"]),
     onInput(e) {
-      this.tipMsg = '';
+      this.tipMsg = "";
       this.value = e.target.value;
     },
     handleSubmit() {
@@ -85,18 +84,18 @@ export default {
           line: this.value
         },
         success: () => {
-          localStorage.setItem('set-account-success', true);
-          this.$router.push('/mobile/mcenter/accountData?success=true');
-          this.$emit('success');
+          localStorage.setItem("set-account-success", true);
+          this.$router.push("/mobile/mcenter/accountData?success=true");
+          this.$emit("success");
         },
-        fail: (res) => {
+        fail: res => {
           if (res && res.data && res.data.msg) {
             this.tipMsg = `${res.data.msg}`;
           }
         }
       });
-    },
+    }
   }
 };
 </script>
-<style src="../../../css/index.module.scss" lang="scss" module>
+<style src="../../../css/index.module.scss" lang="scss" module />

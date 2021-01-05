@@ -3,7 +3,19 @@
     <div :class="[$style['serial-header'], [$style[theme]]]">
       <div :class="$style['btn-prev']">
         <img
-          :src="$getCdnPath(`/static/image/${theme}/common/btn_back.png`)"
+          :src="
+            $getCdnPath(
+              `/static/image/common/btn_back_${
+                themeTPL === 'porn1'
+                  ? 'grey'
+                  : themeTPL === 'ey1'
+                  ? 'white'
+                  : themeTPL === 'sg1'
+                  ? 'black'
+                  : null
+              }.png`
+            )
+          "
           @click="onClose()"
         />
       </div>
@@ -87,7 +99,7 @@ export default {
   props: {
     handleClose: {
       type: Function,
-      default: () => { }
+      default: () => {}
     },
     data: {}
   },
@@ -98,7 +110,7 @@ export default {
     ...mapGetters({
       siteConfig: "getSiteConfig"
     }),
-    theme() {
+    themeTPL() {
       return this.siteConfig.MOBILE_WEB_TPL;
     },
     detailList() {
@@ -137,27 +149,30 @@ export default {
         [
           {
             title: this.$text("S_SERIAL_AUDIT", "充值稽核倍数"),
-            rateValue: this.data.audit_rate > 0 ? this.data.audit_rate : '-',
+            rateValue: this.data.audit_rate > 0 ? this.data.audit_rate : "-",
             value: this.data.administrative_checked
           },
           {
             title: this.$text("S_SERIAL_NUMBER", "流水要求"),
-            rateValue: this.data.audit_amount > 0 ? this.data.audit_amount : '-',
-            value: this.getDeductionNumber(
-              this.data.administrative_amount
-            ),
+            rateValue:
+              this.data.audit_amount > 0 ? this.data.audit_amount : "-",
+            value: this.getDeductionNumber(this.data.administrative_amount),
             deduction: this.$text("S_DEDUCTION_MONEY", "扣除金额")
           }
         ],
         [
           {
             title: this.$text("S_SERIAL_STATUS02", "优惠稽核倍数"),
-            rateValue: this.data.offer_audit_rate > 0 ? this.data.offer_audit_rate : '-',
+            rateValue:
+              this.data.offer_audit_rate > 0 ? this.data.offer_audit_rate : "-",
             value: this.data.offer_checked
           },
           {
             title: this.$text("S_SERIAL_NUMBER", "流水要求"),
-            rateValue: this.data.offer_audit_amount > 0 ? this.data.offer_audit_amount : '-',
+            rateValue:
+              this.data.offer_audit_amount > 0
+                ? this.data.offer_audit_amount
+                : "-",
             value: this.getDeductionNumber(this.data.offer),
             deduction: this.$text("S_DEDUCTION_MONEY", "扣除金额")
           }

@@ -1,70 +1,22 @@
-@import "~@/css/variable.scss";
+@import "./porn1.index.scss";
 
 .total-sub-wrap {
-  position: fixed;
-  top: 43px;
-  border-top: 1px solid #eee;
-  background-color: #fff;
-  max-width: $mobile_max_width;
-  width: 100%;
-  z-index: 2;
-
   .top-sub-title {
-    overflow: hidden;
-    float: left;
-    width: 50%;
-    height: 43px;
-    line-height: 43px;
     color: #a2a2a2;
-    text-align: center;
-    text-overflow: ellipsis;
-    white-space: nowrap;
-
-    img {
-      position: relative;
-      top: 3px;
-      width: 16px;
-    }
 
     &.active {
-      color: #5e626d;
       border-bottom: 2px solid #fb4e74;
     }
-
-    &.self {
-      width: 100%;
-    }
-  }
-}
-
-@media (orientation: landscape) {
-  .total-sub-wrap {
-    max-width: $mobile_max_landscape_width !important;
   }
 }
 
 .history-top-wrap {
-  min-height: 80px;
-  margin-top: 47px;
-  background-color: #fff;
-
   .total-item {
-    float: left;
-    width: 33%;
-    height: 100%;
-    padding: 9px 0 5px;
-    font-size: 12px;
-    text-align: center;
-
     .total-item-title {
-      line-height: 12px;
       color: #333333;
     }
 
     .total-item-money {
-      line-height: 16px;
-      margin: 14px 0 9px;
-      font-size: 16px;
       color: #333333;
 
       &.week {
@@ -77,7 +29,6 @@
     }
 
     .total-item-date {
-      line-height: 15px;
       color: #333333;
     }
   }
@@ -85,30 +36,8 @@
 
 .content-wrap {
   .content-item {
-    margin-top: 10px;
-    background-color: #fff;
-
-    .rebate-header {
-      position: relative;
-      width: 100%;
-      min-height: 40px;
-      padding: 9px 17px;
-      border-bottom: 1px solid #eaeaea;
-      color: #000;
-      font-size: 14px;
-      display: block;
-      text-align: center;
-    }
-
     .rebate-body {
-      padding: 10px 0;
-
       .detail-content {
-        display: flex;
-        justify-content: space-between;
-        align-items: center;
-        padding: 2px 17px;
-
         .content-left {
           color: #a2a2a2;
         }
@@ -119,223 +48,53 @@
       }
     }
 
-    .name-lable {
-      position: absolute;
-      left: 17px;
-      top: 50%;
-      transform: translateY(-50%);
-    }
+    a {
+      color: #fff;
 
-    .rebate-btn {
-      position: absolute;
-      right: 17px;
-      top: 50%;
-      transform: translateY(-50%);
-
-      button {
-        color: red;
-        background: none;
-        border: 0;
-        outline: none;
-      }
-
-      a {
-        display: inline-block;
-        width: 50px;
-        height: 20px;
-        line-height: 20px;
-        color: #fff;
-        background: linear-gradient(to left, #fe593c, #e61938);
-        border: 0;
-        border-radius: 10px;
-        outline: none;
-        font-weight: 400;
-
-        &.disable {
-          color: #ffffff;
-          background: linear-gradient(#fed3cb, #ffc5ce);
-        }
+      &.disable {
+        color: #ffffff;
+        background: linear-gradient(#fed3cb, #ffc5ce);
       }
     }
+  }
 
-    .rebate-nodata {
-      text-align: center;
-      padding: 50px 0;
-
-      img {
-        width: 60px;
-        height: 60px;
-        margin-bottom: 14px;
-      }
-
-      p {
-        font-size: 14px;
-        color: #a2a2a2;
-      }
+  .rebate-nodata {
+    p {
+      color: #a2a2a2;
     }
   }
 }
 
 .real-top-wrap {
-  padding: 5px 10px;
-  height: 60px;
-  margin-top: 47px;
-  background-color: #f8f8f7;
-  display: flex;
-  justify-content: space-between;
-  align-items: center;
-
-  .real-top-title {
-    line-height: 17px;
-    // width: 70%;
-    font-size: 12px;
-    color: #000;
-    vertical-align: middle;
-
-    .calculate-title {
-      overflow: hidden;
-      white-space: nowrap;
-      text-overflow: ellipsis;
-    }
-  }
-
   .real-top-btn {
-    min-width: 105px;
-    border-radius: 17px;
-    height: 33px;
     background: linear-gradient(to left, #fe593c, #e61938);
-    display: flex;
-    justify-content: center;
-    align-items: center;
-    text-align: center;
 
     &.disable {
       background: linear-gradient(#fed3cb, #ffc5ce);
-      height: 45px;
-      border-radius: 3px;
     }
 
     .calculate-button {
-      color: #fff;
-
       &.disable {
         color: #ffffff;
-      }
-
-      .calculate-button-title {
-        display: block;
-        overflow: hidden;
-        white-space: nowrap;
-        text-overflow: ellipsis;
       }
     }
   }
 }
 
-.real-vip-wrap {
-  margin-top: 5px;
-  padding: 0 10px;
-  line-height: 25px;
-  color: #000;
-  background-color: #f6f4f4;
-  display: flex;
-}
-
-.real-vip-block {
-  flex: 1;
-}
-
 .receive-vip-btn {
-  width: 110px;
-  height: 33px;
-  line-height: 33px;
-  margin-top: 9px;
-  text-align: center;
-  border-radius: 17px;
-  color: #fff;
   background: linear-gradient(to left, #fe593c, #e61938);
 
   &.is-disabled {
     background: linear-gradient(to left, #fed3cb, #ffc5ce);
-    color: #fff;
   }
-}
-
-.rebate-manual-title {
-  height: 43px;
-  line-height: 43px;
-  margin-top: 7px;
-  padding: 0 19px;
-  background: #fff;
-}
-
-.rebate-manual-wrap {
-  background: #fff;
-}
-
-.manual-line {
-  height: 1px;
-  margin: 0 14px;
-  background: #cfcfcf;
 }
 
 .rebate-manual-tip {
-  padding: 7px 20px;
   color: #aaaaaa;
-
-  > div {
-    line-height: 24px;
-    margin-bottom: 5px;
-  }
-}
-
-.title-icon,
-.manual-title {
-  display: inline-block;
-  vertical-align: middle;
-}
-
-.maintains-list {
-  color: #2693fc;
 }
 
 .popup {
-  position: fixed;
-  top: 0;
-  right: 0;
-  left: 0;
-  bottom: 0;
-  z-index: 99;
-
-  .pop-mask {
-    width: 100%;
-    height: 100%;
-    background: #000;
-    opacity: 0.5;
-  }
-
-  .content-block {
-    position: absolute;
-    top: 50%;
-    left: 50%;
-    transform: translate(-50%, -50%);
-    width: 70%;
-    background: #fefefe;
-    border-radius: 5px;
-  }
-
-  .msg {
-    display: flex;
-    justify-content: center;
-    align-items: center;
-    min-height: 150px;
-    padding: 10px 25px;
-  }
-
   .close {
-    text-align: center;
-    padding: 15px 0;
-    border-top: 2px solid #f9f9f8;
     color: linear-gradient(to left, #fe593c, #e61938);
   }
 }

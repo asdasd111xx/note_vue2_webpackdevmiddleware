@@ -6,36 +6,38 @@ $main-color: #e42a30;
     .name {
       // vip text
       span:last-of-type {
-        background: linear-gradient(to right, #ffd68a, #fe9154);
+        background: linear-gradient(to right, #febdb2, #ff8093);
       }
     }
   }
 }
 
 .user-desc-block {
-  color: #5e626d;
+  color: #bf8646;
 
   .money {
-    color: #222;
+    color: #333333;
   }
 }
 
-
 .run-level {
   &.current {
-    background: $main-color;
+    background: linear-gradient(to right, #fe593c, #e61938);
+  }
+
+  &.next {
+    background: linear-gradient(to right, #fed3cb, #ffc5ce);
   }
 }
 
 .run-bar {
-  background: url(/static/image/common/vip/vip_runbg.png);
+  background: url(/static/image/sg1/mcenter/vip/vip_runbg.png);
   background-size: cover;
   background-repeat: no-repeat;
 }
 
 .run-ok-bar {
   background: url(/static/image/sg1/mcenter/vip/vip_runok.png);
-
   background-size: cover;
   background-repeat: no-repeat;
 }

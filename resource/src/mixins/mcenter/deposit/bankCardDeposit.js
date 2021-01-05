@@ -45,6 +45,7 @@ export default {
       isDisableDepositInput: false,
       walletData: {
         CGPay: {
+          balance: "", // 值由 api 回來之後再更新，配合 Watch
           method: 0,
           password: "",
           placeholder: "请输入CGPay支付密码"
@@ -430,6 +431,19 @@ export default {
       }
 
       return false;
+    },
+    isOtherBank() {
+      // 判斷是否為其他銀行
+      // 極速到帳(payment_method_id = 6)、銀行轉帳(payment_method_id = 3)皆有其他銀行選項
+      const speedAccount =
+        this.curPayInfo.payment_method_id === 6 &&
+        this.curPayInfo.bank_id === 0;
+
+      const bankTranser =
+        this.curPayInfo.payment_method_id === 3 &&
+        this.curPayInfo.bank_id === 0;
+
+      return speedAccount || bankTranser;
     }
   },
   methods: {
@@ -474,19 +488,6 @@ export default {
                 code: res.code
               });
             }
-            // if (res.code === "C150099") {
-            //   this.actionSetGlobalMessage({
-            //     msg: res.msg,
-            //     code: res.code
-            //   });
-            // } else if (res.code === "TM020067") {
-            //   this.setPopupStatus(true, "blockTips");
-            // } else {
-            //   this.actionSetGlobalMessage({
-            //     msg: res.msg,
-            //     code: res.code
-            //   });
-            // }
             return;
           }
 
@@ -556,19 +557,6 @@ export default {
                 code: res.data.code
               });
             }
-            // if (res.data.code === "C150099") {
-            //   this.actionSetGlobalMessage({
-            //     msg: res.data.msg,
-            //     code: res.data.code
-            //   });
-            // } else if (res.data.code === "TM020067") {
-            //   this.setPopupStatus(true, "blockTips");
-            // } else {
-            //   this.actionSetGlobalMessage({
-            //     msg: res.data.msg,
-            //     code: res.data.code
-            //   });
-            // }
             return;
           }
         });
@@ -633,12 +621,7 @@ export default {
 
       this.isShow = true;
       this.actionSetIsLoading(true);
-      // 判斷是否為其他銀行，極速到帳(payment_method_id = 6)、銀行轉帳(payment_method_id = 3)皆有其他銀行選項
-      const isOtherBank =
-        (this.curPayInfo.payment_method_id === 3 &&
-          this.curPayInfo.bank_id === 0) ||
-        (this.curPayInfo.payment_method_id === 6 &&
-          this.curPayInfo.bank_id === 0);
+
       const nowBankId = !this.curPayInfo.bank_id
         ? this.selectedBank.value
         : this.curPayInfo.bank_id;
@@ -650,22 +633,11 @@ export default {
         errorAlert: false,
         params: {
           payment_method_id: this.curPayInfo.payment_method_id,
-          bank_id: !isOtherBank ? nowBankId : "",
+          bank_id: !this.isOtherBank ? nowBankId : "",
           username: this.username
         },
         fail: res => {
           if (res && res.data && res.data.msg && res.data.code) {
-            // if (res.data.code === "C150099") {
-            //   this.actionSetGlobalMessage({
-            //     msg: res.data.msg,
-            //     code: res.data.code
-            //   });
-            // } else {
-            //   this.actionSetGlobalMessage({
-            //     msg: res.data.msg,
-            //     code: res.data.code
-            //   });
-            // }
             this.actionSetGlobalMessage({
               msg: res.data.msg,
               code: res.data.code
@@ -712,16 +684,10 @@ export default {
       }
 
       [this.curPayInfo] = this.curModeGroup.payment_group_content;
-      // 判斷是否為其他銀行，極速到帳(payment_method_id = 6)、銀行轉帳(payment_method_id = 3)皆有其他銀行選項
-      const isOtherBank =
-        (this.curPayInfo.payment_method_id === 3 &&
-          this.curPayInfo.bank_id === 0) ||
-        (this.curPayInfo.payment_method_id === 6 &&
-          this.curPayInfo.bank_id === 0);
 
       if (
         this.curModeGroup.channel_display &&
-        (this.curPayInfo.bank_id || this.selectedBank.value || isOtherBank)
+        (this.curPayInfo.bank_id || this.selectedBank.value || this.isOtherBank)
       ) {
         this.getPayPass();
       }
@@ -751,21 +717,9 @@ export default {
         this.checkSuccess = false;
       }
 
-      // 判斷是否為其他銀行，極速到帳(payment_method_id = 6)、銀行轉帳(payment_method_id = 3)皆有其他銀行選項
-      const isOtherBank =
-        (this.curPayInfo.payment_method_id === 3 &&
-          this.curPayInfo.bank_id === 0) ||
-        (this.curPayInfo.payment_method_id === 6 &&
-          this.curPayInfo.bank_id === 0);
-
-      // if (this.isDepositAi) {
-      //   this.curPaymentGroupIndex = index;
-      //   this.PassRoadOrAi();
-      // }
-
       if (
         this.curModeGroup.channel_display &&
-        ((!this.curPayInfo.bank_id && isOtherBank) ||
+        ((!this.curPayInfo.bank_id && this.isOtherBank) ||
           this.curPayInfo.bank_id ||
           this.selectedBank.value)
       ) {
@@ -1017,17 +971,6 @@ export default {
         params: paramsData,
         fail: res => {
           if (res && res.data && res.data.msg && res.data.code) {
-            // if (res.data.code === "C150099") {
-            //   this.actionSetGlobalMessage({
-            //     msg: res.data.msg,
-            //     code: res.data.code
-            //   });
-            // } else {
-            //   this.actionSetGlobalMessage({
-            //     msg: res.data.msg,
-            //     code: res.data.code
-            //   });
-            // }
             this.actionSetGlobalMessage({
               msg: res.data.msg,
               code: res.data.code
@@ -1310,6 +1253,35 @@ export default {
 
       return str;
     },
+    // 取得 CGPay 餘額
+    getCGPayBalance() {
+      return axios({
+        method: "get",
+        url: "/api/v1/c/ext/inpay?api_uri=api/trade/v2/c/wallet/balance",
+        params: {
+          method_id: this.curPayInfo.payment_method_id
+        }
+      })
+        .then(response => {
+          const { result, ret } = response.data;
+
+          if (!response || result !== "ok") {
+            this.walletData["CGPay"].balance = "--";
+            return;
+          }
+
+          this.walletData["CGPay"].balance = ret.balance;
+          // this.walletData["CGPay"].balance = "--";
+        })
+        .catch(error => {
+          this.walletData["CGPay"].balance = "--";
+
+          this.actionSetGlobalMessage({
+            msg: error.response.data.msg,
+            code: error.response.data.code
+          });
+        });
+    },
     // 取得存/取款加密貨幣試算金額
     convertCryptoMoney() {
       return axios({
@@ -1339,10 +1311,9 @@ export default {
                   this.setPopupStatus(true, "funcTips");
 
                   this.confirmPopupObj = {
-                    msg:
-                      ['porn1', 'sg1'].includes(this.themeTPL)
-                        ? "汇率已失效"
-                        : "汇率已失效，请再次确认汇率",
+                    msg: ["porn1", "sg1"].includes(this.themeTPL)
+                      ? "汇率已失效"
+                      : "汇率已失效，请再次确认汇率",
                     btnText: "刷新汇率",
                     cb: () => {
                       this.closePopup();

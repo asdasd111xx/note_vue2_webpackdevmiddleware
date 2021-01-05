@@ -23,11 +23,7 @@
           <span>{{ detailInfo.ref_id }}</span>
           <div :class="$style.copyImg" @click="oncopy">
             <img
-              :src="
-                $getCdnPath(
-                  `/static/image/${themeTPL}/mcenter/moneyDetail/icon_copy.png`
-                )
-              "
+              :src="$getCdnPath(`/static/image/common/ic_copy.png`)"
               alt="copy"
             />
           </div>
@@ -62,21 +58,23 @@ import { mapGetters } from "vuex";
 
 export default {
   components: {
-    message,
+    message
   },
   data() {
     return {
-      msg: "",
+      msg: ""
     };
   },
   filters: {
     dateFormat(date) {
-      return Vue.moment(date).utcOffset(-4).format("YYYY-MM-DD HH:mm:ss");
-    },
+      return Vue.moment(date)
+        .utcOffset(-4)
+        .format("YYYY-MM-DD HH:mm:ss");
+    }
   },
   computed: {
     ...mapGetters({
-      siteConfig: "getSiteConfig",
+      siteConfig: "getSiteConfig"
     }),
     themeTPL() {
       return this.siteConfig.MOBILE_WEB_TPL;
@@ -85,21 +83,21 @@ export default {
       const style =
         this[`$style_${this.siteConfig.MOBILE_WEB_TPL}`] || this.$style_porn1;
       return style;
-    },
+    }
   },
   props: {
     currentCategory: {
       type: Object,
-      required: true,
+      required: true
     },
     opcodeList: {
       type: Object,
-      required: true,
+      required: true
     },
     detailInfo: {
       type: Object,
-      default: null,
-    },
+      default: null
+    }
   },
   methods: {
     linkToService() {
@@ -126,11 +124,11 @@ export default {
     oncopy() {
       this.$copyText(this.detailInfo.ref_id);
       this.msg = "已复制到剪贴板";
-    },
+    }
   },
   beforeDestroy() {
     this.$emit("update:detailInfo", null);
-  },
+  }
 };
 </script>
 

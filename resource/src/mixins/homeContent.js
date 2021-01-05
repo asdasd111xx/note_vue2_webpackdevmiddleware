@@ -171,6 +171,7 @@ export default {
   },
   created() {
     localStorage.removeItem("is-open-game");
+    localStorage.removeItem("iframe-third-url");
     this.showPromotion = this.loginStatus
       ? this.memInfo.user.show_promotion
       : true;
@@ -216,7 +217,7 @@ export default {
       });
     } else {
       setDefaultSelected();
-      this.getAllGame(true);
+      this.getAllGame();
     }
 
     if (!this.loginStatus) {
@@ -292,19 +293,25 @@ export default {
     },
     onResize() {
       // 計算外框高度
-      let extraHeight = 60;
-      if (this.siteConfig.MOBILE_WEB_TPL === "porn1") {
-        extraHeight = 60;
-      }
+      setTimeout(() => {
+        // 跑馬燈 header footer
+        let extraHeight = 30 + 43 + 60 + 5;
+        let homeSliderHeight = document.getElementById("home-slider")
+          ? document.getElementById("home-slider").offsetHeight
+          : 0;
 
-      if (this.siteConfig.MOBILE_WEB_TPL === "ey1") {
-        extraHeight = 85;
-      }
+        // 上方功能列
+        if (this.siteConfig.MOBILE_WEB_TPL === "ey1") {
+          extraHeight += homeSliderHeight + 72;
+        } else {
+          extraHeight += homeSliderHeight + 50;
+        }
 
-      this.wrapHeight =
-        document.body.offsetHeight -
-        this.$refs["home-wrap"].offsetTop -
-        extraHeight;
+        this.wrapHeight =
+          document.body.offsetHeight - extraHeight > 0
+            ? document.body.offsetHeight - extraHeight
+            : 225;
+      }, 50);
     },
     onTypeTouchStart(e) {
       if (this.isSliding) {
@@ -503,7 +510,10 @@ export default {
         // return;
 
         case "withdraw":
-          if (this.siteConfig.MOBILE_WEB_TPL === "porn1") {
+          if (
+            this.siteConfig.MOBILE_WEB_TPL === "porn1" ||
+            this.siteConfig.MOBILE_WEB_TPL === "sg1"
+          ) {
             this.$router.push(`/mobile/mcenter/withdraw`);
             return;
           }
@@ -654,9 +664,7 @@ export default {
                     } else {
                       localStorage.setItem("iframe-third-url", res.data);
                       localStorage.setItem("iframe-third-url-title", game.name);
-                      this.$router.push(
-                        `/mobile/iframe/${game.type}?&hasFooter=false&hasHeader=true`
-                      );
+                      this.$router.push(`/mobile/iframe/${game.type}`);
                       return;
                     }
                   });
@@ -717,6 +725,16 @@ export default {
 
             case "SL":
               this.$router.push("/mobile/liveStream?type=ballLive");
+              return;
+
+            case "lg_yb_card":
+            case "lg_yb_casino":
+              if (!this.loginStatus) {
+                this.$router.push("/mobile/login");
+                return;
+              }
+
+              this.$router.push(`/mobile/hotLobby/${game.vendor}`);
               return;
           }
 

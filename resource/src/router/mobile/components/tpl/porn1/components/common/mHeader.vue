@@ -15,14 +15,14 @@
     >
       <img
         v-if="source === 'gay' || source === 'les'"
-        :src="$getCdnPath(`/static/image/_new/common/btn_back_w.png`)"
+        :src="$getCdnPath(`/static/image/common/btn_back_white.png`)"
       />
       <img
         v-else
         :src="
           $getCdnPath(
-            `/static/image/_new/common/btn_${
-              headerConfig.hasClose ? 'close' : 'back'
+            `/static/image/common/btn_${
+              headerConfig.hasClose ? 'close_black' : 'back_black'
             }.png`
           )
         "
@@ -33,29 +33,7 @@
       <div :class="[[$style.title], $style[source]]">
         {{ headerConfig.title }}
       </div>
-      <div
-        v-if="headerConfig.gameList"
-        :class="$style['btn-game-list']"
-        @click="setMenuState('gameList')"
-      >
-        <img
-          :src="
-            $getCdnPath(
-              '/static/image/mobile/tpl/porn1/header/btn_header_n.png'
-            )
-          "
-        />
-      </div>
     </div>
-    <div
-      v-if="headerConfig.gameList"
-      v-show="currentMenu === 'gameList'"
-      ref="game-list-wrap"
-      :class="$style['game-list-wrap']"
-    >
-      <top-game-list :is-list-visible.sync="currentMenu" />
-    </div>
-
     <template v-if="headerConfig.hasSearchBar">
       <div :class="[$style['search-wrap'], $style[source]]">
         <input
@@ -187,7 +165,6 @@ import { mapGetters, mapActions } from "vuex";
 export default {
   components: {
     // sideBalance,
-    // topGameList: () => import(/* webpackChunkName: 'topGameList' */'./topGameList')
   },
   props: {
     headerConfig: {
@@ -269,7 +246,10 @@ export default {
       }
     },
     goSearch() {
-      if (["casino", "card", "mahjong"].includes(this.$route.name)) {
+      // 一般遊戲大廳 & 熱門遊戲大廳
+      if (
+        ["casino", "card", "mahjong", "hotLobby"].includes(this.$route.name)
+      ) {
         this.updateSearchStatus();
         return;
       }
@@ -452,16 +432,6 @@ export default {
     display: block;
     width: 100%;
   }
-}
-
-.game-list-wrap {
-  overflow-y: auto;
-  position: fixed;
-  top: 43px;
-  right: 0;
-  bottom: 0;
-  left: 0;
-  background-color: rgba(0, 0, 0, 0.8);
 }
 
 .search-wrap {
@@ -683,21 +653,21 @@ export default {
 }
 
 .sp-search {
-  background: url("/static/image/_new/common/icon_search_gray.png");
+  background: url("/static/image/common/ic_search_grey.png");
   width: 20px;
   height: 20px;
   background-size: contain;
 }
 
 .gay-search {
-  background: url("/static/image/_new/common/icon_search_white.png");
+  background: url("/static/image/common/ic_search_white.png");
   width: 20px;
   height: 20px;
   background-size: contain;
 }
 
 .normal-search {
-  background: url("/static/image/_new/common/icon_search_n.png");
+  background: url("/static/image/common/ic_search_gold.png");
   width: 20px;
   height: 20px;
   background-size: contain;

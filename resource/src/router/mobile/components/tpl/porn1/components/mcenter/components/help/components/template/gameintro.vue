@@ -11,9 +11,7 @@
           {{ categorys[category_currentIndex] }}
         </div>
         <div :class="[$style['arrow-btn']]">
-          <img
-            :src="$getCdnPath(`/static/image/_new/mcenter/ic_arrow_next.png`)"
-          />
+          <img :src="$getCdnPath(`/static/image/common/arrow_next.png`)" />
         </div>
       </div>
       <div
@@ -40,14 +38,55 @@
             :class="$style['text-block']"
             v-html="item"
           />
+          <div v-if="category_currentkind === 'live' && index === 5">
+            <table :class="$style['table-border']">
+              <tr>
+                <td>如果庄家总点数是</td>
+                <td>如果闲家的第三张牌是以下点数,则拿牌</td>
+                <td>如果闲家的第三张牌是以下点数,则不拿牌</td>
+              </tr>
+              <tr>
+                <td>3</td>
+                <td>1、2、3、4、5、6、7、9、0</td>
+                <td>8</td>
+              </tr>
+              <tr>
+                <td>4</td>
+                <td>2、3、4、5、6、7</td>
+                <td>1、8、9、0</td>
+              </tr>
+              <tr>
+                <td>5</td>
+                <td>4、5、6、7</td>
+                <td>1、2、3、8、9、0</td>
+              </tr>
+              <tr>
+                <td>6</td>
+                <td>6、7</td>
+                <td>1、2、3、4、5、8、9、0</td>
+              </tr>
+              <tr>
+                <td>7</td>
+                <td></td>
+                <td>停牌</td>
+              </tr>
+              <tr>
+                <td>8、9</td>
+                <td></td>
+                <td>天牌 （停牌）</td>
+              </tr>
+            </table>
+
+            <div style="padding-top:5pt;">
+              ※备注: 以上补牌规则适用于传统百家乐，实际请依照各平台游戏规则为主
+            </div>
+          </div>
         </div>
 
         <div
           :class="[$style['arrow-btn'], { [$style['active']]: item.isOpen }]"
         >
-          <img
-            :src="$getCdnPath(`/static/image/_new/mcenter/ic_arrow_next.png`)"
-          />
+          <img :src="$getCdnPath(`/static/image/common/arrow_next.png`)" />
         </div>
       </div>
     </div>
@@ -82,15 +121,15 @@
 </template>
 
 <script>
-import info from '../../json/gameintro.json';
-import mixin from '@/mixins/mcenter/help/help';
+import info from "../../json/gameintro.json";
+import mixin from "@/mixins/mcenter/help/help";
 
 export default {
   mixins: [mixin],
   created() {
     this.isCategoryMode = true;
     this.source = info;
-  },
+  }
 };
 </script>
 

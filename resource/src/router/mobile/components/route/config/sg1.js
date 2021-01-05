@@ -4,14 +4,12 @@ export default {
       import(
         /* webpackChunkName: 'iframeSg1' */ "../../tpl/sg1/components/iframe"
       ),
-
     casinoSg1: () =>
       import(
         /* webpackChunkName: 'casinoSg1' */ "../../tpl/sg1/components/casino"
       ),
     cardSg1: () =>
       import(/* webpackChunkName: 'cardSg1' */ "../../tpl/sg1/components/card"),
-
     homeSg1: () =>
       import(/* webpackChunkName: 'homeSg1' */ "../../tpl/sg1/components/home"),
     loginSg1: () =>
@@ -34,6 +32,14 @@ export default {
       import(
         /* webpackChunkName: 'serviceSg1' */ "../../tpl/sg1/components/service"
       ),
+    webviewSg1: () =>
+      import(
+        /* webpackChunkName: 'webviewSg1' */ "../../tpl/sg1/components/webview"
+      ),
+    installSg1: () =>
+      import(
+        /* webpackChunkName: 'installSg1' */ "../../tpl/sg1/components/install"
+      ),
     resetPwdSg1: () =>
       import(
         /* webpackChunkName: 'resetPwdSg1' */ "../../tpl/sg1/components/resetPwd"
@@ -42,10 +48,29 @@ export default {
       import(
         /* webpackChunkName: 'forgetPwdSg1' */ "../../tpl/sg1/components/forgetPwd"
       ),
-
     launchSg1: () =>
       import(
         /* webpackChunkName: 'launchSg1' */ "../../tpl/sg1/components/launch"
+      ),
+    withdrawAccountSg1: () =>
+      import(
+        /* webpackChunkName: 'withdrawAccountSg1' */ "../../common/withdrawAccount/withdrawAccount"
+      ),
+    shareDownloadSg1: () =>
+      import(
+        /* webpackChunkName: 'shareDownloadSg1' */ "../../tpl/sg1/components/shareDownload"
+      ),
+    videoPlaySg1: () =>
+      import(
+        /* webpackChunkName: 'videoPlaySg1' */ "../../tpl/sg1/components/videoPlay"
+      ),
+    videoListSg1: () =>
+      import(
+        /* webpackChunkName: 'videoListSg1' */ "../../tpl/sg1/components/videoList"
+      ),
+    hotLobbySg1: () =>
+      import(
+        /* webpackChunkName: 'hotLobbySg1' */ "../../tpl/sg1/components/hotLobby"
       )
   },
   mcenter: {
@@ -199,7 +224,13 @@ export default {
       import(
         /* webpackChunkName: 'tcenteRecommendGiftSg1' */ "../../tpl/sg1/components/mcenter/components/tcenter/components/recommendGift"
       ),
-    creditTransSg1: () => import(/* webpackChunkName: 'creditTransSg1' */'../../tpl/sg1/components/mcenter/components/creditTrans'),
-    rewardRulesSg1: () => import(/* webpackChunkName: 'rewardRulesSg1' */'../../tpl/sg1/components/mcenter/components/rewardRules'),
+    creditTransSg1: () =>
+      import(
+        /* webpackChunkName: 'creditTransSg1' */ "../../tpl/sg1/components/mcenter/components/creditTrans"
+      ),
+    rewardRulesSg1: () =>
+      import(
+        /* webpackChunkName: 'rewardRulesSg1' */ "../../tpl/sg1/components/mcenter/components/rewardRules"
+      )
   }
 };

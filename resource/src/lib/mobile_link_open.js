@@ -1,100 +1,104 @@
-import * as moment from 'moment-timezone';
+import * as moment from "moment-timezone";
 
-import Vue from 'vue';
-import axios from 'axios';
-import i18n from '@/config/i18n';
-import links from '@/config/links';
-import mcenterPageAuthControl from '@/lib/mcenterPageAuthControl';
-import member from '@/api/member';
-import openGame from '@/lib/open_game';
-import router from '@/router';
-import store from '@/store';
+import Vue from "vue";
+import axios from "axios";
+import i18n from "@/config/i18n";
+import links from "@/config/links";
+import mcenterPageAuthControl from "@/lib/mcenterPageAuthControl";
+import member from "@/api/member";
+import openGame from "@/lib/open_game";
+import router from "@/router";
+import store from "@/store";
 
-export default (target) => {
-  const { linkType, linkTo, linkItem } = target
+export default target => {
+  const { linkType, linkTo, linkItem } = target;
 
-  let linkTitle = '';
+  let linkTitle = "";
   switch (store.state.webDomain.site) {
-    case 'porn1':
-    case 'ey1':
-    case 'sg1':
+    case "porn1":
+    case "ey1":
+    case "sg1":
       // linkTitle = '鸭博娱乐';
       // linkTitle = '亿元娱乐';
-      // linkTitle = '丝瓜娱乐';
-      linkTitle = '优惠活动';
+      // linkTitle = '丝瓜直播';
+      linkTitle = "优惠活动";
       break;
     default:
       break;
   }
 
   // 空白連結
-  if (!linkType || linkType === 'nolink') {
+  if (!linkType || linkType === "nolink") {
     return;
   }
-  let newWindow = '';
+  let newWindow = "";
   // 外部連結
-  if (linkType === 'external') {
-
+  if (linkType === "external") {
     axios({
-      method: 'get',
-      url: '/api/v1/c/link/customize',
+      method: "get",
+      url: "/api/v1/c/link/customize",
       params: {
-        code: 'promotion',
+        code: "promotion",
         client_uri: linkTo
       }
-    }).then(res => {
-      if (res && res.data && res.data.ret && res.data.ret.uri) {
-        localStorage.setItem('iframe-third-url', res.data.ret.uri);
-        localStorage.setItem('iframe-third-url-title', linkTitle);
-        localStorage.setItem('iframe-third-origin', `home`);
-
-        if (store.state.webDomain.site !== 'ey1') {
-          window.location.href = `/mobile/iframe/promotion?hasFooter=false&hasHeader=true`;
-        } else {
-          newWindow = window.open(res.data.ret.uri + '&v=m', '_blank');
-        }
-      }
-    }).catch(error => {
-      // newWindow.close();
-      if (error && error.data && error.data.msg) {
-        this.actionSetGlobalMessage({ msg: error.data.msg });
-      }
     })
+      .then(res => {
+        if (res && res.data && res.data.ret && res.data.ret.uri) {
+          localStorage.setItem("iframe-third-url", res.data.ret.uri);
+          localStorage.setItem("iframe-third-url-title", linkTitle);
+          localStorage.setItem("iframe-third-origin", `home`);
+
+          if (store.state.webDomain.site !== "ey1") {
+            window.location.href = `/mobile/iframe/promotion`;
+          } else {
+            newWindow = window.open(res.data.ret.uri + "&v=m", "_blank");
+          }
+        }
+      })
+      .catch(error => {
+        // newWindow.close();
+        if (error && error.data && error.data.msg) {
+          this.actionSetGlobalMessage({ msg: error.data.msg });
+        }
+      });
 
     return;
   }
 
   //  固定連結
-  if (linkType === 'static') {
+  if (linkType === "static") {
     // 活動頁面
     if (/^festival*/g.test(linkTo)) {
       const festivalControl = (name, stime, etime, key) => {
         // 判斷是否登入 (此活動頁需登入後才可開啟)
         if (!store.state.loginStatus) {
-          alert(i18n.t('S_LOGIN_TIPS'));
+          alert(i18n.t("S_LOGIN_TIPS"));
           return;
         }
 
-        const now = moment(store.state.systemTime).tz('Asia/Shanghai');
-        const start = moment(stime).tz('Asia/Shanghai');
-        const end = moment(etime).tz('Asia/Shanghai');
+        const now = moment(store.state.systemTime).tz("Asia/Shanghai");
+        const start = moment(stime).tz("Asia/Shanghai");
+        const end = moment(etime).tz("Asia/Shanghai");
 
         // 活動已結束
         if (now.isAfter(end)) {
-          alert(i18n.t('S_PROMOTION_END'));
+          alert(i18n.t("S_PROMOTION_END"));
           return;
         }
 
         // 活動進行中
         if (now.isBetween(start, end)) {
-          newWindow = window.open(`/popcontrol/festival/${key.vendor}/${key.id}`, '_blank');
+          newWindow = window.open(
+            `/popcontrol/festival/${key.vendor}/${key.id}`,
+            "_blank"
+          );
         }
       };
 
       // 活動連結判斷
-      const festival = links.static.filter((casino) => casino.stime);
+      const festival = links.static.filter(casino => casino.stime);
 
-      festival.some((key) => {
+      festival.some(key => {
         if (linkTo === key.value) {
           festivalControl(linkTo, key.stime, key.etime, key);
           return true;
@@ -105,78 +109,83 @@ export default (target) => {
     }
 
     // 優小祕
-    if (linkTo === 'promotion' && linkItem) {
-      localStorage.setItem('iframe-third-url', `/popcontrol/promo/${JSON.stringify({ linkItem })}`);
-      localStorage.setItem('iframe-third-url-title', linkTitle);
-      localStorage.setItem('iframe-third-origin', `home`);
+    if (linkTo === "promotion" && linkItem) {
+      localStorage.setItem(
+        "iframe-third-url",
+        `/popcontrol/promo/${JSON.stringify({ linkItem })}`
+      );
+      localStorage.setItem("iframe-third-url-title", linkTitle);
+      localStorage.setItem("iframe-third-origin", `home`);
 
-      if (store.state.webDomain.site !== 'ey1') {
-        window.location.href = `/mobile/iframe/promotion?hasFooter=false&hasHeader=true`;
+      if (store.state.webDomain.site !== "ey1") {
+        window.location.href = `/mobile/iframe/promotion`;
       } else {
-        newWindow = window.open(`/popcontrol/promo/${JSON.stringify({ linkItem })}`, '_blank');
+        newWindow = window.open(
+          `/popcontrol/promo/${JSON.stringify({ linkItem })}`,
+          "_blank"
+        );
       }
 
       return;
     }
 
     // 加入會員
-    if (linkTo === 'join') {
+    if (linkTo === "join") {
       if (store.state.loginStatus) {
         return;
       }
-      router.push('/mobile/joinmember');
+      router.push("/mobile/joinmember");
       return;
     }
 
     // 在線客服
 
-    if (linkTo.includes('service')) {
+    if (linkTo.includes("service")) {
       let url = store.state.webInfo.on_service_url;
-      let w =
-        newWindow = window.open(
-          url,
-          'mobile service',
-          `width=${store.state.webInfo.on_service_w}, height=${store.state.webInfo.on_service_h}`
-        );
+      let w = (newWindow = window.open(
+        url,
+        "mobile service",
+        `width=${store.state.webInfo.on_service_w}, height=${store.state.webInfo.on_service_h}`
+      ));
 
       // 在線客服流量分析事件
       window.dataLayer.push({
         dep: 2,
-        event: 'ga_click',
-        eventCategory: 'online_service',
-        eventAction: 'online_service_contact',
-        eventLabel: 'online_service_contact'
+        event: "ga_click",
+        eventCategory: "online_service",
+        eventAction: "online_service_contact",
+        eventLabel: "online_service_contact"
       });
       w.document.title = "在线客服";
       return;
     }
 
     // 手機下注
-    if (linkTo === 'mobileBet') {
+    if (linkTo === "mobileBet") {
       if (store.state.loginStatus || store.state.appInfo.unsafe_download) {
         newWindow = window.open(store.state.qrcodeInfo.url);
         return;
       }
-      router.push('/mobile/login');
+      router.push("/mobile/login");
       return;
     }
 
     // 存款
-    if (linkTo === 'deposit') {
+    if (linkTo === "deposit") {
       Vue.prototype.$depositLink(true);
       return;
     }
 
     // 取款
-    if (linkTo === 'withdraw') {
+    if (linkTo === "withdraw") {
       if (!store.state.loginStatus) {
-        alert(i18n.t('S_LOGIN_TIPS'));
+        alert(i18n.t("S_LOGIN_TIPS"));
         return;
       }
 
-      mcenterPageAuthControl(linkTo).then((response) => {
+      mcenterPageAuthControl(linkTo).then(response => {
         if (response && response.status) {
-          router.push('/mobile/mcenter/withdraw');
+          router.push("/mobile/mcenter/withdraw");
         }
       });
 
@@ -184,28 +193,28 @@ export default (target) => {
     }
 
     // 返水
-    if (linkTo === 'bankRebate') {
+    if (linkTo === "bankRebate") {
       if (!store.state.loginStatus) {
-        alert(i18n.t('S_LOGIN_TIPS'));
+        alert(i18n.t("S_LOGIN_TIPS"));
         return;
       }
 
-      router.push('/mobile/mcenter/bankRebate');
+      router.push("/mobile/mcenter/bankRebate");
       return;
     }
 
     // 代理登入
-    if (linkTo === 'agLogin') {
+    if (linkTo === "agLogin") {
       if (!store.state.memInfo.config.agent_login) {
         return;
       }
 
       if (store.state.loginStatus) {
-        if (window.confirm(i18n.t('S_LOGOUT_AGENT_CONFIRM'))) {
+        if (window.confirm(i18n.t("S_LOGOUT_AGENT_CONFIRM"))) {
           member.logout({
             success: () => {
-              store.dispatch('actionSetUserdata', true);
-              router.push('/mobile/agLogin');
+              store.dispatch("actionSetUserdata", true);
+              router.push("/mobile/agLogin");
             }
           });
         }
@@ -214,14 +223,14 @@ export default (target) => {
       }
     }
 
-    if (linkTo === 'domain') {
-      newWindow = window.open('/mobile/domain', '_blank');
+    if (linkTo === "domain") {
+      newWindow = window.open("/mobile/domain", "_blank");
       return;
     }
 
-    if (linkTo === 'cgPay') {
+    if (linkTo === "cgPay") {
       if (!store.state.loginStatus) {
-        router.push('/mobile/login');
+        router.push("/mobile/login");
         return;
       }
 
@@ -237,15 +246,23 @@ export default (target) => {
   }
 
   // 遊戲連結
-  if (linkType === 'games') {
-    const hasHall = [3, 5, 6];
-    const { kind } = store.state.gameData[linkTo];
-    const { vendor } = store.state.gameData[linkTo];
+  if (linkType === "games") {
+    if (!store.state.gameData[linkTo]) {
+      console.log("游戏未开放");
+      return;
+    }
 
-    // 未實作
+    const { vendor, kind } = store.state.gameData[linkTo];
+    const code = linkItem;
+    if (!store.state.loginStatus) {
+      router.push("/mobile/login");
+      return;
+    }
+
     // 有遊戲大廳的遊戲
     // if (hasHall.includes(kind) && (linkItem === '' || typeof linkItem === 'undefined')) {
-    if (hasHall.includes(kind)) {
+    const hasHall = [3, 5];
+    if (hasHall.includes(kind) && !linkItem) {
       switch (kind) {
         case 3:
           router.push(`/mobile/casino/${vendor}`);
@@ -253,35 +270,37 @@ export default (target) => {
         case 5:
           router.push(`/mobile/card/${vendor}`);
           break;
-        case 6:
-          router.push(`/mobile/mahjong/${vendor}`);
-          break;
+        // case 6:
+        //   router.push(`/mobile/mahjong/${vendor}`);
+        //   break;
         default:
       }
       return;
     }
 
-    if (!store.state.loginStatus) {
-      router.push('/mobile/login');
-      return;
-    }
+    const openGameSuccessFunc = res => {};
 
-    return;
-
-    const openGameSuccessFunc = (res) => {
-      // this.isShowLoading = false;
-    };
-
-    const openGameFailFunc = (res) => {
-      // this.isShowLoading = false;
-
+    const openGameFailFunc = res => {
       if (res && res.data) {
         let data = res.data;
         alert(data.msg);
-        // this.actionSetGlobalMessage({ msg: data.msg, code: data.code, origin: 'home' })
+        // this.actionSetGlobalMessage({
+        //   msg: data.msg,
+        //   code: data.code,
+        //   origin: "home"
+        // });
       }
     };
 
-    openGame({ kind: kind, vendor: vendor, code: '', }, openGameSuccessFunc, openGameFailFunc);
+    openGame(
+      {
+        kind: kind || "",
+        vendor: vendor || "",
+        code: code || "",
+        gameName: localStorage.getItem("iframe-third-url-title") || ""
+      },
+      openGameSuccessFunc,
+      openGameFailFunc
+    );
   }
 };

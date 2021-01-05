@@ -16,9 +16,9 @@
       <img
         :src="
           $getCdnPath(
-            `/static/image/ey1/common/btn_${
+            `/static/image/common/btn_${
               headerConfig.hasClose ? 'close' : 'back'
-            }.png`
+            }_white.png`
           )
         "
       />
@@ -28,28 +28,6 @@
       <div :class="[[$style.title], $style[source]]">
         {{ headerConfig.title }}
       </div>
-      <div
-        v-if="headerConfig.gameList"
-        :class="$style['btn-game-list']"
-        @click="setMenuState('gameList')"
-      >
-        <img
-          :src="
-            $getCdnPath(
-              '/static/image/mobile/tpl/porn1/header/btn_header_n.png'
-            )
-          "
-        />
-      </div>
-    </div>
-
-    <div
-      v-if="headerConfig.gameList"
-      v-show="currentMenu === 'gameList'"
-      ref="game-list-wrap"
-      :class="$style['game-list-wrap']"
-    >
-      <top-game-list :is-list-visible.sync="currentMenu" />
     </div>
 
     <template v-if="headerConfig.hasSearchBtn">
@@ -104,9 +82,8 @@
         :class="[
           $style['header-custom-wrap'],
           {
-            [$style[headerConfig.customLinkStyle]]:
-              headerConfig.customLinkStyle,
-          },
+            [$style[headerConfig.customLinkStyle]]: headerConfig.customLinkStyle
+          }
         ]"
       >
         <div
@@ -128,7 +105,7 @@
         <span
           v-if="
             headerConfig.hasHelp.type === 'deposit' ||
-            headerConfig.hasHelp.type === 'withdraw'
+              headerConfig.hasHelp.type === 'withdraw'
           "
         >
           记录/教程
@@ -147,7 +124,6 @@ import { mapGetters, mapActions } from "vuex";
 export default {
   components: {
     // sideBalance,
-    // topGameList: () => import(/* webpackChunkName: 'topGameList' */'./topGameList')
   },
   props: {
     headerConfig: {
@@ -156,7 +132,7 @@ export default {
     },
     updateSearchStatus: {
       type: Function,
-      default: () => { }
+      default: () => {}
     },
     hasUnreadMessage: {
       type: Boolean,
@@ -167,7 +143,7 @@ export default {
     return {
       currentMenu: "",
       msg: "",
-      source: this.$route.query.source,
+      source: this.$route.query.source
     };
   },
   computed: {
@@ -187,12 +163,10 @@ export default {
           : false,
         clearfix: true
       };
-    },
+    }
   },
   methods: {
-    ...mapActions([
-      'actionSetGlobalMessage'
-    ]),
+    ...mapActions(["actionSetGlobalMessage"]),
     // 自訂幫助中心事件
     handleHelpLinkTo() {
       if (this.headerConfig.hasHelp && this.headerConfig.hasHelp.func) {
@@ -213,7 +187,7 @@ export default {
     },
     handleClickAsk() {
       if (this.loginStatus) {
-        this.$router.push({ name: 'mcenter-information' });
+        this.$router.push({ name: "mcenter-information" });
       } else {
         this.$router.push("/mobile/login");
       }
@@ -343,16 +317,6 @@ export default {
     display: block;
     width: 100%;
   }
-}
-
-.game-list-wrap {
-  overflow-y: auto;
-  position: fixed;
-  top: 43px;
-  right: 0;
-  bottom: 0;
-  left: 0;
-  background-color: rgba(0, 0, 0, 0.8);
 }
 
 .search-wrap {

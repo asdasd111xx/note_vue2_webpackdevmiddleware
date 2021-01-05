@@ -110,7 +110,7 @@
         ref="game-wrap"
         :class="[$style['game-list-wrap'], 'clearfix']"
         :style="{
-          height: `${wrapHeight - 50}px`,
+          height: `${wrapHeight}px`,
           'overflow-y': `${stopScroll ? 'hidden' : 'auto'}`,
           opacity: stopScroll ? 0 : 1
         }"
@@ -159,30 +159,33 @@
 
 <script>
 /* global $ */
-import { mapGetters, mapActions } from 'vuex';
-import { Swiper, SwiperSlide } from 'vue-awesome-swiper';
-import mixin from '@/mixins/homeContent';
+import { mapGetters, mapActions } from "vuex";
+import { Swiper, SwiperSlide } from "vue-awesome-swiper";
+import mixin from "@/mixins/homeContent";
 
 export default {
   mixins: [mixin],
   components: {
-    pageLoading: () => import(/* webpackChunkName: 'pageLoading' */ '@/router/mobile/components/common/pageLoading'),
+    pageLoading: () =>
+      import(
+        /* webpackChunkName: 'pageLoading' */ "@/router/mobile/components/common/pageLoading"
+      ),
     Swiper,
     SwiperSlide
   },
   data() {
     return {
       userViplevel: ""
-    }
+    };
   },
   ...mapGetters({
-    loginStatus: 'getLoginStatus',
+    loginStatus: "getLoginStatus"
   }),
   mounted() {
     if (this.loginStatus) {
       this.getUserViplevel();
     }
-  },
+  }
 };
 </script>
 
@@ -192,6 +195,8 @@ export default {
   position: relative;
   padding: 0 18px 0 13px;
   margin-top: 1px;
+  background: white;
+  z-index: 4;
 }
 
 .type-wrap {
@@ -239,6 +244,8 @@ export default {
   color: #ff7171;
   font-size: 12px;
   text-align: center;
+  font-family: MicrosoftJhengHeiBold;
+  font-weight: 500;
 
   &.active {
     color: #fff;
@@ -390,7 +397,6 @@ export default {
   overflow-y: auto;
   touch-action: default; // 誤刪，否則在touchmove事件會有cancelable錯誤
   -webkit-overflow-scrolling: touch; // 誤刪，維持touchmove滾動順暢
-  min-height: 260px;
 }
 
 .wrap {

@@ -23,9 +23,7 @@
         :class="$style['close-fullscreen']"
         @click="toggleFullScreen"
       >
-        <img
-          :src="$getCdnPath(`/static/image/${themeTPL}/common/arrow_next.png`)"
-        />
+        <img :src="$getCdnPath(`/static/image/common/arrow_next.png`)" />
       </div>
 
       <div
@@ -33,7 +31,19 @@
         @click="headerConfig.onClick"
       >
         <img
-          :src="$getCdnPath(`/static/image/${themeTPL}/common/btn_back.png`)"
+          :src="
+            $getCdnPath(
+              `/static/image/common/btn_back_${
+                themeTPL === 'porn1'
+                  ? 'grey'
+                  : themeTPL === 'ey1'
+                  ? 'white'
+                  : themeTPL === 'sg1'
+                  ? 'black'
+                  : null
+              }.png`
+            )
+          "
         />
         <div>返回</div>
       </div>
@@ -131,7 +141,7 @@ export default {
           method: "get",
           url: `${
             this.siteConfig.YABO_GOLANG_API_DOMAIN
-            }/cxbb/ThirdParty/${params.page.toUpperCase()}/${userId}`
+          }/cxbb/ThirdParty/${params.page.toUpperCase()}/${userId}`
         }).then(res => {
           if (res && res.status !== "000") {
             // 維護非即時更新狀態
@@ -151,29 +161,90 @@ export default {
         // this.src = 'https://feature-yabo.app.swag.live/';
         break;
       case "THIRD":
-        axios({
-          method: "get",
-          url: "/api/v1/c/link/customize",
-          params: {
-            code: "fengniao",
-            client_uri: localStorage.getItem("iframe-third-url") || ""
-          }
-        })
-          .then(res => {
-            this.isLoading = false;
-            if (res && res.data && res.data.ret && res.data.ret.uri) {
-              this.src = res.data.ret.uri;
+        let type = this.$route.params.type;
+        let query = this.$route.query;
+
+        switch (type) {
+          case "fengniao":
+            if (query.alias) {
+              goLangApiRequest({
+                method: "get",
+                url: `${this.siteConfig.YABO_GOLANG_API_DOMAIN}/xbb/Link/External/Url?lang=zh-cn&urlName=${query.alias}&needToken=true&externalCode=fengniao`
+              })
+                .then(res => {
+                  this.src = res.data.uri + "&cors=embed";
+                })
+                .catch(error => {
+                  this.isLoading = false;
+                  if (error && error.data && error.data.msg) {
+                    this.actionSetGlobalMessage({ msg: error.data.msg });
+                  }
+                });
+              return;
             }
-          })
-          .catch(error => {
-            this.isLoading = false;
-            if (error && error.data && error.data.msg) {
-              this.actionSetGlobalMessage({ msg: error.data.msg });
-            }
-          });
+
+          default:
+            axios({
+              method: "get",
+              url: "/api/v1/c/link/customize",
+              params: {
+                code: "fengniao",
+                client_uri: localStorage.getItem("iframe-third-url") || ""
+              }
+            })
+              .then(res => {
+                this.isLoading = false;
+                if (res && res.data && res.data.ret && res.data.ret.uri) {
+                  this.src = res.data.ret.uri;
+                }
+              })
+              .catch(error => {
+                this.isLoading = false;
+                if (error && error.data && error.data.msg) {
+                  this.actionSetGlobalMessage({ msg: error.data.msg });
+                }
+              });
+            return;
+        }
         break;
       case "GAME":
-        this.src = localStorage.getItem("iframe-third-url");
+        if (localStorage.getItem("iframe-third-url")) {
+          this.src = localStorage.getItem("iframe-third-url");
+          return;
+        }
+
+        const openGameSuccessFunc = res => {
+          this.isShowLoading = false;
+        };
+
+        const openGameFailFunc = res => {
+          this.isShowLoading = false;
+
+          if (res && res.data) {
+            let data = res.data;
+            this.actionSetGlobalMessage({
+              msg: data.msg,
+              code: data.code,
+              origin: "home"
+            });
+          }
+        };
+
+        openGame(
+          {
+            kind: this.$route.query.kind || "",
+            vendor: this.$route.query.vendor || "",
+            code: this.$route.query.code || "",
+            gameType: this.$route.query.gameType || "",
+            gameName:
+              this.$route.query.gameName ||
+              localStorage.getItem("iframe-third-url-title") ||
+              ""
+          },
+          openGameSuccessFunc,
+          openGameFailFunc
+        );
+
         break;
       case "PROMOTION":
         // 優小秘
@@ -238,21 +309,17 @@ export default {
       const origin = this.$route.params.page.toUpperCase();
 
       this.isFullScreen =
-        origin === "SWAG"
-          ? true
-          : query.fullscreen === undefined
-            ? false
-            : query.fullscreen === "true";
+        query.fullscreen === undefined ? false : query.fullscreen === "true";
 
       let baseConfig = {
         hasHeader:
-          query.hasHeader === undefined ? false : query.hasHeader === "true",
+          query.hasHeader === undefined ? true : query.hasHeader === "true",
         hasFooter:
-          query.hasFooter === undefined ? true : query.hasFooter === "true",
+          query.hasFooter === undefined ? false : query.hasFooter === "true",
         prev: query.prev === undefined ? true : query.prev,
+        hasFunc: query.func === undefined ? true : query.func === "true",
         title:
-          query.title || localStorage.getItem("iframe-third-url-title") || "",
-        hasFunc: query.func === undefined ? true : query.func === "true"
+          query.title || localStorage.getItem("iframe-third-url-title") || ""
       };
 
       // SWAG 固定
@@ -285,16 +352,6 @@ export default {
       if (this.isLoading) {
         return;
       }
-
-      // reload 進入網址
-      // const tmpSrc = this.src;
-      // this.isLoading = true;
-      // this.src = '';
-      // setTimeout(() => {
-      //   this.src = tmpSrc;
-      //   this.isLoading = false;
-      // }, 310)
-
       // reload 當前網址
       document.getElementById("iframe").contentWindow.location.reload();
     },
@@ -409,15 +466,7 @@ export default {
           const code = target[3] || "";
 
           switch (vendor) {
-            // 熱門棋牌
-            case "lg_yb_card":
-            // 熱門電子
-            case "lg_yb_casino":
-              this.$router.push(`/mobile/gamelobby/${vendor}/${kind}/${code}`);
-              return;
-
             default:
-
               const openGameSuccessFunc = res => {
                 this.isLoading = false;
               };
@@ -538,6 +587,10 @@ export default {
 
   &.porn1 {
     background: white;
+  }
+
+  &.sg1 {
+    color: black;
   }
 }
 

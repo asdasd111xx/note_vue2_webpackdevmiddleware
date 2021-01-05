@@ -3,7 +3,7 @@
     <div :class="$style['title-block']">
       <span>{{ videoInfo.title }}</span>
       <img
-        :src="$getCdnPath('/static/image/_new/common/btn_close.png')"
+        :src="$getCdnPath('/static/image/common/btn_close_grey.png')"
         alt="close"
         @click="$emit('update:isShowDialog', false)"
       />

@@ -43,11 +43,11 @@ export const site_500023 = {
 /* eslint-enable camelcase */
 
 /**
- * 丝瓜娱乐 測試站
+ * 丝瓜直播 測試站
  */
 export const site_500035 = {
   ...preset,
   MOBILE_WEB_TPL: "sg1",
   VERSION: getVersion("sg1"),
-  SITE_NAME: "丝瓜娱乐"
+  SITE_NAME: "丝瓜直播"
 };

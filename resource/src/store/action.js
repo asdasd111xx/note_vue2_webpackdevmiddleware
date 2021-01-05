@@ -742,6 +742,10 @@ export const actionSetUserdata = (
       }
 
       let cdnRoot = "";
+      if (!["41", "80", "67"].includes(domain)) {
+        commit(types.SETCDNROOT, "");
+        return;
+      }
 
       // 設置cdn圖片路徑
       if (headers["x-cdn-ey"] && configInfo.MOBILE_WEB_TPL === "ey1") {
@@ -1158,7 +1162,6 @@ export const actionGetMobileInfo = ({ commit, state }, datatpl) => {
       const { result, data } = response;
 
       if (result === "ok") {
-        localStorage.setItem("mobile-slider", JSON.stringify(data));
         commit(types.SETMOBILEINFO, data);
       }
     }

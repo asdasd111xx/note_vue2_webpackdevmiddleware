@@ -8,14 +8,26 @@
       <div :class="$style['wiithdraw-account-header']">
         <div :class="$style['btn-prev']">
           <img
-            :src="$getCdnPath(`/static/image/${themeTPL}/common/btn_back.png`)"
+            :src="
+              $getCdnPath(
+                `/static/image/common/btn_back_${
+                  themeTPL === 'porn1'
+                    ? 'grey'
+                    : themeTPL === 'ey1'
+                    ? 'white'
+                    : themeTPL === 'sg1'
+                    ? 'black'
+                    : null
+                }.png`
+              )
+            "
             @click="onClose(true)"
           />
         </div>
         <span :class="$style['title']"> {{ "帐户资料" }}</span>
         <div :class="$style['btn-icon']">
           <img
-            :src="$getCdnPath('/static/image/ey1/common/btn_help.png')"
+            :src="$getCdnPath(`/static/image/${themeTPL}/common/btn_help.png`)"
             @click="$router.push('/mobile/mcenter/helpCenter')"
           />
         </div>
@@ -523,7 +535,8 @@ export default {
         url: "/api/v1/c/player/verify/user_bank/sms",
         data: {
           phone: `${this.phoneHead.replace("+", "")}-${
-            this.formData.phone.value}`,
+            this.formData.phone.value
+          }`,
           captcha_text: this.captchaData ? this.captchaData : ""
         }
       })
@@ -531,7 +544,9 @@ export default {
           if (this.timer) return;
 
           if (res && res.data && res.data.result === "ok") {
-            this.actionSetGlobalMessage({ msg: this.$text("S_SEND_CHECK_CODE_VALID_TIME").replace("%s", '5') });
+            this.actionSetGlobalMessage({
+              msg: this.$text("S_SEND_CHECK_CODE_VALID_TIME").replace("%s", "5")
+            });
             this.getPhoneTTL().then(() => {
               this.countdownSec = this.ttl;
               this.timer = setInterval(() => {
@@ -616,3 +631,4 @@ export default {
 
 <style lang="scss" src="./css/porn1.index.scss" module="$style_porn1"></style>
 <style lang="scss" src="./css/ey1.index.scss" module="$style_ey1"></style>
+<style lang="scss" src="./css/sg1.index.scss" module="$style_sg1"></style>

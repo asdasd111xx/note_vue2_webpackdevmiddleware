@@ -1,7 +1,7 @@
 <template>
   <mobile-container :header-config="headerConfig" :has-footer="false">
     <div slot="content" :class="$style['content-wrap']">
-      <balanceBack :has-link="false" />
+      <balanceBack :has-link="false" :back-router="backRouter" />
       <balanceTrans :is-show-block-tips.sync="isShowBlockTips" />
       <blockListTips
         v-if="isShowBlockTips"
@@ -14,9 +14,9 @@
 
 <script>
 import { mapGetters, mapActions } from "vuex";
-import balanceBack from "../../../mcenter/components/common/balanceBack";
-import balanceTrans from '@/router/mobile/components/tpl/porn1/components/mcenter/components/balanceTrans/components/index';
-import blockListTips from "../../../common/blockListTips";
+import balanceBack from "@/router/mobile/components/tpl/porn1/components/mcenter/components/common/balanceBack";
+import balanceTrans from "@/router/mobile/components/tpl/porn1/components/mcenter/components/balanceTrans/components/index";
+import blockListTips from "@/router/mobile/components/tpl/porn1/components/common/blockListTips";
 import mobileContainer from "../../../common/mobileContainer";
 
 export default {
@@ -28,13 +28,14 @@ export default {
   },
   data() {
     return {
-      isShowBlockTips: false
-    }
+      isShowBlockTips: false,
+      backRouter: "mcenter/balanceTrans"
+    };
   },
   computed: {
     ...mapGetters({
-      memInfo: 'getMemInfo',
-      siteConfig: 'getSiteConfig'
+      memInfo: "getMemInfo",
+      siteConfig: "getSiteConfig"
     }),
     headerConfig() {
       return {
@@ -44,10 +45,10 @@ export default {
           this.$router.back();
         },
         hasHelp: {
-          url: '/mobile/mcenter/helpCenter'
-        },
+          url: "/mobile/mcenter/helpCenter"
+        }
       };
-    },
+    }
   },
   methods: {
     closeTips() {

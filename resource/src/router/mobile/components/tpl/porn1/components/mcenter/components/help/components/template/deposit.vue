@@ -18,9 +18,7 @@
         </div>
         <div :class="[$style['arrow-btn']]">
           <img
-            :src="
-              $getCdnPath(`/static/image/porn1/mcenter/help/ic_arrow_next.png`)
-            "
+            :src="$getCdnPath(`/static/image/common/arrow_next.png`)"
           />
         </div>
       </div>
@@ -45,11 +43,7 @@
           <span> {{ categorys[category_currentIndex].name }} </span>
           <div :class="$style['btn-next']">
             <img
-              :src="
-                $getCdnPath(
-                  `/static/image/porn1/mcenter/help/ic_arrow_next.png`
-                )
-              "
+              :src="$getCdnPath(`/static/image/common/arrow_next.png`)"
             />
           </div>
         </div>
@@ -271,7 +265,6 @@ export default {
 
   mounted() {
     this.hasCid = getCookie("cid") || false;
-    document.title = this.$text("S_HELP_CENTER", "帮助中心");
 
     let vm = this;
     $("#mobile-wrap").scroll(function () {
@@ -402,16 +395,7 @@ export default {
         (this.$route.query && this.$route.query.APP)
       );
       return isApp;
-    },
-    headerConfig() {
-      return {
-        prev: true,
-        onClick: () => {
-          this.$router.back();
-        },
-        title: this.$text("S_HELP_CENTER", "帮助中心"),
-      };
-    },
+    }
   },
 };
 </script>

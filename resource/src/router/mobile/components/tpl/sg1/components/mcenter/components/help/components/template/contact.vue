@@ -1,11 +1,15 @@
 <template>
   <div>
-    <div v-if="list" v-for="item in list" :class="$style['content']">
+    <div v-for="(item, key) in list" :class="$style['content']" :key="key">
       <div :class="$style['title']">
         <div :class="$style['block']" />
         {{ item.categoryName }}
       </div>
-      <div v-for="cell in item.itemData" :class="$style['cell']">
+      <div
+        v-for="(cell, key) in item.itemData"
+        :class="$style['cell']"
+        :key="key"
+      >
         <div>
           <img :src="cell.iconUrl" />
         </div>
@@ -36,10 +40,7 @@ export default {
   data() {
     return {
       msg: "",
-      list: null,
-      defaultImgSrc: this.$getCdnPath(
-        "/static/image/_new/mcenter/help/email.png"
-      )
+      list: []
     };
   },
   computed: {
@@ -50,19 +51,9 @@ export default {
     })
   },
   created() {
-    // yaboRequest({
-    //   method: 'get',
-    //   url: `${this.siteConfig.YABO_API_DOMAIN}/system/contactus`,
-    //   headers: { 'x-domain': this.memInfo.user.domain, }
-    // }).then((res) => {
-    //   if (res && res.data && res.data.length > 0) {
-    //     this.list = res.data;
-    //   }
-    // });
     goLangApiRequest({
       method: "get",
-      url: `${this.siteConfig.YABO_GOLANG_API_DOMAIN}/cxbb/System/contactus`,
-      headers: { "x-domain": this.memInfo.user.domain }
+      url: `${this.siteConfig.YABO_GOLANG_API_DOMAIN}/cxbb/System/contactus`
     }).then(res => {
       if (res && res.data && res.data.length > 0) {
         this.list = res.data;
@@ -88,14 +79,17 @@ export default {
 
 .title {
   height: 40px;
-  margin: 5px 8px;
+  width: 100%;
+
   display: inline-flex;
   align-items: center;
+  background: #ffffff;
   .block {
     width: 2.5px;
     height: 17px;
-    background: linear-gradient(to top, #dccab8, #d2b496);
+    background: linear-gradient(to top, #fe593c, #e61938);
     border-radius: 1px;
+    margin-left: 10px;
     margin-right: 10px;
   }
 }
@@ -114,13 +108,15 @@ export default {
       display: flex;
       align-items: center;
       justify-content: center;
-      margin: 10px 20px 10px 0;
+      margin: 0 20px;
+      border-right: #f8f8f7 solid 1px;
       img {
         width: 28px;
       }
     }
 
     > div:nth-child(2) {
+      margin-left: 20px;
       width: 100%;
     }
 
@@ -150,11 +146,7 @@ export default {
     border-radius: 5px;
     font-size: 16px;
     line-height: 45px;
-
-    background: -webkit-linear-gradient(right, #dccab8, #d2b496);
-    background: -o-linear-gradient(left, #9c856e, #d2b496);
-    background: -moz-linear-gradient(left, #9c856e, #d2b496);
-    background: linear-gradient(to left, #9c856e, #d2b496);
+    background: linear-gradient(to left, #fe593c, #e61938);
   }
 }
 </style>

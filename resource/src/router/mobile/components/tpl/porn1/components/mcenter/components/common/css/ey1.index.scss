@@ -1,0 +1,82 @@
+@import "./porn1.index.scss";
+
+.balance-wrap {
+  .balance-total-item {
+    .balance-item-money {
+      color: #e42a30;
+    }
+  }
+
+  .recycle-btn {
+    color: #e42a30;
+  }
+
+  .credit-trans-link {
+    color: #e42a30;
+  }
+}
+
+.bird-wrap {
+  position: relative;
+  display: flex;
+  align-items: center;
+  text-align: center;
+  height: 65px;
+  background: #fefefe;
+  color: $main_text_color3;
+  margin-top: 10px;
+  margin-bottom: 10px;
+}
+
+.item {
+  position: relative;
+  flex: 1;
+  font-size: 12px;
+  font-weight: 700;
+  color: $main_text_color3;
+
+  &.wallet {
+    flex: 0;
+    min-width: 120px;
+  }
+
+  &::before {
+    content: "";
+    position: absolute;
+    width: 1px;
+    height: 20px;
+    background: #eee;
+    left: 0;
+    top: 0;
+  }
+
+  img {
+    width: 13px;
+    height: 13px;
+    vertical-align: text-bottom;
+  }
+
+  .bird-block {
+    font-size: 16px;
+    font-family: Microsoft JhengHei, Microsoft JhengHei-Bold;
+    font-weight: 700;
+    text-align: center;
+    color: #e42a30;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+  }
+
+  .maintain-tip-text {
+    font-size: 12px;
+    font-family: Microsoft JhengHei, Microsoft JhengHei-Regular;
+    font-weight: 400;
+    text-align: center;
+    color: #db6372;
+  }
+
+  .maintain-tip-img {
+    width: 12px;
+    height: 12px;
+  }
+}

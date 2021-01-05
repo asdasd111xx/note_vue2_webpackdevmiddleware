@@ -22,16 +22,14 @@
           />
           <div :class="$style['clear-input']" v-if="formData.account_name">
             <img
-              :src="
-                $getCdnPath(`/static/image/${themeTPL}/common/ic_clear.png`)
-              "
+              :src="$getCdnPath(`/static/image/common/ic_clear.png`)"
               @click="formData.account_name = ''"
             />
           </div>
         </div>
       </div>
       <p v-if="!memInfo.user.name" :class="$style['username-remind']">
-        为了您的资金能够迅速到账，请确保填写的姓名与银行卡的开户姓名一致
+        为了您的资金能够迅速到帐，请确保填写的姓名与银行卡的开户姓名一致
       </p>
     </template>
 
@@ -45,7 +43,7 @@
             </span>
             <img
               :class="$style['arrow-icon']"
-              :src="`/static/image/${themeTPL}/common/arrow_next.png`"
+              :src="`/static/image/common/arrow_next.png`"
             />
           </div>
         </div>
@@ -65,9 +63,7 @@
               />
               <div :class="$style['clear-input']" v-if="formData.province">
                 <img
-                  :src="
-                    $getCdnPath(`/static/image/${themeTPL}/common/ic_clear.png`)
-                  "
+                  :src="$getCdnPath(`/static/image/common/ic_clear.png`)"
                   @click="formData.province = ''"
                 />
               </div>
@@ -86,9 +82,7 @@
               />
               <div :class="$style['clear-input']" v-if="formData.city">
                 <img
-                  :src="
-                    $getCdnPath(`/static/image/${themeTPL}/common/ic_clear.png`)
-                  "
+                  :src="$getCdnPath(`/static/image/common/ic_clear.png`)"
                   @click="formData.city = ''"
                 />
               </div>
@@ -108,9 +102,7 @@
             />
             <div :class="$style['clear-input']" v-if="formData.branch">
               <img
-                :src="
-                  $getCdnPath(`/static/image/${themeTPL}/common/ic_clear.png`)
-                "
+                :src="$getCdnPath(`/static/image/common/ic_clear.png`)"
                 @click="formData.branch = ''"
               />
             </div>
@@ -130,9 +122,7 @@
             />
             <div :class="$style['clear-input']" v-if="formData.account">
               <img
-                :src="
-                  $getCdnPath(`/static/image/${themeTPL}/common/ic_clear.png`)
-                "
+                :src="$getCdnPath(`/static/image/common/ic_clear.png`)"
                 @click="formData.account = ''"
               />
             </div>
@@ -150,7 +140,11 @@
           <div :class="$style['input-wrap']">
             <template v-if="['ey1'].includes(themeTPL)">
               <select v-model="phoneHead" :class="$style['phone-selected']">
-                <option v-for="option in phoneHeadOption" v-bind:value="option">
+                <option
+                  v-for="option in phoneHeadOption"
+                  v-bind:value="option"
+                  :key="option"
+                >
                   {{ option }}
                 </option>
               </select>
@@ -196,12 +190,13 @@
       <div :class="$style['info-confirm']">
         <div :class="$style['confirm-remind']">
           <p v-if="addBankCardStep === 'one'">
-            请认真校对银行卡号，卡号错误资金将无法到账
+            请认真校对银行卡号，卡号错误资金将无法到帐
           </p>
           <p v-else>
             1. 为确保您的资金安全，添加银行卡需进行简单的数据核实 <br />
             2. 因手机号码影响各项重要功能，请您务必谨慎填写 <br />
-            3. {{ siteConfig.SITE_NAME }}娱乐时刻关心您的资金安全
+            3.
+            {{ siteConfig.SITE_NAME }}时刻关心您的资金安全
           </p>
         </div>
         <div
@@ -339,6 +334,8 @@ export default {
       let redirect = query.redirect;
       if (!redirect) {
         this.setPageStatus(0, "bankCardInfo", true);
+        this.NextStepStatus = false;
+        this.$emit("update:addBankCardStep", "one");
         return;
       }
 
@@ -374,6 +371,8 @@ export default {
           return;
         default:
           this.setPageStatus(0, "bankCardInfo", true);
+          this.NextStepStatus = false;
+          this.$emit("update:addBankCardStep", "one");
           return;
       }
     }

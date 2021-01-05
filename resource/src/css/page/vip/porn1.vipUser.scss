@@ -88,6 +88,16 @@
   align-items: center;
 }
 
+.run-level-alias {
+  width: 65px;
+  color: white;
+  text-align: center;
+  border-radius: 14px;
+  font-size: 12px;
+  background: linear-gradient(to left, rgba(black, 0.1), #b4b9cf, #bcc1ca);
+  word-break: break-all;
+}
+
 .run-level {
   width: 40px;
   color: white;
@@ -118,7 +128,7 @@
   flex: 1;
   margin: 0px 5px;
   height: 15px;
-  background: url(/static/image/common/vip/vip_runbg.png);
+  background: url(/static/image/porn1/mcenter/vip/vip_runbg.png);
   background-size: cover;
   background-repeat: no-repeat;
 }

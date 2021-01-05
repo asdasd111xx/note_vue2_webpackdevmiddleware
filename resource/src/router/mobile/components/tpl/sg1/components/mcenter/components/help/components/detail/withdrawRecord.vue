@@ -154,7 +154,7 @@ export default {
         { key: "amount", title: "S_WITHDRAW_MONEY" },
         // 扣除金额
         { key: "deduction", title: "S_DEDUCTION_MONEY" },
-        // 实际到账
+        // 实际到帐
         { key: "real_amount", title: "S_REAL_WITHDRAW" },
         // 提现类型
         { key: "bank_name", title: "S_WITHDRAW_TYPE" }

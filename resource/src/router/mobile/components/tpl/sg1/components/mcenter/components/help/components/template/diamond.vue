@@ -8,7 +8,7 @@
     >
       <span> {{ listInfo.name }} </span>
       <div :class="$style['btn-next']">
-        <img :src="$getCdnPath(`/static/image/_new/common/arrow_next.png`)" />
+        <img :src="$getCdnPath(`/static/image/common/arrow_next.png`)" />
       </div>
     </div>
   </div>
@@ -24,12 +24,12 @@ export default {
       list: [
         {
           name: "SWAG 钻石购买说明",
-          key: "buymethod",
+          key: "buymethod"
         },
         {
           name: "SWAG 钻石使用方法",
-          key: "usage",
-        },
+          key: "usage"
+        }
       ]
     };
   },
@@ -49,13 +49,17 @@ export default {
         (this.$route.query && this.$route.query.APP)
       );
       return isApp;
-    },
+    }
   },
-  created() { },
+  created() {},
   methods: {
     ...mapActions(["actionSetGlobalMessage"]),
     handleClick(item) {
-      this.$router.push(`/mobile/mcenter/help/detail?type=${item.key}${this.isApp ? "&app=true" : ""}`);
+      this.$router.push(
+        `/mobile/mcenter/help/detail?type=${item.key}${
+          this.isApp ? "&app=true" : ""
+        }`
+      );
     }
   }
 };

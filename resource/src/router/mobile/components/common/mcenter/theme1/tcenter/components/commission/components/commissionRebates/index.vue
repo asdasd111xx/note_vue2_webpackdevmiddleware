@@ -8,7 +8,7 @@
       >
         <div :class="$style['rebate-header']">
           <template>
-            <div>{{ caculateList.period }}期</div>
+            <div>{{ caculateList.period }}</div>
             <div>
               {{ caculateList.start_at | dateFormat }}~{{
                 caculateList.end_at | dateFormat
@@ -23,9 +23,15 @@
               结算方式
             </span>
             <div :class="$style['content-right']">
-              <template>{{
-                caculateList.type === 1 ? "投注返利" : "损益返利"
-              }}</template>
+              {{
+                caculateList.type === 0
+                  ? "盈亏返利"
+                  : caculateList.type === 1
+                  ? "投注返利"
+                  : caculateList.type === 2
+                  ? "损益返利"
+                  : null
+              }}
             </div>
           </div>
 
@@ -42,7 +48,7 @@
 
           <div :class="$style['detail-content']">
             <span :class="$style['content-left']">
-              損益
+              损益
             </span>
             <div :class="$style['content-right']">
               {{ caculateList.sub_profit }}
@@ -97,6 +103,10 @@
           </template>
         </div>
       </div>
+    </div>
+
+    <div v-if="immediateData.length === 0" :class="$style['no-data']">
+      暂时没有可领取的返利
     </div>
 
     <div :class="$style['rebate-manual-title']" @click="isShowTip = !isShowTip">
@@ -172,6 +182,11 @@ export default {
       siteConfig: "getSiteConfig",
       memInfo: "getMemInfo"
     }),
+    $style() {
+      return (
+        this[`$style_${this.siteConfig.MOBILE_WEB_TPL}`] || this.$style_porn1
+      );
+    },
     isShowPopup: {
       get() {
         return this.togglePopup;
@@ -249,6 +264,7 @@ export default {
         params: { lang: "zh-cn", type }
       }).then(response => {
         this.isShowPopup = true;
+        this.immediateData = [];
         if (response.status === "000") {
           this.amountResult = response.data.dispatched_amount;
         }
@@ -258,4 +274,5 @@ export default {
 };
 </script>
 
-<style lang="scss" src="./css/index.scss" module></style>
+<style lang="scss" src="./css/porn1.index.scss" module="$style_porn1"></style>
+<style lang="scss" src="./css/sg1.index.scss" module="$style_sg1"></style>

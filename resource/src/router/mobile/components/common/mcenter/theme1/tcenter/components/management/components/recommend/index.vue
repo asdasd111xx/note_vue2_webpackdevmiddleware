@@ -146,9 +146,7 @@
               height="25"
             />
             <div :class="$style['captchaText-refresh']" @click="getCaptcha">
-              <img
-                :src="'/static/image/porn1/common/ic_verification_reform.png'"
-              />
+              <img :src="'/static/image/common/ic_verification_reform.png'" />
             </div>
           </div>
         </div>
@@ -162,11 +160,13 @@
       </div>
     </transition>
     <!-- 訊息 -->
-    <message v-if="msg" @close="msg = ''">
-      <div slot="msg">
-        {{ msg }}
-      </div>
-    </message>
+    <template v-if="siteConfig.MOBILE_WEB_TPL !== 'sg1'">
+      <message v-if="msg" @close="msg = ''">
+        <div slot="msg">
+          {{ msg }}
+        </div>
+      </message>
+    </template>
     <!-- 連結複製提示與 QR Code -->
     <popup
       v-if="isPopup"
@@ -195,7 +195,7 @@ export default {
     message,
     slideVerification,
     puzzleVerification,
-    popupVerification,
+    popupVerification
   },
   mixins: [friendsRecommend, promoteFunction],
   data() {
@@ -203,35 +203,35 @@ export default {
       texts: {
         username: {
           placeholder: "S_USERNAME_ERROR",
-          error: "S_USERNAME_ERROR",
+          error: "S_USERNAME_ERROR"
         },
         // 密碼
         password: {
           placeholder: "S_PASSWORD_ERROR",
-          error: "S_PASSWORD_ERROR",
+          error: "S_PASSWORD_ERROR"
         },
         // 確認密碼
         confirm_password: {
           placeholder: "S_PWD_CONFIRM",
-          error: "S_JM_PASSWD_CONFIRM_ERROR",
+          error: "S_JM_PASSWD_CONFIRM_ERROR"
         },
         // 會員姓名
         name: {
           placeholder: "S_REGISTER_TIPS",
-          error: "S_NO_SYMBOL_DIGIT_CHEN",
-        },
+          error: "S_NO_SYMBOL_DIGIT_CHEN"
+        }
       },
       puzzleData: null,
       isGetCaptcha: false, // 重新取得驗證碼
       captchaImg: "",
-      toggleCaptcha: false,
+      toggleCaptcha: false
     };
   },
   computed: {
     ...mapGetters({
       memInfo: "getMemInfo",
       siteConfig: "getSiteConfig",
-      isBackEnd: "getIsBackEnd",
+      isBackEnd: "getIsBackEnd"
     }),
     puzzleObj: {
       get() {
@@ -239,7 +239,7 @@ export default {
       },
       set(value) {
         this.puzzleData = value;
-      },
+      }
     },
     $style() {
       const style =
@@ -252,7 +252,7 @@ export default {
       },
       set(value) {
         return (this.toggleCaptcha = value);
-      },
+      }
     },
     captchaData: {
       get() {
@@ -260,8 +260,8 @@ export default {
       },
       set(value) {
         return (this.allValue["captcha"] = value);
-      },
-    },
+      }
+    }
   },
   created() {
     this.getCaptcha();
@@ -281,13 +281,13 @@ export default {
         method: "post",
         url: this.siteConfig.BBOS_DOMIAN + "/Captcha",
         reqHeaders: {
-          Vendor: this.memInfo.user.domain,
+          Vendor: this.memInfo.user.domain
         },
         params: {
           lang: "zh-cn",
-          format: "png",
-        },
-      }).then((res) => {
+          format: "png"
+        }
+      }).then(res => {
         if (res.data && res.data.data) {
           this.captchaImg = res.data.data;
           this.aid = res.data.cookie.aid;
@@ -315,8 +315,8 @@ export default {
     },
     handleSend() {
       this.onSubmit();
-    },
-  },
+    }
+  }
 };
 </script>
 

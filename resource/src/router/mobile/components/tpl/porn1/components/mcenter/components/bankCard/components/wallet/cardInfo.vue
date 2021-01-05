@@ -47,7 +47,7 @@
       >
         <div :class="$style['no-bankcard']">
           <img
-            :src="`/static/image/${themeTPL}/mcenter/bankCard/no_bankcard.png`"
+            :src="$getCdnPath(`/static/image/common/default/no_bankcard.png`)"
           />
         </div>
       </div>
@@ -198,7 +198,7 @@ export default {
     },
     setPageStatus: {
       type: Function,
-      default: () => { }
+      default: () => {}
     },
     showDetail: {
       type: Boolean,

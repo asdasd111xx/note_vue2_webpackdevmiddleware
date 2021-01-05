@@ -18,7 +18,7 @@
           </div>
           <div :class="[$style['arrow-btn']]">
             <img
-              :src="$getCdnPath(`/static/image/_new/mcenter/ic_arrow_next.png`)"
+              :src="$getCdnPath(`/static/image/common/arrow_next.png`)"
             />
           </div>
         </div>
@@ -49,7 +49,7 @@
               <div :class="[$style['content-img']]">
                 <img
                   :src="
-                    $getCdnPath(`/static/image/_new/mcenter/help/sample_01.png`)
+                    $getCdnPath(`/static/image/sg1/mcenter/help/withdraw.png`)
                   "
                 />
               </div>
@@ -71,7 +71,7 @@
             >
               <img
                 :src="
-                  $getCdnPath(`/static/image/_new/mcenter/ic_arrow_next.png`)
+                  $getCdnPath(`/static/image/common/arrow_next.png`)
                 "
               />
             </div>
@@ -110,7 +110,6 @@ export default {
     if (query.key) {
       this.handleToggleContent(query.key);
     }
-    document.title = this.$text('S_HELP_CENTER', '帮助中心')
   },
   computed: {
     ...mapGetters({
