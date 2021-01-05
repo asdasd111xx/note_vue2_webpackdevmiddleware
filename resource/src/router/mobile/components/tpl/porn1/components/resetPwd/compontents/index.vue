@@ -29,40 +29,26 @@
               v-if="pwdResetInfo[item].key === 'userName'"
               :id="item"
               v-model="pwdResetInfo[item].value"
-              @blur="verification(item, pwdResetInfo[item].value)"
+              @input="verification(item, $event.target.value)"
               type="text"
               :placeholder="pwdResetInfo[item].placeholder"
               :maxlength="pwdResetInfo[item].maxlength"
               :minlength="pwdResetInfo[item].minlength"
-              @input="
-                pwdResetInfo[item].value = $event.target.value
-                  .toLowerCase()
-                  .replace(' ', '')
-                  .trim()
-                  .replace(/[\W]/g, '')
-              "
             />
             <input
               v-else-if="pwdResetInfo[item].type === 'password'"
               :id="item"
               v-model="pwdResetInfo[item].value"
-              @blur="verification(item, pwdResetInfo[item].value)"
               type="password"
               :placeholder="pwdResetInfo[item].placeholder"
               maxlength="12"
-              @input="
-                pwdResetInfo[item].value = $event.target.value
-                  .toLowerCase()
-                  .replace(' ', '')
-                  .trim()
-                  .replace(/[\W]/g, '')
-              "
+              @input="verification(item, $event.target.value)"
             />
             <input
               v-else
               :id="item"
               v-model="pwdResetInfo[item].value"
-              @blur="verification(item, pwdResetInfo[item].value)"
+              @input="verification(item, $event.target.value)"
               type="text"
               :placeholder="pwdResetInfo[item].placeholder"
               :maxlength="pwdResetInfo[item].maxlength"
@@ -100,6 +86,7 @@
         </div>
       </form>
     </div>
+    <page-loading :is-show="isLoading" />
   </div>
 </template>
 
@@ -111,7 +98,12 @@ import member from "@/api/member";
 import agent from "@/api/agent";
 
 export default {
-  components: {},
+  components: {
+    pageLoading: () =>
+      import(
+        /* webpackChunkName: 'pageLoading' */ "@/router/mobile/components/common/pageLoading"
+      )
+  },
   data() {
     return {
       errMsg: "",
@@ -182,7 +174,7 @@ export default {
         }
       },
       isShowPwd: false,
-      isSubmit: false
+      isLoading: false
     };
   },
   computed: {
@@ -201,12 +193,14 @@ export default {
         onClick: () => {
           this.$router.back();
         },
-        title: this.isResetPW
-          ? this.$text("S_PASSWORD_RESET", "重设密码")
-          : this.$text("S_CHANGE_PASSWD", "修改密码")
+        title:
+          this.isResetPW || this.memInfo.user.password_reset
+            ? this.$text("S_PASSWORD_RESET", "重设密码")
+            : this.$text("S_CHANGE_PASSWD", "修改密码")
       };
     },
     isResetPW() {
+      // 信箱重設密碼
       return this.$route.query.page === "pwdreset";
     },
     submitActive() {
@@ -238,6 +232,11 @@ export default {
       this.isShowPwd = !this.isShowPwd;
     },
     verification(id, value) {
+      if (id !== "email") {
+        this.pwdResetInfo[id].value = value.replace(/[\W]/g, "");
+      }
+      this.pwdResetInfo[id].value = value.replace(" ", "").trim();
+
       const data = this.pwdResetInfo[id];
       const re = new RegExp(data.regExp);
       const msg = this.$t(data.errorMsg);
@@ -260,11 +259,11 @@ export default {
       }
     },
     pwdModifySubmit() {
-      if (!this.submitActive || this.isSubmit) return;
-      this.isSubmit = true;
+      if (!this.submitActive || this.isLoading) return;
+      this.isLoading = true;
       setTimeout(() => {
-        this.isSubmit = false;
-      }, 1500);
+        this.isLoading = false;
+      }, 2000);
 
       const pwdInfo = {
         old_password: this.pwdResetInfo.pwd.value,
@@ -288,16 +287,18 @@ export default {
         mcenter.accountPassword({
           params: pwdInfo,
           success: () => {
-            this.actionSetGlobalMessage({ msg: this.$t("S_EDIT_SUCCESS") });
-            setTimeout(() => {
-              if (this.memInfo.user.password_reset) {
-                this.actionSetUserdata(true).then(() => {
-                  this.$router.push("/mobile");
-                });
-                return;
+            this.actionSetGlobalMessage({
+              msg: this.$t("S_EDIT_SUCCESS"),
+              cb: () => {
+                if (this.memInfo.user.password_reset) {
+                  this.actionSetUserdata(true).then(() => {
+                    this.$router.push("/mobile");
+                  });
+                  return;
+                }
+                this.$router.push("/mobile/mcenter/setting");
               }
-              this.$router.push("/mobile/mcenter/setting");
-            }, 2000);
+            });
           },
           fail: res => {
             this.errMsg = `${res.data.msg}`;
@@ -311,8 +312,8 @@ export default {
       const pwdInfo = {
         username: this.pwdResetInfo.userName.value,
         email: this.pwdResetInfo.email.value,
-        new_password: this.pwdResetInfo.newPwd.value,
-        confirm_password: this.pwdResetInfo.confNewPwd.value,
+        new_password: this.pwdResetInfo.newPwd.value.toLowerCase(),
+        confirm_password: this.pwdResetInfo.confNewPwd.value.toLowerCase(),
         keyring: this.$route.query.kr
       };
       if (this.$route.query.type === "agent") {

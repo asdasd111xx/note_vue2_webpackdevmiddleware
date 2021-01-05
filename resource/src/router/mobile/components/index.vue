@@ -77,7 +77,7 @@ export default {
     }
 
     if (this.loginStatus && this.memInfo.user.password_reset) {
-      this.$router.push("/mobile/resetPwd?page=pwdreset");
+      this.$router.push("/mobile/resetPwd");
     }
   },
   methods: {
