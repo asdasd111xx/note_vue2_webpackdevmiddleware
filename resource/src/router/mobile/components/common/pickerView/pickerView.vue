@@ -15,7 +15,8 @@
 
         <div :class="$style['content']">
           <div
-            v-for="item in renderList"
+            v-for="(item, index) in renderList"
+            :key="index"
             :class="$style['cell']"
             @click="handleClickItem(item)"
           >

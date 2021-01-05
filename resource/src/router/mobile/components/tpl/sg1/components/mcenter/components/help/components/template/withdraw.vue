@@ -110,7 +110,6 @@ export default {
     if (query.key) {
       this.handleToggleContent(query.key);
     }
-    document.title = this.$text('S_HELP_CENTER', '帮助中心')
   },
   computed: {
     ...mapGetters({

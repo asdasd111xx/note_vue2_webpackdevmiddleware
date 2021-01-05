@@ -1,48 +1,5 @@
 <template>
   <div :class="['clearfix']">
-    <!-- 億元：自動免轉 -->
-    <template v-if="['ey1'].includes(themeTPL)">
-      <div v-if="isReceiveAuto" :class="[$style['balance-wrap'], 'clearfix']">
-        <div :class="$style['balance-total-icon']">
-          <img
-            :src="
-              $getCdnPath(
-                `/static/image/common/mcenter/wallet/ic_autotransfer.png`
-              )
-            "
-          />
-        </div>
-
-        <div :class="$style['balance-tip-wrap']">
-          {{ $text("S_AUTO_FREE_TRANSFER", "自动免转") }}
-          <span :class="$style['balance-auto-tip']"
-            >({{
-              $text("S_AUTOSWTICH_HINT_GAME", "开启后余额自动转入游戏场馆")
-            }})</span
-          >
-        </div>
-
-        <div :class="`ui fitted toggle checkbox field-checkbox ${themeTPL}`">
-          <input
-            :checked="isAutotransfer"
-            type="checkbox"
-            @click="
-              () => {
-                if (isReceiveAuto) {
-                  if (isAutotransfer) {
-                    closeAutotransfer();
-                  } else {
-                    enableAutotransfer();
-                  }
-                }
-              }
-            "
-          />
-          <label />
-        </div>
-      </div>
-    </template>
-
     <div :class="[$style['balance-item-wrap'], 'clearfix']">
       <div
         v-if="bonus"
@@ -165,7 +122,38 @@
         </div>
       </template>
     </div>
+    <!-- 億元：自動免轉 -->
+    <template v-if="['ey1'].includes(themeTPL)">
+      <div v-if="isReceiveAuto" :class="[$style['balance-wrap'], 'clearfix']">
+        <div :class="$style['balance-tip-wrap']">
+          {{ $text("S_AUTO_FREE_TRANSFER", "自动免转") }}
+          <span :class="$style['balance-auto-tip']"
+            >({{
+              $text("S_AUTOSWTICH_HINT_GAME", "开启后余额自动转入游戏场馆")
+            }})</span
+          >
+        </div>
 
+        <div :class="`ui fitted toggle checkbox field-checkbox ${themeTPL}`">
+          <input
+            :checked="isAutotransfer"
+            type="checkbox"
+            @click="
+              () => {
+                if (isReceiveAuto) {
+                  if (isAutotransfer) {
+                    closeAutotransfer();
+                  } else {
+                    enableAutotransfer();
+                  }
+                }
+              }
+            "
+          />
+          <label />
+        </div>
+      </div>
+    </template>
     <!-- 鴨博：自動免轉 -->
     <template v-if="['porn1', 'sg1'].includes(themeTPL)">
       <div v-if="isReceiveAuto" :class="[$style['balance-wrap'], 'clearfix']">

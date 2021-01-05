@@ -45,7 +45,7 @@ export default {
       isDisableDepositInput: false,
       walletData: {
         CGPay: {
-          balance: "",
+          balance: "", // 值由 api 回來之後再更新，配合 Watch
           method: 0,
           password: "",
           placeholder: "请输入CGPay支付密码"
@@ -1264,6 +1264,7 @@ export default {
       })
         .then(response => {
           const { result, ret } = response.data;
+
           if (!response || result !== "ok") {
             this.walletData["CGPay"].balance = "--";
             return;
@@ -1273,6 +1274,8 @@ export default {
           // this.walletData["CGPay"].balance = "--";
         })
         .catch(error => {
+          this.walletData["CGPay"].balance = "--";
+
           this.actionSetGlobalMessage({
             msg: error.response.data.msg,
             code: error.response.data.code

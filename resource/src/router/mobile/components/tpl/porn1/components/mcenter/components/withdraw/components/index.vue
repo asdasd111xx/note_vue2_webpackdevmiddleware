@@ -2,9 +2,7 @@
   <div>
     <balance-tran :class="[$style['balance-tran-container'], 'clearfix']">
       <!-- 個別餘額 -->
-      <template
-        scope="{ balanceTran, enableAutotransfer, closeAutotransfer, setTranOut, setTranIn, setMoney, balanceTransfer, balanceBack, getDefaultTran }"
-      >
+      <template scope="{ balanceTran }">
         <div :class="['clearfix']">
           <!-- 紅利彩金 -->
           <div
@@ -174,7 +172,8 @@
         <!-- Question: 如果強制使用銀行卡出款，是否數字貨幣卡片 allow 狀態會為 false ? -->
         <!-- disable 的狀態需要與 RD5 請示 -->
         <div
-          v-for="item in allWithdrawAccount"
+          v-for="(item, index) in allWithdrawAccount"
+          :key="index + '-' + item.id"
           :class="[
             $style['bank-card-cell'],
             {
@@ -259,7 +258,8 @@
 
         <!-- 列出所有帳號-->
         <div
-          v-for="item in allWithdrawAccount"
+          v-for="(item, index) in allWithdrawAccount"
+          :key="index + '-' + item.id"
           :class="[
             $style['bank-card-cell'],
             {
@@ -495,12 +495,15 @@
 
     <!-- Tips -->
     <div :class="$style['tips']">
+      <!-- 已綁定 + 尚未被禁用 + 允許支付(allow 為 true) -->
       <div v-if="allWithdrawAccount && allWithdrawAccount.length > 0">
         为了方便您快速提现，请先将所有场馆钱包金额回收至中心钱包<br />
         可提现金额会扣除未兑现红利总计
       </div>
 
-      <div v-else>请先绑定一张银行卡，用于收款</div>
+      <div v-else>
+        {{ hasBindingBankCard ? "" : "请先绑定一张银行卡，用于收款" }}
+      </div>
     </div>
 
     <!-- 流水檢查 -->
@@ -560,7 +563,7 @@
       <template v-if="showPopStatus.type === 'currency'">
         <withdraw-currency
           :type="'withdraw-currency'"
-          :title="'CGPay提现币别'"
+          :title="'选择转出货币'"
           :render-list="currencyList"
           :current-obj="withdrawCurrency"
           :item-func="setWithdrawCurrency"
@@ -806,7 +809,8 @@ export default {
       memCurrency: "getMemCurrency",
       siteConfig: "getSiteConfig",
       memInfo: "getMemInfo",
-      webInfo: "getWebInfo"
+      webInfo: "getWebInfo",
+      hasBindingBankCard: "getHasBank"
     }),
     themeTPL() {
       return this.siteConfig.MOBILE_WEB_TPL;
