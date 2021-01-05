@@ -30,6 +30,7 @@
 
 <script>
 import { mapGetters } from "vuex";
+import goLangApiRequest from "@/api/goLangApiRequest";
 export default {
   data() {
     return {
