@@ -164,7 +164,7 @@ export default {
   computed: {
     ...mapGetters({
       loginStatus: "getLoginStatus",
-      favoriteGame: "getFavoriteGame",
+      favoriteGame: "getFavoriteGame"
     }),
     vendor() {
       return this.$route.params.vendor === "all"
@@ -389,8 +389,8 @@ export default {
       this.showInfinite = false;
       this.isGameDataReceive = false;
       this.gameData = [];
-
-      if (this.paramsData.label === "favorite") {
+      //非搜尋頁面才篩選“最愛”
+      if (this.paramsData.label === "favorite" && !this.isShowSearch) {
         setTimeout(() => {
           this.gameData = this.favoriteData;
         }, 300);
