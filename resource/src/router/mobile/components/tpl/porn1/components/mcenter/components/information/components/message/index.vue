@@ -90,10 +90,10 @@
           { [$style['edit-mode']]: isEditing },
           'clearfix'
         ]"
-        @click="onClick(message)"
       >
         <div
           v-if="isEditing"
+          @click="onClick(message)"
           :class="[
             $style['icon-edit'],
             { [$style.active]: selectMessage.includes(message.id) }
