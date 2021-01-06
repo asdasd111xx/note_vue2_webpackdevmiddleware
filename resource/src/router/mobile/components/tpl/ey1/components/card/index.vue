@@ -30,7 +30,9 @@ export default {
     }),
     headerConfig() {
       let vendor = this.$route.params.vendor;
-      const target = this.memInfo.vendors.find(item => item.vendor === vendor);
+      const target = this.memInfo.vendors.find(
+        item => item.vendor === vendor && item.kind === 5
+      );
       return {
         prev: true,
         title: target.alias || "",
