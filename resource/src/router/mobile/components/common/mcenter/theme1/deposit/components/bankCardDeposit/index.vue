@@ -33,7 +33,7 @@
       :class="$style['deposit-edit-wrap']"
     >
       <template v-if="Object.keys(curModeGroup).length > 0">
-        <div v-if="!curModeGroup.uri" :class="$style['bank-card-wrap']">
+        <div :class="$style['bank-card-wrap']">
           <!-- 支付方式 -->
           <div :class="[$style['feature-wrap'], 'clearfix']">
             <div :class="$style['feature-title']">支付方式</div>
@@ -137,18 +137,14 @@
           </div>
 
           <!-- 選擇銀行 or 選擇點卡 -->
-          <!-- To Do: payment_type_id === 5 就顯示 -->
           <div
-            v-if="
-              (curPayInfo.banks && curPayInfo.banks.length > 0) ||
-                (yourBankData.length > 0 && curPayInfo.payment_type_id === 5)
-            "
+            v-if="allBanks && allBanks.length > 0"
             :class="[
               $style['feature-wrap'],
               $style['select-card-wrap'],
               'clearfix'
             ]"
-            @click="changeType('chagneBank'), (isShowPop = true)"
+            @click="changeType('changeBank'), (isShowPop = true)"
           >
             <span :class="$style['select-bank-title']"
               >{{
@@ -161,7 +157,7 @@
             </span>
 
             <div :class="$style['select-bank-item']">
-              {{ isSelectValue }}
+              {{ curSelectedBank.label }}
             </div>
 
             <img
@@ -184,14 +180,14 @@
 
                 <ul :class="$style['pop-list']">
                   <li
-                    v-for="item in paySelectData['chagneBank'].allData"
+                    v-for="item in paySelectData['changeBank'].allData"
                     :key="item.selectId"
                     @click.stop="changeSelectValue(item.value)"
                   >
                     <img v-lazy="getImg(item)" />
                     {{ item.label }}
                     <icon
-                      v-if="item.value === selectedBank.value"
+                      v-if="item.value === curSelectedBank.value"
                       :class="$style['select-active']"
                       name="check"
                     />
@@ -989,41 +985,7 @@
             <!-- eslint-enable vue/no-v-html -->
           </div>
         </div>
-
-        <!-- 第三方存款 -->
-        <div v-else :class="$style['bank-card-wrap']">
-          <!-- 支付方式 -->
-          <div :class="[$style['feature-wrap'], 'clearfix']">
-            <p :class="$style['bank-card-title']">
-              {{ $text("S_SELECT_PAY_MODE", "请选择支付方式") }}
-            </p>
-            <div
-              :class="$style['pay-mode-item']"
-              @click="changeType('payMethod')"
-            >
-              <span :class="$style['pay-main-title']">{{
-                curModeGroup.alias
-              }}</span>
-            </div>
-          </div>
-          <div
-            v-if="isBlockChecked"
-            :class="$style['pay-button']"
-            title="立即充值"
-            @click="clickSubmit"
-          >
-            立即充值
-          </div>
-        </div>
       </template>
-
-      <select-box
-        v-if="isSelectShow"
-        :select-data="selectBoxData"
-        :now-select-cur.sync="nowSelectData"
-        :close-fuc="isShowSelect"
-        :title="paySelectData[paySelectType].selectTitle"
-      />
     </div>
 
     <deposit-info
@@ -1112,8 +1074,6 @@ export default {
       import(
         /* webpackChunkName: 'eleLoading' */ "@/router/web/components/tpl/common/element/loading/circle"
       ),
-    selectBox: () =>
-      import(/* webpackChunkName: 'selectBox' */ "../common/selectBox"),
     Swiper,
     SwiperSlide,
     DatePicker,
@@ -1132,13 +1092,11 @@ export default {
   data() {
     return {
       submitStatus: "stepOne",
-      isSelectShow: false,
       paySelectType: "",
       categoryOptions: {
         slidesPerView: "auto"
       },
       initHeaderSetting: {},
-      isSelectValue: "",
       tagTrans: { 2: "general", 3: "recommend", 4: "speed" },
 
       nameCheckFail: false,
@@ -1172,6 +1130,9 @@ export default {
     };
   },
   watch: {
+    curModeGroup(value) {
+      console.log(value);
+    },
     //   channel
     passRoad() {
       console.log("all passRoad", this.passRoad);
@@ -1195,26 +1156,19 @@ export default {
 
       if (
         this.curPayInfo.banks.length === 1 &&
-        this.paySelectData["chagneBank"] &&
-        this.paySelectData["chagneBank"].allData
+        this.paySelectData["changeBank"] &&
+        this.paySelectData["changeBank"].allData
       ) {
         this.checkSuccess = true;
-        this.paySelectType = "chagneBank";
+        this.paySelectType = "changeBank";
         this.changeSelectValue(
-          this.paySelectData["chagneBank"].allData[0].value
+          this.paySelectData["changeBank"].allData[0].value
         );
       }
 
       // 選到 CGPay 時，取得 CGPay balance 的 func
       if (this.isSelectBindWallet(16)) {
         this.getCGPayBalance();
-      }
-    },
-    // 選擇銀行的值
-    isSelectValue(value) {
-      if (value) {
-        this.isDisableDepositInput = false;
-        this.checkOrderData();
       }
     },
     noticeData() {
@@ -1291,15 +1245,15 @@ export default {
             selectId: info.id
           }))
         },
-        chagneBank: {
+        changeBank: {
           selectTitle: this.$text("S_CHANGE_BANK", "请选择支付银行"),
           curInfo: {
-            ...this.bankSelectValue,
+            ...this.curSelectedBank,
             selectId:
               this.allBanks.length > 0
-                ? this.bankSelectValue.value || this.allBanks[0].value
+                ? this.curSelectedBank.value || this.allBanks[0].value
                 : "",
-            objKey: "chagneBank"
+            objKey: "changeBank"
           },
           allData: this.allBanks.map(info => ({
             ...info,
@@ -1316,13 +1270,12 @@ export default {
       set(value) {
         if (this.paySelectType === "payMethod") {
           this.changePayMode(value);
-          this.bankSelectValue = this.allBanks[0] || {};
+          this.curSelectedBank = this.allBanks[0] || {};
           return;
         }
 
-        if (this.paySelectType === "chagneBank") {
-          this.isSelectValue = value.label;
-          this.bankSelectValue = value;
+        if (this.paySelectType === "changeBank") {
+          this.curSelectedBank = value;
           return;
         }
 
@@ -1344,15 +1297,12 @@ export default {
         if (value === "stepOne") {
           this.$emit("update:headerSetting", this.initHeaderSetting);
           this.resetStatus();
-          this.getPayGroup().then(() => {
-            this.defaultCurPayBank();
-          });
+          this.getPayGroup();
         }
 
         this.submitStatus = value;
         this.moneyValue = "";
         this.isErrorMoney = false;
-        this.isSelectShow = false;
       }
     },
     allInputData() {
@@ -1535,12 +1485,9 @@ export default {
   },
   created() {
     this.initHeaderSetting = this.headerSetting;
-    this.getPayGroup().then(() => {
-      this.defaultCurPayBank();
-    });
+    this.getPayGroup();
     this.checkEntryBlockStatus();
     this.actionSetRechargeConfig();
-
   },
   destroyed() {
     this.resetTimerStatus();
@@ -1631,16 +1578,7 @@ export default {
       this.checkEntryBlockStatus();
       this.changeMode(listItem);
 
-      // 進來充值頁面，沒有 bankSelectValue 的預設值才觸發，再切換其它類別不再觸發
-      if (Object.keys(this.selectedBank).length === 0) {
-        this.bankSelectValue = this.allBanks[0] || {};
-      }
-
-      // 銀行轉帳 payment_type_id === 5，將您的銀行，預設成當前選擇的支付銀行
-      if (
-        this.yourBankData.length > 0 &&
-        this.curPayInfo.payment_type_id === 5
-      ) {
+      if (this.allBanks && this.allBanks.length > 0) {
         this.defaultCurPayBank();
       }
     },
@@ -1649,23 +1587,7 @@ export default {
      * @method changeType
      */
     changeType(payType) {
-      if (payType === "payMethod") {
-        this.isShowSelect(true);
-      }
       this.paySelectType = payType;
-    },
-    /**
-     * 是否顯示選擇框
-     * @method isShowSelect
-     * @param {Boolean} show - 是否顯示
-     */
-    isShowSelect(show = "") {
-      if (show !== "") {
-        this.isSelectShow = show;
-        return;
-      }
-
-      this.isSelectShow = !this.isSelectShow;
     },
     clickSubmit() {
       // 代客充值
@@ -1826,37 +1748,34 @@ export default {
     // 代客充值
     goToValetDeposit() {
       this.closePopup();
-      let isPWA =
-        getCookie("platform") === "G" ||
-        window.location.host === "yaboxxxapp01.com";
+      // let isPWA =
+      //   getCookie("platform") === "G" ||
+      //   window.location.host === "yaboxxxapp01.com";
 
-      let newWindow = "";
-      if (isPWA) {
-        newWindow = window.open("", "", "_blank", true);
-      }
+      // let newWindow = "";
+      // if (isPWA) {
+      //   newWindow = window.open("", "", "_blank", true);
+      // }
 
-      const newWindowHref = uri => {
-        try {
-          newWindow.location.href = uri;
-        } catch (e) {
-          console.log(e);
-          console.log(newWindow);
-          console.log(uri);
-        }
-      };
+      // const newWindowHref = uri => {
+      //   try {
+      //     newWindow.location.href = uri;
+      //   } catch (e) {
+      //     console.log(e);
+      //     console.log(newWindow);
+      //     console.log(uri);
+      //   }
+      // };
 
       // 前往代客充值
       if (
         this.entryBlockStatusData.has_csr &&
         this.entryBlockStatusData.external_url
       ) {
-        if (this.isWebView) {
-          window.location.href = this.entryBlockStatusData.external_url;
-          return;
-        } else if (isPWA) {
-          newWindowHref(this.entryBlockStatusData.external_url);
-          return;
-        }
+        // if (isPWA) {
+        //   newWindowHref(this.entryBlockStatusData.external_url);
+        //   return;
+        // }
 
         window.open(this.entryBlockStatusData.external_url);
         return;
