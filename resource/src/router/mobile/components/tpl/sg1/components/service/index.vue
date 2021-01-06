@@ -98,7 +98,7 @@
             <img
               :src="
                 $getCdnPath(
-                  '/static/image/sg1/service/popup/popup_ic_close.png'
+                  '/static/image/common/service/popup/popup_ic_close.png'
                 )
               "
               alt="close"
@@ -554,7 +554,7 @@ export default {
         top: 50%;
         left: 20px;
         transform: translateY(-50%);
-        background: url("/static/image/sg1/service/popup/popup_ic_search.png")
+        background: url("/static/image/common/service/popup/popup_ic_search.png")
           no-repeat;
         width: 12px;
         height: 12px;
