@@ -99,7 +99,7 @@ export default {
             }
           })
           .catch(error => {
-            this.actionSetGlobalMessage({ msg: error.data.msg });
+            this.actionSetGlobalMessage({ msg: error.response.data.msg });
             this.avatarSrc = this.$getCdnPath(
               `/static/image/common/mcenter/default/avatar_${imgSrcIndex}.png`
             );

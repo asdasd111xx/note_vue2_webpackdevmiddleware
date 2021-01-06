@@ -151,32 +151,37 @@ export default {
           bind_type: queryType ? queryType : this.bindType,
           wallet_gateway_id: id
         }
-      }).then(res => {
-        const { result, ret } = res.data;
-        if (result !== "ok") {
-          this.actionSetGlobalMessage({ msg: res.data.msg });
+      })
+        .then(res => {
+          const { result, ret } = res.data;
+          if (result !== "ok") {
+            this.actionSetGlobalMessage({ msg: res.data.msg });
 
-          setTimeout(() => {
-            this.closePopup();
-          }, 3000);
-          return;
-        }
-
-        this.countdownSec = ret.expire_at;
-        this.qrcodeLink = ret.url;
-
-        if (this.countdownSec) {
-          this.timer = setInterval(() => {
-            if (this.countdownSec === 0) {
-              clearInterval(this.timer);
-              this.timer = null;
+            setTimeout(() => {
               this.closePopup();
-              return;
-            }
-            this.countdownSec -= 1;
-          }, 1000);
-        }
-      });
+            }, 3000);
+            return;
+          }
+
+          this.countdownSec = ret.expire_at;
+          this.qrcodeLink = ret.url;
+
+          if (this.countdownSec) {
+            this.timer = setInterval(() => {
+              if (this.countdownSec === 0) {
+                clearInterval(this.timer);
+                this.timer = null;
+                this.closePopup();
+                return;
+              }
+              this.countdownSec -= 1;
+            }, 1000);
+          }
+        })
+        .catch(error => {
+          this.actionSetGlobalMessage({ msg: error.response.data.msg });
+          this.closePopup();
+        });
     },
     openLink(url) {
       window.open(url);
@@ -187,23 +192,6 @@ export default {
       localStorage.setItem("download-item", this.qrcodeLink);
 
       if (this.qrcodeLink) {
-        if (localStorage.getItem("test2")) {
-          let a = document.createElement("a");
-          a.download = "qrcode.gif";
-          a.target = "_parent";
-          a.href = this.qrcodeLink;
-
-          a.style.display = "none";
-          document.body.appendChild(a);
-
-          setTimeout(() => {
-            a.click();
-            document.body.removeChild(a);
-          }, 300);
-
-          return;
-        }
-
         function dataURItoBlob(dataURI) {
           // convert base64 to raw binary data held in a string
           // doesn't handle URLEncoded DataURIs - see SO answer #6850276 for code that does this
@@ -232,28 +220,31 @@ export default {
           return blob;
         }
 
-        let blob = dataURItoBlob(this.qrcodeLink);
-        console.log("blob:", blob);
-        let type = "png";
-        if (blob.type && blob.type.split("/")) {
-          type = blob.type.split("/")[1];
-        }
-
-        saveAs(blob, `qrcode.${type}`);
-        return;
-
         if (this.qrcodeLink.includes("base64")) {
-          //   html2canvas(this.$refs["qrcodeRef"], {
-          //     allowTaint: false,
-          //     useCORS: true
-          //   }).then(canvas => {
-          //     let link = document.createElement("a");
-          //     link.href = canvas.toDataURL("image/png");
-          //     link.setAttribute("download", "qrcode.png");
-          //     link.style.display = "none";
-          //     document.body.appendChild(link);
-          //     link.click();
-          //   });
+          let blob = dataURItoBlob(this.qrcodeLink);
+          console.log("blob:", blob);
+          let type = "png";
+          if (blob.type && blob.type.split("/")) {
+            type = blob.type.split("/")[1];
+          }
+
+          saveAs(blob, `qrcode.${type}`);
+          return;
+        } else {
+          let a = document.createElement("a");
+          a.download = "qrcode.gif";
+          a.target = "_parent";
+          a.href = this.qrcodeLink;
+
+          a.style.display = "none";
+          document.body.appendChild(a);
+
+          setTimeout(() => {
+            a.click();
+            document.body.removeChild(a);
+          }, 300);
+
+          return;
         }
       }
     },
