@@ -38,7 +38,7 @@ export default {
       );
       return {
         prev: true,
-        title: target.alias || "",
+        title: target ? target.alias : "",
         hasSearchBtn: true,
         onClick: () => {
           this.$router.back();

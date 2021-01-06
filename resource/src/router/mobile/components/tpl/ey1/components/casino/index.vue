@@ -34,11 +34,12 @@ export default {
     headerConfig() {
       let vendor = this.$route.params.vendor;
       const target = this.memInfo.vendors.find(
-        item => item.vendor === vendor && item.kind === 5
+        item => item.vendor === vendor && item.kind === 3
       );
+
       return {
         prev: true,
-        title: target.alias || "",
+        title: target ? target.alias : "",
         hasSearchBtn: true,
         onClick: () => {
           this.$router.back();
