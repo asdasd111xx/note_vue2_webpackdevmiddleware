@@ -36,7 +36,7 @@ export default {
       const target = this.memInfo.vendors.find(item => item.vendor === vendor);
       return {
         prev: true,
-        title: target.alias || "",
+        title: target ? target.alias : "",
         hasSearchBtn: true,
         onClick: () => {
           this.$router.back();
