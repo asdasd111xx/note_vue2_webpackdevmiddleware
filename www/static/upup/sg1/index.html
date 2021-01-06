@@ -4,41 +4,48 @@
     <meta charset="utf-8">
     <meta name="description" content="">
     <meta name="keywords" content="">
+    <meta name="google-site-verification" content="_jQyYxS7tZ59syz7teR6YRr4L6ZYjiMbJsJb6ymLPCw">
     <meta name="viewport"
         content="width=device-width, initial-scale=1.0, minimum-scale=1.0, maximum-scale=1.0, user-scalable=no">
     <meta name="apple-mobile-web-app-capable" content="yes">
-    <style>
+    <meta http-equiv="x-dns-prefetch-control" content="on">
+    <style type="text/css">
+        @charset "UTF-8";
+
+        html {
+            line-height: 1.15;
+            font-size: 14px;
+            box-sizing: border-box;
+            position: relative;
+        }
+
+        *,
+        *:before,
+        *:after {
+            box-sizing: inherit;
+        }
+
         body {
-            max-width: 420px;
-            min-width: 0;
             height: 100%;
             width: 100%;
             padding: 0;
             border: none;
             display: block;
+            max-width: 420px;
+            min-width: 0;
             background-color: #f2f2f2;
             margin: 0 auto;
         }
 
-        #main-loading {
-            position: fixed;
-            height: 100%;
-            width: 100%;
-            top: 0;
-            left: 0;
-            z-index: 999;
-        }
+        @media (orientation: landscape) {
 
-        #loading-wrap {
-            margin: 0;
-            position: absolute;
-            top: 50%;
-            left: 50%;
-            -ms-transform: translate(-50%, -50%);
-            transform: translate(-50%, -50%);
+            body,
+            #footer,
+            #header {
+                max-width: 768px !important;
+            }
         }
     </style>
-
     <style type="text/css">
         .container__3Np4I {
             min-width: 320px;
@@ -156,10 +163,9 @@
             display: flex;
             flex-direction: column;
             padding: 14px;
-            background-image: url("/static/image/sg1/service/service_card.png");
+            background-image: url("/static/image/sg1/service/bg_service01.png");
             background-size: auto 100%;
             background-position: top 0 right 0;
-            height: 100%;
             background-repeat: no-repeat;
         }
 
@@ -191,6 +197,13 @@
             margin-top: 20px;
             background-image: -webkit-linear-gradient(16deg, #8ab3e2, #b5d0ef);
             background-image: linear-gradient(74deg, #8ab3e2, #b5d0ef);
+        }
+
+        .info-card2__2DzP7>div:first-child {
+            background: url("/static/image/common/service/bg_service02.png");
+            background-size: auto 100%;
+            background-position: top 0 right 0;
+            background-repeat: no-repeat;
         }
 
         .btn-next__11bbP {
@@ -268,7 +281,7 @@
                 <div class="top-bg__3Y4F5"></div>
                 <div class="service-header__2Tusl">
                     <div class="btn-prev__2sxBt" onclick="window.history.back()"><img
-                            src="/static/image/common/btn_back_white.png?v=08883481.1"></div>
+                            src="/static/image/common/btn_back_white.png?v=09900594.1"></div>
                     <div class="title__15RcB">我的客服</div>
                 </div>
                 <div class="avatar-info-wrap__1We4w">
@@ -277,57 +290,55 @@
                             <span id="username"></span>
                         </span> <span>欢迎来到客服中心</span></div>
                 </div>
-                <div class="info-card__9zCud" onclick="service()">
-                    <div>
-                        <div><img src="/static/image/common/service/ic_service01.png?v=08883481.1">
+                <div class="info-card__9zCud">
+                    <div onclick="service()">
+                        <div><img src="/static/image/common/service/ic_service01.png?v=09900594.1">
                             &nbsp;
                             <span>在线客服1</span></div>
                         <div>Main Customer Support</div>
                         <div>7*24小时专线服务 贴心至上</div>
                     </div>
                     <div class="btn-next__11bbP"><img
-                            src="/static/image/common/service/ic_service_arrow.png?v=08883481.1">
-                    </div>
+                            src="/static/image/sg1/common/ic_arrow_next_white.png?v=09900594.1"></div>
                 </div>
-                <div class="info-card2__2DzP7" onclick="service()">
-                    <div>
-                        <div><img src="/static/image/common/service/ic_service02.png?v=08883481.1">
+                <div class="info-card2__2DzP7">
+                    <div onclick="service()">
+                        <div><img src="/static/image/common/service/ic_service02.png?v=09900594.1">
                             &nbsp;
                             <span>在线客服2</span></div>
                         <div>Reserve Customer Support</div>
                         <div>7*24小时专线服务 贴心至上</div>
                     </div>
                     <div class="btn-next__11bbP"><img
-                            src="/static/image/common/service/ic_service_arrow.png?v=08883481.1">
-                    </div>
+                            src="/static/image/sg1/common/ic_arrow_next_white.png?v=09900594.1"></div>
                 </div>
             </div>
+            <!---->
         </div>
     </div>
+
+    <script>
+        const urlParams = new URLSearchParams(window.location.search);
+        const user = urlParams.get('username') || '';
+        document.getElementById('username').innerText = user || '尊敬的用户';
+
+        function service(target) {
+            let url = 'https://yaboxxxcs.net/chat/text/chat_1A09E4.html?skill=8ae482827375169c017375f1528b2446';
+
+            // if (url && target === 2) {
+            //   url = url.replace('gid=default', 'gid=yb04')
+            //     .replace('gid=yb01', 'gid=yb04');
+            // }
+
+            let w =
+                window.open(
+                    url,
+                    'mobile service',
+                    `width=800, height=800`
+                );
+
+            w.document.title = "在线客服";
+        }
+    </script>
+
 </body>
-
-<script>
-    const urlParams = new URLSearchParams(window.location.search);
-    const user = urlParams.get('username') || '';
-    document.getElementById('username').innerText = user || '尊敬的用户';
-
-    function service(target) {
-        let url = 'https://yaboxxxcs.net/chat/text/chat_1A09E4.html?skill=8ae482827375169c017375f1528b2446';
-
-        // if (url && target === 2) {
-        //   url = url.replace('gid=default', 'gid=yb04')
-        //     .replace('gid=yb01', 'gid=yb04');
-        // }
-
-        let w =
-            window.open(
-                url,
-                'mobile service',
-                `width=800, height=800`
-            );
-
-        w.document.title = "在线客服";
-    }
-</script>
-
-</html>
