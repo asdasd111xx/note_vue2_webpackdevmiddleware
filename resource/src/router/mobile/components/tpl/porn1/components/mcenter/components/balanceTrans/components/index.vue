@@ -105,6 +105,7 @@
         </div>
 
         <div
+          v-if="Object.keys(balanceInfo).length > 2"
           :class="[$style['balance-item'], $style['collapse']]"
           @click="toggleShowMore"
         >
