@@ -15,6 +15,7 @@
 <script>
 import casinoWrap from "@/router/mobile/components/common/casino";
 import mobileContainer from "../common/mobileContainer";
+import { mapGetters } from "vuex";
 
 export default {
   components: {
