@@ -1701,6 +1701,11 @@ export const actionVerificationFormData = (
     case "address":
       val = val.substring(0, 100);
       break;
+
+    case "mail":
+      regex = /[，:;！@#$%^&*?<>()+=`|[\]{}\\"/.~\-_']*/g;
+      val = val.replace(regex, "").substring(0, 20);
+      break;
     // case "USDT-address":
     //   val = val.substring(0, 42);
     //   break;
