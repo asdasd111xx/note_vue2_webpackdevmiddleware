@@ -11,7 +11,16 @@
     <div :class="$style['logo-header']">
       <img :src="$getCdnPath(`/static/image/${themeTPL}/common/logo_b.png`)" />
     </div>
-    <div :class="$style['title']">{{ $t("ROUTER_UPUP_TITLE") }}</div>
+    <div
+      :class="[
+        $style['title'],
+        {
+          [$style['sg1']]: themeTPL === 'sg1'
+        }
+      ]"
+    >
+      {{ $t("ROUTER_UPUP_TITLE") }}
+    </div>
     <div :class="$style['main-img']">
       <img
         :src="$getCdnPath(`/static/image/${themeTPL}/status/pic_maintain.png`)"
