@@ -228,16 +228,21 @@ export default {
       return !this.userLevelObj.bank || !this.userLevelObj.virtual_bank;
     },
     showDetailButton() {
+      const showButton =
+        this.showDetail &&
+        !this.isAudit &&
+        this.memInfo.config.delete_bank_card;
+
       switch (this.currentPage) {
         case "bankCardInfo":
-          return (
-            this.showDetail &&
-            !this.isAudit & this.memInfo.config.delete_bank_card
-          );
+          return showButton;
           break;
 
         case "walletCardInfo":
-          return this.showDetail && !this.isAudit;
+          // 億元因還有「停用」與「移至歷史錢包」的選項，故不在此先判斷 delete_bank_card
+          return ["ey1"].includes(this.themeTPL)
+            ? this.showDetail && !this.isAudit
+            : showButton;
           break;
       }
     }
