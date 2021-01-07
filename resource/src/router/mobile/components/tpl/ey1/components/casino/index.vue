@@ -15,6 +15,7 @@
 <script>
 import casinoWrap from "@/router/mobile/components/common/casino";
 import mobileContainer from "../common/mobileContainer";
+import { mapGetters } from "vuex";
 
 export default {
   components: {
@@ -32,10 +33,13 @@ export default {
     }),
     headerConfig() {
       let vendor = this.$route.params.vendor;
-      const target = this.memInfo.vendors.find(item => item.vendor === vendor);
+      const target = this.memInfo.vendors.find(
+        item => item.vendor === vendor && item.kind === 3
+      );
+
       return {
         prev: true,
-        title: target.alias || "",
+        title: target ? target.alias : "",
         hasSearchBtn: true,
         onClick: () => {
           this.$router.back();

@@ -77,10 +77,12 @@ export default {
       };
 
       // 08/28: 如果有需要判斷本站或第三方，才把註解拿掉
-      // const sort = this.rewardOnlyLocal ? ['today', 'yesterday', 'monthly'] : ['today', 'yesterday', 'expected'];
+      const sort = this.rewardOnlyLocal
+        ? ["today", "yesterday", "monthly"]
+        : ["today", "yesterday", "expected"];
 
       // 因 Android & iOS 寫死，固定回傳第三方資料
-      const sort = ["today", "yesterday", "expected"];
+      // const sort = ["today", "yesterday", "expected"];
 
       return sort.map(key => ({
         key,

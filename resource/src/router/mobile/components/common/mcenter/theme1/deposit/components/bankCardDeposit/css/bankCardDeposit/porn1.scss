@@ -85,24 +85,25 @@
   }
 }
 
+// 支付方式 Item
 .pay-mode-item {
   position: relative;
-  float: left;
+  display: inline-flex;
+  flex-direction: column;
+  justify-content: center;
   width: 23%;
-  margin: 0 1% 5px;
-  padding: 7px 1px 1px;
+  height: 62px;
+  margin: 3px;
   border: 1px solid #eee;
   border-radius: 3px;
   color: #aaa;
   cursor: pointer;
-  position: relative;
-  height: 62px;
+  vertical-align: top;
 
   .pay-active {
-    display: block;
+    position: absolute;
     width: 7px;
     height: 5px;
-    position: absolute;
     right: 1px;
     bottom: 2px;
   }
@@ -114,7 +115,6 @@
   }
 
   .pay-mode-tag {
-    display: block;
     position: absolute;
     top: 0;
     right: 0;
@@ -123,10 +123,9 @@
   }
 
   .pay-mode-img {
-    display: block;
     width: 24px;
     height: 24px;
-    margin: 0 auto;
+    margin: 2.5px auto;
   }
 
   .pay-main-title {
@@ -137,22 +136,26 @@
     text-align: center;
     text-overflow: ellipsis;
     white-space: nowrap;
-  }
-
-  .pay-sub-title {
-    overflow: hidden;
-    height: 12px;
-    line-height: 12px;
-    color: #db6372;
-    font-size: 10px;
-    text-align: center;
-    text-overflow: ellipsis;
-    white-space: nowrap;
 
     &.custom {
       height: auto;
       line-height: normal;
       font-size: 16px;
+      color: #db6372;
+    }
+  }
+
+  .pay-sub-title {
+    overflow: hidden;
+    color: #db6372;
+    line-height: 16px;
+    font-size: 10px;
+    text-align: center;
+    text-overflow: ellipsis;
+    word-break: keep-all;
+
+    &.custom {
+      font-size: 12px;
     }
   }
 }

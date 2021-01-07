@@ -51,7 +51,9 @@
 
         <div :class="$style['btn-next']">
           <img
-            :src="$getCdnPath(`/static/image/ey1/webview/ic_service_arrow.png`)"
+            :src="
+              $getCdnPath(`/static/image/common/service/ic_service_arrow.png`)
+            "
           />
         </div>
       </div>
@@ -75,7 +77,7 @@
             <img
               :src="
                 $getCdnPath(
-                  '/static/image/ey1/service/popup/popup_ic_close.png'
+                  '/static/image/common/service/popup/popup_ic_close.png'
                 )
               "
               alt="close"
@@ -333,7 +335,7 @@ div.container {
     display: flex;
     flex-direction: column;
     padding: 14px;
-    background-image: url("/static/image/ey1/service/bg_service01.png");
+    background-image: url("/static/image/common/service/bg_service01.png");
     background-size: auto 100%;
     background-position: top 0 right 0;
     height: 100%;
@@ -517,7 +519,7 @@ div.container {
         top: 50%;
         left: 20px;
         transform: translateY(-50%);
-        background: url("/static/image/_new/service/popup/popup_ic_search.png")
+        background: url("/static/image/common/service/popup/popup_ic_search.png")
           no-repeat;
         width: 12px;
         height: 12px;

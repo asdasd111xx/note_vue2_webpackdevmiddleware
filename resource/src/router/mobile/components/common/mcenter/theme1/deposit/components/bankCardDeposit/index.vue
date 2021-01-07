@@ -87,16 +87,16 @@
                   </template>
                 </div> -->
 
-                <div :class="$style['pay-sub-title']">
-                  <template
-                    v-if="
-                      ['ey1'].includes(themeTPL) &&
-                        [5, 6].includes(info.payment_type_id)
-                    "
-                  >
+                <template
+                  v-if="
+                    ['ey1'].includes(themeTPL) &&
+                      [5, 6].includes(info.payment_type_id)
+                  "
+                >
+                  <div :class="$style['pay-sub-title']">
                     返利1%无上限
-                  </template>
-                </div>
+                  </div>
+                </template>
 
                 <img
                   v-if="
@@ -115,10 +115,13 @@
                   :class="[$style['pay-mode-item']]"
                   @click="handleCreditTrans"
                 >
-                  <div :class="[$style['pay-sub-title'], $style['custom']]">
+                  <div :class="[$style['pay-main-title'], $style['custom']]">
                     代收代付
                   </div>
-                  <div :class="$style['pay-main-title']" style="color: black">
+                  <div
+                    :class="[$style['pay-sub-title'], $style['custom']]"
+                    style="color: black"
+                  >
                     {{
                       `${
                         Number(rechargeConfig.recharger_offer_percent) !== 0
@@ -126,8 +129,6 @@
                           : "额度转让"
                       }`
                     }}
-                  </div>
-                  <div :class="$style['pay-main-title']" style="color: black">
                     代理分红
                   </div>
                 </div>

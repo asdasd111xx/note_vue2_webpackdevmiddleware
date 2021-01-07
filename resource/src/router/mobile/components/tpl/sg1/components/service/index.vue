@@ -98,7 +98,7 @@
             <img
               :src="
                 $getCdnPath(
-                  '/static/image/sg1/service/popup/popup_ic_close.png'
+                  '/static/image/common/service/popup/popup_ic_close.png'
                 )
               "
               alt="close"
@@ -353,11 +353,9 @@ export default {
     display: flex;
     flex-direction: column;
     padding: 14px;
-    background-image: url("/static/image/sg1/service/service_card.png");
-    background-image: url("/static/image/common/service/bg_service01.png");
+    background-image: url("/static/image/sg1/service/bg_service01.png");
     background-size: auto 100%;
     background-position: top 0 right 0;
-    height: 100%;
     background-repeat: no-repeat;
 
     > div {
@@ -386,8 +384,12 @@ export default {
   margin-top: 20px;
   background-image: -webkit-linear-gradient(16deg, #8ab3e2, #b5d0ef);
   background-image: linear-gradient(74deg, #8ab3e2, #b5d0ef);
+
   > div:first-child {
-    background-image: url("/static/image/common/service/bg_service02.png");
+    background: url("/static/image/common/service/bg_service02.png");
+    background-size: auto 100%;
+    background-position: top 0 right 0;
+    background-repeat: no-repeat;
   }
 }
 
@@ -554,7 +556,7 @@ export default {
         top: 50%;
         left: 20px;
         transform: translateY(-50%);
-        background: url("/static/image/sg1/service/popup/popup_ic_search.png")
+        background: url("/static/image/common/service/popup/popup_ic_search.png")
           no-repeat;
         width: 12px;
         height: 12px;

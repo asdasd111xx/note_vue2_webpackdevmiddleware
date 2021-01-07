@@ -97,7 +97,7 @@ import axios from "axios";
 import find from "lodash/find";
 import pornRequest from "@/api/pornRequest";
 import message from "@/router/mobile/components/common/message";
-import { getEncryptImage } from '@/lib/crypto';
+import { getEncryptImage } from "@/lib/crypto";
 
 export default {
   components: {
@@ -131,8 +131,12 @@ export default {
   },
   computed: {
     defaultImg() {
-      const isYabo = this.source === 'yabo';
-      return this.$getCdnPath(`/static/image/porn1/default/${isYabo ? 'bg_video03_d' : 'bg_video03_1_d@3x'}.png`)
+      const isYabo = this.source === "yabo";
+      return this.$getCdnPath(
+        `/static/image/porn1/default/${
+          isYabo ? "bg_video03_d" : "bg_video03_1_d@3x"
+        }.png`
+      );
     },
     allVideoList() {
       const videoRecommand =
@@ -151,11 +155,11 @@ export default {
       );
       setTimeout(() => {
         videoList.forEach(item => {
-          item.list.forEach((i) => {
+          item.list.forEach(i => {
             getEncryptImage(i);
-          })
-        })
-      }, 300)
+          });
+        });
+      }, 300);
 
       return videoList;
     }
@@ -173,21 +177,25 @@ export default {
       this.getVideoList();
     },
     handleVideo(tag, video) {
-      window.location.replace(`${window.location.pathname}${window.location.search}#${tag}`);
-      this.openVideo('videoPlay', {
+      window.location.replace(
+        `${window.location.pathname}${window.location.search}#${tag}`
+      );
+      this.openVideo("videoPlay", {
         params: { id: video.id },
         query: { source: this.$route.query.source }
-      })
+      });
     },
     handleMore(tag, videoData) {
-      window.location.replace(`${window.location.pathname}${window.location.search}#${tag}`);
-      this.openVideo('videoList', {
+      window.location.replace(
+        `${window.location.pathname}${window.location.search}#${tag}`
+      );
+      this.openVideo("videoList", {
         query: {
           source: this.$route.query.source,
           tagId: +this.videoType.id || 0,
           sortId: +videoData.id || 0
         }
-      })
+      });
     },
     getVideoTag() {
       //   try {
@@ -300,20 +308,24 @@ export default {
         }
       }).then(response => {
         if (response.status !== 200) {
-          this.resetTimer = setTimeout(() => {
-            this.initData();
-            clearTimeout(this.resetTimer);
-            this.resetTimer = null;
-          }, 3000)
+          if (!this.resetTimer) {
+            this.resetTimer = setTimeout(() => {
+              this.initData();
+              clearTimeout(this.resetTimer);
+            }, 3000);
+          }
           return;
         }
 
+        this.resetTimer = null;
         this.videoList = [...response.result];
         this.$nextTick(() => {
           if (window.location.hash) {
-            const hash = Number(window.location.hash.replace('#', '')) || 0;
-            const wrap = document.getElementById('video-lobby-container');
-            const cells = document.getElementsByClassName(this.$style['video-cell']);
+            const hash = Number(window.location.hash.replace("#", "")) || 0;
+            const wrap = document.getElementById("video-lobby-container");
+            const cells = document.getElementsByClassName(
+              this.$style["video-cell"]
+            );
 
             if (wrap && cells && cells[0] && hash > 0) {
               let totalTop = 0;
@@ -324,7 +336,7 @@ export default {
               wrap.scrollTop = 220 + totalTop;
             }
           }
-        })
+        });
       });
     },
     openVideo(name, routerParam) {
@@ -334,7 +346,7 @@ export default {
   beforeDestroy() {
     clearTimeout(this.resetTimer);
     this.resetTimer = null;
-  },
+  }
 };
 </script>
 

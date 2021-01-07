@@ -66,7 +66,7 @@
       <div :class="$style['btn-next']">
         <img
           :src="
-            $getCdnPath(`/static/image/common/webview/ic_service_arrow.png`)
+            $getCdnPath(`/static/image/common/service/ic_service_arrow.png`)
           "
         />
       </div>
@@ -88,7 +88,7 @@
       <div :class="$style['btn-next']">
         <img
           :src="
-            $getCdnPath(`/static/image/common/webview/ic_service_arrow.png`)
+            $getCdnPath(`/static/image/common/service/ic_service_arrow.png`)
           "
         />
       </div>
