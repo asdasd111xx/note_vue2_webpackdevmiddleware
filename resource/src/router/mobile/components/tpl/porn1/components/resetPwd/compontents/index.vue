@@ -217,7 +217,7 @@ export default {
     }
   },
   methods: {
-    ...mapActions(["actionSetGlobalMessage"]),
+    ...mapActions(["actionSetGlobalMessage", "actionVerificationFormData"]),
     toggleEye(key) {
       this.verification(key, this.pwdResetInfo[key].value);
       if (this.isShowPwd) {
@@ -233,9 +233,14 @@ export default {
     },
     verification(id, value) {
       if (id !== "email") {
-        this.pwdResetInfo[id].value = value.replace(/[\W]/g, "");
+        this.actionVerificationFormData({
+          target: "password",
+          value: value
+        }).then(val => {
+          this.pwdResetInfo[id].value = val;
+        });
       }
-      this.pwdResetInfo[id].value = value.replace(" ", "").trim();
+      this.pwdResetInfo[id].value = value.trim();
 
       const data = this.pwdResetInfo[id];
       const re = new RegExp(data.regExp);
