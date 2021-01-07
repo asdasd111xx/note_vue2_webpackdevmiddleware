@@ -276,7 +276,7 @@ export default {
     },
     handleSaveAccont() {
       if (!this.rememberPwd) {
-        localStorage.removeItem("username");
+        // localStorage.removeItem("username");
         localStorage.removeItem("password");
         localStorage.removeItem("rememberPwd");
         return;

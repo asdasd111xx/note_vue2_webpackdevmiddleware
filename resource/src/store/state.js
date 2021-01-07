@@ -1,15 +1,17 @@
-import gameData from '@/config/games';
-import i18n from '@/config/i18n';
+import gameData from "@/config/games";
+import i18n from "@/config/i18n";
 
 export default {
   // 判斷極速版、pwa、webclip
-  isPwa: window.matchMedia('(display-mode: standalone)').matches || window.navigator.standalone,
+  isPwa:
+    window.matchMedia("(display-mode: standalone)").matches ||
+    window.navigator.standalone,
   // Webview介接(客端、廳主端)
   isWebview: false,
   // 後台左側slidebar的寬度
   sidebarWidth: 0,
   // 環境 (會員端/代理客端)
-  env: 'mem',
+  env: "mem",
   vip: {
     enable: false
   },
@@ -23,19 +25,19 @@ export default {
   nowtpl: null,
   curLang: i18n.locale,
   languageIndex: {},
-  slideBar: '',
+  slideBar: "",
   layoutRequested: [],
   isFetching: {
     layout: false
   },
   webInfo: {
-    cdn_domain: '',
-    logo: '',
-    logo_hov: '',
-    flash_switch: 'off',
-    flash_logo: '',
-    style_color: 'dark-grey',
-    txt_style: 'default',
+    cdn_domain: "",
+    logo: "",
+    logo_hov: "",
+    flash_switch: "off",
+    flash_logo: "",
+    style_color: "dark-grey",
+    txt_style: "default",
     pageData: {},
     footer: {},
     special_case: {
@@ -45,16 +47,16 @@ export default {
   // 預覽模式開關
   preview: false,
   // 設定是否透過外面CDN廠商代理
-  cdnRoot: '',
+  cdnRoot: "",
   // ＝＝＝＝＝＝＝＝＝＝＝＝＝＝＝＝＝＝
   //     字型對照表
   // ＝＝＝＝＝＝＝＝＝＝＝＝＝＝＝＝＝＝
   tplTxtStyle: {
-    modern: '思源黑體',
-    yaHei: 'Microsoft YaHei',
-    normal: '新細明體',
-    tradition: '標楷體',
-    default: 'Microsoft JhengHei, 微軟正黑體, arial, helvetica, sans-serif'
+    modern: "思源黑體",
+    yaHei: "Microsoft YaHei",
+    normal: "新細明體",
+    tradition: "標楷體",
+    default: "Microsoft JhengHei, 微軟正黑體, arial, helvetica, sans-serif"
   },
   // ＝＝＝＝＝＝＝＝＝＝＝＝＝＝＝＝＝＝
   //     遊戲資料
@@ -111,9 +113,9 @@ export default {
   //     客端 page
   // ＝＝＝＝＝＝＝＝＝＝＝＝＝＝＝＝＝＝
   // 客端-當前頁
-  nowpage: '',
+  nowpage: "",
   // 客端-電子頁-供應商
-  casinoVendor: 'bbin',
+  casinoVendor: "bbin",
   // 客端-電子頁-API讀取狀態
   casinoLoadingStatus: false,
   // 客端-優惠頁-全部資料
@@ -128,48 +130,48 @@ export default {
   // 會員、代理共用-重設密碼 欄位
   pwdResetInfo: {
     username: {
-      key: 'username',
-      text: 'S_ACCOUNT',
-      type: 'text',
+      key: "username",
+      text: "S_ACCOUNT",
+      type: "text",
       regExp: /^[a-z1-9][a-z0-9]{3,19}$/,
-      errorMsg: 'S_USERNAME_ERROR',
-      defaultErrMsg: '请输入4-20位英文小写、数字，首字不得为数字0'
+      errorMsg: "S_USERNAME_ERROR",
+      defaultErrMsg: "请输入4-20位英文小写、数字，首字不得为数字0"
     },
     email: {
-      key: 'email',
-      text: 'S_E_MAIL',
-      type: 'text',
+      key: "email",
+      text: "S_E_MAIL",
+      type: "text",
       regExp: /^[A-Za-z0-9.\-_]+@[A-Za-z0-9.-]+\.[A-Za-z]+$/,
-      errorMsg: 'S_JM_EMAIL_FORMAT_UNAVAILABLE',
-      defaultErrMsg: 'E-mail 格式不正确'
+      errorMsg: "S_JM_EMAIL_FORMAT_UNAVAILABLE",
+      defaultErrMsg: "E-mail 格式不正确"
     },
     password: {
-      key: 'password',
-      text: 'S_PASSWORD',
-      type: 'password',
+      key: "password",
+      text: "S_PASSWORD",
+      type: "password",
       regExp: /^[a-z0-9._\-!@#$&*+=|]{6,12}$/,
-      errorMsg: 'S_PASSWORD_ERROR',
-      defaultErrMsg: '请输入6-12位字母或数字'
+      errorMsg: "S_PASSWORD_ERROR",
+      defaultErrMsg: "请输入6-12位字母或数字"
     },
     chkPwd: {
-      key: 'chkPwd',
-      text: 'S_PWD_CONFIRM',
-      type: 'password',
-      regExp: '',
-      errorMsg: 'S_JM_PASSWD_CONFIRM_ERROR',
-      defaultErrMsg: '确认密码错误，请重新输入'
+      key: "chkPwd",
+      text: "S_PWD_CONFIRM",
+      type: "password",
+      regExp: "",
+      errorMsg: "S_JM_PASSWD_CONFIRM_ERROR",
+      defaultErrMsg: "确认密码错误，请重新输入"
     }
   },
   // 會員、代理共用-系統時間
-  systemTime: '',
+  systemTime: "",
   // 會員、代理共用-彈出視窗
   pop: {
-    type: '',
-    data: ''
+    type: "",
+    data: ""
   },
   mobileCheck: false,
   newsPopControl: {
-    type: 'mem',
+    type: "mem",
     status: false
   },
   // ＝＝＝＝＝＝＝＝＝＝＝＝＝＝＝＝＝＝
@@ -193,8 +195,7 @@ export default {
     }
   },
   // 會員資訊 v3
-  memInfoV3: {
-  },
+  memInfoV3: {},
   // 會員端-登入狀態
   loginStatus: false,
   // 會員端-跑馬燈
@@ -213,9 +214,9 @@ export default {
   // ＝＝＝＝＝＝＝＝＝＝＝＝＝＝＝＝＝＝
   // 代理資訊
   agentInfo: {
-    memUsername: '',
-    intrLink: '',
-    outLink: '',
+    memUsername: "",
+    intrLink: "",
+    outLink: "",
     msgCount: 0
   },
   // 代理端-登入狀態
@@ -236,97 +237,97 @@ export default {
   // ＝＝＝＝＝＝＝＝＝＝＝＝＝＝＝＝＝＝
   // 會員中心-我的返水-當前頁籤 (返水歷史/實時返水)
   mcenterBankRebate: {
-    type: 'history',
-    interval: 'yesterday'
+    type: "history",
+    interval: "yesterday"
   },
   // 會員中心-左側列表
   mcenterList: [
     {
-      key: 'account',
-      text: 'S_MY_ACCOUNT',
+      key: "account",
+      text: "S_MY_ACCOUNT",
       item: [
         {
-          key: 'accountData',
-          text: 'S_ACCOUNT_DATA',
-          icon: 'envelope'
+          key: "accountData",
+          text: "S_ACCOUNT_DATA",
+          icon: "envelope"
         },
         {
-          key: 'accountBankCard',
-          text: 'S_BIND_BANK',
-          icon: 'money-check-alt'
+          key: "accountBankCard",
+          text: "S_BIND_BANK",
+          icon: "money-check-alt"
         },
         {
-          key: 'accountVip',
-          text: 'VIP',
-          icon: 'crown'
+          key: "accountVip",
+          text: "VIP",
+          icon: "crown"
         }
       ]
     },
     {
-      key: 'bank',
-      text: 'S_PERSONAL_BANK',
+      key: "bank",
+      text: "S_PERSONAL_BANK",
       item: [
         {
-          key: 'deposit',
-          text: 'S_ACCOUNT_DEPOSITE',
-          icon: 'money-bill-wave-alt'
+          key: "deposit",
+          text: "S_ACCOUNT_DEPOSITE",
+          icon: "money-bill-wave-alt"
         },
         {
-          key: 'withdraw',
-          text: 'S_ACCOUNT_WITHDRAW',
-          icon: 'money-bill-wave'
+          key: "withdraw",
+          text: "S_ACCOUNT_WITHDRAW",
+          icon: "money-bill-wave"
         },
         {
-          key: 'bankBalanceTran',
-          text: 'S_TRAN_BALANCE',
-          icon: 'share'
+          key: "bankBalanceTran",
+          text: "S_TRAN_BALANCE",
+          icon: "share"
         },
         {
-          key: 'bonusAccount',
-          text: 'S_BONUS_ACCOUNT',
-          icon: 'coins'
+          key: "bonusAccount",
+          text: "S_BONUS_ACCOUNT",
+          icon: "coins"
         },
         {
-          key: 'bankRebate',
-          text: 'S_MYREBATE',
-          icon: 'donate'
+          key: "bankRebate",
+          text: "S_MYREBATE",
+          icon: "donate"
         },
         {
-          key: 'bankMoneyDetail',
-          text: 'S_FUNDS_DETAILS',
-          icon: 'money-check-alt'
+          key: "bankMoneyDetail",
+          text: "S_FUNDS_DETAILS",
+          icon: "money-check-alt"
         }
       ]
     },
     {
-      key: 'tcenter',
-      text: 'S_TEAM_CENTER',
+      key: "tcenter",
+      text: "S_TEAM_CENTER",
       item: [
         {
-          key: 'management',
-          text: 'S_TEAM_MANAGEMENT',
-          icon: 'users'
+          key: "management",
+          text: "S_TEAM_MANAGEMENT",
+          icon: "users"
         },
         {
-          key: 'gameRecord',
-          text: 'S_GAME_RECORD',
-          icon: 'file-signature'
+          key: "gameRecord",
+          text: "S_GAME_RECORD",
+          icon: "file-signature"
         },
         {
-          key: 'commission',
-          text: 'S_MY_COMMISSION',
-          icon: 'donate'
+          key: "commission",
+          text: "S_MY_COMMISSION",
+          icon: "donate"
         }
       ]
     },
     {
-      key: 'bet',
-      text: 'S_BET_INFO',
+      key: "bet",
+      text: "S_BET_INFO",
       item: [
         {
-          key: 'betRecord',
-          text: 'S_BETHISTORYBTN',
-          icon: 'file-alt'
+          key: "betRecord",
+          text: "S_BETHISTORYBTN",
+          icon: "file-alt"
         }
         // {
         //     key: 'betAmount',
@@ -335,29 +336,29 @@ export default {
       ]
     },
     {
-      key: 'info',
-      text: 'S_MSG_CENTER',
+      key: "info",
+      text: "S_MSG_CENTER",
       item: [
         {
-          key: 'infoMessage',
-          text: 'S_PERSONAL_MESSAGE',
-          icon: 'envelope'
+          key: "infoMessage",
+          text: "S_PERSONAL_MESSAGE",
+          icon: "envelope"
         },
         {
-          key: 'infoPost',
-          text: 'S_HOT_NEWS',
-          icon: 'bullhorn'
+          key: "infoPost",
+          text: "S_HOT_NEWS",
+          icon: "bullhorn"
         },
         {
-          key: 'feedBack',
-          text: 'S_FEEDBACK',
-          icon: 'envelope-open'
+          key: "feedBack",
+          text: "S_FEEDBACK",
+          icon: "envelope-open"
         }
       ]
     }
   ],
   // 會員中心-存款
-  mcenterDeposit: '',
+  mcenterDeposit: "",
   mcenterDepositEmbed: false,
   // ＝＝＝＝＝＝＝＝＝＝＝＝＝＝＝＝＝＝
   //     AGCENTER 代理中心
@@ -365,65 +366,66 @@ export default {
   // 代理中心-左側列表
   agcenterList: [
     {
-      key: 'account',
-      text: 'S_MY_ACCOUNT',
+      key: "account",
+      text: "S_MY_ACCOUNT",
       item: [
         {
-          key: 'accountData',
-          text: 'S_ACCOUNT_DATA'
+          key: "accountData",
+          text: "S_ACCOUNT_DATA"
         },
         {
-          key: 'accountBankCard',
-          text: 'S_BIND_BANK'
+          key: "accountBankCard",
+          text: "S_BIND_BANK"
         }
       ]
     },
     {
-      key: 'finance',
-      text: 'S_FINANCE_CENTER',
+      key: "finance",
+      text: "S_FINANCE_CENTER",
       item: [
         {
-          key: 'financeWithdraw',
-          text: 'S_ACCOUNT_WITHDRAW'
+          key: "financeWithdraw",
+          text: "S_ACCOUNT_WITHDRAW"
         },
         {
-          key: 'financeReward',
-          text: 'S_COMMISSION_DETAILS'
+          key: "financeReward",
+          text: "S_COMMISSION_DETAILS"
         }
       ]
     },
     {
-      key: 'report',
-      text: 'S_REPORT_CENTER',
+      key: "report",
+      text: "S_REPORT_CENTER",
       item: [
         {
-          key: 'reportMember',
-          text: 'S_MEMBER_LIST'
+          key: "reportMember",
+          text: "S_MEMBER_LIST"
         },
         {
-          key: 'reportGameRecord',
-          text: 'S_MEM_GAME_RECORD'
+          key: "reportGameRecord",
+          text: "S_MEM_GAME_RECORD"
         }
       ]
     },
     {
-      key: 'info',
-      text: 'S_MSG_CENTER',
+      key: "info",
+      text: "S_MSG_CENTER",
       item: [
         {
-          key: 'infoMessage',
-          text: 'S_PERSONAL_MESSAGE'
+          key: "infoMessage",
+          text: "S_PERSONAL_MESSAGE"
         },
         {
-          key: 'infoPost',
-          text: 'S_HOT_NEWS'
+          key: "infoPost",
+          text: "S_HOT_NEWS"
         },
         {
-          key: 'feedBack',
-          text: 'S_FEEDBACK'
+          key: "feedBack",
+          text: "S_FEEDBACK"
         }
       ]
-    }],
+    }
+  ],
   // ＝＝＝＝＝＝＝＝＝＝＝＝＝＝＝＝＝＝
   //     推播訊息資料
   // ＝＝＝＝＝＝＝＝＝＝＝＝＝＝＝＝＝＝
@@ -437,14 +439,14 @@ export default {
   // 會員中心-個人資料-手機/姓名/信箱 綁定成功訊息
   mcenterBindMessage: {},
   yaboConfig: {},
-  globalMessage: '',
+  globalMessage: "",
   rechargeConfig: {},
   rechargeBonusConfig: {},
   hasBank: false,
   videoBounsPageStatus: false,
   systemDomain: {},
   pornDoamin: "https://jizzapp.app",
-  promotionLink: '',
+  promotionLink: "",
   webDomain: {},
   BBosDomain: {},
   swagConfig: {},

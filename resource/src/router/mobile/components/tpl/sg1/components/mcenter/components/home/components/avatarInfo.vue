@@ -175,7 +175,7 @@ export default {
 
 .info-wrap {
   height: 70px;
-  padding: 10px 9px;
+  padding: 10px 4px;
   width: 100%;
 
   > div {

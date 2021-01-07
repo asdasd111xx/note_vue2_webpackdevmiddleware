@@ -451,7 +451,7 @@ export default {
   display: block;
   width: 60px;
   height: 28px;
-  border-radius: 12px;
+  border-radius: 18px;
   background-color: #ccc;
   transition: all 0.4s;
 

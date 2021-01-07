@@ -67,9 +67,7 @@
                 />
                 <div :class="$style['captchaText-refresh']" @click="getCaptcha">
                   <img
-                    :src="
-                      '/static/image/common/ic_verification_reform.png'
-                    "
+                    :src="'/static/image/common/ic_verification_reform.png'"
                   />
                 </div>
               </div>
@@ -691,10 +689,10 @@ export default {
     verification(key) {
       const data = this.joinMemInfo[key];
 
-      if (data.isRequired && this.allValue[key] === "") {
-        this.allTip[key] = "请输入6-12位字母或数字";
-        return;
-      }
+      // if (data.isRequired && this.allValue[key] === "") {
+      //   this.allTip[key] = "请输入6-12位字母或数字?";
+      //   return;
+      // }
 
       //if (!this.allValue[key]) {
       //  return;

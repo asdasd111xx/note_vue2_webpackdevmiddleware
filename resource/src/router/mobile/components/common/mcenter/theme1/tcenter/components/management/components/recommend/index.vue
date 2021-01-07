@@ -207,8 +207,8 @@ export default {
         },
         // 密碼
         password: {
-          placeholder: "S_PASSWORD_ERROR",
-          error: "S_PASSWORD_ERROR"
+          placeholder: "S_PASSWORD_ERROR_AGENT",
+          error: "S_PASSWORD_ERROR_AGENT"
         },
         // 確認密碼
         confirm_password: {

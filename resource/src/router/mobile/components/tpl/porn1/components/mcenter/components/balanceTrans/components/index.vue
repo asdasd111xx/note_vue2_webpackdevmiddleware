@@ -158,7 +158,7 @@
       </div>
     </template>
     <!-- 鴨博：自動免轉 -->
-    <template v-if="['porn1', 'sg1'].includes(themeTPL)">
+    <template v-if="['porn1'].includes(themeTPL)">
       <div v-if="isReceiveAuto" :class="[$style['balance-wrap'], 'clearfix']">
         <div :class="$style['balance-tip-wrap']">
           {{ $text("S_AUTO_FREE_TRANSFER", "自动免转") }}
@@ -187,6 +187,59 @@
           />
           <label />
         </div>
+      </div>
+    </template>
+
+    <!-- 絲瓜：自動免轉 -->
+    <template v-if="['sg1'].includes(themeTPL)">
+      <div v-if="isReceiveAuto" :class="[$style['balance-wrap'], 'clearfix']">
+        <div :class="$style['balance-tip-wrap']">
+          {{ $text("S_AUTO_FREE_TRANSFER", "自动免转") }}
+          <span :class="$style['balance-auto-tip']"
+            >({{
+              $text("S_AUTOSWTICH_HINT_GAME", "开启后余额自动转入游戏场馆")
+            }})</span
+          >
+        </div>
+
+        <label
+          :class="[
+            $style['balance-auto-switch'],
+            { [$style.active]: isAutotransfer }
+          ]"
+          @click="
+            () => {
+              if (isReceiveAuto) {
+                if (isAutotransfer) {
+                  closeAutotransfer();
+                } else {
+                  enableAutotransfer();
+                }
+              }
+            }
+          "
+        >
+          <span />
+        </label>
+
+        <!-- <div :class="`ui fitted toggle checkbox field-checkbox ${themeTPL}`">
+          <input
+            :checked="isAutotransfer"
+            type="checkbox"
+            @click="
+              () => {
+                if (isReceiveAuto) {
+                  if (isAutotransfer) {
+                    closeAutotransfer();
+                  } else {
+                    enableAutotransfer();
+                  }
+                }
+              }
+            "
+          />
+          <label />
+        </div> -->
       </div>
     </template>
 
