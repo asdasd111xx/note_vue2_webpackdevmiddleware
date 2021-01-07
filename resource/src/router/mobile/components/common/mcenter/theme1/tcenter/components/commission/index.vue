@@ -191,7 +191,7 @@ export default {
   methods: {
     onClick(page) {
       this.hasSearch = page === "record";
-      this.$router.push(`/mobile/mcenter/tcenter/commission/${page}`);
+      this.$router.replace(`/mobile/mcenter/tcenter/commission/${page}`);
     },
     onInquire() {
       if (this.startTime !== this.endTime) {
