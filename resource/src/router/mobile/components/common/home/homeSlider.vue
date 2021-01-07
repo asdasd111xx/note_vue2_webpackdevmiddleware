@@ -8,14 +8,9 @@
     <swiper-slide v-for="(info, key) in slider" :key="key">
       <div :class="$style['phone-image-wrap']">
         <img
-          @click="
-            mobileLinkOpen({
-              ...info,
-              site: themeTPL
-            })
-          "
           :src="info.image"
           :class="$style['phone-image']"
+          :data-key="key"
           :data-link="info.linkTo"
         />
       </div>
@@ -126,7 +121,16 @@ export default {
       this.opts = {
         loop: hasLoop,
         autoplay: hasLoop ? { delay: 5000, disableOnInteraction: false } : {},
-        pagination: { el: ".swiper-pagination", clickable: true }
+        pagination: { el: ".swiper-pagination", clickable: true },
+        on: {
+          click(element) {
+            let info = list[element.target.dataset.key];
+            mobileLinkOpen({
+              ...info,
+              site: this.themeTPL
+            });
+          }
+        }
       };
       this.updateKey = 1;
     },

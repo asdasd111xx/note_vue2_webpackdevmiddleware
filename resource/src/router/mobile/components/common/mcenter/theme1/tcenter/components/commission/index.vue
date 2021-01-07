@@ -26,14 +26,14 @@
             <div :class="$style['form-title']">
               {{ $text("S_STARTED_DAY", "起始日") }}
             </div>
-            <input v-model="start" type="date" />
+            <input v-model="start" :min="fromDate" :max="end" type="date" />
             <span>{{ start | dateFormat }}</span>
           </div>
           <div :class="$style['form-date-end']">
             <div :class="$style['form-title']">
               {{ $text("S_END_DAY", "结束日") }}
             </div>
-            <input v-model="end" type="date" />
+            <input v-model="end" :min="start" :max="endDate" type="date" />
             <span>{{ end | dateFormat }}</span>
           </div>
         </div>
@@ -72,6 +72,7 @@ import { mapGetters } from "vuex";
 import { format } from "date-fns";
 import bbosRequest from "@/api/bbosRequest";
 import commission from "@/mixins/mcenter/commission";
+import EST from "@/lib/EST";
 
 export default {
   components: {
@@ -104,11 +105,16 @@ export default {
     }
   },
   data() {
+    const now = EST(new Date(), "", true);
     return {
       isReceive: true,
       isShowRebate: true,
       hasSearch: this.$route.params.page === "record",
-      commissionInfo: {}
+      commissionInfo: {},
+      fromDate: Vue.moment(now)
+        .add(-29, "days")
+        .format("YYYY-MM-DD"),
+      endDate: Vue.moment(now).format("YYYY-MM-DD")
     };
   },
   computed: {

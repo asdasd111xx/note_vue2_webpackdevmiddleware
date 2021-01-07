@@ -389,7 +389,12 @@ export default {
                 }
                 this.ttl -= 1;
               }, 1000);
-              this.actionSetGlobalMessage({ msg: "验证码已发送" });
+              this.actionSetGlobalMessage({
+                msg: this.$text("S_SEND_CHECK_CODE_VALID_TIME").replace(
+                  "%s",
+                  "5"
+                )
+              });
             });
           } else {
             setTimeout(() => {

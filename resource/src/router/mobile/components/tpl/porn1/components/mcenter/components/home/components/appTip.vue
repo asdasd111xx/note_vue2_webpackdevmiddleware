@@ -38,6 +38,7 @@ export default {
   created() {
     let platform = getCookie("platform");
     this.platform = platform;
+    this.isShow = localStorage.getItem("appTips") || true;
   },
   methods: {
     ...mapActions(["actionSetUserdata"]),
@@ -46,6 +47,7 @@ export default {
 
       this.timer = setTimeout(() => {
         this.isShow = false;
+        localStorage.setItem("appTips", false);
         this.$emit("close");
       }, 300);
     },

@@ -182,14 +182,14 @@
               v-if="summaryContent[index].amount"
               :class="[$style['detail-wrap'], 'clearfix']"
             >
-              <div :class="$style.text">
+              <div :class="[$style.text, $style.main]">
                 {{
                   summaryContent[index].text === ""
                     ? "投注返利"
                     : summaryContent[index].text
                 }}
               </div>
-              <div :class="$style.amount">
+              <div :class="[$style.amount, $style.main]">
                 {{ summaryContent[index].amount }}
               </div>
             </div>
@@ -197,10 +197,10 @@
               v-if="summaryContent[index].oauthAmount"
               :class="[$style['detail-wrap'], 'clearfix']"
             >
-              <div :class="$style.text">
+              <div :class="[$style.text, $style.main]">
                 {{ summaryContent[index].oauthText }}
               </div>
-              <div :class="$style.amount">
+              <div :class="[$style.amount, $style.main]">
                 {{ summaryContent[index].oauthAmount }}
               </div>
             </div>

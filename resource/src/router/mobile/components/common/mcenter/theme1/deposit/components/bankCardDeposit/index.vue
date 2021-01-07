@@ -693,6 +693,7 @@
                   />
                   <div :class="$style['field-title']">{{ info.title }}</div>
                   <div :class="$style['field-info']">
+                    <!-- 充值方式 -->
                     <template v-if="info.objKey === 'depositMethod'">
                       <div
                         :class="[
@@ -714,6 +715,8 @@
                             : info.selectTitle
                         }}
                       </div>
+
+                      <!-- 充值方式選單 -->
                       <div v-if="isShowMethodsPop" :class="$style['pop-wrap']">
                         <div
                           :class="$style['pop-mask']"
@@ -726,6 +729,7 @@
                             }}</span>
                             {{ info.title }}
                           </div>
+
                           <ul :class="$style['pop-list']">
                             <li
                               v-for="item in info.selectData"
@@ -1206,6 +1210,7 @@ export default {
         this.getCGPayBalance();
       }
     },
+    // 選擇銀行的值
     isSelectValue(value) {
       if (value) {
         this.isDisableDepositInput = false;
@@ -1355,7 +1360,6 @@ export default {
         {
           objKey: "depositMethod",
           title: "充值方式",
-          curMethodId: this.speedField.depositMethod,
           selectTitle: "请选择充值方式",
           value: this.speedField.depositMethod,
           selectData: [
@@ -1900,12 +1904,8 @@ export default {
             // this.checkSuccess = val ? true : false;
 
             this.speedField.depositName = val;
-            this.$emit("update:speedField", { val, target });
           });
-        } else {
-          this.$emit("update:speedField", { value, target });
         }
-
         this.checkOrderData();
       }
     },

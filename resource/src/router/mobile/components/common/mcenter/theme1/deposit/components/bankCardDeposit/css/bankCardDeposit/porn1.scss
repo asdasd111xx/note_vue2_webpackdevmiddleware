@@ -6,7 +6,8 @@
 }
 
 .swiper-item {
-  width: 28%;
+  width: auto;
+  min-width: 29%;
   height: 38px;
   line-height: 38px;
   text-align: center;
@@ -14,10 +15,10 @@
   white-space: nowrap;
 
   span {
-    display: inline-block;
     height: 34px;
     line-height: 34px;
     border-bottom: 2px solid transparent;
+    display: block;
   }
 
   &.is-current {
@@ -199,7 +200,7 @@
   color: #979797;
   margin-left: 10px;
 
-  > span {
+  >span {
     color: #6aaaf5;
     border-bottom: 1px solid #6aaaf5;
   }
@@ -895,6 +896,7 @@
 }
 
 .qrcode-item {
+
   // display: inline-block;
   &:last-child {
     margin-right: 0;
@@ -998,7 +1000,7 @@
     font-weight: 700;
   }
 
-  > div {
+  >div {
     line-height: 22px;
   }
 }

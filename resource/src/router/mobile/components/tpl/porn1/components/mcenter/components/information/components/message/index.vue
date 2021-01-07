@@ -90,6 +90,7 @@
           { [$style['edit-mode']]: isEditing },
           'clearfix'
         ]"
+        @click="!isEditing ? onClick(message) : {}"
       >
         <div
           v-if="isEditing"

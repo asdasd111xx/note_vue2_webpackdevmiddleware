@@ -164,7 +164,7 @@ export default {
 }
 
 .info-wrap {
-  padding: 10px 9px;
+  padding: 10px 4px;
   width: 100%;
   font-size: 15px;
 

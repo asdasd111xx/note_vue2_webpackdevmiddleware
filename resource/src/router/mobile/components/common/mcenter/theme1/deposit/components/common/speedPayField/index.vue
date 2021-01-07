@@ -134,7 +134,6 @@ export default {
         {
           objKey: "depositMethod",
           title: "充值方式",
-          curMethodId: this.speedField.depositMethod,
           selectTitle: "请选择充值方式",
           selectData: [
             {
