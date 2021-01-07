@@ -92,7 +92,6 @@
   "S_OLD_PWD": "旧密码",
   "S_NEW_PWD": "新密码",
   "S_CHK_PWD": "确认新密码",
-  "S_PWD_SAME": "新密码不可与原密码相同",
   "S_OLD_PW_NOT_COMPLETE": "旧密码不完整，请重新输入",
   "S_NEW_PW_NOT_COMPLETE": "新密码不完整，请重新输入",
   "S_EDIT_SUCCESS": "修改成功",
