@@ -688,6 +688,10 @@ export default {
         case "link_to":
           switch (game.vendor) {
             case "agent":
+              if (!this.loginStatus) {
+                this.$router.push("/mobile/login");
+                return;
+              }
               this.$router.push("/mobile/mcenter/makeMoney");
               return;
 
