@@ -159,14 +159,14 @@
         <button @click="onSubmit">{{ $text("S_ADD") }}</button>
       </div>
     </transition>
+
     <!-- 訊息 -->
-    <template v-if="siteConfig.MOBILE_WEB_TPL !== 'sg1'">
-      <message v-if="msg" @close="msg = ''">
-        <div slot="msg">
-          {{ msg }}
-        </div>
-      </message>
-    </template>
+    <message v-if="msg" @close="msg = ''">
+      <div slot="msg">
+        {{ msg }}
+      </div>
+    </message>
+
     <!-- 連結複製提示與 QR Code -->
     <popup
       v-if="isPopup"
