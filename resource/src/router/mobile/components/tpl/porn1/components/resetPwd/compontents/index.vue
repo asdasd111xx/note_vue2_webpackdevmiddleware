@@ -242,25 +242,21 @@ export default {
       }
       this.pwdResetInfo[id].value = value.trim();
 
+      if (
+        this.pwdResetInfo["confNewPwd"].value !==
+        this.pwdResetInfo["newPwd"].value
+      ) {
+        this.errMsg = "确认密码预设要跟密码一致";
+      } else {
+        this.errMsg = "";
+      }
+
       const data = this.pwdResetInfo[id];
       const re = new RegExp(data.regExp);
       const msg = this.$t(data.errorMsg);
 
       if (!re.test(value)) {
         this.errMsg = msg;
-      } else {
-        this.errMsg = "";
-      }
-
-      if (
-        this.pwdResetInfo["confNewPwd"].value !==
-        this.pwdResetInfo["newPwd"].value
-      ) {
-        this.errMsg = "确认密码预设要跟密码一致";
-      }
-
-      if (!value) {
-        this.errMsg = "请输入6-12位字母或数字";
       }
     },
     pwdModifySubmit() {
