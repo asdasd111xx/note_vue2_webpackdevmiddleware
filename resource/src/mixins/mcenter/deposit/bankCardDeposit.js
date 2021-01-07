@@ -1156,21 +1156,21 @@ export default {
           },
           deposit_at: {
             key: "depositTime",
-            alertMessage: this.$text("S_ENTER_DEPOSIT_TIME", "请输入存款时间")
+            alertMessage: this.$text("S_ENTER_DEPOSIT_TIME", "请输入充值时间")
           },
           pay_account: {
             key: "depositAccount",
             alertMessage: this.$text(
               "S_ENTER_DEPOSIT_ACCOUNT",
-              "请输入存款帐号"
+              "请输入充值帐号"
             )
           },
           pay_username: {
             key: "depositName",
             alertMessage:
               this.curPayInfo.payment_type_id === 6
-                ? this.$text("S_ENTER_DEPOSIT_NICKNAME", "请输入存款昵称")
-                : this.$text("S_ENTER_DEPOSIT_NAME", "请输入存款人姓名")
+                ? this.$text("S_ENTER_DEPOSIT_NICKNAME", "请输入充值昵称")
+                : this.$text("S_ENTER_DEPOSIT_NAME", "请输入充值人姓名")
           },
           sn: {
             key: "serialNumber",
