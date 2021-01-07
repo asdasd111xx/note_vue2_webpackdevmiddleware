@@ -5,8 +5,8 @@
       $style.container,
       {
         [$style['has-header']]: hasHeader && !isApp,
-        [$style['has-footer']]: hasFooter,
-      },
+        [$style['has-footer']]: hasFooter
+      }
     ]"
   >
     <m-header
@@ -44,39 +44,39 @@ export default {
     agentNote: () =>
       import(
         /* webpackChunkName: 'note' */ "@/router/agent/components/common/note"
-      ),
+      )
   },
   data() {
     return {
-      hasUnreadMessage: false,
+      hasUnreadMessage: false
     };
   },
   props: {
     headerConfig: {
       type: Object,
-      default: null,
+      default: null
     },
     hasFooter: {
       type: Boolean,
-      default: true,
+      default: true
     },
     updateSearchStatus: {
       type: Function,
-      default: () => {},
+      default: () => {}
     },
     isApp: {
       type: Boolean,
-      default: false,
-    },
+      default: false
+    }
   },
   mounted() {
     if (this.loginStatus && getCookie("cid")) {
       axios({
         method: "get",
-        url: "/api/v1/c/player/messages",
-      }).then((res) => {
+        url: "/api/v1/c/player/messages"
+      }).then(res => {
         const ret = res.data.ret;
-        ret.forEach((i) => {
+        ret.forEach(i => {
           if (i.read === false) {
             this.hasUnreadMessage = true;
           }
@@ -88,15 +88,15 @@ export default {
     ...mapGetters({
       popType: "getPopType",
       popData: "getPopData",
-      loginStatus: "getLoginStatus",
+      loginStatus: "getLoginStatus"
     }),
     hasHeader() {
       return this.headerConfig;
     },
     path() {
-      return this.$route.path.split("/").filter((path) => path);
-    },
-  },
+      return this.$route.path.split("/").filter(path => path);
+    }
+  }
 };
 </script>
 
@@ -108,6 +108,7 @@ export default {
 
 .has-header {
   padding-top: 43px;
+  background-color: #f8f8f8;
 }
 
 .has-footer {

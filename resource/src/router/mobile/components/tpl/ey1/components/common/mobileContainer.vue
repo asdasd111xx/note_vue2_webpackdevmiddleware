@@ -30,14 +30,14 @@
 </template>
 
 <script>
-import { mapGetters } from 'vuex';
-import axios from 'axios'
-import { getCookie } from '@/lib/cookie';
+import { mapGetters } from "vuex";
+import axios from "axios";
+import { getCookie } from "@/lib/cookie";
 
 export default {
   components: {
-    mHeader: () => import(/* webpackChunkName: 'mHeader' */ './mHeader'),
-    mFooter: () => import(/* webpackChunkName: 'mFooter' */ './mFooter'),
+    mHeader: () => import(/* webpackChunkName: 'mHeader' */ "./mHeader"),
+    mFooter: () => import(/* webpackChunkName: 'mFooter' */ "./mFooter")
     // elePop: () => import(/* webpackChunkName: 'elePop' */'@/router/web/components/tpl/common/pop')
     // note: () => import(/* webpackChunkName: 'note' */'@/components/mcenter/components/common/note'),
     // agentNote: () => import(/* webpackChunkName: 'note' */'@/router/agent/components/common/note')
@@ -45,7 +45,7 @@ export default {
   data() {
     return {
       hasUnreadMessage: false
-    }
+    };
   },
   props: {
     headerConfig: {
@@ -62,7 +62,7 @@ export default {
     },
     updateSearchStatus: {
       type: Function,
-      default: () => { }
+      default: () => {}
     },
     isApp: {
       type: Boolean,
@@ -70,31 +70,31 @@ export default {
     }
   },
   mounted() {
-    if (this.loginStatus && getCookie('cid')) {
+    if (this.loginStatus && getCookie("cid")) {
       axios({
-        method: 'get',
-        url: '/api/v1/c/player/messages',
-      }).then((res) => {
+        method: "get",
+        url: "/api/v1/c/player/messages"
+      }).then(res => {
         const ret = res.data.ret;
         ret.forEach(i => {
           if (i.read === false) {
             this.hasUnreadMessage = true;
           }
-        })
+        });
       });
     }
   },
   computed: {
     ...mapGetters({
-      popType: 'getPopType',
-      popData: 'getPopData',
+      popType: "getPopType",
+      popData: "getPopData",
       loginStatus: "getLoginStatus"
     }),
     hasHeader() {
       return this.headerConfig;
     },
     path() {
-      return this.$route.path.split('/').filter((path) => path);
+      return this.$route.path.split("/").filter(path => path);
     }
   }
 };
@@ -108,6 +108,7 @@ export default {
 
 .has-header {
   padding-top: 43px;
+  background-color: #f8f8f8;
 }
 
 .has-footer {
