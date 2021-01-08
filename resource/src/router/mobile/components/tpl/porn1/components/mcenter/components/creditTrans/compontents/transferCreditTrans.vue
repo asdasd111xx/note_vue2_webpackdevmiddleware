@@ -6,7 +6,11 @@
 
     <!-- 喜訊 -->
     <template v-if="hasBonusRule">
-      <div :class="$style['promotion-tips']" v-for="item in bonusList">
+      <div
+        :class="$style['promotion-tips']"
+        v-for="(item, index) in bonusList"
+        :key="index"
+      >
         <div>
           {{ item.text }}
         </div>
@@ -22,11 +26,12 @@
         </div>
       </div>
 
-      <template v-for="item in inputInfo">
+      <template v-for="(item, index) in inputInfo">
         <!-- 各欄位錯誤訊息 -->
         <div
           v-if="errorMessage[item.key] && item.key !== 'keyring'"
           :class="[$style['form-tips']]"
+          :key="`${item.key}-${index}`"
         >
           <div>
             {{ errorMessage[item.key] }}
