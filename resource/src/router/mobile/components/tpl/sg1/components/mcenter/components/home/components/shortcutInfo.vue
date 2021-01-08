@@ -79,14 +79,7 @@
         </div>
         <div>{{ $text("S_TRANSACTION_RECORD", "交易记录") }}</div>
       </div>
-      <div
-        :class="$style['cell']"
-        @click="
-          loginStatus
-            ? $router.push('/mobile/mcenter/tcenter/commission/rebate')
-            : $router.push('/mobile/login')
-        "
-      >
+      <div :class="$style['cell']" @click="goToRebate">
         <div>
           <img :src="$getCdnPath('/static/image/_new/mcenter/ic_rebate.png')" />
         </div>
@@ -98,6 +91,7 @@
 
 <script>
 import { mapGetters, mapActions } from "vuex";
+import bbosRequest from "@/api/bbosRequest";
 import moment from "moment";
 import mcenterPageAuthControl from "@/lib/mcenterPageAuthControl";
 import mcenter from "@/api/mcenter";
@@ -124,7 +118,8 @@ export default {
       loginStatus: "getLoginStatus",
       memInfo: "getMemInfo",
       memCurrency: "getMemCurrency",
-      memBalance: "getMemBalance"
+      memBalance: "getMemBalance",
+      siteConfig: "getSiteConfig"
     })
   },
   created() {
@@ -138,7 +133,7 @@ export default {
     this.imgID = this.memInfo.user.image;
   },
   methods: {
-    ...mapActions(["actionSetUserdata"]),
+    ...mapActions(["actionSetUserdata", "actionSetGlobalMessage"]),
     onListClick(listIndex) {
       const item = this.list[listIndex];
 
@@ -184,13 +179,18 @@ export default {
           Vendor: this.memInfo.user.domain
         },
         params: { lang: "zh-cn" }
-      }).then(response => {
-        if (response.status === "000" && response.data.show_real_time) {
-          this.$router.push("/mobile/mcenter/tcenter/commission/rebate");
-        } else {
-          this.$router.push("/mobile/mcenter/tcenter/commission/summary");
-        }
-      });
+      })
+        .then(response => {
+          if (response.status === "000" && response.data.show_real_time) {
+            this.$router.push("/mobile/mcenter/tcenter/commission/rebate");
+          } else {
+            this.$router.push("/mobile/mcenter/tcenter/commission/summary");
+          }
+        })
+        .catch(error => {
+          const { msg } = error.response.data;
+          this.actionSetGlobalMessage({ msg });
+        });
     }
   }
 };
