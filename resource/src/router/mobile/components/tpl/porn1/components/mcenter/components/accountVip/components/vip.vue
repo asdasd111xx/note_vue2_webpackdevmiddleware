@@ -58,7 +58,7 @@
 </template>
 
 <script>
-import { mapGetters } from "vuex";
+import { mapGetters, mapActions } from "vuex";
 import { Swiper, SwiperSlide } from "vue-awesome-swiper";
 import { getCookie } from "@/lib/cookie";
 import vipUser from "./vipUser";
@@ -112,6 +112,7 @@ export default {
     }
   },
   methods: {
+    ...mapActions(["actionSetGlobalMessage"]),
     getUserDetail() {
       // yaboRequest({
       //   method: "get",
@@ -132,6 +133,11 @@ export default {
           cid: getCookie("cid")
         }
       }).then(res => {
+        if (res.code === "M00001") {
+          this.actionSetGlobalMessage({ msg: "请重新登入", code: res.code });
+          return;
+        }
+
         this.userVipInfo = res.data;
 
         if (localStorage.getItem("vip_config_id")) {
@@ -167,6 +173,10 @@ export default {
           cid: getCookie("cid")
         }
       }).then(res => {
+        if (res.code === "M00001") {
+          this.actionSetGlobalMessage({ msg: "请重新登入", code: res.code });
+          return;
+        }
         this.vipLevelList = res.data;
       });
     },
