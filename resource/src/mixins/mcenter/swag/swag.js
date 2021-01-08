@@ -290,9 +290,9 @@ export default {
         })
           .then(res => {
             if (res && res.data && res.data.result === "ok") {
-              this.actionSetGlobalMessage({
-                msg: "回收成功"
-              });
+              // this.actionSetGlobalMessage({
+              //   msg: "回收成功"
+              // });
 
               setTimeout(() => {
                 this.balanceBackLock = false;

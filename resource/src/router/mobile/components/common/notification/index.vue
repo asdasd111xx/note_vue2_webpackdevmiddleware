@@ -61,10 +61,10 @@ export default {
           "网站系统公告\n网站即将进行系统维护，如有不便之处，敬请见谅 !\n" +
           "预计完成 :\n美东时间 %s\n北京时间 %s\n於 %s 分钟後开始",
         C_WS_FEEDBACK_REPLY: "您有1封新的回覆信件，请前往查看",
-        C_WS_WAGE: "您的返利已入帐，请前往查看"
-        // C_WS_RECYCLE_FAIL: ""
-        // C_WS_RECYCLE_ALL_FAIL: ""
-        // C_WS_RECYCLE_OK: ""
+        C_WS_WAGE: "您的返利已入帐，请前往查看",
+        C_WS_RECYCLE_FAIL: "额度无法转移，请稍后再试",
+        C_WS_RECYCLE_ALL_FAIL: "额度无法转移，请稍后再试",
+        C_WS_RECYCLE_OK: "一键归户完成"
       },
       msgType: [
         "player_deposit",
@@ -110,7 +110,24 @@ export default {
           case "notice":
             this.data = temp;
             if (this.lang[this.data.content]) {
-              this.show();
+              switch (this.data.content) {
+                case "C_WS_RECYCLE_FAIL":
+                  this.showToast(
+                    `${this.data.vendorName["zh-cn"]}${
+                      this.lang[this.data.content]
+                    }`
+                  );
+                  return;
+                case "C_WS_RECYCLE_ALL_FAIL":
+                  this.showToast(this.lang[this.data.content]);
+                  return;
+                case "C_WS_RECYCLE_OK":
+                  this.showToast(this.lang[this.data.content]);
+                  return;
+                default:
+                  this.show();
+                  return;
+              }
             } else {
               this.$emit("close");
             }
@@ -157,7 +174,7 @@ export default {
     }
   },
   methods: {
-    ...mapActions(["actionNoticeData"]),
+    ...mapActions(["actionNoticeData", "actionSetGlobalMessage"]),
     handleClick() {
       let content = this.data.content;
       localStorage.setItem("click-notification", 1);
@@ -210,6 +227,11 @@ export default {
             ? this.lang[key]
             : "您有 1 封新的站内信，请前往查看";
       }
+    },
+    showToast(message) {
+      this.actionSetGlobalMessage({
+        msg: message
+      });
     },
     deleMsg(id) {
       clearTimeout(this.closeTimer);
