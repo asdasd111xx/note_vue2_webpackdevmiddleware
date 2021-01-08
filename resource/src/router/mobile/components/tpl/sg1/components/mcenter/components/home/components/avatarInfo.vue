@@ -188,7 +188,7 @@ export default {
   }
 
   div:last-of-type {
-    color: $main_text_color1;
+    color: #be9e7f;
     font-size: 12px;
     height: 50%;
 
