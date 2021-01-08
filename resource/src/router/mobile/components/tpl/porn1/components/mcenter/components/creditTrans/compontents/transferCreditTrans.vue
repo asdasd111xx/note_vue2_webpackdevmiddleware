@@ -81,9 +81,7 @@
                       isSendKeyring ||
                       !isVerifyPhone ||
                       !formData.target_username ||
-                      errorMessage.target_username ||
-                      !formData.amount ||
-                      errorMessage.amount
+                      !formData.amount
                   }
                 ]"
                 @click="showCaptcha"
