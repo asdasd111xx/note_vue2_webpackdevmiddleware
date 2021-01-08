@@ -126,7 +126,7 @@
       </template>
     </div>
     <!-- 億元：自動免轉 -->
-    <template v-if="['ey1'].includes(themeTPL)">
+    <template v-if="['ey1'].includes(themeTPL) && isNeedShowAutotransferSwitch">
       <div v-if="isReceiveAuto" :class="[$style['balance-wrap'], 'clearfix']">
         <div :class="$style['balance-tip-wrap']">
           {{ $text("S_AUTO_FREE_TRANSFER", "自动免转") }}
@@ -137,7 +137,10 @@
           >
         </div>
 
-        <div :class="`ui fitted toggle checkbox field-checkbox ${themeTPL}`">
+        <div
+          v-if="isNeedShowManualtransferSwitch"
+          :class="`ui fitted toggle checkbox field-checkbox ${themeTPL}`"
+        >
           <input
             :checked="isAutotransfer"
             type="checkbox"
@@ -158,7 +161,9 @@
       </div>
     </template>
     <!-- 鴨博：自動免轉 -->
-    <template v-if="['porn1'].includes(themeTPL)">
+    <template
+      v-if="['porn1'].includes(themeTPL) && isNeedShowAutotransferSwitch"
+    >
       <div v-if="isReceiveAuto" :class="[$style['balance-wrap'], 'clearfix']">
         <div :class="$style['balance-tip-wrap']">
           {{ $text("S_AUTO_FREE_TRANSFER", "自动免转") }}
@@ -169,7 +174,10 @@
           >
         </div>
 
-        <div :class="`ui fitted toggle checkbox field-checkbox ${themeTPL}`">
+        <div
+          v-if="isNeedShowManualtransferSwitch"
+          :class="`ui fitted toggle checkbox field-checkbox ${themeTPL}`"
+        >
           <input
             :checked="isAutotransfer"
             type="checkbox"
@@ -191,7 +199,7 @@
     </template>
 
     <!-- 絲瓜：自動免轉 -->
-    <template v-if="['sg1'].includes(themeTPL)">
+    <template v-if="['sg1'].includes(themeTPL) && isNeedShowAutotransferSwitch">
       <div v-if="isReceiveAuto" :class="[$style['balance-wrap'], 'clearfix']">
         <div :class="$style['balance-tip-wrap']">
           {{ $text("S_AUTO_FREE_TRANSFER", "自动免转") }}
@@ -203,6 +211,7 @@
         </div>
 
         <label
+          v-if="isNeedShowManualtransferSwitch"
           :class="[
             $style['balance-auto-switch'],
             { [$style.active]: isAutotransfer }
@@ -244,7 +253,7 @@
     </template>
 
     <!-- 手動轉換功能 -->
-    <template v-if="!isAutotransfer">
+    <template v-if="!isAutotransfer && isNeedShowManualtransferSwitch">
       <div :class="[$style['balance-manual-wrap'], 'clearfix']">
         <template v-if="['ey1'].includes(themeTPL)">
           <span :class="$style['wallet-title']">
@@ -438,6 +447,8 @@ export default {
       total: 0,
       isAutotransfer: "",
       isReceiveAuto: false,
+      isNeedShowAutotransferSwitch: false,
+      isNeedShowManualtransferSwitch: false,
       AutotransferLock: false,
       recentlyData: {},
       tranOutList: {},
@@ -514,6 +525,20 @@ export default {
   created() {
     this.actionSetUserdata(true).then(() => {
       this.isAutotransfer = this.memInfo.auto_transfer.enable;
+
+      this.isNeedShowAutotransferSwitch = this.memInfo.config.auto_transfer;
+      this.isNeedShowManualtransferSwitch = this.memInfo.config.manual_transfer;
+      //只開放單種轉帳 將使用者重設轉帳方式
+      if (
+        !this.isNeedShowAutotransferSwitch ||
+        !this.isNeedShowManualtransferSwitch
+      ) {
+        if (this.isNeedShowManualtransferSwitch) {
+          this.closeAutotransfer();
+        } else {
+          this.enableAutotransfer();
+        }
+      }
       this.isReceiveAuto = true;
       //   http://fb.vir888.com/default.asp?438355#3743844
       //   進到轉帳頁面不需自動回收額度

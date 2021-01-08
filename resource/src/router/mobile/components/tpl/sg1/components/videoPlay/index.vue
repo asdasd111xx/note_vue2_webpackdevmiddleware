@@ -1,29 +1,31 @@
 <template>
-  <mobile-container
-    v-if="videoInfo"
-    :class="[$style.container, $style[source]]"
-  >
-    <div slot="content" class="content-wrap">
+  <mobile-container v-if="info" :class="[$style.container, $style[source]]">
+    <div slot="content" :class="$style['content-wrap']">
       <div :class="$style['header']" id="header">
         <div :class="$style['btn-prev']" @click="$router.back()">
           <img :src="$getCdnPath(`/static/image/common/btn_back_white.png`)" />
         </div>
       </div>
-      <template v-if="videoInfo">
-        <video-player
-          :video-info="videoInfo"
-          :source="this.source"
-          :key="videoInfo.id"
-          ref="player"
-        />
-        <video-info :video-info="videoInfo" />
+      <video-player
+        v-if="info"
+        :video-info="info"
+        :source="this.source"
+        :key="info.id"
+        ref="player"
+        id="videoPlayer"
+      />
+      <div
+        :class="$style['info-wrap']"
+        :style="{ height: `calc(100vh - ${videoHeight}px)` }"
+      >
+        <video-info v-if="info" :video-info="info" />
         <video-tag
           v-if="!['smallPig', 'gay', 'les'].includes(source)"
-          :tag="videoInfo.tag"
+          :tag="info.tag"
           :padding="true"
         />
-      </template>
-      <video-guess @leave="handleLeavePage" />
+        <video-guess @leave="handleLeavePage" />
+      </div>
     </div>
   </mobile-container>
 </template>
@@ -50,7 +52,8 @@ export default {
   data() {
     return {
       source: this.$route.query.source,
-      videoInfo: null
+      info: null,
+      videoHeight: 220
     };
   },
   computed: {
@@ -80,6 +83,13 @@ export default {
       }
     }
   },
+  watch: {
+    info() {
+      this.$nextTick(() => {
+        this.videoHeight = this.$refs["player"].$el.offsetHeight + 65;
+      });
+    }
+  },
   methods: {
     handleLeavePage(cb) {
       if (this.$refs["player"]) {
@@ -88,16 +98,15 @@ export default {
     }
   },
   mounted() {
-    const obj = {
+    pornRequest({
       method: "post",
       url: `/video/videoinfo`,
       data: { videoId: this.$route.params.id, siteId: this.siteId }
-    };
-    pornRequest(obj).then(res => {
+    }).then(res => {
       if (res.status !== 200) {
         return;
       }
-      this.videoInfo = { ...res.result };
+      this.info = { ...res.result };
     });
   },
   created() {
@@ -131,6 +140,11 @@ export default {
 <style lang="scss" module>
 @import "~@/css/variable.scss";
 
+.content-wrap {
+  overflow-x: hidden;
+  overflow-y: hidden;
+}
+
 div.container {
   // Yabo & gay & les
   background-color: $main_white_color1;
@@ -163,5 +177,10 @@ div.container {
       width: 100%;
     }
   }
+}
+
+.info-wrap {
+  height: 400px;
+  overflow-y: auto;
 }
 </style>
