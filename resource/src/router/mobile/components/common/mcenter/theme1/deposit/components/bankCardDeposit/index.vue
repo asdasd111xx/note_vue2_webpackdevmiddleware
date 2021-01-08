@@ -1130,9 +1130,6 @@ export default {
     };
   },
   watch: {
-    curModeGroup(value) {
-      console.log(value);
-    },
     //   channel
     passRoad() {
       console.log("all passRoad", this.passRoad);
