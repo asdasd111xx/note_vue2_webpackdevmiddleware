@@ -22,7 +22,7 @@ body {
   background-color: white;
   background-repeat: no-repeat;
   background-size: cover;
-  background-image: url("/static/image/_new/common/bg.png");
+  background-image: url("/static/image/porn1/common/bg.png");
   min-height: 100vh;
   padding-top: 30px;
   position: relative;
@@ -31,6 +31,10 @@ body {
   &.ey1 {
     background-image: url("/static/image/ey1/common/bg.png");
   }
+
+  &.sg1 {
+    background-image: url("/static/image/sg1/common/bg.png");
+  }
 }
 
 .logo-header {
@@ -38,7 +42,7 @@ body {
   height: 60px;
   text-align: center;
 
-  >img {
+  > img {
     height: 60px;
   }
 }
@@ -51,10 +55,10 @@ body {
   font-family: Microsoft JhengHei, Microsoft JhengHei-Bold;
   font-weight: 700;
   text-align: center;
-  color: #B1977F;
+  color: #b1977f;
 
   &.sg1 {
-    color: #4E5159
+    color: #4e5159;
   }
 }
 
@@ -72,15 +76,19 @@ body {
     margin-bottom: 0;
   }
 
-  >span {
-    color: #6AAAF5;
+  > span {
+    color: #6aaaf5;
   }
 }
 
 .mail-link {
-  color: #6AAAF5;
+  color: #6aaaf5;
   border: none;
   outline: none;
+
+  &.sg1 {
+    color: #e61938;
+  }
 }
 
 .tips {
@@ -97,8 +105,12 @@ body {
   position: absolute;
   bottom: 2.5%;
 
-  >span {
-    color: #6AAAF5;
+  > span {
+    color: #6aaaf5;
+
+    &.sg1 {
+      color: #e61938;
+    }
   }
 }
 
@@ -107,7 +119,7 @@ body {
   height: 360px;
   text-align: center;
 
-  >img {
+  > img {
     height: 100%;
   }
 }
@@ -122,13 +134,13 @@ body {
   text-align: center;
   margin-bottom: 15px;
 
-  >div:first-child {
+  > div:first-child {
     width: 100%;
     color: #9ca3bf;
     text-align: center;
   }
 
-  >div:last-child {
+  > div:last-child {
     margin-top: 8px;
   }
 
@@ -148,8 +160,8 @@ body {
   margin: 0 auto;
 }
 
-@import '~@/css/variable.scss';
-@import '~@/css/index.scss';
+@import "~@/css/variable.scss";
+@import "~@/css/index.scss";
 
 @media screen and (max-height: $pad) {
   .main-img {

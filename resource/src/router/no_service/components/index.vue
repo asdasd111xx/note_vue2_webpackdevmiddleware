@@ -1,7 +1,7 @@
 <template>
   <div
     v-if="themeTPL && (themeTPL === 'porn1' || themeTPL === 'sg1')"
-    :class="[$style['content']]"
+    :class="[$style['content'], $style[themeTPL]]"
   >
     <div :class="$style['logo-header']">
       <img :src="$getCdnPath(`/static/image/${themeTPL}/common/logo_b.png`)" />
@@ -16,23 +16,40 @@
     <div :class="$style['main-img']">
       <img :src="$getCdnPath(`/static/image/${themeTPL}/status/pic_403.png`)" />
     </div>
-    <div v-if="themeTPL === 'sg1'" :class="$style['desc']">
-      {{ $t("ROUTER_NO_SERVICE_TEXTSG") }}
-      <a :class="$style['mail-link']" @click="mailTo()">
+
+    <div :class="$style['desc']">
+      <template v-if="themeTPL === 'porn1'">
+        {{ $t("ROUTER_NO_SERVICE_TEXT1") }}
+      </template>
+
+      <template v-if="themeTPL === 'sg1'">
+        {{ $t("ROUTER_NO_SERVICE_TEXTSG") }}
+      </template>
+
+      <a
+        :class="[
+          $style['mail-link'],
+          {
+            [$style['sg1']]: themeTPL === 'sg1'
+          }
+        ]"
+        @click="mailTo()"
+      >
         <span>{{ mailURL }}</span>
       </a>
+
       {{ $t("ROUTER_NO_SERVICE_TEXT2") }}
     </div>
-    <div v-else :class="$style['desc']">
-      {{ $t("ROUTER_NO_SERVICE_TEXT1") }}
-      <a :class="$style['mail-link']" @click="mailTo()">
-        <span>{{ mailURL }}</span>
-      </a>
-      {{ $t("ROUTER_NO_SERVICE_TEXT2") }}
-    </div>
+
     <div :class="$style.tips">
       如需帮助，请
-      <span @click="linkToService">&nbsp;联系客服</span>
+      <span
+        :class="{
+          [$style['sg1']]: themeTPL === 'sg1'
+        }"
+        @click="linkToService"
+        >&nbsp;联系客服</span
+      >
     </div>
     <message v-if="msg" @close="msg = ''">
       <div slot="msg">{{ msg }}</div>
