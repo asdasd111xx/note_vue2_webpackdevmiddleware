@@ -483,7 +483,7 @@ export default {
             if (res.data.code) {
               this.errMsg = `${res.data.msg}`;
             } else {
-              this.errMsg = "已發送手機認證碼";
+              this.errMsg = "已发送手机认证码";
             }
           } else {
             this.errMsg = res.data.msg;
