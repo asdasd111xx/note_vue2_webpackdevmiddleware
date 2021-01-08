@@ -167,7 +167,7 @@
         <template
           v-else-if="
             summaryContent[index].amount + summaryContent[index].oauthAmount <=
-              0
+              0 && info.key != 'monthly'
           "
         >
           <div v-show="isSummaryShow[info.key]" :class="$style['detail-wrap']">
@@ -182,12 +182,18 @@
               v-if="summaryContent[index].amount"
               :class="[$style['detail-wrap'], 'clearfix']"
             >
-              <div :class="[$style.text, $style.main]">
+              <div
+                v-if="info.key != 'monthly'"
+                :class="[$style.text, $style.main]"
+              >
                 {{
                   summaryContent[index].text === ""
                     ? "投注返利"
                     : summaryContent[index].text
                 }}
+              </div>
+              <div v-else :class="[$style.text, $style.main]">
+                {{ `投注返利(${monthRange})` }}
               </div>
               <div :class="[$style.amount, $style.main]">
                 {{ summaryContent[index].amount }}
@@ -235,6 +241,32 @@ export default {
       const style =
         this[`$style_${this.siteConfig.MOBILE_WEB_TPL}`] || this.$style_porn1;
       return style;
+    },
+    monthRange() {
+      let year = new Date().getFullYear();
+      let month = new Date().getMonth() + 1;
+      let day = "";
+      switch (month) {
+        case 1:
+        case 3:
+        case 5:
+        case 7:
+        case 8:
+        case 10:
+        case 12:
+          day = 31;
+          break;
+        case 4:
+        case 6:
+        case 9:
+        case 11:
+          day = 30;
+          break;
+        case 2:
+          day = year % 4 === 0 ? 29 : 28;
+          break;
+      }
+      return `${month}/1-${month}/${day}`;
     }
   },
   methods: {
