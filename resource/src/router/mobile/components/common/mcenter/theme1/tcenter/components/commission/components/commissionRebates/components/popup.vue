@@ -35,9 +35,7 @@
                 </div>
                 <div
                   :class="$style['button-entry-history']"
-                  @click="
-                    $router.push('/mobile/mcenter/tcenter/commission/record')
-                  "
+                  @click="handleClick"
                 >
                   {{ $t("S_COMMISSION_SEND_RECORD") }}
                 </div>
@@ -94,6 +92,10 @@ export default {
   methods: {
     close() {
       this.$emit("update:isShowPopup", false);
+    },
+    handleClick() {
+      this.$router.push("/mobile/mcenter/tcenter/commission/record");
+      window.location.reload();
     }
   }
 };

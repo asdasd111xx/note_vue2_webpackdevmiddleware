@@ -1,7 +1,10 @@
 <template>
   <div>
     <div v-for="(item, key) in list" :class="$style['content']" :key="key">
-      <div :class="$style['title']">
+      <div
+        :class="$style['title']"
+        v-if="item.categoryName && item.itemData && item.itemData.length > 0"
+      >
         <div :class="$style['block']" />
         {{ item.categoryName }}
       </div>
