@@ -1541,11 +1541,6 @@ export default {
     this.checkEntryBlockStatus();
     this.actionSetRechargeConfig();
 
-    //預設當前時間
-    this.speedField["depositTime"] =
-      new Date().toLocaleDateString().replaceAll("/", "-") +
-      " " +
-      new Date().toTimeString().slice(0, 8);
   },
   destroyed() {
     this.resetTimerStatus();
