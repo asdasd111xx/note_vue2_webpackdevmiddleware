@@ -2,7 +2,7 @@
 
 @mixin grid-style {
   display: grid;
-  grid-template-columns: 68px repeat(6, 1fr);
+  grid-template-columns: 55px repeat(7, 1fr);
   min-height: 43px;
   text-align: center;
 }
@@ -82,7 +82,7 @@
     // 每一個content 且 第一個 item
     & .item:first-of-type {
       color: $main_white_color1;
-      padding-left: 25px;
+      // padding-left: 25px;
     }
 
     // 每一個奇數的content 且 第一個 item
@@ -102,8 +102,8 @@
   .content:nth-child(#{$i + 1}) .item:first-of-type::before {
     content: "";
     position: absolute;
-    background-image: url("/static/image/common/vip/detail/ic_vip#{$i}.png");
-    background-size: contain;
+    // background-image: url("/static/image/common/vip/detail/ic_vip#{$i}.png");
+    // background-size: contain;
     width: 25px;
     height: 25px;
     left: 3px;
