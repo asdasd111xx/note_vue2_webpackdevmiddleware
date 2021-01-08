@@ -16,7 +16,14 @@
     <div :class="$style['main-img']">
       <img :src="$getCdnPath(`/static/image/${themeTPL}/status/pic_403.png`)" />
     </div>
-    <div :class="$style['desc']">
+    <div v-if="themeTPL === 'sg1'" :class="$style['desc']">
+      {{ $t("ROUTER_NO_SERVICE_TEXTSG") }}
+      <a :class="$style['mail-link']" @click="mailTo()">
+        <span>{{ mailURL }}</span>
+      </a>
+      {{ $t("ROUTER_NO_SERVICE_TEXT2") }}
+    </div>
+    <div v-else :class="$style['desc']">
       {{ $t("ROUTER_NO_SERVICE_TEXT1") }}
       <a :class="$style['mail-link']" @click="mailTo()">
         <span>{{ mailURL }}</span>
