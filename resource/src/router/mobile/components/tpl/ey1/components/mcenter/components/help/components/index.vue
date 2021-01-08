@@ -40,11 +40,11 @@ export default {
       templates: [
         { key: "contact", title: "联系我们" },
         { key: "deposit", title: "充值教程" },
-        { key: "faq", title: "常見問題" },
+        { key: "faq", title: "常见问题" },
         { key: "gameintro", title: "游戏介绍" },
         { key: "support", title: "技术支持" },
         { key: "withdraw", title: "提现教程" },
-        { key: "deposit", title: "常見問題" },
+        { key: "deposit", title: "常见问题" },
         { key: "rules", title: "会员协议规章" },
         { key: "bird", title: "蜂鸟钱包" }
       ]

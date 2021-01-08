@@ -1,5 +1,11 @@
 <template>
   <div :class="$style['container']">
+    <div :class="$style['btn-prev']" @click="backPre">
+      <img
+        :src="$getCdnPath(`/static/image/common/btn_back_black.png`)"
+        alt="back"
+      />
+    </div>
     <iframe id="iframe" :src="src" frameborder="0" />
   </div>
 </template>
@@ -47,6 +53,11 @@ export default {
   mounted() {
     document.getElementById("iframe").style.height =
       document.documentElement.clientHeight + "px";
+  },
+  methods: {
+    backPre() {
+      this.$router.push("/mobile/mcenter");
+    }
   }
 };
 </script>
@@ -56,6 +67,20 @@ export default {
   position: relative;
   overflow: hidden;
   padding-bottom: 40px;
+}
+
+.btn-prev {
+  position: absolute;
+  top: 5px;
+  left: 5px;
+  width: 20px;
+  height: 20px;
+  margin: auto;
+
+  > img {
+    display: block;
+    width: 100%;
+  }
 }
 
 iframe {

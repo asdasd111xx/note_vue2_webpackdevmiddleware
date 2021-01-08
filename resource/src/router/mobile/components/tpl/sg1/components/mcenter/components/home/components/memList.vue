@@ -479,7 +479,7 @@ export default {
   }
 }
 .list-info {
-  color: #9ca3bf;
+  color: #a2a2a2;
   font-size: 12px;
   position: absolute;
   right: 38px;
