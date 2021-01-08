@@ -20,7 +20,7 @@ export default target => {
     case "sg1":
       // linkTitle = '鸭博娱乐';
       // linkTitle = '亿元娱乐';
-      // linkTitle = '丝瓜娱乐';
+      // linkTitle = '丝瓜直播';
       linkTitle = "优惠活动";
       break;
     default:
@@ -247,14 +247,22 @@ export default target => {
 
   // 遊戲連結
   if (linkType === "games") {
-    const hasHall = [3, 5, 6];
-    const { kind } = store.state.gameData[linkTo];
-    const { vendor } = store.state.gameData[linkTo];
+    if (!store.state.gameData[linkTo]) {
+      console.log("游戏未开放");
+      return;
+    }
 
-    // 未實作
+    const { vendor, kind } = store.state.gameData[linkTo];
+    const code = linkItem;
+    if (!store.state.loginStatus) {
+      router.push("/mobile/login");
+      return;
+    }
+
     // 有遊戲大廳的遊戲
     // if (hasHall.includes(kind) && (linkItem === '' || typeof linkItem === 'undefined')) {
-    if (hasHall.includes(kind)) {
+    const hasHall = [3, 5];
+    if (hasHall.includes(kind) && !linkItem) {
       switch (kind) {
         case 3:
           router.push(`/mobile/casino/${vendor}`);
@@ -262,37 +270,35 @@ export default target => {
         case 5:
           router.push(`/mobile/card/${vendor}`);
           break;
-        case 6:
-          router.push(`/mobile/mahjong/${vendor}`);
-          break;
+        // case 6:
+        //   router.push(`/mobile/mahjong/${vendor}`);
+        //   break;
         default:
       }
       return;
     }
 
-    if (!store.state.loginStatus) {
-      router.push("/mobile/login");
-      return;
-    }
-
-    return;
-
-    const openGameSuccessFunc = res => {
-      // this.isShowLoading = false;
-    };
+    const openGameSuccessFunc = res => {};
 
     const openGameFailFunc = res => {
-      // this.isShowLoading = false;
-
       if (res && res.data) {
         let data = res.data;
         alert(data.msg);
-        // this.actionSetGlobalMessage({ msg: data.msg, code: data.code, origin: 'home' })
+        // this.actionSetGlobalMessage({
+        //   msg: data.msg,
+        //   code: data.code,
+        //   origin: "home"
+        // });
       }
     };
 
     openGame(
-      { kind: kind, vendor: vendor, code: "" },
+      {
+        kind: kind || "",
+        vendor: vendor || "",
+        code: code || "",
+        gameName: localStorage.getItem("iframe-third-url-title") || ""
+      },
       openGameSuccessFunc,
       openGameFailFunc
     );

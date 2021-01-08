@@ -2,16 +2,20 @@
   <div :class="$style['record-wrap']">
     <div v-if="!hasSearch" :class="$style['total-block']">
       <span>笔数：{{ counts ? counts : 0 }}</span>
-      <span>有效投注：{{ total.valid_bet ? total.valid_bet : "0.00" }}</span>
+      <span
+        >有效投注：{{
+          total.valid_bet ? toCurrency(total.valid_bet) : "0.00"
+        }}</span
+      >
       <span
         >派彩：
         <span
           v-if="themetpl() === 'sg1'"
           :class="{ [$style['is-negative']]: total.payoff > 0 }"
-          >{{ total.payoff ? total.payoff : "0.00" }}</span
+          >{{ total.payoff ? toCurrency(total.payoff) : "0.00" }}</span
         >
         <span v-else :class="{ [$style['is-negative']]: total.payoff < 0 }">{{
-          +total.payoff ? +total.payoff : "0.00"
+          +total.payoff ? toCurrency(+total.payoff) : "0.00"
         }}</span></span
       >
     </div>
@@ -30,6 +34,7 @@
         :class="$style['card']"
         v-for="(info, index) in list"
         @click="$emit('onInquire', info.username)"
+        :key="index"
       >
         <div :class="$style['card-title']">
           <span :class="$style['header']">{{ info.username }}</span>
@@ -39,7 +44,7 @@
               $style['payout'],
               { [$style['is-negative']]: info.payoff > 0 }
             ]"
-            >{{ info.payoff }}</span
+            >{{ toCurrency(info.payoff) }}</span
           >
           <span
             v-else
@@ -47,16 +52,16 @@
               $style['payout'],
               { [$style['is-negative']]: info.payoff < 0 }
             ]"
-            >{{ +info.payoff }}</span
+            >{{ toCurrency(+info.payoff) }}</span
           >
         </div>
         <div>
           <span>投注金额</span>
-          <span>{{ info.bet }}</span>
+          <span>{{ toCurrency(info.bet) }}</span>
         </div>
         <div>
           <span>有效投注</span>
-          <span>{{ info.valid_bet }}</span>
+          <span>{{ toCurrency(info.valid_bet) }}</span>
         </div>
       </div>
     </div>
@@ -102,6 +107,12 @@ export default {
   methods: {
     themetpl() {
       return this.siteconfig.MOBILE_WEB_TPL;
+    },
+
+    toCurrency(num) {
+      var parts = num.toString().split(".");
+      parts[0] = parts[0].replace(/\B(?=(\d{3})+(?!\d))/g, ",");
+      return parts.join(".");
     }
   },
   filters: {

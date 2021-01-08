@@ -1,5 +1,10 @@
 <template>
-  <div :class="$style['content-wrap']">
+  <div
+    :style="{
+      background: '#fefffe',
+      'min-height': 'calc(100vh - 43px)'
+    }"
+  >
     <!-- 錯誤訊息 -->
     <div :class="$style['err-msg']">
       <div v-show="errMsg">
@@ -24,40 +29,26 @@
               v-if="pwdResetInfo[item].key === 'userName'"
               :id="item"
               v-model="pwdResetInfo[item].value"
-              @blur="verification(item, pwdResetInfo[item].value)"
+              @input="verification(item, $event.target.value)"
               type="text"
               :placeholder="pwdResetInfo[item].placeholder"
               :maxlength="pwdResetInfo[item].maxlength"
               :minlength="pwdResetInfo[item].minlength"
-              @input="
-                pwdResetInfo[item].value = $event.target.value
-                  .toLowerCase()
-                  .replace(' ', '')
-                  .trim()
-                  .replace(/[\W]/g, '')
-              "
             />
             <input
               v-else-if="pwdResetInfo[item].type === 'password'"
               :id="item"
               v-model="pwdResetInfo[item].value"
-              @blur="verification(item, pwdResetInfo[item].value)"
               type="password"
               :placeholder="pwdResetInfo[item].placeholder"
               maxlength="12"
-              @input="
-                pwdResetInfo[item].value = $event.target.value
-                  .toLowerCase()
-                  .replace(' ', '')
-                  .trim()
-                  .replace(/[\W]/g, '')
-              "
+              @input="verification(item, $event.target.value)"
             />
             <input
               v-else
               :id="item"
               v-model="pwdResetInfo[item].value"
-              @blur="verification(item, pwdResetInfo[item].value)"
+              @input="verification(item, $event.target.value)"
               type="text"
               :placeholder="pwdResetInfo[item].placeholder"
               :maxlength="pwdResetInfo[item].maxlength"
@@ -70,7 +61,7 @@
               <img
                 :src="
                   $getCdnPath(
-                    `/static/image/_new/login/btn_eye_${
+                    `/static/image/common/login/btn_eye_${
                       isShowPwd ? 'n' : 'd'
                     }.png`
                   )
@@ -95,21 +86,24 @@
         </div>
       </form>
     </div>
+    <page-loading :is-show="isLoading" />
   </div>
 </template>
 
 <script>
 import { mapGetters, mapActions } from "vuex";
-import resetPwd from "@/mixins/resetPwd";
 import mcenter from "@/api/mcenter";
 import agcenter from "@/api/agcenter";
 import member from "@/api/member";
 import agent from "@/api/agent";
 
 export default {
-  components: {},
-  // 原公用驗證
-  //   mixins: [resetPwd],
+  components: {
+    pageLoading: () =>
+      import(
+        /* webpackChunkName: 'pageLoading' */ "@/router/mobile/components/common/pageLoading"
+      )
+  },
   data() {
     return {
       errMsg: "",
@@ -180,7 +174,7 @@ export default {
         }
       },
       isShowPwd: false,
-      isSubmit: false
+      isLoading: false
     };
   },
   computed: {
@@ -193,23 +187,20 @@ export default {
     themeTPL() {
       return this.siteConfig.MOBILE_WEB_TPL;
     },
-    $style() {
-      const style =
-        this[`$style_${this.siteConfig.MOBILE_WEB_TPL}`] || this.$style_porn1;
-      return style;
-    },
     headerConfig() {
       return {
         prev: this.isResetPW ? false : !this.memInfo.user.password_reset,
         onClick: () => {
           this.$router.back();
         },
-        title: this.isResetPW
-          ? this.$text("S_PASSWORD_RESET", "重设密码")
-          : this.$text("S_CHANGE_PASSWD", "修改密码")
+        title:
+          this.isResetPW || this.memInfo.user.password_reset
+            ? this.$text("S_PASSWORD_RESET", "重设密码")
+            : this.$text("S_CHANGE_PASSWD", "修改密码")
       };
     },
     isResetPW() {
+      // 信箱重設密碼
       return this.$route.query.page === "pwdreset";
     },
     submitActive() {
@@ -226,11 +217,10 @@ export default {
     }
   },
   methods: {
-    ...mapActions(["actionSetGlobalMessage"]),
+    ...mapActions(["actionSetGlobalMessage", "actionVerificationFormData"]),
     toggleEye(key) {
       this.verification(key, this.pwdResetInfo[key].value);
-      const target = this.pwdResetInfo[key];
-      if (target.eyeShow) {
+      if (this.isShowPwd) {
         document.getElementById("newPwd").type = "password";
         document.getElementById("confNewPwd").type = "password";
         document.getElementById("pwd").type = "password";
@@ -242,33 +232,39 @@ export default {
       this.isShowPwd = !this.isShowPwd;
     },
     verification(id, value) {
-      const data = this.pwdResetInfo[id];
-      const re = new RegExp(data.regExp);
-      const msg = this.$t(data.errorMsg);
-
-      if (!re.test(value)) {
-        this.errMsg = msg;
-      } else {
-        this.errMsg = "";
+      if (id !== "email") {
+        this.actionVerificationFormData({
+          target: "password",
+          value: value
+        }).then(val => {
+          this.pwdResetInfo[id].value = val;
+        });
       }
+      this.pwdResetInfo[id].value = value.trim();
 
       if (
         this.pwdResetInfo["confNewPwd"].value !==
         this.pwdResetInfo["newPwd"].value
       ) {
         this.errMsg = "确认密码预设要跟密码一致";
+      } else {
+        this.errMsg = "";
       }
 
-      if (!value) {
-        this.errMsg = "请输入6-12位字母或数字";
+      const data = this.pwdResetInfo[id];
+      const re = new RegExp(data.regExp);
+      const msg = this.$t(data.errorMsg);
+
+      if (!re.test(value)) {
+        this.errMsg = msg;
       }
     },
     pwdModifySubmit() {
-      if (!this.submitActive || this.isSubmit) return;
-      this.isSubmit = true;
+      if (!this.submitActive || this.isLoading) return;
+      this.isLoading = true;
       setTimeout(() => {
-        this.isSubmit = false;
-      }, 1500);
+        this.isLoading = false;
+      }, 2000);
 
       const pwdInfo = {
         old_password: this.pwdResetInfo.pwd.value,
@@ -292,16 +288,18 @@ export default {
         mcenter.accountPassword({
           params: pwdInfo,
           success: () => {
-            this.actionSetGlobalMessage({ msg: this.$t("S_EDIT_SUCCESS") });
-            setTimeout(() => {
-              if (this.memInfo.user.password_reset) {
-                this.actionSetUserdata(true).then(() => {
-                  this.$router.push("/mobile");
-                });
-                return;
+            this.actionSetGlobalMessage({
+              msg: this.$t("S_EDIT_SUCCESS"),
+              cb: () => {
+                if (this.memInfo.user.password_reset) {
+                  this.actionSetUserdata(true).then(() => {
+                    this.$router.push("/mobile");
+                  });
+                  return;
+                }
+                this.$router.push("/mobile/mcenter/setting");
               }
-              this.$router.push("/mobile/mcenter/setting");
-            }, 2000);
+            });
           },
           fail: res => {
             this.errMsg = `${res.data.msg}`;
@@ -315,8 +313,8 @@ export default {
       const pwdInfo = {
         username: this.pwdResetInfo.userName.value,
         email: this.pwdResetInfo.email.value,
-        new_password: this.pwdResetInfo.newPwd.value,
-        confirm_password: this.pwdResetInfo.confNewPwd.value,
+        new_password: this.pwdResetInfo.newPwd.value.toLowerCase(),
+        confirm_password: this.pwdResetInfo.confNewPwd.value.toLowerCase(),
         keyring: this.$route.query.kr
       };
       if (this.$route.query.type === "agent") {
@@ -371,12 +369,6 @@ export default {
 
 <style lang="scss" module>
 @import "~@/css/variable.scss";
-
-.content-wrap {
-  background: #fefffe;
-  min-height: 100vh;
-}
-
 .reset-container {
   min-height: 100%;
   background-color: $main_background_white1;

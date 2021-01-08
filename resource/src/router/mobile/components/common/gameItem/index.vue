@@ -133,6 +133,9 @@ export default {
       siteConfig: "getSiteConfig",
       BBOSDomain: "getBBOSDomain"
     }),
+    themeTPL() {
+      return this.siteConfig.MOBILE_WEB_TPL;
+    },
     /**
      * 平台名稱顯示特例
      * @method vendorName
@@ -206,11 +209,11 @@ export default {
       return {
         src: `${resultUrl}?v=${Date.now().toString()}`,
         error:
-          this.theme === "ey1"
+          this.themeTPL === "ey1"
             ? ey1_default_img
             : this.$getCdnPath("/static/image/game_loading_s.gif"),
         loading:
-          this.theme === "ey1"
+          this.themeTPL === "ey1"
             ? ey1_default_img
             : this.$getCdnPath("/static/image/game_loading_s.gif")
       };
@@ -336,7 +339,7 @@ export default {
      * @returns {object} Class Object
      */
     getClass(className, classInfo) {
-      const style = this[`$style_${this.theme}`] || this.$style_porn1;
+      const style = this[`$style_${this.themeTPL}`] || this.$style_porn1;
       const classObj = {};
 
       className.forEach(name => {
@@ -455,3 +458,4 @@ export default {
 
 <style lang="scss" src="./css/porn1.module.scss" module="$style_porn1"></style>
 <style lang="scss" src="./css/ey1.module.scss" module="$style_ey1"></style>
+<style lang="scss" src="./css/sg1.module.scss" module="$style_sg1"></style>

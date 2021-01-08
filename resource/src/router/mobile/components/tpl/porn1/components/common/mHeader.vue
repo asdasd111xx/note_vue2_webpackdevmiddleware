@@ -653,21 +653,21 @@ export default {
 }
 
 .sp-search {
-  background: url("/static/image/_new/common/icon_search_gray.png");
+  background: url("/static/image/common/ic_search_grey.png");
   width: 20px;
   height: 20px;
   background-size: contain;
 }
 
 .gay-search {
-  background: url("/static/image/_new/common/icon_search_white.png");
+  background: url("/static/image/common/ic_search_white.png");
   width: 20px;
   height: 20px;
   background-size: contain;
 }
 
 .normal-search {
-  background: url("/static/image/_new/common/icon_search_n.png");
+  background: url("/static/image/common/ic_search_gold.png");
   width: 20px;
   height: 20px;
   background-size: contain;

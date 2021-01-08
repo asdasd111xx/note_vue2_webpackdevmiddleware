@@ -10,7 +10,6 @@ export default {
       ),
     cardSg1: () =>
       import(/* webpackChunkName: 'cardSg1' */ "../../tpl/sg1/components/card"),
-
     homeSg1: () =>
       import(/* webpackChunkName: 'homeSg1' */ "../../tpl/sg1/components/home"),
     loginSg1: () =>
@@ -32,6 +31,14 @@ export default {
     serviceSg1: () =>
       import(
         /* webpackChunkName: 'serviceSg1' */ "../../tpl/sg1/components/service"
+      ),
+    webviewSg1: () =>
+      import(
+        /* webpackChunkName: 'webviewSg1' */ "../../tpl/sg1/components/webview"
+      ),
+    installSg1: () =>
+      import(
+        /* webpackChunkName: 'installSg1' */ "../../tpl/sg1/components/install"
       ),
     resetPwdSg1: () =>
       import(
@@ -60,6 +67,14 @@ export default {
     videoListSg1: () =>
       import(
         /* webpackChunkName: 'videoListSg1' */ "../../tpl/sg1/components/videoList"
+      ),
+    hotLobbySg1: () =>
+      import(
+        /* webpackChunkName: 'hotLobbySg1' */ "../../tpl/sg1/components/hotLobby"
+      ),
+    searchSg1: () =>
+      import(
+        /* webpackChunkName: 'searchSg1' */ "../../tpl/sg1/components/search"
       )
   },
   mcenter: {

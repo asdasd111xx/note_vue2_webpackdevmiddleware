@@ -1,6 +1,6 @@
 <template>
   <div>
-    <div :class="$style['back']" @click="$router.push('/mobile/mcenter/home')">
+    <div :class="$style['back']" @click="$router.back()">
       <img
         :src="$getCdnPath(`/static/image/common/btn_back_grey.png`)"
         alt="back"
@@ -114,7 +114,7 @@ export default {
 
   .qrcode-wrap {
     position: absolute;
-    bottom: 7.5%;
+    bottom: 29.5%;
     left: 50%;
     transform: translateX(-50%);
     width: 25%;

@@ -99,7 +99,7 @@ export default {
             }
           })
           .catch(error => {
-            this.actionSetGlobalMessage({ msg: error.data.msg });
+            this.actionSetGlobalMessage({ msg: error.response.data.msg });
             this.avatarSrc = this.$getCdnPath(
               `/static/image/common/mcenter/default/avatar_${imgSrcIndex}.png`
             );
@@ -175,7 +175,7 @@ export default {
 
 .info-wrap {
   height: 70px;
-  padding: 10px 9px;
+  padding: 10px 4px;
   width: 100%;
 
   > div {

@@ -10,7 +10,11 @@
             :class="$style['news-item']"
           >
             <h4 :class="$style['news-title']">{{ item.title }}</h4>
-            <p :class="$style['news-content']" v-html="item.content" />
+            <p
+              :class="$style['news-content']"
+              v-html="item.content.replace('\n', '<br>')"
+              v-if="item.content"
+            />
           </div>
         </div>
         <div :class="[$style['no-remind'], 'clearfix']">
@@ -32,7 +36,11 @@
             :key="item.id"
             :class="$style['news-item']"
           >
-            <p :class="$style['news-content']" v-html="item.content" />
+            <p
+              v-html="item.content.replace('\n', '<br>')"
+              v-if="item.content"
+              :class="$style['news-content']"
+            />
           </div>
         </div>
       </div>
@@ -57,7 +65,7 @@
 </template>
 
 <script>
-import { mapGetters } from 'vuex';
+import { mapGetters } from "vuex";
 
 export default {
   props: {
@@ -72,29 +80,29 @@ export default {
   },
   computed: {
     ...mapGetters({
-      post: 'getPost',
-      siteConfig: 'getSiteConfig',
+      post: "getPost",
+      siteConfig: "getSiteConfig"
     }),
     themeTPL() {
       return this.siteConfig.MOBILE_WEB_TPL;
-    },
+    }
   },
   methods: {
     closePop(showDetail) {
       if (showDetail) {
-        this.$router.push('mobile/mcenter/information/post');
+        this.$router.push("mobile/mcenter/information/post");
         return;
       }
 
       if (this.isTick) {
-        localStorage.setItem('do-not-show-home-post', true);
+        localStorage.setItem("do-not-show-home-post", true);
       }
 
       //   if (!!this.sitePostList) {
       //     localStorage.setItem('is-show-popup-announcement', true);
       //   }
 
-      this.$emit('close', !!this.sitePostList);
+      this.$emit("close", !!this.sitePostList);
     }
   }
 };
@@ -149,11 +157,11 @@ export default {
   height: 16px;
   margin-right: 4px;
   opacity: 0.5;
-  background: url("/static/image/_new/common/icon_noremember.png") 0 0 / contain
+  background: url("/static/image/common/icon_noremember.png") 0 0 / contain
     no-repeat;
 
   &.active {
-    background-image: url("/static/image/_new/common/icon_notips_active.png");
+    background-image: url("/static/image/common/icon_notips_active.png");
     opacity: 0.5;
   }
 }

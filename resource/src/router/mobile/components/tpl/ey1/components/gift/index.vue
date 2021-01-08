@@ -2,7 +2,7 @@
   <mobile-container :class="$style.container" :header-config="headerConfig">
     <div slot="content" :class="$style['content-wrap']">
       <page-loading :is-show="isLoading" />
-      <div v-for="list in currentMenu">
+      <div v-for="(list, key) in currentMenu" :key="key">
         <div v-if="isMounted" :class="$style['item-header']">
           <div :class="$style['item-icon']">
             <img :src="$getCdnPath(list.icon)" />
@@ -12,9 +12,10 @@
           </div>
         </div>
         <div
-          v-for="item in list.items"
+          v-for="(item, key) in list.items"
           :class="$style['cell']"
           @click="linkTo(item)"
+          :key="key"
         >
           <div>
             {{ item.name }}
@@ -116,7 +117,7 @@ export default {
     giftMenuList() {
       return [
         {
-          isShow: !["41"].includes(this.memInfo.user.domain),
+          isShow: true,
           title: "福利",
           icon: "/static/image/ey1/gift/icon_gift_bonus.png",
           items: [
@@ -269,8 +270,35 @@ export default {
       }
     },
     getFuliUrl(target) {
-      localStorage.setItem("iframe-third-url-title", target.name);
-      this.$router.push(`/mobile/iframe/third/fengniao?alias=${target.alias}`);
+      let newWindow = "";
+      newWindow = window.open();
+      this.isLoading = true;
+
+      goLangApiRequest({
+        method: "get",
+        url: `${this.siteConfig.YABO_GOLANG_API_DOMAIN}/xbb/Link/External/Url?lang=zh-cn&urlName=${target.alias}&needToken=true&externalCode=fengniao`
+      })
+        .then(res => {
+          setTimeout(() => {
+            this.isLoading = false;
+          }, 1500);
+          const url = res.data.uri + "&cors=embed";
+          newWindow.location = url;
+        })
+        .catch(error => {
+          setTimeout(() => {
+            this.isLoading = false;
+          }, 1500);
+          newWindow.close();
+
+          if (error && error.data && error.data.msg) {
+            this.actionSetGlobalMessage({ msg: error.data.msg });
+          }
+        });
+      return;
+
+      // localStorage.setItem("iframe-third-url-title", target.name);
+      // this.$router.push(`/mobile/iframe/third/fengniao?alias=${target.alias}`);
     }
   }
 };

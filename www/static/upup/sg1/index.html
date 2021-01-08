@@ -4,16 +4,11 @@
     <meta charset="utf-8">
     <meta name="description" content="">
     <meta name="keywords" content="">
-    <!-- wonder 的 google 網站驗證 -->
     <meta name="google-site-verification" content="_jQyYxS7tZ59syz7teR6YRr4L6ZYjiMbJsJb6ymLPCw">
     <meta name="viewport"
         content="width=device-width, initial-scale=1.0, minimum-scale=1.0, maximum-scale=1.0, user-scalable=no">
     <meta name="apple-mobile-web-app-capable" content="yes">
     <meta http-equiv="x-dns-prefetch-control" content="on">
-    <link rel="dns-prefetch" href="https://b1.xf0371.com/">
-    <link rel="dns-prefetch" href="https://b1.alwm03.cn">
-    <link rel="dns-prefetch" href="https://bbos.bbin-asia.com">
-
     <style type="text/css">
         @charset "UTF-8";
 
@@ -50,37 +45,51 @@
                 max-width: 768px !important;
             }
         }
-
-        /* RWD 斷點 */
-        .mobile-wrap__3LiU2 {
-            height: 100%;
-            overflow-y: auto;
-        }
-
-        .container__9RcbU {
+    </style>
+    <style type="text/css">
+        .container__3Np4I {
             min-width: 320px;
             min-height: calc(100vh);
         }
 
-        .has-header__3dDW- {
+        .has-header__3YEHd {
             padding-top: 43px;
         }
 
-        .has-footer__1Zo8K {
-            padding-bottom: 45px;
+        .has-footer__1w9G4 {
+            padding-bottom: 65px;
         }
 
-
-        div.container__xEJTG {
-            background-color: #fff;
-            background-image: url("/static/image/_new/service/header_bg.png");
-            background-repeat: no-repeat;
-            background-size: 100% auto;
-            background-position: 0 -70px;
-            background-repeat: no-repeat;
+        .note-content__3tthZ {
+            position: absolute;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            z-index: 999;
         }
 
-        .avatar-info-wrap__-IaVk {
+        .mask__2L6rp {
+            position: fixed;
+            top: 0;
+            left: 0;
+            background-color: rgba(0, 0, 0, 0.5);
+            width: 100%;
+            height: 100%;
+            z-index: 0;
+        }
+    </style>
+    <style type="text/css">
+        @charset "UTF-8";
+
+        /* RWD 斷點 */
+        .container__2GB8l {
+            position: relative;
+            height: 100vh;
+        }
+
+        .avatar-info-wrap__1We4w {
+            height: 90px;
             display: flex;
             align-items: center;
             padding: 12px;
@@ -92,32 +101,32 @@
             box-shadow: 0 0.2rem 0.4rem 0 rgba(0, 0, 0, 0.2);
         }
 
-        .avatar-info-wrap__-IaVk .info-wrap__2c93e {
-            padding-left: 10px;
-            height: 70px;
+        .avatar-info-wrap__1We4w .info-wrap__bu58b {
+            padding: 10px;
+            height: 100%;
         }
 
-        .avatar-info-wrap__-IaVk .info-wrap__2c93e span {
-            height: 35px;
+        .avatar-info-wrap__1We4w .info-wrap__bu58b span {
+            height: 50%;
             display: flex;
             align-items: center;
         }
 
-        .avatar-info-wrap__-IaVk .info-wrap__2c93e>span:last-child {
+        .avatar-info-wrap__1We4w .info-wrap__bu58b>span:last-child {
             color: #a5a9b3;
         }
 
-        .avatar-info-wrap__-IaVk .avatar-wrap__33rpp {
+        .avatar-info-wrap__1We4w .avatar-wrap__1NGW8 {
             height: 70px;
             width: 70px;
         }
 
-        .avatar-info-wrap__-IaVk .avatar-wrap__33rpp>img {
+        .avatar-info-wrap__1We4w .avatar-wrap__1NGW8>img {
             height: 100%;
             border-radius: 50%;
         }
 
-        .service-header__3-MSd {
+        .service-header__2Tusl {
             text-align: center;
             position: relative;
             height: 43px;
@@ -125,19 +134,19 @@
             font-size: 17px;
         }
 
-        .service-header__3-MSd .title__2aGiF {
+        .service-header__2Tusl .title__15RcB {
             line-height: 43px;
         }
 
-        .service-header__3-MSd .feedback__1QeyJ {
+        .service-header__2Tusl .feedback__zAdZT {
             line-height: 43px;
             position: absolute;
             top: 0;
             right: 12px;
         }
 
-        .info-card__2KBXR,
-        .info-card2__LtBuI {
+        .info-card__9zCud,
+        .info-card2__2DzP7 {
             color: white;
             background-image: -webkit-linear-gradient(196deg, #f8d5c0, #ce8a70);
             background-image: linear-gradient(254deg, #f8d5c0, #ce8a70);
@@ -149,65 +158,71 @@
             box-shadow: 0 0.2rem 0.4rem 0 rgba(0, 0, 0, 0.2);
         }
 
-        .info-card__2KBXR>div:first-child,
-        .info-card2__LtBuI>div:first-child {
+        .info-card__9zCud>div:first-child,
+        .info-card2__2DzP7>div:first-child {
             display: flex;
             flex-direction: column;
             padding: 14px;
-            background-image: url("/static/image/_new/service/service_card.png");
+            background-image: url("/static/image/sg1/service/bg_service01.png");
             background-size: auto 100%;
             background-position: top 0 right 0;
-            height: 100%;
             background-repeat: no-repeat;
         }
 
-        .info-card__2KBXR>div:first-child>div,
-        .info-card2__LtBuI>div:first-child>div {
+        .info-card__9zCud>div:first-child>div,
+        .info-card2__2DzP7>div:first-child>div {
             height: 25px;
             line-height: 25px;
         }
 
-        .info-card__2KBXR>div:first-child>div:first-child,
-        .info-card2__LtBuI>div:first-child>div:first-child {
+        .info-card__9zCud>div:first-child>div:first-child,
+        .info-card2__2DzP7>div:first-child>div:first-child {
             font-size: 20px;
             display: flex;
             align-items: center;
         }
 
-        .info-card__2KBXR>div:first-child>div:nth-child(2),
-        .info-card2__LtBuI>div:first-child>div:nth-child(2) {
+        .info-card__9zCud>div:first-child>div:nth-child(2),
+        .info-card2__2DzP7>div:first-child>div:nth-child(2) {
             color: rgba(255, 255, 255, 0.5);
         }
 
-        .info-card__2KBXR>div:first-child>div>img,
-        .info-card2__LtBuI>div:first-child>div>img {
+        .info-card__9zCud>div:first-child>div>img,
+        .info-card2__2DzP7>div:first-child>div>img {
             width: 24px;
             height: 24px;
         }
 
-        .info-card2__LtBuI {
+        .info-card2__2DzP7 {
             margin-top: 20px;
             background-image: -webkit-linear-gradient(16deg, #8ab3e2, #b5d0ef);
             background-image: linear-gradient(74deg, #8ab3e2, #b5d0ef);
         }
 
-        .btn-next__2iqtz {
+        .info-card2__2DzP7>div:first-child {
+            background: url("/static/image/common/service/bg_service02.png");
+            background-size: auto 100%;
+            background-position: top 0 right 0;
+            background-repeat: no-repeat;
+        }
+
+        .btn-next__11bbP {
             position: absolute;
             height: 100%;
             top: calc(50% - 7px);
             right: 14px;
         }
 
-        .btn-next__2iqtz>img {
+        .btn-next__11bbP>img {
             height: 14px;
             width: 14px;
         }
 
-        .card-bg__1Y9Iy {
+        .card-bg__vE1-Y {
             height: 100%;
         }
 
-        .btn-prev__3-QPx {
+        .btn-prev__2sxBt {
             position: absolute;
             top: 0;
             bottom: 0;
@@ -217,140 +232,113 @@
             margin: auto;
         }
 
-        .btn-prev__3-QPx>img {
+        .btn-prev__2sxBt>img {
             display: block;
             width: 100%;
         }
-    </style>
-    <style type="text/css">
-        /* RWD 斷點 */
-        .footer__1-0jL {
-            margin: 0 auto;
-            max-width: 420px;
-            transition: unset !important;
-            position: fixed;
+
+        .btn-prev__2sxBt {
+            position: absolute;
+            top: 0;
             bottom: 0;
-            width: 100%;
-            min-height: 60px;
+            left: 12px;
+            width: 20px;
+            height: 20px;
+            margin: auto;
             z-index: 2;
-            background: -webkit-linear-gradient(right, #ffffff, #eeeeee);
-            background: -o-linear-gradient(left, #ffffff, #eeeeee);
-            background: -moz-linear-gradient(left, #ffffff, #eeeeee);
-            background: linear-gradient(to left, #ffffff, #eeeeee);
-            border-radius: 20px 20px 0 0;
-            box-shadow: 0pt -7px 7px 0 rgba(0, 0, 0, 0.05);
         }
 
-        .footer-item__2ojRd {
-            float: left;
-            width: 20%;
-            height: 45px;
-            color: #9aa4c2;
-        }
-
-        .footer-item__2ojRd.active__2DT0R {
-            color: #d2b79c;
-        }
-
-        .footer-item__2ojRd>div {
-            overflow: hidden;
-            height: 21px;
-            line-height: 21px;
-            padding: 0 3px;
-            font-size: 12px;
-            text-align: center;
-            text-overflow: ellipsis;
-            white-space: nowrap;
-        }
-
-        .footer-item__2ojRd>img {
+        .btn-prev__2sxBt>img {
             display: block;
-            width: 18px;
-            height: 18px;
-            margin: 6px auto 0;
+            width: 100%;
         }
 
-        @media screen and (min-width: 480px) {
-            .footer-item__2ojRd>div {
-                font-size: 13px;
-            }
+        .top-bg__3Y4F5 {
+            background: url("/static/image/sg1/service/bg_service.png");
+            -moz-background-size: 100% 100%;
+            background-size: 100% 100%;
+            height: 120px;
+            width: 100%;
+            max-width: 420px;
+            top: 0;
+            position: absolute;
+            z-index: -1;
         }
 
-        @media screen and (min-width: 768px) {
-            .footer-item__2ojRd>div {
-                font-size: 15px;
+        @media (orientation: landscape) {
+            .top-bg__3Y4F5 {
+                max-width: 768px !important;
             }
         }
     </style>
 </head>
 
 <body class="body">
-    <div id="mobile-wrap" class="mobile-wrap__3LiU2">
-        <div class="container__9RcbU has-footer__1Zo8K container__xEJTG">
-            <div class="content-wrap">
-                <div class="service-header__3-MSd">
-                    <div class="btn-prev__3-QPx"><img src="/static/image/common/btn_back_white.png"
-                            onclick="window.history.back()"></div>
-                    <div class="title__2aGiF">我的客服</div>
-                    <!-- <div class="feedback__1QeyJ" onclick="window.location.href='/mobile/mcenter/feedback/sendFeedback'">
-            意见反馈
-          </div> -->
+    <div id="mobile-wrap" class="mobile-wrap__2-1-4">
+        <div id="mobile-container" class="container__3Np4I container__2GB8l">
+            <!---->
+            <div>
+                <div class="top-bg__3Y4F5"></div>
+                <div class="service-header__2Tusl">
+                    <div class="btn-prev__2sxBt" onclick="window.history.back()"><img
+                            src="/static/image/common/btn_back_white.png?v=09900594.1"></div>
+                    <div class="title__15RcB">我的客服</div>
                 </div>
-                <div class="avatar-info-wrap__-IaVk">
-                    <div class="avatar-wrap__33rpp"><img src="/static/image/common/default/avatar_nologin.png"></div>
-                    <div class="info-wrap__2c93e"><span>Hi,&nbsp;
+                <div class="avatar-info-wrap__1We4w">
+                    <div class="avatar-wrap__1NGW8"><img src="/static/image/common/default/avatar_nologin.png"></div>
+                    <div class="info-wrap__bu58b"><span>Hi,&nbsp;
                             <span id="username"></span>
                         </span> <span>欢迎来到客服中心</span></div>
                 </div>
-                <div class="info-card__2KBXR">
-                    <div onclick="service(2)">
-                        <div><img src="/static/image/common/service/ic_service01.png">
+                <div class="info-card__9zCud">
+                    <div onclick="service()">
+                        <div><img src="/static/image/common/service/ic_service01.png?v=09900594.1">
                             &nbsp;
-                            <span>在线客服1</span>
-                        </div>
+                            <span>在线客服1</span></div>
                         <div>Main Customer Support</div>
                         <div>7*24小时专线服务 贴心至上</div>
                     </div>
-                    <div class="btn-next__2iqtz"><img src="/static/image/_new/common/btn_next.png"></div>
+                    <div class="btn-next__11bbP"><img
+                            src="/static/image/sg1/common/ic_arrow_next_white.png?v=09900594.1"></div>
                 </div>
-                <div class="info-card2__LtBuI">
+                <div class="info-card2__2DzP7">
                     <div onclick="service()">
-                        <div><img src="/static/image/common/service/ic_service02.png">
+                        <div><img src="/static/image/common/service/ic_service02.png?v=09900594.1">
                             &nbsp;
-                            <span>在线客服2</span>
-                        </div>
+                            <span>在线客服2</span></div>
                         <div>Reserve Customer Support</div>
                         <div>7*24小时专线服务 贴心至上</div>
                     </div>
-                    <div class="btn-next__2iqtz"><img src="/static/image/_new/common/btn_next.png"></div>
+                    <div class="btn-next__11bbP"><img
+                            src="/static/image/sg1/common/ic_arrow_next_white.png?v=09900594.1"></div>
                 </div>
             </div>
+            <!---->
         </div>
     </div>
+
+    <script>
+        const urlParams = new URLSearchParams(window.location.search);
+        const user = urlParams.get('username') || '';
+        document.getElementById('username').innerText = user || '尊敬的用户';
+
+        function service(target) {
+            let url = 'https://yaboxxxcs.net/chat/text/chat_1A09E4.html?skill=8ae482827375169c017375f1528b2446';
+
+            // if (url && target === 2) {
+            //   url = url.replace('gid=default', 'gid=yb04')
+            //     .replace('gid=yb01', 'gid=yb04');
+            // }
+
+            let w =
+                window.open(
+                    url,
+                    'mobile service',
+                    `width=800, height=800`
+                );
+
+            w.document.title = "在线客服";
+        }
+    </script>
+
 </body>
-
-<script>
-    const urlParams = new URLSearchParams(window.location.search);
-    const user = urlParams.get('username') || '';
-    document.getElementById('username').innerText = user || '尊敬的用户';
-
-    function service(target) {
-        let url = 'https://yaboxxxcs.net/chat/text/chat_1A09E4.html?skill=8ae482827375169c017375f1528b2446';
-
-        // if (url && target === 2) {
-        //   url = url.replace('gid=default', 'gid=yb04')
-        //     .replace('gid=yb01', 'gid=yb04');
-        // }
-
-        let w =
-            window.open(
-                url,
-                'mobile service',
-                `width=800, height=800`
-            );
-
-        w.document.title = "在线客服";
-    }
-</script>
-
-</html>

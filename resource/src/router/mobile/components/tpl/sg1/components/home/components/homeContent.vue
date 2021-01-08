@@ -234,6 +234,8 @@ export default {
   overflow: hidden;
   position: relative;
   padding: 0 18px 0 13px;
+  background: white;
+  z-index: 4;
 }
 
 .type-wrap {

@@ -82,17 +82,6 @@ export default {
         }))
       ];
 
-      // 因億元尚未有開加密貨幣的欄位
-      // if (this.withdrawUserData.crypto) {
-      //   resulAccount = [
-      //     ...resulAccount,
-      //     ...this.withdrawUserData.crypto.map(info => ({
-      //       ...info,
-      //       withdrawType: "crypto_id"
-      //     }))
-      //   ];
-      // }
-
       if (this.withdrawUserData.isSupportCGPay && !isMobile()) {
         return resulAccount.concat({
           id: "cgpay",

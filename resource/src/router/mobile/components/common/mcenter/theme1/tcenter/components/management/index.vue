@@ -3,19 +3,19 @@
     <div v-if="!$route.params.date" :class="$style['top-link-wrap']">
       <div
         :class="{ [$style.active]: $route.params.page === 'promote' }"
-        @click="$router.push('/mobile/mcenter/tcenter/management/promote')"
+        @click="$router.replace('/mobile/mcenter/tcenter/management/promote')"
       >
         <span>{{ $text("S_FRIENDS_PROMOTE", "推广信息") }}</span>
       </div>
       <div
         :class="{ [$style.active]: $route.params.page === 'member' }"
-        @click="$router.push('/mobile/mcenter/tcenter/management/member')"
+        @click="$router.replace('/mobile/mcenter/tcenter/management/member')"
       >
         <span>{{ $text("S_MEMBER_STATUS", "会员概况") }}</span>
       </div>
       <div
         :class="{ [$style.active]: $route.params.page === 'friends' }"
-        @click="$router.push('/mobile/mcenter/tcenter/management/friends')"
+        @click="$router.replace('/mobile/mcenter/tcenter/management/friends')"
       >
         <span>{{ $text("S_FIRST_LEVEL_FRIEND", "一级好友") }}</span>
       </div>
@@ -50,31 +50,29 @@ export default {
         /* webpackChunkName: 'firstFriends' */ "./components/firstFriends/index"
       ),
     recommend: () =>
-      import(
-        /* webpackChunkName: 'recommend' */ "./components/recommend/index"
-      ),
+      import(/* webpackChunkName: 'recommend' */ "./components/recommend/index")
   },
   mixins: [management],
   props: {
     setTabState: {
       type: Function,
-      required: true,
+      required: true
     },
     setHeaderTitle: {
       type: Function,
-      required: true,
-    },
+      required: true
+    }
   },
   computed: {
     ...mapGetters({
       memInfo: "getMemInfo",
-      siteConfig: "getSiteConfig",
+      siteConfig: "getSiteConfig"
     }),
     $style() {
       const style =
         this[`$style_${this.siteConfig.MOBILE_WEB_TPL}`] || this.$style_porn1;
       return style;
-    },
+    }
   },
   created() {
     if (this.$route.params.page) {
@@ -83,9 +81,9 @@ export default {
 
     this.$router.push({
       name: "mcenter-tcenter-management",
-      params: { page: "member" },
+      params: { page: "member" }
     });
-  },
+  }
 };
 </script>
 

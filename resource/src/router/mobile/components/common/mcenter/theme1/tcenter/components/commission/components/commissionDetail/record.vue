@@ -144,23 +144,23 @@
               <span
                 :class="[
                   $style.amount,
-                  { [$style.deficit]: +currentInfo.amount < 0 }
+                  { [$style.deficit]: +detailList.amount < 0 }
                 ]"
               >
-                {{ currentInfo.amount }}
+                {{ detailList.amount }}
               </span>
             </div>
             <div :class="[$style.detail, 'clearfix']">
               <span :class="[$style.text, $style.main]">
                 {{ $text("S_REBATE_LEVEL", "返利级别") }}
               </span>
-              <span :class="[$style.amount]"> {{ currentInfo.rate }} % </span>
+              <span :class="[$style.amount]"> {{ detailList.rate }} % </span>
             </div>
           </div>
 
           <div :class="$style.date">
-            ({{ currentInfo.start_at | dateFormat }}-{{
-              currentInfo.end_at | dateFormat
+            ({{ detailList.start_at | dateFormat }}-{{
+              detailList.end_at | dateFormat
             }})
           </div>
 
@@ -170,7 +170,7 @@
                 {{ $text("S_ACH_VALID_MEMBERS", "有效会员") }}
               </div>
               <div :class="$style.amount">
-                {{ currentInfo.valid_user }}
+                {{ detailList.valid_user }}
                 {{ $text("S_PERSON", "人") }}
               </div>
             </div>
@@ -180,7 +180,7 @@
                 {{ $text("S_VALID_BET", "有效投注") }}
               </div>
               <div :class="$style.amount">
-                {{ currentInfo.valid_bet }}
+                {{ detailList.valid_bet }}
               </div>
             </div>
 
@@ -191,10 +191,10 @@
               <div
                 :class="[
                   $style.amount,
-                  { [$style.deficit]: +currentInfo.profit < 0 }
+                  { [$style.deficit]: +detailList.profit < 0 }
                 ]"
               >
-                {{ currentInfo.profit }}
+                {{ detailList.profit }}
               </div>
             </div>
 
@@ -203,7 +203,7 @@
                 {{ $text("S_SENT_RAKEBACK", "已派返水") }}
               </div>
               <div :class="$style.amount">
-                {{ currentInfo.dispatched_rebate }}
+                {{ detailList.dispatched_rebate }}
               </div>
             </div>
 
@@ -212,7 +212,7 @@
                 {{ $text("S_SENT_PROMOTIONS", "已派优惠") }}
               </div>
               <div :class="$style.amount">
-                {{ currentInfo.dispatched_offer }}
+                {{ detailList.dispatched_offer }}
               </div>
             </div>
 
@@ -221,7 +221,7 @@
                 {{ $text("S_MEM_DEPOSIT", "会员入款") }}
               </div>
               <div :class="$style.amount">
-                {{ currentInfo.deposit }}
+                {{ detailList.deposit }}
               </div>
             </div>
 
@@ -232,10 +232,10 @@
               <div
                 :class="[
                   $style.amount,
-                  { [$style.deficit]: +currentInfo.withdraw < 0 }
+                  { [$style.deficit]: +detailList.withdraw < 0 }
                 ]"
               >
-                {{ currentInfo.withdraw }}
+                {{ detailList.withdraw }}
               </div>
             </div>
 
@@ -244,12 +244,12 @@
                 {{ $text("S_PLATFORM_COST", "平台费") }}
               </div>
               <div :class="$style.amount">
-                {{ currentInfo.vendor_fee }}
+                {{ detailList.vendor_fee }}
               </div>
             </div>
 
             <div
-              v-if="currentInfo.shift_amount"
+              v-if="detailList.shift_amount"
               :class="[$style.detail, 'clearfix']"
             >
               <div :class="$style.text">

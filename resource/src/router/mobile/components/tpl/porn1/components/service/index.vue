@@ -51,7 +51,7 @@
         <div :class="$style['btn-next']">
           <img
             :src="
-              $getCdnPath(`/static/image/_new/webview/ic_service_arrow.png`)
+              $getCdnPath(`/static/image/common/service/ic_service_arrow.png`)
             "
           />
         </div>
@@ -75,7 +75,7 @@
         <div :class="$style['btn-next']">
           <img
             :src="
-              $getCdnPath(`/static/image/_new/webview/ic_service_arrow.png`)
+              $getCdnPath(`/static/image/common/service/ic_service_arrow.png`)
             "
           />
         </div>
@@ -88,7 +88,7 @@
       >
         <div :class="$style['tip-img']">
           <img
-            :src="$getCdnPath(`/static/image/_new/service/appicon_yabo.png`)"
+            :src="$getCdnPath(`/static/image/porn1/service/appicon_yabo.png`)"
           />
         </div>
 
@@ -102,7 +102,7 @@
             <img
               :src="
                 $getCdnPath(
-                  '/static/image/_new/service/popup/popup_ic_close.png'
+                  '/static/image/common/service/popup/popup_ic_close.png'
                 )
               "
               alt="close"
@@ -116,7 +116,7 @@
               <img
                 :src="
                   $getCdnPath(
-                    '/static/image/_new/service/popup/popup_img01.png'
+                    '/static/image/porn1/service/popup/popup_img01.png'
                   )
                 "
                 alt="img01"
@@ -134,7 +134,7 @@
                 <img
                   :src="
                     $getCdnPath(
-                      '/static/image/_new/service/popup/popup_img02.png'
+                      '/static/image/porn1/service/popup/popup_img02.png'
                     )
                   "
                   alt="img02"
@@ -282,7 +282,7 @@ export default {
 
 div.container {
   background-color: #fff;
-  background-image: url("/static/image/_new/service/header_bg.png");
+  background-image: url("/static/image/porn1/service/header_bg.png");
   background-repeat: no-repeat;
   background-size: 100% auto;
   background-position: 0 -70px;
@@ -365,10 +365,9 @@ div.container {
     display: flex;
     flex-direction: column;
     padding: 14px;
-    background-image: url("/static/image/_new/service/service_card.png");
+    background-image: url("/static/image/porn1/service/service_card.png");
     background-size: auto 100%;
     background-position: top 0 right 0;
-    height: 100%;
     background-repeat: no-repeat;
 
     > div {
@@ -397,6 +396,13 @@ div.container {
   margin-top: 20px;
   background-image: -webkit-linear-gradient(16deg, #8ab3e2, #b5d0ef);
   background-image: linear-gradient(74deg, #8ab3e2, #b5d0ef);
+
+  > div:first-child {
+    background: url("/static/image/common/service/bg_service02.png");
+    background-size: auto 100%;
+    background-position: top 0 right 0;
+    background-repeat: no-repeat;
+  }
 }
 
 .btn-next {
@@ -561,7 +567,7 @@ div.container {
         top: 50%;
         left: 20px;
         transform: translateY(-50%);
-        background: url("/static/image/_new/service/popup/popup_ic_search.png")
+        background: url("/static/image/common/service/popup/popup_ic_search.png")
           no-repeat;
         width: 12px;
         height: 12px;

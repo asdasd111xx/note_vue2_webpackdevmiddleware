@@ -51,6 +51,10 @@
   margin-top: 52px;
 }
 
+.message-list-editing {
+  margin-bottom: 52px;
+}
+
 .message-content {
   min-height: calc(100vh - 43px - 10px);
   margin-top: 10px;
@@ -268,7 +272,7 @@
 
   &.disable {
     pointer-events: none;
-    opacity: 0.5;
+    color: #cbced8;
   }
 }
 

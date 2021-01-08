@@ -44,67 +44,70 @@
   </transition>
 </template>
 <script>
-import { mapGetters, mapActions } from 'vuex';
-import mcenter from '@/api/mcenter';
-import member from '@/api/member';
-import axios from 'axios';
-import avatarEditer from './avatarEditer';
+import { mapGetters, mapActions } from "vuex";
+import mcenter from "@/api/mcenter";
+import member from "@/api/member";
+import axios from "axios";
+import avatarEditer from "./avatarEditer";
 export default {
   components: {
-    pageLoading: () => import(/* webpackChunkName: 'pageLoading' */ '@/router/mobile/components/common/pageLoading'),
+    pageLoading: () =>
+      import(
+        /* webpackChunkName: 'pageLoading' */ "@/router/mobile/components/common/pageLoading"
+      ),
     avatarEditer
   },
   props: {
     isShow: {
       type: Boolean,
-      default: false,
-    },
+      default: false
+    }
   },
   data() {
     return {
       currentImgID: 999,
       isShowAvatarEditer: false,
       defaultAvatarList: [
-        { url: '/static/image/common/mcenter/default/avatar_0.png' },
-        { url: '/static/image/common/mcenter/default/avatar_1.png' },
-        { url: '/static/image/common/mcenter/default/avatar_2.png' },
-        { url: '/static/image/common/mcenter/default/avatar_3.png' },
-        { url: '/static/image/common/mcenter/default/avatar_4.png' },
-        { url: '/static/image/common/mcenter/default/avatar_5.png' },
-        { url: '/static/image/common/mcenter/default/avatar_6.png' },
-        { url: '/static/image/common/mcenter/default/avatar_7.png' },
+        { url: "/static/image/common/mcenter/default/avatar_0.png" },
+        { url: "/static/image/common/mcenter/default/avatar_1.png" },
+        { url: "/static/image/common/mcenter/default/avatar_2.png" },
+        { url: "/static/image/common/mcenter/default/avatar_3.png" },
+        { url: "/static/image/common/mcenter/default/avatar_4.png" },
+        { url: "/static/image/common/mcenter/default/avatar_5.png" },
+        { url: "/static/image/common/mcenter/default/avatar_6.png" },
+        { url: "/static/image/common/mcenter/default/avatar_7.png" }
       ],
-      isPageLoading: false,
+      isPageLoading: false
     };
   },
   computed: {
     ...mapGetters({
-      memInfo: 'getMemInfo',
-      siteConfig: 'getSiteConfig'
+      memInfo: "getMemInfo",
+      siteConfig: "getSiteConfig"
     }),
     $style() {
-      const style = this[`$style_${this.siteConfig.MOBILE_WEB_TPL}`] || this.$style_porn1;
+      const style =
+        this[`$style_${this.siteConfig.MOBILE_WEB_TPL}`] || this.$style_porn1;
       return style;
-    },
+    }
   },
   mounted() {
     // 是否自訂上傳頭像
     // 八張預設圖
     this.actionSetUserdata(true).then(() => {
-      this.currentImgID = this.memInfo.user.custom ? '999' : this.memInfo.user.image;
-    })
+      this.currentImgID = this.memInfo.user.custom
+        ? "999"
+        : this.memInfo.user.image;
+    });
   },
   methods: {
-    ...mapActions([
-      'actionSetUserdata',
-      'actionSetGlobalMessage'
-    ]),
-    onClose() {
-      this.$emit('close');
+    ...mapActions(["actionSetUserdata", "actionSetGlobalMessage"]),
+    onClose(index) {
+      this.$emit("close", index);
     },
     handleClickFunc(key) {
       if (key === "camera") {
-        this.$refs['cameraInput'].click();
+        this.$refs["cameraInput"].click();
       } else if (key === "album") {
         this.isShowAvatarEditer = true;
       }
@@ -115,10 +118,10 @@ export default {
       this.isShowAvatarEditer = true;
 
       this.$nextTick(() => {
-        this.$refs['avatar-editer'].option.img = URL.createObjectURL(img);
+        this.$refs["avatar-editer"].option.img = URL.createObjectURL(img);
         this.isPageLoading = false;
-        this.$refs['cameraInput'].value = null;
-      })
+        this.$refs["cameraInput"].value = null;
+      });
     },
     saveAvatar(index) {
       if (this.memInfo.user.image === this.imgID) {
@@ -127,26 +130,27 @@ export default {
       }
 
       this.isPageLoading = true;
-      mcenter.accountDataSet({
-        params: { image: index, custom: false },
-        success: () => {
-          this.onClose();
-          setTimeout(() => {
+      mcenter
+        .accountDataSet({
+          params: { image: index, custom: false },
+          success: () => {
+            this.onClose(index);
+            setTimeout(() => {
+              this.isPageLoading = false;
+            }, 500);
+          },
+          fail: res => {
+            this.actionSetGlobalMessage({ msg: res.data.msg });
             this.isPageLoading = false;
-          }, 500)
-        },
-        fail: (res) => {
-          this.actionSetGlobalMessage({ msg: res.data.msg })
+          }
+        })
+        .then(() => {
           this.isPageLoading = false;
-
-        }
-      }).then(() => {
-        this.isPageLoading = false;
-      });
+        });
     },
     selectImg(index) {
       this.currentImgID = index;
-      this.saveAvatar(index)
+      this.saveAvatar(index);
     },
     handleCloseEditer(isDone) {
       this.actionSetUserdata(true);
@@ -160,7 +164,7 @@ export default {
     setPageLoading(set) {
       this.isPageLoading = set;
     }
-  },
+  }
 };
 </script>
 

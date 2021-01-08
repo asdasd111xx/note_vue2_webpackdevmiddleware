@@ -36,8 +36,8 @@
         width: 270px;
         height: 39px;
         color: #fff;
-        background: #00347d;
-        // background: linear-gradient(to left, #bd9d7d, #f9ddbd);
+        // background: #00347d;
+        background: linear-gradient(to left, #bd9d7d, #f9ddbd);
 
         border: 0;
         outline: none;
@@ -45,8 +45,8 @@
       }
 
       .unrebate-btn {
-        background: #aaa;
         color: #cfcfcf;
+        background: linear-gradient(to left, #e9dacb, #eee5db);
       }
     }
 
@@ -67,6 +67,15 @@
       }
     }
   }
+}
+
+// No-data
+.no-data {
+  line-height: 40px;
+  margin: 5px 0;
+  background: #fff;
+  color: #aaa;
+  text-align: center;
 }
 
 // 實返說明

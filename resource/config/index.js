@@ -38,10 +38,12 @@ const domain = "https://yb01.66boxing.com/";
 // Demo
 // const domain = 'https://sgt.66relish.com/';
 // Prod
-// const domain = 'https://sg.66relish.com/';
+// const domain = 'https://sgpr1.yaslart.com/';
+// const domain = 'https://siguaxxxapp01.com/';
+// const domain = 'https://siguaxxxapp02.com/';
 
 // Beta
-
+//
 module.exports = {
   build: {
     env: require("./prod.env"),

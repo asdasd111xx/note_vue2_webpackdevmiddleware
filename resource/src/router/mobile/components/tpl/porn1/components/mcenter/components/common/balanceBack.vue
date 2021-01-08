@@ -108,7 +108,8 @@ export default {
   computed: {
     ...mapGetters({
       hasBank: "getHasBank",
-      siteConfig: "getSiteConfig"
+      siteConfig: "getSiteConfig",
+      memInfo: "getMemInfo"
     }),
     $style() {
       const style =
@@ -131,11 +132,39 @@ export default {
       });
     },
     goBirdUrl() {
-      let url = "https://fengniao131.com/mpage-dianjin.html";
+      let cid = getCookie("cid");
+      let newWindow = "";
+      newWindow = window.open();
       this.isLoading = true;
-      localStorage.setItem("iframe-third-url", url);
-      localStorage.setItem("iframe-third-origin", this.backRouter);
-      this.$router.push(`/mobile/iframe/third/fengniao?fullscreen=true`);
+      let target = "forum_benefits";
+      goLangApiRequest({
+        method: "get",
+        url: `${this.siteConfig.YABO_GOLANG_API_DOMAIN}/xbb/Link/External/Url?lang=zh-cn&urlName=${target}&needToken=true&externalCode=fengniao`,
+        headers: {
+          cid: cid
+        }
+      })
+        .then(res => {
+          setTimeout(() => {
+            this.isLoading = false;
+          }, 1500);
+          const url = res.data.uri + "&cors=embed";
+          newWindow.location = url;
+        })
+        .catch(error => {
+          setTimeout(() => {
+            this.isLoading = false;
+          }, 1500);
+          newWindow.close();
+
+          if (error && error.data && error.data.msg) {
+            this.actionSetGlobalMessage({ msg: error.data.msg });
+          }
+        });
+      return;
+
+      // localStorage.setItem("iframe-third-url-title", target.name);
+      // this.$router.push(`/mobile/iframe/third/fengniao?alias=${target.alias}`);
     },
     birdMoney() {
       let cid = getCookie("cid");
@@ -150,7 +179,7 @@ export default {
           account: this.memInfo.user.username
         }
       }).then(res => {
-        this.birdBalance = res.data ? res.data.credits1 : "--";
+        this.birdBalance = res.data ? res.data.credits2 : "--";
       });
     }
   }

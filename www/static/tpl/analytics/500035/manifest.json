@@ -1,10 +1,10 @@
 {
-  "name": "丝瓜娱乐QA",
-  "short_name": "丝瓜娱乐QA",
+  "name": "丝瓜直播QA",
+  "short_name": "丝瓜直播QA",
   "start_url": "/mobile/launch",
   "display": "standalone",
   "background_color": "#fff",
-  "description": "丝瓜娱乐QA 測試站",
+  "description": "丝瓜直播QA 測試站",
   "icons": [
     {
       "src": "../pwa/sg1/48.png",

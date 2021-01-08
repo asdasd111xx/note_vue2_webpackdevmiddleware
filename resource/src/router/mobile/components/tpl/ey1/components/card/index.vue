@@ -4,11 +4,7 @@
     :update-search-status="updateSearchStatus"
   >
     <div slot="content" class="content-wrap">
-      <card-wrap
-        :is-show-search.sync="isShowSearch"
-        :label-theme="'ey1'"
-        :game-theme="'ey1'"
-      />
+      <card-wrap :is-show-search.sync="isShowSearch" />
     </div>
   </mobile-container>
 </template>
@@ -34,10 +30,12 @@ export default {
     }),
     headerConfig() {
       let vendor = this.$route.params.vendor;
-      const target = this.memInfo.vendors.find(item => item.vendor === vendor);
+      const target = this.memInfo.vendors.find(
+        item => item.vendor === vendor && item.kind === 5
+      );
       return {
         prev: true,
-        title: target.alias || "",
+        title: target ? target.alias : "",
         hasSearchBtn: true,
         onClick: () => {
           this.$router.back();

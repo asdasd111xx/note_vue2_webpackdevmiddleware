@@ -26,7 +26,13 @@
 
             <div :class="$style['result-item']">
               <div>{{ $text("S_COMPUTE_WAGER_INTERVAL", "结算区间") }}</div>
-              <span>{{ data.start_at }}~{{ data.end_at }}</span>
+              <span
+                >{{
+                  caculateData ? caculateData[0].start_at : data.start_at
+                }}~{{
+                  caculateData ? caculateData[0].end_at : data.end_at
+                }}</span
+              >
             </div>
 
             <template v-if="computeState">
@@ -81,6 +87,10 @@ export default {
   props: {
     data: {
       type: Object,
+      default: {}
+    },
+    caculateData: {
+      type: Object | Array,
       default: {}
     }
   },

@@ -23,9 +23,15 @@
               结算方式
             </span>
             <div :class="$style['content-right']">
-              <template>{{
-                caculateList.type === 1 ? "投注返利" : "损益返利"
-              }}</template>
+              {{
+                caculateList.type === 0
+                  ? "盈亏返利"
+                  : caculateList.type === 1
+                  ? "投注返利"
+                  : caculateList.type === 2
+                  ? "损益返利"
+                  : null
+              }}
             </div>
           </div>
 
@@ -99,6 +105,10 @@
       </div>
     </div>
 
+    <div v-if="immediateData.length === 0" :class="$style['no-data']">
+      暂时没有可领取的返利
+    </div>
+
     <div :class="$style['rebate-manual-title']" @click="isShowTip = !isShowTip">
       <icon
         :class="$style['title-icon']"
@@ -144,6 +154,7 @@ import { format } from "date-fns";
 import bbosRequest from "@/api/bbosRequest";
 import { mapActions, mapGetters } from "vuex";
 import popup from "./components/popup";
+import EST from "@/lib/EST";
 
 export default {
   components: {
@@ -193,8 +204,7 @@ export default {
       return value.toString().replace(/\B(?=(\d{3})+(?!\d))/g, ",");
     },
     dateFormat(date) {
-      const est = format(new Date(date), "yyyy/MM/dd HH:mm:ss+20:00");
-      return format(new Date(est), "yyyy-MM-dd HH:mm:ss");
+      return EST(Vue.moment(date).format("YYYY-MM-DD HH:mm:ss"));
     }
   },
   created() {
@@ -254,6 +264,7 @@ export default {
         params: { lang: "zh-cn", type }
       }).then(response => {
         this.isShowPopup = true;
+        this.immediateData = [];
         if (response.status === "000") {
           this.amountResult = response.data.dispatched_amount;
         }

@@ -1,17 +1,23 @@
 @import "./porn1.scss";
-// $main_color: #e42a30;
 
-// .alert-title {
-//   color: #fff;
-//   background: $main_color;
-// }
+.success-title {
+  color: #6aaaf5;
+}
 
-// .success-title {
-//   color: $main_color;
-// }
+.tip-wrap {
+  color: #a6a9b2;
+}
 
-// .confirm-btn {
-//   color: #fff;
-//   background: $main_color;
-//   background-image: unset;
-// }
+.alert-body-wrap {
+  border-radius: 7px;
+}
+
+.confirm-btn {
+  color: #bf8646;
+  background: #fefffe;
+  background-image: none;
+  font-size: 18px;
+  font-weight: 700;
+  line-height: 30px;
+  height: 30px;
+}

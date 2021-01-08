@@ -41,3 +41,36 @@
     color: #a2a2a2;
   }
 }
+
+.balance-auto-switch {
+  position: relative;
+  display: block;
+  width: 53px;
+  height: 28px;
+  border-radius: 18px;
+  background-color: #ccc;
+  transition: all 0.4s;
+
+  >span {
+    margin: 2px;
+    width: 24px;
+    height: 24px;
+    border-radius: 50%;
+    background-color: #fff;
+    transition: all 0.4s;
+    display: block;
+    left: 0;
+    position: absolute;
+  }
+
+  &.active {
+    background-color: #e61938;
+
+    >span {
+      margin: 2px;
+      display: block;
+      left: 18px;
+      position: absolute;
+    }
+  }
+}

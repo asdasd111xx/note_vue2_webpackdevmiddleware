@@ -4,7 +4,6 @@
       <template v-if="slotKey === 'label'">
         <game-label
           :key="`slot-${slotKey}`"
-          :theme="labelTheme"
           :is-label-receive="isLabelReceive"
           :label="paramsData.label.toString()"
           :label-data="labelData"
@@ -28,7 +27,6 @@
               <game-item
                 v-if="gameInfo.is_mobile || isFavorite"
                 :key="`game-${gameInfo.vendor}-${index}`"
-                :theme="gameTheme"
                 :game-info="gameInfo"
                 :show-vendor="gameShowVendor"
                 :show-jackpot="gameShowJackpot"
@@ -62,7 +60,6 @@
       :text="paramsData.name"
       :set-search-text="setSearchText"
       :update-search-status="updateSearchStatus"
-      :theme="gameTheme"
       :game-data="gameData"
       :game-show-vendor="gameShowVendor"
       :game-show-jackpot="gameShowJackpot"
@@ -167,8 +164,7 @@ export default {
   computed: {
     ...mapGetters({
       loginStatus: "getLoginStatus",
-      favoriteGame: "getFavoriteGame",
-      siteconfig: "getSiteConfig"
+      favoriteGame: "getFavoriteGame"
     }),
     vendor() {
       return this.$route.params.vendor === "all"
@@ -393,8 +389,8 @@ export default {
       this.showInfinite = false;
       this.isGameDataReceive = false;
       this.gameData = [];
-
-      if (this.paramsData.label === "favorite") {
+      //非搜尋頁面才篩選“最愛”
+      if (this.paramsData.label === "favorite" && !this.isShowSearch) {
         setTimeout(() => {
           this.gameData = this.favoriteData;
         }, 300);

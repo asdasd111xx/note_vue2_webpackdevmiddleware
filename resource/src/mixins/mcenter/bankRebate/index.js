@@ -148,7 +148,7 @@ export default {
      * 一鍵全領是否可按
      * @returns {boolean}} 是否可一鍵全領
      */
-    isReceiveAll() {
+    isReceiveAllLock() {
       if (this.rebateState === "initial" || this.rebateState === "loading") {
         return false;
       }
@@ -387,7 +387,7 @@ export default {
       window.scrollTo(0, 0);
     },
     rebateCaculate() {
-      if (this.siteConfig.MOBILE_WEB_TPL === "sg1" && !this.btnLock) {
+      if (!this.btnLock) {
         this.isShowTip = false;
       } else if (this.btnLock) {
         return;
@@ -396,7 +396,7 @@ export default {
       // 防連點
       this.btnLock = true;
 
-      // 頁面不重整時，點選試算的操作狀態設定為fasle
+      // 頁面不重整時，點選試算的操作狀態設定為false
       this.btnReceiveLock = this.immediateData.map(() => false);
 
       // 美東時間00:00~00:30期間，系統不提供自助返水
@@ -542,7 +542,12 @@ export default {
       });
     },
     receiveAll() {
-      if (!this.isReceiveAll) {
+      if (
+        this.isReceiveAllLock ||
+        this.immediateData.find(data => {
+          data.operateStatus === true;
+        }) === -1
+      ) {
         return;
       }
 
@@ -560,8 +565,8 @@ export default {
             idArray: response.ret.map(item => item.id),
             start_at: `${this.EST(this.rebateInitData.event_start_at)}`,
             end_at: `${this.EST(this.rebateInitData.event_end_at)}`,
-            rebate: this.caculateData[dataIndex].rebate,
-            total: this.caculateData[dataIndex].total
+            rebate: this.caculateData[0].rebate,
+            total: this.caculateData[0].total
           };
 
           // this.actionSetPop({ type: 'rebate', data: receiveData });
@@ -569,7 +574,9 @@ export default {
           this.bankRebateInit();
         },
         fail: error => {
-          this.popupMsg = error.data.msg;
+          if (error.data && error.data.msg) {
+            this.popupMsg = error.data.msg;
+          }
           this.rebateState = "initial";
           this.init();
         }

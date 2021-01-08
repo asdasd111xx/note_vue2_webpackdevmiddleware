@@ -51,7 +51,7 @@ export const site_69 = {
   MOBILE_WEB_TPL: "porn1",
   VERSION: getVersion("porn1"),
   SITE_NAME: "鸭博娱乐",
-  YABO_API_DOMAIN: "https://yaboapi.canarycherrytart.com/api-demo",
+  YABO_API_DOMAIN: "https://yaboapi.canarycherrytart.com/api",
   YABO_GOLANG_API_DOMAIN: "https://yaboapi.canarycherrytart.com/api-v2",
   // YABO_GOLANG_API_DOMAIN: "https://yaboapi.canarycherrytart.com/api-v2/cxbb",
   ACTIVES_BOUNS_WEBSOCKETV2:
@@ -129,26 +129,26 @@ export const site_100004 = {
 /* eslint-enable camelcase */
 
 /**
- * 丝瓜娱乐 正式站正式環境
+ * 丝瓜直播 正式站正式環境
  */
 export const site_80 = {
   ...preset,
   MOBILE_WEB_TPL: "sg1", // 手機網頁版模版
   VERSION: getVersion("sg1"),
-  SITE_NAME: "丝瓜娱乐",
+  SITE_NAME: "丝瓜直播",
   ACTIVES_BOUNS_WEBSOCKETV2:
     "wss://yaboapi.iguanagingercake.com/wsn/promosocket?"
 };
 
 /**
- * 丝瓜娱乐 正式站Demo環境
+ * 丝瓜直播 正式站Demo環境
  */
 export const site_81 = {
   ...preset,
   MOBILE_WEB_TPL: "sg1",
   VERSION: getVersion("sg1"),
-  SITE_NAME: "丝瓜娱乐",
-  YABO_API_DOMAIN: "https://yaboapi.canarycherrytart.com/api-demo",
+  SITE_NAME: "丝瓜直播",
+  YABO_API_DOMAIN: "https://yaboapi.canarycherrytart.com/api",
   // YABO_GOLANG_API_DOMAIN: "https://yaboapi.canarycherrytart.com/api-v2/cxbb",
   YABO_GOLANG_API_DOMAIN: "https://yaboapi.canarycherrytart.com/api-v2",
   ACTIVES_BOUNS_WEBSOCKETV2:
@@ -156,13 +156,13 @@ export const site_81 = {
 };
 
 /**
- * 丝瓜娱乐 Beta環境
+ * 丝瓜直播 Beta環境
  */
 // export const site_100003 = {
 //   ...preset,
 //   MOBILE_WEB_TPL: "sg1",
 //   VERSION: getVersion("sg1"),
-//   SITE_NAME: "丝瓜娱乐",
+//   SITE_NAME: "丝瓜直播",
 //   YABO_API_DOMAIN: "https://ybbe2.qghco.com/api",
 //   YABO_GOLANG_API_DOMAIN: "https://ybbe2.qghco.com/api-v2/cxbb",
 //   // BBOS_DOMIAN: 'https://api.bbin-staging.com/elibomApi/WebService',

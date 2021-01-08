@@ -140,7 +140,11 @@
           <div :class="$style['input-wrap']">
             <template v-if="['ey1'].includes(themeTPL)">
               <select v-model="phoneHead" :class="$style['phone-selected']">
-                <option v-for="option in phoneHeadOption" v-bind:value="option">
+                <option
+                  v-for="option in phoneHeadOption"
+                  v-bind:value="option"
+                  :key="option"
+                >
                   {{ option }}
                 </option>
               </select>
@@ -191,7 +195,8 @@
           <p v-else>
             1. 为确保您的资金安全，添加银行卡需进行简单的数据核实 <br />
             2. 因手机号码影响各项重要功能，请您务必谨慎填写 <br />
-            3. {{ siteConfig.SITE_NAME }}娱乐时刻关心您的资金安全
+            3.
+            {{ siteConfig.SITE_NAME }}时刻关心您的资金安全
           </p>
         </div>
         <div
@@ -329,6 +334,8 @@ export default {
       let redirect = query.redirect;
       if (!redirect) {
         this.setPageStatus(0, "bankCardInfo", true);
+        this.NextStepStatus = false;
+        this.$emit("update:addBankCardStep", "one");
         return;
       }
 
@@ -364,6 +371,8 @@ export default {
           return;
         default:
           this.setPageStatus(0, "bankCardInfo", true);
+          this.NextStepStatus = false;
+          this.$emit("update:addBankCardStep", "one");
           return;
       }
     }

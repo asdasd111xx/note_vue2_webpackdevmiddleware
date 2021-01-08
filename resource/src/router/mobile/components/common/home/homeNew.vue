@@ -115,6 +115,10 @@ export default {
     ...mapActions(["actionNewsPopControl"]),
     // 開啟最新消息方式
     togglePopup() {
+      if (!this.newsText) {
+        return;
+      }
+
       this.paused = !this.paused;
       if (!this.paused) {
         this.startMove();

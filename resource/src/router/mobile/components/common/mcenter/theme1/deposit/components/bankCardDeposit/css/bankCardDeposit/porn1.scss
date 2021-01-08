@@ -6,7 +6,8 @@
 }
 
 .swiper-item {
-  width: 28%;
+  width: auto;
+  min-width: 29%;
   height: 38px;
   line-height: 38px;
   text-align: center;
@@ -14,10 +15,10 @@
   white-space: nowrap;
 
   span {
-    display: inline-block;
     height: 34px;
     line-height: 34px;
     border-bottom: 2px solid transparent;
+    display: block;
   }
 
   &.is-current {
@@ -85,24 +86,25 @@
   }
 }
 
+// 支付方式 Item
 .pay-mode-item {
   position: relative;
-  float: left;
+  display: inline-flex;
+  flex-direction: column;
+  justify-content: center;
   width: 23%;
-  margin: 0 1% 5px;
-  padding: 7px 1px 1px;
+  height: 62px;
+  margin: 3px;
   border: 1px solid #eee;
   border-radius: 3px;
   color: #aaa;
   cursor: pointer;
-  position: relative;
-  height: 62px;
+  vertical-align: top;
 
   .pay-active {
-    display: block;
+    position: absolute;
     width: 7px;
     height: 5px;
-    position: absolute;
     right: 1px;
     bottom: 2px;
   }
@@ -114,7 +116,6 @@
   }
 
   .pay-mode-tag {
-    display: block;
     position: absolute;
     top: 0;
     right: 0;
@@ -123,10 +124,9 @@
   }
 
   .pay-mode-img {
-    display: block;
     width: 24px;
     height: 24px;
-    margin: 0 auto;
+    margin: 2.5px auto;
   }
 
   .pay-main-title {
@@ -137,22 +137,26 @@
     text-align: center;
     text-overflow: ellipsis;
     white-space: nowrap;
-  }
-
-  .pay-sub-title {
-    overflow: hidden;
-    height: 12px;
-    line-height: 12px;
-    color: #db6372;
-    font-size: 10px;
-    text-align: center;
-    text-overflow: ellipsis;
-    white-space: nowrap;
 
     &.custom {
       height: auto;
       line-height: normal;
       font-size: 16px;
+      color: #db6372;
+    }
+  }
+
+  .pay-sub-title {
+    overflow: hidden;
+    color: #db6372;
+    line-height: 16px;
+    font-size: 10px;
+    text-align: center;
+    text-overflow: ellipsis;
+    word-break: keep-all;
+
+    &.custom {
+      font-size: 12px;
     }
   }
 }
@@ -196,7 +200,7 @@
   color: #979797;
   margin-left: 10px;
 
-  > span {
+  >span {
     color: #6aaaf5;
     border-bottom: 1px solid #6aaaf5;
   }
@@ -594,6 +598,11 @@
   cursor: pointer;
   position: relative;
 
+  &.disable {
+    color: #eee;
+    pointer-events: none;
+  }
+
   .pay-active {
     display: block;
     width: 7px;
@@ -887,7 +896,21 @@
 }
 
 .qrcode-item {
+
   // display: inline-block;
+  &:last-child {
+    margin-right: 0;
+  }
+}
+
+.qrcode-title {
+  color: #000;
+}
+
+.qrcode-img {
+  width: 100px;
+  height: 100px;
+  margin-top: 5px;
 }
 
 .qrcode-td {
@@ -913,23 +936,6 @@
 .info-border {
   margin: 7px 0;
   border-bottom: 1px solid #bebcbc;
-}
-
-.qrcode-item {
-  // text-align: right;
-
-  &:last-child {
-    margin-right: 0;
-  }
-}
-
-.qrcode-title {
-  color: #000;
-}
-
-.qrcode-img {
-  width: 100px;
-  height: 100px;
 }
 
 .warm-tip-title {
@@ -994,7 +1000,7 @@
     font-weight: 700;
   }
 
-  > div {
+  >div {
     line-height: 22px;
   }
 }

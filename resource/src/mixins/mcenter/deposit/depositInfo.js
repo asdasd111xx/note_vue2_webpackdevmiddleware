@@ -13,9 +13,10 @@ export default {
     return {
       moreShow: false,
       speedField: {
+        // 充值方式如果為選填，則在 depositInfo 預設為網銀
         depositMethod: this.orderData.orderInfo.method
           ? String(this.orderData.orderInfo.method)
-          : "",
+          : "1",
         depositTime: this.orderData.orderInfo.deposit_at
           ? Vue.moment(this.orderData.orderInfo.deposit_at)
               .utcOffset(+8)
@@ -46,7 +47,7 @@ export default {
             copyShow: false,
             qrcode: [
               {
-                title: this.$text("S_SCANNING", "扫一扫"),
+                // title: this.$text("S_SCANNING", "扫一扫"),
                 value:
                   this.orderData.orderInfo.qrcode ||
                   this.orderData.orderInfo.img

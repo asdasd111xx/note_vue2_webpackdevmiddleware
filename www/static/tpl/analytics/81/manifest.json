@@ -1,10 +1,10 @@
 {
-  "name": "丝瓜娱乐Demo",
-  "short_name": "丝瓜娱乐Demo",
+  "name": "丝瓜直播Demo",
+  "short_name": "丝瓜直播Demo",
   "start_url": "/mobile/launch",
   "display": "standalone",
   "background_color": "#fff",
-  "description": "丝瓜娱乐Demo",
+  "description": "丝瓜直播Demo",
   "icons": [
     {
       "src": "../pwa/sg1/48.png",

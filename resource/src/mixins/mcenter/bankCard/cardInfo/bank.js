@@ -35,15 +35,20 @@ export default {
       return axios({
         method: "get",
         url: "/api/v1/c/player/user_bank/list"
-      }).then(response => {
-        const { ret, result } = response.data;
-        this.isRevice = true;
-        if (!response || result !== "ok") {
-          return;
-        }
+      })
+        .then(response => {
+          const { ret, result } = response.data;
+          this.isRevice = true;
+          if (!response || result !== "ok") {
+            return;
+          }
 
-        this.bank_card = ret.filter((item, index) => index < 3);
-      });
+          this.bank_card = ret.filter((item, index) => index < 3);
+        })
+        .catch(error => {
+          const { msg } = error.response.data;
+          this.actionSetGlobalMessage({ msg });
+        });
     },
     onClickDetail(info, index) {
       this.colorRepeatIndex = index;
@@ -118,10 +123,12 @@ export default {
             });
         })
         .catch(error => {
+          const { msg } = error.response.data;
+
           this.isRevice = true;
           this.isShowPop = false;
           this.$emit("update:editStatus", false);
-          this.actionSetGlobalMessage({ msg: error.response.data.msg });
+          this.actionSetGlobalMessage({ msg });
         });
     }
   }

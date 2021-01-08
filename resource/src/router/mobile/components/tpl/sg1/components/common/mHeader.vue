@@ -59,7 +59,14 @@
 
     <template v-if="headerConfig.hasSearchBtn">
       <div :class="$style['btn-search-wrap']" @click="goSearch">
-        <div :class="$style['normal-search']" />
+        <div v-if="source === 'smallPig'" :class="$style['sp-search']" />
+
+        <div
+          v-else-if="source === 'gay' || source === 'les'"
+          :class="$style['gay-search']"
+        />
+
+        <div v-else :class="$style['normal-search']" />
       </div>
     </template>
 
@@ -78,7 +85,9 @@
             :src="$getCdnPath('/static/image/sg1/common/icon_ask.png')"
             @click="handleClickAsk"
           />
-          <div v-show="hasUnreadMessage" :class="$style['red-dot']" />
+          <div v-show="hasUnreadMessage">
+            <div :class="$style['red-dot']" />
+          </div>
         </div>
       </div>
       <div v-else :class="$style['login-wrap']">
@@ -185,7 +194,8 @@ export default {
   computed: {
     ...mapGetters({
       membalance: "getMemBalance",
-      loginStatus: "getLoginStatus"
+      loginStatus: "getLoginStatus",
+      siteconfig: "getSiteConfig"
     }),
     mainClass() {
       const style = this.$style;
@@ -214,11 +224,11 @@ export default {
         this.headerConfig.hasHelp.func();
       }
 
-      // 充值不開放
-      // if (this.headerConfig.hasHelp.type === "deposit") {
-      //   this.actionSetGlobalMessage({ type: "incoming" });
-      //   return;
-      // }
+      // 充值不開放(絲瓜)
+      if (this.headerConfig.hasHelp.type === "deposit") {
+        this.actionSetGlobalMessage({ type: "incoming" });
+        return;
+      }
 
       this.$router.push(this.headerConfig.hasHelp.url);
     },
@@ -241,7 +251,9 @@ export default {
       }
     },
     goSearch() {
-      if (["casino", "card", "mahjong"].includes(this.$route.name)) {
+      if (
+        ["casino", "card", "mahjong", "hotLobby"].includes(this.$route.name)
+      ) {
         this.updateSearchStatus();
         return;
       }
@@ -270,6 +282,21 @@ export default {
 
   &.no-border-bottom {
     border-bottom: unset;
+  }
+
+  // 小豬視頻的search Header 為黑色底
+  &.search-page {
+    background: #414141;
+  }
+
+  &.gay {
+    background: #4a8cb8;
+    border-bottom: none;
+  }
+
+  &.les {
+    background: #d64545;
+    border-bottom: none;
   }
 
   &::before {
@@ -567,11 +594,12 @@ export default {
 
 .red-dot {
   position: absolute;
-  right: -4px;
+  right: -1px;
   background: red;
-  border-radius: 50%;
-  width: 6px;
-  height: 6px;
+  border-radius: 60%;
+  border: 1px solid #f9e8b4;
+  width: 7px;
+  height: 7px;
   top: -2px;
 }
 
@@ -587,8 +615,22 @@ export default {
   }
 }
 
+.sp-search {
+  background: url("/static/image/common/ic_search_grey.png");
+  width: 20px;
+  height: 20px;
+  background-size: contain;
+}
+
+.gay-search {
+  background: url("/static/image/common/ic_search_white.png");
+  width: 20px;
+  height: 20px;
+  background-size: contain;
+}
+
 .normal-search {
-  background: url("/static/image/sg1/common/icon_search_n.png");
+  background: url("/static/image/common/ic_search_grey.png");
   width: 20px;
   height: 20px;
   background-size: contain;

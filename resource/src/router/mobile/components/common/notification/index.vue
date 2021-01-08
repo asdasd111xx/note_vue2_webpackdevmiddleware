@@ -21,7 +21,12 @@
             {{ getTime(data.id) }}
           </div>
         </div>
-        <div :class="$style['notification-content']">
+        <div
+          :class="[
+            $style['notification-content'],
+            { [$style['maintain']]: data.event === 'maintain_notice' }
+          ]"
+        >
           <div
             v-if="data.event === 'maintain_notice'"
             :class="$style['maintain-icon']"
@@ -101,13 +106,8 @@ export default {
         }
 
         const event = temp.event;
-
         switch (event) {
           case "notice":
-          case "maintain_notice":
-          case "verification_code":
-            // 外接平台維護通知
-            // case 'outer_maintain':
             this.data = temp;
             if (this.lang[this.data.content]) {
               switch (this.data.content) {
@@ -131,6 +131,14 @@ export default {
             } else {
               this.$emit("close");
             }
+            return;
+
+          // 外接平台維護通知
+          // case 'outer_maintain':
+          case "maintain_notice":
+          case "verification_code":
+            this.data = temp;
+            this.show();
             return;
 
           default:
@@ -205,7 +213,6 @@ export default {
     getText(key) {
       const event = this.data.event;
       let string = "";
-
       switch (event) {
         case "maintain_notice":
           string = `即将进行系统维护 <br /> 于<span>${this.data.countdown}</span>分钟后开始`;
@@ -317,9 +324,13 @@ export default {
   display: flex;
   min-height: 35px;
   line-height: 25px;
-  width: 80%;
+  width: 100%;
   padding: 0 10px;
   align-items: center;
+
+  &.maintain {
+    width: 80%;
+  }
 
   .maintain-icon {
     width: 30px;

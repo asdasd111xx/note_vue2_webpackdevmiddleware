@@ -171,6 +171,7 @@ export default {
   },
   created() {
     localStorage.removeItem("is-open-game");
+    localStorage.removeItem("iframe-third-url");
     this.showPromotion = this.loginStatus
       ? this.memInfo.user.show_promotion
       : true;
@@ -687,6 +688,10 @@ export default {
         case "link_to":
           switch (game.vendor) {
             case "agent":
+              if (!this.loginStatus) {
+                this.$router.push("/mobile/login");
+                return;
+              }
               this.$router.push("/mobile/mcenter/makeMoney");
               return;
 

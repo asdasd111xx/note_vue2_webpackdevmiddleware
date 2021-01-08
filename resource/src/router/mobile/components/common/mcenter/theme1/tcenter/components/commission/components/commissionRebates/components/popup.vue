@@ -54,6 +54,7 @@
 </template>
 
 <script>
+import { mapGetters } from "vuex";
 import { mapActions } from "vuex";
 import EST from "@/lib/EST";
 import mcenter from "@/api/mcenter";
@@ -75,6 +76,16 @@ export default {
       receiveEntryData: {}
     };
   },
+  computed: {
+    ...mapGetters({
+      siteConfig: "getSiteConfig"
+    }),
+    $style() {
+      const style =
+        this[`$style_${this.siteConfig.MOBILE_WEB_TPL}`] || this.$style_porn1;
+      return style;
+    }
+  },
   created() {
     setTimeout(() => {
       this.computeState = true;
@@ -88,105 +99,5 @@ export default {
 };
 </script>
 
-<style lang="scss" module>
-@import "~@/css/variable.scss";
-
-.pop-wrap {
-  position: fixed;
-  top: 0;
-  right: 0;
-  left: 0;
-  bottom: 0;
-  z-index: 99;
-
-  .pop-mask {
-    width: 100%;
-    height: 100%;
-    background: #000;
-    opacity: 0.5;
-  }
-
-  .pop-block {
-    position: absolute;
-    width: 85%;
-    top: 50%;
-    left: 50%;
-    transform: translate(-50%, -50%);
-    background: #f8f8f7;
-    border-radius: 8px;
-  }
-
-  .close-img {
-    position: absolute;
-    top: 13px;
-    right: 10px;
-    width: 23px;
-    height: 23px;
-
-    img {
-      width: 100%;
-      height: 100%;
-    }
-  }
-
-  .title {
-    height: 48px;
-    line-height: 48px;
-    border-radius: 5px 5px 0 0;
-    // background-color: #be9e7f;
-    background-color: #00347d;
-    color: #fff;
-    font-size: 16px;
-    text-align: center;
-  }
-  .content-wrap {
-    padding: 13px;
-
-    .content {
-      text-align: center;
-    }
-    h1 {
-      font-size: 16px;
-      margin-bottom: 14px;
-    }
-  }
-  .rebate-title,
-  .rebate-value {
-    line-height: 19px;
-    margin-bottom: 5px;
-    font-size: 14px;
-  }
-
-  .rebate-value {
-    color: #2693cf;
-  }
-
-  .rebate-entry-button-wrap {
-    text-align: center;
-    margin-top: 15px;
-    display: inline-block;
-    width: 100%;
-    height: 42px;
-    line-height: 42px;
-
-    .button-entry-history {
-      display: inline-block;
-      width: 45%;
-      // background: linear-gradient(to left, #bd9d7d, #f9ddbd);
-      background: #00347d;
-      color: #fff;
-      border-radius: 4px;
-      margin: 0 3px;
-    }
-    .button-entry-close {
-      display: inline-block;
-      width: 45%;
-      background: black;
-      // color: #be9e7f;
-      color: #fff;
-      border-radius: 4px;
-      margin: 0 3px;
-    }
-  }
-}
-</style>
+<style lang="scss" src="./css/porn1.popup.scss" module="$style_porn1"></style>
+<style lang="scss" src="./css/sg1.popup.scss" module="$style_sg1"></style>

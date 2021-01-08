@@ -370,16 +370,17 @@ export default {
         }
       }).then(response => {
         if (response.status !== 200) {
-          this.resetTimer = setTimeout(() => {
-            this.initData();
-            clearTimeout(this.resetTimer);
-            this.resetTimer = null;
-          }, 3000);
+          if (!this.resetTimer) {
+            this.resetTimer = setTimeout(() => {
+              this.initData();
+              clearTimeout(this.resetTimer);
+            }, 3000);
+          }
           return;
         }
 
+        this.resetTimer = null;
         this.videoList = [...response.result];
-
         this.$nextTick(() => {
           if (window.location.hash) {
             const hash = Number(window.location.hash.replace("#", "")) || 0;

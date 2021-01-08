@@ -41,16 +41,21 @@ export default {
       axios({
         method: "get",
         url: "/api/payment/v1/c/virtual/bank/list"
-      }).then(response => {
-        const { ret, result } = response.data;
-        this.isRevice = true;
+      })
+        .then(response => {
+          const { ret, result } = response.data;
+          this.isRevice = true;
 
-        if (!response || result !== "ok") {
-          return;
-        }
+          if (!response || result !== "ok") {
+            return;
+          }
 
-        this.nowOpenWallet = ret;
-      });
+          this.nowOpenWallet = ret;
+        })
+        .catch(error => {
+          const { msg } = error.response.data;
+          this.actionSetGlobalMessage({ msg });
+        });
     },
     /*************************
      * 目前 User 擁有的卡片     *
@@ -64,16 +69,21 @@ export default {
         params: {
           common: true
         }
-      }).then(response => {
-        const { ret, result } = response.data;
-        this.isRevice = true;
+      })
+        .then(response => {
+          const { ret, result } = response.data;
+          this.isRevice = true;
 
-        if (!response || result !== "ok") {
-          return;
-        }
+          if (!response || result !== "ok") {
+            return;
+          }
 
-        this.wallet_card = ret.filter((item, index) => index < 15);
-      });
+          this.wallet_card = ret.filter((item, index) => index < 15);
+        })
+        .catch(error => {
+          const { msg } = error.response.data;
+          this.actionSetGlobalMessage({ msg });
+        });
     },
 
     onClickDetail(info, index) {
@@ -110,20 +120,25 @@ export default {
           virtual_bank_id: String(virtual_bank_id),
           common: false
         }
-      }).then(response => {
-        const { result } = response.data;
-        if (!response || result !== "ok") {
-          return;
-        }
+      })
+        .then(response => {
+          const { result } = response.data;
+          if (!response || result !== "ok") {
+            return;
+          }
 
-        this.actionSetGlobalMessage({ msg: "移至历史帐号 成功" });
-        this.getUserWalletList().then(() => {
-          // 切換當前頁面狀態
-          this.$emit("update:showDetail", false);
-          this.$emit("update:editStatus", false);
-          this.setPageStatus(1, "walletCardInfo", true);
+          this.actionSetGlobalMessage({ msg: "移至历史帐号 成功" });
+          this.getUserWalletList().then(() => {
+            // 切換當前頁面狀態
+            this.$emit("update:showDetail", false);
+            this.$emit("update:editStatus", false);
+            this.setPageStatus(1, "walletCardInfo", true);
+          });
+        })
+        .catch(error => {
+          const { msg } = error.response.data;
+          this.actionSetGlobalMessage({ msg });
         });
-      });
     },
     onDelete() {
       axios({
@@ -132,55 +147,60 @@ export default {
         data: {
           userVirtualBankId: this.wallet_cardDetail.id
         }
-      }).then(response => {
-        const { result, msg } = response.data;
-        if (!response || result !== "ok") {
-          this.actionSetGlobalMessage({ msg: msg ? msg : "不开放删除" });
-          return;
-        }
+      })
+        .then(response => {
+          const { result, msg } = response.data;
+          if (!response || result !== "ok") {
+            this.actionSetGlobalMessage({ msg: msg ? msg : "不开放删除" });
+            return;
+          }
 
-        this.isShowPop = false;
-        this.$emit("update:editStatus", false);
+          this.isShowPop = false;
+          this.$emit("update:editStatus", false);
 
-        this.getUserWalletList()
-          .then(() => {
-            // 更新 wallet_cardDetail
-            let temp = this.wallet_card.find(item => {
-              return item.id === this.wallet_cardDetail.id;
+          this.getUserWalletList()
+            .then(() => {
+              // 更新 wallet_cardDetail
+              let temp = this.wallet_card.find(item => {
+                return item.id === this.wallet_cardDetail.id;
+              });
+              this.wallet_cardDetail = temp;
+            })
+            .then(() => {
+              if (this.memInfo.config.manual_delete_bank_card) {
+                switch (this.themeTPL) {
+                  case "porn1":
+                  case "sg1":
+                    this.actionSetGlobalMessage({ msg: "钱包删除审核中" });
+                    break;
+
+                  case "ey1":
+                    this.actionSetGlobalMessage({ msg: "删除审核中" });
+                    break;
+                }
+                this.$emit("update:isAudit", true);
+                return;
+              } else {
+                switch (this.themeTPL) {
+                  case "porn1":
+                  case "sg1":
+                    this.actionSetGlobalMessage({ msg: "钱包刪除成功" });
+                    break;
+
+                  case "ey1":
+                    this.actionSetGlobalMessage({ msg: "刪除成功" });
+                    break;
+                }
+                this.$emit("update:showDetail", false);
+                this.setPageStatus(1, "walletCardInfo", true);
+                return;
+              }
             });
-            this.wallet_cardDetail = temp;
-          })
-          .then(() => {
-            if (this.memInfo.config.manual_delete_bank_card) {
-              switch (this.themeTPL) {
-                case "porn1":
-                case "sg1":
-                  this.actionSetGlobalMessage({ msg: "钱包删除审核中" });
-                  break;
-
-                case "ey1":
-                  this.actionSetGlobalMessage({ msg: "删除审核中" });
-                  break;
-              }
-              this.$emit("update:isAudit", true);
-              return;
-            } else {
-              switch (this.themeTPL) {
-                case "porn1":
-                case "sg1":
-                  this.actionSetGlobalMessage({ msg: "钱包刪除成功" });
-                  break;
-
-                case "ey1":
-                  this.actionSetGlobalMessage({ msg: "刪除成功" });
-                  break;
-              }
-              this.$emit("update:showDetail", false);
-              this.setPageStatus(1, "walletCardInfo", true);
-              return;
-            }
-          });
-      });
+        })
+        .catch(error => {
+          const { msg } = error.response.data;
+          this.actionSetGlobalMessage({ msg });
+        });
     }
   }
 };

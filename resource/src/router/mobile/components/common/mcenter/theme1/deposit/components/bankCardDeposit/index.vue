@@ -87,16 +87,16 @@
                   </template>
                 </div> -->
 
-                <div :class="$style['pay-sub-title']">
-                  <template
-                    v-if="
-                      ['ey1'].includes(themeTPL) &&
-                        [5, 6].includes(info.payment_type_id)
-                    "
-                  >
+                <template
+                  v-if="
+                    ['ey1'].includes(themeTPL) &&
+                      [5, 6].includes(info.payment_type_id)
+                  "
+                >
+                  <div :class="$style['pay-sub-title']">
                     返利1%无上限
-                  </template>
-                </div>
+                  </div>
+                </template>
 
                 <img
                   v-if="
@@ -115,10 +115,13 @@
                   :class="[$style['pay-mode-item']]"
                   @click="handleCreditTrans"
                 >
-                  <div :class="[$style['pay-sub-title'], $style['custom']]">
+                  <div :class="[$style['pay-main-title'], $style['custom']]">
                     代收代付
                   </div>
-                  <div :class="$style['pay-main-title']" style="color: black">
+                  <div
+                    :class="[$style['pay-sub-title'], $style['custom']]"
+                    style="color: black"
+                  >
                     {{
                       `${
                         Number(rechargeConfig.recharger_offer_percent) !== 0
@@ -126,8 +129,6 @@
                           : "额度转让"
                       }`
                     }}
-                  </div>
-                  <div :class="$style['pay-main-title']" style="color: black">
                     代理分红
                   </div>
                 </div>
@@ -149,16 +150,11 @@
             ]"
             @click="changeType('chagneBank'), (isShowPop = true)"
           >
-            <span
-              v-if="curPayInfo.payment_type_id === 5"
-              :class="$style['select-bank-title']"
-            >
-              {{ $text("S_USE_BANK", "使用银行") }}
-            </span>
-
-            <span v-else :class="$style['select-bank-title']"
+            <span :class="$style['select-bank-title']"
               >{{
-                curPayInfo.payment_method_id === 2
+                curPayInfo.payment_type_id === 5
+                  ? $text("S_USE_BANK", "使用银行")
+                  : curPayInfo.payment_method_id === 2
                   ? $text("S_SELECT_POINT_CARD", "请选择点卡")
                   : $text("S_SELECT_BANKS", "请选择银行")
               }}
@@ -358,12 +354,15 @@
                   :class="$style['CGPay-update-img']"
                   :src="$getCdnPath(`/static/image/common/btn_update.png`)"
                   alt="update"
-                  @click="getPayPass"
+                  @click="getCGPayBalance"
                 />
               </span>
 
               <div :class="$style['CGPay-money']">
-                CGP <span>{{ curPassRoad.balance }}</span>
+                CGP
+                <span>
+                  {{ walletData["CGPay"].balance }}
+                </span>
               </div>
             </div>
 
@@ -390,9 +389,9 @@
                 "
               >
                 <div :class="$style['CGPay-money']">
-                  <div>CGPay余额：{{ curPassRoad.balance }}</div>
+                  <div>CGPay余额：{{ walletData.CGPay.balance }}</div>
 
-                  <div :class="$style['money-update']" @click="getPayPass">
+                  <div :class="$style['money-update']" @click="getCGPayBalance">
                     <img
                       :src="$getCdnPath(`/static/image/common/btn_update.png`)"
                       alt="update"
@@ -625,6 +624,9 @@
                     $style['pay-auth-method'],
                     {
                       [$style['current-data']]: walletData['CGPay'].method === 0
+                    },
+                    {
+                      [$style['disable']]: walletData['CGPay'].balance === '--'
                     }
                   ]"
                   @click="walletData['CGPay'].method = 0"
@@ -691,6 +693,7 @@
                   />
                   <div :class="$style['field-title']">{{ info.title }}</div>
                   <div :class="$style['field-info']">
+                    <!-- 充值方式 -->
                     <template v-if="info.objKey === 'depositMethod'">
                       <div
                         :class="[
@@ -712,6 +715,8 @@
                             : info.selectTitle
                         }}
                       </div>
+
+                      <!-- 充值方式選單 -->
                       <div v-if="isShowMethodsPop" :class="$style['pop-wrap']">
                         <div
                           :class="$style['pop-mask']"
@@ -724,6 +729,7 @@
                             }}</span>
                             {{ info.title }}
                           </div>
+
                           <ul :class="$style['pop-list']">
                             <li
                               v-for="item in info.selectData"
@@ -756,7 +762,7 @@
 
                     <template v-else-if="info.objKey === 'depositTime'">
                       <date-picker
-                        v-model="speedField[info.objKey]"
+                        v-model="speedField['depositTime']"
                         :placeholder="info.placeholderText"
                         type="datetime"
                         format="YYYY-MM-DD HH:mm:ss"
@@ -894,7 +900,12 @@
             <!-- 109/11/10 實際到帳常註顯示 -->
             <span
               v-else
-              :class="[$style['feature-tip-title'], $style.success]"
+              :class="[
+                $style['feature-tip-title'],
+                {
+                  [$style['success']]: moneyValue
+                }
+              ]"
               @click="showRealStatus = true"
             >
               实际到帐： ¥{{ realSaveMoney }} (详情)
@@ -905,7 +916,7 @@
             <div :class="$style['pop-message-mark']" />
             <div :class="$style['message-container']">
               <ul :class="$style['message-content']">
-                <li>• 实际到帐： {{ realSaveMoney }}</li>
+                <li>• 实际到帐： ¥{{ realSaveMoney }}</li>
                 <template
                   v-if="
                     curPayInfo.offer_enable && +curPayInfo.offer_percent > 0
@@ -942,7 +953,10 @@
                   !isBlockChecked ||
                   nameCheckFail ||
                   (isSelectBindWallet() && !this.curPassRoad.is_bind_wallet) ||
-                  (isSelectBindWallet(25, 402) && !isClickCoversionBtn)
+                  (isSelectBindWallet(25, 402) && !isClickCoversionBtn) ||
+                  (isSelectBindWallet(16) &&
+                    walletData['CGPay'].method === 0 &&
+                    !walletData['CGPay'].password)
               }
             ]"
             :title="$text('S_ENTER_PAY', '立即充值')"
@@ -1190,7 +1204,13 @@ export default {
           this.paySelectData["chagneBank"].allData[0].value
         );
       }
+
+      // 選到 CGPay 時，取得 CGPay balance 的 func
+      if (this.isSelectBindWallet(16)) {
+        this.getCGPayBalance();
+      }
     },
+    // 選擇銀行的值
     isSelectValue(value) {
       if (value) {
         this.isDisableDepositInput = false;
@@ -1201,6 +1221,7 @@ export default {
       if (this.noticeData && this.noticeData.length > 0) {
         let data = this.noticeData[0];
 
+        // event => 掃 QRcode 綁定錢包
         if (data.event === "trade_bind_wallet" && data.result === "ok") {
           this.actionSetGlobalMessage({
             msg: "绑定成功",
@@ -1211,6 +1232,19 @@ export default {
             }
           });
         }
+      }
+    },
+    "walletData.CGPay.balance"(value) {
+      switch (value) {
+        // 尚未得到值時，選擇改為"掃碼支付"(同Android邏輯)
+        case "--":
+          this.walletData["CGPay"].method = 1;
+          break;
+
+        // 正常得到值時，選擇改為"CGP支付密碼"
+        default:
+          this.walletData["CGPay"].method = 0;
+          break;
       }
     }
   },
@@ -1326,7 +1360,6 @@ export default {
         {
           objKey: "depositMethod",
           title: "充值方式",
-          curMethodId: this.speedField.depositMethod,
           selectTitle: "请选择充值方式",
           value: this.speedField.depositMethod,
           selectData: [
@@ -1356,25 +1389,6 @@ export default {
           ),
           //   showCondition: this.curPayInfo.field.find((e) => e.name === 'method'),
           isError: false
-        },
-        {
-          objKey: "bankBranch",
-          title: this.$text("S_DEPOSIT_BRANCH", "银行支行"),
-          value: this.speedField.bankBranch,
-          placeholderText: this.$text(
-            "S_ENTER_DEPOSIT_BRANCH",
-            "请输入银行支行"
-          ),
-          showCondition:
-            this.speedField.depositMethod === "2" ||
-            this.speedField.depositMethod === "4",
-          isError:
-            this.showError &&
-            this.curPayInfo.field.find(
-              item => item.name === "method" && item.required
-            ) &&
-            !this.speedField.bankBranch &&
-            ["2", "4"].includes(this.speedField.depositMethod)
         },
         {
           objKey: "depositAccount",
@@ -1419,6 +1433,25 @@ export default {
               item => item.name === "deposit_at" && item.required
             ) &&
             !this.speedField.depositTime
+        },
+        {
+          objKey: "bankBranch",
+          title: this.$text("S_DEPOSIT_BRANCH", "银行支行"),
+          value: this.speedField.bankBranch,
+          placeholderText: this.$text(
+            "S_ENTER_DEPOSIT_BRANCH",
+            "请输入银行支行"
+          ),
+          showCondition:
+            this.speedField.depositMethod === "2" ||
+            this.speedField.depositMethod === "4",
+          isError:
+            this.showError &&
+            this.curPayInfo.field.find(
+              item => item.name === "method" && item.required
+            ) &&
+            !this.speedField.bankBranch &&
+            ["2", "4"].includes(this.speedField.depositMethod)
         },
         {
           objKey: "serialNumber",
@@ -1507,6 +1540,7 @@ export default {
     });
     this.checkEntryBlockStatus();
     this.actionSetRechargeConfig();
+
   },
   destroyed() {
     this.resetTimerStatus();
@@ -1544,6 +1578,7 @@ export default {
         switch (this.curPayInfo.payment_method_id) {
           // CGPay
           case 16:
+          // CGPay-USDT
           case 25:
             this.$router.push(
               "/mobile/mcenter/bankcard?redirect=deposit&type=wallet&wallet=CGPay"
@@ -1864,12 +1899,8 @@ export default {
             // this.checkSuccess = val ? true : false;
 
             this.speedField.depositName = val;
-            this.$emit("update:speedField", { val, target });
           });
-        } else {
-          this.$emit("update:speedField", { value, target });
         }
-
         this.checkOrderData();
       }
     },

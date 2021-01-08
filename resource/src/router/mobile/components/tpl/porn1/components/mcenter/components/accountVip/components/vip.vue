@@ -134,8 +134,13 @@ export default {
       }).then(res => {
         this.userVipInfo = res.data;
 
-        // 起始預設 config_id 為分類中的第一筆
-        this.currentConfigID = this.userVipInfo[0].config_id;
+        if (localStorage.getItem("vip_config_id")) {
+          this.currentConfigID = localStorage.getItem("vip_config_id");
+          localStorage.removeItem("vip_config_id");
+        } else {
+          // 起始預設 config_id 為分類中的第一筆
+          this.currentConfigID = this.userVipInfo[0].config_id;
+        }
       });
     },
     getVipLevel() {
@@ -167,6 +172,7 @@ export default {
     },
     handleConfigId(value) {
       this.currentConfigID = value;
+      localStorage.setItem("vip_config_id", value);
     }
   },
   watch: {

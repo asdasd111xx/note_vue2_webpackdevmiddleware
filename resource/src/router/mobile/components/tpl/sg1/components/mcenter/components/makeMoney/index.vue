@@ -11,13 +11,13 @@
           :src="`/static/image/sg1/mcenter/makeMoney/pic_promotion_banner.png`"
         />
       </div>
-      <div @click="copyCode" :class="$style['img-wrap']">
+      <div :class="$style['img-wrap']">
         <img
           :class="$style['img-wrap']"
           :src="`/static/image/sg1/mcenter/makeMoney/img001.png`"
         />
         <span>{{ agentLink.agentCode }}</span>
-        <div :class="$style['copy-btn']">
+        <div @click="copyCode" :class="$style['copy-btn']">
           复制
         </div>
       </div>
@@ -208,17 +208,14 @@ export default {
   }
 
   .copy-btn {
-    padding: 2px 10px;
+    padding: 6px 10px;
     position: absolute;
     bottom: calc(4vw - 3px);
     right: 4%;
     font-weight: 700;
-    color: #fff;
-    background: #fa4e3a;
-    background-image: -webkit-linear-gradient(left, #e61c38, #fc573c);
-    background-image: linear-gradient(left, #e61c38, #fc573c);
-    border-radius: 20px;
-    border: 3px #fce4d0 solid;
+    color: #4d4d4d;
+    background-image: url("/static/image/sg1/mcenter/makeMoney/img001_btn.png");
+    background-size: 48px auto;
   }
 }
 </style>
