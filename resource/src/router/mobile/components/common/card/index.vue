@@ -180,6 +180,7 @@ export default {
   },
   created() {
     this.getGameLabelList();
+    localStorage.removeItem("is-open-game");
     if (this.loginStatus) {
       this.actionSetFavoriteGame(this.vendor);
     }
