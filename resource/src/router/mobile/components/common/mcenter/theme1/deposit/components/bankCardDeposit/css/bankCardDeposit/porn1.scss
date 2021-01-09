@@ -131,7 +131,7 @@
 
   .pay-main-title {
     overflow: hidden;
-    height: 16px;
+    // height: 16px;
     line-height: 16px;
     font-size: 12px;
     text-align: center;
@@ -200,7 +200,7 @@
   color: #979797;
   margin-left: 10px;
 
-  >span {
+  > span {
     color: #6aaaf5;
     border-bottom: 1px solid #6aaaf5;
   }
@@ -896,7 +896,6 @@
 }
 
 .qrcode-item {
-
   // display: inline-block;
   &:last-child {
     margin-right: 0;
@@ -1000,7 +999,7 @@
     font-weight: 700;
   }
 
-  >div {
+  > div {
     line-height: 22px;
   }
 }
