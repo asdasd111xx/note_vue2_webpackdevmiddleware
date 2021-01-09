@@ -517,10 +517,10 @@ export default {
             this.depositData = res.data.payment_group;
             // this.isDepositAi = res.data.deposit_ai;
 
-            if (res.data.your_bank) {
-              this.yourBankList = res.data.your_bank;
-              this.defaultCurPayBank();
-            }
+            this.yourBankList = res.data.your_bank;
+
+            // 110/01/09 defaultCurPayBank 再判斷能放哪，使用銀行這塊能再改寫
+            this.defaultCurPayBank();
 
             // if (this.isDepositAi) {
             //   this.PassRoadOrAi();
@@ -1185,7 +1185,8 @@ export default {
         return item.value === this.curPayInfo.bank_id;
       });
 
-      this.curSelectedBank = target ? target : this.allBanks[0];
+      // 110/01/09 待再優化使用銀行這塊
+      this.curSelectedBank = target || this.allBanks[0] || {};
     },
     getSingleLimit(minMoney, maxMoney, type = null) {
       let str = type === "placeholder" ? "单笔充值金额：" : "";
