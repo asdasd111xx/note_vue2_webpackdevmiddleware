@@ -58,6 +58,7 @@
                 {{ summaryContent[index].amount }}
               </div>
             </div>
+
             <div :class="[$style.detail, 'clearfix']">
               <div :class="[$style.text, $style.main]">
                 {{ $text("S_REBATE_LEVEL", "返利级别") }}
@@ -66,11 +67,13 @@
                 {{ summaryContent[index].rate }} %
               </div>
             </div>
+
             <div :class="$style['summary-date']">
               {{ summaryContent[index].start_at | dateFormat }}-{{
                 summaryContent[index].end_at | dateFormat
               }}
             </div>
+
             <div :class="[$style.detail, 'clearfix']">
               <div :class="$style.text">
                 {{ $text("S_ACH_VALID_MEMBERS", "有效会员") }}
@@ -80,6 +83,7 @@
                 {{ $text("S_PERSON", "人") }}
               </div>
             </div>
+
             <div :class="[$style.detail, 'clearfix']">
               <div :class="$style.text">
                 {{ $text("S_VALID_BET", "有效投注") }}
@@ -88,6 +92,7 @@
                 {{ summaryContent[index].valid_bet }}
               </div>
             </div>
+
             <div :class="[$style.detail, 'clearfix']">
               <div :class="$style.text">
                 {{ $text("S_GAME_LOSS", "游戏盈亏") }}
@@ -183,16 +188,15 @@
           <div v-show="isSummaryShow[info.key]">
             <div
               v-if="summaryContent[index].amount"
-              :class="[$style['detail-wrap'], 'clearfix']"
+              :class="[
+                $style['detail-wrap'],
+                {
+                  [$style['main']]: info.key === 'monthly'
+                },
+                'clearfix'
+              ]"
             >
-              <div
-                :class="[
-                  $style.text,
-                  {
-                    [$style['main']]: info.key === 'monthly'
-                  }
-                ]"
-              >
+              <div :class="$style.text">
                 <!-- 唯獨本月已領需要額外+區間 -->
                 <template v-if="info.key === 'monthly'">
                   投注返利({{ monthRange }})
@@ -207,19 +211,25 @@
                 </template>
               </div>
 
-              <div :class="[$style.amount, $style.main]">
+              <div :class="$style.amount">
                 {{ summaryContent[index].amount }}
               </div>
             </div>
 
             <div
               v-if="summaryContent[index].oauthAmount"
-              :class="[$style['detail-wrap'], 'clearfix']"
+              :class="[
+                $style['detail-wrap'],
+                {
+                  [$style['main']]: info.key === 'monthly'
+                },
+                'clearfix'
+              ]"
             >
-              <div :class="[$style.text, $style.main]">
+              <div :class="$style.text">
                 {{ summaryContent[index].oauthText }}
               </div>
-              <div :class="[$style.amount, $style.main]">
+              <div :class="$style.amount">
                 {{ summaryContent[index].oauthAmount }}
               </div>
             </div>

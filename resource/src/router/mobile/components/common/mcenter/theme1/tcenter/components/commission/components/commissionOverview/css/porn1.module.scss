@@ -63,6 +63,11 @@
 
 .detail-wrap {
   padding: 5px 0;
+  color: #555;
+
+  &.main {
+    color: #55b9ff;
+  }
 
   .detail {
     padding: 0 1px;
@@ -71,7 +76,6 @@
   .text {
     float: left;
     margin-left: 33px;
-    color: #555;
     font-size: 12px;
 
     &.main {
@@ -82,7 +86,6 @@
   .amount {
     float: right;
     margin-right: 43px;
-    color: #555;
     font-size: 12px;
 
     &.main {
@@ -93,6 +96,7 @@
       color: #f00;
     }
   }
+
   .summary-date {
     position: relative;
     color: #aaaaaa;
