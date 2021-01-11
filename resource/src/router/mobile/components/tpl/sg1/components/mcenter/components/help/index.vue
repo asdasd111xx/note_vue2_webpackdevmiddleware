@@ -47,13 +47,13 @@ export default {
   data() {
     return {
       list: [
-        // {
-        //   name: "充值教程",
-        //   img: "deposit",
-        //   key: "deposit",
-        //   info: "充值极速到帐",
-        //   needLogin: true
-        // },
+        {
+          name: "充值教程",
+          img: "deposit",
+          key: "deposit",
+          info: "充值极速到帐",
+          needLogin: true
+        },
         {
           name: "购买钻石",
           img: "diamond",
