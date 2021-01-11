@@ -95,7 +95,10 @@ export default {
     },
     handleClick() {
       this.$router.push("/mobile/mcenter/tcenter/commission/record");
-      window.location.reload();
+
+      setTimeout(() => {
+        window.location.reload();
+      }, 300);
     }
   }
 };
