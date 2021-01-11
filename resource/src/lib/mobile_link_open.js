@@ -142,11 +142,12 @@ export default target => {
 
     if (linkTo.includes("service")) {
       let url = store.state.webInfo.on_service_url;
-      let w = (newWindow = window.open(
+      newWindow = window.open(
         url,
-        "mobile service",
-        `width=${store.state.webInfo.on_service_w}, height=${store.state.webInfo.on_service_h}`
-      ));
+        "在线客服",
+        `toolbar=yes, width=${store.state.webInfo.on_service_w}, height=${store.state.webInfo.on_service_h}`,
+        "true"
+      );
 
       // 在線客服流量分析事件
       window.dataLayer.push({
@@ -156,7 +157,6 @@ export default target => {
         eventAction: "online_service_contact",
         eventLabel: "online_service_contact"
       });
-      w.document.title = "在线客服";
       return;
     }
 
