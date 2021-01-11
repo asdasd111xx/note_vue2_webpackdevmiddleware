@@ -1590,6 +1590,7 @@ export default {
       // 代客充值
       if (this.curPayInfo.payment_method_id === 20) {
         this.submitInfo();
+        return;
       }
 
       // 使用者存款封鎖狀態

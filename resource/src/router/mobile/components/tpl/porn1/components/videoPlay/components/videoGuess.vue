@@ -46,10 +46,11 @@
 </template>
 
 <script>
-import axios from 'axios';
-import videoTag from './videoTag';
-import pornRequest from '@/api/pornRequest';
-import { getEncryptImage } from '@/lib/crypto';
+import axios from "axios";
+import videoTag from "./videoTag";
+import pornRequest from "@/api/pornRequest";
+import { getEncryptImage } from "@/lib/crypto";
+import { mapActions, mapGetters } from "vuex";
 
 export default {
   components: {
@@ -58,26 +59,36 @@ export default {
   data() {
     return {
       source: this.$route.query.source,
-      videoList: [],
-      img: this.$getCdnPath(`/static/image/porn1/default/bg_video03_d.png`)
+      videoList: []
     };
   },
   computed: {
+    ...mapGetters({
+      siteConfig: "getSiteConfig"
+    }),
+    themeTPL() {
+      return this.siteConfig.MOBILE_WEB_TPL;
+    },
+    img() {
+      return this.$getCdnPath(
+        `/static/image/${this.themeTPL}/default/bg_video03_d.png`
+      );
+    },
     siteId() {
       switch (this.source) {
-        case 'yabo':
+        case "yabo":
           return 1;
           break;
 
-        case 'smallPig':
+        case "smallPig":
           return 2;
-          break
+          break;
 
-        case 'gay':
+        case "gay":
           return 3;
           break;
 
-        case 'les':
+        case "les":
           return 4;
           break;
 
@@ -92,9 +103,9 @@ export default {
       params: {
         siteId: this.siteId
       }
-    }
+    };
     // if (this.$route.query.source === 'smallPig') { obj['smallPig'] = true }
-    pornRequest(obj).then((response) => {
+    pornRequest(obj).then(response => {
       if (response.status !== 200) {
         return;
       }
@@ -104,14 +115,14 @@ export default {
       setTimeout(() => {
         this.videoList.forEach(item => {
           getEncryptImage(item);
-        })
-      }, 300)
+        });
+      }, 300);
     });
   },
   methods: {
     onClick(id) {
       let source = this.$route.query.source;
-      this.$emit('leave', () => {
+      this.$emit("leave", () => {
         window.location.href = `/mobile/videoPlay/${id}?source=${source}`;
       });
     }

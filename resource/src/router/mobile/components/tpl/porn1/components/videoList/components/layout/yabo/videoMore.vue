@@ -67,6 +67,7 @@ import axios from "axios";
 import { Swiper, SwiperSlide } from "vue-awesome-swiper";
 import pornRequest from "@/api/pornRequest";
 import { getEncryptImage } from "@/lib/crypto";
+import { mapActions, mapGetters } from "vuex";
 
 export default {
   components: {
@@ -120,6 +121,12 @@ export default {
     this.setVideoList();
   },
   computed: {
+    ...mapGetters({
+      siteConfig: "getSiteConfig"
+    }),
+    themeTPL() {
+      return this.siteConfig.MOBILE_WEB_TPL;
+    },
     options() {
       return {
         slidesPerView: "auto",
@@ -135,7 +142,7 @@ export default {
     defaultImg() {
       const isYabo = this.source === "yabo";
       return this.$getCdnPath(
-        `/static/image/porn1/default/${
+        `/static/image/${this.themeTPL}/default/${
           isYabo ? "bg_video03_d" : "bg_video03_1_d@3x"
         }.png`
       );

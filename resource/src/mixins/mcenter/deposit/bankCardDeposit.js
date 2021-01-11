@@ -847,19 +847,13 @@ export default {
       }
 
       this.nameCheckFail = false;
-      let isPWA =
-        getCookie("platform") === "G" ||
-        window.location.host === "yaboxxxapp01.com";
-      // let isWebView =
-      //   getCookie("platform") === "H" ||
-      //   window.location.host === "yaboxxxapp02.com";
-      let newWindow;
-      if (isPWA) {
-        newWindow = window.open("", "", "_blank", true);
-      }
 
-      console.log("newWindow:", newWindow);
-      // console.log("isPWA:", isPWA, ",isWebView:", isWebView);
+      let newWindow = "";
+      newWindow = window.open(
+        "",
+        "",
+        "width=1024, height=768, target=_blank, toolbar=yes"
+      );
 
       const newWindowHref = uri => {
         setTimeout(() => {
@@ -877,16 +871,11 @@ export default {
           eventLabel: "success"
         });
 
-        if (isWebView) {
-          this.webviewOpenUrl = this.curPayInfo.external_url;
-          return Promise.resolve({ status: "credit" });
-        } else if (isPWA) {
-          newWindowHref(this.curPayInfo.external_url);
-          return Promise.resolve({ status: "credit" });
-        }
-
-        window.open(this.curPayInfo.external_url, "credit");
+        newWindowHref(this.curPayInfo.external_url);
         return Promise.resolve({ status: "credit" });
+
+        // window.open(this.curPayInfo.external_url, "credit");
+        // return Promise.resolve({ status: "credit" });
       }
 
       this.isShow = true;
