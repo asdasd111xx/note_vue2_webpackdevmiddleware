@@ -264,7 +264,7 @@ export default {
         }
       ],
       selectMenu: "",
-      selectType: { name: "全部", key: "all", status: 0 },
+      selectType: { name: "已派发", key: "dispatch", status: 1 },
       isCustomTime: false,
       currentSelectTime: this.$t("S_TODDAY"),
       selectTime: this.$t("S_TODDAY"),
