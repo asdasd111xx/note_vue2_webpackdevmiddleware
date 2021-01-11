@@ -225,10 +225,10 @@ export default {
       }
 
       // 充值不開放(絲瓜)
-      if (this.headerConfig.hasHelp.type === "deposit") {
-        this.actionSetGlobalMessage({ type: "incoming" });
-        return;
-      }
+      // if (this.headerConfig.hasHelp.type === "deposit") {
+      //   this.actionSetGlobalMessage({ type: "incoming" });
+      //   return;
+      // }
 
       this.$router.push(this.headerConfig.hasHelp.url);
     },
