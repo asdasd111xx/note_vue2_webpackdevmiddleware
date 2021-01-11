@@ -98,6 +98,7 @@ import find from "lodash/find";
 import pornRequest from "@/api/pornRequest";
 import message from "@/router/mobile/components/common/message";
 import { getEncryptImage } from "@/lib/crypto";
+import { mapActions, mapGetters } from "vuex";
 
 export default {
   components: {
@@ -130,10 +131,16 @@ export default {
     };
   },
   computed: {
+    ...mapGetters({
+      siteConfig: "getSiteConfig"
+    }),
+    themeTPL() {
+      return this.siteConfig.MOBILE_WEB_TPL;
+    },
     defaultImg() {
       const isYabo = this.source === "yabo";
       return this.$getCdnPath(
-        `/static/image/porn1/default/${
+        `/static/image/${this.themeTPL}/default/${
           isYabo ? "bg_video03_d" : "bg_video03_1_d@3x"
         }.png`
       );

@@ -49,11 +49,15 @@ import InfiniteLoading from "vue-infinite-loading";
 import axios from "axios";
 import querystring from "querystring";
 import pornRequest from "@/api/pornRequest";
-import { getEncryptImage } from '@/lib/crypto';
+import { getEncryptImage } from "@/lib/crypto";
+import { mapActions, mapGetters } from "vuex";
 
 export default {
   components: {
-    pageLoading: () => import(/* webpackChunkName: 'pageLoading' */ '@/router/mobile/components/common/pageLoading'),
+    pageLoading: () =>
+      import(
+        /* webpackChunkName: 'pageLoading' */ "@/router/mobile/components/common/pageLoading"
+      ),
     InfiniteLoading
   },
   props: {
@@ -73,8 +77,7 @@ export default {
       hasInfinite: false,
       searchList: [],
       current: 0,
-      total: 0,
-      img: this.$getCdnPath(`/static/image/porn1/default/bg_video03_d.png`)
+      total: 0
     };
   },
   watch: {
@@ -85,14 +88,20 @@ export default {
   created() {
     this.setSearchList();
   },
-  methods: {
-    getImg(image) {
-      return {
-        src: image,
-        error: this.$getCdnPath(`/static/image/porn1/default/bg_video03_d.png`),
-        loading: this.$getCdnPath(`/static/image/porn1/default/bg_video03_d.png`)
-      };
+  computed: {
+    ...mapGetters({
+      siteConfig: "getSiteConfig"
+    }),
+    themeTPL() {
+      return this.siteConfig.MOBILE_WEB_TPL;
     },
+    img() {
+      return this.$getCdnPath(
+        `/static/image/${this.themeTPL}/default/bg_video03_1_d@3x.png`
+      );
+    }
+  },
+  methods: {
     getSearchList(page) {
       return pornRequest({
         method: "post",
@@ -128,8 +137,8 @@ export default {
         setTimeout(() => {
           this.searchList.forEach(item => {
             getEncryptImage(item);
-          })
-        }, 300)
+          });
+        }, 300);
 
         if (response.result.current_page >= response.result.last_page) {
           return;
@@ -158,8 +167,8 @@ export default {
         setTimeout(() => {
           this.searchList.forEach(item => {
             getEncryptImage(item);
-          })
-        }, 300)
+          });
+        }, 300);
 
         if (response.result.current_page >= response.result.last_page) {
           $state.complete();
