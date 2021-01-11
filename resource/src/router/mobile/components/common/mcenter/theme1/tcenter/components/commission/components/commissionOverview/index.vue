@@ -40,6 +40,7 @@
           <div :class="$style.title">{{ info.text }}</div>
           <div :class="$style.amount">{{ info.amount }}</div>
         </div>
+
         <!-- 預估返利(第三方) -->
         <template v-if="info.key === 'expected'">
           <div v-show="isSummaryShow[info.key]" :class="$style['detail-wrap']">
@@ -164,6 +165,7 @@
             </div>
           </div>
         </template>
+
         <template
           v-else-if="
             summaryContent[index].amount + summaryContent[index].oauthAmount <=
@@ -176,6 +178,7 @@
             </div>
           </div>
         </template>
+
         <template v-else>
           <div v-show="isSummaryShow[info.key]">
             <div
@@ -183,22 +186,32 @@
               :class="[$style['detail-wrap'], 'clearfix']"
             >
               <div
-                v-if="info.key != 'monthly'"
-                :class="[$style.text, $style.main]"
+                :class="[
+                  $style.text,
+                  {
+                    [$style['main']]: info.key === 'monthly'
+                  }
+                ]"
               >
-                {{
-                  summaryContent[index].text === ""
-                    ? "投注返利"
-                    : summaryContent[index].text
-                }}
+                <!-- 唯獨本月已領需要額外+區間 -->
+                <template v-if="info.key === 'monthly'">
+                  投注返利({{ monthRange }})
+                </template>
+
+                <template v-else>
+                  {{
+                    summaryContent[index].text === ""
+                      ? "投注返利"
+                      : summaryContent[index].text
+                  }}
+                </template>
               </div>
-              <div v-else :class="[$style.text, $style.main]">
-                {{ `投注返利(${monthRange})` }}
-              </div>
+
               <div :class="[$style.amount, $style.main]">
                 {{ summaryContent[index].amount }}
               </div>
             </div>
+
             <div
               v-if="summaryContent[index].oauthAmount"
               :class="[$style['detail-wrap'], 'clearfix']"
