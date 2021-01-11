@@ -55,7 +55,7 @@ export default {
       };
 
       return {
-        prev: hasPrev,
+        prev: this.hasPrev,
         isBackgroundGradient: true,
         hasSearchBtn: name === "home" && this.isAdult,
         title: trans[name],
