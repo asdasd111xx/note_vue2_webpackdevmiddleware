@@ -116,7 +116,8 @@ export default {
       "actionSetSwagBalance"
     ]),
     initSWAGConfig(onlyCheckMaintain = false, fromClick = false) {
-      if (this.isCheckingInit) {
+      const enable = localStorage.getItem("enable-swag") !== "false";
+      if (this.isCheckingInit || !enable) {
         return new Promise((resolve, reject) => {
           resolve(false);
         });

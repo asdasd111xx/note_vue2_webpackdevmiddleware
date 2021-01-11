@@ -1334,7 +1334,6 @@ export const actionSetYaboConfig = ({ state, dispatch, commit }, next) => {
     method: "get",
     url: configInfo.YABO_GOLANG_API_DOMAIN + "/cxbb/System/switch"
   }).then(res => {
-    console.log("api switch test");
     if (res && res.data) {
       commit(types.SET_YABOCONFIG, res.data);
     }
