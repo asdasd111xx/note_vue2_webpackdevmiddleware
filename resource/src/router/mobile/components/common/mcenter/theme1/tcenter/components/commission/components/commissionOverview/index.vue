@@ -243,30 +243,32 @@ export default {
       return style;
     },
     monthRange() {
-      let year = new Date().getFullYear();
-      let month = new Date().getMonth() + 1;
-      let day = "";
-      switch (month) {
-        case 1:
-        case 3:
-        case 5:
-        case 7:
-        case 8:
-        case 10:
-        case 12:
-          day = 31;
-          break;
-        case 4:
-        case 6:
-        case 9:
-        case 11:
-          day = 30;
-          break;
-        case 2:
-          day = year % 4 === 0 ? 29 : 28;
-          break;
-      }
-      return `${month}/1-${month}/${day}`;
+      // Get 目前年/月/日
+      const now = new Date();
+      let year = now.getFullYear();
+      let month = now.getMonth() + 1;
+      let day = now.getDate();
+
+      // 判斷是否月/日 <= 9，補0
+      month = month >= 1 && month <= 9 ? "0" + month : month;
+      day = day >= 1 && day <= 9 ? "0" + day : day;
+
+      // 取當月最後一天
+      const getLastDay = (year, month) => {
+        let new_year = year;
+        let new_month = month++;
+        if (month > 12) {
+          new_month -= 12;
+          new_year++;
+        }
+        let last_date = new Date(new_year, new_month, 0).getDate();
+        return last_date;
+      };
+
+      let firstDate = month + "/" + "01";
+      let lastDate = month + "/" + getLastDay(year, month);
+
+      return firstDate + "-" + lastDate;
     }
   },
   methods: {
