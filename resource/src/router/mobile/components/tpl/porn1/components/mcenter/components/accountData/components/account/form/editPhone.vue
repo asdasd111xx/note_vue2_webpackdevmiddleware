@@ -380,13 +380,9 @@ export default {
     locker() {
       if (this.timer) return;
       this.countdownSec = this.ttl;
-      // this.actionSetGlobalMessage({
-      //   msg: this.$text("S_SEND_CHECK_CODE_VALID_TIME").replace("%s", "5")
-      // });
-      this.tipMsg = this.$text("S_SEND_CHECK_CODE_VALID_TIME").replace(
-        "%s",
-        "5"
-      );
+      this.actionSetGlobalMessage({
+        msg: this.$text("S_SEND_CHECK_CODE_VALID_TIME").replace("%s", "5")
+      });
       this.timer = setInterval(() => {
         if (this.countdownSec === 0) {
           clearInterval(this.timer);
