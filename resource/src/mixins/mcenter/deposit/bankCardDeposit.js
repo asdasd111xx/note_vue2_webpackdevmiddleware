@@ -847,16 +847,13 @@ export default {
       }
 
       this.nameCheckFail = false;
-      let isPWA =
-        getCookie("platform") === "G" ||
-        window.location.host === "yaboxxxapp01.com";
 
-      let newWindow;
-      if (isPWA) {
-        newWindow = window.open("", "", "_blank", true);
-      }
-
-      console.log("newWindow:", newWindow);
+      let newWindow = "";
+      newWindow = window.open(
+        "",
+        "",
+        "width=1024, height=768, target=_blank, toolbar=yes"
+      );
 
       const newWindowHref = uri => {
         setTimeout(() => {
