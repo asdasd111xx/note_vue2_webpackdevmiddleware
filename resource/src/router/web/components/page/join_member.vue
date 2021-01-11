@@ -437,6 +437,10 @@ export default {
       return this.$styleDefault;
     },
     isSlideAble() {
+      if (this.memInfo.config.register_captcha_type === 3) {
+        return true;
+      }
+
       return this.registerData
         .filter(field => this.joinMemInfo[field.key].show)
         .every(field => {
@@ -844,6 +848,13 @@ export default {
 
       // 拼圖
       if (this.memInfo.config.register_captcha_type === 3) {
+        if (!this.puzzleObj) {
+          this.allTip["confirm_password"] = "请先点击按钮进行验证";
+          return;
+        } else {
+          this.allTip["confirm_password"] = "";
+        }
+
         this.allValue.captcha_text = this.puzzleObj;
         this.puzzleData = null;
       }
@@ -971,4 +982,4 @@ export default {
   lang="scss"
   src="@/css/page/joinMem.module.scss"
   module="$styleDefault"
-></style>
+/>
