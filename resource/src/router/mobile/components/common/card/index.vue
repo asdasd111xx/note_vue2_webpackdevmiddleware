@@ -197,7 +197,7 @@ export default {
       // 電子分類預設資料
       const defaultData = [
         {
-          label: "",
+          label: "all",
           name: this.$t("S_ALL")
         },
         {

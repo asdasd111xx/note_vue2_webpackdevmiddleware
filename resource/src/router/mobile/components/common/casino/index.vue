@@ -256,7 +256,7 @@ export default {
       // 電子分類預設資料
       const defaultData = [
         {
-          label: "",
+          label: "all",
           name: this.$t("S_ALL")
         },
         // 活動先註解不開放，後續開放只要搜 activity_open
