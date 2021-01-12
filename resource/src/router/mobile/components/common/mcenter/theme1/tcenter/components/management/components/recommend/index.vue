@@ -197,27 +197,6 @@ export default {
   mixins: [friendsRecommend, promoteFunction],
   data() {
     return {
-      texts: {
-        username: {
-          placeholder: "S_USERNAME_ERROR",
-          error: "S_USERNAME_ERROR"
-        },
-        // 密碼
-        password: {
-          placeholder: "S_PASSWORD_ERROR_AGENT",
-          error: "S_PASSWORD_ERROR_AGENT"
-        },
-        // 確認密碼
-        confirm_password: {
-          placeholder: "S_PWD_CONFIRM",
-          error: "S_JM_PASSWD_CONFIRM_ERROR"
-        },
-        // 會員姓名
-        name: {
-          placeholder: "S_REGISTER_TIPS",
-          error: "S_NO_SYMBOL_DIGIT_CHEN"
-        }
-      },
       puzzleData: null,
       isGetCaptcha: false, // 重新取得驗證碼
       captchaImg: "",
