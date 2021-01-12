@@ -232,7 +232,7 @@
         <ul :class="$style['pop-list']">
           <li v-for="item in bankList" :key="item.id" @click="setBank(item)">
             <!-- <img :src="`https://bbos.bbin-asia.com/elibom/bank/${item.id}.png`" /> -->
-            <img v-lazy="getBankImage(item.swift_code)" />
+            <img v-lazy="getBankImage(item.image_url)" />
             {{ item.name }}
             <icon
               v-if="item.id === formData.bank_id"

@@ -63,7 +63,7 @@
                   "
                   :class="$style['pay-mode-tag']"
                 />
-                <img v-lazy="getImg(info)" :class="$style['pay-mode-img']" />
+                <img v-lazy="getImg(info.image_url)" :class="$style['pay-mode-img']" />
 
                 <div :class="$style['pay-main-title']">
                   {{
@@ -184,7 +184,7 @@
                     :key="item.selectId"
                     @click.stop="changeSelectValue(item.value)"
                   >
-                    <img v-lazy="getImg(item)" />
+                    <img v-lazy="getImg(item.image_url)" />
                     {{ item.label }}
                     <icon
                       v-if="item.value === curSelectedBank.value"
@@ -1670,24 +1670,24 @@ export default {
         }
       });
     },
-    getImg(info) {
-      let imgId = info.swift_code || info.selectId;
+    getImg(image_url) {
+      // let imgId = info.swift_code || info.selectId;
 
-      if (info.bank_id === 0) {
-        if (info.payment_method_id === 20 && info.payment_type_id === 11) {
-          imgId = 70000;
-        }
+      // if (info.bank_id === 0) {
+      //   if (info.payment_method_id === 20 && info.payment_type_id === 11) {
+      //     imgId = 70000;
+      //   }
 
-        if (info.payment_method_id === 3 && info.payment_type_id === 5) {
-          imgId = 70001;
-        }
+      //   if (info.payment_method_id === 3 && info.payment_type_id === 5) {
+      //     imgId = 70001;
+      //   }
 
-        if (info.payment_method_id === 1 && info.payment_type_id === 1) {
-          imgId = 70002;
-        }
-      }
+      //   if (info.payment_method_id === 1 && info.payment_type_id === 1) {
+      //     imgId = 70002;
+      //   }
+      // }
       return {
-        src: `https://images.dormousepie.com/icon/bankIconBySwiftCode/${imgId}.png`,
+        src: image_url,
         error: this.$getCdnPath(
           "/static/image/common/default/bank_card_default.png"
         ),

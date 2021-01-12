@@ -309,9 +309,9 @@ export default {
         return true;
       });
     },
-    getBankImage(swiftCode) {
+    getBankImage(image_url) {
       return {
-        src: `https://images.dormousepie.com/icon/bankIconBySwiftCode/${swiftCode}.png`,
+        src: image_url,
         error: this.$getCdnPath(
           "/static/image/common/default/bank_card_default.png"
         ),
