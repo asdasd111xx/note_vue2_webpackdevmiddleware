@@ -40,7 +40,9 @@
         :class="$style['no-data']"
       >
         <div :class="$style['no-bankcard']">
-          <img :src="$getCdnPath(`/static/image/common/default/no_bankcard.png`)" />
+          <img
+            :src="$getCdnPath(`/static/image/common/default/no_bankcard.png`)"
+          />
         </div>
       </div>
 
@@ -156,19 +158,7 @@ export default {
   created() {
     this.getUserBankList();
   },
-  methods: {
-    getBankImage(swiftCode) {
-      return {
-        src: `https://images.dormousepie.com/icon/bankIconBySwiftCode/${swiftCode}.png`,
-        error: this.$getCdnPath(
-          `/static/image/common/default/bank_card_default.png`
-        ),
-        loading: this.$getCdnPath(
-          `/static/image/common/default/bank_card_default.png`
-        )
-      };
-    }
-  }
+  methods: {}
 };
 </script>
 

@@ -17,7 +17,7 @@
     <template v-if="type === 'bankCard'">
       <div :class="[$style['card-top'], 'clearfix']">
         <div :class="$style['card-logo']">
-          <img v-lazy="getBankImage(data.swift_code)" />
+          <img v-lazy="getBankImage(data.image_url)" />
         </div>
 
         <div :class="$style['card-info']">
@@ -41,7 +41,7 @@
     <template v-if="type === 'wallet'">
       <div :class="[$style['card-top'], 'clearfix']">
         <div :class="$style['card-logo']">
-          <img v-lazy="getBankImage(data.swift_code)" />
+          <img v-lazy="getBankImage(data.image_url)" />
         </div>
 
         <div :class="$style['card-info']">
@@ -114,9 +114,9 @@ export default {
     }
   },
   methods: {
-    getBankImage(swiftCode) {
+    getBankImage(image_url) {
       return {
-        src: `https://images.dormousepie.com/icon/bankIconBySwiftCode/${swiftCode}.png`,
+        src: image_url,
         error: this.$getCdnPath(
           `/static/image/common/default/bank_card_default.png`
         ),
