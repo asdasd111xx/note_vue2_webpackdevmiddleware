@@ -170,16 +170,19 @@ export default {
               goLangApiRequest({
                 method: "get",
                 url: `${this.siteConfig.YABO_GOLANG_API_DOMAIN}/xbb/Link/External/Url?lang=zh-cn&urlName=${query.alias}&needToken=true&externalCode=fengniao`
-              })
-                .then(res => {
+              }).then(res => {
+                this.isLoading = false;
+
+                if (res && res.data && res.data.uri) {
                   this.src = res.data.uri + "&cors=embed";
-                })
-                .catch(error => {
-                  this.isLoading = false;
-                  if (error && error.data && error.data.msg) {
-                    this.actionSetGlobalMessage({ msg: error.data.msg });
-                  }
-                });
+                  return;
+                }
+
+                if (res && res.msg) {
+                  this.actionSetGlobalMessage({ msg: res.msg });
+                  return;
+                }
+              });
               return;
             }
 
