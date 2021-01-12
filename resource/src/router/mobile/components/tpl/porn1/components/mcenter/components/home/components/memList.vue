@@ -29,17 +29,6 @@
       </div>
     </template>
 
-    <div :class="$style.list" @click="showShare">
-      <div :class="$style['list-icon']">
-        <img :src="$getCdnPath(`/static/image/_new/mcenter/ic_share.png`)" />
-      </div>
-      <span>{{ $text("S_SHARE_APP", "分享APP") }}</span>
-
-      <div :class="$style['btn-next']">
-        <img :src="$getCdnPath(`/static/image/common/arrow_next.png`)" />
-      </div>
-    </div>
-
     <div
       v-if="memInfo.config.content_rating"
       :class="[$style['list'], $style['list-part']]"
@@ -57,26 +46,30 @@
     </div>
     <!-- Share Modal -->
     <share v-if="isShowShare" :is-show-share.sync="isShowShare" />
+    <page-loading :is-show="isLoading" />
   </div>
 </template>
 
 <script>
-import Vue from "vue";
+import { getCookie } from "@/lib/cookie";
 import { mapGetters, mapActions } from "vuex";
+import axios from "axios";
+import bbosRequest from "@/api/bbosRequest";
+import common from "@/api/common";
+import goLangApiRequest from "@/api/goLangApiRequest";
 import mcenter from "@/api/mcenter";
 import mcenterPageAuthControl from "@/lib/mcenterPageAuthControl";
-import common from "@/api/common";
-import ajax from "@/lib/ajax";
-import { API_MCENTER_DESPOSIT_AMOUNT } from "@/config/api";
-import mobileLinkOpen from "@/lib/mobile_link_open";
 import share from "./share";
-import { getCookie } from "@/lib/cookie";
+import Vue from "vue";
 import yaboRequest from "@/api/yaboRequest";
-import bbosRequest from "@/api/bbosRequest";
-import axios from "axios";
+
 export default {
   components: {
-    share
+    share,
+    pageLoading: () =>
+      import(
+        /* webpackChunkName: 'pageLoading' */ "@/router/mobile/components/common/pageLoading"
+      )
   },
   data() {
     return {
@@ -89,13 +82,13 @@ export default {
       requiredMoney: "load",
       superAppUrl: "", // 超級簽URL
       superErrorMsg: "", // 超級簽錯誤訊息
-      toggleShare: false
+      toggleShare: false,
+      isLoading: false
     };
   },
   computed: {
     ...mapGetters({
       memInfo: "getMemInfo",
-      onlineService: "getOnlineService",
       loginStatus: "getLoginStatus",
       siteConfig: "getSiteConfig"
     }),
@@ -146,42 +139,27 @@ export default {
           info: "合营计划",
           isPart: false,
           show: this.isShowPromotion
+        },
+        {
+          initName: "打码王",
+          name: "S_LEADERBOARD",
+          path: "",
+          pageName: "leaderboard",
+          image: "leaderboard",
+          info: "",
+          isPart: false,
+          show: true
+        },
+        {
+          initName: "分享APP",
+          name: "S_SHARE_APP",
+          path: "",
+          pageName: "share",
+          image: "share",
+          info: "",
+          isPart: false,
+          show: true
         }
-        // {
-        //   initName: '分享APP', name: 'S_SHARE_APP', path: '/mobile/mcenter/about', pageName: 'share', image: 'share'
-        // },
-        // {
-        //   initName: '色站开关', name: 'S_PORN_SWITCH', path: '', pageName: '', image: '18+'
-        // },
-
-        // 原舊版亞博
-        // {
-        //   initName: '在线客服', name: 'S_CUSTOMER_SERVICE_ONLINE', path: '', pageName: 'service', image: 'service'
-        // }, // 在線客服
-        // {
-        //   initName: '帐户资料', name: 'S_ACCOUNT_DATA', path: '/mobile/mcenter/accountData', pageName: 'accountData', image: 'account_data'
-        // }, // 個人資料
-        // {
-        //   initName: '我的推广', name: 'S_TEAM_CENTER', path: '/mobile/mcenter/tcenter', pageName: 'tcenter', image: 'my_promote'
-        // }, // 我的推廣
-        // {
-        //   initName: '绑定银行卡', name: 'S_BIND_BANK', path: '/mobile/mcenter/bankCard', pageName: 'accountBankCard', image: 'bank_info'
-        // }, // 銀行卡管理
-        // {
-        //   initName: '资金明细', name: 'S_FUNDS_DETAILS', path: '/mobile/mcenter/moneyDetail', pageName: 'bankMoneyDetail', image: 'money_detail'
-        // }, // 交易記錄
-        // {
-        //   initName: '投注纪录', name: 'S_BETHISTORYBTN', path: '/mobile/mcenter/betRecord', pageName: 'betRecord', image: 'bet_record'
-        // }, // 投注記錄
-        // {
-        //   initName: '实时返水', name: 'S_REAL_TIME_REBATE', path: '/mobile/mcenter/bankRebate', pageName: 'bankRebate', image: 'bank_rebate'
-        // }, // 實時返水
-        // {
-        //   initName: '红利帐户', name: 'S_BONUS_ACCOUNT', path: '/mobile/mcenter/bonusAccount', pageName: 'bonusAccount', image: 'bonus_account'
-        // }, // 紅利帳戶
-        // {
-        //   initName: '信息中心', name: 'S_MSG_CENTER', path: '/mobile/mcenter/information/post', pageName: 'information', image: 'info_post'
-        // } // 信息中心
       ].filter(item => item.show);
     }
   },
@@ -269,12 +247,7 @@ export default {
     });
   },
   methods: {
-    ...mapActions([
-      "actionEnterMCenterThirdPartyLink",
-      "actionSetUserdata",
-      "actionSetGlobalMessage"
-    ]),
-    mobileLinkOpen,
+    ...mapActions(["actionSetUserdata", "actionSetGlobalMessage"]),
     onListClick(item) {
       if (item.pageName === "super") {
         if (!this.loginStatus) {
@@ -286,27 +259,11 @@ export default {
           // 超級籤app下載網址
           const appUrl =
             this.superAppUrl || "https://user.51cjq.xyz/pkgs/ybsp2.app";
-          let isWebView =
-            getCookie("platform") === "H" ||
-            window.location.host === "yaboxxxapp02.com";
-          if (isWebView) {
-            window.location.href = appUrl;
-          } else {
-            window.open(appUrl, "_blank");
-          }
+          window.open(appUrl, "_blank");
         } else {
           this.actionSetGlobalMessage({ msg: this.superErrorMsg });
         }
 
-        return;
-      }
-
-      if (item.pageName === "service") {
-        if (!this.onlineService.url) {
-          return;
-        }
-
-        this.mobileLinkOpen({ linkType: "static", linkTo: "service" });
         return;
       }
 
@@ -317,19 +274,36 @@ export default {
         }
       }
 
-      if (item.pageName === "bankRebate") {
-        this.actionEnterMCenterThirdPartyLink({
-          type: "member",
-          page: item.pageName
-        }).then(pageName => {
-          if (pageName) {
-            mcenterPageAuthControl(pageName).then(response => {
-              if (response && response.status) {
-                this.$router.push(item.path);
-              }
-            });
+      if (item.pageName === "leaderboard") {
+        let w = window.open("", "_blank");
+        this.isLoading = true;
+        goLangApiRequest({
+          method: "get",
+          url: `${this.siteConfig.YABO_GOLANG_API_DOMAIN}/xbb/Link/External/Url`,
+          params: {
+            urlName: "ad_promotion",
+            lang: "zh-cn",
+            needToken: "true",
+            externalCode: "promotion"
+          }
+        }).then(res => {
+          this.isLoading = false;
+
+          if (res && res.data && res.data.uri) {
+            w.location.href = res.data.uri + "&v=m";
+            return;
+          }
+          w.close();
+          if (res && res.msg) {
+            this.actionSetGlobalMessage({ msg: res.msg });
           }
         });
+        return;
+      }
+
+      if (item.pageName === "share") {
+        this.showShare();
+        return;
       }
 
       mcenterPageAuthControl(item.pageName).then(response => {
@@ -370,14 +344,12 @@ export default {
           } else {
             localStorage.setItem("home-menu-type", "");
           }
-
           this.memInfo.user.content_rating = +!this.pornSwitchState;
           this.pornSwitchState = !this.pornSwitchState;
           this.isReceive = false;
         }
       });
     },
-
     showShare() {
       this.isShowShare = true;
     }
@@ -487,17 +459,5 @@ export default {
   font-size: 12px;
   position: absolute;
   right: 38px;
-}
-
-@media screen and (min-width: $phone) {
-  .list {
-    font-size: 14px;
-  }
-}
-
-@media screen and (min-width: $pad) {
-  .list {
-    font-size: 15px;
-  }
 }
 </style>
