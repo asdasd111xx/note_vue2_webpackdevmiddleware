@@ -1660,7 +1660,10 @@ export const actionVerificationFormData = (
 
     case "password":
     case "confirm_password":
-      val = val.replace(/[\W]/g, "").substring(0, 50);
+      val = val
+        .replace(/[\W]/g, "")
+        .substring(0, 50)
+        .toLowerCase();
       break;
 
     case "name":
