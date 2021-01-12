@@ -33,8 +33,7 @@ export default {
           if (this.$route.params.date) {
             this.$router.replace("/mobile/mcenter/tcenter/management/member");
           } else {
-            //this.$router.back();
-            this.$router.push("/mobile/mcenter");
+            this.$router.back();
           }
         }
       };
