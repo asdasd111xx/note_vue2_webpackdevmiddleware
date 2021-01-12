@@ -174,7 +174,7 @@
         <template
           v-else-if="
             summaryContent[index].amount + summaryContent[index].oauthAmount <=
-              0 && info.key != 'monthly'
+              0
           "
         >
           <div v-show="isSummaryShow[info.key]" :class="$style['detail-wrap']">
