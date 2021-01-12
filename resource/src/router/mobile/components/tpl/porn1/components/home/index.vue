@@ -67,9 +67,15 @@ export default {
     }
 
     // 先顯示彈跳公告關閉後再顯示一般公告
-    // 顯示過公告 localStorage.getItem('is-show-popup-announcement')
+    // 顯示過公告 localStorage.getItem('is-shown-announcement')
     // 不在提示 localStorage.getItem('do-not-show-home-post')
-    if (this.loginStatus && !localStorage.getItem("do-not-show-home-post")) {
+    if (
+      this.loginStatus &&
+      !localStorage.getItem("do-not-show-home-post") &&
+      !localStorage.getItem("is-shown-announcement")
+    ) {
+      localStorage.setItem("is-shown-announcement", true);
+
       axios({
         method: "get",
         url: "/api/v1/c/player/popup-announcement"

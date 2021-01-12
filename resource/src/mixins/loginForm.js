@@ -41,6 +41,14 @@ export default {
       localStorage.setItem("rememberPwd", val);
     }
   },
+  beforeCreate() {
+    if (this.$route.query.logout) {
+      setCookie("cid", "");
+      setCookie("y_token", "");
+      setCookie("aid", "");
+      this.$router.replace("/mobile/login");
+    }
+  },
   created() {
     this.getCaptcha();
     this.username = localStorage.getItem("username") || "";

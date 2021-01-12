@@ -54,7 +54,7 @@
 </template>
 
 <script>
-import { mapGetters } from 'vuex';
+import { mapGetters } from "vuex";
 
 export default {
   props: {
@@ -69,25 +69,21 @@ export default {
   },
   computed: {
     ...mapGetters({
-      post: 'getPost'
+      post: "getPost"
     })
   },
   methods: {
     closePop(showDetail) {
       if (showDetail) {
-        this.$router.push('mobile/mcenter/information/post');
+        this.$router.push("mobile/mcenter/information/post");
         return;
       }
 
       if (this.isTick) {
-        localStorage.setItem('do-not-show-home-post', true);
+        localStorage.setItem("do-not-show-home-post", true);
       }
 
-      //   if (!!this.sitePostList) {
-      //     localStorage.setItem('is-show-popup-announcement', true);
-      //   }
-
-      this.$emit('close', !!this.sitePostList);
+      this.$emit("close", !!this.sitePostList);
     }
   }
 };
