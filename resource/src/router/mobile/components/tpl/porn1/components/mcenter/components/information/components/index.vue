@@ -9,6 +9,7 @@
           v-for="(item, index) in tabItem"
           :class="$style['menu-list']"
           @click="setCurrentTab(index)"
+          :key="index"
         >
           <div
             :class="[
@@ -49,13 +50,13 @@ export default {
   components: {
     news,
     post,
-    message,
+    message
   },
   data() {
     return {
       msgCount: 0,
       currentTab: 0, // 'message', 'news', 'post'
-      currentTemplate: "message",
+      currentTemplate: "message"
     };
   },
   created() {
@@ -89,12 +90,12 @@ export default {
           break;
       }
       this.$emit("getCurrentTemplate", this.currentTemplate);
-    },
+    }
   },
   computed: {
     ...mapGetters({
       memInfo: "getMemInfo",
-      siteConfig: "getSiteConfig",
+      siteConfig: "getSiteConfig"
     }),
     themeTPL() {
       return this.siteConfig.MOBILE_WEB_TPL;
@@ -114,7 +115,7 @@ export default {
         title: this.$route.query.pid ? trans[this.currentTemplate] : "消息中心",
         onClick: () => {
           this.$router.back();
-        },
+        }
       };
     },
     tabItem() {
@@ -123,36 +124,36 @@ export default {
           {
             key: "message",
             text: "通知",
-            hasMsgCount: true,
+            hasMsgCount: true
           },
           {
             key: "news",
-            text: "消息",
+            text: "消息"
           },
           {
             key: "post",
-            text: "公告",
-          },
+            text: "公告"
+          }
         ];
       } else {
         return [
           {
             key: "message",
             text: "通知",
-            hasMsgCount: true,
+            hasMsgCount: true
           },
           {
             key: "news",
-            text: "活动",
+            text: "活动"
           },
           {
             key: "post",
-            text: "公告",
-          },
+            text: "公告"
+          }
         ];
       }
-    },
-  },
+    }
+  }
 };
 </script>
 

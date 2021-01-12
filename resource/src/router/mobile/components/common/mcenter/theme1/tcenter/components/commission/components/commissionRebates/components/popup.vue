@@ -95,11 +95,15 @@ export default {
     },
     handleClick() {
       this.$router.push("/mobile/mcenter/tcenter/commission/record");
-      window.location.reload();
+
+      setTimeout(() => {
+        window.location.reload();
+      }, 300);
     }
   }
 };
 </script>
 
 <style lang="scss" src="./css/porn1.popup.scss" module="$style_porn1"></style>
+<style lang="scss" src="./css/ey1.popup.scss" module="$style_ey1"></style>
 <style lang="scss" src="./css/sg1.popup.scss" module="$style_sg1"></style>

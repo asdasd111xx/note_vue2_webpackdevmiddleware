@@ -207,7 +207,6 @@ export default {
     }).then(res => {
       if (res && res.data) {
         this.linkArray = res.data;
-        console.log("this.linkArray" + JSON.stringify(this.linkArray));
       }
     });
   },

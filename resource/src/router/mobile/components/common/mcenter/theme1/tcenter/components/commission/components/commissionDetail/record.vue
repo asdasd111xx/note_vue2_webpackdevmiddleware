@@ -139,7 +139,8 @@
           <div :class="$style['rebate-wrap']">
             <div :class="[$style.detail, 'clearfix']">
               <span :class="[$style.text, $style.main]">
-                {{ $text("S_EXPECTED_LOSS_REBATE", "盈亏返利预估") }}
+                <!-- {{ $text("S_EXPECTED_LOSS_REBATE", "盈亏返利预估") }} -->
+                盈亏返利
               </span>
               <span
                 :class="[

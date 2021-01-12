@@ -180,7 +180,7 @@ export default {
       currentUsers: null,
       currentUsersIndex: 0,
 
-      animatedNumber: { value: 0 },
+      animatedNumber: { value: "--" },
       swiperOpts: {
         loop: true,
         touchmove: false,
@@ -235,7 +235,7 @@ export default {
         return;
       }
 
-      if (this.jackpotData.jpMinor.length > 1) {
+      if (this.jackpotData.jpMinor.length > 0) {
         this.currentBonus = [];
         this.jackpotData.jpMinor.forEach(i => {
           let imgSrc = `${this.siteConfig.BBOS_DOMIAN_CDN}/image/${this.$route.name}/${this.vendor}/Game_${i.code}.png`;
@@ -246,7 +246,7 @@ export default {
         });
         this.swiperOpts = {
           // loopFillGroupWithBlank: true,
-          loop: true,
+          loop: this.jackpotData.jpMinor.length > 1,
           direction: "vertical",
           slidesPerView: 2,
           slidesPerGroup: 2,
@@ -371,9 +371,14 @@ export default {
       }
     },
     formatMoney(value, symbol = true) {
-      if (!value || value === 0) {
-        return 0.0;
+      if (!value && !+value === 0) {
+        return "--";
       }
+
+      if (+value === 0) {
+        return value;
+      }
+
       return `${symbol ? "¥" : ""}${(Math.round(value * 100) / 100)
         .toFixed(2)
         .replace(/\B(?=(\d{3})+(?!\d))/g, ",")}`;

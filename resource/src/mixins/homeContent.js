@@ -180,6 +180,7 @@ export default {
   created() {
     localStorage.removeItem("is-open-game");
     localStorage.removeItem("iframe-third-url");
+    localStorage.removeItem("enable-swag");
     this.showPromotion = this.loginStatus
       ? this.memInfo.user.show_promotion
       : true;
@@ -289,7 +290,15 @@ export default {
         }
 
         this.isReceive = true;
-
+        let data = response.data;
+        // SWAG 客製客端判斷開關
+        let welfare = data.find(i => i.category === "Welfare");
+        if (welfare) {
+          let swag = welfare.vendors.find(i => i.vendor === "SWAG");
+          const isEnableSWAG =
+            swag.type && swag.type.toLowerCase() === "thirdparty";
+          localStorage.setItem("enable-swag", isEnableSWAG);
+        }
         try {
           localStorage.setItem("game-list", JSON.stringify(response.data));
         } catch (e) {
@@ -600,6 +609,7 @@ export default {
           ) {
             userId = this.memInfo.user.id;
           }
+          this.isShowLoading = true;
 
           switch (game.vendor) {
             case "SWAG":
@@ -663,6 +673,7 @@ export default {
                     url: `${this.siteConfig.YABO_GOLANG_API_DOMAIN}/cxbb/ThirdParty/${game.vendor}/${userId}`
                   }).then(res => {
                     localStorage.removeItem("is-open-game");
+                    this.isShowLoading = false;
 
                     if (res && res.status !== "000") {
                       if (res.msg) {

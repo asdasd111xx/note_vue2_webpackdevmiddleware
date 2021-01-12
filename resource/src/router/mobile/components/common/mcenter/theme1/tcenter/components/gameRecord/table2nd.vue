@@ -6,12 +6,12 @@
       <span
         >派彩：
         <span
-          v-if="themetpl() === 'sg1'"
-          :class="{ [$style['is-negative']]: total.payoff > 0 }"
+          v-if="themeTPL === 'ey1'"
+          :class="{ [$style['is-negative']]: total.payoff < 0 }"
           >{{ toCurrency(total.payoff) }}</span
         >
-        <span v-else :class="{ [$style['is-negative']]: total.payoff < 0 }">{{
-          toCurrency(+total.payoff)
+        <span v-else :class="{ [$style['is-negative']]: total.payoff > 0 }">{{
+          toCurrency(total.payoff)
         }}</span></span
       >
     </div>
@@ -22,23 +22,25 @@
         <div :class="$style['card-title']">
           <span :class="$style['header']">{{ info.vendor_alias }}</span>
           <span
-            v-if="themetpl() === 'sg1'"
+            v-if="themeTPL === 'ey1'"
             :class="[
               $style['payout'],
-              { [$style['is-negative']]: info.payoff > 0 }
+              { [$style['is-negative']]: info.payoff < 0 }
             ]"
             >{{ toCurrency(info.payoff) }}</span
           ><span
             v-else
             :class="[
               $style['payout'],
-              { [$style['is-negative']]: info.payoff < 0 }
+              { [$style['is-negative']]: info.payoff > 0 }
             ]"
             >{{ toCurrency(info.payoff) }}</span
           >
         </div>
         <div>
-          <span :class="$style['game-name']">{{ info.game_name }}</span>
+          <span :class="[$style['game-name'], $style[themeTPL]]">
+            {{ info.game_name }}
+          </span>
         </div>
         <div :class="$style['bet']">
           <span>单量</span>
@@ -64,7 +66,10 @@ export default {
   computed: {
     ...mapGetters({
       siteconfig: "getSiteConfig"
-    })
+    }),
+    themeTPL() {
+      return this.siteconfig.MOBILE_WEB_TPL;
+    }
   },
   props: {
     list: {
@@ -81,10 +86,6 @@ export default {
     }
   },
   methods: {
-    themetpl() {
-      return this.siteconfig.MOBILE_WEB_TPL;
-    },
-
     toCurrency(num) {
       var parts = num.toString().split(".");
       parts[0] = parts[0].replace(/\B(?=(\d{3})+(?!\d))/g, ",");

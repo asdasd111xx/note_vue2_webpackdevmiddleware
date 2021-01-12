@@ -40,6 +40,7 @@
           <div :class="$style.title">{{ info.text }}</div>
           <div :class="$style.amount">{{ info.amount }}</div>
         </div>
+
         <!-- 預估返利(第三方) -->
         <template v-if="info.key === 'expected'">
           <div v-show="isSummaryShow[info.key]" :class="$style['detail-wrap']">
@@ -57,6 +58,7 @@
                 {{ summaryContent[index].amount }}
               </div>
             </div>
+
             <div :class="[$style.detail, 'clearfix']">
               <div :class="[$style.text, $style.main]">
                 {{ $text("S_REBATE_LEVEL", "返利级别") }}
@@ -65,11 +67,13 @@
                 {{ summaryContent[index].rate }} %
               </div>
             </div>
+
             <div :class="$style['summary-date']">
               {{ summaryContent[index].start_at | dateFormat }}-{{
                 summaryContent[index].end_at | dateFormat
               }}
             </div>
+
             <div :class="[$style.detail, 'clearfix']">
               <div :class="$style.text">
                 {{ $text("S_ACH_VALID_MEMBERS", "有效会员") }}
@@ -79,6 +83,7 @@
                 {{ $text("S_PERSON", "人") }}
               </div>
             </div>
+
             <div :class="[$style.detail, 'clearfix']">
               <div :class="$style.text">
                 {{ $text("S_VALID_BET", "有效投注") }}
@@ -87,6 +92,7 @@
                 {{ summaryContent[index].valid_bet }}
               </div>
             </div>
+
             <div :class="[$style.detail, 'clearfix']">
               <div :class="$style.text">
                 {{ $text("S_GAME_LOSS", "游戏盈亏") }}
@@ -164,10 +170,11 @@
             </div>
           </div>
         </template>
+
         <template
           v-else-if="
             summaryContent[index].amount + summaryContent[index].oauthAmount <=
-              0 && info.key != 'monthly'
+              0
           "
         >
           <div v-show="isSummaryShow[info.key]" :class="$style['detail-wrap']">
@@ -176,37 +183,53 @@
             </div>
           </div>
         </template>
+
         <template v-else>
           <div v-show="isSummaryShow[info.key]">
             <div
               v-if="summaryContent[index].amount"
-              :class="[$style['detail-wrap'], 'clearfix']"
+              :class="[
+                $style['detail-wrap'],
+                {
+                  [$style['main']]: info.key === 'monthly'
+                },
+                'clearfix'
+              ]"
             >
-              <div
-                v-if="info.key != 'monthly'"
-                :class="[$style.text, $style.main]"
-              >
-                {{
-                  summaryContent[index].text === ""
-                    ? "投注返利"
-                    : summaryContent[index].text
-                }}
+              <div :class="$style.text">
+                <!-- 唯獨本月已領需要額外+區間 -->
+                <template v-if="info.key === 'monthly'">
+                  投注返利({{ monthRange }})
+                </template>
+
+                <template v-else>
+                  {{
+                    summaryContent[index].text === ""
+                      ? "投注返利"
+                      : summaryContent[index].text
+                  }}
+                </template>
               </div>
-              <div v-else :class="[$style.text, $style.main]">
-                {{ `投注返利(${monthRange})` }}
-              </div>
-              <div :class="[$style.amount, $style.main]">
+
+              <div :class="$style.amount">
                 {{ summaryContent[index].amount }}
               </div>
             </div>
+
             <div
               v-if="summaryContent[index].oauthAmount"
-              :class="[$style['detail-wrap'], 'clearfix']"
+              :class="[
+                $style['detail-wrap'],
+                {
+                  [$style['main']]: info.key === 'monthly'
+                },
+                'clearfix'
+              ]"
             >
-              <div :class="[$style.text, $style.main]">
+              <div :class="$style.text">
                 {{ summaryContent[index].oauthText }}
               </div>
-              <div :class="[$style.amount, $style.main]">
+              <div :class="$style.amount">
                 {{ summaryContent[index].oauthAmount }}
               </div>
             </div>
@@ -243,30 +266,32 @@ export default {
       return style;
     },
     monthRange() {
-      let year = new Date().getFullYear();
-      let month = new Date().getMonth() + 1;
-      let day = "";
-      switch (month) {
-        case 1:
-        case 3:
-        case 5:
-        case 7:
-        case 8:
-        case 10:
-        case 12:
-          day = 31;
-          break;
-        case 4:
-        case 6:
-        case 9:
-        case 11:
-          day = 30;
-          break;
-        case 2:
-          day = year % 4 === 0 ? 29 : 28;
-          break;
-      }
-      return `${month}/1-${month}/${day}`;
+      // Get 目前年/月/日
+      const now = new Date();
+      let year = now.getFullYear();
+      let month = now.getMonth() + 1;
+      let day = now.getDate();
+
+      // 判斷是否月/日 <= 9，補0
+      month = month >= 1 && month <= 9 ? "0" + month : month;
+      day = day >= 1 && day <= 9 ? "0" + day : day;
+
+      // 取當月最後一天
+      const getLastDay = (year, month) => {
+        let new_year = year;
+        let new_month = month++;
+        if (month > 12) {
+          new_month -= 12;
+          new_year++;
+        }
+        let last_date = new Date(new_year, new_month, 0).getDate();
+        return last_date;
+      };
+
+      let firstDate = month + "/" + "01";
+      let lastDate = month + "/" + getLastDay(year, month);
+
+      return firstDate + "-" + lastDate;
     }
   },
   methods: {

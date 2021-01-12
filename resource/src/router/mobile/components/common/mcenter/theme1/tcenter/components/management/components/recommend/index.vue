@@ -103,7 +103,7 @@
                 $style['btn-show-password'],
                 { [$style.active]: isShowEyes }
               ]"
-              @click="onShowPassword()"
+              @click="onShowPassword"
             />
           </div>
           <!-- 錯誤訊息 -->
@@ -115,10 +115,7 @@
           </div>
         </div>
         <!-- 驗證碼 -->
-        <div
-          v-if="memInfo.config.default_captcha_type === 1"
-          style="display: none"
-        >
+        <div v-if="memInfo.config.friend_captcha_type === 1">
           <div :class="$style['input-title']" style="font-size: 12px">
             验证码
           </div>
@@ -130,8 +127,8 @@
             ]"
           >
             <input
-              ref="captcha"
-              v-model="allValue['captcha']"
+              ref="captcha_text"
+              v-model="allValue['captcha_text']"
               placeholder="请填写验证码"
               :class="$style['captcha-input']"
               maxlength="4"
@@ -154,9 +151,9 @@
           v-if="isShowCaptcha"
           :is-show-captcha.sync="isShowCaptcha"
           :captcha.sync="captchaData"
-          style="display: none"
+          :friend_captcha_type="true"
         />
-        <button @click="onSubmit">{{ $text("S_ADD") }}</button>
+        <button @click="showCaptchaPopup">{{ $text("S_ADD") }}</button>
       </div>
     </transition>
 
@@ -200,32 +197,16 @@ export default {
   mixins: [friendsRecommend, promoteFunction],
   data() {
     return {
-      texts: {
-        username: {
-          placeholder: "S_USERNAME_ERROR",
-          error: "S_USERNAME_ERROR"
-        },
-        // 密碼
-        password: {
-          placeholder: "S_PASSWORD_ERROR_AGENT",
-          error: "S_PASSWORD_ERROR_AGENT"
-        },
-        // 確認密碼
-        confirm_password: {
-          placeholder: "S_PWD_CONFIRM",
-          error: "S_JM_PASSWD_CONFIRM_ERROR"
-        },
-        // 會員姓名
-        name: {
-          placeholder: "S_REGISTER_TIPS",
-          error: "S_NO_SYMBOL_DIGIT_CHEN"
-        }
-      },
       puzzleData: null,
       isGetCaptcha: false, // 重新取得驗證碼
       captchaImg: "",
       toggleCaptcha: false
     };
+  },
+  watch: {
+    captchaData() {
+      this.onSubmit();
+    }
   },
   computed: {
     ...mapGetters({
@@ -256,10 +237,10 @@ export default {
     },
     captchaData: {
       get() {
-        return this.allValue["captcha"];
+        return this.allValue["captcha_text"];
       },
       set(value) {
-        return (this.allValue["captcha"] = value);
+        return (this.allValue["captcha_text"] = value);
       }
     }
   },
@@ -296,16 +277,16 @@ export default {
       });
     },
     captchaVerification(val) {
-      this.allValue["captcha"] = val.replace(/[\W\_]/g, "");
+      this.allValue["captcha_text"] = val.replace(/[\W\_]/g, "");
     },
     showCaptchaPopup() {
       // 無認證直接呼叫
-      if (this.memInfo.config.default_captcha_type === 0) {
+      if (this.memInfo.config.friend_captcha_type === 0) {
         this.handleSend();
         return;
       }
       // 四碼驗證
-      if (this.memInfo.config.default_captcha_type === 1) {
+      if (this.memInfo.config.friend_captcha_type === 1) {
         this.onSubmit();
         return;
       }

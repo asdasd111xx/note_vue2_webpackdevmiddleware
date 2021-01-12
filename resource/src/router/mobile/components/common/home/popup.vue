@@ -98,10 +98,6 @@ export default {
         localStorage.setItem("do-not-show-home-post", true);
       }
 
-      //   if (!!this.sitePostList) {
-      //     localStorage.setItem('is-show-popup-announcement', true);
-      //   }
-
       this.$emit("close", !!this.sitePostList);
     }
   }

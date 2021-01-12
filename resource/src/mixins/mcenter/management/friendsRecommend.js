@@ -2,6 +2,7 @@ import { mapActions, mapGetters } from "vuex";
 
 import { API_FIRST_LEVEL_REGISTER } from "@/config/api";
 import ajax from "@/lib/ajax";
+import axios from "axios";
 import isMobile from "@/lib/is_mobile";
 
 export default {
@@ -15,6 +16,27 @@ export default {
       isShow: false,
       isShowEyes: false,
       allInput: ["username", "password", "confirm_password", "name"],
+      texts: {
+        username: {
+          placeholder: "S_USERNAME_ERROR",
+          error: "S_USERNAME_ERROR"
+        },
+        // 密碼
+        password: {
+          placeholder: "S_PASSWORD_ERROR_AGENT",
+          error: "S_PASSWORD_ERROR_AGENT"
+        },
+        // 確認密碼
+        confirm_password: {
+          placeholder: "S_PWD_CONFIRM",
+          error: "S_JM_PASSWD_CONFIRM_ERROR"
+        },
+        // 會員姓名
+        name: {
+          placeholder: "S_REGISTER_TIPS",
+          error: "S_NO_SYMBOL_DIGIT_CHEN"
+        }
+      },
       allText: {
         // 會員帳號
         username: {
@@ -59,7 +81,7 @@ export default {
         confirm_password: "",
         name: "",
         //驗證碼
-        captcha: ""
+        captcha_text: ""
       },
       msg: ""
     };
@@ -92,6 +114,7 @@ export default {
      * @param {String} key - 欄位名稱
      */
     onInput(value, key) {
+      if (!this.isShow) return;
       const { allValue, allText } = this;
       const reg = {
         username: /^[a-z1-9][a-z0-9]{3,19}$/,
@@ -126,6 +149,22 @@ export default {
         allText.password.error = false;
         return;
       }
+      switch (key) {
+        case "username":
+          this.texts.username.error = "S_USERNAME_ERROR";
+          break;
+        case "password":
+          this.texts.password.error = "S_PASSWORD_ERROR_AGENT";
+          break;
+        case "confirm_password":
+          this.texts.confirm_password.error = "S_PASSWORD_ERROR_AGENT";
+          break;
+        case "name":
+          this.texts.name.error = "S_NO_SYMBOL_DIGIT_CHEN";
+          break;
+        default:
+          break;
+      }
 
       allText[key].error = false;
     },
@@ -135,7 +174,7 @@ export default {
      */
     onSubmit() {
       // 廳主未開放註冊
-      if (!this.memInfo.config.infinity_register) {
+      if (!this.memInfo.config.infinity_register || !this.isShow) {
         return;
       }
 
@@ -160,58 +199,61 @@ export default {
           return;
         }
 
-        ajax({
+        axios({
           method: "post",
           url: API_FIRST_LEVEL_REGISTER,
           errorAlert: false,
-          params: {
+          data: {
             ...this.allValue,
+            captcha_text: this.allValue["captcha_text"],
             code: this.agentCode,
             created_by: 2
-          },
-          success: ({ result }) => {
-            if (result !== "ok") {
-              return;
-            }
-
+          }
+        }).then(result => {
+          if (result.data.result === "ok") {
             this.msg = this.$text("S_CREATE_SECCESS", "新增成功");
 
-            if (isMobile()) {
-              this.allValue = {
-                username: "",
-                password: "",
-                confirm_password: "",
-                name: ""
-              };
-              this.isShow = false;
+            this.isShow = false;
+            // if (isMobile()) {
+            this.allValue = {
+              username: "",
+              password: "",
+              confirm_password: "",
+              name: "",
+              captcha_text: ""
+            };
 
-              return;
-            }
+            //   return;
+            // }
 
             this.$emit("close");
-          },
-          fail: ({ data }) => {
-            if (data.errors) {
-              if (data.errors.username) {
-                this.msg = this.$text(data.errors.username);
-                return;
+          } else {
+            if (result.data.errors) {
+              if (result.data.errors.username) {
+                this.texts.username.error = result.data.errors.username;
+                this.allText.username.error = true;
               }
 
-              if (data.errors.password) {
-                this.msg = this.$text(data.errors.password);
-                return;
+              if (result.data.errors.password) {
+                this.texts.password.error = result.data.errors.password;
+                this.allText.password.error = true;
               }
 
-              if (data.errors.confirm_password) {
-                this.msg = this.$text(data.errors.confirm_password);
-                return;
+              if (result.data.errors.confirm_password) {
+                this.texts.confirm_password.error =
+                  result.data.errors.confirm_password;
+                this.allText.confirm_password.error = true;
               }
 
-              this.msg = this.$text(data.errors.name);
+              if (result.data.errors.name) {
+                this.texts.name.error = result.data.errors.name;
+                this.allText.name.error = true;
+              }
               return;
             }
 
-            this.msg = this.$text(data.msg);
+            this.msg = result.data.msg;
+            return;
           }
         });
       });
