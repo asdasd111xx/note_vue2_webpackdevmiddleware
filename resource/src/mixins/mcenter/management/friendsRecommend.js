@@ -2,6 +2,7 @@ import { mapActions, mapGetters } from "vuex";
 
 import { API_FIRST_LEVEL_REGISTER } from "@/config/api";
 import ajax from "@/lib/ajax";
+import axios from "axios";
 import isMobile from "@/lib/is_mobile";
 
 export default {
@@ -59,7 +60,7 @@ export default {
         confirm_password: "",
         name: "",
         //驗證碼
-        captcha: ""
+        captcha_text: ""
       },
       msg: ""
     };
@@ -160,58 +161,56 @@ export default {
           return;
         }
 
-        ajax({
+        axios({
           method: "post",
           url: API_FIRST_LEVEL_REGISTER,
           errorAlert: false,
-          params: {
+          data: {
             ...this.allValue,
+            captcha_text: this.allValue["captcha_text"],
             code: this.agentCode,
             created_by: 2
-          },
-          success: ({ result }) => {
-            if (result !== "ok") {
-              return;
-            }
-
+          }
+        }).then(result => {
+          if (result.data.result === "ok") {
             this.msg = this.$text("S_CREATE_SECCESS", "新增成功");
 
-            if (isMobile()) {
-              this.allValue = {
-                username: "",
-                password: "",
-                confirm_password: "",
-                name: ""
-              };
-              this.isShow = false;
+            // if (isMobile()) {
+            //   this.allValue = {
+            //     username: "",
+            //     password: "",
+            //     confirm_password: "",
+            //     name: ""
+            //   };
+            this.isShow = false;
 
-              return;
-            }
+            //   return;
+            // }
 
             this.$emit("close");
-          },
-          fail: ({ data }) => {
-            if (data.errors) {
-              if (data.errors.username) {
-                this.msg = this.$text(data.errors.username);
+          } else {
+            if (result.errors) {
+              if (result.data.errors.username) {
+                this.msg = result.data.errors.username;
                 return;
               }
 
-              if (data.errors.password) {
-                this.msg = this.$text(data.errors.password);
+              if (result.data.errors.password) {
+                this.msg = result.data.errors.password;
                 return;
               }
 
-              if (data.errors.confirm_password) {
-                this.msg = this.$text(data.errors.confirm_password);
+              if (result.data.errors.confirm_password) {
+                this.msg = result.data.errors.confirm_password;
                 return;
               }
 
-              this.msg = this.$text(data.errors.name);
+              this.msg = result.data.errors.name;
               return;
             }
 
-            this.msg = this.$text(data.msg);
+            this.msg = result.data.msg;
+            return;
           }
         });
       });
