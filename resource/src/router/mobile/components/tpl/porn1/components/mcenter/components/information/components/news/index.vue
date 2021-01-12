@@ -22,7 +22,9 @@
           />
         </div>
         <div :class="$style.wrap">
-          <div :class="$style.date">{{ currentNews.time | dateFormat2 }}</div>
+          <div :class="$style.date">
+            {{ currentNews.time | shortDateFormat }}
+          </div>
           <div :class="$style.time">{{ currentNews.time | dateFormat }}</div>
         </div>
       </div>
@@ -48,7 +50,7 @@
           />
         </div>
         <div :class="$style.wrap">
-          <div :class="$style.date">{{ news.time | dateFormat2 }}</div>
+          <div :class="$style.date">{{ news.time | shortDateFormat }}</div>
           <div :class="$style.content" v-html="news.content" />
         </div>
       </div>
@@ -60,42 +62,23 @@
 import Vue from "vue";
 import { mapGetters } from "vuex";
 import EST from "@/lib/EST";
-
+import mixin from "@/mixins/mcenter/message/message";
 export default {
-  filters: {
-    dateFormat2(date) {
-      return Vue.moment(EST(date)).format("YYYY-MM-DD");
-    },
-    dateFormat(date) {
-      return EST(Vue.moment(date).format("YYYY-MM-DD HH:mm:ss"));
-    },
-    timeFormat(date) {
-      return EST(Vue.moment(date).format("YYYY-MM-DD HH:mm:ss"));
-    },
-  },
+  mixins: [mixin],
   computed: {
     ...mapGetters({
       newsData: "getNews",
-      siteConfig: "getSiteConfig",
+      siteConfig: "getSiteConfig"
     }),
     currentNews() {
-      if (!this.$route.query.pid) {
+      if (!this.$route.query.pid || this.newsData.length == 0) {
+        this.$router.back();
         return null;
       }
-      return this.newsData.find((news) => news.id === this.$route.query.pid);
-    },
+      return this.newsData.find(news => news.id === this.$route.query.pid);
+    }
   },
-  methods: {
-    setContent(content) {
-      if (!content) {
-        return;
-      }
-      let urlRegex = /(https?:\/\/[^\s]+)/g;
-      return content.replace(/\n/g, "<br/>").replace(urlRegex, function (url) {
-        return '<a href="' + url + '" target="_blank">' + url + "</a>";
-      });
-    },
-  },
+  methods: {}
 };
 </script>
 

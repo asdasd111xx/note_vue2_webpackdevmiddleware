@@ -121,7 +121,7 @@
         </div>
       </div>
     </div>
-    <div v-else :class="$style['message-content']">
+    <div v-else-if="currentMessage" :class="$style['message-content']">
       <div :class="[$style['content-title'], 'clearfix']">
         <div :class="$style['icon-message']">
           <img
@@ -222,21 +222,13 @@ import find from "lodash/find";
 import mcenter from "@/api/mcenter";
 import { API_MCENTER_MESSAGES_CONTENT } from "@/config/api";
 import { getCookie, setCookie } from "@/lib/cookie";
-import EST from "@/lib/EST";
-
+import mixin from "@/mixins/mcenter/message/message";
 export default {
+  mixins: [mixin],
   props: {
     headerConfig: {
       type: Object | null,
       default: null
-    }
-  },
-  filters: {
-    dateFormat(date) {
-      return EST(Vue.moment(date).format("YYYY-MM-DD HH:mm:ss"));
-    },
-    shortDateFormat(date) {
-      return Vue.moment(EST(date)).format("YYYY-MM-DD");
     }
   },
   data() {
@@ -255,18 +247,12 @@ export default {
       memInfo: "getMemInfo",
       siteConfig: "getSiteConfig"
     }),
-    themeTPL() {
-      return this.siteConfig.MOBILE_WEB_TPL;
-    },
-    $style() {
-      const style =
-        this[`$style_${this.siteConfig.MOBILE_WEB_TPL}`] || this.$style_porn1;
-      return style;
-    },
     currentMessage() {
-      if (!this.$route.query.pid) {
+      if (!this.$route.query.pid || this.messageData.length == 0) {
+        this.$router.back();
         return null;
       }
+
       return this.messageData.find(
         message => message.id === this.$route.query.pid
       );
@@ -289,15 +275,6 @@ export default {
       "actionSetUserdata",
       "actionSetGlobalMessage"
     ]),
-    setContent(content) {
-      if (!content) {
-        return;
-      }
-      let urlRegex = /(https?:\/\/[^\s]+)/g;
-      return content.replace(/\n/g, "<br/>").replace(urlRegex, function(url) {
-        return '<a href="' + url + '" target="_blank">' + url + "</a>";
-      });
-    },
     getMessgae() {
       this.actionSetMcenterMsgCount();
       mcenter.message({
