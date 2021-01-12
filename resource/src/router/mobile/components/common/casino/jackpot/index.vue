@@ -235,7 +235,7 @@ export default {
         return;
       }
 
-      if (this.jackpotData.jpMinor.length > 1) {
+      if (this.jackpotData.jpMinor.length > 0) {
         this.currentBonus = [];
         this.jackpotData.jpMinor.forEach(i => {
           let imgSrc = `${this.siteConfig.BBOS_DOMIAN_CDN}/image/${this.$route.name}/${this.vendor}/Game_${i.code}.png`;
@@ -246,7 +246,7 @@ export default {
         });
         this.swiperOpts = {
           // loopFillGroupWithBlank: true,
-          loop: true,
+          loop: this.jackpotData.jpMinor.length > 1,
           direction: "vertical",
           slidesPerView: 2,
           slidesPerGroup: 2,
