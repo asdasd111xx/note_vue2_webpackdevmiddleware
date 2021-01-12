@@ -5,7 +5,7 @@
         <div
           :class="{ [$style.active]: $route.params.date === 'week' }"
           @click="
-            $router.push('/mobile/mcenter/tcenter/management/member/week')
+            $router.replace('/mobile/mcenter/tcenter/management/member/week')
           "
         >
           <span>{{ $text("THIS_WEEK", "本周") }}</span>
@@ -13,17 +13,17 @@
         <div
           :class="{ [$style.active]: $route.params.date === 'last' }"
           @click="
-            $router.push('/mobile/mcenter/tcenter/management/member/last')
+            $router.replace('/mobile/mcenter/tcenter/management/member/last')
           "
         >
           <span>{{ $text("S_LAST_WEEK", "上周") }}</span>
         </div>
         <div
           :class="{
-            [$style.active]: $route.params.date === 'thirty',
+            [$style.active]: $route.params.date === 'thirty'
           }"
           @click="
-            $router.push('/mobile/mcenter/tcenter/management/member/thirty')
+            $router.replace('/mobile/mcenter/tcenter/management/member/thirty')
           "
         >
           <span>{{ $text("S_NEARLY_THIRTY_DAYS", "近30天") }}</span>
@@ -51,8 +51,8 @@
               :class="[
                 $style.count,
                 {
-                  [$style.deficit]: 0 > +friendsStatistics.today_register,
-                },
+                  [$style.deficit]: 0 > +friendsStatistics.today_register
+                }
               ]"
             >
               {{ friendsStatistics.today_register }}
@@ -66,8 +66,8 @@
               :class="[
                 $style.count,
                 {
-                  [$style.deficit]: 0 > +friendsStatistics.month_register,
-                },
+                  [$style.deficit]: 0 > +friendsStatistics.month_register
+                }
               ]"
             >
               {{ friendsStatistics.month_register }}
@@ -81,8 +81,8 @@
               :class="[
                 $style.count,
                 {
-                  [$style.deficit]: 0 > +friendsStatistics.today_has_login,
-                },
+                  [$style.deficit]: 0 > +friendsStatistics.today_has_login
+                }
               ]"
             >
               {{ friendsStatistics.today_has_login }}
@@ -96,8 +96,8 @@
               :class="[
                 $style.count,
                 {
-                  [$style.deficit]: 0 > +friendsStatistics.week_no_login,
-                },
+                  [$style.deficit]: 0 > +friendsStatistics.week_no_login
+                }
               ]"
             >
               {{ friendsStatistics.week_no_login }}
@@ -111,8 +111,8 @@
               :class="[
                 $style.count,
                 {
-                  [$style.deficit]: 0 > +friendsStatistics.today_has_bet,
-                },
+                  [$style.deficit]: 0 > +friendsStatistics.today_has_bet
+                }
               ]"
             >
               {{ friendsStatistics.today_has_bet }}
@@ -126,8 +126,8 @@
               :class="[
                 $style.count,
                 {
-                  [$style.deficit]: 0 > +friendsStatistics.today_has_deposit,
-                },
+                  [$style.deficit]: 0 > +friendsStatistics.today_has_deposit
+                }
               ]"
             >
               {{ friendsStatistics.today_has_deposit }}
@@ -141,8 +141,8 @@
               :class="[
                 $style.count,
                 {
-                  [$style.deficit]: 0 > +friendsStatistics.valid_bet,
-                },
+                  [$style.deficit]: 0 > +friendsStatistics.valid_bet
+                }
               ]"
             >
               {{ friendsStatistics.valid_bet }}
@@ -156,8 +156,8 @@
               :class="[
                 $style.count,
                 {
-                  [$style.deficit]: 0 > +friendsStatistics.payoff,
-                },
+                  [$style.deficit]: 0 > +friendsStatistics.payoff
+                }
               ]"
             >
               {{ friendsStatistics.payoff }}
@@ -171,8 +171,8 @@
               :class="[
                 $style.count,
                 {
-                  [$style.deficit]: 0 > +friendsStatistics.deposit,
-                },
+                  [$style.deficit]: 0 > +friendsStatistics.deposit
+                }
               ]"
             >
               {{ friendsStatistics.deposit }}
@@ -186,8 +186,8 @@
               :class="[
                 $style.count,
                 {
-                  [$style.deficit]: 0 > +friendsStatistics.withdraw,
-                },
+                  [$style.deficit]: 0 > +friendsStatistics.withdraw
+                }
               ]"
             >
               {{ friendsStatistics.withdraw }}
@@ -209,29 +209,29 @@ import friendsStatistics from "@/mixins/mcenter/management/friendsStatistics";
 export default {
   components: {
     allFriends: () =>
-      import(/* webpackChunkName: 'allFriends' */ "../allFriends"),
+      import(/* webpackChunkName: 'allFriends' */ "../allFriends")
   },
   mixins: [friendsStatistics],
   props: {
     setTabState: {
       type: Function,
-      required: true,
+      required: true
     },
     setHeaderTitle: {
       type: Function,
-      required: true,
-    },
+      required: true
+    }
   },
   computed: {
     ...mapGetters({
       memInfo: "getMemInfo",
-      siteConfig: "getSiteConfig",
+      siteConfig: "getSiteConfig"
     }),
     $style() {
       const style =
         this[`$style_${this.siteConfig.MOBILE_WEB_TPL}`] || this.$style_porn1;
       return style;
-    },
+    }
   },
   watch: {
     // eslint-disable-next-line
@@ -244,7 +244,7 @@ export default {
         this.setTabState(true);
         this.setHeaderTitle(this.$text("S_TEAM_CENTER", "我的推广"));
       }
-    },
+    }
   },
   created() {
     if (!this.$route.params.date) {
@@ -257,12 +257,12 @@ export default {
   },
   methods: {
     onCheck() {
-      this.$router.push({
+      this.$router.replace({
         name: "mcenter-tcenter-management",
-        params: { page: "member", date: "week" },
+        params: { page: "member", date: "week" }
       });
-    },
-  },
+    }
+  }
 };
 </script>
 
