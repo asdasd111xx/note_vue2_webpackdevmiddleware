@@ -6,12 +6,12 @@
       <span
         >派彩：
         <span
-          v-if="themeTPL === 'sg1'"
-          :class="{ [$style['is-negative']]: total.payoff > 0 }"
+          v-if="themeTPL === 'ey1'"
+          :class="{ [$style['is-negative']]: total.payoff < 0 }"
           >{{ toCurrency(total.payoff) }}</span
         >
-        <span v-else :class="{ [$style['is-negative']]: total.payoff < 0 }">{{
-          toCurrency(+total.payoff)
+        <span v-else :class="{ [$style['is-negative']]: total.payoff > 0 }">{{
+          toCurrency(total.payoff)
         }}</span></span
       >
     </div>
@@ -22,17 +22,17 @@
         <div :class="$style['card-title']">
           <span :class="$style['header']">{{ info.vendor_alias }}</span>
           <span
-            v-if="themeTPL === 'sg1'"
+            v-if="themeTPL === 'ey1'"
             :class="[
               $style['payout'],
-              { [$style['is-negative']]: info.payoff > 0 }
+              { [$style['is-negative']]: info.payoff < 0 }
             ]"
             >{{ toCurrency(info.payoff) }}</span
           ><span
             v-else
             :class="[
               $style['payout'],
-              { [$style['is-negative']]: info.payoff < 0 }
+              { [$style['is-negative']]: info.payoff > 0 }
             ]"
             >{{ toCurrency(info.payoff) }}</span
           >
