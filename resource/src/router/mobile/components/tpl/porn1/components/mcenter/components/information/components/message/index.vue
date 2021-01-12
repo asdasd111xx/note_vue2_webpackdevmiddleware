@@ -362,6 +362,7 @@ export default {
           return;
         }
         setTimeout(() => {
+          this.actionSetMcenterMsgCount();
           this.isLoading = false;
         }, 500);
       });
