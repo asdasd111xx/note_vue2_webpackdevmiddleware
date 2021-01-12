@@ -26,14 +26,30 @@
             <div :class="$style['form-title']">
               {{ $text("S_STARTED_DAY", "起始日") }}
             </div>
-            <input v-model="start" :min="fromDate" :max="end" type="date" />
+
+            <input
+              v-model="start"
+              :min="fromDate"
+              :max="end"
+              :id="`start`"
+              type="date"
+              @input="limitDate('start', $event.target.value)"
+            />
             <span>{{ start | dateFormat }}</span>
           </div>
           <div :class="$style['form-date-end']">
             <div :class="$style['form-title']">
               {{ $text("S_END_DAY", "结束日") }}
             </div>
-            <input v-model="end" :min="start" :max="endDate" type="date" />
+
+            <input
+              v-model="end"
+              :min="start"
+              :max="endDate"
+              :id="`end`"
+              type="date"
+              @input="limitDate('end', $event.target.value)"
+            />
             <span>{{ end | dateFormat }}</span>
           </div>
         </div>
@@ -68,7 +84,7 @@
 
 <script>
 import Vue from "vue";
-import { mapGetters } from "vuex";
+import { mapGetters, mapActions } from "vuex";
 import { format } from "date-fns";
 import bbosRequest from "@/api/bbosRequest";
 import commission from "@/mixins/mcenter/commission";
@@ -195,6 +211,7 @@ export default {
     this.hasSearch = true;
   },
   methods: {
+    ...mapActions(["actionSetGlobalMessage"]),
     onClick(page) {
       this.hasSearch = page === "record";
       this.$router.push(`/mobile/mcenter/tcenter/commission/${page}`);
@@ -224,6 +241,27 @@ export default {
           return;
         }
       });
+    },
+    limitDate(key, val) {
+      let _value = Vue.moment(val).format("YYYY/MM/DD");
+      let _today = Vue.moment(new Date())
+        .add(-29, "days")
+        .format("YYYY/MM/DD");
+
+      if (_value < _today) {
+        this.checkDate = false;
+        this.actionSetGlobalMessage({ msg: "查询纪录不能超过30天" });
+        this.inqStart = this.endDate;
+        this.checkDate = true;
+      } else if (this.inqStart > this.inqEnd) {
+        this.checkDate = false;
+        this.inqStart = this.endDate;
+      } else if (this.inqEnd > this.endDate) {
+        this.checkDate = false;
+        this.inqEnd = this.endDate;
+      } else {
+        this.checkDate = true;
+      }
     }
   }
 };
