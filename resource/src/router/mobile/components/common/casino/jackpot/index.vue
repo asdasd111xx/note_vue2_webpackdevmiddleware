@@ -180,7 +180,7 @@ export default {
       currentUsers: null,
       currentUsersIndex: 0,
 
-      animatedNumber: { value: 0 },
+      animatedNumber: { value: "--" },
       swiperOpts: {
         loop: true,
         touchmove: false,
@@ -371,9 +371,14 @@ export default {
       }
     },
     formatMoney(value, symbol = true) {
-      if (!value || value === 0) {
-        return 0.0;
+      if (!value && !+value === 0) {
+        return "--";
       }
+
+      if (+value === 0) {
+        return value;
+      }
+
       return `${symbol ? "¥" : ""}${(Math.round(value * 100) / 100)
         .toFixed(2)
         .replace(/\B(?=(\d{3})+(?!\d))/g, ",")}`;
