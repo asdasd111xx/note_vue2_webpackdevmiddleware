@@ -30,7 +30,7 @@
             从相册选取
           </div>
           <div @click="handleClickFunc('camera')">拍照</div>
-          <div @click="onClose">{{ $text("S_CANCEL", "取消") }}</div>
+          <div @click="onClose()">{{ $text("S_CANCEL", "取消") }}</div>
         </div>
       </div>
       <avatar-editer
@@ -103,6 +103,7 @@ export default {
   methods: {
     ...mapActions(["actionSetUserdata", "actionSetGlobalMessage"]),
     onClose(index) {
+      localStorage.removeItem("tmp-avatar-img");
       this.$emit("close", index);
     },
     handleClickFunc(key) {
