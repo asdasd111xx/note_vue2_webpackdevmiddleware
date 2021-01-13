@@ -9,7 +9,7 @@
     </div>
 
     <!-- 頭像編輯彈窗 -->
-    <avatar-dialog v-if="isShowAvatarDialog" @close="handleCloseDialog" />
+    <avatar-dialog v-if="isShowAvatarDialog" @close="handleCloseAvatarEditer" />
     <account />
     <service-tips />
   </div>
@@ -58,7 +58,12 @@ export default {
     getAvatarSrc(index) {
       if (!this.loginStatus) return;
 
-      const imgSrcIndex = index || this.memInfo.user.image;
+      const tmpCustomImage = localStorage.getItem("tmp-avatar-img");
+      if (tmpCustomImage) {
+        this.avatarSrc = tmpCustomImage;
+        return;
+      }
+
       if (this.memInfo.user && this.memInfo.user.custom) {
         axios({
           method: "get",
@@ -75,16 +80,18 @@ export default {
               `/static/image/common/mcenter/default/avatar_${imgSrcIndex}.png`
             );
           });
-      } else {
-        this.avatarSrc = this.$getCdnPath(
-          `/static/image/common/mcenter/default/avatar_${imgSrcIndex}.png`
-        );
+        return;
       }
+
+      const imgSrcIndex = index || this.memInfo.user.image;
+      this.avatarSrc = this.$getCdnPath(
+        `/static/image/common/mcenter/default/avatar_${imgSrcIndex}.png`
+      );
     },
     showAvatarDialog() {
       this.isShowAvatarDialog = !this.isShowAvatarDialog;
     },
-    handleCloseDialog(tmpSelectAvatarIndex) {
+    handleCloseAvatarEditer(tmpSelectAvatarIndex) {
       this.isShowAvatarDialog = false;
 
       this.actionSetUserdata(true).then(() => {

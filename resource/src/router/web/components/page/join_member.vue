@@ -269,9 +269,10 @@
         :success-fuc="joinSubmit"
         page-status="register"
       />
+
       <div v-else :class="$style['join-btn-wrap']">
         <div
-          :class="[$style['join-btn'], { [$style.disabled]: !isSlideAble }]"
+          :class="[$style['join-btn'], { [$style.disabled]: isLoading }]"
           @click="joinSubmit()"
         >
           {{ $text("S_REGISTER", "注册") }}
@@ -279,6 +280,7 @@
       </div>
       <slot name="bottom-content" />
     </div>
+    <page-loading :is-show="isLoading" />
   </div>
 </template>
 
@@ -305,7 +307,11 @@ export default {
     slideVerification,
     puzzleVerification,
     vSelect,
-    datepicker
+    datepicker,
+    pageLoading: () =>
+      import(
+        /* webpackChunkName: 'pageLoading' */ "@/router/mobile/components/common/pageLoading"
+      )
   },
   props: {
     theme: {
@@ -402,7 +408,8 @@ export default {
           selected: { label: this.$i18n.t("S_SELECTED"), value: "" }
         }
       },
-      isGetCaptcha: false
+      isGetCaptcha: false,
+      isLoading: false
     };
   },
   computed: {
@@ -622,7 +629,11 @@ export default {
       });
   },
   methods: {
-    ...mapActions(["actionSetUserdata", "actionSetGlobalMessage"]),
+    ...mapActions([
+      "actionSetUserdata",
+      "actionSetGlobalMessage",
+      "actionVerificationFormData"
+    ]),
     keyDownSubmit() {
       if (this.memInfo.config.register_captcha_type === 2) {
         return;
@@ -702,6 +713,10 @@ export default {
       //  return;
       //}
 
+      if (!data.show) {
+        return;
+      }
+
       switch (key) {
         case "password":
         case "username":
@@ -709,17 +724,14 @@ export default {
         case "qq_num":
         case "withdraw_password":
         case "confirm_password":
-          this.allValue[key] = this.allValue[key]
-            .toLowerCase()
-            .replace(" ", "")
-            .trim()
-            .replace(/[\W]/g, "");
+        case "name":
+          this.actionVerificationFormData({
+            target: key,
+            value: this.allValue[key]
+          }).then(val => {
+            this.allValue[key] = val;
+          });
           break;
-      }
-
-      if (key === "name" && this.allValue[key].length > 30) {
-        this.allValue[key] = this.allValue[key].substring(0, 30);
-        return;
       }
 
       //  非必填欄位，空值不做驗證
@@ -841,6 +853,11 @@ export default {
       this.verification(key);
     },
     joinSubmit(captchaInfo) {
+      this.isLoading = true;
+      Object.keys(this.allValue).forEach(item => {
+        this.verification(item);
+      });
+
       // 滑動
       if (this.memInfo.config.register_captcha_type === 2) {
         this.allValue.captcha_text = captchaInfo.data;
@@ -850,6 +867,7 @@ export default {
       if (this.memInfo.config.register_captcha_type === 3) {
         if (!this.puzzleObj) {
           this.allTip["confirm_password"] = "请先点击按钮进行验证";
+          this.isLoading = false;
           return;
         } else {
           this.allTip["confirm_password"] = "";
@@ -857,6 +875,17 @@ export default {
 
         this.allValue.captcha_text = this.puzzleObj;
         this.puzzleData = null;
+      }
+
+      // 圖形
+      if (this.memInfo.config.register_captcha_type === 1) {
+        if (!this.allValue.captcha_text) {
+          this.allTip["captcha_text"] = "请输入验证码";
+          this.isLoading = false;
+          return;
+        } else {
+          this.allTip["captcha_text"] = "";
+        }
       }
 
       const params = {
@@ -882,12 +911,18 @@ export default {
           host: window.location.host
         },
         fail: error => {
+          setTimeout(() => {
+            this.isLoading = false;
+          }, 1000);
           if (error && error.status === 429) {
             this.errMsg = "操作太频繁，请稍候再试";
             return;
           }
         }
       }).then(res => {
+        setTimeout(() => {
+          this.isLoading = false;
+        }, 1000);
         if (this.$refs.puzzleVer) this.$refs.puzzleVer.ret = null;
         if (res.data && res.data.cookie) {
           try {

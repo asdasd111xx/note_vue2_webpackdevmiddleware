@@ -1,5 +1,5 @@
-import axios from "axios";
 import { mapActions, mapGetters } from "vuex";
+import goLangApiRequest from "@/api/goLangApiRequest";
 
 export default {
   data() {
@@ -37,20 +37,24 @@ export default {
     getNowOpenWallet() {
       this.isRevice = false;
 
+      // C02.141 取得廳主支援的電子錢包列表
       // Get 錢包類型
-      axios({
+      goLangApiRequest({
         method: "get",
-        url: "/api/payment/v1/c/virtual/bank/list"
+        url: `${this.siteConfig.YABO_GOLANG_API_DOMAIN}/xbb/Payment/VirtualBank/List`,
+        params: {
+          lang: "zh-cn"
+        }
       })
         .then(response => {
-          const { ret, result } = response.data;
           this.isRevice = true;
+          const { data, status, errorCode } = response;
 
-          if (!response || result !== "ok") {
+          if (errorCode !== "00" || status !== "000") {
             return;
           }
 
-          this.nowOpenWallet = ret;
+          this.nowOpenWallet = data;
         })
         .catch(error => {
           const { msg } = error.response.data;
@@ -63,22 +67,24 @@ export default {
     getUserWalletList() {
       this.isRevice = false;
 
-      return axios({
-        method: "get",
-        url: "/api/v1/c/player/user_virtual_bank/list",
+      //  C02.241 查詢會員電子錢包
+      return goLangApiRequest({
+        method: "post",
+        url: `${this.siteConfig.YABO_GOLANG_API_DOMAIN}/xbb/Player/User/Virtual/Bank/List`,
         params: {
+          lang: "zh-cn",
           common: true
         }
       })
         .then(response => {
-          const { ret, result } = response.data;
           this.isRevice = true;
+          const { data, status, errorCode } = response;
 
-          if (!response || result !== "ok") {
+          if (errorCode !== "00" || status !== "000") {
             return;
           }
 
-          this.wallet_card = ret.filter((item, index) => index < 15);
+          this.wallet_card = data.filter((item, index) => index < 15);
         })
         .catch(error => {
           const { msg } = error.response.data;
@@ -112,18 +118,21 @@ export default {
     moveCard() {
       const { address, virtual_bank_id } = this.wallet_cardDetail;
 
-      axios({
+      // 編輯會員電子錢包 C02.240 (取代C02.145)
+      goLangApiRequest({
         method: "put",
-        url: "/api/v1/c/player/user_virtual_bank",
-        data: {
-          old_address: address,
-          virtual_bank_id: String(virtual_bank_id),
+        url: `${this.siteConfig.YABO_GOLANG_API_DOMAIN}/xbb/Player/User/VirtualBank/Edit`,
+        params: {
+          lang: "zh-cn",
+          oldAddress: address,
+          virtualBankId: String(virtual_bank_id),
           common: false
         }
       })
         .then(response => {
-          const { result } = response.data;
-          if (!response || result !== "ok") {
+          const { status, errorCode } = response;
+
+          if (errorCode !== "00" || status !== "000") {
             return;
           }
 
@@ -141,16 +150,19 @@ export default {
         });
     },
     onDelete() {
-      axios({
+      // 申請刪除會員電子錢包 C02.244
+      goLangApiRequest({
         method: "put",
-        url: `/api/v1/c/player/user_virtual_bank/${this.wallet_cardDetail.id}/delete/apply`,
-        data: {
-          userVirtualBankId: this.wallet_cardDetail.id
+        url: `${this.siteConfig.YABO_GOLANG_API_DOMAIN}/xbb/Player/User/VirtualBank/ApplyDeletePlayer/${this.wallet_cardDetail.id}`,
+        params: {
+          lang: "zh-cn",
+          bankID: this.wallet_cardDetail.id
         }
       })
         .then(response => {
-          const { result, msg } = response.data;
-          if (!response || result !== "ok") {
+          const { status, errorCode, msg } = response;
+
+          if (errorCode !== "00" || status !== "000") {
             this.actionSetGlobalMessage({ msg: msg ? msg : "不开放删除" });
             return;
           }

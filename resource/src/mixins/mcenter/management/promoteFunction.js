@@ -1,20 +1,20 @@
-import { mapActions, mapGetters } from 'vuex';
+import { mapActions, mapGetters } from "vuex";
 
-import isMobile from '@/lib/is_mobile';
+import isMobile from "@/lib/is_mobile";
 
 export default {
   data() {
     return {
       isRegister: false,
       isPopup: false,
-      popupType: '',
+      popupType: ""
     };
   },
   computed: {
     ...mapGetters({
-      memInfo: 'getMemInfo',
+      memInfo: "getMemInfo",
       agentLink: "getAgentLink",
-      promotionLink: 'getPromotionLink'
+      promotionLink: "getPromotionLink"
     }),
     /**
      * 推廣連結
@@ -37,38 +37,40 @@ export default {
     this.actionSetAgentLink();
   },
   methods: {
-    ...mapActions(["actionSetAgentLink"]),
+    ...mapActions(["actionSetAgentLink", "actionSetGlobalMessage"]),
     /**
      * 複製推廣代碼或連結
      * @method onCopy
      * @param {String} key - code or link
      */
     onCopy(key) {
-      let value = '';
-      let type = '';
+      let value = "";
+      let type = "";
 
       switch (key) {
-        case 'CODE':
+        case "CODE":
           value = this.agentLink.agentCode;
-          type = key
+          type = key;
+          this.actionSetGlobalMessage({ msg: "推广代码已复制" });
           break;
 
-        case 'LINK':
+        case "LINK":
           //   value = this.agentLink.domain;
           value = this.promotionLink;
-          type = key
+          type = key;
+          this.actionSetGlobalMessage({ msg: "连结已复制" });
           break;
       }
 
-      this.$copyText(value).then(() => {
-        this.isPopup = true;
-        this.popupType = type;
+      // this.$copyText(value).then(() => {
+      //   this.isPopup = true;
+      //   this.popupType = type;
 
-        // 三秒後自動關閉
-        setTimeout(() => {
-          this.onPopupClose();
-        }, 3000);
-      });
+      //   // 三秒後自動關閉
+      //   setTimeout(() => {
+      //     this.onPopupClose();
+      //   }, 3000);
+      // });
     },
     /**
      * 顯示 QR Code(for mobile)
@@ -76,7 +78,7 @@ export default {
      */
     onQrcodeOpen() {
       this.isPopup = true;
-      this.popupType = 'qrcode';
+      this.popupType = "qrcode";
     },
     /**
      * 關閉彈跳視窗
@@ -85,7 +87,7 @@ export default {
     onPopupClose() {
       if (isMobile()) {
         this.isPopup = false;
-        this.popupType = '';
+        this.popupType = "";
         return;
       }
 

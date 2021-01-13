@@ -53,7 +53,9 @@
                 @click="onClickMaintain(item.maintain)"
               >
                 <img
-                  :src="$getCdnPath('/static/image/common/mcenter/ic_tips.png')"
+                  :src="
+                    $getCdnPath(`/static/image/${themeTPL}/mcenter/ic_tips.png`)
+                  "
                   :class="$style['balance-wrench']"
                 />
                 {{ $t("S_MAINTAIN") }}
@@ -104,7 +106,9 @@
               >
                 {{ $t("S_MAINTAIN") }}
                 <img
-                  :src="$getCdnPath('/static/image/common/mcenter/ic_tips.png')"
+                  :src="
+                    $getCdnPath(`/static/image/${themeTPL}/mcenter/ic_tips.png`)
+                  "
                   :class="$style['balance-wrench']"
                 />
               </span>
@@ -597,12 +601,9 @@ import withdrawAccount from "@/router/mobile/components/common/withdrawAccount/w
 import withdrawMoreMethod from "./withdrawMoreMethod";
 
 import {
-  API_MCENTER_WITHDRAW,
   API_TRADE_RELAY,
   API_CRYPTO_MONEY,
   API_WITHDRAW,
-  API_WITHDRAW_CGPAY_BINDING,
-  API_WITHDRAW_INFO,
   API_WITHDRAW_WRITE_2
 } from "@/config/api";
 import common from "@/api/common";
@@ -1203,6 +1204,9 @@ export default {
       }
     },
     checkSubmit() {
+      // 110/01/13 防止在匯率試算在倒數最後1秒時，避免「匯率試算」的 popup 與溫馨提示重疊顯示
+      this.resetTimerStatus();
+
       // 每一次按下立即提現的時候，重新刷新 Player Api
       this.actionSetUserdata(true).then(() => {
         // 檢查有無黑名單

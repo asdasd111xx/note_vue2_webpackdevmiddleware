@@ -131,6 +131,14 @@
           </div>
         </template>
       </div>
+
+      <div :class="$style.tips">
+        如需帮助，请<span
+          :class="$style['service-btn']"
+          @click="$router.push('/mobile/service')"
+          >联系客服</span
+        >
+      </div>
     </template>
 
     <template v-else>
@@ -475,6 +483,18 @@ export default {
       margin-left: 5px;
       color: #6aaaf5;
     }
+  }
+}
+
+.tips {
+  padding: 40px 0;
+  color: $main_text_color2;
+  font-size: 12px;
+  text-align: center;
+
+  .service-btn {
+    margin-left: 5px;
+    color: #6aaaf5;
   }
 }
 </style>

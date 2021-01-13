@@ -1,5 +1,5 @@
-import axios from "axios";
 import { mapActions, mapGetters } from "vuex";
+import goLangApiRequest from "@/api/goLangApiRequest";
 
 export default {
   data() {
@@ -32,18 +32,24 @@ export default {
     getUserBankList() {
       this.isRevice = false;
 
-      return axios({
+      // C02.221 回傳銀行卡清單與狀態/查詢會員出款銀行
+      return goLangApiRequest({
         method: "get",
-        url: "/api/v1/c/player/user_bank/list"
+        url: `${this.siteConfig.YABO_GOLANG_API_DOMAIN}/xbb/Player/User/Bank/List`,
+        params: {
+          lang: "zh-cn",
+          common: true
+        }
       })
         .then(response => {
-          const { ret, result } = response.data;
           this.isRevice = true;
-          if (!response || result !== "ok") {
+          const { data, status, errorCode } = response;
+
+          if (errorCode !== "00" || status !== "000") {
             return;
           }
 
-          this.bank_card = ret.filter((item, index) => index < 3);
+          this.bank_card = data.filter((item, index) => index < 3);
         })
         .catch(error => {
           const { msg } = error.response.data;
@@ -65,20 +71,23 @@ export default {
     onDelete() {
       this.isRevice = false;
 
-      axios({
+      // 申請刪除會員銀行卡 C02.243
+      goLangApiRequest({
         method: "put",
-        url: `/api/v1/c/player/user_bank/${this.bank_cardDetail.id}/delete/apply`,
-        data: {
-          userBankId: this.bank_cardDetail.id
+        url: `${this.siteConfig.YABO_GOLANG_API_DOMAIN}/xbb/Player/User/Bank/ApplyDeletePlayer/${this.bank_cardDetail.id}`,
+        params: {
+          lang: "zh-cn",
+          bankID: this.bank_cardDetail.id
         }
       })
         .then(response => {
-          const { result, msg } = response.data;
           this.isRevice = true;
           this.isShowPop = false;
           this.$emit("update:editStatus", false);
 
-          if (!response || result !== "ok") {
+          const { status, errorCode, msg } = response;
+
+          if (errorCode !== "00" || status !== "000") {
             this.actionSetGlobalMessage({ msg: msg });
             return;
           }

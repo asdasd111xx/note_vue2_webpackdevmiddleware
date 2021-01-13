@@ -33,6 +33,7 @@ export default {
     localStorage.removeItem("home-menu-type");
     localStorage.removeItem("is-open-game");
     localStorage.removeItem("is-shown-announcement");
+    localStorage.removeItem("tmp-avatar-img");
   },
   mounted() {
     this.timer = setInterval(() => {
