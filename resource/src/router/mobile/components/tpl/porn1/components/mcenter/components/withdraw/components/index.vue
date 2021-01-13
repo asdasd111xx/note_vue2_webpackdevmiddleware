@@ -53,7 +53,9 @@
                 @click="onClickMaintain(item.maintain)"
               >
                 <img
-                  :src="$getCdnPath('/static/image/common/mcenter/ic_tips.png')"
+                  :src="
+                    $getCdnPath(`/static/image/${themeTPL}/mcenter/ic_tips.png`)
+                  "
                   :class="$style['balance-wrench']"
                 />
                 {{ $t("S_MAINTAIN") }}
@@ -104,7 +106,9 @@
               >
                 {{ $t("S_MAINTAIN") }}
                 <img
-                  :src="$getCdnPath('/static/image/common/mcenter/ic_tips.png')"
+                  :src="
+                    $getCdnPath(`/static/image/${themeTPL}/mcenter/ic_tips.png`)
+                  "
                   :class="$style['balance-wrench']"
                 />
               </span>
