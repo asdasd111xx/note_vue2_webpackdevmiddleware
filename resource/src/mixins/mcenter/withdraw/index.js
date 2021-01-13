@@ -1,12 +1,7 @@
 import {
   API_AGCENTER_USER_LEVELS,
-  API_MCENTER_WITHDRAW,
-  API_TRADE_RELAY,
-  API_WITHDRAW,
-  API_WITHDRAW_BALANCE_BACK,
   API_WITHDRAW_CGPAY_BINDING,
-  API_WITHDRAW_INFO,
-  API_WITHDRAW_WRITE
+  API_WITHDRAW_INFO
 } from "@/config/api";
 import { mapActions, mapGetters } from "vuex";
 
@@ -82,6 +77,7 @@ export default {
         }))
       ];
 
+      // 目前應該進不來，沒有 isSupportCGPay 的欄位 ?
       if (this.withdrawUserData.isSupportCGPay && !isMobile()) {
         return resulAccount.concat({
           id: "cgpay",
@@ -306,37 +302,14 @@ export default {
     this.updateAmount().then(() => {
       this.getWithdrawAccount();
     });
-
-    // 取得取款初始資料
-    // ajax({
-    //   method: 'get',
-    //   url: API_WITHDRAW_INFO,
-    //   errorAlert: false,
-    //   fail: (res) => {
-    //     this.actionSetIsLoading(false);
-    //     if (res.data && res.data.msg) {
-    //       this.actionSetGlobalMessage({
-    //         msg: res.data.msg, cb: () => {
-    //           if (res.data.code == "C600001") {
-    //             this.$router.back();
-    //           }
-    //         }
-    //       })
-    //     }
-    //   }
-    // }).then((res) => {
-    //   this.withdrawData = res;
-    //   if (this.memInfo.config.withdraw === '迅付') {
-    //     this.getWithdrawAccount();
-    //   }
-    // });
   },
   methods: {
     ...mapActions([
       "actionSetIsLoading",
       "actionSetUserdata",
       "actionSetGlobalMessage",
-      "actionVerificationFormData"
+      "actionVerificationFormData",
+      "actionGetWithdrawAccount"
     ]),
     checkAccountData(target) {
       this.getAccountDataStatus().then(data => {
@@ -386,25 +359,13 @@ export default {
       this.isLoading = true;
       this.actionSetIsLoading(true);
 
-      ajax({
-        method: "get",
-        url: API_MCENTER_WITHDRAW,
-        errorAlert: false
-      }).then(response => {
+      this.actionGetWithdrawAccount().then(data => {
         this.isLoading = false;
         this.actionSetIsLoading(false);
 
-        if (response.result === "ok") {
-          this.withdrawUserData = response.ret;
-
-          // if (Object.keys(this.cgpayBindingAccount).length > 0) {
-          //     this.withdrawAccount = this.allWithdrawAccount.filter((info) => Number(info.id) === Number(this.cgpayBindingAccount.ret.external_wallet_id));
-          //     return;
-          // }
-
+        if (data) {
+          this.withdrawUserData = data;
           [this.withdrawAccount] = this.allWithdrawAccount;
-        } else {
-          this.actionSetGlobalMessage({ msg: response && response.msg });
         }
       });
     },

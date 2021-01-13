@@ -597,12 +597,9 @@ import withdrawAccount from "@/router/mobile/components/common/withdrawAccount/w
 import withdrawMoreMethod from "./withdrawMoreMethod";
 
 import {
-  API_MCENTER_WITHDRAW,
   API_TRADE_RELAY,
   API_CRYPTO_MONEY,
   API_WITHDRAW,
-  API_WITHDRAW_CGPAY_BINDING,
-  API_WITHDRAW_INFO,
   API_WITHDRAW_WRITE_2
 } from "@/config/api";
 import common from "@/api/common";

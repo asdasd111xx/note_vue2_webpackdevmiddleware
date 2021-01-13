@@ -71,14 +71,11 @@
 </template>
 
 <script>
-import { mapGetters } from "vuex";
+import { mapActions, mapGetters } from "vuex";
+
 import Multiselect from "vue-multiselect";
 import ajax from "@/lib/ajax";
-import {
-  API_TRADE_RELAY,
-  API_MCENTER_WITHDRAW,
-  API_WITHDRAW
-} from "@/config/api";
+import { API_TRADE_RELAY, API_WITHDRAW } from "@/config/api";
 
 export default {
   components: {
@@ -146,19 +143,16 @@ export default {
   },
   created() {
     if (this.withdrawData.withdraw === "迅付") {
-      ajax({
-        method: "get",
-        url: API_MCENTER_WITHDRAW,
-        errorAlert: false
-      }).then(response => {
-        if (response.result === "ok") {
-          this.withdrawUserData = response.ret;
+      this.actionGetWithdrawAccount().then(data => {
+        if (data) {
+          this.withdrawUserData = data;
           [this.withdrawAccount] = this.allWithdrawAccount;
         }
       });
     }
   },
   methods: {
+    ...mapActions(["actionGetWithdrawAccount"]),
     saveWithdrawData() {
       if (this.isAjax) {
         return;

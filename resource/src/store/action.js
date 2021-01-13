@@ -1903,3 +1903,46 @@ export const actionSetSwagBalance = ({ commit, state }, data) => {
     commit(types.SET_SWAG_BALANCE, res.data);
   });
 };
+
+/**
+ * 取得會員可用出款帳戶 C04.27
+ * @method actionGetWithdrawAccount
+ */
+export const actionGetWithdrawAccount = ({ state, dispatch }) => {
+  let configInfo = {};
+
+  if (state.webDomain) {
+    configInfo =
+      siteConfigTest[`site_${state.webDomain.domain}`] ||
+      siteConfigOfficial[`site_${state.webDomain.domain}`] ||
+      siteConfigTest[`site_${state.webInfo.alias}`] ||
+      siteConfigOfficial.preset;
+  }
+
+  return goLangApiRequest({
+    method: "get",
+    url:
+      configInfo.YABO_GOLANG_API_DOMAIN + "/xbb/Ext/Withdraw/User/Account/List",
+    params: {
+      lang: "zh-cn"
+    }
+  })
+    .then(res => {
+      const { data, status, errorCode, msg } = res;
+
+      if (errorCode !== "00" || status !== "000") {
+        dispatch("actionSetGlobalMessage", {
+          msg: msg
+        });
+        return;
+      }
+
+      return Promise.resolve(data);
+    })
+    .catch(error => {
+      const { msg } = error.response.data;
+      dispatch("actionSetGlobalMessage", {
+        msg: msg
+      });
+    });
+};
