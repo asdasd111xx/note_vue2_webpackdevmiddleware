@@ -1287,9 +1287,10 @@ export default {
           }
         })
         .catch(error => {
+          const { msg, code } = error.response.data;
           this.actionSetGlobalMessage({
-            msg: error.response.data.msg,
-            code: error.response.data.code
+            msg: msg,
+            code: code
           });
         });
     },

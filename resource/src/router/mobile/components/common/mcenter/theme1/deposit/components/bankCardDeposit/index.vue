@@ -63,7 +63,10 @@
                   "
                   :class="$style['pay-mode-tag']"
                 />
-                <img v-lazy="getImg(info.image_url)" :class="$style['pay-mode-img']" />
+                <img
+                  v-lazy="getImg(info.image_url)"
+                  :class="$style['pay-mode-img']"
+                />
 
                 <div :class="$style['pay-main-title']">
                   {{
@@ -1628,6 +1631,9 @@ export default {
       }
 
       this.closePopup();
+
+      // 110/01/13 防止在匯率試算在倒數最後1秒時，送出訂單前仍跳出「匯率試算」的 popup
+      this.resetTimerStatus();
 
       this.submitList().then(response => {
         // 重置阻擋狀態

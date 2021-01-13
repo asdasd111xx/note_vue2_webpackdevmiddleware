@@ -1204,6 +1204,9 @@ export default {
       }
     },
     checkSubmit() {
+      // 110/01/13 防止在匯率試算在倒數最後1秒時，避免「匯率試算」的 popup 與溫馨提示重疊顯示
+      this.resetTimerStatus();
+
       // 每一次按下立即提現的時候，重新刷新 Player Api
       this.actionSetUserdata(true).then(() => {
         // 檢查有無黑名單
