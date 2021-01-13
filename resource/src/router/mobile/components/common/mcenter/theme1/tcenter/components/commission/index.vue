@@ -199,12 +199,12 @@ export default {
 
     // 因 detail 的資料可能為第三方 or 各級好友(從上一個傳下來的data)，統一重整回summary
     if (this.page === "detail") {
-      this.$router.push("/mobile/mcenter/tcenter/commission/summary");
+      this.$router.replace("/mobile/mcenter/tcenter/commission/summary");
     }
 
     // 重整的時候，根據當下render page
     if (this.page) {
-      this.$router.push(`/mobile/mcenter/tcenter/commission/${this.page}`);
+      this.$router.replace(`/mobile/mcenter/tcenter/commission/${this.page}`);
       return;
     }
 
@@ -214,7 +214,7 @@ export default {
     ...mapActions(["actionSetGlobalMessage"]),
     onClick(page) {
       this.hasSearch = page === "record";
-      this.$router.push(`/mobile/mcenter/tcenter/commission/${page}`);
+      this.$router.replace(`/mobile/mcenter/tcenter/commission/${page}`);
     },
     onInquire() {
       if (this.startTime !== this.endTime) {

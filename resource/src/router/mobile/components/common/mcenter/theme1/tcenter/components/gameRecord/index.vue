@@ -219,10 +219,9 @@ export default {
     ...mapActions(["actionSetGlobalMessage"]),
     limitDate(key, val) {
       let _value = Vue.moment(val).format("YYYY/MM/DD");
-      let _today = Vue.moment(new Date())
+      let _today = Vue.moment(EST(new Date()))
         .add(-29, "days")
         .format("YYYY/MM/DD");
-
       if (_value < _today) {
         this.checkDate = false;
         this.actionSetGlobalMessage({ msg: "查询纪录不能超过30天" });
