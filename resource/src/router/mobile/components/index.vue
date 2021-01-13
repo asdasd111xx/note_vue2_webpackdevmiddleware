@@ -21,6 +21,14 @@ export default {
     (async () => {
       await store.dispatch("actionMemInit");
       //  store.dispatch('actionGetMobileInfo', store.state.memInfo.user.domain);
+      if (
+        store.state.memInfo.user &&
+        store.state.memInfo.user.password_reset &&
+        window.location.pathname !== "/mobile/resetPwd"
+      ) {
+        window.location.href = "/mobile/resetPwd";
+      }
+
       next();
     })();
   },
@@ -76,9 +84,10 @@ export default {
       apiBalanceAutoBack("in");
     }
 
-    if (this.loginStatus && this.memInfo.user.password_reset) {
-      this.$router.push("/mobile/resetPwd");
-    }
+    // beforeRouteEnter
+    // if (this.loginStatus && this.memInfo.user.password_reset) {
+    //   this.$router.push("/mobile/resetPwd");
+    // }
   },
   methods: {
     /**
