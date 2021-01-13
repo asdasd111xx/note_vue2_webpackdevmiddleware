@@ -243,8 +243,9 @@ export default {
       this.pwdResetInfo[id].value = value.trim();
 
       if (
+        id === "confNewPwd" &&
         this.pwdResetInfo["confNewPwd"].value !==
-        this.pwdResetInfo["newPwd"].value
+          this.pwdResetInfo["newPwd"].value
       ) {
         this.errMsg = "确认密码预设要跟密码一致";
       } else {
