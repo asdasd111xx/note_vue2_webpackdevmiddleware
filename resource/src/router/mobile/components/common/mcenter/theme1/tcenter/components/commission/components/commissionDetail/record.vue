@@ -16,11 +16,11 @@
           </div>
           <div>
             <span>{{ $text("S_VALID_BET", "有效投注") }}</span>
-            <span>{{ item.valid_bet }}</span>
+            <span>{{ item.valid_bet | commaFormat }}</span>
           </div>
           <div>
             <span>{{ $text("S_PROFIT", "损益") }}</span>
-            <span>{{ item.profit }}</span>
+            <span>{{ item.profit | commaFormat }}</span>
           </div>
         </div>
       </div>
