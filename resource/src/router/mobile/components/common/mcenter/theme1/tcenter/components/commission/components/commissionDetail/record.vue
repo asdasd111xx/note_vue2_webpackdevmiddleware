@@ -168,9 +168,9 @@
           </div>
 
           <div :class="$style.date">
-            ({{ detailList.start_at | dateFormat }}-{{
+            {{ detailList.start_at | dateFormat }}～{{
               detailList.end_at | dateFormat
-            }})
+            }}
           </div>
 
           <div :class="$style['list-wrap']">
