@@ -275,29 +275,9 @@ export default {
       }
 
       if (item.pageName === "leaderboard") {
-        let w = window.open("", "_blank");
-        this.isLoading = true;
-        goLangApiRequest({
-          method: "get",
-          url: `${this.siteConfig.YABO_GOLANG_API_DOMAIN}/xbb/Link/External/Url`,
-          params: {
-            urlName: "ad_promotion",
-            lang: "zh-cn",
-            needToken: "true",
-            externalCode: "promotion"
-          }
-        }).then(res => {
-          this.isLoading = false;
-
-          if (res && res.data && res.data.uri) {
-            w.location.href = res.data.uri + "&v=m";
-            return;
-          }
-          w.close();
-          if (res && res.msg) {
-            this.actionSetGlobalMessage({ msg: res.msg });
-          }
-        });
+        localStorage.setItem("iframe-third-url-title", item.initName);
+        localStorage.setItem("iframe-third-origin", "mcenter");
+        this.$router.push("/mobile/iframe/promotion?alias=ad_promotion");
         return;
       }
 

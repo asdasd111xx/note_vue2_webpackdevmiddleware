@@ -80,7 +80,8 @@
 
                 <div :class="$style['icon-block']">
                   <div
-                    v-for="item in usdtTipsList"
+                    v-for="(item, key) in usdtTipsList"
+                    :key="key"
                     :class="$style['item']"
                     @click="item.onClick"
                   >

@@ -671,24 +671,19 @@ export default {
         headers: {
           cid: cid
         }
-      })
-        .then(res => {
-          setTimeout(() => {
-            this.isLoading = false;
-          }, 1500);
-          const url = res.data.uri + "&cors=embed";
-          newWindow.location = url;
-        })
-        .catch(error => {
-          setTimeout(() => {
-            this.isLoading = false;
-          }, 1500);
+      }).then(res => {
+        setTimeout(() => {
+          this.isLoading = false;
+        }, 1500);
+        if (res && res.data && res.data.uri) {
+          newWindow.location = res.data.uri + "&cors=embed";
+          return;
+        } else {
           newWindow.close();
-
-          if (error && error.data && error.data.msg) {
-            this.actionSetGlobalMessage({ msg: error.data.msg });
-          }
-        });
+          this.actionSetGlobalMessage({ msg: res.msg });
+          return;
+        }
+      });
       return;
 
       // localStorage.setItem("iframe-third-url-title", target.name);
