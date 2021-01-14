@@ -69,7 +69,7 @@
             </div>
 
             <div :class="$style['summary-date']">
-              {{ summaryContent[index].start_at | dateFormat }}-{{
+              {{ summaryContent[index].start_at | dateFormat }}~{{
                 summaryContent[index].end_at | dateFormat
               }}
             </div>
@@ -89,7 +89,7 @@
                 {{ $text("S_VALID_BET", "有效投注") }}
               </div>
               <div :class="$style.amount">
-                {{ summaryContent[index].valid_bet }}
+                {{ summaryContent[index].valid_bet | amountFormat }}
               </div>
             </div>
 
@@ -103,7 +103,7 @@
                   { [$style.deficit]: +summaryContent[index].profit < 0 }
                 ]"
               >
-                {{ summaryContent[index].profit }}
+                {{ summaryContent[index].profit | amountFormat }}
               </div>
             </div>
             <div :class="[$style.detail, 'clearfix']">
@@ -255,6 +255,11 @@ export default {
         expected: false
       }
     };
+  },
+  filters: {
+    amountFormat(amount) {
+      return amount.toString().replace(/\B(?=(\d{3})+(?!\d))/g, ",");
+    }
   },
   computed: {
     ...mapGetters({

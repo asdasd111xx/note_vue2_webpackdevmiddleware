@@ -189,7 +189,7 @@
                 {{ $text("S_VALID_BET", "有效投注") }}
               </div>
               <div :class="$style.amount">
-                {{ detailList.valid_bet }}
+                {{ detailList.valid_bet | amountFormat }}
               </div>
             </div>
 
@@ -203,7 +203,7 @@
                   { [$style.deficit]: +detailList.profit < 0 }
                 ]"
               >
-                {{ detailList.profit }}
+                {{ detailList.profit | amountFormat }}
               </div>
             </div>
 
@@ -212,7 +212,7 @@
                 {{ $text("S_SENT_RAKEBACK", "已派返水") }}
               </div>
               <div :class="$style.amount">
-                {{ detailList.dispatched_rebate }}
+                {{ detailList.dispatched_rebate | amountFormat }}
               </div>
             </div>
 
@@ -221,7 +221,7 @@
                 {{ $text("S_SENT_PROMOTIONS", "已派优惠") }}
               </div>
               <div :class="$style.amount">
-                {{ detailList.dispatched_offer }}
+                {{ detailList.dispatched_offer | amountFormat }}
               </div>
             </div>
 
@@ -230,7 +230,7 @@
                 {{ $text("S_MEM_DEPOSIT", "会员入款") }}
               </div>
               <div :class="$style.amount">
-                {{ detailList.deposit }}
+                {{ detailList.deposit | amountFormat }}
               </div>
             </div>
 
@@ -244,7 +244,7 @@
                   { [$style.deficit]: +detailList.withdraw < 0 }
                 ]"
               >
-                {{ detailList.withdraw }}
+                {{ detailList.withdraw | amountFormat }}
               </div>
             </div>
 
@@ -253,7 +253,7 @@
                 {{ $text("S_PLATFORM_COST", "平台费") }}
               </div>
               <div :class="$style.amount">
-                {{ detailList.vendor_fee }}
+                {{ detailList.vendor_fee | amountFormat }}
               </div>
             </div>
 
@@ -297,6 +297,11 @@ export default {
     ...mapGetters({
       memInfo: "getMemInfo"
     })
+  },
+  filters: {
+    amountFormat(amount) {
+      return amount.toString().replace(/\B(?=(\d{3})+(?!\d))/g, ",");
+    }
   }
 };
 </script>
