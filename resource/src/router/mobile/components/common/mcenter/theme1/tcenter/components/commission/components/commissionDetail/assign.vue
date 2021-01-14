@@ -2,7 +2,7 @@
   <div :class="$style['assign-list-wrap']">
     <div :class="$style['total-block']">
       <span>笔数：{{ detailList.length }}</span>
-      <span>返利总计：{{ allTotal.amount | amountFormat }}</span>
+      <span>返利总计：{{ String(allTotal.amount) | amountFormat }}</span>
     </div>
 
     <div :class="$style['list-block']">
