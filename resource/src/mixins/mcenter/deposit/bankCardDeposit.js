@@ -919,30 +919,52 @@ export default {
         };
       }
 
-      return ajax({
+      let _isPWA =
+        getCookie("platform") === "G" ||
+        window.location.host === "yaboxxxapp01.com";
+
+      return axios({
         method: "post",
         url: API_TRADE_RELAY,
-        errorAlert: false,
-        params: paramsData,
-        fail: res => {
-          if (res && res.data && res.data.msg && res.data.code) {
-            this.actionSetGlobalMessage({
-              msg: res.data.msg,
-              code: res.data.code
-            });
-          }
+        data: {
+          ...paramsData
         }
-      }).then(response => {
-        this.isShow = false;
-        this.actionSetIsLoading(false);
-        let _isWebview =
-          getCookie("platform") === "H" ||
-          window.location.host === "yaboxxxapp02.com";
-        let _isPWA =
-          getCookie("platform") === "G" ||
-          window.location.host === "yaboxxxapp01.com";
+      })
+        .then(response => {
+          this.isShow = false;
+          this.actionSetIsLoading(false);
 
-        if (response && response.result === "ok") {
+          const { result, ret, msg, code } = response.data;
+
+          let _isWebview =
+            getCookie("platform") === "H" ||
+            window.location.host === "yaboxxxapp02.com";
+
+          // let _isPWA =
+          //   getCookie("platform") === "G" ||
+          //   window.location.host === "yaboxxxapp01.com";
+
+          if (result !== "ok") {
+            // 流量分析事件 - 失敗
+            window.dataLayer.push({
+              event: "ga_click",
+              eventCategory: "deposit",
+              eventAction: "pay",
+              eventLabel: "failure"
+            });
+
+            this.actionSetGlobalMessage({
+              msg,
+              code
+            });
+
+            if (_isPWA) {
+              newWindow.close();
+            }
+
+            return { status: "error" };
+          }
+
           // 流量分析事件 - 成功
           window.dataLayer.push({
             event: "ga_click",
@@ -951,42 +973,40 @@ export default {
             eventLabel: "success"
           });
 
-          console.log(response.ret, _isWebview);
+          console.log(ret, _isWebview);
 
           // 如有回傳限制時間
-          if (response.ret.remit.limit_time) {
-            this.limitTime = response.ret.remit.limit_time;
+          if (ret.remit.limit_time) {
+            this.limitTime = ret.remit.limit_time;
           }
 
-          if (response.ret.deposit.url) {
+          if (ret.deposit.url) {
             if (_isWebview) {
-              this.webviewOpenUrl = response.ret.deposit.url;
+              this.webviewOpenUrl = ret.deposit.url;
               // setTimeout(function () { document.location.href = response.ret.deposit.url; }, 250);
               return { status: "third" };
             } else if (_isPWA) {
-              newWindowHref(response.ret.deposit.url);
+              newWindowHref(ret.deposit.url);
               return { status: "third" };
             }
-
-            window.open(response.ret.deposit.url, "third");
+            window.open(ret.deposit.url, "third");
             return { status: "third" };
           }
 
-          if (response.ret.wallet.url) {
+          if (ret.wallet.url) {
             if (_isWebview) {
-              this.webviewOpenUrl = response.ret.wallet.url;
-              // setTimeout(function () { document.location.href = response.ret.wallet.url; }, 250);
+              this.webviewOpenUrl = ret.wallet.url;
+              // setTimeout(function () { document.location.href = ret.wallet.url; }, 250);
               return { status: "third" };
             } else if (_isPWA) {
-              newWindowHref(response.ret.wallet.url);
+              newWindowHref(ret.wallet.url);
               return { status: "third" };
             }
-
-            window.open(response.ret.wallet.url, "third");
+            window.open(ret.wallet.url, "third");
             return { status: "third" };
           }
 
-          Object.keys(response.ret).forEach(info => {
+          Object.keys(ret).forEach(info => {
             if (
               info === "deposit" ||
               info === "wallet" ||
@@ -995,21 +1015,18 @@ export default {
             ) {
               return;
             }
-
             if (
-              response.ret[info] &&
+              ret[info] &&
               (info === "is_deposit" ||
                 info === "is_wallet" ||
                 info === "is_crypto" ||
                 info === "is_remit")
             ) {
               const typeKey = info.split("_")[1];
-
-              this.orderData.orderInfo = response.ret[typeKey];
+              this.orderData.orderInfo = ret[typeKey];
               this.orderData.methodType = typeKey;
             }
-
-            this.orderData[info] = response.ret[info];
+            this.orderData[info] = ret[info];
           });
 
           if (_isPWA) {
@@ -1017,10 +1034,7 @@ export default {
           }
 
           // CGPay 不需要進入詳細入款單
-          if (
-            this.curPayInfo.payment_method_id === 16 &&
-            response.result === "ok"
-          ) {
+          if (this.curPayInfo.payment_method_id === 16) {
             // 將「confirmOneBtn」彈窗打開
             this.setPopupStatus(true, "funcTips");
             this.confirmPopupObj = {
@@ -1028,53 +1042,58 @@ export default {
               btnText: "关闭",
               cb: () => {
                 this.closePopup();
-
                 this.$emit("update:headerSetting", this.initHeaderSetting);
                 this.resetStatus();
                 this.getPayGroup();
               }
             };
-
             return { status: "third" };
           }
 
           return { status: "local" };
-        }
 
-        // 流量分析事件 - 失敗
-        window.dataLayer.push({
-          event: "ga_click",
-          eventCategory: "deposit",
-          eventAction: "pay",
-          eventLabel: "failure"
+          // 停權？
+          // if (
+          //   code === "TM020058" ||
+          //   code === "TM020059" ||
+          //   code === "TM020060"
+          // ) {
+          //   this.actionSetGlobalMessage({
+          //     msg,
+          //     code
+          //   });
+          //   window.location.reload();
+          //   return { status: "error" };
+          // }
+        })
+        .catch(error => {
+          const { msg, code } = error.response.data;
+
+          this.isShow = false;
+          this.actionSetIsLoading(false);
+
+          if (_isPWA) {
+            newWindow.close();
+          }
+
+          this.actionSetGlobalMessage({
+            msg,
+            code
+          });
+
+          // 提交申請單時，如存款金額低於交易費，後台需阻擋且重新撈取新的單筆限額
+          if (code === 1500720069) {
+            this.getPayPass().then(() => {
+              this.verification("money", this.moneyValue);
+              this.checkOrderData();
+              this.getSingleLimit(
+                this.depositInterval.minMoney,
+                this.depositInterval.maxMoney,
+                "placeholder"
+              );
+            });
+          }
         });
-
-        if (response && response.result !== "ok") {
-          this.actionSetGlobalMessage({
-            msg: response.msg,
-            code: response.code
-          });
-        }
-
-        if (_isPWA) {
-          newWindow.close();
-        }
-
-        if (
-          response.code === "TM020058" ||
-          response.code === "TM020059" ||
-          response.code === "TM020060"
-        ) {
-          this.actionSetGlobalMessage({
-            msg: response.msg,
-            code: response.code
-          });
-          window.location.reload();
-          return { status: "error" };
-        }
-
-        return { status: "error" };
-      });
     },
     /**
      * 複製
