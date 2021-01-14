@@ -28,7 +28,10 @@
               class="news-item"
             >
               <h4 class="news-title">{{ item.time | dateFormat }}</h4>
-              <p class="news-text" v-html="item.content" />
+              <p
+                class="news-text"
+                v-html="item.content.replace('\n', '<br>')"
+              />
             </div>
           </div>
         </div>

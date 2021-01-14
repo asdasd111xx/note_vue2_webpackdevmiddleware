@@ -606,7 +606,10 @@ export const actionMemInit = ({ state, dispatch, commit, store }) => {
 
     dispatch("actionSetSiteConfig", configInfo);
     dispatch("actionSetNews");
-    dispatch("actionSetRechargeConfig");
+
+    if (["porn1", "sg1"].includes(state.webDomain.site)) {
+      dispatch("actionSetRechargeConfig");
+    }
     dispatch("actionSetSystemDomain");
     dispatch("actionSetBBOSDomain");
 
@@ -1344,7 +1347,11 @@ export const actionSetGlobalMessage = ({ commit }, data) => {
   commit(types.SET_GLOBALMESSAGE, data);
 };
 
-export const actionSetRechargeConfig = ({ commit }, data) => {
+export const actionSetRechargeConfig = ({ commit, state }, data) => {
+  if (!["porn1", "sg1"].includes(state.webDomain.site)) {
+    return Promise.resolve(null);
+  }
+
   const hasLogin = Vue.cookie.get("cid");
   if (!hasLogin) {
     return;
