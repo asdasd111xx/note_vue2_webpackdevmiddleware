@@ -29,7 +29,7 @@
       </div>
     </template>
 
-    <div
+    <!-- <div
       v-if="memInfo.config.content_rating"
       :class="[$style['list'], $style['list-part']]"
     >
@@ -43,7 +43,7 @@
       >
         <span />
       </label>
-    </div>
+    </div> -->
     <!-- Share Modal -->
     <share v-if="isShowShare" :is-show-share.sync="isShowShare" />
     <page-loading :is-show="isLoading" />
