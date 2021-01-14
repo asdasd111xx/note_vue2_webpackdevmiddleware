@@ -8,13 +8,15 @@
       <div :class="$style['img-wrap']">
         <img
           :class="$style['img-wrap']"
-          :src="`/static/image/_new/mcenter/makeMoney/pic_promotion_banner.png`"
+          :src="
+            `/static/image/porn1/mcenter/makeMoney/pic_promotion_banner.png`
+          "
         />
       </div>
       <div :class="$style['img-wrap']">
         <img
           :class="$style['img-wrap']"
-          :src="`/static/image/_new/mcenter/makeMoney/img001.png`"
+          :src="`/static/image/porn1/mcenter/makeMoney/img001.png`"
         />
         <span>{{ agentLink.agentCode }}</span>
         <div @click="copyCode" :class="$style['copy-btn']">
@@ -24,19 +26,19 @@
       <div :class="$style['img-wrap']">
         <img
           :class="$style['img-wrap']"
-          :src="`/static/image/_new/mcenter/makeMoney/img002.png`"
+          :src="`/static/image/porn1/mcenter/makeMoney/img002.png`"
         />
       </div>
       <div :class="$style['img-wrap']">
         <img
           :class="$style['img-wrap']"
-          :src="`/static/image/_new/mcenter/makeMoney/btn_promote.png`"
+          :src="`/static/image/porn1/mcenter/makeMoney/btn_promote.png`"
         />
       </div>
       <div :class="$style['img-wrap']">
         <img
           :class="$style['img-wrap']"
-          :src="`/static/image/_new/mcenter/makeMoney/img003.png`"
+          :src="`/static/image/porn1/mcenter/makeMoney/img003.png`"
         />
       </div>
     </div>
