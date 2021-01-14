@@ -107,6 +107,8 @@ export default {
     }
 
     const params = this.$route.params;
+    const query = this.$route.query;
+
     if (!params.page) {
       this.src = localStorage.getItem("iframe-third-url");
       return;
@@ -162,14 +164,19 @@ export default {
         break;
       case "THIRD":
         let type = this.$route.params.type;
-        let query = this.$route.query;
 
         switch (type) {
           case "fengniao":
             if (query.alias) {
               goLangApiRequest({
                 method: "get",
-                url: `${this.siteConfig.YABO_GOLANG_API_DOMAIN}/xbb/Link/External/Url?lang=zh-cn&urlName=${query.alias}&needToken=true&externalCode=fengniao`
+                url: `${this.siteConfig.YABO_GOLANG_API_DOMAIN}/xbb/Link/External/Url`,
+                params: {
+                  urlName: query.alias,
+                  lang: "zh-cn",
+                  needToken: "true",
+                  externalCode: "fengniao"
+                }
               }).then(res => {
                 this.isLoading = false;
 
@@ -251,13 +258,42 @@ export default {
         break;
       case "PROMOTION":
         // 優小秘
-        let url = localStorage.getItem("iframe-third-url");
-        if (url && url.indexOf("?") > 0) {
-          url = `${url}&v=m`;
-        } else {
-          url = `${url}?v=m`;
+        let url = localStorage.getItem("iframe-third-url") || "";
+        if (url) {
+          if (!url.includes("v=m")) {
+            url = `${url}&v=m`;
+          }
+          this.src = url;
+          return;
         }
-        this.src = url;
+
+        if (query.alias) {
+          goLangApiRequest({
+            method: "get",
+            url: `${this.siteConfig.YABO_GOLANG_API_DOMAIN}/xbb/Link/External/Url`,
+            params: {
+              urlName: query.alias,
+              lang: "zh-cn",
+              needToken: "true",
+              externalCode: "promotion"
+            }
+          }).then(res => {
+            this.isLoading = false;
+            if (res && res.data && res.data.uri) {
+              url = res.data.uri;
+              // 由API提供
+              // if (!url.includes("v=m")) {
+              //   url = `${url}&v=m`;
+              // }
+              this.src = url;
+            }
+
+            if (res && res.msg) {
+              this.actionSetGlobalMessage({ msg: res.msg });
+              return;
+            }
+          });
+        }
         break;
 
       default:
