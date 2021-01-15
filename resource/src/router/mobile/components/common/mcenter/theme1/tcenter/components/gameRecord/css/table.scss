@@ -93,18 +93,17 @@
       height: 14px;
       top: 1px;
       margin-right: 5px;
-      // background: linear-gradient(#d2bba4, #f1e5db);
     }
 
-    &.porn1 &::before {
+    &.porn1::before {
       background: linear-gradient(#d2bba4, #f1e5db);
     }
 
-    &.ey1 &::before {
+    &.ey1::before {
       background: linear-gradient(#fe2a2a, #b60303);
     }
 
-    &.sg1 &::before {
+    &.sg1::before {
       background: linear-gradient(#fe593c, #e61938);
     }
   }
