@@ -97,7 +97,9 @@
           >
             {{ $t("S_MAINTAIN") }}
             <img
-              :src="$getCdnPath('/static/image/common/mcenter/ic_tips.png')"
+              :src="
+                $getCdnPath(`/static/image/${themeTPL}/mcenter/ic_tips.png`)
+              "
               :class="$style['balance-wrench']"
             />
           </span>

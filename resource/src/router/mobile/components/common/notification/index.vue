@@ -64,7 +64,7 @@ export default {
         C_WS_WAGE: "您的返利已入帐，请前往查看",
         C_WS_RECYCLE_FAIL: "额度无法转移，请稍后再试",
         C_WS_RECYCLE_ALL_FAIL: "额度无法转移，请稍后再试",
-        C_WS_RECYCLE_OK: "一键归户完成"
+        C_WS_RECYCLE_OK: "一键回收完成"
       },
       msgType: [
         "player_deposit",

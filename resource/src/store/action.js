@@ -586,12 +586,12 @@ export const actionMemInit = ({ state, dispatch, commit, store }) => {
     await dispatch("actionGetMemInfoV3");
     await dispatch("actionGetMobileInfo");
 
-    const defaultLang =
-      ["47", "70", "71"].includes(state.memInfo.user.domain) &&
-      state.webInfo.is_production
-        ? "vi"
-        : "zh-cn";
-    await getLang(state.webInfo.language, defaultLang);
+    // const defaultLang =
+    //   ["47", "70", "71"].includes(state.memInfo.user.domain) &&
+    //   state.webInfo.is_production
+    //     ? "vi"
+    //     : "zh-cn";
+    await getLang(state.webInfo.language, "zh-cn");
 
     // 設定網站設定檔資訊 (start)
     let configInfo;
@@ -1738,7 +1738,7 @@ export const actionSetBBOSDomain = ({ commit, state }, data) => {
     method: "get",
     url: configInfo.BBOS_DOMIAN + "/Domain/List",
     reqHeaders: {
-      Vendor: state.memInfo.user.domain
+      Vendor: state.webDomain.domain
     },
     params: {
       lang: "zh-tw"
@@ -1820,15 +1820,16 @@ export const actionSetAgentUserConfig = ({ commit }) =>
     }
   });
 
-export const actionSetWebDomain = ({ commit }) =>
-  axios({
+export const actionSetWebDomain = ({ commit }) => {
+  return axios({
     method: "get",
-    url: "/conf/domain"
+    url: "/conf/domain",
+    timeout: 5000
   })
     .then(res => {
       let result = {
         domain: "",
-        site: "porn1"
+        site: ""
       };
 
       console.log("[conf/domain]:", {
@@ -1837,32 +1838,36 @@ export const actionSetWebDomain = ({ commit }) =>
       });
       const site = (res && res.data && String(res.data.site)) || "";
       const domain = (res && res.data && String(res.data.domain)) || "";
+      if (!site || !domain) {
+        window.location.href = "/500";
+        return;
+      }
       result["site"] = site;
       result["domain"] = domain;
       commit(types.SET_WEB_DOMAIN, result);
     })
     .catch(res => {
       console.log("[conf/domain]:", res);
-      commit(types.SET_WEB_DOMAIN, { site: "porn1", domain: "67" });
+      window.location.href = "/500";
     });
+};
 
 // SWAG設定
 export const actionSetSwagConfig = ({ commit, state, dispatch }, data) => {
   let configInfo;
-  if (state.webInfo.is_production) {
+  if (state.webDomain) {
     configInfo =
-      siteConfigOfficial[`site_${state.webInfo.alias}`] ||
+      siteConfigTest[`site_${state.webDomain.domain}`] ||
+      siteConfigOfficial[`site_${state.webDomain.domain}`] ||
+      siteConfigTest[`site_${state.webInfo.alias}`] ||
       siteConfigOfficial.preset;
-  } else {
-    configInfo =
-      siteConfigTest[`site_${state.webInfo.alias}`] || siteConfigTest.preset;
   }
 
   return bbosRequest({
     method: "get",
     url: configInfo.BBOS_DOMIAN + "/Ext/Swag/Domain/Config",
     reqHeaders: {
-      Vendor: state.memInfo.user.domain
+      Vendor: state.webDomain.domain
     },
     params: {
       lang: "zh-cn"
@@ -1884,21 +1889,20 @@ export const actionSetSwagBalance = ({ commit, state }, data) => {
   if (!hasLogin) {
     return;
   }
-  let configInfo;
-  if (state.webInfo.is_production) {
+
+  if (state.webDomain) {
     configInfo =
-      siteConfigOfficial[`site_${state.webInfo.alias}`] ||
+      siteConfigTest[`site_${state.webDomain.domain}`] ||
+      siteConfigOfficial[`site_${state.webDomain.domain}`] ||
+      siteConfigTest[`site_${state.webInfo.alias}`] ||
       siteConfigOfficial.preset;
-  } else {
-    configInfo =
-      siteConfigTest[`site_${state.webInfo.alias}`] || siteConfigTest.preset;
   }
 
   return bbosRequest({
     method: "get",
     url: configInfo.BBOS_DOMIAN + "/Ext/Swag/Vendor/Quota",
     reqHeaders: {
-      Vendor: state.memInfo.user.domain
+      Vendor: state.webDomain.domain
     },
     params: {
       lang: "zh-cn"

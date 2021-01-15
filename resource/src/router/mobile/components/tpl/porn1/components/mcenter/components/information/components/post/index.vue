@@ -83,6 +83,9 @@ export default {
     ...mapGetters({
       siteConfig: "getSiteConfig"
     }),
+    $style() {
+      return this[`$style`];
+    },
     currentPost() {
       if (!this.$route.query.pid || this.postData.length == 0) {
         this.$router.back();
@@ -121,7 +124,7 @@ export default {
 };
 </script>
 
-<style lang="scss" module>
+<style lang="scss" module="$style">
 .no-data {
   position: relative;
   min-height: calc(100vh - 43px - 42px - 10px);

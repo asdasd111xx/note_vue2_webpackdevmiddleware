@@ -17,7 +17,7 @@
     </div>
 
     <div :class="$style['list-block']" v-for="(data, index) in list">
-      <div :class="$style['date']">{{ data.day }}</div>
+      <div :class="$style['date']">{{ data.day | dateFormat }}</div>
       <div :class="$style['card']" v-for="(info, index) in data.list">
         <div :class="$style['card-title']">
           <span :class="$style['header']">{{ info.vendor_alias }}</span>
@@ -60,6 +60,7 @@
 </template>
 
 <script>
+import Vue from "vue";
 import { mapGetters } from "vuex";
 
 export default {
@@ -90,6 +91,11 @@ export default {
       var parts = num.toString().split(".");
       parts[0] = parts[0].replace(/\B(?=(\d{3})+(?!\d))/g, ",");
       return parts.join(".");
+    }
+  },
+  filters: {
+    dateFormat(value) {
+      return Vue.moment(value).format("MM月DD日");
     }
   }
 };
