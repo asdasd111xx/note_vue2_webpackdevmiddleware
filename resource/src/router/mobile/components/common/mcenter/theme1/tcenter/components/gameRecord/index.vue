@@ -250,14 +250,22 @@ export default {
             return;
           }
 
-          var bbin = { text: "BBIN", value: "bbin" };
+          let bbin = { text: "BBIN", value: "bbin" };
 
-          let originData = ret.map(item => {
-            return {
-              text: item.alias,
-              value: item.vendor
-            };
-          });
+          // 整理 API 原始資料，先撇除 bbin 有關的 vendor
+          let originData = ret
+            .map(item => {
+              return {
+                text: item.alias,
+                value: item.vendor
+              };
+            })
+            .filter(item => {
+              return item.value !== "bbin";
+            });
+
+          // 再最前面添加 bbin 的 vendor
+          originData.unshift(bbin);
 
           this.allvendor.push(...originData);
         })
