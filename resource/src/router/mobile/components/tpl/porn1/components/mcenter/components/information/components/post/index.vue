@@ -84,7 +84,7 @@ export default {
       siteConfig: "getSiteConfig"
     }),
     $style() {
-      return this[`$style`];
+      return this[`$style_default`];
     },
     currentPost() {
       if (!this.$route.query.pid || this.postData.length == 0) {
@@ -124,7 +124,7 @@ export default {
 };
 </script>
 
-<style lang="scss" module="$style">
+<style lang="scss" module="$style_default">
 .no-data {
   position: relative;
   min-height: calc(100vh - 43px - 42px - 10px);
