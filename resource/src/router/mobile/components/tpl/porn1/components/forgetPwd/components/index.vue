@@ -353,14 +353,14 @@ export default {
       }
     },
     changeMethod(status) {
-      this.errMsg = "";
       if (status) return;
-      this.username = "";
-      this.email = "";
-      this.phone = "";
-      this.keyring = "";
-      this.password = "";
-      this.confirm_password = "";
+      // this.errMsg = "";
+      // this.username = "";
+      // this.email = "";
+      // this.phone = "";
+      // this.keyring = "";
+      // this.password = "";
+      // this.confirm_password = "";
     },
     verification(key, value) {
       const re = /^[a-z0-9._\-!@#$&*+=|]{6,12}$/;
