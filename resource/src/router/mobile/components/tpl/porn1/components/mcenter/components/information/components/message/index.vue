@@ -247,6 +247,11 @@ export default {
       memInfo: "getMemInfo",
       siteConfig: "getSiteConfig"
     }),
+    $style() {
+      const style =
+        this[`$style_${this.siteConfig.MOBILE_WEB_TPL}`] || this.$style_porn1;
+      return style;
+    },
     currentMessage() {
       if (!this.$route.query.pid || this.messageData.length == 0) {
         this.$router.back();
