@@ -132,19 +132,13 @@
                   type="password"
                   maxlength="12"
                   @blur="verification('password', $event.target.value)"
-                  @input="
-                    password = $event.target.value
-                      .toLowerCase()
-                      .replace(' ', '')
-                      .trim()
-                      .replace(/[\W]/g, '')
-                  "
+                  @input="verification('password', $event.target.value)"
                 />
                 <div :class="$style['eye']">
                   <img
                     :src="
                       $getCdnPath(
-                        `/static/image/_new/login/btn_eye_${
+                        `/static/image/common/login/btn_eye_${
                           isShowPwd ? 'n' : 'd'
                         }.png`
                       )
@@ -170,20 +164,14 @@
                   type="password"
                   maxlength="12"
                   @blur="verification('confirm_password', $event.target.value)"
-                  @input="
-                    confirm_password = $event.target.value
-                      .toLowerCase()
-                      .replace(' ', '')
-                      .trim()
-                      .replace(/[\W]/g, '')
-                  "
+                  @input="verification('confirm_password', $event.target.value)"
                 />
                 <div :class="$style['eye']">
                   <img
                     :src="
                       $getCdnPath(
-                        `/static/image/_new/login/btn_eye_${
-                          isShowConfPwd ? 'n' : 'd'
+                        `/static/image/common/login/btn_eye_${
+                          isShowPwd ? 'n' : 'd'
                         }.png`
                       )
                     "
@@ -248,13 +236,12 @@ export default {
   },
   data() {
     return {
-      currentMethod: "phone-step-1",
+      currentMethod: "phone-step-2",
       resetKeyring: "",
       errMsg: "",
       countdownSec: 0,
       timer: null,
       isShowPwd: false,
-      isShowConfPwd: false,
       msg: {
         username: "",
         email: "",
@@ -337,20 +324,31 @@ export default {
     this.$emit("update:currentMethod", this.currentMethod);
   },
   methods: {
-    ...mapActions(["actionSetUserdata", "actionSetGlobalMessage"]),
+    ...mapActions([
+      "actionSetUserdata",
+      "actionSetGlobalMessage",
+      "actionVerificationFormData"
+    ]),
     toggleEye(key) {
-      let target = key === "pwd" ? this.isShowPwd : this.isShowConfPwd;
-      if (target) {
-        document.getElementById(key).type = "password";
-      } else {
-        document.getElementById(key).type = "text";
-      }
+      let pwd = document.getElementById("pwd"),
+        confPwd = document.getElementById("confPwd");
 
-      if (key === "pwd") {
-        this.isShowPwd = !this.isShowPwd;
+      if (this.isShowPwd) {
+        if (pwd) {
+          pwd.type = "password";
+        }
+        if (confPwd) {
+          confPwd.type = "password";
+        }
       } else {
-        this.isShowConfPwd = !this.isShowConfPwd;
+        if (pwd) {
+          pwd.type = "text";
+        }
+        if (confPwd) {
+          confPwd.type = "text";
+        }
       }
+      this.isShowPwd = !this.isShowPwd;
     },
     changeMethod(status) {
       if (status) return;
@@ -363,6 +361,13 @@ export default {
       // this.confirm_password = "";
     },
     verification(key, value) {
+      this.actionVerificationFormData({
+        target: key,
+        value: value
+      }).then(val => {
+        this[key] = val;
+      });
+
       const re = /^[a-z0-9._\-!@#$&*+=|]{6,12}$/;
       const msg = this.$text("S_PASSWORD_ERROR", "请输入6-12位字母或数字");
 
