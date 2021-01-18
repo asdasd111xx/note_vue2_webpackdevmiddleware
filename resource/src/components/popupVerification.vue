@@ -19,7 +19,6 @@
           v-model="captchaText"
           :placeholder="'请输入验证码'"
           @input="verification($event.target.value, 'captchaText')"
-          type="tel"
         />
         <img
           v-if="captchaImg"
