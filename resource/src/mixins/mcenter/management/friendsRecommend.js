@@ -75,6 +75,8 @@ export default {
           error: false
         }
       },
+      captchaError: false,
+      captchaErrorMsg: "请填写验证码",
       allValue: {
         username: "",
         password: "",
@@ -137,7 +139,6 @@ export default {
           }
         );
       }
-
       if (["password", "confirm_password"].includes(key)) {
         if (allValue.confirm_password) {
           allText.password.error = false;
@@ -149,24 +150,68 @@ export default {
         allText.password.error = false;
         return;
       }
-      switch (key) {
-        case "username":
-          this.texts.username.error = "S_USERNAME_ERROR";
-          break;
-        case "password":
-          this.texts.password.error = "S_PASSWORD_ERROR_AGENT";
-          break;
-        case "confirm_password":
-          this.texts.confirm_password.error = "S_PASSWORD_ERROR_AGENT";
-          break;
-        case "name":
-          this.texts.name.error = "S_NO_SYMBOL_DIGIT_CHEN";
-          break;
-        default:
-          break;
-      }
 
-      allText[key].error = false;
+      if (key === "captcha_text") {
+        this.captchaError = false;
+        this.captchaErrorMsg = "请填写验证码";
+        allValue["captcha_text"] = value.replace(/[\W\_]/g, "");
+      } else {
+        switch (key) {
+          case "username":
+            this.texts.username.error = "S_USERNAME_ERROR";
+            break;
+          case "password":
+            this.texts.password.error = "S_PASSWORD_ERROR_AGENT";
+            break;
+          case "confirm_password":
+            this.texts.confirm_password.error = "S_PASSWORD_ERROR_AGENT";
+            break;
+          case "name":
+            this.texts.name.error = "S_NO_SYMBOL_DIGIT_CHEN";
+            break;
+          default:
+            break;
+        }
+
+        allText[key].error = false;
+      }
+    },
+
+    checkInput() {
+      // 無認證直接呼叫
+      if (this.memInfo.config.friend_captcha_type === 0) {
+        this.handleSend();
+        return;
+      } else {
+        this.$validator.validateAll("form-page").then(response => {
+          if (!response) {
+            // this.msg = this.$text("S_JM_MSG_COMPLETE");
+            Object.keys(this.allValue).forEach(key => {
+              if (this.allValue[key]) {
+                return;
+              }
+              if (key === "captcha_text") {
+                this.captchaError = true;
+              } else {
+                this.allText[key].error = true;
+              }
+            });
+            return;
+          }
+
+          if (
+            this.allInput.some(key => this.allText[key].error) ||
+            this.captchaError
+          ) {
+            return;
+          }
+          if (this.allValue.password !== this.allValue.confirm_password) {
+            return;
+          }
+
+          this.showCaptchaPopup();
+        });
+      }
     },
     /**
      * 註冊
@@ -178,85 +223,157 @@ export default {
         return;
       }
 
-      this.$validator.validateAll("form-page").then(response => {
-        if (!response) {
-          this.msg = this.$text("S_JM_MSG_COMPLETE");
-          Object.keys(this.allValue).forEach(key => {
-            if (this.allValue[key]) {
-              return;
+      axios({
+        method: "post",
+        url: API_FIRST_LEVEL_REGISTER,
+        errorAlert: false,
+        data: {
+          ...this.allValue,
+          captcha_text: this.allValue["captcha_text"],
+          code: this.agentCode,
+          created_by: 2
+        }
+      }).then(result => {
+        if (result.data.result === "ok") {
+          this.msg = this.$text("S_CREATE_SECCESS", "新增成功");
+
+          this.isShow = false;
+          // if (isMobile()) {
+          this.allValue = {
+            username: "",
+            password: "",
+            confirm_password: "",
+            name: "",
+            captcha_text: ""
+          };
+
+          //   return;
+          // }
+
+          this.$emit("close");
+        } else {
+          if (result.data.errors) {
+            if (result.data.errors.username) {
+              this.texts.username.error = result.data.errors.username;
+              this.allText.username.error = true;
             }
 
-            this.allText[key].error = true;
-          });
-          return;
-        }
-
-        if (this.allInput.some(key => this.allText[key].error)) {
-          return;
-        }
-
-        if (this.allValue.password !== this.allValue.confirm_password) {
-          return;
-        }
-
-        axios({
-          method: "post",
-          url: API_FIRST_LEVEL_REGISTER,
-          errorAlert: false,
-          data: {
-            ...this.allValue,
-            captcha_text: this.allValue["captcha_text"],
-            code: this.agentCode,
-            created_by: 2
-          }
-        }).then(result => {
-          if (result.data.result === "ok") {
-            this.msg = this.$text("S_CREATE_SECCESS", "新增成功");
-
-            this.isShow = false;
-            // if (isMobile()) {
-            this.allValue = {
-              username: "",
-              password: "",
-              confirm_password: "",
-              name: "",
-              captcha_text: ""
-            };
-
-            //   return;
-            // }
-
-            this.$emit("close");
-          } else {
-            if (result.data.errors) {
-              if (result.data.errors.username) {
-                this.texts.username.error = result.data.errors.username;
-                this.allText.username.error = true;
-              }
-
-              if (result.data.errors.password) {
-                this.texts.password.error = result.data.errors.password;
-                this.allText.password.error = true;
-              }
-
-              if (result.data.errors.confirm_password) {
-                this.texts.confirm_password.error =
-                  result.data.errors.confirm_password;
-                this.allText.confirm_password.error = true;
-              }
-
-              if (result.data.errors.name) {
-                this.texts.name.error = result.data.errors.name;
-                this.allText.name.error = true;
-              }
-              return;
+            if (result.data.errors.password) {
+              this.texts.password.error = result.data.errors.password;
+              this.allText.password.error = true;
             }
 
-            this.msg = result.data.msg;
+            if (result.data.errors.confirm_password) {
+              this.texts.confirm_password.error =
+                result.data.errors.confirm_password;
+              this.allText.confirm_password.error = true;
+            }
+
+            if (result.data.errors.name) {
+              this.texts.name.error = result.data.errors.name;
+              this.allText.name.error = true;
+            }
+
+            if (result.data.errors.captcha_text) {
+              this.captchaErrorMsg = result.data.errors.captcha_text;
+              this.captchaError = true;
+            }
             return;
           }
-        });
+
+          this.msg = result.data.msg;
+          return;
+        }
       });
+      // this.$validator.validateAll("form-page").then(response => {
+      //   if (!response) {
+      //     this.msg = this.$text("S_JM_MSG_COMPLETE");
+      //     Object.keys(this.allValue).forEach(key => {
+      //       if (this.allValue[key]) {
+      //         return;
+      //       }
+      //       if (key === "captcha_text") {
+      //         this.captchaError = true;
+      //       } else {
+      //         this.allText[key].error = true;
+      //       }
+      //     });
+      //     return;
+      //   }
+
+      //   if (
+      //     this.allInput.some(key => this.allText[key].error) ||
+      //     this.captchaError
+      //   ) {
+      //     return;
+      //   }
+      //   if (this.allValue.password !== this.allValue.confirm_password) {
+      //     return;
+      //   }
+
+      //   axios({
+      //     method: "post",
+      //     url: API_FIRST_LEVEL_REGISTER,
+      //     errorAlert: false,
+      //     data: {
+      //       ...this.allValue,
+      //       captcha_text: this.allValue["captcha_text"],
+      //       code: this.agentCode,
+      //       created_by: 2
+      //     }
+      //   }).then(result => {
+      //     if (result.data.result === "ok") {
+      //       this.msg = this.$text("S_CREATE_SECCESS", "新增成功");
+
+      //       this.isShow = false;
+      //       // if (isMobile()) {
+      //       this.allValue = {
+      //         username: "",
+      //         password: "",
+      //         confirm_password: "",
+      //         name: "",
+      //         captcha_text: ""
+      //       };
+
+      //       //   return;
+      //       // }
+
+      //       this.$emit("close");
+      //     } else {
+      //       if (result.data.errors) {
+      //         if (result.data.errors.username) {
+      //           this.texts.username.error = result.data.errors.username;
+      //           this.allText.username.error = true;
+      //         }
+
+      //         if (result.data.errors.password) {
+      //           this.texts.password.error = result.data.errors.password;
+      //           this.allText.password.error = true;
+      //         }
+
+      //         if (result.data.errors.confirm_password) {
+      //           this.texts.confirm_password.error =
+      //             result.data.errors.confirm_password;
+      //           this.allText.confirm_password.error = true;
+      //         }
+
+      //         if (result.data.errors.name) {
+      //           this.texts.name.error = result.data.errors.name;
+      //           this.allText.name.error = true;
+      //         }
+
+      //         if (result.data.errors.captcha_text) {
+      //           this.captchaErrorMsg = result.data.errors.captcha_text;
+      //           this.captchaError = true;
+      //         }
+      //         return;
+      //       }
+
+      //       this.msg = result.data.msg;
+      //       return;
+      //     }
+      //   });
+      // });
     },
     onShowPassword() {
       this.isShowEyes = !this.isShowEyes;
