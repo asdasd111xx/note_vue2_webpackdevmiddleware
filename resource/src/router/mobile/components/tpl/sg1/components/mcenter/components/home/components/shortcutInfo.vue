@@ -161,7 +161,6 @@ export default {
 
       this.createdTime = now.diff(startTime, "days") + 1;
     },
-
     goToRebate() {
       if (this.loginStatus) {
         this.getRebateSwitch();
@@ -209,7 +208,7 @@ export default {
 }
 
 .vip-promotion-wrap {
-  margin: 0px 8% 0;
+  margin: 0px 18px 0;
   display: flex;
   align-items: center;
   /* width: 347pt; */
@@ -257,8 +256,8 @@ export default {
   height: 100px;
   display: flex;
   align-items: center;
-  margin-top: 12px;
-  padding: 5px 8% 0;
+  margin-top: 3px;
+  padding: 0 18px;
 
   .cell {
     width: 25%;
@@ -355,15 +354,22 @@ export default {
   }
 }
 
-@media screen and (min-width: $pad) {
-  .mcenter-info-wrap {
+@media screen and (max-width: 374px) {
+  .vip-promotion-wrap {
+    margin: 0px 16px 0;
     font-size: 14px;
   }
 
-  .info-btn-wrap {
-    div {
-      height: 48px;
-    }
+  .vip-promotion-wrap > div {
+    height: 55px;
+  }
+
+  .sub-text {
+    font-size: 8px;
+  }
+
+  .mcenter-func {
+    padding: 0 16px;
   }
 }
 </style>

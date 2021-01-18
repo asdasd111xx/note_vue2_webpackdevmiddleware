@@ -95,39 +95,39 @@
 </template>
 
 <script>
-import { mapGetters, mapActions } from 'vuex';
-import moment from 'moment';
-import mcenterPageAuthControl from '@/lib/mcenterPageAuthControl';
-import mcenter from '@/api/mcenter';
-import member from '@/api/member';
+import { mapGetters, mapActions } from "vuex";
+import moment from "moment";
+import mcenterPageAuthControl from "@/lib/mcenterPageAuthControl";
+import mcenter from "@/api/mcenter";
+import member from "@/api/member";
 
 export default {
+  components: {},
   data() {
     return {
-      msg: "",
       list: [
-        { path: '', pageName: 'deposit' }, // 存款
-        { path: '/mobile/mcenter/balanceTrans', pageName: 'bankBalanceTran' }, // 額度轉換
-        { path: '/mobile/mcenter/withdraw', pageName: 'withdraw' }, // 取款
-        { path: '/mobile/mcenter/accountVip', pageName: 'accountVip' } // VIP
+        { path: "", pageName: "deposit" }, // 存款
+        { path: "/mobile/mcenter/balanceTrans", pageName: "bankBalanceTran" }, // 額度轉換
+        { path: "/mobile/mcenter/withdraw", pageName: "withdraw" }, // 取款
+        { path: "/mobile/mcenter/accountVip", pageName: "accountVip" } // VIP
       ],
       //   vipData: {},
-      createdTime: '',
+      createdTime: "",
       imgID: 0,
       imgIndex: 0
     };
   },
   computed: {
     ...mapGetters({
-      loginStatus: 'getLoginStatus',
-      memInfo: 'getMemInfo',
-      memCurrency: 'getMemCurrency',
-      memBalance: 'getMemBalance'
+      loginStatus: "getLoginStatus",
+      memInfo: "getMemInfo",
+      memCurrency: "getMemCurrency",
+      memBalance: "getMemBalance"
     })
   },
   created() {
     member.data({
-      success: (res) => {
+      success: res => {
         this.countDays(res.ret.user.created_at);
       }
     });
@@ -136,9 +136,7 @@ export default {
     this.imgID = this.memInfo.user.image;
   },
   methods: {
-    ...mapActions([
-      'actionSetUserdata'
-    ]),
+    ...mapActions(["actionSetUserdata"]),
     onListClick(listIndex) {
       const item = this.list[listIndex];
 
@@ -146,26 +144,26 @@ export default {
         this.goLogin();
         return;
       }
-      if (item.pageName === 'deposit') {
+      if (item.pageName === "deposit") {
         this.$depositLink(true);
         return;
       }
 
-      mcenterPageAuthControl(item.pageName).then((response) => {
+      mcenterPageAuthControl(item.pageName).then(response => {
         if (response && response.status) {
           this.$router.push(item.path);
         }
       });
     },
     goLogin() {
-      this.$router.push('/mobile/login');
+      this.$router.push("/mobile/login");
     },
     countDays(ceatedTime) {
       const startTime = moment(ceatedTime);
       const now = moment(new Date());
 
-      this.createdTime = now.diff(startTime, 'days') + 1;
-    },
+      this.createdTime = now.diff(startTime, "days") + 1;
+    }
   }
 };
 </script>
@@ -183,7 +181,7 @@ export default {
 }
 
 .vip-promotion-wrap {
-  margin: 0px 8% 0;
+  margin: 0px 18px 0;
   display: flex;
   align-items: center;
   /* width: 347pt; */
@@ -231,8 +229,8 @@ export default {
   height: 100px;
   display: flex;
   align-items: center;
-  margin-top: 12px;
-  padding: 5px 8% 0;
+  margin-top: 3px;
+  padding: 0 18px;
 
   .cell {
     width: 25%;
@@ -329,15 +327,22 @@ export default {
   }
 }
 
-@media screen and (min-width: $pad) {
-  .mcenter-info-wrap {
+@media screen and (max-width: 374px) {
+  .vip-promotion-wrap {
+    margin: 0px 16px 0;
     font-size: 14px;
   }
 
-  .info-btn-wrap {
-    div {
-      height: 48px;
-    }
+  .vip-promotion-wrap > div {
+    height: 55px;
+  }
+
+  .sub-text {
+    font-size: 8px;
+  }
+
+  .mcenter-func {
+    padding: 0 16px;
   }
 }
 </style>
