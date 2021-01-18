@@ -108,23 +108,32 @@ export default {
 
     const params = this.$route.params;
     const query = this.$route.query;
-
+    const vendor = query.vendor;
     if (!params.page) {
       this.src = localStorage.getItem("iframe-third-url");
       return;
     }
 
     switch (params.page.toUpperCase()) {
-      case "LF":
-      case "APB":
-      case "BALE":
-      case "STB":
-      case "JPB":
-      case "DSC":
-      case "PPV":
-      case "SF":
-      case "SWAG":
+      case "THIRDPARTY":
+        // vendor
+        // case "APB":
+        // case "BALE":
+        // case "STB":
+        // case "JPB":
+        // case "DSC":
+        // case "PPV":
+        // case "SF":
+        // case "SL":
+        // case "SWAG":
         if (localStorage.getItem("iframe-third-url")) {
+          const vendor = query.vendor;
+          if (vendor === "SL") {
+            this.src = localStorage
+              .getItem("iframe-third-url")
+              .replace(window.location.origin, "");
+            return;
+          }
           this.src = localStorage.getItem("iframe-third-url");
           return;
         }
@@ -141,9 +150,7 @@ export default {
 
         goLangApiRequest({
           method: "get",
-          url: `${
-            this.siteConfig.YABO_GOLANG_API_DOMAIN
-          }/cxbb/ThirdParty/${params.page.toUpperCase()}/${userId}`
+          url: `${this.siteConfig.YABO_GOLANG_API_DOMAIN}/cxbb/ThirdParty/${vendor}/${userId}`
         }).then(res => {
           if (res && res.status !== "000") {
             // 維護非即時更新狀態
