@@ -1,19 +1,19 @@
 <template>
   <div
-    v-if="imgSite"
+    v-if="themeTPL"
     :class="[
       $style['content'],
       {
-        [$style['ey1']]: imgSite === 'ey1'
+        [$style['ey1']]: themeTPL === 'ey1'
       }
     ]"
   >
     <div :class="$style['logo-header']">
-      <img :src="$getCdnPath(`/static/image/${imgSite}/common/logo_b.png`)" />
+      <img :src="$getCdnPath(`/static/image/${themeTPL}/common/logo_b.png`)" />
     </div>
     <div :class="$style['title']">{{ $t("ROUTER_404_TITLE") }}</div>
     <div :class="$style['main-img']">
-      <img :src="$getCdnPath(`/static/image/${imgSite}/status/pic_404.png`)" />
+      <img :src="$getCdnPath(`/static/image/${themeTPL}/status/pic_404.png`)" />
     </div>
     <div :class="$style['desc']">{{ $t("ROUTER_404_TEXT2") }}</div>
     <div :class="$style.tips">
@@ -24,14 +24,14 @@
 </template>
 
 <script>
-import Vue from 'vue';
-import getLang from '@/lib/getLang';
-import mixin from '@/mixins/status';
+import Vue from "vue";
+import getLang from "@/lib/getLang";
+import mixin from "@/mixins/status";
 
 export default {
   mixins: [mixin],
   beforeRouteEnter(to, from, next) {
-    getLang({ [Vue.cookie.get('lang') || 'zh-cn']: '' }).then(() => {
+    getLang({ [Vue.cookie.get("lang") || "zh-cn"]: "" }).then(() => {
       next();
     });
   }
