@@ -131,8 +131,8 @@ export default {
       this.showInfinite = false;
       this.isLoading = true;
       this.showPage = 0;
-
       const params = {
+        period: this.currentInfo.period,
         start_at: this.getDate,
         end_at: this.getDate
       };
