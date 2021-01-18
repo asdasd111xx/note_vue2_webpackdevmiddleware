@@ -34,13 +34,13 @@
 </template>
 
 <script>
-import Vue from 'vue';
-import { mapGetters, mapActions } from 'vuex';
-import videojs from 'video.js';
-import bonunsDialog from '../bouns/compontents/bonunsDialog'
-import bonunsProcess from '../bouns/compontents/bonunsProcess'
-import { getCookie } from '@/lib/cookie';
-import yaboRequest from '@/api/yaboRequest';
+import Vue from "vue";
+import { mapGetters, mapActions } from "vuex";
+import videojs from "video.js";
+import bonunsDialog from "../bouns/compontents/bonunsDialog";
+import bonunsProcess from "../bouns/compontents/bonunsProcess";
+import { getCookie } from "@/lib/cookie";
+import yaboRequest from "@/api/yaboRequest";
 
 export default {
   components: {
@@ -53,7 +53,7 @@ export default {
       required: true
     },
     source: {
-      type: String,
+      type: String
     }
   },
   data() {
@@ -62,7 +62,7 @@ export default {
       isPlaying: false,
       //   彩金開關
       isActiveBouns: true, //預設打開由message決定是否啟動
-      dialogType: "tips",// 提示 & 賺得彩金
+      dialogType: "tips", // 提示 & 賺得彩金
       reconnectTimer: null, //重新連線timer
       isFULL: false,
       socket: null,
@@ -70,58 +70,69 @@ export default {
       mission: null,
       keepPlay: false, // wait 任務未達成繼續觀看不發送play
       isUnloginMode: false,
-      breakwaitCallback: () => { },
+      breakwaitCallback: () => {},
       isInit: false
     };
   },
   computed: {
     ...mapGetters({
-      memInfo: 'getMemInfo',
-      loginStatus: 'getLoginStatus',
-      siteConfig: 'getSiteConfig',
-      yaboConfig: 'getYaboConfig'
+      memInfo: "getMemInfo",
+      loginStatus: "getLoginStatus",
+      siteConfig: "getSiteConfig",
+      yaboConfig: "getYaboConfig"
     }),
     playsinline() {
-      return "true"
+      return "true";
     },
     isDebug() {
-      return process.env.NODE_ENV === 'development' || (this.$route.query && this.$route.query.testmode)
-    },
+      return (
+        process.env.NODE_ENV === "development" ||
+        (this.$route.query && this.$route.query.testmode)
+      );
+    }
   },
   mounted() {
     //  暫時手動轉換https
     if (!this.videoInfo.url) return;
     let obj = {
-      sources: [{ src: this.videoInfo.url.replace('http://', 'https://'), type: 'application/x-mpegURL' }],
+      sources: [
+        {
+          src: this.videoInfo.url.replace("http://", "https://"),
+          type: "application/x-mpegURL"
+        }
+      ],
       // sources: [{ src: 'https://pv-oa-1259142350.file.myqcloud.com/dev/video/FCC/FC2-PPV-777661-3/FC2-PPV-777661-3.m3u8', type: 'application/x-mpegURL' , withCredentials: true}],
       autoplay: false,
       controls: true,
       controlBar: true,
       loop: false,
-      preload: 'auto',
-      bigPlayButton: true,
-    }
+      preload: "auto",
+      bigPlayButton: true
+    };
 
     // hls sarfari 小豬視頻必須
     if (this.source === "smallPig") {
-      obj['html5'] = {
+      obj["html5"] = {
         hls: {
-          "overrideNative": true,
-          "withCredentials": true,
+          overrideNative: true,
+          withCredentials: true
         },
-        "nativeAudioTracks": false,
-        "nativeVideoTracks": false,
-      }
+        nativeAudioTracks: false,
+        nativeVideoTracks: false
+      };
     } else {
       if (this.$route.query && this.$route.query.testmode) {
-        obj['crossOrigin'] = 'anonymous'
+        obj["crossOrigin"] = "anonymous";
       }
     }
-    this.player = videojs(this.$refs['video-player'], obj);
+    this.player = videojs(this.$refs["video-player"], obj);
 
     // 彩金疊加在播放器上
     let videoDom = document.getElementById("video-play");
-    videoDom.insertBefore(document.getElementById("video-play-block"), videoDom.childNodes[0]);
+    videoDom.insertBefore(
+      document.getElementById("video-play-block"),
+      videoDom.childNodes[0]
+    );
 
     window.YABO_SOCKET_VIDEO_DISCONNECT = this.onDisconnect;
     window.YABO_SOCKET_VIDEO_CONNECT = this.connectWS;
@@ -142,11 +153,10 @@ export default {
         if (this.isUnloginMode) {
           this.unloginModeAction("play");
         }
-      })
+      });
 
       // 快轉
-      this.player.on("seeking", () => {
-      })
+      this.player.on("seeking", () => {});
 
       if (this.isUnloginMode) {
         this.unloginModeAction("play");
@@ -154,11 +164,9 @@ export default {
     }
 
     // 快轉
-    this.player.on("seeking", () => {
-    })
+    this.player.on("seeking", () => {});
 
-    this.player.on("seeked", () => {
-    })
+    this.player.on("seeked", () => {});
 
     this.player.on("pause", () => {
       if (this.player.seeking()) return;
@@ -172,24 +180,20 @@ export default {
       if (this.isUnloginMode) {
         this.unloginModeAction("pause");
       }
-    })
+    });
 
     this.player.on("ended", () => {
       this.$refs.bonunsProcess.playCueTime("stop");
       this.isPlaying = false;
-      if (window.YABO_SOCKET)
-        this.onSend("STOP");
-    })
+      if (window.YABO_SOCKET) this.onSend("STOP");
+    });
 
     this.player.on("play", () => {
       this.handleClickVideo();
-    })
+    });
   },
   methods: {
-    ...mapActions([
-      'actionSetYaboConfig',
-      'actionSetVideoBounsPageStatus'
-    ]),
+    ...mapActions(["actionSetYaboConfig", "actionSetVideoBounsPageStatus"]),
     handleCloseDialog(keepPlay) {
       this.keepPlay = keepPlay;
       if (this.breakwaitCallback) {
@@ -199,8 +203,8 @@ export default {
     //   點擊進圖條任務彈窗
     handleClickProcess() {
       if (this.isUnloginMode) {
-        this.$refs.bonunsDialog.isShow = true
-        this.dialogType = 'tips';
+        this.$refs.bonunsDialog.isShow = true;
+        this.dialogType = "tips";
         this.playerPause();
         return;
       }
@@ -208,16 +212,16 @@ export default {
       const bonunsProcess = this.$refs.bonunsProcess;
       const bonunsDialog = this.$refs.bonunsDialog;
       if (this.mission) {
-        this.dialogType = 'tips-wait';
+        this.dialogType = "tips-wait";
         bonunsDialog.isFinishMission = Number(this.mission.ActionType) === 7;
         bonunsDialog.missionDesc = this.mission.Description;
         bonunsDialog.missionActionType = this.mission.ActionType;
         bonunsDialog.isShow = true;
         this.playerPause();
       } else if (this.isFULL) {
-        bonunsProcess.processType = 'wait';
+        bonunsProcess.processType = "wait";
         bonunsDialog.isShow = true;
-        this.dialogType = 'tips-full-open';
+        this.dialogType = "tips-full-open";
         this.playerPause();
       }
     },
@@ -225,8 +229,8 @@ export default {
       if (!this.isActiveBouns) return;
       // 餘額夠可播放
       if (!this.loginStatus && !this.isUnloginMode) {
-        this.dialogType = 'tips';
-        this.$refs.bonunsDialog.isShow = true
+        this.dialogType = "tips";
+        this.$refs.bonunsDialog.isShow = true;
         this.playerPause();
       } else if (this.$refs.bonunsDialog.isShow) {
         this.playerPause();
@@ -249,7 +253,7 @@ export default {
         if (!this.isUnloginMode) {
           const bonunsProcess = this.$refs.bonunsProcess;
           const bonunsDialog = this.$refs.bonunsDialog;
-          bonunsProcess.processType = 'process';
+          bonunsProcess.processType = "process";
         }
         return;
       }
@@ -262,7 +266,7 @@ export default {
         window.YABO_SOCKET_VIDEO_ONMESSAGE = this.onMessage;
         const bonunsProcess = this.$refs.bonunsProcess;
         const bonunsDialog = this.$refs.bonunsDialog;
-        bonunsProcess.processType = 'process';
+        bonunsProcess.processType = "process";
       } else {
         if (this.reconnectTimer) return;
         this.reconnectTimer = setTimeout(() => {
@@ -274,8 +278,8 @@ export default {
           this.connectWS();
           const bonunsProcess = this.$refs.bonunsProcess;
           const bonunsDialog = this.$refs.bonunsDialog;
-          bonunsProcess.processType = 'loading';
-        }, 3000)
+          bonunsProcess.processType = "loading";
+        }, 3000);
       }
     },
     onDisconnect() {
@@ -285,16 +289,16 @@ export default {
 
       const bonunsProcess = this.$refs.bonunsProcess;
       const bonunsDialog = this.$refs.bonunsDialog;
-      bonunsProcess.processType = 'loading';
+      bonunsProcess.processType = "loading";
     },
     onMessage(e) {
       if (e && e.data) {
         let data = JSON.parse(e.data);
         this.socketId = data.SocketId;
         // 彩金開關
-        this.isActiveBouns = !!(data.HasActivity);
+        this.isActiveBouns = !!data.HasActivity;
         if (!data.HasActivity) {
-          return
+          return;
         }
 
         this.reconnectTimer = null;
@@ -318,16 +322,23 @@ export default {
           //   bonunsProcess.totalAmount = n * 10
 
           // 獲得彩金
-          bonunsDialog.earnCurrentNum = parseFloat((Number(data.Active.BreakAmout) * Number(data.BreakTimes))).toFixed(2);
+          bonunsDialog.earnCurrentNum = parseFloat(
+            Number(data.Active.BreakAmout) * Number(data.BreakTimes)
+          ).toFixed(2);
 
           // 可獲得最高彩金
-          bonunsDialog.limitAmount = parseFloat(Number(data.Active.LimitAmout)).toFixed(2);
+          bonunsDialog.limitAmount = parseFloat(
+            Number(data.Active.LimitAmout)
+          ).toFixed(2);
 
           // 每個中斷點獲得的彩金
-          bonunsDialog.earnSingleNum = parseFloat(Number(data.Active.BreakAmout)).toFixed(2);
+          bonunsDialog.earnSingleNum = parseFloat(
+            Number(data.Active.BreakAmout)
+          ).toFixed(2);
 
           // 可獲得中斷點數量
-          bonunsDialog.earnCellNum = (Number(data.Active.LimitAmout) / Number(data.Active.BreakAmout));
+          bonunsDialog.earnCellNum =
+            Number(data.Active.LimitAmout) / Number(data.Active.BreakAmout);
 
           // 已獲得中斷點數量
           bonunsDialog.hadEarnNum = Number(data.BreakTimes);
@@ -338,52 +349,53 @@ export default {
               this.$nextTick(() => {
                 bonunsProcess.isInit = true;
                 bonunsDialog.isInit = true;
-              })
-            }, 200)
+              });
+            }, 200);
           }
           //狀態
           // 'OPEN', 'PLAY', 'STOP', 'CLOSE', 'BREAK', 'FULL', 'POOR', 'BREAK_WAIT'
           this.$nextTick(() => {
             switch (data.Status) {
-              case 'OPEN':
+              case "OPEN":
                 bonunsProcess.isInit = true;
                 bonunsDialog.isInit = true;
                 break;
-              case 'RISK':
-                bonunsProcess.processType = 'done';
+              case "RISK":
+                bonunsProcess.processType = "done";
                 break;
-              case 'FULL':
+              case "FULL":
                 bonunsProcess.isForceWait = true;
-                bonunsProcess.processType = 'wait';
+                bonunsProcess.processType = "wait";
                 this.isFULL = true;
                 // bonunsDialog.isShow = true;
                 // this.dialogType = 'tips-full';
                 // this.playerPause();
                 break;
-              case 'POOR':
-                this.dialogType = 'tips-poor';
+              case "POOR":
+                this.dialogType = "tips-poor";
                 bonunsDialog.isShow = true;
                 this.playerPause();
                 break;
-              case 'BREAK':
-                this.dialogType = 'tips-break';
+              case "BREAK":
+                this.dialogType = "tips-break";
                 bonunsDialog.isShow = true;
                 this.playerPause();
                 break;
-              case 'PLAY':
+              case "PLAY":
                 bonunsProcess.playCueTime();
                 break;
-              case 'STOP':
+              case "STOP":
                 this.$nextTick(() => bonunsProcess.playCueTime("stop"));
                 break;
-              case 'WAIT':
+              case "WAIT":
                 let mission = data.Mession;
                 this.mission = mission;
                 bonunsProcess.isForceWait = true;
 
                 if (mission) {
-                  this.dialogType = 'tips-wait';
-                  bonunsProcess.processType = Number(mission.ActionType) === 6 ? 'next' : 'wait';
+                  this.dialogType = "tips-wait";
+                  bonunsProcess.processType =
+                    Number(mission.ActionType) === 6 ? "next" : "wait";
                   bonunsDialog.tagId = mission.TagId;
                   bonunsDialog.missionDesc = mission.Description;
                   bonunsDialog.missionActionType = Number(mission.ActionType);
@@ -392,12 +404,14 @@ export default {
                 }
                 this.playerPause();
                 break;
-              case 'BREAK_WAIT':
+              case "BREAK_WAIT":
                 let _mission = data.Mession;
                 this.mission = _mission;
-                this.dialogType = 'tips-break';
+                this.dialogType = "tips-break";
                 this.$nextTick(() => {
-                  if (_mission) bonunsProcess.processType = Number(_mission.ActionType) === 6 ? 'next' : 'wait';
+                  if (_mission)
+                    bonunsProcess.processType =
+                      Number(_mission.ActionType) === 6 ? "next" : "wait";
                   bonunsDialog.hadEarnNum = data.BreakTimes;
                   bonunsDialog.isShow = true;
                 });
@@ -407,18 +421,20 @@ export default {
                 this.breakwaitCallback = () => {
                   this.$nextTick(() => {
                     if (_mission) {
-                      this.dialogType = 'tips-wait';
+                      this.dialogType = "tips-wait";
                       bonunsDialog.tagId = mission.TagId;
                       bonunsDialog.missionDesc = _mission.Description;
-                      bonunsDialog.missionActionType = Number(_mission.ActionType);
+                      bonunsDialog.missionActionType = Number(
+                        _mission.ActionType
+                      );
                       bonunsDialog.isShow = true;
                       this.$nextTick(() => bonunsDialog.getDialogHeight());
                     }
                     this.breakwaitCallback = null;
                   });
-                }
+                };
                 break;
-              case 'CLOSE':
+              case "CLOSE":
                 this.onSend("STOP");
                 break;
               default:
@@ -435,18 +451,18 @@ export default {
       // 2	CLOSING
       // 3	CLOSED
       if (!window.YABO_SOCKET || window.YABO_SOCKET.readyState !== 1) {
-        return
+        return;
       }
       let data = {
-        "SocketId": window.YABO_SOCKET_ID || this.socketId,
-        "Type": type,
-        "SendTime": new Date().toISOString(),
-        "Data": {
-          "web-platform": getCookie('platform') || 'web'
+        SocketId: window.YABO_SOCKET_ID || this.socketId,
+        Type: type,
+        SendTime: new Date().toISOString(),
+        Data: {
+          "web-platform": getCookie("platform") || "web"
         }
-      }
+      };
       if (this.isDebug) {
-        console.log("[WS]: onSend:", data)
+        console.log("[WS]: onSend:", data);
       }
       window.YABO_SOCKET.send(JSON.stringify(data));
     },
@@ -460,13 +476,13 @@ export default {
           bonunsProcess.playCueTime();
           break;
         case "pause":
-          bonunsProcess.playCueTime('stop');
+          bonunsProcess.playCueTime("stop");
           break;
       }
     },
     handleLeavePage(cb) {
       this.onSend("STOP");
-      document.removeEventListener('visibilitychange', () => { }, false);
+      document.removeEventListener("visibilitychange", () => {}, false);
       window.YABO_SOCKET_VIDEO_ONMESSAGE = null;
       window.YABO_SOCKET_VIDEO_DISCONNECT = null;
       window.YABO_SOCKET_VIDEO_CONNECT = null;
@@ -483,27 +499,28 @@ export default {
     this.actionSetVideoBounsPageStatus(true);
     this.actionSetYaboConfig().then(() => {
       if (this.yaboConfig) {
-        let noLoginVideoSwitch = this.yaboConfig.find(i => i.name === "NoLoginVideoSwitch").value;
-        this.isUnloginMode = !this.loginStatus &&
-          noLoginVideoSwitch == "true";
-        this.$refs.bonunsProcess.processType = 'process';
+        let noLoginVideoSwitch = this.yaboConfig.find(
+          i => i.name === "NoLoginVideoSwitch"
+        ).value;
+        this.isUnloginMode = !this.loginStatus && noLoginVideoSwitch == "true";
+        this.$refs.bonunsProcess.processType = "process";
 
         this.$nextTick(() => {
           if (!this.loginStatus && !this.isUnloginMode) {
-            this.$refs.bonunsDialog.isShow = true
-            this.dialogType = 'tips';
+            this.$refs.bonunsDialog.isShow = true;
+            this.dialogType = "tips";
           }
-        })
+        });
       }
 
       setTimeout(() => {
         this.connectWS();
         this.isInit = true;
-      }, 400)
+      }, 400);
     });
 
     const self = this;
-    const listner = function () {
+    const listner = function() {
       let isHiddenWindow = document.hidden;
       if (self.player) {
         //離開視窗強制暫停影片
@@ -514,12 +531,12 @@ export default {
         //   self.onSend("CLOSE");
         // }
       }
-    }
-    document.addEventListener('visibilitychange', listner, false);
+    };
+    document.addEventListener("visibilitychange", listner, false);
   },
   beforeDestroy() {
     this.onSend("STOP");
-    document.removeEventListener('visibilitychange', () => { }, false);
+    document.removeEventListener("visibilitychange", () => {}, false);
     window.YABO_SOCKET_VIDEO_ONMESSAGE = null;
     window.YABO_SOCKET_VIDEO_DISCONNECT = null;
     window.YABO_SOCKET_VIDEO_CONNECT = null;
@@ -528,7 +545,7 @@ export default {
     this.player.dispose();
     this.player = null;
     this.actionSetVideoBounsPageStatus(false);
-  },
+  }
 };
 </script>
 <style lang="scss" module>
