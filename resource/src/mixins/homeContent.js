@@ -638,7 +638,6 @@ export default {
             // 絲瓜小說 → DZ
             default:
               localStorage.setItem("is-open-game", true);
-
               this.actionSetYaboConfig().then(() => {
                 let noLoginVideoSwitch;
 
@@ -683,7 +682,9 @@ export default {
                     } else {
                       localStorage.setItem("iframe-third-url", res.data);
                       localStorage.setItem("iframe-third-url-title", game.name);
-                      this.$router.push(`/mobile/iframe/${game.type}`);
+                      this.$router.push(
+                        `/mobile/iframe/thirdParty?vendor=${game.vendor}`
+                      );
                       return;
                     }
                   });

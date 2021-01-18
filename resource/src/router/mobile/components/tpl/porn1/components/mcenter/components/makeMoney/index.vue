@@ -195,10 +195,11 @@ export default {
 
 .img-wrap {
   position: relative;
+  width: 100vw;
 
   img {
     display: block;
-    max-width: 100%;
+    width: 100%;
   }
 
   span {

@@ -1,6 +1,9 @@
-import { format } from 'date-fns';
-import ajax from '@/lib/ajax';
-import { API_COMMISSION_LEVEL_LIST, API_COMMISSION_FIRST_LEVEL_LIST } from '@/config/api';
+import { format } from "date-fns";
+import ajax from "@/lib/ajax";
+import {
+  API_COMMISSION_LEVEL_LIST,
+  API_COMMISSION_FIRST_LEVEL_LIST
+} from "@/config/api";
 
 export default {
   props: {
@@ -11,14 +14,14 @@ export default {
   },
   data() {
     return {
-      sort: '',
-      order: '',
+      sort: "",
+      order: "",
       levelTrans: {
-        1: this.$text('S_FIRST_LEVEL_FRIEND', '一级好友'),
-        2: this.$text('S_SECOND_LEVEL_FRIEND', '二级好友'),
-        3: this.$text('S_THIRD_LEVEL_FRIEND', '三级好友'),
-        4: this.$text('S_FOURTH_LEVEL_FRIEND', '四级好友'),
-        5: this.$text('S_FIFTH_LEVEL_FRIEND', '五级好友')
+        1: this.$text("S_FIRST_LEVEL_FRIEND", "一级好友"),
+        2: this.$text("S_SECOND_LEVEL_FRIEND", "二级好友"),
+        3: this.$text("S_THIRD_LEVEL_FRIEND", "三级好友"),
+        4: this.$text("S_FOURTH_LEVEL_FRIEND", "四级好友"),
+        5: this.$text("S_FIFTH_LEVEL_FRIEND", "五级好友")
       },
       detailList: null, // 第三方返利資料
       summaryList: [], // 本站返利各級好友資料
@@ -34,16 +37,18 @@ export default {
   },
   computed: {
     controlData() {
-      return this.friendsList.filter((item, index) => index < this.maxResults * this.showPage)
+      return this.friendsList.filter(
+        (item, index) => index < this.maxResults * this.showPage
+      );
     }
   },
   filters: {
     commaFormat(value) {
-      return value.toString().replace(/\B(?=(\d{3})+(?!\d))/g, ',');
+      return value.toString().replace(/\B(?=(\d{3})+(?!\d))/g, ",");
     },
     dateFormat(date) {
-      const est = format(new Date(date), 'yyyy/MM/dd HH:mm:ss+20:00');
-      return format(new Date(est), 'MM/dd');
+      const est = format(new Date(date), "yyyy/MM/dd HH:mm:ss+20:00");
+      return format(new Date(est), "MM-dd");
     }
   },
   created() {
@@ -64,12 +69,12 @@ export default {
      */
     getSummary() {
       ajax({
-        method: 'get',
+        method: "get",
         url: API_COMMISSION_LEVEL_LIST,
         errorAlert: false,
         params: { period: this.currentInfo.period },
         success: ({ result, ret, total }) => {
-          if (result !== 'ok') {
+          if (result !== "ok") {
             return;
           }
 
@@ -91,23 +96,23 @@ export default {
         // first_result: this.firstResult
       };
 
-      if (this.sort !== '') {
+      if (this.sort !== "") {
         params.sort = this.sort;
         params.order = this.order;
       }
 
       ajax({
-        method: 'get',
+        method: "get",
         url: `${API_COMMISSION_FIRST_LEVEL_LIST}/${this.currentInfo.current_entry_id}/friends`,
         errorAlert: false,
         params,
-        success: (response) => {
+        success: response => {
           this.showInfinite = true;
-          if (response.result !== 'ok' || response.ret.length === 0) {
+          if (response.result !== "ok" || response.ret.length === 0) {
             return;
           }
 
-          this.isLoading = false
+          this.isLoading = false;
           this.friendsList = response.ret; // 第一級好友佣金資料列表
           this.pageTotal = response.sub_total; // 小計
           this.allTotal = response.total; // 總計
@@ -119,11 +124,11 @@ export default {
      */
     getDetail() {
       ajax({
-        method: 'get',
+        method: "get",
         url: `${API_COMMISSION_FIRST_LEVEL_LIST}/${this.currentInfo.current_entry_id}/oauth2/detail`,
         errorAlert: false,
         success: ({ result, ret }) => {
-          if (result !== 'ok') {
+          if (result !== "ok") {
             return;
           }
 
@@ -132,10 +137,10 @@ export default {
       });
     },
     onSort(sortValue) {
-      let orderState = 'asc';
+      let orderState = "asc";
 
       if (this.sort === sortValue) {
-        orderState = (this.order === 'asc') ? 'desc' : 'asc';
+        orderState = this.order === "asc" ? "desc" : "asc";
       }
 
       this.showPage = 1;
@@ -154,18 +159,21 @@ export default {
         if (this.friendsList.length === 0) {
           this.isLoading = false;
           $state.complete();
-          return
+          return;
         }
 
         if (this.friendsList.length / this.maxResults > this.showPage) {
           this.showPage += 1;
-          $state.loaded()
+          $state.loaded();
 
-          if (Math.ceil(this.friendsList.length / this.maxResults) === this.showPage) {
+          if (
+            Math.ceil(this.friendsList.length / this.maxResults) ===
+            this.showPage
+          ) {
             $state.complete();
           }
         }
-      }, 300)
+      }, 300);
     }
   }
 };

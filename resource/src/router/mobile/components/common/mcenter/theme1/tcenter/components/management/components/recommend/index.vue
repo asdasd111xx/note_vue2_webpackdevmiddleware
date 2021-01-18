@@ -123,7 +123,8 @@
             :class="[
               $style['captcha-unit'],
               $style['captcha-unit-captcha'],
-              $style['clearfix']
+              $style['clearfix'],
+              { [$style.error]: captchaError }
             ]"
           >
             <input
@@ -132,7 +133,7 @@
               placeholder="请填写验证码"
               :class="$style['captcha-input']"
               maxlength="4"
-              @input="captchaVerification($event.target.value)"
+              @input="onInput($event.target.value, 'captcha_text')"
               @keydown.13="onSubmit"
             />
             <div class="input-icon"></div>
@@ -146,6 +147,10 @@
               <img :src="'/static/image/common/ic_verification_reform.png'" />
             </div>
           </div>
+          <!-- 錯誤訊息 -->
+          <div v-if="captchaError" :class="$style['captcha-error']">
+            {{ captchaErrorMsg }}
+          </div>
         </div>
         <popup-verification
           v-if="isShowCaptcha"
@@ -153,7 +158,7 @@
           :captcha.sync="captchaData"
           :friend_captcha_type="true"
         />
-        <button @click="showCaptchaPopup">{{ $text("S_ADD") }}</button>
+        <button @click="checkInput">{{ $text("S_ADD") }}</button>
       </div>
     </transition>
 
@@ -205,7 +210,9 @@ export default {
   },
   watch: {
     captchaData() {
-      this.onSubmit();
+      if (this.memInfo.config.friend_captcha_type != 1) {
+        this.onSubmit();
+      }
     }
   },
   computed: {
@@ -276,9 +283,7 @@ export default {
         }
       });
     },
-    captchaVerification(val) {
-      this.allValue["captcha_text"] = val.replace(/[\W\_]/g, "");
-    },
+
     showCaptchaPopup() {
       // 無認證直接呼叫
       if (this.memInfo.config.friend_captcha_type === 0) {

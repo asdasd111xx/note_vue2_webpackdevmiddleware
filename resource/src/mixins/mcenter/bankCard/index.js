@@ -32,6 +32,7 @@ export default {
           case "liveStream":
           case "videoPlay":
           case "wallet":
+          case "hotLobby":
           case "recharge":
             if (type && type === "bankCard") {
               this.setPageStatus(0, "addBankCard", false);
