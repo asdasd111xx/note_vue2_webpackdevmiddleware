@@ -94,7 +94,6 @@ export default {
       }
 
       this.isShowLoading = true;
-
       const openGameSuccessFunc = res => {
         this.isShowLoading = false;
         window.GAME_RELOAD = true;
@@ -108,8 +107,8 @@ export default {
           let data = res.data;
           this.actionSetGlobalMessage({
             msg: data.msg,
-            code: data.code
-            // origin: this.redirectCard()
+            code: data.code,
+            origin: `hotLobby-${this.$route.params.vendor}`
           });
         }
       };
