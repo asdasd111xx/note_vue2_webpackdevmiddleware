@@ -21,13 +21,26 @@
 
 .login-logo {
   width: 150px;
-  margin: 71px auto 55px;
+  margin: 0 auto;
+  height: 140px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
 
   img {
     width: 100%;
-    height: 100%;
+    height: 55px;
   }
 }
+
+
+@media screen and (min-height: 811px) {
+
+  .login-logo {
+    height: 180px;
+  }
+}
+
 
 .login-name {
   font-size: 21px;
@@ -36,7 +49,6 @@
 }
 
 .login-form-wrap {
-  height: 360px;
   margin: 0 41px;
 
   .login-unit {
