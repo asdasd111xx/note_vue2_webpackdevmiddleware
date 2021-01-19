@@ -57,7 +57,6 @@
   </div>
 </template>
 <script>
-
 export default {
   props: {
     isUnloginMode: {
@@ -68,14 +67,14 @@ export default {
     return {
       curCoinSrc: "coin_disconnected",
       processType: "loading", // 累加,達標,已完成
-      coinType:
-        [{ key: 'done', src: 'coin_g' },
-        { key: 'process', src: 'coin_bg' },
-        { key: 'earn', src: 'coin_y' },
-        { key: 'next', src: 'coin_next' },
-        { key: 'wait', src: 'coin_open' },
-        { key: 'loading', src: 'coin_disconnected' },
-        ],
+      coinType: [
+        { key: "done", src: "coin_g" },
+        { key: "process", src: "coin_bg" },
+        { key: "earn", src: "coin_y" },
+        { key: "next", src: "coin_next" },
+        { key: "wait", src: "coin_open" },
+        { key: "loading", src: "coin_disconnected" }
+      ],
       isClose: false,
       isInit: false,
       totalAmount: 0,
@@ -89,18 +88,28 @@ export default {
   watch: {
     // 總獲得彩金量變化 或 時間變化時 時需顯示動畫
     totalAmount(newValue, oldValue) {
-      if (Number(newValue) !== Number(oldValue) && this.isInit) {
+      if (
+        Number(newValue) !== Number(oldValue) &&
+        this.isInit &&
+        !window.YABO_SOCKET_RECONECT_STATUS
+      ) {
         this.handleToggleEarnCoin();
       }
+      window.YABO_SOCKET_RECONECT_STATUS = undefined;
     },
     curMin(newValue, oldValue) {
-      if (Number(newValue) !== Number(oldValue) && this.isInit) {
+      if (
+        Number(newValue) !== Number(oldValue) &&
+        this.isInit &&
+        !window.YABO_SOCKET_RECONECT_STATUS
+      ) {
         this.handleToggleEarnCoin();
       }
+      window.YABO_SOCKET_RECONECT_STATUS = undefined;
     },
     isUnloginMode(val) {
       if (val) {
-        this.processType = 'process';
+        this.processType = "process";
         this.curCoinSrc = this.coinType.find(i => i.key == "earn").src;
         this.earnCoin = "999";
       }
@@ -109,9 +118,11 @@ export default {
       if (this.isUnloginMode) {
         this.curCoinSrc = this.coinType.find(i => i.key == "earn").src;
       } else {
-        this.curCoinSrc = this.coinType.find(i => i.key == this.processType).src;
+        this.curCoinSrc = this.coinType.find(
+          i => i.key == this.processType
+        ).src;
       }
-    },
+    }
   },
   mounted() {
     if (this.isUnloginMode) {
@@ -132,7 +143,7 @@ export default {
 
         clearTimeout(this.timer);
         this.timer = null;
-      }, 2500)
+      }, 2500);
 
       this.curCoinSrc = this.coinType.find(i => i.key == "earn").src;
       this.processType = "earn";
@@ -145,7 +156,7 @@ export default {
       }
 
       //重置計數
-      else if (play === "stop") {
+      else if (["stop"].includes(play)) {
         if (this.isUnloginMode) {
         } else {
           this.isPause = false;
@@ -157,20 +168,23 @@ export default {
       }
 
       // 暫停後繼續播放
-      else if (this.playingCueTime) { this.isPause = false; return; }
+      else if (this.playingCueTime) {
+        this.isPause = false;
+        return;
+      }
 
       // 未登入模式 60秒+999
       if (this.isUnloginMode) {
         this.isPause = false;
         this.playingCueTime = setInterval(() => {
           this.handleToggleEarnCoin();
-        }, 60000)
+        }, 60000);
       } else {
         this.isPause = false;
         this.playingCueTime = setTimeout(() => {
           clearTimeout(this.playingCueTime);
           this.playingCueTime = null;
-        }, 59000)
+        }, 59000);
       }
     }
   },
@@ -180,7 +194,7 @@ export default {
     this.timer = null;
     clearTimeout(this.playingCueTime);
     this.playingCueTime = null;
-  },
+  }
 };
 </script>
 <style src="../index.scss" lang="scss" module></style>

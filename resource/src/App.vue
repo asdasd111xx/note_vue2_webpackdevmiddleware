@@ -146,9 +146,7 @@ export default {
       }
     };
     document.addEventListener("visibilitychange", listner);
-    window.YABO_SOCKET_RECONNECT = () => {
-      this.reconnectYaboWS(true);
-    };
+    window.YABO_SOCKET_RECONNECT = this.reconnectYaboWS;
   },
   methods: {
     ...mapActions(["actionSetWebview"]),
@@ -181,30 +179,31 @@ export default {
       }
     },
     /* 彩金websocket */
-    reconnectYaboWS(timer = false) {
+    reconnectYaboWS() {
       if (
         this.siteConfig.MOBILE_WEB_TPL === "porn1" ||
         this.siteConfig.MOBILE_WEB_TPL === "sg1"
       ) {
+        window.YABO_SOCKET = null;
+        window.YABO_SOCKET_ID = null;
+        window.YABO_SOCKET_RECONECT_STATUS = true;
+
         if (window.YABO_SOCKET_VIDEO_DISCONNECT) {
           window.YABO_SOCKET_VIDEO_DISCONNECT();
         }
 
         if (this.reconnectTimer) return;
-        this.reconnectTimer = setInterval(
-          () => {
-            // 是否要啟用重新連接
-            if (window.YABO_SOCKET_RECONNECT_ACTIVE) {
-              this.isConnecting = false;
-              this.connectYaboWS();
+        this.reconnectTimer = setInterval(() => {
+          // 是否要啟用重新連接
+          if (window.YABO_SOCKET_RECONNECT_ACTIVE) {
+            this.isConnecting = false;
+            this.connectYaboWS();
 
-              if (this.isDebug) {
-                console.log("[WS]: Reconnecting");
-              }
+            if (this.isDebug) {
+              console.log("[WS]: Reconnecting");
             }
-          },
-          timer ? 400 : 3000
-        );
+          }
+        }, 2500);
       }
     },
     connectYaboWS() {
@@ -216,7 +215,9 @@ export default {
         if (!cid) return;
         let uri =
           this.siteConfig.ACTIVES_BOUNS_WEBSOCKET +
-          `?cid=${cid}&domain=${this.memInfo.user.domain}&userid=${this.memInfo.user.id}`;
+          `?cid=${cid}&domain=${this.memInfo.user.domain}&userid=${
+            this.memInfo.user.id
+          }&timestamp=${new Date().getTime()}`;
         window.YABO_SOCKET = new WebSocket(uri);
         window.YABO_SOCKET.onmessage = e => {
           let data = JSON.parse(e.data);
@@ -361,16 +362,9 @@ export default {
           this.reconnectYaboWSV2();
         };
         window.YABO_SOCKETV2.onclose = e => {
-          if (this.isDebug) {
-            console.log("[WSV2]: onClose:", e);
-          }
           this.reconnectYaboWSV2();
         };
         window.YABO_SOCKETV2.onopen = e => {
-          if (this.isDebug) {
-            console.log("[WSV2]: onOpen: Success");
-          }
-
           clearInterval(this.reconnectTimerV2);
           this.reconnectTimerV2 = null;
         };
@@ -386,10 +380,6 @@ export default {
         if (window.YABO_SOCKETV2_RECONNECT_ACTIVE) {
           this.isConnecting = false;
           this.connectYaboWSV2();
-
-          if (this.isDebug) {
-            console.log("[WSV2]: Reconnecting");
-          }
         }
       }, 3000);
     },
