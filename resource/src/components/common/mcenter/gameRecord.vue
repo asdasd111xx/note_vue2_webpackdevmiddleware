@@ -273,14 +273,7 @@ export default {
       });
     },
     onSearchBet(username) {
-      this.showInfinite = false;
-      this.isLoading = true;
-      this.showPage.bet = 0;
-      if (username === this.selectedUser) {
-        this.$router.push({ params: { page: "bet" } });
-        this.showInfinite = true;
-        return;
-      }
+      //if (username === this.selectedUser)   return;
       this.selectedUser = username;
       this.onInquireBet();
     },
