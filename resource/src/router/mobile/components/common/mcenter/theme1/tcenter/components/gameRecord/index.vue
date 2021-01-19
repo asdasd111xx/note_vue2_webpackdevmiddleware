@@ -1,7 +1,8 @@
 <template>
   <div>
     <game-record
-      :inq-game.sync="inqGame"
+      :inq-vendor.sync="inqVendor"
+      :inq-kind.sync="inqKind"
       :inq-start.sync="inqStart"
       :inq-end.sync="inqEnd"
       :set-header-title="setHeaderTitle"
@@ -47,16 +48,14 @@
             <div :class="$style.title">
               {{ $text("S_PLEASE_SELECT_TYPE") }}
             </div>
-            <select v-model="inqGame" :class="$style.select">
-              <option
-                v-for="info in allvendor"
-                :key="`list-${info.value}`"
-                :value="info.value"
-              >
-                {{ info.text }}
+
+            <select :class="$style.select" @change="setParamsData($event)">
+              <option v-for="info in allvendor" :key="`list-${info.value}`">
+                {{ info.alias }}
               </option>
             </select>
           </div>
+
           <div :class="[$style['field-date-wrap'], $style['start-date']]">
             <div :class="$style.title">
               {{ $text("S_STARTED_DAY") }}
@@ -194,11 +193,12 @@ export default {
         .add(-29, "days")
         .format("YYYY-MM-DD"),
       endDate: Vue.moment(now).format("YYYY-MM-DD"),
-      inqGame: "",
+      inqVendor: "",
+      inqKind: 0,
       inqStart: Vue.moment(now).format("YYYY-MM-DD"),
       inqEnd: Vue.moment(now).format("YYYY-MM-DD"),
       checkDate: true,
-      allvendor: [{ text: "全部", value: "" }]
+      allvendor: [{ alias: "全部", vendor: "", kind: 0 }]
     };
   },
   computed: {
@@ -250,22 +250,22 @@ export default {
             return;
           }
 
-          let bbin = { text: "BBIN", value: "bbin" };
+          // let bbin = { alias: "BBIN", vendor: "bbin" };
 
           // 整理 API 原始資料，先撇除 bbin 有關的 vendor
-          let originData = ret
-            .map(item => {
-              return {
-                text: item.alias,
-                value: item.vendor
-              };
-            })
-            .filter(item => {
-              return item.value !== "bbin";
-            });
+          let originData = ret.map(item => {
+            return {
+              alias: item.alias,
+              vendor: item.vendor,
+              kind: item.kind
+            };
+          });
+          // .filter(item => {
+          //   return item.value !== "bbin";
+          // });
 
           // 再最前面添加 bbin 的 vendor
-          originData.unshift(bbin);
+          // originData.unshift(bbin);
 
           this.allvendor.push(...originData);
         })
@@ -273,6 +273,12 @@ export default {
           const { msg } = error.response.data;
           this.actionSetGlobalMessage({ msg });
         });
+    },
+    setParamsData(event) {
+      let index = event.target.selectedIndex;
+      let target = this.allvendor[index];
+      this.inqKind = target.kind;
+      this.inqVendor = target.vendor;
     }
   },
   filters: {
