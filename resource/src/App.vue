@@ -134,7 +134,7 @@ export default {
     const self = this;
     const listner = function() {
       const paths = ["card", "casino"];
-        localStorage.removeItem("is-open-game");
+      localStorage.removeItem("is-open-game");
       if (
         !document.hidden &&
         paths.includes(self.$route.name) &&
@@ -178,8 +178,12 @@ export default {
       }
     },
     /* 彩金websocket */
-    reconnectYaboWS() {
-      if (this.siteConfig.MOBILE_WEB_TPL !== "porn1") {
+    reconnectYaboWS(timer = false) {
+      console.log("reconnectYaboWS");
+      if (
+        this.siteConfig.MOBILE_WEB_TPL === "porn1" ||
+        this.siteConfig.MOBILE_WEB_TPL === "sg1"
+      ) {
         return;
       }
 
@@ -188,17 +192,20 @@ export default {
       }
 
       if (this.reconnectTimer) return;
-      this.reconnectTimer = setInterval(() => {
-        // 是否要啟用重新連接
-        if (window.YABO_SOCKET_RECONNECT_ACTIVE) {
-          this.isConnecting = false;
-          this.connectYaboWS();
+      this.reconnectTimer = setInterval(
+        () => {
+          // 是否要啟用重新連接
+          if (window.YABO_SOCKET_RECONNECT_ACTIVE) {
+            this.isConnecting = false;
+            this.connectYaboWS();
 
-          if (this.isDebug) {
-            console.log("[WS]: Reconnecting");
+            if (this.isDebug) {
+              console.log("[WS]: Reconnecting");
+            }
           }
-        }
-      }, 3000);
+        },
+        timer ? 400 : 3000
+      );
     },
     connectYaboWS() {
       if (this.isConnecting) return;
@@ -224,6 +231,9 @@ export default {
           }
           clearInterval(this.reconnectTimer);
           this.reconnectTimer = null;
+        };
+        window.YABO_SOCKET_RECONNECT = e => {
+          this.reconnectYaboWS(true);
         };
         window.YABO_SOCKET.onerror = e => {
           console.log("[WS]: onError:", e);

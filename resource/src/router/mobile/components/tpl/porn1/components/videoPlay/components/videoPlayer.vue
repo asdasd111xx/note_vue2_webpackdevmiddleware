@@ -64,6 +64,7 @@ export default {
       isActiveBouns: true, //預設打開由message決定是否啟動
       dialogType: "tips", // 提示 & 賺得彩金
       reconnectTimer: null, //重新連線timer
+      checkTimer: null, // 檢查連線狀態timer
       isFULL: false,
       socket: null,
       socketId: "",
@@ -92,7 +93,8 @@ export default {
     }
   },
   mounted() {
-    //  暫時手動轉換https
+    this.connectWS();
+
     if (!this.videoInfo.url) return;
     let obj = {
       sources: [
@@ -139,9 +141,6 @@ export default {
 
     //活動開關
     if (this.isActiveBouns) {
-      // connect websocket
-      this.connectWS();
-
       this.player.on("playing", () => {
         if (this.player.seeking() || !this.isInit) return;
         this.isPlaying = true;
@@ -268,18 +267,7 @@ export default {
         const bonunsDialog = this.$refs.bonunsDialog;
         bonunsProcess.processType = "process";
       } else {
-        if (this.reconnectTimer) return;
-        this.reconnectTimer = setTimeout(() => {
-          if (this.isDebug) {
-            console.log("[WS]: Video active Reconnecting...");
-          }
-
-          window.YABO_SOCKET_VIDEO_ONMESSAGE = null;
-          this.connectWS();
-          const bonunsProcess = this.$refs.bonunsProcess;
-          const bonunsDialog = this.$refs.bonunsDialog;
-          bonunsProcess.processType = "loading";
-        }, 3000);
+        this.setReconnect();
       }
     },
     onDisconnect() {
@@ -288,7 +276,6 @@ export default {
       }
 
       const bonunsProcess = this.$refs.bonunsProcess;
-      const bonunsDialog = this.$refs.bonunsDialog;
       bonunsProcess.processType = "loading";
     },
     onMessage(e) {
@@ -383,6 +370,7 @@ export default {
                 break;
               case "PLAY":
                 bonunsProcess.playCueTime();
+                this.setCheckTimer();
                 break;
               case "STOP":
                 this.$nextTick(() => bonunsProcess.playCueTime("stop"));
@@ -453,12 +441,17 @@ export default {
       if (!window.YABO_SOCKET || window.YABO_SOCKET.readyState !== 1) {
         return;
       }
+      // 檢查連線狀態
+      if (type === "PLAY") {
+        this.setCheckTimer();
+      }
+
       let data = {
         SocketId: window.YABO_SOCKET_ID || this.socketId,
         Type: type,
         SendTime: new Date().toISOString(),
         Data: {
-          "web-platform": getCookie("platform") || "web"
+          "web-platform": getCookie("platform")
         }
       };
       if (this.isDebug) {
@@ -493,6 +486,40 @@ export default {
       if (cb) {
         cb();
       }
+    },
+    setReconnect(timer = true) {
+      if (this.reconnectTimer) return;
+      window.YABO_SOCKET_RECONNECT();
+
+      this.reconnectTimer = setTimeout(
+        () => {
+          if (this.isDebug) {
+            console.log("[WS]: Video active Reconnecting...");
+          }
+
+          this.connectWS();
+          window.YABO_SOCKET_VIDEO_ONMESSAGE = null;
+          const bonunsProcess = this.$refs.bonunsProcess;
+          bonunsProcess.processType = "loading";
+        },
+        timer ? 3000 : 400
+      );
+    },
+    // 檢查連線狀態
+    setCheckTimer() {
+      clearInterval(this.checkTimer);
+      this.checkTimer = null;
+
+      this.checkTimer = setInterval(() => {
+        if (this.isDebug) {
+          console.log(
+            `[WS]: State:${window.YABO_SOCKET.readyState} Check fail.`
+          );
+        }
+        this.setReconnect(false);
+        clearInterval(this.checkTimer);
+        this.checkTimer = null;
+      }, 20000);
     }
   },
   created() {
@@ -514,7 +541,6 @@ export default {
       }
 
       setTimeout(() => {
-        this.connectWS();
         this.isInit = true;
       }, 400);
     });
