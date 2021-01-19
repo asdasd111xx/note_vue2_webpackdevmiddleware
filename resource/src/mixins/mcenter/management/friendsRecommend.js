@@ -4,6 +4,8 @@ import { API_FIRST_LEVEL_REGISTER } from "@/config/api";
 import ajax from "@/lib/ajax";
 import axios from "axios";
 import isMobile from "@/lib/is_mobile";
+import bbosRequest from "@/api/bbosRequest";
+import { getCookie, setCookie } from "@/lib/cookie";
 
 export default {
   provide() {
@@ -76,7 +78,7 @@ export default {
         }
       },
       captchaError: false,
-      captchaErrorMsg: "请填写验证码",
+      captchaErrorMsg: "请输入验证码",
       allValue: {
         username: "",
         password: "",
@@ -153,7 +155,7 @@ export default {
 
       if (key === "captcha_text") {
         this.captchaError = false;
-        this.captchaErrorMsg = "请填写验证码";
+        this.captchaErrorMsg = "请输入验证码";
         allValue["captcha_text"] = value.replace(/[\W\_]/g, "");
       } else {
         switch (key) {
@@ -253,6 +255,7 @@ export default {
           this.$emit("close");
         } else {
           if (result.data.errors) {
+            this.getCaptcha();
             if (result.data.errors.username) {
               this.texts.username.error = result.data.errors.username;
               this.allText.username.error = true;
@@ -374,6 +377,35 @@ export default {
       //     }
       //   });
       // });
+    },
+
+    getCaptcha() {
+      if (this.isBackEnd || this.isGetCaptcha) {
+        return;
+      }
+
+      this.isGetCaptcha = true;
+      setTimeout(() => {
+        this.isGetCaptcha = false;
+      }, 800);
+
+      bbosRequest({
+        method: "post",
+        url: this.siteConfig.BBOS_DOMIAN + "/Captcha",
+        reqHeaders: {
+          Vendor: this.memInfo.user.domain
+        },
+        params: {
+          lang: "zh-cn",
+          format: "png"
+        }
+      }).then(res => {
+        if (res.data && res.data.data) {
+          this.captchaImg = res.data.data;
+          this.aid = res.data.cookie.aid;
+          setCookie("aid", res.data.cookie.aid);
+        }
+      });
     },
     onShowPassword() {
       this.isShowEyes = !this.isShowEyes;

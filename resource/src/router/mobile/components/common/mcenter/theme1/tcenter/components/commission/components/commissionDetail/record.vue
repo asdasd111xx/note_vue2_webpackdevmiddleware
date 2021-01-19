@@ -142,7 +142,7 @@
     </template>
 
     <template v-else>
-      <div class="main-wrap">
+      <div v-if="detailList" class="main-wrap">
         <div :class="$style['detail-wrap']">
           <div :class="$style['rebate-wrap']">
             <div :class="[$style.detail, 'clearfix']">

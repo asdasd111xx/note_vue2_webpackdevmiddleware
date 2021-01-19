@@ -130,7 +130,7 @@
             <input
               ref="captcha_text"
               v-model="allValue['captcha_text']"
-              placeholder="请填写验证码"
+              placeholder="请输入验证码"
               :class="$style['captcha-input']"
               maxlength="4"
               @input="onInput($event.target.value, 'captcha_text')"
@@ -187,7 +187,6 @@ import { mapGetters, mapActions } from "vuex";
 import puzzleVerification from "@/components/puzzleVerification";
 import slideVerification from "@/components/slideVerification";
 import popupVerification from "@/components/popupVerification";
-import bbosRequest from "@/api/bbosRequest";
 import * as apis from "@/config/api";
 import { getCookie, setCookie } from "@/lib/cookie";
 
@@ -255,35 +254,6 @@ export default {
     this.getCaptcha();
   },
   methods: {
-    getCaptcha() {
-      if (this.isBackEnd || this.isGetCaptcha) {
-        return;
-      }
-
-      this.isGetCaptcha = true;
-      setTimeout(() => {
-        this.isGetCaptcha = false;
-      }, 800);
-
-      bbosRequest({
-        method: "post",
-        url: this.siteConfig.BBOS_DOMIAN + "/Captcha",
-        reqHeaders: {
-          Vendor: this.memInfo.user.domain
-        },
-        params: {
-          lang: "zh-cn",
-          format: "png"
-        }
-      }).then(res => {
-        if (res.data && res.data.data) {
-          this.captchaImg = res.data.data;
-          this.aid = res.data.cookie.aid;
-          setCookie("aid", res.data.cookie.aid);
-        }
-      });
-    },
-
     showCaptchaPopup() {
       // 無認證直接呼叫
       if (this.memInfo.config.friend_captcha_type === 0) {

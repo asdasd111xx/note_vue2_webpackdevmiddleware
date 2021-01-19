@@ -202,11 +202,11 @@ export default {
       this.$router.replace("/mobile/mcenter/tcenter/commission/summary");
     }
 
-    // 重整的時候，根據當下render page
-    if (this.page) {
-      this.$router.replace(`/mobile/mcenter/tcenter/commission/${this.page}`);
-      return;
-    }
+    // // 重整的時候，根據當下render page
+    // if (this.page) {
+    //   this.$router.replace(`/mobile/mcenter/tcenter/commission/${this.page}`);
+    //   return;
+    // }
 
     this.hasSearch = true;
   },

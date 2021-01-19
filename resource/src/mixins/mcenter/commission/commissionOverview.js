@@ -140,18 +140,19 @@ export default {
           };
         }
 
+        const oauthAmount = this.summary[key].wage.oauth2 || "";
+
         if (key === "monthly") {
           return {
             key,
             text,
             amount: this.summary[key].wage[wage] || "",
-            oauthAmount: "",
+            oauthText,
+            oauthAmount: oauthText ? oauthAmount : "",
             start_at: new Date(this.currentYear, this.currentMonth - 1, 1),
             end_at: new Date(this.currentYear, this.currentMonth, 0)
           };
         }
-
-        const oauthAmount = this.summary[key].wage.oauth2 || "";
 
         return {
           key,
