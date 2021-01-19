@@ -194,12 +194,10 @@ export default {
       import(
         /* webpackChunkName: 'feedbackSg1' */ "../../tpl/sg1/components/mcenter/components/feedback"
       ),
-
     swagSg1: () =>
       import(
         /* webpackChunkName: 'swagSg1' */ "../../tpl/sg1/components/mcenter/components/swag"
       ),
-
     betRecordSg1: () =>
       import(
         /* webpackChunkName: 'betRecordSg1' */ "../../tpl/sg1/components/mcenter/components/betRecord"
