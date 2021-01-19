@@ -236,7 +236,7 @@ export default {
   },
   data() {
     return {
-      currentMethod: "phone-step-2",
+      currentMethod: "phone-step-1",
       resetKeyring: "",
       errMsg: "",
       countdownSec: 0,

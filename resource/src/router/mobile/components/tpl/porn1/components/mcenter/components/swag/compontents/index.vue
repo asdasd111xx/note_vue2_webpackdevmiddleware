@@ -36,10 +36,10 @@
 <script>
 import { mapGetters, mapActions } from "vuex";
 import mobileContainer from "../../../../common/mobileContainer";
-import buyDiamond from './buyDiamond';
-import recoardDiamond from './recoardDiamond';
-import axios from 'axios';
-import goLangApiRequest from '@/api/goLangApiRequest';
+import buyDiamond from "./buyDiamond";
+import recoardDiamond from "./recoardDiamond";
+import axios from "axios";
+import goLangApiRequest from "@/api/goLangApiRequest";
 import mixin from "@/mixins/mcenter/swag/swag";
 import maintainBlock from "@/router/mobile/components/common/maintainBlock";
 
@@ -63,15 +63,15 @@ export default {
           if (this.$route.query && this.$route.query.prev) {
             let prev = this.$route.query.prev;
             switch (prev) {
-              case 'back':
+              case "back":
               default:
                 this.$router.back();
                 return;
             }
           } else {
-            this.$router.push('/mobile/mcenter/wallet');
+            this.$router.push("/mobile/mcenter/wallet");
           }
-        },
+        }
       },
       currentTab: 0, //buy recoard
       currentTemplate: "buy-diamond",
@@ -81,8 +81,8 @@ export default {
   computed: {
     ...mapGetters({
       memInfo: "getMemInfo",
-      loginStatus: 'getLoginStatus',
-      siteConfig: 'getSiteConfig'
+      loginStatus: "getLoginStatus",
+      siteConfig: "getSiteConfig"
     }),
     themeTPL() {
       return this.siteConfig.MOBILE_WEB_TPL;
@@ -91,19 +91,19 @@ export default {
       return [
         {
           key: "buy",
-          text: this.$text("S_DIAMOND_DISCOUNT", "钻石优惠"),
+          text: this.$text("S_DIAMOND_DISCOUNT", "钻石优惠")
         },
         {
           key: "recoard",
-          text: this.$text("S_DIAMOND_RECOARD", "钻石记录"),
+          text: this.$text("S_DIAMOND_RECOARD", "钻石记录")
         },
         {
           key: "linkToSWAG",
-          text: '进入SWAG',
-          text: this.$text("S_INTO_SWAG", "进入SWAG"),
-        },
-      ]
-    },
+          text: "进入SWAG",
+          text: this.$text("S_INTO_SWAG", "进入SWAG")
+        }
+      ];
+    }
   },
   created() {
     if (this.$route.query && this.$route.query.tab) {
@@ -116,19 +116,18 @@ export default {
     ...mapActions([
       "actionSetUserBalance",
       "actionSetUserdata",
-      'actionSetGlobalMessage',
-      "actionGetRechargeStatus",
+      "actionSetGlobalMessage",
+      "actionGetRechargeStatus"
     ]),
     handleLinkToSWAG() {
       if (this.loginStatus) {
-        this.checkSWAGMaintain({ linkTo: true, origin: 'mcenter/swag?tab=0' });
+        this.checkSWAGMaintain({ linkTo: true, origin: "mcenter/swag?tab=0" });
       } else {
-        this.$router.push('/mobile/login');
+        this.$router.push("/mobile/login");
         return;
       }
     },
     setCurrentTab(index) {
-
       switch (index) {
         default:
         case 0:
@@ -148,7 +147,7 @@ export default {
           this.handleLinkToSWAG();
           break;
       }
-    },
+    }
   }
 };
 </script>
