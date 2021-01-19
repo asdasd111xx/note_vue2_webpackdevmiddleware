@@ -571,7 +571,7 @@ export default {
     window.YABO_SOCKET_VIDEO_ONMESSAGE = null;
     window.YABO_SOCKET_VIDEO_DISCONNECT = null;
     window.YABO_SOCKET_VIDEO_CONNECT = null;
-    clearInterval(this.checkTimer);
+    clearTimeout(this.checkTimer);
     this.checkTimer = null;
     clearTimeout(this.reconnectTimer);
     this.reconnectTimer = null;
@@ -584,6 +584,7 @@ export default {
 <style lang="scss" module>
 .video-player-wrap {
   position: relative;
+  min-height: 200px;
 }
 
 :global {
