@@ -201,11 +201,14 @@ export default {
             return;
           }
 
+          if (this.allInput.some(key => this.allText[key].error)) {
+            return;
+          }
+
           if (
-            this.allInput.some(key => this.allText[key].error) ||
+            this.memInfo.config.friend_captcha_type === 1 &&
             this.captchaError
           ) {
-            return;
           }
           if (this.allValue.password !== this.allValue.confirm_password) {
             return;
