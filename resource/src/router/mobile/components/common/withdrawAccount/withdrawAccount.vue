@@ -25,12 +25,12 @@
           />
         </div>
         <span :class="$style['title']"> {{ "帐户资料" }}</span>
-        <div :class="$style['btn-icon']">
+        <!-- <div :class="$style['btn-icon']">
           <img
             :src="$getCdnPath(`/static/image/${themeTPL}/common/btn_help.png`)"
             @click="$router.push('/mobile/mcenter/helpCenter')"
           />
-        </div>
+        </div> -->
       </div>
 
       <div :class="$style['wiithdraw-account-wrap']">
