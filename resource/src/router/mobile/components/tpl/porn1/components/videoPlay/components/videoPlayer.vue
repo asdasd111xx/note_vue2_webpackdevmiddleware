@@ -444,6 +444,9 @@ export default {
       // 檢查連線狀態
       if (type === "PLAY") {
         this.setCheckTimer();
+      } else {
+        clearInterval(this.checkTimer);
+        this.checkTimer = null;
       }
 
       let data = {
@@ -489,14 +492,13 @@ export default {
     },
     setReconnect(timer = true) {
       if (this.reconnectTimer) return;
-      window.YABO_SOCKET_RECONNECT();
 
       this.reconnectTimer = setTimeout(
         () => {
           if (this.isDebug) {
             console.log("[WS]: Video active Reconnecting...");
           }
-
+          window.YABO_SOCKET_RECONNECT();
           this.connectWS();
           window.YABO_SOCKET_VIDEO_ONMESSAGE = null;
           const bonunsProcess = this.$refs.bonunsProcess;
@@ -566,6 +568,8 @@ export default {
     window.YABO_SOCKET_VIDEO_ONMESSAGE = null;
     window.YABO_SOCKET_VIDEO_DISCONNECT = null;
     window.YABO_SOCKET_VIDEO_CONNECT = null;
+    clearInterval(this.checkTimer);
+    this.checkTimer = null;
     clearTimeout(this.reconnectTimer);
     this.reconnectTimer = null;
     this.player.dispose();
