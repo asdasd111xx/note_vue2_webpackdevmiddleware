@@ -10,7 +10,6 @@ import BigNumber from "bignumber.js/bignumber";
 import ajax from "@/lib/ajax";
 import axios from "axios";
 import goLangApiRequest from "@/api/goLangApiRequest";
-import bbosRequest from "@/api/bbosRequest";
 
 import { getCookie } from "@/lib/cookie";
 
@@ -469,20 +468,9 @@ export default {
       }
 
       // 取得銀行群組
-      // return goLangApiRequest({
-      //   method: "get",
-      //   url: `${this.siteConfig.YABO_GOLANG_API_DOMAIN}/xbb/Ext/Vendor/Payment/Group`,
-      //   params: {
-      //     username: this.username,
-      //     lang: "zh-cn"
-      //   }
-      // })
-      return bbosRequest({
+      return goLangApiRequest({
         method: "get",
-        url: this.siteConfig.BBOS_DOMIAN + "/Ext/V2/Vendor/Payment/Group",
-        reqHeaders: {
-          Vendor: this.memInfo.user.domain
-        },
+        url: `${this.siteConfig.YABO_GOLANG_API_DOMAIN}/xbb/Ext/Vendor/Payment/Group`,
         params: {
           username: this.username,
           lang: "zh-cn"
@@ -515,12 +503,9 @@ export default {
               this.cgPromotionMessage = extraArray.valuePromotionTypeCGPay;
             }
 
-            const filterData = res.data.payment_group.filter(
+            const filterData = res.data.ret.payment_group.filter(
               info => !info.is_link
             )[0];
-            // const filterData = res.data.ret.payment_group.filter(
-            //   info => !info.is_link
-            // )[0];
 
             // 目前為第一個支付群組
             this.curModeGroup = filterData || {};
@@ -529,12 +514,10 @@ export default {
               ? filterData.payment_group_content[0]
               : {};
             // 該參數顯示上方支付群組用
-            this.depositData = res.data.payment_group;
-            // this.depositData = res.data.ret.payment_group;
+            this.depositData = res.data.ret.payment_group;
             // this.isDepositAi = res.data.ret.deposit_ai;
 
-            this.yourBankList = res.data.your_bank;
-            // this.yourBankList = res.data.ret.your_bank;
+            this.yourBankList = res.data.ret.your_bank;
 
             // 110/01/09 defaultCurPayBank 再判斷能放哪，使用銀行這塊能再改寫
             this.defaultCurPayBank();
@@ -556,12 +539,10 @@ export default {
               // this.isShow = false 防非同步造成的問題
               this.isShow = false;
               this.getPayPass();
-              return { result: res.data };
-              // return { result: res.data.ret };
+              return { result: res.data.ret };
             }
 
-            return { result: res.data };
-            // return { result: res.data.ret };
+            return { result: res.data.ret };
           }
 
           return res;
