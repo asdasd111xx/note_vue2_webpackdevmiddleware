@@ -79,7 +79,8 @@ export default {
       query.cid &&
       query.userid &&
       query.tagId &&
-      query.domain
+      query.domain &&
+      query.check === "true"
     ) {
       let cid = query.cid,
         userid = query.userid || query.userId,
